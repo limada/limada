@@ -1,6 +1,6 @@
 /*
  * Limada
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -14,6 +14,7 @@
  */
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Limada.Model {
     /// <summary>
@@ -22,13 +23,20 @@ namespace Limada.Model {
     /// to structure content
     /// Thing supports Descriptions
     /// </summary>
+    [DataContract]
     public class Thing : IThing, IThing<Int64> {
         public Thing() : this(Common.Isaac.Long) { }
         public Thing(Int64 id) { _id = id; }
 
         protected Int64 _id = default(Int64);
+
+        [DataMember]
         public virtual Int64 Id {
             get { return _id; }
+#if ! SILVERLIGHT
+            private 
+#endif
+            set { _id = value; }
         }
 
         public virtual void SetId(Int64 id) {
@@ -39,6 +47,8 @@ namespace Limada.Model {
             get { return null; }
             set { }
         }
+
+        public virtual void MakeEqual(IThing thing) {}
 
         public override string ToString() {
             return "°";

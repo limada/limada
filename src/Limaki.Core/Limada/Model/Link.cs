@@ -1,6 +1,6 @@
 /*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -17,8 +17,10 @@ using System;
 using Id = System.Int64;
 using Limaki.Common;
 using Limaki.Graphs;
+using System.Runtime.Serialization;
 
 namespace Limada.Model {
+    [DataContract]
     public class Link : Thing, IThing<IThing>, ILink, ILink<Id> {
         
         public Link(IThing marker):base() {
@@ -85,6 +87,19 @@ namespace Limada.Model {
         }
 
 
+        public override void MakeEqual(IThing thing) {
+            if (thing is ILink) {
+                base.MakeEqual(thing);
+                var idLink = ( (ILink<Id>) thing );
+                var idThis = ((ILink<Id>)this);
+                idThis.Root = idLink.Root;
+                idThis.Leaf = idLink.Leaf;
+                idThis.Marker = idLink.Marker;
+                this.Root = ( (ILink) thing ).Root;
+                this.Leaf = ((ILink)thing).Leaf;
+                
+            }
+        }
         //public virtual IThing Adjacent(IThing thing) {
         //    if (thing.Equals(this.Root)) {
         //        return this.Leaf;
@@ -125,18 +140,40 @@ namespace Limada.Model {
         }
 
         protected Id _leafId = 0;
+        [DataMember(Name = "LeafId")]
+#if SILVERLIGHT
+        public Id leafId {
+            get { return _leafId; }
+            set { setId(ref _leafId, ref _leaf, value); }
+        }
+#endif
         Id IEdge<Id>.Leaf {
             get { return _leafId; }
             set { setId(ref _leafId, ref _leaf, value); }
         }
 
         protected Id _markerId = 0;
+        [DataMember(Name = "MarkerId")]
+#if SILVERLIGHT        
+        public Id narkerId {
+            get { return _markerId; }
+            set { setId(ref _markerId, ref _marker, value); }
+        }
+#endif
         Id ILink<Id>.Marker {
             get { return _markerId; }
             set { setId(ref _markerId, ref _marker, value); }
         }
 
         protected Id _rootId = 0;
+        [DataMember(Name = "RootId")]
+#if SILVERLIGHT        
+        public Id rootId {
+            get { return _rootId; }
+            set { setId(ref _rootId, ref _root, value); }
+        }
+#endif
+
         Id IEdge<Id>.Root {
             get { return _rootId; }
             set { setId(ref _rootId, ref _root, value); }

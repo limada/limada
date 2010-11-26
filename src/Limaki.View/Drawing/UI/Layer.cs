@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -17,18 +17,17 @@ using System;
 using System.ComponentModel;
 using Limaki.Actions;
 using Limaki.Common;
-using Limaki.Drawing;
 
 namespace Limaki.Drawing.UI {
     public abstract class Layer<T> : ActionBase, ILayer<T>, ICameraTarget {
         
-        IZoomTarget _zoomable = null;
-        IScrollTarget _scrollable = null;
-        ///<directed>True</directed>
-        public Layer(IZoomTarget zoomTarget, IScrollTarget scrollTarget) {
-            this._zoomable = zoomTarget;
-            this._scrollable = scrollTarget;
-        }
+        //IZoomTarget _zoomable = null;
+        //IScrollTarget _scrollable = null;
+        /////<directed>True</directed>
+        //public Layer(IZoomTarget zoomTarget, IScrollTarget scrollTarget) {
+        //    this._zoomable = zoomTarget;
+        //    this._scrollable = scrollTarget;
+        //}
 
         public Layer(ICamera camera) {
             this._camera = camera;
@@ -40,6 +39,12 @@ namespace Limaki.Drawing.UI {
             set { _size = value; }
         }
 
+        private PointI _offset = new PointI();
+        public virtual PointI Offset {
+            get { return _offset; }
+            set { _offset = value; }
+        }
+            
         protected bool isDataOwner = false;
         protected T _data = default(T);
         protected T GetData() { return Data; }
@@ -75,52 +80,14 @@ namespace Limaki.Drawing.UI {
         }
         #endregion
 
-        # region ITransformer member
+        # region ICameraTarget member
         ICamera _camera;
         [Browsable(false)]
         public virtual ICamera Camera {
-            get {
-                if (_camera == null) {
-                    _camera = new DelegatingCamera(GetMatrix);
-                }
-                return _camera;
-            }
+            get { return _camera; }
+            set { _camera = value;}
         }
 
-        static IDrawingUtils _drawingUtils = null;
-        protected static IDrawingUtils drawingUtils {
-            get {
-                if (_drawingUtils == null) {
-                    _drawingUtils = Registry.Factory.One<IDrawingUtils>();
-                }
-                return _drawingUtils;
-            }
-        }
-
-        [Browsable(false)]
-        public virtual Matrice GetMatrix() {
-            Matrice matrice = drawingUtils.NativeMatrice();
-            matrice.Scale(_zoomable.ZoomFactor,_zoomable.ZoomFactor);
-
-            // getting ScrollPosition is very expensive; no idea how to avoid it
-            matrice.Translate(
-                -_scrollable.ScrollPosition.X / _zoomable.ZoomFactor,
-                -_scrollable.ScrollPosition.Y / _zoomable.ZoomFactor);
-            
-            transformSandBox(matrice);
-            
-            return matrice;
-        }
-
-        /// <summary>
-        /// used to try out other tranformation possibitities
-        /// </summary>
-        /// <param name="m"></param>
-        void transformSandBox(Matrice m) {
-            //m.Rotate(20f);
-            //m.Shear(0.1f, 0.1f);
-
-        }
         # endregion 
     
     }

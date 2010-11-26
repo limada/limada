@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -63,6 +63,11 @@ namespace Limaki.Data {
             get { return _extension; }
             set { _extension = value; }
         }
+        
+        public int Port {
+            get;
+            set;
+        }
 
         /// <summary>
         /// extracts the information of filename and fills dataBaseInfo 
@@ -89,6 +94,9 @@ namespace Limaki.Data {
                 dataBaseInfo._password = "masterkey";
             }
             return dataBaseInfo;
+        }
+        public static string ToFileName(DataBaseInfo dataBaseInfo) {
+            return dataBaseInfo.Path+dataBaseInfo.Name+dataBaseInfo.Extension;
         }
     }
 }

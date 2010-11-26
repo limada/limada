@@ -1,6 +1,6 @@
 /*
  * Limada
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -15,7 +15,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
+using System.Xml.Linq;
 using Limada.Model;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
@@ -23,9 +23,10 @@ using Limaki.Graphs;
 using Limaki.Widgets;
 
 namespace Limada.View {
-#if ! SILVERLIGHT
-    public class WidgetThingSerializer : ThingSerializer {
+
+    public class WidgetThingSerializer : ThingIdSerializer {
         private IGraphPair<IWidget, IThing, IEdgeWidget, ILink> _widgetThingGraph = null;
+        
         public virtual IGraphPair<IWidget, IThing, IEdgeWidget, ILink> WidgetThingGraph {
             get { return _widgetThingGraph; }
             set { _widgetThingGraph = value; }
@@ -74,7 +75,7 @@ namespace Limada.View {
         }
 
         protected virtual void ReadInto(ICollection<IWidget> widgets) {
-            foreach (XmlElement node in Things) {
+            foreach (XElement node in Things.Elements()) {
                 IWidget widget = ReadWidget(node);
                 if (widget != null && !widgets.Contains(widget)) {
                     widgets.Add(widget);
@@ -92,29 +93,20 @@ namespace Limada.View {
                 widgets.Remove (widget);
         }
 
-        protected virtual IWidget ReadWidget(XmlElement node) {
+        protected virtual IWidget ReadWidget(XElement node) {
             IThing thing = Read (node);
+            
+            this.ThingCollection.Add (thing);
+
             IWidget widget = null;
             if (thing != null) {
                 widget = WidgetThingGraph.Get (thing);
-                if (Layout != null) {
+                if (widget!=null && Layout != null) {
                     Layout.Invoke (widget);
                     int x = (int)ReadInt(node, "x", false);
                     int y = (int)ReadInt(node, "y", false);
                     int w = (int)ReadInt(node, "w", false);
                     int h = (int)ReadInt(node, "h", false);
-                    //XmlNodeReader reader = new XmlNodeReader(node);
-                    //try {
-                    //    reader.MoveToAttribute ("x");
-                    //    int x = reader.ReadContentAsInt ();
-                    //    reader.MoveToAttribute ("y");
-                    //    int y = reader.ReadContentAsInt ();
-                    //    reader.MoveToAttribute("w");
-                    //    int w = reader.ReadContentAsInt();
-                    //    reader.MoveToAttribute("h");
-                    //    int h = reader.ReadContentAsInt();
-
-                    //} catch {}
                     widget.Shape.Location = new PointI(x, y);
                     widget.Shape.Size = new SizeI(w, h);
                 }
@@ -123,16 +115,16 @@ namespace Limada.View {
             return widget;
         }
 
-        public virtual XmlElement Write(IWidget widget) {
-            XmlElement xmlthing = null;
+        public virtual XElement Write(IWidget widget) {
+            XElement xmlthing = null;
 
             IThing thing = WidgetThingGraph.Get (widget);
             if (thing != null) {
                 xmlthing = Write (thing);
-                xmlthing.SetAttribute("x", widget.Location.X.ToString());
-                xmlthing.SetAttribute("y", widget.Location.Y.ToString());
-                xmlthing.SetAttribute("w", widget.Size.Width.ToString());
-                xmlthing.SetAttribute("h", widget.Size.Height.ToString());
+                xmlthing.Add( new XAttribute("x", widget.Location.X.ToString()));
+                xmlthing.Add( new XAttribute("y", widget.Location.Y.ToString()));
+                xmlthing.Add( new XAttribute("w", widget.Size.Width.ToString()));
+                xmlthing.Add( new XAttribute("h", widget.Size.Height.ToString()));
             }
 
             return xmlthing;
@@ -146,9 +138,13 @@ namespace Limada.View {
         }
 
         public override void Write(System.IO.Stream s) {
-            Write (WidgetCollection);
-            Document.Save (s);
+            Write(WidgetCollection);
+            using (System.Xml.XmlWriter writer = System.Xml.XmlWriter.Create(s)) {
+                Document.Save(writer);
+                writer.Flush();
+            }
         }
     }
-#endif
+
 }
+

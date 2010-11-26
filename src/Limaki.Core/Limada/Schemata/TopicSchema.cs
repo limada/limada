@@ -1,6 +1,6 @@
 /*
  * Limada
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -15,6 +15,7 @@
 
 using Limada.Model;
 using Limada.Schemata;
+using Id = System.Int64;
 
 namespace Limada.Schemata {
     /// <summary>
@@ -33,6 +34,8 @@ namespace Limada.Schemata {
         /// marker-Item for theme
         /// </summary>
         public static readonly IThing TopicMarker = Thing<string>("Topic", 0xF426954398F4D754);
+
+        public static readonly IThing AutoViewMarker = Thing<string>("AutoView", 0xCF5E308A1719F4FD);
 
         //TODO: Add whatever themesViewOnOpenConnectionLink may be
         /// <summary>

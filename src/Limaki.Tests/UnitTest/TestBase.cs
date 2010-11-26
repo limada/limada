@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -21,7 +21,6 @@ using Limaki.UnitTest;
 using NUnit.Framework;
 using System.Diagnostics;
 using Limaki.Context;
-using ApplicationContextRecourceLoader=Limaki.Context.ApplicationContextRecourceLoader;
 
 namespace Limaki.Tests {
 }

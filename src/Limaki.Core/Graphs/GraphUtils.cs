@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -16,6 +16,8 @@
 
 using System;
 using Limaki.Graphs.Extensions;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Limaki.Graphs {
     public class GraphUtils {
@@ -51,6 +53,17 @@ namespace Limaki.Graphs {
                         }
                     }
                 }
+            }
+        }
+
+        public static IEnumerable<TItem> Elements<TItem, TEdge>(IGraph<TItem, TEdge> graph) 
+        where TEdge:IEdge<TItem>,TItem {
+            foreach(var item in graph) {
+                if (!(item is TEdge))
+                    yield return item;
+            }
+            foreach (var item in graph.Edges()) {
+                    yield return item;
             }
         }
     }

@@ -119,7 +119,13 @@ namespace Limaki.Tests.Graph.Wrappers {
                 get { throw new System.Exception("The method or operation is not implemented."); }
             }
 
+            public SizeI Size {
+                get { throw new System.Exception("The method or operation is not implemented."); }
+            }
+            
             public void Update() {}
+            public void UpdateScrollSize() {}
+            public void UpdateCamera() { }
 
             Action _commandsExecute = null;
             public void CommandsExecute() { 
@@ -144,6 +150,7 @@ namespace Limaki.Tests.Graph.Wrappers {
                 set { _scrollMinSize = value; }
             }
 
+            public virtual PointI Offset { get; set; }
             #endregion
 
            

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -66,7 +66,10 @@ namespace Limaki.Widgets {
         protected virtual void checkBoundsAdd ( ref RectangleI bounds ) {
             if ( !_boundsDirty ) {
                 if ( bounds.Bottom > this._bounds.Bottom ||
-                    bounds.Right > this._bounds.Right )
+                    bounds.Right > this._bounds.Right  ||
+                    bounds.X < this._bounds.X ||
+                    bounds.Y < this._bounds.Y
+                    )
                     BoundsDirty = true;
             }
         }
@@ -84,7 +87,9 @@ namespace Limaki.Widgets {
         protected virtual void checkBoundsRemove ( ref RectangleI bounds ) {
             if ( !_boundsDirty ) {
                 if ( bounds.Bottom >= this._bounds.Bottom ||
-                    bounds.Right >= this._bounds.Right )
+                    bounds.Right >= this._bounds.Right ||
+                    bounds.X <= this._bounds.X ||
+                    bounds.Y <= this._bounds.Y)
                     BoundsDirty = true;
             }
         }
@@ -99,17 +104,28 @@ namespace Limaki.Widgets {
         protected abstract void Remove(RectangleI bounds, IWidget item);
 
         public virtual void Fill(IEnumerable<IWidget> items) {
-            int h = 0;
-            int w = 0;
+            int r = 0;
+            int b = 0;
+            int l = 0;
+            int t = 0;
             foreach (IWidget widget in items) {
                 RectangleI bounds = GetRectangle (widget);
                 Add(bounds, widget);
-                int r = bounds.Right;
-                int b = bounds.Bottom;
-                if (r > w) w = r;
-                if (b > h) h = b;
+                int wr = bounds.Right;
+                int wb = bounds.Bottom;
+                int wx = bounds.X;
+                int wy = bounds.Y;
+                if (wr > r) r = wr;
+                if (wb > b) b = wb;
+                if (wx < l) l = wx;
+                if (wy < t) t = wy;
             }
-            _bounds = new RectangleI (0, 0, w, h);
+            if (l > 0) l = 0;
+            if (t > 0) t = 0;
+            if (r < 0) r = 0;
+            if (b < 0) b = 0;
+                   
+            _bounds = RectangleI.FromLTRB (l,t,r,b);
             _boundsDirty = false;
         }
 

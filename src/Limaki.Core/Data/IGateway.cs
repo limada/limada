@@ -1,6 +1,6 @@
 ﻿/*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -13,12 +13,15 @@
  * 
  */
 
+using System.Collections.Generic;
+using Limaki.Common.Collections;
 namespace Limaki.Data {
     public interface IGateway {
         void Close();
         DataBaseInfo DataBaseInfo { get; set; }
         string FileExtension { get; }
         bool IsOpen();
+        bool IsClosed();
         void Open( DataBaseInfo dataBaseInfo );
     }
 }

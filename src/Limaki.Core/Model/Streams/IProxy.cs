@@ -26,8 +26,8 @@ namespace Limaki.Model.Streams {
 
         /// <summary>
         /// realSubject is released
-        /// if clean==false, the object is not disposed or closed
-        /// the caller cares about cleaning the object
+        /// if clean==false, the realSubject is not disposed or closed
+        /// the caller cares about cleaning the realSubject
         /// </summary>
         void ClearRealSubject(bool clean);
         void Flush();

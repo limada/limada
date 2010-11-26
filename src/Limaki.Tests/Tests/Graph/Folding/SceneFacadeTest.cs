@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -51,15 +51,18 @@ namespace Limaki.Tests.Graph.Wrappers {
         public bool AlwaysInvoke = false;
         bool invoked = false;
 
-        public void TestShapes(Scene scene) {
-            //if (!invoked) {
+        public void CommandsExecute() {
+             //if (!invoked) {
             //    Mock.SceneControler.Invoke ();
             //    if (!AlwaysInvoke)
             //        invoked = true;
             //}
             Mock.Control.CommandsExecute ();
-            Mock.Scene.Commands.Clear ();
+            Mock.Scene.Commands.Clear ();           
+        }
 
+        public void TestShapes(Scene scene) {
+            CommandsExecute ();
             ICollection<IWidget> indexList = new Set<IWidget>();
             foreach(IWidget widget in scene.SpatialIndex.Query()) {
                 if (!indexList.Contains(widget)) {
@@ -102,12 +105,14 @@ namespace Limaki.Tests.Graph.Wrappers {
 
         [Test]
         public void InvokeTest() {
+            CommandsExecute();
             Mock.SceneControler.Invoke ();
             TestShapes (Mock.Scene);
         }
 
         [Test]
-        public void FullExpandTest() {
+        public virtual void FullExpandTest() {
+            CommandsExecute();
             Mock.Reset();
             Mock.Scene.Selected.Clear();
             Mock.Scene.Focused = Mock.Factory.Node[1];

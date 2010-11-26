@@ -1,17 +1,20 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
  * published by the Free Software Foundation.
  * 
- * Author: Lytico
- * Copyright (C) 2006-2008 Lytico
+ * Authors: 
+ * Mike Kestner (mkestner@speakeasy.net)
+ * 
+ * Copyright (C) 2004 Novell, Inc (http://www.novell.com)
  *
  * http://limada.sourceforge.net
  * 
  */
+
 
 /* 
  * this file is ported from
@@ -21,7 +24,6 @@
 
 using System;
 using System.ComponentModel;
-using Limaki.Drawing;
 
 namespace Limaki.Drawing {
     public struct RectangleS {
@@ -238,7 +240,7 @@ namespace Limaki.Drawing {
         [Browsable(false)]
         public float Bottom {
             get {
-                return Y + Height;
+                return y + height;
             }
         }
 
@@ -286,7 +288,7 @@ namespace Limaki.Drawing {
         [Browsable(false)]
         public float Left {
             get {
-                return X;
+                return x;
             }
         }
 
@@ -321,7 +323,7 @@ namespace Limaki.Drawing {
         [Browsable(false)]
         public float Right {
             get {
-                return X + Width;
+                return x + width;
             }
         }
 
@@ -356,7 +358,7 @@ namespace Limaki.Drawing {
         [Browsable(false)]
         public float Top {
             get {
-                return Y;
+                return y;
             }
         }
 
@@ -420,8 +422,8 @@ namespace Limaki.Drawing {
         /// </remarks>
 
         public bool Contains(float x, float y) {
-            return ((x >= Left) && (x < Right) &&
-                    (y >= Top) && (y < Bottom));
+            return ((x >= this.x) && (x < Right) &&
+                    (y >= this.y) && (y < Bottom));
         }
 
         /// <summary>
@@ -485,13 +487,13 @@ namespace Limaki.Drawing {
         /// </remarks>
 
         public bool IntersectsWith(RectangleS rect) {
-            return !((Left >= rect.Right) || (Right <= rect.Left) ||
-                     (Top >= rect.Bottom) || (Bottom <= rect.Top));
+            return !((x >= rect.Right) || (Right <= rect.Left) ||
+                     (y >= rect.Bottom) || (Bottom <= rect.Top));
         }
 
         private bool IntersectsWithInclusive(RectangleS r) {
-            return !((Left > r.Right) || (Right < r.Left) ||
-                     (Top > r.Bottom) || (Bottom < r.Top));
+            return !((x > r.Right) || (Right < r.Left) ||
+                     (y > r.Bottom) || (Bottom < r.Top));
         }
 
         /// <summary>
@@ -503,8 +505,8 @@ namespace Limaki.Drawing {
         /// </remarks>
 
         public void Offset(float x, float y) {
-            X += x;
-            Y += y;
+            this.x += x;
+            this.y += y;
         }
 
         /// <summary>

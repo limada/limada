@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -14,6 +14,7 @@
  */
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Limaki.Common {
@@ -28,6 +29,11 @@ namespace Limaki.Common {
                 return _clazzes;
             }
         }
+
+        public IEnumerable<Type> KnownClasses {
+            get { return Clazzes.Values.Distinct<Type>(); }
+        }
+
         public Type Clazz<T>() {
             return Clazz(typeof(T));
         }

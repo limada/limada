@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -55,13 +55,7 @@ namespace Limaki.Widgets {
                     }
                 }
             }
-            IWidget oldTarget = null;
-            if (asRoot) {
-                oldTarget = edge.Root;
-            } else {
-                oldTarget = edge.Leaf;
-            }
-            Graph.ChangeEdge(edge, oldTarget, target);
+            Graph.ChangeEdge(edge, target, asRoot);
             return result;
         }
 
@@ -132,14 +126,15 @@ namespace Limaki.Widgets {
 
         public IEnumerable<IWidget> Elements {
             get {
-                foreach (IWidget widget in Graph) {
-                    if (!(widget is IEdgeWidget)) {
-                        yield return widget;
-                    }
-                }
-                foreach (IWidget widget in Graph.Edges()) {
-                    yield return widget;
-                }
+                return Graph;
+                //foreach (IWidget widget in Graph) {
+                //    if (!(widget is IEdgeWidget)) {
+                //        yield return widget;
+                //    }
+                //}
+                //foreach (IWidget widget in Graph.Edges()) {
+                //    yield return widget;
+                //}
             }
         }
 

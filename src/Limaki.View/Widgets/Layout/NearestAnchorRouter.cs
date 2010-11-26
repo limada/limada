@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -145,7 +145,7 @@ namespace Limaki.Widgets.Layout {
                 edge.LeafAnchor = nearest.Two;
             } catch (ArgumentException e) {
                 ArgumentException ex = new ArgumentException ("Shape-Error with: "+edge.ToString(), e);
-                Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex);
+                Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex,MessageType.OK);
             }
             base.routeEdge(edge);
             

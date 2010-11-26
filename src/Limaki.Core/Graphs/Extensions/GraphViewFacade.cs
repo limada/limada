@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -25,6 +25,7 @@ namespace Limaki.Graphs.Extensions {
     public class GraphViewFacade<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
         public GraphViewFacade(GraphView<TItem, TEdge> view) {
             this._graphView = view;
+            this.RemoveOrphans = true;
         }
         public IGraph<TItem, TEdge> Data {
             get { return graphView.Two; }
@@ -33,6 +34,8 @@ namespace Limaki.Graphs.Extensions {
         protected IGraph<TItem, TEdge> View {
             get { return graphView.One; }
         }
+
+        public bool RemoveOrphans { get; set; }
 
         private GraphView<TItem, TEdge> _graphView = null;
         /// <summary>
@@ -50,8 +53,7 @@ namespace Limaki.Graphs.Extensions {
         /// <param name="item"></param>
         /// <returns></returns>
         public virtual ICollection<TItem> Add(TItem item) {
-            ViewBuilder<TItem, TEdge> viewBuilder =
-                new ViewBuilder<TItem, TEdge>(this.View);
+            var viewBuilder = new ViewBuilder<TItem, TEdge>(this.View);
 
             if (item is TEdge) {
                 if (!Data.Contains((TEdge)item))
@@ -72,10 +74,9 @@ namespace Limaki.Graphs.Extensions {
         /// <param name="item"></param>
         /// <returns></returns>
         public virtual ICollection<TItem> Add(IEnumerable<TItem> elements) {
-            ViewBuilder<TItem, TEdge> viewBuilder =
-                new ViewBuilder<TItem, TEdge>(this.View);
+            var viewBuilder = new ViewBuilder<TItem, TEdge>(this.View);
 
-            foreach (TItem item in elements) {
+            foreach (var item in elements) {
                 if (item is TEdge) {
                     if (!Data.Contains((TEdge)item))
                         Data.Add((TEdge)item);
@@ -92,10 +93,9 @@ namespace Limaki.Graphs.Extensions {
 
         public virtual ICollection<TItem> Expand(IEnumerable<TItem> elements, bool deep) {
 
-            ViewBuilder<TItem, TEdge> viewBuilder =
-                new ViewBuilder<TItem, TEdge>(this.View);
+            var viewBuilder = new ViewBuilder<TItem, TEdge>(this.View);
 
-            foreach (TItem item in elements) {
+            foreach (var item in elements) {
                 if (deep)
                     viewBuilder.AddDeepExpanded(item, this.Data);
                 else
@@ -114,24 +114,22 @@ namespace Limaki.Graphs.Extensions {
         /// </summary>
         /// <param name="viewBuilder"></param>
         protected virtual void CommitAdd(ViewBuilder<TItem, TEdge> viewBuilder) {
-            Stack<TItem> changeStack = new Stack<TItem>(viewBuilder.Changes);
+            var changeStack = new Stack<TItem>(viewBuilder.Changes);
             while (changeStack.Count > 0) {
                 TItem item = changeStack.Pop();
 
                 View.Add(item);
 
                 // look if we have invisible, but valid edges
-                if (Data is IBaseGraphPair<TItem, TEdge>) {
-                    var data = (IBaseGraphPair<TItem, TEdge>)Data;
+                var data = Data as IBaseGraphPair<TItem, TEdge>;
+                if (data != null) {
                     foreach (TEdge edge in data.ComplementEdges(item, View)) {
                         if (!viewBuilder.Changes.Contains(edge)) {
                             changeStack.Push(edge);
                             viewBuilder.Changes.Add(edge);
                         }
                     }
-                }
-                else 
-                foreach (TEdge edge in Data.Fork(item)) {
+                } else  foreach (TEdge edge in Data.Fork(item)) {
                     if (viewBuilder.Contains(edge.Root) && viewBuilder.Contains(edge.Leaf)) {
                         if (!viewBuilder.Changes.Contains(edge)) {
                             changeStack.Push(edge);
@@ -161,7 +159,7 @@ namespace Limaki.Graphs.Extensions {
 
 
         protected virtual void RevoveEdgesOfChanged(ViewBuilder<TItem, TEdge> viewBuilder) {
-            Stack<TItem> changeStack = new Stack<TItem>(viewBuilder.Changes);
+            var changeStack = new Stack<TItem>(viewBuilder.Changes);
             while (changeStack.Count != 0) {
                 TItem item = changeStack.Pop ();
                 if (item is TEdge) {
@@ -175,8 +173,7 @@ namespace Limaki.Graphs.Extensions {
 
         public ICollection<TItem> Collapse( IEnumerable<TItem> elements ) {
 
-            ViewBuilder<TItem, TEdge> viewBuilder =
-                new ViewBuilder<TItem, TEdge>(this.View);
+            var viewBuilder = new ViewBuilder<TItem, TEdge>(this.View);
 
             NeverRemove(viewBuilder, elements);
 
@@ -188,21 +185,24 @@ namespace Limaki.Graphs.Extensions {
             RevoveEdgesOfChanged (viewBuilder);
 
             CommitRemove(viewBuilder);
-            List<TItem> changes = new List<TItem>(viewBuilder.Changes);
-            viewBuilder.Changes.Clear ();
-            
-            viewBuilder.RemoveOrphans(this.View);
-            CommitRemove(viewBuilder);
-            changes.AddRange (viewBuilder.Changes);
+            var result = viewBuilder.Changes;
 
-            viewBuilder.Changes.Clear();
-            return changes;
+            if (RemoveOrphans) {
+                var changes = new List<TItem>(viewBuilder.Changes);
+                viewBuilder.Changes.Clear ();
+                viewBuilder.RemoveOrphans(this.View);
+                CommitRemove(viewBuilder);
+                changes.AddRange(viewBuilder.Changes);
+                viewBuilder.Changes.Clear();
+                result = changes;
+            }
+           
+            return result;
 
         }
 
         public virtual ICollection<TItem> CollapseToFocused(IEnumerable<TItem> elements) {
-            ViewBuilder<TItem, TEdge> viewBuilder =
-                new ViewBuilder<TItem, TEdge>(this.View);
+            var viewBuilder = new ViewBuilder<TItem, TEdge>(this.View);
 
             NeverRemove(viewBuilder, elements);
 
@@ -218,8 +218,7 @@ namespace Limaki.Graphs.Extensions {
 
         public ICollection<TItem> Hide(IEnumerable<TItem> elements) {
 
-            ViewBuilder<TItem, TEdge> viewBuilder =
-                new ViewBuilder<TItem, TEdge>(this.View);
+            var viewBuilder = new ViewBuilder<TItem, TEdge>(this.View);
 
             foreach (TItem item in elements) {
                 viewBuilder.Remove(item);

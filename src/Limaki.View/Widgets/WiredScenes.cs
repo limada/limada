@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -111,16 +111,16 @@ namespace Limaki.Widgets {
 
                 if (targetEdge.Root != root) {
                     if (makeEdgeVisible)
-                        targetGraph.ChangeEdge(targetEdge, targetEdge.Root, root);
+                        targetGraph.ChangeEdge(targetEdge, root, true);
                     else
-                        targetGraph.Two.ChangeEdge(targetEdge, targetEdge.Root, root);
+                        targetGraph.Two.ChangeEdge(targetEdge, root, true);
                 }
 
                 if (targetEdge.Leaf != leaf) {
                     if (makeEdgeVisible)
-                        targetGraph.ChangeEdge(targetEdge, targetEdge.Leaf, leaf);
+                        targetGraph.ChangeEdge(targetEdge, leaf, false);
                     else
-                        targetGraph.Two.ChangeEdge(targetEdge, targetEdge.Leaf, leaf);
+                        targetGraph.Two.ChangeEdge(targetEdge, leaf, false);
                 }
 
 

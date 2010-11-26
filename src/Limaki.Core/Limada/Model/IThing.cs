@@ -1,6 +1,6 @@
 ﻿/*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -16,11 +16,13 @@
 using System;
 using Id = System.Int64;
 
+
 namespace Limada.Model {
     public interface IThing {
         object Data { get; set; }
         Id Id { get; }
         void SetId ( Id id );
+        void MakeEqual ( IThing thing );
     }
 
     public interface IThing<T>:IThing {

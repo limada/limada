@@ -1,9 +1,0 @@
-S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.db4o\bin\Release\Limaki.db4o.dll.config
-S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.db4o\bin\Release\Limaki.db4o.dll
-S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.db4o\bin\Release\Limaki.db4o.pdb
-S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.db4o\bin\Release\Db4objects.Db4o.dll
-S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.db4o\bin\Release\Limaki.Core.dll
-S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.db4o\bin\Release\Limaki.Core.pdb
-S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.db4o\obj\Release\ResolveAssemblyReference.cache
-S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.db4o\obj\Release\Limaki.db4o.dll
-S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.db4o\obj\Release\Limaki.db4o.pdb

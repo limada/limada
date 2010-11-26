@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -26,16 +26,26 @@ namespace Limaki.Widgets {
         }
 
         protected override RectangleI CalculateBounds() {
-            int h = 0;
-            int w = 0;
+            int l = 0;int t = 0;
+            int r = 0;int b = 0;
+            
+            
             foreach (IWidget widget in items) {
-                RectangleI bounds = widget.Shape.BoundsRect;
-                int r = bounds.Right;
-                int b = bounds.Bottom;
-                if (r > w) w = r;
-                if (b > h) h = b;
+                RectangleI env = widget.Shape.BoundsRect;
+                var envX = env.X;
+                var envY = env.Y;
+                var envR = env.Right;
+                var envB = env.Bottom;
+                if (envX < l) l = envX;
+                if (envY < t) t = envY;
+                if (envR > r) r = envR;
+                if (envB > b) b = envB;
             }
-            return new RectangleI(0, 0, w, h);
+            if (l > 0) l = 0;
+            if (t > 0) t = 0;
+            if (r < 0) r = 0;
+            if (b < 0) b = 0;
+            return RectangleI.FromLTRB(l, t, r, b);
         }
 
         public override IEnumerable<IWidget> Query(RectangleS clipBounds) {

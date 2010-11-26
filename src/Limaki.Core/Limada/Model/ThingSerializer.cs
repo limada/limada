@@ -1,138 +1,119 @@
-/*
- * Limada
- * Version 0.08
- * 
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
- * 
- * Author: Lytico
- * Copyright (C) 2006-2008 Lytico
- *
- * http://limada.sourceforge.net
- * 
- */
-
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Xml;
-using Limaki.Common.Collections;
+using Limada.Model;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 using Id = System.Int64;
 
 namespace Limada.Model {
-#if ! SILVERLIGHT        
-    public class ThingSerializer {
-        private XmlDocument _document = new XmlDocument();
-
-        public virtual XmlDocument Document {
+    public class ThingSerializer : ThingSerializerBase {
+        public virtual XmlWriterSettings Settings {
             get {
-                if (_document == null) {
-                    _document = new XmlDocument();
-                    XmlDocumentType doctype = _document.CreateDocumentType("limada", null, null, "<!ELEMENT limada.things ANY>");
-                    _document.AppendChild(doctype);
-                }
-                return _document;
-            }
-            set { _document = value; }
-        }
-        
-        private IThingGraph _graph = null;
-        public virtual IThingGraph Graph {
-            get { return _graph; }
-            set { _graph = value; }
-        }
-
-        private XmlNode _things = null;
-        public virtual XmlNode Things {
-            get {
-                if (_things == null) {
-                    _things = Document.SelectSingleNode("things");
-                }
-                if (_things == null) {
-                    _things = _document.CreateElement("things");
-                    Document.AppendChild(_things);
-                }
-                return _things;
-            }
-            set { _things = value; }
-        }
-        
-        private ICollection<IThing> _thingCollection = null;
-        public ICollection<IThing> ThingCollection {
-            get {
-                if (_thingCollection == null && Graph != null) {
-                    _thingCollection = new Set<IThing>();
-                    //ReadInto(_thingCollection);
-                }
-                return _thingCollection;
-            }
-            set { _thingCollection = value; }
-        }
-
-        public virtual XmlElement Write(IThing thing) {
-            XmlElement xmlthing = Document.CreateElement("thing");
-            xmlthing.SetAttribute("id", thing.Id.ToString("X"));
-            Things.AppendChild(xmlthing);
-            return xmlthing;
-        }
-
-        public virtual void Write(IEnumerable<IThing> things) {
-            if (things == null) return;
-            foreach (IThing thing in things) {
-                Write(thing);
+                var settings = new XmlWriterSettings();
+                settings.OmitXmlDeclaration = true;
+                settings.ConformanceLevel = ConformanceLevel.Fragment;
+                settings.CloseOutput = false;
+                return settings;
             }
         }
 
-        public virtual void Write(Stream s) {
-            Write(ThingCollection);
-            Document.Save(s);
-        }
+        public override XmlReader CreateReader(Stream s) {
+#if ! SILVERLIGHT
+            var result = XmlDictionaryReader
+                //.CreateBinaryReader(s, XmlDictionaryReaderQuotas.Max);
+                .CreateTextReader(s, XmlDictionaryReaderQuotas.Max);
+#else
+            var result = XmlReader.Create (s);
+#endif
 
-        public long ReadInt(XmlElement node, string attribute, bool hex) {
-            long result = default(int);
-            string s = node.GetAttribute(attribute);
-            if (!string.IsNullOrEmpty(s)) {
-                if (hex)
-                    long.TryParse(s, NumberStyles.AllowHexSpecifier, null, out result);
-                else
-                    long.TryParse(s, out result);
-            }
             return result;
         }
 
-        protected virtual IThing Read(XmlElement node) {
-            Id id = ReadInt (node, "id", true);
-            if (id != default(Id)) 
-                return Graph.GetById(id);
-            return null;
+        public override XmlWriter CreateWriter(Stream s) {
+            var writer = XmlDictionaryWriter
+                //.CreateBinaryWriter(s,null,null,false);
+                .CreateDictionaryWriter(XmlWriter.Create(s, Settings));
+            return writer;
         }
 
-        protected virtual void ReadInto(ICollection<IThing> things) {
-            foreach (XmlElement node in Things) {
-                IThing thing = Read(node);
-                if (thing != null && !things.Contains(thing)) {
-                    things.Add(thing);
+
+        public virtual XmlObjectSerializer Serializer {
+            get {
+                var factory = new ThingFactory();
+                var knownClasses = factory.KnownClasses.ToList();
+                knownClasses.Add(typeof(RealData<Byte[]>));
+                return new DataContractSerializer(factory.Clazz<IThing>(), knownClasses);
+            }
+        }
+
+        protected virtual void Write(IEnumerable<IThing> things, XmlWriter writer, XmlObjectSerializer serializer) {
+
+        }
+
+        public override void Write(Stream s) {
+
+            using (var writer = CreateWriter(s)) {
+                writer.WriteStartElement("root");
+                writer.WriteStartElement("things");
+
+                var serializer = this.Serializer;
+                var streams = new List<IStreamThing>();
+                foreach (var thing in this.ThingCollection) {
+                    serializer.WriteObject(writer, thing);
+                    if (thing is IStreamThing) {
+                        streams.Add((IStreamThing)thing);
+                    }
+                }
+
+                writer.WriteEndElement();
+                if (streams.Count > 0) {
+                    writer.WriteStartElement("streamthings");
+                    foreach (var thing in streams) {
+                        if (thing.DataContainer != null) {
+                            var data = thing.DataContainer.GetById(thing.Id);
+                            serializer.WriteObject(writer, data);
+                            data = null;
+                        }
+                    }
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+
+                writer.Flush();
+            }
+        }
+
+        /// <summary>
+        /// Attention! the stream will be closed after reading!
+        /// </summary>
+        /// <param name="s"></param>
+        public override void Read(Stream s) {
+            using (var reader = CreateReader(s)) {
+                reader.ReadStartElement("root");
+                reader.ReadStartElement("things");
+                var streamThings = new Dictionary<Id, IStreamThing>();
+                while (Serializer.IsStartObject(reader)) {
+                    IThing thing = Serializer.ReadObject(reader) as IThing;
+                    ThingCollection.Add(thing);
+                    var streamThing = thing as IStreamThing;
+                    if (streamThing!=null) {
+                        streamThings.Add(thing.Id, streamThing);
+                    }
+                }
+
+                reader.ReadEndElement();
+                if (reader.IsStartElement("streamthings")) {
+                    reader.ReadStartElement("streamthings");
+                    while (Serializer.IsStartObject(reader)) {
+                        var data = Serializer.ReadObject (reader) as RealData<byte[]>;
+                        if (this.Graph.DataContainer != null) {
+                            this.Graph.DataContainer.Add (data);
+                        }
+                    }
                 }
             }
         }
-
-        protected virtual void ReadThings() {
-            ReadInto (ThingCollection);
-        }
-
-        public virtual void Read(Stream s) {
-            if (s.Length ==0) {
-                return;
-            }
-            XmlDocument document = new XmlDocument ();
-            document.Load(s);
-            this._document = document;
-            this.Things = null;
-            ReadThings ();
-        }
-
-
     }
-#endif
 }

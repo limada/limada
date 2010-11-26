@@ -1,6 +1,6 @@
 /*
  * Limada
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -21,21 +21,29 @@ using Limaki.Graphs.Extensions;
 using Limaki.Widgets;
 using Limaki.Widgets.Layout;
 using Id = System.Int64;
+using Limaki.Common;
 
 namespace Limada.View {
-    #if ! SILVERLIGHT
+    
     public class Sheet:IDisposable {
-        
-        public static long StreamType = unchecked((Id)0x5a835878a618b44d);
-
-        public Sheet(Scene scene, ILayout<Scene, IWidget> layout) {
+        public Sheet(Scene scene) {
             this._scene = scene;
+        }
+
+        public Sheet(Scene scene, ILayout<Scene, IWidget> layout):this(scene) {
             this._layout = layout;
         }
 
-        private ILayout<Scene, IWidget> _layout = null;
+        ILayout<Scene, IWidget> _layout = null;
         public virtual ILayout<Scene, IWidget> Layout {
-            get { return _layout; }
+            get {
+                if (_layout == null) {
+                    _layout = new GraphLayout<Scene, IWidget>(
+                        () => { return this.Scene; },
+                        Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet);
+                }
+                return _layout;
+            }
             protected set { _layout = value; }
         }
 
@@ -82,5 +90,6 @@ namespace Limada.View {
 
         #endregion
     }
-#endif
+
 }
+

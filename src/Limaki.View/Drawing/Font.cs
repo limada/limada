@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -27,7 +27,7 @@ namespace Limaki.Drawing {
         public virtual string FontFamily { get; set; }
         public virtual double Size { get; set; }
         public virtual FontStyle Style { get; set; }
-        public virtual FontWeight Weight { get; set; }
+        //public virtual FontWeight Weight { get; set; }
         
         public virtual void Dispose(bool disposing) {}
 
@@ -49,7 +49,7 @@ namespace Limaki.Drawing {
             this.FontFamily = font.FontFamily;
             this.Size  = font.Size;
             this.Style = font.Style;
-            this.Weight = font.Weight;
+            //this.Weight = font.Weight;
             
         }
 
@@ -64,16 +64,16 @@ namespace Limaki.Drawing {
             return 
                    this.FontFamily == other.FontFamily &&
                    this.Size == other.Size &&
-                   this.Style == other.Style &&
-                   this.Weight == other.Weight;
+                   this.Style == other.Style;
+                   // && this.Weight == other.Weight;
         }
 
         public override int GetHashCode() {
-            return 
-                this.FontFamily.GetHashCode()^
-                this.Size.GetHashCode()^
-                this.Style.GetHashCode()^
-                this.Weight.GetHashCode();
+            return
+                this.FontFamily.GetHashCode () ^
+                this.Size.GetHashCode () ^
+                this.Style.GetHashCode ();
+                //^this.Weight.GetHashCode();
         }
     }
 
@@ -83,18 +83,18 @@ namespace Limaki.Drawing {
      * 
      */
 
-    public enum FontWeight {
-        Thin = 100,
-        ExtraLight = 200,
-        Light = 300,
-        Normal = 400,
-        Medium = 500,
-        SemiBold = 600,
-        Bold = 700,
-        ExtraBold = 800,
-        Black = 900,
-        ExtraBlack = 950,
-    }
+    //public enum FontWeight {
+    //    Thin = 100,
+    //    ExtraLight = 200,
+    //    Light = 300,
+    //    Normal = 400,
+    //    Medium = 500,
+    //    SemiBold = 600,
+    //    Bold = 700,
+    //    ExtraBold = 800,
+    //    Black = 900,
+    //    ExtraBlack = 950,
+    //}
 
     /* 
      * this class is ported from
@@ -102,10 +102,13 @@ namespace Limaki.Drawing {
      * 
      */
 
+    [Flags]
     public enum FontStyle {
-        Normal = 0,
-        Oblique = 1,
-        Italic = 2,
-        Underline = 4
+        Normal=0,
+        Bold=1,
+        Italic=2,
+        Underline=4,
+        Strikeout = 8,
+        AllStyles = 0xF
     }
 }

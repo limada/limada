@@ -56,21 +56,28 @@ namespace Limaki.Graphs {
             }
         }
 
-        public virtual void ChangeEdge(TEdge edge, TItem oldItem, TItem newItem) {
+        public virtual void ChangeEdge(TEdge edge, TItem newItem, bool changeRoot) {
             CheckEdge(edge);
-            if (oldItem == null || newItem == null ) {
+            if (newItem == null ) {
                 throw new ArgumentException();
             }
-            if (edge.Root.Equals(oldItem)) {
+            TItem oldItem = default(TItem);
+            TItem adjacent = default(TItem);
+            if (changeRoot) {
+                oldItem = edge.Root;
+                adjacent = edge.Leaf;
                 edge.Root = newItem;
-            } else if (edge.Leaf.Equals(oldItem)) {
+            } else {
+                oldItem = edge.Leaf;
+                adjacent = edge.Root;
                 edge.Leaf = newItem;
             }
             if (this.Contains(edge)) {
                 if (!this.Contains(newItem)) {
                     this.Add(newItem);
                 }
-                RemoveEdge(edge, oldItem);
+                if(!adjacent.Equals(oldItem))
+                    RemoveEdge(edge, oldItem);
                 AddEdge(edge, newItem);
             } else {
                 this.Add(edge);
@@ -117,18 +124,15 @@ namespace Limaki.Graphs {
 
         public abstract IEnumerable<KeyValuePair<TItem, ICollection<TEdge>>> ItemsWithEdges();
 
+        public abstract bool Contains(TItem item);
         public abstract void Add(TItem item);
+        public abstract bool Remove(TItem item);
+        public abstract int Count { get; }
+        public abstract IEnumerator<TItem> GetEnumerator();
 
         public abstract void Clear();
-
-        public abstract bool Contains(TItem item);
         public abstract void CopyTo(TItem[] array, int arrayIndex);
-        public abstract int Count { get;}
         public abstract bool IsReadOnly { get;}
-
-        public abstract bool Remove(TItem item);
-
-        public abstract IEnumerator<TItem> GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
 

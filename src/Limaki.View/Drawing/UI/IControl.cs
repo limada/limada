@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -13,15 +13,13 @@
  * 
  */
 
-
-using Limaki.Drawing;
-
 namespace Limaki.Drawing.UI {
     public interface IControl {
         void Invalidate();
         void Invalidate(RectangleI rect);
         
         RectangleI ClientRectangle { get;}
+        SizeI Size {get;}
         void Update();
         void CommandsExecute();
     }

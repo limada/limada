@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -33,12 +33,12 @@ namespace Limaki.Data.db4o {
             set { _configuration = value; }
         }
 
-        bool isGatewayDisposing = false;
+        bool _isClosed = false;
 
         IObjectContainer _session = null;
         public virtual IObjectContainer Session {
             get {
-                if (!isGatewayDisposing) {
+                if (!_isClosed) {
                     if (_session == null) {
                         try {
                             _session = Db4oFactory.OpenFile(
@@ -66,13 +66,13 @@ namespace Limaki.Data.db4o {
         #region IGateway Member
 
         public override void Open(DataBaseInfo dataBaseInfo) {
-            isGatewayDisposing = false;
+            _isClosed = false;
             this.DataBaseInfo = dataBaseInfo;
 
         }
 
         public override void Close() {
-            isGatewayDisposing = true;
+            _isClosed = true;
             if (_session != null) {
                 try {
                     Session.Close();
@@ -96,7 +96,9 @@ namespace Limaki.Data.db4o {
         public override bool IsOpen() {
             return DataBaseInfo != null;
         }
-
+        public override bool IsClosed() {
+            return _isClosed;
+        }
         public virtual void InitConfiguration(IConfiguration configuration) {
             configuration.MarkTransient(typeof(Limaki.Common.TransientAttribute).FullName);
         }

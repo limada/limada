@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -77,8 +77,8 @@ namespace Limaki.Winform.Controls {
                     }
                     g.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    shape.Location = GDIExtensions.Toolkit(rect.Location);
-                    shape.Size = GDIExtensions.Toolkit(rect.Size);
+                    shape.Location = GDIConverter.Convert(rect.Location);
+                    shape.Size = GDIConverter.Convert(rect.Size);
                     IPainter painter = ShapeLayout.GetPainter(shape.GetType());
                     UiState uiState = UiState.None;
                     if ((state & DrawItemState.Focus) != 0) {

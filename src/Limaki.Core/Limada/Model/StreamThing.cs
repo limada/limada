@@ -1,6 +1,6 @@
 /*
  * Limada
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -19,11 +19,11 @@ using Limaki.Common;
 using Limaki.Model.Streams;
 using Id = System.Int64;
 using Limaki.Data;
+using System.Runtime.Serialization;
 
 namespace Limada.Model {
 
-
-
+    [DataContract]
     public class StreamThing :  Thing, IStreamThing {
         
         //public StreamThing() : this(Common.Isaac.Long) { }
@@ -116,6 +116,7 @@ namespace Limada.Model {
                 _streamWrapper = null;
             }
         }
+
         public virtual void ClearRealSubject() {
             ClearRealSubject (true);
         }
@@ -147,7 +148,15 @@ namespace Limada.Model {
                 //}
             }
         }
-        
+
+        public override void MakeEqual(IThing thing) {
+            base.MakeEqual(thing);
+            if (thing is IStreamThing) {
+                this.StreamType = ( (IStreamThing) thing ).StreamType;
+                this.Compression = ((IStreamThing)thing).Compression;
+                ClearRealSubject ();
+            }
+        }
         object IThing.Data {
             get { return this.Data; }
             set {
@@ -156,9 +165,15 @@ namespace Limada.Model {
             }
         }
 
+        public override string ToString() {
+            return ((char)0x25A1).ToString(); // white square
+        }
+
         #region Properties: Compression, StreamType
         
         int _compression = (int)CompressionType.None;
+        
+        [DataMember]
         public virtual CompressionType Compression {
             get { return (CompressionType)_compression; }
             set {
@@ -171,6 +186,7 @@ namespace Limada.Model {
         }
 
         Id _streamType = -1;
+        [DataMember]
         public virtual Id StreamType {
             get { return _streamType; }
             set {

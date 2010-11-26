@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -31,8 +31,8 @@ namespace Limaki.Tests.Drawing {
             set { }
         }
 
-        public RegionSandbox ( IZoomTarget zoomTarget, IScrollTarget scrollTarget )
-            : base(zoomTarget, scrollTarget) {
+        public RegionSandbox ( ICamera camera )
+            : base(camera) {
             this.Priority = ActionPriorities.LayerPriority - 500;
         }
 
@@ -57,7 +57,7 @@ namespace Limaki.Tests.Drawing {
 
             PointI[] oldHull = vector.Hull(delta, true);
             matrix.TransformPoints(oldHull);
-            return GDIExtensions.Native(oldHull);
+            return GDIConverter.Convert(oldHull);
         }
 
        
@@ -65,15 +65,15 @@ namespace Limaki.Tests.Drawing {
             invPath.Reset();
             VectorShape shape = new VectorShape(
                 new Vector(
-                    GDIExtensions.Toolkit(start),
-                    GDIExtensions.Toolkit(start + size)));
+                    GDIConverter.Convert(start),
+                    GDIConverter.Convert(start + size)));
             invPath.AddLine(
-                GDIExtensions.Native(shape.Start),
-                GDIExtensions.Native(shape.End));
+                GDIConverter.Convert(shape.Start),
+                GDIConverter.Convert(shape.End));
             pathPen.EndCap = LineCap.ArrowAnchor;
             
             g.DrawPath(pathPen, invPath);
-            Point count = GDIExtensions.Native(shape[Anchor.MostLeft]);
+            Point count = GDIConverter.Convert(shape[Anchor.MostLeft]);
             g.DrawString(i.ToString(), SystemFonts.StatusFont, SystemBrushes.Control, count);
 
             invPath.Reset();

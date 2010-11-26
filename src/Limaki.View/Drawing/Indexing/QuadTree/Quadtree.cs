@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the license below.
@@ -52,6 +52,7 @@ For more information, contact:
 using System.Collections.Generic;
 using Limaki.Actions;
 using Limaki.Drawing.Shapes;
+using System;
 
 namespace Limaki.Drawing.Indexing.QuadTrees {
     /// <summary>
@@ -216,11 +217,6 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         }
 
 
-        // TODO: refactor this to use a simple converter or the visitor
-        public virtual PointS QueryRightBottom(Command<ICollection<TItem>, PointS> maxCommand) {
-            return _root.RightBottom(maxCommand); ;
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -235,7 +231,59 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
                 minExtent = delY;
         }
 
+        public virtual void QueryBounds(
+            ref float left, ref float top, ref float right, ref float bottom,
+            Root<TItem> root, Func<TItem, RectangleI> getBounds) {
+            var l = left;
+            var t = top;
+            var r = right;
+            var b = bottom;
 
+            //int iAllNodes = 0;
+            //int iCalcNodes = 0;
+            //int iNodesWithItems = 0;
+            //int iCandidates = 0;
+            //int iLooped = 0;
+            //int iSuccess = 0;
+
+            Stack<NodeBase<TItem>> loopStack = new Stack<NodeBase<TItem>>();
+            loopStack.Push(root);
+
+            while (loopStack.Count > 0) {
+                var current = loopStack.Pop();
+                //iAllNodes++;
+
+                if (current.HasItems) {
+                    //iLooped++;
+                    foreach (var item in current.Items) {
+                        var env = getBounds (item);
+                        float envX = env.X;     float envY = env.Y;
+                        float envR = env.Right; float envB = env.Bottom;
+                        if (envX < l) l = envX;
+                        if (envY < t) t = envY;
+                        if (envR > r) r = envR;
+                        if (envB > b) b = envB;
+                    }
+                }
+                foreach (var node in current.Subnodes) {
+                    if (node != null) {
+                        var env = node.Envelope;
+                        if (env.X < l || env.Y < t || env.Bottom > b || env.Right > r) {
+                            loopStack.Push (node);
+                        }
+                    }
+                }
+
+            }
+
+            //        System.Console.Out.WriteLine("Nodes:\t{0}\tw/items:\t{1}\tcalced:\t{2}\tcands:\t{3}\tlooped:\t{4}\tsuccess:\t{5}\t",
+            //new object[] { iAllNodes, iNodesWithItems, iCalcNodes, iCandidates, iLooped, iSuccess });
+            
+            left = l;
+            top = t;
+            right = r;
+            bottom = b;
+        }
 
     }
 }

@@ -1,6 +1,6 @@
 /*
- * Limada 
- * Version 0.08
+ * Limaki 
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -79,6 +79,7 @@ namespace Limaki.Winform.Controls {
         bool GoBack();
         bool GoForward();
         void GoHome();
+        void MakeReady();
         void Navigate(string urlString);
         void Navigate(Uri url);
         void Navigate(string urlString, bool newWindow);

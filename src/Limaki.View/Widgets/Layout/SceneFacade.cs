@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -56,7 +56,7 @@ namespace Limaki.Widgets.Layout {
         /// </summary>
         public IGraph<IWidget, IEdgeWidget> Data {
             get {
-                IGraph<IWidget, IEdgeWidget> data = _data;
+                var data = _data;
                 Scene scene = this.Scene;
                 if (scene.Graph is GraphView<IWidget, IEdgeWidget>) {
                     _data = ((GraphView<IWidget, IEdgeWidget>)scene.Graph).Two;
@@ -154,15 +154,15 @@ namespace Limaki.Widgets.Layout {
         /// <param name="pt"></param>
         public virtual void Add(IWidget item, PointI pt) {
             Scene scene = this.Scene;
+            if (scene == null || item == null)
+                return;
             ApplyFilter();
             IWidget curr = scene.Focused;
             
-            Arranger<Scene, IWidget, IEdgeWidget> arranger =
-                new Arranger<Scene, IWidget, IEdgeWidget>(scene, this.Layout);
+            var arranger = new Arranger<Scene, IWidget, IEdgeWidget>(scene, this.Layout);
 
-            ICollection<IWidget> affected = 
-                new GraphViewFacade<IWidget, IEdgeWidget> (this.graphView)
-                    .Add (item);
+            var affected = new GraphViewFacade<IWidget, IEdgeWidget> 
+                            (this.graphView).Add (item);
 
             arranger.Arrange(item, affected, pt);
 
@@ -182,15 +182,13 @@ namespace Limaki.Widgets.Layout {
             ApplyFilter();
             IWidget curr = scene.Focused;
 
-            Arranger<Scene, IWidget, IEdgeWidget> arranger =
-                new Arranger<Scene, IWidget, IEdgeWidget>(scene, this.Layout);
+            var arranger = new Arranger<Scene, IWidget, IEdgeWidget>(scene, this.Layout);
 
-            ICollection<IWidget> affected =
-                new GraphViewFacade<IWidget, IEdgeWidget>(this.graphView)
-                    .Add(elements);
+            var affected = new GraphViewFacade<IWidget, IEdgeWidget>
+                                (this.graphView).Add(elements);
 
             if (arrange)
-                arranger.Arrange(affected,justify,(PointI)Layout.Distance);
+                arranger.ArrangeDeepWalk(affected,justify,(PointI)Layout.Distance);
             else
                 arranger.ArrangeEdges(affected, justify);
 
@@ -207,12 +205,10 @@ namespace Limaki.Widgets.Layout {
                 
 
                 IWidget curr = scene.Focused;
-                Arranger<Scene, IWidget, IEdgeWidget> arranger =
-                    new Arranger<Scene, IWidget, IEdgeWidget>(scene, this.Layout);
+                var arranger = new Arranger<Scene, IWidget, IEdgeWidget>(scene, this.Layout);
 
-                ICollection<IWidget> affected = 
-                    new GraphViewFacade<IWidget, IEdgeWidget> (this.graphView)
-                        .Expand (scene.Selected.Elements, deep);
+                var affected = new GraphViewFacade<IWidget, IEdgeWidget> 
+                    (this.graphView).Expand (scene.Selected.Elements, deep);
 
                 arranger.Arrange (scene.Selected.Elements, affected, deep);
                 
@@ -281,19 +277,15 @@ namespace Limaki.Widgets.Layout {
             ApplyFilter();
             IWidget curr = Scene.Focused;
             
-            IEnumerable<IWidget> roots = new Queue<IWidget>(
+            var roots = new Queue<IWidget>(
                 new GraphPairFacade<IWidget, IEdgeWidget> ().FindRoots (this.Data, curr));
             
             new GraphViewFacade<IWidget, IEdgeWidget> (this.graphView).Expand (roots, true);
            
-            Arranger<Scene, IWidget, IEdgeWidget> arranger =
-                new Arranger<Scene, IWidget, IEdgeWidget> (this.Scene, this.Layout);
+            var arranger = new Arranger<Scene, IWidget, IEdgeWidget> (this.Scene, this.Layout);
 
-            PointI startAt = (PointI)Layout.Distance;
-            foreach (IWidget root in roots) {
-                startAt = arranger.Arrange(root, startAt);
-                arranger.ClearRows ();
-            }
+            arranger.ArrangeDeepWalk(roots,true,(PointI)Layout.Distance);
+
             arranger.Commit ();
 
             RestoreFocused(curr);
@@ -301,8 +293,8 @@ namespace Limaki.Widgets.Layout {
         }
 
         public virtual bool IsExpanded(GraphView<IWidget, IEdgeWidget> graphView, IWidget widget) {
-            Walker<IWidget, IEdgeWidget> walker = new Walker<IWidget, IEdgeWidget>(graphView.Two);
-            foreach (LevelItem<IWidget> item in walker.ExpandWalk(widget, 0)) {
+            var walker = new Walker<IWidget, IEdgeWidget>(graphView.Two);
+            foreach (var item in walker.ExpandWalk(widget, 0)) {
                 if (!graphView.One.Contains(item.Node)) {
                     return false;
                 }

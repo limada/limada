@@ -1,6 +1,6 @@
 /*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -23,28 +23,10 @@ using Limaki.Widgets.Layout;
 
 namespace Limada.View {
     public class SearchHandler {
-        public IEnumerable<IThing> Search(Scene scene, object name) {
-            IThingGraph thingGraph = WidgetThingGraphExtension.GetThingGraph(scene.Graph);
-            if (thingGraph is SchemaThingGraph) {
-                thingGraph = ((SchemaThingGraph)thingGraph).Source as IThingGraph;
-            }
 
-            CommonSchema schema = new CommonSchema();
-            
-            foreach (IThing thing in thingGraph.GetByData(name,false)) {
-                IThing described = schema.GetTheRoot(thingGraph, thing, CommonSchema.DescriptionMarker);
-                if (described != null) {
-                    yield return described;
-                } else {
-                    yield return thing;
-                }
-            }
-
-
-        }
 
         public bool IsSearchable(Scene scene) {
-            return new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(scene.Graph) != null;
+            return scene != null && new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(scene.Graph) != null;
         }
 
         public void LoadSearch(Scene scene, ILayout<Scene, IWidget> layout, object name) {
@@ -55,9 +37,10 @@ namespace Limada.View {
             }
 
             SceneTools.CleanScene(scene);
+            IThingGraph thingGraph = WidgetThingGraphExtension.GetThingGraph(scene.Graph);
 
             ICollection<IWidget> widgets = new List<IWidget> ();
-            foreach (IThing thing in Search(scene,name)) {
+            foreach (IThing thing in ThingGraphUtils.Search(thingGraph, name, false)) {
                 IWidget widget = graph.Get (thing);
                 if (widget != null) { // could be a marker or marked thing, then returns null
                     widgets.Add (widget);
@@ -67,9 +50,6 @@ namespace Limada.View {
             new SceneFacade(delegate() { return scene; }, layout).Add(widgets, false, true);
 
             scene.ClearSpatialIndex();
-           
-
-            
         }
     }
 }

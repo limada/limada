@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -56,15 +56,15 @@ namespace Limaki.Graphs {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override void ChangeEdge(TEdge edge, TItem oldItem, TItem newItem) {
+        public override void ChangeEdge(TEdge edge, TItem newItem, bool changeRoot) {
             TItem rootBefore = edge.Root;
             TItem leafBefore = edge.Leaf;
 
-            One.ChangeEdge (edge, oldItem, newItem);
+            One.ChangeEdge (edge, newItem, changeRoot);
 
-            edge.Root = rootBefore;
-            edge.Leaf = leafBefore;
-            Two.ChangeEdge (edge, oldItem, newItem);
+            //edge.Root = rootBefore;
+            //edge.Leaf = leafBefore;
+            Two.ChangeEdge (edge, newItem, changeRoot);
         }
 
         public override void RevertEdge(TEdge edge) {

@@ -26,7 +26,7 @@ namespace Limaki.App {
         /// </summary>
         private void InitializeComponent() {
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // linkLabel1
@@ -45,6 +45,15 @@ namespace Limaki.App {
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             this.linkLabel1.Click += new System.EventHandler(this.About_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(29, 71);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(57, 20);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "";
+            // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -52,6 +61,7 @@ namespace Limaki.App {
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(245, 100);
             this.ControlBox = false;
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.linkLabel1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -73,5 +83,6 @@ namespace Limaki.App {
         #endregion
 
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label1;
     }
 }

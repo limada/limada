@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -22,5 +22,18 @@ namespace Limaki.Common.Collections {
     /// On .NET 2.0 a slightly changed version of monos implementation is used 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Set<T> : HashSet<T>, ICollection<T> { }
+    public class Set<T> : HashSet<T>, ICollection<T> {
+        public Set() : base() {}
+
+        public Set(IEnumerable<T> source):base() {
+            AddRange (source);
+        }
+
+        public virtual void AddRange(IEnumerable<T> source) {
+            if (source != null)
+                foreach (var item in source)
+                    if (!Contains(item))
+                        Add(item);
+        }
+    }
 }

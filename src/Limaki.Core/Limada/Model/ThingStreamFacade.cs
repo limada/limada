@@ -1,19 +1,21 @@
 using System.IO;
 using Limada.Schemata;
 using Limaki.Model.Streams;
+using Limaki.Common;
 
 namespace Limada.Model {
     public class ThingStreamFacade {
-        public ThingStreamFacade (ThingFactory factory) {
+        public ThingStreamFacade (IThingFactory factory) {
             this._factory = factory;
         }
 
-        private ThingFactory _factory = null;
+        public ThingStreamFacade() {}
+        private IThingFactory _factory = null;
 
-        public ThingFactory Factory {
+        public IThingFactory Factory {
             get {
                 if (_factory == null) {
-                    _factory = new ThingFactory();
+                    _factory = Registry.Factory.One<IThingFactory>();
                 }
                 return _factory;
             }
@@ -84,15 +86,17 @@ namespace Limada.Model {
             var result = GetStreamInfo (thing);
             if (result !=null && graph is SchemaThingGraph) {
                 result.Description = ThingGraphUtils.GetDescription (graph, thing);
+                result.Source = ThingGraphUtils.GetSource (graph, thing);
             }
             return result;
         }
 
         public static StreamInfo<Stream> GetStreamInfo(IThing thing) {
             var result = default( StreamInfo<Stream> );
-            if (thing is IStreamThing) {
+            var streamThing = thing as IStreamThing;
+            if (streamThing!=null) {
                 result = new StreamInfo<Stream> ();
-                var streamThing = (IStreamThing)thing;
+                
                 streamThing.DeCompress ();
                 result.Data = streamThing.Data;
                 result.Compression = streamThing.Compression;

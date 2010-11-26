@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -19,6 +19,7 @@ using Limaki.Drawing;
 using Limaki.Actions;
 using Limaki.Drawing.Indexing.QuadTrees;
 using Limaki.Drawing.Shapes;
+using System;
 
 namespace Limaki.Widgets {
     public class QuadTreeIndex:SpatialIndex {
@@ -94,8 +95,8 @@ namespace Limaki.Widgets {
             }
         }
 
-        class BoundsCommand : Command<ICollection<IWidget>, PointS> {
-            public BoundsCommand(ICollection<IWidget> target, PointS parameter)
+        class RightBottomCommand : Command<ICollection<IWidget>, PointS> {
+            public RightBottomCommand(ICollection<IWidget> target, PointS parameter)
                 : base(target, parameter) {
                 Parameter = new PointS(float.MinValue, float.MinValue);
             }
@@ -112,10 +113,32 @@ namespace Limaki.Widgets {
                 Parameter = new PointS(w, h);
             }
         }
-        
-        class BoundsVisitor:IItemVisitor<IWidget> {
-            #region IItemVisitor<IWidget> Member
 
+        class LeftTopCommand : Command<ICollection<IWidget>, PointS> {
+            public LeftTopCommand(ICollection<IWidget> target, PointS parameter)
+                : base(target, parameter) {
+                Parameter = new PointS(float.MaxValue, float.MaxValue);
+            }
+            public override void Execute() {
+                int x = 0;
+                int y = 0;
+                foreach (IWidget widget in Target) {
+                    RectangleI bounds = widget.Shape.BoundsRect;
+                    int l = bounds.X;
+                    int t = bounds.Y;
+                    if (l < x)
+                        x = l;
+                    if (t < y)
+                        y = t;
+                }
+                Parameter = new PointS(x, y);
+            }
+        }
+
+        /// <summary>
+        /// not used!
+        /// </summary>
+        class BoundsVisitor : IItemVisitor<IWidget> {
             public PointS Parameter;
             public void VisitItem(IWidget item) {
                 int w = (int)Parameter.X;
@@ -123,8 +146,10 @@ namespace Limaki.Widgets {
                 RectangleI bounds = item.Shape.BoundsRect;
                 int r = bounds.Right;
                 int b = bounds.Bottom;
-                if (r > w) Parameter.X = r;
-                if (b > h) Parameter.Y = b;
+                if (r > w)
+                    Parameter.X = r;
+                if (b > h)
+                    Parameter.Y = b;
             }
 
             public RectangleS GetEnvelope(IWidget item) {
@@ -133,13 +158,30 @@ namespace Limaki.Widgets {
 
             public bool ProvidesEnvelope { get { return true; } }
 
-            #endregion
         }
 
         protected override RectangleI CalculateBounds() {
-            PointS rightBottom = GeoIndex.QueryRightBottom(new BoundsCommand(null, default(PointS)));
-            return new RectangleI(0, 0, (int)rightBottom.X, (int)rightBottom.Y);
+            // remark: the starting values could be used to 
+            // opimize further if boundsDirty is more refined;
+            // eg: leftDirty leads to : 
+            // l = float.MaxValue, t = float.MinValue, r = float.maxvalue, b = float.maxValue
+
+            var l = float.MaxValue; var t = float.MaxValue;
+            var r = float.MinValue; var b = float.MinValue;
+            
+            GeoIndex.QueryBounds(
+                ref l, ref t, ref r, ref b,
+                GeoIndex.Root,
+                (w) => { return w.Shape.BoundsRect; });
+
+            if (l > 0) l = 0;
+            if (t > 0) t = 0;
+            if (r < 0) r = 0;
+            if (b < 0) b = 0;
+            return RectangleI.FromLTRB((int)l,(int)t, (int) r, (int) b);
         }
+
+       
 
         public override void Clear() {
             BoundsDirty = true;

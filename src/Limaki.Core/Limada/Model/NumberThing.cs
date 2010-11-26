@@ -1,6 +1,6 @@
 /*
  * Limada
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -59,6 +59,13 @@ namespace Limada.Model {
             }
         }
 
+        public override void MakeEqual(IThing thing) {
+            base.MakeEqual(thing);
+            if (thing is INumberThing) {
+                this.NumberType = ( (INumberThing) thing ).NumberType;
+            }
+        }
+
         public virtual object Number {
             get {
                 object result = Data;
@@ -113,6 +120,10 @@ namespace Limada.Model {
                 if (value is long)
                     Data = (long)value;
             }
+        }
+
+        public override string ToString() {
+            return Number.ToString ();
         }
     }
 

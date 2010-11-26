@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -40,8 +40,8 @@ namespace Limaki.Common {
         /// <typeparam name="TTarget"></typeparam>
         /// <param name="target"></param>
         public static void ApplyProperties<T>(T target){
-            ApplicationContextProcessor<T> processor = 
-                Pool.TryGetCreate < ApplicationContextProcessor<T>> ();
+            ContextProcessor<T> processor = 
+                Pool.TryGetCreate < ContextProcessor<T>> ();
             processor.ApplyProperties (ConcreteContext, target);
         }
 
@@ -53,9 +53,9 @@ namespace Limaki.Common {
         /// <typeparam name="TTarget"></typeparam>
         /// <param name="target"></param>
         public static void ApplyProperties<TProcessor, TTarget>(TTarget target)
-            where TProcessor : ApplicationContextProcessor<TTarget> {
+            where TProcessor : ContextProcessor<TTarget> {
             if (target == null || ConcreteContext==null) return;
-            ApplicationContextProcessor<TTarget> processor = Pool.TryGetCreate<TProcessor>();
+            ContextProcessor<TTarget> processor = Pool.TryGetCreate<TProcessor>();
             processor.ApplyProperties(ConcreteContext, target);
 
         }

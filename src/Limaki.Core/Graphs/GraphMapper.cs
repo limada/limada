@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -161,6 +161,8 @@ namespace Limaki.Graphs {
 
         public virtual TItemOne Get( TItemTwo b ) {
             TItemOne result = default(TItemOne);
+            if (b == null)
+                return result;
             TwoOneMapper.Dict.TryGetValue(b, out result);
             return result;
 

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -31,6 +31,8 @@ namespace Limaki.Model.Streams {
         public static  long BMP = unchecked((long)0xF7D9A1343B792E0E);
         
         public static  long Unknown= unchecked((long)0x716D9CE0F33B086A);
+
+        public static long LimadaSheet = unchecked((long)0x5a835878a618b44d);
 
         static IDictionary<long, string> _extensions = null;
         public static IDictionary<long,string> Extensions {

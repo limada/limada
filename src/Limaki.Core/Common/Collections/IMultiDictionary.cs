@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -23,16 +23,3 @@ namespace Limaki.Common.Collections {
     }
 }
 
-namespace System.Linq {
-    public interface IGrouping<TKey, TElement> : IEnumerable<TElement> {
-        TKey Key { get; }
-    }
-
-    public interface ILookup<TKey, TElement> : IEnumerable<IGrouping<TKey, TElement>> {
-
-        int Count { get; }
-        IEnumerable<TElement> this[TKey key] { get; }
-
-        bool Contains(TKey key);
-    }
-}

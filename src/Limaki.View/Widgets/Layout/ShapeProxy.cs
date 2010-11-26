@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -25,6 +25,7 @@ namespace Limaki.Widgets.Layout {
         where TEdge : IEdge<TItem>, TItem 
         where TItem : IWidget 
         where TData : Scene {
+
         public ShapeProxy (ILayout<TData, TItem> layout) {
             this.layout = layout;
         }

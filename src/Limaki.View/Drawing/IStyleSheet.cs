@@ -9,5 +9,6 @@ namespace Limaki.Drawing {
         IStyle EdgeStyle { get; set; }
         IStyle EdgeSelectedStyle { get; set; }
         IStyle EdgeHoveredStyle { get; set; }
+        Color BackColor { get; set; }
     }
 }

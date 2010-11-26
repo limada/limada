@@ -1,6 +1,6 @@
 /*
  * Limada
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -48,7 +48,7 @@ namespace Limada.Model {
         public virtual Stream Stream {
             get {
                 if ((_stream == null) && (InnerData.Data != null)) {
-                    _stream = new MemoryStream(InnerData.Data);
+                    _stream = new MemoryStream(InnerData.Data,0,InnerData.Data.Length,true,true);
                     _stream.Position = 0;
                 }
                 return _stream;

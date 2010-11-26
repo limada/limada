@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -87,10 +87,13 @@ namespace Limaki.Data.db4o {
                 } finally { }
         }
 
-        public override void ChangeEdge(TEdge edge, TItem oldItem, TItem newItem) {
-            if (edge.Root.Equals(oldItem)) {
+        public override void ChangeEdge(TEdge edge, TItem newItem, bool changeRoot) {
+            TItem oldItem = default( TItem );
+            if (changeRoot) {
+                oldItem = edge.Root;
                 edge.Root = newItem;
-            } else if (edge.Leaf.Equals(oldItem)) {
+            } else  {
+                oldItem = edge.Leaf;
                 edge.Leaf = newItem;
             }
             if (this.Contains(edge)) {
@@ -149,12 +152,16 @@ namespace Limaki.Data.db4o {
 
 
         public override ICollection<TEdge> Edges(TItem item) {
-            ICollection<TEdge> result = getCached(item);
-            if (result == null) {
-                result = edges(item);
-                setCached(item, result);
+            if (item != null) {
+                ICollection<TEdge> result = getCached (item);
+                if (result == null) {
+                    result = edges (item);
+                    setCached (item, result);
+                }
+                return result;
+            } else {
+                return new EmptyCollection<TEdge> ();
             }
-            return result;
         }
 
         protected virtual ICollection<TEdge> edges(TItem item) {
@@ -313,7 +320,7 @@ namespace Limaki.Data.db4o {
 
         public IObjectContainer Session {
             get {
-                if (!_gateway.HasSession()) {
+                if (!_gateway.HasSession() && !_gateway.IsClosed()) {
                     ConfigureSession(_gateway.Session);
                 }
                 return _gateway.Session;
@@ -335,7 +342,9 @@ namespace Limaki.Data.db4o {
 
         public virtual void Flush() {
             try {
-                Session.Commit();
+                if (Session != null) {
+                    Session.Commit ();
+                }
             } catch (Db4objects.Db4o.Ext.Db4oException e) {
                 // TODO: a curios exception is thrown here:
                 // "This functionality is only available for indexed fields."

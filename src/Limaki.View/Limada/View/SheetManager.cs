@@ -1,6 +1,6 @@
 /*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -26,8 +26,6 @@ using Limaki.Widgets;
 using Id = System.Int64;
 
 namespace Limada.View {
-
-    #if ! SILVERLIGHT
 
     public class SheetManager : ISheetManager {
 
@@ -96,10 +94,11 @@ namespace Limada.View {
             IThing result = thingGraph.GetById(id);
             if (result != null) {
 
-                if (!(result is IStreamThing && ((IStreamThing)result).StreamType == Sheet.StreamType)) {
+                if (!(result is IStreamThing && 
+                    ((IStreamThing)result).StreamType == StreamTypes.LimadaSheet)) {
                     Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(
                         new ArgumentException("This id does not belong to a sheet")
-                        );
+                        , MessageType.OK);
                 }
             }
             return result;
@@ -118,7 +117,7 @@ namespace Limada.View {
             if (thing is IStreamThing || thing == null) {
                 
                 StreamInfo<Stream> streamInfo = new StreamInfo<Stream>(
-                    new MemoryStream(), CompressionType.bZip2, Sheet.StreamType);
+                    new MemoryStream(), CompressionType.bZip2, StreamTypes.LimadaSheet);
 
                 
                 Sheet sheet = new Sheet(scene, layout);
@@ -137,7 +136,7 @@ namespace Limada.View {
         }
 
         public bool IsSaveable(Scene scene) {
-            return WidgetThingGraphExtension.GetThingGraph(scene.Graph) != null;
+            return scene != null && WidgetThingGraphExtension.GetThingGraph(scene.Graph) != null;
         }
 
 
@@ -156,22 +155,43 @@ namespace Limada.View {
             } 
         }
 
+        public SheetInfo LoadSheet(Scene scene, ILayout<Scene, IWidget> layout, StreamInfo<Stream> info) {
+            var result = default(SheetInfo);
+            try {
+                string name = string.Empty;
+                if (info.Description != null) {
+                    name = info.Description.ToString();
+                }
+
+                Id id = 0;
+                if (info.Source is Id) {
+                    id = (Id)info.Source;
+                }
+
+                LoadSheet(scene, layout, info.Data);
+
+                result = RegisterSheet(id, name);
+                result.Persistent = true;
+            } finally {
+                
+            }
+            return result;
+        }
 
         public SheetInfo LoadSheet(Scene scene, ILayout<Scene, IWidget> layout, IStreamThing thing) {
-            
-            string name = string.Empty;
-            object description = WidgetThingGraphExtension.GetDescription(scene.Graph, thing);
-            if (description != null) {
-                name = description.ToString ();
-            }
-
+            var result = default(SheetInfo);
             thing.DeCompress();
+            try {
+                var info = new StreamInfo<Stream>();
+                info.Description = WidgetThingGraphExtension.GetDescription(scene.Graph, thing);
 
-            LoadSheet (scene, layout, thing.Data);
-            var result = RegisterSheet (thing.Id, name);
-            result.Persistent = true;
-            thing.ClearRealSubject();
+                info.Data = thing.Data;
+                info.Source = thing.Id;
 
+                result = LoadSheet(scene, layout, info);
+            } finally {
+                thing.ClearRealSubject ();
+            }
             return result;
         }
 
@@ -181,7 +201,4 @@ namespace Limada.View {
     }
 
 
-
-
-#endif
 }

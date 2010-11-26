@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Limaki.Tests</RootNamespace>
     <AssemblyName>Limaki.Tests</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
@@ -33,29 +33,49 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\3rdParty\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.4.1.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\3rdParty\bin\nUnit\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limada\Tests\Basic\BasicThingGraphTest.cs" />
     <Compile Include="Limada\Tests\Basic\ThingTest.cs" />
-    <Compile Include="Limada\Tests\Data\db4o\DescriptionTestFactory.cs" />
-    <Compile Include="Limada\Tests\Data\db4o\DocumentSchemaTestFactory.cs" />
-    <Compile Include="Limada\Tests\Data\db4o\SchemaGraphPerformanceTest.cs" />
-    <Compile Include="Limada\Tests\Data\db4o\SchemaGraphTest.cs" />
-    <Compile Include="Limada\Tests\Data\db4o\StreamThingTest.cs" />
-    <Compile Include="Limada\Tests\Data\db4o\ThingGraphDeleteItemsTest.cs" />
-    <Compile Include="Limada\Tests\Data\db4o\ThingGraphTest.cs" />
-    <Compile Include="Limada\Tests\Data\db4o\ThingGraphTestBase.cs" />
+    <Compile Include="Limada\Tests\Model\DescriptionTestFactory.cs" />
+    <Compile Include="Limada\Tests\Model\DocumentSchemaTestFactory.cs" />
+    <Compile Include="Limada\Tests\ThingGraph\Db4oThingGraphTestBase.cs" />
+    <Compile Include="Limada\Tests\ThingGraph\SchemaGraph\SchemaGraphPerformanceTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraph\SchemaGraph\SchemaGraphTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraph\StreamThingTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraph\ThingGraphDeleteItemsTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraph\ThingGraphTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraph\ThingGraphTestBase.cs" />
     <Compile Include="Limada\Tests\Model\GraphItem2ThingAdapter.cs" />
     <Compile Include="Limada\Tests\Model\GraphMapperTest.cs" />
     <Compile Include="Limada\Tests\Model\GraphPairTest.cs" />
+    <Compile Include="Limada\Tests\Model\SimpleDescriptionTestFactory.cs" />
+    <Compile Include="Limada\Tests\Model\ThingGraphUtilTest.cs" />
+    <Compile Include="Limada\Tests\Model\ModelHelper.cs" />
     <Compile Include="Limada\Tests\Model\ThingSerialzerTest.cs" />
     <Compile Include="Limada\Tests\Schema\CommonSchemaTest.cs" />
     <Compile Include="Limada\Tests\Schema\DocumentSchemaTest.cs" />
@@ -72,6 +92,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\Data\db4o\GraphTest.cs" />
     <Compile Include="Tests\DomainTest.cs" />
+    <Compile Include="Tests\View\Drawing\ViewSerialisationTest.cs" />
+    <Compile Include="Tests\Winform\ConverterTest.cs" />
     <Compile Include="Tests\Graph\Basic\BasicGraphTests.cs" />
     <Compile Include="Tests\Graph\Basic\BasicTestDataFactory.cs" />
     <Compile Include="Tests\Graph\Basic\EdgeIsItemTest.cs" />
@@ -107,24 +129,24 @@
     <Compile Include="Tests\Sandbox\HistoryTest.cs" />
     <Compile Include="Tests\Sandbox\RegExTest.cs" />
     <Compile Include="Tests\Sandbox\Schema\SchemaArchitecture.cs" />
-    <Compile Include="Tests\View\Display\BenchmarkOneTests.cs" />
-    <Compile Include="Tests\View\Display\DisplayTest.cs">
+    <Compile Include="Tests\Winform\Display\BenchmarkOneTests.cs" />
+    <Compile Include="Tests\Winform\Display\DisplayTest.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tests\View\Display\DragDropBasicTest.cs" />
-    <Compile Include="Tests\View\Display\DragDropFacadeTest.cs" />
-    <Compile Include="Tests\View\Display\ImageDisplayTest.cs" />
-    <Compile Include="Tests\View\Display\LineTextTest.cs" />
-    <Compile Include="Tests\View\Display\QuadTreeVisualizer.cs">
+    <Compile Include="Tests\Winform\Display\DragDropBasicTest.cs" />
+    <Compile Include="Tests\Winform\Display\DragDropFacadeTest.cs" />
+    <Compile Include="Tests\Winform\Display\ImageDisplayTest.cs" />
+    <Compile Include="Tests\Winform\Display\LineTextTest.cs" />
+    <Compile Include="Tests\Winform\Display\QuadTreeVisualizer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tests\View\Display\QuadTreeVisualizer.Designer.cs">
+    <Compile Include="Tests\Winform\Display\QuadTreeVisualizer.Designer.cs">
       <DependentUpon>QuadTreeVisualizer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tests\View\Display\SceneThreadTest.cs" />
-    <Compile Include="Tests\View\Display\SimpleWidgetLayoutTest.cs" />
-    <Compile Include="Tests\View\Display\WidgetBoundsLayer.cs" />
-    <Compile Include="Tests\View\Display\WidgetDisplayTest.cs" />
+    <Compile Include="Tests\Winform\Display\SceneThreadTest.cs" />
+    <Compile Include="Tests\Winform\Display\SimpleWidgetLayoutTest.cs" />
+    <Compile Include="Tests\Winform\Display\WidgetBoundsLayer.cs" />
+    <Compile Include="Tests\Winform\Display\WidgetDisplayTest.cs" />
     <Compile Include="Tests\View\Drawing\PolygonHulltest.cs" />
     <Compile Include="Tests\View\Drawing\RegionSandbox.cs" />
     <Compile Include="Tests\View\Drawing\RegionTest.cs" />
@@ -160,12 +182,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Tests\View\Display\QuadTreeVisualizer.resx">
+    <EmbeddedResource Include="Tests\Winform\Display\QuadTreeVisualizer.resx">
       <DependentUpon>QuadTreeVisualizer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Limada\Tests\Data\db4o\" />
+    <Folder Include="Tests\Graphics\" />
     <Folder Include="Tests\Sandbox\Graph\" />
     <Folder Include="Tests\Sandbox\View\" />
   </ItemGroup>

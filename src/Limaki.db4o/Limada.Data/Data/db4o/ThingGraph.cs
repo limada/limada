@@ -1,6 +1,6 @@
 /*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -59,7 +59,9 @@ namespace Limada.Data.db4o {
         public override bool IsClassConfigurable(Type type) {
             bool result = base.IsClassConfigurable(type);
             return result || Reflector.Implements(type,typeof(IRealData<Id>));
-        }
+        }
+
+
         protected override void ConfigureType(Type type) {
             IObjectClass clazz = Configuration.ObjectClass(type);
             clazz.MaximumActivationDepth(15);
@@ -315,6 +317,10 @@ namespace Limada.Data.db4o {
                 }
             }
             return result;
+        }
+        
+        public virtual void AddMarker(IThing thing) {
+            this.Add (thing);
         }
 
         public virtual IThing GetById(Id id) {

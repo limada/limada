@@ -7,7 +7,9 @@ using Limaki.Tests.Graph.Model;
 namespace Limada.Tests.Model {
     public class ThingSceneFactoryNew<T> : GenericBiGraphFactory<IWidget, IThing, IEdgeWidget, ILink>
         where T : IGraphFactory<IThing, ILink>, new() {
-        public ThingSceneFactoryNew() : base(new T(), new WidgetThingAdapter().ReverseAdapter()) { }
+        public ThingSceneFactoryNew() : 
+            base(new T(), 
+            new WidgetThingAdapter().ReverseAdapter()) { }
     }
 
 
@@ -24,19 +26,4 @@ namespace Limada.Tests.Model {
         }
     }
 
-    //public class ThingGraphFactory<F>:ThingGraphFactory 
-    //    where F:IGraphFactory<IGraphItem,IGraphEdge>, new() {
-
-        
-    //    public override string Name {
-    //        get { return new F ().Name; }
-    //    }
-
-    //    public override void Populate() {
-            
-    //    }
-    //    public override void Populate(IGraph<IThing, ILink> graph) {
-            
-    //    }
-    //} 
 }

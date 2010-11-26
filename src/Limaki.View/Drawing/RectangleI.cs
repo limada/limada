@@ -1,13 +1,15 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
  * published by the Free Software Foundation.
  * 
- * Author: Lytico
- * Copyright (C) 2006-2008 Lytico
+ * Authors: 
+ * Mike Kestner (mkestner@speakeasy.net)
+ * 
+ * Copyright (C) 2004 Novell, Inc (http://www.novell.com)
  *
  * http://limada.sourceforge.net
  * 
@@ -21,9 +23,8 @@
 
 
 using System;
-using System.Runtime.InteropServices;
 using System.ComponentModel;
-using Limaki.Drawing;
+using System.Runtime.InteropServices;
 
 namespace Limaki.Drawing {
     [ComVisible(true)]
@@ -342,7 +343,7 @@ namespace Limaki.Drawing {
 
         public int Left {
             get {
-                return X;
+                return x;
             }
         }
 
@@ -377,7 +378,7 @@ namespace Limaki.Drawing {
 
         public int Right {
             get {
-                return X + Width;
+                return x + width;
             }
         }
 
@@ -392,11 +393,11 @@ namespace Limaki.Drawing {
         [Browsable(false)]
         public SizeI Size {
             get {
-                return new SizeI(Width, Height);
+                return new SizeI(width, height);
             }
             set {
-                Width = value.Width;
-                Height = value.Height;
+                width = value.Width;
+                height = value.Height;
             }
         }
 
@@ -476,8 +477,8 @@ namespace Limaki.Drawing {
         /// </remarks>
 
         public bool Contains(int x, int y) {
-            return ((x >= Left) && (x < Right) &&
-                    (y >= Top) && (y < Bottom));
+            return ((x >= this.x) && (x < Right) &&
+                    (y >= this.y) && (y < Bottom));
         }
 
         /// <summary>
@@ -541,13 +542,13 @@ namespace Limaki.Drawing {
         /// </remarks>
 
         public bool IntersectsWith(RectangleI rect) {
-            return !((Left >= rect.Right) || (Right <= rect.Left) ||
-                     (Top >= rect.Bottom) || (Bottom <= rect.Top));
+            return !((x >= rect.Right) || (Right <= rect.Left) ||
+                     (y >= rect.Bottom) || (Bottom <= rect.Top));
         }
 
         private bool IntersectsWithInclusive(RectangleI r) {
-            return !((Left > r.Right) || (Right < r.Left) ||
-                     (Top > r.Bottom) || (Bottom < r.Top));
+            return !((x > r.Right) || (Right < r.Left) ||
+                     (y > r.Bottom) || (Bottom < r.Top));
         }
 
         /// <summary>

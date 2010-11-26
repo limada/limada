@@ -1,6 +1,6 @@
 ﻿/*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -13,6 +13,7 @@
  * 
  */
 
+using System;
 using Limada.Model;
 using Limada.Schemata;
 using Limaki.Graphs;
@@ -32,8 +33,8 @@ namespace Limada.View {
             return result;
         }
 
-        public static ThingFactory GetThingFactory(IGraph<IWidget, IEdgeWidget> graph) {
-            ThingFactory result = null;
+        public static IThingFactory GetThingFactory(IGraph<IWidget, IEdgeWidget> graph) {
+            IThingFactory result = null;
             var sourceGraph = new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(graph);
 
             if (sourceGraph != null) {
@@ -59,8 +60,6 @@ namespace Limada.View {
         public static object GetDescription(IGraph<IWidget, IEdgeWidget> source, IThing thing) {
             return ThingGraphUtils.GetDescription(WidgetThingGraphExtension.GetThingGraph(source), thing);
         }
-
-
 
         public static bool ToggleFilterOnTwo(IGraph<IWidget, IEdgeWidget> source) {
             bool result = false;

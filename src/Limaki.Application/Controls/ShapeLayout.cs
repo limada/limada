@@ -1,3 +1,18 @@
+/*
+ * Limaki 
+ * Version 0.081
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2006-2008 Lytico
+ *
+ * http://limada.sourceforge.net
+ * 
+ */
+
 using System;
 using System.Collections.Generic;
 using Limaki.Drawing;
@@ -5,9 +20,7 @@ using Limaki.Drawing.UI;
 
 namespace Limaki.Winform.Controls {
     public class ShapeLayout : Layout<ICollection<IShape>, IShape> {
-        public ShapeLayout(Func<ICollection<IShape>> handler, IStyleSheet stylesheet)
-            :
-                base(handler, stylesheet) { }
+        public ShapeLayout(Func<ICollection<IShape>> handler, IStyleSheet stylesheet):base(handler, stylesheet) { }
         public override void Invoke() {
             throw new Exception("The method or operation is not implemented.");
         }

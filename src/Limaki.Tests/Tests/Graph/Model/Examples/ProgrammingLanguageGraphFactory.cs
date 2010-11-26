@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -113,13 +113,14 @@ namespace Limaki.Tests.Graph.Model {
                 }
                 Populate(this.Graph,Start + 1);
                 if (i > 0) {
-                    GraphEdge edgeWidget = new GraphEdge();
-                    edgeWidget.Root = lastNode1;
-                    edgeWidget.Leaf = Node[1];
-                    Graph.Add(edgeWidget);
-                    if (SeperateLattice) {
-                        edgeWidget = new GraphEdge(lastNode2, Node[5] );
+                    GraphEdge edgeWidget = null;
+                    if (!SeperateLattice) {
+                        edgeWidget = new GraphEdge();
+                        edgeWidget.Root = lastNode1;
+                        edgeWidget.Leaf = Node[1];
                         Graph.Add(edgeWidget);
+
+
                     }
                     if (AddDensity) {
                         edgeWidget = new GraphEdge(Node[2], lastNode3);

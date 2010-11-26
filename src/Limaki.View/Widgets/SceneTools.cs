@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -32,7 +32,7 @@ namespace Limaki.Widgets {
                     newShape = (IShape)newShape.Clone();
                     newShape.Location = widget.Shape.Location;
                     newShape.Size = widget.Shape.Size;
-                    ActionCommand<IWidget, IShape> changeShape =
+                    var changeShape =
                         new ActionCommand<IWidget, IShape>(
                             widget,
                             newShape,
@@ -59,17 +59,18 @@ namespace Limaki.Widgets {
 
         public static IEdgeWidget CreateEdge(Scene scene) {
             IEdgeWidget edge = null;
-            if (scene.Markers != null) {
+            if (scene != null && scene.Markers != null) {
                 edge = scene.Markers.CreateDefaultEdge() as IEdgeWidget;
             } 
             if (edge == null){
-                edge = new EdgeWidget<string>("°");
+                var factory = Registry.Factory.One<IWidgetFactory> ();
+                edge = factory.CreateEdgeWidget ("°");
             }
             return edge;
         }
 
         public static void CreateEdge(Scene scene, IWidget root, IWidget leaf) {
-            if (leaf != null && root != null && root != leaf) {
+            if (scene != null && leaf != null && root != null && root != leaf) {
                 IEdgeWidget edge = CreateEdge (scene);
                 
                 edge.Root = root;
@@ -87,6 +88,8 @@ namespace Limaki.Widgets {
 
         public static void AddItem(Scene scene, IWidget item, ILayout<Scene, IWidget> layout, PointI pt) {
             bool allowAdd = true;
+            if (scene == null)
+                return;
             if (item is IEdgeWidget) {
                 IEdgeWidget edge = (IEdgeWidget)item;
                 allowAdd = scene.Contains(edge.Root) && scene.Contains(edge.Leaf);
@@ -99,7 +102,7 @@ namespace Limaki.Widgets {
         }
 
         public static IWidget PlaceWidget(IWidget root, IWidget widget, Scene scene, ILayout<Scene, IWidget> layout) {
-            if (widget != null) {
+            if (widget != null && scene !=null) {
                 PointI pt = (PointI)layout.Distance;
                 if (root != null) {
                     pt = root.Shape[Anchor.LeftBottom];
@@ -112,12 +115,14 @@ namespace Limaki.Widgets {
         }
 
         public static void CleanScene(Scene scene) {
-            if (scene.Graph is GraphView<IWidget, IEdgeWidget>) {
-                ((GraphView<IWidget, IEdgeWidget>)scene.Graph).One.Clear();
-                scene.ClearView();
-                Registry.ApplyProperties<MarkerContextProcessor, Scene>(scene);
-            } else {
-                throw new ArgumentException("scene.Graph must be a GraphView to load Sheets");
+            if (scene != null) {
+                if (scene.Graph is GraphView<IWidget, IEdgeWidget>) {
+                    ( (GraphView<IWidget, IEdgeWidget>) scene.Graph ).One.Clear ();
+                    scene.ClearView ();
+                    Registry.ApplyProperties<MarkerContextProcessor, Scene> (scene);
+                } else {
+                    throw new ArgumentException ("scene.Graph must be a GraphView to load Sheets");
+                }
             }
         }
     }

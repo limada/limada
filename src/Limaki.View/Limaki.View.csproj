@@ -28,23 +28,40 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NEGATIVECOORDINATES</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\ViewContextRecourceLoader.cs" />
+    <Compile Include="Drawing\DrawingPrimitivesSerializer.cs" />
+    <Compile Include="Limada\App\DocumentSchemaManager.cs" />
+    <Compile Include="Limada\App\FavoriteManager.cs" />
+    <Compile Include="Limada\View\SceneProvider.cs" />
     <Compile Include="Drawing\Anchor.cs" />
-    <Compile Include="Drawing\BitmapFromDibStream.cs" />
+    <Compile Include="Drawing\Imaging\BitmapFromDibStream.cs" />
     <Compile Include="Drawing\Camera.cs" />
+    <Compile Include="Drawing\Imaging\ExifReader.cs" />
+    <Compile Include="Drawing\Imaging\ExifTags.cs" />
     <Compile Include="Drawing\UI\EventControlerBase.cs" />
     <Compile Include="Drawing\ICamera.cs" />
     <Compile Include="Drawing\ICameraTarget.cs" />
     <Compile Include="Drawing\UI\IControl.cs" />
+    <Compile Include="Drawing\UI\ICursorHander.cs" />
+    <Compile Include="Drawing\UI\IKeyAction.cs" />
     <Compile Include="Drawing\UI\ILayer.cs" />
     <Compile Include="Drawing\ILayout.cs" />
     <Compile Include="Drawing\UI\ILayoutControler.cs" />
@@ -67,13 +84,21 @@
     <Compile Include="Drawing\IStyle.cs" />
     <Compile Include="Drawing\IStyleSheet.cs" />
     <Compile Include="Drawing\ISurface.cs" />
+    <Compile Include="Drawing\UI\ISelectionPainter.cs" />
+    <Compile Include="Drawing\UI\ISelectionShapePainter.cs" />
+    <Compile Include="Drawing\UI\IUISystemInformation.cs" />
     <Compile Include="Drawing\UI\IZoomTarget.cs" />
+    <Compile Include="Drawing\UI\Key.cs" />
+    <Compile Include="Drawing\UI\KeyActionBase.cs" />
+    <Compile Include="Drawing\UI\KeyEventArgs.cs" />
     <Compile Include="Drawing\UI\Layer.cs" />
     <Compile Include="Drawing\UI\Layout.cs" />
     <Compile Include="Drawing\UI\LayoutCommand.cs" />
     <Compile Include="Drawing\UI\LayoutControler.cs" />
     <Compile Include="Drawing\Matrice.cs" />
     <Compile Include="Drawing\UI\MouseActionBase.cs" />
+    <Compile Include="Drawing\UI\MouseDragActionBase.cs" />
+    <Compile Include="Drawing\UI\MouseTimerActionBase.cs" />
     <Compile Include="Drawing\UI\PaintActionEventArgs.cs" />
     <Compile Include="Drawing\Painters\Painter.cs" />
     <Compile Include="Drawing\Painters\StringPainterBase.cs" />
@@ -89,6 +114,10 @@
     <Compile Include="Drawing\Shapes\ShapeFactory.cs" />
     <Compile Include="Drawing\Shapes\ShapeFactoryBase.cs" />
     <Compile Include="Drawing\Shapes\ShapeUtils.cs" />
+    <Compile Include="Drawing\UI\ScrollAction.cs" />
+    <Compile Include="Drawing\UI\SelectionBase.cs" />
+    <Compile Include="Drawing\UI\SelectionShape.cs" />
+    <Compile Include="Drawing\UI\ZoomAction.cs" />
     <Compile Include="Drawing\Vector.cs" />
     <Compile Include="Drawing\Shapes\VectorShape.cs" />
     <Compile Include="Drawing\Style.cs" />
@@ -111,7 +140,10 @@
     <Compile Include="Drawing\SizeS.cs" />
     <Compile Include="Drawing\UI\IMouseAction.cs" />
     <Compile Include="Drawing\UI\MouseActionEventArgs.cs" />
-    <Compile Include="Widgets\IDataBaseHandler.cs" />
+    <Compile Include="RTF\AdobeRTFFilter.cs" />
+    <Compile Include="RTF\RTFFilter.cs" />
+    <Compile Include="RTF\RTFHelper.cs" />
+    <Compile Include="Limada\View\ISceneProvider.cs" />
     <Compile Include="Widgets\ISheetManager.cs" />
     <Compile Include="Limada\View\SearchHandler.cs" />
     <Compile Include="Limada\View\Sheet.cs" />
@@ -142,6 +174,15 @@
     <Compile Include="Widgets\Layout\WidgetLayout.cs" />
     <Compile Include="Widgets\MarkerContextProcessor.cs" />
     <Compile Include="Widgets\Renderer.cs" />
+    <Compile Include="Widgets\UI\AddEdgeActionBase.cs" />
+    <Compile Include="Widgets\UI\AddWidgetAction.cs" />
+    <Compile Include="Widgets\UI\EdgeWidgetChangerBase.cs" />
+    <Compile Include="Widgets\UI\WidgetChanger.cs" />
+    <Compile Include="Widgets\UI\WidgetDeleter.cs" />
+    <Compile Include="Widgets\UI\WidgetFolding.cs" />
+    <Compile Include="Widgets\UI\WidgetLayerZoomAction.cs" />
+    <Compile Include="Widgets\UI\WidgetMultiSelector.cs" />
+    <Compile Include="Widgets\UI\WidgetSelectorBase.cs" />
     <Compile Include="Widgets\WidgetLayerBase.cs" />
     <Compile Include="Widgets\WidgetRenderer.cs" />
     <Compile Include="Widgets\QuadTreeIndex.cs" />
@@ -163,6 +204,9 @@
       <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
       <Name>Limaki.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Limada\Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

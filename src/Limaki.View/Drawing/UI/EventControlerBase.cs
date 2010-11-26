@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -13,6 +13,7 @@
  * 
  */
 
+
 using System;
 using System.Collections.Generic;
 using Limaki.Actions;
@@ -23,6 +24,7 @@ namespace Limaki.Drawing.UI {
         public List<IPaintAction> PaintActions = new List<IPaintAction>();
         public List<ILayoutControler> CommandActions = new List<ILayoutControler>();
         public List<IMouseAction> MouseActions = new List<IMouseAction>();
+        public List<IKeyAction> KeyActions = new List<IKeyAction>();
 
         protected int ActionsSort(IAction x, IAction y) {
             return x.Priority.CompareTo(y.Priority);
@@ -40,6 +42,13 @@ namespace Limaki.Drawing.UI {
                 PaintActions.Add((IPaintAction)action);
                 PaintActions.Sort(ActionsSort);
             }
+
+
+            if (action is IKeyAction) {
+                KeyActions.Add((IKeyAction)action);
+                KeyActions.Sort(ActionsSort);
+            }
+
             if (action is ILayoutControler) {
                 CommandActions.Add((ILayoutControler)action);
                 CommandActions.Sort(ActionsSort);
@@ -55,6 +64,10 @@ namespace Limaki.Drawing.UI {
 
             if (action is IPaintAction) {
                 PaintActions.Remove((IPaintAction)action);
+            }
+
+            if (action is IKeyAction) {
+                KeyActions.Remove((IKeyAction)action);
             }
 
             if (action is ILayoutControler) {
@@ -142,6 +155,52 @@ namespace Limaki.Drawing.UI {
                     bool exclusive = mouseAction.Exclusive;
                     mouseAction.OnMouseUp(e);
                     if (exclusive || mouseAction.Exclusive) {
+                        break;
+                    }
+                }
+            }
+            CommandsExecute();
+        }
+
+        #endregion
+        #region IKeyAction Member
+
+        public void OnKeyDown(KeyActionEventArgs e) {
+            Resolved = false;
+            foreach (IKeyAction keyAction in KeyActions) {
+                if (keyAction.Enabled) {
+                    keyAction.OnKeyDown(e);
+                    Resolved = keyAction.Resolved || Resolved;
+                    if (keyAction.Exclusive) {
+                        break;
+                    }
+                }
+            }
+            CommandsExecute();
+        }
+
+        public void OnKeyPress(KeyActionPressEventArgs e) {
+            Resolved = false;
+            foreach (IKeyAction keyAction in KeyActions) {
+                if (keyAction.Enabled) {
+                    keyAction.OnKeyPress(e);
+                    Resolved = keyAction.Resolved || Resolved;
+                    if (keyAction.Exclusive || e.Handled) {
+                        break;
+                    }
+                }
+            }
+            CommandsExecute();
+        }
+
+        public void OnKeyUp(KeyActionEventArgs e) {
+            Resolved = false;
+            foreach (IKeyAction keyAction in KeyActions) {
+                if (keyAction.Enabled) {
+                    Resolved = keyAction.Resolved || Resolved;
+                    bool exclusive = keyAction.Exclusive;
+                    keyAction.OnKeyUp(e);
+                    if (exclusive || e.Handled) {
                         break;
                     }
                 }

@@ -1,6 +1,6 @@
 /*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -20,13 +20,24 @@ using Limada.Schemata;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Widgets;
+using Limaki.Common;
 
 namespace Limada.View {
     public class WidgetThingMarkerFacade:MarkerFacade<IWidget,IThing, IEdgeWidget,ILink> {
         public WidgetThingMarkerFacade(IGraph<IWidget, IEdgeWidget> graph): base(graph) {}
 
+        IWidgetFactory _factory = null;
+        IWidgetFactory factory {
+            get {
+                if (_factory == null) {
+                    _factory = Registry.Factory.One<IWidgetFactory> ();
+                }
+                return _factory;
+            }
+            
+        }
         public override IEdge<IWidget> CreateDefaultEdge() {
-            return new EdgeWidget<string> (DefaultMarker.ToString ());
+            return factory.CreateEdgeWidget (DefaultMarker.ToString ());
         }
 
         public override IThing DefaultMarker {

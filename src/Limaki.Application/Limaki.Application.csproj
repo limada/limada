@@ -30,6 +30,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <ApplicationIcon>LimadaLogo.ico</ApplicationIcon>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,38 +52,108 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.4.1.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\3rdParty\bin\nUnit\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Skybound.Gecko, Version=1.9.0.0, Culture=neutral, PublicKeyToken=3209ac31600d1857, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\Skybound.Gecko.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App\LayoutEditor.cs">
+    <Compile Include="3rdPartyWrappers\GeckoWebBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="App\FileManager.cs" />
+    <Compile Include="App\Viewers\ISplitView.cs" />
+    <Compile Include="App\ToolStrips\IToolView.cs" />
+    <Compile Include="App\ToolStrips\LayoutToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="App\ToolStrips\LayoutToolStrip.Designer.cs">
+      <DependentUpon>LayoutToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="App\ToolStrips\MarkerToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="App\ToolStrips\MarkerToolStrip.Designer.cs">
+      <DependentUpon>MarkerToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="App\ToolStrips\SceneToolsController.cs" />
+    <Compile Include="App\ToolStrips\SceneToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="App\ToolStrips\SceneToolStrip.Designer.cs">
+      <DependentUpon>SceneToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="App\Viewers\BaseStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="App\LayoutEditor.Designer.cs">
+    <Compile Include="App\Viewers\BaseStyleEditor.Designer.cs">
+      <DependentUpon>BaseStyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="App\Viewers\SplitView.cs" />
+    <Compile Include="App\ToolStrips\ToolsController.cs" />
+    <Compile Include="App\StreamViewers\WebProxyServer\RequestInfo.cs" />
+    <Compile Include="App\StreamViewers\WebProxyServer\TimeoutStream.cs" />
+    <Compile Include="App\StreamViewers\WebProxyServer\WebContent.cs" />
+    <Compile Include="App\StreamViewers\WebProxyServer\WebProxyContent.cs" />
+    <Compile Include="App\StreamViewers\WebProxyServer\WebServer.cs" />
+    <Compile Include="App\StreamViewers\HTMLViewerController.cs" />
+    <Compile Include="App\StreamViewers\ImageViewerController.cs" />
+    <Compile Include="App\Viewers\LayoutEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="App\Viewers\LayoutEditor.Designer.cs">
       <DependentUpon>LayoutEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="App\StyleEditor.cs">
+    <Compile Include="App\StreamViewers\SheetViewerController.cs" />
+    <Compile Include="App\StreamViewers\StreamViewerController.cs" />
+    <Compile Include="App\StreamViewers\TextViewerWithToolstripController.cs" />
+    <Compile Include="App\Viewers\StyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="App\StyleEditor.Designer.cs">
+    <Compile Include="App\Viewers\StyleEditor.Designer.cs">
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="App\StreamViewers\TextViewerController.cs" />
+    <Compile Include="App\ToolStrips\ViewToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="App\ToolStrips\ViewToolStrip.Designer.cs">
+      <DependentUpon>ViewToolStrip.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ShapeLayout.cs" />
-    <Compile Include="Limada\App\DocumentSchemaManager.cs" />
-    <Compile Include="App\StreamViewControler.cs" />
-    <Compile Include="App\TextDialog.cs">
+    <Compile Include="App\Viewers\StreamViewManager.cs" />
+    <Compile Include="App\TestFormContextProcessor.cs" />
+    <Compile Include="App\Viewers\TextDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="App\TextDialog.Designer.cs">
+    <Compile Include="App\Viewers\TextDialog.Designer.cs">
       <DependentUpon>TextDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limada\App\DataBaseHandler.cs" />
     <Compile Include="Limada\App\ApplicationContextRecourceLoader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -100,10 +171,10 @@
     <Compile Include="App\OpenExampleData.Designer.cs">
       <DependentUpon>OpenExampleData.cs</DependentUpon>
     </Compile>
-    <Compile Include="App\Options.cs">
+    <Compile Include="App\Viewers\Options.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="App\Options.Designer.cs">
+    <Compile Include="App\Viewers\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
     <Compile Include="App\About.cs">
@@ -121,9 +192,6 @@
     <Compile Include="App\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controls\IWebBrowser.cs" />
-    <Compile Include="Controls\RicherTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\ShapeComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -146,7 +214,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="App\LayoutEditor.resx">
+    <EmbeddedResource Include="App\Viewers\BaseStyleEditor.resx">
+      <DependentUpon>BaseStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App\Viewers\LayoutEditor.resx">
       <DependentUpon>LayoutEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="App\OpenExampleData.resx">
@@ -157,14 +228,14 @@
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="App\Options.resx">
+    <EmbeddedResource Include="App\Viewers\Options.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Options.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="App\StyleEditor.resx">
+    <EmbeddedResource Include="App\Viewers\StyleEditor.resx">
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="App\TextDialog.resx">
+    <EmbeddedResource Include="App\Viewers\TextDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TextDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -205,6 +276,7 @@
     <Content Include="Properties\Resources\CreateWidget24.png" />
     <Content Include="Properties\Resources\DrawSelection.png" />
     <Content Include="Properties\Resources\MoveShift.png" />
+    <Content Include="Properties\Resources\notes.png" />
     <Content Include="Properties\Resources\StraightConnector.png" />
     <Content Include="Properties\Resources\stream_save.png" />
     <Content Include="Properties\Resources\ToggleView.png" />

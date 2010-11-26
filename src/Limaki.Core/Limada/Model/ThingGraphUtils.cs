@@ -1,6 +1,6 @@
 /*
  * Limada
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -18,6 +18,10 @@ using System.Collections.Generic;
 using System.Text;
 using Limaki.Graphs.Extensions;
 using Limada.Schemata;
+using Limaki.Common.Collections;
+using System.Linq;
+using Limaki.Graphs;
+using Id = System.Int64;
 
 namespace Limada.Model {
     public class ThingGraphUtils {
@@ -28,18 +32,16 @@ namespace Limada.Model {
                 while (queue.Count != 0) {
                     IThing item = queue.Dequeue();
                     if (!walker.visited.Contains(item)) {
-
                         if (item is ILink)
                             target.Add((ILink)item);
                         else
                             target.Add(item);
 
                         foreach (LevelItem<IThing> levelItem in walker.DeepWalk(item, 0)) {
-
-                            if (levelItem.Node is ILink) {
-                                target.Add((ILink)levelItem.Node);
-
-                                queue.Enqueue(((ILink)levelItem.Node).Marker);
+                            ILink link = levelItem.Node as ILink;
+                            if (link != null) {
+                                target.Add(link);
+                                queue.Enqueue(link.Marker);
 
                             } else {
                                 target.Add(levelItem.Node);
@@ -49,6 +51,49 @@ namespace Limada.Model {
                 }
             }
         }
+
+        public static void AddRange(IThingGraph thingGraph, IEnumerable<IThing> things) {
+
+            var links = new Set<ILink>();
+            foreach (var thing in things) {
+                if (thing is ILink) {
+                    links.Add((ILink)thing);
+                } else {
+                    thingGraph.Add(thing);
+                }
+            }
+            int linkDepth = 100;
+            int depth = 0;
+            while (links.Count > 0 && depth < linkDepth) {
+                depth++;
+                foreach (var link in links.ToArray()) {
+                    var idLink = (ILink<Id>)link;
+                    if (link.Leaf == null) {
+                        var thing = thingGraph.GetById(idLink.Leaf);
+                        if (thing != null) {
+                            link.Leaf = thing;
+                        }
+                    }
+                    if (link.Root == null) {
+                        var thing = thingGraph.GetById(idLink.Root);
+                        if (thing != null) {
+                            link.Root = thing;
+                        }
+                    }
+                    if (link.Marker == null) {
+                        var thing = thingGraph.GetById(idLink.Marker);
+                        if (thing != null) {
+                            link.Marker = thing;
+                        }
+                    }
+                    if (link.Root != null && link.Leaf != null && link.Marker != null) {
+                        thingGraph.Add(link);
+                        links.Remove(link);
+                    }
+                }
+            }
+        }
+
 
         public static object GetDescription(IThingGraph source, IThing thing) {
             object name = null;
@@ -63,6 +108,120 @@ namespace Limada.Model {
                 throw new ArgumentException("source must be a SchemaThingGraph");
             }
             return name;
+        }
+
+        public static object GetSource(IThingGraph source, IThing thing) {
+            object name = null;
+            if (source != null) {
+                IThing desc = new Schema(source, thing).GetTheLeaf(CommonSchema.SourceMarker);
+                if (desc != null && desc != thing) {
+                    name = desc.Data;
+                }
+            }
+            return name;
+        }
+
+        /// <summary>
+        /// gets a complete list of things 
+        /// as: link.leaf, link.marker, link.root
+        /// if graph is SchemaGraph:
+        /// thing.description, thing.pathtodescrition
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="graph"></param>
+        /// <returns></returns>
+        public static IEnumerable<IThing> CompletedThings(IEnumerable<IThing> things, IGraph<IThing,ILink> graph) {
+            if (things == null)
+                yield break;
+
+            var sourceGraph = graph;
+            if (graph is SchemaThingGraph)
+                sourceGraph = ( (SchemaThingGraph) graph ).Source;
+
+            var stack = new Queue<IThing> ();
+            var done = new Set<IThing> ();
+            Action<IThing> addThing = null;
+            Action<ILink> addLink = (link) => {
+                if (!done.Contains(link)) {
+                    var walker = new Walker<IThing, ILink>(sourceGraph);
+                    foreach(var thing in walker.Walk(link.Marker,0))
+                        addThing(thing.Node);
+
+                    addThing(link.Root);
+                    addThing(link.Leaf);
+
+                    stack.Enqueue(link);
+                    done.Add(link);
+                }
+            };
+
+            addThing = (thing) => {
+                if (!done.Contains(thing)) {
+                    if (thing is ILink) {
+                        foreach (var vein in graph.Vein((ILink)thing)) {
+                            addLink(vein);
+                        }
+                    } else {
+                        stack.Enqueue(thing);
+                        done.Add(thing);
+                    }
+                }
+            };
+
+            foreach (var thing in things) {
+                addThing (thing);
+
+                var schemaGraph = graph as SchemaThingGraph;
+                if (schemaGraph != null) {
+                    addThing (schemaGraph.ThingToDisplay (thing));
+                    foreach (var link in schemaGraph.ThingToDisplayPath (thing)) {
+                        addThing (link);
+                    }
+                }
+            }
+
+            foreach (var item in stack)
+                yield return item;
+        }
+
+
+        /// <summary>
+        /// Search for name
+        /// if something is found,
+        /// get the described thing for it
+        /// </summary>
+        /// <param name="thingGraph"></param>
+        /// <param name="name"></param>
+        /// <param name="exact"></param>
+        /// <returns></returns>
+        public static IEnumerable<IThing> Search(IThingGraph thingGraph, object name, bool exact) {
+            var schemaGraph = thingGraph as SchemaThingGraph;
+            bool isSchemaGraph = schemaGraph != null;
+
+            CommonSchema schema = new CommonSchema();
+
+            foreach (IThing thing in thingGraph.GetByData(name, exact)) {
+                IThing described = null;
+                if (isSchemaGraph) {
+                    described = schemaGraph.DescribedThing(thing);
+                } else {
+                    described = schema.GetTheRoot(thingGraph, thing, CommonSchema.DescriptionMarker);
+                }
+                if (described != null) {
+                    yield return described;
+                } else {
+                    yield return thing;
+                }
+            }
+
+
+        }
+        public static void MergeGraphs(IThingGraph source, IThingGraph target) {
+            GraphUtils.MergeGraphs<IThing, ILink> (source, target);
+            foreach(var thing in source.OfType<IStreamThing> ()) {
+                var data = source.DataContainer.GetById (thing.Id);
+                target.DataContainer.Add (data);
+            }
         }
     }
 }

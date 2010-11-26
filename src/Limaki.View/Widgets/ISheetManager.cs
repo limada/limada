@@ -1,24 +1,10 @@
-/*
- * Limaki 
- * Version 0.08
- * 
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
- * 
- * Author: Lytico
- * Copyright (C) 2006-2008 Lytico
- *
- * http://limada.sourceforge.net
- * 
- */
-
 using System;
 using System.IO;
 using Limada.Model;
 using Limaki.Drawing;
 using Limaki.Widgets;
 using Id = System.Int64;
+using Limaki.Model.Streams;
 
 namespace Limaki.Widgets{
     public interface ISheetManager {
@@ -28,6 +14,7 @@ namespace Limaki.Widgets{
         SheetInfo SaveToThing ( Scene scene, ILayout<Scene, IWidget> layout, IThing thing, string name );
         bool IsSaveable ( Scene scene );
         void LoadSheet ( Scene scene, ILayout<Scene, IWidget> layout, Stream stream );
+        SheetInfo LoadSheet(Scene scene, ILayout<Scene, IWidget> layout, StreamInfo<Stream> info);
         SheetInfo RegisterSheet ( Id id, string name );
     }
 

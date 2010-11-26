@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the license below.
@@ -159,9 +159,9 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             int subnodeIndex = GetSubnodeIndex(searchEnv, _centre);
             if (subnodeIndex == none)
                 return this;
-            if (subnode[subnodeIndex] != null) {
+            if (Subnodes[subnodeIndex] != null) {
                 // query lies in subquad, so search it
-                Node<TItem> node = subnode[subnodeIndex];
+                Node<TItem> node = Subnodes[subnodeIndex];
                 return node.Find(searchEnv);
             }
             // no existing subquad, so return this one anyway
@@ -179,13 +179,13 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
 
             int index = GetSubnodeIndex(node._envelope, _centre);
             if (node.level == level - 1)
-                subnode[index] = node;
+                Subnodes[index] = node;
             else {
                 // the quad is not a direct child, so make a new child quad to contain it
                 // and recursively insert the quad
                 Node<TItem> childNode = CreateSubnode(index);
                 childNode.InsertNode(node);
-                subnode[index] = childNode;
+                Subnodes[index] = childNode;
             }
         }
 
@@ -195,9 +195,9 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// </summary>
         /// <param name="index"></param>
         private Node<TItem> GetSubnode(int index) {
-            if (subnode[index] == null)
-                subnode[index] = CreateSubnode(index);
-            return subnode[index];
+            if (Subnodes[index] == null)
+                Subnodes[index] = CreateSubnode(index);
+            return Subnodes[index];
         }
 
         /// <summary>
@@ -245,12 +245,12 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
 
             bool found = false;
             int i = GetSubnodeIndex(itemEnv, _centre);
-            if (i != none && subnode[i] != null) {
-                found = subnode[i].Remove(itemEnv, item);
+            if (i != none && Subnodes[i] != null) {
+                found = Subnodes[i].Remove(itemEnv, item);
                 if (found) {
                     // trim subtree if empty
-                    if (subnode[i].IsPrunable)
-                        subnode[i] = null;
+                    if (Subnodes[i].IsPrunable)
+                        Subnodes[i] = null;
                 }
             }
 

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -19,70 +19,16 @@ using Limaki.Common;
 using Limaki.Drawing;
 
 namespace Limaki.Drawing.UI {
-    public abstract class Layout<TData, TItem> : ILayout<TData, TItem> {
-        public Layout(Func<TData> dataHandler, IStyleSheet styleSheet) {
-            this.DataHandler = dataHandler;
+    public abstract class Layout : ILayout {
+        public Layout(IStyleSheet styleSheet) {
             this.StyleSheet = styleSheet;
         }
-
-        #region Data
-        private Func<TData> _dataHandler = null;
-        public Func<TData> DataHandler {
-            get { return _dataHandler; }
-            set { _dataHandler = value; }
-        }
-
-        public virtual TData Data {
-            get { return DataHandler(); }
-        }
-        #endregion 
-
-        #region Style-Handling
         private IStyleSheet _styleSheet = null;
         public virtual IStyleSheet StyleSheet {
             get { return _styleSheet; }
             set { _styleSheet = value; }
         }
-        public abstract IStyle GetStyle(TItem item);
-        public abstract IStyle GetStyle(TItem item, UiState uiState);
-        #endregion 
 
-        
-        #region Layout-Methods
-        public abstract void Invoke();
-        /// <summary>
-        /// performs a layout on a single item
-        /// </summary>
-        /// <param name="item"></param>
-        public abstract bool Invoke(TItem item);
-
-        public abstract bool Invoke(TItem item, IShape shape);
-
-        /// <summary>
-        /// Sets position of item
-        /// </summary>
-        public abstract void Justify(TItem item);
-
-        public abstract void Justify(TItem item, IShape shape);
-
-        /// <summary>
-        /// Sets Shape and Style of item
-        /// </summary>
-        public abstract void Perform(TItem item);
-
-        
-
-        #endregion
-
-        #region Bounds-Handling
-
-        public abstract void AddBounds(TItem item);
-        public abstract PointI[] GetDataHull(TItem item, Matrice matrix, int delta, bool extend);
-        public abstract PointI[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend);
-        
-        #endregion 
-
-        #region Shape-Handling
         private IShapeFactory _shapeFactory = null;
         public virtual IShapeFactory ShapeFactory {
             get {
@@ -94,15 +40,12 @@ namespace Limaki.Drawing.UI {
             set { _shapeFactory = value; }
         }
 
-        public abstract IShape CreateShape ( TItem item );
-        #endregion 
-        
         #region Painter-Handling
         private IPainterFactory _painterFactory = null;
         public virtual IPainterFactory PainterFactory {
             get {
                 if (_painterFactory == null) {
-                    _painterFactory =  Registry.Pool.TryGetCreate<IPainterFactory>();
+                    _painterFactory = Registry.Pool.TryGetCreate<IPainterFactory>();
                 }
                 return _painterFactory;
             }
@@ -126,7 +69,7 @@ namespace Limaki.Drawing.UI {
             painterCache.TryGetValue(type, out result);
             if (result == null) {
                 result = PainterFactory.CreatePainter(type);
-                if (result!=null)
+                if (result != null)
                     painterCache.Add(type, result);
                 else {
                     painterCache.Add(type, PainterFactory.CreatePainter(typeof(string)));
@@ -142,7 +85,83 @@ namespace Limaki.Drawing.UI {
             get { return _distance; }
             set { _distance = value; }
         }
+
         #endregion
+
+        public abstract void Invoke();
+    }
+
+    public abstract class Layout<TData> : Layout, ILayout<TData> {
+        public Layout(Func<TData> dataHandler, IStyleSheet styleSheet): base(styleSheet) {
+            this.DataHandler = dataHandler;
+        }
+        #region Data
+        private Func<TData> _dataHandler = null;
+        public Func<TData> DataHandler {
+            get { return _dataHandler; }
+            set { _dataHandler = value; }
+        }
+
+        public virtual TData Data {
+            get { return DataHandler(); }
+        }
+        #endregion
+
+
+    }
+
+
+    public abstract class Layout<TData, TItem> : Layout<TData>, ILayout<TData, TItem> {
+        public Layout(Func<TData> dataHandler, IStyleSheet styleSheet): base(dataHandler, styleSheet) {}
+
+        #region Style-Handling
+
+        public abstract IStyle GetStyle(TItem item);
+        public abstract IStyle GetStyle(TItem item, UiState uiState);
+        #endregion
+
+
+        #region Layout-Methods
+
+        /// <summary>
+        /// performs a layout on a single item
+        /// </summary>
+        /// <param name="item"></param>
+        public abstract bool Invoke(TItem item);
+
+        public abstract bool Invoke(TItem item, IShape shape);
+
+        /// <summary>
+        /// Sets position of item
+        /// </summary>
+        public abstract void Justify(TItem item);
+
+        public abstract void Justify(TItem item, IShape shape);
+
+        /// <summary>
+        /// Sets Shape and Style of item
+        /// </summary>
+        public abstract void Perform(TItem item);
+
+
+
+        #endregion
+
+        #region Bounds-Handling
+
+        public abstract void AddBounds(TItem item);
+        public abstract PointI[] GetDataHull(TItem item, Matrice matrix, int delta, bool extend);
+        public abstract PointI[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend);
+
+        #endregion
+
+        #region Shape-Handling
+
+
+        public abstract IShape CreateShape(TItem item);
+        #endregion
+
+
     }
 
     public class Row<TItem> {
@@ -150,7 +169,7 @@ namespace Limaki.Drawing.UI {
         public PointI Location;
         public SizeI biggestItemSize;
         public SizeI Size;
-
+        public bool SizeAdjusted = false;
         public Row() { }
     }
 }

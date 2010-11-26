@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -20,8 +20,12 @@ using Limaki.Common;
 namespace Limaki.Drawing {
     public class StyleSheet:Style, IStyleSheet {
 
-        public StyleSheet(string name) : base(name) { }
-        public StyleSheet(string name, IStyle parentStyle) : base(name, parentStyle) { }
+        public StyleSheet(string name) : base(name) {
+            this.BackColor = KnownColors.FromKnownColor (KnownColor.Window);
+        }
+        public StyleSheet(string name, IStyle parentStyle) : base(name, parentStyle) {
+            this.BackColor = KnownColors.FromKnownColor (KnownColor.Window);
+        }
 
         private string DefaultStyleName = string.Empty;
 
@@ -187,12 +191,16 @@ namespace Limaki.Drawing {
         }
 
         #region IStyleSheet Member
+
+        public virtual Color BackColor { get; set; }
+
         static IStyleSheet _defaultStyleSheet = null;
 
         public static IStyleSheet CreateDefaultStyleSheet() {
             if (_defaultStyleSheet == null) {
                 IStyle style = StyleSheet.CreateStyleWithSystemSettings ();
                 _defaultStyleSheet = new StyleSheet ("Default", style);
+                _defaultStyleSheet.BackColor = KnownColors.FromKnownColor (KnownColor.Window);
             }
             return _defaultStyleSheet;
         }

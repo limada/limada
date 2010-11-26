@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the license below.
@@ -110,7 +110,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// lytico: original comment is wrong! (in JTS.java)
         /// 
         /// </summary>
-        public Node<TItem>[] subnode = new Node<TItem>[4];
+        public Node<TItem>[] Subnodes = new Node<TItem>[4];
 
         /// <summary>
         /// 
@@ -126,7 +126,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// 
         /// </summary>
         public virtual bool HasItems {
-            get { return _items.Count != 0; }
+            get { return _items!=null && _items.Count != 0; }
         }
 
         /// <summary>
@@ -151,12 +151,12 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             bool found = false;
 
             for (int i = 0; i < 4; i++) {
-                if (subnode[i] != null) {
-                    found = subnode[i].Remove(itemEnv, item);
+                if (Subnodes[i] != null) {
+                    found = Subnodes[i].Remove(itemEnv, item);
                     if (found) {
                         // trim subtree if empty
-                        if (subnode[i].IsPrunable)
-                            subnode[i] = null;
+                        if (Subnodes[i].IsPrunable)
+                            Subnodes[i] = null;
                         break;
                     }
                 }
@@ -185,10 +185,10 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         public virtual bool HasSubNodes {
             get {
                 return
-                    (subnode[0] != null) ||
-                    (subnode[1] != null) ||
-                    (subnode[2] != null) ||
-                    (subnode[3] != null);
+                    (Subnodes[0] != null) ||
+                    (Subnodes[1] != null) ||
+                    (Subnodes[2] != null) ||
+                    (Subnodes[3] != null);
             }
         }
 
@@ -202,7 +202,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
                 if (_items.Count != 0)
                     isEmpty = false;
                 else {
-                    foreach (Node<TItem> sub in subnode)
+                    foreach (Node<TItem> sub in Subnodes)
                         if (sub != null && !sub.IsEmpty)
                             isEmpty = false;
                 }
@@ -221,7 +221,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             // resultItems.addAll(this.items);
             foreach (TItem o in this._items)
                 resultItems.Add(o);
-            foreach (Node<TItem> sub in subnode)
+            foreach (Node<TItem> sub in Subnodes)
                 if (sub != null)
                     sub.AddAllItems(ref resultItems);
             return resultItems;
@@ -250,7 +250,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             foreach (TItem o in this._items)
                 resultItems.Add(o);
 
-            foreach (Node<TItem> sub in subnode)
+            foreach (Node<TItem> sub in Subnodes)
                 if (sub != null)
                     sub.AddAllItemsFromOverlapping(searchEnv, ref resultItems);
         }
@@ -269,7 +269,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             VisitItems(searchEnv, visitor);
 
             // TODO: lytico: here we should make getSubNodeIndex (this.envelope, searchEnv) to speed up
-            foreach (Node<TItem> sub in subnode)
+            foreach (Node<TItem> sub in Subnodes)
                 if (sub != null)
                     sub.Visit(searchEnv, visitor);
 
@@ -294,7 +294,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         public virtual int Depth {
             get {
                 int maxSubDepth = 0;
-                foreach (Node<TItem> sub in subnode)
+                foreach (Node<TItem> sub in Subnodes)
                     if (sub != null) {
                         int sqd = sub.Depth;
                         if (sqd > maxSubDepth)
@@ -311,7 +311,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         public virtual int Count {
             get {
                 int subSize = 0;
-                foreach (Node<TItem> sub in subnode)
+                foreach (Node<TItem> sub in Subnodes)
                     if (sub != null)
                         subSize += sub.Count;
                 return subSize + _items.Count;
@@ -324,7 +324,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         public virtual int NodeCount {
             get {
                 int subSize = 0;
-                foreach (Node<TItem> sub in subnode)
+                foreach (Node<TItem> sub in Subnodes)
                     if (sub != null)
                         subSize += sub.Count;
                 return subSize + 1;

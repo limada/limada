@@ -1,22 +1,29 @@
 /*
- * Matrix.cs - Implementation of the "System.Drawing.Drawing2D.Matrix" class.
- *
+ * Limaki 
+ * Version 0.081
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Authors: 
+ * unknown (dotGNU)
+ * Lytico
+ * 
  * Copyright (C) 2003  Southern Storm Software, Pty Ltd.
+ * Copyright (C) 2006-2008 Lytico
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * http://limada.sourceforge.net
+ * 
  */
+
+/* 
+ * this file is ported from
+ * DotGNU Portable.NET Library (http://www.dotgnu.org/)
+ * 
+ */
+
+
 
 #define CONFIG_EXTENDED_NUMERICS
 using System;
@@ -98,6 +105,7 @@ namespace Limaki.Drawing {
             this.dx = dx;
             this.dy = dy;
         }
+
         internal Matrice(Matrice matrice) {
             this.m11 = matrice.m11;
             this.m12 = matrice.m12;
@@ -539,8 +547,8 @@ namespace Limaki.Drawing {
     }
 
     public enum MatrixOrder {
-        Append = 1,
-        Prepend = 0
+        Prepend = 0,
+        Append = 1
     }
 
 }
@@ -548,3 +556,23 @@ namespace Limaki.Drawing {
 
 
 // namespace System.Drawing.Drawing2D
+
+/*
+ * Matrix.cs - Implementation of the "System.Drawing.Drawing2D.Matrix" class.
+ *
+ * Copyright (C) 2003  Southern Storm Software, Pty Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */

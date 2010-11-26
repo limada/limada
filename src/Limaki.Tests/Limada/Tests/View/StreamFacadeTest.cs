@@ -1,6 +1,6 @@
 /*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -36,8 +36,9 @@ using System.IO;
 using Limada.Test;
 using System;
 using Limaki.Model.Streams;
+using Limada.Tests.ThingGraphs;
 
-namespace Limada.Tests.Data.db4o {
+namespace Limada.Tests.ThingGraphs {
     public class StreamFacadeTest : ThingGraphTestBase {
         protected Stream _stream = null;
         public virtual Stream stream {
@@ -53,7 +54,7 @@ namespace Limada.Tests.Data.db4o {
         [Test]
         public virtual void Test() {
             IThingGraph graph = this.Graph;
-            ThingStreamFacade thingStreamFacade = new ThingStreamFacade (null);
+            ThingStreamFacade thingStreamFacade = new ThingStreamFacade ();
            
             IThing thing = thingStreamFacade.CreateAndAdd (
                 graph, new StreamInfo<Stream>(stream,CompressionType.None));

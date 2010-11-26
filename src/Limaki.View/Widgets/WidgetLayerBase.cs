@@ -1,28 +1,13 @@
-/*
- * Limaki 
- * Version 0.08
- * 
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
- * 
- * Author: Lytico
- * Copyright (C) 2006-2008 Lytico
- *
- * http://limada.sourceforge.net
- * 
- */
-
 using Limaki.Actions;
 using Limaki.Drawing;
 using Limaki.Drawing.UI;
 
 namespace Limaki.Widgets {
     public abstract class WidgetLayerBase : Layer<Scene> {
-        public WidgetLayerBase(IZoomTarget zoomTarget, IScrollTarget scrollTarget)
-            : base(zoomTarget, scrollTarget) {
-            Priority = ActionPriorities.LayerPriority;
-        }
+        //public WidgetLayerBase(IZoomTarget zoomTarget, IScrollTarget scrollTarget)
+        //    : base(zoomTarget, scrollTarget) {
+        //    Priority = ActionPriorities.LayerPriority;
+        //}
 
         public WidgetLayerBase(ICamera camera) : base(camera) { }
 
@@ -45,7 +30,18 @@ namespace Limaki.Widgets {
         public override SizeI Size {
             get {
                 if (Data != null) {
-                    return Data.Shape.Size;
+                    var result= Data.Shape.Size;
+                    var distance = this.Layout.Distance;
+                    result.Width += distance.Width;
+                    result.Height += distance.Height;
+                    var offset = this.Offset;
+                    if (offset.X < 0) {
+                        result.Width += distance.Width;
+                    }
+                    if (offset.Y < 0) {
+                        result.Height += distance.Height;
+                    }
+                    return result;
                 } else {
                     return SizeI.Empty;
                 }
@@ -55,10 +51,30 @@ namespace Limaki.Widgets {
             }
         }
 
+        public override PointI Offset {
+            get {
+                if (Data != null) {
+                    var result = Data.Shape.Location;
+                    if (result.X < 0) {
+                        result.X -= this.Layout.Distance.Width;
+                    }
+                    if (result.Y < 0) {
+                        result.Y -= this.Layout.Distance.Height;
+                    }
+                    return result;
+                } else {
+                    return PointI.Empty;
+                }
+            }
+            set {
+                base.Offset = value;
+            }
+        }
+
         public override void DataChanged() { }
 
         private ILayout<Scene, IWidget> _layout = null;
-        public ILayout<Scene, IWidget> Layout {
+        public virtual ILayout<Scene, IWidget> Layout {
             get { return _layout; }
             set { _layout = value; }
         }

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -222,7 +222,15 @@ namespace Limaki.Graphs {
 
 
         public override IEnumerator<TItem> GetEnumerator() {
-            return items.Keys.GetEnumerator ();
+            foreach (var item in items.Keys)
+                if (EdgeIsItem && !(item is TEdge))
+                    yield return item;
+
+            if (EdgeIsItem) {
+                foreach (var item in Edges()) {
+                    yield return (TItem)(object)item;
+                }
+            }
         }
 
         #endregion

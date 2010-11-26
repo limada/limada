@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Limaki</RootNamespace>
     <AssemblyName>Limaki.Core</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -34,7 +34,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\ActionBase.cs" />
@@ -43,8 +55,8 @@
     <Compile Include="Actions\IAction.cs" />
     <Compile Include="Actions\ICommand.cs" />
     <Compile Include="Common\ApplicationContext.cs" />
-    <Compile Include="Common\ApplicationContextProcessor.cs" />
-    <Compile Include="Common\ApplicationContextRecourceLoader.cs" />
+    <Compile Include="Common\ContextProcessor.cs" />
+    <Compile Include="Common\ContextRecourceLoader.cs" />
     <Compile Include="Common\Collections\CollectionWrapper.cs" />
     <Compile Include="Common\Collections\DictionaryAdapter.cs" />
     <Compile Include="Common\Collections\EmptyCollection.cs" />
@@ -73,6 +85,29 @@
     <Compile Include="Common\Progress.cs" />
     <Compile Include="Common\Reflector.cs" />
     <Compile Include="Common\Registry.cs" />
+    <Compile Include="Common\Text\HTML\HTMLHelper.cs" />
+    <Compile Include="Common\Text\MonoRTF\Charcode.cs" />
+    <Compile Include="Common\Text\MonoRTF\Charset.cs" />
+    <Compile Include="Common\Text\MonoRTF\CharsetFlags.cs" />
+    <Compile Include="Common\Text\MonoRTF\CharsetType.cs" />
+    <Compile Include="Common\Text\MonoRTF\ClassDelegate.cs" />
+    <Compile Include="Common\Text\MonoRTF\Color.cs" />
+    <Compile Include="Common\Text\MonoRTF\DestinationDelegate.cs" />
+    <Compile Include="Common\Text\MonoRTF\Font.cs" />
+    <Compile Include="Common\Text\MonoRTF\KeysInit.cs" />
+    <Compile Include="Common\Text\MonoRTF\KeyStruct.cs" />
+    <Compile Include="Common\Text\MonoRTF\Major.cs" />
+    <Compile Include="Common\Text\MonoRTF\Minor.cs" />
+    <Compile Include="Common\Text\MonoRTF\Picture.cs" />
+    <Compile Include="Common\Text\MonoRTF\RTF.cs" />
+    <Compile Include="Common\Text\MonoRTF\RTFException.cs" />
+    <Compile Include="Common\Text\MonoRTF\StandardCharCode.cs" />
+    <Compile Include="Common\Text\MonoRTF\StandardCharName.cs" />
+    <Compile Include="Common\Text\MonoRTF\Style.cs" />
+    <Compile Include="Common\Text\MonoRTF\StyleElement.cs" />
+    <Compile Include="Common\Text\MonoRTF\StyleType.cs" />
+    <Compile Include="Common\Text\MonoRTF\TextMap.cs" />
+    <Compile Include="Common\Text\MonoRTF\TokenClass.cs" />
     <Compile Include="Common\TODOAttribute.cs" />
     <Compile Include="Common\Transient.cs" />
     <Compile Include="Compression\CompressionWorker.cs" />
@@ -101,9 +136,13 @@
     <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\Streams\StreamManipulator.cs" />
     <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\ZipConstants.cs" />
     <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\ZipException.cs" />
+    <Compile Include="Context\LimakiCoreContextRecourceLoader.cs" />
     <Compile Include="Data\DataBaseInfo.cs" />
+    <Compile Include="Data\DataProviders.cs" />
     <Compile Include="Data\GatewayBase.cs" />
+    <Compile Include="Data\DataProvider.cs" />
     <Compile Include="Data\IDataContainer.cs" />
+    <Compile Include="Data\IDataProvider.cs" />
     <Compile Include="Data\IGateway.cs" />
     <Compile Include="Graphs\EdgeComparer.cs" />
     <Compile Include="Graphs\Extensions\GraphMapping.cs" />
@@ -132,10 +171,14 @@
     <Compile Include="Graphs\LiveGraphPair.cs" />
     <Compile Include="Graphs\MultiDictionaryGraph.cs" />
     <Compile Include="Limada\Common\Isaac.cs" />
+    <Compile Include="Limada\Data\IThingGraphProvider.cs" />
+    <Compile Include="Limada\Data\MemoryThingGraphProvider.cs" />
+    <Compile Include="Limada\Data\XMLThingGraphProvider.cs" />
     <Compile Include="Limada\Model\ByteStreamWrapper.cs" />
     <Compile Include="Limada\Model\ILink.cs" />
     <Compile Include="Limada\Model\IStreamThing.cs" />
     <Compile Include="Limada\Model\IThing.cs" />
+    <Compile Include="Limada\Model\IThingFactory.cs" />
     <Compile Include="Limada\Model\IThingGraph.cs" />
     <Compile Include="Limada\Model\Link.cs" />
     <Compile Include="Limada\Model\NumberThing.cs" />
@@ -145,7 +188,9 @@
     <Compile Include="Limada\Model\ThingFactory.cs" />
     <Compile Include="Limada\Model\ThingGraph.cs" />
     <Compile Include="Limada\Model\ThingGraphUtils.cs" />
+    <Compile Include="Limada\Model\ThingIdSerializer.cs" />
     <Compile Include="Limada\Model\ThingSerializer.cs" />
+    <Compile Include="Limada\Model\ThingSerializerBase.cs" />
     <Compile Include="Limada\Model\ThingStreamFacade.cs" />
     <Compile Include="Limada\Model\Thing_T.cs" />
     <Compile Include="Limada\Schemata\CommonSchema.cs" />
@@ -157,6 +202,7 @@
     <Compile Include="Limada\Schemata\TopicSchema.cs" />
     <Compile Include="Limada\Schemata\UniqueThingAttribute.cs" />
     <Compile Include="Limada\Schemata\ViewMetaSchema.cs" />
+    <Compile Include="Limada\Data\ThingGraphProvider.cs" />
     <Compile Include="Model\Edge.cs" />
     <Compile Include="Model\GraphItem.cs" />
     <Compile Include="Model\Streams\CompressionType.cs" />
@@ -167,6 +213,9 @@
     <Compile Include="Model\Streams\StreamInfo.cs" />
     <Compile Include="Model\Streams\StreamTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Common\Text\MonoRTF\ChangeLog" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -35,7 +35,7 @@ namespace Limaki.Widgets.Layout {
             set { _orientation = value; }
         }
 
-        protected bool _centered = false;
+        protected bool _centered = true;
         public bool Centered {
             get { return _centered; }
             set { _centered = value; }
@@ -51,7 +51,7 @@ namespace Limaki.Widgets.Layout {
         protected virtual void InvokeEdges() {
             Scene scene = this.Data as Scene;
             if (scene != null) {
-                IGraph<IWidget, IEdgeWidget> graph = scene.Graph;
+                var graph = scene.Graph;
                 foreach (IWidget widget in graph) {
                     if (!(widget is IEdgeWidget)) {
                         foreach (IEdgeWidget edge in graph.Twig(widget)) {
@@ -71,7 +71,7 @@ namespace Limaki.Widgets.Layout {
             if (scene != null) {
                 // init spatialIndex:
                 scene.SpatialIndex.Query (RectangleS.Empty);
-                IGraph<IWidget, IEdgeWidget> graph = scene.Graph;
+                var graph = scene.Graph;
                 foreach (IWidget widget in graph) {
                     Invoke((TItem)widget);
                     if (!(widget is IEdgeWidget)) {

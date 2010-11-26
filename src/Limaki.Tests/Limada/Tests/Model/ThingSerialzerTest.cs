@@ -1,6 +1,6 @@
 /*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -27,18 +27,24 @@ using Limaki.Model;
 using Limaki.Drawing;
 using Limaki.Widgets.Layout;
 using Limaki.Graphs.Extensions;
+using System.Runtime.Serialization;
+using System;
+using Limaki.Common;
+using System.Collections.Generic;
+using System.Xml;
+using Limaki.Model.Streams;
 
 namespace Limada.Tests.Model {
     public class ThingSerialzerTest: DomainTest {
         
         [Test]
-        public void ThingSerializerTest() {
+        public void ThingIdSerializerTest() {
             IThingGraph graph = new ThingGraph ();
             IThing thing = new Thing();
             graph.Add (thing);
             graph.Add (new Thing ());
 
-            ThingSerializer serializer = new ThingSerializer ();
+            ThingIdSerializer serializer = new ThingIdSerializer ();
             serializer.Graph = graph;
             serializer.ThingCollection = graph;
 
@@ -50,7 +56,7 @@ namespace Limada.Tests.Model {
             serializer.Write (s);
             s.Position = 0;
             
-            serializer = new ThingSerializer();
+            serializer = new ThingIdSerializer();
             serializer.Graph = graph;
             serializer.Read (s);
             foreach (IThing t in graph) {
@@ -60,24 +66,6 @@ namespace Limada.Tests.Model {
 
         }
 
-
-        WidgetThingGraph GetSourceGraph<TFactory>()
-        where TFactory : GenericGraphFactory<IGraphItem, IGraphEdge>, new() {
-            Mock<ProgrammingLanguageFactory> mock = new Mock<ProgrammingLanguageFactory>();
-            mock.SceneControler.Invoke();
-            mock.SceneFacade.ShowAllData();
-            mock.Control.CommandsExecute();
-
-            IGraph<IWidget, IEdgeWidget> widgetGraph = (mock.Scene.Graph as GraphView<IWidget, IEdgeWidget>).One;
-            widgetGraph.ChangeData = null;
-            widgetGraph.DataChanged = null;
-            widgetGraph.GraphChanged = null;
-
-            
-            WidgetThingGraph sourceGraph = new WidgetThingGraph(widgetGraph, new ThingGraph());
-            sourceGraph.Mapper.ConvertOneTwo();
-            return sourceGraph;
-        }
 
         public ILayout<Scene, IWidget> GetLayout() {
             return new GraphLayout<Scene, IWidget>(null, StyleSheet.CreateDefaultStyleSheet());
@@ -95,7 +83,8 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void SheetTest() {
-            WidgetThingGraph sourceGraph = GetSourceGraph<ProgrammingLanguageFactory> ();
+            WidgetThingGraph sourceGraph = 
+                ModelHelper.GetSourceGraph<ProgrammingLanguageFactory> ();
 
             Scene scene = new Scene();
             scene.Graph = sourceGraph;
@@ -162,10 +151,12 @@ namespace Limada.Tests.Model {
         [Test]
         public void SheetManagerTest() {
             Scene scene = new Scene();
-            scene.Graph = GetSourceGraph<ProgrammingLanguageFactory>();
+
+            scene.Graph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>();
             if (!(scene.Graph is GraphView<IWidget,IEdgeWidget>)){
                 scene.Graph = new GraphView<IWidget, IEdgeWidget> (new WidgetGraph (), scene.Graph);
             }
+
             ILayout<Scene, IWidget> layout = this.GetLayout();
 
             Stream s = SaveSheet(scene, layout);
@@ -176,6 +167,150 @@ namespace Limada.Tests.Model {
 
             TestScene(scene, layout, s);
 
+        }
+
+        [Test]
+        public void DataContractSerializerTest() {
+            WidgetThingGraph sourceGraph =
+                ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>(1);
+            IThingGraph thingGraph = sourceGraph.Two as IThingGraph;
+
+            var factory = new ThingFactory();
+            Stream s = new MemoryStream();
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.OmitXmlDeclaration = true;
+            settings.ConformanceLevel = ConformanceLevel.Fragment;
+            
+            var writer =
+                //System.Runtime.Serialization.Json.JsonReaderWriterFactory.CreateJsonWriter (s);
+                XmlDictionaryWriter.CreateBinaryWriter(s);
+                //XmlDictionaryWriter.CreateDictionaryWriter (XmlWriter.Create (s, settings));
+
+
+            writer.WriteStartElement ("root");
+            DataContractSerializer ser = 
+                new DataContractSerializer(factory.Clazz<IThing>(), factory.KnownClasses);
+            
+            int thingCount = 0;
+            foreach (var thing in thingGraph) {
+                //ser.WriteStartObject (writer, thing);
+                //ser.WriteObjectContent (writer, thing);
+
+                    ser.WriteObject (writer, thing);
+                    thingCount++;
+                
+            }
+
+
+
+            writer.WriteEndElement ();
+            writer.Flush ();
+
+            s.Position = 0;
+            //StreamReader reader = new StreamReader (s);
+            //this.ReportDetail(reader.ReadToEnd ());
+            this.ReportDetail (string.Format("Stream.Length={0}",s.Length));
+            this.ReportDetail(string.Format("Thing.Count={0}", thingCount));
+
+            s.Position = 0;
+            thingCount = 0;
+            var xreader =
+                //System.Runtime.Serialization.Json.JsonReaderWriterFactory.CreateJsonReader (s,XmlDictionaryReaderQuotas.Max);
+                XmlDictionaryReader.CreateBinaryReader(s, XmlDictionaryReaderQuotas.Max);
+                //XmlDictionaryReader.CreateTextReader(s, XmlDictionaryReaderQuotas.Max);
+
+            xreader.ReadStartElement ();
+           
+            while (ser.IsStartObject(xreader)) {
+                IThing thing = ser.ReadObject (xreader) as IThing;
+                thingCount++;
+            }
+            this.ReportDetail(string.Format("Thing.Count={0}", thingCount));
+        }
+
+
+        [Test]
+        public void ThingSerializerTest() {
+            WidgetThingGraph sourceGraph =
+                ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>(10);
+
+            IThingGraph thingGraph = sourceGraph.Two as IThingGraph;
+
+            
+            var dataStream = new StreamWriter (new MemoryStream ());
+            var streamContent = "This is the streamcontent";
+            dataStream.Write(streamContent);
+            dataStream.Flush ();
+
+            IStreamThing streamThing = new StreamThing();
+            thingGraph.Add(streamThing);
+
+            var streamId = streamThing.Id;
+            streamThing.StreamType = StreamTypes.ASCII;
+            streamThing.Compression = CompressionType.bZip2;
+            streamThing.Data = dataStream.BaseStream;
+
+
+            streamThing.Flush();
+            streamThing.ClearRealSubject ();
+
+            var factory = new ThingFactory();
+            Stream s = new MemoryStream();
+
+            ThingSerializer serializer = new ThingSerializer();
+            serializer.Graph = thingGraph;
+            
+            int thingCount = 0;
+            foreach (var thing in thingGraph) {
+                serializer.ThingCollection.Add (thing);
+                thingCount++;
+            }
+
+            Assert.AreEqual (thingCount, serializer.ThingCollection.Count);
+            serializer.Write (s);
+            this.ReportDetail(string.Format("Stream.Length={0}", s.Length));
+            this.ReportDetail(string.Format("Thing.Count={0}", thingCount));
+            thingGraph.Clear();
+            thingGraph = null;
+            serializer = null;
+
+            var compressionWorker = Registry.Factory.One<ICompressionWorker>();
+            var compressed = compressionWorker.Compress(s, CompressionType.bZip2);
+            this.ReportDetail(string.Format("CompressedStream.Length={0}", compressed.Length));
+
+            compressed.Dispose ();
+            compressed = null;
+
+            // readtest
+
+
+            s.Position = 0;
+            StreamReader reader = new StreamReader(s);
+            this.ReportDetail(reader.ReadToEnd());
+
+            s.Position = 0;
+            serializer = new ThingSerializer();
+            serializer.Graph = new ThingGraph();
+            serializer.Read (s);
+
+            Assert.AreEqual(thingCount, serializer.ThingCollection.Count);
+
+            ThingGraphUtils.AddRange(serializer.Graph, serializer.ThingCollection);
+
+            var data = serializer.Graph.DataContainer.GetById(streamId);
+            Assert.IsNotNull (data);
+
+            streamThing = serializer.Graph.GetById (streamId) as IStreamThing;
+            Assert.IsNotNull(streamThing);
+            streamThing.DeCompress ();
+
+            using (var streamReader = new StreamReader(streamThing.Data)) {
+                var resultContent = streamReader.ReadToEnd ();
+                Assert.AreEqual(resultContent, streamContent);
+            }
+
+            streamThing.ClearRealSubject ();
         }
     }
 }

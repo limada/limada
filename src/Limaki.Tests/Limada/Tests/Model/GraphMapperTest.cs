@@ -1,6 +1,6 @@
 /*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -16,19 +16,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using Limada.Model;
+using Limaki.Common.Collections;
+using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests;
-using Limaki.UnitTest;
-using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using NUnit.Framework;
-using Limada.Schemata;
-using Limaki.Common.Collections;
-using Limaki.Tests.Graph;
-using System.IO;
-using Limaki.Common;
 
 namespace Limada.Tests.Model {
     public class MapperTester<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> 

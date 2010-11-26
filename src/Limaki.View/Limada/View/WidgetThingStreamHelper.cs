@@ -1,6 +1,6 @@
 /*
  * Limada
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -32,9 +32,8 @@ namespace Limada.View {
                 new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(graph);
 
             if (sourceGraph != null) {
-                var thingGraph = sourceGraph.Two as IThingGraph;
-                var adapter = sourceGraph.Mapper.Adapter as WidgetThingAdapter;
-                var factory = adapter.ThingFactory;
+                var thingGraph = WidgetThingGraphExtension.GetThingGraph(graph);
+                var factory = WidgetThingGraphExtension.GetThingFactory (graph);
                 
                 IThing thing = new ThingStreamFacade(factory).SetStream(thingGraph, null, streamInfo);
                 

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -29,15 +29,16 @@ using Limaki.Tests.Graph;
 namespace Limaki.Tests.View.Widget {
     public class WidgetDataFactory : BasicTestDataFactory<IWidget, IEdgeWidget> {
         protected override void CreateItems() {
-            One = new Widget<string>("One");
-            Two = new Widget<string>("Two");
-            Three = new Widget<string>("Three");
-            Aside = new Widget<string>("Aside");
-            Single = new Widget<string>("Single");
+            var factory = Registry.Pool.TryGetCreate<IWidgetFactory> ();
+            One = factory.CreateWidget("One");
+            Two = factory.CreateWidget("Two");
+            Three = factory.CreateWidget("Three");
+            Aside = factory.CreateWidget("Aside");
+            Single = factory.CreateWidget("Single");
         }
 
         protected override IEdgeWidget CreateEdge(IWidget root, IWidget leaf) {
-            EdgeWidget<string> result = new EdgeWidget<string>("", root, leaf);
+            var result = Registry.Pool.TryGetCreate<IWidgetFactory>().CreateEdgeWidget("", root, leaf);
             result.Data = GraphUtils.EdgeString<IWidget, IEdgeWidget>(result);
             return result;
         }

@@ -4,6 +4,7 @@ using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using Limaki.Widgets;
+using Limaki.Common;
 
 namespace Limaki.Tests.Widget {
     public class BenchmarkOneGraphFactory : GraphFactoryBase {
@@ -16,7 +17,8 @@ namespace Limaki.Tests.Widget {
             get {
                 if (_line1 == null) {
                     Vector vector = new Vector ();
-                    _line1 = new Widget<string>("line");
+                    _line1 = Registry.Pool.TryGetCreate<IWidgetFactory>()
+                        .CreateWidget("line");
                     _line1.Shape = new VectorShape(vector);
                 }
                 return _line1;

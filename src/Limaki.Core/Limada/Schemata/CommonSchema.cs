@@ -1,6 +1,6 @@
 /*
  * Limada
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -68,6 +68,18 @@ namespace Limada.Schemata {
         public virtual IThing Description {
             get { return GetTheLeaf(DescriptionMarker); }
             set { SetTheLeaf(DescriptionMarker, value); }
+        }
+
+        public virtual IThing DescriptionTarget {
+            get { return GetTheRoot(this.Graph,this.Target,DescriptionMarker); }
+        }
+
+        public virtual IThing Source {
+            get { return GetTheLeaf(SourceMarker); }
+            set { SetTheLeaf(SourceMarker, value); }
+        }
+        public virtual IThing SourceTarget {
+            get { return GetTheRoot(this.Graph, this.Target, SourceMarker); }
         }
         #endregion
 

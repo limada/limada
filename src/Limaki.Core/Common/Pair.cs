@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -22,6 +22,7 @@ namespace Limaki.Common {
             Two = two;
         }
     }
+
     public struct Pair<T,U> {
         public T One;
         public U Two;
@@ -30,6 +31,7 @@ namespace Limaki.Common {
             Two = two;
         }
     }
+
     public struct Triple<T,U,V> {
         public T One;
         public U Two;
@@ -38,6 +40,30 @@ namespace Limaki.Common {
             One = one;
             Two = two;
             Three = three;
+        }
+    }
+
+    public struct Record<T1, T2, T3> {
+        public T1 One;
+        public T2 Two;
+        public T3 Three;
+        public Record(T1 one, T2 two, T3 three) {
+            One = one;
+            Two = two;
+            Three = three;
+        }
+    }
+
+    public struct Record<T1, T2, T3,T4> {
+        public T1 One;
+        public T2 Two;
+        public T3 Three;
+        public T4 Four;
+        public Record(T1 one, T2 two, T3 three, T4 four) {
+            One = one;
+            Two = two;
+            Three = three;
+            Four = four;
         }
     }
 }

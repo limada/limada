@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -22,14 +22,24 @@ namespace Limaki.Drawing {
         /// performs a full layout
         /// </summary>
         void Invoke();
+
+        IShapeFactory ShapeFactory { get; set; }
+
+        IPainterFactory PainterFactory { get; set; }
+        IPainter GetPainter(Type type);
+
+        SizeI Distance { get; set; }
+
     }
 
-    public interface ILayout<TData,TItem>:ILayout {
-        Func<TData> DataHandler { get;set;}
+    public interface ILayout<TData> : ILayout {
+        Func<TData> DataHandler { get; set; }
 
         TData Data { get; }
+    }
 
-        IShapeFactory ShapeFactory { get;set;}
+    public interface ILayout<TData,TItem>:ILayout<TData> {
+
 
         /// <summary>
         /// Gives back a propriate shape for this item
@@ -70,12 +80,11 @@ namespace Limaki.Drawing {
         IStyle GetStyle ( TItem item );
         IStyle GetStyle(TItem item, UiState uiState);
 
-        IPainterFactory PainterFactory { get;set;}
-        IPainter GetPainter ( Type type );
+
 
         PointI[] GetDataHull ( TItem item, Matrice matrix, int delta, bool extend );
         PointI[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend);
 
-        SizeI Distance {get; set;}
+
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -37,7 +37,7 @@ namespace Limaki.Graphs {
 
         bool Contains ( TEdge edge );
         void Add ( TEdge edge );
-        void ChangeEdge ( TEdge edge, TItem oldItem, TItem newItem );
+        void ChangeEdge ( TEdge edge, TItem newItem, bool changeRoot );
         void RevertEdge ( TEdge edge );
         bool Remove ( TEdge edge );
         TItem Adjacent ( TEdge edge, TItem item );

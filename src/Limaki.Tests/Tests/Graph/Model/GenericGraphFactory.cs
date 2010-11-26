@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -22,7 +22,7 @@ namespace Limaki.Tests.Graph.Model {
     public abstract class GenericGraphFactory<TItem, TEdge> : IGraphFactory<TItem, TEdge>
     where TEdge : IEdge<TItem> {
 
-        #region ITestGraphFactory<TItem,TEdge> Member
+        #region IGraphFactory<TItem,TEdge> Member
 
         protected IGraph<TItem, TEdge> _graph = null;
         public virtual IGraph<TItem, TEdge> Graph {

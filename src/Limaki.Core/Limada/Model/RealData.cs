@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -17,13 +17,20 @@ using System;
 using Limaki.Common;
 using Id = System.Int64;
 using Limaki.Model.Streams;
+using System.Runtime.Serialization;
 
 namespace Limada.Model {
+    [DataContract]
     public class RealData: IRealData<Id> {
         
 		protected Id _id = default(Id);
+        [DataMember]
         public virtual Int64 Id {
             get { return _id; }
+#if ! SILVERLIGHT
+            private 
+#endif
+            set { _id = value; }
         }
 
         object IRealData<Id>.Data {
@@ -35,6 +42,7 @@ namespace Limada.Model {
 
 	// the use of the base class is necessary in db4o.DataContainer for indexing
 	// see there: realDataType
+    [DataContract]
     public class RealData<T> : RealData, IRealData<Id,T> {
         public RealData(Id id) { this._id = id; }
 
@@ -56,6 +64,7 @@ namespace Limada.Model {
         }
 
         protected T _data = default(T);
+        [DataMember]
         public virtual T Data {
             get { return _data; }
             set {

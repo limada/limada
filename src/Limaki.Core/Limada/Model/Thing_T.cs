@@ -1,6 +1,6 @@
 /*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -18,8 +18,10 @@ using System.Collections.Generic;
 using System.Text;
 using Limaki.Graphs;
 using Id = System.Int64;
+using System.Runtime.Serialization;
 
 namespace Limada.Model {
+    [DataContract]
     public class Thing<T> : Thing, IThing<T> {
 
         public Thing(T data) : this(Common.Isaac.Long, data) { }
@@ -29,16 +31,28 @@ namespace Limada.Model {
         }
 
         protected T _data = default(T);
+
+
+        [DataMember]
         public virtual T Data {
             get { return _data; }
             set { _data = value; }
         }
 
+        
         object IThing.Data {
             get { return this.Data; }
             set {
                 if (value is T)
                     Data = (T)value;
+            }
+        }
+
+        public override void MakeEqual(IThing thing) {
+            base.MakeEqual(thing);
+            var data = thing.Data;
+            if (data != null && typeof(T).Equals(data.GetType())) {
+                this.Data = (T)thing.Data;
             }
         }
 

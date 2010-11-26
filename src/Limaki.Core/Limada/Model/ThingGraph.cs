@@ -1,6 +1,6 @@
 /*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -43,9 +43,17 @@ namespace Limada.Model {
             }
             return false;
         }
-
+        protected virtual void ReplaceId(IThing thing) {
+            if (thing != null) {
+                _ids[thing.Id]=thing;
+            }
+        }
         #endregion
 
+        public override void Clear() {
+            base.Clear();
+            _ids.Clear ();
+        }
 
         protected override void AddEdge(ILink edge, IThing item) {
             base.AddEdge(edge, item);
@@ -68,7 +76,11 @@ namespace Limada.Model {
 
         public override void Add(IThing item) {
             base.Add(item);
-            AddId (item);
+            AddId(item);
+            var streamThing = item as IStreamThing;
+            if (streamThing!=null && streamThing.DataContainer==null) {
+                streamThing.DataContainer = this.DataContainer;
+            }
         }
 
         public override bool Remove(IThing item) {
@@ -90,7 +102,7 @@ namespace Limada.Model {
         #region Marker-Handling
 
         private ICollection<Id> _markerIds = null;
-        protected ICollection<long> markerIds {
+        protected ICollection<Id> markerIds {
             get {
                 if (_markerIds == null) {
                     _markerIds = new Set<Id>();
@@ -105,14 +117,14 @@ namespace Limada.Model {
 
 
 
-        protected virtual void AddMarker(IThing marker) {
+        public virtual void AddMarker(IThing marker) {
             if (marker == null) return;
             if (!markerIds.Contains(marker.Id)) {
                 markerIds.Add(marker.Id);
             }
         }
 
-        protected virtual void RemoveMarker(IThing marker) {
+        public virtual void RemoveMarker(IThing marker) {
             if (marker == null) return;
             markerIds.Remove(marker.Id);
         }
@@ -131,7 +143,7 @@ namespace Limada.Model {
         public virtual IEnumerable<IThing> GetByData(object data, bool exact) {
             string search = data.ToString ().ToLower ();
             foreach (IThing thing in this) {
-                if (thing.Data.ToString().ToLower().StartsWith(search)) {
+                if (thing.Data != null && thing.Data.ToString().ToLower().StartsWith(search)) {
                     yield return thing;
                 }
             }
@@ -149,8 +161,51 @@ namespace Limada.Model {
             return result;
         }
 
+        protected virtual void Replace(IThing oldThing, IThing newThing) {
+            var links = Edges (oldThing);
+            bool hasLinks = false;
+            foreach (ILink link in links) {
+                hasLinks = true;
+                if(link.Root==oldThing) {
+                    link.Root = newThing;
+                }
+                if (link.Leaf == oldThing) {
+                    link.Leaf = newThing;
+                }
+                if (link.Marker == oldThing) {
+                    link.Marker = newThing;
+                }
+            }
+            ILink oldLink = oldThing as ILink;
+            ILink newLink = newThing as ILink;
+            if (oldLink != null) {
+                edges.Remove(oldLink);
+                edges.Add(newLink);
+            }
+            items.Remove (oldThing);
+            if (hasLinks) {
+                items.Add (newThing, links);
+            } else {
+                items.Add (newThing, null);
+            }
+            if (markerIds.Contains(oldThing.Id)) {
+                foreach(ILink link in this.edges) {
+                    if (link.Marker.Id == oldThing.Id) {
+                        link.Marker = newThing;
+                    }
+                }
+            }
+        }
         public virtual IThing UniqueThing(IThing thing) {
-            return thing;
+            IThing result = thing;
+            if (thing != null) {
+                IThing stored = this.GetById(thing.Id);
+                if (stored !=null && ! object.ReferenceEquals(stored,thing)) {
+                    Replace (stored, thing);
+                    ReplaceId (thing);
+                }
+            }
+            return result;
         }
         #endregion
 
@@ -189,7 +244,9 @@ namespace Limada.Model {
         }
 
         public IRealData<Id> GetById(Id id) {
-            return dataList[id];
+            var result = default(IRealData<Id>);
+            dataList.TryGetValue (id, out result);
+            return result;
         }
 
         public bool Remove(long id) {

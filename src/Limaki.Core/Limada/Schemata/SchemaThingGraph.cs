@@ -1,6 +1,6 @@
 /*
  * Limada 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -18,10 +18,9 @@
 using System.Collections.Generic;
 using Limada.Model;
 using Limaki.Common.Collections;
+using Limaki.Data;
 using Limaki.Graphs;
 using Id = System.Int64;
-using Limaki.Data;
-
 
 
 namespace Limada.Schemata {
@@ -41,18 +40,23 @@ namespace Limada.Schemata {
         public void Initialize() {
             
             SchemaFacade.InitSchemata ();
+            descriptions.Clear ();
+            hiddens.Clear ();
+            describedMarkers.Clear ();
 
             descriptions.Add(CommonSchema.DescriptionMarker.Id);
             hiddens.Add (CommonSchema.DescriptionMarker.Id);
             
 
-            IThingGraph markers = new ThingGraph ();
-            GraphUtils.MergeGraphs<IThing, ILink> (Schema.IdentityGraph, markers);
-            ThingGraphUtils.DeepCopy (ThingGraph, Markers (), markers);
+            IThingGraph markerGraph = new ThingGraph ();
+            var markers = Markers ();
+            GraphUtils.MergeGraphs<IThing, ILink> (Schema.IdentityGraph, markerGraph);
+            ThingGraphUtils.DeepCopy(ThingGraph, markers, markerGraph);
+            ThingGraphUtils.DeepCopy(markerGraph, markers, ThingGraph);
 
-            foreach(IThing marker in markers) {
+            foreach(IThing marker in markerGraph) {
                 var markerId = marker.Id;
-                foreach(ILink link in markers.Edges(marker)) {
+                foreach(ILink link in markerGraph.Edges(marker)) {
                     if (link.Marker == null)
                         continue;
                     
@@ -69,7 +73,7 @@ namespace Limada.Schemata {
                             hiddens.Add(markerId);
                             descriptions.Add(markerId);
                         } else {
-                            descriptedMarkers[markerId] = idLink.Leaf;
+                            describedMarkers[markerId] = idLink.Leaf;
                         }
                     }
                 }
@@ -78,7 +82,11 @@ namespace Limada.Schemata {
 
         private ICollection<Id> hiddens = new Set<Id> ();
         private ICollection<Id> descriptions = new Set<Id>();
-        private IDictionary<Id,Id> descriptedMarkers = new Dictionary<Id,Id>();
+
+        /// <summary>
+        /// Markers that have a description (= a link with a marker of MetaSchema.DescriptionMarker.Id)
+        /// </summary>
+        private IDictionary<Id,Id> describedMarkers = new Dictionary<Id,Id>();
 
         public virtual bool SchemaEdgeFilter(ILink link) {
             if (link == null) return false;
@@ -103,15 +111,21 @@ namespace Limada.Schemata {
             return result;
         }
 
-        public virtual IThing ThingToDisplay(IThing item) {
+        public virtual IEnumerable<ILink> ThingToDisplayPath(IThing item) {
+            // REMARK: this is duplicate code with ThingToDisplay!!
+            var path = new Stack<ILink> ();
             IThing result = item;
             if (item == null)
                 return null;
             ILink linkResult = null;
             ICollection<IThing> itemDone = new Set<IThing>();
-            while (SchemaFacade.DescriptionableThing(result)||(result is ILink)) {
+            Stack<IThing> stack = new Stack<IThing>();
+            if (SchemaFacade.DescriptionableThing(item))
+                stack.Push(item);
+            while (stack.Count > 0) {
+                result = stack.Pop();
                 if (itemDone.Contains(result))
-                    break;
+                    continue;
                 itemDone.Add(result);
                 foreach (ILink link in Source.Edges(result)) {
                     var resultId = result.Id;
@@ -121,17 +135,105 @@ namespace Limada.Schemata {
                     if (idLink.Root == resultId) {
                         if (descriptions.Contains(idLink.Marker)) {
                             result = link.Leaf;
+                            path.Push (link);
+                            stack.Clear();
                             break;
                         }
                     } else if (idLink.Leaf == resultId) {
-                        if (descriptedMarkers.ContainsKey(idLink.Marker)) {
-                            result = link;
+                        if (describedMarkers.ContainsKey(idLink.Marker)) {
+                            path.Push(link);
+                            stack.Push(link);
                             linkResult = link;
+                        }
+                    }
+                }
+                if (SchemaFacade.DescriptionableThing(result))
+                    stack.Push(result);
+            }
+            if (result == linkResult)
+                return new EmptyCollection<ILink>();
+            return path;
+
+        }
+
+        public virtual IThing ThingToDisplay(IThing item) {
+            IThing result = item;
+            if (item == null)
+                return null;
+            ILink linkResult = null;
+            ICollection<IThing> itemDone = new Set<IThing>();
+            Stack<IThing> stack = new Stack<IThing> ();
+            if (SchemaFacade.DescriptionableThing(item))
+                stack.Push (item);
+            while (stack.Count > 0) {
+                result = stack.Pop ();
+                if (itemDone.Contains(result))
+                    continue;
+                itemDone.Add(result);
+                foreach (ILink link in Source.Edges(result)) {
+                    var resultId = result.Id;
+                    var idLink = (ILink<Id>)link;
+                    if (idLink.Marker == 0)
+                        continue;
+                    if (idLink.Root == resultId) {
+                        if (descriptions.Contains(idLink.Marker)) {
+                            result = link.Leaf;
+                            stack.Clear ();
                             break;
+                        }
+                    } else if (idLink.Leaf == resultId) {
+                        if (describedMarkers.ContainsKey(idLink.Marker)) {
+                            stack.Push (link);
+                            linkResult = link;
+                        }
+                    }
+                }
+                if (SchemaFacade.DescriptionableThing(result))
+                    stack.Push(result);
+            }
+            if (result == linkResult)
+                return item;
+            return result;
+
+        }
+
+        public virtual IThing DescribedThing(IThing item) {
+            IThing result = item;
+            if (item == null)
+                return null;
+            ILink linkResult = null;
+            ICollection<IThing> itemDone = new Set<IThing>();
+            Stack<IThing> stack = new Stack<IThing>();
+            stack.Push(item);
+            while (stack.Count > 0 ) {
+                result = stack.Pop ();
+                if (itemDone.Contains(result))
+                    break;
+                itemDone.Add(result);
+                foreach (ILink link in Source.Edges(result)) {
+                    var resultId = result.Id;
+                    var idLink = (ILink<Id>)link;
+                    if (idLink.Marker == 0)
+                        continue;
+                    if (idLink.Leaf == resultId) {
+                        if (descriptions.Contains(idLink.Marker)) {
+                            result = link.Root;
+                            stack.Clear();
+                            break;
+                        }
+                    } else if (idLink.Root == resultId) {
+                        if (describedMarkers.ContainsKey(idLink.Marker)) {
+                            stack.Push (link);
+                            linkResult = link;
                         }
                     }
                 }
             }
+
+            while (result is ILink) {
+                result = ( (ILink) result ).Leaf;
+            }
+
             if (result == linkResult)
                 return item;
             return result;
@@ -149,9 +251,9 @@ namespace Limada.Schemata {
             get { return Source as IThingGraph; }
         }
 
-        public IThingGraph SchemaGraph {
-            get { return Schema.IdentityGraph; }
-        }
+        //public IThingGraph SchemaGraph {
+        //    get { return Schema.IdentityGraph; }
+        //}
 
         public IThing GetById(long id) {
             return ThingGraph.GetById (id);
@@ -183,6 +285,10 @@ namespace Limada.Schemata {
             return ThingGraph.UniqueThing(thing);
         }
 
+        public virtual void AddMarker(IThing thing) {
+            ThingGraph.AddMarker (thing);
+        }
+
         #endregion
 
         public override void Add(ILink edge) {
@@ -191,6 +297,7 @@ namespace Limada.Schemata {
         public override void Add(IThing item) {
             Source.Add(item);
         }
+
 
         public virtual bool RemoveThingToDisplay(IThing item) {
             IThing description = ThingToDisplay (item);

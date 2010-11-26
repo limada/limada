@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -31,16 +31,15 @@ namespace Limaki.Widgets.Layout {
 
         public override void Invoke() {
             if (this.Data != null) {
-                Arranger<Scene, IWidget, IEdgeWidget> arranger = 
+                var arranger = 
                     new Arranger<Scene, IWidget, IEdgeWidget>(
                     Data, (Layout<Scene, IWidget>)(object)this);
 
-                PointI startAt = (PointI)Distance;
-                foreach (TItem root in new GraphPairFacade<IWidget,IEdgeWidget>().FindRoots(Data.Graph,Data.Focused)){
-                    startAt = new PointI (Distance.Width, startAt.Y);
-                    startAt = arranger.Arrange(root, startAt);
-                    arranger.ClearRows ();
-                }
+                arranger.ArrangeDeepWalk (
+                    new GraphPairFacade<IWidget, IEdgeWidget> ().FindRoots (Data.Graph, Data.Focused),
+                    true,
+                    (PointI) Distance);
+
                 arranger.Commit();
             }
         }

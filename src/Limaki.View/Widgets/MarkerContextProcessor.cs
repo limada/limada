@@ -4,7 +4,7 @@ using Limaki.Graphs.Extensions;
 using Limaki.Widgets;
 
 namespace Limaki.Widgets {
-    public class MarkerContextProcessor:ApplicationContextProcessor<Scene> {
+    public class MarkerContextProcessor:ContextProcessor<Scene> {
         public delegate IMarkerFacade<IWidget, IEdgeWidget> MarkerFacadeFactory (IGraph<IWidget, IEdgeWidget> graph)
             ;
 

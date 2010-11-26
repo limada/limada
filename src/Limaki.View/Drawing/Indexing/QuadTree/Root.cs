@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.08
+ * Version 0.081
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the license below.
@@ -83,20 +83,20 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             * the item must be contained in one quadrant, so insert it into the
             * tree for that quadrant (which may not yet exist)
             */
-            Node<TItem> node = subnode[index];
+            Node<TItem> node = Subnodes[index];
             /*
             *  If the subquad doesn't exist or this item is not contained in it,
             *  have to expand the tree upward to contain the item.
             */
-            if (node == null || ! ShapeUtils.Contains(node.Envelope,itemEnv)) {
+            if (node == null || !ShapeUtils.Contains(node.Envelope, itemEnv)) {
                 Node<TItem> largerNode = Node<TItem>.CreateExpanded(node, itemEnv);
-                subnode[index] = largerNode;
+                Subnodes[index] = largerNode;
             }
             /*
             * At this point we have a subquad which exists and must contain
             * contains the env for the item.  Insert the item into the tree.
             */
-            InsertContained(subnode[index], itemEnv, item);
+            InsertContained(Subnodes[index], itemEnv, item);
         }
 
         /// <summary> 
@@ -105,7 +105,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// if necessary to hold the item.
         /// </summary>
         private void InsertContained(Node<TItem> tree, RectangleS itemEnv, TItem item) {
-            if(!ShapeUtils.Contains(tree.Envelope,itemEnv))
+            if (!ShapeUtils.Contains(tree.Envelope, itemEnv))
                 throw new Exception();
             /*
             * Do NOT create a new quad for zero-area envelopes - this would lead
@@ -136,55 +136,6 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         }
 
 
-        public static void RightBottom(Node<TItem> node, Command<ICollection<TItem>, PointS> maxCommand) {
-            if (node != null) {
-                float r = maxCommand.Parameter.X;
-                float b = maxCommand.Parameter.Y;
-                //bool possibleR = r >= node.Envelope.X && r <= node.Envelope.Right;
-                //bool possibleB = b >= node.Envelope.Y && b <= node.Envelope.Bottom;
-                //if (possibleB || possibleR) {
-                if ((r < node.Envelope.Right && r >= node.Envelope.X)
-                    ||
-                    (b < node.Envelope.Bottom && b >= node.Envelope.Y)) {
-                    if (node.Items.Count != 0) {
-
-                        maxCommand.Target = node.Items;
-                        maxCommand.Execute();
-
-                        if (r < maxCommand.Parameter.X) {
-                            r = maxCommand.Parameter.X;
-                        }
-                        if (b < maxCommand.Parameter.Y) {
-                            b = maxCommand.Parameter.Y;
-                        }
-                        maxCommand.Parameter = new PointS(r, b);
-                    }
-                    foreach(Node<TItem> sub in node.subnode) {
-                        if (sub != null) RightBottom(sub, maxCommand);
-                    }
-                }
-            }
-        }
-
-
-        public virtual PointS RightBottom(Command<ICollection<TItem>, PointS> maxCommand) {
-            ICollection<TItem> result = new List<TItem>();
-            maxCommand.Parameter = new PointS(float.MinValue, float.MinValue);
-            if (this.Items.Count != 0) {
-                maxCommand.Target = this.Items;
-                maxCommand.Execute();
-            }
-            foreach (Node<TItem> sub in subnode)
-                if (sub != null) {
-                    if (maxCommand.Parameter.X == float.MinValue) {
-                        maxCommand.Parameter = sub.Envelope.Location;
-                    }
-                    RightBottom(sub, maxCommand);
-                }
-
-
-            return maxCommand.Parameter;
-        }
+ 
     }
-
 }
