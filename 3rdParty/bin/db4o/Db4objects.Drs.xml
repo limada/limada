@@ -1,0 +1,465 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Db4objects.Drs</name>
+    </assembly>
+    <members>
+        <member name="T:Db4objects.Drs.IReplicationProvider">
+            <summary>Facade for persistence systems that provide replication support.</summary>
+            <remarks>
+            Facade for persistence systems that provide replication support.
+            Interacts with another ReplicationProvider and a  ReplicationSession
+            to allows replication of objects between two ReplicationProviders.
+            &lt;p/&gt;
+            &lt;p/&gt; To create an instance of this class, use the methods of
+            <see cref="T:Db4objects.Drs.Replication">Db4objects.Drs.Replication</see>
+            .
+            </remarks>
+            <author>Albert Kwan</author>
+            <author>Klaus Wuestefeld</author>
+            <version>1.2</version>
+            <seealso cref="T:Db4objects.Drs.IReplicationSession">IReplicationSession</seealso>
+            <seealso cref="T:Db4objects.Drs.Replication">Db4objects.Drs.Replication</seealso>
+            <since>dRS 1.0</since>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationProvider.ObjectsChangedSinceLastReplication">
+            <summary>Returns newly created objects and changed objects since last replication with the opposite provider.
+            	</summary>
+            <remarks>Returns newly created objects and changed objects since last replication with the opposite provider.
+            	</remarks>
+            <returns>newly created objects and changed objects since last replication with the opposite provider.
+            	</returns>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationProvider.ObjectsChangedSinceLastReplication(System.Type)">
+            <summary>Returns newly created objects and changed objects since last replication with the opposite provider.
+            	</summary>
+            <remarks>Returns newly created objects and changed objects since last replication with the opposite provider.
+            	</remarks>
+            <param name="clazz">the type of objects interested</param>
+            <returns>newly created objects and changed objects of the type specified in the clazz parameter since last replication
+            	</returns>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.ISimpleObjectContainer.StoreNew(System.Object)">
+            <summary>Will cascade to save the whole graph of objects</summary>
+            <param name="o"></param>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.ISimpleObjectContainer.Update(System.Object)">
+            <summary>It won't cascade.</summary>
+            <remarks>It won't cascade. Use it with caution.</remarks>
+            <param name="o"></param>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.IReplicationProviderInside.ClearAllReferences">
+            <summary>Activates the fields, e.g.</summary>
+            <remarks>
+            Activates the fields, e.g. Collections, arrays, of an object
+            &lt;p/&gt;
+            /** Clear the  ReplicationReference cache
+            </remarks>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.IReplicationProviderInside.Destroy">
+            <summary>Destroys this provider and frees up resources.</summary>
+            <remarks>Destroys this provider and frees up resources.</remarks>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.IReplicationProviderInside.GetCurrentVersion">
+            <summary>Returns the current transaction serial number.</summary>
+            <remarks>Returns the current transaction serial number.</remarks>
+            <returns>the current transaction serial number</returns>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.IReplicationProviderInside.ProduceReference(System.Object,System.Object,System.String)">
+            <summary>Returns the ReplicationReference of an object</summary>
+            <param name="obj">object queried</param>
+            <param name="referencingObj"></param>
+            <param name="fieldName"></param>
+            <returns>null if the object is not owned by this ReplicationProvider.</returns>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.IReplicationProviderInside.ProduceReferenceByUUID(Db4objects.Db4o.Ext.Db4oUUID,System.Type)">
+            <summary>Returns the ReplicationReference of an object by specifying the uuid of the object.
+            	</summary>
+            <remarks>Returns the ReplicationReference of an object by specifying the uuid of the object.
+            	</remarks>
+            <param name="uuid">the uuid of the object</param>
+            <param name="hint">the type of the object</param>
+            <returns>the ReplicationReference or null if the reference cannot be found</returns>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.IReplicationProviderInside.RollbackReplication">
+            <summary>Rollbacks all changes done during the replication session  and terminates the Transaction.
+            	</summary>
+            <remarks>
+            Rollbacks all changes done during the replication session  and terminates the Transaction.
+            Guarantees the changes will not be applied to the underlying databases.
+            </remarks>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.IReplicationProviderInside.StartReplicationTransaction(Db4objects.Drs.Inside.IReadonlyReplicationProviderSignature)">
+            <summary>Start a Replication Transaction with another ReplicationProvider</summary>
+            <param name="peerSignature">the signature of another ReplicationProvider.</param>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.IReplicationProviderInside.StoreReplica(System.Object)">
+            <summary>Stores the new replicated state of obj.</summary>
+            <remarks>
+            Stores the new replicated state of obj. It can also be a new object to this
+            provider.
+            </remarks>
+            <param name="obj">Object with updated state or a clone of new object in the peer.
+            	</param>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.IReplicationProviderInside.VisitCachedReferences(Db4objects.Db4o.Foundation.IVisitor4)">
+            <summary>Visits the object of each cached ReplicationReference.</summary>
+            <remarks>Visits the object of each cached ReplicationReference.</remarks>
+            <param name="visitor">implements the visit functions, including copying of object states, and storing of changed objects
+            	</param>
+        </member>
+        <member name="M:Db4objects.Drs.Db4o.FileReplicationProvider.WhereModified(Db4objects.Db4o.Query.IQuery)">
+            <summary>
+            adds a constraint to the passed Query to query only for objects that were
+            modified since the last replication process between this and the other
+            ObjectContainer involved in the current replication process.
+            </summary>
+            <remarks>
+            adds a constraint to the passed Query to query only for objects that were
+            modified since the last replication process between this and the other
+            ObjectContainer involved in the current replication process.
+            </remarks>
+            <param name="query">the Query to be constrained</param>
+        </member>
+        <member name="T:Db4objects.Drs.Db4o.Db4oProviderFactory">
+            <exclude></exclude>
+        </member>
+        <member name="T:Db4objects.Drs.Db4o.Db4oReplicationProviderSignature">
+            <exclude></exclude>
+        </member>
+        <member name="T:Db4objects.Drs.Db4o.Db4oReplicationReferenceImpl">
+            <exclude></exclude>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.IReplicationReference.Version">
+            <summary>
+            IMPORTANT
+            &lt;p/&gt;
+            Must return the latests version of the object AND OF ALL COLLECTIONS IT REFERENCES IN ITS
+            FIELDS because collections are treated as 2nd class objects (just like arrays) for Hibernate replication
+            compatibility purposes.
+            </summary>
+            <remarks>
+            IMPORTANT
+            &lt;p/&gt;
+            Must return the latests version of the object AND OF ALL COLLECTIONS IT REFERENCES IN ITS
+            FIELDS because collections are treated as 2nd class objects (just like arrays) for Hibernate replication
+            compatibility purposes.
+            </remarks>
+        </member>
+        <member name="T:Db4objects.Drs.IObjectState">
+            <summary>The state of the entity in a provider.</summary>
+            <remarks>The state of the entity in a provider.</remarks>
+            <author>Albert Kwan</author>
+            <author>Klaus Wuestefeld</author>
+            <version>1.2</version>
+            <since>dRS 1.2</since>
+        </member>
+        <member name="M:Db4objects.Drs.IObjectState.GetObject">
+            <summary>The entity.</summary>
+            <remarks>The entity.</remarks>
+            <returns>null if the object has been deleted or if it was not replicated in previous replications.
+            	</returns>
+        </member>
+        <member name="M:Db4objects.Drs.IObjectState.IsNew">
+            <summary>Is the object newly created since last replication?</summary>
+            <returns>true when the object is newly created since last replication</returns>
+        </member>
+        <member name="M:Db4objects.Drs.IObjectState.WasModified">
+            <summary>Was the object modified since last replication?</summary>
+            <returns>true when the object was modified since last replication</returns>
+        </member>
+        <member name="M:Db4objects.Drs.IObjectState.ModificationDate">
+            <summary>The time when the object is modified in a provider.</summary>
+            <remarks>The time when the object is modified in a provider.</remarks>
+            <returns>time when the object is modified in a provider.</returns>
+        </member>
+        <member name="T:Db4objects.Drs.IReplicationEvent">
+            <summary>Defines an event class for the replication of an entity.</summary>
+            <remarks>Defines an event class for the replication of an entity.</remarks>
+            <author>Albert Kwan</author>
+            <author>Klaus Wuestefeld</author>
+            <version>1.2</version>
+            <since>dRS 1.2</since>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationEvent.IsConflict">
+            <summary>Does a conflict occur?</summary>
+            <returns>true when a conflict occur</returns>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationEvent.OverrideWith(Db4objects.Drs.IObjectState)">
+            <summary>Overrides default replication behaviour with some state chosen by the user.
+            	</summary>
+            <remarks>Overrides default replication behaviour with some state chosen by the user.
+            	</remarks>
+            <param name="chosen">the ObjectState of the prevailing object or null if replication should ignore this object and not traverse to its referenced objects.
+            	</param>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationEvent.StateInProviderA">
+            <summary>The ObjectState in provider A.</summary>
+            <remarks>The ObjectState in provider A.</remarks>
+            <returns>ObjectState in provider A</returns>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationEvent.StateInProviderB">
+            <summary>The ObjectState in provider B.</summary>
+            <remarks>The ObjectState in provider B.</remarks>
+            <returns>ObjectState in provider B</returns>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationEvent.ObjectCreationDate">
+            <summary>The time when the object is created in one provider.</summary>
+            <remarks>The time when the object is created in one provider.</remarks>
+            <returns>time when the object is created in one provider.</returns>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationEvent.StopTraversal">
+            <summary>The replication process will not traverse to objects referenced by the current one.
+            	</summary>
+            <remarks>The replication process will not traverse to objects referenced by the current one.
+            	</remarks>
+        </member>
+        <member name="T:Db4objects.Drs.IReplicationEventListener">
+            <summary>Defines the contract for handling of replication events generated from a replication session.
+            	</summary>
+            <remarks>
+            Defines the contract for handling of replication events generated from a replication session.
+            Users can implement this interface to resolve replication conflicts according to their own business rules.
+            </remarks>
+            <author>Albert Kwan</author>
+            <author>Klaus Wuestefeld</author>
+            <version>1.2</version>
+            <since>dRS 1.2</since>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationEventListener.OnReplicate(Db4objects.Drs.IReplicationEvent)">
+            <summary>invoked when a replication of an object occurs.</summary>
+            <remarks>invoked when a replication of an object occurs.</remarks>
+            <param name="e"></param>
+        </member>
+        <member name="T:Db4objects.Drs.IReplicationSession">
+            <summary>Execute a round of replication between two ReplicationProviders.</summary>
+            <remarks>
+            Execute a round of replication between two ReplicationProviders.
+            &lt;p/&gt;
+            Sample code of using ReplicationSession:
+            <pre>
+            ReplicationSession session = Replication.begin(objectContainer1, objectContainer2);
+            session.replicate(object);
+            session.commit();
+            session.close();
+            </pre>
+            </remarks>
+            <author>Albert Kwan</author>
+            <author>Klaus Wuestefeld</author>
+            <version>1.2</version>
+            <seealso cref="T:Db4objects.Drs.Replication">Db4objects.Drs.Replication</seealso>
+            <since>dRS 1.0</since>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationSession.CheckConflict(System.Object)">
+            <summary>
+            checks if an object has been modified in both replication providers
+            since the last time the two replication providers were replicated.
+            </summary>
+            <remarks>
+            checks if an object has been modified in both replication providers
+            since the last time the two replication providers were replicated.
+            </remarks>
+            <param name="obj">- the object to check for a conflict.</param>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationSession.Close">
+            <summary>Closes this session and frees used resources.</summary>
+            <remarks>
+            Closes this session and frees used resources. Sessions that were opened
+            during the creation of ReplicationProviders will be closed as well.
+            &lt;p/&gt;
+            Hibernate Sessions created from Hibernate Configurations will be closed.
+            db4o ObjectContainers will remain open.
+            </remarks>
+            <exception cref="T:System.InvalidOperationException">if the session is still active (neither commitReplicationTransaction() nor rollback is called).
+            	</exception>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationSession.Commit">
+            <summary>
+            Commits replication changes to both ReplicationProviders and marks the
+            involved ReplicationProviders to be "clean" against each other - to contain
+            no modified objects.
+            </summary>
+            <remarks>
+            Commits replication changes to both ReplicationProviders and marks the
+            involved ReplicationProviders to be "clean" against each other - to contain
+            no modified objects.
+            </remarks>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationSession.ProviderA">
+            <summary>
+            Returns the ReplicationProvider representing the <b>first</b> persistence
+            system passed as a parameter when the replication session was instantiated.
+            </summary>
+            <remarks>
+            Returns the ReplicationProvider representing the <b>first</b> persistence
+            system passed as a parameter when the replication session was instantiated.
+            </remarks>
+            <returns>the first persistence system</returns>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationSession.ProviderB">
+            <summary>
+            Returns the ReplicationProvider representing the <b>second</b> persistence
+            system passed as a parameter when the replication session was instantiated.
+            </summary>
+            <remarks>
+            Returns the ReplicationProvider representing the <b>second</b> persistence
+            system passed as a parameter when the replication session was instantiated.
+            </remarks>
+            <returns>the second persistence system</returns>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationSession.Replicate(System.Object)">
+            <summary>
+            Replicates an individual object and traverses to member objects as long as
+            members are new or modified since the last time the two ReplicationProviders
+            were replicated.
+            </summary>
+            <remarks>
+            Replicates an individual object and traverses to member objects as long as
+            members are new or modified since the last time the two ReplicationProviders
+            were replicated.
+            </remarks>
+            <param name="obj">the object to be replicated.</param>
+            <seealso cref="T:Db4objects.Drs.IReplicationEventListener">IReplicationEventListener</seealso>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationSession.ReplicateDeletions(System.Type)">
+            <summary>Replicates all deletions between the two providers.</summary>
+            <remarks>
+            Replicates all deletions between the two providers.
+            Cascade delete is disabled, regardless the user's settings.
+            &lt;p/&gt;
+            If the deletion violates referential integrity, exception will be thrown.
+            You can use the dRS replication callback to check whether the object to
+            be deleted violates referential integrity. If so, you can stop traversal.
+            </remarks>
+            <param name="extent">the Class that you want to delete</param>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationSession.Rollback">
+            <summary>Rollbacks all changes done during the replication session.</summary>
+            <remarks>
+            Rollbacks all changes done during the replication session. This call
+            guarantees the changes will not be applied to the underlying databases. The
+            state of the objects involved in the replication is undefined.
+            Both ReplicationProviders may still contain cached references of touched objects.
+            &lt;p/&gt;
+            To restart replication, it is recommended to reopen both involved
+            ReplicationProviders and to start a new ReplicationSession.
+            </remarks>
+        </member>
+        <member name="M:Db4objects.Drs.IReplicationSession.SetDirection(Db4objects.Drs.IReplicationProvider,Db4objects.Drs.IReplicationProvider)">
+            <summary>Sets the direction of replication.</summary>
+            <remarks>
+            Sets the direction of replication. By default, if this method is not called, replication is bidirectional,
+            which means the newer copy of the object is copied to the other provider..
+            &lt;p/&gt; If you want to force unidirectional replication, call this method before calling
+            <see cref="M:Db4objects.Drs.IReplicationSession.Replicate(System.Object)">IReplicationSession.Replicate</see>
+            .
+            </remarks>
+            <param name="from">objects in this provider will not be changed.</param>
+            <param name="to">objects will be copied to this provider if copies in "from" is newer
+            	</param>
+        </member>
+        <member name="T:Db4objects.Drs.Inside.DefaultReplicationEventListener">
+            <summary>A default implementation of ConflictResolver.</summary>
+            <remarks>
+            A default implementation of ConflictResolver. In case of a conflict
+            a
+            <see cref="T:Db4objects.Drs.ReplicationConflictException">ReplicationConflictException</see>
+            is thrown.
+            </remarks>
+            <author>Albert Kwan</author>
+            <author>Carl Rosenberger</author>
+            <author>Klaus Wuestefeld</author>
+            <version>1.0</version>
+            <since>dRS 1.0</since>
+        </member>
+        <member name="F:Db4objects.Drs.Inside.InstanceReplicationPreparer._objectsPreparedToReplicate">
+            <summary>
+            Purpose: handle circular references
+            TODO Big Refactoring: Evolve this to handle ALL reference logic (!) and remove it from the providers.
+            </summary>
+            <remarks>
+            Purpose: handle circular references
+            TODO Big Refactoring: Evolve this to handle ALL reference logic (!) and remove it from the providers.
+            </remarks>
+        </member>
+        <member name="F:Db4objects.Drs.Inside.InstanceReplicationPreparer._counterpartRefsByOriginal">
+            <summary>
+            key = object originated from one provider
+            value = the counterpart ReplicationReference of the original object
+            </summary>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.Traversal.ITraverser.TraverseGraph(System.Object,Db4objects.Drs.Inside.Traversal.IVisitor)">
+            <summary>
+            Traversal will only stop when visitor.visit(...) returns false, EVEN IN
+            THE PRESENCE OF CIRCULAR REFERENCES.
+            </summary>
+            <remarks>
+            Traversal will only stop when visitor.visit(...) returns false, EVEN IN
+            THE PRESENCE OF CIRCULAR REFERENCES. So it is up to the visitor to detect
+            circular references if necessary. Transient fields are not visited. The
+            fields of second class objects such as Strings and Dates are also not visited.
+            </remarks>
+        </member>
+        <member name="M:Db4objects.Drs.Inside.Traversal.ITraverser.ExtendTraversalTo(System.Object)">
+            <summary>Should only be called during a traversal.</summary>
+            <remarks>
+            Should only be called during a traversal. Will traverse the graph
+            for the received object too, using the current visitor. Used to
+            extend the traversal to a possibly disconnected object graph.
+            </remarks>
+        </member>
+        <member name="T:Db4objects.Drs.Replication">
+            <summary>Factory to create ReplicationSessions.</summary>
+            <remarks>Factory to create ReplicationSessions.</remarks>
+            <author>Albert Kwan</author>
+            <author>Klaus Wuestefeld</author>
+            <version>1.2</version>
+            <seealso cref="!:com.db4o.drs.hibernate.HibernateReplication">com.db4o.drs.hibernate.HibernateReplication
+            	</seealso>
+            <seealso cref="T:Db4objects.Drs.IReplicationProvider">IReplicationProvider</seealso>
+            <seealso cref="T:Db4objects.Drs.IReplicationEventListener">IReplicationEventListener</seealso>
+            <since>dRS 1.0</since>
+        </member>
+        <member name="M:Db4objects.Drs.Replication.Begin(Db4objects.Drs.IReplicationProvider,Db4objects.Drs.IReplicationProvider)">
+            <summary>Begins a replication session between two ReplicationProviders without ReplicationEventListener.
+            	</summary>
+            <remarks>Begins a replication session between two ReplicationProviders without ReplicationEventListener.
+            	</remarks>
+            <exception cref="T:Db4objects.Drs.ReplicationConflictException">when conflicts occur</exception>
+            <seealso cref="T:Db4objects.Drs.IReplicationEventListener">IReplicationEventListener</seealso>
+        </member>
+        <member name="M:Db4objects.Drs.Replication.Begin(Db4objects.Db4o.IObjectContainer,Db4objects.Db4o.IObjectContainer)">
+            <summary>Begins a replication session between db4o and db4o without ReplicationEventListener.
+            	</summary>
+            <remarks>Begins a replication session between db4o and db4o without ReplicationEventListener.
+            	</remarks>
+            <exception cref="T:Db4objects.Drs.ReplicationConflictException">when conflicts occur</exception>
+            <seealso cref="T:Db4objects.Drs.IReplicationEventListener">IReplicationEventListener</seealso>
+        </member>
+        <member name="M:Db4objects.Drs.Replication.Begin(Db4objects.Drs.IReplicationProvider,Db4objects.Drs.IReplicationProvider,Db4objects.Drs.IReplicationEventListener)">
+            <summary>Begins a replication session between two ReplicatoinProviders.</summary>
+            <remarks>Begins a replication session between two ReplicatoinProviders.</remarks>
+        </member>
+        <member name="M:Db4objects.Drs.Replication.Begin(Db4objects.Db4o.IObjectContainer,Db4objects.Db4o.IObjectContainer,Db4objects.Drs.IReplicationEventListener)">
+            <summary>Begins a replication session between db4o and db4o.</summary>
+            <remarks>Begins a replication session between db4o and db4o.</remarks>
+        </member>
+        <member name="T:Db4objects.Drs.ReplicationConflictException">
+            <summary>Thrown when a conflict occurs and no ReplicationEventListener is specified.
+            	</summary>
+            <remarks>Thrown when a conflict occurs and no ReplicationEventListener is specified.
+            	</remarks>
+            <author>Albert Kwan</author>
+            <author>Klaus Wuestefeld</author>
+            <version>1.2</version>
+            <seealso cref="T:Db4objects.Drs.IReplicationEventListener">IReplicationEventListener</seealso>
+            <since>dRS 1.2</since>
+        </member>
+        <member name="T:Db4objects.Drs.Inside.ReplicationPlatform">
+            <summary>
+            Platform dependent code goes here to minimize manually
+            converted code.
+            </summary>
+        </member>
+    </members>
+</doc>

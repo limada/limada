@@ -1,0 +1,11 @@
+S:\Programming\Limada\src\trunk\Limaki.db4o\bin\Debug\Limaki.db4o.dll.config
+S:\Programming\Limada\src\trunk\Limaki.db4o\bin\Debug\Limaki.db4o.dll
+S:\Programming\Limada\src\trunk\Limaki.db4o\bin\Debug\Limaki.db4o.pdb
+S:\Programming\Limada\src\trunk\Limaki.db4o\bin\Debug\Db4objects.Db4o.dll
+S:\Programming\Limada\src\trunk\Limaki.db4o\bin\Debug\Limaki.Core.dll
+S:\Programming\Limada\src\trunk\Limaki.db4o\bin\Debug\Limaki.Core.pdb
+S:\Programming\Limada\src\trunk\Limaki.db4o\bin\Debug\Db4objects.Db4o.pdb
+S:\Programming\Limada\src\trunk\Limaki.db4o\bin\Debug\Db4objects.Db4o.xml
+S:\Programming\Limada\src\trunk\Limaki.db4o\obj\Debug\ResolveAssemblyReference.cache
+S:\Programming\Limada\src\trunk\Limaki.db4o\obj\Debug\Limaki.db4o.dll
+S:\Programming\Limada\src\trunk\Limaki.db4o\obj\Debug\Limaki.db4o.pdb
