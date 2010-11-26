@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -64,13 +64,15 @@ namespace Limaki.Tests.Display {
         public override void  Setup(){
  	        if (testForm == null) {
  	            Display = Activator.CreateInstance<TDisplay> ();
+
                 testForm = new TestForm<TDisplay>(Display);
                 testForm.WindowState = System.Windows.Forms.FormWindowState.Maximized;
                 testForm.BackColor = System.Drawing.Color.WhiteSmoke;
- 	            Application.DoEvents();
- 	            testForm.Show ();
                 Application.DoEvents();
-            }
+                testForm.Show();
+                Application.DoEvents();
+                
+ 	        }
             if ( Display != null )
                 ticker.Instrument(Display);
             base.Setup();

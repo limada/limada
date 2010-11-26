@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -96,7 +96,7 @@ namespace Limaki.Data.db4o {
         }
 
         public override string FileExtension {
-            get { return "limo007"; }
+            get { return "limo"; }
         }
 
         #endregion

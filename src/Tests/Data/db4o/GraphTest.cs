@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -106,14 +106,14 @@ namespace Limaki.Tests.Data.db4o {
         }
         [Test]
         public void BenchmarkOneTest() {
-            ISceneTestData sceneTestData = new BenchmarkOneData();
+            ISceneFactory sceneFactory = new BenchmarkOneSceneFactory();
             Gateway.Open(DataBaseInfo.FromFileName(FileName));
 
             WidgetGraph graph = new WidgetGraph(Gateway);
-            sceneTestData.Count = 10;
+            sceneFactory.Count = 10;
 
-            sceneTestData.Graph = graph;
-            Scene scene = sceneTestData.Scene;
+            sceneFactory.Graph = graph;
+            Scene scene = sceneFactory.Scene;
             //graph.Clear();
             Gateway.Close();
             ReportSummary();

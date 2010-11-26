@@ -1,12 +1,10 @@
 <HTML>
 <BODY>
-<h2>Limaki.Graphics 0.07</h2>
+<h2>Limaki.Graphics 0.071</h2>
 <P><code>Limaki</code> is a framework for building interactive information visualization applications.</P>
-<p><b>New features since Version 0.064:</b></p>
+<p><b>New features since Version 0.071:</b></p>
 <p>
-* Generic GraphPair to transform one graph into an other and vice versa (bi-directinal)<br>
-* Persistent generic graph based on db4o's object database<br>
-* Labeling of Edges<br>
+* Exand and collapse nodes to show or hide the siblings<br>
 </P>
 <h3>Architecture</h3>
 <P>The design of Limaki follows the
@@ -89,18 +87,14 @@ and vice versa. </P>
 This release is a proof of concept; the main purpose was to find out an architecture which provides a user-friendly graphical interface to manipulate graph structures.<br> 
 This is a pre-alpha-release.<br>
 </P>
-<p>The software is tested on Net 2.0, Mono 2.0 under Windows XP<br>
+<p>The software is tested on Net 2.0<br>
 <p><b>Known limitations of this release:</b></p>
 Editing works only on string-based widgets.<br>
 DragDrop works only on string-based widgets.<br>
 The graphical representation is limited to simple rectangles and lines.<br>
 There is no design-time support; you have to code everything “by hand”.<br>
 Mono:<br>
-Although I tried my best to provide the full feature set on mono, you have to consider the following limitations when using it under mono:
+Although I tried my best to provide the full feature set on mono, it doesn't run currently on mono 2.0 or higher.
 <br>
-Speed: around 1/3 of speed under mono-windows, less on mono-linux<br>
-Cursor-Handling: the cursors don’t show up as in .NET if you manipulate nodes (resizing, moving)<br>
-No DragDrop-support
- 
 </BODY>
 </HTML>

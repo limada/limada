@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Limaki.Common;
+using Limaki.Common.Collections;
 
 namespace Limaki.Graphs {
     public class GraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : 
@@ -35,7 +36,16 @@ namespace Limaki.Graphs {
             
         }
 
+        public virtual TItemTwo Get(TItemOne a) {
+            return Converter.Get (a);
+        }
+
+        public virtual TItemOne Get(TItemTwo a) {
+            return Converter.Get(a);
+        }
+
         #region GraphBase<TItemOne,TEdgeOne>-Member
+
         protected override void AddEdge( TEdgeOne edge, TItemOne item ) {
             throw new Exception("The method or operation is not implemented.");
         }
@@ -45,7 +55,7 @@ namespace Limaki.Graphs {
         }
 
         public override void ChangeEdge( TEdgeOne edge, TItemOne oldItem, TItemOne newItem ) {
-            TItemTwo two = Converter.Get(edge);
+            TItemTwo two = Get(edge);
             One.ChangeEdge(edge, oldItem, newItem);
             if (two != null) {
                 TEdgeTwo edgeTwo = (TEdgeTwo) two;
@@ -67,7 +77,7 @@ namespace Limaki.Graphs {
 
         public override bool Remove( TEdgeOne edge ) {
             bool result = One.Remove(edge);
-            TItemTwo edgeTwo = Converter.Get(edge);
+            TItemTwo edgeTwo = Get(edge);
             if (edgeTwo != null) {
                 Two.Remove((TEdgeTwo)edgeTwo);
             }
@@ -77,6 +87,7 @@ namespace Limaki.Graphs {
         public override int EdgeCount( TItemOne item ) {
             return One.EdgeCount(item);
         }
+
 
         public override ICollection<TEdgeOne> Edges( TItemOne item ) {
             return One.Edges(item);
@@ -107,7 +118,8 @@ namespace Limaki.Graphs {
         }
 
         public override void CopyTo( TItemOne[] array, int arrayIndex ) {
-            throw new Exception("The method or operation is not implemented.");
+            //throw new Exception("The method or operation is not implemented.");
+            One.CopyTo (array, arrayIndex);
         }
 
         public override int Count {
@@ -120,7 +132,7 @@ namespace Limaki.Graphs {
 
         public override bool Remove( TItemOne item ) {
             bool result = One.Remove(item);
-            TItemTwo itemTwo = Converter.Get(item);
+            TItemTwo itemTwo = Get(item);
             if (itemTwo != null) {
                 Two.Remove(itemTwo);
             }
@@ -134,7 +146,7 @@ namespace Limaki.Graphs {
         public override void OnDataChanged( TItemOne item ) {
             base.OnDataChanged(item);
             One.OnDataChanged(item);
-            TItemTwo itemTwo = Converter.Get(item);
+            TItemTwo itemTwo = Get(item);
             Two.OnDataChanged(itemTwo);
         }
         #endregion
@@ -142,7 +154,7 @@ namespace Limaki.Graphs {
         #region IGraphPair<TItemOne,TItemTwo,TEdgeOne,TEdgeTwo> Member
 
         IGraph<TItemOne, TEdgeOne> _one = null;
-        public IGraph<TItemOne, TEdgeOne> One {
+        public virtual IGraph<TItemOne, TEdgeOne> One {
             get { return _one; }
             set {
                 _one = value;
@@ -150,7 +162,7 @@ namespace Limaki.Graphs {
             }
         }
         IGraph<TItemTwo, TEdgeTwo> _two = null;
-        public IGraph<TItemTwo, TEdgeTwo> Two {
+        public virtual IGraph<TItemTwo, TEdgeTwo> Two {
             get { return _two; }
             set {
                 _two = value;
@@ -159,24 +171,35 @@ namespace Limaki.Graphs {
         }
 
 
-        public IDictionary<TItemOne, TItemTwo> One2Two {
+        public virtual IDictionary<TItemOne, TItemTwo> One2Two {
             get { return Converter.One2Two; }
             set { Converter.One2Two = value; }
         }
 
-        public IDictionary<TItemTwo, TItemOne> Two2One {
+        public virtual IDictionary<TItemTwo, TItemOne> Two2One {
             get { return Converter.Two2One; }
             set { Converter.Two2One = value; }
         }
 
         GraphConverter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> _converter = null;
-        public GraphConverter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> Converter {
+        public virtual GraphConverter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> Converter {
             get {return _converter;}
             set {_converter = value;}
         }
 
         #endregion
 
+        #region IFactoryListener<TItemOne> Member
 
+        Action<TItemOne> IFactoryListener<TItemOne>.CreateListener {
+            get {
+                return Converter.CreateListener;
+            }
+            set {
+                Converter.CreateListener = value;
+            }
+        }
+
+        #endregion
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -46,6 +46,13 @@ namespace Limaki.Graphs {
         IEnumerable<TEdge> Edges();
 
         /// <summary>
+        /// iterates over all Egdes(item) in source
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        IEnumerable<TEdge> Edges(IEnumerable<TItem> source);
+
+        /// <summary>
         /// returns a KVP of all Items which have Edges
         /// if an item has no edges, it will NOT be listed
         /// </summary>
@@ -71,6 +78,30 @@ namespace Limaki.Graphs {
         IEnumerable<TEdge> PostorderTwig ( TItem source );
         IEnumerable<TEdge> DepthFirstTwig(TItem source);
 
+        /// <summary>
+        /// each Vein(edge) of Edges(Source) 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        IEnumerable<TEdge> Fork ( TItem source );
+
+        /// <summary>
+        /// an enumeration containing
+        /// - the source
+        /// - Vein(leaf) / Vein(root) if leaf / root is TEdge
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        IEnumerable<TEdge> Vein(TEdge source);
+
+        /// <summary>
+        /// gives back all edge.Root and edge.Leaf in egdes 
+        /// if Root/Leaf is not TEdge
+        /// </summary>
+        /// <param name="edges"></param>
+        /// <returns></returns>
+        IEnumerable<TItem> Foliage ( IEnumerable<TEdge> edges );
+        
         Action<TItem> DataChanged { get;set;}
 
         void OnDataChanged( TItem item );

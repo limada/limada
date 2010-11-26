@@ -405,11 +405,9 @@ namespace Limaki.App {
         }
 
         #endregion
-#if Widget
+
         private Limaki.Winform.Displays.WidgetDisplay display;
-#else
-        private Limaki.Displays.ImageDisplay display;
-#endif
+
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel mousePosLabel;
         private System.Windows.Forms.ToolStripStatusLabel scrollPosLabel;

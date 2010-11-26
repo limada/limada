@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -27,11 +27,11 @@ using Limaki.Common.Collections;
 namespace Limaki.Tests.Graph.MethodTests {
     
     public class TestingSomeGraphSemantics:TestBase {
-        private IList<BinaryGraphFactoryBase> _graphs = null;
-        public IList<BinaryGraphFactoryBase> Graphs {
+        private IList<GraphFactoryBase> _graphs = null;
+        public IList<GraphFactoryBase> Graphs {
             get {
                 if (_graphs == null) {
-                    _graphs = new List<BinaryGraphFactoryBase>();
+                    _graphs = new List<GraphFactoryBase>();
                     _graphs.Add (new BinaryTreeFactory());
                     _graphs.Add (new BinaryGraphFactory ());
                 }
@@ -41,7 +41,6 @@ namespace Limaki.Tests.Graph.MethodTests {
         }
 
         # region BreathFirst Twig
-        // remark: NO! not true! this Algos form a Clique (see:http://en.wikipedia.org/wiki/Clique_problem)
         
 
         IEnumerable<TEdge> BreathFirstTwigQueue<TItem, TEdge>(IGraph<TItem, TEdge> graph, TItem source, bool preOrder)
@@ -102,7 +101,7 @@ namespace Limaki.Tests.Graph.MethodTests {
 
         [Test]
         public void TestTwig() {
-            foreach (BinaryGraphFactoryBase factory in this.Graphs) {
+            foreach (GraphFactoryBase factory in this.Graphs) {
                 ReportDetail (factory.Name);
                 factory.Count = 15;
                 factory.AddDensity = false;
@@ -116,9 +115,86 @@ namespace Limaki.Tests.Graph.MethodTests {
         #region Fork and Clique
         // Fork: alle Edges wich are connected without touching a Item 
         // CliqueEdges: alle Edges wich are connected including touching Items
+        // remark: This Algos form a Clique (see:http://en.wikipedia.org/wiki/Clique_problem)
 
 
+        IEnumerable<TEdge> Fork<TItem, TEdge>(IGraph<TItem, TEdge> graph, TEdge source)
+        where TEdge : IEdge<TItem> {
+            if (source.Root is TEdge) {
+                TEdge root = (TEdge) (object) source.Root;
+                yield return root;
+                foreach (TEdge recurse in Fork<TItem,TEdge>(graph,root)) {
+                    yield return recurse;
+                }
+            }            
+            if (source.Leaf is TEdge) {
+                TEdge leaf = (TEdge)(object)source.Leaf;
+                yield return leaf;
+                foreach (TEdge recurse in Fork<TItem, TEdge>(graph, leaf)) {
+                    yield return recurse;
+                }
+            }
+        }
+        IEnumerable<TEdge> Fork<TItem, TEdge>(IGraph<TItem, TEdge> graph, TItem source)
+        where TEdge : IEdge<TItem> {
+                foreach(TEdge edge in graph.Edges(source)) {
+                    yield return edge;
+                    foreach (TEdge recurse in Fork<TItem, TEdge>(graph, edge)) {
+                        yield return recurse;
+                    }
+                }
+        }
 
+        IEnumerable<TEdge> ForkQueue<TItem, TEdge>(IGraph<TItem, TEdge> graph, TItem source)
+where TEdge : IEdge<TItem> {
+            Queue<TEdge> work = new Queue<TEdge>();
+            Set<TEdge> done = new Set<TEdge>();
+            foreach (TEdge edge in graph.Edges(source)) {
+                work.Enqueue (edge);
+            }
+            if (source is TEdge) {
+                TEdge curr = (TEdge) (object) source;
+                done.Add(curr);
+                if (curr.Root is TEdge) {
+                    work.Enqueue((TEdge)(object)curr.Root);
+                }
+                if (curr.Leaf is TEdge) {
+                    work.Enqueue((TEdge)(object)curr.Leaf);
+                }
+            }
+            while (work.Count > 0) {
+                TEdge curr = work.Dequeue ();
+                if (!done.Contains(curr)) {
+                    if (curr.Root is TEdge) {
+                        work.Enqueue((TEdge)(object)curr.Root);
+                    }
+                    if (curr.Leaf is TEdge) {
+                        work.Enqueue((TEdge)(object)curr.Leaf);
+                    }
+                    
+                    done.Add(curr);
+                    
+                    yield return curr;
+                }
+            }
+        }
+
+        [Test]
+        public void TestFork() {
+            foreach (GraphFactoryBase factory in this.Graphs) {
+                ReportDetail(factory.Name);
+                factory.Populate();
+                IGraph <IGraphItem, IGraphEdge> graph = factory.Graph;
+                foreach(IGraphItem item in graph) {
+                    ReportDetail(
+                        GraphTestUtils.ReportItemAndEdges<IGraphItem, IGraphEdge>(
+                       item, ForkQueue<IGraphItem, IGraphEdge>(graph, item))
+                       );
+                    
+                }
+
+            }
+        }
 
         #endregion
     }

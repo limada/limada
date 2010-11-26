@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -28,7 +28,8 @@ namespace Limaki.Graphs {
     /// <typeparam name="TItemTwo"></typeparam>
     /// <typeparam name="TEdgeOne"></typeparam>
     /// <typeparam name="TEdgeTwo"></typeparam>
-    public abstract class GraphConverter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>
+    public abstract class GraphConverter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>:
+        IFactoryListener<TItemOne>
         where TEdgeOne : IEdge<TItemOne>, TItemOne
         where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
 
@@ -158,6 +159,21 @@ namespace Limaki.Graphs {
         public Converter<TItemTwo,TItemOne> CreateItemOne = null;
         public Converter<TEdgeTwo,TEdgeOne> CreateEdgeOne = null;
         public Act<TEdgeTwo,TEdgeOne> RegisterTwoOne=null;
+
+        #endregion
+
+
+
+        #region IFactoryListener<TItemOne> Member
+
+        public virtual Action<TItemOne> CreateListener {
+            get {
+                return TwoOneConverter.CreateListener;
+            }
+            set {
+                TwoOneConverter.CreateListener = value;
+            }
+        }
 
         #endregion
     }

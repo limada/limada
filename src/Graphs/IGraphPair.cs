@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -28,7 +28,7 @@ namespace Limaki.Graphs {
     /// <typeparam name="TEdgeOne"></typeparam>
     /// <typeparam name="TEdgeTwo"></typeparam>
     public interface IGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> :
-        IGraph<TItemOne, TEdgeOne>
+        IGraph<TItemOne, TEdgeOne>, IFactoryListener<TItemOne>
         where TEdgeOne : IEdge<TItemOne>, TItemOne
         where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
 
@@ -37,5 +37,8 @@ namespace Limaki.Graphs {
         IDictionary<TItemOne, TItemTwo> One2Two { get;set;}
         IDictionary<TItemTwo, TItemOne> Two2One { get;set;}
         GraphConverter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> Converter { get;set;}
+
+        TItemTwo Get ( TItemOne a );
+        TItemOne Get ( TItemTwo a );
     }
 }

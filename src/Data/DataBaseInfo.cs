@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -79,8 +79,16 @@ namespace Limaki.Data {
             dataBaseInfo._path = file.DirectoryName + System.IO.Path.DirectorySeparatorChar;
             dataBaseInfo._name = System.IO.Path.GetFileNameWithoutExtension(file.FullName);
             dataBaseInfo._extension = System.IO.Path.GetExtension(file.FullName).ToLower();
-			if (dataBaseInfo._extension == ".limo007") {
+            if (dataBaseInfo._extension == ".limfb") {
+                dataBaseInfo._provider = "FirebirdProvider";
+                dataBaseInfo._user = "SYSDBA";
+                dataBaseInfo._password = "masterkey";
+            } else if (dataBaseInfo._extension == ".limo") {
                 dataBaseInfo._provider = "Db4oProvider";
+            } else if (dataBaseInfo._extension == ".pib") {
+                dataBaseInfo._provider = "PartsProvider";
+                dataBaseInfo._user = "SYSDBA";
+                dataBaseInfo._password = "masterkey";
             }
             return dataBaseInfo;
         }

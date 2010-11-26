@@ -26,59 +26,48 @@ using Limaki.Tests.Widget;
 using Limaki.Winform;
 using Limaki.Winform.Displays;
 using Limaki.Widgets;
-
+using Limaki.Tests.Graph.Model;
 namespace Limaki.App {
     public partial class MainForm : Form {
         public MainForm() {
             InitializeComponent();
-#if Widget
-            string testFile = @"E:\testdata\txbProjekt\Limaki\graphtest.limo";
-#else
-            string testFile = "..\\..\\..\\..\\TestData\\TestDeleteBeforeRelease.tif";
-#endif
 
-            if (System.IO.File.Exists(testFile)) {
-#if Widget
-             
-#else
-                Image image = Image.FromFile (testFile);
-                display.Data = image;
-#endif
-                display.SelectAction.Enabled=true;
-                display.ScrollAction.Enabled = false;
-            } else {
-                display.SelectAction.Enabled = false;
-                display.ScrollAction.Enabled = true;
-            }
-#if Widget
+            ISceneFactory factory = new SceneFactory<LimakiShortHelpFactory> ();
+            display.Data = factory.Scene;
+            
+            display.Data.Focused = factory.Node[2];
+            //display.WidgetFolding.folder.CollapseToFocused ();
+            
+          
+            display.CommandsInvoke();
+            display.Invalidate();
 
-            display.Data = new ProgammingLanguage().Scene;
             display.ZoomState = ZoomState.Original;
             display.SelectAction.Enabled = true;
             display.ScrollAction.Enabled = false;
             display.BackColor = SystemColors.Window;
 
             # region tests
-            
+
             bool showBounds = false;
             bool runThreadTest = false;
             bool showSandbox = false;
             if (showBounds) {
-                WidgetBoundsLayer widgetBoundsLayer = new WidgetBoundsLayer (display, display);
+                WidgetBoundsLayer widgetBoundsLayer = new WidgetBoundsLayer(display, display);
                 widgetBoundsLayer.Data = display.Data;
-                display.EventControler.Add (widgetBoundsLayer);
+                display.EventControler.Add(widgetBoundsLayer);
             }
             if (showSandbox) {
                 RegionSandbox regionSandbox = new RegionSandbox(display, display);
                 display.EventControler.Add(regionSandbox);
             }
             if (runThreadTest) {
-                SceneThreadTest threadTest = new SceneThreadTest (display.Data);
-                threadTest.Run ();
+                SceneThreadTest threadTest = new SceneThreadTest(display.Data);
+                threadTest.Run();
             }
 
-            #endregion 
-#endif
+            #endregion
+
             //openFileDialog.InitialDirectory = Environment.GetFolderPath (Environment.SpecialFolder.MyPictures);
             this.selectButton.Checked = display.SelectAction.Enabled;
             this.moveButton.Checked = display.ScrollAction.Enabled;
@@ -87,31 +76,31 @@ namespace Limaki.App {
         bool showPosition = false;
         private void display_MouseMove(object sender, MouseEventArgs e) {
             if (showPosition)
-                this.mousePosLabel.Text = new Point (e.X, e.Y).ToString ();
+                this.mousePosLabel.Text = new Point(e.X, e.Y).ToString();
         }
 
         private void display_Paint(object sender, PaintEventArgs e) {
-            if(showPosition)
+            if (showPosition)
                 this.scrollPosLabel.Text = display.AutoScrollPosition.ToString();
         }
 
         List<ToolStripButton> _toolsGroup = null;
         List<ToolStripButton> toolsGroup {
             get {
-                if (_toolsGroup==null) {
-                    _toolsGroup = new List<ToolStripButton> ();
-                    _toolsGroup.Add (selectButton);
-                    _toolsGroup.Add (moveButton);
-                    _toolsGroup.Add (connectorButton);
-                    _toolsGroup.Add (AddWidgetButton);
+                if (_toolsGroup == null) {
+                    _toolsGroup = new List<ToolStripButton>();
+                    _toolsGroup.Add(selectButton);
+                    _toolsGroup.Add(moveButton);
+                    _toolsGroup.Add(connectorButton);
+                    _toolsGroup.Add(AddWidgetButton);
                 }
                 return _toolsGroup;
             }
         }
         void activateToolInGroup(object sender) {
             bool activated = false;
-            foreach(ToolStripButton button in toolsGroup ) {
-                if (sender==button) {
+            foreach (ToolStripButton button in toolsGroup) {
+                if (sender == button) {
                     button.Checked = !button.Checked;
                     activated = button.Checked;
                 } else {
@@ -124,18 +113,18 @@ namespace Limaki.App {
         }
         private void selectOrMoveButton_Click(object sender, EventArgs e) {
             // checkOnClick is false cause of mono bug so we have to toggle ourself
-            activateToolInGroup (sender);
+            activateToolInGroup(sender);
 
             display.SelectAction.Enabled = this.selectButton.Checked;
             display.ScrollAction.Enabled = this.moveButton.Checked;
-#if Widget
+
             display.AddEdgeAction.Enabled = this.connectorButton.Checked;
             display.AddWidgetAction.Enabled = this.AddWidgetButton.Checked;
 
             display.WidgetChanger.Enabled = !display.AddWidgetAction.Enabled;
             display.EdgeWidgetChanger.Enabled = !display.AddEdgeAction.Enabled;
-#endif            
-            
+
+
         }
 
         private void zoomButton_DropDownItemClicked(object sender, EventArgs e) {
@@ -151,7 +140,7 @@ namespace Limaki.App {
                 } else if (menuItem == this.zoomMenuOriginalSize) {
                     display.ZoomState = ZoomState.Original;
                 }
-                display.UpdateZoom ();
+                display.UpdateZoom();
                 foreach (ToolStripMenuItem item in zoomButton.DropDownItems) {
                     if (menuItem != item) {
                         item.Checked = false;
@@ -162,8 +151,8 @@ namespace Limaki.App {
 
         private void zoomButton_ButtonClick(object sender, EventArgs e) {
             if (display.ActiveControl == null) {
-                display.ZoomAction.ZoomIn ();
-                display.UpdateZoom ();
+                display.ZoomAction.ZoomIn();
+                display.UpdateZoom();
             }
         }
 
@@ -172,31 +161,17 @@ namespace Limaki.App {
             Application.Exit();
         }
 
-        
+
         private void fileOpenMenuItem_Click(object sender, EventArgs e) {
-#if Widget
-            OpenExampleData dialog = new OpenExampleData ();
+
+            OpenExampleData dialog = new OpenExampleData();
             if (dialog.ShowDialog(this) == DialogResult.OK) {
                 OpenExampleData.ITypeChoose testData = dialog.examples[dialog.comboBox1.SelectedIndex];
                 testData.Data.Count = (int)dialog.numericUpDown1.Value;
                 display.Data = testData.Data.Scene;
             }
-            dialog.Dispose ();
-#else       
-            if (this.openFileDialog.ShowDialog(this)==DialogResult.OK) {
-                try {
+            dialog.Dispose();
 
-                    
-
-                    display.Data = Image.FromFile(openFileDialog.FileName);
-                    display.ZoomState = ZoomState.FitToScreen;
-                    display.UpdateZoom ();
-                } catch {
-                    MessageBox.Show("Image load failed");
-
-                }   
-            }
-#endif
         }
 
         private void testMessage(object sender, string message) {
@@ -208,7 +183,7 @@ namespace Limaki.App {
         Form about = null;
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
             if (about == null) {
-                about = new About ();
+                about = new About();
             }
             about.ShowDialog();
         }
@@ -217,11 +192,9 @@ namespace Limaki.App {
             try {
                 display.Paint -= display_Paint;
                 display.MouseMove -= display_MouseMove;
-#if Widget
+
                 WidgetDisplayTest test = new BenchmarkOneTests(this.display);
-#else
-                ImageDisplayTest test = new ImageDisplayTest(this.display);
-#endif
+
                 test.WriteDetail += this.testMessage;
                 test.Setup();
                 test.RunSelectorTest();
@@ -232,8 +205,8 @@ namespace Limaki.App {
             }
         }
 
-        private void otherTestToolStripMenuItem_Click ( object sender, EventArgs e ) {
-#if Widget
+        private void otherTestToolStripMenuItem_Click(object sender, EventArgs e) {
+
             try {
                 display.Paint -= display_Paint;
                 display.MouseMove -= display_MouseMove;
@@ -247,50 +220,50 @@ namespace Limaki.App {
                 display.Paint += display_Paint;
                 display.MouseMove += display_MouseMove;
             }
-#endif
+
         }
 
         private void LayoutButton_Click(object sender, EventArgs e) {
-            display.CommandsInvoke ();
-            display.Invalidate ();
+            display.CommandsInvoke();
+            display.Invalidate();
         }
 
         Rectangle ControlSize(Control control) {
             Rectangle result = Rectangle.Empty;
-            foreach(Control c in control.Controls) {
-                result = Rectangle.Union (result, c.Bounds);
+            foreach (Control c in control.Controls) {
+                result = Rectangle.Union(result, c.Bounds);
             }
             return result;
         }
 
         Options options = null;
         private void layoutToolStripMenuItem_ClickOld(object sender, EventArgs e) {
-#if Widget
-            options = new Options ();
-            LayoutOptions layoutOptions = new LayoutOptions ();
+
+            options = new Options();
+            LayoutOptions layoutOptions = new LayoutOptions();
             layoutOptions.SceneLayout = ((WidgetKit)display.displayKit).Layout;
             options.applyButton.Click += new EventHandler(LayoutButton_Click);
             options.closeButton.Click += new EventHandler(LayoutButton_Click);
             options.SuspendLayout();
             options.OptionChanger = layoutOptions;
-            options.Controls.Add (layoutOptions);
+            options.Controls.Add(layoutOptions);
             layoutOptions.Dock = DockStyle.Fill;
-            Rectangle optionsBounds = ControlSize (options);
-            optionsBounds = Rectangle.Union(optionsBounds,ControlSize(layoutOptions));
+            Rectangle optionsBounds = ControlSize(options);
+            optionsBounds = Rectangle.Union(optionsBounds, ControlSize(layoutOptions));
             options.ClientSize = optionsBounds.Size;
-            options.ResumeLayout (true);
-            options.Show ();
-#endif
+            options.ResumeLayout(true);
+            options.Show();
+
         }
 
         private void layoutToolStripMenuItem_Click(object sender, EventArgs e) {
             LayoutProperties layoutOptions = new LayoutProperties();
             layoutOptions.SceneLayout = ((WidgetKit)display.displayKit).Layout;
-            showPropertyWindow (layoutOptions);
+            showPropertyWindow(layoutOptions);
         }
 
         private void showPropertyWindow(object optionObject) {
-#if Widget
+
             options = new Options();
             options.applyButton.Click += new EventHandler(LayoutButton_Click);
             options.closeButton.Click += new EventHandler(LayoutButton_Click);
@@ -309,43 +282,43 @@ namespace Limaki.App {
             options.ClientSize = optionsBounds.Size;
             options.ResumeLayout(true);
             options.Show();
-#endif            
+
         }
-        void grid_PropertyValueChanged ( object s, PropertyValueChangedEventArgs e ) {
+        void grid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e) {
             display.CommandsInvoke();
             display.Invalidate();
         }
 
         private void styleToolStripMenuItem_Click(object sender, EventArgs e) {
             Limaki.Drawing.IStyle[] styles = new Limaki.Drawing.IStyle[2];
-            styles[0] = ( (WidgetKit) display.displayKit ).StyleSheet[Limaki.Drawing.StyleNames.DefaultStyle];
+            styles[0] = ((WidgetKit)display.displayKit).StyleSheet[Limaki.Drawing.StyleNames.DefaultStyle];
             styles[1] = ((WidgetKit)display.displayKit).StyleSheet[Limaki.Drawing.StyleNames.EdgeStyle];
             showPropertyWindow(styles);
         }
 
         private void showQuadTreeToolStripMenuItem_Click(object sender, EventArgs e) {
-            QuadTreeVisualizer vis =  new QuadTreeVisualizer ();
+            QuadTreeVisualizer vis = new QuadTreeVisualizer();
             if (this.display.Data.SpatialIndex is QuadTreeIndex)
                 vis.Data = ((QuadTreeIndex)this.display.Data.SpatialIndex).GeoIndex;
-            vis.Show ();
+            vis.Show();
         }
 
-        
 
-        private void currentProblemToolStripMenuItem_Click ( object sender, EventArgs e ) {
-#if Widget
+
+        private void currentProblemToolStripMenuItem_Click(object sender, EventArgs e) {
+
             try {
                 display.Paint -= display_Paint;
                 display.MouseMove -= display_MouseMove;
-                
+
 
             } finally {
                 display.Paint += display_Paint;
                 display.MouseMove += display_MouseMove;
+
             }
-#endif
+
+
         }
-
-
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -529,7 +529,7 @@ namespace System.Collections.Generic {
 
         void ICollection<T>.Add(T item) {
             if (!Add(item))
-                throw new ArgumentException();
+                throw new ArgumentException("Item already in Set");
         }
 
         IEnumerator IEnumerable.GetEnumerator() {

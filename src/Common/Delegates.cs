@@ -76,6 +76,7 @@ namespace Limaki.Common {
     /// <typeparam name="R"></typeparam>
     /// <returns></returns>
     public delegate R Fun<R>();
+
     /// <summary>
     /// Delegate type Fun[A1,R] is the type of functions (methods) from A1
     /// to R, used to compute some transformation for a given collection

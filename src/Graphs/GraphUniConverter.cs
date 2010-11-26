@@ -1,6 +1,6 @@
 /*
  * Limaki
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -19,6 +19,10 @@ using Limaki.Common;
 using Limaki.Common.Collections;
 
 namespace Limaki.Graphs {
+    public interface IFactoryListener<T> {
+        Action<T> CreateListener { get; set; }
+    }
+
     /// <summary>
     /// Converts Graph One into Graph Two
     /// </summary>
@@ -26,7 +30,7 @@ namespace Limaki.Graphs {
     /// <typeparam name="TItemTwo"></typeparam>
     /// <typeparam name="TEdgeOne"></typeparam>
     /// <typeparam name="TEdgeTwo"></typeparam>
-    public class GraphUniConverter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>
+    public class GraphUniConverter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>:IFactoryListener<TItemTwo>
         where TEdgeOne : IEdge<TItemOne>, TItemOne
         where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
 
@@ -66,15 +70,18 @@ namespace Limaki.Graphs {
             set { _dict = value; }
         }
 
-        public Act<TItemOne, TItemTwo> RegisterPair = null;
+
 
         #region One2Two
 
-        public virtual TItemTwo Convert( TItemOne one ) {
+        public virtual TItemTwo Convert(TItemOne one) {
             TItemTwo result = default(TItemTwo);
             if (!Dict.TryGetValue(one, out result)) {
-                if (!( one is TEdgeOne )) {
+                if (!(one is TEdgeOne)) {
                     TItemTwo two = CreateItem(one);
+                    if (CreateListener != null) {
+                        CreateListener (two);
+                    }
                     Two.Add(two);
                     RegisterPair(one, two);
                     result = two;
@@ -88,8 +95,13 @@ namespace Limaki.Graphs {
 
                     if (!Dict.TryGetValue(one, out result)) {
                         TEdgeTwo edgeTwo = CreateEdge(edgeOne);
+
                         edgeTwo.Root = root;
                         edgeTwo.Leaf = leaf;
+
+                        if (CreateListener != null) {
+                            CreateListener(edgeTwo);
+                        }
 
                         RegisterPair(edgeOne, edgeTwo);
 
@@ -114,6 +126,7 @@ namespace Limaki.Graphs {
                     Convert(a);
                     done.Add(a);
                 }
+
                 foreach (TEdgeOne edge in One.DepthFirstTwig(a)) {
                     if (!done.Contains(edge)) {
                         Convert(edge);
@@ -128,11 +141,21 @@ namespace Limaki.Graphs {
 
         #region Factory-Methods
 
+        
         public Converter<TItemOne, TItemTwo> CreateItem = null;
         public Converter<TEdgeOne, TEdgeTwo> CreateEdge = null;
+        
+        public Act<TItemOne, TItemTwo> RegisterPair = null;
         public Act<TEdgeOne, TEdgeTwo> RegisterEdge = null;
 
-
-        #endregion
+        private Action<TItemTwo> _createListener = null;
+        public Action<TItemTwo> CreateListener {
+            get { return _createListener; }
+            set { _createListener = value; }
         }
+       
+        #endregion
+    }
+
+
 }

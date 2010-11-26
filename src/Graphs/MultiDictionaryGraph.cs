@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -69,6 +69,9 @@ namespace Limaki.Graphs {
         }
 
         public override bool Remove(TItem item) {
+            if (EdgeIsItem && item is TEdge) {
+                this.RemoveInternal ((TEdge) (object)item);
+            }
             if (this.Contains(item)) {
                 new List<TEdge>(Edges(item))
                     .ForEach(delegate(TEdge edge) { Remove(edge); });
@@ -127,19 +130,23 @@ namespace Limaki.Graphs {
             return result;
         }
 
-        public override bool Remove(TEdge edge) {
+        protected virtual bool RemoveInternal(TEdge edge) {
             if (this.Contains(edge)) {
-                RemoveEdge (edge, edge.Root);
+                RemoveEdge(edge, edge.Root);
                 RemoveEdge(edge, edge.Leaf);
-
-                if ( EdgeIsItem ) {
-                    object o = edge;
-                    this.Remove ((TItem)o);
-                }
-                return this.edges.Remove (edge);
+                return this.edges.Remove(edge);
             } else {
                 return false;
             }
+        }
+
+        public override bool Remove(TEdge edge) {
+            bool result = RemoveInternal (edge);
+            if (EdgeIsItem) {
+                object o = edge;
+                this.Remove((TItem)o);
+            }
+            return result;
         }
 
         public override int EdgeCount(TItem item) {
@@ -187,7 +194,7 @@ namespace Limaki.Graphs {
         }
 
         public override int Count {
-            get { return items.Count; }
+            get { return items.Keys.Count; }
         }
 
         public override bool IsReadOnly {

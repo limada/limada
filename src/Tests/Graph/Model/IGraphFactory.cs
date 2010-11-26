@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -14,6 +14,7 @@
  */
 
 using Limaki.Graphs;
+using System.Collections.Generic;
 
 namespace Limaki.Tests.Graph.Model {
     public interface IGraphFactory<TItem, TEdge> where TEdge : IEdge<TItem> {
@@ -23,5 +24,9 @@ namespace Limaki.Tests.Graph.Model {
         void Populate();
         bool SeperateLattice { get;set;}
         bool AddDensity { get;set;}
-    }
+        IList<TItem> Node { get; }
+        IList<TEdge> Link { get; }
+
+		void Populate( IGraph<TItem,TEdge> graph );
+	}
 }

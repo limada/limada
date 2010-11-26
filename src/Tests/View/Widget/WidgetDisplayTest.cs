@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -35,7 +35,7 @@ namespace Limaki.Tests.Widget {
         public virtual Scene Scene {
             get {
                 if (_scene == null) {
-                    _scene = new BenchmarkOneData().Scene;
+                    _scene = new BenchmarkOneSceneFactory().Scene;
                 }
                 return _scene;
             }

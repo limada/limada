@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -42,11 +42,11 @@ namespace Limaki.Tests.Widget {
             // this is neccessary as the mouse cursor returns after a long time
             // back to its position and activates WidgetTextEditor
             ((SceneControler<Scene, IWidget>)Display.LayoutControler).Layout =
-                new BenchmarkOneData.LongtermPerformanceLayout(
-                    Display.displayKit.dataHandler,Data.styleSheet);
+                new BenchmarkOneSceneFactory.LongtermPerformanceLayout(
+                    Display.displayKit.dataHandler,factory.styleSheet);
             ( (WidgetLayer) Display.DataLayer ).Layout =
                 ( (SceneControler<Scene, IWidget>) Display.LayoutControler ).Layout;
-            Data.Arrange (Display.Data);
+            factory.Arrange (Display.Data);
             Display.CommandsInvoke ();
             editorEnabled = Display.WidgetTextEditor.Enabled;
             dragDropEnabled = Display.WidgetDragDrop.Enabled;
@@ -69,12 +69,12 @@ namespace Limaki.Tests.Widget {
             ( (SceneControler<Scene, IWidget>) Display.LayoutControler ).Layout = oldlayout;
         }
 
-        BenchmarkOneData Data = null;
+        BenchmarkOneSceneFactory factory = null;
         public override Scene Scene {
             get {
                 if (_scene == null) {
-                    Data = new BenchmarkOneData ();
-                    base.Scene = Data.Scene;
+                    factory = new BenchmarkOneSceneFactory ();
+                    base.Scene = factory.Scene;
                 }
                 return base.Scene;
             }
@@ -84,8 +84,8 @@ namespace Limaki.Tests.Widget {
         }
 
         public void MoveLinks(Rectangle bounds) {
-            MoveLink(Data.Link4,Data.Link1);
-            MoveLink(Data.Link5, Data.Link3);
+            MoveLink(factory.Link[4],factory.Link[1]);
+            MoveLink(factory.Link[5], factory.Link[3]);
         }
 
 
@@ -93,13 +93,13 @@ namespace Limaki.Tests.Widget {
 
         public void MoveNode1(Rectangle bounds) {
             NeutralPosition ();
-            Point startposition = Data.Node1.Shape[Anchor.LeftTop]+new Size(10,0);
+            Point startposition = factory.Node[1].Shape[Anchor.LeftTop]+new Size(10,0);
             Point position = camera.FromSource(startposition);
 
             MouseEventArgs e = new MouseEventArgs(MouseButtons.Left, 0, position.X, position.Y, 0);
             Display.EventControler.OnMouseDown (e);
 
-            Assert.AreSame (Scene.Focused, Data.Node1);
+            Assert.AreSame (Scene.Focused, factory.Node[1]);
 
             
             Vector v = new Vector ();
@@ -123,7 +123,7 @@ namespace Limaki.Tests.Widget {
             MoveAlongLine(v);
 
             v.Start = v.End;
-            v.End = new Point(bounds.Width / 2, Data.distance.Height);
+            v.End = new Point(bounds.Width / 2, factory.distance.Height);
             MoveAlongLine(v);
 
             v.Start = v.End;

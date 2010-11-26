@@ -13,8 +13,6 @@ namespace Limaki.Graphs {
     public abstract class GraphBase<TItem, TEdge> : IGraph<TItem, TEdge>
         where TEdge : IEdge<TItem> {
 
-        protected static TEdge NullEdge = default(TEdge);
-
         private static Nullable<bool> _edgeIsItem = null;
         public static bool EdgeIsItemClazz {
             get {
@@ -36,6 +34,8 @@ namespace Limaki.Graphs {
                 return _itemIsStorable.Value;
             }
         }
+
+        protected static TEdge NullEdge = default(TEdge);
 
         public virtual bool ItemIsStorable {
             get { return ItemIsStorableClazz; }
@@ -128,6 +128,18 @@ namespace Limaki.Graphs {
 
         # region Basic Algorithms
 
+        public virtual IEnumerable<TEdge> Edges ( IEnumerable<TItem> source ) {
+            Set<TEdge> done = new Set<TEdge>();
+            foreach(TItem item in source) {
+                foreach (TEdge edge in this.Edges(item)) {
+                    if (! done.Contains(edge)) {
+                        done.Add(edge);
+                        yield return edge;
+                    }
+                }
+            }
+        }
+
         public virtual IEnumerable<TEdge> Twig ( TItem source ) {
             Queue<IEnumerable<TEdge>> work = new Queue<IEnumerable<TEdge>>();
             work.Enqueue(Edges(source));
@@ -204,8 +216,75 @@ namespace Limaki.Graphs {
                 }
             }
         }
+
+
+        public virtual IEnumerable<TEdge> Fork (TItem source) {
+            Queue<TEdge> work = new Queue<TEdge>();
+            Set<TEdge> done = new Set<TEdge>();
+            if (source is TEdge) {
+                TEdge curr = (TEdge)(object)source;
+                work.Enqueue (curr);
+            }
+
+            foreach (TEdge edge in this.Edges(source)) {
+                work.Enqueue(edge);
+            }
+
+            while (work.Count > 0) {
+                TEdge curr = work.Dequeue();
+                if (!done.Contains(curr)) {
+                    if (curr.Root is TEdge) {
+                        work.Enqueue((TEdge)(object)curr.Root);
+                    }
+                    if (curr.Leaf is TEdge) {
+                        work.Enqueue((TEdge)(object)curr.Leaf);
+                    }
+
+                    done.Add(curr);
+
+                    yield return curr;
+                }
+            }
+        }
+
+        public virtual IEnumerable<TEdge> Vein(TEdge source) {
+            Queue<TEdge> work = new Queue<TEdge>();
+            Set<TEdge> done = new Set<TEdge>();
+            work.Enqueue(source);
+            
+            while (work.Count > 0) {
+                TEdge curr = work.Dequeue();
+                if (!done.Contains(curr)) {
+                    if (curr.Root is TEdge) {
+                        work.Enqueue((TEdge)(object)curr.Root);
+                    }
+                    if (curr.Leaf is TEdge) {
+                        work.Enqueue((TEdge)(object)curr.Leaf);
+                    }
+
+                    done.Add(curr);
+
+                    yield return curr;
+                }
+            }
+        }
+
+        public virtual IEnumerable<TItem> Foliage(IEnumerable<TEdge> edges) {
+            ICollection<TItem> done = new Set<TItem>();
+            foreach (TEdge edge in edges) {
+                TItem result = edge.Root;
+                if (!(result is TEdge) && !done.Contains(result)) {
+                    done.Add (result);
+                    yield return result;
+                }
+                result = edge.Leaf;
+                if (!(result is TEdge) && !done.Contains(result)) {
+                    done.Add(result);
+                    yield return result;
+                }
+            }
+        }
+
         #endregion
-
-
     }
 }

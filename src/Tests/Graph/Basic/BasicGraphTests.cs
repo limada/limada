@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -183,6 +183,23 @@ namespace Limaki.Tests.Graph.Basic {
             ReportSummary();
         }
 
+        [Test]
+        public virtual void RemoveEdgeAsItem() {
+            InitGraphTest("** Remove link as Item");
+            if (Graph.EdgeIsItem) {
+                TItem item = (TItem)(object)Data.OneAside;
+                Graph.Remove(item);
+                FullReportGraph (Graph, "Removed:\t" + Data.OneAside);
+                Assert.IsFalse (Graph.Contains (Data.OneAside));
+                IsRemoved ((TItem) (object) Data.OneAside);
+                if (Graph.ItemIsStorable) {
+                    Assert.IsTrue (Graph.Contains (Data.OneAside.Root));
+                    Assert.IsTrue (Graph.Contains (Data.OneAside.Leaf));
+                }
+                ReportSummary ();
+            }
+        }
+
         public virtual void IsRemoved(TItem item) {
             if (Graph.ItemIsStorable) {
                 Assert.IsFalse(Graph.Contains(item));
@@ -262,6 +279,9 @@ namespace Limaki.Tests.Graph.Basic {
             
             Tickers.Resume();
             RemoveEdge();
+
+            Tickers.Resume();
+            RemoveEdgeAsItem ();
 
             Tickers.Resume();
             RemoveItem();

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.07
+ * Version 0.071
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -24,7 +24,7 @@ namespace Limaki.Tests.Graph.Model {
 
         #region ITestGraphFactory<TItem,TEdge> Member
 
-        IGraph<TItem, TEdge> _graph = null;
+        protected IGraph<TItem, TEdge> _graph = null;
         public virtual IGraph<TItem, TEdge> Graph {
             get { return _graph; }
             set { _graph = value; }
@@ -38,38 +38,47 @@ namespace Limaki.Tests.Graph.Model {
 
         public abstract string Name { get; }
 
+        protected bool _seperateLattice = false;
         public bool SeperateLattice {
             get { return _seperateLattice; }
             set { _seperateLattice = value; }
         }
 
+        protected bool _addDensity = false;
         public bool AddDensity {
             get { return _addDensity; }
             set { _addDensity = value; }
         }
 
-        protected bool _seperateLattice = false;
-        protected bool _addDensity = false;
+        public virtual void Populate () {
+            Populate (this.Graph);
+        }
 
-        public abstract void Populate ();
+        public abstract void Populate(IGraph<TItem, TEdge> graph);
 
-        public TItem Node1;
-        public TItem Node2;
-        public TItem Node3;
-        public TItem Node4;
-        public TItem Node5;
-        public TItem Node6;
-        public TItem Node7;
-        public TItem Node8;
-        public TItem Node9;
-        public TEdge Link1;
-        public TEdge Link2;
-        public TEdge Link3;
-        public TEdge Link4;
-        public TEdge Link5;
-        public TEdge Link6;
-        public TEdge Link7;
-        public TEdge Link8;
+        IList<TItem> _node = null;
+        public virtual IList<TItem> Node {
+            get {
+                if (_node == null) {
+                    _node = new TItem[11];
+                }
+                return _node;
+            }
+        }
+
+
+        IList<TEdge> _link = null;
+        public virtual IList<TEdge> Link {
+            get {
+                if (_link == null) {
+                    _link = new TEdge[11];
+                }
+                return _link;
+            }
+        }
+
+
+
         #endregion
     }
 }
