@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -153,10 +153,10 @@ namespace Limaki.Displays {
             set { ActionDispatcher.Add(value, ref _linkWidgetChanger); }
         }
 
-        protected ICommandAction _commandAction = null;
+        protected IDataControler _commandAction = null;
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual ICommandAction CommandAction {
+        public virtual IDataControler CommandAction {
             get {
                 if (_commandAction == null) {
                     ActionDispatcher.Add(_commandAction = _kit.CommandsAction(this, this,DataLayer.Transformer));

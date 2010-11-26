@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -23,7 +23,7 @@ namespace Limaki.Winform {
         public List<IMouseAction> MouseActions = new List<IMouseAction>();
         public List<IKeyAction> KeyActions = new List<IKeyAction>();
         public List<IPaintAction> PaintActions = new List<IPaintAction>();
-        public List<ICommandAction> CommandActions = new List<ICommandAction>();
+        public List<IDataControler> CommandActions = new List<IDataControler>();
         public List<IDragDropAction> DragDropActions = new List<IDragDropAction>();
         public Dictionary<Type, IAction> Actions = new Dictionary<Type, IAction> ();
 
@@ -44,8 +44,8 @@ namespace Limaki.Winform {
                 PaintActions.Add((IPaintAction)action);
                 PaintActions.Sort (ActionsSort);
             }
-            if (action is ICommandAction) {
-                CommandActions.Add((ICommandAction)action);
+            if (action is IDataControler) {
+                CommandActions.Add((IDataControler)action);
                 CommandActions.Sort(ActionsSort);
             }
             if (action is IDragDropAction) {
@@ -65,8 +65,8 @@ namespace Limaki.Winform {
             if (action is IKeyAction) {
                 KeyActions.Remove((IKeyAction)action);
             }
-            if (action is ICommandAction) {
-                CommandActions.Remove((ICommandAction)action);
+            if (action is IDataControler) {
+                CommandActions.Remove((IDataControler)action);
             }
             if (action is IDragDropAction) {
                 DragDropActions.Remove((IDragDropAction)action);
@@ -117,6 +117,7 @@ namespace Limaki.Winform {
                     //}
                 }
             }
+            CommandsExecute ();
         }
 
         public void OnMouseMove(MouseEventArgs e) {
@@ -130,6 +131,7 @@ namespace Limaki.Winform {
                     }
                 }
             }
+            CommandsExecute();
         }
 
         public void OnMouseHover(MouseEventArgs e) {
@@ -138,6 +140,7 @@ namespace Limaki.Winform {
                     mouseAction.OnMouseHover(e);
                 }
             }
+            CommandsExecute();
         }
 
         public void OnMouseUp(MouseEventArgs e) {
@@ -152,6 +155,7 @@ namespace Limaki.Winform {
                     }
                 }
             }
+            CommandsExecute();
         }
 
         #endregion
@@ -169,7 +173,7 @@ namespace Limaki.Winform {
 
         #region CommandActions
         public void CommandsExecute() {
-            foreach (ICommandAction action in CommandActions) {
+            foreach (IDataControler action in CommandActions) {
                 if (action.Enabled)
                     action.Execute();
             }
@@ -177,14 +181,14 @@ namespace Limaki.Winform {
         }
 
         public void CommandsDone() {
-            foreach (ICommandAction action in CommandActions) {
+            foreach (IDataControler action in CommandActions) {
                 if (action.Enabled)
                     action.Done();
             }
         }
 
         public void CommandsInvoke() {
-            foreach (ICommandAction action in CommandActions) {
+            foreach (IDataControler action in CommandActions) {
                 if (action.Enabled)
                     action.Invoke();
             }
@@ -204,6 +208,7 @@ namespace Limaki.Winform {
                     }
                 }
             }
+            CommandsExecute();
         }
 
         public void OnKeyPress(KeyPressEventArgs e) {
@@ -217,6 +222,7 @@ namespace Limaki.Winform {
                     }
                 }
             }
+            CommandsExecute();
         }
 
         public void OnKeyUp(KeyEventArgs e) {
@@ -231,6 +237,7 @@ namespace Limaki.Winform {
                     }
                 }
             }
+            CommandsExecute();
         }
 
         #endregion
@@ -253,6 +260,7 @@ namespace Limaki.Winform {
                     }
                 }
             }
+            CommandsExecute();
         }
 
         public void OnQueryContinueDrag( QueryContinueDragEventArgs qcdevent ) {
@@ -266,6 +274,7 @@ namespace Limaki.Winform {
                     }
                 }
             }
+            CommandsExecute();
         }
 
         public void OnDragOver( DragEventArgs drgevent ) {
@@ -279,6 +288,7 @@ namespace Limaki.Winform {
                     }
                 }
             }
+            CommandsExecute();
         }
 
         public void OnDragDrop( DragEventArgs drgevent ) {
@@ -292,6 +302,7 @@ namespace Limaki.Winform {
                     }
                 }
             }
+            CommandsExecute();
         }
 
         public void OnDragLeave( EventArgs e ) {
@@ -305,6 +316,7 @@ namespace Limaki.Winform {
                     }
                 }
             }
+            CommandsExecute();
         }
 
         #endregion

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -53,12 +53,12 @@ namespace Limaki.Winform.Widgets {
                 newCounter++;
                 Scene.Commands.Add(new LayoutCommand<IWidget>(NewWidget, LayoutActionType.Invoke));
                 Scene.Add(NewWidget);
-                if (Scene.Selected != null) {
-                    Scene.Commands.Add (new LayoutCommand<IWidget> (Scene.Selected, LayoutActionType.Perform));
+                if (Scene.Focused != null) {
+                    Scene.Commands.Add (new LayoutCommand<IWidget> (Scene.Focused, LayoutActionType.Perform));
                 }
                 this.MouseDownPos = e.Location;
-                last = Scene.Selected;
-                Scene.Selected = NewWidget;
+                last = Scene.Focused;
+                Scene.Focused = NewWidget;
                 resizing = true;
  
             }
@@ -81,7 +81,7 @@ namespace Limaki.Winform.Widgets {
                 if (newSize.Height<10 || newSize.Width < 10) {
                     Scene.Remove (NewWidget);
                     newCounter--;
-                    Scene.Selected = null;
+                    Scene.Focused = null;
                     if (last != null) {
                         Scene.Commands.Add (new LayoutCommand<IWidget> (last, LayoutActionType.Perform));
                     }

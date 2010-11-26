@@ -1,3 +1,24 @@
+/*
+ * Limaki 
+ * Version 0.064
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2006-2008 Lytico
+ *
+ * http://limada.sourceforge.net
+ * 
+ */
+
+/* 
+ * this file is copied from
+ * mono 1.9 - mcs\class\System.Core\System.Collections.Generic\HashSet.cs
+ * and backported to be usable with Net 2.0
+ */
+
 //
 // HashSet.cs
 //
@@ -26,11 +47,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/* 
- * this file is copied from
- * mono 1.9 - mcs\class\System.Core\System.Collections.Generic\HashSet.cs
- * and backported to be usable with Net 2.0
- */
+
 
 using System;
 using System.Collections;

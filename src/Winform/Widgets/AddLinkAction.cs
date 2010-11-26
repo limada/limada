@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -59,8 +59,8 @@ namespace Limaki.Winform.Widgets {
             if (Scene == null) return;
             base.OnMouseDown(e);
             if (e.Button == MouseButtons.Left) {
-                Resolved = (Scene.Selected != null) && (Scene.Selected != Current);
-                Current = Scene.Selected;
+                Resolved = (Scene.Focused != null) && (Scene.Focused != Current);
+                Current = Scene.Focused;
                 LastMousePos = e.Location;
                 //Exclusive = true;
             }
@@ -82,9 +82,9 @@ namespace Limaki.Winform.Widgets {
                 
                 Scene.Add(Link);
                 Scene.Commands.Add(new LayoutCommand<IWidget>(Link, LayoutActionType.Invoke));
-                Scene.Commands.Add(new LayoutCommand<IWidget>(Scene.Selected, LayoutActionType.Perform));
+                Scene.Commands.Add(new LayoutCommand<IWidget>(Scene.Focused, LayoutActionType.Perform));
 
-                Scene.Selected = Link;
+                Scene.Focused = Link;
                 resizing = true;
                 Anchor rootAnchor = Anchor.Center;
                 if (Current is ILinkWidget) {
@@ -121,7 +121,7 @@ namespace Limaki.Winform.Widgets {
             if (Scene == null) return;
             if (Current == null) return;
             base.BaseMouseMove(e);
-            Resolved = Resolved && (Scene.Selected != null);
+            Resolved = Resolved && (Scene.Focused != null);
             if (Resolved) {
                 OnMouseMoveResolved(e);
             }
@@ -135,9 +135,9 @@ namespace Limaki.Winform.Widgets {
 
         protected override void EndAction() {
             if (Link != null) {
-                if ((Current != null) && (Scene.Selected != Current)) {
-                    Scene.Selected = Current;
-                    Scene.Commands.Add(new LayoutCommand<IWidget>(Scene.Selected, LayoutActionType.Perform));
+                if ((Current != null) && (Scene.Focused != Current)) {
+                    Scene.Focused = Current;
+                    Scene.Commands.Add(new LayoutCommand<IWidget>(Scene.Focused, LayoutActionType.Perform));
                 }
                 if ((Target == null) && (Link.Leaf == null)) {
                     Scene.Remove(Link);

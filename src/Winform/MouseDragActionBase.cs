@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -72,7 +72,7 @@ namespace Limaki.Winform {
                 Resolved = ((e.Button & MouseButtons.Left) == MouseButtons.Left);
             }            
         }
-        protected void BaseMouseMove( MouseEventArgs e ) {
+        protected virtual void BaseMouseMove( MouseEventArgs e ) {
             if (!Resolved) {
                 if (( ( e.Button & MouseButtons.Left ) == MouseButtons.Left ))
                     // If the mouse moves outside the Rectangle, start the drag

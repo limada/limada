@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using Limaki.Actions;
+using System.Drawing;
 
 namespace Limaki.Winform {
     /// <summary>
@@ -26,6 +27,9 @@ namespace Limaki.Winform {
     public class Converter {
         public static PaintActionEventArgs Convert(PaintEventArgs e) {
             return new PaintActionEventArgs(e.Graphics, e.ClipRectangle);
+        }
+        public static PaintActionEventArgs Convert(PaintEventArgs e, Region clipRegion) {
+            return new PaintActionEventArgs(e.Graphics, e.ClipRectangle,clipRegion);
         }
         public static PaintEventArgs Convert(PaintActionEventArgs e) {
             return new PaintEventArgs(e.Graphics, e.ClipRectangle);

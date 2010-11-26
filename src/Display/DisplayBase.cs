@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -15,6 +15,7 @@
 
 //#define TracePaint
 //#define TraceInvalidate
+//#define UseRegion
 
 using System;
 using System.Collections.Generic;
@@ -111,7 +112,7 @@ namespace Limaki.Displays {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         ILayer IDisplayBase.DataLayer {
             get { return this.DataLayer; }
-            set { this.DataLayer = (ILayer<T>) value; }
+            set { this.DataLayer = (ILayer<T>)value; }
         }
 
         public virtual Size DataSize { get { return DataLayer.Size; } }
@@ -141,48 +142,80 @@ namespace Limaki.Displays {
                 Region saveRegion = g.Clip;
                 Rectangle clipRect = e.ClipRectangle;
 
-                if (clipRegionHasData) {
-                    if (Commons.Mono) {
-                        g.SetClip(clipRegion.GetBounds(g));
+                lock (clipRegion) {
+                    if (clipRegionHasData) {
+#if UseRegion
+                        region = this.clipRegion;
+#endif
+                        if (Commons.Mono) {
+                            Rectangle monoClip = Rectangle.Ceiling(clipRegion.GetBounds (g));
+                            monoClip.Intersect (this.ClientRectangle);
+                            if (monoClip.IsEmpty) {
+#if TracePaint
+                                Console.WriteLine ("OnPaint (region) monoClip.IsEmpty");
+#endif
+                                return;
+                            }
+                            g.SetClip(monoClip);
+                        }
+#if UseRegion
+#else
+
+                        g.Clip.Intersect(clipRegion);
+#endif
+
+#if TracePaint
+                        Console.WriteLine ("OnPaint (region)" + g.Clip.GetBounds (g) + "\t" + g.ClipBounds);
+#endif
+                    } else {
+                        if (Commons.Mono) {
+                            // mono gives strange g.ClipBounds: 
+                            // X=-4194304,Y=-4194304,Width=8388608,Height=8388608
+                            // so we have to correct that
+                            Rectangle monoClip = e.ClipRectangle;
+                            monoClip.Intersect(this.ClientRectangle);
+                            if (monoClip.IsEmpty) {
+#if TracePaint
+                                Console.WriteLine("OnPaint () monoClip.IsEmpty");
+#endif
+                                return;
+                            }
+
+                            g.SetClip(monoClip);
+                        }
+#if TracePaint
+                        Console.WriteLine ("OnPaint ()" + g.Clip.GetBounds (g) + "\t" + g.ClipBounds+"\t" +e.ClipRectangle);
+#endif
                     }
 
-                    g.Clip.Intersect(clipRegion);
-#if TracePaint
-                    Console.WriteLine("OnPaint (region)" + g.Clip.GetBounds(g) + "\t" + g.ClipBounds);
+
+                    // draw background
+                    if (Opaque) {
+#if UseRegion
+
+                        if (clipRegionHasData)
+                            g.FillRegion (backBrush, region);
+                        else
+                            g.FillRegion (backBrush, g.Clip);
+                        //g.FillRectangle(backBrush, clipRect);
+#else
+                        g.FillRectangle(backBrush, clipRect);
 #endif
-                } else {
-#if TracePaint
-                    Console.WriteLine("OnPaint ()" + g.ClipBounds);
+                    }
+
+#if UseRegion
+                    ActionDispatcher.OnPaint (Converter.Convert (e, region));
+#else
+                    ActionDispatcher.OnPaint(Converter.Convert(e));
 #endif
+
+                    if (clipRegionHasData) {
+                        clipRegion.MakeInfinite();
+                        clipRegionHasData = false;
+                    }
                 }
-
-                bool clipPathHasData = clipPath.PathData.Points.Length != 0;
-                if (clipPathHasData) {
-
-                    g.Clip.Intersect(clipPath);
-#if TracePaint
-                    Console.WriteLine("OnPaint (path)" + g.Clip.GetBounds(g) + "\t" + g.ClipBounds);
-#endif
-                }
-
-                // draw background
-                if (Opaque) {
-                    g.FillRectangle(backBrush, clipRect);
-                }
-
-                ActionDispatcher.OnPaint(Converter.Convert(e));
-
-                if (clipRegionHasData) {
-                    clipRegion.MakeInfinite();
-                    clipRegionHasData = false;
-                    clipRegionUpdate.updating = false;
-                }
-
                 g.Clip = saveRegion;
                 g.Transform.Reset();
-                clipPath.Reset();
-                clipRectStack.Clear ();
-
             } else {
                 if (Opaque) { // draw background
                     e.Graphics.FillRectangle(backBrush, e.ClipRectangle);
@@ -190,7 +223,10 @@ namespace Limaki.Displays {
             }
         }
 
-
+        /// <summary>
+        /// if opaque = true, onpaintbackground is never called
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnPaintBackground(PaintEventArgs e) {
             if (!Opaque) {
                 Graphics g = e.Graphics;
@@ -229,67 +265,50 @@ namespace Limaki.Displays {
             base.OnSizeChanged(e);
         }
 
+
         # endregion
 
         #region IControl-Member and Region-Handling
 
         Region clipRegion = new Region();
 
-        Stack<Rectangle> clipRectStack = new Stack<Rectangle>();
-
-        class RegionUpdate { public bool updating = false; }
-        private RegionUpdate clipRegionUpdate = new RegionUpdate();
         bool clipRegionHasData = false;
-
-        /// <summary>
-        /// needed to override cause of region-handling
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnInvalidated(InvalidateEventArgs e) {
-#if TraceInvalidate
-            Console.WriteLine("OnInvalidated()" + e.InvalidRect);
-#endif
-            base.OnInvalidated(e);
-            // this is a workaround, cause if scrollbar-visible is changed,
-            // OnPaint and OnPaintBackgroud are not called on Mono
-            if (!clipRegionUpdate.updating) {
-                if (Commons.Mono) {
-                    Rectangle invRect = e.InvalidRect;
-                    if (clipRectStack.Count > 0 && invRect != clipRectStack.Peek()) {
-                        clipRectStack.Push(invRect);
-                    }
-                }
-#if TraceInvalidate
-                Console.WriteLine("Push(" + e.InvalidRect + ")");
-#endif
-            } else {
-                clipRegionUpdate.updating = false;
-            }
-        }
 
 
         void IControl.Invalidate() {
 #if TraceInvalidate
             Console.WriteLine("IControl.Invalidate()");
 #endif
+            lock (clipRegion) {
+#if UseRegion
 
-            clipRegionHasData = false;
-            clipRegion.MakeInfinite();
-            clipRectStack.Clear ();
-            this.Invalidate();
+                if (clipRegionHasData)
+                    clipRegion.Union(this.ClientRectangle);
+#else
+                clipRegionHasData = false;
+                clipRegion.MakeInfinite();
+#endif
+                this.Invalidate();
+            }
         }
 
         void IControl.Invalidate(Rectangle rect) {
 #if TraceInvalidate
             Console.WriteLine("IControl.Invalidate(rect)" + rect);
 #endif
-            clipRegionHasData = false;
-            clipRegion.MakeInfinite();
+            lock (clipRegion) {
+#if UseRegion
 
-            while (clipRectStack.Count > 0) {
-                rect = Rectangle.Union(rect, clipRectStack.Pop());
+                if (clipRegionHasData)
+                    clipRegion.Union(rect);
+#else
+                clipRegionHasData = false;
+                clipRegion.MakeInfinite();
+#endif
+
+                this.Invalidate (rect);
+
             }
-            this.Invalidate(rect);
         }
 
 
@@ -297,58 +316,42 @@ namespace Limaki.Displays {
 #if TraceInvalidate
             Console.WriteLine("IControl.Invalidate(region)");
 #endif
-            clipRegionUpdate.updating = true;
-            if (!clipRegionHasData) {
-                    clipRegion.Intersect (region);
+            lock (clipRegion) {
+                if (!clipRegionHasData) {
+                    clipRegion.Intersect(region);
                 } else {
-                    clipRegion.Union (region);
+                    clipRegion.Union(region);
                 }
-            
-            clipRegionHasData = true;
-            if (Commons.Mono) {
-                while (clipRectStack.Count > 0) {
-                    clipRegion.Union(clipRectStack.Pop());
-                }
-            } else {
-                clipRectStack.Clear ();
+
+                clipRegionHasData = true;
+
+#if UseRegion
+                // regionHandling and Invalidate(Region) 
+                // seems not work too good with more complicated regions
+                // so, curiosly, this is much slower:
+                base.Invalidate (region);
+
+#else
+                // complicated region leeds to more unnecessary OnPaint-Calls, 
+                // so invalidate a rectangle instead of a region
+
+                base.Invalidate(Rectangle.Ceiling(region.GetBounds(ShapeUtils.DeviceContext)));
+
+#endif
             }
-
-            // complicated region leeds to more unnecessary OnPaint-Calls, 
-            // so invalidate a rectangle instead of a region
-
-            base.Invalidate(Rectangle.Ceiling(region.GetBounds(ShapeUtils.DeviceContext)));
-
-
-            // regionHandling and Invalidate(Region) seems not work
-            // too good with more complicated regions
-            // so, curiosly, this is much slower:
-            //base.Invalidate(region);
 
             // curiosly, calling Update is faster on windows, 
             // but not on linux:
             if (!Commons.Unix) {
+#if UseRegion
+#else
                 Update();
+#endif
             }
         }
 
-        private GraphicsPath clipPath = new GraphicsPath();
         void IControl.Invalidate(GraphicsPath path) {
-#if TraceInvalidate
-            Console.WriteLine("IControl.Invalidate(path)");
-#endif
-            clipPath.FillMode = path.FillMode;
-            clipPath.AddPath(path, false);
-            path.Reset();
-            if (Commons.Mono) {
-                while (clipRectStack.Count > 0) {
-                    Rectangle rect = clipRectStack.Pop ();
-                    clipPath.AddRectangle(rect);
-                }
-            } else {
-                clipRectStack.Clear ();
-            }
-            base.Invalidate(Rectangle.Ceiling(clipPath.GetBounds()));
-
+            throw new NotImplementedException("Invalidate over path not implemented");
         }
         #endregion
 
@@ -368,8 +371,8 @@ namespace Limaki.Displays {
         public virtual Point ScrollPosition {
             get {
                 if (true) {//(scrollChanged does not work) {
-                    Point near = this.AutoScrollPosition;
-                    _scrollPosition = new Point(-near.X, -near.Y);
+                    Point point = this.AutoScrollPosition;
+                    _scrollPosition = new Point(-point.X, -point.Y);
                     scrollChanged = false;
                 }
                 return _scrollPosition;
@@ -392,58 +395,88 @@ namespace Limaki.Displays {
         public virtual Size ScrollMinSize {
             get { return this.AutoScrollMinSize; }
             set {
-                this.AutoScrollMinSize = value;
-
+            	// remark: this workaround is for mono 1.9; it is fixed in the development branch
+            	// if you use mono <=1.9, uncomment the following line and comment if (false)
+            	// if (Commons.Mono){
+                if (false){
                 # region monoWorkaroud
-                if (Commons.Mono) {
-                    // mono does not update the ScrollBars if you set AutoScrollMinSize
-                    // this is why I try to workaround this behavior
-                    bool vScrollWasVisible = VerticalScroll.Visible;
-                    bool hScrollWasVisible = HorizontalScroll.Visible;
-                    int VSize = vScrollWasVisible ? SystemInformation.VerticalScrollBarWidth : 0;
-                    int HSize = hScrollWasVisible ? SystemInformation.HorizontalScrollBarHeight : 0;
-                    // this works, with bugs:
-                    // it seems that in mono, we got wrong zoomfactors with FitToWidth
-                    bool hScrollNeedsVisible = (this.Size.Width) < value.Width;
-                    bool vScrollNeedsVisible = this.Size.Height < value.Height;
+                    Size _scrollMinSize = this.AutoScrollMinSize;
+                    if (value != _scrollMinSize) {
+                        this.AutoScrollMinSize = value;
+                        // nice, but doesnt give a invalidate 
+                        // if scrollbarwasvisible == true && scrollbarIsVisble == false
+                        bool vWasVisible = VerticalScroll.Visible;
+                        bool hWasVisible = HorizontalScroll.Visible;
+                        PerformLayout(this, "AutoScrollMinSize");
+                        bool doUpdate = false;
+                        if (vWasVisible && !VerticalScroll.Visible) {
+                            Rectangle rect = this.Bounds;
+                            rect.Location = new Point(rect.Right - SystemInformation.VerticalScrollBarWidth, 0);
+                            rect.Size = new Size(SystemInformation.VerticalScrollBarWidth, rect.Height);
+                            this.Invalidate(rect);
+                            doUpdate = true;
+                        }
+                        if (hWasVisible && !HorizontalScroll.Visible) {
+                            Rectangle rect = this.Bounds;
+                            rect.Location = new Point(0, rect.Height - SystemInformation.HorizontalScrollBarHeight);
+                            rect.Size = new Size(rect.Width, SystemInformation.HorizontalScrollBarHeight);
+                            this.Invalidate(rect);
+                            doUpdate = true;
+                        }
+                        if(doUpdate) {
+                            this.Update();
+                        }
+                        return;
+                        // mono does not update the ScrollBars if you set AutoScrollMinSize
+                        // this is why I try to workaround this behavior
+                        bool vScrollWasVisible = VerticalScroll.Visible;
+                        bool hScrollWasVisible = HorizontalScroll.Visible;
+                        int VSize = vScrollWasVisible ? SystemInformation.VerticalScrollBarWidth : 0;
+                        int HSize = hScrollWasVisible ? SystemInformation.HorizontalScrollBarHeight : 0;
+                        // this works, with bugs:
+                        // it seems that in mono, we got wrong zoomfactors with FitToWidth
+                        bool hScrollNeedsVisible = ( this.Size.Width ) < value.Width;
+                        bool vScrollNeedsVisible = this.Size.Height < value.Height;
 
-                    if (hScrollNeedsVisible) {
-                        HorizontalScroll.Maximum = value.Width;
-                    }
+                        if (hScrollNeedsVisible) {
+                            HorizontalScroll.Maximum = value.Width;
+                        }
 
-                    if (vScrollNeedsVisible) {
-                        VerticalScroll.Maximum = value.Height;
-                    }
+                        if (vScrollNeedsVisible) {
+                            VerticalScroll.Maximum = value.Height;
+                        }
 
-                    this.HorizontalScroll.Visible = hScrollNeedsVisible;
-                    this.VerticalScroll.Visible = vScrollNeedsVisible;
-                    bool needsUpdate = false;
-                    // Invalidate if visibility has changed:
-                    if (!hScrollNeedsVisible && hScrollWasVisible) {
-                        Rectangle rect = this.Bounds;
-                        rect.Location = new Point(0, rect.Height - HSize);
-                        rect.Size = new Size (rect.Width, HSize);
-                        ((IControl)this).Invalidate(rect);
-                        needsUpdate = true;
-
-                    }
-                    if (!vScrollNeedsVisible && vScrollWasVisible) {
-                        Rectangle rect = this.Bounds;
-                        rect.Location = new Point(rect.Width - VSize, 0);
-                        rect.Size = new Size(VSize, rect.Height);
-                        ((IControl)this).Invalidate(rect);
-                        needsUpdate = true;
-                    }
-                    if (needsUpdate) {
-                        this.Update();
+                        this.HorizontalScroll.Visible = hScrollNeedsVisible;
+                        this.VerticalScroll.Visible = vScrollNeedsVisible;
+                        bool needsUpdate = false;
+                        // Invalidate if visibility has changed:
+                        if (!hScrollNeedsVisible && hScrollWasVisible) {
+                            Rectangle rect = this.Bounds;
+                            rect.Location = new Point (0, rect.Height - HSize);
+                            rect.Size = new Size (rect.Width, HSize);
+                            ( (IControl) this ).Invalidate (rect);
+                            needsUpdate = true;
+                        }
+                        if (!vScrollNeedsVisible && vScrollWasVisible) {
+                            Rectangle rect = this.Bounds;
+                            rect.Location = new Point (rect.Width - VSize, 0);
+                            rect.Size = new Size (VSize, rect.Height);
+                            ( (IControl) this ).Invalidate (rect);
+                            needsUpdate = true;
+                        }
+                        if (needsUpdate) {
+                            this.Update ();
+                        }
                     }
                 }
                 #endregion
-
+                else {
+                    this.AutoScrollMinSize = value;    
+                }
             }
         }
-        #endregion        
-        
+        #endregion
+
         # region IZoomable-Member
 
         ///<directed>True</directed>
@@ -477,7 +510,7 @@ namespace Limaki.Displays {
                     break;
                 case ZoomState.FitToWidth:
                     _zoomFactor = (float)rc.Width / DataSize.Width;
-                    ScrollPosition = new Point();
+                    //ScrollPosition = new Point();
                     break;
                 case ZoomState.FitToHeigth:
                     _zoomFactor = (float)rc.Height / DataSize.Height;
@@ -527,7 +560,7 @@ namespace Limaki.Displays {
         public virtual SelectionBase SelectAction {
             get {
                 if (_selectAction == null) {
-                    ActionDispatcher.Add(_selectAction = 
+                    ActionDispatcher.Add(_selectAction =
                         displayKit.SelectAction(this, DataLayer.Transformer));
                 }
                 return _selectAction;
@@ -622,29 +655,29 @@ namespace Limaki.Displays {
         #endregion
 
         #region dragdrop
-        protected override void OnGiveFeedback( GiveFeedbackEventArgs gfbevent ) {
+        protected override void OnGiveFeedback(GiveFeedbackEventArgs gfbevent) {
             ActionDispatcher.OnGiveFeedback(gfbevent);
             base.OnGiveFeedback(gfbevent);
-             
+
         }
-        protected override void OnQueryContinueDrag( QueryContinueDragEventArgs qcdevent ) {
+        protected override void OnQueryContinueDrag(QueryContinueDragEventArgs qcdevent) {
             ActionDispatcher.OnQueryContinueDrag(qcdevent);
             base.OnQueryContinueDrag(qcdevent);
-            
+
         }
 
-        protected override void OnDragOver( DragEventArgs drgevent ) {
+        protected override void OnDragOver(DragEventArgs drgevent) {
             ActionDispatcher.OnDragOver(drgevent);
             base.OnDragOver(drgevent);
-            
+
         }
 
-        protected override void OnDragDrop( DragEventArgs drgevent ) {
+        protected override void OnDragDrop(DragEventArgs drgevent) {
             ActionDispatcher.OnDragDrop(drgevent);
             base.OnDragDrop(drgevent);
-            
+
         }
-        protected override void OnDragLeave( EventArgs e ) {
+        protected override void OnDragLeave(EventArgs e) {
             ActionDispatcher.OnDragLeave(e);
             base.OnDragLeave(e);
         }

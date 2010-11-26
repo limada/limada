@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -109,6 +109,11 @@ namespace Limaki.Drawing.Shapes {
             }
         }
 
+        public abstract Point[] Hull ( int delta, bool extend );
+
+        public abstract Point[] Hull ( Matrice matrix, int delta, bool extend );
         #endregion
+
+
     }
 }

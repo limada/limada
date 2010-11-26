@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -22,8 +22,9 @@ using Limaki.Drawing.Painters;
 
 namespace Limaki.Widgets {
 
-    public class WidgetLayer:Layer<Scene> {
-        public WidgetLayer(IZoomTarget zoomTarget, IScrollTarget scrollTarget) : base(zoomTarget, scrollTarget) {
+    public class WidgetLayer : Layer<Scene> {
+        public WidgetLayer(IZoomTarget zoomTarget, IScrollTarget scrollTarget)
+            : base(zoomTarget, scrollTarget) {
             Priority = ActionPriorities.LayerPriority;
         }
 
@@ -32,11 +33,11 @@ namespace Limaki.Widgets {
             set {
                 bool refresh = value != _data;
                 if (refresh) {
-                    DisposeData ();
+                    DisposeData();
                     if (value != null) {
                         isDataOwner = _data != value;
                         _data = value;
-                    } 
+                    }
 
                     DataChanged();
                 }
@@ -56,7 +57,7 @@ namespace Limaki.Widgets {
             }
         }
 
-        public override void DataChanged() {}
+        public override void DataChanged() { }
 
         private PainterFactory _painterFactory = null;
         public PainterFactory PainterFactory {
@@ -70,19 +71,20 @@ namespace Limaki.Widgets {
             set { _layout = value; }
         }
 
-        
+
 
         #region Renderer
 
-        public SceneRenderer sceneRenderer = new SceneRenderer (null);
+        public SceneRenderer sceneRenderer = new SceneRenderer(null);
         #endregion
 
         #region IPaintAction Member
         public bool AntiAlias = true;
         public override void OnPaint(PaintActionEventArgs e) {
             Graphics g = e.Graphics;
-            
-            g.Transform = this.Transformer.Matrice.Matrix;
+
+            Matrice transform = this.Transformer.Matrice;
+            g.Transform = transform.Matrix;
 
             if (AntiAlias) {
                 // this is hiqh quality mode:
@@ -96,10 +98,10 @@ namespace Limaki.Widgets {
                 e.Graphics.InterpolationMode = InterpolationMode.Low;
             }
             //e.Graphics.TextContrast = 12; // 0..12
-            
+
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
-            
-            
+
+
             sceneRenderer.PainterFactory = this.PainterFactory;
             sceneRenderer.Scene = this.Data;
             sceneRenderer.Layout = this.Layout;
@@ -107,9 +109,16 @@ namespace Limaki.Widgets {
             //if (e.ClipPath != null)
             //    sceneRenderer.Render(g,e.ClipPath);
             //else
-                sceneRenderer.Render (g);
+            Region region = e.ClipRegion;
+            if (region != null) {
+                Matrice matrix = transform.Clone();
+                matrix.Invert ();
+                region.Transform(matrix.Matrix);
+                
+            }
+            sceneRenderer.Render(g, region);
 
-            g.Transform.Reset ();
+            g.Transform.Reset();
         }
 
         #endregion

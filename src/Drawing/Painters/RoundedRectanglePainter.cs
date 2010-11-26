@@ -87,7 +87,7 @@ namespace Limaki.Drawing.Painters {
                     // return circle 
                     mPath.AddEllipse(baseRect);
                 }
-            } catch (Exception ex) {
+            } catch  {
                 mPath.AddEllipse(baseRect);
             } finally {
                 mPath.CloseFigure ();

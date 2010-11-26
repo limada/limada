@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -39,6 +39,13 @@ namespace Limaki.Displays {
                     style.Pen.Color = style.PenColor;
                     style.Font = new Font (style.Font.FontFamily, 10);
                     _styleSheet = new StyleSheet("Default",style);
+                    _styleSheet[StyleNames.SelectedStyle].FillColor = Color.Teal;
+                    _styleSheet[StyleNames.SelectedStyle].TextColor = Color.WhiteSmoke;
+                    _styleSheet[StyleNames.SelectedStyle].PenColor = Color.DarkSlateGray;
+                    _styleSheet[StyleNames.SelectedStyle].Pen.Color = Color.DarkSlateGray;
+					_styleSheet[StyleNames.LinkSelectedStyle].PenColor = Color.DarkSlateGray;
+                    _styleSheet[StyleNames.LinkSelectedStyle].Pen.Color = Color.DarkSlateGray;
+                    
 
                 }
                 return _styleSheet;
@@ -51,7 +58,7 @@ namespace Limaki.Displays {
             get {
                 if (_layout == null) {
                     _layout =
-                        new SimpleWidgetLayout<Scene, IWidget>(this.dataHandler, StyleSheet);                    
+                        new GraphLayout<Scene, IWidget>(this.dataHandler, StyleSheet);                    
                 }
                 return _layout;
             }
@@ -66,7 +73,7 @@ namespace Limaki.Displays {
         }
         
         public override SelectionBase SelectAction(IWinControl control, ITransformer transformer) {
-            SelectionShape result = new SelectionShape(control, transformer);
+            WidgetMultiSelector result = new WidgetMultiSelector(dataHandler,control, transformer);
             //result.RenderType = RenderType.DrawAndFill;
             result.ShapeDataType = typeof (Rectangle);
             result.PainterFactory = painterFactory;
@@ -111,10 +118,10 @@ namespace Limaki.Displays {
         }
 
         
-        public virtual ICommandAction CommandsAction(IControl control, IScrollTarget scrollTarget,ITransformer transformer) {
-            ICommandAction<Scene, IWidget> commandAction = 
-                new SceneCommandAction<Scene, IWidget>(this.dataHandler, control,scrollTarget, transformer, Layout);
-            return commandAction;
+        public virtual IDataControler CommandsAction(IControl control, IScrollTarget scrollTarget,ITransformer transformer) {
+            IDataControler<Scene, IWidget> dataControler = 
+                new SceneControler<Scene, IWidget>(this.dataHandler, control,scrollTarget, transformer, Layout);
+            return dataControler;
         }
 
         public virtual AddWidgetAction AddWidgetAction(IWinControl control, ITransformer transformer) {

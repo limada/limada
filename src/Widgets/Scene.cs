@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -21,87 +21,87 @@ using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
 using System;
 using Limaki.Common.Collections;
+using Limaki.Common;
+using Limaki.Drawing.Indexing.QuadTrees;
 
 namespace Limaki.Widgets {
-    public class Scene:IWidget {
+    public class Scene : IWidget, IComposite<IWidget> {
 
-        private IStyle _style;
-        
-        public virtual IStyle Style {
-            get { return _style; }
-            set { _style = value; }
-        }
+        #region Graph
 
-		///<directed>True</directed>
-        private SceneGraph _graph = null;
-        ///<directed>True</directed>
-        public SceneGraph Graph {
+
+        private IGraph<IWidget, ILinkWidget> _graph = null;
+        public IGraph<IWidget,ILinkWidget> Graph {
             get {
-                if (_graph==null) {
-                    _graph = new SceneGraph();
-                    boundsDirty = true;
+                if (_graph == null) {
+                    _graph = new Graph<IWidget,ILinkWidget>();
+                    _spatialIndex = null;
                 }
                 return _graph;
             }
-            set { 
+            set {
+                Clear ();
                 _graph = value;
-                boundsDirty = true;
-        }
+            }
         }
 
-        public IEnumerable<IWidget> Widgets {
-            get {
-                foreach (IWidget widget in Graph) {
-                    if (!(widget is ILinkWidget)) {
-                        yield return widget;
+        public bool ChangeLink(ILinkWidget link, IWidget target, bool asRoot) {
+            bool result = true;
+            // test if there is a loop:
+            if (target is ILinkWidget) {
+                foreach (IWidget widget in this.AffectedByChange(link)) {
+                    if (widget == target) {
+                        return false;
                     }
                 }
-                foreach (IWidget widget in Graph.Edges()) {
-                    yield return widget;
+            }
+            IWidget oldTarget = null;
+            if (asRoot) {
+                oldTarget = link.Root;
+                link.Root = target;
+            } else {
+                oldTarget = link.Leaf;
+                link.Leaf = target;
+            }
+            Graph.ChangeEdge(link, oldTarget, target);
+            return result;
+        }
+
+        /// <summary>
+        /// gives back the widgets wich are affected by a change
+        /// of source
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public IEnumerable<IWidget> AffectedByChange(IWidget source) {
+            // preorder-traversal; could be changed to Graph.PreorderEdges(source);
+            foreach (ILinkWidget widget in Graph.Edges(source)) {
+                yield return widget;
+                foreach (ILinkWidget link in AffectedByChange(widget)) {
+                    yield return link;
                 }
             }
         }
 
+        #endregion
 
-        private RectangleShape _shape= new RectangleShape();
-        bool boundsDirty = true;
+        #region IWidget Member
+
+        private RectangleShape _shape = new RectangleShape();
         public virtual IShape Shape {
             get {
-                // TODO: this is crazy! make better thing here
-                if (boundsDirty) {
-                    ReCalculateBounds ();
+                if (SpatialIndex.BoundsDirty) {
+                    noHit = emptyPoint;
                 }
+                _shape.Data = SpatialIndex.Bounds;
                 
                 this.Size = _shape.Size;
                 this.Location = _shape.Location;
                 return _shape;
             }
-            set {}
+            set { }
         }
 
-
-        public virtual void ReCalculateBounds() {
-            int h = 0;
-            int w = 0;
-
-            foreach (IWidget widget in Widgets) {
-                Rectangle bounds = widget.Shape.BoundsRect;
-                int r = bounds.Right;
-                int b = bounds.Bottom;
-                if (r > w) w = r;
-                if (b > h) h = b;
-
-            }
-            _shape.Data = new Rectangle(0,0,w,h);
-            boundsDirty = false;
-        }
-
-        public virtual void RemoveBounds(IWidget widget) {
-            boundsDirty = true;
-        }
-        public virtual void AddBounds(IWidget widget) {
-            boundsDirty = true;
-        }
         private Size _size = Size.Empty;
         public virtual Size Size {
             get { return _size; }
@@ -114,68 +114,139 @@ namespace Limaki.Widgets {
             set { _location = value; }
         }
 
+        private IStyle _style;
+        public virtual IStyle Style {
+            get { return _style; }
+            set { _style = value; }
+        }
+
+        object IWidget.Data {
+            get { return this.Graph; }
+            set {
+                if (value is IGraph<IWidget,ILinkWidget>)
+                    this.Graph = (IGraph<IWidget, ILinkWidget>)value;
+            }
+        }
+
+        #endregion
+
+        #region IComposite<IWidget> Member
+
+        public IEnumerable<IWidget> Elements {
+            get {
+                foreach (IWidget widget in Graph) {
+                    if (!(widget is ILinkWidget)) {
+                        yield return widget;
+                    }
+                }
+                foreach (IWidget widget in Graph.Edges()) {
+                    yield return widget;
+                }
+            }
+        }
+
         public void Add(IWidget widget) {
             if (widget is ILinkWidget) {
-                Graph.Add ((ILinkWidget) widget);
+                Graph.Add((ILinkWidget)widget);
             } else {
-                Graph.Add (widget);
+                Graph.Add(widget);
             }
-            boundsDirty = true;
+            AddBounds (widget);
         }
-        public void Remove ( IWidget widget ) {
-            if ( widget is ILinkWidget ) {
-                Graph.Remove((ILinkWidget) widget);
+
+        public virtual bool Remove(IWidget widget) {
+            bool result = false;
+            if (widget is ILinkWidget) {
+                result = Graph.Remove((ILinkWidget)widget);
             } else {
-                Graph.Remove(widget);
+                result = Graph.Remove(widget);
             }
-            boundsDirty = true;
-        }
-        public bool ChangeLink(ILinkWidget link, IWidget target, bool asRoot) {
-            bool result = true;
-            // test if there is a loop:
-            if (target is ILinkWidget) {
-               foreach(IWidget widget in this.AffectedByChange(link)) {
-                   if (widget == target) {
-                       return false;
-                   }
-               }
-            }
-            IWidget oldTarget = null;
-            if (asRoot) {
-                oldTarget = link.Root;
-                link.Root = target;
-            } else {
-                oldTarget = link.Leaf;
-                link.Leaf = target;
-            }
-            Graph.ChangeEdge (link, oldTarget, target);
-            boundsDirty = true;
+            RemoveBounds (widget);
             return result;
         }
 
+
+        public bool Contains(IWidget item) {
+            return this.Graph.Contains(item);
+        }
+
+        public void Clear() {
+            _graph = null;
+            Selected.Clear ();
+            Focused = null;
+            Hovered = null;
+            _spatialIndex = null;
+        }
+
+        public virtual int Count {
+            get { return Graph.Count; }
+        }
+        #endregion
+        #region Geo-Location
+
+        const bool useQuadTree = true;
+        
+        public void ClearSpatialIndex() {
+            SpatialIndex = null;
+        }
+        private SpatialIndex _spatialIndex = null;
+        public SpatialIndex SpatialIndex {
+            get {
+                if(_spatialIndex == null) {
+                    _spatialIndex = new QuadTreeIndex ();
+                    _spatialIndex.Fill(this.Elements);
+                }
+                return _spatialIndex;
+            }
+            set {_spatialIndex = value;}
+        }
+        
+        public IEnumerable<IWidget> ElementsIn(RectangleF clipBounds) {
+            return SpatialIndex.Query (clipBounds);
+        }
+        #endregion
+        #region Action-Handling (selection, hit-tests, commandQueue)
+
         private IWidget _selected = null;
-        public virtual IWidget Selected {
+        public virtual IWidget Focused {
             get { return _selected; }
             set { _selected = value; }
         }
 
-		private IWidget _hovered = null;
+        private WidgetComposite<Set<IWidget>> _selectedItems = null;
+        public virtual WidgetComposite<Set<IWidget>> Selected {
+            get {
+                if (_selectedItems == null) {
+                    _selectedItems = new WidgetComposite<Set<IWidget>>(new Set<IWidget>());
+                }
+                return _selectedItems;
+            }
+            set { _selectedItems = value; }
+        }
+
+        private IWidget _hovered = null;
         public virtual IWidget Hovered {
             get { return _hovered; }
             set { _hovered = value; }
         }
 
-        public List<ICommand<IWidget>> Commands = new List<ICommand<IWidget>>();
+        static Point emptyPoint = new Point (int.MinValue, int.MinValue);
+        private Point noHit = emptyPoint;
 
         protected IWidget TestHit(Point p, int hitSize, HitTest hitTest) {
-            if ((Selected != null) && hitTest(Selected, p, hitSize)) {
-                return Selected;
+            if (p==noHit) {
+                return null;
+            }
+            if ((Focused != null) && hitTest(Focused, p, hitSize)) {
+                return Focused;
             }
             if ((Hovered != null) && hitTest(Hovered, p, hitSize)) {
                 return Hovered;
             }
-            foreach (IWidget widget in Widgets) {
-                if ((widget == Selected) || (widget == Hovered)) {
+            int halfSize = hitSize / 2;
+            Rectangle hitBounds = new Rectangle(p.X - halfSize, p.Y - halfSize, hitSize, hitSize);
+            foreach (IWidget widget in SpatialIndex.Query(hitBounds)) {
+                if ((widget == Focused) || (widget == Hovered)) {
                     continue;
                 }
                 if (hitTest(widget, p, hitSize)) {
@@ -183,55 +254,52 @@ namespace Limaki.Widgets {
                 }
             }
 
-            return null; 
+            noHit = p;
+            return null;
         }
 
         public IWidget Hit(Point p, int hitSize) {
-            HitTest hitTest = delegate ( IWidget w, Point ap, int ahitSize ) {
-                                  return w.Shape.IsHit (ap, ahitSize);
-                              };
-           return TestHit(p,hitSize,hitTest);
+            HitTest hitTest = delegate(IWidget w, Point ap, int ahitSize) {
+                if (w.Shape == null) return false;
+                return w.Shape.IsHit(ap, ahitSize);
+            };
+            return TestHit(p, hitSize, hitTest);
         }
 
         public IWidget HitBorder(Point p, int hitSize) {
             HitTest hitTest = delegate(IWidget w, Point ap, int ahitSize) {
+                if (w.Shape == null) return false;
                 return w.Shape.IsBorderHit(ap, ahitSize);
             };
             return TestHit(p, hitSize, hitTest);
         }
 
 
-        /// <summary>
-        /// gives back the widgets wich are affected by a change
-        /// of source
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
+        public List<ICommand<IWidget>> Commands = new List<ICommand<IWidget>>();
 
-        public IEnumerable<IWidget> AffectedByChange(IWidget source) {
-            // preorder-traversal; could be changed to Graph.PreorderEdges(source);
-            foreach (ILinkWidget widget in Graph.Edges(source)) {
-                yield return widget;
-                foreach (ILinkWidget link in AffectedByChange(widget)) {
-                    yield return link;
-                }
-            }
+        #endregion
+
+        #region Bounds-Handling
+
+        public virtual void ReCalculateBounds() {
+
         }
 
-        object IWidget.Data {
-            get { return this.Graph; }
-            set {
-                if (value is SceneGraph) {
-                    this.Graph = (SceneGraph)value;
-                }
-            }
+        public virtual void UpdateBounds(IWidget widget, Rectangle invalid) {
+            SpatialIndex.Update (invalid, widget);
         }
-   }
+
+        public virtual void RemoveBounds(IWidget widget) {
+            SpatialIndex.Remove (widget);
+        }
+        public virtual void AddBounds(IWidget widget) {
+            SpatialIndex.Add (widget);
+        }
+
+        #endregion
+
+    }
 
 
     public delegate bool HitTest(IWidget w, Point p, int hitSize);
-
-    public class LocationList : SortedMultiDictionary<Point, IWidget> {
-        public LocationList():base(new PointComparer()){}
-    }
 }

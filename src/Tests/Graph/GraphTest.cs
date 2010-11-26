@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -37,7 +37,18 @@ namespace Limaki.Tests.Graph {
             }
         }
 
-        public virtual void ReportGraph(Graph<TItem, TEdge> graph, string reportHeader) {
+        protected IGraph<TItem, TEdge> _graph = null;
+        public virtual IGraph<TItem, TEdge> Graph {
+            get {
+                if (_graph == null) {
+                    _graph = new Graph<TItem, TEdge>(); 
+                }
+                return _graph;
+            }
+            set { _graph = value; }
+        }
+
+        public virtual void ReportGraph(IGraph<TItem, TEdge> graph, string reportHeader) {
             this.ReportMessage(reportHeader);
             foreach (System.Collections.Generic.KeyValuePair<TItem, ICollection<TEdge>> kvp in graph.ItemsWithEdges()) {
                 bool first = true;
@@ -56,14 +67,14 @@ namespace Limaki.Tests.Graph {
             }
         }
 
-        void ResetAndFillGraph(EdgeData<TItem, TEdge> data, Graph<TItem, TEdge> graph) {
+        void ResetAndFillGraph(EdgeData<TItem, TEdge> data, IGraph<TItem, TEdge> graph) {
             graph.Clear();
-            foreach (TEdge edge in data.List) {
+            foreach (TEdge edge in data.Edges) {
                 graph.Add(edge);
             }
         }
 
-        public Graph<TItem, TEdge> graph = new Graph<TItem, TEdge>();
+        
         
         public bool dataListReported = false;
 
@@ -71,16 +82,16 @@ namespace Limaki.Tests.Graph {
             this.ReportMessage(TestName);
             if (!dataListReported) {
                 this.ReportMessage ("Data:");
-                foreach (TEdge edge in data.List) {
+                foreach (TEdge edge in data.Edges) {
                     this.ReportMessage ("\t" + edge.ToString ());
                 }
                 dataListReported = true;
             }
-            ResetAndFillGraph(data, graph);
-            ReportGraph(graph,"Graph with Data:");
+            ResetAndFillGraph(data, Graph);
+            ReportGraph(Graph,"Graph with Data:");
         }
 
-        public virtual void FullReportGraph(Graph<TItem, TEdge> graph, string reportHeader) {
+        public virtual void FullReportGraph(IGraph<TItem, TEdge> graph, string reportHeader) {
             ReportGraph(graph, reportHeader);
             this.ReportMessage("Foreach Item in graph");
             foreach (TItem item in graph) {
@@ -113,44 +124,84 @@ namespace Limaki.Tests.Graph {
         [Test]
         public virtual void AddNothing() {
             InitGraphTest("** Add (default("+typeof(TItem).Name+")");
-            graph.Add (data.Nothing);
-            FullReportGraph(graph, "Added:\t(default("+typeof(TItem).Name+")");
+            Graph.Add (data.Nothing);
+            FullReportGraph(Graph, "Added:\t(default("+typeof(TItem).Name+")");
+            Graph.Remove(data.Nothing);
+            FullReportGraph(Graph, "Removed:\t(default(" + typeof(TItem).Name + ")");
+
         }
         
         [Test]
         public virtual void AddSingle() {
             InitGraphTest("** Add " + data.Single.ToString());
-            graph.Add(data.Single);
-            FullReportGraph(graph, "Added:\t"+data.Single.ToString());
+            Graph.Add(data.Single);
+            FullReportGraph(Graph, "Added:\t"+data.Single.ToString());
+            if (Graph.ItemIsStorable) {
+                Assert.IsTrue (Graph.Contains (data.Single));
+            }
             InitGraphTest("** Remove " + data.Single.ToString());
-            graph.Remove(data.Single);
-            FullReportGraph(graph, "Removed:\t" + data.Single.ToString());
+            Graph.Remove(data.Single);
+            FullReportGraph(Graph, "Removed:\t" + data.Single.ToString());
+            IsRemoved(data.Single);
         }
 
         [Test]
         public virtual void JustAddingData() {
             InitGraphTest("** JustAddingData");
+
+
+            Assert.IsTrue (Graph.Contains (data.One));
+            Assert.IsTrue(Graph.Contains(data.Two));
+            Assert.IsTrue(Graph.Contains(data.Three));
+            Assert.IsTrue(Graph.Contains(data.Aside));
+
+            foreach(TEdge edge in data.Edges) {
+                Assert.IsTrue(Graph.Contains(edge));
+            }
+
         }
 
         [Test]
         public virtual void RemoveLink() {
             InitGraphTest("** Remove link");
-            graph.Remove(data.OneAside);
-            FullReportGraph(graph, "Removed:\t" + data.OneAside);
+            Graph.Remove(data.OneAside);
+            FullReportGraph(Graph, "Removed:\t" + data.OneAside);
+            Assert.IsFalse (Graph.Contains (data.OneAside));
+            if (Graph.EdgeIsItem) {
+                IsRemoved ((TItem)(object)data.OneAside);
+            }
+            if (Graph.ItemIsStorable) {
+                Assert.IsTrue(Graph.Contains(data.OneAside.Root));
+                Assert.IsTrue(Graph.Contains(data.OneAside.Leaf));    
+            }
         }
 
-        
+        public virtual void IsRemoved(TItem item) {
+            if (Graph.ItemIsStorable) {
+                Assert.IsFalse(Graph.Contains(item));
+            }
+
+            int count = 0;
+            foreach (TEdge edge in Graph.Edges(item)) {
+                count++;
+            }
+            Assert.IsTrue (count == 0);
+            
+        }
+        [Test]
         public virtual void RemoveItem() {
             InitGraphTest("** Remove item");
-            graph.Remove(data.Two);
-            FullReportGraph(graph, "Removed:\t"+data.Two.ToString());
+            Graph.Remove(data.Two);
+            FullReportGraph(Graph, "Removed:\t"+data.Two.ToString());
+            IsRemoved (data.Two);
 
-            graph.Remove(data.OneAside.Root);
-            graph.Remove(data.OneAside.Leaf);
-            FullReportGraph(graph, 
+            Graph.Remove(data.OneAside.Root);
+            Graph.Remove(data.OneAside.Leaf);
+            FullReportGraph(Graph, 
                 "Removed:\t" + data.OneAside.Root + "\n"+
                 "Removed:\t" + data.OneAside.Leaf);
-
+            IsRemoved (data.OneAside.Root);
+            IsRemoved (data.OneAside.Leaf);
         }
     }
 }

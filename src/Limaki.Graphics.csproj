@@ -42,10 +42,6 @@
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C5">
-      <HintPath>3rdParty\C5.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>3rdParty\nunit.framework.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -53,19 +49,25 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graphs\GraphBase.cs" />
     <Compile Include="Actions\Command.cs" />
     <Compile Include="Actions\ICommand.cs" />
     <Compile Include="Actions\ITransformTarget.cs" />
     <Compile Include="Actions\ILayout.cs" />
-    <Compile Include="Actions\CommandAction.cs" />
-    <Compile Include="Actions\ICommandAction.cs" />
+    <Compile Include="Actions\DataControler.cs" />
+    <Compile Include="Actions\IDataControler.cs" />
     <Compile Include="Actions\Layout.cs" />
+    <Compile Include="Common\Collections\IMultiDictionary.cs" />
     <Compile Include="Common\Collections\MonoHashSet.cs" />
+    <Compile Include="Common\Collections\MultiDictiionary.cs" />
+    <Compile Include="Common\Collections\MultiDictionaryBase.cs" />
     <Compile Include="Common\Commons.cs" />
     <Compile Include="Common\Delegates.cs" />
     <Compile Include="Common\Handler.cs" />
@@ -76,53 +78,79 @@
     <Compile Include="Drawing\IStyleSheet.cs" />
     <Compile Include="Drawing\Painters\RoundedRectanglePainter.cs" />
     <Compile Include="Drawing\Painters\StringPainter.cs" />
+    <Compile Include="Drawing\Shapes\Polygon.cs" />
     <Compile Include="Drawing\Shapes\RoundedRectangleShape.cs" />
-    <Compile Include="Example\OpenExampleData.cs">
+    <Compile Include="App\OpenExampleData.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Example\OpenExampleData.Designer.cs">
+    <Compile Include="App\OpenExampleData.Designer.cs">
       <DependentUpon>OpenExampleData.cs</DependentUpon>
     </Compile>
-    <Compile Include="Example\PropertyOptions.cs">
+    <Compile Include="App\PropertyOptions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Example\PropertyOptions.Designer.cs">
+    <Compile Include="App\PropertyOptions.Designer.cs">
       <DependentUpon>PropertyOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Example\LayoutOptions.cs">
+    <Compile Include="App\LayoutOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Example\LayoutOptions.Designer.cs">
+    <Compile Include="App\LayoutOptions.Designer.cs">
       <DependentUpon>LayoutOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Example\LayoutProperties.cs" />
-    <Compile Include="Example\Options.cs">
+    <Compile Include="App\LayoutProperties.cs" />
+    <Compile Include="App\Options.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Example\Options.Designer.cs">
+    <Compile Include="App\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tests\Display\DisplayTest.cs">
+    <Compile Include="Common\Collections\EmptyCollection.cs" />
+    <Compile Include="Graphs\MultiDictionaryGraph.cs" />
+    <Compile Include="Graphs\IGraph.cs" />
+    <Compile Include="Tests\View\Display\DisplayTest.cs">
     </Compile>
-    <Compile Include="Tests\Display\ImageDisplayTest.cs" />
-    <Compile Include="Tests\Widget\ISceneTestData.cs" />
-    <Compile Include="Tests\Widget\ProgammingLanguageTestData.cs" />
-    <Compile Include="Tests\Widget\LongTermPerformanceTests.cs" />
-    <Compile Include="Tests\Widget\SceneTestData.cs" />
-    <Compile Include="Tests\Widget\SceneTestWithLatticeData.cs" />
-    <Compile Include="Tests\Widget\SceneTestWithTreeData.cs" />
-    <Compile Include="Tests\Widget\SimpleWidgetLayoutTest.cs" />
-    <Compile Include="Tests\Widget\SceneTestBinaryTreeData.cs" />
-    <Compile Include="Tests\Widget\WidgetDisplayTest.cs" />
-    <Compile Include="Widgets\Layout\BasicWidgetLayout.cs" />
+    <Compile Include="Tests\View\Display\ImageDisplayTest.cs" />
+    <Compile Include="Tests\View\Display\QuadTreeVisualizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tests\View\Display\QuadTreeVisualizer.Designer.cs">
+      <DependentUpon>QuadTreeVisualizer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tests\View\Drawing\PolygonHulltest.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\CollectionVisitor.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\DoubleBits.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\HexConverter.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\IItemVisitor.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Key.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Node.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\NodeBase.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Quadtree.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Root.cs" />
+    <Compile Include="Tests\View\Drawing\Toolkit\TestMatrice.cs" />
+    <Compile Include="Tests\View\Widget\ISceneTestData.cs" />
+    <Compile Include="Tests\View\Widget\WordGameTestData.cs" />
+    <Compile Include="Tests\View\Widget\ProgammingLanguageTestData.cs" />
+    <Compile Include="Tests\View\Widget\BenchmarkOneTests.cs" />
+    <Compile Include="Tests\View\Widget\SceneTestData.cs" />
+    <Compile Include="Tests\View\Widget\SceneTestWithLatticeData.cs" />
+    <Compile Include="Tests\View\Widget\SceneTestWithTreeData.cs" />
+    <Compile Include="Tests\View\Widget\SimpleWidgetLayoutTest.cs" />
+    <Compile Include="Tests\View\Widget\SceneTestBinaryTreeData.cs" />
+    <Compile Include="Tests\View\Widget\WidgetDisplayTest.cs" />
+    <Compile Include="Tests\View\Drawing\RegionSandbox.cs" />
+    <Compile Include="Widgets\BruteForceIndex.cs" />
+    <Compile Include="Widgets\IComposite.cs" />
+    <Compile Include="Widgets\Layout\WidgetLayout.cs" />
     <Compile Include="Widgets\Layout\IRouter.cs" />
     <Compile Include="Widgets\Layout\NearestAnchorRouter.cs" />
     <Compile Include="Widgets\Layout\RouterBase.cs" />
-    <Compile Include="Widgets\Layout\SimpleWidgetLayout.cs" />
+    <Compile Include="Widgets\Layout\GraphLayout.cs" />
+    <Compile Include="Widgets\Layout\Walker.cs" />
     <Compile Include="Widgets\PointComparer.cs" />
-    <Compile Include="Widgets\SceneCommandAction.cs" />
+    <Compile Include="Widgets\QuadTreeIndex.cs" />
+    <Compile Include="Widgets\SceneControler.cs" />
     <Compile Include="Actions\PaintActionEventArgs.cs" />
-    <Compile Include="Common\Collections\MultiDictionary.cs" />
     <Compile Include="Common\Collections\Set.cs" />
     <Compile Include="Common\TODOAttribute.cs" />
     <Compile Include="Drawing\Matrice.cs" />
@@ -130,10 +158,10 @@
     <Compile Include="Graphs\IEdge.cs" />
     <Compile Include="Graphs\Edge.cs" />
     <Compile Include="Common\Empty.cs" />
-    <Compile Include="Example\About.cs">
+    <Compile Include="App\About.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Example\About.Designer.cs">
+    <Compile Include="App\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
     <Compile Include="Display\DisplayKit.cs" />
@@ -155,9 +183,10 @@
     <Compile Include="Drawing\Shapes\VectorShape.cs" />
     <Compile Include="Common\Message.cs" />
     <Compile Include="Common\Progress.cs" />
-    <Compile Include="Tests\Widget\LongtermPerformanceData.cs" />
-    <Compile Include="Tests\Widget\SceneThreadTest.cs" />
-    <Compile Include="Tests\Widget\WidgetBoundsLayer.cs" />
+    <Compile Include="Tests\View\Drawing\Toolkit\TestMatrices.cs" />
+    <Compile Include="Tests\View\Widget\BenchmarkOneData.cs" />
+    <Compile Include="Tests\View\Widget\SceneThreadTest.cs" />
+    <Compile Include="Tests\View\Widget\WidgetBoundsLayer.cs" />
     <Compile Include="Tests\Graph\EdgeData.cs" />
     <Compile Include="Tests\Graph\EdgeIsItemTest.cs" />
     <Compile Include="Tests\Graph\GraphTest.cs" />
@@ -167,7 +196,9 @@
     <Compile Include="Widgets\IWidget.cs" />
     <Compile Include="Widgets\Renderer.cs" />
     <Compile Include="Widgets\SceneGraph.cs" />
+    <Compile Include="Widgets\SpatialIndex.cs" />
     <Compile Include="Widgets\WidgetCommands.cs" />
+    <Compile Include="Widgets\WidgetComposite.cs" />
     <Compile Include="Widgets\WidgetRenderer.cs" />
     <Compile Include="Widgets\LinkWidget.cs" />
     <Compile Include="Widgets\SceneRenderer.cs" />
@@ -224,6 +255,7 @@
     <Compile Include="Winform\DragDrop\ControlDataObject.cs" />
     <Compile Include="Winform\Widgets\WidgetDragDrop.cs" />
     <Compile Include="Winform\Widgets\WidgetDeleter.cs" />
+    <Compile Include="Winform\Widgets\WidgetMultiSelector.cs" />
     <Compile Include="Winform\Widgets\WidgetTextEditor.cs" />
     <Compile Include="Winform\Widgets\WidgetLayerZoomAction.cs" />
     <Compile Include="Winform\ZoomAction.cs" />
@@ -236,35 +268,35 @@
     <Compile Include="Winform\Widgets\WidgetChanger.cs" />
     <Compile Include="Winform\Widgets\WidgetSelector.cs" />
     <Compile Include="Actions\ZoomState.cs" />
-    <Compile Include="Example\MainForm.cs">
+    <Compile Include="App\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Example\MainForm.Designer.cs">
+    <Compile Include="App\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Example\Program.cs" />
+    <Compile Include="App\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Example\About.resx">
+    <EmbeddedResource Include="App\About.resx">
       <SubType>Designer</SubType>
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Example\OpenExampleData.resx">
+    <EmbeddedResource Include="App\OpenExampleData.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OpenExampleData.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Example\PropertyOptions.resx">
+    <EmbeddedResource Include="App\PropertyOptions.resx">
       <DependentUpon>PropertyOptions.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Example\MainForm.resx">
+    <EmbeddedResource Include="App\MainForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Example\LayoutOptions.resx">
+    <EmbeddedResource Include="App\LayoutOptions.resx">
       <SubType>Designer</SubType>
       <DependentUpon>LayoutOptions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Example\Options.resx">
+    <EmbeddedResource Include="App\Options.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Options.cs</DependentUpon>
     </EmbeddedResource>
@@ -273,12 +305,16 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tests\View\Display\QuadTreeVisualizer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>QuadTreeVisualizer.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Example\app.config" />
+    <None Include="App\app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -288,7 +324,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Example\Settings.cs" />
+    <Compile Include="App\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Resources\Shape.png" />
@@ -301,7 +337,10 @@
     <Content Include="Properties\Resources\SelectionIcon.png" />
     <Content Include="Properties\Resources\ZoomToolIcon.png" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <ItemGroup>
+    <Folder Include="Drawing\ToolKit\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

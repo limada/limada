@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -20,8 +20,18 @@ using System.Drawing;
 using Limaki.Common;
 
 namespace Limaki.Drawing.Shapes {
+    /// <summary>
+    /// The ShapeFactory holds a list about which grafic data object needs which shape
+    /// </summary>
     public class ShapeFactory : FactoryBase {
-
+        /// <summary>
+        /// Create a Shape with a given location and size 
+        /// with a typeof(T) graphic data object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="location"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
         public IShape<T> Shape<T>(Point location, Size size) {
             T data = (T)System.Activator.CreateInstance (typeof (T), new object[] {location, size});
             Type clazzType = Clazz<T>();

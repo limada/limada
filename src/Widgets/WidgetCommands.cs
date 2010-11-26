@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -25,7 +25,12 @@ namespace Limaki.Widgets {
         public override void Execute() {
            this.Target.Shape.Location = this.Parameter;
         }
-
+    }
+    public class MoveByCommand : Command<IWidget, Size> {
+        public MoveByCommand(IWidget target, Size param) : base(target, param) { }
+        public override void Execute() {
+            this.Target.Shape.Location -= this.Parameter;
+        }
     }
     public class ResizeCommand : Command<IWidget, Rectangle> {
         public ResizeCommand(IWidget target, Rectangle param) : base(target, param) { }

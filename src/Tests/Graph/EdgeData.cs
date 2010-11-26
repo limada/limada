@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -57,7 +57,7 @@ namespace Limaki.Tests.Graph {
             TwoThree = NewEdge(Two, Three);
         }
 
-        public virtual IEnumerable<TEdge> List {
+        public virtual IEnumerable<TEdge> Edges {
             get {
                 yield return OneTwo;
                 yield return TwoThree;

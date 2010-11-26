@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -24,5 +24,5 @@ namespace Limaki.Common.Collections {
     /// On .NET 2.0 a slightly changed version of monos implementation is used 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Set<T>:HashSet<T> {}
+    public class Set<T> : HashSet<T>, ICollection<T> { }
 }

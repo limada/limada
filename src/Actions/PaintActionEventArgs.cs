@@ -1,4 +1,20 @@
 /*
+ * Limaki 
+ * Version 0.064
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2006-2008 Lytico
+ *
+ * http://limada.sourceforge.net
+ * 
+ */
+
+/* This code is derived from
+ * 
  * Mono 1.6
  * 
  */
@@ -49,6 +65,13 @@ namespace Limaki.Actions {
             this.clip_rectangle = clipRect;
         }
 
+        public PaintActionEventArgs(Graphics graphics, Rectangle clipRect, Region clipRegion) {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+            this.graphics = graphics;
+            this.clip_rectangle = clipRect;
+            this._clipRegion = clipRegion;
+        }
         public PaintActionEventArgs(Graphics graphics, Rectangle clipRect, GraphicsPath clipPath):this(graphics,clipRect) {
             this.clip_path = clipPath;
         }
@@ -65,19 +88,29 @@ namespace Limaki.Actions {
             set { this.clip_path=value; }
         }
 
+        Region _clipRegion = null;
+        public Region ClipRegion {
+            get { return this._clipRegion; }
+            set { this._clipRegion = value; }
+        }
+
         public Graphics Graphics {
             get { return this.graphics; }
         }
-        #endregion	// Public Instance Properties
+        #endregion	
 
         #region Public Instance Methods
         public void Dispose() {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion	// Public Instance Methods
+        #endregion	
 
-        // Returns the previous graphics
+        /// <summary>
+        /// sets the graphics
+        ///  </summary>
+        /// <param name="g"></param>
+        /// <returns>the previouse graphics</returns>
         internal Graphics SetGraphics(Graphics g) {
             Graphics res = graphics;
             graphics = g;

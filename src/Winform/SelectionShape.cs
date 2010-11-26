@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -164,7 +164,47 @@ namespace Limaki.Winform {
 
         # region Paint
 
+        protected override void InvalidateShapeOutline(IShape oldShape, IShape newShape) {
+            if (oldShape != null) {
+                int halfborder = GripSize + 1;
 
+                Rectangle a = oldShape.BoundsRect;
+                Rectangle b = newShape.BoundsRect;
+                
+                Rectangle bigger = Rectangle.Union (a, b);
+                bigger = transformer.FromSource(bigger);
+                bigger = ShapeUtils.NormalizedRectangle(bigger);
+
+                if (bigger.Width <=halfborder || bigger.Height <= halfborder ) {
+                    bigger.Inflate(halfborder, halfborder);
+                    control.Invalidate (bigger);
+                    control.Update();
+                } else {
+                    bigger.Inflate(halfborder, halfborder);
+
+                    Rectangle smaller = Rectangle.Intersect(a, b);
+                    smaller = transformer.FromSource(smaller);
+                    smaller = ShapeUtils.NormalizedRectangle(smaller);
+                    smaller.Inflate(-halfborder, -halfborder);
+
+                    control.Invalidate(
+                        Rectangle.FromLTRB (bigger.Left, bigger.Top, bigger.Right, smaller.Top));
+                    control.Update ();
+                    control.Invalidate(
+                        Rectangle.FromLTRB (bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom));
+                    control.Update();
+                    control.Invalidate(
+                        Rectangle.FromLTRB (bigger.Left, smaller.Top, smaller.Left, smaller.Bottom));
+                    control.Update();
+                    control.Invalidate(
+                        Rectangle.FromLTRB (smaller.Right, smaller.Top, bigger.Right, smaller.Bottom));
+                    control.Update();
+
+                    //clipRegion.Intersect(smaller);
+                    //clipRegion.Complement(bigger);
+                }
+            }
+        }
         private PainterFactory _painterFactory = null;
         public PainterFactory PainterFactory {
             get { return _painterFactory; }

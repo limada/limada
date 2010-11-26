@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -42,7 +42,7 @@ namespace Limaki.Winform.Widgets {
         public virtual IWidget Widget {
             get {
                 if (Scene == null) return null;
-                return Scene.Selected;
+                return Scene.Focused;
             }
             set { }
         }
@@ -64,7 +64,7 @@ namespace Limaki.Winform.Widgets {
 
         public override bool HitTest(Point p) {
             Point sp = transformer.ToSource(p);
-            bool result = ((Widget != null) && (Widget.Shape.IsBorderHit(sp, HitSize)));
+            bool result = ((Widget != null) && (Widget.Shape!=null)&& (Widget.Shape.IsBorderHit(sp, HitSize)));
             Anchor anchor = Anchor.None;
             if (result && ShowGrips) {
                 anchor = HitAnchor(p);
@@ -93,7 +93,7 @@ namespace Limaki.Winform.Widgets {
 
         protected void initClip() {
             if (_clipWidget == null) {
-                _clipWidget = new Widget<Empty>(new Empty());
+                _clipWidget = new ToolWidget<Empty>(new Empty());
                 _clipWidget.Shape = clipShape;
             }
             if (_clipCommand == null) {
@@ -105,12 +105,12 @@ namespace Limaki.Winform.Widgets {
         protected override void OnMouseMoveNotResolved(MouseEventArgs e) {
             if (HitTest(e.Location)) {
                 ShowGrips = true;
-                clipRect = Widget.Shape.BoundsRect;
-                clipRect.Inflate(GripSize + 5, GripSize + 5);
-                clipShape.Data = clipRect;
-                Scene.Commands.Add(_clipCommand);
-                control.CommandsExecute ();
-
+                    clipRect = Widget.Shape.BoundsRect;
+                    clipRect.Inflate (GripSize + 5, GripSize + 5);
+                    clipShape.Data = clipRect;
+                    Scene.Commands.Add (_clipCommand);
+                    control.CommandsExecute ();
+                
             } else if (clipRect != Rectangle.Empty) {
                 ShowGrips = false;
                 clipShape.Data = clipRect;
@@ -139,10 +139,15 @@ namespace Limaki.Winform.Widgets {
                             Rectangle.FromLTRB(e.Location.X, e.Location.Y,
                                                LastMousePos.X, LastMousePos.Y));
 
-                        Point location = Point.Subtract(Widget.Location, delta.Size);
+                        foreach(IWidget selected in Scene.Selected.Elements) {
+                            if (!(selected is ILinkWidget)) {
+                                Scene.Commands.Add (new MoveByCommand (selected, delta.Size));
+                                foreach (IWidget widget in Scene.AffectedByChange (selected)) {
+                                    Scene.Commands.Add (new LayoutCommand<IWidget> (widget, LayoutActionType.Justify));
+                                }
+                            }
+                        }
 
-                        command = new MoveCommand (Widget, location);
-                                      
                     } else if (checkResizing()) {
                         Rectangle rect = transformer.ToSource(
                             Rectangle.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
@@ -153,13 +158,14 @@ namespace Limaki.Winform.Widgets {
                             rect = ShapeUtils.NormalizedRectangle(rect);
                         }
                         command = new ResizeCommand (Widget, rect);
+                        Scene.Commands.Add(command);
+
+                        foreach (IWidget widget in Scene.AffectedByChange(Widget)) {
+                            Scene.Commands.Add(new LayoutCommand<IWidget>(widget, LayoutActionType.Justify));
+                        }
                     }
 
-                    Scene.Commands.Add(command);
 
-                    foreach (IWidget widget in Scene.AffectedByChange(Widget)) {
-                        Scene.Commands.Add(new LayoutCommand<IWidget>(widget, LayoutActionType.Justify));
-                    }
                     control.CommandsExecute();
                     
                     // saving current mouse position to be used for next dragging

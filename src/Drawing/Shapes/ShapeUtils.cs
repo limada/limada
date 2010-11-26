@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -36,11 +36,43 @@ namespace Limaki.Drawing.Shapes {
                 Math.Max(start.Y, end.Y));
         }
         public static Rectangle NormalizedRectangle(Rectangle rect) {
-            return Rectangle.FromLTRB(
-                Math.Min(rect.X, rect.Right),
-                Math.Min(rect.Y, rect.Bottom),
-                Math.Max(rect.X, rect.Right),
-                Math.Max(rect.Y, rect.Bottom));
+            int rectX = rect.X;
+            int rectR = rectX + rect.Width;
+            int rectY = rect.Y;
+            int rectB = rectY + rect.Height;
+            int minX = rectX;
+            int maxX = rectR;
+            if (rectX > rectR) {
+                minX = rectR;
+                maxX = rectX;
+            }
+            int minY = rectY;
+            int maxY = rectB;
+            if (rectY > rectB) {
+                minY = rectB;
+                maxY = rectY;
+            }
+            return Rectangle.FromLTRB(minX, minY, maxX, maxY);
+        }
+        public static RectangleF NormalizedRectangle(RectangleF rect) {
+            float rectX = rect.X;
+            float rectR = rectX + rect.Width;
+            float rectY = rect.Y;
+            float rectB = rectY + rect.Height;
+            float minX = rectX;
+            float maxX = rectR;
+            if (rectX > rectR) {
+                minX = rectR;
+                maxX = rectX;
+            }
+            float minY = rectY;
+            float maxY = rectB;
+            if (rectY > rectB) {
+                minY = rectB;
+                maxY = rectY;
+            }
+            return RectangleF.FromLTRB(minX,minY,maxX,maxY);
+                
         }
         protected static void TrimTargetToSourceRectangle(ref Rectangle target, ref Rectangle source) {
             target.Location = new Point(
@@ -84,5 +116,29 @@ namespace Limaki.Drawing.Shapes {
         }
 
 
+        /// <summary>
+        /// Replaces RectangleF.Contains as it gives wrong 
+        /// results with x,y < 0 and right, bottom > 0
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public static bool Contains ( RectangleF value, RectangleF other ) {
+            return 
+                other.X >= value.X && 
+                other.X+other.Width <= value.X+value.Width &&
+                other.Y >= value.Y && 
+                other.Y+other.Height <= value.Y+value.Height;
+        }
+
+        public static bool Intersects ( RectangleF value, RectangleF other ) {
+        //    return !( left > other.right || right < other.left ||
+        //top > other.bottom || bottom < other.top );
+
+            return !( value.X > other.X + other.Width ||
+                ( value.X + value.Width ) < ( other.X ) ||
+                ( value.Y > other.Y + other.Height ) ||
+                ( value.Y + value.Height ) < ( other.Y ) );
+        }
     }
 }

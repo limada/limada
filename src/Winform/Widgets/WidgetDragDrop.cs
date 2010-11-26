@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -11,6 +11,9 @@
  *
  * http://limada.sourceforge.net
  */
+
+
+//#define TraceDrop
 
 using System;
 using System.Drawing;
@@ -67,8 +70,8 @@ namespace Limaki.Winform.Widgets {
         IWidget HitTest(Point p) {
             IWidget result = null;
             Point sp = transformer.ToSource(p);
-            if (Scene.Selected!=null && Scene.Selected.Shape.IsHit(sp, HitSize)) {
-                result = Scene.Selected;
+            if (Scene.Focused!=null && Scene.Focused.Shape.IsHit(sp, HitSize)) {
+                result = Scene.Focused;
             }
 
             return result;
@@ -138,14 +141,18 @@ namespace Limaki.Winform.Widgets {
                 
             }
         }
+
         public virtual void OnDragDrop(DragEventArgs e) {
             IWidget item = dataObjectHandlerChain.GetWidget(e.Data);
             if (item == null) {
                 e.Effect = DragDropEffects.None;
                 return;
-            } else {
+            } 
+#if TraceDrop            
+            else {
                 System.Console.WriteLine ("Dropped:" + item.ToString ());
             }
+#endif
             if (e.Data is ControlDataObject) {
                 ControlDataObject data = (ControlDataObject) e.Data;
                 if (data.control == this.control) {
@@ -225,12 +232,14 @@ namespace Limaki.Winform.Widgets {
             Point pt = transformer.ToSource(control.PointToClient(new Point(e.X, e.Y)));
             IWidget itemUnderMouse = Scene.Hit(pt,HitSize);
 
+#if TraceDrop
             if (itemUnderMouse != null) {
                 System.Console.Out.WriteLine("drag over "+itemUnderMouse.Data.ToString());
 
             } else {
                 System.Console.Out.WriteLine("drag over empty space");
             }
+#endif
 
         }
 

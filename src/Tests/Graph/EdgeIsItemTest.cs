@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -70,9 +70,9 @@ namespace Limaki.Tests.Graph {
             base.InitData();
             TwoThree_One = new EdgeIsItem<string> (TwoThree, One);
         }
-        public override IEnumerable<EdgeIsItem<string>> List {
+        public override IEnumerable<EdgeIsItem<string>> Edges {
             get {
-                foreach (EdgeIsItem<string> edge in base.List)
+                foreach (EdgeIsItem<string> edge in base.Edges)
                     yield return edge;
 
                 yield return TwoThree_One;
@@ -101,8 +101,8 @@ namespace Limaki.Tests.Graph {
         public override void RemoveItem() {
             base.RemoveItem();
             InitGraphTest ("** remove "+data.One);
-            graph.Remove(data.One);
-            FullReportGraph (graph,"Removed:\t" + data.One);
+            Graph.Remove(data.One);
+            FullReportGraph (Graph,"Removed:\t" + data.One);
 
         }
         [Test]

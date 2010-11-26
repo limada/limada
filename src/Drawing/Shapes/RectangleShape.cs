@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -36,53 +36,53 @@ namespace Limaki.Drawing.Shapes {
                     case Anchor.LeftTop:
                     case Anchor.MostLeft:
                     case Anchor.MostTop:
-                        return _data.Location;
+                        return new Point(_data.X , _data.Y);
                         
                     case Anchor.LeftBottom:
                         return new Point(
-                            _data.Left,
-                            _data.Bottom);
+                            _data.X,
+                            _data.Y + _data.Height);
                         
                     case Anchor.RightTop:
                     case Anchor.MostRight:
                         return new Point(
-                            _data.Right,
-                            _data.Top);
+                            _data.X + _data.Width,
+                            _data.Y);
 								
                     case Anchor.RightBottom:
                     case Anchor.MostBottom:
                         return new Point(
-                            _data.Right,
-                            _data.Bottom
+                            _data.X + _data.Width,
+                            _data.Y + _data.Height
                             );
 
                     case Anchor.MiddleTop:
                         return new Point(
-                            _data.Left + _data.Width / 2,
-                            _data.Top);
+                            _data.X + _data.Width / 2,
+                            _data.Y);
 
                     case Anchor.LeftMiddle:
                         return new Point(
-                            _data.Left,
-                            _data.Top + _data.Height / 2);
+                            _data.X,
+                            _data.Y + _data.Height / 2);
 
                     case Anchor.RightMiddle:
                         return new Point(
-                            _data.Right,
-                            _data.Top + _data.Height / 2);
+                            _data.X + _data.Width,
+                            _data.Y + _data.Height / 2);
 
                     case Anchor.MiddleBottom:
                         return new Point(
-                            _data.Left + _data.Width / 2,
-                            _data.Bottom);
+                            _data.X + _data.Width / 2,
+                            _data.Y + _data.Height);
 
                     case Anchor.Center:
                         return new Point(
-                            _data.Left + _data.Width / 2,
-                            _data.Top + _data.Height / 2);
+                            _data.X + _data.Width / 2,
+                            _data.Y + _data.Height / 2);
 
                     default:
-                        return _data.Location;
+                        return new Point(_data.X , _data.Y);
                 }
 
             }
@@ -97,15 +97,43 @@ namespace Limaki.Drawing.Shapes {
             set { _data.Size = value; }
         }
         public override Point Location {
-            get { return this._data.Location; }
+            get { return new Point(_data.X , _data.Y); }
             set { this._data.Location = value; }
         }
 
         public override void Transform(Matrice matrice) {
-            Point[] p = { _data.Location, new Point(_data.Right, _data.Bottom) };
+			int dataX = _data.X;
+			int dataY = _data.Y;
+            Point[] p = { new Point(dataX, dataY), new Point(dataX + _data.Width, dataY + _data.Height) };
             matrice.TransformPoints(p);
             _data = Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
         }
+
+        public static Point[] Hull(Rectangle rect, int delta, bool extend) {
+            int startX = rect.X;
+            int startY = rect.Y;
+            int endX = startX+rect.Width;
+            int endY = startY+rect.Height;
+            return new Point[] {
+                new Point ((startX - delta), (startY - delta)),
+                new Point ((endX + delta), (startY - delta)),
+                new Point((endX + delta), (endY + delta)),
+                new Point ((startX - delta), (endY + delta))
+                                             };
+        }
+
+        public override Point[] Hull(int delta, bool extend) {
+            return Hull(_data,delta, extend);
+        }
+
+        public override Point[] Hull(Matrice matrix, int delta, bool extend) {
+            int dataX = _data.X; int dataY = _data.Y;
+            Point[] p = { new Point(dataX, dataY), new Point(dataX + _data.Width, dataY + _data.Height) };
+
+            matrix.TransformPoints(p);
+            return Hull(Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y), delta, extend);
+        }
+
         public override object Clone() {
             return new RectangleShape (_data);
         }

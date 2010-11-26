@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -127,8 +127,9 @@ namespace Limaki.Widgets.Layout {
                 SourceY = Pos.bottom;
                 TargetY = Pos.top;
             }
-
-            return new Pair<Anchor, Anchor>(PosToAnchor(sourceX, SourceY), PosToAnchor(targetX, TargetY));
+            Anchor one = PosToAnchor (sourceX, SourceY);
+            Anchor two = PosToAnchor (targetX, TargetY);
+            return new Pair<Anchor, Anchor>(one, two);
 
         }
 

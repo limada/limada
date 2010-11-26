@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -25,7 +25,7 @@ namespace Limaki.Widgets {
             Data = data;
         }
         private T _data = default( T );
-        public T Data {
+        public virtual T Data {
             get { return _data; }
             set { _data = value; }
         }
@@ -73,5 +73,8 @@ namespace Limaki.Widgets {
         public override string ToString() {
             return base.ToString()+"("+Data.ToString()+")";
         }
+    }
+    public class ToolWidget<T>:Widget<T>,IToolWidget {
+        public ToolWidget(T data):base(data){}
     }
 }

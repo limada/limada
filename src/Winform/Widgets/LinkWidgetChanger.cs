@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -43,8 +43,8 @@ namespace Limaki.Winform.Widgets {
         public virtual ILinkWidget Link {
             get {
                 if (Scene == null) return null;
-                if (Scene.Selected is ILinkWidget) {
-                    return (ILinkWidget)Scene.Selected;
+                if (Scene.Focused is ILinkWidget) {
+                    return (ILinkWidget)Scene.Focused;
                 }
                 
                 return null;

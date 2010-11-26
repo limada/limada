@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.063
+ * Version 0.064
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -25,8 +25,6 @@ namespace Limaki.Drawing.Shapes {
     }
     public class VectorShape : Shape<Vector>, ILinkShape {
 
-        private static GraphicsPath helperPath = new GraphicsPath ();
-        private static Pen helperPen = new Pen (Color.Black);
 
         public VectorShape():base() {}
         public VectorShape(Vector data) : base(data) { }
@@ -81,13 +79,13 @@ namespace Limaki.Drawing.Shapes {
                     _dataStartY = _dataEndY;
                     _dataEndY = start;
                 }
-                return new Rectangle(_dataStartX, _dataStartY, _dataEndX - _dataStartX, _dataEndY-_dataStartY);
-            }
-        }
+                int _width = _dataEndX - _dataStartX;
+                int _heigth = _dataEndY - _dataStartY;
+                if (_width ==0) _width = 1;
+                if (_heigth==0) _heigth = 1;
 
-        public override Size Size {
-            get { return new Size (_data.End.X - _data.Start.X, _data.End.Y - _data.Start.Y); }
-            set { _data.End = Point.Add (_data.Start, value); }
+                return new Rectangle(_dataStartX, _dataStartY, _width, _heigth);
+            }
         }
 
         public override Point Location {
@@ -98,6 +96,13 @@ namespace Limaki.Drawing.Shapes {
                 Size = oldSize;
             }
         }
+
+        public override Size Size {
+            get { return new Size (_data.End.X - _data.Start.X, _data.End.Y - _data.Start.Y); }
+            set { _data.End = Point.Add (_data.Start, value); }
+        }
+
+
 
         public override void Transform(Matrice matrice) {
             Point[] p = { _data.Start, _data.End };
@@ -140,118 +145,18 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public override bool IsHit(Point p, int hitSize) {
-            // TODO: first ask, if p is in boundsRect
-            lock (helperPath) {
-                helperPath.Reset ();
-                helperPath.AddLine (_data.Start, _data.End);
-                helperPen.Width = hitSize;
-                //helperPen.Width = hitSize/2;
-                //helperPath.Widen (helperPen);
-                return helperPath.IsOutlineVisible (p, helperPen);
-            }
+            return Polygon.Intersect (p,_data.Hull(hitSize / 2, false));
+
         }
 
-        public Point[] PolygonHull_AtanSinCos(int width) {
-            Point[] result = new Point[4];
-            int x1 = _data.Start.X;
-            int x2 = _data.End.X;
-            int y1 = _data.Start.Y;
-            int y2 = _data.End.Y;
-            if ((x2 - x1) != 0.0) {
-                double theta = Math.Atan((y2 - y1) / (x2 - x1));
-                int dx = (int)(Math.Sin(theta) * width);
-                int dy = (int)(Math.Cos(theta) * width);
-                result[0] = new Point(x1 - dx, y1 + dy);
-                result[1] = new Point(x1 + dx, y1 - dy);
-                result[2] = new Point(x2 + dx, y2 - dy);
-                result[3] = new Point(x2 - dx, y2 + dy);
-
-            } else {
-                // special case, vertical line
-                result[0] = new Point(x1 - width, y1);
-                result[1] = new Point(x1 + width, y1);
-                result[2] = new Point(x2 + width, y2);
-                result[3] = new Point(x2 - width, y2);
-
-            }
-            return result;
+        public override Point[] Hull(int delta, bool extend) {
+            return _data.Hull(delta,extend);
         }
 
-        public virtual Point[] PolygonHull_Transform(int delta) {
-            Point[] line = null;
-
-                //if (_data.Start.X <= _data.End.X && _data.Start.Y <= _data.End.Y) {
-                if (_data.Start.X <= _data.End.X) {
-                    line = new Point[] { _data.Start, _data.End };
-                } else {
-                    line = new Point[] { _data.End, _data.Start };
-                }
-
-
-                Matrice lineMatrice = new Matrice ();
-                float angle = (float) Vector.Angle (Data);
-                lineMatrice.Rotate (-angle);
-                lineMatrice.TransformPoints (line);
-                Point[] poly = new Point[] {
-                                                 new Point (line[0].X - delta, line[0].Y - delta),
-                                                 new Point(line[1].X + delta, line[1].Y - delta),
-                                                 new Point (line[1].X + delta, line[1].Y + delta),
-                                                 new Point (line[0].X - delta, line[0].Y + delta)
-                                             };
-                lineMatrice.Reset ();
-                lineMatrice.Rotate (angle);
-                lineMatrice.TransformPoints (poly);
-                return poly;
-            
-        }
-
-        public virtual Point[] PolygonHull ( int delta ) {
-            // get it near:
-            double startX = _data.Start.X;
-            double startY = _data.Start.Y;
-            double endX = _data.End.X;
-            double endY = _data.End.Y;
-
-            double deltaSinusAlpha = 0;
-            double deltaSinusBeta = 0;
-
-            double a = endX - startX;
-            double b = endY - startY;
-
-            if (a == 0d) {
-                if (b > 0d) {
-                    deltaSinusBeta = delta;
-                } else {
-                    deltaSinusBeta = -delta;
-                }
-            } else if (b == 0d) {
-                if (a > 0d) {
-                    deltaSinusAlpha = delta;
-                } else {
-                    deltaSinusAlpha = -delta;
-                }
-            } else {
-                // calculation of the hypotenuse:
-                double c = Math.Sqrt((a * a + b * b));
-
-                // calculation of Sinus Alpha and Beta, factorized with delta:
-                deltaSinusAlpha = (delta * (a / c));
-                deltaSinusBeta = (delta * (b / c));
-            }
-
-            // extending the original line to make it longer:
-            startX = _data.Start.X - deltaSinusAlpha;
-            startY = _data.Start.Y - deltaSinusBeta;
-            endX = _data.End.X + deltaSinusAlpha;
-            endY = _data.End.Y + deltaSinusBeta;
-
-
-            return new Point[] {
-                new Point ((int)(startX - deltaSinusBeta), (int)(startY + deltaSinusAlpha)),
-                new Point ((int)(startX + deltaSinusBeta), (int)(startY - deltaSinusAlpha)),
-                new Point((int)(endX + deltaSinusBeta), (int)(endY - deltaSinusAlpha)),
-                new Point ((int)(endX - deltaSinusBeta), (int)(endY + deltaSinusAlpha))
-                                             };
+        public override Point[] Hull(Matrice matrix, int delta, bool extend) {
+            Vector vector = _data;
+            vector.Transform(matrix);
+            return vector.Hull(delta, extend);
         }
 
         #region ILinkShape Member
