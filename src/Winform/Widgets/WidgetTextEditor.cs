@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -21,6 +21,7 @@ using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Widgets;
+using Limaki.Drawing.Shapes;
 
 namespace Limaki.Winform.Widgets {
     /// <summary>
@@ -31,12 +32,12 @@ namespace Limaki.Winform.Widgets {
             this.Priority = ActionPriorities.SelectionPriority - 30;
         }
         ///<directed>True</directed>
-        ITransformer transformer = null;
+        ICamera camera = null;
         ContainerControl control = null;
-        public WidgetTextEditor(Handler<Scene> sceneHandler, ContainerControl control, ITransformer transformer)
+        public WidgetTextEditor(Handler<Scene> sceneHandler, ContainerControl control, ICamera camera)
             : this() {
             this.control = control;
-            this.transformer = transformer;
+            this.camera = camera;
             this.SceneHandler = sceneHandler;
             
         }
@@ -84,7 +85,7 @@ namespace Limaki.Winform.Widgets {
             if (widget == null)
                 return result;
 
-            Point sp = transformer.ToSource(p);
+            Point sp = camera.ToSource(p);
 
             result = widget.Shape.IsHit(sp, HitSize);
 
@@ -111,7 +112,7 @@ namespace Limaki.Winform.Widgets {
         public override void OnMouseUp(MouseEventArgs e) {
             if (!Exclusive) {
                 base.OnMouseUp(e);
-                Resolved = Resolved && !(Widget is ILinkWidget) &&
+                Resolved = Resolved && !(Widget is IEdgeWidget) &&
                            HitTest(Widget, e.Location);
                 Exclusive = Resolved;
                 if (Resolved) {
@@ -163,7 +164,7 @@ namespace Limaki.Winform.Widgets {
         private FontCache fontCache = new FontCache();
         void StyleEditor() {
             FontMemento newFont = new FontMemento (Style.Font);
-            newFont.SizeInPoints = transformer.Matrice.TransformFontSize (newFont.SizeInPoints);
+            newFont.SizeInPoints = camera.Matrice.TransformFontSize (newFont.SizeInPoints);
             editor.Font = fontCache.GetFont(newFont);
             
             editor.BorderStyle = BorderStyle.FixedSingle;
@@ -171,14 +172,25 @@ namespace Limaki.Winform.Widgets {
             editor.ScrollBars = ScrollBars.None;
             editor.WordWrap = true;
             editor.BackColor = Style.FillColor;
-
-            editor.Location = transformer.FromSource (Current.Location);
-            editor.Size = transformer.FromSource(Current.Size);
+            Point location = camera.FromSource(Current.Location);
+            Size size = camera.FromSource(Current.Size);
+            if (Current is IEdgeWidget) {
+                location = camera.FromSource(Current.Shape[Anchor.Center]);
+                size = 
+                    ShapeUtils.GetTextDimension (editor.Font, Current.Data.ToString (),new SizeF ())
+                    .ToSize();
+                size.Height = Math.Max(size.Height+2,(int)newFont.SizeInPoints+2);
+                size.Width = Math.Max (size.Width+2, (int)newFont.SizeInPoints*4);
+                location.X = location.X - size.Width/2;
+                location.Y = location.Y - size.Height/2;
+            }
+            editor.Location = location;
+            editor.Size = size;
             editor.AllowDrop = true;
             editor.DragOver += new DragEventHandler(editor_DragOver);
             editor.DragDrop += new DragEventHandler(editor_DragDrop);
             // does not work:
-            //editor.Scale (new SizeF (transformer.Matrice.Elements[0], transformer.Matrice.Elements[3]));
+            //editor.Scale (new SizeF (camera.Matrice.Elements[0], transformer.Matrice.Elements[3]));
         }
 
         void editor_DragDrop(object sender, DragEventArgs e) {
@@ -214,6 +226,7 @@ namespace Limaki.Winform.Widgets {
             TypeConverter converter = GetConverter(widget);
             if (converter != null) {
                 widget.Data = converter.ConvertFromString(text);
+                this.Scene.Graph.OnDataChanged(widget);
             }
         }
         #endregion

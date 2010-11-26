@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -27,7 +27,7 @@ namespace Limaki.Winform {
             
         public int gripSize = 4;
         public IShape TargetShape;
-        public ITransformer transformer;
+        public ICamera camera;
 
         private List<Anchor> _customGrips = null;
         public List<Anchor> CustomGrips {
@@ -75,12 +75,12 @@ namespace Limaki.Winform {
                 
             Rectangle clipBounds = Rectangle.Ceiling(g.ClipBounds);
             // get near:
-            Matrice matrix = this.transformer.Matrice;
-            Transformer transformer = new Transformer(matrix);
+            Matrice matrix = this.camera.Matrice;
+            Camera camera = new Camera(matrix);
 
             foreach (Anchor anchor in Grips) {
                 Point anchorPoint = TargetShape[anchor];
-                anchorPoint = transformer.FromSource(anchorPoint);
+                anchorPoint = camera.FromSource(anchorPoint);
                 Shape.Location = new Point(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
                 if (clipBounds.IntersectsWith(Shape.BoundsRect)) {
                     innerPainter.Render(g);

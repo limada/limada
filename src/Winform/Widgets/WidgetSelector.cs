@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -32,11 +32,11 @@ namespace Limaki.Winform.Widgets {
             this.Priority = ActionPriorities.SelectionPriority - 10;
         }
         ///<directed>True</directed>
-        ITransformer transformer = null;
+        ICamera camera = null;
         IWinControl control = null;
-        public WidgetSelector(Handler<Scene> sceneHandler, IWinControl control, ITransformer transformer):this() {
+        public WidgetSelector(Handler<Scene> sceneHandler, IWinControl control, ICamera camera):this() {
             this.control = control;
-            this.transformer = transformer;
+            this.camera = camera;
             this.SceneHandler = sceneHandler;
         }
 
@@ -63,7 +63,7 @@ namespace Limaki.Winform.Widgets {
 
         IWidget HitTest(Point p) {
             IWidget result = null;
-            Point sp = transformer.ToSource(p);
+            Point sp = camera.ToSource(p);
 
             result = Scene.Hit(sp, HitSize);
 
@@ -80,7 +80,8 @@ namespace Limaki.Winform.Widgets {
             if ((Form.ModifierKeys & Keys.Control) == 0) {
                 foreach (IWidget w in Scene.Selected.Elements) {
                     if (w != Current)
-                        Scene.Commands.Add (new Command<IWidget> (w));
+                        Scene.Commands.Add (new StateChangeCommand (w,
+                            new Pair<UiState>(UiState.Selected,UiState.None)));
                 }
                 Scene.Selected.Clear ();
                 if (Scene.Focused != null) {
@@ -98,13 +99,19 @@ namespace Limaki.Winform.Widgets {
                 Resolved = (Current != null)&&(Scene.Focused != Current);
                 Scene.Focused = Current;
                 if (Current != last && last != null) {
-                    Scene.Commands.Add(new Command<IWidget>(last));
+                    Scene.Commands.Add(
+                        new StateChangeCommand (last,
+                        new Pair<UiState>(UiState.Selected,UiState.None))
+                        );
                 }
                 if (Scene.Focused != null) {
-                    Point sp = transformer.ToSource(e.Location);
+                    Point sp = camera.ToSource(e.Location);
                     if (!Scene.Focused.Shape.IsBorderHit(sp, HitSize)) {
                         ClearSelection();
-                        Scene.Commands.Add(new Command<IWidget>(Scene.Focused));
+                        Scene.Commands.Add(
+                            new StateChangeCommand(Scene.Focused,
+                            new Pair<UiState>(UiState.None, UiState.Selected))
+                            );
                     }
                 }
                 if (Resolved && Current != null) {
@@ -112,7 +119,10 @@ namespace Limaki.Winform.Widgets {
                         ClearSelection();
                         Scene.Selected.Add(Current);
                     }
-                    Scene.Commands.Add(new Command<IWidget>(Current));
+                    Scene.Commands.Add(
+                        new StateChangeCommand(Current,
+                        new Pair<UiState>(UiState.None, UiState.Selected))
+                        );
                 }
                 control.CommandsExecute();
             }
@@ -129,7 +139,10 @@ namespace Limaki.Winform.Widgets {
             }
             if (Current != null && Scene.Selected.Contains(Current)&& e.Button== MouseButtons.None) {
                 if (Scene.Focused != null && Scene.Focused != Current) {
-                    Scene.Commands.Add (new Command<IWidget> (Scene.Focused));
+                    Scene.Commands.Add (
+                        new StateChangeCommand (Scene.Focused, 
+                        new Pair<UiState>(UiState.None,UiState.Focus))
+                        );
                 }
                 Scene.Focused = Current;
                 Scene.Hovered = null;
@@ -138,9 +151,14 @@ namespace Limaki.Winform.Widgets {
             }
             if (before != Current) {
                 if (before != null)
-                    Scene.Commands.Add(new Command<IWidget>(before));
+                    Scene.Commands.Add(
+                        new StateChangeCommand(before,
+                        new Pair<UiState>(UiState.Hovered, UiState.None)));
                 if (Current != null)
-                    Scene.Commands.Add(new Command<IWidget>(Current));
+                    Scene.Commands.Add(
+                        new StateChangeCommand(Current,
+                        new Pair<UiState>(UiState.None, UiState.Hovered))
+                        );
                 control.CommandsExecute ();
             }
             Resolved = false;

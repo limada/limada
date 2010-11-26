@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -108,7 +108,7 @@ namespace Limaki.Widgets.Layout {
                 if (showDebug) {
                     System.Console.WriteLine (levelItem.Node.Data.ToString()); }
                 #endregion
-                if (!(widget is ILinkWidget) && !visited.Contains((TItem)widget)) {
+                if (!(widget is IEdgeWidget) && !visited.Contains((TItem)widget)) {
                     #region debugcode
                     if (showDebug) {
                         visit++;
@@ -192,7 +192,7 @@ namespace Limaki.Widgets.Layout {
                         }
                     }
                 }
-                InvokeLinks();
+                InvokeEdges();
             }
         }
 
@@ -220,8 +220,8 @@ namespace Limaki.Widgets.Layout {
         DepthFirst, BreathFirst
     }
 
-    public class SceneWalker : Walker<IWidget, ILinkWidget> {
-        public SceneWalker(IGraph<IWidget, ILinkWidget> graph) : base(graph) { }
+    public class SceneWalker : Walker<IWidget, IEdgeWidget> {
+        public SceneWalker(IGraph<IWidget, IEdgeWidget> graph) : base(graph) { }
     }
 
 

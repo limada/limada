@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -30,7 +30,7 @@ namespace Limaki.Winform {
     /// </summary>
     public class SelectionShape : ShapeActionBase {
 
-        public SelectionShape(IWinControl control, ITransformer transformer) : base(control, transformer) { }
+        public SelectionShape(IWinControl control, ICamera camera) : base(control, camera) { }
 
         # region properties
         Type _shapeDataType = typeof(Rectangle);
@@ -78,7 +78,7 @@ namespace Limaki.Winform {
         public virtual bool HitBorder(Point p) {
             if (Shape == null)
                 return false;
-            Point sp = transformer.ToSource(p);
+            Point sp = camera.ToSource(p);
             bool result = Shape.IsBorderHit(sp, HitSize);
             return result;
         }
@@ -122,12 +122,12 @@ namespace Limaki.Winform {
             IShape prevShape = (Shape != null ? (IShape)Shape.Clone() : null);
             if (moving) {
                 if (Shape == null) return; // should never happen,but who knows?
-                Rectangle delta = transformer.ToSource(
+                Rectangle delta = camera.ToSource(
                     Rectangle.FromLTRB(e.Location.X, e.Location.Y, LastMousePos.X, LastMousePos.Y));
                 Shape.Location = Point.Subtract(Shape.Location, delta.Size);
             } else {
                 // create rectangle and transform into graphics coordinates
-                Rectangle rect = transformer.ToSource(
+                Rectangle rect = camera.ToSource(
                     Rectangle.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
                                        LastMousePos.X, LastMousePos.Y)
                     );
@@ -138,7 +138,7 @@ namespace Limaki.Winform {
                     Shape = ShapeFactory.Shape(ShapeDataType, rect.Location, rect.Size);
                 } else {
                     // do not normalize Links!!
-                    if (!(Shape is ILinkShape)) {
+                    if (!(Shape is IEdgeShape)) {
                         rect = ShapeUtils.NormalizedRectangle(rect);
                     }
                     Shape.Location = rect.Location;
@@ -172,7 +172,7 @@ namespace Limaki.Winform {
                 Rectangle b = newShape.BoundsRect;
                 
                 Rectangle bigger = Rectangle.Union (a, b);
-                bigger = transformer.FromSource(bigger);
+                bigger = camera.FromSource(bigger);
                 bigger = ShapeUtils.NormalizedRectangle(bigger);
 
                 if (bigger.Width <=halfborder || bigger.Height <= halfborder ) {
@@ -183,7 +183,7 @@ namespace Limaki.Winform {
                     bigger.Inflate(halfborder, halfborder);
 
                     Rectangle smaller = Rectangle.Intersect(a, b);
-                    smaller = transformer.FromSource(smaller);
+                    smaller = camera.FromSource(smaller);
                     smaller = ShapeUtils.NormalizedRectangle(smaller);
                     smaller.Inflate(-halfborder, -halfborder);
 
@@ -243,7 +243,7 @@ namespace Limaki.Winform {
                     Matrix transform = g.Transform;
                     g.Transform = emptyMatrix;
                     IShape paintShape = (IShape)this.Shape.Clone();
-                    transformer.FromSource(paintShape);
+                    camera.FromSource(paintShape);
 
                     Painter.RenderType = RenderType;
                     Painter.Shape = paintShape;

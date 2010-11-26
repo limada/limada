@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Limaki.Displays;
+using Limaki.Winform.Displays;
 using System.Drawing;
 
 namespace Limaki.Tests.Display {

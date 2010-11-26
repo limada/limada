@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -21,6 +21,7 @@ namespace Limaki.Drawing.Shapes {
     public struct Vector {
         public Point Start;
         public Point End;
+
         public Vector(Point location, Size size) {
             this.Start = location;
             this.End = location + size;
@@ -35,6 +36,17 @@ namespace Limaki.Drawing.Shapes {
             double dy = (v.End.Y - v.Start.Y);
             return Math.Atan(dy / dx) * (180 / Math.PI);// +((dy < 0) ? 180 : 0);
         }
+
+        public static double Length(Vector v) {
+            double startX = v.Start.X;
+            double startY = v.Start.Y;
+            double endX = v.End.X;
+            double endY = v.End.Y;
+            double a = endX - startX;
+            double b = endY - startY;
+            return Math.Sqrt ( a*a + b*b );
+        }
+
         public void Transform(Matrice matrice) {
             Point[] p = { Start, End };
             matrice.TransformPoints(p);
@@ -43,6 +55,67 @@ namespace Limaki.Drawing.Shapes {
         }
 
         #region Hull
+
+        public static Point[] Hull(
+            double startX, double startY,
+            double endX, double endY,
+            double deltaX, double deltaY) {
+
+            double deltaSinusAlpha = 0;
+            double deltaSinusBeta = 0;
+
+            double sinusAlpha = 0;
+            double sinusBeta = 0;
+
+            double a = endX - startX;
+            double b = endY - startY;
+
+            if (a == 0d) { // vertical line
+                sinusAlpha = 0;
+                if (b > 0d) {
+                    deltaSinusBeta = deltaY;
+                    sinusBeta = 1;
+                } else {
+                    deltaSinusBeta = -deltaY;
+                    sinusBeta = -1;
+                }
+            } else if (b == 0d) { // horizontal line
+                sinusBeta = 0;
+                if (a > 0d) {
+                    deltaSinusAlpha = deltaY;
+                    sinusAlpha = 1;
+                } else {
+                    deltaSinusAlpha = -deltaY;
+                    sinusAlpha = -1;
+                }
+            } else {
+                // calculation of the hypotenuse:
+                double c = Math.Sqrt((a * a + b * b));
+
+                sinusAlpha = (a / c);
+                sinusBeta = (b / c);
+
+                // calculation of Sinus Alpha and Beta, factorized with delta:
+                deltaSinusAlpha = (deltaY * sinusAlpha);
+                deltaSinusBeta = (deltaY * sinusBeta);
+            }
+
+            if (deltaX != 0) {
+                // extending the original line to make it longer:
+                startX = startX - sinusAlpha * deltaX;
+                startY = startY - sinusBeta * deltaX;
+                endX = endX + sinusAlpha * deltaX;
+                endY = endY + sinusBeta * deltaX;
+            }
+
+            return new Point[] {
+                new Point ((int)(startX - deltaSinusBeta), (int)(startY + deltaSinusAlpha)),
+                new Point ((int)(startX + deltaSinusBeta), (int)(startY - deltaSinusAlpha)),
+                new Point((int)(endX + deltaSinusBeta), (int)(endY - deltaSinusAlpha)),
+                new Point ((int)(endX - deltaSinusBeta), (int)(endY + deltaSinusAlpha))
+                                             };
+        }
+
         public static Point[] Hull(double startX, double startY, double endX, double endY, int delta, bool extend) {
             double deltaSinusAlpha = 0;
             double deltaSinusBeta = 0;
@@ -86,6 +159,7 @@ namespace Limaki.Drawing.Shapes {
                 new Point ((int)(endX - deltaSinusBeta), (int)(endY + deltaSinusAlpha))
                                              };
         }
+
         public static Point[] Hull(Point start, Point end, int delta, bool extend) {
             return Hull(start.X, start.Y, end.X, end.Y, delta, extend);
         }
@@ -98,6 +172,16 @@ namespace Limaki.Drawing.Shapes {
             double endY = End.Y;
             return Hull (startX, startY, endX, endY, delta,extend);
         }
+
+        public Point[] Hull(double deltaX, double deltaY) {
+            // get it near:
+            double startX = Start.X;
+            double startY = Start.Y;
+            double endX = End.X;
+            double endY = End.Y;
+            return Hull(startX, startY, endX, endY, deltaX, deltaY);
+        }
+
         #endregion
 
         /// <summary>

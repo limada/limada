@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -30,10 +30,10 @@ namespace Limaki.Winform.Widgets {
     public class WidgetLayerZoomAction:ZoomAction {
         public WidgetLayerZoomAction():base() {}
 
-        public WidgetLayerZoomAction(Handler<Scene> sceneHandler, IZoomTarget zoomTarget, IScrollTarget scrollTarget, ITransformer transformer)
+        public WidgetLayerZoomAction(Handler<Scene> sceneHandler, IZoomTarget zoomTarget, IScrollTarget scrollTarget, ICamera camera)
             : this() {
             this.zoomTarget = zoomTarget;
-            this.transformer = transformer;
+            this.camera = camera;
             this.scrollTarget = scrollTarget;
             this.SceneHandler = sceneHandler;
         }
@@ -43,7 +43,7 @@ namespace Limaki.Winform.Widgets {
             get { return SceneHandler(); }
         }
         public override void OnMouseUp(MouseEventArgs e) {
-            Point p = transformer.ToSource(e.Location);
+            Point p = camera.ToSource(e.Location);
             IWidget widget = Scene.Hit(p, 4);
             if (widget==null) {
                 base.OnMouseUp (e);

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -24,7 +24,7 @@ namespace Limaki.Drawing.Painters {
     /// <summary>
     /// A painter that draws text
     /// </summary>
-    public class StringPainter : IPainter {
+    public class StringPainter : IDataPainter {
 
         #region IPainter Member
 
@@ -63,8 +63,11 @@ namespace Limaki.Drawing.Painters {
             else if (dx == 0)
                 return 90;
             else
-                return Math.Atan(dy / dx) / Math.PI * 180d;// +((dy < 0) ? 180 : 0);
+                return Math.Atan(dy / dx) / Math.PI * 180d;
+            // +((dy < 0) ? 180 : 0);
         }
+
+
 
         public void Render(Graphics g) {
             IStyle style = this.Style;
@@ -72,14 +75,23 @@ namespace Limaki.Drawing.Painters {
             Font font = style.Font;
 
             if (AlignText && shape.ShapeDataType == typeof(Vector)) {
-                linedTextPath.Reset();
+                Vector vector = ( (VectorShape) shape ).Data;
+                float vlen = (float)Vector.Length(vector);
+                float vheight = font.SizeInPoints + 2;
                 lineMatrice.Reset();
-                Point c = shape[Anchor.Center];
-                lineMatrice.Translate(c.X, c.Y);
+                PointF c = new PointF(
+                            vector.Start.X + (vector.End.X - vector.Start.X) / 2f,
+                            vector.Start.Y + (vector.End.Y - vector.Start.Y) / 2f);
+                    //shape[Anchor.Center];
+                lineMatrice.Translate(c.X-1, c.Y-1);
+                lineMatrice.Rotate((float)Angle(vector));
+
+                linedTextPath.Reset();
                 linedTextPath.AddString
-                    (Text, font.FontFamily, (int)font.Style, font.Size, Point.Empty, stringFormat);
-                lineMatrice.Rotate((float)Angle(((VectorShape)shape).Data));
+                    (Text, font.FontFamily, (int)font.Style, font.Size,
+                    new RectangleF(new PointF(-vlen / 2f, -vheight/2f), new SizeF(vlen, vheight)), stringFormat);
                 linedTextPath.Transform(lineMatrice.Matrix);
+
                 g.DrawPath(GetPen(style.TextColor), linedTextPath);
                 g.FillPath(GetSolidBrush(style.FillColor), linedTextPath);
                 
@@ -94,6 +106,32 @@ namespace Limaki.Drawing.Painters {
                         g.DrawString(Text, font, GetSolidBrush(style.TextColor), rect, stringFormat);
                     }
             }
+        }
+
+        public virtual Point[] Measure(Matrice matrix, int delta, bool extend) {
+            IShape shape = this.Shape;
+            if (this.Text != null && shape!=null ) {
+                IStyle style = this.Style;
+                Font font = style.Font;
+                if (AlignText && shape.ShapeDataType == typeof (Vector)) {
+                    Vector vector = ((VectorShape) shape).Data;
+                    float vLen = (float)Vector.Length (vector);
+                    float fontSize = font.SizeInPoints + 2;
+                    SizeF size = new SizeF(vLen, fontSize);
+                    size = ShapeUtils.GetTextDimension (font, this.Text, stringFormat, size);
+                    if (size.Width == 0) {
+                        size.Width = vLen;
+                        size.Height = fontSize;
+                    }
+                    Point[] result = vector.Hull(-(vLen - size.Width) / 2, size.Height / 2);
+                    matrix.TransformPoints(result);
+                    return result;
+
+                } else {
+                    return shape.Hull(matrix, delta, extend);
+                }
+            } else
+                return null;
         }
 
         #endregion
@@ -199,6 +237,15 @@ namespace Limaki.Drawing.Painters {
         public virtual void Dispose(bool disposing) { }
         public virtual void Dispose() {
             Dispose(true);
+        }
+
+        #endregion
+
+        #region IDataPainter Member
+
+        public object Data {
+            get { return Text; }
+            set {Text = value.ToString (); }
         }
 
         #endregion

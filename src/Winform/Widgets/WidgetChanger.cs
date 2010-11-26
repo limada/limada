@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -28,8 +28,8 @@ namespace Limaki.Winform.Widgets {
     /// </summary>
     public class WidgetChanger : ShapeActionBase {
         ///<directed>True</directed>
-        public WidgetChanger(IWinControl control, ITransformer transformer)
-            : base(control, transformer) {
+        public WidgetChanger(IWinControl control, ICamera camera)
+            : base(control, camera) {
             initClip ();
         }
 
@@ -63,7 +63,7 @@ namespace Limaki.Winform.Widgets {
         }
 
         public override bool HitTest(Point p) {
-            Point sp = transformer.ToSource(p);
+            Point sp = camera.ToSource(p);
             bool result = ((Widget != null) && (Widget.Shape!=null)&& (Widget.Shape.IsBorderHit(sp, HitSize)));
             Anchor anchor = Anchor.None;
             if (result && ShowGrips) {
@@ -71,7 +71,7 @@ namespace Limaki.Winform.Widgets {
                 if (!Resolved) {
                     hitAnchor = anchor;
                 }
-                if (!(Widget is ILinkWidget))
+                if (!(Widget is IEdgeWidget))
                     SelectorHelper.SetCursor(anchor, result, p, savedCursor);
             }
 
@@ -81,7 +81,7 @@ namespace Limaki.Winform.Widgets {
 
         public override void OnMouseDown(MouseEventArgs e) {
             Resolved = false;
-            if (Widget != null && !(Widget is ILinkWidget)) {
+            if (Widget != null && !(Widget is IEdgeWidget)) {
                 base.OnMouseDown(e);
             }
         }
@@ -122,12 +122,12 @@ namespace Limaki.Winform.Widgets {
 
         protected virtual bool checkResizing() {
             return Resolved && resizing &&
-            this.transformer.Matrice.Elements[0] > 0.01f &&
-            this.transformer.Matrice.Elements[3] > 0.01f;
+            this.camera.Matrice.Elements[0] > 0.01f &&
+            this.camera.Matrice.Elements[3] > 0.01f;
         }
 
         protected override void OnMouseMoveResolved(MouseEventArgs e) {
-            if (!(Widget is ILinkWidget) && (moving || resizing)) {
+            if (!(Widget is IEdgeWidget) && (moving || resizing)) {
                 ShowGrips = true;
 
                 Resolved = (Resolved) && (Widget != null);
@@ -135,12 +135,12 @@ namespace Limaki.Winform.Widgets {
                     // save previous shape
                     ICommand<IWidget> command = null;
                     if (moving) {
-                        Rectangle delta = transformer.ToSource(
+                        Rectangle delta = camera.ToSource(
                             Rectangle.FromLTRB(e.Location.X, e.Location.Y,
                                                LastMousePos.X, LastMousePos.Y));
 
                         foreach(IWidget selected in Scene.Selected.Elements) {
-                            if (!(selected is ILinkWidget)) {
+                            if (!(selected is IEdgeWidget)) {
                                 Scene.Commands.Add (new MoveByCommand (selected, delta.Size));
                                 foreach (IWidget widget in Scene.AffectedByChange (selected)) {
                                     Scene.Commands.Add (new LayoutCommand<IWidget> (widget, LayoutActionType.Justify));
@@ -149,12 +149,12 @@ namespace Limaki.Winform.Widgets {
                         }
 
                     } else if (checkResizing()) {
-                        Rectangle rect = transformer.ToSource(
+                        Rectangle rect = camera.ToSource(
                             Rectangle.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
                                                LastMousePos.X, LastMousePos.Y));
 
                         // do not normalize Links!!
-                        if (!(Widget.Shape is ILinkShape)) {
+                        if (!(Widget.Shape is IEdgeShape)) {
                             rect = ShapeUtils.NormalizedRectangle(rect);
                         }
                         command = new ResizeCommand (Widget, rect);

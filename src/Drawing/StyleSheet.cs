@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -55,8 +55,9 @@ namespace Limaki.Drawing {
                     style.FillColor = Color.FromArgb(100, this.ParentStyle.FillColor);
                     Styles[style.Name] = style;
                 }
-                if (!Styles.ContainsKey(StyleNames.LinkStyle)) {
-                    IStyle style = new Style(StyleNames.LinkStyle, this.ParentStyle);
+                if (!Styles.ContainsKey(StyleNames.EdgeStyle)) {
+                    IStyle style = new Style(StyleNames.EdgeStyle, this.ParentStyle);
+                    style.PaintData = false;
                     style.Font = new Font (
                         this.ParentStyle.Font.Name, 
                         this.ParentStyle.Font.SizeInPoints-2,
@@ -66,18 +67,19 @@ namespace Limaki.Drawing {
                     style.Pen.EndCap = LineCap.ArrowAnchor;
                     style.Pen.StartCap = LineCap.Round;
                     Styles[style.Name] = style;
+                    
                 }
-                if (!Styles.ContainsKey(StyleNames.LinkHoveredStyle)) {
-                    IStyle linkStyle = Styles[StyleNames.LinkStyle];
-                    IStyle style = new Style(StyleNames.LinkHoveredStyle, linkStyle);
+                if (!Styles.ContainsKey(StyleNames.EdgeHoveredStyle)) {
+                    IStyle edgeStyle = Styles[StyleNames.EdgeStyle];
+                    IStyle style = new Style(StyleNames.EdgeHoveredStyle, edgeStyle);
                     style.Pen = (Pen)style.Pen.Clone();
-                    style.PenColor = Color.FromArgb(150, linkStyle.PenColor);
+                    style.PenColor = Color.FromArgb(150, edgeStyle.PenColor);
                     style.Pen.Color = style.PenColor;
                     Styles[style.Name] = style;
                 }
-                if (!Styles.ContainsKey(StyleNames.LinkSelectedStyle)) {
-                    IStyle linkStyle = Styles[StyleNames.LinkStyle];
-                    IStyle style = new Style(StyleNames.LinkSelectedStyle, linkStyle);
+                if (!Styles.ContainsKey(StyleNames.EdgeSelectedStyle)) {
+                    IStyle edgeStyle = Styles[StyleNames.EdgeStyle];
+                    IStyle style = new Style(StyleNames.EdgeSelectedStyle, edgeStyle);
                     style.Pen = (Pen)style.Pen.Clone();
                     style.Pen.Width = style.Pen.Width * 2;
                     Styles[style.Name] = style;
@@ -157,50 +159,50 @@ namespace Limaki.Drawing {
             }
         }
 
-        IStyle _linkStyle = null;
-        public IStyle LinkStyle {
+        IStyle _edgeStyle = null;
+        public IStyle EdgeStyle {
             get {
-                if (_linkStyle == null)
-                    _linkStyle = Styles[StyleNames.LinkStyle];
-                return _linkStyle;
+                if (_edgeStyle == null)
+                    _edgeStyle = Styles[StyleNames.EdgeStyle];
+                return _edgeStyle;
 
             }
             set {
-                if (value != _linkStyle && value != null) {
-                    Styles[StyleNames.LinkStyle] = value;
-                    _linkStyle = value;
+                if (value != _edgeStyle && value != null) {
+                    Styles[StyleNames.EdgeStyle] = value;
+                    _edgeStyle = value;
                 }
             }
         }
 
-        IStyle _linkSelectedStyle = null;
-        public IStyle LinkSelectedStyle {
+        IStyle _edgeSelectedStyle = null;
+        public IStyle EdgeSelectedStyle {
             get {
-                if (_linkSelectedStyle == null)
-                    _linkSelectedStyle = Styles[StyleNames.LinkSelectedStyle];
-                return _linkSelectedStyle;
+                if (_edgeSelectedStyle == null)
+                    _edgeSelectedStyle = Styles[StyleNames.EdgeSelectedStyle];
+                return _edgeSelectedStyle;
 
             }
             set {
-                if (value != _linkSelectedStyle && value != null) {
-                    Styles[StyleNames.LinkSelectedStyle] = value;
-                    _linkSelectedStyle = value;
+                if (value != _edgeSelectedStyle && value != null) {
+                    Styles[StyleNames.EdgeSelectedStyle] = value;
+                    _edgeSelectedStyle = value;
                 }
             }
         }
 
-        IStyle _linkHoveredStyle = null;
-        public IStyle LinkHoveredStyle {
+        IStyle _edgeHoveredStyle = null;
+        public IStyle EdgeHoveredStyle {
             get {
-                if (_linkHoveredStyle == null)
-                    _linkHoveredStyle = Styles[StyleNames.LinkHoveredStyle];
-                return _linkHoveredStyle;
+                if (_edgeHoveredStyle == null)
+                    _edgeHoveredStyle = Styles[StyleNames.EdgeHoveredStyle];
+                return _edgeHoveredStyle;
 
             }
             set {
-                if (value != _linkHoveredStyle && value != null) {
-                    Styles[StyleNames.LinkHoveredStyle] = value;
-                    _linkHoveredStyle = value;
+                if (value != _edgeHoveredStyle && value != null) {
+                    Styles[StyleNames.EdgeHoveredStyle] = value;
+                    _edgeHoveredStyle = value;
                 }
             }
         }
@@ -212,9 +214,9 @@ namespace Limaki.Drawing {
         public const string DefaultStyle = "DefaultStyle";
         public const string SelectedStyle = "SelectedStyle";
         public const string HoveredStyle = "HoveredStyle";
-        public const string LinkStyle = "LinkStyle";
-        public const string LinkSelectedStyle = "LinkSelectedStyle";
-        public const string LinkHoveredStyle = "LinkHoveredStyle";
+        public const string EdgeStyle = "EdgeStyle";
+        public const string EdgeSelectedStyle = "EdgeSelectedStyle";
+        public const string EdgeHoveredStyle = "EdgeHoveredStyle";
 
     }
 }

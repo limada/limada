@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -52,52 +52,7 @@ namespace Limaki.Widgets {
             set { _layout = value; }
         }
 
-        private IStyleSheet _styleSheet = null;
-        public virtual IStyleSheet StyleSheet {
-            get {
-                if ((_styleSheet == null) && (Parent != null)) {
-                    return Parent.StyleSheet;
-                }
-                return _styleSheet;
-            }
-            set { _styleSheet = value; }
-        }
 
-        private PainterFactory _painterFactory = null;
-        public virtual PainterFactory PainterFactory {
-            get {
-                if ((_painterFactory == null) && (Parent != null)) {
-                    return Parent.PainterFactory;
-                }
-                return _painterFactory;
-            }
-            set { _painterFactory = value; }
-        }
 
-        private Dictionary<Type, IPainter> _painterCache = null;
-        protected Dictionary<Type, IPainter> PainterCache {
-            get {
-                if (_painterCache == null) {
-                    if (Parent != null) {
-                        return Parent.PainterCache;
-                    } else {
-                        _painterCache = new Dictionary<Type, IPainter>();
-                    }
-                }
-                return _painterCache;
-            }
-            set { _painterCache = value; }
-        }
-
-        public virtual IPainter GetPainter(Type type) {
-            IPainter result = null;
-            Dictionary<Type, IPainter> painterCache = PainterCache;
-            painterCache.TryGetValue(type, out result);
-            if (result == null) {
-                result = PainterFactory.CreatePainter(type);
-                painterCache.Add(type, result);
-            }
-            return result;
-        }
     }
 }

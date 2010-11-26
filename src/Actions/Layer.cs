@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -47,9 +47,9 @@ namespace Limaki.Actions {
         #region IDisposable Member
 
         public virtual void Clear() {
-            if (_transformer != null) {
-                _transformer.Dispose();
-                _transformer = null;
+            if (_camera != null) {
+                _camera.Dispose();
+                _camera = null;
             }
         }
 
@@ -71,15 +71,15 @@ namespace Limaki.Actions {
         #endregion
 
         # region ITransformer member
-        ITransformer _transformer;
+        ICamera _camera;
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual ITransformer Transformer {
+        public virtual ICamera Camera {
             get {
-                if (_transformer == null) {
-                    _transformer = new DelegatingTransformer(GetMatrix);
+                if (_camera == null) {
+                    _camera = new DelegatingCamera(GetMatrix);
                 }
-                return _transformer;
+                return _camera;
             }
         }
 

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -30,11 +30,11 @@ namespace Limaki.Widgets {
         #region Graph
 
 
-        private IGraph<IWidget, ILinkWidget> _graph = null;
-        public IGraph<IWidget,ILinkWidget> Graph {
+        private IGraph<IWidget, IEdgeWidget> _graph = null;
+        public IGraph<IWidget,IEdgeWidget> Graph {
             get {
                 if (_graph == null) {
-                    _graph = new Graph<IWidget,ILinkWidget>();
+                    _graph = new Graph<IWidget,IEdgeWidget>();
                     _spatialIndex = null;
                 }
                 return _graph;
@@ -45,11 +45,11 @@ namespace Limaki.Widgets {
             }
         }
 
-        public bool ChangeLink(ILinkWidget link, IWidget target, bool asRoot) {
+        public bool ChangeLink(IEdgeWidget edge, IWidget target, bool asRoot) {
             bool result = true;
             // test if there is a loop:
-            if (target is ILinkWidget) {
-                foreach (IWidget widget in this.AffectedByChange(link)) {
+            if (target is IEdgeWidget) {
+                foreach (IWidget widget in this.AffectedByChange(edge)) {
                     if (widget == target) {
                         return false;
                     }
@@ -57,13 +57,11 @@ namespace Limaki.Widgets {
             }
             IWidget oldTarget = null;
             if (asRoot) {
-                oldTarget = link.Root;
-                link.Root = target;
+                oldTarget = edge.Root;
             } else {
-                oldTarget = link.Leaf;
-                link.Leaf = target;
+                oldTarget = edge.Leaf;
             }
-            Graph.ChangeEdge(link, oldTarget, target);
+            Graph.ChangeEdge(edge, oldTarget, target);
             return result;
         }
 
@@ -73,14 +71,15 @@ namespace Limaki.Widgets {
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public IEnumerable<IWidget> AffectedByChange(IWidget source) {
-            // preorder-traversal; could be changed to Graph.PreorderEdges(source);
-            foreach (ILinkWidget widget in Graph.Edges(source)) {
-                yield return widget;
-                foreach (ILinkWidget link in AffectedByChange(widget)) {
-                    yield return link;
-                }
-            }
+        public IEnumerable<IEdgeWidget> AffectedByChange(IWidget source) {
+             //preorder-traversal; could be changed to Graph.PreorderEdges(source);
+            //foreach (IEdgeWidget widget in Graph.Edges(source)) {
+            //    yield return widget;
+            //    foreach (IEdgeWidget edge in AffectedByChange(widget)) {
+            //        yield return edge;
+            //    }
+            //}
+            return Graph.Twig(source);
         }
 
         #endregion
@@ -123,8 +122,8 @@ namespace Limaki.Widgets {
         object IWidget.Data {
             get { return this.Graph; }
             set {
-                if (value is IGraph<IWidget,ILinkWidget>)
-                    this.Graph = (IGraph<IWidget, ILinkWidget>)value;
+                if (value is IGraph<IWidget,IEdgeWidget>)
+                    this.Graph = (IGraph<IWidget, IEdgeWidget>)value;
             }
         }
 
@@ -135,7 +134,7 @@ namespace Limaki.Widgets {
         public IEnumerable<IWidget> Elements {
             get {
                 foreach (IWidget widget in Graph) {
-                    if (!(widget is ILinkWidget)) {
+                    if (!(widget is IEdgeWidget)) {
                         yield return widget;
                     }
                 }
@@ -146,8 +145,8 @@ namespace Limaki.Widgets {
         }
 
         public void Add(IWidget widget) {
-            if (widget is ILinkWidget) {
-                Graph.Add((ILinkWidget)widget);
+            if (widget is IEdgeWidget) {
+                Graph.Add((IEdgeWidget)widget);
             } else {
                 Graph.Add(widget);
             }
@@ -156,12 +155,12 @@ namespace Limaki.Widgets {
 
         public virtual bool Remove(IWidget widget) {
             bool result = false;
-            if (widget is ILinkWidget) {
-                result = Graph.Remove((ILinkWidget)widget);
+			RemoveBounds (widget);
+            if (widget is IEdgeWidget) {
+                result = Graph.Remove((IEdgeWidget)widget);
             } else {
                 result = Graph.Remove(widget);
             }
-            RemoveBounds (widget);
             return result;
         }
 
@@ -182,6 +181,7 @@ namespace Limaki.Widgets {
             get { return Graph.Count; }
         }
         #endregion
+        
         #region Geo-Location
 
         const bool useQuadTree = true;
@@ -205,6 +205,7 @@ namespace Limaki.Widgets {
             return SpatialIndex.Query (clipBounds);
         }
         #endregion
+        
         #region Action-Handling (selection, hit-tests, commandQueue)
 
         private IWidget _selected = null;
@@ -298,6 +299,22 @@ namespace Limaki.Widgets {
 
         #endregion
 
+
+        #region ICloneable Member
+
+        //object ICloneable.Clone() {
+        //    throw new Exception("The method or operation is not implemented.");
+        //}
+
+        //#endregion
+
+        //#region IDisposable Member
+
+        //void IDisposable.Dispose() {
+        //    //throw new Exception("The method or operation is not implemented.");
+        //}
+
+        #endregion
     }
 
 

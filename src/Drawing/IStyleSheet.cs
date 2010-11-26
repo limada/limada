@@ -4,8 +4,8 @@ namespace Limaki.Drawing {
         IStyle DefaultStyle { get; set; }
         IStyle SelectedStyle { get; set; }
         IStyle HoveredStyle { get; set; }
-        IStyle LinkStyle { get; set; }
-        IStyle LinkSelectedStyle { get; set; }
-        IStyle LinkHoveredStyle { get; set; }
+        IStyle EdgeStyle { get; set; }
+        IStyle EdgeSelectedStyle { get; set; }
+        IStyle EdgeHoveredStyle { get; set; }
     }
 }

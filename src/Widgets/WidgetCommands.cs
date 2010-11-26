@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using Limaki.Common;
 using Limaki.Actions;
 
 namespace Limaki.Widgets {
@@ -39,6 +40,12 @@ namespace Limaki.Widgets {
             this.Target.Shape.Location = this.Parameter.Location;
             this.Target.Shape.Size = this.Parameter.Size;
         }
+
+    }
+    public class StateChangeCommand : Command<IWidget, Pair<UiState>> {
+        public StateChangeCommand(IWidget target, Pair<UiState> param) : base(target, param) { }
+
+        public override void Execute() {}
 
     }
 }

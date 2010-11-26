@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -31,10 +31,10 @@ namespace Limaki.Winform {
 		///<directed>True</directed>
         protected IScrollTarget scrollTarget = null;
 		///<directed>True</directed>
-        protected ITransformer transformer = null;
-        public ZoomAction(IZoomTarget zoomTarget, IScrollTarget scrollTarget, ITransformer transformer):this() {
+        protected ICamera camera = null;
+        public ZoomAction(IZoomTarget zoomTarget, IScrollTarget scrollTarget, ICamera camera):this() {
             this.zoomTarget = zoomTarget;
-            this.transformer = transformer;
+            this.camera = camera;
             this.scrollTarget = scrollTarget;
         }
 
@@ -71,7 +71,7 @@ namespace Limaki.Winform {
             bool doZoomInOut = (e.Button == MouseButtons.Left) || (e.Button == MouseButtons.Right);
             if (doZoomInOut) {
                 // get the mouse position as source coordinates
-                Point mousePosSource = transformer.ToSource(e.Location);
+                Point mousePosSource = camera.ToSource(e.Location);
 
                 if (e.Button == MouseButtons.Left)
                     ZoomIn();
@@ -81,7 +81,7 @@ namespace Limaki.Winform {
                 zoomTarget.UpdateZoom();
 
                 // get the transformed mouse position as transformed coordinates
-                Point mousePosTransformed = transformer.FromSource(mousePosSource);
+                Point mousePosTransformed = camera.FromSource(mousePosSource);
 
                 scrollTarget.ScrollPosition =
                     new Point(

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -22,25 +22,26 @@ namespace Limaki.Widgets {
     public class WidgetRenderer:Renderer {
         public WidgetRenderer(Renderer parent):base(parent) {}
         
-        private StringPainter stringPainter = new StringPainter ();
-
         public virtual void Render(Graphics g, IWidget widget) {
             IStyle style = Layout.GetStyle (widget);
             IShape shape = widget.Shape;
 
-            IPainter painter = GetPainter(widget.Shape.GetType());
-            if (painter != null) {
-                painter.Shape = shape;
-                painter.Style = style;
-                painter.Render(g);
+            IPainter shapePainter = Layout.GetPainter(widget.Shape.GetType());
+            if (shapePainter != null) {
+                shapePainter.Shape = shape;
+                shapePainter.Style = style;
+                shapePainter.Render(g);
             }
 
-            bool drawText = !( widget is ILinkWidget ); // we don't draw Text on Links in this release
-            if (drawText) { 
-                stringPainter.Text = widget.Data.ToString();
-                stringPainter.Style = style;
-                stringPainter.Shape = shape;
-                stringPainter.Render(g);
+            bool paintData = style.PaintData;
+            if (paintData) {
+                IDataPainter dataPainter = Layout.GetPainter (widget.Data.GetType ()) as IDataPainter;
+                if (dataPainter != null) {
+                    dataPainter.Data = widget.Data;
+                    dataPainter.Style = style;
+                    dataPainter.Shape = shape;
+                    dataPainter.Render(g);
+                }
             }
         }
         

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -22,7 +22,7 @@ using System.Windows.Forms;
 using NUnit.Framework;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Displays;
+using Limaki.Winform.Displays;
 using Limaki.UnitTest;
 using Limaki.Winform;
 using Limaki.Actions;
@@ -96,7 +96,7 @@ namespace Limaki.Tests.Display {
             Point position = new Point(0, 0);
 
             Point max = new Point(Display.ClientRectangle.Right, Display.ClientRectangle.Bottom);
-            this.ReportMessage("Selector runs to " + max);
+            this.ReportDetail("Selector runs to " + max);
 
             ticker.Start();
 
@@ -119,13 +119,11 @@ namespace Limaki.Tests.Display {
             }
             
             ticker.Stop();
-            this.ReportMessage(
+            this.ReportDetail(
                 "Selector-Test" + " \t" +
                 ticker.ElapsedInSec() + " sec \t" +
-                ticker.FramePerSecond() + " fps \t" 
-                #if Widget
-                +((WidgetLayer)Display.DataLayer).sceneRenderer.iWidgets + " widgets \t"
-                #endif
+                ticker.FramePerSecond() + " fps \t" +
+                ((WidgetLayer)Display.DataLayer).sceneRenderer.iWidgets + " widgets \t"
                 );
             ticker.Disinstrument(Display);
             Display.ZoomAction.Enabled = zoomEnabled;
@@ -135,7 +133,7 @@ namespace Limaki.Tests.Display {
         }
 
         public virtual void RunFrameTest(Frame frame) {
-            this.ReportMessage("Test run for " + secToTest + " seconds " + frame.ToString() + "...");
+            this.ReportDetail("Test run for " + secToTest + " seconds " + frame.ToString() + "...");
 
             ticker.Start();
 
@@ -165,7 +163,7 @@ namespace Limaki.Tests.Display {
                 " fps (" + frame.ToString() + "),";
             if (layer is ImageLayer)
                 fpsResult += ((ImageLayer)Display.DataLayer).drawMode;
-            this.ReportMessage(fpsResult);
+            this.ReportDetail(fpsResult);
         }
     }
 

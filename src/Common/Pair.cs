@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -14,6 +14,14 @@
  */
 
 namespace Limaki.Common {
+    public struct Pair<T> {
+        public T One;
+        public T Two;
+        public Pair(T one, T two) {
+            One = one;
+            Two = two;
+        }
+    }
     public struct Pair<T,U> {
         public T One;
         public U Two;

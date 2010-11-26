@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -16,7 +16,7 @@
 
 using System.Drawing;
 using Limaki.Common;
-using Limaki.Displays;
+using Limaki.Winform.Displays;
 using Limaki.Drawing;
 using Limaki.Widgets;
 using Limaki.Actions;
@@ -34,26 +34,28 @@ namespace Limaki.Tests.Widget {
         bool dragDropEnabled = false;
         ILayout<Scene, IWidget> oldlayout = null;
         public override void Setup() {
-            oldlayout = ((SceneControler<Scene, IWidget>)Display.CommandAction).Layout;
-            ((SceneControler<Scene, IWidget>)Display.CommandAction).Layout = null;
+            if (Display != null) {
+                oldlayout = ( (SceneControler<Scene, IWidget>) Display.LayoutControler ).Layout;
+                ( (SceneControler<Scene, IWidget>) Display.LayoutControler ).Layout = null;
+            }
             base.Setup();
             // this is neccessary as the mouse cursor returns after a long time
             // back to its position and activates WidgetTextEditor
-            ((SceneControler<Scene, IWidget>)Display.CommandAction).Layout =
+            ((SceneControler<Scene, IWidget>)Display.LayoutControler).Layout =
                 new BenchmarkOneData.LongtermPerformanceLayout(
                     Display.displayKit.dataHandler,Data.styleSheet);
             ( (WidgetLayer) Display.DataLayer ).Layout =
-                ( (SceneControler<Scene, IWidget>) Display.CommandAction ).Layout;
+                ( (SceneControler<Scene, IWidget>) Display.LayoutControler ).Layout;
             Data.Arrange (Display.Data);
             Display.CommandsInvoke ();
             editorEnabled = Display.WidgetTextEditor.Enabled;
             dragDropEnabled = Display.WidgetDragDrop.Enabled;
             Display.WidgetChanger.Enabled = true;
-            Display.LinkWidgetChanger.Enabled = true;
+            Display.EdgeWidgetChanger.Enabled = true;
             Display.WidgetTextEditor.Enabled = false;
             Display.WidgetDragDrop.Enabled = false;
             Display.AddWidgetAction.Enabled = false;
-            Display.AddLinkAction.Enabled = false;
+            Display.AddEdgeAction.Enabled = false;
 
 
             ( (WidgetLayer) Display.DataLayer ).sceneRenderer.iWidgets = 0;
@@ -63,7 +65,8 @@ namespace Limaki.Tests.Widget {
             base.TearDown();
             Display.WidgetTextEditor.Enabled = editorEnabled;
             Display.WidgetDragDrop.Enabled = dragDropEnabled;
-            ( (SceneControler<Scene, IWidget>) Display.CommandAction ).Layout = oldlayout;
+            if (oldlayout != null)
+            ( (SceneControler<Scene, IWidget>) Display.LayoutControler ).Layout = oldlayout;
         }
 
         BenchmarkOneData Data = null;
@@ -91,10 +94,10 @@ namespace Limaki.Tests.Widget {
         public void MoveNode1(Rectangle bounds) {
             NeutralPosition ();
             Point startposition = Data.Node1.Shape[Anchor.LeftTop]+new Size(10,0);
-            Point position = transformer.FromSource(startposition);
+            Point position = camera.FromSource(startposition);
 
             MouseEventArgs e = new MouseEventArgs(MouseButtons.Left, 0, position.X, position.Y, 0);
-            Display.ActionDispatcher.OnMouseDown (e);
+            Display.EventControler.OnMouseDown (e);
 
             Assert.AreSame (Scene.Focused, Data.Node1);
 
@@ -127,19 +130,19 @@ namespace Limaki.Tests.Widget {
             v.End = startposition;
             MoveAlongLine(v);
 
-            position = transformer.FromSource (v.End);
+            position = camera.FromSource (v.End);
             e = new MouseEventArgs(MouseButtons.Left, 0, position.X, position.Y, 0);
-            Display.ActionDispatcher.OnMouseUp(e);
+            Display.EventControler.OnMouseUp(e);
         }
 
         [Test]
         public void MoveAlongSceneBoundsTest() {
             string testName = "MoveAlongSceneBoundsTest";
-            this.ReportMessage (testName);
+            this.ReportDetail (testName);
             
             ticker.Start();
             Rectangle bounds = Scene.Shape.BoundsRect;
-            this.ReportMessage ("bounds:\t" + bounds);
+            this.ReportDetail ("bounds:\t" + bounds);
             MoveNode1 (bounds);
             
             // this test does not work with zoom!
@@ -170,7 +173,7 @@ namespace Limaki.Tests.Widget {
             }
 
             ticker.Stop ();
-            this.ReportMessage (
+            this.ReportDetail (
                 testName + " \t" +
                 ticker.ElapsedInSec () + " sec \t" +
                 ticker.FramePerSecond () + " fps \t"+

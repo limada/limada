@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -26,7 +26,7 @@ namespace Limaki.Winform {
     /// </summary>
     public abstract class ShapeActionBase : SelectionBase {
 
-        public ShapeActionBase(IWinControl control, ITransformer transformer) : base(control, transformer) { }
+        public ShapeActionBase(IWinControl control, ICamera camera) : base(control, camera) { }
 
         private int _hitSize = 5;
         public virtual int HitSize {
@@ -44,7 +44,7 @@ namespace Limaki.Winform {
         public virtual Anchor HitAnchor(Point p) {
             if (Shape == null)
                 return Anchor.None;
-            Point sp = transformer.ToSource(p);
+            Point sp = camera.ToSource(p);
             Anchor result = Shape.IsAnchorHit(sp, HitSize);
             return result;
         }
@@ -65,15 +65,15 @@ namespace Limaki.Winform {
                     switch (hitAnchor) {
                         case Anchor.MiddleTop:
                         case Anchor.MiddleBottom:
-                            _value = transformer.FromSource(Shape[Anchor.LeftTop]);
+                            _value = camera.FromSource(Shape[Anchor.LeftTop]);
                             _value = new Point(_value.X, value.Y);
                             break;
                         case Anchor.LeftMiddle:
-                            _value = transformer.FromSource(Shape[Anchor.LeftTop]);
+                            _value = camera.FromSource(Shape[Anchor.LeftTop]);
                             _value = new Point(value.X, _value.Y);
                             break;
                         case Anchor.RightMiddle:
-                            _value = transformer.FromSource(Shape[Anchor.RightBottom]);
+                            _value = camera.FromSource(Shape[Anchor.RightBottom]);
                             _value = new Point(value.X, _value.Y);
                             break;
                     }
@@ -104,7 +104,7 @@ namespace Limaki.Winform {
                     if (Resolved) {
                         moving = false;
                         this.LastMousePos = e.Location;
-                        this.MouseDownPos = transformer.FromSource(Shape[anchor]);
+                        this.MouseDownPos = camera.FromSource(Shape[anchor]);
                     }
                 } else {
                     Resolved = (Shape != null) && moving;
@@ -211,8 +211,8 @@ namespace Limaki.Winform {
 
                         Rectangle smaller = Rectangle.Intersect(a, b);
                         Rectangle bigger = Rectangle.Union(a, b);
-                        smaller = transformer.FromSource(smaller);
-                        bigger = transformer.FromSource(bigger);
+                        smaller = camera.FromSource(smaller);
+                        bigger = camera.FromSource(bigger);
 
                         smaller.Inflate(-halfborder, -halfborder);
                         bigger.Inflate(halfborder, halfborder);
@@ -243,7 +243,7 @@ namespace Limaki.Winform {
                     // the have do redraw the oldShape and newShape area
                     Rectangle invalidRect = Rectangle.Union(oldShape.BoundsRect, newShape.BoundsRect);
                     // transform rectangle to control coordinates
-                    invalidRect = transformer.FromSource(invalidRect);
+                    invalidRect = camera.FromSource(invalidRect);
 
                     invalidRect.Inflate(halfborder, halfborder);
                     control.Invalidate(invalidRect);
@@ -261,7 +261,7 @@ namespace Limaki.Winform {
                 g.Transform = emptyMatrix;
 
                 gripPainter.gripSize = this.GripSize;
-                gripPainter.transformer = this.transformer;
+                gripPainter.camera = this.camera;
                 gripPainter.Style = this.Style;
                 gripPainter.TargetShape = this.Shape;
                 gripPainter.Render(g);

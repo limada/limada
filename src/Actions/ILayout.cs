@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -15,6 +15,9 @@
 using Limaki.Widgets;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Drawing.Painters;
+using System;
+using System.Drawing;
 
 namespace Limaki.Actions {
     public interface ILayout {
@@ -46,6 +49,14 @@ namespace Limaki.Actions {
         void Perform(TItem item);
 
         IStyle GetStyle ( TItem item );
+        IStyle GetStyle(TItem item, UiState uiState);
+
+        PainterFactory PainterFactory { get;set;}
+        IPainter GetPainter ( Type type );
+
+        Point[] GetDataHull ( TItem item, Matrice matrix, int delta, bool extend );
+        Point[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend);
+
     }
 
     /// <summary>

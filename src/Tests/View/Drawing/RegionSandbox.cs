@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -66,7 +66,7 @@ namespace Limaki.Tests.Drawing {
             g.DrawString(i.ToString(), SystemFonts.StatusFont, SystemBrushes.Control, count);
 
             invPath.Reset();
-            invPath.AddPolygon(GetHull(shape,Transformer.Matrice,2));
+            invPath.AddPolygon(GetHull(shape,Camera.Matrice,2));
             Matrix save = g.Transform;
             g.Transform = new Matrix ();
             g.DrawPath(pathPen, invPath);
@@ -78,7 +78,7 @@ namespace Limaki.Tests.Drawing {
 
             Graphics g = e.Graphics;
             Matrix save = g.Transform;
-            g.Transform = Transformer.Matrice.Matrix;
+            g.Transform = Camera.Matrice.Matrix;
 
             Point start = new Point(200, 100);
             Size size = new Size(0, -100);
@@ -140,7 +140,7 @@ namespace Limaki.Tests.Drawing {
         public override void OnPaint(PaintActionEventArgs e) {
             Graphics g = e.Graphics;
             Matrix save = g.Transform;
-            g.Transform = Transformer.Matrice.Matrix;
+            g.Transform = Camera.Matrice.Matrix;
 
             Rectangle smaller = new Rectangle(start, new Size(50, 20));
             Rectangle bigger = new Rectangle(start, new Size(55, 25));
@@ -186,7 +186,7 @@ namespace Limaki.Tests.Drawing {
         public void OnPaintTest2 ( PaintActionEventArgs e ) {
             Graphics g = e.Graphics;
             Matrix save = g.Transform;
-            g.Transform = Transformer.Matrice.Matrix;
+            g.Transform = Camera.Matrice.Matrix;
 
             Rectangle smaller = new Rectangle(start, new Size(50, 20));
             Rectangle bigger = new Rectangle(start, new Size(55, 25));

@@ -23,7 +23,7 @@
         /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
         /// </summary>
         private void InitializeComponent() {
-            this.widgetDisplay = new Limaki.Displays.WidgetDisplay();
+            this.widgetDisplay = new Limaki.Winform.Displays.WidgetDisplay();
             this.SuspendLayout();
             // 
             // widgetDisplay
@@ -55,6 +55,6 @@
 
         #endregion
 
-        private Limaki.Displays.WidgetDisplay widgetDisplay;
+        private Limaki.Winform.Displays.WidgetDisplay widgetDisplay;
     }
 }

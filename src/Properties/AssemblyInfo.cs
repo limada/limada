@@ -30,5 +30,5 @@ using System.Runtime.InteropServices;
 //      Revision
 //
 
-[assembly: AssemblyVersion("0.064.*")]
-[assembly: AssemblyFileVersion("0.064.*")]
+[assembly: AssemblyVersion("0.07.*")]
+[assembly: AssemblyFileVersion("0.07.*")]

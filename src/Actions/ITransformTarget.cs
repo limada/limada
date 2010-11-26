@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -20,6 +20,6 @@ using Limaki.Drawing;
 
 namespace Limaki.Actions {
     public interface ITransformTarget {
-        ITransformer Transformer { get; }
+        ICamera Camera { get; }
     }
 }

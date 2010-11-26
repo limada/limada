@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -20,12 +20,14 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
+using Limaki.Drawing.Painters;
 
 namespace Limaki.Widgets.Layout {
     public class WidgetLayout<TData, TItem> : Layout<TData, TItem>
         where TData : Scene
-        where TItem : class,IWidget  {
-        public WidgetLayout(Handler<TData> handler, IStyleSheet stylesheet):
+        where TItem : class, IWidget {
+        public WidgetLayout(Handler<TData> handler, IStyleSheet stylesheet)
+            :
                 base(handler, stylesheet) { }
 
         private IRouter _router = new NearestAnchorRouter();
@@ -35,15 +37,15 @@ namespace Limaki.Widgets.Layout {
         }
 
 
-        protected virtual void InvokeLinks() {
+        protected virtual void InvokeEdges() {
             Scene scene = this.Data as Scene;
             if (scene != null) {
-                IGraph<IWidget,ILinkWidget> graph = scene.Graph;
+                IGraph<IWidget, IEdgeWidget> graph = scene.Graph;
                 foreach (IWidget widget in graph) {
-                    if (!(widget is ILinkWidget)) {
-                        foreach (ILinkWidget link in graph.PreorderEdges(widget)) {
-                            Invoke((TItem)link);
-                            Justify((TItem)link);
+                    if (!(widget is IEdgeWidget)) {
+                        foreach (IEdgeWidget edge in graph.Twig(widget)) {
+                            Invoke((TItem)edge);
+                            Justify((TItem)edge);
                         }
 
                     } else {
@@ -55,28 +57,28 @@ namespace Limaki.Widgets.Layout {
         public override void Invoke() {
             Scene scene = this.Data as Scene;
             if (scene != null) {
-                IGraph<IWidget,ILinkWidget> graph = scene.Graph;
+                IGraph<IWidget, IEdgeWidget> graph = scene.Graph;
                 foreach (IWidget widget in graph) {
                     Invoke((TItem)widget);
-                    if (!(widget is ILinkWidget)) {
+                    if (!(widget is IEdgeWidget)) {
                         Justify((TItem)widget);
                     }
                 }
-                InvokeLinks();
+                InvokeEdges();
             }
         }
 
-        protected virtual IShape LinkShape() {
-            return new VectorShape ();
+        protected virtual IShape EdgeShape() {
+            return new VectorShape();
         }
         protected virtual IShape WidgetShape() {
             return new RoundedRectangleShape();
         }
 
         public override void Invoke(TItem item) {
-            if (item is ILinkWidget) {
+            if (item is IEdgeWidget) {
                 if (item.Shape == null) {
-                    item.Shape = LinkShape ();
+                    item.Shape = EdgeShape();
                 }
             } else {
                 if (item.Shape == null) {
@@ -85,22 +87,22 @@ namespace Limaki.Widgets.Layout {
             }
         }
 
-        public override IStyle GetStyle(TItem widget) {
+        public override IStyle GetStyle(TItem item) {
             Scene scene = this.Data as Scene;
-            IStyle style = (widget.Style == null ? this.styleSheet : widget.Style);
-            bool isSelected = scene.Selected.Contains (widget);
-            if (widget is ILinkWidget) {
+            IStyle style = (item.Style == null ? this.styleSheet : item.Style);
+            bool isSelected = scene.Selected.Contains(item);
+            if (item is IEdgeWidget) {
                 if (isSelected) {
-                    style = styleSheet.LinkSelectedStyle;
-                } else if (widget == scene.Hovered) {
-                    style = styleSheet.LinkHoveredStyle;
+                    style = styleSheet.EdgeSelectedStyle;
+                } else if (item == scene.Hovered) {
+                    style = styleSheet.EdgeHoveredStyle;
                 } else {
-                    style = styleSheet.LinkStyle;
+                    style = styleSheet.EdgeStyle;
                 }
             } else {
                 if (isSelected) {
                     style = styleSheet.SelectedStyle;
-                } else if (widget == scene.Hovered) {
+                } else if (item == scene.Hovered) {
                     style = styleSheet.HoveredStyle;
                 } else {
                     style = styleSheet.DefaultStyle;
@@ -109,36 +111,77 @@ namespace Limaki.Widgets.Layout {
             return style;
         }
 
+        public override IStyle GetStyle(TItem item, UiState uiState) {
+            IStyle style = (item.Style == null ? this.styleSheet : item.Style);
+            if (item is IEdgeWidget) {
+                if (uiState==UiState.Selected||uiState==UiState.Focus) {
+                    style = styleSheet.EdgeSelectedStyle;
+                } else if (uiState == UiState.Hovered) {
+                    style = styleSheet.EdgeHoveredStyle;
+                } else {
+                    style = styleSheet.EdgeStyle;
+                }
+            } else {
+                if (uiState == UiState.Selected) {
+                    style = styleSheet.SelectedStyle;
+                } else if (uiState == UiState.Hovered) {
+                    style = styleSheet.HoveredStyle;
+                } else {
+                    style = styleSheet.DefaultStyle;
+                }
+            }
+            
+            return style;
+        }
         public virtual void AjustSize(TItem widget) {
-            if (!(widget is ILinkWidget)) {
+            if (!(widget is IEdgeWidget)) {
                 IStyle style = styleSheet.DefaultStyle;
                 Rectangle invalid = widget.Shape.BoundsRect;
                 SizeF textSize = ShapeUtils.GetTextDimension(
-                    style.Font, widget.Data.ToString(),style.AutoSize);
+                    style.Font, widget.Data.ToString(), style.AutoSize);
                 widget.Size = Size.Add(Size.Ceiling(textSize), new Size(10, 10));
-                Data.UpdateBounds(widget,invalid);
+                Data.UpdateBounds(widget, invalid);
             }
         }
 
         public override void Justify(TItem target) {
-            if ((target is ILinkWidget) && (target.Shape is ILinkShape)) {
+            if ((target is IEdgeWidget) && (target.Shape is IEdgeShape)) {
                 Rectangle invalid = target.Shape.BoundsRect;
-                ILinkWidget link = (ILinkWidget)target;
-                Router.routeLink(link);
-                ILinkShape shape = (ILinkShape)target.Shape;
-                shape.Start = link.Root.Shape[link.RootAnchor];
-                shape.End = link.Leaf.Shape[link.LeafAnchor];
+                IEdgeWidget edge = (IEdgeWidget)target;
+                Invoke((TItem)edge.Root);
+                Invoke((TItem)edge.Leaf);
+                Router.routeEdge(edge);
+
+                IEdgeShape shape = (IEdgeShape)target.Shape;
+                shape.Start = edge.Root.Shape[edge.RootAnchor];
+                shape.End = edge.Leaf.Shape[edge.LeafAnchor];
                 Data.UpdateBounds(target, invalid);
             } else {
                 AjustSize(target);
             }
         }
 
-        public override void Perform(TItem item) {
-            
-        }
-        
+        public override void Perform(TItem item) { }
 
-
+        protected virtual Point[] GetDataHull(TItem item, IStyle style, Matrice matrix, int delta, bool extend) {
+            Point[] result = null;
+            if (style.PaintData && item.Data != null && item.Data.GetType() != typeof(Empty)) {
+                IDataPainter painter = this.GetPainter(item.Data.GetType()) as IDataPainter;
+                if (painter != null) {
+                    painter.Data = item.Data;
+                    painter.Style = style;
+                    painter.Shape = item.Shape;
+                    result = painter.Measure(matrix, delta, extend);
+                }
+            }
+            return result;
         }
+
+        public override Point[] GetDataHull(TItem item, Matrice matrix, int delta, bool extend) {
+            return this.GetDataHull(item, GetStyle(item), matrix, delta, extend);
+        }
+        public override Point[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend) {
+            return this.GetDataHull(item, GetStyle(item,uiState),matrix,delta,extend);
+        }
+    }
 }

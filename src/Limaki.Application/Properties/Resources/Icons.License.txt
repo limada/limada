@@ -1,0 +1,6 @@
+* Icons come with the following license:
+* The Paint.NET logo and icon artwork are Copyright (C) Rick Brewster. 
+They are covered by the Creative Commons Attribution-NonCommercial-NoDerivs 2.5 license which is detailed here: 
+http://creativecommons.org/licenses/by-nc-nd/2.5/ . 
+Permission is granted to use the logo and icon artwork in ways that discuss or promote Paint.NET (e.g. blog and news posts about Paint.NET, "Made with Paint.NET" watermarks or insets).
+

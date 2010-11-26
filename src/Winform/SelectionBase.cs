@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -27,13 +27,13 @@ namespace Limaki.Winform {
         ///<directed>True</directed>
         protected IWinControl control = null;
         ///<directed>True</directed>
-        protected ITransformer transformer = null;
+        protected ICamera camera = null;
         public SelectionBase():base() {
             this.Priority = ActionPriorities.SelectionPriority;   
         }
-        public SelectionBase(IWinControl control, ITransformer transformer):this() {
+        public SelectionBase(IWinControl control, ICamera camera):this() {
             this.control = control;
-            this.transformer = transformer;
+            this.camera = camera;
         }
 
         private Point _mouseDownPos = Point.Empty;

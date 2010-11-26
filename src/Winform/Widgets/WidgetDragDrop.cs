@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -37,12 +37,12 @@ namespace Limaki.Winform.Widgets {
             dataObjectHandlerChain.InitDataObjectHanders();
         }
         ///<directed>True</directed>
-        ITransformer transformer = null;
+        ICamera camera = null;
         IDragDopControl control = null;
-        public WidgetDragDrop( Handler<Scene> sceneHandler, IDragDopControl control, ITransformer transformer )
+        public WidgetDragDrop( Handler<Scene> sceneHandler, IDragDopControl control, ICamera camera )
             : this() {
             this.control = control;
-            this.transformer = transformer;
+            this.camera = camera;
             this.SceneHandler = sceneHandler;
         }
 
@@ -69,7 +69,7 @@ namespace Limaki.Winform.Widgets {
 
         IWidget HitTest(Point p) {
             IWidget result = null;
-            Point sp = transformer.ToSource(p);
+            Point sp = camera.ToSource(p);
             if (Scene.Focused!=null && Scene.Focused.Shape.IsHit(sp, HitSize)) {
                 result = Scene.Focused;
             }
@@ -160,17 +160,17 @@ namespace Limaki.Winform.Widgets {
                         // make a new link:
                         string s = "[" + item.Data.ToString() +
                                    "->" + Scene.Hovered.Data.ToString () + "]";
-                        ILinkWidget link = new LinkWidget<string>(s);
-                        link.Root = item;
-                        link.Leaf = Scene.Hovered;
-                        Scene.Add(link);
-                        Scene.Commands.Add(new LayoutCommand<IWidget>(link, LayoutActionType.Invoke));
-                        Scene.Commands.Add(new LayoutCommand<IWidget>(link, LayoutActionType.Justify));
+                        IEdgeWidget edge = new EdgeWidget<string>(s);
+                        edge.Root = item;
+                        edge.Leaf = Scene.Hovered;
+                        Scene.Add(edge);
+                        Scene.Commands.Add(new LayoutCommand<IWidget>(edge, LayoutActionType.Invoke));
+                        Scene.Commands.Add(new LayoutCommand<IWidget>(edge, LayoutActionType.Justify));
                         control.CommandsExecute ();
                     }
                 }
             } else {
-                Point pt = transformer.ToSource(control.PointToClient(new Point(e.X, e.Y)));
+                Point pt = camera.ToSource(control.PointToClient(new Point(e.X, e.Y)));
                 Scene.Add(item);
                 Scene.Commands.Add(new LayoutCommand<IWidget>(item, LayoutActionType.Invoke));
                 Scene.Commands.Add(new MoveCommand(item, pt));
@@ -229,7 +229,7 @@ namespace Limaki.Winform.Widgets {
             // converted to client coordinates.
 
 
-            Point pt = transformer.ToSource(control.PointToClient(new Point(e.X, e.Y)));
+            Point pt = camera.ToSource(control.PointToClient(new Point(e.X, e.Y)));
             IWidget itemUnderMouse = Scene.Hit(pt,HitSize);
 
 #if TraceDrop

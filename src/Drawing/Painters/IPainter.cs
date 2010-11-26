@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -45,6 +45,12 @@ namespace Limaki.Drawing.Painters {
         /// </summary>
         /// <param name="g"></param>
         void Render(Graphics g);
+
+        /// <summary>
+        /// the Hull of the shape with style
+        /// </summary>
+        /// <returns></returns>
+        Point[] Measure(Matrice matrix, int delta, bool extend);
     }
 
     public interface IPainter<T>:IPainter {
@@ -69,5 +75,9 @@ namespace Limaki.Drawing.Painters {
         /// draw and fill the shape
         /// </summary>
         DrawAndFill = Draw | Fill
+    }
+
+    public interface IDataPainter:IPainter {
+        object Data { get; set; }
     }
 }

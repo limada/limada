@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -65,27 +65,27 @@ namespace Limaki.Widgets.Layout {
 
 
         public static Pair<Anchor, Anchor> nearestAnchors(IWidget source, IWidget target) {
-            return nearestAnchors (source.Shape, target.Shape, source is ILinkWidget, target is ILinkWidget);
+            return nearestAnchors (source.Shape, target.Shape, source is IEdgeWidget, target is IEdgeWidget);
         }
 
-        public static Pair<Anchor, Anchor> nearestAnchors(IShape source, IShape target,bool sourceIsLink, bool targetIsLink) {
+        public static Pair<Anchor, Anchor> nearestAnchors(IShape source, IShape target,bool sourceIsEdge, bool targetIsEdge) {
             Pos sourceX = Pos.middle;
             Pos targetX = Pos.middle;
 
             // get near; calls of IShape[AnchorType] are expensive cause  
             // call of System.Drawing.Rectangle.Location is expensive
-            int sourceMostRightX = (sourceIsLink?
+            int sourceMostRightX = (sourceIsEdge?
                 source[Anchor.Center].X:
                 source[Anchor.MostRight].X);
 
-            int sourceMostLeftX = (sourceIsLink?
+            int sourceMostLeftX = (sourceIsEdge?
                 source[Anchor.Center].X:
                 source[Anchor.MostLeft].X);
 
-            int targetMostRightX = (targetIsLink?
+            int targetMostRightX = (targetIsEdge?
                 target[Anchor.Center].X :
                 target[Anchor.MostRight].X);
-            int targetMostLeftX = (targetIsLink?
+            int targetMostLeftX = (targetIsEdge?
                 target[Anchor.Center].X :
                 target[Anchor.MostLeft].X);
 
@@ -104,18 +104,18 @@ namespace Limaki.Widgets.Layout {
             Pos SourceY = Pos.middle;
             Pos TargetY = Pos.middle;
 
-            int sourceMostTopY = (sourceIsLink?
+            int sourceMostTopY = (sourceIsEdge?
                 source[Anchor.Center].Y:
                 source[Anchor.MostTop].Y);
-            int sourceMostBottomY = (sourceIsLink ?
+            int sourceMostBottomY = (sourceIsEdge ?
                 source[Anchor.Center].Y :
                 source[Anchor.MostBottom].Y);
 
-            int targetMostBottomY =(targetIsLink?
+            int targetMostBottomY =(targetIsEdge?
                 target[Anchor.Center].Y : 
                 target[Anchor.MostBottom].Y);
 
-            int targetMostTopY = (targetIsLink?
+            int targetMostTopY = (targetIsEdge?
                 target[Anchor.Center].Y : 
                 target[Anchor.MostTop].Y);
 
@@ -136,12 +136,12 @@ namespace Limaki.Widgets.Layout {
         #endregion
 
 
-        public override void routeLink(ILinkWidget link) {
-            Pair<Anchor, Anchor> nearest = nearestAnchors(link.Root, link.Leaf);
-            link.RootAnchor = nearest.One;
-            link.LeafAnchor = nearest.Two;
-            base.routeLink(link);
-
+        public override void routeEdge(IEdgeWidget edge) {
+            Pair<Anchor, Anchor> nearest = nearestAnchors(edge.Root, edge.Leaf);
+            edge.RootAnchor = nearest.One;
+            edge.LeafAnchor = nearest.Two;
+            base.routeEdge(edge);
+            
         }
     }
 }

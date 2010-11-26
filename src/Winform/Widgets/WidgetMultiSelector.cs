@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -27,7 +27,7 @@ using Limaki.Common.Collections;
 
 namespace Limaki.Winform.Widgets {
     public class WidgetMultiSelector:SelectionShape {
-        public WidgetMultiSelector(Handler<Scene> sceneHandler, IWinControl control, ITransformer transformer) : base(control, transformer) {
+        public WidgetMultiSelector(Handler<Scene> sceneHandler, IWinControl control, ICamera camera) : base(control, camera) {
             ShowGrips = false;
             this.SceneHandler = sceneHandler;
         }
@@ -56,7 +56,7 @@ namespace Limaki.Winform.Widgets {
             }
             foreach(IWidget widget in Scene.ElementsIn(this.Shape.BoundsRect)) {
                 bool isLinkKey = ( Form.ModifierKeys & Keys.Shift ) == Keys.Shift;
-                bool isLink = widget is ILinkWidget;
+                bool isLink = widget is IEdgeWidget;
                 bool add = (isLinkKey && isLink) || (!isLinkKey && !isLink);
                 if (add) {
                     Scene.Selected.Add (widget);
@@ -83,7 +83,7 @@ namespace Limaki.Winform.Widgets {
 
         bool TestSceneHit(Point p) {
             bool result = true;
-            Point pt = transformer.ToSource(p);
+            Point pt = camera.ToSource(p);
             if (Scene.Hovered != null)
                 result = !Scene.Hovered.Shape.IsHit(pt, this.HitSize);
             if (result && Scene.Focused != null)

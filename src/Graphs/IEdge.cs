@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -23,6 +23,7 @@ namespace Limaki.Graphs {
         T Root { get;set;}
         T Leaf { get;set;}
     }
+
     public interface IEdge:IEdge<object>{};
 
 }

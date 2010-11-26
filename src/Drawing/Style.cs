@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -116,6 +116,17 @@ namespace Limaki.Drawing {
             set { _autoSize = value; }
         }
 
+        private bool? _showText = true;
+        public bool PaintData {
+            get {
+                if ((_showText==null) && (_parentStyle != null)) {
+                    return _parentStyle.PaintData;
+                } else {
+                    return _showText.Value;
+                }
+            }
+            set { _showText = value; }
+        }
         #endregion
 
         #region IDisposable Member

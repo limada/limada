@@ -20,7 +20,7 @@ namespace Limaki.Common.Collections {
                     values = new TCollection();
                     Add(key, values);
                 }
-                if ( value != null ) {
+                if ( value != null && ! values.Contains(value)) {
                     values.Add(value);
                 }
             }

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -63,5 +63,10 @@ namespace Limaki.Drawing {
         /// of a automatic sizing process
         /// </summary>
         Size AutoSize { get;set;}
+
+        /// <summary>
+        /// The text color is used to draw text strings
+        /// </summary>
+        bool PaintData { get; set; }
     }
 }

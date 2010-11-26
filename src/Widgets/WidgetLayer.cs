@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -59,11 +59,11 @@ namespace Limaki.Widgets {
 
         public override void DataChanged() { }
 
-        private PainterFactory _painterFactory = null;
-        public PainterFactory PainterFactory {
-            get { return _painterFactory; }
-            set { _painterFactory = value; }
-        }
+        //private PainterFactory _painterFactory = null;
+        //public PainterFactory PainterFactory {
+        //    get { return _painterFactory; }
+        //    set { _painterFactory = value; }
+        //}
 
         private ILayout<Scene, IWidget> _layout = null;
         public ILayout<Scene, IWidget> Layout {
@@ -83,7 +83,7 @@ namespace Limaki.Widgets {
         public override void OnPaint(PaintActionEventArgs e) {
             Graphics g = e.Graphics;
 
-            Matrice transform = this.Transformer.Matrice;
+            Matrice transform = this.Camera.Matrice;
             g.Transform = transform.Matrix;
 
             if (AntiAlias) {
@@ -102,7 +102,6 @@ namespace Limaki.Widgets {
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
 
-            sceneRenderer.PainterFactory = this.PainterFactory;
             sceneRenderer.Scene = this.Data;
             sceneRenderer.Layout = this.Layout;
 

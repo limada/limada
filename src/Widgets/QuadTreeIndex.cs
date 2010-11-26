@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -50,7 +50,7 @@ namespace Limaki.Widgets {
             IEnumerable<IWidget> search = GeoIndex.Query(clipBounds);
 
             foreach (IWidget widget in search) {
-                if (!(widget is ILinkWidget)) {
+                if (!(widget is IEdgeWidget)) {
                     //RectangleF bounds = widget.Shape.BoundsRect;
                     //bounds.Inflate(1, 1);
                     //if (clipBounds.IntersectsWith(bounds))
@@ -59,7 +59,7 @@ namespace Limaki.Widgets {
                 }
             }
             foreach (IWidget widget in search) {
-                if (widget is ILinkWidget) {
+                if (widget is IEdgeWidget) {
                     //Rectangle bounds = widget.Shape.BoundsRect;
                     //bounds.Inflate(1, 1);
                     //if (clipBounds.IntersectsWith(bounds))

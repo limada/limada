@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.Graphics", "Limaki.Graphics.csproj", "{911D5CE3-3585-46E3-96B0-AA614DF2C49E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki", "Limaki.csproj", "{911D5CE3-3585-46E3-96B0-AA614DF2C49E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.Application", "Limaki.Application\Limaki.Application.csproj", "{CAD1E04E-5EF9-4B04-9CB5-A0531A041D2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,10 @@ Global
 		{911D5CE3-3585-46E3-96B0-AA614DF2C49E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{911D5CE3-3585-46E3-96B0-AA614DF2C49E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{911D5CE3-3585-46E3-96B0-AA614DF2C49E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAD1E04E-5EF9-4B04-9CB5-A0531A041D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAD1E04E-5EF9-4B04-9CB5-A0531A041D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAD1E04E-5EF9-4B04-9CB5-A0531A041D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAD1E04E-5EF9-4B04-9CB5-A0531A041D2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

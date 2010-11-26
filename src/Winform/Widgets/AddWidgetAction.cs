@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -26,7 +26,7 @@ namespace Limaki.Winform.Widgets {
     /// Adds a widget (but not a linkWidget)
     /// </summary>
     public class AddWidgetAction : WidgetChanger {
-        public AddWidgetAction(IWinControl control, ITransformer transformer):base(control, transformer) {
+        public AddWidgetAction(IWinControl control, ICamera camera):base(control, camera) {
             this.Priority = ActionPriorities.SelectionPriority - 20;
         }
 

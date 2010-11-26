@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -20,6 +20,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using System;
+using Limaki.Drawing.Painters;
 
 namespace Limaki.Widgets {
     /// <summary>
@@ -29,14 +30,14 @@ namespace Limaki.Widgets {
     /// </summary>
     /// <typeparam name="TData"></typeparam>
     /// <typeparam name="TItem"></typeparam>
-    public class SceneControler<TData, TItem> : DataControler<TData, TItem>
+    public class SceneControler<TData, TItem> : LayoutControler<TData, TItem>
         // TODO: after refactoring common methods: <Scene, IWidget>
         where TData : Scene
         where TItem : IWidget {
         public SceneControler(
-            Handler<TData> handler, IControl control, IScrollTarget scrollTarget, ITransformer transformer, ILayout<TData, TItem> layout)
+            Handler<TData> handler, IControl control, IScrollTarget scrollTarget, ICamera camera, ILayout<TData, TItem> layout)
             :
-                base(handler, control, scrollTarget, transformer, layout) { }
+                base(handler, control, scrollTarget, camera, layout) { }
 
         public override void Execute(ICommand<TItem> command) {
             if (command is LayoutCommand<TItem>) {
@@ -74,8 +75,8 @@ namespace Limaki.Widgets {
                 clipPath.FillMode = FillMode.Winding;
 
                 // get near:
-                Matrice matrix = this.transformer.Matrice;
-                Transformer transformer = new Transformer(matrix);
+                Matrice matrix = this.camera.Matrice;
+                ICamera camera = new Camera(matrix);
 
 
                 foreach (ICommand<TItem> command in Data.Commands) {
@@ -84,16 +85,31 @@ namespace Limaki.Widgets {
                         if (command.Target.Shape != null) {
                             oldHull = command.Target.Shape.Hull(matrix, tolerance, true);
                         }
+                        Point[] oldDataHull = null;
+                        if (command is StateChangeCommand) {
+                            oldDataHull = Layout.GetDataHull(
+                                command.Target, ((StateChangeCommand)command).Parameter.One,
+                                matrix, tolerance, true);
+                        } else {
+                            oldDataHull = Layout.GetDataHull(command.Target, matrix, tolerance, true);
+                        }
 
                         Execute(command);
 
                         Point[] newHull = command.Target.Shape.Hull(matrix, tolerance, true);
-                        if (oldHull != null) {
-                            clipPath.AddPolygon(oldHull);
+                        Point[] newDataHull = null;
+                        if (command is StateChangeCommand) {
+                            newDataHull = Layout.GetDataHull(
+                                command.Target, ((StateChangeCommand)command).Parameter.Two,
+                                matrix, tolerance, true);
+                        } else {
+                            newDataHull = Layout.GetDataHull(command.Target, matrix, tolerance, true);
                         }
-                        if (newHull != null) {
-                            clipPath.AddPolygon(newHull);
-                        }
+
+                        if (oldHull != null) clipPath.AddPolygon(oldHull);
+                        if (oldDataHull != null) clipPath.AddPolygon(oldDataHull);
+                        if (newHull != null) clipPath.AddPolygon(newHull);
+                        if (newDataHull != null) clipPath.AddPolygon(newDataHull);
 
                         regionChanged = true;
                     }
@@ -111,11 +127,13 @@ namespace Limaki.Widgets {
                     clipRegion.Intersect(clipPath);
                     control.Invalidate(clipRegion);
 
-                    scrollTarget.ScrollMinSize = transformer.FromSource(Data.Shape.BoundsRect).Size;
+                    scrollTarget.ScrollMinSize = camera.FromSource(Data.Shape.BoundsRect).Size;
 
                 }
             }
         }
+
+
 
         public override void Done() {
             if (Data != null)
@@ -125,7 +143,7 @@ namespace Limaki.Widgets {
             if (Layout != null && Data != null) {
                 Layout.Invoke();
                 //Data.ReCalculateBounds();
-                scrollTarget.ScrollMinSize = transformer.FromSource(Data.Shape.BoundsRect).Size;
+                scrollTarget.ScrollMinSize = camera.FromSource(Data.Shape.BoundsRect).Size;
                 if (Commons.Mono) {
                     control.Invalidate ();
                 }

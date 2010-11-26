@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -13,6 +13,8 @@
  * 
  */
 
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Limaki.Drawing;
 
@@ -51,6 +53,11 @@ namespace Limaki.Widgets {
             set { _shape = value; }
         }
 
+
+        public override string ToString() {
+            return base.ToString()+"("+Data.ToString()+")";
+        }
+
         public virtual Size Size {
             get {
                 if (Shape != null)
@@ -70,10 +77,105 @@ namespace Limaki.Widgets {
             }
             set { Shape.Location = value; }
         }
-        public override string ToString() {
-            return base.ToString()+"("+Data.ToString()+")";
+
+        public virtual Point[] Hull(int delta, bool extend) {
+            if (Shape != null)
+                return Shape.Hull(delta, extend);
+            else
+                return new Point[0];
         }
+
+        public virtual Point[] Hull(Matrice matrix, int delta, bool extend) {
+            if (Shape != null)
+                return Shape.Hull(delta, extend);
+            else
+                return new Point[0];
+        }
+
+        #region IShape Member
+
+
+
+        //public Type ShapeDataType {
+        //    get {
+        //        if (Shape != null)
+        //            return Shape.ShapeDataType;
+        //        else
+        //            return null;
+        //    }
+        //}
+
+        //public Point this[Anchor i] {
+        //    get {
+        //        if (Shape != null)
+        //            return Shape[i];
+        //        throw new ArgumentException("Shape must not be null.");
+        //    }
+        //    set {
+        //        if (Shape != null)
+        //            Shape[i]=value;
+        //        else
+        //            throw new ArgumentException("Shape must not be null.");
+        //    }
+        //}
+
+        //public Anchor IsAnchorHit(Point p, int hitSize) {
+        //    if (Shape != null)
+        //        return Shape.IsAnchorHit(p,hitSize);
+        //    throw new ArgumentException("Shape must not be null.");
+        //}
+
+        //public bool IsBorderHit(Point p, int hitSize) {
+        //    if (Shape != null)
+        //        return Shape.IsBorderHit(p,hitSize);
+        //    throw new ArgumentException("Shape must not be null.");
+        //}
+
+        //public bool IsHit(Point p, int hitSize) {
+        //    if (Shape != null)
+        //        return Shape.IsHit(p,hitSize);
+        //    throw new ArgumentException("Shape must not be null.");
+        //}
+
+        //public void Transform(Matrice matrice) {
+        //    if (Shape != null)
+        //        Shape.Transform(matrice);
+        //    throw new ArgumentException("Shape must not be null.");
+        //}
+
+        //public Rectangle BoundsRect {
+        //    get {
+        //        if (Shape != null)
+        //            return Shape.BoundsRect;
+        //        throw new ArgumentException("Shape must not be null.");
+        //    }
+        //}
+
+        //public IEnumerable<Anchor> Grips {
+        //    get {
+        //        if (Shape != null)
+        //            return Shape.Grips;
+        //        throw new ArgumentException("Shape must not be null.");
+        //    }
+        //}
+
+        //public Point[] Hull(int delta, bool extend) {
+        //    if (Shape != null)
+        //        return Shape.Hull(delta,extend);
+        //    throw new ArgumentException("Shape must not be null.");
+        //}
+
+        //public Point[] Hull(Matrice matrix, int delta, bool extend) {
+        //    if (Shape != null)
+        //        return Shape.Hull(matrix,delta,extend);
+        //    throw new ArgumentException("Shape must not be null.");
+        //}
+
+        #endregion
+
+
     }
+
     public class ToolWidget<T>:Widget<T>,IToolWidget {
         public ToolWidget(T data):base(data){}
     }

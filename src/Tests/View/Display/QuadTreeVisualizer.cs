@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Limaki.Actions;
-using Limaki.Displays;
+using Limaki.Winform.Displays;
 using Limaki.Drawing;
 using Limaki.Drawing.Indexing.QuadTrees;
 using Limaki.Drawing.Shapes;
@@ -90,13 +90,13 @@ namespace Limaki.Tests.Display {
                 if ( node.HasSubNodes ) {
                     IWidget subRoot = new Widget<string>(" ° ");
                     this.widgetDisplay.Data.Add(
-                        new LinkWidget<string>(string.Empty, result, subRoot));
+                        new EdgeWidget<string>(string.Empty, result, subRoot));
 
                     foreach (Node<IWidget> sub in node.subnode) {
                         if (sub != null) {
                             IWidget subWidget = NodeWidget(sub, nodesDone, itemsDone);
                             this.widgetDisplay.Data.Add(
-                                new LinkWidget<string>(string.Empty,
+                                new EdgeWidget<string>(string.Empty,
                                                        subRoot, subWidget));
                         }
                     }
@@ -123,12 +123,12 @@ namespace Limaki.Tests.Display {
                     itemsDone.Add(widget, childWidget);
                 }
 
-                ILinkWidget link = 
-                    new LinkWidget<string>(string.Empty, 
+                IEdgeWidget edge = 
+                    new EdgeWidget<string>(string.Empty, 
                     childWidget, nodeWidget);
 
-                link.Shape = new VectorShape();
-                this.widgetDisplay.Data.Add(link);
+                edge.Shape = new VectorShape();
+                this.widgetDisplay.Data.Add(edge);
             }
 
 

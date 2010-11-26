@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -126,13 +126,13 @@ namespace Limaki.Tests.Drawing.Toolkit {
                 MatriceCalculate();
             this.Tickers.Stop();
             Ticker ticker = Tickers[TickerName];
-            ReportMessage ("GNUMatrixCalculate:\t" + ticker.Elapsed.ToString("#,###"));
+            ReportDetail ("GNUMatrixCalculate:\t" + ticker.Elapsed.ToString("#,###"));
 
             this.Tickers.Start();
             for (int i = 0; i < testCount; i++)
                 MSMatrixCalculate();
             this.Tickers.Stop();
-            ReportMessage("MSMatrixCalculate:\t" + ticker.Elapsed.ToString("#,###"));
+            ReportDetail("MSMatrixCalculate:\t" + ticker.Elapsed.ToString("#,###"));
         }
 
     }

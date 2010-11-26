@@ -1,0 +1,106 @@
+<HTML>
+<BODY>
+<h2>Limaki.Graphics 0.07</h2>
+<P><code>Limaki</code> is a framework for building interactive information visualization applications.</P>
+<p><b>New features since Version 0.064:</b></p>
+<p>
+* Generic GraphPair to transform one graph into an other and vice versa (bi-directinal)<br>
+* Persistent generic graph based on db4o's object database<br>
+* Labeling of Edges<br>
+</P>
+<h3>Architecture</h3>
+<P>The design of Limaki follows the
+principle of separation of concerns. Data and visual model are
+separated, similar to the model-view-controller design pattern. In a
+further step, the view part of the pattern is itself modeled after
+mvc-pattern to separate visual models from concrete displays. Modular
+view controllers are used to handle user input in a flexible and
+reusable fashion. 
+</P>
+
+<P>The <code>Limaki.Graphs</code> namespace provides
+generic <code>Graph</code> structures for data and visual models. A generic <code>Edge</code>
+interface represents the members of graphs. The Graph classes are
+implemented using <code>ICollection</code> and <code>IDictionary</code> instances to store the
+nodes and edges.</P>
+
+<P>The <code>Limaki.Data</code> namespace provides
+generic Graph structures backed by Databases. Currently the only
+concrete Data.Graph implementation is based on <code>db4o</code>, but SQL (LinQ)
+based Data.Graph fill follow in a later version.</P>
+
+<P><code>Widgets</code> are providing access to visual
+attributes. An <code>IWidget</code> is a generic data structure which has a <code>Shape</code>,
+a <code>Style</code> and a generic Data property. An <code>EdgeWidget</code> is an instance
+representing an <code>IEdge&lt;Widget&gt;</code>.</P>
+
+<P>A <code>Scene</code> wraps a <code>WidgetGraph</code> and a
+spatial index, providing fast access to the location of Widgets. A
+Scene has methods for hit-tests, iterations over Widgets contained in
+an area, and the overall bounds of the Widgets contained in the
+Graph. A Scene provides a <code>Command</code>-Queue as a central place to gather
+delayed operations on Widgets. 
+</P>
+
+<P>Specific visual appearance is provided by a <code>Layout</code>. A Layout sets the appropriate Style, determines the
+initial Shape, Size and Location of Widgets in a Scene. The Layout
+uses a <code>Router</code> to set the start- and endpoints of an EdgeWidget.</P>
+
+<P>The actual appearance of Widget
+instances are determined by <code>Renderers</code>. A Renderer is responsible for
+drawing Widget.Data and Widget.Shape with the appropriate Style. For
+this task a Renderer uses <code>Painter</code>s. Which Painter to use for a given
+Shape or Data is determined by a <code>PainterFactory</code>, which is asked for
+the appropriate Painter each time a Shape or Data is to be rendered.</P>
+
+<P>A <code>Layer</code> is responsible to draw a Scene.
+It acts as a camera onto the contents of the Scene. The Layer draws
+all the widgets within its current view, and realizes panning and
+zooming.</P>
+
+<P>An <code>Action</code> transforms a user interaction
+into a <code>Command</code>. With Actions moving, resizing, deleting, editing and
+so on are realized. <code>Actions</code> are bundled in an <code>EventControler</code>, which
+converts Windows.Forms.Events into Limaki specific Events. 
+</P>
+
+<P>The <code>SceneControler</code> is the mediator
+between Layout, Scene.CommandQueue and invalidation of the underlying
+Control. Its methods are called on initializing the Control and after
+each bundled execution of Actions by the EventControler. In this call
+it is responsible for executing all pending Commands in the queue,
+calculating the appropriate invalidation area of the Control, and
+calling the Invalidate-method of the Control.</P>
+
+<P>The <code>WidgetDisplay</code> bundles all that
+separated classes and modules as a user control. It paints a Scene
+with a Layer, feeds the Camera with appropriate panning information,
+and calls the EventControler in case of user interaction.</P>
+
+<P>A visual abstraction of a data-Graph
+can be made by creating a <code>GraphPair</code>. A GraphPair is a special data
+structure that includes the original data-Graph but also a
+visualization specific Graph. For any backing data-item or data-edge
+added to the GraphPair corresponding Widget instances are created,
+and vice versa. </P>
+
+<h3>Restrictions</h3>
+<P>
+This release is a proof of concept; the main purpose was to find out an architecture which provides a user-friendly graphical interface to manipulate graph structures.<br> 
+This is a pre-alpha-release.<br>
+</P>
+<p>The software is tested on Net 2.0, Mono 2.0 under Windows XP<br>
+<p><b>Known limitations of this release:</b></p>
+Editing works only on string-based widgets.<br>
+DragDrop works only on string-based widgets.<br>
+The graphical representation is limited to simple rectangles and lines.<br>
+There is no design-time support; you have to code everything “by hand”.<br>
+Mono:<br>
+Although I tried my best to provide the full feature set on mono, you have to consider the following limitations when using it under mono:
+<br>
+Speed: around 1/3 of speed under mono-windows, less on mono-linux<br>
+Cursor-Handling: the cursors don’t show up as in .NET if you manipulate nodes (resizing, moving)<br>
+No DragDrop-support
+ 
+</BODY>
+</HTML>

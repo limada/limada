@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -106,12 +106,14 @@ namespace Limaki.Drawing.Shapes {
                             ;
             return stringFormat;
         }
-        public static SizeF GetTextDimension(Font font, string text, Size textSize) {
+        public static SizeF GetTextDimension(Font font, string text, SizeF textSize) {
             return GetTextDimension(DeviceContext, font, text, GetDefaultStringFormat(), textSize);
         }
 
-        public static SizeF GetTextDimension(Graphics g, Font font, string text, StringFormat stringFormat, Size textSize) {
-            
+        public static SizeF GetTextDimension(Font font, string text, StringFormat stringFormat, SizeF textSize) {
+            return GetTextDimension(DeviceContext, font, text, stringFormat, textSize);
+        }
+        public static SizeF GetTextDimension(Graphics g, Font font, string text, StringFormat stringFormat, SizeF textSize) {
             return g.MeasureString(text, font, textSize, stringFormat);
         }
 

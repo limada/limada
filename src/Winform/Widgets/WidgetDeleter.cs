@@ -13,14 +13,14 @@ namespace Limaki.Winform.Widgets {
     /// Deletes a widget
     /// </summary>
     public class WidgetDeleter:KeyActionBase {
-        ITransformer transformer = null;
+        ICamera camera = null;
         IControl control = null;
         public WidgetDeleter():base() {}
 
-        public WidgetDeleter(Handler<Scene> sceneHandler, IControl control, ITransformer transformer)
+        public WidgetDeleter(Handler<Scene> sceneHandler, IControl control, ICamera camera)
             : this() {
             this.control = control;
-            this.transformer = transformer;
+            this.camera = camera;
             this.SceneHandler = sceneHandler;
             
         }

@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -20,7 +20,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Actions;
-using Limaki.Displays;
+using Limaki.Winform.Displays;
 using Limaki.Tests.Display;
 using Limaki.Widgets;
 using NUnit.Framework;
@@ -69,11 +69,11 @@ namespace Limaki.Tests.Widget {
 
         public void NeutralPosition() {
             MouseEventArgs e = new MouseEventArgs(MouseButtons.Left, 0, 1, 1, 0);
-            Display.ActionDispatcher.OnMouseDown(e);
+            Display.EventControler.OnMouseDown(e);
             Application.DoEvents();
-            Display.ActionDispatcher.OnMouseMove(e);
+            Display.EventControler.OnMouseMove(e);
             Application.DoEvents();
-            Display.ActionDispatcher.OnMouseUp(e);
+            Display.EventControler.OnMouseUp(e);
             Application.DoEvents();
         }
 
@@ -118,17 +118,17 @@ namespace Limaki.Tests.Widget {
             next = nextPoint(v.Start, d);
             end = v.End;
             while (rangeX() || rangeY()) {
-                PointF tnext = transformer.FromSource(next);
+                PointF tnext = camera.FromSource(next);
                 e = new MouseEventArgs(MouseButtons.Left, 0, (int)tnext.X, (int)tnext.Y, 0);
-                Display.ActionDispatcher.OnMouseMove(e);
+                Display.EventControler.OnMouseMove(e);
                 Application.DoEvents();
                 next = nextPoint(next, d);
             }
 
         }
 
-        protected ITransformer transformer {
-            get { return Display.DataLayer.Transformer; }
+        protected ICamera camera {
+            get { return Display.DataLayer.Camera; }
         }
 
         public void MoveLink(IWidget link, IWidget target) {
@@ -136,12 +136,12 @@ namespace Limaki.Tests.Widget {
 
             Size size = new Size(Math.Abs(link.Shape.Size.Width) / 4, -Math.Abs(link.Shape.Size.Height) / 4);
             Point position = link.Shape[Anchor.Center] + size;
-            position = transformer.FromSource(position);
+            position = camera.FromSource(position);
             //new Size(5, (int)(m * 5));
 
             // select link
             MouseEventArgs e = new MouseEventArgs(MouseButtons.Left, 0, position.X, position.Y, 0);
-            Display.ActionDispatcher.OnMouseDown(e);
+            Display.EventControler.OnMouseDown(e);
             Application.DoEvents();
 
             Assert.AreSame(Scene.Focused, link);
@@ -154,18 +154,18 @@ namespace Limaki.Tests.Widget {
             v.End = v.End + size;//new Size((int)(m*3),-3);
 
             // start move
-            position = transformer.FromSource(v.Start);
+            position = camera.FromSource(v.Start);
             e = new MouseEventArgs(MouseButtons.Left, 0, position.X, position.Y, 0);
-            Display.ActionDispatcher.OnMouseDown(e);
+            Display.EventControler.OnMouseDown(e);
             Application.DoEvents();
 
             MoveAlongLine(v);
 
             // end move
-            position = transformer.FromSource(v.End);
+            position = camera.FromSource(v.End);
             e = new MouseEventArgs(MouseButtons.Left, 0, position.X, position.Y, 0);
             Assert.AreSame(Scene.Hovered, target);
-            Display.ActionDispatcher.OnMouseUp(e);
+            Display.EventControler.OnMouseUp(e);
             Application.DoEvents();
 
 

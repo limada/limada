@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -19,6 +19,16 @@ using System.Collections.Generic;
 using Limaki.Common.Collections;
 
 namespace Limaki.Graphs {
+    /// <summary>
+    /// a graph based on 
+    /// IMultiDictionary to store TItems
+    /// ICollection to store TEdge-Lists as IMultiDictionary.Value
+    /// this class can be used directly with any IMultiDictionary and ICollection
+    /// </summary>
+    /// <typeparam name="TItem"></typeparam>
+    /// <typeparam name="TEdge"></typeparam>
+    /// <typeparam name="TMultiDictionary"></typeparam>
+    /// <typeparam name="TCollection"></typeparam>
     public class MultiDictionaryGraph<TItem, TEdge, TMultiDictionary, TCollection> : GraphBase<TItem, TEdge>
         where TEdge: IEdge<TItem>
         where TMultiDictionary : class, IMultiDictionary<TItem, TEdge>,new()
@@ -27,6 +37,9 @@ namespace Limaki.Graphs {
         protected IMultiDictionary<TItem, TEdge> items = null;
         protected ICollection<TEdge> edges = null;
 
+        public override bool ItemIsStorable {
+            get { return true; }
+        }
 
         public MultiDictionaryGraph() {
             items = new TMultiDictionary();
@@ -46,7 +59,12 @@ namespace Limaki.Graphs {
         /// <param name="item"></param>
         public override void Add(TItem item) {
             if (! items.Contains(item)) {
-                items.Add(item,null);
+                if (EdgeIsItem) {
+                    if (( (object) item ) is TEdge) {
+                        this.Add ((TEdge) (object) item);
+                    }
+                }
+                items.Add(item, null);
             }
         }
 
@@ -72,13 +90,21 @@ namespace Limaki.Graphs {
             if (item != null) {
                 ICollection<TEdge> list = items[item];
                 bool isKeyOnly = list.Count == 0;
-                list.Add (edge);
-                if (isKeyOnly)
-                    items[item] = list;
+                if (!list.Contains(edge)) {
+                    list.Add (edge);
+                    if (isKeyOnly)
+                        items[item] = list;
+                    if (EdgeIsItem) {
+                        if (( (object) item ) is TEdge) {
+                            this.Add ((TEdge) (object) item);
+                        }
+                    }
+                }
             }
         }
 
         public override void Add(TEdge edge) {
+            CheckEdge(edge);
             if (! Contains(edge)) {
                 AddEdge(edge,edge.Root);
                 AddEdge(edge,edge.Leaf);
@@ -127,7 +153,7 @@ namespace Limaki.Graphs {
             return result;
         }
 
-        public override IEnumerable<TEdge> Edges(TItem item) {
+        public override ICollection<TEdge> Edges(TItem item) {
             ICollection<TEdge> list = null;
             if (items.TryGetValue(item, out list)) {
                 if (list != null) {

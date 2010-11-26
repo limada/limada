@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.064
+ * Version 0.07
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -210,14 +210,14 @@ namespace Limaki.Tests.Drawing {
                 PaintWidenPolygon(algo, start, size, 12);
             }
             ticker.Stop();
-            this.ReportMessage(algo.ToString() + "\t" + ticker.ElapsedInSec());
+            this.ReportDetail(algo.ToString() + "\t" + ticker.ElapsedInSec());
 
         }
 
         private int count = 1000000;
         [Test]
         public void Test() {
-            this.ReportMessage("PolygonHullTest");
+            this.ReportDetail("PolygonHullTest");
             TestCases(Algo.Transform);
             TestCases(Algo.SqareRoot);
             TestCases(Algo.AtanSinCos);
