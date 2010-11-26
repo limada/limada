@@ -66,30 +66,35 @@ namespace Limada.Data {
                 FileStream file = 
                     new FileStream(DataBaseInfo.ToFileName(FileName), FileMode.Open);
                 Open(file);
+                lastFile = FileName;
             } catch (Exception ex) {
                 Registry.Pool.TryGetCreate<IExceptionHandler>()
                     .Catch(new Exception("File load failed: " + ex.Message, ex),MessageType.OK);
             }
         }
 
+        DataBaseInfo lastFile = null;
         public override void Save() {
             //Registry.Pool.TryGetCreate<IExceptionHandler>()
             //    .Catch(new Exception(Extension+"-Files can't be saved."),MessageType.OK);
+            if (lastFile != null)
+                SaveAs (this.Data, this.lastFile);
         }
 
-        public override void SaveAs(DataBaseInfo FileName) {
+        public override void SaveAs(IThingGraph source, DataBaseInfo FileName) {
             FileStream file = new FileStream(
                 DataBaseInfo.ToFileName(FileName), 
                 FileMode.Create);
 
             var serializer = new ThingSerializer();
-            serializer.Graph = this.Data;
+            serializer.Graph = source;
             serializer.ThingCollection = GraphUtils.Elements<IThing, ILink> (this.Data).ToList();
 
             serializer.Write(file);
 
             file.Flush();
             file.Close();
+            lastFile = FileName;
         }
 
         public override void Close() {
@@ -97,7 +102,9 @@ namespace Limada.Data {
         }
 
         public override void SaveCurrent() {
-            throw new NotImplementedException();
+            Registry.Pool.TryGetCreate<IExceptionHandler>()
+                .Catch(new Exception(this.Description + " saving currently not implemented"), MessageType.OK);
+
         }
 
         public override IDataProvider<IThingGraph> Clone() {

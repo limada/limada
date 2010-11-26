@@ -24,15 +24,21 @@ namespace Limaki.Common.Text.HTML {
             new Regex(@"<A[^>]*?HREF\s*=\s*[""']?" + "|" +
                       @"<IMG[^>]*?SRC\s*=\s*[""']?" + "|" +
                       @"[ '""].*?>",
-                      RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                      RegexOptions.IgnoreCase 
+#if!SILVERLIGHT
+                      | RegexOptions.Compiled
+#endif                      
+                      );
 
         private static Regex links =
             new Regex(
                 @"<A[^>]*?HREF\s*=\s*[""']?([^'"" >]+?)[ '""].*?>"
                 + "|" + @"<IMG[^>]*?SRC\s*=\s*[""']?([^'"" >]+?)[ '""].*?>"
-
-
-                , RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                , RegexOptions.IgnoreCase
+#if!SILVERLIGHT
+                      | RegexOptions.Compiled
+#endif
+);
 
         public static IEnumerable<string> Links(string content) {
 

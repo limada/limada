@@ -44,12 +44,12 @@ namespace Limaki.Data.db4o {
                             _session = Db4oFactory.OpenFile(
                                 _configuration, 
                                 this.DataBaseInfo.Path + this.DataBaseInfo.Name + 
-                                "." + this.FileExtension);
+                                this.FileExtension);
 
                         } catch (Exception e) {
                             Exception ex = new Exception(
                                 e.Message + "\nFile open failed:\t" +
-                                DataBaseInfo.Path + DataBaseInfo.Name + "." + this.FileExtension,
+                                DataBaseInfo.Path + DataBaseInfo.Name + this.FileExtension,
                                 e);
                             throw ex;
                         }
@@ -104,7 +104,7 @@ namespace Limaki.Data.db4o {
         }
 
         public override string FileExtension {
-            get { return "limo"; }
+            get { return ".limo"; }
         }
 
         #endregion

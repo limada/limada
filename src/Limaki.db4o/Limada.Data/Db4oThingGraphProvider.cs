@@ -14,13 +14,12 @@
  */
 
 using System;
-using Limada.Data;
 using Limada.Model;
 using Limaki.Common;
 using Limaki.Data;
 using Limaki.Graphs;
 
-namespace Limada.App {
+namespace Limada.Data {
     public class Db4oThingGraphProvider : ThingGraphProvider {
         public override string Extension {
             get { return ".limo"; }
@@ -44,33 +43,25 @@ namespace Limada.App {
         }
         
         public override void Open() {
-            throw new NotImplementedException();
+            Registry.Pool.TryGetCreate<IExceptionHandler>()
+                .Catch(new Exception(this.Description + " opening without filename currently not implemented"), MessageType.OK);
+
         }
 
         public override void SaveCurrent() {
             if (Data != null) {
-                if (this.Data is Limada.Data.db4o.ThingGraph) {
-                    ((Limada.Data.db4o.ThingGraph)this.Data).Flush();
+                var graph = this.Data as Limada.Data.db4o.ThingGraph;
+                if (graph!=null) {
+                    graph.Flush();
                 }
             }
         }
 
-
-        public override void Save() {
-            SaveCurrent ();
-        }
-
-        public override void SaveAs(DataBaseInfo FileName) {
-            var current = this.Data;
-            this.Data = null;
-            Open (FileName);
-            ThingGraphUtils.MergeGraphs(current, this.Data);
-        }
-
         public override void Close() {
             SaveCurrent();
-            if (Data is Limada.Data.db4o.ThingGraph) {
-                ((Limada.Data.db4o.ThingGraph)this.Data).Close();
+            var graph = this.Data as Limada.Data.db4o.ThingGraph;
+            if (graph != null) {
+                graph.Close();
             }
 
             this.Data = null;

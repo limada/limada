@@ -144,6 +144,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         public void Programming() {
             Mock.Scene.Selected.Clear();
             Mock.Scene.Focused = Mock.Factory.Node[1]; // Programming
+            Mock.Display.Layout.Invoke(Mock.Scene.Focused);
             Mock.SceneFacade.CollapseToFocused();
 
             Assert.AreEqual(Mock.Scene.Graph.Count, 1);
@@ -176,6 +177,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             Mock.Scene.Selected.Clear();
             Mock.Scene.Focused = Mock.Factory.Node[5];//"Library"
+            Mock.Display.Layout.Invoke(Mock.Scene.Focused);
             Mock.SceneFacade.Expand(false);
 
             AreEquivalent(ProgrammingExpanded, Mock.Scene.Graph);
@@ -183,6 +185,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             Mock.Scene.Selected.Clear();
             Mock.Scene.Focused = Mock.Factory.Node[6]; //"Collections"
+            Mock.Display.Layout.Invoke(Mock.Scene.Focused);
 
             Mock.SceneFacade.Expand(false);
             AreEquivalent(FullExpanded, Mock.Scene.Graph);
@@ -194,7 +197,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             Mock.Scene.Selected.Clear();
             Mock.Scene.Focused = Mock.Factory.Node[4]; //"Net"
-
+            Mock.Display.Layout.Invoke(Mock.Scene.Focused);
 
             Mock.SceneFacade.Expand(false);
             AreEquivalent(NetExpanded, Mock.Scene.Graph);
@@ -210,6 +213,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             Mock.Scene.Selected.Clear();
             Mock.Scene.Focused = Mock.Factory.Node[6]; //"Collections"
+            Mock.Display.Layout.Invoke(Mock.Scene.Focused);
 
             Mock.SceneFacade.Collapse();
             AreEquivalent(ProgrammingExpanded, Mock.Scene.Graph);
@@ -221,7 +225,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             Mock.Scene.Selected.Clear();
             Mock.Scene.Focused = Mock.Factory.Node[2]; //"Language"
-
+            Mock.Display.Layout.Invoke(Mock.Scene.Focused);
 
 
             Mock.SceneFacade.Collapse();
@@ -234,7 +238,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             Mock.Scene.Selected.Clear();
             Mock.Scene.Focused = Mock.Factory.Node[3]; //"Java"
-
+            Mock.Display.Layout.Invoke(Mock.Scene.Focused);
 
 
             Mock.SceneFacade.Collapse();
@@ -255,6 +259,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.Scene.Selected.Clear();
 
             Mock.Scene.Focused = Mock.Factory.Node[4]; // .NET
+            Mock.Display.Layout.Invoke (Mock.Scene.Focused);
             Mock.SceneFacade.CollapseToFocused();
 
             Assert.AreEqual(1,Mock.Scene.Graph.Count);
@@ -286,6 +291,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             Mock.Scene.Selected.Clear();
             Mock.Scene.Focused = Mock.Factory.Node[8];//"IList"
+            Mock.Display.Layout.Invoke(Mock.Scene.Focused);
             Mock.SceneFacade.Expand(false);
 
             IEnumerable<IWidget> iListExpanded = new IWidget[] {
@@ -312,6 +318,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             Mock.Scene.Selected.Clear();
             Mock.Scene.Focused = Mock.Factory.Edge[8]; // [[[Programming->Language]->.NET]->IList]
+            Mock.Display.Layout.Invoke(Mock.Scene.Focused);
             Mock.SceneFacade.CollapseToFocused();
 
             AreEquivalent(netExpanded2, Mock.Scene.Graph);
@@ -367,6 +374,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         public void SingleAddProgrammingLanguageNet() {
             Mock.Scene.Selected.Clear();
             Mock.Scene.Focused = Mock.Factory.Node[1]; // Programming
+            Mock.Display.Layout.Invoke(Mock.Scene.Focused);
             Mock.SceneFacade.CollapseToFocused();
             TestShapes(Mock.Scene);
 

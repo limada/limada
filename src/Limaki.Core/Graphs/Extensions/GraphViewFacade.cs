@@ -141,17 +141,25 @@ namespace Limaki.Graphs.Extensions {
         }
 
         protected void NeverRemove(ViewBuilder<TItem, TEdge> viewBuilder, IEnumerable<TItem> items) {
-            foreach (TItem selected in items) {
-                viewBuilder.NeverRemove(selected);
-                viewBuilder.View.Add(selected);
-                if (selected is TEdge) {
-                    foreach (TEdge edge in viewBuilder.View.Vein((TEdge)selected)) {
+            foreach (var item in items) {
+                viewBuilder.NeverRemove(item);
+                viewBuilder.View.Add(item);
+                if (item is TEdge) {
+                    foreach (var edge in viewBuilder.View.Vein((TEdge)item)) {
                         viewBuilder.NeverRemove(edge);
                         viewBuilder.View.Add(edge);
                         viewBuilder.NeverRemove(edge.Root);
                         viewBuilder.View.Add(edge.Root);
                         viewBuilder.NeverRemove(edge.Leaf);
                         viewBuilder.View.Add(edge.Leaf);
+                    }
+                } else {
+                    foreach (var edge in viewBuilder.View.Twig(item)) {
+                       if(viewBuilder.NoTouch.Contains(edge.Root)&&
+                           viewBuilder.NoTouch.Contains(edge.Leaf)) {
+                               viewBuilder.NeverRemove(edge);
+                               viewBuilder.View.Add(edge);
+                       }
                     }
                 }
             }

@@ -30,15 +30,15 @@ namespace Limaki.Tests.View.Widget {
     public class WidgetDataFactory : BasicTestDataFactory<IWidget, IEdgeWidget> {
         protected override void CreateItems() {
             var factory = Registry.Pool.TryGetCreate<IWidgetFactory> ();
-            One = factory.CreateWidget("One");
-            Two = factory.CreateWidget("Two");
-            Three = factory.CreateWidget("Three");
-            Aside = factory.CreateWidget("Aside");
-            Single = factory.CreateWidget("Single");
+            One = factory.CreateItem("One");
+            Two = factory.CreateItem("Two");
+            Three = factory.CreateItem("Three");
+            Aside = factory.CreateItem("Aside");
+            Single = factory.CreateItem("Single");
         }
 
         protected override IEdgeWidget CreateEdge(IWidget root, IWidget leaf) {
-            var result = Registry.Pool.TryGetCreate<IWidgetFactory>().CreateEdgeWidget("", root, leaf);
+            var result = Registry.Pool.TryGetCreate<IWidgetFactory>().CreateEdge(root, leaf, "");
             result.Data = GraphUtils.EdgeString<IWidget, IEdgeWidget>(result);
             return result;
         }

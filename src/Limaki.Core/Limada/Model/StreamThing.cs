@@ -26,8 +26,6 @@ namespace Limada.Model {
     [DataContract]
     public class StreamThing :  Thing, IStreamThing {
         
-        //public StreamThing() : this(Common.Isaac.Long) { }
-        //public StreamThing(Int64 id) { _id = id; }
         public StreamThing() : base (){}
         public StreamThing(Stream data) : base() {
             this.Data = data;
@@ -36,25 +34,10 @@ namespace Limada.Model {
             this.Data = data;
         }
 
-        [Transient]
-        private State _state = null;
-        protected State state {
-            get {
-                if (_state == null) {
-                    _state = new State();
-                }
-                return _state;
-            }
-            set { _state = value; }
-        }
-
         #region Proxy-Handling
 
         [Transient]
         private IDataContainer<Id> _dataContainer = null;
-        /// <summary>
-        /// Remark: this design 
-        /// </summary>
         public virtual IDataContainer<Id> DataContainer {
             get { return _dataContainer; }
             set { _dataContainer = value; }
@@ -68,7 +51,7 @@ namespace Limada.Model {
         internal virtual ByteStreamWrapper StreamWrapper {
             get {
                 if (_streamWrapper == null) {
-                    if (!state.Hollow && DataContainer!=null) {
+                    if (!State.Hollow && DataContainer!=null) {
                         IRealData<Id, Byte[]> realData =
                             DataContainer.GetById(this.Id) as IRealData<Id, Byte[]>;
                         if (realData != null) {
@@ -108,7 +91,7 @@ namespace Limada.Model {
                 }
             }
             _unCompressedStream = null;
-            if (!state.Hollow && (_streamWrapper != null)) {
+            if (!State.Hollow && (_streamWrapper != null)) {
                 if (StreamWrapper.State.Dirty) {
                     Flush();
                 }
@@ -139,10 +122,10 @@ namespace Limada.Model {
                 return result;
             }
             set {
-                if (value == null) {
+                if (value == null || value != _unCompressedStream) {
                     _streamWrapper = null;
                 }
-                _unCompressedStream = value;
+                this.State.Setter(ref _unCompressedStream, value);
                 //if (!Compressable) {
                 //    StreamWrapper.Stream = _unCompressedStream;
                 //}
@@ -176,25 +159,14 @@ namespace Limada.Model {
         [DataMember]
         public virtual CompressionType Compression {
             get { return (CompressionType)_compression; }
-            set {
-                int _value = (int)value;
-                if (_compression != _value) {
-                    state.Dirty = true;
-                }
-                _compression = _value;
-            }
+            set { this.State.Setter(ref _compression, (int)value); }
         }
 
         Id _streamType = -1;
         [DataMember]
         public virtual Id StreamType {
             get { return _streamType; }
-            set {
-                if (value != _streamType) {
-                    state.Dirty = true;
-                    _streamType = value;
-                }
-            }
+            set { this.State.Setter(ref _streamType, value); }
         }
 
         #endregion

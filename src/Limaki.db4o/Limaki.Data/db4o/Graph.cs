@@ -23,30 +23,8 @@ using Limaki.Common.Collections;
 using Limaki.Graphs;
 
 namespace Limaki.Data.db4o {
-    public class Graph<TItem, TEdge> : GraphBase<TItem, TEdge>
+    public class Graph<TItem, TEdge> : DbGraph<TItem,TEdge>
         where TEdge : IEdge<TItem> {
-        
-        # region EdgeList-Cache
-        protected IDictionary<TItem, ICollection<TEdge>> edgesCache =
-                    new Dictionary<TItem, ICollection<TEdge>>();
-
-        protected ICollection<TEdge> getCached(TItem item) {
-            ICollection<TEdge> result = null;
-            if (item != null)
-                edgesCache.TryGetValue(item, out result);
-            return result;
-        }
-
-        protected void setCached(TItem item, ICollection<TEdge> edges) {
-            if (item != null) {
-                if (edges != null) {
-                    edgesCache[item] = edges;
-                } else {
-                    edgesCache.Remove(item);
-                }
-            }
-        }
-        #endregion
 
         #region IGraph<TItem,TEdge> Member
 
@@ -60,111 +38,29 @@ namespace Limaki.Data.db4o {
             return result;
         }
 
-        protected override void AddEdge(TEdge edge, TItem item) {
-            if (item != null) {
-                if (!Contains(item)) {
-                    Add(item);
-                    if (EdgeIsItem) {
-                        if (((object)item) is TEdge) {
-                            this.Add((TEdge)(object)item);
-                        }
-                    }
-                } 
-                setCached(item, null);
-                
-            }
+        protected override void Store(TItem item) {
+            Session.Store(item);
         }
 
-        public override void Add(TEdge edge) {
-            if (edge != null)
-                try {
-                    CheckEdge(edge);
-                    AddEdge(edge, edge.Root);
-                    AddEdge(edge, edge.Leaf);
-                    Session.Store(edge);
-                } catch (Exception e) {
-                    throw e;
-                } finally { }
-        }
-
-        public override void ChangeEdge(TEdge edge, TItem newItem, bool changeRoot) {
-            TItem oldItem = default( TItem );
-            if (changeRoot) {
-                oldItem = edge.Root;
-                edge.Root = newItem;
-            } else  {
-                oldItem = edge.Leaf;
-                edge.Leaf = newItem;
-            }
-            if (this.Contains(edge)) {
-                if (!this.Contains(newItem)) {
-                    this.Add(newItem);
-                } 
-                setCached(newItem, null);
-                setCached(oldItem, null);
-                Session.Store(edge);
-            } else {
-                this.Add(edge);
-            }
-        }
-
-        public override void RevertEdge(TEdge edge) {
-            base.RevertEdgeInternal (edge);
-            setCached(edge.Leaf, null);
-            setCached(edge.Root, null);
+        protected override void Store(TEdge edge) {
             Session.Store(edge);
         }
-        protected override bool RemoveEdge(TEdge edge, TItem item) {
-            setCached(edge.Leaf, null);
-            setCached(edge.Root, null);
-            return true;
+
+        protected override void Delete(TItem item) {
+            Session.Delete(item);
         }
 
-        protected virtual bool RemoveInternal(TEdge edge) {
-            RemoveEdge(edge, edge.Root);
-            RemoveEdge(edge, edge.Leaf);
-            return true;
+        protected override void Delete(TEdge edge) {
+            Session.Delete(edge);
         }
 
-        public override bool Remove(TEdge edge) {
-            bool result = false;
-            try {
-                if (Contains(edge)) {
-                    if (EdgeIsItemClazz) {
-                        object o = edge;
-                        result = this.Remove((TItem)o);
-                    } else {
-                        Session.Delete(edge);
-                        result = true;
-                    }
-                    RemoveInternal (edge);
-                }
-            } catch (Exception e) {
-                throw e;
-            } finally { }
-            return result;
-        }
-
+        
         public override int EdgeCount(TItem item) {
             return Edges(item).Count;
         }
 
 
-
-        public override ICollection<TEdge> Edges(TItem item) {
-            if (item != null) {
-                ICollection<TEdge> result = getCached (item);
-                if (result == null) {
-                    result = edges (item);
-                    setCached (item, result);
-                }
-                return result;
-            } else {
-                return new EmptyCollection<TEdge> ();
-            }
-        }
-
-        protected virtual ICollection<TEdge> edges(TItem item) {
+        protected override ICollection<TEdge> edges(TItem item) {
             ICollection<TEdge> result = null;
             try {
                 // this doesn't optimize; it seems that the easiest way is to 
@@ -197,50 +93,6 @@ namespace Limaki.Data.db4o {
             return result;
         }
 
-        public override IEnumerable<KeyValuePair<TItem, ICollection<TEdge>>> ItemsWithEdges() {
-            foreach (TItem item in this) {
-                ICollection<TEdge> result = Edges(item);
-                if (result.Count != 0) {
-                    yield return new KeyValuePair<TItem, ICollection<TEdge>>(item, result);
-                }
-            }
-        }
-
-
-
-        public override void Add(TItem item) {
-            // TODO: Prove what happens if item is TEdge
-            try {
-                Session.Store(item);
-            } catch (Exception e) {
-                throw e;
-            } finally { }
-        }
-
-        public override bool Remove(TItem item) {
-            bool result = false;
-            if (EdgeIsItem && item is TEdge) {
-                RemoveInternal((TEdge)(object)item);
-            }
-            try {
-                bool contained = Contains(item);
-                if (contained || !ItemIsStorableClazz) {
-                    foreach (TEdge edge in DepthFirstTwig(item)) {
-                        if (Remove(edge))
-                            result = true; // Attention! lazy evaluation!
-                    }
-                }
-                if (contained) {
-                    Session.Delete(item);
-                    result = true;
-                }
-                setCached(item, null);
-            } catch (Exception e) {
-                throw e;
-            } finally { }
-            return result;
-        }
-
         public override bool Contains(TItem item) {
             bool result = false;
             try {
@@ -255,16 +107,6 @@ namespace Limaki.Data.db4o {
             return result;
         }
 
-        public override void OnDataChanged( TItem item ) {
-            base.OnDataChanged(item);
-            this.Add(item);
-        }
-
-        public override void OnChangeData(TItem item, object data) {
-            base.OnChangeData(item, data);
-            this.Add(item);
-        }
-
         public override void Clear() {
             foreach (TItem item in this) {
                 Remove(item);
@@ -276,7 +118,13 @@ namespace Limaki.Data.db4o {
         }
 
         public override int Count {
-            get { return items.Count; }
+            get {
+                int result = 0;
+                foreach (var clazz in Session.Ext().StoredClasses()) {
+                    result += clazz.InstanceCount();
+                }
+                return result;
+            }
         }
 
         public override bool IsReadOnly {
@@ -287,7 +135,7 @@ namespace Limaki.Data.db4o {
             return items.GetEnumerator();
         }
 
-        protected virtual ICollection<TItem> items {
+        protected override IEnumerable<TItem> items {
             get {
                 if (!ItemIsStorableClazz) {
                     Set<TItem> done = new Set<TItem>();
@@ -307,6 +155,15 @@ namespace Limaki.Data.db4o {
             }
         }
 
+        public override void OnDataChanged(TItem item) {
+            base.OnDataChanged(item);
+            this.Add(item);
+        }
+
+        public override void OnChangeData(TItem item, object data) {
+            base.OnChangeData(item, data);
+            this.Add(item);
+        }
 
 
         #endregion
@@ -336,11 +193,11 @@ namespace Limaki.Data.db4o {
             ConfigureSession (_gateway.Session);
         }
 
-        public virtual void EvictItem(TItem item) {
+        public override void EvictItem(TItem item) {
             Session.Ext().Purge(item);
         }
 
-        public virtual void Flush() {
+        public override void Flush() {
             try {
                 if (Session != null) {
                     Session.Commit ();
@@ -352,7 +209,7 @@ namespace Limaki.Data.db4o {
                 throw e;
             }
         }
-        public void Close() {
+        public override void Close() {
             Flush();
             this._gateway.Close();
         }

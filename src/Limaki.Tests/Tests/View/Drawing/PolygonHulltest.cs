@@ -15,11 +15,7 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing.Drawing2D;
 
-using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.UnitTest;
 using NUnit.Framework;
@@ -212,7 +208,7 @@ namespace Limaki.Tests.Drawing {
 
         }
 
-        private int count = 1000000;
+        private int count = 100000;
         [Test]
         public void Test() {
             this.ReportDetail("PolygonHullTest");

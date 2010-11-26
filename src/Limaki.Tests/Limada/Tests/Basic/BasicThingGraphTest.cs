@@ -16,9 +16,8 @@
 
 using System;
 using System.Collections.Generic;
-using Limaki.Graphs;
 using Limada.Model;
-using Limaki.Tests.Graph;
+using Limaki.Graphs;
 using Limaki.Tests.Graph.Basic;
 using NUnit.Framework;
 
@@ -80,27 +79,34 @@ namespace Limada.Tests.Basic {
     }
 
     public class BasicThingDataFactory : BasicTestDataFactory<IThing, ILink> {
-        private IThing marker = new Thing<string>("Marker");
+        protected IThingFactory Factory = new ThingFactory ();
+        private IThing marker = null;
         protected override void CreateItems() {
-            One = new Thing<string>("One");
-            Two = new Thing<string>("Two");
-            Three = new Thing<string>("Three");
-            Aside = new Thing<string>("Aside");
-            Single = new Thing<string>("Single");
+            marker = Factory.CreateItem("Marker");
+            One = Factory.CreateItem("One");
+            Two = Factory.CreateItem("Two");
+            Three = Factory.CreateItem("Three");
+            Aside = Factory.CreateItem("Aside");
+            Single = Factory.CreateItem("Single");
         }
         protected override ILink CreateEdge(IThing root, IThing leaf) {
-            return new Link(root, leaf, marker);
+            return Factory.CreateEdge(root, leaf, marker);
         }
         protected override void CreateEdges() {
             base.CreateEdges();
-        }
-        public override IEnumerable<ILink> Edges {
-            get {
-                foreach (ILink edge in base.Edges) {
-                    edge.Marker = marker;
-                    yield return edge;
-                }
+            foreach (ILink edge in base.Edges) {
+                edge.Marker = marker;
             }
         }
+        
+        // not working in studio 2010:
+        //public override IEnumerable<ILink> Edges {
+        //    get {
+        //        foreach (ILink edge in base.Edges) {
+        //            edge.Marker = marker;
+        //            yield return edge;
+        //        }
+        //    }
+        //}
     }
 }

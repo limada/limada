@@ -22,7 +22,6 @@ using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Widget;
 using Limaki.UnitTest;
 using Limaki.Widgets;
-using Limaki.Widgets.Layout;
 using NUnit.Framework;
 using Limaki.Actions;
 using Limaki.Common.Collections;
@@ -57,8 +56,8 @@ namespace Limaki.Tests.Graph.Wrappers {
             //    if (!AlwaysInvoke)
             //        invoked = true;
             //}
-            Mock.Control.CommandsExecute ();
-            Mock.Scene.Commands.Clear ();           
+            Mock.Display.Execute ();
+            Mock.Scene.Requests.Clear ();           
         }
 
         public void TestShapes(Scene scene) {
@@ -81,6 +80,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
 
             foreach(IWidget widget in scene.Graph) {
+                if (widget.Shape != null)
                 Assert.IsTrue(indexList.Contains(widget),
                     "to less items in SpatialIndex: ! SpatialIndex.Contains ( " + widget.ToString() + " ) of scene.Graph");
             }
@@ -106,7 +106,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         [Test]
         public void InvokeTest() {
             CommandsExecute();
-            Mock.SceneControler.Invoke ();
+            Mock.Display.Invoke ();
             TestShapes (Mock.Scene);
         }
 

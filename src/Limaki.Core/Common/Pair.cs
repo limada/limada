@@ -30,6 +30,9 @@ namespace Limaki.Common {
             One = one;
             Two = two;
         }
+        public override string ToString() {
+            return "{" + One.ToString()+","+Two.ToString()+"}";
+        }
     }
 
     public struct Triple<T,U,V> {
@@ -40,6 +43,11 @@ namespace Limaki.Common {
             One = one;
             Two = two;
             Three = three;
+        }
+        public override string ToString() {
+            return "{" + One.ToString() + "," + 
+                        Two.ToString() + "," + 
+                        Three.ToString() + "}";
         }
     }
 

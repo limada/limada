@@ -20,9 +20,9 @@ namespace Limada.Tests.Model {
 
             mock.Factory.Count = count;
 
-            mock.SceneControler.Invoke();
+            mock.Display.Invoke();
             mock.SceneFacade.ShowAllData();
-            mock.Control.CommandsExecute();
+            mock.Display.Execute();
 
             IGraph<IWidget, IEdgeWidget> widgetGraph = (mock.Scene.Graph as GraphView<IWidget, IEdgeWidget>).One;
             widgetGraph.ChangeData = null;

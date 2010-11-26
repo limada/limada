@@ -24,9 +24,11 @@ namespace Limaki.Data {
         void Open();
         bool Saveable { get; }
         void Save();
-        void SaveAs(DataBaseInfo FileName);
+        void SaveAs(T source, DataBaseInfo FileName);
         void Close();
         void SaveCurrent();
         IDataProvider<T> Clone();
     }
+	
+	
 }

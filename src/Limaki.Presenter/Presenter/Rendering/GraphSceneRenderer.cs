@@ -1,0 +1,83 @@
+/*
+ * Limaki 
+ * Version 0.081
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2006-2008 Lytico
+ *
+ * http://limada.sourceforge.net
+ * 
+ */
+
+
+//#define TraceRenderWidget
+//#define TraceRender
+#define countWidgets
+
+using Limaki.Common;
+using Limaki.Drawing;
+using Limaki.Drawing.Shapes;
+using Limaki.Graphs;
+using Limaki.Presenter.UI;
+
+namespace Limaki.Presenter {
+    public class GraphSceneRenderer<TItem, TEdge> : ContentRenderer<IGraphScene<TItem, TEdge>>,
+                                                    IGraphSceneRenderer<TItem, TEdge>
+        where TEdge : TItem, IEdge<TItem> {
+
+        public virtual IGraphItemRenderer<TItem,TEdge> ItemRenderer { get; set; }
+
+        public Get<IGraphLayout<TItem, TEdge>> Layout { get; set; }
+
+
+#if countWidgets
+        public int iWidgets = 0;
+#endif
+
+        public override void Render(IGraphScene<TItem, TEdge> data, IRenderEventArgs e) {
+            var camera = this.Camera ();
+            RectangleS clipBounds = camera.ToSource(e.Clipper.Bounds);
+
+#if TraceRender
+            System.Console.WriteLine ("***** clipBounds:\t" + clipBounds);
+            //+"\toffset(g)"+new SizeS(g.Transform.OffsetX, g.Transform.OffsetY)
+#endif
+
+            TItem focused = data.Focused;
+            TItem hovered = data.Hovered;
+            
+            var layout = this.Layout();
+            ItemRenderer.Layout = this.Layout;
+
+            foreach (TItem widget in data.ElementsIn(clipBounds, ZOrder.EdgesFirst)) {
+                bool rendered = true;
+                if (!widget.Equals(focused) && !widget.Equals(hovered)) {
+                    ItemRenderer.Render(widget, e);
+
+#if countWidgets
+                    if (rendered)
+                        iWidgets++;
+#endif
+                }
+            }
+
+            if (hovered != null && ShapeUtils.Intersects(clipBounds, layout.GetShape(hovered).BoundsRect)) {
+                ItemRenderer.Render(hovered, e);
+            }
+
+            if (focused != null && ShapeUtils.Intersects(clipBounds, layout.GetShape(focused).BoundsRect)) {
+                ItemRenderer.Render(focused, e);
+            }
+        }
+
+
+
+        
+
+
+    }
+}

@@ -35,13 +35,13 @@ namespace Limaki.Actions {
 
     public class Command<T> : Command,ICommand<T> {
         private T _target = default(T);
-        public T Target {
+        public T Subject {
             get { return _target; }
             set { _target = value; }
         }
-        public Command(T target) { this.Target = target;}
+        public Command(T target) { this.Subject = target;}
         protected override void Dispose(bool disposing) {
-            Target = default( T );
+            Subject = default( T );
         }
     }
 
@@ -88,7 +88,7 @@ namespace Limaki.Actions {
 
         public override void Execute() {
             if (Action != null) {
-                Action (Target, Parameter);
+                Action (Subject, Parameter);
             }
         }
         protected override void Dispose(bool disposing) {

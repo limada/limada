@@ -56,10 +56,10 @@ namespace Limada.Tests.Schemata {
             string testName = "TestDescription";
             this.ReportDetail(testName);
             IThingGraph graph = new ThingGraph ();
-            IThing thing = new Thing ();
+            IThing thing = Factory.CreateItem();
             graph.Add (thing);
 
-            IThing description = new Thing<string>("Description1");
+            IThing description = Factory.CreateItem("Description1");
             CommonSchema schema = new CommonSchema (graph, thing);
 
             // test the new description:
@@ -75,7 +75,7 @@ namespace Limada.Tests.Schemata {
             IThing orphan = description;
             
             // make a new description:
-            description = new Thing<string>("Description2");
+            description = Factory.CreateItem("Description2");
             schema.Description = description;
             ValidateDescription(schema, graph, thing, description);
             

@@ -14,11 +14,12 @@
 
 namespace Limaki.Actions {
     public class ActionPriorities {
-        private static int minPriority = 1000;
-        public static int LayerPriority = minPriority + 1000;
-        public static int SelectionPriority = LayerPriority + 1000;
-        public static int DragActionPriority = SelectionPriority + 1000;
-        public static int ScrollActionPriority = DragActionPriority + 1000;
-        public static int ZoomActionPriority = ScrollActionPriority + 1000;
+        const int minPriority = 1000;
+        public const int DataLayerPriority = minPriority + 1000;
+        public const int ToolsLayerPriority = DataLayerPriority + 1000;
+        public const int SelectionPriority = ToolsLayerPriority + 1000;
+        public const int DragActionPriority = SelectionPriority + 1000;
+        public const int ScrollActionPriority = DragActionPriority + 1000;
+        public const int ZoomActionPriority = ScrollActionPriority + 1000;
     }
 }

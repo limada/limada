@@ -76,8 +76,10 @@ namespace Limada.Tests.Wrappers {
             ProgrammingLanguageFoldingTest test = new ProgrammingLanguageFoldingTest();
             test.Mock.Factory.Populate (graph);
             test.Mock.Factory.Graph = graph;
-            test.Mock.Scene = new Scene();
-            test.Mock.Scene.Graph = graph;
+            var scene = new Scene();
+            scene.Graph = graph;
+            test.Mock.Scene = scene;
+            
 
             test.Net();
 

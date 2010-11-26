@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,10 +10,29 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Limaki.Tests</RootNamespace>
     <AssemblyName>Limaki.Tests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkSubset>
-    </TargetFrameworkSubset>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +42,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,12 +51,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.4.1.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\3rdParty\bin\nUnit\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -57,12 +74,17 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="nunit.framework, Version=2.5.5.10112, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\3rdParty\bin\nUnit\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limada\Tests\Basic\BasicThingGraphTest.cs" />
     <Compile Include="Limada\Tests\Basic\ThingTest.cs" />
     <Compile Include="Limada\Tests\Model\DescriptionTestFactory.cs" />
     <Compile Include="Limada\Tests\Model\DocumentSchemaTestFactory.cs" />
+    <Compile Include="Limada\Tests\Model\ThingFactoryTest.cs" />
     <Compile Include="Limada\Tests\ThingGraph\Db4oThingGraphTestBase.cs" />
     <Compile Include="Limada\Tests\ThingGraph\SchemaGraph\SchemaGraphPerformanceTest.cs" />
     <Compile Include="Limada\Tests\ThingGraph\SchemaGraph\SchemaGraphTest.cs" />
@@ -92,8 +114,46 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\Data\db4o\GraphTest.cs" />
     <Compile Include="Tests\DomainTest.cs" />
+    <Compile Include="Tests\Graph\Folding\BinaryGraphFoldingTest.cs" />
+    <Compile Include="Tests\Graph\Folding\GCJohnBostonFoldingTest.cs" />
+    <Compile Include="Tests\Graph\Folding\Mock.cs" />
+    <Compile Include="Tests\Graph\Folding\MockGraphSceneLayer.cs" />
+    <Compile Include="Tests\Graph\Folding\ProgrammingLanguageFoldingTest.cs" />
+    <Compile Include="Tests\Graph\Folding\SceneFacadeTest.cs" />
+    <Compile Include="Tests\Graph\Wrappers\BasicGraphPairTest.cs" />
+    <Compile Include="Tests\Graph\Wrappers\BasicWidgetItemGraphPairTest.cs" />
+    <Compile Include="Tests\Graph\Wrappers\GraphPairTest.cs" />
+    <Compile Include="Tests\Graph\Wrappers\GraphViewTest.cs" />
+    <Compile Include="Tests\Presenter\Display\BenchmarkOneTests.cs" />
+    <Compile Include="Tests\Presenter\Display\DisplayTest.cs" />
+    <Compile Include="Tests\Presenter\Display\FrameTicker.cs" />
+    <Compile Include="Tests\Presenter\Display\TestDevice.cs" />
+    <Compile Include="Tests\Presenter\Display\WidgetDisplayTest.cs" />
+    <Compile Include="Tests\Presenter\GDI\ConvexHullLayer.cs" />
+    <Compile Include="Tests\Presenter\GDI\RegionLayer.cs" />
+    <Compile Include="Tests\Presenter\GDI\RegionTest.cs" />
+    <Compile Include="Tests\Presenter\Winform\ConverterTest.cs" />
+    <Compile Include="Tests\Presenter\Winform\OpenExampleData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tests\Presenter\Winform\OpenExampleData.Designer.cs">
+      <DependentUpon>OpenExampleData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tests\Presenter\Winform\QuadTreeVisualizer.cs" />
+    <Compile Include="Tests\Presenter\Winform\WidgetBoundsLayer.cs" />
+    <Compile Include="Tests\Presenter\Winform\WinformDisplayTestIntrumenter.cs" />
+    <Compile Include="Tests\Presenter\Winform\WinformTestDevice.cs" />
+    <Compile Include="Tests\Presenter\WiredScenesTest.cs" />
+    <Compile Include="Tests\Sandbox\HTML\HTMLTest.cs" />
+    <Compile Include="Tests\Sandbox\HTML\HtmlTestData.cs" />
+    <Compile Include="Tests\Sandbox\HTML\ParserPrototype.cs" />
+    <Compile Include="Tests\Sandbox\HTML\Style.cs" />
+    <Compile Include="Tests\Sandbox\HTML\Styler.cs" />
+    <Compile Include="Tests\Sandbox\HTML\Tag.cs" />
+    <Compile Include="Tests\Sandbox\HTML\Tagger.cs" />
+    <Compile Include="Tests\Sandbox\HTML\TagStyler.cs" />
+    <Compile Include="Tests\View\Drawing\PoligonAlgoTest.cs" />
     <Compile Include="Tests\View\Drawing\ViewSerialisationTest.cs" />
-    <Compile Include="Tests\Winform\ConverterTest.cs" />
     <Compile Include="Tests\Graph\Basic\BasicGraphTests.cs" />
     <Compile Include="Tests\Graph\Basic\BasicTestDataFactory.cs" />
     <Compile Include="Tests\Graph\Basic\EdgeIsItemTest.cs" />
@@ -101,11 +161,6 @@
     <Compile Include="Tests\Graph\Basic\IntGraphTest.cs" />
     <Compile Include="Tests\Graph\Basic\StringGraphTest.cs" />
     <Compile Include="Tests\Graph\FilteredGraphTest.cs" />
-    <Compile Include="Tests\Graph\Folding\BinaryGraphFoldingTest.cs" />
-    <Compile Include="Tests\Graph\Folding\GCJohnBostonFoldingTest.cs" />
-    <Compile Include="Tests\Graph\Folding\Mock.cs" />
-    <Compile Include="Tests\Graph\Folding\ProgrammingLanguageFoldingTest.cs" />
-    <Compile Include="Tests\Graph\Folding\SceneFacadeTest.cs" />
     <Compile Include="Tests\Graph\GraphTestUtils.cs" />
     <Compile Include="Tests\Graph\Model\Examples\BenchmarkOneGraphFactory.cs" />
     <Compile Include="Tests\Graph\Model\Examples\BinaryGraphFactory.cs" />
@@ -121,35 +176,12 @@
     <Compile Include="Tests\Graph\Model\IGraphFactory.cs" />
     <Compile Include="Tests\Graph\Model\Item.cs" />
     <Compile Include="Tests\Graph\Model\TestingSomeGraphSemantics.cs" />
-    <Compile Include="Tests\Graph\Wrappers\BasicGraphPairTest.cs" />
-    <Compile Include="Tests\Graph\Wrappers\BasicWidgetItemGraphPairTest.cs" />
-    <Compile Include="Tests\Graph\Wrappers\GraphPairTest.cs" />
-    <Compile Include="Tests\Graph\Wrappers\GraphViewTest.cs" />
     <Compile Include="Tests\Sandbox\FileInfoTest.cs" />
     <Compile Include="Tests\Sandbox\HistoryTest.cs" />
     <Compile Include="Tests\Sandbox\RegExTest.cs" />
     <Compile Include="Tests\Sandbox\Schema\SchemaArchitecture.cs" />
-    <Compile Include="Tests\Winform\Display\BenchmarkOneTests.cs" />
-    <Compile Include="Tests\Winform\Display\DisplayTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Tests\Winform\Display\DragDropBasicTest.cs" />
-    <Compile Include="Tests\Winform\Display\DragDropFacadeTest.cs" />
-    <Compile Include="Tests\Winform\Display\ImageDisplayTest.cs" />
-    <Compile Include="Tests\Winform\Display\LineTextTest.cs" />
-    <Compile Include="Tests\Winform\Display\QuadTreeVisualizer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Tests\Winform\Display\QuadTreeVisualizer.Designer.cs">
-      <DependentUpon>QuadTreeVisualizer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Tests\Winform\Display\SceneThreadTest.cs" />
-    <Compile Include="Tests\Winform\Display\SimpleWidgetLayoutTest.cs" />
-    <Compile Include="Tests\Winform\Display\WidgetBoundsLayer.cs" />
-    <Compile Include="Tests\Winform\Display\WidgetDisplayTest.cs" />
+    <Compile Include="Tests\View\Widget\SceneThreadTest.cs" />
     <Compile Include="Tests\View\Drawing\PolygonHulltest.cs" />
-    <Compile Include="Tests\View\Drawing\RegionSandbox.cs" />
-    <Compile Include="Tests\View\Drawing\RegionTest.cs" />
     <Compile Include="Tests\View\Drawing\Shapes\ShapeTest.cs" />
     <Compile Include="Tests\View\Drawing\Toolkit\TestMatrice.cs" />
     <Compile Include="Tests\View\Drawing\Toolkit\TestMatrices.cs" />
@@ -157,8 +189,11 @@
     <Compile Include="Tests\View\Widget\Model\BenchmarkOneSceneFactory.cs" />
     <Compile Include="Tests\View\Widget\Model\ISceneFactory.cs" />
     <Compile Include="Tests\View\Widget\Model\SceneFactory.cs" />
-    <Compile Include="Tests\View\Widget\WiredScenesTest.cs" />
     <Compile Include="UnitTest\TestBase.cs" />
+    <Compile Include="Tests\Sandbox\MonoGenericError2.cs" />
+    <Compile Include="Tests\Presenter\Display\CreateDisplayTest.cs" />
+    <Compile Include="Tests\Sandbox\MonoMarshalByRefError.cs" />
+    <Compile Include="Tests\Data\Streams\StreamProviderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -172,28 +207,48 @@
       <Project>{0EBC08E0-30D8-4D26-ABF4-0AADFA3AF422}</Project>
       <Name>Limaki.Db4o</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
-      <Project>{5E2A280D-1F53-44E5-AAA3-6BDBA2B51094}</Project>
-      <Name>Limaki.View</Name>
+    <ProjectReference Include="..\Limaki.Presenter.Resources\Limaki.Presenter.Resources.csproj">
+      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
+      <Name>Limaki.Presenter.Resources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.Winform\Limaki.Winform.csproj">
-      <Project>{8AAF9C71-4BCC-4F26-87F1-BBEE31AD6C84}</Project>
-      <Name>Limaki.Winform</Name>
+    <ProjectReference Include="..\Limaki.Presenter.Winform\Limaki.Presenter.Winform.csproj">
+      <Project>{00330FAC-98FB-4D4B-9B58-0D73178B6D5A}</Project>
+      <Name>Limaki.Presenter.Winform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.Presenter\Limaki.Presenter.csproj">
+      <Project>{5E2A280D-1F53-44E5-AAA3-6BDBA2B51094}</Project>
+      <Name>Limaki.Presenter</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Tests\Winform\Display\QuadTreeVisualizer.resx">
-      <DependentUpon>QuadTreeVisualizer.cs</DependentUpon>
+    <EmbeddedResource Include="Tests\Presenter\Winform\OpenExampleData.resx">
+      <DependentUpon>OpenExampleData.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Limada\Tests\Data\db4o\" />
-    <Folder Include="Tests\Graphics\" />
     <Folder Include="Tests\Sandbox\Graph\" />
     <Folder Include="Tests\Sandbox\View\" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -201,4 +256,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties InternalTargetFrameworkVersion="3.5" />
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

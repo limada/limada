@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1DD04AE7-245E-49D1-9B3C-C0F6AB9307F8}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki</RootNamespace>
+    <AssemblyName>Limaki.Monodroid.Presenter</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Context\ViewContextRecourceLoader.cs" />
+    <Compile Include="Drawing\DrawingPrimitivesSerializer.cs" />
+    <Compile Include="Drawing\GrahamConvexHull.cs" />
+    <Compile Include="Limada\UseCases\DocumentSchemaManager.cs" />
+    <Compile Include="Limada\Presenter\FavoriteManager.cs" />
+    <Compile Include="Limada\Presenter\SearchHandler.cs" />
+    <Compile Include="Limada\Presenter\Sheet.cs" />
+    <Compile Include="Limada\Presenter\SheetManager.cs" />
+    <Compile Include="Limada\UseCases\FileManager.cs" />
+    <Compile Include="Limada\View\SceneProvider.cs" />
+    <Compile Include="Drawing\Anchor.cs" />
+    <Compile Include="Drawing\Imaging\BitmapFromDibStream.cs" />
+    <Compile Include="Drawing\Camera.cs" />
+    <Compile Include="Drawing\Imaging\ExifReader.cs" />
+    <Compile Include="Drawing\Imaging\ExifTags.cs" />
+    <Compile Include="Drawing\ICamera.cs" />
+    <Compile Include="Drawing\ICameraTarget.cs" />
+    <Compile Include="Drawing\ILayout.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\CollectionVisitor.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\DoubleBits.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\HexConverter.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\IItemVisitor.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Key.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Node.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\NodeBase.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Quadtree.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Root.cs" />
+    <Compile Include="Drawing\IPainter.cs" />
+    <Compile Include="Drawing\IPainterFactory.cs" />
+    <Compile Include="Drawing\IShape.cs" />
+    <Compile Include="Drawing\IStyle.cs" />
+    <Compile Include="Drawing\IStyleSheet.cs" />
+    <Compile Include="Drawing\ISurface.cs" />
+    <Compile Include="Drawing\Matrice.cs" />
+    <Compile Include="Drawing\Painters\Painter.cs" />
+    <Compile Include="Drawing\Painters\StringPainterBase.cs" />
+    <Compile Include="Drawing\PointComparer.cs" />
+    <Compile Include="Drawing\Shapes\BezierShape.cs" />
+    <Compile Include="Drawing\IShapeFactory.cs" />
+    <Compile Include="Drawing\Shapes\IRectangleShape.cs" />
+    <Compile Include="Drawing\Shapes\Polygon.cs" />
+    <Compile Include="Drawing\Shapes\RectangleShape.cs" />
+    <Compile Include="Drawing\Shapes\RectangleShapeBase.cs" />
+    <Compile Include="Drawing\Shapes\RoundedRectangleShape.cs" />
+    <Compile Include="Drawing\Shapes\Shape.cs" />
+    <Compile Include="Drawing\Shapes\ShapeFactory.cs" />
+    <Compile Include="Drawing\Shapes\ShapeFactoryBase.cs" />
+    <Compile Include="Drawing\Shapes\ShapeUtils.cs" />
+    <Compile Include="Drawing\Vector.cs" />
+    <Compile Include="Drawing\Shapes\VectorShape.cs" />
+    <Compile Include="Drawing\Style.cs" />
+    <Compile Include="Drawing\StyleSheet.cs" />
+    <Compile Include="Drawing\StyleSheets.cs" />
+    <Compile Include="Drawing\UiState.cs" />
+    <Compile Include="Drawing\ZoomState.cs" />
+    <Compile Include="Drawing\Color.cs" />
+    <Compile Include="Drawing\Font.cs" />
+    <Compile Include="Drawing\SysColorIndex.cs" />
+    <Compile Include="Drawing\IDrawingUtils.cs" />
+    <Compile Include="Drawing\ISystemFonts.cs" />
+    <Compile Include="Drawing\KnownColor.cs" />
+    <Compile Include="Drawing\Pen.cs" />
+    <Compile Include="Drawing\PointI.cs" />
+    <Compile Include="Drawing\PointS.cs" />
+    <Compile Include="Drawing\RectangleI.cs" />
+    <Compile Include="Drawing\RectangleS.cs" />
+    <Compile Include="Drawing\SizeI.cs" />
+    <Compile Include="Drawing\SizeS.cs" />
+    <Compile Include="Mono.Net.ComponentModel\BindableAttribute.cs" />
+    <Compile Include="Mono.Net.ComponentModel\CancelEventArgs.cs" />
+    <Compile Include="Mono.Net.ComponentModel\CancelEventHandler.cs" />
+    <Compile Include="Presenter\Clipping\BoundsClipper.cs" />
+    <Compile Include="Presenter\Display\DeviceComposer.cs" />
+    <Compile Include="Presenter\Display\Display.cs" />
+    <Compile Include="Presenter\Display\DisplayFactory.cs" />
+    <Compile Include="Presenter\Display\DisplayComposer.cs" />
+    <Compile Include="Presenter\Display\GraphSceneDisplay.cs" />
+    <Compile Include="Presenter\Display\GraphSceneDisplayFactory.cs" />
+    <Compile Include="Presenter\Display\GraphSceneDisplayComposer.cs" />
+    <Compile Include="Presenter\Display\IGraphSceneDisplay.cs" />
+    <Compile Include="Presenter\Display\IComposer.cs" />
+    <Compile Include="Presenter\Display\PresenterRecourceLoader.cs" />
+    <Compile Include="Presenter\INavigateTarget.cs" />
+    <Compile Include="Presenter\IZoomTarget.cs" />
+    <Compile Include="Presenter\Layout\GraphLayout.cs" />
+    <Compile Include="Presenter\Layout\Layout.cs" />
+    <Compile Include="Presenter\Layout\ShapeLayout.cs" />
+    <Compile Include="Presenter\UI\GripPainterBase.cs" />
+    <Compile Include="Presenter\UI\IDragDopActionPresenter.cs" />
+    <Compile Include="Presenter\UI\IEditAction.cs" />
+    <Compile Include="Presenter\UI\MoveResizeRendererBase.cs" />
+    <Compile Include="Presenter\UI\SelectionRendererBase.cs" />
+    <Compile Include="Trace.cs" />
+    <Compile Include="UseCases\UseCase.cs" />
+    <Compile Include="UseCases\UseCaseFactory.cs" />
+    <Compile Include="UseCases\Viewers\DialogResult.cs" />
+    <Compile Include="UseCases\Viewers\FileDialogMemento.cs" />
+    <Compile Include="UseCases\Viewers\GraphScenePainter.cs" />
+    <Compile Include="UseCases\Viewers\ISplitView.cs" />
+    <Compile Include="UseCases\Viewers\ITextOkCancelBox.cs" />
+    <Compile Include="UseCases\Viewers\IWebBrowser.cs" />
+    <Compile Include="UseCases\Viewers\SceneHistory.cs" />
+    <Compile Include="UseCases\Viewers\SplitView.cs" />
+    <Compile Include="UseCases\Viewers\StreamViewerController.cs" />
+    <Compile Include="UseCases\Viewers\StreamViewers\HTMLViewerController.cs" />
+    <Compile Include="UseCases\Viewers\StreamViewers\SheetViewerController.cs" />
+    <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\RequestInfo.cs" />
+    <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\TimeoutStream.cs" />
+    <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\WebContent.cs" />
+    <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\WebProxyContent.cs" />
+    <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\WebServer.cs" />
+    <Compile Include="UseCases\Viewers\StreamViewProvider.cs" />
+    <Compile Include="UseCases\Viewers\TextOkCancelBoxEventArgs.cs" />
+    <Compile Include="UseCases\Viewers\ToolStrips\DisplayToolController.cs" />
+    <Compile Include="UseCases\Viewers\ToolStrips\IDisplayTool.cs" />
+    <Compile Include="UseCases\Viewers\ToolStrips\ILayoutTool.cs" />
+    <Compile Include="UseCases\Viewers\ToolStrips\IMarkerTool.cs" />
+    <Compile Include="UseCases\Viewers\ToolStrips\ITool.cs" />
+    <Compile Include="UseCases\Viewers\ToolStrips\LayoutToolController.cs" />
+    <Compile Include="UseCases\Viewers\ToolStrips\MarkerToolController.cs" />
+    <Compile Include="UseCases\Viewers\ToolStrips\ToolController.cs" />
+    <Compile Include="Presenter\Widgets\Display\WiredDisplays.cs" />
+    <Compile Include="Presenter\IClipper.cs" />
+    <Compile Include="Presenter\Clipping\IClipReceiver.cs" />
+    <Compile Include="Presenter\IDisplayDevice.cs" />
+    <Compile Include="Presenter\IDisplay.cs" />
+    <Compile Include="Presenter\Rendering\IContentRenderer.cs" />
+    <Compile Include="Presenter\NotUsed\IGraphicsPipeline.cs" />
+    <Compile Include="Presenter\Clipping\PolygonClipper.cs" />
+    <Compile Include="Presenter\Modelling\IModelReceiver.cs" />
+    <Compile Include="Presenter\IReceiver.cs" />
+    <Compile Include="Presenter\Rendering\IDeviceRenderer.cs" />
+    <Compile Include="Presenter\Modelling\ISceneReceiver.cs" />
+    <Compile Include="Presenter\IViewport.cs" />
+    <Compile Include="Presenter\DragDrop\DragAction.cs" />
+    <Compile Include="Presenter\DragDrop\DragDropEffects.cs" />
+    <Compile Include="Presenter\DragDrop\DragDropKeyStates.cs" />
+    <Compile Include="Presenter\DragDrop\DragEventArgs.cs" />
+    <Compile Include="Presenter\DragDrop\GiveFeedbackEventArgs.cs" />
+    <Compile Include="Presenter\DragDrop\IDataObject.cs" />
+    <Compile Include="Presenter\DragDrop\IDragDopControl.cs" />
+    <Compile Include="Presenter\DragDrop\QueryContinueDragEventArgs.cs" />
+    <Compile Include="Presenter\UI\EventControler.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphItemZoomAction.cs" />
+    <Compile Include="Presenter\UI\IEventControler.cs" />
+    <Compile Include="Presenter\UI\ScrollAction.cs" />
+    <Compile Include="Presenter\UI\ZoomAction.cs" />
+    <Compile Include="Presenter\Widgets\Display\WidgetDisplayFactory.cs" />
+    <Compile Include="Presenter\Widgets\Display\WidgetDisplayComposer.cs" />
+    <Compile Include="Presenter\Widgets\Layout\ArrangerLayout.cs" />
+    <Compile Include="Presenter\Widgets\Layout\SceneFacade.cs" />
+    <Compile Include="Presenter\Widgets\Layout\WidgetLayout.cs" />
+    <Compile Include="Presenter\Widgets\UI\AddEdgeAction.cs" />
+    <Compile Include="Presenter\IControl.cs" />
+    <Compile Include="Presenter\IDeviceCursor.cs" />
+    <Compile Include="Presenter\UI\GraphScene\IGraphSceneLayer.cs" />
+    <Compile Include="Presenter\UI\IKeyAction.cs" />
+    <Compile Include="Presenter\Rendering\ILayer.cs" />
+    <Compile Include="Presenter\UI\IMouseAction.cs" />
+    <Compile Include="Presenter\Rendering\IRenderAction.cs" />
+    <Compile Include="Presenter\Rendering\IRenderEventArgs.cs" />
+    <Compile Include="Presenter\UI\ISelectionRenderer.cs" />
+    <Compile Include="Presenter\UI\IShapedSelectionRenderer.cs" />
+    <Compile Include="Presenter\UI\IUISystemInformation.cs" />
+    <Compile Include="Presenter\UI\Key.cs" />
+    <Compile Include="Presenter\UI\KeyActionBase.cs" />
+    <Compile Include="Presenter\UI\KeyEventArgs.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphSceneCommands.cs" />
+    <Compile Include="Presenter\UI\Layer.cs" />
+    <Compile Include="Presenter\Layout\LayoutCommand.cs" />
+    <Compile Include="Presenter\UI\MouseActionBase.cs" />
+    <Compile Include="Presenter\UI\MouseActionEventArgs.cs" />
+    <Compile Include="Presenter\UI\MouseDragActionBase.cs" />
+    <Compile Include="Presenter\UI\MouseTimerActionBase.cs" />
+    <Compile Include="Presenter\Rendering\RenderEventArgs.cs" />
+    <Compile Include="Presenter\UI\SelectorAction.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphItemMultiSelector.cs" />
+    <Compile Include="Presenter\Display\ViewPort.cs" />
+    <Compile Include="Presenter\Clipping\ClipReceiver.cs" />
+    <Compile Include="Presenter\NotUsed\ReceiverInstrumentation.cs" />
+    <Compile Include="Presenter\Rendering\ContentRenderer.cs" />
+    <Compile Include="Presenter\Rendering\GraphItemRenderer.cs" />
+    <Compile Include="Presenter\Rendering\GraphSceneRenderer.cs" />
+    <Compile Include="Presenter\Widgets\Display\WidgetDisplay.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphEdgeChangeAction.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphItemAddAction.cs" />
+    <Compile Include="Presenter\Widgets\UI\GraphSceneFolding.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphSceneLayer.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphSceneFocusAction.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphItemMoveResizeAction.cs" />
+    <Compile Include="Presenter\Layout\GraphItemShapeProxy.cs" />
+    <Compile Include="Presenter\Widgets\UI\SceneTools.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphItemDeleteAction.cs" />
+    <Compile Include="Presenter\Widgets\UI\WiredScenes.cs" />
+    <Compile Include="Presenter\Widgets\WidgetSceneRenderer.cs" />
+    <Compile Include="Presenter\Modelling\GraphItemReceiver.cs" />
+    <Compile Include="Presenter\Modelling\GraphSceneReceiver.cs" />
+    <Compile Include="RTF\AdobeRTFFilter.cs" />
+    <Compile Include="RTF\RTFFilter.cs" />
+    <Compile Include="RTF\RTFHelper.cs" />
+    <Compile Include="Limada\View\ISceneProvider.cs" />
+    <Compile Include="Drawing\IGraphScene.cs" />
+    <Compile Include="Widgets\ISheetManager.cs" />
+    <Compile Include="Limada\View\WidgetThingAdapter.cs" />
+    <Compile Include="Limada\View\WidgetThingGraph.cs" />
+    <Compile Include="Limada\View\WidgetThingGraphExtension.cs" />
+    <Compile Include="Limada\View\WidgetThingGraphMapping.cs" />
+    <Compile Include="Limada\View\WidgetThingMarkerFacade.cs" />
+    <Compile Include="Limada\View\WidgetThingSerializer.cs" />
+    <Compile Include="Limada\View\WidgetThingStreamHelper.cs" />
+    <Compile Include="View\GraphItem2WidgetAdapter.cs" />
+    <Compile Include="View\GraphItemWidgetMapping.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Widgets\BruteForceIndex.cs" />
+    <Compile Include="Widgets\EdgeWidget.cs" />
+    <Compile Include="Widgets\IEdgeWidget.cs" />
+    <Compile Include="Widgets\IWidget.cs" />
+    <Compile Include="Widgets\IWidgetFactory.cs" />
+    <Compile Include="Presenter\Layout\Arranger.cs" />
+    <Compile Include="Presenter\Layout\IRouter.cs" />
+    <Compile Include="Presenter\Layout\IShapeProxy.cs" />
+    <Compile Include="Presenter\Layout\NearestAnchorRouter.cs" />
+    <Compile Include="Presenter\Layout\RouterBase.cs" />
+    <Compile Include="Presenter\Widgets\UI\GraphSceneFacade.cs" />
+    <Compile Include="Widgets\MarkerContextProcessor.cs" />
+    <Compile Include="Presenter\UI\IMoveResizeAction.cs" />
+    <Compile Include="Presenter\UI\MoveResizeAction.cs" />
+    <Compile Include="Widgets\QuadTreeIndex.cs" />
+    <Compile Include="Widgets\Scene.cs" />
+    <Compile Include="Widgets\SpatialIndex.cs" />
+    <Compile Include="Widgets\Widget.cs" />
+    <Compile Include="Widgets\WidgetComposite.cs" />
+    <Compile Include="Widgets\WidgetFactory.cs" />
+    <Compile Include="Widgets\WidgetGraph.cs" />
+    <Compile Include="Limada\UseCases\StreamImportManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Limaki.Core\Limaki.MonoDroid.Core.csproj">
+      <Project>{AC134B49-0959-451E-888C-CC52917CD90F}</Project>
+      <Name>Limaki.MonoDroid.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

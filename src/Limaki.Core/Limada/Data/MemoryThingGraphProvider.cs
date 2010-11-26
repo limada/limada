@@ -48,16 +48,18 @@ namespace Limada.Data {
         }
 
         public override void Open(DataBaseInfo FileName) {
-            throw new System.NotImplementedException();
+            Registry.Pool.TryGetCreate<IExceptionHandler>()
+                .Catch(new Exception(this.Description+" opening currently not implemented"), MessageType.OK);
         }
 
         public override void Save() {
-            //Registry.Pool.TryGetCreate<IExceptionHandler>()
-            //    .Catch(new Exception(Extension + "-Files can't be saved."), MessageType.OK);
+            Registry.Pool.TryGetCreate<IExceptionHandler>()
+                .Catch(new Exception(this.Description + " not possible. Use SaveAs "), MessageType.OK);
         }
 
-        public override void SaveAs(DataBaseInfo FileName) {
-            throw new System.NotImplementedException();
+        public override void SaveAs(IThingGraph source, DataBaseInfo FileName) {
+            Registry.Pool.TryGetCreate<IExceptionHandler>()
+                .Catch(new Exception(this.Description + " saving currently not implemented"), MessageType.OK);
         }
 
         public override void Close() {

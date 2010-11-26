@@ -30,7 +30,7 @@ namespace Limaki.Common {
         Type Clazz<T>();
         bool Contains<T>();
 
-        object One ( Type type );
+        object Create ( Type type );
 
         /// <summary>
         /// calls the default-construtor of the class
@@ -40,7 +40,7 @@ namespace Limaki.Common {
         /// </summary>
         /// <typeparam name="T">interface to translate</typeparam>
         /// <returns>new object of translated class</returns>
-        T One<T>();
+        T Create<T>();
 
         /// <summary>
         /// calls the default-construtor of the class TOuter#TInner#
@@ -49,7 +49,7 @@ namespace Limaki.Common {
         /// </summary>
         /// <typeparam name="TInner">type to translate</typeparam>
         /// <returns>new object of R_Of{T}</returns>
-        TOuter One<TInner, TOuter>();
+        TOuter Create<TInner, TOuter>();
 
         void Add ( Type source, Type target );
         void Add<T1, T2>();

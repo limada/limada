@@ -72,6 +72,13 @@ namespace Limaki.Tests.Graph.Basic {
                 if (Graph<TItem, TEdge>.EdgeIsItemClazz) {
                     yield return TwoThree_One;
                 }
+                //var list = new TEdge[] {
+                //              OneTwo,
+                //              TwoThree,
+                //              OneAside,
+                //              OneAside,
+                //            };
+                //return list;
             }
         }
 

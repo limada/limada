@@ -39,7 +39,7 @@ namespace Limada.Tests.ThingGraphs {
         /// Testing ThingGraphTest over Limada.Data.db4o.ThingGraph
         /// </summary>
         [Test]
-        public void StandardGraphTest() {
+        public virtual void StandardGraphTest() {
             BasicThingGraphTest graphTest = new BasicThingGraphTest();
             graphTest.DoDetail = this.DoDetail;
 
@@ -48,7 +48,7 @@ namespace Limada.Tests.ThingGraphs {
             graphTest.AllTests();
             graphTest.TearDown();
 
-            this.OnClose();
+            this.Close();
             ReportSummary();
         }
 
@@ -57,13 +57,13 @@ namespace Limada.Tests.ThingGraphs {
         /// also tests activation of Link.Leaf and Link.Root
         /// </summary>
         [Test]
-        public void OpenCloseOpenRead() {
+        public virtual void OpenCloseOpenRead() {
             BasicThingGraphTest graphTest = new BasicThingGraphTest();
 
             IThingGraph graph = this.Graph;
             AddData(graph, graphTest);
 
-            this.OnClose();
+            this.Close();
             graph = this.Graph;
 
             IThing thing = graph.GetById(graphTest.Data.Two.Id);
@@ -80,12 +80,12 @@ namespace Limada.Tests.ThingGraphs {
             ILink link = (ILink)thing;
             Assert.AreEqual(link.Root.Id, graphTest.Data.Two.Id);
 
-            this.OnClose();
+            this.Close();
             ReportSummary();
         }
 
         [Test]
-        public void CheckInvalidLinks() {
+        public virtual void CheckInvalidLinks() {
             IThingGraph graph = this.Graph;
             foreach (ILink link in graph.Edges()) {
                 if (((ILink<Id>)link).Leaf != default(Id)) {
@@ -98,12 +98,13 @@ namespace Limada.Tests.ThingGraphs {
                     Assert.IsNotNull(link.Root);
                 }
             }
-            this.OnClose();
+            this.Close();
             ReportSummary();
         }
 
+        public int StoreCount = 150;
         [Test]
-        public void StorePerformanceTest() {
+        public virtual void StorePerformanceTest() {
             IThingGraph target = this.Graph;
             IGraphPair<IGraphItem, IThing, IGraphEdge, ILink> graphPair =
                   new GraphPair<IGraphItem, IThing, IGraphEdge, ILink>(
@@ -113,7 +114,7 @@ namespace Limada.Tests.ThingGraphs {
 
             GraphFactoryBase factory = new BinaryGraphFactory();
             factory.Graph = graphPair;
-            factory.Count = 150;
+            factory.Count = StoreCount;
             factory.AddDensity = true;
 
             this.Tickers.Start();
@@ -122,13 +123,13 @@ namespace Limada.Tests.ThingGraphs {
             this.OnFlush (target);
 
             ReportSummary();
-            this.OnClose();
+            this.Close();
         }
 
 
 
         [Test]
-        public void EdgeListTest() {
+        public virtual void EdgeListTest() {
             IThingGraph target = this.Graph;
 
             //IGraphPair<IGraphItem, IThing, IGraphEdge, ILink> graphPair =
@@ -159,11 +160,11 @@ namespace Limada.Tests.ThingGraphs {
                 }
 
             ReportSummary();
-            this.OnClose();
+            this.Close();
         }
 
         [Test]
-        public void ProgramminglanguageJavaDeleteTest2() {
+        public virtual void ProgramminglanguageJavaDeleteTest2() {
             IThingGraph target = this.Graph;
 
             ThingGraphFactory<ProgrammingLanguageFactory> factory =

@@ -17,7 +17,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
     public class SchemaGraphTestBase : ThingGraphTestBase {
         public override IThingGraph Graph {
             get {
-                if (_graph == null) {
+                if (!(_graph is SchemaThingGraph)) {
                     _graph = new SchemaThingGraph(base.Graph);
                     SchemaFacade.MakeMarkersUnique(base.Graph);
                 }
@@ -28,7 +28,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
     }
 
     public class SchemaGraphTest : SchemaGraphTestBase {
-        public void TestFindRoots(IThing described, IThing description, ILink descriptionLink) {
+        public virtual void TestFindRoots(IThing described, IThing description, ILink descriptionLink) {
             GraphPairFacade<IThing, ILink> facade = new GraphPairFacade<IThing, ILink>();
             foreach (IThing item in facade.FindRoots(Graph, described)) {
                 Assert.IsFalse(item.Equals(descriptionLink), descriptionLink.ToString());
@@ -36,7 +36,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
             } 
         }
 
-        public void TestDescription(IThing described, IThing description, ILink descriptionLink) {
+        public virtual void TestDescription(IThing described, IThing description, ILink descriptionLink) {
             Assert.IsTrue (Graph.Contains (described));
             //Assert.IsTrue(Graph.Contains(description));
             Assert.IsFalse(Graph.Contains(descriptionLink));
@@ -66,7 +66,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
         }
 
         [Test]
-        public void StandardGraphTest() {
+        public virtual void StandardGraphTest() {
             BasicThingGraphTest graphTest = new BasicThingGraphTest();
             graphTest.DoDetail = false; //this.DoDetail;
 
@@ -75,12 +75,12 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
             graphTest.AllTests();
             graphTest.TearDown();
 
-            this.OnClose();
+            this.Close();
             ReportSummary();
         }
 
         [Test]
-        public void DescriptionTest() {
+        public virtual void DescriptionTest() {
             var factory = new DescriptionTestFactory ();
             factory.Graph = this.Graph;
             factory.Populate ();
@@ -98,7 +98,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
         }
 
         [Test]
-        public void FindRootsTest() {
+        public virtual void FindRootsTest() {
             if (Graph != null) {
                 foreach (IThing item in new GraphPairFacade<IThing, ILink>().FindRoots(Graph, null)) {
                     if (!Graph.IsMarker(item))
@@ -110,7 +110,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
 
 
         [Test]
-        public void DocumentSchemaTest() {
+        public virtual void DocumentSchemaTest() {
             var factory = new DocumentSchemaTestFactory();
             factory.Graph = this.Graph;
             factory.Populate();

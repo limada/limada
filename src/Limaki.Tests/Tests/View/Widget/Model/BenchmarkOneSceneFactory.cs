@@ -19,10 +19,10 @@ using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Tests.Widget;
 using Limaki.Widgets;
-using Limaki.Widgets.Layout;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using System;
+using Limaki.Presenter.Widgets.Layout;
 
 namespace Limaki.Tests.Graph.Model {
     public class BenchmarkOneSceneFactory : SceneFactory<BenchmarkOneGraphFactory> {
@@ -35,10 +35,13 @@ namespace Limaki.Tests.Graph.Model {
         public SizeI distance = new SizeI(30, 30);
         public SizeI defaultSize = new SizeI(50, 20);
         public PointI startAt = new PointI(30, 30);
-        public StyleSheet styleSheet = new StyleSheet("LongtermPerformanceStyle", StyleSheet.CreateStyleWithSystemSettings ());
+        public StyleSheet styleSheet = 
+            new StyleSheet("LongtermPerformanceStyle", 
+                StyleSheet.CreateStyleWithSystemSettings ()
+                );
 
-        public class LongtermPerformanceLayout : WidgetLayout<Scene, IWidget> {
-            public LongtermPerformanceLayout(Func<Scene> handler, IStyleSheet stylesheet)
+        public class LongtermPerformanceLayout : WidgetLayout<IWidget,IEdgeWidget> {
+            public LongtermPerformanceLayout(Get<IGraphScene<IWidget, IEdgeWidget>> handler, IStyleSheet stylesheet)
                 :
                     base(handler, stylesheet) { }
 
@@ -114,7 +117,7 @@ namespace Limaki.Tests.Graph.Model {
             this.Count = oldCount;
 
             Vector vector = new Vector();
-            IWidget widget = Registry.Pool.TryGetCreate<IWidgetFactory>().CreateWidget("line");
+            IWidget widget = Registry.Pool.TryGetCreate<IWidgetFactory>().CreateItem("line");
             widget.Shape = new VectorShape(vector);
             scene.Add(widget);
             Line1 = widget;

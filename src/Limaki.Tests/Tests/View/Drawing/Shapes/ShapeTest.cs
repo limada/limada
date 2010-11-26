@@ -1,9 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+/*
+ * Limaki 
+ * Version 0.081
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2006-2008 Lytico
+ *
+ * http://limada.sourceforge.net
+ * 
+ */
+
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
-using Limaki.UnitTest;
 using NUnit.Framework;
 
 namespace Limaki.Tests.View.Drawing.Shapes {
@@ -39,5 +50,15 @@ namespace Limaki.Tests.View.Drawing.Shapes {
             TestClone (shape);
                     
         }
+
+        [Test]
+        public void FactoryTest() {
+            var shapeFactory = new Limaki.Drawing.Shapes.ShapeFactory();
+            var shape = shapeFactory.Shape<Limaki.Drawing.RectangleI>(
+                new Limaki.Drawing.PointI(10, 10),
+                new Limaki.Drawing.SizeI(20, 100)
+                );
+        }
+
     }
 }

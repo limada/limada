@@ -18,7 +18,7 @@ namespace Limaki.Tests.Widget {
                 if (_line1 == null) {
                     Vector vector = new Vector ();
                     _line1 = Registry.Pool.TryGetCreate<IWidgetFactory>()
-                        .CreateWidget("line");
+                        .CreateItem("line");
                     _line1.Shape = new VectorShape(vector);
                 }
                 return _line1;

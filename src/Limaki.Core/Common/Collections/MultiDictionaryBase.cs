@@ -1,7 +1,25 @@
+/*
+ * Limaki 
+ * Version 0.081
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2006-2008 Lytico
+ *
+ * http://limada.sourceforge.net
+ * 
+ */
+
+#define MonoCollectionBug
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Limaki.Common.Collections {
+#if ! MonoCollectionBug
+    
     public class MultiDictionaryBase <K, V,TDictionary, TCollection> : IMultiDictionary<K, V>
         where TDictionary : class,IDictionary<K, ICollection<V>>, new() 
         where TCollection: class,ICollection<V>,new() {
@@ -10,6 +28,20 @@ namespace Limaki.Common.Collections {
 
         public MultiDictionaryBase() { _list = new TDictionary(); }
 
+        ICollection<V> CreateCollection(){ return new TCollection();}
+
+#else
+
+    public class MultiDictionary <K, V> : IMultiDictionary<K, V> {
+
+        protected IDictionary<K, ICollection<V>> _list= null;
+
+        public MultiDictionary() { _list = new Dictionary<K, ICollection<V>>(); }
+
+        ICollection<V> CreateCollection() { return new Set<V>(); }
+
+#endif
+
         #region MultiDictionary
 
         public virtual void Add( K key, V value ) {
@@ -17,7 +49,7 @@ namespace Limaki.Common.Collections {
                 ICollection<V> values;
                 _list.TryGetValue(key, out values);
                 if (values == null) {
-                    values = new TCollection();
+                    values = CreateCollection();
                     Add(key, values);
                 }
                 if ( value != null && ! values.Contains(value)) {
@@ -86,7 +118,7 @@ namespace Limaki.Common.Collections {
             if ( key != null )
                 return _list.TryGetValue(key, out value);
             else {
-                value = new TCollection(); 
+                value = CreateCollection(); 
                 return false;
             }
         }
@@ -100,7 +132,7 @@ namespace Limaki.Common.Collections {
                 if ( key != null ) {
                     ICollection<V> values;
                     _list.TryGetValue(key, out values);
-                    return values != null ? values : new TCollection();
+                    return values != null ? values : CreateCollection();
                 } else {
                     return null;
                 }

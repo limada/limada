@@ -23,7 +23,7 @@ using System.Runtime.Serialization;
 namespace Limada.Model {
     [DataContract]
     public class Thing<T> : Thing, IThing<T> {
-
+        protected Thing(){}
         public Thing(T data) : this(Common.Isaac.Long, data) { }
 
         public Thing(Id id, T data): base(id) {
@@ -36,7 +36,7 @@ namespace Limada.Model {
         [DataMember]
         public virtual T Data {
             get { return _data; }
-            set { _data = value; }
+            set { this.State.Setter(ref _data, value); }
         }
 
         

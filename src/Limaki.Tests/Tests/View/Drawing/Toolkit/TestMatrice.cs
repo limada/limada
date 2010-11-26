@@ -35,7 +35,7 @@ using System.Security.Permissions;
 namespace Limaki.Tests.Drawing
 {
 	[TestFixture]
-	public class TestMatrice : Assertion {
+	public class TestMatrice  {
 
 		private Limaki.Drawing.Matrice default_matrix;
 	    private RectangleI rect = RectangleI.Empty;
@@ -54,6 +54,14 @@ namespace Limaki.Tests.Drawing
 			AssertEquals ("C#1", 6, matrice.Elements.Length);
 		}
 
+        private void AssertEquals(string p, int p_2, int p_3) {
+            Assert.AreEqual (p_2, p_3, p);
+        }
+
+        private void AssertEquals(string p, float p_2, float p_3) {
+            Assert.AreEqual(p_2, p_3, p);
+        }
+
 		[Test]
 		public void Constructor_SixFloats ()
 		{
@@ -66,6 +74,8 @@ namespace Limaki.Tests.Drawing
 			AssertEquals ("C#7", 50, matrice.Elements[4]);
 			AssertEquals ("C#8", 60, matrice.Elements[5]);
 		}
+
+
 
 		[Test]
 		public void Constructor_Float ()
@@ -114,6 +124,10 @@ namespace Limaki.Tests.Drawing
 			AssertEquals ("4", -16.6666679, elements[4], 0.00001);
 			AssertEquals ("5", -6.666667, elements[5], 0.00001);
 		}
+
+        private void AssertEquals(string p, double p_2, double p_3, double p_4) {
+            Assert.AreEqual(p_2, p_3, p_4,p);
+        }
 
 		[Test]
 		[ExpectedException (typeof (ArgumentNullException))]
@@ -167,6 +181,10 @@ namespace Limaki.Tests.Drawing
 			matrice = new Limaki.Drawing.Matrice (119, 140, 145, 74, 102, 58);
 			AssertEquals ("I#4", true, matrice.IsInvertible);
 		}
+
+        private void AssertEquals(string p, bool p_2, bool p_3) {
+            Assert.AreEqual(p_2, p_3, p);
+        }
 		
 		[Test]
 		public void IsIdentity ()
@@ -174,35 +192,39 @@ namespace Limaki.Tests.Drawing
 			Limaki.Drawing.Matrice identity = new Limaki.Drawing.Matrice ();
 			Limaki.Drawing.Matrice matrice = new Limaki.Drawing.Matrice (123, 24, 82, 16, 47, 30);
 			AssertEquals ("N#1-identity", false, matrice.IsIdentity);
-			Assert ("N#1-equals", !identity.Equals (matrice));
+            AssertBool("N#1-equals", !identity.Equals(matrice));
 			
 			matrice = new Limaki.Drawing.Matrice (1, 0, 0, 1, 0, 0);
 			AssertEquals ("N#2-identity", true, matrice.IsIdentity);
-			Assert ("N#2-equals", identity.Equals (matrice));
+            AssertBool("N#2-equals", identity.Equals(matrice));
 
 			// so what's the required precision ?
 
 			matrice = new Limaki.Drawing.Matrice (1.1f, 0.1f, -0.1f, 0.9f, 0, 0);
-			Assert ("N#3-identity", !matrice.IsIdentity);
-			Assert ("N#3-equals", !identity.Equals (matrice));
+            AssertBool("N#3-identity", !matrice.IsIdentity);
+            AssertBool("N#3-equals", !identity.Equals(matrice));
 
 			matrice = new Limaki.Drawing.Matrice (1.01f, 0.01f, -0.01f, 0.99f, 0, 0);
-			Assert ("N#4-identity", !matrice.IsIdentity);
-			Assert ("N#4-equals", !identity.Equals (matrice));
+            AssertBool("N#4-identity", !matrice.IsIdentity);
+            AssertBool("N#4-equals", !identity.Equals(matrice));
 
 			matrice = new Limaki.Drawing.Matrice (1.001f, 0.001f, -0.001f, 0.999f, 0, 0);
-			Assert ("N#5-identity", !matrice.IsIdentity);
-			Assert ("N#5-equals", !identity.Equals (matrice));
+            AssertBool("N#5-identity", !matrice.IsIdentity);
+            AssertBool("N#5-equals", !identity.Equals(matrice));
 
 			matrice = new Limaki.Drawing.Matrice (1.0001f, 0.0001f, -0.0001f, 0.9999f, 0, 0);
 			//failed: Assert ("N#6-identity", matrix.IsIdentity);
 			// note: NOT equal
-			Assert ("N#6-equals", !identity.Equals (matrice));
+            AssertBool("N#6-equals", !identity.Equals(matrice));
 
 			matrice = new Limaki.Drawing.Matrice (1.0009f, 0.0009f, -0.0009f, 0.99995f, 0, 0);
-			Assert ("N#7-identity", !matrice.IsIdentity);
-			Assert ("N#7-equals", !identity.Equals (matrice));
+            AssertBool("N#7-identity", !matrice.IsIdentity);
+            AssertBool("N#7-equals", !identity.Equals(matrice));
 		}
+
+        private void AssertBool(string p, bool p_2) {
+            Assert.IsTrue (p_2, p);
+        }
 		
 		[Test]
 		public void IsOffsetX ()
@@ -245,10 +267,10 @@ namespace Limaki.Tests.Drawing
 		{
 			Limaki.Drawing.Matrice matrice = new Limaki.Drawing.Matrice (10, 20, 30, 40, 50, 60);
 			Limaki.Drawing.Matrice clone = matrice.Clone ();
-			Assert ("HashCode/Clone", matrice.GetHashCode () != clone.GetHashCode ());
+			AssertBool ("HashCode/Clone", matrice.GetHashCode () != clone.GetHashCode ());
 
 			Limaki.Drawing.Matrice matrix2 = new Limaki.Drawing.Matrice (10, 20, 30, 40, 50, 60);
-			Assert ("HashCode/Identical", matrice.GetHashCode () != matrix2.GetHashCode ());
+            AssertBool("HashCode/Identical", matrice.GetHashCode() != matrix2.GetHashCode());
 		}
 
 		[Test]
@@ -284,20 +306,20 @@ namespace Limaki.Tests.Drawing
 		public void Rotate_45_135 ()
 		{
 			Limaki.Drawing.Matrice matrice = new Limaki.Drawing.Matrice ();
-			Assert ("original.IsIdentity", matrice.IsIdentity);
+            AssertBool("original.IsIdentity", matrice.IsIdentity);
 
 			matrice.Rotate (45);
-			Assert ("+45.!IsIdentity", !matrice.IsIdentity);
+            AssertBool("+45.!IsIdentity", !matrice.IsIdentity);
 			float[] elements = matrice.Elements;
-			AssertEquals ("45#1", 0.7071068, elements[0]);
-			AssertEquals ("45#2", 0.7071068, elements[1]);
-			AssertEquals ("45#3", -0.7071068, elements[2]);
-			AssertEquals ("45#4", 0.7071068, elements[3]);
+			AssertEquals ("45#1", 0.7071068f, elements[0]);
+			AssertEquals ("45#2", 0.7071068f, elements[1]);
+			AssertEquals ("45#3", -0.7071068f, elements[2]);
+			AssertEquals ("45#4", 0.7071068f, elements[3]);
 			AssertEquals ("45#5", 0, elements[4]);
 			AssertEquals ("45#6", 0, elements[5]);
 
 			matrice.Rotate (135);
-			Assert ("+135.!IsIdentity", !matrice.IsIdentity);
+			AssertBool ("+135.!IsIdentity", !matrice.IsIdentity);
 			elements = matrice.Elements;
 			AssertEquals ("180#1", -1, elements[0], 0.0001);
 			AssertEquals ("180#2", 0, elements[1], 0.0001);
@@ -311,10 +333,10 @@ namespace Limaki.Tests.Drawing
 		public void Rotate_90_270_Matrix ()
 		{
 			Limaki.Drawing.Matrice matrice = new Limaki.Drawing.Matrice ();
-			Assert ("original.IsIdentity", matrice.IsIdentity);
+			AssertBool ("original.IsIdentity", matrice.IsIdentity);
 
 			matrice.Rotate (90);
-			Assert ("+90.!IsIdentity", !matrice.IsIdentity);
+			AssertBool ("+90.!IsIdentity", !matrice.IsIdentity);
 			float[] elements = matrice.Elements;
 			AssertEquals ("90#1", 0, elements[0], 0.0001);
 			AssertEquals ("90#2", 1, elements[1], 0.0001);
@@ -326,7 +348,7 @@ namespace Limaki.Tests.Drawing
 			matrice.Rotate (270);
 			// this isn't a perfect 1, 0, 0, 1, 0, 0 matrix - but close enough
 			//failed: Assert ("360.IsIdentity", matrix.IsIdentity);
-			Assert ("360.Equals", !new Limaki.Drawing.Matrice ().Equals (matrice));
+			AssertBool ("360.Equals", !new Limaki.Drawing.Matrice ().Equals (matrice));
 		}
 
 		//failed [Test]
@@ -439,12 +461,12 @@ namespace Limaki.Tests.Drawing
 			Limaki.Drawing.Matrice matrice = new Limaki.Drawing.Matrice (1, 2, 3, 4, 5, 6);
 			matrice.Invert ();
 			
-			AssertEquals ("V#1", -2, matrice.Elements[0]);
-			AssertEquals ("V#2", 1, matrice.Elements[1]);
-			AssertEquals ("V#3", 1.5, matrice.Elements[2]);
-			AssertEquals ("V#4", -0.5, matrice.Elements[3]);
-			AssertEquals ("V#5", 1, matrice.Elements[4]);
-			AssertEquals ("V#6", -2, matrice.Elements[5]);			
+			AssertEquals ("V#1", -2f, matrice.Elements[0]);
+			AssertEquals ("V#2", 1f, matrice.Elements[1]);
+			AssertEquals ("V#3", 1.5f, matrice.Elements[2]);
+			AssertEquals ("V#4", -0.5f, matrice.Elements[3]);
+			AssertEquals ("V#5", 1f, matrice.Elements[4]);
+			AssertEquals ("V#6", -2f, matrice.Elements[5]);			
 		}
 
 		[Test]
@@ -466,11 +488,11 @@ namespace Limaki.Tests.Drawing
 		public void Invert_Identity ()
 		{
 			Limaki.Drawing.Matrice matrice = new Limaki.Drawing.Matrice ();
-			Assert ("IsIdentity", matrice.IsIdentity);
-			Assert ("IsInvertible", matrice.IsInvertible);
+			AssertBool ("IsIdentity", matrice.IsIdentity);
+            AssertBool("IsInvertible", matrice.IsInvertible);
 			matrice.Invert ();
-			Assert ("IsIdentity-2", matrice.IsIdentity);
-			Assert ("IsInvertible-2", matrice.IsInvertible);
+            AssertBool("IsIdentity-2", matrice.IsIdentity);
+            AssertBool("IsInvertible-2", matrice.IsInvertible);
 		}
 
 		[Test]

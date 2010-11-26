@@ -36,25 +36,22 @@ namespace Limada.Tests.ThingGraphs {
             set { _stream = value; }
         }
         
-        [Test]
-        public void CreateStreamTest() {
-            Id id = CreateStream ();
-            ProveStream (id);
-        }
+        
 
 
 
         public Id CreateStream() {
             long len = stream.Length;
 
-            IThingFactory factory = new ThingFactory();
-            IStreamThing thing = factory.CreateThing(Graph, stream) as IStreamThing;
+            var factory = new ThingFactory();
+            
+            var thing = factory.CreateItem(Graph, stream) as IStreamThing;
             Graph.Add(thing);
 
             thing.Flush();
             thing.ClearRealSubject();
 
-            this.OnClose();
+            this.Close();
 
             
             return thing.Id;
@@ -64,12 +61,12 @@ namespace Limada.Tests.ThingGraphs {
 
         public void ProveStream(Id id) {
             IStreamThing thing = Graph.GetById(id) as IStreamThing;
-
+            thing.DeCompress ();
             Assert.AreEqual(thing.Data.Length, stream.Length);
 
             thing.ClearRealSubject();
 
-            this.OnClose();
+            this.Close();
 
         }
 
@@ -85,7 +82,7 @@ namespace Limada.Tests.ThingGraphs {
             thing.Flush ();
             thing.ClearRealSubject();
 
-            this.OnClose();
+            this.Close();
         }
 
         public void DeleteStream(Id id) {
@@ -101,7 +98,15 @@ namespace Limada.Tests.ThingGraphs {
         }
 
         [Test]
-        public void CrUD() {
+        public virtual void CreateStreamTest() {
+            ReportDetail("CreateStreamTest");
+            Id id = CreateStream();
+            ProveStream(id);
+        }
+
+        [Test]
+        public virtual void CrUD() {
+            ReportDetail("CrUD");
             Id id  = CreateStream ();
             ProveStream (id);
             ChangeStream (id);
@@ -112,6 +117,7 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public void CrU() {
+            ReportDetail("CrU");
             Id id = CreateStream();
             ProveStream(id);
             ChangeStream(id);

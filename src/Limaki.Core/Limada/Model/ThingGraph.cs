@@ -135,7 +135,7 @@ namespace Limada.Model {
 
         public virtual IEnumerable<IThing> GetByData(object data) {
             foreach (IThing thing in this) {
-                if (thing.Data.Equals(data)) {
+                if (thing.Data != null && thing.Data.Equals(data)) {
                     yield return thing;
                 }
             }
@@ -186,7 +186,7 @@ namespace Limada.Model {
             if (hasLinks) {
                 items.Add (newThing, links);
             } else {
-                items.Add (newThing, null);
+                items.Add(newThing, default(ICollection<ILink>));
             }
             if (markerIds.Contains(oldThing.Id)) {
                 foreach(ILink link in this.edges) {

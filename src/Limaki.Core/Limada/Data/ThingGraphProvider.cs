@@ -20,6 +20,7 @@ using Limaki.Data;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Streams;
+using System.IO;
 
 namespace Limada.Data {
     public abstract class ThingGraphProvider : DataProvider<IThingGraph>, IThingGraphProvider {
@@ -27,6 +28,16 @@ namespace Limada.Data {
         public override IThingGraph Data {
             get { return this._data; }
             set { _data = value; }
+        }
+ 
+        public override void Save() {
+            SaveCurrent();
+        }
+
+        public override void SaveAs(IThingGraph source, DataBaseInfo FileName) {
+            this.Data = null;
+            Open(FileName);
+            ThingGraphUtils.MergeGraphs(source, this.Data);
         }
 
         public void ReadIntoList(ICollection<IThing> things, IGraph<IThing, ILink> view) {
@@ -45,7 +56,7 @@ namespace Limada.Data {
 
                         streamThing.DeCompress();
 
-                        ser.Read(streamThing.Data);
+                        ser.Read(streamThing.Data as Stream);
 
                         streamThing.ClearRealSubject();
 
@@ -58,18 +69,21 @@ namespace Limada.Data {
             }
         }
 
-        public virtual IThingGraph Export(IGraph<IThing, ILink> view) {
-            IThingGraph result = new ThingGraph ();
+        public virtual void Export(IGraph<IThing, ILink> view, IThingGraph target) {
             var graph = new GraphPairFacade<IThing, ILink>().Source(view);
             if (graph != null) {
+                var source = graph.Two as IThingGraph;
                 var things = new List<IThing>();
                 this.ReadIntoList(things, view);
-                ThingGraphUtils.AddRange (
-                    result, ThingGraphUtils.CompletedThings (things.Distinct (), graph.Two as IThingGraph)
-                    );
-
+                var completeThings =
+                    ThingGraphUtils.CompletedThings (things.Distinct (), source).ToList ();
+                ThingGraphUtils.AddRange(target, completeThings);
+                foreach(var  thing in completeThings.OfType<IStreamThing>()) {
+                    var data = source.DataContainer.GetById(thing.Id);
+                    target.DataContainer.Add(data);
+                }
+                
             }
-            return result;
         }
     }
 }

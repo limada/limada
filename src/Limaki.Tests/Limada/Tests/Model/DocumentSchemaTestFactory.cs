@@ -2,6 +2,7 @@ using Limada.Model;
 using Limada.Schemata;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
+using System.IO;
 
 namespace Limada.Tests.Model {
     public class DocumentSchemaTestFactory : GenericGraphFactory<IThing, ILink> {
@@ -10,19 +11,21 @@ namespace Limada.Tests.Model {
             get { return "DocumentSchema Things"; }
         }
 
-        public override void Populate(IGraph<IThing, ILink> graph) {
-            Node[1] = new Thing();
-            
-            Node[2] = new Thing<string>("");
-            Node[2].Data = "Document " + Node[2].Id.ToString ("X");
-            
-            Edge[1] = new Link(Node[1], Node[2], DocumentSchema.DocumentTitle);
-            
-            Node[3] = new StreamThing();
-            Edge[2] = new Link(Node[1], Node[3], DocumentSchema.DocumentPage);
+        private ThingFactory factory = new ThingFactory ();
 
-            Node[4] = new Thing<string>("1");
-            Edge[3] = new Link(Edge[2], Node[4], DocumentSchema.PageNumber);
+        public override void Populate(IGraph<IThing, ILink> graph) {
+            Node[1] = factory.CreateItem();
+
+            Node[2] = factory.CreateItem("");
+            Node[2].Data = "Document " + Node[2].Id.ToString ("X");
+
+            Edge[1] = factory.CreateEdge(Node[1], Node[2], DocumentSchema.DocumentTitle);
+
+            Node[3] = factory.CreateItem<Stream>(null);
+            Edge[2] = factory.CreateEdge(Node[1], Node[3], DocumentSchema.DocumentPage);
+
+            Node[4] = factory.CreateItem(1);
+            Edge[3] = factory.CreateEdge(Edge[2], Node[4], DocumentSchema.PageNumber);
 
             AddSamplesToGraph (graph);
         }

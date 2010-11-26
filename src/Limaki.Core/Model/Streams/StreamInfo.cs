@@ -16,8 +16,10 @@
 using Limaki.Model.Streams;
 using Id = System.Int64;
 using System;
+using Limaki.Common;
 
 namespace Limaki.Model.Streams {
+	[TODO("find a better name for this class, eg. streamContent, streamData, streamRecord")]
     public class StreamInfo {
         public CompressionType Compression = CompressionType.None;
         public long StreamType = StreamTypes.Unknown;

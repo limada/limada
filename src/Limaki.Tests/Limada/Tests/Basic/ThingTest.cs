@@ -38,9 +38,10 @@ namespace Limada.Tests.Basic {
 
         public override void Setup() {
             base.Setup();
-            aLeaf = new Thing<string> (leafText);
-            aRoot = new Thing<string>(rootText);
-            aMarker = new Thing<string>(markerText);
+            var factory = new ThingFactory ();
+            aLeaf = factory.CreateItem(leafText);
+            aRoot = factory.CreateItem(rootText);
+            aMarker = factory.CreateItem(markerText);
         }
 
         [Test]

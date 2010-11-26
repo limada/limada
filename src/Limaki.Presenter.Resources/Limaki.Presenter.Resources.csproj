@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki.Presenter</RootNamespace>
+    <AssemblyName>Limaki.Presenter.Resources</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\Resources\cancel.png" />
+    <Content Include="Properties\Resources\ConnectorToolIcon.png" />
+    <Content Include="Properties\Resources\CreateWidget24.png" />
+    <Content Include="Properties\Resources\draw-straight-connector-ends-with-arrow16.png" />
+    <Content Include="Properties\Resources\DrawSelection.png" />
+    <Content Include="Properties\Resources\FontBoldIcon.png" />
+    <Content Include="Properties\Resources\FontItalicIcon.png" />
+    <Content Include="Properties\Resources\FontUnderlineIcon.png" />
+    <Content Include="Properties\Resources\format-indent-less.png" />
+    <Content Include="Properties\Resources\format-indent-more.png" />
+    <Content Include="Properties\Resources\format-justify-center.png" />
+    <Content Include="Properties\Resources\format-justify-fill.png" />
+    <Content Include="Properties\Resources\format-justify-left.png" />
+    <Content Include="Properties\Resources\format-justify-right.png" />
+    <Content Include="Properties\Resources\format-text-bold.png" />
+    <Content Include="Properties\Resources\format-text-italic.png" />
+    <Content Include="Properties\Resources\format-text-strikethrough.png" />
+    <Content Include="Properties\Resources\format-text-underline.png" />
+    <Content Include="Properties\Resources\go-next.png" />
+    <Content Include="Properties\Resources\go-previous.png" />
+    <Content Include="Properties\Resources\gohome.png" />
+    <Content Include="Properties\Resources\GraphDocView.png" />
+    <Content Include="Properties\Resources\GraphGraphView.png" />
+    <Content Include="Properties\Resources\gtk-strikethrough.png" />
+    <Content Include="Properties\Resources\gtk-underline.png" />
+    <Content Include="Properties\Resources\gtk-unindent-ltr.png" />
+    <Content Include="Properties\Resources\gtk-unindent-rtl.png" />
+    <Content Include="Properties\Resources\leftjust.png" />
+    <Content Include="Properties\Resources\LimadaLogo.ico" />
+    <Content Include="Properties\Resources\LimadaLogoA.ico" />
+    <Content Include="Properties\Resources\LimadaLogoL32.png" />
+    <Content Include="Properties\Resources\MenuFileOpenIcon.png" />
+    <Content Include="Properties\Resources\ModifyLayout.png" />
+    <Content Include="Properties\Resources\ModifyLayout16.png" />
+    <Content Include="Properties\Resources\MoveSelectionToolIcon.png" />
+    <Content Include="Properties\Resources\MoveShift.png" />
+    <Content Include="Properties\Resources\MoveToolIcon.png" />
+    <Content Include="Properties\Resources\notes.png" />
+    <Content Include="Properties\Resources\ok.png" />
+    <Content Include="Properties\Resources\RectangleSelectToolIcon.png" />
+    <Content Include="Properties\Resources\rightjust.png" />
+    <Content Include="Properties\Resources\SelectionIcon.png" />
+    <Content Include="Properties\Resources\Shape.png" />
+    <Content Include="Properties\Resources\stock_text-strikethrough.png" />
+    <Content Include="Properties\Resources\stock_text_bold.png" />
+    <Content Include="Properties\Resources\stock_text_center.png" />
+    <Content Include="Properties\Resources\stock_text_indent.png" />
+    <Content Include="Properties\Resources\stock_text_italic.png" />
+    <Content Include="Properties\Resources\stock_text_justify.png" />
+    <Content Include="Properties\Resources\stock_text_left.png" />
+    <Content Include="Properties\Resources\stock_text_right.png" />
+    <Content Include="Properties\Resources\stock_text_underlined.png" />
+    <Content Include="Properties\Resources\stock_text_unindent.png" />
+    <Content Include="Properties\Resources\StraightConnector.png" />
+    <Content Include="Properties\Resources\stream_save.png" />
+    <Content Include="Properties\Resources\text_bold.png" />
+    <Content Include="Properties\Resources\text_italic.png" />
+    <Content Include="Properties\Resources\text_strike.png" />
+    <Content Include="Properties\Resources\text_under.png" />
+    <Content Include="Properties\Resources\ToggleView.png" />
+    <Content Include="Properties\Resources\window-close.png" />
+    <Content Include="Properties\Resources\ZoomToolIcon.png" />
+    <None Include="Properties\Resources\document-new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties InternalTargetFrameworkVersion="3.5" />
+    </MonoDevelop>
+  </ProjectExtensions>
+</Project>

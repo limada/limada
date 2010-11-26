@@ -103,7 +103,7 @@ namespace Limaki.Graphs {
         /// </summary>
         /// <param name="sources"></param>
         /// <returns></returns>
-        IEnumerable<TEdge> Fork(TItem source, Predicate<TItem> pred);
+        IEnumerable<TEdge> Fork(TItem source, Func<TItem,bool> pred);
 
         /// <summary>
         /// an enumeration containing

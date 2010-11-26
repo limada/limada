@@ -19,7 +19,7 @@ namespace Limaki.Actions {
     }
 
     public interface ICommand<T> : ICommand {
-        T Target { get; set; }
+        T Subject { get; set; }
     }
     public interface ICommand<T,P>:ICommand<T> {
         P Parameter { get; set; }

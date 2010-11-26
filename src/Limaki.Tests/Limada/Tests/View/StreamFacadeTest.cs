@@ -29,7 +29,6 @@ using BasicThingGraphTest=Limada.Tests.Basic.BasicThingGraphTest;
 using Id = System.Int64;
 using ThingGraph=Limada.Data.db4o.ThingGraph;
 using Limaki.Common.Collections;
-using Limaki.Widgets.Layout;
 using Limada.View;
 using Limaki.Widgets;
 using System.IO;
@@ -53,6 +52,7 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public virtual void Test() {
+            ReportDetail("ThingStreamFacade");
             IThingGraph graph = this.Graph;
             ThingStreamFacade thingStreamFacade = new ThingStreamFacade ();
            

@@ -15,6 +15,7 @@
 
 
 using Limaki.Common;
+using Limaki.Common.IOC;
 
 namespace Limaki.Graphs.Extensions {
     /// <summary>

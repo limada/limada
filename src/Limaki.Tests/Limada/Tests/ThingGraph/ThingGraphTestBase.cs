@@ -1,9 +1,29 @@
 using Limada.Model;
 using Limaki.Tests;
 using System;
+using Limada.Data;
+using Limaki.Data;
+using Limaki.Common;
+using Limaki;
 
 namespace Limada.Tests.ThingGraphs {
     public class ThingGraphTestBase : DomainTest {
+        protected ThingFactory Factory = new ThingFactory();
+
+        public string FileName {
+            get { 
+			if (Commons.Unix)
+					return 
+						//Environment.SpecialFolder.MyDocuments+Path.DirectorySeparatorChar+
+						"/home/nouser2/Programming/Limada/TestData/"+
+						"graphtest";
+					else	
+				return @"E:\testdata\txbProjekt\Limaki\graphtest"; 
+			}
+        }
+
+        public IThingGraphProvider ThingGraphProvider {get;set;}
+
         protected IThingGraph _graph = null;
         public virtual IThingGraph Graph {
             get {
@@ -15,30 +35,37 @@ namespace Limada.Tests.ThingGraphs {
             set { this._graph = value; }
         }
 
-        public Func<IThingGraph> CreateGraph = null;
         public virtual IThingGraph OnCreateGraph() {
-            if (CreateGraph != null) {
-                return CreateGraph ();
+            return OnCreateGraph (this.FileName);
+        }
+
+        public virtual IThingGraph OnCreateGraph(string fileName) {
+            if (ThingGraphProvider != null) {
+                var info = DataBaseInfo.FromFileName(fileName + ThingGraphProvider.Extension);
+                ThingGraphProvider.Open(info);
+                return ThingGraphProvider.Data;
             }
             return new ThingGraph ();
         }
 
-        public Action<ThingGraphTestBase> Close = null;
-        public virtual void OnClose() {
-            if (Close != null) {
-                Close(this);
+        
+        public virtual void Close() {
+            if (ThingGraphProvider != null) {
+                ThingGraphProvider.Close ();
+                this.Graph = null;
             } 
         }
 
-        public Action<IThingGraph> Flush = null;
+        
         public virtual void OnFlush(IThingGraph graph) {
-            if (Flush != null) {
-                Flush(graph);
+            if (ThingGraphProvider != null) {
+                if (ThingGraphProvider.Saveable)
+                    ThingGraphProvider.Save ();
             }
         }
 
         public override void TearDown() {
-            OnClose ();
+            Close ();
             base.TearDown();
         }
     }

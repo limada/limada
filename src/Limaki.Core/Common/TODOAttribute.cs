@@ -29,6 +29,6 @@ namespace Limaki.Common {
         public TODOAttribute() { 
             // Nothing to do here.
         }
-
+		public TODOAttribute(string text) { }
     };
 }

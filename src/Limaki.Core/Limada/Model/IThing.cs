@@ -15,14 +15,21 @@
 
 using System;
 using Id = System.Int64;
+using Limaki.Common;
 
 
 namespace Limada.Model {
     public interface IThing {
         object Data { get; set; }
         Id Id { get; }
-        void SetId ( Id id );
+        DateTime WriteDate { get; }
+        DateTime CreationDate { get; }
+
+        void SetId(Id id);
+        void SetId ( Id id, DateTime creationDate, DateTime writeDate );
+        
         void MakeEqual ( IThing thing );
+        State State { get; }
     }
 
     public interface IThing<T>:IThing {

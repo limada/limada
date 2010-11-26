@@ -70,17 +70,7 @@ namespace Limada.Model {
             }
         }
 
-        public long ReadInt(XElement node, string attribute, bool hex) {
-            long result = default(int);
-            string s = node.Attribute(attribute).Value;
-            if (!string.IsNullOrEmpty(s)) {
-                if (hex)
-                    long.TryParse(s, NumberStyles.AllowHexSpecifier, null, out result);
-                else
-                    long.TryParse(s, out result);
-            }
-            return result;
-        }
+
 
         protected virtual IThing Read(XElement node) {
             Id id = ReadInt (node, "id", true);

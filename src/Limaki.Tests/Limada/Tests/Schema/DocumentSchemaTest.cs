@@ -55,10 +55,10 @@ namespace Limada.Tests.Schemata {
         public virtual void TestTitle() {
             this.ReportDetail("**** TestTitle");
             IThingGraph graph = new ThingGraph();
-            IThing thing = new Thing();
+            IThing thing = Factory.CreateItem();
             graph.Add(thing);
 
-            IThing title = new Thing<string>("Title1");
+            IThing title = Factory.CreateItem("Title1");
             DocumentSchema schema = new DocumentSchema(graph, thing);
 
             // test the new description:
@@ -74,7 +74,7 @@ namespace Limada.Tests.Schemata {
             IThing orphan = title;
 
             // make a new description:
-            title = new Thing<string>("Title2");
+            title = Factory.CreateItem("Title2");
             schema.Title = title;
             ValidateTitle(schema, graph, thing, title);
 

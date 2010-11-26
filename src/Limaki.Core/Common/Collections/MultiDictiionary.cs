@@ -12,11 +12,18 @@
  * http://limada.sourceforge.net
  * 
  */
+#define MonoCollectionBug
 
 using System.Collections.Generic;
 
 namespace Limaki.Common.Collections {
-    public class MultiDictionary<K, V> : 
+
+#if ! MonoCollectionBug
+
+    public class MultiDictionary<K, V> :
         MultiDictionaryBase<K, V, Dictionary<K, ICollection<V>>, Set<V>> {
     }
+
+#endif
+
 }

@@ -8,7 +8,6 @@ using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Tests.Graph.Model;
 using Limaki.Widgets;
-using Limaki.Widgets.Layout;
 using NUnit.Framework;
 
 
@@ -99,7 +98,7 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public void ProgramminglanguageJavaDeleteTestPingBack() {
-
+            ReportDetail ("ProgramminglanguageJavaDeleteTestPingBack");
             IThingGraph dataSource = this.Graph;
 
             ThingGraphFactory<ProgrammingLanguageFactory> factory =
@@ -113,7 +112,7 @@ namespace Limada.Tests.ThingGraphs {
             TestItem programming2Language = new TestItem(factory.Edge[1].Id, null, null, null);// Programming->Language
 
 
-            this.OnClose();
+            this.Close();
             dataSource = this.Graph;
 
             java.thing = dataSource.GetById(java.id);
@@ -187,7 +186,7 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public void ProgramminglanguageJavaDeleteTest() {
-
+            ReportDetail ("ProgramminglanguageJavaDeleteTest");
             IThingGraph dataSource = this.Graph;
 
             ThingGraphFactory<ProgrammingLanguageFactory> factory =
@@ -199,7 +198,7 @@ namespace Limada.Tests.ThingGraphs {
             TestItem programming = new TestItem(factory.Node[1].Id, null, null, null);// Programming
             TestItem programming2Language = new TestItem(factory.Edge[1].Id, null, null, null);// Programming->Language
 
-            this.OnClose();
+            this.Close();
             dataSource = this.Graph;
 
             java.thing = dataSource.GetById(java.id);
@@ -218,6 +217,7 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public void ProgramminglanguageJavaDeleteOverPair() {
+            ReportDetail("ProgramminglanguageJavaDeleteOverPair");
             var dataSource = this.Graph;
             ThingGraphFactory<ProgrammingLanguageFactory> factory =
                 new ThingGraphFactory<ProgrammingLanguageFactory>();
@@ -228,7 +228,7 @@ namespace Limada.Tests.ThingGraphs {
             TestItem programming = new TestItem(factory.Node[1].Id, null, null, null);// Programming
             TestItem programming2Language = new TestItem(factory.Edge[1].Id, null, null, null);// Programming->Language
 
-            this.OnClose();
+            this.Close();
             dataSource = this.Graph;
 
             java.thing = dataSource.GetById(java.id);

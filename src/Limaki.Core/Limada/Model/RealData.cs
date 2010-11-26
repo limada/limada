@@ -44,6 +44,8 @@ namespace Limada.Model {
 	// see there: realDataType
     [DataContract]
     public class RealData<T> : RealData, IRealData<Id,T> {
+        protected RealData() { }
+        
         public RealData(Id id) { this._id = id; }
 
         public RealData(Id id, T data)

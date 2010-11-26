@@ -144,9 +144,10 @@ namespace Limada.Model {
             Action<ILink> addLink = (link) => {
                 if (!done.Contains(link)) {
                     var walker = new Walker<IThing, ILink>(sourceGraph);
-                    foreach(var thing in walker.Walk(link.Marker,0))
-                        addThing(thing.Node);
-
+                    if (!done.Contains(link.Marker)) {
+                        foreach (var thing in walker.Walk (link.Marker, 0))
+                            addThing (thing.Node);
+                    }
                     addThing(link.Root);
                     addThing(link.Leaf);
 
@@ -218,9 +219,13 @@ namespace Limada.Model {
         }
         public static void MergeGraphs(IThingGraph source, IThingGraph target) {
             GraphUtils.MergeGraphs<IThing, ILink> (source, target);
-            foreach(var thing in source.OfType<IStreamThing> ()) {
-                var data = source.DataContainer.GetById (thing.Id);
-                target.DataContainer.Add (data);
+            MergeGraphStreamThings (source, target);
+        }
+
+        public static void MergeGraphStreamThings(IThingGraph source, IThingGraph target) {
+            foreach (var thing in source.OfType<IStreamThing>()) {
+                var data = source.DataContainer.GetById(thing.Id);
+                target.DataContainer.Add(data);
             }
         }
     }

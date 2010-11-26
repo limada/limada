@@ -60,7 +60,7 @@ namespace Limaki.Common {
             return result;
         }
 
-        public object One(Type type) {
+        public virtual object Create(Type type) {
             object result = null;
             Type clazzType = Clazz(type);
             if (clazzType.IsClass) {
@@ -77,7 +77,7 @@ namespace Limaki.Common {
         /// </summary>
         /// <typeparam name="T">interface to translate</typeparam>
         /// <returns>new object of translated class</returns>
-        public T One<T>() {
+        public virtual T Create<T>() {
             T result = default(T);
             Type type = typeof(T);
             Type clazzType = Clazz<T>();
@@ -93,7 +93,7 @@ namespace Limaki.Common {
         /// </summary>
         /// <typeparam name="TInner">type to translate</typeparam>
         /// <returns>new object of TOuter{TInner}</returns>
-        public TOuter One<TInner,TOuter>() {
+        public virtual TOuter Create<TInner,TOuter>() {
             TOuter result = default(TOuter);
             Type clazzType = Clazz<TInner>();
             if (clazzType.IsClass) {

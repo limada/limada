@@ -15,6 +15,7 @@
 
 
 using Limaki.Common.Collections;
+using System.Collections.Generic;
 
 namespace Limaki.Graphs {
     public class WalkerBase<TItem,TEdge> where TEdge:IEdge<TItem> {
@@ -26,6 +27,6 @@ namespace Limaki.Graphs {
 
 
 
-        public Set<TItem> visited = new Set<TItem>();
+        public ICollection<TItem> visited = new Set<TItem>();
     }
 }

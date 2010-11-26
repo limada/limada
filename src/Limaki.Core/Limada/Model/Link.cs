@@ -22,7 +22,8 @@ using System.Runtime.Serialization;
 namespace Limada.Model {
     [DataContract]
     public class Link : Thing, IThing<IThing>, ILink, ILink<Id> {
-        
+        protected Link() { }
+
         public Link(IThing marker):base() {
             this.Marker = marker;
         }
@@ -109,12 +110,12 @@ namespace Limada.Model {
         //    return WalkerBase<IThing,ILink>.Adjacent(this, thing); ;
         //}
 
-        protected static void setThing(ref Id id,ref IThing data, IThing value) {
+        protected void setThing(ref Id id, ref IThing data, IThing value) {
             if (value == null) {
                 data = value;
-                id = default(Id);
+                this.State.Setter (ref id, default( Id ));
             } else if (value != data) {
-                id = value.Id;
+                this.State.Setter(ref id, value.Id);
                 data = value;
             }
         }
@@ -132,10 +133,10 @@ namespace Limada.Model {
 
         #region IEdge<Id> Member
 
-        protected static void setId(ref Id id, ref IThing data, Id value) {
+        protected void setId(ref Id id, ref IThing data, Id value) {
             if (value != id) {
                 data = null;
-                id = value;
+                this.State.Setter(ref id, value);
             } 
         }
 

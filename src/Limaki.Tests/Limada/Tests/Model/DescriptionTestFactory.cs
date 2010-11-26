@@ -13,24 +13,27 @@ namespace Limada.Tests.Model {
         public IThing Root = null;
         public IThing TestMarker = null;
 
-        public override void Populate(IGraph<IThing, ILink> graph) {
-            Node[1] = new Thing ();
-            Node[2] = new Thing<string> ("a thing with simple description");
-            Edge[1] = new Link (Node[1], Node[2], CommonSchema.DescriptionMarker);
+        ThingFactory factory = new ThingFactory();
 
-            Node[3] = new Thing();
-            Node[4] = new Thing<string>("a thing with a metaschema description");
-            Node[5] = new Thing<string>("this marker is a description");
-            Node[6] = new Thing<string>("this marker is a dummy");
-            Edge[2] = new Link(Node[3], Node[4], Node[5]);
-            Edge[3] = new Link (Node[6], Node[5], MetaSchema.DescriptionMarker);
+        public override void Populate(IGraph<IThing, ILink> graph) {
+            
+            Node[1] = factory.CreateItem ();
+            Node[2] = factory.CreateItem ("a thing with simple description");
+            Edge[1] = factory.CreateEdge(Node[1], Node[2], CommonSchema.DescriptionMarker);
+
+            Node[3] = factory.CreateItem ();
+            Node[4] = factory.CreateItem ("a thing with a metaschema description");
+            Node[5] = factory.CreateItem ("this marker is a description");
+            Node[6] = factory.CreateItem ("this marker is a dummy");
+            Edge[2] = factory.CreateEdge(Node[3], Node[4], Node[5]);
+            Edge[3] = factory.CreateEdge(Node[6], Node[5], MetaSchema.DescriptionMarker);
             
             
             AddSamplesToGraph(graph);
         }
 
         public override void Populate() {
-            Root = new Thing<string> ("");
+            Root = factory.CreateItem("");
             Root.Data = "DescriptionTest " + Root.Id.ToString ("X")+ "Count:"+Count.ToString();
             this.Graph.Add (Root);
             this.Graph.Add (TopicSchema.Topics);

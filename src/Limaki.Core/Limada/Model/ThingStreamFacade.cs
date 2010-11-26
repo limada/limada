@@ -15,7 +15,7 @@ namespace Limada.Model {
         public IThingFactory Factory {
             get {
                 if (_factory == null) {
-                    _factory = Registry.Factory.One<IThingFactory>();
+                    _factory = Registry.Factory.Create<IThingFactory>();
                 }
                 return _factory;
             }
@@ -24,7 +24,7 @@ namespace Limada.Model {
 
         public IStreamThing CreateAndAdd(IThingGraph graph, StreamInfo<Stream> streamInfo) {
 
-            IStreamThing thing = Factory.CreateThing(graph, streamInfo.Data) as IStreamThing;
+            IStreamThing thing = Factory.CreateItem(graph, streamInfo.Data) as IStreamThing;
             thing.Compression = streamInfo.Compression;
             thing.StreamType = streamInfo.StreamType;
 
@@ -68,13 +68,13 @@ namespace Limada.Model {
                 if (schema.Description != null) {
                     schema.Description.Data = streamInfo.Description;
                 } else {
-                    schema.Description = Factory.CreateThing(streamInfo.Description); ;
+                    schema.Description = Factory.CreateItem(streamInfo.Description); ;
                 }
             }
             if (streamInfo.Source != null) {
                 IThing des = schema.GetTheLeaf(CommonSchema.SourceMarker);
                 if (des == null) {
-                    des = Factory.CreateThing (streamInfo.Source);
+                    des = Factory.CreateItem (streamInfo.Source);
                     schema.SetTheLeaf (CommonSchema.SourceMarker, des);
                 } else {
                     des.Data = streamInfo.Source;
@@ -98,7 +98,7 @@ namespace Limada.Model {
                 result = new StreamInfo<Stream> ();
                 
                 streamThing.DeCompress ();
-                result.Data = streamThing.Data;
+                result.Data = streamThing.Data as Stream;
                 result.Compression = streamThing.Compression;
                 result.StreamType = streamThing.StreamType;
                 streamThing.ClearRealSubject (false);

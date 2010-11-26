@@ -24,6 +24,7 @@ using NUnit.Framework;
 namespace Limada.Tests.Schemata {
     [TestFixture]
     public class SchemaTest : DomainTest {
+        public ThingFactory Factory = new ThingFactory();
         public virtual void TestIdentity(IThing thing) {
             bool identity = false;
             if (thing is ILink)

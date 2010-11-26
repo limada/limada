@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Limaki.Common;
 using Limaki.Graphs;
 using Limaki.UnitTest;
+using System.Linq;
 
 namespace Limaki.Tests.Graph.Basic {
     public abstract class BasicGraphTests<TItem, TEdge> : DomainTest
@@ -51,18 +52,21 @@ namespace Limaki.Tests.Graph.Basic {
 
         public virtual void ReportGraph(IGraph<TItem, TEdge> graph, string reportHeader) {
             this.ReportDetail(reportHeader);
-            foreach (System.Collections.Generic.KeyValuePair<TItem, ICollection<TEdge>> kvp in graph.ItemsWithEdges()) {
-                bool first = true;
-                string emptyString = new string(' ', kvp.Key.ToString().Length);
-                foreach (TEdge edge in kvp.Value) {
-                    if (first) {
-                        if (edge != null)
-                            this.ReportDetail("\t" + kvp.Key.ToString() + "\t: " + edge.ToString());
-                        else
-                            this.ReportDetail("\t" + kvp.Key.ToString() + "\t: <null>");
-                        first = false;
-                    } else {
-                        this.ReportDetail("\t" + emptyString + "\t: " + edge.ToString());
+            if (DoDetail) {
+                foreach (
+                    System.Collections.Generic.KeyValuePair<TItem, ICollection<TEdge>> kvp in graph.ItemsWithEdges ()) {
+                    bool first = true;
+                    string emptyString = new string (' ', kvp.Key.ToString ().Length);
+                    foreach (TEdge edge in kvp.Value) {
+                        if (first) {
+                            if (edge != null)
+                                this.ReportDetail ("\t" + kvp.Key.ToString () + "\t: " + edge.ToString ());
+                            else
+                                this.ReportDetail ("\t" + kvp.Key.ToString () + "\t: <null>");
+                            first = false;
+                        } else {
+                            this.ReportDetail ("\t" + emptyString + "\t: " + edge.ToString ());
+                        }
                     }
                 }
             }
@@ -98,37 +102,39 @@ namespace Limaki.Tests.Graph.Basic {
 
         public virtual void FullReportGraph(IGraph<TItem, TEdge> graph, string reportHeader) {
             ReportGraph(graph, reportHeader);
-            this.ReportDetail("Foreach Item in graph");
-            foreach (TItem item in graph) {
-                this.ReportDetail("\t" + item);
-            }
-            this.ReportDetail("Foreach Edge in graph.Edges() ");
-            foreach (TEdge edge in graph.Edges()) {
-                this.ReportDetail("\t" + edge);
-            }
-            this.ReportDetail("Foreach Item Foreach Edge in graph.Edges(Item)");
-            foreach (TItem item in graph) {
-                bool first = true;
-                string placeHolder = "default(" + typeof(TItem).Name + ")";
-                if (item != null)
-                    placeHolder = new string(' ', item.ToString().Length);
-                foreach (TEdge edge in graph.Edges(item)) {
-                    if (first) {
-                        this.ReportDetail("\t" + item + "\t: " + edge.ToString());
-                        first = false;
-                    } else {
-                        this.ReportDetail("\t" + placeHolder + "\t: " + edge.ToString());
-                    }
+            if (DoDetail) {
+                this.ReportDetail ("Foreach Item in graph");
+                foreach (TItem item in graph) {
+                    this.ReportDetail ("\t" + item);
                 }
-                if (first) {
-                    this.ReportDetail("\t" + item + "\t: <no edges>");
+                this.ReportDetail ("Foreach Edge in graph.Edges() ");
+                foreach (TEdge edge in graph.Edges ()) {
+                    this.ReportDetail ("\t" + edge);
+                }
+                this.ReportDetail ("Foreach Item Foreach Edge in graph.Edges(Item)");
+                foreach (TItem item in graph) {
+                    bool first = true;
+                    string placeHolder = "default(" + typeof (TItem).Name + ")";
+                    if (item != null)
+                        placeHolder = new string (' ', item.ToString ().Length);
+                    foreach (TEdge edge in graph.Edges (item)) {
+                        if (first) {
+                            this.ReportDetail ("\t" + item + "\t: " + edge.ToString ());
+                            first = false;
+                        } else {
+                            this.ReportDetail ("\t" + placeHolder + "\t: " + edge.ToString ());
+                        }
+                    }
+                    if (first) {
+                        this.ReportDetail ("\t" + item + "\t: <no edges>");
+                    }
                 }
             }
         }
 
         [Test]
         public virtual void AddNothing() {
-            InitGraphTest("** Add (default(" + typeof(TItem).Name + ")");
+            InitGraphTest("** Add (default(" + typeof(TItem).Name + "))");
             Graph.Add(Data.Nothing);
             FullReportGraph(Graph, "Added:\t(default(" + typeof(TItem).Name + ")");
             Graph.Remove(Data.Nothing);
@@ -272,13 +278,24 @@ namespace Limaki.Tests.Graph.Basic {
         }
 
         public virtual void IsEdgeChanged(TEdge edge, TItem oldItem, TItem newItem, bool newIsRoot) {
-            if (newIsRoot)
-                Assert.AreEqual(edge.Root, newItem);
-            else
-                Assert.AreEqual(edge.Leaf, newItem);
+            var oldEdges = Graph.Edges (oldItem);
+            var newEdges = Graph.Edges (newItem);
+            if (newIsRoot) {
+                Assert.AreEqual (edge.Root, newItem);
+            } else {
+                Assert.AreEqual (edge.Leaf, newItem);
+            }
 
-            Assert.IsFalse(Graph.Edges(oldItem).Contains(edge));
-            Assert.IsTrue(Graph.Edges(newItem).Contains(edge));
+            Assert.AreEqual(
+                oldEdges.Count,
+                oldEdges.Where (e => oldItem.Equals (e.Root) || oldItem.Equals (e.Leaf)).Count()
+                );
+            Assert.AreEqual(
+                newEdges.Count,
+                newEdges.Where(e => newItem.Equals(e.Root) || newItem.Equals(e.Leaf)).Count() );
+
+            Assert.IsFalse(oldEdges.Contains(edge));
+            Assert.IsTrue(newEdges.Contains(edge));
         }
 
         [Test]

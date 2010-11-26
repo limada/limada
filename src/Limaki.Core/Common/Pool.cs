@@ -32,7 +32,7 @@ namespace Limaki.Common {
             object result = null;
             if (!_pooledObjects.TryGetValue(type, out result)) {
                 if (_poolableObjectFactory.Clazz(type) != null) {
-                    result = _poolableObjectFactory.One (type);
+                    result = _poolableObjectFactory.Create (type);
                 } else {
                     result = Activator.CreateInstance(type);
                 }
@@ -46,7 +46,7 @@ namespace Limaki.Common {
             Type type = typeof (T);
             if (!_pooledObjects.TryGetValue(type, out result)) {
                 if (_poolableObjectFactory.Clazz<T>() != null) {
-                    result = _poolableObjectFactory.One<T>();
+                    result = _poolableObjectFactory.Create<T>();
                 } else {
                     result = Activator.CreateInstance<T> ();
                 }

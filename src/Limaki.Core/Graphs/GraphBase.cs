@@ -268,7 +268,7 @@ namespace Limaki.Graphs {
             }
         }
 
-        public virtual IEnumerable<TEdge> Fork(TItem item, Predicate<TItem> pred) {
+        public virtual IEnumerable<TEdge> Fork(TItem item, Func<TItem,bool> pred) {
             foreach (TEdge edge in Fork(item)) {
                 if (pred(edge.Root) && pred(edge.Leaf)) {
                     yield return edge;

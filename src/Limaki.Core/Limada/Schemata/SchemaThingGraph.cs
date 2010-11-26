@@ -83,6 +83,10 @@ namespace Limada.Schemata {
         private ICollection<Id> hiddens = new Set<Id> ();
         private ICollection<Id> descriptions = new Set<Id>();
 
+		public ICollection<Id> Hiddens {
+			get {return hiddens;}
+		}
+		
         /// <summary>
         /// Markers that have a description (= a link with a marker of MetaSchema.DescriptionMarker.Id)
         /// </summary>
@@ -119,7 +123,7 @@ namespace Limada.Schemata {
                 return null;
             ILink linkResult = null;
             ICollection<IThing> itemDone = new Set<IThing>();
-            Stack<IThing> stack = new Stack<IThing>();
+            var stack = new Stack<IThing>();
             if (SchemaFacade.DescriptionableThing(item))
                 stack.Push(item);
             while (stack.Count > 0) {
@@ -162,7 +166,7 @@ namespace Limada.Schemata {
                 return null;
             ILink linkResult = null;
             ICollection<IThing> itemDone = new Set<IThing>();
-            Stack<IThing> stack = new Stack<IThing> ();
+            var stack = new Stack<IThing> ();
             if (SchemaFacade.DescriptionableThing(item))
                 stack.Push (item);
             while (stack.Count > 0) {
@@ -199,11 +203,11 @@ namespace Limada.Schemata {
 
         public virtual IThing DescribedThing(IThing item) {
             IThing result = item;
-            if (item == null)
+            if (item == null )
                 return null;
             ILink linkResult = null;
             ICollection<IThing> itemDone = new Set<IThing>();
-            Stack<IThing> stack = new Stack<IThing>();
+            var stack = new Stack<IThing>();
             stack.Push(item);
             while (stack.Count > 0 ) {
                 result = stack.Pop ();
@@ -216,18 +220,19 @@ namespace Limada.Schemata {
                     if (idLink.Marker == 0)
                         continue;
                     if (idLink.Leaf == resultId) {
-                        if (descriptions.Contains(idLink.Marker)) {
+                        if (descriptions.Contains(idLink.Marker) && SchemaFacade.DescriptionableThing(link.Root)) {
                             result = link.Root;
                             stack.Clear();
                             break;
                         }
-                    } else if (idLink.Root == resultId) {
-                        if (describedMarkers.ContainsKey(idLink.Marker)) {
+                    } else if (idLink.Root == resultId) { 
+                        if (describedMarkers.ContainsKey(idLink.Marker) && SchemaFacade.DescriptionableThing(link.Root)) {
                             stack.Push (link);
                             linkResult = link;
                         }
                     }
                 }
+
             }
 
             while (result is ILink) {

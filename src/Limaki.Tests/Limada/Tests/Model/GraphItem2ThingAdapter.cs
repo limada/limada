@@ -22,7 +22,9 @@ using System;
 
 namespace Limada.Tests.Model {
    public class GraphItem2ThingAdapter : GraphModelAdapter<IGraphItem, IThing, IGraphEdge, ILink> {
-        public override IGraphItem CreateItemOne(IGraph<IThing, ILink> sender,
+       protected IThingFactory Factory = new ThingFactory();
+ 
+       public override IGraphItem CreateItemOne(IGraph<IThing, ILink> sender,
             IGraph<IGraphItem, IGraphEdge> target, IThing item) {
             return new GraphItem<string>(item.ToString());
         }
@@ -34,12 +36,12 @@ namespace Limada.Tests.Model {
 
        public override IThing CreateItemTwo(IGraph<IGraphItem, IGraphEdge> sender,
            IGraph<IThing, ILink> target, IGraphItem item) {
-            return new Thing<string>(item.ToString());
+            return Factory.CreateItem(item.Data);
         }
 
        public override ILink CreateEdgeTwo(IGraph<IGraphItem, IGraphEdge> sender,
            IGraph<IThing, ILink> target, IGraphEdge item) {
-            return new Link(CommonSchema.EmptyMarker);
+           return Factory.CreateEdge(CommonSchema.EmptyMarker);
         }
        
        public override void ChangeData(IGraph<IThing, ILink> sender, IThing item, object data) {

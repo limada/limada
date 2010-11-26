@@ -108,16 +108,19 @@ namespace Limada.Data.db4o {
         #region Graph
 
         public override void Add( IThing item ) {
+            if (item == null)
+                return;
             try {
                 base.Add(this.UniqueThing(item));
+                item.State.Clean = true;
                 //Session.Commit();
             } catch (UniqueFieldValueConstraintViolationException ) {
                 Session.Rollback();
                 //Add(this.UniqueThing(item));
             }
-
         }
 
+        
         void CheckProxy(object o) {
             if (o is IStreamThing) {
                 ((IStreamThing)o).DataContainer = this.DataContainer;
@@ -129,6 +132,10 @@ namespace Limada.Data.db4o {
         }
 
         protected virtual void ActivateThing(object sender, ObjectEventArgs args) {
+            var thing = args.Object as IThing;
+            if (thing != null) {
+                thing.State.Clean = true;
+            }
             if (args.Object is Link) {
                 var link = (Link)args.Object;
                 link.GetByID = GetById;
@@ -179,25 +186,35 @@ namespace Limada.Data.db4o {
             if (edge != null) {
                 markerVisitor = null;
                 Add(edge.Marker);
+                
                 try {
                     base.Add((ILink) this.UniqueThing(edge));
+                    edge.State.Clean = true;
                     //Session.Commit();
                 } catch (UniqueFieldValueConstraintViolationException ) {
                     Session.Rollback();
-                } finally { }
+                } finally {}
+
+                
             }
         }
 
         public override bool Remove(ILink edge) {
             markerVisitor = null;
-            return base.Remove(edge);
+            var result =  base.Remove(edge);
+            edge.State.Hollow = true;
+            return result;
         }
 
         public override bool Remove(IThing item) {
+            if (item == null)
+                return false;
             if (item is IProxy) {
                 DataContainer.Remove (item.Id);
             }
-            return base.Remove(item);
+            var result = base.Remove(item);
+            item.State.Hollow = true;
+            return result;
         }
 
         #region performance enhancements

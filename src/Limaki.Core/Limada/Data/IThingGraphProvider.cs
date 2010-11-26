@@ -22,6 +22,6 @@ using Limaki.Graphs;
 namespace Limada.Data {
     public interface IThingGraphProvider:IDataProvider<IThingGraph> {
         void ReadIntoList ( ICollection<IThing> things, IGraph<IThing, ILink> view );
-        IThingGraph Export ( IGraph<IThing, ILink> view );
+        void Export ( IGraph<IThing, ILink> view, IThingGraph target );
     }
 }

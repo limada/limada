@@ -25,7 +25,6 @@ using NUnit.Framework;
 using Id = System.Int64;
 using Limaki.Model;
 using Limaki.Drawing;
-using Limaki.Widgets.Layout;
 using Limaki.Graphs.Extensions;
 using System.Runtime.Serialization;
 using System;
@@ -33,16 +32,21 @@ using Limaki.Common;
 using System.Collections.Generic;
 using System.Xml;
 using Limaki.Model.Streams;
+using Limaki.Presenter.Layout;
+using Limada.Presenter;
+using Limaki.Presenter.Widgets.UI;
+using Limaki.Presenter.Widgets.Layout;
 
 namespace Limada.Tests.Model {
-    public class ThingSerialzerTest: DomainTest {
-        
+    public class ThingSerialzerTest : DomainTest {
+
         [Test]
         public void ThingIdSerializerTest() {
+            var factory = new ThingFactory ();
             IThingGraph graph = new ThingGraph ();
-            IThing thing = new Thing();
+            IThing thing = factory.CreateItem();
             graph.Add (thing);
-            graph.Add (new Thing ());
+            graph.Add (factory.CreateItem());
 
             ThingIdSerializer serializer = new ThingIdSerializer ();
             serializer.Graph = graph;
@@ -67,11 +71,13 @@ namespace Limada.Tests.Model {
         }
 
 
-        public ILayout<Scene, IWidget> GetLayout() {
-            return new GraphLayout<Scene, IWidget>(null, StyleSheet.CreateDefaultStyleSheet());
+        public IGraphLayout<IWidget,IEdgeWidget> GetLayout() {
+            var styleSheet = StyleSheet.CreateDefaultStyleSheet ();
+            var result = new WidgetLayout<IWidget, IEdgeWidget>(null,styleSheet);
+            return result;
         }
         
-        Stream SaveSheet(Scene scene, ILayout<Scene, IWidget> layout) {
+        Stream SaveSheet(Scene scene, IGraphLayout<IWidget,IEdgeWidget> layout) {
             Sheet sheet = new Sheet(scene, layout);
             sheet.Layout.DataHandler = delegate() { return sheet.Scene; };
 
@@ -91,7 +97,7 @@ namespace Limada.Tests.Model {
 
             IThingGraph thingGraph = sourceGraph.Two as IThingGraph;
             
-            ILayout<Scene, IWidget> layout = this.GetLayout();
+            IGraphLayout<IWidget,IEdgeWidget> layout = this.GetLayout();
 
             Stream s = SaveSheet (scene, layout);
 
@@ -128,7 +134,7 @@ namespace Limada.Tests.Model {
         }
 
 
-        void TestScene(Scene scene, ILayout<Scene, IWidget> layout, Stream s) {
+        void TestScene(Scene scene, IGraphLayout<IWidget,IEdgeWidget> layout, Stream s) {
             
             
             SheetManager sheetManager = new SheetManager();
@@ -157,7 +163,7 @@ namespace Limada.Tests.Model {
                 scene.Graph = new GraphView<IWidget, IEdgeWidget> (new WidgetGraph (), scene.Graph);
             }
 
-            ILayout<Scene, IWidget> layout = this.GetLayout();
+            IGraphLayout<IWidget,IEdgeWidget> layout = this.GetLayout();
 
             Stream s = SaveSheet(scene, layout);
 
@@ -243,7 +249,7 @@ namespace Limada.Tests.Model {
             dataStream.Write(streamContent);
             dataStream.Flush ();
 
-            IStreamThing streamThing = new StreamThing();
+            IStreamThing streamThing = new ThingFactory().CreateItem<Stream>(null) as IStreamThing;
             thingGraph.Add(streamThing);
 
             var streamId = streamThing.Id;
@@ -275,7 +281,7 @@ namespace Limada.Tests.Model {
             thingGraph = null;
             serializer = null;
 
-            var compressionWorker = Registry.Factory.One<ICompressionWorker>();
+            var compressionWorker = Registry.Factory.Create<ICompressionWorker>();
             var compressed = compressionWorker.Compress(s, CompressionType.bZip2);
             this.ReportDetail(string.Format("CompressedStream.Length={0}", compressed.Length));
 

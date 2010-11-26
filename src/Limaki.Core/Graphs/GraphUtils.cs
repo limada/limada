@@ -38,18 +38,26 @@ namespace Limaki.Graphs {
             return String.Format("[{0}->{1}]", root, leaf);
         }
 
-        public static void MergeGraphs<TItem, TEdge>(IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> target) 
+        public static void MergeGraphs<TItem, TEdge>(IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> target)
+        where TEdge:IEdge<TItem>,TItem { MergeGraphs<TItem, TEdge>(source, target, null, null); }
+
+        public static void MergeGraphs<TItem, TEdge>(IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> target,
+                                                     Func<TItem, bool> whereItem, Func<TEdge, bool> whereEdge) 
         where TEdge:IEdge<TItem>,TItem {
             if (source != null && target != null) {
                 Walker<TItem, TEdge> walker = new Walker<TItem, TEdge>(source);
                 foreach (TItem item in source) {
                     if (!walker.visited.Contains(item)) {
-                        target.Add (item);
+                        if (whereItem ==null || whereItem(item))
+                            target.Add(item);
                         foreach (LevelItem<TItem> levelItem in walker.DeepWalk(item, 0)) {
-                            if (levelItem.Node is TEdge)
-                                target.Add((TEdge)levelItem.Node);
-                            else
-                                target.Add(levelItem.Node);
+                            if (levelItem.Node is TEdge) {
+                                var edge = (TEdge)levelItem.Node;
+                                if (whereEdge == null || whereEdge(edge))
+                                    target.Add(edge);
+                            } else
+                                if (whereItem == null || whereItem(levelItem.Node))
+                                    target.Add(levelItem.Node);
                         }
                     }
                 }

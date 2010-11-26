@@ -27,7 +27,7 @@ namespace Limaki.Data {
         public abstract void Open(DataBaseInfo FileName);
         public abstract void Open();
         public abstract void Save();
-        public abstract void SaveAs(DataBaseInfo FileName);
+        public abstract void SaveAs(T source, DataBaseInfo FileName);
         public abstract void Close();
         public abstract void SaveCurrent();
         public abstract IDataProvider<T> Clone();

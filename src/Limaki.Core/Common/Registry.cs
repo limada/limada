@@ -13,6 +13,8 @@
  * 
  */
 
+using Limaki.Common.IOC;
+
 namespace Limaki.Common {
     /// <summary>
     /// The Registry gathers application wide used objects

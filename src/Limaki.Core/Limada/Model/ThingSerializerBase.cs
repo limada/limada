@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using Limaki.Common;
 using Limaki.Common.Collections;
+using System.Globalization;
 
 namespace Limada.Model {
-    public abstract class ThingSerializerBase {
+    public abstract class ThingSerializerBase:SerializerBase {
         private XDocument _document = new XDocument();
         public virtual XDocument Document {
             get {

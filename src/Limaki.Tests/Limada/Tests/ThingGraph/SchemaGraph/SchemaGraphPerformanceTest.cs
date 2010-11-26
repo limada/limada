@@ -17,13 +17,15 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
             set { _rootId = value; }
         }
 
+
         Id testMarkerId = 0x203806532CE53439;
         IThing TestMarker {
             get {
                 IThing result = Graph.GetById (testMarkerId);
                 if (result == null) {
-                    result = new Thing<string> ("performancemarker");
-                    result.SetId (testMarkerId);
+                    var thing = Factory.CreateItem("performancemarker");
+                    thing.SetId(testMarkerId);
+                    result = thing;
                 }
                 return result;
             }
@@ -59,7 +61,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
             this.rootId = factory.Root.Id;
             factory=null;
 
-            OnClose ();
+            Close ();
             ReportSummary("Writes");
 
 

@@ -15,6 +15,8 @@
 
 using System;
 using System.Runtime.Serialization;
+using Limaki.Common;
+using Id = System.Int64;
 
 namespace Limada.Model {
     /// <summary>
@@ -24,14 +26,34 @@ namespace Limada.Model {
     /// Thing supports Descriptions
     /// </summary>
     [DataContract]
-    public class Thing : IThing, IThing<Int64> {
-        public Thing() : this(Common.Isaac.Long) { }
-        public Thing(Int64 id) { _id = id; }
+    public class Thing : IThing, IThing<Id> {
+        
+        public Thing() : this(Common.Isaac.Long) {}
+        public Thing(Id id) {
+            _id = id;
+        }
 
-        protected Int64 _id = default(Int64);
+        protected Id _id = default(Id);
+
+        [Transient]
+        private State _state = null;
+        public State State {
+            get {
+                if (_state == null) {
+                    _state = new State ();
+                    _state.SetDirty = () => {
+                        _state.Dirty = true;
+                        if (!_state.Creating) {
+                            this._writeDate = DateTime.Now;
+                        }
+                    };
+                }
+                return _state;
+            }
+        }
 
         [DataMember]
-        public virtual Int64 Id {
+        public virtual Id Id {
             get { return _id; }
 #if ! SILVERLIGHT
             private 
@@ -39,13 +61,39 @@ namespace Limada.Model {
             set { _id = value; }
         }
 
-        public virtual void SetId(Int64 id) {
+        public virtual void SetId(Id id) {
             _id = id;
         }
 
         object IThing.Data {
             get { return null; }
             set { }
+        }
+
+        DateTime _writeDate = DateTime.MinValue;
+        [DataMember]
+        public virtual DateTime WriteDate {
+            get {  return _writeDate; }
+#if ! SILVERLIGHT
+            private
+#endif
+            set { _writeDate = value; }
+        }
+
+        DateTime _creationDate = DateTime.MinValue;
+        [DataMember]
+        public virtual DateTime CreationDate {
+            get { return _creationDate; }
+#if ! SILVERLIGHT
+            private
+#endif
+            set { _creationDate = value; }
+        }
+
+        public virtual void SetId(Id id, DateTime creationDate, DateTime writeDate) {
+            _id = id;
+            _writeDate = writeDate;
+            _creationDate = creationDate;
         }
 
         public virtual void MakeEqual(IThing thing) {}
@@ -56,7 +104,7 @@ namespace Limada.Model {
 
         #region IThing<long> Member
 
-        long IThing<Int64>.Data {
+        long IThing<Id>.Data {
             get { return Id; }
             set { }
         }
