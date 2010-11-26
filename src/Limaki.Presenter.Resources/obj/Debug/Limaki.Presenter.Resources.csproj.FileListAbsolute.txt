@@ -1,8 +1,0 @@
-S:\Programming\Limada\src\trunk\Limaki.Presenter.Resources\bin\Debug\Limaki.Presenter.Resources.dll
-S:\Programming\Limada\src\trunk\Limaki.Presenter.Resources\bin\Debug\Limaki.Presenter.Resources.pdb
-S:\Programming\Limada\src\trunk\Limaki.Presenter.Resources\obj\Debug\ResolveAssemblyReference.cache
-S:\Programming\Limada\src\trunk\Limaki.Presenter.Resources\obj\Debug\Limaki.Presenter.Properties.Resources.resources
-S:\Programming\Limada\src\trunk\Limaki.Presenter.Resources\obj\Debug\GenerateResource-ResGen.read.1.tlog
-S:\Programming\Limada\src\trunk\Limaki.Presenter.Resources\obj\Debug\GenerateResource-ResGen.write.1.tlog
-S:\Programming\Limada\src\trunk\Limaki.Presenter.Resources\obj\Debug\Limaki.Presenter.Resources.dll
-S:\Programming\Limada\src\trunk\Limaki.Presenter.Resources\obj\Debug\Limaki.Presenter.Resources.pdb

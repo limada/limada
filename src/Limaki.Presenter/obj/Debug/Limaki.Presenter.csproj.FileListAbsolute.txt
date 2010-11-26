@@ -1,8 +1,0 @@
-S:\Programming\Limada\src\trunk\Limaki.Presenter\bin\Debug\Limaki.View.dll.config
-S:\Programming\Limada\src\trunk\Limaki.Presenter\bin\Debug\Limaki.View.dll
-S:\Programming\Limada\src\trunk\Limaki.Presenter\bin\Debug\Limaki.View.pdb
-S:\Programming\Limada\src\trunk\Limaki.Presenter\bin\Debug\Limaki.Core.dll
-S:\Programming\Limada\src\trunk\Limaki.Presenter\bin\Debug\Limaki.Core.pdb
-S:\Programming\Limada\src\trunk\Limaki.Presenter\obj\Debug\ResolveAssemblyReference.cache
-S:\Programming\Limada\src\trunk\Limaki.Presenter\obj\Debug\Limaki.View.dll
-S:\Programming\Limada\src\trunk\Limaki.Presenter\obj\Debug\Limaki.View.pdb

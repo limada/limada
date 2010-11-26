@@ -1,5 +1,0 @@
-S:\Programming\Limada\src\trunk\Limaki.Core\bin\Debug\Limaki.Core.dll
-S:\Programming\Limada\src\trunk\Limaki.Core\bin\Debug\Limaki.Core.pdb
-S:\Programming\Limada\src\trunk\Limaki.Core\obj\Debug\ResolveAssemblyReference.cache
-S:\Programming\Limada\src\trunk\Limaki.Core\obj\Debug\Limaki.Core.dll
-S:\Programming\Limada\src\trunk\Limaki.Core\obj\Debug\Limaki.Core.pdb
