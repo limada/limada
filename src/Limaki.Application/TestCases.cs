@@ -33,7 +33,7 @@ using Limaki.Tests.Presenter.GDI;
 using Limaki.Tests.Presenter.Winform;
 using Limaki.Tests.Widget;
 #if ! MONO
-using Limaki.WCF.Data;
+//using Limaki.WCF.Data;
 #endif
 using Limaki.Widgets;
 
@@ -138,19 +138,19 @@ namespace Limaki.Tests.UseCases {
 
         public void WCFServiceTest(UseCase sender) {
 #if ! MONO
-            DataBaseInfo info = new DataBaseInfo();
-            info.Server = "http://localhost";
-            info.Port = 8000;
-            info.Path = "Limada";
-            info.Name = "ThingGraphService";
-            var handler = new SceneProvider();
-            var provider = new WCFThingGraphClientProvider();
+            //DataBaseInfo info = new DataBaseInfo();
+            //info.Server = "http://localhost";
+            //info.Port = 8000;
+            //info.Path = "Limada";
+            //info.Name = "ThingGraphService";
+            //var handler = new SceneProvider();
+            //var provider = new WCFThingGraphClientProvider();
 
-            handler.Provider = provider;
-            handler.DataBound = sender.FileManager.DataBound;
-            if (handler.Open(info)) {
-                sender.DataPostProcess (provider.host.baseAddress.AbsoluteUri);
-            }
+            //handler.Provider = provider;
+            //handler.DataBound = sender.FileManager.DataBound;
+            //if (handler.Open(info)) {
+            //    sender.DataPostProcess (provider.host.baseAddress.AbsoluteUri);
+            //}
 #endif
         }
 
