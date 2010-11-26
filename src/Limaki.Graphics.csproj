@@ -1,0 +1,312 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{911D5CE3-3585-46E3-96B0-AA614DF2C49E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki</RootNamespace>
+    <AssemblyName>Limaki.Graphics</AssemblyName>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Widget</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>PdbOnly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;Widget</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <BaseAddress>4194304</BaseAddress>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>3rdParty\C5.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>3rdParty\nunit.framework.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\Command.cs" />
+    <Compile Include="Actions\ICommand.cs" />
+    <Compile Include="Actions\ITransformTarget.cs" />
+    <Compile Include="Actions\ILayout.cs" />
+    <Compile Include="Actions\CommandAction.cs" />
+    <Compile Include="Actions\ICommandAction.cs" />
+    <Compile Include="Actions\Layout.cs" />
+    <Compile Include="Common\Collections\MonoHashSet.cs" />
+    <Compile Include="Common\Commons.cs" />
+    <Compile Include="Common\Delegates.cs" />
+    <Compile Include="Common\Handler.cs" />
+    <Compile Include="Drawing\FontCache.cs" />
+    <Compile Include="Drawing\FontMemento.cs" />
+    <Compile Include="Drawing\IControl.cs" />
+    <Compile Include="Common\Pair.cs" />
+    <Compile Include="Drawing\IStyleSheet.cs" />
+    <Compile Include="Drawing\Painters\RoundedRectanglePainter.cs" />
+    <Compile Include="Drawing\Painters\StringPainter.cs" />
+    <Compile Include="Drawing\Shapes\RoundedRectangleShape.cs" />
+    <Compile Include="Example\OpenExampleData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Example\OpenExampleData.Designer.cs">
+      <DependentUpon>OpenExampleData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Example\PropertyOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Example\PropertyOptions.Designer.cs">
+      <DependentUpon>PropertyOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Example\LayoutOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Example\LayoutOptions.Designer.cs">
+      <DependentUpon>LayoutOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Example\LayoutProperties.cs" />
+    <Compile Include="Example\Options.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Example\Options.Designer.cs">
+      <DependentUpon>Options.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tests\Display\DisplayTest.cs">
+    </Compile>
+    <Compile Include="Tests\Display\ImageDisplayTest.cs" />
+    <Compile Include="Tests\Widget\ISceneTestData.cs" />
+    <Compile Include="Tests\Widget\ProgammingLanguageTestData.cs" />
+    <Compile Include="Tests\Widget\LongTermPerformanceTests.cs" />
+    <Compile Include="Tests\Widget\SceneTestData.cs" />
+    <Compile Include="Tests\Widget\SceneTestWithLatticeData.cs" />
+    <Compile Include="Tests\Widget\SceneTestWithTreeData.cs" />
+    <Compile Include="Tests\Widget\SimpleWidgetLayoutTest.cs" />
+    <Compile Include="Tests\Widget\SceneTestBinaryTreeData.cs" />
+    <Compile Include="Tests\Widget\WidgetDisplayTest.cs" />
+    <Compile Include="Widgets\Layout\BasicWidgetLayout.cs" />
+    <Compile Include="Widgets\Layout\IRouter.cs" />
+    <Compile Include="Widgets\Layout\NearestAnchorRouter.cs" />
+    <Compile Include="Widgets\Layout\RouterBase.cs" />
+    <Compile Include="Widgets\Layout\SimpleWidgetLayout.cs" />
+    <Compile Include="Widgets\PointComparer.cs" />
+    <Compile Include="Widgets\SceneCommandAction.cs" />
+    <Compile Include="Actions\PaintActionEventArgs.cs" />
+    <Compile Include="Common\Collections\MultiDictionary.cs" />
+    <Compile Include="Common\Collections\Set.cs" />
+    <Compile Include="Common\TODOAttribute.cs" />
+    <Compile Include="Drawing\Matrice.cs" />
+    <Compile Include="Graphs\Graph.cs" />
+    <Compile Include="Graphs\IEdge.cs" />
+    <Compile Include="Graphs\Edge.cs" />
+    <Compile Include="Common\Empty.cs" />
+    <Compile Include="Example\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Example\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Display\DisplayKit.cs" />
+    <Compile Include="Display\IDisplayBase.cs" />
+    <Compile Include="Actions\ILayer.cs" />
+    <Compile Include="Display\ImageDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Display\ImageKit.cs" />
+    <Compile Include="Display\DisplayBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Display\DisplayBase.Designer.cs">
+      <DependentUpon>DisplayBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Drawing\Painters\VectorPainter.cs" />
+    <Compile Include="Drawing\Shapes\ShapeUtils.cs" />
+    <Compile Include="Drawing\Shapes\Vector.cs" />
+    <Compile Include="Drawing\Shapes\VectorShape.cs" />
+    <Compile Include="Common\Message.cs" />
+    <Compile Include="Common\Progress.cs" />
+    <Compile Include="Tests\Widget\LongtermPerformanceData.cs" />
+    <Compile Include="Tests\Widget\SceneThreadTest.cs" />
+    <Compile Include="Tests\Widget\WidgetBoundsLayer.cs" />
+    <Compile Include="Tests\Graph\EdgeData.cs" />
+    <Compile Include="Tests\Graph\EdgeIsItemTest.cs" />
+    <Compile Include="Tests\Graph\GraphTest.cs" />
+    <Compile Include="Tests\Graph\StringGraphTest.cs" />
+    <Compile Include="UnitTest\TestBase.cs" />
+    <Compile Include="Widgets\ILinkWidget.cs" />
+    <Compile Include="Widgets\IWidget.cs" />
+    <Compile Include="Widgets\Renderer.cs" />
+    <Compile Include="Widgets\SceneGraph.cs" />
+    <Compile Include="Widgets\WidgetCommands.cs" />
+    <Compile Include="Widgets\WidgetRenderer.cs" />
+    <Compile Include="Widgets\LinkWidget.cs" />
+    <Compile Include="Widgets\SceneRenderer.cs" />
+    <Compile Include="Display\WidgetDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Actions\Layer.cs" />
+    <Compile Include="Display\WidgetKit.cs" />
+    <Compile Include="Widgets\WidgetLayer.cs" />
+    <Compile Include="Drawing\Painters\IPainter.cs" />
+    <Compile Include="Drawing\Painters\Painter.cs" />
+    <Compile Include="Drawing\Painters\PainterFactory.cs" />
+    <Compile Include="Drawing\Painters\RectanglePainter.cs" />
+    <Compile Include="Common\FactoryBase.cs" />
+    <Compile Include="Drawing\Shapes\Shape.cs" />
+    <Compile Include="Drawing\IStyle.cs" />
+    <Compile Include="Drawing\Shapes\ShapeFactory.cs" />
+    <Compile Include="Drawing\Style.cs" />
+    <Compile Include="Drawing\StyleSheet.cs" />
+    <Compile Include="Widgets\Widget.cs" />
+    <Compile Include="Widgets\Scene.cs" />
+    <Compile Include="Actions\ActionBase.cs" />
+    <Compile Include="Winform\ActionDispatcher.cs" />
+    <Compile Include="Actions\ActionPriorities.cs" />
+    <Compile Include="Winform\DragDrop\IDataObjectHandler.cs" />
+    <Compile Include="Winform\DragDrop\IWidgetDataObjectHandler.cs" />
+    <Compile Include="Winform\DragDrop\WidgetDataObjectHandler.cs" />
+    <Compile Include="Winform\GripPainter.cs" />
+    <Compile Include="Winform\IDragDopControl.cs" />
+    <Compile Include="Winform\IKeyAction.cs" />
+    <Compile Include="Drawing\Anchor.cs" />
+    <Compile Include="Drawing\Transformer.cs" />
+    <Compile Include="Actions\IAction.cs" />
+    <Compile Include="Drawing\IShape.cs" />
+    <Compile Include="Display\ImageLayer.cs" />
+    <Compile Include="Actions\IPaintAction.cs" />
+    <Compile Include="Drawing\Shapes\RectangleShape.cs" />
+    <Compile Include="Winform\IMouseAction.cs" />
+    <Compile Include="Winform\KeyActionBase.cs" />
+    <Compile Include="Winform\MouseDragActionBase.cs" />
+    <Compile Include="Winform\PaintActionArgsConverter.cs" />
+    <Compile Include="Winform\SelectorHelper.cs" />
+    <Compile Include="Winform\SelectionShape.cs" />
+    <Compile Include="Winform\SelectionBase.cs" />
+    <Compile Include="Winform\MouseTimerActionBase.cs" />
+    <Compile Include="Drawing\ITransformer.cs" />
+    <Compile Include="Winform\IWinControl.cs" />
+    <Compile Include="Actions\IScrollTarget.cs" />
+    <Compile Include="Actions\IZoomTarget.cs" />
+    <Compile Include="Winform\DragDrop\DataObjectHandlerChain.cs" />
+    <Compile Include="Winform\DragDrop\DataObjectHandler.cs" />
+    <Compile Include="Winform\DragDrop\StringDataObjectHandler.cs" />
+    <Compile Include="Winform\DragDrop\WidgetWidgetDataObjectHandler.cs" />
+    <Compile Include="Winform\DragDrop\ControlDataObject.cs" />
+    <Compile Include="Winform\Widgets\WidgetDragDrop.cs" />
+    <Compile Include="Winform\Widgets\WidgetDeleter.cs" />
+    <Compile Include="Winform\Widgets\WidgetTextEditor.cs" />
+    <Compile Include="Winform\Widgets\WidgetLayerZoomAction.cs" />
+    <Compile Include="Winform\ZoomAction.cs" />
+    <Compile Include="Winform\MouseActionBase.cs" />
+    <Compile Include="Winform\ScrollAction.cs" />
+    <Compile Include="Winform\Widgets\AddLinkAction.cs" />
+    <Compile Include="Winform\Widgets\AddWidgetAction.cs" />
+    <Compile Include="Winform\Widgets\LinkWidgetChanger.cs" />
+    <Compile Include="Winform\ShapeActionBase.cs" />
+    <Compile Include="Winform\Widgets\WidgetChanger.cs" />
+    <Compile Include="Winform\Widgets\WidgetSelector.cs" />
+    <Compile Include="Actions\ZoomState.cs" />
+    <Compile Include="Example\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Example\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Example\Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Example\About.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Example\OpenExampleData.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OpenExampleData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Example\PropertyOptions.resx">
+      <DependentUpon>PropertyOptions.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Example\MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Example\LayoutOptions.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LayoutOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Example\Options.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Options.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Example\app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Example\Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\Resources\Shape.png" />
+    <Content Include="Properties\Resources\ConnectorToolIcon.png" />
+    <Content Include="Properties\Resources\Icons.License.txt" />
+    <Content Include="Properties\Resources\MenuFileOpenIcon.png" />
+    <Content Include="Properties\Resources\MoveSelectionToolIcon.png" />
+    <Content Include="Properties\Resources\MoveToolIcon.png" />
+    <Content Include="Properties\Resources\RectangleSelectToolIcon.png" />
+    <Content Include="Properties\Resources\SelectionIcon.png" />
+    <Content Include="Properties\Resources\ZoomToolIcon.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
