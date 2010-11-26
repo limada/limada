@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using Limaki.Tests.Widget;
+using Limada.Schemata;
+using Limada.Tests.View;
 using Limaki.Tests.Graph.Model;
+using Limaki.Tests.Widget;
 
 namespace Limaki.App {
     public partial class OpenExampleData : Form {
@@ -17,8 +15,11 @@ namespace Limaki.App {
             examples.Add(new TypeChoose<SceneFactory<ProgrammingLanguageFactory>>());
             examples.Add(new TypeChoose<SceneFactory<BinaryTreeFactory>>());
             examples.Add(new TypeChoose<SceneFactory<BinaryGraphFactory>>());
+            examples.Add(new TypeChoose<SceneFactory<GCJohnBostonGraphFactory>>());
             examples.Add(new TypeChoose<SceneFactory<WordGameGraphFactory>>());
+            examples.Add(new TypeChoose<SceneFactory<LimakiShortHelpFactory>>());
             examples.Add(new TypeChoose<BenchmarkOneSceneFactory>());
+            examples.Add(new TypeChoose<SchemaViewTestData<DocumentSchema>>());
             this.comboBox1.DataSource = examples;
 
         }

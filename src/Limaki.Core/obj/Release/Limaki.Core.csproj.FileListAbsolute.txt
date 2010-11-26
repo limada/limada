@@ -1,0 +1,5 @@
+S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.Core\bin\Release\Limaki.Core.dll
+S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.Core\bin\Release\Limaki.Core.pdb
+S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.Core\obj\Release\ResolveAssemblyReference.cache
+S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.Core\obj\Release\Limaki.Core.dll
+S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.Core\obj\Release\Limaki.Core.pdb

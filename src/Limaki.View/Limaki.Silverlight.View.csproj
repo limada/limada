@@ -1,0 +1,191 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BFC9C450-1A27-4986-8BEE-5E2307E07026}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki.View</RootNamespace>
+    <AssemblyName>Limaki.View</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Drawing\Anchor.cs" />
+    <Compile Include="Drawing\BitmapFromDibStream.cs" />
+    <Compile Include="Drawing\Camera.cs" />
+    <Compile Include="Drawing\EventControlerBase.cs" />
+    <Compile Include="Drawing\ICamera.cs" />
+    <Compile Include="Drawing\ICameraTarget.cs" />
+    <Compile Include="Drawing\IControl.cs" />
+    <Compile Include="Drawing\ILayer.cs" />
+    <Compile Include="Drawing\ILayout.cs" />
+    <Compile Include="Drawing\ILayoutControler.cs" />
+    <Compile Include="Drawing\INavigateTarget.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\CollectionVisitor.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\DoubleBits.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\HexConverter.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\IItemVisitor.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Key.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Node.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\NodeBase.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Quadtree.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Root.cs" />
+    <Compile Include="Drawing\IPaintAction.cs" />
+    <Compile Include="Drawing\IPaintActionEventArgs.cs" />
+    <Compile Include="Drawing\IPainter.cs" />
+    <Compile Include="Drawing\IPainterFactory.cs" />
+    <Compile Include="Drawing\IScrollTarget.cs" />
+    <Compile Include="Drawing\IShape.cs" />
+    <Compile Include="Drawing\IStyle.cs" />
+    <Compile Include="Drawing\IStyleSheet.cs" />
+    <Compile Include="Drawing\ISurface.cs" />
+    <Compile Include="Drawing\IZoomTarget.cs" />
+    <Compile Include="Drawing\Layer.cs" />
+    <Compile Include="Drawing\Layout.cs" />
+    <Compile Include="Drawing\LayoutCommand.cs" />
+    <Compile Include="Drawing\LayoutControler.cs" />
+    <Compile Include="Drawing\Matrice.cs" />
+    <Compile Include="Drawing\PaintActionEventArgs.cs" />
+    <Compile Include="Drawing\Painters\Painter.cs" />
+    <Compile Include="Drawing\Painters\StringPainterBase.cs" />
+    <Compile Include="Drawing\PointComparer.cs" />
+    <Compile Include="Drawing\Shapes\BezierShape.cs" />
+    <Compile Include="Drawing\IShapeFactory.cs" />
+    <Compile Include="Drawing\Shapes\IRectangleShape.cs" />
+    <Compile Include="Drawing\Shapes\Polygon.cs" />
+    <Compile Include="Drawing\Shapes\RectangleShape.cs" />
+    <Compile Include="Drawing\Shapes\RectangleShapeBase.cs" />
+    <Compile Include="Drawing\Shapes\RoundedRectangleShape.cs" />
+    <Compile Include="Drawing\Shapes\Shape.cs" />
+    <Compile Include="Drawing\Shapes\ShapeFactory.cs" />
+    <Compile Include="Drawing\ShapeFactoryBase.cs" />
+    <Compile Include="Drawing\Shapes\ShapeUtils.cs" />
+    <Compile Include="Drawing\Vector.cs" />
+    <Compile Include="Drawing\Shapes\VectorShape.cs" />
+    <Compile Include="Drawing\Style.cs" />
+    <Compile Include="Drawing\StyleSheet.cs" />
+    <Compile Include="Drawing\StyleSheets.cs" />
+    <Compile Include="Drawing\UiState.cs" />
+    <Compile Include="Drawing\ZoomState.cs" />
+    <Compile Include="Toolkit\Drawing\Color.cs" />
+    <Compile Include="Toolkit\Drawing\MatrixOrder.cs" />
+    <Compile Include="Toolkit\Drawing\Font.cs" />
+    <Compile Include="Toolkit\Drawing\FontStyle.cs" />
+    <Compile Include="Toolkit\Drawing\FontWeight.cs" />
+    <Compile Include="Toolkit\Drawing\SysColorIndex.cs" />
+    <Compile Include="Toolkit\Drawing\INativeDrawingUtils.cs" />
+    <Compile Include="Toolkit\Drawing\ISystemFonts.cs" />
+    <Compile Include="Toolkit\Drawing\KnownColor.cs" />
+    <Compile Include="Toolkit\Drawing\KnownColors.cs" />
+    <Compile Include="Toolkit\Drawing\Pen.cs" />
+    <Compile Include="Toolkit\Drawing\PenLineCap.cs" />
+    <Compile Include="Toolkit\Drawing\PenLineJoin.cs" />
+    <Compile Include="Toolkit\Drawing\Point.cs" />
+    <Compile Include="Toolkit\Drawing\PointF.cs" />
+    <Compile Include="Toolkit\Drawing\Rectangle.cs" />
+    <Compile Include="Toolkit\Drawing\RectangleF.cs" />
+    <Compile Include="Toolkit\Drawing\Size.cs" />
+    <Compile Include="Toolkit\Drawing\SizeF.cs" />
+    <Compile Include="Toolkit\Drawing\SystemFonts.cs" />
+    <Compile Include="Widgets\IDataBaseHandler.cs" />
+    <Compile Include="Widgets\ISheetManager.cs" />
+    <Compile Include="Limada\SearchHandler.cs" />
+    <Compile Include="Limada\Sheet.cs" />
+    <Compile Include="Limada\SheetManager.cs" />
+    <Compile Include="Limada\WidgetThingAdapter.cs" />
+    <Compile Include="Limada\WidgetThingGraph.cs" />
+    <Compile Include="Limada\WidgetThingGraphExtension.cs" />
+    <Compile Include="Limada\WidgetThingGraphMapping.cs" />
+    <Compile Include="Limada\WidgetThingMarkerFacade.cs" />
+    <Compile Include="Limada\WidgetThingSerializer.cs" />
+    <Compile Include="Limada\WidgetThingStreamHelper.cs" />
+    <Compile Include="Model\GraphItem2WidgetAdapter.cs" />
+    <Compile Include="Model\GraphItemWidgetMapping.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Widgets\BruteForceIndex.cs" />
+    <Compile Include="Widgets\EdgeWidget.cs" />
+    <Compile Include="Widgets\IEdgeWidget.cs" />
+    <Compile Include="Widgets\IWidget.cs" />
+    <Compile Include="Widgets\IWidgetFactory.cs" />
+    <Compile Include="Widgets\Layout\Arranger.cs" />
+    <Compile Include="Widgets\Layout\GraphLayout.cs" />
+    <Compile Include="Widgets\Layout\IRouter.cs" />
+    <Compile Include="Widgets\Layout\LayoutProperties.cs" />
+    <Compile Include="Widgets\Layout\NearestAnchorRouter.cs" />
+    <Compile Include="Widgets\Layout\RouterBase.cs" />
+    <Compile Include="Widgets\Layout\SceneFacade.cs" />
+    <Compile Include="Widgets\Layout\ShapeProxy.cs" />
+    <Compile Include="Widgets\Layout\WidgetLayout.cs" />
+    <Compile Include="Widgets\MarkerContextProcessor.cs" />
+    <Compile Include="Widgets\Renderer.cs" />
+    <Compile Include="Widgets\WidgetLayerBase.cs" />
+    <Compile Include="Widgets\WidgetRenderer.cs" />
+    <Compile Include="Widgets\QuadTreeIndex.cs" />
+    <Compile Include="Widgets\Scene.cs" />
+    <Compile Include="Widgets\SceneTools.cs" />
+    <Compile Include="Widgets\SpatialIndex.cs" />
+    <Compile Include="Widgets\Widget.cs" />
+    <Compile Include="Widgets\WidgetCommands.cs" />
+    <Compile Include="Widgets\WidgetComposite.cs" />
+    <Compile Include="Widgets\WidgetFactory.cs" />
+    <Compile Include="Widgets\WidgetGraph.cs" />
+    <Compile Include="Widgets\WiredScenes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Limaki.Core\Limaki.Silverlight.Core.csproj">
+      <Project>{D314B3F4-2CE3-49A0-B39F-5C234EF4F5A9}</Project>
+      <Name>Limaki.Silverlight.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v2.0\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

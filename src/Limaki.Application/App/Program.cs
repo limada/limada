@@ -1,6 +1,6 @@
 ﻿/*
  * Limaki 
- * Version 0.07
+ * Version 0.08
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -15,9 +15,11 @@
 
 
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using Limaki.App;
+using ApplicationContextRecourceLoader=
+    Limada.App.ApplicationContextRecourceLoader;
+using Registry=Limaki.Common.Registry;
+using Limaki.Common;
 
 namespace Limaki.App {
     static class Program {
@@ -26,6 +28,10 @@ namespace Limaki.App {
         /// </summary>
         [STAThread]
         static void Main() {
+            var resourceLoader = new ApplicationContextRecourceLoader ();
+            Registry.ConcreteContext = resourceLoader.CreateContext();
+            resourceLoader.ApplyResources (Registry.ConcreteContext);
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

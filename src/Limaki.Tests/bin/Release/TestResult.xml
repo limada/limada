@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.Tests\bin\Release\Limaki.Tests.dll" total="1" failures="0" not-run="0" date="2010-01-28" time="01:48:29">
+  <environment nunit-version="2.4.1.0" clr-version="2.0.50727.3053" os-version="Microsoft Windows NT 5.1.2600 Service Pack 3" platform="Win32NT" cwd="S:\Programming\Limada.Releases\Limada-0.08\src" machine-name="NONAME2" user="Administrator" user-domain="NONAME2" />
+  <culture-info current-culture="de-AT" current-uiculture="de-DE" />
+  <test-suite name="S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.Tests\bin\Release\Limaki.Tests.dll" success="True" time="2.141" asserts="0">
+    <results>
+      <test-suite name="Limada" success="True" time="2.125" asserts="0">
+        <results>
+          <test-suite name="Tests" success="True" time="2.125" asserts="0">
+            <results>
+              <test-suite name="Data" success="True" time="2.125" asserts="0">
+                <results>
+                  <test-suite name="db4o" success="True" time="2.125" asserts="0">
+                    <results>
+                      <test-suite name="StreamThingTest" success="True" time="2.109" asserts="0">
+                        <results>
+                          <test-case name="Limada.Tests.Data.db4o.StreamThingTest.CrUD" executed="True" success="True" time="1.875" asserts="5" />
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

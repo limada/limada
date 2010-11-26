@@ -26,6 +26,8 @@ namespace Limaki.App {
         private void InitializeComponent() {
             this.closeButton = new System.Windows.Forms.Button();
             this.applyButton = new System.Windows.Forms.Button();
+            this.OptionList = new System.Windows.Forms.ComboBox();
+            this.ContentPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // closeButton
@@ -54,6 +56,24 @@ namespace Limaki.App {
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
             // 
+            // OptionList
+            // 
+            this.OptionList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.OptionList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OptionList.FormattingEnabled = true;
+            this.OptionList.Location = new System.Drawing.Point(0, 0);
+            this.OptionList.Name = "OptionList";
+            this.OptionList.Size = new System.Drawing.Size(140, 21);
+            this.OptionList.TabIndex = 2;
+            // 
+            // ContentPanel
+            // 
+            this.ContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ContentPanel.Location = new System.Drawing.Point(0, 21);
+            this.ContentPanel.Name = "ContentPanel";
+            this.ContentPanel.Size = new System.Drawing.Size(140, 123);
+            this.ContentPanel.TabIndex = 3;
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -61,6 +81,8 @@ namespace Limaki.App {
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(140, 190);
             this.ControlBox = false;
+            this.Controls.Add(this.ContentPanel);
+            this.Controls.Add(this.OptionList);
             this.Controls.Add(this.applyButton);
             this.Controls.Add(this.closeButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -80,5 +102,7 @@ namespace Limaki.App {
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public System.Windows.Forms.Control OptionChanger;
+        public System.Windows.Forms.ComboBox OptionList;
+        public System.Windows.Forms.Panel ContentPanel;
     }
 }

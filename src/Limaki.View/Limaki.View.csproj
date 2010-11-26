@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5E2A280D-1F53-44E5-AAA3-6BDBA2B51094}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki</RootNamespace>
+    <AssemblyName>Limaki.View</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Drawing\Anchor.cs" />
+    <Compile Include="Drawing\BitmapFromDibStream.cs" />
+    <Compile Include="Drawing\Camera.cs" />
+    <Compile Include="Drawing\UI\EventControlerBase.cs" />
+    <Compile Include="Drawing\ICamera.cs" />
+    <Compile Include="Drawing\ICameraTarget.cs" />
+    <Compile Include="Drawing\UI\IControl.cs" />
+    <Compile Include="Drawing\UI\ILayer.cs" />
+    <Compile Include="Drawing\ILayout.cs" />
+    <Compile Include="Drawing\UI\ILayoutControler.cs" />
+    <Compile Include="Drawing\UI\INavigateTarget.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\CollectionVisitor.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\DoubleBits.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\HexConverter.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\IItemVisitor.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Key.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Node.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\NodeBase.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Quadtree.cs" />
+    <Compile Include="Drawing\Indexing\QuadTree\Root.cs" />
+    <Compile Include="Drawing\UI\IPaintAction.cs" />
+    <Compile Include="Drawing\UI\IPaintActionEventArgs.cs" />
+    <Compile Include="Drawing\IPainter.cs" />
+    <Compile Include="Drawing\IPainterFactory.cs" />
+    <Compile Include="Drawing\UI\IScrollTarget.cs" />
+    <Compile Include="Drawing\IShape.cs" />
+    <Compile Include="Drawing\IStyle.cs" />
+    <Compile Include="Drawing\IStyleSheet.cs" />
+    <Compile Include="Drawing\ISurface.cs" />
+    <Compile Include="Drawing\UI\IZoomTarget.cs" />
+    <Compile Include="Drawing\UI\Layer.cs" />
+    <Compile Include="Drawing\UI\Layout.cs" />
+    <Compile Include="Drawing\UI\LayoutCommand.cs" />
+    <Compile Include="Drawing\UI\LayoutControler.cs" />
+    <Compile Include="Drawing\Matrice.cs" />
+    <Compile Include="Drawing\UI\MouseActionBase.cs" />
+    <Compile Include="Drawing\UI\PaintActionEventArgs.cs" />
+    <Compile Include="Drawing\Painters\Painter.cs" />
+    <Compile Include="Drawing\Painters\StringPainterBase.cs" />
+    <Compile Include="Drawing\PointComparer.cs" />
+    <Compile Include="Drawing\Shapes\BezierShape.cs" />
+    <Compile Include="Drawing\IShapeFactory.cs" />
+    <Compile Include="Drawing\Shapes\IRectangleShape.cs" />
+    <Compile Include="Drawing\Shapes\Polygon.cs" />
+    <Compile Include="Drawing\Shapes\RectangleShape.cs" />
+    <Compile Include="Drawing\Shapes\RectangleShapeBase.cs" />
+    <Compile Include="Drawing\Shapes\RoundedRectangleShape.cs" />
+    <Compile Include="Drawing\Shapes\Shape.cs" />
+    <Compile Include="Drawing\Shapes\ShapeFactory.cs" />
+    <Compile Include="Drawing\Shapes\ShapeFactoryBase.cs" />
+    <Compile Include="Drawing\Shapes\ShapeUtils.cs" />
+    <Compile Include="Drawing\Vector.cs" />
+    <Compile Include="Drawing\Shapes\VectorShape.cs" />
+    <Compile Include="Drawing\Style.cs" />
+    <Compile Include="Drawing\StyleSheet.cs" />
+    <Compile Include="Drawing\StyleSheets.cs" />
+    <Compile Include="Drawing\UiState.cs" />
+    <Compile Include="Drawing\ZoomState.cs" />
+    <Compile Include="Drawing\Color.cs" />
+    <Compile Include="Drawing\Font.cs" />
+    <Compile Include="Drawing\SysColorIndex.cs" />
+    <Compile Include="Drawing\IDrawingUtils.cs" />
+    <Compile Include="Drawing\ISystemFonts.cs" />
+    <Compile Include="Drawing\KnownColor.cs" />
+    <Compile Include="Drawing\Pen.cs" />
+    <Compile Include="Drawing\PointI.cs" />
+    <Compile Include="Drawing\PointS.cs" />
+    <Compile Include="Drawing\RectangleI.cs" />
+    <Compile Include="Drawing\RectangleS.cs" />
+    <Compile Include="Drawing\SizeI.cs" />
+    <Compile Include="Drawing\SizeS.cs" />
+    <Compile Include="Drawing\UI\IMouseAction.cs" />
+    <Compile Include="Drawing\UI\MouseActionEventArgs.cs" />
+    <Compile Include="Widgets\IDataBaseHandler.cs" />
+    <Compile Include="Widgets\ISheetManager.cs" />
+    <Compile Include="Limada\View\SearchHandler.cs" />
+    <Compile Include="Limada\View\Sheet.cs" />
+    <Compile Include="Limada\View\SheetManager.cs" />
+    <Compile Include="Limada\View\WidgetThingAdapter.cs" />
+    <Compile Include="Limada\View\WidgetThingGraph.cs" />
+    <Compile Include="Limada\View\WidgetThingGraphExtension.cs" />
+    <Compile Include="Limada\View\WidgetThingGraphMapping.cs" />
+    <Compile Include="Limada\View\WidgetThingMarkerFacade.cs" />
+    <Compile Include="Limada\View\WidgetThingSerializer.cs" />
+    <Compile Include="Limada\View\WidgetThingStreamHelper.cs" />
+    <Compile Include="View\GraphItem2WidgetAdapter.cs" />
+    <Compile Include="View\GraphItemWidgetMapping.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Widgets\BruteForceIndex.cs" />
+    <Compile Include="Widgets\EdgeWidget.cs" />
+    <Compile Include="Widgets\IEdgeWidget.cs" />
+    <Compile Include="Widgets\IWidget.cs" />
+    <Compile Include="Widgets\IWidgetFactory.cs" />
+    <Compile Include="Widgets\Layout\Arranger.cs" />
+    <Compile Include="Widgets\Layout\GraphLayout.cs" />
+    <Compile Include="Widgets\Layout\IRouter.cs" />
+    <Compile Include="Widgets\Layout\LayoutProperties.cs" />
+    <Compile Include="Widgets\Layout\NearestAnchorRouter.cs" />
+    <Compile Include="Widgets\Layout\RouterBase.cs" />
+    <Compile Include="Widgets\Layout\SceneFacade.cs" />
+    <Compile Include="Widgets\Layout\ShapeProxy.cs" />
+    <Compile Include="Widgets\Layout\WidgetLayout.cs" />
+    <Compile Include="Widgets\MarkerContextProcessor.cs" />
+    <Compile Include="Widgets\Renderer.cs" />
+    <Compile Include="Widgets\WidgetLayerBase.cs" />
+    <Compile Include="Widgets\WidgetRenderer.cs" />
+    <Compile Include="Widgets\QuadTreeIndex.cs" />
+    <Compile Include="Widgets\Scene.cs" />
+    <Compile Include="Widgets\SceneTools.cs" />
+    <Compile Include="Widgets\SpatialIndex.cs" />
+    <Compile Include="Widgets\Widget.cs" />
+    <Compile Include="Widgets\WidgetCommands.cs" />
+    <Compile Include="Widgets\WidgetComposite.cs" />
+    <Compile Include="Widgets\WidgetFactory.cs" />
+    <Compile Include="Widgets\WidgetGraph.cs" />
+    <Compile Include="Widgets\WiredScenes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
+      <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
+      <Name>Limaki.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

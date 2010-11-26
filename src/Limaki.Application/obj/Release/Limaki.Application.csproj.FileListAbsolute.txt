@@ -1,0 +1,1 @@
+S:\Programming\Limada.Releases\Limada-0.08\src\Limaki.Application\bin\Release\Limaki.Application.exe.config

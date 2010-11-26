@@ -26,26 +26,31 @@ namespace Limaki.App {
         /// </summary>
         private void InitializeComponent() {
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+
             this.SuspendLayout();
             // 
             // linkLabel1
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.linkLabel1.Image = global::Limaki.Properties.Resources.LimadaLogoL32;
+            this.linkLabel1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.linkLabel1.Location = new System.Drawing.Point(0, 0);
             this.linkLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(240, 20);
+            this.linkLabel1.Size = new System.Drawing.Size(245, 100);
             this.linkLabel1.TabIndex = 0;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://limada.sourceforge.net";
+            this.linkLabel1.Text = "limada.sourceforge.net";
+            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.linkLabel1.Click += new System.EventHandler(this.About_Click);
             // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(390, 120);
+            this.ClientSize = new System.Drawing.Size(245, 100);
             this.ControlBox = false;
             this.Controls.Add(this.linkLabel1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
