@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Limaki.Common;
 using Limaki.Common.Collections;
+using System.Linq.Expressions;
 
 namespace Limaki.Graphs {
     /// <summary>
@@ -352,6 +353,12 @@ namespace Limaki.Graphs {
                 GraphChanged(this, item, changeType);
             }
         }
+        #endregion
+
+        #region Linqishing
+
+        public abstract IEnumerable<TItem> Where(Expression<Func<TItem, bool>> predicate);
+
         #endregion
     }
 }

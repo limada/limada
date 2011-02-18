@@ -21,6 +21,8 @@ using Db4objects.Db4o.Query;
 using Limaki.Common;
 using Limaki.Common.Collections;
 using Limaki.Graphs;
+using Db4objects.Db4o.Linq;
+using System.Linq;
 
 namespace Limaki.Data.db4o {
     public class Graph<TItem, TEdge> : DbGraph<TItem,TEdge>
@@ -340,6 +342,10 @@ namespace Limaki.Data.db4o {
 
         #endregion
 
+
+        public override IEnumerable<TItem> Where(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
+            return Session.AsQueryable<TItem>().Where(predicate);
+        }
     }
 
 }

@@ -1,5 +1,7 @@
 using Limaki.Widgets;
 using Limaki.Widgets.WPF;
+using System;
+using System.Collections.Generic;
 
 namespace Limaki.Widgets.WPF {
     public class WPFWidgetFactory : IWidgetFactory {
@@ -30,6 +32,15 @@ namespace Limaki.Widgets.WPF {
 
         public IEdgeWidget CreateEdge<T>(T data) {
             return new WPFEdgeWidget<T> (data);
+        }
+
+
+
+
+        public IEnumerable<Type> KnownClasses {
+            get { yield return typeof (WPFWidget<string>);
+                  yield return typeof(WPFEdgeWidget<string>);
+            }
         }
 
 

@@ -21,15 +21,15 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 
 namespace Limaki.Presenter.UI {
-
-    public class MoveCommand<TItem> : Command<TItem, Func<TItem,IShape>, PointI> {
+    public interface IDirtyCommand {}
+    public class MoveCommand<TItem> : Command<TItem, Func<TItem,IShape>, PointI>,IDirtyCommand {
         public MoveCommand(TItem target, Func<TItem, IShape> shape, PointI param) : base(target, shape, param) { }
         public override void Execute() {
             var shape = this.Parameter (this.Subject);
             shape.Location = this.Parameter2;
         }
     }
-    public class MoveByCommand<TItem> : Command<TItem, Func<TItem, IShape>, SizeI> {
+    public class MoveByCommand<TItem> : Command<TItem, Func<TItem, IShape>, SizeI>,IDirtyCommand {
         public MoveByCommand(TItem target, Func<TItem, IShape> shape, SizeI param) : base(target, shape, param) { }
         public override void Execute() {
             var shape = this.Parameter(Subject);
@@ -37,7 +37,7 @@ namespace Limaki.Presenter.UI {
         }
     }
 
-    public class ResizeCommand<TItem> : Command<TItem, Func<TItem, IShape>, RectangleI> {
+    public class ResizeCommand<TItem> : Command<TItem, Func<TItem, IShape>, RectangleI>, IDirtyCommand {
         public ResizeCommand(TItem target, Func<TItem, IShape> shape, RectangleI param) : base(target, shape, param) { }
 
         public override void Execute() {
@@ -48,7 +48,7 @@ namespace Limaki.Presenter.UI {
 
     }
 
-    public class DeleteCommand<TItem, TEdge> : Command<TItem, IGraphScene<TItem, TEdge>>
+    public class DeleteCommand<TItem, TEdge> : Command<TItem, IGraphScene<TItem, TEdge>>, IDirtyCommand
     where TEdge : TItem, IEdge<TItem> {
         public DeleteCommand(TItem target, IGraphScene<TItem, TEdge> parameter) : base(target, parameter) { }
         public override void Execute() {

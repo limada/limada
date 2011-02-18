@@ -19,6 +19,8 @@ namespace Limaki.Common.Collections {
         }
 
         public void Add(T item) {
+            back.Remove(item);
+            forward.Remove(item);
             back.Add (item);
             Current = item;
         }
@@ -56,6 +58,9 @@ namespace Limaki.Common.Collections {
             return result;
         }
 
+        public bool Contains(T item) {
+            return forward.Contains(item) || back.Contains(item);
+        }
         public T GetItem(Predicate<T> pred) {
             foreach(T item in forward) {
                 if (pred(item)) {

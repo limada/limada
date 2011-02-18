@@ -84,6 +84,7 @@ namespace Limaki.Model.Streams {
         }
 
         public virtual bool Supports(string extension) {
+            extension = extension.ToLower().TrimStart('.');
             foreach (var type in SupportedStreamTypes) {
                 if (type.Extension == extension) {
                     return true;

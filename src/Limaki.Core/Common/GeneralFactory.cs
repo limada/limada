@@ -16,6 +16,8 @@
 
 namespace Limaki.Common {
     public class GeneralFactory:FactoryBase {
-        protected override void InstrumentClazzes() {}
+        protected override void InstrumentClazzes() {
+            base.InstrumentClazzes();
+        }
     }
 }

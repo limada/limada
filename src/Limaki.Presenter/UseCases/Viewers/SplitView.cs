@@ -183,17 +183,17 @@ namespace Limaki.UseCases.Viewers {
             CurrentDisplay = null;
 
             Display1.Data = scene;
-            new FavoriteManager().GoHome(Display1, true);
+            FavoriteManager.GoHome(Display1, true);
 
             Display2.Data = null;
 
             StreamViewProvider.Clear();
 
-            Registry.ApplyProperties<MarkerContextProcessor, Scene>(Display1.Data);
+            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IWidget, IEdgeWidget>>(Display1.Data);
 
             new WiredDisplays().MakeSideDisplay(Display1, Display2);
 
-            Registry.ApplyProperties<MarkerContextProcessor, Scene>(Display2.Data);
+            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IWidget, IEdgeWidget>>(Display2.Data);
 
             GraphStreamView();
 
@@ -215,12 +215,12 @@ namespace Limaki.UseCases.Viewers {
                 _streamViewProvider.AfterStreamLoaded += this.AfterStreamLoaded;
                 _streamViewProvider.Attach += this.ApplyGotFocus;
 
-                _streamViewProvider.sheetManager = this.SheetManager;
+                _streamViewProvider.SheetManager = this.SheetManager;
 
                 if (CurrentDisplay == Display2)
-                    _streamViewProvider.sheetControl = Display1;
+                    _streamViewProvider.SheetControl = Display1;
                 else
-                    _streamViewProvider.sheetControl = Display2;
+                    _streamViewProvider.SheetControl = Display2;
 
                 return _streamViewProvider;
             }
@@ -233,11 +233,16 @@ namespace Limaki.UseCases.Viewers {
 
             if (ViewMode != SplitViewMode.GraphStream)
                 return;
+            var display = CurrentDisplay;
             try {
+                
+                display.EventControler.UserEventsDisabled = true;
                 StreamViewProvider.ChangeViewer(sender, e);
             } catch (Exception ex) {
                 ExceptionHandler.Catch(ex, MessageType.OK);
-            } 
+            } finally {
+                display.EventControler.UserEventsDisabled = false;
+            }
         }
 
         #endregion
@@ -250,34 +255,35 @@ namespace Limaki.UseCases.Viewers {
             if (CurrentControl == CurrentDisplay) {
                 var currentDisplay = this.CurrentDisplay;
                 if (SheetManager.IsSaveable(currentDisplay.Data as Scene)) {
-                    ShowTextDialog("Sheet:", 
-                                           currentDisplay.Text,
-                                           SaveSheet);
+                    var info = SheetManager.GetSheetInfo(currentDisplay.DataId)??new SheetInfo{Name= currentDisplay.Text};
+                    ShowTextDialog("Sheet:", info.Name, SaveSheet);
                 }
             } else {
-                this.StreamViewProvider.SaveStream(WidgetThingGraphExtension.GetThingGraph(CurrentDisplay.Data.Graph));
+                this.StreamViewProvider.SaveStream(CurrentDisplay.Data.Graph.ThingGraph());
             }
         }
-
-        
 
         public void SaveSheet(string name) {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
-                var oldInfo = SheetManager.GetSheetInfo (currentDisplay.SceneId);
+                var oldInfo = SheetManager.GetSheetInfo (currentDisplay.DataId)??new SheetInfo{Name=name};
                 oldInfo.Name = name;
 
-                var newInfo = SheetManager.SaveToThing (currentDisplay.Data, currentDisplay.Layout, oldInfo);
+                var newInfo = SheetManager.SaveInGraph (currentDisplay.Data, currentDisplay.Layout, oldInfo);
 
                 currentDisplay.Text = newInfo.Name;
-                currentDisplay.SceneId = newInfo.Id;
+                currentDisplay.DataId = newInfo.Id;
+                newInfo.State.CopyTo(currentDisplay.State);
+                FavoriteManager.AddToSheets(currentDisplay.Data.Graph, currentDisplay.DataId);
             }
         }
 
         public void NewSheet() {
             var currentDisplay = this.CurrentDisplay;
-            SceneHistory.Save(currentDisplay, SheetManager, true);
+            SceneHistory.Store(currentDisplay, SheetManager, true);
             SceneTools.CleanScene(currentDisplay.Data);
+            currentDisplay.DataId = 0;
+            new State {Hollow = true}.CopyTo(currentDisplay.State);
             currentDisplay.Text = string.Empty;
             currentDisplay.DeviceRenderer.Render();
             OnViewChanged();
@@ -289,9 +295,11 @@ namespace Limaki.UseCases.Viewers {
 
         public void Search(string name) {
             var currentDisplay = this.CurrentDisplay;
-            SceneHistory.Save (currentDisplay, SheetManager, true);
+            SceneHistory.Store (currentDisplay, SheetManager, true);
             var search = new SearchHandler ();
             search.LoadSearch (currentDisplay.Data, currentDisplay.Layout, name);
+            currentDisplay.DataId = 0;
+            new State { Hollow = true }.CopyTo(currentDisplay.State);
             currentDisplay.Text = name;
             currentDisplay.Viewport.Reset ();
             currentDisplay.DeviceRenderer.Render ();
@@ -321,9 +329,9 @@ namespace Limaki.UseCases.Viewers {
                 SheetManager.Clear();
             }
 
-            Display1.SceneId = 0;
+            Display1.DataId = 0;
             Display1.Text = string.Empty;
-            Display2.SceneId = 0;
+            Display2.DataId = 0;
             Display2.Text = string.Empty;
         }
 
@@ -335,11 +343,11 @@ namespace Limaki.UseCases.Viewers {
         public void GoHome() {
             var display = this.CurrentDisplay;
             if (display != null) {
-                SceneHistory.Save(display, SheetManager, true);
+                SceneHistory.Store(display, SheetManager, true);
                 SceneTools.CleanScene(display.Data);
                 display.Text = string.Empty;
                 display.DeviceRenderer.Render();
-                new FavoriteManager().GoHome(display, false);
+                FavoriteManager.GoHome(display, false);
                 OnViewChanged();
             }
         }
@@ -382,13 +390,15 @@ namespace Limaki.UseCases.Viewers {
         #endregion
 
         #region Favorites
-        
+
+        public FavoriteManager FavoriteManager {get;set;}
+
         public void AddFocusedToFavorites() {
-            new FavoriteManager().AddToFavorites(CurrentDisplay.Data as Scene);
+            FavoriteManager.AddToFavorites(CurrentDisplay.Data as Scene);
         }
 
         public void ViewOnOpen() {
-            new FavoriteManager().ViewOnOpen(CurrentDisplay.Data as Scene);
+            FavoriteManager.ViewOnOpen(CurrentDisplay.Data as Scene);
         }
 
         #endregion

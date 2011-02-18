@@ -27,16 +27,16 @@ namespace Limaki.Context {
             GraphMapping.ChainGraphMapping<GraphItemWidgetMapping>(context);
             GraphMapping.ChainGraphMapping<WidgetThingGraphMapping>(context);
 
-            MarkerContextProcessor markerProcessor =
+            var markerProcessor =
                 context.Pool.TryGetCreate<MarkerContextProcessor>();
             markerProcessor.CreateMarkerFacade = this.MarkerFacade;
 
 
-            var PresenterLoader = new Limaki.Presenter.Display.PresenterRecourceLoader();
-            PresenterLoader.ApplyResources (context);
+            var presenterLoader = new Limaki.Presenter.Display.PresenterRecourceLoader();
+            presenterLoader.ApplyResources (context);
 
-            var WidgetLoader = new Limaki.Presenter.Widgets.WidgetRecourceLoader();
-            WidgetLoader.ApplyResources (context);
+            var widgetLoader = new Limaki.Presenter.Widgets.WidgetRecourceLoader();
+            widgetLoader.ApplyResources (context);
 
             context.Factory.Add<ISheetManager, SheetManager>();
 

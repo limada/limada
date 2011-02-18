@@ -22,11 +22,12 @@ namespace Limada.Model {
     public interface IThing {
         object Data { get; set; }
         Id Id { get; }
-        DateTime WriteDate { get; }
+        DateTime ChangeDate { get; }
         DateTime CreationDate { get; }
 
         void SetId(Id id);
-        void SetId ( Id id, DateTime creationDate, DateTime writeDate );
+        void SetCreationDate(DateTime date);
+        void SetChangeDate(DateTime date);
         
         void MakeEqual ( IThing thing );
         State State { get; }

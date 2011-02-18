@@ -29,6 +29,9 @@ namespace Limaki.Presenter.UI {
     public class GraphItemMoveResizeAction<TItem, TEdge> : MoveResizeAction, ICheckable
         where TEdge:TItem,IEdge<TItem> {
 
+        public GraphItemMoveResizeAction() {
+            Priority = ActionPriorities.SelectionPriority - 10;
+        }
         public Get<IGraphScene<TItem, TEdge>> SceneHandler;
         public virtual IGraphScene<TItem, TEdge> Scene {
             get { return SceneHandler(); }
@@ -82,12 +85,14 @@ namespace Limaki.Presenter.UI {
             if (widget != null && !(widget is TEdge)) {
                 base.OnMouseDown(e);
             }
+            if (Resolved != ShowGrips) {
+                ShowGrips = Resolved;
+                if (_selectionRenderer != null)
+                    this.SelectionRenderer.ShowGrips = Resolved;
+            }
         }
 
-        
-        
         protected virtual void UpdateGrip(IShape shape) {}
-        
         
         bool hideGrips = false;
         protected override void OnMouseMoveNotResolved(MouseActionEventArgs e) {

@@ -13,7 +13,7 @@
  * 
  */
 
-#define ShowHiddens
+#define ShowHiddensNot
 
 using System.Collections.Generic;
 using Limada.Model;
@@ -21,7 +21,8 @@ using Limaki.Common.Collections;
 using Limaki.Data;
 using Limaki.Graphs;
 using Id = System.Int64;
-
+using System.Linq.Expressions;
+using System.Linq;
 
 namespace Limada.Schemata {
     public class SchemaThingGraph:FilteredGraph<IThing,ILink>,IThingGraph {
@@ -50,9 +51,9 @@ namespace Limada.Schemata {
 
             IThingGraph markerGraph = new ThingGraph ();
             var markers = Markers ();
-            GraphUtils.MergeGraphs<IThing, ILink> (Schema.IdentityGraph, markerGraph);
-            ThingGraphUtils.DeepCopy(ThingGraph, markers, markerGraph);
-            ThingGraphUtils.DeepCopy(markerGraph, markers, ThingGraph);
+            GraphExtensions.MergeInto(Schema.IdentityGraph, markerGraph);
+            ThingGraph.DeepCopy(markers, markerGraph);
+            markerGraph.DeepCopy(markers, ThingGraph);
 
             foreach(IThing marker in markerGraph) {
                 var markerId = marker.Id;
@@ -326,5 +327,20 @@ namespace Limada.Schemata {
             RemoveThingToDisplay(item);
             return Source.Remove(item);
         }
+
+        
+        public IEnumerable<T> Where<T>(Expression<System.Func<T, bool>> predicate) where T : IThing {
+            return (Source as IThingGraph).Where<T>(predicate);
+        }
+
+        
+
+        #region IEnumerable Member
+
+        public new System.Collections.IEnumerator GetEnumerator() {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
     }
 }

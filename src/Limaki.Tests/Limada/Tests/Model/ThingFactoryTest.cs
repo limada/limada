@@ -10,7 +10,7 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void Test() {
-            var factory = new ThingFactory ();
+            IThingFactory factory = Registry.Factory.Create<IThingFactory>();
             IThing thing = factory.CreateItem();
             Assert.AreEqual(typeof (Thing), thing.GetType());
             Assert.IsInstanceOfType (typeof(IThing), thing);

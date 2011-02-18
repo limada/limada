@@ -32,8 +32,8 @@ namespace Limada.View {
                 new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(graph);
 
             if (sourceGraph != null) {
-                var thingGraph = WidgetThingGraphExtension.GetThingGraph(graph);
-                var factory = WidgetThingGraphExtension.GetThingFactory (graph);
+                var thingGraph = graph.ThingGraph();
+                var factory = graph.ThingFactory();
                 
                 IThing thing = new ThingStreamFacade(factory).SetStream(thingGraph, null, streamInfo);
                 
@@ -43,8 +43,8 @@ namespace Limada.View {
         }
 
         public IThing SetStream(IGraph<IWidget,IEdgeWidget> graph, IThing thing, StreamInfo<Stream> streamInfo) {
-            var thingGraph = WidgetThingGraphExtension.GetThingGraph(graph);
-            var factory = WidgetThingGraphExtension.GetThingFactory (graph);
+            var thingGraph = graph.ThingGraph();
+            var factory = graph.ThingFactory();
             var streamThing = thing as IStreamThing;
             if ((streamThing==null && thing!=null) || (thingGraph==null)||(factory ==null)){
                 throw new ArgumentException ("stream can not be set");
@@ -58,7 +58,7 @@ namespace Limada.View {
                 new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(graph);
 
              if (sourceGraph != null) {
-                 var thingGraph = WidgetThingGraphExtension.GetThingGraph (graph);
+                 var thingGraph = graph.ThingGraph();
                  return ThingStreamFacade.GetStreamInfo (
                      thingGraph,
                      sourceGraph.Get(widget));

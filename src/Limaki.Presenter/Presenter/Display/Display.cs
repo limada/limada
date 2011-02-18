@@ -17,6 +17,7 @@ using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Presenter.UI;
+using Id = System.Int64;
 
 namespace Limaki.Presenter.Display {
     public class Display<TData> : IDisplay<TData>, IDisposable, ICheckable
@@ -37,6 +38,12 @@ namespace Limaki.Presenter.Display {
                 }
             }
         }
+
+        public virtual Id DataId { get; set; }
+        public virtual string Text { get; set; }
+
+        protected State _state = default(State);
+        public virtual State State { get { return _state ?? (_state = new State{Hollow=true}); } }
 
         public virtual void DataChanged() {
             if (SelectAction != null)
@@ -161,7 +168,6 @@ namespace Limaki.Presenter.Display {
             }
             return true;
         }
-
 
     }
 }

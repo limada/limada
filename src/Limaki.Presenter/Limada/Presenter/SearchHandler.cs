@@ -39,9 +39,9 @@ namespace Limada.Presenter {
             }
 
             SceneTools.CleanScene(scene);
-            var thingGraph = WidgetThingGraphExtension.GetThingGraph(scene.Graph);
+            var thingGraph = scene.Graph.ThingGraph();
 
-            var widgets = from thing in ThingGraphUtils.Search(thingGraph, name, false)
+            var widgets = from thing in thingGraph.Search(name, false)
                         let widget = graph.Get(thing)
                         orderby widget.Data.ToString()
                         select widget;

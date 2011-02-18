@@ -115,12 +115,12 @@ namespace Limaki.Presenter.Widgets.UI {
             return widget;
         }
 
-        public static void CleanScene(Scene scene) {
+        public static void CleanScene(IGraphScene<IWidget, IEdgeWidget> scene) {
             if (scene != null) {
                 if (scene.Graph is GraphView<IWidget, IEdgeWidget>) {
                     ( (GraphView<IWidget, IEdgeWidget>) scene.Graph ).One.Clear ();
                     scene.ClearView ();
-                    Registry.ApplyProperties<MarkerContextProcessor, Scene> (scene);
+                    Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IWidget, IEdgeWidget>>(scene);
                 } else {
                     throw new ArgumentException ("scene.Graph must be a GraphView to load Sheets");
                 }

@@ -20,38 +20,23 @@ using Limada.View;
 using Limaki.Graphs;
 using Limaki.Model.Streams;
 using Limaki.Widgets;
+using System.Linq;
 
 namespace Limada.UseCases {
     public class DocumentSchemaManager {
-        IEnumerable<IThing> Pages(IGraph<IWidget, IEdgeWidget> source, IWidget widget) {
-            var document = WidgetThingGraphExtension.GetThing(source, widget);
-            var graph = WidgetThingGraphExtension.GetThingGraph(source);
-            if (document != null && graph != null)
-                foreach (ILink link in graph.Edges(document)) {
-                    if (link.Marker.Id == DocumentSchema.DocumentPage.Id) {
-                        yield return graph.Adjacent(link, document);
-                    }
-                }
+        public IEnumerable<IThing> Pages(IGraph<IWidget, IEdgeWidget> source, IWidget widget) {
+            var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(widget));
+            return docSchema.Pages();
         }
 
         public IEnumerable<StreamInfo<Stream>> PageStreams(IGraph<IWidget, IEdgeWidget> source, IWidget widget) {
-            var graph = WidgetThingGraphExtension.GetThingGraph(source) as SchemaThingGraph;
-            foreach (IThing page in Pages(source, widget)) {
-                if (page is IStreamThing) {
-                    StreamInfo<Stream> info = ThingStreamFacade.GetStreamInfo(graph, page);
-                    yield return info;
-                }
-            }
+            var docSchema = new DocumentSchema(source.ThingGraph(),source.ThingOf(widget));
+            return docSchema.PageStreams();
         }
 
-        public bool HasPages(IGraph<IWidget, IEdgeWidget> graph, IWidget widget) {
-            bool result = false;
-            foreach (IThing page in Pages(graph, widget)) {
-                result = true;
-                break;
-            }
-
-            return result;
+        public bool HasPages(IGraph<IWidget, IEdgeWidget> source, IWidget widget) {
+            var docSchema = new DocumentSchema(source.ThingGraph(),source.ThingOf(widget));
+            return docSchema.HasPages();
         }
     }
 }

@@ -2,6 +2,7 @@ using Limada.Model;
 using Limada.Schemata;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
+using Limaki.Common;
 
 namespace Limada.Tests.Model {
     public class DescriptionTestFactory:GenericGraphFactory<IThing,ILink> {
@@ -13,7 +14,8 @@ namespace Limada.Tests.Model {
         public IThing Root = null;
         public IThing TestMarker = null;
 
-        ThingFactory factory = new ThingFactory();
+        private IThingFactory _factory = null;
+        public IThingFactory factory { get { return _factory ?? (_factory = Registry.Factory.Create<IThingFactory>()); } }
 
         public override void Populate(IGraph<IThing, ILink> graph) {
             

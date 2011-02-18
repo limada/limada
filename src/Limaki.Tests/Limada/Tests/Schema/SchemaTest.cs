@@ -20,11 +20,14 @@ using Limaki.Tests;
 using Limaki.Tests.Graph;
 using Limaki.UnitTest;
 using NUnit.Framework;
+using Limaki.Common;
 
 namespace Limada.Tests.Schemata {
     [TestFixture]
     public class SchemaTest : DomainTest {
-        public ThingFactory Factory = new ThingFactory();
+        private IThingFactory _factory = null;
+        public IThingFactory Factory { get { return _factory ?? (_factory = Registry.Factory.Create<IThingFactory>()); } }
+
         public virtual void TestIdentity(IThing thing) {
             bool identity = false;
             if (thing is ILink)

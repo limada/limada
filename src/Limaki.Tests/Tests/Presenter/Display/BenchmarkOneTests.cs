@@ -23,6 +23,14 @@ using Limaki.Widgets;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Presenter.Display {
+    public class UITests : WidgetDisplayTest {
+        [Test]
+        public void MultiSelectorAgainstMoveTest() {
+            
+
+        }
+
+    }
     public class BenchmarkOneTests:WidgetDisplayTest {
 
         BenchmarkOneSceneFactory _factory = null;

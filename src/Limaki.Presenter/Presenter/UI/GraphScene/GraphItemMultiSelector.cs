@@ -27,6 +27,7 @@ namespace Limaki.Presenter.UI {
     where IEdgeWidget:IWidget,IEdge<IWidget>{
         public GraphItemMultiSelector() : base() {
             this.ShowGrips = false;
+            this.Priority = ActionPriorities.SelectionPriority + 5;
         }
 
 

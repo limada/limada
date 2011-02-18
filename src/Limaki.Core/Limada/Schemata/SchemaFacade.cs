@@ -38,8 +38,8 @@ namespace Limada.Schemata {
         public static bool DescriptionableThing(IThing thing) {
             if (thing == null)
                 return false;
-
-            return thing.GetType ().Equals (typeof (Thing))|| (thing is IStreamThing);
+            
+            return thing.GetType ().Equals (typeof (Thing))|| (thing is IStreamThing)||thing.Data==null;
         }
     }
 }

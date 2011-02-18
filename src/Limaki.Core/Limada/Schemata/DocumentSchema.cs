@@ -15,6 +15,10 @@
 
 using Limada.Model;
 using Limada.Schemata;
+using System.IO;
+using Limaki.Model.Streams;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Limada.Schemata {
     /// <summary>
@@ -119,20 +123,93 @@ namespace Limada.Schemata {
 
         #endregion
         // TODO:
-        //			pidDocumentGUIDocumentToTitleEdge:txbID = $68C5691BF8B83A95;
-        //			pidDocumentGUIDocumentToAutorEdge:txbID = $EE75EE5BA8CE6A29;
-        //			pidDocumentGUIDocumentToPageEdge:txbID = $3D044A4D1A3D49E1;
-        //			pidDocumentGUIPageEdgeToNumberEdge:txbID = $6725F26A6770C0E0;
+        //			pidAutoCreateDocumentToTitleEdge:txbID = $68C5691BF8B83A95;
+        //			pidAutoCreateDocumentToAutorEdge:txbID = $EE75EE5BA8CE6A29;
+        //			pidAutoCreateDocumentToPageEdge:txbID = $3D044A4D1A3D49E1;
+        //			pidAutoCreatePageEdgeToNumberEdge:txbID = $6725F26A6770C0E0;
 
         #region Data-Handling
         
         public DocumentSchema():base() {}
         public DocumentSchema(IThingGraph graph, IThing document) : base(graph,document) { }
 
-
         public IThing Title {
             get { return GetTheLeaf ( DocumentTitle ); }
             set { SetTheLeaf(DocumentTitle, value); }
+        }
+
+        public IThing CreatePage(StreamInfo<Stream> stream, int pageNr) {
+            return CreatePage(this.Graph, this.Target, stream, pageNr);
+        }
+
+        public IThing CreatePage(IThingGraph graph, IThing document, StreamInfo<Stream> stream, int pageNr) {
+            if (graph == null || document == null)
+                return null;
+            var page = Factory.CreateItem<Stream>(null) as IStreamThing;
+            page.DataContainer = graph.DataContainer;
+            if (stream != null) {
+                new ThingStreamFacade(Factory).SetStream(page, stream);
+            }
+            var pageEdge = Factory.CreateEdge(document, page, DocumentSchema.DocumentPage);
+            graph.Add(pageEdge);
+
+            var number = Factory.CreateItem<int>(pageNr);
+            var numberEdge = Factory.CreateEdge(pageEdge, number, DocumentSchema.PageNumber);
+            graph.Add(number);
+            graph.Add(numberEdge);
+            return page;
+        }
+
+        public IThing CreateDocument(string title) {
+            this.Target = CreateDocument(this.Graph, title);
+            return this.Target;
+        }
+
+        public IThing CreateDocument(IThingGraph graph, string title) {
+            if (graph == null) return null;
+
+            var document = Factory.CreateItem();
+            graph.Add(document);
+            if (title == null)
+                title = "Document " + document.Id.ToString("X");
+            graph.Add(Factory.CreateEdge(document, Factory.CreateItem(title), DocumentSchema.DocumentTitle));
+            return document;
+        }
+
+        public IEnumerable<IThing> Pages() {
+            return this.Pages(this.Graph, this.Target);
+        }
+
+        public IEnumerable<IThing> Pages(IThingGraph graph, IThing document) {
+            if (graph == null || document == null)
+                return new IThing[0];
+            return graph.Edges(document)
+                .Where(link => link.Marker == DocumentSchema.DocumentPage)
+                .Select(link => link.Leaf);
+        }
+
+        public bool HasPages() {
+            return HasPages(this.Graph, this.Target);
+        }
+
+        public bool HasPages(IThingGraph graph, IThing document) {
+            if (graph == null || document == null)
+                return false;
+            return graph.Edges(document)
+                .Any(link => link.Marker == DocumentSchema.DocumentPage && link.Root == document);
+        }
+
+        public IEnumerable<StreamInfo<Stream>> PageStreams() {
+            return this.PageStreams(this.Graph, this.Target);
+        }
+
+        public IEnumerable<StreamInfo<Stream>> PageStreams(IThingGraph graph, IThing document) {
+            if (graph == null || document == null)
+                return new StreamInfo<Stream>[0];
+
+            return Pages(graph, document)
+                .Where(page => page is IStreamThing)
+                .Select(page => ThingStreamFacade.GetStreamInfo(graph, page));
         }
 
         #endregion

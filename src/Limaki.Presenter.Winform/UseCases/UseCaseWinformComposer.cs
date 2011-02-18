@@ -100,7 +100,7 @@ namespace Limaki.UseCases.Winform {
             
             new ToolStripMenuItem("File", null, new ToolStripMenuItem[] {
                 new ToolStripMenuItem("Open ...", null, (s, e) => { useCase.OpenFile(); }),
-                new ToolStripMenuItem("Save", null, (s, e) => { useCase.FileManager.Save(); }),
+                new ToolStripMenuItem("Save", null, (s, e) => { useCase.SaveFile(); }),
                 new ToolStripMenuItem("SaveAs ...", null, (s, e) => { useCase.SaveAsFile(); }),
                 new ToolStripMenuItem("Export", null, new ToolStripMenuItem[] {
                     new ToolStripMenuItem("current view ...", null, (s, e) => { useCase.ExportCurrentView(); }),

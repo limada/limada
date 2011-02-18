@@ -34,8 +34,8 @@ namespace Limada.View {
                 }
                 return _factory;
             }
-            
         }
+
         public override IEdge<IWidget> CreateDefaultEdge() {
             return factory.CreateEdge (DefaultMarker.ToString ());
         }

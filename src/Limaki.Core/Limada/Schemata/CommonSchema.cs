@@ -34,7 +34,6 @@ namespace Limada.Schemata {
     /// link.Root = thing;
     /// link.Leaf = thing#string:"My Description"
     /// link.Marker = CommonSchema.DescriptionMarker
-    
     /// </summary>
     public class CommonSchema : Schema {
         /// <summary>
@@ -51,6 +50,8 @@ namespace Limada.Schemata {
         /// marker for general use if you don't have a special marker
         /// </summary>
         public static readonly IThing CommonMarker = Thing<string>("-»", 0x05C54DDB81FD4AB3);
+
+        private static readonly long max = unchecked((long)0xFFFFFFFFFFFFFFFF);
 
         #region Description
         

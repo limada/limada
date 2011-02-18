@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using Limaki.Data;
 using Limaki.Graphs;
 using Id = System.Int64;
+using System.Linq.Expressions;
+using System;
 
 namespace Limada.Model {
     public interface IThingGraph:IGraph<IThing,ILink> {
@@ -28,5 +30,6 @@ namespace Limada.Model {
         IEnumerable<IThing> GetByData ( object data, bool exact );
         IDataContainer<Id> DataContainer { get;set;}
         IThing UniqueThing ( IThing thing );
+        IEnumerable<T> Where<T>(Expression<Func<T,bool>> predicate) where T:IThing;
     }
 }

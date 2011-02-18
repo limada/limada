@@ -36,12 +36,14 @@ namespace Limaki.Widgets {
                 if (_graph == null) {
                     _graph = new WidgetGraph();
                     _spatialIndex = null;
+                    State.Hollow = true;
                 }
                 return _graph;
             }
             set {
                 Clear ();
                 _graph = value;
+                State.Hollow = value != null;
             }
         }
 
@@ -56,6 +58,8 @@ namespace Limaki.Widgets {
                 }
             }
             Graph.ChangeEdge(edge, target, asRoot);
+            if(result)
+                State.Dirty = true;
             return result;
         }
 
@@ -68,6 +72,9 @@ namespace Limaki.Widgets {
         public IEnumerable<IEdgeWidget> Twig(IWidget source) {
             return Graph.Twig(source);
         }
+
+        protected State _state = default(State);
+        public virtual State State { get { return _state ?? (_state = new State { Hollow = true }); } }
 
         #endregion
 

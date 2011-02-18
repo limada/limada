@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
+    <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkProfile />
@@ -38,7 +38,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;USEMONO_40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,7 +47,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE;USEMONO_40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -114,6 +114,17 @@
     <Compile Include="Common\Registry.cs" />
     <Compile Include="Common\State.cs" />
     <Compile Include="Common\Text\HTML\HTMLHelper.cs" />
+    <Compile Include="Common\Text\HTML\Parser\Attribute.cs" />
+    <Compile Include="Common\Text\HTML\Parser\Entry.cs" />
+    <Compile Include="Common\Text\HTML\Parser\ParserBase.cs" />
+    <Compile Include="Common\Text\HTML\Parser\Status.cs" />
+    <Compile Include="Common\Text\HTML\Parser\Stuff.cs" />
+    <Compile Include="Common\Text\HTML\Parser\Style.cs" />
+    <Compile Include="Common\Text\HTML\Parser\StyleParser.cs" />
+    <Compile Include="Common\Text\HTML\Parser\Tag.cs" />
+    <Compile Include="Common\Text\HTML\Parser\TagEnder.cs" />
+    <Compile Include="Common\Text\HTML\Parser\TagModifier.cs" />
+    <Compile Include="Common\Text\HTML\Parser\TagParser.cs" />
     <Compile Include="Common\Text\MonoRTF\Charcode.cs" />
     <Compile Include="Common\Text\MonoRTF\Charset.cs" />
     <Compile Include="Common\Text\MonoRTF\CharsetFlags.cs" />
@@ -192,7 +203,7 @@
     <Compile Include="Graphs\GraphMapperOneTwo.cs" />
     <Compile Include="Graphs\GraphModelAdapter.cs" />
     <Compile Include="Graphs\GraphPair.cs" />
-    <Compile Include="Graphs\GraphUtils.cs" />
+    <Compile Include="Graphs\GraphExtensions.cs" />
     <Compile Include="Graphs\GraphView.cs" />
     <Compile Include="Graphs\IEdge.cs" />
     <Compile Include="Graphs\IGraph.cs" />
@@ -219,7 +230,7 @@
     <Compile Include="Limada\Model\Thing.cs" />
     <Compile Include="Limada\Model\ThingFactory.cs" />
     <Compile Include="Limada\Model\ThingGraph.cs" />
-    <Compile Include="Limada\Model\ThingGraphUtils.cs" />
+    <Compile Include="Limada\Model\ThingGraphExtensions.cs" />
     <Compile Include="Limada\Model\ThingIdSerializer.cs" />
     <Compile Include="Limada\Model\ThingSerializer.cs" />
     <Compile Include="Limada\Model\ThingSerializerBase.cs" />
@@ -274,11 +285,27 @@
     <MonoDevelop>
       <Properties InternalTargetFrameworkVersion="3.5" />
     </MonoDevelop>
+    <VisualStudio />
   </ProjectExtensions>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -292,4 +319,5 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
 </Project>

@@ -8,6 +8,9 @@ using System.ComponentModel;
 namespace Limaki.Presenter.UI {
     public abstract class MoveResizeRendererBase : ISelectionRenderer {
         
+        public MoveResizeRendererBase() {
+            Priority = ActionPriorities.ToolsLayerPriority;
+        }
         [DefaultValue(ActionPriorities.ToolsLayerPriority)]
         public int Priority { get; set; }
 

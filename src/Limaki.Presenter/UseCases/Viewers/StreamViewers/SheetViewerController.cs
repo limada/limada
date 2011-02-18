@@ -22,52 +22,53 @@ using Limaki.UseCases.Viewers;
 using Limaki.Presenter.Widgets;
 using Limaki.Widgets;
 using Id = System.Int64;
+using Limaki.Drawing;
 
 namespace Limaki.UseCases.Viewers.StreamViewers {
     public class SheetViewerController : StreamViewerController {
 
         protected WidgetDisplay _sheetControl = null;
-        public WidgetDisplay sheetControl {
+        public WidgetDisplay SheetControl {
             get { return _sheetControl; }
             set {
                 if (_sheetControl != value && value != null) {
-                    this.CurrentThingId = value.SceneId;
+                    this.CurrentThingId = value.DataId;
                     _sheetControl = value;
                     OnAttach(_sheetControl);
                 }
             }
         }
-        public ISheetManager sheetManager = null;
+        public ISheetManager SheetManager { get;set;}
 
         public override object Control {
-            get { return sheetControl; }
+            get { return SheetControl; }
         }
 
         public override bool CanView(long streamType) {
             return streamType == StreamTypes.LimadaSheet;
         }
 
-        public override void SetContent(StreamInfo<Stream> info) {
-            if (sheetControl == null) {
+        public override void SetContent(StreamInfo<Stream> streamInfo) {
+            if (SheetControl == null) {
                 throw new ArgumentException("sheetControl must not be null");
             }
 
-            sheetControl.Execute();
+            SheetControl.Execute();
 
-            var sheetinfo = sheetManager
-                .LoadSheet(sheetControl.Data, sheetControl.Layout, info);
+            var sheetinfo = SheetManager.LoadFromStreamInfo(streamInfo, SheetControl.Data, SheetControl.Layout);
 
-            sheetControl.DeviceRenderer.Render ();
+            SheetControl.DeviceRenderer.Render ();
 
-            sheetControl.Execute();
-            sheetControl.Text = sheetinfo.Name;
-            sheetControl.SceneId = (Id)info.Source;
+            SheetControl.Execute();
+            SheetControl.Text = sheetinfo.Name;
+            SheetControl.DataId = sheetinfo.Id;
+            sheetinfo.State.CopyTo(SheetControl.Data.State);
 
-            Registry.ApplyProperties<MarkerContextProcessor, Scene>(sheetControl.Data);
+            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IWidget, IEdgeWidget>>(SheetControl.Data);
 
             if (IsStreamOwner) {
-                info.Data.Close();
-                info.Data = null;
+                streamInfo.Data.Close();
+                streamInfo.Data = null;
             }
 
         }
@@ -76,11 +77,8 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
 
         public override bool CanSave() {return false;}
 
-
-
         public override void Dispose() {
-            sheetControl = null;
-            sheetManager = null;
+            SheetControl = null;
         }
     }
 }

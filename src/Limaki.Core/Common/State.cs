@@ -6,7 +6,7 @@ namespace Limaki.Common {
             SetDirty = () => { this.Dirty = true; };
         }
 
-        bool _creating = true;
+        bool _creating = false;
         /// <summary>
         /// just created 
         /// </summary>
@@ -78,13 +78,16 @@ namespace Limaki.Common {
         }
 
         #region ICloneable Member
-
+        public void CopyTo(State target)
+        {
+            target.Clean = this.Clean;
+            target.Creating = this.Creating;
+            target.Dirty = this.Dirty;
+            target.Hollow = this.Hollow;
+        }
         public object Clone() {
             State result = new State();
-            result.Clean = this.Clean;
-            result.Creating = this.Creating;
-            result.Dirty = this.Dirty;
-            result.Hollow = this.Hollow;
+            CopyTo(result);
             return result;
         }
 

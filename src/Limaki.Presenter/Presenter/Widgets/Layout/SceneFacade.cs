@@ -15,14 +15,14 @@
 
 using System;
 using System.Collections.Generic;
+using Limaki.Common;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Common;
-using Limaki.Widgets;
-using Limaki.Presenter.UI;
 using Limaki.Presenter.Layout;
+using Limaki.Presenter.UI;
+using Limaki.Widgets;
 
 
 namespace Limaki.Presenter.Widgets.Layout {
@@ -32,16 +32,16 @@ namespace Limaki.Presenter.Widgets.Layout {
     /// where scene.graph is a GraphView
     /// </summary>
     public class SceneFacade {
-        public SceneFacade(Get<Scene> sceneHandler, IGraphLayout<IWidget, IEdgeWidget> layout) {
+        public SceneFacade(Get<IGraphScene<IWidget, IEdgeWidget>> sceneHandler, IGraphLayout<IWidget, IEdgeWidget> layout) {
             this.SceneHandler = sceneHandler;
             this.Layout = layout;
         }
 
-        Get<Scene> SceneHandler = null;
-        Scene _scene = null;
-        public virtual Scene Scene {
+        Get<IGraphScene<IWidget, IEdgeWidget>> SceneHandler = null;
+        IGraphScene<IWidget, IEdgeWidget> _scene = null;
+        public virtual IGraphScene<IWidget, IEdgeWidget> Scene {
             get {
-                Scene scene = _scene;
+                var scene = _scene;
 
                 if (SceneHandler != null)
                     scene = SceneHandler();
@@ -62,7 +62,7 @@ namespace Limaki.Presenter.Widgets.Layout {
         public IGraph<IWidget, IEdgeWidget> Data {
             get {
                 var data = _data;
-                Scene scene = this.Scene;
+                var scene = this.Scene;
                 if (scene.Graph is GraphView<IWidget, IEdgeWidget>) {
                     _data = ((GraphView<IWidget, IEdgeWidget>)scene.Graph).Two;
                 } else {
@@ -161,7 +161,7 @@ namespace Limaki.Presenter.Widgets.Layout {
         /// <param name="item"></param>
         /// <param name="pt"></param>
         public virtual void Add(IWidget item, PointI pt) {
-            Scene scene = this.Scene;
+            var scene = this.Scene;
             if (scene == null || item == null)
                 return;
             ApplyFilter();
@@ -186,7 +186,7 @@ namespace Limaki.Presenter.Widgets.Layout {
         /// <param name="item"></param>
         /// <param name="pt"></param>
         public virtual void Add(IEnumerable<IWidget> elements, bool justify, bool arrange) {
-            Scene scene = this.Scene;
+            var scene = this.Scene;
             ApplyFilter();
             IWidget curr = scene.Focused;
 
@@ -207,7 +207,7 @@ namespace Limaki.Presenter.Widgets.Layout {
         }
 
         public virtual void Expand(bool deep) {
-            Scene scene = this.Scene;
+            var scene = this.Scene;
             if (scene.Selected.Count > 0) {
                 ApplyFilter();
                 

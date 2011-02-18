@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using Limaki.Common.Collections;
+using System.Linq;
 
 namespace Limaki.Graphs {
     public class FilteredGraph<TItem, TEdge> : GraphBase<TItem, TEdge>
@@ -177,6 +178,10 @@ namespace Limaki.Graphs {
         public override void OnDataChanged(TItem item) {
             base.OnDataChanged(item);
             Source.OnDataChanged (item);
+        }
+
+        public override IEnumerable<TItem> Where(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
+            return Source.Where(predicate).Where(e => ItemFilter(e));
         }
     }
 }

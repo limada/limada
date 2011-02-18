@@ -38,7 +38,7 @@ namespace Limaki
 		public static string UriToFileName(Uri uri){
 			if(uri.IsFile){
 				//return uri.AbsoluteUri.Remove(0,6);
-			    return uri.AbsolutePath;
+			    return Uri.UnescapeDataString(uri.AbsolutePath);
 			}
 			return null;
 		}

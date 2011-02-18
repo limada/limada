@@ -33,9 +33,10 @@ using Limaki.Tests.Presenter.GDI;
 using Limaki.Tests.Presenter.Winform;
 using Limaki.Tests.Widget;
 #if ! MONO
-//using Limaki.WCF.Data;
+using Limaki.WCF.Data;
 #endif
 using Limaki.Widgets;
+using Limada.Schemata;
 
 
 namespace Limaki.Tests.UseCases {
@@ -46,7 +47,7 @@ namespace Limaki.Tests.UseCases {
             
             Get<BenchmarkOneTests> displayTest = () => {
                 var test = new BenchmarkOneTests();
-                var testinst = new WinformDisplayTestIntrumenter<IGraphScene<IWidget, IEdgeWidget>>();
+                var testinst = new WinformDisplayTestComposer<IGraphScene<IWidget, IEdgeWidget>>();
 
                 testinst.Factory = () => new WinformWidgetDisplay().Display;
                 testinst.Factor(test);
@@ -83,6 +84,9 @@ namespace Limaki.Tests.UseCases {
             }),
             new ToolStripMenuItem("WCF", null, (s, e) =>{
                 this.WCFServiceTest (useCase);
+            }),
+            new ToolStripMenuItem("SchemaFilter off", null, (s, e) =>{
+                this.NoSchemaThingGraph (useCase);
             }),
             new ToolStripMenuItem("current problem", null, (s, e) =>{
                 this.currentProblem (useCase);
@@ -138,19 +142,19 @@ namespace Limaki.Tests.UseCases {
 
         public void WCFServiceTest(UseCase sender) {
 #if ! MONO
-            //DataBaseInfo info = new DataBaseInfo();
-            //info.Server = "http://localhost";
-            //info.Port = 8000;
-            //info.Path = "Limada";
-            //info.Name = "ThingGraphService";
-            //var handler = new SceneProvider();
-            //var provider = new WCFThingGraphClientProvider();
+            DataBaseInfo info = new DataBaseInfo();
+            info.Server = "http://localhost";
+            info.Port = 8000;
+            info.Path = "Limada";
+            info.Name = "ThingGraphService";
+            var handler = new SceneProvider();
+            var provider = new WCFThingGraphClientProvider();
 
-            //handler.Provider = provider;
-            //handler.DataBound = sender.FileManager.DataBound;
-            //if (handler.Open(info)) {
-            //    sender.DataPostProcess (provider.host.baseAddress.AbsoluteUri);
-            //}
+            handler.Provider = provider;
+            handler.DataBound = sender.FileManager.DataBound;
+            if (handler.Open(info)) {
+                sender.DataPostProcess (provider.host.baseAddress.AbsoluteUri);
+            }
 #endif
         }
 
@@ -166,6 +170,15 @@ namespace Limaki.Tests.UseCases {
                     
             }
             display.EventControler.Add(renderAction);
+        }
+        public void NoSchemaThingGraph(UseCase useCase) {
+            var display = useCase.GetCurrentDisplay();
+            var thingGraph = display.Data.Graph.ThingGraph();
+            var schemaGraph = thingGraph as SchemaThingGraph;
+            if(schemaGraph!=null) {
+                schemaGraph.EdgeFilter = e=>true;
+                schemaGraph.ItemFilter = e => true;
+            }
         }
 
         public void SetTests(UseCase useCase) {
@@ -200,15 +213,34 @@ namespace Limaki.Tests.UseCases {
                 //var maint = new WidgetThingGraphTest();
                 //maint.ExpandAndSaveLinks(sender.GetCurrentDisplay().Data.Graph);
 
-                var test = new SchemaGraphPerformanceTest();
-                test.WriteDetail += testMessage;
-                test.WriteSummary += testMessage;
-                test.Setup();
-                test.ReadDescriptionTest();
-                test.TearDown();
-                test.WriteDetail -= testMessage;
-                test.WriteSummary -= testMessage;
+                //var test = new SchemaGraphPerformanceTest();
+                //test.WriteDetail += testMessage;
+                //test.WriteSummary += testMessage;
+                //test.Setup();
+                //test.ReadDescriptionTest();
+                //test.TearDown();
+                //test.WriteDetail -= testMessage;
+                //test.WriteSummary -= testMessage;
 
+                var test = new WinformWidgetDisplayTest<WidgetDisplayTest1>();
+                test.WriteDetail += testMessage;
+
+                test.Setup();
+
+                var form = (test.Test.TestForm as Form);
+                form.WindowState = FormWindowState.Normal;
+
+                var button = new Button() { Text = "Test", Dock = DockStyle.Bottom };
+                form.Controls.Add(button);
+
+                button.Click += (s, e) => {
+                    test.WriteSummary += testMessage;
+                    test.Test.SelectorVersusMulitSelectTest();
+
+                    test.WriteDetail -= testMessage;
+                    test.WriteSummary -= testMessage;
+                };
+                test.TearDown();
             } catch (Exception e) {
                 MessageBox.Show(e.Message);
             } finally {

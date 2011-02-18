@@ -73,7 +73,7 @@ namespace Limada.Tests.View {
         }
 
         public void ExpandAndSaveLinks(IGraph<IWidget, IEdgeWidget> graph) {
-            IThingGraph thingGraph = WidgetThingGraphExtension.GetThingGraph (graph);
+            IThingGraph thingGraph = graph.ThingGraph();
             if (thingGraph is SchemaThingGraph) {
                 thingGraph = ((SchemaThingGraph)thingGraph).Source as IThingGraph;
             }

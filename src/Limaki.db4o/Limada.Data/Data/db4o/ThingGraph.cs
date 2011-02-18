@@ -30,7 +30,8 @@ using Db4objects.Db4o.Foundation;
 using Limaki.Common.Collections;
 using Db4objects.Db4o.Ext;
 using Limaki.Model.Streams;
-
+using Db4objects.Db4o.Linq;
+using System.Linq;
 
 namespace Limada.Data.db4o {
     public class ThingGraph : Graph<IThing, ILink>, IThingGraph {
@@ -71,7 +72,9 @@ namespace Limada.Data.db4o {
                  Reflector.Implements(type, typeof(IRealData<Id>)) ) {
 
                 clazz.ObjectField("_id").Indexed(true);
-               
+                var writeDate = clazz.ObjectField("_writeDate");
+                if(writeDate!=null)
+                    writeDate.Rename("_changeDate");
                 // the following makes errors on closing (sometimes): see Gateway.Close(); this.Flush();
                 // Configuration.Add(new UniqueFieldValueConstraint(type, "_id"));
 
@@ -96,9 +99,9 @@ namespace Limada.Data.db4o {
         protected override void ConfigureSession(IObjectContainer session) {
             base.ConfigureSession(session);
 
-            IEventRegistry registry = EventRegistryFactory.ForObjectContainer(session);
-            registry.Activated += new ObjectEventHandler(ActivateThing);
-            registry.Created += new ObjectEventHandler(ThingCreated);
+            var registry = EventRegistryFactory.ForObjectContainer(session);
+            registry.Activated += new EventHandler<ObjectInfoEventArgs>(ActivateThing);
+            registry.Created += new EventHandler<ObjectInfoEventArgs>(ThingCreated);
         }
 
   
@@ -127,11 +130,11 @@ namespace Limada.Data.db4o {
             }
         }
 
-        protected virtual void ThingCreated(object sender, ObjectEventArgs args) {
+        protected virtual void ThingCreated(object sender, ObjectInfoEventArgs args) {
             CheckProxy (args.Object);
         }
 
-        protected virtual void ActivateThing(object sender, ObjectEventArgs args) {
+        protected virtual void ActivateThing(object sender, ObjectInfoEventArgs args) {
             var thing = args.Object as IThing;
             if (thing != null) {
                 thing.State.Clean = true;
@@ -451,5 +454,22 @@ namespace Limada.Data.db4o {
             }
             set { _dataContainer = value; }
         }
+
+        #region IThingGraph Member
+
+
+        public IEnumerable<T> Where<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate) where T : IThing {
+            return Session.AsQueryable<T>().Where(predicate);
+        }
+
+        #endregion
+
+        #region IEnumerable Member
+
+        public new System.Collections.IEnumerator GetEnumerator() {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

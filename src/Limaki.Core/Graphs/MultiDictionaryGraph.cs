@@ -15,6 +15,9 @@
 
 using System.Collections.Generic;
 using Limaki.Common.Collections;
+using System.Linq;
+using System.Linq.Expressions;
+using System;
 
 namespace Limaki.Graphs {
     /// <summary>
@@ -235,7 +238,27 @@ namespace Limaki.Graphs {
 
         #endregion
 
- 
+        #region Linqishing
+
+        //TODO: make a expression-cache here:
+
+        public override  IEnumerable<TItem> Where(Expression<Func<TItem, bool>> predicate) {
+            var clause = predicate.Compile();
+            var result = items.Keys.Where(clause);
+            if (EdgeIsItemClazz)
+                result.Concat(edges.Cast<TItem>().Where(clause));
+            return result;
+
+            //foreach (var item in items.Keys.Where(clause))
+            //    yield return item;
+
+            //if(EdgeIsItemClazz)
+            //    foreach (var item in edges.Cast<TItem>().Where(clause))
+            //        yield return item;
+        }
+
+        #endregion 
+
     }
 
 

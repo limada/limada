@@ -34,8 +34,7 @@ namespace Limaki.Presenter.Widgets {
             set { base.Data = value; }
         }
 
-        public Id SceneId { get; set; }
-        public string Text { get; set; }
+        
 
         public event EventHandler<SceneEventArgs> SceneFocusChanged = null;
 

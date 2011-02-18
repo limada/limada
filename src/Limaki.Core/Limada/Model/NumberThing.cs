@@ -47,7 +47,7 @@ namespace Limada.Model {
         }
 
         public NumberThing(Id id, long data): base(id) {
-            this.Data = data;
+            this._data = data;
         }
 
         int _numberType = (int)NumberType.Long;
@@ -94,30 +94,31 @@ namespace Limada.Model {
             }
             set {
                 try {
-                    long Data = 0;
+                    long data = 0;
                     Type type = value.GetType();
                     if (type == typeof(long)) {
-                        Data = (long)value;
+                        data = (long)value;
                         NumberType = NumberType.Long;
                     } else if (type == typeof(DateTime)) {
-                        Data = LongConverters.DateTimeToLong((DateTime)value);
+                        data = LongConverters.DateTimeToLong((DateTime)value);
                         NumberType = NumberType.DateTime;
                     } else if (type == typeof(int)) {
-                        Data = LongConverters.IntToLong((int)value);
+                        data = LongConverters.IntToLong((int)value);
                         NumberType = NumberType.Integer;
                     } else if (type == typeof(double) ) {
-                        Data = LongConverters.DoubleToLong((double)value);
+                        data = LongConverters.DoubleToLong((double)value);
                         NumberType = NumberType.Double;
                     } else if (type == typeof(float)) {
                         double d = (float)value;
-                        Data = LongConverters.DoubleToLong(d);
+                        data = LongConverters.DoubleToLong(d);
                         NumberType = NumberType.Double;
                     } else if (type == typeof(Quad16)) {
-                        Data = LongConverters.Quad16ToLong((Quad16)value);
+                        data = LongConverters.Quad16ToLong((Quad16)value);
                         NumberType = NumberType.Quad16;
                     } else {
                         NumberType = NumberType.Special;
                     }
+                    this.Data = data;
 
                 } catch (Exception e) {
                     throw new NotSupportedException(value.GetType() + " is not supported by NumberNode", e);

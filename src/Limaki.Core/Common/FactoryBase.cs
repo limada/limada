@@ -18,7 +18,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 namespace Limaki.Common {
-    public abstract class FactoryBase : IFactory {
+    public class FactoryBase : IFactory {
         private Dictionary<Type, Type> _clazzes = null;
         protected Dictionary<Type, Type> Clazzes {
             get {
@@ -30,6 +30,16 @@ namespace Limaki.Common {
             }
         }
 
+        private IDictionary<Type, Delegate> _creators = null;
+        protected IDictionary<Type, Delegate> Creators {
+            get {
+                if (_creators == null) {
+                    _creators = new Dictionary<Type, Delegate>();
+                    InstrumentClazzes();
+                }
+                return _creators;
+            }
+        }
         public IEnumerable<Type> KnownClasses {
             get { return Clazzes.Values.Distinct<Type>(); }
         }
@@ -62,9 +72,17 @@ namespace Limaki.Common {
 
         public virtual object Create(Type type) {
             object result = null;
-            Type clazzType = Clazz(type);
-            if (clazzType.IsClass) {
-                result = Activator.CreateInstance(clazzType);
+            Type clazzType = null;
+
+            if (Clazzes.TryGetValue(type, out clazzType)) {
+                if (clazzType.IsClass) {
+                    result = Activator.CreateInstance(clazzType);
+                }
+            } else {
+                Delegate d = null;
+                if (Creators.TryGetValue(type, out d)) {
+                    return d.DynamicInvoke(null);
+                }
             }
             return result;
         }
@@ -80,9 +98,20 @@ namespace Limaki.Common {
         public virtual T Create<T>() {
             T result = default(T);
             Type type = typeof(T);
-            Type clazzType = Clazz<T>();
-            if (clazzType.IsClass) {
-                result = (T)Activator.CreateInstance(clazzType);
+            var clazzType = Clazz<T>();
+            if (clazzType != null) {
+                if (clazzType.IsClass) {
+                    result = (T)Activator.CreateInstance(clazzType);
+                }
+            } else {
+                Func<T> func = null;
+                Delegate d = null;
+                if (Creators.TryGetValue(typeof(T), out d)) {
+                    func = d as Func<T>;
+                    if (func != null) {
+                        return func();
+                    }
+                }
             }
             return result;
         }
@@ -111,6 +140,15 @@ namespace Limaki.Common {
             Clazzes[typeof(T1)] = typeof(T2);
         }
 
-        protected abstract void InstrumentClazzes();
+        protected bool instrumented = false;
+        protected virtual void InstrumentClazzes() {
+            instrumented = true;
+        }
+
+        public virtual void Add<T>(Func<T> creator) {
+            Creators[typeof(T)] = creator;
+        }
+
+
     }
 }

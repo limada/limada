@@ -23,6 +23,17 @@ namespace Limaki.Presenter.Display {
     public class GraphSceneDisplay<TItem, TEdge> : Display<IGraphScene<TItem, TEdge>>, IGraphSceneDisplay<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
+        public override State State {
+            get {
+                if (Data != null)
+                    return Data.State;
+                else {
+                    base.State.Hollow = true;
+                    return base.State;
+                }
+            }
+        }
+
         public virtual IGraphModelFactory<TItem, TEdge> ModelFactory { get; set; }
 
         public override IStyleSheet StyleSheet {

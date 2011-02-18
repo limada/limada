@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Id = System.Int64;
+using Limaki.Common;
 
 namespace Limada.Model {
     public class ThingSerializer : ThingSerializerBase {
@@ -41,7 +42,7 @@ namespace Limada.Model {
 
         public virtual XmlObjectSerializer Serializer {
             get {
-                var factory = new ThingFactory();
+                var factory = Registry.Factory.Create<IThingFactory>();
                 var knownClasses = factory.KnownClasses.ToList();
                 knownClasses.Add(typeof(RealData<Byte[]>));
                 return new DataContractSerializer(factory.Clazz<IThing>(), knownClasses);

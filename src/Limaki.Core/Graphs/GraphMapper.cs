@@ -173,7 +173,9 @@ namespace Limaki.Graphs {
 
         public virtual void Clear() {
             OneTwoMapper.Dict = null;
+            OneTwoMapper.Done = null;
             TwoOneMapper.Dict = null;
+            TwoOneMapper.Done = null;
         }
 
         #endregion

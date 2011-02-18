@@ -25,5 +25,6 @@ namespace Limaki.Presenter.UI {
         void Add<T> ( T value, ref T action ) where T : class, IAction;
         T GetAction<T>();
         IDictionary<Type, IAction> Actions { get;}
+        bool UserEventsDisabled { get; set; }
     }
 }

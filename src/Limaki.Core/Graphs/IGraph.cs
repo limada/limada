@@ -54,6 +54,9 @@ namespace Limaki.Graphs {
         /// <returns></returns>
         IEnumerable<TEdge> Edges(IEnumerable<TItem> source);
 
+        bool RootIsEdge(TEdge curr);
+        bool LeafIsEdge(TEdge curr);
+
         /// <summary>
         /// returns a KVP of all Items which have Edges
         /// if an item has no edges, it will NOT be listed
@@ -87,9 +90,15 @@ namespace Limaki.Graphs {
         IEnumerable<TEdge> DepthFirstTwig(TItem source);
 
 
-        bool RootIsEdge ( TEdge curr );
-        bool LeafIsEdge ( TEdge curr );
-        
+        /// <summary>
+        /// an enumeration containing
+        /// - the source
+        /// - Vein(leaf) / Vein(root) if leaf / root is TEdge
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        IEnumerable<TEdge> Vein(TEdge source);
+
         /// <summary>
         /// each Vein(edge) of Edges(Source) 
         /// </summary>
@@ -105,14 +114,7 @@ namespace Limaki.Graphs {
         /// <returns></returns>
         IEnumerable<TEdge> Fork(TItem source, Func<TItem,bool> pred);
 
-        /// <summary>
-        /// an enumeration containing
-        /// - the source
-        /// - Vein(leaf) / Vein(root) if leaf / root is TEdge
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        IEnumerable<TEdge> Vein(TEdge source);
+      
 
 
 
@@ -168,5 +170,7 @@ namespace Limaki.Graphs {
         void OnGraphChanged( TItem item, GraphChangeType changeType );
 
         #endregion
+
+        IEnumerable<TItem> Where(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate);
     }
 }

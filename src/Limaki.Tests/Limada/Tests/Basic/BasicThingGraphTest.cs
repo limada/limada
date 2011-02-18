@@ -20,6 +20,7 @@ using Limada.Model;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Basic;
 using NUnit.Framework;
+using Limaki.Common;
 
 namespace Limada.Tests.Basic {
     /// <summary>
@@ -79,7 +80,9 @@ namespace Limada.Tests.Basic {
     }
 
     public class BasicThingDataFactory : BasicTestDataFactory<IThing, ILink> {
-        protected IThingFactory Factory = new ThingFactory ();
+        private IThingFactory _factory = null;
+        public IThingFactory Factory { get { return _factory ?? (_factory = Registry.Factory.Create<IThingFactory>()); } }
+
         private IThing marker = null;
         protected override void CreateItems() {
             marker = Factory.CreateItem("Marker");

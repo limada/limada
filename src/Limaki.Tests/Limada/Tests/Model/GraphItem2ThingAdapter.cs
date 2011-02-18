@@ -19,10 +19,12 @@ using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using System;
+using Limaki.Common;
 
 namespace Limada.Tests.Model {
    public class GraphItem2ThingAdapter : GraphModelAdapter<IGraphItem, IThing, IGraphEdge, ILink> {
-       protected IThingFactory Factory = new ThingFactory();
+       private IThingFactory _factory = null;
+       public IThingFactory Factory { get { return _factory ?? (_factory = Registry.Factory.Create<IThingFactory>()); } }
  
        public override IGraphItem CreateItemOne(IGraph<IThing, ILink> sender,
             IGraph<IGraphItem, IGraphEdge> target, IThing item) {

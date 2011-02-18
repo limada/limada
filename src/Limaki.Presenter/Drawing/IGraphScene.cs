@@ -30,10 +30,13 @@ namespace Limaki.Drawing {
         IShape Shape { get; }
         
         ISpatialIndex<TItem> SpatialIndex { get; }
+        void ClearSpatialIndex();
 
         IEnumerable<TItem> Elements {get;}
         IEnumerable<TItem> ElementsIn(RectangleS clipBounds);
         IEnumerable<TItem> ElementsIn(RectangleS clipBounds, ZOrder order);
+
+        State State { get; }
 
         void Add(TItem widget);
         bool Remove(TItem widget);
@@ -47,6 +50,9 @@ namespace Limaki.Drawing {
         TItem Hit ( PointI p, int hitSize );
         TItem HitBorder ( PointI p, int hitSize );
         IShape ItemShape ( TItem item );
+
+        void Clear();
+        void ClearView();
     }
 
     public interface ISpatialIndex<IWidget> {

@@ -1,4 +1,4 @@
-﻿namespace Limaki.Tests.Sandbox {
+﻿namespace Limaki.Tests.Tests.Sandbox.HTML {
     public class HtmlTestData {
         public string Commented {
             get {
@@ -10,6 +10,215 @@
             }
         }
 
+
+
+
+        public string HTML19{
+            get {
+                return @"
+<html>
+<meta name=""collection"" content=""api"">
+    <style>
+        p.Flieatext {
+          FirstLineIndent:8.6;
+		  Alignment:justify;
+          SpaceBelow:0.0;
+          SpaceAbove:0.0;
+          RightIndent:0.0;
+          LeftIndent:0.0;
+        }
+        p.InhaltaTa {
+          FirstLineIndent:0.0;
+          Alignment:left;
+          SpaceBelow:3.0;
+          SpaceAbove:4.0;
+          RightIndent:0.0;
+          LeftIndent:0.0;
+        }
+        p.Titelaa {
+          FirstLineIndent:0.0;
+          Alignment:left;
+          SpaceBelow:6.0;
+          SpaceAbove:4.0;
+          RightIndent:0.0;
+          LeftIndent:0.0;
+        }
+        p.Titelaa {
+          FirstLineIndent:0.0;
+          Alignment:left;
+          SpaceBelow:5.0;
+          SpaceAbove:3.0;
+          RightIndent:0.0;
+          LeftIndent:0.0;
+        }
+        p.Quelle {
+          FirstLineIndent:0.0;
+          Alignment:left;
+          SpaceBelow:0.0;
+          SpaceAbove:0.0;
+          RightIndent:0.0;
+          LeftIndent:0.0;
+        }
+        p.Titelaa {
+          FirstLineIndent:0.0;
+          Alignment:left;
+          SpaceBelow:5.0;
+          SpaceAbove:3.0;
+          RightIndent:0.0;
+          LeftIndent:0.0;
+        }
+        p.Titelaa {
+          FirstLineIndent:0.0;
+          Alignment:left;
+          SpaceBelow:9.5;
+          SpaceAbove:7.0;
+          RightIndent:0.0;
+          LeftIndent:0.0;
+        }
+        p.aNoaparagraphastylea {
+          FirstLineIndent:0.0;
+          Alignment:left;
+          SpaceBelow:0.0;
+          SpaceAbove:0.0;
+          RightIndent:0.0;
+          LeftIndent:0.0;
+        }
+        p.Fuanotenzeichen {
+          superscript:super;
+          italic:;
+          bold:normal;
+          underline:;
+        }
+        p.Flieatextakursiv {
+          FirstLineIndent:8.6;
+          Alignment:justify;
+          SpaceBelow:0.0;
+          SpaceAbove:0.0;
+          RightIndent:0.0;
+          LeftIndent:0.0;
+        }
+    </style>
+</html>
+";
+			}
+		}
+
+
+        public string HTML4{
+            get{
+                return @"<html>
+	<body>
+		<p class='noclass' align='center'>
+			<b>
+				Good Morning
+				<br/>
+				<!-- this is a comment-->
+				<i>hey, < how > does'it
+					<a href=bla>
+						Here the HREF-Text
+					</a>
+			</b>
+			<b>
+			</b>
+		</p>
+	</body>
+</html>";
+            }
+        }
+
+      
+
+        public string HTML2{
+            get{
+                return @"
+<!DOCTYPE html PUBLIC \""-//W3C//DTD XHTML 1.0 Strict//EN\"" 
+
+\""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"">\r\n<html>\r\n  <head>\r\n    <style>\r\n      <!--\r\n     
+
+   p.Flieatextakursiv {\r\n          RightIndent:0.0;\r\n          LeftIndent:0.0;\r\n          
+
+FirstLineIndent:8.6;\r\n          Alignment:justify;\r\n          SpaceBelow:0.0;\r\n          
+
+SpaceAbove:0.0;\r\n        }\r\n        p.InhaltaTa {\r\n          RightIndent:0.0;\r\n          
+
+LeftIndent:0.0;\r\n          FirstLineIndent:0.0;\r\n          Alignment:left;\r\n          SpaceBelow:5.0;\r\n   
+
+       SpaceAbove:3.0;\r\n        }\r\n        p.Titelaa {\r\n          RightIndent:0.0;\r\n          
+
+LeftIndent:0.0;\r\n          FirstLineIndent:0.0;\r\n          Alignment:left;\r\n          SpaceBelow:6.0;\r\n   
+
+       SpaceAbove:4.0;\r\n        }\r\n        p.Titelaa {\r\n          RightIndent:0.0;\r\n          
+
+LeftIndent:0.0;\r\n          FirstLineIndent:0.0;\r\n          Alignment:left;\r\n          SpaceBelow:5.0;\r\n   
+
+       SpaceAbove:3.0;\r\n        }\r\n        p.InhaltaTa {\r\n          RightIndent:0.0;\r\n          
+
+LeftIndent:0.0;\r\n          FirstLineIndent:0.0;\r\n          Alignment:left;\r\n          SpaceBelow:3.0;\r\n   
+
+       SpaceAbove:4.0;\r\n        }\r\n        p.Titelaa {\r\n          RightIndent:0.0;\r\n          
+
+LeftIndent:0.0;\r\n          FirstLineIndent:0.0;\r\n          Alignment:left;\r\n          SpaceBelow:5.0;\r\n   
+
+       SpaceAbove:3.0;\r\n        }\r\n        p.Titelaa {\r\n          RightIndent:0.0;\r\n          
+
+LeftIndent:0.0;\r\n          FirstLineIndent:0.0;\r\n          Alignment:left;\r\n          SpaceBelow:9.5;\r\n   
+
+       SpaceAbove:7.0;\r\n        }\r\n        p.Quelle {\r\n          RightIndent:0.0;\r\n          
+
+LeftIndent:0.0;\r\n          FirstLineIndent:0.0;\r\n          Alignment:left;\r\n          SpaceBelow:0.0;\r\n   
+
+       SpaceAbove:0.0;\r\n        }\r\n        p.Fuanotenzeichen {\r\n          bold:normal;\r\n          
+
+superscript:super;\r\n          underline:;\r\n          italic:;\r\n        }\r\n        p.aNoaparagraphastylea 
+
+{\r\n          RightIndent:0.0;\r\n          LeftIndent:0.0;\r\n          FirstLineIndent:0.0;\r\n          
+
+Alignment:left;\r\n          SpaceBelow:0.0;\r\n          SpaceAbove:0.0;\r\n        }\r\n        p.Flieatext 
+
+{\r\n          RightIndent:0.0;\r\n          LeftIndent:0.0;\r\n          FirstLineIndent:8.6;\r\n          
+
+Alignment:justify;\r\n          SpaceBelow:0.0;\r\n          SpaceAbove:0.0;\r\n        }\r\n      -->\r\n    
+
+</style>\r\n  </head>\r\n  <body>\r\n\r\n    <p class=Quelle align=nowhere>\r\n        
+
+<i>http://download.oracle.com/javase/1.4.2/docs/api/java/lang/String.html/i<i>\r\n    </i></i>/p>\r\n    <p 
+
+class=InhaltaTa>\r\n        <b>Class String</b>\r\n    </p>\r\n    <p class=Flieatextakursiv>\r\n        
+
+<i>public final class String</i>\r\n        <i>1</i>\r\n\r\n        <i>The String class represents character 
+
+strings. All string literals in Java programs, such as \""abc\"", are implemented as instances of this class. 
+
+</i>\r\n\r\n    </p>\r\n    <p class=Titelaa>\r\n      <span style=\""color: #000000; font-size: 11pt; 
+
+font-family: Times New Roman\"">\r\n        <b>Constructor Summary</b>\r\n        <br/>\r\n      </span>\r\n    
+
+</p>\r\n    <p class=Flieatext>\r\n\r\n      <span style=\""color: #000000; font-size: 9pt; font-family: 
+
+ClassGarmnd BT\"">\r\nConstructs a new String by decoding the specified array of bytes using the platform's 
+
+default charset. The length of the new String is a function of the charset, and hence may not be equal to the 
+
+length of the byte array.\r\n\r\nThe behavior of this constructor when the given bytes are not valid in the 
+
+default charset is unspecified. The CharsetDecoder class should be used when more control over the decoding 
+
+process is required. \r\n      </span>\r\n\r\n    </p>\r\n    <p class=Flieatext>\r\n      <span style=\""color: 
+
+#000000; font-size: 9pt; font-family: ClassGarmnd BT\"">\r\nThe Java language provides special support for the 
+
+string concatenation operator ( + ), and for conversion of other objects to strings. String concatenation is 
+
+implemented through the StringBuffer class and its append method. String conversions are implemented through the 
+
+method toString, defined by Object and inherited by all classes in Java. For additional information on string 
+
+concatenation and conversion, see Gosling, Joy, and Steele, The Java Language Specification.\r\n      
+
+</span>\r\n\r\n    </p>\r\n\r\n\r\n  </body>\r\n</html>
+";
+            }
+        }
         public string HTML1 {
             get {
                 return @"

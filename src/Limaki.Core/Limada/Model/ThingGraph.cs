@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using Limaki.Common.Collections;
 using Limaki.Model.Streams;
 using Limaki.Data;
+using System.Linq;
+using Limaki.Common;
 
 namespace Limada.Model {
     public class ThingGraph:Graph<IThing,ILink>,IThingGraph {
@@ -224,6 +226,27 @@ namespace Limada.Model {
 
         #endregion
 
+
+        #region Linqish
+
+
+        public IEnumerable<T> Where<T>(System.Linq.Expressions.Expression<System.Func<T, bool>> predicate) where T : IThing {
+            if (typeof(T).GetInterface(typeof(ILink).FullName) != null)
+                return edges.OfType<T>().Where(predicate.Compile());
+            else {
+                return items.OfType<T>().Where(predicate.Compile());
+            }
+        }
+
+        #endregion
+
+        #region IEnumerable Member
+
+        public new System.Collections.IEnumerator GetEnumerator() {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
     }
 
     public class DataContainer:IDataContainer<Id>{

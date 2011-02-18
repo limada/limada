@@ -45,7 +45,7 @@ namespace Limaki.Tests.Graph.Model {
         public virtual void MakeEdgeStrings(IGraph<IGraphItem, IGraphEdge> Graph) {
             foreach(IGraphEdge edge in Graph.Edges()) {
                 if (edge.Data is string) {
-                    edge.Data = GraphUtils.EdgeString<IGraphItem, IGraphEdge> (edge);
+                    edge.Data = GraphExtensions.EdgeString<IGraphItem, IGraphEdge> (edge);
                 }
             }
         }

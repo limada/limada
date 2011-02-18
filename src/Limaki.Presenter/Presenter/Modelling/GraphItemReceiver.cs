@@ -66,11 +66,14 @@ namespace Limaki.Presenter {
                 }
 
                 request.Execute();
-
+                
                 if (invalid != RectangleI.Empty)
                     Data.UpdateBounds(request.Subject, invalid);
                 else
                     Data.AddBounds(request.Subject);
+            }
+            if(request is IDirtyCommand){
+                Data.State.Dirty = true;
             }
         }
 

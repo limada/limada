@@ -26,11 +26,11 @@ using Limaki.Widgets;
 namespace Limada.Presenter {
     
     public class Sheet:IDisposable {
-        public Sheet(Scene scene) {
+        public Sheet(IGraphScene<IWidget,IEdgeWidget> scene) {
             this._scene = scene;
         }
 
-        public Sheet(Scene scene, IGraphLayout<IWidget,IEdgeWidget> layout):this(scene) {
+        public Sheet(IGraphScene<IWidget, IEdgeWidget> scene, IGraphLayout<IWidget, IEdgeWidget> layout): this(scene) {
             this._layout = layout;
         }
 
@@ -47,8 +47,8 @@ namespace Limada.Presenter {
             protected set { _layout = value; }
         }
 
-        private Scene _scene = null;
-        public virtual Scene Scene {
+        private IGraphScene<IWidget, IEdgeWidget> _scene = null;
+        public virtual IGraphScene<IWidget, IEdgeWidget> Scene {
             get { return _scene; }
             protected set { _scene = value; }
         }

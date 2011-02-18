@@ -28,19 +28,19 @@ namespace Limaki.Drawing.WPF.Painters {
         }
 
         protected override void InstrumentClazzes() {
-            Clazzes.Add(typeof(IRectangleShape), typeof(WPFPainter<RectangleI>));
-            Clazzes.Add(typeof(IVectorShape), typeof(WPFPainter<Vector>));
-            Clazzes.Add(typeof(IRoundedRectangleShape), typeof(WPFPainter<RectangleI>));
-            Clazzes.Add(typeof(IBezierShape), typeof(WPFPainter<RectangleI>));
+            Clazzes[typeof(IRectangleShape)] =  typeof(WPFPainter<RectangleI>);
+            Clazzes[typeof(IVectorShape)] =  typeof(WPFPainter<Vector>);
+            Clazzes[typeof(IRoundedRectangleShape)] =  typeof(WPFPainter<RectangleI>);
+            Clazzes[typeof(IBezierShape)] =  typeof(WPFPainter<RectangleI>);
 
-            Clazzes.Add(typeof(RectangleShape), typeof(WPFPainter<RectangleI>));
-            Clazzes.Add(typeof(VectorShape), typeof(WPFPainter<Vector>));
-            Clazzes.Add(typeof(RoundedRectangleShape), typeof(WPFPainter<RectangleI>));
-            Clazzes.Add(typeof(BezierShape), typeof(WPFPainter<RectangleI>));
+            Clazzes[typeof(RectangleShape)] =  typeof(WPFPainter<RectangleI>);
+            Clazzes[typeof(VectorShape)] =  typeof(WPFPainter<Vector>);
+            Clazzes[typeof(RoundedRectangleShape)] =  typeof(WPFPainter<RectangleI>);
+            Clazzes[typeof(BezierShape)] =  typeof(WPFPainter<RectangleI>);
 
-            Clazzes.Add(typeof(RectangleI), typeof(WPFPainter<RectangleI>));
+            Clazzes[typeof(RectangleI)] =  typeof(WPFPainter<RectangleI>);
 
-            Clazzes.Add(typeof(string), typeof(WPFStringPainter));
+            Clazzes[typeof(string)] =  typeof(WPFStringPainter);
         }
     }
 }

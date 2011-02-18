@@ -12,7 +12,7 @@ namespace Limaki.Tests.Presenter.Display {
         public virtual Scene Scene {
             get {
                 if (_scene == null) {
-                    _scene = new BenchmarkOneSceneFactory().Scene;
+                    _scene = new Scene();
                 }
                 return _scene;
             }
@@ -27,7 +27,7 @@ namespace Limaki.Tests.Presenter.Display {
         bool zoomEnabled = false;
         bool trackerEnabled = false;
         bool selectorEnabled = false;
-        protected void InitDisplay() {
+        protected virtual void InitDisplay() {
             this.Display.ZoomState = ZoomState.Original;
             this.Display.Data = this.Scene;
             var zoomAction = Display.EventControler.GetAction<ZoomAction> ();

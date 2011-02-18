@@ -272,5 +272,9 @@ namespace Limaki.Graphs {
         }
 
         #endregion
+
+        public override IEnumerable<TItemOne> Where(System.Linq.Expressions.Expression<Func<TItemOne, bool>> predicate) {
+            return One.Where(predicate);
+        }
     }
 }

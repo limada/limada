@@ -35,7 +35,8 @@ namespace Limaki.Presenter.UI {
                 return _actions;
             }
         }
-        
+
+        public virtual bool UserEventsDisabled { get; set; }
         // Invokers:
         public List<IMouseAction> MouseActions = new List<IMouseAction>();
         public List<IKeyAction> KeyActions = new List<IKeyAction>();
@@ -137,6 +138,8 @@ namespace Limaki.Presenter.UI {
 
         public void OnMouseDown(MouseActionEventArgs e) {
             Resolved = false;
+            if (UserEventsDisabled)
+                return;
             foreach (IMouseAction mouseAction in MouseActions) {
                 if (mouseAction.Enabled) {
                     mouseAction.OnMouseDown(e);
@@ -155,6 +158,8 @@ namespace Limaki.Presenter.UI {
 
         public void OnMouseMove(MouseActionEventArgs e) {
             Resolved = false;
+            if (UserEventsDisabled)
+                return;
             foreach (IMouseAction mouseAction in MouseActions) {
                 if (mouseAction.Enabled) {
                     mouseAction.OnMouseMove(e);
@@ -168,6 +173,8 @@ namespace Limaki.Presenter.UI {
         }
 
         public void OnMouseHover(MouseActionEventArgs e) {
+            if (UserEventsDisabled)
+                return;
             foreach (IMouseAction mouseAction in MouseActions) {
                 if (mouseAction.Enabled) {
                     mouseAction.OnMouseHover(e);
@@ -177,6 +184,8 @@ namespace Limaki.Presenter.UI {
         }
 
         public void OnMouseUp(MouseActionEventArgs e) {
+            if (UserEventsDisabled)
+                return;
             Resolved = false;
             foreach (IMouseAction mouseAction in MouseActions) {
                 if (mouseAction.Enabled) {
@@ -196,6 +205,8 @@ namespace Limaki.Presenter.UI {
         #region IKeyAction Member
 
         public void OnKeyDown(KeyActionEventArgs e) {
+            if (UserEventsDisabled)
+                return;
             Resolved = false;
             foreach (IKeyAction keyAction in KeyActions) {
                 if (keyAction.Enabled) {
@@ -210,6 +221,8 @@ namespace Limaki.Presenter.UI {
         }
 
         public void OnKeyPress(KeyActionPressEventArgs e) {
+            if (UserEventsDisabled)
+                return;
             Resolved = false;
             foreach (IKeyAction keyAction in KeyActions) {
                 if (keyAction.Enabled) {

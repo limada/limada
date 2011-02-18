@@ -89,8 +89,8 @@ namespace Limaki.Graphs {
 
                     TItemTwo root = TryGetCreate(edgeOne.Root);
                     TItemTwo leaf = TryGetCreate(edgeOne.Leaf);
-                    done.Add(edgeOne.Root);
-                    done.Add(edgeOne.Leaf);
+                    Done.Add(edgeOne.Root);
+                    Done.Add(edgeOne.Leaf);
 
                     if (!Dict.TryGetValue(one, out result)) {
                         TEdgeTwo edgeTwo = CreateEdge(this.One,this.Two,edgeOne);
@@ -116,24 +116,29 @@ namespace Limaki.Graphs {
             return result;
         }
 
-        Set<TItemOne> done = new Set<TItemOne>();
+        public ICollection<TItemOne> _done = null;
+        public ICollection<TItemOne> Done {
+            get { return _done ?? (_done = new Set<TItemOne>());}
+            set { _done = value; }
+        }
+
 
         public virtual void Convert() {
-            done.Clear();
+            Done.Clear();
             foreach (TItemOne a in One) {
-                if (!done.Contains(a)) {
+                if (!Done.Contains(a)) {
                     TryGetCreate(a);
-                    done.Add(a);
+                    Done.Add(a);
                 }
 
                 foreach (TEdgeOne edge in One.DepthFirstTwig(a)) {
-                    if (!done.Contains(edge)) {
+                    if (!Done.Contains(edge)) {
                         TryGetCreate(edge);
-                        done.Add(edge);
+                        Done.Add(edge);
                     }
                 }
             }
-            done.Clear();
+            Done.Clear();
         }
 
         #endregion

@@ -30,8 +30,8 @@ using Limaki.Widgets;
 namespace Limaki.UseCases.Viewers {
     public class StreamViewProvider:IDisposable {
         
-        public WidgetDisplay sheetControl = null;
-        public ISheetManager sheetManager = null;
+        public WidgetDisplay SheetControl {get;set;}
+        public ISheetManager SheetManager { get; set; }
 
         public Color BackColor = KnownColors.FromKnownColor(KnownColor.Control);
         public object Parent = null;
@@ -70,8 +70,8 @@ namespace Limaki.UseCases.Viewers {
 
                             if (controller is SheetViewerController) {
                                 var sheetView = (SheetViewerController)controller;
-                                sheetView.sheetControl = this.sheetControl;
-                                sheetView.sheetManager = this.sheetManager;
+                                sheetView.SheetControl = this.SheetControl;
+                                sheetView.SheetManager = this.SheetManager;
                                 info.Source = thing.Id;
                             }
 

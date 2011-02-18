@@ -25,6 +25,7 @@ using Limaki.Widgets;
 using Limaki.Drawing;
 using Limaki.Model.Streams;
 using System.IO;
+using Limada.Presenter;
 
 namespace Limaki.UseCases {
     public class UseCase:IDisposable {
@@ -44,14 +45,20 @@ namespace Limaki.UseCases {
             }
         }
 
+        bool closeDone = false;
         public void Close() {
-            FileManager.Close();
+            if (!closeDone) {
+                SaveChanges();
+                FileManager.Close();
+                closeDone = true;
+            }
         }
 
 
         public SplitView SplitView { get; set; }
         public SceneHistory SceneHistory { get; set; }
         public ISheetManager SheetManager {get;set;}
+        public FavoriteManager FavoriteManager { get; set; }
         
         public DisplayToolController DisplayToolController { get; set; }
         public LayoutToolController LayoutToolController { get; set; }
@@ -68,10 +75,17 @@ namespace Limaki.UseCases {
         public Action<string> DataPostProcess { get; set; }
 
         public void OpenFile() {
+            SaveChanges();
             FileManager.OpenFile ();
         }
 
+        public virtual void SaveFile() {
+            SaveChanges();
+            FileManager.Save();
+        }
+
         public void SaveAsFile() {
+            SaveChanges();
             FileManager.SaveAsFile ();
         }
 
@@ -121,7 +135,14 @@ namespace Limaki.UseCases {
             }
             return null;
         }
-		
+
+        public void SaveChanges() {
+            var displays = new WidgetDisplay[] {SplitView.Display1, SplitView.Display2};
+            SceneHistory.SaveChanges(displays, SheetManager, MessageBoxShow);
+            FavoriteManager.SaveChanges(displays);
+        }
+
+       
     }
 
     public class UseCaseComposer : IComposer<UseCase> {
@@ -134,6 +155,8 @@ namespace Limaki.UseCases {
 			useCase.StreamImportManager = new StreamImportManager();
 			useCase.StreamImportManager.OpenFileDialog = new FileDialogMemento();
             useCase.StreamImportManager.SaveFileDialog = new FileDialogMemento();
+
+            useCase.FavoriteManager = new FavoriteManager();
         }
 
         public void Compose(UseCase useCase) {
@@ -145,6 +168,9 @@ namespace Limaki.UseCases {
             splitView.SceneHistory = useCase.SceneHistory;
             splitView.SheetManager = useCase.SheetManager;
             
+            splitView.FavoriteManager = useCase.FavoriteManager;
+            useCase.FavoriteManager.SheetManager = useCase.SheetManager;
+
             splitView.CurrentControlChanged += (c) => useCase.DisplayToolController.Attach(c);
             splitView.CurrentControlChanged += (c) => useCase.LayoutToolController.Attach(c);
             splitView.CurrentControlChanged += (c) => useCase.MarkerToolController.Attach(c);

@@ -120,7 +120,7 @@ namespace Limaki.Tests.Presenter.Winform {
                 if (childWidget == null) {
                     string ws = widget.Data.ToString();
                     if (widget is IEdgeWidget) {
-                        ws = GraphUtils.EdgeString<IWidget, IEdgeWidget>((IEdgeWidget)widget);
+                        ws = GraphExtensions.EdgeString<IWidget, IEdgeWidget>((IEdgeWidget)widget);
                     }
                     string ds = ws + "\r\n" +
                                 widget.Shape.BoundsRect.ToString();

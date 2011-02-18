@@ -255,7 +255,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
                     foreach (ILink link in graph.Edges (thing)) {
                         var adj = link.Leaf;
                         if (adj != thing && ( adj is IStreamThing )) {
-                            var desc = ThingGraphUtils.GetDescription (graph, adj);
+                            var desc = graph.Description(adj);
                             if (desc != null && desc.ToString () == content) {
                                 return GetContentFromThing (graph, adj);
                             }

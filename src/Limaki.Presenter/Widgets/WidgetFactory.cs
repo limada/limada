@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System;
 namespace Limaki.Widgets {
     public class WidgetFactory : IWidgetFactory {
         
@@ -28,5 +30,13 @@ namespace Limaki.Widgets {
             IEdgeWidget result = new EdgeWidget<string>(data.ToString(), root,leaf);
             return result;
         }
+
+
+        public IEnumerable<Type> KnownClasses {
+            get { yield return typeof (Widget<string>);
+                  yield return typeof (EdgeWidget<string>);
+            }
+        }
+
     }
 }

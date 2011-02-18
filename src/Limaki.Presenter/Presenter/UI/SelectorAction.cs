@@ -173,6 +173,7 @@ namespace Limaki.Presenter.UI {
 
         public override void Clear() {
             Shape = null;
+            ShowGrips = false;
             base.Clear ();
         }
 

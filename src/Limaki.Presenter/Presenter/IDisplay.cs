@@ -14,6 +14,9 @@
 
 using Limaki.Presenter.UI;
 using Limaki.Drawing;
+using Id = System.Int64;
+using Limaki.Common;
+
 namespace Limaki.Presenter {
     public interface IDisplay {
 
@@ -33,11 +36,15 @@ namespace Limaki.Presenter {
         void Execute();
 
         object ActiveControl { get; set; }
+        
     }
 
     public interface IDisplay<T>:IDisplay {
         T Data { get; set; }
-        
+        Id DataId { get; set; }
+        string Text { get; set; }
+        IDisplayDevice<T> Device { get; set; }
+        State State { get; }
         //ILayout<T> Layout { get; set; }
         
     }

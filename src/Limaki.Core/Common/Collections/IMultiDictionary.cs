@@ -14,6 +14,7 @@
  */
 
 using System.Collections.Generic;
+using System;
 
 namespace Limaki.Common.Collections {
     public interface IMultiDictionary<K, V> : IDictionary<K, ICollection<V>> {

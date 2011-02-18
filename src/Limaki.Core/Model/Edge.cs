@@ -44,7 +44,7 @@ namespace Limaki.Model {
             set { _leaf = value; }
         }
         public override string ToString() {
-            return GraphUtils.EdgeString<T,IEdge<T>>(this);
+            return GraphExtensions.EdgeString<T,IEdge<T>>(this);
         }
     }
 }

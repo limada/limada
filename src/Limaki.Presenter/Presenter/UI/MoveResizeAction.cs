@@ -236,6 +236,7 @@ namespace Limaki.Presenter.UI {
 
         public virtual void Clear() {
             this.Shape = null;
+            this.ShowGrips = false;
             if (SelectionRenderer != null) {
                 SelectionRenderer.Clear ();
             }

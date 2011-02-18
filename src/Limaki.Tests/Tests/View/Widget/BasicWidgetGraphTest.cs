@@ -39,7 +39,7 @@ namespace Limaki.Tests.View.Widget {
 
         protected override IEdgeWidget CreateEdge(IWidget root, IWidget leaf) {
             var result = Registry.Pool.TryGetCreate<IWidgetFactory>().CreateEdge(root, leaf, "");
-            result.Data = GraphUtils.EdgeString<IWidget, IEdgeWidget>(result);
+            result.Data = GraphExtensions.EdgeString<IWidget, IEdgeWidget>(result);
             return result;
         }
     }

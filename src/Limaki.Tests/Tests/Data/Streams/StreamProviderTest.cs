@@ -30,9 +30,9 @@ namespace Limaki.Tests.Data.Streams
 			
 			Assert.IsNotNull(providers.Find(StreamTypes.RTF),"rtf");
 			Assert.IsNotNull(providers.Find("rtf"),"rtf");
-			
-			Assert.IsNotNull(providers.Find(StreamTypes.HTML),"hmtl");
-			Assert.IsNotNull(providers.Find("hmtl"),"hmtl");
+
+            Assert.IsNotNull(providers.Find(StreamTypes.HTML), "html");
+            Assert.IsNotNull(providers.Find("html"), "html");
 			
 			Assert.IsNotNull(providers.Find(StreamTypes.JPG),"jpg");
 			Assert.IsNotNull(providers.Find("jpg"),"jpg");

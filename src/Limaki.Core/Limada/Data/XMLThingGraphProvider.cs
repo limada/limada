@@ -42,11 +42,10 @@ namespace Limada.Data {
 
             if (stream != null && stream.Length > 0) {
                 try {
-                    var serializer = new ThingSerializer();
-                    serializer.Graph = this.Data;
+                    var serializer = new ThingSerializer { Graph = this.Data };
 
                     serializer.Read(stream);
-                    ThingGraphUtils.AddRange(Data, serializer.ThingCollection);
+                    Data.AddRange(serializer.ThingCollection);
                 } catch (Exception ex) {
                     Registry.Pool.TryGetCreate<IExceptionHandler>()
                         .Catch(new Exception("File load failed: " + ex.Message, ex), MessageType.OK);
@@ -61,40 +60,35 @@ namespace Limada.Data {
             this.Data = new ThingGraph ();
         }
 
-        public override void Open(DataBaseInfo FileName) {
+        public override void Open(DataBaseInfo fileName) {
             try {
-                FileStream file = 
-                    new FileStream(DataBaseInfo.ToFileName(FileName), FileMode.Open);
+                var file = new FileStream(DataBaseInfo.ToFileName(fileName), FileMode.Open);
                 Open(file);
-                lastFile = FileName;
+                _lastFile = fileName;
             } catch (Exception ex) {
                 Registry.Pool.TryGetCreate<IExceptionHandler>()
                     .Catch(new Exception("File load failed: " + ex.Message, ex),MessageType.OK);
             }
         }
 
-        DataBaseInfo lastFile = null;
+        DataBaseInfo _lastFile = null;
         public override void Save() {
             //Registry.Pool.TryGetCreate<IExceptionHandler>()
             //    .Catch(new Exception(Extension+"-Files can't be saved."),MessageType.OK);
-            if (lastFile != null)
-                SaveAs (this.Data, this.lastFile);
+            if (_lastFile != null)
+                SaveAs (this.Data, this._lastFile);
         }
 
-        public override void SaveAs(IThingGraph source, DataBaseInfo FileName) {
-            FileStream file = new FileStream(
-                DataBaseInfo.ToFileName(FileName), 
-                FileMode.Create);
+        public override void SaveAs(IThingGraph source, DataBaseInfo fileName) {
+            var file = new FileStream(DataBaseInfo.ToFileName(fileName), FileMode.Create);
 
-            var serializer = new ThingSerializer();
-            serializer.Graph = source;
-            serializer.ThingCollection = GraphUtils.Elements<IThing, ILink> (this.Data).ToList();
+            var serializer = new ThingSerializer{Graph = source,ThingCollection = this.Data.Elements().ToList()};
 
             serializer.Write(file);
 
             file.Flush();
             file.Close();
-            lastFile = FileName;
+            _lastFile = fileName;
         }
 
         public override void Close() {

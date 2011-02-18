@@ -76,7 +76,7 @@ namespace Limaki.Model {
 
         #endregion
         public override string ToString() {
-            return GraphUtils.EdgeString<IGraphItem, IGraphEdge>(this);
+            return GraphExtensions.EdgeString<IGraphItem, IGraphEdge>(this);
         }
 
         #region IGraphItem Member

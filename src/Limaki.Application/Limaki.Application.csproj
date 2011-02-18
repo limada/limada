@@ -14,7 +14,7 @@
     <ApplicationIcon>LimadaLogo.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
+    <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkProfile />
@@ -39,7 +39,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -48,7 +48,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE;MONO_OFF</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -84,10 +84,6 @@
       <Project>{0EBC08E0-30D8-4D26-ABF4-0AADFA3AF422}</Project>
       <Name>Limaki.Db4o</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.DBParts\Limaki.dbParts.csproj">
-      <Project>{4BD6F6DE-CEBA-4185-AF2D-47A071E6A276}</Project>
-      <Name>Limaki.dbParts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Limaki.Presenter.Resources\Limaki.Presenter.Resources.csproj">
       <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
       <Name>Limaki.Presenter.Resources</Name>
@@ -104,10 +100,6 @@
       <Project>{5E2A280D-1F53-44E5-AAA3-6BDBA2B51094}</Project>
       <Name>Limaki.Presenter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.WCF\Limaki.WCF.csproj">
-      <Project>{BEED4D77-5589-4C7B-8B2E-6EAD694C4279}</Project>
-      <Name>Limaki.WCF</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="LimadaLogo.ico" />
@@ -123,7 +115,22 @@
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -141,5 +148,6 @@
     <MonoDevelop>
       <Properties InternalTargetFrameworkVersion="3.5" />
     </MonoDevelop>
+    <VisualStudio />
   </ProjectExtensions>
 </Project>

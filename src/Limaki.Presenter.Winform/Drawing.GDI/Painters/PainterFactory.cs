@@ -37,19 +37,20 @@ namespace Limaki.Drawing.GDI.Painters {
         }
 
         protected override void InstrumentClazzes() {
-            Clazzes.Add(typeof(IRectangleShape), typeof(RectanglePainter));
-            Clazzes.Add(typeof(IVectorShape), typeof(VectorPainter));
-            Clazzes.Add(typeof(IRoundedRectangleShape), typeof(RoundedRectanglePainter));
-            Clazzes.Add(typeof(IBezierShape), typeof(BezierPainter));
+            Clazzes[typeof(IRectangleShape)] = typeof(RectanglePainter);
+            Clazzes[typeof(IVectorShape)] = typeof(VectorPainter);
+            Clazzes[typeof(IRoundedRectangleShape)] = typeof(RoundedRectanglePainter);
+            Clazzes[typeof(IBezierShape)] = typeof(BezierPainter);
 
-            Clazzes.Add(typeof(RectangleShape), typeof(RectanglePainter));
-            Clazzes.Add(typeof(VectorShape), typeof(VectorPainter));
-            Clazzes.Add(typeof(RoundedRectangleShape), typeof(RoundedRectanglePainter));
-            Clazzes.Add(typeof(BezierShape), typeof(BezierPainter));
+            Clazzes[typeof(RectangleShape)] = typeof(RectanglePainter);
+            Clazzes[typeof(VectorShape)] = typeof(VectorPainter);
+            Clazzes[typeof(RoundedRectangleShape)] = typeof(RoundedRectanglePainter);
+            Clazzes[typeof(BezierShape)] = typeof(BezierPainter);
 
-            Clazzes.Add(typeof(RectangleI), typeof(RectanglePainter));
+            Clazzes[typeof(RectangleI)] = typeof(RectanglePainter);
 
-            Clazzes.Add(typeof(string), typeof(StringPainter));
+            Clazzes[typeof(string)] = typeof(StringPainter);
+            
         }
     }
 }

@@ -39,6 +39,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
 
         public void Attach(Scene scene) {
             markerCombo.Items.Clear();
+            markerCombo.Text = string.Empty;
             bool makeVisible = scene != null && scene.Markers != null;
             if (makeVisible) {
                 markerCombo.Items.AddRange(scene.Markers.MarkersAsStrings());

@@ -56,18 +56,19 @@ namespace Limada.Tests.Model {
 
 
         void Prove(IEnumerable<IThing> things, IEnumerable<IThing> expected, IThingGraph graph) {
-            var completed = ThingGraphUtils.CompletedThings (things, graph);
+            var completed = things.CompletedThings(graph);
             var result = new Set<IThing> ();
             result.UnionWith(completed);
 
-
+            System.Console.WriteLine("** Completed:");
             foreach (var thing in completed) {
                 System.Console.WriteLine(thing);
             }
 
             
             foreach(var thing in expected) {
-                Assert.IsTrue (result.Contains (thing), "Expected:"+thing.ToString());
+                var compareThing = thing;
+                Assert.IsTrue(result.Contains(compareThing), "Expected:" + thing.ToString());
             }
 
             Assert.AreEqual(expected.Count<IThing>(), result.Count);
@@ -95,7 +96,7 @@ namespace Limada.Tests.Model {
                 graph);
 
             Prove(
-                new IThing[] { factory.Node[1], factory.Node[3] },
+                new IThing[] { factory.Node[1], factory.Node[3], factory.Edge[2] },
                 
                 new IThing[] { factory.Node[1], 
                                factory.Node[2], 
@@ -110,9 +111,10 @@ namespace Limada.Tests.Model {
                                
                                DocumentSchema.DocumentDefaultLink,
                                DocumentSchema.PageDefaultLink,
-                               DocumentSchema.HidePagesLink,
+                               //DocumentSchema.HidePagesLink,
+                               //ViewMetaSchema.Hide,
                                MetaSchema.DescriptionMarker,
-                               ViewMetaSchema.Hide,
+                               
                                
                                //DocumentSchema.Author,
                                //DocumentSchema.AuthorHasDocument,

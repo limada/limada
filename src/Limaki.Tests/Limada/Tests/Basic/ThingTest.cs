@@ -23,6 +23,7 @@ using Limaki.UnitTest;
 using NUnit.Framework;
 
 using Id = System.Int64;
+using Limaki.Common;
 
 namespace Limada.Tests.Basic {
     public class ThingTest:DomainTest {
@@ -38,7 +39,7 @@ namespace Limada.Tests.Basic {
 
         public override void Setup() {
             base.Setup();
-            var factory = new ThingFactory ();
+            var factory = Registry.Factory.Create<IThingFactory>();
             aLeaf = factory.CreateItem(leafText);
             aRoot = factory.CreateItem(rootText);
             aMarker = factory.CreateItem(markerText);

@@ -37,7 +37,7 @@ namespace Limada.Data {
         public override void SaveAs(IThingGraph source, DataBaseInfo FileName) {
             this.Data = null;
             Open(FileName);
-            ThingGraphUtils.MergeGraphs(source, this.Data);
+            source.MergeInto(this.Data);
         }
 
         public void ReadIntoList(ICollection<IThing> things, IGraph<IThing, ILink> view) {
@@ -76,8 +76,8 @@ namespace Limada.Data {
                 var things = new List<IThing>();
                 this.ReadIntoList(things, view);
                 var completeThings =
-                    ThingGraphUtils.CompletedThings (things.Distinct (), source).ToList ();
-                ThingGraphUtils.AddRange(target, completeThings);
+                    things.Distinct ().CompletedThings(source).ToList ();
+                target.AddRange(completeThings);
                 foreach(var  thing in completeThings.OfType<IStreamThing>()) {
                     var data = source.DataContainer.GetById(thing.Id);
                     target.DataContainer.Add(data);

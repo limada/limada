@@ -12,6 +12,10 @@
     <RootNamespace>Limaki</RootNamespace>
     <AssemblyName>Limaki.Monodroid.Presenter</AssemblyName>
     <FileAlignment>512</FileAlignment>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidSupportedAbis>armeabi</AndroidSupportedAbis>
+    <AndroidApplication>true</AndroidApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -276,10 +280,13 @@
     <Compile Include="Limada\UseCases\StreamImportManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Limaki.Core\Limaki.MonoDroid.Core.csproj">
+    <ProjectReference Include="..\Limaki.Core\Limak.iMonoDroid.Core.csproj">
       <Project>{AC134B49-0959-451E-888C-CC52917CD90F}</Project>
-      <Name>Limaki.MonoDroid.Core</Name>
+      <Name>Limak.iMonoDroid.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

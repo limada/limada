@@ -19,13 +19,17 @@ using Limada.Schemata;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Widgets;
+using Limaki.Common;
 
 namespace Limada.View {
-    public class WidgetThingGraphExtension {
-        public static IThingGraph GetThingGraph(IGraph<IWidget, IEdgeWidget> graph) {
+
+    public static class WidgetThingGraphExtension {
+
+        public static IThingGraph ThingGraph(this IGraph<IWidget, IEdgeWidget> graph) {
             IThingGraph result = null;
 
             var sourceGraph = new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(graph);
+
 
             if (sourceGraph != null && (sourceGraph.Two is IThingGraph)) {
                 result = sourceGraph.Two as IThingGraph;
@@ -33,7 +37,7 @@ namespace Limada.View {
             return result;
         }
 
-        public static IThingFactory GetThingFactory(IGraph<IWidget, IEdgeWidget> graph) {
+        public static IThingFactory ThingFactory(this IGraph<IWidget, IEdgeWidget> graph) {
             IThingFactory result = null;
             var sourceGraph = new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(graph);
 
@@ -42,10 +46,12 @@ namespace Limada.View {
                 var adapter = sourceGraph.Mapper.Adapter as WidgetThingAdapter;
                 result = adapter.ThingFactory;
             }
+            if (result == null)
+                result = Registry.Factory.Create<IThingFactory>();
             return result;
         }
 
-        public static IThing GetThing(IGraph<IWidget, IEdgeWidget> source, IWidget widget) {
+        public static IThing ThingOf(this IGraph<IWidget, IEdgeWidget> source, IWidget widget) {
             var graph = new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(source);
             if (widget != null && graph != null) {
                 return  graph.Get (widget);
@@ -53,15 +59,15 @@ namespace Limada.View {
             return null;
         }
 
-        public static object GetDescription(IGraph<IWidget, IEdgeWidget> source, IWidget widget) {
-            return ThingGraphUtils.GetDescription (WidgetThingGraphExtension.GetThingGraph (source), GetThing (source, widget));
+        public static object Description(this IGraph<IWidget, IEdgeWidget> source, IWidget widget) {
+            return source.ThingGraph().Description(source.ThingOf(widget));
         }
 
-        public static object GetDescription(IGraph<IWidget, IEdgeWidget> source, IThing thing) {
-            return ThingGraphUtils.GetDescription(WidgetThingGraphExtension.GetThingGraph(source), thing);
+        public static object Description(this IGraph<IWidget, IEdgeWidget> source, IThing thing) {
+            return source.ThingGraph().Description(thing);
         }
 
-        public static bool ToggleFilterOnTwo(IGraph<IWidget, IEdgeWidget> source) {
+        public static bool ToggleFilterOnTwo(this IGraph<IWidget, IEdgeWidget> source) {
             bool result = false;
             var graph = new GraphPairFacade<IWidget, IEdgeWidget>()
                         .Source<IThing, ILink>(source);

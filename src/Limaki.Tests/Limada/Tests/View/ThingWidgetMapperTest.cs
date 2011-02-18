@@ -49,9 +49,12 @@ namespace Limada.Tests.View {
 
             //mapper.showMarkers = false;
             mapper.ConvertOneTwo();
+            Assert.AreEqual(this.Graph.Count,widgetGraph.Count);
             this.Graph.Clear();
+            mapper.Clear();
             mapper.ConvertTwoOne();
             this.ReportGraph(this.Graph, "Reread");
+            Assert.AreEqual(this.Graph.Count, widgetGraph.Count);
 
             ReportSummary();
 

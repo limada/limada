@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
+    <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkProfile />
@@ -38,7 +38,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,13 +47,21 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Db4objects.Db4o, Version=8.0.184.15484, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\3rdParty\bin\db4o\Db4objects.Db4o.dll</HintPath>
+    </Reference>
+    <Reference Include="Db4objects.Db4o.Linq, Version=8.0.184.15484, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\3rdParty\bin\db4o\Db4objects.Db4o.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -85,20 +93,21 @@
     <Compile Include="Limada\Tests\Model\DescriptionTestFactory.cs" />
     <Compile Include="Limada\Tests\Model\DocumentSchemaTestFactory.cs" />
     <Compile Include="Limada\Tests\Model\ThingFactoryTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraph\Db4oThingGraphTestBase.cs" />
-    <Compile Include="Limada\Tests\ThingGraph\SchemaGraph\SchemaGraphPerformanceTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraph\SchemaGraph\SchemaGraphTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraph\StreamThingTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraph\ThingGraphDeleteItemsTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraph\ThingGraphTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraph\ThingGraphTestBase.cs" />
+    <Compile Include="Limada\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
+    <Compile Include="Limada\Tests\ThingGraphs\SchemaGraph\SchemaGraphPerformanceTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraphs\SchemaGraph\SchemaGraphTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraphs\StreamThingTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraphs\ThingGraphDeleteItemsTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraphs\ThingGraphTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraphs\ThingGraphTestBase.cs" />
     <Compile Include="Limada\Tests\Model\GraphItem2ThingAdapter.cs" />
     <Compile Include="Limada\Tests\Model\GraphMapperTest.cs" />
     <Compile Include="Limada\Tests\Model\GraphPairTest.cs" />
     <Compile Include="Limada\Tests\Model\SimpleDescriptionTestFactory.cs" />
     <Compile Include="Limada\Tests\Model\ThingGraphUtilTest.cs" />
     <Compile Include="Limada\Tests\Model\ModelHelper.cs" />
-    <Compile Include="Limada\Tests\Model\ThingSerialzerTest.cs" />
+    <Compile Include="Limada\Tests\Model\SheetTest.cs" />
     <Compile Include="Limada\Tests\Schema\CommonSchemaTest.cs" />
     <Compile Include="Limada\Tests\Schema\DocumentSchemaTest.cs" />
     <Compile Include="Limada\Tests\Schema\SchemaTest.cs" />
@@ -129,6 +138,7 @@
     <Compile Include="Tests\Presenter\Display\FrameTicker.cs" />
     <Compile Include="Tests\Presenter\Display\TestDevice.cs" />
     <Compile Include="Tests\Presenter\Display\WidgetDisplayTest.cs" />
+    <Compile Include="Tests\Presenter\Display\WidgetDisplayTest1.cs" />
     <Compile Include="Tests\Presenter\GDI\ConvexHullLayer.cs" />
     <Compile Include="Tests\Presenter\GDI\RegionLayer.cs" />
     <Compile Include="Tests\Presenter\GDI\RegionTest.cs" />
@@ -141,17 +151,13 @@
     </Compile>
     <Compile Include="Tests\Presenter\Winform\QuadTreeVisualizer.cs" />
     <Compile Include="Tests\Presenter\Winform\WidgetBoundsLayer.cs" />
-    <Compile Include="Tests\Presenter\Winform\WinformDisplayTestIntrumenter.cs" />
+    <Compile Include="Tests\Presenter\Winform\WinformDisplayTestComposer.cs" />
     <Compile Include="Tests\Presenter\Winform\WinformTestDevice.cs" />
+    <Compile Include="Tests\Presenter\Winform\WinformWidgetDisplayTest.cs" />
     <Compile Include="Tests\Presenter\WiredScenesTest.cs" />
-    <Compile Include="Tests\Sandbox\HTML\HTMLTest.cs" />
+    <Compile Include="Tests\Common\FactoryTest.cs" />
+    <Compile Include="Tests\Sandbox\HTML\HtmlNextTest.cs" />
     <Compile Include="Tests\Sandbox\HTML\HtmlTestData.cs" />
-    <Compile Include="Tests\Sandbox\HTML\ParserPrototype.cs" />
-    <Compile Include="Tests\Sandbox\HTML\Style.cs" />
-    <Compile Include="Tests\Sandbox\HTML\Styler.cs" />
-    <Compile Include="Tests\Sandbox\HTML\Tag.cs" />
-    <Compile Include="Tests\Sandbox\HTML\Tagger.cs" />
-    <Compile Include="Tests\Sandbox\HTML\TagStyler.cs" />
     <Compile Include="Tests\View\Drawing\PoligonAlgoTest.cs" />
     <Compile Include="Tests\View\Drawing\ViewSerialisationTest.cs" />
     <Compile Include="Tests\Graph\Basic\BasicGraphTests.cs" />
@@ -227,14 +233,24 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Limada\Tests\Data\db4o\" />
-    <Folder Include="Tests\Sandbox\Graph\" />
-    <Folder Include="Tests\Sandbox\View\" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -248,6 +264,11 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Limada\Tests\Data\db4o\" />
+    <Folder Include="Tests\Sandbox\Graph\" />
+    <Folder Include="Tests\Sandbox\View\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -260,5 +281,6 @@
     <MonoDevelop>
       <Properties InternalTargetFrameworkVersion="3.5" />
     </MonoDevelop>
+    <VisualStudio />
   </ProjectExtensions>
 </Project>

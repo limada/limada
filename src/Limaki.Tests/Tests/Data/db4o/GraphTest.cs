@@ -31,7 +31,6 @@ using Limaki.Widgets;
 using Limaki.Tests.Widget;
 using Limada.Model;
 
-
 namespace Limaki.Tests.Data.db4o {
     /// <summary>
     /// Tests Limaki.Data.db4o.Graph#TItem,TEdge
@@ -126,5 +125,7 @@ namespace Limaki.Tests.Data.db4o {
         public override void TearDown() {
             base.TearDown();
         }
+
+        
     }
 }

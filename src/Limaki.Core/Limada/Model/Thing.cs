@@ -44,7 +44,7 @@ namespace Limada.Model {
                     _state.SetDirty = () => {
                         _state.Dirty = true;
                         if (!_state.Creating) {
-                            this._writeDate = DateTime.Now;
+                            this._changeDate = DateTime.Now;
                         }
                     };
                 }
@@ -70,14 +70,14 @@ namespace Limada.Model {
             set { }
         }
 
-        DateTime _writeDate = DateTime.MinValue;
+        DateTime _changeDate = DateTime.MinValue;
         [DataMember]
-        public virtual DateTime WriteDate {
-            get {  return _writeDate; }
+        public virtual DateTime ChangeDate {
+            get {  return _changeDate; }
 #if ! SILVERLIGHT
             private
 #endif
-            set { _writeDate = value; }
+            set { _changeDate = value; }
         }
 
         DateTime _creationDate = DateTime.MinValue;
@@ -90,9 +90,16 @@ namespace Limada.Model {
             set { _creationDate = value; }
         }
 
+        public virtual void SetCreationDate(DateTime date) {
+            _creationDate = date;
+            _changeDate = date;
+        }
+        public virtual void SetChangeDate(DateTime date) {
+            _changeDate = date;
+        }
         public virtual void SetId(Id id, DateTime creationDate, DateTime writeDate) {
             _id = id;
-            _writeDate = writeDate;
+            _changeDate = writeDate;
             _creationDate = creationDate;
         }
 

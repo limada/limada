@@ -39,7 +39,8 @@ namespace Limaki.ThirdPartyWrappers {
                     break;
                 }
             }
-            
+            if (xulDir == null)
+                throw new ArgumentException("xulrunner is missing");
             Xpcom.Initialize(xulDir);
 
             this.DomKeyUp += new GeckoDomKeyEventHandler(GeckoWebBrowser_DomKeyUp);

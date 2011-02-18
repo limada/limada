@@ -85,8 +85,8 @@ namespace Limada.Model {
         public static StreamInfo<Stream> GetStreamInfo(IThingGraph graph, IThing thing) {
             var result = GetStreamInfo (thing);
             if (result !=null && graph is SchemaThingGraph) {
-                result.Description = ThingGraphUtils.GetDescription (graph, thing);
-                result.Source = ThingGraphUtils.GetSource (graph, thing);
+                result.Description = graph.Description(thing);
+                result.Source = graph.Source(thing);
             }
             return result;
         }

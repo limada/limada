@@ -30,7 +30,7 @@ namespace Limada.View {
         public IThingFactory ThingFactory {
             get {
                 if (_thingFactory == null) {
-                    _thingFactory = new ThingFactory();
+                    _thingFactory = Registry.Factory.Create<IThingFactory>();
                 }
                 return _thingFactory;
             }
@@ -86,7 +86,7 @@ namespace Limada.View {
         public override IThing CreateItemTwo(IGraph<IWidget, IEdgeWidget> sender, 
             IGraph<IThing, ILink> target, IWidget b) {
             
-            IThing result =  ThingFactory.CreateItem(target as IThingGraph, b.Data);
+            var result =  ThingFactory.CreateItem(target as IThingGraph, b.Data);
             
             return result;
         }
