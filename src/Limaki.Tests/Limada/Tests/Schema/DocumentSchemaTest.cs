@@ -98,6 +98,8 @@ namespace Limada.Tests.Schemata {
         }
         #endregion
 
+        
+
         [Test]
         public virtual void TestDocumentWithPages() {
             this.ReportDetail("**** TestDocumentWithPages");
@@ -117,6 +119,7 @@ namespace Limada.Tests.Schemata {
                 }
 
             }
+            
         }
 
         [Test]

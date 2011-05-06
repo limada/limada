@@ -40,10 +40,8 @@ namespace Limaki.View {
             if (sourceGraph == null || targetGraph == null || sourceitem == null)
                 return item;
 
-            var facade = new GraphPairFacade<TItem, TEdge>();
-            
-            if (facade.Source<IGraphItem, IGraphEdge>(sourceGraph) != null) {
-                return facade.LookUp<IGraphItem, IGraphEdge>(sourceGraph, targetGraph, sourceitem);
+            if (GraphPairExtension<TItem, TEdge>.Source<IGraphItem, IGraphEdge>(sourceGraph) != null) {
+                return GraphPairExtension<TItem, TEdge>.LookUp<IGraphItem, IGraphEdge>(sourceGraph, targetGraph, sourceitem);
             } else if (Next != null) {
                 return Next.LookUp<TItem,TEdge> (sourceGraph,targetGraph,sourceitem);
             }

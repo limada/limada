@@ -25,6 +25,7 @@ using Limaki.Presenter;
 using Limaki.Presenter.Widgets;
 using Limaki.Presenter.Widgets.UI;
 using Limaki.Widgets;
+using Limaki.Presenter.UI;
 
 namespace Limaki.UseCases.Viewers {
     public class SplitView : ISplitView, IDisposable, ICheckable {
@@ -153,8 +154,8 @@ namespace Limaki.UseCases.Viewers {
             if (currentDisplay != null &&
                 currentDisplay.Data != null &&
                 currentDisplay.Data.Focused != null) {
-                var fce = new SceneEventArgs(currentDisplay.Data, currentDisplay.Data.Focused);
-                StreamViewProvider.ChangeViewer(currentDisplay, fce);
+                var fce = new GraphSceneEventArgs<IWidget, IEdgeWidget>(currentDisplay.Data, currentDisplay.Data.Focused);
+                ContentViewManager.ChangeViewer(currentDisplay, fce);
             }
             if (DeviceGraphStreamView != null) {
                 DeviceGraphStreamView();
@@ -187,7 +188,7 @@ namespace Limaki.UseCases.Viewers {
 
             Display2.Data = null;
 
-            StreamViewProvider.Clear();
+            ContentViewManager.Clear();
 
             Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IWidget, IEdgeWidget>>(Display1.Data);
 
@@ -195,6 +196,7 @@ namespace Limaki.UseCases.Viewers {
 
             Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IWidget, IEdgeWidget>>(Display2.Data);
 
+            GraphGraphView();
             GraphStreamView();
 
             CurrentDisplay = Display1;
@@ -202,34 +204,34 @@ namespace Limaki.UseCases.Viewers {
 
         #region StreamView
 
-        private StreamViewProvider _streamViewProvider = null;
-        public StreamViewProvider StreamViewProvider {
+        private ContentViewManager _contentViewManager = null;
+        public ContentViewManager ContentViewManager {
             get {
-                if (_streamViewProvider == null) {
-                    _streamViewProvider = new StreamViewProvider();
+                if (_contentViewManager == null) {
+                    _contentViewManager = new ContentViewManager();
                 }
                 
-                _streamViewProvider.Parent = this.Parent;
-                _streamViewProvider.BackColor = Display1.BackColor;
+                _contentViewManager.Parent = this.Parent;
+                _contentViewManager.BackColor = Display1.BackColor;
 
-                _streamViewProvider.AfterStreamLoaded += this.AfterStreamLoaded;
-                _streamViewProvider.Attach += this.ApplyGotFocus;
+                _contentViewManager.AfterStreamLoaded += this.AfterStreamLoaded;
+                _contentViewManager.Attach += this.ApplyGotFocus;
 
-                _streamViewProvider.SheetManager = this.SheetManager;
+                _contentViewManager.SheetManager = this.SheetManager;
 
                 if (CurrentDisplay == Display2)
-                    _streamViewProvider.SheetControl = Display1;
+                    _contentViewManager.SheetControl = Display1;
                 else
-                    _streamViewProvider.SheetControl = Display2;
+                    _contentViewManager.SheetControl = Display2;
 
-                return _streamViewProvider;
+                return _contentViewManager;
             }
-            set { _streamViewProvider = value; }
+            set { _contentViewManager = value; }
         }
 
 
 
-        void SceneFocusChanged(object sender, SceneEventArgs e) {
+        void SceneFocusChanged(object sender, GraphSceneEventArgs<IWidget , IEdgeWidget> e) {
 
             if (ViewMode != SplitViewMode.GraphStream)
                 return;
@@ -237,7 +239,7 @@ namespace Limaki.UseCases.Viewers {
             try {
                 
                 display.EventControler.UserEventsDisabled = true;
-                StreamViewProvider.ChangeViewer(sender, e);
+                ContentViewManager.ChangeViewer(sender, e);
             } catch (Exception ex) {
                 ExceptionHandler.Catch(ex, MessageType.OK);
             } finally {
@@ -259,7 +261,7 @@ namespace Limaki.UseCases.Viewers {
                     ShowTextDialog("Sheet:", info.Name, SaveSheet);
                 }
             } else {
-                this.StreamViewProvider.SaveStream(CurrentDisplay.Data.Graph.ThingGraph());
+                this.ContentViewManager.SaveStream(CurrentDisplay.Data.Graph.ThingGraph());
             }
         }
 
@@ -464,7 +466,7 @@ namespace Limaki.UseCases.Viewers {
 
         public void Dispose() {
             ClearHistory ();
-            this.StreamViewProvider.Dispose();
+            this.ContentViewManager.Dispose();
 
         }
 

@@ -207,10 +207,14 @@ namespace Limada.Model {
         public virtual void DeCompress() {
             if (Compressable && (_unCompressedStream == null) && (this.Data != null)) {
                 this._unCompressedStream = null;
-                _unCompressedStream = CompressionWorker.DeCompress(StreamWrapper.Stream, Compression);
-                _streamWrapper.Clear();
-                _streamWrapper = null;
-                _unCompressedStream.Position = 0;
+                try {
+                    _unCompressedStream = CompressionWorker.DeCompress(StreamWrapper.Stream, Compression);
+                    _streamWrapper.Clear();
+                    _streamWrapper = null;
+                    _unCompressedStream.Position = 0;
+                } catch (Exception e) {
+                    _unCompressedStream = null;
+                }
             }
         }
 

@@ -29,123 +29,123 @@ namespace Limaki.Presenter.Widgets.UI {
     /// </summary>
     public class WiredScenes {
         public WiredScenes(IGraphScene<IWidget, IEdgeWidget> source, IGraphScene<IWidget, IEdgeWidget> target) {
-            this.source = source;
-            this.target = target;
+            this.Source = source;
+            this.Target = target;
         }
 
         
-        public IGraphScene<IWidget, IEdgeWidget> source { get;set;}
-        public IGraphScene<IWidget, IEdgeWidget> target { get; set; }
+        public IGraphScene<IWidget, IEdgeWidget> Source { get; protected set;}
+        public IGraphScene<IWidget, IEdgeWidget> Target { get; protected set; }
 
-        IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget> sourceGraph {
-            get { return source.Graph as IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget>; }
+        public virtual IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget> SourceGraph {
+            get { return Source.Graph as IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget>; }
         }
 
-        IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget> targetGraph {
-            get { return target.Graph as IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget>; }
+        public virtual IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget> TargetGraph {
+            get { return Target.Graph as IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget>; }
         }
 
-        IWidget lookUp(IWidget sourceitem) {
-            return GraphMapping.Mapping.LookUp<IWidget, IEdgeWidget>(sourceGraph, targetGraph, sourceitem);
+        public virtual IWidget LookUp(IWidget sourceitem) {
+            return GraphMapping.Mapping.LookUp<IWidget, IEdgeWidget>(SourceGraph, TargetGraph, sourceitem);
         }
 
         public virtual void DataChanged(IWidget sourceItem) {
-            IWidget item = lookUp(sourceItem);
+            IWidget item = LookUp(sourceItem);
             if (item != null && !item.Data.Equals(sourceItem.Data)) {
                 item.Data = sourceItem.Data;
-                target.Requests.Add(new LayoutCommand<IWidget>(item, LayoutActionType.Perform));
+                Target.Requests.Add(new LayoutCommand<IWidget>(item, LayoutActionType.Perform));
             }
         }
 
         protected virtual void Remove(IWidget item) {
             ICollection<IEdgeWidget> deleteQueue = 
-                new List<IEdgeWidget>(targetGraph.Two.PostorderTwig(item));
+                new List<IEdgeWidget>(TargetGraph.Two.PostorderTwig(item));
 
             foreach (IWidget delete in deleteQueue) {
-                if (target.Contains (delete)) {
+                if (Target.Contains (delete)) {
                     // remark: it is not allowed to use DeleteCommand here as it calls
                     // OnDataChanged and 
-                    target.Requests.Add(new RemoveBoundsCommand<IWidget,IEdgeWidget>(delete, target));
-                    target.Remove (delete);
+                    Target.Requests.Add(new RemoveBoundsCommand<IWidget,IEdgeWidget>(delete, Target));
+                    Target.Remove (delete);
                 } else {
-                    targetGraph.Two.Remove (delete);
+                    TargetGraph.Two.Remove (delete);
                 }
             }
 
-            if (target.Contains(item)) {
-                if (target.Focused == item) {
-                    target.Focused = null;
+            if (Target.Contains(item)) {
+                if (Target.Focused == item) {
+                    Target.Focused = null;
                 }
-                target.Selected.Remove(item);
+                Target.Selected.Remove(item);
 
-                target.Requests.Add(new RemoveBoundsCommand<IWidget, IEdgeWidget>(item, target));
-                targetGraph.Remove(item);
+                Target.Requests.Add(new RemoveBoundsCommand<IWidget, IEdgeWidget>(item, Target));
+                TargetGraph.Remove(item);
             } else {
-                targetGraph.Two.Remove (item);
+                TargetGraph.Two.Remove (item);
             }
         }
 
         protected virtual void Add(IEdgeWidget edge) {
-            if (target.Contains(edge.Root) && (target.Contains(edge.Leaf))) {
-                target.Graph.Add(edge);
+            if (Target.Contains(edge.Root) && (Target.Contains(edge.Leaf))) {
+                Target.Graph.Add(edge);
                 if (edge.Shape == null) {
-                    target.Requests.Add(new LayoutCommand<IWidget>(edge, LayoutActionType.Invoke));
+                    Target.Requests.Add(new LayoutCommand<IWidget>(edge, LayoutActionType.Invoke));
                 }
-                target.Requests.Add(new LayoutCommand<IWidget>(edge, LayoutActionType.Justify));
+                Target.Requests.Add(new LayoutCommand<IWidget>(edge, LayoutActionType.Justify));
             }
         }
 
         protected virtual void ChangeEdge(IEdgeWidget sourceEdge, IEdgeWidget targetEdge) {
-            IWidget root = lookUp(sourceEdge.Root);
-            IWidget leaf = lookUp(sourceEdge.Leaf);
+            IWidget root = LookUp(sourceEdge.Root);
+            IWidget leaf = LookUp(sourceEdge.Leaf);
             if (targetEdge.Root != root || targetEdge.Leaf != leaf) {
                 
-                bool isEdgeVisible = targetGraph.One.Contains(targetEdge);
-                bool makeEdgeVisible = targetGraph.One.Contains(root) && targetGraph.One.Contains(leaf);
+                bool isEdgeVisible = TargetGraph.One.Contains(targetEdge);
+                bool makeEdgeVisible = TargetGraph.One.Contains(root) && TargetGraph.One.Contains(leaf);
 
                 if (targetEdge.Root != root) {
                     if (makeEdgeVisible)
-                        targetGraph.ChangeEdge(targetEdge, root, true);
+                        TargetGraph.ChangeEdge(targetEdge, root, true);
                     else
-                        targetGraph.Two.ChangeEdge(targetEdge, root, true);
+                        TargetGraph.Two.ChangeEdge(targetEdge, root, true);
                 }
 
                 if (targetEdge.Leaf != leaf) {
                     if (makeEdgeVisible)
-                        targetGraph.ChangeEdge(targetEdge, leaf, false);
+                        TargetGraph.ChangeEdge(targetEdge, leaf, false);
                     else
-                        targetGraph.Two.ChangeEdge(targetEdge, leaf, false);
+                        TargetGraph.Two.ChangeEdge(targetEdge, leaf, false);
                 }
 
 
                 if (makeEdgeVisible) {
                     List<IEdgeWidget> changeList = new List<IEdgeWidget>();
                     changeList.Add(targetEdge);
-                    changeList.AddRange(targetGraph.Two.Twig(targetEdge));
+                    changeList.AddRange(TargetGraph.Two.Twig(targetEdge));
 
                     foreach (IEdgeWidget edge in changeList) {
-                        bool showTwig = (target.Contains(edge.Root) && target.Contains(edge.Leaf));
+                        bool showTwig = (Target.Contains(edge.Root) && Target.Contains(edge.Leaf));
 
                         bool doAdd = ( edge == targetEdge && !isEdgeVisible ) ||
-                                     ( !targetGraph.One.Contains (edge) && showTwig );
+                                     ( !TargetGraph.One.Contains (edge) && showTwig );
 
                         if (doAdd) {
-                            targetGraph.One.Add(edge);
+                            TargetGraph.One.Add(edge);
                             if (edge.Shape == null) {
-                                target.Requests.Add(new LayoutCommand<IWidget>(edge, LayoutActionType.Invoke));
+                                Target.Requests.Add(new LayoutCommand<IWidget>(edge, LayoutActionType.Invoke));
                             } else {
                                 edge.Size = SizeI.Empty;
                             }
                         }
                         if (showTwig || edge==targetEdge)
-                            target.Requests.Add(new LayoutCommand<IWidget>(edge, LayoutActionType.Justify));
+                            Target.Requests.Add(new LayoutCommand<IWidget>(edge, LayoutActionType.Justify));
                     }
                 } else {
-                    ICollection<IEdgeWidget> changeList = new List<IEdgeWidget>(targetGraph.One.Twig(targetEdge));
+                    ICollection<IEdgeWidget> changeList = new List<IEdgeWidget>(TargetGraph.One.Twig(targetEdge));
                     changeList.Add(targetEdge);
                     foreach (IEdgeWidget edge in changeList) {
-                        targetGraph.One.Remove(edge);
-                        target.Requests.Add(new RemoveBoundsCommand<IWidget, IEdgeWidget>(edge, target));
+                        TargetGraph.One.Remove(edge);
+                        Target.Requests.Add(new RemoveBoundsCommand<IWidget, IEdgeWidget>(edge, Target));
                     }
                 }
                 //foreach (IEdgeWidget edge in target.Twig(targetEdge)) {
@@ -160,7 +160,7 @@ namespace Limaki.Presenter.Widgets.UI {
         }
 
         public virtual void GraphChanged(IWidget sourceItem, GraphChangeType changeType) {
-            IWidget item = lookUp(sourceItem);
+            IWidget item = LookUp(sourceItem);
             if (item != null) {
                 if (changeType == GraphChangeType.Remove) {
                     Remove(item);

@@ -17,6 +17,9 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Common;
 using Limaki.Presenter.UI;
+using System;
+using System.Collections.Generic;
+using Limaki.Actions;
 
 
 namespace Limaki.Presenter.Display {
@@ -88,6 +91,38 @@ namespace Limaki.Presenter.Display {
 
         public virtual IGraphItemRenderer<TItem, TEdge> GraphItemRenderer { get; set; }
 
+        public event EventHandler<GraphSceneEventArgs<TItem, TEdge>> SceneFocusChanged = null;
+        protected GraphSceneEventArgs<TItem, TEdge> focusChangedEventArgs = null;
+        public virtual void SceneFocusChangedCallback(IGraphScene<TItem, TEdge> scene, TItem widget) {
+            if (SceneFocusChanged != null) {
+                focusChangedEventArgs = new GraphSceneEventArgs<TItem, TEdge>(scene, widget);
+            }
+        }
+
+        public virtual void OnSceneFocusChanged() {
+            if (SceneFocusChanged != null && focusChangedEventArgs != null) {
+                int start = Environment.TickCount;
+
+                SceneFocusChanged(this, focusChangedEventArgs);
+                focusChangedEventArgs = null;
+
+                //int now = Environment.TickCount;
+                //System.Console.Out.WriteLine("Start/Elapsed FocusChanged:\t" + start+"/"+(now - start));
+
+                foreach (KeyValuePair<Type, IAction> action in this.EventControler.Actions) {
+                    if (action.Value is MouseTimerActionBase) {
+                        ((MouseTimerActionBase)action.Value).LastMouseTime = 0;
+                    }
+                }
+            }
+        }
+
+        public override void DataChanged() {
+            base.DataChanged();
+            if (this.Data != null) {
+                this.Data.FocusChanged += SceneFocusChangedCallback;
+            }
+        }
         public override bool Check() {
             if (this.Layout == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IGraphLayout<TItem, TEdge>));

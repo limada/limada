@@ -28,11 +28,11 @@ namespace Limada.Presenter {
 
 
         public bool IsSearchable(Scene scene) {
-            return scene != null && new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(scene.Graph) != null;
+            return scene != null && GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(scene.Graph) != null;
         }
 
         public void LoadSearch(Scene scene, IGraphLayout<IWidget,IEdgeWidget> layout, object name) {
-            var graph = new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink> (scene.Graph);
+            var graph = GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink> (scene.Graph);
             
             if (graph==null) {
                 throw new ArgumentException ("Search works only on ThingGraphs");
@@ -46,7 +46,7 @@ namespace Limada.Presenter {
                         orderby widget.Data.ToString()
                         select widget;
 
-            new SceneFacade(delegate() { return scene; }, layout).Add(widgets, false, true);
+            new GraphSceneFacade<IWidget, IEdgeWidget>(delegate() { return scene; }, layout).Add(widgets, false, true);
 
             scene.ClearSpatialIndex();
         }

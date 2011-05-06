@@ -83,14 +83,21 @@ namespace Limaki.UseCases.Viewers.ToolStrips {
 
         public void ZoomState(ZoomState zoomState) {
             var display = this.CurrentDisplay;
+            var currentControl = this.Control;
             if (display == null) {
                 return;
             }
 
             // is some editor in action?? then do nothing
             if (display.ActiveControl == null) {
-                display.ZoomState = zoomState;
-                display.Viewport.UpdateZoom();
+                if (currentControl == display && display != null) {
+                    display.ZoomState = zoomState;
+                    display.Viewport.UpdateZoom();
+                } else if (currentControl is IZoomTarget) {
+                    var zoomTarget = currentControl as IZoomTarget;
+                    zoomTarget.ZoomState = zoomState;
+                    zoomTarget.UpdateZoom();
+                }
             }
 
         }
@@ -109,10 +116,12 @@ namespace Limaki.UseCases.Viewers.ToolStrips {
                 }
             } else if (currentControl is IZoomTarget) {
                 IZoomTarget zoomTarget = currentControl as IZoomTarget;
+                zoomTarget.ZoomState = Limaki.Drawing.ZoomState.Custom;
                 if (zoomIn)
                     zoomTarget.ZoomFactor = zoomTarget.ZoomFactor * 1.1f;
                 else
                     zoomTarget.ZoomFactor = zoomTarget.ZoomFactor / 1.1f;
+                zoomTarget.UpdateZoom();
             }
         }
 

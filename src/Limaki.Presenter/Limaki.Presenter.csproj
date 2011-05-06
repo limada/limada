@@ -155,6 +155,7 @@
     <Compile Include="Presenter\UI\IEditAction.cs" />
     <Compile Include="Presenter\UI\MoveResizeRendererBase.cs" />
     <Compile Include="Presenter\UI\SelectionRendererBase.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphSceneEventArgs.cs" />
     <Compile Include="UseCases\UseCase.cs" />
     <Compile Include="UseCases\UseCaseFactory.cs" />
     <Compile Include="UseCases\Viewers\DialogResult.cs" />
@@ -173,8 +174,10 @@
     <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\WebContent.cs" />
     <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\WebProxyContent.cs" />
     <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\WebServer.cs" />
-    <Compile Include="UseCases\Viewers\StreamViewProvider.cs" />
+    <Compile Include="UseCases\Viewers\ContentViewManager.cs" />
     <Compile Include="UseCases\Viewers\TextOkCancelBoxEventArgs.cs" />
+    <Compile Include="UseCases\Viewers\ThingViewerController.cs" />
+    <Compile Include="UseCases\Viewers\ThingContentViewProviders.cs" />
     <Compile Include="UseCases\Viewers\ToolStrips\DisplayToolController.cs" />
     <Compile Include="UseCases\Viewers\ToolStrips\IDisplayTool.cs" />
     <Compile Include="UseCases\Viewers\ToolStrips\ILayoutTool.cs" />
@@ -212,7 +215,6 @@
     <Compile Include="Presenter\Widgets\Display\WidgetDisplayFactory.cs" />
     <Compile Include="Presenter\Widgets\Display\WidgetDisplayComposer.cs" />
     <Compile Include="Presenter\Widgets\Layout\ArrangerLayout.cs" />
-    <Compile Include="Presenter\Widgets\Layout\SceneFacade.cs" />
     <Compile Include="Presenter\Widgets\Layout\WidgetLayout.cs" />
     <Compile Include="Presenter\Widgets\UI\AddEdgeAction.cs" />
     <Compile Include="Presenter\IControl.cs" />
@@ -264,6 +266,8 @@
     <Compile Include="RTF\RTFHelper.cs" />
     <Compile Include="Limada\View\ISceneProvider.cs" />
     <Compile Include="Drawing\IGraphScene.cs" />
+    <Compile Include="UseCases\Viewers\ViewerController.cs" />
+    <Compile Include="UseCases\Viewers\ContentViewProviders.cs" />
     <Compile Include="Widgets\ISheetManager.cs" />
     <Compile Include="Limada\View\WidgetThingAdapter.cs" />
     <Compile Include="Limada\View\WidgetThingGraph.cs" />

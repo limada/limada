@@ -56,7 +56,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
             get { return Control as IWebBrowser; }
         }
 
-        public override bool CanView(long streamType) {
+        public override bool Supports(long streamType) {
             return streamType == StreamTypes.HTML;
         }
 

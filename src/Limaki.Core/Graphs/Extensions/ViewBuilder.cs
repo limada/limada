@@ -22,14 +22,14 @@ namespace Limaki.Graphs.Extensions {
     /// uses a walker to iterate through subgraphs of an item
     /// Add and Remove are performed on the Changes-Collection
     /// </summary>
-    public class ViewBuilder<TITem,TEdge>
-        where TEdge:TITem,IEdge<TITem> {
+    public class ViewBuilder<TITem, TEdge>
+        where TEdge : TITem, IEdge<TITem> {
 
         public IGraph<TITem, TEdge> View;
         public ICollection<TITem> Changes = new Set<TITem>();
         public ICollection<TITem> NoTouch = new Set<TITem>();
 
-        public ViewBuilder (IGraph<TITem, TEdge> graph) {
+        public ViewBuilder(IGraph<TITem, TEdge> graph) {
             this.View = graph;
         }
 
@@ -60,7 +60,7 @@ namespace Limaki.Graphs.Extensions {
         }
 
         public virtual bool Remove(TITem curr) {
-            bool result = ! Changes.Contains(curr) && ! NoTouch.Contains(curr);
+            bool result = !Changes.Contains(curr) && !NoTouch.Contains(curr);
             if (result) {
                 Changes.Add(curr);
             }
@@ -70,20 +70,20 @@ namespace Limaki.Graphs.Extensions {
         public virtual void Remove(IEnumerable<LevelItem<TITem>> remove) {
             foreach (LevelItem<TITem> item in remove) {
                 this.Remove(item.Node);
-            }  
+            }
         }
 
         public virtual bool NeverRemove(TITem curr) {
             bool result = NoTouch.Contains(curr);
             if (!result)
-                NoTouch.Add (curr);
+                NoTouch.Add(curr);
             return result;
         }
 
         public void RemoveCollapsed(TITem root, IGraph<TITem, TEdge> data) {
             Walker<TITem, TEdge> walker = new Walker<TITem, TEdge>(data);
-            foreach (LevelItem<TITem> item in walker.CollapseWalk(root,0)) {
-                this.Remove (item.Node);
+            foreach (LevelItem<TITem> item in walker.CollapseWalk(root, 0)) {
+                this.Remove(item.Node);
             }
         }
 
@@ -102,5 +102,5 @@ namespace Limaki.Graphs.Extensions {
             }
         }
 
-        }
+    }
 }

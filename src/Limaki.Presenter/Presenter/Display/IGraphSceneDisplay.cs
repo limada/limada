@@ -15,11 +15,14 @@
 
 using Limaki.Graphs;
 using Limaki.Drawing;
+using System;
+using Limaki.Presenter.UI;
 
 namespace Limaki.Presenter.Display {
     public interface IGraphSceneDisplay<TItem, TEdge>:IDisplay<IGraphScene<TItem,TEdge>>
     where TEdge : TItem, IEdge<TItem> {
         IGraphLayout<TItem, TEdge> Layout { get; set; }
-
+        event EventHandler<GraphSceneEventArgs<TItem, TEdge>> SceneFocusChanged;
+        void OnSceneFocusChanged();
     }
 }

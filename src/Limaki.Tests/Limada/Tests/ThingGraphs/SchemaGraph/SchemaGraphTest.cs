@@ -29,8 +29,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
 
     public class SchemaGraphTest : SchemaGraphTestBase {
         public virtual void TestFindRoots(IThing described, IThing description, ILink descriptionLink) {
-            GraphPairFacade<IThing, ILink> facade = new GraphPairFacade<IThing, ILink>();
-            foreach (IThing item in facade.FindRoots(Graph, described)) {
+            foreach (IThing item in GraphPairExtension<IThing, ILink>.FindRoots(Graph, described)) {
                 Assert.IsFalse(item.Equals(descriptionLink), descriptionLink.ToString());
                 Assert.IsFalse(item.Equals(description), description.ToString());
             } 
@@ -100,7 +99,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
         [Test]
         public virtual void FindRootsTest() {
             if (Graph != null) {
-                foreach (IThing item in new GraphPairFacade<IThing, ILink>().FindRoots(Graph, null)) {
+                foreach (IThing item in GraphPairExtension<IThing, ILink>.FindRoots(Graph, null)) {
                     if (!Graph.IsMarker(item))
                         ;
                 }

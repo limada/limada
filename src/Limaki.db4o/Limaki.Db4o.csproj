@@ -54,12 +54,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Db4objects.Db4o">
-      <HintPath>..\..\3rdParty\bin\db4o\Db4objects.Db4o.dll</HintPath>
-    </Reference>
-    <Reference Include="Db4objects.Db4o.Linq">
-      <HintPath>..\..\3rdParty\bin\db4o\Db4objects.Db4o.Linq.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -68,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Limada.Data\Data\db4o\Db4oRepairer.cs" />
     <Compile Include="Limada.Data\Db4oThingGraphProvider.cs" />
     <Compile Include="Limaki.Data\db4o\Gateway.cs" />
     <Compile Include="Limaki.Data\db4o\Graph.cs" />
@@ -81,6 +76,14 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq-2010.csproj">
+      <Project>{23531440-0922-43EB-A483-6592FFC2F093}</Project>
+      <Name>Db4objects.Db4o.Linq-2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o\Db4objects.Db4o-2010.csproj">
+      <Project>{600CD3BF-2ED2-4183-87F7-ADD78A968AE0}</Project>
+      <Name>Db4objects.Db4o-2010</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
       <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
       <Name>Limaki.Core</Name>

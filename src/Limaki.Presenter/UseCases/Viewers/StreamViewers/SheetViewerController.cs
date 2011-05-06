@@ -44,7 +44,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
             get { return SheetControl; }
         }
 
-        public override bool CanView(long streamType) {
+        public override bool Supports(long streamType) {
             return streamType == StreamTypes.LimadaSheet;
         }
 

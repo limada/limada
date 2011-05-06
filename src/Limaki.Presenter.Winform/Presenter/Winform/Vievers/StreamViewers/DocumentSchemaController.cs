@@ -1,0 +1,147 @@
+﻿using System.Drawing;
+using System.Linq;
+using Limada.UseCases;
+using Limaki.Common;
+using Limaki.Presenter.Display;
+using Limaki.Presenter.UI;
+using Limaki.Presenter.Widgets.UI;
+using Limaki.Widgets;
+using Limaki.UseCases.Viewers;
+using Limada.Model;
+using Limada.Schemata;
+using Limaki.Graphs;
+using Limaki.Presenter.Widgets;
+using Limada.View;
+
+namespace Limaki.Presenter.Winform.Controls {
+    public class DocumentSchemaController:ThingViewerController {
+        public IGraphSceneDisplay<IWidget, IEdgeWidget> GraphSceneDisplay { get; set; }
+        public IDisplay<Image> ImageDisplay { get; set; }
+
+        public virtual void Compose() {
+            // link GraphSceneDisplay with ImageDisplay:
+            GraphSceneDisplay.SceneFocusChanged += (s, e) => {
+                var docMan = new DocumentSchemaManager();
+                var pageStream = docMan.PageStream(e.Scene.Graph, e.Item);
+                if (pageStream != null) {
+                    var stream = pageStream.Data;
+                    if (stream != null)
+                        ImageDisplay.Data = Image.FromStream(stream);
+                    else
+                        ImageDisplay.Data = null;
+                }
+            };
+
+           
+
+            Adjust(GraphSceneDisplay);
+
+            ImageDisplay.ZoomState = Drawing.ZoomState.FitToWidth;
+
+        }
+
+        public int GetDefaultWidth() {
+            var utils = Registry.Pool.TryGetCreate<Limaki.Drawing.IDrawingUtils>();
+            var size = utils.GetTextDimension("".PadLeft(padding, '9'), DefaultStyleSheet.DefaultStyle);
+            return (int)(size.Width + 32);
+        }
+
+        Limaki.Drawing.IStyleSheet _defaultStyleSheet = null;
+        public Limaki.Drawing.IStyleSheet DefaultStyleSheet {
+            get {
+                if (_defaultStyleSheet == null) {
+                    var styleSheets = Registry.Pool.TryGetCreate<Limaki.Drawing.StyleSheets>();
+                    _defaultStyleSheet = styleSheets["WhiteGlass"];
+                }
+                return _defaultStyleSheet;
+            }
+        }
+
+        Limaki.Drawing.SizeI Distance { get; set; }
+        public void Adjust(IGraphSceneDisplay<IWidget, IEdgeWidget> display) {
+            var layout = display.Layout;
+            Distance = new Limaki.Drawing.SizeI(0, -5);
+            layout.StyleSheet = DefaultStyleSheet;
+
+            var action = display.EventControler.GetAction<GraphItemMoveResizeAction<IWidget, IEdgeWidget>>();
+            display.EventControler.Remove(action);
+
+            var focusAction = GraphSceneDisplay.EventControler.GetAction<GraphSceneFocusAction<IWidget, IEdgeWidget>>();
+            if (focusAction != null)
+                focusAction.HitSize = -1;
+        }
+
+        private int padding = 4;
+        public override void SetContent(IGraph<IWidget,IEdgeWidget> sourceGraph, IWidget sourceDocument) {
+            var display = this.GraphSceneDisplay;
+            // bring the docpages into view:
+            var docManager = new DocumentSchemaManager();
+            var scene = new Scene();
+            var targetGraph = new WiredDisplays().CreateTargetGraph(sourceGraph);
+            scene.Graph = targetGraph;
+            this.GraphSceneDisplay.Data = scene;
+
+            var doc = sourceGraph.ThingOf(sourceDocument);
+            var targetDocument = targetGraph.WidgetOf(doc);
+
+            // get the pages and add them to sceneView:
+            var pages = docManager.Pages(targetGraph, targetDocument).ToArray();
+            foreach (var page in pages)
+                page.Data = page.Data.ToString().PadLeft(padding);
+
+            var distance = display.Layout.Distance;
+            display.Layout.Distance = this.Distance;
+            var facade = new GraphSceneFacade<IWidget, IEdgeWidget>(() => display.Data, display.Layout);
+            //facade.OrderBy = (w) => w.Data.ToString().PadLeft(padding);
+            facade.Add(pages, true, true);
+
+
+            display.DataId = 0;
+            new State { Hollow = true }.CopyTo(display.State);
+            display.Text = sourceDocument.Data.ToString();
+            display.Viewport.Reset();
+            display.DeviceRenderer.Render();
+
+            // show first page:
+            var firstPage = pages.FirstOrDefault();
+            if (firstPage != null) {
+                scene.Focused = firstPage;
+                display.OnSceneFocusChanged();
+            }
+            display.Execute();
+            // wrong: display.Layout.Distance = distance;
+            // TODO: Layout.Margin (Top,Left) and Layout.Padding (distance between widgets)
+        }
+
+        DocumentSchemaControl _control = null;
+        public override object Control {
+            get {
+                if (_control == null) {
+                    _control = new DocumentSchemaControl(this);
+                    OnAttach(_control);
+                }
+                return _control;
+            }
+        }
+
+        public override void Clear() {
+            var control = _control as DocumentSchemaControl;
+            if (control != null) {
+                control.GraphSceneDisplay.Data = null;
+                control.ImageDisplay.Data = null;
+            }
+            base.Clear();
+        }
+
+        public override void Dispose() {
+            Clear();
+        }
+
+        public override bool Supports(Graphs.IGraph<IWidget, IEdgeWidget> graph, IWidget widget) {
+            var docManager = new DocumentSchemaManager();
+            return docManager.HasPages(graph, widget);
+        }
+
+        
+    }
+}

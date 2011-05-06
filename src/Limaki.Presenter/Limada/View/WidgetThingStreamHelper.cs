@@ -29,7 +29,7 @@ namespace Limada.View {
             
             IWidget result = null;
             var sourceGraph =
-                new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(graph);
+                GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(graph);
 
             if (sourceGraph != null) {
                 var thingGraph = graph.ThingGraph();
@@ -55,7 +55,7 @@ namespace Limada.View {
 
         public StreamInfo<Stream> GetStream(IGraph<IWidget, IEdgeWidget> graph, IWidget widget) {
              var sourceGraph =
-                new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(graph);
+                GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(graph);
 
              if (sourceGraph != null) {
                  var thingGraph = graph.ThingGraph();

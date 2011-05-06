@@ -98,5 +98,9 @@ namespace Limaki.Data {
         public static string ToFileName(DataBaseInfo dataBaseInfo) {
             return dataBaseInfo.Path+dataBaseInfo.Name+dataBaseInfo.Extension;
         }
+        public override string ToString() {
+            return (this.Path ?? "") + (this.Name ?? "") + (this.Extension ?? "");
+           
+        }
     }
 }

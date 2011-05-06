@@ -24,7 +24,7 @@ namespace Limada.View {
             SchemaFacade.MakeMarkersUnique(thingGraph);
 
             IThingGraph schemaGraph = thingGraph;
-            if (useSchema) {
+            if (useSchema && !(thingGraph is SchemaThingGraph)) {
                 schemaGraph = new SchemaThingGraph(this.ThingGraph);
             }
 
@@ -70,6 +70,10 @@ namespace Limada.View {
             } catch (Exception ex) {
                 Registry.Pool.TryGetCreate<IExceptionHandler>()
                     .Catch(new Exception("Open failed: " + ex.Message, ex),MessageType.OK);
+                try {
+                    Provider.Close();
+                } catch{}
+
                 return false;
 
             }
@@ -102,7 +106,7 @@ namespace Limada.View {
 
         public virtual void SaveCurrent() {
             if (Scene != null) {
-                var widgetThingGraph = new GraphPairFacade<IWidget, IEdgeWidget>()
+                var widgetThingGraph =  GraphPairExtension<IWidget, IEdgeWidget>
                     .Source<IThing, ILink>(this.Scene.Graph);
                 if (widgetThingGraph != null) {
                     widgetThingGraph.Mapper.ConvertOneTwo();
@@ -141,7 +145,7 @@ namespace Limada.View {
         }
 
         public virtual void Export(Scene scene, IThingGraph target) {
-            var graph = new GraphPairFacade<IWidget, IEdgeWidget>()
+            var graph =  GraphPairExtension<IWidget, IEdgeWidget>
                 .Source<IThing, ILink>(scene.Graph);
 
             if (graph != null) {

@@ -67,12 +67,12 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
             set { _display = value; }
         }
-        
-        protected SceneFacade _sceneFacade;
-        public virtual SceneFacade SceneFacade {
+
+        protected GraphSceneFacade<IWidget, IEdgeWidget> _sceneFacade;
+        public virtual GraphSceneFacade<IWidget, IEdgeWidget> SceneFacade {
             get {
                 if (_sceneFacade == null) {
-                    _sceneFacade = new SceneFacade(() => this.Scene, Display.Layout);
+                    _sceneFacade = new GraphSceneFacade<IWidget, IEdgeWidget>(() => this.Scene, Display.Layout);
                 }
                 return _sceneFacade;
 

@@ -57,7 +57,7 @@ namespace Limada.Model {
             ((ILink<Id>)this).Leaf = leaf;
         }
 
-        //[Transient]
+        
         IThing _root = null;
         [Transient]
         public IThing Root {
@@ -65,7 +65,7 @@ namespace Limada.Model {
             set { setThing (ref _rootId, ref _root, value); }
         }
 
-        //[Transient]
+       
         IThing _leaf = null;
         [Transient]
         public IThing Leaf {
@@ -73,7 +73,7 @@ namespace Limada.Model {
             set { setThing(ref _leafId, ref _leaf, value); }
         }
 
-        //[Transient]
+        
         IThing _marker = null;
         [Transient]
         public IThing Marker {

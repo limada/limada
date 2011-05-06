@@ -33,7 +33,10 @@ namespace Limaki.App {
             factory.Instrument(useCase);
 
             var testCases = new TestCases();
-            testCases.testMessage = (s, m) => deviceInstrumenter.StatusLabel.Text = m;
+            testCases.testMessage = (s, m) => {
+                                        deviceInstrumenter.StatusLabel.Text = m;
+                                        Application.DoEvents();
+                                    };
             testCases.CreateTestCases(useCase, deviceInstrumenter);
 
             useCase.Start();

@@ -36,7 +36,7 @@ namespace Limaki.Presenter.Display {
             
             var context = Registry.ConcreteContext;
 
-            StyleSheets styleSheets = context.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = context.Pool.TryGetCreate<StyleSheets>();
             display.StyleSheet = styleSheets.DefaultStyleSheet;
 
 

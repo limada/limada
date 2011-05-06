@@ -54,7 +54,7 @@ using Limaki.UseCases.Viewers;namespace Limaki.UseCases.Winform.Viewers.StreamVi
             set { _imageStreamTypes = value; }
         }
 
-        public override bool CanView(long streamType) {
+        public override bool Supports(long streamType) {
             return ImageStreamTypes.Contains(streamType);
         }
 

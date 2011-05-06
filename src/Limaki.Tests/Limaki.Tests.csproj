@@ -54,14 +54,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Db4objects.Db4o, Version=8.0.184.15484, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\3rdParty\bin\db4o\Db4objects.Db4o.dll</HintPath>
-    </Reference>
-    <Reference Include="Db4objects.Db4o.Linq, Version=8.0.184.15484, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\3rdParty\bin\db4o\Db4objects.Db4o.Linq.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -94,7 +86,9 @@
     <Compile Include="Limada\Tests\Model\DocumentSchemaTestFactory.cs" />
     <Compile Include="Limada\Tests\Model\ThingFactoryTest.cs" />
     <Compile Include="Limada\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraphs\Db4oRepairTest.cs" />
     <Compile Include="Limada\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
+    <Compile Include="Limada\Tests\ThingGraphs\ReportingTest.cs" />
     <Compile Include="Limada\Tests\ThingGraphs\SchemaGraph\SchemaGraphPerformanceTest.cs" />
     <Compile Include="Limada\Tests\ThingGraphs\SchemaGraph\SchemaGraphTest.cs" />
     <Compile Include="Limada\Tests\ThingGraphs\StreamThingTest.cs" />
@@ -158,6 +152,7 @@
     <Compile Include="Tests\Common\FactoryTest.cs" />
     <Compile Include="Tests\Sandbox\HTML\HtmlNextTest.cs" />
     <Compile Include="Tests\Sandbox\HTML\HtmlTestData.cs" />
+    <Compile Include="Tests\Sandbox\Linqish\ExpressionExploration.cs" />
     <Compile Include="Tests\View\Drawing\PoligonAlgoTest.cs" />
     <Compile Include="Tests\View\Drawing\ViewSerialisationTest.cs" />
     <Compile Include="Tests\Graph\Basic\BasicGraphTests.cs" />
@@ -205,6 +200,14 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq-2010.csproj">
+      <Project>{23531440-0922-43EB-A483-6592FFC2F093}</Project>
+      <Name>Db4objects.Db4o.Linq-2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o\Db4objects.Db4o-2010.csproj">
+      <Project>{600CD3BF-2ED2-4183-87F7-ADD78A968AE0}</Project>
+      <Name>Db4objects.Db4o-2010</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
       <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
       <Name>Limaki.Core</Name>

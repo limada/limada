@@ -32,7 +32,7 @@ using Limaki.Tests.Presenter.Display;
 using Limaki.Tests.Presenter.GDI;
 using Limaki.Tests.Presenter.Winform;
 using Limaki.Tests.Widget;
-#if ! MONO
+#if WCF
 using Limaki.WCF.Data;
 #endif
 using Limaki.Widgets;
@@ -64,11 +64,17 @@ namespace Limaki.Tests.UseCases {
             };
 
             composer.MenuStrip.Items.AddRange(
+
             new ToolStripMenuItem[] {
-                new ToolStripMenuItem("Test", null, new ToolStripMenuItem[] {
-                                        new ToolStripMenuItem("Open Testcase...", null, (s, e) => {
-                                            this.ExampleOpen (useCase);
-                                        }),
+           
+            new ToolStripMenuItem("Test", null, new ToolStripMenuItem[] {
+
+            new ToolStripMenuItem("Repair Database", null, (s, e) => {
+                this.RepairDatabase(useCase);
+            }), 
+            new ToolStripMenuItem("Open Testcase...", null, (s, e) => {
+                this.ExampleOpen (useCase);
+            }),
             new ToolStripMenuItem("Selector", null, (s, e) => {
                 var test = displayTest ();
                 test.RunSelectorTest ();
@@ -141,7 +147,7 @@ namespace Limaki.Tests.UseCases {
         }
 
         public void WCFServiceTest(UseCase sender) {
-#if ! MONO
+#if WCF
             DataBaseInfo info = new DataBaseInfo();
             info.Server = "http://localhost";
             info.Port = 8000;
@@ -206,6 +212,25 @@ namespace Limaki.Tests.UseCases {
                 threadTest.Run();
             }
 
+        }
+
+        public void RepairDatabase(UseCase sender) {
+            sender.FileManager.DefaultDialogValues(sender.FileManager.OpenFileDialog);
+            if (sender.FileDialogShow(sender.FileManager.OpenFileDialog, true) == Limaki.UseCases.Viewers.DialogResult.OK) {
+                sender.SaveChanges();
+                sender.FileManager.Close();
+                sender.FileManager.ShowEmptyThingGraph();
+                var file = sender.FileManager.OpenFileDialog.FileName;
+                var fileInfo = DataBaseInfo.FromFileName(file);
+                if (fileInfo.Extension==".limo") {
+                    var repairer = new Limada.Data.db4o.Db4oRepairer();
+                    repairer.WriteDetail += testMessage;
+                    var newFile = DataBaseInfo.FromFileName(file);
+                    newFile.Name = "repaired." + newFile.Name;
+                    repairer.ReadAndSaveAs(fileInfo, newFile, true);
+                    sender.FileManager.OpenFile(newFile);
+                }
+            }
         }
 
         public void currentProblem(UseCase sender) {

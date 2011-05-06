@@ -95,19 +95,17 @@ namespace Limada.Tests.Model {
 
             var graphView2 = new GraphView<IGraphItem, IGraphEdge>(graphView, view);
 
-            var facade = new GraphPairFacade<IGraphItem, IGraphEdge>();
-            
-            var result = facade.Source(graphView);
+            var result = GraphPairExtension<IGraphItem, IGraphEdge>.Source(graphView);
             Assert.AreSame(graphView, result);
 
-            result = facade.Source(graphView2);
+            result = GraphPairExtension<IGraphItem, IGraphEdge>.Source(graphView2);
             Assert.AreSame(graphView, result);
 
-            var result2 = facade.Source<IThing, ILink> (graphView);
+            var result2 = GraphPairExtension<IGraphItem, IGraphEdge>.Source<IThing, ILink>(graphView);
             
             Assert.AreSame(data, result2);
 
-            result2 = facade.Source<IThing, ILink>(graphView2);
+            result2 = GraphPairExtension<IGraphItem, IGraphEdge>.Source<IThing, ILink>(graphView2);
 
             Assert.AreSame(data, result2);
         }
@@ -121,10 +119,10 @@ namespace Limada.Tests.Model {
             var graphView1 = new GraphView<IGraphItem, IGraphEdge> (data, new Graph<IGraphItem, IGraphEdge> ());
             var graphView2 = new GraphView<IGraphItem, IGraphEdge>(data, new Graph<IGraphItem, IGraphEdge>());
 
-            var facade = new GraphPairFacade<IGraphItem, IGraphEdge>();
+            
 
             foreach (IGraphItem ping in graphView1.Two) {
-                IGraphItem back = facade.LookUp<IThing, ILink> (graphView1, graphView2, ping);
+                IGraphItem back = GraphPairExtension<IGraphItem, IGraphEdge>.LookUp<IThing, ILink>(graphView1, graphView2, ping);
                 Assert.IsNotNull (back);
                 Assert.AreSame (ping, back);
             }
@@ -136,7 +134,7 @@ namespace Limada.Tests.Model {
             graphView2 = new GraphView<IGraphItem, IGraphEdge>(data, new Graph<IGraphItem, IGraphEdge>());
             
             foreach (IGraphItem ping in graphView1.Two) {
-                IGraphItem back = facade.LookUp<IThing, ILink>(graphView1, graphView2, ping);
+                IGraphItem back = GraphPairExtension<IGraphItem, IGraphEdge>.LookUp<IThing, ILink>(graphView1, graphView2, ping);
                 Assert.IsNotNull(back);
                 Assert.AreNotSame(ping, back);
                 Assert.AreEqual (ping.ToString(), back.ToString());

@@ -109,16 +109,15 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
                 // data is sent from another control
                 else if (data.control is IDisplayDevice<IGraphScene<IWidget,IEdgeWidget>>) {// the other control has a Scene
-                    GraphPairFacade<IWidget, IEdgeWidget> facade = new GraphPairFacade<IWidget, IEdgeWidget>();
-                    IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget> targetGraph =
+                    var targetGraph =
                         scene.Graph as IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget>;
 
 					var display = ((IDisplayDevice)data.control).Display as IDisplay<IGraphScene<IWidget,IEdgeWidget>>;
-                    IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget> sourceGraph =
+                    var sourceGraph =
                         display.Data.Graph as IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget>;
 
                     if (targetGraph != null && sourceGraph != null) {
-                        IWidget sourceitem = GetWidget(dataObject, sourceGraph, true);
+                        var sourceitem = GetWidget(dataObject, sourceGraph, true);
 
                         item = GraphMapping.Mapping.LookUp<IWidget, IEdgeWidget>(sourceGraph, targetGraph, sourceitem);
 

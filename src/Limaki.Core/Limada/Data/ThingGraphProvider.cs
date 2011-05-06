@@ -41,7 +41,7 @@ namespace Limada.Data {
         }
 
         public void ReadIntoList(ICollection<IThing> things, IGraph<IThing, ILink> view) {
-            var graph = new GraphPairFacade<IThing, ILink>().Source(view);
+            var graph = GraphPairExtension<IThing, ILink>.Source(view);
 
             if (graph != null) {
                 foreach (var thing in view) {
@@ -70,7 +70,7 @@ namespace Limada.Data {
         }
 
         public virtual void Export(IGraph<IThing, ILink> view, IThingGraph target) {
-            var graph = new GraphPairFacade<IThing, ILink>().Source(view);
+            var graph = GraphPairExtension<IThing, ILink>.Source(view);
             if (graph != null) {
                 var source = graph.Two as IThingGraph;
                 var things = new List<IThing>();

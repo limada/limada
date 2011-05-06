@@ -66,14 +66,14 @@ namespace Limada.Data.db4o {
         protected override void ConfigureType(Type type) {
             IObjectClass clazz = Configuration.ObjectClass(type);
             clazz.MaximumActivationDepth(15);
-            clazz.UpdateDepth(0);
+            clazz.UpdateDepth(1);
             
             if ( Reflector.Implements(type, typeof(IThing)) || 
                  Reflector.Implements(type, typeof(IRealData<Id>)) ) {
 
                 clazz.ObjectField("_id").Indexed(true);
                 var writeDate = clazz.ObjectField("_writeDate");
-                if(writeDate!=null)
+                if (writeDate != null)
                     writeDate.Rename("_changeDate");
                 // the following makes errors on closing (sometimes): see Gateway.Close(); this.Flush();
                 // Configuration.Add(new UniqueFieldValueConstraint(type, "_id"));
@@ -329,7 +329,7 @@ namespace Limada.Data.db4o {
         }
 
         public virtual ICollection<IThing> Markers() {
-            ICollection<IThing> result = new Set<IThing>();
+            var result = new Set<IThing>();
             foreach (Id id in markerVisitor.Ids) {
                 IThing marker = GetById (id);
                 if (marker != null) {
@@ -346,11 +346,11 @@ namespace Limada.Data.db4o {
         public virtual IThing GetById(Id id) {
             IThing result = null;
             try {
-                IQuery query = Session.Query();
+                var query = Session.Query();
                 // Attention! Here we use Thing and NOT IThing as of query-index-usage
                 query.Constrain(typeof(Thing));
                 query.Descend("_id").Constrain(id);
-                IObjectSet set = query.Execute();
+                var set = query.Execute();
                 if (set.HasNext())
                     result = set.Next() as IThing;
             } catch (Exception e) {
@@ -372,13 +372,16 @@ namespace Limada.Data.db4o {
         }
 
         public IEnumerable<IThing> GetByData(object data) {
-           try {
-                IQuery query = Session.Query();
+            try {
+                var query = Session.Query();
                 // Attention! Here we use Thing and NOT IThing as of query-index-usage
                 query.Constrain(typeof(Thing));
                 query.Descend("_data").Constrain(data);
-                IObjectSet set = query.Execute();
-                return new NativeQueryWrapper<IThing>(set);
+                var set = query.Execute();
+                return set.Cast<IThing>();
+                // not working:
+                //var result = Session.AsQueryable<IThing>().Where(e => e.Data != null && e.Data==data);
+                //return result.Cast<IThing>();
             } catch (Exception e) {
                 throw e;
             } finally { }
@@ -389,26 +392,11 @@ namespace Limada.Data.db4o {
                 return GetByData (data);
             else {
                 if (data is string) {
-                    ICollection<IThing> things = new List<IThing> ();
-                    string search = ( (string) data ).ToLower ();
-                    DataVisitor<string> visitor = new DataVisitor<string>(){
-                        session = this.Session,
-                        storedClass = typeof(Thing<string>),
-                        comparer = delegate(string s) {
-                                       return s.ToLower ().StartsWith (search);
-                                   }
-                    };
-                    bool found = visitor.Search ();
-                    if (found) {
-                        foreach(string s in visitor.searchResults) {
-                           foreach(IThing thing in GetByData(s)) {
-                               things.Add (thing);
-                           }
-                        }
-                    }
-                    return things;
+                    string search = ((string)data).ToLower();
+                    var result = Session.AsQueryable<IThing<string>>().Where(e => e.Data != null && e.Data.ToLower().StartsWith(search));
+                    return result.Cast<IThing>();
                 }
-                throw new ArgumentException (data.ToString () + "is not searchable");
+                throw new ArgumentException (data.ToString () + " is not searchable");
             }
             return null;
         }
@@ -464,12 +452,6 @@ namespace Limada.Data.db4o {
 
         #endregion
 
-        #region IEnumerable Member
-
-        public new System.Collections.IEnumerator GetEnumerator() {
-            throw new NotImplementedException();
-        }
-
-        #endregion
+       
     }
 }

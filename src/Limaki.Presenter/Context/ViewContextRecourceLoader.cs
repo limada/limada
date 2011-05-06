@@ -44,7 +44,7 @@ namespace Limaki.Context {
 
         public virtual IMarkerFacade<IWidget, IEdgeWidget> MarkerFacade(IGraph<IWidget, IEdgeWidget> graph) {
 
-            if (new GraphPairFacade<IWidget, IEdgeWidget>()
+            if (GraphPairExtension<IWidget, IEdgeWidget>
                     .Source<IThing, ILink>(graph) != null) {
 
                 return new WidgetThingMarkerFacade(graph);

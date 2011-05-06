@@ -28,7 +28,7 @@ namespace Limada.View {
         public static IThingGraph ThingGraph(this IGraph<IWidget, IEdgeWidget> graph) {
             IThingGraph result = null;
 
-            var sourceGraph = new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(graph);
+            var sourceGraph = GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(graph);
 
 
             if (sourceGraph != null && (sourceGraph.Two is IThingGraph)) {
@@ -39,7 +39,7 @@ namespace Limada.View {
 
         public static IThingFactory ThingFactory(this IGraph<IWidget, IEdgeWidget> graph) {
             IThingFactory result = null;
-            var sourceGraph = new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(graph);
+            var sourceGraph = GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(graph);
 
             if (sourceGraph != null) {
                 var thingGraph = sourceGraph.Two as IThingGraph;
@@ -52,13 +52,20 @@ namespace Limada.View {
         }
 
         public static IThing ThingOf(this IGraph<IWidget, IEdgeWidget> source, IWidget widget) {
-            var graph = new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(source);
+            var graph = GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(source);
             if (widget != null && graph != null) {
                 return  graph.Get (widget);
             }
             return null;
         }
 
+        public static IWidget WidgetOf(this IGraph<IWidget, IEdgeWidget> source, IThing thing) {
+            var graph = GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(source);
+            if (thing != null && graph != null) {
+                return graph.Get(thing);
+            }
+            return null;
+        }
         public static object Description(this IGraph<IWidget, IEdgeWidget> source, IWidget widget) {
             return source.ThingGraph().Description(source.ThingOf(widget));
         }
@@ -69,7 +76,7 @@ namespace Limada.View {
 
         public static bool ToggleFilterOnTwo(this IGraph<IWidget, IEdgeWidget> source) {
             bool result = false;
-            var graph = new GraphPairFacade<IWidget, IEdgeWidget>()
+            var graph = GraphPairExtension<IWidget, IEdgeWidget>
                         .Source<IThing, ILink>(source);
 
             if (graph != null) {

@@ -14,6 +14,7 @@ using Limaki.UseCases.Viewers.StreamViewers;
 using Limaki.UseCases.Winform.Viewers;
 using Limaki.UseCases.Winform.Viewers.StreamViewers;
 using Limaki.UseCases.Winform.Viewers.ToolStrips;
+using Limaki.Presenter.Winform.Controls;
 
 namespace Limaki.UseCases.Winform {
     public class UseCaseWinformComposer : IComposer<UseCase> {
@@ -32,8 +33,6 @@ namespace Limaki.UseCases.Winform {
         public ToolStripStatusLabel StatusLabel { get; set; }
         public StatusStrip StatusStrip { get; set; }
 
-        ICollection<StreamViewerController> StreamViewers = new List<StreamViewerController>();
-
         public void Factor(UseCase useCase) {
             ToolStripContainer = new ToolStripContainer();
             
@@ -50,12 +49,18 @@ namespace Limaki.UseCases.Winform {
             LayoutToolStrip = new LayoutToolStrip ();
             MarkerToolStrip = new MarkerToolStrip ();
 
-            var htmlViewer = new HTMLViewerController ();
+            //TODO: move this to UserCaseContextResourceLoader
+            Registry.Factory.Add<ContentViewProviders, ThingContentViewProviders>();
+
+            var viewProviders = Registry.Pool.TryGetCreate<ContentViewProviders>();
+            
+            var htmlViewer = new HTMLViewerController();
             htmlViewer.Viewer = new HTMLViewer();
-            StreamViewers.Add(htmlViewer);
-            StreamViewers.Add (new ImageViewerController ());
-            StreamViewers.Add (new TextViewerWithToolstripController ());
-            StreamViewers.Add (new SheetViewerController ());
+            viewProviders.Add(htmlViewer);
+            viewProviders.Add(new ImageViewerController());
+            viewProviders.Add(new TextViewerWithToolstripController());
+            viewProviders.Add(new SheetViewerController());
+            viewProviders.Add(new DocumentSchemaController());
             
         }
 
@@ -66,9 +71,7 @@ namespace Limaki.UseCases.Winform {
             ToolStripContainer.BottomToolStripPanel.Controls.Add(StatusStrip);
             this.StatusStrip.Items.Add(StatusLabel);
 
-
             useCase.SplitView = SplitView.View;
-            useCase.SplitView.StreamViewProvider.StreamViewers = this.StreamViewers;
 
             useCase.DisplayToolController = DisplayToolStrip.Controller;
             useCase.LayoutToolController = LayoutToolStrip.Controller;

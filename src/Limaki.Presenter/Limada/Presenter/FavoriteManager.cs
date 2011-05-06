@@ -33,6 +33,7 @@ using Limada.Common;
 using Limaki.Presenter.Display;
 using System.Collections.Generic;
 using Limaki.UseCases.Viewers;
+using Limaki.Presenter.Widgets.UI;
 
 namespace Limada.Presenter {
     public class FavoriteManager {
@@ -66,7 +67,7 @@ namespace Limada.Presenter {
             if (scene == null || scene.Focused == null)
                 return;
             
-            var graph = new GraphPairFacade<IWidget, IEdgeWidget>()
+            var graph = GraphPairExtension<IWidget, IEdgeWidget>
                 .Source<IThing, ILink>(scene.Graph);
 
             if (graph == null)
@@ -134,7 +135,7 @@ namespace Limada.Presenter {
 
             var view = display.Data.Graph as GraphView<IWidget, IEdgeWidget>;
 
-            var graph = new GraphPairFacade<IWidget, IEdgeWidget>()
+            var graph = GraphPairExtension<IWidget, IEdgeWidget>
                             .Source<IThing, ILink>(view) as WidgetThingGraph;
             IThingGraph thingGraph = null;
             if (graph != null) 
@@ -174,14 +175,14 @@ namespace Limada.Presenter {
                     var topicWidget = graph.Get(topic);
                     view.Add(topicWidget);
                     display.Data.Focused = topicWidget;
-                    new SceneFacade(() => { return display.Data as Scene; }, display.Layout).Expand(false);
+                    new GraphSceneFacade<IWidget,IEdgeWidget>(() => { return display.Data as Scene; }, display.Layout).Expand(false);
                     display.Invoke();
                     done = true;
 
                 } 
 
                 if (!done) {
-                    foreach (IThing item in new GraphPairFacade<IThing, ILink>().FindRoots(thingGraph, null)) {
+                    foreach (IThing item in GraphPairExtension<IThing, ILink>.FindRoots(thingGraph, null)) {
                         if (!thingGraph.IsMarker(item))
                             view.Add(graph.Get(item));
                     }
@@ -192,7 +193,7 @@ namespace Limada.Presenter {
             } 
             if (! done && view != null) {
                 // it seems not to be a ThingGraph based Scene:
-                foreach (var item in new GraphPairFacade<IWidget, IEdgeWidget>().FindRoots(view.Two, null)) {
+                foreach (var item in  GraphPairExtension<IWidget, IEdgeWidget>.FindRoots(view.Two, null)) {
                     view.Add(item);
                 }
                 display.Invoke();

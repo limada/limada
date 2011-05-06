@@ -240,13 +240,7 @@ namespace Limada.Model {
 
         #endregion
 
-        #region IEnumerable Member
-
-        public new System.Collections.IEnumerator GetEnumerator() {
-            throw new System.NotImplementedException();
-        }
-
-        #endregion
+        
     }
 
     public class DataContainer:IDataContainer<Id>{

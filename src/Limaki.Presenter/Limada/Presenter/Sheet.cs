@@ -22,6 +22,7 @@ using Limaki.Drawing;
 using Limaki.Graphs.Extensions;
 using Limaki.Presenter.Widgets.Layout;
 using Limaki.Widgets;
+using Limaki.Presenter.Widgets.UI;
 
 namespace Limada.Presenter {
     
@@ -54,7 +55,7 @@ namespace Limada.Presenter {
         }
 
         public virtual void Save(Stream s) {
-            var graph = new GraphPairFacade<IWidget, IEdgeWidget>()
+            var graph = GraphPairExtension<IWidget, IEdgeWidget>
                 .Source<IThing, ILink>(Scene.Graph);
 
             if (graph != null) {
@@ -67,7 +68,7 @@ namespace Limada.Presenter {
         }
 
         public virtual void Read(Stream s) {
-            var graph = new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(Scene.Graph);
+            var graph = GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(Scene.Graph);
 
             if (graph != null) {
                 WidgetThingSerializer serializer = new WidgetThingSerializer();
@@ -75,7 +76,7 @@ namespace Limada.Presenter {
                 serializer.Layout = this.Layout;
                 serializer.Read(s);
 
-                new SceneFacade (delegate() { return this.Scene; }, this.Layout)
+                new GraphSceneFacade<IWidget, IEdgeWidget>(delegate() { return this.Scene; }, this.Layout)
                     .Add (serializer.WidgetCollection, false, false);
 
                 Scene.ClearSpatialIndex ();

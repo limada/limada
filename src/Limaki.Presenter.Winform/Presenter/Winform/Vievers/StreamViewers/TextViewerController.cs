@@ -40,7 +40,7 @@ namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
             }
         }
 
-        public override bool CanView(long streamType) {
+        public override bool Supports(long streamType) {
             return streamType == StreamTypes.RTF || streamType == StreamTypes.ASCII;
         }
 

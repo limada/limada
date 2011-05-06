@@ -57,7 +57,10 @@ namespace Limada.Model {
         }
 
         public override string ToString() {
-            return Data.ToString();
+            if (Data != null)
+                return Data.ToString();
+            else
+                return "<null>";
         }
 
 

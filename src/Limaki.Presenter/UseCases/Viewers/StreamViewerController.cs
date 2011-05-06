@@ -15,46 +15,17 @@
 
 using System;
 using System.IO;
-using Limaki.Drawing;
 using Limaki.Model.Streams;
-using Limaki.Common;
 
 namespace Limaki.UseCases.Viewers {
-    public abstract class StreamViewerController:IDisposable {
-        
-        public Int64 CurrentThingId = 0;
-        
-        public abstract bool CanView ( Int64 streamType );
+    public abstract class StreamViewerController : ViewerController {
+        public virtual bool IsStreamOwner { get; set; }
+        public abstract bool Supports ( Int64 streamType );
         public abstract bool CanSave();
         
         public abstract void SetContent ( StreamInfo<Stream> info );
         public abstract void Save( StreamInfo<Stream> info);
 
-        public virtual bool IsStreamOwner { get; set; }
-
-        public virtual void OnShow(){}
-
-        public abstract object Control { get; }
-        
-        public Color BackColor = KnownColors.FromKnownColor(KnownColor.Control);
-        public object Parent {get;set;}
-
-        public event Action<object> Attach = null;
-        public event Action<object> DeAttach = null;
-
-        protected virtual void OnAttach(object control) {
-            if (Attach != null) {
-                Attach(control);
-            }
-        }
-
-        public abstract void Dispose();
-        public virtual void Clear() {
-            CurrentThingId = 0;
-        }
-
-        protected IExceptionHandler ExceptionHandler {
-            get { return Registry.Pool.TryGetCreate<IExceptionHandler>(); }
-        }
+       
     }
 }

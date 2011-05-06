@@ -301,7 +301,7 @@ namespace Limaki.Widgets {
             }
             int halfSize = hitSize / 2;
             RectangleI hitBounds = new RectangleI(p.X - halfSize, p.Y - halfSize, hitSize, hitSize);
-            foreach (IWidget widget in SpatialIndex.Query(hitBounds)) {
+            foreach (IWidget widget in SpatialIndex.Query(hitBounds,ZOrder.EdgesFirst)) {
                 if ((widget == Focused) || (widget == Hovered)) {
                     continue;
                 }

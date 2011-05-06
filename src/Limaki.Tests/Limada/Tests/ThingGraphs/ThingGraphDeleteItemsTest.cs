@@ -148,18 +148,18 @@ namespace Limada.Tests.ThingGraphs {
             programming.two = pairTwo.Get(programming.thing);
 
             // delete over PingBack in both views:
-            GraphPairFacade<IWidget, IEdgeWidget> facade = new GraphPairFacade<IWidget, IEdgeWidget>();
+            
 
             ICollection<IEdgeWidget> deleteCollection =
                 new List<IEdgeWidget>(viewOne.PostorderTwig(java.one));
 
             foreach (IWidget linkOne in deleteCollection) {// Java
-                IWidget linkTwo = facade.LookUp<IThing, ILink>(viewOne, viewTwo, linkOne);
+                IWidget linkTwo = GraphPairExtension<IWidget, IEdgeWidget>.LookUp<IThing, ILink>(viewOne, viewTwo, linkOne);
                 viewTwo.Remove(linkTwo);
                 viewOne.Remove(linkOne);
             }
 
-            java.two = facade.LookUp<IThing, ILink>(viewOne, viewTwo, java.one);
+            java.two = GraphPairExtension<IWidget, IEdgeWidget>.LookUp<IThing, ILink>(viewOne, viewTwo, java.one);
             viewTwo.Remove(java.two);
             viewOne.Remove(java.one);
 

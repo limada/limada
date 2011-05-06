@@ -149,7 +149,7 @@ namespace Limada.Tests.Model {
             }
             
             IGraphPair<IWidget, IThing, IEdgeWidget, ILink> widgetThingGraph =
-                new GraphPairFacade<IWidget, IEdgeWidget>().Source<IThing, ILink>(scene.Graph);
+                GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(scene.Graph);
 
             foreach(IWidget widget in scene.Elements) {
                 IThing thing = widgetThingGraph.Get (widget);

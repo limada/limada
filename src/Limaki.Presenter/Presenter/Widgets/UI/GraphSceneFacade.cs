@@ -24,6 +24,7 @@ using Limaki.Widgets;
 using Limaki.Presenter.Widgets.Layout;
 using Limaki.Presenter.Layout;
 using System.Linq;
+using System;
 
 namespace Limaki.Presenter.Widgets.UI {
     /// <summary>
@@ -153,8 +154,12 @@ namespace Limaki.Presenter.Widgets.UI {
             Scene.Selected.Add(curr);
         }
 
+        public virtual Func<TItem, string> OrderBy { get; set; }
         protected virtual Arranger<TItem, TEdge> CreateArranger(IGraphScene<TItem, TEdge> data) {
-            return new Arranger<TItem, TEdge>(data, this.Layout);
+            var result = new Arranger<TItem, TEdge>(data, this.Layout);
+            if (OrderBy != null)
+                result.OrderBy = this.OrderBy;
+            return result;
         }
 
         /// <summary>
@@ -171,8 +176,7 @@ namespace Limaki.Presenter.Widgets.UI {
 
             var arranger = CreateArranger (scene);
 
-            var affected = new GraphViewFacade<TItem, TEdge> 
-                            (this.graphView).Add (item);
+            var affected = new GraphViewFacade<TItem, TEdge> (this.graphView).Add (item);
 
             arranger.Arrange(item, affected, pt);
 
@@ -194,11 +198,10 @@ namespace Limaki.Presenter.Widgets.UI {
 
             var arranger = CreateArranger(scene);
 
-            var affected = new GraphViewFacade<TItem, TEdge>
-                                (this.graphView).Add(elements);
+            var affected = new GraphViewFacade<TItem, TEdge>(this.graphView).Add(elements);
 
             if (arrange)
-                arranger.ArrangeDeepWalk(affected,justify,(PointI)Layout.Distance);
+                arranger.ArrangeItems(affected,justify,(PointI)Layout.Distance);
             else
                 arranger.ArrangeEdges(affected, justify);
 
@@ -291,7 +294,7 @@ namespace Limaki.Presenter.Widgets.UI {
             TItem curr = scene.Focused;
             
             var roots = new Queue<TItem>(
-                new GraphPairFacade<TItem, TEdge> ().FindRoots (this.Data, curr));
+                GraphPairExtension<TItem, TEdge>.FindRoots (this.Data, curr));
             
             new GraphViewFacade<TItem, TEdge> (this.graphView).Expand (roots, true);
 

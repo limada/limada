@@ -48,19 +48,22 @@ namespace Limaki.Graphs {
 
         protected abstract void AddEdge(TEdge edge, TItem item);
         protected abstract bool RemoveEdge(TEdge edge, TItem item);
-        
+
+        public virtual bool ValidEdge(TEdge edge) {
+            return !ItemIsStorable || (edge.Root != null && edge.Leaf != null);
+        }
+
         protected void CheckEdge(TEdge edge) {
-            if (ItemIsStorable &&(edge.Root == null || edge.Leaf == null)) {
-                string m = "Edge " + edge;
-                
-                throw new ArgumentException(m+"\tRoot or Leaf is null");
+            if (!ValidEdge(edge)) {
+                var m =  "Edge " + edge + "\tRoot or Leaf is null";
+                throw new CorruptedLinkException<TItem, TEdge>(edge, m);
             }
         }
 
         public virtual void ChangeEdge(TEdge edge, TItem newItem, bool changeRoot) {
             CheckEdge(edge);
             if (newItem == null ) {
-                throw new ArgumentException();
+                throw new ArgumentException("ChangeEdge: Root or Leaf would be null");
             }
             TItem oldItem = default(TItem);
             TItem adjacent = default(TItem);

@@ -69,7 +69,7 @@ namespace Limada.View {
         }
 
         IThingGraph GetThingGraph(IGraph<IWidget, IEdgeWidget> source) {
-            var graph = new GraphPairFacade<IWidget, IEdgeWidget>()
+            var graph = GraphPairExtension<IWidget, IEdgeWidget>
                 .Source<IThing, ILink>(source) as WidgetThingGraph;
 
             if (graph != null) {
@@ -111,7 +111,7 @@ namespace Limada.View {
 
         public virtual WidgetThingAdapter adapter {
             get {
-                WidgetThingGraph graph = new GraphPairFacade<IWidget, IEdgeWidget> ()
+                WidgetThingGraph graph = GraphPairExtension<IWidget, IEdgeWidget> 
                     .Source<IThing, ILink> (this.Graph) as WidgetThingGraph;
 
                 if (graph != null) {

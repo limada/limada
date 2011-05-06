@@ -144,8 +144,7 @@ namespace Limada.UseCases {
 
         public bool IsSceneExportable(Scene scene) {
             if (scene != null) {
-                var graph = new GraphPairFacade<IWidget, IEdgeWidget> ()
-                    .Source<IThing, ILink> (scene.Graph);
+                var graph = GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink> (scene.Graph);
 
                 return graph != null;
             }
@@ -153,7 +152,7 @@ namespace Limada.UseCases {
         }
 
         public void ExportAs(DataBaseInfo fileName, Scene scene) {
-            var graph = new GraphPairFacade<IWidget, IEdgeWidget>()
+            var graph = GraphPairExtension<IWidget, IEdgeWidget>
                 .Source<IThing, ILink>(scene.Graph);
 
             if (graph != null) {

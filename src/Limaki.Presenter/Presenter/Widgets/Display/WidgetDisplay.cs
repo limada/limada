@@ -34,41 +34,10 @@ namespace Limaki.Presenter.Widgets {
             set { base.Data = value; }
         }
 
+       
+       
+
         
-
-        public event EventHandler<SceneEventArgs> SceneFocusChanged = null;
-
-        SceneEventArgs focusChangedEventArgs = null;
-        public virtual void SceneFocusChangedCallback(IGraphScene<IWidget, IEdgeWidget> scene, IWidget widget) {
-            if (SceneFocusChanged != null) {
-                focusChangedEventArgs = new SceneEventArgs(scene, widget);
-            }
-        }
-
-        public override void DataChanged() {
-            base.DataChanged();
-            if (this.Data != null) {
-                this.Data.FocusChanged += SceneFocusChangedCallback;
-            }
-        }
-
-        public virtual void OnSceneFocusChanged() {
-            if (SceneFocusChanged != null && focusChangedEventArgs != null) {
-                int start = Environment.TickCount;
-
-                SceneFocusChanged(this, focusChangedEventArgs);
-                focusChangedEventArgs = null;
-
-                //int now = Environment.TickCount;
-                //System.Console.Out.WriteLine("Start/Elapsed FocusChanged:\t" + start+"/"+(now - start));
-
-                foreach (KeyValuePair<Type, IAction> action in this.EventControler.Actions) {
-                    if (action.Value is MouseTimerActionBase) {
-                        ((MouseTimerActionBase)action.Value).LastMouseTime = 0;
-                    }
-                }
-            }
-        }
 
         
 
@@ -79,15 +48,4 @@ namespace Limaki.Presenter.Widgets {
             context.Factory.Add<IGraphModelFactory<IWidget, IEdgeWidget>, WidgetFactory>();
         }
     }
-
-    public class SceneEventArgs : EventArgs {
-        public SceneEventArgs(IGraphScene<IWidget, IEdgeWidget> scene, IWidget widget) {
-            this.Scene = scene;
-            this.Widget = widget;
-        }
-        public IGraphScene<IWidget, IEdgeWidget> Scene;
-        public IWidget Widget;
-    }
-
-
 }

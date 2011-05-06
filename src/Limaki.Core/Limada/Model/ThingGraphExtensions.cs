@@ -219,6 +219,7 @@ namespace Limada.Model {
         }
         
         public static void MergeInto(this IThingGraph source, IThingGraph target) {
+            // do not change to extension! 
             GraphExtensions.MergeInto(source, target);
             source.MergeStreamThingsInto(target);
         }

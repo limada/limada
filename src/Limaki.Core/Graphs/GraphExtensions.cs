@@ -45,18 +45,30 @@ namespace Limaki.Graphs {
                                                      Func<TItem, bool> whereItem, Func<TEdge, bool> whereEdge) 
         where TEdge:IEdge<TItem>,TItem {
             if (source != null && target != null) {
+                Func<TEdge, bool> checkEdge = e => {
+                    var result = source.ValidEdge(e);
+                    // TODO: show warning here
+                    return result;
+                };
+                Func<TItem, bool> checkItem = i => {
+                    TEdge e = default(TEdge);
+                    if(i is TEdge) e = (TEdge)i;
+                    var result = e==null || checkEdge(e);
+                    return result;                                                  
+                };
                 Walker<TItem, TEdge> walker = new Walker<TItem, TEdge>(source);
                 foreach (TItem item in source) {
                     if (!walker.visited.Contains(item)) {
-                        if (whereItem ==null || whereItem(item))
+                        if (checkItem(item) && (whereItem ==null || whereItem(item)))
                             target.Add(item);
                         foreach (LevelItem<TItem> levelItem in walker.DeepWalk(item, 0)) {
                             if (levelItem.Node is TEdge) {
                                 var edge = (TEdge)levelItem.Node;
-                                if (whereEdge == null || whereEdge(edge))
+                                if (checkEdge(edge) && (whereEdge == null || whereEdge(edge)))
                                     target.Add(edge);
+                                
                             } else
-                                if (whereItem == null || whereItem(levelItem.Node))
+                                if (checkItem(levelItem.Node) && (whereItem == null || whereItem(levelItem.Node)))
                                     target.Add(levelItem.Node);
                         }
                     }

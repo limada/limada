@@ -102,6 +102,13 @@
     <Compile Include="Common\IOC\IContextRecourceLoader.cs" />
     <Compile Include="Common\IOC\IDeviceContextRecourceLoader.cs" />
     <Compile Include="Common\IPool.cs" />
+    <Compile Include="Common\Linqish\MemberByNameExpressionBuilder.cs" />
+    <Compile Include="Common\LinqKit\ExpandableQuery.cs" />
+    <Compile Include="Common\LinqKit\ExpressionExpander.cs" />
+    <Compile Include="Common\LinqKit\ExpressionVisitor.cs" />
+    <Compile Include="Common\LinqKit\Extensions.cs" />
+    <Compile Include="Common\LinqKit\Linq.cs" />
+    <Compile Include="Common\LinqKit\PredicateBuilder.cs" />
     <Compile Include="Common\Message.cs" />
     <Compile Include="Common\Mono.Net.3.0\Mono.System.Actions.cs" />
     <Compile Include="Common\Mono.Net.3.0\Mono.System.Funcs.cs" />
@@ -184,9 +191,10 @@
     <Compile Include="Data\IDataContainer.cs" />
     <Compile Include="Data\IDataProvider.cs" />
     <Compile Include="Data\IGateway.cs" />
+    <Compile Include="Graphs\CorruptedLinkException.cs" />
     <Compile Include="Graphs\EdgeComparer.cs" />
     <Compile Include="Graphs\Extensions\GraphMapping.cs" />
-    <Compile Include="Graphs\Extensions\GraphPairFacade.cs" />
+    <Compile Include="Graphs\Extensions\GraphPairExtension.cs" />
     <Compile Include="Graphs\Extensions\GraphViewFacade.cs" />
     <Compile Include="Graphs\Extensions\IGraphMapping.cs" />
     <Compile Include="Graphs\Extensions\IMarkerFacade.cs" />

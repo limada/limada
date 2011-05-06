@@ -132,6 +132,7 @@ namespace Limaki.Presenter.Display {
             var graphEdgeChangeAction = new GraphEdgeChangeAction<TItem,TEdge>();
             Compose(display, graphEdgeChangeAction,false);
             graphEdgeChangeAction.SceneHandler = this.GraphScene;
+            graphEdgeChangeAction.HitSize = graphItemChanger.HitSize + 1;
             display.EventControler.Add (graphEdgeChangeAction);
 
             var addGraphItemAction = new GraphItemAddAction<TItem, TEdge>();

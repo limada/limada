@@ -59,26 +59,29 @@ namespace Limaki.Presenter.Widgets {
         }
 
 
-        public Scene CreateTargetScene(IGraphScene<IWidget, IEdgeWidget> sourceScene) {
+        public IGraph<IWidget, IEdgeWidget> CreateTargetGraph(IGraph<IWidget, IEdgeWidget> source) {
             IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget> sourceGraph =
-                sourceScene.Graph as GraphView<IWidget, IEdgeWidget>;
-
-            Scene targetScene = new Scene ();
-
+                source as GraphView<IWidget, IEdgeWidget>;
             if (sourceGraph != null) {
-                sourceGraph = new GraphPairFacade<IWidget, IEdgeWidget> ().Source (sourceGraph);
+                sourceGraph = GraphPairExtension<IWidget, IEdgeWidget>.Source(sourceGraph);
 
                 var data = sourceGraph.Two;
-                var targetGraph =
-                    GraphMapping.Mapping.CloneGraphPair<IWidget, IEdgeWidget>(data);
+                var result = GraphMapping.Mapping.CloneGraphPair<IWidget, IEdgeWidget>(data);
 
-                if (targetGraph != null) {
-                    var targetView = 
-                        new GraphView<IWidget, IEdgeWidget>(targetGraph, new WidgetGraph());
-                    targetScene.Graph = targetView;
+                if (result != null) {
+                    return new GraphView<IWidget, IEdgeWidget>(result, new WidgetGraph());
                 }
             }
-            return targetScene;
+            return null;
+        }
+
+        public Scene CreateTargetScene(IGraphScene<IWidget, IEdgeWidget> source) {
+            var result = new Scene ();
+            var targetGraph = CreateTargetGraph(source.Graph);
+            if (targetGraph != null)
+                result.Graph = targetGraph;
+            
+            return result;
         }
 
         public virtual void WireScene(WidgetDisplay targetDisplay, IGraphScene<IWidget, IEdgeWidget> sourceScene, IGraphScene<IWidget, IEdgeWidget> targetScene) {

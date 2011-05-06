@@ -44,8 +44,8 @@ namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
             }
         }
 
-        public override bool CanView(long streamType) {
-            return controller.CanView(streamType);
+        public override bool Supports(long streamType) {
+            return controller.Supports(streamType);
         }
 
         public override bool CanSave() {
