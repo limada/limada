@@ -24,7 +24,7 @@ namespace Limaki.Presenter {
         ZoomState ZoomState { get; set; }
 
         IMoveResizeAction SelectAction { get; set; }
-        ScrollAction ScrollAction { get; set; }
+        MouseScrollAction MouseScrollAction { get; set; }
         IEventControler EventControler { get; set; }
 
         IClipper Clipper { get; set; }

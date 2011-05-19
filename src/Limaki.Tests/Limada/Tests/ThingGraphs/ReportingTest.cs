@@ -94,7 +94,7 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public virtual void WalkThrouFirstLevelTest() {
-            var graph = OpenFile(@"S:\temp\sam_4.pib");//(@"E:\testdata\txbProjekt\ADRESSEXAMPLE.pib");
+            var graph = OpenFile(@"S:\temp\sample_4.pib");//(@"E:\testdata\txbProjekt\ADRESSEXAMPLE.pib");
             
             foreach (var thing in FindRoot(graph, true)) {
                 var disp = graph.ThingToDisplay(thing);
@@ -131,7 +131,7 @@ namespace Limada.Tests.ThingGraphs {
             // remove title
             // set rootlinks.where(marker==Document) to  marker = CommonSchema.Commonmarker
             
-            var graph = OpenFile(@"S:\temp\sam_4.pib"); //(@"E:\testdata\txbProjekt\ADRESSEXAMPLE.pib");
+            var graph = OpenFile(@"S:\temp\sample_4.pib"); //(@"E:\testdata\txbProjekt\ADRESSEXAMPLE.pib");
             graph.Add(CommonSchema.CommonMarker);
             var nullStringThings = graph.GetByData(null);
             var act = true;
@@ -181,7 +181,7 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public virtual void SearchSomeoneTest() {
-            var graph = OpenFile(@"S:\temp\sam_4.pib"); //(@"E:\testdata\txbProjekt\ADRESSEXAMPLE.pib");
+            var graph = OpenFile(@"S:\temp\sample_4.pib"); //(@"E:\testdata\txbProjekt\ADRESSEXAMPLE.pib");
             // this does not work; find out how to search for nulls
             var someones = graph.GetByData(null);
             {

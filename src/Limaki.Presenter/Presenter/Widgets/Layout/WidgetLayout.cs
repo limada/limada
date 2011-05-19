@@ -90,7 +90,7 @@ namespace Limaki.Presenter.Widgets.Layout {
                     style = StyleSheet.EdgeStyle;
                 }
             } else {
-                if (uiState == UiState.Selected) {
+                if (uiState == UiState.Selected || uiState == UiState.Focus) {
                     style = StyleSheet.SelectedStyle;
                 } else if (uiState == UiState.Hovered) {
                     style = StyleSheet.HoveredStyle;

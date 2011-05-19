@@ -36,5 +36,9 @@ namespace Limaki {
                 return _unix.Value;
             }
         }
+
+        public static bool IsWin64BitOS() {
+            return false;
+        }
     }
 }

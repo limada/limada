@@ -72,7 +72,7 @@ namespace Limaki.Presenter.Winform {
 
             display.SelectAction.ShowGrips = true;
             display.SelectAction.Enabled = false;
-            display.ScrollAction.Enabled = true;
+            display.MouseScrollAction.Enabled = true;
             
         }
     }

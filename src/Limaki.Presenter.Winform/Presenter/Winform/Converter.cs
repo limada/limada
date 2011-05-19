@@ -40,10 +40,11 @@ namespace Limaki.Presenter.Winform {
             return (MouseActionButtons) e;
         }
 
-        public static KeyActionEventArgs Convert(KeyEventArgs e) {
+        public static KeyActionEventArgs Convert(KeyEventArgs e, System.Drawing.Point location) {
             return new KeyActionEventArgs(
                 Convert(e.KeyCode), 
-                ConvertModifiers(e.KeyData));
+                ConvertModifiers(e.KeyData),
+                GDIConverter.Convert(location));
         }
 
         public static ModifierKeys ConvertModifiers (Keys keys) {

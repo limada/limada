@@ -34,6 +34,7 @@ using Limaki.Presenter.Display;
 using System.Collections.Generic;
 using Limaki.UseCases.Viewers;
 using Limaki.Presenter.Widgets.UI;
+using Limaki.Presenter.UI;
 
 namespace Limada.Presenter {
     public class FavoriteManager {

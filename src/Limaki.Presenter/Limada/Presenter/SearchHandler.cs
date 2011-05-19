@@ -22,6 +22,7 @@ using Limaki.Presenter.Widgets.Layout;
 using Limaki.Presenter.Widgets.UI;
 using Limaki.Widgets;
 using System.Linq;
+using Limaki.Presenter.UI;
 
 namespace Limada.Presenter {
     public class SearchHandler {

@@ -153,6 +153,7 @@
     <Compile Include="Presenter\UI\GripPainterBase.cs" />
     <Compile Include="Presenter\UI\IDragDopActionPresenter.cs" />
     <Compile Include="Presenter\UI\IEditAction.cs" />
+    <Compile Include="Presenter\UI\KeyScrollAction.cs" />
     <Compile Include="Presenter\UI\MoveResizeRendererBase.cs" />
     <Compile Include="Presenter\UI\SelectionRendererBase.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphSceneEventArgs.cs" />
@@ -210,7 +211,7 @@
     <Compile Include="Presenter\UI\EventControler.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphItemZoomAction.cs" />
     <Compile Include="Presenter\UI\IEventControler.cs" />
-    <Compile Include="Presenter\UI\ScrollAction.cs" />
+    <Compile Include="Presenter\UI\MouseScrollAction.cs" />
     <Compile Include="Presenter\UI\ZoomAction.cs" />
     <Compile Include="Presenter\Widgets\Display\WidgetDisplayFactory.cs" />
     <Compile Include="Presenter\Widgets\Display\WidgetDisplayComposer.cs" />
@@ -250,7 +251,7 @@
     <Compile Include="Presenter\Widgets\Display\WidgetDisplay.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphEdgeChangeAction.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphItemAddAction.cs" />
-    <Compile Include="Presenter\Widgets\UI\GraphSceneFolding.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphSceneFolding.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphSceneLayer.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphSceneFocusAction.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphItemMoveResizeAction.cs" />
@@ -289,7 +290,7 @@
     <Compile Include="Presenter\Layout\IShapeProxy.cs" />
     <Compile Include="Presenter\Layout\NearestAnchorRouter.cs" />
     <Compile Include="Presenter\Layout\RouterBase.cs" />
-    <Compile Include="Presenter\Widgets\UI\GraphSceneFacade.cs" />
+    <Compile Include="Presenter\UI\GraphScene\GraphSceneFacade.cs" />
     <Compile Include="Widgets\MarkerContextProcessor.cs" />
     <Compile Include="Presenter\UI\IMoveResizeAction.cs" />
     <Compile Include="Presenter\UI\MoveResizeAction.cs" />

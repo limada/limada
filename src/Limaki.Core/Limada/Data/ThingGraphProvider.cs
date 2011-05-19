@@ -21,6 +21,8 @@ using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Streams;
 using System.IO;
+using Limaki.Common;
+using System;
 
 namespace Limada.Data {
     public abstract class ThingGraphProvider : DataProvider<IThingGraph>, IThingGraphProvider {
@@ -84,6 +86,12 @@ namespace Limada.Data {
                 }
                 
             }
+        }
+
+        public virtual void RawImport(DataBaseInfo source, IDataProvider<IThingGraph> target) {
+            Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(
+                new Exception(string.Format(
+                    "{0} RawImport of {1} not possible", this.Description, DataBaseInfo.ToFileName(source))), MessageType.OK);
         }
     }
 }

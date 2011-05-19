@@ -20,6 +20,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
+
+// Look to Manos as replacemet for this
+// for threading problems see: Manos.Managed.IOLoop
 namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
     public abstract class WebServerBase : IDisposable {
         public WebServerBase() {
@@ -29,7 +32,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
         }
 
         public string ServerName { get; set; }
-        
+
         private IPAddress _addr = IPAddress.Loopback;
         public IPAddress Addr {
             get { return _addr; }
@@ -43,7 +46,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
 
         private int _port = 40110;
         public int Port {
-            get { return _port; } 
+            get { return _port; }
             set {
                 if (_port != value) {
                     _port = value;
@@ -51,7 +54,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
                 }
             }
         }
-        
+
         public string Authority {
             get { return string.Format(Addr.ToString() + ":{0}", Port); }
         }
@@ -60,7 +63,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
         public Uri Uri {
             get {
                 if (_uri == null) {
-                    _uri = new Uri("http://"+Authority, UriKind.Absolute);
+                    _uri = new Uri("http://" + Authority, UriKind.Absolute);
                 }
                 return _uri;
             }
@@ -209,25 +212,30 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
             TcpListener listener = (TcpListener)ar.AsyncState;
             Socket handler = listener.EndAcceptSocket(ar);
 
-            // Signal the main thread to continue.
-            allDone.Set();
+
 
             if (!handler.Connected || !running) {
+                // Signal the main thread to continue.
+                allDone.Set();
                 return;
             }
             // Create the state object.
             StateObject state = new StateObject();
             state.workSocket = handler;
             if (Asycn) {
-                handler.BeginReceive (state.buffer, 0, StateObject.BufferSize, 0,
-                                      new AsyncCallback (ReadRequest), state);
+                try {
+                    if (handler.Connected)
+                        handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                                             new AsyncCallback(ReadRequest), state);
+                } catch { }
             } else {
                 var bytesRead = handler.Receive(state.buffer);
                 if (bytesRead > 0) {
                     Respond(handler, state);
                 }
             }
-
+            // Signal the main thread to continue.
+            allDone.Set();
         }
 
         public void ReadRequest(IAsyncResult ar) {
@@ -301,7 +309,10 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
             Buffer.BlockCopy(header, 0, buffer, 0, header.Length);
             Buffer.BlockCopy(responseInfo.Data, 0, buffer, header.Length, responseInfo.Data.Length);
             if (Asycn) {
-                handler.BeginSend(buffer, 0, buffer.Length, 0, new AsyncCallback(RespondCallback), handler);
+                try {
+                    if (handler.Connected)
+                        handler.BeginSend(buffer, 0, buffer.Length, 0, new AsyncCallback(RespondCallback), handler);
+                } catch { }
             } else {
                 if (handler.Connected && running) {
                     int bytesSent = handler.Send(buffer);

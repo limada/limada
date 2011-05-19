@@ -55,7 +55,7 @@ namespace Limaki.Presenter.Widgets {
             targetDisplay.BackColor = sourceDisplay.BackColor;
             targetDisplay.ZoomState = sourceDisplay.ZoomState;
             targetDisplay.SelectAction.Enabled = sourceDisplay.SelectAction.Enabled;
-            targetDisplay.ScrollAction.Enabled = sourceDisplay.ScrollAction.Enabled;
+            targetDisplay.MouseScrollAction.Enabled = sourceDisplay.MouseScrollAction.Enabled;
         }
 
 

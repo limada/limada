@@ -36,7 +36,7 @@ namespace Limaki.Presenter.WPF {
         }
 
         public static MouseActionEventArgs Convert(MouseEventArgs e,UIElement relativeTo) {
-            Point point = e.GetPosition(relativeTo);
+            var point = e.GetPosition(relativeTo);
             return new MouseActionEventArgs(
 #if ! SILVERLIGHT
                 Convert(e.LeftButton,e.RightButton),
@@ -84,8 +84,8 @@ Enum.Parse(typeof(Limaki.Presenter.UI.Key), key);
             return result;
         }
 
-        public static KeyActionEventArgs Convert(KeyEventArgs e,UIElement relativeTo) {
-           return new KeyActionEventArgs(Convert(e.Key),Convert(Keyboard.Modifiers));
+        public static KeyActionEventArgs Convert(KeyEventArgs e,UIElement relativeTo, Point location) {
+           return new KeyActionEventArgs(Convert(e.Key),Convert(Keyboard.Modifiers),new Limaki.Drawing.PointI((int)location.X,(int)location.Y));
         }
 
     }

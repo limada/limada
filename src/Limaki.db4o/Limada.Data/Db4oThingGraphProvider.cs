@@ -18,6 +18,7 @@ using Limada.Model;
 using Limaki.Common;
 using Limaki.Data;
 using Limaki.Graphs;
+using System.Linq;
 
 namespace Limada.Data {
     public class Db4oThingGraphProvider : ThingGraphProvider {
@@ -35,13 +36,34 @@ namespace Limada.Data {
 
         public override void Open(DataBaseInfo FileName) {
             Close();
-            IGateway gateway = new Limaki.Data.db4o.Gateway();
+            var gateway = new Limaki.Data.db4o.Gateway();
+            try {
+                gateway.Open(FileName);
 
-            gateway.Open(FileName);
+                this.Data = new Limada.Data.db4o.ThingGraph(gateway);
 
-            this.Data = new Limada.Data.db4o.ThingGraph(gateway);
+            } catch (Exception ex) {
+                var olderVersion = ProveIfOlderVersion(gateway);
+                if (olderVersion != null)
+                    throw new NotSupportedException(olderVersion, ex);
+                else
+                    throw;
+            }
         }
         
+        protected virtual string ProveIfOlderVersion(Limaki.Data.db4o.Gateway gateway) {
+            var repairer = new Limada.Data.db4o.Db4oRepairer();
+            var clazzes = repairer.ClazzNames(gateway);
+            var name = (from clazz in clazzes
+                       from field in clazz.Item2
+                       where field=="_writeDate"
+                       select field).FirstOrDefault();
+                       
+            if (name != null) {
+                return "Database seems created with an older version. Please import into a new database.";
+            }
+            return null;
+        }
         public override void Open() {
             Registry.Pool.TryGetCreate<IExceptionHandler>()
                 .Catch(new Exception(this.Description + " opening without filename currently not implemented"), MessageType.OK);
@@ -69,6 +91,13 @@ namespace Limada.Data {
         
         public override IDataProvider<IThingGraph> Clone() {
             return new Db4oThingGraphProvider();
+        }
+
+        public override void RawImport(DataBaseInfo source, IDataProvider<IThingGraph> target) {
+            var repairer = new Limada.Data.db4o.Db4oRepairer();
+            repairer.WriteDetail = this.StateMessage;
+            repairer.RawImport(source, target, true);
+            //base.RawImport(source, target);
         }
     }
 }

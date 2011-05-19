@@ -116,8 +116,29 @@ namespace Limaki.Presenter.Winform.Display {
             }
         }
 
+        private const int WM_KEYDOWN = 0x0100;
+        private const int WM_KEYUP = 0x0101;
+        private const int WM_SYSKEYDOWN = 0x0104;
+        private const int WM_SYSKEYUP = 0x0105;
+
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
+            bool result = false;
+            if (keyData == Keys.Down || keyData == Keys.Up || keyData==Keys.Left || keyData== Keys.Right) {
+                var e = new KeyEventArgs(keyData);
+                if (msg.Msg == WM_KEYDOWN)
+                    OnKeyDown(e);
+                if (msg.Msg == WM_KEYUP)
+                    OnKeyUp(e);
+                result = true;
+            } else {
+                result = base.ProcessCmdKey(ref msg, keyData);    
+            }
+            return result;
+        }
+
         protected override void OnKeyDown(KeyEventArgs e) {
-            var ev = Converter.Convert(e);
+            var ev = Converter.Convert(e,this.PointToClient(MousePosition));
             if (Display.Data != null)
                 Display.EventControler.OnKeyDown(ev);
             if (!ev.Handled)
@@ -133,7 +154,7 @@ namespace Limaki.Presenter.Winform.Display {
         protected override void OnKeyUp(KeyEventArgs e) {
             base.OnKeyUp(e);
             if (Display.Data != null)
-                Display.EventControler.OnKeyUp(Converter.Convert(e));
+                Display.EventControler.OnKeyUp(Converter.Convert(e,this.PointToClient(MousePosition)));
         }
 
         protected override void OnMouseDown(MouseEventArgs e) {
@@ -145,7 +166,7 @@ namespace Limaki.Presenter.Winform.Display {
         protected override void OnMouseHover(EventArgs e) {
             base.OnMouseHover(e);
 
-            Point pos = this.PointToClient(MousePosition);
+            var pos = this.PointToClient(MousePosition);
             MouseActionEventArgs mouseEventArgs =
                 new MouseActionEventArgs(
                     Converter.Convert(MouseButtons),

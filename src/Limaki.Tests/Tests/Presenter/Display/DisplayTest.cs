@@ -102,8 +102,8 @@ namespace Limaki.Tests.Presenter.Display {
             bool zoomEnabled = zoomAction.Enabled;
             zoomAction.Enabled= false;
 
-            bool trackerEnabled = Display.ScrollAction.Enabled;
-            Display.ScrollAction.Enabled = false;
+            bool trackerEnabled = Display.MouseScrollAction.Enabled;
+            Display.MouseScrollAction.Enabled = false;
 
             IMoveResizeAction selection = Display.SelectAction;
             selection.Enabled = true;
@@ -152,7 +152,7 @@ namespace Limaki.Tests.Presenter.Display {
             ticker.Disinstrument(Display);
             
             zoomAction.Enabled = zoomEnabled;
-            Display.ScrollAction.Enabled = trackerEnabled;
+            Display.MouseScrollAction.Enabled = trackerEnabled;
             Display.Execute ();
             DoEvents();
 

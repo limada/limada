@@ -48,6 +48,7 @@ namespace Limaki.Presenter.Display {
         public virtual void DataChanged() {
             if (SelectAction != null)
                 SelectAction.Clear();
+            Viewport.ClipOrigin = Viewport.DataOrigin;
             Invoke();
             UpdateZoom();
         }
@@ -60,7 +61,7 @@ namespace Limaki.Presenter.Display {
         public virtual IEventControler EventControler { get; set; }
 
         public virtual IMoveResizeAction SelectAction { get; set; }
-        public virtual ScrollAction ScrollAction { get; set; }
+        public virtual MouseScrollAction MouseScrollAction { get; set; }
 
         public virtual IClipper Clipper { get; set; }
         public virtual IClipReceiver ClipReceiver { get; set; }

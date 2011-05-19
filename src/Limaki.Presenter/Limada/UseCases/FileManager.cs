@@ -56,18 +56,20 @@ namespace Limada.UseCases {
         }
 
         public override bool OpenFile(DataBaseInfo fileName) {
-            ISceneProvider handler = new SceneProvider();
-            IThingGraphProvider provider = GetProvider(fileName);
+            var handler = new SceneProvider();
+            var provider = GetProvider(fileName);
             bool result = false;
             if (provider != null) {
                 handler.Provider = provider;
                 handler.DataBound = this.DataBound;
-                this.ThingGraphProvider.Close();
+
                 if (handler.Open(fileName)) {
+                    this.ThingGraphProvider.Close();
                     this.ThingGraphProvider = provider;
                     DataPostProcess(fileName.Name);
                     result = true;
                 }
+
 
             }
             return result;
@@ -75,7 +77,7 @@ namespace Limada.UseCases {
 
         public bool SaveAs(DataBaseInfo fileName) {
 
-            IThingGraphProvider provider = GetProvider(fileName);
+            var provider = GetProvider(fileName);
             bool result = false;
             if (provider != null) {
                 if (this.ThingGraphProvider.Saveable) {
@@ -167,7 +169,7 @@ namespace Limada.UseCases {
             if (this.HasUnsavedData()) {
                 SaveAsFile();
             } else {
-                if (_thingGraphProvider != null) {
+                if (_thingGraphProvider != null && _thingGraphProvider.Saveable) {
                     _thingGraphProvider.Save ();
                 }
             }
@@ -193,6 +195,51 @@ namespace Limada.UseCases {
             if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
                 this.OpenFile(DataBaseInfo.FromFileName(OpenFileDialog.FileName));
             }
+        }
+
+        public void ImportRawFile() {
+            Save();
+            Close();
+            bool tryIt = true;
+            while (tryIt && MessageBoxShow("Open a new, non exisiting file", "RawImport", MessageBoxButtons.OKCancel) == DialogResult.OK) {
+                var fileDialog = new FileDialogMemento();
+                DefaultDialogValues(fileDialog);
+                DefaultDialogValues(OpenFileDialog);
+                if (FileDialogShow(fileDialog, true) == DialogResult.OK) {
+                    var target = fileDialog.FileName;
+                    if (File.Exists(target)) {
+                        continue;
+                    }
+                    if (tryIt = MessageBoxShow("Open the file to import", "RawImport", MessageBoxButtons.OKCancel) == DialogResult.OK) {
+                        if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
+                            
+                            var source = OpenFileDialog.FileName;
+                            if (!File.Exists(source)) {
+                                MessageBoxShow("File does not exist", "RawImport", MessageBoxButtons.OK);
+                                break;
+                            }
+                            tryIt = false;
+                            var targetProvider = GetProvider(DataBaseInfo.FromFileName(target));
+                            var sourceProvider = GetProvider(DataBaseInfo.FromFileName(source));
+
+                            try {
+                                targetProvider.Open(DataBaseInfo.FromFileName(target));
+                                sourceProvider.RawImport(DataBaseInfo.FromFileName(source), targetProvider);
+                            } catch (Exception ex) {
+                                Registry.Pool.TryGetCreate<IExceptionHandler>()
+                                    .Catch(new Exception("Raw import failed: " + ex.Message, ex), MessageType.OK);
+                                targetProvider.Data = null;
+                                targetProvider.Close();
+                                File.Delete(target);
+                            }
+                            targetProvider.Close();
+                            MessageBoxShow("Import successfull", "RawImport", MessageBoxButtons.OK);
+                            this.OpenFile(DataBaseInfo.FromFileName(target));
+                        }
+                    }
+                }
+            }
+            
         }
 
         public void DefaultDialogValues(FileDialogMemento dialog) {

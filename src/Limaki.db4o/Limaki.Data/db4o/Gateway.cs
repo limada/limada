@@ -21,16 +21,15 @@ namespace Limaki.Data.db4o {
     public class Gateway : GatewayBase {
         # region session
 
-        private IConfiguration _configuration = null;
-        public IConfiguration Configuration {
+        private IEmbeddedConfiguration _configuration = null;
+        public ICommonConfiguration Configuration {
             get {
                 if (_configuration == null) {
-                    _configuration = Db4oFactory.NewConfiguration();
-                    InitConfiguration(_configuration);
+                    _configuration = Db4oEmbedded.NewConfiguration();
+                    InitConfiguration(_configuration.Common);
                 }
-                return _configuration;
+                return _configuration.Common;
             }
-            set { _configuration = value; }
         }
 
         bool _isClosed = false;
@@ -41,10 +40,7 @@ namespace Limaki.Data.db4o {
                 if (!_isClosed) {
                     if (_session == null) {
                         try {
-                            _session = Db4oFactory.OpenFile(
-                                _configuration, 
-                                this.DataBaseInfo.Path + this.DataBaseInfo.Name + 
-                                this.FileExtension);
+                            _session = CreateSession(_configuration);
 
                         } catch (Exception e) {
                             Exception ex = new Exception(
@@ -59,7 +55,12 @@ namespace Limaki.Data.db4o {
             }
         }
 
-
+        public virtual IObjectContainer CreateSession(IEmbeddedConfiguration config) {
+            return Db4oEmbedded.OpenFile(
+                                config,
+                                this.DataBaseInfo.Path + this.DataBaseInfo.Name +
+                                this.FileExtension);
+        }
 
         # endregion session
 
@@ -99,7 +100,7 @@ namespace Limaki.Data.db4o {
         public override bool IsClosed() {
             return _isClosed;
         }
-        public virtual void InitConfiguration(IConfiguration configuration) {
+        public virtual void InitConfiguration(ICommonConfiguration configuration) {
             configuration.MarkTransient(typeof(Limaki.Common.TransientAttribute).FullName);
         }
 

@@ -191,6 +191,8 @@ namespace Limaki.Data.db4o {
             if (this._gateway == null) {
                 throw new ArgumentException("Wrong Gateway");
             }
+            DeclareTypesToConfigure();
+            //Refactor();
             Configure();
             ConfigureSession (_gateway.Session);
         }
@@ -233,7 +235,7 @@ namespace Limaki.Data.db4o {
         /// </summary>
         /// <param name="type"></param>
         protected virtual void ConfigureType(Type type) {
-            IObjectClass clazz = Configuration.ObjectClass(type);
+            var clazz = Configuration.ObjectClass(type);
             clazz.CascadeOnUpdate(true);
             clazz.CascadeOnActivate(true);
             clazz.CascadeOnDelete(false);
@@ -244,7 +246,11 @@ namespace Limaki.Data.db4o {
             }
         }
 
-        public IConfiguration Configuration {
+        protected virtual bool RefactorType(Type type) {
+            return false;
+        }
+
+        public ICommonConfiguration Configuration {
             get { return _gateway.Configuration; }
         }
 
@@ -272,15 +278,42 @@ namespace Limaki.Data.db4o {
         }
 
         /// <summary>
+        /// not working:
+        /// </summary>
+        protected void Refactor() {
+            // attention! this avoids having new classes:
+            //Configuration.DetectSchemaChanges = false;
+            var typesDone = new Set<Type>();
+            var needsOpenClose = false;
+            foreach (Type type in TypesToConfigure) {
+                try {
+                    if (!typesDone.Contains(type) && IsClassConfigurable(type)) {
+                        needsOpenClose = RefactorType(type) || needsOpenClose;
+                    }
+                } catch (Exception e) {
+                    System.Console.WriteLine("Error with " + type.FullName + "\t" + e.Message);
+                    System.Console.WriteLine(e.StackTrace);
+                }
+                typesDone.Add(type);
+            }
+
+            if (needsOpenClose) {
+                var configuration = Db4oEmbedded.NewConfiguration();
+                configuration.Common.DetectSchemaChanges = false;
+                var sessíon = _gateway.CreateSession(configuration);
+
+                sessíon.Close();
+            }
+        }
+
+        /// <summary>
         /// Calls configureclass for every type in typesToConfigure
         /// calls ConfigureAliases
         /// this is called before opening the database; no valid session here
         /// </summary>
-        protected virtual void Configure() {
-            DeclareTypesToConfigure();
-
+        protected void Configure() {
             ConfigureAliases ();
-            Set<Type> typesDone = new Set<Type>();
+            var typesDone = new Set<Type>();
             
             foreach (Type type in TypesToConfigure) {
                 try {

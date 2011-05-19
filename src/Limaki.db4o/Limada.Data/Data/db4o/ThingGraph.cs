@@ -41,8 +41,8 @@ namespace Limada.Data.db4o {
 
         protected override void DeclareTypesToConfigure() {
             
-            Configuration.BTreeCacheHeight(10);
-            Configuration.BTreeNodeSize(1000);
+            //Configuration.BTreeCacheHeight(10);
+            //Configuration.BTreeNodeSize(1000);
 
             base.DeclareTypesToConfigure();
 
@@ -62,9 +62,23 @@ namespace Limada.Data.db4o {
             return result || Reflector.Implements(type,typeof(IRealData<Id>));
         }
 
+        protected override bool RefactorType(Type type) {
+            var result = false;
+            var clazz = Configuration.ObjectClass(type);
+            if (Reflector.Implements(type, typeof(IThing))) {
+                var writeDate = clazz.ObjectField("_writeDate");
+                var changeDate = clazz.ObjectField("_changeDate");
+                if (writeDate != null) {
+                    writeDate.Rename("_changeDate");
+                    result = true;
+                }
+            }
+            return result;
+        }
 
         protected override void ConfigureType(Type type) {
-            IObjectClass clazz = Configuration.ObjectClass(type);
+            
+            var clazz = Configuration.ObjectClass(type);
             clazz.MaximumActivationDepth(15);
             clazz.UpdateDepth(1);
             
@@ -72,9 +86,7 @@ namespace Limada.Data.db4o {
                  Reflector.Implements(type, typeof(IRealData<Id>)) ) {
 
                 clazz.ObjectField("_id").Indexed(true);
-                var writeDate = clazz.ObjectField("_writeDate");
-                if (writeDate != null)
-                    writeDate.Rename("_changeDate");
+                
                 // the following makes errors on closing (sometimes): see Gateway.Close(); this.Flush();
                 // Configuration.Add(new UniqueFieldValueConstraint(type, "_id"));
 
@@ -310,17 +322,17 @@ namespace Limada.Data.db4o {
             bool result = false;
             if (item != null)
                 try {
+                    if (pureLinq) {
+                        result = markerVisitor.Ids.Contains(item.Id);
+                    } else {
+                        var query = Session.Query();
+                        // Attention! Here we use Link and NOT ILink as of query-index-usage
+                        query.Constrain(typeof(Link));
 
-                    result = markerVisitor.Ids.Contains(item.Id);
-                    
-                    //IQuery query = Session.Query();
-                    //// Attention! Here we use Link and NOT ILink as of query-index-usage
-                    //query.Constrain(typeof(Link));
-
-                    //query.Descend("_markerId").Constrain(item.Id);
-                    //IObjectSet set = query.Execute ();
-                    //result = set.Ext ().HasNext();
-
+                        query.Descend("_markerId").Constrain(item.Id);
+                        var set = query.Execute();
+                        result = set.Ext().HasNext();
+                    }
 
                 } catch (Exception e) {
                     throw e;
@@ -343,16 +355,21 @@ namespace Limada.Data.db4o {
             this.Add (thing);
         }
 
+        bool pureLinq = false;
         public virtual IThing GetById(Id id) {
             IThing result = null;
             try {
-                var query = Session.Query();
-                // Attention! Here we use Thing and NOT IThing as of query-index-usage
-                query.Constrain(typeof(Thing));
-                query.Descend("_id").Constrain(id);
-                var set = query.Execute();
-                if (set.HasNext())
-                    result = set.Next() as IThing;
+                if (pureLinq) {
+                    result = Session.AsQueryable<IThing>().Where(e => e.Id == id).FirstOrDefault();
+                } else {
+                    var query = Session.Query();
+                    //Attention! Here we use Thing and NOT IThing as of query-index-usage
+                    query.Constrain(typeof(Thing));
+                    query.Descend("_id").Constrain(id);
+                    var set = query.Execute();
+                    if (set.HasNext())
+                        result = set.Next() as IThing;
+                }
             } catch (Exception e) {
                 throw e;
             } finally { }

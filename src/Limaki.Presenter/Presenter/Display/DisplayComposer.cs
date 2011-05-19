@@ -82,10 +82,10 @@ namespace Limaki.Presenter.Display {
             zoomAction.Viewport = this.Viewport;
             display.EventControler.Add (zoomAction);
 
-            var scroll = new ScrollAction ();
+            var scroll = new MouseScrollAction ();
             scroll.Viewport = this.Viewport;
             scroll.Enabled = false;
-            display.ScrollAction = scroll;
+            display.MouseScrollAction = scroll;
             display.EventControler.Add(scroll);
 
         }

@@ -15,17 +15,18 @@ using Limaki.Model.Streams;
 namespace Limada.Data.db4o {
     public class Db4oRepairer {
 
-        public event MessageEventHandler WriteDetail = null;
-
+        public Action<string> WriteDetail = null;
+        protected StringWriter Log { get; set; }
         public void ReportDetail(string message) {
             if (WriteDetail != null) {
-                WriteDetail(this, message);
+                WriteDetail(message);
             }
+            if (Log != null)
+                Log.WriteLine(message);
         }
 
         public void ReadAndSaveAs(DataBaseInfo file, DataBaseInfo newDb, bool repair) {
-            IThingGraph graph = null;
-            var links = new List<ILink>();
+            IThingGraphProvider target = null;
             if (repair) {
                 var newFile = DataBaseInfo.ToFileName(newDb);
                 if (File.Exists(newFile))
@@ -34,23 +35,38 @@ namespace Limada.Data.db4o {
                 var p = Registry.Pool.TryGetCreate<DataProviders<IThingGraph>>().Find(newDb);
                 //new Limaki.Data.
                 //new Limaki.Data.dbLinq.Parts.Model1.PartsThingGraphProvider();
-                p.Open(newDb);
-                graph = p.Data;
+                target.Open(newDb);
+            }
 
-                ReportClazzes((graph as Limada.Data.db4o.ThingGraph).Gateway as Gateway);
+            RawImport(file, target, repair);
+        }
+
+        public void RawImport(DataBaseInfo source, IDataProvider<IThingGraph> target, bool repair) {
+            IThingGraph graph = null;
+            var links = new List<ILink>();
+            if (repair) {
+                this.Log = new StringWriter();
+                graph = target.Data;
+                var db4oGraph = graph as Limada.Data.db4o.ThingGraph;
+                if(db4oGraph!=null) {
+                    ReportClazzes(db4oGraph.Gateway as Gateway);
+                }
+                
             }
 
             var gateway = new Gateway();
+            
             if (!repair) {
-                gateway.Configuration.AllowVersionUpdates(true);
-                gateway.Configuration.DetectSchemaChanges(true);
-                gateway.Configuration.RecoveryMode(true);
+                gateway.Configuration.AllowVersionUpdates=true;
+                gateway.Configuration.DetectSchemaChanges = true;
+                //gateway.Configuration.RecoveryMode(true);
             }
 
             ConfigureAliases(gateway.Configuration);
 
-            gateway.Open(file);
+            gateway.Open(source);
             var session = gateway.Session;
+            
             ReportClazzes(gateway);
 
             var cache = new Dictionary<IReflectClass, Tuple<IReflectClass, List<IReflectField>, Type>>();
@@ -89,7 +105,7 @@ namespace Limada.Data.db4o {
                             if (info == null)
                                 info = type.GetField(field.GetName(), BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
                             if (info == null && field.GetName() == "_writeDate") {
-                                info = type.GetField("_creationDate", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
+                                info = type.GetField("_changeDate", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
                             }
                             type = type.BaseType;
                         }
@@ -119,10 +135,32 @@ namespace Limada.Data.db4o {
                     if (link.Root != null && link.Leaf != null)
                         graph.Add(link);
                 }
-                (graph as DbGraph<IThing, ILink>).Close();
+                
             }
             gateway.Close();
-            ReportDetail("done:\t"+(repair?DataBaseInfo.ToFileName(newDb):""));
+            ReportDetail("done:\t");
+            if (this.Log != null) {
+                var logfilename = DataBaseInfo.ToFileName(source) + ".log";
+                if (File.Exists(logfilename))
+                    File.Delete(logfilename);
+                var logfile = new StreamWriter(logfilename);
+                logfile.Write(this.Log.ToString());
+                logfile.Close();
+            }
+        }
+
+        public IEnumerable<Tuple<string, IList<string>>> ClazzNames(IGateway gateway) {
+            if (gateway == null)
+                yield break;
+
+            var session = (gateway as Gateway).Session;
+            foreach (var clazz in session.Ext().StoredClasses()) {
+                var result = Tuple.Create(clazz.GetName(), new List<string>() as IList<string>);
+                foreach (var field in clazz.GetStoredFields())
+                    result.Item2.Add(field.GetName());
+                yield return result;
+            }
+
         }
 
         public void ReportClazzes(Gateway gateway) {
@@ -140,40 +178,12 @@ namespace Limada.Data.db4o {
             }
         }
 
-        protected virtual void ConfigureAliases(IConfiguration configuration) {
+        protected virtual void ConfigureAliases(ICommonConfiguration configuration) {
             configuration.MarkTransient(typeof(Limaki.Common.TransientAttribute).FullName);
             return;
-            var TypesToConfigure = new List<Type>();
-            TypesToConfigure.Add(typeof(IThing));
-            TypesToConfigure.Add(typeof(ILink));
-            TypesToConfigure.Add(typeof(Thing));
-            TypesToConfigure.Add(typeof(Thing<string>));
-            TypesToConfigure.Add(typeof(Link));
-            TypesToConfigure.Add(typeof(StreamThing));
-
-            TypesToConfigure.Add(typeof(RealData));
-            TypesToConfigure.Add(typeof(RealData<byte[]>));
-
-            foreach (var type in TypesToConfigure)
-                ConfigureAlias(configuration, type);
+           
         }
 
-        protected virtual void ConfigureAlias(IConfiguration configuration, Type type) {
-            string ass = type.Assembly.FullName;
-            ass = ass.Substring(0, ass.IndexOf(","));
-            string namespc = type.Namespace;
-            configuration.AddAlias(
-                new WildcardAlias(
-                    namespc + ".*, " + namespc + ".007",
-                    namespc + ".*, " + ass));
-
-            IObjectClass clazz = configuration.ObjectClass(type);
-            var changeDate = clazz.ObjectField("_changeDate");
-
-            var writeDate = clazz.ObjectField("_writeDate");
-            if (writeDate != null && changeDate == null) {
-                writeDate.Rename("_changeDate");
-            }
-        }
+       
     }
 }

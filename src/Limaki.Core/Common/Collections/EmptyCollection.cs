@@ -15,8 +15,19 @@
 
 
 using System.Collections.Generic;
+using System;
 
 namespace Limaki.Common.Collections {
+    public class FuncComparer<T> : Comparer<T> {
+        Func<T,T,int> Comparer {get;set;}
+        public FuncComparer(Func<T, T, int> comparer) {
+            this.Comparer = comparer;
+        }
+        public override int Compare(T x, T y) {
+            return Comparer(x, y);
+        }
+    }
+
     public class EmptyCollection<T>:ICollection<T> {
 
         #region ICollection<T> Member

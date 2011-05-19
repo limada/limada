@@ -35,8 +35,8 @@ namespace Limaki.Tests.Winform {
         [Test]
         public void KeyEventArgsTest() {
             for (Keys keys = Keys.None; keys <= Keys.BrowserBack; keys++) {
-                KeyEventArgs args1 = new KeyEventArgs(keys);
-                var args2 = Converter.Convert(args1);
+                var args1 = new KeyEventArgs(keys);
+                var args2 = Converter.Convert(args1,System.Drawing.Point.Empty);
                 Key key2 = Converter.Convert(args1.KeyCode);
 
                 this.ReportDetail(
@@ -54,7 +54,7 @@ namespace Limaki.Tests.Winform {
                 Assert.AreEqual (args2.Key, key2, Enum.GetName(typeof(Key),key2));
 
                 args1 = new KeyEventArgs(keys|Keys.Control);
-                args2 = Converter.Convert(args1);
+                args2 = Converter.Convert(args1,System.Drawing.Point.Empty);
                 key2 = Converter.Convert(args1.KeyCode);
                 
                 Assert.AreEqual(args2.Key, key2, 
@@ -66,7 +66,7 @@ namespace Limaki.Tests.Winform {
                     Enum.GetName(typeof(ModifierKeys), args2.ModifierKeys));
 
                 args1 = new KeyEventArgs(keys | Keys.Alt);
-                args2 = Converter.Convert(args1);
+                args2 = Converter.Convert(args1,System.Drawing.Point.Empty);
                 key2 = Converter.Convert(args1.KeyCode);
 
                 Assert.AreEqual(args2.Key, key2,
@@ -78,7 +78,7 @@ namespace Limaki.Tests.Winform {
                     Enum.GetName(typeof(ModifierKeys), args2.ModifierKeys));
 
                 args1 = new KeyEventArgs(keys | Keys.Shift);
-                args2 = Converter.Convert(args1);
+                args2 = Converter.Convert(args1,System.Drawing.Point.Empty);
                 key2 = Converter.Convert(args1.KeyCode);
 
                 Assert.AreEqual(args2.Key, key2,
@@ -90,7 +90,7 @@ namespace Limaki.Tests.Winform {
                     Enum.GetName(typeof(ModifierKeys), args2.ModifierKeys));
 
                 args1 = new KeyEventArgs(keys | Keys.Shift | Keys.Control);
-                args2 = Converter.Convert(args1);
+                args2 = Converter.Convert(args1,System.Drawing.Point.Empty);
                 key2 = Converter.Convert(args1.KeyCode);
 
                 Assert.AreEqual(args2.Key, key2,

@@ -95,7 +95,11 @@ namespace Limaki.UseCases {
                 FileManager.ExportAsFile (display.Data);
             }
         }
-
+        public void ImportRawFile() {
+            SaveChanges();
+            FileManager.ShowEmptyThingGraph();
+            FileManager.ImportRawFile();
+        }
         public void Search() {
             this.SplitView.DoSearch ();
         }
@@ -142,7 +146,7 @@ namespace Limaki.UseCases {
             FavoriteManager.SaveChanges(displays);
         }
 
-       
+        public Action<string> StateMessage {get; set;}
     }
 
     public class UseCaseComposer : IComposer<UseCase> {
@@ -184,6 +188,7 @@ namespace Limaki.UseCases {
             fileManager.DataBound = (scene) => splitView.ChangeData(scene);
             fileManager.DataPostProcess = useCase.DataPostProcess;
 
+            fileManager.StateMessage = useCase.StateMessage;
             
             splitView.Check ();
 			

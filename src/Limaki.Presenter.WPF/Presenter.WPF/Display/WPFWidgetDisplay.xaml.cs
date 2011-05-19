@@ -178,9 +178,11 @@ namespace Limaki.Presenter.WPF.Display {
 
         #region Event-Routing
 
+        public Point MousePosition { get; set; }
 #if ! SILVERLIGHT
 
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e) {
+            MousePosition = e.GetPosition(this);
             base.OnPreviewMouseDown(e);
             Display.EventControler
                 .OnMouseDown(Converter.Convert(e, this));
@@ -189,16 +191,20 @@ namespace Limaki.Presenter.WPF.Display {
 
         protected override void OnPreviewMouseMove(MouseEventArgs e) {
             base.OnPreviewMouseMove(e);
+            MousePosition = e.GetPosition(this);
             Display.EventControler.OnMouseMove(Converter.Convert(e, this));
         }
 
         protected override void OnPreviewMouseUp(MouseButtonEventArgs e) {
             base.OnPreviewMouseUp(e);
+            MousePosition = e.GetPosition(this);
             Display.EventControler.OnMouseUp(Converter.Convert(e, this));
         }
 
+
         protected override void OnPreviewKeyDown(KeyEventArgs e) {
-            Display.EventControler.OnKeyDown(Converter.Convert(e, this));
+            
+            Display.EventControler.OnKeyDown(Converter.Convert(e, this,MousePosition));
             base.OnPreviewKeyDown(e);
 
         }

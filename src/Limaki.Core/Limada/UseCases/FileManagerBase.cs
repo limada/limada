@@ -27,7 +27,10 @@ namespace Limada.UseCases {
 		
 		public virtual IThingGraphProvider GetProvider(DataBaseInfo info) {
             var providers = Registry.Pool.TryGetCreate<DataProviders<IThingGraph>>();
-            return providers.Find(info) as IThingGraphProvider;
+            var result =  providers.Find(info) as IThingGraphProvider;
+            if (result != null)
+                result.StateMessage = this.StateMessage;
+            return result;
         }
 		
 		public virtual bool OpenFile(DataBaseInfo fileName) {
@@ -46,6 +49,8 @@ namespace Limada.UseCases {
             }
             return result;
         }
+
+        public Action<string> StateMessage { get; set; }
 	}
 }
 

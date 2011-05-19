@@ -35,7 +35,7 @@ namespace Limaki.UseCases.Viewers {
 
             Display1.ZoomState = ZoomState.Original;
             Display1.SelectAction.Enabled = true;
-            Display1.ScrollAction.Enabled = false;
+            Display1.MouseScrollAction.Enabled = false;
 
             InitializeDisplay(Display1);
             InitializeDisplay(Display2);

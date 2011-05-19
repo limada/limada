@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using Limada.UseCases;
 using Limaki.Common;
 using Limaki.Presenter.Display;
@@ -12,11 +11,25 @@ using Limada.Schemata;
 using Limaki.Graphs;
 using Limaki.Presenter.Widgets;
 using Limada.View;
+using Limaki.Drawing;
+using System;
+using System.Collections.Generic;
+using Limaki.Common.Collections;
 
 namespace Limaki.Presenter.Winform.Controls {
+    public class DocumentSchemaKeyScrollAction:KeyScrollAction {
+        protected override RectangleI ProcessKey(KeyActionEventArgs e) {
+            var result = base.ProcessKey(e);
+            if (KeyProcessed != null) {
+                KeyProcessed(result);
+            }
+            return result;
+        }
+        public Action<RectangleI> KeyProcessed { get; set; }
+    }
     public class DocumentSchemaController:ThingViewerController {
         public IGraphSceneDisplay<IWidget, IEdgeWidget> GraphSceneDisplay { get; set; }
-        public IDisplay<Image> ImageDisplay { get; set; }
+        public IDisplay<System.Drawing.Image> ImageDisplay { get; set; }
 
         public virtual void Compose() {
             // link GraphSceneDisplay with ImageDisplay:
@@ -26,7 +39,7 @@ namespace Limaki.Presenter.Winform.Controls {
                 if (pageStream != null) {
                     var stream = pageStream.Data;
                     if (stream != null)
-                        ImageDisplay.Data = Image.FromStream(stream);
+                        ImageDisplay.Data = System.Drawing.Image.FromStream(stream);
                     else
                         ImageDisplay.Data = null;
                 }
@@ -37,7 +50,11 @@ namespace Limaki.Presenter.Winform.Controls {
             Adjust(GraphSceneDisplay);
 
             ImageDisplay.ZoomState = Drawing.ZoomState.FitToWidth;
-
+            ImageDisplay.EventControler.Remove(ImageDisplay.EventControler.GetAction<KeyScrollAction>());
+            
+            var scroller = new DocumentSchemaKeyScrollAction();
+            scroller.Viewport = ()=>ImageDisplay.Viewport;
+            ImageDisplay.EventControler.Add(scroller);
         }
 
         public int GetDefaultWidth() {
@@ -111,6 +128,36 @@ namespace Limaki.Presenter.Winform.Controls {
             display.Execute();
             // wrong: display.Layout.Distance = distance;
             // TODO: Layout.Margin (Top,Left) and Layout.Padding (distance between widgets)
+
+            var scroller = ImageDisplay.EventControler.GetAction<DocumentSchemaKeyScrollAction>();
+            if (scroller != null) {
+                scroller.KeyProcessed = (r) => {
+                    var inc = r.X + r.Y + r.Bottom + r.Right;
+                    if (scene.Focused != null && inc != 0) {
+                        var iPage = Array.BinarySearch<IWidget>(
+                            pages, scene.Focused,
+                            new FuncComparer<IWidget>((a, b) => {
+                                if (a == b)
+                                    return 0;
+                                else
+                                    return a.Data.ToString().CompareTo(b.Data.ToString());
+                            }));
+                        if (iPage != -1 && pages.Length > iPage + inc && iPage + inc >= 0) {
+                            scene.Requests.Add(
+                                new StateChangeCommand<IWidget>(scene.Focused, new Pair<UiState>(UiState.Focus, UiState.None))
+                                );
+                            scene.Selected.Clear();
+                            scene.Focused = pages[iPage + inc];
+                            scene.Requests.Add(
+                                new StateChangeCommand<IWidget>(scene.Focused, new Pair<UiState>(UiState.None, UiState.Focus))
+                                );
+                            GraphSceneDisplay.Execute();
+                            GraphSceneDisplay.OnSceneFocusChanged();
+                        }
+
+                    }
+                };
+            }
         }
 
         DocumentSchemaControl _control = null;

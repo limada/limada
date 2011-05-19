@@ -10,14 +10,28 @@ namespace Limaki.Presenter.Winform.Controls {
         public DocumentSchemaControl(DocumentSchemaController controller) {
             Controller = controller;
             InitializeComponent();
+            this.WidgetDisplay.TabStop = false;
+            this.WinImageDisplay.TabStop = false;
+            this.SplitContainer.TabStop = false;
+            
             Controller.GraphSceneDisplay = this.WidgetDisplay.Display as IGraphSceneDisplay<IWidget, IEdgeWidget>;
             Controller.ImageDisplay = this.WinImageDisplay.Display;
             Controller.Compose();
             this.PerformLayout();
             Application.DoEvents();
+
+            this.SplitContainer.KeyDown += new KeyEventHandler(SplitContainer_KeyDown);
+        }
+
+        void SplitContainer_KeyDown(object sender, KeyEventArgs e) {
+            e.Handled = false;
         }
         public DocumentSchemaController Controller { get; set; }
 
+
+        protected override void OnKeyDown(KeyEventArgs e) {
+            base.OnKeyDown(e);
+        }
 
         #region IZoomTarget Member
 

@@ -84,7 +84,10 @@ namespace Limaki.UseCases.Winform {
 
             useCase.MessageBoxShow = this.MessageBoxShow;
             useCase.FileDialogShow = this.FileDialogShow;
-
+            useCase.StateMessage = (m) => {
+                                       this.StatusLabel.Text = m;
+                                       Application.DoEvents();
+                                   };
             Mainform.FormClosing += (s, e) => useCase.Close ();
             Application.ApplicationExit += (s, e) => {
                 useCase.Close();
@@ -111,7 +114,8 @@ namespace Limaki.UseCases.Winform {
                     new ToolStripMenuItem("Content...", null, (s, e) => { useCase.ExportContent(); }),
                 }),
 				new ToolStripMenuItem("Import", null, new ToolStripMenuItem[] { 
-					new ToolStripMenuItem("Content ...", null, (s, e) => { useCase.ImportContent(); })
+					new ToolStripMenuItem("Content ...", null, (s, e) => { useCase.ImportContent(); }),
+                    new ToolStripMenuItem("File from previous version ...", null, (s, e) => { useCase.ImportRawFile(); })
 				}),
                 new ToolStripMenuItem("Print ...", null, (s, e) => { this.Print(useCase); }),
                 new ToolStripMenuItem("PrintPreview ...", null, (s, e) => { this.PrintPreview(useCase); }),

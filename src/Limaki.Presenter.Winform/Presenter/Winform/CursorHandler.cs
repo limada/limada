@@ -1,5 +1,6 @@
 using System.Windows.Forms;
 using Limaki.Drawing;
+using Limaki.Drawing.GDI;
 
 namespace Limaki.Presenter.Winform {
     public class CursorHandler:IDeviceCursor {
@@ -74,6 +75,7 @@ namespace Limaki.Presenter.Winform {
         public void  RestoreCursor() {
             control.Cursor = Cursors.Default;
         }
+
     }
 
 }

@@ -224,7 +224,7 @@ namespace Limaki.Tests.UseCases {
                 var fileInfo = DataBaseInfo.FromFileName(file);
                 if (fileInfo.Extension==".limo") {
                     var repairer = new Limada.Data.db4o.Db4oRepairer();
-                    repairer.WriteDetail += testMessage;
+                    repairer.WriteDetail = (m)=> testMessage(repairer,m);
                     var newFile = DataBaseInfo.FromFileName(file);
                     newFile.Name = "repaired." + newFile.Name;
                     repairer.ReadAndSaveAs(fileInfo, newFile, true);

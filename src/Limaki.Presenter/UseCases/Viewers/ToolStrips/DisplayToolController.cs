@@ -57,7 +57,7 @@ namespace Limaki.UseCases.Viewers.ToolStrips {
             this.Control = display;
             tool.Attach(
                 display.SelectAction.Enabled,
-                display.ScrollAction.Enabled,
+                display.MouseScrollAction.Enabled,
                 ActionEnabled<AddEdgeAction>(display),
                 ActionEnabled <GraphItemAddAction<IWidget, IEdgeWidget>>(display)
                 );
@@ -70,7 +70,7 @@ namespace Limaki.UseCases.Viewers.ToolStrips {
             }
 
             display.SelectAction.Enabled = select;
-            display.ScrollAction.Enabled = move;
+            display.MouseScrollAction.Enabled = move;
 
             connect = ActionEnabled<AddEdgeAction> (display, connect);
             add = ActionEnabled<GraphItemAddAction<IWidget, IEdgeWidget>>(display, add);

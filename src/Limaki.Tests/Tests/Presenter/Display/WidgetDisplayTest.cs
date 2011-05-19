@@ -33,8 +33,8 @@ namespace Limaki.Tests.Presenter.Display {
             var zoomAction = Display.EventControler.GetAction<ZoomAction> ();
             zoomEnabled = zoomAction.Enabled;
             zoomAction.Enabled = false;
-            trackerEnabled = Display.ScrollAction.Enabled;
-            Display.ScrollAction.Enabled = false;
+            trackerEnabled = Display.MouseScrollAction.Enabled;
+            Display.MouseScrollAction.Enabled = false;
             selectorEnabled = Display.SelectAction.Enabled;
             Display.SelectAction.Enabled = false;
         }
@@ -42,7 +42,7 @@ namespace Limaki.Tests.Presenter.Display {
         public override void TearDown() {
             var zoomAction = Display.EventControler.GetAction<ZoomAction> ();
             zoomAction.Enabled = zoomEnabled;
-            Display.ScrollAction.Enabled = trackerEnabled;
+            Display.MouseScrollAction.Enabled = trackerEnabled;
             Display.SelectAction.Enabled = selectorEnabled;
             base.TearDown();
         }

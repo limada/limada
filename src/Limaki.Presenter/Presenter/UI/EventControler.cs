@@ -76,6 +76,9 @@ namespace Limaki.Presenter.UI {
         }
 
         public virtual void Remove(IAction action) {
+            if (action == null)
+                return; 
+
             Actions.Remove(action.GetType());
             
             if (action is IMouseAction) {
