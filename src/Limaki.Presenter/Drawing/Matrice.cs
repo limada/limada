@@ -1,6 +1,6 @@
 /*
  * Limaki 
- * Version 0.081
+ 
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -11,7 +11,7 @@
  * Lytico
  * 
  * Copyright (C) 2003  Southern Storm Software, Pty Ltd.
- * Copyright (C) 2006-2008 Lytico
+ * Copyright (C) 2006-2011 Lytico
  *
  * http://limada.sourceforge.net
  * 
