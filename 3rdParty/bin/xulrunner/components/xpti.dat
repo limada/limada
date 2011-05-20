@@ -2,11 +2,11 @@
 
 [Header,2]
 0,Version,2,0
-1,AppDir,S:\Programming\Limada\src\3rdParty\bin\xulrunner
+1,AppDir,S:\Programming\Git\Limada\3rdParty\bin\xulrunner
 
 [Directories,2]
-0,S:\Programming\Limada\src\3rdParty\bin\xulrunner\components
-1,S:\Programming\Limada\src\3rdParty\bin\xulrunner\plugins
+0,S:\Programming\Git\Limada\3rdParty\bin\xulrunner\components
+1,S:\Programming\Git\Limada\3rdParty\bin\xulrunner\plugins
 
 [Files,128]
 0,dom_svg.xpt,0,23460,1222377704000

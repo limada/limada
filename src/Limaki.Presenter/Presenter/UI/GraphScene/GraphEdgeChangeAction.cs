@@ -23,7 +23,7 @@ using Limaki.Presenter.Layout;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
-    /// Changes Root or Link of a LinkWidget
+    /// Changes Root or Link of an Edge
     /// </summary>
     public class GraphEdgeChangeAction<TItem,TEdge> : MoveResizeAction 
     where TEdge:TItem, IEdge<TItem> {
@@ -162,16 +162,16 @@ namespace Limaki.Presenter.UI {
 
         public virtual bool IsTargetHit(PointI p) {
             bool result = false;
-            TItem widget = Scene.Hovered;
+            TItem hovered = Scene.Hovered;
             TEdge edge = this.Edge;
-            if ((widget != null) && (edge != null) && (!edge.Equals(widget))) {
-                if (!widget.Equals(edge.Leaf) && ! widget.Equals(edge.Root)) {
+            if ((hovered != null) && (edge != null) && (!edge.Equals(hovered))) {
+                if (!hovered.Equals(edge.Leaf) && ! hovered.Equals(edge.Root)) {
                     PointI sp = Camera.ToSource(p);
-                    result = Scene.ItemShape(widget).IsHit(sp, HitSize);
+                    result = Scene.ItemShape(hovered).IsHit(sp, HitSize);
                 }
             }
             if (result) {
-                this.Target = widget;
+                this.Target = hovered;
             } else {
                 Target = default(TItem);
             }
@@ -192,8 +192,8 @@ namespace Limaki.Presenter.UI {
                 }
 
                 Scene.Requests.Add(new LayoutCommand<TItem>(Edge, LayoutActionType.Justify));
-                foreach (TItem widget in Scene.Graph.Twig(Edge)) {
-                    Scene.Requests.Add(new LayoutCommand<TItem>(widget, LayoutActionType.Justify));
+                foreach (TItem item in Scene.Graph.Twig(Edge)) {
+                    Scene.Requests.Add(new LayoutCommand<TItem>(item, LayoutActionType.Justify));
                 }
             }
 

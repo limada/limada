@@ -24,10 +24,10 @@ using Limaki.UnitTest;
 using Limaki.Tests.Graph.Model;
 using Limada.Model;
 using NUnit.Framework;
-using Limaki.Tests.Widget;
+using Limaki.Tests.Visuals;
 using Limaki.Tests.Graph;
 using Limada.Tests.Model;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limada.View;
 using Limaki.Tests.Graph.Wrappers;
 
@@ -51,7 +51,7 @@ namespace Limada.Tests.Wrappers {
         }
         [Test]
         public void ThingGraphFactory() {
-            WidgetThingGraph graph = new WidgetThingGraph ();
+            VisualThingGraph graph = new VisualThingGraph ();
 
             ThingGraphFactory<ProgrammingLanguageFactory> factory = new ThingGraphFactory<ProgrammingLanguageFactory> ();
             factory.Populate (graph.Two);
@@ -61,7 +61,7 @@ namespace Limada.Tests.Wrappers {
 
         [Test]
         public void FoldingTest1() {
-            WidgetThingGraph graph = new WidgetThingGraph();
+            VisualThingGraph graph = new VisualThingGraph();
 
             ProgrammingLanguageFoldingTest test = new ProgrammingLanguageFoldingTest();
             test.Mock.Factory.Graph = graph;
@@ -71,7 +71,7 @@ namespace Limada.Tests.Wrappers {
 
         [Test]
         public void Mock2() {
-            WidgetThingGraph graph = new WidgetThingGraph();
+            VisualThingGraph graph = new VisualThingGraph();
 
             ProgrammingLanguageFoldingTest test = new ProgrammingLanguageFoldingTest();
             test.Mock.Factory.Populate (graph);
@@ -87,7 +87,7 @@ namespace Limada.Tests.Wrappers {
 
         [Test]
         public void FoldingExpandTest() {
-            WidgetThingGraph graph = new WidgetThingGraph();
+            VisualThingGraph graph = new VisualThingGraph();
 
             ProgrammingLanguageFoldingTest test = new ProgrammingLanguageFoldingTest();
             test.Mock.Factory.Graph = graph;
@@ -101,12 +101,12 @@ namespace Limada.Tests.Wrappers {
 
             test.Mock.Scene.Focused = graph.Get (factory.Node[1]);
             Console.Out.Write(
-                    GraphTestUtils.ReportGraph<IWidget, IEdgeWidget>(graph.One, factory.Name));
+                    GraphTestUtils.ReportGraph<IVisual, IVisualEdge>(graph.One, factory.Name));
 
             test.Mock.SceneFacade.Expand (false);
 
             Console.Out.Write(
-                GraphTestUtils.ReportGraph<IWidget, IEdgeWidget>(graph.One, factory.Name));
+                GraphTestUtils.ReportGraph<IVisual, IVisualEdge>(graph.One, factory.Name));
 
         }
     }

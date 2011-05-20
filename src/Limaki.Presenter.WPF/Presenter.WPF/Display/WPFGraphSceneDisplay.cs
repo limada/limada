@@ -1,10 +1,10 @@
 ﻿using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Presenter.Widgets;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals;
+using Limaki.Visuals;
 using Limaki.Presenter.Display;
 using Limaki.Presenter.UI;
-using Limaki.Presenter.Widgets.UI;
+using Limaki.Presenter.Visuals.UI;
 using Limaki.Presenter.WPF;
 
 namespace Limaki.Presenter.WPF.Display {
@@ -20,35 +20,35 @@ namespace Limaki.Presenter.WPF.Display {
     }
 
 
-    public class WPFWidgetDisplay : WPFGraphSceneDisplay<IWidget, IEdgeWidget> {
+    public class WPFVisualsDisplay : WPFGraphSceneDisplay<IVisual, IVisualEdge> {
 
-        public override DisplayFactory<IGraphScene<IWidget, IEdgeWidget>> CreateDisplayFactory(WPFDisplay<IGraphScene<IWidget, IEdgeWidget>> device) {
-            var result = new WidgetDisplayFactory();
-            var deviceInstrumenter = new WPFWidgetDeviceComposer();
+        public override DisplayFactory<IGraphScene<IVisual, IVisualEdge>> CreateDisplayFactory(WPFDisplay<IGraphScene<IVisual, IVisualEdge>> device) {
+            var result = new VisualsDisplayFactory();
+            var deviceInstrumenter = new WPFVisualsDeviceComposer();
             deviceInstrumenter.Device = device;
             result.DeviceComposer = deviceInstrumenter;
-            result.DisplayComposer = new WPFWidgetDisplayComposer();
+            result.DisplayComposer = new WpfVisualsDisplayComposer();
             return result;
         }
 
 
     }
 
-    public class WPFWidgetDisplayComposer : WidgetDisplayComposer {
+    public class WpfVisualsDisplayComposer : VisualsDisplayComposer {
 
-        //public WidgetDragDrop DragDrop { get; set; }
-        public override void Factor(Display<IGraphScene<IWidget, IEdgeWidget>> aDisplay) {
+        //public VisualsDragDrop DragDrop { get; set; }
+        public override void Factor(Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
             base.Factor(aDisplay);
-            var display = aDisplay as WidgetDisplay;
-            display.GraphItemRenderer = new WPFWidgetRenderer();
+            var display = aDisplay as VisualsDisplay;
+            display.GraphItemRenderer = new WpfVisualsRenderer();
         }
 
-        public override void Compose(Display<IGraphScene<IWidget, IEdgeWidget>> aDisplay) {
+        public override void Compose(Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
             var display = aDisplay;
             base.Compose(display);
 
             
-            //var DragDrop = new WidgetDragDrop(
+            //var DragDrop = new VisualsDragDrop(
             //   this.GraphScene,
             //   display.Device as IDragDopControl,
             //   this.Camera(),
@@ -56,9 +56,9 @@ namespace Limaki.Presenter.WPF.Display {
             //DragDrop.Enabled = true;
             //display.EventControler.Add(DragDrop);
 
-            var selector = display.EventControler.GetAction<GraphSceneFocusAction<IWidget, IEdgeWidget>>();
+            var selector = display.EventControler.GetAction<GraphSceneFocusAction<IVisual, IVisualEdge>>();
             if (selector != null) {
-                //var catcher = new DragDropCatcher<GraphSceneFocusAction<IWidget, IEdgeWidget>>(selector, display.Device as IControl);
+                //var catcher = new DragDropCatcher<GraphSceneFocusAction<IVisual, IVisualEdge>>(selector, display.Device as IControl);
                 //display.EventControler.Add(catcher);
             }
 
@@ -67,7 +67,7 @@ namespace Limaki.Presenter.WPF.Display {
                 //var catcher = new DragDropCatcher<AddEdgeAction>(addEdgeAction, display.Device as IControl);
                 //display.EventControler.Add(catcher);
             }
-            //var editor = new WidgetTextEditor(
+            //var editor = new VisualsTextEditor(
             //    this.GraphScene,
             //    display.Device as ContainerControl,
             //    display,
@@ -81,12 +81,12 @@ namespace Limaki.Presenter.WPF.Display {
     }
 
 
-    public class WPFWidgetDeviceComposer : WPFGraphSceneDeviceComposer<IWidget, IEdgeWidget> {
-        public override void Factor(Display<IGraphScene<IWidget, IEdgeWidget>> display) {
+    public class WPFVisualsDeviceComposer : WPFGraphSceneDeviceComposer<IVisual, IVisualEdge> {
+        public override void Factor(Display<IGraphScene<IVisual, IVisualEdge>> display) {
             base.Factor(display);
         }
 
-        public override void Compose(Display<IGraphScene<IWidget, IEdgeWidget>> display) {
+        public override void Compose(Display<IGraphScene<IVisual, IVisualEdge>> display) {
             base.Compose(display);
 
         }

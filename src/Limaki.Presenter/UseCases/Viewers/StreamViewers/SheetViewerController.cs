@@ -19,16 +19,16 @@ using Limada.Presenter;
 using Limaki.Common;
 using Limaki.Model.Streams;
 using Limaki.UseCases.Viewers;
-using Limaki.Presenter.Widgets;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals;
+using Limaki.Visuals;
 using Id = System.Int64;
 using Limaki.Drawing;
 
 namespace Limaki.UseCases.Viewers.StreamViewers {
     public class SheetViewerController : StreamViewerController {
 
-        protected WidgetDisplay _sheetControl = null;
-        public WidgetDisplay SheetControl {
+        protected VisualsDisplay _sheetControl = null;
+        public VisualsDisplay SheetControl {
             get { return _sheetControl; }
             set {
                 if (_sheetControl != value && value != null) {
@@ -64,7 +64,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
             SheetControl.DataId = sheetinfo.Id;
             sheetinfo.State.CopyTo(SheetControl.Data.State);
 
-            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IWidget, IEdgeWidget>>(SheetControl.Data);
+            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(SheetControl.Data);
 
             if (IsStreamOwner) {
                 streamInfo.Data.Close();

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 using Limaki.Presenter.Display;
-using Limaki.Widgets;
+using Limaki.Visuals;
 
 namespace Limaki.Presenter.Winform.Controls {
     // couldn't this replaced by WinformSplitView??
@@ -10,11 +10,11 @@ namespace Limaki.Presenter.Winform.Controls {
         public DocumentSchemaControl(DocumentSchemaController controller) {
             Controller = controller;
             InitializeComponent();
-            this.WidgetDisplay.TabStop = false;
+            this.WinVisualsDisplay.TabStop = false;
             this.WinImageDisplay.TabStop = false;
             this.SplitContainer.TabStop = false;
             
-            Controller.GraphSceneDisplay = this.WidgetDisplay.Display as IGraphSceneDisplay<IWidget, IEdgeWidget>;
+            Controller.GraphSceneDisplay = this.WinVisualsDisplay.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
             Controller.ImageDisplay = this.WinImageDisplay.Display;
             Controller.Compose();
             this.PerformLayout();

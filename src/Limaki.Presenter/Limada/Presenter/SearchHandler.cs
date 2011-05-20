@@ -18,9 +18,9 @@ using Limada.Model;
 using Limada.View;
 using Limaki.Drawing;
 using Limaki.Graphs.Extensions;
-using Limaki.Presenter.Widgets.Layout;
-using Limaki.Presenter.Widgets.UI;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals.Layout;
+using Limaki.Presenter.Visuals.UI;
+using Limaki.Visuals;
 using System.Linq;
 using Limaki.Presenter.UI;
 
@@ -29,11 +29,11 @@ namespace Limada.Presenter {
 
 
         public bool IsSearchable(Scene scene) {
-            return scene != null && GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(scene.Graph) != null;
+            return scene != null && GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(scene.Graph) != null;
         }
 
-        public void LoadSearch(Scene scene, IGraphLayout<IWidget,IEdgeWidget> layout, object name) {
-            var graph = GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink> (scene.Graph);
+        public void LoadSearch(Scene scene, IGraphLayout<IVisual,IVisualEdge> layout, object name) {
+            var graph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink> (scene.Graph);
             
             if (graph==null) {
                 throw new ArgumentException ("Search works only on ThingGraphs");
@@ -42,12 +42,12 @@ namespace Limada.Presenter {
             SceneTools.CleanScene(scene);
             var thingGraph = scene.Graph.ThingGraph();
 
-            var widgets = from thing in thingGraph.Search(name, false)
-                        let widget = graph.Get(thing)
-                        orderby widget.Data.ToString()
-                        select widget;
+            var visuals = from thing in thingGraph.Search(name, false)
+                        let visual = graph.Get(thing)
+                        orderby visual.Data.ToString()
+                        select visual;
 
-            new GraphSceneFacade<IWidget, IEdgeWidget>(delegate() { return scene; }, layout).Add(widgets, false, true);
+            new GraphSceneFacade<IVisual, IVisualEdge>(delegate() { return scene; }, layout).Add(visuals, false, true);
 
             scene.ClearSpatialIndex();
         }

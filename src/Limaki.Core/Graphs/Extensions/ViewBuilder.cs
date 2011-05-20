@@ -88,15 +88,15 @@ namespace Limaki.Graphs.Extensions {
         }
 
         public void RemoveOrphans(IGraph<TITem, TEdge> data) {
-            foreach (TITem widget in data) {
-                if (!(widget is TEdge)) {
+            foreach (TITem item in data) {
+                if (!(item is TEdge)) {
                     bool remove = true;
-                    foreach (TITem one in data.Edges(widget)) {
+                    foreach (TITem one in data.Edges(item)) {
                         remove = false;
                         break;
                     }
                     if (remove) {
-                        this.Remove(widget);
+                        this.Remove(item);
                     }
                 }
             }

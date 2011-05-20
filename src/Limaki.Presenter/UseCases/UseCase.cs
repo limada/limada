@@ -20,8 +20,8 @@ using Limaki.Data;
 using Limaki.Presenter.Display;
 using Limaki.UseCases.Viewers;
 using Limaki.UseCases.Viewers.ToolStrips;
-using Limaki.Presenter.Widgets;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals;
+using Limaki.Visuals;
 using Limaki.Drawing;
 using Limaki.Model.Streams;
 using System.IO;
@@ -65,7 +65,7 @@ namespace Limaki.UseCases {
         public MarkerToolController MarkerToolController { get; set; }
         
         public Get<object> GetCurrentControl { get; set; }
-        public Get<WidgetDisplay> GetCurrentDisplay { get; set; }
+        public Get<VisualsDisplay> GetCurrentDisplay { get; set; }
 
 
         public Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow { get; set; }
@@ -141,7 +141,7 @@ namespace Limaki.UseCases {
         }
 
         public void SaveChanges() {
-            var displays = new WidgetDisplay[] {SplitView.Display1, SplitView.Display2};
+            var displays = new VisualsDisplay[] {SplitView.Display1, SplitView.Display2};
             SceneHistory.SaveChanges(displays, SheetManager, MessageBoxShow);
             FavoriteManager.SaveChanges(displays);
         }

@@ -22,9 +22,9 @@ using Limaki.Drawing;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Streams;
 using Limaki.UseCases.Viewers.StreamViewers;
-using Limaki.Presenter.Widgets;
+using Limaki.Presenter.Visuals;
 using Limaki.UseCases.Viewers.StreamViewers;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limaki.Presenter.UI;
 using System.Linq;
 using Limaki.Graphs;
@@ -32,7 +32,7 @@ using Limaki.Graphs;
 namespace Limaki.UseCases.Viewers {
     public class ContentViewManager:IDisposable {
         
-        public WidgetDisplay SheetControl {get;set;}
+        public VisualsDisplay SheetControl {get;set;}
         public ISheetManager SheetManager { get; set; }
 
         public Color BackColor = KnownColors.FromKnownColor(KnownColor.Control);
@@ -54,7 +54,7 @@ namespace Limaki.UseCases.Viewers {
         public ContentViewProviders Providers { get { return _providers ?? (_providers = Registry.Pool.TryGetCreate<ContentViewProviders>()); } }
         public ThingContentViewProviders ThingContentViewProviders { get { return Providers as ThingContentViewProviders; } }
 
-        void AttachController(ViewerController controller, IGraph<IWidget, IEdgeWidget> graph, IWidget thing) {
+        void AttachController(ViewerController controller, IGraph<IVisual, IVisualEdge> graph, IVisual thing) {
             controller.BackColor = this.BackColor;
             controller.Parent = this.Parent;
             if (this.Attach != null) {
@@ -102,15 +102,15 @@ namespace Limaki.UseCases.Viewers {
             }
         }
 
-        void LoadThing(ThingViewerController controller, IGraph<IWidget, IEdgeWidget> graph, IWidget widget) {
+        void LoadThing(ThingViewerController controller, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
             try {
                 //if (controller.CurrentThingId != thing.Id) {
                 //    //SaveStream(graph, controller);
                 //}
-                var thing = graph.ThingOf(widget);
+                var thing = graph.ThingOf(visual);
                 if (controller.CurrentThingId != thing.Id) {
                     controller.CurrentThingId = thing.Id;
-                    controller.SetContent(graph, widget);
+                    controller.SetContent(graph, visual);
                 }
 
                 currentThing = thing;
@@ -123,23 +123,23 @@ namespace Limaki.UseCases.Viewers {
         }
 
 
-        void LoadThing(IGraph<IWidget,IEdgeWidget> widgetGraph, IWidget widget) {
-            var graph = GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(widgetGraph);
+        void LoadThing(IGraph<IVisual,IVisualEdge> visualGraph, IVisual visual) {
+            var graph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(visualGraph);
 
-            if (widget != null && graph != null) {
-                 var thing = graph.ThingOf(widget);
+            if (visual != null && graph != null) {
+                 var thing = graph.ThingOf(visual);
                  if (thing != null) {
-                     var controller = ThingContentViewProviders.Supports(widgetGraph, widget);
+                     var controller = ThingContentViewProviders.Supports(visualGraph, visual);
                      if (controller != null) {
-                         AttachController(controller, graph, widget);
-                         LoadThing(controller, widgetGraph, widget);
+                         AttachController(controller, graph, visual);
+                         LoadThing(controller, visualGraph, visual);
                      }
                      var streamThing = thing as IStreamThing;
                      if (streamThing != null) {
                          var streamController = Providers.Supports(streamThing.StreamType);
                          
                          if (streamController != null) {
-                             AttachController(streamController, graph, widget);
+                             AttachController(streamController, graph, visual);
                              LoadStreamThing(streamController, graph.Two as IThingGraph, streamThing);
                          }
                      }
@@ -178,7 +178,7 @@ namespace Limaki.UseCases.Viewers {
             }
         }
 
-        public void ChangeViewer(object sender, GraphSceneEventArgs<IWidget, IEdgeWidget> e) {
+        public void ChangeViewer(object sender, GraphSceneEventArgs<IVisual, IVisualEdge> e) {
             if (e.Item != null) {
                 LoadThing(e.Scene.Graph,e.Item);
             }

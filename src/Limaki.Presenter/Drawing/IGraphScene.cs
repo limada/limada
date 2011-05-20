@@ -38,14 +38,14 @@ namespace Limaki.Drawing {
 
         State State { get; }
 
-        void Add(TItem widget);
-        bool Remove(TItem widget);
+        void Add(TItem visual);
+        bool Remove(TItem visual);
         bool ChangeEdge(TEdge edge, TItem target, bool asRoot);
-        bool Contains ( TItem widget );
+        bool Contains(TItem visual);
 
-        void RemoveBounds(TItem widget);
-        void AddBounds(TItem widget);
-        void UpdateBounds(TItem widget, RectangleI invalid);
+        void RemoveBounds(TItem visual);
+        void AddBounds(TItem visual);
+        void UpdateBounds(TItem visual, RectangleI invalid);
 
         TItem Hit ( PointI p, int hitSize );
         TItem HitBorder ( PointI p, int hitSize );
@@ -55,18 +55,18 @@ namespace Limaki.Drawing {
         void ClearView();
     }
 
-    public interface ISpatialIndex<IWidget> {
+    public interface ISpatialIndex<TItem> {
         bool BoundsDirty { get; set; }
         RectangleI Bounds { get; set; }
 
-        void Add(IWidget item);
-        void Remove(IWidget item);
-        void AddRange(IEnumerable<IWidget> items);
-        void Update(RectangleI invalid, IWidget widget);
+        void Add(TItem item);
+        void Remove(TItem item);
+        void AddRange(IEnumerable<TItem> items);
+        void Update(RectangleI invalid, TItem visual);
 
-        IEnumerable<IWidget> Query();
-        IEnumerable<IWidget> Query(RectangleS clipBounds);
-        IEnumerable<IWidget> Query(RectangleS clipBounds, ZOrder zOrder);
+        IEnumerable<TItem> Query();
+        IEnumerable<TItem> Query(RectangleS clipBounds);
+        IEnumerable<TItem> Query(RectangleS clipBounds, ZOrder zOrder);
         void Clear();
     }
 

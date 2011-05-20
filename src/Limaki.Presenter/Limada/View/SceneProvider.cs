@@ -4,7 +4,7 @@ using Limada.Model;
 using Limada.Schemata;
 using Limada.View;
 using Limaki.Graphs;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limaki.Data;
 using Limaki.Graphs.Extensions;
 using Limaki.Common;
@@ -20,7 +20,7 @@ namespace Limada.View {
 
         public bool useSchema = true;
 
-        protected virtual IGraph<IWidget, IEdgeWidget> CreateGraphView(IThingGraph thingGraph) {
+        protected virtual IGraph<IVisual, IVisualEdge> CreateGraphView(IThingGraph thingGraph) {
             SchemaFacade.MakeMarkersUnique(thingGraph);
 
             IThingGraph schemaGraph = thingGraph;
@@ -28,10 +28,10 @@ namespace Limada.View {
                 schemaGraph = new SchemaThingGraph(this.ThingGraph);
             }
 
-            var widgetThingGraph = new WidgetThingGraph(new WidgetGraph(), schemaGraph);
+            var visualThingGraph = new VisualThingGraph(new VisualGraph(), schemaGraph);
 
-            GraphView<IWidget, IEdgeWidget> graphView =
-                new GraphView<IWidget, IEdgeWidget>(widgetThingGraph, new WidgetGraph());
+            GraphView<IVisual, IVisualEdge> graphView =
+                new GraphView<IVisual, IVisualEdge>(visualThingGraph, new VisualGraph());
             return graphView;
         }
 
@@ -106,10 +106,10 @@ namespace Limada.View {
 
         public virtual void SaveCurrent() {
             if (Scene != null) {
-                var widgetThingGraph =  GraphPairExtension<IWidget, IEdgeWidget>
+                var visualThingGraph = GraphPairExtension<IVisual, IVisualEdge>
                     .Source<IThing, ILink>(this.Scene.Graph);
-                if (widgetThingGraph != null) {
-                    widgetThingGraph.Mapper.ConvertOneTwo();
+                if (visualThingGraph != null) {
+                    visualThingGraph.Mapper.ConvertOneTwo();
                 }
                 Provider.SaveCurrent();
             }
@@ -120,39 +120,17 @@ namespace Limada.View {
         public virtual void Save() {
 
             SaveCurrent();
-
-            //if (this.thingGraph != null) {
-            //    IGraph<IWidget, IEdgeWidget> dataGraph = this.Scene.Graph;
-
-            //    var facade = new GraphPairFacade<IWidget, IEdgeWidget>();
-            //    var source = facade.Source(dataGraph);
-
-            //    if (source != null) {
-            //        dataGraph = source.Two;
-            //    }
-            //    if (dataGraph != widgetThingGraph) {
-            //        if (source == null) {
-            //            Display.Data.Graph = widgetThingGraph;
-            //            widgetThingGraph.One = Display.Data.Graph;
-            //        } else {
-            //            widgetThingGraph.One = source.Two;
-            //            source.Two = widgetThingGraph;
-            //        }
-            //        SaveCurrent();
-
-            //    }
-            //}
         }
 
         public virtual void Export(Scene scene, IThingGraph target) {
-            var graph =  GraphPairExtension<IWidget, IEdgeWidget>
+            var graph =  GraphPairExtension<IVisual, IVisualEdge>
                 .Source<IThing, ILink>(scene.Graph);
 
             if (graph != null) {
                 // get a ThingGraphView with only the things that are in the view
                 var thingView = new GraphView<IThing, ILink>(graph.Two as IThingGraph, new ThingGraph());
-                foreach (var widget in scene.Elements) {
-                    var thing = graph.Get(widget);
+                foreach (var visual in scene.Elements) {
+                    var thing = graph.Get(visual);
                     thingView.Add(thing);
                 }
 

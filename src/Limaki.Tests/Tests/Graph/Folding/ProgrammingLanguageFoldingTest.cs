@@ -16,13 +16,13 @@
 using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Tests.Graph.Model;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Graph.Wrappers {
 
     public class ProgrammingLanguageFoldingTest : SceneFacadeTest<ProgrammingLanguageFactory> {
-        public override IEnumerable<IWidget> FullExpanded {
+        public override IEnumerable<IVisual> FullExpanded {
             get {
                 yield return Mock.Factory.Node[1]; // Programming
                 yield return Mock.Factory.Node[2]; // Language
@@ -45,7 +45,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
         }
 
-        public virtual IEnumerable<IWidget> ProgrammingExpanded {
+        public virtual IEnumerable<IVisual> ProgrammingExpanded {
             get {
                 yield return Mock.Factory.Node[1]; // Programming
                 yield return Mock.Factory.Node[2]; // Language
@@ -61,7 +61,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
         }
 
-        public IEnumerable<IWidget> NetExpanded {
+        public IEnumerable<IVisual> NetExpanded {
             get {
                 yield return Mock.Factory.Node[1]; // Programming
                 yield return Mock.Factory.Node[2]; // Language
@@ -80,7 +80,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
         }
 
-        public IEnumerable<IWidget> NetCollapsed {
+        public IEnumerable<IVisual> NetCollapsed {
             get {
                 yield return Mock.Factory.Node[1]; // Programming
                 yield return Mock.Factory.Node[2]; // Language
@@ -90,7 +90,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
         }
 
-        public IEnumerable<IWidget> ProgrammingLanguageNet {
+        public IEnumerable<IVisual> ProgrammingLanguageNet {
             get {
                 yield return Mock.Factory.Node[1]; // Programming
                 yield return Mock.Factory.Node[2]; // Language
@@ -99,7 +99,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         }
 
 
-        public IEnumerable<IWidget> languageCollapsed {
+        public IEnumerable<IVisual> languageCollapsed {
             get {
                 yield return Mock.Factory.Node[1];
                 yield return Mock.Factory.Node[2];
@@ -115,7 +115,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
         }
 
-        public IEnumerable<IWidget> javaCollapsed {
+        public IEnumerable<IVisual> javaCollapsed {
             get {
                 yield return Mock.Factory.Node[1];
                 yield return Mock.Factory.Node[2];
@@ -148,7 +148,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.SceneFacade.CollapseToFocused();
 
             Assert.AreEqual(Mock.Scene.Graph.Count, 1);
-            AreEquivalent(new IWidget[] { Mock.Factory.Node[1] }, Mock.Scene.Graph);
+            AreEquivalent(new IVisual[] { Mock.Factory.Node[1] }, Mock.Scene.Graph);
             TestShapes(Mock.Scene);
 
 
@@ -159,7 +159,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             // 2 Collapse - Expand - Cycle
             Mock.SceneFacade.Collapse();
-            AreEquivalent(new IWidget[] { Mock.Factory.Node[1] }, Mock.Scene.Graph);
+            AreEquivalent(new IVisual[] { Mock.Factory.Node[1] }, Mock.Scene.Graph);
             TestShapes(Mock.Scene);
 
             Mock.SceneFacade.Expand(false);
@@ -168,7 +168,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             // 3 Collapse - Expand - Cycle
             Mock.SceneFacade.Collapse();
-            AreEquivalent(new IWidget[] { Mock.Factory.Node[1] }, Mock.Scene.Graph);
+            AreEquivalent(new IVisual[] { Mock.Factory.Node[1] }, Mock.Scene.Graph);
             TestShapes(Mock.Scene);
                         
             Mock.SceneFacade.Expand(false);
@@ -263,10 +263,10 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.SceneFacade.CollapseToFocused();
 
             Assert.AreEqual(1,Mock.Scene.Graph.Count);
-            AreEquivalent(new IWidget[] { Mock.Factory.Node[4] }, Mock.Scene.Graph);
+            AreEquivalent(new IVisual[] { Mock.Factory.Node[4] }, Mock.Scene.Graph);
             TestShapes(Mock.Scene);
 
-            IEnumerable<IWidget> netExpanded2 = new IWidget[] {
+            IEnumerable<IVisual> netExpanded2 = new IVisual[] {
                                                       Mock.Factory.Node[1], // Programming
                                                       Mock.Factory.Node[2], // Language
                                                       Mock.Factory.Node[4], // .NET
@@ -294,7 +294,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.Display.Layout.Invoke(Mock.Scene.Focused);
             Mock.SceneFacade.Expand(false);
 
-            IEnumerable<IWidget> iListExpanded = new IWidget[] {
+            IEnumerable<IVisual> iListExpanded = new IVisual[] {
                                                         Mock.Factory.Node[1], // Programming
                                                         Mock.Factory.Node[2], // Language
                                                         Mock.Factory.Node[4], // .NET
@@ -334,7 +334,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.Scene.Focused = Mock.Factory.Edge[1]; // Programming
             Mock.SceneFacade.CollapseToFocused();
 
-            IEnumerable<IWidget> programmingLanguageEdge = new IWidget[] {
+            IEnumerable<IVisual> programmingLanguageEdge = new IVisual[] {
                                                                   Mock.Factory.Node[1], // Programming
                                                                   Mock.Factory.Node[2], // Language
                                                                   Mock.Factory.Edge[1], //[Programming->Language]
@@ -344,7 +344,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             AreEquivalent(programmingLanguageEdge, Mock.Scene.Graph);
             TestShapes(Mock.Scene);
 
-            IEnumerable<IWidget> ProgrammingLanguageExpanded = new IWidget[] {
+            IEnumerable<IVisual> ProgrammingLanguageExpanded = new IVisual[] {
                                                                       Mock.Factory.Node[1], // Programming
                                                                       Mock.Factory.Node[2], // Language
                                                                       Mock.Factory.Edge[1], //[Programming->Language]

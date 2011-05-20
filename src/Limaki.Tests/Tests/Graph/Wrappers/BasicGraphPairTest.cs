@@ -1,9 +1,9 @@
 using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.View.Widget;
-using Limaki.Tests.Widget;
-using Limaki.Widgets;
+using Limaki.Tests.View.Visuals;
+using Limaki.Tests.Visuals;
+using Limaki.Visuals;
 using NUnit.Framework;
 using Limaki.Tests.Graph.Basic;
 

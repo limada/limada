@@ -22,7 +22,7 @@ using Limaki.Graphs;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
-    /// Selects a widget on mouse down or mouse move
+    /// Selects an item on mouse down or mouse move
     /// Sets scene.focused and scene.selected or scene.hovered
     /// </summary>
     public class GraphSceneFocusAction<TItem, TEdge> : MouseActionBase, ICheckable
@@ -46,7 +46,7 @@ namespace Limaki.Presenter.UI {
 
         protected int _hitSize = 5;
         /// <summary>
-        /// has to be the same as in WidgetResizer
+        /// has to be the same as in GraphItemResizer
         /// </summary>
         public int HitSize {
             get { return _hitSize; }

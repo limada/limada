@@ -14,9 +14,9 @@
  */
 
 
-//#define TraceRenderWidget
+//#define TraceRenderVisual
 //#define TraceRender
-#define countWidgets
+#define countVisuals
 
 using Limaki.Common;
 using Limaki.Drawing;
@@ -34,8 +34,8 @@ namespace Limaki.Presenter {
         public Get<IGraphLayout<TItem, TEdge>> Layout { get; set; }
 
 
-#if countWidgets
-        public int iWidgets = 0;
+#if countVisuals
+        public int iItems = 0;
 #endif
 
         public override void Render(IGraphScene<TItem, TEdge> data, IRenderEventArgs e) {
@@ -53,14 +53,14 @@ namespace Limaki.Presenter {
             var layout = this.Layout();
             ItemRenderer.Layout = this.Layout;
 
-            foreach (TItem widget in data.ElementsIn(clipBounds, ZOrder.EdgesFirst)) {
+            foreach (TItem item in data.ElementsIn(clipBounds, ZOrder.EdgesFirst)) {
                 bool rendered = true;
-                if (!widget.Equals(focused) && !widget.Equals(hovered)) {
-                    ItemRenderer.Render(widget, e);
+                if (!item.Equals(focused) && !item.Equals(hovered)) {
+                    ItemRenderer.Render(item, e);
 
-#if countWidgets
+#if countVisuals
                     if (rendered)
-                        iWidgets++;
+                        iItems++;
 #endif
                 }
             }

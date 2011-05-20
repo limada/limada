@@ -1,6 +1,6 @@
 ﻿using Limaki.Presenter.Viewers.Winform;
 using System.Drawing.Printing;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limaki.Drawing;
 using System.Windows.Forms;
 
@@ -8,7 +8,7 @@ namespace Limaki.UseCases.Winform {
     public class PrintManager {
         ImageExporter painter = null;
         
-        public PrintDocument CreatePrintDocument(Scene scene, IGraphLayout<IWidget,IEdgeWidget> layout) {
+        public PrintDocument CreatePrintDocument(Scene scene, IGraphLayout<IVisual,IVisualEdge> layout) {
         
             this.painter =
                 new ImageExporter(scene, layout);

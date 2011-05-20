@@ -48,7 +48,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             this.zoomMenuFittoHeigth = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomMenuOriginalSize = new System.Windows.Forms.ToolStripMenuItem();
             this.moveButton = new System.Windows.Forms.ToolStripButton();
-            this.AddWidgetButton = new System.Windows.Forms.ToolStripButton();
+            this.AddVisualButton = new System.Windows.Forms.ToolStripButton();
             this.connectorButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -143,16 +143,16 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             this.moveButton.ToolTipText = "panning";
             this.moveButton.Click += new System.EventHandler(this.SelectOrMove);
             // 
-            // AddWidgetButton
+            // AddVisualButton
             // 
-            this.AddWidgetButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddWidgetButton.Image = global::Limaki.Presenter.Properties.Resources.CreateWidget24;
-            this.AddWidgetButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.AddWidgetButton.Name = "AddWidgetButton";
-            this.AddWidgetButton.Size = new System.Drawing.Size(24, 24);
-            this.AddWidgetButton.Text = "Add Shape";
-            this.AddWidgetButton.ToolTipText = "Add Widget";
-            this.AddWidgetButton.Click += new System.EventHandler(this.SelectOrMove);
+            this.AddVisualButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.AddVisualButton.Image = global::Limaki.Presenter.Properties.Resources.CreateWidget24;
+            this.AddVisualButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.AddVisualButton.Name = "AddVisualButton";
+            this.AddVisualButton.Size = new System.Drawing.Size(24, 24);
+            this.AddVisualButton.Text = "Add Shape";
+            this.AddVisualButton.ToolTipText = "Add Visual";
+            this.AddVisualButton.Click += new System.EventHandler(this.SelectOrMove);
             // 
             // connectorButton
             // 
@@ -174,7 +174,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
                                                                              this.zoomButton,
                                                                              this.moveButton,
                                                                              this.toolStripSeparator1,
-                                                                             this.AddWidgetButton,
+                                                                             this.AddVisualButton,
                                                                              this.connectorButton});
             this.Name = "sceneTools";
             this.Size = new System.Drawing.Size(178, 27);
@@ -187,7 +187,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
         private System.Windows.Forms.ToolStripButton LayoutButton;
         private System.Windows.Forms.ToolStripSplitButton zoomButton;
         private System.Windows.Forms.ToolStripButton moveButton;
-        private System.Windows.Forms.ToolStripButton AddWidgetButton;
+        private System.Windows.Forms.ToolStripButton AddVisualButton;
         private System.Windows.Forms.ToolStripButton connectorButton;
 
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;

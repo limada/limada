@@ -3,15 +3,15 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.Widget;
-using Limaki.Widgets;
-using Limaki.Presenter.Widgets.Layout;
+using Limaki.Tests.Visuals;
+using Limaki.Visuals;
+using Limaki.Presenter.Visuals.Layout;
 using Limaki.Presenter.UI;
 using Limaki.Presenter;
-using Limaki.Presenter.Widgets;
+using Limaki.Presenter.Visuals;
 using Limaki.Common;
 using Limaki.Presenter.Display;
-using Limaki.Presenter.Widgets.UI;
+using Limaki.Presenter.Visuals.UI;
 
 namespace Limaki.Tests.Graph.Wrappers {
     public class Mock<TFactory>
@@ -32,10 +32,10 @@ namespace Limaki.Tests.Graph.Wrappers {
         public virtual Scene Scene {
             get {
                 if (_scene == null) {
-                    IGraph<IWidget, IEdgeWidget> g = this.Factory.Scene.Graph;
-                    g = new GraphView<IWidget, IEdgeWidget>(
-                        ((GenericBiGraphFactory<IWidget, IGraphItem, IEdgeWidget, IGraphEdge>)this.Factory).GraphPair,
-                        new WidgetGraph());
+                    IGraph<IVisual, IVisualEdge> g = this.Factory.Scene.Graph;
+                    g = new GraphView<IVisual, IVisualEdge>(
+                        ((GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>)this.Factory).GraphPair,
+                        new VisualGraph());
                     _scene = new Scene();
                     _scene.Graph = g;
                 }
@@ -49,15 +49,15 @@ namespace Limaki.Tests.Graph.Wrappers {
         }
 
 
-        WidgetDisplay _display = null;
-        public WidgetDisplay Display {
+        VisualsDisplay _display = null;
+        public VisualsDisplay Display {
             get {
                 if (_display == null) {
-                    var factory = new WidgetDisplayFactory ();
-                    var inst = new MockDeviceComposer<IGraphScene<IWidget, IEdgeWidget>> ();
-                    inst.DataLayer = new MockGraphSceneLayer<IWidget, IEdgeWidget> ();
+                    var factory = new VisualsDisplayFactory ();
+                    var inst = new MockDeviceComposer<IGraphScene<IVisual, IVisualEdge>> ();
+                    inst.DataLayer = new MockGraphSceneLayer<IVisual, IVisualEdge> ();
                     factory.DeviceComposer = inst;
-                    var display = new WidgetDisplay();
+                    var display = new VisualsDisplay();
                     factory.Compose(display);
                     display.Data = this.Scene;
                     //display.DataHandler = () => this.Scene;
@@ -68,11 +68,11 @@ namespace Limaki.Tests.Graph.Wrappers {
             set { _display = value; }
         }
 
-        protected GraphSceneFacade<IWidget, IEdgeWidget> _sceneFacade;
-        public virtual GraphSceneFacade<IWidget, IEdgeWidget> SceneFacade {
+        protected GraphSceneFacade<IVisual, IVisualEdge> _sceneFacade;
+        public virtual GraphSceneFacade<IVisual, IVisualEdge> SceneFacade {
             get {
                 if (_sceneFacade == null) {
-                    _sceneFacade = new GraphSceneFacade<IWidget, IEdgeWidget>(() => this.Scene, Display.Layout);
+                    _sceneFacade = new GraphSceneFacade<IVisual, IVisualEdge>(() => this.Scene, Display.Layout);
                 }
                 return _sceneFacade;
 
@@ -89,7 +89,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
     }
 
-    public class MockWidgetDisplay:WidgetDisplay {
+    public class MockVisualsDisplay:VisualsDisplay {
         public Get<Scene> DataHandler { get; set; }
         public override Scene Data {
             get {

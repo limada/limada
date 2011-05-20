@@ -20,27 +20,27 @@ using Limada.View;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs.Extensions;
-using Limaki.Presenter.Widgets.Layout;
-using Limaki.Widgets;
-using Limaki.Presenter.Widgets.UI;
+using Limaki.Presenter.Visuals.Layout;
+using Limaki.Visuals;
+using Limaki.Presenter.Visuals.UI;
 using Limaki.Presenter.UI;
 
 namespace Limada.Presenter {
     
     public class Sheet:IDisposable {
-        public Sheet(IGraphScene<IWidget,IEdgeWidget> scene) {
+        public Sheet(IGraphScene<IVisual,IVisualEdge> scene) {
             this._scene = scene;
         }
 
-        public Sheet(IGraphScene<IWidget, IEdgeWidget> scene, IGraphLayout<IWidget, IEdgeWidget> layout): this(scene) {
+        public Sheet(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout): this(scene) {
             this._layout = layout;
         }
 
-        IGraphLayout<IWidget,IEdgeWidget> _layout = null;
-        public virtual IGraphLayout<IWidget,IEdgeWidget> Layout {
+        IGraphLayout<IVisual,IVisualEdge> _layout = null;
+        public virtual IGraphLayout<IVisual,IVisualEdge> Layout {
             get {
                 if (_layout == null) {
-                    _layout = new ArrangerLayout<IWidget, IEdgeWidget>(
+                    _layout = new ArrangerLayout<IVisual, IVisualEdge>(
                         () => { return this.Scene; },
                         Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet);
                 }
@@ -49,36 +49,36 @@ namespace Limada.Presenter {
             protected set { _layout = value; }
         }
 
-        private IGraphScene<IWidget, IEdgeWidget> _scene = null;
-        public virtual IGraphScene<IWidget, IEdgeWidget> Scene {
+        private IGraphScene<IVisual, IVisualEdge> _scene = null;
+        public virtual IGraphScene<IVisual, IVisualEdge> Scene {
             get { return _scene; }
             protected set { _scene = value; }
         }
 
         public virtual void Save(Stream s) {
-            var graph = GraphPairExtension<IWidget, IEdgeWidget>
+            var graph = GraphPairExtension<IVisual, IVisualEdge>
                 .Source<IThing, ILink>(Scene.Graph);
 
             if (graph != null) {
-                WidgetThingSerializer serializer = new WidgetThingSerializer(); 
-                serializer.WidgetThingGraph = graph;
+                VisualThingSerializer serializer = new VisualThingSerializer(); 
+                serializer.VisualThingGraph = graph;
                 serializer.Layout = this.Layout;
-                serializer.WidgetCollection = Scene.Graph;
+                serializer.VisualsCollection = Scene.Graph;
                 serializer.Write (s);
             }
         }
 
         public virtual void Read(Stream s) {
-            var graph = GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(Scene.Graph);
+            var graph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(Scene.Graph);
 
             if (graph != null) {
-                WidgetThingSerializer serializer = new WidgetThingSerializer();
-                serializer.WidgetThingGraph = graph;
+                VisualThingSerializer serializer = new VisualThingSerializer();
+                serializer.VisualThingGraph = graph;
                 serializer.Layout = this.Layout;
                 serializer.Read(s);
 
-                new GraphSceneFacade<IWidget, IEdgeWidget>(delegate() { return this.Scene; }, this.Layout)
-                    .Add (serializer.WidgetCollection, false, false);
+                new GraphSceneFacade<IVisual, IVisualEdge>(delegate() { return this.Scene; }, this.Layout)
+                    .Add (serializer.VisualsCollection, false, false);
 
                 Scene.ClearSpatialIndex ();
             }

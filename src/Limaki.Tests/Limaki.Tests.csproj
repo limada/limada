@@ -111,8 +111,8 @@
     <Compile Include="Limada\Tests\View\StreamFacadeTest.cs" />
     <Compile Include="Limada\Tests\View\ThingGraphFactory.cs" />
     <Compile Include="Limada\Tests\View\ThingSceneFactory.cs" />
-    <Compile Include="Limada\Tests\View\ThingWidgetMapperTest.cs" />
-    <Compile Include="Limada\Tests\View\WidgetThingGraphTest.cs" />
+    <Compile Include="Limada\Tests\View\ThingVisualMapperTest.cs" />
+    <Compile Include="Limada\Tests\View\VisualThingGraphTest.cs" />
     <Compile Include="Limada\Tests\Wrappers\WrapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\Data\db4o\GraphTest.cs" />
@@ -124,15 +124,15 @@
     <Compile Include="Tests\Graph\Folding\ProgrammingLanguageFoldingTest.cs" />
     <Compile Include="Tests\Graph\Folding\SceneFacadeTest.cs" />
     <Compile Include="Tests\Graph\Wrappers\BasicGraphPairTest.cs" />
-    <Compile Include="Tests\Graph\Wrappers\BasicWidgetItemGraphPairTest.cs" />
+    <Compile Include="Tests\Graph\Wrappers\BasicVisualItemGraphPairTest.cs" />
     <Compile Include="Tests\Graph\Wrappers\GraphPairTest.cs" />
     <Compile Include="Tests\Graph\Wrappers\GraphViewTest.cs" />
     <Compile Include="Tests\Presenter\Display\BenchmarkOneTests.cs" />
     <Compile Include="Tests\Presenter\Display\DisplayTest.cs" />
     <Compile Include="Tests\Presenter\Display\FrameTicker.cs" />
     <Compile Include="Tests\Presenter\Display\TestDevice.cs" />
-    <Compile Include="Tests\Presenter\Display\WidgetDisplayTest.cs" />
-    <Compile Include="Tests\Presenter\Display\WidgetDisplayTest1.cs" />
+    <Compile Include="Tests\Presenter\Display\VisualsDisplayTest.cs" />
+    <Compile Include="Tests\Presenter\Display\VisualsDisplayTest1.cs" />
     <Compile Include="Tests\Presenter\GDI\ConvexHullLayer.cs" />
     <Compile Include="Tests\Presenter\GDI\RegionLayer.cs" />
     <Compile Include="Tests\Presenter\GDI\RegionTest.cs" />
@@ -144,10 +144,10 @@
       <DependentUpon>OpenExampleData.cs</DependentUpon>
     </Compile>
     <Compile Include="Tests\Presenter\Winform\QuadTreeVisualizer.cs" />
-    <Compile Include="Tests\Presenter\Winform\WidgetBoundsLayer.cs" />
+    <Compile Include="Tests\Presenter\Winform\VisualsBoundsLayer.cs" />
     <Compile Include="Tests\Presenter\Winform\WinformDisplayTestComposer.cs" />
     <Compile Include="Tests\Presenter\Winform\WinformTestDevice.cs" />
-    <Compile Include="Tests\Presenter\Winform\WinformWidgetDisplayTest.cs" />
+    <Compile Include="Tests\Presenter\Winform\WinformVisualsDisplayTest.cs" />
     <Compile Include="Tests\Presenter\WiredScenesTest.cs" />
     <Compile Include="Tests\Common\FactoryTest.cs" />
     <Compile Include="Tests\Sandbox\HTML\HtmlNextTest.cs" />
@@ -181,15 +181,15 @@
     <Compile Include="Tests\Sandbox\HistoryTest.cs" />
     <Compile Include="Tests\Sandbox\RegExTest.cs" />
     <Compile Include="Tests\Sandbox\Schema\SchemaArchitecture.cs" />
-    <Compile Include="Tests\View\Widget\SceneThreadTest.cs" />
+    <Compile Include="Tests\View\Visuals\SceneThreadTest.cs" />
     <Compile Include="Tests\View\Drawing\PolygonHulltest.cs" />
     <Compile Include="Tests\View\Drawing\Shapes\ShapeTest.cs" />
     <Compile Include="Tests\View\Drawing\Toolkit\TestMatrice.cs" />
     <Compile Include="Tests\View\Drawing\Toolkit\TestMatrices.cs" />
-    <Compile Include="Tests\View\Widget\BasicWidgetGraphTest.cs" />
-    <Compile Include="Tests\View\Widget\Model\BenchmarkOneSceneFactory.cs" />
-    <Compile Include="Tests\View\Widget\Model\ISceneFactory.cs" />
-    <Compile Include="Tests\View\Widget\Model\SceneFactory.cs" />
+    <Compile Include="Tests\View\Visuals\BasicVisualGraphTest.cs" />
+    <Compile Include="Tests\View\Visuals\Model\BenchmarkOneSceneFactory.cs" />
+    <Compile Include="Tests\View\Visuals\Model\ISceneFactory.cs" />
+    <Compile Include="Tests\View\Visuals\Model\SceneFactory.cs" />
     <Compile Include="UnitTest\TestBase.cs" />
     <Compile Include="Tests\Sandbox\MonoGenericError2.cs" />
     <Compile Include="Tests\Presenter\Display\CreateDisplayTest.cs" />

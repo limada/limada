@@ -93,9 +93,9 @@ namespace Limaki.Presenter.Display {
 
         public event EventHandler<GraphSceneEventArgs<TItem, TEdge>> SceneFocusChanged = null;
         protected GraphSceneEventArgs<TItem, TEdge> focusChangedEventArgs = null;
-        public virtual void SceneFocusChangedCallback(IGraphScene<TItem, TEdge> scene, TItem widget) {
+        public virtual void SceneFocusChangedCallback(IGraphScene<TItem, TEdge> scene, TItem item) {
             if (SceneFocusChanged != null) {
-                focusChangedEventArgs = new GraphSceneEventArgs<TItem, TEdge>(scene, widget);
+                focusChangedEventArgs = new GraphSceneEventArgs<TItem, TEdge>(scene, item);
             }
         }
 

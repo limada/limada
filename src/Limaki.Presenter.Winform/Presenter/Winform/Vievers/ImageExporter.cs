@@ -18,11 +18,11 @@ using System.Drawing.Imaging;
 using Limaki.Drawing;
 using Limaki.Presenter.GDI.UI;
 using Limaki.Presenter.UI;
-using Limaki.Widgets;
+using Limaki.Visuals;
 
 namespace Limaki.Presenter.Viewers.Winform {
     public class ImageExporter : ScenePainter {
-        public ImageExporter(Scene scene, IGraphLayout<IWidget,IEdgeWidget> layout):base() {
+        public ImageExporter(Scene scene, IGraphLayout<IVisual,IVisualEdge> layout):base() {
             this.Data = scene;
             this.Layout = layout;
             Instrument();

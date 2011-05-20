@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Limada.Schemata;
 using Limada.Tests.View;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.Widget;
+using Limaki.Tests.Visuals;
 using Limaki.Presenter.Winform;
 
 namespace Limaki.Tests.Presenter.Winform {

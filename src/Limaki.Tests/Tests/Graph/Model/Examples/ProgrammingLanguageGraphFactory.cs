@@ -113,18 +113,18 @@ namespace Limaki.Tests.Graph.Model {
                 }
                 Populate(this.Graph,Start + 1);
                 if (i > 0) {
-                    GraphEdge edgeWidget = null;
+                    GraphEdge edge = null;
                     if (!SeperateLattice) {
-                        edgeWidget = new GraphEdge();
-                        edgeWidget.Root = lastNode1;
-                        edgeWidget.Leaf = Node[1];
-                        Graph.Add(edgeWidget);
+                        edge = new GraphEdge();
+                        edge.Root = lastNode1;
+                        edge.Leaf = Node[1];
+                        Graph.Add(edge);
 
 
                     }
                     if (AddDensity) {
-                        edgeWidget = new GraphEdge(Node[2], lastNode3);
-                        Graph.Add(edgeWidget);
+                        edge = new GraphEdge(Node[2], lastNode3);
+                        Graph.Add(edge);
                     }
                 }
             }

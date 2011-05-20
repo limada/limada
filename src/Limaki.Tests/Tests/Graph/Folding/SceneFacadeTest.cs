@@ -19,9 +19,9 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.Widget;
+using Limaki.Tests.Visuals;
 using Limaki.UnitTest;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using NUnit.Framework;
 using Limaki.Actions;
 using Limaki.Common.Collections;
@@ -30,20 +30,20 @@ namespace Limaki.Tests.Graph.Wrappers {
     public abstract class SceneFacadeTest<TFactory> : DomainTest 
         where TFactory : GenericGraphFactory<IGraphItem, IGraphEdge>, new() {
 
-        public void AreEquivalent(IEnumerable<IWidget> widgets, IGraph<IWidget, IEdgeWidget> graph) {
+        public void AreEquivalent(IEnumerable<IVisual> visuals, IGraph<IVisual, IVisualEdge> graph) {
             
-            foreach (IWidget widget in widgets) {
-                string s = "graph.Contains( " + widget.Data.ToString() + " )";
-                if (widget is IEdgeWidget) {
-                    Assert.IsTrue(graph.Contains((IEdgeWidget)widget), s);
+            foreach (var visual in visuals) {
+                string s = "graph.Contains( " + visual.Data.ToString() + " )";
+                if (visual is IVisualEdge) {
+                    Assert.IsTrue(graph.Contains((IVisualEdge)visual), s);
                 } else {
-                    Assert.IsTrue(graph.Contains(widget), s);
+                    Assert.IsTrue(graph.Contains(visual), s);
                 }
             }
-            ICollection<IWidget> widgetCollection = new List<IWidget>(widgets);
-            foreach (IWidget widget in graph) {
-                string s = "widgets.Contains( " + widget.Data.ToString() + " )";
-                Assert.IsTrue(widgetCollection.Contains(widget), s);
+            var visualsCollection = new List<IVisual>(visuals);
+            foreach (var visual in graph) {
+                var s = "visuals.Contains( " + visual.Data.ToString() + " )";
+                Assert.IsTrue(visualsCollection.Contains(visual), s);
             }
         }
 
@@ -62,27 +62,27 @@ namespace Limaki.Tests.Graph.Wrappers {
 
         public void TestShapes(Scene scene) {
             CommandsExecute ();
-            ICollection<IWidget> indexList = new Set<IWidget>();
-            foreach(IWidget widget in scene.SpatialIndex.Query()) {
-                if (!indexList.Contains(widget)) {
-                    indexList.Add (widget);
+            var indexList = new Set<IVisual>();
+            foreach(var visual in scene.SpatialIndex.Query()) {
+                if (!indexList.Contains(visual)) {
+                    indexList.Add (visual);
                 } else {
-                    Assert.Fail (widget +" two times in SpatialIndex");
+                    Assert.Fail (visual +" two times in SpatialIndex");
                 }
                 bool found = false;
-                if (widget is IEdgeWidget)
-                    found = scene.Contains ((IEdgeWidget)widget);
+                if (visual is IVisualEdge)
+                    found = scene.Contains ((IVisualEdge)visual);
                 else
-                    found = scene.Contains (widget);
+                    found = scene.Contains (visual);
 
                 Assert.IsTrue (found,
-                    "to much items in SpatialIndex: ! scene.Contains ( " + widget.ToString() + " ) of Spatialindex");
+                    "to much items in SpatialIndex: ! scene.Contains ( " + visual.ToString() + " ) of Spatialindex");
             }
 
-            foreach(IWidget widget in scene.Graph) {
-                if (widget.Shape != null)
-                Assert.IsTrue(indexList.Contains(widget),
-                    "to less items in SpatialIndex: ! SpatialIndex.Contains ( " + widget.ToString() + " ) of scene.Graph");
+            foreach(var visual in scene.Graph) {
+                if (visual.Shape != null)
+                Assert.IsTrue(indexList.Contains(visual),
+                    "to less items in SpatialIndex: ! SpatialIndex.Contains ( " + visual.ToString() + " ) of scene.Graph");
             }
         }
 
@@ -97,9 +97,9 @@ namespace Limaki.Tests.Graph.Wrappers {
             set { _mock = value; }
         }
 
-        public abstract IEnumerable<IWidget> FullExpanded { get; }
+        public abstract IEnumerable<IVisual> FullExpanded { get; }
         
-        public virtual IEnumerable<IWidget> FirstNode {
+        public virtual IEnumerable<IVisual> FirstNode {
             get { yield return Mock.Factory.Node[1]; }
         }
 

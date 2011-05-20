@@ -18,7 +18,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Presenter.UI;
 using Limaki.Graphs;
-//using Limaki.Widgets;
+
 
 namespace Limaki.Presenter.UI {
     public class GraphSceneFolding<TItem, TEdge> : KeyActionBase, ICheckable

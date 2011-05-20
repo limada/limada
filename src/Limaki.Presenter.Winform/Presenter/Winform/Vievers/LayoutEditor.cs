@@ -17,19 +17,19 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Limaki.Drawing.GDI;
-using Limaki.Presenter.Widgets.Layout;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals.Layout;
+using Limaki.Visuals;
 using Orientation = Limaki.Drawing.Orientation;
 using SizeI = Limaki.Drawing.SizeI;
 
 
 namespace Limaki.UseCases.Winform.Viewers {
-    public partial class LayoutEditor : BaseStyleEditor<Limaki.Drawing.IGraphLayout<IWidget, IEdgeWidget>> {
+    public partial class LayoutEditor : BaseStyleEditor<Limaki.Drawing.IGraphLayout<IVisual, IVisualEdge>> {
         public LayoutEditor() {
             InitializeComponent();
         }
 
-        protected override void SetEditorFromLayout(Limaki.Drawing.IGraphLayout<IWidget, IEdgeWidget> layout) {
+        protected override void SetEditorFromLayout(Limaki.Drawing.IGraphLayout<IVisual, IVisualEdge> layout) {
             disableChanges = true;
             this.Distance = layout.Distance;
             this.Orientation = layout.Orientation;

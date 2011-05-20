@@ -21,7 +21,7 @@ using Limaki.Common;
 using Limaki.Data;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Streams;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limaki.UseCases.Viewers;
 
 namespace Limada.UseCases {
@@ -146,7 +146,7 @@ namespace Limada.UseCases {
 
         public bool IsSceneExportable(Scene scene) {
             if (scene != null) {
-                var graph = GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink> (scene.Graph);
+                var graph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink> (scene.Graph);
 
                 return graph != null;
             }
@@ -154,7 +154,7 @@ namespace Limada.UseCases {
         }
 
         public void ExportAs(DataBaseInfo fileName, Scene scene) {
-            var graph = GraphPairExtension<IWidget, IEdgeWidget>
+            var graph = GraphPairExtension<IVisual, IVisualEdge>
                 .Source<IThing, ILink>(scene.Graph);
 
             if (graph != null) {

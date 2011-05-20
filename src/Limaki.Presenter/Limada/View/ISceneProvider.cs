@@ -17,7 +17,7 @@
 using System;
 using Limada.Data;
 using Limaki.Data;
-using Limaki.Widgets;
+using Limaki.Visuals;
 
 namespace Limada.View {
     /// <summary>

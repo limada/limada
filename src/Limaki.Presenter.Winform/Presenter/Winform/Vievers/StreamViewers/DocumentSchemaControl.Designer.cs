@@ -1,9 +1,9 @@
-﻿using Limaki.Presenter.Widgets;
+﻿using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Winform.Display;
 using System.Windows.Forms;
 using System.Drawing;
 
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limaki.Presenter.Display;
 namespace Limaki.Presenter.Winform.Controls {
     partial class DocumentSchemaControl {
@@ -36,15 +36,15 @@ namespace Limaki.Presenter.Winform.Controls {
 
             WinImageDisplay = new WinformImageDisplay () {Dock = System.Windows.Forms.DockStyle.Fill, BackColor = Color.White};
             SplitContainer = new System.Windows.Forms.SplitContainer() { Dock = System.Windows.Forms.DockStyle.Fill };
-            WidgetDisplay = new WinformWidgetDisplay() { Dock = System.Windows.Forms.DockStyle.Right, Width = Controller.GetDefaultWidth()};
+            WinVisualsDisplay = new WinformVisualsDisplay() { Dock = System.Windows.Forms.DockStyle.Right, Width = Controller.GetDefaultWidth()};
 
-            //SplitContainer.Panel1.Controls.Add (ImageDisplay);
-            //SplitContainer.Panel2.Controls.Add(WidgetDisplay);
+            //SplitContainer.Panel1.Controls.Add (WinImageDisplay);
+            //SplitContainer.Panel2.Controls.Add(WinVisualsDisplay);
             //SplitContainer.SplitterDistance = this.Width - 40;
             //this.Controls.Add(SplitContainer);
 
             Splitter = new System.Windows.Forms.Splitter {Dock = DockStyle.Right};
-            this.Controls.AddRange(new Control[] { Splitter, WidgetDisplay, WinImageDisplay });
+            this.Controls.AddRange(new Control[] { Splitter, WinVisualsDisplay, WinImageDisplay });
             
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -52,12 +52,12 @@ namespace Limaki.Presenter.Winform.Controls {
         }
 
 
-        public WinformWidgetDisplay WidgetDisplay { get; set; }
+        public WinformVisualsDisplay WinVisualsDisplay { get; set; }
         public WinformImageDisplay WinImageDisplay { get; set; }
         System.Windows.Forms.SplitContainer SplitContainer { get; set; }
         System.Windows.Forms.Splitter Splitter { get; set; }
 
-        public IGraphSceneDisplay<IWidget, IEdgeWidget> GraphSceneDisplay { get { return this.WidgetDisplay.Display as IGraphSceneDisplay<IWidget, IEdgeWidget>; } }
+        public IGraphSceneDisplay<IVisual, IVisualEdge> GraphSceneDisplay { get { return this.WinVisualsDisplay.Display as IGraphSceneDisplay<IVisual, IVisualEdge>; } }
         public IDisplay<Image> ImageDisplay { get { return this.WinImageDisplay.Display; } }
 
         #endregion

@@ -4,24 +4,22 @@ using Limaki.Drawing;
 using Limaki.Drawing.Indexing.QuadTrees;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
-using Limaki.Widgets;
-using Limaki.Presenter.Widgets;
+using Limaki.Visuals;
+using Limaki.Presenter.Visuals;
 
 namespace Limaki.Tests.Presenter.Winform {
     public class QuadTreeVisualizer {
-        private Quadtree<IWidget> _data = null;
+        private Quadtree<IVisual> _data = null;
 
-        public Quadtree<IWidget> Data {
+        public Quadtree<IVisual> Data {
             get { return _data; }
             set {
                 _data = value;
                 PopulateDisplay();
-
-
             }
         }
 
-        public WidgetDisplay widgetDisplay {get;set;}
+        public VisualsDisplay VisualsDisplay {get;set;}
         
         static IDrawingUtils _drawingUtils = null;
         protected static IDrawingUtils drawingUtils {
@@ -34,73 +32,73 @@ namespace Limaki.Tests.Presenter.Winform {
         }
 
         private void PopulateDisplay() {
-            widgetDisplay.SelectAction.Enabled = true;
+            VisualsDisplay.SelectAction.Enabled = true;
             
             if (Data != null) {
 
-                IStyle style = widgetDisplay.StyleSheet[StyleNames.DefaultStyle];
-                string s = new PointS(float.MaxValue, float.MaxValue).ToString() + "\r\n" +
+                var style = VisualsDisplay.StyleSheet[StyleNames.DefaultStyle];
+                var s = new PointS(float.MaxValue, float.MaxValue).ToString() + "\r\n" +
                            new RectangleS(float.MaxValue, float.MaxValue, float.MaxValue, float.MaxValue).ToString() + "\r\n";
 
                 style.AutoSize =
                     drawingUtils.GetTextDimension(s, style).ToSize();
 
 
-                this.widgetDisplay.ZoomState = ZoomState.Original;
+                this.VisualsDisplay.ZoomState = ZoomState.Original;
 
-                this.widgetDisplay.Data = new Scene();
+                this.VisualsDisplay.Data = new Scene();
 
-                IDictionary<Node<IWidget>, IWidget> nodesDone = new Dictionary<Node<IWidget>, IWidget>();
-                IDictionary<IWidget, IWidget> itemsDone = new Dictionary<IWidget, IWidget>();
+                var nodesDone = new Dictionary<Node<IVisual>, IVisual>();
+                var itemsDone = new Dictionary<IVisual, IVisual>();
 
-                Node<IWidget> rootNode = new Node<IWidget>(new RectangleS(), 0);
+                var rootNode = new Node<IVisual>(new RectangleS(), 0);
                 rootNode.Items = Data.Root.Items;
                 for (int i = 0; i < Data.Root.Subnodes.Length; i++)
                     rootNode.Subnodes[i] = Data.Root.Subnodes[i];
-                IWidget root = NodeWidget(rootNode, nodesDone, itemsDone);
+                var root = VisualNode(rootNode, nodesDone, itemsDone);
 
 
-                this.widgetDisplay.Data.Focused = root;
-                this.widgetDisplay.Layout.Centered = true;
-                this.widgetDisplay.Layout.Orientation = Orientation.TopBottom;
-                var autoSize = widgetDisplay.StyleSheet.DefaultStyle.AutoSize;
-                this.widgetDisplay.StyleSheet.DefaultStyle.AutoSize = new SizeI ();
-                foreach(var widget in widgetDisplay.Data.Elements) {
-                    if (widget.Shape != null)
-                        widgetDisplay.Layout.Justify (widget);
+                this.VisualsDisplay.Data.Focused = root;
+                this.VisualsDisplay.Layout.Centered = true;
+                this.VisualsDisplay.Layout.Orientation = Orientation.TopBottom;
+                var autoSize = VisualsDisplay.StyleSheet.DefaultStyle.AutoSize;
+                this.VisualsDisplay.StyleSheet.DefaultStyle.AutoSize = new SizeI ();
+                foreach(var visual in VisualsDisplay.Data.Elements) {
+                    if (visual.Shape != null)
+                        VisualsDisplay.Layout.Justify (visual);
                 }
-                this.widgetDisplay.Invoke();
-                this.widgetDisplay.Execute ();
-                this.widgetDisplay.DeviceRenderer.Render ();
-                this.widgetDisplay.StyleSheet.DefaultStyle.AutoSize = autoSize;
+                this.VisualsDisplay.Invoke();
+                this.VisualsDisplay.Execute ();
+                this.VisualsDisplay.DeviceRenderer.Render ();
+                this.VisualsDisplay.StyleSheet.DefaultStyle.AutoSize = autoSize;
             }
         }
 
-        private IWidget NodeWidget(Node<IWidget> node,
-                                   IDictionary<Node<IWidget>, IWidget> nodesDone,
-                                   IDictionary<IWidget, IWidget> itemsDone) {
+        private IVisual VisualNode(Node<IVisual> node,
+                                   IDictionary<Node<IVisual>, IVisual> nodesDone,
+                                   IDictionary<IVisual, IVisual> itemsDone) {
 
-            var factory = Registry.Pool.TryGetCreate<IWidgetFactory>();
+            var factory = Registry.Pool.TryGetCreate<IVisualFactory>();
 
             if (node != null) {
-                IWidget result = factory.CreateItem(
+                IVisual result = factory.CreateItem(
                     node.Centre.ToString() + "\r\n" + node.Envelope.ToString());
 
                 result.Shape = new RectangleShape(RectangleI.Ceiling(node.Envelope));
-                this.widgetDisplay.Data.Add(result);
+                this.VisualsDisplay.Data.Add(result);
                 nodesDone.Add(node, result);
                 NodeItems(node, result, itemsDone);
 
                 if (node.HasSubNodes) {
-                    IWidget subRoot = factory.CreateItem(" ° ");
-                    this.widgetDisplay.Data.Add(
+                    var subRoot = factory.CreateItem(" ° ");
+                    this.VisualsDisplay.Data.Add(
                         factory.CreateEdge(result, subRoot, string.Empty));
 
-                    foreach (Node<IWidget> sub in node.Subnodes) {
+                    foreach (Node<IVisual> sub in node.Subnodes) {
                         if (sub != null) {
-                            IWidget subWidget = NodeWidget(sub, nodesDone, itemsDone);
-                            this.widgetDisplay.Data.Add(
-                                factory.CreateEdge(subRoot, subWidget, string.Empty));
+                            var subVisual = VisualNode(sub, nodesDone, itemsDone);
+                            this.VisualsDisplay.Data.Add(
+                                factory.CreateEdge(subRoot, subVisual, string.Empty));
                         }
                     }
                 }
@@ -109,39 +107,37 @@ namespace Limaki.Tests.Presenter.Winform {
                 return null;
         }
 
-        private void NodeItems(Node<IWidget> node, IWidget nodeWidget,
-                               IDictionary<IWidget, IWidget> itemsDone) {
+        private void NodeItems(Node<IVisual> node, IVisual nodeVisual,
+                               IDictionary<IVisual, IVisual> itemsDone) {
 
-            var factory = Registry.Pool.TryGetCreate<IWidgetFactory>();
+            var factory = Registry.Pool.TryGetCreate<IVisualFactory>();
 
-            foreach (IWidget widget in node.Items) {
-                IWidget childWidget = null;
-                itemsDone.TryGetValue(widget, out childWidget);
-                if (childWidget == null) {
-                    string ws = widget.Data.ToString();
-                    if (widget is IEdgeWidget) {
-                        ws = GraphExtensions.EdgeString<IWidget, IEdgeWidget>((IEdgeWidget)widget);
+            foreach (var visual in node.Items) {
+                IVisual childVisual = null;
+                itemsDone.TryGetValue(visual, out childVisual);
+                if (childVisual == null) {
+                    string ws = visual.Data.ToString();
+                    if (visual is IVisualEdge) {
+                        ws = GraphExtensions.EdgeString<IVisual, IVisualEdge>((IVisualEdge)visual);
                     }
                     string ds = ws + "\r\n" +
-                                widget.Shape.BoundsRect.ToString();
+                                visual.Shape.BoundsRect.ToString();
 
-                    if (!node.Envelope.Contains(widget.Shape.BoundsRect))
+                    if (!node.Envelope.Contains(visual.Shape.BoundsRect))
                         ds = "! " + ds;
-                    childWidget = factory.CreateItem(ds);
-                    childWidget.Shape =
-                        this.widgetDisplay.ShapeFactory.Create<IRoundedRectangleShape>();
-                    childWidget.Location = widget.Location;
-                    childWidget.Size = widget.Size;
+                    childVisual = factory.CreateItem(ds);
+                    childVisual.Shape = this.VisualsDisplay.ShapeFactory.Create<IRoundedRectangleShape>();
+                    childVisual.Location = visual.Location;
+                    childVisual.Size = visual.Size;
 
-                    this.widgetDisplay.Data.Add(childWidget);
-                    itemsDone.Add(widget, childWidget);
+                    this.VisualsDisplay.Data.Add(childVisual);
+                    itemsDone.Add(visual, childVisual);
                 }
 
-                IEdgeWidget edge =
-                    factory.CreateEdge(childWidget, nodeWidget, string.Empty);
+                var edge = factory.CreateEdge(childVisual, nodeVisual, string.Empty);
 
-                edge.Shape = this.widgetDisplay.Layout.CreateShape(edge);
-                this.widgetDisplay.Data.Add(edge);
+                edge.Shape = this.VisualsDisplay.Layout.CreateShape(edge);
+                this.VisualsDisplay.Data.Add(edge);
             }
 
 

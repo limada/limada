@@ -24,7 +24,7 @@ using Limaki.Presenter.Layout;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
-    /// Moves or resizes a Widget
+    /// Moves or resizes an item
     /// </summary>
     public class GraphItemMoveResizeAction<TItem, TEdge> : MoveResizeAction, ICheckable
         where TEdge:TItem,IEdge<TItem> {
@@ -81,8 +81,8 @@ namespace Limaki.Presenter.UI {
 
         public override void OnMouseDown(MouseActionEventArgs e) {
             Resolved = false;
-            TItem widget = this.GraphItem;
-            if (widget != null && !(widget is TEdge)) {
+            TItem item = this.GraphItem;
+            if (item != null && !(item is TEdge)) {
                 base.OnMouseDown(e);
             }
             if (Resolved != ShowGrips) {
@@ -117,11 +117,11 @@ namespace Limaki.Presenter.UI {
         }
 
         protected override void OnMouseMoveResolved(MouseActionEventArgs e) {
-            TItem widget = this.GraphItem;
-            if (!(widget is TEdge) && (moving || resizing)) {
+            TItem item = this.GraphItem;
+            if (!(item is TEdge) && (moving || resizing)) {
                 ShowGrips = true;
 
-                Resolved = (Resolved) && (widget != null);
+                Resolved = (Resolved) && (item != null);
                 if (Resolved) {
                     ICommand<TItem> command = null;
                     if (moving) {
@@ -145,15 +145,15 @@ namespace Limaki.Presenter.UI {
                             RectangleI.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
                                                 LastMousePos.X, LastMousePos.Y));
 
-                        var shape = Scene.ItemShape (widget);
+                        var shape = Scene.ItemShape (item);
                         // do not normalize Links!!
                         if (!(shape is IEdgeShape)) {
                             rect = ShapeUtils.NormalizedRectangle(rect);
                         }
-                        command = new ResizeCommand<TItem>(widget, Scene.ItemShape, rect);
+                        command = new ResizeCommand<TItem>(item, Scene.ItemShape, rect);
                         Scene.Requests.Add(command);
 
-                        foreach (TItem twig in Scene.Graph.Twig(widget)) {
+                        foreach (TItem twig in Scene.Graph.Twig(item)) {
                             Scene.Requests.Add(new LayoutCommand<TItem>(twig, LayoutActionType.Justify));
                         }
                     }

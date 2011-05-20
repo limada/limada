@@ -19,14 +19,14 @@ using Limaki.Graphs.Extensions;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Graph.Wrappers;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using NUnit.Framework;
-using Limaki.Presenter.Widgets;
+using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Layout;
 
 
 
-namespace Limaki.Tests.View.Widget {
+namespace Limaki.Tests.View.Visuals {
     public class WiredScenesTest:DomainTest {
         /// <summary>
         /// TODO: same as DragDropFacadeTest-PrepareTest???
@@ -45,18 +45,18 @@ namespace Limaki.Tests.View.Widget {
             facade.WireScene(sourceTest.Mock.Display, targetTest.Mock.Scene, sourceTest.Mock.Scene);
 
             var targetGraph = 
-                GraphPairExtension<IWidget, IEdgeWidget>.Source(targetTest.Mock.Scene.Graph).Two
-                   as IGraphPair<IWidget, IGraphItem, IEdgeWidget, IGraphEdge>;
+                GraphPairExtension<IVisual, IVisualEdge>.Source(targetTest.Mock.Scene.Graph).Two
+                   as IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>;
 
-            ((GenericBiGraphFactory<IWidget, IGraphItem, IEdgeWidget, IGraphEdge>)
+            ((GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>)
               targetTest.Mock.Factory).GraphPair = targetGraph;
 
             var sourceInnerFactory =
-                ((GenericBiGraphFactory<IWidget, IGraphItem, IEdgeWidget, IGraphEdge>)
+                ((GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>)
                   sourceTest.Mock.Factory).Factory;
 
             var targetInnerFactory =
-                ((GenericBiGraphFactory<IWidget, IGraphItem, IEdgeWidget, IGraphEdge>)
+                ((GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>)
                   targetTest.Mock.Factory).Factory;
 
             for (int i = 0; i < sourceInnerFactory.Node.Count; i++) {
@@ -71,27 +71,27 @@ namespace Limaki.Tests.View.Widget {
 
         [Test]
         public void EdgeAddAndChangeTest() {
-            ProgrammingLanguageFoldingTest sourceTest = new ProgrammingLanguageFoldingTest();
-            ProgrammingLanguageFoldingTest targetTest = new ProgrammingLanguageFoldingTest();
+            var sourceTest = new ProgrammingLanguageFoldingTest();
+            var targetTest = new ProgrammingLanguageFoldingTest();
 
             PrepareTests<ProgrammingLanguageFactory> (sourceTest, targetTest);
 
             targetTest.Net();
 
             var sourceGraph =
-                GraphPairExtension<IWidget, IEdgeWidget>.Source(sourceTest.Mock.Scene.Graph).Two
-                   as IGraphPair<IWidget, IGraphItem, IEdgeWidget, IGraphEdge>;
+                GraphPairExtension<IVisual, IVisualEdge>.Source(sourceTest.Mock.Scene.Graph).Two
+                   as IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>;
 
             var sourceView =
-                sourceTest.Mock.Scene.Graph as IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget>;
+                sourceTest.Mock.Scene.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
 
             var targetGraph =
-                GraphPairExtension<IWidget, IEdgeWidget>.Source(targetTest.Mock.Scene.Graph).Two
-                   as IGraphPair<IWidget, IGraphItem, IEdgeWidget, IGraphEdge>;
+                GraphPairExtension<IVisual, IVisualEdge>.Source(targetTest.Mock.Scene.Graph).Two
+                   as IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>;
 
 
             var targetView =
-                targetTest.Mock.Scene.Graph as IGraphPair<IWidget, IWidget, IEdgeWidget, IEdgeWidget>;
+                targetTest.Mock.Scene.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
 
 
             sourceTest.Mock.Scene.Selected.Clear();
@@ -105,8 +105,8 @@ namespace Limaki.Tests.View.Widget {
             targetTest.Mock.Display.Execute();
 
             // make a new link, add it to source, look if in targetGraph.Two
-            IEdgeWidget sourceEdge =
-                new EdgeWidget<string>(".Net->Programming",
+            var sourceEdge =
+                new VisualEdge<string>(".Net->Programming",
                 sourceTest.Mock.Factory.Node[4], // .NET
                 sourceTest.Mock.Factory.Node[1]); // Programming);
 
@@ -117,25 +117,25 @@ namespace Limaki.Tests.View.Widget {
             sourceTest.Mock.Display.Execute();
 
             // testing the data source
-            IGraphEdge graphEdge = sourceGraph.Get(sourceEdge) as IGraphEdge;
+            var graphEdge = sourceGraph.Get(sourceEdge) as IGraphEdge;
             Assert.IsTrue(targetGraph.Two.Contains(graphEdge));
 
             // testing the targetTest
-            IEdgeWidget targetEdge = targetGraph.Get (graphEdge) as IEdgeWidget;
+            IVisualEdge targetEdge = targetGraph.Get (graphEdge) as IVisualEdge;
             Assert.IsNotNull (targetEdge);
 
             Assert.IsTrue (targetView.One.Contains(targetEdge));
 
 
             // change the link in targetTest
-            IWidget targetNewRoot = targetTest.Mock.Factory.Node[3]; // java
-            IWidget targetOldRoot = targetEdge.Root;
+            var targetNewRoot = targetTest.Mock.Factory.Node[3]; // java
+            var targetOldRoot = targetEdge.Root;
             targetTest.Mock.Scene.ChangeEdge(targetEdge, targetNewRoot, true);
             targetTest.Mock.Scene.Graph.OnGraphChanged(targetEdge, GraphChangeType.Update);
 
-            targetTest.Mock.Scene.Requests.Add(new LayoutCommand<IWidget>(targetEdge, LayoutActionType.Justify));
-            foreach (IWidget widget in targetTest.Mock.Scene.Twig(targetEdge)) {
-                targetTest.Mock.Scene.Requests.Add(new LayoutCommand<IWidget>(widget, LayoutActionType.Justify));
+            targetTest.Mock.Scene.Requests.Add(new LayoutCommand<IVisual>(targetEdge, LayoutActionType.Justify));
+            foreach (var visualEdge in targetTest.Mock.Scene.Twig(targetEdge)) {
+                targetTest.Mock.Scene.Requests.Add(new LayoutCommand<IVisual>(visualEdge, LayoutActionType.Justify));
             }
 
             targetTest.Mock.Display.Execute();
@@ -147,8 +147,8 @@ namespace Limaki.Tests.View.Widget {
             Assert.IsFalse(targetView.Edges(targetOldRoot).Contains(targetEdge));
             
             // test in source
-            IWidget sourceNewRoot = sourceTest.Mock.Factory.Node[3];
-            IWidget sourceOldRoot = sourceTest.Mock.Factory.Node[4];
+            var sourceNewRoot = sourceTest.Mock.Factory.Node[3];
+            var sourceOldRoot = sourceTest.Mock.Factory.Node[4];
             Assert.AreSame(sourceEdge.Root, sourceNewRoot);
             Assert.AreNotSame(sourceEdge.Root, sourceOldRoot);
             Assert.IsTrue(sourceView.Edges(sourceNewRoot).Contains(sourceEdge));

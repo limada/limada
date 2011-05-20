@@ -17,9 +17,9 @@ using System.Windows.Forms;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.UseCases.Viewers;
-using Limaki.Presenter.Widgets;
+using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Winform.Display;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limaki.Winform.Controls;
 using DialogResult=Limaki.UseCases.Viewers.DialogResult;
 
@@ -45,8 +45,8 @@ namespace Limaki.UseCases.Winform.Viewers {
         public SplitContainer ViewDevice { get; set; }
         public SplitView View { get; set; }
         
-        public WinformWidgetDisplay Display1 { get; set; }
-        public WinformWidgetDisplay Display2 { get; set; }
+        public WinformVisualsDisplay Display1 { get; set; }
+        public WinformVisualsDisplay Display2 { get; set; }
 
 
         public void InitializeComponent() {
@@ -65,12 +65,12 @@ namespace Limaki.UseCases.Winform.Viewers {
                 ViewDevice.TabIndex = 1;
             }
             if (Display1 == null) {
-                Display1 = new WinformWidgetDisplay();
+                Display1 = new WinformVisualsDisplay();
                 Display1.Dock = DockStyle.Fill;
                 ViewDevice.Panel1.Controls.Add(Display1);
             }
             if (Display2 == null) {
-                Display2 = new WinformWidgetDisplay();
+                Display2 = new WinformVisualsDisplay();
                 Display2.Dock = DockStyle.Fill;
                 ViewDevice.Panel2.Controls.Add(Display2);
             }
@@ -84,8 +84,8 @@ namespace Limaki.UseCases.Winform.Viewers {
             InitializeComponent();
 
             View = new SplitView ();
-            View.Display1 = this.Display1.Display as WidgetDisplay;
-            View.Display2 = this.Display2.Display as WidgetDisplay;
+            View.Display1 = this.Display1.Display as VisualsDisplay;
+            View.Display2 = this.Display2.Display as VisualsDisplay;
             View.Parent = this.Parent;
             View.DeviceInitializeDisplay += this.InitializeDisplay;
             
@@ -108,7 +108,7 @@ namespace Limaki.UseCases.Winform.Viewers {
         }
 
 
-        void InitializeDisplay(WidgetDisplay target) {
+        void InitializeDisplay(VisualsDisplay target) {
             var display = target.Device as Control;
             display.Enter -= DisplayGotFocus;
             display.MouseUp -= DisplayGotFocus;
@@ -117,14 +117,14 @@ namespace Limaki.UseCases.Winform.Viewers {
         }
 
         void DisplayGotFocus(object sender, EventArgs e) {
-            var display = sender as WinformWidgetDisplay;
+            var display = sender as WinformVisualsDisplay;
             if (display != null) {
                 View.DisplayGotFocus (display.Display);
             }
         }
 
         void ControlGotFocus(object sender, EventArgs e) {
-            var display = sender as WinformWidgetDisplay;
+            var display = sender as WinformVisualsDisplay;
             if (display != null) sender = display.Display;
 
             View.ControlGotFocus (sender);
@@ -152,7 +152,7 @@ namespace Limaki.UseCases.Winform.Viewers {
 
             var display1 = this.View.Display1.Device as Control;
             var currentControl = this.View.CurrentControl as Control;
-            bool oneContainsWidgetDisplay = ViewDevice.Panel1.Contains(display1);
+            bool oneContainsVisualsDisplay = ViewDevice.Panel1.Contains(display1);
             bool oneContainsCurrentControl = ViewDevice.Panel1.Contains(currentControl);
             
             ViewDevice.SuspendLayout();
@@ -196,7 +196,7 @@ namespace Limaki.UseCases.Winform.Viewers {
                 return;
             
             var control = sender as Control;
-            var device = sender as WidgetDisplay;
+            var device = sender as VisualsDisplay;
             if(device != null) {
                 control = device.Device as Control;
             }

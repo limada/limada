@@ -4,18 +4,18 @@ using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Graph.Wrappers;
-using Limaki.Widgets;
+using Limaki.Visuals;
 
 namespace Limada.Tests.Model {
     public static class ModelHelper {
-        public static WidgetThingGraph GetSourceGraph<TFactory>()
+        public static VisualThingGraph GetSourceGraph<TFactory>()
             where TFactory : GenericGraphFactory<IGraphItem, IGraphEdge>, new() {
             return GetSourceGraph<TFactory>(1);
         }
 
-        public static WidgetThingGraph GetSourceGraph<TFactory>(int count)
+        public static VisualThingGraph GetSourceGraph<TFactory>(int count)
             where TFactory : GenericGraphFactory<IGraphItem, IGraphEdge>, new() {
-            Mock<ProgrammingLanguageFactory> mock = new Mock<ProgrammingLanguageFactory>();
+            var mock = new Mock<ProgrammingLanguageFactory>();
 
             mock.Factory.Count = count;
 
@@ -23,13 +23,13 @@ namespace Limada.Tests.Model {
             mock.SceneFacade.ShowAllData();
             mock.Display.Execute();
 
-            IGraph<IWidget, IEdgeWidget> widgetGraph = (mock.Scene.Graph as GraphView<IWidget, IEdgeWidget>).One;
-            widgetGraph.ChangeData = null;
-            widgetGraph.DataChanged = null;
-            widgetGraph.GraphChanged = null;
+            var visualGraph = (mock.Scene.Graph as GraphView<IVisual, IVisualEdge>).One;
+            visualGraph.ChangeData = null;
+            visualGraph.DataChanged = null;
+            visualGraph.GraphChanged = null;
 
 
-            WidgetThingGraph sourceGraph = new WidgetThingGraph(widgetGraph, new ThingGraph());
+            var sourceGraph = new VisualThingGraph(visualGraph, new ThingGraph());
             sourceGraph.Mapper.ConvertOneTwo();
             return sourceGraph;
         }

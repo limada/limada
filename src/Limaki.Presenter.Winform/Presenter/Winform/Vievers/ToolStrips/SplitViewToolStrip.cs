@@ -19,7 +19,7 @@ using Limaki.Common;
 using Limaki.UseCases.Viewers.ToolStrips;
 using Limaki.UseCases.Winform.Viewers.ToolStrips;
 using Limaki.UseCases.Viewers;
-using Limaki.Presenter.Widgets;
+using Limaki.Presenter.Visuals;
 using System.ComponentModel;
 
 namespace Limaki.UseCases.Winform.Viewers.ToolStrips {

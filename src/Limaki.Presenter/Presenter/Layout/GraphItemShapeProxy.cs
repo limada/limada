@@ -90,14 +90,14 @@ namespace Limaki.Presenter.Layout {
             }
         }
 
-        public virtual void SetLocation(TItem widget, PointI location) {
-            locations[widget] = location;
+        public virtual void SetLocation(TItem item, PointI location) {
+            locations[item] = location;
         }
 
-        public virtual PointI GetLocation(TItem widget) {
+        public virtual PointI GetLocation(TItem item) {
             PointI result;
-            if (!locations.TryGetValue(widget, out result)) {
-                var shape = Shape(widget);
+            if (!locations.TryGetValue(item, out result)) {
+                var shape = Shape(item);
                 result = shape.Location;
             }
             return result;

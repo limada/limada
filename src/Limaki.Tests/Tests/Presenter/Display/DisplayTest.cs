@@ -20,7 +20,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Presenter;
 using Limaki.Presenter.UI;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using NUnit.Framework;
 using Limaki.Tests.Graph.Model;
 
@@ -84,12 +84,12 @@ namespace Limaki.Tests.Presenter.Display {
         }
 
 
-        public int WidgetCount() {
+        public int VisualsCount() {
             ILayer<T> layer = Display.EventControler.GetAction<ILayer<T>>();
             if (layer != null) {
-                var renderer = layer.Renderer() as GraphSceneRenderer<IWidget, IEdgeWidget>;
+                var renderer = layer.Renderer() as GraphSceneRenderer<IVisual, IVisualEdge>;
                 if (renderer != null)
-                    return renderer.iWidgets;
+                    return renderer.iItems;
             }
             return 0;
         }
@@ -113,7 +113,7 @@ namespace Limaki.Tests.Presenter.Display {
             PointI max = new PointI(Display.Viewport.ClipSize.Width, Display.Viewport.ClipSize.Height);
             this.ReportDetail("Selector runs to " + max);
 
-            var iWidgets = WidgetCount ();
+            var visualsCount = VisualsCount ();
 
             ticker.Start();
 
@@ -140,13 +140,13 @@ namespace Limaki.Tests.Presenter.Display {
             selection.Clear ();
 
             
-            iWidgets = WidgetCount() - iWidgets;
+            visualsCount = VisualsCount() - visualsCount;
 
             this.ReportDetail(
                 "Selector-Test" + " \t" +
                 ticker.ElapsedInSec() + " sec \t" +
                 ticker.FramePerSecond() + " fps \t" +
-                iWidgets + " widgets \t"
+                visualsCount + " visuals \t"
                 );
             
             ticker.Disinstrument(Display);

@@ -20,8 +20,8 @@ namespace Limaki.Graphs.Extensions {
         IGraphMapping Next { get;set;}
         /// <summary>
         /// looks if source is
-        /// - WidgetThingGraphPair
-        /// - IGraphPair<IWidget, IGraphItem, IEdgeWidget, IGraphEdge>
+        /// - VisualThingGraphPair
+        /// - IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>
         /// if so, 
         /// creates a new GraphPair according to source
         /// </summary>

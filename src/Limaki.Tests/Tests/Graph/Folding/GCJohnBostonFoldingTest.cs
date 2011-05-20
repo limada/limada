@@ -15,12 +15,12 @@
 
 using System.Collections.Generic;
 using Limaki.Tests.Graph.Model;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Graph.Wrappers {
     public class GCJohnBostonFoldingTest : SceneFacadeTest<GCJohnBostonGraphFactory> {
-        public IEnumerable<IWidget> JohnGoBostonNodes {
+        public IEnumerable<IVisual> JohnGoBostonNodes {
             get {
                    yield return Mock.Factory.Node[1]; // Person
                    yield return Mock.Factory.Node[2]; // John
@@ -30,7 +30,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
         }
 
-        public IEnumerable<IWidget> JohnGoBoston {
+        public IEnumerable<IVisual> JohnGoBoston {
             get {
                 yield return Mock.Factory.Node[1]; // Person
                 yield return Mock.Factory.Node[2]; // John
@@ -44,9 +44,9 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
         }
 
-        public override IEnumerable<IWidget> FullExpanded {
+        public override IEnumerable<IVisual> FullExpanded {
             get {
-                return new IWidget[] {
+                return new IVisual[] {
                                          Mock.Factory.Node[1], // Person
                                          Mock.Factory.Node[2], // John
                                          Mock.Factory.Node[3], // City
@@ -80,12 +80,12 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.SceneFacade.CollapseToFocused();
 
             Assert.AreEqual(Mock.Scene.Graph.Count, 1);
-            AreEquivalent(new IWidget[] { Mock.Factory.Node[1] }, Mock.Scene.Graph);
+            AreEquivalent(new IVisual[] { Mock.Factory.Node[1] }, Mock.Scene.Graph);
             TestShapes(Mock.Scene);
 
             Mock.SceneFacade.Expand (false);
 
-            IWidget[] PersonExpanded = new IWidget[] {
+            IVisual[] PersonExpanded = new IVisual[] {
                                                          Mock.Factory.Node[1], // Person
                                                          Mock.Factory.Node[2], // John
                                                          Mock.Factory.Node[5], // Go

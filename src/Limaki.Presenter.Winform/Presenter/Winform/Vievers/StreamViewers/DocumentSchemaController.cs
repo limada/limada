@@ -3,13 +3,13 @@ using Limada.UseCases;
 using Limaki.Common;
 using Limaki.Presenter.Display;
 using Limaki.Presenter.UI;
-using Limaki.Presenter.Widgets.UI;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals.UI;
+using Limaki.Visuals;
 using Limaki.UseCases.Viewers;
 using Limada.Model;
 using Limada.Schemata;
 using Limaki.Graphs;
-using Limaki.Presenter.Widgets;
+using Limaki.Presenter.Visuals;
 using Limada.View;
 using Limaki.Drawing;
 using System;
@@ -28,7 +28,7 @@ namespace Limaki.Presenter.Winform.Controls {
         public Action<RectangleI> KeyProcessed { get; set; }
     }
     public class DocumentSchemaController:ThingViewerController {
-        public IGraphSceneDisplay<IWidget, IEdgeWidget> GraphSceneDisplay { get; set; }
+        public IGraphSceneDisplay<IVisual, IVisualEdge> GraphSceneDisplay { get; set; }
         public IDisplay<System.Drawing.Image> ImageDisplay { get; set; }
 
         public virtual void Compose() {
@@ -75,21 +75,21 @@ namespace Limaki.Presenter.Winform.Controls {
         }
 
         Limaki.Drawing.SizeI Distance { get; set; }
-        public void Adjust(IGraphSceneDisplay<IWidget, IEdgeWidget> display) {
+        public void Adjust(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             var layout = display.Layout;
             Distance = new Limaki.Drawing.SizeI(0, -5);
             layout.StyleSheet = DefaultStyleSheet;
 
-            var action = display.EventControler.GetAction<GraphItemMoveResizeAction<IWidget, IEdgeWidget>>();
+            var action = display.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();
             display.EventControler.Remove(action);
 
-            var focusAction = GraphSceneDisplay.EventControler.GetAction<GraphSceneFocusAction<IWidget, IEdgeWidget>>();
+            var focusAction = GraphSceneDisplay.EventControler.GetAction<GraphSceneFocusAction<IVisual, IVisualEdge>>();
             if (focusAction != null)
                 focusAction.HitSize = -1;
         }
 
         private int padding = 4;
-        public override void SetContent(IGraph<IWidget,IEdgeWidget> sourceGraph, IWidget sourceDocument) {
+        public override void SetContent(IGraph<IVisual,IVisualEdge> sourceGraph, IVisual sourceDocument) {
             var display = this.GraphSceneDisplay;
             // bring the docpages into view:
             var docManager = new DocumentSchemaManager();
@@ -99,7 +99,7 @@ namespace Limaki.Presenter.Winform.Controls {
             this.GraphSceneDisplay.Data = scene;
 
             var doc = sourceGraph.ThingOf(sourceDocument);
-            var targetDocument = targetGraph.WidgetOf(doc);
+            var targetDocument = targetGraph.VisualOf(doc);
 
             // get the pages and add them to sceneView:
             var pages = docManager.Pages(targetGraph, targetDocument).ToArray();
@@ -108,7 +108,7 @@ namespace Limaki.Presenter.Winform.Controls {
 
             var distance = display.Layout.Distance;
             display.Layout.Distance = this.Distance;
-            var facade = new GraphSceneFacade<IWidget, IEdgeWidget>(() => display.Data, display.Layout);
+            var facade = new GraphSceneFacade<IVisual, IVisualEdge>(() => display.Data, display.Layout);
             //facade.OrderBy = (w) => w.Data.ToString().PadLeft(padding);
             facade.Add(pages, true, true);
 
@@ -127,16 +127,16 @@ namespace Limaki.Presenter.Winform.Controls {
             }
             display.Execute();
             // wrong: display.Layout.Distance = distance;
-            // TODO: Layout.Margin (Top,Left) and Layout.Padding (distance between widgets)
+            // TODO: Layout.Margin (Top,Left) and Layout.Padding (distance between visuals)
 
             var scroller = ImageDisplay.EventControler.GetAction<DocumentSchemaKeyScrollAction>();
             if (scroller != null) {
                 scroller.KeyProcessed = (r) => {
                     var inc = r.X + r.Y + r.Bottom + r.Right;
                     if (scene.Focused != null && inc != 0) {
-                        var iPage = Array.BinarySearch<IWidget>(
+                        var iPage = Array.BinarySearch<IVisual>(
                             pages, scene.Focused,
-                            new FuncComparer<IWidget>((a, b) => {
+                            new FuncComparer<IVisual>((a, b) => {
                                 if (a == b)
                                     return 0;
                                 else
@@ -144,12 +144,12 @@ namespace Limaki.Presenter.Winform.Controls {
                             }));
                         if (iPage != -1 && pages.Length > iPage + inc && iPage + inc >= 0) {
                             scene.Requests.Add(
-                                new StateChangeCommand<IWidget>(scene.Focused, new Pair<UiState>(UiState.Focus, UiState.None))
+                                new StateChangeCommand<IVisual>(scene.Focused, new Pair<UiState>(UiState.Focus, UiState.None))
                                 );
                             scene.Selected.Clear();
                             scene.Focused = pages[iPage + inc];
                             scene.Requests.Add(
-                                new StateChangeCommand<IWidget>(scene.Focused, new Pair<UiState>(UiState.None, UiState.Focus))
+                                new StateChangeCommand<IVisual>(scene.Focused, new Pair<UiState>(UiState.None, UiState.Focus))
                                 );
                             GraphSceneDisplay.Execute();
                             GraphSceneDisplay.OnSceneFocusChanged();
@@ -184,9 +184,9 @@ namespace Limaki.Presenter.Winform.Controls {
             Clear();
         }
 
-        public override bool Supports(Graphs.IGraph<IWidget, IEdgeWidget> graph, IWidget widget) {
+        public override bool Supports(Graphs.IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
             var docManager = new DocumentSchemaManager();
-            return docManager.HasPages(graph, widget);
+            return docManager.HasPages(graph, visual);
         }
 
         

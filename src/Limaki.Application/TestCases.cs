@@ -24,18 +24,18 @@ using Limaki.Model;
 using Limaki.Presenter.Display;
 using Limaki.Presenter.UI;
 using Limaki.UseCases;
-using Limaki.Presenter.Widgets;
+using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Winform.Display;
 using Limaki.UseCases.Winform;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Presenter.Display;
 using Limaki.Tests.Presenter.GDI;
 using Limaki.Tests.Presenter.Winform;
-using Limaki.Tests.Widget;
+using Limaki.Tests.Visuals;
 #if WCF
 using Limaki.WCF.Data;
 #endif
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limada.Schemata;
 
 
@@ -47,9 +47,9 @@ namespace Limaki.Tests.UseCases {
             
             Get<BenchmarkOneTests> displayTest = () => {
                 var test = new BenchmarkOneTests();
-                var testinst = new WinformDisplayTestComposer<IGraphScene<IWidget, IEdgeWidget>>();
+                var testinst = new WinformDisplayTestComposer<IGraphScene<IVisual, IVisualEdge>>();
 
-                testinst.Factory = () => new WinformWidgetDisplay().Display;
+                testinst.Factory = () => new WinformVisualsDisplay().Display;
                 testinst.Factor(test);
                 testinst.Compose(test);
 
@@ -57,7 +57,7 @@ namespace Limaki.Tests.UseCases {
                         
 
                 test.TestForm = this;
-                test.Display = composer.SplitView.Display1.Display as IGraphSceneDisplay<IWidget, IEdgeWidget>;
+                test.Display = composer.SplitView.Display1.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
 
                 test.Setup();
                 return test;
@@ -117,12 +117,12 @@ namespace Limaki.Tests.UseCases {
 
         public void ShowQuadTree(Scene scene) {
             var form = new Form ();
-            var display = new WinformWidgetDisplay ();
+            var display = new WinformVisualsDisplay ();
             display.Dock = DockStyle.Fill;
             form.Controls.Add (display);
 
             var quadTreeVisualizer = new QuadTreeVisualizer ();
-            quadTreeVisualizer.widgetDisplay = display.Display as WidgetDisplay;
+            quadTreeVisualizer.VisualsDisplay = display.Display as VisualsDisplay;
             quadTreeVisualizer.Data = (scene.SpatialIndex as QuadTreeIndex).GeoIndex;
 
             
@@ -135,14 +135,14 @@ namespace Limaki.Tests.UseCases {
             Scene scene = new Scene();
             scene = factory.Scene;
 
-            IGraph<IWidget, IEdgeWidget> data = null;
-            if (factory is GenericBiGraphFactory<IWidget, IGraphItem, IEdgeWidget, IGraphEdge>) {
-                data = ((GenericBiGraphFactory<IWidget, IGraphItem, IEdgeWidget, IGraphEdge>)factory).GraphPair;
+            IGraph<IVisual, IVisualEdge> data = null;
+            if (factory is GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>) {
+                data = ((GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>)factory).GraphPair;
             } else {
                 data = factory.Graph;
             }
 
-            scene.Graph = new GraphView<IWidget, IEdgeWidget>(data, new WidgetGraph());
+            scene.Graph = new GraphView<IVisual, IVisualEdge>(data, new VisualGraph());
             target.ChangeData(scene);
         }
 
@@ -164,13 +164,13 @@ namespace Limaki.Tests.UseCases {
 #endif
         }
 
-        public void InstrumentLayer(IRenderAction renderAction, WidgetDisplay display) {
-            var layer = renderAction as ILayer<IGraphScene<IWidget, IEdgeWidget>>;
+        public void InstrumentLayer(IRenderAction renderAction, VisualsDisplay display) {
+            var layer = renderAction as ILayer<IGraphScene<IVisual, IVisualEdge>>;
             if (layer != null) {
                 layer.Data = () => display.Data;
                 layer.Camera = () =>  display.Viewport.Camera;
             }
-            var graphLayer = layer as GraphSceneLayer<IWidget, IEdgeWidget>;
+            var graphLayer = layer as GraphSceneLayer<IVisual, IVisualEdge>;
             if (graphLayer !=null) {
                 graphLayer.Layout = ()=> display.Layout;
                     
@@ -194,7 +194,7 @@ namespace Limaki.Tests.UseCases {
             bool showConvexHull = false;
             var display = useCase.GetCurrentDisplay ();
             if (showBounds) {
-                InstrumentLayer(new WidgetBoundsLayer(), display);
+                InstrumentLayer(new VisualsBoundsLayer(), display);
             }
 
             if (showSandbox) {
@@ -235,7 +235,7 @@ namespace Limaki.Tests.UseCases {
 
         public void currentProblem(UseCase sender) {
             try {
-                //var maint = new WidgetThingGraphTest();
+                //var maint = new VisualThingGraphTest();
                 //maint.ExpandAndSaveLinks(sender.GetCurrentDisplay().Data.Graph);
 
                 //var test = new SchemaGraphPerformanceTest();
@@ -247,7 +247,7 @@ namespace Limaki.Tests.UseCases {
                 //test.WriteDetail -= testMessage;
                 //test.WriteSummary -= testMessage;
 
-                var test = new WinformWidgetDisplayTest<WidgetDisplayTest1>();
+                var test = new WinformVisualsDisplayTest<VisualsDisplayTest1>();
                 test.WriteDetail += testMessage;
 
                 test.Setup();

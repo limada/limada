@@ -20,7 +20,7 @@ using Limaki.Graphs;
 using Limaki.Tests;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Graph.Wrappers;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using NUnit.Framework;
 using Id = System.Int64;
 using Limaki.Model;
@@ -34,8 +34,8 @@ using System.Xml;
 using Limaki.Model.Streams;
 using Limaki.Presenter.Layout;
 using Limada.Presenter;
-using Limaki.Presenter.Widgets.UI;
-using Limaki.Presenter.Widgets.Layout;
+using Limaki.Presenter.Visuals.UI;
+using Limaki.Presenter.Visuals.Layout;
 using Limada.Schemata;
 
 namespace Limada.Tests.Model {
@@ -74,13 +74,13 @@ namespace Limada.Tests.Model {
         }
 
 
-        public IGraphLayout<IWidget,IEdgeWidget> GetLayout() {
+        public IGraphLayout<IVisual,IVisualEdge> GetLayout() {
             var styleSheet = StyleSheet.CreateDefaultStyleSheet ();
-            var result = new WidgetLayout<IWidget, IEdgeWidget>(null,styleSheet);
+            var result = new VisualsLayout<IVisual, IVisualEdge>(null,styleSheet);
             return result;
         }
         
-        Stream SaveSheet(Scene scene, IGraphLayout<IWidget,IEdgeWidget> layout) {
+        Stream SaveSheet(Scene scene, IGraphLayout<IVisual,IVisualEdge> layout) {
             Sheet sheet = new Sheet(scene, layout);
             sheet.Layout.DataHandler = delegate() { return sheet.Scene; };
 
@@ -92,7 +92,7 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void TestSheet() {
-            WidgetThingGraph sourceGraph = 
+            VisualThingGraph sourceGraph = 
                 ModelHelper.GetSourceGraph<ProgrammingLanguageFactory> ();
 
             Scene scene = new Scene();
@@ -100,7 +100,7 @@ namespace Limada.Tests.Model {
 
             IThingGraph thingGraph = sourceGraph.Two as IThingGraph;
             
-            IGraphLayout<IWidget,IEdgeWidget> layout = this.GetLayout();
+            IGraphLayout<IVisual,IVisualEdge> layout = this.GetLayout();
 
             Stream s = SaveSheet (scene, layout);
 
@@ -112,23 +112,23 @@ namespace Limada.Tests.Model {
             Sheet sheet = new Sheet(new Scene(), layout);
             sheet.Layout.DataHandler = delegate() { return sheet.Scene; };
 
-            WidgetThingGraph targetGraph = new WidgetThingGraph(new WidgetGraph(), thingGraph);
+            VisualThingGraph targetGraph = new VisualThingGraph(new VisualGraph(), thingGraph);
             sheet.Scene.Graph = targetGraph;
             s.Position = 0;
             sheet.Read (s);
 
-            foreach(IWidget target in targetGraph) {
+            foreach(IVisual target in targetGraph) {
                 IThing thing = targetGraph.Get (target);
-                IWidget source = sourceGraph.Get (thing);
+                IVisual source = sourceGraph.Get (thing);
 
                 Assert.AreEqual (target.Location, source.Location);
                 Assert.AreEqual(target.Size, source.Size);
 
             }
 
-            foreach (IWidget source in sourceGraph) {
+            foreach (IVisual source in sourceGraph) {
                 IThing thing = sourceGraph.Get(source);
-                IWidget target = targetGraph.Get(thing);
+                IVisual target = targetGraph.Get(thing);
 
                 Assert.AreEqual(target.Location, source.Location);
                 Assert.AreEqual(target.Size, source.Size);
@@ -137,38 +137,37 @@ namespace Limada.Tests.Model {
         }
 
 
-        void TestScene(Scene scene, IGraphLayout<IWidget,IEdgeWidget> layout, Stream s) {
+        void TestScene(Scene scene, IGraphLayout<IVisual,IVisualEdge> layout, Stream s) {
             
             
-            SheetManager sheetManager = new SheetManager();
+            var sheetManager = new SheetManager();
             SceneTools.CleanScene(scene);
 
-            using (Sheet sheet = new Sheet(scene, layout)) {
+            using (var sheet = new Sheet(scene, layout)) {
                 s.Position = 0;
                 sheet.Read(s);
             }
-            
-            IGraphPair<IWidget, IThing, IEdgeWidget, ILink> widgetThingGraph =
-                GraphPairExtension<IWidget, IEdgeWidget>.Source<IThing, ILink>(scene.Graph);
 
-            foreach(IWidget widget in scene.Elements) {
-                IThing thing = widgetThingGraph.Get (widget);
+            var visualThingGraph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(scene.Graph);
+
+            foreach(var visual in scene.Elements) {
+                var thing = visualThingGraph.Get (visual);
                 Assert.IsNotNull (thing);
             }
         }
 
         [Test]
         public void TestSheetManager() {
-            Scene scene = new Scene();
+            var scene = new Scene();
 
             scene.Graph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>();
-            if (!(scene.Graph is GraphView<IWidget,IEdgeWidget>)){
-                scene.Graph = new GraphView<IWidget, IEdgeWidget> (new WidgetGraph (), scene.Graph);
+            if (!(scene.Graph is GraphView<IVisual,IVisualEdge>)){
+                scene.Graph = new GraphView<IVisual, IVisualEdge> (new VisualGraph (), scene.Graph);
             }
 
-            IGraphLayout<IWidget,IEdgeWidget> layout = this.GetLayout();
+            var layout = this.GetLayout();
 
-            Stream s = SaveSheet(scene, layout);
+            var s = SaveSheet(scene, layout);
 
             TestScene(scene, layout,s);
 
@@ -180,13 +179,12 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void TestDataContractSerializer() {
-            WidgetThingGraph sourceGraph =
-                ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>(1);
-            IThingGraph thingGraph = sourceGraph.Two as IThingGraph;
+            var sourceGraph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>(1);
+            var thingGraph = sourceGraph.Two as IThingGraph;
 
-            Stream s = new MemoryStream();
+            var s = new MemoryStream();
 
-            XmlWriterSettings settings = new XmlWriterSettings();
+            var settings = new XmlWriterSettings();
             settings.OmitXmlDeclaration = true;
             settings.ConformanceLevel = ConformanceLevel.Fragment;
             
@@ -197,8 +195,7 @@ namespace Limada.Tests.Model {
 
 
             writer.WriteStartElement ("root");
-            DataContractSerializer ser = 
-                new DataContractSerializer(factory.Clazz<IThing>(), factory.KnownClasses);
+            var ser = new DataContractSerializer(factory.Clazz<IThing>(), factory.KnownClasses);
             
             int thingCount = 0;
             foreach (var thing in thingGraph) {
@@ -240,18 +237,15 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void TestThingSerializer() {
-            WidgetThingGraph sourceGraph =
-                ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>(10);
-
-            IThingGraph thingGraph = sourceGraph.Two as IThingGraph;
-
+            var sourceGraph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>(10);
+            var thingGraph = sourceGraph.Two as IThingGraph;
             
             var dataStream = new StreamWriter (new MemoryStream ());
             var streamContent = "This is the streamcontent";
             dataStream.Write(streamContent);
             dataStream.Flush ();
 
-            IStreamThing streamThing = factory.CreateItem<Stream>(null) as IStreamThing;
+            var streamThing = factory.CreateItem<Stream>(null) as IStreamThing;
             thingGraph.Add(streamThing);
 
             var streamId = streamThing.Id;
@@ -263,9 +257,9 @@ namespace Limada.Tests.Model {
             streamThing.Flush();
             streamThing.ClearRealSubject ();
 
-            Stream s = new MemoryStream();
+            var s = new MemoryStream();
 
-            ThingSerializer serializer = new ThingSerializer();
+            var serializer = new ThingSerializer();
             serializer.Graph = thingGraph;
             
             int thingCount = 0;
@@ -293,7 +287,7 @@ namespace Limada.Tests.Model {
 
 
             s.Position = 0;
-            StreamReader reader = new StreamReader(s);
+            var reader = new StreamReader(s);
             this.ReportDetail(reader.ReadToEnd());
 
             s.Position = 0;
@@ -324,8 +318,8 @@ namespace Limada.Tests.Model {
             var scene = new Scene();
 
             scene.Graph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>();
-            if (!(scene.Graph is GraphView<IWidget, IEdgeWidget>)) {
-                scene.Graph = new GraphView<IWidget, IEdgeWidget>(scene.Graph,new WidgetGraph());
+            if (!(scene.Graph is GraphView<IVisual, IVisualEdge>)) {
+                scene.Graph = new GraphView<IVisual, IVisualEdge>(scene.Graph,new VisualGraph());
             }
 
             var layout = this.GetLayout();

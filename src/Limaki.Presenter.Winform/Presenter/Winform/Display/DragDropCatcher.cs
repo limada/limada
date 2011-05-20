@@ -21,8 +21,6 @@ using Limaki.Presenter.UI;
 
 namespace Limaki.Presenter.Winform {
     /// <summary>
-    /// Selects a widget on mouse down or mouse move
-    /// Sets scene.focused and scene.selected or scene.hovered
     /// </summary>
     public class DragDropCatcher<T> : ActionBase,IDragDropAction 
     where T:IMouseAction {

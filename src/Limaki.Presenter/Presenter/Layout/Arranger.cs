@@ -93,33 +93,33 @@ namespace Limaki.Presenter.Layout {
 
 
         /// <summary>
-        /// adds widget to row[level]
+        /// adds item to row[level]
         /// </summary>
         /// <param name="level"></param>
-        /// <param name="widget"></param>
-        protected virtual void AddToRow(int level, TItem widget) {
-            if ((widget != null) && !(widget is TEdge)) {
-                if (!RowIndices.ContainsKey(widget)) {
+        /// <param name="item"></param>
+        protected virtual void AddToRow(int level, TItem item) {
+            if ((item != null) && !(item is TEdge)) {
+                if (!RowIndices.ContainsKey(item)) {
                     Row<TItem> row = null;
                     if (!rows.TryGetValue(level, out row)) {
                         row = new Row<TItem>();
                         rows.Add(level, row);
                     }
-                    row.Items.Add((TItem)widget);
-                    RowIndices.Add(widget, level);
+                    row.Items.Add((TItem)item);
+                    RowIndices.Add(item, level);
                 }
             }
         }
         protected virtual void AdjustRowSize(Row<TItem> row) {
             if (!row.SizeAdjusted) {
-                foreach (TItem widget in row.Items) {
-                    if (!(widget is TEdge)) {
-                        SizeI widgetSize = proxy.GetSize(widget);
-                        row.Size += new SizeI(widgetSize.Width + Distance.Width,
-                                               widgetSize.Height + Distance.Height);
+                foreach (TItem item in row.Items) {
+                    if (!(item is TEdge)) {
+                        SizeI visualSize = proxy.GetSize(item);
+                        row.Size += new SizeI(visualSize.Width + Distance.Width,
+                                               visualSize.Height + Distance.Height);
 
-                        row.biggestItemSize = new SizeI(Math.Max(row.biggestItemSize.Width, widgetSize.Width),
-                                                         Math.Max(row.biggestItemSize.Height, widgetSize.Height));
+                        row.biggestItemSize = new SizeI(Math.Max(row.biggestItemSize.Width, visualSize.Width),
+                                                         Math.Max(row.biggestItemSize.Height, visualSize.Height));
                     }
                 }
                 row.SizeAdjusted = true;
@@ -230,7 +230,7 @@ namespace Limaki.Presenter.Layout {
             var rowStart = startAt;
 
             foreach (KeyValuePair<int, Row<TItem>> kvp in this.rows) {
-                Row<TItem> row = kvp.Value;
+                var row = kvp.Value;
                 row.Items = row.Items.OrderBy<TItem, string>(this.OrderBy).ToList();
                 AdjustRowSize(row);
                 AdjustRowLocation(row, rowStart);
@@ -240,25 +240,25 @@ namespace Limaki.Presenter.Layout {
                 }
 
 
-                PointI location = row.Location;
-                foreach (TItem widget in row.Items)
-                    if (!(widget is TEdge)) {
+                var location = row.Location;
+                foreach (TItem item in row.Items)
+                    if (!(item is TEdge)) {
 
-                        proxy.SetLocation(widget, location);
+                        proxy.SetLocation(item, location);
                         if (siblings != null)
-                            ignore.Remove(widget);
+                            ignore.Remove(item);
 
                         if (siblings == null)
-                            proxy.Justify(widget);
+                            proxy.Justify(item);
 
 
-                        foreach (TEdge edge in this.Graph.Twig(widget)) {
+                        foreach (TEdge edge in this.Graph.Twig(item)) {
                             proxy.AffectedEdges.Add(edge);
                         }
 
                         SizeI size = new SizeI(
-                            proxy.GetSize(widget).Width + Distance.Width,
-                            proxy.GetSize(widget).Height + Distance.Height);
+                            proxy.GetSize(item).Width + Distance.Width,
+                            proxy.GetSize(item).Height + Distance.Height);
 
                         if (Orientation == Orientation.TopBottom) {
                             location.X += size.Width;
@@ -689,17 +689,17 @@ namespace Limaki.Presenter.Layout {
             }
 
             // calculate the most left and right point in stripe
-            PointI locateRight = new PointI();
-            PointI locateLeft = new PointI(int.MaxValue, int.MaxValue);
-            foreach (TItem widget in Data.ElementsIn(stripe)) {
-                if (!(widget is TEdge) && !ignoring.Contains(widget)) {
-                    PointI widgetLocation = proxy.GetLocation(widget);
-                    SizeI widgetSize = proxy.GetSize(widget);
+            var locateRight = new PointI();
+            var locateLeft = new PointI(int.MaxValue, int.MaxValue);
+            foreach (TItem item in Data.ElementsIn(stripe)) {
+                if (!(item is TEdge) && !ignoring.Contains(item)) {
+                    var visualLocation = proxy.GetLocation(item);
+                    var visualSize = proxy.GetSize(item);
 
-                    locateRight.X = Math.Max(locateRight.X, widgetLocation.X + widgetSize.Width);
-                    locateRight.Y = Math.Max(locateRight.Y, widgetLocation.Y + widgetSize.Height);
-                    locateLeft.X = Math.Min(locateLeft.X, widgetLocation.X);
-                    locateLeft.Y = Math.Min(locateLeft.Y, widgetLocation.Y);
+                    locateRight.X = Math.Max(locateRight.X, visualLocation.X + visualSize.Width);
+                    locateRight.Y = Math.Max(locateRight.Y, visualLocation.Y + visualSize.Height);
+                    locateLeft.X = Math.Min(locateLeft.X, visualLocation.X);
+                    locateLeft.Y = Math.Min(locateLeft.Y, visualLocation.Y);
                 }
             }
 

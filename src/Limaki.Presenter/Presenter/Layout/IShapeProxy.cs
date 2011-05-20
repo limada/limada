@@ -8,8 +8,8 @@ namespace Limaki.Presenter.Layout {
         ICollection<TEdge> AffectedEdges { get; set; }
 
         void Commit ( IGraphScene<TItem, TEdge> Data );
-        void SetLocation ( TItem widget, PointI location );
-        PointI GetLocation ( TItem widget );
+        void SetLocation ( TItem item, PointI location );
+        PointI GetLocation ( TItem item );
         SizeI GetSize ( TItem item );
 
         /// <summary>

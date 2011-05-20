@@ -20,7 +20,7 @@ using Limaki.Graphs;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
-    /// Overrides Zooming; if a widget is hit, no zooming is performed
+    /// Overrides Zooming; if an item is hit, no zooming is performed
     /// </summary>
     public class GraphItemZoomAction<TItem, TEdge> : ZoomAction
         where TEdge : IEdge<TItem>, TItem{
@@ -34,7 +34,7 @@ namespace Limaki.Presenter.UI {
 
         private int _hitSize = 5;
         /// <summary>
-        /// has to be the same as in WidgetResizer
+        /// has to be the same as in GraphItemResizer
         /// </summary>
         public int HitSize {
             get { return _hitSize; }
@@ -44,8 +44,8 @@ namespace Limaki.Presenter.UI {
         public override void OnMouseUp(MouseActionEventArgs e) {
             var zoomTarget = this.Viewport ();
             PointI p = zoomTarget.Camera.ToSource(e.Location);
-            TItem widget = Scene.Hit(p, HitSize);
-            if (widget==null) {
+            TItem item = Scene.Hit(p, HitSize);
+            if (item==null) {
                 base.OnMouseUp (e);
             }
         }

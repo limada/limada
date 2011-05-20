@@ -18,14 +18,14 @@ namespace Limaki.Presenter.Layout {
   
     
     /// <summary>
-    /// This class is responsible for routing path of link widgets.
+    /// This class is responsible for routing path of VisualLinks.
     /// </summary>
     public interface IRouter<TItem,TEdge> 
     where TEdge:TItem, IEdge<TItem> {
         /// <summary>
-        /// Sets the RootAnchor and TargetAnchor of a LinkWidget
+        /// Sets the RootAnchor and TargetAnchor of a VisualLink
         /// </summary>
-        /// <param name="widget"></param>
+        /// <param name="edge"></param>
         /// <returns></returns>
         void routeEdge(TEdge edge);
 

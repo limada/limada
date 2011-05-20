@@ -1,15 +1,15 @@
 using Limaki.Model;
 using Limada.Model;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limada.View;
 using Limaki.Tests.Graph.Model;
 
 namespace Limada.Tests.Model {
-    public class ThingSceneFactoryNew<T> : GenericBiGraphFactory<IWidget, IThing, IEdgeWidget, ILink>
+    public class ThingSceneFactoryNew<T> : GenericBiGraphFactory<IVisual, IThing, IVisualEdge, ILink>
         where T : IGraphFactory<IThing, ILink>, new() {
         public ThingSceneFactoryNew() : 
             base(new T(), 
-            new WidgetThingAdapter().ReverseAdapter()) { }
+            new VisualThingAdapter().ReverseAdapter()) { }
     }
 
 

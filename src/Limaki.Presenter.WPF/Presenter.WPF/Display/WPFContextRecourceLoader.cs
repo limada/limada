@@ -6,13 +6,13 @@ using Limaki.Drawing.WPF;
 using Limaki.Drawing.WPF.Painters;
 using Limaki.Drawing.WPF.Shapes;
 using Limaki.Presenter.UI;
-using Limaki.Widgets;
-using Limaki.Widgets.WPF;
+using Limaki.Visuals;
+using Limaki.Visuals.WPF;
 
 namespace Limaki.Presenter.WPF {
     /// <summary>
     /// the concrete ApplicationContextRecourceLoader an application
-    /// which uses StyleSheets, a WidgetDisplay and IGraphMapping
+    /// which uses StyleSheets, a VisualsDisplay and IGraphMapping
     /// </summary>
     public class WPFContextRecourceLoader : ContextRecourceLoader {
         public override void ApplyResources(IApplicationContext context) {
@@ -27,7 +27,7 @@ namespace Limaki.Presenter.WPF {
 
             context.Factory.Add<IUISystemInformation, WPFSystemInformation>();
             context.Factory.Add<IShapeFactory, WPFShapeFactory>();
-            context.Factory.Add<IWidgetFactory, WPFWidgetFactory>();
+            context.Factory.Add<IVisualFactory, WpfVisualFactory>();
 
             context.Factory.Add<IDeviceCursor, CursorHandler>();
 

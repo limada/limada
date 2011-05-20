@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Limaki.Presenter.Widgets;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals;
+using Limaki.Visuals;
 using Limaki.Presenter.UI;
 using Limaki.Drawing.WPF.Shapes;
 using Limaki.Drawing.WPF;
 using Limaki.Drawing;
-using Limaki.Widgets.WPF;
+using Limaki.Visuals.WPF;
 using Limaki.Drawing.WPF.Painters;
 
 namespace Limaki.Presenter.WPF {
-    public class WPFWidgetRenderer : WidgetRenderer {
-        public override void Render(IWidget widget, IRenderEventArgs e) {
+    public class WpfVisualsRenderer : VisualsRenderer {
+        public override void Render(IVisual visual, IRenderEventArgs e) {
             var layout = this.Layout();
-            var shape = widget.Shape as IWPFShape;
+            var shape = visual.Shape as IWPFShape;
             var g = ((WPFSurface)e.Surface).Graphics;
-            var style = layout.GetStyle(widget);
+            var style = layout.GetStyle(visual);
 
-            var shapePainter = layout.GetPainter(widget.Shape.GetType());
+            var shapePainter = layout.GetPainter(visual.Shape.GetType());
             if (shapePainter != null) {
                 if (!g.Children.Contains(shape.Shape)) {
                     shape.Shape.IsHitTestVisible = false;
@@ -30,12 +30,12 @@ namespace Limaki.Presenter.WPF {
                 shapePainter.Render(e.Surface);
             }
             bool paintData = style.PaintData;
-            var wpfWidget = widget as IWPFWidget;
+            var wpfVisual = visual as IWPFVisual;
             if (paintData) {
-                var data = GetData(widget);
+                var data = GetData(visual);
                 var dataPainter = layout.GetPainter(data.GetType()) as WPFStringPainter;
-                if (dataPainter != null && wpfWidget != null) {
-                    var dataElement = wpfWidget.DataElement;
+                if (dataPainter != null && wpfVisual != null) {
+                    var dataElement = wpfVisual.DataElement;
                     dataPainter.DataElement = dataElement;
 
                     if (!g.Children.Contains(dataElement)) {
@@ -48,8 +48,8 @@ namespace Limaki.Presenter.WPF {
                     dataPainter.Render(e.Surface);
                 }
             } else {
-                if (wpfWidget != null && wpfWidget.DataElement != null) {
-                    g.Children.Remove(wpfWidget.DataElement);
+                if (wpfVisual != null && wpfVisual.DataElement != null) {
+                    g.Children.Remove(wpfVisual.DataElement);
                 }
             }
             

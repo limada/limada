@@ -15,17 +15,17 @@
 
 using System.Windows.Forms;
 using Limaki.Graphs;
-using Limaki.Widgets;
+using Limaki.Visuals;
 
 namespace Limaki.Presenter.Winform.DragDrop {
-    public class StringDataObjectHandler : WidgetDataObjectHandler<string> {
+    public class StringDataObjectHandler : VisualsDataObjectHandler<string> {
         public override string[] DataFormats {
             get { return new string[]
                     {System.Windows.Forms.DataFormats.Text}
                 ; }
         }
 
-        public override void SetData(IDataObject data, IGraph<IWidget,IEdgeWidget> container,IWidget value) {
+        public override void SetData(IDataObject data, IGraph<IVisual,IVisualEdge> container,IVisual value) {
             //if ( data is DataObject ) {
             //    DataObject dataObject = (DataObject) data;
             //    dataObject.SetText(value.Data.ToString());

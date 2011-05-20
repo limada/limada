@@ -16,7 +16,7 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limaki.Graphs;
 
 namespace Limaki.Presenter.Layout {
@@ -24,7 +24,7 @@ namespace Limaki.Presenter.Layout {
     /// searches for the nearest Anchors of Root and Link
     /// </summary>
     public class NearestAnchorRouter<TItem, TEdge> : RouterBase<TItem, TEdge>
-        where TItem : IWidget
+        where TItem : IVisual
         where TEdge : TItem, IEdge<TItem> {
 
 
@@ -65,13 +65,13 @@ namespace Limaki.Presenter.Layout {
         }
 
 
-        public static Pair<Anchor, Anchor> nearestAnchors(IWidget source, IWidget target) {
+        public static Pair<Anchor, Anchor> nearestAnchors(IVisual source, IVisual target) {
             var sourceShape = source.Shape;
             var tagetShape = target.Shape;
             if (sourceShape==null||tagetShape==null) {
                 throw new ArgumentException ("shape must not be null");
             }
-            return nearestAnchors (source.Shape, target.Shape, source is IEdgeWidget, target is IEdgeWidget);
+            return nearestAnchors (source.Shape, target.Shape, source is IVisualEdge, target is IVisualEdge);
         }
 
         public static Pair<Anchor, Anchor> nearestAnchors(IShape source, IShape target,bool sourceIsEdge, bool targetIsEdge) {
@@ -145,7 +145,7 @@ namespace Limaki.Presenter.Layout {
         public override void routeEdge(TEdge edge) {
             try {
                 Pair<Anchor, Anchor> nearest = nearestAnchors (edge.Root, edge.Leaf);
-                var e = edge as IEdgeWidget;
+                var e = edge as IVisualEdge;
                 e.RootAnchor = nearest.One;
                 e.LeafAnchor = nearest.Two;
             } catch (ArgumentException e) {

@@ -6,7 +6,7 @@ using System;
 
 namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
     public class HTMLViewer:IHTMLViewer {
-        public static bool GeckoFailed = true;
+        public static bool GeckoFailed = false;
         public object CreateControl(object parent) {
             Control _control = null;
             if (GeckoFailed || Commons.Mono || Commons.IsWin64BitOS()) { //(true){ //

@@ -13,7 +13,7 @@
  * 
  */
 
-using Limaki.Widgets;
+using Limaki.Visuals;
 
 namespace Limaki.UseCases.Viewers.ToolStrips {
     public interface IMarkerTool {

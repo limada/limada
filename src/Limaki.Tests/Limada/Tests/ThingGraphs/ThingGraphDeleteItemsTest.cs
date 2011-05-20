@@ -7,7 +7,7 @@ using Limaki.Data;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Tests.Graph.Model;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using NUnit.Framework;
 
 
@@ -16,9 +16,9 @@ namespace Limada.Tests.ThingGraphs {
         public struct TestItem {
             public Int64 id;
             public IThing thing;
-            public IWidget one;
-            public IWidget two;
-            public TestItem(Int64 id, IThing thing, IWidget one, IWidget two) {
+            public IVisual one;
+            public IVisual two;
+            public TestItem(Int64 id, IThing thing, IVisual one, IVisual two) {
                 this.id = id;
                 this.thing = thing;
                 this.one = one;
@@ -120,28 +120,28 @@ namespace Limada.Tests.ThingGraphs {
             programming2Language.thing = dataSource.GetById(programming2Language.id);
             programming.thing = dataSource.GetById(programming.id);
 
-            IGraphPair<IWidget, IThing, IEdgeWidget, ILink> pairOne =
-                new WidgetThingGraph(new Limaki.Widgets.WidgetGraph(), dataSource);
+            IGraphPair<IVisual, IThing, IVisualEdge, ILink> pairOne =
+                new VisualThingGraph(new Limaki.Visuals.VisualGraph(), dataSource);
 
-            GraphView<IWidget, IEdgeWidget> viewOne =
-                new GraphView<IWidget, IEdgeWidget>(pairOne, new Limaki.Widgets.WidgetGraph());
+            GraphView<IVisual, IVisualEdge> viewOne =
+                new GraphView<IVisual, IVisualEdge>(pairOne, new Limaki.Visuals.VisualGraph());
 
             programming.one = pairOne.Get(programming.thing); // Programming
 
             // expand viewOne:
-            Walker<IWidget, IEdgeWidget> walker = new Walker<IWidget, IEdgeWidget>(pairOne);
-            foreach (LevelItem<IWidget> item in walker.DeepWalk(programming.one, 0)) {
+            Walker<IVisual, IVisualEdge> walker = new Walker<IVisual, IVisualEdge>(pairOne);
+            foreach (LevelItem<IVisual> item in walker.DeepWalk(programming.one, 0)) {
                 viewOne.One.Add(item.Node);
             }
 
-            ICollection<IEdgeWidget> pairOneTwigs = GetTwigCollection<IWidget,IEdgeWidget> (pairOne, java.one);
+            ICollection<IVisualEdge> pairOneTwigs = GetTwigCollection<IVisual,IVisualEdge> (pairOne, java.one);
             ICollection<ILink> dataSourceTwigs = GetTwigCollection<IThing,ILink>(dataSource, java.thing);
 
-            IGraphPair<IWidget, IThing, IEdgeWidget, ILink> pairTwo =
-                new WidgetThingGraph(new Limaki.Widgets.WidgetGraph(), dataSource);
+            IGraphPair<IVisual, IThing, IVisualEdge, ILink> pairTwo =
+                new VisualThingGraph(new Limaki.Visuals.VisualGraph(), dataSource);
 
-            GraphView<IWidget, IEdgeWidget> viewTwo =
-                new GraphView<IWidget, IEdgeWidget>(pairTwo, new Limaki.Widgets.WidgetGraph());
+            GraphView<IVisual, IVisualEdge> viewTwo =
+                new GraphView<IVisual, IVisualEdge>(pairTwo, new Limaki.Visuals.VisualGraph());
 
             java.one = pairOne.Get(java.thing);
             java.two = pairTwo.Get(java.thing);
@@ -150,16 +150,16 @@ namespace Limada.Tests.ThingGraphs {
             // delete over PingBack in both views:
             
 
-            ICollection<IEdgeWidget> deleteCollection =
-                new List<IEdgeWidget>(viewOne.PostorderTwig(java.one));
+            ICollection<IVisualEdge> deleteCollection =
+                new List<IVisualEdge>(viewOne.PostorderTwig(java.one));
 
-            foreach (IWidget linkOne in deleteCollection) {// Java
-                IWidget linkTwo = GraphPairExtension<IWidget, IEdgeWidget>.LookUp<IThing, ILink>(viewOne, viewTwo, linkOne);
+            foreach (IVisual linkOne in deleteCollection) {// Java
+                IVisual linkTwo = GraphPairExtension<IVisual, IVisualEdge>.LookUp<IThing, ILink>(viewOne, viewTwo, linkOne);
                 viewTwo.Remove(linkTwo);
                 viewOne.Remove(linkOne);
             }
 
-            java.two = GraphPairExtension<IWidget, IEdgeWidget>.LookUp<IThing, ILink>(viewOne, viewTwo, java.one);
+            java.two = GraphPairExtension<IVisual, IVisualEdge>.LookUp<IThing, ILink>(viewOne, viewTwo, java.one);
             viewTwo.Remove(java.two);
             viewOne.Remove(java.one);
 
@@ -175,11 +175,11 @@ namespace Limada.Tests.ThingGraphs {
             IsRemoved<IThing, ILink>(dataSource, dataSourceTwigs);
 
             // testing pairOne
-            IsRemoved<IWidget, IEdgeWidget>(pairOne, programming.one, java.one);
-            IsRemoved<IWidget, IEdgeWidget>(pairOne, pairOneTwigs);
+            IsRemoved<IVisual, IVisualEdge>(pairOne, programming.one, java.one);
+            IsRemoved<IVisual, IVisualEdge>(pairOne, pairOneTwigs);
 
             // testing pairTwo
-            IsRemoved<IWidget, IEdgeWidget>(pairTwo, programming.two, java.two);
+            IsRemoved<IVisual, IVisualEdge>(pairTwo, programming.two, java.two);
 
         }
 
@@ -235,23 +235,23 @@ namespace Limada.Tests.ThingGraphs {
             programming.thing = dataSource.GetById(programming.id);
             programming2Language.thing = dataSource.GetById (programming2Language.id);
 
-            IGraphPair<IWidget, IThing, IEdgeWidget, ILink> pairOne =
-                new WidgetThingGraph(new Limaki.Widgets.WidgetGraph(), dataSource);
+            IGraphPair<IVisual, IThing, IVisualEdge, ILink> pairOne =
+                new VisualThingGraph(new Limaki.Visuals.VisualGraph(), dataSource);
 
             programming.one = pairOne.Get(programming.thing);
 
-            Expand<IWidget, IEdgeWidget>(pairOne, programming.one);
-            ICollection<IEdgeWidget> pairOneTwigs = GetTwigCollection<IWidget, IEdgeWidget>(pairOne, java.one);
+            Expand<IVisual, IVisualEdge>(pairOne, programming.one);
+            ICollection<IVisualEdge> pairOneTwigs = GetTwigCollection<IVisual, IVisualEdge>(pairOne, java.one);
             ICollection<ILink> dataSourceTwigs = GetTwigCollection<IThing, ILink>(dataSource, java.thing);
 
             java.one = pairOne.Get(java.thing);
             programming2Language.one = pairOne.Get (programming2Language.thing);
 
-            Remove<IWidget, IEdgeWidget>(pairOne, java.one);
+            Remove<IVisual, IVisualEdge>(pairOne, java.one);
 
-            IsRemoved<IWidget, IEdgeWidget>(pairOne, programming.one, java.one);
-            IsRemoved<IWidget, IEdgeWidget>(pairOne, pairOneTwigs);
-            IsRemoved<IWidget, IEdgeWidget>(pairOne, pairOne.Twig(programming2Language.one),java.one);
+            IsRemoved<IVisual, IVisualEdge>(pairOne, programming.one, java.one);
+            IsRemoved<IVisual, IVisualEdge>(pairOne, pairOneTwigs);
+            IsRemoved<IVisual, IVisualEdge>(pairOne, pairOne.Twig(programming2Language.one),java.one);
 
             IsRemoved<IThing, ILink>(dataSource, programming.thing, java.thing);
             IsRemoved<IThing, ILink>(dataSource, dataSourceTwigs);

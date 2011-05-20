@@ -21,7 +21,7 @@ using Limaki.Graphs;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
-    /// Deletes a widget
+    /// Deletes an item
     /// </summary>
     public class GraphItemDeleteAction<TItem,TEdge>:KeyActionBase 
         where TEdge:TItem,IEdge<TItem> {
@@ -53,8 +53,8 @@ namespace Limaki.Presenter.UI {
             if (e.Key == Key.Delete && (e.ModifierKeys==ModifierKeys.Control)) {
                 if (Scene.Selected.Count >0) {
                     Set<TItem> done = new Set<TItem>();
-                    foreach(TItem widget in Scene.Selected.Elements) {
-                        Delete (widget, done);
+                    foreach(TItem item in Scene.Selected.Elements) {
+                        Delete (item, done);
                     }
                     if (Scene.Focused != null) {
                         Scene.Requests.Add (

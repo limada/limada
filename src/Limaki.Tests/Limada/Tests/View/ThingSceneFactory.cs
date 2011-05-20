@@ -17,9 +17,9 @@
 using Limada.Model;
 using Limada.View;
 using Limaki.Graphs;
-using Limaki.Tests.Widget;
+using Limaki.Tests.Visuals;
 using Limaki.Tests.Graph.Model;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using System.Collections.Generic;
 
 namespace Limada.Tests.View {
@@ -28,11 +28,11 @@ namespace Limada.Tests.View {
 
         #region ISceneFactory Member
 
-        IGraph<IWidget, IEdgeWidget> _graph = null;
-        public virtual IGraph<IWidget, IEdgeWidget> Graph {
+        IGraph<IVisual, IVisualEdge> _graph = null;
+        public virtual IGraph<IVisual, IVisualEdge> Graph {
             get {
                 if ( _graph == null ) {
-                    _graph = new Graph<IWidget, IEdgeWidget>();
+                    _graph = new Graph<IVisual, IVisualEdge>();
                 }
                 return _graph;
 
@@ -45,7 +45,7 @@ namespace Limada.Tests.View {
 
         public virtual Scene Scene {
             get {
-                Scene result = new Scene();
+                var result = new Scene();
                 Populate(result);
                 return result;
             }
@@ -61,7 +61,7 @@ namespace Limada.Tests.View {
 
         public void Populate( Scene scene ) {
             if (ThingGraph != null) {
-                this.Graph = new WidgetThingGraph (new WidgetGraph (), this.ThingGraph);
+                this.Graph = new VisualThingGraph (new VisualGraph (), this.ThingGraph);
                 scene.Graph = this.Graph;
             }
         }
@@ -80,37 +80,34 @@ namespace Limada.Tests.View {
             get { return _addDensity; }
             set { _addDensity = value; }
         }
-        IList<IWidget> _node = null;
-        public IList<IWidget> Node {
+        IList<IVisual> _node = null;
+        public IList<IVisual> Node {
             get {
                 if (_node == null) {
-                    _node = new IWidget[11];
+                    _node = new IVisual[11];
                 }
                 return _node;
             }
         }
 
-        IList<IEdgeWidget> _link = null;
-        public IList<IEdgeWidget> Edge {
+        IList<IVisualEdge> _link = null;
+        public IList<IVisualEdge> Edge {
             get {
                 if (_link == null) {
-                    _link = new IEdgeWidget[11];
+                    _link = new IVisualEdge[11];
                 }
                 return _link;
             }
         }
         #endregion
 
-        #region IGraphFactory<IWidget,IEdgeWidget> Member
+        #region IGraphFactory<IVisual, IVisualEdge> Member
 
 
-        public void Populate(IGraph<IWidget, IEdgeWidget> graph) {
-            GraphModelAdapter<IThing, IWidget, ILink, IEdgeWidget> adapter =
-                new WidgetThingAdapter().ReverseAdapter();
+        public void Populate(IGraph<IVisual, IVisualEdge> graph) {
+            var adapter = new VisualThingAdapter().ReverseAdapter();
+            var mapper = new GraphMapper<IThing, IVisual, ILink, IVisualEdge>(ThingGraph, graph, adapter);
 
-            GraphMapper<IThing, IWidget, ILink, IEdgeWidget> mapper =
-                new GraphMapper<IThing, IWidget, ILink, IEdgeWidget>(
-                ThingGraph, graph, adapter);
             mapper.ConvertOneTwo();
         }
 

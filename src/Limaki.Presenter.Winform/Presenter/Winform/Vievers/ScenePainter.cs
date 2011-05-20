@@ -22,10 +22,10 @@ using Limaki.Drawing.GDI;
 using Limaki.Graphs;
 using Limaki.Presenter.GDI.UI;
 using Limaki.Presenter.UI;
-using Limaki.Presenter.Widgets;
+using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Winform;
 using Limaki.Presenter.Winform.Display;
-using Limaki.Widgets;
+using Limaki.Visuals;
 
 namespace Limaki.Presenter.Viewers.Winform {
     public class GraphScenePainterGdiComposer<TItem, TEdge> : GraphScenePainterComposer<TItem, TEdge>
@@ -80,11 +80,11 @@ namespace Limaki.Presenter.Viewers.Winform {
         }
     }
 
-    public class ScenePainter:GraphScenePainter<IWidget, IEdgeWidget> {
+    public class ScenePainter:GraphScenePainter<IVisual, IVisualEdge> {
         public virtual void Instrument() {
-            var instrumenter = new GraphScenePainterGdiComposer<IWidget, IEdgeWidget>();
+            var instrumenter = new GraphScenePainterGdiComposer<IVisual, IVisualEdge>();
 
-            this.GraphItemRenderer = new WidgetRenderer();
+            this.GraphItemRenderer = new VisualsRenderer();
 
             instrumenter.Factor(this);
             instrumenter.Compose(this);

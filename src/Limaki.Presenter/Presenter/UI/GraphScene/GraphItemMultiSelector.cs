@@ -23,16 +23,16 @@ using Limaki.Graphs.Extensions;
 
 
 namespace Limaki.Presenter.UI {
-    public class GraphItemMultiSelector<IWidget,IEdgeWidget>:SelectorAction, IKeyAction 
-    where IEdgeWidget:IWidget,IEdge<IWidget>{
+    public class GraphItemMultiSelector<TItem,TEdge>:SelectorAction, IKeyAction 
+    where TEdge:TItem,IEdge<TItem>{
         public GraphItemMultiSelector() : base() {
             this.ShowGrips = false;
             this.Priority = ActionPriorities.SelectionPriority + 5;
         }
 
 
-        public virtual Get<IGraphScene<IWidget, IEdgeWidget>> SceneHandler { get; set; }
-        public IGraphScene<IWidget, IEdgeWidget> Scene {
+        public virtual Get<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
+        public IGraphScene<TItem, TEdge> Scene {
             get { return SceneHandler(); }
         }
 
@@ -44,30 +44,30 @@ namespace Limaki.Presenter.UI {
             Exclusive = false;
         }
 
-        public static void Select(IGraphScene<IWidget, IEdgeWidget> scene, IEnumerable<IWidget> selection, ModifierKeys modifiers) {
+        public static void Select(IGraphScene<TItem, TEdge> scene, IEnumerable<TItem> selection, ModifierKeys modifiers) {
             bool isLinkKey = (modifiers & ModifierKeys.Shift) != 0;
-            Set<IWidget> oldSelected = new Set<IWidget>();
-            foreach (IWidget widget in scene.Selected.Elements) {
-                oldSelected.Add(widget);
+            Set<TItem> oldSelected = new Set<TItem>();
+            foreach (TItem item in scene.Selected.Elements) {
+                oldSelected.Add(item);
             }
 
             if ((modifiers & ModifierKeys.Control) != ModifierKeys.Control) {
                 scene.Selected.Clear();
             }
 
-            foreach (IWidget widget in selection) {
-                bool isLink = widget is IEdgeWidget;
+            foreach (TItem item in selection) {
+                bool isLink = item is TEdge;
                 bool add = (isLinkKey && isLink) || (!isLinkKey && !isLink);
                 if (add) {
-                    scene.Selected.Add(widget);
-                    if (!oldSelected.Contains(widget)) {
-                        scene.Requests.Add(new Command<IWidget>(widget));
+                    scene.Selected.Add(item);
+                    if (!oldSelected.Contains(item)) {
+                        scene.Requests.Add(new Command<TItem>(item));
                     }
-                    oldSelected.Remove(widget);
+                    oldSelected.Remove(item);
                 }
             }
-            foreach (IWidget widget in oldSelected) {
-                scene.Requests.Add(new Command<IWidget>(widget));
+            foreach (TItem item in oldSelected) {
+                scene.Requests.Add(new Command<TItem>(item));
             }            
         }
 
@@ -147,7 +147,7 @@ namespace Limaki.Presenter.UI {
 
             if (e.Key == Key.D) {
                 if (Scene.Focused != null) {
-                    var walker = new Walker<IWidget, IEdgeWidget> (Scene.Graph);
+                    var walker = new Walker<TItem, TEdge> (Scene.Graph);
                     Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.DeepWalk(Scene.Focused,0))),
                            e.ModifierKeys);
                 }
@@ -156,7 +156,7 @@ namespace Limaki.Presenter.UI {
 
             if (e.Key == Key.E) {
                 if (Scene.Focused != null) {
-                    var walker = new Walker<IWidget, IEdgeWidget>(Scene.Graph);
+                    var walker = new Walker<TItem, TEdge>(Scene.Graph);
                     Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.ExpandWalk(Scene.Focused, 0))),
                            e.ModifierKeys);
                 }
@@ -166,7 +166,7 @@ namespace Limaki.Presenter.UI {
 
             if (e.Key == Key.W) {
                 if (Scene.Focused != null) {
-                    var walker = new Walker<IWidget, IEdgeWidget>(Scene.Graph);
+                    var walker = new Walker<TItem, TEdge>(Scene.Graph);
                     Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.Walk(Scene.Focused, 0))),
                            e.ModifierKeys);
                 }
@@ -176,7 +176,7 @@ namespace Limaki.Presenter.UI {
 
             if (e.Key == Key.C) {
                 if (Scene.Focused != null) {
-                    var walker = new Walker<IWidget, IEdgeWidget>(Scene.Graph);
+                    var walker = new Walker<TItem, TEdge>(Scene.Graph);
                     Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.CollapseWalk(Scene.Focused, 0))),
                            e.ModifierKeys);
                 }
@@ -192,7 +192,7 @@ namespace Limaki.Presenter.UI {
 
         public override bool Check() {
             if (this.SceneHandler == null) {
-                throw new CheckFailedException(this.GetType(), typeof(IGraphScene<IWidget, IEdgeWidget>));
+                throw new CheckFailedException(this.GetType(), typeof(IGraphScene<TItem, TEdge>));
             }
             return base.Check();
         }

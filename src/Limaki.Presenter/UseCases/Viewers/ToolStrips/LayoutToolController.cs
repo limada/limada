@@ -15,13 +15,13 @@
 
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Presenter.Widgets;
-using Limaki.Presenter.Widgets.UI;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals;
+using Limaki.Presenter.Visuals.UI;
+using Limaki.Visuals;
 using Limaki.Context;
 
 namespace Limaki.UseCases.Viewers.ToolStrips {
-    public class LayoutToolController:ToolController<WidgetDisplay,ILayoutTool> {
+    public class LayoutToolController:ToolController<VisualsDisplay,ILayoutTool> {
 
         public void StyleSheetChange(string sheetName) {
             IStyleSheet styleSheet = null;
@@ -42,15 +42,15 @@ namespace Limaki.UseCases.Viewers.ToolStrips {
         public void ShapeChange(IShape shape) {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
-                foreach (IWidget widget in currentDisplay.Data.Selected.Elements) {
-                    SceneTools.ChangeShape (currentDisplay.Data, widget, shape);
+                foreach (IVisual visual in currentDisplay.Data.Selected.Elements) {
+                    SceneTools.ChangeShape (currentDisplay.Data, visual, shape);
                 }
                 currentDisplay.Execute ();
             }
         }
 
         public override void Attach(object sender) {
-            var display = sender as WidgetDisplay;
+            var display = sender as VisualsDisplay;
             if (display != null) {
                 this.CurrentDisplay = display;
                 Tool.AttachStyleSheet(display.StyleSheet.Name);

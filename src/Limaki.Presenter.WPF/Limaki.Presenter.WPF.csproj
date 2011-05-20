@@ -75,10 +75,10 @@
     <Compile Include="Presenter.WPF\Rendering\WPFRenderer.cs" />
     <Compile Include="Presenter.WPF\Display\WPFViewPort.cs" />
     <Compile Include="Presenter.WPF\Rendering\SelectionRenderer.cs" />
-    <Compile Include="Presenter.WPF\Widgets\IWPFWidget.cs" />
-    <Compile Include="Presenter.WPF\Widgets\WPFEdgeWidget.cs" />
-    <Compile Include="Presenter.WPF\Widgets\WPFWidget.cs" />
-    <Compile Include="Presenter.WPF\Widgets\WPFWidgetFactory.cs" />
+    <Compile Include="Presenter.WPF\Visuals\IWPFVisual.cs" />
+    <Compile Include="Presenter.WPF\Visuals\WpfVisualEdge.cs" />
+    <Compile Include="Presenter.WPF\Visuals\WpfVisual.cs" />
+    <Compile Include="Presenter.WPF\Visuals\WpfVisualFactory.cs" />
     <Compile Include="Presenter.WPF\WPFSystemInformation.cs" />
     <Page Include="Controls\UserControl1.xaml">
       <Generator>MSBuild:Compile</Generator>

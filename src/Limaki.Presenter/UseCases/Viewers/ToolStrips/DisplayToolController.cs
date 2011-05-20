@@ -17,8 +17,8 @@ using Limaki.Actions;
 using Limaki.Drawing;
 using Limaki.Presenter;
 using Limaki.Presenter.UI;
-using Limaki.Presenter.Widgets.UI;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals.UI;
+using Limaki.Visuals;
 
 namespace Limaki.UseCases.Viewers.ToolStrips {
     public class DisplayToolController : ToolController<IDisplay, IDisplayTool> {
@@ -59,7 +59,7 @@ namespace Limaki.UseCases.Viewers.ToolStrips {
                 display.SelectAction.Enabled,
                 display.MouseScrollAction.Enabled,
                 ActionEnabled<AddEdgeAction>(display),
-                ActionEnabled <GraphItemAddAction<IWidget, IEdgeWidget>>(display)
+                ActionEnabled <GraphItemAddAction<IVisual, IVisualEdge>>(display)
                 );
         }
 
@@ -73,10 +73,10 @@ namespace Limaki.UseCases.Viewers.ToolStrips {
             display.MouseScrollAction.Enabled = move;
 
             connect = ActionEnabled<AddEdgeAction> (display, connect);
-            add = ActionEnabled<GraphItemAddAction<IWidget, IEdgeWidget>>(display, add);
+            add = ActionEnabled<GraphItemAddAction<IVisual, IVisualEdge>>(display, add);
 
-            ActionEnabled<GraphEdgeChangeAction<IWidget, IEdgeWidget>>(display, !connect);
-            ActionEnabled<GraphItemMoveResizeAction<IWidget, IEdgeWidget>>(display, !add);
+            ActionEnabled<GraphEdgeChangeAction<IVisual, IVisualEdge>>(display, !connect);
+            ActionEnabled<GraphItemMoveResizeAction<IVisual, IVisualEdge>>(display, !add);
             
 
         }

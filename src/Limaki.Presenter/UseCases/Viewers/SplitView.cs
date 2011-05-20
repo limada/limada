@@ -22,9 +22,9 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Model.Streams;
 using Limaki.Presenter;
-using Limaki.Presenter.Widgets;
-using Limaki.Presenter.Widgets.UI;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals;
+using Limaki.Presenter.Visuals.UI;
+using Limaki.Visuals;
 using Limaki.Presenter.UI;
 
 namespace Limaki.UseCases.Viewers {
@@ -43,7 +43,7 @@ namespace Limaki.UseCases.Viewers {
             CurrentDisplay = Display1;
         }
 
-        public void InitializeDisplay(WidgetDisplay display) {
+        public void InitializeDisplay(VisualsDisplay display) {
             StyleSheets styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
             IStyleSheet styleSheet = null;
 
@@ -63,11 +63,11 @@ namespace Limaki.UseCases.Viewers {
 
         #endregion 
 
-        public WidgetDisplay Display1 { get; set; }
-        public WidgetDisplay Display2 { get; set; }
+        public VisualsDisplay Display1 { get; set; }
+        public VisualsDisplay Display2 { get; set; }
         public object Parent { get; set; }
 
-        public event Action<WidgetDisplay> DeviceInitializeDisplay = null;
+        public event Action<VisualsDisplay> DeviceInitializeDisplay = null;
 
         public Action<object, Action> AfterStreamLoaded { get; set; }
         public Action<string, string, Action<string>> ShowTextDialog { get; set; }
@@ -88,8 +88,8 @@ namespace Limaki.UseCases.Viewers {
             }
         }
 
-        WidgetDisplay _currentDisplay = null;
-        public WidgetDisplay CurrentDisplay {
+        VisualsDisplay _currentDisplay = null;
+        public VisualsDisplay CurrentDisplay {
             get { return _currentDisplay; }
             protected set {
                 _currentDisplay = value;
@@ -104,8 +104,8 @@ namespace Limaki.UseCases.Viewers {
             protected set {
                 lock (locker) {
                     bool isChange = _currentControl != value;
-                    if (value is WidgetDisplay) {
-                        _currentDisplay = (WidgetDisplay)value;
+                    if (value is VisualsDisplay) {
+                        _currentDisplay = (VisualsDisplay)value;
                     }
                     _currentControl = value;
                     if (isChange) {
@@ -119,7 +119,7 @@ namespace Limaki.UseCases.Viewers {
         public Action<object> ApplyGotFocus { get; set; }
         
         public void DisplayGotFocus(object sender) {
-            CurrentDisplay = sender as WidgetDisplay;
+            CurrentDisplay = sender as VisualsDisplay;
         }
 
         public void ControlGotFocus(object sender) {
@@ -154,7 +154,7 @@ namespace Limaki.UseCases.Viewers {
             if (currentDisplay != null &&
                 currentDisplay.Data != null &&
                 currentDisplay.Data.Focused != null) {
-                var fce = new GraphSceneEventArgs<IWidget, IEdgeWidget>(currentDisplay.Data, currentDisplay.Data.Focused);
+                var fce = new GraphSceneEventArgs<IVisual, IVisualEdge>(currentDisplay.Data, currentDisplay.Data.Focused);
                 ContentViewManager.ChangeViewer(currentDisplay, fce);
             }
             if (DeviceGraphStreamView != null) {
@@ -190,11 +190,11 @@ namespace Limaki.UseCases.Viewers {
 
             ContentViewManager.Clear();
 
-            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IWidget, IEdgeWidget>>(Display1.Data);
+            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(Display1.Data);
 
             new WiredDisplays().MakeSideDisplay(Display1, Display2);
 
-            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IWidget, IEdgeWidget>>(Display2.Data);
+            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(Display2.Data);
 
             GraphGraphView();
             GraphStreamView();
@@ -231,7 +231,7 @@ namespace Limaki.UseCases.Viewers {
 
 
 
-        void SceneFocusChanged(object sender, GraphSceneEventArgs<IWidget , IEdgeWidget> e) {
+        void SceneFocusChanged(object sender, GraphSceneEventArgs<IVisual , IVisualEdge> e) {
 
             if (ViewMode != SplitViewMode.GraphStream)
                 return;
@@ -437,19 +437,19 @@ namespace Limaki.UseCases.Viewers {
             streamInfo.Data.Position = 0;
 
 
-            var widget = new WidgetThingStreamHelper().CreateFromStream(scene.Graph, streamInfo);
+            var visual = new VisualThingStreamHelper().CreateFromStream(scene.Graph, streamInfo);
             var root = scene.Focused;
 
             var layout = currentDiplay.Layout;
 
             if (root == null) {
                 PointI pt = new PointI(layout.Distance.Width, scene.Shape.BoundsRect.Bottom);
-                SceneTools.AddItem(scene, widget, layout, pt);
+                SceneTools.AddItem(scene, visual, layout, pt);
             } else {
-                SceneTools.PlaceWidget(root, widget, scene, layout);
+                SceneTools.PlaceVisual(root, visual, scene, layout);
             }
             scene.Selected.Clear();
-            scene.Focused = widget;
+            scene.Focused = visual;
             currentDiplay.Execute();
             currentDiplay.OnSceneFocusChanged();
         }
@@ -478,10 +478,10 @@ namespace Limaki.UseCases.Viewers {
                 throw new CheckFailedException(this.GetType(), typeof(SheetManager));
             }
             if (this.Display1 == null) {
-                throw new CheckFailedException(this.GetType(), typeof(WidgetDisplay));
+                throw new CheckFailedException(this.GetType(), typeof(VisualsDisplay));
             }
             if (this.Display2 == null) {
-                throw new CheckFailedException(this.GetType(), typeof(WidgetDisplay));
+                throw new CheckFailedException(this.GetType(), typeof(VisualsDisplay));
             }
             if (this.ShowTextDialog == null) {
                 throw new CheckFailedException(this.GetType()+"needs a ShowTextDialogAction");

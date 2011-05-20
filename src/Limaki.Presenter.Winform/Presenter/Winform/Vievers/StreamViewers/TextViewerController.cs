@@ -122,7 +122,7 @@ namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
             base.OnShow();
             // this is to bring textControl to show proper scrolloffset and zoom
             // but zoom does not work
-            //Application.DoEvents(); // this disturbs WidgetDisplay.MouseTimerAction!
+            //Application.DoEvents(); // this disturbs VisualsDisplay.MouseTimerAction!
             _control.AutoScrollOffset = new Point();
             _control.ZoomFactor = this.zoom;
             _control.ReadOnly = this.ReadOnly;

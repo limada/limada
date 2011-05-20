@@ -15,12 +15,12 @@
 
 using System.Collections.Generic;
 using Limaki.Tests.Graph.Model;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Graph.Wrappers {
     public class BinaryGraphFoldingTest : SceneFacadeTest<BinaryGraphFactory> {
-        public override IEnumerable<IWidget> FullExpanded {
+        public override IEnumerable<IVisual> FullExpanded {
             get {
                 yield return Mock.Factory.Node[1]; // 1
                 yield return Mock.Factory.Node[2]; // 2
@@ -56,10 +56,10 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.SceneFacade.CollapseToFocused();
 
             Assert.AreEqual(Mock.Scene.Graph.Count, 1);
-            AreEquivalent(new IWidget[] { Mock.Factory.Node[1] }, Mock.Scene.Graph);
+            AreEquivalent(new IVisual[] { Mock.Factory.Node[1] }, Mock.Scene.Graph);
             TestShapes(Mock.Scene);
 
-            IEnumerable<IWidget> N1Expanded = new IWidget[] {
+            IEnumerable<IVisual> N1Expanded = new IVisual[] {
                                                     Mock.Factory.Node[1], // 1
                                                     Mock.Factory.Node[2], // 2
                                                     Mock.Factory.Node[3], // 3
@@ -77,7 +77,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.Scene.Focused = Mock.Factory.Node[4]; // 4
             Mock.SceneFacade.Expand(false);
 
-            IEnumerable<IWidget> N4Expanded = new IWidget[] {
+            IEnumerable<IVisual> N4Expanded = new IVisual[] {
                                                      Mock.Factory.Node[1], // 1
                                                      Mock.Factory.Node[2], // 2
                                                      Mock.Factory.Node[3], // 3
@@ -98,7 +98,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.Scene.Focused = Mock.Factory.Node[5]; 
             Mock.SceneFacade.Expand(false);
 
-            IEnumerable<IWidget> N5Expanded = new IWidget[] {
+            IEnumerable<IVisual> N5Expanded = new IVisual[] {
                                                      Mock.Factory.Node[1], // 1
                                                      Mock.Factory.Node[2], // 2
                                                      Mock.Factory.Node[3], // 3
@@ -119,7 +119,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             AreEquivalent(N5Expanded, Mock.Scene.Graph);
             TestShapes(Mock.Scene);
 
-            IEnumerable<IWidget> N5Collapsed = new IWidget[] {
+            IEnumerable<IVisual> N5Collapsed = new IVisual[] {
                                                       Mock.Factory.Node[1], // 1
                                                       Mock.Factory.Node[2], // 2
                                                       Mock.Factory.Node[3], // 3

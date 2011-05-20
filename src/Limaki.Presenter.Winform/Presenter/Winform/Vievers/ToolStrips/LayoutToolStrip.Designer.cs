@@ -58,7 +58,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             this.ShapeCombo.Margin = new System.Windows.Forms.Padding(0);
             this.ShapeCombo.Name = "shapeCombo";
             this.ShapeCombo.Size = new System.Drawing.Size(80, 27);
-            this.ShapeCombo.ToolTipText = "change shape of widget";
+            this.ShapeCombo.ToolTipText = "change shape of visual";
             this.ShapeCombo.SelectedIndexChanged += new System.EventHandler(this.ShapeSelectedIndexChanged);
             this.Dock = System.Windows.Forms.DockStyle.None;
             this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {

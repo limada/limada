@@ -13,14 +13,14 @@
  * 
  */
 
-using Limaki.Presenter.Widgets;
-using Limaki.Presenter.Widgets.UI;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals;
+using Limaki.Presenter.Visuals.UI;
+using Limaki.Visuals;
 
 namespace Limaki.UseCases.Viewers.ToolStrips {
-    public class MarkerToolController : ToolController<WidgetDisplay, IMarkerTool> {
+    public class MarkerToolController : ToolController<VisualsDisplay, IMarkerTool> {
         public override void Attach(object sender) {
-            var display = sender as WidgetDisplay;
+            var display = sender as VisualsDisplay;
             if (display != null) {
                 this.CurrentDisplay = display;
                 Tool.Attach(display.Data);

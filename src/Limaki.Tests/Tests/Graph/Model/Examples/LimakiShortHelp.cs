@@ -14,12 +14,12 @@
  */
 
 using Limaki.Model;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limaki.Tests.Graph.Model;
 using System.IO;
 using Limaki.Graphs;
 
-namespace Limaki.Tests.Widget {
+namespace Limaki.Tests.Visuals {
     public class LimakiShortHelpFactory : GraphFactoryBase {
         public override void Populate(IGraph<IGraphItem, IGraphEdge> Graph,int start) {
             IGraphItem item = new GraphItem<string>("Limaki");

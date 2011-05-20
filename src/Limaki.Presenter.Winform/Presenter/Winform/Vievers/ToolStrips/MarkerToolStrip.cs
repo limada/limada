@@ -14,10 +14,10 @@
  */
 
 using System.Windows.Forms;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limaki.UseCases.Viewers.ToolStrips;
-using Limaki.Presenter.Widgets;
-using Limaki.Presenter.Widgets.UI;
+using Limaki.Presenter.Visuals;
+using Limaki.Presenter.Visuals.UI;
 using System;
 
 namespace Limaki.UseCases.Winform.Viewers.ToolStrips {

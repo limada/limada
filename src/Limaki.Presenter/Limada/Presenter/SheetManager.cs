@@ -22,9 +22,9 @@ using Limada.Schemata;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Model.Streams;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Id = System.Int64;
-using Limaki.Presenter.Widgets.UI;
+using Limaki.Presenter.Visuals.UI;
 using Limada.View;
 using Limaki.Graphs;
 
@@ -88,7 +88,7 @@ namespace Limada.Presenter {
      
 
         #region save sheet to thing
-        private IThingGraph GetThingGraph(IGraph<IWidget, IEdgeWidget> graph) {
+        private IThingGraph GetThingGraph(IGraph<IVisual, IVisualEdge> graph) {
             var thingGraph = graph.ThingGraph();
             if (thingGraph == null) {
                 throw new ArgumentException("Sheet works only on ThingGraphs");
@@ -101,7 +101,7 @@ namespace Limada.Presenter {
             return thingGraph;
         }
 
-        private IThingGraph GetThingGraph(IGraphScene<IWidget, IEdgeWidget> scene) {
+        private IThingGraph GetThingGraph(IGraphScene<IVisual, IVisualEdge> scene) {
             return GetThingGraph(scene.Graph);
         }
 
@@ -120,7 +120,7 @@ namespace Limada.Presenter {
             return result;
         }
 
-        public bool SaveStreamInGraph(Stream source, IGraph<IWidget, IEdgeWidget> target, SheetInfo info) {
+        public bool SaveStreamInGraph(Stream source, IGraph<IVisual, IVisualEdge> target, SheetInfo info) {
             var thingGraph = GetThingGraph(target);
             var thing = GetSheetThing(thingGraph, info.Id) as IStreamThing;
             StreamInfo<Stream> streamInfo = new StreamInfo<Stream>(
@@ -137,7 +137,7 @@ namespace Limada.Presenter {
             return false;
         }
 
-        public SheetInfo SaveInGraph(IGraphScene<IWidget, IEdgeWidget> scene, IGraphLayout<IWidget, IEdgeWidget> layout, SheetInfo info) {
+        public SheetInfo SaveInGraph(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, SheetInfo info) {
             var graph = GetThingGraph(scene);
             IThing sheetThing = GetSheetThing(graph, info.Id);
             return SaveToThing (scene, layout, sheetThing,info.Name);
@@ -145,7 +145,7 @@ namespace Limada.Presenter {
 
 
 
-        public SheetInfo SaveToThing(IGraphScene<IWidget, IEdgeWidget> scene, IGraphLayout<IWidget, IEdgeWidget> layout, IThing thing, string name) {
+        public SheetInfo SaveToThing(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, IThing thing, string name) {
             var result = default( SheetInfo );
             if (thing is IStreamThing || thing == null) {
                 
@@ -157,7 +157,7 @@ namespace Limada.Presenter {
                 streamInfo.Data.Position = 0;
                 streamInfo.Description = name;
                 
-                thing = new WidgetThingStreamHelper().SetStream(scene.Graph, thing, streamInfo);
+                thing = new VisualThingStreamHelper().SetStream(scene.Graph, thing, streamInfo);
                 
                 result = RegisterSheet(thing.Id, name);
                 result.State.Hollow = false;
@@ -170,7 +170,7 @@ namespace Limada.Presenter {
             return result;
         }
 
-        public bool IsSaveable(IGraphScene<IWidget, IEdgeWidget> scene) {
+        public bool IsSaveable(IGraphScene<IVisual, IVisualEdge> scene) {
             return scene != null && scene.Graph.ThingGraph() != null;
         }
 
@@ -180,14 +180,14 @@ namespace Limada.Presenter {
 
         #region load sheet
 
-        public void LoadFromStream(Stream source, IGraphScene<IWidget, IEdgeWidget> target, IGraphLayout<IWidget, IEdgeWidget> layout) {
+        public void LoadFromStream(Stream source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
             SceneTools.CleanScene(target);
             using (Sheet sheet = new Sheet(target, layout)) {
                 sheet.Read(source);
             } 
         }
 
-        public SheetInfo LoadFromStreamInfo(StreamInfo<Stream> source, IGraphScene<IWidget, IEdgeWidget> target, IGraphLayout<IWidget, IEdgeWidget> layout) {
+        public SheetInfo LoadFromStreamInfo(StreamInfo<Stream> source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
             var result = default(SheetInfo);
             try {
                 string name = string.Empty;
@@ -213,7 +213,7 @@ namespace Limada.Presenter {
             return result;
         }
 
-        public SheetInfo LoadFromThing(IStreamThing source, IGraphScene<IWidget, IEdgeWidget> target, IGraphLayout<IWidget, IEdgeWidget> layout) {
+        public SheetInfo LoadFromThing(IStreamThing source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
             var result = default(SheetInfo);
             source.DeCompress();
             try {
@@ -242,7 +242,7 @@ namespace Limada.Presenter {
         }
 
         #region SheetStreams
-        public bool StoreInStreams(IGraphScene<IWidget, IEdgeWidget> scene, IGraphLayout<IWidget, IEdgeWidget> layout, Id id) {
+        public bool StoreInStreams(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
             if (scene.Graph.Count > 0) {
                 var stream = new MemoryStream();
                 new Sheet(scene, layout).Save(stream);
@@ -264,7 +264,7 @@ namespace Limada.Presenter {
             return stream;
 
         }
-        public bool LoadFromStreams(IGraphScene<IWidget, IEdgeWidget> scene, IGraphLayout<IWidget, IEdgeWidget> layout, Id id) {
+        public bool LoadFromStreams(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
             Stream stream = null;
             if (SheetStreams.TryGetValue(id, out stream)){
                 LoadFromStream(stream, scene, layout);

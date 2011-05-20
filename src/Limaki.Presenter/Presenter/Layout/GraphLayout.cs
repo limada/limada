@@ -42,15 +42,15 @@ namespace Limaki.Presenter.Layout {
             var scene = this.Data;
             if (scene != null) {
                 var graph = scene.Graph;
-                foreach (TItem widget in graph) {
-                    if (!(widget is TEdge)) {
-                        foreach (TEdge edge in graph.Twig(widget)) {
+                foreach (TItem item in graph) {
+                    if (!(item is TEdge)) {
+                        foreach (TEdge edge in graph.Twig(item)) {
                             Invoke(edge);
                             Justify(edge);
                         }
 
                     } else {
-                        Invoke(widget);
+                        Invoke(item);
                     }
                 }
             }
@@ -62,10 +62,10 @@ namespace Limaki.Presenter.Layout {
                 // init spatialIndex:
                 scene.SpatialIndex.Query(RectangleS.Empty);
                 var graph = scene.Graph;
-                foreach (TItem widget in graph) {
-                    Invoke(widget);
-                    if (!(widget is TEdge)) {
-                        Justify(widget);
+                foreach (TItem item in graph) {
+                    Invoke(item);
+                    if (!(item is TEdge)) {
+                        Justify(item);
                     }
                 }
                 InvokeEdges();

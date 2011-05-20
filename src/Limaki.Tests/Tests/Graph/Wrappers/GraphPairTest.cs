@@ -17,33 +17,33 @@
 using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.View.Widget;
-using Limaki.Tests.Widget;
+using Limaki.Tests.View.Visuals;
+using Limaki.Tests.Visuals;
 using Limaki.UnitTest;
 using Limaki.View;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Graph.Wrappers {
     public class GraphPairTest : DomainTest {
-        protected virtual IGraphPair<IWidget, IGraphItem, IEdgeWidget, IGraphEdge> GetPair() {
-            IGraph<IWidget, IEdgeWidget> one = new Graph<IWidget, IEdgeWidget>();
+        protected virtual IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge> GetPair() {
+            IGraph<IVisual, IVisualEdge> one = new Graph<IVisual, IVisualEdge>();
             IGraph<IGraphItem, IGraphEdge> two = new Graph<IGraphItem, IGraphEdge>();
 
             return
-                new GraphPair<IWidget, IGraphItem, IEdgeWidget, IGraphEdge>(
-                one, two, new GraphItem2WidgetAdapter().ReverseAdapter());
+                new GraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>(
+                one, two, new GraphItem2VisualAdapter().ReverseAdapter());
         }
 
         [Test]
         public void RemoveTest() {
-            IGraphPair<IWidget, IGraphItem, IEdgeWidget, IGraphEdge> pair = GetPair();
+            var pair = GetPair();
 
-            WidgetDataFactory factory = new WidgetDataFactory();
-            foreach (IWidget widget in factory.Edges) {
-                pair.Add(widget);
+            var factory = new VisualDataFactory();
+            foreach (var item in factory.Edges) {
+                pair.Add(item);
             }
-            foreach (IEdgeWidget edge in factory.Edges) {
+            foreach (IVisualEdge edge in factory.Edges) {
                 Assert.IsTrue(pair.Contains(edge), edge.ToString());
                 Assert.IsTrue(pair.Contains(edge.Root), edge.Root.ToString());
                 Assert.IsTrue(pair.Contains(edge.Leaf), edge.Leaf.ToString());
@@ -66,7 +66,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             }
 
-            IGraphItem item2 = pair.Get(factory.One);
+            var item2 = pair.Get(factory.One);
             pair.Remove(factory.One);
 
             Assert.IsFalse(pair.Contains(factory.One), factory.One.ToString());
@@ -74,7 +74,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             Assert.IsFalse(pair.Two.Contains(item2), "pair.Two contains:\t" + item2.ToString());
 
-            IWidget pingback = pair.Get(item2);
+            var pingback = pair.Get(item2);
             Assert.IsNull(pingback, "pair.Get(item) must be null\t" + item2.ToString());
 
 

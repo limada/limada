@@ -63,15 +63,15 @@ namespace Limaki.Tests.Graph.Model {
                 }
                 Populate(Graph,Start+1);
                 if (i > 0) {
-                    IGraphEdge linkWidget = new GraphEdge(lastNode1, Node[1]);
-                    Graph.Add(linkWidget);
+                    var edge = new GraphEdge(lastNode1, Node[1]);
+                    Graph.Add(edge);
                     if (SeperateLattice) {
-                        linkWidget = new GraphEdge(lastNode2, Node[5]);
-                        Graph.Add(linkWidget);
+                        edge = new GraphEdge(lastNode2, Node[5]);
+                        Graph.Add(edge);
                     }
                     if (AddDensity) {
-                        linkWidget = new GraphEdge(Node[2], lastNode3);
-                        Graph.Add(linkWidget);
+                        edge = new GraphEdge(Node[2], lastNode3);
+                        Graph.Add(edge);
                     }
                 }
             }
@@ -79,7 +79,7 @@ namespace Limaki.Tests.Graph.Model {
         }
 
         public virtual void Populate(IGraph<IGraphItem, IGraphEdge> Graph, int start) {
-            IGraphItem item = new GraphItem<int>((start++));
+            var item = new GraphItem<int>((start++));
             Graph.Add(item);
             Node[1] = item;
 

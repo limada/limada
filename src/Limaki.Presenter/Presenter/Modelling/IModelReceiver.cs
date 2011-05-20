@@ -20,7 +20,7 @@ using Limaki.Actions;
 
 namespace Limaki.Presenter {
     /// <summary>
-    /// Executes the commands and changes the GraphicsModel (Widgets)
+    /// Executes the commands and changes the GraphicsModel (Visuals)
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IModelReceiver<T> {

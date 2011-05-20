@@ -27,8 +27,8 @@ using Limaki.Graphs;
 using Limaki.UnitTest;
 using Limaki.Tests.Graph;
 using Limaki.Data;
-using Limaki.Widgets;
-using Limaki.Tests.Widget;
+using Limaki.Visuals;
+using Limaki.Tests.Visuals;
 using Limada.Model;
 
 namespace Limaki.Tests.Data.db4o {

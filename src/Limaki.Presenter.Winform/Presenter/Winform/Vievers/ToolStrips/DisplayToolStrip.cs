@@ -50,7 +50,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
                     _toolsGroup.Add(selectButton);
                     _toolsGroup.Add(moveButton);
                     _toolsGroup.Add(connectorButton);
-                    _toolsGroup.Add(AddWidgetButton);
+                    _toolsGroup.Add(AddVisualButton);
                 }
                 return _toolsGroup;
             }
@@ -76,7 +76,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             this.moveButton.Checked = move;
 
             this.connectorButton.Checked = connect;
-            this.AddWidgetButton.Checked = add;
+            this.AddVisualButton.Checked = add;
         }
 
         private void SelectOrMove(object sender, EventArgs e) {
@@ -87,7 +87,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
                 this.selectButton.Checked,
                 this.moveButton.Checked,
                 this.connectorButton.Checked,
-                this.AddWidgetButton.Checked
+                this.AddVisualButton.Checked
                 );
         }
 

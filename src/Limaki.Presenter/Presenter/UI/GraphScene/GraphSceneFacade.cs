@@ -73,8 +73,8 @@ namespace Limaki.Presenter.UI {
                     if (_data is IFactoryListener<TItem>) {
                         ((IFactoryListener<TItem>)_data).ItemCreated +=
                             delegate(TItem w) {
-                                if (!createdWidgets.Contains(w))
-                                    createdWidgets.Add(w);
+                                if (!createdItems.Contains(w))
+                                    createdItems.Add(w);
                             };
                     }
                 }
@@ -84,7 +84,7 @@ namespace Limaki.Presenter.UI {
 
         private IGraph<TItem, TEdge> _view = null;
         /// <summary>
-        /// the Graph containing the filtered widgets
+        /// the Graph containing the filtered items
         /// graphView.View will be set to view
         /// </summary>
         protected IGraph<TItem, TEdge> View {
@@ -129,13 +129,13 @@ namespace Limaki.Presenter.UI {
             this._view = null;
             this._data = null;
             this._graphView = null;
-            createdWidgets.Clear();
+            createdItems.Clear();
         }
 
         /// <summary>
-        /// a list containing the widgets which are newly created in this session
+        /// a list containing the visuals which are newly created in this session
         /// </summary>
-        public ICollection<TItem> createdWidgets = new Set<TItem>();
+        public ICollection<TItem> createdItems = new Set<TItem>();
 
         public bool IsFiltered = false;
         public virtual void ApplyFilter() {
@@ -272,16 +272,16 @@ namespace Limaki.Presenter.UI {
         }
 
         public virtual void UpdateRemoved(ICollection<TItem> removed) {
-            foreach(TItem widget in removed) {
-                Scene.Requests.Add(new RemoveBoundsCommand<TItem,TEdge>(widget, this.Scene));
-                if (this.Scene.Hovered == widget) {
+            foreach(TItem remove in removed) {
+                Scene.Requests.Add(new RemoveBoundsCommand<TItem,TEdge>(remove, this.Scene));
+                if (this.Scene.Hovered == remove) {
                     this.Scene.Hovered = null;
                 }
-                if (this.Scene.Focused == widget) {
+                if (this.Scene.Focused == remove) {
                     this.Scene.Focused = null;
                 }
-                if (this.Scene.Selected.Contains(widget)) {
-                    this.Scene.Selected.Remove (widget);
+                if (this.Scene.Selected.Contains(remove)) {
+                    this.Scene.Selected.Remove (remove);
                 }
             }
         }
@@ -306,9 +306,9 @@ namespace Limaki.Presenter.UI {
 
         }
 
-        public virtual bool IsExpanded(GraphView<TItem, TEdge> graphView, TItem widget) {
+        public virtual bool IsExpanded(GraphView<TItem, TEdge> graphView, TItem target) {
             var walker = new Walker<TItem, TEdge>(graphView.Two);
-            foreach (var item in walker.ExpandWalk(widget, 0)) {
+            foreach (var item in walker.ExpandWalk(target, 0)) {
                 if (!graphView.One.Contains(item.Node)) {
                     return false;
                 }

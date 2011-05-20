@@ -20,7 +20,7 @@ using Limaki.Drawing;
 namespace Limaki.Presenter {
     /// <summary>
     /// calculates the clipping area
-    /// does not know the GraphicsModel (Widgets)
+    /// does not know the GraphicsModel (Visuals)
     /// </summary>
     public interface IClipper {
         IEnumerable<PointI> Hull { get; }

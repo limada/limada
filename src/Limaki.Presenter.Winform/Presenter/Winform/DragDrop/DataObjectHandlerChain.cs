@@ -15,24 +15,24 @@
 
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limaki.Graphs;
 
 
 namespace Limaki.Presenter.Winform.DragDrop {
     public class DataObjectHandlerChain {
-        public IList<IWidgetDataObjectHandler> DataObjectHandlers =
-            new List<IWidgetDataObjectHandler>();
+        public IList<IVisualsDataObjectHandler> DataObjectHandlers =
+            new List<IVisualsDataObjectHandler>();
 
         public virtual bool IsValidData(IDataObject data) {
             return GetDataObjectHandler(data,true) != null;
         }
 
-        public virtual IWidgetDataObjectHandler GetDataObjectHandler(IDataObject data, bool inProcess) {
-            IWidgetDataObjectHandler result = null;
-            foreach (IWidgetDataObjectHandler objectHandler in DataObjectHandlers) {
+        public virtual IVisualsDataObjectHandler GetDataObjectHandler(IDataObject data, bool inProcess) {
+            IVisualsDataObjectHandler result = null;
+            foreach (IVisualsDataObjectHandler objectHandler in DataObjectHandlers) {
                 bool isAInprocHandler =
-                    objectHandler is DataInprocObjectHandler<IGraph<IWidget, IEdgeWidget>, IWidget>;
+                    objectHandler is DataInprocObjectHandler<IGraph<IVisual, IVisualEdge>, IVisual>;
                 bool doTry = false;
                 if (( inProcess && isAInprocHandler ) || ( !inProcess && !isAInprocHandler ))
                     doTry = data.GetDataPresent (objectHandler.HandledType);
@@ -53,7 +53,7 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
         public virtual object GetData(IDataObject data) {
             object result = false;
-            foreach (IWidgetDataObjectHandler objectHandler in DataObjectHandlers) {
+            foreach (IVisualsDataObjectHandler objectHandler in DataObjectHandlers) {
                 if (data.GetDataPresent(objectHandler.HandledType)) {
                     result = data.GetData(objectHandler.HandledType);
                     break;
@@ -62,26 +62,26 @@ namespace Limaki.Presenter.Winform.DragDrop {
             return result;
         }
 
-        public virtual IWidget GetWidget(IDataObject data, IGraph<IWidget,IEdgeWidget> graph, bool inProcess) {
-            IWidget result = null;
-            IWidgetDataObjectHandler objectHandler = GetDataObjectHandler (data,inProcess);
+        public virtual IVisual GetVisual(IDataObject data, IGraph<IVisual,IVisualEdge> graph, bool inProcess) {
+            IVisual result = null;
+            IVisualsDataObjectHandler objectHandler = GetDataObjectHandler (data,inProcess);
             if (objectHandler !=null) {
                 result = objectHandler.GetData (data, graph);
             }
             return result;
         }
 
-        public virtual void SetWidget(IDataObject data, IGraph<IWidget, IEdgeWidget> graph, IWidget value) {
-            foreach (IWidgetDataObjectHandler objectHandler in DataObjectHandlers) {
+        public virtual void SetVisual(IDataObject data, IGraph<IVisual, IVisualEdge> graph, IVisual value) {
+            foreach (IVisualsDataObjectHandler objectHandler in DataObjectHandlers) {
                 objectHandler.SetData(data, graph,value);
             }
         }
 
         public void InitDataObjectHanders() {
-            DataObjectHandlers.Add(new WidgetInprocDataObjectHandler());
-            DataObjectHandlers.Add(new SerializedWidgetDataObjectHandler());
-            DataObjectHandlers.Add(new WidgetImageDataObjectHandler());
-            DataObjectHandlers.Add(new WidgetTextDataObjectHandler());
+            DataObjectHandlers.Add(new VisualsInprocDataObjectHandler());
+            DataObjectHandlers.Add(new SerializedVisualsDataObjectHandler());
+            DataObjectHandlers.Add(new VisualsImageDataObjectHandler());
+            DataObjectHandlers.Add(new VisualsTextDataObjectHandler());
             DataObjectHandlers.Add(new StringDataObjectHandler());
             
         }

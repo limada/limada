@@ -6,7 +6,7 @@ using Limaki.Model.Streams;
 using Limaki.View;
 using System.Reflection;
 using System;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limada.Model;
 using Limada.View;
 using Limaki.Graphs;
@@ -24,8 +24,8 @@ namespace Limaki.Context {
             styleSheets.Init();
 
 
-            GraphMapping.ChainGraphMapping<GraphItemWidgetMapping>(context);
-            GraphMapping.ChainGraphMapping<WidgetThingGraphMapping>(context);
+            GraphMapping.ChainGraphMapping<GraphItemVisualMapping>(context);
+            GraphMapping.ChainGraphMapping<VisualThingGraphMapping>(context);
 
             var markerProcessor =
                 context.Pool.TryGetCreate<MarkerContextProcessor>();
@@ -35,19 +35,19 @@ namespace Limaki.Context {
             var presenterLoader = new Limaki.Presenter.Display.PresenterRecourceLoader();
             presenterLoader.ApplyResources (context);
 
-            var widgetLoader = new Limaki.Presenter.Widgets.WidgetRecourceLoader();
-            widgetLoader.ApplyResources (context);
+            var visualsRecourceLoader = new Limaki.Presenter.Visuals.VisualsRecourceLoader();
+            visualsRecourceLoader.ApplyResources (context);
 
             context.Factory.Add<ISheetManager, SheetManager>();
 
         }
 
-        public virtual IMarkerFacade<IWidget, IEdgeWidget> MarkerFacade(IGraph<IWidget, IEdgeWidget> graph) {
+        public virtual IMarkerFacade<IVisual, IVisualEdge> MarkerFacade(IGraph<IVisual, IVisualEdge> graph) {
 
-            if (GraphPairExtension<IWidget, IEdgeWidget>
+            if (GraphPairExtension<IVisual, IVisualEdge>
                     .Source<IThing, ILink>(graph) != null) {
 
-                return new WidgetThingMarkerFacade(graph);
+                return new VisualThingMarkerFacade(graph);
             }
 
             return null;

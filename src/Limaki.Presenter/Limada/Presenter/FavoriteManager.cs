@@ -25,33 +25,33 @@ using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Streams;
 using Limaki.Presenter;
-using Limaki.Presenter.Widgets.Layout;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals.Layout;
+using Limaki.Visuals;
 
 using Id = System.Int64;
 using Limada.Common;
 using Limaki.Presenter.Display;
 using System.Collections.Generic;
 using Limaki.UseCases.Viewers;
-using Limaki.Presenter.Widgets.UI;
+using Limaki.Presenter.Visuals.UI;
 using Limaki.Presenter.UI;
 
 namespace Limada.Presenter {
     public class FavoriteManager {
 
         public FavoriteManager(){}
-        public FavoriteManager(IGraphSceneDisplay<IWidget, IEdgeWidget> display): this() {
+        public FavoriteManager(IGraphSceneDisplay<IVisual, IVisualEdge> display): this() {
             this.Display = display;
             
         }
 
         public ISheetManager SheetManager { get; set; }
 
-        public void AddToFavorites(IGraphScene<IWidget, IEdgeWidget> scene) {
+        public void AddToFavorites(IGraphScene<IVisual, IVisualEdge> scene) {
             AddToFavorites(scene, TopicSchema.TopicMarker, false);
         }
 
-        public void ViewOnOpen(IGraphScene<IWidget, IEdgeWidget> scene) {
+        public void ViewOnOpen(IGraphScene<IVisual, IVisualEdge> scene) {
             AddToFavorites(scene, TopicSchema.AutoViewMarker, true);
         }
 
@@ -64,11 +64,11 @@ namespace Limada.Presenter {
             return thing;
         }
 
-        public void AddToFavorites(IGraphScene<IWidget, IEdgeWidget> scene, IThing marker, bool oneAndOnly) {
+        public void AddToFavorites(IGraphScene<IVisual, IVisualEdge> scene, IThing marker, bool oneAndOnly) {
             if (scene == null || scene.Focused == null)
                 return;
             
-            var graph = GraphPairExtension<IWidget, IEdgeWidget>
+            var graph = GraphPairExtension<IVisual, IVisualEdge>
                 .Source<IThing, ILink>(scene.Graph);
 
             if (graph == null)
@@ -96,14 +96,14 @@ namespace Limada.Presenter {
             }
         }
 
-        private IGraphSceneDisplay<IWidget, IEdgeWidget> _display = null;
-        public IGraphSceneDisplay<IWidget, IEdgeWidget> Display {
+        private IGraphSceneDisplay<IVisual, IVisualEdge> _display = null;
+        public IGraphSceneDisplay<IVisual, IVisualEdge> Display {
             get { return _display; }
             set { _display = value; }
         }
 
 
-        protected virtual bool DisplaySheet(IGraphSceneDisplay<IWidget, IEdgeWidget> display, IThing thing, IThingGraph thingGraph ) {
+        protected virtual bool DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, IThing thing, IThingGraph thingGraph ) {
             var streamThing = thing as IStreamThing;
             try {
                 if (streamThing != null && streamThing.StreamType == StreamTypes.LimadaSheet) {
@@ -122,7 +122,7 @@ namespace Limada.Presenter {
         }
 
         private Id HomeId = Isaac.Long;
-        public virtual void GoHome(IGraphSceneDisplay<IWidget, IEdgeWidget> display, bool doAutoView) {
+        public virtual void GoHome(IGraphSceneDisplay<IVisual, IVisualEdge> display, bool doAutoView) {
             if (display == null)
                 return;
             if (display.Data == null)
@@ -134,10 +134,10 @@ namespace Limada.Presenter {
             display.Text = "Favorites";
             new State {Hollow = true}.CopyTo(display.State);
 
-            var view = display.Data.Graph as GraphView<IWidget, IEdgeWidget>;
+            var view = display.Data.Graph as GraphView<IVisual, IVisualEdge>;
 
-            var graph = GraphPairExtension<IWidget, IEdgeWidget>
-                            .Source<IThing, ILink>(view) as WidgetThingGraph;
+            var graph = GraphPairExtension<IVisual, IVisualEdge>
+                            .Source<IThing, ILink>(view) as VisualThingGraph;
             IThingGraph thingGraph = null;
             if (graph != null) 
                 thingGraph = graph.Two as IThingGraph;
@@ -173,10 +173,10 @@ namespace Limada.Presenter {
                 }
 
                 if (! done && showTopic) {
-                    var topicWidget = graph.Get(topic);
-                    view.Add(topicWidget);
-                    display.Data.Focused = topicWidget;
-                    new GraphSceneFacade<IWidget,IEdgeWidget>(() => { return display.Data as Scene; }, display.Layout).Expand(false);
+                    var topicVisual = graph.Get(topic);
+                    view.Add(topicVisual);
+                    display.Data.Focused = topicVisual;
+                    new GraphSceneFacade<IVisual,IVisualEdge>(() => { return display.Data as Scene; }, display.Layout).Expand(false);
                     display.Invoke();
                     done = true;
 
@@ -194,7 +194,7 @@ namespace Limada.Presenter {
             } 
             if (! done && view != null) {
                 // it seems not to be a ThingGraph based Scene:
-                foreach (var item in  GraphPairExtension<IWidget, IEdgeWidget>.FindRoots(view.Two, null)) {
+                foreach (var item in  GraphPairExtension<IVisual, IVisualEdge>.FindRoots(view.Two, null)) {
                     view.Add(item);
                 }
                 display.Invoke();
@@ -219,7 +219,7 @@ namespace Limada.Presenter {
             return false;
         }
 
-        public virtual bool AddToSheets(IGraph<IWidget, IEdgeWidget> graph, Id sheetId) {
+        public virtual bool AddToSheets(IGraph<IVisual, IVisualEdge> graph, Id sheetId) {
             var thingGraph = graph.ThingGraph();
             if (thingGraph != null) {
                 return AddToSheets(thingGraph, sheetId);
@@ -227,9 +227,9 @@ namespace Limada.Presenter {
             return false;
         }
 
-        public void SaveChanges(IEnumerable<IGraphSceneDisplay<IWidget, IEdgeWidget>> displays) {
-            IGraphSceneDisplay<IWidget, IEdgeWidget> display = displays.First();
-            IGraph<IWidget, IEdgeWidget> graph = graph = display.Data.Graph;
+        public void SaveChanges(IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays) {
+            IGraphSceneDisplay<IVisual, IVisualEdge> display = displays.First();
+            IGraph<IVisual, IVisualEdge> graph = graph = display.Data.Graph;
             if (graph.Count == 0)
                 return;
 

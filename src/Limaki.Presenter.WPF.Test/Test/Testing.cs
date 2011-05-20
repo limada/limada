@@ -3,7 +3,7 @@ using Limaki.Common;
 
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Widgets;
+using Limaki.Visuals;
 
 using Limada.View;
 using System.Diagnostics;
@@ -14,20 +14,20 @@ using System.Net;
 using System.Threading;
 using Limaki.Drawing;
 using Limaki.Presenter.WPF.Display;
-using Limaki.Presenter.Widgets;
+using Limaki.Presenter.Visuals;
 
 namespace Limaki.WPF008 {
     public class Testing {
 
-        public WPFWidgetDisplay CreateDisplay() {
-            WPFWidgetDisplay display = new WPFWidgetDisplay();
+        public WPFVisualsDisplay CreateDisplay() {
+            WPFVisualsDisplay display = new WPFVisualsDisplay();
             display.Background = new SolidColorBrush(Colors.White);
             return display;
         }
 
 
 
-        public void GenerateTestData(WPFWidgetDisplay display) {
+        public void GenerateTestData(WPFVisualsDisplay display) {
 #if SILVERLIGHT
             WebClient client = new WebClient ();
 
@@ -94,21 +94,21 @@ namespace Limaki.WPF008 {
 
         }
 
-        public WidgetGraph MessageGraph(string message1, string message2,string message3) {
+        public VisualGraph MessageGraph(string message1, string message2,string message3) {
 
-            IWidgetFactory factory = Registry.Factory.Create<IWidgetFactory>();
-            WidgetGraph graph = new WidgetGraph();
+            IVisualFactory factory = Registry.Factory.Create<IVisualFactory>();
+            VisualGraph graph = new VisualGraph();
 
             if (message1 != null) {
-                IWidget widget = factory.CreateItem (message1);
-                graph.Add (widget);
+                IVisual visual = factory.CreateItem (message1);
+                graph.Add (visual);
 
                 if (message2 != null) {
                     var leaf = factory.CreateItem (message2);
-                    graph.Add (widget);
+                    graph.Add (visual);
 
 
-                    var edge = factory.CreateEdge (widget, leaf,"");
+                    var edge = factory.CreateEdge (visual, leaf,"");
                     graph.Add (edge);
                 }
             }
@@ -117,46 +117,46 @@ namespace Limaki.WPF008 {
 
         }
 
-        public WidgetGraph GenerateTestGraph() {
-            IWidgetFactory factory = Registry.Factory.Create<IWidgetFactory>();
-            WidgetGraph graph = new WidgetGraph();
+        public VisualGraph GenerateTestGraph() {
+            IVisualFactory factory = Registry.Factory.Create<IVisualFactory>();
+            VisualGraph graph = new VisualGraph();
 
-            IWidget widget = factory.CreateItem("Limada");
-            graph.Add(widget);
+            IVisual visual = factory.CreateItem("Limada");
+            graph.Add(visual);
 
 
             var leaf = factory.CreateItem("on");
-            graph.Add(widget);
+            graph.Add(visual);
 
 
-            var edge = factory.CreateEdge(widget, leaf,"connected");
+            var edge = factory.CreateEdge(visual, leaf,"connected");
             graph.Add(edge);
 #if SILVERLIGHT
-            leaf = factory.CreateWidget("Silverlight");
+            leaf = factory.CreateItem("Silverlight");
 #else
             leaf = factory.CreateItem("WPF009");
 #endif
-            graph.Add(widget);
+            graph.Add(visual);
 
             edge = factory.CreateEdge(edge, leaf,"connected");
             graph.Add(edge);
             return graph;
         }
 
-        public void LoadGraphIntoDisplay(WPFWidgetDisplay display, WidgetGraph graph) {
+        public void LoadGraphIntoDisplay(WPFVisualsDisplay display, VisualGraph graph) {
             
             //display.Layout.StyleSheet.DefaultStyle.AutoSize =
             //    new Limaki.Toolkit.Drawing.Size (50, 50);
 
 
-            var layout = (display.Display as WidgetDisplay).Layout;
+            var layout = (display.Display as VisualsDisplay).Layout;
             layout.Centered = true;
             layout.Orientation = Orientation.TopBottom;
 
             var view = 
-            	new GraphView<IWidget,IEdgeWidget>(graph,new WidgetGraph());
+            	new GraphView<IVisual,IVisualEdge>(graph,new VisualGraph());
             
-            var fac = new GraphViewFacade<IWidget, IEdgeWidget>(view);
+            var fac = new GraphViewFacade<IVisual, IVisualEdge>(view);
             
             fac.Expand(graph,false);
             

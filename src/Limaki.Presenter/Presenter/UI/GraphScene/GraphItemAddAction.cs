@@ -20,7 +20,7 @@ using Limaki.Presenter.Layout;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
-    /// Adds a widget (but not a linkWidget)
+    /// Adds an item (but not a link)
     /// </summary>
     public class GraphItemAddAction<TItem,TEdge> : GraphItemMoveResizeAction<TItem,TEdge>
         where TEdge : TItem, IEdge<TItem> {
@@ -33,37 +33,28 @@ namespace Limaki.Presenter.UI {
             Resolved = e.Button == MouseActionButtons.Left;
         }
 
-        TItem _newWidget = default(TItem);
-        public virtual TItem NewWidget {
-            get { return _newWidget; }
-            set { _newWidget = value; }
-        }
-
-        TItem _last = default(TItem);
-        public virtual TItem last {
-            get { return _last; }
-            set { _last = value; }
-        }
-
+        
+        public virtual TItem NewItem {get;set;}
+        public virtual TItem Last { get; set; }
         public IGraphModelFactory<TItem,TEdge> ModelFactory {get;set;}
 
         private int newCounter = 1;
         protected override void OnMouseMoveResolved(MouseActionEventArgs e) {
-            if (NewWidget == null) {
+            if (NewItem == null) {
 
-                NewWidget = ModelFactory.CreateItem(newCounter + ". Label");
+                NewItem = ModelFactory.CreateItem(newCounter + ". Label");
 
                 newCounter++;
-                Scene.Add(NewWidget);
-                // see: OnMouseUp Scene.Graph.OnGraphChanged (NewWidget, GraphChangeType.Add);
-                Scene.Requests.Add(new LayoutCommand<TItem>(NewWidget, LayoutActionType.Invoke));
+                Scene.Add(NewItem);
+                // see: OnMouseUp Scene.Graph.OnGraphChanged (NewItem, GraphChangeType.Add);
+                Scene.Requests.Add(new LayoutCommand<TItem>(NewItem, LayoutActionType.Invoke));
                 if (Scene.Focused != null) {
                     Scene.Requests.Add (new LayoutCommand<TItem> (Scene.Focused, LayoutActionType.Perform));
                     Scene.Selected.Remove (Scene.Focused);
                 }
                 this.MouseDownPos = e.Location;
-                last = Scene.Focused;
-                Scene.Focused = NewWidget;
+                Last = Scene.Focused;
+                Scene.Focused = NewItem;
                 resizing = true;
  
             }
@@ -72,7 +63,7 @@ namespace Limaki.Presenter.UI {
 
         public override void OnMouseMove(MouseActionEventArgs e) {
             base.BaseMouseMove (e);
-            //Resolved = Resolved && ( Widget != null ) && !(Widget is ILinkWidget);
+            //Resolved = Resolved && ( visual != null ) && !(visual is IVisualLink);
             if (Resolved) {
                 OnMouseMoveResolved (e);
             } else {
@@ -81,22 +72,22 @@ namespace Limaki.Presenter.UI {
         }
 
         public override void OnMouseUp(MouseActionEventArgs e) {
-            if (NewWidget != null) {
-                var shape = Scene.ItemShape (NewWidget);
+            if (NewItem != null) {
+                var shape = Scene.ItemShape (NewItem);
                 SizeI newSize = shape.Size;
                 if (newSize.Height<10 || newSize.Width < 10) {
-                    Scene.Remove (NewWidget);
+                    Scene.Remove (NewItem);
                     newCounter--;
                     Scene.Focused = default(TItem);
-                    if (last != null) {
-                        Scene.Requests.Add (new LayoutCommand<TItem> (last, LayoutActionType.Perform));
+                    if (Last != null) {
+                        Scene.Requests.Add (new LayoutCommand<TItem> (Last, LayoutActionType.Perform));
                     }
-                    Scene.Requests.Add(new Command<TItem>(NewWidget));
+                    Scene.Requests.Add(new Command<TItem>(NewItem));
                 } else {
-                    Scene.Graph.OnGraphChanged(NewWidget, GraphChangeType.Add);
+                    Scene.Graph.OnGraphChanged(NewItem, GraphChangeType.Add);
                 }
             }
-            NewWidget = default(TItem);
+            NewItem = default(TItem);
             base.OnMouseUp(e);
         }
         }

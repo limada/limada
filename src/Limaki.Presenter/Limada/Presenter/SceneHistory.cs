@@ -14,8 +14,8 @@
 
 using System.IO;
 using Limaki.Common.Collections;
-using Limaki.Presenter.Widgets;
-using Limaki.Widgets;
+using Limaki.Presenter.Visuals;
+using Limaki.Visuals;
 using Id = System.Int64;
 using System;
 using System.Collections.Generic;
@@ -54,7 +54,7 @@ namespace Limada.Presenter {
             _history = null;
         }
 
-        protected SheetInfo Store(WidgetDisplay display, ISheetManager sheetManager, Id id) {
+        protected SheetInfo Store(VisualsDisplay display, ISheetManager sheetManager, Id id) {
             var result = default(SheetInfo);
             if (display != null && display.Data != null && display.Data.Count>0) {
                 if(id == default(Id))
@@ -71,12 +71,12 @@ namespace Limada.Presenter {
             return result;
         }
 
-        public SheetInfo Store(WidgetDisplay display, ISheetManager sheetManager, bool makeNew) {
+        public SheetInfo Store(VisualsDisplay display, ISheetManager sheetManager, bool makeNew) {
             var result = Store(display, sheetManager, display.DataId);
             return result;
         }
 
-        protected void Load(WidgetDisplay display, ISheetManager sheetManager, Id id) {
+        protected void Load(VisualsDisplay display, ISheetManager sheetManager, Id id) {
             if (id == 0)
                 return;
 
@@ -87,7 +87,7 @@ namespace Limada.Presenter {
             }
         }
 
-        public void Navigate(WidgetDisplay display, ISheetManager sheetManager, bool forward) {
+        public void Navigate(VisualsDisplay display, ISheetManager sheetManager, bool forward) {
             var info = Store(display, sheetManager, display.DataId);
             var currSheedId = default(Id);
             
@@ -112,8 +112,8 @@ namespace Limada.Presenter {
                 display.Text = info.Name;
         }
 
-        public void SaveChanges(IEnumerable<IGraphSceneDisplay<IWidget, IEdgeWidget>> displays, ISheetManager sheetManager, Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow) {
-            IGraph<IWidget, IEdgeWidget> graph = null;
+        public void SaveChanges(IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays, ISheetManager sheetManager, Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow) {
+            IGraph<IVisual, IVisualEdge> graph = null;
             foreach (var display in displays)
                 if (display.State.Dirty && !display.State.Hollow) {
                     var info = sheetManager.GetSheetInfo(display.DataId) ?? new SheetInfo { Id = display.DataId };

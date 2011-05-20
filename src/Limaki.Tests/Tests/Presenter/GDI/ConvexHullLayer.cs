@@ -23,7 +23,7 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
 using Limaki.Drawing.Shapes;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limaki.Presenter.UI;
 using Limaki.Presenter;
 
@@ -33,7 +33,7 @@ namespace Limaki.Tests.Presenter.GDI {
     /// does not work at the moment
     /// change it to an IReceiver
     /// </summary>
-    public class ConvexHullLayer : GraphSceneLayer<IWidget, IEdgeWidget>, IReceiver {
+    public class ConvexHullLayer : GraphSceneLayer<IVisual, IVisualEdge>, IReceiver {
         public ConvexHullLayer(): base() {
             this.Priority = ActionPriorities.DataLayerPriority - 500;
         }
@@ -54,11 +54,11 @@ namespace Limaki.Tests.Presenter.GDI {
         private System.Drawing.Pen backGroundPen = new System.Drawing.Pen(System.Drawing.Color.White);
         private GraphicsPath invPath = new GraphicsPath();
 
-        Point[] GetHull(IGraphScene<IWidget,IEdgeWidget> scene, Matrice matrix, int delta) {
+        Point[] GetHull(IGraphScene<IVisual,IVisualEdge> scene, Matrice matrix, int delta) {
             Point[] result = new Point[0];
             var points = new Set<PointI> ();
-            foreach(var widget in scene.Elements) {
-                foreach(var p in widget.Shape.Hull(matrix,0,true)) {
+            foreach(var visual in scene.Elements) {
+                foreach(var p in visual.Shape.Hull(matrix,0,true)) {
                     if (!points.Contains(p))
                         points.Add (p);
                 }
@@ -76,15 +76,15 @@ namespace Limaki.Tests.Presenter.GDI {
             Matrice matrix = this.Camera.Matrice.Clone ();
             var layout = this.Layout ();
             if (Data != null && Data.Requests.Count != 0) {
-                foreach (ICommand<IWidget> command in Data.Requests) {
+                foreach (ICommand<IVisual> command in Data.Requests) {
                     if (command != null && command.Subject != null) {
                         if (command.Subject.Shape != null) {
                             var hull = command.Subject.Shape.Hull (tolerance, true);
                             points.AddRange(hull);
                         }
-                        if (command is StateChangeCommand<IWidget>) {
+                        if (command is StateChangeCommand<IVisual>) {
                             var hull = layout.GetDataHull(
-                                command.Subject, ( (StateChangeCommand<IWidget>) command ).Parameter.One,
+                                command.Subject, ( (StateChangeCommand<IVisual>) command ).Parameter.One,
                                 tolerance, true);
                             points.AddRange(hull);
                         } else {

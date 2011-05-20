@@ -28,43 +28,43 @@ namespace Limaki.Tests.Graph.Model {
 
             base.Populate(Graph,start);
 
-            GraphEdge linkWidget = null;
+            GraphEdge edge = null;
 
             #region Binarytree Links
 
-            linkWidget = new GraphEdge(Node[1], Node[2]);
-            Graph.Add(linkWidget);
-            Edge[1] = linkWidget;
+            edge = new GraphEdge(Node[1], Node[2]);
+            Graph.Add(edge);
+            Edge[1] = edge;
 
-            linkWidget = new GraphEdge(Node[1], Node[4]);
-            Graph.Add(linkWidget);
-            Edge[2] = linkWidget;
+            edge = new GraphEdge(Node[1], Node[4]);
+            Graph.Add(edge);
+            Edge[2] = edge;
 
-            linkWidget = new GraphEdge(Node[2], Node[3]);
-            Graph.Add(linkWidget);
-            Edge[3] = linkWidget;
+            edge = new GraphEdge(Node[2], Node[3]);
+            Graph.Add(edge);
+            Edge[3] = edge;
 
-            linkWidget = new GraphEdge(Node[4], Node[5]);
-            Graph.Add(linkWidget);
-            Edge[4] = linkWidget;
-
-
-            linkWidget = new GraphEdge(Node[4], Node[8]);
-            Graph.Add(linkWidget);
-            Edge[5] = linkWidget;
-
-            linkWidget = new GraphEdge(Node[5], Node[6]);
-            Graph.Add(linkWidget);
-            Edge[6] = linkWidget;
-
-            linkWidget = new GraphEdge(Node[5], Node[7]);
-            Graph.Add(linkWidget);
-            Edge[7] = linkWidget;
+            edge = new GraphEdge(Node[4], Node[5]);
+            Graph.Add(edge);
+            Edge[4] = edge;
 
 
-            linkWidget = new GraphEdge(Node[8], Node[9]);
-            Graph.Add(linkWidget);
-            Edge[8] = linkWidget;
+            edge = new GraphEdge(Node[4], Node[8]);
+            Graph.Add(edge);
+            Edge[5] = edge;
+
+            edge = new GraphEdge(Node[5], Node[6]);
+            Graph.Add(edge);
+            Edge[6] = edge;
+
+            edge = new GraphEdge(Node[5], Node[7]);
+            Graph.Add(edge);
+            Edge[7] = edge;
+
+
+            edge = new GraphEdge(Node[8], Node[9]);
+            Graph.Add(edge);
+            Edge[8] = edge;
 
             #endregion
         }

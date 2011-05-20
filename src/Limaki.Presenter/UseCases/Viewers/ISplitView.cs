@@ -35,11 +35,11 @@ namespace Limaki.UseCases.Viewers {
 
     public enum SplitViewMode {
         /// <summary>
-        /// shows two WidgetDisplays
+        /// shows two VisualsDisplays
         /// </summary>
         GraphGraph,
         /// <summary>
-        /// shows one WidgetDisplay and one StreamViewer
+        /// shows one VisualsDisplay and one StreamViewer
         /// </summary>
         GraphStream
     }

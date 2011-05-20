@@ -3,9 +3,9 @@ using System;
 using Limaki.Model.Streams;
 using Limaki.UseCases;
 using Limaki.UseCases.Viewers;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using Limada.View;
-using Limaki.Presenter.Widgets.UI;
+using Limaki.Presenter.Visuals.UI;
 using Limaki.Drawing;
 using System.IO;
 using Limaki.Common;
@@ -81,11 +81,11 @@ namespace Limaki {
 
         }
 
-        public void ImportContent(StreamInfo<Stream> content, Scene scene, IGraphLayout<IWidget, IEdgeWidget> layout) {
+        public void ImportContent(StreamInfo<Stream> content, Scene scene, IGraphLayout<IVisual, IVisualEdge> layout) {
             var graph = scene.Graph;
-            var thing = new WidgetThingStreamHelper().CreateFromStream(graph, content);
+            var thing = new VisualThingStreamHelper().CreateFromStream(graph, content);
             if (scene.Focused != null) {
-                SceneTools.PlaceWidget(scene.Focused, thing, scene, layout);
+                SceneTools.PlaceVisual(scene.Focused, thing, scene, layout);
             } else {
                 SceneTools.AddItem(scene, thing, layout, scene.NoHit);
             }
@@ -94,7 +94,7 @@ namespace Limaki {
         public StreamInfo<Stream> ExportContent(Scene scene) {
             var graph = scene.Graph;
             if (graph!=null && scene.Focused != null) {
-                return new WidgetThingStreamHelper ().GetStream (graph,scene.Focused);
+                return new VisualThingStreamHelper ().GetStream (graph,scene.Focused);
             }
             return null;
         }

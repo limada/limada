@@ -86,9 +86,9 @@ namespace Limaki.Graphs.Extensions {
             if (marker == null)
                 return;
             this.DefaultMarker = marker;
-            foreach (TOne widget in elements) {
-                if (widget is IEdge<TOne>) {
-                    ChangeMarker((IEdge<TOne>)widget, marker);
+            foreach (TOne one in elements) {
+                if (one is IEdge<TOne>) {
+                    ChangeMarker((IEdge<TOne>)one, marker);
                 }
             }
         }

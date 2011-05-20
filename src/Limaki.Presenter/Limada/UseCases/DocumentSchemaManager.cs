@@ -19,7 +19,7 @@ using Limada.Schemata;
 using Limada.View;
 using Limaki.Graphs;
 using Limaki.Model.Streams;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using System.Linq;
 using Limaki.Model.Content;
 using Limaki.Common;
@@ -28,17 +28,17 @@ using System;
 using Limaki.Graphs.Extensions;
 namespace Limada.UseCases {
     public class DocumentSchemaManager {
-        public IEnumerable<IWidget> Pages(IGraph<IWidget, IEdgeWidget> source, IWidget document) {
+        public IEnumerable<IVisual> Pages(IGraph<IVisual, IVisualEdge> source, IVisual document) {
             var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(document));
-            return docSchema.Pages().Select(t=>source.WidgetOf(t));
+            return docSchema.Pages().Select(t=>source.VisualOf(t));
         }
 
-        public IEnumerable<StreamInfo<Stream>> PageStreams(IGraph<IWidget, IEdgeWidget> source, IWidget document) {
+        public IEnumerable<StreamInfo<Stream>> PageStreams(IGraph<IVisual, IVisualEdge> source, IVisual document) {
             var docSchema = new DocumentSchema(source.ThingGraph(),source.ThingOf(document));
             return docSchema.PageStreams();
         }
         
-        public StreamInfo<Stream> PageStream(IGraph<IWidget, IEdgeWidget> source, IWidget page) {
+        public StreamInfo<Stream> PageStream(IGraph<IVisual, IVisualEdge> source, IVisual page) {
             StreamInfo<Stream> result = null;
             var pageThing = source.ThingOf(page) as IStreamThing;
             var imageStreamProvider = new ImageStreamProvider();
@@ -65,12 +65,12 @@ namespace Limada.UseCases {
         //    return result;
         //}
 
-        public bool HasPages(IGraph<IWidget, IEdgeWidget> source, IWidget widget) {
-            var docSchema = new DocumentSchema(source.ThingGraph(),source.ThingOf(widget));
+        public bool HasPages(IGraph<IVisual, IVisualEdge> source, IVisual visual) {
+            var docSchema = new DocumentSchema(source.ThingGraph(),source.ThingOf(visual));
             return docSchema.HasPages();
         }
 
-        public bool IsPage(IGraph<IWidget, IEdgeWidget> source, IWidget page) {
+        public bool IsPage(IGraph<IVisual, IVisualEdge> source, IVisual page) {
             var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(page));
             var pageThing = source.ThingOf(page) as IStreamThing;
             var imageStreamProvider = new ImageStreamProvider();

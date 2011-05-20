@@ -17,13 +17,13 @@
 using Limaki.Actions;
 using Limaki.Drawing;
 using Limaki.Presenter.UI;
-using Limaki.Presenter.Widgets.UI;
+using Limaki.Presenter.Visuals.UI;
 using Limaki.Tests.Graph.Model;
-using Limaki.Widgets;
+using Limaki.Visuals;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Presenter.Display {
-    public class UITests : WidgetDisplayTest {
+    public class UITests : VisualsDisplayTest {
         [Test]
         public void MultiSelectorAgainstMoveTest() {
             
@@ -31,7 +31,7 @@ namespace Limaki.Tests.Presenter.Display {
         }
 
     }
-    public class BenchmarkOneTests:WidgetDisplayTest {
+    public class BenchmarkOneTests:VisualsDisplayTest {
 
         BenchmarkOneSceneFactory _factory = null;
         BenchmarkOneSceneFactory factory {
@@ -58,7 +58,7 @@ namespace Limaki.Tests.Presenter.Display {
 
         bool editorEnabled = false;
         bool dragDropEnabled = false;
-        IGraphLayout<IWidget,IEdgeWidget> oldlayout = null;
+        IGraphLayout<IVisual,IVisualEdge> oldlayout = null;
         public override void Setup() {
             
             if (Display != null) {
@@ -78,18 +78,18 @@ namespace Limaki.Tests.Presenter.Display {
             var dragDropAction = Display.EventControler.GetAction<IDragDopActionPresenter>();
             dragDropEnabled = dragDropAction.Enabled;
 
-            IAction action = Display.EventControler.GetAction<GraphItemMoveResizeAction<IWidget, IEdgeWidget>>();
+            IAction action = Display.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();
             action.Enabled = true;
-            action = Display.EventControler.GetAction<GraphEdgeChangeAction<IWidget, IEdgeWidget>>();
+            action = Display.EventControler.GetAction<GraphEdgeChangeAction<IVisual, IVisualEdge>>();
             action.Enabled = true;
             
             // this is neccessary as the mouse cursor returns after a long time
-            // back to its position and activates WidgetTextEditor
+            // back to its position and activates VisualsTextEditor
 
             editAction.Enabled = false;
             dragDropAction.Enabled = false;
 
-            action = Display.EventControler.GetAction<GraphItemAddAction<IWidget,IEdgeWidget>>();
+            action = Display.EventControler.GetAction<GraphItemAddAction<IVisual,IVisualEdge>>();
             action.Enabled = false;
             action = Display.EventControler.GetAction < AddEdgeAction>();
             action.Enabled = false;
@@ -169,7 +169,7 @@ namespace Limaki.Tests.Presenter.Display {
 
         [Test]
         public void MoveAlongSceneBoundsTest() {
-            var iWidgets = WidgetCount ();
+            var visualsCount = VisualsCount ();
 
             string testName = "MoveAlongSceneBoundsTest";
             this.ReportDetail (testName);
@@ -210,12 +210,12 @@ namespace Limaki.Tests.Presenter.Display {
             }
 
             ticker.Stop ();
-            iWidgets = WidgetCount () - iWidgets;
+            visualsCount = VisualsCount () - visualsCount;
             this.ReportDetail (
                 testName + " \t" +
                 ticker.ElapsedInSec () + " sec \t" +
                 ticker.FramePerSecond () + " fps \t"+
-                    iWidgets +" widgets \t"
+                    visualsCount +" visuals \t"
                 );
         }
     }
