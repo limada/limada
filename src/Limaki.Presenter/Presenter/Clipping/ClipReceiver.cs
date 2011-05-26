@@ -54,7 +54,7 @@ namespace Limaki.Presenter {
         public virtual void Invoke() {
             Viewport.Update();
 
-            if (Commons.Mono) {
+            if (OS.Mono) {
                 //Renderer.Render ();
             }
         }

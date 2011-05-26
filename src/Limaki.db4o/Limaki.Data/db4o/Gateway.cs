@@ -68,7 +68,6 @@ namespace Limaki.Data.db4o {
         public override void Open(DataBaseInfo dataBaseInfo) {
             _isClosed = false;
             this.DataBaseInfo = dataBaseInfo;
-
         }
 
         public override void Close() {
@@ -77,6 +76,7 @@ namespace Limaki.Data.db4o {
                 try {
                     Session.Close();
                     Session.Dispose();
+                    _configuration = null;
                 } catch (Db4objects.Db4o.Ext.Db4oException e) {
                     // TODO: a curios exception is thrown here:
                     // "This functionality is only available for indexed fields."
@@ -85,6 +85,7 @@ namespace Limaki.Data.db4o {
                     throw e;
                 } finally {
                     _session = null;
+                    _configuration = null;
                 }
             }
             this.DataBaseInfo = null;

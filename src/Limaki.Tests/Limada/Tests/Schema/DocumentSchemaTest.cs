@@ -23,6 +23,7 @@ using Limaki.Model.Streams;
 using Limaki.Model.Content;
 using System;
 using Limaki;
+using Limaki.Tests;
 
 namespace Limada.Tests.Schemata {
     [TestFixture]
@@ -128,7 +129,7 @@ namespace Limada.Tests.Schemata {
             var docSchema = new DocumentSchema();
             var graph = new SchemaThingGraph(new ThingGraph());
             var root = DocumentSchema.DocumentsRoot;
-            var path = @"E:\testdata\txbProjekt\BlobSource";
+            var path = TestLocations.BlobSource;
 
             var document = docSchema.CreateDocument(graph, path);
             graph.Add(Factory.CreateEdge(root, document, DocumentSchema.Document));

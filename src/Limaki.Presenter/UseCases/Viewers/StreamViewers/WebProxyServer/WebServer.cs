@@ -27,7 +27,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
         public WebServerBase() {
             Port = 40110;
             ServerName = "Limaki.ContentServer";
-            Asycn = !Commons.Mono;
+            Asycn = !OS.Mono;
         }
 
         public string ServerName { get; set; }

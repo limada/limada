@@ -17,17 +17,8 @@ using System.Collections.Generic;
 using Limaki.Common.Collections;
 
 namespace Limaki.Presenter.Winform.Controls {
-    public class DocumentSchemaKeyScrollAction:KeyScrollAction {
-        protected override RectangleI ProcessKey(KeyActionEventArgs e) {
-            var result = base.ProcessKey(e);
-            if (KeyProcessed != null) {
-                KeyProcessed(result);
-            }
-            return result;
-        }
-        public Action<RectangleI> KeyProcessed { get; set; }
-    }
     public class DocumentSchemaController:ThingViewerController {
+
         public IGraphSceneDisplay<IVisual, IVisualEdge> GraphSceneDisplay { get; set; }
         public IDisplay<System.Drawing.Image> ImageDisplay { get; set; }
 
@@ -80,12 +71,12 @@ namespace Limaki.Presenter.Winform.Controls {
             Distance = new Limaki.Drawing.SizeI(0, -5);
             layout.StyleSheet = DefaultStyleSheet;
 
-            var action = display.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();
-            display.EventControler.Remove(action);
-
             var focusAction = GraphSceneDisplay.EventControler.GetAction<GraphSceneFocusAction<IVisual, IVisualEdge>>();
             if (focusAction != null)
                 focusAction.HitSize = -1;
+
+            var folding = GraphSceneDisplay.EventControler.GetAction<GraphSceneFolding<IVisual, IVisualEdge>>();
+            folding.Folder.RemoveOrhpans = false;
         }
 
         private int padding = 4;
@@ -158,6 +149,10 @@ namespace Limaki.Presenter.Winform.Controls {
                     }
                 };
             }
+
+            var pageCache = new Set<IVisual>(pages);
+            var moveResize = display.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();
+            moveResize.FocusFilter = e => pageCache.Contains(e) ? null : e;
         }
 
         DocumentSchemaControl _control = null;

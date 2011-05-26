@@ -14,13 +14,7 @@ namespace Limada.Tests.ThingGraphs {
         public virtual string FileName {
             get {
                 if (_fileName == null) {
-                    if (Commons.Unix)
-                        return
-                            //Environment.SpecialFolder.MyDocuments+Path.DirectorySeparatorChar+
-                            "/home/nouser2/Programming/Limada/TestData/" +
-                            "graphtest";
-                    else
-                        return @"E:\testdata\txbProjekt\Limaki\graphtest";
+                    return TestLocations.GraphtestFile;
                 } else {
                     return _fileName;
                 }

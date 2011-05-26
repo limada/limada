@@ -100,13 +100,12 @@
       <Project>{5E2A280D-1F53-44E5-AAA3-6BDBA2B51094}</Project>
       <Name>Limaki.Presenter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.WCF\Limaki.WCF.csproj">
-      <Project>{BEED4D77-5589-4C7B-8B2E-6EAD694C4279}</Project>
-      <Name>Limaki.WCF</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="LimadaLogo.ico" />
+    <None Include="EnableDragDropWithBrowserWin7.cmd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="WinformAppFactory.cs" />

@@ -88,7 +88,7 @@
     <Compile Include="Limada\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
     <Compile Include="Limada\Tests\ThingGraphs\Db4oRepairTest.cs" />
     <Compile Include="Limada\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
-    <Compile Include="Limada\Tests\ThingGraphs\ReportingTest.cs" />
+    <Compile Include="Limada\Tests\ThingGraphs\Sample4Test.cs" />
     <Compile Include="Limada\Tests\ThingGraphs\SchemaGraph\SchemaGraphPerformanceTest.cs" />
     <Compile Include="Limada\Tests\ThingGraphs\SchemaGraph\SchemaGraphTest.cs" />
     <Compile Include="Limada\Tests\ThingGraphs\StreamThingTest.cs" />
@@ -115,6 +115,7 @@
     <Compile Include="Limada\Tests\View\VisualThingGraphTest.cs" />
     <Compile Include="Limada\Tests\Wrappers\WrapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestLocations.cs" />
     <Compile Include="Tests\Data\db4o\GraphTest.cs" />
     <Compile Include="Tests\DomainTest.cs" />
     <Compile Include="Tests\Graph\Folding\BinaryGraphFoldingTest.cs" />
@@ -215,10 +216,6 @@
     <ProjectReference Include="..\Limaki.db4o\Limaki.Db4o.csproj">
       <Project>{0EBC08E0-30D8-4D26-ABF4-0AADFA3AF422}</Project>
       <Name>Limaki.Db4o</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Limaki.DBParts\Limaki.dbParts.csproj">
-      <Project>{4BD6F6DE-CEBA-4185-AF2D-47A071E6A276}</Project>
-      <Name>Limaki.dbParts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Presenter.Resources\Limaki.Presenter.Resources.csproj">
       <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>

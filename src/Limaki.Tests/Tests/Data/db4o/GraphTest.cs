@@ -51,7 +51,7 @@ namespace Limaki.Tests.Data.db4o {
 
         public override void Setup() {
             base.Setup();
-            FileName = @"E:\testdata\txbProjekt\Limaki\graphtest.limo";
+            FileName = TestLocations.GraphtestFile+".limo";
         }
 
 

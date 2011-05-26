@@ -10,7 +10,7 @@ namespace Limaki.Tests.Sandbox {
     public class FileInfoTest:DomainTest {
         [Test]
         public void Test () {
-            string fileName = @"e:\test\testfile.info";
+            string fileName = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)+@"\testfile.info";
             System.IO.FileInfo file = new System.IO.FileInfo(fileName);
 
             string _path = file.DirectoryName + System.IO.Path.DirectorySeparatorChar;

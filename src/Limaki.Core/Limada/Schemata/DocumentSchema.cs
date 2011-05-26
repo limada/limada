@@ -18,6 +18,7 @@ using System.IO;
 using Limaki.Model.Streams;
 using System.Collections.Generic;
 using System.Linq;
+using Limaki.Graphs;
 
 namespace Limada.Schemata {
     /// <summary>
@@ -180,6 +181,10 @@ namespace Limada.Schemata {
         }
 
         public IEnumerable<IThing> Pages(IThingGraph graph, IThing document) {
+            var filteredGraph = graph as FilteredGraph<IThing, ILink>;
+            if (filteredGraph != null)
+                graph = filteredGraph.Source as IThingGraph;
+                
             if (graph == null || document == null)
                 return new IThing[0];
             return graph.Edges(document)
@@ -192,6 +197,9 @@ namespace Limada.Schemata {
         }
 
         public bool HasPages(IThingGraph graph, IThing document) {
+            var filteredGraph = graph as FilteredGraph<IThing, ILink>;
+            if (filteredGraph != null)
+                graph = filteredGraph.Source as IThingGraph;
             if (graph == null || document == null)
                 return false;
             return graph.Edges(document)

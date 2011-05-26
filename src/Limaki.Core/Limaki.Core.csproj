@@ -87,7 +87,7 @@
     <Compile Include="Common\Collections\MultiDictiionary.cs" />
     <Compile Include="Common\Collections\MultiDictionaryBase.cs" />
     <Compile Include="Common\Collections\Set.cs" />
-    <Compile Include="Common\Commons.cs" />
+    <Compile Include="Common\OS.cs" />
     <Compile Include="Common\Copier.cs" />
     <Compile Include="Common\Delegates.cs" />
     <Compile Include="Common\Empty.cs" />

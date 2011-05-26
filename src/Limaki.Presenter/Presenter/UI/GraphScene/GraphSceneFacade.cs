@@ -72,8 +72,8 @@ namespace Limaki.Presenter.UI {
                     if (_data is IFactoryListener<TItem>) {
                         ((IFactoryListener<TItem>)_data).ItemCreated +=
                             delegate(TItem w) {
-                                if (!createdItems.Contains(w))
-                                    createdItems.Add(w);
+                                if (!CreatedItems.Contains(w))
+                                    CreatedItems.Add(w);
                             };
                     }
                 }
@@ -128,13 +128,13 @@ namespace Limaki.Presenter.UI {
             this._view = null;
             this._data = null;
             this._graphView = null;
-            createdItems.Clear();
+            CreatedItems.Clear();
         }
 
         /// <summary>
         /// a list containing the visuals which are newly created in this session
         /// </summary>
-        public ICollection<TItem> createdItems = new Set<TItem>();
+        public ICollection<TItem> CreatedItems = new Set<TItem>();
 
         public bool IsFiltered = false;
         public virtual void ApplyFilter() {
@@ -229,12 +229,13 @@ namespace Limaki.Presenter.UI {
             }
         }
 
+        public bool RemoveOrhpans { get; set; }
         public virtual void Collapse() {
             if (Scene.Selected.Count > 0) {
                 ApplyFilter();
                 var scene = this.Scene;
                 TItem curr = scene.Focused;
-                var affected = new GraphViewFacade<TItem, TEdge> (this.graphView)
+                var affected = new GraphViewFacade<TItem, TEdge> (this.graphView){RemoveOrphans = this.RemoveOrhpans}
                     .Collapse (scene.Selected.Elements);
                 UpdateRemoved(affected);
 

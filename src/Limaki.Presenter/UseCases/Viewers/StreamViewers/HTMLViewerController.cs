@@ -43,7 +43,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
                 if (_control == null) {
                     _control = Viewer.CreateControl(this.Parent);
                     OnAttach(_control);
-                    UseWebServer = !Commons.Mono;
+                    UseWebServer = !OS.Mono;
                     UseProxy = Viewer.AcceptsProxy(_control);
                 }
 
@@ -140,7 +140,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
                     }
                 } else {
                     WebBrowser.MakeReady();
-                    if (Commons.Mono) {
+                    if (OS.Mono) {
                         WebBrowser.DocumentStream = info.Data;
                     } else
                         using (StreamReader reader = new StreamReader(info.Data)) {
@@ -248,10 +248,12 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
             WebContent result = null;
             try {
                 var graph = this.ThingGraph as SchemaThingGraph;
+                
                 var thing = this.ContentThing;
                 if (thing != null && graph != null) {
+                    var searchGraph = graph.Source;
                     string content = uri.Segments[uri.Segments.Length - 1];
-                    foreach (ILink link in graph.Edges (thing)) {
+                    foreach (ILink link in searchGraph.Edges(thing)) {
                         var adj = link.Leaf;
                         if (adj != thing && ( adj is IStreamThing )) {
                             var desc = graph.Description(adj);

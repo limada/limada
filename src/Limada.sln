@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Db4objects.Db4o-2010", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Db4objects.Db4o.Linq-2010", "..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq-2010.csproj", "{23531440-0922-43EB-A483-6592FFC2F093}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdParty", "3rdParty", "{45CD5CB4-9859-49E9-9B08-DC6F7CED6BEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug - Mono Strict|.NET = Debug - Mono Strict|.NET
@@ -715,5 +717,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{877D1A24-2D5E-4C46-A933-FCF11EA0403B} = {45CD5CB4-9859-49E9-9B08-DC6F7CED6BEA}
+		{600CD3BF-2ED2-4183-87F7-ADD78A968AE0} = {45CD5CB4-9859-49E9-9B08-DC6F7CED6BEA}
+		{23531440-0922-43EB-A483-6592FFC2F093} = {45CD5CB4-9859-49E9-9B08-DC6F7CED6BEA}
 	EndGlobalSection
 EndGlobal

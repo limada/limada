@@ -12,7 +12,7 @@
  * 
  */
 
-#define ShowHiddensNot
+#define ShowHiddensNo
 
 using System.Collections.Generic;
 using Limada.Model;
@@ -95,10 +95,12 @@ namespace Limada.Schemata {
         public virtual bool SchemaEdgeFilter(ILink link) {
             if (link == null) return false;
             var idLink = (ILink<Id>)link;
-            if (idLink.Marker == 0 || 
-                (! descriptions.Contains(idLink.Marker) && ! (Source.RootIsEdge(link))))
-                return true;
             return !hiddens.Contains(idLink.Marker);
+                
+            //if (idLink.Marker == 0 || 
+            //    (! descriptions.Contains(idLink.Marker) && ! (Source.RootIsEdge(link))))
+            //    return true;
+            //return !hiddens.Contains(idLink.Marker);
         }
 
         public virtual bool SchemaItemFilter(IThing thing) {

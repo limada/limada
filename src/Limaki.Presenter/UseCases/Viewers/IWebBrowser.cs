@@ -16,10 +16,9 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using Limaki.Drawing;
+using System.Net;
 
-#if winform
-using System.Windows.Forms;
-#endif
+
 
 namespace Limaki.UseCases.Viewers {
     public interface IWebBrowser {
@@ -121,26 +120,9 @@ namespace Limaki.UseCases.Viewers {
         event EventHandler PaddingChanged;
 
 
-        #region Winform
-#if winform
-        [BrowsableAttribute(false)]
-        [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
-        HtmlDocument Document { get; }
+    }
 
-
-        void Refresh(WebBrowserRefreshOption opt);
-
-
-        [BrowsableAttribute(false)]
-        [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
-        WebBrowserReadyState ReadyState { get; }
-
-
-        event WebBrowserDocumentCompletedEventHandler DocumentCompleted;
-        event WebBrowserNavigatedEventHandler Navigated;
-        event WebBrowserNavigatingEventHandler Navigating;
-        event WebBrowserProgressChangedEventHandler ProgressChanged;
-#endif
-        #endregion
+    public interface IWebBrowserWithProxy {
+        void SetProxy(IPAddress adress, int port, object webBrowser);
     }
 }

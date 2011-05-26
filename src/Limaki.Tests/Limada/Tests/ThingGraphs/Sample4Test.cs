@@ -17,7 +17,7 @@ using Limaki.Common.IOC;
 
 namespace Limada.Tests.ThingGraphs {
     [TestFixture]
-    public class ReportingTest : DomainTest {
+    public class Sample4Test : DomainTest {
         protected IThingFactory Factory {
             get { return Registry.Factory.Create<IThingFactory>(); }
         }
@@ -66,6 +66,14 @@ namespace Limada.Tests.ThingGraphs {
             base.TearDown();
         }
 
+        public string SampleFile {
+            get {
+                if (true)
+                    return TestLocations.Sample4_pib;
+                else
+                    return TestLocations.AdressExample_pib;
+            }
+        }
 
         public IEnumerable<IThing> FindRoot(IThingGraph source, bool doAutoView) {
             source = (source as SchemaThingGraph).Source as IThingGraph;
@@ -94,7 +102,7 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public virtual void WalkThrouFirstLevelTest() {
-            var graph = OpenFile(@"S:\temp\sample_4.pib");//(@"E:\testdata\txbProjekt\ADRESSEXAMPLE.pib");
+            var graph = OpenFile(SampleFile);
             
             foreach (var thing in FindRoot(graph, true)) {
                 var disp = graph.ThingToDisplay(thing);
@@ -130,8 +138,8 @@ namespace Limada.Tests.ThingGraphs {
             // set text of target to title.text
             // remove title
             // set rootlinks.where(marker==Document) to  marker = CommonSchema.Commonmarker
-            
-            var graph = OpenFile(@"S:\temp\sample_4.pib"); //(@"E:\testdata\txbProjekt\ADRESSEXAMPLE.pib");
+
+            var graph = OpenFile(SampleFile);
             graph.Add(CommonSchema.CommonMarker);
             var nullStringThings = graph.GetByData(null);
             var act = true;
@@ -181,7 +189,7 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public virtual void SearchSomeoneTest() {
-            var graph = OpenFile(@"S:\temp\sample_4.pib"); //(@"E:\testdata\txbProjekt\ADRESSEXAMPLE.pib");
+            var graph = OpenFile(SampleFile);
             // this does not work; find out how to search for nulls
             var someones = graph.GetByData(null);
             {
@@ -191,13 +199,13 @@ namespace Limada.Tests.ThingGraphs {
                     ReportDetail(string.Format("{0}", disp1.Data ?? "<null>"));
                 }
             }
-            var someone = graph.GetByData("personen", false)
-                .Where(e => e.Data.ToString().ToLower() == "personen")
+            var someone = graph.GetByData(TestLocations.Sample4_Persons, false)
+                .Where(e => e.Data.ToString().ToLower() == TestLocations.Sample4_Persons)
                 .FirstOrDefault();
 
             // another notation of the stuff above:
-            var so2 = (from so in graph.GetByData("personen", false)
-                     where so.Data.ToString().ToLower() == "personen"
+            var so2 = (from so in graph.GetByData(TestLocations.Sample4_Persons, false)
+                       where so.Data.ToString().ToLower() == TestLocations.Sample4_Persons
                      select so).FirstOrDefault();
 
             ReportDetail("****** Exact result:");
@@ -212,7 +220,7 @@ namespace Limada.Tests.ThingGraphs {
                 disp = graph.ThingToDisplay(link.Leaf);
                 ReportDetail(string.Format("[{0}]:{1}", marker.Data, disp.Data ?? "<null>"));
             }
-            var id = unchecked((long)0x0D0A3C7B7F6A4D22);
+            var id = TestLocations.Sample4_Node1;
             var emptything = graph.GetById(id);
             if(emptything != null)
             {

@@ -61,9 +61,9 @@ namespace Limada.UseCases {
             if (provider != null) {
                 handler.Provider = provider;
                 handler.DataBound = this.DataBound;
-
+                this.ThingGraphProvider.Close();
                 if (handler.Open(fileName)) {
-                    this.ThingGraphProvider.Close();
+                    
                     this.ThingGraphProvider = provider;
                     DataPostProcess(fileName.Name);
                     result = true;

@@ -19,6 +19,7 @@ using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
 using Limaki.Presenter.Layout;
+using System;
 
 
 namespace Limaki.Presenter.UI {
@@ -30,17 +31,19 @@ namespace Limaki.Presenter.UI {
 
         public GraphItemMoveResizeAction() {
             Priority = ActionPriorities.SelectionPriority - 10;
+            FocusFilter = e => e;
         }
         public Get<IGraphScene<TItem, TEdge>> SceneHandler;
         public virtual IGraphScene<TItem, TEdge> Scene {
             get { return SceneHandler(); }
         }
 
+        public Func<TItem, TItem> FocusFilter { get; set; }
         public virtual TItem GraphItem {
             get {
                 IGraphScene<TItem, TEdge> scene = SceneHandler();
                 if (scene == null) return default(TItem);
-                return scene.Focused;
+                return FocusFilter(scene.Focused);
             }
             set { }
         }
@@ -109,7 +112,7 @@ namespace Limaki.Presenter.UI {
             }
         }
 
-        protected virtual bool checkResizing() {
+        protected virtual bool CheckResizing() {
             return Resolved && resizing &&
                    this.Camera.Matrice.Elements[0] > 0.01f &&
                    this.Camera.Matrice.Elements[3] > 0.01f;
@@ -139,7 +142,7 @@ namespace Limaki.Presenter.UI {
                             }
                         }
 
-                    } else if (checkResizing()) {
+                    } else if (CheckResizing()) {
                         RectangleI rect = Camera.ToSource(
                             RectangleI.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
                                                 LastMousePos.X, LastMousePos.Y));

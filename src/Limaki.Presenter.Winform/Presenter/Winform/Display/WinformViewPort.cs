@@ -67,7 +67,7 @@ namespace Limaki.Presenter.Winform.Display {
                 if (se.OldValue != se.NewValue) {
                     scrollChanged = true;
                   
-                    if (Commons.Mono) {
+                    if (OS.Mono) {
                         // mono does not deliver ScrollOrientation
                         var deltaX = 0;
                         var deltaY = 0;

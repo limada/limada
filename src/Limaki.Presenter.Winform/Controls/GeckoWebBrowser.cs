@@ -10,35 +10,27 @@ using System.Net;
 using System.Text;
 using System.Diagnostics;
 using Limaki.Presenter;
+using System.Collections.Generic;
 
 namespace Limaki.ThirdPartyWrappers {
-    public class GeckoWebBrowser:Skybound.Gecko.GeckoWebBrowser, 
+    public class GeckoWebBrowser:Skybound.Gecko.GeckoWebBrowser, IWebBrowserWithProxy,
         IWebBrowser, IZoomTarget, INavigateTarget {
-        
-        public GeckoWebBrowser() {
-            string[] xulDirs = new string[] {
-                    @"", 
-                    @"Plugins\",
-                    @"..\Plugins\", 
-                    @"..\..\Plugins\", 
-                    @"..\..\..\Plugins\", 
-                    @"..\..\..\..\Plugins\", 
-                    @"..\..\..\..\..\Plugins\",
-                    @"..\3rdParty\bin\",
-                    @"..\..\3rdParty\bin\",
-                    @"..\..\..\3rdParty\bin\",
-                    @"..\..\..\..\3rdParty\bin\",
-                    @"..\..\..\..\..\3rdParty\bin\",
-                };
-            
-            string xulDir = null;
-            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            foreach(string s in xulDirs) {
-                if (Directory.Exists(baseDir+s + @"xulrunner")) {
-                    xulDir = baseDir + s + @"xulrunner";
-                    break;
+
+        public string XulDir(string basedir) {
+            foreach (var dir in new string[]{ @"Plugins\",@"..\3rdParty\bin\"}) {
+                var s = dir;
+                for (int i = 0; i <= 6; i++) {
+                    var xuldir = basedir + s + @"xulrunner";
+                    if (Directory.Exists(xuldir))
+                        return xuldir;
+                    s = @"..\" + s;
                 }
             }
+            return null;
+        }
+
+        public GeckoWebBrowser() {
+            string xulDir = XulDir(AppDomain.CurrentDomain.BaseDirectory);
             if (xulDir == null)
                 throw new ArgumentException("xulrunner is missing");
             Xpcom.Initialize(xulDir);
@@ -273,5 +265,26 @@ namespace Limaki.ThirdPartyWrappers {
         protected override void Dispose(bool disposing) {
             base.Dispose(disposing);
         }
+
+
+
+        #region IWebBrowserWithProxy Members
+
+        public void SetProxy(IPAddress adress, int port, object webBrowser) {
+            var control = webBrowser as GeckoWebBrowser;
+            if (control != null) {
+                var prefs = GeckoPreferences.User;
+
+                prefs["network.proxy.http"] = adress.ToString();
+                prefs["network.proxy.http_port"] = port;
+
+                prefs["network.proxy.no_proxies_on"] = "";
+                prefs["network.proxy.type"] = 1;
+
+
+            }
+        }
+
+        #endregion
     }
 }

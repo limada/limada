@@ -74,6 +74,7 @@
     <Compile Include="Controls\GeckoWebBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\IWebBrowserWithProxy.cs" />
     <Compile Include="Presenter\Winform\Vievers\ImageExporter.cs" />
     <Compile Include="Presenter\GDI\UI\GDIImageLayer.cs" />
     <Compile Include="Presenter\Winform\Vievers\ScenePainter.cs" />
@@ -84,6 +85,7 @@
       <DependentUpon>DocumentSchemaControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Presenter\Winform\Vievers\StreamViewers\DocumentSchemaController.cs" />
+    <Compile Include="Presenter\Winform\Vievers\StreamViewers\DocumentSchemaKeyScrollAction.cs" />
     <Compile Include="Properties\Resources1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -28,7 +28,7 @@ namespace Limaki.Winform.Controls {
                 else
                     navigate();
 
-                if (!Commons.Mono)
+                if (!OS.Mono)
                     for (int i = 0; i < 200 && base.IsBusy; i++) {
                         Application.DoEvents();
                         Thread.Sleep(5);
