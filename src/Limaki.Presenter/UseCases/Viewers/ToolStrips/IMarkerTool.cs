@@ -17,5 +17,6 @@ using Limaki.Visuals;
 namespace Limaki.UseCases.Viewers.ToolStrips {
     public interface IMarkerTool {
         void Attach(Scene scene);
+        void Detach(Scene oldScene);
     }
 }

@@ -26,24 +26,16 @@ namespace Limaki.Drawing {
         }
         #region IStyle Member
 
-        private string _name = string.Empty;
-        public string Name {
-            get { return _name; }
-            set { _name = value; }
-        }
 
-		///<directed>True</directed>
-		private IStyle _parentStyle=null;
-        public virtual IStyle ParentStyle {
-            get { return _parentStyle; }
-            set { _parentStyle = value; }
-        }
+        public virtual string Name { get; set; }
+        
+        public virtual IStyle ParentStyle { get; set; }
 
         private Color _fillColor = Color.Empty;
-        public Color FillColor {
+        public virtual Color FillColor {
             get {
-                if ((_fillColor == Color.Empty) && (_parentStyle != null)) {
-                    return _parentStyle.FillColor;
+                if ((_fillColor == Color.Empty) && (ParentStyle != null)) {
+                    return ParentStyle.FillColor;
                 } else {
                     return _fillColor;
                 }
@@ -52,11 +44,11 @@ namespace Limaki.Drawing {
         }
 
         private Color? _textColor = null;
-        public Color TextColor {
+        public virtual Color TextColor {
             get {
                 if (_textColor == null){
-                    if (_parentStyle != null)
-                        return _parentStyle.TextColor;
+                    if (ParentStyle != null)
+                        return ParentStyle.TextColor;
                     return Color.Empty;
                 } 
                 return _textColor.Value;
@@ -65,11 +57,11 @@ namespace Limaki.Drawing {
         }
 
         private Color? _penColor = null;
-        public Color PenColor {
+        public virtual Color PenColor {
             get {
                 if (_penColor == null) {
-                    if (_parentStyle != null)
-                        return _parentStyle.PenColor;
+                    if (ParentStyle != null)
+                        return ParentStyle.PenColor;
                     return Color.Empty;
                 }
                 return _penColor.Value;
@@ -78,9 +70,9 @@ namespace Limaki.Drawing {
                 _penColor = value;
                 if (_pen != null) {
                     _pen.Color = PenColor;
-                } else if (_parentStyle!=null && _parentStyle.PenColor != value &&
-                    _parentStyle.Pen != null) {
-                    _pen = (Pen)_parentStyle.Pen.Clone();
+                } else if (ParentStyle!=null && ParentStyle.PenColor != value &&
+                    ParentStyle.Pen != null) {
+                    _pen = (Pen)ParentStyle.Pen.Clone();
                     _pen.Color = _penColor.Value;
                 }
             }
@@ -89,17 +81,17 @@ namespace Limaki.Drawing {
         private Pen _pen= default(Pen);
         public Pen Pen {
             get {
-                if ((_pen == default(Pen)) && (_parentStyle != null)) {
-                    return _parentStyle.Pen;
+                if ((_pen == default(Pen)) && (ParentStyle != null)) {
+                    return ParentStyle.Pen;
                 } else {
                     return _pen;
                 }
             }
             set {
                 if (value == null ||
-                    _parentStyle == null ||
-                    _parentStyle.Pen == null ||
-                    !_parentStyle.Pen.Equals(value)) {
+                    ParentStyle == null ||
+                    ParentStyle.Pen == null ||
+                    !ParentStyle.Pen.Equals(value)) {
                     _pen = value;
                 }
             }
@@ -107,17 +99,17 @@ namespace Limaki.Drawing {
         private Font _font=null;
         public Font Font {
             get {
-                if ((_font == null) && (_parentStyle != null)) {
-                    return _parentStyle.Font;
+                if ((_font == null) && (ParentStyle != null)) {
+                    return ParentStyle.Font;
                 } else {
                     return _font;
                 }
             }
             set { 
                  if  (value==null ||
-                     _parentStyle == null ||
-                     _parentStyle.Font == null ||
-                     ! _parentStyle.Font.Equals(value)) {
+                     ParentStyle == null ||
+                     ParentStyle.Font == null ||
+                     ! ParentStyle.Font.Equals(value)) {
                      _font = value;    
                  }
             }
@@ -128,8 +120,8 @@ namespace Limaki.Drawing {
         public SizeI AutoSize {
             get {
                 if (_autoSize == null)
-                    if (_parentStyle != null)
-                        return _parentStyle.AutoSize;
+                    if (ParentStyle != null)
+                        return ParentStyle.AutoSize;
                     else
                         return NoSize;
                 return _autoSize.Value;
@@ -141,8 +133,8 @@ namespace Limaki.Drawing {
         public bool PaintData {
             get {
                 if (_showText == null)
-                    if (_parentStyle != null)
-                        return _parentStyle.PaintData;
+                    if (ParentStyle != null)
+                        return ParentStyle.PaintData;
                     else
                         return true;
                 
@@ -161,16 +153,18 @@ namespace Limaki.Drawing {
             Dispose(false);
         }
 
-        public void Dispose(bool disposing) {
+        public virtual void Dispose(bool disposing) {
             if (_font != null) {
                 _font.Dispose ();
+                _font = null;
             }
             if (_pen != null) {
                 _pen.Dispose ();
+                _pen = null;
             }
         }
 
-        public void Dispose() {
+        public virtual void Dispose() {
             Dispose(true);
             System.GC.SuppressFinalize(this);
         }
@@ -201,6 +195,7 @@ namespace Limaki.Drawing {
             int result =
                 this.AutoSize.GetHashCode() ^
                 this.FillColor.GetHashCode() ^
+                this.Font.GetHashCode()^
                 this.Name.GetHashCode() ^
                 this.PaintData.GetHashCode() ^
                 this.PenColor.GetHashCode() ^
@@ -213,5 +208,22 @@ namespace Limaki.Drawing {
             }
             return result;
         }
+
+
+        
+        public virtual object Clone() {
+            var result = Activator.CreateInstance(this.GetType(), new object[] { "Clone." + this.Name, this.ParentStyle }) as IStyle;
+            result.AutoSize = this.AutoSize;
+            result.FillColor = this.FillColor;
+            result.Font = (Font)this.Font.Clone();
+            result.PaintData = this.PaintData;
+            result.Pen = (Pen)this.Pen.Clone();
+            result.PenColor = this.PenColor;
+            result.TextColor = this.TextColor;
+            return result; 
+
+        }
+
+
     }
 }

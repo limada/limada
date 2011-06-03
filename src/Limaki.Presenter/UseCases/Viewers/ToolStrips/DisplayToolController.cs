@@ -62,6 +62,10 @@ namespace Limaki.UseCases.Viewers.ToolStrips {
                 );
         }
 
+        public override void Detach(object sender) {
+            this.CurrentDisplay = null;
+        }
+
         public void SelectOrMove(bool select, bool move, bool connect, bool add) {
             var display = this.CurrentDisplay;
             if (display == null) {

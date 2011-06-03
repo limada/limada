@@ -31,6 +31,7 @@ namespace Limaki.Drawing {
         IPainter GetPainter(Type type);
 
         SizeI Distance { get; set; }
+        SizeI Border { get; set; }
 
     }
 

@@ -26,6 +26,9 @@ namespace Limaki.UseCases.Viewers.ToolStrips {
             }
         }
 
+        public override void Detach(object sender) {
+            this.CurrentDisplay = null;
+        }
         public virtual void ChangeMarkers(string marker) {
             var display = CurrentDisplay;
             if (display != null) {

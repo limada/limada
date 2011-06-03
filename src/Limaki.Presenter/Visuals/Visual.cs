@@ -27,13 +27,10 @@ namespace Limaki.Visuals {
 
         public Visual(T data) { Data = data; }
 
-        private T _data = default( T );
-        public virtual T Data {
-            get { return _data; }
-            set { _data = value; }
-        }
+        public virtual IStyleGroup Style { get; set; }
+        public virtual IShape Shape { get; set; }
 
-        
+        public virtual T Data { get; set; }
         object IVisual.Data {
             get { return this.Data; }
             set {
@@ -42,20 +39,6 @@ namespace Limaki.Visuals {
                 }
             }
         }
-
-        //[NonSerialized] 
-        private IStyle _style;
-        public virtual IStyle Style {
-            get { return _style; }
-            set { _style = value; }
-        }
-
-        private IShape _shape;
-        public virtual IShape Shape {
-            get { return _shape; }
-            set { _shape = value; }
-        }
-
 
         public override string ToString() {
             if (Data != null)

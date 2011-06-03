@@ -127,8 +127,10 @@
     <Content Include="Properties\Resources\text_strike.png" />
     <Content Include="Properties\Resources\text_under.png" />
     <Content Include="Properties\Resources\ToggleView.png" />
+    <Content Include="Properties\Resources\ItemLayout.png" />
     <Content Include="Properties\Resources\window-close.png" />
     <Content Include="Properties\Resources\ZoomToolIcon.png" />
+    <None Include="Resources\Tools.Recolor.png" />
     <None Include="Properties\Resources\document-new.png" />
   </ItemGroup>
   <ItemGroup>

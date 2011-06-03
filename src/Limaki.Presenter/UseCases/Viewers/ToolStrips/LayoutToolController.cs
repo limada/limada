@@ -18,16 +18,16 @@ using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
 using Limaki.Context;
+using System.Collections.Generic;
 
 namespace Limaki.UseCases.Viewers.ToolStrips {
     public class LayoutToolController:ToolController<VisualsDisplay,ILayoutTool> {
 
         public void StyleSheetChange(string sheetName) {
             IStyleSheet styleSheet = null;
-            StyleSheets styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
             if (!styleSheets.TryGetValue(sheetName, out styleSheet)) {
-                IStyle style = StyleSheet.CreateStyleWithSystemSettings();
-                style.Name = StyleNames.DefaultStyle;
+                var style = StyleSheet.CreateStyleWithSystemSettings();
                 styleSheet = new StyleSheet(sheetName, style);
                 styleSheets.Add(styleSheet.Name, styleSheet);
             }
@@ -48,12 +48,48 @@ namespace Limaki.UseCases.Viewers.ToolStrips {
             }
         }
 
+        public IStyleGroup StyleToChange() {
+            var currentDisplay = this.CurrentDisplay;
+            if (currentDisplay != null) {
+                var visual = currentDisplay.Data.Focused;
+                if (visual != null) {
+                    if (visual.Style!=null)
+                        return visual.Style;
+                    else {
+                        var result = visual is IVisualEdge ? currentDisplay.StyleSheet.EdgeStyle : currentDisplay.StyleSheet.ItemStyle;
+                        result = (IStyleGroup)result.Clone();
+                        result.Name = visual.ToString();
+                        return result;
+
+                    }
+                }
+                    
+            }
+            return null;
+        }
+
+        public void StyleChange(IStyleGroup style) {
+            var currentDisplay = this.CurrentDisplay;
+            if (currentDisplay != null) {
+                foreach (IVisual visual in currentDisplay.Data.Selected.Elements) {
+                    SceneTools.ChangeStyle(currentDisplay.Data, visual, style);
+                }
+                currentDisplay.Execute();
+                currentDisplay.Device.Invalidate();
+
+            }
+        }
+
         public override void Attach(object sender) {
             var display = sender as VisualsDisplay;
             if (display != null) {
                 this.CurrentDisplay = display;
                 Tool.AttachStyleSheet(display.StyleSheet.Name);
             }
+        }
+        public override void Detach(object sender) {
+            this.CurrentDisplay = null;
+            Tool.DetachStyleSheet(null);
         }
     }
 }

@@ -56,12 +56,12 @@ namespace Limaki.Presenter.Display {
             this.DataOrigin = () => {
                 if (display.Data != null && display.Data.Shape != null) {
                     var result =  display.Data.Shape.Location;
-                    var distance = display.Layout.Distance;
+                    var border = display.Layout.Border;
                     if (result.X < 0) {
-                        result.X -= distance.Width;
+                        result.X -= border.Width;
                     }
                     if (result.Y < 0) {
-                        result.Y -= distance.Height;
+                        result.Y -= border.Height;
                     }
                     return result;
                 } else
@@ -71,14 +71,14 @@ namespace Limaki.Presenter.Display {
             this.DataSize = () => {
                 if (display.Data != null && display.Data.Shape != null) {
                     var result = display.Data.Shape.Size;
-                    var distance = display.Layout.Distance;
-                    result += distance;
+                    var border = display.Layout.Border;
+                    result += border;
                     var offset = display.Data.Shape.Location;
                     if (offset.X < 0) {
-                        result.Width += distance.Width;
+                        result.Width += border.Width;
                     }
                     if (offset.Y < 0) {
-                        result.Height += distance.Height;
+                        result.Height += border.Height;
                     }
                     return result;
                 } else

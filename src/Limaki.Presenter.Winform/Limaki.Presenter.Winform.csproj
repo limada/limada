@@ -74,7 +74,6 @@
     <Compile Include="Controls\GeckoWebBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\IWebBrowserWithProxy.cs" />
     <Compile Include="Presenter\Winform\Vievers\ImageExporter.cs" />
     <Compile Include="Presenter\GDI\UI\GDIImageLayer.cs" />
     <Compile Include="Presenter\Winform\Vievers\ScenePainter.cs" />
@@ -247,8 +246,8 @@
     <Compile Include="Presenter\Winform\Rendering\SelectionRenderer.cs" />
     <Compile Include="Presenter\Winform\Rendering\WinformRenderer.cs" />
     <Compile Include="Presenter\Winform\UI\WinformEventControler.cs" />
-    <Compile Include="Presenter\Winform\Widgets\VisualsDragDrop.cs" />
-    <Compile Include="Presenter\Winform\Widgets\VisualsTextEditor.cs" />
+    <Compile Include="Presenter\Winform\Visuals\VisualsDragDrop.cs" />
+    <Compile Include="Presenter\Winform\Visuals\VisualsTextEditor.cs" />
     <Compile Include="Presenter\Winform\WinformContextRecourceLoader.cs" />
     <Compile Include="Presenter\Winform\WinformExeptionHandler.cs" />
     <Compile Include="Presenter\Winform\WinformSystemInformation.cs" />
@@ -290,6 +289,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Presenter\Winform\Vievers\LayoutEditor.resx">
       <DependentUpon>LayoutEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Presenter\Winform\Vievers\Options.resx">
       <DependentUpon>Options.cs</DependentUpon>

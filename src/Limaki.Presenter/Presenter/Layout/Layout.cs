@@ -23,12 +23,11 @@ namespace Limaki.Presenter.Layout {
     public abstract class Layout : ILayout {
         public Layout(IStyleSheet styleSheet) {
             this.StyleSheet = styleSheet;
+            this.Distance = new SizeI(30, 15);
+            this.Border = this.Distance;
         }
-        private IStyleSheet _styleSheet = null;
-        public virtual IStyleSheet StyleSheet {
-            get { return _styleSheet; }
-            set { _styleSheet = value; }
-        }
+        
+        public virtual IStyleSheet StyleSheet { get; set; }
 
         private IShapeFactory _shapeFactory = null;
         public virtual IShapeFactory ShapeFactory {
@@ -81,12 +80,9 @@ namespace Limaki.Presenter.Layout {
         #endregion
 
         #region Layout-Settings
-        private SizeI _distance = new SizeI(30, 15);
-        public SizeI Distance {
-            get { return _distance; }
-            set { _distance = value; }
-        }
-
+        
+        public SizeI Distance { get; set; }
+        public SizeI Border { get; set; }
         #endregion
 
         public abstract void Invoke();

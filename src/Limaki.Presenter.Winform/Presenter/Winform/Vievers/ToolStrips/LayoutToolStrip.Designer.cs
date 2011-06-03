@@ -40,7 +40,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             components = new System.ComponentModel.Container();
             this.StyleSheetCombo = new System.Windows.Forms.ToolStripComboBox();
             this.ShapeCombo = new ToolStripShapeComboBox();
-
+            this.StyleDialogButton= new System.Windows.Forms.ToolStripButton();
             // 
             // styleSheetCombo
             // 
@@ -59,11 +59,25 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             this.ShapeCombo.Size = new System.Drawing.Size(80, 27);
             this.ShapeCombo.ToolTipText = "change shape of visual";
             this.ShapeCombo.SelectedIndexChanged += new System.EventHandler(this.ShapeSelectedIndexChanged);
+            // 
+            // StyleDialogButton
+            //
+            this.StyleDialogButton.Checked = false;
+            this.StyleDialogButton.CheckState = System.Windows.Forms.CheckState.Unchecked;
+            this.StyleDialogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.StyleDialogButton.Image = global::Limaki.Presenter.Properties.Resources.ItemLayout;
+            this.StyleDialogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.StyleDialogButton.Name = "StyleDialogButton";
+            this.StyleDialogButton.Size = new System.Drawing.Size(24, 24);
+            this.StyleDialogButton.ToolTipText = "set style for selected items";
+            this.StyleDialogButton.Text = "SetStyle";
+            this.StyleDialogButton.Click += new System.EventHandler(ChangeStyle);
+
             this.Dock = System.Windows.Forms.DockStyle.None;
             this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StyleSheetCombo,
-            this.ShapeCombo});
-            
+            this.ShapeCombo,
+            this.StyleDialogButton});
             this.Name = "layoutTools";
             this.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.Size = new System.Drawing.Size(213, 27);
@@ -72,6 +86,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
 
         public System.Windows.Forms.ToolStripComboBox StyleSheetCombo;
         public ToolStripShapeComboBox ShapeCombo;
+        public System.Windows.Forms.ToolStripButton StyleDialogButton;
 
         #endregion
     }

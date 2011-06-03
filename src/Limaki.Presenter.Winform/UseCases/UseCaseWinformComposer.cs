@@ -102,51 +102,52 @@ namespace Limaki.UseCases.Winform {
 
 
         public void InstrumentMenus(UseCase useCase) {
+            var l = new Localizer();
 			this.MenuStrip.Items.AddRange(new ToolStripMenuItem[] {
             
-            new ToolStripMenuItem("File", null, new ToolStripMenuItem[] {
-                new ToolStripMenuItem("Open ...", null, (s, e) => { useCase.OpenFile(); }),
-                new ToolStripMenuItem("Save", null, (s, e) => { useCase.SaveFile(); }),
-                new ToolStripMenuItem("SaveAs ...", null, (s, e) => { useCase.SaveAsFile(); }),
-                new ToolStripMenuItem("Export", null, new ToolStripMenuItem[] {
-                    new ToolStripMenuItem("current view ...", null, (s, e) => { useCase.ExportCurrentView(); }),
-                    new ToolStripMenuItem("as image ...", null, (s, e) => { this.ExportAsImage(useCase); }),
-                    new ToolStripMenuItem("Content...", null, (s, e) => { useCase.ExportContent(); }),
+            new ToolStripMenuItem(l["File"], null, new ToolStripMenuItem[] {
+                new ToolStripMenuItem(l["Open ..."], null, (s, e) => { useCase.OpenFile(); }),
+                new ToolStripMenuItem(l["Save"], null, (s, e) => { useCase.SaveFile(); }),
+                new ToolStripMenuItem(l["SaveAs ..."], null, (s, e) => { useCase.SaveAsFile(); }),
+                new ToolStripMenuItem(l["Export"], null, new ToolStripMenuItem[] {
+                    new ToolStripMenuItem(l["current view ..."], null, (s, e) => { useCase.ExportCurrentView(); }),
+                    new ToolStripMenuItem(l["as image ..."], null, (s, e) => { this.ExportAsImage(useCase); }),
+                    new ToolStripMenuItem(l["Content..."], null, (s, e) => { useCase.ExportContent(); }),
                 }),
-				new ToolStripMenuItem("Import", null, new ToolStripMenuItem[] { 
-					new ToolStripMenuItem("Content ...", null, (s, e) => { useCase.ImportContent(); }),
-                    new ToolStripMenuItem("File from previous version ...", null, (s, e) => { useCase.ImportRawFile(); })
+				new ToolStripMenuItem(l["Import"], null, new ToolStripMenuItem[] { 
+					new ToolStripMenuItem(l["Content ..."], null, (s, e) => { useCase.ImportContent(); }),
+                    new ToolStripMenuItem(l["File from previous version ..."], null, (s, e) => { useCase.ImportRawFile(); })
 				}),
-                new ToolStripMenuItem("Print ...", null, (s, e) => { this.Print(useCase); }),
-                new ToolStripMenuItem("PrintPreview ...", null, (s, e) => { this.PrintPreview(useCase); }),
-                new ToolStripMenuItem("Exit", null, (s, e) => { Application.Exit();}),
+                new ToolStripMenuItem(l["Print ..."], null, (s, e) => { this.Print(useCase); }),
+                new ToolStripMenuItem(l["PrintPreview ..."], null, (s, e) => { this.PrintPreview(useCase); }),
+                new ToolStripMenuItem(l["Exit"], null, (s, e) => { Application.Exit();}),
             }),
 
-            new ToolStripMenuItem("Edit", null, new ToolStripMenuItem[] {
-                new ToolStripMenuItem("Copy", null, (s, e) => {
+            new ToolStripMenuItem(l["Edit"], null, new ToolStripMenuItem[] {
+                new ToolStripMenuItem(l["Copy"], null, (s, e) => {
                     var display = useCase.GetCurrentDisplay();
                     if (display != null) ((IDragDropAction)display.EventControler).Copy();
                 }),
-                new ToolStripMenuItem("Paste", null, (s, e) => {
+                new ToolStripMenuItem(l["Paste"], null, (s, e) => {
                     var display = useCase.GetCurrentDisplay();
                     if (display != null) ((IDragDropAction)display.EventControler).Paste();
                 }),
-                new ToolStripMenuItem("Search", null, (s, e) => { useCase.Search(); }),
+                new ToolStripMenuItem(l["Search"], null, (s, e) => { useCase.Search(); }),
             }),
 
-            new ToolStripMenuItem("Format", null, new ToolStripMenuItem[] {
-                new ToolStripMenuItem("Layout", null, (s, e) => { this.ShowLayoutEditor(useCase); }),
-                new ToolStripMenuItem("Style", null, (s, e) => { this.ShowStyleEditor(useCase); }),
+            new ToolStripMenuItem(l["Format"], null, new ToolStripMenuItem[] {
+                new ToolStripMenuItem(l["Layout"], null, (s, e) => { this.ShowLayoutEditor(useCase); }),
+                new ToolStripMenuItem(l["StyleSheet"], null, (s, e) => { this.ShowStyleEditor(useCase); }),
             }),
 
-            new ToolStripMenuItem("Favorites", null, new ToolStripMenuItem[] {
-                new ToolStripMenuItem("Add to favorites", null, (s, e) 
+            new ToolStripMenuItem(l["Favorites"], null, new ToolStripMenuItem[] {
+                new ToolStripMenuItem(l["Add to favorites"], null, (s, e) 
                 => { new FavoriteManager().AddToFavorites(useCase.GetCurrentDisplay().Data);}),
-                new ToolStripMenuItem("View on open ", null, (s, e) 
+                new ToolStripMenuItem(l["View on open "], null, (s, e) 
                 => { new FavoriteManager().ViewOnOpen(useCase.GetCurrentDisplay().Data);}),
             }),
 
-            new ToolStripMenuItem("About", null, (s, e) => {
+            new ToolStripMenuItem(l["About"], null, (s, e) => {
                 if(About == null) About = new About();
                     About.ShowDialog();
                 })
@@ -258,7 +259,7 @@ namespace Limaki.UseCases.Winform {
         Options options = null;
         private void ShowLayoutEditor(UseCase useCase) {
             options = new Options();
-            options.applyButton.Click += (s1, e1) => {
+            options.ApplyButton.Click += (s1, e1) => {
                 this.DisplayToolStrip.Controller.Layout();
             };
 
@@ -285,18 +286,15 @@ namespace Limaki.UseCases.Winform {
             options.Show();
         }
 
-        private void ShowStyleEditor(UseCase useCase) {
-            ICollection<IStyle> optionObject = useCase.GetCurrentDisplay ().StyleSheet.Styles;
+        public Options ComposeStyleEditor(IEnumerable<IStyle> styles, EventHandler<EventArgs<IStyle>> styleChanged) {
             options = new Options();
-            options.applyButton.Click += (s1, e1) => {
-                this.DisplayToolStrip.Controller.Layout();
-            };
+            options.ApplyButton.Visible = false;
 
             var editor = new StyleEditor();
             editor.Dock = DockStyle.Fill;
 
-            editor.PropertyValueChanged += useCase.OnDisplayStyleChanged;
-            
+            editor.PropertyValueChanged += styleChanged;
+
             options.OptionChanger = editor;
 
             options.SuspendLayout();
@@ -308,8 +306,8 @@ namespace Limaki.UseCases.Winform {
             options.OptionList.Items.Clear();
             editor.Top = options.OptionList.Bottom + 1;
 
-            IList<IStyle> optionList = new List<IStyle>(optionObject);
-            foreach (object o in optionObject) {
+            var optionList = new List<IStyle>(styles);
+            foreach (object o in styles) {
                 options.OptionList.Items.Add(o.ToString());
             }
             options.OptionList.SelectedIndexChanged += (s, e) => {
@@ -324,8 +322,13 @@ namespace Limaki.UseCases.Winform {
             Application.DoEvents();
             options.ClientSize = ControlSize(options).Size;
             Application.DoEvents();
-            options.Show();
+            return options;
+            
+        }
 
+        private void ShowStyleEditor(UseCase useCase) {
+            var options = ComposeStyleEditor(useCase.GetCurrentDisplay().StyleSheet.Styles, useCase.OnDisplayStyleChanged);
+            options.Show();
         }
 
 

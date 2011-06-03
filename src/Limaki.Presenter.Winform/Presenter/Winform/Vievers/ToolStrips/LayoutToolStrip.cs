@@ -53,7 +53,12 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             StyleSheetCombo.SelectedIndexChanged += StyleSheetSelectedIndexChanged;
         }
 
-        
+        public void DetachStyleSheet(string oldSheetName) {
+            StyleSheetCombo.SelectedItem = null;
+            StyleSheetCombo.SelectedIndexChanged -= StyleSheetSelectedIndexChanged;
+            InitLayoutTools();
+        }
+
 
         private void StyleSheetSelectedIndexChanged(object sender, EventArgs e) {
             Controller.StyleSheetChange (StyleSheetCombo.SelectedItem.ToString ());
@@ -69,6 +74,16 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
         private void ShapeSelectedIndexChanged(object sender, EventArgs e) {
             Controller.ShapeChange(ShapeCombo.ShapeComboBoxControl.SelectedItem as IShape);
         }
+
+        void ChangeStyle(object sender, System.EventArgs e) {
+            var style = Controller.StyleToChange();
+            if (style != null) {
+                var styleDialog = new UseCaseWinformComposer().ComposeStyleEditor(style, (s, e1) => Controller.StyleChange(style));
+                styleDialog.Show();
+            }
+        }
+
+       
 
     }
 }

@@ -18,6 +18,7 @@ using Limaki.UseCases.Viewers.ToolStrips;
 using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Visuals.UI;
 using System;
+using Limaki.Common;
 
 namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
     public partial class MarkerToolStrip : ToolStrip, IMarkerTool {
@@ -45,9 +46,21 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             }
             this.Visible = makeVisible;
         }
+        
+        public void Detach(Scene oldScene) {
+            markerCombo.Items.Clear();
+            markerCombo.Text = string.Empty;
+            this.Visible = false;
+        }
 
         private void markerCombo_SelectedIndexChanged(object sender, EventArgs e) {
             Controller.ChangeMarkers(markerCombo.SelectedItem.ToString());
         }
+
+ 
+
+        
+
+ 
     }
 }

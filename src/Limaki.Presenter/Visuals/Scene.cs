@@ -100,23 +100,9 @@ namespace Limaki.Visuals {
             set { }
         }
 
-        private SizeI _size = SizeI.Empty;
-        public virtual SizeI Size {
-            get { return _size; }
-            set { _size = value; }
-        }
-
-        private PointI _location = PointI.Empty;
-        public virtual PointI Location {
-            get { return _location; }
-            set { _location = value; }
-        }
-
-        private IStyle _style;
-        public virtual IStyle Style {
-            get { return _style; }
-            set { _style = value; }
-        }
+        public virtual SizeI Size { get; set; }
+        public virtual PointI Location { get; set; }
+        public virtual IStyleGroup Style { get; set; }
 
         object IVisual.Data {
             get { return this.Graph; }

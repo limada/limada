@@ -54,19 +54,16 @@ namespace Limaki.Presenter.Layout {
         }
 
         public override IStyle GetStyle(IShape item) {
-            return StyleSheet.DefaultStyle;
+            return StyleSheet.BaseStyle;
         }
 
         public override IStyle GetStyle(IShape item, UiState uiState) {
-            IStyle style = StyleSheet.DefaultStyle;
+            var style = StyleSheet.BaseStyle;
             if (uiState == UiState.Selected) {
-                style = StyleSheet.SelectedStyle;
+                style = StyleSheet.ItemStyle.SelectedStyle;
             } else if (uiState == UiState.Hovered) {
-                style = StyleSheet.HoveredStyle;
-            } else {
-                style = StyleSheet.DefaultStyle;
-            }
-
+                style = StyleSheet.ItemStyle.HoveredStyle;
+            } 
             return style;
         }
 

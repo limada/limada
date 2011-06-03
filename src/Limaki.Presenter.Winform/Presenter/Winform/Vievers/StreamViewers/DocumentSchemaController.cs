@@ -50,7 +50,7 @@ namespace Limaki.Presenter.Winform.Controls {
 
         public int GetDefaultWidth() {
             var utils = Registry.Pool.TryGetCreate<Limaki.Drawing.IDrawingUtils>();
-            var size = utils.GetTextDimension("".PadLeft(padding, '9'), DefaultStyleSheet.DefaultStyle);
+            var size = utils.GetTextDimension("".PadLeft(padding, '9'), DefaultStyleSheet.BaseStyle);
             return (int)(size.Width + 32);
         }
 
@@ -65,10 +65,10 @@ namespace Limaki.Presenter.Winform.Controls {
             }
         }
 
-        Limaki.Drawing.SizeI Distance { get; set; }
+        Limaki.Drawing.SizeI Border { get; set; }
         public void Adjust(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             var layout = display.Layout;
-            Distance = new Limaki.Drawing.SizeI(0, -5);
+            Border = new Limaki.Drawing.SizeI(0, -5);
             layout.StyleSheet = DefaultStyleSheet;
 
             var focusAction = GraphSceneDisplay.EventControler.GetAction<GraphSceneFocusAction<IVisual, IVisualEdge>>();
@@ -97,12 +97,15 @@ namespace Limaki.Presenter.Winform.Controls {
             foreach (var page in pages)
                 page.Data = page.Data.ToString().PadLeft(padding);
 
+            
             var distance = display.Layout.Distance;
-            display.Layout.Distance = this.Distance;
+            display.Layout.Distance = this.Border;
+            display.Layout.Border = this.Border;
             var facade = new GraphSceneFacade<IVisual, IVisualEdge>(() => display.Data, display.Layout);
             //facade.OrderBy = (w) => w.Data.ToString().PadLeft(padding);
             facade.Add(pages, true, true);
 
+            display.Layout.Distance = distance;
 
             display.DataId = 0;
             new State { Hollow = true }.CopyTo(display.State);

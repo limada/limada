@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.UseCases.Viewers.ToolStrips;
 using System.ComponentModel;
+using Limaki.Common;
 
 namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
     public partial class DisplayToolStrip : ToolStrip, IDisplayTool {
@@ -78,6 +79,16 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             this.AddVisualButton.Checked = add;
         }
 
+        [TODO("implement detach")]
+        public void Detach() {
+            this.selectButton.CheckState = CheckState.Indeterminate;
+            this.moveButton.CheckState = CheckState.Indeterminate;
+
+            this.connectorButton.CheckState = CheckState.Indeterminate;
+            this.AddVisualButton.CheckState = CheckState.Indeterminate;
+
+        }
+        
         private void SelectOrMove(object sender, EventArgs e) {
             // checkOnClick is false cause of mono bug so we have to toggle ourself
             activateToolInGroup(sender);
@@ -125,6 +136,8 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             Controller.Layout ();
         }
 
+        
 
+        
     }
 }

@@ -56,52 +56,25 @@ namespace Limaki.Presenter.Visuals.Layout {
 
         public override IStyle GetStyle(TItem item) {
             var scene = this.Data;
-            IStyle style = (item.Style == null ? this.StyleSheet : item.Style);
-            bool isSelected = scene.Selected.Contains(item);
-            if (item is TEdge) {
-                if (isSelected) {
-                    style = StyleSheet.EdgeSelectedStyle;
-                } else if (item.Equals(scene.Hovered)) {
-                    style = StyleSheet.EdgeHoveredStyle;
-                } else {
-                    style = StyleSheet.EdgeStyle;
-                }
-            } else {
-                if (isSelected) {
-                    style = StyleSheet.SelectedStyle;
-                } else if (item.Equals(scene.Hovered)) {
-                    style = StyleSheet.HoveredStyle;
-                } else {
-                    style = StyleSheet.DefaultStyle;
-                }
-            }
-            return style;
+            var styleGroup = item.Style ?? (item is TEdge ? StyleSheet.EdgeStyle : StyleSheet.ItemStyle);
+            if (scene.Selected.Contains(item))
+                return styleGroup.SelectedStyle;
+            if (item.Equals(scene.Hovered))
+                return styleGroup.HoveredStyle;
+
+            return styleGroup.DefaultStyle;
         }
 
         public override IStyle GetStyle(TItem item, UiState uiState) {
-            IStyle style = (item.Style == null ? this.StyleSheet : item.Style);
-            if (item is TEdge) {
-                if (uiState==UiState.Selected||uiState==UiState.Focus) {
-                    style = StyleSheet.EdgeSelectedStyle;
-                } else if (uiState == UiState.Hovered) {
-                    style = StyleSheet.EdgeHoveredStyle;
-                } else {
-                    style = StyleSheet.EdgeStyle;
-                }
-            } else {
-                if (uiState == UiState.Selected || uiState == UiState.Focus) {
-                    style = StyleSheet.SelectedStyle;
-                } else if (uiState == UiState.Hovered) {
-                    style = StyleSheet.HoveredStyle;
-                } else {
-                    style = StyleSheet.DefaultStyle;
-                }
-            }
-            
-            return style;
+            var styleGroup = item.Style ?? (item is TEdge ? StyleSheet.EdgeStyle : StyleSheet.ItemStyle);
+
+            if (uiState == UiState.Selected || uiState == UiState.Focus)
+                return styleGroup.SelectedStyle;
+            if (uiState == UiState.Hovered)
+                return styleGroup.HoveredStyle;
+
+            return styleGroup.DefaultStyle;
         }
-
-
 
         public virtual void AjustSize(TItem visual, IShape shape) {
             if (!(visual is TEdge)) {

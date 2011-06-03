@@ -35,16 +35,13 @@ namespace Limaki.Presenter.Layout {
         public Arranger(IGraphScene<TItem, TEdge> data, IGraphLayout<TItem, TEdge> layout) {
             this.Data = data;
             this.Layout = layout;
-            this.proxy = CreateProxy(layout);
             this.RowCollisionResolver = FirstFreeRowCollissionResolver;
             this.OrderBy = (item) => item.ToString();
         }
 
-
-
         public bool Adjust = false;
 
-        public IGraphScene<TItem, TEdge> Data { get; set; }
+        public IGraphScene<TItem, TEdge> Data { get; protected set; }
         public IGraph<TItem, TEdge> Graph {
             get { return Data.Graph; }
         }
@@ -52,25 +49,31 @@ namespace Limaki.Presenter.Layout {
         public SizeI AutoSize { get; set; }
         public bool Centered { get; set; }
         public SizeI Distance { get; set; }
+        public SizeI Border { get; set; }
         public Orientation Orientation { get; set; }
         public virtual Func<TItem, string> OrderBy { get; set; }
 
         private IGraphLayout<TItem, TEdge> _layout = null;
         public IGraphLayout<TItem, TEdge> Layout {
             get { return _layout; }
-            set {
+            protected set {
                 if (_layout != value) {
                     _layout = value;
                     this.Distance = _layout.Distance;
+                    this.Border = _layout.Border;
                     this.Orientation = _layout.Orientation;
                     this.Centered = _layout.Centered;
-                    this.AutoSize = _layout.StyleSheet.DefaultStyle.AutoSize;
+                    this.AutoSize = _layout.StyleSheet.BaseStyle.AutoSize;
                 }
-
             }
         }
 
-        protected IShapeProxy<TItem, TEdge> proxy = null;
+        protected IShapeProxy<TItem, TEdge> _proxy = null;
+        public IShapeProxy<TItem, TEdge> Proxy {
+            get { return _proxy ?? (_proxy = CreateProxy(this.Layout)); }
+            set { _proxy = value; }
+        }
+
         protected virtual IShapeProxy<TItem, TEdge> CreateProxy(IGraphLayout<TItem, TEdge> layout) {
             return new GraphItemShapeProxy<TItem, TEdge>(layout);
         }
@@ -113,7 +116,7 @@ namespace Limaki.Presenter.Layout {
             if (!row.SizeAdjusted) {
                 foreach (TItem item in row.Items) {
                     if (!(item is TEdge)) {
-                        SizeI visualSize = proxy.GetSize(item);
+                        SizeI visualSize = Proxy.GetSize(item);
                         row.Size += new SizeI(visualSize.Width + Distance.Width,
                                                visualSize.Height + Distance.Height);
 
@@ -133,9 +136,9 @@ namespace Limaki.Presenter.Layout {
             }
             if (Centered) {
                 if (Orientation == Orientation.TopBottom) {
-                    row.Location.X = location.X - (row.Size.Width / 2) + (Layout.Distance.Width / 2);
+                    row.Location.X = location.X - (row.Size.Width / 2) + (Distance.Width / 2);
                 } else if (Orientation == Orientation.LeftRight) {
-                    row.Location.Y = location.Y - (row.Size.Height / 2) + (Layout.Distance.Height / 2);
+                    row.Location.Y = location.Y - (row.Size.Height / 2) + (Distance.Height / 2);
                 }
             }
         }
@@ -154,10 +157,10 @@ namespace Limaki.Presenter.Layout {
             Action<RectangleI> moveRight = (r) => { stripe.X = r.Right + Distance.Width; };
 
             if (Orientation == Orientation.LeftRight) {
-                stripe.Height = stripe.Height - Layout.Distance.Height;
+                stripe.Height = stripe.Height - Distance.Height;
                 orderBy = orderByR;
             } else {
-                stripe.Width = stripe.Width - Layout.Distance.Width;
+                stripe.Width = stripe.Width - Distance.Width;
                 orderBy = orderByB;
             }
 
@@ -169,7 +172,7 @@ namespace Limaki.Presenter.Layout {
                 //stripe.X = stripe.X - Layout.Distance.Width+1;
                 var l = from item in Data.ElementsIn(stripe)
                         where !(item is TEdge) && !ignoring.Contains(item)
-                        select new RectangleI(proxy.GetLocation(item), proxy.GetSize(item));
+                        select new RectangleI(Proxy.GetLocation(item), Proxy.GetSize(item));
                 l = l.OrderByDescending(orderBy);
 
                 foreach (var bounds in l) {
@@ -243,21 +246,21 @@ namespace Limaki.Presenter.Layout {
                 foreach (TItem item in row.Items)
                     if (!(item is TEdge)) {
 
-                        proxy.SetLocation(item, location);
+                        Proxy.SetLocation(item, location);
                         if (siblings != null)
                             ignore.Remove(item);
 
                         if (siblings == null)
-                            proxy.Justify(item);
+                            Proxy.Justify(item);
 
 
                         foreach (TEdge edge in this.Graph.Twig(item)) {
-                            proxy.AffectedEdges.Add(edge);
+                            Proxy.AffectedEdges.Add(edge);
                         }
 
                         SizeI size = new SizeI(
-                            proxy.GetSize(item).Width + Distance.Width,
-                            proxy.GetSize(item).Height + Distance.Height);
+                            Proxy.GetSize(item).Width + Distance.Width,
+                            Proxy.GetSize(item).Height + Distance.Height);
 
                         if (Orientation == Orientation.TopBottom) {
                             location.X += size.Width;
@@ -306,7 +309,7 @@ namespace Limaki.Presenter.Layout {
                 if (false)
                     if (item.Node is TEdge) {
                         TEdge edge = (TEdge)item.Node;
-                        proxy.AffectedEdges.Add(edge);
+                        Proxy.AffectedEdges.Add(edge);
                     }
             }
         }
@@ -325,10 +328,10 @@ namespace Limaki.Presenter.Layout {
         /// <returns></returns>
         public virtual PointI Arrange(TItem start, ICollection<TItem> siblings, PointI location) {
 
-            proxy.Justify(start);
+            Proxy.Justify(start);
 
             if (!(start is TEdge))
-                proxy.SetLocation(start, location);
+                Proxy.SetLocation(start, location);
 
             if (siblings.Contains(start))
                 AddToRow(0, start);
@@ -336,7 +339,7 @@ namespace Limaki.Presenter.Layout {
             ArrangeRows(ref location, siblings);
 
             foreach (TEdge edge in this.Graph.Twig(start)) {
-                proxy.AffectedEdges.Add(edge);
+                Proxy.AffectedEdges.Add(edge);
             }
 
             return location;
@@ -344,7 +347,7 @@ namespace Limaki.Presenter.Layout {
 
 
         public virtual PointI Arrange(IEnumerable<TItem> items, ICollection<TItem> siblings, bool deep) {
-            PointI result = (PointI)Distance;
+            PointI result = (PointI)Border;
 
             foreach (TItem item in items) {
                 result = ArrangeExpand(item, siblings, deep);
@@ -361,20 +364,20 @@ namespace Limaki.Presenter.Layout {
         /// <param name="deep"></param>
         /// <returns></returns>
         protected virtual PointI ArrangeExpand(TItem start, ICollection<TItem> siblings, bool deep) {
-            PointI startAt = (PointI)Distance;
+            PointI startAt = (PointI)Border;
             TItem root = start;
             while (root is TEdge) {
                 root = ((TEdge)root).Root;
             }
 
-            startAt = proxy.GetShape(root).Location;
+            startAt = Proxy.GetShape(root).Location;
 
             if (siblings != null && siblings.Count == 1 && siblings.Contains(start)) {
-                startAt = (PointI)Distance;
-                proxy.SetLocation(start, startAt);
+                startAt = (PointI)Border;
+                Proxy.SetLocation(start, startAt);
             }
 
-            var startSize = proxy.GetSize(root);
+            var startSize = Proxy.GetSize(root);
 
 
             if (Orientation == Orientation.TopBottom) {
@@ -410,7 +413,7 @@ namespace Limaki.Presenter.Layout {
         protected virtual PointI ArrangeDeepWalk(TItem start, PointI location) {
             PointI startAt = location;
 
-            proxy.GetShape(start);
+            Proxy.GetShape(start);
 
             AddWalk(start, null, true);
 
@@ -428,7 +431,7 @@ namespace Limaki.Presenter.Layout {
                 }
             }
 
-            proxy.SetLocation(start, startAt);
+            Proxy.SetLocation(start, startAt);
             ArrangeRows(ref startAt, null);
 
             return startAt;
@@ -444,9 +447,9 @@ namespace Limaki.Presenter.Layout {
             foreach (TItem item in items) {
                 if (!(item is TEdge)) {
                     if (!justify)
-                        proxy.EnsureInvoke(item);
+                        Proxy.EnsureInvoke(item);
                     else
-                        proxy.Justify(item);
+                        Proxy.Justify(item);
 
 
                     if (!visited.Contains(item)) {
@@ -464,15 +467,15 @@ namespace Limaki.Presenter.Layout {
             foreach (TItem item in items) {
                 if (!(item is TEdge)) {
                     if (!justify)
-                        proxy.EnsureInvoke(item);
+                        Proxy.EnsureInvoke(item);
                     else
-                        proxy.Justify(item);
+                        Proxy.Justify(item);
 
                     if (!visited.Contains(item)) {
                         location = new PointI(Distance.Width, location.Y);
                         location = ArrangeDeepWalk(item, location);
                         
-                        proxy.GetShape(item);
+                        Proxy.GetShape(item);
 
                         AddWalk(item, null, true);
 
@@ -494,7 +497,7 @@ namespace Limaki.Presenter.Layout {
                             }
                         }
 
-                        proxy.SetLocation(item, location);
+                        Proxy.SetLocation(item, location);
                         
                     }
 
@@ -513,12 +516,12 @@ namespace Limaki.Presenter.Layout {
             foreach (TItem item in items) {
                 if (!(item is TEdge)) {
                     if (justify)
-                        proxy.Justify(item);
+                        Proxy.Justify(item);
                     else
-                        proxy.EnsureInvoke(item);
+                        Proxy.EnsureInvoke(item);
 
                     foreach (TEdge edge in this.Graph.Twig(item)) {
-                        proxy.AffectedEdges.Add(edge);
+                        Proxy.AffectedEdges.Add(edge);
                     }
                 }
             }
@@ -545,9 +548,9 @@ namespace Limaki.Presenter.Layout {
             foreach (TItem item in args.items) {
                 if (!(item is TEdge)) {
                     if (!args.justify)
-                        proxy.EnsureInvoke(item);
+                        Proxy.EnsureInvoke(item);
                     else
-                        proxy.Justify(item);
+                        Proxy.Justify(item);
 
 
                     if (!visited.Contains(item)) {
@@ -556,8 +559,8 @@ namespace Limaki.Presenter.Layout {
                         //**** PointI ArrangeDeepWalk(TItem start, PointI location) {
                         PointI location = args.location;
 
-                        proxy.GetShape(item);
-                        proxy.SetLocation(item, location);
+                        Proxy.GetShape(item);
+                        Proxy.SetLocation(item, location);
 
                         AddWalk(item, null, true);
 
@@ -575,28 +578,28 @@ namespace Limaki.Presenter.Layout {
 
             //**** PointI Arrange(IEnumerable<TItem> items, ICollection<TItem> siblings, bool deep)
 
-            args.location = (PointI)Distance;
+            args.location = (PointI)Border;
             foreach (TItem item in args.items) {
 
                 //**** PointI ArrangeExpand(TItem start, ICollection<TItem> siblings, bool deep) {
-                PointI location = (PointI)Distance;
+                PointI location = (PointI)Border;
                 TItem root = item;
                 while (root is TEdge) {
                     root = ((TEdge)root).Root;
                 }
 
-                IShape shape = proxy.GetShape(root);
+                IShape shape = Proxy.GetShape(root);
                 location = shape.Location;
 
                 if (args.siblings != null && args.siblings.Count == 1 && args.siblings.Contains(item)) {
-                    location = (PointI)Distance;
-                    proxy.SetLocation(item, location);
+                    location = (PointI)Border;
+                    Proxy.SetLocation(item, location);
                 }
 
                 if (Orientation == Orientation.TopBottom) {
-                    location.Y = location.Y + proxy.GetSize(root).Height;
+                    location.Y = location.Y + Proxy.GetSize(root).Height;
                 } else if (Orientation == Orientation.LeftRight) {
-                    location.X = location.X + proxy.GetSize(root).Width + Distance.Width;
+                    location.X = location.X + Proxy.GetSize(root).Width + Distance.Width;
                 }
 
                 overallSize = SizeI.Empty;
@@ -615,10 +618,10 @@ namespace Limaki.Presenter.Layout {
 
             //**** PointI Arrange(TItem start, ICollection<TItem> siblings, PointI location) {
             foreach (TItem item in args.items) {
-                proxy.Justify(item);
+                Proxy.Justify(item);
 
                 if (!(item is TEdge))
-                    proxy.SetLocation(item, args.location);
+                    Proxy.SetLocation(item, args.location);
 
                 if (args.siblings.Contains(item))
                     AddToRow(0, item);
@@ -628,7 +631,7 @@ namespace Limaki.Presenter.Layout {
                 args.location = location;
 
                 foreach (TEdge edge in this.Graph.Twig(item)) {
-                    proxy.AffectedEdges.Add(edge);
+                    Proxy.AffectedEdges.Add(edge);
                 }
             }
         }
@@ -638,7 +641,7 @@ namespace Limaki.Presenter.Layout {
 
 
         public virtual void Commit() {
-            proxy.Commit(this.Data);
+            Proxy.Commit(this.Data);
         }
 
         #region Deprecated
@@ -692,8 +695,8 @@ namespace Limaki.Presenter.Layout {
             var locateLeft = new PointI(int.MaxValue, int.MaxValue);
             foreach (TItem item in Data.ElementsIn(stripe)) {
                 if (!(item is TEdge) && !ignoring.Contains(item)) {
-                    var visualLocation = proxy.GetLocation(item);
-                    var visualSize = proxy.GetSize(item);
+                    var visualLocation = Proxy.GetLocation(item);
+                    var visualSize = Proxy.GetSize(item);
 
                     locateRight.X = Math.Max(locateRight.X, visualLocation.X + visualSize.Width);
                     locateRight.Y = Math.Max(locateRight.Y, visualLocation.Y + visualSize.Height);

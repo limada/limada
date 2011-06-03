@@ -28,7 +28,7 @@ namespace Limaki.Presenter.Layout {
         public GraphItemShapeProxy(IGraphLayout<TItem, TEdge> layout) {
             this.layout = layout;
             this.AffectedEdges = new List<TEdge>();
-            this.Shape = layout.GetShape;
+            this.ShapeGetter = layout.GetShape;
         }
 
         private IGraphLayout<TItem, TEdge> layout = null;
@@ -37,7 +37,7 @@ namespace Limaki.Presenter.Layout {
         private IDictionary<TItem, PointI> locations = new Dictionary<TItem, PointI>();
         private IDictionary<TItem, IShape> invokeList = new Dictionary<TItem, IShape>();
 
-        protected Func<TItem, IShape> Shape = null;
+        protected Func<TItem, IShape> ShapeGetter = null;
 
         public virtual void Commit(IGraphScene<TItem, TEdge> Data) {
 
@@ -55,21 +55,21 @@ namespace Limaki.Presenter.Layout {
             }
 
             foreach (KeyValuePair<TItem, PointI> kvp in locations) {
-                IShape shape = Shape(kvp.Key);
+                IShape shape = ShapeGetter(kvp.Key);
                 if (shape != null && shape.Location.Equals(kvp.Value) && !invokeDone.Contains(kvp.Key)) {
                     Data.Requests.Add(new LayoutCommand<TItem>(kvp.Key, LayoutActionType.AddBounds));
                 } else {
-                    Data.Requests.Add(new MoveCommand<TItem>(kvp.Key, Shape, kvp.Value));
+                    Data.Requests.Add(new MoveCommand<TItem>(kvp.Key, ShapeGetter, kvp.Value));
                 }
             }
 
             Func<TEdge, bool> isAffected =
                 ( edge ) => 
-                    (Shape(edge.Root)!=null || locations.ContainsKey (edge.Root))&& 
-                    (Shape(edge.Leaf)!=null || locations.ContainsKey (edge.Leaf));
+                    (ShapeGetter(edge.Root)!=null || locations.ContainsKey (edge.Root))&& 
+                    (ShapeGetter(edge.Leaf)!=null || locations.ContainsKey (edge.Leaf));
 
             foreach (TEdge edge in AffectedEdges) {
-                if (Shape(edge) == null) {
+                if (ShapeGetter(edge) == null) {
                     if (!invokeDone.Contains(edge)) {
                         Data.Requests.Add(
                             new LayoutCommand<TItem, IShape>(
@@ -96,7 +96,7 @@ namespace Limaki.Presenter.Layout {
         public virtual PointI GetLocation(TItem item) {
             PointI result;
             if (!locations.TryGetValue(item, out result)) {
-                var shape = Shape(item);
+                var shape = ShapeGetter(item);
                 result = shape.Location;
             }
             return result;
@@ -118,7 +118,7 @@ namespace Limaki.Presenter.Layout {
         /// <returns></returns>
         public virtual IShape GetShape(TItem item) {
             IShape shape = null;
-            if (Shape(item) == null) {
+            if (ShapeGetter(item) == null) {
                 if (!invokeList.TryGetValue(item, out shape)) {
                     shape = this.layout.CreateShape(item);
                     if (!(item is TEdge))
@@ -126,7 +126,7 @@ namespace Limaki.Presenter.Layout {
                     invokeList.Add(item, shape);
                 }
             } else {
-                shape = Shape(item);
+                shape = ShapeGetter(item);
 
                 if (shape.Size.Equals(SizeI.Empty)) {
                     Justify(item);
@@ -142,7 +142,7 @@ namespace Limaki.Presenter.Layout {
         /// </summary>
         /// <param name="item"></param>
         public virtual IShape EnsureInvoke(TItem item) {
-            IShape shape = Shape(item);
+            IShape shape = ShapeGetter(item);
             if (shape == null) {
                 shape = GetShape(item);
             } else {

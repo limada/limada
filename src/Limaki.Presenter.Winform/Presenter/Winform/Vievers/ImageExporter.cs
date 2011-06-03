@@ -39,7 +39,7 @@ namespace Limaki.Presenter.Viewers.Winform {
             if (Data == null)
                 return null;
 
-            var size = Data.Shape.Size + new SizeI(Layout.Distance.Width, Layout.Distance.Height);
+            var size = Data.Shape.Size + new SizeI(Layout.Border.Width, Layout.Border.Height);
 
             this.Viewport.ClipOrigin = Data.Shape.Location;
 

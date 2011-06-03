@@ -49,6 +49,18 @@ namespace Limaki.UseCases.Winform.Viewers {
             }
         }
 
+        private SizeI _border = new SizeI(30, 15);
+        public SizeI Border {
+            get { return _border; }
+            set {
+                _border = value;
+                //heightDistanceDown.Value = value.Height;
+                //widthDistanceUpDown.Value = value.Width;
+                this.SelectedObject.Border = value;
+                DoPropertyValueChanged();
+            }
+        }
+
         protected Orientation _orientation = Orientation.LeftRight;
         public Orientation Orientation {
             get { return _orientation; }

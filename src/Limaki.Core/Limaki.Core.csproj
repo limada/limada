@@ -87,6 +87,7 @@
     <Compile Include="Common\Collections\MultiDictiionary.cs" />
     <Compile Include="Common\Collections\MultiDictionaryBase.cs" />
     <Compile Include="Common\Collections\Set.cs" />
+    <Compile Include="Common\Localizer.cs" />
     <Compile Include="Common\OS.cs" />
     <Compile Include="Common\Copier.cs" />
     <Compile Include="Common\Delegates.cs" />

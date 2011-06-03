@@ -442,7 +442,7 @@ namespace Limaki.UseCases.Viewers {
             var layout = currentDiplay.Layout;
 
             if (root == null) {
-                PointI pt = new PointI(layout.Distance.Width, scene.Shape.BoundsRect.Bottom);
+                PointI pt = new PointI(layout.Border.Width, scene.Shape.BoundsRect.Bottom);
                 SceneTools.AddItem(scene, visual, layout, pt);
             } else {
                 SceneTools.PlaceVisual(root, visual, scene, layout);

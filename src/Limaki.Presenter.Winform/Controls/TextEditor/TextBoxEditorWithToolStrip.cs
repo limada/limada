@@ -6,8 +6,6 @@ namespace Limaki.Winform.Controls.TextEditor {
     public partial class TextBoxEditorWithToolStrip : ToolStripContainer, IZoomTarget {
         public TextBoxEditorWithToolStrip() {
             InitializeComponent();
-            
-
         }
 
         void SetEditor(TextBoxEditor editor) {

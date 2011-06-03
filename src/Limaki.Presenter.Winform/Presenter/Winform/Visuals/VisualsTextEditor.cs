@@ -216,7 +216,7 @@ namespace Limaki.Presenter.Winform.Visuals {
 
         private GDIFontCache gdiFontCache = new GDIFontCache();
         void StyleEditor() {
-            IStyle style = Layout.StyleSheet.DefaultStyle;
+            IStyle style = Layout.StyleSheet.BaseStyle;
             FontMemento newFont = new FontMemento(((GDIFont)style.Font).Native);
             newFont.SizeInPoints = camera.Matrice.TransformFontSize (newFont.SizeInPoints);
             editor.Font = gdiFontCache.GetFont(newFont);

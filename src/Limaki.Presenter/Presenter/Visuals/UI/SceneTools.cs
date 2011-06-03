@@ -49,6 +49,22 @@ namespace Limaki.Presenter.Visuals.UI {
             }
         }
 
+        public static void ChangeStyle(Scene scene, IVisual visual, IStyleGroup newStyle) {
+            if (visual != null) {
+                if (newStyle != null) {
+                   var changeStyle = 
+                       new ActionCommand<IVisual, IStyleGroup>(visual,newStyle,(target, style) => target.Style = style);
+                    scene.Requests.Add(changeStyle);
+                    if (visual.Shape is VectorShape) {
+                        scene.Requests.Add(new LayoutCommand<IVisual>(visual, LayoutActionType.Justify));
+                    }
+                    foreach (var edge in scene.Twig(visual)) {
+                        scene.Requests.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Justify));
+                    }
+                }
+            }
+        }
+
         public static void ChangeMarkers(Scene scene, IEnumerable<IVisual> elements, string text) {
             if (scene.Markers != null) {
                 scene.Markers.ChangeMarkers (elements, text);
@@ -104,7 +120,7 @@ namespace Limaki.Presenter.Visuals.UI {
 
         public static IVisual PlaceVisual(IVisual root, IVisual visual, Scene scene, IGraphLayout<IVisual,IVisualEdge> layout) {
             if (visual != null && scene !=null) {
-                PointI pt = (PointI)layout.Distance;
+                PointI pt = (PointI)layout.Border;
                 if (root != null) {
                     pt = root.Shape[Anchor.LeftBottom];
                 }

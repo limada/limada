@@ -20,7 +20,7 @@ namespace Limaki.Drawing {
     /// Font, Pen, Fillcolor etc.
     /// IStyle-Implementations are the place for storing and reusing GDI-Objects
     /// </summary>
-    public interface IStyle : IDisposable {
+    public interface IStyle : IDisposable, ICloneable {
         string Name { get; set;}
         
         /// <summary>

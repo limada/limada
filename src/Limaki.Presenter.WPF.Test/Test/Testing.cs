@@ -145,7 +145,7 @@ namespace Limaki.WPF008 {
 
         public void LoadGraphIntoDisplay(WPFVisualsDisplay display, VisualGraph graph) {
             
-            //display.Layout.StyleSheet.DefaultStyle.AutoSize =
+            //display.Layout.StyleSheet.BaseStyle.AutoSize =
             //    new Limaki.Toolkit.Drawing.Size (50, 50);
 
 

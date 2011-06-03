@@ -25,37 +25,37 @@ namespace Limaki.UseCases.Winform.Viewers {
         /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
         /// </summary>
         private void InitializeComponent() {
-            this.closeButton = new System.Windows.Forms.Button();
-            this.applyButton = new System.Windows.Forms.Button();
+            this.CloseButton = new System.Windows.Forms.Button();
+            this.ApplyButton = new System.Windows.Forms.Button();
             this.OptionList = new System.Windows.Forms.ComboBox();
             this.ContentPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // closeButton
             // 
-            this.closeButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.closeButton.FlatAppearance.BorderSize = 0;
-            this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeButton.Location = new System.Drawing.Point(0, 167);
-            this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(140, 23);
-            this.closeButton.TabIndex = 0;
-            this.closeButton.Text = "Close";
-            this.closeButton.UseVisualStyleBackColor = true;
-            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+            this.CloseButton.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.CloseButton.FlatAppearance.BorderSize = 0;
+            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CloseButton.Location = new System.Drawing.Point(0, 167);
+            this.CloseButton.Name = "CloseButton";
+            this.CloseButton.Size = new System.Drawing.Size(140, 23);
+            this.CloseButton.TabIndex = 0;
+            this.CloseButton.Text = "Close";
+            this.CloseButton.UseVisualStyleBackColor = true;
+            this.CloseButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
             // applyButton
             // 
-            this.applyButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.applyButton.FlatAppearance.BorderSize = 0;
-            this.applyButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.applyButton.Location = new System.Drawing.Point(0, 144);
-            this.applyButton.Name = "applyButton";
-            this.applyButton.Size = new System.Drawing.Size(140, 23);
-            this.applyButton.TabIndex = 1;
-            this.applyButton.Text = "Apply";
-            this.applyButton.UseVisualStyleBackColor = true;
-            this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
+            this.ApplyButton.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ApplyButton.FlatAppearance.BorderSize = 0;
+            this.ApplyButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ApplyButton.Location = new System.Drawing.Point(0, 144);
+            this.ApplyButton.Name = "ApplyButton";
+            this.ApplyButton.Size = new System.Drawing.Size(140, 23);
+            this.ApplyButton.TabIndex = 1;
+            this.ApplyButton.Text = "Apply";
+            this.ApplyButton.UseVisualStyleBackColor = true;
+            this.ApplyButton.Click += new System.EventHandler(this.applyButton_Click);
             // 
             // OptionList
             // 
@@ -84,8 +84,8 @@ namespace Limaki.UseCases.Winform.Viewers {
             this.ControlBox = false;
             this.Controls.Add(this.ContentPanel);
             this.Controls.Add(this.OptionList);
-            this.Controls.Add(this.applyButton);
-            this.Controls.Add(this.closeButton);
+            this.Controls.Add(this.ApplyButton);
+            this.Controls.Add(this.CloseButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.HelpButton = true;
             this.Name = "Options";
@@ -98,8 +98,8 @@ namespace Limaki.UseCases.Winform.Viewers {
 
         #endregion
 
-        public System.Windows.Forms.Button closeButton;
-        public System.Windows.Forms.Button applyButton;
+        public System.Windows.Forms.Button CloseButton;
+        public System.Windows.Forms.Button ApplyButton;
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public System.Windows.Forms.Control OptionChanger;

@@ -68,7 +68,11 @@
     <Compile Include="Context\ViewContextRecourceLoader.cs" />
     <Compile Include="Drawing\DrawingPrimitivesSerializer.cs" />
     <Compile Include="Drawing\GrahamConvexHull.cs" />
+    <Compile Include="Drawing\Styles\StyleGroup.cs" />
+    <Compile Include="Drawing\Styles\StyleNames.cs" />
+    <Compile Include="Drawing\Styles\StyleSheet.cs" />
     <Compile Include="Drawing\Shapes\StringShape.cs" />
+    <Compile Include="Drawing\Styles\StyleSheets.cs" />
     <Compile Include="Limada\UseCases\DocumentSchemaManager.cs" />
     <Compile Include="Limada\Presenter\FavoriteManager.cs" />
     <Compile Include="Limada\Presenter\SearchHandler.cs" />
@@ -116,9 +120,7 @@
     <Compile Include="Drawing\Shapes\ShapeUtils.cs" />
     <Compile Include="Drawing\Vector.cs" />
     <Compile Include="Drawing\Shapes\VectorShape.cs" />
-    <Compile Include="Drawing\Style.cs" />
-    <Compile Include="Drawing\StyleSheet.cs" />
-    <Compile Include="Drawing\StyleSheets.cs" />
+    <Compile Include="Drawing\Styles\Style.cs" />
     <Compile Include="Drawing\UiState.cs" />
     <Compile Include="Drawing\ZoomState.cs" />
     <Compile Include="Drawing\Color.cs" />
@@ -147,8 +149,10 @@
     <Compile Include="Presenter\Display\PresenterRecourceLoader.cs" />
     <Compile Include="Presenter\INavigateTarget.cs" />
     <Compile Include="Presenter\IZoomTarget.cs" />
+    <Compile Include="Presenter\Layout\Alligner.cs" />
     <Compile Include="Presenter\Layout\GraphLayout.cs" />
     <Compile Include="Presenter\Layout\Layout.cs" />
+    <Compile Include="Presenter\Layout\ProxyShape.cs" />
     <Compile Include="Presenter\Layout\ShapeLayout.cs" />
     <Compile Include="Presenter\UI\GripPainterBase.cs" />
     <Compile Include="Presenter\UI\IDragDopActionPresenter.cs" />

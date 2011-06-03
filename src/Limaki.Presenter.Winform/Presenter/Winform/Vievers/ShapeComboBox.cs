@@ -46,8 +46,6 @@ namespace Limaki.UseCases.Winform.Viewers {
             Items.Add (new BezierShape ());
         }
 
-
-
         private ShapeLayout _shapeLayout = null;
 
         public ShapeLayout ShapeLayout {
@@ -63,9 +61,9 @@ namespace Limaki.UseCases.Winform.Viewers {
 
         protected virtual void drawShape(Graphics g, Rectangle bounds, int index, DrawItemState state) {
             if (index != -1) {
-                IShape shape = this.Items[index] as IShape;
+                var shape = this.Items[index] as IShape;
                 if (shape != null) {
-                    Rectangle rect = bounds;
+                    var rect = bounds;
                     using (Brush b = new SolidBrush(this.BackColor)) {
                         g.FillRectangle(b, bounds);
                     }
@@ -78,8 +76,8 @@ namespace Limaki.UseCases.Winform.Viewers {
 
                     shape.Location = GDIConverter.Convert(rect.Location);
                     shape.Size = GDIConverter.Convert(rect.Size);
-                    IPainter painter = ShapeLayout.GetPainter(shape.GetType());
-                    UiState uiState = UiState.None;
+                    var painter = ShapeLayout.GetPainter(shape.GetType());
+                    var uiState = UiState.None;
                     if ((state & DrawItemState.Focus) != 0) {
                         uiState = UiState.Hovered;
                     }
@@ -100,23 +98,8 @@ namespace Limaki.UseCases.Winform.Viewers {
             Rectangle r = Rectangle.Empty;
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-            SolidBrush sb = new SolidBrush(BackColor);
-            //if (Focused)
-            //    sb.Color = SystemColors.Highlight;
-
-            //e.Graphics.FillRectangle(sb, ClientRectangle);
-
-            if (Items.Count != 0) {
-                r = new Rectangle(
-                    ClientRectangle.Left, ClientRectangle.Top,
-                    ClientRectangle.Width - 15, ClientRectangle.Height - 1);
-                //drawShape(e.Graphics, r, SelectedIndex, DrawItemState.Selected);
-
-            }
             Rectangle buttonRect = new Rectangle(Width - 15, 0, 15, Height);
             ControlPaint.DrawComboButton(e.Graphics, buttonRect, ButtonState.Normal | ButtonState.Flat);
-
-            sb.Dispose();
         }
     }
 }

@@ -17,5 +17,6 @@ namespace Limaki.UseCases.Viewers.ToolStrips {
         public virtual TTool Tool { get; set; }
         public virtual TDisplay CurrentDisplay { get; set; }
         public abstract void Attach ( object sender );
+        public abstract void Detach(object sender);
     }
 }

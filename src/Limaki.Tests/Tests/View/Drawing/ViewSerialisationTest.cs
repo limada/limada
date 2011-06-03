@@ -95,7 +95,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         [Test]
         public void StyleTest() {
             var ser = new DrawingPrimitivesSerializer();
-            var item = StyleSheet.CreateDefaultStyleSheet().DefaultStyle;
+            var item = StyleSheet.CreateDefaultStyleSheet().BaseStyle;
 
             item.AutoSize = new SizeI (10, 10);
             item.PaintData = false;

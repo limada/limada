@@ -36,7 +36,7 @@ namespace Limaki.Tests.Presenter.Winform {
             
             if (Data != null) {
 
-                var style = VisualsDisplay.StyleSheet[StyleNames.DefaultStyle];
+                var style = VisualsDisplay.StyleSheet.BaseStyle;
                 var s = new PointS(float.MaxValue, float.MaxValue).ToString() + "\r\n" +
                            new RectangleS(float.MaxValue, float.MaxValue, float.MaxValue, float.MaxValue).ToString() + "\r\n";
 
@@ -61,8 +61,8 @@ namespace Limaki.Tests.Presenter.Winform {
                 this.VisualsDisplay.Data.Focused = root;
                 this.VisualsDisplay.Layout.Centered = true;
                 this.VisualsDisplay.Layout.Orientation = Orientation.TopBottom;
-                var autoSize = VisualsDisplay.StyleSheet.DefaultStyle.AutoSize;
-                this.VisualsDisplay.StyleSheet.DefaultStyle.AutoSize = new SizeI ();
+                var autoSize = VisualsDisplay.StyleSheet.BaseStyle.AutoSize;
+                this.VisualsDisplay.StyleSheet.BaseStyle.AutoSize = new SizeI ();
                 foreach(var visual in VisualsDisplay.Data.Elements) {
                     if (visual.Shape != null)
                         VisualsDisplay.Layout.Justify (visual);
@@ -70,7 +70,7 @@ namespace Limaki.Tests.Presenter.Winform {
                 this.VisualsDisplay.Invoke();
                 this.VisualsDisplay.Execute ();
                 this.VisualsDisplay.DeviceRenderer.Render ();
-                this.VisualsDisplay.StyleSheet.DefaultStyle.AutoSize = autoSize;
+                this.VisualsDisplay.StyleSheet.BaseStyle.AutoSize = autoSize;
             }
         }
 

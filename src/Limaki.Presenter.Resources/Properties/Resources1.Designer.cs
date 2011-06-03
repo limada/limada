@@ -158,6 +158,13 @@ namespace Limaki.Presenter.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap ItemLayout {
+            get {
+                object obj = ResourceManager.GetObject("ItemLayout", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Icon LimadaLogo {
             get {
                 object obj = ResourceManager.GetObject("LimadaLogo", resourceCulture);

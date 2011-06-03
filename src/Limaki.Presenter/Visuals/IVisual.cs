@@ -18,7 +18,7 @@ using System;
 
 namespace Limaki.Visuals {
    public interface IVisual {
-        IStyle Style { get; set; }
+        IStyleGroup Style { get; set; }
         IShape Shape { get; set; }
         PointI Location { get;set;}
         SizeI Size { get;set;}
