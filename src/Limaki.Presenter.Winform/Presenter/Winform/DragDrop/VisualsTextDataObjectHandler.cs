@@ -51,10 +51,11 @@ namespace Limaki.Presenter.Winform.DragDrop {
             object description = null;
             StreamInfo<string> textInfo = new StreamInfo<string> ();
             textInfo.Compression = CompressionType.bZip2;
+            var encoding = System.Text.Encoding.Default;
 
             if (dataObject != null) {
                 // find out if this is a long string:
-
+                
                 if (dataObject.ContainsText(TextDataFormat.Text)) {
                     string plaintext = dataObject.GetText(TextDataFormat.Text);
 
@@ -79,9 +80,19 @@ namespace Limaki.Presenter.Winform.DragDrop {
                     textInfo.StreamType = StreamTypes.RTF;
 
                 } else if (dataObject.ContainsText(TextDataFormat.Html)) {
-
-                    textInfo = HTMLPostProcess (dataObject.GetText (TextDataFormat.Html));
+                    string s = null;
+                    s = dataObject.GetText(TextDataFormat.Html);
+                    textInfo = HTMLPostProcess(s);
                     textInfo.StreamType = StreamTypes.HTML;
+
+                    var format = "text/html";//"HTML Format";//
+                    if (dataObject.GetDataPresent(format)) {
+                        encoding = System.Text.Encoding.Unicode;
+                        s = GetString(dataObject, format, encoding);
+                        textInfo.Data = s;
+                    }
+                    
+                    
 
                 }
             }
@@ -93,7 +104,7 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
                 StreamInfo<Stream> streamInfo = new StreamInfo<Stream> (textInfo);
                 streamInfo.Data = new MemoryStream();
-                StreamWriter writer = new StreamWriter(streamInfo.Data);
+                StreamWriter writer = new StreamWriter(streamInfo.Data, encoding);
                 writer.Write(textInfo.Data);
                 writer.Flush();
                 
@@ -103,6 +114,19 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
             }
             return result;
+        }
+
+        string GetString(IDataObject dataObject, string format, System.Text.Encoding encoding) {
+            string s = null;
+            var dataresult = dataObject.GetData(format);
+            var stream = dataresult as Stream;
+            if (stream != null)
+                using (var reader = new StreamReader(stream, encoding))
+                    s = reader.ReadToEnd();
+            if (dataresult is string)
+                s = dataresult as string;
+            return s;
+
         }
 
         StreamInfo<string> HTMLPostProcess(string text) {

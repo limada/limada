@@ -31,16 +31,21 @@ namespace Limaki.Drawing {
         
         public virtual IStyle ParentStyle { get; set; }
 
-        private Color _fillColor = Color.Empty;
+        private Color? _fillColor = null;
         public virtual Color FillColor {
             get {
-                if ((_fillColor == Color.Empty) && (ParentStyle != null)) {
-                    return ParentStyle.FillColor;
-                } else {
-                    return _fillColor;
+                if (_fillColor == null) {
+                    if (ParentStyle != null)
+                        return ParentStyle.FillColor;
+                    return Color.Empty;
                 }
+                return _fillColor.Value;
+                
             }
-            set { _fillColor = value; }
+            set {
+                if (ParentStyle == null || ParentStyle.FillColor != value)
+                    _fillColor = value;
+            }
         }
 
         private Color? _textColor = null;
@@ -53,7 +58,10 @@ namespace Limaki.Drawing {
                 } 
                 return _textColor.Value;
             }
-            set { _textColor = value; }
+            set {
+                if (ParentStyle == null || ParentStyle.TextColor != value)
+                    _textColor = value;
+            }
         }
 
         private Color? _penColor = null;
@@ -78,10 +86,10 @@ namespace Limaki.Drawing {
             }
         }
 
-        private Pen _pen= default(Pen);
+        private Pen _pen= null;
         public Pen Pen {
             get {
-                if ((_pen == default(Pen)) && (ParentStyle != null)) {
+                if ((_pen == null) && (ParentStyle != null)) {
                     return ParentStyle.Pen;
                 } else {
                     return _pen;
@@ -126,23 +134,27 @@ namespace Limaki.Drawing {
                         return NoSize;
                 return _autoSize.Value;
             }
-            set { _autoSize = value; }
+            set {
+                if (ParentStyle == null || ParentStyle.AutoSize != value)
+                    _autoSize = value;
+            }
         }
 
-        private bool? _showText = null;
+        private bool? _paintData = null;
         public bool PaintData {
             get {
-                if (_showText == null)
+                if (_paintData == null)
                     if (ParentStyle != null)
                         return ParentStyle.PaintData;
                     else
                         return true;
                 
-                return _showText.Value;
+                return _paintData.Value;
                 
             }
             set {
-                _showText = value;
+                if (ParentStyle == null || ParentStyle.PaintData != value)
+                    _paintData = value;
             }
         }
         #endregion

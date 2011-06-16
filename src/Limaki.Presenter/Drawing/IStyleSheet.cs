@@ -16,7 +16,7 @@ namespace Limaki.Drawing {
 
     public interface IStyleGroup : IStyle, IEnumerable<IStyle> {
         Id Id { get; set; }
-        IStyle DefaultStyle { get; }
+        IStyle DefaultStyle { get; set; }
         IStyle SelectedStyle { get; set; }
         IStyle HoveredStyle { get; set; }
     }

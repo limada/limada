@@ -5,7 +5,7 @@ namespace Limaki.Drawing {
         public Int64 Id { get; set; }
         public StyleGroup(string name) : base(name) { }
         public StyleGroup(string name, IStyle parentStyle) : base(name, parentStyle) { }
-        public IStyle DefaultStyle { get { return this; } }
+        public IStyle DefaultStyle { get; set; }
         public IStyle SelectedStyle { get; set; }
         public IStyle HoveredStyle { get; set; }
 
@@ -25,6 +25,8 @@ namespace Limaki.Drawing {
 
         public object Clone() {
             var result = base.Clone() as IStyleGroup;
+            if (DefaultStyle != null)
+                result.DefaultStyle = this.DefaultStyle.Clone() as IStyle;
             if (SelectedStyle != null)
                 result.SelectedStyle = this.SelectedStyle.Clone() as IStyle;
             if (HoveredStyle != null)
@@ -34,6 +36,7 @@ namespace Limaki.Drawing {
 
         }
         public System.Collections.Generic.IEnumerator<IStyle> GetEnumerator() {
+            yield return this;
             yield return DefaultStyle;
             yield return SelectedStyle;
             yield return HoveredStyle;

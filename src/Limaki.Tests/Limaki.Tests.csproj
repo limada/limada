@@ -8,7 +8,7 @@
     <ProjectGuid>{B1BC3EF8-5EC7-491A-BA83-70CB38F1823F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Limaki.Tests</RootNamespace>
+    <RootNamespace>Limaki</RootNamespace>
     <AssemblyName>Limaki.Tests</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -116,6 +116,7 @@
     <Compile Include="Limada\Tests\Wrappers\WrapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestLocations.cs" />
+    <Compile Include="Tests\Graphics\StyleTest.cs" />
     <Compile Include="Tests\Data\db4o\GraphTest.cs" />
     <Compile Include="Tests\DomainTest.cs" />
     <Compile Include="Tests\Graph\Folding\BinaryGraphFoldingTest.cs" />

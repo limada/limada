@@ -79,23 +79,20 @@ namespace Limaki.Drawing {
 
         public IStyleGroup CreateStyleGroup(string name, IStyle parentStyle, bool forEdge) {
             var styleGroup = new StyleGroup(name,parentStyle);
+            var style = new Style(name + ".Default", styleGroup);
+            styleGroup.DefaultStyle = style;
+            styles[style.Name] = style;
+            var selectedStyle = new Style(name + ".Selected", styleGroup);
+            styleGroup.SelectedStyle = selectedStyle;
+            styles[selectedStyle.Name] = selectedStyle;
+            var hoveredStyle = new Style(name + ".Hovered", styleGroup);
+            styleGroup.HoveredStyle = hoveredStyle;
+            styles[hoveredStyle.Name] = hoveredStyle;
+
             if (!forEdge) {
-                var style = styleGroup.DefaultStyle;
-                
-                styles[style.Name] = style;
-
-                var selectedStyle =new Style(name+".Selected", this.ParentStyle);
                 selectedStyle.FillColor = Color.FromArgb(200, this.ParentStyle.FillColor);
-                styleGroup.SelectedStyle = selectedStyle;
-                styles[selectedStyle.Name] = selectedStyle;
-
-                var hoveredStyle = new Style(name + ".Hovered", this.ParentStyle);
-                styleGroup.HoveredStyle = hoveredStyle;
                 hoveredStyle.FillColor = Color.FromArgb(200, this.ParentStyle.FillColor);
-                styles[hoveredStyle.Name] = hoveredStyle;
-
             } else {
-                var style = styleGroup.DefaultStyle;
                 style.PaintData = false;
 
                 style.Font = CreateFont(
@@ -111,26 +108,15 @@ namespace Limaki.Drawing {
                 pen.StartCap = PenLineCap.Round;
                 style.Pen = pen;
 
-                styles[style.Name] = style;
-
-                var selectedStyle = new Style(name + ".Selected", styleGroup.DefaultStyle);
-                styleGroup.SelectedStyle = selectedStyle;
-
                 pen = (Pen)selectedStyle.Pen.Clone();
                 pen.Thickness = styleGroup.DefaultStyle.Pen.Thickness * 2;
                 selectedStyle.Pen = pen;
                 selectedStyle.PaintData = true;
 
-                styles[selectedStyle.Name] = selectedStyle;
-
-                var hoveredStyle = new Style(name + ".Hovered", styleGroup.DefaultStyle);
-                styleGroup.HoveredStyle = hoveredStyle;
-
                 pen = (Pen)hoveredStyle.Pen.Clone();
                 pen.Color = Color.FromArgb(150, styleGroup.DefaultStyle.PenColor);
                 hoveredStyle.PenColor = pen.Color;
                 hoveredStyle.Pen = pen;
-                styles[hoveredStyle.Name] = hoveredStyle;
                 hoveredStyle.PaintData = true;
             }
             
