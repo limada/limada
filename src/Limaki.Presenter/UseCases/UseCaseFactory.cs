@@ -26,7 +26,7 @@ namespace Limaki.UseCases {
         public IComposer<T> Composer { get; set; }
         public IComposer<T> DeviceComposer { get; set; }
 
-        public virtual void Instrument(T useCase) {
+        public virtual void Compose(T useCase) {
             Composer.Factor(useCase);
             DeviceComposer.Factor(useCase);
 

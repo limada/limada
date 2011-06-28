@@ -16,7 +16,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
+namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
     public class ToolStripShapeComboBox : ToolStripControlHost {
         public ToolStripShapeComboBox(): base(new ShapeComboBox()) {
             ShapeComboBoxControl.Margin = new Padding(0);

@@ -361,7 +361,7 @@ namespace Limaki.Presenter.Winform.Visuals {
                     pt = camera.ToSource(pt) - Layout.Distance;
                     SceneTools.AddItem(scene, Current, Layout, pt);
                 } else {
-                    SceneTools.PlaceVisual(root, Current, scene, Layout);
+                    SceneTools.PlaceVisual(scene, root, Current, Layout);
                 }
                 
                 display.Execute();

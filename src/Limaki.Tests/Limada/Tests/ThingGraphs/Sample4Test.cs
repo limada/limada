@@ -32,7 +32,7 @@ namespace Limada.Tests.ThingGraphs {
             if (ThingGraphProvider == null) {
                 var fileManager = new FileManagerBase();
                 var file = DataBaseInfo.FromFileName(fileName);
-                var provider = fileManager.GetProvider(file);
+                var provider = fileManager.GetThingGraphProvider(file);
                 if (provider != null) {
                     provider.Open(file);
                     ThingGraphProvider = provider;

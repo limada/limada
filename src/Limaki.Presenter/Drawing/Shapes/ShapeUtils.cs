@@ -104,5 +104,7 @@ namespace Limaki.Drawing.Shapes {
                 ( value.Y > other.Y + other.Height ) ||
                 ( value.Y + value.Height ) < ( other.Y ) );
         }
+
+
     }
 }

@@ -36,6 +36,7 @@ using Limaki.WCF.Data;
 #endif
 using Limaki.Visuals;
 using Limada.Schemata;
+using Limada.PdfExporter;
 
 
 namespace Limaki.Tests.UseCases {
@@ -114,7 +115,7 @@ namespace Limaki.Tests.UseCases {
 
         }
 
-        public void ShowQuadTree(Scene scene) {
+        public void ShowQuadTree(IGraphScene<IVisual, IVisualEdge> scene) {
             var form = new Form ();
             var display = new WinformVisualsDisplay ();
             display.Dock = DockStyle.Fill;
@@ -246,25 +247,33 @@ namespace Limaki.Tests.UseCases {
                 //test.WriteDetail -= testMessage;
                 //test.WriteSummary -= testMessage;
 
-                var test = new WinformVisualsDisplayTest<VisualsDisplayTest1>();
-                test.WriteDetail += testMessage;
+                //var test = new WinformVisualsDisplayTest<VisualsDisplayTest1>();
+                //test.WriteDetail += testMessage;
 
-                test.Setup();
+                //test.Setup();
 
-                var form = (test.Test.TestForm as Form);
-                form.WindowState = FormWindowState.Normal;
+                //var form = (test.Test.TestForm as Form);
+                //form.WindowState = FormWindowState.Normal;
 
-                var button = new Button() { Text = "Test", Dock = DockStyle.Bottom };
-                form.Controls.Add(button);
+                //var button = new Button() { Text = "Test", Dock = DockStyle.Bottom };
+                //form.Controls.Add(button);
 
-                button.Click += (s, e) => {
-                    test.WriteSummary += testMessage;
-                    test.Test.SelectorVersusMulitSelectTest();
+                //button.Click += (s, e) => {
+                //    test.WriteSummary += testMessage;
+                //    test.Test.SelectorVersusMulitSelectTest();
 
-                    test.WriteDetail -= testMessage;
-                    test.WriteSummary -= testMessage;
-                };
-                test.TearDown();
+                //    test.WriteDetail -= testMessage;
+                //    test.WriteSummary -= testMessage;
+                //};
+                //test.TearDown();
+
+                var exporter = new ThingsToPdfProvider();
+                var scene = sender.GetCurrentDisplay().Data;
+                var sceneProvider = new SceneProvider();
+                sceneProvider.ExportTo(scene, exporter, DataBaseInfo.FromFileName("testExport.pdf"));
+                
+
+
             } catch (Exception e) {
                 MessageBox.Show(e.Message);
             } finally {

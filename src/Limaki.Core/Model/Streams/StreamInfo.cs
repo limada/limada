@@ -18,10 +18,10 @@ using System;
 using Limaki.Common;
 
 namespace Limaki.Model.Streams {
-	[TODO("find a better name for this class, eg. streamContent, streamData, streamRecord")]
+	[TODO("find a better name for this class, eg. streamContent, streamData, streamRecord, contentInfo")]
     public class StreamInfo {
         public CompressionType Compression = CompressionType.None;
-        public long StreamType = StreamTypes.Unknown;
+        public Id StreamType = StreamTypes.Unknown;
         public object Description=null;
         public object Source=null;
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Limaki.Common.Text.HTML.Parser {
-    /*  Hier werden tags rausgefischt. Tags zeichnen sich so aus:
+    /*  Hier werden Tags rausgefischt. Tags zeichnen sich so aus:
      *  Tag			beginnt mit '<', gefolgt von einem Buchstaben.
      *  Tagname		beginnt unmittelbar nach dem '<' bzw. dem '/' bei Endtags
      *  Attribut	beginnt nach dem ' '
@@ -22,8 +22,7 @@ namespace Limaki.Common.Text.HTML.Parser {
     /// und benachrichtigt die aufrufende Klasse am Ende jedes Tag(teil)s bzw. Textteils. 
     /// </summary>
     public class TagParser : ParserBase {
-        public TagParser(string content)
-            : base(content) {
+        public TagParser(string content): base(content) {
         }
 
         public TagParser(Stuff stuff)
@@ -32,38 +31,38 @@ namespace Limaki.Common.Text.HTML.Parser {
 
         private void Go() {
             _stuff.Status = Status.Text;
-            while (_stuff.ActAt < _stuff.Text.Length) {
+            while (_stuff.Position < _stuff.Text.Length) {
                 if (_stop) {
                     break;
                 }
-                _actual = _stuff.Text[_stuff.ActAt]; //actual ist das Zeichen an der aktuellen Stelle
-                Watch(); //Auf zur Untersuchung von actual und status
-                _stuff.ActAt++; //Auf zum nächsten Zeichen
+                _actual = _stuff.Text[_stuff.Position]; //Position ist das Zeichen an der aktuellen Stelle
+                Watch(); //Auf zur Untersuchung von Position und status
+                _stuff.Position++; //Auf zum nächsten Zeichen
             }
         }
 
 
-        public Action<Stuff> Element;
+        public Action<Stuff> DoElement;
 
         private void OnElement() {
-            if (Element != null) {
-                Element(_stuff);
+            if (DoElement != null) {
+                DoElement(_stuff);
             }
         }
 
-        public Action<Stuff> Tag;
+        public Action<Stuff> DoTag;
 
         private void OnTag() {
-            if (Tag != null) {
-                Tag(_stuff);
+            if (DoTag != null) {
+                DoTag(_stuff);
             }
         }
 
-        public Action<Stuff> Text;
+        public Action<Stuff> DoText;
 
         private void OnText() {
-            if (Text != null) {
-                Text(_stuff);
+            if (DoText != null) {
+                DoText(_stuff);
             }
         }
 
@@ -72,80 +71,80 @@ namespace Limaki.Common.Text.HTML.Parser {
             //Bei diesen Zeichen ist u.U. etwas zu unternehmen
             if (_stuff.Status.Equals(Status.Prename)) {
                 if (Letter(_actual)) {
-                    State(Status.Text);
-                    _stuff.ActAt--;
+                    State = Status.Text;
+                    _stuff.Position--;
                     OnText();
-                    _stuff.ActAt++;
-                    _stuff.StartAt = _stuff.ActAt;
-                    State(Status.Name);
+                    _stuff.Position++;
+                    _stuff.Origin = _stuff.Position;
+                    State = Status.Name;
                 }
             }
             if (_actual.Equals('<')) {
                 //Möglicherweise beginnt ein Tag
-                _stuff.StartTag = _stuff.ActAt;
-                State(Status.Prename);
+                _stuff.TagPosition = _stuff.Position;
+                State = Status.Prename;
             } else if (_actual.Equals('>')) {
                 if (_stuff.Status.Equals(Status.Text) == false) {
                     if (_stuff.Status.Equals(Status.Cite) == false) {
                         //Ein Tag endet
                         OnElement();
-                        _stuff.ActAt++;
+                        _stuff.Position++;
                         OnTag();
-                        _stuff.ActAt--;
-                        _stuff.StartAt = _stuff.ActAt + 1;
-                        State(Status.Text);
+                        _stuff.Position--;
+                        _stuff.Origin = _stuff.Position + 1;
+                        State = Status.Text;
                     }
                 }
             } else if (_actual.Equals('!')) {
                 if (_stuff.Status.Equals(Status.Prename)) {
-                    State(Status.Text);
-                    _stuff.ActAt--;
+                    State = Status.Text;
+                    _stuff.Position--;
                     OnText();
-                    _stuff.ActAt++;
-                    _stuff.StartAt = _stuff.ActAt;
-                    State(Status.Commenttag);
+                    _stuff.Position++;
+                    _stuff.Origin = _stuff.Position;
+                    State = Status.Commenttag;
                 }
             } else if (_actual.Equals('/')) {
                 if (_stuff.Status.Equals(Status.Prename)) {
-                    State(Status.Text);
-                    _stuff.ActAt--;
+                    State = Status.Text;
+                    _stuff.Position--;
                     OnText();
-                    _stuff.ActAt++;
-                    _stuff.StartAt = _stuff.ActAt;
-                    State(Status.Endtag);
+                    _stuff.Position++;
+                    _stuff.Origin = _stuff.Position;
+                    State = Status.Endtag;
                 } else if (_stuff.Status.Equals(Status.Name)) {
-                    State(Status.Solotag);
+                    State = Status.Solotag;
                 } else if (_stuff.Status.Equals(Status.Value)) {
-                    State(Status.Solotag);
+                    State = Status.Solotag;
                 } else if (_stuff.Status.Equals(Status.Attribute)) {
                     //Sollte nicht sein: Tag endet mit Attribut-Namen und Slash
-                    State(Status.Solotag);
+                    State = Status.Solotag;
                 }
             } else if (_actual.Equals('\"')) {
                 if (_stuff.Status.Equals(Status.Value)) {
-                    State(Status.Cite);
+                    State = Status.Cite;
                 } else if (_stuff.Status.Equals(Status.Cite)) {
-                    State(Status.Value);
+                    State = Status.Value;
                 }
             } else if (_actual.Equals('=')) {
                 if (_stuff.Status.Equals(Status.Attribute)) {
                     OnElement();
-                    _stuff.StartAt = _stuff.ActAt + 1;
-                    State(Status.Value);
+                    _stuff.Origin = _stuff.Position + 1;
+                    State = Status.Value;
                 }
             } else if (_actual.Equals(' ')) {
                 if (_stuff.Status.Equals(Status.Prename)) {
-                    State(Status.Text);
+                    State = Status.Text;
                 }
                 if (_stuff.Status.Equals(Status.Name)) {
                     OnElement();
-                    _stuff.StartAt = _stuff.ActAt + 1;
-                    State(Status.Attribute);
+                    _stuff.Origin = _stuff.Position + 1;
+                    State = Status.Attribute;
                 }
                 if (_stuff.Status.Equals(Status.Value)) {
                     OnElement();
-                    _stuff.StartAt = _stuff.ActAt + 1;
-                    State(Status.Attribute);
+                    _stuff.Origin = _stuff.Position + 1;
+                    State = Status.Attribute;
                 }
             }
         }
@@ -158,7 +157,7 @@ namespace Limaki.Common.Text.HTML.Parser {
         public void Parse(int starts) {
             if (_stuff != null) {
                 if (starts < _stuff.Text.Length) {
-                    _stuff.ActAt = starts;
+                    _stuff.Position = starts;
                     Go();
                 }
             }
@@ -167,7 +166,7 @@ namespace Limaki.Common.Text.HTML.Parser {
         public override bool Remove(int from, int to) {
             bool result = base.Remove(from, to);
             if (result && _stuff.Status.Equals(Status.Text) == false) {
-                State(Status.Text);
+                State = Status.Text;
             }
             return result;
         }

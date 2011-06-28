@@ -7,12 +7,11 @@ namespace Limaki.Model.Streams {
         public abstract IEnumerable<StreamTypeInfo> SupportedStreamTypes { get; }
 
         public abstract bool Saveable { get; }
-
+        public abstract bool Readable { get; }
 
         public virtual StreamInfo<Stream> Open(Stream stream) {
             var info = SupportingInfo(stream);
             if (info != null) {
-
                 return new StreamInfo<Stream>(
                     stream,
                     info.Compression,
@@ -38,7 +37,7 @@ namespace Limaki.Model.Streams {
         }
 
         public virtual void Save(StreamInfo<Stream> data, Uri uri) {
-            if (uri.IsFile) {
+            if (Saveable && uri.IsFile) {
                 var filename = IOUtils.UriToFileName(uri);
                 var file = new FileStream(filename, FileMode.Create);
                 var target = new BufferedStream(file);
@@ -65,7 +64,7 @@ namespace Limaki.Model.Streams {
 
         public virtual StreamInfo<Stream> Open(Uri uri) {
             var result = default(StreamInfo<Stream>);
-            if (uri.IsFile) {
+            if (Readable && uri.IsFile) {
                 var filename = IOUtils.UriToFileName(uri);
                 var file = new FileStream(filename, FileMode.Open);
 

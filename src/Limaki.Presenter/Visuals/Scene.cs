@@ -86,7 +86,7 @@ namespace Limaki.Visuals {
                     _shape = new RectangleShape();
 
                 if (SpatialIndex.BoundsDirty) {
-                    noHit = emptyPoint;
+                    _noHit = emptyPoint;
                 }
 
                 _shape.Data = SpatialIndex.Bounds;
@@ -224,8 +224,6 @@ namespace Limaki.Visuals {
         
         #region Action-Handling (selection, hit-tests, commandQueue)
 
-
-
         private IVisual _focused = null;
         public virtual IVisual Focused {
             get { return _focused; }
@@ -263,12 +261,12 @@ namespace Limaki.Visuals {
           
 
         static PointI emptyPoint = new PointI (int.MinValue, int.MinValue);
-        private PointI noHit = emptyPoint;
+        private PointI _noHit = emptyPoint;
 
-		public PointI NoHit {get{return noHit;}}
+		public PointI NoHit {get{return _noHit;}}
 		
 		protected IVisual TestHit(PointI p, int hitSize, HitTest hitTest) {
-            if (p==noHit) {
+            if (p==_noHit) {
                 return null;
             }
             if ((Focused != null) && hitTest(Focused, p, hitSize)) {
@@ -288,7 +286,7 @@ namespace Limaki.Visuals {
                 }
             }
 
-            noHit = p;
+            _noHit = p;
             return null;
         }
 

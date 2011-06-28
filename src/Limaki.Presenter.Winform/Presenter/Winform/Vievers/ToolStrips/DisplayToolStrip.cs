@@ -16,11 +16,11 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Limaki.Drawing;
-using Limaki.UseCases.Viewers.ToolStrips;
 using System.ComponentModel;
 using Limaki.Common;
+using Limaki.UseCases.Viewers.ToolStripViewers;
 
-namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
+namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
     public partial class DisplayToolStrip : ToolStrip, IDisplayTool {
         public DisplayToolStrip() {
             InitializeComponent();
@@ -102,8 +102,8 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
         }
 
         private void ZoomState(object sender, EventArgs e) {
-            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
-            ZoomState zoomState = Drawing.ZoomState.Original;
+            var menuItem = sender as ToolStripMenuItem;
+            var zoomState = Drawing.ZoomState.Original;
             if (menuItem == this.zoomMenuFittoHeigth) {
                 zoomState = Drawing.ZoomState.FitToHeigth;
             } else if (menuItem == this.zoomMenuFitToScreen) {

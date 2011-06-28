@@ -80,7 +80,7 @@ namespace Limaki.Presenter.Viewers.Winform {
     }
 
     public class ScenePainter:GraphScenePainter<IVisual, IVisualEdge> {
-        public virtual void Instrument() {
+        public virtual void Compose() {
             var instrumenter = new GraphScenePainterGdiComposer<IVisual, IVisualEdge>();
 
             this.GraphItemRenderer = new VisualsRenderer();

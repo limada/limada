@@ -4,7 +4,7 @@ namespace Limaki.Common.Text.HTML.Parser {
     public class ParserBase {
         protected Stuff _stuff;
         protected char _actual;
-        protected Boolean _stop;
+        protected bool _stop;
 
 
         public ParserBase(string content) {
@@ -19,12 +19,8 @@ namespace Limaki.Common.Text.HTML.Parser {
             _stuff = new Stuff(content);
         }
 
-        public void Stuff(Stuff stuff) {
-            _stuff = stuff;
-        }
-        public Stuff Stuff() {
-            return _stuff;
-        }
+        
+        public Stuff Stuff { get { return _stuff; } set { _stuff = value; } }
 
         public void Stop() {
             if (_stop) {
@@ -35,7 +31,7 @@ namespace Limaki.Common.Text.HTML.Parser {
 
         }
 
-        public Boolean Replace(int from, int to, string with) {
+        public bool Replace(int from, int to, string with) {
             if (Remove(from, to)) {
                 _stuff.Text.Insert(from, with);
                 return true;
@@ -43,12 +39,26 @@ namespace Limaki.Common.Text.HTML.Parser {
             return false;
         }
 
-        public virtual Boolean Remove(int from, int to) {
+        public bool Insert(int from, string with) {
+            var  len = with.Length;
+
+            if (len >0 && from < _stuff.Text.Length){
+                _stuff.Text.Insert(from, with);
+                _stuff.Origin = from + len;
+                _stuff.Position = _stuff.Origin;
+                _stuff.TagPosition = _stuff.Origin;
+                return true;
+            }
+            return false;
+
+        }
+
+        public virtual bool Remove(int from, int to) {
             if ((from < _stuff.Text.Length) && (to <= _stuff.Text.Length)) {
                 _stuff.Text.Remove(from, to - from);
-                _stuff.StartAt = from - 1;
-                _stuff.ActAt = from - 1;
-                _stuff.StartTag = _stuff.StartAt;
+                _stuff.Origin = Math.Max(from - 1,0);
+                _stuff.Position = _stuff.Origin;
+                _stuff.TagPosition = _stuff.Origin;
 
                 return true;
             }
@@ -56,11 +66,9 @@ namespace Limaki.Common.Text.HTML.Parser {
         }
 
 
-        protected void State(Status status) {
-            _stuff.Status = status;
-        }
+        protected Status State { set { _stuff.Status = value; } }
 
-        public static Boolean Letter(char source) {
+        public static bool Letter(char source) {
             return (source >= 'a' && source <= 'z') || (source >= 'A' && source <= 'Z');
         }
     }

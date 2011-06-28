@@ -1,53 +1,78 @@
 ﻿using System.Collections.Generic;
 
-namespace Limaki.Common.Text.HTML.Parser{
-	
-	public class TagEnder{
-		private Stack<string> _stack;
-		public TagEnder(){
-			_stack = new Stack<string>();
-		}
-		public void Set(string name, Status status){
-			name = Name(name);
-			if(status == Status.Endtag){
-				Remove(name);
-			}
-			else if(status == Status.Name){
-				Add(name);
-			}
-			else if(status == Status.Attribute){
-				Add(name);
-			}
-			else if(status == Status.Value){
-				Add(name);
-			}
-		}
-		private string Name(string name){
-			if(name.StartsWith("<")){
-			    var pos = name.IndexOf(" ");
-                if (pos != -1){
-					return name.Substring(1, pos - 1);
-				}else{
-					return name.Substring(1, name.Length - 2);
-				}
-			}
-			return name;
-		}
-		public void Add(string tag){
-			_stack.Push(tag);
-		}
-		public void Remove(string tag){
-			if (tag.Equals(_stack.Peek().ToString())){
-				_stack.Pop();
-			}
-		}
-    
-		public string Get(){
-			string result = "";
-			while(_stack.Count > 0){
-				result = result + "</" + _stack.Pop() + ">";
-			}
-			return result;
-		}
-	}
+namespace Limaki.Common.Text.HTML.Parser {
+
+    public class TagEnder {
+        private Stack<string> _stack;
+        public Stack<string> Stack { get { return _stack; } }
+        public TagEnder() {
+            _stack = new Stack<string>();
+        }
+
+        public bool Set(string name, Status status) {
+           if (status == Status.Endtag) {
+                return Remove(name);
+            } else {
+                Add(name,status);
+                return true;
+            }
+        }
+
+        public string Name(string name) {
+            name = name.Replace("/", "");
+            if (name.StartsWith("<")) {
+                var pos = name.IndexOf(" ");
+                if (pos != -1) {
+                    return name.Substring(1, pos - 1);
+                } else {
+                    return name.Substring(1, name.Length - 2);
+                }
+            }
+            return name;
+        }
+
+        public bool Add(string tag, Status status) {
+            var result = (status == Status.Name || status == Status.Attribute || status == Status.Value);
+            if (result)
+                _stack.Push(tag);
+            return result;
+        }
+
+        public bool Remove(string tag) {
+            var result = _stack.Count > 0 && tag == _stack.Peek();
+            if (result) {
+                _stack.Pop();
+            }
+            return result;
+        }
+
+        public string CloseTags() {
+            var result = "";
+            while (_stack.Count > 0) {
+                result = result + "</" + _stack.Pop() + ">";
+            }
+            return result;
+        }
+        public void Clear() {
+            _stack.Clear();
+        }
+
+        public string LastTag() {
+            if (_stack.Count > 0)
+                return _stack.Peek();
+            return "";
+        }
+
+        public string CloseTag(string tag) {
+            var result = "";
+            while (_stack.Count > 0) {
+                var atag = _stack.Peek();
+                if (atag == tag)
+                    break;
+                _stack.Pop();
+                result += "</" + atag + ">";
+            }
+            return result;
+        }
+    }
 }

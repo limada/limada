@@ -24,7 +24,7 @@ namespace Limaki.Tests.Visuals {
        public class SceneTreadTester {
             public static int testCount = 0;
             public static object myLock = new StringBuilder();
-            public Scene scene = null;
+            public IGraphScene<IVisual, IVisualEdge> scene = null;
             public void DoSomething() {
                 for (int i = 0; i < 100; i++)
                     foreach (var visual in scene.Elements) {
@@ -38,8 +38,8 @@ namespace Limaki.Tests.Visuals {
             }
         }
 
-        private Scene _data = null;
-        public Scene Data {
+       private IGraphScene<IVisual, IVisualEdge> _data = null;
+       public IGraphScene<IVisual, IVisualEdge> Data {
             get {
                 if (_data == null) {
                     _data = new BenchmarkOneSceneFactory().Scene;
@@ -49,7 +49,7 @@ namespace Limaki.Tests.Visuals {
             set { _data = value; }
         }
 
-        public SceneThreadTest(Scene data) {
+        public SceneThreadTest(IGraphScene<IVisual, IVisualEdge> data) {
             this.Data = data;
         }
 

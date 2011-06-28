@@ -20,14 +20,12 @@ using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
 using Limaki.Presenter.Layout;
-using Limaki.Visuals;
 using Limaki.Presenter.UI;
-
-
+using Limaki.Visuals;
 
 namespace Limaki.Presenter.Visuals.UI {
-    public class SceneTools {
-        public static void ChangeShape(Scene scene, IVisual visual, IShape newShape) {
+    public static class SceneTools {
+        public static void ChangeShape(IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IShape newShape) {
             if (visual != null && !(visual is IVisualEdge)) {
                 if (newShape != null) {
                     newShape = (IShape)newShape.Clone();
@@ -49,7 +47,7 @@ namespace Limaki.Presenter.Visuals.UI {
             }
         }
 
-        public static void ChangeStyle(Scene scene, IVisual visual, IStyleGroup newStyle) {
+        public static void ChangeStyle(IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IStyleGroup newStyle) {
             if (visual != null) {
                 if (newStyle != null) {
                    var changeStyle = 
@@ -65,7 +63,7 @@ namespace Limaki.Presenter.Visuals.UI {
             }
         }
 
-        public static void ChangeMarkers(Scene scene, IEnumerable<IVisual> elements, string text) {
+        public static void ChangeMarkers(IGraphScene<IVisual, IVisualEdge> scene, IEnumerable<IVisual> elements, string text) {
             if (scene.Markers != null) {
                 scene.Markers.ChangeMarkers (elements, text);
                 foreach (var visual in elements) {
@@ -74,7 +72,7 @@ namespace Limaki.Presenter.Visuals.UI {
             }
         }
 
-        public static IVisualEdge CreateEdge(Scene scene) {
+        public static IVisualEdge CreateEdge(IGraphScene<IVisual, IVisualEdge> scene) {
             IVisualEdge edge = null;
             if (scene != null && scene.Markers != null) {
                 edge = scene.Markers.CreateDefaultEdge() as IVisualEdge;
@@ -86,7 +84,7 @@ namespace Limaki.Presenter.Visuals.UI {
             return edge;
         }
 
-        public static void CreateEdge(Scene scene, IVisual root, IVisual leaf) {
+        public static void CreateEdge(IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual leaf) {
             if (scene != null && leaf != null && root != null && root != leaf) {
                 IVisualEdge edge = CreateEdge (scene);
                 
@@ -103,7 +101,7 @@ namespace Limaki.Presenter.Visuals.UI {
             }
         }
 
-        public static void AddItem(Scene scene, IVisual item, IGraphLayout<IVisual,IVisualEdge> layout, PointI pt) {
+        public static void AddItem(IGraphScene<IVisual, IVisualEdge> scene, IVisual item, IGraphLayout<IVisual,IVisualEdge> layout, PointI pt) {
             bool allowAdd = true;
             if (scene == null)
                 return;
@@ -118,7 +116,7 @@ namespace Limaki.Presenter.Visuals.UI {
             }
         }
 
-        public static IVisual PlaceVisual(IVisual root, IVisual visual, Scene scene, IGraphLayout<IVisual,IVisualEdge> layout) {
+        public static IVisual PlaceVisual(IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual visual, IGraphLayout<IVisual, IVisualEdge> layout) {
             if (visual != null && scene !=null) {
                 PointI pt = (PointI)layout.Border;
                 if (root != null) {

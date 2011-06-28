@@ -21,10 +21,11 @@ using Limaki.Visuals;
 
 namespace Limaki.Presenter.Viewers.Winform {
     public class ImageExporter : ScenePainter {
-        public ImageExporter(Scene scene, IGraphLayout<IVisual,IVisualEdge> layout):base() {
+        public ImageExporter(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout)
+            : base() {
             this.Data = scene;
             this.Layout = layout;
-            Instrument();
+            Compose();
         }
 
         public virtual void Paint(Graphics g, Rectangle clipRect) {

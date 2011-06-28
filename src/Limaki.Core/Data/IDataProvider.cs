@@ -22,6 +22,7 @@ namespace Limaki.Data {
         void Open ( DataBaseInfo FileName );
         void Open();
         bool Saveable { get; }
+        bool Readable { get; }
         void Save();
         void SaveAs(T source, DataBaseInfo FileName);
         void Close();

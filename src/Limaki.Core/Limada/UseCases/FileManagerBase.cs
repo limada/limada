@@ -5,6 +5,7 @@ using Limada.Data;
 using Limada.Model;
 using Limaki.Common;
 using Limaki.Data;
+using System.Collections.Generic;
 
 namespace Limada.UseCases {
 	public class FileManagerBase {
@@ -25,16 +26,24 @@ namespace Limada.UseCases {
             }           
         }
 		
-		public virtual IThingGraphProvider GetProvider(DataBaseInfo info) {
+		public virtual IThingGraphProvider GetThingGraphProvider(DataBaseInfo info) {
             var providers = Registry.Pool.TryGetCreate<DataProviders<IThingGraph>>();
             var result =  providers.Find(info) as IThingGraphProvider;
             if (result != null)
                 result.StateMessage = this.StateMessage;
             return result;
         }
-		
+
+        public virtual IDataProvider<IEnumerable<IThing>> GetThingsProvider(DataBaseInfo info) {
+            var providers = Registry.Pool.TryGetCreate<DataProviders<IEnumerable<IThing>>>();
+            var result = providers.Find(info);
+            if (result != null)
+                result.StateMessage = this.StateMessage;
+            return result;
+        }
+
 		public virtual bool OpenFile(DataBaseInfo fileName) {
-            IThingGraphProvider provider = GetProvider(fileName);
+            IThingGraphProvider provider = GetThingGraphProvider(fileName);
             bool result = false;
             if (provider != null) {
                 this.ThingGraphProvider.Close();

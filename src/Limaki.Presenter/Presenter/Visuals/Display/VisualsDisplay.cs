@@ -27,9 +27,9 @@ using Id = System.Int64;
 
 namespace Limaki.Presenter.Visuals {
     public class VisualsDisplay: GraphSceneDisplay<IVisual,IVisualEdge> {
-        
-        public virtual new Scene Data {
-            get { return base.Data as Scene; }
+
+        public virtual new IGraphScene<IVisual, IVisualEdge> Data {
+            get { return base.Data; }
             set { base.Data = value; }
         }
 

@@ -23,6 +23,7 @@ namespace Limaki.Data {
         public abstract string Extension { get; }
         public abstract string Description { get; }
         public abstract bool Saveable { get; }
+        public abstract bool Readable { get; }
         public abstract T Data { get; set; }
         public abstract void Open(DataBaseInfo FileName);
         public abstract void Open();

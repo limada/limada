@@ -84,7 +84,7 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
         public IVisual PlaceVisual(IDataObject dataObject, IGraphScene<IVisual,IVisualEdge> scene, IGraphLayout<IVisual,IVisualEdge> layout) {
             var visual = GetVisual (dataObject, scene.Graph,false);
-            SceneTools.PlaceVisual(scene.Focused,visual,scene as Scene,layout);
+            SceneTools.PlaceVisual(scene as Scene,scene.Focused, visual, layout);
             //scene.Selected.Clear();
             //scene.Focused = visual;
             return visual;

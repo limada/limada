@@ -11,20 +11,21 @@ using Limaki.Common;
 using System.Collections.Generic;
 using Limaki.Common.Collections;
 using System.Linq;
+using Limaki.Drawing;
 
 namespace Limada.View {
     public class SceneProvider : ISceneProvider {
-        public IThingGraph ThingGraph = null;
+        public IThingGraph ThingGraph {get;set;}
 
-        public Scene Scene { get; set; }
+        public IGraphScene<IVisual, IVisualEdge> Scene { get; set; }
 
-        public bool useSchema = true;
+        public bool UseSchema = true;
 
         protected virtual IGraph<IVisual, IVisualEdge> CreateGraphView(IThingGraph thingGraph) {
             SchemaFacade.MakeMarkersUnique(thingGraph);
 
             IThingGraph schemaGraph = thingGraph;
-            if (useSchema && !(thingGraph is SchemaThingGraph)) {
+            if (UseSchema && !(thingGraph is SchemaThingGraph)) {
                 schemaGraph = new SchemaThingGraph(this.ThingGraph);
             }
 
@@ -36,7 +37,7 @@ namespace Limada.View {
         }
 
         public virtual Scene CreateScene(IThingGraph thingGraph) {
-            Scene scene = new Scene();
+            var scene = new Scene();
             scene.Graph = CreateGraphView(thingGraph);
             return scene;
 
@@ -122,9 +123,8 @@ namespace Limada.View {
             SaveCurrent();
         }
 
-        public virtual void Export(Scene scene, IThingGraph target) {
-            var graph =  GraphPairExtension<IVisual, IVisualEdge>
-                .Source<IThing, ILink>(scene.Graph);
+        public virtual void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IThingGraph target) {
+            var graph =  GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(scene.Graph);
 
             if (graph != null) {
                 // get a ThingGraphView with only the things that are in the view
@@ -139,11 +139,11 @@ namespace Limada.View {
             
         }
 
-        public virtual void ExportAs(Scene scene, DataBaseInfo fileName) {
 
+        public virtual void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene, DataBaseInfo fileName) {
             var provider = Provider.Clone();
             provider.Open (fileName);
-            Export(scene, provider.Data);
+            ExportTo(scene, provider.Data);
             provider.Close ();
         }
 
@@ -157,10 +157,24 @@ namespace Limada.View {
             this.ThingGraph = null;
         }
 
-        public Action<Scene> BeforeOpen { get; set; }
-        public Action<Scene> DataBound { get; set; }
-        public Action<Scene> BeforeClose { get; set; }
-        public Action<Scene> AfterClose { get; set; }
+        public void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IDataProvider<IEnumerable<IThing>> exporter, DataBaseInfo fileName) {
+            var visuals = scene.Selected.Elements;
+            if(visuals.Count()==0)
+                visuals = scene.Graph.Where(v => !(v is IVisualEdge));
+            if (visuals.Count() == 0)
+                return;
+            exporter.SaveAs(SortedThings(scene.Graph, visuals), fileName);
+        }
+
+        private IEnumerable<IThing> SortedThings(IGraph<IVisual, IVisualEdge> graph, IEnumerable<IVisual> items) {
+            var result = items.OrderBy(v => v.Location, new Limaki.Drawing.Shapes.LeftRightTopBottomComparer());
+            return result.Select(v => graph.ThingOf(v));
+        }
+
+        public Action<IGraphScene<IVisual, IVisualEdge>> BeforeOpen { get; set; }
+        public Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
+        public Action<IGraphScene<IVisual, IVisualEdge>> BeforeClose { get; set; }
+        public Action<IGraphScene<IVisual, IVisualEdge>> AfterClose { get; set; }
 
     }
 }

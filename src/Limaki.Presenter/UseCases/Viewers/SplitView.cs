@@ -177,7 +177,7 @@ namespace Limaki.UseCases.Viewers {
 
         #endregion
 
-        public void ChangeData(Scene scene) {
+        public void ChangeData(IGraphScene<IVisual, IVisualEdge> scene) {
             ClearHistory();
 
             CurrentDisplay = null;
@@ -445,7 +445,7 @@ namespace Limaki.UseCases.Viewers {
                 PointI pt = new PointI(layout.Border.Width, scene.Shape.BoundsRect.Bottom);
                 SceneTools.AddItem(scene, visual, layout, pt);
             } else {
-                SceneTools.PlaceVisual(root, visual, scene, layout);
+                SceneTools.PlaceVisual(scene, root, visual, layout);
             }
             scene.Selected.Clear();
             scene.Focused = visual;

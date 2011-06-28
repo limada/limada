@@ -271,7 +271,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\Mono.Net.3.0\Mono.HashSet3.cs" />
     <Compile Include="Limada\UseCases\FileManagerBase.cs" />
-    <Compile Include="Limada\UseCases\StreamImportManagerBase.cs" />
+    <Compile Include="Model\Content\ContentProviderManagerBase.cs" />
     <Compile Include="Model\Streams\IStreamProvider.cs" />
     <Compile Include="Common\IOUtils.cs" />
     <Compile Include="Model\Content\RtfStreamProvider.cs" />

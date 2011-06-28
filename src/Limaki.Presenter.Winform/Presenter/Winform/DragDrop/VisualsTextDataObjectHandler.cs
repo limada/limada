@@ -81,19 +81,19 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
                 } else if (dataObject.ContainsText(TextDataFormat.Html)) {
                     string s = null;
-                    s = dataObject.GetText(TextDataFormat.Html);
+                    var r = DataObjectHelper.GetData((IDataObject)dataObject, System.Windows.Forms.DataFormats.Html, -1);//dataObject.GetText(TextDataFormat.Html);
+                    if (r!=null)
+                        s = System.Text.Encoding.UTF8.GetString(r); 
                     textInfo = HTMLPostProcess(s);
                     textInfo.StreamType = StreamTypes.HTML;
-
-                    var format = "text/html";//"HTML Format";//
-                    if (dataObject.GetDataPresent(format)) {
-                        encoding = System.Text.Encoding.Unicode;
-                        s = GetString(dataObject, format, encoding);
-                        textInfo.Data = s;
+                    if (false) {
+                        var format = "HTML Format"; //"text/html";//
+                        if (dataObject.GetDataPresent(format)) {
+                            encoding = System.Text.Encoding.UTF8;
+                            s = GetString(dataObject, format, encoding);
+                            textInfo.Data = s;
+                        }
                     }
-                    
-                    
-
                 }
             }
 
@@ -143,6 +143,7 @@ namespace Limaki.Presenter.Winform.DragDrop {
                 if (subText != null)
                     int.TryParse (subText, out endIndex);
                 if (startIndex != -1 && endIndex != -1) {
+                    endIndex = Math.Min(text.Length, endIndex);
                     result.Source = Between (text, "SourceURL:", "\r\n", 0);
                     result.Data = text.Substring (startIndex, endIndex - startIndex);
                 }
@@ -163,6 +164,8 @@ namespace Limaki.Presenter.Winform.DragDrop {
     }
 }
 
+namespace Limaki.Presenter.Winform.DragDrop.Interop {
+}
 
 /*
 function txbDragDropHandler.DropHTML(const dataObj: IDataObject;
@@ -171,11 +174,13 @@ var lItem:txbItem;
     PlainDone,RTFDone,PlainOnly:boolean;
     PlainText,RTFText,DescText,URLText,FileName:string;
     iStart,iEnd:integer;
+ 
     function PostProcess(const Source:string):string;
     var iLen,i:integer;
     begin
         result := Utf8ToAnsi(Source);
     end;
+ 
 begin
      PlainDone := false;
      RTFDone := false;
@@ -269,3 +274,6 @@ begin
 
 end;
 */
+
+
+

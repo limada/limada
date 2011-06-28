@@ -29,10 +29,13 @@ namespace Limaki.Model.Streams {
 
         StreamInfo<Stream> Open(Stream stream);
         StreamInfo<Stream> Open(Uri uri);
-
+        
+        bool Readable { get; }
         bool Saveable { get; }
 
         void Save(StreamInfo<Stream> data, Uri uri);
 
     }
+
+   
 }

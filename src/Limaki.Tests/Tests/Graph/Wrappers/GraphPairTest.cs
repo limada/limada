@@ -19,7 +19,6 @@ using Limaki.Tests.Graph.Model;
 using Limaki.Tests.View.Visuals;
 using Limaki.Tests.Visuals;
 using Limaki.UnitTest;
-using Limaki.View;
 using Limaki.Visuals;
 using NUnit.Framework;
 

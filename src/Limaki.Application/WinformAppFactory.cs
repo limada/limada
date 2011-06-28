@@ -30,7 +30,7 @@ namespace Limaki.App {
             factory.DeviceComposer = deviceInstrumenter;
             var useCase = factory.Create();
 
-            factory.Instrument(useCase);
+            factory.Compose(useCase);
 
             var testCases = new TestCases();
             testCases.testMessage = (s, m) => {

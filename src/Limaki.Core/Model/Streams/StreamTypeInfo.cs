@@ -10,7 +10,7 @@
             this.StreamType = streamType;
             this.Extension = extension;
             this.MimeType = mimeType;
-            this.StreamTypeDescription = streamTypeDescription;
+            this.Description = streamTypeDescription;
             this.Compression = Compression;
         }
 
@@ -28,7 +28,7 @@
 
         public CompressionType Compression { get; set; }
         public long StreamType { get; set; }
-        public string StreamTypeDescription { get; set; }
+        public string Description { get; set; }
         public string Extension { get; set; }
         public string MimeType { get; set; }
         public Magic[] Magics { get; set; }

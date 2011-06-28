@@ -42,6 +42,10 @@ namespace Limada.Data {
             get { return false; }
         }
 
+        public override bool Readable {
+            get { return false; }
+        }
+
         public override void Open() {
             
         }
@@ -70,7 +74,8 @@ namespace Limada.Data {
         }
 
         public override IDataProvider<IThingGraph> Clone() {
-            return new MemoryThingGraphProvider ();
+            return new MemoryThingGraphProvider { StateMessage = this.StateMessage };
+            
         }
     }
 }

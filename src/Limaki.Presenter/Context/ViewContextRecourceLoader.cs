@@ -3,7 +3,6 @@ using Limaki.Common.IOC;
 using Limaki.Drawing;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Streams;
-using Limaki.View;
 using System.Reflection;
 using System;
 using Limaki.Visuals;

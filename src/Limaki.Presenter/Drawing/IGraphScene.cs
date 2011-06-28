@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Limaki.Actions;
 using Limaki.Common;
 using System;
+using Limaki.Graphs.Extensions;
 
 namespace Limaki.Drawing {
     /// <summary>
@@ -15,6 +16,7 @@ namespace Limaki.Drawing {
     where TEdge:TItem, IEdge<TItem> {
         
         IGraph<TItem, TEdge> Graph { get; set; }
+        int Count { get; }
 
         /// <summary>
         /// Requests
@@ -49,10 +51,16 @@ namespace Limaki.Drawing {
 
         TItem Hit ( PointI p, int hitSize );
         TItem HitBorder ( PointI p, int hitSize );
+        PointI NoHit { get; }
         IShape ItemShape ( TItem item );
 
         void Clear();
         void ClearView();
+
+        IMarkerFacade<TItem, TEdge> Markers { get; set; }
+        IEnumerable<TEdge> Twig(TItem visual);
+
+        
     }
 
     public interface ISpatialIndex<TItem> {

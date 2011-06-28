@@ -1,7 +1,7 @@
 ﻿namespace Limaki.Common.Text.HTML.Parser{
 	public class TagModifier{
-		Tag Original = null;
-		Tag Modified = null;
+		Tag Original {get;set;}
+        Tag Modified { get; set; }
 		public TagModifier(){
 		}
 		public TagModifier(Tag original){

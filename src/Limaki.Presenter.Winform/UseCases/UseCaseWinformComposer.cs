@@ -13,7 +13,7 @@ using Limaki.UseCases.Viewers;
 using Limaki.UseCases.Viewers.StreamViewers;
 using Limaki.UseCases.Winform.Viewers;
 using Limaki.UseCases.Winform.Viewers.StreamViewers;
-using Limaki.UseCases.Winform.Viewers.ToolStrips;
+using Limaki.UseCases.Winform.Viewers.ToolStripViewers;
 using Limaki.Presenter.Winform.Controls;
 
 namespace Limaki.UseCases.Winform {
@@ -112,11 +112,12 @@ namespace Limaki.UseCases.Winform {
                 new ToolStripMenuItem(l["Export"], null, new ToolStripMenuItem[] {
                     new ToolStripMenuItem(l["current view ..."], null, (s, e) => { useCase.ExportCurrentView(); }),
                     new ToolStripMenuItem(l["as image ..."], null, (s, e) => { this.ExportAsImage(useCase); }),
-                    new ToolStripMenuItem(l["Content..."], null, (s, e) => { useCase.ExportContent(); }),
+                    new ToolStripMenuItem(l["Content ..."], null, (s, e) => { useCase.ExportContent(); }),
+                    new ToolStripMenuItem(l["Report ..."], null, (s, e) => { useCase.ExportThings(); }),
                 }),
 				new ToolStripMenuItem(l["Import"], null, new ToolStripMenuItem[] { 
 					new ToolStripMenuItem(l["Content ..."], null, (s, e) => { useCase.ImportContent(); }),
-                    new ToolStripMenuItem(l["File from previous version ..."], null, (s, e) => { useCase.ImportRawFile(); })
+                    new ToolStripMenuItem(l["File from previous version ..."], null, (s, e) => { useCase.ImportThingGraphRaw(); })
 				}),
                 new ToolStripMenuItem(l["Print ..."], null, (s, e) => { this.Print(useCase); }),
                 new ToolStripMenuItem(l["PrintPreview ..."], null, (s, e) => { this.PrintPreview(useCase); }),

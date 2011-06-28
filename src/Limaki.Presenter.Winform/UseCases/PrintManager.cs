@@ -7,11 +7,10 @@ using System.Windows.Forms;
 namespace Limaki.UseCases.Winform {
     public class PrintManager {
         ImageExporter painter = null;
+
+        public PrintDocument CreatePrintDocument(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout) {
         
-        public PrintDocument CreatePrintDocument(Scene scene, IGraphLayout<IVisual,IVisualEdge> layout) {
-        
-            this.painter =
-                new ImageExporter(scene, layout);
+            this.painter = new ImageExporter(scene, layout);
 
             painter.Viewport.ClipOrigin = scene.Shape.Location;
 

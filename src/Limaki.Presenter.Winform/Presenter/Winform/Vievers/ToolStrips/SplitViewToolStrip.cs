@@ -15,13 +15,12 @@
 using System;
 using System.Windows.Forms;
 using Limaki.Common;
-using Limaki.UseCases.Viewers.ToolStrips;
-using Limaki.UseCases.Winform.Viewers.ToolStrips;
+using Limaki.UseCases.Winform.Viewers.ToolStripViewers;
 using Limaki.UseCases.Viewers;
 using Limaki.Presenter.Visuals;
 using System.ComponentModel;
 
-namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
+namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
     public partial class SplitViewToolStrip : ToolStrip {
         public SplitViewToolStrip() {
             InitializeComponent();

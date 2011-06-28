@@ -3,32 +3,46 @@
 namespace Limaki.Common.Text.HTML.Parser {
 	
 	public class Stuff{
-	
-		public StringBuilder Text;
+        public Stuff(string content) {
+            Text = new StringBuilder(content);
+            Position = 0;
+            Origin = 0;
+            TagPosition = 0;
+            Status = Status.None;
+        }
+
+        public StringBuilder Text { get; set; }
 		
         /// <summary>
         /// Cursor-Position
         /// </summary>
-		public int ActAt;
-		
-		public int StartAt;
-		
-		public int StartTag;
-		
-        public Status Status;
-		
-		internal Stuff(string content){
-			Text = new StringBuilder(content);
-			ActAt = 0;
-			StartAt = 0;
-			StartTag = 0;
-			Status = Status.None;
-		}
-        public string Element() {
-            return Text.ToString().Substring(StartAt, ActAt - StartAt);
-        }
-        public string Tag() {
-            return Text.ToString().Substring(StartTag, ActAt - StartTag);
-        }
+        public int Position { get; set; }
+
+        public int Origin { get; set; }
+
+        public int TagPosition { get; set; }
+
+        public Status Status { get; set; }
+
+
+	    public string Element {
+	        get {
+	            var len = Position - Origin;
+	            var result = new char[len];
+	            Text.CopyTo(Origin, result, 0, len);
+	            return new string(result);
+	            return Text.ToString().Substring(Origin, len);
+	        }
+	    }
+
+	    public string Tag {
+	        get {
+	            var len = Position - TagPosition;
+	            var result = new char[len];
+	            Text.CopyTo(TagPosition, result, 0, len);
+	            return new string(result);
+	            return Text.ToString().Substring(TagPosition, Position - TagPosition);
+	        }
+	    }
 	}
 }

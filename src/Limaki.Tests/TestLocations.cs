@@ -24,8 +24,8 @@ namespace Limaki.Tests {
         public static string AdressExample_pib = TestDataDir + @"ADRESSEXAMPLE.pib";
 
         public static string Sample4_pib = TestDataDir+@"sample_4.pib";
-        public static string Sample4_Persons = "personen";
-        public static long Sample4_Node1 = unchecked((long)0x0D0A3C7B7F6A4D22);
+        public static string Sample4_Persons = "persons";
+        public static long Sample4_Node1 = unchecked((long)0x0D0A3E7B7D1A4D22);
 
     }
 }

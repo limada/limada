@@ -20,6 +20,7 @@ using Limaki.Presenter.Display;
 using Limaki.UseCases.Viewers;
 using Limaki.UseCases.Viewers.ToolStrips;
 using Limaki.Presenter.Visuals;
+using Limaki.UseCases.Viewers.ToolStripViewers;
 using Limaki.Visuals;
 using Limaki.Drawing;
 using Limaki.Model.Streams;
@@ -91,14 +92,22 @@ namespace Limaki.UseCases {
         public void ExportCurrentView() {
             var display = GetCurrentDisplay ();
             if (display != null) {
-                FileManager.ExportAsFile (display.Data);
+                FileManager.ExportAsThingGraph (display.Data);
             }
         }
-        public void ImportRawFile() {
+
+        public void ExportThings() {
+            var display = GetCurrentDisplay();
+            if (display != null) {
+                FileManager.ExportThingsAs(display.Data);
+            }
+        }
+        public void ImportThingGraphRaw() {
             SaveChanges();
             FileManager.ShowEmptyThingGraph();
-            FileManager.ImportRawFile();
+            FileManager.ImportThingGraphRaw();
         }
+
         public void Search() {
             this.SplitView.DoSearch ();
         }
@@ -115,26 +124,26 @@ namespace Limaki.UseCases {
             }
         }
 
-		public StreamImportManager StreamImportManager { get; set; }
+		public ContentProviderManager ContentProviderManager { get; set; }
 		public void ImportContent() {
-            StreamImportManager.OpenFile ();
+            ContentProviderManager.OpenFile ();
         }
 		
 		public void ImportContent(StreamInfo<Stream> content){
 			var display=GetCurrentDisplay();
 			if(display!=null){
-				StreamImportManager.ImportContent(content,display.Data,display.Layout);
+				ContentProviderManager.ImportContent(content,display.Data,display.Layout);
 			}                  
 		}
 
         public void ExportContent() {
-            StreamImportManager.SaveFile();
+            ContentProviderManager.SaveFile();
         }
 
-        public StreamInfo<Stream> GetExportContent() {
+        public StreamInfo<Stream> ExtractContent() {
             var display = GetCurrentDisplay();
             if (display != null) {
-                return StreamImportManager.ExportContent(display.Data);
+                return ContentProviderManager.ExtractContent(display.Data);
             }
             return null;
         }
@@ -155,9 +164,9 @@ namespace Limaki.UseCases {
             useCase.FileManager = new FileManager ();
             useCase.FileManager.OpenFileDialog = new FileDialogMemento();
             useCase.FileManager.SaveFileDialog = new FileDialogMemento();
-			useCase.StreamImportManager = new StreamImportManager();
-			useCase.StreamImportManager.OpenFileDialog = new FileDialogMemento();
-            useCase.StreamImportManager.SaveFileDialog = new FileDialogMemento();
+			useCase.ContentProviderManager = new ContentProviderManager();
+			useCase.ContentProviderManager.OpenFileDialog = new FileDialogMemento();
+            useCase.ContentProviderManager.SaveFileDialog = new FileDialogMemento();
 
             useCase.FavoriteManager = new FavoriteManager();
         }
@@ -191,11 +200,11 @@ namespace Limaki.UseCases {
             
             splitView.Check ();
 			
-			var streamManager = useCase.StreamImportManager;
+			var streamManager = useCase.ContentProviderManager;
 			streamManager.FileDialogShow = useCase.FileDialogShow;
             streamManager.MessageBoxShow = useCase.MessageBoxShow;
 			streamManager.Import = useCase.ImportContent;
-            streamManager.Export = useCase.GetExportContent;
+            streamManager.Export = useCase.ExtractContent;
         }
     }
 }

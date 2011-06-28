@@ -15,8 +15,12 @@
 
 using System;
 using Limada.Data;
+using Limada.Model;
 using Limaki.Data;
 using Limaki.Visuals;
+using Limaki.Drawing;
+using System.Collections.Generic;
+
 
 namespace Limada.View {
     /// <summary>
@@ -25,19 +29,20 @@ namespace Limada.View {
     /// </summary>
     public interface ISceneProvider {
         IThingGraphProvider Provider { get; set; }
-        Scene Scene { get; set; }
+        IGraphScene<IVisual, IVisualEdge> Scene { get; set; }
         bool Open(DataBaseInfo FileName);
         bool Open ( Action openProvider );
         bool Open();
         void SaveCurrent();
         void Save();
-        void ExportAs(Scene scene, DataBaseInfo FileName);
+        void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene, DataBaseInfo FileName);
+        void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IDataProvider<IEnumerable<IThing>> exporter, DataBaseInfo fileName);
         //bool SaveAs(DataBaseInfo FileName);
         void Close();
 
-        Action<Scene> BeforeOpen { get; set; }
-        Action<Scene> DataBound { get; set; }
-        Action<Scene> BeforeClose { get; set; }
-        Action<Scene> AfterClose { get; set; }
+        Action<IGraphScene<IVisual, IVisualEdge>> BeforeOpen { get; set; }
+        Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
+        Action<IGraphScene<IVisual, IVisualEdge>> BeforeClose { get; set; }
+        Action<IGraphScene<IVisual, IVisualEdge>> AfterClose { get; set; }
     }
 }

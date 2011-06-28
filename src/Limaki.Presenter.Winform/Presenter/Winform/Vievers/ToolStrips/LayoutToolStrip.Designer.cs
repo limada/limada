@@ -12,7 +12,7 @@
  * 
  */
 
-namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
+namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
     partial class LayoutToolStrip {
         /// <summary> 
         /// Erforderliche Designervariable.

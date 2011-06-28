@@ -84,5 +84,6 @@ namespace Limaki.Model.Content {
         }
 
         public override bool Saveable { get { return true; } }
+        public override bool Readable { get { return true; } }
     }
 }

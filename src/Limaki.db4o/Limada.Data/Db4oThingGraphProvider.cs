@@ -29,6 +29,10 @@ namespace Limada.Data {
             get { return "Limada ObjectBase"; }
         }
 
+        public override bool Readable {
+            get { return false; }
+        }
+
         public override bool Saveable {
             get { return true; }
         }
@@ -89,7 +93,7 @@ namespace Limada.Data {
         }
         
         public override IDataProvider<IThingGraph> Clone() {
-            return new Db4oThingGraphProvider();
+            return new Db4oThingGraphProvider(){StateMessage = this.StateMessage};
         }
 
         public override void RawImport(DataBaseInfo source, IDataProvider<IThingGraph> target) {

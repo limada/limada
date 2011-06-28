@@ -14,7 +14,6 @@
  */
 
 using Limaki.Model;
-using Limaki.View;
 using Limaki.Visuals;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;

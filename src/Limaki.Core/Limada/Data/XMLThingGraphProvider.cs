@@ -35,6 +35,10 @@ namespace Limada.Data {
             get { return true; }
         }
 
+        public override bool Readable {
+            get { return true; }
+        }
+
         public virtual void Open(Stream stream) {
 
             this.Data = new ThingGraph();
@@ -101,7 +105,7 @@ namespace Limada.Data {
         }
 
         public override IDataProvider<IThingGraph> Clone() {
-            return new XMLThingGraphProvider ();
+            return new XMLThingGraphProvider() { StateMessage = this.StateMessage };
         }
     }
 }

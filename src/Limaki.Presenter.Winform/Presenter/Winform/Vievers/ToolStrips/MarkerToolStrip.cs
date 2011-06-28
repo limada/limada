@@ -13,14 +13,15 @@
  */
 
 using System.Windows.Forms;
+using Limaki.UseCases.Viewers.ToolStripViewers;
 using Limaki.Visuals;
-using Limaki.UseCases.Viewers.ToolStrips;
 using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Visuals.UI;
 using System;
 using Limaki.Common;
+using Limaki.Drawing;
 
-namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
+namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
     public partial class MarkerToolStrip : ToolStrip, IMarkerTool {
         public MarkerToolStrip() {
             InitializeComponent();
@@ -37,7 +38,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             }
         }
 
-        public void Attach(Scene scene) {
+        public void Attach(IGraphScene<IVisual, IVisualEdge> scene) {
             markerCombo.Items.Clear();
             markerCombo.Text = string.Empty;
             bool makeVisible = scene != null && scene.Markers != null;
@@ -46,8 +47,8 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStrips {
             }
             this.Visible = makeVisible;
         }
-        
-        public void Detach(Scene oldScene) {
+
+        public void Detach(IGraphScene<IVisual, IVisualEdge> oldScene) {
             markerCombo.Items.Clear();
             markerCombo.Text = string.Empty;
             this.Visible = false;

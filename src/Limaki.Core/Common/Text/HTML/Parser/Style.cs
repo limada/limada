@@ -4,12 +4,12 @@ namespace Limaki.Common.Text.HTML.Parser{
 	public class Style{
 		public int Starts;
 		public int Ends;
-		public List<Tag> tags = null;
+		public IList<Tag> Tags {get; private set;}
 		public Style(){
-			tags = new List<Tag>();
+			Tags = new List<Tag>();
 		}
-		public void AddTag(Tag tag){
-			tags.Add(tag);
+		public void Add(Tag tag){
+			Tags.Add(tag);
 		}
 	}
 }
