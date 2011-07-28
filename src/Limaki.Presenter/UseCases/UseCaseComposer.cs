@@ -26,6 +26,7 @@ namespace Limaki.UseCases {
             useCase.GetCurrentDisplay = () => splitView.CurrentDisplay;
             useCase.GetCurrentControl = () => splitView.CurrentControl;
 
+            useCase.SheetManager.SheetRegistered = i => useCase.SceneHistory.Store(i);
             splitView.SceneHistory = useCase.SceneHistory;
             splitView.SheetManager = useCase.SheetManager;
             

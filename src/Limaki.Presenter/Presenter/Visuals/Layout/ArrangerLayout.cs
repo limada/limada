@@ -34,7 +34,7 @@ namespace Limaki.Presenter.Visuals.Layout {
                 var arranger = new Arranger<TItem, TEdge>(data, this);
 
                 arranger.ArrangeDeepWalk (
-                    GraphPairExtension<TItem, TEdge>.FindRoots(data.Graph, data.Focused),
+                    data.Graph.FindRoots(data.Focused),
                     true,
                     (PointI) Border);
 

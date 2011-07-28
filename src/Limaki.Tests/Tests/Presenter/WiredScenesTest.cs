@@ -44,7 +44,7 @@ namespace Limaki.Tests.View.Visuals {
             facade.WireScene(sourceTest.Mock.Display, targetTest.Mock.Scene, sourceTest.Mock.Scene);
 
             var targetGraph = 
-                GraphPairExtension<IVisual, IVisualEdge>.Source(targetTest.Mock.Scene.Graph).Two
+                targetTest.Mock.Scene.Graph.RootSource().Two
                    as IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>;
 
             ((GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>)
@@ -78,14 +78,14 @@ namespace Limaki.Tests.View.Visuals {
             targetTest.Net();
 
             var sourceGraph =
-                GraphPairExtension<IVisual, IVisualEdge>.Source(sourceTest.Mock.Scene.Graph).Two
+                sourceTest.Mock.Scene.Graph.RootSource().Two
                    as IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>;
 
             var sourceView =
                 sourceTest.Mock.Scene.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
 
             var targetGraph =
-                GraphPairExtension<IVisual, IVisualEdge>.Source(targetTest.Mock.Scene.Graph).Two
+                targetTest.Mock.Scene.Graph.RootSource().Two
                    as IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>;
 
 

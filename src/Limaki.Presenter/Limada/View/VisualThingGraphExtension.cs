@@ -27,7 +27,7 @@ namespace Limada.View {
         public static IThingGraph ThingGraph(this IGraph<IVisual, IVisualEdge> graph) {
             IThingGraph result = null;
 
-            var sourceGraph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(graph);
+            var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
 
             if (sourceGraph != null && (sourceGraph.Two is IThingGraph)) {
@@ -38,7 +38,7 @@ namespace Limada.View {
 
         public static IThingFactory ThingFactory(this IGraph<IVisual, IVisualEdge> graph) {
             IThingFactory result = null;
-            var sourceGraph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(graph);
+            var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (sourceGraph != null) {
                 var thingGraph = sourceGraph.Two as IThingGraph;
@@ -51,7 +51,7 @@ namespace Limada.View {
         }
 
         public static IThing ThingOf(this IGraph<IVisual, IVisualEdge> source, IVisual visual) {
-            var graph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(source);
+            var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>();
             if (visual != null && graph != null) {
                 return  graph.Get (visual);
             }
@@ -59,7 +59,7 @@ namespace Limada.View {
         }
 
         public static IVisual VisualOf(this IGraph<IVisual, IVisualEdge> source, IThing thing) {
-            var graph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(source);
+            var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>();
             if (thing != null && graph != null) {
                 return graph.Get(thing);
             }
@@ -75,8 +75,7 @@ namespace Limada.View {
 
         public static bool ToggleFilterOnTwo(this IGraph<IVisual, IVisualEdge> source) {
             bool result = false;
-            var graph = GraphPairExtension<IVisual, IVisualEdge>
-                        .Source<IThing, ILink>(source);
+            var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (graph != null) {
                 if (graph.Two is FilteredGraph<IThing, ILink>) {

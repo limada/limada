@@ -51,7 +51,7 @@ namespace Limaki.Graphs.Extensions {
                             }
                         }
 
-                        TItem adjacent = graph.Adjacent(edge, item.Path);
+                        var adjacent = graph.Adjacent(edge, item.Path);
 
                         if (adjacent != null) {
                             // follow adjacent of node:

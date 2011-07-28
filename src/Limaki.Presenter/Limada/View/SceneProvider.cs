@@ -107,8 +107,7 @@ namespace Limada.View {
 
         public virtual void SaveCurrent() {
             if (Scene != null) {
-                var visualThingGraph = GraphPairExtension<IVisual, IVisualEdge>
-                    .Source<IThing, ILink>(this.Scene.Graph);
+                var visualThingGraph = this.Scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
                 if (visualThingGraph != null) {
                     visualThingGraph.Mapper.ConvertOneTwo();
                 }
@@ -124,7 +123,7 @@ namespace Limada.View {
         }
 
         public virtual void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IThingGraph target) {
-            var graph =  GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(scene.Graph);
+            var graph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (graph != null) {
                 // get a ThingGraphView with only the things that are in the view

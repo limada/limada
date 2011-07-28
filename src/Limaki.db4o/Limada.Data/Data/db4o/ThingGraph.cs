@@ -234,6 +234,9 @@ namespace Limada.Data.db4o {
         #region performance enhancements
 
         public override IThing Adjacent(ILink edge, IThing item) {
+            if (item == null)
+                return null;
+
             if (edge != null) {
                 var idEdge = (ILink<Id>)edge;
                 var idItem = item.Id;

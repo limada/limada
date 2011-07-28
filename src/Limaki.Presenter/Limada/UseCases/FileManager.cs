@@ -35,15 +35,17 @@ namespace Limada.UseCases {
         #region ThingGraph Open 
 
         public override bool OpenFile(DataBaseInfo fileName) {
-            var sceneProvider = new SceneProvider();
             var provider = GetThingGraphProvider(fileName);
             bool result = false;
             if (provider != null) {
-                sceneProvider.Provider = provider;
-                sceneProvider.DataBound = this.DataBound;
-                this.ThingGraphProvider.Close();
-                if (sceneProvider.Open(fileName)) {
+                var sceneProvider = new SceneProvider {
+                    Provider = provider,
+                    DataBound = this.DataBound
+                };
 
+                this.ThingGraphProvider.Close();
+
+                if (sceneProvider.Open(fileName)) {
                     this.ThingGraphProvider = provider;
                     DataPostProcess(fileName.Name);
                     result = true;
@@ -83,12 +85,14 @@ namespace Limada.UseCases {
         }
 
         public void ShowEmptyThingGraph() {
-            ISceneProvider handler = new SceneProvider();
-            IThingGraphProvider provider = new MemoryThingGraphProvider();
+            var provider = new MemoryThingGraphProvider();
             this.ThingGraphProvider.Close();
             this.ThingGraphProvider = provider;
-            handler.Provider = provider;
-            handler.DataBound = this.DataBound;
+
+            var handler = new SceneProvider {
+                Provider = provider,
+                DataBound = this.DataBound
+            };
             handler.Open();
 
             DataPostProcess("unknown");
@@ -106,8 +110,6 @@ namespace Limada.UseCases {
                 if (this.ThingGraphProvider.Saveable) {
                     this.ThingGraphProvider.Save();
                 }
-
-
                 try {
                     provider.SaveAs(this.ThingGraphProvider.Data, fileName);
                     this.ThingGraphProvider.Close();
@@ -158,7 +160,7 @@ namespace Limada.UseCases {
 
         public bool IsSceneExportable(IGraphScene<IVisual, IVisualEdge> scene) {
             if (scene != null) {
-                var graph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink> (scene.Graph);
+                var graph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
                 return graph != null;
             }
             return false;

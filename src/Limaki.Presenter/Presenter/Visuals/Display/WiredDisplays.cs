@@ -62,7 +62,7 @@ namespace Limaki.Presenter.Visuals {
             IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge> sourceGraph =
                 source as GraphView<IVisual, IVisualEdge>;
             if (sourceGraph != null) {
-                sourceGraph = GraphPairExtension<IVisual, IVisualEdge>.Source(sourceGraph);
+                sourceGraph = sourceGraph.RootSource();
 
                 var data = sourceGraph.Two;
                 var result = GraphMapping.Mapping.CloneGraphPair<IVisual, IVisualEdge>(data);

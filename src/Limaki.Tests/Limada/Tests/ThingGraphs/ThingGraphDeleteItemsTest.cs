@@ -153,13 +153,13 @@ namespace Limada.Tests.ThingGraphs {
             ICollection<IVisualEdge> deleteCollection =
                 new List<IVisualEdge>(viewOne.PostorderTwig(java.one));
 
-            foreach (IVisual linkOne in deleteCollection) {// Java
-                IVisual linkTwo = GraphPairExtension<IVisual, IVisualEdge>.LookUp<IThing, ILink>(viewOne, viewTwo, linkOne);
+            foreach (var linkOne in deleteCollection) {// Java
+                var linkTwo = viewOne.LookUp<IVisual, IVisualEdge, IThing, ILink>(viewTwo, linkOne);
                 viewTwo.Remove(linkTwo);
                 viewOne.Remove(linkOne);
             }
 
-            java.two = GraphPairExtension<IVisual, IVisualEdge>.LookUp<IThing, ILink>(viewOne, viewTwo, java.one);
+            java.two = viewOne.LookUp<IVisual, IVisualEdge, IThing, ILink>(viewTwo, java.one);
             viewTwo.Remove(java.two);
             viewOne.Remove(java.one);
 

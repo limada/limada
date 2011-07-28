@@ -39,8 +39,8 @@ namespace Limaki.Visuals {
             if (sourceGraph == null || targetGraph == null || sourceitem == null)
                 return item;
 
-            if (GraphPairExtension<TItem, TEdge>.Source<IGraphItem, IGraphEdge>(sourceGraph) != null) {
-                return GraphPairExtension<TItem, TEdge>.LookUp<IGraphItem, IGraphEdge>(sourceGraph, targetGraph, sourceitem);
+            if (sourceGraph.Source<TItem, TEdge, IGraphItem, IGraphEdge>() != null) {
+                return sourceGraph.LookUp<TItem, TEdge, IGraphItem, IGraphEdge>(targetGraph, sourceitem);
             } else if (Next != null) {
                 return Next.LookUp<TItem,TEdge> (sourceGraph,targetGraph,sourceitem);
             }

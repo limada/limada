@@ -94,7 +94,7 @@ namespace Limada.Tests.ThingGraphs {
                     result.Add(topic);
                 }
             } else {
-                return GraphPairExtension<IThing, ILink>.FindRoots(source, null).Where(item=>!source.IsMarker(item));
+                return source.FindRoots(null).Where(item=>!source.IsMarker(item));
             }
             return result;
         }

@@ -56,6 +56,8 @@ namespace Limada.Presenter {
             set { _sheetsStreams = value; }
         }
 
+        public Action<SheetInfo> SheetRegistered { get; set; }
+
         public SheetInfo RegisterSheet(Id id, string name) {
             SheetInfo result = default( SheetInfo );
             if (id !=0 && Sheets.ContainsKey(id)) {
@@ -69,6 +71,8 @@ namespace Limada.Presenter {
                 result = new SheetInfo() { Id = id, Name = name };
                 result.State.Hollow = true;
                 Sheets[id] = result;
+                if (SheetRegistered != null)
+                    SheetRegistered(result);
             }
             
             return result;
@@ -180,7 +184,7 @@ namespace Limada.Presenter {
 
         #region load sheet
 
-        public void LoadFromStream(Stream source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
+        protected void LoadFromStream(Stream source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
             SceneTools.CleanScene(target);
             using (Sheet sheet = new Sheet(target, layout)) {
                 sheet.Read(source);
@@ -242,6 +246,7 @@ namespace Limada.Presenter {
         }
 
         #region SheetStreams
+
         public bool StoreInStreams(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
             if (scene.Graph.Count > 0) {
                 var stream = new MemoryStream();
@@ -249,6 +254,7 @@ namespace Limada.Presenter {
                 stream.Position = 0;
 
                 SheetStreams[id] = stream;
+                
                 return true;
             } else {
                 SheetStreams.Remove(id);

@@ -43,9 +43,7 @@ namespace Limaki.Context {
 
         public virtual IMarkerFacade<IVisual, IVisualEdge> MarkerFacade(IGraph<IVisual, IVisualEdge> graph) {
 
-            if (GraphPairExtension<IVisual, IVisualEdge>
-                    .Source<IThing, ILink>(graph) != null) {
-
+            if (graph.Source<IVisual, IVisualEdge,IThing, ILink>() != null) {
                 return new VisualThingMarkerFacade(graph);
             }
 

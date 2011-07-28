@@ -94,17 +94,18 @@ namespace Limada.Tests.Model {
 
             var graphView2 = new GraphView<IGraphItem, IGraphEdge>(graphView, view);
 
-            var result = GraphPairExtension<IGraphItem, IGraphEdge>.Source(graphView);
+            var result = graphView.RootSource();
             Assert.AreSame(graphView, result);
 
-            result = GraphPairExtension<IGraphItem, IGraphEdge>.Source(graphView2);
+            result = graphView2.RootSource();
             Assert.AreSame(graphView, result);
 
-            var result2 = GraphPairExtension<IGraphItem, IGraphEdge>.Source<IThing, ILink>(graphView);
+            var result2 = graphView.Source<IGraphItem, IGraphEdge,IThing, ILink>();
             
             Assert.AreSame(data, result2);
 
-            result2 = GraphPairExtension<IGraphItem, IGraphEdge>.Source<IThing, ILink>(graphView2);
+            result2 = graphView2.Source<IGraphItem, IGraphEdge, IThing, ILink>();
+            
 
             Assert.AreSame(data, result2);
         }
@@ -120,8 +121,8 @@ namespace Limada.Tests.Model {
 
             
 
-            foreach (IGraphItem ping in graphView1.Two) {
-                IGraphItem back = GraphPairExtension<IGraphItem, IGraphEdge>.LookUp<IThing, ILink>(graphView1, graphView2, ping);
+            foreach (var ping in graphView1.Two) {
+                var back = graphView1.LookUp<IGraphItem, IGraphEdge,IThing, ILink>(graphView2, ping);
                 Assert.IsNotNull (back);
                 Assert.AreSame (ping, back);
             }
@@ -133,7 +134,7 @@ namespace Limada.Tests.Model {
             graphView2 = new GraphView<IGraphItem, IGraphEdge>(data, new Graph<IGraphItem, IGraphEdge>());
             
             foreach (IGraphItem ping in graphView1.Two) {
-                IGraphItem back = GraphPairExtension<IGraphItem, IGraphEdge>.LookUp<IThing, ILink>(graphView1, graphView2, ping);
+                IGraphItem back = graphView1.LookUp<IGraphItem, IGraphEdge,IThing, ILink>(graphView2, ping);
                 Assert.IsNotNull(back);
                 Assert.AreNotSame(ping, back);
                 Assert.AreEqual (ping.ToString(), back.ToString());

@@ -29,7 +29,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
 
     public class SchemaGraphTest : SchemaGraphTestBase {
         public virtual void TestFindRoots(IThing described, IThing description, ILink descriptionLink) {
-            foreach (IThing item in GraphPairExtension<IThing, ILink>.FindRoots(Graph, described)) {
+            foreach (IThing item in Graph.FindRoots(described)) {
                 Assert.IsFalse(item.Equals(descriptionLink), descriptionLink.ToString());
                 Assert.IsFalse(item.Equals(description), description.ToString());
             } 
@@ -99,7 +99,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
         [Test]
         public virtual void FindRootsTest() {
             if (Graph != null) {
-                foreach (IThing item in GraphPairExtension<IThing, ILink>.FindRoots(Graph, null)) {
+                foreach (IThing item in Graph.FindRoots(null)) {
                     if (!Graph.IsMarker(item))
                         ;
                 }

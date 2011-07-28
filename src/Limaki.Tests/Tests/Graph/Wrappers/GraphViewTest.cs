@@ -84,10 +84,10 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             var graphView2 = new GraphView<IGraphItem, IGraphEdge>(graphView, view);
 
-            var result = GraphPairExtension<IGraphItem, IGraphEdge>.Source(graphView);
+            var result = graphView.RootSource();
             Assert.AreSame (graphView, result);
 
-            result = GraphPairExtension<IGraphItem, IGraphEdge>.Source(graphView2);
+            result = graphView2.RootSource();
             Assert.AreSame(graphView, result);
         }
     }

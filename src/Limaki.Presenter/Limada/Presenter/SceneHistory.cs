@@ -53,10 +53,14 @@ namespace Limada.Presenter {
             _history = null;
         }
 
+        public void Store(SheetInfo info) {
+            history.Add(info.Id);
+        }
+
         protected SheetInfo Store(VisualsDisplay display, ISheetManager sheetManager, Id id) {
             var result = default(SheetInfo);
-            if (display != null && display.Data != null && display.Data.Count>0) {
-                if(id == default(Id))
+            if (display != null && display.Data != null && display.Data.Count > 0) {
+                if (id == default(Id))
                     id = Limada.Common.Isaac.Long;
                 if (sheetManager.StoreInStreams(display.Data, display.Layout, id)) {
                     history.Add(id);
@@ -89,8 +93,8 @@ namespace Limada.Presenter {
         public void Navigate(VisualsDisplay display, ISheetManager sheetManager, bool forward) {
             var info = Store(display, sheetManager, display.DataId);
             var currSheedId = default(Id);
-            
-            if(info!=null)
+
+            if (info != null)
                 currSheedId = info.Id;
 
             Id sheetId = default(Id);
@@ -116,8 +120,8 @@ namespace Limada.Presenter {
             foreach (var display in displays)
                 if (display.State.Dirty && !display.State.Hollow) {
                     var info = sheetManager.GetSheetInfo(display.DataId) ?? new SheetInfo { Id = display.DataId };
-                    display.State.CopyTo(info.State);
                     sheetManager.StoreInStreams(display.Data, display.Layout, info.Id);
+                    display.State.CopyTo(info.State);
                     if (graph == null)
                         graph = display.Data.Graph;
                 }
@@ -129,7 +133,7 @@ namespace Limada.Presenter {
                         if (sheet != null) {
                             sheetManager.SaveStreamInGraph(sheet, graph, info);
                             var display = displays.FirstOrDefault(d => d.DataId == info.Id);
-                            if (display!=null)
+                            if (display != null)
                                 info.State.CopyTo(display.State);
                         }
                     }

@@ -63,9 +63,8 @@ namespace Limada.View {
             if (sourceGraph == null || targetGraph == null || sourceitem == null)
                 return item;
 
-            if (GraphPairExtension<TItem, TEdge>.Source<IThing, ILink>(sourceGraph) != null) {
-                return GraphPairExtension<TItem, TEdge>.LookUp<IThing, ILink>(
-                    sourceGraph, targetGraph, sourceitem);
+            if (sourceGraph.Source<TItem, TEdge, IThing, ILink>() != null) {
+                return sourceGraph.LookUp<TItem, TEdge,IThing, ILink>(targetGraph, sourceitem);
             } else if (Next != null){
                 return Next.LookUp<TItem, TEdge> (sourceGraph, targetGraph, sourceitem);
             }

@@ -87,7 +87,9 @@ namespace Limaki.Graphs {
         }
 
         public override TItem Adjacent(TEdge edge, TItem item) {
-            TItem result =  base.Adjacent(edge, item);
+            var result =  base.Adjacent(edge, item);
+            if(object.Equals(result,default(TItem)))
+                return default(TItem);
             if (!ItemFilter(result))
                 return default(TItem);
             if (result is TEdge && !EdgeFilter((TEdge)(object)result))

@@ -55,8 +55,7 @@ namespace Limada.Presenter {
         }
 
         public virtual void Save(Stream s) {
-            var graph = GraphPairExtension<IVisual, IVisualEdge>
-                .Source<IThing, ILink>(Scene.Graph);
+            var graph = Scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (graph != null) {
                 VisualThingSerializer serializer = new VisualThingSerializer(); 
@@ -68,15 +67,13 @@ namespace Limada.Presenter {
         }
 
         public virtual void Read(Stream s) {
-            var graph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(Scene.Graph);
+            var graph = Scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (graph != null) {
-                VisualThingSerializer serializer = new VisualThingSerializer();
-                serializer.VisualThingGraph = graph;
-                serializer.Layout = this.Layout;
+                var serializer = new VisualThingSerializer { VisualThingGraph = graph, Layout = this.Layout };
                 serializer.Read(s);
 
-                new GraphSceneFacade<IVisual, IVisualEdge>(delegate() { return this.Scene; }, this.Layout)
+                new GraphSceneFacade<IVisual, IVisualEdge>(()=>this.Scene, this.Layout)
                     .Add (serializer.VisualsCollection, false, false);
 
                 Scene.ClearSpatialIndex ();

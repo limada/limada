@@ -27,9 +27,7 @@ namespace Limada.View {
         public virtual IVisual CreateFromStream( IGraph<IVisual, IVisualEdge> graph, StreamInfo<Stream> streamInfo ) {
             
             IVisual result = null;
-            var sourceGraph =
-                GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(graph);
-
+            var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
             if (sourceGraph != null) {
                 var thingGraph = graph.ThingGraph();
                 var factory = graph.ThingFactory();
@@ -53,9 +51,7 @@ namespace Limada.View {
         }
 
         public StreamInfo<Stream> GetStream(IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
-             var sourceGraph =
-                GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(graph);
-
+            var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
              if (sourceGraph != null) {
                  var thingGraph = graph.ThingGraph();
                  return ThingStreamFacade.GetStreamInfo (

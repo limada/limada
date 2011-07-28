@@ -28,11 +28,11 @@ namespace Limada.Presenter {
 
 
         public bool IsSearchable(IGraphScene<IVisual, IVisualEdge> scene) {
-            return scene != null && GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(scene.Graph) != null;
+            return scene != null && scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>() != null;
         }
 
         public void LoadSearch(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, object name) {
-            var graph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink> (scene.Graph);
+            var graph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
             
             if (graph==null) {
                 throw new ArgumentException ("Search works only on ThingGraphs");

@@ -292,7 +292,7 @@ namespace Limaki.Presenter.UI {
             TItem curr = scene.Focused;
             
             var roots = new Queue<TItem>(
-                GraphPairExtension<TItem, TEdge>.FindRoots (this.Data, curr));
+                this.Data.FindRoots (curr));
             
             new GraphViewFacade<TItem, TEdge> (this.graphView).Expand (roots, true);
 

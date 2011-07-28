@@ -68,8 +68,7 @@ namespace Limada.View {
         }
 
         IThingGraph GetThingGraph(IGraph<IVisual, IVisualEdge> source) {
-            var graph = GraphPairExtension<IVisual, IVisualEdge>
-                .Source<IThing, ILink>(source) as VisualThingGraph;
+            var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>() as VisualThingGraph;
 
             if (graph != null) {
                 return graph.Two as IThingGraph;
@@ -110,8 +109,7 @@ namespace Limada.View {
 
         public virtual VisualThingAdapter adapter {
             get {
-                VisualThingGraph graph = GraphPairExtension<IVisual, IVisualEdge> 
-                    .Source<IThing, ILink> (this.Graph) as VisualThingGraph;
+                var graph = this.Graph.Source<IVisual, IVisualEdge, IThing, ILink>() as VisualThingGraph;
 
                 if (graph != null) {
                     return ( graph.Mapper.Adapter as VisualThingAdapter );

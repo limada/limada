@@ -66,9 +66,8 @@ namespace Limada.Presenter {
         public void AddToFavorites(IGraphScene<IVisual, IVisualEdge> scene, IThing marker, bool oneAndOnly) {
             if (scene == null || scene.Focused == null)
                 return;
-            
-            var graph = GraphPairExtension<IVisual, IVisualEdge>
-                .Source<IThing, ILink>(scene.Graph);
+
+            var graph = scene.Graph.Source<IVisual, IVisualEdge,IThing, ILink>();
 
             if (graph == null)
                 return;
@@ -135,8 +134,7 @@ namespace Limada.Presenter {
 
             var view = display.Data.Graph as GraphView<IVisual, IVisualEdge>;
 
-            var graph = GraphPairExtension<IVisual, IVisualEdge>
-                            .Source<IThing, ILink>(view) as VisualThingGraph;
+            var graph = view.Source<IVisual, IVisualEdge,IThing, ILink>() as VisualThingGraph;
             IThingGraph thingGraph = null;
             if (graph != null) 
                 thingGraph = graph.Two as IThingGraph;
@@ -175,14 +173,14 @@ namespace Limada.Presenter {
                     var topicVisual = graph.Get(topic);
                     view.Add(topicVisual);
                     display.Data.Focused = topicVisual;
-                    new GraphSceneFacade<IVisual,IVisualEdge>(() => { return display.Data as Scene; }, display.Layout).Expand(false);
+                    new GraphSceneFacade<IVisual,IVisualEdge>(() => display.Data,  display.Layout).Expand(false);
                     display.Invoke();
                     done = true;
 
                 } 
 
                 if (!done) {
-                    foreach (IThing item in GraphPairExtension<IThing, ILink>.FindRoots(thingGraph, null)) {
+                    foreach (var item in thingGraph.FindRoots(null)) {
                         if (!thingGraph.IsMarker(item))
                             view.Add(graph.Get(item));
                     }
@@ -193,7 +191,7 @@ namespace Limada.Presenter {
             } 
             if (! done && view != null) {
                 // it seems not to be a ThingGraph based Scene:
-                foreach (var item in  GraphPairExtension<IVisual, IVisualEdge>.FindRoots(view.Two, null)) {
+                foreach (var item in  view.Two.FindRoots(null)) {
                     view.Add(item);
                 }
                 display.Invoke();

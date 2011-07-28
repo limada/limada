@@ -123,7 +123,7 @@ namespace Limaki.UseCases.Viewers {
 
 
         void LoadThing(IGraph<IVisual,IVisualEdge> visualGraph, IVisual visual) {
-            var graph = GraphPairExtension<IVisual, IVisualEdge>.Source<IThing, ILink>(visualGraph);
+            var graph = visualGraph.Source<IVisual, IVisualEdge,IThing, ILink>();
 
             if (visual != null && graph != null) {
                  var thing = graph.ThingOf(visual);

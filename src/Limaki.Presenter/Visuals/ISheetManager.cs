@@ -10,6 +10,7 @@ namespace Limaki.Visuals{
     public interface ISheetManager {
         SheetInfo GetSheetInfo ( Int64 id );
         SheetInfo RegisterSheet(Id id, string name);
+        Action<SheetInfo> SheetRegistered { get; set; }
         void VisitRegisteredSheets(Action<SheetInfo> visitor);
 
         bool IsSaveable(IGraphScene<IVisual, IVisualEdge> scene);
