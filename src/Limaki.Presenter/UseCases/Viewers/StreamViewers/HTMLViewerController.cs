@@ -13,17 +13,14 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using Limada.Model;
-using Limada.Schemata;
 using Limaki.Common.Text.HTML;
 using Limaki.Model.Streams;
 using Limaki.UseCases.Viewers.StreamViewers.WebProxy;
-using Limaki.UseCases.Viewers.StreamViewers.WebProxy;
-using Id = System.Int64;
+
 
 namespace Limaki.UseCases.Viewers.StreamViewers {
     public interface IHTMLViewer {
@@ -31,7 +28,8 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
         bool AcceptsProxy(object webBrowser);
         void SetProxy(IPAddress adress, int port, object webBrowser);
 
-        void AfterNavigate(object webBrowser, bool done);
+        void AfterNavigate(object webBrowser, Func<bool> done);
+        
     }
 
     public class HTMLViewerController : StreamViewerController {
@@ -98,45 +96,31 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
         public override void SetContent(StreamInfo<Stream> info) {
             bool closeStream = this.IsStreamOwner;
             try {
-                
+
                 if (UseWebServer || UseProxy) {
 
                     lock (lockObject) {
-                        var webContent = GetContentFromInfo (info);
-                        closeStream = ! webContent.IsStreamOwner;
-                        bool done = false;
-                        webServer.GetContent = (s) => {
-                            WebContent result = null;
-                            try {
-                                Uri request = new Uri(s);
-                                if (webContent.Uri.AbsoluteUri == request.AbsoluteUri) {
-                                    if (!webContent.ContentIsEmpty) {
-                                        result = webContent;
-                                    }
-                                } else {
-                                    result = this.GetContentFromGraph(request);
-                                    if (UseProxy && result == null) {
-                                        result = new WebProxyContent();
-                                    }
-                                }
-                            } catch {
-                                Trace.WriteLine("request denied:" + s);
-                                result = null;
-                            } finally {
-                                done = true;
-                            }
-                            return result;
+                        var response = new ThingWebResponse {
+                            IsStreamOwner = this.IsStreamOwner,
+                            Thing = this.ContentThing,
+                            ThingGraph = this.ThingGraph,
+                            UseProxy = this.UseProxy,
+                            BaseUri = this.webServer.Uri,
                         };
+                        closeStream = ! response.IsStreamOwner;
+
+                        //  webServer.AddContent(webContent.Uri.AbsoluteUri,
+                        webServer.ContentGetter = response.Getter(info);
 
                         WebBrowser.MakeReady();
                         if (UseProxy) {
-                            Viewer.SetProxy (webServer.Addr,webServer.Port, this.Control);
+                            Viewer.SetProxy(webServer.Addr, webServer.Port, this.Control);
                         }
 
-                        WebBrowser.Navigate(webContent.Uri.AbsoluteUri);
-                        
-                        Viewer.AfterNavigate (WebBrowser, done);
-                        Trace.WriteLine("Navigated to" + webContent.Uri.AbsoluteUri);
+                        WebBrowser.Navigate(response.WebContentOfThing.Uri.AbsoluteUri);
+
+                        Viewer.AfterNavigate(WebBrowser, ()=>response.Done);
+                        Trace.WriteLine("Navigated to" + response.WebContentOfThing.Uri.AbsoluteUri);
                     }
                 } else {
                     WebBrowser.MakeReady();
@@ -192,91 +176,6 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
             }
         }
 
-        IDictionary<Id, string> _mimeTypes = null;
-        public virtual IDictionary<Id,string> MimeTypes {
-            get {
-                if (_mimeTypes==null) {
-                    _mimeTypes = new Dictionary<Id, string> ();
-                    _mimeTypes.Add (StreamTypes.HTML, "text/html");
-                    _mimeTypes.Add(StreamTypes.ASCII, "text/plain");
-                    _mimeTypes.Add(StreamTypes.Doc, "application/msword");
-                    _mimeTypes.Add(StreamTypes.GIF, "image/gif");
-                    _mimeTypes.Add(StreamTypes.JPG, "image/jpeg");
-                    _mimeTypes.Add(StreamTypes.PNG, "image/png");
-                    _mimeTypes.Add(StreamTypes.RTF, "text/rtf");
-                    _mimeTypes.Add(StreamTypes.TIF, "image/tiff");
-                }
-                return _mimeTypes;
-            }
-        }
-        public virtual string MimeType(Id streamType) {
-            string result = null;
-            MimeTypes.TryGetValue (streamType, out result);
-            return result;
-        }
-
-        public virtual WebContent GetContentFromInfo(StreamInfo<Stream> info) {
-            var webContent = new WebContent();
-            webContent.ClearContentAfterServing = true;
-            webContent.ContentIsStream = true;
-            webContent.IsStreamOwner = this.IsStreamOwner;
-            webContent.ContentStream = info.Data;
-            webContent.Uri = new Uri(webServer.Uri,"Id=" + CurrentThingId.ToString("X"));
-            webContent.MimeType = MimeType (info.StreamType);
-            if (UseProxy) {
-                var source = info.Source as string;
-                if (source != null && source != "about:blank") {
-                    if (Uri.IsWellFormedUriString(source, UriKind.RelativeOrAbsolute)) {
-                        Uri uri = null;
-                        Uri.TryCreate(source,UriKind.RelativeOrAbsolute,out uri);
-                        if (uri != null && !uri.IsUnc && ! uri.IsFile) {
-                            webContent.Uri = uri;
-                        }
-                    }
-                }
-            }
-            return webContent;
-        }
-
-        public virtual WebContent GetContentFromThing(IThingGraph graph, IThing thing) {
-            var info = ThingStreamFacade.GetStreamInfo(graph, thing);
-            return GetContentFromInfo (info);
-        }
-
-        CommonSchema schema = new CommonSchema();
-        public virtual WebContent GetContentFromGraph(Uri uri) {
-            WebContent result = null;
-            try {
-                var graph = this.ThingGraph as SchemaThingGraph;
-                
-                var thing = this.ContentThing;
-                if (thing != null && graph != null) {
-                    var searchGraph = graph.Source;
-                    string content = uri.Segments[uri.Segments.Length - 1];
-                    foreach (ILink link in searchGraph.Edges(thing)) {
-                        var adj = link.Leaf;
-                        if (adj != thing && ( adj is IStreamThing )) {
-                            var desc = graph.Description(adj);
-                            if (desc != null && desc.ToString () == content) {
-                                return GetContentFromThing (graph, adj);
-                            }
-                        }
-                    }
-                }
-                if (graph != null) {
-                    string content = uri.AbsoluteUri;
-                    foreach (IThing found in graph.GetByData (content, true)) {
-                        var target = schema.GetTheRoot (graph, found, CommonSchema.SourceMarker);
-                        if (target is IStreamThing) {
-                            return GetContentFromThing (graph, target);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Trace.WriteLine (e.Message);
-                return null;
-            }
-            return result;
-        }
+        
     }
 }

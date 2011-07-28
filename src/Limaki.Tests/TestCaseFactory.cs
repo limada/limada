@@ -36,14 +36,25 @@ using Limaki.WCF.Data;
 #endif
 using Limaki.Visuals;
 using Limada.Schemata;
-using Limada.PdfExporter;
+using Limaki.Tests.Presenter;
 
 
 namespace Limaki.Tests.UseCases {
-    public class TestCases {
+    public class TestCaseFactory : UseCaseFactory<UseCase> {
+        public override void Compose(UseCase useCase) {
+            var deviceComposer = DeviceComposer as WinformUseCaseComposer;
+            
+            this.testMessage = (s, m) => {
+                deviceComposer.StatusLabel.Text = m;
+                Application.DoEvents();
+            };
+            CreateTestCases(useCase, deviceComposer);
+        }
+    
+    
         public MessageEventHandler testMessage = null;
 
-        public void CreateTestCases(UseCase useCase, UseCaseWinformComposer composer) {
+        public void CreateTestCases(UseCase useCase, WinformUseCaseComposer composer) {
             
             Get<BenchmarkOneTests> displayTest = () => {
                 var test = new BenchmarkOneTests();
@@ -267,12 +278,13 @@ namespace Limaki.Tests.UseCases {
                 //};
                 //test.TearDown();
 
-                var exporter = new ThingsToPdfProvider();
-                var scene = sender.GetCurrentDisplay().Data;
-                var sceneProvider = new SceneProvider();
-                sceneProvider.ExportTo(scene, exporter, DataBaseInfo.FromFileName("testExport.pdf"));
-                
+                //var exporter = new ThingsToPdfProvider();
+                //var scene = sender.GetCurrentDisplay().Data;
+                //var sceneProvider = new SceneProvider();
+                //sceneProvider.ExportTo(scene, exporter, DataBaseInfo.FromFileName("testExport.pdf"));
 
+                var test = new WebProxyTest();
+                test.CircleFocusToHtml(sender.GetCurrentDisplay());
 
             } catch (Exception e) {
                 MessageBox.Show(e.Message);

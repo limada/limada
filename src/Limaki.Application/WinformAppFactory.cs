@@ -1,9 +1,9 @@
 using System.Windows.Forms;
 using Limaki.Presenter.Winform;
-using Limaki.Tests.UseCases;
 using Limaki.UseCases;
 using Limaki.UseCases.Winform;
 using Limaki.Common.IOC;
+using Limaki.Common;
 
 namespace Limaki.App {
     public class WinformAppFactory : AppFactory<Limada.UseCases.AppResourceLoader> {
@@ -17,29 +17,33 @@ namespace Limaki.App {
             return result;
         }
 
-        
         public void CreateUseCase(Form mainform) {
             mainform.Icon = Limaki.Presenter.Properties.Resources.LimadaLogoA;
             mainform.ClientSize = new System.Drawing.Size(632, 406);
 
-            var deviceInstrumenter = new UseCaseWinformComposer();
-            deviceInstrumenter.Mainform = mainform;
+            var deviceComposer = new WinformUseCaseComposer();
+            deviceComposer.Mainform = mainform;
 
             var factory = new UseCaseFactory<UseCase>();
             factory.Composer = new UseCaseComposer();
-            factory.DeviceComposer = deviceInstrumenter;
+            factory.DeviceComposer = deviceComposer;
+            
             var useCase = factory.Create();
-
             factory.Compose(useCase);
 
-            var testCases = new TestCases();
-            testCases.testMessage = (s, m) => {
-                                        deviceInstrumenter.StatusLabel.Text = m;
-                                        Application.DoEvents();
-                                    };
-            testCases.CreateTestCases(useCase, deviceInstrumenter);
+            CallPlugins(factory, useCase);
 
             useCase.Start();
         }
+
+        public void CallPlugins(UseCaseFactory<UseCase> factory, UseCase useCase) {
+            var factories = Registry.Pool.TryGetCreate < UseCaseFactories<UseCase>>();
+            foreach(var item in factories) {
+                item.Composer = factory.Composer;
+                item.DeviceComposer = factory.DeviceComposer;
+                item.Compose(useCase);
+            }
+        }
     }
+    
 }

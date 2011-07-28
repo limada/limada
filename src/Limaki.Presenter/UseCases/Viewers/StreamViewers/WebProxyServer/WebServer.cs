@@ -16,137 +16,12 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 
 
 // Look to Manos as replacemet for this
 // for threading problems see: Manos.Managed.IOLoop
 namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
-    public abstract class WebServerBase : IDisposable {
-        public WebServerBase() {
-            Port = 40110;
-            ServerName = "Limaki.ContentServer";
-            Asycn = !OS.Mono;
-        }
-
-        public string ServerName { get; set; }
-
-        private IPAddress _addr = IPAddress.Loopback;
-        public IPAddress Addr {
-            get { return _addr; }
-            set {
-                if (_addr != value) {
-                    _addr = value;
-                    _uri = null;
-                }
-            }
-        }
-
-        private int _port = 40110;
-        public int Port {
-            get { return _port; }
-            set {
-                if (_port != value) {
-                    _port = value;
-                    _uri = null;
-                }
-            }
-        }
-
-        public string Authority {
-            get { return string.Format(Addr.ToString() + ":{0}", Port); }
-        }
-
-        Uri _uri = null;
-        public Uri Uri {
-            get {
-                if (_uri == null) {
-                    _uri = new Uri("http://" + Authority, UriKind.Absolute);
-                }
-                return _uri;
-            }
-        }
-
-        private object locker = new object();
-
-        public Func<string, WebContent> GetContent = null;
-
-        public bool Asycn { get; set; }
-
-        protected Thread listenerThread = null;
-        public virtual void Start() {
-            try {
-                //start listing on the given port
-
-                int count = 0;
-                bool hasPort = false;
-                while (count < 100 && !hasPort)
-                    try {
-                        count++;
-                        listener = new TcpListener(Addr, Port);
-                        listener.Start();
-                        hasPort = true;
-                    } catch (SocketException ex) {
-                        if (ex.ErrorCode == 10048) {
-                            Port = Port + 1;
-                        } else {
-                            throw ex;
-                        }
-                    }
-                Trace.WriteLine(ServerName + " Running at: " + Authority);
-                Listen();
-            } catch (Exception e) {
-                Trace.WriteLine("An Exception Occurred while Listening :" + e.ToString());
-            }
-        }
-        protected TcpListener listener;
-
-        public Byte[] MakeHeader(string httpVersion, string mimeHeader, int totalBytes, string statusCode) {
-            StringBuilder buffer = new StringBuilder();
-
-            // if Mime type is not provided set default to text/html
-            if (mimeHeader == null || mimeHeader.Length == 0) {
-                mimeHeader = "text/html";  // Default Mime Type is text/html
-            }
-
-            buffer.Append(httpVersion + statusCode + "\r\n");
-            buffer.Append("Server: " + ServerName + "\r\n");
-            buffer.Append("Content-Type: " + mimeHeader + "\r\n");
-            buffer.Append("Accept-Ranges: bytes\r\n");
-            buffer.Append("Content-Length: " + totalBytes + "\r\n\r\n");
-
-            Byte[] sendData = Encoding.ASCII.GetBytes(buffer.ToString());
-
-
-            return sendData;
-        }
-
-        public abstract void Listen();
-        public virtual void Close() {
-            Sleep();
-            if (listener != null) {
-                listener.Stop();
-                listener = null;
-            }
-
-
-        }
-
-        public virtual void Sleep() {
-            if (listenerThread != null) {
-                listenerThread.Abort();
-                listenerThread = null;
-            }
-        }
-
-        public virtual void Dispose() {
-            Close();
-            GetContent = null;
-        }
-
-    }
-
     public class WebServer : WebServerBase {
         public class StateObject {
             // Client  socket.
@@ -196,8 +71,8 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
         public override void Sleep() {
             running = false;
             /// Create a connection to the port to unblock the listener thread
-            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint endPoint = new IPEndPoint(this.Addr, this.Port);
+            var sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            var endPoint = new IPEndPoint(this.Addr, this.Port);
             sock.Connect(endPoint);
             sock = null;
             base.Sleep();
@@ -209,28 +84,26 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
         public void AcceptRequest(IAsyncResult ar) {
             // Get the socket that handles the client request.
             TcpListener listener = (TcpListener)ar.AsyncState;
-            Socket handler = listener.EndAcceptSocket(ar);
+            var socket = listener.EndAcceptSocket(ar);
 
-
-
-            if (!handler.Connected || !running) {
+            if (!socket.Connected || !running) {
                 // Signal the main thread to continue.
                 allDone.Set();
                 return;
             }
             // Create the state object.
             StateObject state = new StateObject();
-            state.workSocket = handler;
+            state.workSocket = socket;
             if (Asycn) {
                 try {
-                    if (handler.Connected)
-                        handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                    if (socket.Connected)
+                        socket.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                                              new AsyncCallback(ReadRequest), state);
                 } catch { }
             } else {
-                var bytesRead = handler.Receive(state.buffer);
+                var bytesRead = socket.Receive(state.buffer);
                 if (bytesRead > 0) {
-                    Respond(handler, state);
+                    Respond(socket, state);
                 }
             }
             // Signal the main thread to continue.
@@ -241,31 +114,35 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
             // Retrieve the state object and the handler socket
             // from the asynchronous state object.
             StateObject state = (StateObject)ar.AsyncState;
-            Socket handler = state.workSocket;
-            if (!handler.Connected || !running) {
+            var socket = state.workSocket;
+            if (!socket.Connected || !running) {
                 return;
             }
+            try {
+                // Read data from the client socket. 
+                int bytesRead = socket.EndReceive(ar);
 
-            // Read data from the client socket. 
-            int bytesRead = handler.EndReceive(ar);
+                if (bytesRead > 0) {
+                    Respond(socket, state);
+                }
+                // this does not work:
+                //handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                //        new AsyncCallback(ReadRequest), state);
 
-            if (bytesRead > 0) {
-                Respond(handler, state);
+                //} else  if (state.sb.Length>0) {
+                //    Respond (handler, state);
+                //}
+            } catch(Exception ex) {
+                Trace.WriteLine("ReadRequest failed "+ex.Message);
             }
-            // this does not work:
-            //handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-            //        new AsyncCallback(ReadRequest), state);
 
-            //} else  if (state.sb.Length>0) {
-            //    Respond (handler, state);
-            //}
         }
 
-        private void Respond(Socket handler, StateObject state) {
-            if (!handler.Connected || !running) {
+        private void Respond(Socket socket, StateObject state) {
+            if (!socket.Connected || !running) {
                 return;
             }
-
+            
             var requestInfo = new RequestInfo(state.buffer);
             var url = requestInfo.Request;
             if (requestInfo.Uri != null)
@@ -282,9 +159,12 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
                 content.Content = requestInfo.Request;
                 responseInfo = content.Respond(requestInfo);
             } else {
-                if (GetContent != null) {
-                    content = GetContent(url);
+                if (ContentGetter != null) {
+                    content = ContentGetter(url);
                 }
+                //content = GetContent(url);
+                //if (content != null)
+                //    RemoveContent(url);
                 if (content == null) {
                     content = new WebContent();
                     content.Uri = new Uri(this.Uri.AbsoluteUri);
@@ -309,16 +189,18 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
             Buffer.BlockCopy(responseInfo.Data, 0, buffer, header.Length, responseInfo.Data.Length);
             if (Asycn) {
                 try {
-                    if (handler.Connected)
-                        handler.BeginSend(buffer, 0, buffer.Length, 0, new AsyncCallback(RespondCallback), handler);
-                } catch { }
+                    if (socket.Connected)
+                        socket.BeginSend(buffer, 0, buffer.Length, 0, new AsyncCallback(RespondCallback), socket);
+                } catch (Exception ex) {
+                    Debug.WriteLine("Error in webserver-respond:" + ex.Message);
+                }
             } else {
-                if (handler.Connected && running) {
-                    int bytesSent = handler.Send(buffer);
+                if (socket.Connected && running) {
+                    int bytesSent = socket.Send(buffer);
                     Trace.WriteLine("Sent " + bytesSent + " bytes to client.");
 
-                    handler.Shutdown(SocketShutdown.Both);
-                    handler.Close();
+                    socket.Shutdown(SocketShutdown.Both);
+                    socket.Close();
                 }
             }
 
@@ -327,17 +209,17 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
         private void RespondCallback(IAsyncResult ar) {
             try {
                 // Retrieve the socket from the state object.
-                Socket handler = (Socket)ar.AsyncState;
-                if (handler.Connected && running) {
+                Socket socket = (Socket)ar.AsyncState;
+                if (socket.Connected && running) {
                     // Complete sending the data to the remote device.
-                    int bytesSent = handler.EndSend(ar);
+                    int bytesSent = socket.EndSend(ar);
                     Trace.WriteLine("Sent " + bytesSent + " bytes to client.");
 
-                    handler.Shutdown(SocketShutdown.Both);
-                    handler.Close();
+                    socket.Shutdown(SocketShutdown.Both);
+                    socket.Close();
                 }
             } catch (Exception e) {
-                Trace.WriteLine(e.ToString());
+                Trace.WriteLine("Error in webserver-respondcallback:"+e.Message);
             }
         }
 

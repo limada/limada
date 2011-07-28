@@ -79,12 +79,15 @@ namespace Limaki.Drawing {
 
         public IStyleGroup CreateStyleGroup(string name, IStyle parentStyle, bool forEdge) {
             var styleGroup = new StyleGroup(name,parentStyle);
-            var style = new Style(name + ".Default", styleGroup);
-            styleGroup.DefaultStyle = style;
-            styles[style.Name] = style;
+            
+            var defaultStyle = new Style(name + ".Default", styleGroup);
+            styleGroup.DefaultStyle = defaultStyle;
+            styles[defaultStyle.Name] = defaultStyle;
+
             var selectedStyle = new Style(name + ".Selected", styleGroup);
             styleGroup.SelectedStyle = selectedStyle;
             styles[selectedStyle.Name] = selectedStyle;
+
             var hoveredStyle = new Style(name + ".Hovered", styleGroup);
             styleGroup.HoveredStyle = hoveredStyle;
             styles[hoveredStyle.Name] = hoveredStyle;
@@ -93,29 +96,28 @@ namespace Limaki.Drawing {
                 selectedStyle.FillColor = Color.FromArgb(200, this.ParentStyle.FillColor);
                 hoveredStyle.FillColor = Color.FromArgb(200, this.ParentStyle.FillColor);
             } else {
-                style.PaintData = false;
+                defaultStyle.PaintData = false;
 
-                style.Font = CreateFont(
+                defaultStyle.Font = CreateFont(
                     this.ParentStyle.Font.FontFamily,
                     this.ParentStyle.Font.Size - 2);
 
-                style.Font.Style = FontStyle.Italic;
+                defaultStyle.Font.Style = FontStyle.Italic;
 
-                var pen = (Pen)style.Pen.Clone();
-                var arrowWidth = (float)style.Pen.Thickness * 5.5f;
-                var arrowHeigth = (float)style.Pen.Thickness * 1.5f;
+                var pen = (Pen)styleGroup.Pen.Clone();
+                var arrowWidth = (float)styleGroup.Pen.Thickness * 5.5f;
+                var arrowHeigth = (float)styleGroup.Pen.Thickness * 1.5f;
                 pen.CustomEndCap = DrawingUtils.GetCustomLineCap(arrowWidth, arrowHeigth);
                 pen.StartCap = PenLineCap.Round;
-                style.Pen = pen;
+                styleGroup.Pen = pen;
 
-                pen = (Pen)selectedStyle.Pen.Clone();
+                pen = (Pen)styleGroup.Pen.Clone();
                 pen.Thickness = styleGroup.DefaultStyle.Pen.Thickness * 2;
                 selectedStyle.Pen = pen;
                 selectedStyle.PaintData = true;
 
-                pen = (Pen)hoveredStyle.Pen.Clone();
+                pen = (Pen)styleGroup.Pen.Clone();
                 pen.Color = Color.FromArgb(150, styleGroup.DefaultStyle.PenColor);
-                hoveredStyle.PenColor = pen.Color;
                 hoveredStyle.Pen = pen;
                 hoveredStyle.PaintData = true;
             }
@@ -125,8 +127,8 @@ namespace Limaki.Drawing {
 
         protected void InitStyles() {
             if (ParentStyle != null) {
-                if (this.BaseStyle==null) {
-                    var style = new Style(this.Name + "."+StyleNames.BaseStyle, this.ParentStyle);
+                if (this.BaseStyle == null) {
+                    var style = new Style(this.Name + "." + StyleNames.BaseStyle, this.ParentStyle);
                     styles[style.Name] = style;
                     this.BaseStyle = style;
                 }
@@ -141,11 +143,11 @@ namespace Limaki.Drawing {
                 if (!styles.ContainsKey(StyleNames.ResizerToolStyle)) {
                     var style = new Style(StyleNames.ResizerToolStyle, this.ParentStyle);
 
-                    var pen = (Pen)this.ParentStyle.Pen.Clone ();
-                    pen.Color = this.ParentStyle.PenColor;
-                    style.Pen = pen;
+                    //var pen = (Pen)this.ParentStyle.Pen.Clone ();
+                    //pen.Color = this.ParentStyle.PenColor;
+                    //style.Pen = pen;
 
-                    style.PenColor = pen.Color;
+                    //style.PenColor = pen.Color;
                     style.FillColor = this.ParentStyle.FillColor;
                     style.TextColor = this.ParentStyle.TextColor;
                     styles[style.Name] = style;

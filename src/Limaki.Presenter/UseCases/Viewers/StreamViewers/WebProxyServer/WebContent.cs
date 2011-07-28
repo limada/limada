@@ -17,11 +17,22 @@ using System.IO;
 using System.Text;
 
 namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
+
     public class WebContent {
-        public virtual Uri Uri {
-            get;
-            set;
+
+        public virtual Uri Uri { get; set; }
+        private string _mimeType = null;
+        
+        public virtual string MimeType {
+            get {
+                if (_mimeType == null)
+                    return "text/html";
+                else
+                    return _mimeType;
+            }
+            set { _mimeType = value; }
         }
+
         string _content = null;
         public virtual string Content {
             get {
@@ -34,17 +45,6 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
                     _content = value;
                 }
             }
-        }
-
-        private string _mimeType = null;
-        public virtual string MimeType {
-            get {
-                if (_mimeType == null)
-                    return "text/html";
-                else
-                    return _mimeType;
-            }
-            set { _mimeType = value; }
         }
 
         Stream _contentStream = null;
@@ -67,6 +67,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
 
         public virtual bool IsStreamOwner { get; set; }
         public virtual bool ContentIsStream { get; set; }
+        
         public virtual bool ContentIsEmpty {
             get {
                 if (ContentIsStream)

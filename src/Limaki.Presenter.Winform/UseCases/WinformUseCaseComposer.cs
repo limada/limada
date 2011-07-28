@@ -17,7 +17,7 @@ using Limaki.UseCases.Winform.Viewers.ToolStripViewers;
 using Limaki.Presenter.Winform.Controls;
 
 namespace Limaki.UseCases.Winform {
-    public class UseCaseWinformComposer : IComposer<UseCase> {
+    public class WinformUseCaseComposer : IComposer<UseCase> {
         
         public Form Mainform { get; set; }
         public ToolStripContainer ToolStripContainer { get; set; }

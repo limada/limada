@@ -66,5 +66,7 @@ namespace Limaki.Drawing {
         /// The text color is used to draw text strings
         /// </summary>
         bool PaintData { get; set; }
+
+        void CopyTo(IStyle target);
     }
 }

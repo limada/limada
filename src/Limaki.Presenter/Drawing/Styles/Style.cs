@@ -28,10 +28,19 @@ namespace Limaki.Drawing {
 
 
         public virtual string Name { get; set; }
-        
-        public virtual IStyle ParentStyle { get; set; }
 
-        private Color? _fillColor = null;
+        protected IStyle _parentStyle = null;
+        public virtual IStyle ParentStyle {
+            get { return _parentStyle; }
+            set {
+                if (value != _parentStyle) {
+                    _parentStyle = value;
+                    CopyTo(this);
+                }
+            }
+        }
+
+        protected Color? _fillColor = null;
         public virtual Color FillColor {
             get {
                 if (_fillColor == null) {
@@ -48,7 +57,7 @@ namespace Limaki.Drawing {
             }
         }
 
-        private Color? _textColor = null;
+        protected Color? _textColor = null;
         public virtual Color TextColor {
             get {
                 if (_textColor == null){
@@ -61,10 +70,12 @@ namespace Limaki.Drawing {
             set {
                 if (ParentStyle == null || ParentStyle.TextColor != value)
                     _textColor = value;
+                else
+                    _textColor = null;
             }
         }
 
-        private Color? _penColor = null;
+        protected Color? _penColor = null;
         public virtual Color PenColor {
             get {
                 if (_penColor == null) {
@@ -75,37 +86,51 @@ namespace Limaki.Drawing {
                 return _penColor.Value;
             }
             set {
-                _penColor = value;
-                if (_pen != null) {
-                    _pen.Color = PenColor;
-                } else if (ParentStyle!=null && ParentStyle.PenColor != value &&
-                    ParentStyle.Pen != null) {
-                    _pen = (Pen)ParentStyle.Pen.Clone();
-                    _pen.Color = _penColor.Value;
+                if (value != PenColor) {
+                    if (ParentStyle == null || ParentStyle != null && ParentStyle.PenColor != value) {
+                        _penColor = value;
+                    } else
+                        _penColor = null;
+
+                    if (_pen != null) {
+                        _pen.Color = value;
+                        if (ParentStyle != null && _pen.Equals(ParentStyle.Pen))
+                            _pen = null;
+                    } else {
+                        if (ParentStyle == null || ParentStyle != null && ParentStyle.Pen != null && ParentStyle.Pen.Color != value) {
+                            _pen = (Pen) ParentStyle.Pen.Clone();
+                            _pen.Color = value;
+                        }
+                    }
                 }
             }
         }
 
-        private Pen _pen= null;
-        public Pen Pen {
+        protected Pen _pen = null;
+        public virtual Pen Pen {
             get {
-                if ((_pen == null) && (ParentStyle != null)) {
+                if (_pen == null && ParentStyle != null) {
                     return ParentStyle.Pen;
                 } else {
                     return _pen;
                 }
             }
             set {
-                if (value == null ||
-                    ParentStyle == null ||
-                    ParentStyle.Pen == null ||
-                    !ParentStyle.Pen.Equals(value)) {
+                if (ParentStyle != null &&
+                    ParentStyle.Pen != null &&
+                    ParentStyle.Pen.Equals(value)) {
+                    _pen = null;
+                } else {
                     _pen = value;
                 }
+                if (value != null)
+                    this.PenColor = value.Color;
+                else
+                    this._penColor = null;
             }
         }
-        private Font _font=null;
-        public Font Font {
+        protected Font _font=null;
+        public virtual Font Font {
             get {
                 if ((_font == null) && (ParentStyle != null)) {
                     return ParentStyle.Font;
@@ -114,18 +139,19 @@ namespace Limaki.Drawing {
                 }
             }
             set { 
-                 if  (value==null ||
-                     ParentStyle == null ||
-                     ParentStyle.Font == null ||
-                     ! ParentStyle.Font.Equals(value)) {
-                     _font = value;    
+                 if  (ParentStyle != null &&
+                     ParentStyle.Font != null &&
+                     ParentStyle.Font.Equals(value)) {
+                     _font = null;    
+                 } else {
+                     _font = value;
                  }
             }
         }
 
         public static SizeI NoSize = new SizeI (int.MaxValue, int.MaxValue);
-        private SizeI? _autoSize = null;
-        public SizeI AutoSize {
+        protected SizeI? _autoSize = null;
+        public virtual SizeI AutoSize {
             get {
                 if (_autoSize == null)
                     if (ParentStyle != null)
@@ -140,8 +166,8 @@ namespace Limaki.Drawing {
             }
         }
 
-        private bool? _paintData = null;
-        public bool PaintData {
+        protected bool? _paintData = null;
+        public virtual bool PaintData {
             get {
                 if (_paintData == null)
                     if (ParentStyle != null)
@@ -222,16 +248,19 @@ namespace Limaki.Drawing {
         }
 
 
-        
+        public virtual void CopyTo(IStyle target) {
+            target.AutoSize = this.AutoSize;
+            target.FillColor = this.FillColor;
+            target.Font = (Font)this.Font.Clone();
+            target.PaintData = this.PaintData;
+            target.Pen = (Pen)this.Pen.Clone();
+            target.PenColor = this.PenColor;
+            target.TextColor = this.TextColor;
+        }
+
         public virtual object Clone() {
-            var result = Activator.CreateInstance(this.GetType(), new object[] { "Clone." + this.Name, this.ParentStyle }) as IStyle;
-            result.AutoSize = this.AutoSize;
-            result.FillColor = this.FillColor;
-            result.Font = (Font)this.Font.Clone();
-            result.PaintData = this.PaintData;
-            result.Pen = (Pen)this.Pen.Clone();
-            result.PenColor = this.PenColor;
-            result.TextColor = this.TextColor;
+            var result = Activator.CreateInstance(this.GetType(), new object[] { "Clone." + this.Name }) as IStyle;
+            CopyTo(result);
             return result; 
 
         }

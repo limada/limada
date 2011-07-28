@@ -39,7 +39,7 @@ namespace Limaki.Drawing {
             if (name == "Desktop") {
                 var style = StyleSheet.CreateStyleWithSystemSettings();
                 style.Name = name+"."+StyleNames.BaseStyle;
-                style.Pen.Color = style.PenColor;
+                //style.Pen.Color = style.PenColor;
                 style.Font = (Font)SystemFonts.MessageBoxFont.Clone();
 
                 _styleSheet = new StyleSheet(name, style);
@@ -54,7 +54,7 @@ namespace Limaki.Drawing {
                 style.Name = name + "." + StyleNames.BaseStyle;
                 style.FillColor = Color.FromArgb(200, Color.WhiteSmoke);
                 style.PenColor = Color.FromArgb(200, Color.Teal);
-                style.Pen.Color = style.PenColor;
+                //style.Pen.Color = style.PenColor;
                 style.Font = CreateFont(style.Font.FontFamily, 10);
                 _styleSheet = new StyleSheet(name, style);
                 _styleSheet.ItemStyle.SelectedStyle.FillColor = Color.Teal;
@@ -68,13 +68,13 @@ namespace Limaki.Drawing {
                 style.Name = name + "." + StyleNames.BaseStyle;
                 style.FillColor = Color.FromArgb(200, Color.White);
                 style.PenColor = Color.FromArgb(200, Color.White);
-                style.Pen.Color = style.PenColor;
+                //style.Pen.Color = style.PenColor;
                 style.Font = (Font)SystemFonts.MessageBoxFont.Clone();
 
                 _styleSheet = new StyleSheet(name, style);
 
-                //_styleSheet.ItemStyle.SelectedStyle.PenColor=Color.FromArgb(50, 150, 150, 150);
-                _styleSheet.ItemStyle.SelectedStyle.Pen.Thickness = style.Pen.Thickness;
+                _styleSheet.ItemStyle.SelectedStyle.PenColor=Color.FromArgb(50, 150, 150, 150);
+                //_styleSheet.ItemStyle.SelectedStyle.Pen.Thickness = style.Pen.Thickness;
 
                 var font = (Font)_styleSheet.BaseStyle.Font.Clone();
                 font.Style = FontStyle.Underline;
@@ -84,14 +84,15 @@ namespace Limaki.Drawing {
                 _styleSheet.ItemStyle.HoveredStyle.FillColor = style.FillColor;
 
                 _styleSheet.EdgeStyle.TextColor = Color.FromArgb(150, 100, 100, 100);
-                _styleSheet.EdgeStyle.PenColor = Color.FromArgb(150, 180, 180, 180);
                 _styleSheet.EdgeStyle.FillColor = KnownColors.FromKnownColor(KnownColor.White);
                 _styleSheet.EdgeStyle.Font = CreateFont(style.Font.FontFamily, style.Font.Size - 2.0d);
 
-                var pen = _styleSheet.EdgeStyle.Pen;
+                var pen = (Pen)_styleSheet.EdgeStyle.Pen.Clone();
                 pen.Thickness = 0.5d;
                 _styleSheet.EdgeStyle.Pen = pen;
+                _styleSheet.EdgeStyle.PenColor = Color.FromArgb(150, 180, 180, 180);
 
+                // this makes sense, cause CreateStyleGroup could make other colors:
                 _styleSheet.EdgeStyle.HoveredStyle.FillColor = _styleSheet.EdgeStyle.FillColor;
                 _styleSheet.EdgeStyle.HoveredStyle.PenColor = _styleSheet.EdgeStyle.PenColor;
                 _styleSheet.EdgeStyle.HoveredStyle.TextColor = _styleSheet.EdgeStyle.TextColor;

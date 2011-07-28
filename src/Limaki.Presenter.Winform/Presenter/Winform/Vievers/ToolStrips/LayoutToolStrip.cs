@@ -78,7 +78,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
         void ChangeStyle(object sender, System.EventArgs e) {
             var style = Controller.StyleToChange();
             if (style != null) {
-                var styleDialog = new UseCaseWinformComposer().ComposeStyleEditor(style, (s, e1) => Controller.StyleChange(style));
+                var styleDialog = new WinformUseCaseComposer().ComposeStyleEditor(style, (s, e1) => Controller.StyleChange(style));
                 styleDialog.Show();
             }
         }

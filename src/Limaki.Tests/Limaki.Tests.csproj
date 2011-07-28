@@ -115,6 +115,8 @@
     <Compile Include="Limada\Tests\View\VisualThingGraphTest.cs" />
     <Compile Include="Limada\Tests\Wrappers\WrapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceLoader.cs" />
+    <Compile Include="TestCaseFactory.cs" />
     <Compile Include="TestLocations.cs" />
     <Compile Include="Tests\Graphics\StyleTest.cs" />
     <Compile Include="Tests\Data\db4o\GraphTest.cs" />
@@ -138,6 +140,7 @@
     <Compile Include="Tests\Presenter\GDI\ConvexHullLayer.cs" />
     <Compile Include="Tests\Presenter\GDI\RegionLayer.cs" />
     <Compile Include="Tests\Presenter\GDI\RegionTest.cs" />
+    <Compile Include="Tests\Presenter\WebProxyTest.cs" />
     <Compile Include="Tests\Presenter\Winform\ConverterTest.cs" />
     <Compile Include="Tests\Presenter\Winform\OpenExampleData.cs">
       <SubType>Form</SubType>

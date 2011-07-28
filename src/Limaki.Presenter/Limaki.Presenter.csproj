@@ -163,6 +163,8 @@
     <Compile Include="Presenter\UI\SelectionRendererBase.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphSceneEventArgs.cs" />
     <Compile Include="UseCases\UseCase.cs" />
+    <Compile Include="UseCases\UseCaseComposer.cs" />
+    <Compile Include="UseCases\UseCaseFactories.cs" />
     <Compile Include="UseCases\UseCaseFactory.cs" />
     <Compile Include="UseCases\Viewers\DialogResult.cs" />
     <Compile Include="UseCases\Viewers\FileDialogMemento.cs" />
@@ -175,12 +177,14 @@
     <Compile Include="UseCases\Viewers\StreamViewerController.cs" />
     <Compile Include="UseCases\Viewers\StreamViewers\HTMLViewerController.cs" />
     <Compile Include="UseCases\Viewers\StreamViewers\SheetViewerController.cs" />
+    <Compile Include="UseCases\Viewers\StreamViewers\ThingWebResponse.cs" />
     <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\RequestInfo.cs" />
     <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\TimeoutStream.cs" />
     <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\WebContent.cs" />
     <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\WebProxyContent.cs" />
     <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\WebServer.cs" />
     <Compile Include="UseCases\Viewers\ContentViewManager.cs" />
+    <Compile Include="UseCases\Viewers\StreamViewers\WebProxyServer\WebServerBase.cs" />
     <Compile Include="UseCases\Viewers\TextOkCancelBoxEventArgs.cs" />
     <Compile Include="UseCases\Viewers\ThingViewerController.cs" />
     <Compile Include="UseCases\Viewers\ThingContentViewProviders.cs" />

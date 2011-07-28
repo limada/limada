@@ -60,6 +60,8 @@ namespace Limaki.ThirdPartyWrappers {
                     Application.DoEvents();
                     Thread.Sleep(5);
                 }
+            } else {
+                base.Stop();
             }
         }
 

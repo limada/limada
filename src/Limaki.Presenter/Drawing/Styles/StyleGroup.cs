@@ -14,6 +14,8 @@ namespace Limaki.Drawing {
             get { return base.Name; }
             set {
                 if (base.Name != value) {
+                    if (DefaultStyle != null && DefaultStyle!=this)
+                        DefaultStyle.Name = value + ".Default";
                     if (SelectedStyle != null)
                         SelectedStyle.Name = value + ".Selected";
                     if (HoveredStyle != null)
@@ -23,14 +25,30 @@ namespace Limaki.Drawing {
             }
         }
 
+        public override void CopyTo(IStyle target) {
+            base.CopyTo(target);
+        }
+
+        public virtual void CopyTo(IStyleGroup result) {
+            base.CopyTo(result);
+            if (DefaultStyle != null) {
+                result.DefaultStyle = this.DefaultStyle.Clone() as IStyle;
+                result.DefaultStyle.ParentStyle = result;
+            }
+            if (SelectedStyle != null) {
+                result.SelectedStyle = this.SelectedStyle.Clone() as IStyle;
+                result.SelectedStyle.ParentStyle = result;
+
+            }
+            if (HoveredStyle != null) {
+                result.HoveredStyle = this.HoveredStyle.Clone() as IStyle;
+                result.HoveredStyle.ParentStyle = result;
+            }
+        }
+
         public object Clone() {
             var result = base.Clone() as IStyleGroup;
-            if (DefaultStyle != null)
-                result.DefaultStyle = this.DefaultStyle.Clone() as IStyle;
-            if (SelectedStyle != null)
-                result.SelectedStyle = this.SelectedStyle.Clone() as IStyle;
-            if (HoveredStyle != null)
-                result.HoveredStyle = this.HoveredStyle.Clone() as IStyle;
+            CopyTo(result);
             return result;
 
 

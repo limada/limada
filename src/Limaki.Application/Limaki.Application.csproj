@@ -76,10 +76,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Limada.PdfExporter\Limada.PdfExporter.csproj">
-      <Project>{84084423-BA27-4001-8F47-DB0D242A1255}</Project>
-      <Name>Limada.PdfExporter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
       <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
       <Name>Limaki.Core</Name>
@@ -96,17 +92,9 @@
       <Project>{00330FAC-98FB-4D4B-9B58-0D73178B6D5A}</Project>
       <Name>Limaki.Presenter.Winform</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.Tests\Limaki.Tests.csproj">
-      <Project>{B1BC3EF8-5EC7-491A-BA83-70CB38F1823F}</Project>
-      <Name>Limaki.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Limaki.Presenter\Limaki.Presenter.csproj">
       <Project>{5E2A280D-1F53-44E5-AAA3-6BDBA2B51094}</Project>
       <Name>Limaki.Presenter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Limaki.WCF\Limaki.WCF.csproj">
-      <Project>{BEED4D77-5589-4C7B-8B2E-6EAD694C4279}</Project>
-      <Name>Limaki.WCF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -118,7 +106,6 @@
   <ItemGroup>
     <Compile Include="WinformAppFactory.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="TestCases.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
