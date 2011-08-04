@@ -21,6 +21,7 @@ using Limaki.Presenter.Winform.Display;
 using Limaki.Visuals;
 using Limaki.Winform.Controls;
 using DialogResult=Limaki.UseCases.Viewers.DialogResult;
+using Limaki.Presenter.Display;
 
 namespace Limaki.UseCases.Winform.Viewers {
     public class  WinformSplitView : IDisposable {
@@ -42,7 +43,7 @@ namespace Limaki.UseCases.Winform.Viewers {
         #endregion
 
         public SplitContainer ViewDevice { get; set; }
-        public SplitView View { get; set; }
+        public SplitView0 View { get; set; }
         
         public WinformVisualsDisplay Display1 { get; set; }
         public WinformVisualsDisplay Display2 { get; set; }
@@ -82,9 +83,9 @@ namespace Limaki.UseCases.Winform.Viewers {
         public void Initialize() {
             InitializeComponent();
 
-            View = new SplitView ();
-            View.Display1 = this.Display1.Display as VisualsDisplay;
-            View.Display2 = this.Display2.Display as VisualsDisplay;
+            View = new SplitView0 ();
+            View.Display1 = this.Display1.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
+            View.Display2 = this.Display2.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
             View.Parent = this.Parent;
             View.DeviceInitializeDisplay += this.InitializeDisplay;
             
@@ -94,7 +95,7 @@ namespace Limaki.UseCases.Winform.Viewers {
             View.DeviceToggleView += this.ToggleView;
             
             View.ApplyGotFocus = this.ApplyGotFocus;
-            View.ShowTextDialog = this.showTextOkCancelDialog;
+            View.ShowTextDialog = this.ShowTextOkCancelDialog;
             View.AfterStreamLoaded = this.AfterStreamLoaded;
 
             View.Initialize ();
@@ -107,7 +108,7 @@ namespace Limaki.UseCases.Winform.Viewers {
         }
 
 
-        void InitializeDisplay(VisualsDisplay target) {
+        void InitializeDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> target) {
             var display = target.Device as Control;
             display.Enter -= DisplayGotFocus;
             display.MouseUp -= DisplayGotFocus;
@@ -195,7 +196,7 @@ namespace Limaki.UseCases.Winform.Viewers {
                 return;
             
             var control = sender as Control;
-            var device = sender as VisualsDisplay;
+            var device = sender as GraphSceneDisplay<IVisual, IVisualEdge>;
             if(device != null) {
                 control = device.Device as Control;
             }
@@ -244,7 +245,7 @@ namespace Limaki.UseCases.Winform.Viewers {
 
         }
 
-        private void showTextOkCancelDialog(string title, string text, Action<string> OnOk) {
+        protected void ShowTextOkCancelDialog(string title, string text, Action<string> OnOk) {
             var nameDialog = new TextOkCancelBox();
             nameDialog.Finish += finishTextOkCancelDialog;
             nameDialog.OnOk = OnOk;

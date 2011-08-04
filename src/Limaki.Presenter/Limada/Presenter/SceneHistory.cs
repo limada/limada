@@ -57,7 +57,7 @@ namespace Limada.Presenter {
             history.Add(info.Id);
         }
 
-        protected SheetInfo Store(VisualsDisplay display, ISheetManager sheetManager, Id id) {
+        protected SheetInfo Store(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, Id id) {
             var result = default(SheetInfo);
             if (display != null && display.Data != null && display.Data.Count > 0) {
                 if (id == default(Id))
@@ -74,12 +74,12 @@ namespace Limada.Presenter {
             return result;
         }
 
-        public SheetInfo Store(VisualsDisplay display, ISheetManager sheetManager, bool makeNew) {
+        public SheetInfo Store(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, bool makeNew) {
             var result = Store(display, sheetManager, display.DataId);
             return result;
         }
 
-        protected void Load(VisualsDisplay display, ISheetManager sheetManager, Id id) {
+        protected void Load(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, Id id) {
             if (id == 0)
                 return;
 
@@ -90,7 +90,7 @@ namespace Limada.Presenter {
             }
         }
 
-        public void Navigate(VisualsDisplay display, ISheetManager sheetManager, bool forward) {
+        public void Navigate(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, bool forward) {
             var info = Store(display, sheetManager, display.DataId);
             var currSheedId = default(Id);
 

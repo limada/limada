@@ -34,6 +34,8 @@ using System.Collections.Generic;
 using Limaki.UseCases.Viewers;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Presenter.UI;
+using System.Diagnostics;
+using System.IO;
 
 namespace Limada.Presenter {
     public class FavoriteManager {
@@ -100,6 +102,14 @@ namespace Limada.Presenter {
             set { _display = value; }
         }
 
+        protected virtual void DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, StreamInfo<Stream> streamInfo) {
+            var info = SheetManager.LoadFromStreamInfo(streamInfo, display.Data, display.Layout);
+            display.DataId = info.Id;
+            display.Text = info.Name;
+
+            display.Execute();
+            info.State.CopyTo(display.State);
+        }
 
         protected virtual bool DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, IThing thing, IThingGraph thingGraph ) {
             var streamThing = thing as IStreamThing;
@@ -107,15 +117,12 @@ namespace Limada.Presenter {
                 if (streamThing != null && streamThing.StreamType == StreamTypes.LimadaSheet) {
                     var streamInfo = ThingStreamFacade.GetStreamInfo(thingGraph, streamThing);
                     streamInfo.Source = streamThing.Id;
-                    var info = SheetManager.LoadFromStreamInfo(streamInfo, display.Data as Scene, display.Layout);
-                    display.DataId = info.Id;
-                    display.Text = info.Name;
-
-                    display.Execute();
-                    info.State.CopyTo(display.State);
-                    return true;
+                    DisplaySheet(display, streamInfo);
                 }
-            } catch (Exception e) { }
+            } catch (Exception e) {
+                Trace.WriteLine("Error on displaying sheet {0}", e.Message);
+                Debug.WriteLine(e.StackTrace);
+            }
             return false;
         }
 
@@ -130,7 +137,9 @@ namespace Limada.Presenter {
 
             display.DataId = HomeId;
             display.Text = "Favorites";
-            new State {Hollow = true}.CopyTo(display.State);
+            var state = new State {Hollow = true};
+
+            state.CopyTo(display.State);
 
             var view = display.Data.Graph as GraphView<IVisual, IVisualEdge>;
 
@@ -146,11 +155,12 @@ namespace Limada.Presenter {
                 var topicsCount = thingGraph.Edges(topic).Count;
                 var showTopic = topic != null && (topicsCount > 0);
 
+                #region only one sheet
                 // look if there is only one sheet:
                 var sheets = thingGraph.GetById(TopicSchema.Sheets.Id);
                 var sheetsCount = thingGraph.Edges(sheets).Where(l => l.Marker.Id == TopicSchema.SheetMarker.Id).Count();
                 
-                if (doAutoView && sheets != null && sheetsCount==1 && topicsCount <= 1) {
+                if (! done && doAutoView && sheets != null && sheetsCount==1 && topicsCount <= 1) {
                     var autoView = thingGraph.Edges(sheets)
                         .Where(link => link.Marker.Id == TopicSchema.SheetMarker.Id)
                         .Select(link => thingGraph.Adjacent(link, sheets))
@@ -158,7 +168,25 @@ namespace Limada.Presenter {
 
                     done = DisplaySheet(display, autoView, thingGraph);
                 }
+                #endregion
 
+                #region Favorites sheet is in SheetManager
+                if (! done) {
+                    var homeInfo = SheetManager.GetSheetInfo(HomeId);
+                    if(homeInfo!=null) {
+                        var sheet = SheetManager.GetFromStreams(HomeId);
+                        DisplaySheet(display, new StreamInfo<Stream> {
+                            Source = HomeId,
+                            Description = homeInfo.Name,
+                            Data = sheet,
+                            StreamType = TopicSchema.SheetMarker.Id
+                        });
+                        done = true;
+                    }
+                }
+                #endregion
+
+                #region AutoView
                 if (! done && showTopic && doAutoView) {
                     var autoView = thingGraph.Edges(topic)
                         .Where(link => link.Marker.Id == TopicSchema.AutoViewMarker.Id)
@@ -168,7 +196,9 @@ namespace Limada.Presenter {
                     done = DisplaySheet(display, autoView, thingGraph);
 
                 }
+                #endregion
 
+                #region show Topic
                 if (! done && showTopic) {
                     var topicVisual = graph.Get(topic);
                     view.Add(topicVisual);
@@ -177,8 +207,10 @@ namespace Limada.Presenter {
                     display.Invoke();
                     done = true;
 
-                } 
+                }
+                #endregion
 
+                #region show roots
                 if (!done) {
                     foreach (var item in thingGraph.FindRoots(null)) {
                         if (!thingGraph.IsMarker(item))
@@ -187,8 +219,12 @@ namespace Limada.Presenter {
                     display.Invoke();
                     done = true;
                 }
+                #endregion
 
-            } 
+            }
+
+            #region no ThingGraph
+
             if (! done && view != null) {
                 // it seems not to be a ThingGraph based Scene:
                 foreach (var item in  view.Two.FindRoots(null)) {
@@ -196,6 +232,8 @@ namespace Limada.Presenter {
                 }
                 display.Invoke();
             }
+
+            #endregion
         }
 
 
@@ -224,6 +262,10 @@ namespace Limada.Presenter {
             return false;
         }
 
+        /// <summary>
+        /// saves scenes of displays with  AddToSheets
+        /// </summary>
+        /// <param name="displays"></param>
         public void SaveChanges(IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays) {
             IGraphSceneDisplay<IVisual, IVisualEdge> display = displays.First();
             IGraph<IVisual, IVisualEdge> graph = graph = display.Data.Graph;

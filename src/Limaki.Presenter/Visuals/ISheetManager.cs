@@ -7,7 +7,20 @@ using Limaki.Model.Streams;
 using Id = System.Int64;
 
 namespace Limaki.Visuals{
+    /// <summary>
+    /// replaces ISheetManager
+    /// replaces all methods where to load and save scenes
+    /// </summary>
+    public interface ISceneManager {
+        
+    }
+
     public interface ISheetManager {
+        /// <summary>
+        /// null if not registered
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         SheetInfo GetSheetInfo ( Int64 id );
         SheetInfo RegisterSheet(Id id, string name);
         Action<SheetInfo> SheetRegistered { get; set; }

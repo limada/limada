@@ -37,6 +37,7 @@ using Limaki.WCF.Data;
 using Limaki.Visuals;
 using Limada.Schemata;
 using Limaki.Tests.Presenter;
+using Limaki.UseCases.Viewers;
 
 
 namespace Limaki.Tests.UseCases {
@@ -117,7 +118,7 @@ namespace Limaki.Tests.UseCases {
         public void ExampleOpen(UseCase useCase) {
 
             OpenExampleData dialog = new OpenExampleData();
-            if (dialog.ShowDialog() == DialogResult.OK) {
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                 ExampleData.ITypeChoose testData = dialog.ExampleData.Selected;
                 testData.Data.Count = (int)dialog.numericUpDown1.Value;
                 SetTestData(useCase.SplitView, testData.Data);
@@ -133,7 +134,7 @@ namespace Limaki.Tests.UseCases {
             form.Controls.Add (display);
 
             var quadTreeVisualizer = new QuadTreeVisualizer ();
-            quadTreeVisualizer.VisualsDisplay = display.Display as VisualsDisplay;
+            quadTreeVisualizer.VisualsDisplay = display.Display as GraphSceneDisplay<IVisual, IVisualEdge>;
             quadTreeVisualizer.Data = (scene.SpatialIndex as QuadTreeIndex).GeoIndex;
 
             
@@ -142,7 +143,7 @@ namespace Limaki.Tests.UseCases {
             
 
         }
-        public void SetTestData(Limaki.UseCases.Viewers.SplitView target, ISceneFactory factory) {
+        public void SetTestData(SplitView0 target, ISceneFactory factory) {
             Scene scene = new Scene();
             scene = factory.Scene;
 
@@ -175,7 +176,7 @@ namespace Limaki.Tests.UseCases {
 #endif
         }
 
-        public void InstrumentLayer(IRenderAction renderAction, VisualsDisplay display) {
+        public void InstrumentLayer(IRenderAction renderAction, IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             var layer = renderAction as ILayer<IGraphScene<IVisual, IVisualEdge>>;
             if (layer != null) {
                 layer.Data = () => display.Data;

@@ -25,9 +25,10 @@ using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
 using Limaki.Presenter.UI;
+using Limaki.Presenter.Display;
 
 namespace Limaki.UseCases.Viewers {
-    public class SplitView : ISplitView, IDisposable, ICheckable {
+    public class SplitView0 : ISplitView, IDisposable, ICheckable {
         #region Initialize
         public void Initialize() {
             Display1.BackColor = KnownColors.FromKnownColor(KnownColor.Window);
@@ -42,7 +43,7 @@ namespace Limaki.UseCases.Viewers {
             CurrentDisplay = Display1;
         }
 
-        public void InitializeDisplay(VisualsDisplay display) {
+        public void InitializeDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             StyleSheets styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
             IStyleSheet styleSheet = null;
 
@@ -62,11 +63,11 @@ namespace Limaki.UseCases.Viewers {
 
         #endregion 
 
-        public VisualsDisplay Display1 { get; set; }
-        public VisualsDisplay Display2 { get; set; }
+        public IGraphSceneDisplay<IVisual, IVisualEdge> Display1 { get; set; }
+        public IGraphSceneDisplay<IVisual, IVisualEdge> Display2 { get; set; }
         public object Parent { get; set; }
 
-        public event Action<VisualsDisplay> DeviceInitializeDisplay = null;
+        public event Action<IGraphSceneDisplay<IVisual, IVisualEdge>> DeviceInitializeDisplay = null;
 
         public Action<object, Action> AfterStreamLoaded { get; set; }
         public Action<string, string, Action<string>> ShowTextDialog { get; set; }
@@ -87,8 +88,8 @@ namespace Limaki.UseCases.Viewers {
             }
         }
 
-        VisualsDisplay _currentDisplay = null;
-        public VisualsDisplay CurrentDisplay {
+        IGraphSceneDisplay<IVisual, IVisualEdge> _currentDisplay = null;
+        public IGraphSceneDisplay<IVisual, IVisualEdge> CurrentDisplay {
             get { return _currentDisplay; }
             protected set {
                 _currentDisplay = value;
@@ -103,8 +104,8 @@ namespace Limaki.UseCases.Viewers {
             protected set {
                 lock (locker) {
                     bool isChange = _currentControl != value;
-                    if (value is VisualsDisplay) {
-                        _currentDisplay = (VisualsDisplay)value;
+                    if (value is IGraphSceneDisplay<IVisual, IVisualEdge>) {
+                        _currentDisplay = (IGraphSceneDisplay<IVisual, IVisualEdge>)value;
                     }
                     _currentControl = value;
                     if (isChange) {
@@ -118,7 +119,7 @@ namespace Limaki.UseCases.Viewers {
         public Action<object> ApplyGotFocus { get; set; }
         
         public void DisplayGotFocus(object sender) {
-            CurrentDisplay = sender as VisualsDisplay;
+            CurrentDisplay = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
         }
 
         public void ControlGotFocus(object sender) {
@@ -476,10 +477,10 @@ namespace Limaki.UseCases.Viewers {
                 throw new CheckFailedException(this.GetType(), typeof(SheetManager));
             }
             if (this.Display1 == null) {
-                throw new CheckFailedException(this.GetType(), typeof(VisualsDisplay));
+                throw new CheckFailedException(this.GetType(), typeof(IGraphSceneDisplay<IVisual, IVisualEdge>));
             }
             if (this.Display2 == null) {
-                throw new CheckFailedException(this.GetType(), typeof(VisualsDisplay));
+                throw new CheckFailedException(this.GetType(), typeof(IGraphSceneDisplay<IVisual, IVisualEdge>));
             }
             if (this.ShowTextDialog == null) {
                 throw new CheckFailedException(this.GetType()+"needs a ShowTextDialogAction");

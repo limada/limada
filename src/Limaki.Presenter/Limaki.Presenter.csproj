@@ -68,6 +68,7 @@
     <Compile Include="Context\ViewContextRecourceLoader.cs" />
     <Compile Include="Drawing\DrawingPrimitivesSerializer.cs" />
     <Compile Include="Drawing\GrahamConvexHull.cs" />
+    <Compile Include="Drawing\Alignement.cs" />
     <Compile Include="Drawing\Shapes\LeftRightTopBottomComparer.cs" />
     <Compile Include="Drawing\Styles\StyleGroup.cs" />
     <Compile Include="Drawing\Styles\StyleNames.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Presenter\INavigateTarget.cs" />
     <Compile Include="Presenter\IZoomTarget.cs" />
     <Compile Include="Presenter\Layout\Alligner.cs" />
+    <Compile Include="Presenter\Layout\AllignerBase.cs" />
     <Compile Include="Presenter\Layout\GraphLayout.cs" />
     <Compile Include="Presenter\Layout\Layout.cs" />
     <Compile Include="Presenter\Layout\ProxyShape.cs" />
@@ -162,6 +164,7 @@
     <Compile Include="Presenter\UI\MoveResizeRendererBase.cs" />
     <Compile Include="Presenter\UI\SelectionRendererBase.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphSceneEventArgs.cs" />
+    <Compile Include="Presenter\Visuals\Display\VisualsRecourceLoader.cs" />
     <Compile Include="UseCases\UseCase.cs" />
     <Compile Include="UseCases\UseCaseComposer.cs" />
     <Compile Include="UseCases\UseCaseFactories.cs" />
@@ -169,11 +172,12 @@
     <Compile Include="UseCases\Viewers\DialogResult.cs" />
     <Compile Include="UseCases\Viewers\FileDialogMemento.cs" />
     <Compile Include="UseCases\Viewers\GraphScenePainter.cs" />
+    <Compile Include="UseCases\Viewers\IMessageBoxShow.cs" />
     <Compile Include="UseCases\Viewers\ISplitView.cs" />
     <Compile Include="UseCases\Viewers\ITextOkCancelBox.cs" />
     <Compile Include="UseCases\Viewers\IWebBrowser.cs" />
     <Compile Include="Limada\Presenter\SceneHistory.cs" />
-    <Compile Include="UseCases\Viewers\SplitView.cs" />
+    <Compile Include="UseCases\Viewers\SplitView0.cs" />
     <Compile Include="UseCases\Viewers\StreamViewerController.cs" />
     <Compile Include="UseCases\Viewers\StreamViewers\HTMLViewerController.cs" />
     <Compile Include="UseCases\Viewers\StreamViewers\SheetViewerController.cs" />
@@ -257,7 +261,6 @@
     <Compile Include="Presenter\Rendering\ContentRenderer.cs" />
     <Compile Include="Presenter\Rendering\GraphItemRenderer.cs" />
     <Compile Include="Presenter\Rendering\GraphSceneRenderer.cs" />
-    <Compile Include="Presenter\Visuals\Display\VisualsDisplay.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphEdgeChangeAction.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphItemAddAction.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphSceneFolding.cs" />

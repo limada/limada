@@ -17,9 +17,10 @@ using Limaki.Drawing;
 using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Presenter.Display;
 
 namespace Limaki.UseCases.Viewers.ToolStripViewers {
-    public class LayoutToolController:ToolController<VisualsDisplay,ILayoutTool> {
+    public class LayoutToolController : ToolController<IGraphSceneDisplay<IVisual, IVisualEdge>, ILayoutTool> {
 
         public void StyleSheetChange(string sheetName) {
             IStyleSheet styleSheet = null;
@@ -79,7 +80,7 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
         }
 
         public override void Attach(object sender) {
-            var display = sender as VisualsDisplay;
+            var display = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
             if (display != null) {
                 this.CurrentDisplay = display;
                 Tool.AttachStyleSheet(display.StyleSheet.Name);

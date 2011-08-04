@@ -74,6 +74,7 @@
     <Compile Include="Controls\GeckoWebBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\MessageBoxShow.cs" />
     <Compile Include="Presenter\Winform\DragDrop\DataObjectHelper.cs" />
     <Compile Include="Presenter\Winform\Vievers\ImageExporter.cs" />
     <Compile Include="Presenter\GDI\UI\GDIImageLayer.cs" />

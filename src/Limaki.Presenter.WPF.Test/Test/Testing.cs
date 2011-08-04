@@ -15,6 +15,7 @@ using System.Threading;
 using Limaki.Drawing;
 using Limaki.Presenter.WPF.Display;
 using Limaki.Presenter.Visuals;
+using Limaki.Presenter.Display;
 
 namespace Limaki.WPF008 {
     public class Testing {
@@ -149,7 +150,7 @@ namespace Limaki.WPF008 {
             //    new Limaki.Toolkit.Drawing.Size (50, 50);
 
 
-            var layout = (display.Display as VisualsDisplay).Layout;
+            var layout = (display.Display as IGraphSceneDisplay<IVisual, IVisualEdge>).Layout;
             layout.Centered = true;
             layout.Orientation = Orientation.TopBottom;
 

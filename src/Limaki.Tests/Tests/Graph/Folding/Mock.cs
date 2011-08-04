@@ -49,15 +49,15 @@ namespace Limaki.Tests.Graph.Wrappers {
         }
 
 
-        VisualsDisplay _display = null;
-        public VisualsDisplay Display {
+        IGraphSceneDisplay<IVisual, IVisualEdge> _display = null;
+        public IGraphSceneDisplay<IVisual, IVisualEdge> Display {
             get {
                 if (_display == null) {
                     var factory = new VisualsDisplayFactory ();
                     var inst = new MockDeviceComposer<IGraphScene<IVisual, IVisualEdge>> ();
                     inst.DataLayer = new MockGraphSceneLayer<IVisual, IVisualEdge> ();
                     factory.DeviceComposer = inst;
-                    var display = new VisualsDisplay();
+                    var display = new GraphSceneDisplay<IVisual, IVisualEdge>();
                     factory.Compose(display);
                     display.Data = this.Scene;
                     //display.DataHandler = () => this.Scene;
@@ -89,7 +89,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
     }
 
-    public class MockVisualsDisplay:VisualsDisplay {
+    public class MockVisualsDisplay : GraphSceneDisplay<IVisual, IVisualEdge> {
         public Get<IGraphScene<IVisual, IVisualEdge>> DataHandler { get; set; }
         public override IGraphScene<IVisual, IVisualEdge> Data {
             get {

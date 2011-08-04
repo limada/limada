@@ -18,6 +18,7 @@ using System.Collections.Generic;
 namespace Limaki.Graphs.Extensions {
     public class Walker<TItem, TEdge> : WalkerBase<TItem,TEdge> 
         where TEdge : IEdge<TItem>, TItem {
+
         public Walker(IGraph<TItem, TEdge> graph) : base (graph) {}
 
 
@@ -32,10 +33,10 @@ namespace Limaki.Graphs.Extensions {
         public virtual IEnumerable<LevelItem<TItem>> DeepWalk(TItem start, int level) {
             if (!visited.Contains(start)) {
                 visited.Add(start);
-                Queue<LevelItem<TItem>> queue = new Queue<LevelItem<TItem>>();
+                var queue = new Queue<LevelItem<TItem>>();
                 queue.Enqueue(new LevelItem<TItem>(start, default(TItem), level));
                 while (queue.Count > 0) {
-                    LevelItem<TItem> item = queue.Dequeue();
+                    var item = queue.Dequeue();
                     yield return item;
 
                     level = item.Level + 1;
@@ -43,7 +44,7 @@ namespace Limaki.Graphs.Extensions {
                     if (item.Node is TEdge) {
                         TEdge edge = (TEdge)item.Node;
 
-                        foreach (TEdge edge_edge in graph.Edges(edge)) {
+                        foreach (var edge_edge in graph.Edges(edge)) {
                             // follow link:
                             if (!visited.Contains(edge_edge)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge_edge, edge, level));
@@ -70,7 +71,7 @@ namespace Limaki.Graphs.Extensions {
                             }
                         }
                     } else {
-                        foreach (TEdge edge in graph.Edges(item.Node)) {
+                        foreach (var edge in graph.Edges(item.Node)) {
                             // follow link:
                             if (!visited.Contains(edge)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge, item.Node, level));
@@ -94,10 +95,10 @@ namespace Limaki.Graphs.Extensions {
         public virtual IEnumerable<LevelItem<TItem>> Walk(TItem start, int level) {
             if (!visited.Contains(start)) {
                 visited.Add(start);
-                Queue<LevelItem<TItem>> queue = new Queue<LevelItem<TItem>>();
+                var queue = new Queue<LevelItem<TItem>>();
                 queue.Enqueue(new LevelItem<TItem>(start, default(TItem), level));
                 while (queue.Count > 0) {
-                    LevelItem<TItem> item = queue.Dequeue();
+                    var item = queue.Dequeue();
                     yield return item;
 
                     level = item.Level+1;
@@ -106,7 +107,7 @@ namespace Limaki.Graphs.Extensions {
                         TEdge edge = (TEdge)item.Node;
 
                         // follow link of links
-                        foreach (TEdge edge_edge in graph.Edges(edge)) { // Fork!?
+                        foreach (var edge_edge in graph.Edges(edge)) { // Fork!?
                             if (!visited.Contains(edge_edge)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge_edge, edge, level ));
                                 visited.Add(edge_edge);
@@ -116,7 +117,7 @@ namespace Limaki.Graphs.Extensions {
                         if (adjacent != null) {
                             // follow adjacent of node:
                             if (!visited.Contains(adjacent)) {
-                                LevelItem<TItem> result = new LevelItem<TItem>(adjacent, edge, level);
+                                var result = new LevelItem<TItem>(adjacent, edge, level);
                                 if (adjacent is TEdge)
                                     queue.Enqueue(result);
                                 else
@@ -125,7 +126,7 @@ namespace Limaki.Graphs.Extensions {
                             }
                         } else {
                             if (!visited.Contains(edge.Root)) {
-                                LevelItem<TItem> result = new LevelItem<TItem>(edge.Root, edge, level);
+                                var result = new LevelItem<TItem>(edge.Root, edge, level);
                                 if (edge.Root is TEdge)
                                     queue.Enqueue(result);
                                 else
@@ -133,7 +134,7 @@ namespace Limaki.Graphs.Extensions {
                                 visited.Add(edge.Root);
                             }
                             if (!visited.Contains(edge.Leaf)) {
-                                LevelItem<TItem> result = new LevelItem<TItem>(edge.Leaf, edge, level);
+                                var result = new LevelItem<TItem>(edge.Leaf, edge, level);
                                 if (edge.Leaf is TEdge)
                                     queue.Enqueue(result);
                                 else
@@ -142,7 +143,7 @@ namespace Limaki.Graphs.Extensions {
                             }
                         }
                     } else {
-                        foreach (TEdge edge in graph.Edges(item.Node)) {
+                        foreach (var edge in graph.Edges(item.Node)) {
                             // follow link:
                             if (!visited.Contains(edge)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge, item.Node, level ));
@@ -159,10 +160,10 @@ namespace Limaki.Graphs.Extensions {
         public virtual IEnumerable<LevelItem<TItem>> ExpandWalk(TItem start, int level) {
             if (!visited.Contains(start)) {
                 visited.Add(start);
-                Queue<LevelItem<TItem>> queue = new Queue<LevelItem<TItem>>();
+                var queue = new Queue<LevelItem<TItem>>();
                 queue.Enqueue(new LevelItem<TItem>(start, default(TItem), level));
                 while (queue.Count > 0) {
-                    LevelItem<TItem> item = queue.Dequeue();
+                    var item = queue.Dequeue();
                     yield return item;
                     level = item.Level;
                     if (item.Node is TEdge) {
@@ -184,24 +185,24 @@ namespace Limaki.Graphs.Extensions {
                         if (adjacent != null) {
                             // follow adjacent of node:
                             if (!visited.Contains(adjacent)) {
-                                LevelItem<TItem> result = new LevelItem<TItem>(adjacent, edge, level);
+                                var result = new LevelItem<TItem>(adjacent, edge, level);
                                 queue.Enqueue(result);
                                 visited.Add(adjacent);
                             }
                         } else {
                             if (!visited.Contains(edge.Root)) {
-                                LevelItem<TItem> result = new LevelItem<TItem>(edge.Root, edge, level);
+                                var result = new LevelItem<TItem>(edge.Root, edge, level);
                                 queue.Enqueue(result);
                                 visited.Add(edge.Root);
                             }
                             if (!visited.Contains(edge.Leaf)) {
-                                LevelItem<TItem> result = new LevelItem<TItem>(edge.Leaf, edge, level);
+                                var result = new LevelItem<TItem>(edge.Leaf, edge, level);
                                 queue.Enqueue(result);
                                 visited.Add(edge.Leaf);
                             }
                         }
                     } else if (item.Node.Equals(start)) {
-                        foreach (TEdge edge in graph.Edges(item.Node)) {
+                        foreach (var edge in graph.Edges(item.Node)) {
                             // follow link:
                             if (!visited.Contains(edge)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge, item.Node, level + 1));
@@ -217,9 +218,9 @@ namespace Limaki.Graphs.Extensions {
 
         
         public virtual IEnumerable<LevelItem<TItem>> CollapseWalk(TItem start, int level) {
-            Queue<TItem> queue = new Queue<TItem>();
-            foreach (TEdge edge in graph.Edges(start)) {
-                foreach (TEdge subedge in graph.Edges(edge)) {
+            var queue = new Queue<TItem>();
+            foreach (var edge in graph.Edges(start)) {
+                foreach (var subedge in graph.Edges(edge)) {
                     if (!visited.Contains(subedge)) {
                         if (subedge.Leaf.Equals(edge)) {                         
                             continue;
@@ -247,9 +248,9 @@ namespace Limaki.Graphs.Extensions {
             }
 
             while (queue.Count > 0) {
-                TItem item = queue.Dequeue ();
+                var item = queue.Dequeue ();
                 yield return new LevelItem<TItem>(item, default(TItem), 0);
-                foreach (TEdge edge in graph.Twig(item)) {
+                foreach (var edge in graph.Twig(item)) {
                     if (!visited.Contains(edge)) {
                         visited.Add (edge);
                         yield return new LevelItem<TItem>(edge, default(TItem), 0);
@@ -265,13 +266,13 @@ namespace Limaki.Graphs.Extensions {
         /// <param name="level"></param>
         /// <returns></returns>
         public virtual IEnumerable<LevelItem<TItem>> CollapseWalk1(TItem start, int level) {
-            Queue<TItem> queue = new Queue<TItem>();
+            var queue = new Queue<TItem>();
             queue.Enqueue(start);
 
             while (queue.Count > 0) {
-                TItem item = queue.Dequeue();
+                var item = queue.Dequeue();
                 yield return new LevelItem<TItem>(item, default(TItem), 0);
-                foreach (TEdge edge in graph.Twig(item)) {
+                foreach (var edge in graph.Twig(item)) {
                     if (!visited.Contains(edge)) {
 
                         queue.Enqueue(edge);
@@ -297,12 +298,12 @@ namespace Limaki.Graphs.Extensions {
         }
 
         public virtual IEnumerable<TItem> Items(IEnumerable<LevelItem<TItem>> items) {
-            foreach (LevelItem<TItem> item in items)
+            foreach (var item in items)
                 yield return item.Node;
             
         }
         public virtual IEnumerable<TEdge> Edges(IEnumerable<LevelItem<TItem>> items) {
-            foreach (LevelItem<TItem> item in items)
+            foreach (var item in items)
                 if (item.Node is TEdge)
                     yield return (TEdge)item.Node;
 

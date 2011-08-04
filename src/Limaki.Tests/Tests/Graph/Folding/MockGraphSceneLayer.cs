@@ -143,7 +143,7 @@ where T : class {
         public PointI PointToClient(PointI source) {
             return source;
         }
-
+        public void Dispose(){}
     }
 
     public class MockDeviceComposer<TData> : DeviceComposer<TData, IDisplayDevice<TData>>

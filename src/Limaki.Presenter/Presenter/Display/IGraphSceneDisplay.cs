@@ -23,5 +23,7 @@ namespace Limaki.Presenter.Display {
         IGraphLayout<TItem, TEdge> Layout { get; set; }
         event EventHandler<GraphSceneEventArgs<TItem, TEdge>> SceneFocusChanged;
         void OnSceneFocusChanged();
+
+        bool Check();
     }
 }

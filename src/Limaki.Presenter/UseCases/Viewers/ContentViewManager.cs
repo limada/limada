@@ -27,11 +27,12 @@ using Limaki.Visuals;
 using Limaki.Presenter.UI;
 using System.Linq;
 using Limaki.Graphs;
+using Limaki.Presenter.Display;
 
 namespace Limaki.UseCases.Viewers {
     public class ContentViewManager:IDisposable {
-        
-        public VisualsDisplay SheetControl {get;set;}
+
+        public IGraphSceneDisplay<IVisual, IVisualEdge> SheetControl { get; set; }
         public ISheetManager SheetManager { get; set; }
 
         public Color BackColor = KnownColors.FromKnownColor(KnownColor.Control);

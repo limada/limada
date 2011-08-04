@@ -260,5 +260,6 @@ namespace Limaki.Presenter.WPF.Display {
 
         #endregion
 
+        public void Dispose(){}
     }
 }

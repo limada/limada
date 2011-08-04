@@ -13,9 +13,10 @@
  */
 
 using Limaki.Drawing;
+using System;
 
 namespace Limaki.Presenter {
-    public interface IControl {
+    public interface IControl:IDisposable {
         
         RectangleI ClientRectangle { get;}
         SizeI Size {get;}

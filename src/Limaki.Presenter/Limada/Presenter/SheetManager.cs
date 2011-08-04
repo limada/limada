@@ -186,7 +186,8 @@ namespace Limada.Presenter {
 
         protected void LoadFromStream(Stream source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
             SceneTools.CleanScene(target);
-            using (Sheet sheet = new Sheet(target, layout)) {
+            source.Position = 0;
+            using (var sheet = new Sheet(target, layout)) {
                 sheet.Read(source);
             } 
         }
@@ -270,6 +271,7 @@ namespace Limada.Presenter {
             return stream;
 
         }
+
         public bool LoadFromStreams(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
             Stream stream = null;
             if (SheetStreams.TryGetValue(id, out stream)){
@@ -279,6 +281,7 @@ namespace Limada.Presenter {
             }
             return false;
         }
+
         #endregion
     }
 

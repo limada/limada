@@ -25,6 +25,8 @@ using Limaki.Drawing;
 using Limaki.Model.Streams;
 using System.IO;
 using Limada.Presenter;
+using Limaki.Presenter.Layout;
+using Limaki.Presenter.Display;
 
 namespace Limaki.UseCases {
     public class UseCase:IDisposable {
@@ -53,7 +55,7 @@ namespace Limaki.UseCases {
             }
         }
 
-        public SplitView SplitView { get; set; }
+        public SplitView0 SplitView { get; set; }
         public SceneHistory SceneHistory { get; set; }
         public ISheetManager SheetManager {get;set;}
         public FavoriteManager FavoriteManager { get; set; }
@@ -63,7 +65,7 @@ namespace Limaki.UseCases {
         public MarkerToolController MarkerToolController { get; set; }
         
         public Get<object> GetCurrentControl { get; set; }
-        public Get<VisualsDisplay> GetCurrentDisplay { get; set; }
+        public Get<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
 
 
         public Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow { get; set; }
@@ -147,11 +149,21 @@ namespace Limaki.UseCases {
         }
 
         public void SaveChanges() {
-            var displays = new VisualsDisplay[] {SplitView.Display1, SplitView.Display2};
+            var displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { SplitView.Display1, SplitView.Display2 };
             SceneHistory.SaveChanges(displays, SheetManager, MessageBoxShow);
             FavoriteManager.SaveChanges(displays);
         }
 
         public Action<string> StateMessage {get; set;}
+
+        public void AlgignLeft() {
+            var display = GetCurrentDisplay();
+            var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
+            var items = display.Data.Selected.Elements;
+            alligner.AffectedEdges(items);
+            alligner.Allign(items, HorizontalAlignment.Left);
+            alligner.Proxy.Commit(alligner.Data);
+            display.Execute();
+        }
     }
 }

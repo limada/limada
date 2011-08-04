@@ -5,7 +5,7 @@ using Limaki.Visuals;
 namespace Limaki.Presenter.Visuals {
     public class VisualsDisplayFactory:GraphSceneDisplayFactory<IVisual,IVisualEdge> {
         public override Display<IGraphScene<IVisual, IVisualEdge>> Create() {
-            var result = new VisualsDisplay();
+            var result = new GraphSceneDisplay<IVisual, IVisualEdge>();
             return result;           
         }
 

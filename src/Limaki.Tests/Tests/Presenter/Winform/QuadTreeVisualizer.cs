@@ -6,6 +6,7 @@ using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
 using Limaki.Visuals;
 using Limaki.Presenter.Visuals;
+using Limaki.Presenter.Display;
 
 namespace Limaki.Tests.Presenter.Winform {
     public class QuadTreeVisualizer {
@@ -19,7 +20,7 @@ namespace Limaki.Tests.Presenter.Winform {
             }
         }
 
-        public VisualsDisplay VisualsDisplay {get;set;}
+        public GraphSceneDisplay<IVisual, IVisualEdge> VisualsDisplay {get;set;}
         
         static IDrawingUtils _drawingUtils = null;
         protected static IDrawingUtils drawingUtils {

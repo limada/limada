@@ -23,6 +23,8 @@ using Limaki.Drawing.Shapes;
 using Limaki.Presenter.UI;
 using Limaki.Visuals;
 using Limaki.Presenter.Winform.Display;
+using Limaki.Winform.Controls;
+using Limaki.UseCases.Viewers;
 
 namespace Limaki.Presenter.Winform {
     /// <summary>
@@ -46,6 +48,7 @@ namespace Limaki.Presenter.Winform {
             
             context.Factory.Add<IDeviceCursor, CursorHandler>();
             context.Factory.Add<IDisplay<IGraphScene<IVisual, IVisualEdge>>>(() => new WinformVisualsDisplay().Display);
+            context.Factory.Add<IMessageBoxShow, MessageBoxShow>();
 
             new ViewContextRecourceLoader().ApplyResources(context);
 

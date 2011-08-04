@@ -39,7 +39,7 @@ namespace Limaki.Presenter.WPF.Display {
         //public VisualsDragDrop DragDrop { get; set; }
         public override void Factor(Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
             base.Factor(aDisplay);
-            var display = aDisplay as VisualsDisplay;
+            var display = aDisplay as GraphSceneDisplay<IVisual, IVisualEdge>;
             display.GraphItemRenderer = new WpfVisualsRenderer();
         }
 

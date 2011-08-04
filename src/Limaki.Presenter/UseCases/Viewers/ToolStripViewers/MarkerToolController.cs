@@ -15,11 +15,12 @@
 using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Presenter.Display;
 
 namespace Limaki.UseCases.Viewers.ToolStripViewers {
-    public class MarkerToolController : ToolController<VisualsDisplay, IMarkerTool> {
+    public class MarkerToolController : ToolController<IGraphSceneDisplay<IVisual, IVisualEdge>, IMarkerTool> {
         public override void Attach(object sender) {
-            var display = sender as VisualsDisplay;
+            var display = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
             if (display != null) {
                 this.CurrentDisplay = display;
                 Tool.Attach(display.Data);

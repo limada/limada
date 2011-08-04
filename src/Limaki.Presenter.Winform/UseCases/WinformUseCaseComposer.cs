@@ -139,6 +139,9 @@ namespace Limaki.UseCases.Winform {
             new ToolStripMenuItem(l["Format"], null, new ToolStripMenuItem[] {
                 new ToolStripMenuItem(l["Layout"], null, (s, e) => { this.ShowLayoutEditor(useCase); }),
                 new ToolStripMenuItem(l["StyleSheet"], null, (s, e) => { this.ShowStyleEditor(useCase); }),
+                new ToolStripMenuItem(l["Alignment"], null, new ToolStripMenuItem[] { 
+					new ToolStripMenuItem(l["Left"], null, (s, e) => { useCase.AlgignLeft(); })
+				}),
             }),
 
             new ToolStripMenuItem(l["Favorites"], null, new ToolStripMenuItem[] {

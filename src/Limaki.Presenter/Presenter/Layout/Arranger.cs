@@ -254,7 +254,7 @@ namespace Limaki.Presenter.Layout {
                             Proxy.Justify(item);
 
 
-                        foreach (TEdge edge in this.Graph.Twig(item)) {
+                        foreach (var edge in this.Graph.Twig(item)) {
                             Proxy.AffectedEdges.Add(edge);
                         }
 

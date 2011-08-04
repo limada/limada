@@ -12,7 +12,7 @@ using Limaki.Visuals;
 namespace Limaki.Presenter.Visuals {
     public class VisualsDisplayComposer : GraphSceneDisplayComposer<IVisual, IVisualEdge> {
         public override void Factor(Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
-            var display = aDisplay as VisualsDisplay;
+            var display = aDisplay as GraphSceneDisplay<IVisual, IVisualEdge>;
             
             base.Factor(display);
 
@@ -25,7 +25,7 @@ namespace Limaki.Presenter.Visuals {
         protected IMouseAction AddGraphEdgeAction { get; set; }
 
         public override void Compose(Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
-            var display = aDisplay as VisualsDisplay;
+            var display = aDisplay as GraphSceneDisplay<IVisual, IVisualEdge>;
             
             base.Compose(display);
 

@@ -19,6 +19,7 @@ using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Presenter.Display;
 
 
 namespace Limaki.Presenter.Visuals {
@@ -34,7 +35,7 @@ namespace Limaki.Presenter.Visuals {
         /// </summary>
         /// <param name="sourceDisplay"></param>
         /// <param name="targetDisplay"></param>
-        public virtual void MakeSideDisplay(VisualsDisplay sourceDisplay, VisualsDisplay targetDisplay) {
+        public virtual void MakeSideDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> sourceDisplay, IGraphSceneDisplay<IVisual, IVisualEdge> targetDisplay) {
             CopyDisplayProperties(sourceDisplay, targetDisplay);
 
             targetDisplay.Data = CreateTargetScene(sourceDisplay.Data);
@@ -50,7 +51,7 @@ namespace Limaki.Presenter.Visuals {
         /// </summary>
         /// <param name="sourceDisplay"></param>
         /// <param name="targetDisplay"></param>
-        public virtual void CopyDisplayProperties(VisualsDisplay sourceDisplay, VisualsDisplay targetDisplay) {
+        public virtual void CopyDisplayProperties(IGraphSceneDisplay<IVisual, IVisualEdge> sourceDisplay, IGraphSceneDisplay<IVisual, IVisualEdge> targetDisplay) {
             targetDisplay.BackColor = sourceDisplay.BackColor;
             targetDisplay.ZoomState = sourceDisplay.ZoomState;
             targetDisplay.SelectAction.Enabled = sourceDisplay.SelectAction.Enabled;
@@ -83,7 +84,7 @@ namespace Limaki.Presenter.Visuals {
             return result;
         }
 
-        public virtual void WireScene(VisualsDisplay targetDisplay, IGraphScene<IVisual, IVisualEdge> sourceScene, IGraphScene<IVisual, IVisualEdge> targetScene) {
+        public virtual void WireScene(IGraphSceneDisplay<IVisual, IVisualEdge> targetDisplay, IGraphScene<IVisual, IVisualEdge> sourceScene, IGraphScene<IVisual, IVisualEdge> targetScene) {
             
             Action<IGraph<IVisual, IVisualEdge>, IVisual, GraphChangeType> graphChanged =
                delegate(IGraph<IVisual, IVisualEdge> sender, IVisual visual, GraphChangeType changeType) {
