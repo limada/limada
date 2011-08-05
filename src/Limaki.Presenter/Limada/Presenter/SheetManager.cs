@@ -19,28 +19,28 @@ using System.IO;
 using Limada.Common;
 using Limada.Model;
 using Limada.Schemata;
+using Limada.View;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Graphs;
 using Limaki.Model.Streams;
+using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
 using Id = System.Int64;
-using Limaki.Presenter.Visuals.UI;
-using Limada.View;
-using Limaki.Graphs;
 
 namespace Limada.Presenter {
 
     public class SheetManager : ISheetManager {
 
         #region SheetInfo
-        private IDictionary<Id, SheetInfo> _sheets = null;
+        private IDictionary<Id, SceneInfo> _sheets = null;
         /// <summary>
         /// names to thing.ids of loaded and saved sheets
         /// </summary>
-        protected IDictionary<Id, SheetInfo> Sheets {
+        protected IDictionary<Id, SceneInfo> Sheets {
             get {
                 if (_sheets == null) {
-                    _sheets = new Dictionary<Id, SheetInfo>();
+                    _sheets = new Dictionary<Id, SceneInfo>();
                 }
                 return _sheets;
             }
@@ -56,10 +56,17 @@ namespace Limada.Presenter {
             set { _sheetsStreams = value; }
         }
 
-        public Action<SheetInfo> SheetRegistered { get; set; }
+        public Action<SceneInfo> SheetRegistered { get; set; }
 
-        public SheetInfo RegisterSheet(Id id, string name) {
-            SheetInfo result = default( SheetInfo );
+        public void RegisterSheet(SceneInfo info) {
+            if (info.Id == 0) {
+                info.Id = Isaac.Long;
+            }
+            Sheets[info.Id] = info;
+        }
+
+        public SceneInfo RegisterSheet(Id id, string name) {
+            var result = default( SceneInfo );
             if (id !=0 && Sheets.ContainsKey(id)) {
                 result = Sheets[id];
                 if (!string.IsNullOrEmpty(name))
@@ -68,7 +75,7 @@ namespace Limada.Presenter {
                 if (id == 0) {
                     id = Isaac.Long;
                 }
-                result = new SheetInfo() { Id = id, Name = name };
+                result = new SceneInfo() { Id = id, Name = name };
                 result.State.Hollow = true;
                 Sheets[id] = result;
                 if (SheetRegistered != null)
@@ -83,8 +90,8 @@ namespace Limada.Presenter {
             SheetStreams = null;
         }
 
-        public SheetInfo GetSheetInfo(Id id) {
-            var result = default(SheetInfo);
+        public SceneInfo GetSheetInfo(Id id) {
+            var result = default(SceneInfo);
             Sheets.TryGetValue(id, out result);
             return result;
         }
@@ -124,15 +131,24 @@ namespace Limada.Presenter {
             return result;
         }
 
-        public bool SaveStreamInGraph(Stream source, IGraph<IVisual, IVisualEdge> target, SheetInfo info) {
+        public SceneInfo CreateSheet(IGraphScene<IVisual, IVisualEdge> scene) {
+            SceneTools.CleanScene(scene);
+            var result = new SceneInfo();
+            result.State.Hollow = true;
+            result.Id = Isaac.Long;
+            result.Name = string.Empty;
+            return result;
+        }
+
+        public bool SaveStreamInGraph(Stream source, IGraph<IVisual, IVisualEdge> target, SceneInfo info) {
             var thingGraph = GetThingGraph(target);
             var thing = GetSheetThing(thingGraph, info.Id) as IStreamThing;
-            StreamInfo<Stream> streamInfo = new StreamInfo<Stream>(
+            Content<Stream> content = new Content<Stream>(
                     source, CompressionType.bZip2, StreamTypes.LimadaSheet);
-            streamInfo.Description = info.Name;
+            content.Description = info.Name;
             if (thing is IStreamThing || thing == null){
                 var factory = target.ThingFactory();
-                var result =  new ThingStreamFacade(factory).SetStream(thingGraph, thing, streamInfo)!=null;
+                var result =  new ThingStreamFacade(factory).SetStream(thingGraph, thing, content)!=null;
                 info.State.Hollow = false;
                 info.State.Clean = true;
                 return result;
@@ -141,27 +157,29 @@ namespace Limada.Presenter {
             return false;
         }
 
-        public SheetInfo SaveInGraph(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, SheetInfo info) {
+        
+        public void SaveInGraph(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, SceneInfo info) {
             var graph = GetThingGraph(scene);
-            IThing sheetThing = GetSheetThing(graph, info.Id);
-            return SaveToThing (scene, layout, sheetThing,info.Name);
+            var sheetThing = GetSheetThing(graph, info.Id);
+            var saved = SaveToThing(scene, layout, sheetThing, info.Name);
+            info.Id = saved.Id;
+            info.Name = saved.Name;
+            saved.State.CopyTo(info.State);
         }
 
-
-
-        public SheetInfo SaveToThing(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, IThing thing, string name) {
-            var result = default( SheetInfo );
+        public SceneInfo SaveToThing(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, IThing thing, string name) {
+            var result = default( SceneInfo );
             if (thing is IStreamThing || thing == null) {
                 
-                StreamInfo<Stream> streamInfo = new StreamInfo<Stream>(
+                Content<Stream> content = new Content<Stream>(
                     new MemoryStream(), CompressionType.bZip2, StreamTypes.LimadaSheet);
 
                 var sheet = new Sheet(scene, layout);
-                sheet.Save(streamInfo.Data);
-                streamInfo.Data.Position = 0;
-                streamInfo.Description = name;
+                sheet.Save(content.Data);
+                content.Data.Position = 0;
+                content.Description = name;
                 
-                thing = new VisualThingStreamHelper().SetStream(scene.Graph, thing, streamInfo);
+                thing = new VisualThingStreamHelper().SetStream(scene.Graph, thing, content);
                 
                 result = RegisterSheet(thing.Id, name);
                 result.State.Hollow = false;
@@ -192,8 +210,8 @@ namespace Limada.Presenter {
             } 
         }
 
-        public SheetInfo LoadFromStreamInfo(StreamInfo<Stream> source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
-            var result = default(SheetInfo);
+        public SceneInfo LoadFromContent(Content<Stream> source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
+            var result = default(SceneInfo);
             try {
                 string name = string.Empty;
                 if (source.Description != null) {
@@ -218,17 +236,17 @@ namespace Limada.Presenter {
             return result;
         }
 
-        public SheetInfo LoadFromThing(IStreamThing source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
-            var result = default(SheetInfo);
+        public SceneInfo LoadFromThing(IStreamThing source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
+            var result = default(SceneInfo);
             source.DeCompress();
             try {
-                var info = new StreamInfo<Stream>();
-                info.Description = target.Graph.Description(source);
+                var content = new Content<Stream>();
+                content.Description = target.Graph.Description(source);
 
-                info.Data = source.Data;
-                info.Source = source.Id;
+                content.Data = source.Data;
+                content.Source = source.Id;
 
-                result = LoadFromStreamInfo(info, target, layout);
+                result = LoadFromContent(content, target, layout);
 
                 
             } finally {
@@ -240,7 +258,7 @@ namespace Limada.Presenter {
        
         #endregion
 
-        public virtual void VisitRegisteredSheets(Action<SheetInfo> visitor){
+        public virtual void VisitRegisteredSheets(Action<SceneInfo> visitor){
             foreach (var sheetInfo in Sheets.Values){
                 visitor(sheetInfo);
             }
@@ -248,7 +266,7 @@ namespace Limada.Presenter {
 
         #region SheetStreams
 
-        public bool StoreInStreams(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
+        public bool SaveInStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
             if (scene.Graph.Count > 0) {
                 var stream = new MemoryStream();
                 new Sheet(scene, layout).Save(stream);
@@ -263,16 +281,16 @@ namespace Limada.Presenter {
             }
             
         }
-        public Stream GetFromStreams(Id id) {
+        public Stream GetFromStore(Id id) {
             Stream stream = null;
-            if(SheetStreams.TryGetValue(id, out stream)){
+            if (SheetStreams.TryGetValue(id, out stream)) {
                 stream.Position = 0;
             }
             return stream;
 
         }
 
-        public bool LoadFromStreams(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
+        public bool LoadFromStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
             Stream stream = null;
             if (SheetStreams.TryGetValue(id, out stream)){
                 LoadFromStream(stream, scene, layout);

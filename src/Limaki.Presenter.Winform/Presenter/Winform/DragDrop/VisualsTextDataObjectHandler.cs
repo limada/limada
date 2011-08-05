@@ -49,7 +49,7 @@ namespace Limaki.Presenter.Winform.DragDrop {
             IVisual result = null;
 
             object description = null;
-            StreamInfo<string> textInfo = new StreamInfo<string> ();
+            Content<string> textInfo = new Content<string> ();
             textInfo.Compression = CompressionType.bZip2;
             var encoding = System.Text.Encoding.Default;
 
@@ -102,13 +102,13 @@ namespace Limaki.Presenter.Winform.DragDrop {
                 if (textInfo.Description == null)
                     textInfo.Description = description;
 
-                StreamInfo<Stream> streamInfo = new StreamInfo<Stream> (textInfo);
-                streamInfo.Data = new MemoryStream();
-                StreamWriter writer = new StreamWriter(streamInfo.Data, encoding);
+                Content<Stream> content = new Content<Stream> (textInfo);
+                content.Data = new MemoryStream();
+                StreamWriter writer = new StreamWriter(content.Data, encoding);
                 writer.Write(textInfo.Data);
                 writer.Flush();
                 
-                result = new VisualThingStreamHelper().CreateFromStream(container, streamInfo);
+                result = new VisualThingStreamHelper().CreateFromStream(container, content);
 
                 writer.Dispose();
 
@@ -129,8 +129,8 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
         }
 
-        StreamInfo<string> HTMLPostProcess(string text) {
-            StreamInfo<string> result = new StreamInfo<string> ();
+        Content<string> HTMLPostProcess(string text) {
+            Content<string> result = new Content<string> ();
             result.Data = text;
             result.Description = null;
             result.Source = null;

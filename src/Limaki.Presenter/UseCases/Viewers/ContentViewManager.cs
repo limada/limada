@@ -74,7 +74,7 @@ namespace Limaki.UseCases.Viewers {
 
                 controller.IsStreamOwner = IsStreamOwner;
 
-                var info = ThingStreamFacade.GetStreamInfo(graph, thing);
+                var info = ThingStreamFacade.GetContent(graph, thing);
 
                 if (controller is SheetViewerController) {
                     var sheetView = (SheetViewerController)controller;
@@ -159,7 +159,7 @@ namespace Limaki.UseCases.Viewers {
             if (graph != null && controller.CanSave() && controller.CurrentThingId != 0){
                 var thing = graph.GetById(controller.CurrentThingId) as IStreamThing;
                 if (thing != null) {
-                    var info = new StreamInfo<Stream> ();
+                    var info = new Content<Stream> ();
                     controller.Save (info);
                     new ThingStreamFacade ().SetStream (graph, thing, info);
                     info.Data.Dispose ();

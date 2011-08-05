@@ -1,12 +1,7 @@
 ﻿namespace Limaki.Model.Streams {
     public class StreamTypeInfo {
 
-        public StreamTypeInfo(
-            string streamTypeDescription,
-            long streamType,
-            string extension,
-            string mimeType,
-            CompressionType compression) {
+        public StreamTypeInfo(string streamTypeDescription, long streamType, string extension, string mimeType, CompressionType compression) {
             this.StreamType = streamType;
             this.Extension = extension;
             this.MimeType = mimeType;
@@ -14,13 +9,7 @@
             this.Compression = Compression;
         }
 
-        public StreamTypeInfo(
-            string streamTypeDescription,
-            long streamType,
-            string extension,
-            string mimeType,
-            CompressionType compression,
-            Magic[] magics
+        public StreamTypeInfo(string streamTypeDescription, long streamType, string extension, string mimeType, CompressionType compression, Magic[] magics
             )
             : this(streamTypeDescription, streamType, extension, mimeType, compression) {
             this.Magics = magics;

@@ -67,7 +67,7 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
         #region Scene handling
 
-        public virtual void LinkItem(Scene scene,IVisual item, PointI pt, int hitSize, bool itemIsRoot) {
+        public virtual void LinkItem(IGraphScene<IVisual,IVisualEdge> scene,IVisual item, PointI pt, int hitSize, bool itemIsRoot) {
             if (item != null) {
                 IVisual target = scene.Hovered;
                 if (target == null && scene.Focused != null && scene.Focused.Shape.IsHit(pt, hitSize)) {
@@ -84,7 +84,7 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
         public IVisual PlaceVisual(IDataObject dataObject, IGraphScene<IVisual,IVisualEdge> scene, IGraphLayout<IVisual,IVisualEdge> layout) {
             var visual = GetVisual (dataObject, scene.Graph,false);
-            SceneTools.PlaceVisual(scene as Scene,scene.Focused, visual, layout);
+            SceneTools.PlaceVisual(scene,scene.Focused, visual, layout);
             //scene.Selected.Clear();
             //scene.Focused = visual;
             return visual;
@@ -93,9 +93,7 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
 
 
-       public virtual bool DoDragDrop(IGraphScene<IVisual,IVisualEdge> ascene, IControl control, IDataObject dataObject, IGraphLayout<IVisual,IVisualEdge> layout, PointI pt, int hitsize) {
-           Scene scene = ascene as Scene;
-           
+       public virtual bool DoDragDrop(IGraphScene<IVisual,IVisualEdge> scene, IControl control, IDataObject dataObject, IGraphLayout<IVisual,IVisualEdge> layout, PointI pt, int hitsize) {
             IVisual item = null;
             bool itemIsRoot = false;
 

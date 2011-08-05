@@ -22,6 +22,7 @@ using Limaki.Graphs;
 using System.Linq;
 using Limaki.UseCases.Viewers;
 using Limaki.Presenter.Display;
+using Limaki.Drawing;
 
 namespace Limada.Presenter {
     public class SceneStream {
@@ -53,37 +54,28 @@ namespace Limada.Presenter {
             _history = null;
         }
 
-        public void Store(SheetInfo info) {
+        public void Store(SceneInfo info) {
             history.Add(info.Id);
         }
 
-        protected SheetInfo Store(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, Id id) {
-            var result = default(SheetInfo);
+        public void Store(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager) {
             if (display != null && display.Data != null && display.Data.Count > 0) {
-                if (id == default(Id))
-                    id = Limada.Common.Isaac.Long;
-                if (sheetManager.StoreInStreams(display.Data, display.Layout, id)) {
-                    history.Add(id);
-                    var info = sheetManager.RegisterSheet(id, display.Text);
-                    display.State.CopyTo(info.State);
-                    display.DataId = info.Id;
-                    display.Text = info.Name;
-                    return info;
+                if (display.DataId == default(Id))
+                    display.DataId = Limada.Common.Isaac.Long;
+                if (sheetManager.SaveInStore(display.Data, display.Layout, display.DataId)) {
+                    sheetManager.RegisterSheet(display.Info);
+                    history.Add(display.DataId);
                 }
             }
-            return result;
         }
 
-        public SheetInfo Store(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, bool makeNew) {
-            var result = Store(display, sheetManager, display.DataId);
-            return result;
-        }
+        
 
         protected void Load(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, Id id) {
             if (id == 0)
                 return;
 
-            if (sheetManager.LoadFromStreams(display.Data, display.Layout, id)) {
+            if (sheetManager.LoadFromStore(display.Data, display.Layout, id)) {
                 display.DataId = id;
                 display.Viewport.Reset();
                 display.DeviceRenderer.Render();
@@ -91,7 +83,8 @@ namespace Limada.Presenter {
         }
 
         public void Navigate(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, bool forward) {
-            var info = Store(display, sheetManager, display.DataId);
+            var info = display.Info;
+            Store(display, sheetManager);
             var currSheedId = default(Id);
 
             if (info != null)
@@ -119,17 +112,17 @@ namespace Limada.Presenter {
             IGraph<IVisual, IVisualEdge> graph = null;
             foreach (var display in displays)
                 if (display.State.Dirty && !display.State.Hollow) {
-                    var info = sheetManager.GetSheetInfo(display.DataId) ?? new SheetInfo { Id = display.DataId };
-                    sheetManager.StoreInStreams(display.Data, display.Layout, info.Id);
+                    var info = sheetManager.GetSheetInfo(display.DataId) ?? display.Info;
+                    sheetManager.SaveInStore(display.Data, display.Layout, info.Id);
                     display.State.CopyTo(info.State);
                     if (graph == null)
                         graph = display.Data.Graph;
                 }
 
-            Action<SheetInfo> sheetVisitor = (info) => {
+            Action<SceneInfo> sheetVisitor = (info) => {
                 if (info.State.Dirty && !info.State.Hollow) {
                     if (MessageBoxShow("This sheet has been changed. Do you want to save it?", "Sheet " + info.Name, MessageBoxButtons.YesNo) == DialogResult.Yes) {
-                        var sheet = sheetManager.GetFromStreams(info.Id);
+                        var sheet = sheetManager.GetFromStore(info.Id);
                         if (sheet != null) {
                             sheetManager.SaveStreamInGraph(sheet, graph, info);
                             var display = displays.FirstOrDefault(d => d.DataId == info.Id);

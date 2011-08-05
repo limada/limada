@@ -138,11 +138,11 @@ namespace Limada.Schemata {
             set { SetTheLeaf(DocumentTitle, value); }
         }
 
-        public IThing CreatePage(StreamInfo<Stream> stream, int pageNr) {
+        public IThing CreatePage(Content<Stream> stream, int pageNr) {
             return CreatePage(this.Graph, this.Target, stream, pageNr);
         }
 
-        public IThing CreatePage(IThingGraph graph, IThing document, StreamInfo<Stream> stream, int pageNr) {
+        public IThing CreatePage(IThingGraph graph, IThing document, Content<Stream> stream, int pageNr) {
             if (graph == null || document == null)
                 return null;
             var page = Factory.CreateItem<Stream>(null) as IStreamThing;
@@ -206,17 +206,17 @@ namespace Limada.Schemata {
                 .Any(link => link.Marker == DocumentSchema.DocumentPage && link.Root == document);
         }
 
-        public IEnumerable<StreamInfo<Stream>> PageStreams() {
+        public IEnumerable<Content<Stream>> PageStreams() {
             return this.PageStreams(this.Graph, this.Target);
         }
 
-        public IEnumerable<StreamInfo<Stream>> PageStreams(IThingGraph graph, IThing document) {
+        public IEnumerable<Content<Stream>> PageStreams(IThingGraph graph, IThing document) {
             if (graph == null || document == null)
-                return new StreamInfo<Stream>[0];
+                return new Content<Stream>[0];
 
             return Pages(graph, document)
                 .Where(page => page is IStreamThing)
-                .Select(page => ThingStreamFacade.GetStreamInfo(graph, page));
+                .Select(page => ThingStreamFacade.GetContent(graph, page));
         }
 
         #endregion

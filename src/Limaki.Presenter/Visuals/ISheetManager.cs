@@ -6,7 +6,7 @@ using Limaki.Graphs;
 using Limaki.Model.Streams;
 using Id = System.Int64;
 
-namespace Limaki.Visuals{
+namespace Limaki.Visuals {
     /// <summary>
     /// replaces ISheetManager
     /// replaces all methods where to load and save scenes
@@ -21,27 +21,27 @@ namespace Limaki.Visuals{
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        SheetInfo GetSheetInfo ( Int64 id );
-        SheetInfo RegisterSheet(Id id, string name);
-        Action<SheetInfo> SheetRegistered { get; set; }
-        void VisitRegisteredSheets(Action<SheetInfo> visitor);
+        SceneInfo GetSheetInfo ( Int64 id );
+        SceneInfo RegisterSheet(Id id, string name);
+        void RegisterSheet(SceneInfo info);
+        Action<SceneInfo> SheetRegistered { get; set; }
+        void VisitRegisteredSheets(Action<SceneInfo> visitor);
+
+        SceneInfo CreateSheet(IGraphScene<IVisual, IVisualEdge> scene);
 
         bool IsSaveable(IGraphScene<IVisual, IVisualEdge> scene);
-        SheetInfo LoadFromStreamInfo(StreamInfo<Stream> source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout);
-        SheetInfo SaveInGraph(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, SheetInfo info);
-        bool SaveStreamInGraph(Stream source, IGraph<IVisual, IVisualEdge> target, SheetInfo info);
+        SceneInfo LoadFromContent(Content<Stream> source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout);
+        void SaveInGraph(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, SceneInfo info);
+        bool SaveStreamInGraph(Stream source, IGraph<IVisual, IVisualEdge> target, SceneInfo info);
 
-        bool StoreInStreams(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id);
-        bool LoadFromStreams(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id);
-        Stream GetFromStreams(Id id);
+        bool SaveInStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id);
+        bool LoadFromStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id);
+        Stream GetFromStore(Id id);
         
         void Clear();
+
+        
     }
 
-    public class SheetInfo {
-        public Id Id;
-        public string Name;
-        private State _state=null;
-        public State State { get { return _state ?? (_state = new State{Hollow=true}); } }
-    }
+   
 }

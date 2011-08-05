@@ -22,11 +22,11 @@ namespace Limada.Model {
             set { _factory = value; }
         }
 
-        public IStreamThing CreateAndAdd(IThingGraph graph, StreamInfo<Stream> streamInfo) {
+        public IStreamThing CreateAndAdd(IThingGraph graph, Content<Stream> content) {
 
-            IStreamThing thing = Factory.CreateItem(graph, streamInfo.Data) as IStreamThing;
-            thing.Compression = streamInfo.Compression;
-            thing.StreamType = streamInfo.StreamType;
+            IStreamThing thing = Factory.CreateItem(graph, content.Data) as IStreamThing;
+            thing.Compression = content.Compression;
+            thing.StreamType = content.StreamType;
 
             thing.Compress ();
             graph.Add(thing);
@@ -36,54 +36,54 @@ namespace Limada.Model {
             return thing;
         }
 
-        public void SetStream(IStreamThing thing, StreamInfo<Stream> streamInfo) {
+        public void SetStream(IStreamThing thing, Content<Stream> content) {
             if (thing != null && thing.DataContainer != null) {
-                thing.Data = streamInfo.Data;
-                thing.Compression = streamInfo.Compression;
-                thing.StreamType = streamInfo.StreamType;
+                thing.Data = content.Data;
+                thing.Compression = content.Compression;
+                thing.StreamType = content.StreamType;
                 thing.Compress();
                 thing.Flush ();
                 thing.ClearRealSubject ();
             }
         }
 
-        public IStreamThing SetStream(IThingGraph graph, IStreamThing thing, StreamInfo<Stream> streamInfo) {
+        public IStreamThing SetStream(IThingGraph graph, IStreamThing thing, Content<Stream> content) {
             if (thing != null) {
                 thing.DataContainer = graph.DataContainer;
-                SetStream (thing, streamInfo);
-                AddStreamDescription(thing, streamInfo, graph);
+                SetStream (thing, content);
+                AddStreamDescription(thing, content, graph);
             } else {
-                thing = CreateAndAdd(graph, streamInfo);
-                AddStreamDescription(thing, streamInfo, graph);            
+                thing = CreateAndAdd(graph, content);
+                AddStreamDescription(thing, content, graph);            
             }
 
             return thing;
         }
 
-        public virtual void AddStreamDescription(IThing thing, StreamInfo<Stream> streamInfo, IThingGraph thingGraph) {
+        public virtual void AddStreamDescription(IThing thing, Content<Stream> content, IThingGraph thingGraph) {
             IThing streamThing = thing as IStreamThing;
             if (streamThing == null) return;
             CommonSchema schema = new CommonSchema(thingGraph, streamThing);
-            if (streamInfo.Description != null) {
+            if (content.Description != null) {
                 if (schema.Description != null) {
-                    schema.Description.Data = streamInfo.Description;
+                    schema.Description.Data = content.Description;
                 } else {
-                    schema.Description = Factory.CreateItem(streamInfo.Description); ;
+                    schema.Description = Factory.CreateItem(content.Description); ;
                 }
             }
-            if (streamInfo.Source != null) {
+            if (content.Source != null) {
                 IThing des = schema.GetTheLeaf(CommonSchema.SourceMarker);
                 if (des == null) {
-                    des = Factory.CreateItem (streamInfo.Source);
+                    des = Factory.CreateItem (content.Source);
                     schema.SetTheLeaf (CommonSchema.SourceMarker, des);
                 } else {
-                    des.Data = streamInfo.Source;
+                    des.Data = content.Source;
                 }
             }
         }
 
-        public static StreamInfo<Stream> GetStreamInfo(IThingGraph graph, IThing thing) {
-            var result = GetStreamInfo (thing);
+        public static Content<Stream> GetContent(IThingGraph graph, IThing thing) {
+            var result = GetContent (thing);
             if (result !=null && graph is SchemaThingGraph) {
                 result.Description = graph.Description(thing);
                 result.Source = graph.Source(thing);
@@ -91,11 +91,11 @@ namespace Limada.Model {
             return result;
         }
 
-        public static StreamInfo<Stream> GetStreamInfo(IThing thing) {
-            var result = default( StreamInfo<Stream> );
+        public static Content<Stream> GetContent(IThing thing) {
+            var result = default( Content<Stream> );
             var streamThing = thing as IStreamThing;
             if (streamThing!=null) {
-                result = new StreamInfo<Stream> ();
+                result = new Content<Stream> ();
                 
                 streamThing.DeCompress ();
                 result.Data = streamThing.Data as Stream;

@@ -151,10 +151,13 @@
     <Compile Include="Presenter\Display\PresenterRecourceLoader.cs" />
     <Compile Include="Presenter\INavigateTarget.cs" />
     <Compile Include="Presenter\IZoomTarget.cs" />
+    <Compile Include="Presenter\Layout\AllignComposer.cs" />
     <Compile Include="Presenter\Layout\Alligner.cs" />
-    <Compile Include="Presenter\Layout\AllignerBase.cs" />
+    <Compile Include="Presenter\Layout\Placer.cs" />
     <Compile Include="Presenter\Layout\GraphLayout.cs" />
     <Compile Include="Presenter\Layout\Layout.cs" />
+    <Compile Include="Presenter\Layout\PlacerBase.cs" />
+    <Compile Include="Presenter\Layout\PlacerComposer.cs" />
     <Compile Include="Presenter\Layout\ProxyShape.cs" />
     <Compile Include="Presenter\Layout\ShapeLayout.cs" />
     <Compile Include="Presenter\UI\GripPainterBase.cs" />

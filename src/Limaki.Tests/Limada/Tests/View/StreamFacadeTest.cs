@@ -56,7 +56,7 @@ namespace Limada.Tests.ThingGraphs {
             ThingStreamFacade thingStreamFacade = new ThingStreamFacade ();
            
             IThing thing = thingStreamFacade.CreateAndAdd (
-                graph, new StreamInfo<Stream>(stream,CompressionType.None));
+                graph, new Content<Stream>(stream,CompressionType.None));
 
             Assert.IsInstanceOfType (typeof (Thing), thing);
             Assert.AreEqual(((IThing<Stream>)thing).Data.Length, stream.Length);

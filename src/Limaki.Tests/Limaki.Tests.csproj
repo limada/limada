@@ -199,7 +199,7 @@
     <Compile Include="Tests\Sandbox\MonoGenericError2.cs" />
     <Compile Include="Tests\Presenter\Display\CreateDisplayTest.cs" />
     <Compile Include="Tests\Sandbox\MonoMarshalByRefError.cs" />
-    <Compile Include="Tests\Data\Streams\StreamProviderTest.cs" />
+    <Compile Include="Tests\Data\Streams\ContentProviderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

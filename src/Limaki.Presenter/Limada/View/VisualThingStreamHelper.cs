@@ -24,7 +24,7 @@ using Limada.Schemata;
 
 namespace Limada.View {
     public class VisualThingStreamHelper {
-        public virtual IVisual CreateFromStream( IGraph<IVisual, IVisualEdge> graph, StreamInfo<Stream> streamInfo ) {
+        public virtual IVisual CreateFromStream( IGraph<IVisual, IVisualEdge> graph, Content<Stream> content ) {
             
             IVisual result = null;
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
@@ -32,14 +32,14 @@ namespace Limada.View {
                 var thingGraph = graph.ThingGraph();
                 var factory = graph.ThingFactory();
                 
-                IThing thing = new ThingStreamFacade(factory).SetStream(thingGraph, null, streamInfo);
+                IThing thing = new ThingStreamFacade(factory).SetStream(thingGraph, null, content);
                 
                 result = sourceGraph.Get(thing);
             }
             return result;
         }
 
-        public IThing SetStream(IGraph<IVisual,IVisualEdge> graph, IThing thing, StreamInfo<Stream> streamInfo) {
+        public IThing SetStream(IGraph<IVisual,IVisualEdge> graph, IThing thing, Content<Stream> content) {
             var thingGraph = graph.ThingGraph();
             var factory = graph.ThingFactory();
             var streamThing = thing as IStreamThing;
@@ -47,14 +47,14 @@ namespace Limada.View {
                 throw new ArgumentException ("stream can not be set");
             }
 
-            return new ThingStreamFacade(factory).SetStream(thingGraph, streamThing, streamInfo);
+            return new ThingStreamFacade(factory).SetStream(thingGraph, streamThing, content);
         }
 
-        public StreamInfo<Stream> GetStream(IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
+        public Content<Stream> GetStream(IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
              if (sourceGraph != null) {
                  var thingGraph = graph.ThingGraph();
-                 return ThingStreamFacade.GetStreamInfo (
+                 return ThingStreamFacade.GetContent (
                      thingGraph,
                      sourceGraph.Get(visual));
              }

@@ -3,59 +3,57 @@ using Limaki.Graphs;
 using Limaki.Drawing;
 using System.Linq;
 using System;
+using System.Diagnostics;
 
 namespace Limaki.Presenter.Layout {
-    public class Alligner<TItem, TEdge> : AllignerBase<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
-        public Alligner(IGraphScene<TItem, TEdge> data, IGraphLayout<TItem, TEdge> layout):base(data,layout) {
-        }
+    public class Alligner<TItem, TEdge> : Placer<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
+        public Alligner(IGraphScene<TItem, TEdge> data, IGraphLayout<TItem, TEdge> layout):base(data,layout) {}
+        public Alligner(PlacerBase<TItem, TEdge> aligner) : base(aligner) { }
 
-        public RectangleI Extends(IEnumerable<TItem> items) {
-            var extends = from item in items
-                          where !(item is TEdge)
-                          select Proxy.GetShape(item).BoundsRect;
+        public virtual RectangleI AllignFirstVisit(IEnumerable<TItem> items) {
+            var composer = new PlacerComposer<TItem, TEdge>(this);
+            Action<TItem> firstVisit = null;
 
-            int l = int.MaxValue;
-            int t = int.MaxValue;
-            int b = int.MinValue;
-            int r = int.MinValue;
-            foreach (var rect in extends.Where(i => !i.IsEmpty)) {
-                if (rect.Left < l)
-                    l = rect.Left;
-                if (rect.Top < t)
-                    t = rect.Top;
-                if (rect.Right > r)
-                    r = rect.Right;
-                if (rect.Bottom > b)
-                    b = rect.Bottom;
-            }
-            return RectangleI.FromLTRB(l, t, r, b);
+            composer.AffectedEdges(ref firstVisit);
 
-            //var ext = new RectangleI();
-            //foreach (var r in extends.Where(r => !r.IsEmpty)) {
-            //    ext = RectangleI.Union(ext, r);
-            //}
-            //return ext;
-        }
+            var extends = composer.Extents(ref firstVisit);
 
-        public virtual void AffectedEdges(IEnumerable<TItem> items) {
-            foreach (var item in items) {
-                foreach (var edge in this.Graph.Twig(item)) {
-                    Proxy.AffectedEdges.Add(edge);
-                }
-            }
+            VisitItems(items, firstVisit);
+            return extends();
         }
 
         public virtual void Allign(IEnumerable<TItem> items, HorizontalAlignment alignment) {
+            var extends = AllignFirstVisit(items);
+
+            var composer = new AllignComposer<TItem, TEdge>(this);
+            composer.visits = 0;
+            Action<TItem> secondVisit = null;
+            composer.Allign(ref secondVisit, alignment, extends);
             
+            // yes, it visits for every Allign-Call; stupid, no?
+            //Allign(ref secondVisit, alignment, extends());
 
-            var extends = Extends(items);
+            VisitItems(items, secondVisit);
 
-            foreach (var item in items.Where(i => !(i is TEdge))) {
-                if (alignment == HorizontalAlignment.Left)
-                    Proxy.SetLocation(item, new PointI(extends.Left, Proxy.GetLocation(item).Y));
-                else if (alignment == HorizontalAlignment.Right)
-                    Proxy.SetLocation(item, new PointI(extends.Right - Proxy.GetSize(item).Width, Proxy.GetLocation(item).Y));
-            }
+            Trace.WriteLine(string.Format("items\t{0}\tvisits\t{1}", items.Count(), composer.visits));
+
+        }
+
+        public virtual void Distribute(IEnumerable<TItem> items) {
+            var composer = new PlacerComposer<TItem, TEdge>(this);
+            Action<TItem> visit = null;
+
+            composer.AffectedEdges(ref visit);
+            var extends = composer.Extents(ref visit);
+            var minExtends = composer.MinExtents(ref visit);
+
+            VisitItems(items, visit);
+            
+            visit = null;
+            var composer2 = new AllignComposer<TItem, TEdge>(this);
+            composer2.Distribute(ref visit, extends(), minExtends(),items.Count());
+            VisitItems(items.OrderBy(v => Proxy.GetLocation(v), new Limaki.Drawing.Shapes.LeftRightTopBottomComparer()), visit);
+
         }
     }
 }

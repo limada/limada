@@ -56,21 +56,21 @@ namespace Limaki.Presenter.Winform.DragDrop {
             }
 
             if (image != null) {
-                StreamInfo<Stream> streamInfo = new StreamInfo<Stream> ();
-                streamInfo.Data = new MemoryStream();
+                Content<Stream> content = new Content<Stream> ();
+                content.Data = new MemoryStream();
 
-                image.Save(streamInfo.Data, ImageFormat.Jpeg);
-                streamInfo.StreamType = StreamTypes.JPG;
-                streamInfo.Compression = CompressionType.neverCompress;
+                image.Save(content.Data, ImageFormat.Jpeg);
+                content.StreamType = StreamTypes.JPG;
+                content.Compression = CompressionType.neverCompress;
 
                 image.Dispose();
 
                 Uri uri = DragDropFacade.GetUri (data);
                 if (uri != null) {
-                    streamInfo.Source = uri.AbsoluteUri;
-                    streamInfo.Description = uri.Segments[uri.Segments.Length-1];
+                    content.Source = uri.AbsoluteUri;
+                    content.Description = uri.Segments[uri.Segments.Length-1];
                 }
-                return new VisualThingStreamHelper ().CreateFromStream (container, streamInfo);
+                return new VisualThingStreamHelper ().CreateFromStream (container, content);
 
             } else {
                 return null;

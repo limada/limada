@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace Limaki.Model.Streams {
-    public abstract class StreamProvider : IStreamProvider {
+    public abstract class ContentProvider : IContentProvider {
         public abstract IEnumerable<StreamTypeInfo> SupportedStreamTypes { get; }
 
         public abstract bool Saveable { get; }
         public abstract bool Readable { get; }
 
-        public virtual StreamInfo<Stream> Open(Stream stream) {
+        public virtual Content<Stream> Open(Stream stream) {
             var info = SupportingInfo(stream);
             if (info != null) {
-                return new StreamInfo<Stream>(
+                return new Content<Stream>(
                     stream,
                     info.Compression,
                     info.StreamType);
@@ -36,7 +36,7 @@ namespace Limaki.Model.Streams {
             return SupportingInfo(stream) != null;
         }
 
-        public virtual void Save(StreamInfo<Stream> data, Uri uri) {
+        public virtual void Save(Content<Stream> data, Uri uri) {
             if (Saveable && uri.IsFile) {
                 var filename = IOUtils.UriToFileName(uri);
                 var file = new FileStream(filename, FileMode.Create);
@@ -62,8 +62,8 @@ namespace Limaki.Model.Streams {
         }
 
 
-        public virtual StreamInfo<Stream> Open(Uri uri) {
-            var result = default(StreamInfo<Stream>);
+        public virtual Content<Stream> Open(Uri uri) {
+            var result = default(Content<Stream>);
             if (Readable && uri.IsFile) {
                 var filename = IOUtils.UriToFileName(uri);
                 var file = new FileStream(filename, FileMode.Open);

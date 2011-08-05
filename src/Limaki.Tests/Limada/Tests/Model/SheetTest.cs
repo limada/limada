@@ -324,7 +324,10 @@ namespace Limada.Tests.Model {
             var layout = this.GetLayout();
             var thingGraph = scene.Graph.ThingGraph();
 
-            var info = new SheetManager().SaveInGraph(scene, layout, new SheetInfo {Name = "TestFavoriteManagerAddToSheets"});
+            var info = new SceneInfo { Name = "TestFavoriteManagerAddToSheets" };
+            var sheetManager = new SheetManager();
+            sheetManager.SaveInGraph(scene, layout, info);
+            Assert.IsTrue(info.State.Clean);
             var sheetThing = thingGraph.GetById(info.Id);
             Assert.IsNotNull(sheetThing);
             

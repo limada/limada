@@ -22,8 +22,8 @@ namespace Limaki.UseCases.Viewers {
         public abstract bool Supports ( Int64 streamType );
         public abstract bool CanSave();
         
-        public abstract void SetContent ( StreamInfo<Stream> info );
-        public abstract void Save( StreamInfo<Stream> info);
+        public abstract void SetContent ( Content<Stream> info );
+        public abstract void Save( Content<Stream> info);
 
        
     }

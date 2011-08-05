@@ -19,6 +19,7 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
+using System.Collections.Generic;
 
 namespace Limaki.Presenter.Layout {
     /// <summary>
@@ -28,21 +29,15 @@ namespace Limaki.Presenter.Layout {
     /// </summary>
     /// <typeparam name="TItem"></typeparam>
     /// <typeparam name="TEdge"></typeparam>
-    public class AllignerBase<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
+    public class Placer<TItem, TEdge> : PlacerBase<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
 
-        public AllignerBase(IGraphScene<TItem, TEdge> data, IGraphLayout<TItem, TEdge> layout) {
+        public Placer(IGraphScene<TItem, TEdge> data, IGraphLayout<TItem, TEdge> layout) {
             this.Data = data;
             this.Layout = layout;
-
         }
-        public IGraphLayout<TItem, TEdge> Layout { get; protected set; }
-        public IGraphScene<TItem, TEdge> Data { get; protected set; }
-        public IGraph<TItem, TEdge> Graph {
-            get { return Data.Graph; }
-        }
-
+        public Placer(PlacerBase<TItem, TEdge> aligner):base(aligner) {}
         protected IShapeProxy<TItem, TEdge> _proxy = null;
-        public IShapeProxy<TItem, TEdge> Proxy {
+        public override IShapeProxy<TItem, TEdge> Proxy {
             get { return _proxy ?? (_proxy = CreateProxy(this.Layout)); }
             set { _proxy = value; }
         }
@@ -51,7 +46,13 @@ namespace Limaki.Presenter.Layout {
             return new GraphItemShapeProxy<TItem, TEdge>(layout);
         }
 
+        
 
+        public virtual void VisitItems(IEnumerable<TItem> items, Action<TItem> visitor) {
+            foreach (var item in items.Where(i=> !(i is TEdge))) {
+                visitor(item);
+            }
+        }
     }
 
     

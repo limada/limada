@@ -32,18 +32,18 @@ namespace Limada.UseCases {
             return docSchema.Pages().Select(t=>source.VisualOf(t));
         }
 
-        public IEnumerable<StreamInfo<Stream>> PageStreams(IGraph<IVisual, IVisualEdge> source, IVisual document) {
+        public IEnumerable<Content<Stream>> PageStreams(IGraph<IVisual, IVisualEdge> source, IVisual document) {
             var docSchema = new DocumentSchema(source.ThingGraph(),source.ThingOf(document));
             return docSchema.PageStreams();
         }
         
-        public StreamInfo<Stream> PageStream(IGraph<IVisual, IVisualEdge> source, IVisual page) {
-            StreamInfo<Stream> result = null;
+        public Content<Stream> PageStream(IGraph<IVisual, IVisualEdge> source, IVisual page) {
+            Content<Stream> result = null;
             var pageThing = source.ThingOf(page) as IStreamThing;
-            var imageStreamProvider = new ImageStreamProvider();
+            var imageStreamProvider = new ImageContentProvider();
             if(pageThing != null && imageStreamProvider.Supports(pageThing.StreamType)) {
                 try {
-                    result = ThingStreamFacade.GetStreamInfo(pageThing);
+                    result = ThingStreamFacade.GetContent(pageThing);
                 } finally {
                     pageThing.ClearRealSubject(true);
                 }
@@ -72,7 +72,7 @@ namespace Limada.UseCases {
         public bool IsPage(IGraph<IVisual, IVisualEdge> source, IVisual page) {
             var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(page));
             var pageThing = source.ThingOf(page) as IStreamThing;
-            var imageStreamProvider = new ImageStreamProvider();
+            var imageStreamProvider = new ImageContentProvider();
             return (pageThing != null && imageStreamProvider.Supports(pageThing.StreamType));
         }
     }

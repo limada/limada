@@ -4,6 +4,7 @@ using Limaki.Actions;
 using Limaki.Common;
 using System;
 using Limaki.Graphs.Extensions;
+using Id = System.Int64;
 
 namespace Limaki.Drawing {
     /// <summary>
@@ -83,4 +84,10 @@ namespace Limaki.Drawing {
         EdgesFirst
     }
 
+    public class SceneInfo {
+        public Id Id;
+        public string Name;
+        private State _state ;
+        public State State { get { return _state ?? (_state = new State { Hollow = true }); } }
+    }
 }

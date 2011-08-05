@@ -129,7 +129,7 @@ namespace Limaki.UseCases {
             ContentProviderManager.OpenFile ();
         }
 		
-		public void ImportContent(StreamInfo<Stream> content){
+		public void ImportContent(Content<Stream> content){
 			var display=GetCurrentDisplay();
 			if(display!=null){
 				ContentProviderManager.ImportContent(content,display.Data,display.Layout);
@@ -140,7 +140,7 @@ namespace Limaki.UseCases {
             ContentProviderManager.SaveFile();
         }
 
-        public StreamInfo<Stream> ExtractContent() {
+        public Content<Stream> ExtractContent() {
             var display = GetCurrentDisplay();
             if (display != null) {
                 return ContentProviderManager.ExtractContent(display.Data);
@@ -156,12 +156,20 @@ namespace Limaki.UseCases {
 
         public Action<string> StateMessage {get; set;}
 
-        public void AlgignLeft() {
+        public void AlgignHorizontal(HorizontalAlignment alignment) {
             var display = GetCurrentDisplay();
             var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
             var items = display.Data.Selected.Elements;
-            alligner.AffectedEdges(items);
-            alligner.Allign(items, HorizontalAlignment.Left);
+            alligner.Allign(items, alignment);
+            alligner.Proxy.Commit(alligner.Data);
+            display.Execute();
+        }
+        public void AlignDistribute() {
+            var display = GetCurrentDisplay();
+            var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
+            var items = display.Data.Selected.Elements;
+            //alligner.AffectedEdges0(items);
+            alligner.Distribute(items);
             alligner.Proxy.Commit(alligner.Data);
             display.Execute();
         }

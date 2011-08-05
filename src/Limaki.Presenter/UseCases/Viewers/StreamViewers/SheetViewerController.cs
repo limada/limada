@@ -14,16 +14,14 @@
 
 using System;
 using System.IO;
+using Limada.Common;
 using Limada.Presenter;
 using Limaki.Common;
+using Limaki.Drawing;
 using Limaki.Model.Streams;
-using Limaki.UseCases.Viewers;
-using Limaki.Presenter.Visuals;
+using Limaki.Presenter.Display;
 using Limaki.Visuals;
 using Id = System.Int64;
-using Limaki.Drawing;
-using Limada.Common;
-using Limaki.Presenter.Display;
 
 namespace Limaki.UseCases.Viewers.StreamViewers {
     public class SheetViewerController : StreamViewerController {
@@ -32,8 +30,9 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
         public IGraphSceneDisplay<IVisual, IVisualEdge> SheetControl {
             get { return _sheetControl; }
             set {
-                if (_sheetControl != value && value != null) {
+                if(value!=null)
                     this.CurrentThingId = value.DataId;
+                if (_sheetControl != value && value != null) {
                     _sheetControl = value;
                     OnAttach(_sheetControl);
                 }
@@ -49,7 +48,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
             return streamType == StreamTypes.LimadaSheet;
         }
 
-        public override void SetContent(StreamInfo<Stream> streamInfo) {
+        public override void SetContent(Content<Stream> content) {
             if (SheetControl == null) {
                 throw new ArgumentException("sheetControl must not be null");
             }
@@ -59,55 +58,52 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
             if (SheetControl.DataId == 0) 
                 SheetControl.DataId = Isaac.Long;
             
-            SheetManager.StoreInStreams(SheetControl.Data, SheetControl.Layout, SheetControl.DataId);
-            var current = SheetManager.RegisterSheet(SheetControl.DataId, SheetControl.Text);
-            SheetControl.Data.State.CopyTo(current.State);
+            SheetManager.SaveInStore(SheetControl.Data, SheetControl.Layout, SheetControl.DataId);
+            SheetManager.RegisterSheet(SheetControl.Info);
 
-            var loadfromStreamManager = false;
+            var loadFromMemory = false;
             var isStreamOwner = this.IsStreamOwner;
 
-            Id id = streamInfo.Source is Id ? (Id)streamInfo.Source : 0;
-            SheetInfo stored = null;
-            if (id != 0) {
-                var sameSheet = id == SheetControl.DataId && !SheetControl.Data.State.Clean;
+            Id id = content.Source is Id ? (Id)content.Source : 0;
+            SceneInfo stored = null;
+            if (id != 0 ) {
                 stored = SheetManager.GetSheetInfo(id);
-                if (sameSheet ||(stored != null && !stored.State.Clean)) {
+                if(stored != null && id == stored.Id && !stored.State.Clean) {
                     var dialog = Registry.Factory.Create<IMessageBoxShow>();
                     if (dialog.Show(
                         "Warning",
-                        string.Format("You try to load the same sheet again.\r\nYou'll lose all changes on sheet {0}",stored.Name), 
+                        string.Format("You try to load the a changed sheet again.\r\nYou'll lose all changes on sheet {0}",stored.Name), 
                         MessageBoxButtons.OKCancel)
                         == DialogResult.Cancel) {
-                       loadfromStreamManager = true;
+                       loadFromMemory = true;
                     }
                 }
             }
 
-            SheetInfo sheetinfo = null;
-            if (loadfromStreamManager) {
-                SheetManager.LoadFromStreams(SheetControl.Data, SheetControl.Layout, stored.Id);
+            SceneInfo sheetinfo = null;
+            if (!loadFromMemory) {
+                sheetinfo = SheetManager.LoadFromContent(content, SheetControl.Data, SheetControl.Layout);
+            } else {
+                SheetManager.LoadFromStore(SheetControl.Data, SheetControl.Layout, stored.Id);
                 sheetinfo = stored;
                 isStreamOwner = false;
-            } else {
-                sheetinfo = SheetManager.LoadFromStreamInfo(streamInfo, SheetControl.Data, SheetControl.Layout);
             }
             SheetControl.DeviceRenderer.Render ();
 
             SheetControl.Execute();
-            SheetControl.Text = sheetinfo.Name;
-            SheetControl.DataId = sheetinfo.Id;
-            sheetinfo.State.CopyTo(SheetControl.Data.State);
+            SheetControl.Info = sheetinfo;
+           
             this.CurrentThingId = SheetControl.DataId;
             Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(SheetControl.Data);
 
             if (isStreamOwner) {
-                streamInfo.Data.Close();
-                streamInfo.Data = null;
+                content.Data.Close();
+                content.Data = null;
             }
 
         }
 
-        public override void Save(StreamInfo<Stream> info) { }
+        public override void Save(Content<Stream> info) { }
 
         public override bool CanSave() {return false;}
 

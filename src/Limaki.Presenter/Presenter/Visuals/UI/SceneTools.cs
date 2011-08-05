@@ -25,6 +25,7 @@ using Limaki.Visuals;
 
 namespace Limaki.Presenter.Visuals.UI {
     public static class SceneTools {
+
         public static void ChangeShape(IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IShape newShape) {
             if (visual != null && !(visual is IVisualEdge)) {
                 if (newShape != null) {
@@ -131,12 +132,13 @@ namespace Limaki.Presenter.Visuals.UI {
 
         public static void CleanScene(IGraphScene<IVisual, IVisualEdge> scene) {
             if (scene != null) {
-                if (scene.Graph is GraphView<IVisual, IVisualEdge>) {
+                var graphView = scene.Graph as GraphView<IVisual, IVisualEdge>;
+                if (graphView!=null) {
                     ( (GraphView<IVisual, IVisualEdge>) scene.Graph ).One.Clear ();
                     scene.ClearView ();
                     Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(scene);
                 } else {
-                    throw new ArgumentException ("scene.Graph must be a GraphView to load Sheets");
+                    throw new ArgumentException ("scene.Graph must be a GraphView");
                 }
             }
         }

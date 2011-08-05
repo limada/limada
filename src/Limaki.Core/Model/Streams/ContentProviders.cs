@@ -2,18 +2,18 @@
 using Limaki.Common.Collections;
 
 namespace Limaki.Model.Streams {
-    public class StreamProviders : IEnumerable<IStreamProvider> {
-        private ICollection<IStreamProvider> providers = new Set<IStreamProvider>();
+    public class ContentProviders : IEnumerable<IContentProvider> {
+        private ICollection<IContentProvider> providers = new Set<IContentProvider>();
 
-        public virtual void Add(IStreamProvider provider) {
+        public virtual void Add(IContentProvider provider) {
             providers.Add(provider);
         }
 
-        public virtual void Remove(IStreamProvider provider) {
+        public virtual void Remove(IContentProvider provider) {
             providers.Remove(provider);
         }
 
-        public virtual IStreamProvider Find(string extension) {
+        public virtual IContentProvider Find(string extension) {
             foreach (var provider in providers) {
                 if (provider.Supports(extension)) {
                     return provider;
@@ -22,7 +22,7 @@ namespace Limaki.Model.Streams {
             return null;
         }
 
-        public virtual IStreamProvider Find(long streamType) {
+        public virtual IContentProvider Find(long streamType) {
             foreach (var provider in providers) {
                 if (provider.Supports(streamType)) {
                     return provider;
@@ -31,7 +31,7 @@ namespace Limaki.Model.Streams {
             return null;
         }
 
-        public IEnumerator<IStreamProvider> GetEnumerator() {
+        public IEnumerator<IContentProvider> GetEnumerator() {
             return providers.GetEnumerator();
         }
 

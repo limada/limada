@@ -93,7 +93,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
         public virtual IThingGraph ThingGraph { get; set; }
         public virtual IThing ContentThing { get; set; }
 
-        public override void SetContent(StreamInfo<Stream> info) {
+        public override void SetContent(Content<Stream> info) {
             bool closeStream = this.IsStreamOwner;
             try {
 
@@ -153,7 +153,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
             }
         }
 
-        public override void Save(StreamInfo<Stream> info) { }
+        public override void Save(Content<Stream> info) { }
         public override bool CanSave() {return false;}
 
         public override void Dispose() {

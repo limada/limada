@@ -19,7 +19,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
 
         public WebContent WebContentOfThing { get; protected set; }
 
-        public virtual Func<string, WebContent> Getter(StreamInfo<Stream> info) {
+        public virtual Func<string, WebContent> Getter(Content<Stream> info) {
             var graph = this.ThingGraph;
             var thing = this.Thing;
 
@@ -62,7 +62,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
             return new Uri(BaseUri, "Id=" + Thing.Id.ToString("X"));
         }
 
-        public virtual WebContent GetContentFromInfo(StreamInfo<Stream> info, Uri uri) {
+        public virtual WebContent GetContentFromInfo(Content<Stream> info, Uri uri) {
             var webContent = new WebContent();
             webContent.ClearContentAfterServing = true;
             webContent.ContentIsStream = true;
@@ -87,7 +87,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
         }
 
         public virtual WebContent GetContentFromThing(IThingGraph graph, IThing thing) {
-            var info = ThingStreamFacade.GetStreamInfo(graph, thing);
+            var info = ThingStreamFacade.GetContent(graph, thing);
             var uri = GetUri(thing);
             return GetContentFromInfo(info, uri);
         }

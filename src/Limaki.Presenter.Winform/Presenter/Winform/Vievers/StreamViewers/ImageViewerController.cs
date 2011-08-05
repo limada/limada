@@ -61,7 +61,7 @@ using Limaki.UseCases.Viewers;namespace Limaki.UseCases.Winform.Viewers.StreamVi
             return false;
         }
 
-        public override void SetContent(StreamInfo<Stream> info) {
+        public override void SetContent(Content<Stream> info) {
             var control = Control as WinformImageDisplay;
 
             if (control != null) {
@@ -78,7 +78,7 @@ using Limaki.UseCases.Viewers;namespace Limaki.UseCases.Winform.Viewers.StreamVi
             }
         }
 
-        public override void Save(StreamInfo<Stream> info) { }
+        public override void Save(Content<Stream> info) { }
 
         public override void Dispose() {
             if (_control != null) {

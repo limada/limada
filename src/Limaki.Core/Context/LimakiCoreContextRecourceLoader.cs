@@ -14,10 +14,10 @@ namespace Limaki.Context {
             context.Factory.Add<ICompressionWorker, Limaki.Compression.CompressionWorker> ();
             context.Factory.Add<IThingFactory, ThingFactory>();
 			
-			var providers = Registry.Pool.TryGetCreate<StreamProviders>();
-			providers.Add(new RtfStreamProvider());
-			providers.Add(new HtmlStreamProvider());
-			providers.Add(new ImageStreamProvider());
+			var providers = Registry.Pool.TryGetCreate<ContentProviders>();
+			providers.Add(new RtfContentProvider());
+			providers.Add(new HtmlContentProvider());
+			providers.Add(new ImageContentProvider());
         }
 
         public virtual void LoadCompression(IApplicationContext context) {

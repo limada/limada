@@ -40,10 +40,8 @@ using System.IO;
 namespace Limada.Presenter {
     public class FavoriteManager {
 
-        public FavoriteManager(){}
-        public FavoriteManager(IGraphSceneDisplay<IVisual, IVisualEdge> display): this() {
-            this.Display = display;
-            
+        public FavoriteManager() {
+            Trace.WriteLine(string.Format("HomeId\t{0}", HomeId));
         }
 
         public ISheetManager SheetManager { get; set; }
@@ -52,7 +50,7 @@ namespace Limada.Presenter {
             AddToFavorites(scene, TopicSchema.TopicMarker, false);
         }
 
-        public void ViewOnOpen(IGraphScene<IVisual, IVisualEdge> scene) {
+        public void SetAutoView(IGraphScene<IVisual, IVisualEdge> scene) {
             AddToFavorites(scene, TopicSchema.AutoViewMarker, true);
         }
 
@@ -96,28 +94,21 @@ namespace Limada.Presenter {
             }
         }
 
-        private IGraphSceneDisplay<IVisual, IVisualEdge> _display = null;
-        public IGraphSceneDisplay<IVisual, IVisualEdge> Display {
-            get { return _display; }
-            set { _display = value; }
-        }
+        public IGraphSceneDisplay<IVisual, IVisualEdge> Display { get; set; }
 
-        protected virtual void DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, StreamInfo<Stream> streamInfo) {
-            var info = SheetManager.LoadFromStreamInfo(streamInfo, display.Data, display.Layout);
-            display.DataId = info.Id;
-            display.Text = info.Name;
-
+        protected virtual void DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, Content<Stream> content) {
+            var info = SheetManager.LoadFromContent(content, display.Data, display.Layout);
             display.Execute();
-            info.State.CopyTo(display.State);
+            display.Info = info;
         }
 
         protected virtual bool DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, IThing thing, IThingGraph thingGraph ) {
             var streamThing = thing as IStreamThing;
             try {
                 if (streamThing != null && streamThing.StreamType == StreamTypes.LimadaSheet) {
-                    var streamInfo = ThingStreamFacade.GetStreamInfo(thingGraph, streamThing);
-                    streamInfo.Source = streamThing.Id;
-                    DisplaySheet(display, streamInfo);
+                    var content = ThingStreamFacade.GetContent(thingGraph, streamThing);
+                    content.Source = streamThing.Id;
+                    DisplaySheet(display, content);
                 }
             } catch (Exception e) {
                 Trace.WriteLine("Error on displaying sheet {0}", e.Message);
@@ -126,20 +117,23 @@ namespace Limada.Presenter {
             return false;
         }
 
-        private Id HomeId = Isaac.Long;
+        [TODO("change homeId on opening database")]
+        public Id HomeId = Isaac.Long;
         public virtual void GoHome(IGraphSceneDisplay<IVisual, IVisualEdge> display, bool doAutoView) {
             if (display == null)
                 return;
             if (display.Data == null)
                 return;
 
-            this.Display = display;
-
-            display.DataId = HomeId;
-            display.Text = "Favorites";
-            var state = new State {Hollow = true};
-
-            state.CopyTo(display.State);
+            var homeInfo = new SceneInfo {
+                Id = HomeId,
+                Name = "Favorites",
+            };
+            homeInfo.State.Hollow = true;            
+            SceneTools.CleanScene(display.Data);
+            display.DeviceRenderer.Render();
+            display.Info = homeInfo;
+            
 
             var view = display.Data.Graph as GraphView<IVisual, IVisualEdge>;
 
@@ -172,15 +166,16 @@ namespace Limada.Presenter {
 
                 #region Favorites sheet is in SheetManager
                 if (! done) {
-                    var homeInfo = SheetManager.GetSheetInfo(HomeId);
-                    if(homeInfo!=null) {
-                        var sheet = SheetManager.GetFromStreams(HomeId);
-                        DisplaySheet(display, new StreamInfo<Stream> {
+                    var info = SheetManager.GetSheetInfo(HomeId);
+                    if (info != null) {
+                        var sheet = SheetManager.GetFromStore(HomeId);
+                        var content = new Content<Stream> {
                             Source = HomeId,
                             Description = homeInfo.Name,
                             Data = sheet,
                             StreamType = TopicSchema.SheetMarker.Id
-                        });
+                        };
+                        DisplaySheet(display, content);
                         done = true;
                     }
                 }
@@ -276,8 +271,9 @@ namespace Limada.Presenter {
             if (thingGraph != null) {
                 var topic = thingGraph.GetById(TopicSchema.Topics.Id);
                 if(topic == null) {
-                    var info = SheetManager.GetSheetInfo(display.DataId) ?? new SheetInfo { Id = display.DataId };
-                    info = SheetManager.SaveInGraph(display.Data,display.Layout,info);
+                    var info = display.Info;
+                    SheetManager.SaveInGraph(display.Data,display.Layout,info);
+                    display.Info = info;
                     AddToSheets(thingGraph, info.Id);
                 }
             }

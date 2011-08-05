@@ -16,6 +16,8 @@ using Limaki.Graphs;
 using Limaki.Drawing;
 using System;
 using Limaki.Presenter.UI;
+using Id = System.Int64;
+using Limaki.Common;
 
 namespace Limaki.Presenter.Display {
     public interface IGraphSceneDisplay<TItem, TEdge>:IDisplay<IGraphScene<TItem,TEdge>>
@@ -25,5 +27,9 @@ namespace Limaki.Presenter.Display {
         void OnSceneFocusChanged();
 
         bool Check();
+
+        SceneInfo Info { get; set; }
     }
+
+   
 }

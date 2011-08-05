@@ -58,7 +58,7 @@ namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
             return stream;
         }
 
-        public override void SetContent(StreamInfo<Stream> info) {
+        public override void SetContent(Content<Stream> info) {
             TextBoxEditor control = Control as TextBoxEditor;
             if (control == null)
                 return;
@@ -97,7 +97,7 @@ namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
             return stream;
         }
 
-        public override void Save(StreamInfo<Stream> info) {
+        public override void Save(Content<Stream> info) {
             if (CanSave()) {
                 if (info != null) {
                     var stream = DoSave ();

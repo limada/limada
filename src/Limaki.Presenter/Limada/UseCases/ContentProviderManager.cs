@@ -18,7 +18,7 @@ namespace Limada.UseCases {
             get {
                 if (_streamProviderDialogFilter == null) {
                     _streamProviderDialogFilter = string.Empty;
-                    var providers = Registry.Pool.TryGetCreate<StreamProviders>();
+                    var providers = Registry.Pool.TryGetCreate<ContentProviders>();
                     string defaultFilter = null;
                     foreach (var provider in providers) {
                         foreach (var info in provider.SupportedStreamTypes) {
@@ -79,7 +79,7 @@ namespace Limada.UseCases {
 
         }
 
-        public void ImportContent(StreamInfo<Stream> content, IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout) {
+        public void ImportContent(Content<Stream> content, IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout) {
             var graph = scene.Graph;
             var thing = new VisualThingStreamHelper().CreateFromStream(graph, content);
             if (scene.Focused != null) {
@@ -89,7 +89,7 @@ namespace Limada.UseCases {
             }
         }
 
-        public StreamInfo<Stream> ExtractContent(IGraphScene<IVisual, IVisualEdge> scene) {
+        public Content<Stream> ExtractContent(IGraphScene<IVisual, IVisualEdge> scene) {
             var graph = scene.Graph;
             if (graph!=null && scene.Focused != null) {
                 return new VisualThingStreamHelper ().GetStream (graph,scene.Focused);

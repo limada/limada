@@ -1,20 +1,20 @@
-﻿using System.Linq;
-using Limada.UseCases;
-using Limaki.Common;
-using Limaki.Presenter.Display;
-using Limaki.Presenter.UI;
-using Limaki.Presenter.Visuals.UI;
-using Limaki.Visuals;
-using Limaki.UseCases.Viewers;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Limada.Model;
 using Limada.Schemata;
-using Limaki.Graphs;
-using Limaki.Presenter.Visuals;
+using Limada.UseCases;
 using Limada.View;
-using Limaki.Drawing;
-using System;
-using System.Collections.Generic;
+using Limaki.Common;
 using Limaki.Common.Collections;
+using Limaki.Drawing;
+using Limaki.Graphs;
+using Limaki.Presenter.Display;
+using Limaki.Presenter.UI;
+using Limaki.Presenter.Visuals;
+using Limaki.Presenter.Visuals.UI;
+using Limaki.UseCases.Viewers;
+using Limaki.Visuals;
 
 namespace Limaki.Presenter.Winform.Controls {
     public class DocumentSchemaController:ThingViewerController {

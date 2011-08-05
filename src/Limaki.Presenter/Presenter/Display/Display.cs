@@ -102,14 +102,14 @@ namespace Limaki.Presenter.Display {
             Viewport.UpdateZoom();
         }
 
-
-
         public virtual void Invoke() {
             EventControler.Invoke();
         }
+
         public virtual void Execute() {
             EventControler.Execute();
         }
+
         public virtual void Done() {
             EventControler.Done();
         }

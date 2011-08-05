@@ -23,7 +23,7 @@ using Limaki.Model.Streams;
 
 namespace Limaki.Model.Content {
 
-    public class RtfStreamProvider : StreamProvider {
+    public class RtfContentProvider : ContentProvider {
         StreamTypeInfo[] _supportedStreamTypes =
             new StreamTypeInfo[]{
 				new StreamTypeInfo(

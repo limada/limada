@@ -7,7 +7,7 @@ using Limaki.Model.Streams;
 namespace Limaki.UseCases {
 	public class ContentProviderManagerBase {
 
-		public StreamInfo<Stream> Content { get;set;}
+		public Content<Stream> Content { get;set;}
            
 		public void Close() {
             if (Content != null && Content.Data !=null) {
@@ -16,8 +16,8 @@ namespace Limaki.UseCases {
 			Content = null;
         }
 		
-		protected virtual IStreamProvider GetProvider(Uri uri) {
-            var providers = Registry.Pool.TryGetCreate<StreamProviders>();
+		protected virtual IContentProvider GetProvider(Uri uri) {
+            var providers = Registry.Pool.TryGetCreate<ContentProviders>();
 			if(uri.IsFile){
 				var filename = IOUtils.UriToFileName(uri);
 				var ext = Path.GetExtension(filename).Trim('.');
@@ -26,8 +26,8 @@ namespace Limaki.UseCases {
             return null;
         }
 
-        protected virtual StreamTypeInfo GetStreamTypeInfo(StreamInfo stream) {
-            var providers = Registry.Pool.TryGetCreate<StreamProviders>();
+        protected virtual StreamTypeInfo GetStreamTypeInfo(Content stream) {
+            var providers = Registry.Pool.TryGetCreate<ContentProviders>();
             var provider = providers.Find(stream.StreamType);
             if (provider != null) {
                 return provider.SupportedStreamTypes.Where(e => e.StreamType == stream.StreamType).First();
@@ -35,14 +35,14 @@ namespace Limaki.UseCases {
             return null;
         }
 
-        public Action<StreamInfo<Stream>> Import { get; set; }
-        protected void OnImport(StreamInfo<Stream> content) {
+        public Action<Content<Stream>> Import { get; set; }
+        protected void OnImport(Content<Stream> content) {
             if (Import != null) {
                 Import(content);
             }
         }
-        public Func<StreamInfo<Stream>> Export { get; set; }
-        protected StreamInfo<Stream> OnExport() {
+        public Func<Content<Stream>> Export { get; set; }
+        protected Content<Stream> OnExport() {
             if (Export != null) {
                 return Export();
             }

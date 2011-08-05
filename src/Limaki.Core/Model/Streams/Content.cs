@@ -19,27 +19,27 @@ using Limaki.Common;
 
 namespace Limaki.Model.Streams {
 	[TODO("find a better name for this class, eg. streamContent, streamData, streamRecord, contentInfo")]
-    public class StreamInfo {
+    public class Content {
         public CompressionType Compression = CompressionType.None;
         public Id StreamType = StreamTypes.Unknown;
         public object Description=null;
         public object Source=null;
     }
 
-    public class StreamInfo<T>:StreamInfo {
+    public class Content<T>:Content {
         public T Data;
 
-        public StreamInfo() {}
-        public StreamInfo(T data, CompressionType compression) {
+        public Content() {}
+        public Content(T data, CompressionType compression) {
             this.Data = data;
             this.Compression = compression;
         }
 
-        public StreamInfo(T data, CompressionType compression, long streamType):this(data,compression) {
+        public Content(T data, CompressionType compression, long streamType):this(data,compression) {
             this.StreamType = streamType;
         }
 
-        public StreamInfo(StreamInfo source) {
+        public Content(Content source) {
             this.Description = source.Description;
             this.Source = source.Source;
             this.Compression = source.Compression;

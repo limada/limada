@@ -23,7 +23,7 @@ using Limaki.Model.Streams;
 
 namespace Limaki.Model.Content {
 
-    public class HtmlStreamProvider : StreamProvider {
+    public class HtmlContentProvider : ContentProvider {
         static long XHTML = 0x280efaf080c35e30;
 
         StreamTypeInfo[] _supportedStreamTypes =

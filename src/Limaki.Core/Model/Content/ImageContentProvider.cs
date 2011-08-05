@@ -22,7 +22,7 @@ using System.Text;
 using Limaki.Model.Streams;
 
 namespace Limaki.Model.Content {
-    public class ImageStreamProvider : StreamProvider {
+    public class ImageContentProvider : ContentProvider {
         StreamTypeInfo[] _supportedStreamTypes =
             new StreamTypeInfo[]{
 					new StreamTypeInfo(
@@ -72,10 +72,10 @@ namespace Limaki.Model.Content {
         }
 
 
-        public override StreamInfo<Stream> Open(Stream stream) {
+        public override Content<Stream> Open(Stream stream) {
             if (!Supports(stream))
                 return null;
-            var result = new StreamInfo<Stream>(
+            var result = new Content<Stream>(
                                 stream,
                                 _supportedStreamTypes[0].Compression,
                                 _supportedStreamTypes[0].StreamType);

@@ -36,6 +36,27 @@ namespace Limaki.Presenter.Display {
             }
         }
 
+        SceneInfo _info = default(SceneInfo);
+        public virtual SceneInfo Info {
+            get {
+                if(_info == null) {
+                    _info = new SceneInfo ();
+                }
+                _info.Id = this.DataId;
+                _info.Name = this.Text;
+                this.State.CopyTo(_info.State);
+                return _info;
+            }
+            set {
+                if (_info != value) {
+                    _info = value;
+                }
+                this.DataId = _info.Id;
+                _info.State.CopyTo(this.State);
+                this.Text = _info.Name;
+            }
+        }
+
         public virtual IGraphModelFactory<TItem, TEdge> ModelFactory { get; set; }
 
         public override IStyleSheet StyleSheet {

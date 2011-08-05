@@ -21,19 +21,19 @@ using System.Text;
 
 
 namespace Limaki.Model.Streams {
-    public interface IStreamProvider {
+    public interface IContentProvider {
         bool Supports(string extension);
         bool Supports(long streamType);
 
         IEnumerable<StreamTypeInfo> SupportedStreamTypes { get; }
 
-        StreamInfo<Stream> Open(Stream stream);
-        StreamInfo<Stream> Open(Uri uri);
+        Content<Stream> Open(Stream stream);
+        Content<Stream> Open(Uri uri);
         
         bool Readable { get; }
         bool Saveable { get; }
 
-        void Save(StreamInfo<Stream> data, Uri uri);
+        void Save(Content<Stream> data, Uri uri);
 
     }
 

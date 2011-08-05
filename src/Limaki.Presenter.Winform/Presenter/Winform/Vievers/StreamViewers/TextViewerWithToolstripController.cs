@@ -51,7 +51,7 @@ namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
             return controller.CanSave ();
         }
 
-        public override void SetContent(StreamInfo<Stream> info) {
+        public override void SetContent(Content<Stream> info) {
             controller.SetContent(info);
 
             ((TextBoxEditorWithToolStrip)Control).TextBoxEditorToolStrip.Visible = 
@@ -63,7 +63,7 @@ namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
             }
         }
 
-        public override void Save(StreamInfo<Stream> info) {
+        public override void Save(Content<Stream> info) {
             controller.Save (info);
         }
 

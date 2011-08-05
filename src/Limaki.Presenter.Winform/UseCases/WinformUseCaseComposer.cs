@@ -136,19 +136,30 @@ namespace Limaki.UseCases.Winform {
                 new ToolStripMenuItem(l["Search"], null, (s, e) => { useCase.Search(); }),
             }),
 
-            new ToolStripMenuItem(l["Format"], null, new ToolStripMenuItem[] {
+            new ToolStripMenuItem(l["Style"], null, new ToolStripMenuItem[] {
                 new ToolStripMenuItem(l["Layout"], null, (s, e) => { this.ShowLayoutEditor(useCase); }),
                 new ToolStripMenuItem(l["StyleSheet"], null, (s, e) => { this.ShowStyleEditor(useCase); }),
-                new ToolStripMenuItem(l["Alignment"], null, new ToolStripMenuItem[] { 
-					new ToolStripMenuItem(l["Left"], null, (s, e) => { useCase.AlgignLeft(); })
-				}),
+                new ToolStripMenuItem(l["Align"], null, new ToolStripMenuItem[] { 
+					new ToolStripMenuItem(l["Left"], null, (s, e) => 
+					    useCase.AlgignHorizontal(Limaki.Drawing.HorizontalAlignment.Left)
+					),
+                    new ToolStripMenuItem(l["Center"], null, (s, e) => 
+					    useCase.AlgignHorizontal(Limaki.Drawing.HorizontalAlignment.Center)
+					),
+                    new ToolStripMenuItem(l["Right"], null, (s, e) => 
+					    useCase.AlgignHorizontal(Limaki.Drawing.HorizontalAlignment.Right)
+					),
+                    new ToolStripMenuItem(l["Distribute"], null, (s, e) => 
+					    useCase.AlignDistribute()
+					)
+                })
             }),
 
             new ToolStripMenuItem(l["Favorites"], null, new ToolStripMenuItem[] {
                 new ToolStripMenuItem(l["Add to favorites"], null, (s, e) 
-                => { new FavoriteManager().AddToFavorites(useCase.GetCurrentDisplay().Data);}),
+                => { useCase.FavoriteManager.AddToFavorites(useCase.GetCurrentDisplay().Data);}),
                 new ToolStripMenuItem(l["View on open "], null, (s, e) 
-                => { new FavoriteManager().ViewOnOpen(useCase.GetCurrentDisplay().Data);}),
+                => { useCase.FavoriteManager.SetAutoView(useCase.GetCurrentDisplay().Data);}),
             }),
 
             new ToolStripMenuItem(l["About"], null, (s, e) => {
