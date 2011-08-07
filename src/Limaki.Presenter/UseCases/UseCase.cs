@@ -156,22 +156,13 @@ namespace Limaki.UseCases {
 
         public Action<string> StateMessage {get; set;}
 
-        public void AlgignHorizontal(HorizontalAlignment alignment) {
-            var display = GetCurrentDisplay();
-            var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
-            var items = display.Data.Selected.Elements;
-            alligner.Allign(items, alignment);
-            alligner.Proxy.Commit(alligner.Data);
-            display.Execute();
+        public AlignTools AlignTools { get; set; }
+
+        public void AlignHorizontal(HorizontalAlignment alignment) {
+            AlignTools.AlignHorizontal(GetCurrentDisplay(), alignment);
         }
-        public void AlignDistribute() {
-            var display = GetCurrentDisplay();
-            var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
-            var items = display.Data.Selected.Elements;
-            //alligner.AffectedEdges0(items);
-            alligner.Distribute(items);
-            alligner.Proxy.Commit(alligner.Data);
-            display.Execute();
+        public void AlignDistribute(VerticalAlignment distribution) {
+            AlignTools.Distribute(GetCurrentDisplay(), distribution);
         }
     }
 }

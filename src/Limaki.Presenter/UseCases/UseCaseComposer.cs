@@ -55,6 +55,8 @@ namespace Limaki.UseCases {
             streamManager.MessageBoxShow = useCase.MessageBoxShow;
             streamManager.Import = useCase.ImportContent;
             streamManager.Export = useCase.ExtractContent;
+
+            useCase.AlignTools = new AlignTools();
         }
     }
 }

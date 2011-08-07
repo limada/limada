@@ -17,11 +17,12 @@ namespace Limaki.Presenter.Layout {
             var r = int.MinValue;
 
             visitor += item => {
-                var rect = Proxy.GetShape(item).BoundsRect;
-                var il = rect.Left;
-                var it = rect.Top;
-                var ir = rect.Right;
-                var ib = rect.Bottom;
+                var loc = Proxy.GetLocation(item);
+                var size = Proxy.GetSize(item);
+                var il = loc.X;
+                var it = loc.Y;
+                var ir = il+size.Width;
+                var ib = it+size.Height;
                 if (il < l)
                     l = il;
                 if (it < t)
@@ -35,23 +36,30 @@ namespace Limaki.Presenter.Layout {
             return () => RectangleI.FromLTRB(l, t, r, b);
         }
 
-        public Func<RectangleI> MinExtents(ref Action<TItem> visitor) {
-            var l = int.MaxValue;
-            var t = int.MaxValue;
+        public Func<SizeI> SizeSum(ref Action<TItem> visitor) {
             var w = 0;
             var h = 0;
-
             visitor += item => {
-                var rect = Proxy.GetShape(item).BoundsRect;
-                var il = rect.Left;
-                var it = rect.Top;
-                if (il < l) l = il;
-                if (it < t) t = it;
-                w += rect.Width;
-                h += rect.Height;
+                var size = Proxy.GetSize(item);
+               
+                w += size.Width;
+                h += size.Height;
             };
 
-            return () => new RectangleI(l, t, w, h);
+            return () => new SizeI(w,h);
+        }
+        public Func<SizeI> MinSize(ref Action<TItem> visitor) {
+            var w = 0;
+            var h = 0;
+            visitor += item => {
+                var size = Proxy.GetSize(item);
+                if (w < size.Width)
+                    w = size.Width;
+                if (h < size.Height)
+                    h = size.Height;
+            };
+
+            return () => new SizeI(w, h);
         }
         public virtual void AffectedEdges(ref Action<TItem> visitor) {
             visitor += item => {

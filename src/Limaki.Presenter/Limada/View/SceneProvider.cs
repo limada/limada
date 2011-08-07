@@ -166,7 +166,7 @@ namespace Limada.View {
         }
 
         private IEnumerable<IThing> SortedThings(IGraph<IVisual, IVisualEdge> graph, IEnumerable<IVisual> items) {
-            var result = items.OrderBy(v => v.Location, new Limaki.Drawing.Shapes.LeftRightTopBottomComparer());
+            var result = items.OrderBy(v => v.Location, new Limaki.Drawing.Shapes.PointComparer{Delta=20});
             return result.Select(v => graph.ThingOf(v));
         }
 

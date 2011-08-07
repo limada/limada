@@ -69,7 +69,7 @@
     <Compile Include="Drawing\DrawingPrimitivesSerializer.cs" />
     <Compile Include="Drawing\GrahamConvexHull.cs" />
     <Compile Include="Drawing\Alignement.cs" />
-    <Compile Include="Drawing\Shapes\LeftRightTopBottomComparer.cs" />
+    <Compile Include="Drawing\Shapes\PointComparer.cs" />
     <Compile Include="Drawing\Styles\StyleGroup.cs" />
     <Compile Include="Drawing\Styles\StyleNames.cs" />
     <Compile Include="Drawing\Styles\StyleSheet.cs" />
@@ -168,6 +168,7 @@
     <Compile Include="Presenter\UI\SelectionRendererBase.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphSceneEventArgs.cs" />
     <Compile Include="Presenter\Visuals\Display\VisualsRecourceLoader.cs" />
+    <Compile Include="UseCases\AlignTools.cs" />
     <Compile Include="UseCases\UseCase.cs" />
     <Compile Include="UseCases\UseCaseComposer.cs" />
     <Compile Include="UseCases\UseCaseFactories.cs" />
