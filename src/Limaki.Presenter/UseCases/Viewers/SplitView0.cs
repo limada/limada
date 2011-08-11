@@ -117,7 +117,7 @@ namespace Limaki.UseCases.Viewers {
             }
         }
 
-        public Action<object> ApplyGotFocus { get; set; }
+        public Action<object> FocusCatcher { get; set; }
         
         public void DisplayGotFocus(object sender) {
             CurrentDisplay = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
@@ -215,8 +215,10 @@ namespace Limaki.UseCases.Viewers {
                 _contentViewManager.Parent = this.Parent;
                 _contentViewManager.BackColor = Display1.BackColor;
 
+                _contentViewManager.AfterStreamLoaded -= this.AfterStreamLoaded;
                 _contentViewManager.AfterStreamLoaded += this.AfterStreamLoaded;
-                _contentViewManager.Attach += this.ApplyGotFocus;
+                _contentViewManager.Attach -= this.FocusCatcher;
+                _contentViewManager.Attach += this.FocusCatcher;
 
                 _contentViewManager.SheetManager = this.SheetManager;
                 

@@ -143,9 +143,10 @@ namespace Limada.Presenter {
         public bool SaveStreamInGraph(Stream source, IGraph<IVisual, IVisualEdge> target, SceneInfo info) {
             var thingGraph = GetThingGraph(target);
             var thing = GetSheetThing(thingGraph, info.Id) as IStreamThing;
-            Content<Stream> content = new Content<Stream>(
-                    source, CompressionType.bZip2, StreamTypes.LimadaSheet);
+            
+            var content = new Content<Stream>(source, CompressionType.bZip2, StreamTypes.LimadaSheet);
             content.Description = info.Name;
+
             if (thing is IStreamThing || thing == null){
                 var factory = target.ThingFactory();
                 var result =  new ThingStreamFacade(factory).SetStream(thingGraph, thing, content)!=null;

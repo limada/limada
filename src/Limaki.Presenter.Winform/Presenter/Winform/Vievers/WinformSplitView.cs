@@ -94,7 +94,7 @@ namespace Limaki.UseCases.Winform.Viewers {
             //View.DeviceGraphStreamView += this.GraphStreamView;
             View.DeviceToggleView += this.ToggleView;
             
-            View.ApplyGotFocus = this.ApplyGotFocus;
+            View.FocusCatcher = this.SetFocusCatcher;
             View.ShowTextDialog = this.ShowTextOkCancelDialog;
             View.AfterStreamLoaded = this.AfterStreamLoaded;
 
@@ -130,7 +130,7 @@ namespace Limaki.UseCases.Winform.Viewers {
             View.ControlGotFocus (sender);
         }
 
-        void ApplyGotFocus(object target) {
+        void SetFocusCatcher(object target) {
             var control = target as Control;
             if (control != null) {
                 control.Enter += ControlGotFocus;
@@ -228,7 +228,7 @@ namespace Limaki.UseCases.Winform.Viewers {
 
 
 
-        void finishTextOkCancelDialog(object sender, TextOkCancelBoxEventArgs e) {
+        void FinishTextOkCancelDialog(object sender, TextOkCancelBoxEventArgs e) {
             var cd = this.View.CurrentDisplay;
             var control = (sender as TextOkCancelBox);
 
@@ -247,7 +247,7 @@ namespace Limaki.UseCases.Winform.Viewers {
 
         protected void ShowTextOkCancelDialog(string title, string text, Action<string> OnOk) {
             var nameDialog = new TextOkCancelBox();
-            nameDialog.Finish += finishTextOkCancelDialog;
+            nameDialog.Finish += FinishTextOkCancelDialog;
             nameDialog.OnOk = OnOk;
 
             var currentDisplay = this.View.CurrentDisplay.Device as Control;

@@ -110,14 +110,16 @@ namespace Limada.Presenter {
 
         public void SaveChanges(IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays, ISheetManager sheetManager, Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow) {
             IGraph<IVisual, IVisualEdge> graph = null;
-            foreach (var display in displays)
-                if (display.State.Dirty && !display.State.Hollow) {
+            foreach (var display in displays) {
+                if (graph == null)
+                    graph = display.Data.Graph;
+                if (display.State.Dirty && !display.State.Hollow && display.Data != null) {
                     var info = sheetManager.GetSheetInfo(display.DataId) ?? display.Info;
                     sheetManager.SaveInStore(display.Data, display.Layout, info.Id);
                     display.State.CopyTo(info.State);
-                    if (graph == null)
-                        graph = display.Data.Graph;
+
                 }
+            }
 
             Action<SceneInfo> sheetVisitor = (info) => {
                 if (info.State.Dirty && !info.State.Hollow) {
@@ -132,7 +134,9 @@ namespace Limada.Presenter {
                     }
                 }
             };
-            sheetManager.VisitRegisteredSheets(sheetVisitor);
+
+            if (graph != null)
+                sheetManager.VisitRegisteredSheets(sheetVisitor);
         }
 
     }
