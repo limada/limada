@@ -42,64 +42,31 @@ namespace Limaki.Drawing {
 
         protected Color? _fillColor = null;
         public virtual Color FillColor {
-            get {
-                if (_fillColor == null) {
-                    if (ParentStyle != null)
-                        return ParentStyle.FillColor;
-                    return Color.Empty;
-                }
-                return _fillColor.Value;
-                
-            }
-            set {
-                if (ParentStyle == null || ParentStyle.FillColor != value)
-                    _fillColor = value;
-            }
+            get { return Get(() => ParentStyle.FillColor, _fillColor, Color.Empty); }
+            set { Set(() => ParentStyle.FillColor, ref _fillColor, value); }
         }
 
         protected Color? _textColor = null;
         public virtual Color TextColor {
-            get {
-                if (_textColor == null){
-                    if (ParentStyle != null)
-                        return ParentStyle.TextColor;
-                    return Color.Empty;
-                } 
-                return _textColor.Value;
-            }
-            set {
-                if (ParentStyle == null || ParentStyle.TextColor != value)
-                    _textColor = value;
-                else
-                    _textColor = null;
-            }
+            get { return Get(() => ParentStyle.TextColor, _textColor, Color.Empty); }
+            set { Set(() => ParentStyle.TextColor, ref _textColor, value); }
         }
 
         protected Color? _penColor = null;
         public virtual Color PenColor {
-            get {
-                if (_penColor == null) {
-                    if (ParentStyle != null)
-                        return ParentStyle.PenColor;
-                    return Color.Empty;
-                }
-                return _penColor.Value;
-            }
+            get { return Get(() => ParentStyle.PenColor, _penColor, Color.Empty); }
             set {
                 if (value != PenColor) {
-                    if (ParentStyle == null || ParentStyle != null && ParentStyle.PenColor != value) {
-                        _penColor = value;
-                    } else
-                        _penColor = null;
-
-                    if (_pen != null) {
-                        _pen.Color = value;
-                        if (ParentStyle != null && _pen.Equals(ParentStyle.Pen))
-                            _pen = null;
+                    Set(() => ParentStyle.PenColor, ref _penColor, value);
+                    if (_penColor != null) {
+                        if (_pen == null) {
+                            _pen = (Pen) Pen.Clone();
+                        }
+                        _pen.Color = _penColor.Value;
                     } else {
-                        if (ParentStyle == null || ParentStyle != null && ParentStyle.Pen != null && ParentStyle.Pen.Color != value) {
-                            _pen = (Pen) ParentStyle.Pen.Clone();
-                            _pen.Color = value;
+                        if (_pen != null) {
+                            _pen.Color = PenColor;
+                            Pen = _pen;
                         }
                     }
                 }
@@ -108,85 +75,75 @@ namespace Limaki.Drawing {
 
         protected Pen _pen = null;
         public virtual Pen Pen {
-            get {
-                if (_pen == null && ParentStyle != null) {
-                    return ParentStyle.Pen;
-                } else {
-                    return _pen;
-                }
-            }
+            get { return Get(() => ParentStyle.Pen, _pen); }
             set {
-                if (ParentStyle != null &&
-                    ParentStyle.Pen != null &&
-                    ParentStyle.Pen.Equals(value)) {
-                    _pen = null;
-                } else {
-                    _pen = value;
-                }
+                Set(() => ParentStyle.Pen, ref _pen, value); 
                 if (value != null)
                     this.PenColor = value.Color;
                 else
                     this._penColor = null;
             }
         }
+
         protected Font _font=null;
         public virtual Font Font {
-            get {
-                if ((_font == null) && (ParentStyle != null)) {
-                    return ParentStyle.Font;
-                } else {
-                    return _font;
-                }
-            }
-            set { 
-                 if  (ParentStyle != null &&
-                     ParentStyle.Font != null &&
-                     ParentStyle.Font.Equals(value)) {
-                     _font = null;    
-                 } else {
-                     _font = value;
-                 }
-            }
+            get { return Get(() => ParentStyle.Font, _font); }
+            set { Set(() => ParentStyle.Font, ref _font, value); }
         }
 
         public static SizeI NoSize = new SizeI (int.MaxValue, int.MaxValue);
         protected SizeI? _autoSize = null;
         public virtual SizeI AutoSize {
-            get {
-                if (_autoSize == null)
-                    if (ParentStyle != null)
-                        return ParentStyle.AutoSize;
-                    else
-                        return NoSize;
-                return _autoSize.Value;
-            }
-            set {
-                if (ParentStyle == null || ParentStyle.AutoSize != value)
-                    _autoSize = value;
-            }
+            get { return Get(() => ParentStyle.AutoSize, _autoSize, NoSize); }
+            set { Set(()=>ParentStyle.AutoSize, ref _autoSize, value); }
         }
 
         protected bool? _paintData = null;
         public virtual bool PaintData {
-            get {
-                if (_paintData == null)
-                    if (ParentStyle != null)
-                        return ParentStyle.PaintData;
-                    else
-                        return true;
-                
-                return _paintData.Value;
-                
+            get { return Get(() => ParentStyle.PaintData, _paintData, true); }
+            set { Set(()=>ParentStyle.PaintData, ref _paintData, value); }
+        }
+     
+
+        #endregion
+
+        #region cascading
+
+        protected T Get<T>(Func<T> parentMemnber, T member) where T : class {
+            if ((member == null) && (ParentStyle != null)) {
+                return parentMemnber();
+            } else {
+                return member;
             }
-            set {
-                if (ParentStyle == null || ParentStyle.PaintData != value)
-                    _paintData = value;
+        }
+
+        protected void Set<T>(Func<T> parentMemnber, ref T member, T value) where T : class {
+            if (ParentStyle != null && parentMemnber() != null && parentMemnber().Equals(value)) {
+                member = null;
+            } else {
+                member = value;
             }
+        }
+
+        protected T Get<T>(Func<Nullable<T>> parentMemnber, Nullable<T> member, T deefault) where T : struct {
+            if (member == null)
+                if (ParentStyle != null)
+                    return parentMemnber().Value;
+                else
+                    return deefault;
+            return member.Value;
+        }
+
+        protected void Set<T>(Func<Nullable<T>> parentMemnber, ref Nullable<T> member, T value) where T : struct {
+            if (ParentStyle == null || !parentMemnber().Equals(value))
+                member = value;
+            if (ParentStyle != null && parentMemnber().Equals(value))
+                member = null;
         }
         #endregion
 
         #region IDisposable Member
-        
+
         ~Style() {
             Dispose(false);
         }

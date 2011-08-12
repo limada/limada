@@ -38,7 +38,7 @@ namespace Limaki.UseCases.Viewers {
         public Color BackColor = KnownColors.FromKnownColor(KnownColor.Control);
         public object Parent = null;
 
-        public event Action<object, Action> AfterStreamLoaded = null;
+        public event Action<object, Action> AttachControl = null;
         public event Action<object> Attach = null;
         public event Action<object> DeAttach = null;
 
@@ -54,42 +54,43 @@ namespace Limaki.UseCases.Viewers {
         public ContentViewProviders Providers { get { return _providers ?? (_providers = Registry.Pool.TryGetCreate<ContentViewProviders>()); } }
         public ThingContentViewProviders ThingContentViewProviders { get { return Providers as ThingContentViewProviders; } }
 
-        void AttachController(ViewerController controller, IGraph<IVisual, IVisualEdge> graph, IVisual thing) {
+        void AttachController(ViewerController controller, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
+            if (controller is SheetViewerController) {
+                var sheetView = (SheetViewerController)controller;
+                sheetView.SheetControl = this.SheetControl;
+                sheetView.SheetManager = this.SheetManager;
+            }
+
             controller.BackColor = this.BackColor;
             controller.Parent = this.Parent;
             if (this.Attach != null) {
                 controller.Attach -= this.Attach;
                 controller.Attach += this.Attach;
             }
-            DoAfterStreamLoaded(controller.Control, () => { controller.OnShow(); });
-           
+
+            if (AttachControl != null) {
+                AttachControl(controller.Control, () => controller.OnShow());
+            }
         }
 
         void LoadStreamThing(StreamViewerController controller, IThingGraph graph, IStreamThing thing) {
             try {
-                
+                controller.IsStreamOwner = IsStreamOwner;
                 if (controller.CurrentThingId != thing.Id) {
                     SaveStream(graph, controller);
-                }
 
-                controller.IsStreamOwner = IsStreamOwner;
+                    var info = ThingStreamFacade.GetContent(graph, thing);
+                    if (controller is SheetViewerController) {
+                        info.Source = thing.Id;
+                    }
 
-                var info = ThingStreamFacade.GetContent(graph, thing);
+                    if (controller is HTMLViewerController) {
+                        var htmlViewr = (HTMLViewerController)controller;
+                        htmlViewr.ContentThing = thing;
+                        htmlViewr.ThingGraph = graph;
+                    }
 
-                if (controller is SheetViewerController) {
-                    var sheetView = (SheetViewerController)controller;
-                    sheetView.SheetControl = this.SheetControl;
-                    sheetView.SheetManager = this.SheetManager;
-                    info.Source = thing.Id;
-                }
 
-                if (controller is HTMLViewerController) {
-                    var htmlViewr = (HTMLViewerController)controller;
-                    htmlViewr.ContentThing = thing;
-                    htmlViewr.ThingGraph = graph;
-                }
-
-                if (controller.CurrentThingId != thing.Id) {
                     controller.SetContent(info);
                 }
 
@@ -147,14 +148,7 @@ namespace Limaki.UseCases.Viewers {
              }
         }
 
-
-        protected void DoAfterStreamLoaded(object control, Action onShowAction) {
-            if (AfterStreamLoaded != null) {
-                AfterStreamLoaded (control, onShowAction);
-            }
-        }
-
-
+        [TODO("Refactor this to use State")]
         public void SaveStream(IThingGraph graph, StreamViewerController controller) {
             if (graph != null && controller.CanSave() && controller.CurrentThingId != 0){
                 var thing = graph.GetById(controller.CurrentThingId) as IStreamThing;

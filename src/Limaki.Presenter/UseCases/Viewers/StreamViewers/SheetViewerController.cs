@@ -30,7 +30,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
         public IGraphSceneDisplay<IVisual, IVisualEdge> SheetControl {
             get { return _sheetControl; }
             set {
-                if(value!=null)
+                if (value != null)
                     this.CurrentThingId = value.DataId;
                 if (_sheetControl != value && value != null) {
                     _sheetControl = value;
@@ -38,6 +38,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
                 }
             }
         }
+
         public ISheetManager SheetManager { get;set;}
 
         public override object Control {

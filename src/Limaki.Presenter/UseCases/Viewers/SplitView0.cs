@@ -70,7 +70,7 @@ namespace Limaki.UseCases.Viewers {
 
         public event Action<IGraphSceneDisplay<IVisual, IVisualEdge>> DeviceInitializeDisplay = null;
 
-        public Action<object, Action> AfterStreamLoaded { get; set; }
+        public Action<object, Action> AttachControl { get; set; }
         public Action<string, string, Action<string>> ShowTextDialog { get; set; }
 
         #region View-Switching
@@ -215,8 +215,8 @@ namespace Limaki.UseCases.Viewers {
                 _contentViewManager.Parent = this.Parent;
                 _contentViewManager.BackColor = Display1.BackColor;
 
-                _contentViewManager.AfterStreamLoaded -= this.AfterStreamLoaded;
-                _contentViewManager.AfterStreamLoaded += this.AfterStreamLoaded;
+                _contentViewManager.AttachControl -= this.AttachControl;
+                _contentViewManager.AttachControl += this.AttachControl;
                 _contentViewManager.Attach -= this.FocusCatcher;
                 _contentViewManager.Attach += this.FocusCatcher;
 
@@ -238,6 +238,7 @@ namespace Limaki.UseCases.Viewers {
 
             if (ViewMode != SplitViewMode.GraphStream)
                 return;
+            
             var display = sender as IGraphSceneDisplay<IVisual,IVisualEdge>;
             var adjacent = AdjacentDisplay(display);
             try {

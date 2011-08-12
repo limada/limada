@@ -12,6 +12,7 @@
  */
 
 using System;
+using System.Linq;
 using System.Windows.Forms;
 using Limaki.Common;
 using Limaki.Drawing;
@@ -96,7 +97,7 @@ namespace Limaki.UseCases.Winform.Viewers {
             
             View.FocusCatcher = this.SetFocusCatcher;
             View.ShowTextDialog = this.ShowTextOkCancelDialog;
-            View.AfterStreamLoaded = this.AfterStreamLoaded;
+            View.AttachControl = this.AttachControl;
 
             View.Initialize ();
 
@@ -144,17 +145,9 @@ namespace Limaki.UseCases.Winform.Viewers {
         #region View-Switching
         
         public void ToggleView() {
-            Control[] one = new Control[ViewDevice.Panel1.Controls.Count];
-            ViewDevice.Panel1.Controls.CopyTo(one, 0);
+            var one = ViewDevice.Panel1.Controls.Cast<Control>().ToArray();
+            var two = ViewDevice.Panel2.Controls.Cast<Control>().ToArray();
 
-            Control[] two = new Control[ViewDevice.Panel2.Controls.Count];
-            ViewDevice.Panel2.Controls.CopyTo(two, 0);
-
-            var display1 = this.View.Display1.Device as Control;
-            var currentControl = this.View.CurrentControl as Control;
-            bool oneContainsVisualsDisplay = ViewDevice.Panel1.Contains(display1);
-            bool oneContainsCurrentControl = ViewDevice.Panel1.Contains(currentControl);
-            
             ViewDevice.SuspendLayout();
 
             ViewDevice.Panel1.Controls.Clear();
@@ -189,15 +182,13 @@ namespace Limaki.UseCases.Winform.Viewers {
 
         }
         
-
-
-        private void AfterStreamLoaded(object sender, Action onShowAction) {
+        private void AttachControl(object sender, Action onShowAction) {
             if (sender == null)
                 return;
-            
+
             var control = sender as Control;
             var device = sender as GraphSceneDisplay<IVisual, IVisualEdge>;
-            if(device != null) {
+            if (device != null) {
                 control = device.Device as Control;
             }
             var currentDisplay = this.View.CurrentDisplay.Device as Control;

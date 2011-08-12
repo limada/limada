@@ -19,9 +19,38 @@ namespace Limaki.Tests.Graphic {
             var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
             var stylegroup = (IStyleGroup)styleSheets.DefaultStyleSheet.ItemStyle.Clone();
             var newGroup = (styleSheets.DefaultStyleSheet as StyleSheet).CreateStyleGroup("test", null, true);
-            // something is wrong with WhiteGlass; does not show CustonEndCaps with hover, seletcted!
-            //TODO: test this!
+          
 
+        }
+
+        public void ReportStyleGroup(IStyleGroup stylegroup) {
+            ReportDetail("{0}", stylegroup.Name);
+            ReportDetail("\tParent\t{0}", stylegroup.ParentStyle.Name);
+            ReportDetail("\tDefault\t{0}\t{1}", stylegroup.DefaultStyle.Name,stylegroup.DefaultStyle.ParentStyle.Name);
+            ReportDetail("\tSelected\t{0}t{1}", stylegroup.SelectedStyle.Name, stylegroup.SelectedStyle.ParentStyle.Name);
+            ReportDetail("\tHovered\t{0}t{1}", stylegroup.HoveredStyle.Name, stylegroup.HoveredStyle.ParentStyle.Name);
+        }
+
+        public void TestPaintData(IStyleGroup stylegroup) {
+            ReportStyleGroup(stylegroup);
+            var baseData = stylegroup.ParentStyle.PaintData;
+            var toggle = stylegroup.PaintData;
+            stylegroup.PaintData = !toggle;
+            Assert.IsTrue(stylegroup.ParentStyle.PaintData == baseData);
+            Assert.IsTrue(stylegroup.PaintData != toggle);
+            Assert.IsTrue(stylegroup.DefaultStyle.PaintData != toggle);
+            Assert.IsTrue(stylegroup.SelectedStyle.PaintData != toggle);
+            Assert.IsTrue(stylegroup.HoveredStyle.PaintData != toggle);
+        }
+
+        [Test]
+        public void TestCascading() {
+            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            
+            TestPaintData(styleSheets.DefaultStyleSheet.ItemStyle);
+            TestPaintData(styleSheets.DefaultStyleSheet.ItemStyle);
+            TestPaintData(styleSheets.DefaultStyleSheet.EdgeStyle);
+            TestPaintData(styleSheets.DefaultStyleSheet.EdgeStyle);
         }
     }
 }

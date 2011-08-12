@@ -48,7 +48,9 @@ namespace Limaki.UnitTest {
                 WriteDetail(this, message);
             }
         }
-
+        public void ReportDetail(string message,params object[] args) {
+            ReportDetail(string.Format(message, args));
+        }
         bool summaryDone = false;
 
         public void ReportSummary(string testName, string message) {

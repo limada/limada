@@ -74,11 +74,13 @@ namespace Limada.Presenter {
         protected void Load(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, Id id) {
             if (id == 0)
                 return;
-
-            if (sheetManager.LoadFromStore(display.Data, display.Layout, id)) {
-                display.DataId = id;
-                display.Viewport.Reset();
-                display.DeviceRenderer.Render();
+            var info = sheetManager.GetSheetInfo(id);
+            if (info != null) {
+                if (sheetManager.LoadFromStore(display.Data, display.Layout, info.Id)) {
+                    display.Info = info;
+                    display.Viewport.Reset();
+                    display.DeviceRenderer.Render();
+                }
             }
         }
 
@@ -103,9 +105,7 @@ namespace Limada.Presenter {
             if (currSheedId == default(Id))
                 history.Remove(p => p == currSheedId);
 
-            info = sheetManager.GetSheetInfo(display.DataId);
-            if (info != null)
-                display.Text = info.Name;
+            
         }
 
         public void SaveChanges(IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays, ISheetManager sheetManager, Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow) {

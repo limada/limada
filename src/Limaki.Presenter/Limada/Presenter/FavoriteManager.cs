@@ -109,6 +109,7 @@ namespace Limada.Presenter {
                     var content = ThingStreamFacade.GetContent(thingGraph, streamThing);
                     content.Source = streamThing.Id;
                     DisplaySheet(display, content);
+                    return true;
                 }
             } catch (Exception e) {
                 Trace.WriteLine("Error on displaying sheet {0}", e.Message);
