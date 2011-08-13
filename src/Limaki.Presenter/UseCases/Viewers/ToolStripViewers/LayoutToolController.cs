@@ -41,7 +41,7 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
                 foreach (IVisual visual in currentDisplay.Data.Selected.Elements) {
-                    SceneTools.ChangeShape (currentDisplay.Data, visual, shape);
+                    SceneExtensions.ChangeShape (currentDisplay.Data, visual, shape);
                 }
                 currentDisplay.Execute ();
             }
@@ -71,7 +71,7 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
                 foreach (IVisual visual in currentDisplay.Data.Selected.Elements) {
-                    SceneTools.ChangeStyle(currentDisplay.Data, visual, style);
+                    SceneExtensions.ChangeStyle(currentDisplay.Data, visual, style);
                 }
                 currentDisplay.Execute();
                 currentDisplay.Device.Invalidate();

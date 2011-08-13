@@ -132,7 +132,7 @@ namespace Limada.Presenter {
         }
 
         public SceneInfo CreateSheet(IGraphScene<IVisual, IVisualEdge> scene) {
-            SceneTools.CleanScene(scene);
+            SceneExtensions.CleanScene(scene);
             var result = new SceneInfo();
             result.State.Hollow = true;
             result.Id = Isaac.Long;
@@ -202,9 +202,25 @@ namespace Limada.Presenter {
         #endregion
 
         #region load sheet
+        public bool Load(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
+            var result = LoadFromStore(scene, layout, id);
+            try {
+                if (!result) {
+                    var graph = scene.Graph.ThingGraph();
+
+                    if (graph != null) {
+                        var thing = GetSheetThing(graph, id) as IStreamThing;
+                        LoadFromThing(thing, scene, layout);
+                    }
+                }
+                return result;
+            } catch {
+                return false;
+            }
+        }
 
         protected void LoadFromStream(Stream source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
-            SceneTools.CleanScene(target);
+            SceneExtensions.CleanScene(target);
             source.Position = 0;
             using (var sheet = new Sheet(target, layout)) {
                 sheet.Read(source);

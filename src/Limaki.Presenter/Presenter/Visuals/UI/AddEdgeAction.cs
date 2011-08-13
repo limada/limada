@@ -51,7 +51,7 @@ namespace Limaki.Presenter.Visuals.UI {
         }
 
         protected virtual IVisualEdge NewVisual(PointI p) {
-            IVisualEdge result = SceneTools.CreateEdge(this.Scene as Scene);
+            IVisualEdge result = SceneExtensions.CreateEdge(this.Scene as Scene);
             newCounter++;
             result.Root = Current;
             result.Leaf = Current;

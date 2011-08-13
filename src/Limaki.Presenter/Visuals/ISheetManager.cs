@@ -29,6 +29,8 @@ namespace Limaki.Visuals {
 
         SceneInfo CreateSheet(IGraphScene<IVisual, IVisualEdge> scene);
 
+        bool Load(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id);
+
         bool IsSaveable(IGraphScene<IVisual, IVisualEdge> scene);
         SceneInfo LoadFromContent(Content<Stream> source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout);
         void SaveInGraph(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, SceneInfo info);

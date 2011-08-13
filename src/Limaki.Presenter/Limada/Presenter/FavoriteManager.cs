@@ -120,7 +120,7 @@ namespace Limada.Presenter {
 
         [TODO("change homeId on opening database")]
         public Id HomeId = Isaac.Long;
-        public virtual void GoHome(IGraphSceneDisplay<IVisual, IVisualEdge> display, bool doAutoView) {
+        public virtual void GoHome(IGraphSceneDisplay<IVisual, IVisualEdge> display, bool initialize) {
             if (display == null)
                 return;
             if (display.Data == null)
@@ -131,7 +131,7 @@ namespace Limada.Presenter {
                 Name = "Favorites",
             };
             homeInfo.State.Hollow = true;            
-            SceneTools.CleanScene(display.Data);
+            SceneExtensions.CleanScene(display.Data);
             display.DeviceRenderer.Render();
             display.Info = homeInfo;
             
@@ -155,7 +155,7 @@ namespace Limada.Presenter {
                 var sheets = thingGraph.GetById(TopicSchema.Sheets.Id);
                 var sheetsCount = thingGraph.Edges(sheets).Where(l => l.Marker.Id == TopicSchema.SheetMarker.Id).Count();
                 
-                if (! done && doAutoView && sheets != null && sheetsCount==1 && topicsCount <= 1) {
+                if (! done && initialize && sheets != null && sheetsCount==1 && topicsCount <= 1) {
                     var autoView = thingGraph.Edges(sheets)
                         .Where(link => link.Marker.Id == TopicSchema.SheetMarker.Id)
                         .Select(link => thingGraph.Adjacent(link, sheets))
@@ -183,7 +183,7 @@ namespace Limada.Presenter {
                 #endregion
 
                 #region AutoView
-                if (! done && showTopic && doAutoView) {
+                if (! done && showTopic && initialize) {
                     var autoView = thingGraph.Edges(topic)
                         .Where(link => link.Marker.Id == TopicSchema.AutoViewMarker.Id)
                         .Select(link => thingGraph.Adjacent(link, topic))

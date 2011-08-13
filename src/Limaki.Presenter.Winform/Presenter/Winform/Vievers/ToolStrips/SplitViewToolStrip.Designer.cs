@@ -54,23 +54,27 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 
+            this.sheetCombo = new System.Windows.Forms.ToolStripComboBox();
+
             // 
             // viewToolStrip
             // 
             this.Dock = System.Windows.Forms.DockStyle.None;
             this.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                             this.graphStreamViewButton,
-                                                                             this.graphGraphViewButton,
-                                                                             this.toggleViewButton,
-                                                                             this.toolStripSeparator3,
-                                                                             this.goBackButton,
-                                                                             this.goForwardButton,
-                                                                             this.goHomeButton,
-                                                                             this.toolStripSeparator4,
-                                                                             this.newSheetButton,
-                                                                             this.newNoteButton,
-                                                                             this.saveSheetButton});
+                this.graphStreamViewButton,
+                this.graphGraphViewButton,
+                this.toggleViewButton,
+                this.toolStripSeparator3,
+                this.goBackButton,
+                this.goForwardButton,
+                this.goHomeButton,
+                this.toolStripSeparator4,
+                this.newSheetButton,
+                this.newNoteButton,
+                this.saveSheetButton,
+                this.sheetCombo
+            });
 
             this.Name = "viewToolStrip";
             this.Size = new System.Drawing.Size(238, 27);
@@ -180,8 +184,17 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.saveSheetButton.Size = new System.Drawing.Size(24, 24);
             this.saveSheetButton.Text = "saveSheetButton";
             this.saveSheetButton.Click += new System.EventHandler(this.SaveDocument);
+            // 
+            // markerCombo
+            // 
+            this.sheetCombo.Name = "markerCombo";
+            this.sheetCombo.Size = new System.Drawing.Size(121, 27);
+            this.sheetCombo.SelectedIndexChanged += new System.EventHandler(SelectSheet);
+            this.Dock = System.Windows.Forms.DockStyle.None;
 
         }
+
+       
 
         #endregion
 
@@ -197,5 +210,6 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
         private System.Windows.Forms.ToolStripButton goBackButton;
         private System.Windows.Forms.ToolStripButton goForwardButton;
         private System.Windows.Forms.ToolStripButton newNoteButton;
+        private System.Windows.Forms.ToolStripComboBox sheetCombo;
     }
 }

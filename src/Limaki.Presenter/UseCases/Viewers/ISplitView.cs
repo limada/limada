@@ -14,6 +14,7 @@
 
 using System;
 using Limaki.Common;
+using Limaki.Drawing;
 
 namespace Limaki.UseCases.Viewers {
     public interface ISplitView {
@@ -30,6 +31,8 @@ namespace Limaki.UseCases.Viewers {
         void SaveDocument();
 
         event EventHandler ViewChanged;
+
+        void LoadSheet(SceneInfo sceneInfo);
     }
 
     public enum SplitViewMode {

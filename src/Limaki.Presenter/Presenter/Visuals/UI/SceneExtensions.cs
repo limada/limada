@@ -24,7 +24,7 @@ using Limaki.Presenter.UI;
 using Limaki.Visuals;
 
 namespace Limaki.Presenter.Visuals.UI {
-    public static class SceneTools {
+    public static class SceneExtensions {
 
         public static void ChangeShape(IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IShape newShape) {
             if (visual != null && !(visual is IVisualEdge)) {
@@ -107,12 +107,11 @@ namespace Limaki.Presenter.Visuals.UI {
             if (scene == null)
                 return;
             if (item is IVisualEdge) {
-                IVisualEdge edge = (IVisualEdge)item;
+                var edge = (IVisualEdge)item;
                 allowAdd = scene.Contains(edge.Root) && scene.Contains(edge.Leaf);
             }
-            if (allowAdd) {
-                GraphSceneFacade<IVisual,IVisualEdge> facade =
-                    new GraphSceneFacade<IVisual, IVisualEdge>(delegate() { return scene; }, layout);
+            if (allowAdd) { 
+                var facade = new GraphSceneFacade<IVisual, IVisualEdge>(()=>scene, layout);
                 facade.Add(item, pt);
             }
         }
@@ -124,7 +123,7 @@ namespace Limaki.Presenter.Visuals.UI {
                     pt = root.Shape[Anchor.LeftBottom];
                 }
                 AddItem(scene, visual, layout, pt);
-                SceneTools.CreateEdge(scene, root, visual);
+                CreateEdge(scene, root, visual);
             }
 
             return visual;
@@ -134,7 +133,7 @@ namespace Limaki.Presenter.Visuals.UI {
             if (scene != null) {
                 var graphView = scene.Graph as GraphView<IVisual, IVisualEdge>;
                 if (graphView!=null) {
-                    ( (GraphView<IVisual, IVisualEdge>) scene.Graph ).One.Clear ();
+                    graphView.One.Clear ();
                     scene.ClearView ();
                     Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(scene);
                 } else {

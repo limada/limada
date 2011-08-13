@@ -198,7 +198,7 @@ namespace Limaki.Presenter.UI {
             var affected = new GraphViewFacade<TItem, TEdge>(this.graphView).Add(elements);
 
             if (arrange)
-                arranger.ArrangeItems(affected,justify,(PointI)Layout.Border);
+                arranger.ArrangeItems(affected, justify, (PointI)Layout.Border);
             else
                 arranger.ArrangeEdges(affected, justify);
 

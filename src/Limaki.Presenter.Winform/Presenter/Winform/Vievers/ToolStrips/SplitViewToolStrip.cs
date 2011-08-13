@@ -19,8 +19,14 @@ using Limaki.UseCases.Winform.Viewers.ToolStripViewers;
 using Limaki.UseCases.Viewers;
 using Limaki.Presenter.Visuals;
 using System.ComponentModel;
+using System.Linq;
+using System.Collections.Generic;
+using Limaki.Drawing;
+using Limaki.Presenter.Display;
+using Limaki.Visuals;
 
 namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
+    [TODO("make a controller")]
     public partial class SplitViewToolStrip : ToolStrip {
         public SplitViewToolStrip() {
             InitializeComponent();
@@ -48,6 +54,9 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
                 _splitView = value;
             }
         }
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public ISheetManager SheetManager { get; set; }
 
         public void Attach(object sender, EventArgs e) {
             var splitView = sender as ISplitView;
@@ -55,9 +64,12 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
                 CheckBackForward(splitView);
                 this.ViewMode = splitView.ViewMode;
             }
+            AttachSheets();
         }
 
         public SplitViewMode _viewMode = SplitViewMode.GraphStream;
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SplitViewMode ViewMode {
             get {
                 if (graphStreamViewButton.Checked)
@@ -106,6 +118,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
                 CheckBackForward(SplitView);
             }
         }
+
         private void GoForward(object sender, EventArgs e) {
             if (SplitView.CanGoBackOrForward(true)) {
                 SplitView.GoBackOrForward(true);
@@ -128,7 +141,28 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
         private void SaveDocument(object sender, EventArgs e) {
             SplitView.SaveDocument ();
         }
+        private List<SceneInfo> _sheets = new List<SceneInfo>();
+        public void AttachSheets() {
+            sheetCombo.Items.Clear();
+            var display = GetCurrentDisplay();
+            if(display!=null) {
+                sheetCombo.Text =display.Info.Name;
+            }
+            _sheets.Clear();
+            SheetManager.VisitRegisteredSheets(s => _sheets.Add(s));
+            sheetCombo.Items.AddRange(_sheets.Select(i=>i.Name).ToArray());
 
+
+        }
+
+        void SelectSheet(object sender, System.EventArgs e) {
+            if (sheetCombo.SelectedIndex != -1) {
+                SplitView.LoadSheet(_sheets[sheetCombo.SelectedIndex]);
+            }
+        }
+
+
+        public Get<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
     }
 
     public class SplitViewDumnmy : ISplitView {
@@ -161,5 +195,6 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
         public virtual void NewSheet() {}
         public virtual void NewNote() {}
         public virtual void SaveDocument() {}
+        public virtual void LoadSheet(SceneInfo info) { }
     }
 }

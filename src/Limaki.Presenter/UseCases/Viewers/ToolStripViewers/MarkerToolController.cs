@@ -35,7 +35,7 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
             if (display != null) {
                 var scene = display.Data;
                 if (scene.Markers != null) {
-                    SceneTools.ChangeMarkers(scene, scene.Selected.Elements, marker);
+                    SceneExtensions.ChangeMarkers(scene, scene.Selected.Elements, marker);
                 }
                 display.Execute();
             }

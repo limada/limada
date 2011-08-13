@@ -75,16 +75,16 @@ namespace Limaki.Presenter.Winform.DragDrop {
                 }
                 if (item != target) {
                     if (itemIsRoot)
-                        SceneTools.CreateEdge (scene, item, target);
+                        SceneExtensions.CreateEdge (scene, item, target);
                     else
-                        SceneTools.CreateEdge(scene, target, item);
+                        SceneExtensions.CreateEdge(scene, target, item);
                 }
             }
         }
 
         public IVisual PlaceVisual(IDataObject dataObject, IGraphScene<IVisual,IVisualEdge> scene, IGraphLayout<IVisual,IVisualEdge> layout) {
             var visual = GetVisual (dataObject, scene.Graph,false);
-            SceneTools.PlaceVisual(scene,scene.Focused, visual, layout);
+            SceneExtensions.PlaceVisual(scene,scene.Focused, visual, layout);
             //scene.Selected.Clear();
             //scene.Focused = visual;
             return visual;
@@ -118,20 +118,20 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
                         item = GraphMapping.Mapping.LookUp<IVisual, IVisualEdge>(sourceGraph, targetGraph, sourceitem);
 
-                        SceneTools.AddItem(scene, item, layout,pt);
+                        SceneExtensions.AddItem(scene, item, layout, pt);
 
 
                     } else {
                         item = GetVisual(dataObject, scene.Graph,false);
-                        SceneTools.AddItem(scene, item, layout, pt);
+                        SceneExtensions.AddItem(scene, item, layout, pt);
                     }
                 } else {// the other control is not a widget control
                     item = GetVisual(dataObject, scene.Graph,false);
-                    SceneTools.AddItem(scene, item, layout, pt);
+                    SceneExtensions.AddItem(scene, item, layout, pt);
                 }
             } else { // data is sent form another application
                 item = GetVisual(dataObject, scene.Graph,false);
-                SceneTools.AddItem(scene, item, layout, pt);
+                SceneExtensions.AddItem(scene, item, layout, pt);
             }
             if (item == null) {
                return false;

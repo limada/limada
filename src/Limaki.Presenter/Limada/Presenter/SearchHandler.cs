@@ -38,7 +38,7 @@ namespace Limada.Presenter {
                 throw new ArgumentException ("Search works only on ThingGraphs");
             }
 
-            SceneTools.CleanScene(scene);
+            SceneExtensions.CleanScene(scene);
             var thingGraph = scene.Graph.ThingGraph();
 
             var visuals = from thing in thingGraph.Search(name, false)

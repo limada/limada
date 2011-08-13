@@ -272,7 +272,7 @@
     <Compile Include="Presenter\UI\GraphScene\GraphSceneFocusAction.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphItemMoveResizeAction.cs" />
     <Compile Include="Presenter\Layout\GraphItemShapeProxy.cs" />
-    <Compile Include="Presenter\Visuals\UI\SceneTools.cs" />
+    <Compile Include="Presenter\Visuals\UI\SceneExtensions.cs" />
     <Compile Include="Presenter\UI\GraphScene\GraphItemDeleteAction.cs" />
     <Compile Include="Presenter\Visuals\UI\WiredScenes.cs" />
     <Compile Include="Presenter\Visuals\VisualsRenderer.cs" />

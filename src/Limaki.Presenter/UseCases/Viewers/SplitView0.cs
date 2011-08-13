@@ -180,7 +180,7 @@ namespace Limaki.UseCases.Viewers {
         #endregion
 
         public void ChangeData(IGraphScene<IVisual, IVisualEdge> scene) {
-            ClearHistory();
+            Clear();
 
             CurrentDisplay = null;
 
@@ -276,7 +276,13 @@ namespace Limaki.UseCases.Viewers {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
                 var info = currentDisplay.Info;
-                info.Name = name;
+                if(!string.IsNullOrEmpty(info.Name) && info.Name!=name) {
+                    var dialog = Registry.Factory.Create<IMessageBoxShow>();
+                    if (dialog.Show("Question",string.Format("Do you want to copy sheet {0} as {1}", info.Name,name),
+                        MessageBoxButtons.YesNo)== DialogResult.Yes) {
+                            info = SheetManager.RegisterSheet(0, name);
+                    }
+                } 
                 SheetManager.SaveInGraph(currentDisplay.Data, currentDisplay.Layout, info);
                 currentDisplay.Info = info;
                 FavoriteManager.AddToSheets(currentDisplay.Data.Graph, currentDisplay.DataId);
@@ -323,7 +329,8 @@ namespace Limaki.UseCases.Viewers {
 
         public SceneHistory SceneHistory { get; set; }
         
-        private void ClearHistory() {
+        
+        private void Clear() {
             if (SceneHistory != null) {
                 SceneHistory.Clear ();
             }
@@ -372,6 +379,21 @@ namespace Limaki.UseCases.Viewers {
                     return ((INavigateTarget)currentControl).CanGoBack;
             }
             return false;
+        }
+
+        public void LoadSheet(SceneInfo info) {
+            if (info == null )
+                return;
+            info = SheetManager.GetSheetInfo(info.Id);
+            var display = this.CurrentDisplay;
+            if (info != null) {
+                SceneHistory.Store(display, SheetManager);
+                if (SheetManager.Load(display.Data, display.Layout, info.Id)) {
+                    display.Info = info;
+                    display.Viewport.Reset();
+                    display.DeviceRenderer.Render();
+                }
+            }
         }
 
         public void GoBackOrForward(bool forward) {
@@ -444,9 +466,9 @@ namespace Limaki.UseCases.Viewers {
 
             if (root == null) {
                 PointI pt = new PointI(layout.Border.Width, scene.Shape.BoundsRect.Bottom);
-                SceneTools.AddItem(scene, visual, layout, pt);
+                SceneExtensions.AddItem(scene, visual, layout, pt);
             } else {
-                SceneTools.PlaceVisual(scene, root, visual, layout);
+                SceneExtensions.PlaceVisual(scene, root, visual, layout);
             }
             scene.Selected.Clear();
             scene.Focused = visual;
@@ -465,7 +487,7 @@ namespace Limaki.UseCases.Viewers {
         }
 
         public void Dispose() {
-            ClearHistory ();
+            Clear ();
             this.ContentViewManager.Dispose();
 
         }

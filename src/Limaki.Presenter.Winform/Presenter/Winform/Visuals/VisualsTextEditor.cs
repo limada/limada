@@ -359,9 +359,9 @@ namespace Limaki.Presenter.Winform.Visuals {
                 if (root == null) {
                     PointI pt = GDIConverter.Convert(device.PointToClient(Cursor.Position));
                     pt = camera.ToSource(pt) - Layout.Distance;
-                    SceneTools.AddItem(scene, Current, Layout, pt);
+                    SceneExtensions.AddItem(scene, Current, Layout, pt);
                 } else {
-                    SceneTools.PlaceVisual(scene, root, Current, Layout);
+                    SceneExtensions.PlaceVisual(scene, root, Current, Layout);
                 }
                 
                 display.Execute();

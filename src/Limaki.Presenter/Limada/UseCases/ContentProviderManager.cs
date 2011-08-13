@@ -83,9 +83,9 @@ namespace Limada.UseCases {
             var graph = scene.Graph;
             var thing = new VisualThingStreamHelper().CreateFromStream(graph, content);
             if (scene.Focused != null) {
-                SceneTools.PlaceVisual(scene, scene.Focused, thing, layout);
+                SceneExtensions.PlaceVisual(scene, scene.Focused, thing, layout);
             } else {
-                SceneTools.AddItem(scene, thing, layout, scene.NoHit);
+                SceneExtensions.AddItem(scene, thing, layout, scene.NoHit);
             }
         }
 
