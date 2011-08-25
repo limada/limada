@@ -118,6 +118,7 @@
     <Compile Include="ResourceLoader.cs" />
     <Compile Include="TestCaseFactory.cs" />
     <Compile Include="TestLocations.cs" />
+    <Compile Include="Tests\Common\IOUtilsTest.cs" />
     <Compile Include="Tests\Graphics\StyleTest.cs" />
     <Compile Include="Tests\Data\db4o\GraphTest.cs" />
     <Compile Include="Tests\DomainTest.cs" />

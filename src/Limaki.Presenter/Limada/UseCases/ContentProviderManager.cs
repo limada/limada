@@ -51,18 +51,22 @@ namespace Limada.UseCases {
             }
         }
         public void SaveFile() {
-            DefaultDialogValues(SaveFileDialog);
-            this.Content = OnExport();
-            if (this.Content != null) {
-                var info = GetStreamTypeInfo (this.Content);
-                if (info != null) {
-                    SaveFileDialog.DefaultExt = info.Extension;
-                    SaveFileDialog.FileName = this.Content.Description.ToString ();
-                    SaveFileDialog.Filter = info.Description + "|*" + info.Extension + "|" + "All Files|*.*";
-                    if (FileDialogShow (SaveFileDialog, true) == DialogResult.OK) {
-                        this.SaveFile (IOUtils.UriFromFileName (SaveFileDialog.FileName));
+            try {
+                DefaultDialogValues(SaveFileDialog);
+                this.Content = OnExport();
+                if (this.Content != null) {
+                    var info = GetStreamTypeInfo(this.Content);
+                    if (info != null) {
+                        SaveFileDialog.DefaultExt = info.Extension;
+                        SaveFileDialog.FileName = this.Content.Description.ToString();
+                        SaveFileDialog.Filter = info.Description + "|*" + info.Extension + "|" + "All Files|*.*";
+                        if (FileDialogShow(SaveFileDialog, true) == DialogResult.OK) {
+                            this.SaveFile(IOUtils.UriFromFileName(SaveFileDialog.FileName));
+                        }
                     }
                 }
+            } catch (Exception ex) {
+                Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex, MessageType.OK);
             }
         }
 

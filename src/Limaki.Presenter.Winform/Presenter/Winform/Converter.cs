@@ -245,7 +245,7 @@ namespace Limaki.Presenter.Winform {
             target.CheckPathExists = source.CheckPathExists;
             target.DefaultExt = source.DefaultExt;
             target.DereferenceLinks = source.DereferenceLinks;
-            target.FileName = source.FileName;
+            target.FileName = IOUtils.NiceFileName(source.FileName);
             target.Filter = source.Filter;
             target.FilterIndex = source.FilterIndex;
             target.InitialDirectory = source.InitialDirectory;

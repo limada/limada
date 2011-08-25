@@ -12,7 +12,7 @@ namespace Limaki.Presenter.Winform {
             if (MessageBox.Show(e.Message, "Error", buttons) == DialogResult.Cancel)
                 throw e;
         }
-        public void Catch(Exception e) {
+        public virtual void Catch(Exception e) {
             if (MessageBox.Show(e.Message, "Error", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
                 throw e;
         }

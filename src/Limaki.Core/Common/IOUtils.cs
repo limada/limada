@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Limaki.Common;
+using System.Text;
 
 namespace Limaki
 {
@@ -49,5 +50,11 @@ namespace Limaki
 
 			return new Uri(fileName,uriKind);
 		}
+        public static string NiceFileName(string fileName) {
+            var b = new StringBuilder(fileName);
+            foreach (var s in Path.GetInvalidFileNameChars())
+                b.Replace(s, '_');
+            return b.ToString();
+        }
 	}
 }
