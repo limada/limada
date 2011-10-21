@@ -225,6 +225,7 @@
     <Compile Include="Limada\Data\MemoryThingGraphProvider.cs" />
     <Compile Include="Limada\Data\XMLThingGraphProvider.cs" />
     <Compile Include="Limada\Model\ByteStreamWrapper.cs" />
+    <Compile Include="Common\DataComparer.cs" />
     <Compile Include="Limada\Model\ILink.cs" />
     <Compile Include="Limada\Model\IStreamThing.cs" />
     <Compile Include="Limada\Model\IThing.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="Limada\Model\StreamThing.cs" />
     <Compile Include="Limada\Model\StringThing.cs" />
     <Compile Include="Limada\Model\Thing.cs" />
+    <Compile Include="Limada\Model\ThingComparer.cs" />
     <Compile Include="Limada\Model\ThingFactory.cs" />
     <Compile Include="Limada\Model\ThingGraph.cs" />
     <Compile Include="Limada\Model\ThingGraphExtensions.cs" />

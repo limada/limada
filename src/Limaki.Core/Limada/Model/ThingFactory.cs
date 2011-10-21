@@ -9,7 +9,7 @@ using Limaki.Graphs;
 namespace Limada.Model {
     public class ThingFactory : FactoryBase, IThingFactory {
         public IThing CreateItem(IThingGraph graph, object data) {
-            return CreateItem(Common.Isaac.Long, graph, data);
+            return CreateItem(Isaac.Long, graph, data);
         }
 
         public IThing CreateItem(Id id, IThingGraph graph, object data) {
@@ -30,7 +30,7 @@ namespace Limada.Model {
         }
 
         public IThing CreateItem<T>(T data){
-            return CreateItem(Common.Isaac.Long, data);
+            return CreateItem(Isaac.Long, data);
         }
 
         public IThing CreateItem<T>(Id id, T data) {
@@ -71,7 +71,7 @@ namespace Limada.Model {
         }
 
         public ILink CreateEdge(IThingGraph graph, object data) {
-            return CreateEdge(Common.Isaac.Long, graph, data);
+            return CreateEdge(Isaac.Long, graph, data);
         }
 
         public ILink CreateEdge(Id id, IThing root, IThing leaf, IThing marker) {
@@ -84,7 +84,7 @@ namespace Limada.Model {
         }
 
         public ILink CreateEdge(IThing root, IThing leaf, IThing marker) {
-            return CreateEdge(Common.Isaac.Long, root, leaf, marker);
+            return CreateEdge(Isaac.Long, root, leaf, marker);
         }
 
         public ILink CreateEdge<T>(Id id, T data){
@@ -94,7 +94,7 @@ namespace Limada.Model {
         }
 
         public ILink CreateEdge<T>(T data) {
-            return CreateEdge(Common.Isaac.Long, data);
+            return CreateEdge(Isaac.Long, data);
         }
 
         protected override void InstrumentClazzes() {

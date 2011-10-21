@@ -12,6 +12,7 @@
  */
 
 using System.IO;
+using Limaki.Common;
 using Limaki.Common.Collections;
 using Limaki.Presenter.Visuals;
 using Limaki.Visuals;
@@ -61,7 +62,7 @@ namespace Limada.Presenter {
         public void Store(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager) {
             if (display != null && display.Data != null && display.Data.Count > 0) {
                 if (display.DataId == default(Id))
-                    display.DataId = Limada.Common.Isaac.Long;
+                    display.DataId = Isaac.Long;
                 if (sheetManager.SaveInStore(display.Data, display.Layout, display.DataId)) {
                     sheetManager.RegisterSheet(display.Info);
                     history.Add(display.DataId);

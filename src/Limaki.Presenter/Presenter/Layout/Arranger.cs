@@ -36,7 +36,9 @@ namespace Limaki.Presenter.Layout {
             this.Data = data;
             this.Layout = layout;
             this.RowCollisionResolver = FirstFreeRowCollissionResolver;
-            this.OrderBy = (item) => item.ToString();
+            this.OrderBy = item => {
+                return item.ToString();
+            };
         }
 
         public bool Adjust = false;

@@ -58,19 +58,19 @@ namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
             return stream;
         }
 
-        public override void SetContent(Content<Stream> info) {
+        public override void SetContent(Content<Stream> content) {
             TextBoxEditor control = Control as TextBoxEditor;
             if (control == null)
                 return;
             
             zoom = control.ZoomFactor;
 
-            var stream = info.Data;
+            var stream = content.Data;
             
             var rtfStreamType = RichTextBoxStreamType.PlainText;
 
             try {
-                if (info.StreamType == StreamTypes.RTF) {
+                if (content.StreamType == StreamTypes.RTF) {
                     rtfStreamType = RichTextBoxStreamType.RichText;
 
                     stream = PrepareRead(stream);
@@ -97,9 +97,9 @@ namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
             return stream;
         }
 
-        public override void Save(Content<Stream> info) {
+        public override void Save(Content<Stream> content) {
             if (CanSave()) {
-                if (info != null) {
+                if (content != null) {
                     var stream = DoSave ();
                     
                     stream.Position = 0;
@@ -109,9 +109,9 @@ namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
                     stream.Position = 0;
 
 
-                    info.StreamType = StreamTypes.RTF;
-                    info.Compression = CompressionType.bZip2;
-                    info.Data = stream;
+                    content.StreamType = StreamTypes.RTF;
+                    content.Compression = CompressionType.bZip2;
+                    content.Data = stream;
                 }
             }
             _control.Modified = false;

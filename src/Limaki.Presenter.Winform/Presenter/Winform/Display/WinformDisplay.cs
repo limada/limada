@@ -11,8 +11,15 @@ using Limaki.Presenter.Winform.UI;
 using ApplicationContext = Limaki.Common.IOC.ApplicationContext;
 
 namespace Limaki.Presenter.Winform.Display {
-
-    public abstract class WinformDisplay<T> : UserControl, IGDIControl, IDisplayDevice<T>, IDragDopControl {
+    public abstract class WinformDevice: UserControl {
+        public bool ScrollBarsVisible {
+            set {
+                this.HScroll = value;
+                this.VScroll = value;
+            }
+        }
+    }
+    public abstract class WinformDisplay<T> : WinformDevice, IGDIControl, IDisplayDevice<T>, IDragDopControl {
 
         public WinformDisplay() {
             Initialize();
@@ -121,10 +128,16 @@ namespace Limaki.Presenter.Winform.Display {
         private const int WM_SYSKEYDOWN = 0x0104;
         private const int WM_SYSKEYUP = 0x0105;
 
-
+        /// <summary>
+        /// workaround as cursor keys don't rise OnKeyDown-Events
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="keyData"></param>
+        /// <returns></returns>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
             bool result = false;
-            if (keyData == Keys.Down || keyData == Keys.Up || keyData==Keys.Left || keyData== Keys.Right) {
+            if (this.Focused &&
+                (keyData == Keys.Down || keyData == Keys.Up || keyData==Keys.Left || keyData== Keys.Right)) {
                 var e = new KeyEventArgs(keyData);
                 if (msg.Msg == WM_KEYDOWN)
                     OnKeyDown(e);

@@ -66,17 +66,17 @@ namespace Limada.Presenter {
             }
         }
 
-        public virtual void Read(Stream s) {
+        public virtual void Read(Stream stream) {
             var graph = Scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (graph != null) {
                 var serializer = new VisualThingSerializer { VisualThingGraph = graph, Layout = this.Layout };
-                serializer.Read(s);
+                serializer.Read(stream);
 
-                new GraphSceneFacade<IVisual, IVisualEdge>(()=>this.Scene, this.Layout)
-                    .Add (serializer.VisualsCollection, false, false);
+                new GraphSceneFacade<IVisual, IVisualEdge>(() => this.Scene, this.Layout)
+                    .Add(serializer.VisualsCollection, false, false);
 
-                Scene.ClearSpatialIndex ();
+                Scene.ClearSpatialIndex();
             }
         }
 

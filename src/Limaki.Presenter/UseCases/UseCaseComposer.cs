@@ -26,17 +26,24 @@ namespace Limaki.UseCases {
             useCase.GetCurrentDisplay = () => splitView.CurrentDisplay;
             useCase.GetCurrentControl = () => splitView.CurrentControl;
 
-            useCase.SheetManager.SheetRegistered = i => useCase.SceneHistory.Store(i);
+            useCase.SheetManager.SheetRegistered = sceneInfo => {
+                useCase.SceneHistory.Store(sceneInfo);
+                //useCase.SplitViewToolController.Attach(splitView.CurrentDisplay);
+            };
             splitView.SceneHistory = useCase.SceneHistory;
             splitView.SheetManager = useCase.SheetManager;
             
             splitView.FavoriteManager = useCase.FavoriteManager;
             useCase.FavoriteManager.SheetManager = useCase.SheetManager;
 
+            useCase.SplitViewToolController.SplitView = useCase.SplitView;
+            useCase.SplitViewToolController.SheetManager = useCase.SheetManager;
+
             splitView.CurrentControlChanged += (c) => useCase.DisplayToolController.Attach(c);
             splitView.CurrentControlChanged += (c) => useCase.LayoutToolController.Attach(c);
             splitView.CurrentControlChanged += (c) => useCase.MarkerToolController.Attach(c);
-
+            splitView.CurrentControlChanged += (c) => useCase.SplitViewToolController.Attach(c);
+            
             useCase.DisplayStyleChanged += splitView.DoDisplayStyleChanged;
 
             var fileManager = useCase.FileManager;

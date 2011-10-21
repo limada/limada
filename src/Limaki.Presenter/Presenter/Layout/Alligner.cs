@@ -24,6 +24,7 @@ namespace Limaki.Presenter.Layout {
         }
 
         public virtual void Allign(IEnumerable<TItem> items, HorizontalAlignment alignment) {
+
             var extends = AllignFirstVisit(items);
 
             var composer = new AllignComposer<TItem, TEdge>(this);
@@ -33,6 +34,51 @@ namespace Limaki.Presenter.Layout {
             composer.Allign(ref secondVisit, alignment, extends);
             
             VisitItems(items, secondVisit);
+        }
+
+        public virtual void Justify(IEnumerable<TItem> items) {
+            var alligner = new AllignComposer<TItem, TEdge>(this);
+            var placer = new PlacerComposer<TItem, TEdge>(this);
+            Action<TItem> visit = null;
+            
+            alligner.Justify(ref visit);
+            placer.AffectedEdges(ref visit);
+
+            VisitItems(items, visit);
+        }
+        
+        public virtual void MakeRow(IEnumerable<TItem> items, PointI at) {
+            Action<TItem> visit = null;
+            var placer = new PlacerComposer<TItem, TEdge>(this);
+            placer.AffectedEdges(ref visit);
+            var extents = placer.Extents(ref visit);
+            var size = placer.MinSize(ref visit);
+
+            VisitItems(items, visit);
+
+            var space = extents();
+            var minSize = size();
+            space.Width = minSize.Width;
+            space.X = at.X;
+            space.Y = at.Y;
+            visit = null;
+
+            var alligner = new AllignComposer<TItem, TEdge>(this);
+            int? rowStart = null;
+
+            Func<TItem, int> yer = item => {
+                var result = at.Y;
+                if (rowStart.HasValue) {
+                    result = rowStart.Value;
+                } else {
+                    rowStart = at.Y;
+                }
+                rowStart += Proxy.GetSize(item).Height + Layout.Distance.Height;
+                return result;
+            };
+            alligner.Allign(ref visit, HorizontalAlignment.Right, space, yer);
+            
+            VisitItems(items, visit);
         }
 
         public virtual void Distribute0(IEnumerable<TItem> items, Distribution distribution) {
@@ -47,12 +93,12 @@ namespace Limaki.Presenter.Layout {
             
             visit = null;
             var composer2 = new AllignComposer<TItem, TEdge>(this);
-            
+
             var space = extents();
             var distance = (space.Height - size().Height) / (items.Count() - 1);
             var order = Drawing.Shapes.PointOrder.Top;
-            var comparer = new Limaki.Drawing.Shapes.PointComparer {Order = order};
-            if(distribution==Distribution.Y) {
+            var comparer = new Limaki.Drawing.Shapes.PointComparer { Order = order };
+            if (distribution == Distribution.Y) {
                 order = Drawing.Shapes.PointOrder.Top;
                 distance = Math.Max(distance, Layout.Distance.Height);
                 comparer.Delta = Layout.Distance.Height;
@@ -75,8 +121,10 @@ namespace Limaki.Presenter.Layout {
 
             var comparer = new Limaki.Drawing.Shapes.PointComparer {Order = PointOrder.TopToBottom};
             comparer.Delta = Layout.StyleSheet.AutoSize.Width /2;
-            var walk = items.Select(item => new {location = comparer.Round(Proxy.GetLocation(item)), item});
+
+            var walk = items.Select(item => new { location = comparer.Round(Proxy.GetLocation(item)), item });
             Action<TItem> visit = null;
+
             // align X
             int? rowStart = null;
             foreach (var row in walk.GroupBy(row => row.location.X).OrderBy(row=>row.Key)) {
@@ -104,6 +152,7 @@ namespace Limaki.Presenter.Layout {
                 VisitItems(rowItems, visit);
                 
             }
+
             // Allign Y
             rowStart = null;
             comparer.Delta = Layout.StyleSheet.AutoSize.Height/2;

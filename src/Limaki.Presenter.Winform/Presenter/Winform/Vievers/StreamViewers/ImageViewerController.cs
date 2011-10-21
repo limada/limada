@@ -61,24 +61,24 @@ using Limaki.UseCases.Viewers;namespace Limaki.UseCases.Winform.Viewers.StreamVi
             return false;
         }
 
-        public override void SetContent(Content<Stream> info) {
+        public override void SetContent(Content<Stream> content) {
             var control = Control as WinformImageDisplay;
 
             if (control != null) {
                 var display = control.Display;
                 display.BackColor = this.BackColor;
 
-                display.Data = Image.FromStream(info.Data);
+                display.Data = Image.FromStream(content.Data);
 
                 display.ZoomState = ZoomState.FitToScreen;
             }
             if (IsStreamOwner) {
-                info.Data.Close ();
-                info.Data = null;
+                content.Data.Close ();
+                content.Data = null;
             }
         }
 
-        public override void Save(Content<Stream> info) { }
+        public override void Save(Content<Stream> content) { }
 
         public override void Dispose() {
             if (_control != null) {

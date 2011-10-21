@@ -21,7 +21,6 @@ using Limaki.Visuals;
 using Limaki.Common;
 
 namespace Limada.View {
-
     public static class VisualThingGraphExtension {
 
         public static IThingGraph ThingGraph(this IGraph<IVisual, IVisualEdge> graph) {

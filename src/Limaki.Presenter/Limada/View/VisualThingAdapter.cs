@@ -108,7 +108,10 @@ namespace Limada.View {
             if (thing is IProxy) {
                 result = CommonSchema.ProxyString;
             } else {
-                result = thing.Data;
+                if (thing is INumberThing)
+                    result = ((INumberThing) thing).Number;
+                else
+                    result = thing.Data;
             }
 
             if (thing is ILink)

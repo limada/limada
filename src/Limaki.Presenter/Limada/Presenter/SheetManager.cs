@@ -27,6 +27,7 @@ using Limaki.Model.Streams;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
 using Id = System.Int64;
+using Limaki.Graphs.Extensions;
 
 namespace Limada.Presenter {
 
@@ -165,6 +166,12 @@ namespace Limada.Presenter {
             var saved = SaveToThing(scene, layout, sheetThing, info.Name);
             info.Id = saved.Id;
             info.Name = saved.Name;
+            var sheetVisual = scene.Graph.VisualOf(sheetThing);
+            if (sheetVisual != null) {
+                //sheetVisual.Data = info.Name;
+                scene.Graph.OnChangeData(sheetVisual,info.Name);
+                scene.Graph.OnDataChanged(sheetVisual);
+            }
             saved.State.CopyTo(info.State);
         }
 
@@ -210,7 +217,8 @@ namespace Limada.Presenter {
 
                     if (graph != null) {
                         var thing = GetSheetThing(graph, id) as IStreamThing;
-                        LoadFromThing(thing, scene, layout);
+                        var info = LoadFromThing(thing, scene, layout);
+                        RegisterSheet(info);
                     }
                 }
                 return result;
@@ -305,6 +313,10 @@ namespace Limada.Presenter {
             }
             return stream;
 
+        }
+
+        public bool StoreContains(Id id) {
+            return SheetStreams.ContainsKey(id);
         }
 
         public bool LoadFromStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {

@@ -227,14 +227,14 @@ namespace Limaki.UseCases.Viewers {
             set { _contentViewManager = value; }
         }
 
-        IGraphSceneDisplay<IVisual,IVisualEdge> AdjacentDisplay(IGraphSceneDisplay<IVisual,IVisualEdge> display) {
+        public virtual IGraphSceneDisplay<IVisual,IVisualEdge> AdjacentDisplay(IGraphSceneDisplay<IVisual,IVisualEdge> display) {
             if (display == Display2)
                 return Display1;
             else
                 return Display2;
         }
 
-        void SceneFocusChanged(object sender, GraphSceneEventArgs<IVisual , IVisualEdge> e) {
+        protected virtual void SceneFocusChanged(object sender, GraphSceneEventArgs<IVisual, IVisualEdge> e) {
 
             if (ViewMode != SplitViewMode.GraphStream)
                 return;
@@ -282,7 +282,10 @@ namespace Limaki.UseCases.Viewers {
                         MessageBoxButtons.YesNo)== DialogResult.Yes) {
                             info = SheetManager.RegisterSheet(0, name);
                     }
-                } 
+                }
+                if (string.IsNullOrEmpty(info.Name))
+                    info.Name = name;
+
                 SheetManager.SaveInGraph(currentDisplay.Data, currentDisplay.Layout, info);
                 currentDisplay.Info = info;
                 FavoriteManager.AddToSheets(currentDisplay.Data.Graph, currentDisplay.DataId);
@@ -389,6 +392,7 @@ namespace Limaki.UseCases.Viewers {
             if (info != null) {
                 SceneHistory.Store(display, SheetManager);
                 if (SheetManager.Load(display.Data, display.Layout, info.Id)) {
+                    info = SheetManager.GetSheetInfo(info.Id);
                     display.Info = info;
                     display.Viewport.Reset();
                     display.DeviceRenderer.Render();

@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Limaki.Common;
 using Limaki.Graphs;
 using Id = System.Int64;
 using System.Runtime.Serialization;
@@ -23,7 +24,7 @@ namespace Limada.Model {
     [DataContract]
     public class Thing<T> : Thing, IThing<T> {
         protected Thing(){}
-        public Thing(T data) : this(Common.Isaac.Long, data) { }
+        public Thing(T data) : this(Isaac.Long, data) { }
 
         public Thing(Id id, T data): base(id) {
             this.Data = data;

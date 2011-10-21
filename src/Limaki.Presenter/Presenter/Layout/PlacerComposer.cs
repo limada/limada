@@ -48,6 +48,7 @@ namespace Limaki.Presenter.Layout {
 
             return () => new SizeI(w,h);
         }
+
         public Func<SizeI> MinSize(ref Action<TItem> visitor) {
             var w = 0;
             var h = 0;
@@ -61,6 +62,7 @@ namespace Limaki.Presenter.Layout {
 
             return () => new SizeI(w, h);
         }
+
         public virtual void AffectedEdges(ref Action<TItem> visitor) {
             visitor += item => {
                 foreach (var edge in this.Graph.Twig(item))

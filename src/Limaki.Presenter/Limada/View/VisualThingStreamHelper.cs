@@ -32,7 +32,7 @@ namespace Limada.View {
                 var thingGraph = graph.ThingGraph();
                 var factory = graph.ThingFactory();
                 
-                IThing thing = new ThingStreamFacade(factory).SetStream(thingGraph, null, content);
+                var thing = new ThingStreamFacade(factory).SetStream(thingGraph, null, content);
                 
                 result = sourceGraph.Get(thing);
             }

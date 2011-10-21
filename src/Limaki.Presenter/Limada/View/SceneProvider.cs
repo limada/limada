@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Limaki.Common.Collections;
 using System.Linq;
 using Limaki.Drawing;
+using Limaki.Reporting;
 
 namespace Limada.View {
     public class SceneProvider : ISceneProvider {
@@ -158,11 +159,28 @@ namespace Limada.View {
 
         public void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IDataProvider<IEnumerable<IThing>> exporter, DataBaseInfo fileName) {
             var visuals = scene.Selected.Elements;
-            if(visuals.Count()==0)
+            if (visuals.Count() == 0)
                 visuals = scene.Graph.Where(v => !(v is IVisualEdge));
             if (visuals.Count() == 0)
                 return;
-            exporter.SaveAs(SortedThings(scene.Graph, visuals), fileName);
+            IEnumerable<IThing> things = null;
+            if (visuals.Count() == 1) {
+                var thing = scene.Graph.ThingOf(visuals.First());
+                var schema = new DocumentSchema(scene.Graph.ThingGraph(), thing);
+                if (schema.HasPages())
+                    things = schema.Pages().OrderBy(page => page, new ThingComparer());
+                var report = exporter as IReport;
+                if(report!=null) {
+                    report.Options.MarginBottom = 0;
+                    report.Options.MarginLeft = 0;
+                    report.Options.MarginTop = 0;
+                    report.Options.MarginRight = 0;
+                }
+            }
+            if (things == null) {
+                things = SortedThings(scene.Graph, visuals);
+            }
+            exporter.SaveAs(things, fileName);
         }
 
         private IEnumerable<IThing> SortedThings(IGraph<IVisual, IVisualEdge> graph, IEnumerable<IVisual> items) {

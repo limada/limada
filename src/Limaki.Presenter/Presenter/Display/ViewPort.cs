@@ -176,6 +176,7 @@ namespace Limaki.Presenter {
         protected virtual void FitToZoom(ZoomState zoomState) {
             SizeI rc = this.ClipSize;
             SizeI dataSize = this.GetDataSize ();
+            dataSize = new SizeI(dataSize.Width - 1, dataSize.Height - 1);
             switch (zoomState) {
                 case ZoomState.FitToScreen:
                     _zoomFactor = Math.Min(

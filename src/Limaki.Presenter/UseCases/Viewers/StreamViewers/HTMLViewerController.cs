@@ -93,7 +93,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
         public virtual IThingGraph ThingGraph { get; set; }
         public virtual IThing ContentThing { get; set; }
 
-        public override void SetContent(Content<Stream> info) {
+        public override void SetContent(Content<Stream> content) {
             bool closeStream = this.IsStreamOwner;
             try {
 
@@ -110,7 +110,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
                         closeStream = ! response.IsStreamOwner;
 
                         //  webServer.AddContent(webContent.Uri.AbsoluteUri,
-                        webServer.ContentGetter = response.Getter(info);
+                        webServer.ContentGetter = response.Getter(content);
 
                         WebBrowser.MakeReady();
                         if (UseProxy) {
@@ -125,9 +125,9 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
                 } else {
                     WebBrowser.MakeReady();
                     if (OS.Mono) {
-                        WebBrowser.DocumentStream = info.Data;
+                        WebBrowser.DocumentStream = content.Data;
                     } else
-                        using (StreamReader reader = new StreamReader(info.Data)) {
+                        using (StreamReader reader = new StreamReader(content.Data)) {
                             string text = reader.ReadToEnd();
                             WebBrowser.DocumentText = text;
 
@@ -143,17 +143,17 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
                 Trace.WriteLine ("content load failed:\t" + e.Message);  
             } finally {
                 if (IsStreamOwner) {
-                    info.Data = null;
-                    var source = info.Source as Stream;
+                    content.Data = null;
+                    var source = content.Source as Stream;
                     if (closeStream && source != null) {
                         source.Close ();
                     }
-                    info.Source = null;
+                    content.Source = null;
                 } 
             }
         }
 
-        public override void Save(Content<Stream> info) { }
+        public override void Save(Content<Stream> content) { }
         public override bool CanSave() {return false;}
 
         public override void Dispose() {

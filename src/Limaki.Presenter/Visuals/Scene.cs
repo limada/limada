@@ -28,7 +28,6 @@ namespace Limaki.Visuals {
 
         #region Graph
 
-
         private IGraph<IVisual, IVisualEdge> _graph = null;
         public IGraph<IVisual,IVisualEdge> Graph {
             get {

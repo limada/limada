@@ -13,7 +13,7 @@ namespace Limaki.Presenter.UI {
             ProcessKey(e);
         }
 
-        protected virtual RectangleI ProcessKey (KeyActionEventArgs e) {
+        protected virtual RectangleI ProcessKey(KeyActionEventArgs e) {
             base.OnKeyDown(e);
             var viewport = Viewport();
             var x = 0;
@@ -30,7 +30,7 @@ namespace Limaki.Presenter.UI {
             if (e.Key == Key.Right && e.ModifierKeys == ModifierKeys.None) {
                 x = 1;
             }
-            if (x!=0 || y!=0) {
+            if (x != 0 || y != 0) {
                 var pos = viewport.ClipOrigin;
                 var size = viewport.ClipSize;
                 var bounds = new RectangleI(viewport.DataOrigin, viewport.DataSize);

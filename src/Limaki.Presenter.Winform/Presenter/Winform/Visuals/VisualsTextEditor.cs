@@ -135,8 +135,8 @@ namespace Limaki.Presenter.Winform.Visuals {
         #endregion
 
         #region Editor-Handling
-
-        private TextBox editor = new TextBox ();
+       
+        private TextBox editor = new TextBox();
 
         void ActivateMarkers() {
             var scene = Scene as Scene;
@@ -210,7 +210,7 @@ namespace Limaki.Presenter.Winform.Visuals {
             device.ActiveControl = null;
             device.Controls.Remove (editor);
             device.Focus ();
-
+            
             display.ActiveControl = null;
         }
 

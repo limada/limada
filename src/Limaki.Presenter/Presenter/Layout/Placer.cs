@@ -46,8 +46,6 @@ namespace Limaki.Presenter.Layout {
             return new GraphItemShapeProxy<TItem, TEdge>(layout);
         }
 
-        
-
         public virtual void VisitItems(IEnumerable<TItem> items, Action<TItem> visitor) {
             foreach (var item in items.Where(i=> !(i is TEdge))) {
                 visitor(item);

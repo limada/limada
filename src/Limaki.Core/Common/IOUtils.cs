@@ -35,14 +35,14 @@ namespace Limaki
 			}
 			return null;
 		}
-		
-		public static string UriToFileName(Uri uri){
-			if(uri.IsFile){
-				//return uri.AbsoluteUri.Remove(0,6);
-			    return Uri.UnescapeDataString(uri.AbsolutePath);
-			}
-			return null;
-		}
+
+        public static string UriToFileName(Uri uri) {
+            if (uri.IsFile) {
+                //return uri.AbsoluteUri.Remove(0,6);
+                return Uri.UnescapeDataString(uri.AbsolutePath);
+            }
+            return null;
+        }
 		
 		[TODO("handle relative filenames")]
 		public static Uri UriFromFileName(string fileName){
@@ -50,11 +50,18 @@ namespace Limaki
 
 			return new Uri(fileName,uriKind);
 		}
+
         public static string NiceFileName(string fileName) {
-            var b = new StringBuilder(fileName);
+            if (string.IsNullOrEmpty(fileName))
+                return fileName;
+            var b = new StringBuilder(Path.GetFileName(fileName));
+            var path = Path.GetDirectoryName(fileName);
             foreach (var s in Path.GetInvalidFileNameChars())
                 b.Replace(s, '_');
-            return b.ToString();
+            var sep = Path.DirectorySeparatorChar.ToString();
+            if (!string.IsNullOrEmpty(path) && (!path.EndsWith(sep)))
+                b.Insert(0, sep);
+            return path + b.ToString();
         }
 	}
 }

@@ -12,10 +12,14 @@ namespace Limaki.Presenter.Layout {
         internal int visits = 0;
 
         public virtual void Allign(ref Action<TItem> visitor, HorizontalAlignment alignment, RectangleI space) {
+            Allign(ref visitor, alignment, space, item => Proxy.GetLocation(item).Y);
+        }
+
+        public virtual void Allign(ref Action<TItem> visitor, HorizontalAlignment alignment, RectangleI space, Func<TItem,int> yer) {
             visitor += item => {
                 visits++;
 
-                var y = Proxy.GetLocation(item).Y;
+                var y = yer(item);
 
                 if (alignment == HorizontalAlignment.Left)
                     Proxy.SetLocation(item, new PointI(space.Left, y));
@@ -27,11 +31,16 @@ namespace Limaki.Presenter.Layout {
                 }
             };
         }
-        public void Allign(ref Action<TItem> visitor, VerticalAlignment alignment, RectangleI space) {
-            visitor += item => {
-              
-                var x = Proxy.GetLocation(item).X;
 
+        public virtual void Allign(ref Action<TItem> visitor, VerticalAlignment alignment, RectangleI space) {
+            Allign(ref visitor, alignment, space, item => Proxy.GetLocation(item).X);
+        }
+
+        public void Allign(ref Action<TItem> visitor, VerticalAlignment alignment, RectangleI space, Func<TItem, int> xer) {
+            visitor += item => {
+
+                var x = xer(item);
+                
                 if (alignment == VerticalAlignment.Top)
                     Proxy.SetLocation(item, new PointI(x,space.Top));
                 else if (alignment == VerticalAlignment.Bottom)
@@ -42,6 +51,7 @@ namespace Limaki.Presenter.Layout {
                 }
             };
         }
+
         public virtual void Justify(ref Action<TItem> visitor) {
             visitor += item => {
                 Data.Requests.Add(new LayoutCommand<TItem>(item, LayoutActionType.Justify));
@@ -66,6 +76,7 @@ namespace Limaki.Presenter.Layout {
 
       
     }
+
     public enum Distribution {
         X,Y
     }

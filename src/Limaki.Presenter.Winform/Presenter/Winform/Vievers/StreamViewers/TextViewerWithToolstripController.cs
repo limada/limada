@@ -51,20 +51,20 @@ namespace Limaki.UseCases.Winform.Viewers.StreamViewers {
             return controller.CanSave ();
         }
 
-        public override void SetContent(Content<Stream> info) {
-            controller.SetContent(info);
+        public override void SetContent(Content<Stream> content) {
+            controller.SetContent(content);
 
             ((TextBoxEditorWithToolStrip)Control).TextBoxEditorToolStrip.Visible = 
                 !_controller.ReadOnly;
 
             if (IsStreamOwner) {
-                info.Data.Close();
-                info.Data = null;
+                content.Data.Close();
+                content.Data = null;
             }
         }
 
-        public override void Save(Content<Stream> info) {
-            controller.Save (info);
+        public override void Save(Content<Stream> content) {
+            controller.Save (content);
         }
 
         public override void OnShow() {

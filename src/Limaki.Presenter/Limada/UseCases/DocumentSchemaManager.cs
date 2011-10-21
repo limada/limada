@@ -25,23 +25,25 @@ using Limaki.Common;
 using System.Linq;
 using System;
 using Limaki.Graphs.Extensions;
+
 namespace Limada.UseCases {
+
     public class DocumentSchemaManager {
         public IEnumerable<IVisual> Pages(IGraph<IVisual, IVisualEdge> source, IVisual document) {
             var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(document));
-            return docSchema.Pages().Select(t=>source.VisualOf(t));
+            return docSchema.Pages().Select(t => source.VisualOf(t));
         }
 
         public IEnumerable<Content<Stream>> PageStreams(IGraph<IVisual, IVisualEdge> source, IVisual document) {
-            var docSchema = new DocumentSchema(source.ThingGraph(),source.ThingOf(document));
+            var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(document));
             return docSchema.PageStreams();
         }
-        
+
         public Content<Stream> PageStream(IGraph<IVisual, IVisualEdge> source, IVisual page) {
             Content<Stream> result = null;
             var pageThing = source.ThingOf(page) as IStreamThing;
             var imageStreamProvider = new ImageContentProvider();
-            if(pageThing != null && imageStreamProvider.Supports(pageThing.StreamType)) {
+            if (pageThing != null && imageStreamProvider.Supports(pageThing.StreamType)) {
                 try {
                     result = ThingStreamFacade.GetContent(pageThing);
                 } finally {
@@ -65,7 +67,7 @@ namespace Limada.UseCases {
         //}
 
         public bool HasPages(IGraph<IVisual, IVisualEdge> source, IVisual visual) {
-            var docSchema = new DocumentSchema(source.ThingGraph(),source.ThingOf(visual));
+            var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(visual));
             return docSchema.HasPages();
         }
 

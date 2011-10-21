@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using Limaki.Presenter.UI;
 using Limaki.Presenter.GDI.UI;
 using System.ComponentModel;
+using Limaki.Common;
 
 namespace Limaki.Presenter.Winform {
     /// <summary>
@@ -44,6 +45,10 @@ namespace Limaki.Presenter.Winform {
                 Convert(e.KeyCode), 
                 ConvertModifiers(e.KeyData),
                 GDIConverter.Convert(location));
+        }
+        
+        public static KeyEventArgs Convert(KeyActionEventArgs e) {
+            return new KeyEventArgs(Convert(e.Key,e.ModifierKeys));
         }
 
         public static ModifierKeys ConvertModifiers (Keys keys) {
@@ -80,9 +85,21 @@ namespace Limaki.Presenter.Winform {
                 e.Y, 
                 e.Delta);
         }
+         static IDictionary<Key, Keys> keytableW = null;
+         protected static IDictionary<Key, Keys> KeyTableW {
+             get {
+                 if (keytableW == null) {
+                     keytableW = new Dictionary<Key, Keys>();
+                     foreach(var keys in KeyTable) {
+                         keytableW[keys.Value]=keys.Key;
+                     }
+                 }
+                 return keytableW;
+             }
+         }
 
-        static IDictionary<Keys, Key> keytable = null;
-        protected static IDictionary<Keys, Key> KeyTable {
+         static IDictionary<Keys, Key> keytable = null;
+         protected static IDictionary<Keys, Key> KeyTable {
             get {
                 if (keytable == null) {
                     keytable = new Dictionary<Keys, Key> ();
@@ -148,6 +165,40 @@ namespace Limaki.Presenter.Winform {
             return result;
         }
 
+        [TODO("does not work, make a testcase")]
+        public static Keys Convert(Key keys, ModifierKeys modifiers) {
+            byte code = (byte)keys;
+            Keys result = 0;
+
+            if (code >= (byte)Key.A && code <= (byte)Key.Z)
+                result = (Keys)((byte)Key.A + code - (byte)Key.A);
+
+            else if (code >= (byte)Key.D0 && code <= (byte)Key.D9)
+                result = (Keys)((byte)Key.D0 + code - (byte)Key.D0);
+
+            else if (code >= (byte)Key.F1 && code <= (byte)Key.F12)
+                result = (Keys)((byte)Key.F1 + code - (byte)Key.F1);
+
+            else if (code >= (byte)Key.NumPad0 && code <= (byte)Key.NumPad9)
+                result = (Keys)((byte)Key.NumPad0 + code - (byte)Key.NumPad0);
+
+            else
+                KeyTableW.TryGetValue(keys, out result);
+
+            if((modifiers & ModifierKeys.Control) !=0) 
+                result |= Keys.Control;
+            if ((modifiers & ModifierKeys.Alt) != 0) 
+                result |= Keys.Alt;
+            if ((modifiers & ModifierKeys.Shift) != 0)
+                result |= Keys.Shift;
+            if ((modifiers & ModifierKeys.Windows) != 0)
+                result |= Keys.LWin;
+            if ((modifiers & ModifierKeys.Control) != 0) 
+                result |= Keys.Control;
+
+
+            return result;
+        }
         public static Limaki.UseCases.Viewers.DialogResult Convert(DialogResult value) {
             var result = Limaki.UseCases.Viewers.DialogResult.None;
             if (value == DialogResult.OK)  {

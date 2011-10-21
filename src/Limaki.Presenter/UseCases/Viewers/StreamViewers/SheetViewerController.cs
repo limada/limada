@@ -104,7 +104,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
 
         }
 
-        public override void Save(Content<Stream> info) { }
+        public override void Save(Content<Stream> content) { }
 
         public override bool CanSave() {return false;}
 

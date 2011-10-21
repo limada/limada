@@ -22,20 +22,22 @@ using Limaki.Presenter.Winform.Display;
 
 namespace Limaki.Presenter.Winform {
     public class WinformImageDisplay:WinformDisplay<Image> {
-
+       
         public override DisplayFactory<Image> CreateDisplayFactory(WinformDisplay<Image> device) {
-            var result = new DisplayFactory<Image> ();
+            var result = new DisplayFactory<Image>();
             
             var deviceInstrumenter = new ImageDeviceComposer();
             deviceInstrumenter.Device = device;
             result.DeviceComposer = deviceInstrumenter;
             
             result.DisplayComposer = new ImageDisplayComposer ();
-            
+            //device.AutoScroll = false;
+            //device.ScrollBarsVisible = false;
+
             return result;
         }
     }
-
+   
     public class ImageDeviceComposer : WinformDeviceComposer<Image> {
         public override void Factor(Display<Image> display) {
             base.Factor(display);

@@ -207,6 +207,14 @@ namespace Limaki.Presenter.UI {
             RestoreFocused(curr);
 
         }
+        public virtual void AddRaw(IEnumerable<TItem> elements) {
+            IGraphScene<TItem, TEdge> scene = this.Scene;
+            ApplyFilter();
+            TItem curr = scene.Focused;
+
+            var affected = new GraphViewFacade<TItem, TEdge>(this.graphView).Add(elements);
+
+        }
 
         public virtual void Expand(bool deep) {
             IGraphScene<TItem, TEdge> scene = this.Scene;

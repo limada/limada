@@ -15,14 +15,16 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Presenter.Display;
+using Limaki.Visuals;
 
 namespace Limaki.UseCases.Viewers {
     public interface ISplitView {
 
         SplitViewMode ViewMode { get; set; }
         void ToggleView();
-        
-        bool CanGoBackOrForward ( bool forward );
+
+        bool CanGoBackOrForward(bool forward);
         void GoBackOrForward(bool forward);
         void GoHome();
 
@@ -33,6 +35,7 @@ namespace Limaki.UseCases.Viewers {
         event EventHandler ViewChanged;
 
         void LoadSheet(SceneInfo sceneInfo);
+        IGraphSceneDisplay<IVisual, IVisualEdge> AdjacentDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display);
     }
 
     public enum SplitViewMode {

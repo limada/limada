@@ -63,6 +63,7 @@ namespace Limaki.UseCases {
         public DisplayToolController DisplayToolController { get; set; }
         public LayoutToolController LayoutToolController { get; set; }
         public MarkerToolController MarkerToolController { get; set; }
+        public SplitViewToolController SplitViewToolController { get; set; }
         
         public Get<object> GetCurrentControl { get; set; }
         public Get<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
@@ -158,11 +159,6 @@ namespace Limaki.UseCases {
 
         public AlignTools AlignTools { get; set; }
 
-        public void AlignHorizontal(HorizontalAlignment alignment) {
-            AlignTools.AlignHorizontal(GetCurrentDisplay(), alignment);
-        }
-        public void AlignDistribute(VerticalAlignment distribution) {
-            AlignTools.Distribute(GetCurrentDisplay(), distribution);
-        }
+       
     }
 }

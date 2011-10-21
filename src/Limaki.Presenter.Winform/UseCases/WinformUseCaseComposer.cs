@@ -78,10 +78,8 @@ namespace Limaki.UseCases.Winform {
             useCase.DisplayToolController = DisplayToolStrip.Controller;
             useCase.LayoutToolController = LayoutToolStrip.Controller;
             useCase.MarkerToolController = MarkerToolStrip.Controller;
-
-            SplitViewToolStrip.SplitView = useCase.SplitView;
-            SplitViewToolStrip.SheetManager = useCase.SheetManager;
-            SplitViewToolStrip.GetCurrentDisplay = ()=>useCase.GetCurrentDisplay();
+            useCase.SplitViewToolController = SplitViewToolStrip.Controller;
+            
 
             useCase.DataPostProcess =
                 dataName => Mainform.Text = dataName + " - " + useCase.UseCaseTitle;

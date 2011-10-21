@@ -15,10 +15,7 @@
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace Limada.Common {
-    using System.Linq;
-    using System.Collections.Generic;
-
+namespace Limaki.Common {
     public class Copier<T> {
         public bool AreEqual(T source, T target) {
             bool result = true;

@@ -92,6 +92,7 @@ namespace Limaki.UseCases.Viewers {
 
 
                     controller.SetContent(info);
+                    controller.CurrentThingId = thing.Id;
                 }
 
                 currentThing = thing;

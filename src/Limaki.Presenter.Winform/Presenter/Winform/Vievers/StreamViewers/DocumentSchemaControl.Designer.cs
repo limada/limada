@@ -35,16 +35,17 @@ namespace Limaki.Presenter.Winform.Controls {
             this.SuspendLayout();
 
             WinImageDisplay = new WinformImageDisplay () {Dock = System.Windows.Forms.DockStyle.Fill, BackColor = Color.White};
-            SplitContainer = new System.Windows.Forms.SplitContainer() { Dock = System.Windows.Forms.DockStyle.Fill };
+            
             WinVisualsDisplay = new WinformVisualsDisplay() { Dock = System.Windows.Forms.DockStyle.Right, Width = Controller.GetDefaultWidth()};
 
+            //SplitContainer = new System.Windows.Forms.SplitContainer() { Dock = System.Windows.Forms.DockStyle.Fill };
             //SplitContainer.Panel1.Controls.Add (WinImageDisplay);
             //SplitContainer.Panel2.Controls.Add(WinVisualsDisplay);
             //SplitContainer.SplitterDistance = this.Width - 40;
             //this.Controls.Add(SplitContainer);
 
             Splitter = new System.Windows.Forms.Splitter {Dock = DockStyle.Right};
-            this.Controls.AddRange(new Control[] { Splitter, WinVisualsDisplay, WinImageDisplay });
+            this.Controls.AddRange(new Control[] { WinImageDisplay, Splitter, WinVisualsDisplay });
             
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -88,7 +88,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.graphStreamViewButton.Name = "graphStreamViewButton";
             this.graphStreamViewButton.Size = new System.Drawing.Size(24, 24);
             this.graphStreamViewButton.Text = "show stream contents";
-            this.graphStreamViewButton.Click += new System.EventHandler(this.GraphStreamView);
+            
             // 
             // graphGraphViewButton
             // 
@@ -98,7 +98,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.graphGraphViewButton.Name = "graphGraphViewButton";
             this.graphGraphViewButton.Size = new System.Drawing.Size(24, 24);
             this.graphGraphViewButton.Text = "show tiled graph";
-            this.graphGraphViewButton.Click += new System.EventHandler(this.GraphGraphView);
+            
             // 
             // toggleViewButton
             // 
@@ -108,7 +108,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.toggleViewButton.Name = "toggleViewButton";
             this.toggleViewButton.Size = new System.Drawing.Size(24, 24);
             this.toggleViewButton.Text = "toggle view";
-            this.toggleViewButton.Click += new System.EventHandler(this.ToggleView);
+           
             // 
             // toolStripSeparator3
             // 
@@ -124,7 +124,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.goBackButton.Size = new System.Drawing.Size(24, 24);
             this.goBackButton.Text = "toolStripButton2";
             this.goBackButton.ToolTipText = "navigate back";
-            this.goBackButton.Click += new System.EventHandler(this.GoBack);
+            
             // 
             // goForwardButton
             // 
@@ -135,7 +135,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.goForwardButton.Size = new System.Drawing.Size(24, 24);
             this.goForwardButton.Text = "toolStripButton2";
             this.goForwardButton.ToolTipText = "navigate forward";
-            this.goForwardButton.Click += new System.EventHandler(this.GoForward);
+            
             // 
             // goHomeButton
             // 
@@ -146,7 +146,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.goHomeButton.Size = new System.Drawing.Size(24, 24);
             this.goHomeButton.Text = "toolStripButton1";
             this.goHomeButton.ToolTipText = "go to favorites";
-            this.goHomeButton.Click += new System.EventHandler(this.GoHome);
+           
             // 
             // toolStripSeparator4
             // 
@@ -162,7 +162,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.newSheetButton.Size = new System.Drawing.Size(24, 24);
             this.newSheetButton.Text = "toolStripButton1";
             this.newSheetButton.ToolTipText = "new sheet";
-            this.newSheetButton.Click += new System.EventHandler(this.NewSheet);
+            
             // 
             // newNoteButton
             // 
@@ -173,7 +173,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.newNoteButton.Size = new System.Drawing.Size(24, 24);
             this.newNoteButton.Text = "toolStripButton2";
             this.newNoteButton.ToolTipText = "new Note";
-            this.newNoteButton.Click += new System.EventHandler(this.NewNote);
+            
             // 
             // saveSheetButton
             // 
@@ -183,13 +183,13 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.saveSheetButton.Name = "saveSheetButton";
             this.saveSheetButton.Size = new System.Drawing.Size(24, 24);
             this.saveSheetButton.Text = "saveSheetButton";
-            this.saveSheetButton.Click += new System.EventHandler(this.SaveDocument);
+            
             // 
             // markerCombo
             // 
             this.sheetCombo.Name = "markerCombo";
             this.sheetCombo.Size = new System.Drawing.Size(121, 27);
-            this.sheetCombo.SelectedIndexChanged += new System.EventHandler(SelectSheet);
+            
             this.Dock = System.Windows.Forms.DockStyle.None;
 
         }

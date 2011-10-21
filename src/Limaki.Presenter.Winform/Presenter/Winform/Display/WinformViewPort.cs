@@ -12,8 +12,8 @@ namespace Limaki.Presenter.Winform.Display {
     }
 
     public class WinformViewPort : GDIViewPort {
-        protected ScrollableControl device = null;
-        public WinformViewPort(ScrollableControl userControl) {
+        protected WinformDevice device = null;
+        public WinformViewPort(WinformDevice userControl) {
             this.device = userControl;
         }
 
@@ -41,7 +41,7 @@ namespace Limaki.Presenter.Winform.Display {
         }
 
         public override SizeI ClipSize {
-            get { return GDIConverter.Convert(device.Size); }
+            get { return GDIConverter.Convert(device.ClientSize); }
         }
 
         private bool _scrollMinSizeChanging = false;
@@ -58,6 +58,7 @@ namespace Limaki.Presenter.Winform.Display {
                 device.AutoScrollMinSize = GDIConverter.Convert(value);
                 _scrollMinSize = value;
                 _scrollMinSizeChanging = false;
+                //device.ScrollBarsVisible = false;
             }
         }
 
@@ -135,6 +136,7 @@ namespace Limaki.Presenter.Winform.Display {
         public event EventHandler ZoomChanged;
 
         public override void UpdateZoom() {
+            
             FitToZoom(ZoomState);
 
             Update();

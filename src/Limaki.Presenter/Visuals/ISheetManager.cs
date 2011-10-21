@@ -39,6 +39,7 @@ namespace Limaki.Visuals {
         bool SaveInStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id);
         bool LoadFromStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id);
         Stream GetFromStore(Id id);
+        bool StoreContains(Id id);
         
         void Clear();
 
