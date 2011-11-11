@@ -38,10 +38,13 @@ namespace Limaki.Graphs {
         }
 
         public static void MergeInto<TItem, TEdge>(this IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> target)
-        where TEdge:IEdge<TItem>,TItem { source.MergeInto(target, null, null); }
+        where TEdge:IEdge<TItem>,TItem { source.MergeInto(target, null, null,null); }
+
+        public static void MergeInto<TItem, TEdge>(this IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> target, Action<TItem> message)
+        where TEdge : IEdge<TItem>, TItem { source.MergeInto(target, null, null, message); }
 
         public static void MergeInto<TItem, TEdge>(this IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> target,
-                                                     Func<TItem, bool> whereItem, Func<TEdge, bool> whereEdge) 
+                                                     Func<TItem, bool> whereItem, Func<TEdge, bool> whereEdge, Action<TItem> message) 
         where TEdge:IEdge<TItem>,TItem {
             if (source != null && target != null) {
                 Func<TEdge, bool> checkEdge = e => {
@@ -55,20 +58,29 @@ namespace Limaki.Graphs {
                     var result = e==null || checkEdge(e);
                     return result;                                                  
                 };
+                Action<TItem> state = i => {
+                    if (message != null)
+                        message(i);
+                };
                 Walker<TItem, TEdge> walker = new Walker<TItem, TEdge>(source);
                 foreach (TItem item in source) {
                     if (!walker.visited.Contains(item)) {
-                        if (checkItem(item) && (whereItem ==null || whereItem(item)))
+                        state(item);
+                        if (checkItem(item) && (whereItem == null || whereItem(item))) {
                             target.Add(item);
+                        }
                         foreach (LevelItem<TItem> levelItem in walker.DeepWalk(item, 0)) {
+                            state(levelItem.Node);
                             if (levelItem.Node is TEdge) {
                                 var edge = (TEdge)levelItem.Node;
-                                if (checkEdge(edge) && (whereEdge == null || whereEdge(edge)))
+                                if (checkEdge(edge) && (whereEdge == null || whereEdge(edge))) {
                                     target.Add(edge);
-                                
+                                }
+
                             } else
-                                if (checkItem(levelItem.Node) && (whereItem == null || whereItem(levelItem.Node)))
+                                if (checkItem(levelItem.Node) && (whereItem == null || whereItem(levelItem.Node))) {
                                     target.Add(levelItem.Node);
+                                }
                         }
                     }
                 }

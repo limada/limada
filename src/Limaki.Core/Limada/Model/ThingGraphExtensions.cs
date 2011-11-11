@@ -213,18 +213,19 @@ namespace Limada.Model {
                     yield return thing;
                 }
             }
-
-
         }
-        
-        public static void MergeInto(this IThingGraph source, IThingGraph target) {
+
+        public static void MergeThingsInto(this IThingGraph source, IThingGraph target, Action<IThing> message, Action beforeStreamMerge) {
             // do not change to extension! 
-            GraphExtensions.MergeInto(source, target);
-            source.MergeStreamThingsInto(target);
+            GraphExtensions.MergeInto(source, target, message);
+            if (beforeStreamMerge != null)
+                beforeStreamMerge();
+            source.MergeStreamThingsInto(target,message);
         }
 
-        public static void MergeStreamThingsInto(this IThingGraph source, IThingGraph target) {
+        public static void MergeStreamThingsInto(this IThingGraph source, IThingGraph target, Action<IThing> message) {
             foreach (var thing in source.OfType<IStreamThing>()) {
+                message(thing);
                 var data = source.DataContainer.GetById(thing.Id);
                 target.DataContainer.Add(data);
             }

@@ -55,10 +55,11 @@ namespace Limaki.Data.db4o {
         }
 
         public virtual IObjectContainer CreateSession(IEmbeddedConfiguration config) {
-            return Db4oEmbedded.OpenFile(
-                                config,
-                                this.DataBaseInfo.Path + this.DataBaseInfo.Name +
-                                this.FileExtension);
+            var file = this.DataBaseInfo.Path + this.DataBaseInfo.Name +
+                       this.FileExtension;
+            if (!System.IO.File.Exists(file))
+                config.File.BlockSize = 16;
+            return Db4oEmbedded.OpenFile(config,file);
         }
 
         # endregion session

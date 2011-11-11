@@ -13,6 +13,7 @@
  */
 
 using System;
+using Limaki.Common.Collections;
 
 namespace Limaki.Common {
     public class Reflector {
@@ -20,13 +21,18 @@ namespace Limaki.Common {
             return !(type.IsPrimitive || type == typeof(string));
         }
 
+        public static Set<Tuple<Type, Type>> _implements = new Set<Tuple<Type, Type>>();
         public static bool Implements(Type clazz, Type interfaze) {
             if (clazz.IsClass) {
+                var key = Tuple.Create(clazz, interfaze);
+                if (_implements.Contains(key))
+                    return true;
                 bool result = (interfaze.IsAssignableFrom(clazz));
                 if (! result && interfaze.IsInterface) {
                     foreach (Type t in clazz.GetInterfaces()) {
                         if (t == interfaze) {
                             result = true;
+                            _implements.Add(key);
                             break;
                         }
                     }

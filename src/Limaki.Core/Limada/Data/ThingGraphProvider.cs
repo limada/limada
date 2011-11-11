@@ -38,7 +38,27 @@ namespace Limada.Data {
         public override void SaveAs(IThingGraph source, DataBaseInfo FileName) {
             this.Data = null;
             Open(FileName);
-            source.MergeInto(this.Data);
+            Action<IThing> message = null;
+            var i = 0;
+            var iStreams = 0;
+            var count = source.Count;
+            bool streams = false;
+            if (this.StateMessage != null)
+                message = thing => {
+                    i++;
+                    if (thing != null) {
+                        var type = thing.GetType();
+                        if (!streams && Reflector.Implements(type, typeof(IStreamThing)))
+                            iStreams++;
+                        this.StateMessage(string.Format("merging {2} of {3} ({4} Streams / {1} {0} )", thing.Id.ToString("X"),
+                            streams ? "Streams" : type.Name, i, streams ? count : count + iStreams, iStreams));
+                    }
+                };
+            source.MergeThingsInto(this.Data, message, () => {
+                streams = true;
+                i = 0;
+                count = iStreams;
+            });
         }
 
         public void ReadIntoList(ICollection<IThing> things, IGraph<IThing, ILink> view) {
