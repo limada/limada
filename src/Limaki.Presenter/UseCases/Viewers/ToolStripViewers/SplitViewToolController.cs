@@ -9,6 +9,8 @@ using Limaki.UseCases.Viewers.ToolStripViewers;
 using Limaki.Visuals;
 
 namespace Limaki.UseCases.Viewers.ToolStripViewers {
+    
+
     public class SplitViewToolController : ToolController<IGraphSceneDisplay<IVisual, IVisualEdge>, ISplitViewTool> {
         ISplitView _splitView = null;
         public ISplitView SplitView {

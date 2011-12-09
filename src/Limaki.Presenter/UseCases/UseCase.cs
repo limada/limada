@@ -64,7 +64,8 @@ namespace Limaki.UseCases {
         public LayoutToolController LayoutToolController { get; set; }
         public MarkerToolController MarkerToolController { get; set; }
         public SplitViewToolController SplitViewToolController { get; set; }
-        
+        public ArrangerToolController ArrangerToolController { get; set; }
+
         public Get<object> GetCurrentControl { get; set; }
         public Get<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
 
@@ -155,10 +156,12 @@ namespace Limaki.UseCases {
             FavoriteManager.SaveChanges(displays);
         }
 
-        public Action<string> StateMessage {get; set;}
-
-        public AlignTools AlignTools { get; set; }
+        public Action<string,int,int> Progress {get; set;}
 
        
+
+
+
+        
     }
 }

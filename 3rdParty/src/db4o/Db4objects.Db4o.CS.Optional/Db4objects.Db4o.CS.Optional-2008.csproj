@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DB4objects.Db4o.CS.Optional</RootNamespace>
     <AssemblyName>DB4objects.Db4o.CS.Optional</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+   <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     
     

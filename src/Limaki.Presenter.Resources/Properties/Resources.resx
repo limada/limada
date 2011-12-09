@@ -214,8 +214,167 @@
   <data name="LimadaLogoL32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources/LimadaLogoL32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ItemLayout" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\itemlayout.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="applications_graphics" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\applications-graphics.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArrangeCenter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\format-justify-center.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArrangeLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\format-justify-left.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArrangeRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\format-justify-right.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArrangeSameSize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\format-justify-fill.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArrangeTreeToLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\format-indent-less.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArrangeTreeToRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\format-indent-more.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="emblem_downloads" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\emblem-downloads.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fonts" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fonts.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_alignment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_alignment.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_alignment_bottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_alignment-bottom.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_alignment_centered" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_alignment-centered.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_alignment_centered_vertically" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_alignment-centered-vertically.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_alignment_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_alignment-left.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_alignment_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_alignment-right.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_alignment_top" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_alignment-top.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_book_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_book_blue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_book_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_book_red.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_down_with_subpoints" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_down-with-subpoints.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_draw_text" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_draw-text.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_export" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_export.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_first_page" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_first-page.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_form_line_horizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_form-line-horizontal.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArrageRows" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_form-line-vertical.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_form_table_control" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_form-table-control.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_graphics_align_bottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_graphics-align-bottom.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_graphics_align_center" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_graphics-align-center.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_graphics_align_centered" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_graphics-align-centered.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_graphics_align_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_graphics-align-left.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_graphics_align_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_graphics-align-right.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_graphics_align_top" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_graphics-align-top.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_guides" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_guides.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_insert_file" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_insert-file.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_last_page" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_last-page.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_left_with_subpoints" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_left-with-subpoints.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_next" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_next.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_next_page" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_next-page.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_previous" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_previous.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_previous_page" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_previous-page.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_reload" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_reload.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_right_with_subpoints" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_right-with-subpoints.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_table_fit_height" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_table-fit-height.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_table_fit_width" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_table-fit-width.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_table_fixed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_table-fixed.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_table_fixed_proportional" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_table-fixed-proportional.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_table_same_height" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_table-same-height.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_table_same_width" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_table-same-width.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_undo-history.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stock_up_with_subpoints" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stock_up-with-subpoints.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="OrderLeftDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OrderLeftDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OrderLeftRigh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OrderLeftRigh.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SortAscending" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gtk-sort-ascending.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SortDescending" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gtk-sort-descending.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

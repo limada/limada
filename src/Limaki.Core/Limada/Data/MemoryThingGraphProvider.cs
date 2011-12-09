@@ -74,7 +74,7 @@ namespace Limada.Data {
         }
 
         public override IDataProvider<IThingGraph> Clone() {
-            return new MemoryThingGraphProvider { StateMessage = this.StateMessage };
+            return new MemoryThingGraphProvider { Progress = this.Progress };
             
         }
     }

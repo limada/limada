@@ -43,6 +43,7 @@ namespace Limaki.UseCases {
             splitView.CurrentControlChanged += (c) => useCase.LayoutToolController.Attach(c);
             splitView.CurrentControlChanged += (c) => useCase.MarkerToolController.Attach(c);
             splitView.CurrentControlChanged += (c) => useCase.SplitViewToolController.Attach(c);
+            splitView.CurrentControlChanged += (c) => useCase.ArrangerToolController.Attach(c);
             
             useCase.DisplayStyleChanged += splitView.DoDisplayStyleChanged;
 
@@ -53,7 +54,7 @@ namespace Limaki.UseCases {
             fileManager.DataBound = (scene) => splitView.ChangeData(scene);
             fileManager.DataPostProcess = useCase.DataPostProcess;
 
-            fileManager.StateMessage = useCase.StateMessage;
+            fileManager.Progress = useCase.Progress;
             
             splitView.Check ();
 			
@@ -63,7 +64,7 @@ namespace Limaki.UseCases {
             streamManager.Import = useCase.ImportContent;
             streamManager.Export = useCase.ExtractContent;
 
-            useCase.AlignTools = new AlignTools();
+            
         }
     }
 }

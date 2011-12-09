@@ -19,6 +19,8 @@ using Limaki.Model.Streams;
 using System.Collections.Generic;
 using System.Linq;
 using Limaki.Graphs;
+using Limada.Common.Linqish;
+using System;
 
 namespace Limada.Schemata {
     /// <summary>
@@ -179,7 +181,9 @@ namespace Limada.Schemata {
         public IEnumerable<IThing> Pages() {
             return this.Pages(this.Graph, this.Target);
         }
-
+        public IEnumerable<IThing> OrderedPages() {
+            return this.OrderedPages(this.Graph, this.Target);
+        }
         public IEnumerable<IThing> Pages(IThingGraph graph, IThing document) {
             var filteredGraph = graph as FilteredGraph<IThing, ILink>;
             if (filteredGraph != null)
@@ -190,6 +194,15 @@ namespace Limada.Schemata {
             return graph.Edges(document)
                 .Where(link => link.Marker == DocumentSchema.DocumentPage)
                 .Select(link => link.Leaf);
+        }
+        public IEnumerable<IThing> OrderedPages(IThingGraph graph, IThing document) {
+            var pages = Pages(graph, document);
+            Func<IThing, IThing> order = t => t;
+            var schemaGraph = graph as SchemaThingGraph;
+            if (schemaGraph != null) {
+                order = t => schemaGraph.ThingToDisplay(t);
+            }
+            return pages.Yield().OrderBy(e => order(e), new ThingComparer());
         }
 
         public bool HasPages() {

@@ -17,6 +17,8 @@ using Limaki.UseCases.Winform.Viewers.ToolStripViewers;
 using Limaki.Presenter.Winform.Controls;
 using Limaki.Presenter.Layout;
 using Limaki.Visuals;
+using System.Linq;
+using LinqKit;
 
 namespace Limaki.UseCases.Winform {
     public class WinformUseCaseComposer : IComposer<UseCase> {
@@ -31,6 +33,7 @@ namespace Limaki.UseCases.Winform {
         public SplitViewToolStrip SplitViewToolStrip { get; set; }
         public MarkerToolStrip MarkerToolStrip { get; set; }
         public LayoutToolStrip LayoutToolStrip { get; set; }
+        public ArrangerToolStrip ArrangerToolStrip { get; set; }
 
         public ToolStripStatusLabel StatusLabel { get; set; }
         public StatusStrip StatusStrip { get; set; }
@@ -50,6 +53,7 @@ namespace Limaki.UseCases.Winform {
             SplitViewToolStrip = new SplitViewToolStrip();
             LayoutToolStrip = new LayoutToolStrip();
             MarkerToolStrip = new MarkerToolStrip();
+            ArrangerToolStrip = new ArrangerToolStrip();
 
             //TODO: move this to UserCaseContextResourceLoader
             Registry.Factory.Add<ContentViewProviders, ThingContentViewProviders>();
@@ -79,14 +83,14 @@ namespace Limaki.UseCases.Winform {
             useCase.LayoutToolController = LayoutToolStrip.Controller;
             useCase.MarkerToolController = MarkerToolStrip.Controller;
             useCase.SplitViewToolController = SplitViewToolStrip.Controller;
-            
+            useCase.ArrangerToolController = ArrangerToolStrip.Controller;
 
             useCase.DataPostProcess =
                 dataName => Mainform.Text = dataName + " - " + useCase.UseCaseTitle;
 
             useCase.MessageBoxShow = this.MessageBoxShow;
             useCase.FileDialogShow = this.FileDialogShow;
-            useCase.StateMessage = (m) => {
+            useCase.Progress = (m,i,count) => {
                 this.StatusLabel.Text = m;
                 Application.DoEvents();
             };
@@ -98,8 +102,17 @@ namespace Limaki.UseCases.Winform {
 
             InstrumentMenus(useCase);
 
-
-            InitializeToolstripPositions();
+            var utils = new WinformUtils();
+            utils.InitializeToolstripPositions(
+                this.ToolStripContainer.TopToolStripPanel,
+                this.MenuStrip, new ToolStrip[] {
+                    DisplayToolStrip,
+                    MarkerToolStrip,
+                    ArrangerToolStrip,
+                    SplitViewToolStrip,
+                    LayoutToolStrip,
+                });
+            
         }
 
 
@@ -141,7 +154,6 @@ namespace Limaki.UseCases.Winform {
             new ToolStripMenuItem(l["Style"], null, new ToolStripMenuItem[] {
                 new ToolStripMenuItem(l["Layout"], null, (s, e) => { this.ShowLayoutEditor(useCase); }),
                 new ToolStripMenuItem(l["StyleSheet"], null, (s, e) => { this.ShowStyleEditor(useCase); }),
-                new ToolStripMenuItem(l["Align"], null, ComposeAllign(l,useCase))
             }),
 
             new ToolStripMenuItem(l["Favorites"], null, new ToolStripMenuItem[] {
@@ -173,74 +185,11 @@ namespace Limaki.UseCases.Winform {
                 setFont(item);
         }
 
-        private ToolStripItem[] ComposeAllign(Localizer l, UseCase useCase) {
-            
-            return new ToolStripMenuItem[] { 
-				new ToolStripMenuItem(l["Left"], null, (s, e) => 
-					useCase.AlignTools.AlignHorizontal(useCase.GetCurrentDisplay(),Limaki.Drawing.HorizontalAlignment.Left)),
-                new ToolStripMenuItem(l["Center"], null, (s, e) => 
-					useCase.AlignTools.AlignHorizontal(useCase.GetCurrentDisplay(),Limaki.Drawing.HorizontalAlignment.Center)),
-                new ToolStripMenuItem(l["Right"], null, (s, e) => 
-					useCase.AlignTools.AlignHorizontal(useCase.GetCurrentDisplay(),Limaki.Drawing.HorizontalAlignment.Right)),
-                new ToolStripMenuItem(l["Distribute"], null, (s, e) => 
-					useCase.AlignTools.Distribute(useCase.GetCurrentDisplay(),Limaki.Drawing.VerticalAlignment.Top)),
-                new ToolStripMenuItem(l["Undo"], null, (s, e) => 
-					useCase.AlignTools.Undo(useCase.GetCurrentDisplay()))
-            };
-        }
-
-        public void SetFont(System.Drawing.Font font, Control control) {
-            control.Font = font;
-            foreach (Control child in control.Controls) {
-                SetFont(font, child);
-            }
-        }
-
         Form About = null;
-
-        protected void InitializeToolstripPositions() {
-            this.ToolStripContainer.TopToolStripPanel.SuspendLayout();
-
-            Point location = new Point();
-
-            this.ToolStripContainer.TopToolStripPanel.Controls.Clear();
-            this.ToolStripContainer.TopToolStripPanel.ResumeLayout(true);
-            Application.DoEvents();
-
-            this.ToolStripContainer.TopToolStripPanel.SuspendLayout();
-
-            if (this.MenuStrip != null) {
-                MenuStrip.Location = new Point();
-                this.ToolStripContainer.TopToolStripPanel.Controls.Add(MenuStrip);
-                location = this.MenuStrip.Location + new Size(0, this.MenuStrip.Size.Height + 3);
-            }
-
-            this.DisplayToolStrip.Location = location;
-            this.ToolStripContainer.TopToolStripPanel.Controls.Add(DisplayToolStrip);
-            this.ToolStripContainer.TopToolStripPanel.Controls.Add(LayoutToolStrip);
-            this.ToolStripContainer.TopToolStripPanel.Controls.Add(MarkerToolStrip);
-            this.ToolStripContainer.TopToolStripPanel.Controls.Add(SplitViewToolStrip);
-
-            location = new Point(this.DisplayToolStrip.Bounds.Right + 3, this.DisplayToolStrip.Bounds.Top);
-            this.LayoutToolStrip.Location = location;
-
-            location = new Point(this.LayoutToolStrip.Bounds.Right + 3, this.LayoutToolStrip.Bounds.Top);
-            this.MarkerToolStrip.Location = location;
-
-            location = new Point(this.MarkerToolStrip.Bounds.Right + 3, this.MarkerToolStrip.Bounds.Top);
-            this.SplitViewToolStrip.Location = location;
-
-
-            this.ToolStripContainer.TopToolStripPanel.ResumeLayout(false);
-            this.ToolStripContainer.TopToolStripPanel.PerformLayout();
-
-
-        }
 
         public Limaki.UseCases.Viewers.DialogResult MessageBoxShow(string text, string title, Limaki.UseCases.Viewers.MessageBoxButtons buttons) {
             return Converter.Convert(MessageBox.Show(Mainform, text, title, Converter.Convert(buttons)));
         }
-
 
         public Limaki.UseCases.Viewers.DialogResult FileDialogShow(FileDialogMemento value, bool open) {
             FileDialog fileDialog = null;

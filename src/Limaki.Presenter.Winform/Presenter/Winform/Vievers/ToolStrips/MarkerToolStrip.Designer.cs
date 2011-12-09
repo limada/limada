@@ -44,6 +44,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             // 
             this.markerCombo.Name = "markerCombo";
             this.markerCombo.Size = new System.Drawing.Size(121, 27);
+            this.markerCombo.Width = 120;
             this.markerCombo.SelectedIndexChanged += new System.EventHandler(this.markerCombo_SelectedIndexChanged);
             this.Dock = System.Windows.Forms.DockStyle.None;
             this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {

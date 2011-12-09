@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Db4objects.Db4o.Linq</RootNamespace>
     <AssemblyName>Db4objects.Db4o.Linq</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+   <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>

@@ -18,7 +18,7 @@
     </UpgradeBackupLocation>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -87,6 +87,17 @@
     </Compile>
     <Compile Include="Presenter\Winform\Vievers\StreamViewers\DocumentSchemaController.cs" />
     <Compile Include="Presenter\Winform\Vievers\StreamViewers\DocumentSchemaKeyScrollAction.cs" />
+    <Compile Include="Presenter\Winform\Vievers\ToolStrips\ArrangerToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Presenter\Winform\Vievers\ToolStrips\ArrangerToolStrip.Designer.cs">
+      <DependentUpon>ArrangerToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presenter\Winform\Vievers\ToolStrips\IToolStripCommandItem.cs" />
+    <Compile Include="Presenter\Winform\Vievers\ToolStrips\ToolStripItemEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Presenter\Winform\Vievers\ToolStrips\ToolStripCommand.cs" />
     <Compile Include="Properties\Resources1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Limaki.Sivlerlight.WPF.Web</RootNamespace>
     <AssemblyName>Limaki.Sivlerlight.WPF.Web</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+   <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightApplicationList>{BF8F54B4-E21E-4DF0-B4B1-A27EB423CAA4}|..\..\Limaki.WPF\Limaki.Silverlight.WPF.csproj|ClientBin|False</SilverlightApplicationList>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

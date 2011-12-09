@@ -34,6 +34,8 @@ namespace Limaki.Presenter.Winform.Controls {
                         ImageDisplay.Data = System.Drawing.Image.FromStream(stream);
                     else
                         ImageDisplay.Data = null;
+                } else {
+                    ImageDisplay.Data = null;
                 }
             };
 
@@ -74,7 +76,7 @@ namespace Limaki.Presenter.Winform.Controls {
             if (focusAction != null)
                 focusAction.HitSize = -1;
 
-            var folding = GraphSceneDisplay.EventControler.GetAction<GraphSceneFolding<IVisual, IVisualEdge>>();
+            var folding = GraphSceneDisplay.EventControler.GetAction<IGraphSceneFolding<IVisual, IVisualEdge>>();
             folding.Folder.RemoveOrhpans = false;
         }
 
@@ -103,7 +105,7 @@ namespace Limaki.Presenter.Winform.Controls {
             display.Layout.Border = this.Border;
 
             var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
-            alligner.MakeRow(pages, new PointI(this.Border));
+            alligner.OneRow(pages, new PointI(this.Border));
             alligner.Proxy.Commit(alligner.Data);
 
             display.Layout.Distance = distance;

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Db4oTool.Tests.Integration</RootNamespace>
     <AssemblyName>Db4oTool.Tests.Integration</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+   <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../db4objects.snk</AssemblyOriginatorKeyFile>

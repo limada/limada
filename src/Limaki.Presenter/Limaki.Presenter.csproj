@@ -18,7 +18,7 @@
     </UpgradeBackupLocation>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -197,6 +197,7 @@
     <Compile Include="UseCases\Viewers\TextOkCancelBoxEventArgs.cs" />
     <Compile Include="UseCases\Viewers\ThingViewerController.cs" />
     <Compile Include="UseCases\Viewers\ThingContentViewProviders.cs" />
+    <Compile Include="UseCases\Viewers\ToolStripViewers\ArrangerToolController.cs" />
     <Compile Include="UseCases\Viewers\ToolStripViewers\DisplayToolController.cs" />
     <Compile Include="UseCases\Viewers\ToolStripViewers\IDisplayTool.cs" />
     <Compile Include="UseCases\Viewers\ToolStripViewers\ILayoutTool.cs" />

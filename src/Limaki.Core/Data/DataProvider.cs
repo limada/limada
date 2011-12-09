@@ -33,6 +33,6 @@ namespace Limaki.Data {
         public abstract void SaveCurrent();
         public abstract IDataProvider<T> Clone();
 
-        public Action<string> StateMessage { get; set; }
+        public Action<string, int, int> Progress { get; set; }
     }
 }

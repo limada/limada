@@ -28,7 +28,7 @@ namespace Limaki.Data {
         void Close();
         void SaveCurrent();
         IDataProvider<T> Clone();
-        Action<string> StateMessage { get; set; }
+        Action<string,int,int> Progress { get; set; }
     }
 	
 	

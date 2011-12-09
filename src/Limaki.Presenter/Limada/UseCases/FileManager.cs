@@ -304,9 +304,13 @@ namespace Limada.UseCases {
                 if (thingsProvider == null)
                     return;
 
-                var provider = new SceneProvider();
-                provider.ExportTo(scene, thingsProvider, fileName);
-                thingsProvider.Close();
+                var provider = new SceneProvider() { Progress = this.Progress };
+                try {
+                    provider.ExportTo(scene, thingsProvider, fileName);
+                    thingsProvider.Close();
+                } catch(Exception ex) {
+                    Message(ex.Message,-1,-1);
+                }
             }
         }
 

@@ -12,19 +12,12 @@
  * 
  */
 
-using System;
-using System.Windows.Forms;
-using Limaki.Common;
-using Limaki.UseCases.Winform.Viewers.ToolStripViewers;
-using Limaki.UseCases.Viewers;
-using Limaki.Presenter.Visuals;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Collections.Generic;
+using System.Windows.Forms;
 using Limaki.Drawing;
-using Limaki.Presenter.Display;
-using Limaki.Visuals;
-using Limaki.Presenter;
+using Limaki.UseCases.Viewers;
 using Limaki.UseCases.Viewers.ToolStripViewers;
 
 namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {

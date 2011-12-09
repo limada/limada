@@ -30,7 +30,7 @@ namespace Limada.UseCases {
             var providers = Registry.Pool.TryGetCreate<DataProviders<IThingGraph>>();
             var result =  providers.Find(info) as IThingGraphProvider;
             if (result != null)
-                result.StateMessage = this.StateMessage;
+                result.Progress = this.Progress;
             return result;
         }
 
@@ -38,7 +38,7 @@ namespace Limada.UseCases {
             var providers = Registry.Pool.TryGetCreate<DataProviders<IEnumerable<IThing>>>();
             var result = providers.Find(info);
             if (result != null)
-                result.StateMessage = this.StateMessage;
+                result.Progress = this.Progress;
             return result;
         }
 
@@ -59,7 +59,11 @@ namespace Limada.UseCases {
             return result;
         }
 
-        public Action<string> StateMessage { get; set; }
+        public Action<string, int, int> Progress { get; set; }
+        protected virtual void Message(string m,int i, int count) {
+            if (Progress != null)
+                Progress(m,i,count);
+        }
 	}
 }
 

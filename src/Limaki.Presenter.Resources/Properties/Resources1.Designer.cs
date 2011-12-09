@@ -60,6 +60,62 @@ namespace Limaki.Presenter.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap applications_graphics {
+            get {
+                object obj = ResourceManager.GetObject("applications_graphics", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ArrageRows {
+            get {
+                object obj = ResourceManager.GetObject("ArrageRows", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ArrangeCenter {
+            get {
+                object obj = ResourceManager.GetObject("ArrangeCenter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ArrangeLeft {
+            get {
+                object obj = ResourceManager.GetObject("ArrangeLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ArrangeRight {
+            get {
+                object obj = ResourceManager.GetObject("ArrangeRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ArrangeSameSize {
+            get {
+                object obj = ResourceManager.GetObject("ArrangeSameSize", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ArrangeTreeToLeft {
+            get {
+                object obj = ResourceManager.GetObject("ArrangeTreeToLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ArrangeTreeToRight {
+            get {
+                object obj = ResourceManager.GetObject("ArrangeTreeToRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap cancel {
             get {
                 object obj = ResourceManager.GetObject("cancel", resourceCulture);
@@ -102,6 +158,13 @@ namespace Limaki.Presenter.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap emblem_downloads {
+            get {
+                object obj = ResourceManager.GetObject("emblem_downloads", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap FontBoldIcon {
             get {
                 object obj = ResourceManager.GetObject("FontBoldIcon", resourceCulture);
@@ -112,6 +175,13 @@ namespace Limaki.Presenter.Properties {
         public static System.Drawing.Bitmap FontItalicIcon {
             get {
                 object obj = ResourceManager.GetObject("FontItalicIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap fonts {
+            get {
+                object obj = ResourceManager.GetObject("fonts", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -242,6 +312,20 @@ namespace Limaki.Presenter.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap OrderLeftDown {
+            get {
+                object obj = ResourceManager.GetObject("OrderLeftDown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap OrderLeftRigh {
+            get {
+                object obj = ResourceManager.GetObject("OrderLeftRigh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap RectangleSelectToolIcon {
             get {
                 object obj = ResourceManager.GetObject("RectangleSelectToolIcon", resourceCulture);
@@ -263,6 +347,286 @@ namespace Limaki.Presenter.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap SortAscending {
+            get {
+                object obj = ResourceManager.GetObject("SortAscending", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap SortDescending {
+            get {
+                object obj = ResourceManager.GetObject("SortDescending", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_alignment {
+            get {
+                object obj = ResourceManager.GetObject("stock_alignment", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_alignment_bottom {
+            get {
+                object obj = ResourceManager.GetObject("stock_alignment_bottom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_alignment_centered {
+            get {
+                object obj = ResourceManager.GetObject("stock_alignment_centered", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_alignment_centered_vertically {
+            get {
+                object obj = ResourceManager.GetObject("stock_alignment_centered_vertically", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_alignment_left {
+            get {
+                object obj = ResourceManager.GetObject("stock_alignment_left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_alignment_right {
+            get {
+                object obj = ResourceManager.GetObject("stock_alignment_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_alignment_top {
+            get {
+                object obj = ResourceManager.GetObject("stock_alignment_top", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_book_blue {
+            get {
+                object obj = ResourceManager.GetObject("stock_book_blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_book_red {
+            get {
+                object obj = ResourceManager.GetObject("stock_book_red", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_down_with_subpoints {
+            get {
+                object obj = ResourceManager.GetObject("stock_down_with_subpoints", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_draw_text {
+            get {
+                object obj = ResourceManager.GetObject("stock_draw_text", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_export {
+            get {
+                object obj = ResourceManager.GetObject("stock_export", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_first_page {
+            get {
+                object obj = ResourceManager.GetObject("stock_first_page", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_form_line_horizontal {
+            get {
+                object obj = ResourceManager.GetObject("stock_form_line_horizontal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_form_table_control {
+            get {
+                object obj = ResourceManager.GetObject("stock_form_table_control", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_graphics_align_bottom {
+            get {
+                object obj = ResourceManager.GetObject("stock_graphics_align_bottom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_graphics_align_center {
+            get {
+                object obj = ResourceManager.GetObject("stock_graphics_align_center", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_graphics_align_centered {
+            get {
+                object obj = ResourceManager.GetObject("stock_graphics_align_centered", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_graphics_align_left {
+            get {
+                object obj = ResourceManager.GetObject("stock_graphics_align_left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_graphics_align_right {
+            get {
+                object obj = ResourceManager.GetObject("stock_graphics_align_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_graphics_align_top {
+            get {
+                object obj = ResourceManager.GetObject("stock_graphics_align_top", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_guides {
+            get {
+                object obj = ResourceManager.GetObject("stock_guides", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_insert_file {
+            get {
+                object obj = ResourceManager.GetObject("stock_insert_file", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_last_page {
+            get {
+                object obj = ResourceManager.GetObject("stock_last_page", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_left_with_subpoints {
+            get {
+                object obj = ResourceManager.GetObject("stock_left_with_subpoints", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_next {
+            get {
+                object obj = ResourceManager.GetObject("stock_next", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_next_page {
+            get {
+                object obj = ResourceManager.GetObject("stock_next_page", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_previous {
+            get {
+                object obj = ResourceManager.GetObject("stock_previous", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_previous_page {
+            get {
+                object obj = ResourceManager.GetObject("stock_previous_page", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_reload {
+            get {
+                object obj = ResourceManager.GetObject("stock_reload", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_right_with_subpoints {
+            get {
+                object obj = ResourceManager.GetObject("stock_right_with_subpoints", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_table_fit_height {
+            get {
+                object obj = ResourceManager.GetObject("stock_table_fit_height", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_table_fit_width {
+            get {
+                object obj = ResourceManager.GetObject("stock_table_fit_width", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_table_fixed {
+            get {
+                object obj = ResourceManager.GetObject("stock_table_fixed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_table_fixed_proportional {
+            get {
+                object obj = ResourceManager.GetObject("stock_table_fixed_proportional", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_table_same_height {
+            get {
+                object obj = ResourceManager.GetObject("stock_table_same_height", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_table_same_width {
+            get {
+                object obj = ResourceManager.GetObject("stock_table_same_width", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap stock_up_with_subpoints {
+            get {
+                object obj = ResourceManager.GetObject("stock_up_with_subpoints", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap StraightConnector {
             get {
                 object obj = ResourceManager.GetObject("StraightConnector", resourceCulture);
@@ -280,6 +644,13 @@ namespace Limaki.Presenter.Properties {
         public static System.Drawing.Bitmap ToggleView {
             get {
                 object obj = ResourceManager.GetObject("ToggleView", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap Undo {
+            get {
+                object obj = ResourceManager.GetObject("Undo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

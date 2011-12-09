@@ -15,7 +15,7 @@
     <PlatformID>3C41C503-53EF-4c2a-8DD4-A8217CAD115E</PlatformID>
     <OSVersion>4.20</OSVersion>
     <DeployDirSuffix>Db4objects.Db4o.Instrumentation_CF_2008</DeployDirSuffix>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+   <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FormFactorID>
     </FormFactorID>
     <FileUpgradeFlags>

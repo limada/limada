@@ -29,7 +29,7 @@ namespace Limaki.Presenter.Visuals {
             
             base.Compose(display);
 
-            var folding = new GraphSceneFolding<IVisual, IVisualEdge>();
+            IGraphSceneFolding<IVisual, IVisualEdge> folding = new GraphSceneFolding<IVisual, IVisualEdge>();
             folding.SceneHandler = this.GraphScene;
             folding.Layout = this.Layout;
             folding.DeviceRenderer = display.DeviceRenderer;

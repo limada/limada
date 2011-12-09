@@ -13,6 +13,7 @@
  */
 
 
+using System.ComponentModel;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Presenter.UI;
@@ -20,7 +21,34 @@ using Limaki.Graphs;
 
 
 namespace Limaki.Presenter.UI {
-    public class GraphSceneFolding<TItem, TEdge> : KeyActionBase, ICheckable
+    public interface IGraphSceneFolding<TItem, TEdge> : IKeyAction
+        where TItem: class 
+        where TEdge: TItem, IEdge<TItem> {
+
+        IDeviceRenderer DeviceRenderer { get; set; }
+        ISelectionRenderer MoveResizeRenderer { get; set; }
+        Get<IGraphLayout<TItem, TEdge>> Layout { get; set; }
+        Get<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
+        GraphSceneFacade<TItem, TEdge> Folder { get; set; }
+
+        [Browsable(false)]
+        bool Resolved { get; }
+
+        [Browsable(false)]
+        bool Exclusive { get; }
+
+        bool Enabled { get; set; }
+        int Priority { get; set; }
+
+        void Clear();
+        void OnKeyDown( KeyActionEventArgs e );
+        bool Check();
+        void OnKeyPress( KeyActionPressEventArgs e );
+        void OnKeyUp( KeyActionEventArgs e );
+        void Dispose();
+    }
+
+    public class GraphSceneFolding<TItem, TEdge> : KeyActionBase, ICheckable, IGraphSceneFolding<TItem, TEdge> 
         where TItem:class where TEdge : TItem, IEdge<TItem> {
 
         public GraphSceneFolding(): base() {}

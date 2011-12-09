@@ -105,7 +105,7 @@ namespace Limada.Data {
         }
 
         public override IDataProvider<IThingGraph> Clone() {
-            return new XMLThingGraphProvider() { StateMessage = this.StateMessage };
+            return new XMLThingGraphProvider() { Progress = this.Progress };
         }
     }
 }

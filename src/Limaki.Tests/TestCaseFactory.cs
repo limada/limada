@@ -81,9 +81,7 @@ namespace Limaki.Tests.UseCases {
            
             new ToolStripMenuItem("Test", null, new ToolStripMenuItem[] {
 
-            new ToolStripMenuItem("Repair Database", null, (s, e) => {
-                this.RepairDatabase(useCase);
-            }), 
+          
             new ToolStripMenuItem("Open Testcase...", null, (s, e) => {
                 this.ExampleOpen (useCase);
             }),
@@ -106,6 +104,9 @@ namespace Limaki.Tests.UseCases {
             new ToolStripMenuItem("SchemaFilter off", null, (s, e) =>{
                 this.NoSchemaThingGraph (useCase);
             }),
+            new ToolStripMenuItem("Repair Database", null, (s, e) => {
+                this.RepairDatabase(useCase);
+            }), 
             new ToolStripMenuItem("current problem", null, (s, e) =>{
                 this.currentProblem (useCase);
             }),
@@ -117,9 +118,9 @@ namespace Limaki.Tests.UseCases {
 
         public void ExampleOpen(UseCase useCase) {
 
-            OpenExampleData dialog = new OpenExampleData();
+            var dialog = new OpenExampleData();
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                ExampleData.ITypeChoose testData = dialog.ExampleData.Selected;
+                var testData = dialog.ExampleData.Selected;
                 testData.Data.Count = (int)dialog.numericUpDown1.Value;
                 SetTestData(useCase.SplitView, testData.Data);
             }
@@ -127,25 +128,9 @@ namespace Limaki.Tests.UseCases {
 
         }
 
-        public void ShowQuadTree(IGraphScene<IVisual, IVisualEdge> scene) {
-            var form = new Form ();
-            var display = new WinformVisualsDisplay ();
-            display.Dock = DockStyle.Fill;
-            form.Controls.Add (display);
-
-            var quadTreeVisualizer = new QuadTreeVisualizer ();
-            quadTreeVisualizer.VisualsDisplay = display.Display as GraphSceneDisplay<IVisual, IVisualEdge>;
-            quadTreeVisualizer.Data = (scene.SpatialIndex as QuadTreeIndex).GeoIndex;
-
-            
-            form.FormClosing += (s, e) => e=null;
-            form.Show ();
-            
-
-        }
+       
         public void SetTestData(SplitView0 target, ISceneFactory factory) {
-            Scene scene = new Scene();
-            scene = factory.Scene;
+            var scene = factory.Scene;
 
             IGraph<IVisual, IVisualEdge> data = null;
             if (factory is GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>) {
@@ -158,6 +143,22 @@ namespace Limaki.Tests.UseCases {
             target.ChangeData(scene);
         }
 
+        public void ShowQuadTree(IGraphScene<IVisual, IVisualEdge> scene) {
+            var form = new Form();
+            var display = new WinformVisualsDisplay();
+            display.Dock = DockStyle.Fill;
+            form.Controls.Add(display);
+
+            var quadTreeVisualizer = new QuadTreeVisualizer();
+            quadTreeVisualizer.VisualsDisplay = display.Display as GraphSceneDisplay<IVisual, IVisualEdge>;
+            quadTreeVisualizer.Data = (scene.SpatialIndex as QuadTreeIndex).GeoIndex;
+
+
+            form.FormClosing += (s, e) => e = null;
+            form.Show();
+
+
+        }
         public void WCFServiceTest(UseCase sender) {
 #if WCF
             DataBaseInfo info = new DataBaseInfo();

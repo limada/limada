@@ -13,10 +13,17 @@
  */
 
 namespace Limaki.UseCases.Viewers.ToolStripViewers {
-    public abstract class ToolController<TDisplay, TTool> {
+    public abstract class ToolController<TDisplay, TTool>
+        where TDisplay : class {
+        
         public virtual TTool Tool { get; set; }
         public virtual TDisplay CurrentDisplay { get; set; }
-        public abstract void Attach(object sender);
+
+        public virtual void Attach(object sender) {
+            var display = sender as TDisplay;
+            if (display != null)
+                CurrentDisplay = display;
+        }
         public abstract void Detach(object sender);
     }
 }

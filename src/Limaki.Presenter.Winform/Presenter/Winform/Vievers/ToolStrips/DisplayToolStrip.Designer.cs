@@ -167,14 +167,15 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             this.Dock = System.Windows.Forms.DockStyle.None;
             this.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                             this.selectButton,
-                                                                             this.toolStripSeparator2,
-                                                                             this.LayoutButton,
-                                                                             this.zoomButton,
-                                                                             this.moveButton,
-                                                                             this.toolStripSeparator1,
-                                                                             this.AddVisualButton,
-                                                                             this.connectorButton});
+                this.selectButton,
+                //this.toolStripSeparator2,
+                //this.LayoutButton,
+                this.zoomButton,
+                this.moveButton,
+                //this.toolStripSeparator1,
+                //this.AddVisualButton,
+                //this.connectorButton
+            });
             this.Name = "sceneTools";
             this.Size = new System.Drawing.Size(178, 27);
             this.Text = "Scene Tools";

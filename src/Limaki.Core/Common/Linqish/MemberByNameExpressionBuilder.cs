@@ -69,7 +69,7 @@ namespace Limada.Common.Linqish {
         #endregion
 
         #region Expression-Builder
-        
+
         /// <summary>
         /// builds an Expression of Type: 
         /// Expression<Func<TSource,TKey>> keySelector = e => e.Member
@@ -80,7 +80,7 @@ namespace Limada.Common.Linqish {
         /// <returns></returns>
         public Tuple<Expression, Type> KeySelector<TSource>(string memberName) {
             if (!IsValidMemberName<TSource>(memberName))
-                throw new ArgumentException(typeof(TSource).FullName+" has no member with Name "+memberName);
+                throw new ArgumentException(typeof(TSource).FullName + " has no member with Name " + memberName);
 
             var memberInfo = SourceMemberInfoFromCache<TSource>(memberName); // TSource.Member
             var keyType = memberInfo.PropertyType; // typeof(TKey)
@@ -108,7 +108,7 @@ namespace Limada.Common.Linqish {
         }
 
         protected PropertyInfo GetMemberInfo<TSource>(string memberName) {
-            return typeof (TSource).GetProperty(memberName);
+            return typeof(TSource).GetProperty(memberName);
         }
 
         public bool IsValidMemberName<TSource>(string memberName) {
@@ -122,7 +122,7 @@ namespace Limada.Common.Linqish {
         protected static IDictionary<Tuple<Type, string>, PropertyInfo> SourceMemberInfos = new Dictionary<Tuple<Type, string>, PropertyInfo>();
         protected PropertyInfo SourceMemberInfoFromCache<TSource>(string memberName) {
             PropertyInfo memberInfo = null;
-            var cacheKey = Tuple.Create(typeof (TSource), memberName);
+            var cacheKey = Tuple.Create(typeof(TSource), memberName);
             if (!SourceMemberInfos.TryGetValue(cacheKey, out memberInfo)) {
                 memberInfo = GetMemberInfo<TSource>(memberName);
                 SourceMemberInfos.Add(cacheKey, memberInfo);
@@ -158,7 +158,7 @@ namespace Limada.Common.Linqish {
         public IQueryable<TSource> OrderByKey<TSource, TKey>(IQueryable<TSource> source, Expression<Func<TSource, TKey>> keySelector) {
             return OrderBySelectorAndType(source, keySelector, typeof(TKey), "OrderBy");
         }
-        
+
 
         #endregion
     }

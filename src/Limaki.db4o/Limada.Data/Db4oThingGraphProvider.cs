@@ -93,12 +93,12 @@ namespace Limada.Data {
         }
         
         public override IDataProvider<IThingGraph> Clone() {
-            return new Db4oThingGraphProvider(){StateMessage = this.StateMessage};
+            return new Db4oThingGraphProvider(){Progress = this.Progress};
         }
 
         public override void RawImport(DataBaseInfo source, IDataProvider<IThingGraph> target) {
             var repairer = new Limada.Data.db4o.Db4oRepairer();
-            repairer.WriteDetail = this.StateMessage;
+            repairer.WriteDetail = m=> this.Progress(m,-1,-1);
             repairer.RawImport(source, target, true);
             //base.RawImport(source, target);
         }

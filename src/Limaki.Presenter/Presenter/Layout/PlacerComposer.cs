@@ -10,7 +10,7 @@ namespace Limaki.Presenter.Layout {
             this.Proxy = aligner.Proxy;
         }
 
-        public Func<RectangleI> Extents(ref Action<TItem> visitor) {
+        public Func<RectangleI> Bounds(ref Action<TItem> visitor) {
             var l = int.MaxValue;
             var t = int.MaxValue;
             var b = int.MinValue;

@@ -44,5 +44,7 @@ namespace Limada.View {
         Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
         Action<IGraphScene<IVisual, IVisualEdge>> BeforeClose { get; set; }
         Action<IGraphScene<IVisual, IVisualEdge>> AfterClose { get; set; }
+
+        Action<string,int,int> Progress { get; set; }
     }
 }

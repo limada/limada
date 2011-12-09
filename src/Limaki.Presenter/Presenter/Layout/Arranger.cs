@@ -167,9 +167,9 @@ namespace Limaki.Presenter.Layout {
             }
 
             bool collissionDetected = false;
-            int max = 100;
-            while (collission && max>0) {
-                max--;
+            int iterations = 100;
+            while (collission && iterations > 0) {
+                iterations--;
                 collission = false;
                 //stripe.X = stripe.X - Layout.Distance.Width+1;
                 var l = from item in Data.ElementsIn(stripe)
@@ -180,13 +180,15 @@ namespace Limaki.Presenter.Layout {
                 foreach (var bounds in l) {
                     if (Orientation == Orientation.LeftRight) {
                         if (bounds.X < stripe.X || bounds.Right > stripe.Right) {
-                            if (stripe.X < startStripe.Bottom) {
-                                moveDown(bounds);
-                                orderBy = orderByB;
-                            } else {
-                                moveRight(bounds);
-                                orderBy = orderByB;
-                            }
+                            moveRight(bounds);
+                            orderBy = orderByB;
+                            //if (stripe.X < startStripe.Bottom) {
+                            //    moveDown(bounds);
+                            //    orderBy = orderByB;
+                            //} else {
+                            //    moveRight(bounds);
+                            //    orderBy = orderByB;
+                            //}
                         } else {
                             moveDown(bounds);
                             orderBy = orderByR;

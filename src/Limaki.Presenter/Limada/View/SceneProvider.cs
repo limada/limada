@@ -168,7 +168,7 @@ namespace Limada.View {
                 var thing = scene.Graph.ThingOf(visuals.First());
                 var schema = new DocumentSchema(scene.Graph.ThingGraph(), thing);
                 if (schema.HasPages())
-                    things = schema.Pages().OrderBy(page => page, new ThingComparer());
+                    things = schema.OrderedPages();
                 var report = exporter as IReport;
                 if(report!=null) {
                     report.Options.MarginBottom = 0;
@@ -192,6 +192,7 @@ namespace Limada.View {
         public Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
         public Action<IGraphScene<IVisual, IVisualEdge>> BeforeClose { get; set; }
         public Action<IGraphScene<IVisual, IVisualEdge>> AfterClose { get; set; }
+        public Action<string,int,int> Progress { get; set; }
 
     }
 }
