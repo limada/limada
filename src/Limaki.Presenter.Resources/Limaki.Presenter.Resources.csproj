@@ -130,6 +130,10 @@
     <Content Include="Properties\Resources\ItemLayout.png" />
     <Content Include="Properties\Resources\window-close.png" />
     <Content Include="Properties\Resources\ZoomToolIcon.png" />
+    <None Include="Resources\stock_form-line-onerow.png" />
+    <None Include="Resources\format-justify-top.png" />
+    <None Include="Resources\format-justify-bottom.png" />
+    <None Include="Resources\format-justify-middle.png" />
     <None Include="Resources\gtk-sort-descending.png" />
     <None Include="Resources\gtk-sort-ascending.png" />
     <None Include="Resources\OrderLeftRigh.png" />

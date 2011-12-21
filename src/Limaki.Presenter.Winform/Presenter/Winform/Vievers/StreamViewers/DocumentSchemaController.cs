@@ -101,14 +101,11 @@ namespace Limaki.Presenter.Winform.Controls {
             pages.ForEach(page => display.Data.Add(page));
 
             var distance = display.Layout.Distance;
-            display.Layout.Distance = this.Border;
             display.Layout.Border = this.Border;
 
             var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
-            alligner.OneRow(pages, new PointI(this.Border));
+            alligner.OneColumn(pages, new PointI(this.Border),this.Border.Height);
             alligner.Proxy.Commit(alligner.Data);
-
-            display.Layout.Distance = distance;
 
             display.DataId = 0;
             new State { Hollow = true }.CopyTo(display.State);

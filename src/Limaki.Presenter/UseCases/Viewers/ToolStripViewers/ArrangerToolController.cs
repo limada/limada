@@ -66,17 +66,14 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
         public virtual void Undo() {
             Undo(CurrentDisplay);
         }
-        public virtual void Align(AllignerOptions options) {
-            Call(CurrentDisplay, (alligner, items) => alligner.Allign(items, options));
+       
+        public virtual void Columns(AllignerOptions options) {
+            Call(CurrentDisplay, (alligner, items) => alligner.Columns(items, options));
         }
-        public virtual void Distribute(AllignerOptions options) {
-            Call(CurrentDisplay, (alligner, items) => alligner.Distribute(items, options));
+        public void OneColumn(AllignerOptions options) {
+            Call(CurrentDisplay, (alligner, items) => alligner.OneColumn(items, options));
         }
-        public virtual void Rows(AllignerOptions options) {
-            Call(CurrentDisplay, (alligner, items) => alligner.Rows(items, options));
-        }
-
-        public virtual void FullLayout(AllignerOptions options) {
+        public virtual void LogicalLayout(AllignerOptions options) {
             var display = this.CurrentDisplay;
             if (display != null) {
                 display.BackColor = display.StyleSheet.BackColor;
@@ -85,5 +82,7 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
             }
         }
 
+
+        
     }
 }

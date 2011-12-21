@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\ViewContextRecourceLoader.cs" />
+    <Compile Include="Drawing\DrawingExtensions.cs" />
     <Compile Include="Drawing\DrawingPrimitivesSerializer.cs" />
     <Compile Include="Drawing\GrahamConvexHull.cs" />
     <Compile Include="Drawing\Alignement.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Presenter\IZoomTarget.cs" />
     <Compile Include="Presenter\Layout\AllignComposer.cs" />
     <Compile Include="Presenter\Layout\Alligner.cs" />
+    <Compile Include="Presenter\Layout\AllignerOptions.cs" />
     <Compile Include="Presenter\Layout\Placer.cs" />
     <Compile Include="Presenter\Layout\GraphLayout.cs" />
     <Compile Include="Presenter\Layout\Layout.cs" />

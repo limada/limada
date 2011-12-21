@@ -10,6 +10,7 @@ namespace Limaki.Presenter.Layout {
         /// testing if too much visits
         /// </summary>
         internal int visits = 0;
+    
 
         public virtual void Allign(ref Action<TItem> visitor, HorizontalAlignment alignment, RectangleI space) {
             Allign(ref visitor, alignment, space, item => Proxy.GetLocation(item).Y);
@@ -58,13 +59,31 @@ namespace Limaki.Presenter.Layout {
             };
         }
 
-        public virtual void Distribute(ref Action<TItem> visitor, int start, int space, Distribution distribution) {
+        public Func<TItem, int> Location(int start, int distance, Distribution distribution) {
+            int? i = null;
+            return item => {
+                var result = start;
+                if (i.HasValue) 
+                    result = i.Value;
+               else 
+                    i = start;
+                
+                if (distribution == Distribution.Vertical) 
+                    i += Proxy.GetSize(item).Height + distance;
+                else 
+                    i += Proxy.GetSize(item).Width + distance;
+                
+                return result;
+            };
+        }
+
+        public virtual void Locate(ref Action<TItem> visitor, int start, int space, Distribution distribution) {
             
             var i = start;
             visitor += item => {
                 var location = Proxy.GetLocation(item);
                 var size = Proxy.GetSize(item);
-                if (distribution == Distribution.Y) {
+                if (distribution == Distribution.Vertical) {
                     Proxy.SetLocation(item, new PointI(location.X, i));
                     i += size.Height + space;
                 } else {
@@ -74,10 +93,36 @@ namespace Limaki.Presenter.Layout {
             };
         }
 
-      
+        #region deprectated
+        public Func<TItem, int> Yer(PointI at) {
+            int? rowStart = null;
+            return item => {
+                var result = at.Y;
+                if (rowStart.HasValue) {
+                    result = rowStart.Value;
+                } else {
+                    rowStart = at.Y;
+                }
+                rowStart += Proxy.GetSize(item).Height + Layout.Distance.Height;
+                return result;
+            };
+        }
+        public Func<TItem, int> Xer(PointI at) {
+            int? rowStart = null;
+            return item => {
+                var result = at.Y;
+                if (rowStart.HasValue) {
+                    result = rowStart.Value;
+                } else {
+                    rowStart = at.Y;
+                }
+                rowStart += Proxy.GetSize(item).Height + Layout.Distance.Height;
+                return result;
+            };
+        }
+        #endregion   
     }
 
-    public enum Distribution {
-        X,Y
-    }
+
+    
 }

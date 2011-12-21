@@ -74,6 +74,20 @@ namespace Limaki.Presenter.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap ArragneBottom {
+            get {
+                object obj = ResourceManager.GetObject("ArragneBottom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ArragneTop {
+            get {
+                object obj = ResourceManager.GetObject("ArragneTop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap ArrangeCenter {
             get {
                 object obj = ResourceManager.GetObject("ArrangeCenter", resourceCulture);
@@ -84,6 +98,20 @@ namespace Limaki.Presenter.Properties {
         public static System.Drawing.Bitmap ArrangeLeft {
             get {
                 object obj = ResourceManager.GetObject("ArrangeLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ArrangeMiddle {
+            get {
+                object obj = ResourceManager.GetObject("ArrangeMiddle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ArrangeOneRow {
+            get {
+                object obj = ResourceManager.GetObject("ArrangeOneRow", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
