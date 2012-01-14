@@ -16,6 +16,16 @@ namespace Limaki.Presenter.Winform {
                 return SystemInformation.DoubleClickTime;
             }
         }
+        public int VerticalScrollBarWidth {
+            get {
+                return SystemInformation.VerticalScrollBarWidth;
+            }
+        }
+        public int HorizontalScrollBarHeight {
+            get {
+                return SystemInformation.HorizontalScrollBarHeight;
+            }
+        }
     }
 
 }

@@ -7,6 +7,8 @@ using ID = System.Int64;
 using Limaki.Presenter.Layout;
 using Limaki.Presenter.UI;
 using Limaki.Drawing;
+using System.Linq;
+using Limaki.Graphs.Extensions;
 
 namespace Limaki.UseCases.Viewers.ToolStripViewers {
 
@@ -25,13 +27,30 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
         public override void Attach(object sender) {
             base.Attach(sender);
         }
+        //public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Alligner<IVisual, IVisualEdge>> call) {
+        //    if (display == null)
+        //        return;
 
+        //    var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
+        //    var items = display.Data.Selected.Elements;
+        //    call(alligner);
+        //    StoreUndo(display, alligner, items);
+        //    alligner.Proxy.Commit(alligner.Data);
+        //    display.Execute();
+        //}
         public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Alligner<IVisual, IVisualEdge>, IEnumerable<IVisual>> call) {
             if (display == null)
                 return;
 
+            Call(display, call, display.Data.Selected.Elements);
+        }
+
+        public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Alligner<IVisual, IVisualEdge>, IEnumerable<IVisual>> call, IEnumerable<IVisual> items) {
+            if (display == null)
+                return;
+
             var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
-            var items = display.Data.Selected.Elements;
+            
             call(alligner, items);
             StoreUndo(display, alligner, items);
             alligner.Proxy.Commit(alligner.Data);
@@ -73,7 +92,7 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
         public void OneColumn(AllignerOptions options) {
             Call(CurrentDisplay, (alligner, items) => alligner.OneColumn(items, options));
         }
-        public virtual void LogicalLayout(AllignerOptions options) {
+        public virtual void LogicalLayout0(AllignerOptions options) {
             var display = this.CurrentDisplay;
             if (display != null) {
                 display.BackColor = display.StyleSheet.BackColor;
@@ -82,7 +101,17 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
             }
         }
 
-
+        public virtual void LogicalLayout(AllignerOptions options) {
+            var display = this.CurrentDisplay;
+            if (display != null) {
+                var selected = display.Data.Selected.Elements;
+                var root = display.Data.Focused;
+                if (selected.Count() == 1) {
+                    selected = new Walker<IVisual, IVisualEdge>(display.Data.Graph).DeepWalk(root, 0).Select(l => l.Node);
+                }
+                Call(CurrentDisplay, (alligner, items) => alligner.Columns(root, items, options), selected);
+            }
+        }
         
     }
 }

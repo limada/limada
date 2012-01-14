@@ -27,7 +27,7 @@
 //
 
 
-#if USEMONO_40
+#if ! NET40
 using System;
 
 namespace System {

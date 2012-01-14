@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Limaki.Graphs;
+using Limaki.Graphs.Extensions;
 using Limaki.Drawing;
 using System.Linq;
 using System;
@@ -12,10 +13,6 @@ namespace Limaki.Presenter.Layout {
         public Alligner(IGraphScene<TItem, TEdge> data, IGraphLayout<TItem, TEdge> layout):base(data,layout) {}
 
         public Alligner(PlacerBase<TItem, TEdge> aligner) : base(aligner) { }
-
-       
-
-       
 
         public virtual void Justify(IEnumerable<TItem> items) {
             var alligner = new AllignComposer<TItem, TEdge>(this);
@@ -97,7 +94,7 @@ namespace Limaki.Presenter.Layout {
             var placer = new PlacerComposer<TItem, TEdge>(this);
             var aligner = new AllignComposer<TItem, TEdge>(this);
 
-            var comparer = new Limaki.Drawing.Shapes.PointComparer { Order = PointOrder.TopToBottom };
+            var comparer = new Limaki.Drawing.Shapes.PointComparer { Order = options.PointOrder };
             comparer.Delta = Layout.StyleSheet.AutoSize.Width /2;
 
             var walk = items.Select(item => new { location = comparer.Round(Proxy.GetLocation(item)), item });
@@ -107,6 +104,7 @@ namespace Limaki.Presenter.Layout {
             // align X
             int? rowStart = null;
             int top = int.MaxValue;
+            int left = int.MaxValue;
             var rows = new Queue<Tuple<IEnumerable<TItem>, SizeI>>();
             var maxSize = new SizeI();
             foreach (var row in walk.GroupBy(row => row.location.X).OrderBy(row=>row.Key)) {
@@ -126,28 +124,117 @@ namespace Limaki.Presenter.Layout {
                 bounds.Width = size.Width;
                 if (rowStart.HasValue)
                     bounds.X = rowStart.Value;
+
                 if (top > bounds.Y)
                     top = bounds.Y;
-
-                maxSize = maxSize.Max(size);
+                if (left > bounds.X)
+                    left = bounds.X;
+                maxSize = maxSize.Max(bounds.Size);
                 
                 rowStart = bounds.X + size.Width + Layout.Distance.Width;
 
                 aligner.Allign(ref visit, horizontalAlignment, bounds);
                 //aligner.Distribute(ref visit, bounds.Y, Layout.Distance.Height, Distribution.Y);
                 VisitItems(rowItems, visit);
-                rows.Enqueue(Tuple.Create(rowItems as IEnumerable<TItem>, size));
+                rows.Enqueue(Tuple.Create(rowItems as IEnumerable<TItem>, bounds.Size));
             }
 
-
+            var rowX = left;
+            var rowY = top;
             while (rows.Count > 0) {
                 var row = rows.Dequeue();
                 visit = null;
-                aligner.Locate(ref visit, top, Layout.Distance.Height, Distribution.Vertical);
+                var size = row.Item2;
+
+                if (verticalAlignment == VerticalAlignment.Center)
+                    rowY = top + (maxSize.Height - size.Height) / 2;
+                if (verticalAlignment == VerticalAlignment.Bottom)
+                    rowY = top + (maxSize.Height - size.Height);
+
+                aligner.Locate(ref visit, rowY, Layout.Distance.Height, Distribution.Vertical);
                 VisitItems(row.Item1, visit);
             }
         }
+        
+        public virtual void Columns(TItem root, IEnumerable<TItem> items, AllignerOptions options) {
+            
+            if (root == null || items == null)
+                return;
+            
+            var itemCache = new HashSet<TItem>(items);
+            if (itemCache.Count == 0)
+                return;
 
+            var verticalAlignment = options.VerticalAlignment;
+            var horizontalAlignment = options.HorizontalAlignment;
+
+            var placer = new PlacerComposer<TItem, TEdge>(this);
+            var aligner = new AllignComposer<TItem, TEdge>(this);
+
+            var comparer = new Limaki.Drawing.Shapes.PointComparer {Order = options.PointOrder};
+            comparer.Delta = Layout.StyleSheet.AutoSize.Width / 2;
+
+            var walk = new Walker<TItem, TEdge>(this.Graph).DeepWalk(root, 1)
+                .Where(l => itemCache.Contains(l.Node)&&!(l.Node is TEdge));
+
+
+            int top = int.MaxValue;
+            int left = int.MaxValue;
+
+            var rows = new Queue<Tuple<IEnumerable<TItem>, SizeI>>();
+            var maxSize = new SizeI();
+
+            Action<TItem> visit = null;
+
+            foreach (var row in walk.GroupBy(row => row.Level)) {
+                if (row.Count() == 0)
+                    continue;
+
+                visit = null;
+                placer.AffectedEdges(ref visit);
+                var fBounds = placer.Bounds(ref visit);
+                var fSize = placer.MinSize(ref visit);
+
+                var rowItems = row.Select(r => r.Node).OrderBy(item => Proxy.GetLocation(item).Y);
+                VisitItems(rowItems, visit);
+
+                visit = null;
+
+                var bounds = fBounds();
+                var size = fSize();
+                bounds.Width = size.Width;
+
+                if (top > bounds.Y)
+                    top = bounds.Y;
+                if (left > bounds.X)
+                    left = bounds.X;
+                maxSize = maxSize.Max(bounds.Size);
+
+                rows.Enqueue(Tuple.Create(rowItems as IEnumerable<TItem>, bounds.Size));
+            }
+
+            var rowX = left;
+            var rowY = top;
+            while (rows.Count > 0) {
+                var row = rows.Dequeue();
+                var size = row.Item2;
+
+                if (verticalAlignment == VerticalAlignment.Center)
+                    rowY = top + (maxSize.Height - size.Height) / 2;
+                if (verticalAlignment == VerticalAlignment.Bottom)
+                    rowY = top + (maxSize.Height - size.Height);
+
+                var bounds = new RectangleI(rowX, rowY, size.Width, size.Height);
+               
+                rowX = bounds.X + size.Width + Layout.Distance.Width;
+                
+                visit = null;
+
+                aligner.Allign(ref visit, horizontalAlignment, bounds);
+                aligner.Locate(ref visit, rowY, Layout.Distance.Height, Distribution.Vertical);
+                VisitItems(row.Item1, visit);
+            }
+        }
         #region Depracated
         public virtual void Distribute(IEnumerable<TItem> items, AllignerOptions options) {
             var placer = new PlacerComposer<TItem, TEdge>(this);

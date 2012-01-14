@@ -19,5 +19,7 @@ namespace Limaki.Presenter.UI {
     public interface IUISystemInformation {
         SizeI DragSize { get; }
         int DoubleClickTime { get; }
+        int VerticalScrollBarWidth { get; }
+        int HorizontalScrollBarHeight { get; }
     }
 }

@@ -74,16 +74,9 @@ namespace Limaki.Presenter.Properties {
             }
         }
         
-        public static System.Drawing.Bitmap ArragneBottom {
+        public static System.Drawing.Bitmap ArrangeBottom {
             get {
-                object obj = ResourceManager.GetObject("ArragneBottom", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        public static System.Drawing.Bitmap ArragneTop {
-            get {
-                object obj = ResourceManager.GetObject("ArragneTop", resourceCulture);
+                object obj = ResourceManager.GetObject("ArrangeBottom", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -126,6 +119,13 @@ namespace Limaki.Presenter.Properties {
         public static System.Drawing.Bitmap ArrangeSameSize {
             get {
                 object obj = ResourceManager.GetObject("ArrangeSameSize", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ArrangeTop {
+            get {
+                object obj = ResourceManager.GetObject("ArrangeTop", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

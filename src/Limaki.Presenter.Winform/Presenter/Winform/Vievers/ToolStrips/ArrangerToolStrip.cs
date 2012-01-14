@@ -46,7 +46,10 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             Action action = () => Columns(options);
 
             var logicalLayout = new ToolStripCommand {
-                Action = (s) => LogicalLayout(options),
+                Action = (s) => {
+                    action = () => LogicalLayout(options);
+                    action();
+                },
                 Image = Limaki.Presenter.Properties.Resources.ModifyLayout24,
                 Size = size,
             };
@@ -97,7 +100,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
                     options.VerticalAlignment = Limaki.Drawing.VerticalAlignment.Top;
                     action();
                 },
-                Image = Limaki.Presenter.Properties.Resources.ArragneTop,
+                Image = Limaki.Presenter.Properties.Resources.ArrangeTop,
                 Size = size,
             };
             var arrangeCenterV = new ToolStripCommand {
@@ -113,7 +116,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
                     options.VerticalAlignment = Limaki.Drawing.VerticalAlignment.Bottom;
                     action();
                 },
-                Image = Limaki.Presenter.Properties.Resources.ArragneBottom,
+                Image = Limaki.Presenter.Properties.Resources.ArrangeBottom,
                 Size = size,
             };
 
@@ -132,11 +135,13 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
                   new ToolStripMenuItemEx {Command=arrangeCenterV,ToggleOnClick=verticalButton},
                   new ToolStripMenuItemEx {Command=arrangeBottom,ToggleOnClick=verticalButton},
             });
+
             var layoutButton = new ToolStripDropDownButtonEx { Command = logicalLayout };
             layoutButton.DropDownItems.AddRange(new ToolStripItem[] {
                 new ToolStripMenuItemEx {Command=columns,ToggleOnClick=layoutButton},    
                 new ToolStripMenuItemEx {Command=oneColumn,ToggleOnClick=layoutButton},          
             });
+
             this.Items.AddRange(new ToolStripItem[] {
                 layoutButton,
                 horizontalButton,

@@ -78,7 +78,7 @@ namespace Limaki.Presenter.Layout {
         }
 
         public virtual void Locate(ref Action<TItem> visitor, int start, int space, Distribution distribution) {
-            
+
             var i = start;
             visitor += item => {
                 var location = Proxy.GetLocation(item);
@@ -87,7 +87,7 @@ namespace Limaki.Presenter.Layout {
                     Proxy.SetLocation(item, new PointI(location.X, i));
                     i += size.Height + space;
                 } else {
-                    Proxy.SetLocation(item, new PointI(i,location.Y));
+                    Proxy.SetLocation(item, new PointI(i, location.Y));
                     i += size.Width + space;
                 }
             };

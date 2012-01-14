@@ -100,7 +100,7 @@ namespace Limaki.Presenter.UI {
                     Scene.Focused = default(TItem);
                     Scene.Selected.Remove(last);
                     Current = default(TItem);
-                } else {
+                } else if (e.Modifiers != ModifierKeys.Control) {
                     Scene.Focused = Current;
                 }
 
