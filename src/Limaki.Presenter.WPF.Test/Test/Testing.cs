@@ -22,7 +22,7 @@ namespace Limaki.WPF008 {
 
         public WPFVisualsDisplay CreateDisplay() {
             WPFVisualsDisplay display = new WPFVisualsDisplay();
-            display.Background = new SolidColorBrush(Colors.White);
+            display.Background = new SolidColorBrush(System.Windows.Media.Colors.White);
             return display;
         }
 

@@ -8,6 +8,5 @@ namespace Limaki.Graphs {
         TEdge CreateEdge<T>(T data);
         TEdge CreateEdge(TItem root, TItem leaf, object data);
 
-        IEnumerable<Type> KnownClasses { get; }
     }
 }

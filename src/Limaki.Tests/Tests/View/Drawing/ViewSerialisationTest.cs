@@ -38,7 +38,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         [Test]
         public void ColorTest() {
             var ser = new DrawingPrimitivesSerializer();
-            var item = Color.Black;
+            var item = Colors.Black;
 
 
             var node = new XElement ("ColorTest");
@@ -53,7 +53,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         [Test]
         public void PenTest() {
             var ser = new DrawingPrimitivesSerializer();
-            var item = new Pen(Color.Red);
+            var item = new Pen(Colors.Red);
             item.Thickness = 5;
             item.LineJoin = PenLineJoin.Miter;
             item.StartCap = PenLineCap.Flat;

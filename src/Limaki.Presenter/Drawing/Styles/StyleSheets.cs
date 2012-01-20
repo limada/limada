@@ -52,22 +52,22 @@ namespace Limaki.Drawing {
             if (name == "TealSmoke") {
                 var style = StyleSheet.CreateStyleWithSystemSettings();
                 style.Name = name + "." + StyleNames.BaseStyle;
-                style.FillColor = Color.FromArgb(200, Color.WhiteSmoke);
-                style.PenColor = Color.FromArgb(200, Color.Teal);
+                style.FillColor = Color.FromArgb(200, Colors.WhiteSmoke);
+                style.PenColor = Color.FromArgb(200, Colors.Teal);
                 //style.Pen.Color = style.PenColor;
                 style.Font = CreateFont(style.Font.FontFamily, 10);
                 _styleSheet = new StyleSheet(name, style);
-                _styleSheet.ItemStyle.SelectedStyle.FillColor = Color.Teal;
-                _styleSheet.ItemStyle.SelectedStyle.TextColor = Color.WhiteSmoke;
-                _styleSheet.ItemStyle.HoveredStyle.FillColor = Color.MintCream;
+                _styleSheet.ItemStyle.SelectedStyle.FillColor = Colors.Teal;
+                _styleSheet.ItemStyle.SelectedStyle.TextColor = Colors.WhiteSmoke;
+                _styleSheet.ItemStyle.HoveredStyle.FillColor = Colors.MintCream;
 
             }
 
             if (name == "WhiteGlass") {
                 var style = StyleSheet.CreateStyleWithSystemSettings();
                 style.Name = name + "." + StyleNames.BaseStyle;
-                style.FillColor = Color.FromArgb(200, Color.White);
-                style.PenColor = Color.FromArgb(200, Color.White);
+                style.FillColor = Color.FromArgb(200, Colors.White);
+                style.PenColor = Color.FromArgb(200, Colors.White);
                 //style.Pen.Color = style.PenColor;
                 style.Font = (Font)SystemFonts.MessageBoxFont.Clone();
 

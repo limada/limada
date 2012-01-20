@@ -19,7 +19,7 @@ using Limaki.Drawing.Shapes;
 using GDIFont=Limaki.Drawing.GDI.GDIFont;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class StringPainter : StringPainterBase {
+    public class StringPainter : StringPainterBase,IPainter<string> {
         #region helper methods
 
         protected SolidBrush _brush = null;

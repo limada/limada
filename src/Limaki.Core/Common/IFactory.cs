@@ -14,6 +14,7 @@
 
 
 using System;
+using System.Collections.Generic;
 
 namespace Limaki.Common {
     public interface IFactory {
@@ -24,18 +25,19 @@ namespace Limaki.Common {
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        Type Clazz ( Type type );
+        //Type Clazz ( Type type );
 
         Type Clazz<T>();
+        IEnumerable<Type> KnownClasses { get; }
         bool Contains<T>();
-
+        bool Contains(Type type);
         object Create ( Type type );
 
         /// <summary>
         /// calls the default-construtor of the class
         /// which is associated with interface T
         /// <code>T o = TranslatedType.New();</code>
-        /// <seealso cref="FactoryBase.Clazz"/>
+        /// <seealso cref="Factory.Clazz"/>
         /// </summary>
         /// <typeparam name="T">interface to translate</typeparam>
         /// <returns>new object of translated class</returns>
@@ -44,14 +46,14 @@ namespace Limaki.Common {
         /// <summary>
         /// calls the default-construtor of the class TOuter#TInner#
         /// which is associated with type T
-        /// <seealso cref="FactoryBase.Clazz"/>
+        /// <seealso cref="Factory.Clazz"/>
         /// </summary>
         /// <typeparam name="TInner">type to translate</typeparam>
         /// <returns>new object of R_Of{T}</returns>
-        TOuter Create<TInner, TOuter>();
+        //TOuter Create<TInner, TOuter>();
 
         void Add ( Type source, Type target );
-        void Add<T1, T2>();
+        void Add<T1, T2>() where T2 : T1;
         void Add<T>(Func<T> creator);
     }
 }

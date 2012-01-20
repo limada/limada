@@ -115,6 +115,7 @@ namespace Limaki.Drawing.Shapes {
         public abstract PointI[] Hull ( int delta, bool extend );
 
         public abstract PointI[] Hull ( Matrice matrix, int delta, bool extend );
+
         #endregion
 
 

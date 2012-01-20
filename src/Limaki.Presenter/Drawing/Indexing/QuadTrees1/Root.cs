@@ -47,11 +47,9 @@ For more information, contact:
 
 */
 
-using System.Collections.Generic;
-using Limaki.Actions;
 using Limaki.Drawing.Shapes;
-using Limaki.Graphs;
 using System;
+using System.Collections.Generic;
 
 namespace Limaki.Drawing.Indexing.QuadTrees {
     /// <summary>
@@ -66,29 +64,32 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// <summary>
         /// 
         /// </summary>
-        public Root() { }
+        public Root() {
+            QuadItems = new Dictionary<TItem, NodeBase<TItem>>();
+        }
 
         /// <summary> 
         /// Insert an item into the quadtree this is the root of.
         /// </summary>
         public virtual void Add(RectangleS itemEnv, TItem item) {
-            int index = GetSubnodeIndex(itemEnv, origin);
+            var index = GetSubnodeIndex(itemEnv, origin);
             // if index is none, itemEnv must cross the X or Y axis.
             if (index == none) {
-                Add(item);
+                AddItem(item);
                 return;
             }
             /*
             * the item must be contained in one quadrant, so insert it into the
             * tree for that quadrant (which may not yet exist)
             */
-            Node<TItem> node = Subnodes[index];
+            var node = Subnodes[index];
             /*
             *  If the subquad doesn't exist or this item is not contained in it,
             *  have to expand the tree upward to contain the item.
             */
             if (node == null || !ShapeUtils.Contains(node.Envelope, itemEnv)) {
-                Node<TItem> largerNode = Node<TItem>.CreateExpanded(node, itemEnv);
+                var largerNode = Node<TItem>.Create(node, itemEnv);
+                largerNode.QuadItems = this.QuadItems;
                 Subnodes[index] = largerNode;
             }
             /*
@@ -111,18 +112,18 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             * to infinite recursion. Instead, use a heuristic of simply returning
             * the smallest existing quad containing the query
             */
-            float itemEnvX = itemEnv.X;
-            float itemEnvR = itemEnvX + itemEnv.Width;
-            float itemEnvY = itemEnv.Y;
-            float itemEnvB = itemEnvY + itemEnv.Height;
-            bool isZeroX = DoubleBits.IsZeroWidth(itemEnvX, itemEnvR);
-            bool isZeroY = DoubleBits.IsZeroWidth(itemEnvY, itemEnvB);
+            var itemEnvX = itemEnv.X;
+            var itemEnvR = itemEnvX + itemEnv.Width;
+            var itemEnvY = itemEnv.Y;
+            var itemEnvB = itemEnvY + itemEnv.Height;
+            var isZeroX = DoubleBits.IsZeroWidth(itemEnvX, itemEnvR);
+            var isZeroY = DoubleBits.IsZeroWidth(itemEnvY, itemEnvB);
             NodeBase<TItem> node;
             if (isZeroX || isZeroY)
                 node = tree.Find(itemEnv);
             else
                 node = tree.GetNode(itemEnv);
-            node.Add(item);
+            node.AddItem(item);
         }
 
         /// <summary>

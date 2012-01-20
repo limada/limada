@@ -64,6 +64,7 @@
     <Compile Include="Common\Collections\MultiDictiionary.cs" />
     <Compile Include="Common\Collections\MultiDictionaryBase.cs" />
     <Compile Include="Common\Collections\Set.cs" />
+    <Compile Include="Common\KeyMaker.cs" />
     <Compile Include="Common\Linqish\LinqishExtensions.cs" />
     <Compile Include="Common\Localizer.cs" />
     <Compile Include="Common\OS.cs" />
@@ -71,8 +72,7 @@
     <Compile Include="Common\Delegates.cs" />
     <Compile Include="Common\Empty.cs" />
     <Compile Include="Common\EventArgs_T.cs" />
-    <Compile Include="Common\FactoryBase.cs" />
-    <Compile Include="Common\GeneralFactory.cs" />
+    <Compile Include="Common\Factory.cs" />
     <Compile Include="Common\IOC\IApplicationContext.cs" />
     <Compile Include="Common\ICheckable.cs" />
     <Compile Include="Common\IComposite.cs" />

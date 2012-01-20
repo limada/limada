@@ -19,6 +19,7 @@ using Limaki.UseCases.Viewers.ToolStripViewers;
 using System.ComponentModel;
 using Limaki.Presenter.Layout;
 using System;
+using Limaki.Xwt;
 
 namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
     
@@ -40,7 +41,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
         
         protected virtual void Compose() {
             var options = new AllignerOptions();
-            options.Distribution = Distribution.Vertical;
+            options.Dimension = Presenter.Layout.Dimension.Y;
 
             var size = new System.Drawing.Size(36, 36);
             Action action = () => Columns(options);
@@ -48,6 +49,15 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             var logicalLayout = new ToolStripCommand {
                 Action = (s) => {
                     action = () => LogicalLayout(options);
+                    action();
+                },
+                Image = Limaki.Presenter.Properties.Resources.LogicalLayout,
+                Size = size,
+            };
+
+            var fullLayout = new ToolStripCommand {
+                Action = (s) => {
+                    action = () => FullLayout(options);
                     action();
                 },
                 Image = Limaki.Presenter.Properties.Resources.ModifyLayout24,
@@ -72,7 +82,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             };
             var arrangeLeft = new ToolStripCommand {
                 Action = (s) => {
-                    options.HorizontalAlignment = Limaki.Drawing.HorizontalAlignment.Left;
+                    options.AlignX = Alignment.Start;
                     action();
                 },
                 Image = Limaki.Presenter.Properties.Resources.ArrangeLeft,
@@ -80,7 +90,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             };
             var arrangeCenter = new ToolStripCommand {
                 Action = (s) => {
-                    options.HorizontalAlignment = Limaki.Drawing.HorizontalAlignment.Center;
+                    options.AlignX = Alignment.Center;
                     action();
                 },
                 Image = Limaki.Presenter.Properties.Resources.ArrangeCenter,
@@ -88,7 +98,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             };
             var arrangeRight = new ToolStripCommand {
                 Action = (s) => {
-                    options.HorizontalAlignment = Limaki.Drawing.HorizontalAlignment.Right;
+                    options.AlignX = Alignment.End;
                     action();
                 },
                 Image = Limaki.Presenter.Properties.Resources.ArrangeRight,
@@ -97,7 +107,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
 
             var arrangeTop = new ToolStripCommand {
                 Action = (s) => {
-                    options.VerticalAlignment = Limaki.Drawing.VerticalAlignment.Top;
+                    options.AlignY = Alignment.Start;
                     action();
                 },
                 Image = Limaki.Presenter.Properties.Resources.ArrangeTop,
@@ -105,7 +115,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             };
             var arrangeCenterV = new ToolStripCommand {
                 Action = (s) => {
-                    options.VerticalAlignment = Limaki.Drawing.VerticalAlignment.Center;
+                    options.AlignY = Alignment.Center;
                     action();
                 },
                 Image = Limaki.Presenter.Properties.Resources.ArrangeMiddle,
@@ -113,7 +123,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             };
             var arrangeBottom = new ToolStripCommand {
                 Action = (s) => {
-                    options.VerticalAlignment = Limaki.Drawing.VerticalAlignment.Bottom;
+                    options.AlignY = Alignment.End;
                     action();
                 },
                 Image = Limaki.Presenter.Properties.Resources.ArrangeBottom,
@@ -140,6 +150,7 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
             layoutButton.DropDownItems.AddRange(new ToolStripItem[] {
                 new ToolStripMenuItemEx {Command=columns,ToggleOnClick=layoutButton},    
                 new ToolStripMenuItemEx {Command=oneColumn,ToggleOnClick=layoutButton},          
+                new ToolStripMenuItemEx {Command=fullLayout}, 
             });
 
             this.Items.AddRange(new ToolStripItem[] {
@@ -163,6 +174,8 @@ namespace Limaki.UseCases.Winform.Viewers.ToolStripViewers {
         public virtual void LogicalLayout(AllignerOptions options) {
             Controller.LogicalLayout(options);
         }
-
+        public virtual void FullLayout(AllignerOptions options) {
+            Controller.FullLayout(options);
+        }
     }
 }

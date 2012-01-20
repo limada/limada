@@ -19,7 +19,7 @@ namespace Limaki.Drawing.Shapes {
     /// <summary>
     /// The ShapeFactory holds a list about which grafic data object needs which shape
     /// </summary>
-    public abstract class ShapeFactoryBase : FactoryBase, IShapeFactory {
+    public abstract class ShapeFactoryBase : Factory, IShapeFactory {
         /// <summary>
         /// Create a Shape with a given location and size 
         /// with a typeof(T) graphic data object
@@ -31,20 +31,13 @@ namespace Limaki.Drawing.Shapes {
         public IShape<T> Shape<T>(PointI location, SizeI size) {
             T data = (T)System.Activator.CreateInstance(typeof(T), new object[] { location,size });
 
-            Type clazzType = Clazz<T>();
-            IShape<T> result = (IShape<T>)System.Activator.CreateInstance(clazzType);
+            var result = Create<IShape<T>>();
             result.Data = data;
             return result;
 
         }
 
-        public IShape<T> One<T>(PointI location, SizeI size) {
-            IShape<T> result = (IShape<T>)base.Create<T>();
-            result.Location = location;
-            result.Size = size;
-            return result;
-        }
-
+        
         /// <summary>
         /// Creates an instance of IShape{T} where typeof(T)==typeofShapeData
         /// </summary>
@@ -55,8 +48,8 @@ namespace Limaki.Drawing.Shapes {
         public IShape Shape(Type typeofShapeData, PointI location, SizeI size) {
             //var rect = new RectangleI(location, size);
             object data = System.Activator.CreateInstance(typeofShapeData);//, new object[] { rect });
-            Type clazzType = Clazz(typeofShapeData);
-            IShape result = (IShape)System.Activator.CreateInstance(clazzType, new object[] { data });
+            Type clazzType = typeof (IShape<>).GetGenericTypeDefinition().MakeGenericType(typeofShapeData);
+            IShape result = (IShape) this.Create(clazzType);
             result.Location = location;
             result.Size = size;
             return result;

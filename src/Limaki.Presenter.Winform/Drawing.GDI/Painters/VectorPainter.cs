@@ -17,7 +17,7 @@ using Limaki.Drawing.Painters;
 using GDIPen=Limaki.Drawing.GDI.GDIPen;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class VectorPainter:Painter<Vector> {
+    public class VectorPainter:Painter<Vector>,IPainter<IVectorShape,Vector> {
         SolidBrush _brush = null;
         SolidBrush GetSolidBrush(System.Drawing.Color color) {
             if ((_brush != null) && (_brush.Color == color)) {

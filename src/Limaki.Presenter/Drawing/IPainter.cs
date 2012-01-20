@@ -50,8 +50,11 @@ namespace Limaki.Drawing {
         PointI[] Measure(int delta, bool extend);
     }
 
-    public interface IPainter<T>:IPainter {
-        new IShape<T> Shape { get;set; }
+    public interface IPainter<T> : IPainter {
+        new IShape<T> Shape { get; set; }
+    }
+    public interface IPainter<S, T> : IPainter<T> where S : IShape<T> {
+
     }
 
     [Flags]
@@ -78,5 +81,7 @@ namespace Limaki.Drawing {
         object Data { get; set; }
     }
 
-
+    public interface IDataPainter<T> : IPainter<T> {
+        new T Data { get; set; }
+    }
 }

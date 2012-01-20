@@ -42,7 +42,7 @@ namespace Limaki.Presenter.WPF {
                         dataElement.IsHitTestVisible = false;
                         g.Children.Add(dataElement);
                     }
-                    dataPainter.Data = data;
+                    ((IDataPainter)dataPainter).Data = data;
                     dataPainter.Style = style;
                     dataPainter.Shape = shape;
                     dataPainter.Render(e.Surface);

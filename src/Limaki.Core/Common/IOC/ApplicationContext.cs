@@ -23,7 +23,7 @@ namespace Limaki.Common.IOC {
             }
         }
 
-        private IFactory _factory = new GeneralFactory();
+        private IFactory _factory = new Factory();
         public IFactory Factory {
             get { return _factory; }
         }

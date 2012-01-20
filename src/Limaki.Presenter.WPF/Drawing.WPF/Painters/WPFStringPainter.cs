@@ -6,7 +6,7 @@ using Limaki.Drawing.Shapes;
 using System.Windows.Media;
 
 namespace Limaki.Drawing.WPF.Painters {
-    public class WPFStringPainter : Limaki.Drawing.Painters.StringPainterBase {
+    public class WPFStringPainter : Limaki.Drawing.Painters.StringPainterBase, IPainter<string> {
         
         public System.Windows.UIElement DataElement { get; set; }
         

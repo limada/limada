@@ -37,7 +37,7 @@ namespace Limaki.Drawing.WPF.Shapes {
 
     }
 
-    public class RectangleShape : RectangleShapeBase, IRectangleShape {
+    public class RectangleShape : RectangleShapeBase, IRectangleShape{
         public RectangleShape() : base() { }
         public RectangleShape(RectangleI data) : base(data) { }
 

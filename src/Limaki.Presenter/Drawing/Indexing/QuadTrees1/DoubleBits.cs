@@ -48,11 +48,7 @@ For more information, contact:
 */
 
 
-
 using System;
-using System.Collections;
-using System.Text;
-
 
 namespace Limaki.Drawing.Indexing.QuadTrees {
     /// <summary>

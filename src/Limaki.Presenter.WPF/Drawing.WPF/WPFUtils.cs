@@ -7,7 +7,7 @@ using Limaki.Drawing;
 namespace Limaki.Drawing.WPF {
     public class WPFUtils {
         public static System.Windows.Media.Color Convert(Limaki.Drawing.Color color) {
-            return System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
+            return System.Windows.Media.Color.FromArgb(color.Alpha, color.Red, color.Green, color.Blue);
         }
 
         static TextBlock stringContext = new TextBlock();

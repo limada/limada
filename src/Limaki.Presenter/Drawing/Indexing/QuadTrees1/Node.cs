@@ -60,34 +60,31 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="env"></param>
-        /// <returns></returns>
         public static Node<TItem> CreateNode(RectangleS env) {
             Key key = new Key(env);
             Node<TItem> node = new Node<TItem>(key.Envelope, key.Level);
             return node;
         }
-
+        /// <param name="env"></param>
+        /// <returns></returns>
         /// <summary>
         /// 
         /// </summary>
         /// <param name="node"></param>
         /// <param name="addEnv"></param>
         /// <returns></returns>
-        public static Node<TItem> CreateExpanded(Node<TItem> node, RectangleS addEnv) {
-            RectangleS expandEnv = new RectangleS(addEnv.Location, addEnv.Size);
+        public static Node<TItem> Create(Node<TItem> node, RectangleS addEnv) {
+            var expandEnv = new RectangleS(addEnv.Location, addEnv.Size);
             if (node != null)
                 expandEnv = RectangleS.Union(expandEnv, node._envelope);
-            //expandEnv = Envelope.FromLTRB(
-            //    Math.Min(addEnv.X, node.env.X),
-            //    Math.Min(addEnv.Y, node.env.Y),
-            //    Math.Max(addEnv.Right, node.env.Right),
-            //    Math.Max(addEnv.Bottom, node.env.Bottom)
-            //    );
 
-            Node<TItem> largerNode = CreateNode(expandEnv);
-            if (node != null)
+
+            var largerNode = CreateNode(expandEnv);
+
+            if (node != null) {
+                largerNode.QuadItems = node.QuadItems;
                 largerNode.InsertNode(node);
+            }
             return largerNode;
         }
 
@@ -121,10 +118,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// <param name="searchEnv"></param>
         /// <returns></returns>
         protected override bool IsSearchMatch(RectangleS searchEnv) {
-            // remark: Rectangle.IntersectsWith gives wrong results with x,y < 0 and right, bottom > 0
-            // return _envelope.IntersectsWith (searchEnv);
-
-
+        
             return !(searchEnv.X > _envelope.X + _envelope.Width ||
                 (searchEnv.X + searchEnv.Width) < (_envelope.X) ||
                 (searchEnv.Y > _envelope.Y + _envelope.Height) ||
@@ -138,11 +132,11 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// </summary>
         /// <param name="searchEnv"></param>
         public virtual Node<TItem> GetNode(RectangleS searchEnv) {
-            int subnodeIndex = GetSubnodeIndex(searchEnv, _centre);
+            var subnodeIndex = GetSubnodeIndex(searchEnv, _centre);
             // if subquadIndex is -1 searchEnv is not contained in a subquad
             if (subnodeIndex != none) {
                 // create the quad if it does not exist
-                Node<TItem> node = GetSubnode(subnodeIndex);
+                var node = GetSubnode(subnodeIndex);
                 // recursively search the found/created quad
                 return node.GetNode(searchEnv);
             } else
@@ -155,12 +149,12 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// </summary>
         /// <param name="searchEnv"></param>
         public virtual NodeBase<TItem> Find(RectangleS searchEnv) {
-            int subnodeIndex = GetSubnodeIndex(searchEnv, _centre);
+            var subnodeIndex = GetSubnodeIndex(searchEnv, _centre);
             if (subnodeIndex == none)
                 return this;
             if (Subnodes[subnodeIndex] != null) {
                 // query lies in subquad, so search it
-                Node<TItem> node = Subnodes[subnodeIndex];
+                var node = Subnodes[subnodeIndex];
                 return node.Find(searchEnv);
             }
             // no existing subquad, so return this one anyway
@@ -172,8 +166,8 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// </summary>
         /// <param name="node"></param>
         public virtual void InsertNode(Node<TItem> node) {
-            if ( !( _envelope == default(RectangleS) ||
-                  ShapeUtils.Contains(_envelope, node.Envelope) ) )
+            if (!(_envelope == default(RectangleS) ||
+                   ShapeUtils.Contains(_envelope, node.Envelope)))
                 throw new Exception();
 
             int index = GetSubnodeIndex(node._envelope, _centre);
@@ -182,7 +176,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             else {
                 // the quad is not a direct child, so make a new child quad to contain it
                 // and recursively insert the quad
-                Node<TItem> childNode = CreateSubnode(index);
+                var childNode = CreateSubnode(index);
                 childNode.InsertNode(node);
                 Subnodes[index] = childNode;
             }
@@ -211,7 +205,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// <returns></returns>
         private Node<TItem> CreateSubnode(int index) {
             // create a new subquad in the appropriate quadrant
-            float minx = 0.0f; float miny = 0.0f; float maxx = 0.0f; float maxy = 0.0f;
+            var minx = 0.0f; var miny = 0.0f; var maxx = 0.0f; var maxy = 0.0f;
             switch (index) {
                 case nw:
                     minx = _envelope.X; miny = _envelope.Y;
@@ -232,8 +226,8 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
                 default:
                     break;
             }
-            RectangleS sqEnv = RectangleS.FromLTRB(minx, miny, maxx, maxy);
-            Node<TItem> node = new Node<TItem>(sqEnv, level - 1);
+            var sqEnv = RectangleS.FromLTRB(minx, miny, maxx, maxy);
+            var node = new Node<TItem>(sqEnv, level - 1) { QuadItems = this.QuadItems };
             return node;
         }
 
@@ -242,8 +236,8 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             if (!IsSearchMatch(itemEnv))
                 return false;
 
-            bool found = false;
-            int i = GetSubnodeIndex(itemEnv, _centre);
+            var found = false;
+            var i = GetSubnodeIndex(itemEnv, _centre);
             if (i != none && Subnodes[i] != null) {
                 found = Subnodes[i].Remove(itemEnv, item);
                 if (found) {
@@ -254,24 +248,12 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             }
 
             // if item was found lower down, don't need to search for it here
-            if (!found) {
+            if (!found && HasItems ) {
                 // otherwise, try and remove the item from the list of items in this node
-                found = Items.Remove(item);
+                found = RemoveItem(item);
             }
             return found;
         }
 
-        //public override void Visit(Envelope searchEnv, IItemVisitor<TItem> visitor) {
-        //    if (!IsSearchMatch(searchEnv))
-        //        return;
-
-        //    // this node may have items as well as subnodes (since items may not
-        //    // be wholely contained in any single subnode)
-        //    VisitItems (searchEnv, visitor);
-
-        //    for (int i = 0; i < subnode.Length; i++)
-        //        if (subnode[i] != null && IsSearchMatch(subnode[i].Envelope, ref searchEnv))
-        //            subnode[i].Visit(searchEnv, visitor);
-        //}
     }
 }

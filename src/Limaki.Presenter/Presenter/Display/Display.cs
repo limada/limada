@@ -80,7 +80,7 @@ namespace Limaki.Presenter.Display {
         public virtual ISelectionRenderer MoveResizeRenderer { get; set; }
 
 
-        private Color _backColor = Color.Black;
+        private Color _backColor = Colors.Black;
         public virtual Color BackColor {
             get { return _backColor; }
             set {

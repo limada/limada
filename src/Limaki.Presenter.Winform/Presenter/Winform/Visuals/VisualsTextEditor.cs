@@ -226,7 +226,7 @@ namespace Limaki.Presenter.Winform.Visuals {
             editor.ScrollBars = ScrollBars.None;
             editor.WordWrap = true;
             Color color = style.FillColor;
-            color = Color.FromArgb (color.R, color.G, color.B);
+            color = Color.FromArgb (color.Red, color.Green, color.Blue);
             editor.BackColor = GDIConverter.Convert(color);
             PointI location = camera.FromSource(Current.Location);
             SizeI size = camera.FromSource(Current.Size);

@@ -13,7 +13,7 @@ namespace Limaki.Drawing {
         /// <returns></returns>
         IShape<T> Shape<T> ( PointI location, SizeI size );
 
-        IShape<T> One<T> ( PointI location, SizeI size );
+    
 
         /// <summary>
         /// Creates an instance of IShape{T} where typeof(T)==typeofShapeData

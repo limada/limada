@@ -143,7 +143,7 @@ namespace Limaki.Presenter.Visuals.Layout {
         protected virtual PointI[] GetDataHull(TItem item, IStyle style, Matrice matrix, int delta, bool extend) {
             PointI[] result = null;
             if (style.PaintData && item.Data != null && item.Data.GetType() != typeof(Empty)) {
-                IDataPainter painter = this.GetPainter(item.Data.GetType()) as IDataPainter;
+                var painter = this.GetPainter(item.Data.GetType()) as IDataPainter;
                 if (painter != null) {
                     var autoSize = style.AutoSize;
                     var oldSize = autoSize;

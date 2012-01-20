@@ -40,8 +40,9 @@ namespace Limada.Model {
     }
 
 	[DataContract]
-    public class NumberThing : Thing, INumberThing {
-        public NumberThing() : base (){}
+    public class NumberThing : Thing, INumberThing, IThing<int>, IThing<double>, IThing<DateTime>, IThing<Quad16> {
+
+        internal NumberThing() : base (){}
         public NumberThing(long data) : base() {
             this.Data = data;
         }
@@ -141,6 +142,27 @@ namespace Limada.Model {
 
         public override string ToString() {
             return Number.ToString ();
+        }
+
+       
+        int IThing<int>.Data {
+            get { return LongConverters.LongToInt(this.Data); }
+            set { this.Data = LongConverters.IntToLong(value); }
+        }
+
+        double IThing<double>.Data {
+            get { return LongConverters.LongToDouble(this.Data); }
+            set { this.Data = LongConverters.DoubleToLong(value); }
+        }
+
+        DateTime IThing<DateTime>.Data {
+            get { return LongConverters.LongToDateTime(this.Data); }
+            set { this.Data = LongConverters.DateTimeToLong(value); }
+        }
+
+        Quad16 IThing<Quad16>.Data {
+            get { return LongConverters.LongToQuad16(this.Data); }
+            set { this.Data = LongConverters.Quad16ToLong(value); }
         }
     }
 

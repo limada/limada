@@ -6,7 +6,7 @@ namespace Limaki.Drawing.Painters {
     /// <summary>
     /// A painter that draws text
     /// </summary>
-    public abstract class StringPainterBase : IDataPainter {
+    public abstract class StringPainterBase : IDataPainter<string>,IDataPainter {
 
         #region IPainter Member
 
@@ -75,9 +75,9 @@ namespace Limaki.Drawing.Painters {
             Dispose(true);
         }
         
-        public object Data {
+        public string Data {
             get { return Text; }
-            set {Text = value.ToString (); }
+            set {Text = value; }
         }
 
         public virtual PointI[] Measure(int delta, bool extend) {
@@ -115,5 +115,28 @@ namespace Limaki.Drawing.Painters {
         }
 
         public abstract void Render(ISurface surface);
+
+       
+
+        IShape<string> IPainter<string>.Shape {
+            get {
+                throw new NotImplementedException();
+            }
+            set {
+                throw new NotImplementedException();
+            }
+        }
+
+       
+        object IDataPainter.Data {
+            get { return this.Data; }
+            set {
+                if (value is string)
+                    this.Data = (string)value;
+                else
+                    this.Data = value.ToString();
+            }
+        }
+       
     }
 }

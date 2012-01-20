@@ -15,6 +15,7 @@
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using NUnit.Framework;
+using Limaki.Common;
 
 namespace Limaki.Tests.View.Drawing.Shapes {
     public class ShapeTest:DomainTest {
@@ -51,13 +52,26 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         }
 
         [Test]
-        public void FactoryTest() {
+        public void ShapeFactoryTest() {
             var shapeFactory = new Limaki.Drawing.Shapes.ShapeFactory();
-            var shape = shapeFactory.Shape<Limaki.Drawing.RectangleI>(
+            var shapeR = shapeFactory.Shape<Limaki.Drawing.RectangleI>(
                 new Limaki.Drawing.PointI(10, 10),
                 new Limaki.Drawing.SizeI(20, 100)
                 );
+            Assert.IsNotNull(shapeR);
+            var shape = shapeFactory.Shape(typeof (RectangleI), new Limaki.Drawing.PointI(10, 10),
+                                           new Limaki.Drawing.SizeI(20, 100));
+            Assert.IsNotNull(shape);
         }
 
+        [Test]
+        public void PainterFactoryTest() {
+            var factory = Registry.Pool.TryGetCreate<IPainterFactory>();
+            var shape = new RectangleShape();
+            IPainter _painter = factory.CreatePainter(shape.GetType());
+            Assert.IsNotNull(_painter);
+            _painter = factory.CreatePainter(typeof(string));
+            Assert.IsNotNull(_painter);
+        }
     }
 }

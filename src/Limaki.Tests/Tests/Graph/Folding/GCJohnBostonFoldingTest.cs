@@ -21,11 +21,11 @@ namespace Limaki.Tests.Graph.Wrappers {
     public class GCJohnBostonFoldingTest : SceneFacadeTest<GCJohnBostonGraphFactory> {
         public IEnumerable<IVisual> JohnGoBostonNodes {
             get {
-                   yield return Mock.Factory.Node[1]; // Person
-                   yield return Mock.Factory.Node[2]; // John
-                   yield return Mock.Factory.Node[3]; // City
-                   yield return Mock.Factory.Node[4]; // Boston
-                   yield return Mock.Factory.Node[5]; // Go
+                yield return Mock.Factory.Node[1]; // Person
+                yield return Mock.Factory.Node[2]; // John
+                yield return Mock.Factory.Node[3]; // City
+                yield return Mock.Factory.Node[4]; // Boston
+                yield return Mock.Factory.Node[5]; // Go
             }
         }
 
@@ -46,18 +46,18 @@ namespace Limaki.Tests.Graph.Wrappers {
         public override IEnumerable<IVisual> FullExpanded {
             get {
                 return new IVisual[] {
-                                         Mock.Factory.Node[1], // Person
-                                         Mock.Factory.Node[2], // John
-                                         Mock.Factory.Node[3], // City
-                                         Mock.Factory.Node[4], // Boston
-                                         Mock.Factory.Node[5], // Go
-                                         Mock.Factory.Node[6], // Bus
-                                         Mock.Factory.Edge[1], // [Person->John]
-                                         Mock.Factory.Edge[2], // [City->Boston]
-                                         Mock.Factory.Edge[3], // [[Person->John]->Go]
-                                         Mock.Factory.Edge[4], // [[[Person->John]->Go]->[City->Boston]]
-                                         Mock.Factory.Edge[5], // [[[[Person->John]->Go]->[City->Boston]]->Bus]
-                                     };
+                    Mock.Factory.Node[1], // Person
+                    Mock.Factory.Node[2], // John
+                    Mock.Factory.Node[3], // City
+                    Mock.Factory.Node[4], // Boston
+                    Mock.Factory.Node[5], // Go
+                    Mock.Factory.Node[6], // Bus
+                    Mock.Factory.Edge[1], // [Person->John]
+                    Mock.Factory.Edge[2], // [City->Boston]
+                    Mock.Factory.Edge[3], // [[Person->John]->Go]
+                    Mock.Factory.Edge[4], // [[[Person->John]->Go]->[City->Boston]]
+                    Mock.Factory.Edge[5], // [[[[Person->John]->Go]->[City->Boston]]->Bus]
+                };
             }
         }
 
@@ -85,12 +85,12 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.SceneFacade.Expand (false);
 
             IVisual[] PersonExpanded = new IVisual[] {
-                                                         Mock.Factory.Node[1], // Person
-                                                         Mock.Factory.Node[2], // John
-                                                         Mock.Factory.Node[5], // Go
-                                                         Mock.Factory.Edge[1], // [Person->John]
-                                                         Mock.Factory.Edge[3], // [[Person->John]->Go]
-                                                     };
+                Mock.Factory.Node[1], // Person
+                Mock.Factory.Node[2], // John
+                Mock.Factory.Node[5], // Go
+                Mock.Factory.Edge[1], // [Person->John]
+                Mock.Factory.Edge[3], // [[Person->John]->Go]
+            };
             AreEquivalent(PersonExpanded, Mock.Scene.Graph);
             TestShapes(Mock.Scene);
 

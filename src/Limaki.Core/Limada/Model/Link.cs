@@ -21,7 +21,7 @@ using System.Runtime.Serialization;
 namespace Limada.Model {
     [DataContract]
     public class Link : Thing, IThing<IThing>, ILink, ILink<Id> {
-        protected Link() { }
+        public Link() { }
 
         public Link(IThing marker):base() {
             this.Marker = marker;

@@ -125,6 +125,15 @@ namespace Limaki.Drawing {
             }
         }
 
+        protected T Get<T>(Func<T> parentMemnber, T member, T deefault) where T : class {
+            if (member == null)
+                if (ParentStyle != null)
+                    return parentMemnber();
+                else
+                    return deefault;
+            return member;
+        }
+
         protected T Get<T>(Func<Nullable<T>> parentMemnber, Nullable<T> member, T deefault) where T : struct {
             if (member == null)
                 if (ParentStyle != null)

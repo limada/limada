@@ -42,12 +42,19 @@ namespace Limaki.Presenter.Layout {
             set { _proxy = value; }
         }
 
+
+        /// <summary>
+        /// testing if too much visits
+        /// </summary>
+        internal int visits = 0;
+
         protected virtual IShapeProxy<TItem, TEdge> CreateProxy(IGraphLayout<TItem, TEdge> layout) {
             return new GraphItemShapeProxy<TItem, TEdge>(layout);
         }
 
         public virtual void VisitItems(IEnumerable<TItem> items, Action<TItem> visitor) {
             foreach (var item in items.Where(i=> !(i is TEdge))) {
+                visits++;
                 visitor(item);
             }
         }

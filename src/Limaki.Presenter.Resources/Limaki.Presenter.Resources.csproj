@@ -77,10 +77,13 @@
     <Content Include="Properties\Resources\FontUnderlineIcon.png" />
     <Content Include="Properties\Resources\format-indent-less.png" />
     <Content Include="Properties\Resources\format-indent-more.png" />
+    <Content Include="Properties\Resources\format-justify-bottom.png" />
     <Content Include="Properties\Resources\format-justify-center.png" />
     <Content Include="Properties\Resources\format-justify-fill.png" />
     <Content Include="Properties\Resources\format-justify-left.png" />
+    <Content Include="Properties\Resources\format-justify-middle.png" />
     <Content Include="Properties\Resources\format-justify-right.png" />
+    <Content Include="Properties\Resources\format-justify-top.png" />
     <Content Include="Properties\Resources\format-text-bold.png" />
     <Content Include="Properties\Resources\format-text-italic.png" />
     <Content Include="Properties\Resources\format-text-strikethrough.png" />
@@ -98,6 +101,7 @@
     <Content Include="Properties\Resources\LimadaLogo.ico" />
     <Content Include="Properties\Resources\LimadaLogoA.ico" />
     <Content Include="Properties\Resources\LimadaLogoL32.png" />
+    <Content Include="Properties\Resources\LogicalLayout.png" />
     <Content Include="Properties\Resources\MenuFileOpenIcon.png" />
     <Content Include="Properties\Resources\ModifyLayout.png" />
     <Content Include="Properties\Resources\ModifyLayout16.png" />

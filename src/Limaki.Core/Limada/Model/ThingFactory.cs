@@ -7,7 +7,7 @@ using Id = System.Int64;
 using Limaki.Graphs;
 
 namespace Limada.Model {
-    public class ThingFactory : FactoryBase, IThingFactory {
+    public class ThingFactory : Factory, IThingFactory {
         public IThing CreateItem(IThingGraph graph, object data) {
             return CreateItem(Isaac.Long, graph, data);
         }
@@ -98,22 +98,21 @@ namespace Limada.Model {
         }
 
         protected override void InstrumentClazzes() {
-            
-                Clazzes[typeof (IThing)] =  typeof (Thing);
-                Clazzes[typeof (IThing<string>)] =  typeof (Thing<string>); //typeof(StringThing); 
 
-                Clazzes[typeof (IThing<Stream>)] =  typeof (StreamThing);
-                Clazzes[typeof (IStreamThing)] =  typeof (StreamThing);
+            Add<IThing>(() => new Thing());
+            Add<IThing<string>>(() => new Thing<string>()); //typeof(StringThing()); 
 
-                Clazzes[typeof (IThing<long>)] =  typeof (NumberThing);
-                Clazzes[typeof (IThing<double>)] =  typeof (NumberThing);
-                Clazzes[typeof (IThing<DateTime>)] =  typeof (NumberThing);
-                Clazzes[typeof (IThing<float>)] =  typeof (NumberThing);
-                Clazzes[typeof (IThing<Quad16>)] =  typeof (NumberThing);
-                Clazzes[typeof (IThing<int>)] =  typeof (NumberThing);
-                Clazzes[typeof (INumberThing)] =  typeof (NumberThing);
+            Add<IThing<Stream>>(() => new StreamThing());
+            Add<IStreamThing>(() => new StreamThing());
 
-                Clazzes[typeof (ILink)] =  typeof (Link);
+            Add<IThing<long>>(() => new NumberThing());
+            Add<IThing<double>>(() => new NumberThing());
+            Add<IThing<DateTime>>(() => new NumberThing());
+            Add<IThing<Quad16>>(() => new NumberThing());
+            Add<IThing<int>>(() => new NumberThing());
+            Add<INumberThing>(() => new NumberThing());
+
+            Add<ILink>(() => new Link());
             
         }
 

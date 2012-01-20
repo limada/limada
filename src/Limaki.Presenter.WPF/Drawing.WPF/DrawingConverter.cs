@@ -28,7 +28,7 @@ namespace Limaki.Drawing.WPF {
             return Color.FromArgb(value.A,value.R,value.G,value.B);
         }
         public static System.Windows.Media.Color Convert(Color value) {
-            return System.Windows.Media.Color.FromArgb(value.A, value.R, value.G, value.B);
+            return System.Windows.Media.Color.FromArgb(value.Alpha, value.Red, value.Green, value.Blue);
         }
     }
 }

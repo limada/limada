@@ -3,7 +3,7 @@ using System.Drawing.Drawing2D;
 using GDIPen=Limaki.Drawing.GDI.GDIPen;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class BezierPainter:RectanglePainter {
+    public class BezierPainter:RectanglePainter,IPainter<IBezierShape,RectangleI> {
         public override void Render( ISurface surface ) {
             Graphics g = ((GDISurface)surface).Graphics;
             PointF[] bezierPoints = 

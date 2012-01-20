@@ -52,7 +52,7 @@ namespace Limaki.Presenter.Layout {
         public bool Centered { get; set; }
         public SizeI Distance { get; set; }
         public SizeI Border { get; set; }
-        public Orientation Orientation { get; set; }
+        public Drawing.Orientation Orientation { get; set; }
         public virtual Func<TItem, string> OrderBy { get; set; }
 
         private IGraphLayout<TItem, TEdge> _layout = null;
@@ -131,15 +131,15 @@ namespace Limaki.Presenter.Layout {
         }
         protected virtual void AdjustRowLocation(Row<TItem> row, PointI location) {
             row.Location = location;
-            if (Orientation == Orientation.TopBottom) {
+            if (Orientation == Drawing.Orientation.TopBottom) {
                 row.Size.Height = row.biggestItemSize.Height;
             } else {
                 row.Size.Width = row.biggestItemSize.Width;
             }
             if (Centered) {
-                if (Orientation == Orientation.TopBottom) {
+                if (Orientation == Drawing.Orientation.TopBottom) {
                     row.Location.X = location.X - (row.Size.Width / 2) + (Distance.Width / 2);
-                } else if (Orientation == Orientation.LeftRight) {
+                } else if (Orientation == Drawing.Orientation.LeftRight) {
                     row.Location.Y = location.Y - (row.Size.Height / 2) + (Distance.Height / 2);
                 }
             }
@@ -158,7 +158,7 @@ namespace Limaki.Presenter.Layout {
             Action<RectangleI> moveDown = (r) => { stripe.Y = r.Bottom + Distance.Height; };
             Action<RectangleI> moveRight = (r) => { stripe.X = r.Right + Distance.Width; };
 
-            if (Orientation == Orientation.LeftRight) {
+            if (Orientation == Drawing.Orientation.LeftRight) {
                 stripe.Height = stripe.Height - Distance.Height;
                 orderBy = orderByR;
             } else {
@@ -178,7 +178,7 @@ namespace Limaki.Presenter.Layout {
                 l = l.OrderByDescending(orderBy);
 
                 foreach (var bounds in l) {
-                    if (Orientation == Orientation.LeftRight) {
+                    if (Orientation == Drawing.Orientation.LeftRight) {
                         if (bounds.X < stripe.X || bounds.Right > stripe.Right) {
                             moveRight(bounds);
                             orderBy = orderByB;
@@ -266,12 +266,12 @@ namespace Limaki.Presenter.Layout {
                             Proxy.GetSize(item).Width + Distance.Width,
                             Proxy.GetSize(item).Height + Distance.Height);
 
-                        if (Orientation == Orientation.TopBottom) {
+                        if (Orientation == Drawing.Orientation.TopBottom) {
                             location.X += size.Width;
                             startAt.X = Math.Max(location.X, startAt.X);
                             startAt.Y = Math.Max(location.Y + size.Height, startAt.Y);
                             rowStart.Y = startAt.Y;
-                        } else if (Orientation == Orientation.LeftRight) {
+                        } else if (Orientation == Drawing.Orientation.LeftRight) {
                             location.Y += size.Height;
                             startAt.X = Math.Max(location.X + size.Width, startAt.X);
                             startAt.Y = Math.Max(location.Y, startAt.Y);
@@ -384,12 +384,12 @@ namespace Limaki.Presenter.Layout {
             var startSize = Proxy.GetSize(root);
 
 
-            if (Orientation == Orientation.TopBottom) {
+            if (Orientation == Drawing.Orientation.TopBottom) {
                 if (Centered)
                     startAt.X += startSize.Width / 2;
                 startAt.Y = startAt.Y + startSize.Height;
 
-            } else if (Orientation == Orientation.LeftRight) {
+            } else if (Orientation == Drawing.Orientation.LeftRight) {
                 if (Centered)
                     startAt.Y += startSize.Height / 2;
                 startAt.X = startAt.X + startSize.Width + Distance.Width;
@@ -429,7 +429,7 @@ namespace Limaki.Presenter.Layout {
                     size.Height = Math.Max(size.Height, row.Size.Height);
                     size.Width = Math.Max(size.Width, row.Size.Width);
                 }
-                if (Orientation == Orientation.LeftRight) {
+                if (Orientation == Drawing.Orientation.LeftRight) {
                     size.Height -= Distance.Height;
                     startAt.Y += size.Height / 2;
                 }
@@ -491,7 +491,7 @@ namespace Limaki.Presenter.Layout {
                                 size.Height = Math.Max(size.Height, row.Size.Height);
                                 size.Width = Math.Max(size.Width, row.Size.Width);
                             }
-                            if (Orientation == Orientation.LeftRight) {
+                            if (Orientation == Drawing.Orientation.LeftRight) {
                                 size.Height -= Distance.Height;
                                 location.Y += size.Height / 2;
                                 if (firstRow) {
@@ -600,9 +600,9 @@ namespace Limaki.Presenter.Layout {
                     Proxy.SetLocation(item, location);
                 }
 
-                if (Orientation == Orientation.TopBottom) {
+                if (Orientation == Drawing.Orientation.TopBottom) {
                     location.Y = location.Y + Proxy.GetSize(root).Height;
-                } else if (Orientation == Orientation.LeftRight) {
+                } else if (Orientation == Drawing.Orientation.LeftRight) {
                     location.X = location.X + Proxy.GetSize(root).Width + Distance.Width;
                 }
 
@@ -653,18 +653,18 @@ namespace Limaki.Presenter.Layout {
             // calculate the extend of the rows
             int iRow = 0;
 
-            if (Orientation == Orientation.LeftRight)
+            if (Orientation == Drawing.Orientation.LeftRight)
                 iRow--;
 
             foreach (KeyValuePair<int, Row<TItem>> kvp in rows) {
                 Row<TItem> row = kvp.Value;
                 row.Location = startAt;
                 iRow++;
-                if (Orientation == Orientation.TopBottom) {
+                if (Orientation == Drawing.Orientation.TopBottom) {
                     row.Location.Y = row.Location.Y +
                                      overallSize.Height +//Math.Max(overallSize.Height, iRow - 1 * AutoSize.Height) +
                                      (iRow * Distance.Height);
-                } else if (Orientation == Orientation.LeftRight) {
+                } else if (Orientation == Drawing.Orientation.LeftRight) {
                     row.Location.X = row.Location.X +
                                      overallSize.Width +
                                      (iRow * Distance.Width);
@@ -672,7 +672,7 @@ namespace Limaki.Presenter.Layout {
 
                 AdjustRowSize(row);
 
-                if (Orientation == Orientation.TopBottom) {
+                if (Orientation == Drawing.Orientation.TopBottom) {
                     row.Size.Height = row.biggestItemSize.Height;
                     overallSize.Height = overallSize.Height + row.biggestItemSize.Height;
                     overallSize.Width = Math.Max(overallSize.Width, row.Size.Width);
@@ -686,10 +686,10 @@ namespace Limaki.Presenter.Layout {
         }
 
         protected virtual Pair<PointI, PointI> StripeLocactions(RectangleI stripe, Row<TItem> row, ICollection<TItem> ignoring) {
-            if (Orientation == Orientation.TopBottom) {
+            if (Orientation == Drawing.Orientation.TopBottom) {
                 stripe.Y = row.Location.Y;
                 stripe.Height = row.biggestItemSize.Height;
-            } else if (Orientation == Orientation.LeftRight) {
+            } else if (Orientation == Drawing.Orientation.LeftRight) {
                 stripe.X = row.Location.X;
                 stripe.Width = row.biggestItemSize.Width;
             }
@@ -725,13 +725,13 @@ namespace Limaki.Presenter.Layout {
             PointI locateLeft = stripeLocation.One;
             PointI locateRight = stripeLocation.Two;
 
-            if (Orientation == Orientation.TopBottom) {
+            if (Orientation == Drawing.Orientation.TopBottom) {
                 if ((row.Location.X + row.Size.Width - Distance.Width) < locateLeft.X) {
                     row.Location.X = Math.Min(row.Location.X, locateLeft.X + Distance.Width);
                 } else {
                     row.Location.X = Math.Max(row.Location.X, locateRight.X + Distance.Width);
                 }
-            } else if (Orientation == Orientation.LeftRight) {
+            } else if (Orientation == Drawing.Orientation.LeftRight) {
                 if ((row.Location.Y + row.Size.Height + Distance.Height) < locateLeft.Y) {
                     row.Location.Y = Math.Min(row.Location.Y, locateLeft.Y + Distance.Height);
                 } else {

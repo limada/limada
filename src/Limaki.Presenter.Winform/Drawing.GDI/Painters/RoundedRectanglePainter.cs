@@ -5,7 +5,7 @@ using Limaki.Drawing.GDI;
 using Limaki.Drawing.GDI.Painters;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class RoundedRectanglePainter:RectanglePainter {
+    public class RoundedRectanglePainter:RectanglePainter,IPainter<IRoundedRectangleShape,RectangleI> {
         public override void Render( ISurface surface ) {
             Graphics g = ( (GDISurface) surface ).Graphics;
             Rectangle rect = GDIConverter.Convert(Shape.Data);

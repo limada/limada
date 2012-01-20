@@ -69,7 +69,16 @@
     <Compile Include="Drawing\DrawingExtensions.cs" />
     <Compile Include="Drawing\DrawingPrimitivesSerializer.cs" />
     <Compile Include="Drawing\GrahamConvexHull.cs" />
-    <Compile Include="Drawing\Alignement.cs" />
+    <Compile Include="Drawing\Indexing\QuadTrees1\CollectionVisitor.cs" />
+    <Compile Include="Drawing\Indexing\QuadTrees1\DoubleBits.cs" />
+    <Compile Include="Drawing\Indexing\QuadTrees1\HexConverter.cs" />
+    <Compile Include="Drawing\Indexing\QuadTrees1\IItemVisitor.cs" />
+    <Compile Include="Drawing\Indexing\QuadTrees1\Key.cs" />
+    <Compile Include="Drawing\Indexing\QuadTrees1\Node.cs" />
+    <Compile Include="Drawing\Indexing\QuadTrees1\NodeBase.cs" />
+    <Compile Include="Drawing\Indexing\QuadTrees1\Quadtree.cs" />
+    <Compile Include="Drawing\Indexing\QuadTrees1\Root.cs" />
+    <Compile Include="Drawing\Painters\PainterFactoryBase.cs" />
     <Compile Include="Drawing\Shapes\PointComparer.cs" />
     <Compile Include="Drawing\Styles\StyleGroup.cs" />
     <Compile Include="Drawing\Styles\StyleNames.cs" />
@@ -91,15 +100,6 @@
     <Compile Include="Drawing\ICamera.cs" />
     <Compile Include="Drawing\ICameraTarget.cs" />
     <Compile Include="Drawing\ILayout.cs" />
-    <Compile Include="Drawing\Indexing\QuadTree\CollectionVisitor.cs" />
-    <Compile Include="Drawing\Indexing\QuadTree\DoubleBits.cs" />
-    <Compile Include="Drawing\Indexing\QuadTree\HexConverter.cs" />
-    <Compile Include="Drawing\Indexing\QuadTree\IItemVisitor.cs" />
-    <Compile Include="Drawing\Indexing\QuadTree\Key.cs" />
-    <Compile Include="Drawing\Indexing\QuadTree\Node.cs" />
-    <Compile Include="Drawing\Indexing\QuadTree\NodeBase.cs" />
-    <Compile Include="Drawing\Indexing\QuadTree\Quadtree.cs" />
-    <Compile Include="Drawing\Indexing\QuadTree\Root.cs" />
     <Compile Include="Drawing\IPainter.cs" />
     <Compile Include="Drawing\IPainterFactory.cs" />
     <Compile Include="Drawing\IShape.cs" />
@@ -326,6 +326,16 @@
     <Compile Include="Visuals\VisualFactory.cs" />
     <Compile Include="Visuals\VisualGraph.cs" />
     <Compile Include="Limada\UseCases\ContentProviderManager.cs" />
+    <Compile Include="Xwt\Xwt\Alignment.cs" />
+    <Compile Include="Xwt\Drawing\Color.cs" />
+    <Compile Include="Xwt\Drawing\HslColor.cs" />
+    <Compile Include="Xwt\Xwt\Key.cs" />
+    <Compile Include="Xwt\Xwt\KeyEventArgs.cs" />
+    <Compile Include="Xwt\Xwt\ModifierKeys.cs" />
+    <Compile Include="Xwt\NameSpaceInfo.cs" />
+    <Compile Include="Xwt\Xwt\Point.cs" />
+    <Compile Include="Xwt\Xwt\Rectangle.cs" />
+    <Compile Include="Xwt\Xwt\Size.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

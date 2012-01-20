@@ -6,7 +6,7 @@ namespace Limaki.Tests.Common
     public class FactoryTest : DomainTest {
         [Test]
         public void Test() {
-            var factory = new FactoryBase();
+            var factory = new Factory();
             factory.Add<IPool>(() => new Pool());
             
             

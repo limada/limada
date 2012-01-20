@@ -22,7 +22,7 @@ namespace Limaki.Presenter.Layout {
         public GraphLayout(Get<IGraphScene<TItem, TEdge>> dataHandler, IStyleSheet styleSheet)
             : base(styleSheet) {
             this.DataHandler = dataHandler;
-            this.Orientation = Orientation.LeftRight;
+            this.Orientation = Drawing.Orientation.LeftRight;
             this.Centered = true;
         }
 
@@ -32,7 +32,7 @@ namespace Limaki.Presenter.Layout {
             get { return DataHandler(); }
         }
 
-        public Orientation Orientation { get; set; }
+        public Drawing.Orientation Orientation { get; set; }
         public bool Centered { get; set; }
 
         public IRouter<TItem, TEdge> Router { get; set; }

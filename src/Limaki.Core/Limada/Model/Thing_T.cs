@@ -23,7 +23,7 @@ using System.Runtime.Serialization;
 namespace Limada.Model {
     [DataContract]
     public class Thing<T> : Thing, IThing<T> {
-        protected Thing(){}
+        public Thing() { }
         public Thing(T data) : this(Isaac.Long, data) { }
 
         public Thing(Id id, T data): base(id) {

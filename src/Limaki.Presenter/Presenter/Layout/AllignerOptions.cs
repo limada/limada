@@ -1,16 +1,16 @@
 ﻿using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
+using Limaki.Xwt;
 
 namespace Limaki.Presenter.Layout {
     public class AllignerOptions {
-        public HorizontalAlignment HorizontalAlignment { get; set; }
-        public VerticalAlignment VerticalAlignment { get; set; }
+        public Alignment AlignX { get; set; }
+        public Alignment AlignY { get; set; }
         public PointOrder PointOrder { get; set; }
-        public Distribution Distribution { get; set; }
+        public Dimension Dimension { get; set; }
     }
 
-    public enum Distribution {
-        Horizontal,
-        Vertical
+    public enum Dimension {
+        X,Y
     }
 }

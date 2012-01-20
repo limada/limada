@@ -30,7 +30,7 @@ namespace Limaki.Common {
         public virtual object TryGetCreate(Type type) {
             object result = null;
             if (!_pooledObjects.TryGetValue(type, out result)) {
-                if (_poolableObjectFactory.Clazz(type) != null) {
+                if (_poolableObjectFactory.Contains(type)) {
                     result = _poolableObjectFactory.Create (type);
                 } else {
                     result = Activator.CreateInstance(type);
@@ -44,7 +44,7 @@ namespace Limaki.Common {
             object result = default(T);
             Type type = typeof (T);
             if (!_pooledObjects.TryGetValue(type, out result)) {
-                if (_poolableObjectFactory.Clazz<T>() != null) {
+                if (_poolableObjectFactory.Contains<T>()) {
                     result = _poolableObjectFactory.Create<T>();
                 } else {
                     result = Activator.CreateInstance<T> ();

@@ -49,7 +49,6 @@ For more information, contact:
 
 
 using System.Collections.Generic;
-using Limaki.Actions;
 using Limaki.Drawing.Shapes;
 using System;
 
@@ -158,7 +157,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         public virtual void Add(RectangleS itemEnv, TItem item) {
             itemEnv = ShapeUtils.NormalizedRectangle(itemEnv);
             CollectStats(itemEnv);
-            RectangleS insertEnv = EnsureExtent(itemEnv, minExtent);
+            var insertEnv = EnsureExtent(itemEnv, minExtent);
             _root.Add(insertEnv, item);
         }
 
@@ -169,8 +168,17 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was found.</returns>
         public virtual bool Remove(RectangleS itemEnv, TItem item) {
+
+            NodeBase<TItem> node = null;
+            if(_root.QuadItems.TryGetValue(item, out node)){
+                node.RemoveItem(item);
+                var delnode = node as Node<TItem>;
+                if (delnode != null)
+                    return _root.Remove(delnode.Envelope, delnode);
+            }
+            return false;
             itemEnv = ShapeUtils.NormalizedRectangle(itemEnv);
-            RectangleS posEnv = EnsureExtent(itemEnv, minExtent);
+            var posEnv = EnsureExtent(itemEnv, minExtent);
             return _root.Remove(posEnv, item);
         }
 
@@ -185,7 +193,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             * the items that are matched are the items in quads which
             * overlap the search envelope
             */
-            CollectionVisitor<TItem> visitor = new CollectionVisitor<TItem>();
+            var visitor = new CollectionVisitor<TItem>();
             Query(searchEnv, visitor);
             return visitor.Items;
         }
@@ -245,7 +253,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             //int iLooped = 0;
             //int iSuccess = 0;
 
-            Stack<NodeBase<TItem>> loopStack = new Stack<NodeBase<TItem>>();
+            var loopStack = new Stack<NodeBase<TItem>>();
             loopStack.Push(root);
 
             while (loopStack.Count > 0) {
@@ -256,7 +264,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
                     //iLooped++;
                     foreach (var item in current.Items) {
                         var env = getBounds (item);
-                        float envX = env.X;     float envY = env.Y;
+                        float envX = env.X; float envY = env.Y;
                         float envR = env.Right; float envB = env.Bottom;
                         if (envX < l) l = envX;
                         if (envY < t) t = envY;

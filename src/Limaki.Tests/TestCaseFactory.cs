@@ -13,7 +13,6 @@
 
 using System;
 using System.Windows.Forms;
-using Limada.Tests.ThingGraphs.SchemaGraph;
 using Limada.View;
 using Limaki.Common;
 using Limaki.Data;
@@ -23,7 +22,6 @@ using Limaki.Model;
 using Limaki.Presenter.Display;
 using Limaki.Presenter.UI;
 using Limaki.UseCases;
-using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Winform.Display;
 using Limaki.UseCases.Winform;
 using Limaki.Tests.Graph.Model;

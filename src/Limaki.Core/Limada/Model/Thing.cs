@@ -26,8 +26,8 @@ namespace Limada.Model {
     /// </summary>
     [DataContract]
     public class Thing : IThing, IThing<Id> {
-        
-        public Thing() : this(Isaac.Long) {}
+
+        public Thing() : this(Isaac.Long) { }
         public Thing(Id id) {
             _id = id;
         }

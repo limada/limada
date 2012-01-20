@@ -19,7 +19,7 @@ using Limaki.Drawing.GDI;
 using Limaki.Drawing.Painters;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class RectanglePainter:Painter<RectangleI> {
+    public class RectanglePainter:Painter<RectangleI>,IPainter<IRectangleShape,RectangleI> {
         protected SolidBrush _brush = null;
         protected virtual SolidBrush GetSolidBrush(System.Drawing.Color color) {
             if (_brush != null) {

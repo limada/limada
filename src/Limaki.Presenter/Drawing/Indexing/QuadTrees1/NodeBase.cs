@@ -47,9 +47,6 @@ For more information, contact:
 
 */
 
-using System;
-using System.Collections;
-using System.Text;
 using System.Collections.Generic;
 using Limaki.Common.Collections;
 
@@ -58,6 +55,9 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
     /// The base class for nodes in a <c>Quadtree</c>.
     /// </summary>
     public abstract class NodeBase<TItem> {
+
+        public IDictionary<TItem, NodeBase<TItem>> QuadItems { get; set; }
+
         /// <summary> 
         /// Returns the index of the subquad that wholly contains the given envelope.
         /// If none does, returns -1.
@@ -65,20 +65,24 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// <param name="env"></param>
         /// <param name="centre"></param>
         public static int GetSubnodeIndex(RectangleS env, PointS centre) {
-            int subnodeIndex = none;
-            float envX = env.X;
-            float envY = env.Y;
-            float envR = env.X + env.Width;
-            float envB = env.Y + env.Height;
-            float centreX = centre.X;
-            float centreY = centre.Y;
+            var subnodeIndex = none;
+            var envX = env.X;
+            var envY = env.Y;
+            var envR = env.X + env.Width;
+            var envB = env.Y + env.Height;
+            var centreX = centre.X;
+            var centreY = centre.Y;
             if (envX >= centreX) {
-                if (envY >= centreY) subnodeIndex = se;
-                if (envB <= centreY) subnodeIndex = ne;
+                if (envY >= centreY)
+                    subnodeIndex = se;
+                if (envB <= centreY)
+                    subnodeIndex = ne;
             }
             if (envR <= centreX) {
-                if (envY >= centreY) subnodeIndex = sw;
-                if (envB <= centreY) subnodeIndex = nw;
+                if (envY >= centreY)
+                    subnodeIndex = sw;
+                if (envB <= centreY)
+                    subnodeIndex = nw;
             }
             return subnodeIndex;
         }
@@ -86,9 +90,9 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// <summary>
         /// 
         /// </summary>
-        private ICollection<TItem> _items = new Set<TItem>();
+        private ICollection<TItem> _items = null;
         public virtual ICollection<TItem> Items {
-            get { return _items; }
+            get { return _items ?? (_items = new Set<TItem>()); }
             set { _items = value; }
         }
 
@@ -117,24 +121,25 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// </summary>
         public NodeBase() { }
 
-        /// <summary>
-        /// 
-        /// </summary>
-
-
+    
         /// <summary>
         /// 
         /// </summary>
         public virtual bool HasItems {
-            get { return _items!=null && _items.Count != 0; }
+            get { return _items != null && _items.Count != 0; }
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="item"></param>
-        public virtual void Add(TItem item) {
-            _items.Add(item);
+        public virtual void AddItem(TItem item) {
+            Items.Add(item);
+            QuadItems[item] = this;
+        }
+
+        public virtual bool RemoveItem(TItem item) {
+            return Items.Remove(item);
         }
 
         /// <summary> 
@@ -148,7 +153,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             if (!IsSearchMatch(itemEnv))
                 return false;
 
-            bool found = false;
+            var found = false;
 
             for (int i = 0; i < 4; i++) {
                 if (Subnodes[i] != null) {
@@ -163,19 +168,41 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             }
 
             // if item was found lower down, don't need to search for it here
-            if (!found) {
+            if (!found && HasItems) {
                 // otherwise, try and remove the item from the list of items in this node
-                found = _items.Remove(item);
+                found = RemoveItem(item);
             }
             return found;
         }
 
+
+        public virtual bool Remove(RectangleS nodeEnv, NodeBase<TItem> node) {
+            // use envelope to restrict nodes scanned
+            if (!IsSearchMatch(nodeEnv))
+                return false;
+
+            var found = false;
+
+            for (int i = 0; i < 4; i++) {
+                if (Subnodes[i] != null) {
+                    found = Subnodes[i] == node || Subnodes[i].Remove(nodeEnv, node);
+                    if (found) {
+                        // trim subtree if empty
+                        if (Subnodes[i].IsPrunable)
+                            Subnodes[i] = null;
+                        break;
+                    } 
+                }
+            }
+          
+            return found;
+        }
         /// <summary>
         /// 
         /// </summary>
         public virtual bool IsPrunable {
             get {
-                return !( HasSubNodes || HasItems );
+                return !(HasSubNodes || HasItems);
             }
         }
 
@@ -197,16 +224,14 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// </summary>
         public virtual bool IsEmpty {
             get {
-                bool isEmpty = true;
+                if (HasItems)
+                    return false;
 
-                if (_items.Count != 0)
-                    isEmpty = false;
-                else {
-                    foreach (Node<TItem> sub in Subnodes)
-                        if (sub != null && !sub.IsEmpty)
-                            isEmpty = false;
-                }
-                return isEmpty;
+                foreach (var sub in Subnodes)
+                    if (sub != null && !sub.IsEmpty)
+                        return false;
+
+                return true;
             }
         }
 
@@ -219,9 +244,10 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
             // resultItems.addAll(this.items);
-            foreach (TItem o in this._items)
-                resultItems.Add(o);
-            foreach (Node<TItem> sub in Subnodes)
+            if (HasItems)
+                foreach (var o in Items)
+                    resultItems.Add(o);
+            foreach (var sub in Subnodes)
                 if (sub != null)
                     sub.AddAllItems(ref resultItems);
             return resultItems;
@@ -247,10 +273,11 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
             // resultItems.addAll(items);
-            foreach (TItem o in this._items)
-                resultItems.Add(o);
+            if (HasItems)
+                foreach (var o in Items)
+                    resultItems.Add(o);
 
-            foreach (Node<TItem> sub in Subnodes)
+            foreach (var sub in Subnodes)
                 if (sub != null)
                     sub.AddAllItemsFromOverlapping(searchEnv, ref resultItems);
         }
@@ -283,9 +310,10 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         protected virtual void VisitItems(RectangleS searchEnv, IItemVisitor<TItem> visitor) {
             // would be nice to filter items based on search envelope, but can't until they contain an envelope
             // lytico: what about having IItemVisitor.GetEnvelope(TItem item)
-            foreach (TItem current in _items) {
-                visitor.VisitItem(current);
-            }
+            if (HasItems)
+                foreach (var current in Items) {
+                    visitor.VisitItem(current);
+                }
         }
 
         /// <summary>
@@ -293,10 +321,10 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// </summary>
         public virtual int Depth {
             get {
-                int maxSubDepth = 0;
-                foreach (Node<TItem> sub in Subnodes)
+                var maxSubDepth = 0;
+                foreach (var sub in Subnodes)
                     if (sub != null) {
-                        int sqd = sub.Depth;
+                        var sqd = sub.Depth;
                         if (sqd > maxSubDepth)
                             maxSubDepth = sqd;
                     }
@@ -310,11 +338,11 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// </summary>
         public virtual int Count {
             get {
-                int subSize = 0;
-                foreach (Node<TItem> sub in Subnodes)
+                var subSize = 0;
+                foreach (var sub in Subnodes)
                     if (sub != null)
                         subSize += sub.Count;
-                return subSize + _items.Count;
+                return subSize + (_items != null ? _items.Count : 0);
             }
         }
 
@@ -324,7 +352,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         public virtual int NodeCount {
             get {
                 int subSize = 0;
-                foreach (Node<TItem> sub in Subnodes)
+                foreach (var sub in Subnodes)
                     if (sub != null)
                         subSize += sub.Count;
                 return subSize + 1;

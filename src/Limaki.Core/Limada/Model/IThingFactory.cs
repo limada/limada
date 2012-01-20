@@ -1,6 +1,7 @@
 using Limaki.Graphs;
 using Limaki.Common;
 using Id = System.Int64;
+using System;
 namespace Limada.Model {
     public interface IThingFactory : IGraphModelFactory<IThing, ILink>, IFactory {
         
@@ -14,5 +15,7 @@ namespace Limada.Model {
         ILink CreateEdge(Id id, IThingGraph graph, object data);
         ILink CreateEdge<T>(Id id, T data);
         ILink CreateEdge(Id id, IThing root, IThing leaf, IThing marker);
+
+        Type Clazz<T>();
     }
 }

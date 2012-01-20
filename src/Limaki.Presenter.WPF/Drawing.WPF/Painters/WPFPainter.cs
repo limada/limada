@@ -5,6 +5,7 @@ using Limaki.Drawing.WPF;
 using Limaki.Drawing.WPF.Shapes;
 
 namespace Limaki.Drawing.WPF.Painters {
+
     public class WPFPainter<T>:Limaki.Drawing.Painters.Painter<T> {
 
         public override void Render(ISurface surface) {
@@ -32,5 +33,18 @@ namespace Limaki.Drawing.WPF.Painters {
                 }
             }
         }
+    }
+
+    public class WPFVectorPainter : WPFPainter<Vector>, IPainter<IVectorShape, Vector> {
+
+    }
+    public class WPFRectanglePainter : WPFPainter<RectangleI>, IPainter<IRectangleShape, RectangleI> {
+
+    }
+    public class WPFRoundedRectanglePainter : WPFRectanglePainter, IPainter<IRoundedRectangleShape, RectangleI> {
+
+    }
+    public class WPFBezierPainter : WPFPainter<RectangleI>, IPainter<IBezierShape, RectangleI> {
+
     }
 }

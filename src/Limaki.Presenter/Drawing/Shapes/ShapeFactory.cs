@@ -15,13 +15,13 @@
 namespace Limaki.Drawing.Shapes {
     public class ShapeFactory : ShapeFactoryBase {
         protected override void InstrumentClazzes() {
-            Clazzes[typeof(RectangleI)] =  typeof(RectangleShape);
-            Clazzes[typeof(Vector)] =  typeof(VectorShape);
+            Add<IShape<RectangleI>>(() => new RectangleShape());
+            Add<IShape<Vector>>(() => new VectorShape());
 
-            Clazzes[typeof(IRectangleShape)] =  typeof(RectangleShape);
-            Clazzes[typeof(IRoundedRectangleShape)] =  typeof(RoundedRectangleShape);
-            Clazzes[typeof(IBezierShape)] =  typeof(BezierShape);
-            Clazzes[typeof(IVectorShape)] =  typeof(VectorShape);
+            Add<IRectangleShape> (() => new RectangleShape());
+            Add<IRoundedRectangleShape> (() => new RoundedRectangleShape());
+            Add<IBezierShape> (() => new BezierShape());
+            Add<IVectorShape> (() => new VectorShape());
         }
     }
 }

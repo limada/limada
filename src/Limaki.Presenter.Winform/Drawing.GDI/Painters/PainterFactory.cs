@@ -12,43 +12,30 @@
  * 
  */
 
-using System;
-using Limaki.Common;
 using Limaki.Drawing.Shapes;
+using Limaki.Drawing.Painters;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class PainterFactory : FactoryBase, IPainterFactory {
-        /// <summary>
-        /// gives back a painter provided for shape of type
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public virtual IPainter CreatePainter(Type type) {
-            return (IPainter)Create(type);
-        }
-
-        public virtual IPainter<T> CreatePainter<T>() {
-            return Create<T, IPainter<T>>();
-        }
-
-        public virtual IPainter CreatePainter(IShape shape) {
-            return CreatePainter (shape.GetType());
-        }
+    public class PainterFactory: PainterFactoryBase, IPainterFactory {
+        
 
         protected override void InstrumentClazzes() {
-            Clazzes[typeof(IRectangleShape)] = typeof(RectanglePainter);
-            Clazzes[typeof(IVectorShape)] = typeof(VectorPainter);
-            Clazzes[typeof(IRoundedRectangleShape)] = typeof(RoundedRectanglePainter);
-            Clazzes[typeof(IBezierShape)] = typeof(BezierPainter);
+           Add<IPainter<IShape<RectangleI>,RectangleI>>(()=> new RectanglePainter());
+           Add<IPainter<IShape<Vector>,Vector>>(()=> new VectorPainter());
+           Add<IPainter<IRoundedRectangleShape,RectangleI>>(()=> new RoundedRectanglePainter());
+           Add<IPainter<IRectangleShape, RectangleI>>(() => new RectanglePainter());
+           Add<IPainter<IBezierShape,RectangleI>>(()=> new BezierPainter());
+           Add<IPainter<IVectorShape, Vector>>(() => new VectorPainter());
 
-            Clazzes[typeof(RectangleShape)] = typeof(RectanglePainter);
-            Clazzes[typeof(VectorShape)] = typeof(VectorPainter);
-            Clazzes[typeof(RoundedRectangleShape)] = typeof(RoundedRectanglePainter);
-            Clazzes[typeof(BezierShape)] = typeof(BezierPainter);
+            //Add<IPainter<RectangleShape>, RectanglePainter>();
+           //Add<IPainter<RectangleShape>>(() => new RectanglePainter());
+           //Add<IPainter<VectorShape>>(() => new VectorPainter());
+           //Add<IPainter<RoundedRectangleShape>>(() => new RoundedRectanglePainter());
+           //Add<IPainter<BezierShape>>(() => new BezierPainter());
 
-            Clazzes[typeof(RectangleI)] = typeof(RectanglePainter);
+           Add<IPainter<RectangleI>>(()=> new RectanglePainter());
 
-            Clazzes[typeof(string)] = typeof(StringPainter);
+           Add<IPainter<string>>(()=> new StringPainter());
             
         }
     }

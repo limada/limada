@@ -92,7 +92,7 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
         public void OneColumn(AllignerOptions options) {
             Call(CurrentDisplay, (alligner, items) => alligner.OneColumn(items, options));
         }
-        public virtual void LogicalLayout0(AllignerOptions options) {
+        public virtual void FullLayout(AllignerOptions options) {
             var display = this.CurrentDisplay;
             if (display != null) {
                 display.BackColor = display.StyleSheet.BackColor;

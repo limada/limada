@@ -16,7 +16,7 @@
 using System;
 
 namespace Limaki.Drawing.Painters {
-    public abstract class Painter<T>:IPainter<T> {
+    public abstract class Painter<T> : IPainter<T>, IPainter<IShape<T>, T> {
 
         #region IPainter<T> Member
 
