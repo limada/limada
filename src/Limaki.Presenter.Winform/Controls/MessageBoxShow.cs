@@ -1,12 +1,12 @@
 ﻿using System.Windows.Forms;
-using Limaki.Presenter.Winform;
-using Limaki.UseCases.Viewers;
 using DialogResult = Limaki.UseCases.Viewers.DialogResult;
+using Limaki.UseCases.Viewers;
+using Limaki.Presenter.Winform;
 
 namespace Limaki.Winform.Controls {
     public class MessageBoxShow : IMessageBoxShow {
 
-        public DialogResult Show(string title, string text, UseCases.Viewers.MessageBoxButtons buttons) {
+        public DialogResult Show(string title, string text, Limaki.UseCases.Viewers.MessageBoxButtons buttons) {
             return Converter.Convert(MessageBox.Show(text, title, Converter.Convert(buttons)));
         }
 

@@ -15,6 +15,7 @@
 using System;
 using Db4objects.Db4o;
 using Db4objects.Db4o.Config;
+using System.Diagnostics;
 
 namespace Limaki.Data.db4o {
     public class Gateway : GatewayBase {
@@ -57,8 +58,10 @@ namespace Limaki.Data.db4o {
         public virtual IObjectContainer CreateSession(IEmbeddedConfiguration config) {
             var file = this.DataBaseInfo.Path + this.DataBaseInfo.Name +
                        this.FileExtension;
-            if (!System.IO.File.Exists(file))
+            if (!System.IO.File.Exists(file)) {
                 config.File.BlockSize = 16;
+                Trace.TraceInformation("{0}: File not exists: {1}", this.GetType().FullName, file);
+            }
             return Db4oEmbedded.OpenFile(config,file);
         }
 

@@ -19,7 +19,7 @@ namespace Limaki.Context {
         /// </summary>
         /// <param name="context"></param>
         public virtual void ApplyResources(IApplicationContext context) {
-            StyleSheets styleSheets = context.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = context.Pool.TryGetCreate<StyleSheets>();
             styleSheets.Init();
 
 

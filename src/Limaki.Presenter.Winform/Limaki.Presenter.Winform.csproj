@@ -75,29 +75,29 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\MessageBoxShow.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\DataObjectHelper.cs" />
-    <Compile Include="Presenter\Winform\Vievers\ImageExporter.cs" />
-    <Compile Include="Presenter\GDI\UI\GDIImageLayer.cs" />
-    <Compile Include="Presenter\Winform\Vievers\ScenePainter.cs" />
-    <Compile Include="Presenter\Winform\Vievers\StreamViewers\DocumentSchemaControl.cs">
+    <Compile Include="Presenter.Winform\DragDrop\DataObjectHelper.cs" />
+    <Compile Include="Vievers\ImageExporter.cs" />
+    <Compile Include="Presenter.GDI\UI\GDIImageLayer.cs" />
+    <Compile Include="Vievers\ScenePainter.cs" />
+    <Compile Include="Vievers\StreamViewers\DocumentSchemaControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\StreamViewers\DocumentSchemaControl.Designer.cs">
+    <Compile Include="Vievers\StreamViewers\DocumentSchemaControl.Designer.cs">
       <DependentUpon>DocumentSchemaControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\StreamViewers\DocumentSchemaController.cs" />
-    <Compile Include="Presenter\Winform\Vievers\StreamViewers\DocumentSchemaKeyScrollAction.cs" />
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\ArrangerToolStrip.cs">
+    <Compile Include="Vievers\StreamViewers\DocumentSchemaController.cs" />
+    <Compile Include="Vievers\StreamViewers\DocumentSchemaKeyScrollAction.cs" />
+    <Compile Include="Vievers\ToolStrips\ArrangerToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\ArrangerToolStrip.Designer.cs">
+    <Compile Include="Vievers\ToolStrips\ArrangerToolStrip.Designer.cs">
       <DependentUpon>ArrangerToolStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\IToolStripCommandItem.cs" />
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\ToolStripItemEx.cs">
+    <Compile Include="Vievers\ToolStrips\IToolStripCommandItem.cs" />
+    <Compile Include="Vievers\ToolStrips\ToolStripItemEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\ToolStripCommand.cs" />
+    <Compile Include="Vievers\ToolStrips\ToolStripCommand.cs" />
     <Compile Include="Properties\Resources1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -105,81 +105,81 @@
     </Compile>
     <Compile Include="UseCases\PrintManager.cs" />
     <Compile Include="UseCases\WinformUseCaseComposer.cs" />
-    <Compile Include="Presenter\Winform\Display\ImageDisplay.cs">
+    <Compile Include="Presenter.Winform\Display\ImageDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Display\WinformDeviceComposer.cs" />
-    <Compile Include="Presenter\Winform\Vievers\About.cs">
+    <Compile Include="Presenter.Winform\Display\WinformDeviceComposer.cs" />
+    <Compile Include="Vievers\About.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\About.Designer.cs">
+    <Compile Include="Vievers\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\BaseStyleEditor.cs">
+    <Compile Include="Vievers\BaseStyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\BaseStyleEditor.Designer.cs">
+    <Compile Include="Vievers\BaseStyleEditor.Designer.cs">
       <DependentUpon>BaseStyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\LayoutEditor.cs">
+    <Compile Include="Vievers\LayoutEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\LayoutEditor.Designer.cs">
+    <Compile Include="Vievers\LayoutEditor.Designer.cs">
       <DependentUpon>LayoutEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\Options.cs">
+    <Compile Include="Vievers\Options.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\Options.Designer.cs">
+    <Compile Include="Vievers\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ShapeComboBox.cs">
+    <Compile Include="Vievers\ShapeComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ShapeComboBox.Designer.cs">
+    <Compile Include="Vievers\ShapeComboBox.Designer.cs">
       <DependentUpon>ShapeComboBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\StreamViewers\HTMLViewer.cs" />
-    <Compile Include="Presenter\Winform\Vievers\StreamViewers\ImageViewerController.cs" />
-    <Compile Include="Presenter\Winform\Vievers\StreamViewers\TextViewerController.cs" />
-    <Compile Include="Presenter\Winform\Vievers\StreamViewers\TextViewerWithToolstripController.cs" />
-    <Compile Include="Presenter\Winform\Vievers\StyleEditor.cs">
+    <Compile Include="Vievers\StreamViewers\HTMLViewer.cs" />
+    <Compile Include="Vievers\StreamViewers\ImageViewerController.cs" />
+    <Compile Include="Vievers\StreamViewers\TextViewerController.cs" />
+    <Compile Include="Vievers\StreamViewers\TextViewerWithToolstripController.cs" />
+    <Compile Include="Vievers\StyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\StyleEditor.Designer.cs">
+    <Compile Include="Vievers\StyleEditor.Designer.cs">
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\LayoutToolStrip.cs">
+    <Compile Include="Vievers\ToolStrips\LayoutToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\LayoutToolStrip.Designer.cs">
+    <Compile Include="Vievers\ToolStrips\LayoutToolStrip.Designer.cs">
       <DependentUpon>LayoutToolStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\MarkerToolStrip.cs">
+    <Compile Include="Vievers\ToolStrips\MarkerToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\MarkerToolStrip.Designer.cs">
+    <Compile Include="Vievers\ToolStrips\MarkerToolStrip.Designer.cs">
       <DependentUpon>MarkerToolStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\DisplayToolStrip.cs">
+    <Compile Include="Vievers\ToolStrips\DisplayToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\DisplayToolStrip.Designer.cs">
+    <Compile Include="Vievers\ToolStrips\DisplayToolStrip.Designer.cs">
       <DependentUpon>DisplayToolStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\SplitViewToolStrip.cs">
+    <Compile Include="Vievers\ToolStrips\SplitViewToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\SplitViewToolStrip.Designer.cs">
+    <Compile Include="Vievers\ToolStrips\SplitViewToolStrip.Designer.cs">
       <DependentUpon>SplitViewToolStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\ToolStrips\ToolStripShapeComboBox.cs">
+    <Compile Include="Vievers\ToolStrips\ToolStripShapeComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\WebBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Vievers\WinformSplitView.cs" />
+    <Compile Include="Vievers\WinformSplitView.cs" />
     <Compile Include="Controls\TextEditor\TextBoxEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -221,50 +221,50 @@
     <Compile Include="Drawing.GDI\Painters\RoundedRectanglePainter.cs" />
     <Compile Include="Drawing.GDI\Painters\StringPainter.cs" />
     <Compile Include="Drawing.GDI\Painters\VectorPainter.cs" />
-    <Compile Include="Presenter\GDI\UI\GDIControl.cs" />
-    <Compile Include="Presenter\GDI\UI\GDIGraphSceneLayer.cs" />
-    <Compile Include="Presenter\GDI\UI\GDIRenderEventArgs.cs" />
-    <Compile Include="Presenter\Winform\Converter.cs" />
-    <Compile Include="Presenter\Winform\CursorHandler.cs" />
-    <Compile Include="Presenter\Winform\Display\DragDropCatcher.cs" />
-    <Compile Include="Presenter\Winform\Display\WinformDisplay.cs">
+    <Compile Include="Presenter.GDI\UI\GDIControl.cs" />
+    <Compile Include="Presenter.GDI\UI\GDIGraphSceneLayer.cs" />
+    <Compile Include="Presenter.GDI\UI\GDIRenderEventArgs.cs" />
+    <Compile Include="Presenter.Winform\Converter.cs" />
+    <Compile Include="Presenter.Winform\CursorHandler.cs" />
+    <Compile Include="Presenter.Winform\Display\DragDropCatcher.cs" />
+    <Compile Include="Presenter.Winform\Display\WinformDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Display\WinformGraphSceneDisplay.cs">
+    <Compile Include="Presenter.Winform\Display\WinformGraphSceneDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\Display\WinformViewPort.cs" />
-    <Compile Include="Presenter\Winform\Display\WinformVisualsDisplay.cs">
+    <Compile Include="Presenter.Winform\Display\WinformViewPort.cs" />
+    <Compile Include="Presenter.Winform\Display\WinformVisualsDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Presenter\Winform\DragDrop\ControlDataObject.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\DataInprocObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\DataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\DataObjectHandlerChain.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\DragDropFacade.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\IDataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\ImageDataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\IVisualsDataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\SerializedDataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\SerializedVisualsDataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\StreamDataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\StringDataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\VisualsDataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\VisualsImageDataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\VisualsInprocDataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\DragDrop\VisualsTextDataObjectHandler.cs" />
-    <Compile Include="Presenter\Winform\IDragDopControl.cs" />
-    <Compile Include="Presenter\Winform\Rendering\GripPainter.cs" />
-    <Compile Include="Presenter\Winform\Rendering\MoveResizeRenderer.cs" />
-    <Compile Include="Presenter\Winform\Rendering\SelectionRenderer.cs" />
-    <Compile Include="Presenter\Winform\Rendering\WinformRenderer.cs" />
-    <Compile Include="Presenter\Winform\UI\WinformEventControler.cs" />
-    <Compile Include="Presenter\Winform\Visuals\VisualsDragDrop.cs" />
-    <Compile Include="Presenter\Winform\Visuals\VisualsTextEditor.cs" />
-    <Compile Include="Presenter\Winform\WinformContextRecourceLoader.cs" />
-    <Compile Include="Presenter\Winform\WinformExeptionHandler.cs" />
-    <Compile Include="Presenter\Winform\WinformSystemInformation.cs" />
-    <Compile Include="Presenter\Winform\WinformUtils.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\ControlDataObject.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\DataInprocObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\DataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\DataObjectHandlerChain.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\DragDropFacade.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\IDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\ImageDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\IVisualsDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\SerializedDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\SerializedVisualsDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\StreamDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\StringDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\VisualsDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\VisualsImageDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\VisualsInprocDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\VisualsTextDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\IDragDopControl.cs" />
+    <Compile Include="Presenter.Winform\Rendering\GripPainter.cs" />
+    <Compile Include="Presenter.Winform\Rendering\MoveResizeRenderer.cs" />
+    <Compile Include="Presenter.Winform\Rendering\SelectionRenderer.cs" />
+    <Compile Include="Presenter.Winform\Rendering\WinformRenderer.cs" />
+    <Compile Include="Presenter.Winform\UI\WinformEventControler.cs" />
+    <Compile Include="Presenter.Winform\Visuals\VisualsDragDrop.cs" />
+    <Compile Include="Presenter.Winform\Visuals\VisualsTextEditor.cs" />
+    <Compile Include="Presenter.Winform\WinformContextRecourceLoader.cs" />
+    <Compile Include="Presenter.Winform\WinformExeptionHandler.cs" />
+    <Compile Include="Presenter.Winform\WinformSystemInformation.cs" />
+    <Compile Include="Presenter.Winform\WinformUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -292,23 +292,23 @@
       <DependentUpon>TextOkCancelBox.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Presenter\Winform\Vievers\About.resx">
+    <EmbeddedResource Include="Vievers\About.resx">
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Presenter\Winform\Vievers\BaseStyleEditor.resx">
+    <EmbeddedResource Include="Vievers\BaseStyleEditor.resx">
       <DependentUpon>BaseStyleEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Presenter\Winform\Vievers\LayoutEditor.resx">
+    <EmbeddedResource Include="Vievers\LayoutEditor.resx">
       <DependentUpon>LayoutEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Presenter\Winform\Vievers\Options.resx">
+    <EmbeddedResource Include="Vievers\Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Presenter\Winform\Vievers\StyleEditor.resx">
+    <EmbeddedResource Include="Vievers\StyleEditor.resx">
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

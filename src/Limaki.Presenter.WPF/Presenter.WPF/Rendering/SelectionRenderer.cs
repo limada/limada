@@ -88,7 +88,7 @@ namespace Limaki.Presenter.WPF {
 
                 RectangleI bigger = RectangleI.Union(a, b);
                 bigger = Camera.FromSource(bigger);
-                bigger = ShapeUtils.NormalizedRectangle(bigger);
+                bigger = bigger.NormalizedRectangle();
 
                 if (bigger.Width <= halfborder || bigger.Height <= halfborder) {
                     bigger.Inflate(halfborder, halfborder);
@@ -98,7 +98,7 @@ namespace Limaki.Presenter.WPF {
 
                     RectangleI smaller = RectangleI.Intersect(a, b);
                     smaller = Camera.FromSource(smaller);
-                    smaller = ShapeUtils.NormalizedRectangle(smaller);
+                    smaller = smaller.NormalizedRectangle();
                     smaller.Inflate(-halfborder, -halfborder);
 
                     Device.Invalidate(

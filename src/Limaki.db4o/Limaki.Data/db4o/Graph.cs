@@ -24,7 +24,7 @@ using Db4objects.Db4o.Linq;
 using System.Linq;
 
 namespace Limaki.Data.db4o {
-    public class Graph<TItem, TEdge> : DbGraph<TItem,TEdge>
+    public class Graph<TItem, TEdge> : DbGraph<TItem, TEdge>, IGatewayConnection
         where TEdge : IEdge<TItem> {
 
         #region IGraph<TItem,TEdge> Member

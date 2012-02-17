@@ -112,7 +112,7 @@ namespace Limaki.Presenter.UI {
                 } else {
                     // do not normalize Links!!
                     if (!(Shape is IEdgeShape)) {
-                        rect = ShapeUtils.NormalizedRectangle(rect);
+                        rect = rect.NormalizedRectangle();
                     }
                     Shape.Location = rect.Location;
                     Shape.Size = rect.Size;

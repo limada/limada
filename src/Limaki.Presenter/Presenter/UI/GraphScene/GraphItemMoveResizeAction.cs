@@ -150,7 +150,7 @@ namespace Limaki.Presenter.UI {
                         var shape = Scene.ItemShape (item);
                         // do not normalize Links!!
                         if (!(shape is IEdgeShape)) {
-                            rect = ShapeUtils.NormalizedRectangle(rect);
+                            rect = rect.NormalizedRectangle();
                         }
                         command = new ResizeCommand<TItem>(item, Scene.ItemShape, rect);
                         Scene.Requests.Add(command);

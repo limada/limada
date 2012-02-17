@@ -155,7 +155,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
         public virtual void Add(RectangleS itemEnv, TItem item) {
-            itemEnv = ShapeUtils.NormalizedRectangle(itemEnv);
+            itemEnv = itemEnv.NormalizedRectangle();
             CollectStats(itemEnv);
             var insertEnv = EnsureExtent(itemEnv, minExtent);
             _root.Add(insertEnv, item);
@@ -177,7 +177,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
                     return _root.Remove(delnode.Envelope, delnode);
             }
             return false;
-            itemEnv = ShapeUtils.NormalizedRectangle(itemEnv);
+            itemEnv = itemEnv.NormalizedRectangle();
             var posEnv = EnsureExtent(itemEnv, minExtent);
             return _root.Remove(posEnv, item);
         }
@@ -188,7 +188,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// <param name="searchEnv"></param>
         /// <returns></returns>
         public virtual ICollection<TItem> Query(RectangleS searchEnv) {
-            searchEnv = ShapeUtils.NormalizedRectangle(searchEnv);
+            searchEnv = searchEnv.NormalizedRectangle();
             /*
             * the items that are matched are the items in quads which
             * overlap the search envelope
@@ -208,7 +208,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             * the items that are matched are the items in quads which
             * overlap the search envelope
             */
-            searchEnv = ShapeUtils.NormalizedRectangle(searchEnv);
+            searchEnv = searchEnv.NormalizedRectangle();
             _root.Visit(searchEnv, visitor);
         }
 

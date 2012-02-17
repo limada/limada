@@ -41,7 +41,7 @@ namespace Limaki.Drawing {
 
         public virtual XElement Write(Font font) {
             XElement xmlthing = new XElement("font");
-            xmlthing.Add(Write("family", font.FontFamily));
+            xmlthing.Add(Write("family", font.Family));
             xmlthing.Add(Write("size",font.Size));
             xmlthing.Add(Write("style",font.Style));
             return xmlthing;
@@ -58,7 +58,7 @@ namespace Limaki.Drawing {
 
         public virtual Font ReadFont(XElement node) {
             var font = ReadBaseFont (node);
-            Font result = drawingUtils.CreateFont (font.FontFamily,font.Size);
+            Font result = drawingUtils.CreateFont (font.Family,font.Size);
             result.Style = font.Style;
             return result;
         }
@@ -112,7 +112,7 @@ namespace Limaki.Drawing {
             } else {
                 var font = ReadBaseFont (node);
                 if (!style.ParentStyle.Font.Equals(font)) {
-                    var result = drawingUtils.CreateFont(font.FontFamily, font.Size);
+                    var result = drawingUtils.CreateFont(font.Family, font.Size);
                     result.Style = font.Style;
                     style.Font = result;
                 } 

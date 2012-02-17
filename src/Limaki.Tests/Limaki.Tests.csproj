@@ -18,7 +18,7 @@
     </UpgradeBackupLocation>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
-   <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -80,127 +80,128 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Limada\Tests\Basic\BasicThingGraphTest.cs" />
-    <Compile Include="Limada\Tests\Basic\ThingTest.cs" />
-    <Compile Include="Limada\Tests\Model\DescriptionTestFactory.cs" />
-    <Compile Include="Limada\Tests\Model\DocumentSchemaTestFactory.cs" />
-    <Compile Include="Limada\Tests\Model\ThingFactoryTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraphs\Db4oRepairTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
-    <Compile Include="Limada\Tests\ThingGraphs\Sample4Test.cs" />
-    <Compile Include="Limada\Tests\ThingGraphs\SchemaGraph\SchemaGraphPerformanceTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraphs\SchemaGraph\SchemaGraphTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraphs\StreamThingTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraphs\ThingGraphDeleteItemsTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraphs\ThingGraphTest.cs" />
-    <Compile Include="Limada\Tests\ThingGraphs\ThingGraphTestBase.cs" />
-    <Compile Include="Limada\Tests\Model\GraphItem2ThingAdapter.cs" />
-    <Compile Include="Limada\Tests\Model\GraphMapperTest.cs" />
-    <Compile Include="Limada\Tests\Model\GraphPairTest.cs" />
-    <Compile Include="Limada\Tests\Model\SimpleDescriptionTestFactory.cs" />
-    <Compile Include="Limada\Tests\Model\ThingGraphUtilTest.cs" />
-    <Compile Include="Limada\Tests\Model\ModelHelper.cs" />
-    <Compile Include="Limada\Tests\Model\SheetTest.cs" />
-    <Compile Include="Limada\Tests\Schema\CommonSchemaTest.cs" />
-    <Compile Include="Limada\Tests\Schema\DocumentSchemaTest.cs" />
-    <Compile Include="Limada\Tests\Schema\SchemaTest.cs" />
-    <Compile Include="Limada\Tests\Schema\SchemaTest1.cs" />
-    <Compile Include="Limada\Tests\Schema\SchemaViewTestData.cs" />
-    <Compile Include="Limada\Tests\StreamSources.cs" />
-    <Compile Include="Limada\Tests\View\StreamFacadeTest.cs" />
-    <Compile Include="Limada\Tests\View\ThingGraphFactory.cs" />
-    <Compile Include="Limada\Tests\View\ThingSceneFactory.cs" />
-    <Compile Include="Limada\Tests\View\ThingVisualMapperTest.cs" />
-    <Compile Include="Limada\Tests\View\VisualThingGraphTest.cs" />
-    <Compile Include="Limada\Tests\Wrappers\WrapperTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Basic\BasicThingGraphTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Basic\ThingTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\DescriptionTestFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\DocumentSchemaTestFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\ThingFactoryTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oRepairTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\Sample4Test.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\SchemaGraph\SchemaGraphPerformanceTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\SchemaGraph\SchemaGraphTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\StreamThingTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\ThingGraphDeleteItemsTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\ThingGraphTest.cs" />
+    <Compile Include="Limada.Tests\Tests\ThingGraphs\ThingGraphTestBase.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\GraphItem2ThingAdapter.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\GraphMapperTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\GraphPairTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\SimpleDescriptionTestFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\ThingGraphUtilTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\ModelHelper.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\SheetTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Schema\CommonSchemaTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Schema\DocumentSchemaTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Schema\SchemaTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Schema\SchemaTest1.cs" />
+    <Compile Include="Limada.Tests\Tests\Schema\SchemaViewTestData.cs" />
+    <Compile Include="Limada.Tests\Tests\StreamSources.cs" />
+    <Compile Include="Limada.Tests\Tests\View\StreamFacadeTest.cs" />
+    <Compile Include="Limada.Tests\Tests\View\ThingGraphFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\View\ThingSceneFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\View\ThingVisualMapperTest.cs" />
+    <Compile Include="Limada.Tests\Tests\View\VisualThingGraphTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Wrappers\WrapperTest.cs" />
+    <Compile Include="Playground\KeyValueStore\KeyValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceLoader.cs" />
     <Compile Include="TestCaseFactory.cs" />
     <Compile Include="TestLocations.cs" />
-    <Compile Include="Tests\Common\IOUtilsTest.cs" />
-    <Compile Include="Tests\Graphics\StyleTest.cs" />
-    <Compile Include="Tests\Data\db4o\GraphTest.cs" />
-    <Compile Include="Tests\DomainTest.cs" />
-    <Compile Include="Tests\Graph\Folding\BinaryGraphFoldingTest.cs" />
-    <Compile Include="Tests\Graph\Folding\GCJohnBostonFoldingTest.cs" />
-    <Compile Include="Tests\Graph\Folding\Mock.cs" />
-    <Compile Include="Tests\Graph\Folding\MockGraphSceneLayer.cs" />
-    <Compile Include="Tests\Graph\Folding\ProgrammingLanguageFoldingTest.cs" />
-    <Compile Include="Tests\Graph\Folding\SceneFacadeTest.cs" />
-    <Compile Include="Tests\Graph\Wrappers\BasicGraphPairTest.cs" />
-    <Compile Include="Tests\Graph\Wrappers\BasicVisualItemGraphPairTest.cs" />
-    <Compile Include="Tests\Graph\Wrappers\GraphPairTest.cs" />
-    <Compile Include="Tests\Graph\Wrappers\GraphViewTest.cs" />
-    <Compile Include="Tests\Presenter\Display\BenchmarkOneTests.cs" />
-    <Compile Include="Tests\Presenter\Display\DisplayTest.cs" />
-    <Compile Include="Tests\Presenter\Display\FrameTicker.cs" />
-    <Compile Include="Tests\Presenter\Display\TestDevice.cs" />
-    <Compile Include="Tests\Presenter\Display\VisualsDisplayTest.cs" />
-    <Compile Include="Tests\Presenter\Display\VisualsDisplayTest1.cs" />
-    <Compile Include="Tests\Presenter\GDI\ConvexHullLayer.cs" />
-    <Compile Include="Tests\Presenter\GDI\RegionLayer.cs" />
-    <Compile Include="Tests\Presenter\GDI\RegionTest.cs" />
-    <Compile Include="Tests\Presenter\WebProxyTest.cs" />
-    <Compile Include="Tests\Presenter\Winform\ConverterTest.cs" />
-    <Compile Include="Tests\Presenter\Winform\OpenExampleData.cs">
+    <Compile Include="Limaki.Tests\Common\IOUtilsTest.cs" />
+    <Compile Include="Limaki.Tests\Graphics\StyleTest.cs" />
+    <Compile Include="Limaki.Tests\Data\db4o\GraphTest.cs" />
+    <Compile Include="Limaki.Tests\DomainTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Folding\BinaryGraphFoldingTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Folding\GCJohnBostonFoldingTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Folding\Mock.cs" />
+    <Compile Include="Limaki.Tests\Graph\Folding\MockGraphSceneLayer.cs" />
+    <Compile Include="Limaki.Tests\Graph\Folding\ProgrammingLanguageFoldingTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Folding\SceneFacadeTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Wrappers\BasicGraphPairTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Wrappers\BasicVisualItemGraphPairTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Wrappers\GraphPairTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Wrappers\GraphViewTest.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Display\BenchmarkOneTests.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Display\DisplayTest.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Display\FrameTicker.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Display\TestDevice.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Display\VisualsDisplayTest.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Display\VisualsDisplayTest1.cs" />
+    <Compile Include="Limaki.Tests\Presenter\GDI\ConvexHullLayer.cs" />
+    <Compile Include="Limaki.Tests\Presenter\GDI\RegionLayer.cs" />
+    <Compile Include="Limaki.Tests\Presenter\GDI\RegionTest.cs" />
+    <Compile Include="Limaki.Tests\Presenter\WebProxyTest.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Winform\ConverterTest.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Winform\OpenExampleData.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tests\Presenter\Winform\OpenExampleData.Designer.cs">
+    <Compile Include="Limaki.Tests\Presenter\Winform\OpenExampleData.Designer.cs">
       <DependentUpon>OpenExampleData.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tests\Presenter\Winform\QuadTreeVisualizer.cs" />
-    <Compile Include="Tests\Presenter\Winform\VisualsBoundsLayer.cs" />
-    <Compile Include="Tests\Presenter\Winform\WinformDisplayTestComposer.cs" />
-    <Compile Include="Tests\Presenter\Winform\WinformTestDevice.cs" />
-    <Compile Include="Tests\Presenter\Winform\WinformVisualsDisplayTest.cs" />
-    <Compile Include="Tests\Presenter\WiredScenesTest.cs" />
-    <Compile Include="Tests\Common\FactoryTest.cs" />
-    <Compile Include="Tests\Common\HTML\HtmlNextTest.cs" />
-    <Compile Include="Tests\Common\HTML\HtmlTestData.cs" />
-    <Compile Include="Tests\Sandbox\Linqish\ExpressionExploration.cs" />
-    <Compile Include="Tests\View\Drawing\PoligonAlgoTest.cs" />
-    <Compile Include="Tests\View\Drawing\ViewSerialisationTest.cs" />
-    <Compile Include="Tests\Graph\Basic\BasicGraphTests.cs" />
-    <Compile Include="Tests\Graph\Basic\BasicTestDataFactory.cs" />
-    <Compile Include="Tests\Graph\Basic\EdgeIsItemTest.cs" />
-    <Compile Include="Tests\Graph\Basic\GraphItemTest.cs" />
-    <Compile Include="Tests\Graph\Basic\IntGraphTest.cs" />
-    <Compile Include="Tests\Graph\Basic\StringGraphTest.cs" />
-    <Compile Include="Tests\Graph\FilteredGraphTest.cs" />
-    <Compile Include="Tests\Graph\GraphTestUtils.cs" />
-    <Compile Include="Tests\Graph\Model\Examples\BenchmarkOneGraphFactory.cs" />
-    <Compile Include="Tests\Graph\Model\Examples\BinaryGraphFactory.cs" />
-    <Compile Include="Tests\Graph\Model\Examples\BinaryTreeFactory.cs" />
-    <Compile Include="Tests\Graph\Model\Examples\GCJohnBostonGraphFactory.cs" />
-    <Compile Include="Tests\Graph\Model\Examples\LimakiShortHelp.cs" />
-    <Compile Include="Tests\Graph\Model\Examples\ProgrammingLanguageGraphFactory.cs" />
-    <Compile Include="Tests\Graph\Model\Examples\SimpleGraphFactory.cs" />
-    <Compile Include="Tests\Graph\Model\Examples\WordGameGraphFactory.cs" />
-    <Compile Include="Tests\Graph\Model\GenericBiGraphFactory.cs" />
-    <Compile Include="Tests\Graph\Model\GenericGraphFactory.cs" />
-    <Compile Include="Tests\Graph\Model\GraphFactoryBase.cs" />
-    <Compile Include="Tests\Graph\Model\IGraphFactory.cs" />
-    <Compile Include="Tests\Graph\Model\Item.cs" />
-    <Compile Include="Tests\Graph\Model\TestingSomeGraphSemantics.cs" />
-    <Compile Include="Tests\Sandbox\FileInfoTest.cs" />
-    <Compile Include="Tests\Sandbox\HistoryTest.cs" />
-    <Compile Include="Tests\Sandbox\RegExTest.cs" />
-    <Compile Include="Tests\Sandbox\Schema\SchemaArchitecture.cs" />
-    <Compile Include="Tests\View\Visuals\SceneThreadTest.cs" />
-    <Compile Include="Tests\View\Drawing\PolygonHulltest.cs" />
-    <Compile Include="Tests\View\Drawing\Shapes\ShapeTest.cs" />
-    <Compile Include="Tests\View\Drawing\Toolkit\TestMatrice.cs" />
-    <Compile Include="Tests\View\Drawing\Toolkit\TestMatrices.cs" />
-    <Compile Include="Tests\View\Visuals\BasicVisualGraphTest.cs" />
-    <Compile Include="Tests\View\Visuals\Model\BenchmarkOneSceneFactory.cs" />
-    <Compile Include="Tests\View\Visuals\Model\ISceneFactory.cs" />
-    <Compile Include="Tests\View\Visuals\Model\SceneFactory.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Winform\QuadTreeVisualizer.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Winform\VisualsBoundsLayer.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Winform\WinformDisplayTestComposer.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Winform\WinformTestDevice.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Winform\WinformVisualsDisplayTest.cs" />
+    <Compile Include="Limaki.Tests\Presenter\WiredScenesTest.cs" />
+    <Compile Include="Limaki.Tests\Common\FactoryTest.cs" />
+    <Compile Include="Limaki.Tests\Common\HTML\HtmlNextTest.cs" />
+    <Compile Include="Limaki.Tests\Common\HTML\HtmlTestData.cs" />
+    <Compile Include="Playground\Linqish\ExpressionExploration.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\PoligonAlgoTest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\ViewSerialisationTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\BasicGraphTests.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\BasicTestDataFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\EdgeIsItemTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\GraphItemTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\IntGraphTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\StringGraphTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\FilteredGraphTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\GraphTestUtils.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\Examples\BenchmarkOneGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\Examples\BinaryGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\Examples\BinaryTreeFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\Examples\GCJohnBostonGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\Examples\LimakiShortHelp.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\Examples\ProgrammingLanguageGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\Examples\SimpleGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\Examples\WordGameGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\GenericBiGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\GenericGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\GraphFactoryBase.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\IGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\Item.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\TestingSomeGraphSemantics.cs" />
+    <Compile Include="Playground\FileInfoTest.cs" />
+    <Compile Include="Playground\HistoryTest.cs" />
+    <Compile Include="Playground\RegExTest.cs" />
+    <Compile Include="Playground\Schema\SchemaArchitecture.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\SceneThreadTest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\PolygonHulltest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\Shapes\ShapeTest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\Toolkit\TestMatrice.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\Toolkit\TestMatrices.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\BasicVisualGraphTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Model\BenchmarkOneSceneFactory.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Model\ISceneFactory.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Model\SceneFactory.cs" />
     <Compile Include="UnitTest\TestBase.cs" />
-    <Compile Include="Tests\Sandbox\MonoGenericError2.cs" />
-    <Compile Include="Tests\Presenter\Display\CreateDisplayTest.cs" />
-    <Compile Include="Tests\Sandbox\MonoMarshalByRefError.cs" />
-    <Compile Include="Tests\Data\Streams\ContentProviderTest.cs" />
+    <Compile Include="Playground\MonoGenericError2.cs" />
+    <Compile Include="Limaki.Tests\Presenter\Display\CreateDisplayTest.cs" />
+    <Compile Include="Playground\MonoMarshalByRefError.cs" />
+    <Compile Include="Limaki.Tests\Data\Streams\ContentProviderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -244,7 +245,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Tests\Presenter\Winform\OpenExampleData.resx">
+    <EmbeddedResource Include="Limaki.Tests\Presenter\Winform\OpenExampleData.resx">
       <DependentUpon>OpenExampleData.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -282,9 +283,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Limada\Tests\Data\db4o\" />
-    <Folder Include="Tests\Sandbox\Graph\" />
-    <Folder Include="Tests\Sandbox\View\" />
+    <Folder Include="Limada.Tests\Tests\Data\db4o\" />
+    <Folder Include="Playground\Graph\" />
+    <Folder Include="Playground\View\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

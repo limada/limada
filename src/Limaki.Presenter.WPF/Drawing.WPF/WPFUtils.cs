@@ -31,7 +31,7 @@ namespace Limaki.Drawing.WPF {
 
         public const double PixelToPoint = 1.5;
         public static void SetTextStyle(TextBlock textBlock, IStyle style) {
-            textBlock.FontFamily = new FontFamily(style.Font.FontFamily);
+            textBlock.FontFamily = new FontFamily(style.Font.Family);
             textBlock.FontSize = style.Font.Size * PixelToPoint;
 #if ! SILVERLIGHT
             textBlock.TextTrimming = System.Windows.TextTrimming.CharacterEllipsis;

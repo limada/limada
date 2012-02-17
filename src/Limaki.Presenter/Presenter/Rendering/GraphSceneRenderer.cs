@@ -64,11 +64,11 @@ namespace Limaki.Presenter {
                 }
             }
 
-            if (hovered != null && ShapeUtils.Intersects(clipBounds, layout.GetShape(hovered).BoundsRect)) {
+            if (hovered != null && DrawingExtensions.Intersects(clipBounds, layout.GetShape(hovered).BoundsRect)) {
                 ItemRenderer.Render(hovered, e);
             }
 
-            if (focused != null && ShapeUtils.Intersects(clipBounds, layout.GetShape(focused).BoundsRect)) {
+            if (focused != null && DrawingExtensions.Intersects(clipBounds, layout.GetShape(focused).BoundsRect)) {
                 ItemRenderer.Render(focused, e);
             }
         }

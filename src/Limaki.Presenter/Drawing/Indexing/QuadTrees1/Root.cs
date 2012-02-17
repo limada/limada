@@ -87,7 +87,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             *  If the subquad doesn't exist or this item is not contained in it,
             *  have to expand the tree upward to contain the item.
             */
-            if (node == null || !ShapeUtils.Contains(node.Envelope, itemEnv)) {
+            if (node == null || !DrawingExtensions.Contains(node.Envelope, itemEnv)) {
                 var largerNode = Node<TItem>.Create(node, itemEnv);
                 largerNode.QuadItems = this.QuadItems;
                 Subnodes[index] = largerNode;
@@ -105,7 +105,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// if necessary to hold the item.
         /// </summary>
         private void InsertContained(Node<TItem> tree, RectangleS itemEnv, TItem item) {
-            if (!ShapeUtils.Contains(tree.Envelope, itemEnv))
+            if (!DrawingExtensions.Contains(tree.Envelope, itemEnv))
                 throw new Exception();
             /*
             * Do NOT create a new quad for zero-area envelopes - this would lead

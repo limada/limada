@@ -38,31 +38,7 @@ namespace Limaki.Presenter.Layout {
             return () => RectangleI.FromLTRB(l, t, r, b);
         }
 
-        public Func<RectangleI> SpacedBounds(ref Action<TItem> visitor, SizeI space) {
-            var l = int.MaxValue;
-            var t = int.MaxValue;
-            var b = int.MinValue;
-            var r = int.MinValue;
-
-            visitor += item => {
-                var loc = Proxy.GetLocation(item);
-                var size = Proxy.GetSize(item);
-                var il = loc.X;
-                var it = loc.Y;
-                var ir = il + size.Width;
-                var ib = it + size.Height;
-                if (il < l)
-                    l = il;
-                if (it < t)
-                    t = it;
-                if (ir > r)
-                    r = ir;
-                if (ib > b)
-                    b = ib;
-            };
-
-            return () => RectangleI.FromLTRB(l, t, r, b);
-        }
+        
         public Func<SizeI> SizeSum(ref Action<TItem> visitor) {
             var w = 0;
             var h = 0;
@@ -76,18 +52,42 @@ namespace Limaki.Presenter.Layout {
             return () => new SizeI(w,h);
         }
 
-        public Func<SizeI> SizeSum(ref Action<TItem> visitor, SizeI space) {
+        public Func<SizeI> SizeSum(ref Action<TItem> visitor, SizeI distance) {
             var w = 0;
             var h = 0;
             visitor += item => {
                 var size = Proxy.GetSize(item);
 
-                w += size.Width + space.Width;
-                h += size.Height + space.Height;
+                w += size.Width + distance.Width;
+                h += size.Height + distance.Height;
             };
 
-            w -= space.Width;
-            h -= space.Height;
+            w -= distance.Width;
+            h -= distance.Height;
+
+            return () => new SizeI(w, h);
+        }
+
+        public Func<SizeI> SizeToFit(ref Action<TItem> visitor, SizeI distance,  Dimension dimension) {
+            var w = 0;
+            var h = 0;
+            
+            visitor += item => {
+                var size = Proxy.GetSize(item);
+                if (dimension == Dimension.X) {
+                    w += size.Width + distance.Width;
+                    if (h < size.Height)
+                        h = size.Height;
+                } else {
+                    h += size.Height + distance.Height;
+                    if (w < size.Width)
+                        w = size.Width;
+                }
+            };
+            if (dimension == Dimension.X)
+                w -= distance.Width;
+            else
+                h -= distance.Height;
 
             return () => new SizeI(w, h);
         }

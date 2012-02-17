@@ -23,7 +23,7 @@ namespace Limaki.Drawing {
             this.Size = 10;
         }
 
-        public virtual string FontFamily { get; set; }
+        public virtual string Family { get; set; }
         public virtual double Size { get; set; }
         public virtual FontStyle Style { get; set; }
         //public virtual FontWeight Weight { get; set; }
@@ -40,12 +40,12 @@ namespace Limaki.Drawing {
         }
 
         public Font(string fontFamily, double size) {
-            this.FontFamily = fontFamily;
+            this.Family = fontFamily;
             this.Size = size;
         }
 
         public Font(Font font)  {
-            this.FontFamily = font.FontFamily;
+            this.Family = font.Family;
             this.Size  = font.Size;
             this.Style = font.Style;
             //this.Weight = font.Weight;
@@ -61,7 +61,7 @@ namespace Limaki.Drawing {
                 return false;
             var other = (Font)obj;
             return 
-                   this.FontFamily == other.FontFamily &&
+                   this.Family == other.Family &&
                    this.Size == other.Size &&
                    this.Style == other.Style;
                    // && this.Weight == other.Weight;
@@ -69,7 +69,7 @@ namespace Limaki.Drawing {
 
         public override int GetHashCode() {
             return
-                this.FontFamily.GetHashCode () ^
+                this.Family.GetHashCode () ^
                 this.Size.GetHashCode () ^
                 this.Style.GetHashCode ();
                 //^this.Weight.GetHashCode();

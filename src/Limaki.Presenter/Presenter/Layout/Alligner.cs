@@ -9,6 +9,7 @@ using Limaki.Drawing.Shapes;
 using Limaki.Xwt;
 
 namespace Limaki.Presenter.Layout {
+
     public class Alligner<TItem, TEdge> : Placer<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
 
         public Alligner(IGraphScene<TItem, TEdge> data, IGraphLayout<TItem, TEdge> layout) : base(data, layout) { }
@@ -157,6 +158,7 @@ namespace Limaki.Presenter.Layout {
             }
         }
 
+       
         public virtual void Columns(TItem root, IEnumerable<TItem> items, AllignerOptions options) {
 
             if (root == null || items == null)
@@ -169,6 +171,7 @@ namespace Limaki.Presenter.Layout {
             var verticalAlignment = options.AlignY;
             var horizontalAlignment = options.AlignX;
             var distance = Layout.Distance;
+            var dimension = options.Dimension;
 
             var placer = new PlacerComposer<TItem, TEdge>(this);
             var aligner = new AllignComposer<TItem, TEdge>(this);
@@ -177,71 +180,59 @@ namespace Limaki.Presenter.Layout {
             comparer.Delta = Layout.StyleSheet.AutoSize.Width / 2;
 
             var walk = new Walker<TItem, TEdge>(this.Graph).DeepWalk(root, 1)
-                .Where(l => itemCache.Contains(l.Node) && !(l.Node is TEdge));
+                .Where(l => !(l.Node is TEdge) && itemCache.Contains(l.Node));
 
+            var bounds = new RectangleI(int.MaxValue,int.MaxValue,0,0);
 
-            int top = int.MaxValue;
-            int left = int.MaxValue;
-
-            var rows = new Queue<Tuple<IEnumerable<TItem>, SizeI>>();
-            var maxSize = new SizeI();
-
+            var rows = new Queue<Tuple<IEnumerable<TItem>, RectangleI>>();
+            
             Action<TItem> visit = null;
 
             foreach (var row in walk.GroupBy(row => row.Level)) {
                 if (row.Count() == 0)
                     continue;
 
+                var rowItems = row.Select(r => r.Node).OrderBy(item => Proxy.GetLocation(item).Y);
+
                 visit = null;
                 placer.AffectedEdges(ref visit);
                 var fBounds = placer.Bounds(ref visit);
-                var fSize = placer.MinSize(ref visit);
-                var fSizeSum = placer.SizeSum(ref visit, distance);
-                var rowItems = row.Select(r => r.Node).OrderBy(item => Proxy.GetLocation(item).Y);
+                var fSize = placer.SizeToFit(ref visit, distance, dimension);
+
                 VisitItems(rowItems, visit);
 
                 visit = null;
 
-                var bounds = fBounds();
-                var size = fSize();
-                var sizeSum = fSizeSum();
-                bounds.Width = size.Width;
-                bounds.Height = sizeSum.Height;
+                var rowBounds = fBounds();
+                rowBounds.Size = fSize();
+               
+                bounds.Location = bounds.Location.Min(rowBounds.Location);
+                bounds.Size = bounds.Size.Max(rowBounds.Size);
 
-                if (top > bounds.Y)
-                    top = bounds.Y;
-                if (left > bounds.X)
-                    left = bounds.X;
-                maxSize = maxSize.Max(bounds.Size);
-
-                rows.Enqueue(Tuple.Create(rowItems as IEnumerable<TItem>, bounds.Size));
+                rows.Enqueue(Tuple.Create(rowItems as IEnumerable<TItem>, rowBounds));
             }
 
-            var rowX = left;
-            var rowY = top;
+            var rowPos = bounds.Location;
             while (rows.Count > 0) {
                 var row = rows.Dequeue();
-                var size = row.Item2;
+              
+                var rowBounds = row.Item2;
 
                 if (verticalAlignment == Alignment.Center)
-                    rowY = top + (maxSize.Height - size.Height) / 2;
+                    rowPos.Y = bounds.Y + (bounds.Height - rowBounds.Height) / 2;
                 if (verticalAlignment == Alignment.End)
-                    rowY = top + (maxSize.Height - size.Height);
-
-                var bounds = new RectangleI(rowX, rowY, size.Width, size.Height);
-
-                
-
+                    rowPos.Y = bounds.Y + (bounds.Height - rowBounds.Height);
+                rowBounds.Location = rowPos;
+               
                 visit = null;
 
-                //aligner.AllignX(ref visit, horizontalAlignment, bounds,
-                //    aligner.Location(rowY, distance.Height, Dimension.Y));
-                aligner.Locate(ref visit, 
-                    aligner.Allign(rowX,bounds.Width,horizontalAlignment,Dimension.X),
-                    aligner.Location(rowY, distance.Height, Dimension.Y));
+                aligner.Locate(ref visit,
+                    aligner.Allign(rowBounds.X, rowBounds.Width, horizontalAlignment, Dimension.X),
+                    aligner.Location(rowBounds.Y, distance.Height, Dimension.Y));
                 VisitItems(row.Item1, visit);
 
-                rowX = bounds.X + size.Width + distance.Width;
+                rowPos.X += rowBounds.Width + distance.Width;
+                
             }
         }
 

@@ -4,6 +4,7 @@ using Limaki.Common.Collections;
 using Limaki.Graphs;
 
 namespace Limaki.Data {
+    
     public abstract class DbGraph<TItem, TEdge> : GraphBase<TItem, TEdge>
         where TEdge : IEdge<TItem> {
         # region EdgeList-Cache

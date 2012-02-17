@@ -52,7 +52,7 @@ namespace Limaki.Visuals {
             if (zOrder==ZOrder.EdgesFirst) {
                 foreach (var visual in search) {
                     if (visual is IVisualEdge) {
-                        if (ShapeUtils.Intersects(clipBounds, visual.Shape.BoundsRect))
+                        if (DrawingExtensions.Intersects(clipBounds, visual.Shape.BoundsRect))
                             yield return visual;
                     }
                 }
@@ -60,7 +60,7 @@ namespace Limaki.Visuals {
 
             foreach (var visual in search) {
                 if (!(visual is IVisualEdge)) {
-                    if (ShapeUtils.Intersects(clipBounds, visual.Shape.BoundsRect))
+                    if (DrawingExtensions.Intersects(clipBounds, visual.Shape.BoundsRect))
                         yield return visual;
                 }
             }
@@ -68,7 +68,7 @@ namespace Limaki.Visuals {
             if (zOrder==ZOrder.NodesFirst) {
                 foreach (var visual in search) {
                     if (visual is IVisualEdge) {
-                        if (ShapeUtils.Intersects (clipBounds, visual.Shape.BoundsRect))
+                        if (DrawingExtensions.Intersects(clipBounds, visual.Shape.BoundsRect))
                             yield return visual;
                     }
                 }

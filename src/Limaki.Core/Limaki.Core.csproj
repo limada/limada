@@ -99,6 +99,7 @@
     <Compile Include="Common\Reflector.cs" />
     <Compile Include="Common\Registry.cs" />
     <Compile Include="Common\State.cs" />
+    <Compile Include="Common\Text\HTML\HTMLCleaner.cs" />
     <Compile Include="Common\Text\HTML\HTMLHelper.cs" />
     <Compile Include="Common\Text\HTML\Parser\Attribute.cs" />
     <Compile Include="Common\Text\HTML\Parser\Entry.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="Data\IDataContainer.cs" />
     <Compile Include="Data\IDataProvider.cs" />
     <Compile Include="Data\IGateway.cs" />
+    <Compile Include="Data\IGatewayConnection.cs" />
     <Compile Include="Graphs\CorruptedLinkException.cs" />
     <Compile Include="Graphs\EdgeComparer.cs" />
     <Compile Include="Graphs\Extensions\GraphMapping.cs" />

@@ -34,12 +34,12 @@ namespace Limaki.Drawing.GDI {
                 if (_native == null) {
                     System.Drawing.FontStyle style = GDIUtils.GetFontStyle (this);
                     _native = new System.Drawing.Font (
-                        this.FontFamily, 
+                        this.Family, 
                         (float) this.Size, 
                         style,
                         System.Drawing.GraphicsUnit.Point);
                     base.Size = _native.Size;
-                    base.FontFamily = _native.Name;
+                    base.Family = _native.Name;
                 }
                 return _native;
             }
@@ -52,18 +52,18 @@ namespace Limaki.Drawing.GDI {
             }
         }
 
-        public override string FontFamily {
+        public override string Family {
             get {
                 if (_native != null) {
                     return _native.Name;
                 } else {
-                    return base.FontFamily;
+                    return base.Family;
                 }
             }
             set {
-                if (base.FontFamily != value){
+                if (base.Family != value){
                     ClearNative ();
-                    base.FontFamily = value;
+                    base.Family = value;
                 }
             }
         }

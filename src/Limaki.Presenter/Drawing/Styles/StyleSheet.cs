@@ -99,7 +99,7 @@ namespace Limaki.Drawing {
                 defaultStyle.PaintData = false;
 
                 defaultStyle.Font = CreateFont(
-                    this.ParentStyle.Font.FontFamily,
+                    this.ParentStyle.Font.Family,
                     this.ParentStyle.Font.Size - 2);
 
                 defaultStyle.Font.Style = FontStyle.Italic;

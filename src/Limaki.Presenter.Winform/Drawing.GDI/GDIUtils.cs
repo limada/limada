@@ -14,7 +14,9 @@
 
 
 namespace Limaki.Drawing.GDI {
+
     public class GDIUtils {
+
         public static void SetFontStyle(Font toolkit, System.Drawing.FontStyle native) {
             if (toolkit == null) return;
 
@@ -38,7 +40,7 @@ namespace Limaki.Drawing.GDI {
         public static void SetFont(Font toolkit, System.Drawing.Font native) {
             SetFontStyle (toolkit, native.Style);
             toolkit.Size = native.Size;
-            toolkit.FontFamily = native.Name;
+            toolkit.Family = native.Name;
         }
 
         public static System.Drawing.FontStyle GetFontStyle(Font toolkit) {

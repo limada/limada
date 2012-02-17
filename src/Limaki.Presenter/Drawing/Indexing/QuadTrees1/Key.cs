@@ -105,7 +105,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             _env = new RectangleS();
             ComputeKey(_level, itemEnv);
             // MD - would be nice to have a non-iterative form of this algorithm
-            while ( !ShapeUtils.Contains(_env, itemEnv) ) {
+            while (!DrawingExtensions.Contains(_env, itemEnv)) {
                 _level += 1;
                 ComputeKey(_level, itemEnv);
             }

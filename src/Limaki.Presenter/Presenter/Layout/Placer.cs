@@ -36,6 +36,7 @@ namespace Limaki.Presenter.Layout {
             this.Layout = layout;
         }
         public Placer(PlacerBase<TItem, TEdge> aligner):base(aligner) {}
+
         protected IShapeProxy<TItem, TEdge> _proxy = null;
         public override IShapeProxy<TItem, TEdge> Proxy {
             get { return _proxy ?? (_proxy = CreateProxy(this.Layout)); }

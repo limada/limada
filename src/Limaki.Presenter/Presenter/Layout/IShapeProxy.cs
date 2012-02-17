@@ -3,14 +3,9 @@ using Limaki.Graphs;
 using System.Collections.Generic;
 
 namespace Limaki.Presenter.Layout {
-    public interface IShapeProxy<TItem,TEdge> where TEdge : IEdge<TItem>, TItem {
+    public interface IShapeProxy<TItem,TEdge>:ILocator<TItem> where TEdge : IEdge<TItem>, TItem {
 
         ICollection<TEdge> AffectedEdges { get; set; }
-
-        void Commit ( IGraphScene<TItem, TEdge> Data );
-        void SetLocation ( TItem item, PointI location );
-        PointI GetLocation ( TItem item );
-        SizeI GetSize ( TItem item );
 
         /// <summary>
         /// gives back a valid shape
@@ -32,5 +27,7 @@ namespace Limaki.Presenter.Layout {
         IShape EnsureInvoke ( TItem item );
 
         void Justify ( TItem item );
+
+        void Commit(IGraphScene<TItem, TEdge> scene);
     }
 }

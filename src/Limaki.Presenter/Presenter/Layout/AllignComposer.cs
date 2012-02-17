@@ -55,9 +55,7 @@ namespace Limaki.Presenter.Layout {
         }
         
         public virtual void Justify(ref Action<TItem> visitor) {
-            visitor += item => {
-                Data.Requests.Add(new LayoutCommand<TItem>(item, LayoutActionType.Justify));
-            };
+            visitor += item => Proxy.Justify(item);
         }
 
         #region Refactor this to Locate (above)

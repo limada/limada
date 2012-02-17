@@ -55,7 +55,7 @@ namespace Limaki.Drawing {
                 style.FillColor = Color.FromArgb(200, Colors.WhiteSmoke);
                 style.PenColor = Color.FromArgb(200, Colors.Teal);
                 //style.Pen.Color = style.PenColor;
-                style.Font = CreateFont(style.Font.FontFamily, 10);
+                style.Font = CreateFont(style.Font.Family, 10);
                 _styleSheet = new StyleSheet(name, style);
                 _styleSheet.ItemStyle.SelectedStyle.FillColor = Colors.Teal;
                 _styleSheet.ItemStyle.SelectedStyle.TextColor = Colors.WhiteSmoke;
@@ -85,7 +85,7 @@ namespace Limaki.Drawing {
 
                 _styleSheet.EdgeStyle.TextColor = Color.FromArgb(150, 100, 100, 100);
                 _styleSheet.EdgeStyle.FillColor = KnownColors.FromKnownColor(KnownColor.White);
-                _styleSheet.EdgeStyle.Font = CreateFont(style.Font.FontFamily, style.Font.Size - 2.0d);
+                _styleSheet.EdgeStyle.Font = CreateFont(style.Font.Family, style.Font.Size - 2.0d);
 
                 var pen = (Pen)_styleSheet.EdgeStyle.Pen.Clone();
                 pen.Thickness = 0.5d;

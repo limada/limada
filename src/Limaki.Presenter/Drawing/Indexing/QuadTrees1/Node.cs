@@ -167,7 +167,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
         /// <param name="node"></param>
         public virtual void InsertNode(Node<TItem> node) {
             if (!(_envelope == default(RectangleS) ||
-                   ShapeUtils.Contains(_envelope, node.Envelope)))
+                   DrawingExtensions.Contains(_envelope, node.Envelope)))
                 throw new Exception();
 
             int index = GetSubnodeIndex(node._envelope, _centre);

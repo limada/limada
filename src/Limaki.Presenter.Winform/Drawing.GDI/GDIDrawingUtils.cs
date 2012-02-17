@@ -21,7 +21,7 @@ namespace Limaki.Drawing.GDI {
     public class GDIDrawingUtils : IDrawingUtils {
         public virtual Font CreateFont(string familiy, double size) {
             var result = new GDIFont();
-            result.FontFamily = familiy;
+            result.Family = familiy;
             result.Size = size;
             return result;
         }
