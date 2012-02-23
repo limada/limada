@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Presenter.Display;
-using Limaki.UseCases.Viewers;
-using Limaki.UseCases.Viewers.ToolStripViewers;
 using Limaki.Visuals;
 
 namespace Limaki.UseCases.Viewers.ToolStripViewers {

@@ -1,11 +1,14 @@
 using System.Drawing;
-using Limaki.Presenter.UI;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System;
 using Limaki.Drawing.GDI;
 using Limaki.Drawing;
 using Limaki.Common;
+using Limaki.Presenter.Rendering;
+using Limaki.Presenter.UI;
+using Xwt;
+using Size = Xwt.Size;
 
 namespace Limaki.Presenter.GDI.UI {
     public class GDIImageLayer : Layer<Image> {
@@ -35,7 +38,7 @@ namespace Limaki.Presenter.GDI.UI {
             if (data != null) {
                 this.Size = GDIConverter.Convert(data.Size);
             } else {
-                this.Size = SizeI.Empty;
+                this.Size = Size.Zero;
             }
             hadError = false;
         }
@@ -87,21 +90,22 @@ namespace Limaki.Presenter.GDI.UI {
             var data = this.Data;
             if (data != null && ! hadError) {
                 try {
-                    Graphics g = ((GDISurface)e.Surface).Graphics;
+                    var g = ((GDISurface)e.Surface).Graphics;
                     g.Transform = ((GDIMatrice)this.Camera.Matrice).Matrix;
                     g.InterpolationMode = InterpolationMode.Low;
                     g.CompositingMode = CompositingMode.SourceCopy;
                     g.CompositingQuality = CompositingQuality.HighSpeed;
 
-                    RectangleS rc = Camera.ToSource(e.Clipper.Bounds);
+                    var rc = Camera.ToSource(e.Clipper.Bounds);
 
-                    rc.Intersect(new RectangleS(0, 0, Size.Width, Size.Height));
-                    rc.Inflate(new SizeS(1, 1));
+                    rc.Intersect(new RectangleD(0, 0, Size.Width, Size.Height));
+                    rc.Inflate(new Size(1, 1));
 
-                    g.DrawImage(data, rc.Location.X, rc.Location.Y,
+                    g.DrawImage(data, 
+                        (float)rc.Location.X,
+                        (float)rc.Location.Y,
                         GDIConverter.Convert(rc),
                         GraphicsUnit.Pixel);
-
 
                     g.Transform.Reset();
                 } catch (Exception ex) {

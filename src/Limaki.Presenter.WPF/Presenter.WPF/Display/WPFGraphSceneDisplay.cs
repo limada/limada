@@ -1,6 +1,8 @@
 ﻿using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.Presenter.Visuals;
+using Limaki.Presenter.Visuals.Display;
 using Limaki.Visuals;
 using Limaki.Presenter.Display;
 using Limaki.Presenter.UI;

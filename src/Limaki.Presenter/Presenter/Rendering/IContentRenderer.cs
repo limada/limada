@@ -16,9 +16,8 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Presenter.UI;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Rendering {
     /// <summary>
     /// this class 
     /// encapsulates the content-specific rendering

@@ -1,7 +1,7 @@
 ﻿using System;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Xwt;
+using Xwt;
 
 namespace Limaki.Presenter.Layout {
 
@@ -10,9 +10,9 @@ namespace Limaki.Presenter.Layout {
         public AllignComposer(PlacerBase<TItem, TEdge> aligner) : base(aligner) { }
 
 
-        public Func<SizeI, int> Allign(int start, int space, Alignment alignment, Dimension dimension) {
+        public Func<Size, double> Allign(double start, double space, Alignment alignment, Dimension dimension) {
             return size => {
-                var distance = 0;
+                var distance = 0d;
                 if (dimension == Dimension.X)
                     distance = size.Width;
                 else
@@ -28,8 +28,8 @@ namespace Limaki.Presenter.Layout {
             };
         }
 
-        public Func<SizeI, int> Location(int start, int distance, Dimension dimension) {
-            int? i = null;
+        public Func<Size, double> Location(double start, double distance, Dimension dimension) {
+            double? i = null;
             return size => {
                 var result = start;
                 if (i.HasValue)
@@ -46,10 +46,10 @@ namespace Limaki.Presenter.Layout {
             };
         }
 
-        public virtual void Locate(ref Action<TItem> visitor, Func<SizeI, int> Xer, Func<SizeI, int> Yer) {
+        public virtual void Locate(ref Action<TItem> visitor, Func<Size, double> Xer, Func<Size, double> Yer) {
             visitor += item => {
                 var size = Proxy.GetSize(item);
-                var location = new PointI(Xer(size), Yer(size));
+                var location = new Point(Xer(size), Yer(size));
                 Proxy.SetLocation(item, location);
             };
         }
@@ -60,47 +60,47 @@ namespace Limaki.Presenter.Layout {
 
         #region Refactor this to Locate (above)
 
-        public virtual void AllignX(ref Action<TItem> visitor, Alignment alignment, RectangleI space) {
+        public virtual void AllignX(ref Action<TItem> visitor, Alignment alignment, RectangleD space) {
             AllignX(ref visitor, alignment, space, item => Proxy.GetLocation(item).Y);
         }
 
-        public virtual void AllignX(ref Action<TItem> visitor, Alignment alignment, RectangleI space, Func<TItem,int> yer) {
+        public virtual void AllignX(ref Action<TItem> visitor, Alignment alignment, RectangleD space, Func<TItem,double> yer) {
             visitor += item => {
                 var y = yer(item);
 
                 if (alignment == Alignment.Start)
-                    Proxy.SetLocation(item, new PointI(space.Left, y));
+                    Proxy.SetLocation(item, new Point(space.Left, y));
                 else if (alignment == Alignment.End)
-                    Proxy.SetLocation(item, new PointI(space.Right - Proxy.GetSize(item).Width, y));
+                    Proxy.SetLocation(item, new Point(space.Right - Proxy.GetSize(item).Width, y));
                 else if (alignment == Alignment.Center) {
                     var x = space.Left + (space.Width - Proxy.GetSize(item).Width) / 2;
-                    Proxy.SetLocation(item, new PointI(x, y));
+                    Proxy.SetLocation(item, new Point(x, y));
                 }
             };
         }
 
-        public virtual void AllignY(ref Action<TItem> visitor, Alignment alignment, RectangleI space) {
+        public virtual void AllignY(ref Action<TItem> visitor, Alignment alignment, RectangleD space) {
             AllignY(ref visitor, alignment, space, item => Proxy.GetLocation(item).X);
         }
 
-        public virtual void AllignY(ref Action<TItem> visitor, Alignment alignment, RectangleI space, Func<TItem, int> xer) {
+        public virtual void AllignY(ref Action<TItem> visitor, Alignment alignment, RectangleD space, Func<TItem, double> xer) {
             visitor += item => {
 
                 var x = xer(item);
 
                 if (alignment == Alignment.Start)
-                    Proxy.SetLocation(item, new PointI(x, space.Top));
+                    Proxy.SetLocation(item, new Point(x, space.Top));
                 else if (alignment == Alignment.End)
-                    Proxy.SetLocation(item, new PointI(x, space.Bottom - Proxy.GetSize(item).Height));
+                    Proxy.SetLocation(item, new Point(x, space.Bottom - Proxy.GetSize(item).Height));
                 else if (alignment == Alignment.Center) {
                     var y = space.Top + (space.Height - Proxy.GetSize(item).Height) / 2;
-                    Proxy.SetLocation(item, new PointI(x, y));
+                    Proxy.SetLocation(item, new Point(x, y));
                 }
             };
         }
 
-        public Func<TItem, int> ItemLocation(int start, int distance, Dimension dimension) {
-            int? i = null;
+        public Func<TItem, double> ItemLocation(double start, double distance, Dimension dimension) {
+            double? i = null;
             return item => {
                 var result = start;
                 if (i.HasValue) 
@@ -118,17 +118,17 @@ namespace Limaki.Presenter.Layout {
         }
 
         
-        public virtual void LocateItem(ref Action<TItem> visitor, int start, int space, Dimension dimension) {
+        public virtual void LocateItem(ref Action<TItem> visitor, double start, double space, Dimension dimension) {
 
             var i = start;
             visitor += item => {
                 var location = Proxy.GetLocation(item);
                 var size = Proxy.GetSize(item);
                 if (dimension == Dimension.Y) {
-                    Proxy.SetLocation(item, new PointI(location.X, i));
+                    Proxy.SetLocation(item, new Point(location.X, i));
                     i += size.Height + space;
                 } else {
-                    Proxy.SetLocation(item, new PointI(i, location.Y));
+                    Proxy.SetLocation(item, new Point(i, location.Y));
                     i += size.Width + space;
                 }
             };
@@ -139,8 +139,8 @@ namespace Limaki.Presenter.Layout {
 
         #region deprectated
 
-        public Func<TItem, int> Yer(PointI at) {
-            int? rowStart = null;
+        public Func<TItem, double> Yer(Point at) {
+            double? rowStart = null;
             return item => {
                 var result = at.Y;
                 if (rowStart.HasValue) {
@@ -152,8 +152,8 @@ namespace Limaki.Presenter.Layout {
                 return result;
             };
         }
-        public Func<TItem, int> Xer(PointI at) {
-            int? rowStart = null;
+        public Func<TItem, double> Xer(Point at) {
+            double? rowStart = null;
             return item => {
                 var result = at.Y;
                 if (rowStart.HasValue) {

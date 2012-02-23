@@ -14,9 +14,9 @@
 
 using System;
 using Limaki.Actions;
-using Limaki.Drawing;
 using Limaki.Common;
-
+using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
@@ -28,7 +28,7 @@ namespace Limaki.Presenter.UI {
 
         public MouseScrollAction(): base() {
             Priority = ActionPriorities.ScrollActionPriority;
-            ModifierKeys = ModifierKeys.Control;
+            this.ModifierKeys = ModifierKeys.Control;
         }
 
 
@@ -45,15 +45,15 @@ namespace Limaki.Presenter.UI {
             if (Resolved) {
                 var scrollTarget = this.Viewport ();
                 if (scrollTarget != null) {
-                    PointI scrollPosition = scrollTarget.ClipOrigin;
+                    var scrollPosition = scrollTarget.ClipOrigin;
 
-                    int dx = e.X - LastMousePos.X;
-                    int dy = e.Y - LastMousePos.Y;
-                    scrollPosition = new PointI (
+                    var dx = e.X - LastMousePos.X;
+                    var dy = e.Y - LastMousePos.Y;
+                    scrollPosition = new Point (
                         Math.Max (scrollPosition.X - dx, 0),
                         Math.Max (scrollPosition.Y - dy, 0)
                         );
-                    this.LastMousePos = new PointI (e.X, e.Y);
+                    this.LastMousePos = new Point (e.X, e.Y);
                     scrollTarget.ClipOrigin = scrollPosition;
                     scrollTarget.Update ();
                 }

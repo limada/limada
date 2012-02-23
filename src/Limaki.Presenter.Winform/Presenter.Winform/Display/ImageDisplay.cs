@@ -19,6 +19,9 @@ using Limaki.Presenter.Display;
 using Limaki.Presenter.GDI.UI;
 using Limaki.Presenter.UI;
 using Limaki.Presenter.Winform.Display;
+using Xwt;
+using Point = Xwt.Point;
+using Size = Xwt.Size;
 
 namespace Limaki.Presenter.Winform {
     public class WinformImageDisplay:WinformDisplay<Image> {
@@ -49,13 +52,13 @@ namespace Limaki.Presenter.Winform {
     public class ImageDisplayComposer: DisplayComposer<Image> {
         public override void Compose(Display<Image> display) {
             
-            this.DataOrigin = () => { return PointI.Empty; };
+            this.DataOrigin = () => { return Point.Zero; };
             this.DataSize = () => {
                 var data = display.Data;
                 if (data != null)
                     return GDIConverter.Convert(data.Size);
                 else
-                    return SizeI.Empty;
+                    return Size.Zero;
             };
 
             base.Compose(display);

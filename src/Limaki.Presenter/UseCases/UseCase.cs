@@ -13,22 +13,19 @@
  */
 
 using System;
-using Limada.UseCases;
 using Limaki.Common;
-using Limaki.Data;
-using Limaki.UseCases.Viewers;
-using Limaki.UseCases.Viewers.ToolStrips;
-using Limaki.Presenter.Visuals;
-using Limaki.UseCases.Viewers.ToolStripViewers;
-using Limaki.Visuals;
 using Limaki.Drawing;
+using Limaki.Limada.Presenter;
+using Limaki.Limada.UseCases;
 using Limaki.Model.Streams;
 using System.IO;
-using Limada.Presenter;
-using Limaki.Presenter.Layout;
 using Limaki.Presenter.Display;
+using Limaki.UseCases.Viewers;
+using Limaki.UseCases.Viewers.ToolStripViewers;
+using Limaki.Visuals;
 
 namespace Limaki.UseCases {
+
     public class UseCase:IDisposable {
         protected string _useCaseTitle = "limada::concept";
         public string UseCaseTitle {

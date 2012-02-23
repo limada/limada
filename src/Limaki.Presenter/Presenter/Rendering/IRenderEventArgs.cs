@@ -14,7 +14,7 @@
 
 using Limaki.Drawing;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.Rendering {
     public interface IRenderEventArgs {
         ISurface Surface { get; }
         IClipper Clipper { get; }

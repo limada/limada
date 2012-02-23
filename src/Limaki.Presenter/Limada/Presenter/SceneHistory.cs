@@ -14,29 +14,27 @@
 using System.IO;
 using Limaki.Common;
 using Limaki.Common.Collections;
-using Limaki.Presenter.Visuals;
-using Limaki.Visuals;
-using Id = System.Int64;
 using System;
 using System.Collections.Generic;
+using Limaki.Drawing;
 using Limaki.Graphs;
 using System.Linq;
-using Limaki.UseCases.Viewers;
 using Limaki.Presenter.Display;
-using Limaki.Drawing;
+using Limaki.UseCases.Viewers;
+using Limaki.Visuals;
 
-namespace Limada.Presenter {
+namespace Limaki.Limada.Presenter {
     public class SceneStream {
-        public Id Id = 0;
+        public Int64 Id = 0;
         public Stream Stream = null;
     }
 
     public class SceneHistory {
-        private History<Id> _history = null;
-        protected History<Id> history {
+        private History<long> _history = null;
+        protected History<long> history {
             get {
                 if (_history == null) {
-                    _history = new History<Id>();
+                    _history = new History<long>();
                 }
                 return _history;
             }
@@ -61,7 +59,7 @@ namespace Limada.Presenter {
 
         public void Store(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager) {
             if (display != null && display.Data != null && display.Data.Count > 0) {
-                if (display.DataId == default(Id))
+                if (display.DataId == default(Int64))
                     display.DataId = Isaac.Long;
                 if (sheetManager.SaveInStore(display.Data, display.Layout, display.DataId)) {
                     sheetManager.RegisterSheet(display.Info);
@@ -72,7 +70,7 @@ namespace Limada.Presenter {
 
         
 
-        protected void Load(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, Id id) {
+        protected void Load(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, Int64 id) {
             if (id == 0)
                 return;
             var info = sheetManager.GetSheetInfo(id);
@@ -88,22 +86,22 @@ namespace Limada.Presenter {
         public void Navigate(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, bool forward) {
             var info = display.Info;
             Store(display, sheetManager);
-            var currSheedId = default(Id);
+            var currSheedId = default(Int64);
 
             if (info != null)
                 currSheedId = info.Id;
 
-            Id sheetId = default(Id);
+            Int64 sheetId = default(Int64);
             if (forward)
                 sheetId = history.Forward();
             else
                 sheetId = history.Back();
 
-            if (sheetId != default(Id) && sheetId != currSheedId) {
+            if (sheetId != default(Int64) && sheetId != currSheedId) {
                 Load(display, sheetManager, sheetId);
             }
 
-            if (currSheedId == default(Id))
+            if (currSheedId == default(Int64))
                 history.Remove(p => p == currSheedId);
 
             

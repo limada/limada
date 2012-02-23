@@ -1,8 +1,9 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
-using Limaki.Drawing.Shapes;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
+using Xwt;
 
 
 namespace Limaki.Presenter.Winform {
@@ -25,10 +26,10 @@ namespace Limaki.Presenter.Winform {
             if (oldShape != null) {
                 int halfborder = GripSize + 1;
 
-                RectangleI a = oldShape.BoundsRect;
-                RectangleI b = newShape.BoundsRect;
+                var a = oldShape.BoundsRect;
+                var b = newShape.BoundsRect;
 
-                RectangleI bigger = RectangleI.Union(a, b);
+                var bigger = DrawingExtensions.Union(a, b);
                 bigger = Camera.FromSource(bigger);
                 bigger = bigger.NormalizedRectangle();
 
@@ -39,23 +40,23 @@ namespace Limaki.Presenter.Winform {
                 } else {
                     bigger.Inflate(halfborder, halfborder);
 
-                    RectangleI smaller = RectangleI.Intersect(a, b);
+                    var smaller = DrawingExtensions.Intersect(a, b);
                     smaller = Camera.FromSource(smaller);
                     smaller = smaller.NormalizedRectangle();
                     smaller.Inflate(-halfborder, -halfborder);
 
                     Device.Invalidate(
-                        RectangleI.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top));
+                        RectangleD.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top));
                     Device.Update();
                     Device.Invalidate(
-                        RectangleI.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom));
+                        RectangleD.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom));
                     Device.Update();
                     Device.Invalidate(
-                        RectangleI.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom));
+                        RectangleD.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom));
                     Device.Update();
 
                     Device.Invalidate(
-                        RectangleI.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom));
+                        RectangleD.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom));
                     Device.Update();
 
                 }
@@ -72,7 +73,7 @@ namespace Limaki.Presenter.Winform {
                 if (RenderType != RenderType.None) {
                     System.Drawing.Drawing2D.Matrix transform = g.Transform;
                     g.Transform = emptyMatrix;
-                    IShape paintShape = (IShape)this.Shape.Clone();
+                    var paintShape = (IShape)this.Shape.Clone();
                     Camera.FromSource(paintShape);
 
                     Painter.RenderType = RenderType;

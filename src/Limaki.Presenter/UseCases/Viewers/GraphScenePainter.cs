@@ -14,11 +14,16 @@
 
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Presenter.UI;
 using Limaki.Common;
+using Limaki.Presenter;
+using Limaki.Presenter.Clipping;
 using Limaki.Presenter.Display;
+using Limaki.Presenter.Rendering;
+using Xwt;
+using Xwt.Drawing;
 
-namespace Limaki.Presenter.Viewers {
+namespace Limaki.UseCases.Viewers {
+
     public class GraphScenePainter<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
@@ -69,8 +74,8 @@ namespace Limaki.Presenter.Viewers {
 
         }
 
-        public virtual Get<SizeI> DataSize { get; set; }
-        public virtual Get<PointI> DataOrigin { get; set; }
+        public virtual Get<Size> DataSize { get; set; }
+        public virtual Get<Point> DataOrigin { get; set; }
         public virtual Get<IClipper> Clipper { get; set; }
         public virtual Get<IViewport> Viewport { get; set; }
         public virtual Get<IDeviceRenderer> Renderer { get; set; }
@@ -90,7 +95,7 @@ namespace Limaki.Presenter.Viewers {
                     }
                     return result;
                 } else
-                    return PointI.Empty;
+                    return Point.Zero;
             };
 
             this.DataSize = () => {
@@ -107,7 +112,7 @@ namespace Limaki.Presenter.Viewers {
                     }
                     return result;
                 } else
-                    return SizeI.Empty;
+                    return Size.Zero;
             };
 
             this.Clipper = () => display.Clipper;

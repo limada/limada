@@ -17,7 +17,9 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using Limaki.Drawing.GDI;
 using Limaki.Graphs;
-using Limaki.Presenter.UI;
+using Limaki.Presenter.Rendering;
+using Limaki.Presenter.UI.GraphScene;
+
 
 namespace Limaki.Presenter.GDI.UI {
     public class GDIGraphSceneLayer<TItem, TEdge> : GraphSceneLayer<TItem, TEdge>
@@ -26,7 +28,7 @@ namespace Limaki.Presenter.GDI.UI {
         public bool AntiAlias = true;
         
         public override void OnPaint(IRenderEventArgs e) {
-            Graphics g = ((GDISurface)e.Surface).Graphics;
+            var g = ((GDISurface)e.Surface).Graphics;
 
             var transform = (GDIMatrice)this.Camera.Matrice;
             g.Transform = transform.Matrix;

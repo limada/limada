@@ -19,9 +19,10 @@ using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Visuals;
 using System.Text;
 using Limaki.Presenter.Visuals.UI;
+using Limaki.Visuals;
+using Xwt;
 
 namespace Limaki.Presenter.Winform.DragDrop {
     /// <summary>
@@ -67,7 +68,7 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
         #region Scene handling
 
-        public virtual void LinkItem(IGraphScene<IVisual,IVisualEdge> scene,IVisual item, PointI pt, int hitSize, bool itemIsRoot) {
+        public virtual void LinkItem(IGraphScene<IVisual,IVisualEdge> scene,IVisual item, Point pt, int hitSize, bool itemIsRoot) {
             if (item != null) {
                 IVisual target = scene.Hovered;
                 if (target == null && scene.Focused != null && scene.Focused.Shape.IsHit(pt, hitSize)) {
@@ -93,7 +94,8 @@ namespace Limaki.Presenter.Winform.DragDrop {
 
 
 
-       public virtual bool DoDragDrop(IGraphScene<IVisual,IVisualEdge> scene, IControl control, IDataObject dataObject, IGraphLayout<IVisual,IVisualEdge> layout, PointI pt, int hitsize) {
+       public virtual bool DoDragDrop(IGraphScene<IVisual,IVisualEdge> scene, IControl control, IDataObject dataObject, 
+           IGraphLayout<IVisual,IVisualEdge> layout, Point pt, int hitsize) {
             IVisual item = null;
             bool itemIsRoot = false;
 

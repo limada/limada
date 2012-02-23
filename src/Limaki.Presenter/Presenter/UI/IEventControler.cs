@@ -16,6 +16,7 @@
 using Limaki.Actions;
 using System.Collections.Generic;
 using System;
+using Limaki.Presenter.Rendering;
 
 namespace Limaki.Presenter.UI {
     public interface IEventControler : IMouseAction, IRenderAction, IReceiver, IKeyAction {

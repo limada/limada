@@ -17,11 +17,11 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Limada.View;
 using Limaki.Graphs;
+using Limaki.Limada.View;
 using Limaki.Model.Streams;
-using Limaki.Visuals;
 using Limaki.Common;
+using Limaki.Visuals;
 
 namespace Limaki.Presenter.Winform.DragDrop {
     public class VisualsTextDataObjectHandler :

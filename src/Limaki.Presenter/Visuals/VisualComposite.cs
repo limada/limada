@@ -12,11 +12,11 @@
  * 
  */
 
-using System;
 using System.Collections.Generic;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
+using Xwt;
 
 namespace Limaki.Visuals {
     public class VisualComposite<T>:Visual<T>, IComposite<IVisual> 
@@ -41,28 +41,28 @@ namespace Limaki.Visuals {
             set { base.Data = value; }
         }
 
-        public override SizeI Size {
+        public override Size Size {
             get {
                 if (base.Shape != null)
                     return base.Shape.Size;
                 else
-                    return new SizeI();
+                    return new Size();
             }
             set { base.Shape.Size = value; }
         }
 
-        public override PointI Location {
+        public override Point Location {
             get {
                 if (base.Shape != null) {
                     return base.Shape.Location;
                 } else
-                    return new PointI();
+                    return new Point();
             }
             set {
                 var oldLocation = base.Location;
                 base.Location = value;
-                int dx = oldLocation.X - value.X;
-                int dy = oldLocation.Y - value.Y;
+                var dx = oldLocation.X - value.X;
+                var dy = oldLocation.Y - value.Y;
                 foreach(var visual in Data) {
                     visual.Location.Offset(dx,dy);
                 }

@@ -13,8 +13,8 @@
  */
 
 using Limaki.Drawing;
-using Limaki.Visuals;
 using Limaki.Graphs;
+using Limaki.Visuals;
 
 namespace Limaki.Presenter.Layout {
     public class RouterBase<TItem, TEdge> : IRouter<TItem, TEdge>

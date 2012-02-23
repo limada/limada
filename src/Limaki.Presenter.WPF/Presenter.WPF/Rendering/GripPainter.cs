@@ -23,6 +23,7 @@ using System.Windows.Media;
 using Limaki.Drawing.WPF.Shapes;
 using System.Windows.Controls;
 using Limaki.Presenter.UI;
+using Xwt;
 
 namespace Limaki.Presenter.WPF {
     /// <summary>
@@ -39,7 +40,7 @@ namespace Limaki.Presenter.WPF {
         }
 
         public override void Render(ISurface surface) {
-            var size = new SizeI(GripSize, GripSize);
+            var size = new Size(GripSize, GripSize);
 
             innerPainter.Style = this.Style;
             int halfWidth = GripSize / 2;
@@ -54,10 +55,10 @@ namespace Limaki.Presenter.WPF {
             var camera = new Camera(this.Camera.Matrice);
 
             foreach (Anchor anchor in Grips) {
-                PointI anchorPoint = TargetShape[anchor];
+                Point anchorPoint = TargetShape[anchor];
                 // no translation in wpf, as the whole surface is translated:
                 //anchorPoint = camera.FromSource (anchorPoint);
-                var location = new PointI (anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
+                var location = new Point (anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
                 var _geom = new RectangleGeometry ();
                 _geom.Rect = new System.Windows.Rect(location.X,location.Y,GripSize, GripSize);
                 _group.Children.Add (_geom);

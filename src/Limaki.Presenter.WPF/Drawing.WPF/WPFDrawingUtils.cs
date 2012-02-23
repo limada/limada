@@ -1,10 +1,13 @@
 using System;
-using System.Windows;
-
+using Xwt;
+using SystemColors = System.Windows.SystemColors;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing.WPF {
+
     public class WPFDrawingUtils : IDrawingUtils {
-        public virtual SizeS GetTextDimension(string text, IStyle style) {
+
+        public virtual Size GetTextDimension(string text, IStyle style) {
             return WPFUtils.GetTextDimension(text,style);
         }
 
@@ -160,7 +163,7 @@ namespace Limaki.Drawing.WPF {
         }
 
         public virtual Font CreateFont(string familiy, double size) {
-            var result = new Font(familiy,size);
+            var result = Font.FromName(familiy,size);
             return result;
         }
 
@@ -168,11 +171,12 @@ namespace Limaki.Drawing.WPF {
             return new Pen(color);
         }
 
-        public Limaki.Drawing.Matrice NativeMatrice() {
+        public Matrice NativeMatrice() {
             return new Limaki.Drawing.Matrice();
         }
 
-        public object GetCustomLineCap(float arrowWidth, float arrowHeigth) {
+        public object GetCustomLineCap(double arrowWidth, double arrowHeigth) {
+
             if (arrowHeigth == 0 || arrowWidth == 0)
                 throw new ArgumentException("ArrowWidth must not be 0");
 

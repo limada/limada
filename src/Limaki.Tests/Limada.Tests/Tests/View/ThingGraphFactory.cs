@@ -1,7 +1,7 @@
+using Limaki.Limada.View;
 using Limaki.Model;
 using Limada.Model;
 using Limaki.Visuals;
-using Limada.View;
 using Limaki.Tests.Graph.Model;
 
 namespace Limada.Tests.Model {

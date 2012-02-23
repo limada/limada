@@ -2,11 +2,12 @@ using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
 using Limaki.Presenter.UI;
+using Xwt;
 
 
 namespace Limaki.Presenter.Winform {
     public class WinformSystemInformation : IUISystemInformation {
-        public SizeI DragSize {
+        public Size DragSize {
             get {
                 return GDIConverter.Convert(SystemInformation.DragSize);
             }

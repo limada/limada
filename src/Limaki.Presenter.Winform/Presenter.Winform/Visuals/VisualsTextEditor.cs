@@ -18,10 +18,17 @@ using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
+using Limaki.Presenter.Layout;
 using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
-using Limaki.Presenter.Layout;
+using Xwt;
+using DragEventArgs = System.Windows.Forms.DragEventArgs;
+using WidgetRegistry = Xwt.Engine.WidgetRegistry;
+using ModifierKeys = Xwt.ModifierKeys;
+using Key = Xwt.Key;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 
 namespace Limaki.Presenter.Winform.Visuals {
     
@@ -89,12 +96,12 @@ namespace Limaki.Presenter.Winform.Visuals {
             protected set { _exclusive = value; }
         }
 
-        bool HitTest(IVisual visual, PointI p) {
+        bool HitTest(IVisual visual, Point p) {
             bool result = false;
             if (visual == null)
                 return result;
 
-            PointI sp = camera.ToSource(p);
+            var sp = camera.ToSource(p);
 
             result = visual.Shape.IsHit(sp, HitSize);
 
@@ -217,24 +224,22 @@ namespace Limaki.Presenter.Winform.Visuals {
         private GDIFontCache gdiFontCache = new GDIFontCache();
         void StyleEditor() {
             var style = Layout.StyleSheet.ItemStyle.DefaultStyle;
-            FontMemento newFont = new FontMemento(((GDIFont)style.Font).Native);
-            newFont.SizeInPoints = camera.Matrice.TransformFontSize (newFont.SizeInPoints);
+            var newFont = new FontMemento(WidgetRegistry.GetBackend(style.Font) as System.Drawing.Font);
+            newFont.SizeInPoints = (float)camera.Matrice.TransformFontSize (newFont.SizeInPoints);
             editor.Font = gdiFontCache.GetFont(newFont);
             
             editor.BorderStyle = BorderStyle.FixedSingle;
             editor.Multiline = true;
             editor.ScrollBars = ScrollBars.None;
             editor.WordWrap = true;
-            Color color = style.FillColor;
-            color = Color.FromArgb (color.Red, color.Green, color.Blue);
-            editor.BackColor = GDIConverter.Convert(color);
-            PointI location = camera.FromSource(Current.Location);
-            SizeI size = camera.FromSource(Current.Size);
+            editor.BackColor = System.Drawing.Color.FromArgb( (int) style.FillColor.ToArgb() );
+            var location = camera.FromSource(Current.Location);
+            var size = camera.FromSource(Current.Size);
             if (Current is IVisualEdge) {
                 location = camera.FromSource(Current.Shape[Anchor.Center]);
-                size = 
+                size = (Size)
                     GDIUtils.GetTextDimension (editor.Font, Current.Data.ToString (),new System.Drawing.SizeF ())
-                    .ToSize();
+                    ;
                 size.Height = Math.Max(size.Height+2,(int)newFont.SizeInPoints+2);
                 size.Width = Math.Max (size.Width+2, (int)newFont.SizeInPoints*4);
                 location.X = location.X - size.Width/2;
@@ -341,7 +346,7 @@ namespace Limaki.Presenter.Winform.Visuals {
             focusAfterEdit = false;
             hoverAfteredit = false;
             bool insert = false;
-            if (e.Key == Key.Enter) {
+            if (e.Key == Key.Return) {
                 insert = true;
             }
             if (e.Key == Key.Insert) {
@@ -357,7 +362,7 @@ namespace Limaki.Presenter.Winform.Visuals {
                 IVisual root = scene.Focused;
 
                 if (root == null) {
-                    PointI pt = GDIConverter.Convert(device.PointToClient(Cursor.Position));
+                    var pt = GDIConverter.Convert(device.PointToClient(Cursor.Position));
                     pt = camera.ToSource(pt) - Layout.Distance;
                     SceneExtensions.AddItem(scene, Current, Layout, pt);
                 } else {

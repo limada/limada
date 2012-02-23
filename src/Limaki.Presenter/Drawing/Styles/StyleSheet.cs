@@ -13,13 +13,14 @@
  */
 
 
+using System;
 using System.Collections.Generic;
 using Limaki.Common;
-using Id = System.Int64;
+using Xwt.Drawing;
 
-namespace Limaki.Drawing {
+namespace Limaki.Drawing.Styles {
     public class StyleSheet:Style, IStyleSheet {
-        public Id Id { get; set; }
+        public Int64 Id { get; set; }
         public StyleSheet(string name) : base(name) {
             this.BackColor = KnownColors.FromKnownColor (KnownColor.Window);
         }
@@ -62,7 +63,7 @@ namespace Limaki.Drawing {
         }
         
         protected virtual Font CreateFont(string familiy, double size) {
-            return DrawingUtils.CreateFont(familiy, size);
+            return Font.FromName(familiy, size);
         }
 
         private IDictionary<string, IStyle> styles = new Dictionary<string, IStyle>();
@@ -93,20 +94,18 @@ namespace Limaki.Drawing {
             styles[hoveredStyle.Name] = hoveredStyle;
 
             if (!forEdge) {
-                selectedStyle.FillColor = Color.FromArgb(200, this.ParentStyle.FillColor);
-                hoveredStyle.FillColor = Color.FromArgb(200, this.ParentStyle.FillColor);
+                selectedStyle.FillColor = DrawingExtensions.FromArgb(200, this.ParentStyle.FillColor);
+                hoveredStyle.FillColor = DrawingExtensions.FromArgb(200, this.ParentStyle.FillColor);
             } else {
                 defaultStyle.PaintData = false;
 
                 defaultStyle.Font = CreateFont(
                     this.ParentStyle.Font.Family,
-                    this.ParentStyle.Font.Size - 2);
-
-                defaultStyle.Font.Style = FontStyle.Italic;
+                    this.ParentStyle.Font.Size - 2).WithStyle(FontStyle.Italic);
 
                 var pen = (Pen)styleGroup.Pen.Clone();
-                var arrowWidth = (float)styleGroup.Pen.Thickness * 5.5f;
-                var arrowHeigth = (float)styleGroup.Pen.Thickness * 1.5f;
+                var arrowWidth = (double)styleGroup.Pen.Thickness * 5.5d;
+                var arrowHeigth = (double)styleGroup.Pen.Thickness * 1.5d;
                 pen.CustomEndCap = DrawingUtils.GetCustomLineCap(arrowWidth, arrowHeigth);
                 pen.StartCap = PenLineCap.Round;
                 styleGroup.Pen = pen;
@@ -117,7 +116,7 @@ namespace Limaki.Drawing {
                 selectedStyle.PaintData = true;
 
                 pen = (Pen)styleGroup.Pen.Clone();
-                pen.Color = Color.FromArgb(150, styleGroup.DefaultStyle.PenColor);
+                pen.Color = DrawingExtensions.FromArgb(150, styleGroup.DefaultStyle.PenColor);
                 hoveredStyle.Pen = pen;
                 hoveredStyle.PaintData = true;
             }
@@ -173,8 +172,8 @@ namespace Limaki.Drawing {
             
             result.TextColor = KnownColors.FromKnownColor(KnownColor.WindowText);
             result.FillColor = KnownColors.FromKnownColor(KnownColor.Window);
-            
-            result.AutoSize = DrawingUtils.GetTextDimension("ABCDEFGHIJKLMNOPQRESTUVWXY\n\n\n\n", result).ToSize();
+
+            result.AutoSize = DrawingUtils.GetTextDimension("ABCDEFGHIJKLMNOPQRESTUVWXY\n\n\n\n", result);
             result.PaintData = true;
             return result;
         }

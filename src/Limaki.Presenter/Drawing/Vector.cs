@@ -13,21 +13,21 @@
  */
 
 using System;
-using System.Collections.Generic;
+using Xwt;
 
 namespace Limaki.Drawing {
 #if !SILVERLIGHT
     [Serializable]
 #endif
     public struct Vector {
-        public PointI Start;
-        public PointI End;
+        public Point Start;
+        public Point End;
 
-        public Vector(PointI location, SizeI size) {
+        public Vector(Point location, Size size) {
             this.Start = location;
             this.End = location + size;
         }
-        public Vector(PointI start, PointI end) {
+        public Vector(Point start, Point end) {
             this.Start = start;
             this.End = end;
         }
@@ -49,7 +49,7 @@ namespace Limaki.Drawing {
         }
 
         public void Transform(Matrice matrice) {
-            PointI[] p = { Start, End };
+            Point[] p = { Start, End };
             matrice.TransformPoints(p);
             Start = p[0];
             End = p[1];
@@ -57,7 +57,7 @@ namespace Limaki.Drawing {
 
         #region Hull
 
-        public static PointI[] Hull(
+        public static Point[] Hull(
             double startX, double startY,
             double endX, double endY,
             double deltaX, double deltaY) {
@@ -109,15 +109,15 @@ namespace Limaki.Drawing {
                 endY = endY + sinusBeta * deltaX;
             }
 
-            return new PointI[] {
-                                   new PointI ((int)(startX - deltaSinusBeta), (int)(startY + deltaSinusAlpha)),
-                                   new PointI ((int)(startX + deltaSinusBeta), (int)(startY - deltaSinusAlpha)),
-                                   new PointI((int)(endX + deltaSinusBeta), (int)(endY - deltaSinusAlpha)),
-                                   new PointI ((int)(endX - deltaSinusBeta), (int)(endY + deltaSinusAlpha))
+            return new Point[] {
+                                   new Point ((startX - deltaSinusBeta), (startY + deltaSinusAlpha)),
+                                   new Point ((startX + deltaSinusBeta), (startY - deltaSinusAlpha)),
+                                   new Point((endX + deltaSinusBeta), (endY - deltaSinusAlpha)),
+                                   new Point ((endX - deltaSinusBeta), (endY + deltaSinusAlpha))
                                };
         }
 
-        public static PointI[] Hull(double startX, double startY, double endX, double endY, int delta, bool extend) {
+        public static Point[] Hull(double startX, double startY, double endX, double endY, int delta, bool extend) {
             double deltaSinusAlpha = 0;
             double deltaSinusBeta = 0;
 
@@ -153,19 +153,19 @@ namespace Limaki.Drawing {
                 endY = endY + deltaSinusBeta;
             }
 
-            return new PointI[] {
-                                   new PointI ((int)(startX - deltaSinusBeta), (int)(startY + deltaSinusAlpha)),
-                                   new PointI ((int)(startX + deltaSinusBeta), (int)(startY - deltaSinusAlpha)),
-                                   new PointI((int)(endX + deltaSinusBeta), (int)(endY - deltaSinusAlpha)),
-                                   new PointI ((int)(endX - deltaSinusBeta), (int)(endY + deltaSinusAlpha))
+            return new Point[] {
+                                   new Point ((startX - deltaSinusBeta), (startY + deltaSinusAlpha)),
+                                   new Point ((startX + deltaSinusBeta), (startY - deltaSinusAlpha)),
+                                   new Point((endX + deltaSinusBeta), (endY - deltaSinusAlpha)),
+                                   new Point ((endX - deltaSinusBeta), (endY + deltaSinusAlpha))
                                };
         }
 
-        public static PointI[] Hull(PointI start, PointI end, int delta, bool extend) {
+        public static Point[] Hull(Point start, Point end, int delta, bool extend) {
             return Hull(start.X, start.Y, end.X, end.Y, delta, extend);
         }
 
-        public PointI[] Hull(int delta, bool extend) {
+        public Point[] Hull(int delta, bool extend) {
             // get it near:
             double startX = Start.X;
             double startY = Start.Y;
@@ -174,7 +174,7 @@ namespace Limaki.Drawing {
             return Hull (startX, startY, endX, endY, delta,extend);
         }
 
-        public PointI[] Hull(double deltaX, double deltaY) {
+        public Point[] Hull(double deltaX, double deltaY) {
             // get it near:
             double startX = Start.X;
             double startY = Start.Y;
@@ -196,9 +196,9 @@ namespace Limaki.Drawing {
         /// <param name="end"></param>
         /// <param name="p"></param>
         /// <returns></returns>
-        public static int Orientation(PointI start, PointI end, PointI p) {
-            int startX = start.X;
-            int startY = start.Y;
+        public static double Orientation(Point start, Point end, Point p) {
+            var startX = start.X;
+            var startY = start.Y;
             return ((end.X - startX) * (p.Y - startY)
                     - (p.X - startX) * (end.Y - startY));
         }
@@ -211,7 +211,7 @@ namespace Limaki.Drawing {
         /// </summary>
         /// <param name="p">Point to test</param>
         /// <returns></returns>
-        public int Orientation(PointI p) {
+        public double Orientation(Point p) {
             return Orientation (Start, End, p);
         }
     }

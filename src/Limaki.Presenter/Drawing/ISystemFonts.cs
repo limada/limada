@@ -12,6 +12,8 @@
  * 
  */
 
+using Xwt.Drawing;
+
 namespace Limaki.Drawing {
     public interface ISystemFonts {
         Font CaptionFont { get; }

@@ -17,6 +17,7 @@ using Limaki.Drawing;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
+using Xwt;
 
 namespace Limaki.Tests.Graph.Wrappers {
 
@@ -377,10 +378,10 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.SceneFacade.CollapseToFocused();
             TestShapes(Mock.Scene);
 
-            Mock.SceneFacade.Add(Mock.Factory.Node[2], PointI.Empty);// Language
+            Mock.SceneFacade.Add(Mock.Factory.Node[2], Point.Zero);// Language
             TestShapes(Mock.Scene);
 
-            Mock.SceneFacade.Add(Mock.Factory.Node[4], PointI.Empty);// .NET
+            Mock.SceneFacade.Add(Mock.Factory.Node[4], Point.Zero);// .NET
 
             AreEquivalent(NetCollapsed, Mock.Scene.Graph);
             TestShapes(Mock.Scene);

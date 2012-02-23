@@ -13,6 +13,7 @@
  */
 
 using System;
+using Xwt;
 
 namespace Limaki.Drawing.Shapes {
 #if !SILVERLIGHT
@@ -20,8 +21,8 @@ namespace Limaki.Drawing.Shapes {
 #endif
 
     public struct Polygon {
-        public PointI[] Points;
-        public Polygon(PointI[] points) {
+        public Point[] Points;
+        public Polygon(Point[] points) {
             this.Points = points;
         }
 
@@ -50,7 +51,7 @@ namespace Limaki.Drawing.Shapes {
         /// <param name="p">the point to test</param>
         /// <param name="v">polygon points</param>
         /// <returns></returns>
-        public static int WindingOfPoint(PointI p, PointI[] v) {
+        public static int WindingOfPoint(Point p, Point[] v) {
             int winding = 0;    // the winding number counter
             // loop through all edges of the polygon
             for (int i = 0; i < v.Length-1; i++) {   // edge from V[0] to V[n]
@@ -61,8 +62,8 @@ namespace Limaki.Drawing.Shapes {
             return winding;
         }
 
-        private static void Winding(PointI start, PointI end, PointI p, ref int wn) {
-            int pY = p.Y;
+        private static void Winding(Point start, Point end, Point p, ref int wn) {
+            var pY = p.Y;
             if (start.Y <= pY) {         // start y <= P.y
                 if (end.Y > pY)      // an upward crossing
                     if (Vector.Orientation(start, end, p) > 0)  // P left of edge
@@ -74,11 +75,11 @@ namespace Limaki.Drawing.Shapes {
             }
         }
 
-        public int WindingOfPoint(PointI p) {
+        public int WindingOfPoint(Point p) {
             return WindingOfPoint (p, this.Points);
         }
 
         #endregion
-        public static bool Intersect(PointI p, PointI[]v){ return WindingOfPoint (p, v) != 0; }
+        public static bool Intersect(Point p, Point[]v){ return WindingOfPoint (p, v) != 0; }
     }
 }

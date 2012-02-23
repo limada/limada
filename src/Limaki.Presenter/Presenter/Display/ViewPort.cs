@@ -17,8 +17,9 @@ using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
+using Xwt;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Display {
     public class ViewPort:IViewport, ICheckable {
 
         #region Camera
@@ -56,14 +57,14 @@ namespace Limaki.Presenter {
         #endregion
 
         #region Data
-        protected PointI _offset = new PointI();
-        public virtual PointI DataOrigin {
+        protected Point _offset = new Point();
+        public virtual Point DataOrigin {
             get { return _offset; }
             protected set { _offset = value; }
         }
 
-        protected SizeI _scrollMinSize = new SizeI();
-        public virtual SizeI DataSize {
+        protected Size _scrollMinSize = new Size();
+        public virtual Size DataSize {
             get { return _scrollMinSize; }
             set { _scrollMinSize = value; }
         }
@@ -71,16 +72,16 @@ namespace Limaki.Presenter {
         /// <summary>
         /// DataLayer.Origin
         /// </summary>
-        public Get<PointI> GetDataOrigin {get;set;}
-        public Get<SizeI> GetDataSize{get;set;}
+        public Get<Point> GetDataOrigin {get;set;}
+        public Get<Size> GetDataSize{get;set;}
 
         #endregion
 
         #region Clipping
         
-        public virtual PointI ClipOrigin { get; set; }
+        public virtual Point ClipOrigin { get; set; }
         
-        public virtual SizeI ClipSize {
+        public virtual Size ClipSize {
             get { return this.DataSize; }
         }
 
@@ -90,7 +91,7 @@ namespace Limaki.Presenter {
             var oldOffset = this.DataOrigin;
             var oldSize = this.DataSize;
             var oldPosition = this.ClipOrigin;
-            var matrixOffset = new PointI((int)-matrix.OffsetX, (int)-matrix.OffsetY);
+            var matrixOffset = new Point(-matrix.OffsetX, -matrix.OffsetY);
 
             this.Update();
 
@@ -100,9 +101,9 @@ namespace Limaki.Presenter {
             if (newSize.Width < oldSize.Width &&
                 (oldPosition.X + oldOffset.X) == matrixOffset.X) {
                 var h = Math.Max(oldSize.Height, newSize.Height);
-                var rect = new Drawing.RectangleI(
+                var rect = new RectangleD(
                     newSize.Width,
-                    (int)matrix.OffsetY,
+                    matrix.OffsetY,
                     oldSize.Width - newSize.Width,
                     h);
                 clipper.Add(RectangleShape.Hull(camera.ToSource(rect), 0, false));
@@ -111,8 +112,8 @@ namespace Limaki.Presenter {
             if (newSize.Height < oldSize.Height &&
                 (oldPosition.Y + oldOffset.Y) == matrixOffset.Y) {
                 var w = Math.Max(oldSize.Width, newSize.Width);
-                var rect = new Drawing.RectangleI(
-                    (int)matrix.OffsetX,
+                var rect = new RectangleD(
+                    matrix.OffsetX,
                     newSize.Height,
                     w,
                     oldSize.Height - newSize.Height);
@@ -131,7 +132,7 @@ namespace Limaki.Presenter {
             System.Console.Out.WriteLine("Data.Bounds\t" + DataSize);
 #endif
             var scrollMinSize = this.Camera.FromSource(GetDataSize());
-            var offset = (PointI)this.Camera.FromSource((SizeI)GetDataOrigin());
+            var offset = (Point)this.Camera.FromSource((Size)GetDataOrigin());
             this._scrollMinSize = scrollMinSize;
             this._offset = offset;
         }
@@ -149,7 +150,7 @@ namespace Limaki.Presenter {
 
         public Action CommandsExecute=null;
         public virtual void Reset() {
-            ClipOrigin = new PointI();
+            ClipOrigin = new Point();
             if (this.CommandsExecute != null) {
                 this.CommandsExecute ();
             }
@@ -159,8 +160,8 @@ namespace Limaki.Presenter {
         #endregion
 
         #region Zoom
-        protected float _zoomFactor = 1.0f;
-        public virtual float ZoomFactor {
+        protected double _zoomFactor = 1.0f;
+        public virtual double ZoomFactor {
             get { return _zoomFactor; }
             set { _zoomFactor = value; }
         }
@@ -174,9 +175,9 @@ namespace Limaki.Presenter {
 
         // Fit to selected zoom
         protected virtual void FitToZoom(ZoomState zoomState) {
-            SizeI rc = this.ClipSize;
-            SizeI dataSize = this.GetDataSize ();
-            dataSize = new SizeI(dataSize.Width - 1, dataSize.Height - 1);
+            Size rc = this.ClipSize;
+            Size dataSize = this.GetDataSize ();
+            dataSize = new Size(dataSize.Width - 1, dataSize.Height - 1);
             switch (zoomState) {
                 case ZoomState.FitToScreen:
                     _zoomFactor = Math.Min(

@@ -18,9 +18,9 @@ using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Modelling {
     /// <summary>
     /// modells the scene
     /// updates clipper

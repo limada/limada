@@ -16,7 +16,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
-using GDIFont=Limaki.Drawing.GDI.GDIFont;
+using Xwt;
+using Xwt.Engine;
 
 namespace Limaki.Drawing.GDI.Painters {
     public class StringPainter : StringPainterBase,IPainter<string> {
@@ -118,22 +119,22 @@ namespace Limaki.Drawing.GDI.Painters {
             bool isVisible = ( elements[0] > 0.2f && elements[3] > 0.2f );
             
             if (isVisible) {
-                IStyle style = this.Style;
-                IShape shape = this.Shape;
-                System.Drawing.Font font = ( (GDIFont) Style.Font ).Native;
+                var style = this.Style;
+                var shape = this.Shape;
+                var font = (System.Drawing.Font)WidgetRegistry.GetBackend(Style.Font);
 
 
                 if (AlignText && shape is IVectorShape) {
-                    Vector vector = ( (IVectorShape) shape ).Data;
-                    float vlen = (float) Vector.Length (vector);
-                    float vheight = font.SizeInPoints + ( font.SizeInPoints/4f );
+                    var vector = ( (IVectorShape) shape ).Data;
+                    var vlen =  (float)Vector.Length (vector);
+                    var vheight = font.SizeInPoints + ( font.SizeInPoints/4f );
                     lineMatrice.Reset ();
-                    PointF c = new PointF (
-                        vector.Start.X + ( vector.End.X - vector.Start.X )/2f,
-                        vector.Start.Y + ( vector.End.Y - vector.Start.Y )/2f);
+                    var c = new PointF (
+                        (float)(vector.Start.X + ( vector.End.X - vector.Start.X )/2f),
+                        (float)(vector.Start.Y + (vector.End.Y - vector.Start.Y) / 2f));
                     
                     lineMatrice.Translate (c.X - 1, c.Y - 1);
-                    lineMatrice.Rotate ((float) Angle (vector));
+                    lineMatrice.Rotate ( Angle (vector));
 
                     linedTextPath.Reset ();
                     // TODO: something is wrong with emSize, it is too small:

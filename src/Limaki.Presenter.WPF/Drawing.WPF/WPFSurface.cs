@@ -1,7 +1,8 @@
 using System.Windows;
 using Limaki.Drawing;
 using System.Windows.Input;
-using System.Windows.Controls;
+using Xwt;
+using Panel = System.Windows.Controls.Panel;
 
 namespace Limaki.Drawing.WPF {
     public class WPFSurface : ISurface {
@@ -9,7 +10,7 @@ namespace Limaki.Drawing.WPF {
             this.Graphics = graphics;
         }
 
-        public RectangleI Clip { get; set; }
+        public RectangleD Clip { get; set; }
         public Panel Graphics { get; set; }
 
         public MouseButtonEventHandler MouseButtonDown = null;

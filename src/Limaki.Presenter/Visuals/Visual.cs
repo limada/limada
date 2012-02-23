@@ -13,8 +13,9 @@
  */
 
 using System;
-using System.Collections.Generic;
 using Limaki.Drawing;
+using Xwt;
+
 //using System.Runtime.Serialization;
 
 namespace Limaki.Visuals {
@@ -49,38 +50,38 @@ namespace Limaki.Visuals {
                 return ( (char) ( 0x2260 ) ).ToString ();
         }
 
-        public virtual SizeI Size {
+        public virtual Size Size {
             get {
                 if (Shape != null)
                     return Shape.Size;
                 else
-                    return new SizeI();
+                    return new Size();
             }
             set { Shape.Size = value; }
         }
 
-        public virtual PointI Location {
+        public virtual Point Location {
             get {
                 if (Shape != null) {
                     return Shape.Location;
                 } else
-                    return new PointI();
+                    return new Point();
             }
             set { Shape.Location = value; }
         }
 
-        public virtual PointI[] Hull(int delta, bool extend) {
+        public virtual Point[] Hull(int delta, bool extend) {
             if (Shape != null)
                 return Shape.Hull(delta, extend);
             else
-                return new PointI[0];
+                return new Point[0];
         }
 
-        public virtual PointI[] Hull(Matrice matrix, int delta, bool extend) {
+        public virtual Point[] Hull(Matrice matrix, int delta, bool extend) {
             if (Shape != null)
                 return Shape.Hull(delta, extend);
             else
-                return new PointI[0];
+                return new Point[0];
         }
 
         #region IShape Member

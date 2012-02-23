@@ -15,7 +15,7 @@
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
-
+using Xwt;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
@@ -43,7 +43,7 @@ namespace Limaki.Presenter.UI {
             }
         }
 
-        protected virtual PointI MouseDownPos { get; set;}
+        protected virtual Point MouseDownPos { get; set;}
 
         private int _hitSize = 5;
         public virtual int HitSize {
@@ -59,17 +59,17 @@ namespace Limaki.Presenter.UI {
         protected bool moving = false;
 
 
-        public virtual Anchor HitAnchor(PointI p) {
+        public virtual Anchor HitAnchor(Point p) {
             IShape shape = this.Shape;
             if (shape == null)
                 return Anchor.None;
-            PointI sp = Camera.ToSource(p);
+            Point sp = Camera.ToSource(p);
             Anchor result = shape.IsAnchorHit(sp, HitSize);
             return result;
         }
 
 
-        public abstract bool HitTest(PointI p);
+        public abstract bool HitTest(Point p);
 
         public static Anchor AdjacentAnchor(Anchor hitAnchor) {
 
@@ -118,26 +118,26 @@ namespace Limaki.Presenter.UI {
 
         #region Mouse-Handling
 
-        protected override PointI LastMousePos {
+        protected override Point LastMousePos {
             get {
                 return base.LastMousePos;
             }
             set {
                 if (resizing) {
-                    PointI _value = value;
+                    Point _value = value;
                     switch (hitAnchor) {
                         case Anchor.MiddleTop:
                         case Anchor.MiddleBottom:
                             _value = Camera.FromSource(this.Shape[Anchor.LeftTop]);
-                            _value = new PointI(_value.X, value.Y);
+                            _value = new Point(_value.X, value.Y);
                             break;
                         case Anchor.LeftMiddle:
                             _value = Camera.FromSource(this.Shape[Anchor.LeftTop]);
-                            _value = new PointI(value.X, _value.Y);
+                            _value = new Point(value.X, _value.Y);
                             break;
                         case Anchor.RightMiddle:
                             _value = Camera.FromSource(this.Shape[Anchor.RightBottom]);
-                            _value = new PointI(value.X, _value.Y);
+                            _value = new Point(value.X, _value.Y);
                             break;
                     }
                     base.LastMousePos = _value;
@@ -194,8 +194,8 @@ namespace Limaki.Presenter.UI {
             DeviceCursor.RestoreCursor();
             resizing = false;
             moving = false;
-            LastMousePos = PointI.Empty;
-            MouseDownPos = PointI.Empty;
+            LastMousePos = Point.Zero;
+            MouseDownPos = Point.Zero;
             hitAnchor = Anchor.None;
             if (SelectionRenderer != null)
                 SelectionRenderer.UpdateSelection();

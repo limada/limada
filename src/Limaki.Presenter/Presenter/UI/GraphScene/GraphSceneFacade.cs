@@ -14,16 +14,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Limaki.Common;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
+using System.Linq;
 using Limaki.Presenter.Layout;
-using Limaki.Presenter.UI;
+using Xwt;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.UI.GraphScene {
     /// <summary>
     /// Provides a simplified interface to
     /// a scene, a layout and the scenes graph
@@ -164,7 +164,7 @@ namespace Limaki.Presenter.UI {
         /// </summary>
         /// <param name="item"></param>
         /// <param name="pt"></param>
-        public virtual void Add(TItem item, PointI pt) {
+        public virtual void Add(TItem item, Point pt) {
             IGraphScene<TItem, TEdge> scene = this.Scene;
             if (scene == null || item == null)
                 return;
@@ -198,7 +198,7 @@ namespace Limaki.Presenter.UI {
             var affected = new GraphViewFacade<TItem, TEdge>(this.graphView).Add(elements);
 
             if (arrange)
-                arranger.ArrangeItems(affected, justify, (PointI)Layout.Border);
+                arranger.ArrangeItems(affected, justify, (Point)Layout.Border);
             else
                 arranger.ArrangeEdges(affected, justify);
 
@@ -306,7 +306,7 @@ namespace Limaki.Presenter.UI {
 
             var arranger = CreateArranger(scene);
 
-            arranger.ArrangeDeepWalk(roots,true,(PointI)Layout.Distance);
+            arranger.ArrangeDeepWalk(roots,true,(Point)Layout.Distance);
 
             arranger.Commit ();
 

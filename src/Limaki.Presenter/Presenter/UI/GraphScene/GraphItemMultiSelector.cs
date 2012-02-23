@@ -19,9 +19,9 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
+using Xwt;
 
-
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.UI.GraphScene {
     public class GraphItemMultiSelector<TItem,TEdge>:SelectorAction, IKeyAction 
     where TEdge:TItem,IEdge<TItem>{
         public GraphItemMultiSelector() : base() {
@@ -76,7 +76,7 @@ namespace Limaki.Presenter.UI {
             Select (this.Scene, Scene.ElementsIn (this.Shape.BoundsRect), e.Modifiers);
         }
 
-        public override bool HitTest(PointI p) {
+        public override bool HitTest(Point p) {
             bool result = false;
             if (this.Shape == null) {
                 return result;
@@ -85,9 +85,9 @@ namespace Limaki.Presenter.UI {
             return result;
         }
 
-        bool TestSceneHit(PointI p) {
+        bool TestSceneHit(Point p) {
             bool result = true;
-            PointI pt = Camera.ToSource(p);
+            Point pt = Camera.ToSource(p);
             if (Scene.Hovered != null)
                 result = !Scene.ItemShape(Scene.Hovered).IsHit(pt, this.HitSize);
             if (result && Scene.Focused != null)
@@ -109,8 +109,8 @@ namespace Limaki.Presenter.UI {
             base.OnMouseUp(e);
             Exclusive = false;
             IShape oldShape = this.Shape;
-            this.Shape = ShapeFactory.Shape(ShapeDataType, PointI.Empty, SizeI.Empty);
-            SelectionRenderer.InvalidateShapeOutline(oldShape, ShapeFactory.Shape(ShapeDataType, PointI.Empty, SizeI.Empty));
+            this.Shape = ShapeFactory.Shape(ShapeDataType, Point.Zero, Size.Zero);
+            SelectionRenderer.InvalidateShapeOutline(oldShape, ShapeFactory.Shape(ShapeDataType, Point.Zero, Size.Zero));
         }
 
 

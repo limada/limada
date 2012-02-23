@@ -13,9 +13,7 @@
  */
 
 
-using System.Collections.Generic;
 using Limaki.Graphs;
-using Limaki.Common.Collections;
 
 namespace Limaki.Visuals {
     public class VisualGraph:Graph<IVisual,IVisualEdge> {}

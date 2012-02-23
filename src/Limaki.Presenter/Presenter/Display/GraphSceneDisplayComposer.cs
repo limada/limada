@@ -15,7 +15,11 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.Presenter.Modelling;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
+using Xwt;
 
 namespace Limaki.Presenter.Display {
     public class GraphSceneDisplayComposer<TItem, TEdge> : DisplayComposer<IGraphScene<TItem, TEdge>>
@@ -65,7 +69,7 @@ namespace Limaki.Presenter.Display {
                     }
                     return result;
                 } else
-                    return PointI.Empty;
+                    return Point.Zero;
             };
 
             this.DataSize = () => {
@@ -82,7 +86,7 @@ namespace Limaki.Presenter.Display {
                     }
                     return result;
                 } else
-                    return SizeI.Empty;
+                    return Size.Zero;
             };
 
 

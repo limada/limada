@@ -18,6 +18,7 @@ using System;
 using Limaki.Drawing;
 using Limaki.UnitTest;
 using NUnit.Framework;
+using Xwt;
 
 namespace Limaki.Tests.Drawing {
     public class PolygonHulltest:DomainTest {
@@ -33,52 +34,52 @@ namespace Limaki.Tests.Drawing {
             Tickers.Add("",new Ticker());
         }
 
-        public PointI[] PolygonHull_AtanSinCos ( Vector _data, int width ) {
-            PointI[] result = new PointI[4];
-            int x1 = _data.Start.X;
-            int x2 = _data.End.X;
-            int y1 = _data.Start.Y;
-            int y2 = _data.End.Y;
-            if ( ( x2 - x1 ) != 0.0 ) {
-                double theta = Math.Atan(( y2 - y1 ) / ( x2 - x1 ));
-                int dx = (int) ( Math.Sin(theta) * width );
-                int dy = (int) ( Math.Cos(theta) * width );
-                result[0] = new PointI(x1 - dx, y1 + dy);
-                result[1] = new PointI(x1 + dx, y1 - dy);
-                result[2] = new PointI(x2 + dx, y2 - dy);
-                result[3] = new PointI(x2 - dx, y2 + dy);
+        public Point[] PolygonHull_AtanSinCos ( Vector _data, int width ) {
+            var result = new Point[4];
+            var x1 = _data.Start.X;
+            var x2 = _data.End.X;
+            var y1 = _data.Start.Y;
+            var y2 = _data.End.Y;
+            if ( ( x2 - x1 ) != 0.0d ) {
+                var theta = Math.Atan(( y2 - y1 ) / ( x2 - x1 ));
+                var dx = (int) ( Math.Sin(theta) * width );
+                var dy = (int) ( Math.Cos(theta) * width );
+                result[0] = new Point(x1 - dx, y1 + dy);
+                result[1] = new Point(x1 + dx, y1 - dy);
+                result[2] = new Point(x2 + dx, y2 - dy);
+                result[3] = new Point(x2 - dx, y2 + dy);
 
             } else {
                 // special case, vertical line
-                result[0] = new PointI(x1 - width, y1);
-                result[1] = new PointI(x1 + width, y1);
-                result[2] = new PointI(x2 + width, y2);
-                result[3] = new PointI(x2 - width, y2);
+                result[0] = new Point(x1 - width, y1);
+                result[1] = new Point(x1 + width, y1);
+                result[2] = new Point(x2 + width, y2);
+                result[3] = new Point(x2 - width, y2);
 
             }
             return result;
         }
 
-        public virtual PointI[] PolygonHull_Transform ( Vector _data, int delta ) {
-            PointI[] line = null;
+        public virtual Point[] PolygonHull_Transform ( Vector _data, double delta ) {
+            Point[] line = null;
 
             //if (_data.Start.X <= _data.End.X && _data.Start.Y <= _data.End.Y) {
             if ( _data.Start.X <= _data.End.X ) {
-                line = new PointI[] { _data.Start, _data.End };
+                line = new Point[] { _data.Start, _data.End };
             } else {
-                line = new PointI[] { _data.End, _data.Start };
+                line = new Point[] { _data.End, _data.Start };
             }
 
 
-            Matrice lineMatrice = new Matrice();
-            float angle = (float) Vector.Angle(_data);
+            var lineMatrice = new Matrice();
+            var angle = Vector.Angle(_data);
             lineMatrice.Rotate(-angle);
             lineMatrice.TransformPoints(line);
-            PointI[] poly = new PointI[] {
-                                                 new PointI (line[0].X - delta, line[0].Y - delta),
-                                                 new PointI(line[1].X + delta, line[1].Y - delta),
-                                                 new PointI (line[1].X + delta, line[1].Y + delta),
-                                                 new PointI (line[0].X - delta, line[0].Y + delta)
+            var poly = new Point[] {
+                                                 new Point (line[0].X - delta, line[0].Y - delta),
+                                                 new Point(line[1].X + delta, line[1].Y - delta),
+                                                 new Point (line[1].X + delta, line[1].Y + delta),
+                                                 new Point (line[0].X - delta, line[0].Y + delta)
                                              };
             lineMatrice.Reset();
             lineMatrice.Rotate(angle);
@@ -87,18 +88,18 @@ namespace Limaki.Tests.Drawing {
 
         }
 
-        public virtual PointI[] PolygonHullSqareRoot (Vector _data, int delta ) {
+        public virtual Point[] PolygonHullSqareRoot (Vector _data, int delta ) {
             // get it near:
-            int startX = _data.Start.X;
-            int startY = _data.Start.Y;
-            int endX = _data.End.X;
-            int endY = _data.End.Y;
+            var startX = _data.Start.X;
+            var startY = _data.Start.Y;
+            var endX = _data.End.X;
+            var endY = _data.End.Y;
 
-            int deltaSinusAlpha = 0;
-            int deltaSinusBeta = 0;
-            
-            int a = endX - startX;
-            int b = endY - startY;
+            var deltaSinusAlpha = 0d;
+            var deltaSinusBeta = 0d;
+
+            var a = endX - startX;
+            var b = endY - startY;
             if (a==0) {
                 if (b > 0) {
                     deltaSinusBeta = delta; 
@@ -114,7 +115,7 @@ namespace Limaki.Tests.Drawing {
             } else {
 
                 // calculation of the hypotenuse:
-                double c = Math.Sqrt (( a*a + b*b ));
+                var c = Math.Sqrt (( a*a + b*b ));
 
                 // calculation of Sinus Alpha and Beta, factorized with delta:
                 deltaSinusAlpha = (int) ( delta*( a/c ) );
@@ -128,15 +129,15 @@ namespace Limaki.Tests.Drawing {
             endY = endY + deltaSinusBeta;
 
 
-            return new PointI[] {
-                new PointI (startX - deltaSinusBeta, startY + deltaSinusAlpha),
-                new PointI (startX + deltaSinusBeta, startY - deltaSinusAlpha),
-                new PointI(endX + deltaSinusBeta, endY - deltaSinusAlpha),
-                new PointI (endX - deltaSinusBeta, endY + deltaSinusAlpha)
+            return new Point[] {
+                new Point (startX - deltaSinusBeta, startY + deltaSinusAlpha),
+                new Point (startX + deltaSinusBeta, startY - deltaSinusAlpha),
+                new Point(endX + deltaSinusBeta, endY - deltaSinusAlpha),
+                new Point (endX - deltaSinusBeta, endY + deltaSinusAlpha)
                                              };
         }
 
-        void PaintWidenPolygon (Algo algo, PointI start, SizeI size, int i ) {
+        void PaintWidenPolygon (Algo algo, Point start, Size size, int i ) {
             if ( algo == Algo.AtanSinCos )
                 PolygonHull_AtanSinCos(new Vector(start, start + size), 10);
             else if ( algo == Algo.SqareRoot )
@@ -149,57 +150,57 @@ namespace Limaki.Tests.Drawing {
                         Ticker ticker = new Ticker();
             ticker.Start();
             for ( int i = 0; i < count; i++ ) {
-                PointI start = new PointI(200, 100);
-                SizeI size = new SizeI(0, -100);
-                SizeI distance = new SizeI(30, 30);
+                Point start = new Point(200, 100);
+                Size size = new Size(0, -100);
+                Size distance = new Size(30, 30);
                 PaintWidenPolygon(algo, start, size, 1);
 
                 start += distance;
-                size = new SizeI(0, 100);
+                size = new Size(0, 100);
                 PaintWidenPolygon(algo, start, size, 2);
 
                 start += distance;
-                size = new SizeI(100, 0);
+                size = new Size(100, 0);
                 PaintWidenPolygon(algo, start, size, 3);
 
                 start += distance;
-                size = new SizeI(-100, 0);
+                size = new Size(-100, 0);
                 PaintWidenPolygon(algo, start, size, 4);
 
                 // second
 
                 start += distance;
-                size = new SizeI(10, -100);
+                size = new Size(10, -100);
                 PaintWidenPolygon(algo, start, size, 5);
 
                 start += distance;
-                size = new SizeI(10, 100);
+                size = new Size(10, 100);
                 PaintWidenPolygon(algo, start, size, 6);
 
                 start += distance;
-                size = new SizeI(100, 10);
+                size = new Size(100, 10);
                 PaintWidenPolygon(algo, start, size, 7);
 
                 start += distance;
-                size = new SizeI(-100, 10);
+                size = new Size(-100, 10);
                 PaintWidenPolygon(algo, start, size, 8);
 
                 // third
 
                 start += distance;
-                size = new SizeI(-10, -100);
+                size = new Size(-10, -100);
                 PaintWidenPolygon(algo, start, size, 9);
 
                 start += distance;
-                size = new SizeI(-10, 100);
+                size = new Size(-10, 100);
                 PaintWidenPolygon(algo, start, size, 10);
 
                 start += distance;
-                size = new SizeI(100, -80);
+                size = new Size(100, -80);
                 PaintWidenPolygon(algo, start, size, 11);
 
                 start += distance;
-                size = new SizeI(-100, -10);
+                size = new Size(-100, -10);
                 PaintWidenPolygon(algo, start, size, 12);
             }
             ticker.Stop();

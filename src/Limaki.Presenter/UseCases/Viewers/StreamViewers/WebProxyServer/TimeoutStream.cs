@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
+namespace Limaki.UseCases.Viewers.StreamViewers.WebProxyServer {
     /// <summary>
     /// A normal Stream might provide a timeout on a specific read opreation.
     /// However, using StreamReader.ReadToEnd() on it can still get stuck for a long time.

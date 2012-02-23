@@ -14,14 +14,15 @@
 
 
 using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter.UI {
     public interface IMoveResizeAction:IMouseAction {
         int HitSize { get; set; }
         IDeviceCursor DeviceCursor { get; }
 
-        Anchor HitAnchor ( PointI p );
-        bool HitTest ( PointI p );
+        Anchor HitAnchor ( Point p );
+        bool HitTest ( Point p );
 
         bool ShowGrips { get; set; }
         void Clear();

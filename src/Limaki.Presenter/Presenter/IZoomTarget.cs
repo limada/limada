@@ -15,10 +15,11 @@
 
 
 using Limaki.Drawing;
+
 namespace Limaki.Presenter {
     public interface IZoomTarget {
         ZoomState ZoomState { get;set;}
-        float ZoomFactor { get;set;}
+        double ZoomFactor { get;set;}
         void UpdateZoom();
     }
 }

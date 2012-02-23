@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using Limaki.Presenter.UI;
 using Limaki.Presenter.Winform;
 using NUnit.Framework;
+using Xwt;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 
 namespace Limaki.Tests.Winform {
     public class ConverterTest:DomainTest {
@@ -10,17 +12,19 @@ namespace Limaki.Tests.Winform {
         public void KeyConverterTest () {
             for (Keys keys = Keys.None; keys <= Keys.OemClear; keys++) {
                 
-                Key key = Converter.Convert(keys);
+                var key = Converter.Convert(keys);
                 
                 string sKey = Enum.GetName(typeof(Key), key);
                 string sKeys = Enum.GetName(typeof(Keys), keys);
                 
                 this.ReportDetail(sKeys + "\t" + sKey);
 
-                if (key != Key.None) {
+                if (key != 0) {
 
-                    if (key != Key.Ctrl &&
-                        key != Key.Shift &&
+                    if (key != Key.ControlLeft &&
+                        key != Key.ControlRight &&
+                        key != Key.ShiftLeft &&
+                        key != Key.ShiftRight &&
                         key != Key.Menu &&
                         keys != Keys.Prior &&
                         keys != Keys.Next &&
@@ -46,7 +50,7 @@ namespace Limaki.Tests.Winform {
 
                 if (keys == Keys.LWin || keys == Keys.RWin) {
                     Assert.IsTrue(
-                       args2.ModifierKeys == ModifierKeys.Windows,
+                       args2.ModifierKeys == ModifierKeys.Command,
                        Enum.GetName(typeof(ModifierKeys), args2.ModifierKeys));
                     continue;
                 }

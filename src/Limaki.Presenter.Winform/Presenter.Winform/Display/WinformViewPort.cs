@@ -1,12 +1,14 @@
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
+using Limaki.Presenter.Display;
+using Xwt;
+using Point = System.Drawing.Point;
 
 namespace Limaki.Presenter.Winform.Display {
     public class GDIViewPort : ViewPort {
-        public override Limaki.Drawing.Matrice CreateMatrix() {
+        public override Matrice CreateMatrix() {
             return new GDIMatrice();
         }
     }
@@ -18,12 +20,12 @@ namespace Limaki.Presenter.Winform.Display {
         }
 
         bool scrollChanged = false;
-        private PointI _scrollPosition = PointI.Empty;
-        public override Limaki.Drawing.PointI ClipOrigin {
+        private Xwt.Point _scrollPosition = Xwt.Point.Zero;
+        public override Xwt.Point ClipOrigin {
             get {
                 if (!useOnScroll) {
                     Point point = device.AutoScrollPosition;
-                    _scrollPosition = new PointI(-point.X, -point.Y);
+                    _scrollPosition = new Xwt.Point(-point.X, -point.Y);
                     scrollChanged = false;
                 }
                 return _scrollPosition;
@@ -40,12 +42,12 @@ namespace Limaki.Presenter.Winform.Display {
             }
         }
 
-        public override SizeI ClipSize {
+        public override Size ClipSize {
             get { return GDIConverter.Convert(device.ClientSize); }
         }
 
         private bool _scrollMinSizeChanging = false;
-        public override SizeI DataSize {
+        public override Size DataSize {
             get {
                 if (useOnScroll) {
                     return _scrollMinSize;
@@ -70,15 +72,15 @@ namespace Limaki.Presenter.Winform.Display {
                   
                     if (OS.Mono) {
                         // mono does not deliver ScrollOrientation
-                        var deltaX = 0;
-                        var deltaY = 0;
+                        var deltaX = 0d;
+                        var deltaY = 0d;
 
                         var point = device.AutoScrollPosition;
                         deltaX = _scrollPosition.X + point.X;
                         deltaY = _scrollPosition.Y + point.Y;
 
                         //update and set new scrollPosition
-                        _scrollPosition = new PointI(-point.X, -point.Y);
+                        _scrollPosition = new Xwt.Point(-point.X, -point.Y);
                         
                         if(deltaX != 0 || deltaY != 0){
                             // OnScroll works different on mono
@@ -113,7 +115,7 @@ namespace Limaki.Presenter.Winform.Display {
             base.Update();
             if (useOnScroll) {
                 var point = device.AutoScrollPosition;
-                _scrollPosition = new PointI(-point.X, -point.Y);
+                _scrollPosition = new Xwt.Point(-point.X, -point.Y);
             }
            
         }

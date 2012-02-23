@@ -17,8 +17,9 @@ using Limaki.Common;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Xwt;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.UI.GraphScene {
     /// <summary>
     /// Deletes an item
     /// </summary>

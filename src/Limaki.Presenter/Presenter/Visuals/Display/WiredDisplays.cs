@@ -17,12 +17,11 @@ using System;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
+using Limaki.Presenter.Display;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
-using Limaki.Presenter.Display;
 
-
-namespace Limaki.Presenter.Visuals {
+namespace Limaki.Presenter.Visuals.Display {
     /// <summary>
     /// Methods to make Displays aware of each other
     /// </summary>

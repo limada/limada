@@ -18,10 +18,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
-using Limada.View;
-using Limaki.Drawing.Imaging;
 using Limaki.Graphs;
+using Limaki.Limada.View;
 using Limaki.Model.Streams;
+using Limaki.Drawing.Imaging;
 using Limaki.Visuals;
 
 
@@ -49,8 +49,8 @@ namespace Limaki.Presenter.Winform.DragDrop {
                 if (dataObject.ContainsImage()) {
                     image = dataObject.GetImage();
                 } else {
-                    Stream stream = dataObject.GetData(DataFormats[0]) as Stream;
-                    BitmapFromDibStream bmpStream = new BitmapFromDibStream(stream);
+                    var stream = dataObject.GetData(DataFormats[0]) as Stream;
+                    var bmpStream = new BitmapFromDibStream(stream);
                     image = new Bitmap(bmpStream);
                 }
             }

@@ -1,9 +1,9 @@
 using System;
 using Limaki.Actions;
 using Limaki.Common;
-using Limaki.Drawing;
-using Limaki.Presenter.UI;
 using System.ComponentModel;
+using Limaki.Drawing;
+using Limaki.Presenter.Rendering;
 
 namespace Limaki.Presenter.UI {
     public abstract class MoveResizeRendererBase : ISelectionRenderer {

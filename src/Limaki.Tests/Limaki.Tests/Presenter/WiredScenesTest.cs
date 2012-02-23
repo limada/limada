@@ -16,13 +16,14 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model;
+using Limaki.Presenter.Visuals.Display;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Graph.Wrappers;
 using Limaki.Visuals;
 using NUnit.Framework;
 using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Layout;
-
+using Xwt;
 
 
 namespace Limaki.Tests.View.Visuals {
@@ -112,7 +113,7 @@ namespace Limaki.Tests.View.Visuals {
             sourceGraph.Add (sourceEdge);
             sourceView.OnGraphChanged (sourceEdge, GraphChangeType.Add);
 
-            sourceTest.Mock.SceneFacade.Add (sourceEdge, new PointI (10, 10));
+            sourceTest.Mock.SceneFacade.Add (sourceEdge, new Point (10, 10));
             sourceTest.Mock.Display.Execute();
 
             // testing the data source

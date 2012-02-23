@@ -21,10 +21,11 @@ using Limaki.Drawing.GDI;
 using Limaki.Drawing.GDI.Painters;
 using Limaki.Drawing.Shapes;
 using Limaki.Presenter.UI;
-using Limaki.Visuals;
-using Limaki.Presenter.Winform.Display;
-using Limaki.Winform.Controls;
 using Limaki.UseCases.Viewers;
+using Limaki.Visuals;
+using Limaki.Winform.Controls;
+using Limaki.Presenter.Winform.Display;
+using Xwt.WinformBackend;
 
 namespace Limaki.Presenter.Winform {
     /// <summary>
@@ -36,6 +37,7 @@ namespace Limaki.Presenter.Winform {
 
             new LimakiCoreContextRecourceLoader ().ApplyResources (context);
 
+            new SWFEngine().RegisterBackends();
 
             context.Factory.Add<IExceptionHandler,WinformExeptionHandler>();
             context.Factory.Add<IDrawingUtils,GDIDrawingUtils>();

@@ -15,6 +15,7 @@
 
 using Limaki.Common;
 using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter {
     /// <summary>
@@ -30,36 +31,36 @@ namespace Limaki.Presenter {
         /// origin of the Data in 
         /// ViewPort Coordinates 
         /// </summary>
-        PointI DataOrigin { get; }
+        Point DataOrigin { get; }
 
         /// <summary>
         /// size of the visible Data in 
         /// ViewPort Coordinates
         /// </summary>
-        SizeI DataSize { get; }
+        Size DataSize { get; }
 
         /// <summary>
         /// origin of the visible Clip in 
         /// ViewPort Coordinates
         /// </summary>
-        PointI ClipOrigin { get; set; }
+        Point ClipOrigin { get; set; }
 
         /// <summary>
         /// size of the visible Clip in 
         /// ViewPort Coordinates
         /// </summary>
-        SizeI ClipSize { get; }
+        Size ClipSize { get; }
 
         /// <summary>
         /// Origin of Data in
         /// World Coordinates
         /// </summary>
-        Get<PointI> GetDataOrigin { get; set; }
+        Get<Point> GetDataOrigin { get; set; }
         /// <summary>
         /// size of Data in 
         /// World Coordinates  
         /// </summary>
-        Get<SizeI> GetDataSize { get; set; }
+        Get<Size> GetDataSize { get; set; }
         
 
         void Update();
@@ -67,7 +68,7 @@ namespace Limaki.Presenter {
         void UpdateCamera();
         void UpdateZoom();
         void Reset();
-        float ZoomFactor { get; set; }
+        double ZoomFactor { get; set; }
         ZoomState ZoomState { get; set; }
         
     }

@@ -1,6 +1,7 @@
-﻿using Limaki.Graphs;
+﻿using Limaki.Drawing;
+using Limaki.Graphs;
 using System;
-using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter.Layout {
 
@@ -12,11 +13,11 @@ namespace Limaki.Presenter.Layout {
             this.Proxy = aligner.Proxy;
         }
 
-        public Func<RectangleI> Bounds(ref Action<TItem> visitor) {
-            var l = int.MaxValue;
-            var t = int.MaxValue;
-            var b = int.MinValue;
-            var r = int.MinValue;
+        public Func<RectangleD> Bounds(ref Action<TItem> visitor) {
+            var l = double.MaxValue;
+            var t = double.MaxValue;
+            var b = double.MinValue;
+            var r = double.MinValue;
 
             visitor += item => {
                 var loc = Proxy.GetLocation(item);
@@ -35,13 +36,13 @@ namespace Limaki.Presenter.Layout {
                     b = ib;
             };
 
-            return () => RectangleI.FromLTRB(l, t, r, b);
+            return () => RectangleD.FromLTRB(l, t, r, b);
         }
 
         
-        public Func<SizeI> SizeSum(ref Action<TItem> visitor) {
-            var w = 0;
-            var h = 0;
+        public Func<Size> SizeSum(ref Action<TItem> visitor) {
+            var w = 0d;
+            var h = 0d;
             visitor += item => {
                 var size = Proxy.GetSize(item);
                
@@ -49,12 +50,12 @@ namespace Limaki.Presenter.Layout {
                 h += size.Height;
             };
 
-            return () => new SizeI(w,h);
+            return () => new Size(w,h);
         }
 
-        public Func<SizeI> SizeSum(ref Action<TItem> visitor, SizeI distance) {
-            var w = 0;
-            var h = 0;
+        public Func<Size> SizeSum(ref Action<TItem> visitor, Size distance) {
+            var w = 0d;
+            var h = 0d;
             visitor += item => {
                 var size = Proxy.GetSize(item);
 
@@ -65,12 +66,12 @@ namespace Limaki.Presenter.Layout {
             w -= distance.Width;
             h -= distance.Height;
 
-            return () => new SizeI(w, h);
+            return () => new Size(w, h);
         }
 
-        public Func<SizeI> SizeToFit(ref Action<TItem> visitor, SizeI distance,  Dimension dimension) {
-            var w = 0;
-            var h = 0;
+        public Func<Size> SizeToFit(ref Action<TItem> visitor, Size distance,  Dimension dimension) {
+            var w = 0d;
+            var h = 0d;
             
             visitor += item => {
                 var size = Proxy.GetSize(item);
@@ -89,12 +90,12 @@ namespace Limaki.Presenter.Layout {
             else
                 h -= distance.Height;
 
-            return () => new SizeI(w, h);
+            return () => new Size(w, h);
         }
 
-        public Func<SizeI> MinSize(ref Action<TItem> visitor) {
-            var w = 0;
-            var h = 0;
+        public Func<Size> MinSize(ref Action<TItem> visitor) {
+            var w = 0d;
+            var h = 0d;
             visitor += item => {
                 var size = Proxy.GetSize(item);
                 if (w < size.Width)
@@ -103,7 +104,7 @@ namespace Limaki.Presenter.Layout {
                     h = size.Height;
             };
 
-            return () => new SizeI(w, h);
+            return () => new Size(w, h);
         }
 
         public virtual void AffectedEdges(ref Action<TItem> visitor) {

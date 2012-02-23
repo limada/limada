@@ -2,6 +2,7 @@
 using Limaki.Visuals;
 using Limaki.Presenter.UI;
 using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Tests.Presenter.Display {
     public class VisualsDisplayTest1:VisualsDisplayTest {

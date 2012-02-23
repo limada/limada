@@ -13,9 +13,9 @@
  */
 
 
-using System;
 using System.Collections.Generic;
 using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Visuals {
     public class BruteForceIndex : SpatialIndex {
@@ -24,9 +24,9 @@ namespace Limaki.Visuals {
             this.Visuals = items;
         }
 
-        protected override RectangleI CalculateBounds() {
-            int l = 0;int t = 0;
-            int r = 0;int b = 0;
+        protected override RectangleD CalculateBounds() {
+            var l = 0d;var t = 0d;
+            var r = 0d;var b = 0d;
             
             
             foreach (var visual in Visuals) {
@@ -44,19 +44,19 @@ namespace Limaki.Visuals {
             if (t > 0) t = 0;
             if (r < 0) r = 0;
             if (b < 0) b = 0;
-            return RectangleI.FromLTRB(l, t, r, b);
+            return RectangleD.FromLTRB(l, t, r, b);
         }
 
-        public override IEnumerable<IVisual> Query(RectangleS clipBounds) {
+        public override IEnumerable<IVisual> Query(RectangleD clipBounds) {
             return Query(clipBounds, ZOrder.NodesFirst);
 
         }
 
-        public override IEnumerable<IVisual> Query( RectangleS clipBounds, ZOrder zOrder ) {
+        public override IEnumerable<IVisual> Query( RectangleD clipBounds, ZOrder zOrder ) {
             if (zOrder==ZOrder.EdgesFirst)
                 foreach (var visual in Visuals) {
                     if (visual is IVisualEdge) {
-                        RectangleI bounds = visual.Shape.BoundsRect;
+                        RectangleD bounds = visual.Shape.BoundsRect;
                         bounds.Inflate(1, 1);
                         if (clipBounds.IntersectsWith(bounds))
                             yield return visual;
@@ -64,7 +64,7 @@ namespace Limaki.Visuals {
                 }
             foreach (var visual in Visuals) {
                 if (!(visual is IVisualEdge)) {
-                    RectangleI bounds = visual.Shape.BoundsRect;
+                    RectangleD bounds = visual.Shape.BoundsRect;
                     bounds.Inflate(1, 1);
                     if (clipBounds.IntersectsWith(bounds))
                         yield return visual;
@@ -73,7 +73,7 @@ namespace Limaki.Visuals {
             if (zOrder==ZOrder.NodesFirst)
                 foreach (var visual in Visuals) {
                     if (visual is IVisualEdge) {
-                        RectangleI bounds = visual.Shape.BoundsRect;
+                        RectangleD bounds = visual.Shape.BoundsRect;
                         bounds.Inflate(1, 1);
                         if (clipBounds.IntersectsWith(bounds))
                             yield return visual;
@@ -95,11 +95,11 @@ namespace Limaki.Visuals {
 
         public override void Clear() {
             BoundsDirty = true;
-            Bounds = RectangleI.Empty;
+            Bounds = RectangleD.Zero;
             Visuals = null;
         }
-        protected override void Add(RectangleI bounds, IVisual item) {}
+        protected override void Add(RectangleD bounds, IVisual item) {}
 
-        protected override void Remove(RectangleI bounds, IVisual item) { }
+        protected override void Remove(RectangleD bounds, IVisual item) { }
     }
 }

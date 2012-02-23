@@ -5,11 +5,12 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Presenter.Display;
 using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.Presenter.Visuals.Layout;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
 
-namespace Limaki.Presenter.Visuals {
+namespace Limaki.Presenter.Visuals.Display {
     public class VisualsDisplayComposer : GraphSceneDisplayComposer<IVisual, IVisualEdge> {
         public override void Factor(Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
             var display = aDisplay as GraphSceneDisplay<IVisual, IVisualEdge>;

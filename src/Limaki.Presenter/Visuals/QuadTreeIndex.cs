@@ -14,11 +14,10 @@
 
 
 using System.Collections.Generic;
-using Limaki.Drawing;
 using Limaki.Actions;
+using Limaki.Drawing;
 using Limaki.Drawing.Indexing.QuadTrees;
-using Limaki.Drawing.Shapes;
-using System;
+using Xwt;
 
 namespace Limaki.Visuals {
     public class QuadTreeIndex:SpatialIndex {
@@ -33,12 +32,12 @@ namespace Limaki.Visuals {
             set { _geoIndex = value; }
         }
 
-        protected override void Add(RectangleI bounds, IVisual item) {
-            if ( bounds != RectangleI.Empty )
+        protected override void Add(RectangleD bounds, IVisual item) {
+            if ( bounds != RectangleD.Zero )
                 GeoIndex.Add (bounds, item);
         }
-        protected override void Remove(RectangleI bounds, IVisual item) {
-            if ( bounds != RectangleI.Empty )
+        protected override void Remove(RectangleD bounds, IVisual item) {
+            if ( bounds != RectangleD.Zero )
                 GeoIndex.Remove(bounds, item);
         }
 
@@ -46,7 +45,7 @@ namespace Limaki.Visuals {
             base.AddRange (items);
         }
 
-        public override IEnumerable<IVisual> Query( RectangleS clipBounds, ZOrder zOrder ) {
+        public override IEnumerable<IVisual> Query( RectangleD clipBounds, ZOrder zOrder ) {
             IEnumerable<IVisual> search = GeoIndex.Query(clipBounds);
 
             if (zOrder==ZOrder.EdgesFirst) {
@@ -75,7 +74,7 @@ namespace Limaki.Visuals {
             }
         }
 
-        public override IEnumerable<IVisual> Query(RectangleS clipBounds) {
+        public override IEnumerable<IVisual> Query(RectangleD clipBounds) {
             return Query (clipBounds, ZOrder.NodesFirst);
         }
 
@@ -94,43 +93,43 @@ namespace Limaki.Visuals {
             }
         }
 
-        class RightBottomCommand : Command<ICollection<IVisual>, PointS> {
-            public RightBottomCommand(ICollection<IVisual> target, PointS parameter)
+        class RightBottomCommand : Command<ICollection<IVisual>, Point> {
+            public RightBottomCommand(ICollection<IVisual> target, Point parameter)
                 : base(target, parameter) {
-                Parameter = new PointS(float.MinValue, float.MinValue);
+                Parameter = new Point(float.MinValue, float.MinValue);
             }
             public override void Execute() {
-                int h = 0;
-                int w = 0;
+                var h = 0d;
+                var w = 0d;
                 foreach (var visual in Subject) {
                     var bounds = visual.Shape.BoundsRect;
-                    int r = bounds.Right;
-                    int b = bounds.Bottom;
+                    var r = bounds.Right;
+                    var b = bounds.Bottom;
                     if (r > w) w = r;
                     if (b > h) h = b;
                 }
-                Parameter = new PointS(w, h);
+                Parameter = new Point(w, h);
             }
         }
 
-        class LeftTopCommand : Command<ICollection<IVisual>, PointS> {
-            public LeftTopCommand(ICollection<IVisual> target, PointS parameter)
+        class LeftTopCommand : Command<ICollection<IVisual>, Point> {
+            public LeftTopCommand(ICollection<IVisual> target, Point parameter)
                 : base(target, parameter) {
-                Parameter = new PointS(float.MaxValue, float.MaxValue);
+                Parameter = new Point(float.MaxValue, float.MaxValue);
             }
             public override void Execute() {
-                int x = 0;
-                int y = 0;
+                var x = 0d;
+                var y = 0d;
                 foreach (IVisual visual in Subject) {
                     var bounds = visual.Shape.BoundsRect;
-                    int l = bounds.X;
-                    int t = bounds.Y;
+                    var l = bounds.X;
+                    var t = bounds.Y;
                     if (l < x)
                         x = l;
                     if (t < y)
                         y = t;
                 }
-                Parameter = new PointS(x, y);
+                Parameter = new Point(x, y);
             }
         }
 
@@ -138,20 +137,20 @@ namespace Limaki.Visuals {
         /// not used!
         /// </summary>
         class BoundsVisitor : IItemVisitor<IVisual> {
-            public PointS Parameter;
+            public Point Parameter;
             public void VisitItem(IVisual item) {
-                int w = (int)Parameter.X;
-                int h = (int)Parameter.Y;
+                var w = Parameter.X;
+                var h = Parameter.Y;
                 var bounds = item.Shape.BoundsRect;
-                int r = bounds.Right;
-                int b = bounds.Bottom;
+                var r = bounds.Right;
+                var b = bounds.Bottom;
                 if (r > w)
                     Parameter.X = r;
                 if (b > h)
                     Parameter.Y = b;
             }
 
-            public RectangleS GetEnvelope(IVisual item) {
+            public RectangleD GetEnvelope(IVisual item) {
                 return item.Shape.BoundsRect;
             }
 
@@ -159,14 +158,14 @@ namespace Limaki.Visuals {
 
         }
 
-        protected override RectangleI CalculateBounds() {
+        protected override RectangleD CalculateBounds() {
             // remark: the starting values could be used to 
             // opimize further if boundsDirty is more refined;
             // eg: leftDirty leads to : 
             // l = float.MaxValue, t = float.MinValue, r = float.maxvalue, b = float.maxValue
 
-            var l = float.MaxValue; var t = float.MaxValue;
-            var r = float.MinValue; var b = float.MinValue;
+            var l = double.MaxValue; var t = double.MaxValue;
+            var r = double.MinValue; var b = double.MinValue;
             
             GeoIndex.QueryBounds(
                 ref l, ref t, ref r, ref b,
@@ -177,14 +176,14 @@ namespace Limaki.Visuals {
             if (t > 0) t = 0;
             if (r < 0) r = 0;
             if (b < 0) b = 0;
-            return RectangleI.FromLTRB((int)l,(int)t, (int) r, (int) b);
+            return RectangleD.FromLTRB((int)l,(int)t, (int) r, (int) b);
         }
 
        
 
         public override void Clear() {
             BoundsDirty = true;
-            Bounds = RectangleI.Empty;
+            Bounds = RectangleD.Zero;
             GeoIndex = null;
         }
     }

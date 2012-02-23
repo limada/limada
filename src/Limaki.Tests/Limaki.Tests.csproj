@@ -215,6 +215,10 @@
       <Project>{600CD3BF-2ED2-4183-87F7-ADD78A968AE0}</Project>
       <Name>Db4objects.Db4o-2010</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Limada.PdfExporter\Limada.PdfExporter.csproj">
       <Project>{84084423-BA27-4001-8F47-DB0D242A1255}</Project>
       <Name>Limada.PdfExporter</Name>
@@ -231,17 +235,13 @@
       <Project>{4BD6F6DE-CEBA-4185-AF2D-47A071E6A276}</Project>
       <Name>Limaki.dbParts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.Presenter.Resources\Limaki.Presenter.Resources.csproj">
-      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
-      <Name>Limaki.Presenter.Resources</Name>
+    <ProjectReference Include="..\Limaki.Presenter.Winform\Limaki.View.SWF.csproj">
+      <Project>{B87913C3-EBEE-45AB-88EC-8687D9E57127}</Project>
+      <Name>Limaki.View.SWF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.Presenter.Winform\Limaki.Presenter.Winform.csproj">
-      <Project>{00330FAC-98FB-4D4B-9B58-0D73178B6D5A}</Project>
-      <Name>Limaki.Presenter.Winform</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Limaki.Presenter\Limaki.Presenter.csproj">
-      <Project>{5E2A280D-1F53-44E5-AAA3-6BDBA2B51094}</Project>
-      <Name>Limaki.Presenter</Name>
+    <ProjectReference Include="..\Limaki.Presenter\Limaki.View.csproj">
+      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
+      <Name>Limaki.View</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

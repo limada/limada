@@ -11,10 +11,12 @@
  * http://limada.sourceforge.net
  */
 
-using Limaki.Presenter.UI;
-using Limaki.Drawing;
-using Id = System.Int64;
+using System;
 using Limaki.Common;
+using Limaki.Drawing;
+using Limaki.Presenter.Rendering;
+using Limaki.Presenter.UI;
+using Xwt.Drawing;
 
 namespace Limaki.Presenter {
     public interface IDisplay {
@@ -40,7 +42,7 @@ namespace Limaki.Presenter {
 
     public interface IDisplay<T>:IDisplay {
         T Data { get; set; }
-        Id DataId { get; set; }
+        Int64 DataId { get; set; }
         string Text { get; set; }
         IDisplayDevice<T> Device { get; set; }
         State State { get; }

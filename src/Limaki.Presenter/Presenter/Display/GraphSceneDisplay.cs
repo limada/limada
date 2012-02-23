@@ -15,11 +15,14 @@
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Common;
-using Limaki.Presenter.UI;
 using System;
 using System.Collections.Generic;
 using Limaki.Actions;
-
+using Limaki.Presenter.Modelling;
+using Limaki.Presenter.Rendering;
+using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
+using Xwt.Drawing;
 
 namespace Limaki.Presenter.Display {
     public class GraphSceneDisplay<TItem, TEdge> : Display<IGraphScene<TItem, TEdge>>, IGraphSceneDisplay<TItem, TEdge>

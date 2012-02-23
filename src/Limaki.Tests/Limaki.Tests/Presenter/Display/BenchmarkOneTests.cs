@@ -16,10 +16,12 @@
 using Limaki.Actions;
 using Limaki.Drawing;
 using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
+using Xwt;
 
 namespace Limaki.Tests.Presenter.Display {
     public class UITests : VisualsDisplayTest {
@@ -109,7 +111,7 @@ namespace Limaki.Tests.Presenter.Display {
 
 
 
-        public void MoveLinks(RectangleI bounds) {
+        public void MoveLinks(RectangleD bounds) {
             MoveLink(factory.Edge[4],factory.Edge[1]);
             MoveLink(factory.Edge[5], factory.Edge[3]);
         }
@@ -117,10 +119,10 @@ namespace Limaki.Tests.Presenter.Display {
 
         
 
-        public void MoveNode1(RectangleI bounds) {
+        public void MoveNode1(RectangleD bounds) {
             NeutralPosition ();
-            PointI startposition = factory.Node[1].Shape[Anchor.LeftTop]+new SizeI(10,0);
-            PointI position = camera.FromSource(startposition);
+            Point startposition = factory.Node[1].Shape[Anchor.LeftTop]+new Size(10,0);
+            Point position = camera.FromSource(startposition);
 
             MouseActionEventArgs e = 
                 new MouseActionEventArgs(
@@ -134,25 +136,25 @@ namespace Limaki.Tests.Presenter.Display {
             Vector v = new Vector ();
             // diagonal movement:
             v.Start = startposition;
-            v.End = new PointI(bounds.Right, bounds.Bottom);
+            v.End = new Point(bounds.Right, bounds.Bottom);
             MoveAlongLine(v);
 
             // horizontal movement:
             v.Start = v.End;
-            v.End = new PointI (bounds.Right, startposition.Y);
+            v.End = new Point (bounds.Right, startposition.Y);
             MoveAlongLine(v);
 
             // vertical movement:
             v.Start = v.End;
-            v.End = new PointI(startposition.X, bounds.Bottom);
+            v.End = new Point(startposition.X, bounds.Bottom);
             MoveAlongLine (v);
 
             v.Start = v.End;
-            v.End = new PointI(bounds.Width/2, bounds.Bottom);
+            v.End = new Point(bounds.Width/2, bounds.Bottom);
             MoveAlongLine(v);
 
             v.Start = v.End;
-            v.End = new PointI(bounds.Width / 2, factory.distance.Height);
+            v.End = new Point(bounds.Width / 2, factory.distance.Height);
             MoveAlongLine(v);
 
             v.Start = v.End;
@@ -174,7 +176,7 @@ namespace Limaki.Tests.Presenter.Display {
             this.ReportDetail (testName);
             
             ticker.Start();
-            RectangleI bounds = Scene.Shape.BoundsRect;
+            RectangleD bounds = Scene.Shape.BoundsRect;
 
             this.ReportDetail ("Scene:\t" + bounds+"\t Display: \t"+Display.Viewport.ClipSize);
             MoveNode1 (bounds);

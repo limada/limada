@@ -1,8 +1,8 @@
 ﻿using Limaki.Graphs;
-using Limaki.Visuals;
 using Limaki.Common.IOC;
+using Limaki.Visuals;
 
-namespace Limaki.Presenter.Visuals {
+namespace Limaki.Presenter.Visuals.Display {
     public class VisualsRecourceLoader : ContextRecourceLoader {
         public override void ApplyResources(IApplicationContext context) {
             context.Factory.Add<IGraphModelFactory<IVisual, IVisualEdge>, VisualFactory>();

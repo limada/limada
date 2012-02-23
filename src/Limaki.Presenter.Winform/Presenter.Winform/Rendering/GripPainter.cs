@@ -17,9 +17,9 @@ using System.Collections.Generic;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
-using Limaki.Drawing.Painters;
-using Limaki.Drawing.Shapes;
 using Limaki.Presenter.UI;
+using Xwt;
+
 
 namespace Limaki.Presenter.Winform {
     /// <summary>
@@ -30,20 +30,20 @@ namespace Limaki.Presenter.Winform {
             System.Drawing.Graphics g = ((GDISurface)surface).Graphics;
            
             
-            Shape.Size = new SizeI(GripSize, GripSize);
+            Shape.Size = new Size(GripSize, GripSize);
             innerPainter.Style = this.Style;
             int halfWidth = GripSize / 2;
             int halfHeight = GripSize / 2;
-                
-            RectangleI clipBounds = 
-                RectangleI.Ceiling(GDIConverter.Convert(g.ClipBounds));
+
+            var clipBounds = //RectangleI.Ceiling(
+                GDIConverter.Convert(g.ClipBounds);
             // get near:
             Camera camera = new Camera(this.Camera.Matrice);
 
             foreach (Anchor anchor in Grips) {
-                PointI anchorPoint = TargetShape[anchor];
+                var anchorPoint = TargetShape[anchor];
                 anchorPoint = camera.FromSource(anchorPoint);
-                Shape.Location = new PointI(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
+                Shape.Location = new Point(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
                 if (clipBounds.IntersectsWith(Shape.BoundsRect)) {
                     innerPainter.Render(surface);
                 }

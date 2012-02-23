@@ -1,16 +1,18 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using Limaki.Drawing.Shapes;
+using Xwt;
 using GDIPen=Limaki.Drawing.GDI.GDIPen;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class BezierPainter:RectanglePainter,IPainter<IBezierShape,RectangleI> {
+    public class BezierPainter:RectanglePainter,IPainter<IBezierShape,RectangleD> {
         public override void Render( ISurface surface ) {
-            Graphics g = ((GDISurface)surface).Graphics;
-            PointF[] bezierPoints = 
+            var g = ((GDISurface)surface).Graphics;
+            var bezierPoints = 
                 GDIConverter.Convert((Shape as IBezierShape).BezierPoints);
-            IStyle style = this.Style;
-            RenderType renderType = this.RenderType;
-            GraphicsPath path = new GraphicsPath ();
+            var style = this.Style;
+            var renderType = this.RenderType;
+            var path = new GraphicsPath ();
             path.AddBeziers (bezierPoints);
             if ((RenderType.Fill & renderType) != 0) {
                 g.FillPath(GetSolidBrush(

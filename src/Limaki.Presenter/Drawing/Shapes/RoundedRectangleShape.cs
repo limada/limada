@@ -14,6 +14,7 @@
  */
 
 using System;
+using Xwt;
 
 namespace Limaki.Drawing.Shapes {
     
@@ -22,9 +23,9 @@ namespace Limaki.Drawing.Shapes {
 #endif
     public class RoundedRectangleShape : RectangleShapeBase, IRoundedRectangleShape {
         public RoundedRectangleShape():base() {}
-        public RoundedRectangleShape(RectangleI data): base(data) {}
+        public RoundedRectangleShape(RectangleD data): base(data) {}
          
-        public override PointI this[Anchor i] {
+        public override Point this[Anchor i] {
             get {
                 switch (i) {
                     case Anchor.LeftTop:
@@ -33,45 +34,45 @@ namespace Limaki.Drawing.Shapes {
                         return Data.Location;
                         
                     case Anchor.LeftBottom:
-                        return new PointI(
+                        return new Point(
                             Data.Left,
                             Data.Bottom);
                         
                     case Anchor.RightTop:
                     case Anchor.MostRight:
-                        return new PointI(
+                        return new Point(
                             Data.Right,
                             Data.Top);
 								
                     case Anchor.RightBottom:
                     case Anchor.MostBottom:
-                        return new PointI(
+                        return new Point(
                             Data.Right,		
                             Data.Bottom
                             );
 
                     case Anchor.MiddleTop:
-                        return new PointI(
+                        return new Point(
                             Data.Left+Data.Width/2,
                             Data.Top);
 
                     case Anchor.LeftMiddle:
-                        return new PointI(
+                        return new Point(
                             Data.Left,
                             Data.Top+Data.Height/2);
 
                     case Anchor.RightMiddle:
-                        return new PointI(
+                        return new Point(
                             Data.Right,
                             Data.Top+Data.Height/2);
 
                     case Anchor.MiddleBottom:
-                        return new PointI(
+                        return new Point(
                             Data.Left+Data.Width/2,
                             Data.Bottom);
 
                     case Anchor.Center:
-                        return new PointI(
+                        return new Point(
                             Data.Left+Data.Width/2,
                             Data.Top+Data.Height/2);
 

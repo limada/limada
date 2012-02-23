@@ -1,10 +1,12 @@
-﻿using Limaki.Presenter.UI;
+﻿using Limaki.Presenter.Rendering;
+using Limaki.Presenter.UI;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Drawing.WPF;
 using Limaki.Drawing.WPF.Shapes;
 using System.Windows.Media;
+using Xwt;
 
 namespace Limaki.Presenter.WPF {
 
@@ -83,10 +85,10 @@ namespace Limaki.Presenter.WPF {
             if (oldShape != null) {
                 int halfborder = GripSize + 1;
 
-                RectangleI a = oldShape.BoundsRect;
-                RectangleI b = newShape.BoundsRect;
+                RectangleD a = oldShape.BoundsRect;
+                RectangleD b = newShape.BoundsRect;
 
-                RectangleI bigger = RectangleI.Union(a, b);
+                RectangleD bigger = DrawingExtensions.Union(a, b);
                 bigger = Camera.FromSource(bigger);
                 bigger = bigger.NormalizedRectangle();
 
@@ -96,22 +98,22 @@ namespace Limaki.Presenter.WPF {
                 } else {
                     bigger.Inflate(halfborder, halfborder);
 
-                    RectangleI smaller = RectangleI.Intersect(a, b);
+                    RectangleD smaller = DrawingExtensions.Intersect(a, b);
                     smaller = Camera.FromSource(smaller);
                     smaller = smaller.NormalizedRectangle();
                     smaller.Inflate(-halfborder, -halfborder);
 
                     Device.Invalidate(
-                        RectangleI.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top));
+                        RectangleD.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top));
 
                     Device.Invalidate(
-                        RectangleI.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom));
+                        RectangleD.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom));
 
                     Device.Invalidate(
-                        RectangleI.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom));
+                        RectangleD.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom));
 
                     Device.Invalidate(
-                        RectangleI.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom));
+                        RectangleD.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom));
 
                 }
             }

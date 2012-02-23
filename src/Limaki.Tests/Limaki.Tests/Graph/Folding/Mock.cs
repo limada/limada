@@ -2,6 +2,8 @@ using System;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Model;
+using Limaki.Presenter.UI.GraphScene;
+using Limaki.Presenter.Visuals.Display;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Visuals;
 using Limaki.Visuals;

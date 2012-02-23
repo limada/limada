@@ -1,8 +1,10 @@
-﻿using Limaki.Presenter.UI;
+﻿using Limaki.Presenter.Rendering;
+using Limaki.Presenter.UI;
 using Limaki.Common;
 using System.Windows.Media;
 using Limaki.Drawing;
 using Limaki.Drawing.WPF;
+using Xwt;
 
 namespace Limaki.Presenter.WPF {
 
@@ -42,7 +44,7 @@ namespace Limaki.Presenter.WPF {
                 int halfborder = GripSize + 1;
 
                 // the have do redraw the oldShape and newShape area
-                RectangleI invalidRect = RectangleI.Union(oldShape.BoundsRect, newShape.BoundsRect);
+                RectangleD invalidRect = DrawingExtensions.Union(oldShape.BoundsRect, newShape.BoundsRect);
                 // transform rectangle to control coordinates
                 invalidRect = Camera.FromSource(invalidRect);
 

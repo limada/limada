@@ -16,6 +16,8 @@
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Presenter.Rendering;
+using Xwt;
 
 namespace Limaki.Presenter.UI {
     public abstract class Layer<T> : ActionBase, ILayer<T> {
@@ -35,14 +37,14 @@ namespace Limaki.Presenter.UI {
 
         public abstract void DataChanged();
 
-        protected SizeI _size = SizeI.Empty;
-        public virtual SizeI Size {
+        protected Size _size = Xwt.Size.Zero;
+        public virtual Size Size {
             get { return _size; }
             set { _size = value; }
         }
 
-        protected PointI _origin = new PointI();
-        public virtual PointI Origin {
+        protected Point _origin = new Point();
+        public virtual Point Origin {
             get { return _origin; }
             set { _origin = value; }
         }

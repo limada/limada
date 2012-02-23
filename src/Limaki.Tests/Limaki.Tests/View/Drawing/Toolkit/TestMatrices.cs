@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.UnitTest;
 using NUnit.Framework;
+using Xwt;
 
 namespace Limaki.Tests.Drawing.Toolkit {
     public class TestMatrices:DomainTest {
@@ -27,11 +28,11 @@ namespace Limaki.Tests.Drawing.Toolkit {
         }
         public class TestData {
             public int pointCount = 5000;
-            public PointI[] Points;
-            public PointS[] PointsF;
+            public Point[] Points;
+            public Point[] PointsF;
             public List<MatrixOrder> matrixOrder = new List<MatrixOrder> ();
             public float angle = 23.45f;
-            public PointS rotatePoint = new PointS ();
+            public Point rotatePoint = new Point ();
             public float scaleX = 0.003f;
             public float scaleY = 23f;
             public float shearX = 0.345F;
@@ -40,13 +41,13 @@ namespace Limaki.Tests.Drawing.Toolkit {
             public float offsetY = 10.2f;
             
             public TestData() {
-                Points = new PointI[pointCount];
+                Points = new Point[pointCount];
                 for (int i= 0; i<pointCount;i++) {
-                    Points[i] = new PointI (i, pointCount - i);
+                    Points[i] = new Point (i, pointCount - i);
                 }
-                PointsF = new PointS[pointCount];
+                PointsF = new Point[pointCount];
                 for (int i = 0; i < pointCount; i++) {
-                    PointsF[i] = new PointI(i, pointCount - i);
+                    PointsF[i] = new Point(i, pointCount - i);
                 }
                 matrixOrder.Add (MatrixOrder.Append);
                 matrixOrder.Add (MatrixOrder.Prepend);

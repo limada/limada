@@ -14,10 +14,10 @@
 
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Presenter.Visuals;
+using Limaki.Drawing.Styles;
+using Limaki.Presenter.Display;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
-using Limaki.Presenter.Display;
 
 namespace Limaki.UseCases.Viewers.ToolStripViewers {
     public class LayoutToolController : ToolController<IGraphSceneDisplay<IVisual, IVisualEdge>, ILayoutTool> {

@@ -15,10 +15,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
-using Limaki.Drawing;
 using System.Net;
-
-
 
 namespace Limaki.UseCases.Viewers {
     public interface IWebBrowser {

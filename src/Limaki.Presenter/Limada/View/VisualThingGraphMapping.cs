@@ -17,7 +17,7 @@ using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Visuals;
 
-namespace Limada.View {
+namespace Limaki.Limada.View {
     /// <summary>
     /// encapsulates operations on 
     /// where the type of TItemTwo and TEdgeTwo are unknown

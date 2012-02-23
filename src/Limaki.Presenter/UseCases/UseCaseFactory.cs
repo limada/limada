@@ -13,7 +13,6 @@
  */
 
 using Limaki.Presenter.Display;
-using Limaki.UseCases.Viewers;
 
 namespace Limaki.UseCases {
     public class UseCaseFactory<T> where T:new() {

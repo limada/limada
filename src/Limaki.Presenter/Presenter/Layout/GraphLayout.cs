@@ -14,7 +14,9 @@
 
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
+using Xwt;
 
 namespace Limaki.Presenter.Layout {
     public abstract class GraphLayout<TItem, TEdge> : Layout<TItem>, IGraphLayout<TItem, TEdge>
@@ -59,7 +61,7 @@ namespace Limaki.Presenter.Layout {
             var scene = this.Data;
             if (scene != null) {
                 // init spatialIndex:
-                scene.SpatialIndex.Query(RectangleS.Empty);
+                scene.SpatialIndex.Query(RectangleD.Zero);
                 var graph = scene.Graph;
                 foreach (TItem item in graph) {
                     Invoke(item);

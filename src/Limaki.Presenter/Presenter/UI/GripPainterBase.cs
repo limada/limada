@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using Limaki.Common;
+using System;
 using Limaki.Drawing;
 using Limaki.Drawing.Painters;
-using Limaki.Drawing.Shapes;
-using System;
+using Xwt;
 
 namespace Limaki.Presenter.UI {
-    public abstract class GripPainterBase : Painter<RectangleI> {
+    public abstract class GripPainterBase : Painter<RectangleD> {
         
         public int GripSize {get;set;}
         public IShape TargetShape { get; set; }
@@ -23,11 +23,11 @@ namespace Limaki.Presenter.UI {
             }
         }
 
-        public override IShape<RectangleI> Shape {
+        public override IShape<RectangleD> Shape {
             get {
                 if (base.Shape == null) {
                     var factory = Registry.Pool.TryGetCreate<IShapeFactory>();
-                    base.Shape = factory.Shape<RectangleI>(new PointI(), new SizeI(GripSize, GripSize));
+                    base.Shape = factory.Shape<RectangleD>(new Point(), new Size(GripSize, GripSize));
                 }
                 return base.Shape;
             }
@@ -39,7 +39,7 @@ namespace Limaki.Presenter.UI {
             get {
                 if (_innerPainter == null) {
                     var factory = Registry.Pool.TryGetCreate<IPainterFactory>();
-                    _innerPainter = factory.CreatePainter<RectangleI>();
+                    _innerPainter = factory.CreatePainter<RectangleD>();
                     _innerPainter.Shape = this.Shape;
                 }
                 return _innerPainter;
@@ -50,16 +50,16 @@ namespace Limaki.Presenter.UI {
         public Action<IShape> UpdateGrip { get; set; }
         public virtual void UpdateGrips() {
             if (UpdateGrip != null) {
-                Shape.Size = new SizeI(GripSize, GripSize);
+                Shape.Size = new Size(GripSize, GripSize);
                 innerPainter.Style = this.Style;
                 int halfWidth = GripSize / 2;
                 int halfHeight = GripSize / 2;
                 Camera camera = new Camera(this.Camera.Matrice);
 
                 foreach (Anchor anchor in Grips) {
-                    PointI anchorPoint = TargetShape[anchor];
+                    Point anchorPoint = TargetShape[anchor];
                     anchorPoint = camera.FromSource(anchorPoint);
-                    Shape.Location = new PointI(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
+                    Shape.Location = new Point(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
                     UpdateGrip(Shape);
                 }
             }

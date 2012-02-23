@@ -12,38 +12,43 @@
  * 
  */
 
+using Xwt.Drawing;
+using Xwt.Engine;
+
 namespace Limaki.Drawing.GDI {
+
     public class GDISystemFonts:ISystemFonts {
+
         public Font CaptionFont {
-            get { return new GDIFont(System.Drawing.SystemFonts.CaptionFont); }
+            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.CaptionFont); }
         }
 
         public Font DefaultFont {
-            get { return new GDIFont(System.Drawing.SystemFonts.DefaultFont); }
+            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.DefaultFont); }
         }
 
         public Font DialogFont {
-            get { return new GDIFont(System.Drawing.SystemFonts.DialogFont); }
+            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.DialogFont); }
         }
 
         public Font IconTitleFont {
-            get { return new GDIFont(System.Drawing.SystemFonts.IconTitleFont); }
+            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.IconTitleFont); }
         }
 
         public Font MenuFont {
-            get { return new GDIFont(System.Drawing.SystemFonts.MenuFont); }
+            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.MenuFont); }
         }
 
         public Font MessageBoxFont {
-            get { return new GDIFont(System.Drawing.SystemFonts.MessageBoxFont); }
+            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.MessageBoxFont); }
         }
 
         public Font SmallCaptionFont {
-            get { return new GDIFont(System.Drawing.SystemFonts.SmallCaptionFont); }
+            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.SmallCaptionFont); }
         }
 
         public Font StatusFont {
-            get { return new GDIFont(System.Drawing.SystemFonts.StatusFont); }
+            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.StatusFont); }
         }
 
 

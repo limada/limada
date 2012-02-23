@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B87913C3-EBEE-45AB-88EC-8687D9E57127}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki.Presenter.Xwt.Winform</RootNamespace>
+    <AssemblyName>Limaki.Presenter.Xwt.Winform</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\GeckoWebBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\MessageBoxShow.cs" />
+    <Compile Include="Controls\TextEditor\TextBoxEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TextEditor\TextBoxEditor.Designer.cs">
+      <DependentUpon>TextBoxEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextEditor\TextBoxEditorControler.cs" />
+    <Compile Include="Controls\TextEditor\TextBoxEditorToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TextEditor\TextBoxEditorToolStrip.Designer.cs">
+      <DependentUpon>TextBoxEditorToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextEditor\TextBoxEditorWithToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TextEditor\TextBoxEditorWithToolStrip.Designer.cs">
+      <DependentUpon>TextBoxEditorWithToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextOkCancelBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TextOkCancelBox.Designer.cs">
+      <DependentUpon>TextOkCancelBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WebBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Drawing.GDI\FontMemento.cs" />
+    <Compile Include="Drawing.GDI\GDIConverter.cs" />
+    <Compile Include="Drawing.GDI\GDIDrawingUtils.cs" />
+    <Compile Include="Drawing.GDI\GDIFontCache.cs" />
+    <Compile Include="Drawing.GDI\GDIMatrice.cs" />
+    <Compile Include="Drawing.GDI\GDIPen.cs" />
+    <Compile Include="Drawing.GDI\GDISurface.cs" />
+    <Compile Include="Drawing.GDI\GDISystemFonts.cs" />
+    <Compile Include="Drawing.GDI\GDIUtils.cs" />
+    <Compile Include="Drawing.GDI\Painters\BezierPainter.cs" />
+    <Compile Include="Drawing.GDI\Painters\PainterFactory.cs" />
+    <Compile Include="Drawing.GDI\Painters\RectanglePainter.cs" />
+    <Compile Include="Drawing.GDI\Painters\RoundedRectanglePainter.cs" />
+    <Compile Include="Drawing.GDI\Painters\StringPainter.cs" />
+    <Compile Include="Drawing.GDI\Painters\VectorPainter.cs" />
+    <Compile Include="Presenter.GDI\UI\GDIControl.cs" />
+    <Compile Include="Presenter.GDI\UI\GDIGraphSceneLayer.cs" />
+    <Compile Include="Presenter.GDI\UI\GDIImageLayer.cs" />
+    <Compile Include="Presenter.GDI\UI\GDIRenderEventArgs.cs" />
+    <Compile Include="Presenter.Winform\Converter.cs" />
+    <Compile Include="Presenter.Winform\CursorHandler.cs" />
+    <Compile Include="Presenter.Winform\Display\DragDropCatcher.cs" />
+    <Compile Include="Presenter.Winform\Display\ImageDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presenter.Winform\Display\WinformDeviceComposer.cs" />
+    <Compile Include="Presenter.Winform\Display\WinformDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presenter.Winform\Display\WinformGraphSceneDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presenter.Winform\Display\WinformViewPort.cs" />
+    <Compile Include="Presenter.Winform\Display\WinformVisualsDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Presenter.Winform\DragDrop\ControlDataObject.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\DataInprocObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\DataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\DataObjectHandlerChain.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\DataObjectHelper.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\DragDropFacade.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\IDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\ImageDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\IVisualsDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\SerializedDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\SerializedVisualsDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\StreamDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\StringDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\VisualsDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\VisualsImageDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\VisualsInprocDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\DragDrop\VisualsTextDataObjectHandler.cs" />
+    <Compile Include="Presenter.Winform\IDragDopControl.cs" />
+    <Compile Include="Presenter.Winform\Rendering\GripPainter.cs" />
+    <Compile Include="Presenter.Winform\Rendering\MoveResizeRenderer.cs" />
+    <Compile Include="Presenter.Winform\Rendering\SelectionRenderer.cs" />
+    <Compile Include="Presenter.Winform\Rendering\WinformRenderer.cs" />
+    <Compile Include="Presenter.Winform\UI\WinformEventControler.cs" />
+    <Compile Include="Presenter.Winform\Visuals\VisualsDragDrop.cs" />
+    <Compile Include="Presenter.Winform\Visuals\VisualsTextEditor.cs" />
+    <Compile Include="Presenter.Winform\WinformContextRecourceLoader.cs" />
+    <Compile Include="Presenter.Winform\WinformExeptionHandler.cs" />
+    <Compile Include="Presenter.Winform\WinformSystemInformation.cs" />
+    <Compile Include="Presenter.Winform\WinformUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UseCases\PrintManager.cs" />
+    <Compile Include="UseCases\WinformUseCaseComposer.cs" />
+    <Compile Include="Viewers\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewers\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\BaseStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Viewers\BaseStyleEditor.Designer.cs">
+      <DependentUpon>BaseStyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\ImageExporter.cs" />
+    <Compile Include="Viewers\LayoutEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Viewers\LayoutEditor.Designer.cs">
+      <DependentUpon>LayoutEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\Options.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewers\Options.Designer.cs">
+      <DependentUpon>Options.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\ScenePainter.cs" />
+    <Compile Include="Viewers\ShapeComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Viewers\ShapeComboBox.Designer.cs">
+      <DependentUpon>ShapeComboBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\StreamViewers\DocumentSchemaControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Viewers\StreamViewers\DocumentSchemaControl.Designer.cs">
+      <DependentUpon>DocumentSchemaControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\StreamViewers\DocumentSchemaController.cs" />
+    <Compile Include="Viewers\StreamViewers\DocumentSchemaKeyScrollAction.cs" />
+    <Compile Include="Viewers\StreamViewers\HTMLViewer.cs" />
+    <Compile Include="Viewers\StreamViewers\ImageViewerController.cs" />
+    <Compile Include="Viewers\StreamViewers\TextViewerController.cs" />
+    <Compile Include="Viewers\StreamViewers\TextViewerWithToolstripController.cs" />
+    <Compile Include="Viewers\StyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Viewers\StyleEditor.Designer.cs">
+      <DependentUpon>StyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\ArrangerToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\ArrangerToolStrip.Designer.cs">
+      <DependentUpon>ArrangerToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\DisplayToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\DisplayToolStrip.Designer.cs">
+      <DependentUpon>DisplayToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\IToolStripCommandItem.cs" />
+    <Compile Include="Viewers\ToolStrips\LayoutToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\LayoutToolStrip.Designer.cs">
+      <DependentUpon>LayoutToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\MarkerToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\MarkerToolStrip.Designer.cs">
+      <DependentUpon>MarkerToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\SplitViewToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\SplitViewToolStrip.Designer.cs">
+      <DependentUpon>SplitViewToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\ToolStripCommand.cs" />
+    <Compile Include="Viewers\ToolStrips\ToolStripItemEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Viewers\ToolStrips\ToolStripShapeComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Viewers\WinformSplitView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\Skybound.GeckoFX.src.v1.9.0.0\src\Skybound.Gecko\Skybound.Gecko.csproj">
+      <Project>{877D1A24-2D5E-4C46-A933-FCF11EA0403B}</Project>
+      <Name>Skybound.Gecko</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
+      <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
+      <Name>Limaki.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.Presenter.Resources\Limaki.View.Resources.csproj">
+      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
+      <Name>Limaki.View.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.Presenter\Limaki.View.csproj">
+      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
+      <Name>Limaki.View</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xwt.SWF\Xwt.GDI\Xwt.GDI.csproj">
+      <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
+      <Name>Xwt.GDI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xwt.SWF\Xwt.SWF\Xwt.SWF.csproj">
+      <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
+      <Name>Xwt.SWF %28Xwt.SWF\Xwt.SWF%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\TextEditor\TextBoxEditor.resx">
+      <DependentUpon>TextBoxEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TextEditor\TextBoxEditorWithToolStrip.resx">
+      <DependentUpon>TextBoxEditorWithToolStrip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TextOkCancelBox.resx">
+      <DependentUpon>TextOkCancelBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers\BaseStyleEditor.resx">
+      <DependentUpon>BaseStyleEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers\LayoutEditor.resx">
+      <DependentUpon>LayoutEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers\Options.resx">
+      <DependentUpon>Options.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewers\StyleEditor.resx">
+      <DependentUpon>StyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

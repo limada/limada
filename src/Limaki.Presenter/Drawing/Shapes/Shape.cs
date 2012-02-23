@@ -14,6 +14,7 @@
  */
 using System;
 using System.Collections.Generic;
+using Xwt;
 
 namespace Limaki.Drawing.Shapes {
 #if !SILVERLIGHT
@@ -38,30 +39,30 @@ namespace Limaki.Drawing.Shapes {
             this._data = data;
         }
 
-        public virtual PointI SetShapeGetAnchor(T shape, Anchor i) {
+        public virtual Point SetShapeGetAnchor(T shape, Anchor i) {
             this._data = shape;
             return this[i];
         }
 
-        public abstract PointI this[Anchor i] { get; set; }
+        public abstract Point this[Anchor i] { get; set; }
 
-        public virtual Anchor IsAnchorHit(PointI p, int hitSize) {
-            RectangleS hitRect = new RectangleS(0, 0, hitSize, hitSize);
-            float halfWidth = hitRect.Width / 2;
-            float halfHeight = hitRect.Height / 2;
+        public virtual Anchor IsAnchorHit(Point p, int hitSize) {
+            RectangleD hitRect = new RectangleD(0, 0, hitSize, hitSize);
+            double halfWidth = hitRect.Width / 2;
+            double halfHeight = hitRect.Height / 2;
 
             foreach (Anchor anchor in Grips) {
-                PointS anchorPoint = this[anchor];
-                hitRect.Location = new PointS(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
+                Point anchorPoint = this[anchor];
+                hitRect.Location = new Point(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
                 if (hitRect.Contains(p))
                     return anchor;
             }
             return Anchor.None;
         }
 
-        public virtual bool IsBorderHit(PointI p, int hitSize) {
+        public virtual bool IsBorderHit(Point p, int hitSize) {
             bool result = false;
-            RectangleI hitRect = this.BoundsRect;
+            RectangleD hitRect = this.BoundsRect;
             int halfSize = hitSize / 2;
             hitRect.Inflate(halfSize, halfSize);
             if (hitRect.Contains(p)) {
@@ -72,8 +73,8 @@ namespace Limaki.Drawing.Shapes {
             return result;
         }
 
-        public virtual bool IsHit(PointI p, int hitSize) {
-            RectangleI hitRect = this.BoundsRect;
+        public virtual bool IsHit(Point p, int hitSize) {
+            RectangleD hitRect = this.BoundsRect;
             int halfSize = hitSize / 2;
             hitRect.Inflate(halfSize, halfSize);
             return hitRect.Contains(p);
@@ -89,19 +90,19 @@ namespace Limaki.Drawing.Shapes {
 
         #region IShape Member
         public abstract void Transform(Matrice matrice);
-        public virtual RectangleI BoundsRect {
+        public virtual RectangleD BoundsRect {
             get {
-                PointI lt = this[Anchor.LeftTop];
-                PointI rb = this[Anchor.RightBottom];
-                return RectangleI.FromLTRB(lt.X, lt.Y, rb.X, rb.Y);
+                Point lt = this[Anchor.LeftTop];
+                Point rb = this[Anchor.RightBottom];
+                return RectangleD.FromLTRB(lt.X, lt.Y, rb.X, rb.Y);
             }
         }
 
         public abstract object Clone();
 
-        public abstract PointI Location { get; set;}
+        public abstract Point Location { get; set;}
 
-        public abstract SizeI Size { get; set;}
+        public abstract Size Size { get; set;}
 
         public virtual IEnumerable<Anchor> Grips {
             get {
@@ -112,9 +113,9 @@ namespace Limaki.Drawing.Shapes {
             }
         }
 
-        public abstract PointI[] Hull ( int delta, bool extend );
+        public abstract Point[] Hull ( int delta, bool extend );
 
-        public abstract PointI[] Hull ( Matrice matrix, int delta, bool extend );
+        public abstract Point[] Hull ( Matrice matrix, int delta, bool extend );
 
         #endregion
 

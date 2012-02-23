@@ -16,6 +16,7 @@ using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using NUnit.Framework;
 using Limaki.Common;
+using Xwt;
 
 namespace Limaki.Tests.View.Drawing.Shapes {
     public class ShapeTest:DomainTest {
@@ -25,7 +26,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
             TestShape (clone, shape.Location, shape.Size);
         }
 
-        public void TestShape(IShape shape, PointI location, SizeI size) {
+        public void TestShape(IShape shape, Point location, Size size) {
             Assert.AreEqual (shape.Location, location, "wrong location");
             Assert.AreEqual (shape.Size, size, "wrong size");
         }
@@ -39,8 +40,8 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
         public void CloneTest<T>() where T : IShape, new() {
             ReportSummary ("CloneTest<"+typeof(T).Name+">");
-            PointI locaction = new PointI (5, 10);
-            SizeI size = new SizeI (20, 40);
+            var locaction = new Point (5, 10);
+            var size = new Size (20, 40);
 
             IShape shape = new T ();
             shape.Location = locaction;
@@ -54,13 +55,13 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         [Test]
         public void ShapeFactoryTest() {
             var shapeFactory = new Limaki.Drawing.Shapes.ShapeFactory();
-            var shapeR = shapeFactory.Shape<Limaki.Drawing.RectangleI>(
-                new Limaki.Drawing.PointI(10, 10),
-                new Limaki.Drawing.SizeI(20, 100)
+            var shapeR = shapeFactory.Shape<RectangleD>(
+                new Point(10, 10),
+                new Size(20, 100)
                 );
             Assert.IsNotNull(shapeR);
-            var shape = shapeFactory.Shape(typeof (RectangleI), new Limaki.Drawing.PointI(10, 10),
-                                           new Limaki.Drawing.SizeI(20, 100));
+            var shape = shapeFactory.Shape(typeof (RectangleD), new Point(10, 10),
+                                           new Size(20, 100));
             Assert.IsNotNull(shape);
         }
 

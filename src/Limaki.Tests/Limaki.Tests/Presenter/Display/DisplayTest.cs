@@ -18,12 +18,15 @@ using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Presenter;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
 using Limaki.Visuals;
 using NUnit.Framework;
 using Limaki.Tests.Graph.Model;
+using Xwt;
 
 namespace Limaki.Tests.Presenter.Display {
+
     public class DisplayTest<T>:DomainTest where T:class {
         
         public ITestDevice TestDevice { get; set; }
@@ -104,12 +107,12 @@ namespace Limaki.Tests.Presenter.Display {
             bool trackerEnabled = Display.MouseScrollAction.Enabled;
             Display.MouseScrollAction.Enabled = false;
 
-            IMoveResizeAction selection = Display.SelectAction;
+            var selection = Display.SelectAction;
             selection.Enabled = true;
             selection.Clear();
 
-            PointI position = new PointI(0, 0);
-            PointI max = new PointI(Display.Viewport.ClipSize.Width, Display.Viewport.ClipSize.Height);
+            var position = new Point(0, 0);
+            var max = new Point(Display.Viewport.ClipSize.Width, Display.Viewport.ClipSize.Height);
             this.ReportDetail("Selector runs to " + max);
 
             var visualsCount = VisualsCount ();
@@ -162,14 +165,14 @@ namespace Limaki.Tests.Presenter.Display {
 
             ticker.Start();
 
-            RectangleI rect = new RectangleI(new PointI(),Display.Viewport.ClipSize);
+            RectangleD rect = new RectangleD(new Point(),Display.Viewport.ClipSize);
             int div = 2;
             if (frame == Frame.Quarter) {
                 div = 4;
             }
-            SizeI deflate = new SizeI(rect.Width / div, rect.Height / div);
-            rect = new RectangleI(
-                new PointI(rect.Location.X + deflate.Width, rect.Location.Y + deflate.Height), deflate);
+            Size deflate = new Size(rect.Width / div, rect.Height / div);
+            rect = new RectangleD(
+                new Point(rect.Location.X + deflate.Width, rect.Location.Y + deflate.Height), deflate);
 
             int time = (secToTest * 1000) + Environment.TickCount;
             while (ticker.Elapsed > Environment.TickCount) {
@@ -194,7 +197,7 @@ namespace Limaki.Tests.Presenter.Display {
         #region helper-functions
         
         public void NeutralPosition() {
-            MouseActionEventArgs e =
+            var e =
                 new MouseActionEventArgs(MouseActionButtons.Left, ModifierKeys.None, 0, 1, 1, 0);
             Display.EventControler.OnMouseDown(e);
             DoEvents();
@@ -204,39 +207,39 @@ namespace Limaki.Tests.Presenter.Display {
             DoEvents();
         }
 
-        protected virtual PointS nextPoint(PointS n, SizeS d) {
+        protected virtual Point nextPoint(Point n, Size d) {
             return n + d;
         }
 
         protected virtual void MoveAlongLine(Vector v) {
-            PointS next = PointS.Empty;
-            PointS end = v.End;
+            var next = Point.Zero;
+            var end = v.End;
 
-            int dx = v.End.X - v.Start.X;
-            int dy = v.End.Y - v.Start.Y;
-            double m1 = (double)dy / dx;
-            double m = Math.Abs((double)dy / dx);
+            var dx = v.End.X - v.Start.X;
+            var dy = v.End.Y - v.Start.Y;
+            var m1 = (double)dy / dx;
+            var m = Math.Abs((double)dy / dx);
 
 
-            SizeS d = new SizeS(1, (float)m);
+            var d = new Size(1, (float)m);
             if (m == 1d) {
                 // horizontal line:
-                d = new SizeS(1, 0);
+                d = new Size(1, 0);
             } else if (double.IsInfinity(m)) {
                 // vertical line:
-                d = new SizeS(0, 1);
+                d = new Size(0, 1);
             } else if (m > 1d) {
-                d = new SizeS((float)(1d / m), 1);
+                d = new Size((float)(1d / m), 1);
             }
 
-            Func<bool> rangeX = delegate() { return next.X < end.X; };
-            Func<bool> rangeY = delegate() { return next.Y < end.Y; };
+            Func<bool> rangeX = ()  => next.X < end.X; 
+            Func<bool> rangeY = ()  => next.Y < end.Y; 
             if (dx < 0) {
-                d = new SizeS(-d.Width, d.Height);
+                d = new Size(-d.Width, d.Height);
                 rangeX = delegate() { return next.X > end.X; };
             }
             if (dy < 0) {
-                d = new SizeS(d.Width, -d.Height);
+                d = new Size(d.Width, -d.Height);
                 rangeY = delegate() { return next.Y > end.Y; };
             }
             //double angle = Math.Atan(dx / dy) / Math.PI * 180 + ((dx < 0) ? 180 : 0);
@@ -244,7 +247,7 @@ namespace Limaki.Tests.Presenter.Display {
             next = nextPoint(v.Start, d);
             end = v.End;
             while (rangeX() || rangeY()) {
-                PointS tnext = camera.FromSource(next);
+                Point tnext = camera.FromSource(next);
                 e = new MouseActionEventArgs(MouseActionButtons.Left,
                         ModifierKeys.None, 0, (int)tnext.X, (int)tnext.Y, 0);
                 Display.EventControler.OnMouseMove(e);

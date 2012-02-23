@@ -14,127 +14,128 @@
  */
 
 using System;
+using Xwt;
 
 namespace Limaki.Drawing.Shapes {
 #if ! SILVERLIGHT    
     [Serializable]
 #endif
-    public abstract class RectangleShapeBase : Shape<RectangleI> {
+    public abstract class RectangleShapeBase : Shape<RectangleD> {
         public RectangleShapeBase():base() {}
-        public RectangleShapeBase(RectangleI data):base() {
-            this.Data = RectangleI.FromLTRB(
+        public RectangleShapeBase(RectangleD data):base() {
+            this.Data = RectangleD.FromLTRB(
                 Math.Min(data.X,data.Right),
                 Math.Min(data.Y, data.Bottom),
                 Math.Max(data.X, data.Right),
                 Math.Max(data.Y, data.Bottom));
         }
 
-        public RectangleShapeBase(PointI location, SizeI size) : base() {
-            this.Data = new RectangleI (location, size);
+        public RectangleShapeBase(Point location, Size size) : base() {
+            this.Data = new RectangleD (location, size);
         }
 
-        public override PointI this[Anchor i] {
+        public override Point this[Anchor i] {
             get {
                 switch (i) {
                     case Anchor.LeftTop:
                     case Anchor.MostLeft:
                     case Anchor.MostTop:
-                        return new PointI(_data.X , _data.Y);
+                        return new Point(_data.X , _data.Y);
                         
                     case Anchor.LeftBottom:
-                        return new PointI(
+                        return new Point(
                             _data.X,
                             _data.Y + _data.Height);
                         
                     case Anchor.RightTop:
                     case Anchor.MostRight:
-                        return new PointI(
+                        return new Point(
                             _data.X + _data.Width,
                             _data.Y);
 								
                     case Anchor.RightBottom:
                     case Anchor.MostBottom:
-                        return new PointI(
+                        return new Point(
                             _data.X + _data.Width,
                             _data.Y + _data.Height
                             );
 
                     case Anchor.MiddleTop:
-                        return new PointI(
+                        return new Point(
                             _data.X + _data.Width / 2,
                             _data.Y);
 
                     case Anchor.LeftMiddle:
-                        return new PointI(
+                        return new Point(
                             _data.X,
                             _data.Y + _data.Height / 2);
 
                     case Anchor.RightMiddle:
-                        return new PointI(
+                        return new Point(
                             _data.X + _data.Width,
                             _data.Y + _data.Height / 2);
 
                     case Anchor.MiddleBottom:
-                        return new PointI(
+                        return new Point(
                             _data.X + _data.Width / 2,
                             _data.Y + _data.Height);
 
                     case Anchor.Center:
-                        return new PointI(
+                        return new Point(
                             _data.X + _data.Width / 2,
                             _data.Y + _data.Height / 2);
 
                     default:
-                        return new PointI(_data.X , _data.Y);
+                        return new Point(_data.X , _data.Y);
                 }
 
             }
 
             set {}
         }
-        public override RectangleI BoundsRect {
+        public override RectangleD BoundsRect {
             get { return this._data; }
         }
-        public override SizeI Size {
+        public override Size Size {
             get { return _data.Size;}
             set { _data.Size = value; }
         }
-        public override PointI Location {
-            get { return new PointI(_data.X , _data.Y); }
+        public override Point Location {
+            get { return new Point(_data.X , _data.Y); }
             set { this._data.Location = value; }
         }
 
         public override void Transform(Matrice matrice) {
-            int dataX = _data.X;
-            int dataY = _data.Y;
-            PointI[] p = { new PointI(dataX, dataY), new PointI(dataX + _data.Width, dataY + _data.Height) };
+            var dataX = _data.X;
+            var dataY = _data.Y;
+            Point[] p = { new Point(dataX, dataY), new Point(dataX + _data.Width, dataY + _data.Height) };
             matrice.TransformPoints(p);
-            _data = RectangleI.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
+            _data = RectangleD.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
         }
 
-        public static PointI[] Hull(RectangleI rect, int delta, bool extend) {
-            int startX = rect.X;
-            int startY = rect.Y;
-            int endX = startX+rect.Width;
-            int endY = startY+rect.Height;
-            return new PointI[] {
-                                   new PointI ((startX - delta), (startY - delta)),
-                                   new PointI ((endX + delta), (startY - delta)),
-                                   new PointI((endX + delta), (endY + delta)),
-                                   new PointI ((startX - delta), (endY + delta))
+        public static Point[] Hull(RectangleD rect, int delta, bool extend) {
+            var startX = rect.X;
+            var startY = rect.Y;
+            var endX = startX+rect.Width;
+            var endY = startY+rect.Height;
+            return new Point[] {
+                                   new Point ((startX - delta), (startY - delta)),
+                                   new Point ((endX + delta), (startY - delta)),
+                                   new Point((endX + delta), (endY + delta)),
+                                   new Point ((startX - delta), (endY + delta))
                                };
         }
 
-        public override PointI[] Hull(int delta, bool extend) {
+        public override Point[] Hull(int delta, bool extend) {
             return Hull(_data,delta, extend);
         }
 
-        public override PointI[] Hull(Matrice matrix, int delta, bool extend) {
-            int dataX = _data.X; int dataY = _data.Y;
-            PointI[] p = { new PointI(dataX, dataY), new PointI(dataX + _data.Width, dataY + _data.Height) };
+        public override Point[] Hull(Matrice matrix, int delta, bool extend) {
+            var dataX = _data.X; var dataY = _data.Y;
+            Point[] p = { new Point(dataX, dataY), new Point(dataX + _data.Width, dataY + _data.Height) };
 
             matrix.TransformPoints(p);
-            return Hull(RectangleI.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y), delta, extend);
+            return Hull(RectangleD.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y), delta, extend);
         }
 
 

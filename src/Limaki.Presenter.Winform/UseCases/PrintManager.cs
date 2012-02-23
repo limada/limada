@@ -1,8 +1,8 @@
-﻿using Limaki.Presenter.Viewers.Winform;
+﻿using Limaki.Drawing;
+using Limaki.Presenter.Viewers.Winform;
 using System.Drawing.Printing;
-using Limaki.Visuals;
-using Limaki.Drawing;
 using System.Windows.Forms;
+using Limaki.Visuals;
 
 namespace Limaki.UseCases.Winform {
     public class PrintManager {

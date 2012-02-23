@@ -1,5 +1,5 @@
-using Limaki.Common;
 using Limaki.Common.IOC;
+using Limaki.Presenter.Clipping;
 
 namespace Limaki.Presenter.Display {
     public class PresenterRecourceLoader : ContextRecourceLoader {

@@ -13,7 +13,7 @@ namespace Limaki.Tests {
                 var loader = new Limaki.Presenter.Winform.WinformContextRecourceLoader ();
                 Registry.ConcreteContext = new ApplicationContext();
                 loader.ApplyResources(Registry.ConcreteContext);
-                var factory = new AppFactory<Limada.UseCases.AppResourceLoader>(loader);
+                var factory = new AppFactory<global::Limada.UseCases.AppResourceLoader>(loader);
                 
             }
             base.Setup();

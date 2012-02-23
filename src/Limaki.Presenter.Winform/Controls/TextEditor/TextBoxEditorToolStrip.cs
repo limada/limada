@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Drawing;
+
 using System.Windows.Forms;
 
 namespace Limaki.Winform.Controls.TextEditor {
@@ -23,13 +23,13 @@ namespace Limaki.Winform.Controls.TextEditor {
 
         void ApplyEvents() {
             this.boldButton.Click += (sender, args) => {
-                Controller.SetFontStyle(FontStyle.Bold);
+                Controller.SetFontStyle(System.Drawing.FontStyle.Bold);
             };
             this.italicButton.Click += (sender, args) => {
-                Controller.SetFontStyle(FontStyle.Italic);
+                Controller.SetFontStyle(System.Drawing.FontStyle.Italic);
             };
             this.underlineButton.Click += (sender, args) => {
-                Controller.SetFontStyle(FontStyle.Underline);
+                Controller.SetFontStyle(System.Drawing.FontStyle.Underline);
             };
 
             this.fontSizeComboBox.SelectedIndexChanged += (sender, args) => {

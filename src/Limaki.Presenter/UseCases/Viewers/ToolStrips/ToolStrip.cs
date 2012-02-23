@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 namespace Limaki.UseCases.Viewers.ToolStrips {
     public class ToolStrip {
         public ICollection<ToolStripItem> Items { get; set; }

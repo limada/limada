@@ -18,11 +18,11 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
-using Limaki.Presenter.Layout;
 using System;
+using Limaki.Presenter.Layout;
+using Xwt;
 
-
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.UI.GraphScene {
     /// <summary>
     /// Moves or resizes an item
     /// </summary>
@@ -61,8 +61,8 @@ namespace Limaki.Presenter.UI {
             set { }
         }
 
-        public override bool HitTest(PointI p) {
-            PointI sp = Camera.ToSource(p);
+        public override bool HitTest(Point p) {
+            Point sp = Camera.ToSource(p);
             TItem item = this.GraphItem;
             bool result = ((item != null) && 
                 (Scene.ItemShape(item)!= null) &&
@@ -127,8 +127,8 @@ namespace Limaki.Presenter.UI {
                 if (Resolved) {
                     ICommand<TItem> command = null;
                     if (moving) {
-                        RectangleI delta = Camera.ToSource(
-                            RectangleI.FromLTRB(e.Location.X, e.Location.Y,
+                        RectangleD delta = Camera.ToSource(
+                            RectangleD.FromLTRB(e.Location.X, e.Location.Y,
                                                 LastMousePos.X, LastMousePos.Y));
 
                         foreach(TItem selected in Scene.Selected.Elements) {
@@ -143,8 +143,8 @@ namespace Limaki.Presenter.UI {
                         }
 
                     } else if (CheckResizing()) {
-                        RectangleI rect = Camera.ToSource(
-                            RectangleI.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
+                        RectangleD rect = Camera.ToSource(
+                            RectangleD.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
                                                 LastMousePos.X, LastMousePos.Y));
 
                         var shape = Scene.ItemShape (item);

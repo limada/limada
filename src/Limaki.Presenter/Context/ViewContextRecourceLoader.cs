@@ -1,15 +1,13 @@
-using Limaki.Common;
 using Limaki.Common.IOC;
-using Limaki.Drawing;
+using Limaki.Drawing.Styles;
 using Limaki.Graphs.Extensions;
-using Limaki.Model.Streams;
-using System.Reflection;
-using System;
-using Limaki.Visuals;
 using Limada.Model;
-using Limada.View;
 using Limaki.Graphs;
-using Limada.Presenter;
+using Limaki.Limada.Presenter;
+using Limaki.Limada.View;
+using Limaki.Presenter.Display;
+using Limaki.Presenter.Visuals.Display;
+using Limaki.Visuals;
 
 namespace Limaki.Context {
     public class ViewContextRecourceLoader : IContextRecourceLoader {
@@ -31,10 +29,10 @@ namespace Limaki.Context {
             markerProcessor.CreateMarkerFacade = this.MarkerFacade;
 
 
-            var presenterLoader = new Limaki.Presenter.Display.PresenterRecourceLoader();
+            var presenterLoader = new PresenterRecourceLoader();
             presenterLoader.ApplyResources (context);
 
-            var visualsRecourceLoader = new Limaki.Presenter.Visuals.VisualsRecourceLoader();
+            var visualsRecourceLoader = new VisualsRecourceLoader();
             visualsRecourceLoader.ApplyResources (context);
 
             context.Factory.Add<ISheetManager, SheetManager>();

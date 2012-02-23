@@ -1,9 +1,12 @@
 ﻿using System;
 using Limaki.Common;
+using Limaki.Presenter.Clipping;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
 using Limaki.Presenter.WPF.UI;
 using Limaki.Drawing.WPF;
 using System.Windows.Threading;
+using Xwt.Drawing;
 
 namespace Limaki.Presenter.WPF.Display {
     public class WPFRenderer<T> : IDeviceRenderer {
@@ -18,7 +21,7 @@ namespace Limaki.Presenter.WPF.Display {
             OnPaint (new WPFRenderEventArgs (Device.Surface, clipper));
         }
 
-        public Get<Drawing.Color> BackColor {get;set;}
+        public Get<Color> BackColor {get;set;}
 
 
         public void OnPaint(IRenderEventArgs e) {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Limaki.Drawing {
+namespace Limaki.Drawing.Styles {
     public class StyleGroup : Style, IStyleGroup {
         public Int64 Id { get; set; }
         public StyleGroup(string name) : base(name) { }

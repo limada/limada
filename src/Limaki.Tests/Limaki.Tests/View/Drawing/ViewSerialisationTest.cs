@@ -15,7 +15,10 @@
 using System.Xml.Linq;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Drawing.Styles;
 using NUnit.Framework;
+using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Tests.View.Drawing.Shapes {
     public class ViewSerialisationTest:DomainTest {
@@ -23,8 +26,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         [Test]
         public void FontTest() {
             var ser = new DrawingPrimitivesSerializer ();
-            var font = new Font ();
-            font.Family = "Tahoma";
+            var font = Font.FromName("Tahoma",10);
             var elem = ser.Write (font);
             this.ReportDetail (elem.ToString());
 
@@ -83,9 +85,9 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         [Test]
         public void SizeTest() {
             var ser = new DrawingPrimitivesSerializer();
-            var item = new SizeI(10,10);
+            var item = new Size(10,10);
             var node = new XElement("itemTest");
-            node.Add(ser.Write("size", new Pair<int,int>(item.Width,item.Height)));
+            node.Add(ser.Write("size", new Pair<double, double>(item.Width, item.Height)));
 
             this.ReportDetail(node.ToString());
 
@@ -97,7 +99,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
             var ser = new DrawingPrimitivesSerializer();
             var item = StyleSheet.CreateDefaultStyleSheet().BaseStyle;
 
-            item.AutoSize = new SizeI (10, 10);
+            item.AutoSize = new Size (10, 10);
             item.PaintData = false;
 
             var node = ser.Write (item);

@@ -15,8 +15,10 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Presenter.Clipping;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
-using Id = System.Int64;
+using Xwt.Drawing;
 
 namespace Limaki.Presenter.Display {
     public class Display<TData> : IDisplay<TData>, IDisposable, ICheckable
@@ -38,7 +40,7 @@ namespace Limaki.Presenter.Display {
             }
         }
 
-        public virtual Id DataId { get; set; }
+        public virtual Int64 DataId { get; set; }
         public virtual string Text { get; set; }
 
         protected State _state = default(State);
@@ -84,7 +86,7 @@ namespace Limaki.Presenter.Display {
         public virtual Color BackColor {
             get { return _backColor; }
             set {
-                if (_backColor != value) {
+                if (!_backColor.Equals(value)) {
                     _backColor = value;
                 }
             }

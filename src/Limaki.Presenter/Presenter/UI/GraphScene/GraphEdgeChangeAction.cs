@@ -19,8 +19,9 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Presenter.Layout;
+using Xwt;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.UI.GraphScene {
     /// <summary>
     /// Changes Root or Link of an Edge
     /// </summary>
@@ -58,10 +59,10 @@ namespace Limaki.Presenter.UI {
 
         public virtual bool Dragging { get; set; }
 
-        public override bool HitTest(PointI p) {
+        public override bool HitTest(Point p) {
             bool result = false;
             if (Edge != null) {
-                PointI sp = Camera.ToSource(p);
+                Point sp = Camera.ToSource(p);
                 hitAnchor = Scene.ItemShape(Edge).IsAnchorHit(sp, HitSize);
                 DeviceCursor.SetEdgeCursor(hitAnchor);
                 result = hitAnchor != Anchor.None;
@@ -115,8 +116,8 @@ namespace Limaki.Presenter.UI {
             if ((Edge != null) && (resizing)) {
                 ShowGrips = true;
 
-                RectangleI rect = Camera.ToSource(
-                    RectangleI.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
+                RectangleD rect = Camera.ToSource(
+                    RectangleD.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
                                         LastMousePos.X, LastMousePos.Y));
 
                 Scene.Requests.Add(new ResizeCommand<TItem>(Edge, Scene.ItemShape,rect));
@@ -136,7 +137,7 @@ namespace Limaki.Presenter.UI {
 
         }
 
-        RectangleI clipRect = RectangleI.Empty;
+        RectangleD clipRect = RectangleD.Zero;
         protected override void OnMouseMoveNotResolved(MouseActionEventArgs e) {
             if (HitTest(e.Location)) {
                 ShowGrips = true;
@@ -159,13 +160,13 @@ namespace Limaki.Presenter.UI {
             Dragging = !Resolved;
         }
 
-        public virtual bool IsTargetHit(PointI p) {
+        public virtual bool IsTargetHit(Point p) {
             bool result = false;
             TItem hovered = Scene.Hovered;
             TEdge edge = this.Edge;
             if ((hovered != null) && (edge != null) && (!edge.Equals(hovered))) {
                 if (!hovered.Equals(edge.Leaf) && ! hovered.Equals(edge.Root)) {
-                    PointI sp = Camera.ToSource(p);
+                    Point sp = Camera.ToSource(p);
                     result = Scene.ItemShape(hovered).IsHit(sp, HitSize);
                 }
             }

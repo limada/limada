@@ -16,7 +16,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
+namespace Limaki.UseCases.Viewers.StreamViewers.WebProxyServer {
 
     public class WebContent {
 

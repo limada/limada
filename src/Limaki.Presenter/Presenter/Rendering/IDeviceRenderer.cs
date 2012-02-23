@@ -14,10 +14,9 @@
 
 
 using Limaki.Common;
-using Limaki.Drawing;
-using Limaki.Presenter.UI;
+using Xwt.Drawing;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Rendering {
     /// <summary>
     /// DeviceRenderers are responible
     /// to manage the rendering methods of a device

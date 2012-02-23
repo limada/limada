@@ -5,27 +5,16 @@
  * under the terms of the GNU General Public License version 2 only, as
  * published by the Free Software Foundation.
  * 
- * Authors: 
- * unknown (dotGNU)
- * Lytico
- * 
- * Copyright (C) 2003  Southern Storm Software, Pty Ltd.
+ * Author: Lytico
  * Copyright (C) 2006-2011 Lytico
  *
  * http://limada.sourceforge.net
  * 
  */
 
-/* 
- * this file is ported from
- * DotGNU Portable.NET Library (http://www.dotgnu.org/)
- * 
- */
 
-
-
-#define CONFIG_EXTENDED_NUMERICS
 using System;
+using Xwt;
 
 namespace Limaki.Drawing {
     public class Matrice : IDisposable {
@@ -33,71 +22,51 @@ namespace Limaki.Drawing {
         /// <summary>
         /// scaleX
         /// </summary>
-        protected float m11;
+        protected double m11;
         /// <summary>
         /// shearX
         /// </summary>
-        protected float m12;
+        protected double m12;
         /// <summary>
         /// shearY
         /// </summary>
-        protected float m21;
+        protected double m21;
         /// <summary>
         /// scaleY
         /// </summary>
-        protected float m22;
+        protected double m22;
 
-        protected float dx;
-        protected float dy;
+        protected double dx;
+        protected double dy;
 
         // Constructors.
         public Matrice() {
-            m11 = 1.0f;
-            m12 = 0.0f;
-            m21 = 0.0f;
-            m22 = 1.0f;
-            dx = 0.0f;
-            dy = 0.0f;
+            m11 = 1.0d;
+            m12 = 0.0d;
+            m21 = 0.0d;
+            m22 = 1.0d;
+            dx = 0.0d;
+            dy = 0.0d;
         }
         
-        public Matrice(RectangleI rect, PointI[] plgpts) {
-            RectangleS rectF = new RectangleS(
-                (float)rect.X,
-                (float)rect.Y,
-                (float)rect.Width,
-                (float)rect.Height
-                );
-            PointS[] plgptsF = null;
-            if (plgpts != null) {
-                plgptsF = new PointS[plgpts.Length];
-                for (int i = 0; i < plgpts.Length; i++) {
-                    plgptsF[i] = new PointS(
-                        (float)(plgpts[i].X),
-                        (float)(plgpts[i].Y)
-                        );
-                }
-
-
-            }
-            TransfRect2Poly(rectF, plgptsF);
-        }
-        public Matrice(RectangleS rect, PointS[] plgpts) {
+       
+        public Matrice(RectangleD rect, Point[] plgpts) {
             TransfRect2Poly(rect, plgpts);
         }
         // helper method, computes transformation from rectangle rect to polygon  plgpts
-        private void TransfRect2Poly(RectangleS rect, PointS[] plgpts) {
+        private void TransfRect2Poly(RectangleD rect, Point[] plgpts) {
             // check if plgpts defines a polygon with 3 points
             if ((plgpts == null) || (plgpts.Length != 3))
                 throw new ArgumentNullException("plgpts", "Argument cannot be null");
             // check if rect is degenerated
-            if ((rect.Width == 0.0f) || (rect.Height == 0.0f))
+            if ((rect.Width == 0.0d) || (rect.Height == 0.0d))
                 throw new ArgumentOutOfRangeException("rect");
             // compute transformation of rect to plgpts
-            PointS v1 = new PointS(
+            var v1 = new Point(
                 plgpts[1].X - plgpts[0].X,
                 plgpts[1].Y - plgpts[0].Y
                 );
-            PointS v2 = new PointS(
+            var v2 = new Point(
                 plgpts[2].X - plgpts[0].X,
                 plgpts[2].Y - plgpts[0].Y
                 );
@@ -113,8 +82,8 @@ namespace Limaki.Drawing {
             return new Matrice(this);
         }
 
-        public Matrice(float m11, float m12, float m21, float m22,
-                      float dx, float dy) {
+        public Matrice(double m11, double m12, double m21, double m22,
+                      double dx, double dy) {
             this.m11 = m11;
             this.m12 = m12;
             this.m21 = m21;
@@ -134,41 +103,38 @@ namespace Limaki.Drawing {
 
 
         // Get the elements of this matrix.
-        public float[] Elements {
+        public double[] Elements {
             get {
-#if CONFIG_EXTENDED_NUMERICS
-                return new float[] {m11, m12, m21, m22, dx, dy};
-#else
-                return null;
-#endif
+
+                return new double[] {m11, m12, m21, m22, dx, dy};
             }
         }
 
         // Determine if this is the identity matrix.
         public bool IsIdentity {
             get {
-                return (m11 == 1.0f && m12 == 0.0f &&
-                        m21 == 0.0f && m22 == 1.0f &&
-                        dx == 0.0f && dy == 0.0f);
+                return (m11 == 1.0d && m12 == 0.0d &&
+                        m21 == 0.0d && m22 == 1.0d &&
+                        dx == 0.0d && dy == 0.0d);
             }
         }
 
         // Determine if the matrix is invertible.
         public bool IsInvertible {
             get {
-                return (Determinant() != 0.0f);
+                return (Determinant() != 0.0d);
             }
         }
 
         // Get the X offset value.
-        public float OffsetX {
+        public double OffsetX {
             get {
                 return dx;
             }
         }
 
         // Get the Y offset value.
-        public float OffsetY {
+        public double OffsetY {
             get {
                 return dy;
             }
@@ -181,7 +147,7 @@ namespace Limaki.Drawing {
 
         // Determine if two matrices are equal.
         public override bool Equals(Object obj) {
-            Matrice other = (obj as Matrice);
+            var other = (obj as Matrice);
             if (other != null) {
                 return (other.m11 == m11 && other.m12 == m12 &&
                         other.m21 == m21 && other.m22 == m22 &&
@@ -198,12 +164,12 @@ namespace Limaki.Drawing {
 
         // Invert this matrix.
         public void Invert() {
-            float m11, m12, m21, m22, dx, dy;
-            float determinant;
+            double m11, m12, m21, m22, dx, dy;
+            double determinant;
 
             // Compute the determinant and check it.
             determinant = Determinant();
-            if (determinant != 0.0f) {
+            if (determinant != 0.0d) {
                 // Get the answer into temporary variables.
                 m11 = this.m22 / determinant;
                 m12 = -(this.m12 / determinant);
@@ -226,7 +192,7 @@ namespace Limaki.Drawing {
 
         // Multiply two matrices and write the result into this one.
         private void Multiply(Matrice matrix1, Matrice matrix2) {
-            float m11, m12, m21, m22, dx, dy;
+            double m11, m12, m21, m22, dx, dy;
 
             // Compute the result within temporary variables,
             // to prevent overwriting "matrix1" or "matrix2",
@@ -275,24 +241,24 @@ namespace Limaki.Drawing {
 
         // Reset this matrix to the identity matrix.
         public void Reset() {
-            m11 = 1.0f;
-            m12 = 0.0f;
-            m21 = 0.0f;
-            m22 = 1.0f;
-            dx = 0.0f;
-            dy = 0.0f;
+            m11 = 1.0d;
+            m12 = 0.0d;
+            m21 = 0.0d;
+            m22 = 1.0d;
+            dx = 0.0d;
+            dy = 0.0d;
         }
 
         // Perform a rotation on this matrix.
         // lytico: PI/180 as const
-        public const double PiDiv180 = Math.PI/180.0;
-        public void Rotate(float angle) {
-#if CONFIG_EXTENDED_NUMERICS
-            float m11, m12, m21, m22;
+        public const double PiDiv180 = Math.PI/180.0d;
+        public void Rotate(double angle) {
 
-            double radians = (angle * (PiDiv180));
-            float cos = (float)(Math.Cos(radians));
-            float sin = (float)(Math.Sin(radians));
+            double m11, m12, m21, m22;
+
+            var radians = (angle * (PiDiv180));
+            var cos = (Math.Cos(radians));
+            var sin = (Math.Sin(radians));
 
             m11 = cos * this.m11 + sin * this.m21;
             m12 = cos * this.m12 + sin * this.m22;
@@ -303,15 +269,15 @@ namespace Limaki.Drawing {
             this.m12 = m12;
             this.m21 = m21;
             this.m22 = m22;
-#endif
-        }
-        public void Rotate(float angle, MatrixOrder order) {
-#if CONFIG_EXTENDED_NUMERICS
-            float m11, m12, m21, m22, dx, dy;
 
-            double radians = (angle * (PiDiv180));
-            float cos = (float)(Math.Cos(radians));
-            float sin = (float)(Math.Sin(radians));
+        }
+        public void Rotate(double angle, MatrixOrder order) {
+
+            double m11, m12, m21, m22, dx, dy;
+
+            var radians = (angle * (PiDiv180));
+            var cos = (double)(Math.Cos(radians));
+            var sin = (double)(Math.Sin(radians));
 	
             if(order == MatrixOrder.Prepend)
             {
@@ -341,16 +307,16 @@ namespace Limaki.Drawing {
                 this.dx  = dx;
                 this.dy  = dy;
             }
-#endif
+
         }
 
         // Rotate about a specific point.
-        public void RotateAt(float angle, PointS point) {
+        public void RotateAt(double angle, Point point) {
             Translate(point.X, point.Y);
             Rotate(angle);
             Translate(-point.X, -point.Y);
         }
-        public void RotateAt(float angle, PointS point, MatrixOrder order) {
+        public void RotateAt(double angle, Point point, MatrixOrder order) {
             if (order == MatrixOrder.Prepend) {
                 Translate(point.X, point.Y);
                 Rotate(angle);
@@ -363,13 +329,13 @@ namespace Limaki.Drawing {
         }
 
         // Apply a scale factor to this matrix.
-        public void Scale(float scaleX, float scaleY) {
+        public void Scale(double scaleX, double scaleY) {
             m11 *= scaleX;
             m12 *= scaleX;
             m21 *= scaleY;
             m22 *= scaleY;
         }
-        public void Scale(float scaleX, float scaleY, MatrixOrder order) {
+        public void Scale(double scaleX, double scaleY, MatrixOrder order) {
             if (order == MatrixOrder.Prepend) {
                 m11 *= scaleX;
                 m12 *= scaleX;
@@ -386,8 +352,8 @@ namespace Limaki.Drawing {
         }
 
         // Apply a shear factor to this matrix.
-        public void Shear(float shearX, float shearY) {
-            float m11, m12, m21, m22;
+        public void Shear(double shearX, double shearY) {
+            double m11, m12, m21, m22;
 
             m11 = this.m11 + this.m21 * shearY;
             m12 = this.m12 + this.m22 * shearY;
@@ -400,9 +366,9 @@ namespace Limaki.Drawing {
             this.m22 = m22;
         }
 
-        public void Shear(float shearX, float shearY, MatrixOrder order) {
+        public void Shear(double shearX, double shearY, MatrixOrder order) {
             if (order == MatrixOrder.Prepend) {
-                float m11, m12, m21, m22;
+                double m11, m12, m21, m22;
 
                 m11 = this.m11 + this.m21 * shearY;
                 m12 = this.m12 + this.m22 * shearY;
@@ -414,7 +380,7 @@ namespace Limaki.Drawing {
                 this.m21 = m21;
                 this.m22 = m22;
             } else {
-                float m11, m12, m21, m22, dx, dy;
+                double m11, m12, m21, m22, dx, dy;
 
                 m11 = this.m11 + this.m12 * shearX;
                 m12 = this.m11 * shearY + this.m12;
@@ -432,26 +398,13 @@ namespace Limaki.Drawing {
             }
         }
 
-        // Transform a list of points.
-        public void TransformPoints(PointI[] pts) {
+        
+        public void TransformPoints(Point[] pts) {
             if (pts == null) {
                 throw new ArgumentNullException("pts");
             }
             int posn;
-            float x, y;
-            for (posn = pts.Length - 1; posn >= 0; --posn) {
-                x = (float)(pts[posn].X);
-                y = (float)(pts[posn].Y);
-                pts[posn].X = (int)(x * m11 + y * m21 + dx);
-                pts[posn].Y = (int)(x * m12 + y * m22 + dy);
-            }
-        }
-        public void TransformPoints(PointS[] pts) {
-            if (pts == null) {
-                throw new ArgumentNullException("pts");
-            }
-            int posn;
-            float x, y;
+            double x, y;
             for (posn = pts.Length - 1; posn >= 0; --posn) {
                 x = pts[posn].X;
                 y = pts[posn].Y;
@@ -461,25 +414,13 @@ namespace Limaki.Drawing {
         }
 
         // Transform a list of vectors.
-        public void TransformVectors(PointI[] pts) {
+        
+        public void TransformVectors(Point[] pts) {
             if (pts == null) {
                 throw new ArgumentNullException("pts");
             }
             int posn;
-            float x, y;
-            for (posn = pts.Length - 1; posn >= 0; --posn) {
-                x = (float)(pts[posn].X);
-                y = (float)(pts[posn].Y);
-                pts[posn].X = (int)(x * m11 + y * m21);
-                pts[posn].Y = (int)(x * m12 + y * m22);
-            }
-        }
-        public void TransformVectors(PointS[] pts) {
-            if (pts == null) {
-                throw new ArgumentNullException("pts");
-            }
-            int posn;
-            float x, y;
+            double x, y;
             for (posn = pts.Length - 1; posn >= 0; --posn) {
                 x = pts[posn].X;
                 y = pts[posn].Y;
@@ -488,17 +429,17 @@ namespace Limaki.Drawing {
             }
         }
 
-        public void VectorTransformPoints(PointI[] pts) {
+        public void VectorTransformPoints(Point[] pts) {
             TransformVectors(pts);
         }
         
 
         // Translate the matrix.
-        public void Translate(float offsetX, float offsetY) {
+        public void Translate(double offsetX, double offsetY) {
             dx += offsetX * m11 + offsetY * m21;
             dy += offsetX * m12 + offsetY * m22;
         }
-        public void Translate(float offsetX, float offsetY, MatrixOrder order) {
+        public void Translate(double offsetX, double offsetY, MatrixOrder order) {
             if (order == MatrixOrder.Prepend) {
                 dx += offsetX * m11 + offsetY * m21;
                 dy += offsetX * m12 + offsetY * m22;
@@ -520,20 +461,20 @@ namespace Limaki.Drawing {
         }
 
         // Transform a particular point - faster version for only one point.
-        internal void TransformPoint(float x, float y, out float ox, out float oy) {
+        internal void TransformPoint(double x, double y, out double ox, out double oy) {
             ox = x * m11 + y * m21 + dx;
             oy = x * m12 + y * m22 + dy;
         }
 
         // Transform a size value according to the inverse transformation.
-        internal void TransformSizeBack(float width, float height,
-                                        out float owidth, out float oheight) {
-            float m11, m12, m21, m22;
-            float determinant;
+        internal void TransformSizeBack(double width, double height,
+                                        out double owidth, out double oheight) {
+            double m11, m12, m21, m22;
+            double determinant;
 
             // Compute the determinant and check it.
             determinant = Determinant();
-            if (determinant != 0.0f) {
+            if (determinant != 0.0d) {
                 // Get the answer into temporary variables.
                 // We ignore dx and dy because we don't need them.
                 m11 = this.m22 / determinant;
@@ -550,14 +491,14 @@ namespace Limaki.Drawing {
             }
         }
         // private helper method to compute the determinant
-        private float Determinant() {
+        private double Determinant() {
             return this.m11 * this.m22 - this.m12 * this.m21;
         }
 
         // Workaround for calculation new font size, if a transformation is set
         // this does only work for scaling, not for rotation or multiply transformations
         // Normally we should stretch or shrink the font.
-        public float TransformFontSize(float fIn) {
+        public double TransformFontSize(double fIn) {
             return Math.Abs(Math.Min(this.m11, this.m22) * fIn);
         }
 
@@ -573,24 +514,3 @@ namespace Limaki.Drawing {
 
 
 
-// namespace System.Drawing.Drawing2D
-
-/*
- * Matrix.cs - Implementation of the "System.Drawing.Drawing2D.Matrix" class.
- *
- * Copyright (C) 2003  Southern Storm Software, Pty Ltd.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */

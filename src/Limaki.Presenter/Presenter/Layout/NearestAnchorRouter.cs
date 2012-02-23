@@ -15,8 +15,8 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Visuals;
 using Limaki.Graphs;
+using Limaki.Visuals;
 
 namespace Limaki.Presenter.Layout {
     /// <summary>
@@ -79,19 +79,19 @@ namespace Limaki.Presenter.Layout {
 
             // get near; calls of IShape[AnchorType] are expensive cause  
             // call of System.Drawing.Rectangle.Location is expensive
-            int sourceMostRightX = (sourceIsEdge?
+            var sourceMostRightX = (sourceIsEdge?
                 source[Anchor.Center].X:
                 source[Anchor.MostRight].X);
 
-            int sourceMostLeftX = (sourceIsEdge?
+            var sourceMostLeftX = (sourceIsEdge?
                 source[Anchor.Center].X:
                 source[Anchor.MostLeft].X);
 
-            int targetMostRightX = (targetIsEdge?
+            var targetMostRightX = (targetIsEdge?
                 target[Anchor.Center].X :
                 target[Anchor.MostRight].X);
 
-            int targetMostLeftX = (targetIsEdge?
+            var targetMostLeftX = (targetIsEdge?
                 target[Anchor.Center].X :
                 target[Anchor.MostLeft].X);
 
@@ -107,21 +107,21 @@ namespace Limaki.Presenter.Layout {
                 targetX = Pos.left;
             }
 
-            Pos SourceY = Pos.middle;
-            Pos TargetY = Pos.middle;
+            var SourceY = Pos.middle;
+            var TargetY = Pos.middle;
 
-            int sourceMostTopY = (sourceIsEdge?
+            var sourceMostTopY = (sourceIsEdge?
                 source[Anchor.Center].Y:
                 source[Anchor.MostTop].Y);
-            int sourceMostBottomY = (sourceIsEdge ?
+            var sourceMostBottomY = (sourceIsEdge ?
                 source[Anchor.Center].Y :
                 source[Anchor.MostBottom].Y);
 
-            int targetMostBottomY =(targetIsEdge?
+            var targetMostBottomY =(targetIsEdge?
                 target[Anchor.Center].Y : 
                 target[Anchor.MostBottom].Y);
 
-            int targetMostTopY = (targetIsEdge?
+            var targetMostTopY = (targetIsEdge?
                 target[Anchor.Center].Y : 
                 target[Anchor.MostTop].Y);
 
@@ -133,8 +133,8 @@ namespace Limaki.Presenter.Layout {
                 SourceY = Pos.bottom;
                 TargetY = Pos.top;
             }
-            Anchor one = PosToAnchor (sourceX, SourceY);
-            Anchor two = PosToAnchor (targetX, TargetY);
+            var one = PosToAnchor (sourceX, SourceY);
+            var two = PosToAnchor (targetX, TargetY);
             return new Pair<Anchor, Anchor>(one, two);
 
         }

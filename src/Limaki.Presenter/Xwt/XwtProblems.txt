@@ -1,0 +1,7 @@
+﻿Size:
+
+ public static explicit operator Point(Size size) {
+            return new Point(size.Width, size.Height);
+        }
+
+missing

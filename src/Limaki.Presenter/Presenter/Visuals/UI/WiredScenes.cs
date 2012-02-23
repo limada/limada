@@ -18,8 +18,9 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Presenter.Layout;
-using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.Visuals;
+using Xwt;
 
 namespace Limaki.Presenter.Visuals.UI {
     /// <summary>
@@ -60,7 +61,7 @@ namespace Limaki.Presenter.Visuals.UI {
             ICollection<IVisualEdge> deleteQueue = 
                 new List<IVisualEdge>(TargetGraph.Two.PostorderTwig(item));
 
-            foreach (IVisual delete in deleteQueue) {
+            foreach (var delete in deleteQueue) {
                 if (Target.Contains (delete)) {
                     // remark: it is not allowed to use DeleteCommand here as it calls
                     // OnDataChanged and 
@@ -133,7 +134,7 @@ namespace Limaki.Presenter.Visuals.UI {
                             if (edge.Shape == null) {
                                 Target.Requests.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Invoke));
                             } else {
-                                edge.Size = SizeI.Empty;
+                                edge.Size = Size.Zero;
                             }
                         }
                         if (showTwig || edge==targetEdge)

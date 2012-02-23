@@ -15,15 +15,15 @@
 using System;
 using System.Collections.Generic;
 using Limaki.Common;
-using Limaki.Drawing;
-using Limaki.Graphs;
 using Limaki.Common.Collections;
+using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter.Layout {
     public abstract class Layout : ILayout {
         public Layout(IStyleSheet styleSheet) {
             this.StyleSheet = styleSheet;
-            this.Distance = new SizeI(30, 15);
+            this.Distance = new Size(30, 15);
             this.Border = this.Distance;
         }
         
@@ -81,8 +81,8 @@ namespace Limaki.Presenter.Layout {
 
         #region Layout-Settings
         
-        public SizeI Distance { get; set; }
-        public SizeI Border { get; set; }
+        public Size Distance { get; set; }
+        public Size Border { get; set; }
         #endregion
 
         public abstract void Invoke();
@@ -128,10 +128,10 @@ namespace Limaki.Presenter.Layout {
         #region Bounds-Handling
 
         public abstract void AddBounds(TItem item);
-        public abstract PointI[] GetDataHull(TItem item, Matrice matrix, int delta, bool extend);
-        public abstract PointI[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend);
-        public abstract PointI[] GetDataHull(TItem item, int delta, bool extend);
-        public abstract PointI[] GetDataHull(TItem item, UiState uiState, int delta, bool extend);
+        public abstract Point[] GetDataHull(TItem item, Matrice matrix, int delta, bool extend);
+        public abstract Point[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend);
+        public abstract Point[] GetDataHull(TItem item, int delta, bool extend);
+        public abstract Point[] GetDataHull(TItem item, UiState uiState, int delta, bool extend);
 
         #endregion
 
@@ -149,9 +149,9 @@ namespace Limaki.Presenter.Layout {
 
     public class Row<TItem> {
         public ICollection<TItem> Items = new Set<TItem>();
-        public PointI Location;
-        public SizeI biggestItemSize;
-        public SizeI Size;
+        public Point Location;
+        public Size biggestItemSize;
+        public Size Size;
         public bool SizeAdjusted = false;
         public Row() { }
     }

@@ -13,10 +13,12 @@
  * 
  */
 
+using Xwt;
+
 namespace Limaki.Drawing.Shapes {
     public class RectangleShape : RectangleShapeBase, IRectangleShape {
         public RectangleShape():base() {}
-        public RectangleShape(RectangleI data) : base(data) {}
+        public RectangleShape(RectangleD data) : base(data) {}
         
         public override object Clone() {
             return new RectangleShape(_data);

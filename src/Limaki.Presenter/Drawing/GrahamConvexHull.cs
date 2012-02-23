@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Limaki.Drawing;
-using System.Linq;
+using Xwt;
 
 namespace Limaki.Drawing {
     /// <summary>
@@ -18,18 +17,18 @@ namespace Limaki.Drawing {
     /// <code>
     /// // generate some random points
     /// Random rand = new Random( );
-    /// List&lt;PointI&gt; points = new List&lt;PointI&gt;( );
+    /// List&lt;PointD&gt; points = new List&lt;PointD&gt;( );
     /// 
     /// for ( int i = 0; i &lt; 10; i++ )
     /// {
-    ///     points.Add( new PointI(
+    ///     points.Add( new PointD(
     ///            rand.Next( 200 ) - 100,
     ///            rand.Next( 200 ) - 100 ) );
     /// }
     /// 
     /// // find the convex hull
     /// IConvexHullAlgorithm hullFinder = new GrahamConvexHull( );
-    /// List&lt;PointI&gt; hull = hullFinder.FindHull( points );
+    /// List&lt;PointD&gt; hull = hullFinder.FindHull( points );
     /// </code>
     /// </remarks>
     /// 
@@ -46,12 +45,12 @@ namespace Limaki.Drawing {
         /// (<a href="http://en.wikipedia.org/wiki/Cartesian_coordinate_system">Cartesian
         /// coordinate system</a>).</returns>
         /// 
-        public IEnumerable<PointI> FindHull(IEnumerable<PointI> points) {
-            List<PointToProcess> pointsToProcess = new List<PointToProcess>();
+        public IEnumerable<Point> FindHull(IEnumerable<Point> points) {
+            var pointsToProcess = new List<PointToProcess>();
             int firstCornerIndex = 0;
             PointToProcess firstCorner = null;
             int fi = 0;
-            var firstPoint = new PointI();
+            var firstPoint = new Point();
             bool newPoly = true;
             int polygonCount = 0;
             foreach (var point in points) {
@@ -90,8 +89,8 @@ namespace Limaki.Drawing {
 
             // find K (tangent of line's angle) and distance to the first corner
             foreach(var point in pointsToProcess){
-                int dx = point.X - firstCorner.X;
-                int dy = point.Y - firstCorner.Y;
+                var dx = point.X - firstCorner.X;
+                var dy = point.Y - firstCorner.Y;
 
                 // don't need square root, since it is not important in our case
                 point.Distance = dx * dx + dy * dy;
@@ -102,7 +101,7 @@ namespace Limaki.Drawing {
             // sort point by angle and distance
             pointsToProcess.Sort();
 
-            List<PointToProcess> convexHullTemp = new List<PointToProcess>();
+            var convexHullTemp = new List<PointToProcess>();
 
             // add first corner, which is always on the hull
             convexHullTemp.Add(firstCorner);
@@ -110,8 +109,8 @@ namespace Limaki.Drawing {
             convexHullTemp.Add(pointsToProcess[0]);
             pointsToProcess.RemoveAt(0); //Lytico: error here: was: points.removeat(0);
 
-            PointToProcess lastPoint = convexHullTemp[1];
-            PointToProcess prevPoint = convexHullTemp[0];
+            var lastPoint = convexHullTemp[1];
+            var prevPoint = convexHullTemp[0];
 
             while (pointsToProcess.Count != 0) {
                 PointToProcess newPoint = pointsToProcess[0];
@@ -141,24 +140,24 @@ namespace Limaki.Drawing {
             }
 
             // convert points back
-            List<PointI> convexHull = new List<PointI>(convexHullTemp.Count);
+            var convexHull = new List<Point>(convexHullTemp.Count);
 
             foreach (PointToProcess pt in convexHullTemp) {
-                convexHull.Add(new PointI(pt.X,pt.Y));
+                convexHull.Add(new Point(pt.X,pt.Y));
             }
 
             return convexHull;
-            //convexHullTemp.Select<PointToProcess,PointI>(pt=>pt.ToPoint());
+            //convexHullTemp.Select<PointToProcess,PointD>(pt=>pt.ToPoint());
         }
 
         // Internal comparer for sorting points
         private class PointToProcess : IComparable {
-            public int X;
-            public int Y;
+            public double X;
+            public double Y;
             public double K;
             public double Distance;
 
-            public PointToProcess(PointI point) {
+            public PointToProcess(Point point) {
                 X = point.X;
                 Y = point.Y;
 
@@ -167,7 +166,7 @@ namespace Limaki.Drawing {
             }
 
             public int CompareTo(object obj) {
-                PointToProcess another = (PointToProcess)obj;
+                var another = (PointToProcess)obj;
 
                 return (K < another.K) ? -1 : (K > another.K) ? 1 :
                                                                       ((Distance > another.Distance) ? -1 : (Distance < another.Distance) ? 1 : 0);

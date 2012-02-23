@@ -13,14 +13,16 @@
 
 using System;
 using System.Windows.Forms;
-using Limada.View;
 using Limaki.Common;
 using Limaki.Data;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.Limada.View;
 using Limaki.Model;
 using Limaki.Presenter.Display;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.UseCases;
 using Limaki.Presenter.Winform.Display;
 using Limaki.UseCases.Winform;
@@ -234,7 +236,7 @@ namespace Limaki.Tests.UseCases {
                 var file = sender.FileManager.OpenFileDialog.FileName;
                 var fileInfo = DataBaseInfo.FromFileName(file);
                 if (fileInfo.Extension==".limo") {
-                    var repairer = new Limada.Data.db4o.Db4oRepairer();
+                    var repairer = new global::Limada.Data.db4o.Db4oRepairer();
                     repairer.WriteDetail = (m)=> testMessage(repairer,m);
                     var newFile = DataBaseInfo.FromFileName(file);
                     newFile.Name = "repaired." + newFile.Name;

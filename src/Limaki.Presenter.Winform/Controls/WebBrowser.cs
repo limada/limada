@@ -12,14 +12,14 @@
  */
 
 
-using Limaki.UseCases.Viewers;
 using System.Windows.Forms;
 using System.Threading;
 using System;
-using Limaki.Presenter;
-using Limaki.Drawing;
 using System.Runtime.InteropServices;
 using System.Net;
+using Limaki.Drawing;
+using Limaki.Presenter;
+using Limaki.UseCases.Viewers;
 
 namespace Limaki.Winform.Controls {
     public class WebBrowser:System.Windows.Forms.WebBrowser,IWebBrowser, INavigateTarget, IZoomTarget {
@@ -61,8 +61,8 @@ namespace Limaki.Winform.Controls {
             }
         }
 
-        private float _zoomFactor = 1f;
-        public float ZoomFactor {
+        private double _zoomFactor = 1f;
+        public double ZoomFactor {
             get { return _zoomFactor; }
             set { _zoomFactor = value;
                 UpdateZoom();

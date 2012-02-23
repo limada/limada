@@ -247,19 +247,19 @@ namespace Limaki.ThirdPartyWrappers {
             get {return ZoomState.Original;}
             set {
                 if (value == ZoomState.Original) {
-                    ZoomFactor = 1.0f;
+                    ZoomFactor = 1.0d;
                 }
             }
         }
 
         
-        public float ZoomFactor {
+        public double ZoomFactor {
             get { return base.Window.TextZoom; }
-            set { base.Window.TextZoom = value; }
+            set { base.Window.TextZoom = (float)value; }
         }
 
         public void UpdateZoom() {
-            base.Window.TextZoom = ZoomFactor;
+            base.Window.TextZoom = (float)ZoomFactor;
         }
 
         #endregion

@@ -15,18 +15,18 @@ using System;
 using System.IO;
 using Limada.Data;
 using Limada.Model;
-using Limada.View;
+using Limada.UseCases;
 using Limaki.Common;
 using Limaki.Data;
-using Limaki.Graphs.Extensions;
-using Limaki.Model.Streams;
-using Limaki.Visuals;
-using Limaki.UseCases.Viewers;
 using Limaki.Drawing;
-using System.Collections;
+using Limaki.Limada.View;
+using Limaki.Model.Streams;
 using System.Collections.Generic;
+using Limaki.Graphs.Extensions;
+using Limaki.UseCases.Viewers;
+using Limaki.Visuals;
 
-namespace Limada.UseCases {
+namespace Limaki.Limada.UseCases {
 	public class FileManager:FileManagerBase {
 
         public Action<IGraphScene<IVisual, IVisualEdge>> DataBound = null;

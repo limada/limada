@@ -16,25 +16,25 @@
 using System.Collections.Generic;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
-using Limaki.Drawing.Shapes;
+using Xwt;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Clipping {
     public class PolygonClipper:IClipper {
 
-        Set<PointI> clipPolygon = new Set<PointI>();
+        Set<Point> clipPolygon = new Set<Point>();
 
-        public IEnumerable<PointI> Hull {
+        public IEnumerable<Point> Hull {
             get { return new GrahamConvexHull ().FindHull (clipPolygon);}
         }
 
-        public RectangleI Bounds {
+        public RectangleD Bounds {
             get {
                 var resultI = clipPolygon;
                 if (resultI.Count > 0) {
-                    int l = int.MaxValue;
-                    int t = int.MaxValue;
-                    int b = int.MinValue;
-                    int r = int.MinValue;
+                    var l = double.MaxValue;
+                    var t = double.MaxValue;
+                    var b = double.MinValue;
+                    var r = double.MinValue;
                     foreach (var env in resultI) {
                         var envX = env.X;
                         var envY = env.Y;
@@ -47,16 +47,16 @@ namespace Limaki.Presenter {
                         if (envY > b)
                             b = envY;
                     }
-                    return Drawing.RectangleI.FromLTRB (l, t, r, b);
+                    return RectangleD.FromLTRB (l, t, r, b);
                 } else {
-                    return RectangleI.Empty;
+                    return RectangleD.Zero;
                 }
             }
         }
         
         public virtual bool RenderAll { get; set; }
 
-        public void Add(IEnumerable<PointI> hull) {
+        public void Add(IEnumerable<Point> hull) {
             clipPolygon.AddRange (hull);
         }
 

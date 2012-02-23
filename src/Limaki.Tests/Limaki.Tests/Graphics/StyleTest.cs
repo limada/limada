@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Limaki.Drawing.Styles;
+using NUnit.Framework;
 using Limaki.Drawing;
 using Limaki.Common;
 

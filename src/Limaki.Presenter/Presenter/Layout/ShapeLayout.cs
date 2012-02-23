@@ -13,8 +13,9 @@
  */
 
 using System;
-using Limaki.Drawing;
 using Limaki.Common;
+using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter.Layout {
     public class ShapeLayout : Layout<IShape> {
@@ -67,27 +68,27 @@ namespace Limaki.Presenter.Layout {
             return style;
         }
 
-        public override PointI[] GetDataHull(IShape item, Matrice matrix, int delta, bool extend) {
+        public override Point[] GetDataHull(IShape item, Matrice matrix, int delta, bool extend) {
             Registry.Pool.TryGetCreate<IExceptionHandler>()
                 .Catch(new Exception("The method or operation is not implemented."), MessageType.OK);
-            return new PointI[0];
+            return new Point[0];
 
         }
 
-        public override PointI[] GetDataHull(IShape item, UiState uiState, Matrice matrix, int delta, bool extend) {
+        public override Point[] GetDataHull(IShape item, UiState uiState, Matrice matrix, int delta, bool extend) {
             Registry.Pool.TryGetCreate<IExceptionHandler>()
                 .Catch(new Exception("The method or operation is not implemented."), MessageType.OK);
-            return new PointI[0];
+            return new Point[0];
         }
-        public override PointI[] GetDataHull(IShape item, int delta, bool extend) {
+        public override Point[] GetDataHull(IShape item, int delta, bool extend) {
             Registry.Pool.TryGetCreate<IExceptionHandler>()
                 .Catch(new Exception("The method or operation is not implemented."), MessageType.OK);
-            return new PointI[0];
+            return new Point[0];
         }
-        public override PointI[] GetDataHull(IShape item, UiState uiState, int delta, bool extend) {
+        public override Point[] GetDataHull(IShape item, UiState uiState, int delta, bool extend) {
             Registry.Pool.TryGetCreate<IExceptionHandler>()
                 .Catch(new Exception("The method or operation is not implemented."), MessageType.OK);
-            return new PointI[0];
+            return new Point[0];
         }
     }
 }

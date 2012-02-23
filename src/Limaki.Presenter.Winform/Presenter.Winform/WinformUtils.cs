@@ -29,8 +29,8 @@ namespace Limaki.Presenter.Winform {
         }
 
         public bool IsSameApp(IControl a, IControl b) {
-            Control control = a as Control;
-            Control thisControl = b as Control;
+            var control = a as Control;
+            var thisControl = b as Control;
             if (control != null) {
                 Form form = control.FindForm();
                 bool sameApp = false;

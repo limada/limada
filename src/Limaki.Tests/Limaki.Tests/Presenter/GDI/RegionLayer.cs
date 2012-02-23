@@ -20,7 +20,12 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
 using Limaki.Drawing.Shapes;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
+using Xwt;
+using Point = System.Drawing.Point;
+using Rectangle = System.Drawing.Rectangle;
+using Size = System.Drawing.Size;
 
 
 namespace Limaki.Tests.Presenter.GDI {
@@ -52,7 +57,7 @@ namespace Limaki.Tests.Presenter.GDI {
             //vector.Transform(matrix);
             //return vector.PolygonHull(delta, true);
 
-            PointI[] oldHull = vector.Hull(delta, true);
+            Xwt.Point[] oldHull = vector.Hull(delta, true);
             matrix.TransformPoints(oldHull);
             return GDIConverter.Convert(oldHull);
         }

@@ -2,6 +2,9 @@ using System.Windows;
 using System.Windows.Input;
 using System;
 using Limaki.Presenter.UI;
+using Xwt;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using Point = System.Windows.Point;
 
 namespace Limaki.Presenter.WPF {
     public class Converter {
@@ -48,44 +51,30 @@ namespace Limaki.Presenter.WPF {
 
         }
 
-        public static Limaki.Presenter.UI.Key Convert(System.Windows.Input.Key native) {
+        public static Xwt.Key Convert(System.Windows.Input.Key native) {
             // Attention! silverlight and wpf-keys are different!
-            var key = Enum.GetName(typeof(System.Windows.Input.Key), native);
-            var lkey = Limaki.Presenter.UI.Key.None;
-
-            if (!string.IsNullOrEmpty(key)) {
-                try {
-                    lkey = (Limaki.Presenter.UI.Key)
-#if ! SILVERLIGHT
-Enum.Parse(typeof(Limaki.Presenter.UI.Key), key);
-#else
-                    Enum.Parse(typeof(Limaki.Presenter.UI.Key), key,true);
-#endif
-
-                } catch { lkey = Limaki.Presenter.UI.Key.None; }
-            }
-            return lkey;
+            return Xwt.WPFBackend.KeyboardUtil.TranslateToXwtKey(native);
         }
 
-        public static Limaki.Presenter.UI.ModifierKeys Convert(System.Windows.Input.ModifierKeys native) {
-            var result = Limaki.Presenter.UI.ModifierKeys.None;
+        public static Xwt.ModifierKeys Convert(System.Windows.Input.ModifierKeys native) {
+            var result = Xwt.ModifierKeys.None;
             if ((native & System.Windows.Input.ModifierKeys.Alt) !=0) {
-                result |= Limaki.Presenter.UI.ModifierKeys.Alt;
+                result |= Xwt.ModifierKeys.Alt;
             }
             if ((native & System.Windows.Input.ModifierKeys.Control) != 0) {
-                result |= Limaki.Presenter.UI.ModifierKeys.Control;
+                result |= Xwt.ModifierKeys.Control;
             }
             if ((native & System.Windows.Input.ModifierKeys.Shift) != 0) {
-                result |= Limaki.Presenter.UI.ModifierKeys.Shift;
+                result |= Xwt.ModifierKeys.Shift;
             }
             if ((native & System.Windows.Input.ModifierKeys.Windows) != 0) {
-                result |= Limaki.Presenter.UI.ModifierKeys.Windows;
+                result |= Xwt.ModifierKeys.Command;
             }
             return result;
         }
 
         public static KeyActionEventArgs Convert(KeyEventArgs e,UIElement relativeTo, Point location) {
-           return new KeyActionEventArgs(Convert(e.Key),Convert(Keyboard.Modifiers),new Limaki.Drawing.PointI((int)location.X,(int)location.Y));
+           return new KeyActionEventArgs(Convert(e.Key),Convert(Keyboard.Modifiers),new Xwt.Point((int)location.X,(int)location.Y));
         }
 
     }

@@ -14,14 +14,15 @@
 
 using Limaki.Common;
 using Limaki.Drawing;
+using Xwt;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.Rendering {
     public interface ILayer<T> : IRenderAction {
         Get<T> Data { get; set; }
         void DataChanged();
 
-        PointI Origin { get; set; }
-        SizeI Size { get; set;}
+        Point Origin { get; set; }
+        Size Size { get; set;}
         
         Get<ICamera> Camera { get; set; }
         Get<IContentRenderer<T>> Renderer { get; set; }

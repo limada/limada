@@ -13,7 +13,10 @@
  */
 
 using System;
-namespace Limaki.Drawing {
+using Xwt;
+using Xwt.Drawing;
+
+namespace Limaki.Drawing.Styles {
     /// <summary>
     /// Zusammenfassung für Style.
     /// </summary>
@@ -42,21 +45,21 @@ namespace Limaki.Drawing {
 
         protected Color? _fillColor = null;
         public virtual Color FillColor {
-            get { return Get(() => ParentStyle.FillColor, _fillColor, Color.Empty); }
+            get { return Get(() => ParentStyle.FillColor, _fillColor, DrawingExtensions.EmptyColor); }
             set { Set(() => ParentStyle.FillColor, ref _fillColor, value); }
         }
 
         protected Color? _textColor = null;
         public virtual Color TextColor {
-            get { return Get(() => ParentStyle.TextColor, _textColor, Color.Empty); }
+            get { return Get(() => ParentStyle.TextColor, _textColor, DrawingExtensions.EmptyColor); }
             set { Set(() => ParentStyle.TextColor, ref _textColor, value); }
         }
 
         protected Color? _penColor = null;
         public virtual Color PenColor {
-            get { return Get(() => ParentStyle.PenColor, _penColor, Color.Empty); }
+            get { return Get(() => ParentStyle.PenColor, _penColor, DrawingExtensions.EmptyColor); }
             set {
-                if (value != PenColor) {
+                if (!value.Equals(PenColor)) {
                     Set(() => ParentStyle.PenColor, ref _penColor, value);
                     if (_penColor != null) {
                         if (_pen == null) {
@@ -91,9 +94,11 @@ namespace Limaki.Drawing {
             set { Set(() => ParentStyle.Font, ref _font, value); }
         }
 
-        public static SizeI NoSize = new SizeI (int.MaxValue, int.MaxValue);
-        protected SizeI? _autoSize = null;
-        public virtual SizeI AutoSize {
+        public virtual TextDecoration TextDecoration { get; set; }
+
+        public static Size NoSize = new Size (int.MaxValue, int.MaxValue);
+        protected Size? _autoSize = null;
+        public virtual Size AutoSize {
             get { return Get(() => ParentStyle.AutoSize, _autoSize, NoSize); }
             set { Set(()=>ParentStyle.AutoSize, ref _autoSize, value); }
         }
@@ -186,13 +191,13 @@ namespace Limaki.Drawing {
             var other = (IStyle)obj;
             return
                    this.AutoSize == other.AutoSize &&
-                   this.FillColor == other.FillColor &&
+                   this.FillColor.Equals(other.FillColor) &&
                    this.Font == other.Font &&
                    this.Name == other.Name &&
                    this.PaintData == other.PaintData &&
                    this.Pen == other.Pen &&
-                   this.PenColor == other.PenColor &&
-                   this.TextColor == other.TextColor;
+                   this.PenColor.Equals(other.PenColor) &&
+                   this.TextColor.Equals(other.TextColor);
         }
 
         public override int GetHashCode() {

@@ -23,21 +23,22 @@
 
 using System;
 using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter.UI {
     public class MouseActionEventArgs : EventArgs {
         private MouseActionButtons buttons;
         private int clicks;
-        private int delta;
-        private int x;
-        private int y;
+        private double delta;
+        private double x;
+        private double y;
         private ModifierKeys modifiers;
 
         #region Public Constructors
         
         public MouseActionEventArgs(
             MouseActionButtons button, ModifierKeys modifiers,
-            int clicks, int x, int y, int delta) {
+            int clicks, double x, double y, double delta) {
 
             this.buttons = button;
             this.modifiers = modifiers;
@@ -63,24 +64,24 @@ namespace Limaki.Presenter.UI {
             }
         }
 
-        public int Delta {
+        public double Delta {
             get {
                 return this.delta;
             }
         }
 
-        public int X {
+        public double X {
             get {
                 return this.x;
             }
         }
 
-        public int Y {
+        public double Y {
             get {return this.y;}
         }
 
-        public PointI Location {
-            get { return new PointI(this.x, this.y); }
+        public Point Location {
+            get { return new Point(this.x, this.y); }
         }
 
         public ModifierKeys Modifiers {

@@ -18,26 +18,27 @@ using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Xwt;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.UI.GraphScene {
     public interface IDirtyCommand {}
-    public class MoveCommand<TItem> : Command<TItem, Func<TItem,IShape>, PointI>,IDirtyCommand {
-        public MoveCommand(TItem target, Func<TItem, IShape> shape, PointI param) : base(target, shape, param) { }
+    public class MoveCommand<TItem> : Command<TItem, Func<TItem, IShape>, Point>,IDirtyCommand {
+        public MoveCommand(TItem target, Func<TItem, IShape> shape, Point param) : base(target, shape, param) { }
         public override void Execute() {
             var shape = this.Parameter (this.Subject);
             shape.Location = this.Parameter2;
         }
     }
-    public class MoveByCommand<TItem> : Command<TItem, Func<TItem, IShape>, SizeI>,IDirtyCommand {
-        public MoveByCommand(TItem target, Func<TItem, IShape> shape, SizeI param) : base(target, shape, param) { }
+    public class MoveByCommand<TItem> : Command<TItem, Func<TItem, IShape>, Size>,IDirtyCommand {
+        public MoveByCommand(TItem target, Func<TItem, IShape> shape, Size param) : base(target, shape, param) { }
         public override void Execute() {
             var shape = this.Parameter(Subject);
             shape.Location -= this.Parameter2;
         }
     }
 
-    public class ResizeCommand<TItem> : Command<TItem, Func<TItem, IShape>, RectangleI>, IDirtyCommand {
-        public ResizeCommand(TItem target, Func<TItem, IShape> shape, RectangleI param) : base(target, shape, param) { }
+    public class ResizeCommand<TItem> : Command<TItem, Func<TItem, IShape>, RectangleD>, IDirtyCommand {
+        public ResizeCommand(TItem target, Func<TItem, IShape> shape, RectangleD param) : base(target, shape, param) { }
 
         public override void Execute() {
             var shape = this.Parameter (Subject);

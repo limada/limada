@@ -1,16 +1,15 @@
 using System;
 using System.IO;
-using Limada.View;
-using Limaki;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Limada.View;
 using Limaki.Model.Streams;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.UseCases;
 using Limaki.UseCases.Viewers;
 using Limaki.Visuals;
 
-namespace Limada.UseCases {
+namespace Limaki.Limada.UseCases {
     public class ContentProviderManager : ContentProviderManagerBase {
         public string DefaultExtension = null;
         string _streamProviderDialogFilter = null;

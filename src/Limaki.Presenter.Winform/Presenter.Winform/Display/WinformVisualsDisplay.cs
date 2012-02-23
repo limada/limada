@@ -14,11 +14,12 @@
 using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.Presenter.Display;
-using Limaki.Presenter.UI;
-using Limaki.Presenter.Visuals;
+using Limaki.Presenter.UI.GraphScene;
+using Limaki.Presenter.Visuals.Display;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Presenter.Winform.Visuals;
 using Limaki.Visuals;
+
 
 namespace Limaki.Presenter.Winform.Display {
     public class WinformVisualsDisplay : WinformGraphSceneDisplay<IVisual, IVisualEdge> {

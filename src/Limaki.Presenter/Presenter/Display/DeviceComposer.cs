@@ -11,6 +11,7 @@
  * http://limada.sourceforge.net
  */
 
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
 
 namespace Limaki.Presenter.Display {

@@ -14,8 +14,10 @@
 
 using System.IO;
 using Limada.Model;
-using Limada.View;
+using Limaki.Drawing.Styles;
 using Limaki.Graphs;
+using Limaki.Limada.Presenter;
+using Limaki.Limada.View;
 using Limaki.Tests;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Graph.Wrappers;
@@ -32,7 +34,6 @@ using System.Collections.Generic;
 using System.Xml;
 using Limaki.Model.Streams;
 using Limaki.Presenter.Layout;
-using Limada.Presenter;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Presenter.Visuals.Layout;
 using Limada.Schemata;

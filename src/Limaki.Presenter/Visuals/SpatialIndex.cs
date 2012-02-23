@@ -13,9 +13,9 @@
  */
 
 
-using System;
 using System.Collections.Generic;
 using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Visuals {
     public abstract class SpatialIndex : ISpatialIndex<IVisual> {
@@ -25,8 +25,8 @@ namespace Limaki.Visuals {
             set { _boundsDirty = value; }
         }
 
-        private RectangleI _bounds = default( RectangleI );
-        public RectangleI Bounds {
+        private RectangleD _bounds = default( RectangleD );
+        public RectangleD Bounds {
             get {
                 if (BoundsDirty) {
                     _bounds = CalculateBounds ();
@@ -37,17 +37,17 @@ namespace Limaki.Visuals {
             set { _bounds = value; }
         }
 
-        public static RectangleI GetRectangle(IVisual visual) {
+        public static RectangleD GetRectangle(IVisual visual) {
             if (visual.Shape != null)
                 return visual.Shape.BoundsRect;
             else
-                return RectangleI.Empty;
+                return RectangleD.Zero;
         }
 
-        public virtual void Update ( RectangleI invalid, IVisual visual ) {
+        public virtual void Update ( RectangleD invalid, IVisual visual ) {
             if (!(visual is IVisualTool)) {
                 if (visual.Shape != null) {
-                    RectangleI bounds = visual.Shape.BoundsRect;
+                    RectangleD bounds = visual.Shape.BoundsRect;
                     if (!invalid.Equals(bounds)) {
                         Remove(invalid, visual);
                         Add(bounds, visual);
@@ -62,7 +62,7 @@ namespace Limaki.Visuals {
             }
         }
 
-        protected virtual void checkBoundsAdd ( ref RectangleI bounds ) {
+        protected virtual void checkBoundsAdd ( ref RectangleD bounds ) {
             if ( !_boundsDirty ) {
                 if ( bounds.Bottom > this._bounds.Bottom ||
                     bounds.Right > this._bounds.Right  ||
@@ -75,15 +75,15 @@ namespace Limaki.Visuals {
 
         public virtual void Add(IVisual item) {
             if (item.Shape != null) {
-                RectangleI bounds = item.Shape.BoundsRect;
+                RectangleD bounds = item.Shape.BoundsRect;
                 Add (bounds, item);
                 checkBoundsAdd(ref bounds);
             }
         }
 
-        protected abstract void Add ( RectangleI bounds, IVisual item );
+        protected abstract void Add ( RectangleD bounds, IVisual item );
 
-        protected virtual void checkBoundsRemove ( ref RectangleI bounds ) {
+        protected virtual void checkBoundsRemove ( ref RectangleD bounds ) {
             if ( !_boundsDirty ) {
                 if ( bounds.Bottom >= this._bounds.Bottom ||
                     bounds.Right >= this._bounds.Right ||
@@ -94,13 +94,13 @@ namespace Limaki.Visuals {
         }
         public virtual void Remove(IVisual item) {
             if (item.Shape != null) {
-                RectangleI bounds = item.Shape.BoundsRect;
+                RectangleD bounds = item.Shape.BoundsRect;
                 checkBoundsRemove(ref bounds);
                 Remove (bounds, item);
             }
         }
 
-        protected abstract void Remove(RectangleI bounds, IVisual item);
+        protected abstract void Remove(RectangleD bounds, IVisual item);
 
         public virtual void AddRange(IEnumerable<IVisual> items) {
             var r = _bounds.Right;
@@ -124,15 +124,15 @@ namespace Limaki.Visuals {
             if (r < 0) r = 0;
             if (b < 0) b = 0;
                    
-            _bounds = RectangleI.FromLTRB (l,t,r,b);
+            _bounds = RectangleD.FromLTRB (l,t,r,b);
             _boundsDirty = false;
         }
 
-        protected abstract RectangleI CalculateBounds();
+        protected abstract RectangleD CalculateBounds();
 
-        public abstract IEnumerable<IVisual> Query(RectangleS clipBounds);
+        public abstract IEnumerable<IVisual> Query(RectangleD clipBounds);
 
-        public abstract IEnumerable<IVisual> Query( RectangleS clipBounds, ZOrder zOrder );
+        public abstract IEnumerable<IVisual> Query( RectangleD clipBounds, ZOrder zOrder );
 
         public abstract IEnumerable<IVisual> Query();
 

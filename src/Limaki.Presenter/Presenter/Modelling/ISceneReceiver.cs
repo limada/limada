@@ -17,7 +17,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Modelling {
     /// <summary>
     /// updates the data with the modeller
     /// feeds the Clipper with TItems hulls

@@ -18,10 +18,10 @@ using Limada.Model;
 using Limada.Schemata;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Visuals;
 using Limaki.Common;
+using Limaki.Visuals;
 
-namespace Limada.View {
+namespace Limaki.Limada.View {
     public class VisualThingMarkerFacade:MarkerFacade<IVisual,IThing, IVisualEdge,ILink> {
         public VisualThingMarkerFacade(IGraph<IVisual, IVisualEdge> graph): base(graph) {}
 

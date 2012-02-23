@@ -16,30 +16,31 @@
 using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
+using Xwt;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Clipping {
     public class BoundsClipper : IClipper {
-        public BoundsClipper(RectangleI bounds) {
+        public BoundsClipper(RectangleD bounds) {
             this._bounds = bounds;
         }
 
-        public IEnumerable<PointI> Hull {
+        public IEnumerable<Point> Hull {
             get { return RectangleShape.Hull(_bounds,0,false); }
         }
 
-        protected RectangleI _bounds = RectangleI.Empty;
-        public RectangleI Bounds {
+        protected RectangleD _bounds = RectangleD.Zero;
+        public RectangleD Bounds {
             get { return _bounds; }
         }
 
         public bool RenderAll {get;set;}
 
 
-        public void Add(IEnumerable<PointI> hull) {
-            int l = _bounds.X;
-            int t = _bounds.Y;
-            int b = _bounds.Bottom;
-            int r = _bounds.Right;
+        public void Add(IEnumerable<Point> hull) {
+            var l = _bounds.X;
+            var t = _bounds.Y;
+            var b = _bounds.Bottom;
+            var r = _bounds.Right;
             foreach (var env in hull) {
                 var envX = env.X;
                 var envY = env.Y;
@@ -52,7 +53,7 @@ namespace Limaki.Presenter {
                 if (envY > b)
                     b = envY;
             }
-            this._bounds = Drawing.RectangleI.FromLTRB(l, t, r, b);
+            this._bounds = RectangleD.FromLTRB(l, t, r, b);
         }
 
         public bool IsEmpty {
@@ -60,7 +61,7 @@ namespace Limaki.Presenter {
         }
 
         public void Clear() {
-            _bounds = RectangleI.Empty;
+            _bounds = RectangleD.Zero;
             RenderAll = false;
         }
 

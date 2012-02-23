@@ -12,12 +12,12 @@
  * 
  */
 
-using System;
-using Limaki.Drawing;
 using Limaki.Common;
+using Limaki.Drawing;
 using Limaki.Graphs;
+using Xwt;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.UI.GraphScene {
     /// <summary>
     /// Overrides Zooming; if an item is hit, no zooming is performed
     /// </summary>
@@ -42,7 +42,7 @@ namespace Limaki.Presenter.UI {
 
         public override void OnMouseUp(MouseActionEventArgs e) {
             var zoomTarget = this.Viewport ();
-            PointI p = zoomTarget.Camera.ToSource(e.Location);
+            Point p = zoomTarget.Camera.ToSource(e.Location);
             TItem item = Scene.Hit(p, HitSize);
             if (item==null) {
                 base.OnMouseUp (e);
