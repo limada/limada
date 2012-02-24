@@ -52,7 +52,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;NET_4_0</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>3</WarningLevel>
+    <WarningLevel>4</WarningLevel>
     <NoWarn>1591;1572;1573;1574;0419;</NoWarn>
     <DocumentationFile>bin\Release\Db4objects.Db4o.xml</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>

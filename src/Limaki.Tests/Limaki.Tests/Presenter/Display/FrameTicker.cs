@@ -1,6 +1,6 @@
-using Limaki.Presenter;
-using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI;
+using Limaki.View;
+using Limaki.View.Rendering;
+using Limaki.View.UI;
 using Limaki.UnitTest;
 
 namespace Limaki.Tests.Presenter.Display {

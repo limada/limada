@@ -41,13 +41,8 @@ namespace Xwt.GtkBackend
 		bool changingCheck;
 		
 		public MenuItemBackend ()
-			: this (new Gtk.ImageMenuItem (""))
 		{
-		}
-		
-		public MenuItemBackend (Gtk.MenuItem item)
-		{
-			this.item = item;
+			item = new Gtk.ImageMenuItem ("");
 			label = (Gtk.Label) item.Child;
 			item.ShowAll ();
 		}
@@ -123,7 +118,7 @@ namespace Xwt.GtkBackend
 			}
 		}
 		
-/*		public void SetType (MenuItemType type)
+		public void SetType (MenuItemType type)
 		{
 			string text = label.Text;
 			
@@ -170,8 +165,13 @@ namespace Xwt.GtkBackend
 						EnableEvent (ob);
 				}
 			}
-		}*/
+		}
 		
+		public void SetSeparator ()
+		{
+			throw new NotImplementedException ();
+		}
+
 		public void Initialize (object frontend)
 		{
 		}

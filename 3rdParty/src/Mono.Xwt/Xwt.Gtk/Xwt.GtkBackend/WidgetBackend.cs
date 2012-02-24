@@ -135,15 +135,6 @@ namespace Xwt.GtkBackend
 			Widget.GrabFocus ();
 		}
 		
-		public string TooltipText {
-			get {
-				return Widget.TooltipText;
-			}
-			set {
-				Widget.TooltipText = value;
-			}
-		}
-		
 		public virtual void Dispose (bool disposing)
 		{
 			if (Widget != null && !disposing && Widget.Parent == null)
@@ -605,8 +596,6 @@ namespace Xwt.GtkBackend
 
 		void HandleLeaveNotifyEvent (object o, Gtk.LeaveNotifyEventArgs args)
 		{
-			if (args.Event.Detail == Gdk.NotifyType.Inferior)
-				return;
 			Toolkit.Invoke (delegate {
 				EventSink.OnMouseExited ();
 			});
@@ -614,8 +603,6 @@ namespace Xwt.GtkBackend
 
 		void HandleEnterNotifyEvent (object o, Gtk.EnterNotifyEventArgs args)
 		{
-			if (args.Event.Detail == Gdk.NotifyType.Inferior)
-				return;
 			Toolkit.Invoke (delegate {
 				EventSink.OnMouseEntered ();
 			});

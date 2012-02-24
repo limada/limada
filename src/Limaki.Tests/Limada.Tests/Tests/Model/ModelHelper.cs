@@ -1,6 +1,7 @@
 using Limada.Model;
 using Limaki.Graphs;
-using Limaki.Limada.View;
+using Limada.View;
+using Limada.VisualThings;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Graph.Wrappers;

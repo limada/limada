@@ -119,15 +119,6 @@ namespace Xwt.Mac
 		{
 		}
 		
-		public string TooltipText {
-			get {
-				return Widget.ToolTip;
-			}
-			set {
-				Widget.ToolTip = value;
-			}
-		}
-		
 		public virtual void Dispose (bool disposing)
 		{
 		}
@@ -156,10 +147,6 @@ namespace Xwt.Mac
 		
 		public virtual object Font {
 			get {
-				if (Widget is NSControl)
-					return ((NSControl)(object)Widget).Font;
-				if (Widget is NSText)
-					return ((NSText)(object)Widget).Font;
 				/// TODO
 //				throw new NotImplementedException ();
 				return null;
@@ -170,16 +157,12 @@ namespace Xwt.Mac
 			}
 		}
 		
-		public virtual Xwt.Drawing.Color BackgroundColor {
+		public Xwt.Drawing.Color BackgroundColor {
 			get {
-				if (Widget.Layer != null)
-					return Widget.Layer.BackgroundColor.ToXwtColor ();
-				else
-					return Xwt.Drawing.Color.Black;
+				throw new NotImplementedException ();
 			}
 			set {
-				if (Widget.Layer != null)
-					Widget.Layer.BackgroundColor = value.ToCGColor ();
+				throw new NotImplementedException ();
 			}
 		}
 		
@@ -194,7 +177,6 @@ namespace Xwt.Mac
 		
 		public WidgetSize GetPreferredWidth ()
 		{
-//			double w1 = Widget.FittingSize.Width + frontend.Margin.HorizontalSpacing;
 			double w = Widget.WidgetWidth() + frontend.Margin.HorizontalSpacing;
 			var s = new Xwt.WidgetSize (w, w);
 			if (minWidth != -1 && s.MinSize > minWidth)
@@ -204,7 +186,6 @@ namespace Xwt.Mac
 
 		public WidgetSize GetPreferredHeight ()
 		{
-//			double h1 = Widget.FittingSize.Height + frontend.Margin.VerticalSpacing;
 			double h = Widget.WidgetHeight() + frontend.Margin.VerticalSpacing;
 			var s = new Xwt.WidgetSize (h, h);
 			if (minHeight != -1 && s.MinSize > minHeight)

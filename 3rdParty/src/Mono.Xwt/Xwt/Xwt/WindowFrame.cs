@@ -68,7 +68,7 @@ namespace Xwt
 			
 			public void OnBoundsChanged (Rectangle bounds)
 			{
-				Parent.OnBoundsChanged (new BoundsChangedEventArgs () { Bounds = bounds });
+				((Window)Parent).OnBoundsChanged (new BoundsChangedEventArgs () { Bounds = bounds });
 			}
 		}
 		

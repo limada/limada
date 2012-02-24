@@ -5,8 +5,8 @@ using Limaki.Drawing.Indexing.QuadTrees;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
 using Limaki.Visuals;
-using Limaki.Presenter.Visuals;
-using Limaki.Presenter.Display;
+using Limaki.View.Visuals;
+using Limaki.View.Display;
 using Xwt;
 
 namespace Limaki.Tests.Presenter.Winform {

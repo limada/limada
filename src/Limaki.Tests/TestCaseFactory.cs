@@ -17,14 +17,15 @@ using Limaki.Common;
 using Limaki.Data;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Limada.View;
+using Limada.View;
+using Limada.VisualThings;
 using Limaki.Model;
-using Limaki.Presenter.Display;
-using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI;
-using Limaki.Presenter.UI.GraphScene;
+using Limaki.View.Display;
+using Limaki.View.Rendering;
+using Limaki.View.UI;
+using Limaki.View.UI.GraphScene;
 using Limaki.UseCases;
-using Limaki.Presenter.Winform.Display;
+using Limaki.View.Winform.Display;
 using Limaki.UseCases.Winform;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Presenter.Display;
@@ -37,7 +38,7 @@ using Limaki.WCF.Data;
 using Limaki.Visuals;
 using Limada.Schemata;
 using Limaki.Tests.Presenter;
-using Limaki.UseCases.Viewers;
+using Limaki.Viewers;
 
 
 namespace Limaki.Tests.UseCases {
@@ -229,7 +230,7 @@ namespace Limaki.Tests.UseCases {
 
         public void RepairDatabase(UseCase sender) {
             sender.FileManager.DefaultDialogValues(sender.FileManager.OpenFileDialog);
-            if (sender.FileDialogShow(sender.FileManager.OpenFileDialog, true) == Limaki.UseCases.Viewers.DialogResult.OK) {
+            if (sender.FileDialogShow(sender.FileManager.OpenFileDialog, true) == Viewers.DialogResult.OK) {
                 sender.SaveChanges();
                 sender.FileManager.Close();
                 sender.FileManager.ShowEmptyThingGraph();

@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Limaki.WPF008;
 
-namespace Limaki.Presenter.WPF.Test {
+namespace Limaki.View.WPF.Test {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>

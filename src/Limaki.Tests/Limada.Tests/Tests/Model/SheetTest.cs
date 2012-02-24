@@ -16,8 +16,8 @@ using System.IO;
 using Limada.Model;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;
-using Limaki.Limada.Presenter;
-using Limaki.Limada.View;
+using Limada.View;
+using Limada.VisualThings;
 using Limaki.Tests;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Graph.Wrappers;
@@ -33,9 +33,9 @@ using Limaki.Common;
 using System.Collections.Generic;
 using System.Xml;
 using Limaki.Model.Streams;
-using Limaki.Presenter.Layout;
-using Limaki.Presenter.Visuals.UI;
-using Limaki.Presenter.Visuals.Layout;
+using Limaki.View.Layout;
+using Limaki.View.Visuals.UI;
+using Limaki.View.Visuals.Layout;
 using Limada.Schemata;
 
 namespace Limada.Tests.Model {

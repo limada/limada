@@ -27,7 +27,6 @@
 using System;
 using MonoMac.AppKit;
 using Xwt.Drawing;
-using MonoMac.CoreGraphics;
 
 namespace Xwt.Mac
 {
@@ -69,22 +68,6 @@ namespace Xwt.Mac
 		public static NSColor ToNSColor (this Color col)
 		{
 			return NSColor.FromDeviceRgba ((float)col.Red, (float)col.Green, (float)col.Blue, (float)col.Alpha);
-		}
-		
-		public static CGColor ToCGColor (this Color col)
-		{
-			return new CGColor ((float)col.Red, (float)col.Green, (float)col.Blue, (float)col.Alpha);
-		}
-		
-		public static Color ToXwtColor (this NSColor col)
-		{
-			return new Color (col.RedComponent, col.GreenComponent, col.BlueComponent, col.AlphaComponent);
-		}
-		
-		public static Color ToXwtColor (this CGColor col)
-		{
-			var cs = col.Components;
-			return new Color (cs[0], cs[1], cs[2], col.Alpha);
 		}
 	}
 }

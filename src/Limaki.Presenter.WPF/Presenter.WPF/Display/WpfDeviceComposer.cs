@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Limaki.Presenter.UI;
-using Limaki.Presenter.Display;
-using Limaki.Presenter.WPF.UI;
+using Limaki.View.Display;
+using Limaki.View.UI;
+using Limaki.View.WPF.UI;
 
-namespace Limaki.Presenter.WPF.Display {
+namespace Limaki.View.WPF.Display {
     public class WPFDeviceComposer<TData> : DeviceComposer<TData, WPFDisplay<TData>> {
         public EventControler EventControler { get; set; }
         public override void Factor(Display<TData> display) {
@@ -20,7 +20,7 @@ namespace Limaki.Presenter.WPF.Display {
             this.DeviceRenderer = deviceRenderer;
 
             this.EventControler = new WPFEventControler();
-            this.ViewPort = new WPFViewPort<TData>(Device);
+            this.ViewPort = new WpfViewport<TData>(Device);
             this.DeviceCursor = new CursorHandler(Device);
 
             this.SelectionRenderer = new SelectionRenderer();

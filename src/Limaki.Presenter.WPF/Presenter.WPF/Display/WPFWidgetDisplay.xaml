@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Limaki.Presenter.WPF.Display.WPFDisplay"
+﻿<UserControl x:Class="Limaki.View.WPF.Display.WPFDisplay"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     >

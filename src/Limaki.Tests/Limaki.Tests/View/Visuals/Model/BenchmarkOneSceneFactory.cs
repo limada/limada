@@ -22,7 +22,7 @@ using Limaki.Visuals;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using System;
-using Limaki.Presenter.Visuals.Layout;
+using Limaki.View.Visuals.Layout;
 using Xwt;
 
 namespace Limaki.Tests.Graph.Model {

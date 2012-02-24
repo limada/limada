@@ -1,12 +1,12 @@
-﻿using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI;
-using Limaki.Common;
+﻿using Limaki.Common;
 using System.Windows.Media;
 using Limaki.Drawing;
 using Limaki.Drawing.WPF;
+using Limaki.View.Rendering;
+using Limaki.View.UI;
 using Xwt;
 
-namespace Limaki.Presenter.WPF {
+namespace Limaki.View.WPF {
 
     public class MoveResizeRenderer : MoveResizeRendererBase {
 

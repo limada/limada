@@ -1,12 +1,12 @@
 using System.Windows;
 using System.Windows.Input;
 using System;
-using Limaki.Presenter.UI;
+using Limaki.View.UI;
 using Xwt;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using Point = System.Windows.Point;
 
-namespace Limaki.Presenter.WPF {
+namespace Limaki.View.WPF {
     public class Converter {
 
 #if ! SILVERLIGHT

@@ -11,9 +11,9 @@ using Limada.UseCases;
 using System.Net;
 using System.Threading;
 using Limaki.Drawing;
-using Limaki.Presenter.WPF.Display;
-using Limaki.Presenter.Visuals;
-using Limaki.Presenter.Display;
+using Limaki.View.WPF.Display;
+using Limaki.View.Visuals;
+using Limaki.View.Display;
 
 namespace Limaki.WPF008 {
     public class Testing {

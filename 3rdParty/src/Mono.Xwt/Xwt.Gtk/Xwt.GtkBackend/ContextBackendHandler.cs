@@ -35,6 +35,7 @@ namespace Xwt.GtkBackend
 	{
 		public Cairo.Context Context;
 		public Cairo.Surface TempSurface;
+		public Gtk.Widget Widget;
 	}
 	
 	public class ContextBackendHandler: IContextBackendHandler
@@ -56,6 +57,7 @@ namespace Xwt.GtkBackend
 			} else {
 				ctx.Context = Gdk.CairoHelper.Create (b.Widget.GdkWindow);
 			}
+			ctx.Widget = b.Widget;
 			return ctx;
 		}
 		
@@ -185,17 +187,11 @@ namespace Xwt.GtkBackend
 			ctx.LineWidth = width;
 		}
 		
-		public void SetLineDash (object backend, double offset, params double[] pattern)
-		{
-			Cairo.Context ctx = ((GtkContext) backend).Context;
-			ctx.SetDash (pattern, offset);
-		}
-		
-		public void SetPattern (object backend, object p)
+		public void SetPattern (object backend, Pattern p)
 		{
 			Cairo.Context ctx = ((GtkContext)backend).Context;
 			if (p != null)
-				ctx.Pattern = (Cairo.Pattern) p;
+				ctx.Pattern = (Cairo.Pattern)WidgetRegistry.GetBackend (p);
 			else
 				ctx.Pattern = null;
 		}
@@ -208,50 +204,20 @@ namespace Xwt.GtkBackend
 		{
 			Pango.Layout pl = (Pango.Layout) WidgetRegistry.GetBackend (layout);
 			GtkContext ctx = (GtkContext) backend;
-			ctx.Context.MoveTo (x, y);
-			Pango.CairoHelper.ShowLayout (ctx.Context, pl);
+			
+			Gdk.GC gc = ctx.Widget.Style.BlackGC;
+			ctx.Widget.GdkWindow.DrawLayout (gc, (int)x, (int)y, pl);
 		}
 		
-		public void DrawImage (object backend, object img, double x, double y, double alpha)
+		public void DrawImage (object backend, Image img, double x, double y, double alpha)
 		{
-			Gdk.Pixbuf pb = (Gdk.Pixbuf)img;
+			Gdk.Pixbuf pb = (Gdk.Pixbuf)WidgetRegistry.GetBackend (img);
 			GtkContext ctx = (GtkContext)backend;
 			Gdk.CairoHelper.SetSourcePixbuf (ctx.Context, pb, x, y);
 			if (alpha == 1)
 				ctx.Context.Paint ();
 			else
 				ctx.Context.PaintWithAlpha (alpha);
-		}
-		
-		public void DrawImage (object backend, object img, double x, double y, double width, double height, double alpha)
-		{
-			Gdk.Pixbuf pb = (Gdk.Pixbuf)img;
-			GtkContext ctx = (GtkContext)backend;
-			ctx.Context.Save ();
-			double sx = ((double) width) / pb.Width;
-			double sy = ((double) height) / pb.Height;
-			ctx.Context.Translate (x, y);
-			ctx.Context.Scale (sx, sy);
-			Gdk.CairoHelper.SetSourcePixbuf (ctx.Context, pb, 0, 0);
-			if (alpha == 1)
-				ctx.Context.Paint ();
-			else
-				ctx.Context.PaintWithAlpha (alpha);
-			ctx.Context.Restore ();
-			
-/*			var imgs = new Cairo.ImageSurface (Cairo.Format.ARGB32, pb.Width, pb.Height);
-			var ic = new Cairo.Context (imgs);
-			Gdk.CairoHelper.SetSourcePixbuf (ic, pb, 0, 0);
-			if (alpha == 1)
-				ic.Paint ();
-			else
-				ic.PaintWithAlpha (alpha);
-			
-			var sp = new Cairo.SurfacePattern (imgs);
-			sp.Extend = Cairo.Extend.None;
-			ctx.Context.Rectangle (x, y, width, height);
-			ctx.Context.Pattern = sp;
-			ctx.Context.Fill ();*/
 		}
 		
 		public void Rotate (object backend, double angle)

@@ -184,10 +184,8 @@ namespace Xwt.Mac
 		
 		public void SetMainMenu (IMenuBackend menu)
 		{
-			var m = (MenuBackend) menu;
-			m.SetMainMenuMode ();
+			NSMenu m = (NSMenu) menu;
 			NSApplication.SharedApplication.Menu = m;
-			
 //			base.Menu = m;
 		}
 		

@@ -81,9 +81,7 @@ namespace Xwt.Mac
 		public void SetChildBounds (IWidgetBackend widget, Rectangle rect)
 		{
 			var w = GetWidget (widget);
-			
-			// Not using SetWidgetBounds because the view is flipped
-			w.Frame = new System.Drawing.RectangleF ((float)rect.X, (float)rect.Y, (float)rect.Width, (float)rect.Height);;
+			w.SetWidgetBounds (rect);
 			w.NeedsDisplay = true;
 		}
 	}

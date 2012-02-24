@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Limaki.Presenter.WPF {
+namespace Limaki.View.WPF {
     /// <summary>
     /// Interaktionslogik für UserControl1.xaml
     /// </summary>

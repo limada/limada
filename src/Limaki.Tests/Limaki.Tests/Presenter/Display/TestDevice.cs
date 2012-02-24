@@ -1,4 +1,4 @@
-using Limaki.Presenter;
+using Limaki.View;
 
 namespace Limaki.Tests.Presenter.Display {
     public interface ITestDevice {

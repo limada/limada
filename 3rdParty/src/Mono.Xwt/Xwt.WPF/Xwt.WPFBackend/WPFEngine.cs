@@ -39,19 +39,18 @@ namespace Xwt.WPFBackend
 		public override void InitializeApplication ()
 		{
 			application = new System.Windows.Application ();
-		    
-            RegisterBackends();
+		    RegisterBackends();
 			
 		}
+        public virtual void RegisterBackends() {
+            WidgetRegistry.RegisterBackend(typeof(Window), typeof(WindowBackend));
+            WidgetRegistry.RegisterBackend(typeof(Menu), typeof(MenuBackend));
+            WidgetRegistry.RegisterBackend(typeof(MenuItem), typeof(MenuItemBackend));
+            WidgetRegistry.RegisterBackend(typeof(Box), typeof(BoxBackend));
 
-        public void RegisterBackends() {
-            WidgetRegistry.RegisterBackend( typeof( Window ), typeof( WindowBackend ) );
-            WidgetRegistry.RegisterBackend( typeof( Menu ), typeof( MenuBackend ) );
-            WidgetRegistry.RegisterBackend( typeof( MenuItem ), typeof( MenuItemBackend ) );
-            WidgetRegistry.RegisterBackend( typeof( Box ), typeof( BoxBackend ) );
-
-            WidgetRegistry.RegisterBackend( typeof( Font ), typeof( FontBackendHandler ) );
+            WidgetRegistry.RegisterBackend(typeof(Font), typeof(FontBackendHandler));
         }
+
 		public override void RunApplication ()
 		{
 			application.Run ();
@@ -96,8 +95,6 @@ namespace Xwt.WPFBackend
 
 			return null;
 		}
-
-       
-    }
+	}
 }
 

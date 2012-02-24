@@ -1,12 +1,12 @@
 ﻿using System.Windows.Controls;
 using Limaki.Drawing;
 using Limaki.Drawing.WPF;
-using Limaki.Presenter.Clipping;
-using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI;
+using Limaki.View.UI;
+using Limaki.View.Clipping;
+using Limaki.View.Rendering;
 using Xwt;
 
-namespace Limaki.Presenter.WPF.UI {
+namespace Limaki.View.WPF.UI {
     public class WPFRenderEventArgs : RenderEventArgs {
 
         public WPFRenderEventArgs(WPFSurface surface) {

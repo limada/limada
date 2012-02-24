@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Limaki.Presenter.WPF.Test.Properties {
+namespace Limaki.View.WPF.Test.Properties {
 
 
     /// <summary>

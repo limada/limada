@@ -28,7 +28,6 @@ using System;
 using Xwt.Backends;
 using Xwt.Drawing;
 using MonoMac.AppKit;
-using MonoMac.Foundation;
 
 namespace Xwt.Mac
 {
@@ -50,8 +49,7 @@ namespace Xwt.Mac
 		public object SetSize (object handle, double size)
 		{
 			NSFont f = (NSFont) handle;
-			var matrix = f.FontDescriptor.Matrix ?? new NSAffineTransform ();
-			return NSFont.FromDescription (f.FontDescriptor.FontDescriptorWithSize ((float)size), matrix);
+			return NSFont.FromDescription (f.FontDescriptor.FontDescriptorWithSize ((float)size), f.FontDescriptor.Matrix);
 		}
 
 		public object SetFamily (object handle, string family)

@@ -1,11 +1,11 @@
 using Limaki.Graphs;
-using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI;
-using Limaki.Presenter.Display;
-using Limaki.Presenter;
+using Limaki.View.Rendering;
+using Limaki.View.UI;
+using Limaki.View.Display;
+using Limaki.View;
 using Limaki.Drawing;
 using Limaki.Common;
-using Limaki.Presenter.UI.GraphScene;
+using Limaki.View.UI.GraphScene;
 using Xwt;
 
 namespace Limaki.Tests.Graph.Wrappers {
@@ -162,7 +162,7 @@ where T : class {
 			deviceRenderer.Display = display;
             this.DeviceRenderer = deviceRenderer;
             this.EventControler = new EventControler();
-            this.ViewPort = new ViewPort();
+            this.ViewPort = new Viewport();
             this.DeviceCursor = new MockCursorHandler();
 
             this.SelectionRenderer = new MockSelectionRenderer();

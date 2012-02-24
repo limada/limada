@@ -117,9 +117,6 @@
     <Compile Include="Samples\MenuSamples.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Samples\Tooltips.cs">
-      <SubType>Component</SubType>
-    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -138,9 +135,6 @@
     <EmbeddedResource Include="Samples\cow.jpg">
       <LogicalName>cow.jpg</LogicalName>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -2,18 +2,18 @@ using System;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Model;
-using Limaki.Presenter.UI.GraphScene;
-using Limaki.Presenter.Visuals.Display;
+using Limaki.View.UI.GraphScene;
+using Limaki.View.Visuals.Display;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Visuals;
 using Limaki.Visuals;
-using Limaki.Presenter.Visuals.Layout;
-using Limaki.Presenter.UI;
-using Limaki.Presenter;
-using Limaki.Presenter.Visuals;
+using Limaki.View.Visuals.Layout;
+using Limaki.View.UI;
+using Limaki.View;
+using Limaki.View.Visuals;
 using Limaki.Common;
-using Limaki.Presenter.Display;
-using Limaki.Presenter.Visuals.UI;
+using Limaki.View.Display;
+using Limaki.View.Visuals.UI;
 
 namespace Limaki.Tests.Graph.Wrappers {
     public class Mock<TFactory>

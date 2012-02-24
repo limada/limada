@@ -9,7 +9,7 @@ using Xwt.Drawing;
 
 namespace Xwt.WPFBackend
 {
-	public static class DataConverter
+    public static class DataConverter
 	{
 		//
 		// Rect/Point

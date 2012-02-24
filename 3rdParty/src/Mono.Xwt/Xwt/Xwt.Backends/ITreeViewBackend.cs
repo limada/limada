@@ -40,8 +40,6 @@ namespace Xwt.Backends
 		bool IsRowExpanded (TreePosition pos);
 		void ExpandRow (TreePosition pos, bool expandChildren);
 		void CollapseRow (TreePosition pos);
-		void ScrollToRow (TreePosition pos);
-		void ExpandToRow (TreePosition pos);
 		
 		bool HeadersVisible { get; set; }
 	}

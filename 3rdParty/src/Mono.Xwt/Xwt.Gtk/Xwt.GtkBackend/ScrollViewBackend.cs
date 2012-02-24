@@ -31,8 +31,6 @@ namespace Xwt.GtkBackend
 {
 	public class ScrollViewBackend: WidgetBackend, IScrollViewBackend
 	{
-		bool showBorder = true;
-		
 		public ScrollViewBackend ()
 		{
 			Widget = new Gtk.ScrolledWindow ();
@@ -54,15 +52,10 @@ namespace Xwt.GtkBackend
 				var w = GetWidget (child);
 				if (w is Gtk.Viewport)
 					Widget.Child = w;
-				else {
-					Gtk.Viewport vp = new Gtk.Viewport ();
-					vp.Show ();
-					vp.Add (w);
-					Widget.Child = vp;
-				}
+				else
+					Widget.AddWithViewport (w);
 			} else
 				Widget.Child = null;
-			UpdateBorder ();
 		}
 		
 		public override void EnableEvent (object eventId)
@@ -101,25 +94,6 @@ namespace Xwt.GtkBackend
 				double y = Widget.Vadjustment.Value;
 				return new Rectangle (x, y, Widget.Hadjustment.PageSize, Widget.Vadjustment.PageSize);
 			}
-		}
-		
-		public bool BorderVisible {
-			get {
-				return Widget.ShadowType == Gtk.ShadowType.In;
-			}
-			set {
-				showBorder = value;
-				UpdateBorder ();
-			}
-		}
-		
-		void UpdateBorder ()
-		{
-			var shadowType = showBorder ? Gtk.ShadowType.In : Gtk.ShadowType.None;
-			if (Widget.Child is Gtk.Viewport)
-				((Gtk.Viewport)Widget.Child).ShadowType = shadowType;
-			else
-				Widget.ShadowType = shadowType;
 		}
 		
 		public ScrollPolicy VerticalScrollPolicy {

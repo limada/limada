@@ -86,11 +86,6 @@ namespace Xwt
 			get { return Backend.VisibleRect; }
 		}
 		
-		public bool BorderVisible {
-			get { return Backend.BorderVisible; }
-			set { Backend.BorderVisible = value; }
-		}
-		
 		public event EventHandler VisibleRectChanged {
 			add {
 				OnBeforeEventAdd (ScrollViewEvent.VisibleRectChanged, visibleRectChanged);

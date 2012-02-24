@@ -1,5 +1,5 @@
 using System.Windows.Forms;
-using Limaki.Presenter.Winform;
+using Limaki.View.Winform;
 using Limaki.UseCases;
 using Limaki.UseCases.Winform;
 using Limaki.Common.IOC;
@@ -20,7 +20,7 @@ namespace Limaki.App {
         }
 
         public void CreateUseCase(Form mainform) {
-            mainform.Icon = Limaki.Presenter.Properties.Resources.LimadaLogoA;
+            mainform.Icon = Limaki.View.Properties.Resources.LimadaLogoA;
             mainform.ClientSize = new System.Drawing.Size(800, 600);
 
             var deviceComposer = new WinformUseCaseComposer();

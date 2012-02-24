@@ -3,7 +3,8 @@ using Xwt.Backends;
 using Xwt.Engine;
 
 namespace Xwt.GDIBackend {
-    public class GDIEngine : Xwt.Backends.EngineBackend {
+
+    public class GdiEngine : Xwt.Backends.EngineBackend {
 
         public override void RunApplication() {
             RegisterBackends();

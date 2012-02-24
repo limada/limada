@@ -422,11 +422,6 @@ namespace Xwt
 			set { Backend.BackgroundColor = value; }
 		}
 		
-		public string TooltipText {
-			get { return Backend.TooltipText; }
-			set { Backend.TooltipText = value; }
-		}
-		
 		public Point ConvertToScreenCoordinates (Point widgetCoordinates)
 		{
 			return Backend.ConvertToScreenCoordinates (widgetCoordinates);

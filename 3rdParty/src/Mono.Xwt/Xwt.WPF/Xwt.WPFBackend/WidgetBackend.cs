@@ -353,20 +353,7 @@ namespace Xwt.WPFBackend
 				eventSink.OnDragLeave (EventArgs.Empty);
 			});
 		}
-
-
-        public string TooltipText
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-    }
+	}
 
 	public interface IWpfWidgetBackend
 	{

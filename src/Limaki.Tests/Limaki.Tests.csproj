@@ -114,7 +114,11 @@
     <Compile Include="Limada.Tests\Tests\View\ThingVisualMapperTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\VisualThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\Wrappers\WrapperTest.cs" />
-    <Compile Include="Playground\KeyValueStore\KeyValue.cs" />
+    <Compile Include="Playground\Limjekts\Limjekts.cs" />
+    <None Include="Playground\View\Mac.ContextBackendHandler.cs" />
+    <Compile Include="Playground\View\PaintContext.cs" />
+    <Compile Include="Playground\View\PaintContextBackendHandler.cs" />
+    <None Include="Playground\View\Mac.TextLayoutBackendHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceLoader.cs" />
     <Compile Include="TestCaseFactory.cs" />
@@ -243,6 +247,14 @@
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xwt.SWF\Xwt.GDI\Xwt.GDI.csproj">
+      <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
+      <Name>Xwt.GDI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xwt.SWF\Xwt.SWF\Xwt.SWF.csproj">
+      <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
+      <Name>Xwt.SWF %28Xwt.SWF\Xwt.SWF%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Limaki.Tests\Presenter\Winform\OpenExampleData.resx">
@@ -285,7 +297,9 @@
   <ItemGroup>
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
     <Folder Include="Playground\Graph\" />
-    <Folder Include="Playground\View\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Playground\View\graphics-cairo.c" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

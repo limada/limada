@@ -41,11 +41,6 @@ namespace Xwt.Backends
 			set;
 		}
 		
-		bool BorderVisible {
-			get;
-			set;
-		}
-		
 		Rectangle VisibleRect { get; }
 	}
 	

@@ -16,13 +16,13 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model;
-using Limaki.Presenter.Visuals.Display;
+using Limaki.View.Visuals.Display;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Graph.Wrappers;
 using Limaki.Visuals;
 using NUnit.Framework;
-using Limaki.Presenter.Visuals;
-using Limaki.Presenter.Layout;
+using Limaki.View.Visuals;
+using Limaki.View.Layout;
 using Xwt;
 
 

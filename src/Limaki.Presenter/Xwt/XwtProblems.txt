@@ -5,3 +5,13 @@
         }
 
 missing
+
+Recangle has strange behaviours
+
+this is made public:
+WidgetRegistry.CreateSharedBackend
+
+changed temporary:
+this is needed until Engines works in limaki
+WPFEngine: RegisterBackends() 
+

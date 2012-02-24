@@ -86,10 +86,6 @@ namespace Xwt.Engine
 		{
 			exitActions.Enqueue (a);
 		}
-		
-		public static bool InUserCode {
-			get { return inUserCode > 0; }
-		}
 	}
 }
 

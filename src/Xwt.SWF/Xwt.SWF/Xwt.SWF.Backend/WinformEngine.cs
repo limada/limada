@@ -1,10 +1,10 @@
-﻿using Xwt.Engine;
+using Xwt.Engine;
 using SWF = System.Windows.Forms;
 using Xwt.GDIBackend;
 
 namespace Xwt.WinformBackend {
 
-    public class SWFEngine : GDIEngine {
+    public class SWFEngine : GdiEngine {
         public override void InitializeApplication() {
 
             SWF.Application.EnableVisualStyles();

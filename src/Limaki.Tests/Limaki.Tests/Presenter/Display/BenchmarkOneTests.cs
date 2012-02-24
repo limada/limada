@@ -15,9 +15,9 @@
 
 using Limaki.Actions;
 using Limaki.Drawing;
-using Limaki.Presenter.UI;
-using Limaki.Presenter.UI.GraphScene;
-using Limaki.Presenter.Visuals.UI;
+using Limaki.View.UI;
+using Limaki.View.UI.GraphScene;
+using Limaki.View.Visuals.UI;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;

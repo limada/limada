@@ -16,7 +16,8 @@
 
 using Limada.Model;
 using Limaki.Graphs;
-using Limaki.Limada.View;
+using Limada.View;
+using Limada.VisualThings;
 using Limaki.Tests.Visuals;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;

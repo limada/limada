@@ -1,14 +1,14 @@
-﻿using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI;
-using Limaki.Common;
+﻿using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Drawing.WPF;
 using Limaki.Drawing.WPF.Shapes;
 using System.Windows.Media;
+using Limaki.View.Rendering;
+using Limaki.View.UI;
 using Xwt;
 
-namespace Limaki.Presenter.WPF {
+namespace Limaki.View.WPF {
 
     public class SelectionRenderer : MoveResizeRenderer, IShapedSelectionRenderer {
         private IPainter _painter = null;

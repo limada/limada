@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows;
 using Limaki.Common;
 
-namespace Limaki.Presenter.WPF.Test {
+namespace Limaki.View.WPF.Test {
     /// <summary>
     /// Interaktionslogik für "App.xaml"
     /// </summary>

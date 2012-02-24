@@ -69,7 +69,6 @@ namespace Xwt.Backends
 		
 		object Font { get; set; }
 		Color BackgroundColor { get; set; }
-		string TooltipText { get; set; }
 	}
 	
 	public interface IWidgetEventSink

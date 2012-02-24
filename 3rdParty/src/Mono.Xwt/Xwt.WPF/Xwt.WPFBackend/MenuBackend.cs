@@ -87,15 +87,17 @@ namespace Xwt.WPFBackend
 		{
 		}
 
+        #region IMenuBackend Member
 
-        public void Popup()
-        {
+
+        public void Popup() {
             throw new NotImplementedException();
         }
 
-        public void Popup(IWidgetBackend widget, double x, double y)
-        {
+        public void Popup(IWidgetBackend widget, double x, double y) {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

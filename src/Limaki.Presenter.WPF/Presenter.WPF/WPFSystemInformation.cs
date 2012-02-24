@@ -1,11 +1,11 @@
 using Limaki.Drawing;
-using Limaki.Presenter.UI;
 using System.Windows;
+using Limaki.View.UI;
 using Xwt;
 using Size = Xwt.Size;
 
 
-namespace Limaki.Presenter.WPF {
+namespace Limaki.View.WPF {
     public class WPFSystemInformation : IUISystemInformation {
         public Size DragSize {
             get {

@@ -37,6 +37,7 @@ namespace Xwt
 		Menu subMenu;
 		EventSink eventSink;
 		EventHandler clicked;
+		MenuItemType type;
 		Image image;
 		
 		static MenuItem ()
@@ -59,6 +60,12 @@ namespace Xwt
 		public MenuItem (string label): this ()
 		{
 			Label = label;
+		}
+		
+		public MenuItem (string label, MenuItemType type): this ()
+		{
+			Label = label;
+			Type = type;
 		}
 		
 		new IMenuItemBackend Backend {
@@ -89,9 +96,21 @@ namespace Xwt
 			set { Backend.Visible = value; }
 		}
 		
+		[DefaultValue (true)]
+		public bool Checked {
+			get { return Backend.Checked; }
+			set { Backend.Checked = value; }
+		}
+		
 		public Image Image {
 			get { return image; }
 			set { image = value; Backend.SetImage (XwtObject.GetBackend (value)); }
+		}
+		
+		[DefaultValue (MenuItemType.Normal)]
+		public MenuItemType Type {
+			get { return type; }
+			set { type = value; Backend.SetType (type); }
 		}
 		
 		public void Show ()

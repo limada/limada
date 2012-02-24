@@ -29,7 +29,6 @@ using Xwt.Backends;
 using MonoMac.AppKit;
 using MonoMac.Foundation;
 using Xwt.Engine;
-using MonoMac.ObjCRuntime;
 
 namespace Xwt.Mac
 {
@@ -42,25 +41,23 @@ namespace Xwt.Mac
 		#region IButtonBackend implementation
 		public override void Initialize ()
 		{
-			ViewObject = new MacButton (EventSink);
+			ViewObject = new Button (EventSink);
 			Widget.SizeToFit ();
 		}
 
 		public void EnableEvent (Xwt.Backends.ButtonEvent ev)
 		{
-			((MacButton)Widget).EnableEvent (ev);
+			((Button)Widget).EnableEvent (ev);
 		}
 
 		public void DisableEvent (Xwt.Backends.ButtonEvent ev)
 		{
-			((MacButton)Widget).DisableEvent (ev);
+			((Button)Widget).DisableEvent (ev);
 		}
 		
 		public void SetContent (string label, object imageBackend, ContentPosition imagePosition)
 		{
-			Widget.Title = label ?? "";
-			if (string.IsNullOrEmpty (label))
-				imagePosition = ContentPosition.Center;
+			Widget.Title = label;
 			if (imageBackend != null) {
 				Widget.Image = (NSImage)imageBackend;
 				switch (imagePosition) {
@@ -68,7 +65,6 @@ namespace Xwt.Mac
 				case ContentPosition.Left: Widget.ImagePosition = NSCellImagePosition.ImageLeft; break;
 				case ContentPosition.Right: Widget.ImagePosition = NSCellImagePosition.ImageRight; break;
 				case ContentPosition.Top: Widget.ImagePosition = NSCellImagePosition.ImageAbove; break;
-				case ContentPosition.Center: Widget.ImagePosition = NSCellImagePosition.ImageOverlaps; break;
 				}
 			}
 			Widget.SizeToFit ();
@@ -80,46 +76,31 @@ namespace Xwt.Mac
 			case ButtonStyle.Normal:
 				Widget.BezelStyle = NSBezelStyle.RoundRect;
 				Widget.SetButtonType (NSButtonType.MomentaryPushIn);
-				Messaging.void_objc_msgSend_bool (Widget.Handle, selSetShowsBorderOnlyWhileMouseInside.Handle, false);
 				break;
 			case ButtonStyle.Flat:
 				Widget.BezelStyle = NSBezelStyle.RoundRect;
-				Messaging.void_objc_msgSend_bool (Widget.Handle, selSetShowsBorderOnlyWhileMouseInside.Handle, true);
+				Widget.ShowsBorderOnlyWhileMouseInside ();
 				break;
 			}
 		}
 		
-		static Selector selSetShowsBorderOnlyWhileMouseInside = new Selector ("setShowsBorderOnlyWhileMouseInside:");
-		
 		public void SetButtonType (ButtonType type)
 		{
-			switch (type) {
-			case ButtonType.Disclosure: Widget.BezelStyle = NSBezelStyle.Disclosure; break;
-			default: Widget.BezelStyle = NSBezelStyle.RoundRect; break;
-			}
+			
 		}
 		
 		#endregion
 	}
 	
-	class MacButton: NSButton, IViewObject<NSButton>
+	class Button: NSButton, IViewObject<NSButton>
 	{
-		public MacButton (IntPtr p): base (p)
+		public Button (IntPtr p): base (p)
 		{
 		}
 		
-		public MacButton (IButtonEventSink eventSink)
+		public Button (IButtonEventSink eventSink)
 		{
 			BezelStyle = NSBezelStyle.Rounded;
-			Activated += delegate {
-				Toolkit.Invoke (delegate {
-					eventSink.OnClicked ();
-				});
-			};
-		}
-		
-		public MacButton (ICheckBoxEventSink eventSink)
-		{
 			Activated += delegate {
 				Toolkit.Invoke (delegate {
 					eventSink.OnClicked ();

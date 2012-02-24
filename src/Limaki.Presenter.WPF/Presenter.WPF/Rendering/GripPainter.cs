@@ -22,10 +22,10 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using Limaki.Drawing.WPF.Shapes;
 using System.Windows.Controls;
-using Limaki.Presenter.UI;
+using Limaki.View.UI;
 using Xwt;
 
-namespace Limaki.Presenter.WPF {
+namespace Limaki.View.WPF {
     /// <summary>
     /// Paints the grips of a rectangle
     /// </summary>
