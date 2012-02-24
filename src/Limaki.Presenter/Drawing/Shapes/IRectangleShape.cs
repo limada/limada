@@ -13,14 +13,16 @@
  * 
  */
 
-namespace Limaki.Drawing {
-    public interface IRectangleShape : IShape<RectangleI> { }
+using Xwt;
 
-    public interface IRoundedRectangleShape : IShape<RectangleI> { }
+namespace Limaki.Drawing.Shapes {
+    public interface IRectangleShape : IShape<RectangleD> { }
+
+    public interface IRoundedRectangleShape : IShape<RectangleD> { }
 
     public interface IVectorShape : IShape<Vector> { }
 
-    public interface IBezierShape : IShape<RectangleI> {
-        PointS[] BezierPoints { get; }
+    public interface IBezierShape : IShape<RectangleD> {
+        Point[] BezierPoints { get; }
     }
 }

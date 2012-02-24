@@ -13,42 +13,14 @@
  */
 
 
+using Xwt;
+using Xwt.Drawing;
+
 namespace Limaki.Drawing.GDI {
 
     public class GDIUtils {
 
-        public static void SetFontStyle(Font toolkit, System.Drawing.FontStyle native) {
-            if (toolkit == null) return;
-
-            if ((native & System.Drawing.FontStyle.Italic) != 0) {
-                toolkit.Style |= FontStyle.Italic;
-            } 
-            
-            if ((native & System.Drawing.FontStyle.Underline) != 0) {
-                toolkit.Style |= FontStyle.Underline;
-            } 
-
-            if ((native & System.Drawing.FontStyle.Bold) != 0) {
-                toolkit.Style |= FontStyle.Bold;
-            };
-
-            if (native == System.Drawing.FontStyle.Regular) {
-                toolkit.Style = FontStyle.Normal;
-            }
-        }
-
-        public static void SetFont(Font toolkit, System.Drawing.Font native) {
-            SetFontStyle (toolkit, native.Style);
-            toolkit.Size = native.Size;
-            toolkit.Family = native.Name;
-        }
-
-        public static System.Drawing.FontStyle GetFontStyle(Font toolkit) {
-            var result = System.Drawing.FontStyle.Regular;
-            if (toolkit == null) return result;
-            return GDIConverter.Convert (toolkit.Style);
-        }
-
+       
         public static void SetToolkitPen(Pen toolkit, System.Drawing.Pen native) {
             
         }
@@ -97,18 +69,18 @@ namespace Limaki.Drawing.GDI {
             return stringFormat;
         }
 
-        public static SizeS GetTextDimension(System.Drawing.Font font, string text, System.Drawing.SizeF textSize) {
+        public static Size GetTextDimension(System.Drawing.Font font, string text, System.Drawing.SizeF textSize) {
             return GetTextDimension(DeviceContext, font, text, GetDefaultStringFormat(), textSize);
         }
 
-        public static SizeS GetTextDimension(System.Drawing.Font font, string text,
+        public static Size GetTextDimension(System.Drawing.Font font, string text,
             System.Drawing.StringFormat stringFormat,
             System.Drawing.SizeF textSize) {
 
             return GetTextDimension(DeviceContext, font, text, stringFormat, textSize);
         }
 
-        public static SizeS GetTextDimension(
+        public static Size GetTextDimension(
             System.Drawing.Graphics g,
             System.Drawing.Font font,
             string text,

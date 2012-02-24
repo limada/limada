@@ -20,8 +20,9 @@ using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
 using Limaki.Presenter.Layout;
-using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.Visuals;
+using Xwt;
 
 namespace Limaki.Presenter.Visuals.UI {
     public static class SceneExtensions {
@@ -102,7 +103,7 @@ namespace Limaki.Presenter.Visuals.UI {
             }
         }
 
-        public static void AddItem(IGraphScene<IVisual, IVisualEdge> scene, IVisual item, IGraphLayout<IVisual,IVisualEdge> layout, PointI pt) {
+        public static void AddItem(IGraphScene<IVisual, IVisualEdge> scene, IVisual item, IGraphLayout<IVisual,IVisualEdge> layout, Point pt) {
             bool allowAdd = true;
             if (scene == null)
                 return;
@@ -118,7 +119,7 @@ namespace Limaki.Presenter.Visuals.UI {
 
         public static IVisual PlaceVisual(IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual visual, IGraphLayout<IVisual, IVisualEdge> layout) {
             if (visual != null && scene !=null) {
-                PointI pt = (PointI)layout.Border;
+                Point pt = (Point)layout.Border;
                 if (root != null) {
                     pt = root.Shape[Anchor.LeftBottom];
                 }

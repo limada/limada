@@ -1,6 +1,9 @@
 ﻿
 
+
+
 using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Reporting {
     public interface IReport {
@@ -8,11 +11,11 @@ namespace Limaki.Reporting {
     }
 
     public interface IReportOptions {
-        RectangleS PageSize { get; set; }
-        float MarginLeft { get; set; }
-        float MarginRight { get; set; }
-        float MarginTop { get; set; }
-        float MarginBottom { get; set; }
+        RectangleD PageSize { get; set; }
+        double MarginLeft { get; set; }
+        double MarginRight { get; set; }
+        double MarginTop { get; set; }
+        double MarginBottom { get; set; }
         bool MarginMirroring { get; set; }
         int Columns { get; set; }
     }

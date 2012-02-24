@@ -1,5 +1,8 @@
 ﻿using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Presenter.Display;
+using Xwt;
+
 namespace Limaki.Presenter.WPF.Display {
     [TODO]
     public class WPFViewPort<T>:ViewPort {
@@ -9,8 +12,8 @@ namespace Limaki.Presenter.WPF.Display {
         }
         public virtual WPFDisplay<T> Device { get; set; }
 
-        private PointI _scrollPosition = PointI.Empty;
-        public override Limaki.Drawing.PointI ClipOrigin {
+        private Point _scrollPosition = Point.Zero;
+        public override Point ClipOrigin {
             get {
                
                 return _scrollPosition;
@@ -24,12 +27,12 @@ namespace Limaki.Presenter.WPF.Display {
 
             }
         }
-        public override SizeI ClipSize {
+        public override Size ClipSize {
             get { return Device.Size; }
         }
 
         private bool _scrollMinSizeChanging = false;
-        public override SizeI DataSize {
+        public override Size DataSize {
             get {
                     return Device.ScrollMinSize;
 

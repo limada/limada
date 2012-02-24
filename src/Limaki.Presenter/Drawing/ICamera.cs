@@ -14,6 +14,7 @@
  */
 
 using System;
+using Xwt;
 
 namespace Limaki.Drawing {
     public interface ICamera:IDisposable {
@@ -27,61 +28,32 @@ namespace Limaki.Drawing {
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        PointI ToSource ( PointI s );
+        Point ToSource ( Point s );
         /// <summary>
         /// convert a source point into a transformed point (matrix.transform)
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        PointI FromSource ( PointI s );
+        Point FromSource ( Point s );
         /// <summary>
         /// convert a transformed rectangle into a source rectangle (matrix.inverseTransform)
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        RectangleI ToSource(RectangleI s);
+        RectangleD ToSource(RectangleD s);
         /// <summary>
         /// convert a source rectangle into a transformed rectangle (matrix.transform)
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        RectangleI FromSource(RectangleI s);
+        RectangleD FromSource(RectangleD s);
 
 
-        SizeI FromSource ( SizeI s );
-        SizeI ToSource ( SizeI s );
-
-        /// <summary>
-        /// convert a transformed point into a source point (matrix.inverseTransform)
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        PointS ToSource(PointS s);
-        /// <summary>
-        /// convert a source point into a transformed point (matrix.transform)
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        PointS FromSource(PointS s);
-        /// <summary>
-        /// convert a transformed rectangle into a source rectangle (matrix.inverseTransform)
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        RectangleS ToSource(RectangleS s);
-        /// <summary>
-        /// convert a source rectangle into a transformed rectangle (matrix.transform)
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        RectangleS FromSource(RectangleS s);
-
-        SizeS FromSource(SizeS s);
-        SizeS ToSource(SizeS s);
+        Size FromSource ( Size s );
+        Size ToSource ( Size s );
 
         void FromSource(IShape s);
         void ToSource(IShape s);
-
 
     }
 

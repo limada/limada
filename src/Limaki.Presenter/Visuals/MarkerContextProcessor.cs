@@ -1,9 +1,7 @@
-using Limaki.Common;
 using Limaki.Common.IOC;
+using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Visuals;
-using Limaki.Drawing;
 
 namespace Limaki.Visuals {
     public class MarkerContextProcessor : ContextProcessor<IGraphScene<IVisual, IVisualEdge>> {

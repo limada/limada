@@ -1,8 +1,9 @@
 using System;
 using System.Drawing;
 using Limaki.Presenter;
-using Limaki.Presenter.UI;
 using Limaki.Drawing.GDI;
+using Limaki.Presenter.Clipping;
+using Limaki.Presenter.Rendering;
 
 namespace Limaki.Presenter.GDI.UI {
     public class GDIRenderEventArgs : RenderEventArgs {

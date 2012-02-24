@@ -16,8 +16,9 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.Presenter.Rendering;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.UI.GraphScene {
     public interface IGraphSceneLayer<TItem, TEdge> : ILayer<IGraphScene<TItem, TEdge>> 
     where TEdge:TItem, IEdge<TItem> {
         

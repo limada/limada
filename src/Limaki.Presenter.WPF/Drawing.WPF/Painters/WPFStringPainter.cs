@@ -4,6 +4,8 @@ using Limaki.Drawing.WPF;
 using Limaki.Drawing.WPF.Shapes;
 using Limaki.Drawing.Shapes;
 using System.Windows.Media;
+using Xwt;
+using Canvas = System.Windows.Controls.Canvas;
 
 namespace Limaki.Drawing.WPF.Painters {
     public class WPFStringPainter : Limaki.Drawing.Painters.StringPainterBase, IPainter<string> {
@@ -13,13 +15,13 @@ namespace Limaki.Drawing.WPF.Painters {
         public override void Render(ISurface surface) {
             var shape = this.Shape;
             var bounds =
-                new RectangleI(shape.Location, shape.Size).NormalizedRectangle();
+                new RectangleD(shape.Location, shape.Size).NormalizedRectangle();
             
             var border = new System.Windows.Thickness (4, 4, 4, 1);
 
             var isVector = shape.ShapeDataType == typeof (Vector);
             double angle = 0;
-            PointI middle = default( PointI );
+            Point middle = default( Point );
 
             if (this.DataElement is TextBlock) {
                 var textBlock = (TextBlock) DataElement;
@@ -82,16 +84,16 @@ namespace Limaki.Drawing.WPF.Painters {
             }
         }
 
-        public override PointI[] Measure(Matrice matrix, int delta, bool extend) {
+        public override Point[] Measure(Matrice matrix, int delta, bool extend) {
             IShape shape = this.Shape;
             if (this.Text != null && shape != null) {
                 IStyle style = this.Style;
                 var font = style.Font;
                 if (AlignText && shape.ShapeDataType == typeof(Vector)) {
                     Vector vector = ((Limaki.Drawing.Shapes.VectorShape)shape).Data;
-                    float vLen = (float)Vector.Length(vector);
-                    float fontSize = (float)font.Size + 2;
-                    var size = new SizeS(vLen, fontSize);
+                    var vLen = Vector.Length(vector);
+                    var fontSize = font.Size + 2;
+                    var size = new Size(vLen, fontSize);
                     size = WPFUtils.GetTextDimension(this.Text, style);
                     if (size.Width == 0) {
                         size.Width = vLen;

@@ -20,8 +20,8 @@ using Limaki.Graphs;
 using System;
 using Limaki.Common.Collections;
 using Limaki.Common;
-using Limaki.Drawing.Indexing.QuadTrees;
 using Limaki.Graphs.Extensions;
+using Xwt;
 
 namespace Limaki.Visuals {
     public class Scene : IGraphScene<IVisual,IVisualEdge>, IVisual, IComposite<IVisual> {
@@ -90,7 +90,7 @@ namespace Limaki.Visuals {
 
                 _shape.Data = SpatialIndex.Bounds;
                 if (_shape.Size.Height < 0 || _shape.Size.Width < 0)
-                    _shape.Size = SizeI.Empty;
+                    _shape.Size = Xwt.Size.Zero;
                 
                 this.Size = _shape.Size;
                 this.Location = _shape.Location;
@@ -99,8 +99,8 @@ namespace Limaki.Visuals {
             set { }
         }
 
-        public virtual SizeI Size { get; set; }
-        public virtual PointI Location { get; set; }
+        public virtual Size Size { get; set; }
+        public virtual Point Location { get; set; }
         public virtual IStyleGroup Style { get; set; }
 
         object IVisual.Data {
@@ -173,8 +173,8 @@ namespace Limaki.Visuals {
             _spatialIndex = null;
             Markers = null;
             Requests.Clear ();
-            this.Size = SizeI.Empty;
-            this.Location = PointI.Empty;
+            this.Size = Size.Zero;
+            this.Location = Point.Zero;
             this._shape = null;
         }
 
@@ -211,11 +211,11 @@ namespace Limaki.Visuals {
             set {_spatialIndex = value;}
         }
         
-        public IEnumerable<IVisual> ElementsIn(RectangleS clipBounds) {
+        public IEnumerable<IVisual> ElementsIn(RectangleD clipBounds) {
             return SpatialIndex.Query (clipBounds);
         }
 
-        public IEnumerable<IVisual> ElementsIn(RectangleS clipBounds, ZOrder zOrder) {
+        public IEnumerable<IVisual> ElementsIn(RectangleD clipBounds, ZOrder zOrder) {
             return SpatialIndex.Query(clipBounds, zOrder);
         }
 
@@ -259,12 +259,12 @@ namespace Limaki.Visuals {
         public virtual IVisual Hovered {get;set;}
           
 
-        static PointI emptyPoint = new PointI (int.MinValue, int.MinValue);
-        private PointI _noHit = emptyPoint;
+        static Point emptyPoint = new Point (int.MinValue, int.MinValue);
+        private Point _noHit = emptyPoint;
 
-		public PointI NoHit {get{return _noHit;}}
+		public Point NoHit {get{return _noHit;}}
 		
-		protected IVisual TestHit(PointI p, int hitSize, HitTest hitTest) {
+		protected IVisual TestHit(Point p, int hitSize, HitTest hitTest) {
             if (p==_noHit) {
                 return null;
             }
@@ -275,7 +275,7 @@ namespace Limaki.Visuals {
                 return Hovered;
             }
             int halfSize = hitSize / 2;
-            var hitBounds = new RectangleI(p.X - halfSize, p.Y - halfSize, hitSize, hitSize);
+            var hitBounds = new RectangleD(p.X - halfSize, p.Y - halfSize, hitSize, hitSize);
             foreach (var visual in SpatialIndex.Query(hitBounds,ZOrder.EdgesFirst)) {
                 if ((visual == Focused) || (visual == Hovered)) {
                     continue;
@@ -289,16 +289,16 @@ namespace Limaki.Visuals {
             return null;
         }
 
-        public IVisual Hit(PointI p, int hitSize) {
-            HitTest hitTest = delegate(IVisual w, PointI ap, int ahitSize) {
+        public IVisual Hit(Point p, int hitSize) {
+            HitTest hitTest = delegate(IVisual w, Point ap, int ahitSize) {
                 if (w.Shape == null) return false;
                 return w.Shape.IsHit(ap, ahitSize);
             };
             return TestHit(p, hitSize, hitTest);
         }
 
-        public IVisual HitBorder(PointI p, int hitSize) {
-            HitTest hitTest = delegate(IVisual w, PointI ap, int ahitSize) {
+        public IVisual HitBorder(Point p, int hitSize) {
+            HitTest hitTest = delegate(IVisual w, Point ap, int ahitSize) {
                 if (w.Shape == null) return false;
                 return w.Shape.IsBorderHit(ap, ahitSize);
             };
@@ -319,7 +319,7 @@ namespace Limaki.Visuals {
 
         #region Bounds-Handling
 
-        public virtual void UpdateBounds(IVisual visual, RectangleI invalid) {
+        public virtual void UpdateBounds(IVisual visual, RectangleD invalid) {
             SpatialIndex.Update (invalid, visual);
         }
 
@@ -360,5 +360,5 @@ namespace Limaki.Visuals {
     }
 
 
-    public delegate bool HitTest(IVisual w, PointI p, int hitSize);
+    public delegate bool HitTest(IVisual w, Point p, int hitSize);
 }

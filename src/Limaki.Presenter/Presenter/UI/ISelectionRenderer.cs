@@ -16,6 +16,7 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Presenter.Rendering;
 
 namespace Limaki.Presenter.UI {
     public interface ISelectionRenderer : IRenderAction {

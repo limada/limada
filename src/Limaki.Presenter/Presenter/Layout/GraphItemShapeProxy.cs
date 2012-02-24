@@ -18,8 +18,8 @@ using System.Collections.Generic;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Presenter.UI;
-using System.Linq;
+using Limaki.Presenter.UI.GraphScene;
+using Xwt;
 
 namespace Limaki.Presenter.Layout {
     public class GraphItemShapeProxy<TItem, TEdge> : IShapeProxy<TItem, TEdge>
@@ -34,7 +34,7 @@ namespace Limaki.Presenter.Layout {
         private IGraphLayout<TItem, TEdge> layout = null;
         public ICollection<TEdge> AffectedEdges { get; set; }
 
-        private IDictionary<TItem, PointI> locations = new Dictionary<TItem, PointI>();
+        private IDictionary<TItem, Point> locations = new Dictionary<TItem, Point>();
         private IDictionary<TItem, IShape> invokeList = new Dictionary<TItem, IShape>();
 
         protected Func<TItem, IShape> ShapeGetter = null;
@@ -54,7 +54,7 @@ namespace Limaki.Presenter.Layout {
                 }
             }
 
-            foreach (KeyValuePair<TItem, PointI> kvp in locations) {
+            foreach (KeyValuePair<TItem, Point> kvp in locations) {
                 IShape shape = ShapeGetter(kvp.Key);
                 if (shape != null && shape.Location.Equals(kvp.Value) && !invokeDone.Contains(kvp.Key)) {
                     scene.Requests.Add(new LayoutCommand<TItem>(kvp.Key, LayoutActionType.AddBounds));
@@ -89,12 +89,12 @@ namespace Limaki.Presenter.Layout {
             }
         }
 
-        public virtual void SetLocation(TItem item, PointI location) {
+        public virtual void SetLocation(TItem item, Point location) {
             locations[item] = location;
         }
 
-        public virtual PointI GetLocation(TItem item) {
-            PointI result;
+        public virtual Point GetLocation(TItem item) {
+            Point result;
             if (!locations.TryGetValue(item, out result)) {
                 var shape = ShapeGetter(item);
                 result = shape.Location;
@@ -102,11 +102,11 @@ namespace Limaki.Presenter.Layout {
             return result;
         }
 
-        public virtual SizeI GetSize(TItem item) {
+        public virtual Size GetSize(TItem item) {
             var shape = GetShape(item);
             return shape.Size;
         }
-        public virtual void SetSize(TItem item, SizeI value) {
+        public virtual void SetSize(TItem item, Size value) {
             var shape = GetShape(item);
             shape.Size = value;
         }
@@ -130,7 +130,7 @@ namespace Limaki.Presenter.Layout {
                     invokeList.Add(item, shape);
                 }
             } else {
-                if (shape.Size.Equals(SizeI.Empty)) {
+                if (shape.Size.Equals(Size.Zero)) {
                     Justify(item);
                 }
             }

@@ -13,7 +13,7 @@
  * 
  */
 
-using System;
+using Xwt;
 
 namespace Limaki.Drawing.Painters {
     public abstract class Painter<T> : IPainter<T>, IPainter<IShape<T>, T> {
@@ -54,11 +54,11 @@ namespace Limaki.Drawing.Painters {
 
         public abstract void Render ( ISurface surface );
 
-        public virtual PointI[] Measure(Matrice matrix, int delta, bool extend) {
+        public virtual Point[] Measure(Matrice matrix, int delta, bool extend) {
             return Shape.Hull (matrix, delta, extend);
         }
 
-        public virtual PointI[] Measure(int delta, bool extend) {
+        public virtual Point[] Measure(int delta, bool extend) {
             return Shape.Hull(delta, extend);
         }
 

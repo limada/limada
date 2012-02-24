@@ -1,6 +1,5 @@
-﻿using Limaki.Drawing;
-using Limaki.Drawing.Shapes;
-using Limaki.Xwt;
+﻿using Limaki.Drawing.Shapes;
+using Xwt;
 
 namespace Limaki.Presenter.Layout {
     public class AllignerOptions {

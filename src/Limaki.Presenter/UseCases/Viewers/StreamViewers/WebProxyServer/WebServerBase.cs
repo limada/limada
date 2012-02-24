@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Collections.Generic;
 
-namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
+namespace Limaki.UseCases.Viewers.StreamViewers.WebProxyServer {
     public abstract class WebServerBase : IDisposable {
         public WebServerBase() {
             Port = 40110;

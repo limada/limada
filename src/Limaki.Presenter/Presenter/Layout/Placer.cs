@@ -14,11 +14,8 @@
 
 using System;
 using System.Linq;
-using Limaki.Common;
-using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using System.Collections.Generic;
 
 namespace Limaki.Presenter.Layout {

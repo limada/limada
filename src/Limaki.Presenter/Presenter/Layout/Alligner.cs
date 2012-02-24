@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
+using Limaki.Drawing;
+using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Drawing;
 using System.Linq;
 using System;
-using System.Diagnostics;
-using Limaki.Drawing.Shapes;
-using Limaki.Xwt;
+using Xwt;
 
 namespace Limaki.Presenter.Layout {
 
@@ -27,7 +26,7 @@ namespace Limaki.Presenter.Layout {
             VisitItems(items, visit);
         }
 
-        public virtual void OneColumn(IEnumerable<TItem> items, PointI at, int distance) {
+        public virtual void OneColumn(IEnumerable<TItem> items, Point at, double distance) {
             Action<TItem> visit = null;
             var placer = new PlacerComposer<TItem, TEdge>(this);
             placer.AffectedEdges(ref visit);
@@ -57,7 +56,7 @@ namespace Limaki.Presenter.Layout {
             var order = options.PointOrder;
             var dimension = options.Dimension;
 
-            var comparer = new Limaki.Drawing.Shapes.PointComparer { Order = order };
+            var comparer = new PointComparer { Order = order };
             comparer.Delta = Layout.StyleSheet.AutoSize.Width / 2;
 
             Action<TItem> visit = null;
@@ -96,7 +95,7 @@ namespace Limaki.Presenter.Layout {
             var placer = new PlacerComposer<TItem, TEdge>(this);
             var aligner = new AllignComposer<TItem, TEdge>(this);
 
-            var comparer = new Limaki.Drawing.Shapes.PointComparer { Order = options.PointOrder };
+            var comparer = new PointComparer { Order = options.PointOrder };
             comparer.Delta = Layout.StyleSheet.AutoSize.Width / 2;
 
             var walk = items.Select(item => new { location = comparer.Round(Proxy.GetLocation(item)), item });
@@ -104,11 +103,11 @@ namespace Limaki.Presenter.Layout {
 
 
             // align X
-            int? rowStart = null;
-            int top = int.MaxValue;
-            int left = int.MaxValue;
-            var rows = new Queue<Tuple<IEnumerable<TItem>, SizeI>>();
-            var maxSize = new SizeI();
+            double? rowStart = null;
+            double top = double.MaxValue;
+            double left = double.MaxValue;
+            var rows = new Queue<Tuple<IEnumerable<TItem>, Size>>();
+            var maxSize = new Size();
             foreach (var row in walk.GroupBy(row => row.location.X).OrderBy(row => row.Key)) {
                 visit = null;
 
@@ -176,15 +175,15 @@ namespace Limaki.Presenter.Layout {
             var placer = new PlacerComposer<TItem, TEdge>(this);
             var aligner = new AllignComposer<TItem, TEdge>(this);
 
-            var comparer = new Limaki.Drawing.Shapes.PointComparer { Order = options.PointOrder };
+            var comparer = new PointComparer { Order = options.PointOrder };
             comparer.Delta = Layout.StyleSheet.AutoSize.Width / 2;
 
             var walk = new Walker<TItem, TEdge>(this.Graph).DeepWalk(root, 1)
                 .Where(l => !(l.Node is TEdge) && itemCache.Contains(l.Node));
 
-            var bounds = new RectangleI(int.MaxValue,int.MaxValue,0,0);
+            var bounds = new RectangleD(int.MaxValue,int.MaxValue,0,0);
 
-            var rows = new Queue<Tuple<IEnumerable<TItem>, RectangleI>>();
+            var rows = new Queue<Tuple<IEnumerable<TItem>, RectangleD>>();
             
             Action<TItem> visit = null;
 
@@ -242,14 +241,14 @@ namespace Limaki.Presenter.Layout {
             var placer = new PlacerComposer<TItem, TEdge>(this);
             var aligner = new AllignComposer<TItem, TEdge>(this);
 
-            var comparer = new Limaki.Drawing.Shapes.PointComparer { Order = options.PointOrder };
+            var comparer = new PointComparer { Order = options.PointOrder };
             comparer.Delta = Layout.StyleSheet.AutoSize.Width / 2;
 
             var walk = items.Select(item => new { location = comparer.Round(Proxy.GetLocation(item)), item });
             Action<TItem> visit = null;
 
             // align X
-            int? rowStart = null;
+            double? rowStart = null;
             foreach (var row in walk.GroupBy(row => row.location.X).OrderBy(row => row.Key)) {
                 visit = null;
 
@@ -321,7 +320,7 @@ namespace Limaki.Presenter.Layout {
             var space = bounds();
             var distance = (space.Height - size().Height) / (items.Count() - 1);
             var order = Drawing.Shapes.PointOrder.Top;
-            var comparer = new Limaki.Drawing.Shapes.PointComparer { Order = order };
+            var comparer = new PointComparer { Order = order };
             if (dimension == Dimension.Y) {
                 order = Drawing.Shapes.PointOrder.Top;
                 distance = Math.Max(distance, Layout.Distance.Height);
@@ -339,7 +338,7 @@ namespace Limaki.Presenter.Layout {
 
         }
 
-        public virtual RectangleI AllignBounds(IEnumerable<TItem> items) {
+        public virtual RectangleD AllignBounds(IEnumerable<TItem> items) {
             var placer = new PlacerComposer<TItem, TEdge>(this);
             Action<TItem> firstVisit = null;
 

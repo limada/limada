@@ -15,7 +15,7 @@ using System;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
-
+using Xwt;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
@@ -27,8 +27,8 @@ namespace Limaki.Presenter.UI {
             : base() {
             Priority = ActionPriorities.DragActionPriority;
         }
-        private PointI _lastMousePos = new PointI();
-        protected virtual PointI lastMousePos {
+        private Point _lastMousePos = new Point();
+        protected virtual Point lastMousePos {
             get { return _lastMousePos; }
             set { _lastMousePos = value; }
         }
@@ -49,18 +49,18 @@ namespace Limaki.Presenter.UI {
             }
         }
 
-        protected Drawing.RectangleI dragBoxFromMouseDown = Drawing.RectangleI.Empty;
+        protected RectangleD dragBoxFromMouseDown = RectangleD.Zero;
 
         protected void BaseMouseDown(MouseActionEventArgs e) {
             base.OnMouseDown(e);
 
             // The DragSize indicates the size that the mouse can move 
             // before a drag event should be started.                
-            SizeI dragSize = systemInformation.DragSize;
+            Size dragSize = systemInformation.DragSize;
 
             // Create a Rectangle using the DragSize, with the mouse position being
             // at the center of the Rectangle.
-            dragBoxFromMouseDown = new Drawing.RectangleI(new PointI(e.X - (dragSize.Width / 2),
+            dragBoxFromMouseDown = new RectangleD(new Point(e.X - (dragSize.Width / 2),
                                                            e.Y - (dragSize.Height / 2)), dragSize);
 
             // Remember the point where the mouse down occurred
@@ -103,7 +103,7 @@ namespace Limaki.Presenter.UI {
                 int dragTime = systemInformation.DoubleClickTime;
                 int now = Environment.TickCount;
                 // If the mouse NOT moves outside the Rectangle
-                Resolved = !(dragBoxFromMouseDown != Drawing.RectangleI.Empty &&
+                Resolved = !(dragBoxFromMouseDown != RectangleD.Zero &&
                               !dragBoxFromMouseDown.Contains(e.X, e.Y))
                     // if more than 
                            && ((now - _lastMouseTime) > dragTime);
@@ -116,7 +116,7 @@ namespace Limaki.Presenter.UI {
                 }
 
             }
-            dragBoxFromMouseDown = Drawing.RectangleI.Empty;
+            dragBoxFromMouseDown = RectangleD.Zero;
             _lastMouseTime = 0;
 
         }

@@ -12,10 +12,9 @@
  * 
  */
 
-using Limaki.Presenter.Visuals;
+using Limaki.Presenter.Display;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
-using Limaki.Presenter.Display;
 
 namespace Limaki.UseCases.Viewers.ToolStripViewers {
     public class MarkerToolController : ToolController<IGraphSceneDisplay<IVisual, IVisualEdge>, IMarkerTool> {

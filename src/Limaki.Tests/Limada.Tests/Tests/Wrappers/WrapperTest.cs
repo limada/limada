@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Limaki.Graphs;
+using Limaki.Limada.View;
 using Limaki.Model;
 using Limaki.Tests;
 using Limaki.UnitTest;
@@ -27,7 +28,6 @@ using Limaki.Tests.Visuals;
 using Limaki.Tests.Graph;
 using Limada.Tests.Model;
 using Limaki.Visuals;
-using Limada.View;
 using Limaki.Tests.Graph.Wrappers;
 
 

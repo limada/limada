@@ -16,44 +16,41 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Limada.Common;
 using Limada.Model;
 using Limada.Schemata;
-using Limada.View;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.Limada.View;
 using Limaki.Model.Streams;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
-using Id = System.Int64;
-using Limaki.Graphs.Extensions;
 
-namespace Limada.Presenter {
+namespace Limaki.Limada.Presenter {
 
     public class SheetManager : ISheetManager {
 
         #region SheetInfo
-        private IDictionary<Id, SceneInfo> _sheets = null;
+        private IDictionary<Int64, SceneInfo> _sheets = null;
         /// <summary>
         /// names to thing.ids of loaded and saved sheets
         /// </summary>
-        protected IDictionary<Id, SceneInfo> Sheets {
+        protected IDictionary<Int64, SceneInfo> Sheets {
             get {
                 if (_sheets == null) {
-                    _sheets = new Dictionary<Id, SceneInfo>();
+                    _sheets = new Dictionary<Int64, SceneInfo>();
                 }
                 return _sheets;
             }
             set { _sheets = value; }
         }
 
-        private IDictionary<Id, Stream> _sheetsStreams = null;
+        private IDictionary<long, Stream> _sheetsStreams = null;
         /// <summary>
         /// streams of sheets
         /// </summary>
-        protected IDictionary<Id, Stream> SheetStreams {
-            get { return _sheetsStreams ?? (_sheetsStreams = new Dictionary<Id, Stream>()); }
+        protected IDictionary<long, Stream> SheetStreams {
+            get { return _sheetsStreams ?? (_sheetsStreams = new Dictionary<long, Stream>()); }
             set { _sheetsStreams = value; }
         }
 
@@ -66,7 +63,7 @@ namespace Limada.Presenter {
             Sheets[info.Id] = info;
         }
 
-        public SceneInfo RegisterSheet(Id id, string name) {
+        public SceneInfo RegisterSheet(Int64 id, string name) {
             var result = default( SceneInfo );
             if (id !=0 && Sheets.ContainsKey(id)) {
                 result = Sheets[id];
@@ -91,7 +88,7 @@ namespace Limada.Presenter {
             SheetStreams = null;
         }
 
-        public SceneInfo GetSheetInfo(Id id) {
+        public SceneInfo GetSheetInfo(Int64 id) {
             var result = default(SceneInfo);
             Sheets.TryGetValue(id, out result);
             return result;
@@ -117,7 +114,7 @@ namespace Limada.Presenter {
             return GetThingGraph(scene.Graph);
         }
 
-        IThing GetSheetThing(IThingGraph thingGraph, Id id) {
+        IThing GetSheetThing(IThingGraph thingGraph, Int64 id) {
             if (id == -1)
                 return null;
             IThing result = thingGraph.GetById(id);
@@ -209,7 +206,7 @@ namespace Limada.Presenter {
         #endregion
 
         #region load sheet
-        public bool Load(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
+        public bool Load(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Int64 id) {
             var result = LoadFromStore(scene, layout, id);
             try {
                 if (!result) {
@@ -243,9 +240,9 @@ namespace Limada.Presenter {
                     name = source.Description.ToString();
                 }
 
-                Id id = 0;
-                if (source.Source is Id) {
-                    id = (Id)source.Source;
+                Int64 id = 0;
+                if (source.Source is Int64) {
+                    id = (Int64)source.Source;
                 }
 
                 LoadFromStream(source.Data, target, layout);
@@ -291,7 +288,7 @@ namespace Limada.Presenter {
 
         #region SheetStreams
 
-        public bool SaveInStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
+        public bool SaveInStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Int64 id) {
             if (scene.Graph.Count > 0) {
                 var stream = new MemoryStream();
                 new Sheet(scene, layout).Save(stream);
@@ -306,7 +303,7 @@ namespace Limada.Presenter {
             }
             
         }
-        public Stream GetFromStore(Id id) {
+        public Stream GetFromStore(Int64 id) {
             Stream stream = null;
             if (SheetStreams.TryGetValue(id, out stream)) {
                 stream.Position = 0;
@@ -315,11 +312,11 @@ namespace Limada.Presenter {
 
         }
 
-        public bool StoreContains(Id id) {
+        public bool StoreContains(Int64 id) {
             return SheetStreams.ContainsKey(id);
         }
 
-        public bool LoadFromStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Id id) {
+        public bool LoadFromStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Int64 id) {
             Stream stream = null;
             if (SheetStreams.TryGetValue(id, out stream)){
                 LoadFromStream(stream, scene, layout);

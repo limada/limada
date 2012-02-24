@@ -14,6 +14,7 @@
 
 using System.Drawing;
 using Limaki.Drawing.Painters;
+using Limaki.Drawing.Shapes;
 using GDIPen=Limaki.Drawing.GDI.GDIPen;
 
 namespace Limaki.Drawing.GDI.Painters {

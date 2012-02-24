@@ -14,14 +14,11 @@
 
 using System;
 using System.IO;
-using Limada.Common;
-using Limada.Presenter;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Model.Streams;
 using Limaki.Presenter.Display;
 using Limaki.Visuals;
-using Id = System.Int64;
 
 namespace Limaki.UseCases.Viewers.StreamViewers {
     public class SheetViewerController : StreamViewerController {
@@ -65,7 +62,7 @@ namespace Limaki.UseCases.Viewers.StreamViewers {
             var loadFromMemory = false;
             var isStreamOwner = this.IsStreamOwner;
 
-            Id id = content.Source is Id ? (Id)content.Source : 0;
+            Int64 id = content.Source is Int64 ? (Int64)content.Source : 0;
             SceneInfo stored = null;
             if (id != 0 ) {
                 stored = SheetManager.GetSheetInfo(id);

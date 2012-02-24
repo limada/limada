@@ -1,9 +1,12 @@
 using Limaki.Graphs;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
 using Limaki.Presenter.Display;
 using Limaki.Presenter;
 using Limaki.Drawing;
 using Limaki.Common;
+using Limaki.Presenter.UI.GraphScene;
+using Xwt;
 
 namespace Limaki.Tests.Graph.Wrappers {
     public class MockGraphSceneLayer<TItem, TEdge> : GraphSceneLayer<TItem, TEdge>
@@ -39,7 +42,7 @@ where T : class {
 
         public bool Opaque { get; set; }
 
-        public Get<Limaki.Drawing.Color> BackColor { get; set; }
+        public Get<Xwt.Drawing.Color> BackColor { get; set; }
 
         protected object lockRender = new object();
 
@@ -126,11 +129,11 @@ where T : class {
             set { this.Display = value as IDisplay<T>; }
         }
 
-        public RectangleI ClientRectangle {
-            get { return new RectangleI(Display.Viewport.DataOrigin, Display.Viewport.DataSize); }
+        public RectangleD ClientRectangle {
+            get { return new RectangleD(Display.Viewport.DataOrigin, Display.Viewport.DataSize); }
         }
 
-        public SizeI Size {
+        public Size Size {
             get { return Display.Viewport.DataSize; }
         }
 
@@ -138,9 +141,9 @@ where T : class {
 
         public void Invalidate() {}
 
-        public void Invalidate(RectangleI rect) {}
+        public void Invalidate(RectangleD rect) {}
 
-        public PointI PointToClient(PointI source) {
+        public Point PointToClient(Point source) {
             return source;
         }
         public void Dispose(){}

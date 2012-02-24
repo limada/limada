@@ -40,7 +40,7 @@ namespace Limaki.Winform.Controls.TextEditor {
                         }
                     }
 
-                    if (!family.IsStyleAvailable((FontStyle)0xF)) {
+                    if (!family.IsStyleAvailable((System.Drawing.FontStyle)0xF)) {
                         usable = false;
                     }
 
@@ -63,13 +63,26 @@ namespace Limaki.Winform.Controls.TextEditor {
         /// </summary>
         /// <param name="style"></param>
         public void SetFontStyle(System.Drawing.FontStyle style) {
-            SetEditorSelectedRTF((source)=> {
-                return new RTFHelper().SetAttributes(source, 
-                                                     Limaki.Drawing.GDI.GDIConverter.Convert(style));
+            SetEditorSelectedRTF((source) => {
+                return new RTFHelper().SetAttributes(source,Convert(style));
             });
         }
 
-
+        public static Limaki.Common.Text.RTF.FontStyle Convert(System.Drawing.FontStyle native) {
+            var result = Limaki.Common.Text.RTF.FontStyle.Normal;
+            if (native == null)
+                return result;
+            if ((native & System.Drawing.FontStyle.Italic) != 0) {
+                result |= Limaki.Common.Text.RTF.FontStyle.Italic;
+            }
+            if ((native & System.Drawing.FontStyle.Underline) != 0) {
+                result |= Limaki.Common.Text.RTF.FontStyle.Underline;
+            }
+            if ((native & System.Drawing.FontStyle.Bold) != 0) {
+                result |= Limaki.Common.Text.RTF.FontStyle.Bold;
+            }
+            return result;
+        }
 
         public void SetEditorSelectedRTF(Func<Stream, Stream> func) {
             try {

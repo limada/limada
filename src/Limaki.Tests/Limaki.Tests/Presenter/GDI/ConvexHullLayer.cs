@@ -22,9 +22,13 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
 using Limaki.Drawing.Shapes;
+using Limaki.Presenter.Rendering;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.Visuals;
 using Limaki.Presenter.UI;
 using Limaki.Presenter;
+using Xwt;
+using Point = System.Drawing.Point;
 
 
 namespace Limaki.Tests.Presenter.GDI {
@@ -55,7 +59,7 @@ namespace Limaki.Tests.Presenter.GDI {
 
         Point[] GetHull(IGraphScene<IVisual,IVisualEdge> scene, Matrice matrix, int delta) {
             Point[] result = new Point[0];
-            var points = new Set<PointI> ();
+            var points = new Set<Xwt.Point> ();
             foreach(var visual in scene.Elements) {
                 foreach(var p in visual.Shape.Hull(matrix,0,true)) {
                     if (!points.Contains(p))
@@ -63,7 +67,7 @@ namespace Limaki.Tests.Presenter.GDI {
                 }
             }
             var resultI =  new GrahamConvexHull ().FindHull (points).ToArray();
-            return Array.ConvertAll<PointI, Point>(resultI,
+            return Array.ConvertAll<Xwt.Point, Point>(resultI,
                                                    (a) => { return GDIConverter.Convert(a); });
         }
 
@@ -71,7 +75,7 @@ namespace Limaki.Tests.Presenter.GDI {
         Point[] CommandsHull = new Point[0];
 
         void IReceiver.Execute() {
-            var points = new Set<PointI>();
+            var points = new Set<Xwt.Point>();
             Matrice matrix = this.Camera.Matrice.Clone ();
             var layout = this.Layout ();
             if (Data != null && Data.Requests.Count != 0) {
@@ -99,7 +103,7 @@ namespace Limaki.Tests.Presenter.GDI {
                 var resultI = new GrahamConvexHull().FindHull(points).ToArray();
                 //matrix.Invert ();
                 matrix.TransformPoints (resultI);
-                CommandsHull = Array.ConvertAll<PointI, Point>(resultI, a => GDIConverter.Convert(a) );
+                CommandsHull = Array.ConvertAll<Xwt.Point, Point>(resultI, a => GDIConverter.Convert(a) );
             } else {
                 CommandsHull = new Point[0] ;
             }
@@ -109,7 +113,7 @@ namespace Limaki.Tests.Presenter.GDI {
             var hull = e.Clipper.Hull.ToArray();
             var result = new Point[hull.Length];
             
-            result = Array.ConvertAll<PointI, Point>(hull,
+            result = Array.ConvertAll<Xwt.Point, Point>(hull,
                                                      (a) => { return GDIConverter.Convert(a); });
 
             return result;

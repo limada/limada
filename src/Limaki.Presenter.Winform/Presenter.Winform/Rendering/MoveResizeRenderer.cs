@@ -1,11 +1,14 @@
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
-using Limaki.Drawing.Shapes;
+
 using System;
 using Limaki.Common;
-using Limaki.Presenter.UI;
+
 using Limaki.Actions;
 using Limaki.Presenter.GDI.UI;
+using Limaki.Presenter.Rendering;
+using Limaki.Presenter.UI;
+using Xwt;
 
 
 namespace Limaki.Presenter.Winform {
@@ -49,11 +52,11 @@ namespace Limaki.Presenter.Winform {
                 if (useRegionForClipping) {
                     lock (clipRegion) {
                         clipRegion.MakeInfinite();
-                        RectangleI a = oldShape.BoundsRect;
-                        RectangleI b = newShape.BoundsRect;
+                        var a = oldShape.BoundsRect;
+                        var b = newShape.BoundsRect;
 
-                        RectangleI smaller = RectangleI.Intersect(a, b);
-                        RectangleI bigger = RectangleI.Union(a, b);
+                        var smaller = DrawingExtensions.Intersect(a, b);
+                        var bigger = DrawingExtensions.Union(a, b);
                         smaller = Camera.FromSource(smaller);
                         bigger = Camera.FromSource(bigger);
 
@@ -65,17 +68,17 @@ namespace Limaki.Presenter.Winform {
                         bigger = bigger.NormalizedRectangle();
 
                         // this is a mono workaround, as it don't like strange rectangles:
-                        if (smaller.Size == SizeI.Empty) {
+                        if (smaller.Size == Size.Zero) {
                             clipRegion.Intersect(GDIConverter.Convert(bigger));
                         } else {
                             clipRegion.Intersect(
-                                GDIConverter.Convert(RectangleI.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top)));
+                                GDIConverter.Convert(RectangleD.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top)));
                             clipRegion.Union(
-                                GDIConverter.Convert(RectangleI.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom)));
+                                GDIConverter.Convert(RectangleD.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom)));
                             clipRegion.Union(
-                                GDIConverter.Convert(RectangleI.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom)));
+                                GDIConverter.Convert(RectangleD.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom)));
                             clipRegion.Union(
-                                GDIConverter.Convert(RectangleI.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom)));
+                                GDIConverter.Convert(RectangleD.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom)));
 
                             //clipRegion.Intersect(smaller);
                             //clipRegion.Complement(bigger);
@@ -84,7 +87,7 @@ namespace Limaki.Presenter.Winform {
                     }
                 } else {
                     // the have do redraw the oldShape and newShape area
-                    RectangleI invalidRect = RectangleI.Union(oldShape.BoundsRect, newShape.BoundsRect);
+                    var invalidRect = DrawingExtensions.Union(oldShape.BoundsRect, newShape.BoundsRect);
                     // transform rectangle to control coordinates
                     invalidRect = Camera.FromSource(invalidRect);
 

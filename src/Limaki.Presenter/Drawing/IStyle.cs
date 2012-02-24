@@ -13,6 +13,8 @@
  */
 
 using System;
+using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
     /// <summary>
@@ -33,6 +35,8 @@ namespace Limaki.Drawing {
         /// </summary>
         Color TextColor { get; set; }
 
+        TextDecoration TextDecoration { get; set; }
+
         /// <summary>
         /// The pen color is used to draw lines and the outlines of shapes.
         /// </summary>
@@ -48,6 +52,7 @@ namespace Limaki.Drawing {
         /// </summary>
         Font Font { get; set;}
 
+
         /// <summary>
         /// Styles can be linked to other Styles to reuse
         /// resource-intensiv GDI-Objects
@@ -60,7 +65,7 @@ namespace Limaki.Drawing {
         /// The autoSize is used to define the maximum height and width
         /// of a automatic sizing process
         /// </summary>
-        SizeI AutoSize { get;set;}
+        Size AutoSize { get;set;}
 
         /// <summary>
         /// The text color is used to draw text strings
@@ -68,5 +73,11 @@ namespace Limaki.Drawing {
         bool PaintData { get; set; }
 
         void CopyTo(IStyle target);
+    }
+
+    [Flags]
+    public enum TextDecoration {
+        BaseLine = 0,
+        Underline=1
     }
 }

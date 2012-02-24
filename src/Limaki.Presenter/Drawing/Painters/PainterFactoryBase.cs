@@ -1,5 +1,7 @@
 ﻿using System;
 using Limaki.Common;
+using Limaki.Drawing.Shapes;
+using Xwt;
 
 namespace Limaki.Drawing.Painters {
     public abstract class PainterFactoryBase: Factory {
@@ -16,11 +18,11 @@ namespace Limaki.Drawing.Painters {
                 if (type == typeof(string))
                     return Create<IPainter<string>>();
                 if (Reflector.Implements(type, typeof(IRectangleShape)))
-                    return Create<IPainter<IRectangleShape, RectangleI>>();
+                    return Create<IPainter<IRectangleShape, RectangleD>>();
                 if (Reflector.Implements(type, typeof(IRoundedRectangleShape)))
-                    return Create<IPainter<IRoundedRectangleShape, RectangleI>>();
+                    return Create<IPainter<IRoundedRectangleShape, RectangleD>>();
                 if (Reflector.Implements(type, typeof(IBezierShape)))
-                    return Create<IPainter<IBezierShape, RectangleI>>();
+                    return Create<IPainter<IBezierShape, RectangleD>>();
                 if (Reflector.Implements(type, typeof(IVectorShape)))
                     return Create<IPainter<IVectorShape, Vector>>();
             }

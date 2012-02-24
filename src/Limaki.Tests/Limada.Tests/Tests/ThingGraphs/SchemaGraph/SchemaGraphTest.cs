@@ -3,7 +3,6 @@ using Limaki.Graphs;
 using Limaki.Tests;
 using Limaki.UnitTest;
 //using Limaki.Data.db4o;
-using Limada.View;
 using NUnit.Framework;
 using Limada.Model;
 using Limaki.Data;

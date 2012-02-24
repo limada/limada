@@ -15,14 +15,12 @@
 using System;
 using System.IO;
 using Limada.Model;
-using Limada.View;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Streams;
 using Limaki.Visuals;
-using Limada.Schemata;
 
-namespace Limada.View {
+namespace Limaki.Limada.View {
     public class VisualThingStreamHelper {
         public virtual IVisual CreateFromStream( IGraph<IVisual, IVisualEdge> graph, Content<Stream> content ) {
             

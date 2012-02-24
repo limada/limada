@@ -12,15 +12,14 @@
  * 
  */
 
-using System;
 using Limada.Model;
 using Limada.Schemata;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Visuals;
 using Limaki.Common;
+using Limaki.Visuals;
 
-namespace Limada.View {
+namespace Limaki.Limada.View {
     public static class VisualThingGraphExtension {
 
         public static IThingGraph ThingGraph(this IGraph<IVisual, IVisualEdge> graph) {

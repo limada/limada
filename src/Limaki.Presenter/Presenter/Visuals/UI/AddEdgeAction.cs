@@ -15,10 +15,11 @@ using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Presenter.UI;
-using Limaki.Visuals;
 using Limaki.Presenter.Layout;
-
+using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
+using Limaki.Visuals;
+using Xwt;
 
 namespace Limaki.Presenter.Visuals.UI {
     /// <summary>
@@ -50,7 +51,7 @@ namespace Limaki.Presenter.Visuals.UI {
             }
         }
 
-        protected virtual IVisualEdge NewVisual(PointI p) {
+        protected virtual IVisualEdge NewVisual(Point p) {
             IVisualEdge result = SceneExtensions.CreateEdge(this.Scene as Scene);
             newCounter++;
             result.Root = Current;
@@ -62,7 +63,7 @@ namespace Limaki.Presenter.Visuals.UI {
 
         protected override void OnMouseMoveResolved(MouseActionEventArgs e) {
             var camera = this.Camera;
-            PointI p = camera.ToSource(e.Location);
+            Point p = camera.ToSource(e.Location);
             if (Edge == null && Current != null) {
                 Edge = NewVisual (p);
 
@@ -75,7 +76,7 @@ namespace Limaki.Presenter.Visuals.UI {
                 if (Current is IVisualEdge) {
                     rootAnchor = Anchor.Center;
                 } else {
-                    IShape shape = Layout.ShapeFactory.Shape<Vector>(p,new SizeI());
+                    IShape shape = Layout.ShapeFactory.Shape<Vector>(p,new Size());
 
                     rootAnchor = NearestAnchorRouter<IVisual,IVisualEdge>.nearestAnchors(Current.Shape, shape,Current is IVisualEdge,true).One;
                 }
@@ -84,8 +85,8 @@ namespace Limaki.Presenter.Visuals.UI {
 
             ShowGrips = true;
 
-            RectangleI rect = camera.ToSource(
-                RectangleI.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
+            var rect = camera.ToSource(
+                RectangleD.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
                                     LastMousePos.X, LastMousePos.Y));
 
             Scene.Requests.Add(new ResizeCommand<IVisual>(Edge, Scene.ItemShape,rect));

@@ -15,8 +15,9 @@
 
 using Limaki.Actions;
 using Limaki.Common;
+using Limaki.Presenter.Rendering;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Clipping {
     /// <summary>
     /// this class updates the Viewport
     /// and renders according to Clipper

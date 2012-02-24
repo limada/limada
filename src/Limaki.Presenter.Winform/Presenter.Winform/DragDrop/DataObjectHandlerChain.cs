@@ -14,8 +14,8 @@
 
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Limaki.Visuals;
 using Limaki.Graphs;
+using Limaki.Visuals;
 
 
 namespace Limaki.Presenter.Winform.DragDrop {

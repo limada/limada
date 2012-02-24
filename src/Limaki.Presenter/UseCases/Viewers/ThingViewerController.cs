@@ -1,5 +1,4 @@
-﻿using Limada.Model;
-using Limaki.Graphs;
+﻿using Limaki.Graphs;
 using Limaki.Visuals;
 
 namespace Limaki.UseCases.Viewers {

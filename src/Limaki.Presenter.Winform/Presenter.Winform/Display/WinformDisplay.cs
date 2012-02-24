@@ -3,12 +3,19 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Limaki.Common;
+using Limaki.Drawing;
 using Limaki.Drawing.GDI;
 using Limaki.Presenter.Display;
 using Limaki.Presenter.GDI.UI;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
 using Limaki.Presenter.Winform.UI;
+using Xwt;
 using ApplicationContext = Limaki.Common.IOC.ApplicationContext;
+using DragEventArgs = System.Windows.Forms.DragEventArgs;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using Point = Xwt.Point;
+using Size = Xwt.Size;
 
 namespace Limaki.Presenter.Winform.Display {
     public abstract class WinformDevice: UserControl {
@@ -94,7 +101,7 @@ namespace Limaki.Presenter.Winform.Display {
             set {
                 base.BackColor = value;
                 var color = GDIConverter.Convert (value);
-                if (Display.BackColor != color) {
+                if (!Display.BackColor.Equals(color)) {
                     Display.BackColor = color;
                 }
                 
@@ -257,20 +264,20 @@ namespace Limaki.Presenter.Winform.Display {
 
         #region IControl Member
 
-        Limaki.Drawing.RectangleI IControl.ClientRectangle {
+        RectangleD IControl.ClientRectangle {
             get { return GDIConverter.Convert (this.ClientRectangle); }
         }
 
-        Limaki.Drawing.SizeI IControl.Size {
+        Size IControl.Size {
             get { return GDIConverter.Convert(this.Size); }
         }
 
 
-        void IControl.Invalidate(Limaki.Drawing.RectangleI rect) {
+        void IControl.Invalidate(RectangleD rect) {
             this.Invalidate (GDIConverter.Convert (rect));
         }
 
-        Limaki.Drawing.PointI IControl.PointToClient(Limaki.Drawing.PointI source) {
+        Point IControl.PointToClient(Point source) {
             return GDIConverter.Convert(this.PointToClient(GDIConverter.Convert(source)));
         }
 

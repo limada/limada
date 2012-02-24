@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
+using Xwt;
 
 namespace Limaki.Tests.Visuals {
     public class SceneThreadTest {
@@ -28,8 +29,8 @@ namespace Limaki.Tests.Visuals {
             public void DoSomething() {
                 for (int i = 0; i < 100; i++)
                     foreach (var visual in scene.Elements) {
-                        visual.Shape.IsBorderHit(new PointI(10, 10), 10);
-                        PointI location = visual.Shape.Location;
+                        visual.Shape.IsBorderHit(new Point(10, 10), 10);
+                        Point location = visual.Shape.Location;
                         location.X++;
                         location.Y++;
                         visual.Shape.Location = location;
@@ -58,7 +59,7 @@ namespace Limaki.Tests.Visuals {
             int threadCount = 100;
             Thread[] threads = new Thread[threadCount];
 
-            PointI p = new PointI(0, 0);
+            Point p = new Point(0, 0);
 
             for (int i = 0; i < threads.Length; i++) {
                 SceneTreadTester test = new SceneTreadTester();

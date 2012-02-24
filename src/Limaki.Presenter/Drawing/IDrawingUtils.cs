@@ -1,12 +1,14 @@
-﻿using Limaki.Drawing;
+﻿
+using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
     public interface IDrawingUtils {
         uint GetSysColor(SysColorIndex index);
-        object GetCustomLineCap(float arrowWidth, float arrowHeigth);
-        Font CreateFont ( string familiy, double size );
+        object GetCustomLineCap(double arrowWidth, double arrowHeigth);
+       
         Pen CreatePen ( Color color );
         Matrice NativeMatrice();
-        SizeS GetTextDimension(string text, IStyle style);
+        Size GetTextDimension(string text, IStyle style);
     }
 }

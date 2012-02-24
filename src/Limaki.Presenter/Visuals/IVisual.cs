@@ -14,14 +14,14 @@
  */
 
 using Limaki.Drawing;
-using System;
+using Xwt;
 
 namespace Limaki.Visuals {
    public interface IVisual {
         IStyleGroup Style { get; set; }
         IShape Shape { get; set; }
-        PointI Location { get;set;}
-        SizeI Size { get;set;}
+        Point Location { get;set;}
+        Size Size { get;set;}
         object Data { get;set;}
     }
 

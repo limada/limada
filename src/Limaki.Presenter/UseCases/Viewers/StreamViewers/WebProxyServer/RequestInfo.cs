@@ -16,7 +16,7 @@ using System;
 using System.Text;
 using System.Diagnostics;
 
-namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
+namespace Limaki.UseCases.Viewers.StreamViewers.WebProxyServer {
     public class RequestInfo {
 
         public Uri Uri=null;

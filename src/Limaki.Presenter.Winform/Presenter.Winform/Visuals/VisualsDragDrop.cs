@@ -22,6 +22,11 @@ using Limaki.Drawing;
 using Limaki.Presenter.UI;
 using Limaki.Presenter.Winform.DragDrop;
 using Limaki.Visuals;
+using Xwt;
+using Clipboard = System.Windows.Forms.Clipboard;
+using DragEventArgs = System.Windows.Forms.DragEventArgs;
+using Key=Xwt.Key;
+using ModifierKeys = Xwt.ModifierKeys;
 
 namespace Limaki.Presenter.Winform.Visuals {
 
@@ -70,9 +75,9 @@ namespace Limaki.Presenter.Winform.Visuals {
             set { _current = value; }
         }
 
-        IVisual HitTest(PointI p) {
+        IVisual HitTest(Point p) {
             IVisual result = null;
-            PointI sp = camera.ToSource(p);
+            var sp = camera.ToSource(p);
             if (Scene.Focused!=null && Scene.Focused.Shape.IsHit(sp, HitSize)) {
                 result = Scene.Focused;
             }
@@ -152,8 +157,8 @@ namespace Limaki.Presenter.Winform.Visuals {
 
         public virtual void OnDragDrop(DragEventArgs e) {
             
-            PointI pt = camera.ToSource(
-                control.PointToClient(new PointI(e.X, e.Y))
+            var pt = camera.ToSource(
+                control.PointToClient(new Point(e.X, e.Y))
                 );
 
             if (!facade.DoDragDrop (this.Scene, this.control, e.Data, this.Layout, pt, this.HitSize)) {
@@ -172,7 +177,7 @@ namespace Limaki.Presenter.Winform.Visuals {
 
             e.Effect = DragDropEffects.Copy;
 
-            bool sourceIsVisualControl = e.Data is ControlDataObject;
+            var sourceIsVisualControl = e.Data is ControlDataObject;
             // Set the effect based upon the KeyState.
             if (( e.KeyState & ( 8 + 32 ) ) == ( 8 + 32 ) &&
                 ( e.AllowedEffect & DragDropEffects.Link ) == DragDropEffects.Link) {
@@ -213,10 +218,10 @@ namespace Limaki.Presenter.Winform.Visuals {
             // converted to client coordinates.
 
 
-            PointI pt = camera.ToSource(
-                control.PointToClient(new PointI(e.X, e.Y))
+            var pt = camera.ToSource(
+                control.PointToClient(new Point(e.X, e.Y))
                 );
-            IVisual itemUnderMouse = Scene.Hit(pt,HitSize);
+            var itemUnderMouse = Scene.Hit(pt,HitSize);
 
 #if TraceDrop
             if (itemUnderMouse != null) {

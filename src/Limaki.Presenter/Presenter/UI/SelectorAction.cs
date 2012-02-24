@@ -16,6 +16,7 @@ using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
+using Xwt;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
@@ -24,7 +25,7 @@ namespace Limaki.Presenter.UI {
     public class SelectorAction : MoveResizeAction {
 
         # region properties
-        Type _shapeDataType = typeof(RectangleI);
+        Type _shapeDataType = typeof(RectangleD);
         public virtual Type ShapeDataType {
             get { return _shapeDataType; }
             set {
@@ -49,10 +50,10 @@ namespace Limaki.Presenter.UI {
         
         #region Selector-Handling
 
-        public virtual bool HitBorder(PointI p) {
+        public virtual bool HitBorder(Point p) {
             if (Shape == null)
                 return false;
-            PointI sp = Camera.ToSource(p);
+            Point sp = Camera.ToSource(p);
             bool result = Shape.IsBorderHit(sp, HitSize);
             return result;
         }
@@ -64,7 +65,7 @@ namespace Limaki.Presenter.UI {
         # region Mouse-Handling
 
 
-        public override bool HitTest(PointI p) {
+        public override bool HitTest(Point p) {
             bool result = false;
             if (Shape == null) {
                 return result;
@@ -96,13 +97,13 @@ namespace Limaki.Presenter.UI {
             IShape prevShape = (Shape != null ? (IShape)Shape.Clone() : null);
             if (moving) {
                 if (Shape == null) return; // should never happen,but who knows?
-                RectangleI delta = Camera.ToSource(
-                    RectangleI.FromLTRB(e.Location.X, e.Location.Y, LastMousePos.X, LastMousePos.Y));
-                Shape.Location = PointI.Subtract(Shape.Location, delta.Size);
+                RectangleD delta = Camera.ToSource(
+                    RectangleD.FromLTRB(e.Location.X, e.Location.Y, LastMousePos.X, LastMousePos.Y));
+                Shape.Location = Shape.Location - delta.Size;
             } else {
                 // create rectangle and transform into graphics coordinates
-                RectangleI rect = Camera.ToSource(
-                    RectangleI.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
+                RectangleD rect = Camera.ToSource(
+                    RectangleD.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
                                         LastMousePos.X, LastMousePos.Y)
                     );
 

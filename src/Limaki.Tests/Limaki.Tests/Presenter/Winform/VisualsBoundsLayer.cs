@@ -15,9 +15,12 @@
 
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.Visuals;
 using Limaki.Drawing.GDI;
+using Xwt;
 
 namespace Limaki.Tests.Presenter.Winform {
     public class VisualsBoundsLayer : GraphSceneLayer<IVisual,IVisualEdge> {
@@ -68,8 +71,8 @@ namespace Limaki.Tests.Presenter.Winform {
 
             var layout = this.Layout ();
             foreach (var visual in Data.Elements) {
-                PointI[] datahull = null;
-                RectangleI r = Camera.FromSource(visual.Shape.BoundsRect);
+                Point[] datahull = null;
+                var r = Camera.FromSource(visual.Shape.BoundsRect);
                 g.DrawRectangle(pen, GDIConverter.Convert(r));
 
                 if (Layout != null) {
@@ -77,7 +80,7 @@ namespace Limaki.Tests.Presenter.Winform {
                 }
                 //Point[] hull = visual.Shape.Hull(Transformer.Matrice,15, true);
 
-                PointI[] hull = null;
+                Point[] hull = null;
                 if (visual.Shape is VectorShape && Layout != null) {
 
                 }

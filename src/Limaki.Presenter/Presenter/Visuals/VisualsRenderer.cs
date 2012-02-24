@@ -13,9 +13,8 @@
  */
 
 using Limaki.Drawing;
-using Limaki.Presenter.UI;
+using Limaki.Presenter.Rendering;
 using Limaki.Visuals;
-
 
 namespace Limaki.Presenter.Visuals {
     public class VisualsRenderer : GraphItemRenderer<IVisual, IVisualEdge> {

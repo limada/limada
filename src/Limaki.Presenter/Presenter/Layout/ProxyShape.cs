@@ -1,6 +1,7 @@
 ﻿using System;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Xwt;
 
 namespace Limaki.Presenter.Layout {
     /// <summary>
@@ -22,21 +23,21 @@ namespace Limaki.Presenter.Layout {
 
         Func<IShape> GetShape { get; set; }
 
-        Func<PointI> GetLocation { get; set; }
-        Action<PointI> SetLocation { get; set; }
+        Func<Point> GetLocation { get; set; }
+        Action<Point> SetLocation { get; set; }
 
-        Func<SizeI> GetSize { get; set; }
-        Action<SizeI> SetSize { get; set; }
+        Func<Size> GetSize { get; set; }
+        Action<Size> SetSize { get; set; }
 
         public TItem Item { get; protected set; }
         public IShape Shape { get { return GetShape(); } }
 
-        public PointI Location {
+        public Point Location {
             get { return GetLocation(); }
             set { SetLocation(value); }
         }
 
-        public SizeI Size {
+        public Size Size {
             get { return GetSize(); }
             set { SetSize(value); }
         }

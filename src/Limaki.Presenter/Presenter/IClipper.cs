@@ -15,6 +15,7 @@
 
 using System.Collections.Generic;
 using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter {
     /// <summary>
@@ -22,10 +23,10 @@ namespace Limaki.Presenter {
     /// does not know the GraphicsModel (Visuals)
     /// </summary>
     public interface IClipper {
-        IEnumerable<PointI> Hull { get; }
-        Drawing.RectangleI Bounds { get; }
+        IEnumerable<Point> Hull { get; }
+        RectangleD Bounds { get; }
         bool RenderAll { get; set; }
-        void Add ( IEnumerable<PointI> hull );
+        void Add ( IEnumerable<Point> hull );
         void Clear();
         bool IsEmpty { get; }
     }

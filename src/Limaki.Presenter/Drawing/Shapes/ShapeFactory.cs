@@ -12,10 +12,12 @@
  * 
  */
 
+using Xwt;
+
 namespace Limaki.Drawing.Shapes {
     public class ShapeFactory : ShapeFactoryBase {
         protected override void InstrumentClazzes() {
-            Add<IShape<RectangleI>>(() => new RectangleShape());
+            Add<IShape<RectangleD>>(() => new RectangleShape());
             Add<IShape<Vector>>(() => new VectorShape());
 
             Add<IRectangleShape> (() => new RectangleShape());

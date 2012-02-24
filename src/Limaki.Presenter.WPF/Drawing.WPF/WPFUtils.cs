@@ -1,28 +1,32 @@
 using System;
-using System.Windows.Controls;
-using System.Windows.Media;
-using Limaki.Drawing;
 
+using Limaki.Drawing;
+using Xwt.Drawing;
+using Xwt;
+
+using SW = System.Windows;
+using SWM = System.Windows.Media;
+using SWC = System.Windows.Controls;
 
 namespace Limaki.Drawing.WPF {
     public class WPFUtils {
-        public static System.Windows.Media.Color Convert(Limaki.Drawing.Color color) {
-            return System.Windows.Media.Color.FromArgb(color.Alpha, color.Red, color.Green, color.Blue);
+        public static System.Windows.Media.Color Convert(Color color) {
+            return Xwt.WPFBackend.DataConverter.ToWpfColor(color);
         }
 
-        static TextBlock stringContext = new TextBlock();
-        public static SizeI GetTextDimension(string text, IStyle style) {
+        static SWC.TextBlock stringContext = new SWC.TextBlock();
+        public static Size GetTextDimension(string text, IStyle style) {
             SetTextStyle (stringContext, style);
             stringContext.Text = text;
 #if ! SILVERLIGHT
             stringContext.Measure (new System.Windows.Size (style.AutoSize.Width, style.AutoSize.Height));
             System.Windows.Size size = stringContext.DesiredSize;
-            return new SizeI((int)size.Width, (int)size.Height);
+            return new Size((int)size.Width, (int)size.Height);
 #else
             // TODO: look at StringPainter; set maxheight, maxwith
             // take aktualSize, aktualWidth then
             var size =
-                new SizeI (
+                new SizeD (
                     Math.Min((int) stringContext.ActualWidth,style.AutoSize.Width),
                     Math.Min((int)stringContext.ActualHeight, style.AutoSize.Height));
             return size;
@@ -30,8 +34,8 @@ namespace Limaki.Drawing.WPF {
         }
 
         public const double PixelToPoint = 1.5;
-        public static void SetTextStyle(TextBlock textBlock, IStyle style) {
-            textBlock.FontFamily = new FontFamily(style.Font.Family);
+        public static void SetTextStyle(SWC.TextBlock textBlock, IStyle style) {
+            textBlock.FontFamily = new SWM.FontFamily(style.Font.Family);
             textBlock.FontSize = style.Font.Size * PixelToPoint;
 #if ! SILVERLIGHT
             textBlock.TextTrimming = System.Windows.TextTrimming.CharacterEllipsis;
@@ -42,7 +46,7 @@ namespace Limaki.Drawing.WPF {
             if ((style.Font.Style & FontStyle.Italic) !=0) {
                 textBlock.FontStyle = System.Windows.FontStyles.Italic;    
             }
-            if ((style.Font.Style & FontStyle.Bold) != 0) {
+            if ((style.Font.Weight & FontWeight.Bold) != 0) {
                 textBlock.FontWeight = System.Windows.FontWeights.Bold;
             }
 #if ! SILVERLIGHT
@@ -50,7 +54,7 @@ namespace Limaki.Drawing.WPF {
 #else
             textBlock.TextDecorations = null;
 #endif
-            if ((style.Font.Style & FontStyle.Underline) != 0) {
+            if ((style.TextDecoration & TextDecoration.Underline) != 0) {
 #if ! SILVERLIGHT
                 textBlock.TextDecorations.Add(System.Windows.TextDecorations.Underline);
 #else
@@ -59,10 +63,10 @@ namespace Limaki.Drawing.WPF {
             } 
             //textBlock.FontStretch = style.Font.Stretch;
             //textBlock.FontWeight = style.Font.Weight;
-            textBlock.Foreground = new SolidColorBrush(Convert(style.TextColor));
+            textBlock.Foreground = new SWM.SolidColorBrush(Convert(style.TextColor));
         }
 
-        public static void AddPoints(PointCollection points, PointI[] toolkit) {
+        public static void AddPoints(SWM.PointCollection points, Point[] toolkit) {
             foreach(var point in toolkit) {
                 points.Add (new System.Windows.Point (point.X, point.Y));
             }

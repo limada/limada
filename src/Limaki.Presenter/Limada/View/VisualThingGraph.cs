@@ -17,7 +17,7 @@ using Limada.Model;
 using Limaki.Graphs;
 using Limaki.Visuals;
 
-namespace Limada.View {
+namespace Limaki.Limada.View {
     public class VisualThingGraph : LiveGraphPair<IVisual, IThing, IVisualEdge, ILink> {
         public VisualThingGraph( IGraph<IVisual, IVisualEdge> one, IThingGraph two):
             this(one, two, new VisualThingAdapter()) { }

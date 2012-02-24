@@ -14,70 +14,72 @@
 
 
 using System;
+using Xwt;
+using Xwt.Drawing;
 
 
 namespace Limaki.Drawing.GDI {
     public static class GDIConverter{
-        public static System.Drawing.Rectangle Convert(RectangleI toolkit) {
-            return new System.Drawing.Rectangle (toolkit.X, toolkit.Y, toolkit.Width, toolkit.Height);
+        public static System.Drawing.Rectangle Convert(RectangleD toolkit) {
+            return new System.Drawing.Rectangle((int)toolkit.X, (int)toolkit.Y, (int)toolkit.Width, (int)toolkit.Height);
         }
 
-        public static System.Drawing.RectangleF Convert(RectangleS toolkit) {
-            return new System.Drawing.RectangleF(toolkit.X, toolkit.Y, toolkit.Width, toolkit.Height);
+        public static System.Drawing.RectangleF ConvertF(RectangleD toolkit) {
+            return new System.Drawing.RectangleF( (float) toolkit.X, (float) toolkit.Y, (float) toolkit.Width, (float) toolkit.Height );
         }
 
-        public static RectangleI Convert(System.Drawing.Rectangle toolkit) {
-            return new RectangleI(toolkit.X, toolkit.Y, toolkit.Width, toolkit.Height);
+        public static RectangleD Convert(System.Drawing.Rectangle toolkit) {
+            return new RectangleD(toolkit.X, toolkit.Y, toolkit.Width, toolkit.Height);
         }
 
-        public static RectangleS Convert(System.Drawing.RectangleF toolkit) {
-            return new RectangleS(toolkit.X, toolkit.Y, toolkit.Width, toolkit.Height);
+        public static RectangleD Convert(System.Drawing.RectangleF toolkit) {
+            return new RectangleD(toolkit.X, toolkit.Y, toolkit.Width, toolkit.Height);
         }
 
-        public static System.Drawing.Point[] Convert(PointI[] toolkit) {
-            return Array.ConvertAll<PointI, System.Drawing.Point>(toolkit, Convert);
+        public static System.Drawing.Point[] Convert(Point[] toolkit) {
+            return Array.ConvertAll<Point, System.Drawing.Point>(toolkit, Convert);
         }
 
-        public static System.Drawing.PointF[] Convert(PointS[] toolkit) {
-            return Array.ConvertAll<PointS, System.Drawing.PointF>(toolkit, Convert);
+        public static System.Drawing.PointF[] ConvertF(Point[] toolkit) {
+            return Array.ConvertAll<Point, System.Drawing.PointF>( toolkit, ConvertF );
         }
 
-        public static PointS[] Convert(System.Drawing.PointF[] toolkit) {
-            return Array.ConvertAll<System.Drawing.PointF, PointS>(toolkit, Convert);
+        public static Point[] Convert(System.Drawing.PointF[] toolkit) {
+            return Array.ConvertAll<System.Drawing.PointF, Point>(toolkit, Convert);
         }
 
-        public static System.Drawing.Point Convert(PointI toolkit) {
-            return new System.Drawing.Point(toolkit.X, toolkit.Y);
-        }
-
-
-        public static System.Drawing.PointF Convert(PointS toolkit) {
-            return new System.Drawing.PointF(toolkit.X, toolkit.Y);
-        }
-
-        public static PointI Convert(System.Drawing.Point toolkit) {
-            return new PointI(toolkit.X, toolkit.Y);
-        }
-
-        public static PointS Convert(System.Drawing.PointF toolkit) {
-            return new PointS(toolkit.X, toolkit.Y);
-        }
-
-        public static System.Drawing.Size Convert(SizeI toolkit) {
-            return new System.Drawing.Size(toolkit.Width, toolkit.Height);
+        public static System.Drawing.Point Convert(Point toolkit) {
+            return new System.Drawing.Point((int)toolkit.X, (int)toolkit.Y);
         }
 
 
-        public static System.Drawing.SizeF Convert(SizeS toolkit) {
-            return new System.Drawing.SizeF(toolkit.Width, toolkit.Height);
+        public static System.Drawing.PointF ConvertF(Point toolkit) {
+            return new System.Drawing.PointF( (float) toolkit.X, (float) toolkit.Y );
         }
 
-        public static SizeI Convert(System.Drawing.Size toolkit) {
-            return new SizeI(toolkit.Width, toolkit.Height);
+        public static Point Convert(System.Drawing.Point toolkit) {
+            return new Point(toolkit.X, toolkit.Y);
         }
 
-        public static SizeS Convert(System.Drawing.SizeF toolkit) {
-            return new SizeS(toolkit.Width, toolkit.Height);
+        public static Point Convert(System.Drawing.PointF toolkit) {
+            return new Point(toolkit.X, toolkit.Y);
+        }
+
+        public static System.Drawing.Size Convert(Size toolkit) {
+            return new System.Drawing.Size((int)toolkit.Width, (int)toolkit.Height);
+        }
+
+
+        public static System.Drawing.SizeF ConvertF(Size toolkit) {
+            return new System.Drawing.SizeF( (float) toolkit.Width, (float) toolkit.Height );
+        }
+
+        public static Size Convert(System.Drawing.Size toolkit) {
+            return new Size(toolkit.Width, toolkit.Height);
+        }
+
+        public static Size Convert(System.Drawing.SizeF toolkit) {
+            return new Size(toolkit.Width, toolkit.Height);
         }
 
         public static System.Drawing.Color Convert(Color color) {
@@ -85,7 +87,7 @@ namespace Limaki.Drawing.GDI {
         }
 
         public static Color Convert(System.Drawing.Color color) {
-            return Color.FromArgb((uint)color.ToArgb());
+            return DrawingExtensions.FromArgb((uint)color.ToArgb());
         }
 
         public static System.Drawing.Drawing2D.LineCap Convert(PenLineCap linecap) {
@@ -121,10 +123,10 @@ namespace Limaki.Drawing.GDI {
             if ((toolkit & FontStyle.Italic) != 0) {
                 result |= System.Drawing.FontStyle.Italic;
             }
-            if ((toolkit & FontStyle.Underline) != 0) {
-                result |= System.Drawing.FontStyle.Underline;
-            }
-            if ((toolkit & FontStyle.Bold) != 0) {
+            //if ((toolkit & FontStyle.Underline) != 0) {
+            //    result |= System.Drawing.FontStyle.Underline;
+            //}
+            if ((toolkit & FontStyle.Oblique) != 0) {
                 result |= System.Drawing.FontStyle.Bold;
             }
             return result;
@@ -137,11 +139,11 @@ namespace Limaki.Drawing.GDI {
             if ((native & System.Drawing.FontStyle.Italic) != 0) {
                 result |= FontStyle.Italic;
             }
-            if ((native & System.Drawing.FontStyle.Underline) != 0) {
-                result |= FontStyle.Underline;
-            }
+            //if ((native & System.Drawing.FontStyle.Underline) != 0) {
+            //    result |= FontStyle.Underline;
+            //}
             if ((native & System.Drawing.FontStyle.Bold) != 0) {
-                result |= FontStyle.Bold;
+                result |= FontStyle.Oblique;
             }
             return result;
         }

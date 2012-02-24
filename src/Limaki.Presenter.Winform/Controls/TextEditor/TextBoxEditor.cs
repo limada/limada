@@ -6,8 +6,8 @@ using System.Drawing;
 using Limaki.Common.Text.RTF;
 using System.IO;
 using System.Text;
+using Limaki.Drawing;
 using Limaki.Presenter;
-
 
 
 // this control uses ideas from RicherTextBox by ???
@@ -104,10 +104,10 @@ namespace Limaki.Winform.Controls.TextEditor {
 
         #region IZoomTarget Member
 
-        public Limaki.Drawing.ZoomState ZoomState {
-            get { return Limaki.Drawing.ZoomState.Original; }
+        public ZoomState ZoomState {
+            get { return ZoomState.Original; }
             set {
-                if (value == Limaki.Drawing.ZoomState.Original) {
+                if (value == ZoomState.Original) {
                     this.innerTextBox.ZoomFactor = 1.0f;
                 }
             }
@@ -117,9 +117,9 @@ namespace Limaki.Winform.Controls.TextEditor {
         /// remark: works only with truetype-fonts, else next integer
         /// </summary>
         [Browsable(true)]
-        public virtual float ZoomFactor {
+        public virtual double ZoomFactor {
             get { return this.innerTextBox.ZoomFactor; }
-            set { this.innerTextBox.ZoomFactor = value; }
+            set { this.innerTextBox.ZoomFactor = (float)value; }
         }
 
         public void UpdateZoom() {

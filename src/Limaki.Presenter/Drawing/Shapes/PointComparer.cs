@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Xwt;
 
 namespace Limaki.Drawing.Shapes {
     public enum PointOrder {
@@ -9,23 +9,23 @@ namespace Limaki.Drawing.Shapes {
         TopToBottom
     }
 
-    public class PointComparer : Comparer<PointI> {
+    public class PointComparer : Comparer<Point> {
         public PointOrder Order { get;set;}
-        public int Delta { get; set; }
+        public double Delta { get; set; }
         public PointComparer() {
             Order = PointOrder.LeftToRight;
-            Delta = 10;
+            Delta = 10d;
         }
 
-        public int Round(int x) {
+        public double Round(double x) {
             return (x / Delta * Delta); // Floor
         }
         
-        public PointI Round(PointI p) {
-            return new PointI(Round(p.X),Round(p.Y));
+        public Point Round(Point p) {
+            return new Point(Round(p.X),Round(p.Y));
         }
 
-        public override int Compare(PointI a, PointI b) {
+        public override int Compare(Point a, Point b) {
             if (Order == PointOrder.LeftToRight || Order == PointOrder.TopToBottom) {
                 var aX = Round(a.X);
                 var aY = Round(a.Y);

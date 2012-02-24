@@ -18,10 +18,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-
 // Look to Manos as replacemet for this
 // for threading problems see: Manos.Managed.IOLoop
-namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
+namespace Limaki.UseCases.Viewers.StreamViewers.WebProxyServer {
     public class WebServer : WebServerBase {
         public class StateObject {
             // Client  socket.

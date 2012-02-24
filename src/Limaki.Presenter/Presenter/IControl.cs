@@ -12,22 +12,23 @@
  * 
  */
 
-using Limaki.Drawing;
 using System;
+using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter {
     public interface IControl:IDisposable {
         
-        RectangleI ClientRectangle { get;}
-        SizeI Size {get;}
+        RectangleD ClientRectangle { get;}
+        Size Size {get;}
         
         // Renderer:
         void Update();
         void Invalidate();
-        void Invalidate(RectangleI rect);
+        void Invalidate(RectangleD rect);
 
         // Helper Functions:
-        PointI PointToClient(PointI source);
+        Point PointToClient(Point source);
 
     }
 }

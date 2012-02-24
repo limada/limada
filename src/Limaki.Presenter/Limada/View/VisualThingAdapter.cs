@@ -19,11 +19,12 @@ using Limada.Model;
 using Limada.Schemata;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
 using Limaki.Model.Streams;
 using Limaki.Visuals;
 
-namespace Limada.View {
+namespace Limaki.Limada.View {
     public class VisualThingAdapter:GraphModelAdapter<IVisual,IThing,IVisualEdge,ILink> {
         private IThingFactory _thingFactory = null;
         public IThingFactory ThingFactory {

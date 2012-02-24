@@ -26,10 +26,9 @@
  */
 
 
-
-
 using Limaki.Common;
 using System;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
     public enum KnownColor {
@@ -455,9 +454,9 @@ namespace Limaki.Drawing {
             short n = (short)kc;
             if ((n <= 0) || (n >= ArgbValues.Length)) {
                 // This is what it returns!
-                c = Color.FromArgb(0, 0, 0, 0);
+                c = DrawingExtensions.FromArgb(0, 0, 0, 0);
             } else {
-                c = Color.FromArgb(ArgbValues[n]);
+                c = DrawingExtensions.FromArgb(ArgbValues[n]);
             }
             return c;
         }
@@ -829,7 +828,7 @@ namespace Limaki.Drawing {
                 if (argb == KnownColors.ArgbValues[i])
                     return KnownColors.FromKnownColor((KnownColor)i);
             }
-            return Color.Empty;
+            return DrawingExtensions.EmptyColor;
         }
 
         // When this method is called, we teach any new color(s) to the Color class

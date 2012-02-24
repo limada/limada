@@ -13,8 +13,9 @@
 
 //using System.Windows.Forms;
 using Limaki.Actions;
-using Limaki.Drawing;
 using Limaki.Common;
+using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
@@ -25,8 +26,8 @@ namespace Limaki.Presenter.UI {
             Priority = ActionPriorities.DragActionPriority;
         }
 
-        private PointI _lastMousePos = new PointI();
-        protected virtual PointI LastMousePos {
+        private Point _lastMousePos = new Point();
+        protected virtual Point LastMousePos {
             get { return _lastMousePos; }
             set { _lastMousePos = value; }
         }
@@ -37,17 +38,17 @@ namespace Limaki.Presenter.UI {
             set { _modifierKeys = value; }
         }
 
-        static IUISystemInformation _drawingUtils = null;
-        protected static IUISystemInformation systemInformation {
+        static IUISystemInformation _systemInformation = null;
+        protected static IUISystemInformation SystemInformation {
             get {
-                if (_drawingUtils == null) {
-                    _drawingUtils = Registry.Factory.Create<IUISystemInformation>();
+                if (_systemInformation == null) {
+                    _systemInformation = Registry.Factory.Create<IUISystemInformation>();
                 }
-                return _drawingUtils;
+                return _systemInformation;
             }
         }
 
-        protected RectangleI dragBoxFromMouseDown = RectangleI.Empty;
+        protected RectangleD DragBoxFromMouseDown = RectangleD.Zero;
 
         protected void BaseMouseDown(MouseActionEventArgs e) {
             base.OnMouseDown(e);
@@ -58,12 +59,12 @@ namespace Limaki.Presenter.UI {
 
             // The DragSize indicates the size that the mouse can move 
             // before a drag event should be started.                
-            SizeI dragSize = systemInformation.DragSize;
+            Size dragSize = SystemInformation.DragSize;
                
 
             // Create a Rectangle using the DragSize, with the mouse position being
             // at the center of the Rectangle.
-            dragBoxFromMouseDown = new RectangleI(new PointI(e.X - (dragSize.Width / 2),
+            DragBoxFromMouseDown = new RectangleD(new Point(e.X - (dragSize.Width / 2),
                                                            e.Y - (dragSize.Height / 2)), dragSize);
 
             // Remember the point where the mouse down occurred
@@ -87,8 +88,8 @@ namespace Limaki.Presenter.UI {
             if (!Resolved) {
                 if (((e.Button & MouseActionButtons.Left) == MouseActionButtons.Left))
                     // If the mouse moves outside the Rectangle, start the drag
-                    Resolved = ( dragBoxFromMouseDown != RectangleI.Empty &&
-                                 !dragBoxFromMouseDown.Contains(e.X, e.Y) );
+                    Resolved = ( DragBoxFromMouseDown != RectangleD.Zero &&
+                                 !DragBoxFromMouseDown.Contains(e.X, e.Y) );
 
             } else {
                 Resolved = ((e.Button & MouseActionButtons.Left) == MouseActionButtons.Left);
@@ -105,7 +106,7 @@ namespace Limaki.Presenter.UI {
 
         protected override void EndAction() {
             base.EndAction();
-            dragBoxFromMouseDown = RectangleI.Empty;            
+            DragBoxFromMouseDown = RectangleD.Zero;            
         }
 
         public override void OnMouseUp(MouseActionEventArgs e) {

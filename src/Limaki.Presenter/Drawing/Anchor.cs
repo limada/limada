@@ -12,8 +12,6 @@
  * 
  */
 
-using System;
-
 namespace Limaki.Drawing {
     public enum Anchor {
         LeftTop, MiddleTop,RightTop,

@@ -13,8 +13,8 @@
  * 
  */
 using System;
-using System.Collections.Generic;
 using Limaki.Common;
+using Xwt;
 
 namespace Limaki.Drawing.Shapes {
 #if !SILVERLIGHT
@@ -28,7 +28,7 @@ namespace Limaki.Drawing.Shapes {
    [TODO]
     public class StringShape : Shape<string> {
 
-        public override PointI this[Anchor i] {
+        public override Point this[Anchor i] {
             get {
                 throw new NotImplementedException();
             }
@@ -45,7 +45,7 @@ namespace Limaki.Drawing.Shapes {
             throw new NotImplementedException();
         }
 
-        public override PointI Location {
+        public override Point Location {
             get {
                 throw new NotImplementedException();
             }
@@ -54,7 +54,7 @@ namespace Limaki.Drawing.Shapes {
             }
         }
 
-        public override SizeI Size {
+        public override Size Size {
             get {
                 throw new NotImplementedException();
             }
@@ -63,11 +63,11 @@ namespace Limaki.Drawing.Shapes {
             }
         }
 
-        public override PointI[] Hull(int delta, bool extend) {
+        public override Point[] Hull(int delta, bool extend) {
             throw new NotImplementedException();
         }
 
-        public override PointI[] Hull(Matrice matrix, int delta, bool extend) {
+        public override Point[] Hull(Matrice matrix, int delta, bool extend) {
             throw new NotImplementedException();
         }
     }

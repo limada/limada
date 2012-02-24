@@ -28,7 +28,6 @@ using BasicThingGraphTest=Limada.Tests.Basic.BasicThingGraphTest;
 using Id = System.Int64;
 using ThingGraph=Limada.Data.db4o.ThingGraph;
 using Limaki.Common.Collections;
-using Limada.View;
 using Limaki.Visuals;
 using System.IO;
 using Limada.Test;

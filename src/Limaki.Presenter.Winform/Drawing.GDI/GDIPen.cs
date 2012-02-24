@@ -12,6 +12,8 @@
  * 
  */
 
+using Xwt.Drawing;
+
 namespace Limaki.Drawing.GDI {
     public class GDIPen:Pen {
 
@@ -58,7 +60,7 @@ namespace Limaki.Drawing.GDI {
                 return base.Color;
             }
             set {
-                if (base.Color != value) {
+                if (!base.Color.Equals(value)) {
                     base.Color = value;
                     GDIUtils.SetNativePen(this, _natvive);
                 }

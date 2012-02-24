@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+
 namespace Limaki.Visuals {
     public class VisualFactory : IVisualFactory {
         

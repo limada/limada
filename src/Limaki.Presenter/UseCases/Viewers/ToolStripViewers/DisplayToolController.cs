@@ -16,6 +16,7 @@ using Limaki.Actions;
 using Limaki.Drawing;
 using Limaki.Presenter;
 using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
 
@@ -119,7 +120,7 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
                 }
             } else if (currentControl is IZoomTarget) {
                 IZoomTarget zoomTarget = currentControl as IZoomTarget;
-                zoomTarget.ZoomState = Limaki.Drawing.ZoomState.Custom;
+                zoomTarget.ZoomState = Drawing.ZoomState.Custom;
                 if (zoomIn)
                     zoomTarget.ZoomFactor = zoomTarget.ZoomFactor * 1.1f;
                 else

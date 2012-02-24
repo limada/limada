@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using Xwt;
 
 namespace Limaki.Drawing {
     /// <summary>
@@ -32,7 +33,7 @@ namespace Limaki.Drawing {
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        PointI this[Anchor i] { get;set;}
+        Point this[Anchor i] { get;set;}
 
         /// <summary>
         /// gives back the Anchor which is hit with point
@@ -41,7 +42,7 @@ namespace Limaki.Drawing {
         /// <param name="p">the point to test</param>
         /// <param name="hitSize">the tolerance</param>
         /// <returns></returns>
-        Anchor IsAnchorHit(PointI p, int hitSize);
+        Anchor IsAnchorHit(Point p, int hitSize);
 
         /// <summary>
         /// tests if the border of the shape is hit
@@ -49,7 +50,7 @@ namespace Limaki.Drawing {
         /// <param name="p"></param>
         /// <param name="hitSize"></param>
         /// <returns></returns>
-        bool IsBorderHit(PointI p, int hitSize);
+        bool IsBorderHit(Point p, int hitSize);
 
         /// <summary>
         /// tests if the shape is hit (including border)
@@ -57,7 +58,7 @@ namespace Limaki.Drawing {
         /// <param name="p"></param>
         /// <param name="hitSize"></param>
         /// <returns></returns>
-        bool IsHit(PointI p, int hitSize);
+        bool IsHit(Point p, int hitSize);
 
         /// <summary>
         /// transforms the shape
@@ -68,17 +69,17 @@ namespace Limaki.Drawing {
         /// <summary>
         /// the clipping rectangle of the shape
         /// </summary>
-        RectangleI BoundsRect { get; }
+        RectangleD BoundsRect { get; }
 
         /// <summary>
         /// location
         /// </summary>
-        PointI Location { get; set; }
+        Point Location { get; set; }
 
         /// <summary>
         /// size
         /// </summary>
-        SizeI Size { get; set;}
+        Size Size { get; set;}
 
         /// <summary>
         /// a enumeration of anchors to be used as 
@@ -86,9 +87,9 @@ namespace Limaki.Drawing {
         /// </summary>
         IEnumerable<Anchor> Grips { get; }
 
-        PointI[] Hull ( int delta, bool extend );
+        Point[] Hull ( int delta, bool extend );
 
-        PointI[] Hull ( Matrice matrix, int delta, bool extend );
+        Point[] Hull ( Matrice matrix, int delta, bool extend );
     }
 
     public interface IShape<T> : IShape {
@@ -103,6 +104,6 @@ namespace Limaki.Drawing {
         /// <param name="shape"></param>
         /// <param name="i"></param>
         /// <returns></returns>
-        PointI SetShapeGetAnchor(T shape, Anchor i);
+        Point SetShapeGetAnchor(T shape, Anchor i);
     }
 }

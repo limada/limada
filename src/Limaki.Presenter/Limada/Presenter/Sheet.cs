@@ -15,16 +15,16 @@
 using System;
 using System.IO;
 using Limada.Model;
-using Limada.View;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Drawing.Styles;
 using Limaki.Graphs.Extensions;
+using Limaki.Limada.View;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.Presenter.Visuals.Layout;
 using Limaki.Visuals;
-using Limaki.Presenter.Visuals.UI;
-using Limaki.Presenter.UI;
 
-namespace Limada.Presenter {
+namespace Limaki.Limada.Presenter {
     
     public class Sheet:IDisposable {
         public Sheet(IGraphScene<IVisual,IVisualEdge> scene) {

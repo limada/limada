@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using Limaki.Drawing;
 using Limaki.Presenter;
 
 
@@ -82,12 +83,12 @@ namespace Limaki.Winform.Controls.TextEditor {
 
         #region IZoomTarget Member
 
-        public Limaki.Drawing.ZoomState ZoomState {
+        public ZoomState ZoomState {
             get {
                 if (_textBoxEditor != null) {
                     return _textBoxEditor.ZoomState;
                 } else {
-                    return Limaki.Drawing.ZoomState.Original;
+                    return ZoomState.Original;
                 }
             }
             set {
@@ -97,12 +98,12 @@ namespace Limaki.Winform.Controls.TextEditor {
             }
         }
 
-        public float ZoomFactor {
+        public double ZoomFactor {
             get {
                 if (_textBoxEditor != null) {
                     return _textBoxEditor.ZoomFactor;
                 } else {
-                    return 1f;
+                    return 1d;
                 }
             }
             set {

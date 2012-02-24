@@ -18,8 +18,9 @@ using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Xwt;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.UI.GraphScene {
     /// <summary>
     /// Selects an item on mouse down or mouse move
     /// Sets scene.focused and scene.selected or scene.hovered
@@ -58,9 +59,9 @@ namespace Limaki.Presenter.UI {
             set { _current = value; }
         }
 
-        TItem HitTest(PointI p) {
+        TItem HitTest(Point p) {
             TItem result = default(TItem);
-            PointI sp = Camera.ToSource(p);
+            Point sp = Camera.ToSource(p);
 
             result = Scene.Hit(sp, HitSize);
 
@@ -115,7 +116,7 @@ namespace Limaki.Presenter.UI {
                 }
 
                 if (Scene.Focused != null) {
-                    PointI sp = Camera.ToSource(e.Location);
+                    Point sp = Camera.ToSource(e.Location);
                     if (e.Modifiers == ModifierKeys.None
                         &&
                         ! Scene.ItemShape(Scene.Focused).IsBorderHit(sp, HitSize)) {

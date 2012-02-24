@@ -18,7 +18,6 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
 using Limada.Model;
-using Limada.View;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;

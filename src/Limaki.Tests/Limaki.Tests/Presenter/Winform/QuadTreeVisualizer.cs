@@ -7,6 +7,7 @@ using Limaki.Graphs;
 using Limaki.Visuals;
 using Limaki.Presenter.Visuals;
 using Limaki.Presenter.Display;
+using Xwt;
 
 namespace Limaki.Tests.Presenter.Winform {
     public class QuadTreeVisualizer {
@@ -38,11 +39,10 @@ namespace Limaki.Tests.Presenter.Winform {
             if (Data != null) {
 
                 var style = VisualsDisplay.StyleSheet.BaseStyle;
-                var s = new PointS(float.MaxValue, float.MaxValue).ToString() + "\r\n" +
-                           new RectangleS(float.MaxValue, float.MaxValue, float.MaxValue, float.MaxValue).ToString() + "\r\n";
+                var s = new Point(float.MaxValue, float.MaxValue).ToString() + "\r\n" +
+                           new RectangleD(float.MaxValue, float.MaxValue, float.MaxValue, float.MaxValue).ToString() + "\r\n";
 
-                style.AutoSize =
-                    drawingUtils.GetTextDimension(s, style).ToSize();
+                style.AutoSize = (Size) drawingUtils.GetTextDimension(s, style);
 
 
                 this.VisualsDisplay.ZoomState = ZoomState.Original;
@@ -52,7 +52,7 @@ namespace Limaki.Tests.Presenter.Winform {
                 var nodesDone = new Dictionary<Node<IVisual>, IVisual>();
                 var itemsDone = new Dictionary<IVisual, IVisual>();
 
-                var rootNode = new Node<IVisual>(new RectangleS(), 0);
+                var rootNode = new Node<IVisual>(new RectangleD(), 0);
                 rootNode.Items = Data.Root.Items;
                 for (int i = 0; i < Data.Root.Subnodes.Length; i++)
                     rootNode.Subnodes[i] = Data.Root.Subnodes[i];
@@ -63,7 +63,7 @@ namespace Limaki.Tests.Presenter.Winform {
                 this.VisualsDisplay.Layout.Centered = true;
                 this.VisualsDisplay.Layout.Orientation = Orientation.TopBottom;
                 var autoSize = VisualsDisplay.StyleSheet.BaseStyle.AutoSize;
-                this.VisualsDisplay.StyleSheet.BaseStyle.AutoSize = new SizeI ();
+                this.VisualsDisplay.StyleSheet.BaseStyle.AutoSize = new Size ();
                 foreach(var visual in VisualsDisplay.Data.Elements) {
                     if (visual.Shape != null)
                         VisualsDisplay.Layout.Justify (visual);
@@ -85,7 +85,7 @@ namespace Limaki.Tests.Presenter.Winform {
                 IVisual result = factory.CreateItem(
                     node.Centre.ToString() + "\r\n" + node.Envelope.ToString());
 
-                result.Shape = new RectangleShape(RectangleI.Ceiling(node.Envelope));
+                result.Shape = new RectangleShape(node.Envelope);
                 this.VisualsDisplay.Data.Add(result);
                 nodesDone.Add(node, result);
                 NodeItems(node, result, itemsDone);

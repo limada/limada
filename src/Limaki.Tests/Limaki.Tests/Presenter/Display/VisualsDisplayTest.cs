@@ -5,6 +5,7 @@ using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
 using Limaki.Presenter.Display;
+using Xwt;
 
 namespace Limaki.Tests.Presenter.Display {
     public class VisualsDisplayTest:DisplayTest<IGraphScene<IVisual,IVisualEdge>> {
@@ -57,8 +58,8 @@ namespace Limaki.Tests.Presenter.Display {
         public void MoveLink(IVisual link, IVisual target) {
             NeutralPosition();
 
-            SizeI size = new SizeI(Math.Abs(link.Shape.Size.Width) / 4, -Math.Abs(link.Shape.Size.Height) / 4);
-            PointI position = link.Shape[Anchor.Center] + size;
+            Size size = new Size(Math.Abs(link.Shape.Size.Width) / 4, -Math.Abs(link.Shape.Size.Height) / 4);
+            Point position = link.Shape[Anchor.Center] + size;
             position = camera.FromSource(position);
             //new Size(5, (int)(m * 5));
 
@@ -75,7 +76,7 @@ namespace Limaki.Tests.Presenter.Display {
             v.Start = link.Shape[Anchor.LeftTop];
             v.End = target.Shape[Anchor.Center];
             //m = M(v);
-            size = new SizeI(Math.Abs(target.Shape.Size.Width) / 4, -Math.Abs(target.Shape.Size.Height) / 4);
+            size = new Size(Math.Abs(target.Shape.Size.Width) / 4, -Math.Abs(target.Shape.Size.Height) / 4);
             v.End = v.End + size;//new Size((int)(m*3),-3);
 
             // start move

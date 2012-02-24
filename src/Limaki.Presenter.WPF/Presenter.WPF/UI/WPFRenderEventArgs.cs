@@ -1,7 +1,10 @@
 ﻿using System.Windows.Controls;
 using Limaki.Drawing;
 using Limaki.Drawing.WPF;
+using Limaki.Presenter.Clipping;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
+using Xwt;
 
 namespace Limaki.Presenter.WPF.UI {
     public class WPFRenderEventArgs : RenderEventArgs {
@@ -11,7 +14,7 @@ namespace Limaki.Presenter.WPF.UI {
         }
 
 
-        public WPFRenderEventArgs(WPFSurface surface, RectangleI clipRect): this(surface) {
+        public WPFRenderEventArgs(WPFSurface surface, RectangleD clipRect): this(surface) {
             this._clipper = new BoundsClipper(clipRect);
         }
 

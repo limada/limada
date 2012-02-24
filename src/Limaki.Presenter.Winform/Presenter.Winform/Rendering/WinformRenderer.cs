@@ -2,8 +2,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Limaki.Common;
 using Limaki.Drawing.GDI;
-using Limaki.Presenter.Display;
-using Limaki.Presenter.UI;
+using Limaki.Presenter.Rendering;
 
 namespace Limaki.Presenter.Winform.Display {
     public class WinformRenderer<T>:IDeviceRenderer {
@@ -36,7 +35,7 @@ namespace Limaki.Presenter.Winform.Display {
         }
 
         
-        public Get<Limaki.Drawing.Color> BackColor {get;set;}
+        public Get<global::Xwt.Drawing.Color> BackColor {get;set;}
 
         protected object lockRender = new object();
         

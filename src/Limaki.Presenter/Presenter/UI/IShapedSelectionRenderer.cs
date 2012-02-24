@@ -14,6 +14,7 @@
 
 
 using Limaki.Drawing;
+
 namespace Limaki.Presenter.UI {
     public interface IShapedSelectionRenderer:ISelectionRenderer {
         IPainter Painter { get; set; }

@@ -14,6 +14,7 @@
 
 using System;
 using Limaki.Common;
+using Xwt;
 
 namespace Limaki.Drawing.Shapes {
     /// <summary>
@@ -28,7 +29,7 @@ namespace Limaki.Drawing.Shapes {
         /// <param name="location"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public IShape<T> Shape<T>(PointI location, SizeI size) {
+        public IShape<T> Shape<T>(Point location, Size size) {
             T data = (T)System.Activator.CreateInstance(typeof(T), new object[] { location,size });
 
             var result = Create<IShape<T>>();
@@ -45,8 +46,8 @@ namespace Limaki.Drawing.Shapes {
         /// <param name="location"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public IShape Shape(Type typeofShapeData, PointI location, SizeI size) {
-            //var rect = new RectangleI(location, size);
+        public IShape Shape(Type typeofShapeData, Point location, Size size) {
+            //var rect = new RectangleD(location, size);
             object data = System.Activator.CreateInstance(typeofShapeData);//, new object[] { rect });
             Type clazzType = typeof (IShape<>).GetGenericTypeDefinition().MakeGenericType(typeofShapeData);
             IShape result = (IShape) this.Create(clazzType);

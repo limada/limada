@@ -13,11 +13,10 @@
  */
 
 using Limaki.Actions;
-using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Presenter.Layout;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.UI.GraphScene {
     /// <summary>
     /// Adds an item (but not a link)
     /// </summary>
@@ -73,7 +72,7 @@ namespace Limaki.Presenter.UI {
         public override void OnMouseUp(MouseActionEventArgs e) {
             if (NewItem != null) {
                 var shape = Scene.ItemShape (NewItem);
-                SizeI newSize = shape.Size;
+                var newSize = shape.Size;
                 if (newSize.Height<10 || newSize.Width < 10) {
                     Scene.Remove (NewItem);
                     newCounter--;

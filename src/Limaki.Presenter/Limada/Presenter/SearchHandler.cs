@@ -12,18 +12,16 @@
  */
 
 using System;
-using System.Collections.Generic;
 using Limada.Model;
-using Limada.View;
 using Limaki.Drawing;
 using Limaki.Graphs.Extensions;
-using Limaki.Presenter.Visuals.Layout;
+using System.Linq;
+using Limaki.Limada.View;
+using Limaki.Presenter.UI.GraphScene;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
-using System.Linq;
-using Limaki.Presenter.UI;
 
-namespace Limada.Presenter {
+namespace Limaki.Limada.Presenter {
     public class SearchHandler {
 
 

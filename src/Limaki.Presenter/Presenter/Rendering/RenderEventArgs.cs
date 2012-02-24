@@ -16,7 +16,7 @@
 using System;
 using Limaki.Drawing;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.Rendering {
     public class RenderEventArgs : EventArgs, IRenderEventArgs, IDisposable {
 
         public IClipper Clipper {

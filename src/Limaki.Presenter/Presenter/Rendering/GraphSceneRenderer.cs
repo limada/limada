@@ -19,11 +19,9 @@
 
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
-using Limaki.Presenter.UI;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Rendering {
     public class GraphSceneRenderer<TItem, TEdge> : ContentRenderer<IGraphScene<TItem, TEdge>>,
                                                     IGraphSceneRenderer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
@@ -39,7 +37,7 @@ namespace Limaki.Presenter {
 
         public override void Render(IGraphScene<TItem, TEdge> data, IRenderEventArgs e) {
             var camera = this.Camera ();
-            RectangleS clipBounds = camera.ToSource(e.Clipper.Bounds);
+            var clipBounds = camera.ToSource(e.Clipper.Bounds);
 
 #if TraceRender
             System.Console.WriteLine ("***** clipBounds:\t" + clipBounds);

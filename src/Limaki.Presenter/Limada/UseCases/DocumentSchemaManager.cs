@@ -15,18 +15,14 @@ using System.Collections.Generic;
 using System.IO;
 using Limada.Model;
 using Limada.Schemata;
-using Limada.View;
 using Limaki.Graphs;
+using Limaki.Limada.View;
 using Limaki.Model.Streams;
-using Limaki.Visuals;
 using System.Linq;
 using Limaki.Model.Content;
-using Limaki.Common;
-using System.Linq;
-using System;
-using Limaki.Graphs.Extensions;
+using Limaki.Visuals;
 
-namespace Limada.UseCases {
+namespace Limaki.Limada.UseCases {
 
     public class DocumentSchemaManager {
         public IEnumerable<IVisual> Pages(IGraph<IVisual, IVisualEdge> source, IVisual document) {

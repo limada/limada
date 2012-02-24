@@ -12,8 +12,8 @@
  * 
  */
 
-using Limaki.Visuals;
 using Limaki.Drawing;
+using Limaki.Visuals;
 
 namespace Limaki.UseCases.Viewers.ToolStripViewers {
     public interface IMarkerTool {

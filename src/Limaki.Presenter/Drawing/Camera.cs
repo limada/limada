@@ -13,15 +13,30 @@
  */
 
 using System;
+using Xwt;
 
 namespace Limaki.Drawing {
     public abstract class CameraBase:ICamera {
         #region ICamera Member
         public abstract Matrice Matrice { get; set;}
 
+        # region IShape
+        public virtual void ToSource(IShape s) {
+            using (Matrice m = (Matrice)Matrice.Clone()) {
+                m.Invert();
+                s.Transform(m);
+            }
+        }
+
+        public virtual void FromSource(IShape s) {
+            s.Transform(Matrice);
+        }
+
+        #endregion
+
         # region int
-        public virtual PointI ToSource(PointI s) {
-            PointI[] result = { s };
+        public virtual Point ToSource(Point s) {
+            Point[] result = { s };
             using (Matrice m = (Matrice)Matrice.Clone()) {
                 m.Invert();
                 m.TransformPoints(result);
@@ -29,108 +44,53 @@ namespace Limaki.Drawing {
             return result[0];
         }
         
-        public virtual SizeI ToSource(SizeI s) {
-            PointI[] result = { new PointI(s.Width, s.Height) };
+        public virtual Size ToSource(Size s) {
+            Point[] result = { new Point(s.Width, s.Height) };
             using (Matrice m = (Matrice)Matrice.Clone()) {
                 m.Invert();
                 m.VectorTransformPoints(result);
             }
-            return new SizeI(result[0].X, result[0].Y);
+            return new Size(result[0].X, result[0].Y);
         }
 
-        public virtual RectangleI ToSource(RectangleI r) {
-            PointI[] p = { r.Location, new PointI(r.Right, r.Bottom) };
+        public virtual RectangleD ToSource(RectangleD r) {
+            Point[] p = { r.Location, new Point(r.Right, r.Bottom) };
             using (Matrice m = (Matrice)Matrice.Clone()) {
                 m.Invert();
                 m.TransformPoints(p);
             }
-            return RectangleI.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
+            return RectangleD.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
         }
         
-        public virtual void ToSource(IShape s) {
-            using (Matrice m = (Matrice)Matrice.Clone()) {
-                m.Invert();
-                s.Transform (m);
-            }
-        }
+       
 
-        public virtual PointI FromSource(PointI s) {
+        public virtual Point FromSource(Point s) {
             Matrice m = Matrice;
-            PointI[] result = { s };
+            Point[] result = { s };
             m.TransformPoints(result);
             return result[0];
         }
 
-        public virtual SizeI FromSource(SizeI s) {
+        public virtual Size FromSource(Size s) {
             Matrice m = Matrice;
-            PointI[] result =  { new PointI(s.Width, s.Height) };
+            Point[] result =  { new Point(s.Width, s.Height) };
             m.VectorTransformPoints(result);
-            return new SizeI(result[0].X,result[0].Y);
+            return new Size(result[0].X,result[0].Y);
         }
        
-        public virtual RectangleI FromSource(RectangleI r) {
-            PointI[] p = { r.Location, new PointI(r.Right, r.Bottom) };
+        public virtual RectangleD FromSource(RectangleD r) {
+            Point[] p = { r.Location, new Point(r.Right, r.Bottom) };
             Matrice m = Matrice;
             m.TransformPoints(p);
 
-            return RectangleI.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
+            return RectangleD.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
         }
 
-        public virtual void FromSource(IShape s) {
-            s.Transform (Matrice);
-        }
+       
 
         # endregion
 
-        #region float
-        public virtual PointS ToSource(PointS s) {
-            PointS[] result = { s };
-            using (Matrice m = (Matrice)Matrice.Clone()) {
-                m.Invert();
-                m.TransformPoints(result);
-            }
-            return result[0];
-        }
-        public virtual SizeS ToSource(SizeS s) {
-            PointS[] result = { (PointS)s };
-            using (Matrice m = (Matrice)Matrice.Clone()) {
-                m.Invert();
-                m.TransformVectors(result);
-            }
-            
-            return  new SizeS (result[0]);
-        }
-
-        public virtual RectangleS ToSource(RectangleS r) {
-            PointS[] p = { r.Location, new PointS(r.Right, r.Bottom) };
-            using (Matrice m = (Matrice)Matrice.Clone()) {
-                m.Invert();
-                m.TransformPoints(p);
-            }
-            return RectangleS.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
-        }
-
-        public virtual PointS FromSource(PointS s) {
-            Matrice m = Matrice;
-            PointS[] result = { s };
-            m.TransformPoints(result);
-            return result[0];
-        }
-        public virtual SizeS FromSource(SizeS s) {
-            Matrice m = Matrice;
-            PointS[] result =  { (PointS)s };
-            m.TransformVectors(result);
-            return new SizeS(result[0]);
-        }
-
-        public virtual RectangleS FromSource(RectangleS r) {
-            PointS[] p = { r.Location, new PointS(r.Right, r.Bottom) };
-            Matrice m = Matrice;
-            m.TransformPoints(p);
-
-            return RectangleS.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
-        }
-        #endregion
+       
 
         #endregion
 

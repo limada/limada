@@ -2,19 +2,18 @@ using System;
 using Limada.Data;
 using Limada.Model;
 using Limada.Schemata;
-using Limada.View;
+using Limaki.Drawing;
+using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
-using Limaki.Visuals;
 using Limaki.Data;
-using Limaki.Graphs.Extensions;
 using Limaki.Common;
 using System.Collections.Generic;
-using Limaki.Common.Collections;
 using System.Linq;
-using Limaki.Drawing;
+using Limaki.Graphs.Extensions;
 using Limaki.Reporting;
+using Limaki.Visuals;
 
-namespace Limada.View {
+namespace Limaki.Limada.View {
     public class SceneProvider : ISceneProvider {
         public IThingGraph ThingGraph {get;set;}
 
@@ -184,7 +183,7 @@ namespace Limada.View {
         }
 
         private IEnumerable<IThing> SortedThings(IGraph<IVisual, IVisualEdge> graph, IEnumerable<IVisual> items) {
-            var result = items.OrderBy(v => v.Location, new Limaki.Drawing.Shapes.PointComparer{Delta=20});
+            var result = items.OrderBy(v => v.Location, new PointComparer{Delta=20});
             return result.Select(v => graph.ThingOf(v));
         }
 

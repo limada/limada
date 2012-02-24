@@ -16,11 +16,11 @@
 using System.ComponentModel;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Presenter.UI;
 using Limaki.Graphs;
+using Limaki.Presenter.Rendering;
+using Xwt;
 
-
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.UI.GraphScene {
     public interface IGraphSceneFolding<TItem, TEdge> : IKeyAction
         where TItem: class 
         where TEdge: TItem, IEdge<TItem> {
@@ -80,23 +80,23 @@ namespace Limaki.Presenter.UI {
 
             bool wasFiltered = Folder.IsFiltered;
 
-            if ((e.Key == Key.Add && e.ModifierKeys==ModifierKeys.None)) {
+            if ((e.Key == Key.NumPadAdd && e.ModifierKeys==ModifierKeys.None)) {
                 Folder.Expand (false);
             }
 
-            if ((e.Key == Key.Subtract && e.ModifierKeys == ModifierKeys.None)) {
+            if ((e.Key == Key.NumPadSubtract && e.ModifierKeys == ModifierKeys.None)) {
                 Folder.Collapse ();
             }
 
-            if ((e.Key == Key.Divide )) {
+            if ((e.Key == Key.NumPadDivide )) {
                 Folder.CollapseToFocused ();
             }
 
-            if (e.Key == Key.Multiply && e.ModifierKeys == ModifierKeys.Control){
+            if (e.Key == Key.NumPadMultiply && e.ModifierKeys == ModifierKeys.Control){
                 Folder.ShowAllData ();
             }
 
-            if (e.Key == Key.Multiply&& e.ModifierKeys==ModifierKeys.None){
+            if (e.Key == Key.NumPadMultiply && e.ModifierKeys == ModifierKeys.None) {
                 Folder.Expand(true);
             }
 

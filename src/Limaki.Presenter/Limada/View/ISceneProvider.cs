@@ -17,12 +17,11 @@ using System;
 using Limada.Data;
 using Limada.Model;
 using Limaki.Data;
-using Limaki.Visuals;
-using Limaki.Drawing;
 using System.Collections.Generic;
+using Limaki.Drawing;
+using Limaki.Visuals;
 
-
-namespace Limada.View {
+namespace Limaki.Limada.View {
     /// <summary>
     /// Attachs a Model from a DataSource
     /// to a Scene

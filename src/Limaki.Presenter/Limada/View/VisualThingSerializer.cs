@@ -20,8 +20,9 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Visuals;
+using Xwt;
 
-namespace Limada.View {
+namespace Limaki.Limada.View {
 
     public class VisualThingSerializer : ThingIdSerializer {
         private IGraphPair<IVisual, IThing, IVisualEdge, ILink> _visualThingGraph = null;
@@ -106,8 +107,8 @@ namespace Limada.View {
                     int y = (int)ReadInt(node, "y", false);
                     int w = (int)ReadInt(node, "w", false);
                     int h = (int)ReadInt(node, "h", false);
-                    visual.Shape.Location = new PointI(x, y);
-                    visual.Shape.Size = new SizeI(w, h);
+                    visual.Shape.Location = new Point(x, y);
+                    visual.Shape.Size = new Size(w, h);
                 }
                 
             }

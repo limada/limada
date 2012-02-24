@@ -3,12 +3,14 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Limaki.Drawing.GDI;
 using Limaki.Drawing.GDI.Painters;
+using Limaki.Drawing.Shapes;
+using Xwt;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class RoundedRectanglePainter:RectanglePainter,IPainter<IRoundedRectangleShape,RectangleI> {
+    public class RoundedRectanglePainter:RectanglePainter,IPainter<IRoundedRectangleShape,RectangleD> {
         public override void Render( ISurface surface ) {
             Graphics g = ( (GDISurface) surface ).Graphics;
-            Rectangle rect = GDIConverter.Convert(Shape.Data);
+            var rect = GDIConverter.Convert(Shape.Data);
             IStyle style = this.Style;
             RenderType renderType = this.RenderType;
             GraphicsPath path = new GraphicsPath ();
@@ -29,7 +31,7 @@ namespace Limaki.Drawing.GDI.Painters {
             }
         }
 
-        private void SetRoundedRect(GraphicsPath mPath, Rectangle baseRect, float radius) {
+        private void SetRoundedRect(GraphicsPath mPath, RectangleF baseRect, float radius) {
             // if corner radius is less than or equal to zero, 
             // return the original Rectangle 
             if (radius <= 0.0F) {
@@ -47,24 +49,24 @@ namespace Limaki.Drawing.GDI.Painters {
 
             // create the arc for the Rectangle sides and declare 
             // a graphics path object for the drawing 
-            int diameter = (int)(radius * 2.0F);
-            Size size = new Size(diameter, diameter);
-            Rectangle arc = new Rectangle(baseRect.Location, size);
+            var diameter = (radius * 2.0F);
+            var size = new SizeF(diameter, diameter);
+            var arc = new RectangleF(baseRect.Location, size);
 
             // top left arc 
-            mPath.AddArc(arc, 180, 90);
+            mPath.AddArc(arc, 180f, 90f);
 
             // top right arc 
             arc.X = baseRect.Right - diameter;
-            mPath.AddArc(arc, 270, 90);
+            mPath.AddArc(arc, 270f, 90f);
 
             // bottom right arc 
             arc.Y = baseRect.Bottom - diameter;
-            mPath.AddArc(arc, 0, 90);
+            mPath.AddArc(arc, 0f, 90f);
 
             // bottom left arc
             arc.X = baseRect.Left;
-            mPath.AddArc(arc, 90, 90);
+            mPath.AddArc(arc, 90f, 90f);
             mPath.CloseFigure ();
 
         }

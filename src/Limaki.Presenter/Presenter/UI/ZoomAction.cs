@@ -13,9 +13,9 @@
  */
 
 using Limaki.Actions;
-using Limaki.Drawing;
 using Limaki.Common;
-using System;
+using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
@@ -32,7 +32,7 @@ namespace Limaki.Presenter.UI {
         // ZoomState In 
         public virtual void ZoomIn() {
             var zoomTarget = Viewport ();
-            float z = zoomTarget.ZoomFactor * 1.5f;
+            var z = zoomTarget.ZoomFactor * 1.5d;
             zoomTarget.ZoomState = ZoomState.Custom;
             if (z <= 10) {
                 zoomTarget.ZoomFactor = z;
@@ -42,7 +42,7 @@ namespace Limaki.Presenter.UI {
         // ZoomState Out 
         public virtual void ZoomOut() {
             var zoomTarget = Viewport();
-            float z = zoomTarget.ZoomFactor / 1.5f;
+            var z = zoomTarget.ZoomFactor / 1.5d;
             zoomTarget.ZoomState = ZoomState.Custom;
             if (z >= 0.05) {
                 zoomTarget.ZoomFactor = z;
@@ -70,7 +70,7 @@ namespace Limaki.Presenter.UI {
                 var camera = zoomTarget.Camera;
 
                 // get the mouse position as source coordinates
-                PointI mousePosSource = camera.ToSource(e.Location);
+                var mousePosSource = camera.ToSource(e.Location);
 
                 if (e.Button == MouseActionButtons.Left)
                     ZoomIn();
@@ -79,11 +79,11 @@ namespace Limaki.Presenter.UI {
 
                 zoomTarget.UpdateCamera();
                 // get the transformed mouse position as transformed coordinates
-                PointI mousePosTransformed = camera.FromSource(mousePosSource);
+                var mousePosTransformed = camera.FromSource(mousePosSource);
 
                 var clipOrigin = zoomTarget.ClipOrigin;
                 zoomTarget.ClipOrigin = 
-                    new PointI(
+                    new Point(
                         mousePosTransformed.X - e.X + clipOrigin.X,
                         mousePosTransformed.Y - e.Y + clipOrigin.Y);
 

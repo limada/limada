@@ -12,8 +12,8 @@
  * 
  */
 
-using Limaki.Drawing;
 using System;
+using Limaki.Drawing;
 
 namespace Limaki.Visuals {
 

@@ -1,5 +1,6 @@
 using System;
 using Limaki.Common;
+using Xwt;
 
 namespace Limaki.Drawing {
     public interface IShapeFactory:IFactory {
@@ -11,7 +12,7 @@ namespace Limaki.Drawing {
         /// <param name="location"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        IShape<T> Shape<T> ( PointI location, SizeI size );
+        IShape<T> Shape<T> ( Point location, Size size );
 
     
 
@@ -22,6 +23,6 @@ namespace Limaki.Drawing {
         /// <param name="location"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        IShape Shape ( Type typeofShapeData, PointI location, SizeI size );
+        IShape Shape ( Type typeofShapeData, Point location, Size size );
     }
 }

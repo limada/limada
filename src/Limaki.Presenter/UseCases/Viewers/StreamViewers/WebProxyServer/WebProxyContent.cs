@@ -17,7 +17,7 @@ using System.IO;
 using System.Net;
 using Limaki.Common.Collections;
 
-namespace Limaki.UseCases.Viewers.StreamViewers.WebProxy {
+namespace Limaki.UseCases.Viewers.StreamViewers.WebProxyServer {
     public class WebProxyContent : WebContent {
         
         public static ICollection<string> FailedConnections = new Set<string>();

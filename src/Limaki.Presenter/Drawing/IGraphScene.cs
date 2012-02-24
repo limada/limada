@@ -4,7 +4,7 @@ using Limaki.Actions;
 using Limaki.Common;
 using System;
 using Limaki.Graphs.Extensions;
-using Id = System.Int64;
+using Xwt;
 
 namespace Limaki.Drawing {
     /// <summary>
@@ -36,8 +36,8 @@ namespace Limaki.Drawing {
         void ClearSpatialIndex();
 
         IEnumerable<TItem> Elements {get;}
-        IEnumerable<TItem> ElementsIn(RectangleS clipBounds);
-        IEnumerable<TItem> ElementsIn(RectangleS clipBounds, ZOrder order);
+        IEnumerable<TItem> ElementsIn(RectangleD clipBounds);
+        IEnumerable<TItem> ElementsIn(RectangleD clipBounds, ZOrder order);
 
         State State { get; }
 
@@ -48,11 +48,11 @@ namespace Limaki.Drawing {
 
         void RemoveBounds(TItem visual);
         void AddBounds(TItem visual);
-        void UpdateBounds(TItem visual, RectangleI invalid);
+        void UpdateBounds(TItem visual, RectangleD invalid);
 
-        TItem Hit ( PointI p, int hitSize );
-        TItem HitBorder ( PointI p, int hitSize );
-        PointI NoHit { get; }
+        TItem Hit ( Point p, int hitSize );
+        TItem HitBorder ( Point p, int hitSize );
+        Point NoHit { get; }
         IShape ItemShape ( TItem item );
 
         void Clear();
@@ -66,16 +66,16 @@ namespace Limaki.Drawing {
 
     public interface ISpatialIndex<TItem> {
         bool BoundsDirty { get; set; }
-        RectangleI Bounds { get; set; }
+        RectangleD Bounds { get; set; }
 
         void Add(TItem item);
         void Remove(TItem item);
         void AddRange(IEnumerable<TItem> items);
-        void Update(RectangleI invalid, TItem visual);
+        void Update(RectangleD invalid, TItem visual);
 
         IEnumerable<TItem> Query();
-        IEnumerable<TItem> Query(RectangleS clipBounds);
-        IEnumerable<TItem> Query(RectangleS clipBounds, ZOrder zOrder);
+        IEnumerable<TItem> Query(RectangleD clipBounds);
+        IEnumerable<TItem> Query(RectangleD clipBounds, ZOrder zOrder);
         void Clear();
     }
 
@@ -85,7 +85,7 @@ namespace Limaki.Drawing {
     }
 
     public class SceneInfo {
-        public Id Id;
+        public Int64 Id;
         public string Name;
         private State _state ;
         public State State { get { return _state ?? (_state = new State { Hollow = true }); } }

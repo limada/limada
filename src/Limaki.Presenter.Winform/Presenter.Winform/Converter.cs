@@ -15,10 +15,16 @@
 using System.Windows.Forms;
 using Limaki.Drawing.GDI;
 using System.Collections.Generic;
-using Limaki.Presenter.UI;
 using Limaki.Presenter.GDI.UI;
 using System.ComponentModel;
 using Limaki.Common;
+using Limaki.Presenter.Rendering;
+using Limaki.Presenter.UI;
+using Limaki.UseCases.Viewers;
+using DialogResult = System.Windows.Forms.DialogResult;
+using ModifierKeys = Xwt.ModifierKeys;
+using Key = Xwt.Key;
+using MessageBoxButtons = System.Windows.Forms.MessageBoxButtons;
 
 namespace Limaki.Presenter.Winform {
     /// <summary>
@@ -52,7 +58,7 @@ namespace Limaki.Presenter.Winform {
         }
 
         public static ModifierKeys ConvertModifiers(Keys keys) {
-            ModifierKeys result = ModifierKeys.None;
+            var result = ModifierKeys.None;
             if ((keys & Keys.Control) != 0)
                 result |= ModifierKeys.Control;
             if ((keys & Keys.Alt) != 0)
@@ -60,13 +66,13 @@ namespace Limaki.Presenter.Winform {
             if ((keys & Keys.Shift) != 0)
                 result |= ModifierKeys.Shift;
             if (keys == Keys.LWin || keys == Keys.RWin)
-                result |= ModifierKeys.Windows;
+                result |= ModifierKeys.Command;
             return result;
 
         }
 
         public static ModifierKeys ConvertModifiers(int keyState) {
-            ModifierKeys result = ModifierKeys.None;
+            var result = ModifierKeys.None;
             if ((keyState & 4) != 0)
                 result |= ModifierKeys.Shift;
             if ((keyState & 8) != 0)
@@ -104,25 +110,25 @@ namespace Limaki.Presenter.Winform {
                 if (keytable == null) {
                     keytable = new Dictionary<Keys, Key>();
 
-                    keytable.Add(Keys.Multiply, Key.Multiply);
-                    keytable.Add(Keys.Add, Key.Add);
-                    keytable.Add(Keys.Oemplus, Key.Add);
-                    keytable.Add(Keys.Subtract, Key.Subtract);
-                    keytable.Add(Keys.OemMinus, Key.Subtract);
-                    keytable.Add(Keys.Decimal, Key.Decimal);
-                    keytable.Add(Keys.Divide, Key.Divide);
-                    keytable.Add(Keys.Back, Key.Back);
+                    keytable.Add(Keys.Multiply, Key.NumPadMultiply);
+                    keytable.Add( Keys.Add, Key.NumPadAdd );
+                    keytable.Add( Keys.Oemplus, Key.NumPadAdd );
+                    keytable.Add( Keys.Subtract, Key.NumPadSubtract );
+                    keytable.Add( Keys.OemMinus, Key.NumPadSubtract );
+                    keytable.Add( Keys.Decimal, Key.NumPadDecimal );
+                    keytable.Add( Keys.Divide, Key.NumPadDivide );
+                    keytable.Add(Keys.Back, Key.BackSpace);
                     keytable.Add(Keys.Tab, Key.Tab);
-                    keytable.Add(Keys.Enter, Key.Enter);
-                    keytable.Add(Keys.Shift, Key.Shift);
-                    keytable.Add(Keys.ShiftKey, Key.Shift);
-                    keytable.Add(Keys.LShiftKey, Key.Shift);
-                    keytable.Add(Keys.RShiftKey, Key.Shift);
-                    keytable.Add(Keys.Control, Key.Ctrl);
-                    keytable.Add(Keys.ControlKey, Key.Ctrl);
-                    keytable.Add(Keys.LControlKey, Key.Ctrl);
-                    keytable.Add(Keys.RControlKey, Key.Ctrl);
-                    keytable.Add(Keys.Alt, Key.Alt);
+                    keytable.Add(Keys.Enter, Key.Return);
+                    keytable.Add(Keys.Shift, Key.ShiftLeft);
+                    keytable.Add( Keys.ShiftKey, Key.ShiftLeft );
+                    keytable.Add( Keys.LShiftKey, Key.ShiftLeft );
+                    keytable.Add(Keys.RShiftKey, Key.ShiftRight);
+                    keytable.Add(Keys.Control, Key.ControlLeft);
+                    keytable.Add( Keys.ControlKey, Key.ControlLeft );
+                    keytable.Add( Keys.LControlKey, Key.ControlLeft );
+                    keytable.Add( Keys.RControlKey, Key.ControlRight);
+                    keytable.Add(Keys.Alt, Key.AltLeft);
                     keytable.Add(Keys.CapsLock, Key.CapsLock);
                     keytable.Add(Keys.Escape, Key.Escape);
                     keytable.Add(Keys.Space, Key.Space);
@@ -145,13 +151,13 @@ namespace Limaki.Presenter.Winform {
         }
         public static Key Convert(Keys keys) {
             uint code = (uint)keys & 0x0000FFFF;
-            Key result = Key.None;
+            Key result =0;
 
             if (code >= (uint)Keys.A && code <= (uint)Keys.Z)
                 result = (Key)((uint)Key.A + code - (uint)Keys.A);
 
             else if (code >= (uint)Keys.D0 && code <= (uint)Keys.D9)
-                result = (Key)((uint)Key.D0 + code - (uint)Keys.D0);
+                result = (Key)((uint)Key.K0 + code - (uint)Keys.D0);
 
             else if (code >= (uint)Keys.F1 && code <= (uint)Keys.F12)
                 result = (Key)((uint)Key.F1 + code - (uint)Keys.F1);
@@ -167,20 +173,20 @@ namespace Limaki.Presenter.Winform {
 
         [TODO("does not work, make a testcase")]
         public static Keys Convert(Key keys, ModifierKeys modifiers) {
-            byte code = (byte)keys;
+            var code = (int)keys;
             Keys result = 0;
 
             if (code >= (byte)Key.A && code <= (byte)Key.Z)
                 result = (Keys)((byte)Key.A + code - (byte)Key.A);
 
-            else if (code >= (byte)Key.D0 && code <= (byte)Key.D9)
-                result = (Keys)((byte)Key.D0 + code - (byte)Key.D0);
+            else if (code >= (byte)Key.K0 && code <= (byte)Key.K9)
+                result = (Keys)((byte)Keys.D0 + code - (byte)Key.K0);
 
-            else if (code >= (byte)Key.F1 && code <= (byte)Key.F12)
-                result = (Keys)((byte)Key.F1 + code - (byte)Key.F1);
+            else if ( code >= (int) Key.F1 && code <= (int) Key.F10 )
+                result = (Keys) ( (int) Key.F1 + code - (int) Key.F1 );
 
-            else if (code >= (byte)Key.NumPad0 && code <= (byte)Key.NumPad9)
-                result = (Keys)((byte)Key.NumPad0 + code - (byte)Key.NumPad0);
+            else if ( code >= (int) Key.NumPad0 && code <= (int) Key.NumPad9 )
+                result = (Keys) ( (int) Key.NumPad0 + code - (int) Key.NumPad0 );
 
             else
                 KeyTableW.TryGetValue(keys, out result);
@@ -191,7 +197,7 @@ namespace Limaki.Presenter.Winform {
                 result |= Keys.Alt;
             if ((modifiers & ModifierKeys.Shift) != 0)
                 result |= Keys.Shift;
-            if ((modifiers & ModifierKeys.Windows) != 0)
+            if ((modifiers & ModifierKeys.Command) != 0)
                 result |= Keys.LWin;
             if ((modifiers & ModifierKeys.Control) != 0)
                 result |= Keys.Control;
@@ -199,97 +205,97 @@ namespace Limaki.Presenter.Winform {
 
             return result;
         }
-        public static Limaki.UseCases.Viewers.DialogResult Convert(DialogResult value) {
-            var result = Limaki.UseCases.Viewers.DialogResult.None;
+        public static UseCases.Viewers.DialogResult Convert(DialogResult value) {
+            var result = UseCases.Viewers.DialogResult.None;
             if (value == DialogResult.OK) {
-                result = Limaki.UseCases.Viewers.DialogResult.OK;
+                result = UseCases.Viewers.DialogResult.OK;
             }
             if (value == DialogResult.Cancel) {
-                result = Limaki.UseCases.Viewers.DialogResult.Cancel;
+                result = UseCases.Viewers.DialogResult.Cancel;
             }
             if (value == DialogResult.Abort) {
-                result = Limaki.UseCases.Viewers.DialogResult.Abort;
+                result = UseCases.Viewers.DialogResult.Abort;
             }
             if (value == DialogResult.Retry) {
-                result = Limaki.UseCases.Viewers.DialogResult.Retry;
+                result = UseCases.Viewers.DialogResult.Retry;
             }
             if (value == DialogResult.Ignore) {
-                result = Limaki.UseCases.Viewers.DialogResult.Ignore;
+                result = UseCases.Viewers.DialogResult.Ignore;
             }
             if (value == DialogResult.Yes) {
-                result = Limaki.UseCases.Viewers.DialogResult.Yes;
+                result = UseCases.Viewers.DialogResult.Yes;
             }
             if (value == DialogResult.No) {
-                result = Limaki.UseCases.Viewers.DialogResult.No;
+                result = UseCases.Viewers.DialogResult.No;
             }
 
             return result;
         }
 
-        public static DialogResult Convert(Limaki.UseCases.Viewers.DialogResult value) {
+        public static DialogResult Convert(UseCases.Viewers.DialogResult value) {
             var result = DialogResult.None;
             if (value == null)
                 return result;
-            if (value == Limaki.UseCases.Viewers.DialogResult.OK) {
+            if ( value == UseCases.Viewers.DialogResult.OK ) {
                 result = DialogResult.OK;
             }
-            if (value == Limaki.UseCases.Viewers.DialogResult.Cancel) {
+            if ( value == UseCases.Viewers.DialogResult.Cancel ) {
                 result = DialogResult.Cancel;
             }
-            if (value == Limaki.UseCases.Viewers.DialogResult.Abort) {
+            if ( value == UseCases.Viewers.DialogResult.Abort ) {
                 result = DialogResult.Abort;
             }
-            if (value == Limaki.UseCases.Viewers.DialogResult.Retry) {
+            if ( value == UseCases.Viewers.DialogResult.Retry ) {
                 result = DialogResult.Retry;
             }
-            if (value == Limaki.UseCases.Viewers.DialogResult.Ignore) {
+            if ( value == UseCases.Viewers.DialogResult.Ignore ) {
                 result = DialogResult.Ignore;
             }
-            if (value == Limaki.UseCases.Viewers.DialogResult.Yes) {
+            if ( value == UseCases.Viewers.DialogResult.Yes ) {
                 result = DialogResult.Yes;
             }
-            if (value == Limaki.UseCases.Viewers.DialogResult.No) {
+            if ( value == UseCases.Viewers.DialogResult.No ) {
                 result = DialogResult.No;
             }
 
             return result;
         }
 
-        public static MessageBoxButtons Convert(Limaki.UseCases.Viewers.MessageBoxButtons value) {
+        public static MessageBoxButtons Convert(UseCases.Viewers.MessageBoxButtons value) {
             var result = MessageBoxButtons.OK;
             if (value == null)
                 return result;
-            if (value == Limaki.UseCases.Viewers.MessageBoxButtons.OKCancel)
+            if (value == UseCases.Viewers.MessageBoxButtons.OKCancel)
                 return MessageBoxButtons.OKCancel;
-            if (value == Limaki.UseCases.Viewers.MessageBoxButtons.AbortRetryIgnore)
+            if (value == UseCases.Viewers.MessageBoxButtons.AbortRetryIgnore)
                 return MessageBoxButtons.AbortRetryIgnore;
-            if (value == Limaki.UseCases.Viewers.MessageBoxButtons.YesNoCancel)
+            if (value == UseCases.Viewers.MessageBoxButtons.YesNoCancel)
                 return MessageBoxButtons.YesNoCancel;
-            if (value == Limaki.UseCases.Viewers.MessageBoxButtons.YesNo)
+            if (value == UseCases.Viewers.MessageBoxButtons.YesNo)
                 return MessageBoxButtons.YesNo;
-            if (value == Limaki.UseCases.Viewers.MessageBoxButtons.RetryCancel)
+            if (value == UseCases.Viewers.MessageBoxButtons.RetryCancel)
                 return MessageBoxButtons.RetryCancel;
             return result;
         }
 
-        public static Limaki.UseCases.Viewers.MessageBoxButtons Convert(MessageBoxButtons value) {
-            var result = Limaki.UseCases.Viewers.MessageBoxButtons.OK;
+        public static UseCases.Viewers.MessageBoxButtons Convert(MessageBoxButtons value) {
+            var result = UseCases.Viewers.MessageBoxButtons.OK;
             if (value == null)
                 return result;
             if (value == MessageBoxButtons.OKCancel)
-                return Limaki.UseCases.Viewers.MessageBoxButtons.OKCancel;
+                return UseCases.Viewers.MessageBoxButtons.OKCancel;
             if (value == MessageBoxButtons.AbortRetryIgnore)
-                return Limaki.UseCases.Viewers.MessageBoxButtons.AbortRetryIgnore;
+                return UseCases.Viewers.MessageBoxButtons.AbortRetryIgnore;
             if (value == MessageBoxButtons.YesNoCancel)
-                return Limaki.UseCases.Viewers.MessageBoxButtons.YesNoCancel;
+                return UseCases.Viewers.MessageBoxButtons.YesNoCancel;
             if (value == MessageBoxButtons.YesNo)
-                return Limaki.UseCases.Viewers.MessageBoxButtons.YesNo;
+                return UseCases.Viewers.MessageBoxButtons.YesNo;
             if (value == MessageBoxButtons.RetryCancel)
-                return Limaki.UseCases.Viewers.MessageBoxButtons.RetryCancel;
+                return UseCases.Viewers.MessageBoxButtons.RetryCancel;
             return result;
         }
 
-        public static void FileDialogSetValue(FileDialog target, Limaki.UseCases.Viewers.FileDialogMemento source) {
+        public static void FileDialogSetValue(FileDialog target, FileDialogMemento source) {
             target.AddExtension = source.AddExtension;
             target.AutoUpgradeEnabled = source.AutoUpgradeEnabled;
             target.CheckFileExists = source.CheckFileExists;
@@ -306,7 +312,7 @@ namespace Limaki.Presenter.Winform {
             target.ValidateNames = source.ValidateNames;
         }
 
-        public static void FileDialogSetValue(Limaki.UseCases.Viewers.FileDialogMemento target, FileDialog source) {
+        public static void FileDialogSetValue(FileDialogMemento target, FileDialog source) {
             target.AddExtension = source.AddExtension;
             target.AutoUpgradeEnabled = source.AutoUpgradeEnabled;
             target.CheckFileExists = source.CheckFileExists;

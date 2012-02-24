@@ -1,5 +1,6 @@
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.Presenter.Display;
 using Limaki.Presenter.GDI.UI;
 
 namespace Limaki.Presenter.Winform.Display {
@@ -9,7 +10,7 @@ namespace Limaki.Presenter.Winform.Display {
 
     public class WinformGraphSceneDeviceComposer<TItem, TEdge> : WinformDeviceComposer<IGraphScene<TItem, TEdge>>
     where TEdge : TItem, IEdge<TItem> {
-        public override void Factor(Limaki.Presenter.Display.Display<IGraphScene<TItem, TEdge>> display) {
+        public override void Factor(Display<IGraphScene<TItem, TEdge>> display) {
             base.Factor(display);
             this.DataLayer = new GDIGraphSceneLayer<TItem, TEdge>();
         }

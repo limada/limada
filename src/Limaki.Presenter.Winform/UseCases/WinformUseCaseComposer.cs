@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
-using Limada.Presenter;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Presenter.Display;
@@ -15,10 +14,10 @@ using Limaki.UseCases.Winform.Viewers;
 using Limaki.UseCases.Winform.Viewers.StreamViewers;
 using Limaki.UseCases.Winform.Viewers.ToolStripViewers;
 using Limaki.Presenter.Winform.Controls;
-using Limaki.Presenter.Layout;
-using Limaki.Visuals;
 using System.Linq;
 using LinqKit;
+using DialogResult = Limaki.UseCases.Viewers.DialogResult;
+using MessageBoxButtons = Limaki.UseCases.Viewers.MessageBoxButtons;
 
 namespace Limaki.UseCases.Winform {
     public class WinformUseCaseComposer : IComposer<UseCase> {
@@ -187,11 +186,11 @@ namespace Limaki.UseCases.Winform {
 
         Form About = null;
 
-        public Limaki.UseCases.Viewers.DialogResult MessageBoxShow(string text, string title, Limaki.UseCases.Viewers.MessageBoxButtons buttons) {
+        public DialogResult MessageBoxShow(string text, string title, MessageBoxButtons buttons) {
             return Converter.Convert(MessageBox.Show(Mainform, text, title, Converter.Convert(buttons)));
         }
 
-        public Limaki.UseCases.Viewers.DialogResult FileDialogShow(FileDialogMemento value, bool open) {
+        public DialogResult FileDialogShow(FileDialogMemento value, bool open) {
             FileDialog fileDialog = null;
             if (open)
                 fileDialog = new OpenFileDialog();
@@ -314,7 +313,7 @@ namespace Limaki.UseCases.Winform {
                     ValidateNames = true,
                 };
 
-                if (useCase.FileDialogShow(saveFileDialog, false) == UseCases.Viewers.DialogResult.OK) {
+                if (useCase.FileDialogShow(saveFileDialog, false) == DialogResult.OK) {
                     var image =
                         new ImageExporter(currentDisplay.Data, currentDisplay.Layout)
                             .ExportImage();

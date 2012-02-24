@@ -12,19 +12,20 @@
  * 
  */
 
-using Limaki.Drawing.Shapes;
 using Limaki.Drawing.Painters;
+using Limaki.Drawing.Shapes;
+using Xwt;
 
 namespace Limaki.Drawing.GDI.Painters {
     public class PainterFactory: PainterFactoryBase, IPainterFactory {
         
 
         protected override void InstrumentClazzes() {
-           Add<IPainter<IShape<RectangleI>,RectangleI>>(()=> new RectanglePainter());
+           Add<IPainter<IShape<RectangleD>,RectangleD>>(()=> new RectanglePainter());
            Add<IPainter<IShape<Vector>,Vector>>(()=> new VectorPainter());
-           Add<IPainter<IRoundedRectangleShape,RectangleI>>(()=> new RoundedRectanglePainter());
-           Add<IPainter<IRectangleShape, RectangleI>>(() => new RectanglePainter());
-           Add<IPainter<IBezierShape,RectangleI>>(()=> new BezierPainter());
+           Add<IPainter<IRoundedRectangleShape,RectangleD>>(()=> new RoundedRectanglePainter());
+           Add<IPainter<IRectangleShape, RectangleD>>(() => new RectanglePainter());
+           Add<IPainter<IBezierShape,RectangleD>>(()=> new BezierPainter());
            Add<IPainter<IVectorShape, Vector>>(() => new VectorPainter());
 
             //Add<IPainter<RectangleShape>, RectanglePainter>();
@@ -33,7 +34,7 @@ namespace Limaki.Drawing.GDI.Painters {
            //Add<IPainter<RoundedRectangleShape>>(() => new RoundedRectanglePainter());
            //Add<IPainter<BezierShape>>(() => new BezierPainter());
 
-           Add<IPainter<RectangleI>>(()=> new RectanglePainter());
+           Add<IPainter<RectangleD>>(()=> new RectanglePainter());
 
            Add<IPainter<string>>(()=> new StringPainter());
             

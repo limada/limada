@@ -4,14 +4,16 @@ using Limaki.UseCases;
 using Limaki.UseCases.Winform;
 using Limaki.Common.IOC;
 using Limaki.Common;
+using Xwt.WinformBackend;
 
 namespace Limaki.App {
-    public class WinformAppFactory : AppFactory<Limada.UseCases.AppResourceLoader> {
+    public class WinformAppFactory : AppFactory<global::Limada.UseCases.AppResourceLoader> {
         public WinformAppFactory(): base(new WinformContextRecourceLoader()) {}
 
         public Form MainForm() {
             var result = new Form ();
-
+            
+           
             CreateUseCase (result);
             
             return result;

@@ -13,16 +13,14 @@
  */
 
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-//using System.Xml;
-using Limaki.Common.Collections;
-using Id = System.Int64;
 using System.Xml.Linq;
-using System.Xml;
-using System;
 using Limaki.Common;
 using System.Linq;
+using Limaki.Drawing.Styles;
+using Xwt;
+using Xwt.Drawing;
+
+//using System.Xml;
 
 namespace Limaki.Drawing {
     public class DrawingPrimitivesSerializer : SerializerBase {
@@ -51,15 +49,14 @@ namespace Limaki.Drawing {
             var fam = node.Attribute("family").Value;
             var size = ReadDouble(node, "size");
             var style = ReadEnum<FontStyle>(node.Attribute("style").Value);
-            Font result = new Font(fam,size);
-            result.Style = style;
+            var result = Font.FromName(fam, size).WithStyle(style);
+
             return result;
         }
 
         public virtual Font ReadFont(XElement node) {
             var font = ReadBaseFont (node);
-            Font result = drawingUtils.CreateFont (font.Family,font.Size);
-            result.Style = font.Style;
+            Font result = Font.FromName (font.Family,font.Size).WithStyle(font.Style);
             return result;
         }
 
@@ -69,7 +66,7 @@ namespace Limaki.Drawing {
 
         public virtual Color ReadColor(XElement node, string attribute) {
             var argb = (uint)ReadInt (node, attribute, true);
-            return Color.FromArgb(argb);
+            return DrawingExtensions.FromArgb(argb);
         }
 
         public virtual XElement Write(Pen pen) {
@@ -112,8 +109,7 @@ namespace Limaki.Drawing {
             } else {
                 var font = ReadBaseFont (node);
                 if (!style.ParentStyle.Font.Equals(font)) {
-                    var result = drawingUtils.CreateFont(font.Family, font.Size);
-                    result.Style = font.Style;
+                    var result = Font.FromName(font.Family, font.Size).WithStyle(font.Style);
                     style.Font = result;
                 } 
             }
@@ -146,18 +142,18 @@ namespace Limaki.Drawing {
             result.Add(Write(style.FillColor, "fillcolor"));
             result.Add(Write(style.PenColor, "pencolor"));
             result.Add(Write(style.TextColor, "textcolor"));
-            result.Add(Write("autosize",new Pair<int,int>(style.AutoSize.Width,style.AutoSize.Height)));
+            result.Add(Write("autosize",new Pair<double,double>(style.AutoSize.Width,style.AutoSize.Height)));
             result.Add(Write("paintdata", style.PaintData));
             return result;
         }
 
-        public virtual SizeI ReadSize(XElement node, string attribute) {
+        public virtual Size ReadSize(XElement node, string attribute) {
             var size = ReadTuple (node, attribute);
-            var a = 0;
-            int.TryParse (size.One, out a);
-            var b = 0;
-            int.TryParse(size.Two, out b);
-            return new SizeI (a, b);
+            var a = 0d;
+            double.TryParse (size.One, out a);
+            var b = 0d;
+            double.TryParse(size.Two, out b);
+            return new Size (a, b);
         }
 
         public virtual IStyle ReadStyle(XElement node, IStyle parent) {

@@ -1,5 +1,6 @@
+using System;
 using System.Collections.Generic;
-using Id = System.Int64;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
     public interface IStyleSheet0:IStyle {
@@ -15,14 +16,14 @@ namespace Limaki.Drawing {
     }
 
     public interface IStyleGroup : IStyle, IEnumerable<IStyle> {
-        Id Id { get; set; }
+        Int64 Id { get; set; }
         IStyle DefaultStyle { get; set; }
         IStyle SelectedStyle { get; set; }
         IStyle HoveredStyle { get; set; }
     }
 
     public interface IStyleSheet : IStyle, IEnumerable<IStyle> {
-        Id Id { get; set; }
+        Int64 Id { get; set; }
         IStyle this[string styleName] { get; set; }
         ICollection<IStyle> Styles { get; }
         ICollection<IStyleGroup> StyleGroups { get; }

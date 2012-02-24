@@ -5,7 +5,7 @@ using System.IO;
 using Limada.Model;
 using Limada.Schemata;
 using Limaki.Model.Streams;
-using Limaki.UseCases.Viewers.StreamViewers.WebProxy;
+using Limaki.UseCases.Viewers.StreamViewers.WebProxyServer;
 
 namespace Limaki.UseCases.Viewers.StreamViewers {
     public class ThingWebResponse {

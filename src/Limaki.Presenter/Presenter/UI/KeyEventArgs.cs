@@ -15,17 +15,18 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter.UI {
     public class KeyActionEventArgs : EventArgs {
 
-        public KeyActionEventArgs(Key key, PointI location):base() {
+        public KeyActionEventArgs(Key key, Point location):base() {
             this._key = key;
             this._location = location;
             this.Handled = false;
         }
 
-        public KeyActionEventArgs(Key key, ModifierKeys modifiers, PointI location)
+        public KeyActionEventArgs(Key key, ModifierKeys modifiers, Point location)
             : this(key, location) {
             this._modifierKeys = modifiers;
         }
@@ -35,13 +36,13 @@ namespace Limaki.Presenter.UI {
             set;
         }
 
-        private Key _key = Key.None;
+        private Key _key = 0;
         public Key Key {
             get { return _key; }
         }
 
-        private PointI _location = PointI.Empty;
-        public PointI Location {
+        private Point _location = Point.Zero;
+        public Point Location {
             get { return _location; }
         }
 

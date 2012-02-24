@@ -12,15 +12,13 @@
  */
 
 
-using Limaki.Graphs;
 using Limaki.Drawing;
+using Limaki.Graphs;
 using System;
-using Limaki.Presenter.UI;
-using Id = System.Int64;
-using Limaki.Common;
+using Limaki.Presenter.UI.GraphScene;
 
 namespace Limaki.Presenter.Display {
-    public interface IGraphSceneDisplay<TItem, TEdge>:IDisplay<IGraphScene<TItem,TEdge>>
+    public interface IGraphSceneDisplay<TItem, TEdge>:IDisplay<IGraphScene<TItem, TEdge>>
     where TEdge : TItem, IEdge<TItem> {
         IGraphLayout<TItem, TEdge> Layout { get; set; }
         event EventHandler<GraphSceneEventArgs<TItem, TEdge>> SceneFocusChanged;

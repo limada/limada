@@ -18,9 +18,9 @@ using System.Drawing.Drawing2D;
 namespace Limaki.Drawing.GDI {
     public class GDIMatrice:Matrice {
         public Matrix Matrix {
-            get { return new Matrix(m11, m12, m21, m22, dx, dy); }
+            get { return new Matrix((float)m11, (float)m12, (float)m21, (float)m22, (float)dx, (float)dy); }
             set {
-                float[] elements = value.Elements;
+                var elements = value.Elements;
                 this.m11 = elements[0];
                 this.m12 = elements[1];
                 this.m21 = elements[2];

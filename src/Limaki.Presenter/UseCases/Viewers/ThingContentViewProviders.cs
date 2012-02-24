@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using Limada.Model;
-using Limaki.Visuals;
 using Limaki.Graphs;
+using Limaki.Visuals;
 
 namespace Limaki.UseCases.Viewers {
     public class ThingContentViewProviders:ContentViewProviders {

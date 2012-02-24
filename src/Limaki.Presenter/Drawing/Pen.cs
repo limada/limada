@@ -14,6 +14,7 @@
 
 
 using System;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
     public class Pen:ICloneable, IDisposable {
@@ -68,7 +69,7 @@ namespace Limaki.Drawing {
             var other = (Pen)obj;
             return
                    this.Thickness == other.Thickness &&
-                   this.Color == other.Color &&
+                   this.Color.Equals(other.Color) &&
                    this.StartCap == other.StartCap &&
                    this.EndCap == other.EndCap &&
                    this.LineJoin == other.LineJoin

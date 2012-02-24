@@ -1,11 +1,12 @@
 ﻿using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter.Layout {
     public interface ILocator<TItem> {
-        PointI GetLocation(TItem item);
-        void SetLocation(TItem item, PointI location);
+        Point GetLocation(TItem item);
+        void SetLocation(TItem item, Point location);
 
-        SizeI GetSize(TItem item);
-        void SetSize(TItem item, SizeI value);
+        Size GetSize(TItem item);
+        void SetSize(TItem item, Size value);
     }
 }

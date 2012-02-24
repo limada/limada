@@ -15,18 +15,20 @@
 
 using System;
 using System.IO;
-using Limada.Presenter;
-using Limada.View;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Drawing.Styles;
+using Limaki.Limada.Presenter;
+using Limaki.Limada.View;
 using Limaki.Model.Streams;
+using System.Diagnostics;
 using Limaki.Presenter;
-using Limaki.Presenter.Visuals;
+using Limaki.Presenter.Display;
+using Limaki.Presenter.UI.GraphScene;
+using Limaki.Presenter.Visuals.Display;
 using Limaki.Presenter.Visuals.UI;
 using Limaki.Visuals;
-using Limaki.Presenter.UI;
-using Limaki.Presenter.Display;
-using System.Diagnostics;
+using Xwt;
 
 namespace Limaki.UseCases.Viewers {
     public class SplitView0 : ISplitView, IDisposable, ICheckable {
@@ -45,7 +47,7 @@ namespace Limaki.UseCases.Viewers {
         }
 
         public void InitializeDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
-            StyleSheets styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
             IStyleSheet styleSheet = null;
 
             if (styleSheets.TryGetValue(display.StyleSheet.Name, out styleSheet)) {
@@ -469,7 +471,7 @@ namespace Limaki.UseCases.Viewers {
             var layout = currentDiplay.Layout;
 
             if (root == null) {
-                PointI pt = new PointI(layout.Border.Width, scene.Shape.BoundsRect.Bottom);
+                Point pt = new Point(layout.Border.Width, scene.Shape.BoundsRect.Bottom);
                 SceneExtensions.AddItem(scene, visual, layout, pt);
             } else {
                 SceneExtensions.PlaceVisual(scene, root, visual, layout);

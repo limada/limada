@@ -19,9 +19,10 @@ using Limaki.Actions;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Presenter.Layout;
-using Limaki.Presenter.UI;
+using Limaki.Presenter.UI.GraphScene;
+using Xwt;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Modelling {
     public class GraphItemReceiver<TItem,TEdge> : IModelReceiver<TItem> 
         where TEdge:TItem,IEdge<TItem> {
 
@@ -57,7 +58,7 @@ namespace Limaki.Presenter {
             } else if (request is DeleteCommand<TItem,TEdge>) {
                 request.Execute();
             } else {
-                RectangleI invalid = RectangleI.Empty;
+                var invalid = RectangleD.Zero;
                 var shape = Data.ItemShape (request.Subject);
 
                 if (shape != null) {
@@ -66,7 +67,7 @@ namespace Limaki.Presenter {
 
                 request.Execute();
                 
-                if (invalid != RectangleI.Empty)
+                if (invalid != RectangleD.Zero)
                     Data.UpdateBounds(request.Subject, invalid);
                 else
                     Data.AddBounds(request.Subject);

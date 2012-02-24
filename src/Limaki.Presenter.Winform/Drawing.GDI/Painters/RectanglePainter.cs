@@ -17,9 +17,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Limaki.Drawing.GDI;
 using Limaki.Drawing.Painters;
+using Limaki.Drawing.Shapes;
+using Xwt;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class RectanglePainter:Painter<RectangleI>,IPainter<IRectangleShape,RectangleI> {
+    public class RectanglePainter:Painter<RectangleD>,IPainter<IRectangleShape,RectangleD> {
         protected SolidBrush _brush = null;
         protected virtual SolidBrush GetSolidBrush(System.Drawing.Color color) {
             if (_brush != null) {
@@ -40,10 +42,10 @@ namespace Limaki.Drawing.GDI.Painters {
         }
 
         public override void Render( ISurface surface ) {
-            Rectangle rect = GDIConverter.Convert(Shape.Data);
-            IStyle style = this.Style;
-            RenderType renderType = this.RenderType;
-            Graphics g = ((GDISurface)surface).Graphics;
+            var rect = GDIConverter.Convert(Shape.Data);
+            var style = this.Style;
+            var renderType = this.RenderType;
+            var g = ((GDISurface)surface).Graphics;
             if ((RenderType.Fill & renderType) != 0) {
                 g.FillRectangle(
                     GetSolidBrush(GDIConverter.Convert(style.FillColor)), 

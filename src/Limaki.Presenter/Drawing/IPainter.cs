@@ -14,6 +14,7 @@
  */
 
 using System;
+using Xwt;
 
 namespace Limaki.Drawing {
     /// <summary>
@@ -46,8 +47,8 @@ namespace Limaki.Drawing {
         /// the Hull of the shape with style
         /// </summary>
         /// <returns></returns>
-        PointI[] Measure(Matrice matrix, int delta, bool extend);
-        PointI[] Measure(int delta, bool extend);
+        Point[] Measure(Matrice matrix, int delta, bool extend);
+        Point[] Measure(int delta, bool extend);
     }
 
     public interface IPainter<T> : IPainter {

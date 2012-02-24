@@ -1,5 +1,6 @@
 ﻿using Limaki.Common;
 using Limaki.Drawing;
+using Xwt;
 
 namespace Limaki.Presenter.UI {
     /// <summary>
@@ -13,11 +14,11 @@ namespace Limaki.Presenter.UI {
             ProcessKey(e);
         }
 
-        protected virtual RectangleI ProcessKey(KeyActionEventArgs e) {
+        protected virtual RectangleD ProcessKey(KeyActionEventArgs e) {
             base.OnKeyDown(e);
             var viewport = Viewport();
-            var x = 0;
-            var y = 0;
+            var x = 0d;
+            var y = 0d;
             if (e.Key == Key.Down && e.ModifierKeys == ModifierKeys.None) {
                 y = 1;
             }
@@ -30,12 +31,12 @@ namespace Limaki.Presenter.UI {
             if (e.Key == Key.Right && e.ModifierKeys == ModifierKeys.None) {
                 x = 1;
             }
-            if (x != 0 || y != 0) {
+            if (x != 0d || y != 0d) {
                 var pos = viewport.ClipOrigin;
                 var size = viewport.ClipSize;
-                var bounds = new RectangleI(viewport.DataOrigin, viewport.DataSize);
+                var bounds = new RectangleD(viewport.DataOrigin, viewport.DataSize);
 
-                var result = RectangleI.FromLTRB(
+                var result = RectangleD.FromLTRB(
                     x == -1 && pos.X == bounds.X ? -1 : 0,
                     y == -1 && pos.Y == bounds.Y ? -1 : 0,
                     x == 1 && pos.X + size.Width >= bounds.Width ? 1 : 0,
@@ -53,12 +54,12 @@ namespace Limaki.Presenter.UI {
                 if (y > bounds.Bottom)
                     y = bounds.Bottom - size.Height;
 
-                pos = new PointI(x, y);
+                pos = new Point(x, y);
                 viewport.ClipOrigin = pos;
                 viewport.Update();
                 return result;
             } else {
-                return new RectangleI();
+                return new RectangleD();
             }
         }
 

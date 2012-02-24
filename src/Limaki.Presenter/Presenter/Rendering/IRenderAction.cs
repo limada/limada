@@ -15,7 +15,7 @@
 
 using Limaki.Actions;
 
-namespace Limaki.Presenter.UI {
+namespace Limaki.Presenter.Rendering {
     public interface IRenderAction : IAction {
         void OnPaint(IRenderEventArgs e);
     }

@@ -15,7 +15,11 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Drawing.Styles;
+using Limaki.Presenter.Clipping;
+using Limaki.Presenter.Rendering;
 using Limaki.Presenter.UI;
+using Xwt;
 
 namespace Limaki.Presenter.Display {
 
@@ -25,8 +29,8 @@ namespace Limaki.Presenter.Display {
         public virtual Get<IViewport> Viewport { get; set; }
         public virtual Get<IDeviceRenderer> Renderer { get; set; }
         public virtual Get<ICamera> Camera { get; set; }
-        public virtual Get<SizeI> DataSize { get; set; }
-        public virtual Get<PointI> DataOrigin { get; set; }
+        public virtual Get<Size> DataSize { get; set; }
+        public virtual Get<Point> DataOrigin { get; set; }
         public virtual Get<IDeviceCursor> DeviceCursor { get; set; }
 
 

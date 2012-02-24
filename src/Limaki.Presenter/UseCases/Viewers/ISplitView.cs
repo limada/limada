@@ -13,7 +13,6 @@
  */
 
 using System;
-using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Presenter.Display;
 using Limaki.Visuals;

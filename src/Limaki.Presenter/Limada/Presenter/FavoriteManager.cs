@@ -16,28 +16,21 @@ using System;
 using System.Linq;
 using Limada.Model;
 using Limada.Schemata;
-using Limada.View;
-
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
+using Limaki.Limada.View;
 using Limaki.Model.Streams;
-using Limaki.Presenter;
-using Limaki.Presenter.Visuals.Layout;
-using Limaki.Visuals;
-
-using Id = System.Int64;
-using Limada.Common;
-using Limaki.Presenter.Display;
 using System.Collections.Generic;
-using Limaki.UseCases.Viewers;
-using Limaki.Presenter.Visuals.UI;
-using Limaki.Presenter.UI;
 using System.Diagnostics;
 using System.IO;
+using Limaki.Presenter.Display;
+using Limaki.Presenter.UI.GraphScene;
+using Limaki.Presenter.Visuals.UI;
+using Limaki.Visuals;
 
-namespace Limada.Presenter {
+namespace Limaki.Limada.Presenter {
     public class FavoriteManager {
 
         public FavoriteManager() {
@@ -119,7 +112,7 @@ namespace Limada.Presenter {
         }
 
         [TODO("change homeId on opening database")]
-        public Id HomeId = Isaac.Long;
+        public Int64 HomeId = Isaac.Long;
         public virtual void GoHome(IGraphSceneDisplay<IVisual, IVisualEdge> display, bool initialize) {
             if (display == null)
                 return;
@@ -233,7 +226,7 @@ namespace Limada.Presenter {
         }
 
 
-        public virtual bool AddToSheets(IThingGraph graph, Id sheetId) {
+        public virtual bool AddToSheets(IThingGraph graph, Int64 sheetId) {
             var thing = graph.GetById(sheetId) as IStreamThing;
                 if (thing != null && thing.StreamType == StreamTypes.LimadaSheet) {
                     var add = graph.Edges(thing).Where(l => l.Marker.Id != CommonSchema.DescriptionMarker.Id).Count() == 0;
@@ -250,7 +243,7 @@ namespace Limada.Presenter {
             return false;
         }
 
-        public virtual bool AddToSheets(IGraph<IVisual, IVisualEdge> graph, Id sheetId) {
+        public virtual bool AddToSheets(IGraph<IVisual, IVisualEdge> graph, Int64 sheetId) {
             var thingGraph = graph.ThingGraph();
             if (thingGraph != null) {
                 return AddToSheets(thingGraph, sheetId);

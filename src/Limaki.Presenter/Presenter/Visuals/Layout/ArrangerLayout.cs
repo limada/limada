@@ -13,20 +13,20 @@
  */
 
 
-using System;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Common;
-using Limaki.Visuals;
 using Limaki.Presenter.Layout;
+using Limaki.Visuals;
+using Xwt;
 
 namespace Limaki.Presenter.Visuals.Layout {
     public class ArrangerLayout<TItem, TEdge> : VisualsLayout<TItem, TEdge>
         where TItem : IVisual
         where TEdge : IEdge<TItem>, TItem {
 
-        public ArrangerLayout(Get<IGraphScene<TItem,TEdge>> handler, IStyleSheet stylesheet) : base(handler, stylesheet) { }
+        public ArrangerLayout(Get<IGraphScene<TItem, TEdge>> handler, IStyleSheet stylesheet) : base(handler, stylesheet) { }
 
         public override void Invoke() {
             var data = Data;
@@ -36,7 +36,7 @@ namespace Limaki.Presenter.Visuals.Layout {
                 arranger.ArrangeDeepWalk (
                     data.Graph.FindRoots(data.Focused),
                     true,
-                    (PointI) Border);
+                    (Point) Border);
 
                 arranger.Commit();
             }

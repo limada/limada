@@ -1,0 +1,77 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt", "Xwt\Xwt.csproj", "{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.Gtk", "Xwt.Gtk\Xwt.Gtk.csproj", "{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.Mac", "Xwt.Mac\Xwt.Mac.csproj", "{B7C1673E-5124-4BE5-8D21-EC8B12F85B6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacTest", "MacTest\MacTest.csproj", "{2B7FF081-FE53-42F7-9D5D-D4B38E548F94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "Samples\Samples.csproj", "{88C04B85-B69B-47B4-AB9F-64F6DD4E0897}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkTest", "GtkTest\GtkTest.csproj", "{0AF50CE4-E455-4A9D-92AD-711CBD068A55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.WPF", "Xwt.WPF\Xwt.WPF.csproj", "{C93D746E-1586-4D4F-B411-BF5A966E6A08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|Any CPU = Release|Any CPU
+		Win-Debug|Any CPU = Win-Debug|Any CPU
+		Mac-Debug|Any CPU = Mac-Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0AF50CE4-E455-4A9D-92AD-711CBD068A55}.Mac-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AF50CE4-E455-4A9D-92AD-711CBD068A55}.Mac-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AF50CE4-E455-4A9D-92AD-711CBD068A55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AF50CE4-E455-4A9D-92AD-711CBD068A55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AF50CE4-E455-4A9D-92AD-711CBD068A55}.Win-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AF50CE4-E455-4A9D-92AD-711CBD068A55}.Win-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B7FF081-FE53-42F7-9D5D-D4B38E548F94}.Mac-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B7FF081-FE53-42F7-9D5D-D4B38E548F94}.Mac-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B7FF081-FE53-42F7-9D5D-D4B38E548F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B7FF081-FE53-42F7-9D5D-D4B38E548F94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B7FF081-FE53-42F7-9D5D-D4B38E548F94}.Win-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B7FF081-FE53-42F7-9D5D-D4B38E548F94}.Win-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88C04B85-B69B-47B4-AB9F-64F6DD4E0897}.Mac-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88C04B85-B69B-47B4-AB9F-64F6DD4E0897}.Mac-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88C04B85-B69B-47B4-AB9F-64F6DD4E0897}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88C04B85-B69B-47B4-AB9F-64F6DD4E0897}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88C04B85-B69B-47B4-AB9F-64F6DD4E0897}.Win-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88C04B85-B69B-47B4-AB9F-64F6DD4E0897}.Win-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}.Mac-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}.Mac-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}.Win-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}.Win-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7C1673E-5124-4BE5-8D21-EC8B12F85B6B}.Mac-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7C1673E-5124-4BE5-8D21-EC8B12F85B6B}.Mac-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7C1673E-5124-4BE5-8D21-EC8B12F85B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7C1673E-5124-4BE5-8D21-EC8B12F85B6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7C1673E-5124-4BE5-8D21-EC8B12F85B6B}.Win-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}.Mac-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}.Mac-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}.Win-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}.Win-Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C93D746E-1586-4D4F-B411-BF5A966E6A08}.Mac-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C93D746E-1586-4D4F-B411-BF5A966E6A08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C93D746E-1586-4D4F-B411-BF5A966E6A08}.Win-Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C93D746E-1586-4D4F-B411-BF5A966E6A08}.Win-Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = MacTest\MacTest.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
+		$0.VersionControlPolicy = $2
+		$2.inheritsSet = Mono
+		$0.StandardHeader = $3
+		$3.Text = @\n${FileName}\n \nAuthor:\n      ${AuthorName} <${AuthorEmail}>\n\nCopyright (c) ${Year} ${CopyrightHolder}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the "Software"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.
+		$3.IncludeInNewFiles = True
+	EndGlobalSection
+EndGlobal

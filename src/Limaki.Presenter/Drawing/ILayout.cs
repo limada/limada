@@ -15,6 +15,7 @@
 using System;
 using Limaki.Common;
 using Limaki.Graphs;
+using Xwt;
 
 namespace Limaki.Drawing {
     public interface ILayout {
@@ -30,8 +31,8 @@ namespace Limaki.Drawing {
         IPainterFactory PainterFactory { get; set; }
         IPainter GetPainter(Type type);
 
-        SizeI Distance { get; set; }
-        SizeI Border { get; set; }
+        Size Distance { get; set; }
+        Size Border { get; set; }
 
     }
 
@@ -78,11 +79,11 @@ namespace Limaki.Drawing {
         IStyle GetStyle(TItem item);
         IStyle GetStyle(TItem item, UiState uiState);
 
-        PointI[] GetDataHull(TItem item, Matrice matrix, int delta, bool extend);
-        PointI[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend);
+        Point[] GetDataHull(TItem item, Matrice matrix, int delta, bool extend);
+        Point[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend);
 
-        PointI[] GetDataHull(TItem item, int delta, bool extend);
-        PointI[] GetDataHull(TItem item, UiState uiState, int delta, bool extend);
+        Point[] GetDataHull(TItem item, int delta, bool extend);
+        Point[] GetDataHull(TItem item, UiState uiState, int delta, bool extend);
 
         Func<TItem, string> OrderBy { get; set; }
     }

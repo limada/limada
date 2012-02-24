@@ -17,6 +17,9 @@ using System.Windows.Forms;
 using Limaki.Actions;
 using Limaki.Drawing;
 using Limaki.Presenter.UI;
+using Xwt;
+using DragEventArgs = System.Windows.Forms.DragEventArgs;
+
 
 namespace Limaki.Presenter.Winform {
     /// <summary>
@@ -46,8 +49,8 @@ namespace Limaki.Presenter.Winform {
 
         public void OnDragOver(DragEventArgs e) {
             if (baseAction.Enabled) {
-                PointI pt =
-                    control.PointToClient (new PointI (e.X, e.Y))
+                var pt =
+                    control.PointToClient (new Point (e.X, e.Y))
                     ;
 
                 MouseActionEventArgs em =

@@ -16,12 +16,14 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
+using Limaki.Drawing.Styles;
 using Limaki.Tests.Visuals;
 using Limaki.Visuals;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using System;
 using Limaki.Presenter.Visuals.Layout;
+using Xwt;
 
 namespace Limaki.Tests.Graph.Model {
     public class BenchmarkOneSceneFactory : SceneFactory<BenchmarkOneGraphFactory> {
@@ -31,9 +33,9 @@ namespace Limaki.Tests.Graph.Model {
 
         public IVisual Line1;
 
-        public SizeI distance = new SizeI(30, 30);
-        public SizeI defaultSize = new SizeI(50, 20);
-        public PointI startAt = new PointI(30, 30);
+        public Size distance = new Size(30, 30);
+        public Size defaultSize = new Size(50, 20);
+        public Point startAt = new Point(30, 30);
         public StyleSheet styleSheet = 
             new StyleSheet("LongtermPerformanceStyle", 
                 StyleSheet.CreateStyleWithSystemSettings ()
@@ -44,7 +46,7 @@ namespace Limaki.Tests.Graph.Model {
                 :
                     base(handler, stylesheet) { }
 
-            public virtual PointI nextVisualLocation(IVisual visual, SizeI distance) {
+            public virtual Point nextVisualLocation(IVisual visual, Size distance) {
                 return visual.Location + visual.Size + distance;
             }
 
@@ -58,25 +60,25 @@ namespace Limaki.Tests.Graph.Model {
         }
 
         public virtual void Arrange(Scene scene) {
-            PointI location = startAt;
+            Point location = startAt;
 
-            int level2Width = Node[2].Size.Width + distance.Width + Node[3].Size.Width;
-            int ident = startAt.X;
-            Node[1].Location = new PointI(
+            var level2Width = Node[2].Size.Width + distance.Width + Node[3].Size.Width;
+            var ident = startAt.X;
+            Node[1].Location = new Point(
                 ident + (level2Width - Node[1].Size.Width) / 2,
                 startAt.Y);
 
-            int level2Y = Node[1].Location.Y + Node[1].Size.Height + distance.Height;
+            var level2Y = Node[1].Location.Y + Node[1].Size.Height + distance.Height;
 
-            Node[2].Location = new PointI(
+            Node[2].Location = new Point(
                 ident,
                 level2Y);
 
-            Node[3].Location = new PointI(
+            Node[3].Location = new Point(
                 ident + level2Width - Node[3].Size.Width,
                 level2Y);
 
-            Node[4].Location = new PointI(
+            Node[4].Location = new Point(
                 ident + (level2Width - Node[4].Size.Width) / 2,
                 level2Y + Node[3].Size.Height + distance.Height);
 
@@ -84,25 +86,25 @@ namespace Limaki.Tests.Graph.Model {
             ident = ident + level2Width + distance.Width;
             level2Width = Node[6].Size.Width + distance.Width + Node[7].Size.Width;
 
-            Node[5].Location = new PointI(
+            Node[5].Location = new Point(
                 ident + (level2Width - Node[5].Size.Width) / 2,
                 Node[1].Location.Y);
 
             level2Y = Node[5].Location.Y + Node[5].Size.Height + distance.Height;
 
-            Node[6].Location = new PointI(
+            Node[6].Location = new Point(
                 ident,
                 level2Y);
 
-            Node[7].Location = new PointI(
+            Node[7].Location = new Point(
                 ident + level2Width - Node[7].Size.Width,
                 level2Y);
 
-            Node[8].Location = new PointI(
+            Node[8].Location = new Point(
                 ident + (level2Width - Node[8].Size.Width) / 2,
                 level2Y + Node[7].Size.Height + distance.Height);
 
-            Vector vector = new Vector();
+            var vector = new Vector();
             vector.Start = Node[1].Shape[Anchor.RightMiddle];
             vector.End = Node[6].Shape[Anchor.LeftMiddle];
             ((VectorShape)Line1.Shape).Data = vector;
@@ -115,8 +117,8 @@ namespace Limaki.Tests.Graph.Model {
             base.Populate (scene);
             this.Count = oldCount;
 
-            Vector vector = new Vector();
-            IVisual visual = Registry.Pool.TryGetCreate<IVisualFactory>().CreateItem("line");
+            var vector = new Vector();
+            var visual = Registry.Pool.TryGetCreate<IVisualFactory>().CreateItem("line");
             visual.Shape = new VectorShape(vector);
             scene.Add(visual);
             Line1 = visual;
@@ -124,9 +126,9 @@ namespace Limaki.Tests.Graph.Model {
 
 
         public Scene createScene() {
-            Scene result = new Scene();
+            var result = new Scene();
             result.Graph = this.Graph;
-            LongtermPerformanceLayout layout = new LongtermPerformanceLayout(
+            var layout = new LongtermPerformanceLayout(
                 delegate() { return result; }, this.styleSheet);
             Populate(result);
             layout.Invoke();
@@ -138,17 +140,17 @@ namespace Limaki.Tests.Graph.Model {
         public override Scene Scene {
             get {
                 var result = createScene();
-                var nextStart = new PointI(startAt.X, result.Shape.BoundsRect.Bottom + distance.Height);
+                var nextStart = new Point(startAt.X, result.Shape.BoundsRect.Bottom + distance.Height);
                 for (int i = 0; i < Count; i++) {
-                    BenchmarkOneSceneFactory example = new BenchmarkOneSceneFactory();
+                    var example = new BenchmarkOneSceneFactory();
                     example.startAt = nextStart;
-                    Scene scene = example.createScene();
+                    var scene = example.createScene();
                     foreach (var visual in scene.Elements)
                         result.Add(visual);
-                    nextStart = new PointI(startAt.X, scene.Shape.BoundsRect.Bottom + distance.Height);
+                    nextStart = new Point(startAt.X, scene.Shape.BoundsRect.Bottom + distance.Height);
                 }
                 result.ClearSpatialIndex();
-                IShape shape = result.Shape;
+                var shape = result.Shape;
                 return result;
             }
         }

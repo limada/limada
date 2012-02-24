@@ -1,14 +1,12 @@
 ﻿using System;
-using Limaki.Presenter.Display;
-using Limaki.Visuals;
 using System.Collections.Generic;
 using Limaki.Actions;
-using ID = System.Int64;
-using Limaki.Presenter.Layout;
-using Limaki.Presenter.UI;
-using Limaki.Drawing;
 using System.Linq;
 using Limaki.Graphs.Extensions;
+using Limaki.Presenter.Display;
+using Limaki.Presenter.Layout;
+using Limaki.Presenter.UI.GraphScene;
+using Limaki.Visuals;
 
 namespace Limaki.UseCases.Viewers.ToolStripViewers {
 
@@ -58,7 +56,7 @@ namespace Limaki.UseCases.Viewers.ToolStripViewers {
         }
 
         private List<ICommand<IVisual>> _undo;
-        private ID _undoID = 0;
+        private Int64 _undoID = 0;
         protected virtual void StoreUndo(IGraphSceneDisplay<IVisual, IVisualEdge> display, Alligner<IVisual, IVisualEdge> alligner, IEnumerable<IVisual> items) {
             _undo = new List<ICommand<IVisual>>();
             _undoID = display.DataId;

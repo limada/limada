@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using Limaki.Actions;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Modelling {
     /// <summary>
     /// Executes the commands and changes the GraphicsModel (Visuals)
     /// </summary>

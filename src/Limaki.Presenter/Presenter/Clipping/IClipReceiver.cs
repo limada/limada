@@ -14,8 +14,9 @@
 
 
 using Limaki.Common;
+using Limaki.Presenter.Rendering;
 
-namespace Limaki.Presenter {
+namespace Limaki.Presenter.Clipping {
     /// <summary>
     /// calls the Renderer and updates the ViewPort
     /// the subjects are ViewPort and Rederer

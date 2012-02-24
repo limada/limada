@@ -19,8 +19,7 @@ using System.Net;
 using Limada.Model;
 using Limaki.Common.Text.HTML;
 using Limaki.Model.Streams;
-using Limaki.UseCases.Viewers.StreamViewers.WebProxy;
-
+using Limaki.UseCases.Viewers.StreamViewers.WebProxyServer;
 
 namespace Limaki.UseCases.Viewers.StreamViewers {
     public interface IHTMLViewer {

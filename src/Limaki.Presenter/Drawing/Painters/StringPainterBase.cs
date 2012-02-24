@@ -1,6 +1,7 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing.Shapes;
+using Xwt;
 
 namespace Limaki.Drawing.Painters {
     /// <summary>
@@ -45,8 +46,8 @@ namespace Limaki.Drawing.Painters {
         }
         
         public static double Angle(Vector v) {
-            double dx = (v.End.X - v.Start.X);
-            double dy = (v.End.Y - v.Start.Y);
+            var dx = (v.End.X - v.Start.X);
+            var dy = (v.End.Y - v.Start.Y);
             if (dy == 0)
                 return 0;
             else if (dx == 0)
@@ -80,20 +81,20 @@ namespace Limaki.Drawing.Painters {
             set {Text = value; }
         }
 
-        public virtual PointI[] Measure(int delta, bool extend) {
+        public virtual Point[] Measure(int delta, bool extend) {
             return Measure (null, delta, extend);
         }
 
-        public virtual PointI[] Measure(Matrice matrix, int delta, bool extend) {
+        public virtual Point[] Measure(Matrice matrix, int delta, bool extend) {
             var shape = this.Shape;
             if (this.Text != null && shape != null) {
                 var style = this.Style;
                 var font = style.Font;
                 if (AlignText && shape is IVectorShape) {
                     var vector = ((IVectorShape)shape).Data;
-                    var vLen = (float)Vector.Length(vector);
-                    var fontSize = (float)font.Size + 2;
-                    var size = new SizeS(vLen, fontSize);
+                    var vLen = Vector.Length(vector);
+                    var fontSize = font.Size + 2;
+                    var size = new Size(vLen, fontSize);
                     size = drawingUtils.GetTextDimension(this.Text, style);
                     if (size.Width == 0) {
                         size.Width = vLen;

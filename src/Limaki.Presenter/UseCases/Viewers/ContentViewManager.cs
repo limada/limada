@@ -15,19 +15,18 @@
 using System;
 using System.IO;
 using Limada.Model;
-using Limada.View;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs.Extensions;
+using Limaki.Limada.View;
 using Limaki.Model.Streams;
-using Limaki.UseCases.Viewers.StreamViewers;
-using Limaki.Presenter.Visuals;
-using Limaki.UseCases.Viewers.StreamViewers;
-using Limaki.Visuals;
-using Limaki.Presenter.UI;
 using System.Linq;
 using Limaki.Graphs;
 using Limaki.Presenter.Display;
+using Limaki.Presenter.UI.GraphScene;
+using Limaki.UseCases.Viewers.StreamViewers;
+using Limaki.Visuals;
+using Xwt.Drawing;
 
 namespace Limaki.UseCases.Viewers {
     public class ContentViewManager:IDisposable {

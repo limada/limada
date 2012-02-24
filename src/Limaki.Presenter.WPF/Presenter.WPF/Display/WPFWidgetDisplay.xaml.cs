@@ -4,12 +4,19 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Limaki.Common;
 using Limaki.Drawing.WPF;
+using Limaki.Presenter.Clipping;
 using Limaki.Presenter.Display;
 using System;
 using System.Windows.Input;
 using System.IO;
 using System.Diagnostics;
 using Limaki.Graphs;
+using Limaki.Presenter.Rendering;
+using Xwt;
+using Canvas = System.Windows.Controls.Canvas;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using Point = System.Windows.Point;
+using Size = Xwt.Size;
 
 
 namespace Limaki.Presenter.WPF.Display {
@@ -73,16 +80,16 @@ namespace Limaki.Presenter.WPF.Display {
             }
             set {
                 var color = DrawingConverter.Convert(value);
-                if (Display.BackColor != color) {
+                if (!Display.BackColor.Equals(color)) {
                     Display.BackColor = color;
                 }
 
             }
         }
 
-        public Limaki.Drawing.PointI ScrollPosition {
+        public Xwt.Point ScrollPosition {
             get {
-                return new Limaki.Drawing.PointI(
+                return new Xwt.Point(
                     (int)this.ScrollViewer.HorizontalOffset,
                     (int)this.ScrollViewer.VerticalOffset);
             }
@@ -92,9 +99,9 @@ namespace Limaki.Presenter.WPF.Display {
             }
         }
 
-        public Limaki.Drawing.SizeI ScrollMinSize {
+        public Size ScrollMinSize {
             get {
-                return new Limaki.Drawing.SizeI(
+                return new Size(
                     (int)this.LayoutRoot.Width,
                     (int)this.LayoutRoot.Height);
             }
@@ -105,24 +112,24 @@ namespace Limaki.Presenter.WPF.Display {
         }
         #region IControl Member
 
-        public virtual Limaki.Drawing.RectangleI ClientRectangle {
+        public virtual RectangleD ClientRectangle {
             get {
-                return new Limaki.Drawing.RectangleI(
+                return new RectangleD(
                  ScrollPosition,
-                 Limaki.Drawing.SizeI.Subtract(ScrollMinSize, new Limaki.Drawing.SizeI(ScrollPosition))
+                 ScrollMinSize - (Size)ScrollPosition
                  );
             }
         }
 
-        public virtual Limaki.Drawing.SizeI Size {
-            get { return new Limaki.Drawing.SizeI((int)this.Width, (int)this.Height); }
+        public virtual Size Size {
+            get { return new Size((int)this.Width, (int)this.Height); }
         }
 
-        void IControl.Invalidate(Limaki.Drawing.RectangleI rect) {
+        void IControl.Invalidate(RectangleD rect) {
             this.DeviceRenderer.Render(new BoundsClipper(rect));
         }
 
-        Limaki.Drawing.PointI IControl.PointToClient(Limaki.Drawing.PointI source) {
+        Xwt.Point IControl.PointToClient(Xwt.Point source) {
             return DrawingConverter.Convert(
                 this.PointFromScreen(DrawingConverter.Convert(source))
              );
