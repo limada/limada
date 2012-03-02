@@ -15,6 +15,7 @@
 
 using Xwt;
 using Xwt.Drawing;
+using Xwt.GDI;
 
 namespace Limaki.Drawing.GDI {
 
@@ -28,7 +29,7 @@ namespace Limaki.Drawing.GDI {
         public static void SetNativePen(Pen toolkit, System.Drawing.Pen native) {
             if (native == null || toolkit == null)
                 return;
-            native.Color = GDIConverter.Convert(toolkit.Color);
+            native.Color = GdiConverter.Convert(toolkit.Color);
             native.StartCap = GDIConverter.Convert(toolkit.StartCap);
             native.EndCap = GDIConverter.Convert(toolkit.EndCap);
             native.Width = (float)toolkit.Thickness;

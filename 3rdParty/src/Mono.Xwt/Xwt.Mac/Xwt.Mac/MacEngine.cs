@@ -61,15 +61,25 @@ namespace Xwt.Mac
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Canvas), typeof(CanvasBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Drawing.Image), typeof(ImageHandler));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Drawing.Context), typeof(ContextBackendHandler));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.Drawing.ImageBuilder), typeof(ImageBuilderBackendHandler));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.Drawing.ImagePattern), typeof(ImagePatternBackendHandler));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Drawing.Gradient), typeof(GradientBackendHandler));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Drawing.TextLayout), typeof(TextLayoutBackendHandler));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Drawing.Font), typeof(FontBackendHandler));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Menu), typeof(MenuBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.MenuItem), typeof(MenuItemBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.CheckBoxMenuItem), typeof(CheckBoxMenuItemBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.RadioButtonMenuItem), typeof(RadioButtonMenuItemBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.SeparatorMenuItem), typeof(SeparatorMenuItemBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.ComboBox), typeof(ComboBoxBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.ComboBoxEntry), typeof(ComboBoxEntryBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.TextEntry), typeof(TextEntryBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.ImageView), typeof(ImageViewBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Table), typeof(BoxBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.CheckBox), typeof(CheckBoxBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.Frame), typeof(FrameBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.ScrollView), typeof(ScrollViewBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.ToggleButton), typeof(ToggleButtonBackend));
 		}
 
 		public override void RunApplication ()
@@ -77,6 +87,11 @@ namespace Xwt.Mac
 			pool.Dispose ();
 			NSApplication.Main (new string [0]);
 			pool = new NSAutoreleasePool ();
+		}
+
+		public override void ExitApplication ()
+		{
+			NSApplication.SharedApplication.Terminate(appDelegate);
 		}
 
 		public static void ReplaceChild (NSView cont, NSView oldView, NSView newView)
@@ -110,19 +125,22 @@ namespace Xwt.Mac
 			return Messaging.bool_objc_msgSend_IntPtr_IntPtr (self, hijackedSel.Handle, filePath, owner);
 		}
 		
-		public override void Invoke (Action action)
+		public override void InvokeAsync (Action action)
 		{
+			if (action == null)
+				throw new ArgumentNullException ("action");
+
 			NSApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
 				action ();
 			});
 		}
 		
-		public override object TimeoutInvoke (Func<bool> action, TimeSpan timeSpan)
+		public override object TimerInvoke (Func<bool> action, TimeSpan timeSpan)
 		{
 			throw new NotImplementedException ();
 		}
 		
-		public override void CancelTimeoutInvoke (object id)
+		public override void CancelTimerInvoke (object id)
 		{
 			throw new NotImplementedException ();
 		}

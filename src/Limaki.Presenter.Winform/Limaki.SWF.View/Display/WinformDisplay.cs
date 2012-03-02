@@ -16,6 +16,7 @@ using DragEventArgs = System.Windows.Forms.DragEventArgs;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using Point = Xwt.Point;
 using Size = Xwt.Size;
+using Xwt.GDI;
 
 namespace Limaki.View.Winform.Display {
     public abstract class WinformDevice: UserControl {
@@ -100,7 +101,7 @@ namespace Limaki.View.Winform.Display {
             get { return base.BackColor; }
             set {
                 base.BackColor = value;
-                var color = GDIConverter.Convert (value);
+                var color = GdiConverter.Convert (value);
                 if (!Display.BackColor.Equals(color)) {
                     Display.BackColor = color;
                 }

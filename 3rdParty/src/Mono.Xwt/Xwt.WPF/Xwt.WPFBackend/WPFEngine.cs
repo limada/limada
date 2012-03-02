@@ -3,8 +3,10 @@
 //  
 // Author:
 //       Carlos Alberto Cortez <calberto.cortez@gmail.com>
+//       Luis Reis <luiscubal@gmail.com>
 // 
 // Copyright (c) 2011 Carlos Alberto Cortez
+// Copyright (c) 2012 Luís Reis
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -39,34 +41,51 @@ namespace Xwt.WPFBackend
 		public override void InitializeApplication ()
 		{
 			application = new System.Windows.Application ();
+
 		    RegisterBackends();
-			
 		}
-        public virtual void RegisterBackends() {
+
+        public void RegisterBackends() {
             WidgetRegistry.RegisterBackend(typeof(Window), typeof(WindowBackend));
             WidgetRegistry.RegisterBackend(typeof(Menu), typeof(MenuBackend));
             WidgetRegistry.RegisterBackend(typeof(MenuItem), typeof(MenuItemBackend));
             WidgetRegistry.RegisterBackend(typeof(Box), typeof(BoxBackend));
+            WidgetRegistry.RegisterBackend(typeof(Label), typeof(LabelBackend));
+            WidgetRegistry.RegisterBackend(typeof(TextEntry), typeof(TextEntryBackend));
+            WidgetRegistry.RegisterBackend(typeof(Button), typeof(ButtonBackend));
+            WidgetRegistry.RegisterBackend(typeof(ToggleButton), typeof(ToggleButtonBackend));
+            WidgetRegistry.RegisterBackend(typeof(TreeView), typeof(TreeViewBackend));
+            WidgetRegistry.RegisterBackend(typeof(TreeStore), typeof(TreeStoreBackend));
+            WidgetRegistry.RegisterBackend(typeof(ImageView), typeof(ImageViewBackend));
 
+            WidgetRegistry.RegisterBackend(typeof(Image), typeof(ImageHandler));
             WidgetRegistry.RegisterBackend(typeof(Font), typeof(FontBackendHandler));
         }
 
-		public override void RunApplication ()
+	    public override void RunApplication ()
 		{
 			application.Run ();
 		}
 
-		public override void Invoke (Action action)
+		public override void ExitApplication ()
 		{
+			application.Shutdown();
+		}
+
+		public override void InvokeAsync (Action action)
+		{
+			if (action == null)
+				throw new ArgumentNullException ("action");
+
 			application.Dispatcher.BeginInvoke (action, new object [0]);
 		}
 
-		public override object TimeoutInvoke (Func<bool> action, TimeSpan timeSpan)
+		public override object TimerInvoke (Func<bool> action, TimeSpan timeSpan)
 		{
-			throw new NotImplementedException ();
+			throw new NotImplementedException();
 		}
 
-		public override void CancelTimeoutInvoke (object id)
+		public override void CancelTimerInvoke (object id)
 		{
 			throw new NotImplementedException ();
 		}
@@ -95,6 +114,8 @@ namespace Xwt.WPFBackend
 
 			return null;
 		}
-	}
+
+        
+    }
 }
 

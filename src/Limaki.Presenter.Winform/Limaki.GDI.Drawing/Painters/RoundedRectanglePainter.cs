@@ -5,6 +5,7 @@ using Limaki.Drawing.GDI;
 using Limaki.Drawing.GDI.Painters;
 using Limaki.Drawing.Shapes;
 using Xwt;
+using Xwt.GDI;
 
 namespace Limaki.Drawing.GDI.Painters {
     public class RoundedRectanglePainter:RectanglePainter,IPainter<IRoundedRectangleShape,RectangleD> {
@@ -17,7 +18,7 @@ namespace Limaki.Drawing.GDI.Painters {
             SetRoundedRect (path, rect, 10f);
             if ((RenderType.Fill & renderType) != 0) {
                 g.FillPath(GetSolidBrush(
-                               GDIConverter.Convert(style.FillColor)
+                               GdiConverter.Convert(style.FillColor)
                                ), path);
                 
             }

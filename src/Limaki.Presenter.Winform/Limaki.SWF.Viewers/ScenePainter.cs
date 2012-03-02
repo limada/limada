@@ -26,6 +26,7 @@ using Limaki.View.Visuals;
 using Limaki.View.Winform;
 using Limaki.View.Winform.Display;
 using Limaki.Visuals;
+using Xwt.GDI;
 
 namespace Limaki.View.Viewers.Winform {
     public class GraphScenePainterGdiComposer<TItem, TEdge> : GraphScenePainterComposer<TItem, TEdge>
@@ -72,7 +73,7 @@ namespace Limaki.View.Viewers.Winform {
         public virtual void OnPaint(PaintEventArgs e) {
             var g = e.Graphics;
 
-            var b = new SolidBrush(GDIConverter.Convert(BackColor()));
+            var b = new SolidBrush(GdiConverter.Convert(BackColor()));
             g.FillRectangle(b, e.ClipRectangle);
 
             Layer.OnPaint(Converter.Convert(e));

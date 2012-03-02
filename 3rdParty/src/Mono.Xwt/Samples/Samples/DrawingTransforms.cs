@@ -38,6 +38,32 @@ namespace Samples
 		protected override void OnDraw (Xwt.Drawing.Context ctx)
 		{
 			base.OnDraw (ctx);
+			
+			ctx.SetLineDash (15, 10, 10, 5, 5);
+			ctx.Rectangle (100, 100, 100, 100);
+			ctx.Stroke ();
+			ctx.SetLineDash (0);
+			
+			ImageBuilder ib = new ImageBuilder (30, 30, ImageFormat.ARGB32);
+			ib.Context.Arc (15, 15, 15, 0, 360);
+			ib.Context.SetColor (new Color (1, 0, 1));
+			ib.Context.Rectangle (0, 0, 5, 5);
+			ib.Context.Fill ();
+			var img = ib.ToImage ();
+			ctx.DrawImage (img, 90, 90);
+			ctx.DrawImage (img, 90, 140, 50, 10);
+			
+			ctx.Arc (190, 190, 15, 0, 360);
+			ctx.SetColor (new Color (1, 0, 1, 0.4));
+			ctx.Fill ();
+			
+			ctx.Save ();
+			ctx.Translate (90, 220);
+			ctx.Pattern = new ImagePattern (img);
+			ctx.Rectangle (0, 0, 100, 70);
+			ctx.Fill ();
+			ctx.Restore ();
+			
 			ctx.Translate (30, 30);
 			double end = 270;
 			

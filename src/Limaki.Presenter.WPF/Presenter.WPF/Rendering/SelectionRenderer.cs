@@ -93,15 +93,15 @@ namespace Limaki.View.WPF {
                 bigger = bigger.NormalizedRectangle();
 
                 if (bigger.Width <= halfborder || bigger.Height <= halfborder) {
-                    bigger.Inflate(halfborder, halfborder);
+                    bigger = bigger.Inflate(halfborder, halfborder);
                     Device.Invalidate(bigger);
                 } else {
-                    bigger.Inflate(halfborder, halfborder);
+                    bigger = bigger.Inflate(halfborder, halfborder);
 
                     RectangleD smaller = DrawingExtensions.Intersect(a, b);
                     smaller = Camera.FromSource(smaller);
                     smaller = smaller.NormalizedRectangle();
-                    smaller.Inflate(-halfborder, -halfborder);
+                    smaller = smaller.Inflate(-halfborder, -halfborder);
 
                     Device.Invalidate(
                         RectangleD.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top));

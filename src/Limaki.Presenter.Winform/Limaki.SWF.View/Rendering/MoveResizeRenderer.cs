@@ -9,6 +9,7 @@ using Limaki.View.GDI.UI;
 using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Xwt;
+using Xwt.GDI;
 
 
 namespace Limaki.View.Winform {
@@ -60,8 +61,8 @@ namespace Limaki.View.Winform {
                         smaller = Camera.FromSource(smaller);
                         bigger = Camera.FromSource(bigger);
 
-                        smaller.Inflate(-halfborder, -halfborder);
-                        bigger.Inflate(halfborder, halfborder);
+                        smaller = smaller.Inflate(-halfborder, -halfborder);
+                        bigger = bigger.Inflate(halfborder, halfborder);
 
                         // this is a mono workaround, as it don't like strange rectangles:
                         smaller = smaller.NormalizedRectangle();
@@ -91,7 +92,7 @@ namespace Limaki.View.Winform {
                     // transform rectangle to control coordinates
                     invalidRect = Camera.FromSource(invalidRect);
 
-                    invalidRect.Inflate(halfborder, halfborder);
+                    invalidRect = invalidRect.Inflate(halfborder, halfborder);
                     decive.Invalidate(invalidRect);
                 }
             }

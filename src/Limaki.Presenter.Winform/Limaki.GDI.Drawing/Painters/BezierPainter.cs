@@ -3,6 +3,7 @@ using System.Drawing.Drawing2D;
 using Limaki.Drawing.Shapes;
 using Xwt;
 using GDIPen=Limaki.Drawing.GDI.GDIPen;
+using Xwt.GDI;
 
 namespace Limaki.Drawing.GDI.Painters {
     public class BezierPainter:RectanglePainter,IPainter<IBezierShape,RectangleD> {
@@ -16,7 +17,7 @@ namespace Limaki.Drawing.GDI.Painters {
             path.AddBeziers (bezierPoints);
             if ((RenderType.Fill & renderType) != 0) {
                 g.FillPath(GetSolidBrush(
-                               GDIConverter.Convert(style.FillColor)
+                               GdiConverter.Convert(style.FillColor)
                                ), path);
                 
             }

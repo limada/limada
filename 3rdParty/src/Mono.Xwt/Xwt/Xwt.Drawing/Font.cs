@@ -44,9 +44,11 @@ namespace Xwt.Drawing
 				return handler;
 			}
 		}
-
-        public Font(object backend)
+		
+		public Font (object backend)
 		{
+			if (backend == null)
+				throw new ArgumentNullException ("backend");
 			Backend = backend;
 		}
 		

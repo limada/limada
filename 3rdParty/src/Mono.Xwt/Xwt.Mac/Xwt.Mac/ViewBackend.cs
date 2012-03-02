@@ -119,6 +119,15 @@ namespace Xwt.Mac
 		{
 		}
 		
+		public string TooltipText {
+			get {
+				return Widget.ToolTip;
+			}
+			set {
+				Widget.ToolTip = value;
+			}
+		}
+		
 		public virtual void Dispose (bool disposing)
 		{
 		}
@@ -147,6 +156,10 @@ namespace Xwt.Mac
 		
 		public virtual object Font {
 			get {
+				if (Widget is NSControl)
+					return ((NSControl)(object)Widget).Font;
+				if (Widget is NSText)
+					return ((NSText)(object)Widget).Font;
 				/// TODO
 //				throw new NotImplementedException ();
 				return null;
@@ -157,12 +170,16 @@ namespace Xwt.Mac
 			}
 		}
 		
-		public Xwt.Drawing.Color BackgroundColor {
+		public virtual Xwt.Drawing.Color BackgroundColor {
 			get {
-				throw new NotImplementedException ();
+				if (Widget.Layer != null)
+					return Widget.Layer.BackgroundColor.ToXwtColor ();
+				else
+					return Xwt.Drawing.Color.Black;
 			}
 			set {
-				throw new NotImplementedException ();
+				if (Widget.Layer != null)
+					Widget.Layer.BackgroundColor = value.ToCGColor ();
 			}
 		}
 		
@@ -175,8 +192,9 @@ namespace Xwt.Mac
 			return new Point (lo.X, lo.Y);
 		}
 		
-		public WidgetSize GetPreferredWidth ()
+		public virtual WidgetSize GetPreferredWidth ()
 		{
+//			double w1 = Widget.FittingSize.Width + frontend.Margin.HorizontalSpacing;
 			double w = Widget.WidgetWidth() + frontend.Margin.HorizontalSpacing;
 			var s = new Xwt.WidgetSize (w, w);
 			if (minWidth != -1 && s.MinSize > minWidth)
@@ -184,8 +202,9 @@ namespace Xwt.Mac
 			return s;
 		}
 
-		public WidgetSize GetPreferredHeight ()
+		public virtual WidgetSize GetPreferredHeight ()
 		{
+//			double h1 = Widget.FittingSize.Height + frontend.Margin.VerticalSpacing;
 			double h = Widget.WidgetHeight() + frontend.Margin.VerticalSpacing;
 			var s = new Xwt.WidgetSize (h, h);
 			if (minHeight != -1 && s.MinSize > minHeight)
@@ -280,7 +299,7 @@ namespace Xwt.Mac
 			}
 		}
 		
-		public void DragStart (TransferDataSource data, DragDropAction dragAction, object image, double xhot, double yhot)
+		public void DragStart (DragStartData sdata)
 		{
 			var lo = RootWidget.ConvertPointToBase (new PointF (Widget.Bounds.X, Widget.Bounds.Y));
 			lo = RootWidget.Window.ConvertBaseToScreen (lo);
@@ -288,19 +307,19 @@ namespace Xwt.Mac
 			var pb = NSPasteboard.FromName (NSPasteboard.NSDragPasteboardName);
 			if (pb == null)
 				throw new InvalidOperationException ("Could not get pasteboard");
-			if (data == null)
+			if (sdata.Data == null)
 				throw new ArgumentNullException ("data");
-			InitPasteboard (pb, data);
-			var img = (NSImage)image;
-			var pos = new PointF (ml.X - lo.X - (float)xhot, lo.Y - ml.Y - (float)yhot + img.Size.Height);
+			InitPasteboard (pb, sdata.Data);
+			var img = (NSImage)sdata.ImageBackend;
+			var pos = new PointF (ml.X - lo.X - (float)sdata.HotX, lo.Y - ml.Y - (float)sdata.HotY + img.Size.Height);
 			Widget.DragImage (img, pos, new SizeF (0, 0), NSApplication.SharedApplication.CurrentEvent, pb, Widget, true);
 		}
 		
-		public void SetDragSource (string[] types, DragDropAction dragAction)
+		public void SetDragSource (TransferDataType[] types, DragDropAction dragAction)
 		{
 		}
 		
-		public void SetDragTarget (string[] types, DragDropAction dragAction)
+		public void SetDragTarget (TransferDataType[] types, DragDropAction dragAction)
 		{
 			SetupForDragDrop (Widget.GetType ());
 			var dtypes = types.Select (t => ToNSDragType (t)).ToArray ();
@@ -325,9 +344,7 @@ namespace Xwt.Mac
 			
 			if ((backend.currentEvents & WidgetEvent.DragOverCheck) != 0) {
 				var args = new DragOverCheckEventArgs (pos, types, ConvertAction (di.DraggingSourceOperationMask));
-				Toolkit.Invoke (delegate {
-					backend.eventSink.OnDragOverCheck (args);
-				});
+				backend.OnDragOverCheck (di, args);
 				if (args.AllowedAction == DragDropAction.None)
 					return NSDragOperation.None;
 				if (args.AllowedAction != DragDropAction.Default)
@@ -338,9 +355,7 @@ namespace Xwt.Mac
 				TransferDataStore store = new TransferDataStore ();
 				FillDataStore (store, di.DraggingPasteboard, ob.View.RegisteredDragTypes ());
 				var args = new DragOverEventArgs (pos, store, ConvertAction (di.DraggingSourceOperationMask));
-				Toolkit.Invoke (delegate {
-					backend.eventSink.OnDragOver (args);
-				});
+				backend.OnDragOver (di, args);
 				if (args.AllowedAction == DragDropAction.None)
 					return NSDragOperation.None;
 				if (args.AllowedAction != DragDropAction.Default)
@@ -412,6 +427,20 @@ namespace Xwt.Mac
 			Console.WriteLine ("ConcludeDragOperation");
 		}
 		
+		protected virtual void OnDragOverCheck (NSDraggingInfo di, DragOverCheckEventArgs args)
+		{
+			Toolkit.Invoke (delegate {
+				eventSink.OnDragOverCheck (args);
+			});
+		}
+		
+		protected virtual void OnDragOver (NSDraggingInfo di, DragOverEventArgs args)
+		{
+			Toolkit.Invoke (delegate {
+				eventSink.OnDragOver (args);
+			});
+		}
+		
 		void InitPasteboard (NSPasteboard pb, TransferDataSource data)
 		{
 			pb.ClearContents ();
@@ -466,18 +495,16 @@ namespace Xwt.Mac
 			return res;
 		}
 		
-		static string ToNSDragType (string type)
+		static string ToNSDragType (TransferDataType type)
 		{
-			switch (type) {
-			case TransferDataType.Text: return NSPasteboard.NSStringType;
-			case TransferDataType.Uri: return NSPasteboard.NSFilenamesType;
-			case TransferDataType.Image: return NSPasteboard.NSPictType;
-			case TransferDataType.Rtf: return NSPasteboard.NSRtfType;
-			}
-			return type;
+			if (type == TransferDataType.Text) return NSPasteboard.NSStringType;
+			if (type == TransferDataType.Uri) return NSPasteboard.NSFilenamesType;
+			if (type == TransferDataType.Image) return NSPasteboard.NSPictType;
+			if (type == TransferDataType.Rtf) return NSPasteboard.NSRtfType;
+			return type.Id;
 		}
 		
-		static string ToXwtDragType (string type)
+		static TransferDataType ToXwtDragType (string type)
 		{
 			if (type == NSPasteboard.NSStringType)
 				return TransferDataType.Text;
@@ -487,7 +514,7 @@ namespace Xwt.Mac
 				return TransferDataType.Image;
 			if (type == NSPasteboard.NSRtfType)
 				return TransferDataType.Rtf;
-			return type;
+			return TransferDataType.FromId (type);
 		}
 		
 		#endregion

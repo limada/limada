@@ -13,6 +13,7 @@
  */
 
 using Xwt.Drawing;
+using Xwt.GDI;
 
 namespace Limaki.Drawing.GDI {
     public class GDIPen:Pen {
@@ -26,7 +27,7 @@ namespace Limaki.Drawing.GDI {
         public System.Drawing.Pen Native {
             get {
                 if (_natvive == null) {
-                    _natvive = new System.Drawing.Pen(GDIConverter.Convert(this.Color));
+                    _natvive = new System.Drawing.Pen(GdiConverter.Convert(this.Color));
                     GDIUtils.SetNativePen (this, _natvive);
                 }
                 return _natvive;

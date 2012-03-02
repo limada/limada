@@ -4,6 +4,7 @@ using Limaki.Drawing.GDI;
 using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Xwt;
+using Xwt.GDI;
 
 
 namespace Limaki.View.Winform {
@@ -34,16 +35,16 @@ namespace Limaki.View.Winform {
                 bigger = bigger.NormalizedRectangle();
 
                 if (bigger.Width <= halfborder || bigger.Height <= halfborder) {
-                    bigger.Inflate(halfborder, halfborder);
+                    bigger = bigger.Inflate(halfborder, halfborder);
                     Device.Invalidate(bigger);
                     Device.Update();
                 } else {
-                    bigger.Inflate(halfborder, halfborder);
+                    bigger = bigger.Inflate(halfborder, halfborder);
 
                     var smaller = DrawingExtensions.Intersect(a, b);
                     smaller = Camera.FromSource(smaller);
                     smaller = smaller.NormalizedRectangle();
-                    smaller.Inflate(-halfborder, -halfborder);
+                    smaller = smaller.Inflate(-halfborder, -halfborder);
 
                     Device.Invalidate(
                         RectangleD.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top));

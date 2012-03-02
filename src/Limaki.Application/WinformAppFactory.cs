@@ -7,7 +7,9 @@ using Limaki.Common;
 using Xwt.WinformBackend;
 
 namespace Limaki.App {
+
     public class WinformAppFactory : AppFactory<global::Limada.UseCases.AppResourceLoader> {
+
         public WinformAppFactory(): base(new WinformContextRecourceLoader()) {}
 
         public Form MainForm() {
@@ -20,6 +22,7 @@ namespace Limaki.App {
         }
 
         public void CreateUseCase(Form mainform) {
+
             mainform.Icon = Limaki.View.Properties.Resources.LimadaLogoA;
             mainform.ClientSize = new System.Drawing.Size(800, 600);
 

@@ -18,6 +18,7 @@ using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using Xwt;
 using Xwt.Engine;
+using Xwt.GDI;
 
 namespace Limaki.Drawing.GDI.Painters {
     public class StringPainter : StringPainterBase,IPainter<string> {
@@ -148,10 +149,10 @@ namespace Limaki.Drawing.GDI.Painters {
                     }
 
                     g.DrawPath (
-                        GetPen (GDIConverter.Convert (style.FillColor)),
+                        GetPen (GdiConverter.Convert (style.FillColor)),
                         linedTextPath);
                     g.FillPath (
-                        GetSolidBrush (GDIConverter.Convert (style.TextColor)),
+                        GetSolidBrush (GdiConverter.Convert (style.TextColor)),
                         linedTextPath);
                 } else {
                     RectangleF rect = GDIConverter.Convert (shape.BoundsRect);
@@ -162,7 +163,7 @@ namespace Limaki.Drawing.GDI.Painters {
 
                     if (rectSize.Width > 1 && rectSize.Height > 1) {
                         g.DrawString (Text, font,
-                                      GetSolidBrush (GDIConverter.Convert (style.TextColor)),
+                                      GetSolidBrush (GdiConverter.Convert (style.TextColor)),
                                       rect, stringFormat);
                     }
                 }

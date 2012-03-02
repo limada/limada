@@ -1,6 +1,6 @@
 using Xwt.Engine;
 using SWF = System.Windows.Forms;
-using Xwt.GDIBackend;
+using Xwt.GDI.Backend;
 
 namespace Xwt.WinformBackend {
 
@@ -21,18 +21,18 @@ namespace Xwt.WinformBackend {
             SWF.Application.Run();
         }
 
-        public override void Invoke(System.Action action) {
+        //public override void Invoke(System.Action action) {
            
-            SWF.Form.ActiveForm.Invoke(action);
-        }
+        //    SWF.Form.ActiveForm.Invoke(action);
+        //}
 
-        public override object TimeoutInvoke(System.Func<bool> action, System.TimeSpan timeSpan) {
-            throw new System.NotImplementedException();
-        }
+        //public override object TimeoutInvoke(System.Func<bool> action, System.TimeSpan timeSpan) {
+        //    throw new System.NotImplementedException();
+        //}
 
-        public override void CancelTimeoutInvoke(object id) {
-            throw new System.NotImplementedException();
-        }
+        //public override void CancelTimeoutInvoke(object id) {
+        //    throw new System.NotImplementedException();
+        //}
 
         public override object GetNativeWidget(Widget w) {
             var backend = (IWinformWidgetBackend)WidgetRegistry.GetBackend(w);

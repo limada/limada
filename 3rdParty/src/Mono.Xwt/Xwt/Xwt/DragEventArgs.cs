@@ -30,7 +30,7 @@ namespace Xwt
 {
 	public class DragCheckEventArgs: EventArgs
 	{
-		public DragCheckEventArgs (Point position, string[] types, DragDropAction action)
+		public DragCheckEventArgs (Point position, TransferDataType[] types, DragDropAction action)
 		{
 			DataTypes = types;
 			Action = action;
@@ -38,7 +38,7 @@ namespace Xwt
 			Result = DragDropResult.None;
 		}
 		
-		public string[] DataTypes { get; private set; }
+		public TransferDataType[] DataTypes { get; private set; }
 		
 		public Point Position { get; private set; }
 		
@@ -68,7 +68,9 @@ namespace Xwt
 	
 	public class DragOverCheckEventArgs: EventArgs
 	{
-		public DragOverCheckEventArgs (Point position, string[] types, DragDropAction action)
+		DragDropAction allowedAction;
+		
+		public DragOverCheckEventArgs (Point position, TransferDataType[] types, DragDropAction action)
 		{
 			DataTypes = types;
 			Action = action;
@@ -79,7 +81,7 @@ namespace Xwt
 		/// <summary>
 		/// Type of the data being dropped
 		/// </summary>
-		public string[] DataTypes { get; private set; }
+		public TransferDataType[] DataTypes { get; private set; }
 		
 		/// <summary>
 		/// Drop coordinates (in widget coordinates)
@@ -98,7 +100,22 @@ namespace Xwt
 		/// To be set by the handler of the event. Specifies the action that will be performed if the item is dropped.
 		/// If not specified or set to Default, the action will be determined by the handler of DragOver.
 		/// </remarks>
-		public DragDropAction AllowedAction { get; set; }
+		public DragDropAction AllowedAction {
+			get { return allowedAction; }
+			set {
+				switch (value) {
+				case DragDropAction.Copy:
+				case Xwt.DragDropAction.Default:
+				case Xwt.DragDropAction.Link:
+				case Xwt.DragDropAction.Move:
+				case Xwt.DragDropAction.None:
+					allowedAction = value;
+					break;
+				default:
+					throw new ArgumentException ("Allowed action must be one of Copy, Link, Move, None or Default");
+				}
+			}
+		}
 	}
 
 	public class DragOverEventArgs: EventArgs
@@ -141,6 +158,11 @@ namespace Xwt
 		}
 		
 		public bool DeleteSource { get; private set; }
+	}
+	
+	public class DragStartedEventArgs: EventArgs
+	{
+		public DragOperation DragOperation { get; internal set; }
 	}
 	
 	public enum DragDropResult

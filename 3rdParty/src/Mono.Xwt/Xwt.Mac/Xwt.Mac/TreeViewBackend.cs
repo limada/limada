@@ -121,6 +121,55 @@ namespace Xwt.Mac
 			if (it != null)
 				Tree.CollapseItem (it);
 		}
+		
+		public void ScrollToRow (TreePosition pos)
+		{
+			var it = tsource.GetItem (pos);
+			if (it != null)
+				Tree.ScrollRowToVisible (Tree.RowForItem (it));
+		}
+		
+		public void ExpandToRow (TreePosition pos)
+		{
+			NSObject it = tsource.GetItem (pos);
+			if (it == null)
+				return;
+			
+			it = Tree.GetParent (it);
+			while (it != null) {
+				Tree.ExpandItem (it, false);
+				it = Tree.GetParent (it);
+			}
+		}
+		
+		public bool GetDropTargetRow (double x, double y, out RowDropPosition pos, out TreePosition nodePosition)
+		{
+			pos = RowDropPosition.Into;
+			nodePosition = null;
+			return false;
+		}
+		
+/*		protected override void OnDragOverCheck (NSDraggingInfo di, DragOverCheckEventArgs args)
+		{
+			base.OnDragOverCheck (di, args);
+			var row = Tree.GetRow (new System.Drawing.PointF (di.DraggingLocation.X, di.DraggingLocation.Y));
+			if (row != -1) {
+				var item = Tree.ItemAtRow (row);
+				Tree.SetDropItem (item, row);
+			}
+		}
+		
+		protected override void OnDragOver (NSDraggingInfo di, DragOverEventArgs args)
+		{
+			base.OnDragOver (di, args);
+			var p = Tree.ConvertPointFromView (di.DraggingLocation, null);
+			var row = Tree.GetRow (p);
+			if (row != -1) {
+				Tree.SetDropRowDropOperation (row, NSTableViewDropOperation.On);
+				var item = Tree.ItemAtRow (row);
+				Tree.SetDropItem (item, 0);
+			}
+		}*/
 	}
 	
 	class TreeItem: NSObject, ITablePosition

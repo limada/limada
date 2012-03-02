@@ -36,7 +36,8 @@ namespace Xwt.GtkBackend
 		public object Create (Context context)
 		{
 			GtkContext c = (GtkContext) WidgetRegistry.GetBackend (context);
-			return new Pango.Layout (c.Widget.PangoContext);
+			var pl = Pango.CairoHelper.CreateLayout (c.Context);
+			return pl;
 		}
 
 		public void SetText (object backend, string text)

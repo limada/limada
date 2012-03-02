@@ -62,11 +62,11 @@ namespace Limaki.Drawing.Shapes {
 
         public virtual bool IsBorderHit(Point p, int hitSize) {
             bool result = false;
-            RectangleD hitRect = this.BoundsRect;
+            var hitRect = this.BoundsRect;
             int halfSize = hitSize / 2;
-            hitRect.Inflate(halfSize, halfSize);
+            hitRect = hitRect.Inflate(halfSize, halfSize);
             if (hitRect.Contains(p)) {
-                hitRect.Inflate(-hitSize, -hitSize);
+                hitRect = hitRect.Inflate(-hitSize, -hitSize);
                 result = !hitRect.Contains(p);
 
             }
@@ -76,7 +76,7 @@ namespace Limaki.Drawing.Shapes {
         public virtual bool IsHit(Point p, int hitSize) {
             RectangleD hitRect = this.BoundsRect;
             int halfSize = hitSize / 2;
-            hitRect.Inflate(halfSize, halfSize);
+            hitRect = hitRect.Inflate(halfSize, halfSize);
             return hitRect.Contains(p);
         }
 

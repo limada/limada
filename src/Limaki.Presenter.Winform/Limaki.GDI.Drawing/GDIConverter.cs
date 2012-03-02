@@ -14,80 +14,74 @@
 
 
 using System;
+using Limaki.Drawing;
 using Xwt;
 using Xwt.Drawing;
 
-
 namespace Limaki.Drawing.GDI {
-    public static class GDIConverter{
-        public static System.Drawing.Rectangle Convert(RectangleD toolkit) {
-            return new System.Drawing.Rectangle((int)toolkit.X, (int)toolkit.Y, (int)toolkit.Width, (int)toolkit.Height);
+
+    public static class GDIConverter {
+
+        public static System.Drawing.Rectangle Convert(RectangleD value) {
+            return new System.Drawing.Rectangle((int)value.X, (int)value.Y, (int)value.Width, (int)value.Height);
         }
 
-        public static System.Drawing.RectangleF ConvertF(RectangleD toolkit) {
-            return new System.Drawing.RectangleF( (float) toolkit.X, (float) toolkit.Y, (float) toolkit.Width, (float) toolkit.Height );
+        public static System.Drawing.RectangleF ConvertF(RectangleD value) {
+            return new System.Drawing.RectangleF((float)value.X, (float)value.Y, (float)value.Width, (float)value.Height);
         }
 
-        public static RectangleD Convert(System.Drawing.Rectangle toolkit) {
-            return new RectangleD(toolkit.X, toolkit.Y, toolkit.Width, toolkit.Height);
+        public static RectangleD Convert(System.Drawing.Rectangle value) {
+            return new RectangleD(value.X, value.Y, value.Width, value.Height);
         }
 
-        public static RectangleD Convert(System.Drawing.RectangleF toolkit) {
-            return new RectangleD(toolkit.X, toolkit.Y, toolkit.Width, toolkit.Height);
+        public static RectangleD Convert(System.Drawing.RectangleF value) {
+            return new RectangleD(value.X, value.Y, value.Width, value.Height);
         }
 
-        public static System.Drawing.Point[] Convert(Point[] toolkit) {
-            return Array.ConvertAll<Point, System.Drawing.Point>(toolkit, Convert);
+        public static System.Drawing.Point[] Convert(Point[] value) {
+            return Array.ConvertAll<Point, System.Drawing.Point>(value, Convert);
         }
 
-        public static System.Drawing.PointF[] ConvertF(Point[] toolkit) {
-            return Array.ConvertAll<Point, System.Drawing.PointF>( toolkit, ConvertF );
+        public static System.Drawing.PointF[] ConvertF(Point[] value) {
+            return Array.ConvertAll<Point, System.Drawing.PointF>(value, ConvertF);
         }
 
-        public static Point[] Convert(System.Drawing.PointF[] toolkit) {
-            return Array.ConvertAll<System.Drawing.PointF, Point>(toolkit, Convert);
+        public static Point[] Convert(System.Drawing.PointF[] value) {
+            return Array.ConvertAll<System.Drawing.PointF, Point>(value, Convert);
         }
 
-        public static System.Drawing.Point Convert(Point toolkit) {
-            return new System.Drawing.Point((int)toolkit.X, (int)toolkit.Y);
-        }
-
-
-        public static System.Drawing.PointF ConvertF(Point toolkit) {
-            return new System.Drawing.PointF( (float) toolkit.X, (float) toolkit.Y );
-        }
-
-        public static Point Convert(System.Drawing.Point toolkit) {
-            return new Point(toolkit.X, toolkit.Y);
-        }
-
-        public static Point Convert(System.Drawing.PointF toolkit) {
-            return new Point(toolkit.X, toolkit.Y);
-        }
-
-        public static System.Drawing.Size Convert(Size toolkit) {
-            return new System.Drawing.Size((int)toolkit.Width, (int)toolkit.Height);
+        public static System.Drawing.Point Convert(Point value) {
+            return new System.Drawing.Point((int)value.X, (int)value.Y);
         }
 
 
-        public static System.Drawing.SizeF ConvertF(Size toolkit) {
-            return new System.Drawing.SizeF( (float) toolkit.Width, (float) toolkit.Height );
+        public static System.Drawing.PointF ConvertF(Point value) {
+            return new System.Drawing.PointF((float)value.X, (float)value.Y);
         }
 
-        public static Size Convert(System.Drawing.Size toolkit) {
-            return new Size(toolkit.Width, toolkit.Height);
+        public static Point Convert(System.Drawing.Point value) {
+            return new Point(value.X, value.Y);
         }
 
-        public static Size Convert(System.Drawing.SizeF toolkit) {
-            return new Size(toolkit.Width, toolkit.Height);
+        public static Point Convert(System.Drawing.PointF value) {
+            return new Point(value.X, value.Y);
         }
 
-        public static System.Drawing.Color Convert(Color color) {
-            return System.Drawing.Color.FromArgb((int)color.ToArgb());
+        public static System.Drawing.Size Convert(Size value) {
+            return new System.Drawing.Size((int)value.Width, (int)value.Height);
         }
 
-        public static Color Convert(System.Drawing.Color color) {
-            return DrawingExtensions.FromArgb((uint)color.ToArgb());
+
+        public static System.Drawing.SizeF ConvertF(Size value) {
+            return new System.Drawing.SizeF((float)value.Width, (float)value.Height);
+        }
+
+        public static Size Convert(System.Drawing.Size value) {
+            return new Size(value.Width, value.Height);
+        }
+
+        public static Size Convert(System.Drawing.SizeF value) {
+            return new Size(value.Width, value.Height);
         }
 
         public static System.Drawing.Drawing2D.LineCap Convert(PenLineCap linecap) {
@@ -112,38 +106,6 @@ namespace Limaki.Drawing.GDI {
                 result |= System.Drawing.Drawing2D.LineJoin.Miter;
             } else if (linecap == PenLineJoin.Round) {
                 result |= System.Drawing.Drawing2D.LineJoin.Round;
-            }
-            return result;
-        }
-
-        public static System.Drawing.FontStyle Convert(FontStyle toolkit) {
-            var result = System.Drawing.FontStyle.Regular;
-            if (toolkit == null)
-                return result;
-            if ((toolkit & FontStyle.Italic) != 0) {
-                result |= System.Drawing.FontStyle.Italic;
-            }
-            //if ((toolkit & FontStyle.Underline) != 0) {
-            //    result |= System.Drawing.FontStyle.Underline;
-            //}
-            if ((toolkit & FontStyle.Oblique) != 0) {
-                result |= System.Drawing.FontStyle.Bold;
-            }
-            return result;
-        }
-
-        public static FontStyle Convert(System.Drawing.FontStyle native) {
-            var result = FontStyle.Normal;
-            if (native == null)
-                return result;
-            if ((native & System.Drawing.FontStyle.Italic) != 0) {
-                result |= FontStyle.Italic;
-            }
-            //if ((native & System.Drawing.FontStyle.Underline) != 0) {
-            //    result |= FontStyle.Underline;
-            //}
-            if ((native & System.Drawing.FontStyle.Bold) != 0) {
-                result |= FontStyle.Oblique;
             }
             return result;
         }

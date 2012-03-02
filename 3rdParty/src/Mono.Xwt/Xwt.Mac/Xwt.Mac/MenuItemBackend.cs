@@ -30,8 +30,23 @@ using MonoMac.AppKit;
 
 namespace Xwt.Mac
 {
-	public class MenuItemBackend: NSMenuItem, IMenuItemBackend
+	public class MenuItemBackend: IMenuItemBackend
 	{
+		NSMenuItem item;
+		
+		public MenuItemBackend (): this (new NSMenuItem ())
+		{
+		}
+		
+		public MenuItemBackend (NSMenuItem item)
+		{
+			this.item = item;
+		}
+		
+		public NSMenuItem Item {
+			get { return item; }
+		}
+		
 		public void Initialize (IMenuItemEventSink eventSink)
 		{
 		}
@@ -39,62 +54,56 @@ namespace Xwt.Mac
 		public void SetSubmenu (IMenuBackend menu)
 		{
 			if (menu == null)
-				Submenu = null;
+				item.Submenu = null;
 			else
-				Submenu = ((MenuBackend)menu);
+				item.Submenu = ((MenuBackend)menu);
 		}
 
 		public string Label {
 			get {
-				return Title;
+				return item.Title;
 			}
 			set {
-				Title = value;
+				item.Title = value;
 			}
-		}
-		
-		public void SetType (MenuItemType type)
-		{
-			throw new NotImplementedException ();
 		}
 		
 		public void SetImage (object imageBackend)
 		{
-			throw new NotImplementedException ();
+			var img = (NSImage) imageBackend;
+			item.Image = img;
 		}
 		
 		public bool Visible {
 			get {
-				throw new NotImplementedException ();
+				return !item.Hidden;
 			}
 			set {
-				throw new NotImplementedException ();
+				item.Hidden = !value;
 			}
 		}
 		
 		public bool Sensitive {
 			get {
-				throw new NotImplementedException ();
+				return item.Enabled;
 			}
 			set {
-				throw new NotImplementedException ();
+				item.Enabled = value;
 			}
 		}
 		
 		public bool Checked {
 			get {
-				throw new NotImplementedException ();
+				return item.State == NSCellStateValue.On;
 			}
 			set {
-				throw new NotImplementedException ();
+				if (value)
+					item.State = NSCellStateValue.On;
+				else
+					item.State = NSCellStateValue.Off;
 			}
 		}
 		
-		public void SetSeparator ()
-		{
-			throw new NotImplementedException ();
-		}
-
 		#region IBackend implementation
 		public void Initialize (object frontend)
 		{

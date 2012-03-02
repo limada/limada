@@ -31,6 +31,58 @@ namespace Xwt.GtkBackend
 {
 	public class TreeViewBackend: TableViewBackend, ITreeViewBackend
 	{
+		Gtk.TreePath autoExpandPath;
+		uint expandTimer;
+		
+		protected override void OnSetDragTarget (Gtk.TargetEntry[] table, Gdk.DragAction actions)
+		{
+			base.OnSetDragTarget (table, actions);
+			Widget.EnableModelDragDest (table, actions);
+		}
+		
+		protected override void OnSetDragSource (Gdk.ModifierType modifierType, Gtk.TargetEntry[] table, Gdk.DragAction actions)
+		{
+			base.OnSetDragSource (modifierType, table, actions);
+			Widget.EnableModelDragSource (modifierType, table, actions);
+		}
+		
+		protected override void OnSetDragStatus (Gdk.DragContext context, int x, int y, uint time, Gdk.DragAction action)
+		{
+			base.OnSetDragStatus (context, x, y, time, action);
+			
+			// We are overriding the TreeView methods for handling drag & drop, so we need
+			// to manually highlight the selected row
+			
+			Gtk.TreeViewDropPosition tpos;
+			Gtk.TreePath path;
+			if (!Widget.GetDestRowAtPos (x, y, out path, out tpos))
+				path = null;
+			
+			if (expandTimer == 0 || autoExpandPath != path) {
+				if (expandTimer != 0)
+					GLib.Source.Remove (expandTimer);
+				if (path != null) {
+					expandTimer = GLib.Timeout.Add (600, delegate {
+						Widget.ExpandRow (path, false);
+						return false;
+					});
+				}
+				autoExpandPath = path;
+			}
+			
+			if (path != null && action != 0)
+				Widget.SetDragDestRow (path, tpos);
+			else
+				Widget.SetDragDestRow (null, 0);
+		}
+		
+		public override void Dispose (bool disposing)
+		{
+			if (expandTimer != 0)
+				GLib.Source.Remove (expandTimer);
+			base.Dispose (disposing);
+		}
+		
 		public void SetSource (ITreeDataSource source, IBackend sourceBackend)
 		{
 			TreeStoreBackend b = sourceBackend as TreeStoreBackend;
@@ -84,6 +136,16 @@ namespace Xwt.GtkBackend
 			Widget.CollapseRow (Widget.Model.GetPath (((IterPos)pos).Iter));
 		}
 		
+		public void ScrollToRow (TreePosition pos)
+		{
+			Widget.ScrollToCell (Widget.Model.GetPath (((IterPos)pos).Iter), Widget.Columns[0], false, 0, 0);
+		}
+		
+		public void ExpandToRow (TreePosition pos)
+		{
+			Widget.ExpandToPath (Widget.Model.GetPath (((IterPos)pos).Iter));
+		}
+		
 		public bool HeadersVisible {
 			get {
 				return Widget.HeadersVisible;
@@ -91,6 +153,27 @@ namespace Xwt.GtkBackend
 			set {
 				Widget.HeadersVisible = value;
 			}
+		}
+		
+		public bool GetDropTargetRow (double x, double y, out RowDropPosition pos, out TreePosition nodePosition)
+		{
+			Gtk.TreeViewDropPosition tpos;
+			Gtk.TreePath path;
+			if (!Widget.GetDestRowAtPos ((int)x, (int)y, out path, out tpos)) {
+				pos = RowDropPosition.Into;
+				nodePosition = null;
+				return false;
+			}
+			
+			Gtk.TreeIter it;
+			Widget.Model.GetIter (out it, path);
+			nodePosition = new IterPos (-1, it);
+			switch (tpos) {
+			case Gtk.TreeViewDropPosition.After: pos = RowDropPosition.After; break;
+			case Gtk.TreeViewDropPosition.Before: pos = RowDropPosition.Before; break;
+			default: pos = RowDropPosition.Into; break;
+			}
+			return true;
 		}
 	}
 }

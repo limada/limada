@@ -48,7 +48,7 @@ namespace Limaki.View.WPF {
                 // transform rectangle to control coordinates
                 invalidRect = Camera.FromSource(invalidRect);
 
-                invalidRect.Inflate(halfborder, halfborder);
+                invalidRect = invalidRect.Inflate(halfborder, halfborder);
                 this.Device.Invalidate(invalidRect);
             }
         }

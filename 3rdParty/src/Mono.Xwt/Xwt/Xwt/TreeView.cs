@@ -302,6 +302,21 @@ namespace Xwt
 			status.Load (this);
 		}
 		
+		public void ScrollToRow (TreePosition pos)
+		{
+			Backend.ScrollToRow (pos);
+		}
+		
+		public void ExpandToRow (TreePosition pos)
+		{
+			Backend.ExpandToRow (pos);
+		}
+		
+		public bool GetDropTargetRow (double x, double y, out RowDropPosition pos, out TreePosition nodePosition)
+		{
+			return Backend.GetDropTargetRow (x, y, out pos, out nodePosition);
+		}
+		
 		void IColumnContainer.NotifyColumnsChanged ()
 		{
 		}

@@ -27,23 +27,33 @@
 using System;
 using MonoMac.AppKit;
 using Xwt.Backends;
+using MonoMac.Foundation;
 
 namespace Xwt.Mac
 {
 	public class MenuBackend: NSMenu, IMenuBackend
 	{
+		public void Initialize (object frontend)
+		{
+		}
+
 		public void InsertItem (int index, IMenuItemBackend menuItem)
 		{
-			InsertItematIndex ((NSMenuItem)menuItem, index);
+			InsertItematIndex (((MenuItemBackend)menuItem).Item, index);
 		}
 
 		public void RemoveItem (IMenuItemBackend menuItem)
 		{
 			RemoveItem ((NSMenuItem)menuItem);
 		}
-
-		public void Initialize (object frontend)
+		
+		public void SetMainMenuMode ()
 		{
+			for (int n=0; n<Count; n++) {
+				var it = ItemAt (n);
+				if (it.Menu != null)
+					it.Submenu.Title = it.Title;
+			}
 		}
 
 		public void EnableEvent (object eventId)
@@ -56,12 +66,12 @@ namespace Xwt.Mac
 		
 		public void Popup ()
 		{
-			throw new System.NotImplementedException ();
+			NSMenu.PopUpContextMenu (this, null, null, null);
 		}
 		
 		public void Popup (IWidgetBackend widget, double x, double y)
 		{
-			throw new System.NotImplementedException ();
+			NSMenu.PopUpContextMenu (this, null, ((IMacViewBackend)widget).View, null);
 		}
 	}
 }

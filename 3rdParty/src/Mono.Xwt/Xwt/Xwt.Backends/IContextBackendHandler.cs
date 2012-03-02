@@ -75,14 +75,20 @@ namespace Xwt.Backends
 		
 		void SetLineWidth (object backend, double width);
 		
-		void SetPattern (object backend, Pattern p);
+		void SetLineDash (object backend, double offset, params double[] pattern);
+		
+		void SetPattern (object backend, object p);
 		
 		void SetFont (object backend, Font font);
 		
 		void DrawTextLayout (object backend, TextLayout layout, double x, double y);
 		
-		void DrawImage (object backend, Image img, double x, double y, double alpha);
+		void DrawImage (object backend, object img, double x, double y, double alpha);
 		
+		void DrawImage (object backend, object img, double x, double y, double width, double height, double alpha);
+
+		void ResetTransform (object backend);
+
 		void Rotate (object backend, double angle);
 		
 		void Translate (object backend, double tx, double ty);

@@ -1,12 +1,4 @@
-﻿Size:
-
- public static explicit operator Point(Size size) {
-            return new Point(size.Width, size.Height);
-        }
-
-missing
-
-Recangle has strange behaviours
+﻿Recangle has strange behaviours
 
 this is made public:
 WidgetRegistry.CreateSharedBackend
@@ -15,3 +7,11 @@ changed temporary:
 this is needed until Engines works in limaki
 WPFEngine: RegisterBackends() 
 
+contributed:
+Size:
+
+ public static explicit operator Point(Size size) {
+            return new Point(size.Width, size.Height);
+        }
+
+missing

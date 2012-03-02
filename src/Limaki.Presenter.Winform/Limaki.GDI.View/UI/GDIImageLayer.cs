@@ -98,8 +98,8 @@ namespace Limaki.View.GDI.UI {
 
                     var rc = Camera.ToSource(e.Clipper.Bounds);
 
-                    rc.Intersect(new RectangleD(0, 0, Size.Width, Size.Height));
-                    rc.Inflate(new Size(1, 1));
+                    rc = rc.Intersect(new RectangleD(0, 0, Size.Width, Size.Height));
+                    rc = rc.Inflate(new Size(1, 1));
 
                     g.DrawImage(data, 
                         (float)rc.Location.X,

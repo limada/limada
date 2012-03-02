@@ -283,12 +283,7 @@
     <Compile Include="Limaki.Visuals\VisualEdge.cs" />
     <Compile Include="Limaki.Visuals\VisualFactory.cs" />
     <Compile Include="Limaki.Visuals\VisualGraph.cs" />
-    <Compile Include="Xwt\gdiRectangleD.cs" />
-    <Compile Include="Xwt\unused\gdiSizeD.cs" />
-    <Compile Include="Xwt\unused\gidPointD.cs" />
-    <Compile Include="Xwt\unused\xwtPoint.cs" />
-    <Compile Include="Xwt\unused\xwtSize.cs" />
-    <Compile Include="Xwt\xwtRectangle.cs" />
+    <Compile Include="Xwt\RectangleD.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
 using Limaki.Drawing.Styles;
+using Xwt.GDI;
 
 namespace Limaki.SWF.Viewers {
     public partial class StyleEditor : BaseStyleEditor<IStyle> {
@@ -45,9 +46,9 @@ namespace Limaki.SWF.Viewers {
             try {
                 if (style == null)
                     return;
-                this.FillColor = GDIConverter.Convert (style.FillColor);
-                this.TextColor = GDIConverter.Convert (style.TextColor);
-                this.PenColor = GDIConverter.Convert (style.PenColor);
+                this.FillColor = GdiConverter.Convert (style.FillColor);
+                this.TextColor = GdiConverter.Convert (style.TextColor);
+                this.PenColor = GdiConverter.Convert (style.PenColor);
                 if ( style.Font != null ) {
                     var swfFont = global::Xwt.Engine.WidgetRegistry.GetBackend( style.Font ) as Font;
                     if ( swfFont != null )
@@ -70,7 +71,7 @@ namespace Limaki.SWF.Viewers {
             set {
                 _fillColor = value;
                 SetColor (_fillColor, fillColorButton, fillTransparency);
-                SelectedObject.FillColor = GDIConverter.Convert (_fillColor);
+                SelectedObject.FillColor = GdiConverter.Convert (_fillColor);
             }
         }
 
@@ -80,7 +81,7 @@ namespace Limaki.SWF.Viewers {
             set {
                 _textColor = value;
                 SetColor(_textColor, textColorButton, textTransparency);
-                SelectedObject.TextColor = GDIConverter.Convert(_textColor);
+                SelectedObject.TextColor = GdiConverter.Convert(_textColor);
             }
         }
         private Color _penColor = Color.Blue;
@@ -89,7 +90,7 @@ namespace Limaki.SWF.Viewers {
             set {
                 _penColor = value;
                 SetColor(_penColor, penColorButton, penTransparency);
-                SelectedObject.PenColor = GDIConverter.Convert(_penColor);
+                SelectedObject.PenColor = GdiConverter.Convert(_penColor);
             }
         }
 
@@ -119,7 +120,7 @@ namespace Limaki.SWF.Viewers {
                 } else {
                     var pen = new Limaki.Drawing.GDI.GDIPen ();
                     pen.Thickness = value;
-                    pen.Color = GDIConverter.Convert (this.PenColor);
+                    pen.Color = GdiConverter.Convert (this.PenColor);
                     SelectedObject.Pen = pen;
                 }
                 this.penThicknessUpDown.Value = (decimal)value;

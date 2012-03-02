@@ -33,12 +33,9 @@ namespace Xwt.Backends
 		void Initialize (IMenuItemEventSink eventSink);
 		void SetSubmenu (IMenuBackend menu);
 		void SetImage (object imageBackend);
-		void SetType (MenuItemType type);
-		void SetSeparator ();
 		string Label { get; set; }
 		bool Sensitive { get; set; }
 		bool Visible { get; set; }
-		bool Checked { get; set; }
 	}
 	
 	public interface IMenuItemEventSink

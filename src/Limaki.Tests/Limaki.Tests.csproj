@@ -115,10 +115,31 @@
     <Compile Include="Limada.Tests\Tests\View\VisualThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\Wrappers\WrapperTest.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
-    <None Include="Playground\View\Mac.ContextBackendHandler.cs" />
-    <Compile Include="Playground\View\PaintContext.cs" />
-    <Compile Include="Playground\View\PaintContextBackendHandler.cs" />
-    <None Include="Playground\View\Mac.TextLayoutBackendHandler.cs" />
+    <None Include="Playground\View\[Samples]\Mac.ContextBackendHandler.cs" />
+    <Compile Include="Playground\View\GdiBackend\GradientBackendHandler.cs" />
+    <Compile Include="Playground\View\Rectangle\Refactoring\gdiRectangleD.cs" />
+    <Compile Include="Playground\View\Rectangle\Mono.WindowBase.Rect.cs" />
+    <Compile Include="Playground\View\Rectangle\RectTest.cs" />
+    <Compile Include="Playground\View\Rectangle\TestRectangle.cs" />
+    <Compile Include="Playground\View\SwfBackend\PaintCanvasBackend.cs" />
+    <Compile Include="Playground\View\Rectangle\Refactoring\gdiSizeD.cs" />
+    <Compile Include="Playground\View\Rectangle\Refactoring\gidPointD.cs" />
+    <Compile Include="Playground\View\Rectangle\Refactoring\xwtPoint.cs" />
+    <Compile Include="Playground\View\Rectangle\Refactoring\xwtSize.cs" />
+    <Compile Include="Playground\View\XwtBackend\IPaintCanvasBackend.cs" />
+    <Compile Include="Playground\View\XwtBackend\IPaintContextBackendHandler.cs" />
+    <Compile Include="Playground\View\XwtFrontend\PaintCanvas.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Playground\View\PaintContextTest.cs" />
+    <Compile Include="Playground\View\GdiBackend\GdiContext.cs" />
+    <Compile Include="Playground\View\XwtFrontend\PaintContext.cs" />
+    <Compile Include="Playground\View\GdiBackend\PaintContextBackendHandler.cs" />
+    <None Include="Playground\View\[Samples]\Mac.TextLayoutBackendHandler.cs" />
+    <Compile Include="Playground\View\Rectangle\XwtRectangleTest.cs" />
+    <Compile Include="Playground\View\PaintContextTestControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceLoader.cs" />
     <Compile Include="TestCaseFactory.cs" />
@@ -297,9 +318,10 @@
   <ItemGroup>
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
     <Folder Include="Playground\Graph\" />
+    <Folder Include="Playground\View\LimakiView\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Playground\View\graphics-cairo.c" />
+    <Content Include="Playground\View\[Samples]\graphics-cairo.c" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

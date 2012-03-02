@@ -60,7 +60,13 @@ namespace Xwt
 			});
 		}
 		
-		/// <summary>
+		public static void Exit ()
+		{
+			Toolkit.InvokePlatformCode (delegate {
+				engine.ExitApplication ();
+			});
+		}
+			/// <summary>
 		/// Invokes an action in the GUI thread
 		/// </summary>
 		/// <param name='action'>
@@ -68,7 +74,7 @@ namespace Xwt
 		/// </param>
 		public static void Invoke (Action action)
 		{
-			engine.Invoke (delegate {
+			engine.InvokeAsync (delegate {
 				try {
 					Toolkit.EnterUserCode ();
 					action ();
@@ -117,7 +123,7 @@ namespace Xwt
 		public static IDisposable TimeoutInvoke (TimeSpan timeSpan, Func<bool> action)
 		{
 			Timer t = new Timer ();
-			t.Id = engine.TimeoutInvoke (delegate {
+			t.Id = engine.TimerInvoke (delegate {
 				bool res = false;
 				try {
 					Toolkit.EnterUserCode ();
@@ -136,7 +142,7 @@ namespace Xwt
 			public object Id;
 			public void Dispose ()
 			{
-				Application.engine.CancelTimeoutInvoke (Id);
+				Application.engine.CancelTimerInvoke (Id);
 			}
 		}
 		

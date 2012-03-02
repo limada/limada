@@ -55,6 +55,9 @@ namespace Xwt.GtkBackend
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Drawing.Font), typeof(FontBackendHandler));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Menu), typeof(MenuBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.MenuItem), typeof(MenuItemBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.CheckBoxMenuItem), typeof(CheckBoxMenuItemBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.RadioButtonMenuItem), typeof(RadioButtonMenuItemBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.SeparatorMenuItem), typeof(SeparatorMenuItemBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.ScrollView), typeof(ScrollViewBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.ComboBox), typeof(ComboBoxBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Design.DesignerSurface), typeof(DesignerSurfaceBackend));
@@ -71,11 +74,18 @@ namespace Xwt.GtkBackend
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Dialog), typeof(DialogBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.ComboBoxEntry), typeof(ComboBoxEntryBackend));
 			WidgetRegistry.RegisterBackend (typeof(Xwt.Clipboard), typeof(ClipboardBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.Drawing.ImageBuilder), typeof(ImageBuilderBackend));
+			WidgetRegistry.RegisterBackend (typeof(Xwt.Drawing.ImagePattern), typeof(ImagePatternBackendHandler));
 		}
 
 		public override void RunApplication ()
 		{
 			Gtk.Application.Run ();
+		}
+		
+		public override void ExitApplication ()
+		{
+			Gtk.Application.Quit ();
 		}
 		
 		public override bool HandlesSizeNegotiation {
@@ -117,25 +127,36 @@ namespace Xwt.GtkBackend
 			}
 		}
 		
-		public override void Invoke (Action action)
+		public override void InvokeAsync (Action action)
 		{
+			if (action == null)
+				throw new ArgumentNullException ("action");
+
 			Gtk.Application.Invoke (delegate {
 				action ();
 			});
 		}
-		
-		public override object TimeoutInvoke (Func<bool> action, TimeSpan timeSpan)
+
+		public override object TimerInvoke (Func<bool> action, TimeSpan timeSpan)
 		{
+			if (action == null)
+				throw new ArgumentNullException ("action");
+			if (timeSpan.TotalMilliseconds < 0)
+				throw new ArgumentException ("Timer period must be >=0", "timeSpan");
+
 			return GLib.Timeout.Add ((uint) timeSpan.TotalMilliseconds, delegate {
 				return action ();
 			});
 		}
-		
-		public override void CancelTimeoutInvoke (object id)
+
+		public override void CancelTimerInvoke (object id)
 		{
+			if (id == null)
+				throw new ArgumentNullException ("id");
+
 			GLib.Source.Remove ((uint)id);
 		}
-		
+
 		public override object GetNativeWidget (Widget w)
 		{
 			IGtkWidgetBackend wb = (IGtkWidgetBackend)Xwt.Engine.WidgetRegistry.GetBackend (w);

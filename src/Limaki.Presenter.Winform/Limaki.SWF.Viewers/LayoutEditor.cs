@@ -20,6 +20,7 @@ using Limaki.Drawing.GDI;
 using Limaki.Visuals;
 using Orientation = Limaki.Drawing.Orientation;
 using Size = Xwt.Size;
+using Xwt.GDI;
 
 
 namespace Limaki.SWF.Viewers {
@@ -33,7 +34,7 @@ namespace Limaki.SWF.Viewers {
             this.Distance = layout.Distance;
             this.Orientation = layout.Orientation;
             this.Centered = layout.Centered;
-            this.LayoutBackColor = GDIConverter.Convert(layout.StyleSheet.BackColor);
+            this.LayoutBackColor = GdiConverter.Convert(layout.StyleSheet.BackColor);
             disableChanges = false;
         }
 
@@ -125,7 +126,7 @@ namespace Limaki.SWF.Viewers {
             set {
                 _backColor = value;
                 SetColor(_backColor, backColorButton, backColorTransparency);
-                SelectedObject.StyleSheet.BackColor = GDIConverter.Convert(_backColor);
+                SelectedObject.StyleSheet.BackColor = GdiConverter.Convert(_backColor);
             }
         }
 

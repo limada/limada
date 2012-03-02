@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Limaki.Common;
 using Limaki.Drawing.GDI;
 using Limaki.View.Rendering;
+using Xwt.GDI;
 
 namespace Limaki.View.Winform.Display {
     public class WinformRenderer<T>:IDeviceRenderer {
@@ -29,7 +30,7 @@ namespace Limaki.View.Winform.Display {
         protected SolidBrush _backBrush = new SolidBrush(SystemColors.ButtonFace);
         protected SolidBrush backBrush {
             get {
-                _backBrush.Color = GDIConverter.Convert(BackColor());
+                _backBrush.Color = GdiConverter.Convert(BackColor());
                 return _backBrush;
             }
         }

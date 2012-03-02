@@ -19,6 +19,7 @@ using Limaki.Drawing.GDI;
 using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using Xwt;
+using Xwt.GDI;
 
 namespace Limaki.Drawing.GDI.Painters {
     public class RectanglePainter:Painter<RectangleD>,IPainter<IRectangleShape,RectangleD> {
@@ -48,7 +49,7 @@ namespace Limaki.Drawing.GDI.Painters {
             var g = ((GDISurface)surface).Graphics;
             if ((RenderType.Fill & renderType) != 0) {
                 g.FillRectangle(
-                    GetSolidBrush(GDIConverter.Convert(style.FillColor)), 
+                    GetSolidBrush(GdiConverter.Convert(style.FillColor)), 
                     rect);
                 
             }

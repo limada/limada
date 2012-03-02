@@ -50,7 +50,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xwt.GDI.Backend\FontBackendHandler.cs" />
-    <Compile Include="Xwt.GDI.Backend\GDIEngine.cs" />
+    <Compile Include="Xwt.GDI.Backend\GdiConverter.cs" />
+    <Compile Include="Xwt.GDI.Backend\GdiEngine.cs" />
     <Compile Include="Xwt.GDI.Backend\IGdiGraphicsBackend.cs" />
   </ItemGroup>
   <ItemGroup>

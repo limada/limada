@@ -3,7 +3,6 @@ using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Drawing {
-
     public static class DrawingExtensions {
 
         #region Point and Size
@@ -120,7 +119,7 @@ namespace Limaki.Drawing {
         public static RectangleD Intersect (RectangleD a, RectangleD b) {
 
             Func<bool> intersectsWithInclusive = () => !( ( a.X > b.Right ) || ( a.Right < b.Left ) ||
-                                                         ( a.Y > b.Bottom ) || ( b.Bottom < b.Top ) );
+                                                          ( a.Y > b.Bottom ) || ( b.Bottom < b.Top ) );
 
             // MS.NET returns a non-empty rectangle if the two rectangles
             // touch each other
@@ -135,8 +134,9 @@ namespace Limaki.Drawing {
         }
 
         public static RectangleD Inflate (RectangleD rect, double x, double y) {
-            var ir = new RectangleD (rect.X, rect.Y, rect.Width, rect.Height);
-            ir.Inflate (x, y);
+            var ir = 
+                new RectangleD (rect.X, rect.Y, rect.Width, rect.Height)
+                .Inflate (x, y);
             return ir;
         }
 
@@ -194,9 +194,9 @@ namespace Limaki.Drawing {
         public static Font Clone (this Font value) {
             return
                 Font.FromName (value.Family, value.Size)
-                .WithStretch (value.Stretch)
-                .WithStyle (value.Style)
-                .WithWeight (value.Weight);
+                    .WithStretch (value.Stretch)
+                    .WithStyle (value.Style)
+                    .WithWeight (value.Weight);
         }
 
         #endregion

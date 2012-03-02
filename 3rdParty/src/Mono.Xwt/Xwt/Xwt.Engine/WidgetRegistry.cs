@@ -46,7 +46,7 @@ namespace Xwt.Engine
 			return (T) res;
 		}
 		
-		internal static T CreateSharedBackend<T> (Type widgetType)
+		public static T CreateSharedBackend<T> (Type widgetType)
 		{
 			object res;
 			if (!sharedBackends.TryGetValue (widgetType, out res))

@@ -24,6 +24,7 @@ using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Xwt;
+using Xwt.GDI;
 using DragEventArgs = System.Windows.Forms.DragEventArgs;
 using WidgetRegistry = Xwt.Engine.WidgetRegistry;
 using ModifierKeys = Xwt.ModifierKeys;

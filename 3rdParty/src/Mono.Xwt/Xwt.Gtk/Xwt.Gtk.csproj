@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -88,15 +88,23 @@
     <Compile Include="Xwt.GtkBackend\DialogBackend.cs" />
     <Compile Include="Xwt.GtkBackend\ComboBoxEntryBackend.cs" />
     <Compile Include="Xwt.GtkBackend\ClipboardBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\ImageBuilderBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\ImagePatternBackendHandler.cs" />
+    <Compile Include="Xwt.GtkBackend\CheckBoxMenuItemBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\RadioButtonMenuItemBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\SeparatorMenuItemBackend.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Xwt.GtkBackend\" />
+    <Folder Include="Xwt.GtkBackend.CellViews\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Xwt.Gtk.dll.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

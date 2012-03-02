@@ -56,16 +56,16 @@ namespace Limaki.Visuals {
             if (zOrder==ZOrder.EdgesFirst)
                 foreach (var visual in Visuals) {
                     if (visual is IVisualEdge) {
-                        RectangleD bounds = visual.Shape.BoundsRect;
-                        bounds.Inflate(1, 1);
+                        var bounds = visual.Shape.BoundsRect;
+                        bounds = bounds.Inflate(1, 1);
                         if (clipBounds.IntersectsWith(bounds))
                             yield return visual;
                     }
                 }
             foreach (var visual in Visuals) {
                 if (!(visual is IVisualEdge)) {
-                    RectangleD bounds = visual.Shape.BoundsRect;
-                    bounds.Inflate(1, 1);
+                    var bounds = visual.Shape.BoundsRect;
+                    bounds = bounds.Inflate(1, 1);
                     if (clipBounds.IntersectsWith(bounds))
                         yield return visual;
                 }
@@ -73,8 +73,8 @@ namespace Limaki.Visuals {
             if (zOrder==ZOrder.NodesFirst)
                 foreach (var visual in Visuals) {
                     if (visual is IVisualEdge) {
-                        RectangleD bounds = visual.Shape.BoundsRect;
-                        bounds.Inflate(1, 1);
+                        var bounds = visual.Shape.BoundsRect;
+                        bounds = bounds.Inflate(1, 1);
                         if (clipBounds.IntersectsWith(bounds))
                             yield return visual;
                     }
