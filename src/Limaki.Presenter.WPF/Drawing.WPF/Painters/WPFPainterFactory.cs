@@ -15,30 +15,30 @@ namespace Limaki.Drawing.WPF.Painters {
 
        
         protected override void InstrumentClazzes() {
-            //Clazzes[typeof(IRectangleShape)] =  typeof(WPFPainter<RectangleD>);
+            //Clazzes[typeof(IRectangleShape)] =  typeof(WPFPainter<Rectangle>);
             //Clazzes[typeof(IVectorShape)] =  typeof(WPFPainter<Vector>);
-            //Clazzes[typeof(IRoundedRectangleShape)] =  typeof(WPFPainter<RectangleD>);
-            //Clazzes[typeof(IBezierShape)] =  typeof(WPFPainter<RectangleD>);
+            //Clazzes[typeof(IRoundedRectangleShape)] =  typeof(WPFPainter<Rectangle>);
+            //Clazzes[typeof(IBezierShape)] =  typeof(WPFPainter<Rectangle>);
 
-            //Clazzes[typeof(RectangleShape)] =  typeof(WPFPainter<RectangleD>);
+            //Clazzes[typeof(RectangleShape)] =  typeof(WPFPainter<Rectangle>);
             //Clazzes[typeof(VectorShape)] =  typeof(WPFPainter<Vector>);
-            //Clazzes[typeof(RoundedRectangleShape)] =  typeof(WPFPainter<RectangleD>);
-            //Clazzes[typeof(BezierShape)] =  typeof(WPFPainter<RectangleD>);
+            //Clazzes[typeof(RoundedRectangleShape)] =  typeof(WPFPainter<Rectangle>);
+            //Clazzes[typeof(BezierShape)] =  typeof(WPFPainter<Rectangle>);
 
-            //Clazzes[typeof(RectangleD)] =  typeof(WPFPainter<RectangleD>);
+            //Clazzes[typeof(Rectangle)] =  typeof(WPFPainter<Rectangle>);
 
             //Clazzes[typeof(string)] =  typeof(WPFStringPainter);
 
-            Add<IPainter<IShape<RectangleD>, RectangleD>>(() => new WPFRectanglePainter());
+            Add<IPainter<IShape<Rectangle>, Rectangle>>(() => new WPFRectanglePainter());
             Add<IPainter<IShape<Vector>, Vector>>(() => new WPFVectorPainter());
-            Add<IPainter<IRoundedRectangleShape, RectangleD>>(() => new WPFRoundedRectanglePainter());
-            Add<IPainter<IRectangleShape, RectangleD>>(() => new WPFRoundedRectanglePainter());
-            Add<IPainter<IBezierShape, RectangleD>>(() => new WPFBezierPainter());
+            Add<IPainter<IRoundedRectangleShape, Rectangle>>(() => new WPFRoundedRectanglePainter());
+            Add<IPainter<IRectangleShape, Rectangle>>(() => new WPFRoundedRectanglePainter());
+            Add<IPainter<IBezierShape, Rectangle>>(() => new WPFBezierPainter());
             Add<IPainter<IVectorShape, Vector>>(() => new WPFVectorPainter());
 
             
 
-            Add<IPainter<RectangleD>>(() => new WPFPainter<RectangleD>());
+            Add<IPainter<Rectangle>>(() => new WPFPainter<Rectangle>());
 
             Add<IPainter<string>>(() => new WPFStringPainter());
         }

@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 using Limaki.Common;
 using System.Diagnostics;
 
-namespace Limaki.Presenter.WPF {
+namespace Limaki.View.WPF {
     public class WPFExeptionHandler : IExceptionHandler {
 
        

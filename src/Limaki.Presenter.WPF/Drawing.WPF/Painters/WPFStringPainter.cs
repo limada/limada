@@ -15,7 +15,7 @@ namespace Limaki.Drawing.WPF.Painters {
         public override void Render(ISurface surface) {
             var shape = this.Shape;
             var bounds =
-                new RectangleD(shape.Location, shape.Size).NormalizedRectangle();
+                new Rectangle(shape.Location, shape.Size).NormalizedRectangle();
             
             var border = new System.Windows.Thickness (4, 4, 4, 1);
 

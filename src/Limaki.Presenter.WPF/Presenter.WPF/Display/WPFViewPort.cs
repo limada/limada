@@ -1,13 +1,13 @@
 ﻿using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Presenter.Display;
+using Limaki.View.Display;
 using Xwt;
 
-namespace Limaki.Presenter.WPF.Display {
+namespace Limaki.View.WPF.Display {
     [TODO]
-    public class WPFViewPort<T>:ViewPort {
+    public class WpfViewport<T>:Viewport {
         
-        public WPFViewPort(WPFDisplay<T> device) {
+        public WpfViewport(WPFDisplay<T> device) {
             this.Device = device;
         }
         public virtual WPFDisplay<T> Device { get; set; }

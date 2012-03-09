@@ -34,8 +34,8 @@ namespace Xwt.Engine
 	{
 		static Dictionary<Type,Type> backendTypes = new Dictionary<Type, Type> ();
 		static Dictionary<Type,object> sharedBackends = new Dictionary<Type, object> ();
-		
-		internal static T CreateBackend<T> (Type widgetType)
+
+        public static T CreateBackend<T> (Type widgetType)
 		{
 			Type bt;
 			if (!backendTypes.TryGetValue (widgetType, out bt))
@@ -46,7 +46,7 @@ namespace Xwt.Engine
 			return (T) res;
 		}
 		
-		internal static T CreateSharedBackend<T> (Type widgetType)
+		public static T CreateSharedBackend<T> (Type widgetType)
 		{
 			object res;
 			if (!sharedBackends.TryGetValue (widgetType, out res))

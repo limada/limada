@@ -5,8 +5,8 @@ using Limaki.Drawing.Indexing.QuadTrees;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
 using Limaki.Visuals;
-using Limaki.Presenter.Visuals;
-using Limaki.Presenter.Display;
+using Limaki.View.Visuals;
+using Limaki.View.Display;
 using Xwt;
 
 namespace Limaki.Tests.Presenter.Winform {
@@ -40,7 +40,7 @@ namespace Limaki.Tests.Presenter.Winform {
 
                 var style = VisualsDisplay.StyleSheet.BaseStyle;
                 var s = new Point(float.MaxValue, float.MaxValue).ToString() + "\r\n" +
-                           new RectangleD(float.MaxValue, float.MaxValue, float.MaxValue, float.MaxValue).ToString() + "\r\n";
+                           new Rectangle(float.MaxValue, float.MaxValue, float.MaxValue, float.MaxValue).ToString() + "\r\n";
 
                 style.AutoSize = (Size) drawingUtils.GetTextDimension(s, style);
 
@@ -52,7 +52,7 @@ namespace Limaki.Tests.Presenter.Winform {
                 var nodesDone = new Dictionary<Node<IVisual>, IVisual>();
                 var itemsDone = new Dictionary<IVisual, IVisual>();
 
-                var rootNode = new Node<IVisual>(new RectangleD(), 0);
+                var rootNode = new Node<IVisual>(new Rectangle(), 0);
                 rootNode.Items = Data.Root.Items;
                 for (int i = 0; i < Data.Root.Subnodes.Length; i++)
                     rootNode.Subnodes[i] = Data.Root.Subnodes[i];

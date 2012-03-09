@@ -38,6 +38,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Xwt.WPFBackend.Interop\NativeStockIcon.cs" />
+    <Compile Include="Xwt.WPFBackend.Utilities\CellUtil.cs" />
+    <Compile Include="Xwt.WPFBackend.Utilities\MultiColumnTreeViewItem.cs" />
+    <Compile Include="Xwt.WPFBackend\ButtonBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\ImageHandler.cs" />
+    <Compile Include="Xwt.WPFBackend.Interop\NativeMethods.cs" />
+    <Compile Include="Xwt.WPFBackend\ImageViewBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\LabelBackend.cs" />
     <Compile Include="Xwt.WPFBackend\BoxBackend.cs" />
     <Compile Include="Xwt.WPFBackend\DataConverter.cs" />
     <Compile Include="Xwt.WPFBackend\FontBackendHandler.cs" />
@@ -45,6 +53,10 @@
     <Compile Include="Xwt.WPFBackend\MenuBackend.cs" />
     <Compile Include="Xwt.WPFBackend\MenuItemBackend.cs" />
     <Compile Include="Xwt.WPFBackend\ResPool.cs" />
+    <Compile Include="Xwt.WPFBackend\TextEntryBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\ToggleButtonBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\TreeStoreBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\TreeViewBackend.cs" />
     <Compile Include="Xwt.WPFBackend\Util.cs" />
     <Compile Include="Xwt.WPFBackend\WidgetBackend.cs" />
     <Compile Include="Xwt.WPFBackend\WindowBackend.cs" />
@@ -55,7 +67,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -5,11 +5,11 @@ using Limaki.Drawing;
 using Limaki.Drawing.WPF;
 using Limaki.Drawing.WPF.Painters;
 using Limaki.Drawing.WPF.Shapes;
-using Limaki.Presenter.UI;
+using Limaki.View.UI;
 using Limaki.Visuals;
 using Limaki.Visuals.WPF;
 
-namespace Limaki.Presenter.WPF {
+namespace Limaki.View.WPF {
     /// <summary>
     /// the concrete ApplicationContextRecourceLoader an application
     /// which uses StyleSheets, a VisualsDisplay and IGraphMapping

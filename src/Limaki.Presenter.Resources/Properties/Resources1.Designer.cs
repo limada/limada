@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Limaki.Presenter.Properties {
+namespace Limaki.View.Properties {
     using System;
     
     

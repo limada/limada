@@ -89,6 +89,11 @@ namespace Xwt.Mac
 			pool = new NSAutoreleasePool ();
 		}
 
+		public override void ExitApplication ()
+		{
+			NSApplication.SharedApplication.Terminate(appDelegate);
+		}
+
 		public static void ReplaceChild (NSView cont, NSView oldView, NSView newView)
 		{
 			if (cont is IViewContainer) {
@@ -120,19 +125,22 @@ namespace Xwt.Mac
 			return Messaging.bool_objc_msgSend_IntPtr_IntPtr (self, hijackedSel.Handle, filePath, owner);
 		}
 		
-		public override void Invoke (Action action)
+		public override void InvokeAsync (Action action)
 		{
+			if (action == null)
+				throw new ArgumentNullException ("action");
+
 			NSApplication.SharedApplication.BeginInvokeOnMainThread (delegate {
 				action ();
 			});
 		}
 		
-		public override object TimeoutInvoke (Func<bool> action, TimeSpan timeSpan)
+		public override object TimerInvoke (Func<bool> action, TimeSpan timeSpan)
 		{
 			throw new NotImplementedException ();
 		}
 		
-		public override void CancelTimeoutInvoke (object id)
+		public override void CancelTimerInvoke (object id)
 		{
 			throw new NotImplementedException ();
 		}

@@ -4,7 +4,7 @@ using Limaki.Drawing;
 using System.Windows.Input;
 using System.Windows.Controls;
 
-namespace Limaki.Presenter.WPF {
+namespace Limaki.View.WPF {
     public class CursorHandler : IDeviceCursor {
         public CursorHandler(IWPFControl control) {
             this.control = control;

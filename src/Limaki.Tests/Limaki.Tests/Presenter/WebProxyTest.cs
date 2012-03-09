@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Limaki.Drawing;
-using Limaki.Limada.View;
+using Limada.View;
+using Limada.VisualThings;
 using Limaki.Visuals;
 using Limada.Model;
 using Limaki.Model.Streams;
-using Limaki.Presenter.Display;
+using Limaki.View.Display;
 
 namespace Limaki.Tests.Presenter {
     public class WebProxyTest {

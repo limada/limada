@@ -15,9 +15,9 @@
 
 using Limaki.Actions;
 using Limaki.Drawing;
-using Limaki.Presenter.UI;
-using Limaki.Presenter.UI.GraphScene;
-using Limaki.Presenter.Visuals.UI;
+using Limaki.View.UI;
+using Limaki.View.UI.GraphScene;
+using Limaki.View.Visuals.UI;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
@@ -111,7 +111,7 @@ namespace Limaki.Tests.Presenter.Display {
 
 
 
-        public void MoveLinks(RectangleD bounds) {
+        public void MoveLinks(Rectangle bounds) {
             MoveLink(factory.Edge[4],factory.Edge[1]);
             MoveLink(factory.Edge[5], factory.Edge[3]);
         }
@@ -119,7 +119,7 @@ namespace Limaki.Tests.Presenter.Display {
 
         
 
-        public void MoveNode1(RectangleD bounds) {
+        public void MoveNode1(Rectangle bounds) {
             NeutralPosition ();
             Point startposition = factory.Node[1].Shape[Anchor.LeftTop]+new Size(10,0);
             Point position = camera.FromSource(startposition);
@@ -176,7 +176,7 @@ namespace Limaki.Tests.Presenter.Display {
             this.ReportDetail (testName);
             
             ticker.Start();
-            RectangleD bounds = Scene.Shape.BoundsRect;
+            Rectangle bounds = Scene.Shape.BoundsRect;
 
             this.ReportDetail ("Scene:\t" + bounds+"\t Display: \t"+Display.Viewport.ClipSize);
             MoveNode1 (bounds);

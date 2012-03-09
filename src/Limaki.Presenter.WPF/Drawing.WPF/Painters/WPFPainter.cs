@@ -40,13 +40,13 @@ namespace Limaki.Drawing.WPF.Painters {
     public class WPFVectorPainter : WPFPainter<Vector>, IPainter<IVectorShape, Vector> {
 
     }
-    public class WPFRectanglePainter : WPFPainter<RectangleD>, IPainter<IRectangleShape, RectangleD> {
+    public class WPFRectanglePainter : WPFPainter<Rectangle>, IPainter<IRectangleShape, Rectangle> {
 
     }
-    public class WPFRoundedRectanglePainter : WPFRectanglePainter, IPainter<IRoundedRectangleShape, RectangleD> {
+    public class WPFRoundedRectanglePainter : WPFRectanglePainter, IPainter<IRoundedRectangleShape, Rectangle> {
 
     }
-    public class WPFBezierPainter : WPFPainter<RectangleD>, IPainter<IBezierShape, RectangleD> {
+    public class WPFBezierPainter : WPFPainter<Rectangle>, IPainter<IBezierShape, Rectangle> {
 
     }
 }

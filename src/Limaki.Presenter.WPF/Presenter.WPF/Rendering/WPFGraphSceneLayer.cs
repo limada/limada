@@ -1,10 +1,10 @@
 ﻿using Limaki.Graphs;
-using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI;
+using Limaki.View.UI;
 using Limaki.Drawing.WPF;
-using Limaki.Presenter.UI.GraphScene;
+using Limaki.View.Rendering;
+using Limaki.View.UI.GraphScene;
 
-namespace Limaki.Presenter.WPF.Display {
+namespace Limaki.View.WPF.Display {
     public class WPFGraphSceneLayer<TItem, TEdge> : GraphSceneLayer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 

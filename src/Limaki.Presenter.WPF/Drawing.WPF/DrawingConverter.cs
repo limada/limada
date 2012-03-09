@@ -13,12 +13,12 @@ namespace Limaki.Drawing.WPF {
             return result;
         }
 
-        public static Rect Convert(RectangleD value) {
+        public static Rect Convert(Rectangle value) {
             return new Rect (value.X, value.Y, value.Width, value.Height);
         }
 
-        public static RectangleD Convert(Rect value) {
-            return new RectangleD((int)value.X, (int)value.Y, (int)value.Width, (int)value.Height);
+        public static Rectangle Convert(Rect value) {
+            return new Rectangle((int)value.X, (int)value.Y, (int)value.Width, (int)value.Height);
         }
         public static Point Convert(Xwt.Point value) {
             return new Point (value.X, value.Y);

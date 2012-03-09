@@ -1,7 +1,14 @@
-﻿Size:
+﻿
 
- public static explicit operator Point(Size size) {
-            return new Point(size.Width, size.Height);
-        }
+this is made public:
+WidgetRegistry.CreateSharedBackend
+WidgetRegistry.CreateBackend
+
+changed temporary:
+this is needed until Engines works in limaki
+WPFEngine: RegisterBackends() 
+
+:
+
 
 missing

@@ -1,5 +1,5 @@
-﻿using Limaki.Presenter.UI;
+﻿using Limaki.View.UI;
 
-namespace Limaki.Presenter.WPF.UI {
+namespace Limaki.View.WPF.UI {
     public class WPFEventControler : EventControler {}
 }

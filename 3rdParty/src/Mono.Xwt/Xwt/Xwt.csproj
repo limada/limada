@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Xwt.Drawing\Colors.cs" />
     <Compile Include="Xwt\Widget.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -266,6 +267,8 @@
     <Compile Include="Xwt.Backends\ICheckBoxMenuItemBackend.cs" />
     <Compile Include="Xwt.Backends\IRadioButtonMenuItemBackend.cs" />
     <Compile Include="Xwt.Backends\ISeparatorMenuItemBackend.cs" />
+    <Compile Include="Xwt\EllipsizeMode.cs" />
+    <Compile Include="Xwt\RowDropPosition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

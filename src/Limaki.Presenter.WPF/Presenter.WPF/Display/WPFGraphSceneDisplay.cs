@@ -1,21 +1,21 @@
 ﻿using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Presenter.UI.GraphScene;
-using Limaki.Presenter.Visuals;
-using Limaki.Presenter.Visuals.Display;
+using Limaki.View.Visuals;
+using Limaki.View.Display;
+using Limaki.View.UI.GraphScene;
+using Limaki.View.Visuals.Display;
+using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
-using Limaki.Presenter.Display;
-using Limaki.Presenter.UI;
-using Limaki.Presenter.Visuals.UI;
-using Limaki.Presenter.WPF;
+using Limaki.View.UI;
+using Limaki.View.WPF;
 
-namespace Limaki.Presenter.WPF.Display {
+namespace Limaki.View.WPF.Display {
     public abstract class WPFGraphSceneDisplay<TItem, TEdge> : WPFDisplay<IGraphScene<TItem, TEdge>>
         where TEdge : TItem, IEdge<TItem> {}
 
     public class WPFGraphSceneDeviceComposer<TItem, TEdge> : WPFDeviceComposer<IGraphScene<TItem, TEdge>>
     where TEdge : TItem, IEdge<TItem> {
-        public override void Factor(Limaki.Presenter.Display.Display<IGraphScene<TItem, TEdge>> display) {
+        public override void Factor(Display<IGraphScene<TItem, TEdge>> display) {
             base.Factor(display);
             this.DataLayer = new WPFGraphSceneLayer<TItem, TEdge>();
         }

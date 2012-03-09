@@ -2,7 +2,7 @@ using Font = System.Drawing.Font;
 using Xwt.Backends;
 using Xwt.Drawing;
 
-namespace Xwt.GDIBackend {
+namespace Xwt.Gdi.Backend {
 
     public class FontBackendHandler : IFontBackendHandler {
 

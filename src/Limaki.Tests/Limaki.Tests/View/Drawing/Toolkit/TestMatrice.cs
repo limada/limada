@@ -39,8 +39,8 @@ namespace Limaki.Tests.Drawing
 	public class TestMatrice  {
 
 		private Matrice default_matrix;
-	    private RectangleD rect = RectangleD.Zero;
-        private RectangleD rectf = RectangleD.Zero;
+	    private Rectangle rect = Rectangle.Zero;
+        private Rectangle rectf = Rectangle.Zero;
 
 		[TestFixtureSetUp]
 		public void FixtureSetUp ()
@@ -111,7 +111,7 @@ namespace Limaki.Tests.Drawing
 		[Test]
 		public void Constructor_Rect_Point ()
 		{
-			var r = new RectangleD (100, 200, 300, 400);
+			var r = new Rectangle (100, 200, 300, 400);
 			Matrice m = new Matrice (r, new Point[3] { new Point (10, 20), new Point (30, 40), new Point (50, 60) });
 			var elements = m.Elements;
 			AssertEquals ("0", 0.06666666, elements[0], 0.00001);
@@ -150,7 +150,7 @@ namespace Limaki.Tests.Drawing
 		[Test]
 		public void Constructor_RectF_PointF ()
 		{
-			var r = new RectangleD (100, 200, 300, 400);
+			var r = new Rectangle (100, 200, 300, 400);
 			Matrice m = new Matrice (r, new Point[3] { new Point (10, 20), new Point (30, 40), new Point (50, 60) });
 			var elements = m.Elements;
 			AssertEquals ("0", 0.06666666, elements[0], 0.00001);

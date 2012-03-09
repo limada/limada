@@ -10,7 +10,7 @@ namespace Limaki.Drawing.WPF {
             this.Graphics = graphics;
         }
 
-        public RectangleD Clip { get; set; }
+        public Rectangle Clip { get; set; }
         public Panel Graphics { get; set; }
 
         public MouseButtonEventHandler MouseButtonDown = null;

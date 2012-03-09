@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Limaki.Presenter.Rendering;
-using Limaki.Presenter.Visuals;
+using Limaki.View.Rendering;
+using Limaki.View.Visuals;
 using Limaki.Visuals;
-using Limaki.Presenter.UI;
+using Limaki.View.UI;
 using Limaki.Drawing.WPF.Shapes;
 using Limaki.Drawing.WPF;
 using Limaki.Drawing;
 using Limaki.Visuals.WPF;
 using Limaki.Drawing.WPF.Painters;
 
-namespace Limaki.Presenter.WPF {
+namespace Limaki.View.WPF {
     public class WpfVisualsRenderer : VisualsRenderer {
         public override void Render(IVisual visual, IRenderEventArgs e) {
             var layout = this.Layout();

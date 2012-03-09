@@ -32,5 +32,6 @@ namespace Xwt.Backends
 	{
 		string Text { get; set; }
 		Alignment TextAlignment { get; set; }
+		EllipsizeMode Ellipsize { get; set; }
 	}
 }

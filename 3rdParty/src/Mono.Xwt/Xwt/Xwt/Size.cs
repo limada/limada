@@ -89,11 +89,12 @@ namespace Xwt {
 		{
 			return (s1.width != s2.width) || (s1.height != s2.height);
 		}
-
-        public static explicit operator Point(Size size) {
-            return new Point( size.Width, size.Height );
-        }
-
+		
+		public static explicit operator Point(Size size) 
+		{
+			return new Point (size.Width, size.Height);
+		}
+		
 		public override bool Equals (object ob)
 		{
 			return (ob is Size) && this == (Size)ob;

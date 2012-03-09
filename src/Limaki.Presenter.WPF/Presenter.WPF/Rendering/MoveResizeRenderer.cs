@@ -1,12 +1,12 @@
-﻿using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI;
-using Limaki.Common;
+﻿using Limaki.Common;
 using System.Windows.Media;
 using Limaki.Drawing;
 using Limaki.Drawing.WPF;
+using Limaki.View.Rendering;
+using Limaki.View.UI;
 using Xwt;
 
-namespace Limaki.Presenter.WPF {
+namespace Limaki.View.WPF {
 
     public class MoveResizeRenderer : MoveResizeRendererBase {
 
@@ -44,11 +44,11 @@ namespace Limaki.Presenter.WPF {
                 int halfborder = GripSize + 1;
 
                 // the have do redraw the oldShape and newShape area
-                RectangleD invalidRect = DrawingExtensions.Union(oldShape.BoundsRect, newShape.BoundsRect);
+                Rectangle invalidRect = DrawingExtensions.Union(oldShape.BoundsRect, newShape.BoundsRect);
                 // transform rectangle to control coordinates
                 invalidRect = Camera.FromSource(invalidRect);
 
-                invalidRect.Inflate(halfborder, halfborder);
+                invalidRect = invalidRect.Inflate(halfborder, halfborder);
                 this.Device.Invalidate(invalidRect);
             }
         }

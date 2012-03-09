@@ -4,14 +4,14 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Limaki.Common;
 using Limaki.Drawing.WPF;
-using Limaki.Presenter.Clipping;
-using Limaki.Presenter.Display;
 using System;
 using System.Windows.Input;
 using System.IO;
 using System.Diagnostics;
 using Limaki.Graphs;
-using Limaki.Presenter.Rendering;
+using Limaki.View.Clipping;
+using Limaki.View.Display;
+using Limaki.View.Rendering;
 using Xwt;
 using Canvas = System.Windows.Controls.Canvas;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -19,7 +19,7 @@ using Point = System.Windows.Point;
 using Size = Xwt.Size;
 
 
-namespace Limaki.Presenter.WPF.Display {
+namespace Limaki.View.WPF.Display {
 
 
 
@@ -66,12 +66,12 @@ namespace Limaki.Presenter.WPF.Display {
             set { _deviceRenderer = value as WPFRenderer<T>; }
         }
 
-        protected WPFViewPort<T> _deviceViewPort = null;
+        protected WpfViewport<T> DeviceViewport = null;
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual IViewport DeviceViewPort {
-            get { return _deviceViewPort; }
-            set { _deviceViewPort = value as WPFViewPort<T>; }
+            get { return DeviceViewport; }
+            set { DeviceViewport = value as WpfViewport<T>; }
         }
 
         public virtual Color BackColor {
@@ -112,9 +112,9 @@ namespace Limaki.Presenter.WPF.Display {
         }
         #region IControl Member
 
-        public virtual RectangleD ClientRectangle {
+        public virtual Rectangle ClientRectangle {
             get {
-                return new RectangleD(
+                return new Rectangle(
                  ScrollPosition,
                  ScrollMinSize - (Size)ScrollPosition
                  );
@@ -125,7 +125,7 @@ namespace Limaki.Presenter.WPF.Display {
             get { return new Size((int)this.Width, (int)this.Height); }
         }
 
-        void IControl.Invalidate(RectangleD rect) {
+        void IControl.Invalidate(Rectangle rect) {
             this.DeviceRenderer.Render(new BoundsClipper(rect));
         }
 

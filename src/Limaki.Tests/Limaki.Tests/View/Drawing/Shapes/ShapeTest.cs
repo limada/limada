@@ -55,12 +55,12 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         [Test]
         public void ShapeFactoryTest() {
             var shapeFactory = new Limaki.Drawing.Shapes.ShapeFactory();
-            var shapeR = shapeFactory.Shape<RectangleD>(
+            var shapeR = shapeFactory.Shape<Rectangle>(
                 new Point(10, 10),
                 new Size(20, 100)
                 );
             Assert.IsNotNull(shapeR);
-            var shape = shapeFactory.Shape(typeof (RectangleD), new Point(10, 10),
+            var shape = shapeFactory.Shape(typeof (Rectangle), new Point(10, 10),
                                            new Size(20, 100));
             Assert.IsNotNull(shape);
         }

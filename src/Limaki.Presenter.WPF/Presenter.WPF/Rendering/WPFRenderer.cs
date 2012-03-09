@@ -1,14 +1,14 @@
 ﻿using System;
 using Limaki.Common;
-using Limaki.Presenter.Clipping;
-using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI;
-using Limaki.Presenter.WPF.UI;
+using Limaki.View.UI;
 using Limaki.Drawing.WPF;
 using System.Windows.Threading;
+using Limaki.View.Clipping;
+using Limaki.View.Rendering;
+using Limaki.View.WPF.UI;
 using Xwt.Drawing;
 
-namespace Limaki.Presenter.WPF.Display {
+namespace Limaki.View.WPF.Display {
     public class WPFRenderer<T> : IDeviceRenderer {
         public virtual WPFDisplay<T> Device { get; set; }
         public virtual IDisplay<T> Display { get; set; }

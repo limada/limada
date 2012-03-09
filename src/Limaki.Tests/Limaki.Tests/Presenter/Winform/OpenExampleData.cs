@@ -5,7 +5,7 @@ using Limada.Schemata;
 using Limada.Tests.View;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Visuals;
-using Limaki.Presenter.Winform;
+using Limaki.View.Winform;
 
 namespace Limaki.Tests.Presenter.Winform {
     public class ExampleData {
@@ -55,7 +55,7 @@ namespace Limaki.Tests.Presenter.Winform {
             }
         }
 
-        public Limaki.UseCases.Viewers.DialogResult DialogResult { get; set; }
+        public Viewers.DialogResult DialogResult { get; set; }
         public ITypeChoose Selected { get; set; }
     }
 
@@ -76,12 +76,12 @@ namespace Limaki.Tests.Presenter.Winform {
         }
 
         private void openButton_Click(object sender, EventArgs e) {
-            this.ExampleData.DialogResult = Limaki.UseCases.Viewers.DialogResult.OK;
+            this.ExampleData.DialogResult = Viewers.DialogResult.OK;
             this.DialogResult = DialogResult.OK;
         }
 
         private void cancelButton_Click(object sender, EventArgs e) {
-            this.ExampleData.DialogResult = Limaki.UseCases.Viewers.DialogResult.Cancel;
+            this.ExampleData.DialogResult = Viewers.DialogResult.Cancel;
             this.DialogResult = DialogResult.Cancel;
         }
     }

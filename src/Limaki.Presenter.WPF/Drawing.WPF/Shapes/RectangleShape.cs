@@ -10,7 +10,7 @@ namespace Limaki.Drawing.WPF.Shapes {
         IBezierShape {
 
         public RectangleShapeBase(): base() {}
-        public RectangleShapeBase(RectangleD data) : base(data) { }
+        public RectangleShapeBase(Xwt.Rectangle data) : base(data) { }
 
         protected Path _path = null;
         protected RectangleGeometry _geom = null;
@@ -41,7 +41,7 @@ namespace Limaki.Drawing.WPF.Shapes {
 
     public class RectangleShape : RectangleShapeBase, IRectangleShape{
         public RectangleShape() : base() { }
-        public RectangleShape(RectangleD data) : base(data) { }
+        public RectangleShape(Xwt.Rectangle data) : base(data) { }
 
         public override object Clone() {
             return new RectangleShape(this.Data);
@@ -50,7 +50,7 @@ namespace Limaki.Drawing.WPF.Shapes {
 
     public class RoundedRectangleShape:RectangleShape, IRoundedRectangleShape {
         public RoundedRectangleShape() : base() { }
-        public RoundedRectangleShape(RectangleD data) : base(data) { }
+        public RoundedRectangleShape(Xwt.Rectangle data) : base(data) { }
 
         public override Shape Shape {
             get {

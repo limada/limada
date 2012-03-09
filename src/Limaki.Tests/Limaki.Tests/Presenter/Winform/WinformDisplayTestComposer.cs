@@ -1,6 +1,6 @@
-using Limaki.Presenter.Display;
+using Limaki.View.Display;
 using Limaki.Tests.Presenter.Display;
-using Limaki.Presenter;
+using Limaki.View;
 using Limaki.Common;
 
 namespace Limaki.Tests.Presenter.Winform {

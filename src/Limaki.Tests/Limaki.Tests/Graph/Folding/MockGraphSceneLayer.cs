@@ -1,11 +1,11 @@
 using Limaki.Graphs;
-using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI;
-using Limaki.Presenter.Display;
-using Limaki.Presenter;
+using Limaki.View.Rendering;
+using Limaki.View.UI;
+using Limaki.View.Display;
+using Limaki.View;
 using Limaki.Drawing;
 using Limaki.Common;
-using Limaki.Presenter.UI.GraphScene;
+using Limaki.View.UI.GraphScene;
 using Xwt;
 
 namespace Limaki.Tests.Graph.Wrappers {
@@ -129,8 +129,8 @@ where T : class {
             set { this.Display = value as IDisplay<T>; }
         }
 
-        public RectangleD ClientRectangle {
-            get { return new RectangleD(Display.Viewport.DataOrigin, Display.Viewport.DataSize); }
+        public Rectangle ClientRectangle {
+            get { return new Rectangle(Display.Viewport.DataOrigin, Display.Viewport.DataSize); }
         }
 
         public Size Size {
@@ -141,7 +141,7 @@ where T : class {
 
         public void Invalidate() {}
 
-        public void Invalidate(RectangleD rect) {}
+        public void Invalidate(Rectangle rect) {}
 
         public Point PointToClient(Point source) {
             return source;
@@ -162,7 +162,7 @@ where T : class {
 			deviceRenderer.Display = display;
             this.DeviceRenderer = deviceRenderer;
             this.EventControler = new EventControler();
-            this.ViewPort = new ViewPort();
+            this.ViewPort = new Viewport();
             this.DeviceCursor = new MockCursorHandler();
 
             this.SelectionRenderer = new MockSelectionRenderer();

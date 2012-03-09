@@ -22,11 +22,11 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
 using Limaki.Drawing.Shapes;
-using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI.GraphScene;
+using Limaki.View.Rendering;
+using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
-using Limaki.Presenter.UI;
-using Limaki.Presenter;
+using Limaki.View.UI;
+using Limaki.View;
 using Xwt;
 using Point = System.Drawing.Point;
 

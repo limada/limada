@@ -17,9 +17,9 @@ using System;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Presenter;
-using Limaki.Presenter.Rendering;
-using Limaki.Presenter.UI;
+using Limaki.View;
+using Limaki.View.Rendering;
+using Limaki.View.UI;
 using Limaki.Visuals;
 using NUnit.Framework;
 using Limaki.Tests.Graph.Model;
@@ -165,13 +165,13 @@ namespace Limaki.Tests.Presenter.Display {
 
             ticker.Start();
 
-            RectangleD rect = new RectangleD(new Point(),Display.Viewport.ClipSize);
+            Rectangle rect = new Rectangle(new Point(),Display.Viewport.ClipSize);
             int div = 2;
             if (frame == Frame.Quarter) {
                 div = 4;
             }
             Size deflate = new Size(rect.Width / div, rect.Height / div);
-            rect = new RectangleD(
+            rect = new Rectangle(
                 new Point(rect.Location.X + deflate.Width, rect.Location.Y + deflate.Height), deflate);
 
             int time = (secToTest * 1000) + Environment.TickCount;

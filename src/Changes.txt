@@ -1,0 +1,30 @@
+2012-03-09
+new class Xwt.SystemColors
+refactored to use Xwt.SystemColors
+removed Limaki.Drawing.KnownColors
+
+moved and renamed Playground.View.XwtRefactoring.PaintContextBackendHandler to
+Xwt.Gdi.ContextBackendhandler
+
+2012-03-08
+new class Xwt.Colors
+https://github.com/mono/xwt/pull/40
+refactored to Xwt.Colors
+
+2012-03-02
+fixed Xwt.Rectangle
+https://github.com/mono/xwt/pull/26
+refactored to use Xwt.Rectangle
+
+2012-02-28
+Xwt.Size: Point conversion operator
+https://github.com/mono/xwt/pull/19
+
+2012-02-23
+refactored to use xwt.drawing:
+point size font key
+new projects: 
+Xwt.Gdi: System.Drawing - Backends
+Xwt.Swf: System.Windows.Forms - Backends
+
+

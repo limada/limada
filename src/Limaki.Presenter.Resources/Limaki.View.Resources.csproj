@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Limaki.Presenter</RootNamespace>
-    <AssemblyName>Limaki.Presenter.Resources</AssemblyName>
+    <AssemblyName>Limaki.View.Resources</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

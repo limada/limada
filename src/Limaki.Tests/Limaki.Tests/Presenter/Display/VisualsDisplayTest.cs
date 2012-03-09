@@ -1,10 +1,10 @@
 using System;
 using Limaki.Drawing;
-using Limaki.Presenter.UI;
+using Limaki.View.UI;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
-using Limaki.Presenter.Display;
+using Limaki.View.Display;
 using Xwt;
 
 namespace Limaki.Tests.Presenter.Display {

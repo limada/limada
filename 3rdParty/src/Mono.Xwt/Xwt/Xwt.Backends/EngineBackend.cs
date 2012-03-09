@@ -3,8 +3,9 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
+//       Eric Maupin <ermau@xamarin.com>
 // 
-// Copyright (c) 2011 Xamarin Inc
+// Copyright (c) 2011-2012 Xamarin Inc
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -38,11 +39,31 @@ namespace Xwt.Backends
 		
 		public abstract void RunApplication ();
 		
-		public abstract void Invoke (Action action);
+		public abstract void ExitApplication ();
+		
+		/// <summary>
+		/// Asynchronously invokes <paramref name="action"/> on the engine UI thread.
+		/// </summary>
+		/// <param name="action">The action to invoke.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="action"/> is <c>null</c>.</exception>
+		public abstract void InvokeAsync (Action action);
 
-		public abstract object TimeoutInvoke (Func<bool> action, TimeSpan timeSpan);
+		/// <summary>
+		/// Begins invoking <paramref name="action"/> on a timer period of <paramref name="timeSpan"/>.
+		/// </summary>
+		/// <param name="action">The function to invoke. Returning <c>false</c> stops the timer.</param>
+		/// <param name="timeSpan">The period before the initial invoke and between subsequent invokes.</param>
+		/// <returns>An identifying object that can be used to cancel the timer with <seealso cref="CancelTimerInvoke"/>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="action"/> is <c>null</c>.</exception>
+		/// <seealso cref="CancelTimerInvoke"/>
+		public abstract object TimerInvoke (Func<bool> action, TimeSpan timeSpan);
 
-		public abstract void CancelTimeoutInvoke (object id);
+		/// <summary>
+		/// Cancels an invoke timer started from <see cref="TimerInvoke"/>.
+		/// </summary>
+		/// <param name="id">The unique object returned from <see cref="TimerInvoke"/>.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="id"/> is <c>null</c>.</exception>
+		public abstract void CancelTimerInvoke (object id);
 		
 		public abstract object GetNativeWidget (Widget w);
 		
