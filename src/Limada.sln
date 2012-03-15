@@ -18,11 +18,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdParty", "3rdParty", "{45
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt", "..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj", "{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.View", "Limaki.Presenter\Limaki.View.csproj", "{3434F6BC-D6AA-4C53-B359-A1B114364025}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.View", "Limaki.View\Limaki.View.csproj", "{3434F6BC-D6AA-4C53-B359-A1B114364025}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.View.Resources", "Limaki.Presenter.Resources\Limaki.View.Resources.csproj", "{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.View.Resources", "Limaki.View.Resources\Limaki.View.Resources.csproj", "{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.View.SWF", "Limaki.Presenter.Winform\Limaki.View.SWF.csproj", "{B87913C3-EBEE-45AB-88EC-8687D9E57127}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.View.SWF", "Limaki.View.Swf\Limaki.View.SWF.csproj", "{B87913C3-EBEE-45AB-88EC-8687D9E57127}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.GDI", "Xwt.SWF\Xwt.GDI\Xwt.GDI.csproj", "{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}"
 EndProject
@@ -30,9 +30,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.SWF", "Xwt.SWF\Xwt.SWF\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Limaki.WPF", "Limaki.WPF", "{60E302E0-D923-4A49-B9AC-785D8FD0149A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.View.WPF", "Limaki.Presenter.WPF\Limaki.View.WPF.csproj", "{D04D52F0-BF12-4043-B772-DCCE92171C72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.View.WPF", "Limaki.View.WPF\Limaki.View.WPF.csproj", "{D04D52F0-BF12-4043-B772-DCCE92171C72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.View.WPF.Test", "Limaki.Presenter.WPF.Test\Limaki.View.WPF.Test.csproj", "{17704843-1114-4A18-B514-40EE4F79E313}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limaki.View.WPF.Test", "Limaki.View.WPF.Test\Limaki.View.WPF.Test.csproj", "{17704843-1114-4A18-B514-40EE4F79E313}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xwt.WPF", "..\3rdParty\src\Mono.Xwt\Xwt.WPF\Xwt.WPF.csproj", "{C93D746E-1586-4D4F-B411-BF5A966E6A08}"
 EndProject
