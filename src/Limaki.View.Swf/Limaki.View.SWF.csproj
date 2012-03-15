@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B87913C3-EBEE-45AB-88EC-8687D9E57127}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki</RootNamespace>
+    <AssemblyName>Limaki.View.SWF</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Limaki.Controls\GeckoWebBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.Controls\MessageBoxShow.cs" />
+    <Compile Include="Limaki.Controls\TextEditor\TextBoxEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.Controls\TextEditor\TextBoxEditor.Designer.cs">
+      <DependentUpon>TextBoxEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.Controls\TextEditor\TextBoxEditorControler.cs" />
+    <Compile Include="Limaki.Controls\TextEditor\TextBoxEditorToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.Controls\TextEditor\TextBoxEditorToolStrip.Designer.cs">
+      <DependentUpon>TextBoxEditorToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.Controls\TextEditor\TextBoxEditorWithToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.Controls\TextEditor\TextBoxEditorWithToolStrip.Designer.cs">
+      <DependentUpon>TextBoxEditorWithToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.Controls\TextOkCancelBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.Controls\TextOkCancelBox.Designer.cs">
+      <DependentUpon>TextOkCancelBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.Controls\WebBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.GDI.Drawing\FontMemento.cs" />
+    <Compile Include="Limaki.GDI.Drawing\GDIConverter.cs" />
+    <Compile Include="Limaki.GDI.Drawing\GDIDrawingUtils.cs" />
+    <Compile Include="Limaki.GDI.Drawing\GDIFontCache.cs" />
+    <Compile Include="Limaki.GDI.Drawing\GDIMatrice.cs" />
+    <Compile Include="Limaki.GDI.Drawing\GDIPen.cs" />
+    <Compile Include="Limaki.GDI.Drawing\GDISurface.cs" />
+    <Compile Include="Limaki.GDI.Drawing\GDISystemFonts.cs" />
+    <Compile Include="Limaki.GDI.Drawing\GDIUtils.cs" />
+    <Compile Include="Limaki.GDI.Drawing\Painters\BezierPainter.cs" />
+    <Compile Include="Limaki.GDI.Drawing\Painters\PainterFactory.cs" />
+    <Compile Include="Limaki.GDI.Drawing\Painters\RectanglePainter.cs" />
+    <Compile Include="Limaki.GDI.Drawing\Painters\RoundedRectanglePainter.cs" />
+    <Compile Include="Limaki.GDI.Drawing\Painters\StringPainter.cs" />
+    <Compile Include="Limaki.GDI.Drawing\Painters\VectorPainter.cs" />
+    <Compile Include="Limaki.GDI.View\UI\GDIControl.cs" />
+    <Compile Include="Limaki.GDI.View\UI\GDIGraphSceneLayer.cs" />
+    <Compile Include="Limaki.GDI.View\UI\GDIImageLayer.cs" />
+    <Compile Include="Limaki.GDI.View\UI\GDIRenderEventArgs.cs" />
+    <Compile Include="Limaki.SWF.View\Converter.cs" />
+    <Compile Include="Limaki.SWF.View\CursorHandler.cs" />
+    <Compile Include="Limaki.SWF.View\Display\DragDropCatcher.cs" />
+    <Compile Include="Limaki.SWF.View\Display\ImageDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.View\Display\WinformDeviceComposer.cs" />
+    <Compile Include="Limaki.SWF.View\Display\WinformDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.View\Display\WinformGraphSceneDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.View\Display\WinformViewPort.cs" />
+    <Compile Include="Limaki.SWF.View\Display\WinformVisualsDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.View\DragDrop\ControlDataObject.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\DataInprocObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\DataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\DataObjectHandlerChain.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\DataObjectHelper.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\DragDropFacade.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\IDataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\ImageDataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\IVisualsDataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\SerializedDataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\SerializedVisualsDataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\StreamDataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\StringDataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\VisualsDataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\VisualsImageDataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\VisualsInprocDataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\DragDrop\VisualsTextDataObjectHandler.cs" />
+    <Compile Include="Limaki.SWF.View\IDragDopControl.cs" />
+    <Compile Include="Limaki.SWF.View\Rendering\GripPainter.cs" />
+    <Compile Include="Limaki.SWF.View\Rendering\MoveResizeRenderer.cs" />
+    <Compile Include="Limaki.SWF.View\Rendering\SelectionRenderer.cs" />
+    <Compile Include="Limaki.SWF.View\Rendering\WinformRenderer.cs" />
+    <Compile Include="Limaki.SWF.View\UI\WinformEventControler.cs" />
+    <Compile Include="Limaki.SWF.View\Visuals\VisualsDragDrop.cs" />
+    <Compile Include="Limaki.SWF.View\Visuals\VisualsTextEditor.cs" />
+    <Compile Include="Limaki.SWF.View\WinformContextRecourceLoader.cs" />
+    <Compile Include="Limaki.SWF.View\WinformExeptionHandler.cs" />
+    <Compile Include="Limaki.SWF.View\WinformSystemInformation.cs" />
+    <Compile Include="Limaki.SWF.View\WinformUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Limaki.SWF.UseCases\PrintManager.cs" />
+    <Compile Include="Limaki.SWF.UseCases\WinformUseCaseComposer.cs" />
+    <Compile Include="Limaki.SWF.Viewers\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\BaseStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\BaseStyleEditor.Designer.cs">
+      <DependentUpon>BaseStyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ImageExporter.cs" />
+    <Compile Include="Limaki.SWF.Viewers\LayoutEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\LayoutEditor.Designer.cs">
+      <DependentUpon>LayoutEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\Options.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\Options.Designer.cs">
+      <DependentUpon>Options.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ScenePainter.cs" />
+    <Compile Include="Limaki.SWF.Viewers\ShapeComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ShapeComboBox.Designer.cs">
+      <DependentUpon>ShapeComboBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\StreamViewers\DocumentSchemaControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\StreamViewers\DocumentSchemaControl.Designer.cs">
+      <DependentUpon>DocumentSchemaControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\StreamViewers\DocumentSchemaController.cs" />
+    <Compile Include="Limaki.SWF.Viewers\StreamViewers\DocumentSchemaKeyScrollAction.cs" />
+    <Compile Include="Limaki.SWF.Viewers\StreamViewers\WebBrowserBackendHandler.cs" />
+    <Compile Include="Limaki.SWF.Viewers\StreamViewers\ImageViewerController.cs" />
+    <Compile Include="Limaki.SWF.Viewers\StreamViewers\TextViewerController.cs" />
+    <Compile Include="Limaki.SWF.Viewers\StreamViewers\TextViewerWithToolstripController.cs" />
+    <Compile Include="Limaki.SWF.Viewers\StyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\StyleEditor.Designer.cs">
+      <DependentUpon>StyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\ArrangerToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\ArrangerToolStrip.Designer.cs">
+      <DependentUpon>ArrangerToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\DisplayToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\DisplayToolStrip.Designer.cs">
+      <DependentUpon>DisplayToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\IToolStripCommandItem.cs" />
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\LayoutToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\LayoutToolStrip.Designer.cs">
+      <DependentUpon>LayoutToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\MarkerToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\MarkerToolStrip.Designer.cs">
+      <DependentUpon>MarkerToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\SplitViewToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\SplitViewToolStrip.Designer.cs">
+      <DependentUpon>SplitViewToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\ToolStripCommand.cs" />
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\ToolStripItemEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\ToolStrips\ToolStripShapeComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.SWF.Viewers\WinformSplitView.cs" />
+    <Compile Include="Xwt.Gdi\SystemColorsBackend.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\Skybound.GeckoFX.src.v1.9.0.0\src\Skybound.Gecko\Skybound.Gecko.csproj">
+      <Project>{877D1A24-2D5E-4C46-A933-FCF11EA0403B}</Project>
+      <Name>Skybound.Gecko</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
+      <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
+      <Name>Limaki.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
+      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
+      <Name>Limaki.View.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
+      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
+      <Name>Limaki.View</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xwt.SWF\Xwt.GDI\Xwt.GDI.csproj">
+      <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
+      <Name>Xwt.GDI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xwt.SWF\Xwt.SWF\Xwt.SWF.csproj">
+      <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
+      <Name>Xwt.SWF %28Xwt.SWF\Xwt.SWF%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Limaki.Controls\TextEditor\TextBoxEditor.resx">
+      <DependentUpon>TextBoxEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Limaki.Controls\TextEditor\TextBoxEditorWithToolStrip.resx">
+      <DependentUpon>TextBoxEditorWithToolStrip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Limaki.Controls\TextOkCancelBox.resx">
+      <DependentUpon>TextOkCancelBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Limaki.SWF.Viewers\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Limaki.SWF.Viewers\BaseStyleEditor.resx">
+      <DependentUpon>BaseStyleEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Limaki.SWF.Viewers\LayoutEditor.resx">
+      <DependentUpon>LayoutEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Limaki.SWF.Viewers\Options.resx">
+      <DependentUpon>Options.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Limaki.SWF.Viewers\StyleEditor.resx">
+      <DependentUpon>StyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -143,7 +143,7 @@
     <Compile Include="TestCaseFactory.cs" />
     <Compile Include="TestLocations.cs" />
     <Compile Include="Limaki.Tests\Common\IOUtilsTest.cs" />
-    <Compile Include="Limaki.Tests\Graphics\StyleTest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\StyleTest.cs" />
     <Compile Include="Limaki.Tests\Data\db4o\GraphTest.cs" />
     <Compile Include="Limaki.Tests\DomainTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Folding\BinaryGraphFoldingTest.cs" />
@@ -258,11 +258,11 @@
       <Project>{4BD6F6DE-CEBA-4185-AF2D-47A071E6A276}</Project>
       <Name>Limaki.dbParts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.Presenter.Winform\Limaki.View.SWF.csproj">
+    <ProjectReference Include="..\Limaki.View.Swf\Limaki.View.SWF.csproj">
       <Project>{B87913C3-EBEE-45AB-88EC-8687D9E57127}</Project>
       <Name>Limaki.View.SWF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.Presenter\Limaki.View.csproj">
+    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
     </ProjectReference>
