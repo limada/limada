@@ -9,6 +9,7 @@ namespace Limaki.View.Layout {
         public Alignment AlignY { get; set; }
         public PointOrder PointOrder { get; set; }
         public Dimension Dimension { get; set; }
+        public Size Distance{ get; set; }
     }
 
     public enum Dimension {

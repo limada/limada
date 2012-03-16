@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Xwt;
 
 namespace Limaki.Tests.Drawing {
+
     public class PolygonHulltest:DomainTest {
         public enum Algo {
             AtanSinCos,
@@ -76,11 +77,11 @@ namespace Limaki.Tests.Drawing {
             lineMatrice.Rotate(-angle);
             lineMatrice.TransformPoints(line);
             var poly = new Point[] {
-                                                 new Point (line[0].X - delta, line[0].Y - delta),
-                                                 new Point(line[1].X + delta, line[1].Y - delta),
-                                                 new Point (line[1].X + delta, line[1].Y + delta),
-                                                 new Point (line[0].X - delta, line[0].Y + delta)
-                                             };
+                new Point (line[0].X - delta, line[0].Y - delta),
+                new Point(line[1].X + delta, line[1].Y - delta),
+                new Point (line[1].X + delta, line[1].Y + delta),
+                new Point (line[0].X - delta, line[0].Y + delta)
+            };
             lineMatrice.Reset();
             lineMatrice.Rotate(angle);
             lineMatrice.TransformPoints(poly);
@@ -134,7 +135,7 @@ namespace Limaki.Tests.Drawing {
                 new Point (startX + deltaSinusBeta, startY - deltaSinusAlpha),
                 new Point(endX + deltaSinusBeta, endY - deltaSinusAlpha),
                 new Point (endX - deltaSinusBeta, endY + deltaSinusAlpha)
-                                             };
+            };
         }
 
         void PaintWidenPolygon (Algo algo, Point start, Size size, int i ) {
@@ -215,9 +216,6 @@ namespace Limaki.Tests.Drawing {
             TestCases(Algo.Transform);
             TestCases(Algo.SqareRoot);
             TestCases(Algo.AtanSinCos);
-
-            
-
         }
     }
 }

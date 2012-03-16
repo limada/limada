@@ -62,21 +62,8 @@ namespace Limaki.Drawing.GDI {
             set { _deviceContext = value; }
         }
 
-        public static System.Drawing.StringFormat GetDefaultStringFormat() {
-            var stringFormat =
-                System.Drawing.StringFormat.GenericTypographic;
-            stringFormat.Trimming = System.Drawing.StringTrimming.EllipsisWord;
-            //stringFormat.FormatFlags = StringFormatFlags.FitBlackBox;
-            stringFormat.FormatFlags = stringFormat.FormatFlags
-                                       & ~System.Drawing.StringFormatFlags.NoClip
-                                       & ~System.Drawing.StringFormatFlags.FitBlackBox
-                                       & System.Drawing.StringFormatFlags.LineLimit
-                ;
-            return stringFormat;
-        }
-
         public static Size GetTextDimension(System.Drawing.Font font, string text, System.Drawing.SizeF textSize) {
-            return GetTextDimension(DeviceContext, font, text, GetDefaultStringFormat(), textSize);
+            return GetTextDimension(DeviceContext, font, text, GdiConverter.GetDefaultStringFormat(), textSize);
         }
 
         public static Size GetTextDimension(System.Drawing.Font font, string text,

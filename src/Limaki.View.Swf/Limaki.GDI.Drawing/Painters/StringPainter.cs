@@ -56,10 +56,10 @@ namespace Limaki.Drawing.GDI.Painters {
 
         #region TextStyle
         private StringFormat _stringFormat = null;
-        protected StringFormat stringFormat {
+        protected StringFormat StringFormat {
             get {
                 if (_stringFormat == null) {
-                    _stringFormat = GDIUtils.GetDefaultStringFormat();
+                    _stringFormat = GdiConverter.GetDefaultStringFormat();
                     hAlignChanged = true;
                     vAlignChanged = true;
                 }
@@ -124,7 +124,6 @@ namespace Limaki.Drawing.GDI.Painters {
                 var shape = this.Shape;
                 var font = (System.Drawing.Font)WidgetRegistry.GetBackend(Style.Font);
 
-
                 if (AlignText && shape is IVectorShape) {
                     var vector = ( (IVectorShape) shape ).Data;
                     var vlen =  (float)Vector.Length (vector);
@@ -142,7 +141,7 @@ namespace Limaki.Drawing.GDI.Painters {
                     var emSize = font.Size;
                     linedTextPath.AddString
                         (Text, font.FontFamily, (int) font.Style, emSize,
-                         new RectangleF (new PointF (-vlen/2f, -vheight/2f), new SizeF (vlen, vheight)), stringFormat);
+                         new RectangleF (new PointF (-vlen/2f, -vheight/2f), new SizeF (vlen, vheight)), StringFormat);
 
                     using (var matrix = ( (GDIMatrice) lineMatrice ).Matrix) {
                         linedTextPath.Transform (matrix);
@@ -164,7 +163,7 @@ namespace Limaki.Drawing.GDI.Painters {
                     if (rectSize.Width > 1 && rectSize.Height > 1) {
                         g.DrawString (Text, font,
                                       GetSolidBrush (GdiConverter.ToGdi (style.TextColor)),
-                                      rect, stringFormat);
+                                      rect, StringFormat);
                     }
                 }
             }

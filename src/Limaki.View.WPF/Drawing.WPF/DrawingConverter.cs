@@ -4,7 +4,7 @@ using Xwt.Drawing;
 using Point = System.Windows.Point;
 
 namespace Limaki.Drawing.WPF {
-    public class DrawingConverter {
+    public static class DrawingConverter {
         public static Point[] Convert(Xwt.Point[] value) {
             var result = new Point[value.Length];
             for (int i = 0; i < value.Length; i++) {
@@ -27,7 +27,7 @@ namespace Limaki.Drawing.WPF {
             return new Xwt.Point(value.X, value.Y);
         }
 
-        public static Color Convert(System.Windows.Media.Color value) {
+        public static Color ToXwt(this System.Windows.Media.Color value) {
             return Xwt.WPFBackend.DataConverter.ToXwtColor(value);
         }
         public static System.Windows.Media.Color Convert(Color value) {

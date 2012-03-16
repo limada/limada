@@ -52,7 +52,7 @@ namespace Xwt.Drawing
 		{
 		}
 		
-		internal Context (object backend): base (backend)
+		public Context (object backend): base (backend)
 		{
 		}
 		

@@ -10,7 +10,7 @@ namespace Xwt.Gdi.Backend {
             return new Font(fontName, (float)size);
         }
 
-        #region IFontBackendHandler implementation
+        
 
         public object Copy(object handle) {
             Font d = (Font)handle;
@@ -108,7 +108,7 @@ namespace Xwt.Gdi.Backend {
         public FontStretch GetStretch(object handle) {
             return FontStretch.Normal;
         }
-        #endregion
+
 
 
     }

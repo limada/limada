@@ -1,4 +1,9 @@
-﻿using Xwt.Drawing;
+﻿using System.Drawing;
+using Xwt.Engine;
+using Color = Xwt.Drawing.Color;
+using Font = Xwt.Drawing.Font;
+using FontStyle = Xwt.Drawing.FontStyle;
+
 namespace Xwt.Gdi {
 
     public static class GdiConverter {
@@ -71,6 +76,27 @@ namespace Xwt.Gdi {
                 result |= FontStyle.Oblique;
             }
             return result;
+        }
+
+        public static System.Drawing.Font ToGdi (this Font value) {
+            return (System.Drawing.Font) WidgetRegistry.GetBackend (value);
+        }
+
+        public static Size ToXwt (this SizeF value) {
+            return new Size (value.Width, value.Height);
+        }
+
+        public static System.Drawing.StringFormat GetDefaultStringFormat() {
+            var stringFormat =
+                StringFormat.GenericTypographic;
+            stringFormat.Trimming = StringTrimming.EllipsisWord;
+            //stringFormat.FormatFlags = StringFormatFlags.FitBlackBox;
+            stringFormat.FormatFlags = stringFormat.FormatFlags
+                                       & ~StringFormatFlags.NoClip
+                                       & ~StringFormatFlags.FitBlackBox
+                                       & StringFormatFlags.LineLimit
+                ;
+            return stringFormat;
         }
     }
 }

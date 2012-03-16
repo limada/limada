@@ -114,6 +114,7 @@
     <Compile Include="Limada.Tests\Tests\View\ThingVisualMapperTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\VisualThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\Wrappers\WrapperTest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\PointComparerTest.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
     <None Include="Playground\View\XwtRefactroring\[Samples]\Mac.ContextBackendHandler.cs" />
     <Compile Include="Playground\View\XwtRefactroring\Rectangle\Refactoring\gdiRectangleD.cs" />

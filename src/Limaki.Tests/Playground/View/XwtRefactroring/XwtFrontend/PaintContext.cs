@@ -43,9 +43,11 @@ namespace Limaki.Painting {
 
         protected override IBackendHandler BackendHandler { get { return handler;} }
 
-        public PaintContext(Widget w) : base(handler.CreateContext(w)) { }
+        public PaintContext (Widget w) : base (handler.CreateContext (w)) { }
 
-        public PaintContext(object backend) : base(backend) { }
+        public PaintContext (object backend) : base (backend) {
+            handler.InitBackend (backend);
+        }
 
         public void Save () { handler.Save (Backend); }
 
@@ -182,6 +184,13 @@ namespace Limaki.Painting {
             handler.Translate (Backend, p.X, p.Y);
         }
 
+        /// <summary>
+        /// Resets the Current Trasnformation Matrix (CTM) to the Identity Matrix
+        /// </summary>
+        public void ResetTransform () {
+            handler.ResetTransform (Backend);
+        }
+
         public void Dispose () {
             handler.Dispose (Backend);
         }
@@ -198,6 +207,26 @@ namespace Limaki.Painting {
 
         public void SetLineDash (double offset, params double[] pattern) {
             handler.SetLineDash (Backend, offset, pattern);
+        }
+
+        public Xwt.Drawing.Context CreateContext() {
+            return new Xwt.Drawing.Context (Backend);
+        }
+
+        public Xwt.Drawing.TextLayout CreateTextLayout () {
+            return new TextLayout(new Xwt.Drawing.Context (Backend));
+        }
+
+        public void DrawTextLayout (TextLayout layout, double x, double y, int height) {
+            handler.DrawTextLayout (Backend, layout, x, y, height);
+        }
+
+        public void TextLayout (TextLayout layout, double x, double y, double height) {
+            handler.TextLayout (Backend, layout, x, y, height);
+        }
+
+        internal void TranslatePath (double x, double y) {
+            handler.TranslatePath (Backend,  x, y);
         }
     }
 }

@@ -22,6 +22,7 @@ using Xwt;
 namespace Limaki.View.Layout {
 
     public abstract class Layout : ILayout {
+
         public Layout(IStyleSheet styleSheet) {
             this.StyleSheet = styleSheet;
             this.Distance = new Size(30, 15);

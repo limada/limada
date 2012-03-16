@@ -12,6 +12,8 @@ namespace Xwt.Gdi.Backend {
 
         public virtual void RegisterBackends() {
             WidgetRegistry.RegisterBackend(typeof(Xwt.Drawing.Font), typeof(FontBackendHandler));
+            WidgetRegistry.RegisterBackend (typeof (Xwt.Drawing.TextLayout), typeof (TextLayoutBackendHandler));
+            WidgetRegistry.RegisterBackend (typeof (Xwt.Drawing.Context), typeof (ContextBackendHandler));
 
         }
 

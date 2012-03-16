@@ -11,8 +11,10 @@ namespace Limaki.Drawing {
     }
 
     public class PointComparer : Comparer<Point> {
+
         public PointOrder Order { get;set;}
         public double Delta { get; set; }
+
         public PointComparer() {
             Order = PointOrder.LeftToRight;
             Delta = 10d;
@@ -29,8 +31,8 @@ namespace Limaki.Drawing {
         public override int Compare(Point a, Point b) {
             if (Order == PointOrder.LeftToRight || Order == PointOrder.TopToBottom) {
                 var aX = Round(a.X);
+                var bX = Round (b.X);
                 var aY = Round(a.Y);
-                var bX = Round(b.X);
                 var bY = Round(b.Y);
                 if (Order == PointOrder.LeftToRight)
                     if (aY == bY)
@@ -43,11 +45,16 @@ namespace Limaki.Drawing {
                     else
                         return aX.CompareTo(bX);
             }
-            if (Order == PointOrder.Left)
-                return a.X.CompareTo(b.X);
-            if (Order == PointOrder.Top)
-                return a.Y.CompareTo(b.Y);
-
+            if (Order == PointOrder.Left) {
+                var aX = Round (a.X);
+                var bX = Round (b.X);
+                return aX.CompareTo(bX);
+            }
+            if (Order == PointOrder.Top) {
+                var aY = Round(a.Y);
+                var bY = Round(b.Y);
+                return aY.CompareTo(bY);
+            }
             return 0;
         }
     }

@@ -11,23 +11,50 @@ namespace Xwt.Gdi.Backend {
         private PointF _current;
         public PointF Current {
             get {
-                if (Path.PointCount==0)
+                if (Path.PointCount == 0)
                     return _current;
-                return Path.GetLastPoint();
+                return Path.GetLastPoint ();
             }
             set { _current=value;}
         }
 
         GraphicsPath _path = null;
         public GraphicsPath Path {
-            get { return _path ?? (_path = new GraphicsPath()); }
+            get {
+                if (_path == null) {
+                    _path = new GraphicsPath ();
+                    if (_transformPath)
+                        _transformed = false;
+                }
+                return _path;
+            }
             set {
                 if (_path != value && _path != null)
-                    _path.Dispose();
+                    _path.Dispose ();
+                if (_transformPath)
+                    _transformed = false;
                 _path = value;
             }
         }
 
+        Matrix _matrix = null;
+        public Matrix Matrix {
+            get {
+
+                if (_matrix == null) {
+                    _matrix = new Matrix ();
+                }
+                return _matrix;
+
+            }
+            set {
+                if (_matrix != value && _matrix != null)
+                    _matrix.Dispose ();
+                _matrix = value;
+                if (_transformPath)
+                    _path.Transform (Matrix);
+            }
+        }
         public Color Color { get; set; }
         public double LineWidth { get; set; }
         public double[] LineDash { get; set; }
@@ -66,8 +93,55 @@ namespace Xwt.Gdi.Backend {
                 _pen.Dispose();
             if (_brush != null)
                 _brush.Dispose();
+            if (_matrix != null)
+                _matrix.Dispose();
         }
 
         public Xwt.Drawing.Font Font { get; set; }
+
+        public bool HasTransform {
+            get { return _matrix != null; }
+        }
+
+        private bool _transformed = false;
+        bool _transformPath = true; //false: very slow, but normal text is transformed too
+        public void Transform () {
+            if (!_transformed && _path != null) {
+                if (_transformPath)
+                    // this transforms path.points immedeatly:
+                    Path.Transform (Matrix);
+                else
+                    Graphics.Transform = Matrix;
+                _transformed = true;
+            }
+        }
+        public void Rotate (float p) {
+            Matrix.Rotate (p,MatrixOrder.Append);
+        }
+
+        public  void ResetTransform () {
+            if (_matrix != null) {
+                Matrix.Reset ();
+
+                if (_path != null && _transformPath) {
+                    //Path.Transform (Matrix); //has no effect as all points are already transformed
+                    //Graphics.ResetTransform();
+                    
+                } else
+                    Graphics.Transform = Matrix;
+               
+            }
+            _transformed = false;
+        }
+
+        public void Translate (float x, float y) {
+            //Matrix.Translate (x,y);
+            Graphics.TranslateTransform (x, y);
+           
+        }
+
+        public void TranslatePath (float x, float y) {
+            Matrix.Translate (x, y);
+        }
     }
 }

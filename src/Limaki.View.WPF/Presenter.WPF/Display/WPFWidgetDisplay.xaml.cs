@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -79,7 +79,7 @@ namespace Limaki.View.WPF.Display {
                 return DrawingConverter.Convert(Display.BackColor);
             }
             set {
-                var color = DrawingConverter.Convert(value);
+                var color = DrawingConverter.ToXwt(value);
                 if (!Display.BackColor.Equals(color)) {
                     Display.BackColor = color;
                 }
