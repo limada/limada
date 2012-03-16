@@ -3,12 +3,12 @@
 this is made public:
 WidgetRegistry.CreateSharedBackend
 WidgetRegistry.CreateBackend
+Canvas.ctor(object backend)
 
 changed temporary:
 this is needed until Engines works in limaki
 WPFEngine: RegisterBackends() 
 
 :
-
-
 missing
+Rectangle.Equals Rectangle.GetHashCode
