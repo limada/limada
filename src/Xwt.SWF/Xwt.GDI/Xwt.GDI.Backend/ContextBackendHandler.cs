@@ -1,5 +1,5 @@
 // 
-// Colors.cs
+// ContextBackendHandler.cs
 //  
 // Author:
 //       Lytico 
@@ -32,13 +32,13 @@ using Xwt.Engine;
 
 namespace Xwt.Gdi.Backend {
 
-    public class ContextBackendHandler:IContextBackendHandler{
-  
-        public virtual object CreateContext (Widget w) {
-            var b = (IGdiGraphicsBackend) WidgetRegistry.GetBackend(w);
+    public class ContextBackendHandler : IContextBackendHandler {
 
-            var ctx = new GdiContext();
-            if (b.Graphics!=null) {
+        public virtual object CreateContext (Widget w) {
+            var b = (IGdiGraphicsBackend) WidgetRegistry.GetBackend (w);
+
+            var ctx = new GdiContext ();
+            if (b.Graphics != null) {
                 ctx.Graphics = b.Graphics;
             } else {
                 //ctx.Graphics = System.Drawing.BufferedGraphicsManager.Current.Allocate();
@@ -46,14 +46,20 @@ namespace Xwt.Gdi.Backend {
             return ctx;
         }
 
+        /// <summary>
+        /// Makes a copy of the current state of the Context and saves it on an internal stack of saved states.
+        /// When Restore() is called, it will be restored to the saved state. 
+        /// Multiple calls to Save() and Restore() can be nested; 
+        /// each call to restore() restores the state from the matching paired save().
+        /// </summary>
         public virtual void Save (object backend) {
             var gc = (GdiContext) backend;
-            gc.State = gc.Graphics.Save ();
+            gc.Save ();
         }
 
         public virtual void Restore (object backend) {
             var gc = (GdiContext) backend;
-            gc.Graphics.Restore (gc.State);
+           gc.Restore ();
         }
 
         // http://cairographics.org/documentation/cairomm/reference/classCairo_1_1Context.html
@@ -80,10 +86,11 @@ namespace Xwt.Gdi.Backend {
         public virtual void Arc (object backend, double xc, double yc, double radius, double angle1, double angle2) {
             var gc = (GdiContext) backend;
             //?? look in mono-libgdiplus 
-            gc.Path.AddArc(
-                (float) xc, (float) yc, 
-                (float) radius, (float) radius, 
+            gc.Path.AddArc (
+                (float) (xc - radius), (float) (yc - radius),
+                (float) radius * 2, (float) radius * 2,
                 (float) angle1, (float) angle2);
+            gc.Current = gc.Path.GetLastPoint();
         }
 
         /// <summary>
@@ -98,23 +105,25 @@ namespace Xwt.Gdi.Backend {
         /// The only other means of increasing the size of the clip region is reset_clip().
         /// </summary>
         public virtual void Clip (object backend) {
+            ClipPreserve (backend);
             var gc = (GdiContext) backend;
-            gc.Graphics.DrawPath(gc.Pen, gc.Path);
             gc.Path.Dispose ();
-            gc.Path = new GraphicsPath();
+            gc.Path = new GraphicsPath ();
         }
 
         public virtual void ClipPreserve (object backend) {
-            throw new NotImplementedException ();
+            var gc = (GdiContext) backend;
+            gc.Graphics.Clip = new Region (gc.Path);
         }
 
         public virtual void ResetClip (object backend) {
-            throw new System.NotImplementedException ();
+            var gc = (GdiContext) backend;
+            gc.Graphics.ResetClip ();
         }
 
         public virtual void ClosePath (object backend) {
             var gc = (GdiContext) backend;
-            gc.Path.CloseFigure();
+            gc.Path.CloseFigure ();
         }
 
         /// <summary>
@@ -124,31 +133,31 @@ namespace Xwt.Gdi.Backend {
         public virtual void CurveTo (object backend, double x1, double y1, double x2, double y2, double x3, double y3) {
             var gc = (GdiContext) backend;
 
-            gc.Path.AddBezier(
-                (float) gc.Current.X,(float) gc.Current.Y,
+            gc.Path.AddBezier (
+                (float) gc.Current.X, (float) gc.Current.Y,
                 (float) x1, (float) y1,
                 (float) x2, (float) y2,
                 (float) x3, (float) y3);
-
+            gc.Current = new PointF((float) x3, (float) y3);
         }
 
         public virtual void Fill (object backend) {
             FillPreserve (backend);
-            var gc = (GdiContext)backend;
-            gc.Path.Dispose();
+            var gc = (GdiContext) backend;
+            gc.Path.Dispose ();
             gc.Path = null;
         }
 
         public virtual void FillPreserve (object backend) {
-            var gc = (GdiContext)backend;
+            var gc = (GdiContext) backend;
             gc.Transform ();
-            gc.Graphics.FillPath(gc.Brush, gc.Path);
+            gc.Graphics.FillPath (gc.Brush, gc.Path);
         }
 
         public virtual void LineTo (object backend, double x, double y) {
             var gc = (GdiContext) backend;
-
             gc.Path.AddLine (gc.Current, new PointF ((float) x, (float) y));
+            gc.Current = new PointF ((float) x, (float) y);
         }
 
         /// <summary>
@@ -164,67 +173,95 @@ namespace Xwt.Gdi.Backend {
         }
 
         public virtual void NewPath (object backend) {
-            var gc = (GdiContext)backend;
-            gc.Path = new GraphicsPath();
+            var gc = (GdiContext) backend;
+            gc.Path = new GraphicsPath ();
         }
 
         public virtual void Rectangle (object backend, double x, double y, double width, double height) {
-            var gc = (GdiContext)backend;
-            gc.Path.AddRectangle(new RectangleF((float)x, (float)y, (float)width, (float)height));
+            var gc = (GdiContext) backend;
+            gc.Path.AddRectangle (new RectangleF ((float) x, (float) y, (float) width, (float) height));
+            gc.Current = gc.Path.GetLastPoint();
         }
 
+        /// <summary>
+        /// Relative-coordinate version of curve_to().
+        /// All offsets are relative to the current point. 
+        /// Adds a cubic Bezier spline to the path from the current point to a point offset 
+        /// from the current point by (dx3, dy3), using points offset by (dx1, dy1) and (dx2, dy2) 
+        /// as the control points. After this call the current point will be offset by (dx3, dy3).
+        /// Given a current point of (x, y), RelCurveTo(dx1, dy1, dx2, dy2, dx3, dy3)
+        /// is logically equivalent to CurveTo(x + dx1, y + dy1, x + dx2, y + dy2, x + dx3, y + dy3).
+        /// </summary>
         public virtual void RelCurveTo (object backend, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3) {
-            throw new System.NotImplementedException ();
-            var gc = (GdiContext)backend;
-           
+            var gc = (GdiContext) backend;
+            gc.Path.AddBezier (
+                (float) gc.Current.X, (float) gc.Current.Y,
+               (float) (gc.Current.X + dx1), (float) (gc.Current.Y + dy1),
+               (float) (gc.Current.X + dx2), (float) (gc.Current.Y + dy2),
+               (float) (gc.Current.X + dx3), (float) (gc.Current.Y + dy3));
+            gc.Current = new PointF ((float) (gc.Current.X + dx3), (float) (gc.Current.Y + dy3));
         }
 
+        /// <summary>
+        /// Adds a line to the path from the current point to a point that 
+        /// is offset from the current point by (dx, dy) in user space. 
+        /// After this call the current point will be offset by (dx, dy).
+        /// Given a current point of (x, y), 
+        /// RelLineTo(dx, dy) is logically equivalent to LineTo(x + dx, y + dy).
         public virtual void RelLineTo (object backend, double dx, double dy) {
-            throw new System.NotImplementedException ();
-            var gc = (GdiContext)backend;
+            var gc = (GdiContext) backend;
+            gc.Path.AddLine (gc.Current,
+                new PointF ((float) (gc.Current.X + dx), (float) (gc.Current.Y + dy)));
+            gc.Current = gc.Path.GetLastPoint ();
         }
 
+        /// <summary>
+        /// If the current subpath is not empty, begin a new subpath.
+        /// After this call the current point will offset by (x, y).
+        /// Given a current point of (x, y), 
+        /// RelMoveTo(dx, dy) is logically equivalent to MoveTo(x + dx, y + dy).
+        /// </summary>
         public virtual void RelMoveTo (object backend, double dx, double dy) {
-            throw new System.NotImplementedException ();
-            var gc = (GdiContext)backend;
+            var gc = (GdiContext) backend;
+            gc.Current = new PointF ((float) (gc.Current.X + dx), (float) (gc.Current.Y + dy));
         }
 
         public virtual void Stroke (object backend) {
             StrokePreserve (backend);
-            var gc = (GdiContext)backend;
-            gc.Path.Dispose();
+            var gc = (GdiContext) backend;
+            gc.Path.Dispose ();
             gc.Path = null;
 
         }
 
         public virtual void StrokePreserve (object backend) {
-            var gc = (GdiContext)backend;
-            gc.Transform();
-            gc.Graphics.DrawPath(gc.Pen, gc.Path);
+            var gc = (GdiContext) backend;
+            gc.Transform ();
+            gc.Graphics.DrawPath (gc.Pen, gc.Path);
         }
 
         public virtual void SetColor (object backend, Xwt.Drawing.Color color) {
-            var gc = (GdiContext)backend;
-            gc.Color = GdiConverter.ToGdi(color);
+            var gc = (GdiContext) backend;
+            gc.Color = GdiConverter.ToGdi (color);
         }
 
         public virtual void SetLineWidth (object backend, double width) {
-            var gc = (GdiContext)backend;
+            var gc = (GdiContext) backend;
             gc.LineWidth = width;
         }
 
         public virtual void SetLineDash (object backend, double offset, params double[] pattern) {
-            var gc = (GdiContext)backend;
+            var gc = (GdiContext) backend;
             gc.LineDash = pattern;
         }
 
         public virtual void SetPattern (object backend, object p) {
-            var gc = (GdiContext)backend;
+            var gc = (GdiContext) backend;
             gc.Pattern = p;
         }
 
         public virtual void SetFont (object backend, Xwt.Drawing.Font font) {
-            var gc = (GdiContext)backend;
+            var gc = (GdiContext) backend;
             gc.Font = font;
         }
 
@@ -233,26 +270,29 @@ namespace Xwt.Gdi.Backend {
             var tl = (TextLayoutBackend) WidgetRegistry.GetBackend (layout);
             var font = tl.Font.ToGdi ();
             var rect = new System.Drawing.RectangleF ((float) x, (float) y, (float) layout.Width, context.Graphics.ClipBounds.Height);
-            
+
             context.Graphics.DrawString (tl.Text, font, context.Brush, rect, tl.Format);
         }
 
         public virtual void DrawImage (object backend, object img, double x, double y, double alpha) {
-            throw new System.NotImplementedException ();
+
         }
 
         public virtual void DrawImage (object backend, object img, double x, double y, double width, double height, double alpha) {
-            throw new System.NotImplementedException ();
+
         }
 
         public virtual void Rotate (object backend, double angle) {
-            var gc = (GdiContext)backend;
-            gc.Rotate ((float)angle);
+            var gc = (GdiContext) backend;
+            gc.Rotate ((float) angle);
+            if (gc.Path.PointCount != 0) {
+                gc.Current = gc.Path.GetLastPoint();
+            }
         }
 
         public virtual void Translate (object backend, double tx, double ty) {
-            var gc = (GdiContext)backend;
-            gc.Translate((float)tx, (float)ty);
+            var gc = (GdiContext) backend;
+            gc.Translate ((float) tx, (float) ty);
         }
 
         public virtual void ResetTransform (object backend) {
@@ -261,14 +301,9 @@ namespace Xwt.Gdi.Backend {
         }
 
         public virtual void Dispose (object backend) {
-            var gc = (GdiContext)backend;
-            gc.Dispose();
+            var gc = (GdiContext) backend;
+            gc.Dispose ();
         }
 
-       
-
-       
-
-       
     }
 }

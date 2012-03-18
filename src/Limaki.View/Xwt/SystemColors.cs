@@ -1,5 +1,5 @@
 ﻿// 
-// Colors.cs
+// SystemColors.cs
 //  
 // Author:
 //       Lytico 
@@ -27,6 +27,7 @@
 using Xwt.Backends;
 using Xwt.Engine;
 namespace Xwt.Drawing {
+
     public static class SystemColors {
 
         static SystemColors() {

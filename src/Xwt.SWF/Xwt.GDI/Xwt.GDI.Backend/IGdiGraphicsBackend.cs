@@ -1,5 +1,5 @@
 // 
-// Colors.cs
+// IGdiGraphicsBackend.cs
 //  
 // Author:
 //       Lytico 

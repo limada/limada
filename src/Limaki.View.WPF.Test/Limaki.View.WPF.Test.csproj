@@ -117,7 +117,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.WPF\Limaki.View.WPF.csproj">
       <Project>{D04D52F0-BF12-4043-B772-DCCE92171C72}</Project>
-      <Name>Limaki.Presenter.WPF</Name>
+      <Name>Limaki.View.WPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>

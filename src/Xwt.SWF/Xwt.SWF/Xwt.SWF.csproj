@@ -8,8 +8,8 @@
     <ProjectGuid>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Xwt.SWF</RootNamespace>
-    <AssemblyName>Xwt.SWF</AssemblyName>
+    <RootNamespace>Xwt.Swf</RootNamespace>
+    <AssemblyName>Xwt.Swf</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -53,9 +53,9 @@
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xwt.GDI\Xwt.GDI.csproj">
+    <ProjectReference Include="..\Xwt.GDI\Xwt.Gdi.csproj">
       <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
-      <Name>Xwt.GDI</Name>
+      <Name>Xwt.Gdi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

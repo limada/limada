@@ -1,5 +1,5 @@
 ﻿// 
-// Colors.cs
+// XwtDrawingExtensions.cs
 //  
 // Author:
 //       Lytico 

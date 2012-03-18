@@ -1,3 +1,11 @@
+2012-03-18
+Xwt.Gdi.ContextBackendhandler: adjusted Current
+
+2012-03-15, 16
+cleaned up alligner
+Xwt.Gdi.ContextBackendhandler:
+DrawText, Transform, Save/Restore
+
 2012-03-09
 new class Xwt.SystemColors
 refactored to use Xwt.SystemColors

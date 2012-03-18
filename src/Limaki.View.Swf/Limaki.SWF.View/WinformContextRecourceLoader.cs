@@ -38,7 +38,7 @@ namespace Limaki.View.Winform {
 
             new LimakiCoreContextRecourceLoader ().ApplyResources (context);
 
-            new SWFEngine().RegisterBackends();
+            new SwfEngine().RegisterBackends();
             Xwt.Engine.WidgetRegistry.RegisterBackend(
                 typeof (Xwt.Drawing.SystemColors),
                 typeof (Xwt.Gdi.Backends.SystemColorsBackend)

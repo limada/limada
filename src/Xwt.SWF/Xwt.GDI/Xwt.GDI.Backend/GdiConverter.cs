@@ -1,5 +1,5 @@
 ﻿// 
-// Colors.cs
+// GdiConverter.cs
 //  
 // Author:
 //       Lytico 

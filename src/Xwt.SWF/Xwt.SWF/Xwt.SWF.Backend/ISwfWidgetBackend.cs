@@ -1,5 +1,5 @@
 ﻿// 
-// Colors.cs
+// ISwfWidgetBackend.cs
 //  
 // Author:
 //       Lytico 

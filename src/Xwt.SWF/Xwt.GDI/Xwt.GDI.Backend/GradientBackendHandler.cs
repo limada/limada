@@ -1,5 +1,5 @@
 ﻿// 
-// Colors.cs
+// GradientBackendHandler.cs
 //  
 // Author:
 //       Lytico 

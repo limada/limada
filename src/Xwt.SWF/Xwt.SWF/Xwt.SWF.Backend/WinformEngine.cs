@@ -30,7 +30,7 @@ using Xwt.Gdi.Backend;
 
 namespace Xwt.WinformBackend {
 
-    public class SWFEngine : GdiEngine {
+    public class SwfEngine : GdiEngine {
         public override void InitializeApplication() {
 
             SWF.Application.EnableVisualStyles();

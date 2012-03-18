@@ -1,5 +1,5 @@
 ﻿// 
-// Colors.cs
+// WidgetBackend.cs
 //  
 // Author:
 //       Lytico 
