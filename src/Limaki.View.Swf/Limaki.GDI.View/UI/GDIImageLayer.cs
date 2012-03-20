@@ -57,7 +57,7 @@ namespace Limaki.View.GDI.UI {
                 try {
                     Image result = new Bitmap(source.Width, source.Height, PixelFormat.Format32bppPArgb);
 
-                    using (Graphics g = Graphics.FromImage(result)) {
+                    using (var g = Graphics.FromImage(result)) {
                         g.InterpolationMode = InterpolationMode.HighQualityBilinear;
                         g.CompositingMode = CompositingMode.SourceCopy;
                         g.CompositingQuality = CompositingQuality.HighQuality;

@@ -31,14 +31,15 @@ using System.Collections.Generic;
 
 
 namespace Xwt.Gdi.Backend {
-    public class GdiContext:IDisposable {
-        public GdiContext() {
+    public class GdiContext : IDisposable {
+        public GdiContext () {
             Color = Color.Black;
             LineWidth = 1;
         }
 
-        public GdiContext (GdiContext c):this() {
-            c.SaveTo(this);
+        public GdiContext (GdiContext c)
+            : this () {
+            c.SaveTo (this);
         }
         public Graphics Graphics;
         public GraphicsState State { get; set; }
@@ -46,26 +47,8 @@ namespace Xwt.Gdi.Backend {
 
         private PointF _current;
         public PointF Current {
-            get {
-                //if (_path==null || Path.PointCount == 0)
-                    return _current;
-                //return (_current = Path.GetLastPoint());
-            }
-            set {
-                //if (_path!=null && Path.PointCount != 0 ) {
-                //    var _lastpoint = Path.GetLastPoint();
-                //    if (_lastpoint != value) {
-                //        //var _lastpoint = Path.PathPoints[Path.PathData.Points.Length - 1];
-                //        var _p = new GraphicsPath ();
-                //        //Path.AddPath (_p, true); //empty paths are not allowed
-                //        _p.AddPath(Path,true);
-                //        _transformed = false;
-                //        _path = _p;
-                //        //Path.PathData.Points[Path.PathData.Points.Length - 1] = value;
-                //    }
-                //}
-                _current = value;
-            }
+            get { return _current; }
+            set { _current = value; }
         }
 
         GraphicsPath _path = null;
@@ -73,8 +56,7 @@ namespace Xwt.Gdi.Backend {
             get {
                 if (_path == null) {
                     _path = new GraphicsPath ();
-                    if (_transformPath)
-                        _transformed = false;
+                    _transformed = false;
                 }
                 return _path;
             }
@@ -86,7 +68,7 @@ namespace Xwt.Gdi.Backend {
                 _path = value;
             }
         }
-       
+
         Matrix _matrix = null;
         public Matrix Matrix {
             get {
@@ -101,8 +83,8 @@ namespace Xwt.Gdi.Backend {
                 if (_matrix != value && _matrix != null)
                     _matrix.Dispose ();
                 _matrix = value;
-                //if (_transformPath)
-                //    _path.Transform (Matrix);
+                if (_path != null)
+                    _path.Transform(Matrix);
             }
         }
 
@@ -111,23 +93,23 @@ namespace Xwt.Gdi.Backend {
         public double[] LineDash { get; set; }
         public object Pattern { get; set; }
 
-        SolidBrush _brush = null;
+        Brush _brush = null;
         public Brush Brush {
             get {
                 if (_brush == null)
-                    _brush = new SolidBrush(this.Color);
-                else
-                    _brush.Color = this.Color;
+                    _brush = new SolidBrush (this.Color);
+                else if(_brush is SolidBrush)
+                    ((SolidBrush)_brush).Color = this.Color;
                 return _brush;
             }
-            set { _brush = value as SolidBrush; }
+            set { _brush = value; }
         }
 
         Pen _pen = null;
         public Pen Pen {
             get {
                 if (_pen == null)
-                    _pen = new Pen(Color);
+                    _pen = new Pen (Color);
                 else
                     _pen.Color = Color;
 
@@ -137,19 +119,19 @@ namespace Xwt.Gdi.Backend {
             set { _pen = value; }
         }
 
-        public void Dispose() {
+        public void Dispose () {
             if (_path != null)
-                Path.Dispose();
+                Path.Dispose ();
             if (_pen != null)
-                _pen.Dispose();
+                _pen.Dispose ();
             if (_brush != null)
-                _brush.Dispose();
+                _brush.Dispose ();
             if (_matrix != null)
-                _matrix.Dispose();
+                _matrix.Dispose ();
             if (this.contexts != null) {
                 foreach (var c in this.contexts)
                     c.Dispose();
-                contexts.Clear();
+                contexts.Clear ();
             }
         }
 
@@ -160,15 +142,13 @@ namespace Xwt.Gdi.Backend {
         }
 
         private bool _transformed = false;
-        bool _transformPath = true; //false: very slow, but normal text is transformed too
         public void Transform () {
             if (!_transformed && _path != null) {
-                if (_transformPath) {
-                    // this transforms path.points immedeatly:
-                    Path.Transform(Matrix);
-                    Matrix.Reset();
-                } else
-                    Graphics.Transform = Matrix;
+
+                // this transforms path.points immedeatly:
+                Path.Transform (Matrix);
+                Matrix.Reset ();
+
                 _transformed = true;
             }
         }
@@ -177,50 +157,29 @@ namespace Xwt.Gdi.Backend {
             Matrix.Rotate (p, MatrixOrder.Append);
         }
 
-        public  void ResetTransform () {
+        public void ResetTransform () {
             if (_matrix != null) {
                 Matrix.Reset ();
-
-                if (_path != null && _transformPath) {
-                    //Path.Transform (Matrix); //has no effect as all points are already transformed
-                    //Graphics.ResetTransform();
-                    
-                } else
-                    Graphics.Transform = Matrix;
-               
             }
+            Graphics.ResetTransform ();
             _transformed = false;
         }
 
         public void Translate (float x, float y) {
-            //Matrix.Translate (x,y);
             Graphics.TranslateTransform (x, y);
-           
         }
 
         public void TranslatePath (float x, float y) {
             Matrix.Translate (x, y);
         }
-        public class ContextState {
-            public Drawing.Font Font { get; set; }
-
-            public Pen Pen { get; set; }
-
-            public SolidBrush Brush { get; set; }
-
-            public GraphicsPath Path { get; set; }
-
-            public Matrix Matrix { get; set; }
-
-            public PointF Current { get; set; }
-        }
 
         public void SaveTo (GdiContext c) {
             c.Font = this.Font;
             c.Pen = this._pen;
+            c.LineDash = this.LineDash;
             c.Brush = this._brush;
-            c.Path = this._path;
             c.Matrix = this._matrix;
+            c.Path = this._path;
             c.Current = this.Current;
             //return c;
         }
@@ -230,23 +189,23 @@ namespace Xwt.Gdi.Backend {
         public void Save () {
             if (this.contexts == null)
                 this.contexts = new Stack<GdiContext> ();
-           
-            this.contexts.Push ( new GdiContext(this) {State=Graphics.Save()} );
+
+            this.contexts.Push (new GdiContext (this) { State = Graphics.Save () });
         }
-        
+
 
         public void Restore () {
             if (this.contexts == null || this.contexts.Count == 0)
                 throw new InvalidOperationException ();
 
             var c = this.contexts.Pop ();
-          
-            c.SaveTo(this);
-            Graphics.Restore(c.State);
-          
+
+            c.SaveTo (this);
+            Graphics.Restore (c.State);
+
         }
 
-        
-        
+
+
     }
 }

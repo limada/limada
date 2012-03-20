@@ -1,3 +1,9 @@
+2012-03-20
+Xwt.Gdi:
+ContextBackendHandler.SetLineDash, .SetPattern, .DrawImage
+ImageBuilderBackend,ImageHandler,ImagePatternBackendHandler,ImageGraphics
+Runs Xwt.Samples.DrawingTransforms complete now
+
 2012-03-18
 Xwt.Gdi.ContextBackendhandler: adjusted Current
 

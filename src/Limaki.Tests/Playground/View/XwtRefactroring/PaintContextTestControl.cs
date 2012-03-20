@@ -160,7 +160,7 @@ namespace Limaki.Tests.Sandbox {
             ctx.Stroke ();
             ctx.SetLineDash (0);
             Image img = null;
-            if (false) {
+            if (true) {
                 ImageBuilder ib = new ImageBuilder (30, 30, ImageFormat.ARGB32);
                 ib.Context.Arc (15, 15, 15, 0, 360);
                 ib.Context.SetColor (new Color (1, 0, 1));
@@ -181,7 +181,7 @@ namespace Limaki.Tests.Sandbox {
 
             ctx.Save ();
             ctx.Translate (90, 220);
-            if (false) {
+            if (true) {
                 ctx.Pattern = new ImagePattern(img);
             }
             ctx.Rectangle (0, 0, 100, 70);
