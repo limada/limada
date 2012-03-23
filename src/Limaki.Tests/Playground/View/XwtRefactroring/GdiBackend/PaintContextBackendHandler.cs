@@ -7,6 +7,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
 namespace Limaki.GDI.Painting {
+
     public class PaintContextBackendHandler : ContextBackendHandler, IPaintContextBackendHandler {
 
         public PaintContextBackendHandler () {
@@ -71,6 +72,7 @@ namespace Limaki.GDI.Painting {
             context.TranslatePath ((float)x, (float)y);
         }
 
+       
       
     }
 }

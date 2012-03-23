@@ -169,5 +169,14 @@ namespace Xwt.WinformBackend {
         }
 
         #endregion
+
+
+        public void Dispose () {
+            throw new System.NotImplementedException ();
+        }
+
+        public void SetCursor (CursorType cursorType) {
+            throw new System.NotImplementedException ();
+        }
     }
 }

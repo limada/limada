@@ -35,8 +35,9 @@ namespace Xwt
 		Orientation direction;
 		Panel panel1;
 		Panel panel2;
+		EventHandler positionChanged;
 		
-		protected new class EventSink: Widget.EventSink, IContainerEventSink<Panel>
+		protected new class EventSink: Widget.EventSink, IContainerEventSink<Panel>, IPanedEventSink
 		{
 			public void ChildChanged (Panel child, string hint)
 			{
@@ -47,6 +48,16 @@ namespace Xwt
 			{
 				((Paned)Parent).OnReplaceChild (child, oldWidget, newWidget);
 			}
+			
+			public void OnPositionChanged ()
+			{
+				((Paned)Parent).NotifyPositionChanged ();
+			}
+		}
+		
+		static Paned ()
+		{
+			MapEvent (PanedEvent.PositionChanged, typeof(Paned), "OnPositionChanged");
 		}
 		
 		internal Paned (Orientation direction)
@@ -54,6 +65,18 @@ namespace Xwt
 			this.direction = direction;
 			panel1 = new Panel ((EventSink)WidgetEventSink, 1);
 			panel2 = new Panel ((EventSink)WidgetEventSink, 2);
+		}
+		
+		protected override IBackend OnCreateBackend ()
+		{
+			IPanedBackend b = (IPanedBackend) base.OnCreateBackend ();
+			
+			// We always want to listen this event because we use it
+			// to reallocate the children
+			if (!Application.EngineBackend.HandlesSizeNegotiation)
+				b.EnableEvent (PanedEvent.PositionChanged);
+			
+			return b;
 		}
 		
 		protected override Widget.EventSink CreateEventSink ()
@@ -65,12 +88,42 @@ namespace Xwt
 			get { return (IPanedBackend) base.Backend; }
 		}
 		
+		/// <summary>
+		/// Left or top panel
+		/// </summary>
 		public Panel Panel1 {
 			get { return panel1; }
 		}
-		
+
+		/// <summary>
+		/// Right or bottom panel
+		/// </summary>
 		public Panel Panel2 {
 			get { return panel2; }
+		}
+
+		/// <summary>
+		/// Gets or sets the position of the panel separator
+		/// </summary>
+		/// <value>
+		/// The position.
+		/// </value>
+		public double Position {
+			get { return Backend.Position; }
+			set { Backend.Position = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the position of the panel separator as a fraction available size
+		/// </summary>
+		/// <value>
+		/// The position.
+		/// </value>
+		public double PositionFraction {
+			get {
+				return Backend.Position / ((direction == Orientation.Horizontal) ? ScreenBounds.Width : ScreenBounds.Height);
+			}
+			set { Backend.Position = ((direction == Orientation.Horizontal) ? ScreenBounds.Width : ScreenBounds.Height) * value; }
 		}
 		
 		protected override void OnBackendCreated ()
@@ -81,24 +134,61 @@ namespace Xwt
 		
 		void OnReplaceChild (Panel panel, Widget oldChild, Widget newChild)
 		{
-			if (oldChild != null)
+			if (oldChild != null) {
+				Backend.RemovePanel (panel.NumPanel);
 				UnregisterChild (oldChild);
-			if (newChild != null)
+			}
+			if (newChild != null) {
 				RegisterChild (newChild);
-			Backend.SetPanel (panel.NumPanel, (IWidgetBackend)GetBackend (newChild), panel);
+				Backend.SetPanel (panel.NumPanel, (IWidgetBackend)GetBackend (newChild), panel.Resize);
+			}
 		}
 		
+		/// <summary>
+		/// Removes a child widget
+		/// </summary>
+		/// <param name='child'>
+		/// A widget bound to one of the panels
+		/// </param>
 		public void Remove (Widget child)
 		{
-			if (panel1.Child == child)
-				panel1.Child = null;
-			else if (panel2.Child == child)
-				panel2.Child = null;
+			if (panel1.Content == child)
+				panel1.Content = null;
+			else if (panel2.Content == child)
+				panel2.Content = null;
 		}
 		
 		void OnChildChanged (Panel panel, object hint)
 		{
-			Backend.Update (panel.NumPanel, panel);
+			Backend.UpdatePanel (panel.NumPanel, panel.Resize);
+		}
+		
+		void NotifyPositionChanged ()
+		{
+			if (!Application.EngineBackend.HandlesSizeNegotiation) {
+				if (panel1.Content != null)
+					((IWidgetSurface)panel1.Content).Reallocate ();
+				if (panel2.Content != null)
+					((IWidgetSurface)panel2.Content).Reallocate ();
+			}
+			OnPositionChanged ();
+		}
+		
+		protected virtual void OnPositionChanged ()
+		{
+			if (positionChanged != null)
+				positionChanged (this, EventArgs.Empty);
+		}
+		
+		public event EventHandler PositionChanged {
+			add {
+				OnBeforeEventAdd (PanedEvent.PositionChanged, positionChanged);
+				positionChanged += value;
+			}
+			remove {
+				positionChanged -= value;
+				OnAfterEventRemove (PanedEvent.PositionChanged, positionChanged);
+			}
 		}
 	}
 	
@@ -107,7 +197,6 @@ namespace Xwt
 	{
 		IContainerEventSink<Panel> parent;
 		bool resize;
-		bool shrink;
 		int numPanel;
 		Widget child;
 		
@@ -117,6 +206,12 @@ namespace Xwt
 			this.numPanel = numPanel;
 		}
 		
+		/// <summary>
+		/// Gets or sets a value indicating whether this panel should be resized when the Paned container is resized.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if the panel has to be resized; otherwise, <c>false</c>.
+		/// </value>
 		public bool Resize {
 			get {
 				return this.resize;
@@ -127,17 +222,13 @@ namespace Xwt
 			}
 		}
 
-		public bool Shrink {
-			get {
-				return this.shrink;
-			}
-			set {
-				shrink = value;
-				parent.ChildChanged (this, "Shrink");
-			}
-		}
-		
-		public Widget Child {
+		/// <summary>
+		/// Gets or sets the content of the panel
+		/// </summary>
+		/// <value>
+		/// The content.
+		/// </value>
+		public Widget Content {
 			get {
 				return child;
 			}

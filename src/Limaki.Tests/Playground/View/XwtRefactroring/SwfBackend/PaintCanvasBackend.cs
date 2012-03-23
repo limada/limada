@@ -5,10 +5,7 @@ using Xwt.WinformBackend;
 namespace Limaki.SWF.Painting {
 
     public class PaintCanvasBackend : WidgetBackend,IPaintCanvasBackend {
-
-        
-        #region ICanvasBackend Member
-
+   
         public void OnPreferredSizeChanged() {
             throw new System.NotImplementedException();
         }
@@ -33,11 +30,14 @@ namespace Limaki.SWF.Painting {
             throw new System.NotImplementedException();
         }
 
-        Xwt.Rectangle Xwt.Backends.ICanvasBackend.Bounds {
-            get { throw new System.NotImplementedException(); }
-        }
+        
 
-        #endregion
+
+
+
+        public void AddChild (Xwt.Backends.IWidgetBackend widget, Xwt.Rectangle bounds) {
+            throw new System.NotImplementedException ();
+        }
     }
 }
 

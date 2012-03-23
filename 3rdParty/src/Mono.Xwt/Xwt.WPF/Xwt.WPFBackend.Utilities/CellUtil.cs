@@ -3,8 +3,10 @@
 //  
 // Author:
 //       Luís Reis <luiscubal@gmail.com>
+//       Eric Maupin <ermau@xamarin.com>
 // 
 // Copyright (c) 2012 Luís Reis
+// Copyright (c) 2012 Xamarin, Inc.
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,13 +27,11 @@
 // THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using SWC = System.Windows.Controls;
 using SWM = System.Windows.Media;
 using Xwt.Engine;
-using Xwt.Drawing;
 
 namespace Xwt.WPFBackend.Utilities
 {
@@ -61,6 +61,38 @@ namespace Xwt.WPFBackend.Utilities
 				};
 				return imageCtrl;
 			}
+			throw new NotImplementedException ();
+		}
+
+		internal static FrameworkElementFactory CreateBoundCellRenderer (CellView view)
+		{
+			TextCellView textView = view as TextCellView;
+			if (textView != null) {
+				FrameworkElementFactory factory = new FrameworkElementFactory (typeof (SWC.TextBlock));
+				factory.SetValue (FrameworkElement.MarginProperty, new Thickness (2));
+
+				if (textView.TextField != null)
+					factory.SetBinding (SWC.TextBlock.TextProperty, new Binding (".[" + textView.TextField.Index + "]"));
+
+				return factory;
+			}
+
+			ImageCellView imageView = view as ImageCellView;
+			if (imageView != null) {
+				FrameworkElementFactory factory = new FrameworkElementFactory (typeof (SWC.Image));
+				factory.SetValue (FrameworkElement.MarginProperty, new Thickness (2));
+
+				if (imageView.ImageField != null) {
+					var binding = new Binding (".[" + imageView.ImageField.Index + "]")
+					{ Converter = new ImageToImageSourceConverter () };
+
+					factory.SetBinding (SWC.Image.SourceProperty, binding);
+				}
+					
+
+				return factory;
+			}
+
 			throw new NotImplementedException ();
 		}
 	}

@@ -51,7 +51,7 @@ namespace Xwt.Gdi.Backend {
         /// Makes a copy of the current state of the Context and saves it on an internal stack of saved states.
         /// When Restore() is called, it will be restored to the saved state. 
         /// Multiple calls to Save() and Restore() can be nested; 
-        /// each call to restore() restores the state from the matching paired save().
+        /// each call to Restore() restores the state from the matching paired save().
         /// </summary>
         public virtual void Save (object backend) {
             var gc = (GdiContext) backend;
@@ -85,13 +85,16 @@ namespace Xwt.Gdi.Backend {
         /// <param name="angle1"></param>
         /// <param name="angle2"></param>
         public virtual void Arc (object backend, double xc, double yc, double radius, double angle1, double angle2) {
-            var gc = (GdiContext) backend;
-            //?? look in mono-libgdiplus 
-            gc.Path.AddArc (
-                (float) (xc - radius), (float) (yc - radius),
-                (float) radius * 2, (float) radius * 2,
-                (float) angle1, (float) angle2);
-            gc.Current = gc.Path.GetLastPoint ();
+            var c = (GdiContext) backend;
+            if (angle1 > 0 && angle2 == 0)
+                angle2 = 360;
+            // GraphicsPath.AddArc sweepAngle:The angle between startAngle and the end of the arc. 
+            c.Path.AddArc ((float) (xc - radius), (float) (yc - radius),
+                           (float) radius * 2, (float) radius * 2,
+                           (float) angle1, (float) (angle2 - angle1));
+
+            c.Current = c.Path.GetLastPoint ();
+         
         }
 
         /// <summary>
@@ -127,13 +130,14 @@ namespace Xwt.Gdi.Backend {
             gc.Path.CloseFigure ();
         }
 
+       
+        
         /// <summary>
         /// Adds a cubic Bezier spline to the path from the current point to position (x3, y3) in user-space coordinates, 
         /// using (x1, y1) and (x2, y2) as the control points. 
         /// </summary>
         public virtual void CurveTo (object backend, double x1, double y1, double x2, double y2, double x3, double y3) {
             var gc = (GdiContext) backend;
-
             gc.Path.AddBezier (
                 (float) gc.Current.X, (float) gc.Current.Y,
                 (float) x1, (float) y1,
@@ -157,7 +161,9 @@ namespace Xwt.Gdi.Backend {
 
         public virtual void LineTo (object backend, double x, double y) {
             var gc = (GdiContext) backend;
-            gc.Path.AddLine(gc.Current, new SD.PointF((float)x, (float)y));
+         
+            gc.Path.AddLine (gc.Current, new SD.PointF ((float) x, (float) y));
+
             gc.Current = new SD.PointF((float)x, (float)y);
         }
 
@@ -170,7 +176,12 @@ namespace Xwt.Gdi.Backend {
         /// <param name="y"></param>
         public virtual void MoveTo (object backend, double x, double y) {
             var gc = (GdiContext) backend;
-            gc.Current = new SD.PointF((float)x, (float)y);
+
+            if (gc.Current.X != x || gc.Current.Y != y) {
+                gc.Path.StartFigure ();
+                gc.Current = new SD.PointF ((float) x, (float) y);
+            }
+
         }
 
         public virtual void NewPath (object backend) {
@@ -180,8 +191,11 @@ namespace Xwt.Gdi.Backend {
 
         public virtual void Rectangle (object backend, double x, double y, double width, double height) {
             var gc = (GdiContext) backend;
-            gc.Path.AddRectangle(new SD.RectangleF((float)x, (float)y, (float)width, (float)height));
+            if (gc.Current.X != x || gc.Current.Y != y)
+                gc.Path.StartFigure ();
+            gc.Path.AddRectangle (new SD.RectangleF ((float) x, (float) y, (float) width, (float) height));
             gc.Current = gc.Path.GetLastPoint ();
+            //gc.Current = new SD.PointF(float) x,(float) y);
         }
 
         /// <summary>
@@ -195,13 +209,11 @@ namespace Xwt.Gdi.Backend {
         /// </summary>
         public virtual void RelCurveTo (object backend, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3) {
             var gc = (GdiContext) backend;
-            gc.Path.AddBezier (
-                (float) gc.Current.X, (float) gc.Current.Y,
-               (float) (gc.Current.X + dx1), (float) (gc.Current.Y + dy1),
-               (float) (gc.Current.X + dx2), (float) (gc.Current.Y + dy2),
-               (float) (gc.Current.X + dx3), (float) (gc.Current.Y + dy3));
-            gc.Current = new SD.PointF((float)(gc.Current.X + dx3), (float)(gc.Current.Y + dy3));
-        }
+            RelCurveTo(backend,
+                gc.Current.X + dx1, gc.Current.Y + dy1,
+                gc.Current.X + dx2, gc.Current.Y + dy2,
+                gc.Current.X + dx3, gc.Current.Y + dy3);
+       }
 
         /// <summary>
         /// Adds a line to the path from the current point to a point that 
@@ -209,11 +221,10 @@ namespace Xwt.Gdi.Backend {
         /// After this call the current point will be offset by (dx, dy).
         /// Given a current point of (x, y), 
         /// RelLineTo(dx, dy) is logically equivalent to LineTo(x + dx, y + dy).
+        /// </summary>
         public virtual void RelLineTo (object backend, double dx, double dy) {
             var gc = (GdiContext) backend;
-            gc.Path.AddLine (gc.Current,
-                new SD.PointF((float)(gc.Current.X + dx), (float)(gc.Current.Y + dy)));
-            gc.Current = gc.Path.GetLastPoint ();
+            LineTo (backend, gc.Current.X + dx, gc.Current.Y + dy);
         }
 
         /// <summary>
@@ -281,16 +292,23 @@ namespace Xwt.Gdi.Backend {
 
         public virtual void SetFont (object backend, Xwt.Drawing.Font font) {
             var gc = (GdiContext) backend;
-            gc.Font = font;
+            gc.Font = font.ToGdi();
         }
 
         public virtual void DrawTextLayout (object backend, Xwt.Drawing.TextLayout layout, double x, double y) {
-            var context = (GdiContext) backend;
+            var gc = (GdiContext) backend;
             var tl = (TextLayoutBackend) WidgetRegistry.GetBackend (layout);
             var font = tl.Font.ToGdi ();
-            var rect = new System.Drawing.RectangleF ((float) x, (float) y, (float) layout.Width, context.Graphics.ClipBounds.Height);
-
-            context.Graphics.DrawString (tl.Text, font, context.Brush, rect, tl.Format);
+            var rect = new System.Drawing.RectangleF ((float) x, (float) y, (float) layout.Width, gc.Graphics.ClipBounds.Height);
+            if (!gc.ScaledRotated (gc.Graphics.Transform) && !gc.ScaledOrRotated)
+                gc.Graphics.DrawString (tl.Text, font, gc.Brush, rect, tl.Format);
+            else {
+                var path = gc.TextLayoutPath (layout, (float) x, (float) y);
+                var pen = new SD.SolidBrush (gc.Color);
+                var s = gc.Graphics.SetQuality(GdiConverter.DrawTextHighQuality);
+                gc.Graphics.FillPath (pen, path);
+                gc.Graphics.SetQuality(s);
+            }
         }
 
         public virtual void DrawImage (object backend, object img, double x, double y, double alpha) {
@@ -315,9 +333,9 @@ namespace Xwt.Gdi.Backend {
         public virtual void Rotate (object backend, double angle) {
             var gc = (GdiContext) backend;
             gc.Rotate ((float) angle);
-            if (gc.Path.PointCount != 0) {
-                gc.Current = gc.Path.GetLastPoint ();
-            }
+            //if (gc.Path.PointCount != 0) {
+            //    gc.Current = gc.Path.GetLastPoint ();
+            //} 
         }
 
         public virtual void Translate (object backend, double tx, double ty) {
@@ -335,5 +353,14 @@ namespace Xwt.Gdi.Backend {
             gc.Dispose ();
         }
 
+         public void Scale (object backend, double scaleX, double scaleY) {
+            var context = (GdiContext) backend;
+            context.Scale ((float) scaleX, (float) scaleY);
+        }
+
+
+        public void SetGlobalAlpha (object backend, double globalAlpha) {
+           
+        }
     }
 }

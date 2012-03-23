@@ -27,6 +27,7 @@
 using System;
 using Xwt.Drawing;
 using Xwt.Engine;
+using Xwt.Backends;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,11 +39,6 @@ namespace Xwt.GtkBackend
 		static Dictionary<TransferDataType, Gtk.TargetEntry[]> dragTargets = new Dictionary<TransferDataType, Gtk.TargetEntry[]> ();
 		static Dictionary<string, TransferDataType> atomToType = new Dictionary<string, TransferDataType> ();
 
-		public static Cairo.Color ToCairoColor (this Color col)
-		{
-			return new Cairo.Color (col.Red, col.Green, col.Blue, col.Alpha);
-		}
-		
 		public static void SetDragData (TransferDataSource data, Gtk.DragDataGetArgs args)
 		{
 			foreach (var t in data.DataTypes) {
@@ -167,6 +163,9 @@ namespace Xwt.GtkBackend
 				icons [StockIcons.OrientationLandscape] = Gtk.Stock.OrientationLandscape;
 				icons [StockIcons.Add] = Gtk.Stock.Add;
 				icons [StockIcons.Remove] = Gtk.Stock.Remove;
+				icons [StockIcons.Warning] = Gtk.Stock.DialogWarning;
+				icons [StockIcons.Error] = Gtk.Stock.DialogError;
+				icons [StockIcons.Information] = Gtk.Stock.DialogInfo;
 			}
 			string res;
 			icons.TryGetValue (id, out res);
@@ -186,12 +185,12 @@ namespace Xwt.GtkBackend
 			return Gtk.IconSize.Dialog;
 		}
 		
-		public static Gdk.Color ToGdkColor (Xwt.Drawing.Color color)
+		public static Gdk.Color ToGdkColor (this Xwt.Drawing.Color color)
 		{
 			return new Gdk.Color ((byte)(color.Red * 255), (byte)(color.Green * 255), (byte)(color.Blue * 255));
 		}
 		
-		public static Color ToXwtColor (Gdk.Color color)
+		public static Color ToXwtColor (this Gdk.Color color)
 		{
 			return new Color ((double)color.Red / (double)ushort.MaxValue, (double)color.Green / (double)ushort.MaxValue, (double)color.Blue / (double)ushort.MaxValue);
 		}

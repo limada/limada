@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using Xwt.Backends;
 using System.Linq;
 using Xwt.Engine;
+using Xwt.CairoBackend;
 
 namespace Xwt.GtkBackend
 {
@@ -44,7 +45,6 @@ namespace Xwt.GtkBackend
 			Widget.Frontend = Frontend;
 			Widget.EventSink = EventSink;
 			Widget.Events |= Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask | Gdk.EventMask.PointerMotionMask;
-			Widget.SizeAllocated += HandleWidgetSizeAllocated;
 			Widget.SizeRequested += HandleSizeRequested;
 			Widget.Show ();
 		}
@@ -68,11 +68,6 @@ namespace Xwt.GtkBackend
 			Widget.QueueDrawArea ((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
 		}
 		
-		public void OnPreferredSizeChanged ()
-		{
-			Widget.QueueResize ();
-		}
-
 		void HandleSizeRequested (object o, Gtk.SizeRequestedArgs args)
 		{
 			IWidgetSurface ws = (IWidgetSurface)Frontend;
@@ -92,17 +87,11 @@ namespace Xwt.GtkBackend
 			}
 		}
 
-		void HandleWidgetSizeAllocated (object o, Gtk.SizeAllocatedArgs args)
-		{
-			Toolkit.Invoke (delegate {
-				EventSink.OnBoundsChanged ();
-			});
-		}
-		
-		public void AddChild (IWidgetBackend widget)
+		public void AddChild (IWidgetBackend widget, Rectangle bounds)
 		{
 			var w = ((IGtkWidgetBackend)widget).Widget;
 			Widget.Add (w);
+			Widget.SetAllocation (w, bounds);
 		}
 		
 		public void RemoveChild (IWidgetBackend widget)
@@ -195,9 +184,23 @@ namespace Xwt.GtkBackend
 		protected override bool OnExposeEvent (Gdk.EventExpose evnt)
 		{
 			Toolkit.Invoke (delegate {
-				EventSink.OnDraw (null);
+				EventSink.OnDraw (CreateContext ());
 			});
 			return base.OnExposeEvent (evnt);
+		}
+		
+		public object CreateContext ()
+		{
+			CairoContextBackend ctx = new CairoContextBackend ();
+			if (!IsRealized) {
+				Cairo.Surface sf = new Cairo.ImageSurface (Cairo.Format.ARGB32, 1, 1);
+				Cairo.Context c = new Cairo.Context (sf);
+				ctx.Context = c;
+				ctx.TempSurface = sf;
+			} else {
+				ctx.Context = Gdk.CairoHelper.Create (GdkWindow);
+			}
+			return ctx;
 		}
 	}
 }

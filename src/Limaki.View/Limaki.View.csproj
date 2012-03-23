@@ -282,6 +282,7 @@
     <Compile Include="Limaki.Visuals\VisualGraph.cs" />
     <Compile Include="Xwt\ISystemColorsBackend.cs" />
     <Compile Include="Xwt\SystemColors.cs" />
+    <Compile Include="Xwt\XwtToChange.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
@@ -298,6 +299,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Xwt\RelatedDocs.txt" />
     <Content Include="Xwt\XwtProblems.txt" />
   </ItemGroup>
   <ItemGroup />

@@ -44,7 +44,7 @@ namespace Samples
 					w.Dispose ();
 				};
 				var bpos = b.ScreenBounds;
-				w.Bounds = new Rectangle (bpos.X, bpos.Y + b.Size.Height, w.Bounds.Width, w.Bounds.Height);
+				w.ScreenBounds = new Rectangle (bpos.X, bpos.Y + b.Size.Height, w.Width, w.Height);
 				w.Show ();
 			};
 			b = new Button ("Show message dialog");
@@ -74,6 +74,58 @@ namespace Samples
 				var r = d.Run (this.ParentWindow);
 				db.Label = "Result: " + r.Label;
 				d.Dispose ();
+			};
+			
+			b = new Button ("Show Open File dialog");
+			PackStart (b);
+			b.Clicked += delegate {
+				OpenFileDialog dlg = new OpenFileDialog ("Select a file");
+				dlg.InitialFileName = "Some file";
+				dlg.Multiselect = true;
+				dlg.Filters.Add (new FileDialogFilter ("Xwt files", "*.xwt"));
+				dlg.Filters.Add (new FileDialogFilter ("All files", "*.*"));
+				if (dlg.Run ())
+					MessageDialog.ShowMessage ("Files have been selected!", string.Join ("\n", dlg.FileNames));
+			};
+			
+			b = new Button ("Show Save File dialog");
+			PackStart (b);
+			b.Clicked += delegate {
+				SaveFileDialog dlg = new SaveFileDialog ("Select a file");
+				dlg.InitialFileName = "Some file";
+				dlg.Multiselect = true;
+				dlg.Filters.Add (new FileDialogFilter ("Xwt files", "*.xwt"));
+				dlg.Filters.Add (new FileDialogFilter ("All files", "*.*"));
+				if (dlg.Run ())
+					MessageDialog.ShowMessage ("Files have been selected!", string.Join ("\n", dlg.FileNames));
+			};
+			
+			b = new Button ("Show Select Folder dialog (Multi select)");
+			PackStart (b);
+			b.Clicked += delegate {
+				SelectFolderDialog dlg = new SelectFolderDialog ("Select some folder");
+				dlg.Multiselect = true;
+				if (dlg.Run ())
+					MessageDialog.ShowMessage ("Folders have been selected!", string.Join ("\n", dlg.Folders));
+			};
+			
+			b = new Button ("Show Select Folder dialog (Single select)");
+			PackStart (b);
+			b.Clicked += delegate {
+				SelectFolderDialog dlg = new SelectFolderDialog ("Select a folder");
+				dlg.Multiselect = false;
+				if (dlg.Run ())
+					MessageDialog.ShowMessage ("Folders have been selected!", string.Join ("\n", dlg.Folders));
+			};
+			
+			b = new Button ("Show Select Color dialog");
+			PackStart (b);
+			b.Clicked += delegate {
+				SelectColorDialog dlg = new SelectColorDialog ("Select a color");
+				dlg.SupportsAlpha = true;
+				dlg.Color = Xwt.Drawing.Colors.AliceBlue;
+				if (dlg.Run (ParentWindow))
+					MessageDialog.ShowMessage ("A color has been selected!", dlg.Color.ToString ());
 			};
 		}
 	}

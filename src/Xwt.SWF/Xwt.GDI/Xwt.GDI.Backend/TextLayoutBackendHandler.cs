@@ -55,5 +55,10 @@ namespace Xwt.Gdi.Backend {
             var tl = (TextLayoutBackend) backend;
             return tl.Size;
         }
+
+
+        public object Create (ICanvasBackend canvas) {
+            throw new System.NotImplementedException ();
+        }
     }
 }

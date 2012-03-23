@@ -38,7 +38,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Xwt.Drawing\Colors.cs" />
     <Compile Include="Xwt\Widget.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -269,6 +268,36 @@
     <Compile Include="Xwt.Backends\ISeparatorMenuItemBackend.cs" />
     <Compile Include="Xwt\EllipsizeMode.cs" />
     <Compile Include="Xwt\RowDropPosition.cs" />
+    <Compile Include="Xwt\ScrollAdjustment.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt.Backends\IScrollAdjustmentBackend.cs" />
+    <Compile Include="Xwt\OpenFileDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt\SaveFileDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt\FileDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt.Backends\IFileDialogBackend.cs" />
+    <Compile Include="Xwt.Backends\IOpenFileDialogBackend.cs" />
+    <Compile Include="Xwt.Backends\ISaveFileDialogBackend.cs" />
+    <Compile Include="Xwt\FileDialogFilter.cs" />
+    <Compile Include="Xwt\ObjectCollection.cs" />
+    <Compile Include="Xwt.Backends\ISelectFolderDialogBackend.cs" />
+    <Compile Include="Xwt\SelectFolderDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt\WidgetSpacing.cs" />
+    <Compile Include="Xwt.Drawing\Colors.cs" />
+    <Compile Include="Xwt\TransferDataSource.cs" />
+    <Compile Include="Xwt\TransferDataType.cs" />
+    <Compile Include="Xwt.Backends\TransferDataStore.cs" />
+    <Compile Include="Xwt\CursorType.cs" />
+    <Compile Include="Xwt\SelectColorDialog.cs" />
+    <Compile Include="Xwt.Backends\ISelectColorDialogBackend.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

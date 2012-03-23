@@ -172,7 +172,7 @@ namespace Limaki.Drawing {
             return Color.FromBytes (r, g, b);
         }
 
-        private static Color _emptyColor = Color.White;
+        private static Color _emptyColor = Colors.White;
         public static Color EmptyColor {
             get { return _emptyColor; }
         }

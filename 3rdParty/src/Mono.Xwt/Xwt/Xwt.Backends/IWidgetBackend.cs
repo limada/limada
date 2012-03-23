@@ -32,7 +32,7 @@ namespace Xwt.Backends
 	public interface IWidgetBackend: IBackend
 	{
 		void Initialize (IWidgetEventSink eventSink);
-		void Dispose (bool disposing);
+		void Dispose ();
 		
 		bool Visible { get; set; }
 		bool Sensitive { get; set; }
@@ -63,13 +63,50 @@ namespace Xwt.Backends
 		
 		object NativeWidget { get; }
 		
+		/// <summary>
+		/// Starts a drag operation originated in this widget
+		/// </summary>
+		/// <param name='data'>
+		/// Drag operation arguments
+		/// </param>
 		void DragStart (DragStartData data);
+		
+		/// <summary>
+		/// Sets up a widget so that XWT will start a drag operation when the user clicks and drags on the widget.
+		/// </summary>
+		/// <param name='types'>
+		/// Types of data that can be dragged from this widget
+		/// </param>
+		/// <param name='dragAction'>
+		/// Bitmask of possible actions for a drag from this widget
+		/// </param>
+		/// <remarks>
+		/// When a drag operation is started, the backend should fire the OnDragStarted event
+		/// </remarks>
 		void SetDragSource (TransferDataType[] types, DragDropAction dragAction);
+		
+		/// <summary>
+		/// Sets a widget as a potential drop destination
+		/// </summary>
+		/// <param name='types'>
+		/// Types.
+		/// </param>
+		/// <param name='dragAction'>
+		/// Drag action.
+		/// </param>
 		void SetDragTarget (TransferDataType[] types, DragDropAction dragAction);
 		
 		object Font { get; set; }
 		Color BackgroundColor { get; set; }
 		string TooltipText { get; set; }
+		
+		/// <summary>
+		/// Sets the cursor shape to be used when the mouse is over the widget
+		/// </summary>
+		/// <param name='cursorType'>
+		/// The cursor type.
+		/// </param>
+		void SetCursor (CursorType cursorType);
 	}
 	
 	public interface IWidgetEventSink
@@ -80,7 +117,9 @@ namespace Xwt.Backends
 		void OnDragDropCheck (DragCheckEventArgs args);
 		void OnDragDrop (DragEventArgs args);
 		void OnDragLeave (EventArgs args);
+		
 		void OnDragFinished (DragFinishedEventArgs args);
+		
 		DragStartData OnDragStarted ();
 		void OnKeyPressed (KeyEventArgs args);
 		void OnKeyReleased (KeyEventArgs args);
@@ -91,6 +130,7 @@ namespace Xwt.Backends
 		void OnButtonPressed (ButtonEventArgs args);
 		void OnButtonReleased (ButtonEventArgs args);
 		void OnMouseMoved (MouseMovedEventArgs args);
+		void OnBoundsChanged ();
 
 		// Events
 		WidgetSize OnGetPreferredWidth ();
@@ -112,6 +152,9 @@ namespace Xwt.Backends
 		/// </remarks>
 		void OnPreferredSizeChanged ();
 		SizeRequestMode GetSizeRequestMode ();
+		
+		bool SupportsCustomScrolling ();
+		void SetScrollAdjustments (IScrollAdjustmentBackend horizontal, IScrollAdjustmentBackend vertical);
 	}
 	
 	[Flags]
@@ -135,21 +178,13 @@ namespace Xwt.Backends
 		ButtonPressed = 1 << 15,
 		ButtonReleased = 1 << 16,
 		MouseMoved = 1 << 17,
-		DragStarted = 1 << 18
-	}
-	
-	public interface DragOperationEventSink
-	{
-		
-	}
-	
-	public interface ITransferDataSource
-	{
-		string[] Types { get; }
+		DragStarted = 1 << 18,
+		BoundsChanged = 1 << 19
 	}
 	
 	public class DragStartData
 	{
+		
 		public TransferDataSource Data { get; private set; }
 		public DragDropAction DragAction { get; private set; }
 		public object ImageBackend { get; private set; }

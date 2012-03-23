@@ -51,6 +51,7 @@ namespace Xwt
 		WindowFrame parentWindow;
 		double minWidth = -1, minHeight = -1;
 		double naturalWidth = -1, naturalHeight = -1;
+		CursorType cursor;
 		
 		EventHandler<DragOverCheckEventArgs> dragOverCheck;
 		EventHandler<DragOverEventArgs> dragOver;
@@ -65,6 +66,7 @@ namespace Xwt
 		EventHandler<ButtonEventArgs> buttonPressed;
 		EventHandler<ButtonEventArgs> buttonReleased;
 		EventHandler<MouseMovedEventArgs> mouseMoved;
+		EventHandler boundsChanged;
 		
 		EventHandler gotFocus;
 		EventHandler lostFocus;
@@ -188,6 +190,23 @@ namespace Xwt
 			{
 				Parent.OnMouseMoved (args);
 			}
+			
+			public bool SupportsCustomScrolling ()
+			{
+				return Parent.SupportsCustomScrolling;
+			}
+			
+			public void SetScrollAdjustments (IScrollAdjustmentBackend horizontal, IScrollAdjustmentBackend vertical)
+			{
+				var h = new ScrollAdjustment (horizontal);
+				var v = new ScrollAdjustment (vertical);
+				Parent.SetScrollAdjustments (h, v);
+			}
+			
+			public void OnBoundsChanged ()
+			{
+				Parent.OnBoundsChanged ();
+			}
 		}
 		
 		public Widget ()
@@ -214,13 +233,17 @@ namespace Xwt
 			MapEvent (WidgetEvent.ButtonReleased, typeof(Widget), "OnButtonReleased");
 			MapEvent (WidgetEvent.MouseMoved, typeof(Widget), "OnMouseMoved");
 			MapEvent (WidgetEvent.DragStarted, typeof(Widget), "OnDragStarted");
+			MapEvent (WidgetEvent.BoundsChanged, typeof(Widget), "OnBoundsChanged");
 		}
 		
 		protected override void Dispose (bool disposing)
 		{
 			base.Dispose (disposing);
-			if (Backend != null)
-				Backend.Dispose (disposing);
+			
+			// Don't dispose the backend if this object is being finalized
+			// The backend has to handle the finalizing on its own
+			if (disposing && BackendCreated)
+				Backend.Dispose ();
 		}
 		
 		public WindowFrame ParentWindow {
@@ -325,6 +348,10 @@ namespace Xwt
 				if (bk == null)
 					throw new InvalidOperationException ("The Content widget can only be set when directly subclassing Xwt.Widget");
 				bk.SetContent ((IWidgetBackend)GetBackend (value));
+				if (contentWidget != null)
+					UnregisterChild (contentWidget);
+				if (value != null)
+					RegisterChild (value);
 				contentWidget = value;
 			}
 		}
@@ -434,6 +461,20 @@ namespace Xwt
 			set { Backend.TooltipText = value; }
 		}
 		
+		/// <summary>
+		/// Gets or sets the cursor shape to be used when the mouse is over the widget
+		/// </summary>
+		/// <value>
+		/// The cursor.
+		/// </value>
+		public CursorType Cursor {
+			get { return cursor ?? CursorType.Arrow; }
+			set {
+				cursor = value;
+				Backend.SetCursor (value);
+			}
+		}
+		
 		public Point ConvertToScreenCoordinates (Point widgetCoordinates)
 		{
 			return Backend.ConvertToScreenCoordinates (widgetCoordinates);
@@ -504,6 +545,14 @@ namespace Xwt
 			Backend.SetDragSource (types.Select (t => TransferDataType.FromType (t)).ToArray(), dragAction);
 		}
 		
+		protected virtual bool SupportsCustomScrolling {
+			get { return false; }
+		}
+		
+		protected virtual void SetScrollAdjustments (ScrollAdjustment horizontal, ScrollAdjustment vertical)
+		{
+		}
+
 		protected override void OnBackendCreated ()
 		{
 			Backend.Initialize (eventSink);
@@ -591,7 +640,7 @@ namespace Xwt
 				dragStarted (this, args);
 		}
 		
-		internal protected virtual void OnDragFinished (DragFinishedEventArgs args)
+		internal void OnDragFinished (DragFinishedEventArgs args)
 		{
 			if (currentDragOperation != null) {
 				var dop = currentDragOperation;
@@ -664,6 +713,12 @@ namespace Xwt
 		{
 			if (mouseMoved != null)
 				mouseMoved (this, args);
+		}
+		
+		protected virtual void OnBoundsChanged ()
+		{
+			if (boundsChanged != null)
+				boundsChanged (this, EventArgs.Empty);
 		}
 		
 		protected static IWidgetBackend GetWidgetBackend (Widget w)
@@ -972,11 +1027,6 @@ namespace Xwt
 			}
 		}
 		
-		public Context CreateContext ()
-		{
-			return new Context (this);
-		}
-		
 		IEnumerable<Widget> IWidgetSurface.Children {
 			get {
 				return (IEnumerable<Widget>)children ?? (IEnumerable<Widget>) emptyList; 
@@ -1209,97 +1259,23 @@ namespace Xwt
 				OnAfterEventRemove (WidgetEvent.MouseMoved, mouseMoved);
 			}
 		}
+		
+		public event EventHandler BoundsChanged {
+			add {
+				OnBeforeEventAdd (WidgetEvent.BoundsChanged, boundsChanged);
+				boundsChanged += value;
+			}
+			remove {
+				boundsChanged -= value;
+				OnAfterEventRemove (WidgetEvent.BoundsChanged, boundsChanged);
+			}
+		}
 	}
 	
 	class EventMap
 	{
 		public string MethodName;
 		public object EventId;
-	}
-	
-	public enum EventResult
-	{
-		Handled,
-		NotHandled
-	}
-	
-	public class WidgetSpacing
-	{
-		ISpacingListener parent;
-		double top, left, right, bottom;
-		
-		internal WidgetSpacing (ISpacingListener parent)
-		{
-			this.parent = parent;
-		}
-		
-		void NotifyChanged ()
-		{
-			parent.OnSpacingChanged (this);
-		}
-		
-		public double Left {
-			get { return left; }
-			set { left = value; NotifyChanged (); }
-		}
-		
-		public double Bottom {
-			get {
-				return this.bottom;
-			}
-			set {
-				bottom = value; NotifyChanged ();
-			}
-		}
-	
-		public double Right {
-			get {
-				return this.right;
-			}
-			set {
-				right = value; NotifyChanged ();
-			}
-		}
-	
-		public double Top {
-			get {
-				return this.top;
-			}
-			set {
-				top = value; NotifyChanged ();
-			}
-		}
-		
-		public double HorizontalSpacing {
-			get { return left + right; }
-		}
-		
-		public double VerticalSpacing {
-			get { return top + bottom; }
-		}
-		
-		public void Set (double left, double top, double right, double bottom)
-		{
-			this.left = left;
-			this.top = top;
-			this.bottom = bottom;
-			this.right = right;
-			NotifyChanged ();
-		}
-		
-		public void SetAll (double padding)
-		{
-			this.left = padding;
-			this.top = padding;
-			this.bottom = padding;
-			this.right = padding;
-			NotifyChanged ();
-		}
-	}
-	
-	public interface ISpacingListener
-	{
-		void OnSpacingChanged (WidgetSpacing source);
 	}
 }
 

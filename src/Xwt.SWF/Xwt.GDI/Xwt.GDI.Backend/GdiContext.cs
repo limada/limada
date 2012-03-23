@@ -39,7 +39,7 @@ namespace Xwt.Gdi.Backend {
 
         public GdiContext (GdiContext c)
             : this () {
-            c.SaveTo (this);
+            c.SaveTo (this,false);
         }
         public Graphics Graphics;
         public GraphicsState State { get; set; }
@@ -86,6 +86,16 @@ namespace Xwt.Gdi.Backend {
                 if (_path != null)
                     _path.Transform(Matrix);
             }
+        }
+
+        public PointF Transform (PointF p) {
+            var ps = new PointF[] { p };
+            if (_matrix == null) 
+                Matrix.TransformPoints(ps);
+            
+            if (!Graphics.Transform.IsIdentity)
+                Graphics.Transform.TransformPoints(ps);
+            return ps[0];
         }
 
         public Color Color { get; set; }
@@ -135,10 +145,14 @@ namespace Xwt.Gdi.Backend {
             }
         }
 
-        public Xwt.Drawing.Font Font { get; set; }
+        Font _font = null;
+        public Font Font {
+            get { return _font ?? (_font = new Font(FontFamily.GenericSansSerif, 12)); }
+            set { _font = value; }
+        }
 
         public bool HasTransform {
-            get { return _matrix != null; }
+            get { return _matrix != null && !_matrix.IsIdentity; }
         }
 
         private bool _transformed = false;
@@ -168,17 +182,23 @@ namespace Xwt.Gdi.Backend {
         public void Translate (float x, float y) {
             Graphics.TranslateTransform (x, y);
         }
+        public void Scale (float x, float y) {
+            Graphics.ScaleTransform (x, y);
+        }
 
         public void TranslatePath (float x, float y) {
             Matrix.Translate (x, y);
         }
 
-        public void SaveTo (GdiContext c) {
-            c.Font = this.Font;
+        public void SaveTo (GdiContext c, bool restore) {
+            c.Font = this._font;
             c.Pen = this._pen;
             c.LineDash = this.LineDash;
             c.Brush = this._brush;
-            c.Matrix = this._matrix;
+            if (restore)
+                c.Matrix = _matrix;
+            else if(_matrix != null && !_matrix.IsIdentity)
+                c.Matrix = _matrix.Clone ();
             c.Path = this._path;
             c.Current = this.Current;
             //return c;
@@ -200,12 +220,42 @@ namespace Xwt.Gdi.Backend {
 
             var c = this.contexts.Pop ();
 
-            c.SaveTo (this);
+            c.SaveTo (this,true);
             Graphics.Restore (c.State);
 
         }
 
+        
+        public void AddPath (GraphicsPath path) {
+           if (_path != null) {
+                _path.AddPath (path, false);
+                //_path = path;
+            } else {
+                _path = path;
+            }
 
+        }
+        public bool ScaledOrRotated {
+            get { return (_matrix != null && ScaledRotated (_matrix)); }
+        }
+        public bool ScaledRotated (Matrix matrix) {
+            return 
+                matrix.Elements[0] != 1 && matrix.Elements[3] != 1 &&
+                matrix.Elements[1] != 0 && matrix.Elements[2] != 0;
+        }
+        public GraphicsPath TextLayoutPath (Xwt.Drawing.TextLayout layout, float x, float y) {
+  
+            var tl = (TextLayoutBackend) Xwt.Engine.WidgetRegistry.GetBackend (layout);
+            var font = tl.Font.ToGdi ();
+            var size = layout.GetSize();
+            var rect = new System.Drawing.RectangleF ((float) x, (float) y, (float) layout.Width, (float) size.Height);
+            var fs = (int)(font.SizeInPoints * this.Graphics.DpiY / 72);
+            var path = new GraphicsPath();
+            path.AddString (tl.Text, font.FontFamily, (int) font.Style, fs, rect, tl.Format);
+            if (_matrix != null && !_matrix.IsIdentity)
+                path.Transform(Matrix);
+            return path;
 
+        }
     }
 }

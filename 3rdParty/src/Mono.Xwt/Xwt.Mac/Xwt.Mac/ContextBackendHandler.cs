@@ -40,11 +40,6 @@ namespace Xwt.Mac
 		{
 		}
 		
-		public object CreateContext (Widget w)
-		{
-			return new ContextInfo ();
-		}
-		
 		ContextInfo GetContext (object backend)
 		{
 			var ctx = (ContextInfo) backend;
@@ -62,6 +57,11 @@ namespace Xwt.Mac
 		{
 			GetContext (backend);
 			NSGraphicsContext.CurrentContext.RestoreGraphicsState ();
+		}
+
+		public void SetGlobalAlpha (object backend, double alpha)
+		{
+			// TODO
 		}
 
 		public void Arc (object backend, double xc, double yc, double radius, double angle1, double angle2)
@@ -260,6 +260,14 @@ namespace Xwt.Mac
 			GetContext (backend);
 			NSAffineTransform t = new NSAffineTransform ();
 			t.RotateByDegrees ((float)angle);
+			t.Concat ();
+		}
+		
+		public void Scale (object backend, double scaleX, double scaleY)
+		{
+			GetContext (backend);
+			NSAffineTransform t = new NSAffineTransform ();
+			t.Scale ((float)scaleX, (float)scaleY);
 			t.Concat ();
 		}
 		

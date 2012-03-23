@@ -42,9 +42,8 @@ namespace Xwt.Mac
 	public abstract class ViewBackend<T,S>: IWidgetBackend,IMacViewBackend where T:NSView where S:IWidgetEventSink
 	{
 		Widget frontend;
-		NSView alignment;
 		S eventSink;
-		IViewObject<T> viewObject;
+		IViewObject viewObject;
 		WidgetEvent currentEvents;
 		
 		void IBackend.Initialize (object frontend)
@@ -81,10 +80,10 @@ namespace Xwt.Mac
 		}
 		
 		public T Widget {
-			get { return ViewObject.View; }
+			get { return (T) ViewObject.View; }
 		}
 		
-		public IViewObject<T> ViewObject {
+		public IViewObject ViewObject {
 			get { return viewObject; }
 			set {
 				viewObject = value;
@@ -92,13 +91,9 @@ namespace Xwt.Mac
 			}
 		}
 		
-		public NSView RootWidget {
-			get { return alignment ?? (NSView) Widget; }
-		}
-		
 		public bool Visible {
-			get { return !RootWidget.Hidden; }
-			set { RootWidget.Hidden = !value; }
+			get { return !Widget.Hidden; }
+			set { Widget.Hidden = !value; }
 		}
 		
 		public virtual bool Sensitive {
@@ -128,7 +123,51 @@ namespace Xwt.Mac
 			}
 		}
 		
-		public virtual void Dispose (bool disposing)
+		public void NotifyPreferredSizeChanged ()
+		{
+			EventSink.OnPreferredSizeChanged ();
+		}
+		
+		public void SetCursor (CursorType cursor)
+		{
+			NSCursor ctype;
+			if (cursor == CursorType.Arrow)
+				ctype = NSCursor.ArrowCursor;
+			else if (cursor == CursorType.Crosshair)
+				ctype = NSCursor.CrosshairCursor;
+			else if (cursor == CursorType.Hand)
+				ctype = NSCursor.ClosedHandCursor;
+			else if (cursor == CursorType.IBeam)
+				ctype = NSCursor.IBeamCursor;
+			else if (cursor == CursorType.ResizeDown)
+				ctype = NSCursor.ResizeDownCursor;
+			else if (cursor == CursorType.ResizeUp)
+				ctype = NSCursor.ResizeUpCursor;
+			else if (cursor == CursorType.ResizeLeft)
+				ctype = NSCursor.ResizeLeftCursor;
+			else if (cursor == CursorType.ResizeRight)
+				ctype = NSCursor.ResizeRightCursor;
+			else if (cursor == CursorType.ResizeLeftRight)
+				ctype = NSCursor.ResizeLeftRightCursor;
+			else if (cursor == CursorType.ResizeUpDown)
+				ctype = NSCursor.ResizeUpDownCursor;
+			else
+				ctype = NSCursor.ArrowCursor;
+			// TODO: assign the cursor
+		}
+		
+		~ViewBackend ()
+		{
+			Dispose (false);
+		}
+		
+		public void Dispose ()
+		{
+			GC.SuppressFinalize (this);
+			Dispose (true);
+		}
+		
+		protected virtual void Dispose (bool disposing)
 		{
 		}
 		
@@ -137,11 +176,11 @@ namespace Xwt.Mac
 		}
 		
 		Size IWidgetBackend.Size {
-			get { return new Size (RootWidget.WidgetWidth (), RootWidget.WidgetHeight ()); }
+			get { return new Size (Widget.WidgetWidth (), Widget.WidgetHeight ()); }
 		}
 		
 		NSView IMacViewBackend.View {
-			get { return RootWidget; }
+			get { return (NSView) Widget; }
 		}
 		
 		public static NSView GetWidget (IWidgetBackend w)
@@ -175,7 +214,7 @@ namespace Xwt.Mac
 				if (Widget.Layer != null)
 					return Widget.Layer.BackgroundColor.ToXwtColor ();
 				else
-					return Xwt.Drawing.Color.Black;
+					return Xwt.Drawing.Colors.Black;
 			}
 			set {
 				if (Widget.Layer != null)
@@ -237,28 +276,53 @@ namespace Xwt.Mac
 		
 		public virtual void UpdateLayout ()
 		{
-			if (frontend.Margin.HorizontalSpacing == 0 && frontend.Margin.VerticalSpacing == 0) {
-				if (alignment != null) {
-					Widget.RemoveFromSuperview ();
-					NSView cont = alignment.Superview;
-					if (cont != null)
-						MacEngine.ReplaceChild (cont, alignment, Widget);
-					alignment.Dispose ();
-					alignment = null;
-				}
-			} else {
-				if (alignment == null) {
-					alignment = new NSView ();
-					alignment.Frame = Widget.Frame;
-					NSView cont = Widget.Superview;
-					if (cont != null)
-						MacEngine.ReplaceChild (cont, Widget, alignment);
-					alignment.AddSubview (Widget);
-				}
-				Rectangle frame = new Rectangle ((int)frontend.Margin.Left, (int)frontend.Margin.Top, (int)alignment.Frame.Width - frontend.Margin.HorizontalSpacing, (int)alignment.Frame.Height - frontend.Margin.VerticalSpacing);
-				Widget.SetWidgetBounds (frame);
+			IViewContainer parent = Widget.Superview as IViewContainer;
+			if (parent != null)
+				parent.UpdateChildMargins (this);
+		}
+		
+		public static NSView AddMargins (IMacViewBackend backend, NSView currentChild)
+		{
+			if (backend == null)
+				return null;
+			if (backend.Frontend.Margin.HorizontalSpacing == 0 && backend.Frontend.Margin.VerticalSpacing == 0) {
+				if (currentChild is MarginView)
+					backend.View.RemoveFromSuperview ();
+				return backend.View;
+			}
+			else if (currentChild is MarginView) {
+				((MarginView)currentChild).UpdateLayout ();
+				return currentChild;
+			}
+			else {
+				var f = backend.Frontend;
+				var newFrame = backend.View.Frame;
+				newFrame.Width += (float) f.Margin.HorizontalSpacing;
+				newFrame.Height += (float) f.Margin.VerticalSpacing;
+				if (backend.View.Superview != null)
+					backend.View.RemoveFromSuperview ();
+				MarginView marginView = new MarginView (backend);
+				marginView.Frame = newFrame;
+				Rectangle frame = new Rectangle ((int)f.Margin.Left, (int)f.Margin.Top, (int)marginView.Frame.Width - f.Margin.HorizontalSpacing, (int)marginView.Frame.Height - f.Margin.VerticalSpacing);
+				return marginView;
 			}
 		}
+		
+/*		protected void UpdateChildMargins (IMenuBackend backend)
+		{
+			var viewObject = (IViewObject) view;
+			
+			MarginView marginView = new MarginView () { Frontend = frontend };
+			marginView.Frame = viewObject.View.Frame;
+			
+			view.RemoveFromSuperview ();
+			Widget.AddSubview (marginView);
+			
+			marginView.AddSubview (viewObject.View);
+			var f = viewObject.Frontend;
+			Rectangle frame = new Rectangle ((int)f.Margin.Left, (int)f.Margin.Top, (int)marginView.Frame.Width - f.Margin.HorizontalSpacing, (int)marginView.Frame.Height - f.Margin.VerticalSpacing);
+			viewObject.View.SetWidgetBounds (frame);
+		}*/
 		
 		public virtual void EnableEvent (object eventId)
 		{
@@ -301,8 +365,8 @@ namespace Xwt.Mac
 		
 		public void DragStart (DragStartData sdata)
 		{
-			var lo = RootWidget.ConvertPointToBase (new PointF (Widget.Bounds.X, Widget.Bounds.Y));
-			lo = RootWidget.Window.ConvertBaseToScreen (lo);
+			var lo = Widget.ConvertPointToBase (new PointF (Widget.Bounds.X, Widget.Bounds.Y));
+			lo = Widget.Window.ConvertBaseToScreen (lo);
 			var ml = NSEvent.CurrentMouseLocation;
 			var pb = NSPasteboard.FromName (NSPasteboard.NSDragPasteboardName);
 			if (pb == null)
@@ -333,7 +397,7 @@ namespace Xwt.Mac
 		
 		static NSDragOperation DraggingUpdated (IntPtr sender, IntPtr sel, IntPtr dragInfo)
 		{
-			IViewObject<T> ob = Runtime.GetNSObject (sender) as IViewObject<T>;
+			IViewObject ob = Runtime.GetNSObject (sender) as IViewObject;
 			if (ob == null)
 				return NSDragOperation.None;
 			var backend = (ViewBackend<T,S>) WidgetRegistry.GetBackend (ob.Frontend);
@@ -367,7 +431,7 @@ namespace Xwt.Mac
 		
 		static void DraggingExited (IntPtr sender, IntPtr sel, IntPtr dragInfo)
 		{
-			IViewObject<T> ob = Runtime.GetNSObject (sender) as IViewObject<T>;
+			IViewObject ob = Runtime.GetNSObject (sender) as IViewObject;
 			if (ob != null) {
 				var backend = (ViewBackend<T,S>) WidgetRegistry.GetBackend (ob.Frontend);
 				Toolkit.Invoke (delegate {
@@ -378,7 +442,7 @@ namespace Xwt.Mac
 		
 		static bool PrepareForDragOperation (IntPtr sender, IntPtr sel, IntPtr dragInfo)
 		{
-			IViewObject<T> ob = Runtime.GetNSObject (sender) as IViewObject<T>;
+			IViewObject ob = Runtime.GetNSObject (sender) as IViewObject;
 			if (ob == null)
 				return false;
 			
@@ -401,7 +465,7 @@ namespace Xwt.Mac
 		
 		static bool PerformDragOperation (IntPtr sender, IntPtr sel, IntPtr dragInfo)
 		{
-			IViewObject<T> ob = Runtime.GetNSObject (sender) as IViewObject<T>;
+			IViewObject ob = Runtime.GetNSObject (sender) as IViewObject;
 			if (ob == null)
 				return false;
 			
@@ -520,9 +584,55 @@ namespace Xwt.Mac
 		#endregion
 	}
 	
+	class MarginView: NSView, IViewObject, IViewContainer
+	{
+		public MarginView (IMacViewBackend c)
+		{
+			AddSubview (c.View);
+			ChildBackend = c;
+		}
+		
+		public NSView View {
+			get {
+				return this;
+			}
+		}
+		
+		public IMacViewBackend ChildBackend { get; set; }
+		
+		public void UpdateLayout ()
+		{
+			var rect = this.WidgetBounds ();
+			var f = ChildBackend.Frontend;
+			rect.X += f.Margin.Left;
+			rect.Width -= f.Margin.HorizontalSpacing;
+			rect.Y += f.Margin.Top;
+			rect.Height -= f.Margin.VerticalSpacing;
+			ChildBackend.View.SetWidgetBounds (rect);
+		}
+		
+		public override void SetFrameSize (SizeF newSize)
+		{
+			base.SetFrameSize (newSize);
+			UpdateLayout ();
+		}
+
+		public Widget Frontend { get; set; }
+
+		public void UpdateChildMargins (IMacViewBackend view)
+		{
+			if (view != ChildBackend)
+				throw new InvalidOperationException ();
+			
+			UpdateLayout ();
+		}
+	}
+	
 	public interface IMacViewBackend
 	{
 		NSView View { get; }
+		Widget Frontend { get; }
+		void NotifyPreferredSizeChanged ();
 	}
 }
 

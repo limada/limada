@@ -90,7 +90,7 @@ namespace Limaki.Visuals {
 
                 _shape.Data = SpatialIndex.Bounds;
                 if (_shape.Size.Height < 0 || _shape.Size.Width < 0)
-                    _shape.Size = Xwt.Size.Zero;
+                    _shape.Size = Size.Zero;
                 
                 this.Size = _shape.Size;
                 this.Location = _shape.Location;

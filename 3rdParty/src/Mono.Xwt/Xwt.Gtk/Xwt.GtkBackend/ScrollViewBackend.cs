@@ -50,9 +50,27 @@ namespace Xwt.GtkBackend
 
 		public void SetChild (IWidgetBackend child)
 		{
+			if (Widget.Child != null) {
+				if (Widget.Child is Gtk.Bin) {
+					Gtk.Bin vp = (Gtk.Bin) Widget.Child;
+					vp.Remove (vp.Child);
+				}
+				Widget.Remove (Widget.Child);
+			}
+			
 			if (child != null) {
+				
 				var w = GetWidget (child);
-				if (w is Gtk.Viewport)
+				
+				WidgetBackend wb = (WidgetBackend) child;
+				
+				if (wb.EventSink.SupportsCustomScrolling ()) {
+					CustomViewPort vp = new CustomViewPort (wb.EventSink);
+					vp.Show ();
+					vp.Add (w);
+					Widget.Child = vp;
+				}
+				else if (w is Gtk.Viewport)
 					Widget.Child = w;
 				else {
 					Gtk.Viewport vp = new Gtk.Viewport ();
@@ -60,8 +78,8 @@ namespace Xwt.GtkBackend
 					vp.Add (w);
 					Widget.Child = vp;
 				}
-			} else
-				Widget.Child = null;
+			}
+			
 			UpdateBorder ();
 		}
 		
@@ -164,6 +182,48 @@ namespace Xwt.GtkBackend
 				return Gtk.PolicyType.Never;
 			}
 			throw new InvalidOperationException ("Invalid policy value:" + p);
+		}
+	}
+	
+	class CustomViewPort: Gtk.Bin
+	{
+		Gtk.Widget child;
+		IWidgetEventSink eventSink;
+		
+		public CustomViewPort (IWidgetEventSink eventSink)
+		{
+			this.eventSink = eventSink;
+		}
+		
+		protected override void OnAdded (Gtk.Widget widget)
+		{
+			base.OnAdded (widget);
+			child = widget;
+		}
+
+		protected override void OnSizeRequested (ref Gtk.Requisition requisition)
+		{
+			if (child != null) {
+				requisition = child.SizeRequest ();
+			} else {
+				requisition.Width = 0;
+				requisition.Height = 0;
+			}
+		}
+
+		protected override void OnSizeAllocated (Gdk.Rectangle allocation)
+		{
+			base.OnSizeAllocated (allocation);
+			if (child != null)
+				child.SizeAllocate (allocation);
+		}
+
+		protected override void OnSetScrollAdjustments (Gtk.Adjustment hadj, Gtk.Adjustment vadj)
+		{
+			var hsa = new ScrollAdjustmentBackend (hadj);
+			var vsa = new ScrollAdjustmentBackend (vadj);
+			
+			eventSink.SetScrollAdjustments (hsa, vsa);
 		}
 	}
 }

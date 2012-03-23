@@ -25,12 +25,13 @@
 // THE SOFTWARE.
 
 using System;
+using MonoMac.AppKit;
 
 namespace Xwt.Mac
 {
-	public interface IViewObject<T>
+	public interface IViewObject
 	{
-		T View { get; }
+		NSView View { get; }
 		Widget Frontend { get; set; }
 	}
 }

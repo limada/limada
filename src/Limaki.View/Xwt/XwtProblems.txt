@@ -1,14 +1,17 @@
-﻿
-
-this is made public:
-WidgetRegistry.CreateSharedBackend
-WidgetRegistry.CreateBackend
-Canvas.ctor(object backend)
+﻿missing:
+TextLayout.Height
+two lines in 
+CairoTextLayoutBackendHandler
+to implement in cairo
+wpf: not a problem
+mac:
+NSAttributedString.DrawString(Rectangle), same as Gdi
+TextLayoutBackendHandler.LayoutInfo
 
 changed temporary:
 this is needed until Engines works in limaki
 WPFEngine: RegisterBackends() 
 
-:
-missing
-Rectangle.Equals Rectangle.GetHashCode
+strange:
+Rectangle.Equals: uses size,location instead of x,y,w,l 
+Rectangle.GetHashCode: maybe an error have a deeper look

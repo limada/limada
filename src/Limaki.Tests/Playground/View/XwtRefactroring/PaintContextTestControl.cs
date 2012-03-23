@@ -4,21 +4,21 @@ using Xwt.Drawing;
 using Xwt.Gdi.Backend;
 using System;
 namespace Limaki.Tests.Sandbox {
-   
-    public class PaintContextTestControl:System.Windows.Forms.UserControl {
 
-        protected override void OnPaint(System.Windows.Forms.PaintEventArgs e) {
-            base.OnPaint(e);
-            var pen = new System.Drawing.Pen(System.Drawing.Color.WhiteSmoke);
+    public class PaintContextTestControl : System.Windows.Forms.UserControl {
+
+        protected override void OnPaint (System.Windows.Forms.PaintEventArgs e) {
+            base.OnPaint (e);
+            var pen = new System.Drawing.Pen (System.Drawing.Color.WhiteSmoke);
             pen.Width = 2;
 
             var graphics = new GdiContext { Graphics = e.Graphics };
             var painter = new PaintContext (graphics);
 
             if (true)
-                XwtSample (painter.CreateContext ());
+                XwtSample (painter);
             else
-                MySample(painter);
+                MySample (painter);
 
             graphics.Dispose ();
 
@@ -118,91 +118,17 @@ namespace Limaki.Tests.Sandbox {
             painter.Stroke ();
         }
 
-        protected virtual void XwtSample (Xwt.Drawing.Context ctx) {
 
-            // Simple rectangles
+        protected virtual void XwtSample (PaintContext painter) {
+            var ctx = painter.CreateContext();
+            ctx.Font = Xwt.Engine.WidgetRegistry.CreateFrontend<Font>(this.Font);
 
-            ctx.SetLineWidth (1);
-            ctx.Rectangle (100, 5, 10, 10);
-            ctx.SetColor (Color.Black);
-            ctx.Fill ();
-
-            ctx.Rectangle (115, 5, 10, 10);
-            ctx.SetColor (Color.Black);
-            ctx.Stroke ();
-
-            //
-
-            ctx.SetLineWidth (3);
-            ctx.Rectangle (100, 20, 10, 10);
-            ctx.SetColor (Color.Black);
-            ctx.Fill ();
-
-            ctx.Rectangle (115, 20, 10, 10);
-            ctx.SetColor (Color.Black);
-            ctx.Stroke ();
-
-            // Rectangle with hole
-
-            ctx.Rectangle (10, 100, 40, 40);
-            ctx.MoveTo (45, 135);
-            ctx.RelLineTo (0, -20);
-            ctx.RelLineTo (-20, 0);
-            ctx.RelLineTo (0, 20);
-            ctx.ClosePath ();
-            ctx.SetColor (Color.Black);
-            ctx.Fill ();
-
-            // Dashed lines
-			
-            ctx.SetLineDash (15, 10, 10, 5, 5);
-            ctx.Rectangle (100, 100, 100, 100);
-            ctx.Stroke ();
-            ctx.SetLineDash (0);
-            Image img = null;
-            if (true) {
-                ImageBuilder ib = new ImageBuilder (30, 30, ImageFormat.ARGB32);
-                ib.Context.Arc (15, 15, 15, 0, 360);
-                ib.Context.SetColor (new Color (1, 0, 1));
-                ib.Context.Rectangle (0, 0, 5, 5);
-                ib.Context.Fill ();
-                img = ib.ToImage ();
-                ctx.DrawImage (img, 90, 90);
-                ctx.DrawImage (img, 90, 140, 50, 10);
-            } else {
-                ctx.Arc (105, 105, 15, 0, 360);
-                ctx.SetColor (new Color (1, 0, 1));
-                ctx.Rectangle (90, 90, 5, 5);
-                ctx.Fill ();
-            }
-            ctx.Arc (190, 190, 15, 0, 360);
-            ctx.SetColor (new Color (1, 0, 1, 0.4));
-            ctx.Fill ();
-
-            ctx.Save ();
-            ctx.Translate (90, 220);
-            if (true) {
-                ctx.Pattern = new ImagePattern(img);
-            }
-            ctx.Rectangle (0, 0, 100, 70);
-            ctx.Fill ();
-            ctx.Restore ();
-
-            ctx.Translate (30, 30);
-            double end = 270;
-
-            for (double n = 0; n <= end; n += 5) {
-                ctx.Save ();
-                ctx.Rotate (n);
-                ctx.MoveTo (0, 0);
-                ctx.RelLineTo (30, 0);
-                double c = n / end;
-                ctx.SetColor (new Color (c, c, c));
-                ctx.Stroke ();
-                ctx.Restore ();
-            }
+            var p = new Samples.ReferencePainter();
+            p.Font = Xwt.Engine.WidgetRegistry.CreateFrontend<Font> (this.Font);
+            p.All(ctx);
+           
         }
     }
 
-    
+
 }

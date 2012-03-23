@@ -32,7 +32,7 @@ namespace Xwt.Gdi.Backend {
     public class ImagePatternBackendHandler : IImagePatternBackendHandler {
         public object Create(object img) {
             var image = (Image)img;
-            return new TextureBrush(image);
+            return new TextureBrush (image, System.Drawing.Drawing2D.WrapMode.Tile);
         }
     }
 }

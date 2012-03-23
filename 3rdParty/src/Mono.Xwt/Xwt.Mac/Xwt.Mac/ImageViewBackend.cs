@@ -56,9 +56,9 @@ namespace Xwt.Mac
 		}
 	}
 	
-	class CustomNSImageView: NSImageView, IViewObject<NSImageView>
+	class CustomNSImageView: NSImageView, IViewObject
 	{
-		public NSImageView View {
+		public NSView View {
 			get {
 				return this;
 			}

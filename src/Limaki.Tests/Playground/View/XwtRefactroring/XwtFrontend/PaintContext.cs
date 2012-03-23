@@ -43,8 +43,6 @@ namespace Limaki.Painting {
 
         protected override IBackendHandler BackendHandler { get { return handler;} }
 
-        public PaintContext (Widget w) : base (handler.CreateContext (w)) { }
-
         public PaintContext (object backend) : base (backend) {
             handler.InitBackend (backend);
         }
@@ -184,6 +182,9 @@ namespace Limaki.Painting {
             handler.Translate (Backend, p.X, p.Y);
         }
 
+        public void Scale (double scaleX, double scaleY) {
+            handler.Scale (Backend, scaleX, scaleY);
+        }
         /// <summary>
         /// Resets the Current Trasnformation Matrix (CTM) to the Identity Matrix
         /// </summary>

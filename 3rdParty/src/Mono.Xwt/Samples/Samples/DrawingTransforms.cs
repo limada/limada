@@ -1,8 +1,9 @@
 // 
 // DrawingTransforms.cs
 //  
-// Author:
+// Authors:
 //       Lluis Sanchez <lluis@xamarin.com>
+//       Lytico (http://limada.sourceforge.net)
 // 
 // Copyright (c) 2011 Xamarin Inc
 // 
@@ -29,42 +30,35 @@ using Xwt.Drawing;
 
 namespace Samples
 {
+	public class Drawings: Canvas
+	{
+		public Drawings ()
+		{
+			this.BackgroundColor = Colors.White;
+		}
+	}
+	
 	public class DrawingTransforms: Canvas
 	{
-		public DrawingTransforms ()
-		{
-		}
-		
-		protected override void OnDraw (Xwt.Drawing.Context ctx)
+		protected override void OnDraw (Context ctx)
 		{
 			base.OnDraw (ctx);
-			
-			ctx.SetLineDash (15, 10, 10, 5, 5);
-			ctx.Rectangle (100, 100, 100, 100);
-			ctx.Stroke ();
-			ctx.SetLineDash (0);
-			
-			ImageBuilder ib = new ImageBuilder (30, 30, ImageFormat.ARGB32);
-			ib.Context.Arc (15, 15, 15, 0, 360);
-			ib.Context.SetColor (new Color (1, 0, 1));
-			ib.Context.Rectangle (0, 0, 5, 5);
-			ib.Context.Fill ();
-			var img = ib.ToImage ();
-			ctx.DrawImage (img, 90, 90);
-			ctx.DrawImage (img, 90, 140, 50, 10);
-			
-			ctx.Arc (190, 190, 15, 0, 360);
-			ctx.SetColor (new Color (1, 0, 1, 0.4));
-			ctx.Fill ();
-			
+			Transforms (ctx, 5, 5);
+		}
+
+		public virtual void Transforms (Xwt.Drawing.Context ctx, double x, double y)
+		{
+			Rotate (ctx, x, y);
+			Scale (ctx, x + 100, y);
+		}
+		
+		public virtual void Rotate (Xwt.Drawing.Context ctx, double x, double y)
+		{
 			ctx.Save ();
-			ctx.Translate (90, 220);
-			ctx.Pattern = new ImagePattern (img);
-			ctx.Rectangle (0, 0, 100, 70);
-			ctx.Fill ();
-			ctx.Restore ();
+			ctx.Translate (x + 30, y + 30);
+			ctx.SetLineWidth (3);
+			// Rotation
 			
-			ctx.Translate (30, 30);
 			double end = 270;
 			
 			for (double n = 0; n<=end; n += 5) {
@@ -77,6 +71,36 @@ namespace Samples
 				ctx.Stroke ();
 				ctx.Restore ();
 			}
+			
+			ctx.ResetTransform ();
+			ctx.Restore ();
+		}
+		
+		public virtual void Scale (Context ctx, double ax, double ay)
+		{
+			ctx.Save ();
+			ctx.Translate (ax, ay);
+			ctx.SetColor (Colors.Black);
+			ctx.SetLineWidth (1);
+			
+			var x = 0d;
+			var y = 0d;
+			var w = 10d;
+			var inc = .1d;
+			for (var i = inc; i < 3.5d; i +=inc) {
+				ctx.Save ();
+				ctx.Scale (i, i);
+				ctx.Rectangle (x, y, w, w);
+				ctx.SetColor (Colors.Yellow.WithAlpha (1 / i));
+				ctx.FillPreserve ();
+				ctx.SetColor (Colors.Red.WithAlpha (1 / i));
+				ctx.Stroke ();
+				ctx.MoveTo (x += w * inc, y += w * inc / 3);
+				ctx.Restore ();
+				
+			}
+
+			ctx.Restore ();
 		}
 	}
 }

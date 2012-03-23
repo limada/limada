@@ -151,7 +151,62 @@ namespace Xwt.GtkBackend
 			}
 		}
 		
-		public virtual void Dispose (bool disposing)
+		static Dictionary<CursorType,Gdk.Cursor> gtkCursors = new Dictionary<CursorType, Gdk.Cursor> ();
+		
+		public void SetCursor (CursorType cursor)
+		{
+			AllocEventBox ();
+			Gdk.Cursor gc;
+			if (!gtkCursors.TryGetValue (cursor, out gc)) {
+				Gdk.CursorType ctype;
+				if (cursor == CursorType.Arrow)
+					ctype = Gdk.CursorType.LeftPtr;
+				else if (cursor == CursorType.Crosshair)
+					ctype = Gdk.CursorType.Crosshair;
+				else if (cursor == CursorType.Hand)
+					ctype = Gdk.CursorType.Hand1;
+				else if (cursor == CursorType.IBeam)
+					ctype = Gdk.CursorType.Xterm;
+				else if (cursor == CursorType.ResizeDown)
+					ctype = Gdk.CursorType.BottomSide;
+				else if (cursor == CursorType.ResizeUp)
+					ctype = Gdk.CursorType.TopSide;
+				else if (cursor == CursorType.ResizeLeft)
+					ctype = Gdk.CursorType.LeftSide;
+				else if (cursor == CursorType.ResizeRight)
+					ctype = Gdk.CursorType.RightSide;
+				else if (cursor == CursorType.ResizeLeftRight)
+					ctype = Gdk.CursorType.SbHDoubleArrow;
+				else if (cursor == CursorType.ResizeUpDown)
+					ctype = Gdk.CursorType.SbVDoubleArrow;
+				else
+					ctype = Gdk.CursorType.Arrow;
+				
+				gtkCursors [cursor] = gc = new Gdk.Cursor (ctype);
+			}
+			if (EventsRootWidget.GdkWindow == null) {
+				EventHandler h = null;
+				h = delegate {
+					EventsRootWidget.GdkWindow.Cursor = gc;
+					EventsRootWidget.Realized -= h;
+				};
+				EventsRootWidget.Realized += h;
+			} else
+				EventsRootWidget.GdkWindow.Cursor = gc;
+		}
+		
+		~WidgetBackend ()
+		{
+			Dispose (false);
+		}
+		
+		public void Dispose ()
+		{
+			GC.SuppressFinalize (this);
+			Dispose (true);
+		}
+		
+		protected virtual void Dispose (bool disposing)
 		{
 			if (Widget != null && !disposing && Widget.Parent == null)
 				Widget.Destroy ();
@@ -173,8 +228,10 @@ namespace Xwt.GtkBackend
 		
 		public Point ConvertToScreenCoordinates (Point widgetCoordinates)
 		{
+			if (Widget.ParentWindow == null)
+				return Point.Zero;
 			int x, y;
-			Widget.GdkWindow.GetOrigin (out x, out y);
+			Widget.ParentWindow.GetOrigin (out x, out y);
 			var a = Widget.Allocation;
 			x += a.X;
 			y += a.Y;
@@ -339,10 +396,12 @@ namespace Xwt.GtkBackend
 				WidgetEvent ev = (WidgetEvent) eventId;
 				switch (ev) {
 				case WidgetEvent.DragLeave:
-					Widget.DragLeave += HandleWidgetDragLeave;
+					AllocEventBox ();
+					EventsRootWidget.DragLeave += HandleWidgetDragLeave;
 					break;
 				case WidgetEvent.DragStarted:
-					Widget.DragBegin += HandleWidgetDragBegin;
+					AllocEventBox ();
+					EventsRootWidget.DragBegin += HandleWidgetDragBegin;
 					break;
 				case WidgetEvent.KeyPressed:
 					Widget.KeyPressEvent += HandleKeyPressEvent;
@@ -380,6 +439,9 @@ namespace Xwt.GtkBackend
 					AllocEventBox ();
 					EventsRootWidget.Events |= Gdk.EventMask.PointerMotionMask;
 					EventsRootWidget.MotionNotifyEvent += HandleMotionNotifyEvent;
+					break;
+				case WidgetEvent.BoundsChanged:
+					Widget.SizeAllocated += HandleWidgetBoundsChanged;
 					break;
 				}
 				if ((ev & dragDropEvents) != 0 && (enabledEvents & dragDropEvents) == 0) {
@@ -445,6 +507,9 @@ namespace Xwt.GtkBackend
 					EventsRootWidget.Events &= Gdk.EventMask.PointerMotionMask;
 					EventsRootWidget.MotionNotifyEvent -= HandleMotionNotifyEvent;
 					break;
+				case WidgetEvent.BoundsChanged:
+					Widget.SizeAllocated -= HandleWidgetBoundsChanged;
+					break;
 				}
 				
 				enabledEvents &= ~ev;
@@ -468,6 +533,13 @@ namespace Xwt.GtkBackend
 				Widget.SizeRequested -= HandleWidgetSizeRequested;
 				Widget.SizeAllocated -= HandleWidgetSizeAllocated;;
 			}
+		}
+		
+		void HandleWidgetBoundsChanged (object o, Gtk.SizeAllocatedArgs args)
+		{
+			Toolkit.Invoke (delegate {
+				EventSink.OnBoundsChanged ();
+			});
 		}
 		
 		enum SizeCheckStep
@@ -644,7 +716,8 @@ namespace Xwt.GtkBackend
 
 		void HandleMotionNotifyEvent (object o, Gtk.MotionNotifyEventArgs args)
 		{
-			var a = new MouseMovedEventArgs ((long) args.Event.Time, args.Event.X, args.Event.Y);
+			var sc = ConvertToScreenCoordinates (new Point (0, 0));
+			var a = new MouseMovedEventArgs ((long) args.Event.Time, args.Event.XRoot - sc.X, args.Event.YRoot - sc.Y);
 			Toolkit.Invoke (delegate {
 				EventSink.OnMouseMoved (a);
 			});
@@ -661,6 +734,7 @@ namespace Xwt.GtkBackend
 			});
 		}
 
+		[GLib.ConnectBeforeAttribute]
 		void HandleButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
 			var a = new ButtonEventArgs ();
@@ -894,10 +968,10 @@ namespace Xwt.GtkBackend
 
 		void HandleDragBegin (object o, Gtk.DragBeginArgs args)
 		{
-			Widget.DragEnd += HandleWidgetDragEnd;
-			Widget.DragFailed += HandleDragFailed;
-			Widget.DragDataDelete += HandleDragDataDelete;
-			Widget.DragDataGet += HandleWidgetDragDataGet;
+			EventsRootWidget.DragEnd += HandleWidgetDragEnd;
+			EventsRootWidget.DragFailed += HandleDragFailed;
+			EventsRootWidget.DragDataDelete += HandleDragDataDelete;
+			EventsRootWidget.DragDataGet += HandleWidgetDragDataGet;
 		}
 		
 		void HandleWidgetDragDataGet (object o, Gtk.DragDataGetArgs args)
@@ -952,6 +1026,7 @@ namespace Xwt.GtkBackend
 		
 		public void SetDragSource (TransferDataType[] types, DragDropAction dragAction)
 		{
+			AllocEventBox ();
 			DragDropInfo.SourceDragAction = ConvertDragAction (dragAction);
 			var table = Util.BuildTargetTable (types);
 			OnSetDragSource (Gdk.ModifierType.Button1Mask, (Gtk.TargetEntry[]) table, DragDropInfo.SourceDragAction);
@@ -959,7 +1034,7 @@ namespace Xwt.GtkBackend
 		
 		protected virtual void OnSetDragSource (Gdk.ModifierType modifierType, Gtk.TargetEntry[] table, Gdk.DragAction actions)
 		{
-			Gtk.Drag.SourceSet (Widget, modifierType, table, actions);
+			Gtk.Drag.SourceSet (EventsRootWidget, modifierType, table, actions);
 		}
 		
 		Gdk.DragAction ConvertDragAction (DragDropAction dragAction)

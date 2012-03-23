@@ -1,21 +1,23 @@
-﻿// 
+﻿//
 // WidgetBackend.cs
-//  
-// Author:
+//
+// Authors:
 //       Carlos Alberto Cortez <calberto.cortez@gmail.com>
-// 
+//       Eric Maupin <ermau@xamarin.com>
+//
 // Copyright (c) 2011 Carlos Alberto Cortez
-// 
+// Copyright (c) 2012 Xamarin, Inc.
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,29 +27,23 @@
 // THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using SWM = System.Windows.Media;
 using SWC = System.Windows.Controls; // When we need to resolve ambigituies.
 
 using Xwt.Backends;
-using Xwt.Drawing;
 using Xwt.Engine;
+using Color = Xwt.Drawing.Color;
 
 namespace Xwt.WPFBackend
 {
-	public class WidgetBackend : IWidgetBackend, IWpfWidgetBackend
+	public abstract class WidgetBackend
+		: Backend, IWidgetBackend, IWpfWidgetBackend
 	{
-		Widget frontend;
 		IWidgetEventSink eventSink;
-
-		void IBackend.Initialize (object frontend)
-		{
-			this.frontend = (Widget) frontend;
-		}
 
 		void IWidgetBackend.Initialize (IWidgetEventSink eventSink)
 		{
@@ -55,20 +51,27 @@ namespace Xwt.WPFBackend
 			Initialize ();
 		}
 
-		public virtual void Initialize ()
+		protected virtual void Initialize ()
 		{
 		}
-
-		public virtual void Dispose (bool disposing)
+		
+		~WidgetBackend ()
+		{
+			Dispose (false);
+		}
+		
+		public void Dispose ()
+		{
+			GC.SuppressFinalize (this);
+			Dispose (true);
+		}
+		
+		protected virtual void Dispose (bool disposing)
 		{
 		}
 
 		public IWidgetEventSink EventSink {
 			get { return eventSink; }
-		}
-
-		public Widget Frontend {
-			get { return frontend; }
 		}
 
 		public object NativeWidget {
@@ -96,11 +99,12 @@ namespace Xwt.WPFBackend
 		{
 			if (Widget is Control) {
 				var control = (Control)Widget;
-				return ((SWM.SolidColorBrush)control.Background).Color;
-			}
-			if (Widget is SWC.Panel) {
+				if (control.Background != null)
+					return ((SWM.SolidColorBrush)control.Background).Color;
+			} else if (Widget is SWC.Panel) {
 				var panel = (SWC.Panel)Widget;
-				return ((SWM.SolidColorBrush)panel.Background).Color;
+				if (panel.Background != null)
+					return ((SWM.SolidColorBrush)panel.Background).Color;
 			}
 
 			return SystemColors.ControlColor;
@@ -192,8 +196,10 @@ namespace Xwt.WPFBackend
 
 		System.Windows.Size GetWidgetDesiredSize ()
 		{
-			if (!Widget.IsMeasureValid)
+			if (!Widget.IsMeasureValid) {
+				Widget.UpdateLayout ();
 				Widget.Measure (new System.Windows.Size (Double.PositiveInfinity, Double.PositiveInfinity));
+			}
 
 			return Widget.DesiredSize;
 		}
@@ -201,43 +207,63 @@ namespace Xwt.WPFBackend
 		public virtual WidgetSize GetPreferredWidth ()
 		{
 			var size = GetWidgetDesiredSize ();
-			return new WidgetSize (size.Width) + frontend.Margin.HorizontalSpacing;
+			return new WidgetSize (size.Width);
 		}
 
 		public virtual WidgetSize GetPreferredHeight ()
 		{
 			var size = GetWidgetDesiredSize ();
-			return new WidgetSize (size.Height) + frontend.Margin.VerticalSpacing;
+			return new WidgetSize (size.Height);
 		}
 
 		public virtual WidgetSize GetPreferredWidthForHeight (double height)
 		{
 			var size = GetWidgetDesiredSize ();
-			return new WidgetSize (size.Width) + frontend.Margin.HorizontalSpacing;
+			return new WidgetSize (size.Width);
 		}
 
 		public virtual WidgetSize GetPreferredHeightForWidth (double width)
 		{
 			var size = GetWidgetDesiredSize ();
-			return new WidgetSize (size.Height) + frontend.Margin.VerticalSpacing;
+			return new WidgetSize (size.Height);
 		}
 
 		public void SetMinSize (double width, double height)
 		{
-			Widget.MinWidth = width;
-			Widget.MinHeight = height;
+			if (width == -1)
+				Widget.ClearValue (FrameworkElement.MinWidthProperty);
+			else
+				Widget.MinWidth = width / WidthPixelRatio;
+
+			if (height == -1)
+				Widget.ClearValue (FrameworkElement.MinHeightProperty);
+			else
+				Widget.MinHeight = height / HeightPixelRatio;
 		}
 
 		public void SetNaturalSize (double width, double height)
 		{
-			// Nothing do it in WPF, it seems.
+			if (width == -1)
+				Widget.ClearValue (FrameworkElement.WidthProperty);
+			else
+				Widget.Width = width / WidthPixelRatio;
+
+			if (height == -1)
+				Widget.ClearValue (FrameworkElement.HeightProperty);
+			else
+				Widget.Height = height / HeightPixelRatio;
 		}
 
+		public void SetCursor (CursorType cursor)
+		{
+			// TODO
+		}
+		
 		public virtual void UpdateLayout ()
 		{
 		}
 
-		public virtual void EnableEvent (object eventId)
+		public override void EnableEvent (object eventId)
 		{
 			if (eventId is WidgetEvent) {
 				switch ((WidgetEvent)eventId) {
@@ -258,17 +284,32 @@ namespace Xwt.WPFBackend
 					case WidgetEvent.KeyReleased:
 						Widget.KeyDown += WidgetKeyUpHandler;
 						break;
+					case WidgetEvent.ButtonPressed:
+						Widget.MouseDown += WidgetMouseDownHandler;
+						break;
+					case WidgetEvent.ButtonReleased:
+						Widget.MouseUp += WidgetMouseUpHandler;
+						break;
 					case WidgetEvent.GotFocus:
 						Widget.GotFocus += WidgetGotFocusHandler;
 						break;
 					case WidgetEvent.LostFocus:
 						Widget.LostFocus += WidgetLostFocusHandler;
 						break;
+					case WidgetEvent.MouseEntered:
+						Widget.MouseEnter += WidgetMouseEnteredHandler;
+						break;
+					case WidgetEvent.MouseExited:
+						Widget.MouseLeave += WidgetMouseExitedHandler;
+						break;
+					case WidgetEvent.BoundsChanged:
+						Widget.SizeChanged += WidgetOnSizeChanged;
+						break;
 				}
 			}
 		}
 
-		public virtual void DisableEvent (object eventId)
+		public override void DisableEvent (object eventId)
 		{
 			if (eventId is WidgetEvent) {
 				switch ((WidgetEvent)eventId) {
@@ -289,7 +330,48 @@ namespace Xwt.WPFBackend
 					case WidgetEvent.KeyReleased:
 						Widget.KeyUp -= WidgetKeyUpHandler;
 						break;
+					case WidgetEvent.ButtonPressed:
+						Widget.MouseDown -= WidgetMouseDownHandler;
+						break;
+					case WidgetEvent.ButtonReleased:
+						Widget.MouseUp -= WidgetMouseUpHandler;
+						break;
+					case WidgetEvent.MouseEntered:
+						Widget.MouseEnter -= WidgetMouseEnteredHandler;
+						break;
+					case WidgetEvent.MouseExited:
+						Widget.MouseLeave -= WidgetMouseExitedHandler;
+						break;
+					case WidgetEvent.BoundsChanged:
+						Widget.SizeChanged -= WidgetOnSizeChanged;
+						break;
 				}
+			}
+		}
+
+		protected double WidthPixelRatio
+		{
+			get
+			{
+				PresentationSource source = PresentationSource.FromVisual (Widget);
+				if (source == null)
+					return 1;
+
+				Matrix m = source.CompositionTarget.TransformToDevice;
+				return m.M11;
+			}
+		}
+
+		protected double HeightPixelRatio
+		{
+			get
+			{
+				PresentationSource source = PresentationSource.FromVisual (Widget);
+				if (source == null)
+					return 1;
+
+				Matrix m = source.CompositionTarget.TransformToDevice;
+				return m.M22;
 			}
 		}
 
@@ -323,6 +405,32 @@ namespace Xwt.WPFBackend
 			return true;
 		}
 
+		void WidgetMouseDownHandler (object o, MouseButtonEventArgs e)
+		{
+			Toolkit.Invoke (delegate () {
+				eventSink.OnButtonPressed (ToXwtButtonArgs (e));
+			});
+		}
+
+		void WidgetMouseUpHandler (object o, MouseButtonEventArgs e)
+		{
+			var args = ToXwtButtonArgs (e);
+			Toolkit.Invoke (delegate () {
+				eventSink.OnButtonReleased (ToXwtButtonArgs (e));
+			});
+		}
+
+		ButtonEventArgs ToXwtButtonArgs (MouseButtonEventArgs e)
+		{
+			var pos = e.GetPosition (Widget);
+			return new ButtonEventArgs () {
+				X = pos.X,
+				Y = pos.Y,
+				MultiplePress = e.ClickCount,
+				Button = e.ChangedButton.ToXwtButton ()
+			};
+		}
+
 		void WidgetGotFocusHandler (object o, RoutedEventArgs e)
 		{
 			Toolkit.Invoke (delegate {
@@ -337,19 +445,17 @@ namespace Xwt.WPFBackend
 			});
 		}
 
+		// TODO
 		public void DragStart (DragStartData data)
 		{
-			throw new NotImplementedException ();
 		}
 
 		public void SetDragTarget (TransferDataType [] types, DragDropAction dragAction)
 		{
-			throw new NotImplementedException ();
 		}
 
 		public void SetDragSource (TransferDataType [] types, DragDropAction dragAction)
 		{
-			throw new NotImplementedException ();
 		}
 
 		void WidgetDragLeaveHandler (object sender, System.Windows.DragEventArgs e)
@@ -357,6 +463,22 @@ namespace Xwt.WPFBackend
 			Toolkit.Invoke (delegate {
 				eventSink.OnDragLeave (EventArgs.Empty);
 			});
+		}
+
+		private void WidgetMouseEnteredHandler (object sender, MouseEventArgs e)
+		{
+			Toolkit.Invoke (eventSink.OnMouseEntered);
+		}
+
+		private void WidgetMouseExitedHandler (object sender, MouseEventArgs e)
+		{
+			Toolkit.Invoke (eventSink.OnMouseExited);
+		}
+
+		private void WidgetOnSizeChanged (object sender, SizeChangedEventArgs e)
+		{
+			if (Widget.IsVisible)
+				Toolkit.Invoke (this.eventSink.OnBoundsChanged);
 		}
 	}
 

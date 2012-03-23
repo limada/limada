@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -33,6 +33,8 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -40,10 +42,31 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Xwt.WPFBackend.Interop\NativeStockIcon.cs" />
     <Compile Include="Xwt.WPFBackend.Utilities\CellUtil.cs" />
+    <Compile Include="Xwt.WPFBackend.Utilities\ExTextBox.cs" />
+    <Compile Include="Xwt.WPFBackend.Utilities\ImageToImageSourceConverter.cs" />
     <Compile Include="Xwt.WPFBackend.Utilities\MultiColumnTreeViewItem.cs" />
+    <Compile Include="Xwt.WPFBackend.Utilities\TypeToStringConverter.cs" />
+    <Compile Include="Xwt.WPFBackend\AlertDialogBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\Backend.cs" />
     <Compile Include="Xwt.WPFBackend\ButtonBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\CanvasBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\CheckBoxBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\ClipboardBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\ComboBoxBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\ComboBoxEntryBackend.cs" />
+    <Compile Include="Xwt.WPFBackend.Utilities\DataSourceNotifyWrapper.cs" />
+    <Compile Include="Xwt.WPFBackend\ComboBoxTextEntryBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\CustomWidgetBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\DrawingContext.cs" />
+    <Compile Include="Xwt.WPFBackend\ContextBackendHandler.cs" />
+    <Compile Include="Xwt.WPFBackend\ExCanvas.cs" />
+    <Compile Include="Xwt.WPFBackend\FileDialogBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\FrameBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\GradientBackendHandler.cs" />
+    <Compile Include="Xwt.WPFBackend\ImageBuilderBackendHandler.cs" />
     <Compile Include="Xwt.WPFBackend\ImageHandler.cs" />
     <Compile Include="Xwt.WPFBackend.Interop\NativeMethods.cs" />
+    <Compile Include="Xwt.WPFBackend\ImagePatternBackendHandler.cs" />
     <Compile Include="Xwt.WPFBackend\ImageViewBackend.cs" />
     <Compile Include="Xwt.WPFBackend\LabelBackend.cs" />
     <Compile Include="Xwt.WPFBackend\BoxBackend.cs" />
@@ -52,8 +75,16 @@
     <Compile Include="Xwt.WPFBackend\KeyboardUtil.cs" />
     <Compile Include="Xwt.WPFBackend\MenuBackend.cs" />
     <Compile Include="Xwt.WPFBackend\MenuItemBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\OpenFileDialogBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\PanedBackend.cs" />
     <Compile Include="Xwt.WPFBackend\ResPool.cs" />
+    <Compile Include="Xwt.WPFBackend\ScrollViewBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\SelectFolderDialogBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\SeparatorBackend.cs" />
     <Compile Include="Xwt.WPFBackend\TextEntryBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\TextLayoutBackendHandler.cs" />
+    <Compile Include="Xwt.WPFBackend\TextLayoutContext.cs" />
+    <Compile Include="Xwt.WPFBackend\Timeout.cs" />
     <Compile Include="Xwt.WPFBackend\ToggleButtonBackend.cs" />
     <Compile Include="Xwt.WPFBackend\TreeStoreBackend.cs" />
     <Compile Include="Xwt.WPFBackend\TreeViewBackend.cs" />
@@ -62,12 +93,15 @@
     <Compile Include="Xwt.WPFBackend\WindowBackend.cs" />
     <Compile Include="Xwt.WPFBackend\WindowFrameBackend.cs" />
     <Compile Include="Xwt.WPFBackend\WPFEngine.cs" />
+    <Compile Include="Xwt.WPFBackend\NotebookBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\ScrollAdjustmentBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\CustomScrollViewPort.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

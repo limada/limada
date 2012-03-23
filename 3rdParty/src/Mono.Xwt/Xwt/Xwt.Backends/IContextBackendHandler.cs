@@ -31,8 +31,6 @@ namespace Xwt.Backends
 {
 	public interface IContextBackendHandler: IBackendHandler
 	{
-		object CreateContext (Widget w);
-		
 		void Save (object backend);
 
 		void Restore (object backend);
@@ -91,7 +89,15 @@ namespace Xwt.Backends
 
 		void Rotate (object backend, double angle);
 		
+		void Scale (object backend, double scaleX, double scaleY);
+		
 		void Translate (object backend, double tx, double ty);
+		
+		/// <summary>
+		/// Sets a global alpha to be applied to all drawing operations.
+		/// It doesn't affect colors that have already been set.
+		/// </summary>
+		void SetGlobalAlpha (object backend, double globalAlpha);
 		
 		void Dispose (object backend);
 	}

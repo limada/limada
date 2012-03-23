@@ -53,7 +53,7 @@ namespace Xwt.Gdi.Backend {
         }
 
         public Font Font {
-            get { return _font; }
+            get { return _font??Font.FromName("Default",10); }
             set {
                 if (!Xwt.Drawing.XwtDrawingExtensions.Equals (_font, value))
                     _size = null;
@@ -67,7 +67,7 @@ namespace Xwt.Gdi.Backend {
                 if (_size == null) {
                     var font = Font.ToGdi ();
                     var size = new System.Drawing.SizeF ((float) Width, 0);
-                    _size = Context.Graphics.MeasureString (Text, font, size,Format).ToXwt ();
+                    _size = Context.Graphics.MeasureString (Text, font, size, Format).ToSize ().ToXwt ();
                 }
                 return _size.Value;
             }

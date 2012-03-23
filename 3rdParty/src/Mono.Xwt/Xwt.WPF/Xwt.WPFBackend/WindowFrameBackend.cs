@@ -60,15 +60,18 @@ namespace Xwt.WPFBackend
 		{
 		}
 
-		public virtual void Dispose (bool disposing)
-		{
-			if (disposing)
-				Window.Close ();
+		public virtual void Dispose ()
+		{	
+			Window.Close ();
 		}
 
 		public System.Windows.Window Window {
 			get { return window; }
 			set { window = value; }
+		}
+
+		public virtual bool HasMenu {
+			get { return false;  }
 		}
 
 		protected WindowFrame Frontend {
@@ -103,9 +106,12 @@ namespace Xwt.WPFBackend
 
 		public Rectangle Bounds {
 			get {
-				return new Rectangle (window.Left, window.Top, window.Width, window.Height);
+				double width = Double.IsNaN (window.Width) ? window.ActualWidth : window.Width;
+				double height = Double.IsNaN (window.Height) ? window.ActualHeight : window.Height;
+				return ToClientRect (new Rectangle (window.Left, window.Top, width, height));
 			}
 			set {
+				value = ToNonClientRect (value);
 				window.Top = value.Top;
 				window.Left = value.Left;
 				window.Width = value.Width;
@@ -145,6 +151,53 @@ namespace Xwt.WPFBackend
 			Toolkit.Invoke (delegate () {
 				eventSink.OnBoundsChanged (Bounds);
 			});
+		}
+
+		Rectangle ToNonClientRect (Rectangle rect)
+		{
+			var size = rect.Size;
+			var loc = rect.Location;
+
+			size.Height += SystemParameters.ResizeFrameHorizontalBorderHeight * 2;
+			size.Width += SystemParameters.ResizeFrameVerticalBorderWidth * 2;
+			loc.X -= SystemParameters.ResizeFrameVerticalBorderWidth;
+			loc.Y -= SystemParameters.ResizeFrameHorizontalBorderHeight;
+
+			if (((IWindowFrameBackend)this).Decorated) {
+				size.Height += SystemParameters.CaptionHeight;
+				loc.Y -= SystemParameters.CaptionHeight;
+			}
+			if (HasMenu) {
+				size.Height += SystemParameters.MenuBarHeight;
+				loc.Y -= SystemParameters.MenuBarHeight;
+			}
+
+			return new Rectangle (loc, size);
+		}
+
+		Rectangle ToClientRect (Rectangle rect)
+		{
+			var size = rect.Size;
+			var loc = rect.Location;
+
+			size.Height -= SystemParameters.ResizeFrameHorizontalBorderHeight * 2;
+			size.Width -= SystemParameters.ResizeFrameVerticalBorderWidth * 2;
+			loc.X += SystemParameters.ResizeFrameVerticalBorderWidth;
+			loc.Y += SystemParameters.ResizeFrameHorizontalBorderHeight;
+
+			if (((IWindowFrameBackend)this).Decorated) {
+				size.Height -= SystemParameters.CaptionHeight;
+				loc.Y += SystemParameters.CaptionHeight;
+			}
+			if (HasMenu) {
+				size.Height -= SystemParameters.MenuBarHeight;
+				loc.Y += SystemParameters.MenuBarHeight;
+			}
+
+			size.Width = Math.Max (0, size.Width);
+			size.Height = Math.Max (0, size.Height);
+
+			return new Rectangle (loc, size);
 		}
 	}
 }

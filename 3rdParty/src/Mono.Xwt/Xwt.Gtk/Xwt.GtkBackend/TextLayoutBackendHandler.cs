@@ -28,16 +28,29 @@ using System;
 using Xwt.Backends;
 using Xwt.Drawing;
 using Xwt.Engine;
+using Xwt.CairoBackend;
 
 namespace Xwt.GtkBackend
 {
 	public class TextLayoutBackendHandler: ITextLayoutBackendHandler
 	{
+		static Cairo.Context SharedContext;
+		
+		static TextLayoutBackendHandler ()
+		{
+			Cairo.Surface sf = new Cairo.ImageSurface (Cairo.Format.ARGB32, 1, 1);
+			SharedContext = new Cairo.Context (sf);
+		}
+		
 		public object Create (Context context)
 		{
-			GtkContext c = (GtkContext) WidgetRegistry.GetBackend (context);
-			var pl = Pango.CairoHelper.CreateLayout (c.Context);
-			return pl;
+			CairoContextBackend c = (CairoContextBackend) WidgetRegistry.GetBackend (context);
+			return Pango.CairoHelper.CreateLayout (c.Context);
+		}
+		
+		public object Create (ICanvasBackend canvas)
+		{
+			return Pango.CairoHelper.CreateLayout (SharedContext);
 		}
 
 		public void SetText (object backend, string text)

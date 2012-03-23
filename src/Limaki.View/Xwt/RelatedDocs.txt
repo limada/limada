@@ -1,0 +1,18 @@
+﻿Gtk:
+http://cairographics.org/documentation/cairomm/reference/classCairo_1_1Context.html
+Mac:
+https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaDrawingGuide/GraphicsContexts/GraphicsContexts.html#//apple_ref/doc/uid/TP40003290-CH203-BCIJFBJJ
+Context.Scale:
+Gkt:
+http://cairographics.org/manual/cairo-Transformations.html
+Mac:
+https://developer.apple.com/library/mac/#documentation/Cocoa/Reference/Foundation/Classes/NSAffineTransform_Class/Reference/Reference.html
+
+ContextBackendHandler Mac:
+public void Scale (object backend, double scaleX, double scaleY)
+		{
+			GetContext (backend);
+			NSAffineTransform t = new NSAffineTransform ();
+			t.Scale ((float)scaleX,(float)scaleY);
+			t.Concat ();
+		}

@@ -37,7 +37,7 @@ namespace Limaki.View.UI {
 
         public abstract void DataChanged();
 
-        protected Size _size = Xwt.Size.Zero;
+        protected Size _size = Size.Zero;
         public virtual Size Size {
             get { return _size; }
             set { _size = value; }

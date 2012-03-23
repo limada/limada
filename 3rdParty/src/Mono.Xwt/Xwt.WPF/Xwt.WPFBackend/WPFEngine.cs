@@ -4,9 +4,11 @@
 // Author:
 //       Carlos Alberto Cortez <calberto.cortez@gmail.com>
 //       Luis Reis <luiscubal@gmail.com>
+//       Thomas Ziegler <ziegler.thomas@web.de>
 // 
 // Copyright (c) 2011 Carlos Alberto Cortez
 // Copyright (c) 2012 Luís Reis
+// Copyright (c) 2012 Thomas Ziegler
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -38,31 +40,49 @@ namespace Xwt.WPFBackend
 	{
 		System.Windows.Application application;
 
-		public override void InitializeApplication ()
-		{
-			application = new System.Windows.Application ();
-
-		    RegisterBackends();
-		}
-
-        public void RegisterBackends() {
-            WidgetRegistry.RegisterBackend(typeof(Window), typeof(WindowBackend));
-            WidgetRegistry.RegisterBackend(typeof(Menu), typeof(MenuBackend));
-            WidgetRegistry.RegisterBackend(typeof(MenuItem), typeof(MenuItemBackend));
-            WidgetRegistry.RegisterBackend(typeof(Box), typeof(BoxBackend));
-            WidgetRegistry.RegisterBackend(typeof(Label), typeof(LabelBackend));
-            WidgetRegistry.RegisterBackend(typeof(TextEntry), typeof(TextEntryBackend));
-            WidgetRegistry.RegisterBackend(typeof(Button), typeof(ButtonBackend));
-            WidgetRegistry.RegisterBackend(typeof(ToggleButton), typeof(ToggleButtonBackend));
-            WidgetRegistry.RegisterBackend(typeof(TreeView), typeof(TreeViewBackend));
-            WidgetRegistry.RegisterBackend(typeof(TreeStore), typeof(TreeStoreBackend));
-            WidgetRegistry.RegisterBackend(typeof(ImageView), typeof(ImageViewBackend));
-
-            WidgetRegistry.RegisterBackend(typeof(Image), typeof(ImageHandler));
-            WidgetRegistry.RegisterBackend(typeof(Font), typeof(FontBackendHandler));
+        public override void InitializeApplication () {
+            application = new System.Windows.Application ();
+            RegisterBackends();
         }
 
-	    public override void RunApplication ()
+        public virtual void RegisterBackends () {
+            WidgetRegistry.RegisterBackend (typeof (Window), typeof (WindowBackend));
+            WidgetRegistry.RegisterBackend (typeof (Notebook), typeof (NotebookBackend));
+            WidgetRegistry.RegisterBackend (typeof (Menu), typeof (MenuBackend));
+            WidgetRegistry.RegisterBackend (typeof (MenuItem), typeof (MenuItemBackend));
+            WidgetRegistry.RegisterBackend (typeof (Table), typeof (BoxBackend));
+            WidgetRegistry.RegisterBackend (typeof (Box), typeof (BoxBackend));
+			WidgetRegistry.RegisterBackend (typeof (Label), typeof (LabelBackend));
+			WidgetRegistry.RegisterBackend (typeof (TextEntry), typeof (TextEntryBackend));
+			WidgetRegistry.RegisterBackend (typeof (Button), typeof (ButtonBackend));
+			WidgetRegistry.RegisterBackend (typeof (ToggleButton), typeof (ToggleButtonBackend));
+			WidgetRegistry.RegisterBackend (typeof (CheckBox), typeof (CheckBoxBackend));
+			WidgetRegistry.RegisterBackend (typeof (TreeView), typeof (TreeViewBackend));
+			WidgetRegistry.RegisterBackend (typeof (TreeStore), typeof (TreeStoreBackend));
+			WidgetRegistry.RegisterBackend (typeof (ImageView), typeof (ImageViewBackend));
+			WidgetRegistry.RegisterBackend (typeof (Separator), typeof (SeparatorBackend));
+			WidgetRegistry.RegisterBackend (typeof (Image), typeof (ImageHandler));
+			WidgetRegistry.RegisterBackend (typeof (Font), typeof (FontBackendHandler));
+			WidgetRegistry.RegisterBackend (typeof (Clipboard), typeof (ClipboardBackend));
+			WidgetRegistry.RegisterBackend (typeof (ComboBox), typeof (ComboBoxBackend));
+			WidgetRegistry.RegisterBackend (typeof (ComboBoxEntry), typeof (ComboBoxEntryBackend));
+			WidgetRegistry.RegisterBackend (typeof (ScrollView), typeof (ScrollViewBackend));
+			WidgetRegistry.RegisterBackend (typeof (Frame), typeof (FrameBackend));
+			WidgetRegistry.RegisterBackend (typeof (Canvas), typeof (CanvasBackend));
+			WidgetRegistry.RegisterBackend (typeof (Context), typeof (ContextBackendHandler));
+			WidgetRegistry.RegisterBackend (typeof (Gradient), typeof (GradientBackendHandler));
+			WidgetRegistry.RegisterBackend (typeof (TextLayout), typeof (TextLayoutBackendHandler));
+			WidgetRegistry.RegisterBackend (typeof (Widget), typeof (CustomWidgetBackend));
+			WidgetRegistry.RegisterBackend (typeof (Paned), typeof (PanedBackend));
+			WidgetRegistry.RegisterBackend (typeof (ScrollAdjustment), typeof (ScrollAdjustmentBackend));
+			WidgetRegistry.RegisterBackend (typeof (OpenFileDialog), typeof (OpenFileDialogBackend));
+			WidgetRegistry.RegisterBackend (typeof (SelectFolderDialog), typeof (SelectFolderDialogBackend));
+			WidgetRegistry.RegisterBackend (typeof (IAlertDialogBackend), typeof (AlertDialogBackend));
+			WidgetRegistry.RegisterBackend (typeof (ImageBuilder), typeof (ImageBuilderBackendHandler));
+			WidgetRegistry.RegisterBackend (typeof (ImagePattern), typeof (ImagePatternBackendHandler));
+		}
+
+		public override void RunApplication ()
 		{
 			application.Run ();
 		}
@@ -82,12 +102,18 @@ namespace Xwt.WPFBackend
 
 		public override object TimerInvoke (Func<bool> action, TimeSpan timeSpan)
 		{
-			throw new NotImplementedException();
+			if (action == null)
+				throw new ArgumentNullException ("action");
+
+			return Timeout.Add (action, timeSpan, application.Dispatcher);
 		}
 
 		public override void CancelTimerInvoke (object id)
 		{
-			throw new NotImplementedException ();
+			if (id == null)
+				throw new ArgumentNullException ("id");
+
+			Timeout.CancelTimeout ((uint)id);
 		}
 
 		public override IWindowFrameBackend GetBackendForWindow (object nativeWindow)
@@ -114,8 +140,6 @@ namespace Xwt.WPFBackend
 
 			return null;
 		}
-
-        
-    }
+	}
 }
 

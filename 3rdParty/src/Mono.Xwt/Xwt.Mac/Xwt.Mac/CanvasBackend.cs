@@ -61,15 +61,14 @@ namespace Xwt.Mac
 			view.NeedsToDraw (new System.Drawing.RectangleF ((float)rect.X, (float)rect.Y, (float)rect.Width, (float)rect.Height));
 		}
 		
-		public void OnPreferredSizeChanged ()
-		{
-			
-		}
-		
-		public void AddChild (IWidgetBackend widget)
+		public void AddChild (IWidgetBackend widget, Rectangle rect)
 		{
 			var v = GetWidget (widget);
 			view.AddSubview (v);
+			
+			// Not using SetWidgetBounds because the view is flipped
+			v.Frame = new System.Drawing.RectangleF ((float)rect.X, (float)rect.Y, (float)rect.Width, (float)rect.Height);;
+			v.NeedsDisplay = true;
 		}
 		
 		public void RemoveChild (IWidgetBackend widget)
@@ -88,7 +87,7 @@ namespace Xwt.Mac
 		}
 	}
 	
-	class CanvasView: NSView, IViewObject<NSView>
+	class CanvasView: NSView, IViewObject
 	{
 		ICanvasEventSink eventSink;
 		
@@ -112,7 +111,7 @@ namespace Xwt.Mac
 		public override void DrawRect (System.Drawing.RectangleF dirtyRect)
 		{
 			Toolkit.Invoke (delegate {
-				eventSink.OnDraw (null);
+				eventSink.OnDraw (new ContextInfo ());
 			});
 		}
 		

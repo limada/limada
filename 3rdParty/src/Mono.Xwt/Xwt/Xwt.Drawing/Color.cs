@@ -33,9 +33,6 @@ namespace Xwt.Drawing
 		double r, g, b, a;
 		HslColor hsl;
 		
-		public static Color Black = new Color (0, 0, 0);
-		public static Color White = new Color (1, 1, 1);
-		
 		public double Red {
 			get { return r; }
 			set { r = Normalize (value); hsl = null; }
@@ -155,15 +152,12 @@ namespace Xwt.Drawing
 		{
 			if (amount < 0 || amount > 1)
 				throw new ArgumentException ("Blend amount must be between 0 and 1");
-			return new Color (BlendValue (r, target.r, amount), BlendValue (g, target.g, amount), BlendValue (b, target.b, amount));
+			return new Color (BlendValue (r, target.r, amount), BlendValue (g, target.g, amount), BlendValue (b, target.b, amount), target.Alpha);
 		}
 		
 		double BlendValue (double s, double t, double amount)
 		{
-			if (t > s)
-				return s + (t - s) * amount;
-			else
-				return t + (s - t) * amount;
+			return s + (t - s) * amount;
 		}
 	
 		public static Color FromBytes (byte red, byte green, byte blue)
@@ -206,7 +200,7 @@ namespace Xwt.Drawing
 		{
 			uint val;
 			if (!TryParseColourFromHex (name, out val)) {
-				color = Color.White;
+				color = Colors.White;
 				return false;
 			}
 			color = Color.FromBytes ((byte)(val >> 24), (byte)((val >> 16) & 0xff), (byte)((val >> 8) & 0xff), (byte)(val & 0xff));
@@ -253,6 +247,11 @@ namespace Xwt.Drawing
 		public override int GetHashCode ()
 		{
 			return r.GetHashCode () ^ g.GetHashCode () ^ b.GetHashCode () ^ a.GetHashCode ();
+		}
+		
+		public override string ToString ()
+		{
+			return string.Format ("[Color: Red={0}, Green={1}, Blue={2}, Alpha={3}]", Red, Green, Blue, Alpha);
 		}
 	}
 }

@@ -131,5 +131,10 @@ namespace Xwt.WinformBackend {
                 eventSink.OnBoundsChanged(Bounds);
             });
         }
+
+
+        public void Dispose () {
+            throw new NotImplementedException ();
+        }
     }
 }

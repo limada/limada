@@ -112,7 +112,9 @@ namespace Xwt.Gdi {
         public static Size ToXwt (this SizeF value) {
             return new Size (value.Width, value.Height);
         }
-
+        public static Size ToXwt(this System.Drawing.Size value) {
+            return new Size(value.Width, value.Height);
+        }
         public static System.Drawing.StringFormat GetDefaultStringFormat() {
             var stringFormat =
                 StringFormat.GenericTypographic;
@@ -134,6 +136,8 @@ namespace Xwt.Gdi {
             public SmoothingMode SmoothingMode { get; set; }
 
             public System.Drawing.Text.TextRenderingHint TextRenderingHint { get; set; }
+
+            public PixelOffsetMode PixelOffsetMode { get; set; }
         }
 
         public static GraphicsQuality DrawHighQuality {
@@ -141,7 +145,21 @@ namespace Xwt.Gdi {
                 return new GraphicsQuality {
                     InterpolationMode = InterpolationMode.HighQualityBilinear,
                     CompositingMode = CompositingMode.SourceOver,
-                    CompositingQuality = CompositingQuality.HighQuality
+                    CompositingQuality = CompositingQuality.HighQuality,
+                    PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality
+                };
+            }
+        }
+        public static GraphicsQuality DrawTextHighQuality {
+            get {
+                return new GraphicsQuality {
+                    InterpolationMode = InterpolationMode.NearestNeighbor,
+                    CompositingMode = CompositingMode.SourceOver,
+                    CompositingQuality = CompositingQuality.HighQuality,
+                    PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality,
+                    SmoothingMode = SmoothingMode.HighQuality,
+                    TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit,
+                  
                 };
             }
         }
@@ -153,6 +171,7 @@ namespace Xwt.Gdi {
                     CompositingQuality = CompositingQuality.AssumeLinear,
                     SmoothingMode = SmoothingMode.AntiAlias,
                     TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit,
+                    PixelOffsetMode=System.Drawing.Drawing2D.PixelOffsetMode.HighQuality
                 };
             }
         }
@@ -161,7 +180,8 @@ namespace Xwt.Gdi {
                 return new GraphicsQuality {
                     InterpolationMode = InterpolationMode.HighQualityBilinear,
                     CompositingMode = CompositingMode.SourceCopy,
-                    CompositingQuality = CompositingQuality.HighQuality
+                    CompositingQuality = CompositingQuality.HighQuality,
+                    PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality
                 };
             }
         }
@@ -171,7 +191,8 @@ namespace Xwt.Gdi {
                 CompositingMode = g.CompositingMode,
                 CompositingQuality = g.CompositingQuality,
                 SmoothingMode = g.SmoothingMode,
-                TextRenderingHint = g.TextRenderingHint
+                TextRenderingHint = g.TextRenderingHint,
+                PixelOffsetMode = g.PixelOffsetMode
             };
             if (true) {
                 g.InterpolationMode = quality.InterpolationMode;
@@ -179,6 +200,7 @@ namespace Xwt.Gdi {
                 g.CompositingQuality = quality.CompositingQuality;
                 g.SmoothingMode = quality.SmoothingMode;
                 g.TextRenderingHint = quality.TextRenderingHint;
+                g.PixelOffsetMode = quality.PixelOffsetMode;
             }
             return result;
         }

@@ -36,6 +36,7 @@ namespace Xwt.Mac
 		IListDataSource source;
 		ComboDataSource tsource;
 		TextEntryBackend entryBackend;
+		int textColumn;
 		
 		public ComboBoxEntryBackend ()
 		{
@@ -67,6 +68,7 @@ namespace Xwt.Mac
 		{
 			this.source = source;
 			tsource = new ComboDataSource (source);
+			tsource.TextColumn = textColumn;
 			Widget.UsesDataSource = true;
 			Widget.DataSource = tsource;
 		}
@@ -79,10 +81,17 @@ namespace Xwt.Mac
 				Widget.SelectItem (value);
 			}
 		}
+		
+		public void SetTextColumn (int column)
+		{
+			textColumn = column;
+			if (tsource != null)
+				tsource.TextColumn = column;
+		}
 		#endregion
 	}
 	
-	class MacComboBox: NSComboBox, IViewObject<NSComboBox>, IViewObject<NSTextField>
+	class MacComboBox: NSComboBox, IViewObject
 	{
 		IComboBoxEventSink eventSink;
 		ITextEntryEventSink entryEventSink;
@@ -97,24 +106,13 @@ namespace Xwt.Mac
 			this.entryEventSink = entryEventSink;
 		}
 		
-		#region IViewObject implementation
-		NSComboBox IViewObject<NSComboBox>.View {
+		public NSView View {
 			get {
 				return this;
 			}
 		}
 
 		public Widget Frontend { get; set; }
-		
-		#endregion
-
-		#region IViewObject implementation
-		NSTextField IViewObject<NSTextField>.View {
-			get {
-				return this;
-			}
-		}
-		#endregion
 		
 		public override void DidChange (MonoMac.Foundation.NSNotification notification)
 		{
@@ -131,6 +129,8 @@ namespace Xwt.Mac
 	{
 		IListDataSource source;
 		
+		public int TextColumn;
+		
 		public ComboDataSource (IListDataSource source)
 		{
 			this.source = source;
@@ -138,7 +138,7 @@ namespace Xwt.Mac
 		
 		public override NSObject ObjectValueForItem (NSComboBox comboBox, int index)
 		{
-			return NSObject.FromObject (source.GetValue (index, 0));
+			return NSObject.FromObject (source.GetValue (index, TextColumn));
 		}
 		
 		public override int ItemCount (NSComboBox comboBox)

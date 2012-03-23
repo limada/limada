@@ -15,10 +15,7 @@ namespace Limaki.Painting {
             public void OnDraw(object context) {
                 PaintContext ctx = null;
                 try {
-                    if (context == null)
-                        ctx = new PaintContext(Parent);
-                    else
-                        ctx = new PaintContext(context);
+                    ctx = new PaintContext(context);
                     ((PaintCanvas)Parent).OnDraw(ctx);
                 } finally {
                     ctx.Dispose();
@@ -47,7 +44,7 @@ namespace Limaki.Painting {
             if (positions != null)
                 positions = new Dictionary<Widget, Rectangle>();
             var bk = (IWidgetBackend)Widget.GetBackend(w);
-            Backend.AddChild(bk);
+            Backend.AddChild(bk,rect);
             Backend.SetChildBounds(bk, rect);
             RegisterChild(w);
             OnPreferredSizeChanged();
@@ -100,7 +97,10 @@ namespace Limaki.Painting {
         }
 
         public Rectangle Bounds {
-            get { return Backend.Bounds; }
+            get {
+                var s = Size;
+                return new Rectangle (0, 0, s.Width, s.Height);
+            }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -145,9 +145,6 @@ namespace Limaki.Painting {
             return OnGetPreferredWidth();
         }
 
-        protected override void OnPreferredSizeChanged() {
-            base.OnPreferredSizeChanged();
-            Backend.OnPreferredSizeChanged();
-        }
+        
     }
 }

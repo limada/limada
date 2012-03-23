@@ -117,10 +117,14 @@
     <Compile Include="Limaki.Tests\View\Drawing\PointComparerTest.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
     <None Include="Playground\View\XwtRefactroring\[Samples]\Mac.ContextBackendHandler.cs" />
+    <Compile Include="Playground\View\XwtRefactroring\DrawingTransforms.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Playground\View\XwtRefactroring\Rectangle\Refactoring\gdiRectangleD.cs" />
     <Compile Include="Playground\View\XwtRefactroring\Rectangle\Mono.WindowBase.Rect.cs" />
     <Compile Include="Playground\View\XwtRefactroring\Rectangle\RectTest.cs" />
     <Compile Include="Playground\View\XwtRefactroring\Rectangle\TestRectangle.cs" />
+    <Compile Include="Playground\View\XwtRefactroring\ReferencePainter.cs" />
     <Compile Include="Playground\View\XwtRefactroring\SwfBackend\PaintCanvasBackend.cs" />
     <Compile Include="Playground\View\XwtRefactroring\Rectangle\Refactoring\gdiSizeD.cs" />
     <Compile Include="Playground\View\XwtRefactroring\Rectangle\Refactoring\gidPointD.cs" />

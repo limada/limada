@@ -35,6 +35,7 @@ using SWC = System.Windows.Controls;
 using SWMI = System.Windows.Media.Imaging;
 
 using Xwt.Backends;
+using Xwt.Engine;
 
 namespace Xwt.WPFBackend
 {
@@ -70,32 +71,34 @@ namespace Xwt.WPFBackend
 					Button.ClearValue (SWC.Control.BorderBrushProperty);
 					break;
 				case ButtonStyle.Flat:
-					Button.Background = SystemColors.ControlBrush;
-					Button.ClearValue (SWC.Control.BorderThicknessProperty);
-					Button.ClearValue (SWC.Control.BorderBrushProperty);
+					Button.Background = Brushes.Transparent;
+					Button.BorderBrush = Brushes.Transparent;
 					break;
 				case ButtonStyle.Borderless:
 					Button.ClearValue (SWC.Control.BackgroundProperty);
 					Button.BorderThickness = new Thickness (0);
-					Button.BorderBrush = new SolidColorBrush (Colors.Transparent);
+					Button.BorderBrush = Brushes.Transparent;
 					break;
 			}
+			Button.InvalidateMeasure ();
 		}
 
 		public void SetButtonType(ButtonType type) {
 			//TODO
+			Button.InvalidateMeasure ();
 		}
 
-		public void SetContent(string label, object imageBackend, ContentPosition position) {
+		public void SetContent (string label, object imageBackend, ContentPosition position)
+		{
 			if (imageBackend == null)
-			{
 				Button.Content = label;
-			}
+			else if (String.IsNullOrEmpty (label))
+				Button.Content = new SWC.Image { Source = DataConverter.AsImageSource (imageBackend) };
 			else
 			{
 				SWC.DockPanel grid = new SWC.DockPanel ();
 
-				var img = (SWMI.BitmapSource)imageBackend;
+				var img = DataConverter.AsImageSource (imageBackend);
 				SWC.Image imageCtrl = new SWC.Image
 				{
 					Source = img,
@@ -112,6 +115,7 @@ namespace Xwt.WPFBackend
 
 				Button.Content = grid;
 			}
+			Button.InvalidateMeasure ();
 		}
 
 		public override void EnableEvent (object eventId)
@@ -140,7 +144,7 @@ namespace Xwt.WPFBackend
 
 		void HandleWidgetClicked (object sender, EventArgs e)
 		{
-			EventSink.OnClicked ();
+			Toolkit.Invoke (EventSink.OnClicked);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -19,7 +19,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,7 +27,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -54,9 +52,7 @@
     <Compile Include="Xwt.GtkBackend\TreeViewBackend.cs" />
     <Compile Include="Xwt.GtkBackend.CellViews\CellUtil.cs" />
     <Compile Include="Xwt.GtkBackend\ImageHandler.cs" />
-    <Compile Include="Xwt.GtkBackend\ContextBackendHandler.cs" />
     <Compile Include="Xwt.GtkBackend\CanvasBackend.cs" />
-    <Compile Include="Xwt.GtkBackend\GradientBackendHandler.cs" />
     <Compile Include="Xwt.GtkBackend\Util.cs" />
     <Compile Include="Xwt.GtkBackend\TextLayoutBackendHandler.cs" />
     <Compile Include="Xwt.GtkBackend\FontBackendHandler.cs" />
@@ -95,15 +91,28 @@
     <Compile Include="Xwt.GtkBackend\CheckBoxMenuItemBackend.cs" />
     <Compile Include="Xwt.GtkBackend\RadioButtonMenuItemBackend.cs" />
     <Compile Include="Xwt.GtkBackend\SeparatorMenuItemBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\ScrollAdjustmentBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\FileDialogBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\PanedBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\SelectColorDialogBackend.cs" />
+    <Compile Include="Xwt.CairoBackend\CairoConversion.cs" />
+    <Compile Include="Xwt.CairoBackend\CairoTextLayoutBackendHandler.cs" />
+    <Compile Include="Xwt.CairoBackend\CairoContextBackendHandler.cs" />
+    <Compile Include="Xwt.GtkBackend\ContextBackendHandler.cs" />
+    <Compile Include="Xwt.CairoBackend\CairoGradientBackendHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Xwt.GtkBackend\" />
+    <Folder Include="Xwt.GtkBackend.CellViews\" />
+    <Folder Include="Xwt.CairoBackend\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Xwt.Gtk.dll.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -25,7 +25,11 @@ namespace Samples
 			file.SubMenu = new Menu ();
 			file.SubMenu.Items.Add (new MenuItem ("Open"));
 			file.SubMenu.Items.Add (new MenuItem ("New"));
-			file.SubMenu.Items.Add (new MenuItem ("Close"));
+			MenuItem mi = new MenuItem ("Close");
+			mi.Clicked += delegate {
+				Application.Exit();
+			};
+			file.SubMenu.Items.Add (mi);
 			menu.Items.Add (file);
 			
 			var edit = new MenuItem ("Edit");
@@ -38,7 +42,7 @@ namespace Samples
 			MainMenu = menu;
 			
 			
-			HBox box = new HBox ();
+			HPaned box = new HPaned ();
 			
 			icon = Image.FromResource (typeof(App), "class.png");
 			
@@ -57,8 +61,11 @@ namespace Samples
 			var n = AddSample (null, "Drawing", null);
 			AddSample (n, "Canvas with Widget", typeof(CanvasWithWidget));
 			AddSample (n, "Chart", typeof(ChartSample));
-			AddSample (n, "Colors", typeof(Colors));
+			AddSample (n, "Colors", typeof(ColorsSample));
+			AddSample (n, "Figures", typeof(DrawingFigures));
 			AddSample (n, "Transformations", typeof(DrawingTransforms));
+			AddSample (n, "Images and Patterns", typeof(DrawingPatternsAndImages));
+			AddSample (n, "Text", typeof(DrawingText));
 			
 			AddSample (null, "Frames", typeof(Frames));
 			AddSample (null, "Images", typeof(Images));
@@ -66,6 +73,7 @@ namespace Samples
 			AddSample (null, "List View", typeof(ListView1));
 			AddSample (null, "Menu", typeof(MenuSamples));
 			AddSample (null, "Notebook", typeof(NotebookSample));
+			AddSample (null, "Paneds", typeof(PanedViews));
 			AddSample (null, "Scroll View", typeof(ScrollWindowSample));
 			AddSample (null, "Tables", typeof(Tables));
 			AddSample (null, "Text Entry", typeof(TextEntries));
@@ -76,13 +84,14 @@ namespace Samples
 			
 			samplesTree.DataSource = store;
 			
-			box.PackStart (samplesTree);
+			box.Panel1.Content = samplesTree;
 			
 			sampleBox = new VBox ();
 			title = new Label ("Sample:");
 			sampleBox.PackStart (title, BoxMode.None);
 			
-			box.PackStart (sampleBox, BoxMode.FillAndExpand);
+			box.Panel2.Content = sampleBox;
+			box.Panel2.Resize = true;
 			
 			Content = box;
 			
