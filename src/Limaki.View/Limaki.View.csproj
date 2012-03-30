@@ -43,6 +43,7 @@
     <Compile Include="Limaki.Context\ViewContextRecourceLoader.cs" />
     <Compile Include="Limaki.Drawing\Anchor.cs" />
     <Compile Include="Limaki.Drawing\Camera.cs" />
+    <Compile Include="Limaki.Drawing\ContextSurface.cs" />
     <Compile Include="Limaki.Drawing\DrawingExtensions.cs" />
     <Compile Include="Limaki.Drawing\DrawingPrimitivesSerializer.cs" />
     <Compile Include="Limaki.Drawing\GrahamConvexHull.cs" />

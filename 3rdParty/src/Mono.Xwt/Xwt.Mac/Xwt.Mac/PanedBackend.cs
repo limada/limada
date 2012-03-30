@@ -58,7 +58,7 @@ namespace Xwt.Mac
 			Widget.Delegate = viewDelegate;
 		}
 
-		public void SetPanel (int panel, IWidgetBackend widget, bool resize)
+		public void SetPanel (int panel, IWidgetBackend widget, bool resize, bool shrink)
 		{
 			IMacViewBackend view = (IMacViewBackend) widget;
 			Widget.AddSubview (view.View);
@@ -71,7 +71,7 @@ namespace Xwt.Mac
 			EventSink.OnPositionChanged ();
 		}
 
-		public void UpdatePanel (int panel, bool resize)
+		public void UpdatePanel (int panel, bool resize, bool shrink)
 		{
 		}
 

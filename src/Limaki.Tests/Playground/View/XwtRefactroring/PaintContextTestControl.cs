@@ -3,20 +3,20 @@ using Limaki.GDI.Painting;
 using Xwt.Drawing;
 using Xwt.Gdi.Backend;
 using System;
+using SD = System.Drawing;
 namespace Limaki.Tests.Sandbox {
 
     public class PaintContextTestControl : System.Windows.Forms.UserControl {
 
         protected override void OnPaint (System.Windows.Forms.PaintEventArgs e) {
             base.OnPaint (e);
-            var pen = new System.Drawing.Pen (System.Drawing.Color.WhiteSmoke);
-            pen.Width = 2;
+            this.BackColor = SD.Color.White;
 
             var graphics = new GdiContext { Graphics = e.Graphics };
             var painter = new PaintContext (graphics);
-
+            var context = new Xwt.Drawing.Context(graphics);
             if (true)
-                XwtSample (painter);
+                XwtSample (context);
             else
                 MySample (painter);
 
@@ -119,8 +119,7 @@ namespace Limaki.Tests.Sandbox {
         }
 
 
-        protected virtual void XwtSample (PaintContext painter) {
-            var ctx = painter.CreateContext();
+        protected virtual void XwtSample (Xwt.Drawing.Context ctx) {
             ctx.Font = Xwt.Engine.WidgetRegistry.CreateFrontend<Font>(this.Font);
 
             var p = new Samples.ReferencePainter();

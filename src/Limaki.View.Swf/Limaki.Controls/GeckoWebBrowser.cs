@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Limaki.Drawing;
 using Limaki.Viewers;
-using Skybound.Gecko;
+using Gecko;
 using System.Windows.Forms;
 using System.Threading;
 using System.Net.Sockets;
@@ -13,14 +13,15 @@ using Limaki.View;
 using System.Collections.Generic;
 
 namespace Limaki.ThirdPartyWrappers {
-    public class GeckoWebBrowser:Skybound.Gecko.GeckoWebBrowser, IWebBrowserWithProxy,
+    
+    public class GeckoWebBrowser:Gecko.GeckoWebBrowser, IWebBrowserWithProxy,
         IWebBrowser, IZoomTarget, INavigateTarget {
 
         public string XulDir(string basedir) {
             foreach (var dir in new string[]{ @"Plugins\",@"..\3rdParty\bin\"}) {
                 var s = dir;
                 for (int i = 0; i <= 6; i++) {
-                    var xuldir = basedir + s + @"xulrunner";
+                    var xuldir = basedir + s + @"xulrunner11.0";
                     if (Directory.Exists(xuldir))
                         return xuldir;
                     s = @"..\" + s;
@@ -35,7 +36,7 @@ namespace Limaki.ThirdPartyWrappers {
                 throw new ArgumentException("xulrunner is missing");
             Xpcom.Initialize(xulDir);
 
-            this.DomKeyUp += new GeckoDomKeyEventHandler(GeckoWebBrowser_DomKeyUp);
+            this.DomKeyUp += new EventHandler<GeckoDomKeyEventArgs>(GeckoWebBrowser_DomKeyUp);
         }
 
         void GeckoWebBrowser_DomKeyUp(object sender, GeckoDomKeyEventArgs e) {
@@ -47,8 +48,6 @@ namespace Limaki.ThirdPartyWrappers {
                 ZoomFactor = ZoomFactor / 1.1f;
             }
         }
-
-
 
 
         #region IWebBrowser Member
@@ -113,7 +112,7 @@ namespace Limaki.ThirdPartyWrappers {
                 Thread.Sleep(5);
             }
 
-            base.Document.DocumentElement.InnerHtml = content;
+            //base.Document.DocumentElement.InnerHtml = content;
 
             //does nothing: base.Document.TextContent = content;
         }
@@ -267,8 +266,6 @@ namespace Limaki.ThirdPartyWrappers {
         protected override void Dispose(bool disposing) {
             base.Dispose(disposing);
         }
-
-
 
         #region IWebBrowserWithProxy Members
 

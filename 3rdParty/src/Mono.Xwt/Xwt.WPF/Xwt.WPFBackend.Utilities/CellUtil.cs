@@ -28,6 +28,7 @@
 
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using SWC = System.Windows.Controls;
 using SWM = System.Windows.Media;
@@ -53,6 +54,9 @@ namespace Xwt.WPFBackend.Utilities
 				DataField field = ((ImageCellView)view).ImageField;
 				int index = field.Index;
 				SWM.ImageSource image = (SWM.ImageSource) WidgetRegistry.GetBackend(node.Values[index]);
+				if (image == null)
+					return null;
+
 				SWC.Image imageCtrl = new SWC.Image
 				{
 					Source = image,
@@ -62,6 +66,21 @@ namespace Xwt.WPFBackend.Utilities
 				return imageCtrl;
 			}
 			throw new NotImplementedException ();
+		}
+
+		internal static FrameworkElementFactory CreateBoundColumnTemplate (ListViewColumn column)
+		{
+			if (column.Views.Count == 1)
+				return CreateBoundCellRenderer (column.Views [0]);
+			
+			FrameworkElementFactory container = new FrameworkElementFactory (typeof (StackPanel));
+			container.SetValue (StackPanel.OrientationProperty, Orientation.Horizontal);
+
+			foreach (CellView view in column.Views) {
+				container.AppendChild (CreateBoundCellRenderer (view));
+			}
+
+			return container;
 		}
 
 		internal static FrameworkElementFactory CreateBoundCellRenderer (CellView view)
@@ -88,7 +107,6 @@ namespace Xwt.WPFBackend.Utilities
 
 					factory.SetBinding (SWC.Image.SourceProperty, binding);
 				}
-					
 
 				return factory;
 			}

@@ -1,0 +1,8 @@
+﻿[2012-03-28]
+initial classes to implement Xwt.Drawing over Html5.Canvas:
+
+ContextBackendHandler
+FontBackendHandler
+TextLayoutBackendHandler
+
+and needed co-classes

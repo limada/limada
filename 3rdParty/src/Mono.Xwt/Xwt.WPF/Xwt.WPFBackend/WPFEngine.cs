@@ -40,22 +40,27 @@ namespace Xwt.WPFBackend
 	{
 		System.Windows.Application application;
 
-        public override void InitializeApplication () {
-            application = new System.Windows.Application ();
-            RegisterBackends();
+		public override void InitializeApplication ()
+		{
+			application = new System.Windows.Application ();
+		    RegisterBackends();
         }
-
-        public virtual void RegisterBackends () {
-            WidgetRegistry.RegisterBackend (typeof (Window), typeof (WindowBackend));
-            WidgetRegistry.RegisterBackend (typeof (Notebook), typeof (NotebookBackend));
-            WidgetRegistry.RegisterBackend (typeof (Menu), typeof (MenuBackend));
-            WidgetRegistry.RegisterBackend (typeof (MenuItem), typeof (MenuItemBackend));
-            WidgetRegistry.RegisterBackend (typeof (Table), typeof (BoxBackend));
-            WidgetRegistry.RegisterBackend (typeof (Box), typeof (BoxBackend));
+        public virtual void RegisterBackends() {
+			WidgetRegistry.RegisterBackend (typeof (Window), typeof (WindowBackend));
+			WidgetRegistry.RegisterBackend (typeof (Dialog), typeof (DialogBackend));
+			WidgetRegistry.RegisterBackend (typeof (Notebook), typeof (NotebookBackend));
+			WidgetRegistry.RegisterBackend (typeof (Menu), typeof (MenuBackend));
+			WidgetRegistry.RegisterBackend (typeof (MenuItem), typeof (MenuItemBackend));
+			WidgetRegistry.RegisterBackend (typeof (CheckBoxMenuItem), typeof (CheckboxMenuItemBackend));
+			WidgetRegistry.RegisterBackend (typeof (RadioButtonMenuItem), typeof (RadioButtonMenuItemBackend));
+			WidgetRegistry.RegisterBackend (typeof (SeparatorMenuItem), typeof (SeparatorMenuItemBackend));
+			WidgetRegistry.RegisterBackend (typeof (Table), typeof (BoxBackend));
+			WidgetRegistry.RegisterBackend (typeof (Box), typeof (BoxBackend));
 			WidgetRegistry.RegisterBackend (typeof (Label), typeof (LabelBackend));
 			WidgetRegistry.RegisterBackend (typeof (TextEntry), typeof (TextEntryBackend));
 			WidgetRegistry.RegisterBackend (typeof (Button), typeof (ButtonBackend));
 			WidgetRegistry.RegisterBackend (typeof (ToggleButton), typeof (ToggleButtonBackend));
+			WidgetRegistry.RegisterBackend (typeof (MenuButton), typeof (MenuButtonBackend));
 			WidgetRegistry.RegisterBackend (typeof (CheckBox), typeof (CheckBoxBackend));
 			WidgetRegistry.RegisterBackend (typeof (TreeView), typeof (TreeViewBackend));
 			WidgetRegistry.RegisterBackend (typeof (TreeStore), typeof (TreeStoreBackend));
@@ -80,6 +85,7 @@ namespace Xwt.WPFBackend
 			WidgetRegistry.RegisterBackend (typeof (IAlertDialogBackend), typeof (AlertDialogBackend));
 			WidgetRegistry.RegisterBackend (typeof (ImageBuilder), typeof (ImageBuilderBackendHandler));
 			WidgetRegistry.RegisterBackend (typeof (ImagePattern), typeof (ImagePatternBackendHandler));
+			WidgetRegistry.RegisterBackend (typeof (ListView), typeof (ListViewBackend));
 		}
 
 		public override void RunApplication ()

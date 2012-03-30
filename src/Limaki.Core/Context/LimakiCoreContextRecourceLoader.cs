@@ -7,7 +7,7 @@ using Limaki.Model.Streams;
 using Limada.Model;
 using Limaki.Model.Content;
 
-namespace Limaki.Context {
+namespace Limaki.IOC {
     public class LimakiCoreContextRecourceLoader : ContextRecourceLoader {
         
         public override void ApplyResources(IApplicationContext context) {

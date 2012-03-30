@@ -34,8 +34,8 @@ namespace Xwt.Engine
 	{
 		static Dictionary<Type,Type> backendTypes = new Dictionary<Type, Type> ();
 		static Dictionary<Type,object> sharedBackends = new Dictionary<Type, object> ();
-		
-		public static T CreateBackend<T> (Type widgetType)
+
+        public static T CreateBackend<T> (Type widgetType)
 		{
 			Type bt;
 			if (!backendTypes.TryGetValue (widgetType, out bt))
@@ -45,8 +45,8 @@ namespace Xwt.Engine
 				throw new InvalidOperationException ("Invalid backend type.");
 			return (T) res;
 		}
-		
-		public static T CreateSharedBackend<T> (Type widgetType)
+
+        public static T CreateSharedBackend<T> (Type widgetType)
 		{
 			object res;
 			if (!sharedBackends.TryGetValue (widgetType, out res))
@@ -100,6 +100,15 @@ namespace Xwt.Engine
 		{
 			return backend;
 		}
+	}
+	
+	static class DefaultNaturalSizes
+	{
+		public static Size ComboBox = new Size (100, 0);
+		public static Size ListView = new Size (100, 100);
+		public static Size ScrollView = new Size (100, 100);
+		public static Size TextEntry = new Size (100, 0);
+		public static Size TreeView = new Size (100, 100);
 	}
 }
 

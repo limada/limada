@@ -39,7 +39,7 @@ namespace Xwt.WPFBackend
 {
 	public class WindowBackend : WindowFrameBackend, IWindowBackend
 	{
-		Grid rootPanel;
+		protected Grid rootPanel;
 		public System.Windows.Controls.Menu mainMenu;
 		MenuBackend mainMenuBackend;
 		FrameworkElement widget;
@@ -60,7 +60,7 @@ namespace Xwt.WPFBackend
 			var grid = new Grid ();
 
 			grid.ColumnDefinitions.Add (new ColumnDefinition ());
-
+			
 			var menuRow = new RowDefinition () { Height = GridLength.Auto }; // Only take the menu requested space.
 			var contentRow = new RowDefinition (); // Take all the remaining space (default).
 
@@ -104,7 +104,7 @@ namespace Xwt.WPFBackend
 
 			var m = new System.Windows.Controls.Menu ();
 			foreach (var item in menuBackend.Items)
-				m.Items.Add (item.MenuItem);
+				m.Items.Add (item.Item);
 
 			Grid.SetColumn (m, 0);
 			Grid.SetRow (m, 0);
@@ -120,6 +120,13 @@ namespace Xwt.WPFBackend
 			padding = new Thickness (left, top, right, bottom);
 			if (widget != null)
 				widget.Margin = padding;
+		}
+
+		public virtual void SetMinSize (Size s)
+		{
+			var r = ToNonClientRect (new Rectangle (0, 0, s.Width, s.Height));
+			Window.MinHeight = r.Height;
+			Window.MinWidth = r.Width;
 		}
 	}
 }

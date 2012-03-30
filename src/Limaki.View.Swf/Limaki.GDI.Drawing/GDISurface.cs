@@ -13,10 +13,37 @@
  */
 
 
-using System.Drawing;
+using SD = System.Drawing;
+using Xwt.Drawing;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.GDI {
-    public struct GDISurface:ISurface {
-        public Graphics Graphics {get;set;}
+
+    public class GDISurface : ContextSurface {
+        SD.Graphics _graphics = null;
+
+        public SD.Graphics Graphics {
+            get { return _graphics; }
+            set {
+                if (_graphics != value) {
+                    _graphics = value;
+                    if (base.Context != null)
+                        base.Context.Dispose ();
+                }
+            }
+        }
+
+        public override Context Context {
+            get {
+                if (base.Context == null) {
+                    var ctx = new GdiContext { Graphics = this.Graphics };
+                    base.Context = new Xwt.Drawing.Context (ctx);
+                }
+                return base.Context;
+            }
+            protected set {
+                base.Context = value;
+            }
+        }
     }
 }

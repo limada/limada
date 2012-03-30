@@ -39,6 +39,11 @@ namespace Xwt
 			{
 				((ScrollView)Parent).OnVisibleRectChanged (EventArgs.Empty);
 			}
+			
+			public override Size GetDefaultNaturalSize ()
+			{
+				return Xwt.Engine.DefaultNaturalSizes.ScrollView;
+			}
 		}
 		
 		protected override Widget.EventSink CreateEventSink ()
@@ -69,6 +74,23 @@ namespace Xwt
 					RegisterChild (child);
 				Backend.SetChild ((IWidgetBackend)GetBackend (child));
 				OnPreferredSizeChanged ();
+			}
+		}
+		
+		protected override void OnReallocate ()
+		{
+			base.OnReallocate ();
+			if (child != null && !child.SupportsCustomScrolling) {
+				var ws = (IWidgetSurface) child;
+				if (ws.SizeRequestMode == SizeRequestMode.HeightForWidth) {
+					var w = ws.GetPreferredWidth ();
+					var h = ws.GetPreferredHeightForWidth (w.NaturalSize);
+					Backend.SetChildSize (new Size (w.NaturalSize, h.NaturalSize));
+				} else {
+					var h = ws.GetPreferredHeight ();
+					var w = ws.GetPreferredWidthForHeight (h.NaturalSize);
+					Backend.SetChildSize (new Size (w.NaturalSize, h.NaturalSize));
+				}
 			}
 		}
 		

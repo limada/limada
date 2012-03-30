@@ -243,17 +243,14 @@ namespace Xwt.Gdi.Backend {
                 matrix.Elements[0] != 1 && matrix.Elements[3] != 1 &&
                 matrix.Elements[1] != 0 && matrix.Elements[2] != 0;
         }
-        public GraphicsPath TextLayoutPath (Xwt.Drawing.TextLayout layout, float x, float y) {
-  
-            var tl = (TextLayoutBackend) Xwt.Engine.WidgetRegistry.GetBackend (layout);
-            var font = tl.Font.ToGdi ();
-            var size = layout.GetSize();
-            var rect = new System.Drawing.RectangleF ((float) x, (float) y, (float) layout.Width, (float) size.Height);
-            var fs = (int)(font.SizeInPoints * this.Graphics.DpiY / 72);
-            var path = new GraphicsPath();
-            path.AddString (tl.Text, font.FontFamily, (int) font.Style, fs, rect, tl.Format);
+
+        public GraphicsPath TextLayoutPath (Font font, Action<GraphicsPath, int> addString) {
+
+            var fs = (int) (font.SizeInPoints * this.Graphics.DpiY / 72);
+            var path = new GraphicsPath ();
+            addString (path, fs);
             if (_matrix != null && !_matrix.IsIdentity)
-                path.Transform(Matrix);
+                path.Transform (Matrix);
             return path;
 
         }

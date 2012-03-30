@@ -82,7 +82,7 @@ namespace Xwt.WPFBackend
 
 		public void SetSource (IListDataSource source, IBackend sourceBackend)
 		{
-			ComboBox.ItemsSource = new DataSourceNotifyWrapper (source);
+			ComboBox.ItemsSource = new ListSourceNotifyWrapper (source);
 		}
 
 		public int SelectedRow
@@ -131,7 +131,7 @@ namespace Xwt.WPFBackend
 
 		private void OnSelectionChanged (object sender, SelectionChangedEventArgs e)
 		{
-			ComboBoxEventSink.OnSelectionChanged();
+			Xwt.Engine.Toolkit.Invoke (ComboBoxEventSink.OnSelectionChanged);
 		}
 
 		private DataTemplate GetDataTemplate (IList<CellView> views)

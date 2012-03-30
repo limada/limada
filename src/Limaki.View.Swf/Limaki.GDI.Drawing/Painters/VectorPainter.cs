@@ -18,42 +18,27 @@ using Limaki.Drawing.Shapes;
 using GDIPen=Limaki.Drawing.GDI.GDIPen;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class VectorPainter:Painter<Vector>,IPainter<IVectorShape,Vector> {
-        SolidBrush _brush = null;
-        SolidBrush GetSolidBrush(System.Drawing.Color color) {
-            if ((_brush != null) && (_brush.Color == color)) {
-                return _brush;
+    public class VectorPainter:GdiPainter<Vector>,IPainter<IVectorShape,Vector> {
 
-            }
-            if (_brush != null) {
-                _brush.Dispose ();
-                _brush = null;
-            }
-            _brush = new SolidBrush(color);
-            return _brush;
+        public override void Render (ISurface surface) {
+            RenderGdi (surface);
         }
-
-        public override void Render( ISurface surface ) {
+        public override void RenderGdi( ISurface surface ) {
             if ((RenderType.Draw & RenderType) != 0) {
                 Graphics g = ((GDISurface)surface).Graphics;
                 Vector v = Shape.Data;
-                System.Drawing.Pen pen = ( (GDIPen) Style.Pen ).Native;
+                System.Drawing.Pen pen = ( (GDIPen) Style.Pen ).Backend;
                 g.DrawLine(
                     pen, 
                     GDIConverter.Convert(v.Start),
                     GDIConverter.Convert(v.End));
             }
-
-
         }
-        public override void Dispose(bool disposing) {
-            base.Dispose(disposing);
-            if (disposing) {
-                if (_brush != null) {
-                    _brush.Dispose();
-                    _brush = null;
-                }   
-            }
+
+        public override void RenderXwt (ISurface surface) {
+            throw new System.NotImplementedException ();
         }
+
+        
     }
 }

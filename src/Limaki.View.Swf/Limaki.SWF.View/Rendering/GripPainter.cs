@@ -27,8 +27,7 @@ namespace Limaki.View.Winform {
     /// </summary>
     public class GripPainter : GripPainterBase {
         public override void Render( ISurface surface ) {
-            System.Drawing.Graphics g = ((GDISurface)surface).Graphics;
-           
+            var g = ((GDISurface)surface).Graphics;
             
             Shape.Size = new Size(GripSize, GripSize);
             innerPainter.Style = this.Style;
@@ -38,7 +37,7 @@ namespace Limaki.View.Winform {
             var clipBounds = //RectangleI.Ceiling(
                 GDIConverter.Convert(g.ClipBounds);
             // get near:
-            Camera camera = new Camera(this.Camera.Matrice);
+            var camera = new Camera(this.Camera.Matrice);
 
             foreach (Anchor anchor in Grips) {
                 var anchorPoint = TargetShape[anchor];

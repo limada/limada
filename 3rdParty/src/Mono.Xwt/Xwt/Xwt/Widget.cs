@@ -207,6 +207,17 @@ namespace Xwt
 			{
 				Parent.OnBoundsChanged ();
 			}
+			
+			/// <summary>
+			/// Gets the default natural size for this type of widget
+			/// </summary>
+			/// <returns>
+			/// The default natural size.
+			/// </returns>
+			public virtual Size GetDefaultNaturalSize ()
+			{
+				return new Size (0, 0);
+			}
 		}
 		
 		public Widget ()
@@ -234,6 +245,10 @@ namespace Xwt
 			MapEvent (WidgetEvent.MouseMoved, typeof(Widget), "OnMouseMoved");
 			MapEvent (WidgetEvent.DragStarted, typeof(Widget), "OnDragStarted");
 			MapEvent (WidgetEvent.BoundsChanged, typeof(Widget), "OnBoundsChanged");
+			MapEvent (WidgetEvent.PreferredHeightCheck, typeof (Widget), "OnGetPreferredHeight");
+			MapEvent (WidgetEvent.PreferredWidthCheck, typeof (Widget), "OnGetPreferredWidth");
+			MapEvent (WidgetEvent.PreferredHeightForWidthCheck, typeof (Widget), "OnGetPreferredHeightForWidth");
+			MapEvent (WidgetEvent.PreferredWidthForHeightCheck, typeof (Widget), "OnGetPreferredWidthForHeight");
 		}
 		
 		protected override void Dispose (bool disposing)
@@ -545,7 +560,7 @@ namespace Xwt
 			Backend.SetDragSource (types.Select (t => TransferDataType.FromType (t)).ToArray(), dragAction);
 		}
 		
-		protected virtual bool SupportsCustomScrolling {
+		internal protected virtual bool SupportsCustomScrolling {
 			get { return false; }
 		}
 		
@@ -950,11 +965,16 @@ namespace Xwt
 					Toolkit.QueueExitAction (DelayedResizeRequest);
 				}
 			} else if (ParentWindow is Window) {
-				resizeWindows.Add ((Window)ParentWindow);
-				if (!delayedSizeNegotiationRequested) {
-					delayedSizeNegotiationRequested = true;
-					Toolkit.QueueExitAction (DelayedResizeRequest);
-				}
+				QueueWindowSizeNegotiation ((Window)ParentWindow);
+			}
+		}
+
+		internal static void QueueWindowSizeNegotiation (Window window)
+		{
+			resizeWindows.Add ((Window)window);
+			if (!delayedSizeNegotiationRequested) {
+				delayedSizeNegotiationRequested = true;
+				Toolkit.QueueExitAction (DelayedResizeRequest);
 			}
 		}
 		
@@ -983,7 +1003,7 @@ namespace Xwt
 			}
 		}
 		
-		void DelayedResizeRequest ()
+		static void DelayedResizeRequest ()
 		{
 			// First of all, query the preferred size for those
 			// widgets that were changed

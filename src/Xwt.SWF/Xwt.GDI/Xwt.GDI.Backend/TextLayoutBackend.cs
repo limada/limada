@@ -25,17 +25,19 @@
 // THE SOFTWARE.
 
 using Xwt.Drawing;
-
+using SD = System.Drawing;
+using System;
 namespace Xwt.Gdi.Backend {
 
     public class TextLayoutBackend {
+
         public GdiContext Context { get; set; }
         private double _width;
         private string _text;
-        private Xwt.Drawing.Font _font;
+        private Font _font;
 
         public double Width {
-            get { return _width; } 
+            get { return _width; }
             set {
                 if (_width != value)
                     _size = null;
@@ -43,8 +45,11 @@ namespace Xwt.Gdi.Backend {
             }
         }
 
+        public double Heigth { get; set; }
+        public SD.StringTrimming Trimming { get; set; }
+
         public string Text {
-            get { return _text; } 
+            get { return _text; }
             set {
                 if (_text != value)
                     _size = null;
@@ -53,7 +58,7 @@ namespace Xwt.Gdi.Backend {
         }
 
         public Font Font {
-            get { return _font??Font.FromName("Default",10); }
+            get { return _font ?? Font.FromName ("Default", 10); }
             set {
                 if (!Xwt.Drawing.XwtDrawingExtensions.Equals (_font, value))
                     _size = null;
@@ -66,18 +71,25 @@ namespace Xwt.Gdi.Backend {
             get {
                 if (_size == null) {
                     var font = Font.ToGdi ();
-                    var size = new System.Drawing.SizeF ((float) Width, 0);
-                    _size = Context.Graphics.MeasureString (Text, font, size, Format).ToSize ().ToXwt ();
+                    var size = Context.Graphics.MeasureString (Text, font, (int) Width, Format);
+                    return new Size(Math.Ceiling(size.Width), Math.Ceiling(size.Height));
                 }
                 return _size.Value;
             }
         }
 
-        System.Drawing.StringFormat _format = null;
-        public System.Drawing.StringFormat Format {
+        SD.StringFormat _format = null;
+        public SD.StringFormat Format {
             get {
-                return _format ?? (_format = GdiConverter.GetDefaultStringFormat ());
+                if (_format == null)
+                    _format = GdiConverter.GetDefaultStringFormat ();
+                if (_format.Trimming != this.Trimming)
+                    _format.Trimming = this.Trimming;
+
+                return _format;
             }
         }
+
+
     }
 }

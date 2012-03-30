@@ -13,14 +13,14 @@ namespace Limaki.SWF.Viewers.StreamViewers {
         public static bool GeckoFailed = false ;
         public object CreateControl(object parent) {
             Control _control = null;
-            if (GeckoFailed || OS.Mono || OS.IsWin64BitOS) { //(true){ //
+            if (GeckoFailed || OS.Mono || OS.IsWin64Process) { //(true){ //
                 _control = new Limaki.Winform.Controls.WebBrowser();
                 _control.Parent = parent as Control;
                 GeckoFailed = true;
                 Trace.WriteLine("No Gecko");
             } else {
                 try {
-                    var gecko = Activator.CreateInstance("Limaki.Presenter.Winform",
+                    var gecko = Activator.CreateInstance("Limaki.View.SWF",
                                                          "Limaki.ThirdPartyWrappers.GeckoWebBrowser");
                     if (gecko !=null)
                         _control = (Control)gecko.Unwrap();

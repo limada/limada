@@ -50,20 +50,26 @@ namespace Limaki {
         public static bool IsWin64BitOS {
             get {
                 if (_isWin64BitOS == null) {
-                    if (IntPtr.Size == 8)
-                        // 64-bit programs run only on Win64           
-                        _isWin64BitOS = true;
-                    else // 32-bit programs run on both 32-bit and 64-bit Windows     
-                    {
-                        // Detect whether the current process is a 32-bit process                
-                        // running on a 64-bit system.               
-                        _isWin64BitOS = Is64BitProc(Process.GetCurrentProcess());
-                    }
+
+                    _isWin64BitOS = IsWin64Process || IsWin32on64BitProcess;
+                    
                 }
                 return _isWin64BitOS.Value;
             }
         }
+        public static bool IsWin64Process { get { return IntPtr.Size == 8; } }
+        /// <summary>
+        /// Detect whether the current process is a 32-bit process                
+        /// running on a 64-bit system.         
+        /// </summary>
+        public static bool IsWin32on64BitProcess { get {
+            if(_isWin64BitProcess==null) {
+                _isWin64BitProcess = Is64BitProc (Process.GetCurrentProcess ());
+            }
+            return _isWin64BitProcess.Value;
+        } }
 
+        protected static Nullable<bool> _isWin64BitProcess = null;
         /// <summary>  
         /// checks if the process is 64 bit  
         /// </summary>  

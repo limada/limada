@@ -27,6 +27,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -44,6 +45,17 @@ namespace Xwt.WPFBackend
 		: Backend, IWidgetBackend, IWpfWidgetBackend
 	{
 		IWidgetEventSink eventSink;
+		WidgetEvent enabledEvents;
+		DragDropEffects currentDragEffect;
+		FrameworkElement widget;
+
+		const WidgetEvent dragDropEvents = WidgetEvent.DragDropCheck | WidgetEvent.DragDrop | WidgetEvent.DragOver | WidgetEvent.DragOverCheck;
+
+		// Set to true when measuring a natural size for this widget
+		bool gettingNaturalSize;
+
+		// Set to true when calculating the default preferred size of the widget
+		bool calculatingPreferredSize;
 
 		void IWidgetBackend.Initialize (IWidgetEventSink eventSink)
 		{
@@ -78,7 +90,15 @@ namespace Xwt.WPFBackend
 			get { return Widget; }
 		}
 
-		public FrameworkElement Widget { get; set; }
+		public FrameworkElement Widget {
+			get { return widget; }
+			set
+			{
+				widget = value;
+				if (widget is IWpfWidget)
+					((IWpfWidget)widget).Backend = this;
+			}
+		}
 
 		Color? customBackgroundColor;
 
@@ -190,42 +210,169 @@ namespace Xwt.WPFBackend
 
 		public Point ConvertToScreenCoordinates (Point widgetCoordinates)
 		{
-			var p = Widget.PointToScreen (new System.Windows.Point (widgetCoordinates.X, widgetCoordinates.Y));
-			return new Point (p.X, p.Y);
+			double wratio = WidthPixelRatio;
+			double hratio = HeightPixelRatio;
+
+			var p = Widget.PointToScreen (new System.Windows.Point (
+				widgetCoordinates.X / wratio, widgetCoordinates.Y / hratio));
+
+			return new Point (p.X * wratio, p.Y * hratio);
 		}
 
-		System.Windows.Size GetWidgetDesiredSize ()
+		System.Windows.Size GetWidgetDesiredSize (double availableWidth, double availableHeight)
 		{
+			// Calculates the desired size of widget.
+
 			if (!Widget.IsMeasureValid) {
 				Widget.UpdateLayout ();
-				Widget.Measure (new System.Windows.Size (Double.PositiveInfinity, Double.PositiveInfinity));
+				try {
+					calculatingPreferredSize = true;
+					Widget.Measure (new System.Windows.Size (availableWidth, availableHeight));
+				}
+				finally {
+					calculatingPreferredSize = false;
+				}
 			}
 
 			return Widget.DesiredSize;
 		}
 
+		System.Windows.Size GetWidgetNaturalSize (double availableWidth, double availableHeight)
+		{
+			// Calculates the natural size of widget
+			// Since WPF doesn't have the concept of natural size, we use the
+			// normal size calculation, but we set gettingNaturalSize to true.
+			// The flag is checked when the size is measured in MeasureOverride
+			try {
+				gettingNaturalSize = true;
+				return GetWidgetDesiredSize (availableWidth, availableHeight);
+			}
+			finally {
+				gettingNaturalSize = false;
+			}
+		}
+
+		// The GetPreferred* methods are called when the corresponding OnGetPreferred* methods in the
+		// XWT widget are not overriden, or if they are overriden and the new implementation calls
+		// base.OnGetPreferred*. For this reason, we have to ensure that the widget's MeasureOverride
+		// method doesn't end calling the frontend OnGetPreferred* methods. To avoid it we set
+		// the calculatingPreferredSize flag to true, and we check this flag in MeasureOverride
+
 		public virtual WidgetSize GetPreferredWidth ()
 		{
-			var size = GetWidgetDesiredSize ();
-			return new WidgetSize (size.Width);
+			var size = GetWidgetDesiredSize (Double.PositiveInfinity, Double.PositiveInfinity);
+			var naturalSize = GetWidgetNaturalSize (Double.PositiveInfinity, Double.PositiveInfinity);
+			return new WidgetSize (size.Width * WidthPixelRatio, naturalSize.Width * WidthPixelRatio);
 		}
 
 		public virtual WidgetSize GetPreferredHeight ()
 		{
-			var size = GetWidgetDesiredSize ();
-			return new WidgetSize (size.Height);
+			var size = GetWidgetDesiredSize (Double.PositiveInfinity, Double.PositiveInfinity);
+			var naturalSize = GetWidgetNaturalSize (Double.PositiveInfinity, Double.PositiveInfinity);
+			return new WidgetSize (size.Height * WidthPixelRatio, naturalSize.Height * HeightPixelRatio);
 		}
 
 		public virtual WidgetSize GetPreferredWidthForHeight (double height)
 		{
-			var size = GetWidgetDesiredSize ();
-			return new WidgetSize (size.Width);
+			var size = GetWidgetDesiredSize (Double.PositiveInfinity, height);
+			var naturalSize = GetWidgetNaturalSize (Double.PositiveInfinity, height);
+			return new WidgetSize (size.Width * WidthPixelRatio, naturalSize.Width * WidthPixelRatio);
 		}
 
 		public virtual WidgetSize GetPreferredHeightForWidth (double width)
 		{
-			var size = GetWidgetDesiredSize ();
-			return new WidgetSize (size.Height);
+			var size = GetWidgetDesiredSize (width, Double.PositiveInfinity);
+			var naturalSize = GetWidgetNaturalSize (width, Double.PositiveInfinity);
+			return new WidgetSize (size.Height * HeightPixelRatio, naturalSize.Height * HeightPixelRatio);
+		}
+
+		/// <summary>
+		/// A default implementation of MeasureOverride to be used by all WPF widgets
+		/// </summary>
+		/// <param name="constraint">Size constraints</param>
+		/// <param name="wpfMeasure">Size returned by the base MeasureOverride</param>
+		/// <returns></returns>
+		public System.Windows.Size MeasureOverride (System.Windows.Size constraint, System.Windows.Size wpfMeasure)
+		{
+			// Calculate the natural size, if that's what is being measured
+
+			if (gettingNaturalSize) {
+				var defNaturalSize = eventSink.GetDefaultNaturalSize ();
+
+				// -2 means use the WPF default, -1 use the XWT default, any other other value is used as custom natural size
+				var nw = DefaultNaturalWidth;
+				if (nw == -2)
+					nw = wpfMeasure.Width;
+				else if (nw == -1) {
+					nw = defNaturalSize.Width;
+					if (nw == 0)
+						nw = wpfMeasure.Width;
+				}
+
+				var nh = DefaultNaturalHeight;
+				if (nh == -2)
+					nh = wpfMeasure.Height;
+				else if (nh == -1) {
+					nh = defNaturalSize.Height;
+					if (nh == 0)
+						nh = wpfMeasure.Height;
+				}
+			}
+
+			// If we are calculating the default preferred size of the widget we end here.
+			// See note above about when GetPreferred* methods are called.
+			if (calculatingPreferredSize)
+				return wpfMeasure;
+
+			Toolkit.Invoke (delegate
+			{
+				if (eventSink.GetSizeRequestMode () == SizeRequestMode.HeightForWidth) {
+					// Calculate the preferred width through the frontend, if there is an overriden OnGetPreferredWidth
+					if ((enabledEvents & WidgetEvent.PreferredWidthCheck) != 0) {
+						var ws = eventSink.OnGetPreferredWidth ();
+						wpfMeasure.Width = gettingNaturalSize ? ws.NaturalSize : ws.MinSize;
+					}
+
+					// Now calculate the preferred height for that width, also using the override if available
+					if ((enabledEvents & WidgetEvent.PreferredHeightForWidthCheck) != 0) {
+						var ws = eventSink.OnGetPreferredHeightForWidth (wpfMeasure.Width);
+						wpfMeasure.Height = gettingNaturalSize ? ws.NaturalSize : ws.MinSize;
+					}
+				}
+				else {
+					// Calculate the preferred height through the frontend, if there is an overriden OnGetPreferredHeight
+					if ((enabledEvents & WidgetEvent.PreferredHeightCheck) != 0) {
+						var ws = eventSink.OnGetPreferredHeight ();
+						wpfMeasure.Height = gettingNaturalSize ? ws.NaturalSize : ws.MinSize;
+					}
+
+					// Now calculate the preferred width for that height, also using the override if available
+					if ((enabledEvents & WidgetEvent.PreferredWidthForHeightCheck) != 0) {
+						var ws = eventSink.OnGetPreferredWidthForHeight (wpfMeasure.Height);
+						wpfMeasure.Width = gettingNaturalSize ? ws.NaturalSize : ws.MinSize;
+					}
+				}
+			});
+			return wpfMeasure;
+		}
+
+		/// <summary>
+		/// Natural width for the widget. It can be any arbitrary custom value, 
+		/// or -1 if the XWT defined default has to be used, 
+		/// or -2 if the WPF desired size has to be used (this is the default)
+		/// </summary>
+		protected virtual double DefaultNaturalWidth {
+			get { return -2; }
+		}
+
+		/// <summary>
+		/// Natural width for the widget. It can be any arbitrary custom value, 
+		/// or -1 if the XWT defined default has to be used, 
+		/// or -2 if the WPF desired size has to be used (this is the default)
+		/// </summary>
+		protected virtual double DefaultNaturalHeight
+		{
+			get { return -2; }
 		}
 
 		public void SetMinSize (double width, double height)
@@ -266,15 +413,8 @@ namespace Xwt.WPFBackend
 		public override void EnableEvent (object eventId)
 		{
 			if (eventId is WidgetEvent) {
-				switch ((WidgetEvent)eventId) {
-					case WidgetEvent.DragDropCheck:
-						break;
-					case WidgetEvent.DragDrop:
-						break;
-					case WidgetEvent.DragOverCheck:
-						break;
-					case WidgetEvent.DragOver:
-						break;
+				var ev = (WidgetEvent)eventId;
+				switch (ev) {
 					case WidgetEvent.DragLeave:
 						Widget.DragLeave += WidgetDragLeaveHandler;
 						break;
@@ -302,25 +442,29 @@ namespace Xwt.WPFBackend
 					case WidgetEvent.MouseExited:
 						Widget.MouseLeave += WidgetMouseExitedHandler;
 						break;
+					case WidgetEvent.MouseMoved:
+						Widget.MouseMove += WidgetMouseMoveHandler;
+						break;
 					case WidgetEvent.BoundsChanged:
 						Widget.SizeChanged += WidgetOnSizeChanged;
 						break;
 				}
+
+				if ((ev & dragDropEvents) != 0 && (enabledEvents & dragDropEvents) == 0) {
+					// Enabling a drag&drop event for the first time
+					Widget.DragOver += WidgetDragOverHandler;
+					Widget.Drop += WidgetDropHandler;
+				}
+
+				enabledEvents |= ev;
 			}
 		}
 
 		public override void DisableEvent (object eventId)
 		{
 			if (eventId is WidgetEvent) {
-				switch ((WidgetEvent)eventId) {
-					case WidgetEvent.DragDropCheck:
-						break;
-					case WidgetEvent.DragDrop:
-						break;
-					case WidgetEvent.DragOverCheck:
-						break;
-					case WidgetEvent.DragOver:
-						break;
+				var ev = (WidgetEvent)eventId;
+				switch (ev) {
 					case WidgetEvent.DragLeave:
 						Widget.DragLeave -= WidgetDragLeaveHandler;
 						break;
@@ -342,9 +486,20 @@ namespace Xwt.WPFBackend
 					case WidgetEvent.MouseExited:
 						Widget.MouseLeave -= WidgetMouseExitedHandler;
 						break;
+					case WidgetEvent.MouseMoved:
+						Widget.MouseMove -= WidgetMouseMoveHandler;
+						break;
 					case WidgetEvent.BoundsChanged:
 						Widget.SizeChanged -= WidgetOnSizeChanged;
 						break;
+				}
+
+				enabledEvents &= ~ev;
+
+				if ((ev & dragDropEvents) != 0 && (enabledEvents & dragDropEvents) == 0) {
+					// All drag&drop events have been disabled
+					Widget.DragOver -= WidgetDragOverHandler;
+					Widget.Drop -= WidgetDropHandler;
 				}
 			}
 		}
@@ -424,8 +579,8 @@ namespace Xwt.WPFBackend
 		{
 			var pos = e.GetPosition (Widget);
 			return new ButtonEventArgs () {
-				X = pos.X,
-				Y = pos.Y,
+				X = pos.X * WidthPixelRatio,
+				Y = pos.Y * HeightPixelRatio,
 				MultiplePress = e.ClickCount,
 				Button = e.ChangedButton.ToXwtButton ()
 			};
@@ -445,17 +600,132 @@ namespace Xwt.WPFBackend
 			});
 		}
 
-		// TODO
 		public void DragStart (DragStartData data)
 		{
+			if (data.Data == null)
+				throw new ArgumentNullException ("data");
+
+			var dataObj = CreateDataObject (data.Data);
+			DragDrop.DoDragDrop (Widget, dataObj, data.DragAction.ToWpfDropEffect ());
+		}
+
+		static DataObject CreateDataObject (TransferDataSource data)
+		{
+			var retval = new DataObject ();
+			foreach (var type in data.DataTypes) {
+				if (type == TransferDataType.Text)
+					retval.SetText ((string)data.GetValue (type));
+			}
+
+			return retval;
 		}
 
 		public void SetDragTarget (TransferDataType [] types, DragDropAction dragAction)
 		{
+			Widget.AllowDrop = true;
 		}
 
 		public void SetDragSource (TransferDataType [] types, DragDropAction dragAction)
 		{
+		}
+
+		static DragDropAction DetectDragAction (DragDropKeyStates keys)
+		{
+			if ((keys & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey) {
+				if ((keys & DragDropKeyStates.ShiftKey) == DragDropKeyStates.ShiftKey)
+					return DragDropAction.Link;
+				else
+					return DragDropAction.Copy;
+			}
+
+			return DragDropAction.Move;
+		}
+
+		static void FillDataStore (TransferDataStore store, IDataObject data)
+		{
+			foreach (string format in data.GetFormats ()) {
+				if (format == DataFormats.UnicodeText)
+					store.AddText ((string)data.GetData (format));
+			}
+		}
+
+		void WidgetDragOverHandler (object sender, System.Windows.DragEventArgs e)
+		{
+			var types = e.Data.GetFormats ().Select (t => t.ToXwtDragType ()).ToArray ();
+			var pos = e.GetPosition (Widget).ToXwtPoint ();
+			var proposedAction = DetectDragAction (e.KeyStates);
+
+			e.Handled = true; // Prevent default handlers from being used.
+
+			if ((enabledEvents & WidgetEvent.DragOverCheck) > 0) {
+				var checkArgs = new DragOverCheckEventArgs (pos, types, proposedAction);
+				Toolkit.Invoke (delegate {
+					eventSink.OnDragOverCheck (checkArgs);
+				});
+				if (checkArgs.AllowedAction == DragDropAction.None) {
+					e.Effects = currentDragEffect = DragDropEffects.None;
+					return;
+				}
+				if (checkArgs.AllowedAction != DragDropAction.Default) {
+					e.Effects = currentDragEffect = checkArgs.AllowedAction.ToWpfDropEffect ();
+					return;
+				}
+			}
+
+			if ((enabledEvents & WidgetEvent.DragOver) > 0) {
+				var store = new TransferDataStore ();
+				FillDataStore (store, e.Data);
+
+				var args = new DragOverEventArgs (pos, store, proposedAction);
+				Toolkit.Invoke (delegate {
+					eventSink.OnDragOver (args);
+				});
+				if (args.AllowedAction == DragDropAction.None) {
+					e.Effects = currentDragEffect = DragDropEffects.None;
+					return;
+				}
+				if (args.AllowedAction != DragDropAction.Default) {
+					e.Effects = currentDragEffect = args.AllowedAction.ToWpfDropEffect ();
+					return;
+				}
+			}
+
+			e.Effects = currentDragEffect = proposedAction.ToWpfDropEffect ();
+		}
+
+		void WidgetDropHandler (object sender, System.Windows.DragEventArgs e)
+		{
+			var types = e.Data.GetFormats ().Select (t => t.ToXwtDragType ()).ToArray ();
+			var pos = e.GetPosition (Widget).ToXwtPoint ();
+			var actualEffect = currentDragEffect;
+
+			e.Handled = true; // Prevent default handlers from being used.
+
+			if ((enabledEvents & WidgetEvent.DragDropCheck) > 0) {
+				var checkArgs = new DragCheckEventArgs (pos, types, actualEffect.ToXwtDropAction ());
+				bool res = Toolkit.Invoke (delegate {
+					eventSink.OnDragDropCheck (checkArgs);
+				});
+				if (checkArgs.Result == DragDropResult.Canceled || !res) {
+					e.Effects = DragDropEffects.None;
+					return;
+				}
+			}
+
+			if ((enabledEvents & WidgetEvent.DragDrop) > 0) {
+				var store = new TransferDataStore ();
+				FillDataStore (store, e.Data);
+
+				var args = new DragEventArgs (pos, store, actualEffect.ToXwtDropAction ());
+				Toolkit.Invoke (delegate {
+					eventSink.OnDragDrop (args);
+				});
+
+				e.Effects = args.Success ? actualEffect : DragDropEffects.None;
+			}
+
+			// No DrapDropCheck/DragDrop event enabled.
+			e.Effects = DragDropEffects.None;
 		}
 
 		void WidgetDragLeaveHandler (object sender, System.Windows.DragEventArgs e)
@@ -475,6 +745,15 @@ namespace Xwt.WPFBackend
 			Toolkit.Invoke (eventSink.OnMouseExited);
 		}
 
+		private void WidgetMouseMoveHandler (object sender, MouseEventArgs e)
+		{
+			Toolkit.Invoke (() => {
+				var p = e.GetPosition (Widget);
+				eventSink.OnMouseMoved (new MouseMovedEventArgs (
+					e.Timestamp, p.X * WidthPixelRatio, p.Y * HeightPixelRatio));
+			});
+		}
+
 		private void WidgetOnSizeChanged (object sender, SizeChangedEventArgs e)
 		{
 			if (Widget.IsVisible)
@@ -485,5 +764,10 @@ namespace Xwt.WPFBackend
 	public interface IWpfWidgetBackend
 	{
 		FrameworkElement Widget { get; }
+	}
+
+	public interface IWpfWidget
+	{
+		WidgetBackend Backend { get; set; }
 	}
 }

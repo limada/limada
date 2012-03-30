@@ -15,6 +15,7 @@ namespace Limaki.XwtAdapter {
             var c = new Canvas();
             new Xwt.Drawing.Context(new object());
             new Xwt.Drawing.Font(new object());
+
         }
     }
 }

@@ -13,36 +13,35 @@
  */
 
 using System;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using Limaki.Drawing.GDI;
-using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using Xwt;
 using Xwt.Gdi;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class RectanglePainter:Painter<Xwt.Rectangle>,IPainter<IRectangleShape,Xwt.Rectangle> {
-        protected SolidBrush _brush = null;
-        protected virtual SolidBrush GetSolidBrush(System.Drawing.Color color) {
-            if (_brush != null) {
-                // maybe more expensive to ask as to set:
-                //if (_brush.Color != color) {
-                //    _brush.Color = color;
-                //}
-                _brush.Color = color;
-                return _brush;
 
+    public class RectanglePainter : GdiPainter<Xwt.Rectangle>, IPainter<IRectangleShape, Xwt.Rectangle> {
+        
+        public override void RenderXwt (ISurface surface) {
+            var ctx = ((GDISurface) surface).Context;
+            var style = this.Style;
+            var renderType = this.RenderType;
+            ctx.Rectangle (Shape.Data);
+            if (renderType.HasFlag (RenderType.Fill)) {
+                ctx.SetColor(style.FillColor);
+                ctx.FillPreserve();
             }
-            if (_brush != null) {
-                _brush.Dispose ();
-                _brush = null;
+            if (renderType.HasFlag (RenderType.Draw)) {
+                ctx.SetColor (style.Pen.Color);
+                ctx.SetLineWidth(style.Pen.Thickness);
+                ctx.Stroke ();
+            } else {
+               
             }
-            _brush = new SolidBrush(color);
-            return _brush;
         }
 
-        public override void Render( ISurface surface ) {
+        public override void RenderGdi (ISurface surface) {
             var rect = GDIConverter.Convert(Shape.Data);
             var style = this.Style;
             var renderType = this.RenderType;
@@ -58,20 +57,12 @@ namespace Limaki.Drawing.GDI.Painters {
                 //    int penSize = -(int)Style.Pen.Width/2;
                 //    Rectangle rect = Rectangle.Inflate(Shape.Data, penSize, penSize);
                 //}
-                System.Drawing.Pen pen = ((GDIPen)style.Pen).Native;
+                System.Drawing.Pen pen = ((GDIPen)style.Pen).Backend;
                 g.DrawRectangle(pen, rect);
             }
 
 
         }
-        public override void Dispose(bool disposing) {
-            base.Dispose(disposing);
-            if (disposing) {
-                if (_brush != null) {
-                    _brush.Dispose();
-                    _brush = null;
-                }   
-            }
-        }
+       
     }
 }

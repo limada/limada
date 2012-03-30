@@ -22,7 +22,7 @@ namespace Limaki.Drawing.GDI.Painters {
                 
             }
             if ((RenderType.Draw & renderType) != 0) {
-                System.Drawing.Pen pen = ((GDIPen)Style.Pen).Native;
+                System.Drawing.Pen pen = ((GDIPen)Style.Pen).Backend;
                 g.DrawPath(
                     pen, 
                     path);

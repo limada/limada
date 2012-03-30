@@ -128,10 +128,10 @@ namespace Xwt
 		
 		protected override void OnBackendCreated ()
 		{
-			base.OnBackendCreated ();
 			Backend.Initialize (direction);
+			base.OnBackendCreated ();
 		}
-		
+
 		void OnReplaceChild (Panel panel, Widget oldChild, Widget newChild)
 		{
 			if (oldChild != null) {
@@ -140,7 +140,8 @@ namespace Xwt
 			}
 			if (newChild != null) {
 				RegisterChild (newChild);
-				Backend.SetPanel (panel.NumPanel, (IWidgetBackend)GetBackend (newChild), panel.Resize);
+				Backend.SetPanel (panel.NumPanel, (IWidgetBackend)GetBackend (newChild), panel.Resize, panel.Shrink);
+				UpdatePanel (panel);
 			}
 		}
 		
@@ -160,7 +161,12 @@ namespace Xwt
 		
 		void OnChildChanged (Panel panel, object hint)
 		{
-			Backend.UpdatePanel (panel.NumPanel, panel.Resize);
+			UpdatePanel (panel);
+		}
+
+		void UpdatePanel (Panel panel)
+		{
+			Backend.UpdatePanel (panel.NumPanel, panel.Resize, panel.Shrink);
 		}
 		
 		void NotifyPositionChanged ()
@@ -197,6 +203,7 @@ namespace Xwt
 	{
 		IContainerEventSink<Panel> parent;
 		bool resize;
+		bool shrink;
 		int numPanel;
 		Widget child;
 		
@@ -219,6 +226,22 @@ namespace Xwt
 			set {
 				resize = value;
 				parent.ChildChanged (this, "Resize");
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this panel can be made smaller than its min size
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if the panel has to be shrinked; otherwise, <c>false</c>.
+		/// </value>
+		public bool Shrink {
+			get {
+				return this.shrink;
+			}
+			set {
+				shrink = value;
+				parent.ChildChanged (this, "Shrink");
 			}
 		}
 

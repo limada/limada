@@ -31,13 +31,14 @@ namespace Limaki.View.Winform {
         public override void OnPaint(IRenderEventArgs e) {
             IShape shape = this.Shape;
             if ((shape != null) && (ShowGrips)) {
-                System.Drawing.Graphics g = ((GDISurface)e.Surface).Graphics;
-
+                var g = ((GDISurface)e.Surface).Graphics;
+                //save
                 System.Drawing.Drawing2D.Matrix transform = g.Transform;
+                //reset
                 g.Transform = emptyMatrix;
 
                 GripPainter.Render(e.Surface);
-
+                //restore
                 g.Transform = transform;
             }
         }

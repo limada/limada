@@ -275,9 +275,9 @@
       <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
       <Name>Xwt.Gdi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xwt.SWF\Xwt.SWF\Xwt.Swf.csproj">
+    <ProjectReference Include="..\Xwt.Swf\Xwt.Swf\Xwt.Swf.csproj">
       <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
-      <Name>Xwt.Swf %28Xwt.SWF\Xwt.Swf%29</Name>
+      <Name>Xwt.Swf</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

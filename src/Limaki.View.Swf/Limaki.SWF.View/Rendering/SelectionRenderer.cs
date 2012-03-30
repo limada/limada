@@ -66,14 +66,16 @@ namespace Limaki.View.Winform {
 
         public override void OnPaint(IRenderEventArgs e) {
             if (Shape != null) {
-                System.Drawing.Graphics g = ((GDISurface)e.Surface).Graphics;
+                var g = ((GDISurface)e.Surface).Graphics;
 
                 // we paint the Shape transformed, otherwise it looses its line-size
                 // that means, that the linesize is zoomed which makes an ugly effect
 
                 if (RenderType != RenderType.None) {
-                    System.Drawing.Drawing2D.Matrix transform = g.Transform;
+                    //save
+                    var transform = g.Transform;
                     g.Transform = emptyMatrix;
+
                     var paintShape = (IShape)this.Shape.Clone();
                     Camera.FromSource(paintShape);
 
@@ -81,6 +83,8 @@ namespace Limaki.View.Winform {
                     Painter.Shape = paintShape;
                     Painter.Style = this.Style;
                     Painter.Render(e.Surface);
+
+                    //restore
                     g.Transform = transform;
                 }
 

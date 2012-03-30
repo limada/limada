@@ -8,13 +8,15 @@ using Xwt;
 using Xwt.Gdi;
 
 namespace Limaki.Drawing.GDI.Painters {
+
     public class RoundedRectanglePainter:RectanglePainter,IPainter<IRoundedRectangleShape,Xwt.Rectangle> {
+
         public override void Render( ISurface surface ) {
-            Graphics g = ( (GDISurface) surface ).Graphics;
+            var g = ( (GDISurface) surface ).Graphics;
             var rect = GDIConverter.Convert(Shape.Data);
-            IStyle style = this.Style;
-            RenderType renderType = this.RenderType;
-            GraphicsPath path = new GraphicsPath ();
+            var style = this.Style;
+            var renderType = this.RenderType;
+            var path = new GraphicsPath ();
             SetRoundedRect (path, rect, 10f);
             if ((RenderType.Fill & renderType) != 0) {
                 g.FillPath(GetSolidBrush(
@@ -27,7 +29,7 @@ namespace Limaki.Drawing.GDI.Painters {
                 //    int penSize = -(int)Style.Pen.Width/2;
                 //    Rectangle rect = Rectangle.Inflate(Shape.Data, penSize, penSize);
                 //}
-                System.Drawing.Pen pen = ((GDIPen)Style.Pen).Native;
+                var pen = ((GDIPen)Style.Pen).Backend;
                 g.DrawPath(pen, path);
             }
         }

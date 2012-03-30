@@ -41,6 +41,16 @@ namespace Xwt.Gdi.Backend {
             tl.Width = value;
         }
 
+        public void SetHeigth (object backend, double value) {
+            var tl = (TextLayoutBackend) backend;
+            tl.Heigth = value;
+        }
+
+        public void SetTrimming (object backend, Drawing.TextTrimming value) {
+            var tl = (TextLayoutBackend) backend;
+            tl.Trimming = value.ToGdi();
+        }
+
         public void SetText (object backend, string text) {
             var tl = (TextLayoutBackend) backend;
             tl.Text = text;

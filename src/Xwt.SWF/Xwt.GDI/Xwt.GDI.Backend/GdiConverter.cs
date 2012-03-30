@@ -24,22 +24,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Drawing;
+
 using Xwt.Engine;
 using Color = Xwt.Drawing.Color;
 using Font = Xwt.Drawing.Font;
 using FontStyle = Xwt.Drawing.FontStyle;
-using System.Drawing.Drawing2D;
+using  System.Drawing.Drawing2D;
+using SD = System.Drawing;
 
 namespace Xwt.Gdi {
 
     public static class GdiConverter {
 
-        public static System.Drawing.Color ToGdi(this Color color) {
-            return System.Drawing.Color.FromArgb((int)ToArgb(color));
+        public static SD.Color ToGdi(this Color color) {
+            return SD.Color.FromArgb((int)ToArgb(color));
         }
 
-        public static Color ToXwt(this System.Drawing.Color color) {
+        public static Color ToXwt(this SD.Color color) {
             return FromArgb((uint)color.ToArgb());
         }
 
@@ -73,57 +74,64 @@ namespace Xwt.Gdi {
             return Color.FromBytes(r, g, b);
         }
 
-        public static System.Drawing.FontStyle ToGdi(this FontStyle value) {
-            var result = System.Drawing.FontStyle.Regular;
+        public static SD.StringTrimming ToGdi (this Xwt.Drawing.TextTrimming value) {
+            if (value == Xwt.Drawing.TextTrimming.Word) return SD.StringTrimming.Word;
+            if (value == Xwt.Drawing.TextTrimming.WordElipsis) return SD.StringTrimming.EllipsisWord;
+
+            return SD.StringTrimming.Word;
+        }
+
+        public static SD.FontStyle ToGdi(this FontStyle value) {
+            var result = SD.FontStyle.Regular;
             if (value == null)
                 return result;
             if ((value & FontStyle.Italic) != 0) {
-                result |= System.Drawing.FontStyle.Italic;
+                result |= SD.FontStyle.Italic;
             }
             //if ((value & FontStyle.Underline) != 0) {
-            //    result |= System.Drawing.FontStyle.Underline;
+            //    result |= SD.FontStyle.Underline;
             //}
             if ((value & FontStyle.Oblique) != 0) {
-                result |= System.Drawing.FontStyle.Bold;
+                result |= SD.FontStyle.Bold;
             }
             return result;
         }
 
-        public static FontStyle ToXwt(this System.Drawing.FontStyle value) {
+        public static FontStyle ToXwt(this SD.FontStyle value) {
             var result = FontStyle.Normal;
             if (value == null)
                 return result;
-            if ((value & System.Drawing.FontStyle.Italic) != 0) {
+            if ((value & SD.FontStyle.Italic) != 0) {
                 result |= FontStyle.Italic;
             }
-            //if ((native & System.Drawing.FontStyle.Underline) != 0) {
+            //if ((native & SD.FontStyle.Underline) != 0) {
             //    result |= FontStyle.Underline;
             //}
-            if ((value & System.Drawing.FontStyle.Bold) != 0) {
+            if ((value & SD.FontStyle.Bold) != 0) {
                 result |= FontStyle.Oblique;
             }
             return result;
         }
 
-        public static System.Drawing.Font ToGdi (this Font value) {
+        public static SD.Font ToGdi (this Font value) {
             return (System.Drawing.Font) WidgetRegistry.GetBackend (value);
         }
 
-        public static Size ToXwt (this SizeF value) {
+        public static Size ToXwt (this SD.SizeF value) {
             return new Size (value.Width, value.Height);
         }
-        public static Size ToXwt(this System.Drawing.Size value) {
+        public static Size ToXwt(this SD.Size value) {
             return new Size(value.Width, value.Height);
         }
-        public static System.Drawing.StringFormat GetDefaultStringFormat() {
+        public static SD.StringFormat GetDefaultStringFormat() {
             var stringFormat =
-                StringFormat.GenericTypographic;
-            stringFormat.Trimming = StringTrimming.EllipsisWord;
-            //stringFormat.FormatFlags = StringFormatFlags.FitBlackBox;
+                SD.StringFormat.GenericTypographic;
+            stringFormat.Trimming = SD.StringTrimming.EllipsisWord;
+            //stringFormat.FormatFlags = SD.StringFormatFlags.FitBlackBox;
             stringFormat.FormatFlags = stringFormat.FormatFlags
-                                       & ~StringFormatFlags.NoClip
-                                       & ~StringFormatFlags.FitBlackBox
-                                       & StringFormatFlags.LineLimit
+                                       & ~SD.StringFormatFlags.NoClip
+                                       & ~SD.StringFormatFlags.FitBlackBox
+                                       & SD.StringFormatFlags.LineLimit
                 ;
             return stringFormat;
         }
@@ -135,7 +143,7 @@ namespace Xwt.Gdi {
 
             public SmoothingMode SmoothingMode { get; set; }
 
-            public System.Drawing.Text.TextRenderingHint TextRenderingHint { get; set; }
+            public SD.Text.TextRenderingHint TextRenderingHint { get; set; }
 
             public PixelOffsetMode PixelOffsetMode { get; set; }
         }
@@ -146,7 +154,7 @@ namespace Xwt.Gdi {
                     InterpolationMode = InterpolationMode.HighQualityBilinear,
                     CompositingMode = CompositingMode.SourceOver,
                     CompositingQuality = CompositingQuality.HighQuality,
-                    PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality
+                    PixelOffsetMode = SD.Drawing2D.PixelOffsetMode.HighQuality
                 };
             }
         }
@@ -156,9 +164,9 @@ namespace Xwt.Gdi {
                     InterpolationMode = InterpolationMode.NearestNeighbor,
                     CompositingMode = CompositingMode.SourceOver,
                     CompositingQuality = CompositingQuality.HighQuality,
-                    PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality,
+                    PixelOffsetMode = SD.Drawing2D.PixelOffsetMode.HighQuality,
                     SmoothingMode = SmoothingMode.HighQuality,
-                    TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit,
+                    TextRenderingHint = SD.Text.TextRenderingHint.AntiAliasGridFit,
                   
                 };
             }
@@ -170,7 +178,7 @@ namespace Xwt.Gdi {
                     CompositingMode = CompositingMode.SourceOver,
                     CompositingQuality = CompositingQuality.AssumeLinear,
                     SmoothingMode = SmoothingMode.AntiAlias,
-                    TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit,
+                    TextRenderingHint = SD.Text.TextRenderingHint.AntiAliasGridFit,
                     PixelOffsetMode=System.Drawing.Drawing2D.PixelOffsetMode.HighQuality
                 };
             }
@@ -181,11 +189,11 @@ namespace Xwt.Gdi {
                     InterpolationMode = InterpolationMode.HighQualityBilinear,
                     CompositingMode = CompositingMode.SourceCopy,
                     CompositingQuality = CompositingQuality.HighQuality,
-                    PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality
+                    PixelOffsetMode = SD.Drawing2D.PixelOffsetMode.HighQuality
                 };
             }
         }
-        public static GraphicsQuality SetQuality(this Graphics g,GraphicsQuality quality ) {
+        public static GraphicsQuality SetQuality (this SD.Graphics g, GraphicsQuality quality) {
             var result = new GraphicsQuality {
                 InterpolationMode = g.InterpolationMode,
                 CompositingMode = g.CompositingMode,

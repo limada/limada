@@ -223,7 +223,7 @@ namespace Samples {
             var col1 = new Rectangle ();
             var col2 = new Rectangle ();
 
-            var text = new TextLayout (ctx);
+            var text = new TextLayout (ctx); 
             text.Font = this.Font.WithSize (10);
 
             // first text
@@ -232,7 +232,6 @@ namespace Samples {
             col1.Width = size1.Width;
             col1.Height += size1.Height + 10;
             ctx.DrawTextLayout (text, 0, 0);
-
 
             // proofing width; test should align with text above
             ctx.SetColor (Colors.DarkMagenta);
@@ -261,7 +260,6 @@ namespace Samples {
             ctx.DrawTextLayout (text, col2.Left / scale, col2.Top / scale);
             ctx.Restore ();
 
-
             // drawing col line
             ctx.SetLineWidth (1);
 
@@ -274,13 +272,42 @@ namespace Samples {
             ctx.Stroke ();
             ctx.SetColor (Colors.Black);
 
+            // proofing heigth, on second col
+            ctx.Save ();
+            ctx.SetColor (Colors.DarkCyan);
+            text.Text = "Praesent ac lacus nec dolor pulvinar feugiat a id elit.";
+            var size4 = text.GetSize ();
+            text.Heigth = size4.Height / 2;
+            text.Trimming = TextTrimming.WordElipsis;
+            ctx.DrawTextLayout (text, col2.Left, col2.Bottom + 5);
+
+            ctx.SetLineWidth (1);
+            ctx.SetColor (Colors.Blue);
+            ctx.Rectangle (new Rectangle (col2.Left, col2.Bottom + 5, text.Width, text.Heigth));
+            ctx.Stroke ();
+           
+            // drawing col line
+            ctx.SetLineWidth (1);
+
+            ctx.SetColor (Colors.Black.WithAlpha (.5));
+            ctx.MoveTo (col1.Right + 5, col1.Top);
+            ctx.LineTo (col1.Right + 5, col1.Bottom);
+            ctx.Stroke ();
+            ctx.MoveTo (col2.Right + 5, col2.Top);
+            ctx.LineTo (col2.Right + 5, col2.Bottom);
+            ctx.Stroke ();
+            ctx.SetColor (Colors.Black);
+
+            ctx.Restore ();
+
             // proofing rotate, and printing size to see the values
             ctx.Save ();
-            text = new TextLayout (ctx);
+            
             text.Font = this.Font.WithSize (10);
             text.Text = string.Format ("Size 1 {0}\r\nSize 2 {1}\r\nSize 3 {2} Scale {3}",
                                        size1, size2, size3, scale);
-            //text.Width = -1; // this clears textsize
+            text.Width = -1; // this clears textsize
+            text.Heigth = -1;
             ctx.Rotate (5);
             // maybe someone knows a formula with angle and textsize to calculyte ty
             var ty = 30;
@@ -289,6 +316,30 @@ namespace Samples {
             ctx.Restore ();
           
             ctx.Restore ();
+            // Text boces
+
+            ctx.Translate (x, y);
+            y = 180;
+
+            // Without wrapping
+
+            TextLayout tl = new TextLayout (ctx);
+            tl.Text = "Stright text";
+            DrawText (ctx, tl, ref y);
+
+            // With wrapping
+
+            tl = new TextLayout (ctx);
+            tl.Text = "The quick brown fox jumps over the lazy dog";
+            tl.Width = 100;
+            DrawText (ctx, tl, ref y);
+
+            // With blank lines
+
+            tl = new TextLayout (ctx);
+            tl.Text = "\nEmpty line above\nLine break above\n\nEmpty line above\n\n\nTwo empty lines above\nEmpty line below\n";
+            tl.Width = 200;
+            DrawText (ctx, tl, ref y);
         }
 
         void DrawText (Context ctx, TextLayout tl, ref double y) {
@@ -304,6 +355,8 @@ namespace Samples {
 
             y += s.Height + 20;
         }
+
+       
 
         public virtual void Transforms (Xwt.Drawing.Context ctx, double x, double y) {
             Rotate (ctx, x, y);

@@ -19,7 +19,7 @@ using Limaki.Common;
 using Limaki.UnitTest;
 using NUnit.Framework;
 using System.Diagnostics;
-using Limaki.Context;
+using Limaki.IOC;
 
 namespace Limaki.Tests {
 }

@@ -45,7 +45,15 @@ namespace Xwt.WPFBackend
 
 		public TreeViewBackend ()
 		{
-			Tree = new SWC.TreeView ();
+			Tree = new WpfTreeView ();
+		}
+
+		protected override double DefaultNaturalHeight {
+			get { return -1; }
+		}
+
+		protected override double DefaultNaturalWidth {
+			get { return -1; }
 		}
 
 		public SWC.TreeView Tree
@@ -67,6 +75,7 @@ namespace Xwt.WPFBackend
 			if (treeStore != null)
 			{
 				TreeNode node = treeStore.RootNode;
+				node.TreeViewData.Add (Tuple.Create<TreeViewBackend, SWC.ItemsControl>(this, Tree));
 				foreach (TreeNode child in node.Children)
 				{
 					Tree.Items.Add (GenerateTreeViewItem (child));
@@ -74,9 +83,9 @@ namespace Xwt.WPFBackend
 			}
 		}
 
-		private MultiColumnTreeViewItem GenerateTreeViewItem (TreeNode node)
+		internal MultiColumnTreeViewItem GenerateTreeViewItem (TreeNode node)
 		{
-			MultiColumnTreeViewItem item = new MultiColumnTreeViewItem (node);
+			MultiColumnTreeViewItem item = new MultiColumnTreeViewItem (this, node);
 
 			foreach (ListViewColumn column in columns)
 			{
@@ -220,6 +229,17 @@ namespace Xwt.WPFBackend
 				if (((TableViewEvent)eventId) == TableViewEvent.SelectionChanged)
 					Tree.SelectedItemChanged -= HandleWidgetSelectionChanged;
 			}
+		}
+	}
+
+	class WpfTreeView : SWC.TreeView, IWpfWidget
+	{
+		public WidgetBackend Backend { get; set; }
+
+		protected override System.Windows.Size MeasureOverride (System.Windows.Size constraint)
+		{
+			var s = base.MeasureOverride (constraint);
+			return Backend.MeasureOverride (constraint, s);
 		}
 	}
 }

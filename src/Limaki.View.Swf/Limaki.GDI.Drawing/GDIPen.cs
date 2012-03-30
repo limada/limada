@@ -24,7 +24,7 @@ namespace Limaki.Drawing.GDI {
         protected GDIPen(Pen pen) : base(pen) { }
 
         System.Drawing.Pen _natvive = null;
-        public System.Drawing.Pen Native {
+        public System.Drawing.Pen Backend {
             get {
                 if (_natvive == null) {
                     _natvive = new System.Drawing.Pen(GdiConverter.ToGdi(this.Color));

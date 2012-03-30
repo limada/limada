@@ -52,12 +52,12 @@ namespace Xwt.GtkBackend
 			Widget.Show ();
 		}
 		
-		public void SetPanel (int panel, IWidgetBackend widget, bool resize)
+		public void SetPanel (int panel, IWidgetBackend widget, bool resize, bool shrink)
 		{
 			if (panel == 1)
-				Widget.Pack1 (((WidgetBackend)widget).RootWidget, resize, false);
+				Widget.Pack1 (((WidgetBackend)widget).RootWidget, resize, shrink);
 			else
-				Widget.Pack2 (((WidgetBackend)widget).RootWidget, resize, false);
+				Widget.Pack2 (((WidgetBackend)widget).RootWidget, resize, shrink);
 		}
 		
 		public void RemovePanel (int panel)
@@ -68,17 +68,33 @@ namespace Xwt.GtkBackend
 				Widget.Remove (Widget.Child2);
 		}
 		
-		public void UpdatePanel (int panel, bool resize)
+		public void UpdatePanel (int panel, bool resize, bool shrink)
 		{
-			if (panel == 1)
-				((Gtk.Paned.PanedChild)Widget [Widget.Child1]).Resize = resize;
-			else
-				((Gtk.Paned.PanedChild)Widget [Widget.Child2]).Resize = resize;
+			if (panel == 1) {
+				var c = (Gtk.Paned.PanedChild)Widget[Widget.Child1];
+				c.Resize = resize;
+				c.Shrink = shrink;
+			}
+			else {
+				var c = (Gtk.Paned.PanedChild)Widget[Widget.Child2];
+				c.Resize = resize;
+				c.Shrink = shrink;
+			}
 		}
 		
 		public double Position {
 			get { return Widget.Position; }
 			set { Widget.Position = (int) value; }
+		}
+
+		public Size GetDecorationSize ()
+		{
+			throw new NotSupportedException ();
+		}
+
+		public void GetPanelSizes (double totalSize, out double panel1Size, out double panel2Size)
+		{
+			throw new NotSupportedException ();
 		}
 	}
 }

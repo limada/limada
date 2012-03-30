@@ -66,10 +66,8 @@ namespace Xwt.WPFBackend
 			var c = (DrawingContext)backend;
 			if (angle1 > 0 && angle2 == 0)
 				angle2 = 360;
-			// GraphicsPath.AddArc sweepAngle:The angle between startAngle and the end of the arc. 
-			c.Path.AddArc ((float)(xc - radius), (float)(yc - radius), 
-			               (float)radius * 2, (float)radius * 2, 
-			               (float)angle1, (float)(angle2 - angle1));
+			c.Path.AddArc ((float)(xc - radius), (float)(yc - radius), (float)radius * 2, (float)radius * 2, (float)angle1,
+			               (float)(angle2 - angle1));
 
 			var current = c.Path.GetLastPoint ();
 			c.CurrentX = current.X;
@@ -99,24 +97,13 @@ namespace Xwt.WPFBackend
 
 		public void CurveTo (object backend, double x1, double y1, double x2, double y2, double x3, double y3)
 		{
-			var c = (DrawingContext) backend;
-			bool moved = false;
-			if (c.Path.PointCount != 0) {
-				var lastPoint = c.Path.GetLastPoint ();
-				moved = lastPoint.X != c.CurrentX && lastPoint.Y != c.CurrentY;
-			}
-
-			var path = moved ? new GraphicsPath () : c.Path;
-			path.AddBezier (c.CurrentX, c.CurrentY,
-							(float) x1, (float) y1,
-							(float) x2, (float) y2,
-							(float) x3, (float) y3);
-
-			if (moved)
-				c.Path.AddPath (path, connect: false);
-
-			c.CurrentX = (float) x3;
-			c.CurrentY = (float) y3;
+			var c = (DrawingContext)backend;
+			c.Path.AddBezier (c.CurrentX, c.CurrentY,
+					(float)x1, (float)y1,
+					(float)x2, (float)y2,
+					(float)x3, (float)y3);
+			c.CurrentX = (float)x3;
+			c.CurrentY = (float)y3;
 		}
 
 		public void Fill (object backend)
@@ -144,8 +131,11 @@ namespace Xwt.WPFBackend
 		public void MoveTo (object backend, double x, double y)
 		{
 			var c = (DrawingContext) backend;
-			c.CurrentX = (float) x;
-			c.CurrentY = (float) y;
+			if (c.CurrentX != x || c.CurrentY != y) {
+				c.Path.StartFigure ();
+				c.CurrentX = (float)x;
+				c.CurrentY = (float)y;
+			}
 		}
 
 		public void NewPath (object backend)
@@ -157,11 +147,22 @@ namespace Xwt.WPFBackend
 		public void Rectangle (object backend, double x, double y, double width, double height)
 		{
 			var c = (DrawingContext) backend;
-			c.Path.AddRectangle (new RectangleF ((float) x, (float) y, (float) width, (float) height));
+			if (c.CurrentX != x || c.CurrentY != y)
+				c.Path.StartFigure ();
+			c.Path.AddRectangle (new RectangleF ((float)x, (float)y, (float)width, (float)height));
+			c.CurrentX = (float)x;
+			c.CurrentY = (float)y;
 		}
 
 		public void RelCurveTo (object backend, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3)
 		{
+			var c = (DrawingContext)backend;
+			c.Path.AddBezier (c.CurrentX, c.CurrentY,
+					(float)(c.CurrentX + dx1), (float)(c.CurrentY + dy1),
+					(float)(c.CurrentX + dx2), (float)(c.CurrentY + dy2),
+					(float)(c.CurrentX + dx3), (float)(c.CurrentY + dy3));
+			c.CurrentX = (float)(c.CurrentX + dx3);
+			c.CurrentY = (float)(c.CurrentX + dy3);
 		}
 
 		public void RelLineTo (object backend, double dx, double dy)
@@ -179,6 +180,7 @@ namespace Xwt.WPFBackend
 		public void RelMoveTo (object backend, double dx, double dy)
 		{
 			var c = (DrawingContext) backend;
+			c.Path.StartFigure ();
 			c.CurrentX += (float)dx;
 			c.CurrentY += (float)dy;
 		}
@@ -231,11 +233,11 @@ namespace Xwt.WPFBackend
 			var lg = p as LinearGradient;
 			if (lg != null) {
 				if (lg.ColorStops.Count == 0)
-					throw new ArgumentException();
+					throw new ArgumentException ();
 
 				var stops = lg.ColorStops.OrderBy (t => t.Item1).ToArray ();
-				var first = stops [0];
-				var last = stops [stops.Length - 1];
+				var first = stops[0];
+				var last = stops[stops.Length - 1];
 
 				var brush = new LinearGradientBrush (lg.Start, lg.End, first.Item2.ToDrawingColor (),
 														last.Item2.ToDrawingColor ());
@@ -251,6 +253,8 @@ namespace Xwt.WPFBackend
 
 				c.Brush = brush;
 			}
+			else if (p is Brush)
+				c.Brush = (Brush)p;
 		}
 
 		public void SetFont (object backend, Font font)
@@ -261,12 +265,19 @@ namespace Xwt.WPFBackend
 
 		public void DrawTextLayout (object backend, TextLayout layout, double x, double y)
 		{
-			var c = (DrawingContext) backend;
+			var c = (DrawingContext)backend;
 			var sfont = layout.Font.ToDrawingFont ();
-			var measure = c.Graphics.MeasureString (layout.Text, sfont);
-
+			var measure = layout.GetSize ();
+			var h = layout.Heigth > 0 ? (float)layout.Heigth : (float)measure.Height;
+			var stringFormat = TextLayoutContext.StringFormat;
+			var sdStringFormat = layout.Trimming.ToDrawingStringTrimming ();
+			if (layout.Heigth > 0 && stringFormat.Trimming != sdStringFormat) {
+				stringFormat = (System.Drawing.StringFormat)stringFormat.Clone ();
+				stringFormat.Trimming = sdStringFormat;
+			}
 			c.Graphics.DrawString (layout.Text, layout.Font.ToDrawingFont (), c.Brush,
-			                       new RectangleF ((float) x, (float) y, (float)layout.Width, measure.Height));
+			                       new RectangleF ((float)x, (float)y, (float)measure.Width, h),
+			                       stringFormat);
 		}
 
 		public void DrawImage (object backend, object img, double x, double y, double alpha)
@@ -274,7 +285,7 @@ namespace Xwt.WPFBackend
 			var c = (DrawingContext) backend;
 
 			Bitmap bmp = DataConverter.AsBitmap (img);
-			DrawImageCore (c, bmp, (float) x, (float) y, bmp.Width, bmp.Height, (float)alpha);
+			DrawImageCore (c.Graphics, bmp, (float) x, (float) y, bmp.Width, bmp.Height, (float)alpha);
 		}
 
 		public void DrawImage (object backend, object img, double x, double y, double width, double height, double alpha)
@@ -282,7 +293,7 @@ namespace Xwt.WPFBackend
 			var c = (DrawingContext) backend;
 
 			Bitmap bmp = DataConverter.AsBitmap (img);
-			DrawImageCore (c, bmp, (float) x, (float) y, (float) width, (float) height, (float) alpha);
+			DrawImageCore (c.Graphics, bmp, (float) x, (float) y, (float) width, (float) height, (float) alpha);
 		}
 
 		public void ResetTransform (object backend)
@@ -313,7 +324,7 @@ namespace Xwt.WPFBackend
 		{
 		}
 
-		private void DrawImageCore (DrawingContext c, Bitmap bmp, float x, float y, float width, float height, float alpha)
+		internal static void DrawImageCore (Graphics g, Bitmap bmp, float x, float y, float width, float height, float alpha)
 		{
 			if (bmp == null)
 				throw new ArgumentException();
@@ -336,10 +347,10 @@ namespace Xwt.WPFBackend
 				points [1] = new PointF (x + width, y);
 				points [2] = new PointF (x, y + height);
 
-				c.Graphics.DrawImage (bmp, points, new RectangleF (0, 0, bmp.Width, bmp.Height), GraphicsUnit.Pixel, attr);
+				g.DrawImage (bmp, points, new RectangleF (0, 0, bmp.Width, bmp.Height), GraphicsUnit.Pixel, attr);
 			}
 			else
-				c.Graphics.DrawImage (bmp, x, y, width, height);
+				g.DrawImage (bmp, x, y, width, height);
 		}
 	}
 }

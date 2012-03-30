@@ -1,4 +1,19 @@
-2012-03-20
+[2012-03-29]
+RecanglePainter running over Xwt.Gdi
+Update to Gecko.Webbrowser 11.0 (https://bitbucket.org/geckofx/geckofx-11.0)
+
+[2012-03-28]
+Mono.Xwt:update to latest version
+Xwt.Gdi: implemented TextLayout.Height, Trimming
+
+[2012-03-27]
+Xwt.Html5:
+initial commit
+
+[2012-03-23]
+Mono.Xwt:update to latest version
+
+[2012-03-20]
 Xwt.Gdi:
 ContextBackendHandler.SetLineDash, .SetPattern, .DrawImage
 ImageBuilderBackend,ImageHandler,ImagePatternBackendHandler,ImageGraphics

@@ -58,7 +58,7 @@ namespace Xwt.Backends
 		/// <param name='resize'>
 		/// If set to <c>true</c> the panel is resized when the Paned view is resized
 		/// </param>
-		void SetPanel (int panel, IWidgetBackend widget, bool resize);
+		void SetPanel (int panel, IWidgetBackend widget, bool resize, bool shrink);
 		
 		/// <summary>
 		/// Updates the panel settings
@@ -69,7 +69,7 @@ namespace Xwt.Backends
 		/// <param name='resize'>
 		/// If set to <c>true</c> the panel is resized when the Paned view is resized
 		/// </param>
-		void UpdatePanel (int panel, bool resize);
+		void UpdatePanel (int panel, bool resize, bool shrink);
 		
 		/// <summary>
 		/// Removes the content of a panel.

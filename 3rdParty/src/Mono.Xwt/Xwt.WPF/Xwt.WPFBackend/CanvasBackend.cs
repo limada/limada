@@ -56,8 +56,8 @@ namespace Xwt.WPFBackend
 			this.fullRedraw = true;
 
 			if (!this.queued) {
-				Toolkit.QueueExitAction (() => OnRender (this, EventArgs.Empty));
-				this.queued = true;
+			    Toolkit.QueueExitAction (Render);
+			    this.queued = true;
 			}
 		}
 
@@ -69,8 +69,8 @@ namespace Xwt.WPFBackend
 			this.dirtyRects.Add (rect.ToInt32Rect());
 
 			if (!this.queued) {
-				Toolkit.QueueExitAction (() => OnRender (this, EventArgs.Empty));
-				this.queued = true;
+			    Toolkit.QueueExitAction (Render);
+			    this.queued = true;
 			}
 		}
 
@@ -86,14 +86,17 @@ namespace Xwt.WPFBackend
 
 		public void SetChildBounds (IWidgetBackend widget, Rectangle bounds)
 		{
-			UIElement element = widget.NativeWidget as UIElement;
+			FrameworkElement element = widget.NativeWidget as FrameworkElement;
 			if (element == null)
 				throw new ArgumentException();
 
-			SWC.Canvas.SetTop (element, bounds.Top);
-			SWC.Canvas.SetLeft (element, bounds.Left);
-			SWC.Canvas.SetRight (element, bounds.Right);
-			SWC.Canvas.SetBottom (element, bounds.Bottom);
+			double hratio = HeightPixelRatio;
+			double wratio = WidthPixelRatio;
+
+			SWC.Canvas.SetTop (element, bounds.Top * hratio);
+			SWC.Canvas.SetLeft (element, bounds.Left * wratio);
+			element.Height = (bounds.Height > 0) ? bounds.Height * hratio : 0;
+			element.Width = (bounds.Width > 0) ? bounds.Width * wratio : 0;
 		}
 
 		public void RemoveChild (IWidgetBackend widget)
@@ -128,6 +131,11 @@ namespace Xwt.WPFBackend
 		}
 
 		private void OnRender (object sender, EventArgs e)
+		{
+			Render();
+		}
+
+		private void Render()
 		{
 			if (!Widget.IsVisible)
 				return;

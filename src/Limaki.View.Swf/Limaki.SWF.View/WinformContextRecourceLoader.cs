@@ -15,7 +15,7 @@
 
 using Limaki.Common;
 using Limaki.Common.IOC;
-using Limaki.Context;
+using Limaki.IOC;
 using Limaki.Drawing;
 using Limaki.Drawing.GDI;
 using Limaki.Drawing.GDI.Painters;
@@ -40,9 +40,8 @@ namespace Limaki.View.Winform {
 
             new SwfEngine().RegisterBackends();
             Xwt.Engine.WidgetRegistry.RegisterBackend(
-                typeof (Xwt.Drawing.SystemColors),
-                typeof (Xwt.Gdi.Backends.SystemColorsBackend)
-                );
+                typeof (Xwt.Drawing.SystemColors),typeof (Xwt.Gdi.Backends.SystemColorsBackend)
+            );
 
             context.Factory.Add<IExceptionHandler,WinformExeptionHandler>();
             context.Factory.Add<IDrawingUtils,GDIDrawingUtils>();

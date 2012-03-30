@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -51,15 +51,19 @@
     <Compile Include="Xwt.WPFBackend\ButtonBackend.cs" />
     <Compile Include="Xwt.WPFBackend\CanvasBackend.cs" />
     <Compile Include="Xwt.WPFBackend\CheckBoxBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\CheckboxMenuItemBackend.cs" />
     <Compile Include="Xwt.WPFBackend\ClipboardBackend.cs" />
     <Compile Include="Xwt.WPFBackend\ComboBoxBackend.cs" />
     <Compile Include="Xwt.WPFBackend\ComboBoxEntryBackend.cs" />
-    <Compile Include="Xwt.WPFBackend.Utilities\DataSourceNotifyWrapper.cs" />
     <Compile Include="Xwt.WPFBackend\ComboBoxTextEntryBackend.cs" />
     <Compile Include="Xwt.WPFBackend\CustomWidgetBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\DelegatedCommand.cs" />
+    <Compile Include="Xwt.WPFBackend\DialogBackend.cs" />
     <Compile Include="Xwt.WPFBackend\DrawingContext.cs" />
     <Compile Include="Xwt.WPFBackend\ContextBackendHandler.cs" />
+    <Compile Include="Xwt.WPFBackend\DropDownButton.cs" />
     <Compile Include="Xwt.WPFBackend\ExCanvas.cs" />
+    <Compile Include="Xwt.WPFBackend\ExListView.cs" />
     <Compile Include="Xwt.WPFBackend\FileDialogBackend.cs" />
     <Compile Include="Xwt.WPFBackend\FrameBackend.cs" />
     <Compile Include="Xwt.WPFBackend\GradientBackendHandler.cs" />
@@ -73,14 +77,19 @@
     <Compile Include="Xwt.WPFBackend\DataConverter.cs" />
     <Compile Include="Xwt.WPFBackend\FontBackendHandler.cs" />
     <Compile Include="Xwt.WPFBackend\KeyboardUtil.cs" />
+    <Compile Include="Xwt.WPFBackend\ListSourceNotifyWrapper.cs" />
+    <Compile Include="Xwt.WPFBackend\ListViewBackend.cs" />
     <Compile Include="Xwt.WPFBackend\MenuBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\MenuButtonBackend.cs" />
     <Compile Include="Xwt.WPFBackend\MenuItemBackend.cs" />
     <Compile Include="Xwt.WPFBackend\OpenFileDialogBackend.cs" />
     <Compile Include="Xwt.WPFBackend\PanedBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\RadioButtonMenuItemBackend.cs" />
     <Compile Include="Xwt.WPFBackend\ResPool.cs" />
     <Compile Include="Xwt.WPFBackend\ScrollViewBackend.cs" />
     <Compile Include="Xwt.WPFBackend\SelectFolderDialogBackend.cs" />
     <Compile Include="Xwt.WPFBackend\SeparatorBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\SeparatorMenuItemBackend.cs" />
     <Compile Include="Xwt.WPFBackend\TextEntryBackend.cs" />
     <Compile Include="Xwt.WPFBackend\TextLayoutBackendHandler.cs" />
     <Compile Include="Xwt.WPFBackend\TextLayoutContext.cs" />
@@ -101,7 +110,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt</Name>
+      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

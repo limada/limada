@@ -3,6 +3,7 @@
 //
 // Author:
 //       Eric Maupin <ermau@xamarin.com>
+//       Lytico (http://limada.sourceforge.net)
 //
 // Copyright (c) 2012 Xamarin, Inc.
 //
@@ -35,15 +36,24 @@ namespace Xwt.WPFBackend
 		internal TextLayoutContext (DrawingContext context)
 		{
 			this.context = context;
+			this.StringTrimming = StringTrimming.Word; 
 		}
 
 		internal double Width;
+		internal double Heigth;
 		internal string Text;
 		internal Font Font;
-
-		public Size GetSize()
+		internal StringTrimming StringTrimming;
+		
+		public static readonly StringFormat StringFormat = 
+			new StringFormat {
+				Trimming = StringTrimming.Word,
+				FormatFlags=StringFormatFlags.LineLimit
+			};
+			
+		public Size GetSize ()
 		{
-			return context.Graphics.MeasureString (Text, Font, (int) Width).ToXwtSize ();
+			return context.Graphics.MeasureString (Text, Font, (int) Width, StringFormat).ToXwtSize ();
 		}
 	}
 }
