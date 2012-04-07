@@ -31,20 +31,16 @@ namespace Limaki.Drawing {
             this.Start = start;
             this.End = end;
         }
-
+        const double rad = 180d/Math.PI;
         public static double Angle(Vector v) {
-            double dx = (v.End.X - v.Start.X);
-            double dy = (v.End.Y - v.Start.Y);
-            return Math.Atan(dy / dx) * (180 / Math.PI);// +((dy < 0) ? 180 : 0);
+            var dx = (v.End.X - v.Start.X);
+            var dy = (v.End.Y - v.Start.Y);
+            return Math.Atan(dy / dx) * rad;// +((dy < 0) ? 180 : 0);
         }
 
         public static double Length(Vector v) {
-            double startX = v.Start.X;
-            double startY = v.Start.Y;
-            double endX = v.End.X;
-            double endY = v.End.Y;
-            double a = endX - startX;
-            double b = endY - startY;
+            var a = (v.End.X - v.Start.X);
+            var b = (v.End.Y - v.Start.Y);
             return Math.Sqrt ( a*a + b*b );
         }
 

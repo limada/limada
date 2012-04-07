@@ -7,8 +7,10 @@ using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.GDI.Painters {
+
     public class BezierPainter:RectanglePainter,IPainter<IBezierShape,Xwt.Rectangle> {
-        public override void Render( ISurface surface ) {
+
+        public override void RenderGdi( ISurface surface ) {
             var g = ((GDISurface)surface).Graphics;
             var bezierPoints = 
                 GDIConverter.Convert((Shape as IBezierShape).BezierPoints);

@@ -73,6 +73,10 @@
     <Compile Include="Limaki.Drawing\ISurface.cs" />
     <Compile Include="Limaki.Drawing\ISystemFonts.cs" />
     <Compile Include="Limaki.Drawing\Matrice.cs" />
+    <Compile Include="Limaki.Drawing\Painters\BezierPainter.cs" />
+    <Compile Include="Limaki.Drawing\Painters\RectanglePainter.cs" />
+    <Compile Include="Limaki.Drawing\Painters\RoundedRectanglePainter.cs" />
+    <Compile Include="Limaki.Drawing\Painters\VectorPainter.cs" />
     <Compile Include="Limaki.Drawing\Pen.cs" />
     <Compile Include="Limaki.Drawing\Shapes\BezierShape.cs" />
     <Compile Include="Limaki.Drawing\Shapes\IRectangleShape.cs" />

@@ -27,21 +27,21 @@ namespace Limaki.Drawing.GDI {
             
         }
 
-        public static void SetNativePen(Pen toolkit, System.Drawing.Pen native) {
-            if (native == null || toolkit == null)
+        public static void SetNativePen(Pen frontend, System.Drawing.Pen backend) {
+            if (backend == null || frontend == null)
                 return;
-            native.Color = GdiConverter.ToGdi(toolkit.Color);
-            native.StartCap = GDIConverter.Convert(toolkit.StartCap);
-            native.EndCap = GDIConverter.Convert(toolkit.EndCap);
-            native.Width = (float)toolkit.Thickness;
-            native.LineJoin = GDIConverter.Convert(toolkit.LineJoin);
-            native.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
-            if (toolkit.CustomEndCap!=null)
-                native.CustomEndCap = 
-                    toolkit.CustomEndCap as System.Drawing.Drawing2D.CustomLineCap ;
-            if (toolkit.CustomStartCap != null)
-                native.CustomStartCap = 
-                    toolkit.CustomStartCap as System.Drawing.Drawing2D.CustomLineCap;
+            backend.Color = GdiConverter.ToGdi(frontend.Color);
+            backend.StartCap = GDIConverter.Convert(frontend.StartCap);
+            backend.EndCap = GDIConverter.Convert(frontend.EndCap);
+            backend.Width = (float)frontend.Thickness;
+            backend.LineJoin = GDIConverter.Convert(frontend.LineJoin);
+            backend.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
+            if (frontend.CustomEndCap!=null)
+                backend.CustomEndCap = 
+                    frontend.CustomEndCap as System.Drawing.Drawing2D.CustomLineCap ;
+            if (frontend.CustomStartCap != null)
+                backend.CustomStartCap = 
+                    frontend.CustomStartCap as System.Drawing.Drawing2D.CustomLineCap;
         }
         public static System.Drawing.Graphics CreateGraphics () {
             return System.Drawing.Graphics.FromImage (

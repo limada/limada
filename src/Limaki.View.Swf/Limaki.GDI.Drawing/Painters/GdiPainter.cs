@@ -10,7 +10,6 @@ namespace Limaki.Drawing.GDI.Painters {
             RenderXwt (surface);
         }
 
-        
         public abstract void RenderXwt (ISurface surface);
         public abstract void RenderGdi (ISurface surface);
 

@@ -104,8 +104,8 @@ namespace Limaki.Drawing.Styles {
                     this.ParentStyle.Font.Size - 2).WithStyle(FontStyle.Italic);
 
                 var pen = (Pen)styleGroup.Pen.Clone();
-                var arrowWidth = (double)styleGroup.Pen.Thickness * 5.5d;
-                var arrowHeigth = (double)styleGroup.Pen.Thickness * 1.5d;
+                var arrowWidth = styleGroup.Pen.Thickness * 5.5d;
+                var arrowHeigth = styleGroup.Pen.Thickness * 1.5d;
                 pen.CustomEndCap = DrawingUtils.GetCustomLineCap(arrowWidth, arrowHeigth);
                 pen.StartCap = PenLineCap.Round;
                 styleGroup.Pen = pen;

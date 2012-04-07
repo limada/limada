@@ -152,7 +152,14 @@ namespace Limaki.Drawing {
                 | (uint) ( color.Blue * 255 );
 
         }
+        public static uint ToRgb (this Color color) {
+            return
+                (uint) (255) << 24
+                | (uint) (color.Red * 255) << 16
+                | (uint) (color.Green * 255) << 8
+                | (uint) (color.Blue * 255);
 
+        }
         public static Color FromArgb (uint argb) {
             var a = ( argb >> 24 ) / 255d;
             var r = ( ( argb >> 16 ) & 0xFF ) / 255d;

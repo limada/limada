@@ -233,7 +233,8 @@ namespace Limaki.View.Winform.Visuals {
             editor.Multiline = true;
             editor.ScrollBars = ScrollBars.None;
             editor.WordWrap = true;
-            editor.BackColor = System.Drawing.Color.FromArgb( (int) style.FillColor.ToArgb() );
+            
+            editor.BackColor = System.Drawing.Color.FromArgb((int)style.FillColor.ToRgb() );
             var location = camera.FromSource(Current.Location);
             var size = camera.FromSource(Current.Size);
             if (Current is IVisualEdge) {

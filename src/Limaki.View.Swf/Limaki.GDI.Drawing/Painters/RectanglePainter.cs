@@ -23,12 +23,9 @@ using Xwt.Gdi.Backend;
 namespace Limaki.Drawing.GDI.Painters {
 
     public class RectanglePainter : GdiPainter<Rectangle>, IPainter<IRectangleShape, Rectangle> {
-
-        public override void RenderXwt (ISurface surface) {
-            var ctx = ((ContextSurface) surface).Context;
-            Render (ctx, (c, d) => c.Rectangle (d));
+        public override void Render (ISurface surface) {
+            RenderGdi (surface);
         }
-
         public override void RenderGdi (ISurface surface) {
             var rect = GDIConverter.Convert(Shape.Data);
             var style = this.Style;
@@ -51,6 +48,9 @@ namespace Limaki.Drawing.GDI.Painters {
 
 
         }
-       
+
+        public override void RenderXwt (ISurface surface) {
+            throw new NotImplementedException ();
+        }
     }
 }

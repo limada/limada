@@ -22,6 +22,7 @@ using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.GDI.Painters {
+
     public class StringPainter : StringPainterBase,IPainter<string> {
         #region helper methods
 
@@ -135,7 +136,7 @@ namespace Limaki.Drawing.GDI.Painters {
                         (float)(vector.Start.Y + (vector.End.Y - vector.Start.Y) / 2f));
                     
                     lineMatrice.Translate (c.X - 1, c.Y - 1);
-                    lineMatrice.Rotate ( Angle (vector));
+                    lineMatrice.Rotate ( Vector.Angle (vector));
 
                     linedTextPath.Reset ();
                     // TODO: something is wrong with emSize, it is too small:

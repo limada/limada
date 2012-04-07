@@ -44,19 +44,6 @@ namespace Limaki.Drawing.Painters {
                 return _drawingUtils;
             }
         }
-        
-        public static double Angle(Vector v) {
-            var dx = (v.End.X - v.Start.X);
-            var dy = (v.End.Y - v.Start.Y);
-            if (dy == 0)
-                return 0;
-            else if (dx == 0)
-                return 90;
-            else
-                return Math.Atan(dy / dx) / Math.PI * 180d;
-            // +((dy < 0) ? 180 : 0);
-        }
-
 
         #endregion
 

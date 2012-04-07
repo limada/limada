@@ -2,6 +2,7 @@ using System;
 using Xwt;
 using SystemColors = System.Windows.SystemColors;
 using Xwt.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Limaki.Drawing.WPF {
 
@@ -51,5 +52,31 @@ namespace Limaki.Drawing.WPF {
             return path;
 
         }
+#if ! SILVERLIGHT
+        public void SetGraphicsMode (System.Drawing.Graphics graphics)
+		{
+			if (graphics == null)
+				throw new ArgumentNullException ("graphics");
+			
+			var displayTier = (System.Windows.Media.RenderCapability.Tier >> 16);
+			displayTier = 0; //debug code; remove that!
+			if (displayTier == 0) {//no hardware acceleration
+				graphics.SmoothingMode = SmoothingMode.None;
+				graphics.PixelOffsetMode = PixelOffsetMode.Half;
+				graphics.CompositingQuality = CompositingQuality.HighSpeed;
+			} else if (displayTier == 1) {//partial hardware acceleration
+				graphics.SmoothingMode = SmoothingMode.AntiAlias;
+				graphics.PixelOffsetMode = PixelOffsetMode.Half;
+				graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+				graphics.CompositingQuality = CompositingQuality.AssumeLinear;
+			} else {//supports hardware acceleration
+				graphics.SmoothingMode = SmoothingMode.AntiAlias;
+				graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+				graphics.CompositingQuality = CompositingQuality.HighQuality;
+				graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+			}
+
+		}
+        #endif
     }
 }

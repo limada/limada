@@ -119,7 +119,13 @@ namespace Xwt.Gdi.Backend {
         public Pen Pen {
             get {
                 if (_pen == null)
-                    _pen = new Pen (Color);
+                    _pen = new Pen (Color) {
+                        //Alignment = PenAlignment.Inset, this makes problems with scale
+                        LineJoin = LineJoin.Miter,
+                        StartCap = LineCap.Round,
+                        EndCap = LineCap.Round,
+                        
+                    };
                 else
                     _pen.Color = Color;
 

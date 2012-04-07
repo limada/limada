@@ -37,5 +37,17 @@ namespace Limaki.Drawing.Painters {
 
             return CreatePainter(shape.GetType());
         }
+        protected override void InstrumentClazzes () {
+
+            Add<IPainter<IShape<Rectangle>, Rectangle>> (() => new RectanglePainter ());
+            Add<IPainter<IRectangleShape, Rectangle>> (() => new RectanglePainter ());
+            Add<IPainter<Rectangle>> (() => new RectanglePainter ());
+
+            Add<IPainter<IRoundedRectangleShape, Rectangle>> (() => new RoundedRectanglePainter ());
+            Add<IPainter<IBezierShape, Rectangle>> (() => new BezierPainter ());
+
+            Add<IPainter<IShape<Vector>, Vector>> (() => new VectorPainter ());
+            Add<IPainter<IVectorShape, Vector>> (() => new VectorPainter ());
+        }
     }
 }

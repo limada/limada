@@ -15,30 +15,32 @@
 using System.Drawing;
 using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
-using GDIPen=Limaki.Drawing.GDI.GDIPen;
+using GDIPen = Limaki.Drawing.GDI.GDIPen;
+using System;
 
 namespace Limaki.Drawing.GDI.Painters {
-    public class VectorPainter:GdiPainter<Vector>,IPainter<IVectorShape,Vector> {
 
+    public class VectorPainter : GdiPainter<Vector>, IPainter<IVectorShape, Vector> {
+
+       
         public override void Render (ISurface surface) {
             RenderGdi (surface);
         }
-        public override void RenderGdi( ISurface surface ) {
+
+        public override void RenderGdi (ISurface surface) {
             if ((RenderType.Draw & RenderType) != 0) {
-                Graphics g = ((GDISurface)surface).Graphics;
+                Graphics g = ((GDISurface) surface).Graphics;
                 Vector v = Shape.Data;
-                System.Drawing.Pen pen = ( (GDIPen) Style.Pen ).Backend;
-                g.DrawLine(
-                    pen, 
-                    GDIConverter.Convert(v.Start),
-                    GDIConverter.Convert(v.End));
+                System.Drawing.Pen pen = ((GDIPen) Style.Pen).Backend;
+                g.DrawLine (
+                    pen,
+                    GDIConverter.Convert (v.Start),
+                    GDIConverter.Convert (v.End));
             }
         }
 
         public override void RenderXwt (ISurface surface) {
-            throw new System.NotImplementedException ();
+            throw new NotImplementedException ();
         }
-
-        
     }
 }

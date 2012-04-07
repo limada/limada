@@ -18,6 +18,7 @@ using System;
 using Xwt.Drawing;
 
 namespace Limaki.Drawing.Painters {
+
     public abstract class Painter<T> : IPainter<T>, IPainter<IShape<T>, T> {
 
         #region IPainter<T> Member
@@ -55,6 +56,21 @@ namespace Limaki.Drawing.Painters {
         }
 
         public abstract void Render ( ISurface surface );
+
+        public virtual void Render (Context ctx, Action<Context, T> draw, 
+            RenderType renderType, Color fillColor, Color penColor, double thickness) {
+
+            draw (ctx, Shape.Data);
+            if (renderType.HasFlag (RenderType.Fill)) {
+                ctx.SetColor (fillColor);
+                ctx.FillPreserve ();
+            }
+            if (renderType.HasFlag (RenderType.Draw)) {
+                ctx.SetColor (penColor);
+                ctx.SetLineWidth (thickness);
+                ctx.Stroke ();
+            }
+        }
 
         public virtual void Render (Context ctx, Action<Context, T> draw) {
             var style = this.Style;
