@@ -19,6 +19,7 @@ using Limaki.Drawing;
 using Limaki.Drawing.GDI;
 using Limaki.Drawing.Styles;
 using Xwt.Gdi;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.SWF.Viewers {
     public partial class StyleEditor : BaseStyleEditor<IStyle> {

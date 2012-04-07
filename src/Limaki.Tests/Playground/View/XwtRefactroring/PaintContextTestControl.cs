@@ -2,12 +2,36 @@ using Limaki.Painting;
 using Limaki.GDI.Painting;
 using Xwt.Drawing;
 using Xwt.Gdi.Backend;
+using Xwt.Gdi;
 using System;
 using SD = System.Drawing;
+using System.Diagnostics;
+
 namespace Limaki.Tests.Sandbox {
 
-    public class PaintContextTestControl : System.Windows.Forms.UserControl {
+    public enum PaintContextTestCase {
+        XwtSample,
+        MySample,
+        SpeedTest,
 
+    }
+
+    public class PaintContextTestControl : System.Windows.Forms.UserControl {
+        public PaintContextTestControl() {
+            this.Stopwatch = new Stopwatch();
+            System.Windows.Forms.ControlStyles controlStyle =
+                    System.Windows.Forms.ControlStyles.UserPaint
+                    | System.Windows.Forms.ControlStyles.AllPaintingInWmPaint
+                    | System.Windows.Forms.ControlStyles.OptimizedDoubleBuffer;
+
+            //if (Opaque) {
+            //    controlStyle = controlStyle | ControlStyles.Opaque;
+            //}
+
+            this.SetStyle (controlStyle, true);
+        }
+
+        PaintContextTestCase TestCase { get; set; }
         protected override void OnPaint (System.Windows.Forms.PaintEventArgs e) {
             base.OnPaint (e);
             this.BackColor = SD.Color.White;
@@ -15,12 +39,17 @@ namespace Limaki.Tests.Sandbox {
             var graphics = new GdiContext { Graphics = e.Graphics };
             var painter = new PaintContext (graphics);
             var context = new Xwt.Drawing.Context(graphics);
-            if (true)
+            if (TestCase == PaintContextTestCase.XwtSample)
                 XwtSample (context);
-            else
+            else if (TestCase == PaintContextTestCase.MySample)
                 MySample (painter);
-
+            else if (TestCase == PaintContextTestCase.SpeedTest) {
+                Stopwatch.Start();
+                SpeedTest(context);
+                Stopwatch.Stop();
+            }
             graphics.Dispose ();
+            Frames++;
 
         }
 
@@ -124,8 +153,42 @@ namespace Limaki.Tests.Sandbox {
 
             var p = new Samples.ReferencePainter();
             p.Font = Xwt.Engine.WidgetRegistry.CreateFrontend<Font> (this.Font);
+            p.Bounds = this.Bounds.ToXwt();
             p.All(ctx);
            
+        }
+
+        protected virtual void SpeedTest (Xwt.Drawing.Context ctx) {
+            var p = new Samples.ReferencePainter ();
+            p.Font = Xwt.Engine.WidgetRegistry.CreateFrontend<Font> (this.Font);
+            p.Bounds = this.Bounds.ToXwt ();
+            p.SpeedTest (ctx,0,0);
+        }
+
+        public int Iterations { get; set; }
+        public int Frames { get; set; }
+        Stopwatch Stopwatch { get; set; }
+
+        public virtual void SpeedTest() {
+            Iterations = 200;
+            this.TestCase = PaintContextTestCase.SpeedTest;
+            int i = 0;
+            this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            System.Windows.Forms.Application.DoEvents ();
+            while (i++ < Iterations) {
+                this.Invalidate();
+                System.Windows.Forms.Application.DoEvents();
+            }
+            System.Windows.Forms.Application.DoEvents ();
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            var ms = Stopwatch.ElapsedMilliseconds;
+            if (ms == 0)
+                ms = 1;
+            Trace.WriteLine(string.Format ("Time in sec {0:#0.00}\tFrames per sec {1:#0.00}\tFrames {2}",
+                                 ms / 1000d,
+                                 Frames / (ms / 1000d),
+                                 Frames));
+
         }
     }
 

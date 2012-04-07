@@ -14,6 +14,8 @@
  */
 
 using Xwt;
+using System;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing.Painters {
     public abstract class Painter<T> : IPainter<T>, IPainter<IShape<T>, T> {
@@ -54,6 +56,20 @@ namespace Limaki.Drawing.Painters {
 
         public abstract void Render ( ISurface surface );
 
+        public virtual void Render (Context ctx, Action<Context, T> draw) {
+            var style = this.Style;
+            var renderType = this.RenderType;
+            draw (ctx, Shape.Data);
+            if (renderType.HasFlag (RenderType.Fill)) {
+                ctx.SetColor (style.FillColor);
+                ctx.FillPreserve ();
+            }
+            if (renderType.HasFlag (RenderType.Draw)) {
+                ctx.SetColor (style.Pen.Color);
+                ctx.SetLineWidth (style.Pen.Thickness);
+                ctx.Stroke ();
+            }
+        }
         public virtual Point[] Measure(Matrice matrix, int delta, bool extend) {
             return Shape.Hull (matrix, delta, extend);
         }

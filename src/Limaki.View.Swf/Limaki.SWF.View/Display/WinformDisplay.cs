@@ -17,6 +17,7 @@ using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using Point = Xwt.Point;
 using Size = Xwt.Size;
 using Xwt.Gdi;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Winform.Display {
     public abstract class WinformDevice: UserControl {
@@ -266,7 +267,7 @@ namespace Limaki.View.Winform.Display {
         #region IControl Member
 
         Xwt.Rectangle IControl.ClientRectangle {
-            get { return GDIConverter.Convert (this.ClientRectangle); }
+            get { return GdiConverter.ToXwt (this.ClientRectangle); }
         }
 
         Size IControl.Size {

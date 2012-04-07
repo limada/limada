@@ -19,9 +19,11 @@ using Limaki.Drawing;
 using Limaki.View;
 using Limaki.Viewers;
 using Xwt;
+using Xwt.Gdi;
 using DialogResult=Limaki.Viewers.DialogResult;
 using Limaki.Drawing.GDI;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Winform.Controls {
     public partial class TextOkCancelBox : UserControl, ITextOkCancelBox {
@@ -69,7 +71,7 @@ namespace Limaki.Winform.Controls {
         #region IControl Member
 
         Rectangle IControl.ClientRectangle {
-            get { return Limaki.Drawing.GDI.GDIConverter.Convert (this.ClientRectangle); }
+            get { return GdiConverter.ToXwt (this.ClientRectangle); }
         }
 
         Size IControl.Size {

@@ -356,8 +356,6 @@ namespace Samples {
             y += s.Height + 20;
         }
 
-       
-
         public virtual void Transforms (Xwt.Drawing.Context ctx, double x, double y) {
             Rotate (ctx, x, y);
             Scale (ctx, x + 100, y);
@@ -420,5 +418,36 @@ namespace Samples {
         }
 
         public Font Font { get; set; }
+        public Rectangle Bounds { get; set; }
+        public virtual void SpeedTest (Xwt.Drawing.Context ctx, double sx, double sy)
+			{
+				ctx.Save ();
+            
+				ctx.Translate (sx, sy);
+		
+				var n = 1000;
+				var ll = 80;
+				var p = new Point (0, 0);
+				for (double i = 1; i<n; i++) {
+					
+					ctx.MoveTo (p.X, p.Y);
+					
+					ctx.SetColor (new Color (i / n, i / n, i / n));
+					
+					ctx.LineTo (p.X + ll, p.Y + ll);
+					ctx.Stroke ();
+					
+					if (p.Y + ll > this.Bounds.Bottom) {
+						p.Y = 0;
+						p.X += ll + 5;
+						
+					} else {
+						p.Y++;
+					}
+				
+				}
+			
+				ctx.Restore ();
+			}		
+		}
     }
-}

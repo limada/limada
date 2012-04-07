@@ -86,14 +86,16 @@ namespace Xwt.Gdi.Backend {
         /// <param name="angle2"></param>
         public virtual void Arc (object backend, double xc, double yc, double radius, double angle1, double angle2) {
             var c = (GdiContext) backend;
+            if (radius == 0)
+                return;
             if (angle1 > 0 && angle2 == 0)
                 angle2 = 360;
             // GraphicsPath.AddArc sweepAngle:The angle between startAngle and the end of the arc. 
             c.Path.AddArc ((float) (xc - radius), (float) (yc - radius),
                            (float) radius * 2, (float) radius * 2,
                            (float) angle1, (float) (angle2 - angle1));
-
-            c.Current = c.Path.GetLastPoint ();
+            if (c.Path.PointCount != 0)
+                c.Current = c.Path.GetLastPoint ();
 
         }
 

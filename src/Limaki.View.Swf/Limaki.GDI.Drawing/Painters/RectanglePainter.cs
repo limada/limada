@@ -18,27 +18,15 @@ using Limaki.Drawing.GDI;
 using Limaki.Drawing.Shapes;
 using Xwt;
 using Xwt.Gdi;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.GDI.Painters {
 
-    public class RectanglePainter : GdiPainter<Xwt.Rectangle>, IPainter<IRectangleShape, Xwt.Rectangle> {
-        
+    public class RectanglePainter : GdiPainter<Rectangle>, IPainter<IRectangleShape, Rectangle> {
+
         public override void RenderXwt (ISurface surface) {
-            var ctx = ((GDISurface) surface).Context;
-            var style = this.Style;
-            var renderType = this.RenderType;
-            ctx.Rectangle (Shape.Data);
-            if (renderType.HasFlag (RenderType.Fill)) {
-                ctx.SetColor(style.FillColor);
-                ctx.FillPreserve();
-            }
-            if (renderType.HasFlag (RenderType.Draw)) {
-                ctx.SetColor (style.Pen.Color);
-                ctx.SetLineWidth(style.Pen.Thickness);
-                ctx.Stroke ();
-            } else {
-               
-            }
+            var ctx = ((ContextSurface) surface).Context;
+            Render (ctx, (c, d) => c.Rectangle (d));
         }
 
         public override void RenderGdi (ISurface surface) {

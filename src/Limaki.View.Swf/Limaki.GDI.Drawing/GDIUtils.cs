@@ -16,6 +16,7 @@
 using Xwt;
 using Xwt.Drawing;
 using Xwt.Gdi;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.GDI {
 

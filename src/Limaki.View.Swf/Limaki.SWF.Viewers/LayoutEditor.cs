@@ -21,6 +21,7 @@ using Limaki.Visuals;
 using Orientation = Limaki.Drawing.Orientation;
 using Size = Xwt.Size;
 using Xwt.Gdi;
+using Xwt.Gdi.Backend;
 
 
 namespace Limaki.SWF.Viewers {

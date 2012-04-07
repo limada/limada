@@ -30,14 +30,6 @@ namespace Limaki.Drawing.GDI {
             return new System.Drawing.RectangleF((float)value.X, (float)value.Y, (float)value.Width, (float)value.Height);
         }
 
-        public static Rectangle Convert(System.Drawing.Rectangle value) {
-            return new Rectangle(value.X, value.Y, value.Width, value.Height);
-        }
-
-        public static Rectangle Convert(System.Drawing.RectangleF value) {
-            return new Rectangle(value.X, value.Y, value.Width, value.Height);
-        }
-
         public static System.Drawing.Point[] Convert(Point[] value) {
             return Array.ConvertAll<Point, System.Drawing.Point>(value, Convert);
         }

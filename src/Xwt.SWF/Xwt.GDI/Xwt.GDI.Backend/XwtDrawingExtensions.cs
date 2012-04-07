@@ -25,7 +25,9 @@
 // THE SOFTWARE.
 
 namespace Xwt.Drawing {
+
     public static class XwtDrawingExtensions {
+
         public static bool Equals (this Font value, Font other) {
             if (value == null || other == null)
                 return false;

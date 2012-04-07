@@ -19,6 +19,7 @@ using Limaki.Drawing.Shapes;
 using Xwt;
 using Xwt.Engine;
 using Xwt.Gdi;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.GDI.Painters {
     public class StringPainter : StringPainterBase,IPainter<string> {

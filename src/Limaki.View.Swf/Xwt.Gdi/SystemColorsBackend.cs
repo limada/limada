@@ -2,7 +2,7 @@ using Xwt.Backends;
 using Xwt.Drawing;
 using Xwt.Gdi;
 
-namespace Xwt.Gdi.Backends {
+namespace Xwt.Gdi.Backend {
 
     public class SystemColorsBackend : ISystemColorsBackend {
 

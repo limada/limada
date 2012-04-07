@@ -19,6 +19,8 @@ using Limaki.Drawing;
 using Limaki.Drawing.GDI;
 using Limaki.View.UI;
 using Xwt;
+using Xwt.Gdi;
+using Xwt.Gdi.Backend;
 
 
 namespace Limaki.View.Winform {
@@ -35,7 +37,7 @@ namespace Limaki.View.Winform {
             int halfHeight = GripSize / 2;
 
             var clipBounds = //RectangleI.Ceiling(
-                GDIConverter.Convert(g.ClipBounds);
+                GdiConverter.ToXwt(g.ClipBounds);
             // get near:
             var camera = new Camera(this.Camera.Matrice);
 

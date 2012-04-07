@@ -27,6 +27,7 @@ using Limaki.View.Winform;
 using Limaki.View.Winform.Display;
 using Limaki.Visuals;
 using Xwt.Gdi;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Viewers.Winform {
     public class GraphScenePainterGdiComposer<TItem, TEdge> : GraphScenePainterComposer<TItem, TEdge>

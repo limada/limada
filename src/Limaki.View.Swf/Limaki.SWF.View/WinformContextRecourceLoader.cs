@@ -40,7 +40,7 @@ namespace Limaki.View.Winform {
 
             new SwfEngine().RegisterBackends();
             Xwt.Engine.WidgetRegistry.RegisterBackend(
-                typeof (Xwt.Drawing.SystemColors),typeof (Xwt.Gdi.Backends.SystemColorsBackend)
+                typeof (Xwt.Drawing.SystemColors),typeof (Xwt.Gdi.Backend.SystemColorsBackend)
             );
 
             context.Factory.Add<IExceptionHandler,WinformExeptionHandler>();

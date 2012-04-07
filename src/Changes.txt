@@ -1,3 +1,9 @@
+[2012-04-07]
+RoundedRecanglePainter running over Xwt.Gdi
+
+[2012-04-06]
+SpeedTest added to ReferencePainter
+
 [2012-03-29]
 RecanglePainter running over Xwt.Gdi
 Update to Gecko.Webbrowser 11.0 (https://bitbucket.org/geckofx/geckofx-11.0)

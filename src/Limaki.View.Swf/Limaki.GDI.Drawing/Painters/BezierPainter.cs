@@ -4,6 +4,7 @@ using Limaki.Drawing.Shapes;
 using Xwt;
 using GDIPen=Limaki.Drawing.GDI.GDIPen;
 using Xwt.Gdi;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.GDI.Painters {
     public class BezierPainter:RectanglePainter,IPainter<IBezierShape,Xwt.Rectangle> {

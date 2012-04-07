@@ -4,6 +4,7 @@ using Limaki.Common;
 using Limaki.Drawing.GDI;
 using Limaki.View.Rendering;
 using Xwt.Gdi;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Winform.Display {
     public class WinformRenderer<T>:IDeviceRenderer {
