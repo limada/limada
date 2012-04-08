@@ -15,8 +15,8 @@
 using System.Windows.Forms;
 
 
-namespace Limaki.View.Winform {
+namespace Limaki.View.Swf {
     public class ControlDataObject:DataObject {
-        public IControl control = null;
+        public IWidgetBackend control = null;
     }
 }

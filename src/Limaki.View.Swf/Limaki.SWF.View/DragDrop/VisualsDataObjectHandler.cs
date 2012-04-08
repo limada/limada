@@ -17,7 +17,7 @@ using Limaki.Graphs;
 using Limaki.Common;
 using Limaki.Visuals;
 
-namespace Limaki.View.Winform.DragDrop {
+namespace Limaki.View.Swf.DragDrop {
     public abstract class VisualsDataObjectHandler<OUT> : DataObjectHandler<IGraph<IVisual, IVisualEdge>, IVisual, OUT>, IVisualsDataObjectHandler {
         public override IVisual GetData(IDataObject data, IGraph<IVisual,IVisualEdge> graph) {
             object odata = data.GetData(HandledType);

@@ -2,7 +2,7 @@ using System.Drawing;
 using Limaki.Drawing.Painters;
 using System;
 
-namespace Limaki.Drawing.GDI.Painters {
+namespace Limaki.Drawing.Gdi.Painters {
 
     public abstract class GdiPainter<T>:Painter<T> {
 

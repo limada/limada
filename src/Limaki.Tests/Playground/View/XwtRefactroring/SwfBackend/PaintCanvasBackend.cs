@@ -2,7 +2,7 @@ using Limaki.Painting;
 using Xwt.Gdi;
 using Xwt.WinformBackend;
 
-namespace Limaki.SWF.Painting {
+namespace Limaki.Swf.Painting {
 
     public class PaintCanvasBackend : WidgetBackend,IPaintCanvasBackend {
    

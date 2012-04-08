@@ -19,8 +19,8 @@ using System.Windows.Forms;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.View.Swf.DragDrop;
 using Limaki.View.UI;
-using Limaki.View.Winform.DragDrop;
 using Limaki.Visuals;
 using Xwt;
 using Clipboard = System.Windows.Forms.Clipboard;
@@ -28,7 +28,7 @@ using DragEventArgs = System.Windows.Forms.DragEventArgs;
 using Key=Xwt.Key;
 using ModifierKeys = Xwt.ModifierKeys;
 
-namespace Limaki.View.Winform.Visuals {
+namespace Limaki.View.Swf.Visuals {
 
     /// <summary>
     /// DragDrop support

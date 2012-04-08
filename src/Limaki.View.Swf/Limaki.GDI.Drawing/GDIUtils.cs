@@ -18,16 +18,11 @@ using Xwt.Drawing;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 
-namespace Limaki.Drawing.GDI {
+namespace Limaki.Drawing.Gdi {
 
-    public class GDIUtils {
-
-       
-        public static void SetToolkitPen(Pen toolkit, System.Drawing.Pen native) {
-            
-        }
-
-        public static void SetNativePen(Pen frontend, System.Drawing.Pen backend) {
+    public class GdiUtils {
+        
+        public static void SetBackend(Pen frontend, System.Drawing.Pen backend) {
             if (backend == null || frontend == null)
                 return;
             backend.Color = GdiConverter.ToGdi(frontend.Color);
@@ -43,6 +38,7 @@ namespace Limaki.Drawing.GDI {
                 backend.CustomStartCap = 
                     frontend.CustomStartCap as System.Drawing.Drawing2D.CustomLineCap;
         }
+
         public static System.Drawing.Graphics CreateGraphics () {
             return System.Drawing.Graphics.FromImage (
                         new System.Drawing.Bitmap (1, 1,
@@ -83,24 +79,5 @@ namespace Limaki.Drawing.GDI {
             return GDIConverter.Convert(g.MeasureString(text, font, textSize, stringFormat));
         }
 
-
-        public static System.Drawing.Drawing2D.CustomLineCap getLineCapReverse(float arrowWidth, float arrowHeigth) {
-            var path = new System.Drawing.Drawing2D.GraphicsPath();
-            var p1 = new System.Drawing.PointF(0, -arrowWidth - 1);
-            var p2 = new System.Drawing.PointF(-arrowHeigth / 2, 0);
-            var p3 = new System.Drawing.PointF(arrowHeigth, 0);
-            path.AddPolygon(new System.Drawing.PointF[3] { p3, p2, p1 });
-            path.CloseAllFigures();
-            //path.AddLine(p1, p2);
-            //path.AddLine(p2, p3);
-            //path.AddLine(p3, p1);
-
-            var result = new System.Drawing.Drawing2D.CustomLineCap(path, null);
-            result.BaseInset = 0;
-            //result.StrokeJoin = LineJoin.Round;
-
-            return result;
-
-        }
-    }
+   }
 }

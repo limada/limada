@@ -25,8 +25,8 @@ using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Limaki.UseCases;
-using Limaki.View.Winform.Display;
-using Limaki.UseCases.Winform;
+using Limaki.View.Swf.Display;
+using Limaki.Swf.Backends.UseCases;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Presenter.Display;
 using Limaki.Tests.Presenter.GDI;
@@ -44,7 +44,7 @@ using Limaki.Viewers;
 namespace Limaki.Tests.UseCases {
     public class TestCaseFactory : UseCaseFactory<UseCase> {
         public override void Compose(UseCase useCase) {
-            var deviceComposer = DeviceComposer as WinformUseCaseComposer;
+            var deviceComposer = DeviceComposer as SwfUseCaseComposer;
             
             this.testMessage = (s, m) => {
                 deviceComposer.StatusLabel.Text = m;
@@ -56,13 +56,13 @@ namespace Limaki.Tests.UseCases {
     
         public MessageEventHandler testMessage = null;
 
-        public void CreateTestCases(UseCase useCase, WinformUseCaseComposer composer) {
+        public void CreateTestCases(UseCase useCase, SwfUseCaseComposer composer) {
             
             Get<BenchmarkOneTests> displayTest = () => {
                 var test = new BenchmarkOneTests();
                 var testinst = new WinformDisplayTestComposer<IGraphScene<IVisual, IVisualEdge>>();
 
-                testinst.Factory = () => new WinformVisualsDisplay().Display;
+                testinst.Factory = () => new SwfVisualsDisplayBackend().Display;
                 testinst.Factor(test);
                 testinst.Compose(test);
 
@@ -146,7 +146,7 @@ namespace Limaki.Tests.UseCases {
 
         public void ShowQuadTree(IGraphScene<IVisual, IVisualEdge> scene) {
             var form = new Form();
-            var display = new WinformVisualsDisplay();
+            var display = new SwfVisualsDisplayBackend();
             display.Dock = DockStyle.Fill;
             form.Controls.Add(display);
 

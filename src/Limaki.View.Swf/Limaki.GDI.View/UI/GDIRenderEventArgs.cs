@@ -1,24 +1,25 @@
 using System;
 using System.Drawing;
 using Limaki.View;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using Limaki.View.Clipping;
 using Limaki.View.Rendering;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 
-namespace Limaki.View.GDI.UI {
+namespace Limaki.View.Gdi.UI {
 
-    public class GDIRenderEventArgs : RenderEventArgs {
+    public class GdiRenderEventArgs : RenderEventArgs {
+
         private Graphics graphics = null;
-     
-        public GDIRenderEventArgs (Graphics graphics, Rectangle clipRect) {
+
+        public GdiRenderEventArgs (Graphics graphics, Rectangle clipRect) {
             if (graphics == null)
                 throw new ArgumentNullException ("graphics");
             this.graphics = graphics;
-            this._clipper = new BoundsClipper (GdiConverter.ToXwt (clipRect));
-            this._surface = new GDISurface () { Graphics = graphics };
+            this._clipper = new BoundsClipper (clipRect.ToXwt ());
+            this._surface = new GdiSurface { Graphics = graphics };
         }
-     
+
     }
 }

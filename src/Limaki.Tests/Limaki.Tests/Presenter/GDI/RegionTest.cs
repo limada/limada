@@ -14,7 +14,7 @@
 
 
 using System.Drawing;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Presenter.GDI {
@@ -24,7 +24,7 @@ namespace Limaki.Tests.Presenter.GDI {
             Region region = new Region ();
             region.MakeInfinite ();
 
-            RectangleF rect = region.GetBounds (GDIUtils.DeviceContext);
+            RectangleF rect = region.GetBounds (GdiUtils.DeviceContext);
             ReportDetail("Rect of empty region is:\t"+rect);
         }
     }

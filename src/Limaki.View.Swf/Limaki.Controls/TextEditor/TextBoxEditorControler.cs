@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using Limaki.Common.Text.RTF;
 
-namespace Limaki.Winform.Controls.TextEditor {
+namespace Limaki.Swf.Backends.TextEditor {
     /// <summary>
 
     /// </summary>

@@ -33,6 +33,7 @@ using Xwt.Drawing;
 
 namespace Limaki.Viewers {
     public class SplitView0 : ISplitView, IDisposable, ICheckable {
+
         #region Initialize
         public void Initialize() {
             Display1.BackColor = SystemColors.Window;
@@ -60,8 +61,8 @@ namespace Limaki.Viewers {
             display.SceneFocusChanged -= SceneFocusChanged;
             display.SceneFocusChanged += SceneFocusChanged;
 
-            if (DeviceInitializeDisplay !=null) {
-                DeviceInitializeDisplay (display);
+            if (BackendInitializeDisplay !=null) {
+                BackendInitializeDisplay (display);
             }
         }
 
@@ -71,7 +72,7 @@ namespace Limaki.Viewers {
         public IGraphSceneDisplay<IVisual, IVisualEdge> Display2 { get; set; }
         public object Parent { get; set; }
 
-        public event Action<IGraphSceneDisplay<IVisual, IVisualEdge>> DeviceInitializeDisplay = null;
+        public event Action<IGraphSceneDisplay<IVisual, IVisualEdge>> BackendInitializeDisplay = null;
 
         public Action<object, Action> AttachControl { get; set; }
         public Action<string, string, Action<string>> ShowTextDialog { get; set; }
@@ -97,23 +98,23 @@ namespace Limaki.Viewers {
             get { return _currentDisplay; }
             protected set {
                 _currentDisplay = value;
-                CurrentControl = value;
+                CurrentWidget = value;
             }
         }
 
         private object locker = new object();
-        object _currentControl = null;
-        public object CurrentControl {
-            get { return _currentControl; }
+        object _currentWidget = null;
+        public object CurrentWidget {
+            get { return _currentWidget; }
             protected set {
                 lock (locker) {
-                    bool isChange = _currentControl != value;
+                    bool isChange = _currentWidget != value;
                     if (value is IGraphSceneDisplay<IVisual, IVisualEdge>) {
                         _currentDisplay = (IGraphSceneDisplay<IVisual, IVisualEdge>)value;
                     }
-                    _currentControl = value;
+                    _currentWidget = value;
                     if (isChange) {
-                        OnCurrentControlChanged(value);
+                        OnCurrentWidgetChanged(value);
                         OnViewChanged();
                     }
                 }
@@ -126,21 +127,21 @@ namespace Limaki.Viewers {
             CurrentDisplay = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
         }
 
-        public void ControlGotFocus(object sender) {
-            CurrentControl = sender;
+        public void WidgetGotFocus(object sender) {
+            CurrentWidget = sender;
         }
 
-        public event Action DeviceGraphGraphView = null;
-        public event Action DeviceGraphStreamView = null;
-        public event Action DeviceToggleView = null;
+        public event Action BackendGraphGraphView = null;
+        public event Action BackendGraphStreamView = null;
+        public event Action BackendToggleView = null;
 
         protected IExceptionHandler ExceptionHandler {
             get { return Registry.Pool.TryGetCreate<IExceptionHandler>(); }
         }
 
         public void ToggleView() {
-            if (DeviceToggleView != null) {
-                DeviceToggleView();
+            if (BackendToggleView != null) {
+                BackendToggleView();
             }
             var display = Display1;
             Display1 = Display2;
@@ -148,8 +149,8 @@ namespace Limaki.Viewers {
         }
 
         public void GraphGraphView() {
-            if (DeviceGraphGraphView != null) {
-                DeviceGraphGraphView();
+            if (BackendGraphGraphView != null) {
+                BackendGraphGraphView();
             }
         }
 
@@ -161,8 +162,8 @@ namespace Limaki.Viewers {
                 var fce = new GraphSceneEventArgs<IVisual, IVisualEdge>(currentDisplay.Data, currentDisplay.Data.Focused);
                 ContentViewManager.ChangeViewer(currentDisplay, fce);
             }
-            if (DeviceGraphStreamView != null) {
-                DeviceGraphStreamView();
+            if (BackendGraphStreamView != null) {
+                BackendGraphStreamView();
             }
         }
 
@@ -173,10 +174,10 @@ namespace Limaki.Viewers {
             }
         }
         
-        public event Action<object> CurrentControlChanged = null;
-        public void OnCurrentControlChanged(object control) {
-            if (CurrentControlChanged != null) {
-                CurrentControlChanged(control);
+        public event Action<object> CurrentWidgetChanged = null;
+        public void OnCurrentWidgetChanged(object backend) {
+            if (CurrentWidgetChanged != null) {
+                CurrentWidgetChanged(backend);
             }
         }
 
@@ -264,7 +265,7 @@ namespace Limaki.Viewers {
         public ISheetManager SheetManager {get;set;}
 
         public void SaveDocument() {
-            if (CurrentControl == CurrentDisplay) {
+            if (CurrentWidget == CurrentDisplay) {
                 var display = this.CurrentDisplay;
                 if (SheetManager.IsSaveable(display.Data)) {
                     var info = display.Info;
@@ -372,7 +373,7 @@ namespace Limaki.Viewers {
                 return false;
 
             var currentDisplay = this.CurrentDisplay;
-            var currentControl = this.CurrentControl;
+            var currentControl = this.CurrentWidget;
             if (currentControl == currentDisplay && currentDisplay != null) {
                 if (forward)
                     return SceneHistory.CanGoForward();
@@ -405,7 +406,7 @@ namespace Limaki.Viewers {
 
         public void GoBackOrForward(bool forward) {
             var currentDisplay = this.CurrentDisplay;
-            var currentControl = this.CurrentControl;
+            var currentControl = this.CurrentWidget;
             if (currentControl == currentDisplay && currentDisplay != null) {
                 SceneHistory.Navigate(currentDisplay, SheetManager, forward);
             } else if (currentControl is INavigateTarget) {

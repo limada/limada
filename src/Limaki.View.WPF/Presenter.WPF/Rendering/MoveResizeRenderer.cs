@@ -1,4 +1,4 @@
-﻿using Limaki.Common;
+using Limaki.Common;
 using System.Windows.Media;
 using Limaki.Drawing;
 using Limaki.Drawing.WPF;
@@ -49,7 +49,7 @@ namespace Limaki.View.WPF {
                 invalidRect = Camera.FromSource(invalidRect);
 
                 invalidRect = invalidRect.Inflate(halfborder, halfborder);
-                this.Device.Invalidate(invalidRect);
+                this.Backend.Invalidate(invalidRect);
             }
         }
 

@@ -21,16 +21,16 @@ using SystemColors = System.Drawing.SystemColors;
 using Xwt;
 using Xwt.Engine;
 
-namespace Limaki.Drawing.GDI {
+namespace Limaki.Drawing.Gdi {
 
-    public class GDIDrawingUtils : IDrawingUtils {
+    public class GdiDrawingUtils : IDrawingUtils {
 
         public Pen CreatePen(Color color) {
-            return new GDIPen(color);
+            return new GdiPen(color);
         }
 
         public Matrice NativeMatrice() {
-            return new GDIMatrice ();
+            return new GdiMatrice ();
         }
 
         public object GetCustomLineCap(double arrowWidth, double arrowHeigth) {
@@ -56,7 +56,7 @@ namespace Limaki.Drawing.GDI {
         }
 
         public virtual Size GetTextDimension(string text, IStyle style) {
-            return GDIUtils.GetTextDimension(
+            return GdiUtils.GetTextDimension(
                 (System.Drawing.Font)WidgetRegistry.GetBackend(style.Font),
                 text,
                 GDIConverter.Convert(style.AutoSize));

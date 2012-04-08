@@ -79,7 +79,7 @@
     <Compile Include="Common\IExceptionHandler.cs" />
     <Compile Include="Common\IFactory.cs" />
     <Compile Include="Common\IOC\IContextRecourceLoader.cs" />
-    <Compile Include="Common\IOC\IDeviceContextRecourceLoader.cs" />
+    <Compile Include="Common\IOC\IBackendContextRecourceLoader.cs" />
     <Compile Include="Common\IPool.cs" />
     <Compile Include="Common\Linqish\MemberByNameExpressionBuilder.cs" />
     <Compile Include="Common\LinqKit\ExpandableQuery.cs" />

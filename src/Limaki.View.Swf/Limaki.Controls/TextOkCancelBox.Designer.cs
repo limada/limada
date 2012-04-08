@@ -1,4 +1,4 @@
-ï»¿namespace Limaki.Winform.Controls {
+namespace Limaki.Swf.Backends {
     partial class TextOkCancelBox {
         /// <summary> 
         /// Erforderliche Designervariable.
@@ -8,7 +8,7 @@
         /// <summary> 
         /// Verwendete Ressourcen bereinigen.
         /// </summary>
-        /// <param name="disposing">True, wenn verwaltete Ressourcen gelÃ¶scht werden sollen; andernfalls False.</param>
+        /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
         protected override void Dispose(bool disposing) {
             if (disposing && (components != null)) {
                 components.Dispose();
@@ -19,8 +19,8 @@
         #region Vom Komponenten-Designer generierter Code
 
         /// <summary> 
-        /// Erforderliche Methode fÃ¼r die DesignerunterstÃ¼tzung. 
-        /// Der Inhalt der Methode darf nicht mit dem Code-Editor geÃ¤ndert werden.
+        /// Erforderliche Methode für die Designerunterstützung. 
+        /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
         /// </summary>
         private void InitializeComponent() {
             this.TextBox = new System.Windows.Forms.TextBox();

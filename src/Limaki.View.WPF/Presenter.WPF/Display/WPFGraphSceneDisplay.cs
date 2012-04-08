@@ -1,4 +1,4 @@
-﻿using Limaki.Drawing;
+using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.Visuals;
 using Limaki.View.Display;
@@ -13,7 +13,7 @@ namespace Limaki.View.WPF.Display {
     public abstract class WPFGraphSceneDisplay<TItem, TEdge> : WPFDisplay<IGraphScene<TItem, TEdge>>
         where TEdge : TItem, IEdge<TItem> {}
 
-    public class WPFGraphSceneDeviceComposer<TItem, TEdge> : WPFDeviceComposer<IGraphScene<TItem, TEdge>>
+    public class WpfGraphSceneBackendComposer<TItem, TEdge> : WpfBackendComposer<IGraphScene<TItem, TEdge>>
     where TEdge : TItem, IEdge<TItem> {
         public override void Factor(Display<IGraphScene<TItem, TEdge>> display) {
             base.Factor(display);
@@ -27,7 +27,7 @@ namespace Limaki.View.WPF.Display {
         public override DisplayFactory<IGraphScene<IVisual, IVisualEdge>> CreateDisplayFactory(WPFDisplay<IGraphScene<IVisual, IVisualEdge>> device) {
             var result = new VisualsDisplayFactory();
             var deviceInstrumenter = new WPFVisualsDeviceComposer();
-            deviceInstrumenter.Device = device;
+            deviceInstrumenter.Backend = device;
             result.DeviceComposer = deviceInstrumenter;
             result.DisplayComposer = new WpfVisualsDisplayComposer();
             return result;
@@ -83,7 +83,7 @@ namespace Limaki.View.WPF.Display {
     }
 
 
-    public class WPFVisualsDeviceComposer : WPFGraphSceneDeviceComposer<IVisual, IVisualEdge> {
+    public class WPFVisualsDeviceComposer : WpfGraphSceneBackendComposer<IVisual, IVisualEdge> {
         public override void Factor(Display<IGraphScene<IVisual, IVisualEdge>> display) {
             base.Factor(display);
         }

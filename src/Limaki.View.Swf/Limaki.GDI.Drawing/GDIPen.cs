@@ -16,20 +16,19 @@ using Xwt.Drawing;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 
-namespace Limaki.Drawing.GDI {
-    public class GDIPen:Pen {
+namespace Limaki.Drawing.Gdi {
 
-
-        public GDIPen() : base() { }
-        public GDIPen ( Color color ) : base (color){}
-        protected GDIPen(Pen pen) : base(pen) { }
+    public class GdiPen:Pen {
+        public GdiPen() : base() { }
+        public GdiPen ( Color color ) : base (color){}
+        protected GdiPen(Pen pen) : base(pen) { }
 
         System.Drawing.Pen _natvive = null;
         public System.Drawing.Pen Backend {
             get {
                 if (_natvive == null) {
                     _natvive = new System.Drawing.Pen(GdiConverter.ToGdi(this.Color));
-                    GDIUtils.SetNativePen (this, _natvive);
+                    GdiUtils.SetBackend (this, _natvive);
                 }
                 return _natvive;
             }
@@ -41,7 +40,7 @@ namespace Limaki.Drawing.GDI {
             set {
                 if (base.Thickness != value) {
                     base.Thickness = value;
-                    GDIUtils.SetNativePen(this, _natvive);
+                    GdiUtils.SetBackend(this, _natvive);
                 }
                 
             }
@@ -53,7 +52,7 @@ namespace Limaki.Drawing.GDI {
             set {
                 if (base.LineJoin != value) {
                     base.LineJoin = value;
-                    GDIUtils.SetNativePen(this, _natvive);
+                    GdiUtils.SetBackend(this, _natvive);
                 }
             }
         }
@@ -64,7 +63,7 @@ namespace Limaki.Drawing.GDI {
             set {
                 if (!base.Color.Equals(value)) {
                     base.Color = value;
-                    GDIUtils.SetNativePen(this, _natvive);
+                    GdiUtils.SetBackend(this, _natvive);
                 }
             }
         }
@@ -76,7 +75,7 @@ namespace Limaki.Drawing.GDI {
             set {
                 if (base.EndCap != value) {
                     base.EndCap = value;
-                    GDIUtils.SetNativePen(this, _natvive);
+                    GdiUtils.SetBackend(this, _natvive);
                 }
             }
         }
@@ -88,13 +87,13 @@ namespace Limaki.Drawing.GDI {
             set {
                 if (base.StartCap != value) {
                     base.StartCap = value;
-                    GDIUtils.SetNativePen(this, _natvive);
+                    GdiUtils.SetBackend(this, _natvive);
                 }
             }
         }
 
         public override object Clone() {
-            return new GDIPen(this);
+            return new GdiPen(this);
         }
 
         protected void ClearNative() {

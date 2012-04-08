@@ -18,7 +18,7 @@ using Limaki.Drawing;
 using Xwt;
 using Xwt.Drawing;
 
-namespace Limaki.Drawing.GDI {
+namespace Limaki.Drawing.Gdi {
 
     public static class GDIConverter {
 

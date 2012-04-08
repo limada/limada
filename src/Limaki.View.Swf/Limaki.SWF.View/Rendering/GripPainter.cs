@@ -16,20 +16,20 @@ using System;
 using System.Collections.Generic;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using Limaki.View.UI;
 using Xwt;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 
 
-namespace Limaki.View.Winform {
+namespace Limaki.View.Swf {
     /// <summary>
     /// Paints the grips of a rectangle
     /// </summary>
     public class GripPainter : GripPainterBase {
         public override void Render( ISurface surface ) {
-            var g = ((GDISurface)surface).Graphics;
+            var g = ((GdiSurface)surface).Graphics;
             
             Shape.Size = new Size(GripSize, GripSize);
             innerPainter.Style = this.Style;

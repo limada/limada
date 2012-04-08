@@ -21,11 +21,11 @@ using Limaki.Viewers;
 using Xwt;
 using Xwt.Gdi;
 using DialogResult=Limaki.Viewers.DialogResult;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using Xwt.Gdi.Backend;
 
-namespace Limaki.Winform.Controls {
+namespace Limaki.Swf.Backends {
     public partial class TextOkCancelBox : UserControl, ITextOkCancelBox {
         public TextOkCancelBox() {
             InitializeComponent();
@@ -70,27 +70,27 @@ namespace Limaki.Winform.Controls {
 
         #region IControl Member
 
-        Rectangle IControl.ClientRectangle {
+        Rectangle IWidgetBackend.ClientRectangle {
             get { return GdiConverter.ToXwt (this.ClientRectangle); }
         }
 
-        Size IControl.Size {
-            get { return Limaki.Drawing.GDI.GDIConverter.Convert (this.Size); }
+        Size IWidgetBackend.Size {
+            get { return Limaki.Drawing.Gdi.GDIConverter.Convert (this.Size); }
         }
 
-        void IControl.Update() {
+        void IWidgetBackend.Update() {
             this.Update();
         }
 
-        void IControl.Invalidate() {
+        void IWidgetBackend.Invalidate() {
             this.Invalidate();
         }
 
-        void IControl.Invalidate(Rectangle rect) {
+        void IWidgetBackend.Invalidate(Rectangle rect) {
             this.Invalidate(GDIConverter.Convert(rect));
         }
 
-        Point IControl.PointToClient(Point source) {
+        Point IWidgetBackend.PointToClient(Point source) {
             return GDIConverter.Convert (this.PointToClient (GDIConverter.Convert (source)));
         }
 

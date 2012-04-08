@@ -16,7 +16,7 @@ using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using Xwt;
 
-namespace Limaki.Drawing.GDI.Painters {
+namespace Limaki.Drawing.Gdi.Painters {
 
     public class PainterFactory : PainterFactoryBase, IPainterFactory {
 

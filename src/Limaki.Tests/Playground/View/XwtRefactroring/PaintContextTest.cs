@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 
 using Xwt.Backends;
@@ -13,7 +13,7 @@ namespace Limaki.Tests.Sandbox {
         [Test]
         public void TestPureXwt() {
             WidgetRegistry.RegisterBackend(typeof(PaintContext), typeof(Limaki.GDI.Painting.PaintContextBackendHandler));
-            WidgetRegistry.RegisterBackend(typeof(PaintCanvas), typeof(Limaki.SWF.Painting.PaintCanvasBackend));
+            WidgetRegistry.RegisterBackend(typeof(PaintCanvas), typeof(Limaki.Swf.Painting.PaintCanvasBackend));
 
             var control = new PaintCanvas();
 

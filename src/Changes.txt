@@ -2,6 +2,7 @@
 BezierPainter running over Xwt
 startet VectorPainter over Xwt, has errors with Arrow and scaling
 switch in Limaki.Drawing.GDI.Painters.PainterFactory Gdi/Xwt
+Naming and Namespaces nearer to Xwt
 
 [2012-04-07]
 RoundedRecanglePainter running over Xwt

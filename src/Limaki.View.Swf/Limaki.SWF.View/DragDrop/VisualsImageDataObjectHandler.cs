@@ -26,7 +26,7 @@ using Limaki.Drawing.Imaging;
 using Limaki.Visuals;
 
 
-namespace Limaki.View.Winform.DragDrop {
+namespace Limaki.View.Swf.DragDrop {
     public class VisualsImageDataObjectHandler: 
         IDataObjectHandler<IGraph<IVisual,IVisualEdge>,IVisual>, IVisualsDataObjectHandler{
 

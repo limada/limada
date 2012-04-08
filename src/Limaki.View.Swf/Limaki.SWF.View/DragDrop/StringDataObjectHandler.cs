@@ -16,7 +16,7 @@ using System.Windows.Forms;
 using Limaki.Graphs;
 using Limaki.Visuals;
 
-namespace Limaki.View.Winform.DragDrop {
+namespace Limaki.View.Swf.DragDrop {
     public class StringDataObjectHandler : VisualsDataObjectHandler<string> {
         public override string[] DataFormats {
             get { return new string[]

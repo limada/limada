@@ -19,24 +19,24 @@ namespace Limaki.Tests.Graph.Wrappers {
         }
     }
 
-    public class MockRenderer<T> : IDeviceRenderer
+    public class MockRenderer<T> : IBackendRenderer
 where T : class {
 
-        public virtual IDisplayDevice<T> Device { get; set; }
+        public virtual IDisplayBackend<T> Backend { get; set; }
 
         public virtual IDisplay<T> Display { get; set; }
 
         public MockRenderer() {}
 
         public void Render() {
-            Device.Invalidate();
+            Backend.Invalidate();
         }
 
         public void Render(IClipper clipper) {
             if (clipper.RenderAll) {
-                Device.Invalidate();
+                Backend.Invalidate();
             } else {
-                Device.Invalidate(clipper.Bounds);
+                Backend.Invalidate(clipper.Bounds);
             }
         }
 
@@ -69,7 +69,7 @@ where T : class {
 
     }
 
-    public class MockCursorHandler : IDeviceCursor {
+    public class MockCursorHandler : IBackendCursor {
         public void SetCursor(Anchor anchor, bool hasHit) { }
         public void SetEdgeCursor(Anchor anchor) { }
         public void SaveCursor() { }
@@ -120,11 +120,11 @@ where T : class {
 
     }
 
-    public class MockDevice<T> : IDisplayDevice<T> where T : class {
+    public class MockBackend<T> : IDisplayBackend<T> where T : class {
         public IDisplay<T> Display { get; set; }
 
 
-        IDisplay IDisplayDevice.Display {
+        IDisplay IDisplayBackend.Display {
             get { return this.Display; }
             set { this.Display = value as IDisplay<T>; }
         }
@@ -149,39 +149,39 @@ where T : class {
         public void Dispose(){}
     }
 
-    public class MockDeviceComposer<TData> : DeviceComposer<TData, IDisplayDevice<TData>>
+    public class MockBackendComposer<TData> : BackendComposer<TData, IDisplayBackend<TData>>
     where TData : class {
         public EventControler EventControler { get; set; }
         public override void Factor(Display<TData> display) {
-            this.Device = new MockDevice<TData>();
-            Device.Display = display;
-            display.Device = Device;
+            this.Backend = new MockBackend<TData>();
+            Backend.Display = display;
+            display.Backend = Backend;
 
 			var deviceRenderer = new MockRenderer<TData>();
-			deviceRenderer.Device = Device;
+			deviceRenderer.Backend = Backend;
 			deviceRenderer.Display = display;
-            this.DeviceRenderer = deviceRenderer;
+            this.BackendRenderer = deviceRenderer;
             this.EventControler = new EventControler();
             this.ViewPort = new Viewport();
-            this.DeviceCursor = new MockCursorHandler();
+            this.BackendCursor = new MockCursorHandler();
 
             this.SelectionRenderer = new MockSelectionRenderer();
             this.MoveResizeRenderer = new MockMoveResizeRenderer();
         }
 
         public override void Compose(Display<TData> display) {
-            this.DeviceRenderer.BackColor = () => display.BackColor;
+            this.BackendRenderer.BackColor = () => display.BackColor;
 
-            display.DeviceRenderer = this.DeviceRenderer;
+            display.DeviceRenderer = this.BackendRenderer;
             display.DataLayer = this.DataLayer;
             display.EventControler = this.EventControler;
             display.Viewport = this.ViewPort;
-            display.DeviceCursor = this.DeviceCursor;
+            display.BackendCursor = this.BackendCursor;
 
-            this.MoveResizeRenderer.Device = this.Device;
+            this.MoveResizeRenderer.Backend = this.Backend;
             display.MoveResizeRenderer = this.MoveResizeRenderer;
 
-            this.SelectionRenderer.Device = this.Device;
+            this.SelectionRenderer.Backend = this.Backend;
             display.SelectionRenderer = this.SelectionRenderer;
         }
     }

@@ -17,7 +17,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Limaki.View.Winform.DragDrop {
+namespace Limaki.View.Swf.DragDrop {
     public abstract class SerializedDataObjectHandler<TContainer, TItem> : StreamDataObjectHandler<TContainer, TItem>
         where TItem : class {
 

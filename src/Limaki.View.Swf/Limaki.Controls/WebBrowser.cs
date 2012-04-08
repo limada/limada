@@ -21,7 +21,7 @@ using Limaki.Drawing;
 using Limaki.View;
 using Limaki.Viewers;
 
-namespace Limaki.Winform.Controls {
+namespace Limaki.Swf.Backends {
     public class WebBrowser:System.Windows.Forms.WebBrowser,IWebBrowser, INavigateTarget, IZoomTarget {
 
         public void Navigatewithproxy(string uri, string host, int port) {

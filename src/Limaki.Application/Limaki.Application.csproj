@@ -90,9 +90,9 @@
       <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
       <Name>Limaki.View.Resources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.View.Swf\Limaki.View.SWF.csproj">
+    <ProjectReference Include="..\Limaki.View.Swf\Limaki.View.Swf.csproj">
       <Project>{B87913C3-EBEE-45AB-88EC-8687D9E57127}</Project>
-      <Name>Limaki.View.SWF</Name>
+      <Name>Limaki.View.Swf</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>

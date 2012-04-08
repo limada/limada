@@ -1,11 +1,11 @@
-﻿using System.IO;
+using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Diagnostics;
 
-namespace Limaki.View.Winform.DragDrop {
+namespace Limaki.View.Swf.DragDrop {
     public class DataObjectHelper {
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]

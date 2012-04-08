@@ -13,12 +13,12 @@
  */
 
 using System.Windows.Forms;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Limaki.Common;
 using Limaki.Viewers;
-using Limaki.View.GDI.UI;
+using Limaki.View.Gdi.UI;
 using Limaki.View.Rendering;
 using Limaki.View.UI;
 using DialogResult = System.Windows.Forms.DialogResult;
@@ -26,19 +26,19 @@ using ModifierKeys = Xwt.ModifierKeys;
 using Key = Xwt.Key;
 using MessageBoxButtons = System.Windows.Forms.MessageBoxButtons;
 
-namespace Limaki.View.Winform {
+namespace Limaki.View.Swf {
     /// <summary>
     /// Converts Windows.Forms.PaintEventArgs and Limaki.PaintActionEventArgs
     /// </summary>
     public class Converter {
 
         public static IRenderEventArgs Convert(PaintEventArgs e) {
-            return new GDIRenderEventArgs(e.Graphics, e.ClipRectangle);
+            return new GdiRenderEventArgs(e.Graphics, e.ClipRectangle);
         }
 
         public static PaintEventArgs Convert(IRenderEventArgs e) {
             return new PaintEventArgs(
-                ((GDISurface)e.Surface).Graphics,
+                ((GdiSurface)e.Surface).Graphics,
                 GDIConverter.Convert(e.Clipper.Bounds));
         }
 

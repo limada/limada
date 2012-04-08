@@ -32,7 +32,7 @@ namespace Limaki.View {
         IClipper Clipper { get; set; }
         IStyleSheet StyleSheet { get; set; }
         IViewport Viewport { get; set; }
-        IDeviceRenderer DeviceRenderer { get; set; }
+        IBackendRenderer DeviceRenderer { get; set; }
 
         void Invoke();
         void Execute();
@@ -45,7 +45,7 @@ namespace Limaki.View {
         T Data { get; set; }
         Int64 DataId { get; set; }
         string Text { get; set; }
-        IDisplayDevice<T> Device { get; set; }
+        IDisplayBackend<T> Backend { get; set; }
         State State { get; }
         //ILayout<T> Layout { get; set; }
         

@@ -18,8 +18,8 @@ using System.Windows.Forms;
 using Limaki.Actions;
 
 
-namespace Limaki.View.Winform {
-    public interface IDragDopControl:IControl {
+namespace Limaki.View.Swf {
+    public interface IDragDopControl:IWidgetBackend {
         bool AllowDrop { get; set; }
         DragDropEffects DoDragDrop(Object data, DragDropEffects allowedEffects);
     }

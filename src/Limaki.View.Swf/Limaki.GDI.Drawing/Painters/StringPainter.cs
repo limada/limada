@@ -21,7 +21,7 @@ using Xwt.Engine;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 
-namespace Limaki.Drawing.GDI.Painters {
+namespace Limaki.Drawing.Gdi.Painters {
 
     public class StringPainter : StringPainterBase,IPainter<string> {
         #region helper methods
@@ -113,10 +113,10 @@ namespace Limaki.Drawing.GDI.Painters {
 
         
         private GraphicsPath linedTextPath = new GraphicsPath();
-        private Matrice lineMatrice = new GDIMatrice();
+        private Matrice lineMatrice = new GdiMatrice();
 
         public override void Render(ISurface surface) {
-            Graphics g = ( (GDISurface) surface ).Graphics;
+            Graphics g = ( (GdiSurface) surface ).Graphics;
             
             float[] elements = g.Transform.Elements;
             bool isVisible = ( elements[0] > 0.2f && elements[3] > 0.2f );
@@ -145,7 +145,7 @@ namespace Limaki.Drawing.GDI.Painters {
                         (Text, font.FontFamily, (int) font.Style, emSize,
                          new RectangleF (new PointF (-vlen/2f, -vheight/2f), new SizeF (vlen, vheight)), StringFormat);
 
-                    using (var matrix = ( (GDIMatrice) lineMatrice ).Matrix) {
+                    using (var matrix = ( (GdiMatrice) lineMatrice ).Matrix) {
                         linedTextPath.Transform (matrix);
                     }
 

@@ -1,18 +1,18 @@
 using Limaki.Drawing;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 
 using System;
 using Limaki.Common;
 
 using Limaki.Actions;
-using Limaki.View.GDI.UI;
+using Limaki.View.Gdi.UI;
 using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Xwt;
 using Xwt.Gdi;
 
+namespace Limaki.View.Swf {
 
-namespace Limaki.View.Winform {
     public class MoveResizeRenderer : MoveResizeRendererBase {
 
         public override GripPainterBase GripPainter {
@@ -31,7 +31,7 @@ namespace Limaki.View.Winform {
         public override void OnPaint(IRenderEventArgs e) {
             IShape shape = this.Shape;
             if ((shape != null) && (ShowGrips)) {
-                var g = ((GDISurface)e.Surface).Graphics;
+                var g = ((GdiSurface)e.Surface).Graphics;
                 //save
                 System.Drawing.Drawing2D.Matrix transform = g.Transform;
                 //reset
@@ -45,11 +45,12 @@ namespace Limaki.View.Winform {
 
         bool useRegionForClipping = true;
         private System.Drawing.Region clipRegion = new System.Drawing.Region();
+
         public override void InvalidateShapeOutline(IShape oldShape, IShape newShape) {
             if (oldShape != null) {
                 int halfborder = GripSize + 1;
                 
-                var decive = this.Device as IGDIControl;
+                var backend = this.Backend as IGdiBackend;
 
                 if (useRegionForClipping) {
                     lock (clipRegion) {
@@ -85,7 +86,7 @@ namespace Limaki.View.Winform {
                             //clipRegion.Intersect(smaller);
                             //clipRegion.Complement(bigger);
                         }
-                        decive.Invalidate(clipRegion);
+                        backend.Invalidate(clipRegion);
                     }
                 } else {
                     // the have do redraw the oldShape and newShape area
@@ -94,7 +95,7 @@ namespace Limaki.View.Winform {
                     invalidRect = Camera.FromSource(invalidRect);
 
                     invalidRect = invalidRect.Inflate(halfborder, halfborder);
-                    decive.Invalidate(invalidRect);
+                    backend.Invalidate(invalidRect);
                 }
             }
         }

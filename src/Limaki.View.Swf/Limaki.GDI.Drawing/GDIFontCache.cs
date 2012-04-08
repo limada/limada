@@ -13,12 +13,13 @@
  */
 
 
-namespace Limaki.Drawing.GDI {
+namespace Limaki.Drawing.Gdi {
     /// <summary>
     /// A simple FontCache which remembers the last used font
     /// if the font changes, disposes the old font and makes a new one
     /// </summary>
-    public class GDIFontCache {
+    public class GdiFontCache {
+
         System.Drawing.Font cachedFont = null;
         FontMemento cachedMemento = default(FontMemento);
 

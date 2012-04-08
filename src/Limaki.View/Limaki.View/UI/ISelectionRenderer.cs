@@ -31,7 +31,7 @@ namespace Limaki.View.UI {
         void InvalidateShapeOutline(IShape oldShape, IShape newShape);
         void Clear();
 
-        IControl Device { get; set; }
+        IWidgetBackend Backend { get; set; }
         Get<IClipper> Clipper { get; set; }
         Get<ICamera> Camera { get; set; }
     }

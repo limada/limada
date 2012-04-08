@@ -9,7 +9,7 @@ namespace Limaki.Tests.Presenter.Winform {
 
         public object CreateForm(IDisplay display) {
             var disp = display as Display<T>;
-            var device = disp.Device as Control;
+            var device = disp.Backend as Control;
 
             var form = new Form();
             form.Controls.Add(device);
@@ -24,7 +24,7 @@ namespace Limaki.Tests.Presenter.Winform {
 
         public object FindForm(IDisplay display) {
             var disp = display as Display<T>;
-            var device = disp.Device as Control;
+            var device = disp.Backend as Control;
             return device.FindForm();
         }
 

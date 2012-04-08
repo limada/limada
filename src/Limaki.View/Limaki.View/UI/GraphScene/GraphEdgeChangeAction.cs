@@ -64,7 +64,7 @@ namespace Limaki.View.UI.GraphScene {
             if (Edge != null) {
                 Point sp = Camera.ToSource(p);
                 hitAnchor = Scene.ItemShape(Edge).IsAnchorHit(sp, HitSize);
-                DeviceCursor.SetEdgeCursor(hitAnchor);
+                BackendCursor.SetEdgeCursor(hitAnchor);
                 result = hitAnchor != Anchor.None;
             }
             return result;

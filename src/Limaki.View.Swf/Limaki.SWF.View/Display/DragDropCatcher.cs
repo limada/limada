@@ -21,19 +21,19 @@ using Xwt;
 using DragEventArgs = System.Windows.Forms.DragEventArgs;
 
 
-namespace Limaki.View.Winform {
+namespace Limaki.View.Swf {
     /// <summary>
     /// </summary>
     public class DragDropCatcher<T> : ActionBase,IDragDropAction 
     where T:IMouseAction {
         public DragDropCatcher():base() {}
 
-        public DragDropCatcher(T baseAction, IControl control): base() {
+        public DragDropCatcher(T baseAction, IWidgetBackend control): base() {
             this.Priority = baseAction.Priority;
             this.control = control;
             this.baseAction = baseAction;
         }
-        IControl control = null;
+        IWidgetBackend control = null;
         T baseAction = default(T);
 
         #region IDragDropAction Member

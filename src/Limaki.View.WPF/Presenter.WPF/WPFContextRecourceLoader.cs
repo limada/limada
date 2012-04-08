@@ -29,7 +29,7 @@ namespace Limaki.View.WPF {
             context.Factory.Add<IShapeFactory, WPFShapeFactory>();
             context.Factory.Add<IVisualFactory, WpfVisualFactory>();
 
-            context.Factory.Add<IDeviceCursor, CursorHandler>();
+            context.Factory.Add<IBackendCursor, CursorHandler>();
 
             new ViewContextRecourceLoader().ApplyResources(context);
 

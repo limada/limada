@@ -22,7 +22,7 @@ namespace Limaki.View.Rendering {
     /// this class 
     /// encapsulates the content-specific rendering
     /// it is called by the layers OnPaint-Method
-    /// it should have no dependencies on a specific device
+    /// it should have no dependencies on a specific backend
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IContentRenderer<T>  {

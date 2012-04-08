@@ -15,8 +15,8 @@
 
 using System.Drawing.Drawing2D;
 
-namespace Limaki.Drawing.GDI {
-    public class GDIMatrice:Matrice {
+namespace Limaki.Drawing.Gdi {
+    public class GdiMatrice:Matrice {
         public Matrix Matrix {
             get { return new Matrix((float)m11, (float)m12, (float)m21, (float)m22, (float)dx, (float)dy); }
             set {

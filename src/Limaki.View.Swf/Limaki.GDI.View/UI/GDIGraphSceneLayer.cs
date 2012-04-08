@@ -15,22 +15,22 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using Limaki.Graphs;
 using Limaki.View.Rendering;
 using Limaki.View.UI.GraphScene;
 
+namespace Limaki.View.Gdi.UI {
 
-namespace Limaki.View.GDI.UI {
-    public class GDIGraphSceneLayer<TItem, TEdge> : GraphSceneLayer<TItem, TEdge>
+    public class GdiGraphSceneLayer<TItem, TEdge> : GraphSceneLayer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
-        
-        public bool AntiAlias = true;
-        
-        public override void OnPaint(IRenderEventArgs e) {
-            var g = ((GDISurface)e.Surface).Graphics;
 
-            var transform = (GDIMatrice)this.Camera.Matrice;
+        public bool AntiAlias = true;
+
+        public override void OnPaint (IRenderEventArgs e) {
+            var g = ((GdiSurface) e.Surface).Graphics;
+
+            var transform = (GdiMatrice) this.Camera.Matrice;
             g.Transform = transform.Matrix;
 
             if (AntiAlias) {
@@ -50,9 +50,9 @@ namespace Limaki.View.GDI.UI {
 
             this.Renderer.Render (this.Data, e);
 
-            g.Transform.Reset();
+            g.Transform.Reset ();
         }
 
-        public override void DataChanged() {}
-        }
+        public override void DataChanged () { }
+    }
 }

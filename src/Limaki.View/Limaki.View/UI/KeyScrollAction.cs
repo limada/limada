@@ -8,7 +8,7 @@ namespace Limaki.View.UI {
     /// </summary>
     public class KeyScrollAction : KeyActionBase, ICheckable {
         public virtual Get<IViewport> Viewport { get; set; }
-        public virtual Get<IDeviceCursor> CursorGetter { get; set; }
+        public virtual Get<IBackendCursor> CursorGetter { get; set; }
 
         public override void OnKeyDown(KeyActionEventArgs e) {
             ProcessKey(e);

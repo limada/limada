@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -12,7 +12,7 @@ using Limaki.View;
 
 // this control uses ideas from RicherTextBox by ???
 
-namespace Limaki.Winform.Controls.TextEditor {
+namespace Limaki.Swf.Backends.TextEditor {
     public partial class TextBoxEditor : UserControl, IZoomTarget {
         public TextBoxEditor() {
             InitializeComponent();

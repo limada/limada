@@ -19,7 +19,7 @@ using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using Xwt;
 
 namespace Limaki.Tests.Presenter.Winform {
@@ -63,7 +63,7 @@ namespace Limaki.Tests.Presenter.Winform {
         }
 
         public override void OnPaint(IRenderEventArgs e) {
-            var g = ((GDISurface)e.Surface).Graphics;
+            var g = ((GdiSurface)e.Surface).Graphics;
             var save = g.Transform;
             g.Transform = new System.Drawing.Drawing2D.Matrix();
             System.Drawing.Drawing2D.GraphicsPath hullPath = 

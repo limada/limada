@@ -1,10 +1,10 @@
-﻿using Limaki.Drawing;
-using Limaki.View.Viewers.Winform;
+using Limaki.Drawing;
+using Limaki.View.Viewers.Swf;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 using Limaki.Visuals;
 
-namespace Limaki.UseCases.Winform {
+namespace Limaki.Swf.Backends.UseCases {
     public class PrintManager {
         ImageExporter painter = null;
 

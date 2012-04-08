@@ -10,9 +10,9 @@ namespace Limaki.Common.IOC {
     public class AppFactory<T>
     where T : ContextRecourceLoader {
         public AppFactory() { }
-        public AppFactory(IDeviceContextRecourceLoader deviceContextRecourceLoader) {
+        public AppFactory(IBackendContextRecourceLoader backendContextRecourceLoader) {
             
-            var resourceLoader = Activator.CreateInstance(typeof(T),new object[]{deviceContextRecourceLoader}) as T;
+            var resourceLoader = Activator.CreateInstance(typeof(T),new object[]{backendContextRecourceLoader}) as T;
             Registry.ConcreteContext = resourceLoader.CreateContext();
             resourceLoader.ApplyResources(Registry.ConcreteContext);
 

@@ -20,7 +20,7 @@ using System.Linq;
 using Limaki.Actions;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using Limaki.Drawing.Shapes;
 using Limaki.View.Rendering;
 using Limaki.View.UI.GraphScene;
@@ -126,7 +126,7 @@ namespace Limaki.Tests.Presenter.GDI {
             //hull = ClipHull(e);
             GetHull(this.Data, Camera.Matrice, 5);
 
-            Graphics g = ((GDISurface)e.Surface).Graphics;
+            Graphics g = ((GdiSurface)e.Surface).Graphics;
             Matrix save = g.Transform;
             g.Transform = new Matrix();
 

@@ -36,7 +36,7 @@ namespace Limaki.View.Clipping {
             }
         }
 
-        public virtual IDeviceRenderer DeviceRenderer {
+        public virtual IBackendRenderer DeviceRenderer {
             get {
                 if (_renderer != null) {
                     return _renderer();
@@ -82,8 +82,8 @@ namespace Limaki.View.Clipping {
             set { _viewport = value; }
         }
 
-        Get<IDeviceRenderer> _renderer = null;
-        Get<IDeviceRenderer> IClipReceiver.Renderer {
+        Get<IBackendRenderer> _renderer = null;
+        Get<IBackendRenderer> IClipReceiver.Renderer {
             get { return _renderer; }
             set { _renderer = value; }
         }

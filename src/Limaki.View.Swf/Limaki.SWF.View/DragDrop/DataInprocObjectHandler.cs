@@ -16,7 +16,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Limaki.View.Winform.DragDrop {
+namespace Limaki.View.Swf.DragDrop {
     public abstract class DataInprocObjectHandler<TContainer, TItem> : IDataObjectHandler<TContainer, TItem>
         where TItem : class {
         public virtual Type HandledType {

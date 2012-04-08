@@ -24,7 +24,7 @@ using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Xwt;
 
-namespace Limaki.View.Winform.DragDrop {
+namespace Limaki.View.Swf.DragDrop {
     /// <summary>
     /// encapsulates operations to realise DragDrop or CopyPaste events
     /// </summary>
@@ -55,7 +55,7 @@ namespace Limaki.View.Winform.DragDrop {
             return SetVisual(graph,visual, new DataObject());
         }
 
-        public IDataObject SetVisual(IControl control, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
+        public IDataObject SetVisual(IWidgetBackend control, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
             ControlDataObject dataObject = new ControlDataObject();
             dataObject.control = control;
             return SetVisual(graph,visual, dataObject);
@@ -94,7 +94,7 @@ namespace Limaki.View.Winform.DragDrop {
 
 
 
-       public virtual bool DoDragDrop(IGraphScene<IVisual,IVisualEdge> scene, IControl control, IDataObject dataObject, 
+       public virtual bool DoDragDrop(IGraphScene<IVisual,IVisualEdge> scene, IWidgetBackend control, IDataObject dataObject, 
            IGraphLayout<IVisual,IVisualEdge> layout, Point pt, int hitsize) {
             IVisual item = null;
             bool itemIsRoot = false;
@@ -107,11 +107,11 @@ namespace Limaki.View.Winform.DragDrop {
                 }
 
                 // data is sent from another control
-                else if (data.control is IDisplayDevice<IGraphScene<IVisual,IVisualEdge>>) {// the other control has a Scene
+                else if (data.control is IDisplayBackend<IGraphScene<IVisual,IVisualEdge>>) {// the other control has a Scene
                     var targetGraph =
                         scene.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
 
-					var display = ((IDisplayDevice)data.control).Display as IDisplay<IGraphScene<IVisual,IVisualEdge>>;
+					var display = ((IDisplayBackend)data.control).Display as IDisplay<IGraphScene<IVisual,IVisualEdge>>;
                     var sourceGraph =
                         display.Data.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
 

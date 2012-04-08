@@ -15,7 +15,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Limaki.View.Winform.DragDrop {
+namespace Limaki.View.Swf.DragDrop {
     public interface IDataObjectHandler<TContainer,TItem> {
         Type HandledType { get; }
         string[] DataFormats { get; }

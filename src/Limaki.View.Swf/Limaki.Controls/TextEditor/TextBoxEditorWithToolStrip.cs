@@ -1,9 +1,9 @@
-﻿using System.Windows.Forms;
+using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.View;
 
 
-namespace Limaki.Winform.Controls.TextEditor {
+namespace Limaki.Swf.Backends.TextEditor {
     public partial class TextBoxEditorWithToolStrip : ToolStripContainer, IZoomTarget {
         public TextBoxEditorWithToolStrip() {
             InitializeComponent();

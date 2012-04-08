@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Limada.UseCases\DocumentSchemaKeyScrollAction.cs" />
     <Compile Include="Limaki.Context\ViewContextRecourceLoader.cs" />
     <Compile Include="Limaki.Drawing\Anchor.cs" />
     <Compile Include="Limaki.Drawing\Camera.cs" />
@@ -123,7 +124,7 @@
     <Compile Include="Limaki.View\Clipping\ClipReceiver.cs" />
     <Compile Include="Limaki.View\Clipping\IClipReceiver.cs" />
     <Compile Include="Limaki.View\Clipping\PolygonClipper.cs" />
-    <Compile Include="Limaki.View\Display\DeviceComposer.cs" />
+    <Compile Include="Limaki.View\Display\BackendComposer.cs" />
     <Compile Include="Limaki.View\Display\Display.cs" />
     <Compile Include="Limaki.View\Display\DisplayComposer.cs" />
     <Compile Include="Limaki.View\Display\DisplayFactory.cs" />
@@ -135,10 +136,10 @@
     <Compile Include="Limaki.View\Display\ViewRecourceLoader.cs" />
     <Compile Include="Limaki.View\Display\Viewport.cs" />
     <Compile Include="Limaki.View\IClipper.cs" />
-    <Compile Include="Limaki.View\IControl.cs" />
-    <Compile Include="Limaki.View\IDeviceCursor.cs" />
+    <Compile Include="Limaki.View\IWidgetBackend.cs" />
+    <Compile Include="Limaki.View\IBackendCursor.cs" />
     <Compile Include="Limaki.View\IDisplay.cs" />
-    <Compile Include="Limaki.View\IDisplayDevice.cs" />
+    <Compile Include="Limaki.View\IDisplayBackend.cs" />
     <Compile Include="Limaki.View\INavigateTarget.cs" />
     <Compile Include="Limaki.View\IReceiver.cs" />
     <Compile Include="Limaki.View\IViewport.cs" />
@@ -169,7 +170,7 @@
     <Compile Include="Limaki.View\Rendering\GraphItemRenderer.cs" />
     <Compile Include="Limaki.View\Rendering\GraphSceneRenderer.cs" />
     <Compile Include="Limaki.View\Rendering\IContentRenderer.cs" />
-    <Compile Include="Limaki.View\Rendering\IDeviceRenderer.cs" />
+    <Compile Include="Limaki.View\Rendering\IBackendRenderer.cs" />
     <Compile Include="Limaki.View\Rendering\ILayer.cs" />
     <Compile Include="Limaki.View\Rendering\IRenderAction.cs" />
     <Compile Include="Limaki.View\Rendering\IRenderEventArgs.cs" />

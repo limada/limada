@@ -32,8 +32,8 @@ namespace Limaki.Viewers {
         public virtual IClipper Clipper { get; set; }
         public virtual IClipReceiver ClipReceiver { get; set; }
 
-        public virtual IDisplayDevice<IGraphScene<TItem, TEdge>> Device { get; set; }
-        public virtual IDeviceRenderer DeviceRenderer { get; set; }
+        public virtual IDisplayBackend<IGraphScene<TItem, TEdge>> Backend { get; set; }
+        public virtual IBackendRenderer DeviceRenderer { get; set; }
 
         public virtual ILayer<IGraphScene<TItem, TEdge>> DataLayer { get; set; }
         public virtual IContentRenderer<IGraphScene<TItem, TEdge>> DataRenderer { get; set; }
@@ -78,7 +78,7 @@ namespace Limaki.Viewers {
         public virtual Get<Point> DataOrigin { get; set; }
         public virtual Get<IClipper> Clipper { get; set; }
         public virtual Get<IViewport> Viewport { get; set; }
-        public virtual Get<IDeviceRenderer> Renderer { get; set; }
+        public virtual Get<IBackendRenderer> Renderer { get; set; }
         public virtual Get<ICamera> Camera { get; set; }
         public virtual Get<IGraphLayout<TItem, TEdge>> Layout { get; set; }
 

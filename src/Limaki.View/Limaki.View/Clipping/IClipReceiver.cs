@@ -27,6 +27,6 @@ namespace Limaki.View.Clipping {
         IClipper Clipper { get; set; }
 
         Get<IViewport> Viewport { get; set; }
-        Get<IDeviceRenderer> Renderer { get; set; }
+        Get<IBackendRenderer> Renderer { get; set; }
     }
 }

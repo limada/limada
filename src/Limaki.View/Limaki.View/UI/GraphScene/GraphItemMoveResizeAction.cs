@@ -74,7 +74,7 @@ namespace Limaki.View.UI.GraphScene {
                     hitAnchor = anchor;
                 }
                 if (!(item is TEdge))
-                    DeviceCursor.SetCursor (anchor, result);
+                    BackendCursor.SetCursor (anchor, result);
             }
 
             return result;
@@ -108,7 +108,7 @@ namespace Limaki.View.UI.GraphScene {
                 if (_selectionRenderer != null)
                     this.SelectionRenderer.ShowGrips = false;
                 hideGrips = false;
-                DeviceCursor.RestoreCursor ();
+                BackendCursor.RestoreCursor ();
             }
         }
 

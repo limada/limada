@@ -17,7 +17,7 @@ using System.Windows.Forms;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using Limaki.View.Layout;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
@@ -31,7 +31,7 @@ using ModifierKeys = Xwt.ModifierKeys;
 using Key = Xwt.Key;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 
-namespace Limaki.View.Winform.Visuals {
+namespace Limaki.View.Swf.Visuals {
     
     /// <summary>
     /// Activates a propriate editor for the selected visual
@@ -222,7 +222,7 @@ namespace Limaki.View.Winform.Visuals {
             display.ActiveControl = null;
         }
 
-        private GDIFontCache gdiFontCache = new GDIFontCache();
+        private GdiFontCache gdiFontCache = new GdiFontCache();
         void StyleEditor() {
             var style = Layout.StyleSheet.ItemStyle.DefaultStyle;
             var newFont = new FontMemento(WidgetRegistry.GetBackend(style.Font) as System.Drawing.Font);
@@ -240,7 +240,7 @@ namespace Limaki.View.Winform.Visuals {
             if (Current is IVisualEdge) {
                 location = camera.FromSource(Current.Shape[Anchor.Center]);
                 size = (Size)
-                    GDIUtils.GetTextDimension (editor.Font, Current.Data.ToString (),new System.Drawing.SizeF ())
+                    GdiUtils.GetTextDimension (editor.Font, Current.Data.ToString (),new System.Drawing.SizeF ())
                     ;
                 size.Height = Math.Max(size.Height+2,(int)newFont.SizeInPoints+2);
                 size.Width = Math.Max (size.Width+2, (int)newFont.SizeInPoints*4);

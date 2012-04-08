@@ -177,11 +177,11 @@ namespace Limaki.Tests.Presenter.Display {
             int time = (secToTest * 1000) + Environment.TickCount;
             while (ticker.Elapsed > Environment.TickCount) {
                 if (frame == Frame.Full) {
-                    ((IControl)Display).Invalidate();
+                    ((IWidgetBackend)Display).Invalidate();
                 } else {
-                    ((IControl)Display).Invalidate(rect);
+                    ((IWidgetBackend)Display).Invalidate(rect);
                 }
-                ((IControl)Display).Update();
+                ((IWidgetBackend)Display).Update();
                 DoEvents();
             }
 

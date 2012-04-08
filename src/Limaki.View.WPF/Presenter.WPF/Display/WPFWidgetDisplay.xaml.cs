@@ -23,7 +23,7 @@ namespace Limaki.View.WPF.Display {
 
 
 
-    public abstract class WPFDisplay<T> : UserControl, IWPFControl, IDisplayDevice<T> {
+    public abstract class WPFDisplay<T> : UserControl, IWPFControl, IDisplayBackend<T> {
         public WPFDisplay() {
             Initialize();
         }
@@ -53,7 +53,7 @@ namespace Limaki.View.WPF.Display {
             set { _display = value; }
         }
 
-        IDisplay IDisplayDevice.Display {
+        IDisplay IDisplayBackend.Display {
             get { return this.Display; }
             set { this.Display = value as IDisplay<T>; }
         }
@@ -61,7 +61,7 @@ namespace Limaki.View.WPF.Display {
         protected WPFRenderer<T> _deviceRenderer = null;
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual IDeviceRenderer DeviceRenderer {
+        public virtual IBackendRenderer DeviceRenderer {
             get { return _deviceRenderer; }
             set { _deviceRenderer = value as WPFRenderer<T>; }
         }
@@ -125,11 +125,11 @@ namespace Limaki.View.WPF.Display {
             get { return new Size((int)this.Width, (int)this.Height); }
         }
 
-        void IControl.Invalidate(Rectangle rect) {
+        void IWidgetBackend.Invalidate(Rectangle rect) {
             this.DeviceRenderer.Render(new BoundsClipper(rect));
         }
 
-        Xwt.Point IControl.PointToClient(Xwt.Point source) {
+        Xwt.Point IWidgetBackend.PointToClient(Xwt.Point source) {
             return DrawingConverter.Convert(
                 this.PointFromScreen(DrawingConverter.Convert(source))
              );

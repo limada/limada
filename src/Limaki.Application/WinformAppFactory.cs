@@ -1,7 +1,7 @@
 using System.Windows.Forms;
-using Limaki.View.Winform;
+using Limaki.View.Swf;
 using Limaki.UseCases;
-using Limaki.UseCases.Winform;
+using Limaki.Swf.Backends.UseCases;
 using Limaki.Common.IOC;
 using Limaki.Common;
 using Xwt.WinformBackend;
@@ -10,7 +10,7 @@ namespace Limaki.App {
 
     public class WinformAppFactory : AppFactory<global::Limada.UseCases.AppResourceLoader> {
 
-        public WinformAppFactory(): base(new WinformContextRecourceLoader()) {}
+        public WinformAppFactory(): base(new SwfContextRecourceLoader()) {}
 
         public Form MainForm() {
             var result = new Form ();
@@ -26,7 +26,7 @@ namespace Limaki.App {
             mainform.Icon = Limaki.View.Properties.Resources.LimadaLogoA;
             mainform.ClientSize = new System.Drawing.Size(800, 600);
 
-            var deviceComposer = new WinformUseCaseComposer();
+            var deviceComposer = new SwfUseCaseComposer();
             deviceComposer.Mainform = mainform;
 
             var factory = new UseCaseFactory<UseCase>();

@@ -18,7 +18,7 @@ using System.Drawing.Drawing2D;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using Limaki.Drawing.Shapes;
 using Limaki.View.Rendering;
 using Limaki.View.UI;
@@ -89,9 +89,9 @@ namespace Limaki.Tests.Presenter.GDI {
         }
         public  void OnPaintHullTest ( IRenderEventArgs e ) {
 
-            Graphics g = ((GDISurface)e.Surface).Graphics;
+            Graphics g = ((GdiSurface)e.Surface).Graphics;
             Matrix save = g.Transform;
-            g.Transform = ((GDIMatrice)Camera.Matrice).Matrix;
+            g.Transform = ((GdiMatrice)Camera.Matrice).Matrix;
 
             Point start = new Point(200, 100);
             Size size = new Size(0, -100);
@@ -151,9 +151,9 @@ namespace Limaki.Tests.Presenter.GDI {
 
 
         public override void OnPaint(IRenderEventArgs e) {
-            Graphics g = ((GDISurface)e.Surface).Graphics;
+            Graphics g = ((GdiSurface)e.Surface).Graphics;
             Matrix save = g.Transform;
-            g.Transform = ((GDIMatrice)Camera.Matrice).Matrix;
+            g.Transform = ((GdiMatrice)Camera.Matrice).Matrix;
 
             Rectangle smaller = new Rectangle(start, new Size(50, 20));
             Rectangle bigger = new Rectangle(start, new Size(55, 25));
@@ -197,9 +197,9 @@ namespace Limaki.Tests.Presenter.GDI {
         }
 
         public void OnPaintTest2(IRenderEventArgs e) {
-            Graphics g = ((GDISurface)e.Surface).Graphics;
+            Graphics g = ((GdiSurface)e.Surface).Graphics;
             Matrix save = g.Transform;
-            g.Transform = ((GDIMatrice)Camera.Matrice).Matrix;
+            g.Transform = ((GdiMatrice)Camera.Matrice).Matrix;
 
             Rectangle smaller = new Rectangle(start, new Size(50, 20));
             Rectangle bigger = new Rectangle(start, new Size(55, 25));

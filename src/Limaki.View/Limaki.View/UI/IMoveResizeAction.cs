@@ -19,7 +19,7 @@ using Xwt;
 namespace Limaki.View.UI {
     public interface IMoveResizeAction:IMouseAction {
         int HitSize { get; set; }
-        IDeviceCursor DeviceCursor { get; }
+        IBackendCursor BackendCursor { get; }
 
         Anchor HitAnchor ( Point p );
         bool HitTest ( Point p );

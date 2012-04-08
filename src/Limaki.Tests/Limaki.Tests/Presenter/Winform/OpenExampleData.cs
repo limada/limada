@@ -5,7 +5,7 @@ using Limada.Schemata;
 using Limada.Tests.View;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Visuals;
-using Limaki.View.Winform;
+using Limaki.View.Swf;
 
 namespace Limaki.Tests.Presenter.Winform {
     public class ExampleData {

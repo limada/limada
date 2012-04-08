@@ -17,9 +17,9 @@ using SD = System.Drawing;
 using Xwt.Drawing;
 using Xwt.Gdi.Backend;
 
-namespace Limaki.Drawing.GDI {
+namespace Limaki.Drawing.Gdi {
 
-    public class GDISurface : ContextSurface {
+    public class GdiSurface : ContextSurface {
         SD.Graphics _graphics = null;
 
         public SD.Graphics Graphics {

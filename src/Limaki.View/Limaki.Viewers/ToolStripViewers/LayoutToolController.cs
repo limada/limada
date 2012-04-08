@@ -74,7 +74,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     SceneExtensions.ChangeStyle(currentDisplay.Data, visual, style);
                 }
                 currentDisplay.Execute();
-                currentDisplay.Device.Invalidate();
+                currentDisplay.Backend.Invalidate();
 
             }
         }

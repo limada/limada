@@ -1,6 +1,6 @@
-﻿using Limaki.Drawing;
+using Limaki.Drawing;
 using Limaki.View.Display;
-using Limaki.View.Winform.Display;
+using Limaki.View.Swf.Display;
 using Limaki.Tests.Presenter.Display;
 using Limaki.Visuals;
 using NUnit.Framework;

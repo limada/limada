@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 using Limaki.View.UI;
-using Limaki.View.Winform;
+using Limaki.View.Swf;
 using NUnit.Framework;
 using Xwt;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;

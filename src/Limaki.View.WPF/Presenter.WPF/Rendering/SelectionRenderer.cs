@@ -1,4 +1,4 @@
-﻿using Limaki.Common;
+using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Drawing.WPF;
@@ -94,7 +94,7 @@ namespace Limaki.View.WPF {
 
                 if (bigger.Width <= halfborder || bigger.Height <= halfborder) {
                     bigger = bigger.Inflate(halfborder, halfborder);
-                    Device.Invalidate(bigger);
+                    Backend.Invalidate(bigger);
                 } else {
                     bigger = bigger.Inflate(halfborder, halfborder);
 
@@ -103,16 +103,16 @@ namespace Limaki.View.WPF {
                     smaller = smaller.NormalizedRectangle();
                     smaller = smaller.Inflate(-halfborder, -halfborder);
 
-                    Device.Invalidate(
+                    Backend.Invalidate(
                         Rectangle.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top));
 
-                    Device.Invalidate(
+                    Backend.Invalidate(
                         Rectangle.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom));
 
-                    Device.Invalidate(
+                    Backend.Invalidate(
                         Rectangle.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom));
 
-                    Device.Invalidate(
+                    Backend.Invalidate(
                         Rectangle.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom));
 
                 }

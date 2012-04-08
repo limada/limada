@@ -1,13 +1,14 @@
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Xwt;
 using Xwt.Gdi;
 
 
-namespace Limaki.View.Winform {
+namespace Limaki.View.Swf {
+
     public class SelectionRenderer : MoveResizeRenderer, IShapedSelectionRenderer {
         private IPainter _painter = null;
         public IPainter Painter {
@@ -36,8 +37,8 @@ namespace Limaki.View.Winform {
 
                 if (bigger.Width <= halfborder || bigger.Height <= halfborder) {
                     bigger = bigger.Inflate(halfborder, halfborder);
-                    Device.Invalidate(bigger);
-                    Device.Update();
+                    Backend.Invalidate(bigger);
+                    Backend.Update();
                 } else {
                     bigger = bigger.Inflate(halfborder, halfborder);
 
@@ -46,19 +47,19 @@ namespace Limaki.View.Winform {
                     smaller = smaller.NormalizedRectangle();
                     smaller = smaller.Inflate(-halfborder, -halfborder);
 
-                    Device.Invalidate(
+                    Backend.Invalidate(
                         Rectangle.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top));
-                    Device.Update();
-                    Device.Invalidate(
+                    Backend.Update();
+                    Backend.Invalidate(
                         Rectangle.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom));
-                    Device.Update();
-                    Device.Invalidate(
+                    Backend.Update();
+                    Backend.Invalidate(
                         Rectangle.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom));
-                    Device.Update();
+                    Backend.Update();
 
-                    Device.Invalidate(
+                    Backend.Invalidate(
                         Rectangle.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom));
-                    Device.Update();
+                    Backend.Update();
 
                 }
             }
@@ -66,7 +67,7 @@ namespace Limaki.View.Winform {
 
         public override void OnPaint(IRenderEventArgs e) {
             if (Shape != null) {
-                var g = ((GDISurface)e.Surface).Graphics;
+                var g = ((GdiSurface)e.Surface).Graphics;
 
                 // we paint the Shape transformed, otherwise it looses its line-size
                 // that means, that the linesize is zoomed which makes an ugly effect

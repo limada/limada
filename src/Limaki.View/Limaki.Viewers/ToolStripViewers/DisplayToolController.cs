@@ -45,7 +45,7 @@ namespace Limaki.Viewers.ToolStripViewers {
         public override void Attach(object sender) {
             var display = sender as IDisplay;
             this.Control = sender;
-            var device = sender as IDisplayDevice;
+            var device = sender as IDisplayBackend;
             if (device != null) {
                 display = device.Display;
             }

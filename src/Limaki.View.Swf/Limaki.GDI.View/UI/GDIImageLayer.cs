@@ -2,7 +2,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using Limaki.Drawing;
 using Limaki.Common;
 using Limaki.View.Rendering;
@@ -11,8 +11,9 @@ using Xwt;
 using Size = Xwt.Size;
 using Rectangle = Xwt.Rectangle;
 
-namespace Limaki.View.GDI.UI {
-    public class GDIImageLayer : Layer<Image> {
+namespace Limaki.View.Gdi.UI {
+
+    public class GdiImageLayer : Layer<Image> {
 
         Image _cache = null;
         Image _value = null;
@@ -91,8 +92,8 @@ namespace Limaki.View.GDI.UI {
             var data = this.Data;
             if (data != null && ! hadError) {
                 try {
-                    var g = ((GDISurface)e.Surface).Graphics;
-                    g.Transform = ((GDIMatrice)this.Camera.Matrice).Matrix;
+                    var g = ((GdiSurface)e.Surface).Graphics;
+                    g.Transform = ((GdiMatrice)this.Camera.Matrice).Matrix;
                     g.InterpolationMode = InterpolationMode.Low;
                     g.CompositingMode = CompositingMode.SourceCopy;
                     g.CompositingQuality = CompositingQuality.HighSpeed;

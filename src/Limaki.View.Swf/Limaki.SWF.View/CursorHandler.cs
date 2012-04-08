@@ -1,9 +1,9 @@
 using System.Windows.Forms;
 using Limaki.Drawing;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 
-namespace Limaki.View.Winform {
-    public class CursorHandler:IDeviceCursor {
+namespace Limaki.View.Swf {
+    public class CursorHandler:IBackendCursor {
 
         Control control = null;
         public CursorHandler(Control control) {

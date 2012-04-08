@@ -15,10 +15,9 @@
 using System.Drawing;
 using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
-using GDIPen = Limaki.Drawing.GDI.GDIPen;
 using System;
 
-namespace Limaki.Drawing.GDI.Painters {
+namespace Limaki.Drawing.Gdi.Painters {
 
     public class VectorPainter : GdiPainter<Vector>, IPainter<IVectorShape, Vector> {
 
@@ -29,9 +28,9 @@ namespace Limaki.Drawing.GDI.Painters {
 
         public override void RenderGdi (ISurface surface) {
             if ((RenderType.Draw & RenderType) != 0) {
-                Graphics g = ((GDISurface) surface).Graphics;
+                Graphics g = ((GdiSurface) surface).Graphics;
                 Vector v = Shape.Data;
-                System.Drawing.Pen pen = ((GDIPen) Style.Pen).Backend;
+                System.Drawing.Pen pen = ((GdiPen) Style.Pen).Backend;
                 g.DrawLine (
                     pen,
                     GDIConverter.Convert (v.Start),

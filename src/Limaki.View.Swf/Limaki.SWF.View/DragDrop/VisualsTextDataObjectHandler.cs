@@ -24,7 +24,7 @@ using Limaki.Model.Streams;
 using Limaki.Common;
 using Limaki.Visuals;
 
-namespace Limaki.View.Winform.DragDrop {
+namespace Limaki.View.Swf.DragDrop {
     public class VisualsTextDataObjectHandler :
         IDataObjectHandler<IGraph<IVisual, IVisualEdge>, IVisual>, IVisualsDataObjectHandler {
 
@@ -165,7 +165,7 @@ namespace Limaki.View.Winform.DragDrop {
     }
 }
 
-namespace Limaki.View.Winform.DragDrop.Interop {
+namespace Limaki.View.Swf.DragDrop.Interop {
 }
 
 /*

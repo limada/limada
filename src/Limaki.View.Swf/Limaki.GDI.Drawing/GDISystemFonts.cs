@@ -15,9 +15,9 @@
 using Xwt.Drawing;
 using Xwt.Engine;
 
-namespace Limaki.Drawing.GDI {
+namespace Limaki.Drawing.Gdi {
 
-    public class GDISystemFonts:ISystemFonts {
+    public class GdiSystemFonts:ISystemFonts {
 
         public Font CaptionFont {
             get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.CaptionFont); }

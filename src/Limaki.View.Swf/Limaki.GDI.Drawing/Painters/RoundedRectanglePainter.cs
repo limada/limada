@@ -1,19 +1,19 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using Limaki.Drawing.GDI;
-using Limaki.Drawing.GDI.Painters;
+using Limaki.Drawing.Gdi;
+using Limaki.Drawing.Gdi.Painters;
 using Limaki.Drawing.Shapes;
 using Xwt;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 
-namespace Limaki.Drawing.GDI.Painters {
+namespace Limaki.Drawing.Gdi.Painters {
 
     public class RoundedRectanglePainter:RectanglePainter,IPainter<IRoundedRectangleShape,Xwt.Rectangle> {
         
         public override void Render (ISurface surface) {
-            var g = ( (GDISurface) surface ).Graphics;
+            var g = ( (GdiSurface) surface ).Graphics;
             var rect = GDIConverter.Convert(Shape.Data);
             var style = this.Style;
             var renderType = this.RenderType;
@@ -30,7 +30,7 @@ namespace Limaki.Drawing.GDI.Painters {
                 //    int penSize = -(int)Style.Pen.Width/2;
                 //    Rectangle rect = Rectangle.Inflate(Shape.Data, penSize, penSize);
                 //}
-                var pen = ((GDIPen)Style.Pen).Backend;
+                var pen = ((GdiPen)Style.Pen).Backend;
                 g.DrawPath(pen, path);
             }
         }

@@ -67,9 +67,9 @@ namespace Limaki.View.Display {
         public virtual IClipper Clipper { get; set; }
         public virtual IClipReceiver ClipReceiver { get; set; }
 
-        public virtual IDisplayDevice<TData> Device { get; set; }
-        public virtual IDeviceRenderer DeviceRenderer { get; set; }
-        public virtual IDeviceCursor DeviceCursor { get; set; }
+        public virtual IDisplayBackend<TData> Backend { get; set; }
+        public virtual IBackendRenderer DeviceRenderer { get; set; }
+        public virtual IBackendCursor BackendCursor { get; set; }
 
         public virtual object ActiveControl { get; set; }
 
@@ -128,9 +128,9 @@ namespace Limaki.View.Display {
             this.EventControler = null;
             eventController.Dispose();
 
-            var device = this.Device;
+            var device = this.Backend;
 //            device.Display = null;
-            this.Device = null;
+            this.Backend = null;
 
         }
 
@@ -152,7 +152,7 @@ namespace Limaki.View.Display {
                 throw new CheckFailedException(this.GetType(), typeof(IContentRenderer<TData>));
             }
             if (this.DeviceRenderer == null) {
-                throw new CheckFailedException(this.GetType(), typeof(IDeviceRenderer));
+                throw new CheckFailedException(this.GetType(), typeof(IBackendRenderer));
             }
             if (SelectionRenderer is ICheckable) {
                 ((ICheckable)SelectionRenderer).Check();

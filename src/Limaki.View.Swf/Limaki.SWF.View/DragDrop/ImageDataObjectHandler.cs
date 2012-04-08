@@ -16,7 +16,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Limaki.View.Winform.DragDrop {
+namespace Limaki.View.Swf.DragDrop {
     public abstract class ImageDataObjectHandler<TContainer, TItem> : StreamDataObjectHandler<TContainer, TItem>
         where TItem : class {
         public abstract TItem GetData(Image image, TContainer container);

@@ -14,13 +14,13 @@
 
 using System;
 using System.Drawing.Drawing2D;
-using Limaki.Drawing.GDI;
+using Limaki.Drawing.Gdi;
 using Limaki.Drawing.Shapes;
 using Xwt;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 
-namespace Limaki.Drawing.GDI.Painters {
+namespace Limaki.Drawing.Gdi.Painters {
 
     public class RectanglePainter : GdiPainter<Rectangle>, IPainter<IRectangleShape, Rectangle> {
         public override void Render (ISurface surface) {
@@ -30,7 +30,7 @@ namespace Limaki.Drawing.GDI.Painters {
             var rect = GDIConverter.Convert(Shape.Data);
             var style = this.Style;
             var renderType = this.RenderType;
-            var g = ((GDISurface)surface).Graphics;
+            var g = ((GdiSurface)surface).Graphics;
             if ((RenderType.Fill & renderType) != 0) {
                 g.FillRectangle(
                     GetSolidBrush(GdiConverter.ToGdi(style.FillColor)), 
@@ -42,7 +42,7 @@ namespace Limaki.Drawing.GDI.Painters {
                 //    int penSize = -(int)Style.Pen.Width/2;
                 //    Rectangle rect = Rectangle.Inflate(Shape.Data, penSize, penSize);
                 //}
-                System.Drawing.Pen pen = ((GDIPen)style.Pen).Backend;
+                System.Drawing.Pen pen = ((GdiPen)style.Pen).Backend;
                 g.DrawRectangle(pen, rect);
             }
 

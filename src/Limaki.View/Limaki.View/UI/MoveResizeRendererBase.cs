@@ -63,7 +63,7 @@ namespace Limaki.View.UI {
             set { _gripPainter = value; }
         }
         
-        public IControl Device { get; set; }
+        public IWidgetBackend Backend { get; set; }
         public abstract void InvalidateShapeOutline ( IShape oldShape, IShape newShape );
 
         public virtual void Clear() {

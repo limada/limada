@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Limaki.Common;
 using Limaki.View.UI;
 using Limaki.Drawing.WPF;
@@ -9,7 +9,7 @@ using Limaki.View.WPF.UI;
 using Xwt.Drawing;
 
 namespace Limaki.View.WPF.Display {
-    public class WPFRenderer<T> : IDeviceRenderer {
+    public class WPFRenderer<T> : IBackendRenderer {
         public virtual WPFDisplay<T> Device { get; set; }
         public virtual IDisplay<T> Display { get; set; }
 

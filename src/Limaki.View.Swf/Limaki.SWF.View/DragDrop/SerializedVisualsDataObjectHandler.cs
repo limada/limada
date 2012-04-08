@@ -15,7 +15,7 @@
 using Limaki.Graphs;
 using Limaki.Visuals;
 
-namespace Limaki.View.Winform.DragDrop {
+namespace Limaki.View.Swf.DragDrop {
     public class SerializedVisualsDataObjectHandler : SerializedDataObjectHandler<IGraph<IVisual, IVisualEdge>, IVisual>, IVisualsDataObjectHandler {
         public override string[] DataFormats {
             get { return new string[] { "Limaki_IVisual-Binary" }; }

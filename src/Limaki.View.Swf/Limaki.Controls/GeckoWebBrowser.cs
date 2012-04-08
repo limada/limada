@@ -12,7 +12,7 @@ using System.Diagnostics;
 using Limaki.View;
 using System.Collections.Generic;
 
-namespace Limaki.ThirdPartyWrappers {
+namespace Limaki.Swf.Backends.ThirdPartyWrappers {
     
     public class GeckoWebBrowser:Gecko.GeckoWebBrowser, IWebBrowserWithProxy,
         IWebBrowser, IZoomTarget, INavigateTarget {
