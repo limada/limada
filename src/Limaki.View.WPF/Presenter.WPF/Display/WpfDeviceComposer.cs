@@ -21,7 +21,7 @@ namespace Limaki.View.WPF.Display {
 
             this.EventControler = new WPFEventControler();
             this.ViewPort = new WpfViewport<TData>(Backend);
-            this.BackendCursor = new CursorHandler(Backend);
+            this.CursorHandler = new CursorHandlerBackend(Backend);
 
             this.SelectionRenderer = new SelectionRenderer();
             this.MoveResizeRenderer = new MoveResizeRenderer();
@@ -36,7 +36,7 @@ namespace Limaki.View.WPF.Display {
             display.DataLayer = this.DataLayer;
             display.EventControler = this.EventControler;
             display.Viewport = this.ViewPort;
-            display.BackendCursor = this.BackendCursor;
+            display.CursorHandler = this.CursorHandler;
 
             this.MoveResizeRenderer.Backend = this.Backend;
             display.MoveResizeRenderer = this.MoveResizeRenderer;

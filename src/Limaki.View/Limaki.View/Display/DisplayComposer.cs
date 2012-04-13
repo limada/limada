@@ -31,7 +31,7 @@ namespace Limaki.View.Display {
         public virtual Get<ICamera> Camera { get; set; }
         public virtual Get<Size> DataSize { get; set; }
         public virtual Get<Point> DataOrigin { get; set; }
-        public virtual Get<IBackendCursor> DeviceCursor { get; set; }
+        public virtual Get<ICursorHandler> DeviceCursor { get; set; }
 
 
         public virtual void Factor(Display<TData> display) {
@@ -63,7 +63,7 @@ namespace Limaki.View.Display {
             this.Camera = () => display.Viewport.Camera;
 
             this.Renderer = () => display.DeviceRenderer;
-            this.DeviceCursor = () => display.BackendCursor;
+            this.DeviceCursor = () => display.CursorHandler;
 
             display.ClipReceiver.Clipper = display.Clipper;
             display.ClipReceiver.Renderer = this.Renderer;

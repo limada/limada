@@ -129,10 +129,8 @@ namespace Xwt.Gdi.Backend {
 
         public virtual void ClosePath (object backend) {
             var gc = (GdiContext) backend;
-            gc.Path.CloseFigure ();
+            gc.CloseFigure ();
         }
-
-
 
         /// <summary>
         /// Adds a cubic Bezier spline to the path from the current point to position (x3, y3) in user-space coordinates, 
@@ -151,7 +149,6 @@ namespace Xwt.Gdi.Backend {
         public virtual void Fill (object backend) {
             FillPreserve (backend);
             var gc = (GdiContext) backend;
-            gc.Path.Dispose ();
             gc.Path = null;
         }
 
@@ -163,10 +160,10 @@ namespace Xwt.Gdi.Backend {
 
         public virtual void LineTo (object backend, double x, double y) {
             var gc = (GdiContext) backend;
+            var dest = new SD.PointF ((float) x, (float) y);
+            gc.Path.AddLine (gc.Current, dest);
 
-            gc.Path.AddLine (gc.Current, new SD.PointF ((float) x, (float) y));
-
-            gc.Current = new SD.PointF ((float) x, (float) y);
+            gc.Current = dest;
         }
 
         /// <summary>
@@ -244,9 +241,9 @@ namespace Xwt.Gdi.Backend {
         }
 
         public virtual void Stroke (object backend) {
-            StrokePreserve (backend);
             var gc = (GdiContext) backend;
-            gc.Path.Dispose ();
+            gc.Transform ();
+            gc.Graphics.DrawPath (gc.Pen, gc.Path);
             gc.Path = null;
 
         }
@@ -301,11 +298,15 @@ namespace Xwt.Gdi.Backend {
         }
 
         public virtual void DrawTextLayout (object backend, Xwt.Drawing.TextLayout layout, double x, double y) {
+
+            if (layout.Text == null)
+                return;
+
             var gc = (GdiContext) backend;
             var tl = (TextLayoutBackend) WidgetRegistry.GetBackend (layout);
             var font = tl.Font.ToGdi ();
             var w = layout.Width;
-            var h = layout.Heigth;
+            var h = layout.Height;
             SD.Drawing2D.GraphicsPath path = null;
             var onPath = (gc.ScaledRotated (gc.Graphics.Transform) || gc.ScaledOrRotated);
 

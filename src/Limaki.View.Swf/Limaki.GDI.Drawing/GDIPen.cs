@@ -23,14 +23,14 @@ namespace Limaki.Drawing.Gdi {
         public GdiPen ( Color color ) : base (color){}
         protected GdiPen(Pen pen) : base(pen) { }
 
-        System.Drawing.Pen _natvive = null;
+        System.Drawing.Pen _backend = null;
         public System.Drawing.Pen Backend {
             get {
-                if (_natvive == null) {
-                    _natvive = new System.Drawing.Pen(GdiConverter.ToGdi(this.Color));
-                    GdiUtils.SetBackend (this, _natvive);
+                if (_backend == null) {
+                    _backend = new System.Drawing.Pen(GdiConverter.ToGdi(this.Color));
+                    GdiUtils.SetBackend (this, _backend);
                 }
-                return _natvive;
+                return _backend;
             }
         }
         public override double Thickness {
@@ -40,7 +40,7 @@ namespace Limaki.Drawing.Gdi {
             set {
                 if (base.Thickness != value) {
                     base.Thickness = value;
-                    GdiUtils.SetBackend(this, _natvive);
+                    GdiUtils.SetBackend(this, _backend);
                 }
                 
             }
@@ -52,7 +52,7 @@ namespace Limaki.Drawing.Gdi {
             set {
                 if (base.LineJoin != value) {
                     base.LineJoin = value;
-                    GdiUtils.SetBackend(this, _natvive);
+                    GdiUtils.SetBackend(this, _backend);
                 }
             }
         }
@@ -63,7 +63,7 @@ namespace Limaki.Drawing.Gdi {
             set {
                 if (!base.Color.Equals(value)) {
                     base.Color = value;
-                    GdiUtils.SetBackend(this, _natvive);
+                    GdiUtils.SetBackend(this, _backend);
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace Limaki.Drawing.Gdi {
             set {
                 if (base.EndCap != value) {
                     base.EndCap = value;
-                    GdiUtils.SetBackend(this, _natvive);
+                    GdiUtils.SetBackend(this, _backend);
                 }
             }
         }
@@ -87,7 +87,7 @@ namespace Limaki.Drawing.Gdi {
             set {
                 if (base.StartCap != value) {
                     base.StartCap = value;
-                    GdiUtils.SetBackend(this, _natvive);
+                    GdiUtils.SetBackend(this, _backend);
                 }
             }
         }
@@ -97,9 +97,9 @@ namespace Limaki.Drawing.Gdi {
         }
 
         protected void ClearNative() {
-            if (_natvive != null) {
-                _natvive.Dispose();
-                _natvive = null;
+            if (_backend != null) {
+                _backend.Dispose();
+                _backend = null;
             }
         }
 

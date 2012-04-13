@@ -78,7 +78,7 @@ namespace Limaki.View.UI {
                     hitAnchor = anchor;
                 }
             }
-            BackendCursor.SetCursor (anchor, result);
+            CursorHandler.SetCursor (anchor, result);
 
             return result;
         }
@@ -131,7 +131,7 @@ namespace Limaki.View.UI {
         }
 
         protected override void OnMouseMoveNotResolved(MouseActionEventArgs e) {
-            BackendCursor.SaveCursor ();
+            CursorHandler.SaveCursor ();
             HitTest(e.Location);
         }
 

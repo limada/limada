@@ -69,7 +69,7 @@ namespace Limaki.View.Display {
 
         public virtual IDisplayBackend<TData> Backend { get; set; }
         public virtual IBackendRenderer DeviceRenderer { get; set; }
-        public virtual IBackendCursor BackendCursor { get; set; }
+        public virtual ICursorHandler CursorHandler { get; set; }
 
         public virtual object ActiveControl { get; set; }
 

@@ -48,6 +48,9 @@ namespace Limaki.Drawing.Painters {
 
             Add<IPainter<IShape<Vector>, Vector>> (() => new VectorPainter ());
             Add<IPainter<IVectorShape, Vector>> (() => new VectorPainter ());
+
+            Add<IPainter<string>>(() => new StringPainter());
+
         }
     }
 }

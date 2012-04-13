@@ -54,6 +54,7 @@ namespace Limaki.Drawing {
     public interface IPainter<T> : IPainter {
         new IShape<T> Shape { get; set; }
     }
+
     public interface IPainter<S, T> : IPainter<T> where S : IShape<T> {
 
     }

@@ -21,25 +21,11 @@ namespace Limaki.Drawing.Painters {
 
     public abstract class Painter<T> : IPainter<T>, IPainter<IShape<T>, T> {
 
-        #region IPainter<T> Member
-
-		protected IShape<T> _shape;
-        public virtual IShape<T> Shape {
-            get { return _shape; }
-            set { _shape = value; }
-        }
-
-        #endregion
-
         #region IPainter Member
 
+        public virtual IShape<T> Shape { get; set; }
 
-		///<directed>True</directed>
-        protected IStyle _style;
-        public virtual IStyle Style {
-            get { return _style; }
-            set { _style = value; }
-        }
+        public virtual IStyle Style { get; set; }
 
         IShape IPainter.Shape {
             get { return Shape; }
@@ -86,12 +72,13 @@ namespace Limaki.Drawing.Painters {
                 ctx.Stroke ();
             }
         }
+
         public virtual Point[] Measure(Matrice matrix, int delta, bool extend) {
-            return Shape.Hull (matrix, delta, extend);
+            return ((IPainter) this).Shape.Hull (matrix, delta, extend);
         }
 
         public virtual Point[] Measure(int delta, bool extend) {
-            return Shape.Hull(delta, extend);
+            return ((IPainter) this).Shape.Hull(delta, extend);
         }
 
         #endregion

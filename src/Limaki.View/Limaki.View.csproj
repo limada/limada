@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limada.UseCases\DocumentSchemaKeyScrollAction.cs" />
-    <Compile Include="Limaki.Context\ViewContextRecourceLoader.cs" />
+    <Compile Include="ViewContextRecourceLoader.cs" />
     <Compile Include="Limaki.Drawing\Anchor.cs" />
     <Compile Include="Limaki.Drawing\Camera.cs" />
     <Compile Include="Limaki.Drawing\ContextSurface.cs" />
@@ -77,6 +77,7 @@
     <Compile Include="Limaki.Drawing\Painters\BezierPainter.cs" />
     <Compile Include="Limaki.Drawing\Painters\RectanglePainter.cs" />
     <Compile Include="Limaki.Drawing\Painters\RoundedRectanglePainter.cs" />
+    <Compile Include="Limaki.Drawing\Painters\StringPainter.cs" />
     <Compile Include="Limaki.Drawing\Painters\VectorPainter.cs" />
     <Compile Include="Limaki.Drawing\Pen.cs" />
     <Compile Include="Limaki.Drawing\Shapes\BezierShape.cs" />
@@ -133,14 +134,14 @@
     <Compile Include="Limaki.View\Display\GraphSceneDisplayFactory.cs" />
     <Compile Include="Limaki.View\Display\IComposer.cs" />
     <Compile Include="Limaki.View\Display\IGraphSceneDisplay.cs" />
-    <Compile Include="Limaki.View\Display\ViewRecourceLoader.cs" />
+    <Compile Include="Limaki.View\DisplayRecourceLoader.cs" />
     <Compile Include="Limaki.View\Display\Viewport.cs" />
     <Compile Include="Limaki.View\IClipper.cs" />
     <Compile Include="Limaki.View\IWidgetBackend.cs" />
-    <Compile Include="Limaki.View\IBackendCursor.cs" />
+    <Compile Include="Limaki.View\ICursorHandler.cs" />
     <Compile Include="Limaki.View\IDisplay.cs" />
     <Compile Include="Limaki.View\IDisplayBackend.cs" />
-    <Compile Include="Limaki.View\INavigateTarget.cs" />
+    <Compile Include="Limaki.View\IHistoryAware.cs" />
     <Compile Include="Limaki.View\IReceiver.cs" />
     <Compile Include="Limaki.View\IViewport.cs" />
     <Compile Include="Limaki.View\IZoomTarget.cs" />
@@ -287,6 +288,9 @@
     <Compile Include="Limaki.Visuals\VisualFactory.cs" />
     <Compile Include="Limaki.Visuals\VisualGraph.cs" />
     <Compile Include="Xwt\ISystemColorsBackend.cs" />
+    <Compile Include="Limaki.Widgets\Xwt\ScrollableCanvas.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Xwt\SystemColors.cs" />
     <Compile Include="Xwt\XwtToChange.cs" />
   </ItemGroup>

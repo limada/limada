@@ -29,7 +29,7 @@ namespace Limaki.Common.Text.HTML {
         public bool RemoveTable { get; set; }
         public bool RemoveStyle { get; set; }
         public bool RemoveComment { get; set; }
-        
+        public bool FistLineAsH1 { get; set; }
         /// <summary>
         /// not implemented!
         /// </summary>
@@ -149,7 +149,25 @@ namespace Limaki.Common.Text.HTML {
                                    };
             }
 
-            
+            if (FistLineAsH1 && false) {
+                throw new NotImplementedException ();
+                var firstPara = false;
+                bool removed = false;
+                TagParser.DoElement += stuff => {
+                    var element = stuff.Element.ToLower ();
+
+                    if (!firstPara)
+                        firstPara = stuff.Status == Status.Name && element == "p" ||
+                                    stuff.Status == Status.Endtag && element == "/p";
+                };
+
+                TagParser.DoTag += stuff => {
+                    if (firstPara && !removed) {
+                       TagParser.Insert (stuff.TagPosition, "<H1/>");
+                        removed = true;
+                    }
+                };
+            }
             if (RemoveBrBr) {
                 throw new NotImplementedException();
                 var doRemove = false;

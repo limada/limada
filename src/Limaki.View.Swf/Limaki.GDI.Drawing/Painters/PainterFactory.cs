@@ -23,11 +23,14 @@ namespace Limaki.Drawing.Gdi.Painters {
         protected override void InstrumentClazzes () {
 
             base.InstrumentClazzes ();
+
             if (false) {
                 Add<IPainter<IShape<Vector>, Vector>>(() => new VectorPainter());
                 Add<IPainter<IVectorShape, Vector>>(() => new VectorPainter());
+                Add<IPainter<string>>(() => new StringPainter());
             }
-            Add<IPainter<string>> (() => new StringPainter ());
+
+            
 
         }
     }

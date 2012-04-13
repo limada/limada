@@ -20,7 +20,7 @@ namespace Limaki.View.Swf.Display {
 
             this.EventControler = new SwfEventControler ();
             this.ViewPort = new SwfViewport (Backend);
-            this.BackendCursor = new CursorHandler (Backend);
+            this.CursorHandler = new CursorHandlerBackend (Backend);
 
             this.SelectionRenderer = new  SelectionRenderer();
             this.MoveResizeRenderer = new MoveResizeRenderer ();
@@ -35,7 +35,7 @@ namespace Limaki.View.Swf.Display {
             display.DataLayer = this.DataLayer;
             display.EventControler = this.EventControler;
             display.Viewport = this.ViewPort;
-            display.BackendCursor = this.BackendCursor;
+            display.CursorHandler = this.CursorHandler;
 
             this.MoveResizeRenderer.Backend = this.Backend;
             display.MoveResizeRenderer = this.MoveResizeRenderer;

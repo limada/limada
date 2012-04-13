@@ -22,46 +22,15 @@ using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.Gdi.Painters {
-
-    public class StringPainter : StringPainterBase,IPainter<string> {
-        #region helper methods
-
-        protected SolidBrush _brush = null;
-        protected virtual SolidBrush GetSolidBrush(System.Drawing.Color color) {
-            if (_brush != null) {
-                if (_brush.Color != color) {
-                    _brush.Color = color;
-                }
-                return _brush;
-
-            }
-            if (_brush != null) {
-                _brush.Dispose();
-                _brush = null;
-            }
-            _brush = new SolidBrush(color);
-            return _brush;
-        }
-        protected System.Drawing.Pen _pen = null;
-        protected virtual System.Drawing.Pen GetPen(System.Drawing.Color color) {
-            if (_pen == null) {
-                _pen = new System.Drawing.Pen(color);
-                _pen.Width = 0.1f;
-            }
-            if (_pen.Color != color) {
-                _pen.Color = color;
-            }
-            return _pen;
-        }
-
-        #endregion
+   
+    public class StringPainter : StringPainterBase, IPainter<string> {
 
         #region TextStyle
         private StringFormat _stringFormat = null;
         protected StringFormat StringFormat {
             get {
                 if (_stringFormat == null) {
-                    _stringFormat = GdiConverter.GetDefaultStringFormat();
+                    _stringFormat = GdiConverter.GetDefaultStringFormat ();
                     hAlignChanged = true;
                     vAlignChanged = true;
                 }
@@ -110,42 +79,44 @@ namespace Limaki.Drawing.Gdi.Painters {
         }
 
         #endregion
+        public override void Render (ISurface surface) {
+            RenderGdi(surface);
+        }
 
-        
-        private GraphicsPath linedTextPath = new GraphicsPath();
-        private Matrice lineMatrice = new GdiMatrice();
+        private GraphicsPath linedTextPath = new GraphicsPath ();
+        private Matrice lineMatrice = new GdiMatrice ();
 
-        public override void Render(ISurface surface) {
-            Graphics g = ( (GdiSurface) surface ).Graphics;
-            
+        public override void RenderGdi (ISurface surface) {
+            Graphics g = ((GdiSurface) surface).Graphics;
+
             float[] elements = g.Transform.Elements;
-            bool isVisible = ( elements[0] > 0.2f && elements[3] > 0.2f );
-            
+            bool isVisible = (elements[0] > 0.2f && elements[3] > 0.2f);
+
             if (isVisible) {
                 var style = this.Style;
                 var shape = this.Shape;
-                var font = (System.Drawing.Font)WidgetRegistry.GetBackend(Style.Font);
+                var font = (System.Drawing.Font) WidgetRegistry.GetBackend (Style.Font);
 
                 if (AlignText && shape is IVectorShape) {
-                    var vector = ( (IVectorShape) shape ).Data;
-                    var vlen =  (float)Vector.Length (vector);
-                    var vheight = font.SizeInPoints + ( font.SizeInPoints/4f );
+                    var vector = ((IVectorShape) shape).Data;
+                    var vlen = (float) Vector.Length (vector);
+                    var vheight = font.SizeInPoints + (font.SizeInPoints / 4f);
                     lineMatrice.Reset ();
                     var c = new PointF (
-                        (float)(vector.Start.X + ( vector.End.X - vector.Start.X )/2f),
-                        (float)(vector.Start.Y + (vector.End.Y - vector.Start.Y) / 2f));
-                    
+                        (float) (vector.Start.X + (vector.End.X - vector.Start.X) / 2f),
+                        (float) (vector.Start.Y + (vector.End.Y - vector.Start.Y) / 2f));
+
                     lineMatrice.Translate (c.X - 1, c.Y - 1);
-                    lineMatrice.Rotate ( Vector.Angle (vector));
+                    lineMatrice.Rotate (Vector.Angle (vector));
 
                     linedTextPath.Reset ();
                     // TODO: something is wrong with emSize, it is too small:
                     var emSize = font.Size;
                     linedTextPath.AddString
                         (Text, font.FontFamily, (int) font.Style, emSize,
-                         new RectangleF (new PointF (-vlen/2f, -vheight/2f), new SizeF (vlen, vheight)), StringFormat);
+                         new RectangleF (new PointF (-vlen / 2f, -vheight / 2f), new SizeF (vlen, vheight)), StringFormat);
 
-                    using (var matrix = ( (GdiMatrice) lineMatrice ).Matrix) {
+                    using (var matrix = ((GdiMatrice) lineMatrice).Matrix) {
                         linedTextPath.Transform (matrix);
                     }
 
@@ -171,5 +142,9 @@ namespace Limaki.Drawing.Gdi.Painters {
             }
         }
 
+        public override void RenderXwt(ISurface surface) {
+            throw new System.NotImplementedException();
+        }
+        
     }
 }

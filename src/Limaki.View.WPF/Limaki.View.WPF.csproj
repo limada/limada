@@ -110,7 +110,7 @@
     <Compile Include="Drawing.WPF\WPFSystemFonts.cs" />
     <Compile Include="Drawing.WPF\WPFUtils.cs" />
     <Compile Include="Presenter.WPF\Converter.cs" />
-    <Compile Include="Presenter.WPF\CursorHandler.cs" />
+    <Compile Include="Presenter.WPF\CursorHandlerBackend.cs" />
     <Compile Include="Presenter.WPF\Rendering\GripPainter.cs" />
     <Compile Include="Presenter.WPF\UI\IWPFControl.cs" />
     <Compile Include="Presenter.WPF\UI\WPFEventControler.cs" />

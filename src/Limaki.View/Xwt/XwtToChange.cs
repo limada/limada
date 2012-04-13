@@ -13,8 +13,8 @@ namespace Limaki.XwtAdapter {
             WidgetRegistry.CreateSharedBackend<object>(typeof (object));
             WidgetRegistry.CreateBackend<object>(typeof (object));
             var c = new Canvas();
-            new Xwt.Drawing.Context(new object());
-            new Xwt.Drawing.Font(new object());
+            new Context(new object());
+            new Font(new object());
 
         }
     }

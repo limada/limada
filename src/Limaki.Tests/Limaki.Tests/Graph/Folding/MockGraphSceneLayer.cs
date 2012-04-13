@@ -9,6 +9,7 @@ using Limaki.View.UI.GraphScene;
 using Xwt;
 
 namespace Limaki.Tests.Graph.Wrappers {
+
     public class MockGraphSceneLayer<TItem, TEdge> : GraphSceneLayer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
@@ -69,7 +70,7 @@ where T : class {
 
     }
 
-    public class MockCursorHandler : IBackendCursor {
+    public class MockCursorHandler : ICursorHandler {
         public void SetCursor(Anchor anchor, bool hasHit) { }
         public void SetEdgeCursor(Anchor anchor) { }
         public void SaveCursor() { }
@@ -120,7 +121,7 @@ where T : class {
 
     }
 
-    public class MockBackend<T> : IDisplayBackend<T> where T : class {
+    public class MockDisplayBackend<T> : IDisplayBackend<T> where T : class {
         public IDisplay<T> Display { get; set; }
 
 
@@ -153,7 +154,7 @@ where T : class {
     where TData : class {
         public EventControler EventControler { get; set; }
         public override void Factor(Display<TData> display) {
-            this.Backend = new MockBackend<TData>();
+            this.Backend = new MockDisplayBackend<TData>();
             Backend.Display = display;
             display.Backend = Backend;
 
@@ -163,7 +164,7 @@ where T : class {
             this.BackendRenderer = deviceRenderer;
             this.EventControler = new EventControler();
             this.ViewPort = new Viewport();
-            this.BackendCursor = new MockCursorHandler();
+            this.CursorHandler = new MockCursorHandler();
 
             this.SelectionRenderer = new MockSelectionRenderer();
             this.MoveResizeRenderer = new MockMoveResizeRenderer();
@@ -176,7 +177,7 @@ where T : class {
             display.DataLayer = this.DataLayer;
             display.EventControler = this.EventControler;
             display.Viewport = this.ViewPort;
-            display.BackendCursor = this.BackendCursor;
+            display.CursorHandler = this.CursorHandler;
 
             this.MoveResizeRenderer.Backend = this.Backend;
             display.MoveResizeRenderer = this.MoveResizeRenderer;

@@ -11,45 +11,42 @@ namespace Limaki.Drawing.Painters {
             var vector = Shape.Data;
 
             var width = this.Style.Pen.Thickness;
-            var arrowHeigth = width * 1.5d;
-            GetCustomLineCap (ctx, vector, width * 5.5d, arrowHeigth);
+            var arrowHeigth = width * 5.5d;
+            var arrowWidth = width * 1.5d;
+            var end = DrawArrow (ctx, vector, arrowWidth, arrowHeigth);
             ctx.SetColor (Style.PenColor);
             ctx.Fill ();
+        
+            this.RenderType = RenderType.Draw;
 
-            var a = (vector.End.X - vector.Start.X);
-            var b = (vector.End.Y - vector.Start.Y);
-            // todo: calculate end - arrowHeigth
-            var end = new Point (vector.End.X, vector.End.Y);
             Render (ctx, (c, d) => {
-                ctx.MoveTo (vector.Start);
-                ctx.LineTo (end);
-                ctx.ClosePath ();
-
+                c.MoveTo (vector.Start);
+                c.LineTo (end);
             });
         }
 
         protected Matrice Matrix = new Matrice ();
 
-        public void GetCustomLineCap (Context ctx, Vector v, double arrowWidth, double arrowHeigth) {
-            if (arrowHeigth == 0 || arrowWidth == 0)
+        public Point DrawArrow (Context ctx, Vector v, double w, double h) {
+            if (h == 0 || w == 0)
                 throw new ArgumentException ("ArrowWidth must not be 0");
 
-            var w = arrowWidth;
-            var h = arrowHeigth;
-            var arrow = new Point[] {
-                            new Point(0,0),
-                            new Point(-h, -w),
-                            new Point(h, -w)
+            Point[] arrow =  {
+                            new Point (0, 0),
+                            new Point (-w, -h),
+                            new Point (w, -h),
+                            new Point (0, -h)
                         };
             Matrix.Reset ();
-            Matrix.RotateAt (Vector.Angle (v) - 90d, v.End);
+            var angle = Vector.Angle (v) + (v.Start.X - v.End.X > 0 ? 90d : -90d);
+            Matrix.RotateAt (angle, v.End);
             Matrix.Translate (v.End.X, v.End.Y);
             Matrix.TransformPoints (arrow);
             ctx.MoveTo (arrow[0]);
             ctx.LineTo (arrow[1]);
             ctx.LineTo (arrow[2]);
             ctx.ClosePath ();
-
+            return arrow[3];
         }
     }
 }

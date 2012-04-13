@@ -379,11 +379,11 @@ namespace Limaki.Viewers {
                     return SceneHistory.CanGoForward();
                 else
                     return SceneHistory.CanGoBack();
-            } else if (currentControl is INavigateTarget) {
+            } else if (currentControl is IHistoryAware) {
                 if (forward)
-                    return ((INavigateTarget)currentControl).CanGoForward;
+                    return ((IHistoryAware)currentControl).CanGoForward;
                 else
-                    return ((INavigateTarget)currentControl).CanGoBack;
+                    return ((IHistoryAware)currentControl).CanGoBack;
             }
             return false;
         }
@@ -409,11 +409,11 @@ namespace Limaki.Viewers {
             var currentControl = this.CurrentWidget;
             if (currentControl == currentDisplay && currentDisplay != null) {
                 SceneHistory.Navigate(currentDisplay, SheetManager, forward);
-            } else if (currentControl is INavigateTarget) {
+            } else if (currentControl is IHistoryAware) {
                 if (forward)
-                    ((INavigateTarget)currentControl).GoForward();
+                    ((IHistoryAware)currentControl).GoForward();
                 else
-                    ((INavigateTarget)currentControl).GoBack();
+                    ((IHistoryAware)currentControl).GoBack();
 
             }
             OnViewChanged();

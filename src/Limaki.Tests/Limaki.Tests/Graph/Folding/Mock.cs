@@ -16,6 +16,7 @@ using Limaki.View.Display;
 using Limaki.View.Visuals.UI;
 
 namespace Limaki.Tests.Graph.Wrappers {
+
     public class Mock<TFactory>
         where TFactory : GenericGraphFactory<IGraphItem, IGraphEdge>, new() {
 

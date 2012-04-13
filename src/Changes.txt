@@ -1,3 +1,7 @@
+[2012-04-12]
+StringPainter running over Xwt, has errors on resizing
+adjusted VectorPainter Arrows and scaling
+
 [2012-04-08]
 BezierPainter running over Xwt
 startet VectorPainter over Xwt, has errors with Arrow and scaling

@@ -22,7 +22,7 @@ using Limaki.View;
 using Limaki.Viewers;
 
 namespace Limaki.Swf.Backends {
-    public class WebBrowser:System.Windows.Forms.WebBrowser,IWebBrowser, INavigateTarget, IZoomTarget {
+    public class WebBrowser:System.Windows.Forms.WebBrowser,IWebBrowser, IHistoryAware, IZoomTarget {
 
         public void Navigatewithproxy(string uri, string host, int port) {
             var webRequest = (HttpWebRequest)WebRequest.Create(uri);

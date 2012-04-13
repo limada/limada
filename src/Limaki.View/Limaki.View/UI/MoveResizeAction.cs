@@ -27,19 +27,19 @@ namespace Limaki.View.UI {
         }
 
         public virtual Get<ICamera> CameraHandler { get; set; }
-        public virtual Get<IBackendCursor> CursorGetter { get; set; }
+        public virtual Get<ICursorHandler> CursorGetter { get; set; }
 
         protected ICamera Camera {
             get { return CameraHandler ();}
         }
         
-        IBackendCursor _backendCursor = null;
-        public virtual IBackendCursor BackendCursor {
+        ICursorHandler _cursorHandler = null;
+        public virtual ICursorHandler CursorHandler {
             get {
-                if (_backendCursor == null) {
-                    _backendCursor = this.CursorGetter();
+                if (_cursorHandler == null) {
+                    _cursorHandler = this.CursorGetter();
                 }
-                return _backendCursor;
+                return _cursorHandler;
             }
         }
 
@@ -159,7 +159,7 @@ namespace Limaki.View.UI {
             if (e.Button == MouseActionButtons.Left) {
                 resizing = false;
                 hitAnchor = Anchor.None;
-                BackendCursor.SaveCursor();
+                CursorHandler.SaveCursor();
                 moving = HitTest(e.Location);
                 if (hitAnchor != Anchor.None) {
                     Anchor anchor = AdjacentAnchor(hitAnchor);
@@ -191,7 +191,7 @@ namespace Limaki.View.UI {
 
         protected override void EndAction() {
             //if (Resolved) {
-            BackendCursor.RestoreCursor();
+            CursorHandler.RestoreCursor();
             resizing = false;
             moving = false;
             LastMousePos = Point.Zero;
@@ -262,7 +262,7 @@ namespace Limaki.View.UI {
                 throw new CheckFailedException(this.GetType(), typeof(ICamera));
             }
             if (this.CursorGetter == null) {
-                throw new CheckFailedException(this.GetType(), typeof(IBackendCursor));
+                throw new CheckFailedException(this.GetType(), typeof(ICursorHandler));
             }
             return true;
         }

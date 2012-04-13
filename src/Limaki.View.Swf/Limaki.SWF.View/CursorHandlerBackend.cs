@@ -1,26 +1,20 @@
-
+using System.Windows.Forms;
 using Limaki.Drawing;
+using Limaki.Drawing.Gdi;
 
-using System.Windows.Input;
-using System.Windows.Controls;
+namespace Limaki.View.Swf {
 
-namespace Limaki.View.WPF {
-    public class CursorHandler : IBackendCursor {
-        public CursorHandler(IWPFControl control) {
+    public class CursorHandlerBackend:ICursorHandler {
+
+        Control control = null;
+        public CursorHandlerBackend(Control control) {
             this.control = control;
         }
 
-        IWPFControl control = null;
-
-        protected Cursor savedCursor = Cursors.Arrow;
+        protected Cursor savedCursor = Cursors.Default;
 
         public Cursor HitCursor(Anchor hitAnchor) {
-            Cursor result = Cursors.Arrow;
-#if SILVERLIGHT
-            if (hitAnchor != Anchor.None) {
-                result = Cursors.SizeNS;
-            }
-#else
+            Cursor result = control.Cursor;
             if (hitAnchor != Anchor.None)
                 switch (hitAnchor) {
                     case Anchor.Center:
@@ -51,32 +45,27 @@ namespace Limaki.View.WPF {
                         result = Cursors.SizeWE;
                         break;
                 }
-#endif
             return result;
         }
 
-  
+
         public void SetCursor(Anchor anchor, bool hasHit) {
             if (hasHit) {
                 if (anchor != Anchor.None) {
                     control.Cursor = HitCursor(anchor);
                 } else {
-#if ! SILVERLIGHT
                     control.Cursor = Cursors.SizeAll;
-#else
-                    control.Cursor = Cursors.Hand;
-#endif
                 }
             } else {
-                control.Cursor = Cursors.Arrow;
+                control.Cursor = (hasHit ? Cursors.SizeAll : savedCursor);
             }
         }
 
         public void SetEdgeCursor(Anchor anchor) {
             if (anchor != Anchor.None) {
-                control.Cursor = Cursors.Arrow;
+                control.Cursor = Cursors.HSplit;
             } else {
-                control.Cursor = Cursors.Arrow;
+                control.Cursor = savedCursor;
             }
         }
 
@@ -85,7 +74,9 @@ namespace Limaki.View.WPF {
         }
 
         public void  RestoreCursor() {
-            control.Cursor = Cursors.Arrow;
+            control.Cursor = Cursors.Default;
         }
+
     }
+
 }

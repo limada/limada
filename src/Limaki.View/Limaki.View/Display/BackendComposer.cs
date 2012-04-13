@@ -26,7 +26,7 @@ namespace Limaki.View.Display {
         public virtual ILayer<TData> DataLayer { get; set; }
         public virtual IBackendRenderer BackendRenderer { get; set; }
         public virtual IViewport ViewPort { get; set; }
-        public virtual IBackendCursor BackendCursor { get; set; }
+        public virtual ICursorHandler CursorHandler { get; set; }
 
         public virtual ISelectionRenderer MoveResizeRenderer { get; set; }
         public virtual ISelectionRenderer SelectionRenderer { get; set; }

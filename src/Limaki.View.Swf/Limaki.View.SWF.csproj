@@ -89,6 +89,7 @@
     <Compile Include="Limaki.Gdi.Drawing\Painters\RectanglePainter.cs" />
     <Compile Include="Limaki.Gdi.Drawing\Painters\RoundedRectanglePainter.cs" />
     <Compile Include="Limaki.Gdi.Drawing\Painters\StringPainter.cs" />
+    <Compile Include="Limaki.Gdi.Drawing\Painters\StringPainterBase.cs" />
     <Compile Include="Limaki.Gdi.Drawing\Painters\VectorPainter.cs" />
     <Compile Include="Limaki.Gdi.View\UI\IGdiBackend.cs" />
     <Compile Include="Limaki.Gdi.View\UI\GdiGraphSceneLayer.cs" />
@@ -98,7 +99,7 @@
     <Compile Include="Limaki.Swf.Backends\GraphScenePainterRenderer.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.Content\DocumentSchemaController.cs" />
     <Compile Include="Limaki.Swf.View\Converter.cs" />
-    <Compile Include="Limaki.Swf.View\CursorHandler.cs" />
+    <Compile Include="Limaki.Swf.View\CursorHandlerBackend.cs" />
     <Compile Include="Limaki.Swf.View\Display\DragDropCatcher.cs" />
     <Compile Include="Limaki.Gdi.View\UI\GdiViewport.cs" />
     <Compile Include="Limaki.Swf.View\Display\ImageBackendComposer.cs" />

@@ -52,7 +52,7 @@ namespace Limaki.View.Swf {
             context.Factory.Add<IShapeFactory, ShapeFactory>();
             context.Factory.Add<IVisualFactory,VisualFactory>();
             
-            context.Factory.Add<IBackendCursor, CursorHandler>();
+            context.Factory.Add<ICursorHandler, CursorHandlerBackend>();
             context.Factory.Add<IDisplay<IGraphScene<IVisual, IVisualEdge>>>(() => new SwfVisualsDisplayBackend().Display);
             context.Factory.Add<IMessageBoxShow, MessageBoxShow>();
 

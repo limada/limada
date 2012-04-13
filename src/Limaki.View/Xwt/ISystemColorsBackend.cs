@@ -57,3 +57,6 @@ namespace Xwt.Backends {
     }
 
 }
+
+namespace Xwt.Widgets {
+}

@@ -38,7 +38,7 @@ namespace Xwt.Drawing
 		Font font;
 		string text;
 		double width = -1;
-		double heigth = -1;
+		double _height = -1;
 		TextTrimming textTrimming;
 		
 		static TextLayout ()
@@ -91,9 +91,9 @@ namespace Xwt.Drawing
 		/// <value>
 		/// The heigth. A value of -1 uses GetSize().Heigth on drawings
 		/// </value>
-		public double Heigth {
-			get { return heigth; }
-			set { heigth = value; handler.SetHeigth (Backend, value); }
+		public double Height {
+			get { return _height; }
+			set { _height = value; handler.SetHeigth (Backend, value); }
 		}
 		
 		/// <summary>

@@ -14,7 +14,8 @@
 
 
 namespace Limaki.View {
-    public interface INavigateTarget {
+
+    public interface IHistoryAware {
         bool CanGoBack { get; }
         bool CanGoForward { get; }
         bool GoBack();

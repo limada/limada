@@ -10,6 +10,7 @@ using Limaki.View.Visuals.Display;
 using Limaki.Visuals;
 
 namespace Limaki.IOC {
+
     public class ViewContextRecourceLoader : IContextRecourceLoader {
         /// <summary>
         /// Attention! Before calling this ResourceLoader, all DrawingFactories
@@ -17,9 +18,9 @@ namespace Limaki.IOC {
         /// </summary>
         /// <param name="context"></param>
         public virtual void ApplyResources (IApplicationContext context) {
+           
             var styleSheets = context.Pool.TryGetCreate<StyleSheets> ();
             styleSheets.Init ();
-
 
             GraphMapping.ChainGraphMapping<GraphItemVisualMapping> (context);
             GraphMapping.ChainGraphMapping<VisualThingGraphMapping> (context);
@@ -28,9 +29,8 @@ namespace Limaki.IOC {
                 context.Pool.TryGetCreate<MarkerContextProcessor> ();
             markerProcessor.CreateMarkerFacade = this.MarkerFacade;
 
-
-            var presenterLoader = new ViewRecourceLoader ();
-            presenterLoader.ApplyResources (context);
+            var displayRecourceLoader = new DisplayRecourceLoader ();
+            displayRecourceLoader.ApplyResources (context);
 
             var visualsRecourceLoader = new VisualsRecourceLoader ();
             visualsRecourceLoader.ApplyResources (context);

@@ -90,7 +90,7 @@ namespace Xwt.Gdi.Backend {
 
         public PointF Transform (PointF p) {
             var ps = new PointF[] { p };
-            if (_matrix == null) 
+            if (_matrix != null) 
                 Matrix.TransformPoints(ps);
             
             if (!Graphics.Transform.IsIdentity)
@@ -120,7 +120,7 @@ namespace Xwt.Gdi.Backend {
             get {
                 if (_pen == null)
                     _pen = new Pen (Color) {
-                        //Alignment = PenAlignment.Inset, this makes problems with scale
+                        Alignment = PenAlignment.Inset, //this makes problems with scale
                         LineJoin = LineJoin.Miter,
                         StartCap = LineCap.Round,
                         EndCap = LineCap.Round,
@@ -259,6 +259,11 @@ namespace Xwt.Gdi.Backend {
                 path.Transform (Matrix);
             return path;
 
+        }
+
+        public void CloseFigure () {
+            if (_path != null)
+                _path.CloseFigure();
         }
     }
 }

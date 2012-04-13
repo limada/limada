@@ -45,5 +45,16 @@ namespace Limaki.Drawing.Gdi {
                 base.Context = value;
             }
         }
+        public override Matrice Matrix {
+            get {
+                if (base.Matrix == null) {
+                    base.Matrix = new GdiMatrice { Matrix = this.Graphics.Transform };
+                }
+                return base.Matrix;
+            }
+            protected set {
+                base.Matrix = value;
+            }
+        }
     }
 }

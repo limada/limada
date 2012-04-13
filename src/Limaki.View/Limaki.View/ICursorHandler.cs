@@ -16,7 +16,7 @@ using Limaki.Drawing;
 
 namespace Limaki.View {
 
-    public interface IBackendCursor {
+    public interface ICursorHandler {
         void SetCursor(Anchor anchor, bool hasHit);
         void SetEdgeCursor(Anchor anchor);
         void SaveCursor();

@@ -27,15 +27,17 @@ namespace Limaki.Drawing {
             this.Start = location;
             this.End = location + size;
         }
+
         public Vector(Point start, Point end) {
             this.Start = start;
             this.End = end;
         }
+
         const double rad = 180d/Math.PI;
         public static double Angle(Vector v) {
             var dx = (v.End.X - v.Start.X);
             var dy = (v.End.Y - v.Start.Y);
-            return Math.Atan(dy / dx) * rad;// +((dy < 0) ? 180 : 0);
+            return Math.Atan(dy / dx) * rad;
         }
 
         public static double Length(Vector v) {
