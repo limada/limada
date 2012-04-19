@@ -159,7 +159,7 @@ namespace Limaki.WPF008 {
             
             fac.Expand(graph,false);
             
-            Scene scene = new Scene();
+            var scene = new Scene();
             scene.Graph = view;
             display.Display.Data = scene;
             

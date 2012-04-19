@@ -12,7 +12,6 @@
  * 
  */
 
-
 using Limaki.Common;
 using Xwt.Drawing;
 
@@ -33,7 +32,6 @@ namespace Limaki.View.Rendering {
         /// </summary>
         /// <param name="clipper"></param>
         void Render(IClipper clipper);
-
 
         Get<Color> BackColor { get; set; }
 

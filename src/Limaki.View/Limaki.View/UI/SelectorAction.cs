@@ -16,6 +16,7 @@ using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
+using Limaki.View.Rendering;
 using Xwt;
 
 namespace Limaki.View.UI {

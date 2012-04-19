@@ -45,7 +45,7 @@ namespace Limaki.Viewers {
         public virtual IGraphModelFactory<TItem, TEdge> ModelFactory { get; set; }
 
         public virtual IStyleSheet StyleSheet { get; set; }
-        public virtual IGraphLayout<TItem, TEdge> Layout { get; set; }
+        public virtual IGraphSceneLayout<TItem, TEdge> Layout { get; set; }
         public virtual Color BackColor {
             get {
                 if (Layout != null && Layout.StyleSheet != null) {
@@ -80,7 +80,7 @@ namespace Limaki.Viewers {
         public virtual Get<IViewport> Viewport { get; set; }
         public virtual Get<IBackendRenderer> Renderer { get; set; }
         public virtual Get<ICamera> Camera { get; set; }
-        public virtual Get<IGraphLayout<TItem, TEdge>> Layout { get; set; }
+        public virtual Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
 
         public virtual void Compose(GraphScenePainter<TItem, TEdge> display) {
             this.DataOrigin = () => {

@@ -126,7 +126,7 @@ namespace Limada.View {
             };
             homeInfo.State.Hollow = true;            
             SceneExtensions.CleanScene(display.Data);
-            display.DeviceRenderer.Render();
+            display.BackendRenderer.Render();
             display.Info = homeInfo;
             
 

@@ -19,15 +19,15 @@ using Limaki.Graphs;
 
 namespace Limaki.View.Modelling {
     /// <summary>
-    /// updates the data with the modeller
+    /// updates the data with the ModelReceiver
     /// feeds the Clipper with TItems hulls
     /// </summary>
     /// <typeparam name="TItem"></typeparam>
     /// <typeparam name="TEdge"></typeparam>
-    public interface ISceneReceiver<TItem, TEdge> : IReceiver
+    public interface IGraphSceneReceiver<TItem, TEdge> : IReceiver
         where TEdge : TItem, IEdge<TItem> { // "Realizer"; == SceneController
         Get<IGraphScene<TItem, TEdge>> GraphScene { get; set; }
-        Get<IGraphLayout<TItem, TEdge>> Layout { get; set; }
+        Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
         Get<ICamera> Camera { get; set; }
         Get<IClipper> Clipper { get; set; }
         Get<IModelReceiver<TItem>> ModelReceiver { get; set; }

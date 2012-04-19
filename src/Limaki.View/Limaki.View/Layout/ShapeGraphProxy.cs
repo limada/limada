@@ -26,13 +26,13 @@ namespace Limaki.View.Layout {
     public class ShapeGraphProxy<TItem, TEdge> : IShapeGraphProxy<TItem, TEdge>
         where TEdge : IEdge<TItem>, TItem {
 
-        public ShapeGraphProxy(IGraphLayout<TItem, TEdge> layout) {
+        public ShapeGraphProxy(IGraphSceneLayout<TItem, TEdge> layout) {
             this.layout = layout;
             this.AffectedEdges = new List<TEdge>();
             this.ShapeGetter = layout.GetShape;
         }
 
-        private IGraphLayout<TItem, TEdge> layout = null;
+        private IGraphSceneLayout<TItem, TEdge> layout = null;
         public ICollection<TEdge> AffectedEdges { get; set; }
 
         private IDictionary<TItem, Point> locations = new Dictionary<TItem, Point>();

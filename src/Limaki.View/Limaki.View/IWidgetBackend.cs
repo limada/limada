@@ -17,6 +17,7 @@ using Limaki.Drawing;
 using Xwt;
 
 namespace Limaki.View {
+
     public interface IWidgetBackend:IDisposable {
         
         Rectangle ClientRectangle { get;}

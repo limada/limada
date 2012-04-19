@@ -74,7 +74,7 @@ namespace Limaki.View.Visuals.Display {
             return null;
         }
 
-        public Scene CreateTargetScene(IGraphScene<IVisual, IVisualEdge> source) {
+        public IGraphScene<IVisual, IVisualEdge> CreateTargetScene (IGraphScene<IVisual, IVisualEdge> source) {
             var result = new Scene ();
             var targetGraph = CreateTargetGraph(source.Graph);
             if (targetGraph != null)

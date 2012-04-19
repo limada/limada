@@ -11,23 +11,29 @@
  * http://limada.sourceforge.net
  */
 
-
+using System;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using System;
+using Limaki.View.Modelling;
+using Limaki.View.Rendering;
 using Limaki.View.UI.GraphScene;
 
 namespace Limaki.View.Display {
+
     public interface IGraphSceneDisplay<TItem, TEdge>:IDisplay<IGraphScene<TItem, TEdge>>
-    where TEdge : TItem, IEdge<TItem> {
-        IGraphLayout<TItem, TEdge> Layout { get; set; }
+        where TEdge : TItem, IEdge<TItem> {
+
+        SceneInfo Info { get; set; }
+        IGraphSceneLayout<TItem, TEdge> Layout { get; set; }
+        IGraphSceneReceiver<TItem, TEdge> GraphSceneReceiver { get; set; }
+        IModelReceiver<TItem> ModelReceiver { get; set; }
+        IGraphItemRenderer<TItem, TEdge> GraphItemRenderer { get; set; }
+
         event EventHandler<GraphSceneEventArgs<TItem, TEdge>> SceneFocusChanged;
         void OnSceneFocusChanged();
 
         bool Check();
-
-        SceneInfo Info { get; set; }
+        
     }
-
-   
+  
 }

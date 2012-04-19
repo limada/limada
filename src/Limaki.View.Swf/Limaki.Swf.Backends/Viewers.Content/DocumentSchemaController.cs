@@ -110,7 +110,7 @@ namespace Limaki.View.Swf.Backends {
             new State { Hollow = true }.CopyTo(display.State);
             display.Text = sourceDocument.Data.ToString();
             display.Viewport.Reset();
-            display.DeviceRenderer.Render();
+            display.BackendRenderer.Render();
 
             // show first page:
             var firstPage = pages.FirstOrDefault();

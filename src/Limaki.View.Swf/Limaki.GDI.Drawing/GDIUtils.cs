@@ -17,6 +17,7 @@ using Xwt;
 using Xwt.Drawing;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
+using System;
 
 namespace Limaki.Drawing.Gdi {
 
@@ -76,7 +77,8 @@ namespace Limaki.Drawing.Gdi {
             string text,
             System.Drawing.StringFormat stringFormat,
             System.Drawing.SizeF textSize) {
-            return GDIConverter.Convert(g.MeasureString(text, font, textSize, stringFormat));
+            var result = g.MeasureString(text, font, textSize, stringFormat);
+            return new Size(Math.Ceiling(result.Width),Math.Ceiling(result.Height));
         }
 
    }

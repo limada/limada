@@ -26,7 +26,7 @@ namespace Limaki.View.Layout {
     /// <typeparam name="TEdge"></typeparam>
     public class Placer<TItem, TEdge> : PlacerBase<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
 
-        public Placer(IGraphScene<TItem, TEdge> data, IGraphLayout<TItem, TEdge> layout) {
+        public Placer(IGraphScene<TItem, TEdge> data, IGraphSceneLayout<TItem, TEdge> layout) {
             this.Data = data;
             this.Layout = layout;
         }
@@ -39,7 +39,7 @@ namespace Limaki.View.Layout {
             set { _proxy = value; }
         }
         
-        protected virtual IShapeGraphProxy<TItem, TEdge> CreateProxy(IGraphLayout<TItem, TEdge> layout) {
+        protected virtual IShapeGraphProxy<TItem, TEdge> CreateProxy(IGraphSceneLayout<TItem, TEdge> layout) {
             return new ShapeGraphProxy<TItem, TEdge>(layout);
         }
 

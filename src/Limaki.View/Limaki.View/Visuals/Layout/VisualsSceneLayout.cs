@@ -21,17 +21,15 @@ using Limaki.Visuals;
 using Xwt;
 
 namespace Limaki.View.Visuals.Layout {
-    public class VisualsLayout<TItem, TEdge> : GraphLayout<TItem, TEdge>
+    public class VisualsSceneLayout<TItem, TEdge> : GraphSceneLayout<TItem, TEdge>
         where TItem :  IVisual
         where TEdge:  TItem, IEdge<TItem> {
-        public VisualsLayout(Get<IGraphScene<TItem, TEdge>> handler, IStyleSheet stylesheet)
+        public VisualsSceneLayout(Get<IGraphScene<TItem, TEdge>> handler, IStyleSheet stylesheet)
             : base(handler, stylesheet) {
             
             this.Router = new NearestAnchorRouter<TItem,TEdge>();
         }
-
-
-        
+     
         public override IShape GetShape(TItem item) {
             if(item.Shape==null) {
                 item.Shape = CreateShape (item);

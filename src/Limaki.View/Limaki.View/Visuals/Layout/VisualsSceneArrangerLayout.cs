@@ -22,11 +22,12 @@ using Limaki.Visuals;
 using Xwt;
 
 namespace Limaki.View.Visuals.Layout {
-    public class ArrangerLayout<TItem, TEdge> : VisualsLayout<TItem, TEdge>
+
+    public class VisualsSceneArrangerLayout<TItem, TEdge> : VisualsSceneLayout<TItem, TEdge>
         where TItem : IVisual
         where TEdge : IEdge<TItem>, TItem {
 
-        public ArrangerLayout(Get<IGraphScene<TItem, TEdge>> handler, IStyleSheet stylesheet) : base(handler, stylesheet) { }
+        public VisualsSceneArrangerLayout(Get<IGraphScene<TItem, TEdge>> handler, IStyleSheet stylesheet) : base(handler, stylesheet) { }
 
         public override void Invoke() {
             var data = Data;

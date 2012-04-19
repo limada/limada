@@ -28,7 +28,7 @@ namespace Limaki.View.Rendering {
 
         public virtual IGraphItemRenderer<TItem,TEdge> ItemRenderer { get; set; }
 
-        public Get<IGraphLayout<TItem, TEdge>> Layout { get; set; }
+        public Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
 
 
 #if countVisuals

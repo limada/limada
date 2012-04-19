@@ -8,7 +8,7 @@ namespace Limaki.Swf.Backends.UseCases {
     public class PrintManager {
         ImageExporter painter = null;
 
-        public PrintDocument CreatePrintDocument(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout) {
+        public PrintDocument CreatePrintDocument(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
         
             this.painter = new ImageExporter(scene, layout);
 

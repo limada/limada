@@ -30,8 +30,8 @@ namespace Limaki.View.Visuals.UI {
             this.Priority = ActionPriorities.SelectionPriority + 10;
         }
 
-        public virtual Get<IGraphLayout<IVisual, IVisualEdge>> LayoutHandler { get; set; }
-        public virtual IGraphLayout<IVisual, IVisualEdge> Layout {
+        public virtual Get<IGraphSceneLayout<IVisual, IVisualEdge>> LayoutHandler { get; set; }
+        public virtual IGraphSceneLayout<IVisual, IVisualEdge> Layout {
             get { return LayoutHandler(); }
         }
 
@@ -52,7 +52,7 @@ namespace Limaki.View.Visuals.UI {
         }
 
         protected virtual IVisualEdge NewVisual(Point p) {
-            IVisualEdge result = SceneExtensions.CreateEdge(this.Scene as Scene);
+            IVisualEdge result = SceneExtensions.CreateEdge(this.Scene);
             newCounter++;
             result.Root = Current;
             result.Leaf = Current;

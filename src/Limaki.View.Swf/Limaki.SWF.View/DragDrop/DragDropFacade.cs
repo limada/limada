@@ -83,7 +83,7 @@ namespace Limaki.View.Swf.DragDrop {
             }
         }
 
-        public IVisual PlaceVisual(IDataObject dataObject, IGraphScene<IVisual,IVisualEdge> scene, IGraphLayout<IVisual,IVisualEdge> layout) {
+        public IVisual PlaceVisual(IDataObject dataObject, IGraphScene<IVisual,IVisualEdge> scene, IGraphSceneLayout<IVisual,IVisualEdge> layout) {
             var visual = GetVisual (dataObject, scene.Graph,false);
             SceneExtensions.PlaceVisual(scene,scene.Focused, visual, layout);
             //scene.Selected.Clear();
@@ -95,7 +95,7 @@ namespace Limaki.View.Swf.DragDrop {
 
 
        public virtual bool DoDragDrop(IGraphScene<IVisual,IVisualEdge> scene, IWidgetBackend control, IDataObject dataObject, 
-           IGraphLayout<IVisual,IVisualEdge> layout, Point pt, int hitsize) {
+           IGraphSceneLayout<IVisual,IVisualEdge> layout, Point pt, int hitsize) {
             IVisual item = null;
             bool itemIsRoot = false;
 

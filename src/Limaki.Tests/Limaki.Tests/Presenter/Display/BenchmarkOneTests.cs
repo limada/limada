@@ -45,7 +45,7 @@ namespace Limaki.Tests.Presenter.Display {
             }
         }
 
-        public override Scene Scene {
+        public override IGraphScene<IVisual, IVisualEdge> Scene {
             get {
                 if (_scene == null) {
                     base.Scene = factory.Scene;
@@ -59,19 +59,19 @@ namespace Limaki.Tests.Presenter.Display {
 
         bool editorEnabled = false;
         bool dragDropEnabled = false;
-        IGraphLayout<IVisual,IVisualEdge> oldlayout = null;
+        IGraphSceneLayout<IVisual,IVisualEdge> oldlayout = null;
         public override void Setup() {
             
             if (Display != null) {
                 oldlayout = Display.Layout;
-                Display.Layout = new BenchmarkOneSceneFactory.LongtermPerformanceLayout(
+                Display.Layout = new BenchmarkOneSceneFactory.LongtermPerformanceSceneLayout(
                                     () => { return Display.Data; }, factory.styleSheet);
                 Display.StyleSheet = factory.styleSheet;
             }
 
             base.Setup();
             
-            factory.Arrange (Display.Data as Scene);
+            factory.Arrange (Display.Data);
             Display.Invoke ();
 
             var editAction = Display.EventControler.GetAction<IEditAction> ();

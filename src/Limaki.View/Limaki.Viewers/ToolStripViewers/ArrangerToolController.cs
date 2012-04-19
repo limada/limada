@@ -102,7 +102,7 @@ namespace Limaki.Viewers.ToolStripViewers {
             if (display != null) {
                 display.BackColor = display.StyleSheet.BackColor;
                 display.Invoke();
-                display.DeviceRenderer.Render();
+                display.BackendRenderer.Render();
             }
         }
 

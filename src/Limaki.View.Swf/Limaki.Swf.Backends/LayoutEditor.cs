@@ -26,12 +26,12 @@ using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends.Viewers {
 
-    public partial class LayoutEditor : BaseStyleEditor<IGraphLayout<IVisual, IVisualEdge>> {
+    public partial class LayoutEditor : BaseStyleEditor<IGraphSceneLayout<IVisual, IVisualEdge>> {
         public LayoutEditor() {
             InitializeComponent();
         }
 
-        protected override void SetEditorFromLayout(IGraphLayout<IVisual, IVisualEdge> layout) {
+        protected override void SetEditorFromLayout(IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             disableChanges = true;
             this.Distance = layout.Distance;
             this.Orientation = layout.Orientation;

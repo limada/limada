@@ -37,7 +37,7 @@ namespace Limaki.View.Layout {
     public class Arranger0<TItem, TEdge>
         where TEdge : IEdge<TItem>, TItem {
 
-        public Arranger0(IGraphScene<TItem, TEdge> data, IGraphLayout<TItem, TEdge> layout) {
+        public Arranger0(IGraphScene<TItem, TEdge> data, IGraphSceneLayout<TItem, TEdge> layout) {
             this.Data = data;
             this.Layout = layout;
             this.RowCollisionResolver = FirstFreeRowCollissionResolver;
@@ -60,8 +60,8 @@ namespace Limaki.View.Layout {
         public Drawing.Orientation Orientation { get; set; }
         public virtual Func<TItem, string> OrderBy { get; set; }
 
-        private IGraphLayout<TItem, TEdge> _layout = null;
-        public IGraphLayout<TItem, TEdge> Layout {
+        private IGraphSceneLayout<TItem, TEdge> _layout = null;
+        public IGraphSceneLayout<TItem, TEdge> Layout {
             get { return _layout; }
             protected set {
                 if (_layout != value) {
@@ -81,7 +81,7 @@ namespace Limaki.View.Layout {
             set { _proxy = value; }
         }
 
-        protected virtual IShapeGraphProxy<TItem, TEdge> CreateProxy(IGraphLayout<TItem, TEdge> layout) {
+        protected virtual IShapeGraphProxy<TItem, TEdge> CreateProxy(IGraphSceneLayout<TItem, TEdge> layout) {
             return new ShapeGraphProxy<TItem, TEdge>(layout);
         }
 

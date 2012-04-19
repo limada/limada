@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Limaki.Viewers;
 using Limaki.Viewers.StreamViewers;
+using Limaki.Common;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
 
@@ -20,10 +21,9 @@ namespace Limaki.Swf.Backends.Viewers.Content {
                 Trace.WriteLine("No Gecko");
             } else {
                 try {
-                    var gecko = Activator.CreateInstance("Limaki.View.SWF",
-                                                         "Limaki.ThirdPartyWrappers.GeckoWebBrowser");
+                    var gecko = Registry.Factory.Create<IGeckoWebBrowser>();
                     if (gecko !=null)
-                        _control = (Control)gecko.Unwrap();
+                        _control = (Control)gecko;
                     else
                         throw new Exception();
                 } catch {

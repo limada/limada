@@ -103,7 +103,7 @@ namespace Limaki.View.Visuals.UI {
             }
         }
 
-        public static void AddItem(IGraphScene<IVisual, IVisualEdge> scene, IVisual item, IGraphLayout<IVisual,IVisualEdge> layout, Point pt) {
+        public static void AddItem(IGraphScene<IVisual, IVisualEdge> scene, IVisual item, IGraphSceneLayout<IVisual,IVisualEdge> layout, Point pt) {
             bool allowAdd = true;
             if (scene == null)
                 return;
@@ -117,7 +117,7 @@ namespace Limaki.View.Visuals.UI {
             }
         }
 
-        public static IVisual PlaceVisual(IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual visual, IGraphLayout<IVisual, IVisualEdge> layout) {
+        public static IVisual PlaceVisual(IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual visual, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             if (visual != null && scene !=null) {
                 Point pt = (Point)layout.Border;
                 if (root != null) {

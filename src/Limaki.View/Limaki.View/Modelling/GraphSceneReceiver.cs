@@ -26,11 +26,10 @@ namespace Limaki.View.Modelling {
     /// updates clipper
     /// uses a ModelReceiver 
     /// </summary>
-    public class GraphSceneReceiver<TItem, TEdge> : ActionBase, ISceneReceiver<TItem, TEdge>
+    public class GraphSceneReceiver<TItem, TEdge> : ActionBase, IGraphSceneReceiver<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
-
-        protected int tolerance = 5;
+       protected int tolerance = 5;
         public virtual void Execute() {
             var data = GraphScene;
             var camera = this.Camera;
@@ -134,7 +133,7 @@ namespace Limaki.View.Modelling {
             }
         }
 
-        public virtual IGraphLayout<TItem, TEdge> Layout {
+        public virtual IGraphSceneLayout<TItem, TEdge> Layout {
             get {
                 if (_layout != null) {
                     return _layout();
@@ -165,31 +164,31 @@ namespace Limaki.View.Modelling {
 
         #region ISceneRealizer<TItem, TEdge> Member
         protected Get<IGraphScene<TItem, TEdge>> _graphScene = null;
-        Get<IGraphScene<TItem, TEdge>> ISceneReceiver<TItem, TEdge>.GraphScene {
+        Get<IGraphScene<TItem, TEdge>> IGraphSceneReceiver<TItem, TEdge>.GraphScene {
             get { return _graphScene; }
             set { _graphScene = value; }
         }
 
-        protected Get<IGraphLayout<TItem, TEdge>> _layout = null;
-        Get<IGraphLayout<TItem, TEdge>> ISceneReceiver<TItem, TEdge>.Layout {
+        protected Get<IGraphSceneLayout<TItem, TEdge>> _layout = null;
+        Get<IGraphSceneLayout<TItem, TEdge>> IGraphSceneReceiver<TItem, TEdge>.Layout {
             get { return _layout; }
             set { _layout = value; }
         }
 
         protected Get<ICamera> _camera = null;
-        Get<ICamera> ISceneReceiver<TItem, TEdge>.Camera {
+        Get<ICamera> IGraphSceneReceiver<TItem, TEdge>.Camera {
             get { return _camera; }
             set { _camera = value; }
         }
 
         protected Get<IClipper> _clipper = null;
-        Get<IClipper> ISceneReceiver<TItem, TEdge>.Clipper {
+        Get<IClipper> IGraphSceneReceiver<TItem, TEdge>.Clipper {
             get { return _clipper; }
             set { _clipper = value; }
         }
 
         protected Get<IModelReceiver<TItem>> _modelReceiver = null;
-        Get<IModelReceiver<TItem>> ISceneReceiver<TItem, TEdge>.ModelReceiver {
+        Get<IModelReceiver<TItem>> IGraphSceneReceiver<TItem, TEdge>.ModelReceiver {
             get { return _modelReceiver; }
             set { _modelReceiver = value; }
         }

@@ -301,7 +301,7 @@ namespace Limaki.Viewers {
             SceneHistory.Store(currentDisplay, SheetManager);
             var info = SheetManager.CreateSheet(currentDisplay.Data);
             currentDisplay.Info = info;
-            currentDisplay.DeviceRenderer.Render();
+            currentDisplay.BackendRenderer.Render();
             OnViewChanged();
         }
 
@@ -318,7 +318,7 @@ namespace Limaki.Viewers {
             new State { Hollow = true }.CopyTo(currentDisplay.State);
             currentDisplay.Text = name;
             currentDisplay.Viewport.Reset ();
-            currentDisplay.DeviceRenderer.Render ();
+            currentDisplay.BackendRenderer.Render ();
             OnViewChanged ();
         }
 
@@ -399,7 +399,7 @@ namespace Limaki.Viewers {
                     info = SheetManager.GetSheetInfo(info.Id);
                     display.Info = info;
                     display.Viewport.Reset();
-                    display.DeviceRenderer.Render();
+                    display.BackendRenderer.Render();
                 }
             }
         }
@@ -426,11 +426,11 @@ namespace Limaki.Viewers {
         public FavoriteManager FavoriteManager {get;set;}
 
         public void AddFocusedToFavorites() {
-            FavoriteManager.AddToFavorites(CurrentDisplay.Data as Scene);
+            FavoriteManager.AddToFavorites(CurrentDisplay.Data);
         }
 
         public void ViewOnOpen() {
-            FavoriteManager.SetAutoView(CurrentDisplay.Data as Scene);
+            FavoriteManager.SetAutoView(CurrentDisplay.Data);
         }
 
         #endregion
@@ -487,10 +487,10 @@ namespace Limaki.Viewers {
 
         public void DoDisplayStyleChanged(object sender, EventArgs<IStyle> arg) {
             if (Display1 != null) {
-                Display1.DeviceRenderer.Render();
+                Display1.BackendRenderer.Render();
             }
             if (Display2 != null) {
-                Display2.DeviceRenderer.Render();
+                Display2.BackendRenderer.Render();
             }
         }
 

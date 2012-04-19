@@ -16,7 +16,7 @@ namespace Limaki.View.Layout {
             this.Proxy = aligner.Proxy;
         }
 
-        public IGraphLayout<TItem, TEdge> Layout { get; protected set; }
+        public IGraphSceneLayout<TItem, TEdge> Layout { get; protected set; }
         public IGraphScene<TItem, TEdge> Data { get; protected set; }
         public virtual IShapeGraphProxy<TItem, TEdge> Proxy { get; set; }
 

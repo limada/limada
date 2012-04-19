@@ -23,11 +23,12 @@ using Limaki.View.UI.GraphScene;
 using Xwt;
 
 namespace Limaki.View.Modelling {
+
     public class GraphItemReceiver<TItem,TEdge> : IModelReceiver<TItem> 
         where TEdge:TItem,IEdge<TItem> {
 
         public virtual IGraphScene<TItem,TEdge> Data { get; set; }
-        public virtual IGraphLayout<TItem, TEdge> Layout { get; set; }
+        public virtual IGraphSceneLayout<TItem, TEdge> Layout { get; set; }
 
         public Action<ICommand<TItem>> BeforeExecute { get; set; }
         public Action<ICommand<TItem>> AfterExecute { get; set; }
@@ -94,7 +95,6 @@ namespace Limaki.View.Modelling {
                         if (AfterExecute != null) {
                             AfterExecute(command);
                         }
-
 
                         clipChanged = true;
                     }

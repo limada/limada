@@ -32,7 +32,7 @@ namespace Limaki.View {
         IClipper Clipper { get; set; }
         IStyleSheet StyleSheet { get; set; }
         IViewport Viewport { get; set; }
-        IBackendRenderer DeviceRenderer { get; set; }
+        IBackendRenderer BackendRenderer { get; set; }
 
         void Invoke();
         void Execute();

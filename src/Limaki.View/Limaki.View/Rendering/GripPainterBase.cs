@@ -5,7 +5,8 @@ using Limaki.Drawing;
 using Limaki.Drawing.Painters;
 using Xwt;
 
-namespace Limaki.View.UI {
+namespace Limaki.View.Rendering {
+
     public abstract class GripPainterBase : Painter<Rectangle> {
         
         public int GripSize {get;set;}
@@ -35,7 +36,7 @@ namespace Limaki.View.UI {
         }
 
         private IPainter _innerPainter = null;
-        protected IPainter innerPainter {
+        protected IPainter InnerPainter {
             get {
                 if (_innerPainter == null) {
                     var factory = Registry.Pool.TryGetCreate<IPainterFactory>();
@@ -51,7 +52,7 @@ namespace Limaki.View.UI {
         public virtual void UpdateGrips() {
             if (UpdateGrip != null) {
                 Shape.Size = new Size(GripSize, GripSize);
-                innerPainter.Style = this.Style;
+                InnerPainter.Style = this.Style;
                 int halfWidth = GripSize / 2;
                 int halfHeight = GripSize / 2;
                 Camera camera = new Camera(this.Camera.Matrice);
@@ -66,8 +67,8 @@ namespace Limaki.View.UI {
         }
         public override void Dispose(bool disposing) {
             if (disposing) {
-                innerPainter.Dispose();
-                innerPainter = null;
+                InnerPainter.Dispose();
+                InnerPainter = null;
             }
             base.Dispose(disposing);
         }

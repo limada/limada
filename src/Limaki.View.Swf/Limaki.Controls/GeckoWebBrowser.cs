@@ -15,7 +15,7 @@ using System.Collections.Generic;
 namespace Limaki.Swf.Backends.ThirdPartyWrappers {
     
     public class GeckoWebBrowser:Gecko.GeckoWebBrowser, IWebBrowserWithProxy,
-        IWebBrowser, IZoomTarget, IHistoryAware {
+        IWebBrowser, IZoomTarget, IHistoryAware, IGeckoWebBrowser {
 
         public string XulDir(string basedir) {
             foreach (var dir in new string[]{ @"Plugins\",@"..\3rdParty\bin\"}) {

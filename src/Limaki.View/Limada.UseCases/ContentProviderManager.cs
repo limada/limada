@@ -84,7 +84,7 @@ namespace Limada.UseCases {
 
         }
 
-        public void ImportContent(Content<Stream> content, IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout) {
+        public void ImportContent(Content<Stream> content, IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             var graph = scene.Graph;
             var thing = new VisualThingStreamHelper().CreateFromStream(graph, content);
             if (scene.Focused != null) {

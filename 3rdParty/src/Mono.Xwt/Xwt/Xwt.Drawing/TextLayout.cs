@@ -86,10 +86,10 @@ namespace Xwt.Drawing
 		}
 		
 		/// <summary>
-		/// Gets or sets desired heigth.
+		/// Gets or sets desired _height.
 		/// </summary>
 		/// <value>
-		/// The heigth. A value of -1 uses GetSize().Heigth on drawings
+		/// The _height. A value of -1 uses GetSize()._height on drawings
 		/// </value>
 		public double Height {
 			get { return _height; }
@@ -99,7 +99,7 @@ namespace Xwt.Drawing
 		/// <summary>
 		/// measures the text
 		/// if Width is other than -1, it measures the height according to Width
-		/// Heigth is ignored
+		/// _height is ignored
 		/// </summary>
 		/// <returns>
 		/// The size.

@@ -33,7 +33,7 @@ namespace Limaki.Viewers.ToolStripViewers {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
                 currentDisplay.StyleSheet = styleSheet;
-                currentDisplay.DeviceRenderer.Render();
+                currentDisplay.BackendRenderer.Render();
             }
         }
 

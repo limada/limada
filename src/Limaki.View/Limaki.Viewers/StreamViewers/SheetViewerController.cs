@@ -86,7 +86,7 @@ namespace Limaki.Viewers.StreamViewers {
                 sheetinfo = stored;
                 isStreamOwner = false;
             }
-            SheetControl.DeviceRenderer.Render ();
+            SheetControl.BackendRenderer.Render ();
 
             SheetControl.Execute();
             SheetControl.Info = sheetinfo;

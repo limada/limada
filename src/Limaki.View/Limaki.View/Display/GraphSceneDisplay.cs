@@ -11,7 +11,6 @@
  * http://limada.sourceforge.net
  */
 
-
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Common;
@@ -25,6 +24,7 @@ using Limaki.View.UI.GraphScene;
 using Xwt.Drawing;
 
 namespace Limaki.View.Display {
+
     public class GraphSceneDisplay<TItem, TEdge> : Display<IGraphScene<TItem, TEdge>>, IGraphSceneDisplay<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
@@ -75,8 +75,8 @@ namespace Limaki.View.Display {
             }
         }
 
-        IGraphLayout<TItem, TEdge> _layout = null;
-        public virtual IGraphLayout<TItem, TEdge> Layout {
+        IGraphSceneLayout<TItem, TEdge> _layout = null;
+        public virtual IGraphSceneLayout<TItem, TEdge> Layout {
             get { return _layout; }
             set {
                 if (_layout != value) {
@@ -87,6 +87,11 @@ namespace Limaki.View.Display {
             }
         }
 
+        public virtual IGraphSceneReceiver<TItem, TEdge> GraphSceneReceiver { get; set; }
+        public virtual IModelReceiver<TItem> ModelReceiver { get; set; }
+
+        public virtual IGraphItemRenderer<TItem, TEdge> GraphItemRenderer { get; set; }
+        
         public override Color BackColor {
             get {
                 if (Layout != null && Layout.StyleSheet != null) {
@@ -102,17 +107,11 @@ namespace Limaki.View.Display {
                 }
             }
         }
-
         public virtual void LayoutChanged() {
             if (Layout != null && Layout.StyleSheet != null) {
                 base.BackColor = Layout.StyleSheet.BackColor;
             }
         }
-
-        public virtual ISceneReceiver<TItem, TEdge> SceneReceiver { get; set; }
-        public virtual IModelReceiver<TItem> ModelReceiver { get; set; }
-
-        public virtual IGraphItemRenderer<TItem, TEdge> GraphItemRenderer { get; set; }
 
         public event EventHandler<GraphSceneEventArgs<TItem, TEdge>> SceneFocusChanged = null;
         protected GraphSceneEventArgs<TItem, TEdge> focusChangedEventArgs = null;
@@ -148,7 +147,7 @@ namespace Limaki.View.Display {
         }
         public override bool Check() {
             if (this.Layout == null) {
-                throw new CheckFailedException(this.GetType(), typeof(IGraphLayout<TItem, TEdge>));
+                throw new CheckFailedException(this.GetType(), typeof(IGraphSceneLayout<TItem, TEdge>));
             }
 
             if (ModelFactory == null) {

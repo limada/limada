@@ -11,7 +11,7 @@ namespace Limaki.View.Layout {
 
     public class Alligner<TItem, TEdge> : Placer<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
 
-        public Alligner (IGraphScene<TItem, TEdge> data, IGraphLayout<TItem, TEdge> layout) : base (data, layout) { }
+        public Alligner (IGraphScene<TItem, TEdge> data, IGraphSceneLayout<TItem, TEdge> layout) : base (data, layout) { }
 
         public Alligner (PlacerBase<TItem, TEdge> aligner) : base (aligner) { }
 

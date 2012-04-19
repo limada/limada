@@ -36,7 +36,7 @@ namespace Limada.VisualThings {
             return graphView;
         }
 
-        public virtual Scene CreateScene(IThingGraph thingGraph) {
+        public virtual IGraphScene<IVisual, IVisualEdge> CreateScene (IThingGraph thingGraph) {
             var scene = new Scene();
             scene.Graph = CreateGraphView(thingGraph);
             return scene;

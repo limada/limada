@@ -59,7 +59,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             Mock.Scene.Requests.Clear ();           
         }
 
-        public void TestShapes(Scene scene) {
+        public void TestShapes (IGraphScene<IVisual, IVisualEdge> scene) {
             CommandsExecute ();
             var indexList = new Set<IVisual>();
             foreach(var visual in scene.SpatialIndex.Query()) {

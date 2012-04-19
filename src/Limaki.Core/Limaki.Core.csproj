@@ -262,6 +262,7 @@
     <Compile Include="Model\Content\HtmlContentProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Common\Text\MonoRTF\ChangeLog" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

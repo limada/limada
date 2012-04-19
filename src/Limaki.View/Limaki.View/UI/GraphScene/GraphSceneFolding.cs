@@ -27,7 +27,7 @@ namespace Limaki.View.UI.GraphScene {
 
         IBackendRenderer DeviceRenderer { get; set; }
         ISelectionRenderer MoveResizeRenderer { get; set; }
-        Get<IGraphLayout<TItem, TEdge>> Layout { get; set; }
+        Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
         Get<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
         GraphSceneFacade<TItem, TEdge> Folder { get; set; }
 
@@ -56,7 +56,7 @@ namespace Limaki.View.UI.GraphScene {
         public IBackendRenderer DeviceRenderer {get;set;}
         public virtual ISelectionRenderer MoveResizeRenderer { get; set; }
 
-        public Get<IGraphLayout<TItem, TEdge>> Layout { get;set;}
+        public Get<IGraphSceneLayout<TItem, TEdge>> Layout { get;set;}
         public Get<IGraphScene<TItem, TEdge>> SceneHandler {get;set;}
 
         private GraphSceneFacade<TItem,TEdge> _folder = null;
@@ -124,7 +124,7 @@ namespace Limaki.View.UI.GraphScene {
                 throw new CheckFailedException(this.GetType(), typeof(IGraphScene<TItem, TEdge>));
             }
             if (this.Layout == null) {
-                throw new CheckFailedException(this.GetType(), typeof(IGraphLayout<TItem, TEdge>));
+                throw new CheckFailedException(this.GetType(), typeof(IGraphSceneLayout<TItem, TEdge>));
             }
             if (this.DeviceRenderer == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IBackendRenderer));

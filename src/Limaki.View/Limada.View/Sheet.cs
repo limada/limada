@@ -32,15 +32,15 @@ namespace Limada.View {
             this._scene = scene;
         }
 
-        public Sheet(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout): this(scene) {
+        public Sheet(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout): this(scene) {
             this._layout = layout;
         }
 
-        IGraphLayout<IVisual,IVisualEdge> _layout = null;
-        public virtual IGraphLayout<IVisual,IVisualEdge> Layout {
+        IGraphSceneLayout<IVisual,IVisualEdge> _layout = null;
+        public virtual IGraphSceneLayout<IVisual,IVisualEdge> Layout {
             get {
                 if (_layout == null) {
-                    _layout = new ArrangerLayout<IVisual, IVisualEdge>(
+                    _layout = new VisualsSceneArrangerLayout<IVisual, IVisualEdge>(
                         () => { return this.Scene; },
                         Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet);
                 }

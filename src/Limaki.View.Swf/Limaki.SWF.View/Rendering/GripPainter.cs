@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
+using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Xwt;
 using Xwt.Gdi;
@@ -32,7 +33,7 @@ namespace Limaki.View.Swf {
             var g = ((GdiSurface)surface).Graphics;
             
             Shape.Size = new Size(GripSize, GripSize);
-            innerPainter.Style = this.Style;
+            InnerPainter.Style = this.Style;
             int halfWidth = GripSize / 2;
             int halfHeight = GripSize / 2;
 
@@ -46,7 +47,7 @@ namespace Limaki.View.Swf {
                 anchorPoint = camera.FromSource(anchorPoint);
                 Shape.Location = new Point(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
                 if (clipBounds.IntersectsWith(Shape.BoundsRect)) {
-                    innerPainter.Render(surface);
+                    InnerPainter.Render(surface);
                 }
             }
         }

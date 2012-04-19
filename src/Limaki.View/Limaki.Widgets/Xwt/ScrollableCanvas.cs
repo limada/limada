@@ -1,4 +1,5 @@
 using Xwt.Drawing;
+using System;
 
 namespace Xwt.Widgets {
     public class ScrollableCanvas : Canvas {
@@ -33,6 +34,7 @@ namespace Xwt.Widgets {
             hscroll.PageSize = Bounds.Width;
             hscroll.ValueChanged += delegate {
                 VisibleRect = new Rectangle (hscroll.Value, vscroll.Value, hscroll.PageSize, vscroll.PageSize);
+				 Func<Rectangle> visrect2 = ()=>(Parent as ScrollView).VisibleRect;
                 QueueDraw ();
             };
 

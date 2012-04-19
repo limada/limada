@@ -70,7 +70,7 @@ namespace Limaki.Tests.Presenter.Winform {
                 }
                 this.VisualsDisplay.Invoke();
                 this.VisualsDisplay.Execute ();
-                this.VisualsDisplay.DeviceRenderer.Render ();
+                this.VisualsDisplay.BackendRenderer.Render ();
                 this.VisualsDisplay.StyleSheet.BaseStyle.AutoSize = autoSize;
             }
         }

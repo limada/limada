@@ -62,7 +62,7 @@ namespace Limaki.View.Display {
             this.Viewport = () => display.Viewport;
             this.Camera = () => display.Viewport.Camera;
 
-            this.Renderer = () => display.DeviceRenderer;
+            this.Renderer = () => display.BackendRenderer;
             this.DeviceCursor = () => display.CursorHandler;
 
             display.ClipReceiver.Clipper = display.Clipper;

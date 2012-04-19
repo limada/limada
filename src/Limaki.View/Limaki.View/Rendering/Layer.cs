@@ -16,10 +16,10 @@
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.View.Rendering;
 using Xwt;
 
-namespace Limaki.View.UI {
+namespace Limaki.View.Rendering {
+
     public abstract class Layer<T> : ActionBase, ILayer<T> {
 
         public Layer () {
@@ -82,7 +82,6 @@ namespace Limaki.View.UI {
         #endregion
 
 
-
         #region ILayer<T> Member
 
         protected Get<T> _data = null;
@@ -104,7 +103,6 @@ namespace Limaki.View.UI {
 
 
         #endregion
-
 
     }
 }

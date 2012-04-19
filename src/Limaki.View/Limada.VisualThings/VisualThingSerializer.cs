@@ -56,8 +56,8 @@ namespace Limada.VisualThings {
             set { _visualsCollection = value; }
         }
 
-        private IGraphLayout<IVisual,IVisualEdge> _layout = null;
-        public virtual IGraphLayout<IVisual,IVisualEdge> Layout {
+        private IGraphSceneLayout<IVisual,IVisualEdge> _layout = null;
+        public virtual IGraphSceneLayout<IVisual,IVisualEdge> Layout {
             get { return _layout; }
             set { _layout = value; }
         }

@@ -11,7 +11,6 @@
  * http://limada.sourceforge.net
  */
 
-
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
@@ -21,8 +20,8 @@ using Limaki.View.UI;
 using Xwt.Drawing;
 
 namespace Limaki.View.Display {
-    public class Display<TData> : IDisplay<TData>, IDisposable, ICheckable
-     {
+
+    public class Display<TData> : IDisplay<TData>, IDisposable, ICheckable {
 
         public Display() { }
 
@@ -68,7 +67,7 @@ namespace Limaki.View.Display {
         public virtual IClipReceiver ClipReceiver { get; set; }
 
         public virtual IDisplayBackend<TData> Backend { get; set; }
-        public virtual IBackendRenderer DeviceRenderer { get; set; }
+        public virtual IBackendRenderer BackendRenderer { get; set; }
         public virtual ICursorHandler CursorHandler { get; set; }
 
         public virtual object ActiveControl { get; set; }
@@ -151,7 +150,7 @@ namespace Limaki.View.Display {
             if (this.DataRenderer == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IContentRenderer<TData>));
             }
-            if (this.DeviceRenderer == null) {
+            if (this.BackendRenderer == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IBackendRenderer));
             }
             if (SelectionRenderer is ICheckable) {

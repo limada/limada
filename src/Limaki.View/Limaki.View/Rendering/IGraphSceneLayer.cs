@@ -12,12 +12,17 @@
  * 
  */
 
-
+using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Graphs;
+using Limaki.View.Rendering;
 
-namespace Limaki.View.UI {
-    public interface IShapedSelectionRenderer:ISelectionRenderer {
-        IPainter Painter { get; set; }
-        RenderType RenderType { get; set; }
+namespace Limaki.View.Rendering {
+
+    public interface IGraphSceneLayer<TItem, TEdge> : ILayer<IGraphScene<TItem, TEdge>> 
+        where TEdge:TItem, IEdge<TItem> {
+        
+        Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
+    
     }
 }

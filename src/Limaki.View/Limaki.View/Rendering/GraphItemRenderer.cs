@@ -12,7 +12,6 @@
  * 
  */
 
-
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
@@ -21,7 +20,7 @@ namespace Limaki.View.Rendering {
     public abstract class GraphItemRenderer<TItem, TEdge> : ContentRenderer<TItem>, IGraphItemRenderer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
-        public Get<IGraphLayout<TItem, TEdge>> Layout {get;set;}
+        public Get<IGraphSceneLayout<TItem, TEdge>> Layout {get;set;}
 
 
     }

@@ -24,7 +24,7 @@ using Size = Xwt.Size;
 namespace Limaki.View.Viewers.Swf {
 
     public class ImageExporter : ScenePainter {
-        public ImageExporter(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout)
+        public ImageExporter(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout)
             : base() {
             this.Data = scene;
             this.Layout = layout;

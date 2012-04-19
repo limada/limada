@@ -22,6 +22,7 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using Limaki.Drawing.WPF.Shapes;
 using System.Windows.Controls;
+using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Xwt;
 
@@ -42,14 +43,14 @@ namespace Limaki.View.WPF {
         public override void Render(ISurface surface) {
             var size = new Size(GripSize, GripSize);
 
-            innerPainter.Style = this.Style;
+            InnerPainter.Style = this.Style;
             int halfWidth = GripSize / 2;
             int halfHeight = GripSize / 2;
 
             var path = Path;
             path.Data = null;
 
-            innerPainter.Render(surface);
+            InnerPainter.Render(surface);
 
             var _group = new GeometryGroup();
             var camera = new Camera(this.Camera.Matrice);

@@ -20,10 +20,10 @@ using Xwt;
 
 namespace Limaki.View.Layout {
 
-    public abstract class GraphLayout<TItem, TEdge> : Layout<TItem>, IGraphLayout<TItem, TEdge>
+    public abstract class GraphSceneLayout<TItem, TEdge> : Layout<TItem>, IGraphSceneLayout<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
-        public GraphLayout(Get<IGraphScene<TItem, TEdge>> dataHandler, IStyleSheet styleSheet)
+        public GraphSceneLayout(Get<IGraphScene<TItem, TEdge>> dataHandler, IStyleSheet styleSheet)
             : base(styleSheet) {
             this.DataHandler = dataHandler;
             this.Orientation = Drawing.Orientation.LeftRight;

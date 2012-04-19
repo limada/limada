@@ -41,8 +41,8 @@ namespace Limaki.Tests.Graph.Model {
                 StyleSheet.CreateStyleWithSystemSettings ()
                 );
 
-        public class LongtermPerformanceLayout : VisualsLayout<IVisual,IVisualEdge> {
-            public LongtermPerformanceLayout(Get<IGraphScene<IVisual, IVisualEdge>> handler, IStyleSheet stylesheet)
+        public class LongtermPerformanceSceneLayout : VisualsSceneLayout<IVisual,IVisualEdge> {
+            public LongtermPerformanceSceneLayout(Get<IGraphScene<IVisual, IVisualEdge>> handler, IStyleSheet stylesheet)
                 :
                     base(handler, stylesheet) { }
 
@@ -59,8 +59,8 @@ namespace Limaki.Tests.Graph.Model {
             }
         }
 
-        public virtual void Arrange(Scene scene) {
-            Point location = startAt;
+        public virtual void Arrange (IGraphScene<IVisual, IVisualEdge> scene) {
+            var location = startAt;
 
             var level2Width = Node[2].Size.Width + distance.Width + Node[3].Size.Width;
             var ident = startAt.X;
@@ -111,7 +111,7 @@ namespace Limaki.Tests.Graph.Model {
 
         }
 
-        public override void Populate(Scene scene) {
+        public override void Populate (IGraphScene<IVisual, IVisualEdge> scene) {
             int oldCount = this.Count;
             this.Count = 1;
             base.Populate (scene);
@@ -125,10 +125,10 @@ namespace Limaki.Tests.Graph.Model {
         }
 
 
-        public Scene createScene() {
+        public IGraphScene<IVisual, IVisualEdge> CreateScene () {
             var result = new Scene();
             result.Graph = this.Graph;
-            var layout = new LongtermPerformanceLayout(
+            var layout = new LongtermPerformanceSceneLayout(
                 delegate() { return result; }, this.styleSheet);
             Populate(result);
             layout.Invoke();
@@ -137,14 +137,14 @@ namespace Limaki.Tests.Graph.Model {
             return result;
         }
 
-        public override Scene Scene {
+        public override IGraphScene<IVisual, IVisualEdge> Scene {
             get {
-                var result = createScene();
+                var result = CreateScene();
                 var nextStart = new Point(startAt.X, result.Shape.BoundsRect.Bottom + distance.Height);
                 for (int i = 0; i < Count; i++) {
                     var example = new BenchmarkOneSceneFactory();
                     example.startAt = nextStart;
-                    var scene = example.createScene();
+                    var scene = example.CreateScene();
                     foreach (var visual in scene.Elements)
                         result.Add(visual);
                     nextStart = new Point(startAt.X, scene.Shape.BoundsRect.Bottom + distance.Height);

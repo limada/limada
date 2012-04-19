@@ -78,7 +78,7 @@ namespace Limada.View {
                 if (sheetManager.LoadFromStore(display.Data, display.Layout, info.Id)) {
                     display.Info = info;
                     display.Viewport.Reset();
-                    display.DeviceRenderer.Render();
+                    display.BackendRenderer.Render();
                 }
             }
         }

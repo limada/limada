@@ -20,7 +20,7 @@ namespace Limaki.View.Visuals.Display {
             display.ModelFactory = Registry.Factory.Create < IGraphModelFactory<IVisual, IVisualEdge>> ();
             display.GraphItemRenderer = new VisualsRenderer ();
 
-            display.Layout = new ArrangerLayout<IVisual, IVisualEdge>(this.GraphScene, display.StyleSheet);
+            display.Layout = new VisualsSceneArrangerLayout<IVisual, IVisualEdge>(this.GraphScene, display.StyleSheet);
         }
 
         protected IMouseAction AddGraphEdgeAction { get; set; }
@@ -33,7 +33,7 @@ namespace Limaki.View.Visuals.Display {
             IGraphSceneFolding<IVisual, IVisualEdge> folding = new GraphSceneFolding<IVisual, IVisualEdge>();
             folding.SceneHandler = this.GraphScene;
             folding.Layout = this.Layout;
-            folding.DeviceRenderer = display.DeviceRenderer;
+            folding.DeviceRenderer = display.BackendRenderer;
             folding.MoveResizeRenderer = display.MoveResizeRenderer;
             display.EventControler.Add (folding);
 

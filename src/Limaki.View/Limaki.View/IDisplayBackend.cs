@@ -11,8 +11,8 @@
  * http://limada.sourceforge.net
  */
 
-
 namespace Limaki.View {
+
     public interface IDisplayBackend : IWidgetBackend {
         IDisplay Display { get; set; }
     }

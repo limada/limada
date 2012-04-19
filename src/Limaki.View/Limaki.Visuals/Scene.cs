@@ -24,6 +24,7 @@ using Limaki.Graphs.Extensions;
 using Xwt;
 
 namespace Limaki.Visuals {
+
     public class Scene : IGraphScene<IVisual,IVisualEdge>, IVisual, IComposite<IVisual> {
 
         #region Graph
@@ -358,7 +359,6 @@ namespace Limaki.Visuals {
 
         #endregion
     }
-
-
+    
     public delegate bool HitTest(IVisual w, Point p, int hitSize);
 }

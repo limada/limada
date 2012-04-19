@@ -17,7 +17,9 @@ using Limaki.View.Rendering;
 using Limaki.Visuals;
 
 namespace Limaki.View.Visuals {
+
     public class VisualsRenderer : GraphItemRenderer<IVisual, IVisualEdge> {
+
         public VisualsRenderer() {}
 
         protected object GetData(IVisual visual) {
@@ -51,8 +53,5 @@ namespace Limaki.View.Visuals {
                 }
             }
         }
-
-
-
     }
 }

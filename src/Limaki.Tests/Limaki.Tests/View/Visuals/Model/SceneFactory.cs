@@ -18,6 +18,7 @@ using Limaki.Visuals;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using System.Collections.Generic;
+using Limaki.Drawing;
 
 namespace Limaki.Tests.Visuals {
     public class SceneFactory<T> : GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>, ISceneFactory
@@ -38,7 +39,7 @@ namespace Limaki.Tests.Visuals {
         /// <summary>
         /// Creates a new scene and populates it
         /// </summary>
-        public virtual Scene Scene {
+        public virtual IGraphScene<IVisual, IVisualEdge> Scene {
             get {
                 var result = new Scene();
                 Populate ();
@@ -47,7 +48,7 @@ namespace Limaki.Tests.Visuals {
             }
         }
 
-        public virtual void Populate(Scene scene) {
+        public virtual void Populate (IGraphScene<IVisual, IVisualEdge> scene) {
             Populate (scene.Graph);
             scene.ClearSpatialIndex ();
         }

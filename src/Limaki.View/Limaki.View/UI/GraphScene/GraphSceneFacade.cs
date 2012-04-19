@@ -33,7 +33,7 @@ namespace Limaki.View.UI.GraphScene {
         where TItem : class
         where TEdge : TItem, IEdge<TItem> {
 
-        public GraphSceneFacade (Get<IGraphScene<TItem, TEdge>> sceneHandler, IGraphLayout<TItem, TEdge> layout) {
+        public GraphSceneFacade (Get<IGraphScene<TItem, TEdge>> sceneHandler, IGraphSceneLayout<TItem, TEdge> layout) {
             this.SceneHandler = sceneHandler;
             this.Layout = layout;
         }
@@ -56,29 +56,28 @@ namespace Limaki.View.UI.GraphScene {
         }
 
 
-        private IGraph<TItem, TEdge> _data = null;
+        private IGraph<TItem, TEdge> _graph = null;
         /// <summary>
         /// the data-graph of the GraphView
         /// </summary>
-        public IGraph<TItem, TEdge> Data {
+        public IGraph<TItem, TEdge> Graph {
             get {
-                var data = _data;
-                IGraphScene<TItem, TEdge> scene = this.Scene;
+                var graph = _graph;
+                var scene = this.Scene;
                 if (scene.Graph is GraphView<TItem, TEdge>) {
-                    _data = ((GraphView<TItem, TEdge>) scene.Graph).Two;
+                    _graph = ((GraphView<TItem, TEdge>) scene.Graph).Two;
                 } else {
-                    _data = scene.Graph;
+                    _graph = scene.Graph;
                 }
-                if (data != _data) {
-                    if (_data is IFactoryListener<TItem>) {
-                        ((IFactoryListener<TItem>) _data).ItemCreated +=
-                            delegate (TItem w) {
-                                if (!CreatedItems.Contains (w))
-                                    CreatedItems.Add (w);
-                            };
+                if (graph != _graph) {
+                    if (_graph is IFactoryListener<TItem>) {
+                        ((IFactoryListener<TItem>) _graph).ItemCreated += w => {
+                            if (!CreatedItems.Contains (w))
+                                CreatedItems.Add (w);
+                        };
                     }
                 }
-                return _data;
+                return _graph;
             }
         }
 
@@ -93,7 +92,6 @@ namespace Limaki.View.UI.GraphScene {
                     _view = ((GraphView<TItem, TEdge>) this.Scene.Graph).One;
                 } else if (_view == null) {
                     _view = new Graph<TItem, TEdge> ();
-
                 }
                 return _view;
             }
@@ -105,29 +103,25 @@ namespace Limaki.View.UI.GraphScene {
         /// View: the filtered graph
         /// Data: the original, full, unfiltered graph 
         /// </summary>
-        protected GraphView<TItem, TEdge> graphView {
+        protected GraphView<TItem, TEdge> GraphView {
             get {
                 if (this.Scene.Graph is GraphView<TItem, TEdge>) {
                     _graphView = (GraphView<TItem, TEdge>) this.Scene.Graph;
                     IsFiltered = true;
                 } else if (_graphView == null) {
-                    _graphView = new GraphView<TItem, TEdge> (this.Data, this.View);
+                    _graphView = new GraphView<TItem, TEdge> (this.Graph, this.View);
                 }
 
                 return _graphView;
             }
         }
 
-        private IGraphLayout<TItem, TEdge> _layout = null;
-        public IGraphLayout<TItem, TEdge> Layout {
-            get { return _layout; }
-            set { _layout = value; }
-        }
+        public IGraphSceneLayout<TItem, TEdge> Layout { get; set; }
 
         public virtual void Clear () {
             this._scene = null;
             this._view = null;
-            this._data = null;
+            this._graph = null;
             this._graphView = null;
             CreatedItems.Clear ();
         }
@@ -139,9 +133,9 @@ namespace Limaki.View.UI.GraphScene {
 
         public bool IsFiltered = false;
         public virtual void ApplyFilter () {
-            if (Scene.Graph != graphView) {
+            if (Scene.Graph != GraphView) {
                 TItem curr = Scene.Focused;
-                Scene.Graph = graphView;
+                Scene.Graph = GraphView;
                 Scene.Focused = curr;
             }
             IsFiltered = true;
@@ -174,7 +168,7 @@ namespace Limaki.View.UI.GraphScene {
 
             var arranger = CreateArranger (scene);
 
-            var affected = new GraphViewFacade<TItem, TEdge> (this.graphView).Add (item);
+            var affected = new GraphViewFacade<TItem, TEdge> (this.GraphView).Add (item);
 
             arranger.Arrange (item, affected, pt);
 
@@ -196,7 +190,7 @@ namespace Limaki.View.UI.GraphScene {
 
             var arranger = CreateArranger (scene);
 
-            var affected = new GraphViewFacade<TItem, TEdge> (this.graphView).Add (elements);
+            var affected = new GraphViewFacade<TItem, TEdge> (this.GraphView).Add (elements);
 
             if (arrange)
                 arranger.ArrangeItems (affected, justify, (Point) Layout.Border);
@@ -208,12 +202,13 @@ namespace Limaki.View.UI.GraphScene {
             RestoreFocused (curr);
 
         }
+
         public virtual void AddRaw (IEnumerable<TItem> elements) {
             IGraphScene<TItem, TEdge> scene = this.Scene;
             ApplyFilter ();
             TItem curr = scene.Focused;
 
-            var affected = new GraphViewFacade<TItem, TEdge> (this.graphView).Add (elements);
+            var affected = new GraphViewFacade<TItem, TEdge> (this.GraphView).Add (elements);
 
         }
 
@@ -227,7 +222,7 @@ namespace Limaki.View.UI.GraphScene {
                 var arranger = CreateArranger (scene);
 
                 var affected = new GraphViewFacade<TItem, TEdge>
-                    (this.graphView).Expand (scene.Selected.Elements, deep);
+                    (this.GraphView).Expand (scene.Selected.Elements, deep);
 
                 arranger.Arrange (scene.Selected.Elements, affected, deep);
 
@@ -239,12 +234,13 @@ namespace Limaki.View.UI.GraphScene {
         }
 
         public bool RemoveOrhpans { get; set; }
+
         public virtual void Collapse () {
             if (Scene.Selected.Count > 0) {
                 ApplyFilter ();
                 var scene = this.Scene;
                 TItem curr = scene.Focused;
-                var affected = new GraphViewFacade<TItem, TEdge> (this.graphView) { RemoveOrphans = this.RemoveOrhpans }
+                var affected = new GraphViewFacade<TItem, TEdge> (this.GraphView) { RemoveOrphans = this.RemoveOrhpans }
                     .Collapse (scene.Selected.Elements);
                 UpdateRemoved (affected);
 
@@ -258,7 +254,7 @@ namespace Limaki.View.UI.GraphScene {
                 ApplyFilter ();
                 TItem curr = Scene.Focused;
 
-                UpdateRemoved (new GraphViewFacade<TItem, TEdge> (this.graphView)
+                UpdateRemoved (new GraphViewFacade<TItem, TEdge> (this.GraphView)
                     .CollapseToFocused (Scene.Selected.Elements));
 
                 RestoreFocused (curr);
@@ -269,7 +265,7 @@ namespace Limaki.View.UI.GraphScene {
             if (Scene.Selected.Count > 0) {
                 ApplyFilter ();
 
-                UpdateRemoved (new GraphViewFacade<TItem, TEdge> (this.graphView)
+                UpdateRemoved (new GraphViewFacade<TItem, TEdge> (this.GraphView)
                     .Hide (Scene.Selected.Elements));
 
                 Scene.Selected.Clear ();
@@ -301,9 +297,9 @@ namespace Limaki.View.UI.GraphScene {
             TItem curr = scene.Focused;
 
             var roots = new Queue<TItem> (
-                this.Data.FindRoots (curr));
+                this.Graph.FindRoots (curr));
 
-            new GraphViewFacade<TItem, TEdge> (this.graphView).Expand (roots, true);
+            new GraphViewFacade<TItem, TEdge> (this.GraphView).Expand (roots, true);
 
             var arranger = CreateArranger (scene);
 
@@ -330,8 +326,8 @@ namespace Limaki.View.UI.GraphScene {
             if (focused == null) {
                 focused = Scene.Selected.Elements.FirstOrDefault ();
             }
-            if (focused != null && Scene.Graph == this.graphView) {
-                if (IsExpanded (this.graphView, focused)) {
+            if (focused != null && Scene.Graph == this.GraphView) {
+                if (IsExpanded (this.GraphView, focused)) {
                     Collapse ();
                 } else {
                     Expand (false);

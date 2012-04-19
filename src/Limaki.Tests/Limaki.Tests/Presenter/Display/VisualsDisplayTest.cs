@@ -9,8 +9,8 @@ using Xwt;
 
 namespace Limaki.Tests.Presenter.Display {
     public class VisualsDisplayTest:DisplayTest<IGraphScene<IVisual,IVisualEdge>> {
-        protected Scene _scene = null;
-        public virtual Scene Scene {
+        protected IGraphScene<IVisual, IVisualEdge> _scene = null;
+        public virtual IGraphScene<IVisual, IVisualEdge> Scene {
             get {
                 if (_scene == null) {
                     _scene = new Scene();

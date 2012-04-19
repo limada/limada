@@ -133,6 +133,7 @@ namespace Xwt.Gdi.Backend {
         public static Rectangle ToXwt (this SD.RectangleF value) {
             return new Rectangle (value.X, value.Y, value.Width, value.Height);
         }
+
         public static StringFormat GetDefaultStringFormat() {
             var stringFormat =
                 StringFormat.GenericTypographic;

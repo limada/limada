@@ -26,7 +26,7 @@ namespace Limaki.View.Display {
         where TEdge : TItem, IEdge<TItem> {
 
         public virtual Get<IGraphScene<TItem, TEdge>> GraphScene { get; set; }
-        public virtual Get<IGraphLayout<TItem, TEdge>> Layout { get; set; }
+        public virtual Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
         public virtual Get<IModelReceiver<TItem>> ModelReceiver { get; set; }
 
         public override void Dispose() {
@@ -45,7 +45,7 @@ namespace Limaki.View.Display {
 
             display.ModelReceiver = new GraphItemReceiver<TItem, TEdge>();
             
-            display.SceneReceiver = new GraphSceneReceiver<TItem, TEdge>();
+            display.GraphSceneReceiver = new GraphSceneReceiver<TItem, TEdge>();
 
             display.DataRenderer = new GraphSceneRenderer<TItem, TEdge>();
             
@@ -98,12 +98,12 @@ namespace Limaki.View.Display {
             display.Layout.StyleSheet = display.StyleSheet;
             display.Layout.PainterFactory = display.PainterFactory;
 
-            display.SceneReceiver.GraphScene = this.GraphScene;
-            display.SceneReceiver.Layout = this.Layout;
-            display.SceneReceiver.Camera = this.Camera;
-            display.SceneReceiver.Clipper = this.Clipper;
-            display.SceneReceiver.ModelReceiver = this.ModelReceiver;
-            display.EventControler.Add(display.SceneReceiver);
+            display.GraphSceneReceiver.GraphScene = this.GraphScene;
+            display.GraphSceneReceiver.Layout = this.Layout;
+            display.GraphSceneReceiver.Camera = this.Camera;
+            display.GraphSceneReceiver.Clipper = this.Clipper;
+            display.GraphSceneReceiver.ModelReceiver = this.ModelReceiver;
+            display.EventControler.Add(display.GraphSceneReceiver);
 
             var renderer = display.DataRenderer as IGraphSceneRenderer<TItem, TEdge>;
             renderer.ItemRenderer = display.GraphItemRenderer;

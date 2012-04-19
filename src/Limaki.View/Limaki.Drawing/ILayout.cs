@@ -13,8 +13,6 @@
  */
 
 using System;
-using Limaki.Common;
-using Limaki.Graphs;
 using Xwt;
 
 namespace Limaki.Drawing {
@@ -88,19 +86,6 @@ namespace Limaki.Drawing {
         Func<TItem, string> OrderBy { get; set; }
     }
 
-    public interface IGraphLayout<TItem, TEdge> : ILayout<TItem> 
-        where TEdge : TItem, IEdge<TItem> {
-
-        Get<IGraphScene<TItem,TEdge>> DataHandler { get; set; }
-
-        IGraphScene<TItem, TEdge> Data { get; }
-
-        Orientation Orientation { get; set; }
-
-        bool Centered { get; set; }
-
-    }
-   
     public enum Orientation {
         LeftRight,
         TopBottom

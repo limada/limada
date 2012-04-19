@@ -30,7 +30,7 @@ namespace Limada.View {
             return scene != null && scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>() != null;
         }
 
-        public void LoadSearch(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, object name) {
+        public void LoadSearch(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, object name) {
             var graph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
             
             if (graph==null) {

@@ -158,7 +158,7 @@ namespace Limada.View {
         }
 
         
-        public void SaveInGraph(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, SceneInfo info) {
+        public void SaveInGraph(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, SceneInfo info) {
             var graph = GetThingGraph(scene);
             var sheetThing = GetSheetThing(graph, info.Id);
             var saved = SaveToThing(scene, layout, sheetThing, info.Name);
@@ -173,7 +173,7 @@ namespace Limada.View {
             saved.State.CopyTo(info.State);
         }
 
-        public SceneInfo SaveToThing(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, IThing thing, string name) {
+        public SceneInfo SaveToThing(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, IThing thing, string name) {
             var result = default( SceneInfo );
             if (thing is IStreamThing || thing == null) {
                 
@@ -207,7 +207,7 @@ namespace Limada.View {
         #endregion
 
         #region load sheet
-        public bool Load(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Int64 id) {
+        public bool Load(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Int64 id) {
             var result = LoadFromStore(scene, layout, id);
             try {
                 if (!result) {
@@ -225,7 +225,7 @@ namespace Limada.View {
             }
         }
 
-        protected void LoadFromStream(Stream source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
+        protected void LoadFromStream(Stream source, IGraphScene<IVisual, IVisualEdge> target, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             SceneExtensions.CleanScene(target);
             source.Position = 0;
             using (var sheet = new Sheet(target, layout)) {
@@ -233,7 +233,7 @@ namespace Limada.View {
             } 
         }
 
-        public SceneInfo LoadFromContent(Content<Stream> source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
+        public SceneInfo LoadFromContent(Content<Stream> source, IGraphScene<IVisual, IVisualEdge> target, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             var result = default(SceneInfo);
             try {
                 string name = string.Empty;
@@ -259,7 +259,7 @@ namespace Limada.View {
             return result;
         }
 
-        public SceneInfo LoadFromThing(IStreamThing source, IGraphScene<IVisual, IVisualEdge> target, IGraphLayout<IVisual, IVisualEdge> layout) {
+        public SceneInfo LoadFromThing(IStreamThing source, IGraphScene<IVisual, IVisualEdge> target, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             var result = default(SceneInfo);
             source.DeCompress();
             try {
@@ -289,7 +289,7 @@ namespace Limada.View {
 
         #region SheetStreams
 
-        public bool SaveInStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Int64 id) {
+        public bool SaveInStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Int64 id) {
             if (scene.Graph.Count > 0) {
                 var stream = new MemoryStream();
                 new Sheet(scene, layout).Save(stream);
@@ -317,7 +317,7 @@ namespace Limada.View {
             return SheetStreams.ContainsKey(id);
         }
 
-        public bool LoadFromStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphLayout<IVisual, IVisualEdge> layout, Int64 id) {
+        public bool LoadFromStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Int64 id) {
             Stream stream = null;
             if (SheetStreams.TryGetValue(id, out stream)){
                 LoadFromStream(stream, scene, layout);

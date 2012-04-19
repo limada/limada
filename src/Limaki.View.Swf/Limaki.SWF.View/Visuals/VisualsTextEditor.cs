@@ -50,7 +50,7 @@ namespace Limaki.View.Swf.Visuals {
             ContainerControl device,
             IDisplay display,
             ICamera camera,
-            IGraphLayout<IVisual,IVisualEdge> layout)
+            IGraphSceneLayout<IVisual,IVisualEdge> layout)
             : this() {
             this.device = device;
             this.display = display;
@@ -75,8 +75,8 @@ namespace Limaki.View.Swf.Visuals {
         }
 
 
-        private IGraphLayout<IVisual,IVisualEdge> _layout = null;
-        public virtual IGraphLayout<IVisual,IVisualEdge> Layout {
+        private IGraphSceneLayout<IVisual,IVisualEdge> _layout = null;
+        public virtual IGraphSceneLayout<IVisual,IVisualEdge> Layout {
             get { return _layout; }
             set { _layout = value; }
         }
@@ -147,7 +147,7 @@ namespace Limaki.View.Swf.Visuals {
         private TextBox editor = new TextBox();
 
         void ActivateMarkers() {
-            var scene = Scene as Scene;
+            var scene = Scene;
             if (Current is IVisualEdge && scene.Markers != null) {
                 editor.AutoCompleteCustomSource =
                     new AutoCompleteStringCollection ();
@@ -287,7 +287,7 @@ namespace Limaki.View.Swf.Visuals {
         }
 
         void TextToData(IVisual visual, string text) {
-            var scene = this.Scene as Scene;
+            var scene = this.Scene;
             
             TypeConverter converter = GetConverter (visual);
             if (converter == null) return;
@@ -360,7 +360,7 @@ namespace Limaki.View.Swf.Visuals {
                 DetachEditor(true);
                 Exclusive = Resolved = true;
                 Current = Registry.Pool.TryGetCreate<IVisualFactory>().CreateItem<string>("XXXXXXXX");
-                var scene = Scene as Scene;
+                var scene = Scene;
                 IVisual root = scene.Focused;
 
                 if (root == null) {

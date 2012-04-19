@@ -31,11 +31,11 @@ namespace Limaki.Tests.Graph.Wrappers {
             set { _factory = value; }
         }
 
-        protected Scene _scene;
-        public virtual Scene Scene {
+        protected IGraphScene<IVisual, IVisualEdge> _scene;
+        public virtual IGraphScene<IVisual, IVisualEdge> Scene {
             get {
                 if (_scene == null) {
-                    IGraph<IVisual, IVisualEdge> g = this.Factory.Scene.Graph;
+                    var g = this.Factory.Scene.Graph;
                     g = new GraphView<IVisual, IVisualEdge>(
                         ((GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>)this.Factory).GraphPair,
                         new VisualGraph());

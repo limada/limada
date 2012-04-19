@@ -31,7 +31,7 @@ namespace Limaki.View.Swf.Display {
             Backend.BackendRenderer = this.BackendRenderer;
             Backend.BackendViewPort = this.ViewPort;
 
-            display.DeviceRenderer = this.BackendRenderer;
+            display.BackendRenderer = this.BackendRenderer;
             display.DataLayer = this.DataLayer;
             display.EventControler = this.EventControler;
             display.Viewport = this.ViewPort;

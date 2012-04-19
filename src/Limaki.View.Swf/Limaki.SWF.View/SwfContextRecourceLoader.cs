@@ -26,6 +26,7 @@ using Limaki.View.UI;
 using Limaki.Visuals;
 using Limaki.Swf.Backends;
 using Xwt.WinformBackend;
+using Limaki.Swf.Backends.ThirdPartyWrappers;
 
 namespace Limaki.View.Swf {
     /// <summary>
@@ -55,6 +56,7 @@ namespace Limaki.View.Swf {
             context.Factory.Add<ICursorHandler, CursorHandlerBackend>();
             context.Factory.Add<IDisplay<IGraphScene<IVisual, IVisualEdge>>>(() => new SwfVisualsDisplayBackend().Display);
             context.Factory.Add<IMessageBoxShow, MessageBoxShow>();
+            context.Factory.Add<IGeckoWebBrowser, GeckoWebBrowser> ();
 
             new ViewContextRecourceLoader().ApplyResources(context);
 

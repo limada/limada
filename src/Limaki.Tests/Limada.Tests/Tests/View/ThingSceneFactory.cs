@@ -22,6 +22,7 @@ using Limaki.Tests.Visuals;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using System.Collections.Generic;
+using Limaki.Drawing;
 
 namespace Limada.Tests.View {
     public abstract class ThingSceneFactory:ISceneFactory {
@@ -44,7 +45,7 @@ namespace Limada.Tests.View {
         protected IThingGraph _thingGraph = null;
         public abstract IThingGraph ThingGraph { get; set; }
 
-        public virtual Scene Scene {
+        public virtual IGraphScene<IVisual, IVisualEdge> Scene {
             get {
                 var result = new Scene();
                 Populate(result);
@@ -60,7 +61,7 @@ namespace Limada.Tests.View {
 
         public string Name { get { return this.GetType().Name; } }
 
-        public void Populate( Scene scene ) {
+        public void Populate (IGraphScene<IVisual, IVisualEdge> scene) {
             if (ThingGraph != null) {
                 this.Graph = new VisualThingGraph (new VisualGraph (), this.ThingGraph);
                 scene.Graph = this.Graph;

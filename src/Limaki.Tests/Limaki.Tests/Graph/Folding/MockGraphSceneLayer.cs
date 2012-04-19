@@ -21,7 +21,7 @@ namespace Limaki.Tests.Graph.Wrappers {
     }
 
     public class MockRenderer<T> : IBackendRenderer
-where T : class {
+        where T : class {
 
         public virtual IDisplayBackend<T> Backend { get; set; }
 
@@ -66,7 +66,6 @@ where T : class {
                 }
             }
         }
-
 
     }
 
@@ -151,7 +150,7 @@ where T : class {
     }
 
     public class MockBackendComposer<TData> : BackendComposer<TData, IDisplayBackend<TData>>
-    where TData : class {
+        where TData : class {
         public EventControler EventControler { get; set; }
         public override void Factor(Display<TData> display) {
             this.Backend = new MockDisplayBackend<TData>();
@@ -173,7 +172,7 @@ where T : class {
         public override void Compose(Display<TData> display) {
             this.BackendRenderer.BackColor = () => display.BackColor;
 
-            display.DeviceRenderer = this.BackendRenderer;
+            display.BackendRenderer = this.BackendRenderer;
             display.DataLayer = this.DataLayer;
             display.EventControler = this.EventControler;
             display.Viewport = this.ViewPort;

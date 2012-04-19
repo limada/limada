@@ -1,3 +1,7 @@
+[2012-04-19]
+Limaki.Drawing.Gdi.GdiUtils.GetTextDimension: Size ceiling to fit Xwt.Drawing DrawingText
+Code-Review: namings and namespace fixes, some fixes with dependencies
+
 [2012-04-12]
 StringPainter running over Xwt, has errors on resizing
 adjusted VectorPainter Arrows and scaling

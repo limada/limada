@@ -74,13 +74,13 @@ namespace Limada.Tests.Model {
         }
 
 
-        public IGraphLayout<IVisual,IVisualEdge> GetLayout() {
+        public IGraphSceneLayout<IVisual,IVisualEdge> GetLayout() {
             var styleSheet = StyleSheet.CreateDefaultStyleSheet ();
-            var result = new VisualsLayout<IVisual, IVisualEdge>(null,styleSheet);
+            var result = new VisualsSceneLayout<IVisual, IVisualEdge>(null,styleSheet);
             return result;
         }
-        
-        Stream SaveSheet(Scene scene, IGraphLayout<IVisual,IVisualEdge> layout) {
+
+        Stream SaveSheet (IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             Sheet sheet = new Sheet(scene, layout);
             sheet.Layout.DataHandler = delegate() { return sheet.Scene; };
 
@@ -95,12 +95,12 @@ namespace Limada.Tests.Model {
             VisualThingGraph sourceGraph = 
                 ModelHelper.GetSourceGraph<ProgrammingLanguageFactory> ();
 
-            Scene scene = new Scene();
+            var scene = new Scene();
             scene.Graph = sourceGraph;
 
             IThingGraph thingGraph = sourceGraph.Two as IThingGraph;
             
-            IGraphLayout<IVisual,IVisualEdge> layout = this.GetLayout();
+            IGraphSceneLayout<IVisual,IVisualEdge> layout = this.GetLayout();
 
             Stream s = SaveSheet (scene, layout);
 
@@ -109,7 +109,7 @@ namespace Limada.Tests.Model {
             ReportDetail (reader.ReadToEnd ());
             s.Position = 0;
 
-            Sheet sheet = new Sheet(new Scene(), layout);
+            var sheet = new Sheet(new Scene(), layout);
             sheet.Layout.DataHandler = delegate() { return sheet.Scene; };
 
             VisualThingGraph targetGraph = new VisualThingGraph(new VisualGraph(), thingGraph);
@@ -137,7 +137,7 @@ namespace Limada.Tests.Model {
         }
 
 
-        void TestScene(Scene scene, IGraphLayout<IVisual,IVisualEdge> layout, Stream s) {
+        void TestScene (IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Stream s) {
             
             
             var sheetManager = new SheetManager();

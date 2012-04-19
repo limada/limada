@@ -16,9 +16,8 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.View.Rendering;
 
-namespace Limaki.View.UI {
+namespace Limaki.View.Rendering {
     public interface ISelectionRenderer : IRenderAction {
         IShape Shape { get; set; }
         

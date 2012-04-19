@@ -32,7 +32,7 @@ namespace Limaki.View.Rendering {
 
     public interface IGraphItemRenderer<TItem, TEdge> : IContentRenderer<TItem>
     where TEdge : TItem, IEdge<TItem> {
-        Get<IGraphLayout<TItem, TEdge>> Layout { get; set; }
+        Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
     }
 
     public interface IGraphSceneRenderer<TItem, TEdge> : IContentRenderer<IGraphScene<TItem, TEdge>>
@@ -40,7 +40,7 @@ namespace Limaki.View.Rendering {
         
         IGraphItemRenderer<TItem, TEdge> ItemRenderer { get; set; }
 
-        Get<IGraphLayout<TItem, TEdge>> Layout { get; set; }
+        Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
         
 
     }

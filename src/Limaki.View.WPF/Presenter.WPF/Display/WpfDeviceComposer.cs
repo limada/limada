@@ -32,7 +32,7 @@ namespace Limaki.View.WPF.Display {
             Backend.DeviceRenderer = this.BackendRenderer;
             Backend.DeviceViewPort = this.ViewPort;
 
-            display.DeviceRenderer = this.BackendRenderer;
+            display.BackendRenderer = this.BackendRenderer;
             display.DataLayer = this.DataLayer;
             display.EventControler = this.EventControler;
             display.Viewport = this.ViewPort;
