@@ -8,7 +8,7 @@
  * Author: Lytico
  * Copyright (C) 2006-2011 Lytico
  *
- * http://limada.sourceforge.net
+ * http://www.limada.org
  * 
  */
 
@@ -103,7 +103,7 @@ namespace Limaki.View.Visuals.Layout {
         public override void Justify(TItem target, IShape tshape) {
             if ((target is IVisualEdge) && (tshape is IEdgeShape)) {
                 var edge = (IVisualEdge)target;
-                Router.routeEdge((TEdge)edge);
+                Router.RouteEdge((TEdge)edge);
 
                 IEdgeShape shape = (IEdgeShape)tshape;
                 shape.Start = edge.Root.Shape[edge.RootAnchor];

@@ -8,7 +8,7 @@
  * Author: Lytico
  * Copyright (C) 2006-2011 Lytico
  *
- * http://limada.sourceforge.net
+ * http://www.limada.org
  */
 
 namespace Limaki.Actions {

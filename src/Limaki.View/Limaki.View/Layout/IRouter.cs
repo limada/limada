@@ -8,7 +8,7 @@
  * Author: Lytico
  * Copyright (C) 2006-2011 Lytico
  *
- * http://limada.sourceforge.net
+ * http://www.limada.org
  * 
  */
 
@@ -28,7 +28,7 @@ namespace Limaki.View.Layout {
         /// </summary>
         /// <param name="edge"></param>
         /// <returns></returns>
-        void routeEdge (TEdge edge);
+        void RouteEdge (TEdge edge);
 
     }
 }

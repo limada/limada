@@ -104,7 +104,7 @@ namespace Limaki.View.Swf.Backends {
 
             var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
             alligner.OneColumn(pages, (Point)this.Border,this.Border.Height);
-            alligner.Proxy.Commit(alligner.Data.Requests);
+            alligner.Locator.Commit(alligner.GraphScene.Requests);
 
             display.DataId = 0;
             new State { Hollow = true }.CopyTo(display.State);

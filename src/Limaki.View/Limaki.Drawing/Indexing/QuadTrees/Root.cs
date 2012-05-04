@@ -10,7 +10,7 @@
  * 
  * Author of changes: Lytico
  *
- * http://limada.sourceforge.net
+ * http://www.limada.org
  * 
  */
 

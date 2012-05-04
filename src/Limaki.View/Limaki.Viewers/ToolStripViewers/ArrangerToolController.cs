@@ -52,7 +52,7 @@ namespace Limaki.Viewers.ToolStripViewers {
 
             call(alligner, items);
             
-            alligner.Proxy.Commit (alligner.Data.Requests);
+            alligner.Locator.Commit (alligner.GraphScene.Requests);
 
             StoreUndo (display, alligner, items);
 
@@ -64,10 +64,10 @@ namespace Limaki.Viewers.ToolStripViewers {
         protected virtual void StoreUndo(IGraphSceneDisplay<IVisual, IVisualEdge> display, Alligner<IVisual, IVisualEdge> alligner, IEnumerable<IVisual> items) {
             _undo = new List<ICommand<IVisual>>();
             _undoID = display.DataId;
-            foreach (var item in alligner.Data.Requests.Select(c=>c.Subject)) {
+            foreach (var item in alligner.GraphScene.Requests.Select(c=>c.Subject)) {
                 _undo.Add(new MoveCommand<IVisual>(item, i => i.Shape, item.Location));
             }
-            foreach (var edge in alligner.Proxy.AffectedEdges) {
+            foreach (var edge in alligner.Locator.AffectedEdges) {
                 _undo.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Justify));
             }
         }

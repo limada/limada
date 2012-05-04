@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Limada.UseCases\DocumentSchemaKeyScrollAction.cs" />
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\CollissionResolver.cs" />
     <Compile Include="ViewContextRecourceLoader.cs" />
     <Compile Include="Limaki.Drawing\Anchor.cs" />
     <Compile Include="Limaki.Drawing\Camera.cs" />
@@ -146,21 +147,20 @@
     <Compile Include="Limaki.View\IReceiver.cs" />
     <Compile Include="Limaki.View\IViewport.cs" />
     <Compile Include="Limaki.View\IZoomTarget.cs" />
-    <Compile Include="Limaki.View\Layout\LocateVisits.cs" />
-    <Compile Include="Limaki.View\Layout\Alligner.cs" />
-    <Compile Include="Limaki.View\Layout\AllignerOptions.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\LocateVisits.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\Alligner.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\AllignerOptions.cs" />
     <Compile Include="Limaki.View\Layout\Arranger0.cs" />
-    <Compile Include="Limaki.View\Layout\ShapeGraphProxy.cs" />
+    <Compile Include="Limaki.View\Layout\GraphSceneLocator.cs" />
     <Compile Include="Limaki.View\Layout\GraphSceneLayout.cs" />
-    <Compile Include="Limaki.View\Layout\ILocator.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\ILocator.cs" />
     <Compile Include="Limaki.View\Layout\IRouter.cs" />
-    <Compile Include="Limaki.View\Layout\IShapeGraphProxy.cs" />
+    <Compile Include="Limaki.View\Layout\IGraphSceneLocator.cs" />
     <Compile Include="Limaki.View\Layout\Layout.cs" />
     <Compile Include="Limaki.View\Layout\LayoutCommand.cs" />
     <Compile Include="Limaki.View\Layout\NearestAnchorRouter.cs" />
-    <Compile Include="Limaki.View\Layout\Placer.cs" />
-    <Compile Include="Limaki.View\Layout\PlacerBase.cs" />
-    <Compile Include="Limaki.View\Layout\MeasureVisits.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\Placer.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\MeasureVisits.cs" />
     <Compile Include="Limaki.View\Layout\ProxyShape.cs" />
     <Compile Include="Limaki.View\Layout\RouterBase.cs" />
     <Compile Include="Limaki.View\Layout\ShapeLayout.cs" />

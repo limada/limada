@@ -11,7 +11,7 @@
  * Copyright (C) 2001 Mike Kestner
  * Copyright (C) 2004, 2007 Novell, Inc (http://www.novell.com)
  *
- * http://limada.sourceforge.net
+ * http://www.limada.org
  * 
  */
 

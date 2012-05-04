@@ -46,7 +46,11 @@ namespace Xwt.Drawing
 				return handler;
 			}
 		}
-		
+        public IBackendHandler BackendHandler1 {
+            get {
+                return handler;
+            }
+        }
 		public Context (object backend): base (backend)
 		{
 		}

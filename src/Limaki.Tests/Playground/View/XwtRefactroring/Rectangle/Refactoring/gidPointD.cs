@@ -10,7 +10,7 @@
  * 
  * Copyright (C) 2004 Novell, Inc (http://www.novell.com)
  *
- * http://limada.sourceforge.net
+ * http://www.limada.org
  * 
  */
 

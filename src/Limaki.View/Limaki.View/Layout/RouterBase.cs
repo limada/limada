@@ -8,7 +8,7 @@
  * Author: Lytico
  * Copyright (C) 2006-2011 Lytico
  *
- * http://limada.sourceforge.net
+ * http://www.limada.org
  * 
  */
 
@@ -20,7 +20,7 @@ namespace Limaki.View.Layout {
     public class RouterBase<TItem, TEdge> : IRouter<TItem, TEdge>
         where TItem : IVisual
         where TEdge : TItem, IEdge<TItem> {
-        public virtual void routeEdge(TEdge edge) {
+        public virtual void RouteEdge(TEdge edge) {
             var e = edge as IVisualEdge;
             if (edge.Root is IEdge<IVisual>) {
                 e.RootAnchor = Anchor.Center;

@@ -8,7 +8,7 @@
  * Author: Lytico
  * Copyright (C) 2006-2011 Lytico
  *
- * http://limada.sourceforge.net
+ * http://www.limada.org
  * 
  */
 
@@ -75,14 +75,14 @@ namespace Limaki.View.Layout {
             }
         }
 
-        protected IShapeGraphProxy<TItem, TEdge> _proxy = null;
-        public IShapeGraphProxy<TItem, TEdge> Proxy {
+        protected IGraphSceneLocator<TItem, TEdge> _proxy = null;
+        public IGraphSceneLocator<TItem, TEdge> Proxy {
             get { return _proxy ?? (_proxy = CreateProxy(this.Layout)); }
             set { _proxy = value; }
         }
 
-        protected virtual IShapeGraphProxy<TItem, TEdge> CreateProxy(IGraphSceneLayout<TItem, TEdge> layout) {
-            return new ShapeGraphProxy<TItem, TEdge>(layout);
+        protected virtual IGraphSceneLocator<TItem, TEdge> CreateProxy(IGraphSceneLayout<TItem, TEdge> layout) {
+            return new GraphSceneLocator<TItem, TEdge>(layout);
         }
 
 
@@ -379,7 +379,7 @@ namespace Limaki.View.Layout {
                 root = ((TEdge)root).Root;
             }
 
-            startAt = Proxy.GetShape(root).Location;
+            startAt = Proxy.GetOrCreateShape(root).Location;
 
             if (siblings != null && siblings.Count == 1 && siblings.Contains(start)) {
                 startAt = (Point)Border;
@@ -422,7 +422,7 @@ namespace Limaki.View.Layout {
         protected virtual Point ArrangeDeepWalk(TItem start, Point location) {
             Point startAt = location;
 
-            Proxy.GetShape(start);
+            Proxy.GetOrCreateShape(start);
 
             AddWalk(start, null, true);
 
@@ -485,7 +485,7 @@ namespace Limaki.View.Layout {
                         location = new Point(Distance.Width, location.Y);
                         location = ArrangeDeepWalk(item, location);
                         
-                        Proxy.GetShape(item);
+                        Proxy.GetOrCreateShape(item);
 
                         AddWalk(item, null, true);
 
@@ -569,7 +569,7 @@ namespace Limaki.View.Layout {
                         //**** PointD ArrangeDeepWalk(TItem start, PointD location) {
                         Point location = args.location;
 
-                        Proxy.GetShape(item);
+                        Proxy.GetOrCreateShape(item);
                         Proxy.SetLocation(item, location);
 
                         AddWalk(item, null, true);
@@ -598,7 +598,7 @@ namespace Limaki.View.Layout {
                     root = ((TEdge)root).Root;
                 }
 
-                IShape shape = Proxy.GetShape(root);
+                IShape shape = Proxy.GetOrCreateShape(root);
                 location = shape.Location;
 
                 if (args.siblings != null && args.siblings.Count == 1 && args.siblings.Contains(item)) {

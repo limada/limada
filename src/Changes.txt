@@ -1,3 +1,13 @@
+[2012-05-04]
+updated fileheader to limada.org
+
+[2012-04-24]
+first draft of Html5TestApp
+
+[2012-04-19]
+first draft of CollisionResolver
+some refactoring in aligner-stuff
+
 [2012-04-19]
 Limaki.Drawing.Gdi.GdiUtils.GetTextDimension: Size ceiling to fit Xwt.Drawing DrawingText
 Code-Review: namings and namespace fixes, some fixes with dependencies

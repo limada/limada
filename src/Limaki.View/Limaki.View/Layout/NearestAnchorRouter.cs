@@ -8,7 +8,7 @@
  * Author: Lytico
  * Copyright (C) 2006-2011 Lytico
  *
- * http://limada.sourceforge.net
+ * http://www.limada.org
  * 
  */
 
@@ -141,7 +141,7 @@ namespace Limaki.View.Layout {
 
         #endregion
 
-        public override void routeEdge(TEdge edge) {
+        public override void RouteEdge(TEdge edge) {
             try {
                 Pair<Anchor, Anchor> nearest = nearestAnchors (edge.Root, edge.Leaf);
                 var e = edge as IVisualEdge;
@@ -151,7 +151,7 @@ namespace Limaki.View.Layout {
                 ArgumentException ex = new ArgumentException ("Shape-Error with: "+edge.ToString(), e);
                 Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex,MessageType.OK);
             }
-            base.routeEdge(edge);
+            base.RouteEdge(edge);
             
         }
     }

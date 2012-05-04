@@ -8,7 +8,7 @@
  * Author: Lytico
  * Copyright (C) 2006-2011 Lytico
  *
- * http://limada.sourceforge.net
+ * http://www.limada.org
  * 
  */
 
@@ -26,7 +26,8 @@ using Limaki.View.UI;
 using Limaki.Visuals;
 using Limaki.Swf.Backends;
 using Xwt.WinformBackend;
-using Limaki.Swf.Backends.ThirdPartyWrappers;
+using System;
+
 
 namespace Limaki.View.Swf {
     /// <summary>
@@ -56,7 +57,17 @@ namespace Limaki.View.Swf {
             context.Factory.Add<ICursorHandler, CursorHandlerBackend>();
             context.Factory.Add<IDisplay<IGraphScene<IVisual, IVisualEdge>>>(() => new SwfVisualsDisplayBackend().Display);
             context.Factory.Add<IMessageBoxShow, MessageBoxShow>();
-            context.Factory.Add<IGeckoWebBrowser, GeckoWebBrowser> ();
+
+            if (!OS.IsWin64Process)
+                context.Factory.Add<IGeckoWebBrowser>(() => {
+                    // this is needed to avoid loading win86-Assembly:
+                    var gecko = Activator.CreateInstance(
+                        this.GetType().Assembly.FullName,
+                        typeof(WebBrowser).Assembly.FullName + ".GeckoWebBrowser");
+                    if (gecko != null)
+                        return (IGeckoWebBrowser)gecko.Unwrap();
+                    return null;
+                });
 
             new ViewContextRecourceLoader().ApplyResources(context);
 

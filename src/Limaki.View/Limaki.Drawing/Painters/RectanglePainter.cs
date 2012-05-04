@@ -9,7 +9,7 @@
  * Author: Lytico
  * Copyright (C) 2006-2012 Lytico
  *
- * http://limada.sourceforge.net
+ * http://www.limada.org
  * 
  */
 

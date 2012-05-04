@@ -11,13 +11,13 @@ namespace Limaki.View.Layout {
     /// <typeparam name="TEdge"></typeparam>
     public class ProxyShape<TItem, TEdge>
         where TEdge : IEdge<TItem>, TItem {
-        public ProxyShape(IShapeGraphProxy<TItem, TEdge> proxy, TItem item) {
+        public ProxyShape(IGraphSceneLocator<TItem, TEdge> locator, TItem item) {
             this.Item = item;
-            GetShape = () => proxy.GetShape(item);
-            GetLocation = () => proxy.GetLocation(item);
-            SetLocation = l => proxy.SetLocation(item, l);
+            GetShape = () => locator.GetOrCreateShape(item);
+            GetLocation = () => locator.GetLocation(item);
+            SetLocation = l => locator.SetLocation(item, l);
 
-            GetSize = () => proxy.GetSize(item);
+            GetSize = () => locator.GetSize(item);
             SetSize = s => GetShape().Size = s;
         }
 
