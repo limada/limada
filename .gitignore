@@ -1,0 +1,14 @@
+bin
+obj
+_ReSharper.*
+build.*
+*~
+*.sln.cache
+*.suo
+*.user
+*.dotCover
+*.pidb
+*.userprefs
+*.usertasks
+*.mdb
+.DS_Store
