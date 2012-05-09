@@ -9,11 +9,11 @@ using Xwt;
 
 namespace Limaki.View.Layout {
 
-    public interface ILocationDetector {
-        double NextFreePosition (Point start, Size sizeNeeded, Dimension dimension);
+    public interface ILocationDetector<TItem> {
+        Point NextFreePosition (Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore);
     }
 
-    public class GraphSceneLocationDetector<TItem, TEdge> : ILocationDetector where TEdge : IEdge<TItem>, TItem {
+    public class GraphSceneLocationDetector<TItem, TEdge> : ILocationDetector<TItem> where TEdge : IEdge<TItem>, TItem {
 
         public GraphSceneLocationDetector (IGraphScene<TItem, TEdge> scene) {
             this.GraphScene = scene;
@@ -39,7 +39,7 @@ namespace Limaki.View.Layout {
             }
         }
 
-        public double NextFreePosition (Point start, Size sizeNeeded, Dimension dimension) {
+        public Point NextFreePosition(Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore) {
             var rect = new Rectangle (start, sizeNeeded);
             var loc = new SGraphSceneLocator { GraphScene = this.GraphScene };
             var measure = new MeasureVisits<TItem> (loc);
@@ -47,7 +47,7 @@ namespace Limaki.View.Layout {
             
             IEnumerable<TItem> elems = null;
             do {
-                elems = GraphScene.ElementsIn (rect);
+                elems = GraphScene.ElementsIn(rect).Except(ignore);
                 var frect = measure.Bounds (ref visit);
                 foreach (var item in elems)
                     visit (item);
@@ -59,18 +59,27 @@ namespace Limaki.View.Layout {
             } while (!rect.IsEmpty);
 
 
-            return rect.X;
+            return rect.Location;
         }
 
     }
 
-    public class CollissionResolver<TItem> {
-        public CollissionResolver (ILocator<TItem> locator, ILocationDetector detector) {
+    public class CollissionResolver<TItem>:LocateVisits<TItem> {
+        public CollissionResolver (ILocator<TItem> locator, ILocationDetector<TItem> detector):base(locator) {
             this.Locator = locator;
             this.Detector = detector;
         }
 
-        public virtual ILocator<TItem> Locator { get; protected set; }
-        public virtual ILocationDetector Detector { get; protected set; }
+        public virtual ILocationDetector<TItem> Detector { get; protected set; }
+
+        public virtual void Locate(ref Action<TItem> visitor, Func<Size, double> Xer, Func<Size, double> Yer, Dimension dimension, IEnumerable<TItem> ignore) {
+            visitor += item => {
+                var size = Locator.GetSize(item);
+                var location = new Point(Xer(size), Yer(size));
+
+                location = Detector.NextFreePosition(location, size, dimension, ignore);
+                Locator.SetLocation(item, location);
+            };
+        }
     }
 }

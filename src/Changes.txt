@@ -1,3 +1,6 @@
+[2012-05-09]
+CollisionResolver
+
 [2012-05-04]
 updated fileheader to limada.org
 

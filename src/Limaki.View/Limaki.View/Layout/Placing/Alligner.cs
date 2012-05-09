@@ -128,6 +128,7 @@ namespace Limaki.View.Layout {
         protected virtual void LocateColumn (IEnumerable<TItem> colItems, Rectangle colBounds, Rectangle bounds, ref Point colPos, AllignerOptions options) {
             Action<TItem> visit = null;
             var locator = new LocateVisits<TItem> (this.Locator);
+                //new CollissionResolver<TItem>(this.Locator, new GraphSceneLocationDetector<TItem, TEdge>(this.GraphScene));
 
             if (Alignment.Center == options.AlignY)
                 colPos.Y = bounds.Y + (bounds.Height - colBounds.Height) / 2;
@@ -136,7 +137,10 @@ namespace Limaki.View.Layout {
 
             locator.Locate (ref visit,
                 locator.Allign (colPos.X, colBounds.Width, options.AlignX, Dimension.X),
-                locator.Location (colPos.Y, options.Distance.Height, Dimension.Y));
+                locator.Location (colPos.Y, options.Distance.Height, Dimension.Y)
+                //,Dimension.X,colItems
+                );
+
             VisitItems (colItems, visit);
 
             colPos.X += colBounds.Width + options.Distance.Width;
