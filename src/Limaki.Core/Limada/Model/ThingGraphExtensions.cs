@@ -30,7 +30,7 @@ namespace Limada.Model {
                 Queue<IThing> queue = new Queue<IThing>(items);
                 while (queue.Count != 0) {
                     IThing item = queue.Dequeue();
-                    if (!walker.visited.Contains(item)) {
+                    if (!walker.Visited.Contains(item)) {
                         if (item is ILink)
                             target.Add((ILink)item);
                         else

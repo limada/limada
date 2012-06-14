@@ -13,7 +13,11 @@ namespace Limaki.Viewers {
 
         public abstract object Backend { get; }
 
-        public Color BackColor = SystemColors.Background;
+        private Color? _backColor;
+        public virtual Color BackColor {
+            get { return (_backColor??(_backColor= SystemColors.Background)).Value; }
+            set { _backColor = value; }
+        }
         public object Parent { get; set; }
 
         public event Action<object> Attach = null;

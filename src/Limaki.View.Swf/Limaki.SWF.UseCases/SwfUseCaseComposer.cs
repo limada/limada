@@ -313,7 +313,7 @@ namespace Limaki.Swf.Backends.UseCases {
 
                 if (useCase.FileDialogShow (saveFileDialog, false) == DialogResult.OK) {
                     var image =
-                        new ImageExporter (currentDisplay.Data, currentDisplay.Layout)
+                        new ImageExporter (currentDisplay.Data, currentDisplay.Layout){StyleSheet=currentDisplay.StyleSheet}
                             .ExportImage ();
                     if (image != null) {
                         image.Save (saveFileDialog.FileName, ImageFormat.Tiff);

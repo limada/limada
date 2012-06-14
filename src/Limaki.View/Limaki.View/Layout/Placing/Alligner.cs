@@ -37,7 +37,8 @@ namespace Limaki.View.Layout {
             var options = new AllignerOptions { Distance = new Size (distance, distance), AlignX = Alignment.End, AlignY = Alignment.Start, Dimension = Dimension.Y };
             var bounds = new Rectangle (int.MaxValue, int.MaxValue, 0, 0);
             MeasureColumn (items, options, ref bounds);
-            LocateColumn (items, bounds, bounds, ref at, options);
+            var locator = new LocateVisits<TItem> (this.Locator);
+            LocateColumn (items, bounds, bounds, ref at, locator,options);
         }
 
         public virtual void OneColumn (IEnumerable<TItem> items, AllignerOptions options) {
@@ -46,13 +47,13 @@ namespace Limaki.View.Layout {
             var bounds = new Rectangle (int.MaxValue, int.MaxValue, 0, 0);
             MeasureColumn (colItems, options, ref bounds);
             var colPos = bounds.Location;
-            LocateColumn (colItems, bounds, bounds, ref colPos, options);
+            var locator = new LocateVisits<TItem> (this.Locator);
+            LocateColumn (colItems, bounds, bounds, ref colPos, locator,options);
 
         }
 
         public virtual void Columns (IEnumerable<TItem> items, AllignerOptions options) {
-            var comparer = new PointComparer { Order = options.PointOrder };
-            comparer.Delta = Layout.StyleSheet.AutoSize.Width / 2;
+            var comparer = new PointComparer { Order = options.PointOrder, Delta = Layout.StyleSheet.AutoSize.Width / 2 };
 
             var walk = items.Select (item => new { location = comparer.Round (Locator.GetLocation (item)), item });
 
@@ -64,10 +65,11 @@ namespace Limaki.View.Layout {
                 cols.Enqueue (MeasureColumn (colItems, options, ref bounds));
             }
 
+            var locator = new LocateVisits<TItem> (this.Locator);
             var colPos = bounds.Location;
             while (cols.Count > 0) {
                 var col = cols.Dequeue ();
-                LocateColumn (col.Item1, col.Item2, bounds, ref colPos, options);
+                LocateColumn (col.Item1, col.Item2, bounds, ref colPos, locator, options);
             }
         }
 
@@ -94,9 +96,16 @@ namespace Limaki.View.Layout {
             }
 
             var colPos = bounds.Location;
+            LocateVisits<TItem> locator = new CollissionResolver<TItem>(
+                this.Locator, 
+                new GraphSceneLocationDetector<TItem, TEdge> (this.GraphScene), 
+                itemCache, 
+                options.Dimension,
+                options.Distance.Width);
+            //locator = new LocateVisits<TItem>(this.Locator);
             while (cols.Count > 0) {
                 var col = cols.Dequeue ();
-                LocateColumn (col.Item1, col.Item2, bounds, ref colPos, options);
+                LocateColumn (col.Item1, col.Item2, bounds, ref colPos, locator, options);
 
             }
         }
@@ -125,10 +134,8 @@ namespace Limaki.View.Layout {
 
         }
 
-        protected virtual void LocateColumn (IEnumerable<TItem> colItems, Rectangle colBounds, Rectangle bounds, ref Point colPos, AllignerOptions options) {
+        protected virtual void LocateColumn (IEnumerable<TItem> colItems, Rectangle colBounds, Rectangle bounds, ref Point colPos, ILocateVisits<TItem> locator, AllignerOptions options) {
             Action<TItem> visit = null;
-            var locator = new LocateVisits<TItem> (this.Locator);
-                //new CollissionResolver<TItem>(this.Locator, new GraphSceneLocationDetector<TItem, TEdge>(this.GraphScene));
 
             if (Alignment.Center == options.AlignY)
                 colPos.Y = bounds.Y + (bounds.Height - colBounds.Height) / 2;
@@ -138,9 +145,7 @@ namespace Limaki.View.Layout {
             locator.Locate (ref visit,
                 locator.Allign (colPos.X, colBounds.Width, options.AlignX, Dimension.X),
                 locator.Location (colPos.Y, options.Distance.Height, Dimension.Y)
-                //,Dimension.X,colItems
                 );
-
             VisitItems (colItems, visit);
 
             colPos.X += colBounds.Width + options.Distance.Width;

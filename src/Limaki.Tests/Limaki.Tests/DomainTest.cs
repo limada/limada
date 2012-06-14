@@ -10,10 +10,10 @@ namespace Limaki.Tests {
         [TestFixtureSetUp]
         public override void Setup() {
             if (Registry.ConcreteContext == null) {
-                var loader = new Limaki.View.Swf.SwfContextRecourceLoader ();
+                var loader = new ViewContextRecourceLoader();
                 Registry.ConcreteContext = new ApplicationContext();
                 loader.ApplyResources(Registry.ConcreteContext);
-                var factory = new AppFactory<global::Limada.UseCases.AppResourceLoader>(loader);
+                var factory = new AppFactory<global::Limada.UseCases.AppResourceLoader>(loader as IBackendContextRecourceLoader);
                 
             }
             base.Setup();

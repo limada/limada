@@ -8,7 +8,7 @@
     <ProjectGuid>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Limaki.Presenter</RootNamespace>
+    <RootNamespace>Limaki.View</RootNamespace>
     <AssemblyName>Limaki.View.Resources</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -134,6 +134,7 @@
     <Content Include="Properties\Resources\ItemLayout.png" />
     <Content Include="Properties\Resources\window-close.png" />
     <Content Include="Properties\Resources\ZoomToolIcon.png" />
+    <None Include="Resources\LimadaLogo.ico" />
     <None Include="Resources\stock_form-line-onerow.png" />
     <None Include="Resources\format-justify-top.png" />
     <None Include="Resources\format-justify-bottom.png" />

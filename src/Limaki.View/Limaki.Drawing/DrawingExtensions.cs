@@ -1,6 +1,7 @@
 using System;
 using Xwt;
 using Xwt.Drawing;
+using Limaki.Common;
 
 namespace Limaki.Drawing {
     public static class DrawingExtensions {
@@ -208,6 +209,22 @@ namespace Limaki.Drawing {
 
         #endregion
 
-        
+        static IDrawingUtils _drawingUtils = null;
+        public static IDrawingUtils DrawingUtils {
+            get {
+                if (_drawingUtils == null) {
+                    _drawingUtils = Registry.Factory.Create<IDrawingUtils>();
+                }
+                return _drawingUtils;
+            }
+        }
+
+        public static Size DpiFactor(Size dpi) {
+            return new Size(DrawingUtils.ScreenResolution().Width / dpi.Width,DrawingUtils.ScreenResolution().Height / dpi.Height);
+        }
+
+        public static Size DpiFactor(this Context context) {
+            return DpiFactor(DrawingUtils.Resolution(context));
+        }
     }
 }

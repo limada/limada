@@ -20,7 +20,7 @@ namespace Limaki.Swf.Backends {
         public string XulDir(string basedir) {
             foreach (var dir in new string[]{ @"Plugins\",@"..\3rdParty\bin\"}) {
                 var s = dir;
-                for (int i = 0; i <= 6; i++) {
+                for (int i = 0; i <= 10; i++) {
                     var xuldir = basedir + s + @"xulrunner11.0";
                     if (Directory.Exists(xuldir))
                         return xuldir;

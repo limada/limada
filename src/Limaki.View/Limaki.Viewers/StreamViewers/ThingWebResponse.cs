@@ -6,9 +6,11 @@ using Limada.Model;
 using Limada.Schemata;
 using Limaki.Model.Streams;
 using Limaki.Net.WebProxyServer;
+using Limaki.Common;
 
 namespace Limaki.Viewers.StreamViewers {
-    public class ThingWebResponse {
+
+    public class ThingWebResponse : IWebResponse {
 
         public virtual IThingGraph ThingGraph { get; set; }
         public virtual IThing Thing { get; set; }
@@ -17,14 +19,14 @@ namespace Limaki.Viewers.StreamViewers {
         public bool Done { get; set; }
         public Uri BaseUri { get; set; }
 
-        public WebContent WebContentOfThing { get; protected set; }
+        public WebContent WebContent { get; protected set; }
 
-        public virtual Func<string, WebContent> Getter(Content<Stream> info) {
+        public virtual Func<string, WebContent> Getter(Content<Stream> content) {
             var graph = this.ThingGraph;
             var thing = this.Thing;
 
-            WebContentOfThing = GetContentFromInfo(info, GetUri(thing));
-            IsStreamOwner = WebContentOfThing.IsStreamOwner;
+            WebContent = GetContentFromContent(content, GetUri(thing));
+            IsStreamOwner = WebContent.IsStreamOwner;
 
             Done = false;
 
@@ -33,9 +35,9 @@ namespace Limaki.Viewers.StreamViewers {
                     WebContent result = null;
                     try {
                         var request = new Uri(s);
-                        if (WebContentOfThing.Uri.AbsoluteUri == request.AbsoluteUri) {
-                            if (!WebContentOfThing.ContentIsEmpty) {
-                                result = WebContentOfThing;
+                        if (WebContent.Uri.AbsoluteUri == request.AbsoluteUri) {
+                            if (!WebContent.ContentIsEmpty) {
+                                result = WebContent;
                             }
                         } else {
                             result = this.GetContentFromGraph(graph, thing, request);
@@ -62,17 +64,22 @@ namespace Limaki.Viewers.StreamViewers {
             return new Uri(BaseUri, "Id=" + Thing.Id.ToString("X"));
         }
 
-        public virtual WebContent GetContentFromInfo(Content<Stream> info, Uri uri) {
+        private ContentProviders _providers = null;
+        ContentProviders Providers {
+            get { return _providers ?? (_providers = Registry.Pool.TryGetCreate<ContentProviders>());}
+        }
+        
+        public virtual WebContent GetContentFromContent(Content<Stream> content, Uri uri) {
             var webContent = new WebContent();
             webContent.ClearContentAfterServing = true;
             webContent.ContentIsStream = true;
             webContent.IsStreamOwner = this.IsStreamOwner;
-            webContent.ContentStream = info.Data;
+            webContent.ContentStream = content.Data;
             webContent.Uri = uri;
 
-            webContent.MimeType = MimeType(info.StreamType);
+            webContent.MimeType = Providers.MimeType(content.StreamType);
             if (UseProxy) {
-                var source = info.Source as string;
+                var source = content.Source as string;
                 if (source != null && source != "about:blank") {
                     if (Uri.IsWellFormedUriString(source, UriKind.RelativeOrAbsolute)) {
                         uri = null;
@@ -89,7 +96,7 @@ namespace Limaki.Viewers.StreamViewers {
         public virtual WebContent GetContentFromThing(IThingGraph graph, IThing thing) {
             var info = ThingStreamFacade.GetContent(graph, thing);
             var uri = GetUri(thing);
-            return GetContentFromInfo(info, uri);
+            return GetContentFromContent(info, uri);
         }
 
         public virtual WebContent GetContentFromGraph(IThingGraph graph, IThing thing, Uri uri) {
@@ -125,32 +132,15 @@ namespace Limaki.Viewers.StreamViewers {
             return result;
         }
 
-       
-
-        #region MimeTypes - Refactor this
-        IDictionary<long, string> _mimeTypes = null;
-        public virtual IDictionary<long, string> MimeTypes {
-            get {
-                if (_mimeTypes == null) {
-                    _mimeTypes = new Dictionary<long, string>();
-                    _mimeTypes.Add(StreamTypes.HTML, "text/html");
-                    _mimeTypes.Add(StreamTypes.ASCII, "text/plain");
-                    _mimeTypes.Add(StreamTypes.Doc, "application/msword");
-                    _mimeTypes.Add(StreamTypes.GIF, "image/gif");
-                    _mimeTypes.Add(StreamTypes.JPG, "image/jpeg");
-                    _mimeTypes.Add(StreamTypes.PNG, "image/png");
-                    _mimeTypes.Add(StreamTypes.RTF, "text/rtf");
-                    _mimeTypes.Add(StreamTypes.TIF, "image/tiff");
-                }
-                return _mimeTypes;
-            }
+        public string AbsoluteUri {
+            get { return WebContent.Uri.AbsoluteUri; }
         }
+ 
 
-        public virtual string MimeType(Int64 streamType) {
-            string result = null;
-            MimeTypes.TryGetValue(streamType, out result);
-            return result;
-        }
-        #endregion
+      
+
+      
+      
+      
     }
 }

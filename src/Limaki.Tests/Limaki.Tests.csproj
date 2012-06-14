@@ -59,7 +59,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -80,6 +80,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FunctionPoints\FunctionPointCounter.cs" />
+    <Compile Include="FunctionPoints\FunctionPointReport.cs" />
     <Compile Include="Limada.Tests\Tests\Basic\BasicThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\Basic\ThingTest.cs" />
     <Compile Include="Limada.Tests\Tests\Model\DescriptionTestFactory.cs" />
@@ -116,36 +118,26 @@
     <Compile Include="Limada.Tests\Tests\Wrappers\WrapperTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\PointComparerTest.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
-    <None Include="Playground\View\XwtRefactroring\[Samples]\Mac.ContextBackendHandler.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\DrawingTransforms.cs">
+    <Compile Include="Playground\View\DrawingTransforms.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Playground\View\XwtRefactroring\Rectangle\Refactoring\gdiRectangleD.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\Rectangle\Mono.WindowBase.Rect.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\Rectangle\RectTest.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\Rectangle\TestRectangle.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\ReferencePainter.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\SwfBackend\PaintCanvasBackend.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\Rectangle\Refactoring\gdiSizeD.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\Rectangle\Refactoring\gidPointD.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\Rectangle\Refactoring\xwtPoint.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\Rectangle\Refactoring\xwtSize.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\XwtBackend\IPaintCanvasBackend.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\XwtBackend\IPaintContextBackendHandler.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\XwtFrontend\PaintCanvas.cs">
+    <Compile Include="Playground\View\Rectangle\Mono.WindowBase.Rect.cs" />
+    <Compile Include="Playground\View\Rectangle\RectTest.cs" />
+    <Compile Include="Playground\View\Rectangle\Refactoring\gdiRectangleD.cs" />
+    <Compile Include="Playground\View\Rectangle\Refactoring\gdiSizeD.cs" />
+    <Compile Include="Playground\View\Rectangle\Refactoring\gidPointD.cs" />
+    <Compile Include="Playground\View\Rectangle\Refactoring\xwtPoint.cs" />
+    <Compile Include="Playground\View\Rectangle\Refactoring\xwtSize.cs" />
+    <Compile Include="Playground\View\Rectangle\TestRectangle.cs" />
+    <Compile Include="Playground\View\Rectangle\XwtRectangleTest.cs" />
+    <Compile Include="Playground\View\ReferencePainter.cs" />
+    <Compile Include="Playground\View\XwtBackend\IPaintCanvasBackend.cs" />
+    <Compile Include="Playground\View\XwtBackend\IPaintContextBackendHandler.cs" />
+    <Compile Include="Playground\View\XwtFrontend\PaintCanvas.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Playground\View\XwtRefactroring\PaintContextTest.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\XwtFrontend\PaintContext.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\GdiBackend\PaintContextBackendHandler.cs" />
-    <None Include="Playground\View\XwtRefactroring\[Samples]\Mac.TextLayoutBackendHandler.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\Rectangle\XwtRectangleTest.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\PaintContextTestControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Playground\View\XwtFrontend\PaintContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceLoader.cs" />
-    <Compile Include="TestCaseFactory.cs" />
     <Compile Include="TestLocations.cs" />
     <Compile Include="Limaki.Tests\Common\IOUtilsTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\StyleTest.cs" />
@@ -167,22 +159,7 @@
     <Compile Include="Limaki.Tests\Presenter\Display\TestDevice.cs" />
     <Compile Include="Limaki.Tests\Presenter\Display\VisualsDisplayTest.cs" />
     <Compile Include="Limaki.Tests\Presenter\Display\VisualsDisplayTest1.cs" />
-    <Compile Include="Limaki.Tests\Presenter\GDI\ConvexHullLayer.cs" />
-    <Compile Include="Limaki.Tests\Presenter\GDI\RegionLayer.cs" />
-    <Compile Include="Limaki.Tests\Presenter\GDI\RegionTest.cs" />
     <Compile Include="Limaki.Tests\Presenter\WebProxyTest.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Winform\ConverterTest.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Winform\OpenExampleData.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Limaki.Tests\Presenter\Winform\OpenExampleData.Designer.cs">
-      <DependentUpon>OpenExampleData.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Limaki.Tests\Presenter\Winform\QuadTreeVisualizer.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Winform\VisualsBoundsLayer.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Winform\WinformDisplayTestComposer.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Winform\WinformTestDevice.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Winform\WinformVisualsDisplayTest.cs" />
     <Compile Include="Limaki.Tests\Presenter\WiredScenesTest.cs" />
     <Compile Include="Limaki.Tests\Common\FactoryTest.cs" />
     <Compile Include="Limaki.Tests\Common\HTML\HtmlNextTest.cs" />
@@ -227,12 +204,8 @@
     <Compile Include="Limaki.Tests\View\Visuals\Model\SceneFactory.cs" />
     <Compile Include="UnitTest\TestBase.cs" />
     <Compile Include="Playground\MonoGenericError2.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Display\CreateDisplayTest.cs" />
     <Compile Include="Playground\MonoMarshalByRefError.cs" />
     <Compile Include="Limaki.Tests\Data\Streams\ContentProviderTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq-2010.csproj">
@@ -263,28 +236,10 @@
       <Project>{4BD6F6DE-CEBA-4185-AF2D-47A071E6A276}</Project>
       <Name>Limaki.dbParts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.View.Swf\Limaki.View.Swf.csproj">
-      <Project>{B87913C3-EBEE-45AB-88EC-8687D9E57127}</Project>
-      <Name>Limaki.View.Swf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xwt.SWF\Xwt.GDI\Xwt.Gdi.csproj">
-      <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
-      <Name>Xwt.Gdi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Xwt.Swf\Xwt.Swf\Xwt.Swf.csproj">
-      <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
-      <Name>Xwt.Swf</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Limaki.Tests\Presenter\Winform\OpenExampleData.resx">
-      <DependentUpon>OpenExampleData.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -321,10 +276,6 @@
   <ItemGroup>
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
     <Folder Include="Playground\Graph\" />
-    <Folder Include="Playground\View\XwtRefactroring\LimakiView\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Playground\View\XwtRefactroring\[Samples]\graphics-cairo.c" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

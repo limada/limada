@@ -10,5 +10,13 @@ namespace Limaki.Drawing {
         Pen CreatePen ( Color color );
         Matrice NativeMatrice();
         Size GetTextDimension(string text, IStyle style);
+
+        /// <summary>
+        /// x ... DpiX, y ... DpiY of Screen
+        /// </summary>
+        /// <returns></returns>
+        Size ScreenResolution();
+
+        Size Resolution(Context context);
     }
 }

@@ -10,7 +10,13 @@ using Xwt;
 namespace Limaki.View.Layout {
 
     public interface ILocationDetector<TItem> {
-        Point NextFreePosition (Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore);
+        Point NextFreePosition (Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore,double distance);
+        /// <summary>
+        /// sets items location and size to be aware in NextFreePosition
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="location"></param>
+        void SetLocation (object item, Point location, Size size);
     }
 
     public class GraphSceneLocationDetector<TItem, TEdge> : ILocationDetector<TItem> where TEdge : IEdge<TItem>, TItem {
@@ -39,46 +45,87 @@ namespace Limaki.View.Layout {
             }
         }
 
-        public Point NextFreePosition(Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore) {
-            var rect = new Rectangle (start, sizeNeeded);
+        public Point NextFreePosition0 (Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore, double distance) {
+            var result = new Rectangle (start, sizeNeeded);
             var loc = new SGraphSceneLocator { GraphScene = this.GraphScene };
             var measure = new MeasureVisits<TItem> (loc);
-            Action<TItem> visit = null;
             
-            IEnumerable<TItem> elems = null;
-            do {
-                elems = GraphScene.ElementsIn(rect).Except(ignore);
+            var iRect = result;
+
+            while (!iRect.IsEmpty) {
+                var elems = GraphScene.ElementsIn (iRect).Where (e => !(e is TEdge)).Except (ignore);
+                if (!elems.Any())
+                    break;
+                Action<TItem> visit = null;
                 var frect = measure.Bounds (ref visit);
                 foreach (var item in elems)
                     visit (item);
-                rect = frect ();
-                if (!rect.IsEmpty) {
-                    rect = new Rectangle (new Point (rect.Right, rect.Top), sizeNeeded);
+                iRect = frect ();
+                if (!iRect.IsEmpty) {
+                    iRect = new Rectangle (new Point (iRect.Right + distance, result.Top), sizeNeeded);
+                    result = iRect;
                 }
+            } 
 
-            } while (!rect.IsEmpty);
+
+            return result.Location;
+        }
+
+        IList<Rectangle> FreeSpace = null;
+
+        IList<Rectangle> CalculateFreeSpace(Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore, double distance) {
+            var h = dimension==Dimension.X ? sizeNeeded.Height : GraphScene.Shape.Size.Height;
+            var w = dimension==Dimension.X ? GraphScene.Shape.Size.Width : sizeNeeded.Width;
+            var iRect = new Rectangle(start, new Size(w, h));
+
+            var comparer = new PointComparer { Order = dimension == Dimension.X ? PointOrder.X : PointOrder.Y };
+            var loc = new SGraphSceneLocator { GraphScene = this.GraphScene };
+            var elems = GraphScene.ElementsIn(iRect).Where(e => !(e is TEdge)).Except(ignore).OrderBy(e=>loc.GetLocation(e),comparer);
+
+            return new Rectangle[0];
+        }
+
+        public Point NextFreePosition(Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore, double distance) {
+            var result = start;
+           
+           var freeSpace = CalculateFreeSpace(start, sizeNeeded, dimension, ignore, distance);
+           
+           
 
 
-            return rect.Location;
+            return result;
+        }
+
+        public void SetLocation(object item, Point location, Size size) {
+
         }
 
     }
 
-    public class CollissionResolver<TItem>:LocateVisits<TItem> {
-        public CollissionResolver (ILocator<TItem> locator, ILocationDetector<TItem> detector):base(locator) {
+    public class CollissionResolver<TItem> : LocateVisits<TItem> {
+        public CollissionResolver (ILocator<TItem> locator, ILocationDetector<TItem> detector, IEnumerable<TItem> ignore, Dimension dimension, double distance)
+            : base (locator) {
             this.Locator = locator;
             this.Detector = detector;
+            this.ignore = new HashSet<TItem>(ignore);
+            this.dimension = dimension;
+            this.distance = distance;
         }
 
+        private ISet<TItem> ignore;
+        private Dimension dimension;
+        private double distance;
         public virtual ILocationDetector<TItem> Detector { get; protected set; }
 
-        public virtual void Locate(ref Action<TItem> visitor, Func<Size, double> Xer, Func<Size, double> Yer, Dimension dimension, IEnumerable<TItem> ignore) {
-            visitor += item => {
-                var size = Locator.GetSize(item);
-                var location = new Point(Xer(size), Yer(size));
+        public override void Locate (ref Action<TItem> visit, Func<Size, double> Xer, Func<Size, double> Yer) {
+            visit += item => {
+                var size = Locator.GetSize (item);
+                var location = new Point (Xer (size), Yer (size));
 
-                location = Detector.NextFreePosition(location, size, dimension, ignore);
-                Locator.SetLocation(item, location);
+                location = Detector.NextFreePosition (location, size, dimension, ignore, distance);
+                Locator.SetLocation (item, location);
+                //!!: ignore.Remove (item);
+                Detector.SetLocation (item, location,size);
             };
         }
     }

@@ -172,6 +172,7 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             NodeBase<TItem> node = null;
             if(_root.QuadItems.TryGetValue(item, out node)){
                 node.RemoveItem(item);
+                _root.QuadItems.Remove (item);
                 var delnode = node as Node<TItem>;
                 if (delnode != null)
                     return _root.Remove(delnode.Envelope, delnode);

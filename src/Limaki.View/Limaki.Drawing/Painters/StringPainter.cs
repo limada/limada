@@ -38,17 +38,21 @@ namespace Limaki.Drawing.Painters {
 
             if (AlignText && shape is IVectorShape) {
                 var vector = ((IVectorShape)shape).Data;
+
+                var f = ctx.DpiFactor();
                 var width = Vector.Length(vector);
-                var height = font.Size + (font.Size / 2d);
+                
+                var height = Math.Ceiling(font.Size);
 
                 var text = new TextLayout(ctx);
                 text.Trimming = TextTrimming.WordElipsis;
                 text.Text = this.Text;
                 text.Font = font;
-                text.Height = height;
                 var size = text.GetSize();
                 width = Math.Min(size.Width, width);
+                height = Math.Max(size.Height,height);
                 text.Width = width;
+                text.Height = height;
 
                 var c = new Point(
                     (vector.Start.X + (vector.End.X - vector.Start.X) / 2d),
@@ -60,7 +64,7 @@ namespace Limaki.Drawing.Painters {
 
                 ctx.SetColor(style.TextColor);
                 ctx.SetLineWidth(1);
-                ctx.DrawTextLayout(text, -width / 2f, -height / 2f);
+                ctx.DrawTextLayout(text, -width / 2d, -height / 2d);
                 ctx.Restore();
             } else {
                 var rect = shape.BoundsRect.Inflate(-5, -5);

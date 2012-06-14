@@ -252,7 +252,10 @@ namespace Xwt.Gdi.Backend {
 
         public GraphicsPath TextLayoutPath (Font font, Action<GraphicsPath, int> addString) {
 
-            var fs = (int) (font.SizeInPoints * this.Graphics.DpiY / 72);
+            var dpiY = this.Graphics.DpiY;
+            if(this.Graphics.PageUnit==GraphicsUnit.Point)
+                dpiY=72;
+            var fs = (int)(font.SizeInPoints * dpiY / 72);
             var path = new GraphicsPath ();
             addString (path, fs);
             if (_matrix != null && !_matrix.IsIdentity)

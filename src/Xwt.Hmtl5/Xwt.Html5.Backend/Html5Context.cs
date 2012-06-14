@@ -29,8 +29,8 @@ using System;
 using System.Collections.Generic;
 using Xwt.Drawing;
 
-
 namespace Xwt.Html5.Backend {
+
     public class Html5Context {
 
         public Html5Context () {
@@ -40,7 +40,7 @@ namespace Xwt.Html5.Backend {
 
         IHtmlChunk _context = null;
         public IHtmlChunk Context {
-            get { return _context ?? (_context = new HtmlChunk ("context.")); }
+            get { return _context ?? (_context = new HtmlChunk ("context")); }
             set { _context = value; }
         }
 

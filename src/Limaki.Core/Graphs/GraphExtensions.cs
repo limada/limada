@@ -64,7 +64,7 @@ namespace Limaki.Graphs {
                 };
                 Walker<TItem, TEdge> walker = new Walker<TItem, TEdge>(source);
                 foreach (TItem item in source) {
-                    if (!walker.visited.Contains(item)) {
+                    if (!walker.Visited.Contains(item)) {
                         state(item);
                         if (checkItem(item) && (whereItem == null || whereItem(item))) {
                             target.Add(item);

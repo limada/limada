@@ -91,14 +91,19 @@ namespace Xwt.Html5.Backend {
 
         public void LineTo (object backend, double x, double y) {
             var c = (Html5Context) backend;
+            c.Context.CommandLine ("lineTo({0},{1})", x, y);
+            c.Current = new Point (x, y);
         }
 
         public void MoveTo (object backend, double x, double y) {
             var c = (Html5Context) backend;
+            c.Context.CommandLine ("moveTo({0},{1})", x, y);
+            c.Current = new Point (x, y);
         }
 
         public void NewPath (object backend) {
             var c = (Html5Context) backend;
+            c.Context.CommandLine ("beginPath()");
         }
 
         public void Rectangle (object backend, double x, double y, double width, double height) {
@@ -119,6 +124,7 @@ namespace Xwt.Html5.Backend {
 
         public void Stroke (object backend) {
             var c = (Html5Context) backend;
+            c.Context.CommandLine ("stroke()");
         }
 
         public void StrokePreserve (object backend) {

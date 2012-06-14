@@ -3,6 +3,7 @@ using Xwt;
 using SystemColors = System.Windows.SystemColors;
 using Xwt.Drawing;
 using System.Drawing.Drawing2D;
+using Xwt.Engine;
 
 namespace Limaki.Drawing.WPF {
 
@@ -77,6 +78,23 @@ namespace Limaki.Drawing.WPF {
 			}
 
 		}
+
+        public Size ScreenResolution() {
+            throw new NotImplementedException();
+
+            var MainWindow = System.Windows.Application.Current.MainWindow;
+            var MainWindowPresentationSource = System.Windows.PresentationSource.FromVisual(MainWindow);
+            var m = MainWindowPresentationSource.CompositionTarget.TransformToDevice;
+            var thisDpiWidthFactor = m.M11;
+            var thisDpiHeightFactor = m.M22;
+
+            return new Size(thisDpiWidthFactor, thisDpiHeightFactor);
+        }
+
+        public Size Resolution(Context context) {
+            var ctx = (Xwt.WPFBackend.DrawingContext)WidgetRegistry.GetBackend(context);
+            return new Size(ctx.Graphics.DpiX, ctx.Graphics.DpiY);
+        }
         #endif
     }
 }

@@ -63,7 +63,7 @@ namespace Limaki.View.Swf {
                     // this is needed to avoid loading win86-Assembly:
                     var gecko = Activator.CreateInstance(
                         this.GetType().Assembly.FullName,
-                        typeof(WebBrowser).Assembly.FullName + ".GeckoWebBrowser");
+                        typeof(WebBrowser).Namespace + ".GeckoWebBrowser");
                     if (gecko != null)
                         return (IGeckoWebBrowser)gecko.Unwrap();
                     return null;

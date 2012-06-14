@@ -24,12 +24,12 @@ namespace Limaki.View.Viewers.Swf {
     public class ScenePainter:GraphScenePainter<IVisual, IVisualEdge> {
 
         public virtual void Compose() {
-            var instrumenter = new GraphScenePainterGdiComposer<IVisual, IVisualEdge>();
+            var composer = new GraphScenePainterGdiComposer<IVisual, IVisualEdge>();
 
             this.GraphItemRenderer = new VisualsRenderer();
 
-            instrumenter.Factor(this);
-            instrumenter.Compose(this);
+            composer.Factor(this);
+            composer.Compose(this);
         }
              
     }

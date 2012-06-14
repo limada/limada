@@ -24,8 +24,6 @@ namespace Limaki.Graphs {
             this.graph = graph;
         }
 
-
-
-        public ICollection<TItem> visited = new Set<TItem>();
+        public ICollection<TItem> Visited = new Set<TItem>();
     }
 }

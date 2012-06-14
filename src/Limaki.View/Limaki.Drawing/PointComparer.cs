@@ -4,8 +4,8 @@ using Xwt;
 namespace Limaki.Drawing {
 
     public enum PointOrder {
-        Left,
-        Top,
+        X,
+        Y,
         LeftToRight,
         TopToBottom
     }
@@ -45,12 +45,12 @@ namespace Limaki.Drawing {
                     else
                         return aX.CompareTo(bX);
             }
-            if (Order == PointOrder.Left) {
+            if (Order == PointOrder.X) {
                 var aX = Round (a.X);
                 var bX = Round (b.X);
                 return aX.CompareTo(bX);
             }
-            if (Order == PointOrder.Top) {
+            if (Order == PointOrder.Y) {
                 var aY = Round(a.Y);
                 var bY = Round(b.Y);
                 return aY.CompareTo(bY);

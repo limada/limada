@@ -4,8 +4,35 @@ using Limaki.Graphs;
 using Xwt;
 
 namespace Limaki.View.Layout {
+    public interface ILocateVisits<TItem> {
+        ILocator<TItem> Locator { get; }
 
-    public class LocateVisits<TItem>  {
+        /// <summary>
+        /// gives back a func which returns the
+        /// prefered location according to size (param of func)
+        /// aligned according to alignment
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="space">the space within to align</param>
+        /// <param name="alignment"></param>
+        /// <param name="dimension"></param>
+        /// <returns></returns>
+        Func<Size, double> Allign(double start, double space, Alignment alignment, Dimension dimension);
+
+        /// <summary>
+        /// gives back a func which returns the
+        /// prefered location according to size (param of func)
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="distance"></param>
+        /// <param name="dimension"></param>
+        /// <returns></returns>
+        Func<Size, double> Location (double start, double distance, Dimension dimension);
+
+        void Locate(ref Action<TItem> visitor, Func<Size, double> Xer, Func<Size, double> Yer);
+    }
+
+    public class LocateVisits<TItem> : ILocateVisits<TItem> {
 
         public LocateVisits (ILocator<TItem> locator) {
             this.Locator = locator;

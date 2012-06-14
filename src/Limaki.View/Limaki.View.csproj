@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Limada.UseCases\DocumentSchemaKeyScrollAction.cs" />
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
+    <Compile Include="Limaki.Viewers\StreamViewers\IWebResponse.cs" />
+    <Compile Include="Limaki.Viewers\StreamViewers\WebResponse.cs" />
     <Compile Include="Limaki.View\Layout\Placing\CollissionResolver.cs" />
     <Compile Include="ViewContextRecourceLoader.cs" />
     <Compile Include="Limaki.Drawing\Anchor.cs" />

@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="LimadaLogo.ico" />
+    <Content Include="LimadaLogoB.ico" />
     <None Include="EnableDragDropWithBrowserWin7.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

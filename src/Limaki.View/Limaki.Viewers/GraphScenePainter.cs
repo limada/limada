@@ -66,14 +66,6 @@ namespace Limaki.Viewers {
     public class GraphScenePainterComposer<TItem, TEdge> : IComposer<GraphScenePainter<TItem, TEdge>>
     where TEdge : TItem, IEdge<TItem> {
 
-        public virtual void Factor(GraphScenePainter<TItem, TEdge> display) {
-            var context = Registry.ConcreteContext;
-            display.Clipper = context.Factory.Create<IClipper>();
-            display.ClipReceiver = context.Factory.Create<IClipReceiver>();
-            display.DataRenderer = new GraphSceneRenderer<TItem, TEdge>();
-
-        }
-
         public virtual Get<Size> DataSize { get; set; }
         public virtual Get<Point> DataOrigin { get; set; }
         public virtual Get<IClipper> Clipper { get; set; }
@@ -82,11 +74,19 @@ namespace Limaki.Viewers {
         public virtual Get<ICamera> Camera { get; set; }
         public virtual Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
 
-        public virtual void Compose(GraphScenePainter<TItem, TEdge> display) {
+        public virtual void Factor(GraphScenePainter<TItem, TEdge> painter) {
+            var context = Registry.ConcreteContext;
+            painter.Clipper = context.Factory.Create<IClipper>();
+            painter.ClipReceiver = context.Factory.Create<IClipReceiver>();
+            painter.DataRenderer = new GraphSceneRenderer<TItem, TEdge>();
+
+        }
+       
+        public virtual void Compose(GraphScenePainter<TItem, TEdge> painter) {
             this.DataOrigin = () => {
-                if (display.Data != null && display.Data.Shape != null) {
-                    var result = display.Data.Shape.Location;
-                    var border = display.Layout.Border;
+                if (painter.Data != null && painter.Data.Shape != null) {
+                    var result = painter.Data.Shape.Location;
+                    var border = painter.Layout.Border;
                     if (result.X < 0) {
                         result.X -= border.Width;
                     }
@@ -99,11 +99,11 @@ namespace Limaki.Viewers {
             };
 
             this.DataSize = () => {
-                if (display.Data != null && display.Data.Shape != null) {
-                    var result = display.Data.Shape.Size;
-                    var border = display.Layout.Border;
+                if (painter.Data != null && painter.Data.Shape != null) {
+                    var result = painter.Data.Shape.Size;
+                    var border = painter.Layout.Border;
                     result += border;
-                    var offset = display.Data.Shape.Location;
+                    var offset = painter.Data.Shape.Location;
                     if (offset.X < 0) {
                         result.Width += border.Width;
                     }
@@ -115,30 +115,30 @@ namespace Limaki.Viewers {
                     return Size.Zero;
             };
 
-            this.Clipper = () => display.Clipper;
-            this.Viewport = () => display.Viewport;
-            this.Camera = () => display.Viewport.Camera;
-            this.Layout = () => display.Layout;
+            this.Clipper = () => painter.Clipper;
+            this.Viewport = () => painter.Viewport;
+            this.Camera = () => painter.Viewport.Camera;
+            this.Layout = () => painter.Layout;
 
-            this.Renderer = () => display.DeviceRenderer;
-            display.DeviceRenderer.BackColor = () => display.BackColor;
+            this.Renderer = () => painter.DeviceRenderer;
+            painter.DeviceRenderer.BackColor = () => painter.BackColor;
 
-            display.ClipReceiver.Clipper = display.Clipper;
-            display.ClipReceiver.Renderer = this.Renderer;
-            display.ClipReceiver.Viewport = this.Viewport;
+            painter.ClipReceiver.Clipper = painter.Clipper;
+            painter.ClipReceiver.Renderer = this.Renderer;
+            painter.ClipReceiver.Viewport = this.Viewport;
 
-            display.DataLayer.Data = () => display.Data;
-            display.DataLayer.Camera = this.Camera;
-            display.DataLayer.Renderer = () => display.DataRenderer;
+            painter.DataLayer.Data = () => painter.Data;
+            painter.DataLayer.Camera = this.Camera;
+            painter.DataLayer.Renderer = () => painter.DataRenderer;
 
-            display.Viewport.GetDataOrigin = this.DataOrigin;
-            display.Viewport.GetDataSize = this.DataSize;
+            painter.Viewport.GetDataOrigin = this.DataOrigin;
+            painter.Viewport.GetDataSize = this.DataSize;
 
-            display.PainterFactory = display.Layout.PainterFactory;
-            display.ShapeFactory = display.Layout.ShapeFactory;
+            painter.PainterFactory = painter.Layout.PainterFactory;
+            painter.ShapeFactory = painter.Layout.ShapeFactory;
 
-            var renderer = display.DataRenderer as IGraphSceneRenderer<TItem, TEdge>;
-            renderer.ItemRenderer = display.GraphItemRenderer;
+            var renderer = painter.DataRenderer as IGraphSceneRenderer<TItem, TEdge>;
+            renderer.ItemRenderer = painter.GraphItemRenderer;
             renderer.Layout = this.Layout;
             renderer.Camera = this.Camera;
         }

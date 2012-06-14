@@ -66,6 +66,7 @@
     <Compile Include="Common\Collections\Set.cs" />
     <Compile Include="Common\KeyMaker.cs" />
     <Compile Include="Common\Linqish\LinqishExtensions.cs" />
+    <Compile Include="Common\Reflections\MemberReflectionCache.cs" />
     <Compile Include="Common\Localizer.cs" />
     <Compile Include="Common\OS.cs" />
     <Compile Include="Common\Copier.cs" />

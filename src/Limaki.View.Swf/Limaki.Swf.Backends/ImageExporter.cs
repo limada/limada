@@ -44,14 +44,14 @@ namespace Limaki.View.Viewers.Swf {
                 return null;
 
             var size = Data.Shape.Size + new Size(Layout.Border.Width, Layout.Border.Height);
-
+            var f = DrawingExtensions.DpiFactor(new Size(72,72));
             this.Viewport.ClipOrigin = Data.Shape.Location;
 
             var clipRect = new Rectangle(0, 0, (int)size.Width, (int)size.Height);
             // Create image
-            Image result = new Bitmap((int)size.Width, (int)size.Height, PixelFormat.Format24bppRgb);
-            Graphics g = Graphics.FromImage(result);
-
+            var result = new Bitmap((int)(size.Width*f.Width), (int)(size.Height*f.Height), PixelFormat.Format32bppArgb);
+            var g = Graphics.FromImage(result);
+            g.PageUnit = GraphicsUnit.Point;
             Paint (g, clipRect);
 
             return result;

@@ -139,6 +139,10 @@ namespace Xwt.Drawing
 		{
 			handler.Dispose (Backend);
 		}
-	}
+
+        public void Save (Stream result, string p) {
+            throw new NotImplementedException ();
+        }
+    }
 }
 

@@ -42,15 +42,14 @@ namespace Xwt.Drawing
 		}
 		
 		protected override IBackendHandler BackendHandler {
-			get {
-				return handler;
-			}
+			get { return handler; }
+            
 		}
         public IBackendHandler BackendHandler1 {
-            get {
-                return handler;
-            }
+            get { return handler; }
+            set { handler = value as IContextBackendHandler; }
         }
+
 		public Context (object backend): base (backend)
 		{
 		}

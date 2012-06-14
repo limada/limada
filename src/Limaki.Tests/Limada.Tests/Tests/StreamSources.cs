@@ -15,10 +15,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Text;
 using System.IO;
+using Xwt;
+using Xwt.Drawing;
 
 namespace Limada.Test {
     /// <summary>
@@ -43,7 +42,7 @@ namespace Limada.Test {
         #region IEnumerable<Source> Member
 
         public IEnumerator<StreamSource> GetEnumerator() {
-            yield return new StreamSource(Image, "Tiff B/W Image");
+            yield return new StreamSource(Image, "Image");
             yield return new StreamSource(this.RandomHTML, "HTML random");
         }
 
@@ -84,41 +83,34 @@ namespace Limada.Test {
         public Stream Image {
             get {
                 Stream result = new MemoryStream();
-                SizeF size = new SizeF(1000, 3000);
+                var size = new Size(1000, 3000);
                 // Create image.
-                Image image = new Bitmap((int)size.Width, (int)size.Height, PixelFormat.Format24bppRgb);
+                var builder = new ImageBuilder((int)size.Width, (int)size.Height,ImageFormat.RGB24);
+                var graphics = builder.Context;
+              
+                var font = Font.FromName("MS Sans Serif", 14);
+                var stringPos = new Point(0, 0);
+                var xInc = 10;
+                var yInc = 3;
 
-                // Create graphics object 
-                Graphics graphics = Graphics.FromImage(image);
-                graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                Font font = new Font("MS Sans Serif", 14f);
-                PointF stringPos = new PointF(0, 0);
-                float xInc = 10;
-                float yInc = 3;
-
-                StringFormat stringFormat = new StringFormat();
-                stringFormat.Alignment = StringAlignment.Near;
-                stringFormat.LineAlignment = StringAlignment.Near;
-                stringFormat.Trimming = StringTrimming.EllipsisWord;
-                stringFormat.FormatFlags = StringFormatFlags.FitBlackBox;
-
-                Brush brush = new SolidBrush(Color.White);
-                graphics.FillRectangle(brush, new Rectangle(0, 0, (int)size.Width, (int)size.Height));
-                brush.Dispose();
-
-                brush = new SolidBrush(Color.Black);
-                Random rnd = new Random();
+                graphics.SetColor(Colors.White);
+                graphics.Rectangle(0, 0, size.Width, size.Height);
+                graphics.SetColor(Colors.Black);
+                var rnd = new Random();
 
                 while ((stringPos.Y < size.Height) && (stringPos.X < size.Width)) {
                     string s = "this is " + rnd.Next(10000).ToString("#,##0");
-                    int maxTextWidth = (int)(size.Width - stringPos.X);
-                    SizeF sSize = graphics.MeasureString(s, font, maxTextWidth, stringFormat);
-                    graphics.DrawString(s, font, brush, stringPos);
-                    stringPos.Y += sSize.Height + yInc;
+                    var textLayout = new TextLayout(graphics);
+                    textLayout.Font = font;
+                    textLayout.Width =size.Width - stringPos.X;
+                    textLayout.Trimming = TextTrimming.WordElipsis;
+                    graphics.DrawTextLayout(textLayout,stringPos);
+                    stringPos.Y += textLayout.GetSize().Height + yInc;
                     stringPos.X += xInc;
                 }
+                var image = builder.ToImage();
 
-                image.Save(result, ImageFormat.Tiff);
+                image.Save(result, "image/tiff");
                 result.Flush();
                 image.Dispose();
                 graphics.Dispose();

@@ -10,5 +10,7 @@ namespace Xwt.Html5.Backend {
         void Command (string s, params object[] args);
         void CommandLine (string s);
         void CommandLine (string s, params object[] args);
+
+        string Render ();
     }
 }

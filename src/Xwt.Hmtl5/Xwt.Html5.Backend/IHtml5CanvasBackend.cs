@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 
 namespace Xwt.Html5.Backend {
+
     public interface IHtml5CanvasBackend {
         IHtmlChunk Context { get; }
     }

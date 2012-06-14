@@ -110,7 +110,7 @@ namespace Limaki.Graphs.Extensions {
                 var focusedroot = default(Pair<TItem, int>);
 
                 foreach (var item in graph) {
-                    if (!walker.visited.Contains(item)) {
+                    if (!walker.Visited.Contains(item)) {
                         bool selected = false;
                         int count = 0;
                         var root = new Pair<TItem, int>(item, int.MaxValue);

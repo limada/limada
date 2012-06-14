@@ -40,7 +40,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         
         protected virtual void Compose() {
             var options = new AllignerOptions();
-            options.Dimension = Dimension.Y;
+            options.Dimension = Dimension.X;
 
             var size = new System.Drawing.Size(36, 36);
             Action action = () => Columns(options);

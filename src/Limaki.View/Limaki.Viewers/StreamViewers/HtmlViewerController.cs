@@ -63,7 +63,7 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         WebServer _webServer = null;
-        WebServer webServer {
+        public WebServer WebServer {
             get {
                 if (_webServer == null) {
                     _webServer = new WebServer();
@@ -84,35 +84,39 @@ namespace Limaki.Viewers.StreamViewers {
         public virtual IThingGraph ThingGraph { get; set; }
         public virtual IThing ContentThing { get; set; }
 
+        public virtual  void SetContent (IWebResponse response, Content<Stream> content) {
+            bool closeStream = this.IsStreamOwner;
+            lock (lockObject) {
+              
+                closeStream = !response.IsStreamOwner;
+
+                WebServer.ContentGetter = response.Getter (content);
+
+                WebBrowser.MakeReady ();
+                if (UseProxy) {
+                    BackendHandler.SetProxy (WebServer.Addr, WebServer.Port, this.Backend);
+                }
+
+                WebBrowser.Navigate (response.AbsoluteUri);
+
+                BackendHandler.AfterNavigate (WebBrowser, () => response.Done);
+                Trace.WriteLine ("Navigated to " + response.AbsoluteUri);
+            }
+        }
+
         public override void SetContent(Content<Stream> content) {
             bool closeStream = this.IsStreamOwner;
             try {
 
                 if (UseWebServer || UseProxy) {
-
-                    lock (lockObject) {
-                        var response = new ThingWebResponse {
-                            IsStreamOwner = this.IsStreamOwner,
-                            Thing = this.ContentThing,
-                            ThingGraph = this.ThingGraph,
-                            UseProxy = this.UseProxy,
-                            BaseUri = this.webServer.Uri,
-                        };
-                        closeStream = ! response.IsStreamOwner;
-
-                        //  webServer.AddContent(webContent.Uri.AbsoluteUri,
-                        webServer.ContentGetter = response.Getter(content);
-
-                        WebBrowser.MakeReady();
-                        if (UseProxy) {
-                            BackendHandler.SetProxy(webServer.Addr, webServer.Port, this.Backend);
-                        }
-
-                        WebBrowser.Navigate(response.WebContentOfThing.Uri.AbsoluteUri);
-
-                        BackendHandler.AfterNavigate(WebBrowser, ()=>response.Done);
-                        Trace.WriteLine("Navigated to" + response.WebContentOfThing.Uri.AbsoluteUri);
-                    }
+                     var response = new ThingWebResponse {
+                        IsStreamOwner = this.IsStreamOwner,
+                        Thing = this.ContentThing,
+                        ThingGraph = this.ThingGraph,
+                        UseProxy = this.UseProxy,
+                        BaseUri = this.WebServer.Uri,
+                    };
+                    SetContent (response, content);
                 } else {
                     WebBrowser.MakeReady();
                     if (OS.Mono) {

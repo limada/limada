@@ -21,7 +21,6 @@ namespace Limaki.Graphs.Extensions {
 
         public Walker(IGraph<TItem, TEdge> graph) : base (graph) {}
 
-
         /// <summary>
         /// Maybe a Trail???
         /// Iterates over all Nodes and Vertices which are connected to each other
@@ -31,8 +30,8 @@ namespace Limaki.Graphs.Extensions {
         /// <param name="level"></param>
         /// <returns></returns>
         public virtual IEnumerable<LevelItem<TItem>> DeepWalk(TItem start, int level) {
-            if (!visited.Contains(start)) {
-                visited.Add(start);
+            if (!Visited.Contains(start)) {
+                Visited.Add(start);
                 var queue = new Queue<LevelItem<TItem>>();
                 queue.Enqueue(new LevelItem<TItem>(start, default(TItem), level));
                 while (queue.Count > 0) {
@@ -46,9 +45,9 @@ namespace Limaki.Graphs.Extensions {
 
                         foreach (var edge_edge in graph.Edges(edge)) {
                             // follow link:
-                            if (!visited.Contains(edge_edge)) {
+                            if (!Visited.Contains(edge_edge)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge_edge, edge, level));
-                                visited.Add(edge_edge);
+                                Visited.Add(edge_edge);
                             }
                         }
 
@@ -56,26 +55,26 @@ namespace Limaki.Graphs.Extensions {
 
                         if (adjacent != null) {
                             // follow adjacent of node:
-                            if (!visited.Contains(adjacent)) {
+                            if (!Visited.Contains(adjacent)) {
                                 queue.Enqueue(new LevelItem<TItem>(adjacent, edge, level));
-                                visited.Add(adjacent);
+                                Visited.Add(adjacent);
                             }
                         } else {
-                            if (!visited.Contains(edge.Root)) {
+                            if (!Visited.Contains(edge.Root)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge.Root, edge, level));
-                                visited.Add(edge.Root);
+                                Visited.Add(edge.Root);
                             }
-                            if (!visited.Contains(edge.Leaf)) {
+                            if (!Visited.Contains(edge.Leaf)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge.Leaf, edge, level));
-                                visited.Add(edge.Leaf);
+                                Visited.Add(edge.Leaf);
                             }
                         }
                     } else {
                         foreach (var edge in graph.Edges(item.Node)) {
                             // follow link:
-                            if (!visited.Contains(edge)) {
+                            if (!Visited.Contains(edge)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge, item.Node, level));
-                                visited.Add(edge);
+                                Visited.Add(edge);
                             }
                         }
                     }
@@ -93,8 +92,8 @@ namespace Limaki.Graphs.Extensions {
         /// <param name="level"></param>
         /// <returns></returns>
         public virtual IEnumerable<LevelItem<TItem>> Walk(TItem start, int level) {
-            if (!visited.Contains(start)) {
-                visited.Add(start);
+            if (!Visited.Contains(start)) {
+                Visited.Add(start);
                 var queue = new Queue<LevelItem<TItem>>();
                 queue.Enqueue(new LevelItem<TItem>(start, default(TItem), level));
                 while (queue.Count > 0) {
@@ -108,46 +107,46 @@ namespace Limaki.Graphs.Extensions {
 
                         // follow link of links
                         foreach (var edge_edge in graph.Edges(edge)) { // Fork!?
-                            if (!visited.Contains(edge_edge)) {
+                            if (!Visited.Contains(edge_edge)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge_edge, edge, level ));
-                                visited.Add(edge_edge);
+                                Visited.Add(edge_edge);
                             }
                         }
                         TItem adjacent = graph.Adjacent(edge, item.Path);
                         if (adjacent != null) {
                             // follow adjacent of node:
-                            if (!visited.Contains(adjacent)) {
+                            if (!Visited.Contains(adjacent)) {
                                 var result = new LevelItem<TItem>(adjacent, edge, level);
                                 if (adjacent is TEdge)
                                     queue.Enqueue(result);
                                 else
                                     yield return result;
-                                visited.Add(adjacent);
+                                Visited.Add(adjacent);
                             }
                         } else {
-                            if (!visited.Contains(edge.Root)) {
+                            if (!Visited.Contains(edge.Root)) {
                                 var result = new LevelItem<TItem>(edge.Root, edge, level);
                                 if (edge.Root is TEdge)
                                     queue.Enqueue(result);
                                 else
                                     yield return result;
-                                visited.Add(edge.Root);
+                                Visited.Add(edge.Root);
                             }
-                            if (!visited.Contains(edge.Leaf)) {
+                            if (!Visited.Contains(edge.Leaf)) {
                                 var result = new LevelItem<TItem>(edge.Leaf, edge, level);
                                 if (edge.Leaf is TEdge)
                                     queue.Enqueue(result);
                                 else
                                     yield return result;
-                                visited.Add(edge.Leaf);
+                                Visited.Add(edge.Leaf);
                             }
                         }
                     } else {
                         foreach (var edge in graph.Edges(item.Node)) {
                             // follow link:
-                            if (!visited.Contains(edge)) {
+                            if (!Visited.Contains(edge)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge, item.Node, level ));
-                                visited.Add(edge);
+                                Visited.Add(edge);
                             }
                         }
                     }
@@ -158,8 +157,8 @@ namespace Limaki.Graphs.Extensions {
         }
 
         public virtual IEnumerable<LevelItem<TItem>> ExpandWalk(TItem start, int level) {
-            if (!visited.Contains(start)) {
-                visited.Add(start);
+            if (!Visited.Contains(start)) {
+                Visited.Add(start);
                 var queue = new Queue<LevelItem<TItem>>();
                 queue.Enqueue(new LevelItem<TItem>(start, default(TItem), level));
                 while (queue.Count > 0) {
@@ -175,38 +174,38 @@ namespace Limaki.Graphs.Extensions {
                             // follow link of links
                             foreach (TEdge edge_edge in graph.Edges(edge)) {
                                 // Fork!?
-                                if (!visited.Contains(edge_edge)) {
+                                if (!Visited.Contains(edge_edge)) {
                                     queue.Enqueue(new LevelItem<TItem>(edge_edge, edge, level + 1));
-                                    visited.Add(edge_edge);
+                                    Visited.Add(edge_edge);
                                 }
                             }
                         }
 
                         if (adjacent != null) {
                             // follow adjacent of node:
-                            if (!visited.Contains(adjacent)) {
+                            if (!Visited.Contains(adjacent)) {
                                 var result = new LevelItem<TItem>(adjacent, edge, level);
                                 queue.Enqueue(result);
-                                visited.Add(adjacent);
+                                Visited.Add(adjacent);
                             }
                         } else {
-                            if (!visited.Contains(edge.Root)) {
+                            if (!Visited.Contains(edge.Root)) {
                                 var result = new LevelItem<TItem>(edge.Root, edge, level);
                                 queue.Enqueue(result);
-                                visited.Add(edge.Root);
+                                Visited.Add(edge.Root);
                             }
-                            if (!visited.Contains(edge.Leaf)) {
+                            if (!Visited.Contains(edge.Leaf)) {
                                 var result = new LevelItem<TItem>(edge.Leaf, edge, level);
                                 queue.Enqueue(result);
-                                visited.Add(edge.Leaf);
+                                Visited.Add(edge.Leaf);
                             }
                         }
                     } else if (item.Node.Equals(start)) {
                         foreach (var edge in graph.Edges(item.Node)) {
                             // follow link:
-                            if (!visited.Contains(edge)) {
+                            if (!Visited.Contains(edge)) {
                                 queue.Enqueue(new LevelItem<TItem>(edge, item.Node, level + 1));
-                                visited.Add(edge);
+                                Visited.Add(edge);
                             }
                         }
                     }
@@ -221,28 +220,28 @@ namespace Limaki.Graphs.Extensions {
             var queue = new Queue<TItem>();
             foreach (var edge in graph.Edges(start)) {
                 foreach (var subedge in graph.Edges(edge)) {
-                    if (!visited.Contains(subedge)) {
+                    if (!Visited.Contains(subedge)) {
                         if (subedge.Leaf.Equals(edge)) {                         
                             continue;
                         }
                         queue.Enqueue(subedge);
-                        visited.Add(subedge);
-                        if (!visited.Contains(subedge.Leaf)) {
+                        Visited.Add(subedge);
+                        if (!Visited.Contains(subedge.Leaf)) {
                             queue.Enqueue(subedge.Leaf);
-                            visited.Add(subedge.Leaf);
+                            Visited.Add(subedge.Leaf);
                         }
                     }
                 }
 
-                if (!visited.Contains(edge)) {
+                if (!Visited.Contains(edge)) {
                     if (edge.Leaf.Equals(start)) {
                         continue;
                     }
                     queue.Enqueue(edge);
-                    visited.Add(edge);
-                    if (!visited.Contains(edge.Leaf)) {
+                    Visited.Add(edge);
+                    if (!Visited.Contains(edge.Leaf)) {
                         queue.Enqueue(edge.Leaf);
-                        visited.Add(edge.Leaf);
+                        Visited.Add(edge.Leaf);
                     }                    
                 }
             }
@@ -251,8 +250,8 @@ namespace Limaki.Graphs.Extensions {
                 var item = queue.Dequeue ();
                 yield return new LevelItem<TItem>(item, default(TItem), 0);
                 foreach (var edge in graph.Twig(item)) {
-                    if (!visited.Contains(edge)) {
-                        visited.Add (edge);
+                    if (!Visited.Contains(edge)) {
+                        Visited.Add (edge);
                         yield return new LevelItem<TItem>(edge, default(TItem), 0);
                     }
                 }
@@ -273,10 +272,10 @@ namespace Limaki.Graphs.Extensions {
                 var item = queue.Dequeue();
                 yield return new LevelItem<TItem>(item, default(TItem), 0);
                 foreach (var edge in graph.Twig(item)) {
-                    if (!visited.Contains(edge)) {
+                    if (!Visited.Contains(edge)) {
 
                         queue.Enqueue(edge);
-                        visited.Add(edge);
+                        Visited.Add(edge);
                         
                         if (edge.Leaf.Equals(item)) {
                             continue;
@@ -287,9 +286,9 @@ namespace Limaki.Graphs.Extensions {
                             //    queue.Enqueue(edge.Root);
                             //    done.Add(edge.Root);
                             //} 
-                            if (!visited.Contains(edge.Leaf)) {
+                            if (!Visited.Contains(edge.Leaf)) {
                                 queue.Enqueue(edge.Leaf);
-                                visited.Add(edge.Leaf);
+                                Visited.Add(edge.Leaf);
                             }
                         }
                     }

@@ -299,11 +299,11 @@ namespace Limaki.View.Layout {
 
             IEnumerable<LevelItem<TItem>> walk = null;
             if (deep) {
-                walker.visited = this.visited;
+                walker.Visited = this.visited;
                 walk = walker.DeepWalk(start, 0);
             } else {
                 walk = walker.Walk(start, 0);
-                this.visited.AddRange(walker.visited);
+                this.visited.AddRange(walker.Visited);
             }
 
             foreach (LevelItem<TItem> item in walk) {

@@ -75,20 +75,23 @@ namespace Limaki.View.Layout {
             
             visitor += item => {
                 var size = Locator.GetSize(item);
+                //WHY???
                 if (dimension == Dimension.X) {
-                    w += size.Width + distance.Width;
-                    if (h < size.Height)
-                        h = size.Height;
-                } else {
                     h += size.Height + distance.Height;
                     if (w < size.Width)
                         w = size.Width;
+                    
+                } else {
+                    w += size.Width + distance.Width;
+                    if (h < size.Height)
+                        h = size.Height;
                 }
             };
+
             if (dimension == Dimension.X)
-                w -= distance.Width;
-            else
                 h -= distance.Height;
+            else
+                w -= distance.Width;
 
             return () => new Size(w, h);
         }

@@ -37,17 +37,17 @@ namespace Limaki.Drawing.Gdi {
             if (arrowHeigth == 0 || arrowWidth == 0)
                 throw new ArgumentException ("ArrowWidth must not be 0");
             var path = new System.Drawing.Drawing2D.GraphicsPath();
-            float w = (float) arrowWidth;
-            float h = (float) arrowHeigth;
-            System.Drawing.PointF p1 = new System.Drawing.PointF(0, 1);
-            System.Drawing.PointF p2 = new System.Drawing.PointF(-h, -w);
-            System.Drawing.PointF p3 = new System.Drawing.PointF(h, -w);
+            var w = (float) arrowWidth;
+            var h = (float) arrowHeigth;
+            var p1 = new System.Drawing.PointF(0, 1);
+            var p2 = new System.Drawing.PointF(-h, -w);
+            var p3 = new System.Drawing.PointF(h, -w);
             path.AddPolygon(new System.Drawing.PointF[3] { p1, p2, p3 });
             //path.AddLine(p1, p2);
             //path.AddLine(p2, p3);
             //path.AddLine(p3, p1);
 
-            CustomLineCap result = new CustomLineCap(path, null);
+            var result = new CustomLineCap(path, null);
             result.BaseInset = 1;
             //result.StrokeJoin = LineJoin.Round;
 
@@ -62,8 +62,16 @@ namespace Limaki.Drawing.Gdi {
                 GDIConverter.Convert(style.AutoSize));
         }
 
+        public Size ScreenResolution() {
+            return new Size(GdiUtils.DeviceContext.DpiX, GdiUtils.DeviceContext.DpiY);
+        }
 
-      
+        public Size Resolution(Context context) {
+            var ctx = (Xwt.Gdi.Backend.GdiContext)WidgetRegistry.GetBackend(context);
+            if (ctx.Graphics.PageUnit == System.Drawing.GraphicsUnit.Point)
+                return new Size(72, 72);
+            return new Size(ctx.Graphics.DpiX, ctx.Graphics.DpiY);
+        }
 
     }
 }

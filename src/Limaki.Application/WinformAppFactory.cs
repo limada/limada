@@ -23,7 +23,7 @@ namespace Limaki.App {
 
         public void CreateUseCase(Form mainform) {
 
-            mainform.Icon = Limaki.View.Properties.Resources.LimadaLogoA;
+            mainform.Icon = Limaki.View.Properties.Resources.LimadaLogo;
             mainform.ClientSize = new System.Drawing.Size(800, 600);
 
             var deviceComposer = new SwfUseCaseComposer();
