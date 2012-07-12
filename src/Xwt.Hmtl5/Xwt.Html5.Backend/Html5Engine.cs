@@ -4,7 +4,7 @@
 // Author:
 //       Lytico 
 // 
-// Copyright (c) 2012 Lytico (http://limada.sourceforge.net)
+// Copyright (c) 2012 Lytico (http://limada.org)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,40 +32,41 @@ namespace Xwt.Html5.Backend {
 
     public class Html5Engine : Xwt.Backends.EngineBackend {
 
-        public override void RunApplication() {
-            RegisterBackends();
+        public override void RunApplication () {
+            RegisterBackends ();
         }
 
-        public virtual void RegisterBackends() {
-            WidgetRegistry.RegisterBackend(typeof(Xwt.Drawing.Font), typeof(FontBackendHandler));
+        public virtual void RegisterBackends () {
+            WidgetRegistry.Clear();
+            WidgetRegistry.RegisterBackend (typeof (Xwt.Drawing.Font), typeof (FontBackendHandler));
             WidgetRegistry.RegisterBackend (typeof (Xwt.Drawing.TextLayout), typeof (TextLayoutBackendHandler));
             WidgetRegistry.RegisterBackend (typeof (Xwt.Drawing.Context), typeof (ContextBackendHandler));
             //WidgetRegistry.RegisterBackend (typeof (Xwt.Drawing.ImageBuilder), typeof (ImageBuilderBackend));
             //WidgetRegistry.RegisterBackend(typeof(Xwt.Drawing.ImagePattern), typeof(ImagePatternBackendHandler));
         }
 
-        public override object GetNativeWidget(Widget w) {
-            throw new NotImplementedException();
+        public override object GetNativeWidget (Widget w) {
+            throw new NotImplementedException ();
         }
 
-        public override IWindowFrameBackend GetBackendForWindow(object nativeWindow) {
-            throw new NotImplementedException();
+        public override IWindowFrameBackend GetBackendForWindow (object nativeWindow) {
+            throw new NotImplementedException ();
         }
 
-        public override void ExitApplication() {
-            throw new NotImplementedException();
+        public override void ExitApplication () {
+            throw new NotImplementedException ();
         }
 
-        public override void InvokeAsync(Action action) {
-            throw new NotImplementedException();
+        public override void InvokeAsync (Action action) {
+            throw new NotImplementedException ();
         }
 
-        public override object TimerInvoke(Func<bool> action, TimeSpan timeSpan) {
-            throw new NotImplementedException();
+        public override object TimerInvoke (Func<bool> action, TimeSpan timeSpan) {
+            throw new NotImplementedException ();
         }
 
-        public override void CancelTimerInvoke(object id) {
-            throw new NotImplementedException();
+        public override void CancelTimerInvoke (object id) {
+            throw new NotImplementedException ();
         }
     }
 }

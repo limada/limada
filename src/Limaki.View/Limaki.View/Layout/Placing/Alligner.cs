@@ -34,7 +34,7 @@ namespace Limaki.View.Layout {
         }
 
         public virtual void OneColumn (IEnumerable<TItem> items, Point at, double distance) {
-            var options = new AllignerOptions { Distance = new Size (distance, distance), AlignX = Alignment.End, AlignY = Alignment.Start, Dimension = Dimension.Y };
+            var options = new AllignerOptions { Distance = new Size (distance, distance), AlignX = Alignment.End, AlignY = Alignment.Start, Dimension = Dimension.X };
             var bounds = new Rectangle (int.MaxValue, int.MaxValue, 0, 0);
             MeasureColumn (items, options, ref bounds);
             var locator = new LocateVisits<TItem> (this.Locator);
@@ -96,13 +96,16 @@ namespace Limaki.View.Layout {
             }
 
             var colPos = bounds.Location;
-            LocateVisits<TItem> locator = new CollissionResolver<TItem>(
-                this.Locator, 
-                new GraphSceneLocationDetector<TItem, TEdge> (this.GraphScene), 
-                itemCache, 
-                options.Dimension,
-                options.Distance.Width);
-            //locator = new LocateVisits<TItem>(this.Locator);
+            LocateVisits<TItem> locator = null;
+            if (false)
+                locator = new CollissionResolver<TItem> (
+                    this.Locator,
+                    new GraphSceneLocationDetector<TItem, TEdge> (this.GraphScene),
+                    itemCache,
+                    options.Dimension,
+                    options.Distance.Width);
+            else
+                locator = new LocateVisits<TItem> (this.Locator);
             while (cols.Count > 0) {
                 var col = cols.Dequeue ();
                 LocateColumn (col.Item1, col.Item2, bounds, ref colPos, locator, options);

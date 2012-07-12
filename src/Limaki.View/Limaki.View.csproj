@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limada.UseCases\DocumentSchemaKeyScrollAction.cs" />
+    <Compile Include="Limaki.Drawing\BlindDrawingUtils.cs" />
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
+    <Compile Include="Limaki.Drawing\BlindSystemFonts.cs" />
     <Compile Include="Limaki.Viewers\StreamViewers\IWebResponse.cs" />
     <Compile Include="Limaki.Viewers\StreamViewers\WebResponse.cs" />
     <Compile Include="Limaki.View\Layout\Placing\CollissionResolver.cs" />
@@ -289,11 +291,16 @@
     <Compile Include="Limaki.Visuals\VisualEdge.cs" />
     <Compile Include="Limaki.Visuals\VisualFactory.cs" />
     <Compile Include="Limaki.Visuals\VisualGraph.cs" />
+    <Compile Include="Xwt.Blind.Backend\FontBackendHandler.cs" />
+    <Compile Include="Xwt.Blind.Backend\FontData.cs" />
+    <Compile Include="Xwt.Blind.Backend\BlindEngine.cs" />
+    <Compile Include="Xwt.Blind.Backend\SystemColorsBackend.cs" />
     <Compile Include="Xwt\ISystemColorsBackend.cs" />
     <Compile Include="Limaki.Widgets\Xwt\ScrollableCanvas.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Xwt\SystemColors.cs" />
+    <Compile Include="Xwt\XwtLExtensions.cs" />
     <Compile Include="Xwt\XwtToChange.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@
 // Author:
 //       Lytico 
 // 
-// Copyright (c) 2012 Lytico (http://limada.sourceforge.net)
+// Copyright (c) 2012 Lytico (http://www.limada.org)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using Xwt.Drawing;
 
 namespace Xwt.Html5.Backend {
-
     public class Html5Context {
 
         public Html5Context () {
@@ -56,8 +55,7 @@ namespace Xwt.Html5.Backend {
         public double TranslateX { get; set; }
         public double TranslateY { get; set; }
 
-        public Html5Context (Html5Context c)
-            : this () {
+        public Html5Context (Html5Context c): this () {
             c.SaveTo (this, false);
         }
 

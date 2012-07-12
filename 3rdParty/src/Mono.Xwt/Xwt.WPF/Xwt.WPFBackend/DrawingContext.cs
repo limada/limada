@@ -31,9 +31,9 @@ using System.Drawing.Drawing2D;
 
 namespace Xwt.WPFBackend
 {
-	internal class DrawingContext
+	public class DrawingContext
 	{
-		internal DrawingContext (Graphics graphics)
+        public DrawingContext (Graphics graphics)
 		{
 			if (graphics == null)
 				throw new ArgumentNullException ("graphics");
@@ -59,7 +59,7 @@ namespace Xwt.WPFBackend
 			CurrentY = context.CurrentY;
 		}
 
-		internal readonly Graphics Graphics;
+		public readonly Graphics Graphics;
 
 		internal Font Font = new Font (FontFamily.GenericSansSerif, 12);
 		internal Pen Pen = new Pen (Color.Black, 1);

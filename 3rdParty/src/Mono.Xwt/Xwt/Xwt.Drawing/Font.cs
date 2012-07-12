@@ -32,17 +32,26 @@ namespace Xwt.Drawing
 {
 	public class Font: XwtObject
 	{
-		static IFontBackendHandler handler;
-		
+        static IFontBackendHandler _handler = null;
+	    static IFontBackendHandler handler 
+        {
+            get { return _handler ?? (_handler = WidgetRegistry.CreateSharedBackend<IFontBackendHandler> (typeof (Font))); }
+            
+	    }
+
+        internal static void SetHandler (IFontBackendHandler handler) 
+        {
+            _handler = handler;
+        }
+
 		static Font ()
 		{
-			handler = WidgetRegistry.CreateSharedBackend<IFontBackendHandler> (typeof(Font));
+			
 		}
 		
-		protected override IBackendHandler BackendHandler {
-			get {
-				return handler;
-			}
+		protected override IBackendHandler BackendHandler 
+        {
+			get { return handler; }
 		}
 		
 		public Font (object backend)

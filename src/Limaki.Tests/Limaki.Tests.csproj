@@ -130,7 +130,6 @@
     <Compile Include="Playground\View\Rectangle\Refactoring\xwtSize.cs" />
     <Compile Include="Playground\View\Rectangle\TestRectangle.cs" />
     <Compile Include="Playground\View\Rectangle\XwtRectangleTest.cs" />
-    <Compile Include="Playground\View\ReferencePainter.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintCanvasBackend.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintContextBackendHandler.cs" />
     <Compile Include="Playground\View\XwtFrontend\PaintCanvas.cs">
@@ -239,6 +238,10 @@
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xwt.Tests\Xwt.Tests.csproj">
+      <Project>{4F416F8C-27E2-4D94-86D4-9E58E24AF10B}</Project>
+      <Name>Xwt.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

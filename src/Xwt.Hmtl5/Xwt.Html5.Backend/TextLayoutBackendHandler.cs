@@ -4,6 +4,7 @@ using Xwt.Backends;
 namespace Xwt.Html5.Backend {
 
     public class TextLayoutBackendHandler : ITextLayoutBackendHandler {
+
         public object Create (Drawing.Context context) {
             var c = (Html5Context) WidgetRegistry.GetBackend (context);
             var tl = new TextLayoutBackend { Context = c };

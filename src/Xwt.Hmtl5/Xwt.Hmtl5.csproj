@@ -46,6 +46,7 @@
     <Compile Include="Xwt.Html5.Backend\FontData.cs" />
     <Compile Include="Xwt.Html5.Backend\Html5Context.cs" />
     <Compile Include="Xwt.Html5.Backend\Html5Engine.cs" />
+    <Compile Include="Xwt.Html5.Backend\Html5Extensions.cs" />
     <Compile Include="Xwt.Html5.Backend\HtmlChunk.cs" />
     <Compile Include="Xwt.Html5.Backend\IHtml5CanvasBackend.cs" />
     <Compile Include="Xwt.Html5.Backend\IHtmlChunk.cs" />

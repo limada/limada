@@ -8,6 +8,7 @@ using Limada.VisualThings;
 using Limaki.View.Display;
 using Limaki.View.Visuals.Display;
 using Limaki.Visuals;
+using Limaki.Drawing;
 
 namespace Limaki.IOC {
 
@@ -18,7 +19,13 @@ namespace Limaki.IOC {
         /// </summary>
         /// <param name="context"></param>
         public virtual void ApplyResources (IApplicationContext context) {
-           
+
+            if (!context.Factory.Contains<IDrawingUtils> ())
+                context.Factory.Add<IDrawingUtils, BlindDrawingUtils> ();
+
+            if (!context.Factory.Contains<ISystemFonts> ())
+                context.Factory.Add<ISystemFonts, BlindSystemFonts> ();
+
             var styleSheets = context.Pool.TryGetCreate<StyleSheets> ();
             styleSheets.Init ();
 

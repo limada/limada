@@ -2,6 +2,7 @@ using Xwt.Drawing;
 using Xwt.Engine;
 
 namespace Xwt.Html5.Backend {
+
     public class TextLayoutBackend {
 
         public Html5Context Context { get; set; }
@@ -48,10 +49,12 @@ namespace Xwt.Html5.Backend {
         }
 
         public Size MeasureString (string text, FontData font, Size size) {
-            return size;
+            var w = size.Width;
+            if (w == 0)
+                w = text.Length * font.Size;
+            var h = size.Height;
+            return new Size(w,h);
         }
-
-
 
         public double Heigth { get; set; }
 

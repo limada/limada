@@ -101,8 +101,10 @@ namespace Limaki.Drawing {
             this.dy = matrice.dy;
         }
 
-
-        // Get the elements of this matrix.
+        /// <summary>
+        /// Get the elements of this matrix:
+        /// {[0]=scaleX, [1]=shearX, [2]=shearY, [3]=scaleY, [4]=dx, [5]=dy}
+        /// </summary>
         public double[] Elements {
             get {
 
@@ -256,7 +258,7 @@ namespace Limaki.Drawing {
 
             double m11, m12, m21, m22;
 
-            var radians = (angle * (PiDiv180));
+            var radians = (angle * PiDiv180);
             var cos = (Math.Cos(radians));
             var sin = (Math.Sin(radians));
 
@@ -266,9 +268,10 @@ namespace Limaki.Drawing {
             m22 = cos * this.m22 - sin * this.m12;
 
             this.m11 = m11;
+            this.m22 = m22;
             this.m12 = m12;
             this.m21 = m21;
-            this.m22 = m22;
+            
 
         }
         public void Rotate(double angle, MatrixOrder order) {
@@ -331,9 +334,9 @@ namespace Limaki.Drawing {
         // Apply a scale factor to this matrix.
         public void Scale(double scaleX, double scaleY) {
             m11 *= scaleX;
+            m22 *= scaleY;
             m12 *= scaleX;
             m21 *= scaleY;
-            m22 *= scaleY;
         }
         public void Scale(double scaleX, double scaleY, MatrixOrder order) {
             if (order == MatrixOrder.Prepend) {

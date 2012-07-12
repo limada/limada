@@ -124,7 +124,7 @@ namespace Limaki.Data {
 
         public override ICollection<TEdge> Edges(TItem item) {
             if (item != null) {
-                ICollection<TEdge> result = getCached(item);
+                var result = getCached(item);
                 if (result == null) {
                     result = edges(item);
                     setCached(item, result);

@@ -33,8 +33,16 @@ namespace Xwt.Drawing
 {
 	public class TextLayout: XwtObject
 	{
-		static ITextLayoutBackendHandler handler;
 		
+        static ITextLayoutBackendHandler _handler = null;
+        static ITextLayoutBackendHandler handler {
+            get { return _handler ?? (_handler = WidgetRegistry.CreateSharedBackend<ITextLayoutBackendHandler> (typeof (TextLayout))); }
+        }
+
+        internal static void SetHandler (ITextLayoutBackendHandler handler) {
+            _handler = handler;
+        }
+
 		Font font;
 		string text;
 		double width = -1;
@@ -43,7 +51,7 @@ namespace Xwt.Drawing
 		
 		static TextLayout ()
 		{
-			handler = WidgetRegistry.CreateSharedBackend<ITextLayoutBackendHandler> (typeof(TextLayout));
+			
 		}
 		
 		protected override IBackendHandler BackendHandler {
@@ -109,7 +117,8 @@ namespace Xwt.Drawing
 			return handler.GetSize (Backend);
 		}
 		
-		public TextTrimming Trimming {
+		public TextTrimming Trimming 
+        {
 			get { return textTrimming; }
 			set { textTrimming = value; handler.SetTrimming (Backend, value); }
 		}

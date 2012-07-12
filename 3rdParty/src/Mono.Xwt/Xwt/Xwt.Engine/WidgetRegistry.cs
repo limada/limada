@@ -85,6 +85,14 @@ namespace Xwt.Engine
 		{
 			return new NativeWindowFrame (Application.EngineBackend.GetBackendForWindow (nativeWindow));
 		}
+
+        public static void Clear () 
+        {
+            backendTypes.Clear();
+            sharedBackends.Clear();
+            Drawing.Font.SetHandler (null);
+            Drawing.TextLayout.SetHandler (null);
+        }
 	}
 	
 	class NativeWindowFrame: WindowFrame

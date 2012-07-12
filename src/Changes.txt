@@ -1,3 +1,26 @@
+[2012-07-13]
+Limaki.GraphScenePainterRenderer over Xwt.Html5
+
+[2012-07-05]
+Xwt.Html5.ContextBackendhandler: DrawTextLayout
+
+[2012-07-02]
+Xwt.Html5.ContextBackendhandler: some bugs
+
+[2012-06-19]
+Xwt.Html5.ContextBackendhandler: arc, curve
+
+[2012-06-16]
+Xwt.Html5.ContextBackendhandler: fill, color
+
+[2012-06-15]
+Xwt.Tests-Project
+Html5-Test: Figures
+
+[2012-06-14]
+fix Test: Xwt.Blind to run tests without backend
+fix Alligner.OneColumn Dimension
+
 [2012-06-04]
 fix TextPainter; use screen-dpi to measure
 

@@ -6,23 +6,23 @@ using Limaki.Viewers;
 namespace Limaki.View.Viewers.Swf {
     public class GraphScenePainterGdiComposer<TItem, TEdge> : GraphScenePainterComposer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
-        public override void Factor(GraphScenePainter<TItem, TEdge> display) {
-            base.Factor(display);
+        public override void Factor (GraphScenePainter<TItem, TEdge> painter) {
+            base.Factor (painter);
 
-            var layer = new GdiGraphSceneLayer<TItem, TEdge>();
-            var renderer = new GraphScenePainterRenderer<IGraphScene<TItem, TEdge>>();
+            var layer = new GdiGraphSceneLayer<TItem, TEdge> ();
+            var renderer = new GraphScenePainterRenderer<IGraphScene<TItem, TEdge>> ();
             renderer.Layer = layer;
 
-            display.DeviceRenderer = renderer;
-            display.DataLayer = layer;
+            painter.DeviceRenderer = renderer;
+            painter.DataLayer = layer;
 
-            display.Viewport = new GdiViewport();
-        }
-        
-        public override void Compose(GraphScenePainter<TItem, TEdge> display) {
-            base.Compose(display);
-
+            painter.Viewport = new GdiViewport ();
         }
 
+        public override void Compose (GraphScenePainter<TItem, TEdge> display) {
+            base.Compose (display);
+
         }
+
+    }
 }
