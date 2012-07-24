@@ -18,7 +18,7 @@ using Xwt;
 
 namespace Limaki.Drawing.Gdi.Painters {
 
-    public class PainterFactory : PainterFactoryBase, IPainterFactory {
+    public class PainterFactory : DefaultPainterFactory, IPainterFactory {
 
         protected override void InstrumentClazzes () {
 

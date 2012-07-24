@@ -121,6 +121,7 @@
     <Compile Include="Playground\View\DrawingTransforms.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Limaki.Tests\View\Visuals\SceneExamples.cs" />
     <Compile Include="Playground\View\Rectangle\Mono.WindowBase.Rect.cs" />
     <Compile Include="Playground\View\Rectangle\RectTest.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\gdiRectangleD.cs" />

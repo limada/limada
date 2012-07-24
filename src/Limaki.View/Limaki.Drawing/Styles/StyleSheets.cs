@@ -3,37 +3,20 @@ using Limaki.Common;
 using Xwt.Drawing;
 
 namespace Limaki.Drawing.Styles {
+
     public class StyleSheets : Dictionary<string, IStyleSheet> {
 
-        static ISystemFonts _systemfonts = null;
-        protected static ISystemFonts SystemFonts {
-            get {
-                if (_systemfonts == null) {
-                    _systemfonts = Registry.Factory.Create<ISystemFonts>();
-                }
-                return _systemfonts;
-            }
-        }
+        ISystemFonts _systemfonts = null;
+        protected ISystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = Registry.Pool.TryGetCreate<ISystemFonts> ()); } }
 
-        static IDrawingUtils _drawingUtils = null;
-        protected static IDrawingUtils drawingUtils {
-            get {
-                if (_drawingUtils == null) {
-                    _drawingUtils = Registry.Factory.Create<IDrawingUtils>();
-                }
-                return _drawingUtils;
-            }
-        }
+        IDrawingUtils _drawingUtils = null;
+        protected IDrawingUtils drawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils> ()); } }
 
-        protected virtual Font CreateFont(string familiy, double size) {
-            return Font.FromName(familiy, size);
-        }
+        protected virtual Font CreateFont(string familiy, double size) { return Font.FromName(familiy, size); }
 
         public IList<string> StyleSheetNames = new string[] { "Desktop", "TealSmoke", "WhiteGlass" };
 
-        public virtual IStyleSheet DefaultStyleSheet {
-            get { return this[StyleSheetNames[1]]; }
-        }
+        public virtual IStyleSheet DefaultStyleSheet { get { return this[StyleSheetNames[1]]; } }
 
         public virtual IStyleSheet PredefinedStyleSheets(string name) {
             IStyleSheet _styleSheet = null;
@@ -115,6 +98,12 @@ namespace Limaki.Drawing.Styles {
                         this.Add(sheet.Name, sheet);
                 }
             }
+        }
+
+        public new void Clear() {
+            base.Clear();
+            _systemfonts = null;
+            _drawingUtils = null;
         }
     }
 }

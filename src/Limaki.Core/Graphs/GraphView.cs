@@ -33,17 +33,23 @@ namespace Limaki.Graphs {
             this.One = view;
             this.Two = data;
         }
-        
+
+        IGraph<TItem, TEdge> _view = null;
+        /// <summary>
+        /// the sub-graph of Two with the visible items
+        /// </summary>
+        public virtual IGraph<TItem, TEdge> One {
+            get { return _view; }
+            set { _view = value; }
+        }
+
         IGraph<TItem, TEdge> _source = null;
+        /// <summary>
+        /// the full graph
+        /// </summary>
         public virtual IGraph<TItem, TEdge> Two {
             get { return _source; }
             set { _source = value; }
-        }
-
-        IGraph<TItem, TEdge> _sub = null;
-        public virtual IGraph<TItem, TEdge> One {
-            get { return _sub; }
-            set { _sub = value; }
         }
 
 

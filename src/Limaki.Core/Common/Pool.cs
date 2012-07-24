@@ -17,7 +17,9 @@ using System;
 using System.Collections.Generic;
 
 namespace Limaki.Common {
+
     public class Pool:IPool {
+
         private IDictionary<Type,object> _pooledObjects = 
             new Dictionary<Type,object> ();
 
@@ -57,6 +59,10 @@ namespace Limaki.Common {
         public virtual bool Remove<T>() {
             Type type = typeof(T);
             return _pooledObjects.Remove (type);
+        }
+
+        public virtual void Clear() {
+            _pooledObjects.Clear();
         }
     }
 }

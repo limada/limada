@@ -9,6 +9,9 @@ using Limaki.View.Display;
 using Limaki.View.Visuals.Display;
 using Limaki.Visuals;
 using Limaki.Drawing;
+using Limaki.View.Visuals.Layout;
+using Limaki.Common;
+using Limaki.View.UI;
 
 namespace Limaki.IOC {
 
@@ -25,6 +28,9 @@ namespace Limaki.IOC {
 
             if (!context.Factory.Contains<ISystemFonts> ())
                 context.Factory.Add<ISystemFonts, BlindSystemFonts> ();
+
+            if (!context.Factory.Contains<IUISystemInformation> ())
+                context.Factory.Add<IUISystemInformation, BlindSystemInformation> ();
 
             var styleSheets = context.Pool.TryGetCreate<StyleSheets> ();
             styleSheets.Init ();
@@ -43,7 +49,9 @@ namespace Limaki.IOC {
             visualsRecourceLoader.ApplyResources (context);
 
             context.Factory.Add<ISheetManager, SheetManager> ();
-
+            context.Factory.Add<IGraphSceneLayout<IVisual, IVisualEdge>>(args =>
+                    new VisualsSceneArrangerLayout<IVisual, IVisualEdge>(args[0] as Get<IGraphScene<IVisual, IVisualEdge>>, args[1] as IStyleSheet)
+                );
         }
 
         public virtual IMarkerFacade<IVisual, IVisualEdge> MarkerFacade (IGraph<IVisual, IVisualEdge> graph) {

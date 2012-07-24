@@ -23,7 +23,6 @@ using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Viewers {
-
     public class GraphScenePainter<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
@@ -61,6 +60,8 @@ namespace Limaki.Viewers {
         public void OnPaint(IRenderEventArgs e) {
             DeviceRenderer.OnPaint(e);
         }
+
+        
     }
 
     public class GraphScenePainterComposer<TItem, TEdge> : IComposer<GraphScenePainter<TItem, TEdge>>

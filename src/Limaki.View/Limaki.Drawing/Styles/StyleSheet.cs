@@ -19,11 +19,14 @@ using Limaki.Common;
 using Xwt.Drawing;
 
 namespace Limaki.Drawing.Styles {
+
     public class StyleSheet:Style, IStyleSheet {
+        
         public Int64 Id { get; set; }
         public StyleSheet(string name) : base(name) {
             this.BackColor = SystemColors.Window;
         }
+
         public StyleSheet(string name, IStyle parentStyle) : base(name, parentStyle) {
             this.BackColor = SystemColors.Window;
         }
@@ -42,28 +45,18 @@ namespace Limaki.Drawing.Styles {
             }
         }
 
-        static ISystemFonts _systemfonts = null;
-        protected static ISystemFonts SystemFonts {
-            get {
-                if (_systemfonts == null) {
-                    _systemfonts = Registry.Factory.Create<ISystemFonts>();
-                }
-                return _systemfonts;
-            }
+        protected ISystemFonts _systemfonts = null;
+        protected ISystemFonts SystemFonts {
+            get { return _systemfonts ?? (_systemfonts = Registry.Pool.TryGetCreate<ISystemFonts> ()); }
         }
 
-        static IDrawingUtils _drawingUtils = null;
-        protected static IDrawingUtils DrawingUtils {
-            get {
-                if (_drawingUtils == null) {
-                    _drawingUtils = Registry.Factory.Create<IDrawingUtils>();
-                }
-                return _drawingUtils;
-            }
+        protected IDrawingUtils _drawingUtils = null;
+        protected IDrawingUtils DrawingUtils {
+            get { return _drawingUtils ?? (_drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils> ()); }
         }
-        
-        protected virtual Font CreateFont(string familiy, double size) {
-            return Font.FromName(familiy, size);
+
+        protected virtual Font CreateFont (string familiy, double size) {
+            return Font.FromName (familiy, size);
         }
 
         private IDictionary<string, IStyle> styles = new Dictionary<string, IStyle>();
@@ -165,15 +158,18 @@ namespace Limaki.Drawing.Styles {
 
         public static IStyle CreateStyleWithSystemSettings() {
             var result = new Style ("SystemStyle");
-            result.Font = (Font) SystemFonts.DefaultFont.Clone ();
-            result.Pen = DrawingUtils.CreatePen (SystemColors.ActiveCaption);
+            var systemfonts = Registry.Pool.TryGetCreate<ISystemFonts>();
+            var drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils>();
+
+            result.Font = (Font) systemfonts.DefaultFont.Clone ();
+            result.Pen = drawingUtils.CreatePen (SystemColors.ActiveCaption);
 
             result.PenColor = result.Pen.Color;
             
             result.TextColor = SystemColors.WindowText;
             result.FillColor = SystemColors.Window;
 
-            result.AutoSize = DrawingUtils.GetTextDimension("ABCDEFGHIJKLMNOPQRESTUVWXY\n\n\n\n", result);
+            result.AutoSize = drawingUtils.GetTextDimension("ABCDEFGHIJKLMNOPQRESTUVWXY\n\n\n\n", result);
             result.PaintData = true;
             return result;
         }

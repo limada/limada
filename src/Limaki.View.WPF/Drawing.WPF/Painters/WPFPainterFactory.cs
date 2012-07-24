@@ -11,7 +11,7 @@ using RoundedRectangleShape=Limaki.Drawing.WPF.Shapes.RoundedRectangleShape;
 using VectorShape=Limaki.Drawing.WPF.Shapes.VectorShape;
 
 namespace Limaki.Drawing.WPF.Painters {
-    public class WPFPainterFactory : Limaki.Drawing.Painters.PainterFactoryBase, IPainterFactory {
+    public class WPFPainterFactory : Limaki.Drawing.Painters.DefaultPainterFactory, IPainterFactory {
 
        
         protected override void InstrumentClazzes() {

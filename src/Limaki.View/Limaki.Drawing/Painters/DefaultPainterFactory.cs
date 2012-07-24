@@ -19,7 +19,8 @@ using Limaki.Drawing.Shapes;
 using Xwt;
 
 namespace Limaki.Drawing.Painters {
-    public abstract class PainterFactoryBase: Factory {
+
+    public class DefaultPainterFactory: Factory, IPainterFactory {
         /// <summary>
         /// gives back a painter provided for shape of type
         /// </summary>
@@ -52,6 +53,7 @@ namespace Limaki.Drawing.Painters {
 
             return CreatePainter(shape.GetType());
         }
+
         protected override void InstrumentClazzes () {
 
             Add<IPainter<IShape<Rectangle>, Rectangle>> (() => new RectanglePainter ());

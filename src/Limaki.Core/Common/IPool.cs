@@ -42,5 +42,7 @@ namespace Limaki.Common {
         T TryGetCreate<T>();
 
         bool Remove<T>();
+
+        void Clear ();
     }
 }

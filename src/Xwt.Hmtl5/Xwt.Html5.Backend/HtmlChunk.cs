@@ -3,7 +3,9 @@ using System.IO;
 namespace Xwt.Html5.Backend {
 
     public class HtmlChunk : IHtmlChunk {
+
         public string Target { get; protected set; }
+
         public HtmlChunk (string command) {
             this.Target = command;
         }

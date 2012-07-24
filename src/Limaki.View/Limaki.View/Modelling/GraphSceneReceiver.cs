@@ -29,8 +29,9 @@ namespace Limaki.View.Modelling {
     public class GraphSceneReceiver<TItem, TEdge> : ActionBase, IGraphSceneReceiver<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
-       protected int tolerance = 5;
-        public virtual void Execute() {
+        protected int tolerance = 5;
+
+        public virtual void Execute () {
             var data = GraphScene;
             var camera = this.Camera;
             var clipper = this.Clipper;
@@ -38,46 +39,46 @@ namespace Limaki.View.Modelling {
 
             if (data != null && data.Requests.Count != 0 && modeller != null && camera != null) {
                 bool clipChanged = false;
-                Matrice matrix = camera.Matrice.Clone();
+                Matrice matrix = camera.Matrice.Clone ();
 
                 if (clipper != null) {
                     Action<ICommand<TItem>> before = (request) => {
                         clipChanged = true;
                         var subject = request.Subject;
-                        var shape = data.ItemShape(subject);
+                        var shape = data.ItemShape (subject);
                         if (shape != null) {
-                            var hull = shape.Hull(matrix, tolerance, true);
-                            clipper.Add(hull);
+                            var hull = shape.Hull (matrix, tolerance, true);
+                            clipper.Add (hull);
                         }
 
                         if (request is StateChangeCommand<TItem>) {
-                            var hull = Layout.GetDataHull(
-                                subject, ((StateChangeCommand<TItem>)request).Parameter.One,
+                            var hull = Layout.GetDataHull (
+                                subject, ((StateChangeCommand<TItem>) request).Parameter.One,
                                 matrix, tolerance, true);
-                            clipper.Add(hull);
+                            clipper.Add (hull);
                         } else {
-                            var hull = Layout.GetDataHull(subject, matrix, tolerance, true);
-                            clipper.Add(hull);
+                            var hull = Layout.GetDataHull (subject, matrix, tolerance, true);
+                            clipper.Add (hull);
                         }
                     };
 
                     Action<ICommand<TItem>> after = (request) => {
                         clipChanged = true;
                         var subject = request.Subject;
-                        var shape = data.ItemShape(subject);
+                        var shape = data.ItemShape (subject);
                         if (shape != null) {
-                            var hull = shape.Hull(matrix, tolerance, true);
-                            clipper.Add(hull);
+                            var hull = shape.Hull (matrix, tolerance, true);
+                            clipper.Add (hull);
                         }
 
                         if (request is StateChangeCommand<TItem>) {
-                            var hull = Layout.GetDataHull(
-                                subject, ((StateChangeCommand<TItem>)request).Parameter.Two,
+                            var hull = Layout.GetDataHull (
+                                subject, ((StateChangeCommand<TItem>) request).Parameter.Two,
                                 matrix, tolerance, true);
-                            clipper.Add(hull);
+                            clipper.Add (hull);
                         } else {
-                            var hull = Layout.GetDataHull(subject, matrix, tolerance, true);
-                            clipper.Add(hull);
+                            var hull = Layout.GetDataHull (subject, matrix, tolerance, true);
+                            clipper.Add (hull);
                         }
                     };
 
@@ -93,24 +94,24 @@ namespace Limaki.View.Modelling {
                 modeller.Layout = this.Layout;
 
 
-                modeller.Execute(data.Requests);
+                modeller.Execute (data.Requests);
             }
         }
 
-        public virtual void Done() {
+        public virtual void Done () {
             var data = this.GraphScene;
             if (data != null)
-                data.Requests.Clear();
+                data.Requests.Clear ();
         }
 
-        public virtual void Invoke() {
+        public virtual void Invoke () {
             var layout = this.Layout;
             var data = this.GraphScene;
             if (layout != null && data != null) {
                 ISpatialIndex<TItem> index = data.SpatialIndex;
                 index.BoundsDirty = true;
 
-                layout.Invoke();
+                layout.Invoke ();
             }
         }
 
@@ -118,7 +119,7 @@ namespace Limaki.View.Modelling {
         public virtual GraphItemReceiver<TItem, TEdge> ModelReceiver {
             get {
                 if (_modelReceiver != null) {
-                    return _modelReceiver() as GraphItemReceiver<TItem, TEdge>;
+                    return _modelReceiver () as GraphItemReceiver<TItem, TEdge>;
                 }
                 return null;
             }
@@ -127,7 +128,7 @@ namespace Limaki.View.Modelling {
         public virtual IGraphScene<TItem, TEdge> GraphScene {
             get {
                 if (_graphScene != null) {
-                    return _graphScene();
+                    return _graphScene ();
                 }
                 return null;
             }
@@ -136,7 +137,7 @@ namespace Limaki.View.Modelling {
         public virtual IGraphSceneLayout<TItem, TEdge> Layout {
             get {
                 if (_layout != null) {
-                    return _layout();
+                    return _layout ();
                 }
                 return null;
             }
@@ -146,7 +147,7 @@ namespace Limaki.View.Modelling {
         public virtual IClipper Clipper {
             get {
                 if (_clipper != null) {
-                    return _clipper();
+                    return _clipper ();
                 }
                 return null;
             }
@@ -155,14 +156,15 @@ namespace Limaki.View.Modelling {
         public virtual ICamera Camera {
             get {
                 if (_camera != null) {
-                    return _camera();
+                    return _camera ();
                 }
                 return null;
             }
         }
         #endregion
 
-        #region ISceneRealizer<TItem, TEdge> Member
+        #region IGraphSceneReceiver<TItem, TEdge> Member
+
         protected Get<IGraphScene<TItem, TEdge>> _graphScene = null;
         Get<IGraphScene<TItem, TEdge>> IGraphSceneReceiver<TItem, TEdge>.GraphScene {
             get { return _graphScene; }

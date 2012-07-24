@@ -41,7 +41,7 @@ namespace Limaki.Drawing.Gdi {
                 }
                 return base.Context;
             }
-            protected set {
+            set {
                 base.Context = value;
             }
         }
@@ -52,8 +52,8 @@ namespace Limaki.Drawing.Gdi {
                 }
                 return base.Matrix;
             }
-            protected set {
-                base.Matrix = value;
+            set {
+                base.Matrix = value as GdiMatrice;
             }
         }
     }

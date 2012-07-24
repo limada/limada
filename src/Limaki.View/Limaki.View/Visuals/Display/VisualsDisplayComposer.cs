@@ -20,7 +20,7 @@ namespace Limaki.View.Visuals.Display {
             display.ModelFactory = Registry.Factory.Create < IGraphModelFactory<IVisual, IVisualEdge>> ();
             display.GraphItemRenderer = new VisualsRenderer ();
 
-            display.Layout = new VisualsSceneArrangerLayout<IVisual, IVisualEdge>(this.GraphScene, display.StyleSheet);
+            display.Layout = Registry.Factory.Create <IGraphSceneLayout<IVisual, IVisualEdge>>(this.GraphScene, display.StyleSheet);
         }
 
         protected IMouseAction AddGraphEdgeAction { get; set; }

@@ -1,5 +1,8 @@
+[2012-07-19]
+Limaki.GraphScenePainter over Xwt.Html5
+
 [2012-07-13]
-Limaki.GraphScenePainterRenderer over Xwt.Html5
+Limaki.GraphScenePainter over Xwt.Html5
 
 [2012-07-05]
 Xwt.Html5.ContextBackendhandler: DrawTextLayout

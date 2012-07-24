@@ -84,6 +84,11 @@ namespace Limaki.Common {
             }
         }
 
+        public virtual void Clear () {
+            _clazzes = null;
+            _knownClazzes = null;
+        }
+
         public override bool Contains<T>() {
             return Clazzes.ContainsKey(typeof(T));
         }

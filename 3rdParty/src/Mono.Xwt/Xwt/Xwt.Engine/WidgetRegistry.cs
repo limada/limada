@@ -92,6 +92,7 @@ namespace Xwt.Engine
             sharedBackends.Clear();
             Drawing.Font.SetHandler (null);
             Drawing.TextLayout.SetHandler (null);
+            Drawing.Context.SetHandler (null);
         }
 	}
 	

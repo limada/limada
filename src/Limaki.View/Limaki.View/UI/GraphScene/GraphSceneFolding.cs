@@ -21,6 +21,7 @@ using Limaki.View.Rendering;
 using Xwt;
 
 namespace Limaki.View.UI.GraphScene {
+
     public interface IGraphSceneFolding<TItem, TEdge> : IKeyAction
         where TItem: class 
         where TEdge: TItem, IEdge<TItem> {

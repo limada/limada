@@ -17,6 +17,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 
 namespace Limaki.View.Rendering {
+
     public abstract class ContentRenderer<T> : IContentRenderer<T> {
 
         public virtual Get<ICamera> Camera {get;set;}

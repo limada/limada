@@ -41,12 +41,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limada.UseCases\DocumentSchemaKeyScrollAction.cs" />
-    <Compile Include="Limaki.Drawing\BlindDrawingUtils.cs" />
+    <Compile Include="Limaki.View.Blind\BlindDrawingUtils.cs" />
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
-    <Compile Include="Limaki.Drawing\BlindSystemFonts.cs" />
+    <Compile Include="Limaki.View.Blind\BlindSystemFonts.cs" />
+    <Compile Include="Limaki.View.Blind\BlindSystemInformation.cs" />
+    <Compile Include="Xwtish\ContextGraphSceneLayer.cs" />
+    <Compile Include="Xwtish\ContextGraphScenePainter.cs" />
     <Compile Include="Limaki.Viewers\StreamViewers\IWebResponse.cs" />
     <Compile Include="Limaki.Viewers\StreamViewers\WebResponse.cs" />
     <Compile Include="Limaki.View\Layout\Placing\CollissionResolver.cs" />
+    <Compile Include="Xwtish\ContextRenderEventArgs.cs" />
     <Compile Include="ViewContextRecourceLoader.cs" />
     <Compile Include="Limaki.Drawing\Anchor.cs" />
     <Compile Include="Limaki.Drawing\Camera.cs" />
@@ -106,7 +110,7 @@
     <Compile Include="Limaki.Drawing\UiState.cs" />
     <Compile Include="Limaki.Drawing\Vector.cs" />
     <Compile Include="Limaki.Drawing\Painters\Painter.cs" />
-    <Compile Include="Limaki.Drawing\Painters\PainterFactoryBase.cs" />
+    <Compile Include="Limaki.Drawing\Painters\DefaultPainterFactory.cs" />
     <Compile Include="Limaki.Drawing\Painters\StringPainterBase.cs" />
     <Compile Include="Limaki.Drawing\ZoomState.cs" />
     <Compile Include="Limada.View\FavoriteManager.cs" />
@@ -295,6 +299,9 @@
     <Compile Include="Xwt.Blind.Backend\FontData.cs" />
     <Compile Include="Xwt.Blind.Backend\BlindEngine.cs" />
     <Compile Include="Xwt.Blind.Backend\SystemColorsBackend.cs" />
+    <Compile Include="Xwtish\GraphSceneContextPainterComposer.cs" />
+    <Compile Include="Xwtish\GraphSceneContextPainterRenderer.cs" />
+    <Compile Include="Xwtish\VisualSceneContextPainter.cs" />
     <Compile Include="Xwt\ISystemColorsBackend.cs" />
     <Compile Include="Limaki.Widgets\Xwt\ScrollableCanvas.cs">
       <SubType>Component</SubType>

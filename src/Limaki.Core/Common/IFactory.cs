@@ -43,6 +43,8 @@ namespace Limaki.Common {
         /// <returns>new object of translated class</returns>
         T Create<T>();
 
+        T Create<T>(params object[] args);
+
         /// <summary>
         /// calls the default-construtor of the class TOuter#TInner#
         /// which is associated with type T
@@ -55,5 +57,8 @@ namespace Limaki.Common {
         void Add ( Type source, Type target );
         void Add<T1, T2>() where T2 : T1;
         void Add<T>(Func<T> creator);
+        void Add<T>(Func<object[], T> creator);
+
+        void Clear ();
     }
 }
