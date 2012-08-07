@@ -4,6 +4,7 @@ using Xwt.Drawing;
 using Point = System.Windows.Point;
 
 namespace Limaki.Drawing.WPF {
+
     public static class DrawingConverter {
         public static Point[] Convert(Xwt.Point[] value) {
             var result = new Point[value.Length];

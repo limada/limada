@@ -1,3 +1,11 @@
+[2012-08-07]
+update Limaki.Html5.Prototyper to mono.xwt.c769c7afd423c660283e4c49d55ada769106f012
+
+[2012-07-31]
+update to mono.xwt.c769c7afd423c660283e4c49d55ada769106f012
+https://github.com/mono/xwt/commit/c769c7afd423c660283e4c49d55ada769106f012
+attention! follow ups are in https://github.com/mono/xwt/tree/mixed-toolkit now
+
 [2012-07-19]
 Limaki.GraphScenePainter over Xwt.Html5
 

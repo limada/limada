@@ -3,8 +3,10 @@
 //  
 // Author:
 //       Thomas Ziegler <ziegler.thomas@web.de>
+//       Eric Maupin <ermau@xamarin.com>
 // 
 // Copyright (c) 2012 Thomas Ziegler
+// Copyright (c) 2012 Xamarin, Inc.
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +28,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
+using System.Windows.Controls;
+using Xwt.Engine;
 using SWC = System.Windows.Controls;
-using SWMI = System.Windows.Media.Imaging;
-
 using Xwt.Backends;
 
 namespace Xwt.WPFBackend
@@ -41,25 +40,33 @@ namespace Xwt.WPFBackend
 	{
 		public NotebookBackend ()
 		{
-			this.TabControl = new WpfNotebook ();
+			TabControl = new WpfNotebook ();
 		}
 
-		public SWC.TabControl TabControl {
-			get { return (SWC.TabControl)Widget; }
-			set { Widget = value; }
+		public int CurrentTab {
+			get { return TabControl.SelectedIndex; }
+			set { TabControl.SelectedIndex = value; }
 		}
 
-		#region INotebookBackend implementation
 		public void Add (IWidgetBackend widget, NotebookTab tab)
 		{
-			UIElement element = widget.NativeWidget as UIElement;
-			if (element == null) {
-				throw new ArgumentException ();
+			UIElement element = (UIElement)widget.NativeWidget;
+			TabItem ti = new TabItem {
+				Content = element,
+				Header = tab.Label,
+				Tag = tab
+			};
+
+			FrameworkElement felement = element as FrameworkElement;
+			if (felement != null) {
+				felement.Tag = widget;
+				felement.Loaded += OnContentLoaded;
 			}
-			SWC.TabItem ti = new SWC.TabItem () {Header = tab.Label};
-			//HACK this is not a propper implementation 
-			ti.Content = element;
+
 			TabControl.Items.Add (ti);
+			
+			if (TabControl.SelectedIndex == -1)
+				TabControl.SelectedIndex = 0;
 		}
 
 		public void Remove (IWidgetBackend widget)
@@ -67,27 +74,75 @@ namespace Xwt.WPFBackend
 			UIElement element = widget.NativeWidget as UIElement;
 			if (element == null)
 				throw new ArgumentException ();
-			throw new System.NotImplementedException ();
+
+			FrameworkElement felement = element as FrameworkElement;
+			if (felement != null)
+				felement.Loaded -= OnContentLoaded;
+			
+			for (int i = 0; i < TabControl.Items.Count; ++i) {
+				TabItem tab = (TabItem)TabControl.Items [i];
+				if (tab.Content == widget.NativeWidget) {
+					TabControl.Items.RemoveAt (i);
+					break;
+				}
+			}
 		}
 
 		public void UpdateLabel (NotebookTab tab, string hint)
 		{
-			foreach (SWC.TabItem item in TabControl.Items) {
-				if (item.Header.ToString () == tab.Label) {
-					item.Header = hint;
-				}	
+			TabItem item = TabControl.Items.Cast<TabItem> ().FirstOrDefault (t => t.Tag == tab);
+			if (item != null)
+				item.Header = tab.Label;
+		}
+
+		public override void EnableEvent (object eventId)
+		{
+			base.EnableEvent (eventId);
+			if (eventId is NotebookEvent) {
+				switch ((NotebookEvent)eventId) {
+				case NotebookEvent.CurrentTabChanged:
+					TabControl.SelectionChanged += OnCurrentTabChanged;
+					break;
+				}
 			}
 		}
 
-		public int CurrentTab {
-			get {
-				return TabControl.SelectedIndex;
-			}
-			set {
-				TabControl.SelectedIndex = value;
+		public override void DisableEvent (object eventId)
+		{
+			base.DisableEvent (eventId);
+			if (eventId is NotebookEvent) {
+				switch ((NotebookEvent)eventId) {
+				case NotebookEvent.CurrentTabChanged:
+					TabControl.SelectionChanged -= OnCurrentTabChanged;
+					break;
+				}
 			}
 		}
-		#endregion
+
+		private void OnCurrentTabChanged (object sender, SelectionChangedEventArgs e)
+		{
+			Toolkit.Invoke (NotebookEventSink.OnCurrentTabChanged);
+		}
+
+		protected TabControl TabControl {
+			get { return (TabControl)Widget; }
+			set { Widget = value; }
+		}
+
+		protected INotebookEventSink NotebookEventSink {
+			get { return (INotebookEventSink) EventSink; }
+		}
+
+		private void OnContentLoaded (object sender, RoutedEventArgs routedEventArgs)
+		{
+			WidgetBackend backend = (WidgetBackend)((FrameworkElement) sender).Tag;
+
+			var surface = backend.Frontend as IWidgetSurface;
+			if (surface == null)
+				return;
+
+			surface.Reallocate();
+		}
 	}
 
 	class WpfNotebook : SWC.TabControl, IWpfWidget

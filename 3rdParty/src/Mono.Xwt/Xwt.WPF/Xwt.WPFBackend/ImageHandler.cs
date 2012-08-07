@@ -63,7 +63,8 @@ namespace Xwt.WPFBackend
 
 			switch (id) {
 			case StockIcons.Add:
-				return NativeMethods.GetImage (NativeStockIcon.Help, options);
+					using (var s = typeof (ImageHandler).Assembly.GetManifestResourceStream ("Xwt.WPF.icons.list-add.png"))
+						return LoadFromStream (s);
 				//throw new NotImplementedException();
 			case StockIcons.Error:
 				return NativeMethods.GetImage (NativeStockIcon.Error, options);
@@ -76,7 +77,8 @@ namespace Xwt.WPFBackend
 			case StockIcons.Question:
 				return NativeMethods.GetImage (NativeStockIcon.Help, options);
 			case StockIcons.Remove:
-				return NativeMethods.GetImage (NativeStockIcon.Delete, options);
+				using (var s = typeof (ImageHandler).Assembly.GetManifestResourceStream ("Xwt.WPF.icons.list-remove.png"))
+					return LoadFromStream (s);
 			case StockIcons.Warning:
 				return NativeMethods.GetImage (NativeStockIcon.Warning, options);
 			case StockIcons.Zoom100:
@@ -88,6 +90,16 @@ namespace Xwt.WPFBackend
 			default:
 				throw new ArgumentException ("Unknown icon id", "id");
 			}
+		}
+
+		public override Xwt.Drawing.Color GetPixel (object handle, int x, int y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override void SetPixel (object handle, int x, int y, Drawing.Color color)
+		{
+			throw new NotImplementedException ();
 		}
 
 		private static NativeStockIconOptions GetNativeStockOptionsFromSize (IconSize size)
@@ -137,7 +149,7 @@ namespace Xwt.WPFBackend
 				ctx.DrawImage (oldImg, new System.Windows.Rect (0, 0, width, height));
 			}
 
-			SWMI.RenderTargetBitmap bmp = new SWMI.RenderTargetBitmap ((int)width, (int)height, oldImg.DpiX, oldImg.DpiY, oldImg.Format);
+			SWMI.RenderTargetBitmap bmp = new SWMI.RenderTargetBitmap ((int)width, (int)height, oldImg.DpiX, oldImg.DpiY, PixelFormats.Pbgra32);
 			bmp.Render (visual);
 
 			return bmp;
@@ -162,7 +174,7 @@ namespace Xwt.WPFBackend
 				ctx.DrawImage(oldImg, new System.Windows.Rect (-srcX, -srcY, srcX+width, srcY+height));
 			}
 
-			SWMI.RenderTargetBitmap bmp = new SWMI.RenderTargetBitmap ((int)width, (int)height, oldImg.DpiX, oldImg.DpiY, oldImg.Format);
+			SWMI.RenderTargetBitmap bmp = new SWMI.RenderTargetBitmap ((int)width, (int)height, oldImg.DpiX, oldImg.DpiY, PixelFormats.Pbgra32);
 			bmp.Render (visual);
 
 			return bmp;

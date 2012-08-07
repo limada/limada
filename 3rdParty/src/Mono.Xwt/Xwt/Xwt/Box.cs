@@ -40,7 +40,7 @@ namespace Xwt
 		Orientation direction;
 		double spacing = 6;
 		
-		protected new class EventSink: Widget.EventSink, ICollectionEventSink<BoxPlacement>, IContainerEventSink<BoxPlacement>
+		protected new class WidgetBackendHost: Widget.WidgetBackendHost, ICollectionEventSink<BoxPlacement>, IContainerEventSink<BoxPlacement>
 		{
 			public void AddedItem (BoxPlacement item, int index)
 			{
@@ -63,18 +63,18 @@ namespace Xwt
 			}
 		}
 		
-		protected override Widget.EventSink CreateEventSink ()
+		protected override BackendHost CreateBackendHost ()
 		{
-			return new EventSink ();
+			return new WidgetBackendHost ();
 		}
 		
-		new IBoxBackend Backend {
-			get { return (IBoxBackend) base.Backend; }
+		IBoxBackend Backend {
+			get { return (IBoxBackend) BackendHost.Backend; }
 		}
 		
 		internal Box (Orientation dir)
 		{
-			children = new ChildrenCollection<BoxPlacement> ((EventSink)WidgetEventSink);
+			children = new ChildrenCollection<BoxPlacement> ((WidgetBackendHost)BackendHost);
 			direction = dir;
 		}
 		
@@ -123,7 +123,7 @@ namespace Xwt
 		
 		void Pack (Widget widget, BoxMode mode, int padding, PackOrigin ptype)
 		{
-			var p = new BoxPlacement ((EventSink)WidgetEventSink, widget);
+			var p = new BoxPlacement ((WidgetBackendHost)BackendHost, widget);
 			p.BoxMode = mode;
 			p.Padding = padding;
 			p.PackOrigin = ptype;
@@ -184,7 +184,7 @@ namespace Xwt
 			Rectangle[] rects = new Rectangle [visibleChildren.Length];
 			
 			if (direction == Orientation.Horizontal) {
-				CalcDefaultSizes (((IWidgetSurface)this).SizeRequestMode, size.Width, size.Height);
+				CalcDefaultSizes (Surface.SizeRequestMode, size.Width, size.Height);
 				double xs = 0;
 				double xe = size.Width + spacing;
 				for (int n=0; n<visibleChildren.Length; n++) {
@@ -198,7 +198,7 @@ namespace Xwt
 						xs += bp.NextSize + spacing;
 				}
 			} else {
-				CalcDefaultSizes (((IWidgetSurface)this).SizeRequestMode, size.Height, size.Width);
+				CalcDefaultSizes (Surface.SizeRequestMode, size.Height, size.Width);
 				double ys = 0;
 				double ye = size.Height + spacing;
 				for (int n=0; n<visibleChildren.Length; n++) {
@@ -216,7 +216,7 @@ namespace Xwt
 			
 			if (!Application.EngineBackend.HandlesSizeNegotiation) {
 				foreach (var bp in visibleChildren)
-					((IWidgetSurface)bp.Child).Reallocate ();
+					bp.Child.Surface.Reallocate ();
 			}
 		}
 		
@@ -291,14 +291,15 @@ namespace Xwt
 			
 			if (direction == Orientation.Horizontal) {
 				int count = 0;
-				foreach (IWidgetSurface cw in Children.Where (b => b.Visible)) {
-					s += cw.GetPreferredWidth ();
+				foreach (var cw in Children.Where (b => b.Visible)) {
+					s += cw.Surface.GetPreferredWidth ();
 					count++;
 				}
-				s += spacing * (double)(count - 1);
+				if (count > 0)
+					s += spacing * (double)(count - 1);
 			} else {
-				foreach (IWidgetSurface cw in Children.Where (b => b.Visible))
-					s = s.UnionWith (cw.GetPreferredWidth ());
+				foreach (var cw in Children.Where (b => b.Visible))
+					s = s.UnionWith (cw.Surface.GetPreferredWidth ());
 			}
 			return s;
 		}
@@ -309,14 +310,15 @@ namespace Xwt
 			
 			if (direction == Orientation.Vertical) {
 				int count = 0;
-				foreach (IWidgetSurface cw in Children.Where (b => b.Visible)) {
-					s += cw.GetPreferredHeight ();
+				foreach (var cw in Children.Where (b => b.Visible)) {
+					s += cw.Surface.GetPreferredHeight ();
 					count++;
 				}
-				s += spacing * (double)(count - 1);
+				if (count > 0)
+					s += spacing * (double)(count - 1);
 			} else {
-				foreach (IWidgetSurface cw in Children.Where (b => b.Visible))
-					s = s.UnionWith (cw.GetPreferredHeight ());
+				foreach (var cw in Children.Where (b => b.Visible))
+					s = s.UnionWith (cw.Surface.GetPreferredHeight ());
 			}
 			return s;
 		}
@@ -347,7 +349,8 @@ namespace Xwt
 					s += GetPreferredLengthForSize (mode, bp.Child, width);
 					count++;
 				}
-				s += spacing * (double)(count - 1);
+				if (count > 0)
+					s += spacing * (double)(count - 1);
 			}
 			return s;
 		}
@@ -355,18 +358,17 @@ namespace Xwt
 		WidgetSize GetPreferredSize (bool calcHeight, Widget w)
 		{
 			if (calcHeight)
-				return ((IWidgetSurface)w).GetPreferredHeight ();
+				return w.Surface.GetPreferredHeight ();
 			else
-				return ((IWidgetSurface)w).GetPreferredWidth ();
+				return w.Surface.GetPreferredWidth ();
 		}
 		
 		WidgetSize GetPreferredLengthForSize (SizeRequestMode mode, Widget w, double width)
 		{
-			IWidgetSurface surface = w;
 			if (mode == SizeRequestMode.WidthForHeight)
-				return surface.GetPreferredWidthForHeight (width);
+				return w.Surface.GetPreferredWidthForHeight (width);
 			else
-				return surface.GetPreferredHeightForWidth (width);
+				return w.Surface.GetPreferredHeightForWidth (width);
 		}
 	}
 	

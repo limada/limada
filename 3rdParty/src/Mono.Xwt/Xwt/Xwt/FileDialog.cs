@@ -25,10 +25,12 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
+using System.ComponentModel;
+using Xwt.Engine;
 
 namespace Xwt
 {
-	public class FileDialog: XwtComponent
+	public class FileDialog: Component
 	{
 		FileDialogFilterCollection filters;
 		bool running;
@@ -40,9 +42,13 @@ namespace Xwt
 		string fileName;
 		string[] fileNames = new string[0];
 		
+		BackendHost<FileDialog,IFileDialogBackend> backendHost;
+		
 		internal FileDialog ()
 		{
 			filters = new FileDialogFilterCollection (AddRemoveItem);
+			backendHost = new BackendHost<FileDialog,IFileDialogBackend> ();
+			backendHost.Parent = this;
 		}
 
 		internal FileDialog (string title): this ()
@@ -50,8 +56,8 @@ namespace Xwt
 			this.title = title;
 		}
 
-		new IFileDialogBackend Backend {
-			get { return (IFileDialogBackend) base.Backend; }
+		IFileDialogBackend Backend {
+			get { return backendHost.Backend; }
 		}
 		
 		void AddRemoveItem (FileDialogFilter filter, bool added)
@@ -180,7 +186,7 @@ namespace Xwt
 					Backend.ActiveFilter = activeFilter;
 				if (!string.IsNullOrEmpty (title))
 					Backend.Title = title;
-				return Backend.Run ((IWindowFrameBackend)GetBackend (parentWindow));
+				return Backend.Run ((IWindowFrameBackend)WidgetRegistry.MainRegistry.GetBackend (parentWindow));
 			} finally {
 				currentFolder = Backend.CurrentFolder;
 				activeFilter = Backend.ActiveFilter;

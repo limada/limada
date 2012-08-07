@@ -30,6 +30,7 @@ using WidgetRegistry = Xwt.Engine.WidgetRegistry;
 using ModifierKeys = Xwt.ModifierKeys;
 using Key = Xwt.Key;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf.Visuals {
     
@@ -225,7 +226,7 @@ namespace Limaki.View.Swf.Visuals {
         private GdiFontCache gdiFontCache = new GdiFontCache();
         void StyleEditor() {
             var style = Layout.StyleSheet.ItemStyle.DefaultStyle;
-            var newFont = new FontMemento(WidgetRegistry.GetBackend(style.Font) as System.Drawing.Font);
+            var newFont = new FontMemento(GdiEngine.Registry.GetBackend(style.Font) as System.Drawing.Font);
             newFont.SizeInPoints = (float)camera.Matrice.TransformFontSize (newFont.SizeInPoints);
             editor.Font = gdiFontCache.GetFont(newFont);
             

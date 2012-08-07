@@ -41,7 +41,7 @@ namespace Xwt.WPFBackend.Utilities
 			if (image == null)
 				return null;
 
-			return DataConverter.AsImageSource (WidgetRegistry.GetBackend (image));
+            return DataConverter.AsImageSource(WPFEngine.Registry.GetBackend(image));
 		}
 
 		public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)

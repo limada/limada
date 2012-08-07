@@ -3,8 +3,10 @@
 //  
 // Author:
 //       Luís Reis <luiscubal@gmail.com>
+//       Eric Maupin <ermau@xamarin.com>
 // 
 // Copyright (c) 2012 Luís Reis
+// Copyright (c) 2012 Xamarin, Inc.
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,15 +27,11 @@
 // THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Markup;
 using System.Windows.Media;
 using SWC = System.Windows.Controls;
-using SWMI = System.Windows.Media.Imaging;
-
 using Xwt.Backends;
 using Xwt.Engine;
 
@@ -42,7 +40,7 @@ namespace Xwt.WPFBackend
 	public class ButtonBackend : WidgetBackend, IButtonBackend
 	{
 		public ButtonBackend ()
-			: this (new SWC.Button())
+			: this (new WpfButton ())
 		{
 		}
 
@@ -83,8 +81,17 @@ namespace Xwt.WPFBackend
 			Button.InvalidateMeasure ();
 		}
 
-		public void SetButtonType(ButtonType type) {
-			//TODO
+		public virtual void SetButtonType (ButtonType type) {
+			switch (type) {
+			case ButtonType.Normal:
+				Button.Style = null;
+				break;
+
+			case ButtonType.DropDown:
+				Button.Style = (Style) ButtonResources ["NormalDropDown"];
+				break;
+			}
+
 			Button.InvalidateMeasure ();
 		}
 
@@ -145,6 +152,36 @@ namespace Xwt.WPFBackend
 		void HandleWidgetClicked (object sender, EventArgs e)
 		{
 			Toolkit.Invoke (EventSink.OnClicked);
+		}
+
+		private static ResourceDictionary buttonsDictionary;
+		protected static ResourceDictionary ButtonResources
+		{
+			get
+			{
+				if (buttonsDictionary == null) {
+					Uri uri = new Uri ("pack://application:,,,/Xwt.WPF;component/XWT.WPFBackend/Buttons.xaml");
+					buttonsDictionary = (ResourceDictionary)XamlReader.Load (System.Windows.Application.GetResourceStream (uri).Stream);
+				}
+
+				return buttonsDictionary;
+			}
+		}
+	}
+
+	class WpfButton : SWC.Button, IWpfWidget
+	{
+		public WidgetBackend Backend { get; set; }
+
+		protected override System.Windows.Size MeasureOverride (System.Windows.Size constraint)
+		{
+			var s = base.MeasureOverride (constraint);
+			return Backend.MeasureOverride (constraint, s);
+		}
+
+		protected override System.Windows.Size ArrangeOverride (System.Windows.Size arrangeBounds)
+		{
+			return base.ArrangeOverride (arrangeBounds);
 		}
 	}
 }

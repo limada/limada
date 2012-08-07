@@ -33,7 +33,7 @@ namespace Xwt
 		Widget child;
 		EventHandler visibleRectChanged;
 		
-		protected new class EventSink: Widget.EventSink, IScrollViewEventSink
+		protected new class WidgetBackendHost: Widget.WidgetBackendHost, IScrollViewEventSink
 		{
 			public void OnVisibleRectChanged ()
 			{
@@ -42,24 +42,26 @@ namespace Xwt
 			
 			public override Size GetDefaultNaturalSize ()
 			{
-				return Xwt.Engine.DefaultNaturalSizes.ScrollView;
+				return Xwt.Backends.DefaultNaturalSizes.ScrollView;
 			}
 		}
 		
-		protected override Widget.EventSink CreateEventSink ()
+		protected override BackendHost CreateBackendHost ()
 		{
-			return new EventSink ();
+			return new WidgetBackendHost ();
 		}
 		
-		new IScrollViewBackend Backend {
-			get { return (IScrollViewBackend)base.Backend; }
+		IScrollViewBackend Backend {
+			get { return (IScrollViewBackend)BackendHost.Backend; }
 		}
 		
 		public ScrollView ()
 		{
+			HorizontalScrollPolicy = ScrollPolicy.Automatic;
+			VerticalScrollPolicy = ScrollPolicy.Automatic;
 		}
 		
-		public ScrollView (Widget child)
+		public ScrollView (Widget child): this ()
 		{
 			Content = child;
 		}
@@ -81,14 +83,13 @@ namespace Xwt
 		{
 			base.OnReallocate ();
 			if (child != null && !child.SupportsCustomScrolling) {
-				var ws = (IWidgetSurface) child;
-				if (ws.SizeRequestMode == SizeRequestMode.HeightForWidth) {
-					var w = ws.GetPreferredWidth ();
-					var h = ws.GetPreferredHeightForWidth (w.NaturalSize);
+				if (child.Surface.SizeRequestMode == SizeRequestMode.HeightForWidth) {
+					var w = child.Surface.GetPreferredWidth ();
+					var h = child.Surface.GetPreferredHeightForWidth (w.NaturalSize);
 					Backend.SetChildSize (new Size (w.NaturalSize, h.NaturalSize));
 				} else {
-					var h = ws.GetPreferredHeight ();
-					var w = ws.GetPreferredWidthForHeight (h.NaturalSize);
+					var h = child.Surface.GetPreferredHeight ();
+					var w = child.Surface.GetPreferredWidthForHeight (h.NaturalSize);
 					Backend.SetChildSize (new Size (w.NaturalSize, h.NaturalSize));
 				}
 			}
@@ -115,12 +116,12 @@ namespace Xwt
 		
 		public event EventHandler VisibleRectChanged {
 			add {
-				OnBeforeEventAdd (ScrollViewEvent.VisibleRectChanged, visibleRectChanged);
+				BackendHost.OnBeforeEventAdd (ScrollViewEvent.VisibleRectChanged, visibleRectChanged);
 				visibleRectChanged += value;
 			}
 			remove {
 				visibleRectChanged -= value;
-				OnAfterEventRemove (ScrollViewEvent.VisibleRectChanged, visibleRectChanged);
+				BackendHost.OnAfterEventRemove (ScrollViewEvent.VisibleRectChanged, visibleRectChanged);
 			}
 		}
 		

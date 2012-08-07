@@ -37,7 +37,7 @@ namespace Xwt.Html5.Backend {
     public class ContextBackendHandler : IContextBackendHandler {
 
         public virtual object CreateContext (Widget w) {
-            var b = (IHtml5CanvasBackend) WidgetRegistry.GetBackend (w);
+            var b = (IHtml5CanvasBackend)Html5Engine.Registry.GetBackend(w);
 
             var ctx = new Html5Context ();
             if (b.Context != null) {
@@ -193,7 +193,7 @@ namespace Xwt.Html5.Backend {
         public void DrawTextLayout (object backend, Drawing.TextLayout layout, double x, double y) {
             var c = (Html5Context) backend;
             c.Context.CommandLine ("fillStyle={0}", c.Color.ToStyle ());
-            var tl = (TextLayoutBackend) WidgetRegistry.GetBackend (layout);
+            var tl = (TextLayoutBackend)Html5Engine.Registry.GetBackend(layout);
             var font = tl.Font;
             c.Context.CommandLine ("font=\"{0} {1}em {2}\"", font.Family, font.Size.ToHtml (), font.Style.ToHtml());
            
@@ -250,6 +250,24 @@ namespace Xwt.Html5.Backend {
           
         }
 
-        
+        public void DrawImage(object backend, object img, Rectangle srcRect, Rectangle destRect, double alpha) {
+            throw new NotImplementedException();
+        }
+
+        public void TransformPoint(object backend, ref double x, ref double y) {
+            throw new NotImplementedException();
+        }
+
+        public void TransformDistance(object backend, ref double dx, ref double dy) {
+            throw new NotImplementedException();
+        }
+
+        public void TransformPoints(object backend, Point[] points) {
+            throw new NotImplementedException();
+        }
+
+        public void TransformDistances(object backend, Distance[] vectors) {
+            throw new NotImplementedException();
+        }
     }
 }

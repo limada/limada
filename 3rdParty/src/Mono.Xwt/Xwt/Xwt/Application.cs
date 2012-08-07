@@ -45,12 +45,14 @@ namespace Xwt
 				return;
 			InitBackend (null);
 			engine.InitializeApplication ();
+			engine.InitializeRegistry (WidgetRegistry.MainRegistry);
 		}
 		
 		public static void Initialize (string backendType)
 		{
 			InitBackend (backendType);
 			engine.InitializeApplication ();
+			engine.InitializeRegistry (WidgetRegistry.MainRegistry);
 		}
 		
 		public static void Run ()
@@ -135,6 +137,11 @@ namespace Xwt
 				return res;
 			}, timeSpan);
 			return t;
+		}
+		
+		public static StatusIcon CreateStatusIcon ()
+		{
+			return new StatusIcon ();
 		}
 		
 		class Timer: IDisposable

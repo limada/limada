@@ -66,6 +66,9 @@
     <Compile Include="MonoDevelop.Components.Chart\IntegerAxis.cs" />
     <Compile Include="MonoDevelop.Components.Chart\Serie.cs" />
     <Compile Include="MonoDevelop.Components.Chart\TickEnumerator.cs" />
+    <Compile Include="Samples\PartialImages.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Samples\ScrollWindowSample.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -135,12 +138,24 @@
     <Compile Include="Samples\DrawingPatternsAndImages.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Samples\ListBoxSample.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Samples\ColorSelectorSample.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Samples\ProgressBarSample.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Samples\ExpanderSample.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -28,19 +28,16 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using Xwt.Backends;
-using WindowsComboBox = System.Windows.Controls.ComboBox;
+using Xwt.Engine;
 
 namespace Xwt.WPFBackend
 {
 	public class ComboBoxTextEntryBackend
 		: WidgetBackend, ITextEntryBackend
 	{
-		private readonly WindowsComboBox combobox;
-
-		public ComboBoxTextEntryBackend (WindowsComboBox combobox)
+		public ComboBoxTextEntryBackend (ExComboBox combobox)
 		{
 			if (combobox == null)
 				throw new ArgumentNullException ("combobox");
@@ -52,8 +49,8 @@ namespace Xwt.WPFBackend
 
 		public string Text
 		{
-			get { return this.combobox.Text; }
-			set { this.combobox.Text = value; }
+			get { return this.combobox.Text ?? String.Empty; }
+			set { this.combobox.Text = value ?? String.Empty; }
 		}
 
 		public string PlaceholderText
@@ -92,7 +89,41 @@ namespace Xwt.WPFBackend
 			}
 		}
 
+		public override void EnableEvent (object eventId)
+		{
+			base.EnableEvent (eventId);
+			if (eventId is TextEntryEvent) {
+				switch ((TextEntryEvent)eventId) {
+				case TextEntryEvent.Changed:
+					this.combobox.TextChanged += OnTextChanged;
+					break;
+				}
+			}
+		}
+
+		public override void DisableEvent (object eventId)
+		{
+			base.DisableEvent (eventId);
+			if (eventId is TextEntryEvent) {
+				switch ((TextEntryEvent)eventId) {
+				case TextEntryEvent.Changed:
+					this.combobox.TextChanged -= OnTextChanged;
+					break;
+				}
+			}
+		}
+
+		private readonly ExComboBox combobox;
 		private string placeholderText;
+
+		protected ITextEntryEventSink TextEntryEventSink {
+			get { return (ITextEntryEventSink) EventSink; }
+		}
+
+		private void OnTextChanged (object sender, EventArgs e)
+		{
+			Toolkit.Invoke (TextEntryEventSink.OnChanged);
+		}
 
 		private void UpdatePlaceholder (string newPlaceholder, bool focused)
 		{
@@ -101,7 +132,7 @@ namespace Xwt.WPFBackend
 
 			this.placeholderText = newPlaceholder;
 
-			if (focused && Text == PlaceholderText)
+			if (focused && (Text == PlaceholderText || String.IsNullOrEmpty (Text)))
 				this.combobox.ClearValue (Control.ForegroundProperty);
 			else if (!focused && String.IsNullOrEmpty (Text))
 			{

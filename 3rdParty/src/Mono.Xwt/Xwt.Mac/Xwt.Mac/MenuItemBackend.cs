@@ -26,13 +26,17 @@
 
 using System;
 using Xwt.Backends;
+using Xwt.Engine;
 using MonoMac.AppKit;
+using System.Collections.Generic;
 
 namespace Xwt.Mac
 {
 	public class MenuItemBackend: IMenuItemBackend
 	{
 		NSMenuItem item;
+		IMenuItemEventSink eventSink;
+		List<MenuItemEvent> enabledEvents;
 		
 		public MenuItemBackend (): this (new NSMenuItem ())
 		{
@@ -49,6 +53,7 @@ namespace Xwt.Mac
 		
 		public void Initialize (IMenuItemEventSink eventSink)
 		{
+			this.eventSink = eventSink;
 		}
 
 		public void SetSubmenu (IMenuBackend menu)
@@ -105,18 +110,37 @@ namespace Xwt.Mac
 		}
 		
 		#region IBackend implementation
-		public void Initialize (object frontend)
+		public void InitializeBackend (object frontend)
 		{
 		}
 
 		public void EnableEvent (object eventId)
 		{
+			if (eventId is MenuItemEvent) {
+				if (enabledEvents == null)
+					enabledEvents = new List<MenuItemEvent> ();
+				enabledEvents.Add ((MenuItemEvent)eventId);
+				if ((MenuItemEvent)eventId == MenuItemEvent.Clicked)
+					item.Activated += HandleItemActivated;
+			}
 		}
 
 		public void DisableEvent (object eventId)
 		{
+			if (eventId is MenuItemEvent) {
+				enabledEvents.Remove ((MenuItemEvent)eventId);
+				if ((MenuItemEvent)eventId == MenuItemEvent.Clicked)
+					item.Activated -= HandleItemActivated;
+			}
 		}
 		#endregion
+		
+		void HandleItemActivated (object sender, EventArgs e)
+		{
+			Toolkit.Invoke (delegate {
+				eventSink.OnClicked ();
+			});
+		}
 	}
 }
 

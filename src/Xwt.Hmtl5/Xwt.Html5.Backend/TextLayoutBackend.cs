@@ -40,7 +40,7 @@ namespace Xwt.Html5.Backend {
         public Size Size {
             get {
                 if (_size == null) {
-                    var font = (FontData) WidgetRegistry.GetBackend (this.Font);
+                    var font = (FontData)Html5Engine.Registry.GetBackend(this.Font);
                     var size = new Size (this.Width, 0);
                     _size = MeasureString (this.Text, font, size);
                 }

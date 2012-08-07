@@ -4,6 +4,7 @@ using Limaki.IOC;
 using Limaki.UnitTest;
 using NUnit.Framework;
 using Xwt.Blind.Backend;
+using Xwt.Engine;
 
 
 namespace Limaki.Tests {
@@ -12,8 +13,8 @@ namespace Limaki.Tests {
         [TestFixtureSetUp]
         public override void Setup() {
             if (Registry.ConcreteContext == null) {
-                new BlindEngine ().RegisterBackends ();
-                Xwt.Engine.WidgetRegistry.RegisterBackend (
+                new BlindEngine ().InitializeRegistry (WidgetRegistry.MainRegistry);
+                BlindEngine.Registry.RegisterBackend(
                     typeof (Xwt.Drawing.SystemColors), typeof (SystemColorsBackend)
                 );
 

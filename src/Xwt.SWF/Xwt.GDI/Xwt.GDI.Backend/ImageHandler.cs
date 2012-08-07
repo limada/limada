@@ -99,5 +99,13 @@ namespace Xwt.Gdi.Backend {
         public override object ChangeOpacity (object backend, double opacity) {
             throw new System.NotImplementedException ();
         }
+
+        public override void SetPixel(object handle, int x, int y, Drawing.Color color) {
+            throw new NotImplementedException();
+        }
+
+        public override Drawing.Color GetPixel(object handle, int x, int y) {
+            throw new NotImplementedException();
+        }
     }
 }

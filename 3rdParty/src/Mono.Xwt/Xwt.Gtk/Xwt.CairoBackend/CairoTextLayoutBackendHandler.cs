@@ -62,7 +62,7 @@ namespace Xwt.CairoBackend
 		#region ITextLayoutBackendHandler implementation
 		public object Create (Context context)
 		{
-			CairoContextBackend c = (CairoContextBackend) WidgetRegistry.GetBackend (context);
+			CairoContextBackend c = (CairoContextBackend) Xwt.GtkBackend.GtkEngine.Registry.GetBackend (context);
 			LayoutBackend b = new LayoutBackend ();
 			b.Context = c;
 			return b;
@@ -84,7 +84,7 @@ namespace Xwt.CairoBackend
 			la.Measured = false;
 		}
 		
-		public void SetHeigth (object backend, double value)
+		public void SetHeight (object backend, double value)
 		{
 			LayoutBackend la = (LayoutBackend) backend;
 			la.Heigth = value;

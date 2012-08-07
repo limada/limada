@@ -45,7 +45,6 @@ namespace Xwt
 		WidgetSize height;
 		bool widthCached;
 		bool heightCached;
-		EventSink eventSink;
 		DragOperation currentDragOperation;
 		Widget contentWidget;
 		WindowFrame parentWindow;
@@ -71,143 +70,51 @@ namespace Xwt
 		EventHandler gotFocus;
 		EventHandler lostFocus;
 		
-		protected class EventSink: IWidgetEventSink, ISpacingListener
+		protected class WidgetBackendHost<T,B>: WidgetBackendHost where T:Widget where B:IWidgetBackend
 		{
-			public Widget Parent { get; internal set; }
-			
-			public void OnDragOverCheck (DragOverCheckEventArgs args)
+			public new T Parent {
+				get { return (T) base.Parent; }
+				set { base.Parent = value; }
+			}
+			public new B Backend {
+				get { return (B) base.Backend; }
+			}
+		}
+		
+		protected class WidgetBackendHost: BackendHost<Widget, IWidgetBackend>, IWidgetEventSink, ISpacingListener
+		{
+			public WidgetBackendHost ()
 			{
-				Parent.OnDragOverCheck (args);
+			}
+			
+			protected override IBackend OnCreateBackend ()
+			{
+				if (Parent.Parent != null) {
+					Console.WriteLine ("Reuse : {0}", Parent.Parent.BackendHost.WidgetRegistry != null);
+					WidgetRegistry = Parent.Parent.BackendHost.WidgetRegistry;
+				}
+				var backend = base.OnCreateBackend ();
+				if (backend == null || backend is XwtWidgetBackend) {
+					// If this is a custom widget, not implemented in Xwt, then we provide the default
+					// backend, which allows setting a content widget
+					Type t = Parent.GetType ();
+					Type wt = typeof(Widget);
+					while (t != wt) {
+						if (t.Assembly == wt.Assembly)
+							return null; // It's a core widget
+						t = t.BaseType;
+					}
+					return WidgetRegistry.CreateBackend<IBackend> (wt);
+				}
+				return backend;
 			}
 
-			public void OnDragOver (DragOverEventArgs args)
+			protected override void OnBackendCreated ()
 			{
-				Parent.OnDragOver (args);
+				((IWidgetBackend)Backend).Initialize (this);
+				base.OnBackendCreated ();
 			}
-
-			public void OnDragDropCheck (DragCheckEventArgs args)
-			{
-				Parent.OnDragDropCheck (args);
-			}
-
-			public void OnDragDrop (DragEventArgs args)
-			{
-				Parent.OnDragDrop (args);
-			}
-
-			public void OnDragLeave (EventArgs args)
-			{
-				Parent.OnDragLeave (args);
-			}
-			
-			public void OnPreferredSizeChanged ()
-			{
-				Parent.OnPreferredSizeChanged ();
-			}
-			
-			public void OnDragFinished (DragFinishedEventArgs args)
-			{
-				Parent.OnDragFinished (args);
-			}
-			
-			public DragStartData OnDragStarted ()
-			{
-				return Parent.InternalDragStarted ();
-			}
-			
-			public void OnKeyPressed (KeyEventArgs args)
-			{
-				Parent.OnKeyPressed (args);
-			}
-			
-			public void OnKeyReleased (KeyEventArgs args)
-			{
-				Parent.OnKeyReleased (args);
-			}
-			
-			public virtual void OnSpacingChanged (WidgetSpacing source)
-			{
-				if (source == Parent.margin)
-					Parent.OnPreferredSizeChanged ();
-			}
-			
-			public WidgetSize OnGetPreferredWidth ()
-			{
-				return Parent.OnGetPreferredWidth ();
-			}
-			
-			public WidgetSize OnGetPreferredHeight ()
-			{
-				return Parent.OnGetPreferredWidth ();
-			}
-			
-			public WidgetSize OnGetPreferredHeightForWidth (double width)
-			{
-				return Parent.OnGetPreferredHeightForWidth (width);
-			}
-			
-			public WidgetSize OnGetPreferredWidthForHeight (double height)
-			{
-				return Parent.OnGetPreferredWidthForHeight (height);
-			}
-			
-			public SizeRequestMode GetSizeRequestMode ()
-			{
-				return ((IWidgetSurface)Parent).SizeRequestMode;
-			}
-			
-			public void OnGotFocus ()
-			{
-				Parent.OnGotFocus (EventArgs.Empty);
-			}
-			
-			public void OnLostFocus ()
-			{
-				Parent.OnLostFocus (EventArgs.Empty);
-			}
-			
-			public void OnMouseEntered ()
-			{
-				Parent.OnMouseEntered (EventArgs.Empty);
-			}
-			
-			public void OnMouseExited ()
-			{
-				Parent.OnMouseExited (EventArgs.Empty);
-			}
-			
-			public void OnButtonPressed (ButtonEventArgs args)
-			{
-				Parent.OnButtonPressed (args);
-			}
-			
-			public void OnButtonReleased (ButtonEventArgs args)
-			{
-				Parent.OnButtonReleased (args);
-			}
-			
-			public void OnMouseMoved (MouseMovedEventArgs args)
-			{
-				Parent.OnMouseMoved (args);
-			}
-			
-			public bool SupportsCustomScrolling ()
-			{
-				return Parent.SupportsCustomScrolling;
-			}
-			
-			public void SetScrollAdjustments (IScrollAdjustmentBackend horizontal, IScrollAdjustmentBackend vertical)
-			{
-				var h = new ScrollAdjustment (horizontal);
-				var v = new ScrollAdjustment (vertical);
-				Parent.SetScrollAdjustments (h, v);
-			}
-			
-			public void OnBoundsChanged ()
-			{
-				Parent.OnBoundsChanged ();
-			}
-			
+		
 			/// <summary>
 			/// Gets the default natural size for this type of widget
 			/// </summary>
@@ -218,13 +125,146 @@ namespace Xwt
 			{
 				return new Size (0, 0);
 			}
+			
+			public virtual void OnSpacingChanged (WidgetSpacing source)
+			{
+				if (source == Parent.margin)
+					Parent.OnPreferredSizeChanged ();
+			}
+			
+			void IWidgetEventSink.OnDragOverCheck (DragOverCheckEventArgs args)
+			{
+				Parent.OnDragOverCheck (args);
+			}
+
+			void IWidgetEventSink.OnDragOver (DragOverEventArgs args)
+			{
+				Parent.OnDragOver (args);
+			}
+
+			void IWidgetEventSink.OnDragDropCheck (DragCheckEventArgs args)
+			{
+				Parent.OnDragDropCheck (args);
+			}
+
+			void IWidgetEventSink.OnDragDrop (DragEventArgs args)
+			{
+				Parent.OnDragDrop (args);
+			}
+
+			void IWidgetEventSink.OnDragLeave (EventArgs args)
+			{
+				Parent.OnDragLeave (args);
+			}
+			
+			void IWidgetEventSink.OnPreferredSizeChanged ()
+			{
+				Parent.OnPreferredSizeChanged ();
+			}
+			
+			void IWidgetEventSink.OnDragFinished (DragFinishedEventArgs args)
+			{
+				Parent.OnDragFinished (args);
+			}
+			
+			DragStartData IWidgetEventSink.OnDragStarted ()
+			{
+				return Parent.InternalDragStarted ();
+			}
+			
+			void IWidgetEventSink.OnKeyPressed (KeyEventArgs args)
+			{
+				Parent.OnKeyPressed (args);
+			}
+			
+			void IWidgetEventSink.OnKeyReleased (KeyEventArgs args)
+			{
+				Parent.OnKeyReleased (args);
+			}
+			
+			WidgetSize IWidgetEventSink.OnGetPreferredWidth ()
+			{
+				return Parent.OnGetPreferredWidth ();
+			}
+			
+			WidgetSize IWidgetEventSink.OnGetPreferredHeight ()
+			{
+				return Parent.OnGetPreferredWidth ();
+			}
+			
+			WidgetSize IWidgetEventSink.OnGetPreferredHeightForWidth (double width)
+			{
+				return Parent.OnGetPreferredHeightForWidth (width);
+			}
+			
+			WidgetSize IWidgetEventSink.OnGetPreferredWidthForHeight (double height)
+			{
+				return Parent.OnGetPreferredWidthForHeight (height);
+			}
+			
+			SizeRequestMode IWidgetEventSink.GetSizeRequestMode ()
+			{
+				return Parent.Surface.SizeRequestMode;
+			}
+			
+			void IWidgetEventSink.OnGotFocus ()
+			{
+				Parent.OnGotFocus (EventArgs.Empty);
+			}
+			
+			void IWidgetEventSink.OnLostFocus ()
+			{
+				Parent.OnLostFocus (EventArgs.Empty);
+			}
+			
+			void IWidgetEventSink.OnMouseEntered ()
+			{
+				Parent.OnMouseEntered (EventArgs.Empty);
+			}
+			
+			void IWidgetEventSink.OnMouseExited ()
+			{
+				Parent.OnMouseExited (EventArgs.Empty);
+			}
+			
+			void IWidgetEventSink.OnButtonPressed (ButtonEventArgs args)
+			{
+				Parent.OnButtonPressed (args);
+			}
+			
+			void IWidgetEventSink.OnButtonReleased (ButtonEventArgs args)
+			{
+				Parent.OnButtonReleased (args);
+			}
+			
+			void IWidgetEventSink.OnMouseMoved (MouseMovedEventArgs args)
+			{
+				Parent.OnMouseMoved (args);
+			}
+			
+			bool IWidgetEventSink.SupportsCustomScrolling ()
+			{
+				return Parent.SupportsCustomScrolling;
+			}
+			
+			void IWidgetEventSink.SetScrollAdjustments (IScrollAdjustmentBackend horizontal, IScrollAdjustmentBackend vertical)
+			{
+				var h = new ScrollAdjustment (horizontal);
+				var v = new ScrollAdjustment (vertical);
+				Parent.SetScrollAdjustments (h, v);
+			}
+			
+			void IWidgetEventSink.OnBoundsChanged ()
+			{
+				Parent.OnBoundsChanged ();
+			}
 		}
 		
 		public Widget ()
 		{
-			eventSink = CreateEventSink ();
-			eventSink.Parent = this;
-			margin = new Xwt.WidgetSpacing (eventSink);
+			if (!(base.BackendHost is WidgetBackendHost))
+				throw new InvalidOperationException ("CreateBackendHost for Widget did not return a WidgetBackendHost instance");
+			margin = new Xwt.WidgetSpacing (BackendHost);
 		}
 		
 		static Widget ()
@@ -251,13 +291,29 @@ namespace Xwt
 			MapEvent (WidgetEvent.PreferredWidthForHeightCheck, typeof (Widget), "OnGetPreferredWidthForHeight");
 		}
 		
+		internal protected static IBackend GetBackend (Widget w)
+		{
+			if (w.Backend is XwtWidgetBackend)
+				return GetBackend ((XwtWidgetBackend)w.Backend);
+			return w != null ? w.Backend : null;
+		}
+		
+		protected new WidgetBackendHost BackendHost {
+			get { return (WidgetBackendHost) base.BackendHost; }
+		}
+		
+		protected override Xwt.Backends.BackendHost CreateBackendHost ()
+		{
+			return new WidgetBackendHost ();
+		}
+		
 		protected override void Dispose (bool disposing)
 		{
 			base.Dispose (disposing);
 			
 			// Don't dispose the backend if this object is being finalized
 			// The backend has to handle the finalizing on its own
-			if (disposing && BackendCreated)
+			if (disposing && BackendHost.BackendCreated)
 				Backend.Dispose ();
 		}
 		
@@ -268,7 +324,7 @@ namespace Xwt
 				else if (parentWindow == null) {
 					var p = Application.EngineBackend.GetNativeParentWindow (this);
 					if (p != null)
-						parentWindow = WidgetRegistry.WrapWindow (p);
+						parentWindow = BackendHost.WidgetRegistry.WrapWindow (p);
 				}
 				return parentWindow;
 			}
@@ -279,35 +335,17 @@ namespace Xwt
 			parentWindow = win;
 		}
 		
-		protected virtual EventSink CreateEventSink ()
+/*		protected virtual WidgetBackendHost CreateBackendHost ()
 		{
-			return new EventSink ();
+			return new WidgetBackendHost ();
 		}
 		
-		protected override IBackend OnCreateBackend ()
-		{
-			var backend = base.OnCreateBackend ();
-			if (backend == null) {
-				// If this is a custom widget, not implemented in Xwt, then we provide the default
-				// backend, which allows setting a content widget
-				Type t = GetType ();
-				Type wt = typeof(Widget);
-				while (t != wt) {
-					if (t.Assembly == wt.Assembly)
-						return null; // It's a core widget
-					t = t.BaseType;
-				}
-				return WidgetRegistry.CreateBackend<IBackend> (wt);
-			}
-			return backend;
-		}
-		
-		protected EventSink WidgetEventSink {
-			get { return eventSink; }
-		}
-		
-		new IWidgetBackend Backend {
-			get { return (IWidgetBackend) base.Backend; }
+		protected WidgetBackendHost BackendHost {
+			get { return backendHost; }
+		}*/
+
+        protected IWidgetBackend Backend {
+			get { return (IWidgetBackend) BackendHost.Backend; }
 		}
 		
 		public WidgetSpacing Margin {
@@ -355,6 +393,11 @@ namespace Xwt
 		
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public Widget Parent { get; set; }
+		
+		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		public IWidgetSurface Surface {
+			get { return this; }
+		}
 		
 		protected Widget Content {
 			get { return contentWidget; }
@@ -462,7 +505,7 @@ namespace Xwt
 				return new Font (Backend.Font);
 			}
 			set {
-				Backend.Font = WidgetRegistry.GetBackend (value);
+				Backend.Font = BackendHost.WidgetRegistry.GetBackend (value);
 			}
 		}
 		
@@ -566,12 +609,6 @@ namespace Xwt
 		
 		protected virtual void SetScrollAdjustments (ScrollAdjustment horizontal, ScrollAdjustment vertical)
 		{
-		}
-
-		protected override void OnBackendCreated ()
-		{
-			Backend.Initialize (eventSink);
-			base.OnBackendCreated ();
 		}
 		
 		/// <summary>
@@ -730,6 +767,17 @@ namespace Xwt
 				mouseMoved (this, args);
 		}
 		
+		void HandleBoundsChanged ()
+		{
+			// If bounds have changed and the widget has not a parent, chances are that
+			// the widget is embedded in a native application, in which case we
+			// have to call Reallocate here (which is normally called by the root XWT window)
+			if (!Application.EngineBackend.HandlesSizeNegotiation && Parent == null)
+				Surface.Reallocate ();
+			
+			OnBoundsChanged ();
+		}
+		
 		protected virtual void OnBoundsChanged ()
 		{
 			if (boundsChanged != null)
@@ -741,7 +789,7 @@ namespace Xwt
 			return (IWidgetBackend) GetBackend (w);
 		}
 		
-		void IWidgetSurface.ResetCachedSizes ()
+		void ResetCachedSizes ()
 		{
 			widthCached = false;
 			heightCached = false;
@@ -762,8 +810,6 @@ namespace Xwt
 			if (widthCached)
 				return width;
 			else {
-				if (!Application.EngineBackend.HandlesSizeNegotiation)
-					widthCached = true;
 				if (minWidth != -1 && naturalWidth != -1)
 					return new WidgetSize (minWidth, naturalWidth);
 				width = OnGetPreferredWidth () + Margin.HorizontalSpacing;
@@ -773,6 +819,8 @@ namespace Xwt
 					width.MinSize = minWidth;
 				if (width.NaturalSize < width.MinSize)
 					width.NaturalSize = width.MinSize;
+				if (!Application.EngineBackend.HandlesSizeNegotiation)
+					widthCached = true;
 				return width;
 			}
 		}
@@ -782,8 +830,6 @@ namespace Xwt
 			if (heightCached)
 				return height;
 			else {
-				if (!Application.EngineBackend.HandlesSizeNegotiation)
-					heightCached = true;
 				if (minHeight != -1 && naturalHeight != -1)
 					return new WidgetSize (minHeight, naturalHeight);
 				height = OnGetPreferredHeight () + Margin.VerticalSpacing;
@@ -793,6 +839,8 @@ namespace Xwt
 					height.MinSize = minHeight;
 				if (height.NaturalSize < height.MinSize)
 					height.NaturalSize = height.MinSize;
+				if (!Application.EngineBackend.HandlesSizeNegotiation)
+					heightCached = true;
 				return height;
 			}
 		}
@@ -850,8 +898,8 @@ namespace Xwt
 		protected virtual void OnReallocate ()
 		{
 			if (children != null) {
-				foreach (IWidgetSurface c in children)
-					c.Reallocate ();
+				foreach (Widget w in children)
+					w.Surface.Reallocate ();
 			}
 		}
 		
@@ -895,11 +943,9 @@ namespace Xwt
 		
 		void OnChildPreferredSizeChanged ()
 		{
-			IWidgetSurface surface = this;
-			
 			if (Parent != null && resizeRequestQueue.Contains (Parent)) {
 				// Size for this widget will be checked when checking the parent
-				surface.ResetCachedSizes ();
+				ResetCachedSizes ();
 				return;
 			}
 			
@@ -910,21 +956,21 @@ namespace Xwt
 			var oldWidth = width;
 			var oldHeight = height;
 			
-			surface.ResetCachedSizes ();
+			ResetCachedSizes ();
 			
 			bool changed = true;
 			
-			if (surface.SizeRequestMode == SizeRequestMode.HeightForWidth) {
-				var nw = surface.GetPreferredWidth ();
+			if (Surface.SizeRequestMode == SizeRequestMode.HeightForWidth) {
+				var nw = Surface.GetPreferredWidth ();
 				if (nw == oldWidth) {
-					var nh = surface.GetPreferredHeightForWidth (Backend.Size.Width);
+					var nh = Surface.GetPreferredHeightForWidth (Backend.Size.Width);
 					if (nh == oldHeight)
 						changed = false;
 				}
 			} else {
-				var nh = surface.GetPreferredHeight ();
+				var nh = Surface.GetPreferredHeight ();
 				if (nh == oldHeight) {
-					var nw = surface.GetPreferredWidthForHeight (Backend.Size.Height);
+					var nw = Surface.GetPreferredWidthForHeight (Backend.Size.Height);
 					if (nw == oldWidth)
 						changed = false;
 				}
@@ -949,8 +995,7 @@ namespace Xwt
 			// may imply a change of the size of the parent. However, we don't do
 			// it immediately, but we queue the resizing request
 			
-			IWidgetSurface surface = this;
-			surface.ResetCachedSizes ();
+			ResetCachedSizes ();
 			Backend.UpdateLayout ();
 			if (!Application.EngineBackend.HandlesSizeNegotiation)
 				NotifySizeChangeToParent ();
@@ -985,7 +1030,7 @@ namespace Xwt
 		
 		void QueueForSizeCheck (Widget w)
 		{
-			if (resizeRequestQueue.Add (Parent)) {
+			if (resizeRequestQueue.Add (w)) {
 				int depth = w.Depth;
 				bool inserted = false;
 				for (int n=0; n<resizeDepths.Count; n++) {
@@ -1023,7 +1068,7 @@ namespace Xwt
 					// The widget may already have been reallocated as a result of reallocating the parent
 					// so we have to check if it is still in the queue
 					if (reallocationQueue.Contains (w))
-						((IWidgetSurface)w).Reallocate ();
+						w.Surface.Reallocate ();
 				}
 				foreach (var w in resizeWindows.ToArray ()) {
 					w.AdjustSize ();
@@ -1082,12 +1127,12 @@ namespace Xwt
 		/// </remarks>
 		public event EventHandler<DragOverCheckEventArgs> DragOverCheck {
 			add {
-				OnBeforeEventAdd (WidgetEvent.DragOverCheck, dragOverCheck);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.DragOverCheck, dragOverCheck);
 				dragOverCheck += value;
 			}
 			remove {
 				dragOverCheck -= value;
-				OnAfterEventRemove (WidgetEvent.DragOverCheck, dragOverCheck);
+				BackendHost.OnAfterEventRemove (WidgetEvent.DragOverCheck, dragOverCheck);
 			}
 		}
 		
@@ -1106,12 +1151,12 @@ namespace Xwt
 		/// </remarks>
 		public event EventHandler<DragOverEventArgs> DragOver {
 			add {
-				OnBeforeEventAdd (WidgetEvent.DragOver, dragOver);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.DragOver, dragOver);
 				dragOver += value;
 			}
 			remove {
 				dragOver -= value;
-				OnAfterEventRemove (WidgetEvent.DragOver, dragOver);
+				BackendHost.OnAfterEventRemove (WidgetEvent.DragOver, dragOver);
 			}
 		}
 		
@@ -1120,12 +1165,12 @@ namespace Xwt
 		/// </summary>
 		public event EventHandler<DragCheckEventArgs> DragDropCheck {
 			add {
-				OnBeforeEventAdd (WidgetEvent.DragDropCheck, dragDropCheck);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.DragDropCheck, dragDropCheck);
 				dragDropCheck += value;
 			}
 			remove {
 				dragDropCheck -= value;
-				OnAfterEventRemove (WidgetEvent.DragDropCheck, dragDropCheck);
+				BackendHost.OnAfterEventRemove (WidgetEvent.DragDropCheck, dragDropCheck);
 			}
 		}
 		
@@ -1138,56 +1183,56 @@ namespace Xwt
 		/// </remarks>
 		public event EventHandler<DragEventArgs> DragDrop {
 			add {
-				OnBeforeEventAdd (WidgetEvent.DragDrop, dragDrop);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.DragDrop, dragDrop);
 				dragDrop += value;
 			}
 			remove {
 				dragDrop -= value;
-				OnAfterEventRemove (WidgetEvent.DragDrop, dragDrop);
+				BackendHost.OnAfterEventRemove (WidgetEvent.DragDrop, dragDrop);
 			}
 		}
 		
 		public event EventHandler DragLeave {
 			add {
-				OnBeforeEventAdd (WidgetEvent.DragLeave, dragLeave);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.DragLeave, dragLeave);
 				dragLeave += value;
 			}
 			remove {
 				dragLeave -= value;
-				OnAfterEventRemove (WidgetEvent.DragLeave, dragLeave);
+				BackendHost.OnAfterEventRemove (WidgetEvent.DragLeave, dragLeave);
 			}
 		}
 		
 		public event EventHandler<DragStartedEventArgs> DragStarted {
 			add {
-				OnBeforeEventAdd (WidgetEvent.DragStarted, dragStarted);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.DragStarted, dragStarted);
 				dragStarted += value;
 			}
 			remove {
 				dragStarted -= value;
-				OnAfterEventRemove (WidgetEvent.DragStarted, dragStarted);
+				BackendHost.OnAfterEventRemove (WidgetEvent.DragStarted, dragStarted);
 			}
 		}
 		
 		public event EventHandler<KeyEventArgs> KeyPressed {
 			add {
-				OnBeforeEventAdd (WidgetEvent.KeyPressed, keyPressed);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.KeyPressed, keyPressed);
 				keyPressed += value;
 			}
 			remove {
 				keyPressed -= value;
-				OnAfterEventRemove (WidgetEvent.KeyPressed, keyPressed);
+				BackendHost.OnAfterEventRemove (WidgetEvent.KeyPressed, keyPressed);
 			}
 		}
 		
 		public event EventHandler<KeyEventArgs> KeyReleased {
 			add {
-				OnBeforeEventAdd (WidgetEvent.KeyReleased, keyReleased);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.KeyReleased, keyReleased);
 				keyReleased += value;
 			}
 			remove {
 				keyReleased -= value;
-				OnAfterEventRemove (WidgetEvent.KeyReleased, keyReleased);
+				BackendHost.OnAfterEventRemove (WidgetEvent.KeyReleased, keyReleased);
 			}
 		}
 		
@@ -1196,12 +1241,12 @@ namespace Xwt
 		/// </summary>
 		public event EventHandler GotFocus {
 			add {
-				OnBeforeEventAdd (WidgetEvent.GotFocus, gotFocus);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.GotFocus, gotFocus);
 				gotFocus += value;
 			}
 			remove {
 				gotFocus -= value;
-				OnAfterEventRemove (WidgetEvent.GotFocus, gotFocus);
+				BackendHost.OnAfterEventRemove (WidgetEvent.GotFocus, gotFocus);
 			}
 		}
 		
@@ -1210,12 +1255,12 @@ namespace Xwt
 		/// </summary>
 		public event EventHandler LostFocus {
 			add {
-				OnBeforeEventAdd (WidgetEvent.LostFocus, lostFocus);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.LostFocus, lostFocus);
 				lostFocus += value;
 			}
 			remove {
 				lostFocus -= value;
-				OnAfterEventRemove (WidgetEvent.LostFocus, lostFocus);
+				BackendHost.OnAfterEventRemove (WidgetEvent.LostFocus, lostFocus);
 			}
 		}
 
@@ -1224,12 +1269,12 @@ namespace Xwt
 		/// </summary>
 		public event EventHandler MouseEntered {
 			add {
-				OnBeforeEventAdd (WidgetEvent.MouseEntered, mouseEntered);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.MouseEntered, mouseEntered);
 				mouseEntered += value;
 			}
 			remove {
 				mouseEntered -= value;
-				OnAfterEventRemove (WidgetEvent.MouseEntered, mouseEntered);
+				BackendHost.OnAfterEventRemove (WidgetEvent.MouseEntered, mouseEntered);
 			}
 		}
 
@@ -1238,56 +1283,56 @@ namespace Xwt
 		/// </summary>
 		public event EventHandler MouseExited {
 			add {
-				OnBeforeEventAdd (WidgetEvent.MouseExited, mouseExited);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.MouseExited, mouseExited);
 				mouseExited += value;
 			}
 			remove {
 				mouseExited -= value;
-				OnAfterEventRemove (WidgetEvent.MouseExited, mouseExited);
+				BackendHost.OnAfterEventRemove (WidgetEvent.MouseExited, mouseExited);
 			}
 		}
 		
 		public event EventHandler<ButtonEventArgs> ButtonPressed {
 			add {
-				OnBeforeEventAdd (WidgetEvent.ButtonPressed, buttonPressed);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.ButtonPressed, buttonPressed);
 				buttonPressed += value;
 			}
 			remove {
 				buttonPressed -= value;
-				OnAfterEventRemove (WidgetEvent.ButtonPressed, buttonPressed);
+				BackendHost.OnAfterEventRemove (WidgetEvent.ButtonPressed, buttonPressed);
 			}
 		}
 		
 		public event EventHandler<ButtonEventArgs> ButtonReleased {
 			add {
-				OnBeforeEventAdd (WidgetEvent.ButtonReleased, buttonReleased);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.ButtonReleased, buttonReleased);
 				buttonReleased += value;
 			}
 			remove {
 				buttonReleased -= value;
-				OnAfterEventRemove (WidgetEvent.ButtonReleased, buttonReleased);
+				BackendHost.OnAfterEventRemove (WidgetEvent.ButtonReleased, buttonReleased);
 			}
 		}
 		
 		public event EventHandler<MouseMovedEventArgs> MouseMoved {
 			add {
-				OnBeforeEventAdd (WidgetEvent.MouseMoved, mouseMoved);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.MouseMoved, mouseMoved);
 				mouseMoved += value;
 			}
 			remove {
 				mouseMoved -= value;
-				OnAfterEventRemove (WidgetEvent.MouseMoved, mouseMoved);
+				BackendHost.OnAfterEventRemove (WidgetEvent.MouseMoved, mouseMoved);
 			}
 		}
 		
 		public event EventHandler BoundsChanged {
 			add {
-				OnBeforeEventAdd (WidgetEvent.BoundsChanged, boundsChanged);
+				BackendHost.OnBeforeEventAdd (WidgetEvent.BoundsChanged, boundsChanged);
 				boundsChanged += value;
 			}
 			remove {
 				boundsChanged -= value;
-				OnAfterEventRemove (WidgetEvent.BoundsChanged, boundsChanged);
+				BackendHost.OnAfterEventRemove (WidgetEvent.BoundsChanged, boundsChanged);
 			}
 		}
 	}

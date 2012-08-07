@@ -63,14 +63,14 @@ namespace Xwt
 	{
 		Dictionary<Widget,Rectangle> positions;
 		
-		protected new class EventSink: Widget.EventSink, ICanvasEventSink
+		protected new class WidgetBackendHost: Widget.WidgetBackendHost, ICanvasEventSink
 		{
-			public void OnDraw (object context)
+			public virtual void OnDraw (object context, Rectangle dirtyRect)
 			{
 				Context ctx = null;
 				try {
 					ctx = new Context (context);
-					((Canvas)Parent).OnDraw (ctx);
+					((Canvas)Parent).OnDraw (ctx, dirtyRect);
 				}
 				finally {
 					ctx.Dispose ();
@@ -115,9 +115,8 @@ namespace Xwt
 		/// </remarks>
 		public void AddChild (Widget w, double x, double y)
 		{
-			var ws = w as IWidgetSurface;
-			var pw = ws.GetPreferredWidth ().NaturalSize;
-			AddChild (w, new Rectangle (x, y, pw, ws.GetPreferredHeightForWidth (pw).NaturalSize));
+			var pw = w.Surface.GetPreferredWidth ().NaturalSize;
+			AddChild (w, new Rectangle (x, y, pw, w.Surface.GetPreferredHeightForWidth (pw).NaturalSize));
 		}
 		
 		/// <summary>
@@ -190,7 +189,7 @@ namespace Xwt
 		/// The children.
 		/// </value>
 		public IEnumerable<Widget> Children {
-			get { return ((IWidgetSurface)this).Children; }
+			get { return Surface.Children; }
 		}
 		
 		/// <summary>
@@ -213,13 +212,13 @@ namespace Xwt
 			return Rectangle.Zero;
 		}
 		
-		protected override Widget.EventSink CreateEventSink ()
+		protected override BackendHost CreateBackendHost ()
 		{
-			return new EventSink ();
+			return new WidgetBackendHost ();
 		}
 		
-		new ICanvasBackend Backend {
-			get { return (ICanvasBackend) base.Backend; }
+		ICanvasBackend Backend {
+			get { return (ICanvasBackend) BackendHost.Backend; }
 		}
 		
 		/// <summary>
@@ -247,7 +246,7 @@ namespace Xwt
 		/// <param name='ctx'>
 		/// Drawing context
 		/// </param>
-		protected virtual void OnDraw (Context ctx)
+		protected virtual void OnDraw (Context ctx, Rectangle dirtyRect)
 		{
 		}
 		

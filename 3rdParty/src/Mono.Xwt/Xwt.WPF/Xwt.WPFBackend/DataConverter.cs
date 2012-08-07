@@ -29,10 +29,12 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Specialized;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using SW = System.Windows;
+using SWC = System.Windows.Controls;
 using SWM = System.Windows.Media;
 using SD = System.Drawing;
 using SDI = System.Drawing.Imaging;
@@ -58,6 +60,11 @@ namespace Xwt.WPFBackend
 		public static SW.Rect ToWpfRect (this Rectangle rect)
 		{
 			return new SW.Rect (rect.X, rect.Y, rect.Width, rect.Height);
+		}
+
+		public static SD.RectangleF ToSDRectF (this Rectangle rect)
+		{
+			return new SD.RectangleF ((float) rect.X, (float) rect.Y, (float) rect.Width, (float) rect.Height);
 		}
 
 		public static Int32Rect ToInt32Rect (this Rectangle rect)
@@ -260,7 +267,11 @@ namespace Xwt.WPFBackend
 			switch (value) {
 				case MouseButton.Left: return PointerButton.Left;
 				case MouseButton.Middle: return PointerButton.Middle;
-				default: return PointerButton.Right;
+				case MouseButton.Right: return PointerButton.Right;
+				case MouseButton.XButton1: return PointerButton.ExtendedButton1;
+				case MouseButton.XButton2: return PointerButton.ExtendedButton2;
+
+				default: throw new ArgumentException();
 			}
 		}
 
@@ -269,7 +280,11 @@ namespace Xwt.WPFBackend
 			switch (value) {
 				case PointerButton.Left: return MouseButton.Left;
 				case PointerButton.Middle: return MouseButton.Middle;
-				default: return MouseButton.Right;
+				case PointerButton.Right: return MouseButton.Right;
+				case PointerButton.ExtendedButton1: return MouseButton.XButton1;
+				case PointerButton.ExtendedButton2: return MouseButton.XButton2;
+
+				default: throw new ArgumentException();
 			}
 		}
 
@@ -373,20 +388,73 @@ namespace Xwt.WPFBackend
 			return effects;
 		}
 
-		public static string ToWpfDragType (this TransferDataType type)
+		public static string ToWpfDataFormat (this TransferDataType type)
 		{
 			if (type == TransferDataType.Text) return DataFormats.UnicodeText;
 			if (type == TransferDataType.Rtf) return DataFormats.Rtf;
 			if (type == TransferDataType.Uri) return DataFormats.FileDrop;
+			if (type == TransferDataType.Image) return DataFormats.Bitmap;
 			return type.Id;
 		}
 
-		public static TransferDataType ToXwtDragType (this string type)
+		public static TransferDataType ToXwtTransferType (this string type)
 		{
 			if (type == DataFormats.UnicodeText) return TransferDataType.Text;
 			if (type == DataFormats.Rtf) return TransferDataType.Rtf;
 			if (type == DataFormats.FileDrop) return TransferDataType.Uri;
+			if (type == DataFormats.Bitmap) return TransferDataType.Image;
 			return TransferDataType.FromId (type);
+		}
+
+		// Scrollbar visibility
+
+		public static SWC.ScrollBarVisibility ToWpfScrollBarVisibility (this ScrollPolicy policy)
+		{
+			switch (policy) {
+				case ScrollPolicy.Always:
+					return SWC.ScrollBarVisibility.Visible;
+				case ScrollPolicy.Automatic:
+					return SWC.ScrollBarVisibility.Auto;
+				case ScrollPolicy.Never:
+					return SWC.ScrollBarVisibility.Hidden;
+
+				default:
+					throw new NotSupportedException ();
+			}
+		}
+
+		public static ScrollPolicy ToXwtScrollPolicy (this SWC.ScrollBarVisibility visibility)
+		{
+			switch (visibility) {
+				case SWC.ScrollBarVisibility.Auto:
+					return ScrollPolicy.Automatic;
+				case SWC.ScrollBarVisibility.Visible:
+					return ScrollPolicy.Always;
+				case SWC.ScrollBarVisibility.Hidden:
+					return ScrollPolicy.Never;
+
+				default:
+					throw new NotSupportedException ();
+			}
+		}
+
+		public static DataObject ToDataObject (this TransferDataSource data)
+		{
+			var retval = new DataObject ();
+			foreach (var type in data.DataTypes) {
+				var value = data.GetValue (type);
+
+				if (type == TransferDataType.Text)
+					retval.SetText ((string)value);
+				else if (type == TransferDataType.Uri) {
+					var uris = new StringCollection ();
+					uris.Add (((Uri)value).LocalPath);
+					retval.SetFileDropList (uris);
+				} else
+					retval.SetData (type.Id, TransferDataSource.SerializeValue (value));
+			}
+
+			return retval;
 		}
 	}
 }

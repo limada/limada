@@ -31,14 +31,14 @@ namespace Xwt.Drawing
 {
 	public sealed class Context: XwtObject, IDisposable
 	{
-		
+        
         static IContextBackendHandler _handler = null;
         static IContextBackendHandler handler {
-            get { return _handler ?? (_handler = WidgetRegistry.CreateSharedBackend<IContextBackendHandler> (typeof (Context))); }
+            get { return _handler ?? (_handler = WidgetRegistry.MainRegistry.CreateSharedBackend<IContextBackendHandler>(typeof(Context))); }
 
         }
 
-        internal static void SetHandler (IContextBackendHandler handler) {
+        internal static void SetHandler(IContextBackendHandler handler) {
             _handler = handler;
         }
 
@@ -52,10 +52,11 @@ namespace Xwt.Drawing
 		}
 		
 		protected override IBackendHandler BackendHandler {
-			get { return handler; }
-            
+			get {
+				return handler;
+			}
 		}
-
+		
 		public Context (object backend): base (backend)
 		{
 		}
@@ -383,6 +384,16 @@ namespace Xwt.Drawing
 			handler.DrawImage (Backend, GetBackend (img), rect.X, rect.Y, rect.Width, rect.Height, alpha);
 		}
 
+		public void DrawImage (Image img, Rectangle srcRect, Rectangle destRect)
+		{
+			handler.DrawImage (Backend, GetBackend (img), srcRect, destRect, 1);
+		}
+
+		public void DrawImage (Image img, Rectangle srcRect, Rectangle destRect, double alpha)
+		{
+			handler.DrawImage (Backend, GetBackend (img), srcRect, destRect, alpha);
+		}
+
 		/// <summary>
 		/// Resets the current trasnformation matrix (CTM) to the Identity Matrix
 		/// </summary>
@@ -423,6 +434,38 @@ namespace Xwt.Drawing
 			handler.Translate (Backend, p.X, p.Y);
 		}
 		
+		/// <summary>
+		/// Transforms the point (x, y) by the current transformation matrix (CTM)
+		/// </summary>
+		public void TransformPoint (ref double x, ref double y)
+		{
+			handler.TransformPoint (Backend, ref x, ref y);
+		}
+
+		/// <summary>
+		/// Transforms the distance (dx, dy) by the scale and rotation elements (only) of the CTM
+		/// </summary>
+		public void TransformDistance (ref double dx, ref double dy)
+		{
+			handler.TransformDistance (Backend, ref dx, ref dy);
+		}
+
+		/// <summary>
+		/// Transforms the array of points by the current transformation matrix (CTM)
+		/// </summary>
+		public void TransformPoints (Point[] points)
+		{
+			handler.TransformPoints (Backend, points);
+		}
+
+		/// <summary>
+		/// Transforms the array of distances by the scale and rotation elements (only) of the CTM
+		/// </summary>
+		public void TransformDistances (Distance[] vectors)
+		{
+			handler.TransformDistances (Backend, vectors);
+		}
+
 		public void Dispose ()
 		{
 			handler.Dispose (Backend);

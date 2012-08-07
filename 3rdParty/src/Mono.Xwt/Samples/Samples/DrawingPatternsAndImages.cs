@@ -32,9 +32,9 @@ namespace Samples
 {
 	public class DrawingPatternsAndImages: Drawings
 	{
-		protected override void OnDraw (Context ctx)
+		protected override void OnDraw (Context ctx, Rectangle dirtyRect)
 		{
-			base.OnDraw (ctx);
+			base.OnDraw (ctx, dirtyRect);
 			PatternsAndImages (ctx, 5, 5);
 		}
 		
@@ -80,6 +80,18 @@ namespace Samples
 			ctx.Restore ();
 			
 			ctx.Restore ();
+			
+			// Setting pixels
+			
+			ctx.SetLineWidth (1);
+			for (int i=0; i<50;i++) {
+				for (var j=0; j<50;j++) {
+					Color c = Color.FromHsl (0.5, (double)i / 50d, (double)j / 50d);
+					ctx.Rectangle (i, j, 1, 1);
+					ctx.SetColor (c);
+					ctx.Fill ();
+				}
+			}
 		}	
 	}
 }

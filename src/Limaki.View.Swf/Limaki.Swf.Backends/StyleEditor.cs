@@ -51,7 +51,7 @@ namespace Limaki.Swf.Backends.Viewers {
                 this.TextColor = GdiConverter.ToGdi (style.TextColor);
                 this.PenColor = GdiConverter.ToGdi (style.PenColor);
                 if ( style.Font != null ) {
-                    var swfFont = global::Xwt.Engine.WidgetRegistry.GetBackend( style.Font ) as Font;
+                    var swfFont = GdiEngine.Registry.GetBackend( style.Font ) as Font;
                     if ( swfFont != null )
                         this.StyleFont = swfFont;
                 }
@@ -102,7 +102,7 @@ namespace Limaki.Swf.Backends.Viewers {
                 _font = value;
                 if (value != null) {
                     fontButton.Font = _font;
-                    var font = global::Xwt.Engine.WidgetRegistry.CreateFrontend<global::Xwt.Drawing.Font>( _font );
+                    var font = GdiEngine.Registry.CreateFrontend<global::Xwt.Drawing.Font>( _font );
                     SelectedObject.Font = font;
                 }
                 DoPropertyValueChanged();

@@ -33,14 +33,35 @@ using SWC = System.Windows.Controls;
 namespace Xwt.WPFBackend
 {
 	public class DropDownButton
-		: SWC.Primitives.ToggleButton
+		: SWC.Primitives.ToggleButton, IWpfWidget
 	{
+		public DropDownButton()
+		{
+			Checked += OnChecked;
+		}
+
 		public event EventHandler<MenuOpeningEventArgs> MenuOpening;
 
-		protected override void OnToggle()
+		public WidgetBackend Backend
 		{
-			base.OnToggle();
+			get;
+			set;
+		}
 
+		protected override System.Windows.Size MeasureOverride (System.Windows.Size constraint)
+		{
+			// HACK: This is a hack to fix a size calculation issue with buttons.
+			// For some reason, base.MeasureOverride doesn't return the correct size
+			// when using infinite,infinite as constraint, unless a previous call with
+			// concrete numbers has been made.
+			base.MeasureOverride (new System.Windows.Size (0, 0));
+
+			var s = base.MeasureOverride (constraint);
+			return Backend.MeasureOverride (constraint, s);
+		}
+
+		private void OnChecked (object sender, RoutedEventArgs routedEventArgs)
+		{
 			if (!IsChecked.HasValue || !IsChecked.Value)
 				return;
 
@@ -55,7 +76,7 @@ namespace Xwt.WPFBackend
 				IsChecked = false;
 				return;
 			}
-
+			
 			string text = Content as string;
 			if (!String.IsNullOrWhiteSpace (text)) {
 				SWC.MenuItem selected = menu.Items.OfType<SWC.MenuItem>().FirstOrDefault (i => i.Header as string == text);

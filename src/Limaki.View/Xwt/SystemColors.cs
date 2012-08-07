@@ -31,7 +31,7 @@ namespace Xwt.Drawing {
     public static class SystemColors {
 
         static SystemColors() {
-            backend= WidgetRegistry.CreateBackend<ISystemColorsBackend> (typeof (SystemColors));
+            backend = WidgetRegistry.MainRegistry.CreateBackend<ISystemColorsBackend>(typeof(SystemColors));
         }
 
         static ISystemColorsBackend backend;

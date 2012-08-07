@@ -38,7 +38,7 @@ namespace Limaki.Painting {
         Font font;
 
         static PaintContext () {
-            handler = WidgetRegistry.CreateSharedBackend<IPaintContextBackendHandler> (typeof (PaintContext));
+            handler = WidgetRegistry.MainRegistry.CreateSharedBackend<IPaintContextBackendHandler> (typeof (PaintContext));
         }
 
         protected override IBackendHandler BackendHandler { get { return handler;} }
@@ -132,7 +132,7 @@ namespace Limaki.Painting {
         }
 
         private object GetBackend (object obj) {
-            return WidgetRegistry.GetBackend (obj);
+            return WidgetRegistry.MainRegistry.GetBackend (obj);
         }
 
         public void DrawImage (Image img, double x, double y) {

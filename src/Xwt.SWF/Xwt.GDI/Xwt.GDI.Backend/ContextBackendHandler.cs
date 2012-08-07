@@ -36,7 +36,7 @@ namespace Xwt.Gdi.Backend {
     public class ContextBackendHandler : IContextBackendHandler {
 
         public virtual object CreateContext (Widget w) {
-            var b = (IGdiGraphicsBackend) WidgetRegistry.GetBackend (w);
+            var b = (IGdiGraphicsBackend)GdiEngine.Registry.GetBackend(w);
 
             var ctx = new GdiContext ();
             if (b.Graphics != null) {
@@ -303,7 +303,7 @@ namespace Xwt.Gdi.Backend {
                 return;
 
             var gc = (GdiContext) backend;
-            var tl = (TextLayoutBackend) WidgetRegistry.GetBackend (layout);
+            var tl = (TextLayoutBackend)GdiEngine.Registry.GetBackend(layout);
             var font = tl.Font.ToGdi ();
             var w = layout.Width;
             var h = layout.Height;
@@ -396,6 +396,27 @@ namespace Xwt.Gdi.Backend {
 
         public void SetGlobalAlpha (object backend, double globalAlpha) {
 
+        }
+
+
+        public void DrawImage(object backend, object img, Rectangle srcRect, Rectangle destRect, double alpha) {
+            throw new NotImplementedException();
+        }
+
+        public void TransformPoint(object backend, ref double x, ref double y) {
+            throw new NotImplementedException();
+        }
+
+        public void TransformDistance(object backend, ref double dx, ref double dy) {
+            throw new NotImplementedException();
+        }
+
+        public void TransformPoints(object backend, Point[] points) {
+            throw new NotImplementedException();
+        }
+
+        public void TransformDistances(object backend, Distance[] vectors) {
+            throw new NotImplementedException();
         }
     }
 }

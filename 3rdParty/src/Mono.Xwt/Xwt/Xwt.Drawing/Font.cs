@@ -30,17 +30,16 @@ using Xwt.Engine;
 
 namespace Xwt.Drawing
 {
-	public class Font: XwtObject
+	public sealed class Font: XwtObject
 	{
+		
         static IFontBackendHandler _handler = null;
-	    static IFontBackendHandler handler 
-        {
-            get { return _handler ?? (_handler = WidgetRegistry.CreateSharedBackend<IFontBackendHandler> (typeof (Font))); }
-            
-	    }
+        static IFontBackendHandler handler {
+            get { return _handler ?? (_handler = WidgetRegistry.MainRegistry.CreateSharedBackend<IFontBackendHandler>(typeof(Font))); }
 
-        internal static void SetHandler (IFontBackendHandler handler) 
-        {
+        }
+
+        internal static void SetHandler(IFontBackendHandler handler) {
             _handler = handler;
         }
 
@@ -49,9 +48,10 @@ namespace Xwt.Drawing
 			
 		}
 		
-		protected override IBackendHandler BackendHandler 
-        {
-			get { return handler; }
+		protected override IBackendHandler BackendHandler {
+			get {
+				return handler;
+			}
 		}
 		
 		public Font (object backend)

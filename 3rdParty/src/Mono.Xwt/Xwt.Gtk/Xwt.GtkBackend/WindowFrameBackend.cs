@@ -48,7 +48,7 @@ namespace Xwt.GtkBackend
 			get { return frontend; }
 		}
 		
-		void IBackend.Initialize (object frontend)
+		void IBackend.InitializeBackend (object frontend)
 		{
 			this.frontend = (WindowFrame) frontend;
 		}
@@ -76,6 +76,23 @@ namespace Xwt.GtkBackend
 		
 		public IWindowFrameEventSink EventSink {
 			get { return eventSink; }
+		}
+
+		public void Move (double x, double y)
+		{
+			Window.Move ((int)x, (int)y);
+			Toolkit.Invoke (delegate {
+				EventSink.OnBoundsChanged (Bounds);
+			});
+		}
+
+		public void Resize (double width, double height)
+		{
+			Window.Resize ((int)width, (int)height);
+			Window.SetDefaultSize ((int)width, (int)height);
+			Toolkit.Invoke (delegate {
+				EventSink.OnBoundsChanged (Bounds);
+			});
 		}
 
 		public Rectangle Bounds {
@@ -155,6 +172,12 @@ namespace Xwt.GtkBackend
 				EventSink.OnBoundsChanged (Bounds);
 			});
 		}
+
+		public void Present ()
+		{
+			Window.Present ();
+		}
+	
 	}
 }
 

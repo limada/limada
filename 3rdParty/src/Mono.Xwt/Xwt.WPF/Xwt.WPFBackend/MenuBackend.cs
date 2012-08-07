@@ -41,7 +41,7 @@ namespace Xwt.WPFBackend
 	{
 		List<MenuItemBackend> items;
 
-		public void Initialize (object frontend)
+		public void InitializeBackend (object frontend)
 		{
 			items = new List<MenuItemBackend> ();
 		}
@@ -98,7 +98,7 @@ namespace Xwt.WPFBackend
 		public void Popup ()
 		{
 			var menu = CreateContextMenu ();
-			menu.Placement = PlacementMode.Mouse;
+			menu.Placement = PlacementMode.MousePoint;
 			menu.IsOpen = true;
 		}
 

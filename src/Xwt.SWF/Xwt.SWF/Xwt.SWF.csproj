@@ -46,7 +46,7 @@
     <Compile Include="Xwt.Swf.Backend\ISwfWidgetBackend.cs" />
     <Compile Include="Xwt.Swf.Backend\WidgetBackend.cs" />
     <Compile Include="Xwt.Swf.Backend\WindowFrameBackend.cs" />
-    <Compile Include="Xwt.Swf.Backend\WinformEngine.cs" />
+    <Compile Include="Xwt.Swf.Backend\SwfEngine.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

@@ -6,7 +6,7 @@ namespace Xwt.Html5.Backend {
     public class TextLayoutBackendHandler : ITextLayoutBackendHandler {
 
         public object Create (Drawing.Context context) {
-            var c = (Html5Context) WidgetRegistry.GetBackend (context);
+            var c = (Html5Context) Html5Engine.Registry.GetBackend (context);
             var tl = new TextLayoutBackend { Context = c };
             return tl;
         }
@@ -26,7 +26,7 @@ namespace Xwt.Html5.Backend {
             tl.Font = font;
         }
 
-        public void SetHeigth (object backend, double value) {
+        public void SetHeight (object backend, double value) {
             var tl = (TextLayoutBackend) backend;
             tl.Heigth = value;
         }

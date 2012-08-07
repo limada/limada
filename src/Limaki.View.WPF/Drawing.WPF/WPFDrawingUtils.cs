@@ -4,6 +4,7 @@ using SystemColors = System.Windows.SystemColors;
 using Xwt.Drawing;
 using System.Drawing.Drawing2D;
 using Xwt.Engine;
+using Xwt.WPFBackend;
 
 namespace Limaki.Drawing.WPF {
 
@@ -92,7 +93,7 @@ namespace Limaki.Drawing.WPF {
         }
 
         public Size Resolution(Context context) {
-            var ctx = (Xwt.WPFBackend.DrawingContext)WidgetRegistry.GetBackend(context);
+            var ctx = (Xwt.WPFBackend.DrawingContext)WPFEngine.Registry.GetBackend(context);
             return new Size(ctx.Graphics.DpiX, ctx.Graphics.DpiY);
         }
         #endif

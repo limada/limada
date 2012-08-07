@@ -32,19 +32,29 @@ namespace Xwt.Html5.Backend {
 
     public class Html5Engine : Xwt.Backends.EngineBackend {
 
+        public static WidgetRegistry Registry {
+            get;
+            set;
+        }
+
         public override void RunApplication () {
-            RegisterBackends ();
+        
         }
 
-        public virtual void RegisterBackends () {
-            WidgetRegistry.Clear();
-            WidgetRegistry.RegisterBackend (typeof (Xwt.Drawing.Font), typeof (FontBackendHandler));
-            WidgetRegistry.RegisterBackend (typeof (Xwt.Drawing.TextLayout), typeof (TextLayoutBackendHandler));
-            WidgetRegistry.RegisterBackend (typeof (Xwt.Drawing.Context), typeof (ContextBackendHandler));
-            //WidgetRegistry.RegisterBackend (typeof (Xwt.Drawing.ImageBuilder), typeof (ImageBuilderBackend));
-            //WidgetRegistry.RegisterBackend(typeof(Xwt.Drawing.ImagePattern), typeof(ImagePatternBackendHandler));
+        public override void InitializeApplication() {
+            base.InitializeApplication();
         }
 
+        public override void InitializeRegistry(WidgetRegistry registry) {
+            Registry = registry;
+            registry.FromEngine = this;
+
+            Registry.RegisterBackend(typeof(Xwt.Drawing.Font), typeof(FontBackendHandler));
+            Registry.RegisterBackend(typeof(Xwt.Drawing.TextLayout), typeof(TextLayoutBackendHandler));
+            Registry.RegisterBackend(typeof(Xwt.Drawing.Context), typeof(ContextBackendHandler));
+        }
+
+       
         public override object GetNativeWidget (Widget w) {
             throw new NotImplementedException ();
         }

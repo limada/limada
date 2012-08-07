@@ -95,7 +95,7 @@ namespace Limaki.Drawing.Gdi.Painters {
             if (isVisible) {
                 var style = this.Style;
                 var shape = this.Shape;
-                var font = (System.Drawing.Font) WidgetRegistry.GetBackend (Style.Font);
+                var font = (System.Drawing.Font)GdiEngine.Registry.GetBackend(Style.Font);
 
                 if (AlignText && shape is IVectorShape) {
                     var vector = ((IVectorShape) shape).Data;

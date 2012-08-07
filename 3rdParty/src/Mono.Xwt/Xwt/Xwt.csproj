@@ -9,24 +9,26 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Xwt</RootNamespace>
     <AssemblyName>Xwt</AssemblyName>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\xwt.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <ConsolePause>False</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <ConsolePause>False</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -221,9 +223,6 @@
     </Compile>
     <Compile Include="Xwt.Backends\ICheckBoxBackend.cs" />
     <Compile Include="Xwt\ContentPosition.cs" />
-    <Compile Include="Xwt\Frame.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Xwt.Backends\IFrameBackend.cs" />
     <Compile Include="Xwt\Separator.cs">
       <SubType>Component</SubType>
@@ -297,6 +296,51 @@
     <Compile Include="Xwt\CursorType.cs" />
     <Compile Include="Xwt\SelectColorDialog.cs" />
     <Compile Include="Xwt.Backends\ISelectColorDialogBackend.cs" />
+    <Compile Include="Xwt\IScrollableWidget.cs" />
+    <Compile Include="Xwt.Backends\IScrollableWidgetBackend.cs" />
+    <Compile Include="Xwt\ListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt.Backends\IListBoxBackend.cs" />
+    <Compile Include="Xwt.Backends\BackendHost.cs" />
+    <Compile Include="Xwt.Backends\IFrontend.cs" />
+    <Compile Include="Xwt.Backends\DefaultNaturalSizes.cs" />
+    <Compile Include="Xwt\StatusIcon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt.Backends\IStatusIconBackend.cs" />
+    <Compile Include="Xwt\ColorSelector.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt.Backends\IColorSelectorBackend.cs" />
+    <Compile Include="Xwt.Backends\XwtWidgetBackend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt\ProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt.Backends\IProgressBarBackend.cs" />
+    <Compile Include="Xwt\Popover.cs" />
+    <Compile Include="Xwt.Backends\IPopoverBackend.cs" />
+    <Compile Include="Xwt.Backends\ISpinButtonBackend.cs" />
+    <Compile Include="Xwt\SpinButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt\DatePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt.Backends\IDatePickerBackend.cs" />
+    <Compile Include="Xwt\Frame.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt\ForeignPlug.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt.Backends\IForeignPlugBackend.cs" />
+    <Compile Include="Xwt\Expander.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Xwt.Backends\IExpandBackend.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

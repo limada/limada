@@ -28,7 +28,7 @@ using System;
 
 namespace Xwt.Backends
 {
-	public interface ITableViewBackend: IWidgetBackend, IColumnContainerBackend
+	public interface ITableViewBackend: IWidgetBackend, IColumnContainerBackend, IScrollableWidgetBackend
 	{
 		void SetSelectionMode (SelectionMode mode);
 		void SelectAll ();

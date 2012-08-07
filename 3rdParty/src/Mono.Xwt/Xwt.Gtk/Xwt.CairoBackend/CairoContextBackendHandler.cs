@@ -3,6 +3,7 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
+//       Hywel Thomas <hywel.w.thomas@gmail.com>
 // 
 // Copyright (c) 2011 Xamarin Inc
 // 
@@ -210,7 +211,7 @@ namespace Xwt.CairoBackend
 		public virtual void DrawTextLayout (object backend, TextLayout layout, double x, double y)
 		{
 			Cairo.Context ctx = ((CairoContextBackend)backend).Context;
-			var lb = WidgetRegistry.GetBackend (layout);
+			var lb = Xwt.GtkBackend.GtkEngine.Registry.GetBackend (layout);
 			CairoTextLayoutBackendHandler.Draw (ctx, lb, x, y);
 		}
 		
@@ -237,6 +238,26 @@ namespace Xwt.CairoBackend
 			double sx = ((double) width) / s.Width;
 			double sy = ((double) height) / s.Height;
 			ctx.Context.Translate (x, y);
+			ctx.Context.Scale (sx, sy);
+			SetSourceImage (ctx.Context, img, 0, 0);
+			alpha = alpha * ctx.GlobalAlpha;
+			if (alpha == 1)
+				ctx.Context.Paint ();
+			else
+				ctx.Context.PaintWithAlpha (alpha);
+			ctx.Context.Restore ();
+		}
+		
+		public void DrawImage (object backend, object img, Rectangle srcRect, Rectangle destRect, double alpha)
+		{
+			CairoContextBackend ctx = (CairoContextBackend)backend;
+			ctx.Context.Save ();
+			ctx.Context.NewPath();
+			ctx.Context.Rectangle (destRect.X, destRect.Y, destRect.Width, destRect.Height);
+			ctx.Context.Clip ();
+			ctx.Context.Translate (destRect.X-srcRect.X, destRect.Y-srcRect.Y);
+			double sx = destRect.Width / srcRect.Width;
+			double sy = destRect.Height / srcRect.Height;
 			ctx.Context.Scale (sx, sy);
 			SetSourceImage (ctx.Context, img, 0, 0);
 			alpha = alpha * ctx.GlobalAlpha;
@@ -275,7 +296,47 @@ namespace Xwt.CairoBackend
 			CairoContextBackend gc = (CairoContextBackend)backend;
 			gc.Context.Translate (tx, ty);
 		}
-		
+
+		public void TransformPoint (object backend, ref double x, ref double y)
+		{
+			Cairo.Context ctx = ((CairoContextBackend)backend).Context;
+			ctx.TransformPoint (ref x, ref y);
+		}
+
+		public void TransformDistance (object backend, ref double dx, ref double dy)
+		{
+			Cairo.Context ctx = ((CairoContextBackend)backend).Context;
+			ctx.TransformDistance (ref dx, ref dy);
+		}
+
+		public void TransformPoints (object backend, Point[] points)
+		{
+			Cairo.Context ctx = ((CairoContextBackend)backend).Context;
+
+			double x, y;
+			for (int i = 0; i < points.Length; ++i) {
+				x = points[i].X;
+				y = points[i].Y;
+				ctx.TransformPoint (ref x, ref y);
+				points[i].X = x;
+				points[i].Y = y;
+			}
+		}
+
+		public void TransformDistances (object backend, Distance[] vectors)
+		{
+			Cairo.Context ctx = ((CairoContextBackend)backend).Context;
+
+			double x, y;
+			for (int i = 0; i < vectors.Length; ++i) {
+				x = vectors[i].Dx;
+				y = vectors[i].Dy;
+				ctx.TransformDistance (ref x, ref y);
+				vectors[i].Dx = x;
+				vectors[i].Dy = y;
+			}
+		}
+
 		public void Dispose (object backend)
 		{
 			var ctx = (CairoContextBackend) backend;

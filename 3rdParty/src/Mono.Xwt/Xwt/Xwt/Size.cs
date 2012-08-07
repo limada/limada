@@ -33,6 +33,7 @@ namespace Xwt {
 	
 	[TypeConverter (typeof(SizeValueConverter))]
 	[ValueSerializer (typeof(SizeValueSerializer))]
+	[Serializable]
 	public struct Size
 	{		
 		double width, height;
@@ -108,7 +109,7 @@ namespace Xwt {
 
 		public override string ToString ()
 		{
-            return String.Format ("{{Width={0} Height={1}}}", width.ToString (CultureInfo.InvariantCulture), height.ToString (CultureInfo.InvariantCulture));
+			return String.Format ("{{Width={0} Height={1}}}", width.ToString (CultureInfo.InvariantCulture), height.ToString (CultureInfo.InvariantCulture));
 		}
 	}
 	

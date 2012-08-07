@@ -39,7 +39,7 @@ namespace Xwt.WPFBackend
 	{
 		public object Create (Context context)
 		{
-			var drawingContext = (DrawingContext)WidgetRegistry.GetBackend (context);
+            var drawingContext = (DrawingContext) WPFEngine.Registry.GetBackend(context); 
 			return new TextLayoutContext (drawingContext);
 		}
 
@@ -54,7 +54,7 @@ namespace Xwt.WPFBackend
 			((TextLayoutContext) backend).Width = value;
 		}
 		
-		public void SetHeigth (object backend, double value)
+		public void SetHeight (object backend, double value)
 		{
 			((TextLayoutContext) backend).Heigth = value;
 		}

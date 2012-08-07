@@ -33,21 +33,35 @@ namespace Xwt.Backends
 		void Dispose ();
 		
 		Rectangle Bounds { get; set; }
+		void Move (double x, double y);
+		void Resize (double width, double height);
+
 		bool Visible { get; set; }
 		string Title { get; set; }
 		
 		bool Decorated { get; set; }
 		bool ShowInTaskbar { get; set; }
+		
+		/// <summary>
+		/// Presents a window to the user. This may mean raising the window in the stacking order,
+		/// deiconifying it, moving it to the current desktop, and/or giving it the keyboard focus
+		/// </summary>
+		void Present ();
 	}
 	
 	public interface IWindowFrameEventSink
 	{
 		void OnBoundsChanged (Rectangle bounds);
+		void OnShown ();
+		void OnHidden ();
 	}
-	
+
+	[Flags]
 	public enum WindowFrameEvent
 	{
-		BoundsChanged = 1
+		BoundsChanged = 1,
+		Shown = 2,
+		Hidden = 4
 	}
 }
 

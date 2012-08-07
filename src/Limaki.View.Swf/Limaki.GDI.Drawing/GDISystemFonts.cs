@@ -14,41 +14,42 @@
 
 using Xwt.Drawing;
 using Xwt.Engine;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.Gdi {
 
     public class GdiSystemFonts:ISystemFonts {
 
         public Font CaptionFont {
-            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.CaptionFont); }
+            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.CaptionFont); }
         }
 
         public Font DefaultFont {
-            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.DefaultFont); }
+            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.DefaultFont); }
         }
 
         public Font DialogFont {
-            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.DialogFont); }
+            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.DialogFont); }
         }
 
         public Font IconTitleFont {
-            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.IconTitleFont); }
+            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.IconTitleFont); }
         }
 
         public Font MenuFont {
-            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.MenuFont); }
+            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.MenuFont); }
         }
 
         public Font MessageBoxFont {
-            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.MessageBoxFont); }
+            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.MessageBoxFont); }
         }
 
         public Font SmallCaptionFont {
-            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.SmallCaptionFont); }
+            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.SmallCaptionFont); }
         }
 
         public Font StatusFont {
-            get { return WidgetRegistry.CreateFrontend<Font>(System.Drawing.SystemFonts.StatusFont); }
+            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.StatusFont); }
         }
 
 

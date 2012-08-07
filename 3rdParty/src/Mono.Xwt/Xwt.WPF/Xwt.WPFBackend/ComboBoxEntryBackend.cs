@@ -24,10 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-using System.Windows.Data;
 using Xwt.Backends;
-using WindowsComboBox = System.Windows.Controls.ComboBox;
 
 namespace Xwt.WPFBackend
 {
@@ -49,6 +46,14 @@ namespace Xwt.WPFBackend
 		{
 			if (ComboBox.DisplayMemberPath != null)
 				ComboBox.DisplayMemberPath = ".[" + column + "]";
+		}
+
+		protected override double DefaultNaturalWidth
+		{
+			get
+			{
+				return -1;
+			}
 		}
 
 		private readonly ComboBoxTextEntryBackend textBackend;

@@ -30,6 +30,7 @@ using System.Globalization;
 
 namespace Xwt
 {
+	[Serializable]
 	public struct Rectangle
 	{
 		public double X { get; set; }
@@ -41,7 +42,7 @@ namespace Xwt
 		
 		public override string ToString ()
 		{
-            return String.Format ("{{X={0} Y={1} Width={2} Height={3}}}", X.ToString (CultureInfo.InvariantCulture), Y.ToString (CultureInfo.InvariantCulture), Width.ToString (CultureInfo.InvariantCulture), Height.ToString (CultureInfo.InvariantCulture));
+			return String.Format ("{{X={0} Y={1} Width={2} Height={3}}}", X.ToString (CultureInfo.InvariantCulture), Y.ToString (CultureInfo.InvariantCulture), Width.ToString (CultureInfo.InvariantCulture), Height.ToString (CultureInfo.InvariantCulture));
 		}
 		
 		// constructors

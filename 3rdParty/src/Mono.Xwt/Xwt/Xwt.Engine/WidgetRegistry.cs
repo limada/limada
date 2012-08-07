@@ -27,17 +27,38 @@
 using System;
 using System.Collections.Generic;
 using Xwt.Backends;
+using Xwt.Drawing;
 
 namespace Xwt.Engine
 {
-	public static class WidgetRegistry
+	public sealed class WidgetRegistry
 	{
-		static Dictionary<Type,Type> backendTypes = new Dictionary<Type, Type> ();
-		static Dictionary<Type,object> sharedBackends = new Dictionary<Type, object> ();
+		static WidgetRegistry mainRegistry = new WidgetRegistry ();
+		Dictionary<Type,Type> backendTypes = new Dictionary<Type, Type> ();
+		Dictionary<Type,object> sharedBackends = new Dictionary<Type, object> ();
 
-        public static T CreateBackend<T> (Type widgetType)
+		// Get the default widget registry
+		public static WidgetRegistry MainRegistry {
+			get {
+				return mainRegistry;
+			}
+            set {
+                mainRegistry = value;
+            }
+		}
+
+		public static void RunAsIfDefault (WidgetRegistry registry, Action action)
 		{
-			Type bt;
+			var saveRegistry = mainRegistry;
+			mainRegistry = registry;
+			action ();
+			mainRegistry = saveRegistry;
+		}
+		
+		public T CreateBackend<T> (Type widgetType)
+		{
+			Type bt = null;
+
 			if (!backendTypes.TryGetValue (widgetType, out bt))
 				return default(T);
 			object res = Activator.CreateInstance (bt);
@@ -46,7 +67,12 @@ namespace Xwt.Engine
 			return (T) res;
 		}
 
-        public static T CreateSharedBackend<T> (Type widgetType)
+		public EngineBackend FromEngine {
+			get;
+			set;
+		}
+
+		public T CreateSharedBackend<T> (Type widgetType)
 		{
 			object res;
 			if (!sharedBackends.TryGetValue (widgetType, out res))
@@ -54,70 +80,56 @@ namespace Xwt.Engine
 			return (T)res;
 		}
 		
-		public static void RegisterBackend (Type widgetType, Type backendType)
+		public void RegisterBackend (Type widgetType, Type backendType)
 		{
 			backendTypes [widgetType] = backendType;
 		}
 		
-		public static object GetBackend (object obj)
+		public object GetBackend (object obj)
 		{
-			if (obj is XwtComponent)
-				return XwtComponent.GetBackend ((XwtComponent)obj);
-			else if (obj is XwtObject)
-				return XwtObject.GetBackend ((XwtObject)obj);
+			if (obj is IFrontend)
+				return ((IFrontend)obj).Backend;
 			else if (obj == null)
 				return null;
 			else
 				throw new InvalidOperationException ("Object doesn't have a backend");
 		}
 		
-		public static T CreateFrontend<T> (object backend)
+		public T CreateFrontend<T> (object backend)
 		{
 			return (T) Activator.CreateInstance (typeof(T), backend);
 		}
 		
-		public static object GetNativeWidget (Widget w)
+		public object GetNativeWidget (Widget w)
 		{
 			return Application.EngineBackend.GetNativeWidget (w);
 		}
 		
-		public static WindowFrame WrapWindow (object nativeWindow)
+		public object GetNativeImage (Image image)
+		{
+			return Application.EngineBackend.GetNativeImage (image);
+		}
+		
+		public WindowFrame WrapWindow (object nativeWindow)
 		{
 			return new NativeWindowFrame (Application.EngineBackend.GetBackendForWindow (nativeWindow));
 		}
 
-        public static void Clear () 
-        {
+        public void Clear() {
             backendTypes.Clear();
             sharedBackends.Clear();
-            Drawing.Font.SetHandler (null);
-            Drawing.TextLayout.SetHandler (null);
-            Drawing.Context.SetHandler (null);
+            Drawing.Font.SetHandler(null);
+            Drawing.TextLayout.SetHandler(null);
+            Drawing.Context.SetHandler(null);
         }
-	}
+    }
 	
 	class NativeWindowFrame: WindowFrame
 	{
-		IWindowFrameBackend backend;
-		
 		public NativeWindowFrame (IWindowFrameBackend backend)
 		{
-			this.backend = backend;
+			BackendHost.SetCustomBackend (backend);
 		}
-		
-		protected override IBackend OnCreateBackend ()
-		{
-			return backend;
-		}
-	}
-	
-	static class DefaultNaturalSizes
-	{
-		public static Size ComboBox = new Size (100, 0);
-		public static Size ListView = new Size (100, 100);
-		public static Size ScrollView = new Size (100, 100);
-		public static Size TextEntry = new Size (100, 0);
-		public static Size TreeView = new Size (100, 100);
 	}
 }
 

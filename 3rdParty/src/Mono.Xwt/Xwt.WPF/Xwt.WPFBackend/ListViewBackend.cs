@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Xwt.Engine;
 using Xwt.WPFBackend.Utilities;
 using SWC = System.Windows.Controls;
 using Xwt.Backends;
@@ -43,32 +44,41 @@ namespace Xwt.WPFBackend
 			ListView = new ExListView();
 			ListView.View = this.view;
 		}
+		
+		public ScrollPolicy VerticalScrollPolicy {
+			get { return ScrollViewer.GetVerticalScrollBarVisibility (this.ListView).ToXwtScrollPolicy (); }
+			set { ScrollViewer.SetVerticalScrollBarVisibility (ListView, value.ToWpfScrollBarVisibility ()); }
+		}
+
+		public ScrollPolicy HorizontalScrollPolicy {
+			get { return ScrollViewer.GetHorizontalScrollBarVisibility (this.ListView).ToXwtScrollPolicy (); }
+			set { ScrollViewer.SetHorizontalScrollBarVisibility (ListView, value.ToWpfScrollBarVisibility ()); }
+		}
 
 		public bool HeadersVisible {
 			get { return this.headersVisible; }
-			set
-			{
+			set {
 				this.headersVisible = value;
 				if (value) {
-					if (this.view.ColumnHeaderContainerStyle != null)
-						this.view.ColumnHeaderContainerStyle.Setters.Clear ();
-				}
-				else {
-					this.view.ColumnHeaderContainerStyle = new Style();
-					this.view.ColumnHeaderContainerStyle.Setters.Add (
-						new Setter (UIElement.VisibilityProperty, Visibility.Collapsed));
+				    if (this.view.ColumnHeaderContainerStyle != null)
+						this.view.ColumnHeaderContainerStyle.Setters.Remove (HideHeadersSetter);
+				} else {
+					if (this.view.ColumnHeaderContainerStyle == null)
+						this.view.ColumnHeaderContainerStyle = new Style();
+
+					this.view.ColumnHeaderContainerStyle.Setters.Add (HideHeadersSetter);
 				}
 			}
 		}
 
 		public int[] SelectedRows {
-			get { return ListView.SelectedIndexes.ToArray (); }
+			get { return ListView.SelectedItems.Cast<object>().Select (ListView.Items.IndexOf).ToArray (); }
 		}
 
 		public object AddColumn (ListViewColumn col)
 		{
 			var column = new GridViewColumn ();
-			column.CellTemplate = new DataTemplate { VisualTree = CellUtil.CreateBoundColumnTemplate (col) };
+			column.CellTemplate = new DataTemplate { VisualTree = CellUtil.CreateBoundColumnTemplate (col.Views) };
 			if (col.HeaderView != null)
 				column.HeaderTemplate = new DataTemplate { VisualTree = CellUtil.CreateBoundCellRenderer (col.HeaderView) };
 			else
@@ -87,7 +97,7 @@ namespace Xwt.WPFBackend
 		public void UpdateColumn (ListViewColumn col, object handle, ListViewColumnChange change)
 		{
 			var column = (GridViewColumn) handle;
-			column.CellTemplate = new DataTemplate { VisualTree = CellUtil.CreateBoundColumnTemplate (col) };
+			column.CellTemplate = new DataTemplate { VisualTree = CellUtil.CreateBoundColumnTemplate (col.Views) };
 			if (col.HeaderView != null)
 				column.HeaderTemplate = new DataTemplate { VisualTree = CellUtil.CreateBoundCellRenderer (col.HeaderView) };
 			else
@@ -119,17 +129,58 @@ namespace Xwt.WPFBackend
 
 		public void SetSource (IListDataSource source, IBackend sourceBackend)
 		{
-			ListView.ItemsSource = new ListSourceNotifyWrapper (source);
+			var dataSource = sourceBackend as ListDataSource;
+			if (dataSource != null)
+				ListView.ItemsSource = dataSource;
+			else
+				ListView.ItemsSource = new ListSourceNotifyWrapper (source);
 		}
 
 		public void SelectRow (int pos)
 		{
-			ListView.SelectedIndexes.Add (pos);
+			object item = ListView.Items [pos];
+			if (ListView.SelectionMode == System.Windows.Controls.SelectionMode.Single)
+				ListView.SelectedItem = item;
+			else
+				ListView.SelectedItems.Add (item);
 		}
 
 		public void UnselectRow (int pos)
 		{
-			ListView.SelectedIndexes.Remove (pos);
+			object item = ListView.Items [pos];
+			if (ListView.SelectionMode == System.Windows.Controls.SelectionMode.Extended)
+				ListView.SelectedItems.Remove (item);
+			else if (ListView.SelectedItem == item)
+				ListView.SelectedItem = null;
+		}
+
+		public override void EnableEvent(object eventId)
+		{
+			base.EnableEvent (eventId);
+			if (eventId is TableViewEvent) {
+				switch ((TableViewEvent)eventId) {
+				case TableViewEvent.SelectionChanged:
+					ListView.SelectionChanged += OnSelectionChanged;
+					break;
+				}
+			}
+		}
+
+		public override void DisableEvent (object eventId)
+		{
+			base.DisableEvent (eventId);
+			if (eventId is TableViewEvent) {
+				switch ((TableViewEvent)eventId) {
+				case TableViewEvent.SelectionChanged:
+					ListView.SelectionChanged -= OnSelectionChanged;
+					break;
+				}
+			}
+		}
+
+		private void OnSelectionChanged (object sender, SelectionChangedEventArgs e)
+		{
+			Toolkit.Invoke (ListViewEventSink.OnSelectionChanged);
 		}
 
 		private bool headersVisible;
@@ -139,5 +190,11 @@ namespace Xwt.WPFBackend
 			get { return (ExListView) Widget; }
 			set { Widget = value; }
 		}
+
+		protected IListViewEventSink ListViewEventSink {
+			get { return (IListViewEventSink) EventSink; }
+		}
+
+		private static readonly Setter HideHeadersSetter = new Setter (UIElement.VisibilityProperty, Visibility.Collapsed);
 	}
 }

@@ -60,6 +60,12 @@ namespace Xwt.WPFBackend
 			public bool Shrink;
 			public WidgetBackend Backend;
 
+			public bool HasWidget { get { return Widget != null; } }
+
+			public IWidgetSurface WidgetSurface {
+				get { return (IWidgetSurface)Backend.Frontend; }
+			}
+
 			public GridLength Size
 			{
 				get
@@ -135,9 +141,10 @@ namespace Xwt.WPFBackend
 
 			splitter.DragDelta += delegate
 			{
-				position = panel1.Size.Value;
-				if (this.reportPositionChanged)
-					Toolkit.Invoke (((IPanedEventSink)EventSink).OnPositionChanged);
+				if (position != panel1.Size.Value) {
+					position = panel1.Size.Value;
+					NotifyPositionChanged ();
+				}
 			};
 		}
 
@@ -150,16 +157,25 @@ namespace Xwt.WPFBackend
 				value /= direction == Orientation.Horizontal ? WidthPixelRatio : HeightPixelRatio;
 				if (position != value) {
 					position = value;
-					Grid.InvalidateArrange ();
-					if (this.reportPositionChanged)
-						Toolkit.Invoke (((IPanedEventSink)EventSink).OnPositionChanged);
+					NotifyPositionChanged ();
 				}
 			}
+		}
+
+		internal void NotifyPositionChanged ()
+		{
+			if (this.reportPositionChanged)
+				Toolkit.Invoke (((IPanedEventSink)EventSink).OnPositionChanged);
 		}
 
 		PanelInfo GetPanel (int panel)
 		{
 			return panel == 1 ? panel1 : panel2;
+		}
+
+		bool SplitterVisible
+		{
+			get { return panel1.HasWidget && panel2.HasWidget; }
 		}
 
 		public void SetPanel (int panel, IWidgetBackend widget, bool resize, bool shrink)
@@ -198,6 +214,120 @@ namespace Xwt.WPFBackend
 			UpdateSplitterVisibility ();
 		}
 
+		public override WidgetSize GetPreferredWidth ()
+		{
+			if (panel1.HasWidget && panel2.HasWidget) {
+				if (direction == Orientation.Horizontal) {
+					var ws = panel1.WidgetSurface.GetPreferredWidth ();
+					ws += panel2.WidgetSurface.GetPreferredWidth ();
+					ws += SplitterSize;
+					return ws;
+				}
+				else {
+					var ws = panel1.WidgetSurface.GetPreferredWidth ();
+					return ws.UnionWith (panel2.WidgetSurface.GetPreferredWidth ());
+				}
+			}
+			else if (panel1.HasWidget)
+				return panel1.WidgetSurface.GetPreferredWidth ();
+			else if (panel2.HasWidget)
+				return panel2.WidgetSurface.GetPreferredWidth ();
+			else
+				return new WidgetSize (0);
+		}
+
+		public override WidgetSize GetPreferredHeightForWidth (double width)
+		{
+			if (panel1.HasWidget && panel2.HasWidget) {
+				var tempPos = position;
+				var availableWidth = width - SplitterSize;
+				if (direction == Orientation.Horizontal) {
+					if (!panel1.Shrink) {
+						var w1 = panel1.WidgetSurface.GetPreferredWidth ().MinSize;
+						if (tempPos < w1)
+							tempPos = w1;
+					}
+					if (!panel2.Shrink) {
+						var w2 = panel2.WidgetSurface.GetPreferredWidth ().MinSize;
+						if (availableWidth - tempPos < w2)
+							tempPos = availableWidth - w2;
+					}
+					var ws = panel1.WidgetSurface.GetPreferredHeightForWidth (tempPos);
+					ws = ws.UnionWith (panel2.WidgetSurface.GetPreferredHeightForWidth (availableWidth - tempPos));
+					return ws;
+				}
+				else {
+					var ws = panel1.WidgetSurface.GetPreferredHeightForWidth (width);
+					ws = ws.UnionWith (panel2.WidgetSurface.GetPreferredHeightForWidth (width));
+					ws += SplitterSize;
+					return ws;
+				}
+			}
+			else if (panel1.HasWidget)
+				return panel1.WidgetSurface.GetPreferredHeightForWidth (width);
+			else if (panel2.HasWidget)
+				return panel2.WidgetSurface.GetPreferredHeightForWidth (width);
+			else
+				return new WidgetSize (0);
+		}
+
+		public override WidgetSize GetPreferredHeight ()
+		{
+			if (panel1.HasWidget && panel2.HasWidget) {
+				if (direction == Orientation.Vertical) {
+					var ws = panel1.WidgetSurface.GetPreferredHeight ();
+					ws += panel2.WidgetSurface.GetPreferredHeight ();
+					ws += SplitterSize;
+					return ws;
+				}
+				else {
+					var ws = panel1.WidgetSurface.GetPreferredHeight ();
+					return ws.UnionWith (panel2.WidgetSurface.GetPreferredHeight ());
+				}
+			}
+			else if (panel1.HasWidget)
+				return panel1.WidgetSurface.GetPreferredHeight ();
+			else if (panel2.HasWidget)
+				return panel2.WidgetSurface.GetPreferredHeight ();
+			else
+				return new WidgetSize (0);
+		}
+
+		public override WidgetSize GetPreferredWidthForHeight (double width)
+		{
+			if (panel1.HasWidget && panel2.HasWidget) {
+				var tempPos = position;
+				var availableWidth = width - SplitterSize;
+				if (direction == Orientation.Vertical) {
+					if (!panel1.Shrink) {
+						var w1 = panel1.WidgetSurface.GetPreferredHeight ().MinSize;
+						if (tempPos < w1)
+							tempPos = w1;
+					}
+					if (!panel2.Shrink) {
+						var w2 = panel2.WidgetSurface.GetPreferredHeight ().MinSize;
+						if (availableWidth - tempPos < w2)
+							tempPos = availableWidth - w2;
+					}
+					var ws = panel1.WidgetSurface.GetPreferredWidthForHeight (tempPos);
+					ws = ws.UnionWith (panel2.WidgetSurface.GetPreferredWidthForHeight (availableWidth - tempPos));
+					return ws;
+				}
+				else {
+					var ws = panel1.WidgetSurface.GetPreferredWidthForHeight (width);
+					ws = ws.UnionWith (panel2.WidgetSurface.GetPreferredWidthForHeight (width));
+					ws += SplitterSize;
+					return ws;
+				}
+			}
+			else if (panel1.HasWidget)
+				return panel1.WidgetSurface.GetPreferredWidthForHeight (width);
+			else if (panel2.HasWidget)
+				return panel2.WidgetSurface.GetPreferredWidthForHeight (width);
+			else
+				return new WidgetSize (0);
+		}
+
 		internal void ArrangeChildren (SW.Size size)
 		{
 			double newSize = direction == Orientation.Horizontal ? size.Width : size.Height;
@@ -224,12 +354,14 @@ namespace Xwt.WPFBackend
 				}
 
 				if (!panel1.Shrink) {
-					var min = direction == Orientation.Horizontal ? panel1.Widget.DesiredSize.Width : panel1.Widget.DesiredSize.Height;
+					var w = panel1.WidgetSurface;
+					var min = direction == Orientation.Horizontal ? w.GetPreferredWidth ().MinSize: w.GetPreferredHeight ().MinSize;
 					if (position < min)
 						position = min;
 				}
 				if (!panel2.Shrink) {
-					var min = direction == Orientation.Horizontal ? panel2.Widget.DesiredSize.Width : panel1.Widget.DesiredSize.Height;
+					var w = panel2.WidgetSurface;
+					var min = direction == Orientation.Horizontal ? w.GetPreferredWidth ().MinSize : w.GetPreferredHeight ().MinSize;
 					if (availableSize - position < min) {
 						position = availableSize - min;
 					}
@@ -240,8 +372,8 @@ namespace Xwt.WPFBackend
 				if (position > availableSize)
 					position = availableSize;
 
-				panel1.Size = new GridLength (position, GridUnitType.Pixel);
-				panel2.Size = new GridLength (availableSize - position, GridUnitType.Pixel);
+				panel1.Size = new GridLength (position, GridUnitType.Star);
+				panel2.Size = new GridLength (availableSize - position, GridUnitType.Star);
 			}
 			else if (panel1.Widget != null)
 				panel1.Size = new GridLength (1, GridUnitType.Star);
@@ -297,20 +429,31 @@ namespace Xwt.WPFBackend
 		}
 	}
 
-	class PanedGrid: Grid
+	class PanedGrid: Grid, IWpfWidget
 	{
-		public PanedBackend Backend;
+		public WidgetBackend Backend { get; set; }
 
 		protected override SW.Size MeasureOverride (SW.Size constraint)
 		{
-			base.MeasureOverride (constraint);
-			return new SW.Size (0, 0);
+			// HACK: Fixes invalid size measure
+			// This line is hack to fix a measuring issue with Grid. For some reason, the grid 'remembers' the constraint
+			// parameter, so if MeasureOverride is called with a constraining size, but ArrangeOverride is later called
+			// with a bigger size, the Grid still uses the constrained size when determining the size of the children
+			constraint = new SW.Size (double.PositiveInfinity, double.PositiveInfinity);
+
+			var s = base.MeasureOverride (constraint);
+			return Backend.MeasureOverride (constraint, s);
 		}
 
 		protected override System.Windows.Size ArrangeOverride (System.Windows.Size arrangeSize)
 		{
-			Backend.ArrangeChildren (arrangeSize);
-			return base.ArrangeOverride (arrangeSize);
+			PanedBackend b = ((PanedBackend)Backend);
+			var oldPos = b.Position;
+			b.ArrangeChildren (arrangeSize);
+			var s = base.ArrangeOverride (arrangeSize);
+			if (oldPos != b.Position)
+				b.NotifyPositionChanged ();
+			return s;
 		}
 	}
 }

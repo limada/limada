@@ -29,79 +29,51 @@ using System.ComponentModel;
 using Xwt.Engine;
 using System.Collections.Generic;
 using System.Reflection;
+using Xwt.Backends;
 
 namespace Xwt
 {
-	public abstract class XwtComponent: Component
+	public abstract class XwtComponent: Component, IFrontend
 	{
-		IBackend backend;
-		bool usingCustomBackend;
-		
-		HashSet<object> defaultEnabledEvents;
-		static Dictionary<Type, List<EventMap>> overridenEventMap = new Dictionary<Type, List<EventMap>> ();
-		static Dictionary<Type, HashSet<object>> overridenEvents = new Dictionary<Type, HashSet<object>> ();
+		BackendHost backendHost;
 		
 		public XwtComponent ()
 		{
+			backendHost = CreateBackendHost ();
+			backendHost.Parent = this;
 		}
 		
-		protected XwtComponent (IBackend backend)
+		protected virtual BackendHost CreateBackendHost ()
 		{
-			this.backend = backend;
-			usingCustomBackend = true;
+			return new BackendHost ();
 		}
 		
-		protected IBackend Backend {
-			get {
-				LoadBackend ();
-				return backend;
-			}
+		protected BackendHost BackendHost {
+			get { return backendHost; }
 		}
 		
-		internal bool BackendCreated {
-			get { return backend != null; }
+		object IFrontend.Backend {
+			get { return backendHost.Backend; }
 		}
-		
-		protected virtual void OnBackendCreated ()
+
+		object IFrontend.GetBackendForRegistry (WidgetRegistry registry)
 		{
-			foreach (var ev in DefaultEnabledEvents)
-				Backend.EnableEvent (ev);
-		}
-		
-		protected virtual IBackend OnCreateBackend ()
-		{
-			Type t = GetType ();
-			while (t != typeof(XwtComponent)) {
-				IBackend b = WidgetRegistry.CreateBackend<IBackend> (t);
-				if (b != null)
-					return b;
-				t = t.BaseType;
-			}
-			return null;
-		}
-		
-		protected void LoadBackend ()
-		{
-			if (usingCustomBackend) {
-				usingCustomBackend = false;
-				backend.Initialize (this);
-				OnBackendCreated ();
-			}
-			else if (backend == null) {
-				backend = OnCreateBackend ();
-				if (backend == null)
-					throw new InvalidOperationException ("No backend found for widget: " + GetType ());
-				backend.Initialize (this);
-				OnBackendCreated ();
-			}
-		}
-		
-		internal protected static IBackend GetBackend (XwtComponent w)
-		{
-			return w != null ? w.Backend : null;
+			backendHost.WidgetRegistry = registry;
+			return backendHost.Backend;
 		}
 		
 		protected static void MapEvent (object eventId, Type type, string methodName)
+		{
+			EventUtil.MapEvent (eventId, type, methodName);
+		}
+	}
+	
+	class EventUtil
+	{
+		static Dictionary<Type, List<EventMap>> overridenEventMap = new Dictionary<Type, List<EventMap>> ();
+		static Dictionary<Type, HashSet<object>> overridenEvents = new Dictionary<Type, HashSet<object>> ();
+		
+		public static void MapEvent (object eventId, Type type, string methodName)
 		{
 			List<EventMap> events;
 			if (!overridenEventMap.TryGetValue (type, out events)) {
@@ -115,43 +87,28 @@ namespace Xwt
 			events.Add (emap);
 		}
 		
-		protected void OnBeforeEventAdd (object eventId, Delegate eventDelegate)
+		public static HashSet<object> GetDefaultEnabledEvents (Type type)
 		{
-			if (eventDelegate == null && !DefaultEnabledEvents.Contains (eventId))
-				Backend.EnableEvent (eventId);
-		}
-		
-		protected void OnAfterEventRemove (object eventId, Delegate eventDelegate)
-		{
-			if (eventDelegate != null && !DefaultEnabledEvents.Contains (eventId))
-				Backend.DisableEvent (eventId);
-		}
-		
-		HashSet<object> DefaultEnabledEvents {
-			get {
-				if (defaultEnabledEvents == null) {
-					Type thisType = GetType ();
-					if (!overridenEvents.TryGetValue (thisType, out defaultEnabledEvents)) {
-						defaultEnabledEvents = new HashSet<object> ();
-						Type t = thisType;
-						while (t != typeof(XwtComponent)) {
-							List<EventMap> emaps;
-							if (overridenEventMap.TryGetValue (t, out emaps)) {
-								foreach (var emap in emaps) {
-									if (IsOverriden (emap, thisType, t))
-										defaultEnabledEvents.Add (emap.EventId);
-								}
-							}
-							t = t.BaseType;
+			HashSet<object> defaultEnabledEvents;
+			if (!overridenEvents.TryGetValue (type, out defaultEnabledEvents)) {
+				defaultEnabledEvents = new HashSet<object> ();
+				Type t = type;
+				while (t != typeof(Component)) {
+					List<EventMap> emaps;
+					if (overridenEventMap.TryGetValue (t, out emaps)) {
+						foreach (var emap in emaps) {
+							if (IsOverriden (emap, type, t))
+								defaultEnabledEvents.Add (emap.EventId);
 						}
-						overridenEvents [GetType ()] = defaultEnabledEvents;
 					}
+					t = t.BaseType;
 				}
-				return defaultEnabledEvents;
+				overridenEvents [type] = defaultEnabledEvents;
 			}
+			return defaultEnabledEvents;
 		}
 		
-		bool IsOverriden (EventMap emap, Type thisType, Type t)
+		static bool IsOverriden (EventMap emap, Type thisType, Type t)
 		{
 			var method = thisType.GetMethod (emap.MethodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 			return method.DeclaringType != t;

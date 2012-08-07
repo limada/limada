@@ -10,8 +10,8 @@ namespace Limaki.XwtAdapter {
 
     public class XwtToChange {
         public void ChangeMe() {
-            WidgetRegistry.CreateSharedBackend<object>(typeof (object));
-            WidgetRegistry.CreateBackend<object>(typeof (object));
+            WidgetRegistry.MainRegistry.CreateSharedBackend<object>(typeof (object));
+            WidgetRegistry.MainRegistry.CreateBackend<object>(typeof(object));
             var c = new Canvas();
             new Context(new object());
             new Font(new object());

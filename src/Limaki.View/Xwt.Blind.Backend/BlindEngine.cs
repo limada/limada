@@ -32,14 +32,26 @@ namespace Xwt.Blind.Backend {
 
     public class BlindEngine : Xwt.Backends.EngineBackend {
 
+        public static WidgetRegistry Registry {
+            get;
+            set;
+        }
+
         public override void RunApplication() {
-            RegisterBackends();
+        
         }
 
-        public virtual void RegisterBackends() {
-            WidgetRegistry.RegisterBackend(typeof(Xwt.Drawing.Font), typeof(FontBackendHandler));
-
+        public override void InitializeApplication() {
+            base.InitializeApplication();
         }
+
+        public override void InitializeRegistry(WidgetRegistry registry) {
+            Registry = registry;
+            registry.FromEngine = this;
+
+            Registry.RegisterBackend(typeof(Xwt.Drawing.Font), typeof(FontBackendHandler));
+        }
+       
 
         public override object GetNativeWidget(Widget w) {
             throw new NotImplementedException();

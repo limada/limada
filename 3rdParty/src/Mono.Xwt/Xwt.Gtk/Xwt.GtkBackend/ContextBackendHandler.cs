@@ -28,6 +28,7 @@ using System;
 using Xwt.CairoBackend;
 using Xwt.Drawing;
 using Xwt.Engine;
+using Xwt.Backends;
 
 namespace Xwt.GtkBackend
 {
@@ -50,7 +51,7 @@ namespace Xwt.GtkBackend
 	{
 		public override void DrawTextLayout (object backend, TextLayout layout, double x, double y)
 		{
-			Pango.Layout pl = (Pango.Layout)WidgetRegistry.GetBackend (layout);
+			Pango.Layout pl = (Pango.Layout)GtkEngine.Registry.GetBackend (layout);
 			CairoContextBackend ctx = (CairoContextBackend)backend;
 			ctx.Context.MoveTo (x, y);
 			if (layout.Height <= 0) {

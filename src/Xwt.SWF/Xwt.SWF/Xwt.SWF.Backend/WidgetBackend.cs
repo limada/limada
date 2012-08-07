@@ -156,7 +156,7 @@ namespace Xwt.WinformBackend {
 
         #region IBackend Member
 
-        public void Initialize(object frontend) {
+        public void InitializeBackend(object frontend) {
             throw new System.NotImplementedException();
         }
 
@@ -179,4 +179,6 @@ namespace Xwt.WinformBackend {
             throw new System.NotImplementedException ();
         }
     }
+
+    class WidgetBackendImpl : WidgetBackend {}
 }

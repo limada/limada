@@ -32,14 +32,23 @@ namespace Xwt
 	{
 		EventHandler valueChanged;
 		
-		class EventSink: IScrollAdjustmentEventSink
+		class ScrollAdjustmentBackendHost: BackendHost<ScrollAdjustment,IScrollAdjustmentBackend>, IScrollAdjustmentEventSink
 		{
-			public ScrollAdjustment Parent;
+			protected override void OnBackendCreated ()
+			{
+				base.OnBackendCreated ();
+				Backend.Initialize (this);
+			}
 			
 			public void OnValueChanged ()
 			{
 				Parent.OnValueChanged (EventArgs.Empty);
 			}
+		}
+		
+		protected override Xwt.Backends.BackendHost CreateBackendHost ()
+		{
+			return new ScrollAdjustmentBackendHost ();
 		}
 		
 		static ScrollAdjustment ()
@@ -57,18 +66,13 @@ namespace Xwt
 			PageIncrement = 10;
 		}
 		
-		internal ScrollAdjustment (IBackend backend): base (backend)
+		internal ScrollAdjustment (IBackend backend)
 		{
+			BackendHost.SetCustomBackend (backend);
 		}
 		
-		new IScrollAdjustmentBackend Backend {
-			get { return (IScrollAdjustmentBackend) base.Backend; }
-		}
-		
-		protected override void OnBackendCreated ()
-		{
-			base.OnBackendCreated ();
-			Backend.Initialize (new EventSink () { Parent = this });
+		IScrollAdjustmentBackend Backend {
+			get { return (IScrollAdjustmentBackend) BackendHost.Backend; }
 		}
 		
 		/// <summary>
@@ -137,12 +141,12 @@ namespace Xwt
 		
 		public event EventHandler ValueChanged {
 			add {
-				OnBeforeEventAdd (ScrollAdjustmentEvent.ValueChanged, valueChanged);
+				BackendHost.OnBeforeEventAdd (ScrollAdjustmentEvent.ValueChanged, valueChanged);
 				valueChanged += value;
 			}
 			remove {
 				valueChanged -= value;
-				OnAfterEventRemove (ScrollAdjustmentEvent.ValueChanged, valueChanged);
+				BackendHost.OnAfterEventRemove (ScrollAdjustmentEvent.ValueChanged, valueChanged);
 			}
 		}
 	}

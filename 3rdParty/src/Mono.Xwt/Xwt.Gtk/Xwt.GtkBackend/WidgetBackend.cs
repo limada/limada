@@ -62,7 +62,7 @@ namespace Xwt.GtkBackend
 		const WidgetEvent dragDropEvents = WidgetEvent.DragDropCheck | WidgetEvent.DragDrop | WidgetEvent.DragOver | WidgetEvent.DragOverCheck;
 		const WidgetEvent sizeCheckEvents = WidgetEvent.PreferredWidthCheck | WidgetEvent.PreferredHeightCheck | WidgetEvent.PreferredHeightForWidthCheck | WidgetEvent.PreferredWidthForHeightCheck;
 		
-		void IBackend.Initialize (object frontend)
+		void IBackend.InitializeBackend (object frontend)
 		{
 			this.frontend = (Widget) frontend;
 		}
@@ -208,7 +208,7 @@ namespace Xwt.GtkBackend
 		
 		protected virtual void Dispose (bool disposing)
 		{
-			if (Widget != null && !disposing && Widget.Parent == null)
+			if (Widget != null && disposing && Widget.Parent == null)
 				Widget.Destroy ();
 		}
 		
@@ -352,7 +352,7 @@ namespace Xwt.GtkBackend
 			get { return RootWidget; }
 		}
 		
-		Gtk.Widget EventsRootWidget {
+		protected virtual Gtk.Widget EventsRootWidget {
 			get { return eventBox ?? Widget; }
 		}
 		
@@ -388,8 +388,8 @@ namespace Xwt.GtkBackend
 		{
 			// Wraps the widget with an event box. Required for some
 			// widgets such as Label which doesn't have its own gdk window
-			
-			if (eventBox == null && Widget.IsNoWindow) {
+
+			if (eventBox == null && EventsRootWidget.IsNoWindow) {
 				eventBox = new Gtk.EventBox ();
 				eventBox.Visible = Widget.Visible;
 				eventBox.Sensitive = Widget.Sensitive;
@@ -458,9 +458,10 @@ namespace Xwt.GtkBackend
 				}
 				if ((ev & dragDropEvents) != 0 && (enabledEvents & dragDropEvents) == 0) {
 					// Enabling a drag&drop event for the first time
-					Widget.DragDrop += HandleWidgetDragDrop;
-					Widget.DragMotion += HandleWidgetDragMotion;
-					Widget.DragDataReceived += HandleWidgetDragDataReceived;
+					AllocEventBox ();
+					EventsRootWidget.DragDrop += HandleWidgetDragDrop;
+					EventsRootWidget.DragMotion += HandleWidgetDragMotion;
+					EventsRootWidget.DragDataReceived += HandleWidgetDragDataReceived;
 				}
 				if ((ev & sizeCheckEvents) != 0) {
 					EnableSizeCheckEvents ();
@@ -484,10 +485,10 @@ namespace Xwt.GtkBackend
 				WidgetEvent ev = (WidgetEvent) eventId;
 				switch (ev) {
 				case WidgetEvent.DragLeave:
-					Widget.DragLeave -= HandleWidgetDragLeave;
+					EventsRootWidget.DragLeave -= HandleWidgetDragLeave;
 					break;
 				case WidgetEvent.DragStarted:
-					Widget.DragBegin -= HandleWidgetDragBegin;
+					EventsRootWidget.DragBegin -= HandleWidgetDragBegin;
 					break;
 				case WidgetEvent.KeyPressed:
 					Widget.KeyPressEvent -= HandleKeyPressEvent;
@@ -528,9 +529,9 @@ namespace Xwt.GtkBackend
 				
 				if ((ev & dragDropEvents) != 0 && (enabledEvents & dragDropEvents) == 0) {
 					// All drag&drop events have been disabled
-					Widget.DragDrop -= HandleWidgetDragDrop;
-					Widget.DragMotion -= HandleWidgetDragMotion;
-					Widget.DragDataReceived -= HandleWidgetDragDataReceived;
+					EventsRootWidget.DragDrop -= HandleWidgetDragDrop;
+					EventsRootWidget.DragMotion -= HandleWidgetDragMotion;
+					EventsRootWidget.DragDataReceived -= HandleWidgetDragDataReceived;
 				}
 				if ((ev & sizeCheckEvents) != 0) {
 					DisableSizeCheckEvents ();
@@ -602,7 +603,6 @@ namespace Xwt.GtkBackend
 						}
 						if ((enabledEvents & WidgetEvent.PreferredHeightForWidthCheck) != 0) {
 							if (doubleSizeRequestCheckSupported) {
-								req.Height = 1;
 								sizeCheckStep = SizeCheckStep.PreAllocate;
 								realRequestedWidth = req.Width; // Store the width, since it will be used in the next iteration
 							} else {
@@ -623,7 +623,6 @@ namespace Xwt.GtkBackend
 						}
 						if ((enabledEvents & WidgetEvent.PreferredWidthForHeightCheck) != 0) {
 							if (doubleSizeRequestCheckSupported) {
-								req.Width = 1;
 								sizeCheckStep = SizeCheckStep.PreAllocate;
 								realRequestedHeight = req.Height; // Store the height, since it will be used in the next iteration
 							} else {
@@ -660,15 +659,11 @@ namespace Xwt.GtkBackend
 				}
 				else if (sizeCheckStep == SizeCheckStep.PreAllocate || sizeCheckStep == SizeCheckStep.AdjustSize) {
 					if (EventSink.GetSizeRequestMode () == SizeRequestMode.HeightForWidth) {
-						Toolkit.Invoke (delegate {
-							realRequestedHeight = (int) eventSink.OnGetPreferredHeightForWidth (args.Allocation.Width).MinSize;
-						});
+						realRequestedHeight = (int) eventSink.OnGetPreferredHeightForWidth (args.Allocation.Width).MinSize;
 						sizeCheckStep = SizeCheckStep.AdjustSize;
 						Widget.QueueResize ();
 					} else {
-						Toolkit.Invoke (delegate {
-							realRequestedWidth = (int) eventSink.OnGetPreferredWidthForHeight (args.Allocation.Height).MinSize;
-						});
+						realRequestedWidth = (int) eventSink.OnGetPreferredWidthForHeight (args.Allocation.Height).MinSize;
 						sizeCheckStep = SizeCheckStep.AdjustSize;
 						Widget.QueueResize ();
 					}
@@ -691,7 +686,7 @@ namespace Xwt.GtkBackend
 			Toolkit.Invoke (delegate {
 				EventSink.OnKeyReleased (kargs);
 			});
-			if (kargs.IsEventCanceled)
+			if (kargs.Handled)
 				args.RetVal = true;
 		}
 
@@ -710,7 +705,7 @@ namespace Xwt.GtkBackend
 			Toolkit.Invoke (delegate {
 				EventSink.OnKeyPressed (kargs);
 			});
-			if (kargs.IsEventCanceled)
+			if (kargs.Handled)
 				args.RetVal = true;
 		}
 
@@ -753,6 +748,8 @@ namespace Xwt.GtkBackend
 			Toolkit.Invoke (delegate {
 				EventSink.OnMouseMoved (a);
 			});
+			if (a.Handled)
+				args.RetVal = true;
 		}
 
 		void HandleButtonReleaseEvent (object o, Gtk.ButtonReleaseEventArgs args)
@@ -764,6 +761,8 @@ namespace Xwt.GtkBackend
 			Toolkit.Invoke (delegate {
 				EventSink.OnButtonReleased (a);
 			});
+			if (a.Handled)
+				args.RetVal = true;
 		}
 
 		[GLib.ConnectBeforeAttribute]
@@ -782,6 +781,8 @@ namespace Xwt.GtkBackend
 			Toolkit.Invoke (delegate {
 				EventSink.OnButtonPressed (a);
 			});
+			if (a.Handled)
+				args.RetVal = true;
 		}
 		
 		[GLib.ConnectBefore]
@@ -807,8 +808,10 @@ namespace Xwt.GtkBackend
 				var cact = ConvertDragAction (context.Actions);
 				if (cact == DragDropAction.All)
 					cact = DragDropAction.Move;
-				
-				DragOverCheckEventArgs da = new DragOverCheckEventArgs (new Point (x, y), Util.GetDragTypes (context.Targets), cact);
+
+				var target = Gtk.Drag.DestFindTarget (EventsRootWidget, context, null);
+				var targetTypes = Util.GetDragTypes (new Gdk.Atom[] { target });
+				DragOverCheckEventArgs da = new DragOverCheckEventArgs (new Point (x, y), targetTypes, cact);
 				Toolkit.Invoke (delegate {
 					EventSink.OnDragOverCheck (da);
 				});
@@ -889,7 +892,7 @@ namespace Xwt.GtkBackend
 			DragDropInfo.DragDataRequests = DragDropInfo.ValidDropTypes.Length;
 			foreach (var t in DragDropInfo.ValidDropTypes) {
 				var at = Gdk.Atom.Intern (t.Target, true);
-				Gtk.Drag.GetData (Widget, ctx, at, time);
+				Gtk.Drag.GetData (EventsRootWidget, ctx, at, time);
 			}
 		}
 		
@@ -949,6 +952,10 @@ namespace Xwt.GtkBackend
 		
 		void HandleWidgetDragBegin (object o, Gtk.DragBeginArgs args)
 		{
+			// If SetDragSource has not been called, ignore the event
+			if (DragDropInfo.SourceDragAction == default (Gdk.DragAction))
+				return;
+
 			DragStartData sdata = null;
 			Toolkit.Invoke (delegate {
 				sdata = EventSink.OnDragStarted ();
@@ -990,12 +997,13 @@ namespace Xwt.GtkBackend
 		
 		public void DragStart (DragStartData sdata)
 		{
+			AllocEventBox ();
 			Gdk.DragAction action = ConvertDragAction (sdata.DragAction);
 			DragDropInfo.CurrentDragData = sdata.Data;
-			Widget.DragBegin += HandleDragBegin;
+			EventsRootWidget.DragBegin += HandleDragBegin;
 			if (sdata.ImageBackend != null)
-				IconInitializer.Init (Widget, (Gdk.Pixbuf) sdata.ImageBackend, sdata.HotX, sdata.HotY);
-			Gtk.Drag.Begin (Widget, Util.BuildTargetTable (sdata.Data.DataTypes), action, 1, Gtk.Global.CurrentEvent);
+				IconInitializer.Init (EventsRootWidget, (Gdk.Pixbuf) sdata.ImageBackend, sdata.HotX, sdata.HotY);
+			Gtk.Drag.Begin (EventsRootWidget, Util.BuildTargetTable (sdata.Data.DataTypes), action, 1, Gtk.Global.CurrentEvent);
 		}
 
 		void HandleDragBegin (object o, Gtk.DragBeginArgs args)
@@ -1033,11 +1041,11 @@ namespace Xwt.GtkBackend
 		
 		void FinishDrag (bool delete)
 		{
-			Widget.DragEnd -= HandleWidgetDragEnd;
-			Widget.DragDataGet -= HandleWidgetDragDataGet;
-			Widget.DragFailed -= HandleDragFailed;
-			Widget.DragDataDelete -= HandleDragDataDelete;
-			Widget.DragBegin -= HandleDragBegin; // This event is subscribed only when manualy starting a drag
+			EventsRootWidget.DragEnd -= HandleWidgetDragEnd;
+			EventsRootWidget.DragDataGet -= HandleWidgetDragDataGet;
+			EventsRootWidget.DragFailed -= HandleDragFailed;
+			EventsRootWidget.DragDataDelete -= HandleDragDataDelete;
+			EventsRootWidget.DragBegin -= HandleDragBegin; // This event is subscribed only when manualy starting a drag
 			Toolkit.Invoke (delegate {
 				eventSink.OnDragFinished (new DragFinishedEventArgs (delete));
 			});
@@ -1053,7 +1061,8 @@ namespace Xwt.GtkBackend
 		
 		protected virtual void OnSetDragTarget (Gtk.TargetEntry[] table, Gdk.DragAction actions)
 		{
-			Gtk.Drag.DestSet (Widget, Gtk.DestDefaults.Highlight, table, actions);
+			AllocEventBox ();
+			Gtk.Drag.DestSet (EventsRootWidget, Gtk.DestDefaults.Highlight, table, actions);
 		}
 		
 		public void SetDragSource (TransferDataType[] types, DragDropAction dragAction)

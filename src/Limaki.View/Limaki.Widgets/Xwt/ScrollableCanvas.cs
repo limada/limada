@@ -2,10 +2,11 @@ using Xwt.Drawing;
 using System;
 
 namespace Xwt.Widgets {
+
     public class ScrollableCanvas : Canvas {
 
 
-        protected override void OnDraw (Context ctx) {
+        protected override void OnDraw (Context ctx, Rectangle dirtyRect) {
             ctx.Translate (-VisibleRect.X, -VisibleRect.Y);
         }
 

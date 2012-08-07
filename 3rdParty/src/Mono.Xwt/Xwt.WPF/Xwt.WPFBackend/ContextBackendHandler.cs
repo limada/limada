@@ -5,6 +5,7 @@
 //       Eric Maupin <ermau@xamarin.com>
 //       Hywel Thomas <hywel.w.thomas@gmail.com>
 //       Lytico (http://limada.sourceforge.net)
+//       Luís Reis <luiscubal@gmail.com>
 //
 // Copyright (c) 2012 Xamarin, Inc.
 // 
@@ -77,16 +78,20 @@ namespace Xwt.WPFBackend
 		public void Clip (object backend)
 		{
 			var c = (DrawingContext) backend;
+			c.Graphics.SetClip (c.Path);
+			c.Path.Reset ();
 		}
 
 		public void ClipPreserve (object backend)
 		{
 			var c = (DrawingContext) backend;
+			c.Graphics.SetClip (c.Path);
 		}
 
 		public void ResetClip (object backend)
 		{
 			var c = (DrawingContext) backend;
+			c.Graphics.ResetClip ();
 		}
 
 		public void ClosePath (object backend)
@@ -111,6 +116,8 @@ namespace Xwt.WPFBackend
 			var c = (DrawingContext) backend;
 			c.Graphics.FillPath (c.Brush, c.Path);
 			c.Path.Reset();
+			c.CurrentX = 0;
+			c.CurrentY = 0;
 		}
 
 		public void FillPreserve (object backend)
@@ -142,6 +149,8 @@ namespace Xwt.WPFBackend
 		{
 			var c = (DrawingContext) backend;
 			c.Path.Reset();
+			c.CurrentX = 0;
+			c.CurrentY = 0;
 		}
 
 		public void Rectangle (object backend, double x, double y, double width, double height)
@@ -190,6 +199,8 @@ namespace Xwt.WPFBackend
 			var c = (DrawingContext) backend;
 			c.Graphics.DrawPath (c.Pen, c.Path);
 			c.Path.Reset();
+			c.CurrentX = 0;
+			c.CurrentY = 0;
 		}
 
 		public void StrokePreserve (object backend)
@@ -201,13 +212,15 @@ namespace Xwt.WPFBackend
 		public void SetColor (object backend, Color color)
 		{
 			var c = (DrawingContext) backend;
-			c.SetColor (color.ToDrawingColor ());
+
+			var dc = color.ToDrawingColor ();
+			c.SetColor (dc);
 		}
 
 		public void SetLineWidth (object backend, double width)
 		{
 			var c = (DrawingContext) backend;
-			c.Pen.Width = (float) width;
+			c.SetWidth ((float) width);
 		}
 
 		public void SetLineDash (object backend, double offset, params double[] pattern)
@@ -260,21 +273,23 @@ namespace Xwt.WPFBackend
 		public void SetFont (object backend, Font font)
 		{
 			var c = (DrawingContext) backend;
+			c.Font.Dispose();
 			c.Font = font.ToDrawingFont ();
 		}
 
 		public void DrawTextLayout (object backend, TextLayout layout, double x, double y)
 		{
 			var c = (DrawingContext)backend;
-			var sfont = layout.Font.ToDrawingFont ();
 			var measure = layout.GetSize ();
 			var h = layout.Height > 0 ? (float)layout.Height : (float)measure.Height;
 			var stringFormat = TextLayoutContext.StringFormat;
 			var sdStringFormat = layout.Trimming.ToDrawingStringTrimming ();
+
 			if (layout.Height > 0 && stringFormat.Trimming != sdStringFormat) {
 				stringFormat = (System.Drawing.StringFormat)stringFormat.Clone ();
 				stringFormat.Trimming = sdStringFormat;
 			}
+
 			c.Graphics.DrawString (layout.Text, layout.Font.ToDrawingFont (), c.Brush,
 			                       new RectangleF ((float)x, (float)y, (float)measure.Width, h),
 			                       stringFormat);
@@ -296,16 +311,25 @@ namespace Xwt.WPFBackend
 			DrawImageCore (c.Graphics, bmp, (float) x, (float) y, (float) width, (float) height, (float) alpha);
 		}
 
+		public void DrawImage (object backend, object img, Rectangle srcRect, Rectangle destRect, double alpha)
+		{
+			var c = (DrawingContext) backend;
+
+			Bitmap bmp = DataConverter.AsBitmap (img);
+
+			DrawImageCore (c.Graphics, bmp, srcRect, destRect, (float) alpha);
+		}
+
 		public void ResetTransform (object backend)
 		{
 			var c = (DrawingContext)backend;
-			c.Graphics.ResetTransform();
+			c.Graphics.ResetTransform ();
 		}
 
 		public void Rotate (object backend, double angle)
 		{
 			var c = (DrawingContext)backend;
-			c.Graphics.RotateTransform((float)angle);
+			c.Graphics.RotateTransform ((float)angle);
 		}
 
 		public void Scale (object backend, double scaleX, double scaleY)
@@ -320,8 +344,59 @@ namespace Xwt.WPFBackend
 			c.Graphics.TranslateTransform ((float)tx, (float)ty);
 		}
 
+		public void TransformPoint (object backend, ref double x, ref double y)
+		{
+			Matrix m = ((DrawingContext)backend).Graphics.Transform;
+			PointF p = new PointF ((float)x, (float)y);
+			PointF[] pts = new PointF[] { p };
+			m.TransformPoints (pts);
+			x = pts[0].X;
+			y = pts[0].Y;
+		}
+
+		public void TransformDistance (object backend, ref double dx, ref double dy)
+		{
+			Matrix m = ((DrawingContext)backend).Graphics.Transform;
+			PointF p = new PointF ((float)dx, (float)dy);
+			PointF[] pts = new PointF[] {p};
+			m.TransformVectors (pts);
+			dx = pts[0].X;
+			dy = pts[0].Y;
+		}
+
+		public void TransformPoints (object backend, Point[] points)
+		{
+			Matrix m = ((DrawingContext)backend).Graphics.Transform;
+			PointF[] pts = new PointF[points.Length];
+			for (int i = 0; i < points.Length; ++i) {
+				pts[i].X = (float)points[i].X;
+				pts[i].Y = (float)points[i].Y;
+			}
+			m.TransformPoints (pts);
+			for (int i = 0; i < points.Length; ++i) {
+				points[i].X = pts[i].X;
+				points[i].Y = pts[i].Y;
+			}
+		}
+
+		public void TransformDistances (object backend, Distance[] vectors)
+		{
+			Matrix m = ((DrawingContext)backend).Graphics.Transform;
+			PointF[] pts = new PointF[vectors.Length];
+			for (int i = 0; i < vectors.Length; ++i) {
+				pts[i].X = (float)vectors[i].Dx;
+				pts[i].Y = (float)vectors[i].Dy;
+			}
+			m.TransformVectors (pts);
+			for (int i = 0; i < vectors.Length; ++i) {
+				vectors[i].Dx = pts[i].X;
+				vectors[i].Dy = pts[i].Y;
+			}
+		}
+
 		public void Dispose (object backend)
 		{
+			((DrawingContext)backend).Dispose();
 		}
 
 		internal static void DrawImageCore (Graphics g, Bitmap bmp, float x, float y, float width, float height, float alpha)
@@ -351,6 +426,33 @@ namespace Xwt.WPFBackend
 			}
 			else
 				g.DrawImage (bmp, x, y, width, height);
+		}
+
+		internal void DrawImageCore (Graphics g, Bitmap bmp, Rectangle srcRect, Rectangle destRect, float alpha)
+		{
+			if (alpha < 1)
+			{
+				var attr = new ImageAttributes ();
+
+				float[][] matrixItems = new[] {
+					new float[] { 1, 0, 0, 0, 0 },
+					new float[] { 0, 1, 0, 0, 0 },
+					new float[] { 0, 0, 1, 0, 0 },
+					new float[] { 0, 0, 0, alpha, 0 },
+					new float[] { 0, 0, 0, 0, 1 },
+				};
+
+				attr.SetColorMatrix (new ColorMatrix (matrixItems), ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
+				PointF[] points = new PointF[3];
+				points[0] = new PointF ((float) destRect.X, (float) destRect.Y);
+				points[1] = new PointF ((float) (destRect.X + destRect.Width), (float) destRect.Y);
+				points[2] = new PointF ((float) destRect.X, (float) (destRect.Y + destRect.Height));
+
+				g.DrawImage (bmp, points, srcRect.ToSDRectF (), GraphicsUnit.Pixel, attr);
+			}
+			else
+				g.DrawImage (bmp, destRect.ToSDRectF (), srcRect.ToSDRectF (), GraphicsUnit.Pixel);
 		}
 	}
 }

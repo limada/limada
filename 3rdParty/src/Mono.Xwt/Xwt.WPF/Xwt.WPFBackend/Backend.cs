@@ -31,7 +31,7 @@ namespace Xwt.WPFBackend
 	{
 		protected object frontend;
 
-		void IBackend.Initialize (object frontend)
+		void IBackend.InitializeBackend (object frontend)
 		{
 			this.frontend = frontend;
 		}
@@ -42,6 +42,10 @@ namespace Xwt.WPFBackend
 
 		public virtual void DisableEvent (object eventId)
 		{
+		}
+
+		public object Frontend {
+			get { return frontend; }
 		}
 	}
 }

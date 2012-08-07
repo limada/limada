@@ -40,7 +40,7 @@ namespace Xwt.WinformBackend {
         public WindowFrameBackend() {
         }
 
-        void IBackend.Initialize(object frontend) {
+        void IBackend.InitializeBackend(object frontend) {
             this.frontend = (WindowFrame)frontend;
         }
 
@@ -135,6 +135,19 @@ namespace Xwt.WinformBackend {
 
         public void Dispose () {
             throw new NotImplementedException ();
+        }
+
+
+        public void Move(double x, double y) {
+            throw new NotImplementedException();
+        }
+
+        public void Resize(double width, double height) {
+            throw new NotImplementedException();
+        }
+
+        public void Present() {
+            throw new NotImplementedException();
         }
     }
 }

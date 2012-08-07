@@ -13,7 +13,7 @@ namespace Xwt.Html5.Backend {
         }
 
         public override string Render () {
-            var ctx = ((Html5Context) WidgetRegistry.GetBackend (Context));
+            var ctx = ((Html5Context) Html5Engine.Registry.GetBackend(Context));
             return string.Format (@"function() {{
                 var {0} = document.getElementById(""{1}"");
                 var {2} = {0}.getContext(""2d"");

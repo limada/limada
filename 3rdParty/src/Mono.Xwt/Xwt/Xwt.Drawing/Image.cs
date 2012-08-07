@@ -32,13 +32,13 @@ using System.IO;
 
 namespace Xwt.Drawing
 {
-	public sealed class Image: XwtObject
+	public sealed class Image: XwtObject, IDisposable
 	{
 		static ImageBackendHandler handler;
 		
 		static Image ()
 		{
-			handler = WidgetRegistry.CreateSharedBackend<ImageBackendHandler> (typeof(Image));
+			handler = WidgetRegistry.MainRegistry.CreateSharedBackend<ImageBackendHandler> (typeof(Image));
 		}
 		
 		protected override IBackendHandler BackendHandler {
@@ -88,6 +88,16 @@ namespace Xwt.Drawing
 		
 		public Size Size {
 			get { return handler.GetSize (Backend); }
+		}
+		
+		public void SetPixel (int x, int y, Color color)
+		{
+			handler.SetPixel (Backend, x, y, color);
+		}
+		
+		public Color GetPixel (int x, int y)
+		{
+			return handler.GetPixel (Backend, x, y);
 		}
 		
 		public Image Scale (double scale)
@@ -140,8 +150,8 @@ namespace Xwt.Drawing
 			handler.Dispose (Backend);
 		}
 
-        public void Save (Stream result, string p) {
-            throw new NotImplementedException ();
+        public void Save(Stream result, string p) {
+            throw new NotImplementedException();
         }
     }
 }

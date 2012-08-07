@@ -71,18 +71,6 @@ namespace Limaki.Model.Content {
             get { return _supportedStreamTypes; }
         }
 
-
-        public override Content<Stream> Open(Stream stream) {
-            if (!Supports(stream))
-                return null;
-            var result = new Content<Stream>(
-                                stream,
-                                _supportedStreamTypes[0].Compression,
-                                _supportedStreamTypes[0].StreamType);
-
-            return result;
-        }
-
         public override bool Saveable { get { return true; } }
         public override bool Readable { get { return true; } }
     }

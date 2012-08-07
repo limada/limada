@@ -54,7 +54,7 @@ namespace Xwt.GtkBackend
 			if (val is string)
 				data.Text = (string)val;
 			else if (val is Xwt.Drawing.Image)
-				data.SetPixbuf ((Gdk.Pixbuf) WidgetRegistry.GetBackend (val));
+				data.SetPixbuf ((Gdk.Pixbuf) GtkEngine.Registry.GetBackend (val));
 			else {
 				var at = Gdk.Atom.Intern (atomType, false);
 				data.Set (at, 0, TransferDataSource.SerializeValue (val));
@@ -70,7 +70,7 @@ namespace Xwt.GtkBackend
 			if (type == TransferDataType.Text)
 				target.AddText (data.Text);
 			else if (data.TargetsIncludeImage (false))
-				target.AddImage (WidgetRegistry.CreateFrontend<Xwt.Drawing.Image> (data.Pixbuf));
+				target.AddImage (GtkEngine.Registry.CreateFrontend<Xwt.Drawing.Image> (data.Pixbuf));
 			else if (type == TransferDataType.Uri) {
 				var uris = System.Text.Encoding.UTF8.GetString (data.Data).Split ('\n').Where (u => !string.IsNullOrEmpty(u)).Select (u => new Uri (u)).ToArray ();
 				target.AddUris (uris);
@@ -92,7 +92,7 @@ namespace Xwt.GtkBackend
 			List<TransferDataType> types = new List<TransferDataType> ();
 			foreach (var dt in dropTypes) {
 				TransferDataType type;
-				if (atomToType.TryGetValue (dt.ToString (), out type))
+				if (atomToType.TryGetValue (dt.Name, out type))
 					types.Add (type);
 			}
 			return types.ToArray ();
@@ -193,6 +193,32 @@ namespace Xwt.GtkBackend
 		public static Color ToXwtColor (this Gdk.Color color)
 		{
 			return new Color ((double)color.Red / (double)ushort.MaxValue, (double)color.Green / (double)ushort.MaxValue, (double)color.Blue / (double)ushort.MaxValue);
+		}
+		
+		public static ScrollPolicy ConvertScrollPolicy (Gtk.PolicyType p)
+		{
+			switch (p) {
+			case Gtk.PolicyType.Always:
+				return ScrollPolicy.Always;
+			case Gtk.PolicyType.Automatic:
+				return ScrollPolicy.Automatic;
+			case Gtk.PolicyType.Never:
+				return ScrollPolicy.Never;
+			}
+			throw new InvalidOperationException ("Invalid policy value:" + p);
+		}
+		
+		public static Gtk.PolicyType ConvertScrollPolicy (ScrollPolicy p)
+		{
+			switch (p) {
+			case ScrollPolicy.Always:
+				return Gtk.PolicyType.Always;
+			case ScrollPolicy.Automatic:
+				return Gtk.PolicyType.Automatic;
+			case ScrollPolicy.Never:
+				return Gtk.PolicyType.Never;
+			}
+			throw new InvalidOperationException ("Invalid policy value:" + p);
 		}
 	}
 }

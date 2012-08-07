@@ -46,7 +46,6 @@ namespace Xwt.WPFBackend
 		static ComboBoxBackend()
 		{
 			var factory = new FrameworkElementFactory (typeof (WindowsSeparator));
-			factory.SetValue (UIElement.IsEnabledProperty, false);
 			factory.SetValue (FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
 			
 			var sepTemplate = new ControlTemplate (typeof (ComboBoxItem));
@@ -56,19 +55,15 @@ namespace Xwt.WPFBackend
 			trigger.Binding = new Binding (".[1]") { Converter = new TypeToStringConverter() };
 			trigger.Value = typeof(ItemSeparator).Name;
 			trigger.Setters.Add (new Setter (Control.TemplateProperty, sepTemplate));
+			trigger.Setters.Add (new Setter (UIElement.IsEnabledProperty, false));
 
 			ContainerStyle = new Style (typeof (ComboBoxItem));
 			ContainerStyle.Triggers.Add (trigger);
-
-			//FrameworkElementFactory f = new FrameworkElementFactory (typeof (TextBlock));
-			//f.SetBinding (TextBlock.TextProperty, new Binding (".[0]"));
-			//DefaultTemplate = new DataTemplate { VisualTree = f };
 		}
 
 		public ComboBoxBackend()
 		{
-			Widget = new WindowsComboBox();
-
+			ComboBox = new ExComboBox();
 			ComboBox.DisplayMemberPath = ".[0]";
 			//ComboBox.ItemTemplate = DefaultTemplate;
 			ComboBox.ItemContainerStyle = ContainerStyle;
@@ -82,7 +77,11 @@ namespace Xwt.WPFBackend
 
 		public void SetSource (IListDataSource source, IBackend sourceBackend)
 		{
-			ComboBox.ItemsSource = new ListSourceNotifyWrapper (source);
+			var dataSource = sourceBackend as ListDataSource;
+			if (dataSource != null)
+				ComboBox.ItemsSource = dataSource;
+			else
+				ComboBox.ItemsSource = new ListSourceNotifyWrapper (source);
 		}
 
 		public int SelectedRow
@@ -119,9 +118,10 @@ namespace Xwt.WPFBackend
 			}
 		}
 
-		protected WindowsComboBox ComboBox
+		protected ExComboBox ComboBox
 		{
-			get { return (WindowsComboBox) Widget; }
+			get { return (ExComboBox) Widget; }
+			set { Widget = value; }
 		}
 
 		protected IComboBoxEventSink ComboBoxEventSink

@@ -30,17 +30,25 @@ using Xwt.Drawing;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Xwt.Backends;
+using Xwt.Engine;
 
 namespace Xwt
 {
-	public class TreeView: Widget, IColumnContainer
+	public class TreeView: Widget, IColumnContainer, IScrollableWidget
 	{
 		ListViewColumnCollection columns;
 		ITreeDataSource dataSource;
 		SelectionMode mode;
 		
-		protected new class EventSink: Widget.EventSink, ITreeViewEventSink
+		protected new class WidgetBackendHost: Widget.WidgetBackendHost<TreeView,ITreeViewBackend>, ITreeViewEventSink
 		{
+			protected override void OnBackendCreated ()
+			{
+				base.OnBackendCreated ();
+				Backend.Initialize (this);
+				Parent.columns.Attach (Backend);
+			}
+			
 			public void OnSelectionChanged ()
 			{
 				((TreeView)Parent).OnSelectionChanged (EventArgs.Empty);
@@ -48,7 +56,7 @@ namespace Xwt
 			
 			public override Size GetDefaultNaturalSize ()
 			{
-				return Xwt.Engine.DefaultNaturalSizes.TreeView;
+				return Xwt.Backends.DefaultNaturalSizes.TreeView;
 			}
 		}
 		
@@ -63,22 +71,7 @@ namespace Xwt
 		public TreeView ()
 		{
 			columns = new ListViewColumnCollection (this);
-		}
-		
-		protected override Widget.EventSink CreateEventSink ()
-		{
-			return new EventSink ();
-		}
-		
-		new ITreeViewBackend Backend {
-			get { return (ITreeViewBackend) base.Backend; }
-		}
-		
-		protected override void OnBackendCreated ()
-		{
-			base.OnBackendCreated ();
-			Backend.Initialize ((EventSink)WidgetEventSink);
-			columns.Attach (Backend);
+			VerticalScrollPolicy = HorizontalScrollPolicy = ScrollPolicy.Automatic;
 		}
 		
 		/// <summary>
@@ -90,6 +83,25 @@ namespace Xwt
 		public TreeView (ITreeDataSource source): this ()
 		{
 			DataSource = source;
+		}
+		
+		protected override BackendHost CreateBackendHost ()
+		{
+			return new WidgetBackendHost ();
+		}
+		
+		ITreeViewBackend Backend {
+			get { return (ITreeViewBackend) BackendHost.Backend; }
+		}
+
+		public ScrollPolicy VerticalScrollPolicy {
+			get { return Backend.VerticalScrollPolicy; }
+			set { Backend.VerticalScrollPolicy = value; }
+		}
+		
+		public ScrollPolicy HorizontalScrollPolicy {
+			get { return Backend.HorizontalScrollPolicy; }
+			set { Backend.HorizontalScrollPolicy = value; }
 		}
 		
 		/// <summary>
@@ -117,7 +129,7 @@ namespace Xwt
 			set {
 				if (dataSource != value) {
 					dataSource = value;
-					Backend.SetSource (dataSource, dataSource is XwtComponent ? GetBackend ((XwtComponent)dataSource) : null);
+					Backend.SetSource (dataSource, dataSource is IFrontend ? (IBackend)BackendHost.WidgetRegistry.GetBackend (dataSource) : null);
 				}
 			}
 		}
@@ -351,12 +363,12 @@ namespace Xwt
 		/// </summary>
 		public event EventHandler SelectionChanged {
 			add {
-				OnBeforeEventAdd (TableViewEvent.SelectionChanged, selectionChanged);
+				BackendHost.OnBeforeEventAdd (TableViewEvent.SelectionChanged, selectionChanged);
 				selectionChanged += value;
 			}
 			remove {
 				selectionChanged -= value;
-				OnAfterEventRemove (TableViewEvent.SelectionChanged, selectionChanged);
+				BackendHost.OnAfterEventRemove (TableViewEvent.SelectionChanged, selectionChanged);
 			}
 		}
 	}

@@ -30,6 +30,7 @@ using System.Globalization;
 
 namespace Xwt {
 
+	[Serializable]
 	public struct Point {
 
 		public double X { get; set; }
@@ -39,7 +40,7 @@ namespace Xwt {
 
 		public override string ToString ()
 		{
-            return String.Format ("{{X={0} Y={1}}}", X.ToString (CultureInfo.InvariantCulture), Y.ToString (CultureInfo.InvariantCulture));
+			return String.Format ("{{X={0} Y={1}}}", X.ToString (CultureInfo.InvariantCulture), Y.ToString (CultureInfo.InvariantCulture));
 		}
 		
 		public Point (double x, double y): this ()

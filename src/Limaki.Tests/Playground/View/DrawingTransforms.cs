@@ -34,9 +34,9 @@ namespace Samples
 		{
 		}
 		
-		protected override void OnDraw (Xwt.Drawing.Context ctx)
+		protected override void OnDraw (Xwt.Drawing.Context ctx, Rectangle dirtyRect)
 		{
-			base.OnDraw (ctx);
+			base.OnDraw (ctx, dirtyRect);
 
 		    ctx.Font = this.Font;
 

@@ -35,6 +35,20 @@ namespace Xwt
 	{
 		DataField[] fields;
 		
+		class ListStoreBackendHost: BackendHost<ListStore,IListStoreBackend>
+		{
+			protected override void OnBackendCreated ()
+			{
+				Backend.Initialize (Parent.fields.Select (f => f.FieldType).ToArray ());
+				base.OnBackendCreated ();
+			}
+		}
+		
+		protected override Xwt.Backends.BackendHost CreateBackendHost ()
+		{
+			return new ListStoreBackendHost ();
+		}
+		
 		public ListStore (params DataField[] fields)
 		{
 			for (int n=0; n<fields.Length; n++) {
@@ -45,18 +59,8 @@ namespace Xwt
 			this.fields = fields;
 		}
 		
-		new IListStoreBackend Backend {
-			get { return (IListStoreBackend) base.Backend; }
-		}
-		
-		protected override IBackend OnCreateBackend ()
-		{
-			IBackend b = base.OnCreateBackend ();
-			if (b == null)
-				b = new DefaultListStoreBackend ();
-			((IListStoreBackend)b).Initialize (fields.Select (f => f.FieldType).ToArray ());
-			return b;
-		
+		IListStoreBackend Backend {
+			get { return (IListStoreBackend) BackendHost.Backend; }
 		}
 		
 		public ListStore ()
@@ -131,9 +135,14 @@ namespace Xwt
 		{
 			Backend.RemoveRow (row);
 		}
+		
+		public void Clear ()
+		{
+			Backend.Clear ();
+		}
 	}
 	
-	class DefaultListStoreBackend: IListStoreBackend
+	public class DefaultListStoreBackend: IListStoreBackend
 	{
 		List<object[]> list = new List<object[]> ();
 		Type[] columnTypes;
@@ -143,7 +152,7 @@ namespace Xwt
 		public event EventHandler<ListRowEventArgs> RowChanged;
 		public event EventHandler<ListRowOrderEventArgs> RowsReordered;
 
-		public void Initialize (object frontend)
+		public void InitializeBackend (object frontend)
 		{
 		}
 		
@@ -217,6 +226,16 @@ namespace Xwt
 		
 		public void DisableEvent (object eventId)
 		{
+		}
+		
+		public void Clear ()
+		{
+			int count = list.Count;
+			list.Clear ();
+			for (int n=0; n<count; n++) {
+				if (RowDeleted != null)
+					RowDeleted (this, new ListRowEventArgs (n));
+			}
 		}
 	}
 }

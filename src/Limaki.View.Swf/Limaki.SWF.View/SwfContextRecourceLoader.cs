@@ -27,6 +27,7 @@ using Limaki.Visuals;
 using Limaki.Swf.Backends;
 using Xwt.WinformBackend;
 using System;
+using Xwt.Engine;
 
 
 namespace Limaki.View.Swf {
@@ -40,8 +41,8 @@ namespace Limaki.View.Swf {
 
             new LimakiCoreContextRecourceLoader ().ApplyResources (context);
 
-            new SwfEngine().RegisterBackends();
-            Xwt.Engine.WidgetRegistry.RegisterBackend(
+            new SwfEngine().InitializeRegistry(WidgetRegistry.MainRegistry);
+            WidgetRegistry.MainRegistry.RegisterBackend(
                 typeof (Xwt.Drawing.SystemColors),typeof (Xwt.Gdi.Backend.SystemColorsBackend)
             );
 

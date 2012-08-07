@@ -117,7 +117,7 @@ namespace Xwt.Gdi.Backend {
         }
 
         public static System.Drawing.Font ToGdi (this Font value) {
-            return (System.Drawing.Font) WidgetRegistry.GetBackend (value);
+            return (System.Drawing.Font)GdiEngine.Registry.GetBackend(value);
         }
 
         public static Size ToXwt (this SizeF value) {

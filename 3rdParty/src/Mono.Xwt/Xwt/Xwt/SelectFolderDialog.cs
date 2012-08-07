@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
+using Xwt.Engine;
 
 namespace Xwt
 {
@@ -46,8 +47,8 @@ namespace Xwt
 			this.title = title;
 		}
 
-		new ISelectFolderDialogBackend Backend {
-			get { return (ISelectFolderDialogBackend) base.Backend; }
+		ISelectFolderDialogBackend Backend {
+			get { return (ISelectFolderDialogBackend) BackendHost.Backend; }
 		}
 		
 		public string Title {
@@ -138,7 +139,7 @@ namespace Xwt
 					Backend.CurrentFolder = currentFolder;
 				if (!string.IsNullOrEmpty (title))
 					Backend.Title = title;
-				return Backend.Run ((IWindowFrameBackend)GetBackend (parentWindow));
+				return Backend.Run ((IWindowFrameBackend)WidgetRegistry.MainRegistry.GetBackend (parentWindow));
 			} finally {
 				currentFolder = Backend.CurrentFolder;
 				folder = Backend.Folder;

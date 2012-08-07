@@ -22,9 +22,12 @@ using Limaki.Graphs.Extensions;
 using Xwt.Engine;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Modelling;
+using Xwt.Html5.Backend;
 
 namespace Xwt.Html5.TestApp {
+
     public partial class XwtHtml5TestMainForm : Form {
+
         public XwtHtml5TestMainForm () {
             InitializeComponent ();
             Compose ();
@@ -131,13 +134,15 @@ namespace Xwt.Html5.TestApp {
 
 
         public void ClearResources () {
-            WidgetRegistry.Clear();
+            WidgetRegistry.MainRegistry.Clear();
+            WidgetRegistry.MainRegistry = null;
         }
 
         public void ApplyResources () {
             var loader = new Html5ContextRecourceLoader ();
             Registry.ConcreteContext = new Limaki.Common.IOC.ApplicationContext ();
             loader.ApplyResources (Registry.ConcreteContext);
+            WidgetRegistry.MainRegistry = Html5Engine.Registry;
         }
 
         IGraphScene<IVisual, IVisualEdge> SceneWithTestData (int example) {

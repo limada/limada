@@ -36,7 +36,7 @@ using Xwt.Engine;
 namespace Xwt
 {
 	/// <summary>
-	/// A collection of data to be transferred through drag & drop or the clipboard
+	/// A collection of data to be transferred through drag and drop or the clipboard
 	/// </summary>
 	public sealed class TransferDataSource
 	{
@@ -64,11 +64,11 @@ namespace Xwt
 		/// <param name='value'>
 		/// Value.
 		/// </param>
-		public void AddValue (object value)
+		public void AddValue<T> (T value) where T : class
 		{
 			if (value == null)
 				throw new ArgumentNullException ("value");
-			data [TransferDataType.FromType (value.GetType ())] = value;
+			data [TransferDataType.FromType (typeof (T))] = value;
 		}
 		
 		/// <summary>

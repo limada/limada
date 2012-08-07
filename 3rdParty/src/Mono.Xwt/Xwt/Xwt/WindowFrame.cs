@@ -52,30 +52,57 @@
 using System;
 using Xwt.Backends;
 using Xwt.Engine;
+using System.ComponentModel;
 
 namespace Xwt
 {
 	public class WindowFrame: XwtComponent
 	{
 		EventHandler boundsChanged;
-		Rectangle bounds;
-		EventSink eventSink;
+		EventHandler shown;
+		EventHandler hidden;
+
+		Point location;
+		Size size;
 		bool pendingReallocation;
 		
-		protected class EventSink: IWindowFrameEventSink
+		protected class WindowBackendHost: BackendHost<WindowFrame,IWindowFrameBackend>, IWindowFrameEventSink
 		{
-			internal protected WindowFrame Parent { get; set; }
+			protected override void OnBackendCreated ()
+			{
+				base.OnBackendCreated ();
+				Backend.Initialize (this);
+				Parent.location = Backend.Bounds.Location;
+				Parent.size = Backend.Bounds.Size;
+				Backend.EnableEvent (WindowFrameEvent.BoundsChanged);
+			}
 			
 			public void OnBoundsChanged (Rectangle bounds)
 			{
 				Parent.OnBoundsChanged (new BoundsChangedEventArgs () { Bounds = bounds });
 			}
+
+			public virtual void OnShown ()
+			{
+				Parent.OnShown ();
+			}
+
+			public virtual void OnHidden ()
+			{
+				Parent.OnHidden ();
+			}
 		}
-		
+
+		static WindowFrame ()
+		{
+			MapEvent (WindowFrameEvent.Shown, typeof(WindowFrame), "OnShown");
+			MapEvent (WindowFrameEvent.Hidden, typeof(WindowFrame), "OnHidden");
+		}
+
 		public WindowFrame ()
 		{
-			eventSink = CreateEventSink ();
-			eventSink.Parent = this;
+			if (!(base.BackendHost is WindowBackendHost))
+				throw new InvalidOperationException ("CreateBackendHost for WindowFrame did not return a WindowBackendHost instance");
 		}
 		
 		public WindowFrame (string title): this ()
@@ -89,29 +116,21 @@ namespace Xwt
 			
 			// Don't dispose the backend if this object is being finalized
 			// The backend has to handle the finalizing on its own
-			if (disposing && BackendCreated)
+			if (disposing && BackendHost.BackendCreated)
 				Backend.Dispose ();
 		}
 		
-		new IWindowFrameBackend Backend {
-			get { return (IWindowFrameBackend) base.Backend; } 
+		IWindowFrameBackend Backend {
+			get { return (IWindowFrameBackend) BackendHost.Backend; } 
 		}
 		
-		protected override void OnBackendCreated ()
+		protected override BackendHost CreateBackendHost ()
 		{
-			base.OnBackendCreated ();
-			Backend.Initialize (eventSink);
-			bounds = Backend.Bounds;
-			Backend.EnableEvent (WindowFrameEvent.BoundsChanged);
+			return new WindowBackendHost ();
 		}
 		
-		protected virtual EventSink CreateEventSink ()
-		{
-			return new EventSink ();
-		}
-		
-		protected EventSink WindowEventSink {
-			get { return eventSink; }
+		protected new WindowBackendHost BackendHost {
+			get { return (WindowBackendHost) base.BackendHost; }
 		}
 		
 		public Rectangle ScreenBounds {
@@ -123,19 +142,18 @@ namespace Xwt
 					value.Width = 0;
 				if (value.Height < 0)
 					value.Height = 0;
-				SetSize (value.Width, value.Height);
 				BackendBounds = value;
 			}
 		}
 
 		public double X {
 			get { return BackendBounds.X; }
-			set { BackendBounds = new Xwt.Rectangle (value, Y, Width, Height); }
+			set { SetBackendLocation (value, Y); }
 		}
 		
 		public double Y {
 			get { return BackendBounds.Y; }
-			set { BackendBounds = new Xwt.Rectangle (X, value, Width, Height); }
+			set { SetBackendLocation (X, value); }
 		}
 		
 		public double Width {
@@ -143,8 +161,7 @@ namespace Xwt
 			set {
 				if (value < 0)
 					value = 0;
-				SetSize (value, -1);
-				BackendBounds = new Rectangle (X, Y, value, Height);
+				SetBackendSize (value, -1);
 			}
 		}
 		
@@ -153,8 +170,7 @@ namespace Xwt
 			set {
 				if (value < 0)
 					value = 0;
-				SetSize (-1, value);
-				BackendBounds = new Rectangle (X, Y, Width, value);
+				SetBackendSize (-1, value);
 			}
 		}
 		
@@ -165,14 +181,13 @@ namespace Xwt
 					value.Width = 0;
 				if (value.Height < 0)
 					value.Height = 0;
-				SetSize (value.Width, value.Height);
-				BackendBounds = new Rectangle (Location, value);
+				SetBackendSize (value.Width, value.Height);
 			}
 		}
 		
 		public Point Location {
 			get { return BackendBounds.Location; }
-			set { BackendBounds = new Rectangle (value.X, value.Y, Width, Height); }
+			set { SetBackendLocation (value.X, value.Y); }
 		}
 		
 		public string Title {
@@ -200,25 +215,62 @@ namespace Xwt
 			Visible = true;
 		}
 		
+		/// <summary>
+		/// Presents a window to the user. This may mean raising the window in the stacking order,
+		/// deiconifying it, moving it to the current desktop, and/or giving it the keyboard focus
+		/// </summary>
+		public void Present ()
+		{
+			Backend.Present ();
+		}
+
+		protected virtual void OnShown ()
+		{
+			if(shown != null)
+				shown (this, EventArgs.Empty);
+		}
+		
 		public void Hide ()
 		{
 			Visible = false;
 		}
 
-		internal virtual void SetSize (double width, double height)
+		protected virtual void OnHidden ()
 		{
-			BackendBounds = new Rectangle (X, Y, width != -1 ? width : Width, height != -1 ? height : Height);
+			if (hidden != null)
+				hidden (this, EventArgs.Empty);
+		}
+
+		internal virtual void SetBackendSize (double width, double height)
+		{
+			size = new Size (width != -1 ? width : Width, height != -1 ? height : Height);
+			Backend.Resize (size.Width, size.Height);
+		}
+
+		internal virtual void SetBackendLocation (double x, double y)
+		{
+			location = new Point (x, y);
+			Backend.Move (x, y);
 		}
 
 		internal virtual Rectangle BackendBounds {
-			get { LoadBackend ();  return bounds; }
-			set { bounds = Backend.Bounds = value; }
+			get {
+				BackendHost.EnsureBackendLoaded ();
+				return new Rectangle (location, size);
+			}
+			set {
+				size = value.Size;
+				location = value.Location;
+				Backend.Bounds = value;
+			}
 		}
 		
 		protected virtual void OnBoundsChanged (BoundsChangedEventArgs a)
 		{
+			var bounds = new Rectangle (location, size);
 			if (bounds != a.Bounds) {
-				bounds = a.Bounds;
+				size = a.Bounds.Size;
+				location = a.Bounds.Location;
 				Reallocate ();
 				if (boundsChanged != null)
 					boundsChanged (this, a);
@@ -247,7 +299,29 @@ namespace Xwt
 			remove {
 				boundsChanged -= value;
 			}
-		}	
+		}
+
+		public event EventHandler Shown {
+			add {
+				BackendHost.OnBeforeEventAdd (WindowFrameEvent.Shown, shown);
+				shown += value;
+			}
+			remove {
+				shown -= value;
+				BackendHost.OnAfterEventRemove (WindowFrameEvent.Shown, shown);
+			}
+		}
+
+		public event EventHandler Hidden {
+			add {
+				BackendHost.OnBeforeEventAdd (WindowFrameEvent.Hidden, hidden);
+				hidden += value;
+			}
+			remove {
+				hidden -= value;
+				BackendHost.OnAfterEventRemove (WindowFrameEvent.Hidden, hidden);
+			}
+		}
 	}
 	
 	public class BoundsChangedEventArgs: EventArgs

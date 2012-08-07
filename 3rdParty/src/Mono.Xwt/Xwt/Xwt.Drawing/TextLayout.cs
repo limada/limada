@@ -31,22 +31,22 @@ using Xwt.Backends;
 
 namespace Xwt.Drawing
 {
-	public class TextLayout: XwtObject
+	public sealed class TextLayout: XwtObject
 	{
-		
+
         static ITextLayoutBackendHandler _handler = null;
         static ITextLayoutBackendHandler handler {
-            get { return _handler ?? (_handler = WidgetRegistry.CreateSharedBackend<ITextLayoutBackendHandler> (typeof (TextLayout))); }
+            get { return _handler ?? (_handler = WidgetRegistry.MainRegistry.CreateSharedBackend<ITextLayoutBackendHandler>(typeof(TextLayout))); }
+
         }
 
-        internal static void SetHandler (ITextLayoutBackendHandler handler) {
+        internal static void SetHandler(ITextLayoutBackendHandler handler) {
             _handler = handler;
         }
-
 		Font font;
 		string text;
 		double width = -1;
-		double _height = -1;
+		double height = -1;
 		TextTrimming textTrimming;
 		
 		static TextLayout ()
@@ -62,7 +62,7 @@ namespace Xwt.Drawing
 		
 		public TextLayout (Canvas canvas)
 		{
-			Backend = handler.Create ((ICanvasBackend)WidgetRegistry.GetBackend (canvas));
+			Backend = handler.Create ((ICanvasBackend)WidgetRegistry.MainRegistry.GetBackend (canvas));
 			Font = canvas.Font;
 		}
 		
@@ -94,20 +94,20 @@ namespace Xwt.Drawing
 		}
 		
 		/// <summary>
-		/// Gets or sets desired _height.
+		/// Gets or sets desired Height.
 		/// </summary>
 		/// <value>
-		/// The _height. A value of -1 uses GetSize()._height on drawings
+		/// The Height. A value of -1 uses GetSize().Height on drawings
 		/// </value>
 		public double Height {
-			get { return _height; }
-			set { _height = value; handler.SetHeigth (Backend, value); }
+			get { return this.height; }
+			set { this.height = value; handler.SetHeight (Backend, value); }
 		}
 		
 		/// <summary>
 		/// measures the text
 		/// if Width is other than -1, it measures the height according to Width
-		/// _height is ignored
+		/// Height is ignored
 		/// </summary>
 		/// <returns>
 		/// The size.
@@ -117,8 +117,7 @@ namespace Xwt.Drawing
 			return handler.GetSize (Backend);
 		}
 		
-		public TextTrimming Trimming 
-        {
+		public TextTrimming Trimming {
 			get { return textTrimming; }
 			set { textTrimming = value; handler.SetTrimming (Backend, value); }
 		}

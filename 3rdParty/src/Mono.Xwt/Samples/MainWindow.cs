@@ -17,8 +17,19 @@ namespace Samples
 		DataField<Sample> widgetCol = new DataField<Sample> ();
 		DataField<Image> iconCol = new DataField<Image> ();
 		
+		StatusIcon statusIcon;
+		
 		public MainWindow ()
 		{
+			try {
+				statusIcon = Application.CreateStatusIcon ();
+				statusIcon.Menu = new Menu ();
+				statusIcon.Menu.Items.Add (new MenuItem ("Test"));
+				statusIcon.Image = Image.FromResource (GetType (), "package.png");
+			} catch {
+				Console.WriteLine ("Status icon could not be shown");
+			}
+			
 			Menu menu = new Menu ();
 			
 			var file = new MenuItem ("File");
@@ -54,6 +65,7 @@ namespace Samples
 			AddSample (null, "Buttons", typeof(ButtonSample));
 			AddSample (null, "CheckBox", typeof(Checkboxes));
 			AddSample (null, "Clipboard", typeof(ClipboardSample));
+			AddSample (null, "ColorSelector", typeof(ColorSelectorSample));
 			AddSample (null, "ComboBox", typeof(ComboBoxes));
 //			AddSample (null, "Designer", typeof(Designer));
 			AddSample (null, "Drag & Drop", typeof(DragDrop));
@@ -66,11 +78,15 @@ namespace Samples
 			AddSample (n, "Transformations", typeof(DrawingTransforms));
 			AddSample (n, "Images and Patterns", typeof(DrawingPatternsAndImages));
 			AddSample (n, "Text", typeof(DrawingText));
-			
+			AddSample (n, "Partial Images", typeof (PartialImages));
+
+			AddSample (null, "Expander", typeof (ExpanderSample));
+			AddSample (null, "Progress bars", typeof(ProgressBarSample));
 			AddSample (null, "Frames", typeof(Frames));
 			AddSample (null, "Images", typeof(Images));
 			AddSample (null, "Labels", typeof(Labels));
-			AddSample (null, "List View", typeof(ListView1));
+			AddSample (null, "ListBox", typeof(ListBoxSample));
+			AddSample (null, "ListView", typeof(ListView1));
 			AddSample (null, "Menu", typeof(MenuSamples));
 			AddSample (null, "Notebook", typeof(NotebookSample));
 			AddSample (null, "Paneds", typeof(PanedViews));
@@ -97,6 +113,15 @@ namespace Samples
 			Content = box;
 			
 			samplesTree.SelectionChanged += HandleSamplesTreeSelectionChanged;
+		}
+		
+		protected override void Dispose (bool disposing)
+		{
+			base.Dispose (disposing);
+			
+			if (statusIcon != null) {
+				statusIcon.Dispose ();
+			}
 		}
 
 		void HandleSamplesTreeSelectionChanged (object sender, EventArgs e)

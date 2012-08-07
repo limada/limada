@@ -80,7 +80,9 @@ namespace Xwt.WPFBackend
 			if (element == null)
 				throw new ArgumentException();
 
-			Canvas.Children.Add (element);
+			if (!Canvas.Children.Contains (element))
+				Canvas.Children.Add (element);
+
 			SetChildBounds (widget, bounds);
 		}
 
@@ -97,6 +99,8 @@ namespace Xwt.WPFBackend
 			SWC.Canvas.SetLeft (element, bounds.Left * wratio);
 			element.Height = (bounds.Height > 0) ? bounds.Height * hratio : 0;
 			element.Width = (bounds.Width > 0) ? bounds.Width * wratio : 0;
+
+			((FrameworkElement) widget.NativeWidget).UpdateLayout();
 		}
 
 		public void RemoveChild (IWidgetBackend widget)
@@ -116,8 +120,8 @@ namespace Xwt.WPFBackend
 		private Bitmap bbitmap;
 		private readonly List<Int32Rect> dirtyRects = new List<Int32Rect> ();
 
-		private double pwidth;
-		private double pheight;
+		private double pwidth = -1;
+		private double pheight = -1;
 
 		private ExCanvas Canvas
 		{
@@ -164,7 +168,7 @@ namespace Xwt.WPFBackend
 			this.wbitmap.Lock();
 
 			using (Graphics g = Graphics.FromImage (this.bbitmap))
-				CanvasEventSink.OnDraw (new DrawingContext (g));
+				CanvasEventSink.OnDraw (new DrawingContext (g), new Rectangle (0, 0, this.wbitmap.PixelWidth, this.wbitmap.PixelHeight));
 
 			if (this.fullRedraw || this.dirtyRects.Count == 0) {
 				this.wbitmap.AddDirtyRect (new Int32Rect (0, 0, this.wbitmap.PixelWidth, this.wbitmap.PixelHeight));

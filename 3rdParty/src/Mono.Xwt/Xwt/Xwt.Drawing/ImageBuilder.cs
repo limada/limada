@@ -40,7 +40,7 @@ namespace Xwt.Drawing
 		
 		static ImageBuilder ()
 		{
-			handler = WidgetRegistry.CreateSharedBackend<IImageBuilderBackendHandler> (typeof(ImageBuilder));
+			handler = WidgetRegistry.MainRegistry.CreateSharedBackend<IImageBuilderBackendHandler> (typeof(ImageBuilder));
 		}
 		
 		public ImageBuilder (int width, int height): this (width, height, ImageFormat.ARGB32)
@@ -66,12 +66,6 @@ namespace Xwt.Drawing
 		public void Dispose ()
 		{
 			ctx.Dispose ();
-			handler.Dispose (backend);
-			GC.SuppressFinalize (this);
-		}
-		
-		~ImageBuilder ()
-		{
 			handler.Dispose (backend);
 		}
 		
