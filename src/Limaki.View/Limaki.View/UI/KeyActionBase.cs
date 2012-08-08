@@ -19,13 +19,12 @@ namespace Limaki.View.UI {
     /// </summary>
     public abstract class KeyActionBase : ActionBase, IKeyAction {
 
-        public virtual void OnKeyDown( KeyActionEventArgs e ) {
+        public virtual void OnKeyPressed( KeyActionEventArgs e ) {
             _resolved = false;    
         }
 
-        public virtual void OnKeyPress( KeyActionPressEventArgs e ) { }
 
-        public virtual void OnKeyUp( KeyActionEventArgs e ) {
+        public virtual void OnKeyReleased( KeyActionEventArgs e ) {
             if (_resolved) {
                 _resolved = false;
             }

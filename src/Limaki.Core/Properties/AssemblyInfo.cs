@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Limaki")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("http:\\limada.sourceforge.net")]
+[assembly: AssemblyCompany ("http:\\www.limada.org")]
 [assembly: AssemblyProduct("Limaki")]
 [assembly: AssemblyCopyright("Copyright © Lytico 2008")]
 [assembly: AssemblyTrademark("")]

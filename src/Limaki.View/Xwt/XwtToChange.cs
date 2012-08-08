@@ -12,6 +12,8 @@ namespace Limaki.XwtAdapter {
         public void ChangeMe() {
             WidgetRegistry.MainRegistry.CreateSharedBackend<object>(typeof (object));
             WidgetRegistry.MainRegistry.CreateBackend<object>(typeof(object));
+            WidgetRegistry.MainRegistry.Clear();
+            WidgetRegistry.MainRegistry = null;
             var c = new Canvas();
             new Context(new object());
             new Font(new object());

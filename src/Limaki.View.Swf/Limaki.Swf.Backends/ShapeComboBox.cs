@@ -24,7 +24,7 @@ using Limaki.Common;
 using Limaki.Drawing.Shapes;
 using Limaki.Drawing.Styles;
 using Limaki.View.Layout;
-
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends.Viewers {
     public partial class ShapeComboBox : ComboBox {
@@ -75,8 +75,8 @@ namespace Limaki.Swf.Backends.Viewers {
                     }
                     g.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    shape.Location = GDIConverter.Convert(rect.Location);
-                    shape.Size = GDIConverter.Convert(rect.Size);
+                    shape.Location = rect.Location.ToXwt ();
+                    shape.Size = rect.Size.ToXwt ();
                     var painter = ShapeLayout.GetPainter(shape.GetType());
                     var uiState = UiState.None;
                     if ((state & DrawItemState.Focus) != 0) {

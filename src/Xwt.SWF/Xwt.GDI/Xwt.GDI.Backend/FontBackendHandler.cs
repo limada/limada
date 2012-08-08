@@ -4,7 +4,7 @@
 // Author:
 //       Lytico 
 // 
-// Copyright (c) 2012 Lytico (http://limada.sourceforge.net)
+// Copyright (c) 2012 Lytico (http://www.limada.org)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,8 +36,6 @@ namespace Xwt.Gdi.Backend {
             return new Font(fontName, (float)size);
         }
 
-        
-
         public object Copy(object handle) {
             Font d = (Font)handle;
             return d.Clone();
@@ -60,36 +58,13 @@ namespace Xwt.Gdi.Backend {
             return d;
         }
 
-        System.Drawing.FontStyle Convert(FontStyle style, FontWeight weight) {
-            var result = System.Drawing.FontStyle.Regular;
-            if (FontStyle.Italic == style || FontStyle.Oblique == style)
-                result |= System.Drawing.FontStyle.Italic;
-            if (FontWeight.Heavy == weight || FontWeight.Bold == weight || FontWeight.Ultrabold == weight)
-                result |= System.Drawing.FontStyle.Bold;
-            return result;
-        }
-
-         FontStyle Convert(System.Drawing.FontStyle style) {
-             if (style == System.Drawing.FontStyle.Italic)
-                 return FontStyle.Italic;
-             return FontStyle.Normal;
-
-         }
-
-         FontWeight ConvertW(System.Drawing.FontStyle style) {
-             if (style == System.Drawing.FontStyle.Bold)
-                 return FontWeight.Bold;
-             return FontWeight.Normal;
-
-         }
-
         public object SetStyle(object handle, FontStyle style) {
             var d = (Font)handle;
-            var oldStyle = Convert(d.Style);
-            var w = ConvertW(d.Style);
+            var oldStyle = GdiConverter.ToXwt (d.Style);
+            var w = GdiConverter.ToXwtWeight(d.Style);
 
             if (oldStyle != style) {
-                d = new Font(d.FontFamily, d.Size, Convert(style, w));
+                d = new Font(d.FontFamily, d.Size, GdiConverter.ToGdi(style, w));
             }
             return d;
 
@@ -97,11 +72,11 @@ namespace Xwt.Gdi.Backend {
 
         public object SetWeight(object handle, FontWeight weight) {
             var d = (Font)handle;
-            var oldW = ConvertW(d.Style);
-            var s = Convert(d.Style);
+            var oldW = GdiConverter.ToXwtWeight(d.Style);
+            var s = GdiConverter.ToXwt (d.Style);
 
             if (oldW != weight) {
-                d = new Font(d.FontFamily, d.Size, Convert(s, weight));
+                d = new Font(d.FontFamily, d.Size, GdiConverter.ToGdi(s, weight));
             }
             return d;
         }
@@ -123,12 +98,12 @@ namespace Xwt.Gdi.Backend {
 
         public FontStyle GetStyle(object handle) {
             var d = (Font)handle;
-            return Convert(d.Style);
+            return GdiConverter.ToXwt (d.Style);
         }
 
         public FontWeight GetWeight(object handle) {
             var d = (Font)handle;
-            return ConvertW(d.Style);
+            return GdiConverter.ToXwtWeight(d.Style);
         }
 
         public FontStretch GetStretch(object handle) {

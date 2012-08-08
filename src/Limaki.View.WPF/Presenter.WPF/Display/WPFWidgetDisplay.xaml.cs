@@ -211,7 +211,7 @@ namespace Limaki.View.WPF.Display {
 
         protected override void OnPreviewKeyDown(KeyEventArgs e) {
             
-            Display.EventControler.OnKeyDown(Converter.Convert(e, this,MousePosition));
+            Display.EventControler.OnKeyPressed(Converter.Convert(e, this,MousePosition));
             base.OnPreviewKeyDown(e);
 
         }

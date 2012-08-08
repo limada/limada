@@ -1,28 +1,24 @@
 ﻿using System;
-using System.Windows.Forms;
-using Limaki.Viewers.StreamViewers;
-using Limaki.Swf.Backends.Viewers.Content;
-using Limaki.Model.Streams;
 using System.IO;
-using Xwt.Drawing;
-using Xwt.Tests;
-using Limaki.View.Html5;
-using Limaki.Drawing;
-using Limaki.Visuals;
-using Limaki.View;
+using System.Windows.Forms;
 using Limaki.Common;
+using Limaki.Drawing;
 using Limaki.Drawing.Styles;
-using Limaki.View.Visuals.Layout;
-using Limaki.Tests.View;
-using System.Linq;
 using Limaki.Graphs;
-using Limada.Model;
-using Limada.VisualThings;
 using Limaki.Graphs.Extensions;
-using Xwt.Engine;
-using Limaki.View.UI.GraphScene;
+using Limaki.Model.Streams;
+using Limaki.Swf.Backends.Viewers.Content;
+using Limaki.Tests.View;
+using Limaki.View;
+using Limaki.View.Html5;
 using Limaki.View.Modelling;
+using Limaki.View.UI.GraphScene;
+using Limaki.Viewers.StreamViewers;
+using Limaki.Visuals;
+using Xwt.Drawing;
+using Xwt.Engine;
 using Xwt.Html5.Backend;
+using Xwt.Tests;
 
 namespace Xwt.Html5.TestApp {
 
@@ -64,7 +60,7 @@ namespace Xwt.Html5.TestApp {
             butt2.Click += (s, e) =>
                            showInBrowser (TestDataOne.SimpleLine, "http://localhost/simpleline");
 
-            var renderer = new Html5Renderer();
+            var renderer = new Html5PageRenderer();
 
             var butt3 = new System.Windows.Forms.Button { Text = "lineTest", Dock = DockStyle.Top };
             Action<Context> linetest = ctx => {
@@ -113,7 +109,7 @@ namespace Xwt.Html5.TestApp {
             var example = 0;
 
             Action<Context> VisualScene = ctx => {
-                PaintScene (ctx, 10, 10,example++);
+                PaintScene (ctx, 10, 10, example++);
                 if (example >= maxExample)
                     example = 0;
             };

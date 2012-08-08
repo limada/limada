@@ -4,7 +4,7 @@
 // Author:
 //       Lytico 
 // 
-// Copyright (c) 2012 Lytico (http://limada.sourceforge.net)
+// Copyright (c) 2012 Lytico (http://www.limada.org)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,24 +26,27 @@
 
 
 using System.Drawing;
+using SD = System.Drawing;
 using System.Drawing.Text;
 using Xwt.Drawing;
 using Xwt.Engine;
 using Color = Xwt.Drawing.Color;
 using Font = Xwt.Drawing.Font;
 using FontStyle = Xwt.Drawing.FontStyle;
-using  System.Drawing.Drawing2D;
-using SD = System.Drawing;
+using System.Drawing.Drawing2D;
+
 
 namespace Xwt.Gdi.Backend {
 
     public static class GdiConverter {
 
-        public static System.Drawing.Color ToGdi(this Color color) {
-            return System.Drawing.Color.FromArgb((int)ToArgb(color));
+        #region Color
+
+        public static SD.Color ToGdi(this Color color) {
+            return SD.Color.FromArgb((int)ToArgb(color));
         }
 
-        public static Color ToXwt(this System.Drawing.Color color) {
+        public static Color ToXwt(this SD.Color color) {
             return FromArgb((uint)color.ToArgb());
         }
 
@@ -77,62 +80,61 @@ namespace Xwt.Gdi.Backend {
             return Color.FromBytes(r, g, b);
         }
 
-        public static StringTrimming ToGdi (this TextTrimming value) {
-            if (value == TextTrimming.Word) return StringTrimming.Word;
-            if (value == TextTrimming.WordElipsis) return StringTrimming.EllipsisWord;
+        #endregion
 
-            return StringTrimming.Word;
-        }
+        #region Size, Point, Rectangle
 
-        public static System.Drawing.FontStyle ToGdi(this FontStyle value) {
-            var result = System.Drawing.FontStyle.Regular;
-            if (value == null)
-                return result;
-            if ((value & FontStyle.Italic) != 0) {
-                result |= System.Drawing.FontStyle.Italic;
-            }
-            //if ((value & FontStyle.Underline) != 0) {
-            //    result |= SD.FontStyle.Underline;
-            //}
-            if ((value & FontStyle.Oblique) != 0) {
-                result |= System.Drawing.FontStyle.Bold;
-            }
-            return result;
-        }
-
-        public static FontStyle ToXwt(this System.Drawing.FontStyle value) {
-            var result = FontStyle.Normal;
-            if (value == null)
-                return result;
-            if ((value & System.Drawing.FontStyle.Italic) != 0) {
-                result |= FontStyle.Italic;
-            }
-            //if ((native & SD.FontStyle.Underline) != 0) {
-            //    result |= FontStyle.Underline;
-            //}
-            if ((value & System.Drawing.FontStyle.Bold) != 0) {
-                result |= FontStyle.Oblique;
-            }
-            return result;
-        }
-
-        public static System.Drawing.Font ToGdi (this Font value) {
-            return (System.Drawing.Font)GdiEngine.Registry.GetBackend(value);
-        }
-
-        public static Size ToXwt (this SizeF value) {
+        public static Size ToXwt (this SD.SizeF value) {
             return new Size (value.Width, value.Height);
         }
-        public static Size ToXwt(this System.Drawing.Size value) {
+
+        public static Size ToXwt(this SD.Size value) {
             return new Size(value.Width, value.Height);
         }
+
+        public static SD.Size ToGdi (this Size value) {
+            return new SD.Size ((int) value.Width, (int) value.Height);
+        }
+
+        public static SD.SizeF ToGdiF (this Size value) {
+            return new SD.SizeF ((float) value.Width, (float) value.Height);
+        }
+
+        public static SD.Point ToGdi (this Point value) {
+            return new SD.Point ((int) value.X, (int) value.Y);
+        }
+
+        public static SD.PointF ToGdiF (this Point value) {
+            return new SD.PointF ((float) value.X, (float) value.Y);
+        }
+
+        public static Point ToXwt (this SD.Point value) {
+            return new Point (value.X, value.Y);
+        }
+
+        public static Point ToXwt (this SD.PointF value) {
+            return new Point (value.X, value.Y);
+        }
+
         public static Rectangle ToXwt (this SD.Rectangle value) {
             return new Rectangle (value.X, value.Y, value.Width, value.Height);
         }
 
-        public static Rectangle ToXwt (this SD.RectangleF value) {
+        public static Rectangle ToXwt (this RectangleF value) {
             return new Rectangle (value.X, value.Y, value.Width, value.Height);
         }
+
+        public static SD.Rectangle ToGdi (this Rectangle value) {
+            return new SD.Rectangle ((int) value.X, (int) value.Y, (int) value.Width, (int) value.Height);
+        }
+
+        public static SD.RectangleF ToGdiF (this Rectangle value) {
+            return new SD.RectangleF ((float) value.X, (float) value.Y, (float) value.Width, (float) value.Height);
+        }
+
+        #endregion
+
+        #region Graphics
 
         public static StringFormat GetDefaultStringFormat() {
             var stringFormat =
@@ -169,6 +171,7 @@ namespace Xwt.Gdi.Backend {
                 };
             }
         }
+        
         public static GraphicsQuality DrawTextHighQuality {
             get {
                 return new GraphicsQuality {
@@ -204,6 +207,7 @@ namespace Xwt.Gdi.Backend {
                 };
             }
         }
+
         public static GraphicsQuality SetQuality (this Graphics g, GraphicsQuality quality) {
             var result = new GraphicsQuality {
                 InterpolationMode = g.InterpolationMode,
@@ -224,6 +228,71 @@ namespace Xwt.Gdi.Backend {
             return result;
         }
 
-       
+        public static StringTrimming ToGdi (this TextTrimming value) {
+            if (value == TextTrimming.Word)
+                return StringTrimming.Word;
+            if (value == TextTrimming.WordElipsis)
+                return StringTrimming.EllipsisWord;
+
+            return StringTrimming.Word;
+        }
+        #endregion
+
+        #region Font
+
+        public static SD.FontStyle ToGdi (this FontStyle value) {
+            var result = SD.FontStyle.Regular;
+            if (value == null)
+                return result;
+            if ((value & FontStyle.Italic) != 0) {
+                result |= SD.FontStyle.Italic;
+            }
+            //if ((value & FontStyle.Underline) != 0) {
+            //    result |= SD.FontStyle.Underline;
+            //}
+            if ((value & FontStyle.Oblique) != 0) {
+                result |= SD.FontStyle.Bold;
+            }
+            return result;
+        }
+        
+        public static FontStyle ToXwt (this SD.FontStyle value) {
+            var result = FontStyle.Normal;
+            if (value == null)
+                return result;
+            if ((value & SD.FontStyle.Italic) != 0) {
+                result |= FontStyle.Italic;
+            }
+            //if ((value & SD.FontStyle.Underline) != 0) {
+            //    result |= FontStyle.Underline;
+            //}
+            if ((value & SD.FontStyle.Bold) != 0) {
+                result |= FontStyle.Oblique;
+            }
+            return result;
+        }
+
+        public static FontWeight ToXwtWeight (SD.FontStyle style) {
+            if (style == SD.FontStyle.Bold)
+                return FontWeight.Bold;
+            return FontWeight.Normal;
+
+        }
+
+        public static SD.Font ToGdi (this Font value) {
+            return (SD.Font) GdiEngine.Registry.GetBackend (value);
+        }
+
+        public static SD.FontStyle ToGdi (FontStyle style, FontWeight weight) {
+            var result = SD.FontStyle.Regular;
+            if (FontStyle.Italic == style || FontStyle.Oblique == style)
+                result |= SD.FontStyle.Italic;
+            if (FontWeight.Heavy == weight || FontWeight.Bold == weight || FontWeight.Ultrabold == weight)
+                result |= SD.FontStyle.Bold;
+            return result;
+        }
+
+        #endregion
+
     }
 }

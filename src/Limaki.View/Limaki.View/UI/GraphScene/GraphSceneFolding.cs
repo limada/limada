@@ -32,21 +32,9 @@ namespace Limaki.View.UI.GraphScene {
         Get<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
         GraphSceneFacade<TItem, TEdge> Folder { get; set; }
 
-        [Browsable(false)]
-        bool Resolved { get; }
+        void Clear ();
+        bool Check ();
 
-        [Browsable(false)]
-        bool Exclusive { get; }
-
-        bool Enabled { get; set; }
-        int Priority { get; set; }
-
-        void Clear();
-        void OnKeyDown( KeyActionEventArgs e );
-        bool Check();
-        void OnKeyPress( KeyActionPressEventArgs e );
-        void OnKeyUp( KeyActionEventArgs e );
-        void Dispose();
     }
 
     public class GraphSceneFolding<TItem, TEdge> : KeyActionBase, ICheckable, IGraphSceneFolding<TItem, TEdge> 
@@ -76,16 +64,16 @@ namespace Limaki.View.UI.GraphScene {
             Folder.Clear ();
         }
 
-        public override void OnKeyDown( KeyActionEventArgs e ) {
-            base.OnKeyDown(e);
+        public override void OnKeyPressed( KeyActionEventArgs e ) {
+            base.OnKeyPressed(e);
 
             bool wasFiltered = Folder.IsFiltered;
 
-            if ((e.Key == Key.NumPadAdd && e.ModifierKeys==ModifierKeys.None)) {
+            if ((e.Key == Key.NumPadAdd && e.Modifiers==ModifierKeys.None)) {
                 Folder.Expand (false);
             }
 
-            if ((e.Key == Key.NumPadSubtract && e.ModifierKeys == ModifierKeys.None)) {
+            if ((e.Key == Key.NumPadSubtract && e.Modifiers == ModifierKeys.None)) {
                 Folder.Collapse ();
             }
 
@@ -93,19 +81,19 @@ namespace Limaki.View.UI.GraphScene {
                 Folder.CollapseToFocused ();
             }
 
-            if (e.Key == Key.NumPadMultiply && e.ModifierKeys == ModifierKeys.Control){
+            if (e.Key == Key.NumPadMultiply && e.Modifiers == ModifierKeys.Control){
                 Folder.ShowAllData ();
             }
 
-            if (e.Key == Key.NumPadMultiply && e.ModifierKeys == ModifierKeys.None) {
+            if (e.Key == Key.NumPadMultiply && e.Modifiers == ModifierKeys.None) {
                 Folder.Expand(true);
             }
 
-            if ((e.Key == Key.Space && e.ModifierKeys == ModifierKeys.None)) {
+            if ((e.Key == Key.Space && e.Modifiers == ModifierKeys.None)) {
                 Folder.Toggle ();
             }
 
-            if (e.Key == Key.Delete && e.ModifierKeys == ModifierKeys.None) {
+            if (e.Key == Key.Delete && e.Modifiers == ModifierKeys.None) {
                 if (MoveResizeRenderer != null) {
                     MoveResizeRenderer.Shape = null;
                     MoveResizeRenderer.ShowGrips = false;

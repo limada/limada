@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // die mit einer Assembly verknüpft sind.
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("http:\\limada.sourceforge.net")]
+[assembly: AssemblyCompany ("http:\\www.limada.org")]
 [assembly: AssemblyProduct("Limaki")]
 [assembly: AssemblyCopyright("Copyright © Lytico 2008")]
 [assembly: AssemblyTrademark("")]

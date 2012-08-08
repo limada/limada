@@ -71,11 +71,11 @@ namespace Limaki.Swf.Backends {
         #region IControl Member
 
         Rectangle IWidgetBackend.ClientRectangle {
-            get { return GdiConverter.ToXwt (this.ClientRectangle); }
+            get { return this.ClientRectangle.ToXwt(); }
         }
 
         Size IWidgetBackend.Size {
-            get { return Limaki.Drawing.Gdi.GDIConverter.Convert (this.Size); }
+            get { return this.Size.ToXwt (); }
         }
 
         void IWidgetBackend.Update() {
@@ -87,11 +87,11 @@ namespace Limaki.Swf.Backends {
         }
 
         void IWidgetBackend.Invalidate(Rectangle rect) {
-            this.Invalidate(GDIConverter.Convert(rect));
+            this.Invalidate(rect.ToGdi ());
         }
 
         Point IWidgetBackend.PointToClient(Point source) {
-            return GDIConverter.Convert (this.PointToClient (GDIConverter.Convert (source)));
+            return this.PointToClient (source.ToGdi()).ToXwt ();
         }
 
         #endregion

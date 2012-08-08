@@ -1,3 +1,9 @@
+[2012-08-08]
+limaki.view.html5 into its own project
+removed KeyActionPressEventArgs and IKeyAction.KeyPress
+changed KeyActionEventArgs to inherit from xwt.KeyEventArgs
+some cleanups here and there
+
 [2012-08-07]
 update Limaki.Html5.Prototyper to mono.xwt.c769c7afd423c660283e4c49d55ada769106f012
 

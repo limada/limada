@@ -10,25 +10,25 @@ namespace Limaki.View.UI {
         public virtual Get<IViewport> Viewport { get; set; }
         public virtual Get<ICursorHandler> CursorGetter { get; set; }
 
-        public override void OnKeyDown(KeyActionEventArgs e) {
+        public override void OnKeyPressed(KeyActionEventArgs e) {
             ProcessKey(e);
         }
 
         protected virtual Rectangle ProcessKey(KeyActionEventArgs e) {
-            base.OnKeyDown(e);
+            base.OnKeyPressed(e);
             var viewport = Viewport();
             var x = 0d;
             var y = 0d;
-            if (e.Key == Key.Down && e.ModifierKeys == ModifierKeys.None) {
+            if (e.Key == Key.Down && e.Modifiers == ModifierKeys.None) {
                 y = 1;
             }
-            if (e.Key == Key.Up && e.ModifierKeys == ModifierKeys.None) {
+            if (e.Key == Key.Up && e.Modifiers == ModifierKeys.None) {
                 y = -1;
             }
-            if (e.Key == Key.Left && e.ModifierKeys == ModifierKeys.None) {
+            if (e.Key == Key.Left && e.Modifiers == ModifierKeys.None) {
                 x = -1;
             }
-            if (e.Key == Key.Right && e.ModifierKeys == ModifierKeys.None) {
+            if (e.Key == Key.Right && e.Modifiers == ModifierKeys.None) {
                 x = 1;
             }
             if (x != 0d || y != 0d) {

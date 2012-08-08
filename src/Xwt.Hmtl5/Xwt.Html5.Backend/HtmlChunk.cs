@@ -10,7 +10,7 @@ namespace Xwt.Html5.Backend {
             this.Target = command;
         }
 
-        TextWriter _content = null;
+        protected TextWriter _content = null;
 
         protected TextWriter Content {
             get { return _content ?? (_content = new StringWriter ()); }
@@ -33,7 +33,7 @@ namespace Xwt.Html5.Backend {
             Content.WriteLine (s, args);
         }
 
-        public virtual string Render () {
+        public virtual string Html () {
             return Content.ToString ();
         }
 

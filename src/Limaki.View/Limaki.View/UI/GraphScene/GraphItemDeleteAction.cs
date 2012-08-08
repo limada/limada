@@ -49,9 +49,9 @@ namespace Limaki.View.UI.GraphScene {
             }
         }
 
-        public override void OnKeyDown( KeyActionEventArgs e ) {
-            base.OnKeyDown(e);
-            if (e.Key == Key.Delete && (e.ModifierKeys==ModifierKeys.Control)) {
+        public override void OnKeyPressed( KeyActionEventArgs e ) {
+            base.OnKeyPressed(e);
+            if (e.Key == Key.Delete && (e.Modifiers==ModifierKeys.Control)) {
                 if (Scene.Selected.Count >0) {
                     Set<TItem> done = new Set<TItem>();
                     foreach(TItem item in Scene.Selected.Elements) {

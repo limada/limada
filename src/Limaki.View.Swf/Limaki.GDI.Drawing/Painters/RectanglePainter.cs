@@ -27,7 +27,7 @@ namespace Limaki.Drawing.Gdi.Painters {
             RenderGdi (surface);
         }
         public override void RenderGdi (ISurface surface) {
-            var rect = GDIConverter.Convert(Shape.Data);
+            var rect = Shape.Data.ToGdi ();
             var style = this.Style;
             var renderType = this.RenderType;
             var g = ((GdiSurface)surface).Graphics;

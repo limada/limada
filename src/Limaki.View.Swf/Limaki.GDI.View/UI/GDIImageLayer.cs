@@ -10,6 +10,7 @@ using Limaki.View.UI;
 using Xwt;
 using Size = Xwt.Size;
 using Rectangle = Xwt.Rectangle;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Gdi.UI {
 
@@ -38,7 +39,7 @@ namespace Limaki.View.Gdi.UI {
         public override void DataChanged() {
             var data = this.Data;
             if (data != null) {
-                this.Size = GDIConverter.Convert(data.Size);
+                this.Size = data.Size.ToXwt();
             } else {
                 this.Size = Size.Zero;
             }
@@ -106,7 +107,7 @@ namespace Limaki.View.Gdi.UI {
                     g.DrawImage(data, 
                         (float)rc.Location.X,
                         (float)rc.Location.Y,
-                        GDIConverter.Convert(rc),
+                        rc.ToGdi (),
                         GraphicsUnit.Pixel);
 
                     g.Transform.Reset();

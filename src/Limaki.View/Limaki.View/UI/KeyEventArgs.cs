@@ -18,67 +18,23 @@ using Limaki.Drawing;
 using Xwt;
 
 namespace Limaki.View.UI {
-    public class KeyActionEventArgs : EventArgs {
 
-        public KeyActionEventArgs(Key key, Point location):base() {
-            this._key = key;
-            this._location = location;
-            this.Handled = false;
+    public class KeyActionEventArgs : Xwt.KeyEventArgs {
+
+        public KeyActionEventArgs (Key key, ModifierKeys modifiers, Point location)
+            : base (key, modifiers, false, Environment.TickCount) {
+            this.Location = location;
         }
 
-        public KeyActionEventArgs(Key key, ModifierKeys modifiers, Point location)
-            : this(key, location) {
-            this._modifierKeys = modifiers;
-        }
-
-        public bool Handled {
-            get;
-            set;
-        }
-
-        private Key _key = 0;
-        public Key Key {
-            get { return _key; }
-        }
-
-        private Point _location = Point.Zero;
-        public Point Location {
-            get { return _location; }
-        }
-
-        private ModifierKeys _modifierKeys = ModifierKeys.None;
-        public ModifierKeys ModifierKeys {
-            get { return _modifierKeys; }
-        }
+        public Point Location { get; protected set; }
 
         public int PlatformKeyCode {
             get {
-                Registry.Pool.TryGetCreate<IExceptionHandler>()
-                    .Catch(new Exception(this.GetType().Name + ".PlatformKeyCode not implemented"), MessageType.OK);
+                Registry.Pool.TryGetCreate<IExceptionHandler> ()
+                    .Catch (new Exception (this.GetType ().Name + ".PlatformKeyCode not implemented"), MessageType.OK);
                 return 0;
             }
         }
     }
-
-    public class KeyActionPressEventArgs : EventArgs {
-
-        public KeyActionPressEventArgs(char keyChar) {
-            this.KeyChar = keyChar;
-            this.Handled = false;
-        }
-
-
-        public bool Handled {
-            get;
-            set;
-        }
-
-        public char KeyChar {
-            get;
-            set;
-        }
-
-    }
-
-    public delegate void KeyEventHandler(object sender, KeyActionEventArgs e);
+    
 }

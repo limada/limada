@@ -126,20 +126,20 @@ namespace Limaki.View.UI.GraphScene {
 
         #region IKeyAction Member
 
-        void IKeyAction.OnKeyDown( KeyActionEventArgs e ) {
-            if (e.ModifierKeys != (ModifierKeys.Control |ModifierKeys.Alt))
+        void IKeyAction.OnKeyPressed( KeyActionEventArgs e ) {
+            if (e.Modifiers != (ModifierKeys.Control |ModifierKeys.Alt))
                 return;
 
             if (e.Key == Key.F) {
                 if (Scene.Focused != null) {
-                    Select (Scene, Scene.Graph.Foliage(Scene.Graph.Fork (Scene.Focused)), e.ModifierKeys);
+                    Select (Scene, Scene.Graph.Foliage(Scene.Graph.Fork (Scene.Focused)), e.Modifiers);
                 }
                 e.Handled = true;
             }
 
             if (e.Key == Key.T) {
                 if (Scene.Focused != null) {
-                    Select(Scene, Scene.Graph.Foliage(Scene.Graph.Twig(Scene.Focused)), e.ModifierKeys);
+                    Select(Scene, Scene.Graph.Foliage(Scene.Graph.Twig(Scene.Focused)), e.Modifiers);
                 }
                 e.Handled = true;
             }
@@ -148,7 +148,7 @@ namespace Limaki.View.UI.GraphScene {
                 if (Scene.Focused != null) {
                     var walker = new Walker<TItem, TEdge> (Scene.Graph);
                     Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.DeepWalk(Scene.Focused,0))),
-                           e.ModifierKeys);
+                           e.Modifiers);
                 }
                 e.Handled = true;
             }
@@ -157,7 +157,7 @@ namespace Limaki.View.UI.GraphScene {
                 if (Scene.Focused != null) {
                     var walker = new Walker<TItem, TEdge>(Scene.Graph);
                     Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.ExpandWalk(Scene.Focused, 0))),
-                           e.ModifierKeys);
+                           e.Modifiers);
                 }
                 e.Handled = true;
 
@@ -167,7 +167,7 @@ namespace Limaki.View.UI.GraphScene {
                 if (Scene.Focused != null) {
                     var walker = new Walker<TItem, TEdge>(Scene.Graph);
                     Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.Walk(Scene.Focused, 0))),
-                           e.ModifierKeys);
+                           e.Modifiers);
                 }
                 e.Handled = true;
 
@@ -177,15 +177,13 @@ namespace Limaki.View.UI.GraphScene {
                 if (Scene.Focused != null) {
                     var walker = new Walker<TItem, TEdge>(Scene.Graph);
                     Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.CollapseWalk(Scene.Focused, 0))),
-                           e.ModifierKeys);
+                           e.Modifiers);
                 }
                 e.Handled = true;
             }
         }
 
-        void IKeyAction.OnKeyPress( KeyActionPressEventArgs e ) {}
-
-        void IKeyAction.OnKeyUp( KeyActionEventArgs e ) {}
+        void IKeyAction.OnKeyReleased( KeyActionEventArgs e ) {}
 
         #endregion
 

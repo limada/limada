@@ -60,7 +60,7 @@ namespace Limaki.Drawing.Gdi {
             return GdiUtils.GetTextDimension(
                 (System.Drawing.Font)GdiEngine.Registry.GetBackend(style.Font),
                 text,
-                GDIConverter.Convert(style.AutoSize));
+                style.AutoSize.ToGdi());
         }
 
         public Size ScreenResolution() {

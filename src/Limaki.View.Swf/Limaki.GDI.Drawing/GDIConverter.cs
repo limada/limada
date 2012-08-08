@@ -17,63 +17,24 @@ using System;
 using Limaki.Drawing;
 using Xwt;
 using Xwt.Drawing;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.Gdi {
 
     public static class GDIConverter {
 
-        public static System.Drawing.Rectangle Convert(Rectangle value) {
-            return new System.Drawing.Rectangle((int)value.X, (int)value.Y, (int)value.Width, (int)value.Height);
-        }
-
-        public static System.Drawing.RectangleF ConvertF(Rectangle value) {
-            return new System.Drawing.RectangleF((float)value.X, (float)value.Y, (float)value.Width, (float)value.Height);
-        }
+       
 
         public static System.Drawing.Point[] Convert(Point[] value) {
-            return Array.ConvertAll<Point, System.Drawing.Point>(value, Convert);
+            return Array.ConvertAll<Point, System.Drawing.Point> (value, GdiConverter.ToGdi);
         }
 
         public static System.Drawing.PointF[] ConvertF(Point[] value) {
-            return Array.ConvertAll<Point, System.Drawing.PointF>(value, ConvertF);
+            return Array.ConvertAll<Point, System.Drawing.PointF> (value, GdiConverter.ToGdiF);
         }
 
         public static Point[] Convert(System.Drawing.PointF[] value) {
-            return Array.ConvertAll<System.Drawing.PointF, Point>(value, Convert);
-        }
-
-        public static System.Drawing.Point Convert(Point value) {
-            return new System.Drawing.Point((int)value.X, (int)value.Y);
-        }
-
-
-        public static System.Drawing.PointF ConvertF(Point value) {
-            return new System.Drawing.PointF((float)value.X, (float)value.Y);
-        }
-
-        public static Point Convert(System.Drawing.Point value) {
-            return new Point(value.X, value.Y);
-        }
-
-        public static Point Convert(System.Drawing.PointF value) {
-            return new Point(value.X, value.Y);
-        }
-
-        public static System.Drawing.Size Convert(Size value) {
-            return new System.Drawing.Size((int)value.Width, (int)value.Height);
-        }
-
-
-        public static System.Drawing.SizeF ConvertF(Size value) {
-            return new System.Drawing.SizeF((float)value.Width, (float)value.Height);
-        }
-
-        public static Size Convert(System.Drawing.Size value) {
-            return new Size(value.Width, value.Height);
-        }
-
-        public static Size Convert(System.Drawing.SizeF value) {
-            return new Size(value.Width, value.Height);
+            return Array.ConvertAll<System.Drawing.PointF, Point> (value, GdiConverter.ToXwt);
         }
 
         public static System.Drawing.Drawing2D.LineCap Convert(PenLineCap linecap) {
@@ -101,5 +62,14 @@ namespace Limaki.Drawing.Gdi {
             }
             return result;
         }
+
+
+        //internal static Size ToXwt (this System.Drawing.Size size) {
+        //    throw new NotImplementedException ();
+        //}
+
+        //internal static Point ToXwt (this System.Drawing.Point size) {
+        //    throw new NotImplementedException ();
+        //}
     }
 }

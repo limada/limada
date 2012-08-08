@@ -55,7 +55,7 @@ namespace Limaki.Swf.Backends.Viewers {
                     if ( swfFont != null )
                         this.StyleFont = swfFont;
                 }
-                this.StyleAutoSize = GDIConverter.Convert (style.AutoSize);
+                this.StyleAutoSize = style.AutoSize.ToGdi();
                 this.PaintData = style.PaintData;
                 if (style.Pen != null) {
                     this.PenThickness = style.Pen.Thickness;
@@ -135,12 +135,12 @@ namespace Limaki.Swf.Backends.Viewers {
             set {
                 _autoSize = value;
 
-                SelectedObject.AutoSize = GDIConverter.Convert (_autoSize);
-                
-                this.heightAutoSizeUpDown.Value = (value.Height<10000? value.Height: -1);
-                this.widthAutoSizeUpDown.Value = (value.Width<10000? value.Width:-1);
+                SelectedObject.AutoSize = _autoSize.ToXwt ();
 
-                DoPropertyValueChanged();
+                this.heightAutoSizeUpDown.Value = (value.Height < 10000 ? value.Height : -1);
+                this.widthAutoSizeUpDown.Value = (value.Width < 10000 ? value.Width : -1);
+
+                DoPropertyValueChanged ();
             }
         }
 

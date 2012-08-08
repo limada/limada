@@ -98,55 +98,55 @@
     <Compile Include="Limaki.Swf.Backends\GraphScenePainterGdiComposer.cs" />
     <Compile Include="Limaki.Swf.Backends\GraphScenePainterRenderer.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.Content\DocumentSchemaController.cs" />
-    <Compile Include="Limaki.Swf.View\Converter.cs" />
-    <Compile Include="Limaki.Swf.View\CursorHandlerBackend.cs" />
-    <Compile Include="Limaki.Swf.View\Display\DragDropCatcher.cs" />
+    <Compile Include="Limaki.View.Swf\Converter.cs" />
+    <Compile Include="Limaki.View.Swf\CursorHandlerBackend.cs" />
+    <Compile Include="Limaki.View.Swf\Display\DragDropCatcher.cs" />
     <Compile Include="Limaki.Gdi.View\UI\GdiViewport.cs" />
-    <Compile Include="Limaki.Swf.View\Display\ImageBackendComposer.cs" />
-    <Compile Include="Limaki.Swf.View\Display\ImageDisplayComposer.cs" />
-    <Compile Include="Limaki.Swf.View\Display\SwfBackendComposer.cs" />
-    <Compile Include="Limaki.Swf.View\Display\SwfImageDisplayBackend.cs">
+    <Compile Include="Limaki.View.Swf\Display\ImageBackendComposer.cs" />
+    <Compile Include="Limaki.View.Swf\Display\ImageDisplayComposer.cs" />
+    <Compile Include="Limaki.View.Swf\Display\SwfBackendComposer.cs" />
+    <Compile Include="Limaki.View.Swf\Display\SwfImageDisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.View\Display\SwfWidgetBackend.cs">
+    <Compile Include="Limaki.View.Swf\Display\SwfWidgetBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.View\Display\SwfGraphSceneBackend.cs">
+    <Compile Include="Limaki.View.Swf\Display\SwfGraphSceneBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.View\Display\SwfViewport.cs" />
-    <Compile Include="Limaki.Swf.View\Display\SwfVisualsDisplayBackend.cs">
+    <Compile Include="Limaki.View.Swf\Display\SwfViewport.cs" />
+    <Compile Include="Limaki.View.Swf\Display\SwfVisualsDisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.View\DragDrop\ControlDataObject.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\DataInprocObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\DataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\DataObjectHandlerChain.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\DataObjectHelper.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\DragDropFacade.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\IDataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\ImageDataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\IVisualsDataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\SerializedDataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\SerializedVisualsDataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\StreamDataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\StringDataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\VisualsDataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\VisualsImageDataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\VisualsInprocDataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\DragDrop\VisualsTextDataObjectHandler.cs" />
-    <Compile Include="Limaki.Swf.View\IDragDopControl.cs" />
-    <Compile Include="Limaki.Swf.View\Rendering\GripPainter.cs" />
-    <Compile Include="Limaki.Swf.View\Rendering\MoveResizeRenderer.cs" />
-    <Compile Include="Limaki.Swf.View\Rendering\SelectionRenderer.cs" />
-    <Compile Include="Limaki.Swf.View\Rendering\SwfBackendRenderer.cs" />
-    <Compile Include="Limaki.Swf.View\UI\SwfEventControler.cs" />
-    <Compile Include="Limaki.Swf.View\Visuals\VisualsDragDrop.cs" />
-    <Compile Include="Limaki.Swf.View\Visuals\VisualsTextEditor.cs" />
-    <Compile Include="Limaki.Swf.View\SwfContextRecourceLoader.cs" />
-    <Compile Include="Limaki.Swf.View\SwfExeptionHandlerBackend.cs" />
-    <Compile Include="Limaki.Swf.View\SwfSystemInformation.cs" />
-    <Compile Include="Limaki.Swf.View\SwfUtils.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\ControlDataObject.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\DataInprocObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\DataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\DataObjectHandlerChain.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\DataObjectHelper.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\DragDropFacade.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\IDataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\ImageDataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\IVisualsDataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\SerializedDataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\SerializedVisualsDataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\StreamDataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\StringDataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\VisualsDataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\VisualsImageDataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\VisualsInprocDataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\DragDrop\VisualsTextDataObjectHandler.cs" />
+    <Compile Include="Limaki.View.Swf\IDragDopControl.cs" />
+    <Compile Include="Limaki.View.Swf\Rendering\GripPainter.cs" />
+    <Compile Include="Limaki.View.Swf\Rendering\MoveResizeRenderer.cs" />
+    <Compile Include="Limaki.View.Swf\Rendering\SelectionRenderer.cs" />
+    <Compile Include="Limaki.View.Swf\Rendering\SwfBackendRenderer.cs" />
+    <Compile Include="Limaki.View.Swf\UI\SwfEventControler.cs" />
+    <Compile Include="Limaki.View.Swf\Visuals\VisualsDragDrop.cs" />
+    <Compile Include="Limaki.View.Swf\Visuals\VisualsTextEditor.cs" />
+    <Compile Include="Limaki.View.Swf\SwfContextRecourceLoader.cs" />
+    <Compile Include="Limaki.View.Swf\SwfExeptionHandlerBackend.cs" />
+    <Compile Include="Limaki.View.Swf\SwfSystemInformation.cs" />
+    <Compile Include="Limaki.View.Swf\SwfUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Limaki.Swf.UseCases\PrintManager.cs" />
     <Compile Include="Limaki.Swf.UseCases\SwfUseCaseComposer.cs" />

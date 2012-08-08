@@ -15,13 +15,12 @@
 using Limaki.Actions;
 
 namespace Limaki.View.UI {
+
     public interface IKeyAction:IAction {
 
-        void OnKeyDown ( KeyActionEventArgs e ) ;
+        void OnKeyPressed ( KeyActionEventArgs e ) ;
 
-        void OnKeyPress( KeyActionPressEventArgs e );
-
-        void OnKeyUp ( KeyActionEventArgs e );
+        void OnKeyReleased ( KeyActionEventArgs e );
 
     }
 }

@@ -207,13 +207,13 @@ namespace Limaki.View.UI {
 
         #region IKeyAction Member
 
-        public void OnKeyDown(KeyActionEventArgs e) {
+        public void OnKeyPressed(KeyActionEventArgs e) {
             if (UserEventsDisabled)
                 return;
             Resolved = false;
             foreach (IKeyAction keyAction in KeyActions) {
                 if (keyAction.Enabled) {
-                    keyAction.OnKeyDown(e);
+                    keyAction.OnKeyPressed(e);
                     Resolved = keyAction.Resolved || Resolved;
                     if (keyAction.Exclusive) {
                         break;
@@ -223,29 +223,13 @@ namespace Limaki.View.UI {
             Execute();
         }
 
-        public void OnKeyPress(KeyActionPressEventArgs e) {
-            if (UserEventsDisabled)
-                return;
-            Resolved = false;
-            foreach (IKeyAction keyAction in KeyActions) {
-                if (keyAction.Enabled) {
-                    keyAction.OnKeyPress(e);
-                    Resolved = keyAction.Resolved || Resolved;
-                    if (keyAction.Exclusive || e.Handled) {
-                        break;
-                    }
-                }
-            }
-            Execute();
-        }
-
-        public void OnKeyUp(KeyActionEventArgs e) {
+        public void OnKeyReleased(KeyActionEventArgs e) {
             Resolved = false;
             foreach (IKeyAction keyAction in KeyActions) {
                 if (keyAction.Enabled) {
                     Resolved = keyAction.Resolved || Resolved;
                     bool exclusive = keyAction.Exclusive;
-                    keyAction.OnKeyUp(e);
+                    keyAction.OnKeyReleased(e);
                     if (exclusive || e.Handled) {
                         break;
                     }

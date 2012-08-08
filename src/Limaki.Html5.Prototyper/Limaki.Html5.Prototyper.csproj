@@ -46,15 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Backend\HtmlCanvas.cs" />
-    <Compile Include="Limaki.Html5.View\Html5DrawingUtils.cs" />
-    <Compile Include="Limaki.Html5.View\Html5ExeptionHandlerBackend.cs" />
-    <Compile Include="Limaki.Html5.View\Html5Surface.cs" />
-    <Compile Include="Limaki.Html5.View\Html5ContextRecourceLoader.cs" />
-    <Compile Include="Limaki.Html5.View\Html5SystemFonts.cs" />
-    <Compile Include="Limaki.Html5.View\Html5SystemInformation.cs" />
-    <Compile Include="Limaki.Html5.View\SystemColorsBackend.cs" />
-    <Compile Include="TestApp\Html5Renderer.cs" />
+    <Compile Include="TestApp\HtmlCanvas.cs" />
+    <Compile Include="TestApp\Html5PageRenderer.cs" />
     <Compile Include="TestApp\TestDataOne.cs" />
     <Compile Include="TestApp\XwtHtml5TestMainForm.cs">
       <SubType>Form</SubType>
@@ -104,6 +97,10 @@
       <Project>{B1BC3EF8-5EC7-491A-BA83-70CB38F1823F}</Project>
       <Name>Limaki.Tests</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.Html5\Limaki.View.Html5.csproj">
+      <Project>{B77C5BE4-8B43-4B9D-BD73-25B7E58BC8EF}</Project>
+      <Name>Limaki.View.Html5</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
       <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
       <Name>Limaki.View.Resources</Name>
@@ -129,6 +126,7 @@
       <Name>Xwt.Tests</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -16,6 +16,7 @@ using System.Drawing;
 using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using System;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.Gdi.Painters {
 
@@ -31,10 +32,7 @@ namespace Limaki.Drawing.Gdi.Painters {
                 Graphics g = ((GdiSurface) surface).Graphics;
                 Vector v = Shape.Data;
                 System.Drawing.Pen pen = ((GdiPen) Style.Pen).Backend;
-                g.DrawLine (
-                    pen,
-                    GDIConverter.Convert (v.Start),
-                    GDIConverter.Convert (v.End));
+                g.DrawLine (pen, v.Start.ToGdi(), v.End.ToGdi());
             }
         }
 

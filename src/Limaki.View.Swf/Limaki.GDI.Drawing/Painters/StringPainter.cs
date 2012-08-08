@@ -127,7 +127,7 @@ namespace Limaki.Drawing.Gdi.Painters {
                         GetSolidBrush (GdiConverter.ToGdi (style.TextColor)),
                         linedTextPath);
                 } else {
-                    RectangleF rect = GDIConverter.Convert (shape.BoundsRect);
+                    RectangleF rect = shape.BoundsRect.ToGdi ();
                     float PenWidth = (float) style.Pen.Thickness;
                     //rect.Inflate(-PenWidth, -PenWidth);
 

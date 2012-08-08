@@ -1,4 +1,5 @@
 namespace Xwt.Html5.Backend {
+
     public interface IHtmlChunk {
         string Target { get; }
         void Write (string s);
@@ -11,6 +12,7 @@ namespace Xwt.Html5.Backend {
         void CommandLine (string s);
         void CommandLine (string s, params object[] args);
 
-        string Render ();
+        string Html ();
     }
+
 }
