@@ -12,17 +12,15 @@
  * 
  */
 
-using System.Windows.Forms;
-using Limaki.Common;
-using Limaki.Drawing;
-using System.ComponentModel;
 using System;
+using System.ComponentModel;
+using System.Windows.Forms;
 using Limaki.View.Layout;
 using Limaki.Viewers.ToolStripViewers;
 using Alignment = Xwt.Alignment;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
-    
+
     public partial class ArrangerToolStrip : ToolStrip, IArrangerTool {
 
         ArrangerToolController _controller = null;
@@ -32,13 +30,13 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             get { return _controller ?? (_controller = new ArrangerToolController { Tool = this }); }
         }
 
-        public ArrangerToolStrip() {
+        public ArrangerToolStrip () {
             InitializeComponent();
             Compose();
             Controller.Tool = this;
         }
-        
-        protected virtual void Compose() {
+
+        protected virtual void Compose () {
             var options = new AllignerOptions();
             options.Dimension = Dimension.X;
 
@@ -129,12 +127,30 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 Size = size,
             };
 
+            var dimensionX = new ToolStripCommand {
+                Action = (s) => {
+                    options.Dimension = Dimension.X;
+                    action();
+                },
+                Image = Limaki.View.Properties.Resources.DimensionX,
+                Size = size,
+            };
+
+            var dimensionY = new ToolStripCommand {
+                Action = (s) => {
+                    options.Dimension = Dimension.Y;
+                    action();
+                },
+                Image = Limaki.View.Properties.Resources.DimensionY,
+                Size = size,
+            };
+
             var undo = new ToolStripCommand {
                 Action = (s) => Undo(),
                 Size = size,
                 Image = Limaki.View.Properties.Resources.Undo,
             };
-            var horizontalButton = new ToolStripDropDownButtonEx {Command = arrangeLeft};
+            var horizontalButton = new ToolStripDropDownButtonEx { Command = arrangeLeft };
             horizontalButton.DropDownItems.AddRange(new ToolStripItem[] {
                   new ToolStripMenuItemEx {Command=arrangeCenter,ToggleOnClick=horizontalButton},
                   new ToolStripMenuItemEx {Command=arrangeRight,ToggleOnClick=horizontalButton},
@@ -152,28 +168,34 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 new ToolStripMenuItemEx {Command=fullLayout}, 
             });
 
+            var dimensionButton = new ToolStripDropDownButtonEx { Command = dimensionX };
+            dimensionButton.DropDownItems.AddRange(new ToolStripItem[] {
+                new ToolStripMenuItemEx {Command=dimensionY,ToggleOnClick=dimensionButton},    
+            });
+
             this.Items.AddRange(new ToolStripItem[] {
                 layoutButton,
                 horizontalButton,
                 verticalButton,
+                dimensionButton,
                 new ToolStripButtonEx {Command=undo},
             });
         }
 
-        public virtual void Undo() {
+        public virtual void Undo () {
             Controller.Undo();
         }
-      
-        public virtual void Columns(AllignerOptions options) {
+
+        public virtual void Columns (AllignerOptions options) {
             Controller.Columns(options);
         }
-        public virtual void OneColumn(AllignerOptions options) {
+        public virtual void OneColumn (AllignerOptions options) {
             Controller.OneColumn(options);
         }
-        public virtual void LogicalLayout(AllignerOptions options) {
+        public virtual void LogicalLayout (AllignerOptions options) {
             Controller.LogicalLayout(options);
         }
-        public virtual void FullLayout(AllignerOptions options) {
+        public virtual void FullLayout (AllignerOptions options) {
             Controller.FullLayout(options);
         }
     }

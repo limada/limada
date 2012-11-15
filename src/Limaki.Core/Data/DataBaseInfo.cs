@@ -41,12 +41,17 @@ namespace Limaki.Data {
         /// <param name="fileName"></param>
         /// <param name="dataBaseInfo"></param>
         public static DataBaseInfo FromFileName(string fileName) {
-            DataBaseInfo dataBaseInfo = new DataBaseInfo ();
-            System.IO.FileInfo file = new System.IO.FileInfo(fileName);
+            var dataBaseInfo = new DataBaseInfo ();
+            FromFileName (dataBaseInfo,fileName);
+            return dataBaseInfo;
+        }
+
+        public static void FromFileName (DataBaseInfo dataBaseInfo, string fileName) {
+            System.IO.FileInfo file = new System.IO.FileInfo (fileName);
             dataBaseInfo.Server = "localhost";
             dataBaseInfo.Path = file.DirectoryName + System.IO.Path.DirectorySeparatorChar;
-            dataBaseInfo.Name = System.IO.Path.GetFileNameWithoutExtension(file.FullName);
-            dataBaseInfo.Extension = System.IO.Path.GetExtension(file.FullName).ToLower();
+            dataBaseInfo.Name = System.IO.Path.GetFileNameWithoutExtension (file.FullName);
+            dataBaseInfo.Extension = System.IO.Path.GetExtension (file.FullName).ToLower ();
             if (dataBaseInfo.Extension == ".limfb") {
                 dataBaseInfo.Provider = "FirebirdProvider";
                 dataBaseInfo.User = "SYSDBA";
@@ -58,8 +63,8 @@ namespace Limaki.Data {
                 dataBaseInfo.User = "SYSDBA";
                 dataBaseInfo.Password = "masterkey";
             }
-            return dataBaseInfo;
         }
+
         public static string ToFileName(DataBaseInfo dataBaseInfo) {
             return dataBaseInfo.Path+dataBaseInfo.Name+dataBaseInfo.Extension;
         }

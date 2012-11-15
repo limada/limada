@@ -26,6 +26,7 @@ namespace Limaki.Viewers.ToolStripViewers {
         public override void Attach(object sender) {
             base.Attach(sender);
         }
+
         //public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Alligner<IVisual, IVisualEdge>> call) {
         //    if (display == null)
         //        return;
@@ -37,6 +38,7 @@ namespace Limaki.Viewers.ToolStripViewers {
         //    alligner.Proxy.Commit(alligner.Data);
         //    display.Execute();
         //}
+
         public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Alligner<IVisual, IVisualEdge>, IEnumerable<IVisual>> call) {
             if (display == null)
                 return;

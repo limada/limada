@@ -19,7 +19,7 @@ using Limaki.Model.Streams;
 using System.Collections.Generic;
 using System.Linq;
 using Limaki.Graphs;
-using Limada.Common.Linqish;
+using Limaki.Common.Linqish;
 using System;
 
 namespace Limada.Schemata {

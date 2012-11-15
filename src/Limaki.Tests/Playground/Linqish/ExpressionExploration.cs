@@ -15,7 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Limada.Common.Linqish;
+using Limaki.Common.Linqish;
 using NUnit.Framework;
 
 namespace Limada.Tests.Linqish {

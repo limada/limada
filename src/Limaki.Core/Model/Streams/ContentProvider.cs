@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Limaki.Model.Streams {
     public abstract class ContentProvider : IContentProvider {
@@ -10,7 +11,7 @@ namespace Limaki.Model.Streams {
         public abstract bool Readable { get; }
 
         public virtual Content<Stream> Open(Stream stream) {
-            var info = SupportingInfo(stream);
+            var info = Info (stream);
             if (info != null) {
                 return new Content<Stream>(
                     stream,
@@ -20,21 +21,33 @@ namespace Limaki.Model.Streams {
             return null;
         }
 
-        public virtual StreamTypeInfo SupportingInfo(Stream stream) {
-            foreach (var info in SupportedStreamTypes) {
-                if (info.Magics != null) {
-                    foreach (var magic in info.Magics) {
-                        if (HasMagic(stream, magic.Bytes, magic.Offset))
-                            return info;
-                    }
-                }
-            }
-            return null;
+        public virtual StreamTypeInfo Info(Stream stream) {
+            return SupportedStreamTypes.Where(info => info.Magics != null)
+                .Where (info => info.Magics.Any (magic => HasMagic (stream, magic.Bytes, magic.Offset)))
+                .FirstOrDefault();
         }
 
-        public virtual bool Supports(Stream stream) {
-            return SupportingInfo(stream) != null;
+        public virtual StreamTypeInfo Info (string extension) {
+            extension = extension.ToLower ().TrimStart ('.');
+            return SupportedStreamTypes.Where (type => type.Extension == extension).FirstOrDefault ();
         }
+
+        public virtual StreamTypeInfo Info ( long streamType) {
+            return SupportedStreamTypes.Where (type => type.StreamType == streamType).FirstOrDefault();
+        }
+
+        public virtual bool Supports (string something) {
+            return Info (something) != null;
+        }
+
+        public virtual bool Supports (Stream something) {
+            return Info (something) != null;
+        }
+
+        public virtual bool Supports (long something) {
+            return Info (something) != null;
+        }
+
 
         public virtual void Save(Content<Stream> data, Uri uri) {
             if (Saveable && uri.IsFile) {
@@ -82,25 +95,7 @@ namespace Limaki.Model.Streams {
             return result;
         }
 
-        public virtual bool Supports(string extension) {
-            extension = extension.ToLower().TrimStart('.');
-            foreach (var type in SupportedStreamTypes) {
-                if (type.Extension == extension) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-
-        public bool Supports(long streamType) {
-            foreach (var type in SupportedStreamTypes) {
-                if (type.StreamType == streamType) {
-                    return true;
-                }
-            }
-            return false;
-        }
+       
 
         protected virtual bool BuffersAreEqual(byte[] a, byte[] b) {
             if (a.Length != b.Length)

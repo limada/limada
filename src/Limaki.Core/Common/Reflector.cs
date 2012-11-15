@@ -42,5 +42,33 @@ namespace Limaki.Common {
                 return false;
             }
         }
+
+        public static string ClassName (Type type) {
+            var result = type.Name;
+            if (type.IsNested && !type.IsGenericParameter) {
+                result = type.FullName.Replace(type.DeclaringType.FullName + "+", ClassName(type.DeclaringType));
+            }
+            if (type.IsGenericType) {
+
+                var genPos = result.IndexOf('`');
+                if (genPos > 0)
+                    result = result.Substring(0, genPos);
+                else
+                    result = result + "";
+                bool isNullable = result == "Nullable";
+                if (!isNullable)
+                    result += "<";
+                else
+                    result = "";
+                foreach (var item in type.GetGenericArguments())
+                    result += ClassName(item) + ",";
+                result = result.Remove(result.Length - 1, 1);
+                if (isNullable)
+                    result += "?";
+                else
+                    result += ">";
+            }
+            return result;
+        }
     }
 }

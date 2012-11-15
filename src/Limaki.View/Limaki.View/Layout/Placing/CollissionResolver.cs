@@ -25,30 +25,12 @@ namespace Limaki.View.Layout {
             this.GraphScene = scene;
         }
         public IGraphScene<TItem, TEdge> GraphScene { get; protected set; }
-        public class SGraphSceneLocator : ILocator<TItem> {
-            public IGraphScene<TItem, TEdge> GraphScene { get; set; }
-
-            public Point GetLocation (TItem item) {
-                return GraphScene.ItemShape (item).Location;
-            }
-
-            public void SetLocation (TItem item, Point location) {
-                throw new NotImplementedException ();
-            }
-
-            public Size GetSize (TItem item) {
-                return GraphScene.ItemShape (item).Size;
-            }
-
-            public void SetSize (TItem item, Size value) {
-                throw new NotImplementedException ();
-            }
-        }
-
+        
+        
         public Point NextFreePosition0 (Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore, double distance) {
             var result = new Rectangle (start, sizeNeeded);
-            var loc = new SGraphSceneLocator { GraphScene = this.GraphScene };
-            var measure = new MeasureVisits<TItem> (loc);
+            var loc = new SGraphSceneLocator<TItem, TEdge> { GraphScene = this.GraphScene };
+            var measure = new MeasureVisitBuilder<TItem> (loc);
             
             var iRect = result;
 
@@ -79,8 +61,9 @@ namespace Limaki.View.Layout {
             var iRect = new Rectangle(start, new Size(w, h));
 
             var comparer = new PointComparer { Order = dimension == Dimension.X ? PointOrder.X : PointOrder.Y };
-            var loc = new SGraphSceneLocator { GraphScene = this.GraphScene };
-            var elems = GraphScene.ElementsIn(iRect).Where(e => !(e is TEdge)).Except(ignore).OrderBy(e=>loc.GetLocation(e),comparer);
+            var loc = new SGraphSceneLocator<TItem,TEdge> { GraphScene = this.GraphScene };
+            var elems = GraphScene.ElementsIn(iRect)
+                .Where(e => !(e is TEdge)).Except(ignore).OrderBy(e=>loc.GetLocation(e),comparer);
 
             return new Rectangle[0];
         }
@@ -102,7 +85,7 @@ namespace Limaki.View.Layout {
 
     }
 
-    public class CollissionResolver<TItem> : LocateVisits<TItem> {
+    public class CollissionResolver<TItem> : LocateVisitBuilder<TItem> {
         public CollissionResolver (ILocator<TItem> locator, ILocationDetector<TItem> detector, IEnumerable<TItem> ignore, Dimension dimension, double distance)
             : base (locator) {
             this.Locator = locator;
@@ -129,4 +112,26 @@ namespace Limaki.View.Layout {
             };
         }
     }
+
+    public class SGraphSceneLocator<TItem, TEdge> : ILocator<TItem>
+    where TEdge : IEdge<TItem>, TItem {
+        public IGraphScene<TItem, TEdge> GraphScene { get; set; }
+
+        public Point GetLocation (TItem item) {
+            return GraphScene.ItemShape(item).Location;
+        }
+
+        public void SetLocation (TItem item, Point location) {
+            throw new NotImplementedException();
+        }
+
+        public Size GetSize (TItem item) {
+            return GraphScene.ItemShape(item).Size;
+        }
+
+        public void SetSize (TItem item, Size value) {
+            throw new NotImplementedException();
+        }
+    }
+
 }

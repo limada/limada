@@ -198,9 +198,9 @@ namespace Limada.Model {
             var schemaGraph = thingGraph as SchemaThingGraph;
             bool isSchemaGraph = schemaGraph != null;
 
-            CommonSchema schema = new CommonSchema();
+            var schema = new CommonSchema();
 
-            foreach (IThing thing in thingGraph.GetByData(name, exact)) {
+            foreach (var thing in thingGraph.GetByData(name, exact)) {
                 IThing described = null;
                 if (isSchemaGraph) {
                     described = schemaGraph.DescribedThing(thing);

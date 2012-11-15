@@ -6,6 +6,12 @@ using Xwt.Drawing;
 
 namespace Limaki.Viewers {
 
+    /// <summary>
+    /// a GraphScenePainter using
+    /// Xwt.Context to paint
+    /// </summary>
+    /// <typeparam name="TItem"></typeparam>
+    /// <typeparam name="TEdge"></typeparam>
     public class ContextGraphScenePainter<TItem, TEdge> : GraphScenePainter<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
         public virtual void Paint (Context context) {

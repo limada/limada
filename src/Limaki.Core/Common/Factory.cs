@@ -16,9 +16,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
-using LinqKit;
 using System.Text;
-using Limada.Common.Linqish;
+using Limaki.Common.Linqish;
 using System.Linq.Expressions;
 
 namespace Limaki.Common {
@@ -165,7 +164,7 @@ namespace Limaki.Common {
             Delegate d = null;
             if (Clazzes.TryGetValue(type, out d)) {
                 if (GenericAddMethod == null) {
-                    var genexp = ExpressionUtils.Expression<Action>(() => this.Create<object>());
+                    var genexp = ExpressionUtils.ToLamda<Action>(() => this.Create<object>());
                     GenericCreateMethod = ((MethodCallExpression)((LambdaExpression)genexp).Body).Method.GetGenericMethodDefinition();
                 }
                 return GenericCreateMethod.MakeGenericMethod(type).Invoke(this, null);
@@ -176,7 +175,7 @@ namespace Limaki.Common {
         protected static MethodInfo GenericAddMethod = null;
         public virtual void Add(Type t1, Type t2) {
             if (GenericAddMethod == null) {
-                var genexp = ExpressionUtils.Expression<Action>(() => this.Add<object, object>());
+                var genexp = ExpressionUtils.ToLamda<Action>(() => this.Add<object, object>());
                 GenericAddMethod = ((MethodCallExpression)((LambdaExpression)genexp).Body).Method.GetGenericMethodDefinition();
             }
             GenericAddMethod.MakeGenericMethod(t1, t2).Invoke(this, null);

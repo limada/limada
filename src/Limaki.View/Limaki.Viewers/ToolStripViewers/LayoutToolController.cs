@@ -20,6 +20,7 @@ using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 
 namespace Limaki.Viewers.ToolStripViewers {
+
     public class LayoutToolController : ToolController<IGraphSceneDisplay<IVisual, IVisualEdge>, ILayoutTool> {
 
         public void StyleSheetChange(string sheetName) {

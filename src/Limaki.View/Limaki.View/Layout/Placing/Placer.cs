@@ -13,6 +13,11 @@ namespace Limaki.View.Layout {
             this.Layout = layout;
         }
 
+        public Placer (IGraphScene<TItem, TEdge> scene, IGraphSceneLayout<TItem, TEdge> layout, Action<Placer<TItem, TEdge>> call):this(scene,layout) {
+            call(this);
+            Commit();
+        }
+
         protected IGraphSceneLocator<TItem, TEdge> _locator = null;
         public virtual IGraphSceneLocator<TItem, TEdge> Locator {
             get { return _locator ?? (_locator = CreateLocator(this.Layout)); }
@@ -42,6 +47,8 @@ namespace Limaki.View.Layout {
             }
         }
         
-            
+        public void Commit() {
+            Locator.Commit(this.GraphScene.Requests);
+        }
     }
 }

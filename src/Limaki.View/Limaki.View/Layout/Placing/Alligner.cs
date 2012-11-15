@@ -8,10 +8,11 @@ using System;
 using Xwt;
 
 namespace Limaki.View.Layout {
-
     public class Alligner<TItem, TEdge> : Placer<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
 
         public Alligner (IGraphScene<TItem, TEdge> data, IGraphSceneLayout<TItem, TEdge> layout) : base (data, layout) { }
+        public Alligner (IGraphScene<TItem, TEdge> data, IGraphSceneLayout<TItem, TEdge> layout, Action<Alligner<TItem, TEdge>> call) :
+            base(data, layout, p => call(p as Alligner<TItem, TEdge>)) { }
 
         public virtual void Justify (ref Action<TItem> visitor) {
             visitor += item => Locator.Justify (item);
@@ -33,11 +34,13 @@ namespace Limaki.View.Layout {
             VisitItems (items, visit);
         }
 
+       
+
         public virtual void OneColumn (IEnumerable<TItem> items, Point at, double distance) {
             var options = new AllignerOptions { Distance = new Size (distance, distance), AlignX = Alignment.End, AlignY = Alignment.Start, Dimension = Dimension.X };
             var bounds = new Rectangle (int.MaxValue, int.MaxValue, 0, 0);
             MeasureColumn (items, options, ref bounds);
-            var locator = new LocateVisits<TItem> (this.Locator);
+            var locator = new LocateVisitBuilder<TItem> (this.Locator);
             LocateColumn (items, bounds, bounds, ref at, locator,options);
         }
 
@@ -47,7 +50,7 @@ namespace Limaki.View.Layout {
             var bounds = new Rectangle (int.MaxValue, int.MaxValue, 0, 0);
             MeasureColumn (colItems, options, ref bounds);
             var colPos = bounds.Location;
-            var locator = new LocateVisits<TItem> (this.Locator);
+            var locator = new LocateVisitBuilder<TItem> (this.Locator);
             LocateColumn (colItems, bounds, bounds, ref colPos, locator,options);
 
         }
@@ -65,7 +68,7 @@ namespace Limaki.View.Layout {
                 cols.Enqueue (MeasureColumn (colItems, options, ref bounds));
             }
 
-            var locator = new LocateVisits<TItem> (this.Locator);
+            var locator = new LocateVisitBuilder<TItem> (this.Locator);
             var colPos = bounds.Location;
             while (cols.Count > 0) {
                 var col = cols.Dequeue ();
@@ -96,19 +99,20 @@ namespace Limaki.View.Layout {
             }
 
             var colPos = bounds.Location;
-            LocateVisits<TItem> locator = null;
+            LocateVisitBuilder<TItem> locate = null;
             if (false)
-                locator = new CollissionResolver<TItem> (
+                locate = new CollissionResolver<TItem> (
                     this.Locator,
                     new GraphSceneLocationDetector<TItem, TEdge> (this.GraphScene),
                     itemCache,
                     options.Dimension,
                     options.Distance.Width);
             else
-                locator = new LocateVisits<TItem> (this.Locator);
+                locate = new LocateVisitBuilder<TItem> (this.Locator);
+
             while (cols.Count > 0) {
                 var col = cols.Dequeue ();
-                LocateColumn (col.Item1, col.Item2, bounds, ref colPos, locator, options);
+                LocateColumn (col.Item1, col.Item2, bounds, ref colPos, locate, options);
 
             }
         }
@@ -121,7 +125,7 @@ namespace Limaki.View.Layout {
             visit += i => items.Enqueue (i);
             AffectedEdges (ref visit);
 
-            var measure = new MeasureVisits<TItem> (this.Locator);
+            var measure = new MeasureVisitBuilder<TItem> (this.Locator);
             var fBounds = measure.Bounds (ref visit);
             var fSize = measure.SizeToFit (ref visit, options.Distance, options.Dimension);
 
@@ -137,21 +141,36 @@ namespace Limaki.View.Layout {
 
         }
 
-        protected virtual void LocateColumn (IEnumerable<TItem> colItems, Rectangle colBounds, Rectangle bounds, ref Point colPos, ILocateVisits<TItem> locator, AllignerOptions options) {
+        protected virtual void LocateColumn (IEnumerable<TItem> colItems, Rectangle colBounds, Rectangle bounds, ref Point colPos, ILocateVisitBuilder<TItem> locate, AllignerOptions options) {
             Action<TItem> visit = null;
+            if (options.Dimension == Dimension.X) {
+                if (Alignment.Center == options.AlignY)
+                    colPos.Y = bounds.Y + (bounds.Height - colBounds.Height) / 2;
+                else if (Alignment.End == options.AlignY)
+                    colPos.Y = bounds.Y + (bounds.Height - colBounds.Height);
 
-            if (Alignment.Center == options.AlignY)
-                colPos.Y = bounds.Y + (bounds.Height - colBounds.Height) / 2;
-            else if (Alignment.End == options.AlignY)
-                colPos.Y = bounds.Y + (bounds.Height - colBounds.Height);
+                locate.Locate(ref visit,
+                               locate.Allign(colPos.X, colBounds.Width, options.AlignX, Dimension.X),
+                               locate.Location(colPos.Y, options.Distance.Height, Dimension.Y)
+                    );
+                VisitItems(colItems, visit);
 
-            locator.Locate (ref visit,
-                locator.Allign (colPos.X, colBounds.Width, options.AlignX, Dimension.X),
-                locator.Location (colPos.Y, options.Distance.Height, Dimension.Y)
-                );
-            VisitItems (colItems, visit);
+                colPos.X += colBounds.Width + options.Distance.Width;
+            } else {
+                if (Alignment.Center == options.AlignX)
+                    colPos.X = bounds.X + (bounds.Width - colBounds.Width) / 2;
+                else if (Alignment.End == options.AlignX)
+                    colPos.X = bounds.X + (bounds.Width- colBounds.Width);
 
-            colPos.X += colBounds.Width + options.Distance.Width;
+                locate.Locate(ref visit,
+                    locate.Location(colPos.X, options.Distance.Width, Dimension.X),
+                    locate.Allign(colPos.Y, colBounds.Height, options.AlignY, Dimension.Y)
+                               
+                    );
+                VisitItems(colItems, visit);
+
+                colPos.Y += colBounds.Height+ options.Distance.Height;
+            }
         }
 
     }

@@ -1,3 +1,16 @@
+[2012-11-15]
+alligner collissionresolver
+
+[2012-11-02]
+alligner collissionresolver prototype started
+
+[2012-11-01]
+alligner.Dimension.Y implementation
+
+[2012-10-xx]
+limada.mvc3 implementation (not public until now; will follow if useable)
+
+
 [2012-08-08]
 limaki.view.html5 into its own project
 removed KeyActionPressEventArgs and IKeyAction.KeyPress

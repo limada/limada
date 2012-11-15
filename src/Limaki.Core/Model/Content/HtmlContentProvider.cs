@@ -49,7 +49,7 @@ namespace Limaki.Model.Content {
             get { return _supportedStreamTypes; }
         }
 
-        public override StreamTypeInfo SupportingInfo(Stream stream) {
+        public override StreamTypeInfo Info(Stream stream) {
 
             StreamTypeInfo result = null;
             

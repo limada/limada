@@ -172,10 +172,10 @@ namespace Xwt.Html5.TestApp {
             var layout = Registry.Factory.Create<IGraphSceneLayout<IVisual, IVisualEdge>>(fScene, styleSheet);
             layout.Orientation = DateTime.Now.Second % 2 == 0 ? Limaki.Drawing.Orientation.TopBottom : Limaki.Drawing.Orientation.LeftRight;
 
-            var painter = new VisualSceneContextPainter (scene, layout);
-
-            var _folder = new GraphSceneFacade<IVisual, IVisualEdge> (fScene, layout);
+            var _folder = new GraphSceneFacade<IVisual, IVisualEdge>(fScene, layout);
             _folder.ShowAllData();
+
+            var painter = new VisualSceneContextPainter (scene, layout);
 
             var modelReceiver = new GraphItemReceiver<IVisual, IVisualEdge> ();
             var receiver = new GraphSceneReceiver<IVisual, IVisualEdge> () as IGraphSceneReceiver<IVisual, IVisualEdge>;

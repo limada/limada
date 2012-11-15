@@ -22,10 +22,16 @@ using System.Text;
 
 namespace Limaki.Model.Streams {
     public interface IContentProvider {
+
         bool Supports(string extension);
         bool Supports(long streamType);
+        bool Supports (Stream stream);
 
         IEnumerable<StreamTypeInfo> SupportedStreamTypes { get; }
+
+        StreamTypeInfo Info (string extension);
+        StreamTypeInfo Info (long streamType);
+        StreamTypeInfo Info (Stream stream);
 
         Content<Stream> Open(Stream stream);
         Content<Stream> Open(Uri uri);

@@ -30,7 +30,6 @@ namespace Limaki.View.UI.GraphScene {
     /// where scene.graph is a GraphView
     /// </summary>
     public class GraphSceneFacade<TItem, TEdge>
-        where TItem : class
         where TEdge : TItem, IEdge<TItem> {
 
         public GraphSceneFacade (Get<IGraphScene<TItem, TEdge>> sceneHandler, IGraphSceneLayout<TItem, TEdge> layout) {
@@ -269,8 +268,8 @@ namespace Limaki.View.UI.GraphScene {
                     .Hide (Scene.Selected.Elements));
 
                 Scene.Selected.Clear ();
-                Scene.Focused = null;
-                Scene.Hovered = null;
+                Scene.Focused = default(TItem);
+                Scene.Hovered = default(TItem);
 
 
             }
@@ -279,11 +278,11 @@ namespace Limaki.View.UI.GraphScene {
         public virtual void UpdateRemoved (ICollection<TItem> removed) {
             foreach (TItem remove in removed) {
                 Scene.Requests.Add (new RemoveBoundsCommand<TItem, TEdge> (remove, this.Scene));
-                if (this.Scene.Hovered == remove) {
-                    this.Scene.Hovered = null;
+                if (remove.Equals(this.Scene.Hovered)) {
+                    this.Scene.Hovered = default(TItem);
                 }
-                if (this.Scene.Focused == remove) {
-                    this.Scene.Focused = null;
+                if (remove.Equals(this.Scene.Focused)) {
+                    this.Scene.Focused = default(TItem);
                 }
                 if (this.Scene.Selected.Contains (remove)) {
                     this.Scene.Selected.Remove (remove);

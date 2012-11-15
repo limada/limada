@@ -2,6 +2,7 @@ using System;
 using System.Windows.Forms;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
+
     public class ToolStripCommand {
 
         public Action<object> Action { get; set; }

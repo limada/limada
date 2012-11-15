@@ -98,6 +98,7 @@
     <Compile Include="Limaki.Swf.Backends\GraphScenePainterGdiComposer.cs" />
     <Compile Include="Limaki.Swf.Backends\GraphScenePainterRenderer.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.Content\DocumentSchemaController.cs" />
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripUtils.cs" />
     <Compile Include="Limaki.View.Swf\Converter.cs" />
     <Compile Include="Limaki.View.Swf\CursorHandlerBackend.cs" />
     <Compile Include="Limaki.View.Swf\Display\DragDropCatcher.cs" />

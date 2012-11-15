@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using Limaki.Common.Collections;
 using System;
+using Limaki.Common.Linqish;
+using System.Linq;
+using System.IO;
 
 namespace Limaki.Model.Streams {
     public class ContentProviders : IEnumerable<IContentProvider> {
@@ -8,28 +11,24 @@ namespace Limaki.Model.Streams {
 
         public virtual void Add(IContentProvider provider) {
             providers.Add(provider);
+            provider.SupportedStreamTypes.ForEach(t => MimeTypes[t.StreamType]=t.MimeType);
         }
 
         public virtual void Remove(IContentProvider provider) {
             providers.Remove(provider);
+            provider.SupportedStreamTypes.ForEach (t => MimeTypes.Remove (t.StreamType));
         }
 
         public virtual IContentProvider Find(string extension) {
-            foreach (var provider in providers) {
-                if (provider.Supports(extension)) {
-                    return provider;
-                }
-            }
-            return null;
+            return providers.Where(provider => provider.Supports(extension)).FirstOrDefault();
         }
 
         public virtual IContentProvider Find(long streamType) {
-            foreach (var provider in providers) {
-                if (provider.Supports(streamType)) {
-                    return provider;
-                }
-            }
-            return null;
+            return providers.Where (provider => provider.Supports (streamType)).FirstOrDefault ();
+        }
+
+        public virtual IContentProvider Find (Stream stream) {
+            return providers.Where (provider => provider.Supports (stream)).FirstOrDefault ();
         }
 
         public IEnumerator<IContentProvider> GetEnumerator() {

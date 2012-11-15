@@ -4,10 +4,10 @@ using Xwt;
 namespace Limaki.Drawing {
 
     public enum PointOrder {
-        X,
-        Y,
-        LeftToRight,
-        TopToBottom
+        X,  // same as Dimension ?
+        Y,  // same as Dimension ?
+        TopToBottom,
+        LeftToRight
     }
 
     public class PointComparer : Comparer<Point> {
@@ -16,7 +16,7 @@ namespace Limaki.Drawing {
         public double Delta { get; set; }
 
         public PointComparer() {
-            Order = PointOrder.LeftToRight;
+            Order = PointOrder.TopToBottom;
             Delta = 10d;
         }
 
@@ -29,17 +29,17 @@ namespace Limaki.Drawing {
         }
 
         public override int Compare(Point a, Point b) {
-            if (Order == PointOrder.LeftToRight || Order == PointOrder.TopToBottom) {
+            if (Order == PointOrder.TopToBottom || Order == PointOrder.LeftToRight) {
                 var aX = Round(a.X);
                 var bX = Round (b.X);
                 var aY = Round(a.Y);
                 var bY = Round(b.Y);
-                if (Order == PointOrder.LeftToRight)
+                if (Order == PointOrder.TopToBottom)
                     if (aY == bY)
                         return aX.CompareTo(bX);
                     else
                         return aY.CompareTo(bY);
-                if (Order == PointOrder.TopToBottom)
+                if (Order == PointOrder.LeftToRight)
                     if (aX == bX)
                         return aY.CompareTo(bY);
                     else

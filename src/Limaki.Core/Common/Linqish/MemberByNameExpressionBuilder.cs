@@ -1,14 +1,14 @@
-﻿/*
- * Limada
+/*
+ * Limaki 
  * 
  * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser Public License version 2 only, as
+ * under the terms of the GNU General Public License version 2 only, as
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
  * Copyright (C) 2011 Lytico
  *
- * http://www.limada.org
+ * http://limada.sourceforge.net
  * 
  */
 
@@ -18,7 +18,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Limada.Common.Linqish {
+namespace Limaki.Common.Linqish {
     /// <summary>
     /// Builds Expressions and extends IQuerables
     /// where the Member-Type of an entity is unknown 
@@ -63,13 +63,14 @@ namespace Limada.Common.Linqish {
 
         }
 
-        protected static Expression ExpressionCall(MethodInfo method, params Expression[] expressions) {
-            return Expression.Call(null, method, expressions);
+        protected static Expression ExpressionCall(MethodInfo method, params Expression[] arguments) {
+            return Expression.Call(null, method, arguments);
         }
+
         #endregion
 
         #region Expression-Builder
-
+        
         /// <summary>
         /// builds an Expression of Type: 
         /// Expression<Func<TSource,TKey>> keySelector = e => e.Member
@@ -80,7 +81,7 @@ namespace Limada.Common.Linqish {
         /// <returns></returns>
         public Tuple<Expression, Type> KeySelector<TSource>(string memberName) {
             if (!IsValidMemberName<TSource>(memberName))
-                throw new ArgumentException(typeof(TSource).FullName + " has no member with Name " + memberName);
+                throw new ArgumentException(typeof(TSource).FullName+" has no member with Name "+memberName);
 
             var memberInfo = SourceMemberInfoFromCache<TSource>(memberName); // TSource.Member
             var keyType = memberInfo.PropertyType; // typeof(TKey)
@@ -108,7 +109,7 @@ namespace Limada.Common.Linqish {
         }
 
         protected PropertyInfo GetMemberInfo<TSource>(string memberName) {
-            return typeof(TSource).GetProperty(memberName);
+            return typeof (TSource).GetProperty(memberName);
         }
 
         public bool IsValidMemberName<TSource>(string memberName) {
@@ -122,7 +123,7 @@ namespace Limada.Common.Linqish {
         protected static IDictionary<Tuple<Type, string>, PropertyInfo> SourceMemberInfos = new Dictionary<Tuple<Type, string>, PropertyInfo>();
         protected PropertyInfo SourceMemberInfoFromCache<TSource>(string memberName) {
             PropertyInfo memberInfo = null;
-            var cacheKey = Tuple.Create(typeof(TSource), memberName);
+            var cacheKey = Tuple.Create(typeof (TSource), memberName);
             if (!SourceMemberInfos.TryGetValue(cacheKey, out memberInfo)) {
                 memberInfo = GetMemberInfo<TSource>(memberName);
                 SourceMemberInfos.Add(cacheKey, memberInfo);
@@ -158,7 +159,7 @@ namespace Limada.Common.Linqish {
         public IQueryable<TSource> OrderByKey<TSource, TKey>(IQueryable<TSource> source, Expression<Func<TSource, TKey>> keySelector) {
             return OrderBySelectorAndType(source, keySelector, typeof(TKey), "OrderBy");
         }
-
+        
 
         #endregion
     }

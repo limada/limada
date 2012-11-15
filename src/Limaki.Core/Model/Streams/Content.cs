@@ -18,7 +18,7 @@ using System;
 using Limaki.Common;
 
 namespace Limaki.Model.Streams {
-	[TODO("find a better name for this class, eg. streamContent, streamData, streamRecord, contentInfo")]
+	
     public class Content {
         public CompressionType Compression = CompressionType.None;
         public Id StreamType = StreamTypes.Unknown;
@@ -44,6 +44,9 @@ namespace Limaki.Model.Streams {
             this.Source = source.Source;
             this.Compression = source.Compression;
             this.StreamType = source.StreamType;
+            var sourceT = source as Content<T>;
+            if (sourceT != null)
+                this.Data = sourceT.Data;
         }
     }
 }

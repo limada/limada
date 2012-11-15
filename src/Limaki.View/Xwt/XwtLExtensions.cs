@@ -3,6 +3,7 @@ using Limaki.Drawing;
 using Xwt.Drawing;
 
 namespace Limaki.XwtAdapter {
+
     public static class XwtLExtensions {
 
         public static double Degree = 180 / Math.PI;

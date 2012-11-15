@@ -45,6 +45,7 @@
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
     <Compile Include="Limaki.View.Blind\BlindSystemFonts.cs" />
     <Compile Include="Limaki.View.Blind\BlindSystemInformation.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\AllignerExtensions.cs" />
     <Compile Include="Xwtish\ContextGraphSceneLayer.cs" />
     <Compile Include="Xwtish\ContextGraphScenePainter.cs" />
     <Compile Include="Limaki.Viewers\StreamViewers\IWebResponse.cs" />
@@ -155,7 +156,7 @@
     <Compile Include="Limaki.View\IReceiver.cs" />
     <Compile Include="Limaki.View\IViewport.cs" />
     <Compile Include="Limaki.View\IZoomTarget.cs" />
-    <Compile Include="Limaki.View\Layout\Placing\LocateVisits.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\LocateVisitBuilder.cs" />
     <Compile Include="Limaki.View\Layout\Placing\Alligner.cs" />
     <Compile Include="Limaki.View\Layout\Placing\AllignerOptions.cs" />
     <Compile Include="Limaki.View\Layout\Arranger0.cs" />
@@ -168,7 +169,7 @@
     <Compile Include="Limaki.View\Layout\LayoutCommand.cs" />
     <Compile Include="Limaki.View\Layout\NearestAnchorRouter.cs" />
     <Compile Include="Limaki.View\Layout\Placing\Placer.cs" />
-    <Compile Include="Limaki.View\Layout\Placing\MeasureVisits.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\MeasureVisitBuilder.cs" />
     <Compile Include="Limaki.View\Layout\ProxyShape.cs" />
     <Compile Include="Limaki.View\Layout\RouterBase.cs" />
     <Compile Include="Limaki.View\Layout\ShapeLayout.cs" />
@@ -235,9 +236,6 @@
     <Compile Include="Limaki.View\Visuals\VisualsRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Limaki.Reporting\IReportOptions.cs" />
-    <Compile Include="Limaki.Common.Text.RTF\AdobeRTFFilter.cs" />
-    <Compile Include="Limaki.Common.Text.RTF\RTFFilter.cs" />
-    <Compile Include="Limaki.Common.Text.RTF\RTFHelper.cs" />
     <Compile Include="Limaki.UseCases\UseCase.cs" />
     <Compile Include="Limaki.UseCases\UseCaseComposer.cs" />
     <Compile Include="Limaki.UseCases\UseCaseFactories.cs" />

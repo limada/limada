@@ -134,6 +134,8 @@
     <Content Include="Properties\Resources\ItemLayout.png" />
     <Content Include="Properties\Resources\window-close.png" />
     <Content Include="Properties\Resources\ZoomToolIcon.png" />
+    <None Include="Resources\DimensionX.png" />
+    <None Include="Resources\DimensionY.png" />
     <None Include="Resources\LimadaLogo.ico" />
     <None Include="Resources\stock_form-line-onerow.png" />
     <None Include="Resources\format-justify-top.png" />

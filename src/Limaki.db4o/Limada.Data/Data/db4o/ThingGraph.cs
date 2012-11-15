@@ -404,6 +404,8 @@ namespace Limada.Data.db4o {
         }
 
         public IEnumerable<IThing> GetByData(object data, bool exact) {
+            if (data == null)
+                return new IThing[0];
             if (exact)
                 return GetByData (data);
             else {
@@ -414,7 +416,7 @@ namespace Limada.Data.db4o {
                 }
                 throw new ArgumentException (data.ToString () + " is not searchable");
             }
-            return null;
+            return new IThing[0];
         }
 
         public class DataVisitor<T> : IVisitor4 {

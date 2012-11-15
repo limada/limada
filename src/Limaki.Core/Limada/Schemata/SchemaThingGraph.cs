@@ -163,7 +163,7 @@ namespace Limada.Schemata {
         }
 
         public virtual IThing ThingToDisplay(IThing item) {
-            IThing result = item;
+            var result = item;
             if (item == null)
                 return null;
             ILink linkResult = null;

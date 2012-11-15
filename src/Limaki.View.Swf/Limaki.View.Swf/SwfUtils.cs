@@ -51,7 +51,6 @@ namespace Limaki.View.Swf {
 
             var location = new System.Drawing.Point();
 
-
             toolStripPanel.Controls.Clear();
             toolStripPanel.ResumeLayout(true);
             Application.DoEvents();
@@ -65,16 +64,20 @@ namespace Limaki.View.Swf {
             }
 
             toolStrips.ForEach(toolStrip => {
+                toolStrip.SuspendLayout();
                 var border = toolStrip.Items.Count;
                 var size = new System.Drawing.Size(4, toolStrip.Size.Height);
                 toolStrip.Items.Cast<ToolStripItem>().ForEach(s =>
                     size = new System.Drawing.Size(size.Width + s.Bounds.Width + 3, size.Height)
                     );
+                toolStrip.ResumeLayout(true);
                 toolStrip.Size = size;
             });
 
             toolStrips.ForEach(toolStrip => {
                 toolStrip.Location = location;
+                if(toolStrip.Bounds.Right>toolStripPanel.Bounds.Right)
+                    toolStrip.Size = new System.Drawing.Size(1, 1);
                 location = new System.Drawing.Point(toolStrip.Bounds.Right + 1, toolStrip.Bounds.Top);
             });
 

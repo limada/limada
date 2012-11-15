@@ -103,12 +103,14 @@ namespace Limaki.Swf.Backends.UseCases {
             var utils = new SwfUtils ();
             utils.InitializeToolstripPositions (
                 this.ToolStripContainer.TopToolStripPanel,
-                this.MenuStrip, new ToolStrip[] {
+                this.MenuStrip,
+                new ToolStrip[] {
                     DisplayToolStrip,
-                    MarkerToolStrip,
                     ArrangerToolStrip,
                     SplitViewToolStrip,
+                    MarkerToolStrip,
                     LayoutToolStrip,
+                    
                 });
 
         }
