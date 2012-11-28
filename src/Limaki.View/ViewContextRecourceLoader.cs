@@ -13,8 +13,7 @@ using Limaki.View.Visuals.Layout;
 using Limaki.Common;
 using Limaki.View.UI;
 
-namespace Limaki.IOC {
-
+namespace Limaki.View {
     public class ViewContextRecourceLoader : IContextRecourceLoader {
         /// <summary>
         /// Attention! Before calling this ResourceLoader, all DrawingFactories
@@ -61,8 +60,8 @@ namespace Limaki.IOC {
 
             context.Factory.Add<ISheetManager, SheetManager>();
             context.Factory.Add<IGraphSceneLayout<IVisual, IVisualEdge>>(args =>
-                    new VisualsSceneArrangerLayout<IVisual, IVisualEdge>(args[0] as Get<IGraphScene<IVisual, IVisualEdge>>, args[1] as IStyleSheet)
-                );
+                     new VisualsSceneArrangerLayout<IVisual, IVisualEdge>(args[0] as Get<IGraphScene<IVisual, IVisualEdge>>, args[1] as IStyleSheet)
+             );
         }
 
         public virtual IMarkerFacade<IVisual, IVisualEdge> MarkerFacade (IGraph<IVisual, IVisualEdge> graph) {

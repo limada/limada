@@ -1,5 +1,6 @@
 using Xwt.Drawing;
 using Xwt.Engine;
+using System.Linq;
 
 namespace Xwt.Html5.Backend {
 
@@ -48,12 +49,18 @@ namespace Xwt.Html5.Backend {
             }
         }
 
+        static char[] smallChars = new char[] { 't', 'i', '1', 'l', 'r', 'I', '/', '\\', '.', ':', ';', ',' };
         public Size MeasureString (string text, FontData font, Size size) {
             var w = size.Width;
-            if (w == 0)
-                w = text.Length * font.Size;
+            if (w == 0) {
+                foreach (var c in text)
+                    if (smallChars.Contains(c))
+                        w += (font.Size/2);
+                    else
+                        w += font.Size*.7;
+            }
             var h = size.Height;
-            return new Size(w,h);
+            return new Size(w, h);
         }
 
         public double Heigth { get; set; }

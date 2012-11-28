@@ -103,7 +103,15 @@ namespace Limaki.View.Swf.Backends {
             display.Layout.Border = this.Border;
 
             var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
-            alligner.OneColumn(pages, (Point)this.Border,this.Border.Height);
+            var dd = this.Border.Height;
+            var options = new AllignerOptions {
+                                                  Distance = new Size(dd, dd), 
+                                                  AlignX = Alignment.End, 
+                                                  AlignY = Alignment.Start, 
+                                                  Dimension = Dimension.X
+                                              };
+
+            alligner.OneColumn(pages, (Point) this.Border, options);
             alligner.Locator.Commit(alligner.GraphScene.Requests);
 
             display.DataId = 0;

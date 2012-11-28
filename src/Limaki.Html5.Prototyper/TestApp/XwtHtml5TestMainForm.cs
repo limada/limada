@@ -19,6 +19,8 @@ using Xwt.Drawing;
 using Xwt.Engine;
 using Xwt.Html5.Backend;
 using Xwt.Tests;
+using Limaki.View.Display;
+using Limaki.View.Visuals;
 
 namespace Xwt.Html5.TestApp {
 
@@ -70,7 +72,7 @@ namespace Xwt.Html5.TestApp {
                 ctx.Stroke();
             };
             butt3.Click += (s, e) =>
-                           showInBrowser (renderer.RenderPage (linetest), "http://localhost/LineTest");
+                           showInBrowser (renderer.Page (linetest), "http://localhost/LineTest");
             
             var refPainter = new ReferencePainter ();
 
@@ -86,21 +88,21 @@ namespace Xwt.Html5.TestApp {
                 //refPainter.Curves2(ctx, x + 100, y + 60);
             };
             butt4.Click += (s, e) =>
-                           showInBrowser (renderer.RenderPage (Figures), "http://localhost/Figures");
+                           showInBrowser (renderer.Page (Figures), "http://localhost/Figures");
 
             var butt5 = new System.Windows.Forms.Button { Text = "Transforms", Dock = DockStyle.Top };
             Action<Context> Transforms = ctx => {
                 refPainter.Transforms (ctx, 10, 10);
             };
             butt5.Click += (s, e) =>
-                           showInBrowser (renderer.RenderPage (Transforms), "http://localhost/Transforms");
+                           showInBrowser (renderer.Page (Transforms), "http://localhost/Transforms");
 
             var butt6 = new System.Windows.Forms.Button { Text = "Texts", Dock = DockStyle.Top };
             Action<Context> Texts = ctx => {
                 refPainter.Texts (ctx, 10, 10);
             };
             butt6.Click += (s, e) =>
-                           showInBrowser (renderer.RenderPage (Texts), "http://localhost/Texts");
+                           showInBrowser (renderer.Page (Texts), "http://localhost/Texts");
 
 
             var butt7 = new System.Windows.Forms.Button { Text = "VisualScene", Dock = DockStyle.Top };
@@ -114,7 +116,7 @@ namespace Xwt.Html5.TestApp {
                     example = 0;
             };
             butt7.Click += (s, e) =>
-                           showInBrowser (renderer.RenderPage (VisualScene,new Size(1000,2000)), "http://localhost/VisualScene");
+                           showInBrowser (renderer.Page (VisualScene,new Size(1000,2000)), "http://localhost/VisualScene");
 
             panel1.Controls.AddRange (new[] { butt7, butt6,butt5, butt4, butt3, butt2, butt1, });
 
@@ -163,31 +165,21 @@ namespace Xwt.Html5.TestApp {
         Size PaintScene(Context ctx, double x, double y, int example) {
 
             var scene = SceneWithTestData (example);
+
             var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
-            
             var styleSheet = styleSheets[styleSheets.StyleSheetNames[(DateTime.Now.Millisecond%2)+1]];
             //errror here: wrong fontdata! styleSheet.EdgeStyle.DefaultStyle.PaintData = true;
 
-            Get<IGraphScene<IVisual, IVisualEdge>> fScene = () => scene;
-            var layout = Registry.Factory.Create<IGraphSceneLayout<IVisual, IVisualEdge>>(fScene, styleSheet);
-            layout.Orientation = DateTime.Now.Second % 2 == 0 ? Limaki.Drawing.Orientation.TopBottom : Limaki.Drawing.Orientation.LeftRight;
+            var worker = new GraphSceneVisualizer<IVisual, IVisualEdge> {
+                            StyleSheet = styleSheet
+                         };
+            worker.Compose(scene, new VisualsRenderer());
 
-            var _folder = new GraphSceneFacade<IVisual, IVisualEdge>(fScene, layout);
-            _folder.ShowAllData();
+            worker.Folder.ShowAllData();
+            worker.Receiver.Execute();
+            worker.Receiver.Done();
 
-            var painter = new VisualSceneContextPainter (scene, layout);
-
-            var modelReceiver = new GraphItemReceiver<IVisual, IVisualEdge> ();
-            var receiver = new GraphSceneReceiver<IVisual, IVisualEdge> () as IGraphSceneReceiver<IVisual, IVisualEdge>;
-            receiver.GraphScene = fScene;
-            receiver.Layout = () => layout;
-            receiver.Camera = () => painter.Viewport.Camera;
-            receiver.Clipper = () => painter.Clipper;
-            receiver.ModelReceiver = () => modelReceiver;
-
-            receiver.Execute ();
-
-            painter.Paint (ctx);
+            worker.Painter.Paint(ctx);
             return scene.Shape.Size;
         }
 

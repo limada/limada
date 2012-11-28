@@ -19,23 +19,10 @@ using Limaki.Drawing;
 
 namespace Limaki.View {
 
-    public class VisualSceneContextPainter : ContextGraphScenePainter<IVisual, IVisualEdge> {
+    public class VisualSceneContextPainter : GraphSceneContextPainter<IVisual, IVisualEdge> {
 
         public VisualSceneContextPainter(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout)
-            : base() {
-            this.Data = scene;
-            this.Layout = layout;
-            Compose();
-        }
-
-        public virtual void Compose() {
-            var composer = new GraphSceneContextPainterComposer<IVisual, IVisualEdge>();
-
-            this.GraphItemRenderer = new VisualsRenderer();
-
-            composer.Factor(this);
-            composer.Compose(this);
-        }
-             
+            : base(scene,layout, new VisualsRenderer()) {}
+     
     }
 }

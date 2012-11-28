@@ -6,7 +6,13 @@ namespace Limaki.Drawing {
     public enum PointOrder {
         X,  // same as Dimension ?
         Y,  // same as Dimension ?
+        /// <summary>
+        /// round(Y); if(round(Y)==round(X)) then X
+        /// </summary>
         TopToBottom,
+        /// <summary>
+        /// round(X); if(round(X)==round(Y)) then Y
+        /// </summary>
         LeftToRight
     }
 

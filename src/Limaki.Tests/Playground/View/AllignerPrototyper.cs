@@ -1,5 +1,19 @@
-﻿using NUnit.Framework;
-using Limaki.Tests;
+﻿/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2012 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+
+using NUnit.Framework;
 using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
@@ -10,51 +24,15 @@ using System;
 using Xwt;
 using Limaki.Visuals;
 using Limaki.Tests.View;
-using Limaki.Common;
-using Limaki.Drawing.Styles;
-using Limaki.View.UI.GraphScene;
 using Limaki.Common.Linqish;
 using Limaki.View;
-using Limaki.View.Modelling;
 using Limaki.View.Layout;
+using Xwt.Drawing;
+using Limaki.View.Visuals;
+using Limaki.View.Display;
 
 namespace Limaki.Playground.View {
-    public class SceneWorker<TItem, TEdge>
-        where TEdge : TItem, IEdge<TItem> {
-        public IGraphSceneLayout<TItem, TEdge> Layout { get; set; }
-        public IGraphScene<TItem, TEdge> Scene { get; set; }
-        public GraphSceneFacade<TItem, TEdge> Folder { get; set; }
-        public IGraphSceneReceiver<TItem, TEdge> Receiver { get; set; }
-    }
-
-    public class AllignerPrototyper : DomainTest {
-        SceneWorker<IVisual, IVisualEdge> CreateSceneWorker(IGraphScene<IVisual, IVisualEdge> scene) {
-            var styleSheet = Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet;
-            Get<IGraphScene<IVisual, IVisualEdge>> fScene = () => scene;
-            var layout = Registry.Factory.Create<IGraphSceneLayout<IVisual, IVisualEdge>>(fScene, styleSheet);
-            layout.Orientation = Limaki.Drawing.Orientation.LeftRight;
-
-            var folder = new GraphSceneFacade<IVisual, IVisualEdge>(fScene, layout);
-            folder.ShowAllData();
-
-            var painter = new VisualSceneContextPainter(scene, layout);
-
-            var modelReceiver = new GraphItemReceiver<IVisual, IVisualEdge>();
-            var receiver = new GraphSceneReceiver<IVisual, IVisualEdge>() as IGraphSceneReceiver<IVisual, IVisualEdge>;
-            receiver.GraphScene = fScene;
-            receiver.Layout = () => layout;
-            receiver.Camera = () => painter.Viewport.Camera;
-            receiver.Clipper = () => painter.Clipper;
-            receiver.ModelReceiver = () => modelReceiver;
-
-            return new SceneWorker<IVisual, IVisualEdge> {
-                Scene = scene,
-                Layout = layout,
-                Receiver = receiver,
-                Folder = folder,
-            };   
-        }
-
+    public class AllignerPrototyper : Html5DomainTest {
         IGraphScene<IVisual, IVisualEdge> SceneWithTestData (int example) {
             IGraphScene<IVisual, IVisualEdge> scene = null;
             var examples = new SceneExamples();
@@ -63,18 +41,22 @@ namespace Limaki.Playground.View {
             scene = examples.GetScene(testData.Data);
 
             return scene;
-           
+
         }
 
-        SceneWorker<IVisual, IVisualEdge> SceneWorkerWithTestData (int example) {
+        GraphSceneVisualizer<IVisual, IVisualEdge> SceneWorkerWithTestData (int example) {
             var scene = SceneWithTestData(example);
-            
-            var worker = CreateSceneWorker(scene);
+
+            var worker = new GraphSceneVisualizer<IVisual, IVisualEdge>();
+            worker.Compose(scene, new VisualsRenderer());
+            worker.StyleSheet.BackColor = Colors.WhiteSmoke;
+            worker.Layout.Orientation = Orientation.TopBottom;
+            worker.Folder.ShowAllData();
             worker.Receiver.Execute();
             worker.Receiver.Done();
 
             var scene2 = SceneWithTestData(example);
-           
+
             var view = scene.Graph as GraphView<IVisual, IVisualEdge>;
             var graph = view.Two;
             var graph2 = (scene2.Graph as GraphView<IVisual, IVisualEdge>).Two;
@@ -97,17 +79,26 @@ namespace Limaki.Playground.View {
         public void Collisions () {
             var worker = SceneWorkerWithTestData(0);
             var scene = worker.Scene;
-            ILocator<IVisual> loc = new SGraphSceneLocator<IVisual, IVisualEdge> { GraphScene = scene };
-            Action<IEnumerable<IVisual>> reportElems = elms=>
-                 elms
-                .OrderBy(e => e.Location, new PointComparer { Delta = worker.Layout.Distance.Width, Order = PointOrder.LeftToRight })
-                .ForEach(e => ReportDetail("{3}{0}\t{1}\t{2}", e.Data, loc.GetLocation(e), loc.GetSize(e), scene.Focused == e ? "*" : ""));
 
-             
+            ILocator<IVisual> locator = new GraphSceneItemShapeLocator<IVisual, IVisualEdge> { GraphScene = scene };
+            var options = new AllignerOptions {
+                AlignX = Alignment.Start,
+                AlignY = Alignment.Center,
+                Dimension = Dimension.X,
+                Distance = worker.Layout.Distance,
+                PointOrder = PointOrder.LeftToRight
+            };
+
+            Action<IEnumerable<IVisual>> reportElems = elms =>
+                 elms
+                .OrderBy(e => locator.GetLocation(e), new PointComparer { Delta = worker.Layout.Distance.Width, Order = options.PointOrder })
+                .ForEach(e => ReportDetail("\t{3}{0}\t{1}\t{2}", e.Data, locator.GetLocation(e), locator.GetSize(e), scene.Focused == e ? "*" : ""));
+
+
             Func<IEnumerable<IVisual>, Rectangle> reportExtent = elms => {
-                var measure = new MeasureVisitBuilder<IVisual>(loc);
+                var measure = new MeasureVisitBuilder<IVisual>(locator);
                 Action<IVisual> visit = null;
-                var fSizeToFit = measure.SizeToFit(ref visit, worker.Layout.Distance, Dimension.X);
+                var fSizeToFit = measure.SizeToFit(ref visit, options.Distance, options.Dimension);
                 var fBounds = measure.Bounds(ref visit);
                 var fMinSize = measure.MinSize(ref visit);
 
@@ -116,45 +107,65 @@ namespace Limaki.Playground.View {
                 return fBounds();
             };
 
-            var ignore = new HashSet<IVisual>(scene.Elements.Where(e => !(e is IVisualEdge)));
-            reportElems(ignore);
-            reportExtent(ignore);
-            IEnumerable<IVisual> elems = Walker.Create((scene.Graph as GraphView<IVisual, IVisualEdge>).Two)
-                .ExpandWalk(scene.Focused, 0)
+            var visibleItems = new HashSet<IVisual>(scene.Elements.Where(e => !(e is IVisualEdge)));
+            var visibleBounds = locator.Bounds(visibleItems);
+            reportElems(visibleItems);
+            reportExtent(visibleItems);
+
+
+            IEnumerable<IVisual> itemsToPlace = Walker.Create((scene.Graph as GraphView<IVisual, IVisualEdge>).Two)
+                .DeepWalk(scene.Focused, 0)
                 .Select(l => l.Node)
                 .ToArray();
+            scene.Focused.Location = Point.Zero+worker.Layout.Distance;
+            itemsToPlace.ForEach(e => scene.Graph.Add(e));
+
+            itemsToPlace = itemsToPlace.Where(e => !(e is IVisualEdge));
+            var alligner = new Alligner<IVisual, IVisualEdge>(scene, worker.Layout);
+           
+            alligner.Columns(scene.Focused, itemsToPlace, options);
+            locator = alligner.Locator;
+            reportElems(itemsToPlace);
+            var bounds = reportExtent(itemsToPlace);
+            var free = alligner.NextFreeSpace(bounds.Location, bounds.Size, itemsToPlace, options.Dimension, options.Distance);
+            ReportDetail("Next free space {0}", free);
+            var free2 = alligner.NearestNextFreeSpace(bounds.Location, bounds.Size, itemsToPlace, false, options.Dimension, options.Distance);
+            ReportDetail("Nearest Next free space {0}", free);
+
+            var dist = new Size(bounds.Location.X - free2.Location.X, bounds.Location.Y - free2.Location.Y);
+            itemsToPlace.ForEach(e => alligner.Locator.SetLocation(e, alligner.Locator.GetLocation(e) - dist));
+
+            alligner.Commit();
+            worker.Receiver.Execute();
+            worker.Receiver.Done();
             
-            new Alligner<IVisual, IVisualEdge>(scene, worker.Layout, p => p.Justify(elems.Where(e=>e!=scene.Focused)));
-            elems.ForEach(e => scene.Graph.Add(e));
+            ReportPainter.Paint(ctx => worker.Painter.Paint(ctx));
+           
+            ReportPainter.Paint(ctx => {
+                var translate = worker.Painter.Viewport.ClipOrigin;
+                ctx.Translate(-translate.X, -translate.Y);
+                ctx.SetLineWidth(.5);
+                ctx.SetColor(Colors.Black);
+                ctx.Rectangle(visibleBounds);
+                ctx.Stroke();
+                ctx.SetColor(Colors.Red);
+                ctx.Rectangle(bounds);
+                ctx.Stroke();
 
-            elems = elems.Where(e => !(e is IVisualEdge));
-            var all = new Alligner<IVisual, IVisualEdge>(scene, worker.Layout);
-            all.Columns(scene.Focused, elems, new AllignerOptions { AlignX = Alignment.Center, AlignY = Alignment.Center, Dimension = Dimension.X, Distance = worker.Layout.Distance, PointOrder = PointOrder.LeftToRight });
-            loc = all.Locator;
-            reportElems(elems);
-            var bounds = reportExtent(elems);
-            var free = CalculateNextFreeSpace(scene, bounds.Location, bounds.Size, Dimension.X, elems, worker.Layout.Distance.Width);
+                ctx.SetColor(Colors.Green);
+                ctx.Rectangle(free);
+                ctx.Stroke();
+
+                ctx.SetColor(Colors.LawnGreen);
+                ctx.Rectangle(free2);
+                ctx.Stroke();
+                ctx.SetColor(Colors.White);
+                ctx.ResetTransform();
+            });
+
+            WritePainter();
         }
 
-        IList<Rectangle> CalculateNextFreeSpace (IGraphScene<IVisual, IVisualEdge> scene,
-            Point start, Size sizeNeeded, Dimension dimension, IEnumerable<IVisual> ignore, double distance) {
-
-            //var h = dimension == Dimension.X ? sizeNeeded.Height : scene.Shape.Size.Height;
-            //var w = dimension == Dimension.X ? scene.Shape.Size.Width : sizeNeeded.Width;
-            //var iRect = new Rectangle(start, new Size(w, h));
-
-            var iRect = new Rectangle(start, sizeNeeded);
-
-            var comparer = new PointComparer { Order = dimension == Dimension.X ? PointOrder.X : PointOrder.Y };
-            var loc = new SGraphSceneLocator<IVisual,IVisualEdge> { GraphScene = scene };
-            var elems = scene.ElementsIn(iRect)
-                .Where(e => !(e is IVisualEdge))
-                .Except(ignore)
-                .OrderBy(e => loc.GetLocation(e), comparer);
-            if(elems.Any()) {
-                
-            }
-            return new Rectangle[0];
-        }
+       
     }
 }

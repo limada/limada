@@ -22,7 +22,7 @@ namespace Limaki.View.Layout {
     /// <summary>
     /// searches for the nearest Anchors of Root and Link
     /// </summary>
-    public class NearestAnchorRouter<TItem, TEdge> : RouterBase<TItem, TEdge>
+    public class NearestAnchorRouter<TItem, TEdge> : EdgeRouterBase<TItem, TEdge>
         where TItem : IVisual
         where TEdge : TItem, IEdge<TItem> {
 

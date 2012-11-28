@@ -46,8 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestApp\HtmlCanvas.cs" />
-    <Compile Include="TestApp\Html5PageRenderer.cs" />
     <Compile Include="TestApp\TestDataOne.cs" />
     <Compile Include="TestApp\XwtHtml5TestMainForm.cs">
       <SubType>Form</SubType>

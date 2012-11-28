@@ -22,7 +22,14 @@ using Limaki.Graphs;
 using Xwt;
 
 namespace Limaki.View.Layout {
-
+    /// <summary>
+    /// a Locator for Graph-Items
+    /// assuming that an item has a Shape
+    /// operations are resulting in commands
+    /// and have to be commited to a receiver
+    /// </summary>
+    /// <typeparam name="TItem"></typeparam>
+    /// <typeparam name="TEdge"></typeparam>
     public class GraphSceneLocator<TItem, TEdge> : IGraphSceneLocator<TItem, TEdge>
         where TEdge : IEdge<TItem>, TItem {
 
@@ -47,10 +54,11 @@ namespace Limaki.View.Layout {
         }
 
         public virtual Point GetLocation (TItem item) {
-            Point result;
-            if (!changedLocations.TryGetValue (item, out result)) {
-                var shape = ShapeGetter (item);
-                result = shape.Location;
+            var result = default(Point);
+            if (!changedLocations.TryGetValue(item, out result)) {
+                var shape = ShapeGetter(item);
+                if (shape != null)
+                    result = shape.Location;
             }
             return result;
         }
@@ -59,10 +67,20 @@ namespace Limaki.View.Layout {
             var shape = GetOrCreateShape (item);
             return shape.Size;
         }
+
         public virtual void SetSize (TItem item, Size value) {
             var shape = GetOrCreateShape (item);
             shape.Size = value;
         }
+
+        public bool HasLocation (TItem item) {
+            return ShapeGetter(item) != null || changedLocations.ContainsKey(item);
+        }
+
+        public bool HasSize (TItem item) {
+            return ShapeGetter(item) != null || itemsToInvoke.ContainsKey(item);
+        }
+
         public virtual void Commit (ICollection<ICommand<TItem>> requests) {
 
             ICollection<TItem> invokeDone = new Set<TItem>();

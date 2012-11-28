@@ -40,7 +40,7 @@ namespace Limaki.View.Layout {
 
         public bool Centered { get; set; }
 
-        public IRouter<TItem, TEdge> Router { get; set; }
+        public IEdgeRouter<TItem, TEdge> EdgeRouter { get; set; }
 
         protected virtual void InvokeEdges() {
             var scene = this.Data;

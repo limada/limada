@@ -46,8 +46,9 @@
     <Compile Include="Limaki.View.Blind\BlindSystemFonts.cs" />
     <Compile Include="Limaki.View.Blind\BlindSystemInformation.cs" />
     <Compile Include="Limaki.View\Layout\Placing\AllignerExtensions.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\GraphSceneItemShapeLocator.cs" />
     <Compile Include="Xwtish\ContextGraphSceneLayer.cs" />
-    <Compile Include="Xwtish\ContextGraphScenePainter.cs" />
+    <Compile Include="Xwtish\GraphSceneContextPainter.cs" />
     <Compile Include="Limaki.Viewers\StreamViewers\IWebResponse.cs" />
     <Compile Include="Limaki.Viewers\StreamViewers\WebResponse.cs" />
     <Compile Include="Limaki.View\Layout\Placing\CollissionResolver.cs" />
@@ -163,7 +164,7 @@
     <Compile Include="Limaki.View\Layout\GraphSceneLocator.cs" />
     <Compile Include="Limaki.View\Layout\GraphSceneLayout.cs" />
     <Compile Include="Limaki.View\Layout\Placing\ILocator.cs" />
-    <Compile Include="Limaki.View\Layout\IRouter.cs" />
+    <Compile Include="Limaki.View\Layout\IEdgeRouter.cs" />
     <Compile Include="Limaki.View\Layout\IGraphSceneLocator.cs" />
     <Compile Include="Limaki.View\Layout\Layout.cs" />
     <Compile Include="Limaki.View\Layout\LayoutCommand.cs" />
@@ -171,7 +172,7 @@
     <Compile Include="Limaki.View\Layout\Placing\Placer.cs" />
     <Compile Include="Limaki.View\Layout\Placing\MeasureVisitBuilder.cs" />
     <Compile Include="Limaki.View\Layout\ProxyShape.cs" />
-    <Compile Include="Limaki.View\Layout\RouterBase.cs" />
+    <Compile Include="Limaki.View\Layout\EdgeRouterBase.cs" />
     <Compile Include="Limaki.View\Layout\ShapeLayout.cs" />
     <Compile Include="Limaki.View\Modelling\GraphItemReceiver.cs" />
     <Compile Include="Limaki.View\Modelling\GraphSceneReceiver.cs" />

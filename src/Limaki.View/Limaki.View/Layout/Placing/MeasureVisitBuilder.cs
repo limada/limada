@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2012 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Limaki.Drawing;
 using Limaki.Graphs;
 using System;
@@ -10,7 +24,7 @@ namespace Limaki.View.Layout {
         public MeasureVisitBuilder(ILocator<TItem> locator) {
             this.Locator = locator;
         }
-
+        
         public virtual ILocator<TItem> Locator { get; set; }
 
         public Func<Rectangle> Bounds(ref Action<TItem> visit) {
@@ -20,21 +34,24 @@ namespace Limaki.View.Layout {
             var r = double.MinValue;
 
             visit += item => {
-                var loc = Locator.GetLocation(item);
-                var size = Locator.GetSize(item);
-                var il = loc.X;
-                var it = loc.Y;
-                var ir = il + size.Width;
-                var ib = it + size.Height;
-                if (il < l)
-                    l = il;
-                if (it < t)
-                    t = it;
-                if (ir > r)
-                    r = ir;
-                if (ib > b)
-                    b = ib;
-            };
+                if (Locator.HasLocation(item)) {
+                    var loc = Locator.GetLocation(item);
+                    var il = loc.X;
+                    var it = loc.Y;
+
+                    var size = Locator.GetSize(item);
+                    var ir = il + size.Width;
+                    var ib = it + size.Height;
+                    if (il < l)
+                        l = il;
+                    if (it < t)
+                        t = it;
+                    if (ir > r)
+                        r = ir;
+                    if (ib > b)
+                        b = ib;
+                }
+              };
 
             return () => Rectangle.FromLTRB(l, t, r, b);
         }

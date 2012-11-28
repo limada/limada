@@ -14,7 +14,7 @@ namespace Limaki.Swf.Backends.UseCases {
 
             painter.Viewport.ClipOrigin = scene.Shape.Location;
 
-            PrintDocument doc = new PrintDocument();
+            var doc = new PrintDocument();
             doc.PrintPage += new PrintPageEventHandler(doc_PrintPage);
             return doc;
         }

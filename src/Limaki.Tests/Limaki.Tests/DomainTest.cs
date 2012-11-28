@@ -2,6 +2,7 @@ using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.IOC;
 using Limaki.UnitTest;
+using Limaki.View;
 using NUnit.Framework;
 using Xwt.Blind.Backend;
 using Xwt.Engine;

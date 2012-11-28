@@ -2,6 +2,7 @@ using System;
 using Xwt;
 using Xwt.Drawing;
 using Limaki.Common;
+using System.Collections.Generic;
 
 namespace Limaki.Drawing {
     public static class DrawingExtensions {
@@ -21,10 +22,24 @@ namespace Limaki.Drawing {
             return new Point (a.X < b.X ? a.X : b.X, a.Y < b.Y ? a.Y : b.Y);
         }
 
+        public static Point Nearest (this Point xy, IEnumerable<Point> points) {
+            var result = xy;
+            var dmin = double.MaxValue;
+            foreach (var pt in points) {
+                var x1 = xy.X - pt.X;
+                var y1 = xy.Y - pt.Y;
+                var min1 = x1 * x1 + y1 * y1; //Squared Euclidean Distance
+                if (min1 < dmin) {
+                    dmin = min1;
+                    result = pt;
+                }
+            }
+            return result;
+        }
+
         public static Point Add (Point pt, Size sz) {
             return new Point (pt.X + sz.Width, pt.Y + sz.Height);
         }
-
 
         public static Point Subtract (Point pt, Size sz) {
             return new Point (pt.X - sz.Width, pt.Y - sz.Height);

@@ -1,4 +1,18 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2012 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
@@ -10,13 +24,13 @@ using Xwt;
 namespace Limaki.View.Layout {
 
     public interface ILocationDetector<TItem> {
-        Point NextFreePosition (Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore,double distance);
+        Point NextFreePosition (Point start, Size sizeNeeded, IEnumerable<TItem> ignore, Dimension dimension, double distance);
         /// <summary>
         /// sets items location and size to be aware in NextFreePosition
         /// </summary>
         /// <param name="item"></param>
         /// <param name="location"></param>
-        void SetLocation (object item, Point location, Size size);
+        void SetLocation (TItem item, Point location, Size size);
     }
 
     public class GraphSceneLocationDetector<TItem, TEdge> : ILocationDetector<TItem> where TEdge : IEdge<TItem>, TItem {
@@ -29,7 +43,7 @@ namespace Limaki.View.Layout {
         
         public Point NextFreePosition0 (Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore, double distance) {
             var result = new Rectangle (start, sizeNeeded);
-            var loc = new SGraphSceneLocator<TItem, TEdge> { GraphScene = this.GraphScene };
+            var loc = new GraphSceneItemShapeLocator<TItem, TEdge> { GraphScene = this.GraphScene };
             var measure = new MeasureVisitBuilder<TItem> (loc);
             
             var iRect = result;
@@ -61,14 +75,14 @@ namespace Limaki.View.Layout {
             var iRect = new Rectangle(start, new Size(w, h));
 
             var comparer = new PointComparer { Order = dimension == Dimension.X ? PointOrder.X : PointOrder.Y };
-            var loc = new SGraphSceneLocator<TItem,TEdge> { GraphScene = this.GraphScene };
+            var loc = new GraphSceneItemShapeLocator<TItem,TEdge> { GraphScene = this.GraphScene };
             var elems = GraphScene.ElementsIn(iRect)
                 .Where(e => !(e is TEdge)).Except(ignore).OrderBy(e=>loc.GetLocation(e),comparer);
 
             return new Rectangle[0];
         }
 
-        public Point NextFreePosition(Point start, Size sizeNeeded, Dimension dimension, IEnumerable<TItem> ignore, double distance) {
+        public Point NextFreePosition(Point start, Size sizeNeeded, IEnumerable<TItem> ignore, Dimension dimension, double distance) {
             var result = start;
            
            var freeSpace = CalculateFreeSpace(start, sizeNeeded, dimension, ignore, distance);
@@ -79,7 +93,7 @@ namespace Limaki.View.Layout {
             return result;
         }
 
-        public void SetLocation(object item, Point location, Size size) {
+        public void SetLocation (TItem item, Point location, Size size) {
 
         }
 
@@ -105,33 +119,11 @@ namespace Limaki.View.Layout {
                 var size = Locator.GetSize (item);
                 var location = new Point (Xer (size), Yer (size));
 
-                location = Detector.NextFreePosition (location, size, dimension, ignore, distance);
+                location = Detector.NextFreePosition (location, size, ignore, dimension, distance);
                 Locator.SetLocation (item, location);
                 //!!: ignore.Remove (item);
                 Detector.SetLocation (item, location,size);
             };
         }
     }
-
-    public class SGraphSceneLocator<TItem, TEdge> : ILocator<TItem>
-    where TEdge : IEdge<TItem>, TItem {
-        public IGraphScene<TItem, TEdge> GraphScene { get; set; }
-
-        public Point GetLocation (TItem item) {
-            return GraphScene.ItemShape(item).Location;
-        }
-
-        public void SetLocation (TItem item, Point location) {
-            throw new NotImplementedException();
-        }
-
-        public Size GetSize (TItem item) {
-            return GraphScene.ItemShape(item).Size;
-        }
-
-        public void SetSize (TItem item, Size value) {
-            throw new NotImplementedException();
-        }
-    }
-
 }

@@ -27,13 +27,13 @@ namespace Limaki.View.Visuals.Layout {
         public VisualsSceneLayout(Get<IGraphScene<TItem, TEdge>> handler, IStyleSheet stylesheet)
             : base(handler, stylesheet) {
             
-            this.Router = new NearestAnchorRouter<TItem,TEdge>();
+            this.EdgeRouter = new NearestAnchorRouter<TItem,TEdge>();
         }
-     
-        public override IShape GetShape(TItem item) {
-            if(item.Shape==null) {
-                item.Shape = CreateShape (item);
-            }
+
+        public override IShape GetShape (TItem item) {
+            //if (item.Shape == null) {
+            //    item.Shape = CreateShape(item);
+            //}
             return item.Shape;
         }
 
@@ -103,7 +103,7 @@ namespace Limaki.View.Visuals.Layout {
         public override void Justify(TItem target, IShape tshape) {
             if ((target is IVisualEdge) && (tshape is IEdgeShape)) {
                 var edge = (IVisualEdge)target;
-                Router.RouteEdge((TEdge)edge);
+                EdgeRouter.RouteEdge((TEdge)edge);
 
                 IEdgeShape shape = (IEdgeShape)tshape;
                 shape.Start = edge.Root.Shape[edge.RootAnchor];

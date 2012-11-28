@@ -10,11 +10,14 @@ namespace Limaki.Common.IOC {
     public class AppFactory<T>
     where T : ContextRecourceLoader {
         public AppFactory() { }
+
+        bool backendApplied = false;
         public AppFactory(IBackendContextRecourceLoader backendContextRecourceLoader) {
             
             var resourceLoader = Activator.CreateInstance(typeof(T),new object[]{backendContextRecourceLoader}) as T;
             Registry.ConcreteContext = resourceLoader.CreateContext();
             resourceLoader.ApplyResources(Registry.ConcreteContext);
+            backendApplied = true;
 
             ResolveDirectory ("", "Lima*.dll");
         }
@@ -24,6 +27,10 @@ namespace Limaki.Common.IOC {
                 t => t.IsClass && 
                      ! t.IsAbstract &&
                      t.GetInterface(typeof(IContextRecourceLoader).FullName) != null)) {
+
+                // only one IBackendContextRecourceLoader allowed:
+                if (type.GetInterface(typeof(IBackendContextRecourceLoader).FullName) != null && backendApplied)
+                    return;
 
                 var loader = Activator.CreateInstance(type) as IContextRecourceLoader;
                 loader.ApplyResources(Registry.ConcreteContext);
