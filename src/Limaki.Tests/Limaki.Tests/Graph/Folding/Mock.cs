@@ -3,7 +3,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.View.UI.GraphScene;
-using Limaki.View.Visuals.Display;
+using Limaki.View.Visuals.Visualizers;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Visuals;
 using Limaki.Visuals;
@@ -12,7 +12,7 @@ using Limaki.View.UI;
 using Limaki.View;
 using Limaki.View.Visuals;
 using Limaki.Common;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.View.Visuals.UI;
 
 namespace Limaki.Tests.Graph.Wrappers {

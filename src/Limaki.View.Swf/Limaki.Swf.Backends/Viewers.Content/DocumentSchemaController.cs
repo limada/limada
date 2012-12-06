@@ -7,11 +7,11 @@ using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;
 using Limaki.Viewers;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.View.Layout;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
-using Limaki.View.Visuals.Display;
+using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
 using Xwt;
 
@@ -102,17 +102,17 @@ namespace Limaki.View.Swf.Backends {
             var distance = display.Layout.Distance;
             display.Layout.Border = this.Border;
 
-            var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
+            var aligner = new Aligner<IVisual, IVisualEdge>(display.Data, display.Layout);
             var dd = this.Border.Height;
-            var options = new AllignerOptions {
+            var options = new AlignerOptions {
                                                   Distance = new Size(dd, dd), 
                                                   AlignX = Alignment.End, 
                                                   AlignY = Alignment.Start, 
                                                   Dimension = Dimension.X
                                               };
 
-            alligner.OneColumn(pages, (Point) this.Border, options);
-            alligner.Locator.Commit(alligner.GraphScene.Requests);
+            aligner.OneColumn(pages, (Point) this.Border, options);
+            aligner.Locator.Commit(aligner.GraphScene.Requests);
 
             display.DataId = 0;
             new State { Hollow = true }.CopyTo(display.State);

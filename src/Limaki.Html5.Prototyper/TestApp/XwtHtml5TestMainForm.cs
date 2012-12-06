@@ -19,8 +19,9 @@ using Xwt.Drawing;
 using Xwt.Engine;
 using Xwt.Html5.Backend;
 using Xwt.Tests;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.View.Visuals;
+using Limaki.View.Visuals.Rendering;
 
 namespace Xwt.Html5.TestApp {
 
@@ -170,9 +171,10 @@ namespace Xwt.Html5.TestApp {
             var styleSheet = styleSheets[styleSheets.StyleSheetNames[(DateTime.Now.Millisecond%2)+1]];
             //errror here: wrong fontdata! styleSheet.EdgeStyle.DefaultStyle.PaintData = true;
 
-            var worker = new GraphSceneVisualizer<IVisual, IVisualEdge> {
+            var worker = new GraphSceneContextVisualizer<IVisual, IVisualEdge> {
                             StyleSheet = styleSheet
                          };
+
             worker.Compose(scene, new VisualsRenderer());
 
             worker.Folder.ShowAllData();

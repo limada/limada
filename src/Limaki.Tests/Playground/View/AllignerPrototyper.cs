@@ -29,10 +29,11 @@ using Limaki.View;
 using Limaki.View.Layout;
 using Xwt.Drawing;
 using Limaki.View.Visuals;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
+using Limaki.View.Visuals.Rendering;
 
 namespace Limaki.Playground.View {
-    public class AllignerPrototyper : Html5DomainTest {
+    public class AlignerPrototyper : Html5DomainTest {
         IGraphScene<IVisual, IVisualEdge> SceneWithTestData (int example) {
             IGraphScene<IVisual, IVisualEdge> scene = null;
             var examples = new SceneExamples();
@@ -44,10 +45,10 @@ namespace Limaki.Playground.View {
 
         }
 
-        GraphSceneVisualizer<IVisual, IVisualEdge> SceneWorkerWithTestData (int example) {
+        GraphSceneContextVisualizer<IVisual, IVisualEdge> SceneWorkerWithTestData (int example) {
             var scene = SceneWithTestData(example);
 
-            var worker = new GraphSceneVisualizer<IVisual, IVisualEdge>();
+            var worker = new GraphSceneContextVisualizer<IVisual, IVisualEdge>();
             worker.Compose(scene, new VisualsRenderer());
             worker.StyleSheet.BackColor = Colors.WhiteSmoke;
             worker.Layout.Orientation = Orientation.TopBottom;
@@ -66,7 +67,7 @@ namespace Limaki.Playground.View {
             var root2 = graph2.FindRoots(null).First();
             graph2.Elements().ForEach(e => graph.Add(e));
             view.Add(root2);
-            new Alligner<IVisual, IVisualEdge>(scene, worker.Layout, p => p.OneColumn(new IVisual[] { root, root2 }));
+            new Aligner<IVisual, IVisualEdge>(scene, worker.Layout, p => p.OneColumn(new IVisual[] { root, root2 }));
 
             scene.Focused = root2;
 
@@ -81,7 +82,7 @@ namespace Limaki.Playground.View {
             var scene = worker.Scene;
 
             ILocator<IVisual> locator = new GraphSceneItemShapeLocator<IVisual, IVisualEdge> { GraphScene = scene };
-            var options = new AllignerOptions {
+            var options = new AlignerOptions {
                 AlignX = Alignment.Start,
                 AlignY = Alignment.Center,
                 Dimension = Dimension.X,
@@ -121,21 +122,21 @@ namespace Limaki.Playground.View {
             itemsToPlace.ForEach(e => scene.Graph.Add(e));
 
             itemsToPlace = itemsToPlace.Where(e => !(e is IVisualEdge));
-            var alligner = new Alligner<IVisual, IVisualEdge>(scene, worker.Layout);
+            var aligner = new Aligner<IVisual, IVisualEdge>(scene, worker.Layout);
            
-            alligner.Columns(scene.Focused, itemsToPlace, options);
-            locator = alligner.Locator;
+            aligner.Columns(scene.Focused, itemsToPlace, options);
+            locator = aligner.Locator;
             reportElems(itemsToPlace);
             var bounds = reportExtent(itemsToPlace);
-            var free = alligner.NextFreeSpace(bounds.Location, bounds.Size, itemsToPlace, options.Dimension, options.Distance);
+            var free = aligner.NextFreeSpace(bounds.Location, bounds.Size, itemsToPlace, options.Dimension, options.Distance);
             ReportDetail("Next free space {0}", free);
-            var free2 = alligner.NearestNextFreeSpace(bounds.Location, bounds.Size, itemsToPlace, false, options.Dimension, options.Distance);
+            var free2 = aligner.NearestNextFreeSpace(bounds.Location, bounds.Size, itemsToPlace, false, options.Dimension, options.Distance);
             ReportDetail("Nearest Next free space {0}", free);
 
             var dist = new Size(bounds.Location.X - free2.Location.X, bounds.Location.Y - free2.Location.Y);
-            itemsToPlace.ForEach(e => alligner.Locator.SetLocation(e, alligner.Locator.GetLocation(e) - dist));
+            itemsToPlace.ForEach(e => aligner.Locator.SetLocation(e, aligner.Locator.GetLocation(e) - dist));
 
-            alligner.Commit();
+            aligner.Commit();
             worker.Receiver.Execute();
             worker.Receiver.Done();
             

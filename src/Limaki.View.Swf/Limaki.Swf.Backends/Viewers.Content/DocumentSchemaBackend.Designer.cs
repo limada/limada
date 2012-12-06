@@ -1,7 +1,7 @@
 using System.Windows.Forms;
 using System.Drawing;
-using Limaki.View.Display;
-using Limaki.View.Swf.Display;
+using Limaki.View.Visualizers;
+using Limaki.View.Swf.Visualizers;
 using Limaki.Visuals;
 
 namespace Limaki.View.Swf.Backends {

@@ -16,7 +16,7 @@ using Limaki.Drawing;
 using Limaki.View.Rendering;
 using Limaki.Visuals;
 
-namespace Limaki.View.Visuals {
+namespace Limaki.View.Visuals.Rendering {
 
     public class VisualsRenderer : GraphItemRenderer<IVisual, IVisualEdge> {
 
@@ -28,6 +28,7 @@ namespace Limaki.View.Visuals {
                 data = "<<null>>";
             return data;
         }
+
         public override void Render(IVisual visual, IRenderEventArgs e) {
             var layout = this.Layout();
             var style = layout.GetStyle(visual);

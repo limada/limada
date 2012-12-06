@@ -13,7 +13,7 @@ using System.Threading;
 using Limaki.Drawing;
 using Limaki.View.WPF.Display;
 using Limaki.View.Visuals;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 
 namespace Limaki.WPF008 {
     public class Testing {

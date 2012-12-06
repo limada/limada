@@ -37,7 +37,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         }
 
         protected virtual void Compose () {
-            var options = new AllignerOptions();
+            var options = new AlignerOptions();
             options.Dimension = Dimension.X;
 
             var size = new System.Drawing.Size(36, 36);
@@ -186,16 +186,16 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             Controller.Undo();
         }
 
-        public virtual void Columns (AllignerOptions options) {
+        public virtual void Columns (AlignerOptions options) {
             Controller.Columns(options);
         }
-        public virtual void OneColumn (AllignerOptions options) {
+        public virtual void OneColumn (AlignerOptions options) {
             Controller.OneColumn(options);
         }
-        public virtual void LogicalLayout (AllignerOptions options) {
+        public virtual void LogicalLayout (AlignerOptions options) {
             Controller.LogicalLayout(options);
         }
-        public virtual void FullLayout (AllignerOptions options) {
+        public virtual void FullLayout (AlignerOptions options) {
             Controller.FullLayout(options);
         }
     }

@@ -23,9 +23,9 @@ using Limada.VisualThings;
 using Limaki.Model.Streams;
 using System.Diagnostics;
 using Limaki.View;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.View.UI.GraphScene;
-using Limaki.View.Visuals.Display;
+using Limaki.View.Visuals.Visualizers;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Xwt;
@@ -131,9 +131,9 @@ namespace Limaki.Viewers {
             CurrentWidget = sender;
         }
 
-        public event Action BackendGraphGraphView = null;
-        public event Action BackendGraphStreamView = null;
-        public event Action BackendToggleView = null;
+        public Action BackendGraphGraphView = null;
+        public Action BackendGraphStreamView = null;
+        public Action BackendToggleView = null;
 
         protected IExceptionHandler ExceptionHandler {
             get { return Registry.Pool.TryGetCreate<IExceptionHandler>(); }

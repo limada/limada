@@ -1,7 +1,7 @@
 using Limaki.Graphs;
 using Limaki.View.Rendering;
 using Limaki.View.UI;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.View;
 using Limaki.Drawing;
 using Limaki.Common;

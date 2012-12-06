@@ -25,6 +25,7 @@ namespace Limaki.XwtAdapter {
                 context.Rotate (transform.Angle());
             }
         }
+
         public static Matrice GetTransform (this Context context) {
             throw new NotImplementedException();
         }

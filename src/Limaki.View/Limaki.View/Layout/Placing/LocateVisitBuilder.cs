@@ -32,7 +32,7 @@ namespace Limaki.View.Layout {
         /// <param name="alignment"></param>
         /// <param name="dimension"></param>
         /// <returns></returns>
-        Func<Size, double> Allign(double start, double space, Alignment alignment, Dimension dimension);
+        Func<Size, double> Align(double start, double space, Alignment alignment, Dimension dimension);
 
         /// <summary>
         /// gives back a func which returns the
@@ -73,7 +73,7 @@ namespace Limaki.View.Layout {
         /// <param name="alignment"></param>
         /// <param name="dimension"></param>
         /// <returns></returns>
-        public virtual Func<Size, double> Allign(double start, double space, Alignment alignment, Dimension dimension) {
+        public virtual Func<Size, double> Align(double start, double space, Alignment alignment, Dimension dimension) {
             return size => {
                 var distance = 0d;
                 if (dimension == Dimension.X)

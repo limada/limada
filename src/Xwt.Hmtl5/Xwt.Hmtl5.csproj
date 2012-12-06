@@ -44,6 +44,7 @@
     <Compile Include="Xwt.Html5.Backend\ContextBackendHandler.cs" />
     <Compile Include="Xwt.Html5.Backend\FontBackendHandler.cs" />
     <Compile Include="Xwt.Html5.Backend\FontData.cs" />
+    <Compile Include="Xwt.Html5.Backend\FontMeasure.cs" />
     <Compile Include="Xwt.Html5.Backend\Html5Context.cs" />
     <Compile Include="Xwt.Html5.Backend\Html5Engine.cs" />
     <Compile Include="Xwt.Html5.Backend\Html5Extensions.cs" />

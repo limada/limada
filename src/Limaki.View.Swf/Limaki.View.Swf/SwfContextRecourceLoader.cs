@@ -20,7 +20,7 @@ using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
 using Limaki.Drawing.Gdi.Painters;
 using Limaki.Drawing.Shapes;
-using Limaki.View.Swf.Display;
+using Limaki.View.Swf.Visualizers;
 using Limaki.Viewers;
 using Limaki.View.UI;
 using Limaki.Visuals;

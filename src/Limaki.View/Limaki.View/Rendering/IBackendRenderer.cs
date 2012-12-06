@@ -23,12 +23,12 @@ namespace Limaki.View.Rendering {
     /// </summary>
     public interface IBackendRenderer {
         /// <summary>
-        /// invokes the render-method of the control
+        /// invokes the render-method of the Backend
         /// </summary>
         void Render();
 
         /// <summary>
-        /// invokes the render-method of the control
+        /// invokes the render-method of the Backend
         /// </summary>
         /// <param name="clipper"></param>
         void Render(IClipper clipper);

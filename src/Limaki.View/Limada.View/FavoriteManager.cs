@@ -26,7 +26,7 @@ using Limaki.Model.Streams;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;

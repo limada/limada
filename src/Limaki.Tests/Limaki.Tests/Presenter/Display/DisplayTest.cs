@@ -25,7 +25,7 @@ using NUnit.Framework;
 using Limaki.Tests.Graph.Model;
 using Xwt;
 
-namespace Limaki.Tests.Presenter.Display {
+namespace Limaki.Tests.View.Display {
 
     public class DisplayTest<T>:DomainTest where T:class {
         

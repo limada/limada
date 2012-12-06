@@ -30,7 +30,7 @@ namespace Limaki.View.Layout {
     /// the Items have valid data AFTER commiting scene.Commands
     /// </summary>
     /// <remarks>
-    /// this is to be replaced with Alligner
+    /// this is to be replaced with Aligner
     /// </remarks>
     /// <typeparam name="TItem"></typeparam>
     /// <typeparam name="TEdge"></typeparam>

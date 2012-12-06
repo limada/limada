@@ -10,7 +10,7 @@ using System.IO;
 using System.Diagnostics;
 using Limaki.Graphs;
 using Limaki.View.Clipping;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.View.Rendering;
 using Xwt;
 using Canvas = System.Windows.Controls.Canvas;

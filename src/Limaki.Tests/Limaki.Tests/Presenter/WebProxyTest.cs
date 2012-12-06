@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +8,9 @@ using Limada.VisualThings;
 using Limaki.Visuals;
 using Limada.Model;
 using Limaki.Model.Streams;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 
-namespace Limaki.Tests.Presenter {
+namespace Limaki.Tests.View {
     public class WebProxyTest {
         public void CircleFocusToHtml(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             var scene = display.Data;

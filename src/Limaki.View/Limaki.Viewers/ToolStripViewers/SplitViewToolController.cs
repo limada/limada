@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.Visuals;
 
 namespace Limaki.Viewers.ToolStripViewers {

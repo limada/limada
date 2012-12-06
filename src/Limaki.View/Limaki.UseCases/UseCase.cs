@@ -19,7 +19,7 @@ using Limada.View;
 using Limada.UseCases;
 using Limaki.Model.Streams;
 using System.IO;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Viewers.ToolStripViewers;
 using Limaki.Visuals;

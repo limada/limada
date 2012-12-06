@@ -16,8 +16,8 @@ using System.Linq;
 using System.Windows.Forms;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.View.Display;
-using Limaki.View.Swf.Display;
+using Limaki.View.Visualizers;
+using Limaki.View.Swf.Visualizers;
 using Limaki.Viewers;
 using Limaki.Visuals;
 using Limaki.Swf.Backends;
@@ -209,8 +209,6 @@ namespace Limaki.Swf.Backends.Viewers {
                 onShowAction();
             }
         }
-
-
 
         #endregion
 

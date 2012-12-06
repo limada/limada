@@ -37,10 +37,10 @@ namespace Xwt.WPFBackend
 		{
 			if (graphics == null)
 				throw new ArgumentNullException ("graphics");
-
-		    graphics.SmoothingMode = SmoothingMode.HighQuality;
-			graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-		    graphics.CompositingQuality = CompositingQuality.HighQuality;
+			
+			graphics.SmoothingMode = SmoothingMode.None;
+			graphics.PixelOffsetMode = PixelOffsetMode.Half;
+			graphics.CompositingQuality = CompositingQuality.HighSpeed;
 			
 			
 			Graphics = graphics;

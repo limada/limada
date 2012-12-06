@@ -22,10 +22,10 @@ using Limaki.Drawing;
 
 namespace Limaki.View.Layout {
 
-    public static class AllignerExtensions {
+    public static class AlignerExtensions {
 
-        public static AllignerOptions Options<TItem, TEdge> (this IGraphSceneLayout<TItem, TEdge> layout) where TEdge : IEdge<TItem>, TItem {
-            var result = new AllignerOptions {
+        public static AlignerOptions Options<TItem, TEdge> (this IGraphSceneLayout<TItem, TEdge> layout) where TEdge : IEdge<TItem>, TItem {
+            var result = new AlignerOptions {
                 Dimension = layout.Orientation == Orientation.LeftRight ? Dimension.X : Dimension.Y,
                 Distance = layout.Distance,
                 PointOrder = layout.Orientation == Orientation.LeftRight ? PointOrder.LeftToRight : PointOrder.TopToBottom,
@@ -42,14 +42,14 @@ namespace Limaki.View.Layout {
             return result;
         }
 
-        public static void OneColumn<TItem, TEdge> (this Alligner<TItem, TEdge> alligner, IEnumerable<TItem> items, Point at) where TEdge : IEdge<TItem>, TItem {
-            alligner.OneColumn(items, at, alligner.Layout.Options());
+        public static void OneColumn<TItem, TEdge> (this Aligner<TItem, TEdge> aligner, IEnumerable<TItem> items, Point at) where TEdge : IEdge<TItem>, TItem {
+            aligner.OneColumn(items, at, aligner.Layout.Options());
         }
 
-        public static void OneColumn<TItem, TEdge> (this Alligner<TItem, TEdge> alligner, IEnumerable<TItem> items) where TEdge : IEdge<TItem>, TItem {
+        public static void OneColumn<TItem, TEdge> (this Aligner<TItem, TEdge> aligner, IEnumerable<TItem> items) where TEdge : IEdge<TItem>, TItem {
             if (items.Count() < 2)
                 return;
-            alligner.OneColumn(items, alligner.Locator.GetLocation(items.First()), alligner.Layout.Options());
+            aligner.OneColumn(items, aligner.Locator.GetLocation(items.First()), aligner.Layout.Options());
         }
     }
 

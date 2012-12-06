@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using System.Linq;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Visuals;
 

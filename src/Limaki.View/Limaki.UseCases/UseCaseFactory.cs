@@ -12,7 +12,7 @@
  * 
  */
 
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 
 namespace Limaki.UseCases {
     public class UseCaseFactory<T> where T:new() {

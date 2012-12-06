@@ -1,10 +1,10 @@
-﻿using Limaki.Common;
+using Limaki.Common;
 using Limaki.Visuals;
 using Limaki.View.UI;
 using Limaki.Drawing;
 using Xwt;
 
-namespace Limaki.Tests.Presenter.Display {
+namespace Limaki.Tests.View.Display {
     public class VisualsDisplayTest1:VisualsDisplayTest {
         public void SelectorVersusMulitSelectTest() {
             Display.SelectAction.Enabled = true;

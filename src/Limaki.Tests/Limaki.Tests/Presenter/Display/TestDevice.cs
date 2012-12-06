@@ -1,6 +1,6 @@
 using Limaki.View;
 
-namespace Limaki.Tests.Presenter.Display {
+namespace Limaki.Tests.View.Display {
     public interface ITestDevice {
         object CreateForm ( IDisplay display );
         object FindForm ( IDisplay display );

@@ -17,7 +17,7 @@ using System.IO;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Model.Streams;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.Visuals;
 
 namespace Limaki.Viewers.StreamViewers {

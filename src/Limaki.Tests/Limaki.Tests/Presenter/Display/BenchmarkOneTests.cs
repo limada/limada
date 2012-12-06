@@ -23,7 +23,7 @@ using Limaki.Visuals;
 using NUnit.Framework;
 using Xwt;
 
-namespace Limaki.Tests.Presenter.Display {
+namespace Limaki.Tests.View.Display {
     public class UITests : VisualsDisplayTest {
         [Test]
         public void MultiSelectorAgainstMoveTest() {

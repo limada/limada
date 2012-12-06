@@ -133,7 +133,6 @@
     <Compile Include="Playground\View\Rectangle\Refactoring\xwtSize.cs" />
     <Compile Include="Playground\View\Rectangle\TestRectangle.cs" />
     <Compile Include="Playground\View\Rectangle\XwtRectangleTest.cs" />
-    <Compile Include="Playground\View\GraphSceneVisualizer.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintCanvasBackend.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintContextBackendHandler.cs" />
     <Compile Include="Playground\View\XwtFrontend\PaintCanvas.cs">

@@ -1,7 +1,7 @@
 using Limaki.Common.IOC;
 using Limaki.View.Clipping;
 
-namespace Limaki.View.Display {
+namespace Limaki.View.Visualizers {
     public class DisplayRecourceLoader : ContextRecourceLoader {
         public override void ApplyResources(IApplicationContext context) {
             context.Factory.Add<IClipper, PolygonClipper>();

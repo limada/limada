@@ -3,7 +3,7 @@ using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Limaki.UnitTest;
 
-namespace Limaki.Tests.Presenter.Display {
+namespace Limaki.Tests.View.Display {
     public enum Frame {
         Full,
         Half,

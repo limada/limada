@@ -23,6 +23,7 @@ using Limaki.Model.Streams;
 using System.IO;
 using Limaki.View.Swf;
 using Limaki.Viewers;
+using Limaki.View.Swf.Visualizers;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
 

@@ -1,6 +1,6 @@
 ﻿using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Xwt;
 
 namespace Limaki.View.WPF.Display {

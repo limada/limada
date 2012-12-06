@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.View.UI;
 using Limaki.View.WPF.UI;
 

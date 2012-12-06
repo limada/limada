@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Limaki.Actions;
 using System.Linq;
 using Limaki.Graphs.Extensions;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.View.Layout;
 using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
@@ -27,49 +27,49 @@ namespace Limaki.Viewers.ToolStripViewers {
             base.Attach(sender);
         }
 
-        //public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Alligner<IVisual, IVisualEdge>> call) {
+        //public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Aligner<IVisual, IVisualEdge>> call) {
         //    if (display == null)
         //        return;
 
-        //    var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
+        //    var aligner = new Aligner<IVisual, IVisualEdge>(display.Data, display.Layout);
         //    var items = display.Data.Selected.Elements;
-        //    call(alligner);
-        //    StoreUndo(display, alligner, items);
-        //    alligner.Proxy.Commit(alligner.Data);
+        //    call(aligner);
+        //    StoreUndo(display, aligner, items);
+        //    aligner.Proxy.Commit(aligner.Data);
         //    display.Execute();
         //}
 
-        public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Alligner<IVisual, IVisualEdge>, IEnumerable<IVisual>> call) {
+        public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Aligner<IVisual, IVisualEdge>, IEnumerable<IVisual>> call) {
             if (display == null)
                 return;
 
             Call(display, call, display.Data.Selected.Elements);
         }
 
-        public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Alligner<IVisual, IVisualEdge>, IEnumerable<IVisual>> call, IEnumerable<IVisual> items) {
+        public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Aligner<IVisual, IVisualEdge>, IEnumerable<IVisual>> call, IEnumerable<IVisual> items) {
             if (display == null)
                 return;
 
-            var alligner = new Alligner<IVisual, IVisualEdge>(display.Data, display.Layout);
+            var aligner = new Aligner<IVisual, IVisualEdge>(display.Data, display.Layout);
 
-            call(alligner, items);
+            call(aligner, items);
             
-            alligner.Locator.Commit (alligner.GraphScene.Requests);
+            aligner.Locator.Commit (aligner.GraphScene.Requests);
 
-            StoreUndo (display, alligner, items);
+            StoreUndo (display, aligner, items);
 
             display.Execute();
         }
 
         private List<ICommand<IVisual>> _undo;
         private Int64 _undoID = 0;
-        protected virtual void StoreUndo(IGraphSceneDisplay<IVisual, IVisualEdge> display, Alligner<IVisual, IVisualEdge> alligner, IEnumerable<IVisual> items) {
+        protected virtual void StoreUndo(IGraphSceneDisplay<IVisual, IVisualEdge> display, Aligner<IVisual, IVisualEdge> aligner, IEnumerable<IVisual> items) {
             _undo = new List<ICommand<IVisual>>();
             _undoID = display.DataId;
-            foreach (var item in alligner.GraphScene.Requests.Select(c=>c.Subject)) {
+            foreach (var item in aligner.GraphScene.Requests.Select(c=>c.Subject)) {
                 _undo.Add(new MoveCommand<IVisual>(item, i => i.Shape, item.Location));
             }
-            foreach (var edge in alligner.Locator.AffectedEdges) {
+            foreach (var edge in aligner.Locator.AffectedEdges) {
                 _undo.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Justify));
             }
         }
@@ -90,15 +90,15 @@ namespace Limaki.Viewers.ToolStripViewers {
             Undo(CurrentDisplay);
         }
        
-        public virtual void Columns(AllignerOptions options) {
+        public virtual void Columns(AlignerOptions options) {
             options.Distance = CurrentDisplay.Layout.Distance;
-            Call(CurrentDisplay, (alligner, items) => alligner.Columns(items, options));
+            Call(CurrentDisplay, (aligner, items) => aligner.Columns(items, options));
         }
-        public void OneColumn(AllignerOptions options) {
+        public void OneColumn(AlignerOptions options) {
             options.Distance = CurrentDisplay.Layout.Distance;
-            Call(CurrentDisplay, (alligner, items) => alligner.OneColumn(items, options));
+            Call(CurrentDisplay, (aligner, items) => aligner.OneColumn(items, options));
         }
-        public virtual void FullLayout(AllignerOptions options) {
+        public virtual void FullLayout(AlignerOptions options) {
             options.Distance = CurrentDisplay.Layout.Distance;
             var display = this.CurrentDisplay;
             if (display != null) {
@@ -108,7 +108,7 @@ namespace Limaki.Viewers.ToolStripViewers {
             }
         }
 
-        public virtual void LogicalLayout(AllignerOptions options) {
+        public virtual void LogicalLayout(AlignerOptions options) {
             options.Distance = CurrentDisplay.Layout.Distance;
             var display = this.CurrentDisplay;
             if (display != null) {
@@ -117,7 +117,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                 if (selected.Count() == 1) {
                     selected = new Walker<IVisual, IVisualEdge>(display.Data.Graph).DeepWalk(root, 0).Select(l => l.Node);
                 }
-                Call(CurrentDisplay, (alligner, items) => alligner.Columns(root, items, options), selected);
+                Call(CurrentDisplay, (aligner, items) => aligner.Columns(root, items, options), selected);
             }
         }
         

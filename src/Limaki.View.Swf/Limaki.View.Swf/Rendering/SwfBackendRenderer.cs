@@ -6,24 +6,23 @@ using Limaki.View.Rendering;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 
-namespace Limaki.View.Swf.Display {
+namespace Limaki.View.Swf.Visualizers {
+    
     public class SwfBackendRenderer<T>:IBackendRenderer {
-        
-        public virtual SwfWidgetBackend<T> Device { get; set; }
-        
+        public SwfBackendRenderer () { }
+
+        public virtual SwfWidgetBackend<T> Backend { get; set; }
         public virtual IDisplay<T> Display { get; set; }
-        
-        public SwfBackendRenderer() { }
 
         public void Render() {
-            Device.Invalidate ();
+            Backend.Invalidate ();
         }
 
         public void Render(IClipper clipper) {
             if (clipper.RenderAll) {
-                Device.Invalidate();    
+                Backend.Invalidate();    
             } else {
-                Device.Invalidate (clipper.Bounds.ToGdi ());
+                Backend.Invalidate (clipper.Bounds.ToGdi ());
             }
         }
 

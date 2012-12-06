@@ -11,6 +11,7 @@ using Limaki.Drawing.WPF;
 using Limaki.Drawing;
 using Limaki.Visuals.WPF;
 using Limaki.Drawing.WPF.Painters;
+using Limaki.View.Visuals.Rendering;
 
 namespace Limaki.View.WPF {
     public class WpfVisualsRenderer : VisualsRenderer {

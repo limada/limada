@@ -12,7 +12,7 @@
  * 
  */
 
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 

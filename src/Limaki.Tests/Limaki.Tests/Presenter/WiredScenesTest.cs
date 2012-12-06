@@ -16,7 +16,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model;
-using Limaki.View.Visuals.Display;
+using Limaki.View.Visuals.Visualizers;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Graph.Wrappers;
 using Limaki.Visuals;

@@ -4,10 +4,10 @@ using Limaki.View.UI;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
-using Limaki.View.Display;
+using Limaki.View.Visualizers;
 using Xwt;
 
-namespace Limaki.Tests.Presenter.Display {
+namespace Limaki.Tests.View.Display {
     public class VisualsDisplayTest:DisplayTest<IGraphScene<IVisual,IVisualEdge>> {
         protected IGraphScene<IVisual, IVisualEdge> _scene = null;
         public virtual IGraphScene<IVisual, IVisualEdge> Scene {

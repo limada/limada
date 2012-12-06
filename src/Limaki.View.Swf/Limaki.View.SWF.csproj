@@ -74,49 +74,49 @@
     <Compile Include="Limaki.Controls\WebBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.Gdi.Drawing\FontMemento.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\GdiConverter.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\GdiDrawingUtils.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\GdiFontCache.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\GdiMatrice.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\GdiPen.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\GdiSurface.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\GdiSystemFonts.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\GdiUtils.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\Painters\BezierPainter.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\Painters\GdiPainter.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\Painters\PainterFactory.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\Painters\RectanglePainter.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\Painters\RoundedRectanglePainter.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\Painters\StringPainter.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\Painters\StringPainterBase.cs" />
-    <Compile Include="Limaki.Gdi.Drawing\Painters\VectorPainter.cs" />
-    <Compile Include="Limaki.Gdi.View\UI\IGdiBackend.cs" />
-    <Compile Include="Limaki.Gdi.View\UI\GdiGraphSceneLayer.cs" />
-    <Compile Include="Limaki.Gdi.View\UI\GdiImageLayer.cs" />
-    <Compile Include="Limaki.Gdi.View\UI\GdiRenderEventArgs.cs" />
-    <Compile Include="Limaki.Swf.Backends\GraphScenePainterGdiComposer.cs" />
-    <Compile Include="Limaki.Swf.Backends\GraphScenePainterRenderer.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\FontMemento.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\GdiConverter.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\GdiDrawingUtils.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\GdiFontCache.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\GdiMatrice.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\GdiPen.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\GdiSurface.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\GdiSystemFonts.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\GdiUtils.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\Painters\BezierPainter.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\Painters\GdiPainter.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\Painters\PainterFactory.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\Painters\RectanglePainter.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\Painters\RoundedRectanglePainter.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainter.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainterBase.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\Painters\VectorPainter.cs" />
+    <Compile Include="Limaki.View.Gdi\UI\IGdiBackend.cs" />
+    <Compile Include="Limaki.View.Gdi\UI\GdiGraphSceneLayer.cs" />
+    <Compile Include="Limaki.View.Gdi\UI\GdiImageLayer.cs" />
+    <Compile Include="Limaki.View.Gdi\UI\GdiRenderEventArgs.cs" />
+    <Compile Include="Limaki.View.Swf\Visualizers\GraphSceneGdiPainterComposer.cs" />
+    <Compile Include="Limaki.View.Swf\Visualizers\GraphScenePainterRenderer.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.Content\DocumentSchemaController.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripUtils.cs" />
     <Compile Include="Limaki.View.Swf\Converter.cs" />
     <Compile Include="Limaki.View.Swf\CursorHandlerBackend.cs" />
-    <Compile Include="Limaki.View.Swf\Display\DragDropCatcher.cs" />
-    <Compile Include="Limaki.Gdi.View\UI\GdiViewport.cs" />
-    <Compile Include="Limaki.View.Swf\Display\ImageBackendComposer.cs" />
-    <Compile Include="Limaki.View.Swf\Display\ImageDisplayComposer.cs" />
-    <Compile Include="Limaki.View.Swf\Display\SwfBackendComposer.cs" />
-    <Compile Include="Limaki.View.Swf\Display\SwfImageDisplayBackend.cs">
+    <Compile Include="Limaki.View.Swf\Visualizers\DragDropCatcher.cs" />
+    <Compile Include="Limaki.View.Gdi\UI\GdiViewport.cs" />
+    <Compile Include="Limaki.View.Swf\Visualizers\ImageBackendComposer.cs" />
+    <Compile Include="Limaki.View.Swf\Visualizers\ImageDisplayComposer.cs" />
+    <Compile Include="Limaki.View.Swf\Visualizers\SwfBackendComposer.cs" />
+    <Compile Include="Limaki.View.Swf\Visualizers\SwfImageDisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.View.Swf\Display\SwfWidgetBackend.cs">
+    <Compile Include="Limaki.View.Swf\Visualizers\SwfWidgetBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.View.Swf\Display\SwfGraphSceneBackend.cs">
+    <Compile Include="Limaki.View.Swf\Visualizers\SwfGraphSceneBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.View.Swf\Display\SwfViewport.cs" />
-    <Compile Include="Limaki.View.Swf\Display\SwfVisualsDisplayBackend.cs">
+    <Compile Include="Limaki.View.Swf\Visualizers\SwfViewport.cs" />
+    <Compile Include="Limaki.View.Swf\Visualizers\SwfVisualsDisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Limaki.View.Swf\DragDrop\ControlDataObject.cs" />
@@ -163,7 +163,7 @@
     <Compile Include="Limaki.Swf.Backends\BaseStyleEditor.Designer.cs">
       <DependentUpon>BaseStyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\ImageExporter.cs" />
+    <Compile Include="Limaki.View.Swf\Visuals\ImageExporter.cs" />
     <Compile Include="Limaki.Swf.Backends\LayoutEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -176,7 +176,7 @@
     <Compile Include="Limaki.Swf.Backends\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\ScenePainter.cs" />
+    <Compile Include="Limaki.View.Swf\Visuals\VisualsSceneGdiPainter.cs" />
     <Compile Include="Limaki.Swf.Backends\ShapeComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
