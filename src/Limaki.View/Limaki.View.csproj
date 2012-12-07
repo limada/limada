@@ -54,8 +54,8 @@
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextPainter.cs" />
     <Compile Include="Limaki.Viewers\StreamViewers\IWebResponse.cs" />
     <Compile Include="Limaki.Viewers\StreamViewers\WebResponse.cs" />
-    <Compile Include="Limaki.View\Layout\Placing\CollissionResolver.cs" />
     <Compile Include="Limaki.View.XwtContext\RenderContextEventArgs.cs" />
+    <Compile Include="Limaki.Visuals\SpatialIndex.cs" />
     <Compile Include="ViewContextRecourceLoader.cs" />
     <Compile Include="Limaki.Drawing\Anchor.cs" />
     <Compile Include="Limaki.Drawing\Camera.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="Limaki.Drawing\Painters\StringPainter.cs" />
     <Compile Include="Limaki.Drawing\Painters\VectorPainter.cs" />
     <Compile Include="Limaki.Drawing\Pen.cs" />
-    <Compile Include="Limaki.Drawing\Shapes\BezierShape.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\BezierRectangleShape.cs" />
     <Compile Include="Limaki.Drawing\Shapes\IRectangleShape.cs" />
     <Compile Include="Limaki.Drawing\PointComparer.cs" />
     <Compile Include="Limaki.Drawing\Shapes\Polygon.cs" />
@@ -288,9 +288,9 @@
     <Compile Include="Limaki.Visuals\IVisualEdge.cs" />
     <Compile Include="Limaki.Visuals\IVisualFactory.cs" />
     <Compile Include="Limaki.Visuals\MarkerContextProcessor.cs" />
-    <Compile Include="Limaki.Visuals\QuadTreeIndex.cs" />
+    <Compile Include="Limaki.Visuals\VisualsQuadTreeIndex.cs" />
     <Compile Include="Limaki.Visuals\Scene.cs" />
-    <Compile Include="Limaki.Visuals\SpatialIndex.cs" />
+    <Compile Include="Limaki.Visuals\VisualsSpatialIndex.cs" />
     <Compile Include="Limaki.Visuals\Visual.cs" />
     <Compile Include="Limaki.Visuals\VisualComparer.cs" />
     <Compile Include="Limaki.Visuals\VisualComposite.cs" />

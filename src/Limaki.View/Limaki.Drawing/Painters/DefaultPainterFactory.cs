@@ -37,8 +37,8 @@ namespace Limaki.Drawing.Painters {
                     return Create<IPainter<IRectangleShape, Rectangle>>();
                 if (Reflector.Implements(type, typeof(IRoundedRectangleShape)))
                     return Create<IPainter<IRoundedRectangleShape, Rectangle>>();
-                if (Reflector.Implements(type, typeof(IBezierShape)))
-                    return Create<IPainter<IBezierShape, Rectangle>>();
+                if (Reflector.Implements(type, typeof(IBezierRectangleShape)))
+                    return Create<IPainter<IBezierRectangleShape, Rectangle>>();
                 if (Reflector.Implements(type, typeof(IVectorShape)))
                     return Create<IPainter<IVectorShape, Vector>>();
             }
@@ -61,7 +61,7 @@ namespace Limaki.Drawing.Painters {
             Add<IPainter<Rectangle>> (() => new RectanglePainter ());
 
             Add<IPainter<IRoundedRectangleShape, Rectangle>> (() => new RoundedRectanglePainter ());
-            Add<IPainter<IBezierShape, Rectangle>> (() => new BezierPainter ());
+            Add<IPainter<IBezierRectangleShape, Rectangle>> (() => new BezierPainter ());
 
             Add<IPainter<IShape<Vector>, Vector>> (() => new VectorPainter ());
             Add<IPainter<IVectorShape, Vector>> (() => new VectorPainter ());

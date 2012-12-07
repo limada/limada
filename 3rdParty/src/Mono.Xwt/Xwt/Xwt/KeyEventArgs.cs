@@ -37,13 +37,13 @@ namespace Xwt
 			this.Timestamp = timestamp;
 		}
 		
-		public Key Key { get; protected set; }
-
-        public ModifierKeys Modifiers { get; protected set; }
-
-        public bool IsRepeat { get; protected set; }
-
-        public long Timestamp { get; protected set; }
+		public Key Key { get; private set; }
+		
+		public ModifierKeys Modifiers { get; private set; }
+		
+		public bool IsRepeat { get; private set; }
+		
+		public long Timestamp { get; private set; }
 		
 		public bool Handled { get; set; }
 	}

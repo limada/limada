@@ -168,7 +168,5 @@ namespace Limaki.Visuals {
 
     }
 
-    public class VisualTool<T>:Visual<T>,IVisualTool {
-        public VisualTool(T data):base(data){}
-    }
+    
 }

@@ -14,6 +14,8 @@
 
 using System.Collections.Generic;
 using Limaki.Common.Collections;
+using System.Linq;
+using Limaki.Common.Linqish;
 
 namespace Limaki.Graphs.Extensions {
     /// <summary>
@@ -28,15 +30,15 @@ namespace Limaki.Graphs.Extensions {
         public ICollection<TITem> Changes = new Set<TITem>();
         public ICollection<TITem> NoTouch = new Set<TITem>();
 
-        public ViewBuilder(IGraph<TITem, TEdge> graph) {
+        public ViewBuilder (IGraph<TITem, TEdge> graph) {
             this.View = graph;
         }
 
-        public virtual bool Contains(TITem curr) {
+        public virtual bool Contains (TITem curr) {
             return View.Contains(curr) || Changes.Contains(curr);
         }
 
-        public virtual bool Add(TITem curr) {
+        public virtual bool Add (TITem curr) {
             bool result = !Contains(curr);
             if (result) {
                 Changes.Add(curr);
@@ -44,21 +46,17 @@ namespace Limaki.Graphs.Extensions {
             return result;
         }
 
-        public void AddExpanded(TITem root, IGraph<TITem, TEdge> data) {
-            Walker<TITem, TEdge> walker = new Walker<TITem, TEdge>(data);
-            foreach (LevelItem<TITem> item in walker.ExpandWalk(root, 0)) {
-                this.Add(item.Node);
-            }
+        public void AddExpanded (TITem root, IGraph<TITem, TEdge> data) {
+            new Walker<TITem, TEdge>(data)
+                .ExpandWalk(root, 0).ForEach(item => this.Add(item.Node));
         }
 
-        public void AddDeepExpanded(TITem root, IGraph<TITem, TEdge> data) {
-            Walker<TITem, TEdge> walker = new Walker<TITem, TEdge>(data);
-            foreach (LevelItem<TITem> item in walker.DeepWalk(root, 0)) {
-                this.Add(item.Node);
-            }
+        public void AddDeepExpanded (TITem root, IGraph<TITem, TEdge> data) {
+            new Walker<TITem, TEdge>(data)
+                .DeepWalk(root, 0).ForEach(item => this.Add(item.Node));
         }
 
-        public virtual bool Remove(TITem curr) {
+        public virtual bool Remove (TITem curr) {
             bool result = !Changes.Contains(curr) && !NoTouch.Contains(curr);
             if (result) {
                 Changes.Add(curr);
@@ -66,39 +64,27 @@ namespace Limaki.Graphs.Extensions {
             return result;
         }
 
-        public virtual void Remove(IEnumerable<LevelItem<TITem>> remove) {
-            foreach (LevelItem<TITem> item in remove) {
+        public virtual void Remove (IEnumerable<LevelItem<TITem>> remove) {
+            foreach (var item in remove) {
                 this.Remove(item.Node);
             }
         }
 
-        public virtual bool NeverRemove(TITem curr) {
+        public virtual bool NeverRemove (TITem curr) {
             bool result = NoTouch.Contains(curr);
             if (!result)
                 NoTouch.Add(curr);
             return result;
         }
 
-        public void RemoveCollapsed(TITem root, IGraph<TITem, TEdge> data) {
-            Walker<TITem, TEdge> walker = new Walker<TITem, TEdge>(data);
-            foreach (LevelItem<TITem> item in walker.CollapseWalk(root, 0)) {
-                this.Remove(item.Node);
-            }
+        public void RemoveCollapsed (TITem root, IGraph<TITem, TEdge> data) {
+            new Walker<TITem, TEdge>(data)
+                .CollapseWalk(root, 0).ForEach(item => this.Remove(item.Node));
         }
 
-        public void RemoveOrphans(IGraph<TITem, TEdge> data) {
-            foreach (TITem item in data) {
-                if (!(item is TEdge)) {
-                    bool remove = true;
-                    foreach (TITem one in data.Edges(item)) {
-                        remove = false;
-                        break;
-                    }
-                    if (remove) {
-                        this.Remove(item);
-                    }
-                }
-            }
+        public void RemoveOrphans (IGraph<TITem, TEdge> data) {
+            data.Where(item => !(item is TEdge) && !data.Edges(item).Any())
+                .ForEach(item=>this.Remove(item));
         }
 
     }

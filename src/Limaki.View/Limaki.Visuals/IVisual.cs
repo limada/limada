@@ -25,7 +25,6 @@ namespace Limaki.Visuals {
         object Data { get;set;}
     }
 
-    public interface IVisualTool:IVisual {
-        
-    }
+ 
+    
 }

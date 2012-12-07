@@ -46,7 +46,7 @@ namespace Limaki.Drawing.WPF.Painters {
     public class WPFRoundedRectanglePainter : WPFRectanglePainter, IPainter<IRoundedRectangleShape, Rectangle> {
 
     }
-    public class WPFBezierPainter : WPFPainter<Rectangle>, IPainter<IBezierShape, Rectangle> {
+    public class WPFBezierPainter : WPFPainter<Rectangle>, IPainter<IBezierRectangleShape, Rectangle> {
 
     }
 }

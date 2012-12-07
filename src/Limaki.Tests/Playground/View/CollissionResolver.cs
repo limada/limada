@@ -20,8 +20,9 @@ using Limaki.Graphs.Extensions;
 using System.Linq;
 using System;
 using Xwt;
+using Limaki.View.Layout;
 
-namespace Limaki.View.Layout {
+namespace Limaki.Playground.View {
 
     public interface ILocationDetector<TItem> {
         Point NextFreePosition (Point start, Size sizeNeeded, IEnumerable<TItem> ignore, Dimension dimension, double distance);

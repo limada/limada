@@ -89,6 +89,7 @@ namespace Limaki.View.Layout {
             }
         }
 
+
         public virtual void Columns (TItem root, IEnumerable<TItem> items, AlignerOptions options) {
             if (root == null || items == null)
                 return;
@@ -102,6 +103,11 @@ namespace Limaki.View.Layout {
                 .ToArray();
 
             var bounds = new Rectangle(int.MaxValue, int.MaxValue, 0, 0);
+            Columns(walk, ref bounds, options);
+        }
+
+        public virtual void Columns (IEnumerable<LevelItem<TItem>> walk, ref Rectangle bounds, AlignerOptions options) {
+           
             var cols = new Queue<Tuple<IEnumerable<TItem>, Rectangle>>();
             
             foreach (var col in walk.GroupBy(row => row.Level)) {
@@ -119,7 +125,8 @@ namespace Limaki.View.Layout {
 
             if (options.Collisions.HasFlag(Collisions.NextFree)) {
                 var ignore = walk.Select(i => i.Node).ToArray();
-                var newbounds = NearestNextFreeSpace(bounds.Location, bounds.Size, ignore, options.Collisions.HasFlag(Collisions.Toggle), options.Dimension, options.Distance);
+                var newbounds = NearestNextFreeSpace(bounds.Location, bounds.Size, ignore, 
+                    options.Collisions.HasFlag(Collisions.Toggle), options.Dimension, options.Distance);
                 bounds = newbounds;
             }
             var colPos = bounds.Location;
@@ -127,11 +134,9 @@ namespace Limaki.View.Layout {
            
             locate = new LocateVisitBuilder<TItem>(this.Locator);
             
-
             while (cols.Count > 0) {
                 var col = cols.Dequeue();
                 LocateColumn(col.Item1, col.Item2, bounds, ref colPos, locate, options);
-
             }
         }
 
@@ -150,6 +155,8 @@ namespace Limaki.View.Layout {
             VisitItems(colItems, visit);
 
             var colBounds = fBounds();
+            if (colBounds.IsEmpty)
+                colBounds.Location = bounds.Location;
             colBounds.Size = fSize();
 
             bounds.Location = bounds.Location.Min(colBounds.Location);
@@ -200,6 +207,7 @@ namespace Limaki.View.Layout {
                 var bounds = locator.Bounds(
                     this.GraphScene.ElementsIn(result)
                         .Where(e => !(e is TEdge))
+                // TODO: .Union(this.Locator.ElementsIn(result))
                         .Except(ignore));
 
                 if (bounds.IsEmpty)

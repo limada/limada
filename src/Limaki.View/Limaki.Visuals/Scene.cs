@@ -204,7 +204,7 @@ namespace Limaki.Visuals {
                     // ensure we have a graph, 
                     // cause if graph==null, _spatialIndex will be set to null
                     bool dummy = this.Graph.IsReadOnly;
-                    _spatialIndex = new QuadTreeIndex ();
+                    _spatialIndex = new VisualsQuadTreeIndex ();
                     _spatialIndex.AddRange(this.Elements);
                 }
                 return _spatialIndex;

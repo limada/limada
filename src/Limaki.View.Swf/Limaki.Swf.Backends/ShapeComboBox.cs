@@ -44,7 +44,7 @@ namespace Limaki.Swf.Backends.Viewers {
             Items.Add(new RectangleShape());
             Items.Add(new RoundedRectangleShape());
             Items.Add(new VectorShape());
-            Items.Add (new BezierShape ());
+            Items.Add (new BezierRectangleShape ());
         }
 
         private ShapeLayout _shapeLayout = null;

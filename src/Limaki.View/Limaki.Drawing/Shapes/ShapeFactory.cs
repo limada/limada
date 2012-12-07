@@ -22,7 +22,7 @@ namespace Limaki.Drawing.Shapes {
 
             Add<IRectangleShape> (() => new RectangleShape());
             Add<IRoundedRectangleShape> (() => new RoundedRectangleShape());
-            Add<IBezierShape> (() => new BezierShape());
+            Add<IBezierRectangleShape> (() => new BezierRectangleShape());
             Add<IVectorShape> (() => new VectorShape());
         }
     }

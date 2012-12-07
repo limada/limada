@@ -11,7 +11,7 @@ namespace Limaki.Drawing.WPF.Shapes {
 
            Add<IRectangleShape>(()=>new Drawing.WPF.Shapes.RectangleShape());
            Add<IRoundedRectangleShape>(()=>new Drawing.WPF.Shapes.RoundedRectangleShape());
-           Add<IBezierShape>(()=>new Drawing.WPF.Shapes.RectangleShape());
+           Add<IBezierRectangleShape>(()=>new Drawing.WPF.Shapes.RectangleShape());
            Add<IVectorShape>(()=>new Drawing.WPF.Shapes.VectorShape());
 
         

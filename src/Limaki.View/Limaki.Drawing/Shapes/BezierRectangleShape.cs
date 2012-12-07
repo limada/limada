@@ -20,10 +20,10 @@ namespace Limaki.Drawing.Shapes {
 #if ! SILVERLIGHT    
     [Serializable]
 #endif
-    public class BezierShape : RectangleShapeBase, IBezierShape {
-        public BezierShape():base() {}
-        public BezierShape(Rectangle data):base(data) {}
-        public BezierShape(Point location, Size size) : base(location,size) { }
+    public class BezierRectangleShape : RectangleShapeBase, IBezierRectangleShape {
+        public BezierRectangleShape():base() {}
+        public BezierRectangleShape(Rectangle data):base(data) {}
+        public BezierRectangleShape(Point location, Size size) : base(location,size) { }
 
         public override Rectangle BoundsRect {
             get {
@@ -147,7 +147,7 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public override object Clone() {
-            return new BezierShape(_data);
+            return new BezierRectangleShape(_data);
         }
     }
 }

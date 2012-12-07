@@ -20,7 +20,13 @@ using Limaki.Drawing.Indexing.QuadTrees;
 using Xwt;
 
 namespace Limaki.Visuals {
-    public class QuadTreeIndex:SpatialIndex {
+    public class VisualsQuadTreeIndex: SpatialIndex<IVisual> {//VisualsSpatialIndex {
+        public VisualsQuadTreeIndex () {
+            BoundsOf = visual => visual.Shape.BoundsRect;
+            HasBounds = visual => visual.Shape != null;
+        }
+
+
         private Quadtree<IVisual> _geoIndex = null;
         public Quadtree<IVisual> GeoIndex {
             get {
@@ -36,15 +42,13 @@ namespace Limaki.Visuals {
             if ( bounds != Rectangle.Zero )
                 GeoIndex.Add (bounds, item);
         }
+
         protected override void Remove(Rectangle bounds, IVisual item) {
             if ( bounds != Rectangle.Zero )
                 GeoIndex.Remove(bounds, item);
         }
 
-        public override void AddRange(IEnumerable<IVisual> items) {
-            base.AddRange (items);
-        }
-
+  
         public override IEnumerable<IVisual> Query( Rectangle clipBounds, ZOrder zOrder ) {
             IEnumerable<IVisual> search = GeoIndex.Query(clipBounds);
 
@@ -120,7 +124,7 @@ namespace Limaki.Visuals {
             public override void Execute() {
                 var x = 0d;
                 var y = 0d;
-                foreach (IVisual visual in Subject) {
+                foreach (var visual in Subject) {
                     var bounds = visual.Shape.BoundsRect;
                     var l = bounds.X;
                     var t = bounds.Y;

@@ -119,7 +119,8 @@
     <Compile Include="Limaki.Tests\View\Drawing\PointComparerTest.cs" />
     <Compile Include="Playground\View\AllignerPrototyper.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
-    <Compile Include="Playground\View\DrawingTransforms.cs">
+    <Compile Include="Playground\View\CollissionResolver.cs" />
+    <Compile Include="Playground\View\ReferencePainterCanvas.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Limaki.Tests\View\Visuals\SceneExamples.cs" />
@@ -155,14 +156,14 @@
     <Compile Include="Limaki.Tests\Graph\Wrappers\BasicVisualItemGraphPairTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Wrappers\GraphPairTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Wrappers\GraphViewTest.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Display\BenchmarkOneTests.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Display\DisplayTest.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Display\FrameTicker.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Display\TestDevice.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Display\VisualsDisplayTest.cs" />
-    <Compile Include="Limaki.Tests\Presenter\Display\VisualsDisplayTest1.cs" />
-    <Compile Include="Limaki.Tests\Presenter\WebProxyTest.cs" />
-    <Compile Include="Limaki.Tests\Presenter\WiredScenesTest.cs" />
+    <Compile Include="Limaki.Tests\View\Display\BenchmarkOneTests.cs" />
+    <Compile Include="Limaki.Tests\View\Display\DisplayTest.cs" />
+    <Compile Include="Limaki.Tests\View\Display\FrameTicker.cs" />
+    <Compile Include="Limaki.Tests\View\Display\TestDevice.cs" />
+    <Compile Include="Limaki.Tests\View\Display\VisualsDisplayTest.cs" />
+    <Compile Include="Limaki.Tests\View\Display\VisualsDisplayTest1.cs" />
+    <Compile Include="Limaki.Tests\View\WebProxyTest.cs" />
+    <Compile Include="Limaki.Tests\View\WiredScenesTest.cs" />
     <Compile Include="Limaki.Tests\Common\FactoryTest.cs" />
     <Compile Include="Limaki.Tests\Common\HTML\HtmlNextTest.cs" />
     <Compile Include="Limaki.Tests\Common\HTML\HtmlTestData.cs" />
@@ -289,6 +290,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
+    <Folder Include="Limaki.Tests\Presenter\" />
     <Folder Include="Playground\Graph\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

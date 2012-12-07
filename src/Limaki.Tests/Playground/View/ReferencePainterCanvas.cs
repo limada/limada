@@ -28,9 +28,9 @@ using Xwt.Tests;
 
 namespace Samples
 {
-	public class DrawingTransforms: Canvas
+	public class ReferencePainterCanvas: Canvas
 	{
-		public DrawingTransforms ()
+		public ReferencePainterCanvas ()
 		{
 		}
 		

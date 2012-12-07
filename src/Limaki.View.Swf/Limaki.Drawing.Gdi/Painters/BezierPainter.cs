@@ -7,7 +7,7 @@ using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.Gdi.Painters {
 
-    public class BezierPainter:RectanglePainter,IPainter<IBezierShape,Xwt.Rectangle> {
+    public class BezierPainter:RectanglePainter,IPainter<IBezierRectangleShape,Xwt.Rectangle> {
 
         public override void RenderGdi( ISurface surface ) {
             var g = ((GdiSurface)surface).Graphics;

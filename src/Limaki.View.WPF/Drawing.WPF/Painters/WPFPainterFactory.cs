@@ -33,7 +33,7 @@ namespace Limaki.Drawing.WPF.Painters {
             Add<IPainter<IShape<Vector>, Vector>>(() => new WPFVectorPainter());
             Add<IPainter<IRoundedRectangleShape, Rectangle>>(() => new WPFRoundedRectanglePainter());
             Add<IPainter<IRectangleShape, Rectangle>>(() => new WPFRoundedRectanglePainter());
-            Add<IPainter<IBezierShape, Rectangle>>(() => new WPFBezierPainter());
+            Add<IPainter<IBezierRectangleShape, Rectangle>>(() => new WPFBezierPainter());
             Add<IPainter<IVectorShape, Vector>>(() => new WPFVectorPainter());
 
             

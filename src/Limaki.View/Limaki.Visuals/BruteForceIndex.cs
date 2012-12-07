@@ -18,11 +18,18 @@ using Limaki.Drawing;
 using Xwt;
 
 namespace Limaki.Visuals {
-    public class BruteForceIndex : SpatialIndex {
-        protected IEnumerable<IVisual> Visuals { get; set; }
+    public class BruteForceIndex : SpatialIndex<IVisual> {
+       
+        public BruteForceIndex () {
+            BoundsOf = visual => visual.Shape.BoundsRect;
+            HasBounds = visual => visual.Shape != null;
+        }
+        
         public override void AddRange(IEnumerable<IVisual> items) {
             this.Visuals = items;
         }
+
+        protected IEnumerable<IVisual> Visuals { get; set; }
 
         protected override Rectangle CalculateBounds() {
             var l = 0d;var t = 0d;

@@ -7,7 +7,7 @@ namespace Limaki.Drawing.WPF.Shapes {
     public abstract class RectangleShapeBase:
         Limaki.Drawing.Shapes.RectangleShapeBase, 
         IWPFShape,
-        IBezierShape {
+        IBezierRectangleShape {
 
         public RectangleShapeBase(): base() {}
         public RectangleShapeBase(Xwt.Rectangle data) : base(data) { }

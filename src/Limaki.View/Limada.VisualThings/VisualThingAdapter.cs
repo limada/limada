@@ -65,7 +65,7 @@ namespace Limada.VisualThings {
             IVisual result = VisualFactory.CreateItem(ThingDataToDisplay(sender,a));
             if (SchemaFacade.DescriptionableThing(a)) {
                 if (a is IThing<Stream>) {
-                    result.Shape = ShapeFactory.Create<IBezierShape>();
+                    result.Shape = ShapeFactory.Create<IBezierRectangleShape>();
                 } else {
                     result.Shape = ShapeFactory.Create<IRectangleShape>();
                 }
