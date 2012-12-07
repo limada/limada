@@ -150,7 +150,7 @@ namespace Limaki.WPF008 {
 
             var layout = (display.Display as IGraphSceneDisplay<IVisual, IVisualEdge>).Layout;
             layout.Centered = true;
-            layout.Orientation = Orientation.TopBottom;
+            layout.Dimension = Dimension.Y;
 
             var view = 
             	new GraphView<IVisual,IVisualEdge>(graph,new VisualGraph());

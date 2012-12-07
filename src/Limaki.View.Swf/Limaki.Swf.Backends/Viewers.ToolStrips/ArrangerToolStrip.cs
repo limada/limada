@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using Limaki.View.Layout;
 using Limaki.Viewers.ToolStripViewers;
 using Alignment = Xwt.Alignment;
+using Dimension = Limaki.Drawing.Dimension;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
@@ -37,9 +38,12 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         }
 
         protected virtual void Compose () {
-            var options = new AlignerOptions();
-            options.Dimension = Dimension.X;
-
+            var options = new AlignerOptions {
+                Dimension = Dimension.X,
+                PointOrderDelta=40,
+                Collisions = Collisions.NextFree //| Collisions.Toggle
+            };
+            
             var size = new System.Drawing.Size(36, 36);
             Action action = () => Columns(options);
 

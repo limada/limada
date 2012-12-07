@@ -34,7 +34,7 @@ namespace Limaki.View.Visualizers {
 
             if (Layout == null) {
                 Layout = Registry.Factory.Create<IGraphSceneLayout<TItem, TEdge>>(fScene, StyleSheet);
-                Layout.Orientation = Limaki.Drawing.Orientation.LeftRight;
+                Layout.Dimension = Limaki.Drawing.Dimension.X;
             }
 
             if (Painter == null)

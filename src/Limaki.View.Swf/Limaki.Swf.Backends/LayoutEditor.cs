@@ -18,7 +18,6 @@ using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
 using Limaki.Visuals;
-using Orientation = Limaki.Drawing.Orientation;
 using Size = Xwt.Size;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
@@ -34,7 +33,7 @@ namespace Limaki.Swf.Backends.Viewers {
         protected override void SetEditorFromLayout(IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             disableChanges = true;
             this.Distance = layout.Distance;
-            this.Orientation = layout.Orientation;
+            this.Dimension = layout.Dimension;
             this.Centered = layout.Centered;
             this.LayoutBackColor = GdiConverter.ToGdi(layout.StyleSheet.BackColor);
             disableChanges = false;
@@ -64,17 +63,17 @@ namespace Limaki.Swf.Backends.Viewers {
             }
         }
 
-        protected Orientation _orientation = Orientation.LeftRight;
-        public Orientation Orientation {
-            get { return _orientation; }
+        protected Dimension _dimension = Dimension.X;
+        public Dimension Dimension {
+            get { return _dimension; }
             set {
-                _orientation = value;
-                if (value==Orientation.LeftRight) {
+                _dimension = value;
+                if (value==Dimension.X) {
                     leftRightButton.Checked = true;
                 } else {
                     topBottomButton.Checked = true;
                 }
-                this.SelectedObject.Orientation = value;
+                this.SelectedObject.Dimension = value;
                 DoPropertyValueChanged();
             }
         }
@@ -108,9 +107,9 @@ namespace Limaki.Swf.Backends.Viewers {
             var button = sender as RadioButton;
             if (button != null) {
                 if (button.Name.ToLower().StartsWith("left")) {
-                    this.Orientation = Orientation.LeftRight;
+                    this.Dimension = Dimension.X;
                 } else if (button.Name.ToLower().StartsWith("top")) {
-                    this.Orientation = Orientation.TopBottom;
+                    this.Dimension = Dimension.Y;
                 }
 
             }

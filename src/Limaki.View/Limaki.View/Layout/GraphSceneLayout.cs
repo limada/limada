@@ -26,7 +26,7 @@ namespace Limaki.View.Layout {
         public GraphSceneLayout(Get<IGraphScene<TItem, TEdge>> dataHandler, IStyleSheet styleSheet)
             : base(styleSheet) {
             this.DataHandler = dataHandler;
-            this.Orientation = Drawing.Orientation.LeftRight;
+            this.Dimension = Drawing.Dimension.X;
             this.Centered = true;
         }
 
@@ -36,7 +36,7 @@ namespace Limaki.View.Layout {
             get { return DataHandler(); }
         }
 
-        public Drawing.Orientation Orientation { get; set; }
+        public Drawing.Dimension Dimension { get; set; }
 
         public bool Centered { get; set; }
 

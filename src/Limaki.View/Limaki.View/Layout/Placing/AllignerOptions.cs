@@ -23,17 +23,14 @@ namespace Limaki.View.Layout {
         public Alignment AlignX { get; set; }
         public Alignment AlignY { get; set; }
         public PointOrder PointOrder { get; set; }
+        public double PointOrderDelta { get; set; }
         public Dimension Dimension { get; set; }
         public Size Distance{ get; set; }
-        public Collissions Collissions { get; set; }
-    }
-
-    public enum Dimension {
-        X,Y
+        public Collisions Collisions { get; set; }
     }
 
     [Flags]
-    public enum Collissions {
+    public enum Collisions {
         None = 0x1 << 0,
         NextFree = 0x1 << 1,
         Toggle = 0x1 << 2,

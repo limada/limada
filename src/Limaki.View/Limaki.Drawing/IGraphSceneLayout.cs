@@ -10,7 +10,7 @@ namespace Limaki.Drawing {
 
         IGraphScene<TItem, TEdge> Data { get; }
 
-        Orientation Orientation { get; set; }
+        Dimension Dimension { get; set; }
 
         bool Centered { get; set; }
 

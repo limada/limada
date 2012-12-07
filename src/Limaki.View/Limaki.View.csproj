@@ -42,9 +42,11 @@
   <ItemGroup>
     <Compile Include="Limada.UseCases\DocumentSchemaKeyScrollAction.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindDrawingUtils.cs" />
+    <Compile Include="Limaki.Drawing\Dimension.cs" />
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindSystemFonts.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindSystemInformation.cs" />
+    <Compile Include="Limaki.Drawing\IShaper.cs" />
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextVisualizer.cs" />
     <Compile Include="Limaki.View\Layout\Placing\AllignerExtensions.cs" />
     <Compile Include="Limaki.View\Layout\Placing\GraphSceneItemShapeLocator.cs" />

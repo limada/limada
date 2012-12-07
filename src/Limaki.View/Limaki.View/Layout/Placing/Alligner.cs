@@ -25,9 +25,9 @@ namespace Limaki.View.Layout {
 
     public class Aligner<TItem, TEdge> : Placer<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
 
-        public Aligner (IGraphScene<TItem, TEdge> data, IGraphSceneLayout<TItem, TEdge> layout) : base(data, layout) { }
-        public Aligner (IGraphScene<TItem, TEdge> data, IGraphSceneLayout<TItem, TEdge> layout, Action<Aligner<TItem, TEdge>> call) :
-            base(data, layout, p => call(p as Aligner<TItem, TEdge>)) { }
+        public Aligner (IGraphScene<TItem, TEdge> data, IShaper<TItem> shaper) : base(data, shaper) { }
+        public Aligner (IGraphScene<TItem, TEdge> data, IShaper<TItem> shaper, Action<Aligner<TItem, TEdge>> call) :
+            base(data, shaper, p => call(p as Aligner<TItem, TEdge>)) { }
 
         public virtual void Justify (ref Action<TItem> visitor) {
             visitor += item => Locator.Justify(item);
@@ -58,7 +58,7 @@ namespace Limaki.View.Layout {
         }
 
         public virtual void OneColumn (IEnumerable<TItem> items, AlignerOptions options) {
-            var comparer = new PointComparer { Order = options.PointOrder, Delta = Layout.StyleSheet.AutoSize.Width / 2 };
+            var comparer = new PointComparer { Order = options.PointOrder, Delta = options.PointOrderDelta};
             var colItems = items.OrderBy(item => Locator.GetLocation(item), comparer);
             var bounds = new Rectangle(int.MaxValue, int.MaxValue, 0, 0);
             MeasureColumn(colItems, options, ref bounds);
@@ -69,7 +69,7 @@ namespace Limaki.View.Layout {
         }
 
         public virtual void Columns (IEnumerable<TItem> items, AlignerOptions options) {
-            var comparer = new PointComparer { Order = options.PointOrder, Delta = Layout.StyleSheet.AutoSize.Width / 2 };
+            var comparer = new PointComparer { Order = options.PointOrder, Delta = options.PointOrderDelta };
 
             var walk = items.Select(item => new { location = comparer.Round(Locator.GetLocation(item)), item });
 
@@ -98,11 +98,12 @@ namespace Limaki.View.Layout {
                 return;
 
             var walk = new Walker<TItem, TEdge>(this.Graph).DeepWalk(root, 1)
-                .Where(l => !(l.Node is TEdge) && itemCache.Contains(l.Node));
+                .Where(l => !(l.Node is TEdge) && itemCache.Contains(l.Node))
+                .ToArray();
 
             var bounds = new Rectangle(int.MaxValue, int.MaxValue, 0, 0);
             var cols = new Queue<Tuple<IEnumerable<TItem>, Rectangle>>();
-
+            
             foreach (var col in walk.GroupBy(row => row.Level)) {
                 if (col.Count() == 0)
                     continue;
@@ -116,17 +117,16 @@ namespace Limaki.View.Layout {
                 cols.Enqueue(MeasureColumn(colItems, options, ref bounds));
             }
 
+            if (options.Collisions.HasFlag(Collisions.NextFree)) {
+                var ignore = walk.Select(i => i.Node).ToArray();
+                var newbounds = NearestNextFreeSpace(bounds.Location, bounds.Size, ignore, options.Collisions.HasFlag(Collisions.Toggle), options.Dimension, options.Distance);
+                bounds = newbounds;
+            }
             var colPos = bounds.Location;
             LocateVisitBuilder<TItem> locate = null;
-            if (false)
-                locate = new CollissionResolver<TItem>(
-                    this.Locator,
-                    new GraphSceneLocationDetector<TItem, TEdge>(this.GraphScene),
-                    itemCache,
-                    options.Dimension,
-                    options.Distance.Width);
-            else
-                locate = new LocateVisitBuilder<TItem>(this.Locator);
+           
+            locate = new LocateVisitBuilder<TItem>(this.Locator);
+            
 
             while (cols.Count > 0) {
                 var col = cols.Dequeue();
@@ -153,7 +153,7 @@ namespace Limaki.View.Layout {
             colBounds.Size = fSize();
 
             bounds.Location = bounds.Location.Min(colBounds.Location);
-            bounds.Size = bounds.Size.Max(colBounds.Size);
+            bounds.Size = bounds.Size.SizeToFit(colBounds.Size,options.Dimension);
 
             return new Tuple<IEnumerable<TItem>, Rectangle>(items, colBounds);
 
@@ -219,10 +219,8 @@ namespace Limaki.View.Layout {
 
             var best = new Rectangle(start, sizeNeeded);
             var result = NextFreeSpace(start, sizeNeeded, ignore, dimension, distance);
-            if (result != best) {
-                if (toggleDimension) {
+            if (result != best && toggleDimension) {
                     dimension = dimension == Dimension.X ? Dimension.Y : Dimension.X;
-                }
                 var prove = NextFreeSpace(start, sizeNeeded, ignore, dimension, distance);
                 var nearest = best.Location.Nearest(new Point[] { result.Location, prove.Location });
                 if (nearest == prove.Location)

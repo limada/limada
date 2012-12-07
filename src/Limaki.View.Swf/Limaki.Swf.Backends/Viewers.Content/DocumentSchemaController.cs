@@ -15,6 +15,7 @@ using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
 using Xwt;
 
+
 namespace Limaki.View.Swf.Backends {
 
     public class DocumentSchemaController : ThingViewerController {
@@ -108,7 +109,8 @@ namespace Limaki.View.Swf.Backends {
                                                   Distance = new Size(dd, dd), 
                                                   AlignX = Alignment.End, 
                                                   AlignY = Alignment.Start, 
-                                                  Dimension = Dimension.X
+                                                  Dimension = Dimension.X,
+                                                  PointOrderDelta=1
                                               };
 
             aligner.OneColumn(pages, (Point) this.Border, options);

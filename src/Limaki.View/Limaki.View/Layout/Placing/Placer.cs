@@ -22,27 +22,27 @@ namespace Limaki.View.Layout {
 
     public class Placer<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
 
-        public Placer (IGraphScene<TItem, TEdge> scene, IGraphSceneLayout<TItem, TEdge> layout) {
+        public Placer (IGraphScene<TItem, TEdge> scene, IShaper<TItem> layout) {
             this.GraphScene = scene;
-            this.Layout = layout;
+            this.Shaper = layout;
         }
 
-        public Placer (IGraphScene<TItem, TEdge> scene, IGraphSceneLayout<TItem, TEdge> layout, Action<Placer<TItem, TEdge>> call):this(scene,layout) {
+        public Placer (IGraphScene<TItem, TEdge> scene, IShaper<TItem> shaper, Action<Placer<TItem, TEdge>> call): this(scene, shaper) {
             call(this);
             Commit();
         }
 
         protected IGraphSceneLocator<TItem, TEdge> _locator = null;
         public virtual IGraphSceneLocator<TItem, TEdge> Locator {
-            get { return _locator ?? (_locator = CreateLocator(this.Layout)); }
+            get { return _locator ?? (_locator = CreateLocator(this.Shaper)); }
             set { _locator = value; }
         }
         
-        protected virtual IGraphSceneLocator<TItem, TEdge> CreateLocator(IGraphSceneLayout<TItem, TEdge> layout) {
-            return new GraphSceneLocator<TItem, TEdge>(layout);
+        protected virtual IGraphSceneLocator<TItem, TEdge> CreateLocator(IShaper<TItem> shaper) {
+            return new GraphSceneLocator<TItem, TEdge>(shaper);
         }
      
-        public IGraphSceneLayout<TItem, TEdge> Layout { get; protected set; }
+        public IShaper<TItem> Shaper { get; protected set; }
         public IGraphScene<TItem, TEdge> GraphScene { get; protected set; }
 
         protected IGraph<TItem, TEdge> Graph {

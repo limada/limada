@@ -34,16 +34,8 @@ namespace Limaki.Drawing {
 
     }
 
-    public interface ILayout<TItem> : ILayout {
-        /// <summary>
-        /// Gives back a propriate shape for this item
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        IShape CreateShape(TItem item);
 
-
-        IShape GetShape(TItem item);
+    public interface ILayout<TItem> : ILayout,IShaper<TItem> {
 
         /// <summary>
         /// Prepares TItem with Layout Data, eg. shapes
@@ -53,20 +45,9 @@ namespace Limaki.Drawing {
         /// <param name="item"></param>
         bool Invoke(TItem item);
 
-
         bool Invoke(TItem item, IShape shape);
 
-        /// <summary>
-        /// Sets position and others things on target
-        /// </summary>
-        void Justify(TItem target);
-
         void AddBounds(TItem target);
-
-        /// <summary>
-        /// Sets position and others things on shape
-        /// </summary>
-        void Justify(TItem target, IShape shape);
 
         /// <summary>
         /// Invalidates Item.Bounds to redraw the item
@@ -84,14 +65,6 @@ namespace Limaki.Drawing {
         Point[] GetDataHull(TItem item, UiState uiState, int delta, bool extend);
 
         Func<TItem, string> OrderBy { get; set; }
-    }
-
-    public enum Orientation {
-        LeftRight,
-        TopBottom
-        //,RightLeft,
-        //BottomTop,
-        //Center
     }
 
     public enum Order {
