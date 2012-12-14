@@ -20,6 +20,7 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Xwt;
+using Limaki.Drawing.Indexing;
 
 namespace Limaki.View.Layout {
     /// <summary>
@@ -51,6 +52,7 @@ namespace Limaki.View.Layout {
 
         public virtual void SetLocation (TItem item, Point location) {
             changedLocations[item] = location;
+            UpdateIndex(item);
         }
 
         public virtual Point GetLocation (TItem item) {
@@ -73,11 +75,11 @@ namespace Limaki.View.Layout {
             shape.Size = value;
         }
 
-        public bool HasLocation (TItem item) {
+        public virtual bool HasLocation (TItem item) {
             return ShapeGetter(item) != null || changedLocations.ContainsKey(item);
         }
 
-        public bool HasSize (TItem item) {
+        public virtual bool HasSize (TItem item) {
             return ShapeGetter(item) != null || itemsToInvoke.ContainsKey(item);
         }
 
@@ -150,6 +152,7 @@ namespace Limaki.View.Layout {
                     if (!(item is TEdge))
                         ShapeJustifier(item, shape);
                     itemsToInvoke.Add(item, shape);
+                    UpdateIndex(item);
                 }
             } else {
                 if (shape.Size.Equals(Size.Zero)) {
@@ -158,6 +161,8 @@ namespace Limaki.View.Layout {
             }
             return shape;
         }
+
+       
 
         /// <summary>
         /// adds item to invokeList
@@ -183,6 +188,23 @@ namespace Limaki.View.Layout {
                 ShapeJustifier(item, shape);
         }
 
+        ISpatialIndex<TItem> _index = null;
+        public IEnumerable<TItem> ElementsIn (Rectangle bounds) {
+            if(_index==null) {
+                _index = new SpatialQuadTreeIndex<TItem> {
+                                                             BoundsOf = item => new Rectangle(this.GetLocation(item), this.GetSize(item)),
+                                                             HasBounds = item => this.HasLocation(item) && this.HasSize(item)
+                                                         };
+                _index.AddRange(this.changedLocations.Keys);
+            }
+            var result= _index.Query(bounds);
+            return result;
+        }
+        
+        private void UpdateIndex (TItem item) {
+            if (_index != null)
+                _index = null;
+        }
 
     }
 }

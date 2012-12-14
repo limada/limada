@@ -58,7 +58,7 @@ namespace Limaki.View.Layout {
         }
 
         public virtual void OneColumn (IEnumerable<TItem> items, AlignerOptions options) {
-            var comparer = new PointComparer { Order = options.PointOrder, Delta = options.PointOrderDelta};
+            var comparer = new PointComparer { Order = options.PointOrder, Delta = options.PointOrderDelta };
             var colItems = items.OrderBy(item => Locator.GetLocation(item), comparer);
             var bounds = new Rectangle(int.MaxValue, int.MaxValue, 0, 0);
             MeasureColumn(colItems, options, ref bounds);
@@ -81,12 +81,7 @@ namespace Limaki.View.Layout {
                 cols.Enqueue(MeasureColumn(colItems, options, ref bounds));
             }
 
-            var locator = new LocateVisitBuilder<TItem>(this.Locator);
-            var colPos = bounds.Location;
-            while (cols.Count > 0) {
-                var col = cols.Dequeue();
-                LocateColumn(col.Item1, col.Item2, bounds, ref colPos, locator, options);
-            }
+            LocateColumns(cols, ref bounds, options);
         }
 
 
@@ -107,9 +102,14 @@ namespace Limaki.View.Layout {
         }
 
         public virtual void Columns (IEnumerable<LevelItem<TItem>> walk, ref Rectangle bounds, AlignerOptions options) {
-           
+            var cols = MeasureWalk(walk, ref bounds, options);
+            LocateColumns(cols, ref bounds, options);
+        }
+
+        public virtual Queue<Tuple<IEnumerable<TItem>, Rectangle>> MeasureWalk (IEnumerable<LevelItem<TItem>> walk, ref Rectangle bounds, AlignerOptions options) {
+            var colPos = bounds.Location;
+
             var cols = new Queue<Tuple<IEnumerable<TItem>, Rectangle>>();
-            
             foreach (var col in walk.GroupBy(row => row.Level)) {
                 if (col.Count() == 0)
                     continue;
@@ -123,17 +123,26 @@ namespace Limaki.View.Layout {
                 cols.Enqueue(MeasureColumn(colItems, options, ref bounds));
             }
 
-            if (options.Collisions.HasFlag(Collisions.NextFree)) {
+            if (colPos.X == int.MaxValue && colPos.Y == int.MaxValue)
+                colPos = bounds.Location;
+            else
+                bounds.Location = colPos;
+
+            if (options.Collisions.HasFlag(Collisions.NextFree) && !options.Collisions.HasFlag(Collisions.PerColumn)) {
                 var ignore = walk.Select(i => i.Node).ToArray();
-                var newbounds = NearestNextFreeSpace(bounds.Location, bounds.Size, ignore, 
+                var newbounds = NearestNextFreeSpace(bounds.Location, bounds.Size, ignore,
                     options.Collisions.HasFlag(Collisions.Toggle), options.Dimension, options.Distance);
                 bounds = newbounds;
             }
+
+            return cols;
+        }
+
+
+        public virtual void LocateColumns (Queue<Tuple<IEnumerable<TItem>, Rectangle>> cols, ref Rectangle bounds, AlignerOptions options) {
             var colPos = bounds.Location;
-            LocateVisitBuilder<TItem> locate = null;
-           
-            locate = new LocateVisitBuilder<TItem>(this.Locator);
-            
+            var locate = new LocateVisitBuilder<TItem>(this.Locator);
+
             while (cols.Count > 0) {
                 var col = cols.Dequeue();
                 LocateColumn(col.Item1, col.Item2, bounds, ref colPos, locate, options);
@@ -160,20 +169,33 @@ namespace Limaki.View.Layout {
             colBounds.Size = fSize();
 
             bounds.Location = bounds.Location.Min(colBounds.Location);
-            bounds.Size = bounds.Size.SizeToFit(colBounds.Size,options.Dimension);
+            bounds.Size = bounds.Size.SizeToFit(colBounds.Size, options.Dimension);
 
             return new Tuple<IEnumerable<TItem>, Rectangle>(items, colBounds);
 
         }
 
-        protected virtual void LocateColumn (IEnumerable<TItem> colItems, Rectangle colBounds, Rectangle bounds, ref Point colPos, ILocateVisitBuilder<TItem> locate, AlignerOptions options) {
-            Action<TItem> visit = null;
-            if (options.Dimension == Dimension.X) {
-                if (Alignment.Center == options.AlignY)
-                    colPos.Y = bounds.Y + (bounds.Height - colBounds.Height) / 2;
-                else if (Alignment.End == options.AlignY)
-                    colPos.Y = bounds.Y + (bounds.Height - colBounds.Height);
+        public double AlignDelta (double boundsSize, double size, Alignment alignement) {
+            var delta = 0d;
+            if (Alignment.Center == alignement)
+                delta = (boundsSize - size) / 2;
+            else if (Alignment.End == alignement)
+                delta = (boundsSize - size);
+            return delta;
+        }
 
+        protected virtual void LocateColumn (IEnumerable<TItem> colItems, Rectangle colBounds, Rectangle bounds, ref Point colPos, ILocateVisitBuilder<TItem> locate, AlignerOptions options) {
+            Func<Point, Point> nextFree = pos =>
+                options.Collisions.HasFlag(Collisions.PerColumn) ?
+                    NearestNextFreeSpace(pos, colBounds.Size, colItems,
+                        options.Collisions.HasFlag(Collisions.Toggle), options.Dimension, options.Distance).Location :
+                pos;
+
+            Action<TItem> visit = null;
+            
+            if (options.Dimension == Dimension.X) {
+                colPos.Y = bounds.Y + AlignDelta(bounds.Height, colBounds.Height, options.AlignY);
+                colPos = nextFree(colPos);
                 locate.Locate(ref visit,
                                locate.Align(colPos.X, colBounds.Width, options.AlignX, Dimension.X),
                                locate.Location(colPos.Y, options.Distance.Height, Dimension.Y)
@@ -182,10 +204,8 @@ namespace Limaki.View.Layout {
 
                 colPos.X += colBounds.Width + options.Distance.Width;
             } else {
-                if (Alignment.Center == options.AlignX)
-                    colPos.X = bounds.X + (bounds.Width - colBounds.Width) / 2;
-                else if (Alignment.End == options.AlignX)
-                    colPos.X = bounds.X + (bounds.Width - colBounds.Width);
+                colPos.X = bounds.X + AlignDelta(bounds.Width, colBounds.Width, options.AlignX); ;
+                colPos = nextFree(colPos);
 
                 locate.Locate(ref visit,
                     locate.Location(colPos.X, options.Distance.Width, Dimension.X),
@@ -207,11 +227,19 @@ namespace Limaki.View.Layout {
                 var bounds = locator.Bounds(
                     this.GraphScene.ElementsIn(result)
                         .Where(e => !(e is TEdge))
-                // TODO: .Union(this.Locator.ElementsIn(result))
                         .Except(ignore));
+                var bounds1 = (this.Locator.Bounds(this.Locator.ElementsIn(result)
+                         .Where(e => !(e is TEdge))
+                         .Except(ignore)));
 
-                if (bounds.IsEmpty)
+                if (bounds.IsEmpty && bounds1.IsEmpty)
                     break;
+                if (bounds.IsEmpty)
+                    bounds = bounds1;
+                else if (bounds1.IsEmpty)
+                    bounds1 = bounds;
+                else
+                    bounds = bounds.Union(bounds1);
 
                 if (dimension == Dimension.X)
                     start = new Point(bounds.Right + distance.Width, start.Y);
@@ -228,7 +256,7 @@ namespace Limaki.View.Layout {
             var best = new Rectangle(start, sizeNeeded);
             var result = NextFreeSpace(start, sizeNeeded, ignore, dimension, distance);
             if (result != best && toggleDimension) {
-                    dimension = dimension == Dimension.X ? Dimension.Y : Dimension.X;
+                dimension = dimension == Dimension.X ? Dimension.Y : Dimension.X;
                 var prove = NextFreeSpace(start, sizeNeeded, ignore, dimension, distance);
                 var nearest = best.Location.Nearest(new Point[] { result.Location, prove.Location });
                 if (nearest == prove.Location)

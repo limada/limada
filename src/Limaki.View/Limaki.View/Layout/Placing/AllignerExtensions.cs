@@ -69,6 +69,12 @@ namespace Limaki.View.Layout {
                 return;
             aligner.OneColumn(items, aligner.Locator.GetLocation(items.First()), options);
         }
+
+        public static void AffectedEdges<TItem, TEdge> (this Aligner<TItem, TEdge> aligner, IEnumerable<TItem> items) where TEdge : IEdge<TItem>, TItem {
+            Action<TItem> visit = null;
+            aligner.AffectedEdges(ref visit);
+            aligner.VisitItems(items, visit);
+        }
     }
 
     public static class LocatorExtensions {

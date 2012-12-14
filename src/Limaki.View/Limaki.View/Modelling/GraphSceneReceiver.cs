@@ -108,7 +108,7 @@ namespace Limaki.View.Modelling {
             var layout = this.Layout;
             var data = this.GraphScene;
             if (layout != null && data != null) {
-                ISpatialIndex<TItem> index = data.SpatialIndex;
+                var index = data.SpatialIndex;
                 index.BoundsDirty = true;
 
                 layout.Invoke ();

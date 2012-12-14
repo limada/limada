@@ -13,10 +13,13 @@
  */
 
 using Limaki.Common;
+using Limaki.Common.Linqish;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
 using Xwt;
+using Limaki.Graphs.Extensions;
+using System.Linq;
 
 namespace Limaki.View.Layout {
 
@@ -60,12 +63,12 @@ namespace Limaki.View.Layout {
             }
         }
 
-        public override void Invoke() {
-            var scene = this.Data;
-            if (scene != null) {
-                // init spatialIndex:
-                scene.SpatialIndex.Query(Rectangle.Zero);
-                var graph = scene.Graph;
+        public override void Invoke () {
+            var data = Data;
+            var align = true;
+            if (data != null) {
+                data.SpatialIndex.Query(Rectangle.Zero);
+                var graph = data.Graph;
                 foreach (TItem item in graph) {
                     Invoke(item);
                     if (!(item is TEdge)) {
@@ -73,6 +76,23 @@ namespace Limaki.View.Layout {
                     }
                 }
                 InvokeEdges();
+
+                if (align) {
+                    var aligner = new Aligner<TItem, TEdge>(data, this);
+                    var options = this.Options();
+
+                    var pos = new Point(Border.Width, Border.Height);
+                    var walker = new Walker<TItem, TEdge>(data.Graph);
+                    var roots = data.Graph.FindRoots(data.Focused);
+                    roots.ForEach(root => {
+                        var walk = walker.DeepWalk(root, 1).Where(l => !(l.Node is TEdge)).ToArray();
+                        var bounds = new Rectangle(pos, Size.Zero);
+                        aligner.Columns(walk, ref bounds, options);
+                        pos = new Point(pos.X, pos.Y + bounds.Size.Height + options.Distance.Height);
+                    });
+
+                    aligner.Commit();
+                } 
             }
         }
 
@@ -85,7 +105,7 @@ namespace Limaki.View.Layout {
         }
 
         static IDrawingUtils _drawingUtils = null;
-        protected static IDrawingUtils drawingUtils {
+        protected static IDrawingUtils DrawingUtils {
             get {
                 if (_drawingUtils == null) {
                     _drawingUtils = Registry.Factory.Create<IDrawingUtils>();

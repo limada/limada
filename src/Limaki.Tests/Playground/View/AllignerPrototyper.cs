@@ -98,6 +98,7 @@ namespace Limaki.Playground.View {
             ReportDetail("Bounds {1}\tSizeToFit {0}\tMinSize  {2}", fSizeToFit(), fBounds(), fMinSize());
             return fBounds();
         }
+
         [Test]
         public void TestCollisions0 () {
             var options = new AlignerOptions {
@@ -268,17 +269,18 @@ namespace Limaki.Playground.View {
         public void TestShowAllData () {
             var options = new AlignerOptions {
                 AlignX = Alignment.Center,
-                AlignY = Alignment.Center,
+                AlignY = Alignment.Start,
                 Dimension = Dimension.X,
                 PointOrder = PointOrder.LeftToRight,
-                Collisions = Collisions.NextFree
+                //Collisions = Collisions.NextFree
             };
 
             var scene = SceneWithTestData(0);
             var graphView = scene.Graph as GraphView<IVisual, IVisualEdge>;
             var graph = graphView.Two;
-            (SceneWithTestData(1).Graph as GraphView<IVisual, IVisualEdge>)
-                .Two.ForEach(item => graph.Add(item) );
+            for (int i = 1; i < 6; i++)
+                (SceneWithTestData(i).Graph as GraphView<IVisual, IVisualEdge>)
+                    .Two.ForEach(item => graph.Add(item));
 
             var worker = new GraphSceneContextVisualizer<IVisual, IVisualEdge>();
             worker.Compose(scene, new VisualsRenderer());
@@ -286,19 +288,84 @@ namespace Limaki.Playground.View {
             worker.Layout.SetOptions(options);
             options.Distance = worker.Layout.Distance;
 
+            Action allData = () =>
+            {
+                var roots = new Queue<IVisual>(graph.FindRoots(null));
+
+                var walker = new Walker<IVisual, IVisualEdge>(graph);
+
+                roots.ForEach(root => walker.DeepWalk(root, 0).ForEach(item => graphView.One.Add(item.Node)));
+                walker = new Walker<IVisual, IVisualEdge>(graphView);
+                var aligner = new Aligner<IVisual, IVisualEdge>(scene, worker.Layout);
+                //var bounds = new Rectangle(worker.Layout.Border.Width, worker.Layout.Border.Height, 0, 0);
+                var pos = new Point(worker.Layout.Border.Width, worker.Layout.Border.Height);
+                roots.ForEach(root => {
+                    var walk = walker.DeepWalk(root, 1).Where(l => !(l.Node is IVisualEdge)).ToArray();
+                    var bounds = new Rectangle(pos, Size.Zero);
+                    var cols = aligner.MeasureWalk(walk, ref bounds, options);
+                    //bounds = aligner.NextFreeSpace(bounds.Location, bounds.Size, walk.Select(t => t.Node), Dimension.Y, options.Distance);
+                    pos = new Point(pos.X, pos.Y+bounds.Size.Height+options.Distance.Height);
+                    aligner.LocateColumns(cols, ref bounds, options);
+                    //bounds.Top = bounds.Bottom + options.Distance.Height;
+                   
+                   
+                });
+
+                aligner.Commit();
+                worker.Receiver.Execute();
+                worker.Receiver.Done();
+            };
+            allData();
+            allData();
+
+            ReportPainter.Paint(ctx => worker.Painter.Paint(ctx));
+
+            WritePainter();
+        }
+
+
+        [Test]
+        public void TestExpand () {
+            var options = new AlignerOptions {
+                                                 AlignX = Alignment.Start,
+                                                 AlignY = Alignment.Center,
+                                                 Dimension = Dimension.X,
+                                                 PointOrder = PointOrder.LeftToRight,
+                                                
+            };
+
+            var worker = SceneWorkerWithTestData(3, options);
+            options.Distance = worker.Layout.Distance;
+
+            var roots = new IVisual[] {worker.Scene.Focused};
+            var aligner = new Aligner<IVisual, IVisualEdge>(worker.Scene, worker.Layout);
+            var deep = false;
+            var graphView = worker.Scene.Graph as GraphView<IVisual, IVisualEdge>;
+
+            var affected = new GraphViewFacade<IVisual, IVisualEdge>
+                    (graphView).Expand(roots, deep);
+
            
-            var roots = new Queue<IVisual>(graph.FindRoots(null));
 
-            var walker = new Walker<IVisual, IVisualEdge>(graph);
+            var walker = new Walker<IVisual, IVisualEdge>(graphView);
 
-            roots.ForEach(root => walker.DeepWalk(root, 0).ForEach(item => graphView.One.Add(item.Node)));
-            walker = new Walker<IVisual, IVisualEdge>(graph);
-            var aligner = new Aligner<IVisual, IVisualEdge>(scene, worker.Layout);
-            var bounds = new Rectangle(worker.Layout.Border.Width, worker.Layout.Border.Height, 0, 0);
-            
             roots.ForEach(root => {
-                var walk = walker.DeepWalk(root, 1).Where(l => !(l.Node is IVisualEdge));
-                aligner.Columns(walk, ref bounds, options);
+                var walk = (deep ? walker.DeepWalk(root, 1) : walker.ExpandWalk(root, 1))
+                          .Where(l => !(l.Node is IVisualEdge)).ToArray();
+                var bounds = new Rectangle(aligner.Locator.GetLocation(root), aligner.Locator.GetSize(root));
+                options.Collisions = Collisions.None;
+                var cols = aligner.MeasureWalk(walk, ref bounds, options);
+                var removeCol = cols.Dequeue();
+
+                if (options.Dimension == Dimension.X) {
+                    var adjust = aligner.AlignDelta(bounds.Height, removeCol.Item2.Height, options.AlignY);
+                    bounds.Location = new Point(bounds.X + removeCol.Item2.Width + options.Distance.Width, bounds.Y - adjust);
+                } else {
+                    var adjust = aligner.AlignDelta(bounds.Width, removeCol.Item2.Width, options.AlignX);
+                    bounds.Location = new Point(bounds.X + adjust, bounds.Y + removeCol.Item2.Height + options.Distance.Height);
+                }
+                options.Collisions = Collisions.NextFree | Collisions.PerColumn | Collisions.Toggle;
+                aligner.LocateColumns(cols, ref bounds, options);
             });
 
             aligner.Commit();

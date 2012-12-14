@@ -32,7 +32,7 @@ namespace Limaki.Swf.Backends.Viewers {
             // linkLabel1
             // 
             this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.linkLabel1.Image = Limaki.View.Properties.Resources.LimadaLogoL32;
+            this.linkLabel1.Image = Limaki.View.Properties.Iconery.LimadaLogoL32;
             this.linkLabel1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.linkLabel1.Location = new System.Drawing.Point(0, 0);
             this.linkLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);

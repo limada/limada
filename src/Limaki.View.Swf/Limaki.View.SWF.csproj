@@ -91,6 +91,8 @@
     <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainter.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainterBase.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\VectorPainter.cs" />
+    <Compile Include="Properties\IconeryExtensions.cs" />
+    <Compile Include="Properties\Iconery.cs" />
     <Compile Include="Limaki.View.Gdi\UI\IGdiBackend.cs" />
     <Compile Include="Limaki.View.Gdi\UI\GdiGraphSceneLayer.cs" />
     <Compile Include="Limaki.View.Gdi\UI\GdiImageLayer.cs" />

@@ -87,6 +87,7 @@ namespace Xwt.Html5.TestApp {
                 //refPainter.RoundetRectangle(ctx, x+120, y);
                 //refPainter.Curves1(ctx, x, y + 60);
                 //refPainter.Curves2(ctx, x + 100, y + 60);
+                //refPainter.FontAwesome(ctx, 32, c => font.IconAdjust(c));
             };
             butt4.Click += (s, e) =>
                            showInBrowser (renderer.Page (Figures), "http://localhost/Figures");

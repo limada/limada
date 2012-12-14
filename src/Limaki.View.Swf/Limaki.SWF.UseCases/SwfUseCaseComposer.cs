@@ -53,7 +53,7 @@ namespace Limaki.Swf.Backends.UseCases {
             MarkerToolStrip = new MarkerToolStrip ();
             ArrangerToolStrip = new ArrangerToolStrip ();
 
-            //TODO: move this to UserCaseContextResourceLoader
+            //TODO: move this to UseCaseContextResourceLoader
             Registry.Factory.Add<ContentViewProviders, ThingContentViewProviders> ();
 
             var viewProviders = Registry.Pool.TryGetCreate<ContentViewProviders> ();

@@ -16,9 +16,10 @@
 using System.Collections.Generic;
 using Limaki.Drawing;
 using Xwt;
+using Limaki.Drawing.Indexing;
 
 namespace Limaki.Visuals {
-    public class BruteForceIndex : SpatialIndex<IVisual> {
+    public class BruteForceIndex : SpatialIndex<IVisual>, ISpatialZIndex<IVisual> {
        
         public BruteForceIndex () {
             BoundsOf = visual => visual.Shape.BoundsRect;
@@ -59,7 +60,7 @@ namespace Limaki.Visuals {
 
         }
 
-        public override IEnumerable<IVisual> Query( Rectangle clipBounds, ZOrder zOrder ) {
+        public virtual IEnumerable<IVisual> Query( Rectangle clipBounds, ZOrder zOrder ) {
             if (zOrder==ZOrder.EdgesFirst)
                 foreach (var visual in Visuals) {
                     if (visual is IVisualEdge) {

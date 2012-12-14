@@ -87,7 +87,7 @@ namespace Limaki.Swf.Backends {
             this.buttonOk.Dock = System.Windows.Forms.DockStyle.Right;
             this.buttonOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonOk.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.buttonOk.Image = global::Limaki.View.Properties.Resources.ok;
+            this.buttonOk.Image = global::Limaki.View.Properties.Iconery.OK;
             this.buttonOk.Location = new System.Drawing.Point(231, 0);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(26, 24);
@@ -102,7 +102,7 @@ namespace Limaki.Swf.Backends {
             this.buttonCancel.Dock = System.Windows.Forms.DockStyle.Right;
             this.buttonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonCancel.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.buttonCancel.Image = global::Limaki.View.Properties.Resources.cancel;
+            this.buttonCancel.Image = Limaki.View.Properties.Iconery.Cancel;
             this.buttonCancel.Location = new System.Drawing.Point(257, 0);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(0);
             this.buttonCancel.Name = "buttonCancel";

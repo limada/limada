@@ -197,8 +197,8 @@ namespace Limaki.Visuals {
             SpatialIndex = null;
         }
 
-        private ISpatialIndex<IVisual> _spatialIndex = null;
-        public ISpatialIndex<IVisual> SpatialIndex {
+        private ISpatialZIndex<IVisual> _spatialIndex = null;
+        public ISpatialZIndex<IVisual> SpatialIndex {
             get {
                 if(_spatialIndex == null) {
                     // ensure we have a graph, 

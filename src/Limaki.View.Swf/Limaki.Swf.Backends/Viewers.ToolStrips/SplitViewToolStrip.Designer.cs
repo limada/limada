@@ -39,17 +39,17 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         private void InitializeComponent() {
             components = new System.ComponentModel.Container();
             
-            this.graphStreamViewButton = new System.Windows.Forms.ToolStripButton();
-            this.graphGraphViewButton = new System.Windows.Forms.ToolStripButton();
-            this.toggleViewButton = new System.Windows.Forms.ToolStripButton();
+            this.graphStreamViewButton = new ToolStripButtonEx();
+            this.graphGraphViewButton = new ToolStripButtonEx();
+            this.toggleViewButton = new ToolStripButtonEx();
             
-            this.goBackButton = new System.Windows.Forms.ToolStripButton();
-            this.goForwardButton = new System.Windows.Forms.ToolStripButton();
-            this.goHomeButton = new System.Windows.Forms.ToolStripButton();
+            this.goBackButton = new ToolStripButtonEx();
+            this.goForwardButton = new ToolStripButtonEx();
+            this.goHomeButton = new ToolStripButtonEx();
             
-            this.newSheetButton = new System.Windows.Forms.ToolStripButton();
-            this.newNoteButton = new System.Windows.Forms.ToolStripButton();
-            this.saveSheetButton = new System.Windows.Forms.ToolStripButton();
+            this.newSheetButton = new ToolStripButtonEx();
+            this.newNoteButton = new ToolStripButtonEx();
+            this.saveSheetButton = new ToolStripButtonEx();
 
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -83,7 +83,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // graphStreamViewButton
             // 
             this.graphStreamViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.graphStreamViewButton.Image = global::Limaki.View.Properties.Resources.GraphDocView;
+            this.graphStreamViewButton.Image = global::Limaki.View.Properties.Iconery.GraphDocView;
             this.graphStreamViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.graphStreamViewButton.Name = "graphStreamViewButton";
             this.graphStreamViewButton.Size = new System.Drawing.Size(24, 24);
@@ -93,7 +93,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // graphGraphViewButton
             // 
             this.graphGraphViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.graphGraphViewButton.Image = global::Limaki.View.Properties.Resources.GraphGraphView;
+            this.graphGraphViewButton.Image = global::Limaki.View.Properties.Iconery.GraphGraphView;
             this.graphGraphViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.graphGraphViewButton.Name = "graphGraphViewButton";
             this.graphGraphViewButton.Size = new System.Drawing.Size(24, 24);
@@ -103,7 +103,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // toggleViewButton
             // 
             this.toggleViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toggleViewButton.Image = global::Limaki.View.Properties.Resources.ToggleView;
+            this.toggleViewButton.Image = global::Limaki.View.Properties.Iconery.ToggleView;
             this.toggleViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toggleViewButton.Name = "toggleViewButton";
             this.toggleViewButton.Size = new System.Drawing.Size(24, 24);
@@ -118,7 +118,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // goBackButton
             // 
             this.goBackButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.goBackButton.Image = global::Limaki.View.Properties.Resources.go_previous;
+            this.goBackButton.Image = global::Limaki.View.Properties.Iconery.GoPrevious;
             this.goBackButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.goBackButton.Name = "goBackButton";
             this.goBackButton.Size = new System.Drawing.Size(24, 24);
@@ -129,7 +129,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // goForwardButton
             // 
             this.goForwardButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.goForwardButton.Image = global::Limaki.View.Properties.Resources.go_next;
+            this.goForwardButton.Image = global::Limaki.View.Properties.Iconery.GoNext;
             this.goForwardButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.goForwardButton.Name = "goForwardButton";
             this.goForwardButton.Size = new System.Drawing.Size(24, 24);
@@ -140,7 +140,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // goHomeButton
             // 
             this.goHomeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.goHomeButton.Image = global::Limaki.View.Properties.Resources.gohome;
+            this.goHomeButton.Image = global::Limaki.View.Properties.Iconery.GoHome;
             this.goHomeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.goHomeButton.Name = "goHomeButton";
             this.goHomeButton.Size = new System.Drawing.Size(24, 24);
@@ -156,7 +156,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // newSheetButton
             // 
             this.newSheetButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.newSheetButton.Image = global::Limaki.View.Properties.Resources.document_new;
+            this.newSheetButton.Image = Limaki.View.Properties.Iconery.NewSheet;
             this.newSheetButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newSheetButton.Name = "newSheetButton";
             this.newSheetButton.Size = new System.Drawing.Size(24, 24);
@@ -167,7 +167,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // newNoteButton
             // 
             this.newNoteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.newNoteButton.Image = global::Limaki.View.Properties.Resources.notes;
+            this.newNoteButton.Image = global::Limaki.View.Properties.Iconery.NewNote;
             this.newNoteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newNoteButton.Name = "newNoteButton";
             this.newNoteButton.Size = new System.Drawing.Size(24, 24);
@@ -178,7 +178,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // saveSheetButton
             // 
             this.saveSheetButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.saveSheetButton.Image = global::Limaki.View.Properties.Resources.stream_save;
+            this.saveSheetButton.Image = global::Limaki.View.Properties.Iconery.SaveContent;
             this.saveSheetButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveSheetButton.Name = "saveSheetButton";
             this.saveSheetButton.Size = new System.Drawing.Size(24, 24);
@@ -199,17 +199,17 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         #endregion
 
 
-        private System.Windows.Forms.ToolStripButton graphStreamViewButton;
-        private System.Windows.Forms.ToolStripButton graphGraphViewButton;
-        private System.Windows.Forms.ToolStripButton toggleViewButton;
-        private System.Windows.Forms.ToolStripButton goHomeButton;
+        private ToolStripButtonEx graphStreamViewButton;
+        private ToolStripButtonEx graphGraphViewButton;
+        private ToolStripButtonEx toggleViewButton;
+        private ToolStripButtonEx goHomeButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripButton newSheetButton;
-        private System.Windows.Forms.ToolStripButton saveSheetButton;
-        private System.Windows.Forms.ToolStripButton goBackButton;
-        private System.Windows.Forms.ToolStripButton goForwardButton;
-        private System.Windows.Forms.ToolStripButton newNoteButton;
+        private ToolStripButtonEx newSheetButton;
+        private ToolStripButtonEx saveSheetButton;
+        private ToolStripButtonEx goBackButton;
+        private ToolStripButtonEx goForwardButton;
+        private ToolStripButtonEx newNoteButton;
         private System.Windows.Forms.ToolStripComboBox sheetCombo;
     }
 }

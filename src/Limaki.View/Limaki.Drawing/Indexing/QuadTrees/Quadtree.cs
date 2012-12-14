@@ -5,8 +5,10 @@
  * under the terms of the license below.
  *
  * Changes:
- * Adopted to work with RectangleF and PointF
+ * Adopted to work with Xwt.Rectangle and Xwt.Point
  * Generic Items introduced
+ * Add, Remove based on a dictionary <TItem,NodeBase>
+ * optimized key calculation
  * 
  * Author of changes: Lytico
  *
@@ -213,8 +215,6 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             _root.Visit(searchEnv, visitor);
         }
 
-
-
         /// <summary>
         /// Return a list of all items in the Quadtree.
         /// </summary>
@@ -247,22 +247,13 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
             var r = right;
             var b = bottom;
 
-            //int iAllNodes = 0;
-            //int iCalcNodes = 0;
-            //int iNodesWithItems = 0;
-            //int iCandidates = 0;
-            //int iLooped = 0;
-            //int iSuccess = 0;
-
             var loopStack = new Stack<NodeBase<TItem>>();
             loopStack.Push(root);
 
             while (loopStack.Count > 0) {
                 var current = loopStack.Pop();
-                //iAllNodes++;
 
                 if (current.HasItems) {
-                    //iLooped++;
                     foreach (var item in current.Items) {
                         var env = getBounds (item);
                         var envX = env.X; var envY = env.Y;

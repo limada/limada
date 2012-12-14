@@ -21,6 +21,7 @@ using Limaki.Visuals;
 using Xwt;
 
 namespace Limaki.View.Visuals.Layout {
+
     public class VisualsSceneLayout<TItem, TEdge> : GraphSceneLayout<TItem, TEdge>
         where TItem :  IVisual
         where TEdge:  TItem, IEdge<TItem> {
@@ -82,7 +83,7 @@ namespace Limaki.View.Visuals.Layout {
                 var data = visual.Data;
                 if (data == null)
                     data = "<<null>>";
-                var textSize = drawingUtils.GetTextDimension(data.ToString(), style);
+                var textSize = DrawingUtils.GetTextDimension(data.ToString(), style);
                 var size = textSize + new Size(10, 10);
                 if (shape is VectorShape) {
                     size.Height = 0;

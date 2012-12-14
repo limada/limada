@@ -52,7 +52,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     action = () => LogicalLayout(options);
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.LogicalLayout,
+                Image = Limaki.View.Properties.Iconery.LogicalLayout,
                 Size = size,
             };
 
@@ -61,7 +61,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     action = () => FullLayout(options);
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.ModifyLayout24,
+                Image = Limaki.View.Properties.Iconery.FullLayout,
                 Size = size,
             };
 
@@ -70,7 +70,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     action = () => Columns(options);
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.ArrageRows,
+                Image = Limaki.View.Properties.Iconery.ArrageRows,
                 Size = size,
             };
             var oneColumn = new ToolStripCommand {
@@ -78,7 +78,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     action = () => OneColumn(options);
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.ArrangeOneRow,
+                Image = Limaki.View.Properties.Iconery.ArrangeOneRow,
                 Size = size,
             };
             var arrangeLeft = new ToolStripCommand {
@@ -86,7 +86,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     options.AlignX = Alignment.Start;
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.ArrangeLeft,
+                Image = Limaki.View.Properties.Iconery.ArrangeLeft,
                 Size = size,
             };
             var arrangeCenter = new ToolStripCommand {
@@ -94,7 +94,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     options.AlignX = Alignment.Center;
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.ArrangeCenter,
+                Image = Limaki.View.Properties.Iconery.ArrangeCenter,
                 Size = size,
             };
             var arrangeRight = new ToolStripCommand {
@@ -102,7 +102,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     options.AlignX = Alignment.End;
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.ArrangeRight,
+                Image = Limaki.View.Properties.Iconery.ArrangeRight,
                 Size = size,
             };
 
@@ -111,7 +111,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     options.AlignY = Alignment.Start;
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.ArrangeTop,
+                Image = Limaki.View.Properties.Iconery.ArrangeTop,
                 Size = size,
             };
             var arrangeCenterV = new ToolStripCommand {
@@ -119,7 +119,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     options.AlignY = Alignment.Center;
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.ArrangeMiddle,
+                Image = Limaki.View.Properties.Iconery.ArrangeMiddle,
                 Size = size,
             };
             var arrangeBottom = new ToolStripCommand {
@@ -127,7 +127,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     options.AlignY = Alignment.End;
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.ArrangeBottom,
+                Image = Limaki.View.Properties.Iconery.ArrangeBottom,
                 Size = size,
             };
 
@@ -136,7 +136,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     options.Dimension = Dimension.X;
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.DimensionX,
+                Image = Limaki.View.Properties.Iconery.DimensionX,
                 Size = size,
             };
 
@@ -145,14 +145,14 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     options.Dimension = Dimension.Y;
                     action();
                 },
-                Image = Limaki.View.Properties.Resources.DimensionY,
+                Image = Limaki.View.Properties.Iconery.DimensionY,
                 Size = size,
             };
 
             var undo = new ToolStripCommand {
                 Action = (s) => Undo(),
                 Size = size,
-                Image = Limaki.View.Properties.Resources.Undo,
+                Image = Limaki.View.Properties.Iconery.Undo,
             };
             var horizontalButton = new ToolStripDropDownButtonEx { Command = arrangeLeft };
             horizontalButton.DropDownItems.AddRange(new ToolStripItem[] {

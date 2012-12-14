@@ -47,6 +47,10 @@
     <Compile Include="Limaki.Drawing.Blind\BlindSystemFonts.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindSystemInformation.cs" />
     <Compile Include="Limaki.Drawing\IShaper.cs" />
+    <Compile Include="Limaki.Iconeria\AwesomeIconeria.cs" />
+    <Compile Include="Limaki.Iconeria\AwesomeIconeria.Generated.cs" />
+    <Compile Include="Limaki.Iconeria\IconAttribute.cs" />
+    <Compile Include="Limaki.Iconeria\Iconeria.cs" />
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextVisualizer.cs" />
     <Compile Include="Limaki.View\Layout\Placing\AllignerExtensions.cs" />
     <Compile Include="Limaki.View\Layout\Placing\GraphSceneItemShapeLocator.cs" />
@@ -55,7 +59,8 @@
     <Compile Include="Limaki.Viewers\StreamViewers\IWebResponse.cs" />
     <Compile Include="Limaki.Viewers\StreamViewers\WebResponse.cs" />
     <Compile Include="Limaki.View.XwtContext\RenderContextEventArgs.cs" />
-    <Compile Include="Limaki.Visuals\SpatialIndex.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\SpatialIndex.cs" />
+    <Compile Include="Limaki.Drawing\Indexing\SpatialQuadTreeIndex.cs" />
     <Compile Include="ViewContextRecourceLoader.cs" />
     <Compile Include="Limaki.Drawing\Anchor.cs" />
     <Compile Include="Limaki.Drawing\Camera.cs" />
@@ -163,7 +168,6 @@
     <Compile Include="Limaki.View\Layout\Placing\LocateVisitBuilder.cs" />
     <Compile Include="Limaki.View\Layout\Placing\Alligner.cs" />
     <Compile Include="Limaki.View\Layout\Placing\AllignerOptions.cs" />
-    <Compile Include="Limaki.View\Layout\Arranger0.cs" />
     <Compile Include="Limaki.View\Layout\GraphSceneLocator.cs" />
     <Compile Include="Limaki.View\Layout\GraphSceneLayout.cs" />
     <Compile Include="Limaki.View\Layout\Placing\ILocator.cs" />
@@ -174,7 +178,6 @@
     <Compile Include="Limaki.View\Layout\NearestAnchorRouter.cs" />
     <Compile Include="Limaki.View\Layout\Placing\Placer.cs" />
     <Compile Include="Limaki.View\Layout\Placing\MeasureVisitBuilder.cs" />
-    <Compile Include="Limaki.View\Layout\ProxyShape.cs" />
     <Compile Include="Limaki.View\Layout\EdgeRouterBase.cs" />
     <Compile Include="Limaki.View\Layout\ShapeLayout.cs" />
     <Compile Include="Limaki.View\Modelling\GraphItemReceiver.cs" />
@@ -232,7 +235,6 @@
     <Compile Include="Limaki.View\Visuals\Visualizers\VisualsDisplayFactory.cs" />
     <Compile Include="Limaki.View\Visuals\Visualizers\VisualsRecourceLoader.cs" />
     <Compile Include="Limaki.View\Visuals\Visualizers\WiredDisplays.cs" />
-    <Compile Include="Limaki.View\Visuals\Layout\VisualsSceneArrangerLayout.cs" />
     <Compile Include="Limaki.View\Visuals\Layout\VisualsSceneLayout.cs" />
     <Compile Include="Limaki.View\Visuals\UI\AddEdgeAction.cs" />
     <Compile Include="Limaki.View\Visuals\UI\SceneExtensions.cs" />
@@ -290,7 +292,6 @@
     <Compile Include="Limaki.Visuals\MarkerContextProcessor.cs" />
     <Compile Include="Limaki.Visuals\VisualsQuadTreeIndex.cs" />
     <Compile Include="Limaki.Visuals\Scene.cs" />
-    <Compile Include="Limaki.Visuals\VisualsSpatialIndex.cs" />
     <Compile Include="Limaki.Visuals\Visual.cs" />
     <Compile Include="Limaki.Visuals\VisualComparer.cs" />
     <Compile Include="Limaki.Visuals\VisualComposite.cs" />

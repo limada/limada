@@ -1,3 +1,4 @@
+using Limaki.Swf.Backends.Viewers.ToolStrips;
 namespace Limaki.Swf.Backends.TextEditor {
     partial class TextBoxEditorToolStrip {
         /// <summary> 
@@ -24,36 +25,33 @@ namespace Limaki.Swf.Backends.TextEditor {
         /// </summary>
         private void InitializeComponent() {
             components = new System.ComponentModel.Container ();
-            this.boldButton = new System.Windows.Forms.ToolStripButton ();
-            this.italicButton = new System.Windows.Forms.ToolStripButton();
-            this.underlineButton = new System.Windows.Forms.ToolStripButton();
+            this.boldButton = new ToolStripButtonEx ();
+            this.italicButton = new ToolStripButtonEx();
+            this.underlineButton = new ToolStripButtonEx();
             this.fontSizeComboBox = new System.Windows.Forms.ToolStripComboBox ();
             this.fontComboBox = new System.Windows.Forms.ToolStripComboBox();
 
             this.boldButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.boldButton.Image = Limaki.View.Properties.Resources.FontBoldIcon;
-            this.boldButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.boldButton.Image = Limaki.View.Properties.Iconery.FontBoldIcon;
             this.boldButton.Name = "boldButton";
-            this.boldButton.Size = new System.Drawing.Size(24, 24);
+            this.boldButton.Size = new System.Drawing.Size(36, 36);
             this.boldButton.Text = "Bold";
             this.boldButton.ToolTipText = "Bold";
 
             this.italicButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.italicButton.Image = Limaki.View.Properties.Resources.FontItalicIcon;
-            this.italicButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.italicButton.Image = Limaki.View.Properties.Iconery.FontItalicIcon;
             this.italicButton.Name = "italicButton";
-            this.italicButton.Size = new System.Drawing.Size(24, 24);
+            this.italicButton.Size = new System.Drawing.Size(36, 36); 
             this.italicButton.Text = "Italic";
             this.italicButton.ToolTipText = "Italic";
 
             this.underlineButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.underlineButton.Image = Limaki.View.Properties.Resources.FontUnderlineIcon;
-            this.underlineButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.underlineButton.Image = Limaki.View.Properties.Iconery.FontUnderlineIcon;
             this.underlineButton.Name = "underlineButton";
-            this.underlineButton.Size = new System.Drawing.Size(24, 24);
+            this.underlineButton.Size = new System.Drawing.Size(36, 36);
             this.underlineButton.Text = "underline";
             this.underlineButton.ToolTipText = "Underline";
-
+            //this.underlineButton.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.SizeToFit;
 
             this.fontSizeComboBox.AutoSize = false;
             this.fontSizeComboBox.DropDownWidth = 60;
@@ -95,9 +93,9 @@ namespace Limaki.Swf.Backends.TextEditor {
             });
         }
 
-        public System.Windows.Forms.ToolStripButton boldButton;
-        public System.Windows.Forms.ToolStripButton italicButton;
-        public System.Windows.Forms.ToolStripButton underlineButton;
+        public ToolStripButtonEx boldButton;
+        public ToolStripButtonEx italicButton;
+        public ToolStripButtonEx underlineButton;
         public System.Windows.Forms.ToolStripComboBox fontSizeComboBox;
         public System.Windows.Forms.ToolStripComboBox fontComboBox;
         #endregion

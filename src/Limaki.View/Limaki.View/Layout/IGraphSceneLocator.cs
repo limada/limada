@@ -16,6 +16,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using System.Collections.Generic;
 using Limaki.Actions;
+using Xwt;
 
 namespace Limaki.View.Layout {
     /// <summary>
@@ -60,5 +61,7 @@ namespace Limaki.View.Layout {
         /// </summary>
         /// <param name="requests"></param>
         void Commit (ICollection<ICommand<TItem>> requests);
+
+        IEnumerable<TItem> ElementsIn (Rectangle bounds);
     }
 }

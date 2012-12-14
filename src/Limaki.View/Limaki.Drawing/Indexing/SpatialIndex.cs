@@ -3,7 +3,8 @@ using Limaki.Drawing;
 using Xwt;
 using System;
 
-namespace Limaki.Visuals {
+namespace Limaki.Drawing.Indexing {
+
     public abstract class SpatialIndex<TItem> : ISpatialIndex<TItem> {
 
         public Func<TItem, Rectangle> BoundsOf  { get;set; }
@@ -27,18 +28,18 @@ namespace Limaki.Visuals {
             set { _bounds = value; }
         }
 
-        public virtual void Update (Rectangle invalid, TItem visual) {
-            if (HasBounds(visual)) {
-                var bounds = BoundsOf(visual);
+        public virtual void Update (Rectangle invalid, TItem item) {
+            if (HasBounds(item)) {
+                var bounds = BoundsOf(item);
                 if (!invalid.Equals(bounds)) {
-                    Remove(invalid, visual);
-                    Add(bounds, visual);
+                    Remove(invalid, item);
+                    Add(bounds, item);
                     checkBoundsRemove(ref invalid);
                     checkBoundsAdd(ref bounds);
 
                 }
             } else {
-                Remove(invalid, visual);
+                Remove(invalid, item);
                 checkBoundsRemove(ref invalid);
             }
 
@@ -115,7 +116,6 @@ namespace Limaki.Visuals {
 
         public abstract IEnumerable<TItem> Query (Rectangle clipBounds);
 
-        public abstract IEnumerable<TItem> Query (Rectangle clipBounds, ZOrder zOrder);
 
         public abstract IEnumerable<TItem> Query ();
 

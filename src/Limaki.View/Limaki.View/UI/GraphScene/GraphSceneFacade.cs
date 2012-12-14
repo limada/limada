@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Limaki.Common;
+using Limaki.Common.Linqish;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
@@ -145,11 +146,10 @@ namespace Limaki.View.UI.GraphScene {
             Scene.Selected.Add (curr);
         }
 
-        public virtual Func<TItem, string> OrderBy { get; set; }
-        protected virtual Arranger0<TItem, TEdge> CreateArranger (IGraphScene<TItem, TEdge> data) {
-            var result = new Arranger0<TItem, TEdge> (data, this.Layout);
-            if (OrderBy != null)
-                result.OrderBy = this.OrderBy;
+        public virtual DataComparer<TItem> OrderBy { get; set; }
+
+        protected virtual Aligner<TItem, TEdge> CreateAligner (IGraphScene<TItem, TEdge> data) {
+            var result = new Aligner<TItem, TEdge>(data, this.Layout);
             return result;
         }
 
@@ -165,13 +165,15 @@ namespace Limaki.View.UI.GraphScene {
             ApplyFilter ();
             TItem curr = scene.Focused;
 
-            var arranger = CreateArranger (scene);
-
             var affected = new GraphViewFacade<TItem, TEdge> (this.GraphView).Add (item);
 
-            arranger.Arrange (item, affected, pt);
-
-            arranger.Commit ();
+            var aligner = CreateAligner(scene);
+            aligner.Locator.Justify(item);
+            var options = Layout.Options();
+            var bounds = aligner.NearestNextFreeSpace(pt, aligner.Locator.GetSize(item), new TItem[]{item}, true, options.Dimension, options.Distance);
+            aligner.Locator.SetLocation(item, bounds.Location);
+            aligner.AffectedEdges(new TItem[]{item});
+            aligner.Commit ();
 
             RestoreFocused (curr);
 
@@ -187,16 +189,13 @@ namespace Limaki.View.UI.GraphScene {
             ApplyFilter ();
             TItem curr = scene.Focused;
 
-            var arranger = CreateArranger (scene);
-
             var affected = new GraphViewFacade<TItem, TEdge> (this.GraphView).Add (elements);
 
-            if (arrange)
-                arranger.ArrangeItems (affected, justify, (Point) Layout.Border);
-            else
-                arranger.ArrangeEdges (affected, justify);
-
-            arranger.Commit ();
+            var aligner = CreateAligner(scene);
+            var options = Layout.Options();
+            options.Collisions = Collisions.NextFree | Collisions.Toggle;
+            aligner.Columns(affected, options);
+            aligner.Commit();
 
             RestoreFocused (curr);
 
@@ -212,20 +211,47 @@ namespace Limaki.View.UI.GraphScene {
         }
 
         public virtual void Expand (bool deep) {
-            IGraphScene<TItem, TEdge> scene = this.Scene;
+            var scene = this.Scene;
             if (scene.Selected.Count > 0) {
                 ApplyFilter ();
-
-
+                var roots = scene.Selected.Elements;
+                
                 TItem curr = scene.Focused;
-                var arranger = CreateArranger (scene);
-
                 var affected = new GraphViewFacade<TItem, TEdge>
-                    (this.GraphView).Expand (scene.Selected.Elements, deep);
+                    (this.GraphView).Expand(roots, deep);
 
-                arranger.Arrange (scene.Selected.Elements, affected, deep);
+                var aligner = CreateAligner(scene);
+                var options = Layout.Options();
 
-                arranger.Commit ();
+                var walker = new Walker<TItem, TEdge>(this.GraphView);
+                
+                roots.ForEach(root => {
+                    affected.Add(root);
+                    var walk = (deep ? walker.DeepWalk(root, 1) : walker.ExpandWalk(root, 1))
+                            .Where(l => !(l.Node is TEdge) && affected.Contains(l.Node))
+                            ;// && !root.Equals(l.Node));
+                    if (OrderBy != null)
+                        walk = walk.OrderBy(l => l.Node, OrderBy);
+                    walk = walk.ToArray();
+                    var bounds = new Rectangle(aligner.Locator.GetLocation(root), aligner.Locator.GetSize(root));
+                    options.Collisions = Collisions.None;
+                    var cols = aligner.MeasureWalk(walk, ref bounds, options);
+                    var rootCol = cols.Dequeue();
+
+                    if (options.Dimension == Dimension.X) {
+                        bounds.Location = new Point(
+                            bounds.X + rootCol.Item2.Width + options.Distance.Width, 
+                            bounds.Y - aligner.AlignDelta(bounds.Height, rootCol.Item2.Height, options.AlignY));
+                    } else {
+                        bounds.Location = new Point(
+                            bounds.X - aligner.AlignDelta(bounds.Width, rootCol.Item2.Width, options.AlignX), 
+                            bounds.Y + rootCol.Item2.Height + options.Distance.Height);
+                    }
+                    options.Collisions = Collisions.NextFree | Collisions.PerColumn | Collisions.Toggle;
+                    aligner.LocateColumns(cols, ref bounds, options);
+                });
+
+                aligner.Commit();
 
                 RestoreFocused (curr);
 
@@ -300,11 +326,23 @@ namespace Limaki.View.UI.GraphScene {
 
             new GraphViewFacade<TItem, TEdge> (this.GraphView).Expand (roots, true);
 
-            var arranger = CreateArranger (scene);
+            var aligner = CreateAligner(scene);
+            
+            var walker = new Walker<TItem, TEdge>(this.GraphView);
+            var options = Layout.Options();
+            var pos = new Point(Layout.Border.Width, Layout.Border.Height);
 
-            arranger.ArrangeDeepWalk (roots, true, (Point) Layout.Distance);
+            roots.ForEach(root => {
+                var walk = walker.DeepWalk(root, 1).Where(l => !(l.Node is TEdge));
+                if (OrderBy != null)
+                    walk = walk.OrderBy(l => l.Node, OrderBy);
+                
+                var bounds = new Rectangle(pos, Size.Zero);
+                aligner.Columns(walk, ref bounds, options);
+                pos = new Point(pos.X, pos.Y + bounds.Size.Height + options.Distance.Height);
+            });
 
-            arranger.Commit ();
+            aligner.Commit();
 
             RestoreFocused (curr);
 

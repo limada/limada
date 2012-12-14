@@ -11,12 +11,14 @@ namespace Limaki.Drawing {
         void Add(TItem item);
         void Remove(TItem item);
         void AddRange(IEnumerable<TItem> items);
-        void Update(Rectangle invalid, TItem visual);
+        void Update(Rectangle invalid, TItem item);
 
         IEnumerable<TItem> Query();
         IEnumerable<TItem> Query(Rectangle clipBounds);
-        IEnumerable<TItem> Query(Rectangle clipBounds, ZOrder zOrder);
+        
         void Clear();
 
     }
+
+  
 }

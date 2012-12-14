@@ -57,12 +57,15 @@ namespace Xwt.Gdi.Backend {
         }
 
         protected void Dispose(bool disposing) {
-            if (_graphics != null) {
-                _graphics.Dispose();
-                _graphics = null;
-            }
-            if (Image != null)
-                Image.Dispose();
+            // this makes Images unusable outside:
+            //if (_graphics != null) {
+            //    _graphics.Dispose();
+            //    
+            //}
+           
+            //if (Image != null)
+            //    Image.Dispose();
+            _graphics = null;
             Image = null;
         }
 

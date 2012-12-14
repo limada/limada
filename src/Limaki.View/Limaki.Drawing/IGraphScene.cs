@@ -48,7 +48,7 @@ namespace Limaki.Drawing {
         
         IShape Shape { get; }
         
-        ISpatialIndex<TItem> SpatialIndex { get; }
+        ISpatialZIndex<TItem> SpatialIndex { get; }
         void ClearSpatialIndex();
 
         IEnumerable<TItem> Elements {get;}
@@ -80,15 +80,19 @@ namespace Limaki.Drawing {
         
     }
 
-    public enum ZOrder {
-        NodesFirst,
-        EdgesFirst
-    }
-
     public class SceneInfo {
         public Int64 Id;
         public string Name;
         private State _state ;
         public State State { get { return _state ?? (_state = new State { Hollow = true }); } }
+    }
+
+    public interface ISpatialZIndex<TItem> : ISpatialIndex<TItem> {
+        IEnumerable<TItem> Query (Rectangle clipBounds, ZOrder zOrder);
+    }
+
+    public enum ZOrder {
+        NodesFirst,
+        EdgesFirst
     }
 }

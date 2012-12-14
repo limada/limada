@@ -117,6 +117,7 @@
     <Compile Include="Limada.Tests\Tests\View\VisualThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\Wrappers\WrapperTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\PointComparerTest.cs" />
+    <Compile Include="Playground\DocumentObjectModel\DOM.cs" />
     <Compile Include="Playground\View\AllignerPrototyper.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
     <Compile Include="Playground\View\CollissionResolver.cs" />
@@ -209,6 +210,11 @@
     <Compile Include="Playground\MonoGenericError2.cs" />
     <Compile Include="Playground\MonoMarshalByRefError.cs" />
     <Compile Include="Limaki.Tests\Data\Streams\ContentProviderTest.cs" />
+    <Compile Include="[Deprecated]\Arranger0.cs" />
+    <Compile Include="[Deprecated]\GraphSceneFacade0.cs" />
+    <Compile Include="[Deprecated]\ProxyShape.cs" />
+    <Compile Include="[Deprecated]\VisualsSceneArrangerLayout.cs" />
+    <Compile Include="[Deprecated]\VisualsSpatialIndex.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq-2010.csproj">

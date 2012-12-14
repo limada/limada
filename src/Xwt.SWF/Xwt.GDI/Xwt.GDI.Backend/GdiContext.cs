@@ -37,11 +37,23 @@ namespace Xwt.Gdi.Backend {
             LineWidth = 1;
         }
 
-        public GdiContext (GdiContext c)
-            : this () {
+        public GdiContext (Graphics g): this() {
+            if (g == null)
+                throw new ArgumentNullException("graphics must not be null");
+
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+
+
+            Graphics = g;
+        }
+
+        public GdiContext (GdiContext c): this () {
             c.SaveTo (this,false);
         }
-        public Graphics Graphics;
+
+        public Graphics Graphics { get; set; }
         public GraphicsState State { get; set; }
         public GraphicsContainer State1 { get; set; }
 

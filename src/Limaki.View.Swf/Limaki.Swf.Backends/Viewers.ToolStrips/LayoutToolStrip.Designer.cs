@@ -40,7 +40,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             components = new System.ComponentModel.Container();
             this.StyleSheetCombo = new System.Windows.Forms.ToolStripComboBox();
             this.ShapeCombo = new ToolStripShapeComboBox();
-            this.StyleDialogButton= new System.Windows.Forms.ToolStripButton();
+            this.StyleDialogButton= new ToolStripButtonEx();
             // 
             // styleSheetCombo
             // 
@@ -65,7 +65,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             this.StyleDialogButton.Checked = false;
             this.StyleDialogButton.CheckState = System.Windows.Forms.CheckState.Unchecked;
             this.StyleDialogButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.StyleDialogButton.Image = global::Limaki.View.Properties.Resources.ItemLayout;
+            this.StyleDialogButton.Image = global::Limaki.View.Properties.Iconery.StyleItem;
             this.StyleDialogButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.StyleDialogButton.Name = "StyleDialogButton";
             this.StyleDialogButton.Size = new System.Drawing.Size(24, 24);
@@ -86,7 +86,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
         public System.Windows.Forms.ToolStripComboBox StyleSheetCombo;
         public ToolStripShapeComboBox ShapeCombo;
-        public System.Windows.Forms.ToolStripButton StyleDialogButton;
+        public ToolStripButtonEx StyleDialogButton;
 
         #endregion
     }

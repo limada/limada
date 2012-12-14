@@ -39,16 +39,16 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         private void InitializeComponent() {
             components = new System.ComponentModel.Container();
 
-            this.selectButton = new System.Windows.Forms.ToolStripButton();
-            this.LayoutButton = new System.Windows.Forms.ToolStripButton();
+            this.selectButton = new ToolStripButtonEx();
+            this.LayoutButton = new ToolStripButtonEx();
             this.zoomButton = new System.Windows.Forms.ToolStripSplitButton();
-            this.zoomMenuFitToScreen = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomMenuFittoWidth = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomMenuFittoHeigth = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomMenuOriginalSize = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveButton = new System.Windows.Forms.ToolStripButton();
-            this.AddVisualButton = new System.Windows.Forms.ToolStripButton();
-            this.connectorButton = new System.Windows.Forms.ToolStripButton();
+            this.zoomMenuFitToScreen = new ToolStripMenuItemEx();
+            this.zoomMenuFittoWidth = new ToolStripMenuItemEx();
+            this.zoomMenuFittoHeigth = new ToolStripMenuItemEx();
+            this.zoomMenuOriginalSize = new ToolStripMenuItemEx();
+            this.moveButton = new ToolStripButtonEx();
+            this.AddVisualButton = new ToolStripButtonEx();
+            this.connectorButton = new ToolStripButtonEx();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             // 
@@ -67,7 +67,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             this.selectButton.Checked = true;
             this.selectButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.selectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.selectButton.Image = global::Limaki.View.Properties.Resources.DrawSelection;
+            this.selectButton.Image = global::Limaki.View.Properties.Iconery.Select;
             this.selectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.selectButton.Name = "selectButton";
             this.selectButton.Size = new System.Drawing.Size(24, 24);
@@ -77,7 +77,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // LayoutButton
             // 
             this.LayoutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LayoutButton.Image = global::Limaki.View.Properties.Resources.ModifyLayout24;
+            this.LayoutButton.Image = global::Limaki.View.Properties.Iconery.FullLayout;
             this.LayoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LayoutButton.Name = "LayoutButton";
             this.LayoutButton.Size = new System.Drawing.Size(24, 24);
@@ -93,7 +93,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                                                                                                 this.zoomMenuFittoWidth,
                                                                                                 this.zoomMenuFittoHeigth,
                                                                                                 this.zoomMenuOriginalSize});
-            this.zoomButton.Image = global::Limaki.View.Properties.Resources.ZoomToolIcon;
+            this.zoomButton.Image = global::Limaki.View.Properties.Iconery.Zoom;
             this.zoomButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.zoomButton.Name = "zoomButton";
             this.zoomButton.Size = new System.Drawing.Size(36, 24);
@@ -134,7 +134,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // moveButton
             // 
             this.moveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.moveButton.Image = global::Limaki.View.Properties.Resources.MoveShift;
+            this.moveButton.Image = global::Limaki.View.Properties.Iconery.Panning;
             this.moveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveButton.Name = "moveButton";
             this.moveButton.Size = new System.Drawing.Size(24, 24);
@@ -145,7 +145,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // AddVisualButton
             // 
             this.AddVisualButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddVisualButton.Image = global::Limaki.View.Properties.Resources.CreateWidget24;
+            this.AddVisualButton.Image = global::Limaki.View.Properties.Iconery.AddVisual;
             this.AddVisualButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddVisualButton.Name = "AddVisualButton";
             this.AddVisualButton.Size = new System.Drawing.Size(24, 24);
@@ -156,7 +156,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // connectorButton
             // 
             this.connectorButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.connectorButton.Image = global::Limaki.View.Properties.Resources.StraightConnector;
+            this.connectorButton.Image = global::Limaki.View.Properties.Iconery.StraightConnector;
             this.connectorButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.connectorButton.Name = "connectorButton";
             this.connectorButton.Size = new System.Drawing.Size(24, 24);
@@ -193,9 +193,9 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         
-        private System.Windows.Forms.ToolStripMenuItem zoomMenuFitToScreen;
-        private System.Windows.Forms.ToolStripMenuItem zoomMenuFittoWidth;
-        private System.Windows.Forms.ToolStripMenuItem zoomMenuFittoHeigth;
-        private System.Windows.Forms.ToolStripMenuItem zoomMenuOriginalSize;
+        private ToolStripMenuItemEx zoomMenuFitToScreen;
+        private ToolStripMenuItemEx zoomMenuFittoWidth;
+        private ToolStripMenuItemEx zoomMenuFittoHeigth;
+        private ToolStripMenuItemEx zoomMenuOriginalSize;
     }
 }

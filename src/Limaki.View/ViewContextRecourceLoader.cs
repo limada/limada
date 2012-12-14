@@ -60,7 +60,7 @@ namespace Limaki.View {
 
             context.Factory.Add<ISheetManager, SheetManager>();
             context.Factory.Add<IGraphSceneLayout<IVisual, IVisualEdge>>(args =>
-                     new VisualsSceneArrangerLayout<IVisual, IVisualEdge>(args[0] as Get<IGraphScene<IVisual, IVisualEdge>>, args[1] as IStyleSheet)
+                     new VisualsSceneLayout<IVisual, IVisualEdge>(args[0] as Get<IGraphScene<IVisual, IVisualEdge>>, args[1] as IStyleSheet)
              );
         }
 
