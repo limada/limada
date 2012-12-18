@@ -58,13 +58,13 @@ namespace Limaki.Tests.View.Display {
         public void MoveLink(IVisual link, IVisual target) {
             NeutralPosition();
 
-            Size size = new Size(Math.Abs(link.Shape.Size.Width) / 4, -Math.Abs(link.Shape.Size.Height) / 4);
-            Point position = link.Shape[Anchor.Center] + size;
+            var size = new Size(Math.Abs(link.Shape.Size.Width) / 4, -Math.Abs(link.Shape.Size.Height) / 4);
+            var position = link.Shape[Anchor.Center] + size;
             position = camera.FromSource(position);
             //new Size(5, (int)(m * 5));
 
             // select link
-            MouseActionEventArgs e = 
+            var e = 
                 new MouseActionEventArgs(MouseActionButtons.Left,
                     ModifierKeys.None, 0, position.X, position.Y, 0);
             Display.EventControler.OnMouseDown(e);

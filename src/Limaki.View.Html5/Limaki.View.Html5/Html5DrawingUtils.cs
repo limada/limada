@@ -19,10 +19,6 @@ namespace Limaki.View.Html5 {
             return new Pen (color);
         }
 
-        public Matrice NativeMatrice () {
-            return new Matrice ();
-        }
-
         private static TextLayoutBackend tl = new TextLayoutBackend();
         public Size GetTextDimension (string text, IStyle style) {
             //return new Size (text.Length * 10, 10);

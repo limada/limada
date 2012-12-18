@@ -109,7 +109,7 @@ namespace Limaki.Drawing.Shapes {
 
         public override void Transform(Matrice matrice) {
             Point[] p = { _data.Start, _data.End };
-            matrice.TransformPoints(p);
+            matrice.Transform(p);
             _data.Start = p[0];
             _data.End = p[1];
         }

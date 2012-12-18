@@ -23,9 +23,7 @@ namespace Limaki.Drawing.Gdi {
 
     public static class GDIConverter {
 
-       
-
-        public static System.Drawing.Point[] Convert(Point[] value) {
+       public static System.Drawing.Point[] Convert(Point[] value) {
             return Array.ConvertAll<Point, System.Drawing.Point> (value, GdiConverter.ToGdi);
         }
 
@@ -63,7 +61,27 @@ namespace Limaki.Drawing.Gdi {
             return result;
         }
 
+        public static System.Drawing.Drawing2D.Matrix Convert (Matrice matrice) {
+            return new System.Drawing.Drawing2D.Matrix(
+                (float) matrice.Elements[0],
+                (float) matrice.Elements[1],
+                (float) matrice.Elements[2],
+                (float) matrice.Elements[3],
+                (float) matrice.Elements[4],
+                (float) matrice.Elements[5]);
+        }
 
+        public static Matrice Convert (System.Drawing.Drawing2D.Matrix matrice) {
+            return new Matrice(
+               matrice.Elements[0],
+               matrice.Elements[1],
+               matrice.Elements[2],
+               matrice.Elements[3],
+               matrice.Elements[4],
+               matrice.Elements[5]);
+        }
+
+       
         //internal static Size ToXwt (this System.Drawing.Size size) {
         //    throw new NotImplementedException ();
         //}

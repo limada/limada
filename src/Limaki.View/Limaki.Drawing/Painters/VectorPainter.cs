@@ -53,11 +53,11 @@ namespace Limaki.Drawing.Painters {
                             new Point (w, -h),
                             new Point (0, -h)
                         };
-            Matrix.Reset ();
+            Matrix.SetIdentity ();
             var angle = Vector.Angle (v) + (v.Start.X - v.End.X > 0 ? 90d : -90d);
             Matrix.RotateAt (angle, v.End);
             Matrix.Translate (v.End.X, v.End.Y);
-            Matrix.TransformPoints (arrow);
+            Matrix.Transform (arrow);
             ctx.MoveTo (arrow[0]);
             ctx.LineTo (arrow[1]);
             ctx.LineTo (arrow[2]);

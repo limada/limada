@@ -170,6 +170,7 @@ namespace Limaki.Tests.View.Display {
 
         [Test]
         public void MoveAlongSceneBoundsTest() {
+            
             var visualsCount = VisualsCount ();
 
             string testName = "MoveAlongSceneBoundsTest";
@@ -181,7 +182,6 @@ namespace Limaki.Tests.View.Display {
             this.ReportDetail ("Scene:\t" + bounds+"\t Display: \t"+Display.Viewport.ClipSize);
             MoveNode1 (bounds);
             
-            // this test does not work with zoom!
             Display.ZoomState = ZoomState.Custom;
 
             var viewport = Display.Viewport;

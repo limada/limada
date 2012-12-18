@@ -31,6 +31,7 @@ namespace Limaki.View.Layout {
             this.DataHandler = dataHandler;
             this.Dimension = Drawing.Dimension.X;
             this.Centered = true;
+            this.Align = true;
         }
 
         public Get<IGraphScene<TItem, TEdge>> DataHandler { get; set; }
@@ -63,9 +64,10 @@ namespace Limaki.View.Layout {
             }
         }
 
+        public bool Align { get; set; }
         public override void Invoke () {
             var data = Data;
-            var align = true;
+            
             if (data != null) {
                 data.SpatialIndex.Query(Rectangle.Zero);
                 var graph = data.Graph;
@@ -77,7 +79,7 @@ namespace Limaki.View.Layout {
                 }
                 InvokeEdges();
 
-                if (align) {
+                if (Align) {
                     var aligner = new Aligner<TItem, TEdge>(data, this);
                     var options = this.Options();
 

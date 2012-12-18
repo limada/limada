@@ -8,7 +8,6 @@ namespace Limaki.Drawing {
         object GetCustomLineCap(double arrowWidth, double arrowHeigth);
        
         Pen CreatePen ( Color color );
-        Matrice NativeMatrice();
         Size GetTextDimension(string text, IStyle style);
 
         /// <summary>

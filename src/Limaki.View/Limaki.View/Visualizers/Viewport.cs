@@ -49,8 +49,6 @@ namespace Limaki.View.Visualizers {
                 (-offset.X - scrollPosition.X) / zoomFactor,//
                 (-offset.Y - scrollPosition.Y) / zoomFactor);//
 
-            //transformSandBox(matrice);
-
             return matrice;
         }
 

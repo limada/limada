@@ -12,10 +12,6 @@ namespace Limaki.Drawing {
             return new Pen (color);
         }
 
-        public Matrice NativeMatrice () {
-            return new Matrice();
-        }
-
         public Size GetTextDimension (string text, IStyle style) {
             return new Size(text.Length * 10,10);
         }

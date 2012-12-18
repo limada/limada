@@ -227,7 +227,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limada.PdfExporter\Limada.PdfExporter.csproj">
       <Project>{84084423-BA27-4001-8F47-DB0D242A1255}</Project>
@@ -296,7 +296,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
-    <Folder Include="Limaki.Tests\Presenter\" />
     <Folder Include="Playground\Graph\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

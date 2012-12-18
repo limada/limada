@@ -100,7 +100,7 @@ namespace Limaki.Drawing.WPF.Painters {
                         size.Height = fontSize;
                     }
                     var result = vector.Hull(-(vLen - size.Width) / 2, size.Height / 2);
-                    matrix.TransformPoints(result);
+                    matrix.Transform(result);
                     return result;
 
                 } else {

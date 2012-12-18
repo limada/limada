@@ -274,7 +274,7 @@ namespace Limaki.Tests.Drawing
 		public void Reset ()
 		{
 			Matrice matrice = new Matrice (51, 52, 53, 54, 55, 56);
-			matrice.Reset ();
+			matrice.SetIdentity ();
 
 			AssertEquals ("F#1", 6, matrice.Elements.Length);
 			AssertEquals ("F#2", 1, matrice.Elements[0]);
@@ -572,7 +572,7 @@ namespace Limaki.Tests.Drawing
 		{
 			Matrice matrice = new Matrice (2, 4, 6, 8, 10, 12);
 			Point [] pointsF = new Point [] {new Point (2, 4), new Point (4, 8)};
-			matrice.TransformPoints (pointsF);
+			matrice.Transform (pointsF);
 						
 			AssertEquals ("K#1", 38, pointsF[0].X);
 			AssertEquals ("K#2", 52, pointsF[0].Y);
@@ -580,7 +580,7 @@ namespace Limaki.Tests.Drawing
 			AssertEquals ("K#4", 92, pointsF[1].Y);
 			
 			Point [] points = new Point [] {new Point (2, 4), new Point (4, 8)};
-			matrice.TransformPoints (points);
+			matrice.Transform (points);
 			AssertEquals ("K#5", 38, pointsF[0].X);
 			AssertEquals ("K#6", 52, pointsF[0].Y);
 			AssertEquals ("K#7", 66, pointsF[1].X);
@@ -591,28 +591,28 @@ namespace Limaki.Tests.Drawing
 		[ExpectedException (typeof (ArgumentNullException))]
 		public void TransformPoints_Point_Null ()
 		{
-			new Matrice ().TransformPoints ((Point[]) null);
+			new Matrice ().Transform ((Point[]) null);
 		}
 
 		[Test]
 		[ExpectedException (typeof (ArgumentNullException))]
 		public void TransformPoints_PointF_Null ()
 		{
-			new Matrice ().TransformPoints ((Point[]) null);
+			new Matrice ().Transform ((Point[]) null);
 		}
 
 		//failed [Test]
 		[ExpectedException (typeof (ArgumentException))]
 		public void TransformPoints_Point_Empty ()
 		{
-			new Matrice ().TransformPoints (new Point[0]);
+			new Matrice ().Transform (new Point[0]);
 		}
 
 		//failed[Test]
 		[ExpectedException (typeof (ArgumentException))]
 		public void TransformPoints_PointF_Empty ()
 		{
-			new Matrice ().TransformPoints (new Point[0]);
+			new Matrice ().Transform (new Point[0]);
 		}
 		
 		[Test]

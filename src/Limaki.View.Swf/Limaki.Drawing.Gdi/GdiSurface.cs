@@ -16,6 +16,7 @@
 using SD = System.Drawing;
 using Xwt.Drawing;
 using Xwt.Gdi.Backend;
+using System;
 
 namespace Limaki.Drawing.Gdi {
 
@@ -48,12 +49,14 @@ namespace Limaki.Drawing.Gdi {
         public override Matrice Matrix {
             get {
                 if (base.Matrix == null) {
-                    base.Matrix = new GdiMatrice { Matrix = this.Graphics.Transform };
+                    var elements = new double[6];
+                    var gelements = this.Graphics.Transform.Elements;
+                    for (int i = 0; i < 6; i++)
+                        elements[i] = gelements[i];
+                    base.Matrix = new Matrice { Elements = elements };
+                    //base.Matrix = new GdiMatrice {Matrix = this.Graphics.Transform};
                 }
                 return base.Matrix;
-            }
-            set {
-                base.Matrix = value as GdiMatrice;
             }
         }
     }

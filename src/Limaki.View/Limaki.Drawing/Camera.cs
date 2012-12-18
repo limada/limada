@@ -39,7 +39,7 @@ namespace Limaki.Drawing {
             Point[] result = { s };
             using (Matrice m = (Matrice)Matrice.Clone()) {
                 m.Invert();
-                m.TransformPoints(result);
+                m.Transform(result);
             }
             return result[0];
         }
@@ -57,7 +57,7 @@ namespace Limaki.Drawing {
             Point[] p = { r.Location, new Point(r.Right, r.Bottom) };
             using (Matrice m = (Matrice)Matrice.Clone()) {
                 m.Invert();
-                m.TransformPoints(p);
+                m.Transform(p);
             }
             return Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
         }
@@ -67,7 +67,7 @@ namespace Limaki.Drawing {
         public virtual Point FromSource(Point s) {
             Matrice m = Matrice;
             Point[] result = { s };
-            m.TransformPoints(result);
+            m.Transform(result);
             return result[0];
         }
 
@@ -81,7 +81,7 @@ namespace Limaki.Drawing {
         public virtual Rectangle FromSource(Rectangle r) {
             Point[] p = { r.Location, new Point(r.Right, r.Bottom) };
             Matrice m = Matrice;
-            m.TransformPoints(p);
+            m.Transform(p);
 
             return Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
         }

@@ -27,7 +27,7 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public void Transform(Matrice matrice) {
-            matrice.TransformPoints(Points);
+            matrice.Transform(Points);
         }
 
         #region Point in Polygon

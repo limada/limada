@@ -80,7 +80,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
       <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
@@ -90,21 +90,21 @@
       <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
       <Name>Limaki.View.Resources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.View.Swf\Limaki.View.Swf.csproj">
+    <ProjectReference Include="..\Limaki.View.Swf\Limaki.View.SWF.csproj">
       <Project>{B87913C3-EBEE-45AB-88EC-8687D9E57127}</Project>
-      <Name>Limaki.View.Swf</Name>
+      <Name>Limaki.View.SWF</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xwt.SWF\Xwt.GDI\Xwt.Gdi.csproj">
+    <ProjectReference Include="..\Xwt.SWF\Xwt.Gdi\Xwt.GDI.csproj">
       <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
-      <Name>Xwt.Gdi</Name>
+      <Name>Xwt.GDI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xwt.Swf\Xwt.Swf\Xwt.Swf.csproj">
+    <ProjectReference Include="..\Xwt.SWF\Xwt.Swf\Xwt.SWF.csproj">
       <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
-      <Name>Xwt.Swf</Name>
+      <Name>Xwt.SWF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

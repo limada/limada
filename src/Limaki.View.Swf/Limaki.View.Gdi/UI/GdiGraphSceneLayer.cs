@@ -30,8 +30,8 @@ namespace Limaki.View.Gdi.UI {
         public override void OnPaint (IRenderEventArgs e) {
             var g = ((GdiSurface) e.Surface).Graphics;
 
-            var transform = (GdiMatrice) this.Camera.Matrice;
-            g.Transform = transform.Matrix;
+            var transform = this.Camera.Matrice;
+            g.Transform = GDIConverter.Convert(transform);
 
             if (AntiAlias) {
                 // this is hiqh quality mode:

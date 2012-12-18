@@ -57,6 +57,11 @@ namespace Limaki.Tests.Graph.Model {
                     return new RectangleShape ();
                 }
             }
+
+            public override void Invoke () {
+                Align = false;
+                base.Invoke();
+            }
         }
 
         public virtual void Arrange (IGraphScene<IVisual, IVisualEdge> scene) {

@@ -77,8 +77,8 @@ namespace Limaki.Tests.Drawing.Toolkit {
                 matrix.Scale (data.scaleX, data.scaleY, MatrixOrder.Prepend);
                 matrix.Shear (data.shearX, data.shearY);
                 matrix.Shear (data.shearX, data.shearY, MatrixOrder.Append);
-                matrix.TransformPoints (data.Points);
-                matrix.TransformPoints (data.PointsF);
+                matrix.Transform (data.Points);
+                matrix.Transform (data.PointsF);
                 matrix.TransformVectors (data.Points);
                 matrix.TransformVectors (data.PointsF);
                 matrix.Translate (data.offsetX, data.offsetY);

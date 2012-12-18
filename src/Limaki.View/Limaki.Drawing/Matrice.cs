@@ -107,8 +107,15 @@ namespace Limaki.Drawing {
         /// </summary>
         public double[] Elements {
             get {
-
                 return new double[] {m11, m12, m21, m22, dx, dy};
+            }
+            set {
+                m11 = value[0];
+                m12 = value[1];
+                m21 = value[2];
+                m22 = value[3];
+                dx = value[4];
+                dy = value[5];
             }
         }
 
@@ -242,7 +249,7 @@ namespace Limaki.Drawing {
         }
 
         // Reset this matrix to the identity matrix.
-        public void Reset() {
+        public void SetIdentity() {
             m11 = 1.0d;
             m12 = 0.0d;
             m21 = 0.0d;
@@ -402,7 +409,7 @@ namespace Limaki.Drawing {
         }
 
         
-        public void TransformPoints(Point[] pts) {
+        public void Transform(Point[] pts) {
             if (pts == null) {
                 throw new ArgumentNullException("pts");
             }

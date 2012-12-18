@@ -69,7 +69,7 @@ namespace Limaki.Drawing.Painters {
                     }
                     var result = vector.Hull(-(vLen - size.Width) / 2, size.Height / 2);
                     if (matrix != null)
-                        matrix.TransformPoints(result);
+                        matrix.Transform(result);
                     return result;
 
                 } else {

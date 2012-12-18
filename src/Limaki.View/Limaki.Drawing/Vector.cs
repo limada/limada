@@ -48,7 +48,7 @@ namespace Limaki.Drawing {
 
         public void Transform(Matrice matrice) {
             Point[] p = { Start, End };
-            matrice.TransformPoints(p);
+            matrice.Transform(p);
             Start = p[0];
             End = p[1];
         }

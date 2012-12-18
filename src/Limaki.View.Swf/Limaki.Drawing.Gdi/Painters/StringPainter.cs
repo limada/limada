@@ -84,7 +84,7 @@ namespace Limaki.Drawing.Gdi.Painters {
         }
 
         private GraphicsPath linedTextPath = new GraphicsPath ();
-        private Matrice lineMatrice = new GdiMatrice ();
+        private Matrice lineMatrice = new Matrice ();
 
         public override void RenderGdi (ISurface surface) {
             Graphics g = ((GdiSurface) surface).Graphics;
@@ -101,7 +101,7 @@ namespace Limaki.Drawing.Gdi.Painters {
                     var vector = ((IVectorShape) shape).Data;
                     var vlen = (float) Vector.Length (vector);
                     var vheight = font.SizeInPoints + (font.SizeInPoints / 4f);
-                    lineMatrice.Reset ();
+                    lineMatrice.SetIdentity ();
                     var c = new PointF (
                         (float) (vector.Start.X + (vector.End.X - vector.Start.X) / 2f),
                         (float) (vector.Start.Y + (vector.End.Y - vector.Start.Y) / 2f));
@@ -116,7 +116,7 @@ namespace Limaki.Drawing.Gdi.Painters {
                         (Text, font.FontFamily, (int) font.Style, emSize,
                          new RectangleF (new PointF (-vlen / 2f, -vheight / 2f), new SizeF (vlen, vheight)), StringFormat);
 
-                    using (var matrix = ((GdiMatrice) lineMatrice).Matrix) {
+                    using (var matrix = GDIConverter.Convert(lineMatrice)) {
                         linedTextPath.Transform (matrix);
                     }
 

@@ -29,10 +29,6 @@ namespace Limaki.Drawing.WPF {
             return new Pen(color);
         }
 
-        public Matrice NativeMatrice() {
-            return new Limaki.Drawing.Matrice();
-        }
-
         public object GetCustomLineCap(double arrowWidth, double arrowHeigth) {
 
             if (arrowHeigth == 0 || arrowWidth == 0)

@@ -30,9 +30,6 @@ namespace Limaki.Drawing.Gdi {
             return new GdiPen(color);
         }
 
-        public Matrice NativeMatrice() {
-            return new GdiMatrice ();
-        }
 
         public object GetCustomLineCap(double arrowWidth, double arrowHeigth) {
             if (arrowHeigth == 0 || arrowWidth == 0)

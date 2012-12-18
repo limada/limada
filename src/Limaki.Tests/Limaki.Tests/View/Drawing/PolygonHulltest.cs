@@ -19,6 +19,7 @@ using Limaki.Drawing;
 using Limaki.UnitTest;
 using NUnit.Framework;
 using Xwt;
+using Matrice = Xwt.Drawing.Matrix;
 
 namespace Limaki.Tests.Drawing {
 
@@ -75,16 +76,16 @@ namespace Limaki.Tests.Drawing {
             var lineMatrice = new Matrice();
             var angle = Vector.Angle(_data);
             lineMatrice.Rotate(-angle);
-            lineMatrice.TransformPoints(line);
+            lineMatrice.Transform(line);
             var poly = new Point[] {
                 new Point (line[0].X - delta, line[0].Y - delta),
                 new Point(line[1].X + delta, line[1].Y - delta),
                 new Point (line[1].X + delta, line[1].Y + delta),
                 new Point (line[0].X - delta, line[0].Y + delta)
             };
-            lineMatrice.Reset();
+            lineMatrice.SetIdentity();
             lineMatrice.Rotate(angle);
-            lineMatrice.TransformPoints(poly);
+            lineMatrice.Transform(poly);
             return poly;
 
         }
