@@ -18,7 +18,7 @@ namespace Limaki.View.Visualizers {
             painter.BackendRenderer = renderer;
             painter.DataLayer = layer;
 
-            painter.Viewport = new GdiViewport ();
+            painter.Viewport = new Viewport ();
         }
 
         public override void Compose (GraphScenePainter<TItem, TEdge> display) {

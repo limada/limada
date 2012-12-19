@@ -1,33 +1,47 @@
-﻿using System;
+using System;
 using Limaki.Drawing;
 using Xwt.Drawing;
+//using Matrice = Limaki.Drawing.Matrice;
 
 namespace Limaki.XwtAdapter {
 
     public static class XwtLExtensions {
 
         public static double Degree = 180 / Math.PI;
-        public static double Angle (this Matrice m) {
-            if ((m.Elements[2] != (-1 * m.Elements[1])) ||
-                (m.Elements[3] != m.Elements[0]) ) {
+        public static double Angle (this Matrix m) {
+            if ((m.M21 != (-1 * m.M12)) ||
+                (m.M22 != m.M11) ) {
                 return double.NaN;
             } else {
-                var scale_factor = Math.Sqrt ((m.Elements[0] * m.Elements[3] - m.Elements[1] * m.Elements[2]));
-                return Math.Acos (m.Elements[0] / scale_factor) * Degree;
+                var scale_factor = Math.Sqrt ((m.M11 * m.M22 - m.M12 * m.M21));
+                return Math.Acos (m.M11 / scale_factor) * Degree;
             }
         }
 
-        public static void SetTransform (this Context context, Matrice transform) {
+        public static void SetTransform (this Context context, Matrix transform) {
             context.ResetTransform();
             if (!transform.IsIdentity) {
-                context.Scale (transform.Elements[0], transform.Elements[3]);
-                context.Translate (transform.Elements[4], transform.Elements[5]);
+                context.Scale (transform.M11, transform.M22);
+                context.Translate (transform.OffsetX, transform.OffsetY);
                 context.Rotate (transform.Angle());
             }
         }
 
-        public static Matrice GetTransform (this Context context) {
+        public static Matrix GetTransform (this Context context) {
             throw new NotImplementedException();
+        }
+
+        public static void SetElements(this Matrix m, double[] value) {
+                m.M11 = value[0];
+                m.M12 = value[1];
+                m.M21 = value[2];
+                m.M22 = value[3];
+                m.OffsetX = value[4];
+                m.OffsetY= value[5];
+        }
+
+        public static double[] GetElements(this Matrix m) {
+            return new double[] { m.M11, m.M12, m.M21, m.M22, m.OffsetX, m.OffsetY };
         }
     }
 }

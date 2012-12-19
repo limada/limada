@@ -134,7 +134,6 @@
     <Compile Include="Playground\View\Rectangle\Refactoring\xwtPoint.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\xwtSize.cs" />
     <Compile Include="Playground\View\Rectangle\TestRectangle.cs" />
-    <Compile Include="Playground\View\Rectangle\XwtRectangleTest.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintCanvasBackend.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintContextBackendHandler.cs" />
     <Compile Include="Playground\View\XwtFrontend\PaintCanvas.cs">
@@ -200,8 +199,8 @@
     <Compile Include="Limaki.Tests\View\Visuals\SceneThreadTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\PolygonHulltest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\Shapes\ShapeTest.cs" />
-    <Compile Include="Limaki.Tests\View\Drawing\Toolkit\TestMatrice.cs" />
-    <Compile Include="Limaki.Tests\View\Drawing\Toolkit\TestMatrices.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\MatriceTest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\TestMatrices.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\BasicVisualGraphTest.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Model\BenchmarkOneSceneFactory.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Model\ISceneFactory.cs" />
@@ -212,6 +211,7 @@
     <Compile Include="Limaki.Tests\Data\Streams\ContentProviderTest.cs" />
     <Compile Include="[Deprecated]\Arranger0.cs" />
     <Compile Include="[Deprecated]\GraphSceneFacade0.cs" />
+    <Compile Include="[Deprecated]\Matrice0.cs" />
     <Compile Include="[Deprecated]\ProxyShape.cs" />
     <Compile Include="[Deprecated]\VisualsSceneArrangerLayout.cs" />
     <Compile Include="[Deprecated]\VisualsSpatialIndex.cs" />
@@ -227,7 +227,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt</Name>
+      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limada.PdfExporter\Limada.PdfExporter.csproj">
       <Project>{84084423-BA27-4001-8F47-DB0D242A1255}</Project>

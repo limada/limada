@@ -2,6 +2,7 @@ using System;
 using Limaki.Common;
 using Limaki.Drawing.Shapes;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing.Gdi.Painters {
 
@@ -50,7 +51,7 @@ namespace Limaki.Drawing.Gdi.Painters {
             }
         }
 
-        public override Point[] Measure (Matrice matrix, int delta, bool extend) {
+        public override Point[] Measure (Matrix matrix, int delta, bool extend) {
             var shape = this.Shape;
             if (this.Text != null && shape != null) {
                 var style = this.Style;

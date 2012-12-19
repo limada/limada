@@ -1,10 +1,11 @@
-﻿using Limaki.Drawing;
+using Limaki.Drawing;
 using Xwt.Html5.Backend;
 using Xwt.Drawing;
 using Xwt;
 using Limaki.View.Rendering;
 using System;
 using Limaki.View.Clipping;
+//using Matrice = Limaki.Drawing.Matrice;
 
 namespace Limaki.View.Html5 {
 
@@ -48,10 +49,10 @@ namespace Limaki.View.Html5 {
                 base.Context = value;
             }
         }
-        public override Matrice Matrix {
+        public override Matrix Matrix {
             get {
                 if (base.Matrix == null) {
-                    base.Matrix = new Matrice ();
+                    base.Matrix = new Matrix ();
                 }
                 return base.Matrix;
             }

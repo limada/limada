@@ -5,6 +5,6 @@ namespace Limaki.Drawing {
     /// </summary>
     public class ContextSurface : ISurface {
         public virtual Context Context { get; set; }
-        public virtual Matrice Matrix { get; set; }
+        public virtual Matrix Matrix { get; set; }
     }
 }

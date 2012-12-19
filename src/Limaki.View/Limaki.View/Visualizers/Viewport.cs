@@ -18,6 +18,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.Visualizers {
     public class Viewport:IViewport, ICheckable {
@@ -34,11 +35,11 @@ namespace Limaki.View.Visualizers {
             set { _camera = value; }
         }
 
-        public virtual Matrice CreateMatrix() {
-            return new Matrice();
+        public virtual Matrix CreateMatrix() {
+            return new Matrix();
         }
 
-        public virtual Matrice GetMatrix() {
+        public virtual Matrix GetMatrix() {
             var zoomFactor = this.ZoomFactor;
             var scrollPosition = this.ClipOrigin;
             var offset = this.DataOrigin;
@@ -84,7 +85,7 @@ namespace Limaki.View.Visualizers {
         }
 
         public virtual void Update(IClipper clipper) {
-            var matrix = this.Camera.Matrice;
+            var matrix = this.Camera.Matrix;
             var camera = new Camera(matrix);
             var oldOffset = this.DataOrigin;
             var oldSize = this.DataSize;

@@ -6,6 +6,8 @@ using Limaki.Drawing.Shapes;
 using System.Windows.Media;
 using Xwt;
 using Canvas = System.Windows.Controls.Canvas;
+using Xwt.Drawing;
+using Matrix = Xwt.Drawing.Matrix;
 
 namespace Limaki.Drawing.WPF.Painters {
     public class WPFStringPainter : Limaki.Drawing.Painters.StringPainterBase, IPainter<string> {
@@ -84,7 +86,7 @@ namespace Limaki.Drawing.WPF.Painters {
             }
         }
 
-        public override Point[] Measure(Matrice matrix, int delta, bool extend) {
+        public override Point[] Measure(Matrix matrix, int delta, bool extend) {
             IShape shape = this.Shape;
             if (this.Text != null && shape != null) {
                 IStyle style = this.Style;

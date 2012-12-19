@@ -73,7 +73,7 @@ namespace Limaki.Drawing.Painters {
             }
         }
 
-        public virtual Point[] Measure(Matrice matrix, int delta, bool extend) {
+        public virtual Point[] Measure(Matrix matrix, int delta, bool extend) {
             return ((IPainter) this).Shape.Hull (matrix, delta, extend);
         }
 

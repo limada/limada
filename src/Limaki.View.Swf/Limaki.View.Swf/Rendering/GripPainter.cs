@@ -40,7 +40,7 @@ namespace Limaki.View.Swf {
             var clipBounds = //RectangleI.Ceiling(
                 GdiConverter.ToXwt(g.ClipBounds);
             // get near:
-            var camera = new Camera(this.Camera.Matrice);
+            var camera = new Camera(this.Camera.Matrix);
 
             foreach (Anchor anchor in Grips) {
                 var anchorPoint = TargetShape[anchor];

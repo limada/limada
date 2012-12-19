@@ -96,8 +96,8 @@ namespace Limaki.Tests.Graph.Wrappers {
         public override void InvalidateShapeOutline(IShape oldShape, IShape newShape) {
             var clipper = this.Clipper();
             var camera = this.Camera;
-            clipper.Add(oldShape.Hull(camera.Matrice, 0, false));
-            clipper.Add(newShape.Hull(camera.Matrice, 0, false));
+            clipper.Add(oldShape.Hull(camera.Matrix, 0, false));
+            clipper.Add(newShape.Hull(camera.Matrix, 0, false));
         }
 
         public override void OnPaint(IRenderEventArgs e) { }

@@ -35,11 +35,12 @@
 
 using System;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace Xwt.Drawing {
 
     [Serializable]
-    public class Matrix {
+    public class Matrix:IDisposable {
 
         double m11;
         double m12;
@@ -79,6 +80,8 @@ namespace Xwt.Drawing {
         }
 
         public bool Equals (Matrix value) {
+            if (value == null)
+                return false;
             return (m11 == value.M11 &&
                 m12 == value.M12 &&
                 m21 == value.M21 &&
@@ -137,11 +140,13 @@ namespace Xwt.Drawing {
         }
 
         public static bool operator == (Matrix matrix1, Matrix matrix2) {
+            if (Matrix.ReferenceEquals(matrix1, matrix2)) return true;
+            if (Matrix.ReferenceEquals(matrix1, null)) return false; 
             return matrix1.Equals(matrix2);
         }
 
         public static bool operator != (Matrix matrix1, Matrix matrix2) {
-            return !matrix1.Equals(matrix2);
+            return !(matrix1==matrix2);
         }
 
         public static Matrix operator * (Matrix trans1, Matrix trans2) {
@@ -189,7 +194,11 @@ namespace Xwt.Drawing {
             Rotate(angle);
             Translate(centerX, centerY);
         }
-
+        public void RotateAt (double angle, Point center) {
+            Translate(-center.X, -center.Y);
+            Rotate(angle);
+            Translate(center.X, center.Y);
+        }
         public void RotateAtPrepend (double angle, double centerX, double centerY) {
             var m = Matrix.Identity;
             m.RotateAt(angle, centerX, centerY);
@@ -348,6 +357,10 @@ namespace Xwt.Drawing {
             set { offsetY = value; }
         }
 
+
+        public void Dispose () {
+            
+        }
     }
 
 }

@@ -94,7 +94,7 @@ namespace Limaki.View.Gdi.UI {
             if (data != null && ! hadError) {
                 try {
                     var g = ((GdiSurface)e.Surface).Graphics;
-                    g.Transform = GDIConverter.Convert(this.Camera.Matrice);
+                    g.Transform = GDIConverter.Convert(this.Camera.Matrix);
                     g.InterpolationMode = InterpolationMode.Low;
                     g.CompositingMode = CompositingMode.SourceCopy;
                     g.CompositingQuality = CompositingQuality.HighSpeed;

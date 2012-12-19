@@ -55,7 +55,7 @@ namespace Limaki.View.Rendering {
                 InnerPainter.Style = this.Style;
                 int halfWidth = GripSize / 2;
                 int halfHeight = GripSize / 2;
-                Camera camera = new Camera(this.Camera.Matrice);
+                Camera camera = new Camera(this.Camera.Matrix);
 
                 foreach (Anchor anchor in Grips) {
                     Point anchorPoint = TargetShape[anchor];

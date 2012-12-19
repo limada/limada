@@ -78,7 +78,6 @@
     <Compile Include="Limaki.Drawing.Gdi\GdiConverter.cs" />
     <Compile Include="Limaki.Drawing.Gdi\GdiDrawingUtils.cs" />
     <Compile Include="Limaki.Drawing.Gdi\GdiFontCache.cs" />
-    <Compile Include="Limaki.Drawing.Gdi\GdiMatrice.cs" />
     <Compile Include="Limaki.Drawing.Gdi\GdiPen.cs" />
     <Compile Include="Limaki.Drawing.Gdi\GdiSurface.cs" />
     <Compile Include="Limaki.Drawing.Gdi\GdiSystemFonts.cs" />
@@ -104,7 +103,6 @@
     <Compile Include="Limaki.View.Swf\Converter.cs" />
     <Compile Include="Limaki.View.Swf\CursorHandlerBackend.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\DragDropCatcher.cs" />
-    <Compile Include="Limaki.View.Gdi\UI\GdiViewport.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\ImageBackendComposer.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\ImageDisplayComposer.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\SwfBackendComposer.cs" />
@@ -245,7 +243,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt</Name>
+      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Skybound.Gecko.11.0\Skybound.Gecko.csproj">
       <Project>{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}</Project>
@@ -263,13 +261,13 @@
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xwt.SWF\Xwt.Gdi\Xwt.GDI.csproj">
+    <ProjectReference Include="..\Xwt.SWF\Xwt.GDI\Xwt.Gdi.csproj">
       <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
-      <Name>Xwt.GDI</Name>
+      <Name>Xwt.Gdi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xwt.SWF\Xwt.Swf\Xwt.SWF.csproj">
+    <ProjectReference Include="..\Xwt.Swf\Xwt.Swf\Xwt.Swf.csproj">
       <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
-      <Name>Xwt.SWF</Name>
+      <Name>Xwt.Swf</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

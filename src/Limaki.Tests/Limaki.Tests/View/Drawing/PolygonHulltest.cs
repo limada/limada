@@ -19,7 +19,7 @@ using Limaki.Drawing;
 using Limaki.UnitTest;
 using NUnit.Framework;
 using Xwt;
-using Matrice = Xwt.Drawing.Matrix;
+using Xwt.Drawing;
 
 namespace Limaki.Tests.Drawing {
 
@@ -73,7 +73,7 @@ namespace Limaki.Tests.Drawing {
             }
 
 
-            var lineMatrice = new Matrice();
+            var lineMatrice = new Matrix();
             var angle = Vector.Angle(_data);
             lineMatrice.Rotate(-angle);
             lineMatrice.Transform(line);

@@ -14,6 +14,7 @@
 
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing.Shapes {
 
@@ -96,7 +97,7 @@ namespace Limaki.Drawing.Shapes {
             return Hull( BoundsRect,delta,extend);
         }
 
-        public override Point[] Hull(Matrice matrix, int delta, bool extend) {
+        public override Point[] Hull(Matrix matrix, int delta, bool extend) {
             var _data = BoundsRect;
             var dataX = _data.X; var dataY = _data.Y;
             Point[] p = { new Point(dataX, dataY), new Point(dataX + _data.Width, dataY + _data.Height) };

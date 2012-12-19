@@ -3,20 +3,14 @@ using NUnit.Framework;
 using Xwt;
 using System;
 
-namespace Limaki.Tests.Sandbox {
-
-
-    using System.Windows;
-    using NUnit.Framework;
-
-
+namespace Xwt.Tests {
     // see also: 
     // https://github.com/mono/mono/blob/master/mcs/class/WindowsBase/Test/System.Windows/RectTest.cs
     // https://github.com/mono/mono/blob/master/mcs/class/System.Drawing/Test/System.Drawing/TestRectangleF.cs
     // https://github.com/mono/mono/blob/master/mcs/class/WindowsBase/System.Windows/Rect.cs
 
     [TestFixture]
-    public class XwtRectangleTest  {
+    public class RectangleTest  {
 
         public static Rectangle IntersectMonoWindowBase(Rectangle r1, Rectangle r2) {
             var _x = Math.Max(r1.X, r2.X);

@@ -2,6 +2,7 @@
 using Limaki.Drawing;
 using Limaki.View.Visualizers;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.WPF.Display {
     [TODO]
@@ -45,7 +46,7 @@ namespace Limaki.View.WPF.Display {
             }
         }
 
-        public override Matrice GetMatrix() {
+        public override Matrix GetMatrix() {
             var zoomFactor = this.ZoomFactor;
             var scrollPosition = this.ClipOrigin;
             var offset = this.DataOrigin;

@@ -27,6 +27,8 @@ using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
 using Size = System.Drawing.Size;
 using Xwt.Gdi.Backend;
+using Xwt.Drawing;
+using Matrix = Xwt.Drawing.Matrix;
 
 namespace Limaki.Tests.View.GDI {
     public class RegionSandbox : Layer<Empty> {
@@ -52,7 +54,7 @@ namespace Limaki.Tests.View.GDI {
         private Point start = new Point(200, 100);
         private GraphicsPath invPath = new GraphicsPath();
 
-        Point[] GetHull(VectorShape shape, Matrice matrix, int delta) {
+        Point[] GetHull(VectorShape shape, Matrix matrix, int delta) {
             var vector = shape.Data;
             //vector.Transform(matrix);
             //return vector.PolygonHull(delta, true);
@@ -77,9 +79,9 @@ namespace Limaki.Tests.View.GDI {
             g.DrawString(i.ToString(), SystemFonts.StatusFont, SystemBrushes.Control, count);
 
             invPath.Reset();
-            invPath.AddPolygon(GetHull(shape,Camera.Matrice,2));
+            invPath.AddPolygon(GetHull(shape,Camera.Matrix,2));
             var save = g.Transform;
-            g.Transform = new Matrix ();
+            g.Transform = new System.Drawing.Drawing2D.Matrix ();
             g.DrawPath(pathPen, invPath);
             g.Transform = save;
 
@@ -89,7 +91,7 @@ namespace Limaki.Tests.View.GDI {
 
             var g = ((GdiSurface)e.Surface).Graphics;
             var save = g.Transform;
-            g.Transform = GDIConverter.Convert(Camera.Matrice);
+            g.Transform = GDIConverter.Convert(Camera.Matrix);
 
             var start = new Point(200, 100);
             var size = new Size(0, -100);
@@ -150,8 +152,8 @@ namespace Limaki.Tests.View.GDI {
 
         public override void OnPaint(IRenderEventArgs e) {
             Graphics g = ((GdiSurface)e.Surface).Graphics;
-            Matrix save = g.Transform;
-            g.Transform = GDIConverter.Convert(Camera.Matrice);
+            System.Drawing.Drawing2D.Matrix save = g.Transform;
+            g.Transform = GDIConverter.Convert(Camera.Matrix);
 
             Rectangle smaller = new Rectangle(start, new Size(50, 20));
             Rectangle bigger = new Rectangle(start, new Size(55, 25));
@@ -196,8 +198,8 @@ namespace Limaki.Tests.View.GDI {
 
         public void OnPaintTest2(IRenderEventArgs e) {
             Graphics g = ((GdiSurface)e.Surface).Graphics;
-            Matrix save = g.Transform;
-            g.Transform = GDIConverter.Convert(Camera.Matrice);
+            System.Drawing.Drawing2D.Matrix save = g.Transform;
+            g.Transform = GDIConverter.Convert(Camera.Matrix);
 
             Rectangle smaller = new Rectangle(start, new Size(50, 20));
             Rectangle bigger = new Rectangle(start, new Size(55, 25));

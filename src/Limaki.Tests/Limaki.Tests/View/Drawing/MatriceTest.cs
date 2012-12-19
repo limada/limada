@@ -32,11 +32,11 @@ using NUnit.Framework;
 using System;
 using System.Security.Permissions;
 using Xwt;
-
+using Matrice = Limaki.Drawing.Matrice0;
 namespace Limaki.Tests.Drawing
 {
 	[TestFixture]
-	public class TestMatrice  {
+	public class MatriceTest  {
 
 		private Matrice default_matrix;
 	    private Rectangle rect = Rectangle.Zero;

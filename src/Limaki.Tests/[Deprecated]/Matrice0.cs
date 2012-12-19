@@ -17,7 +17,8 @@ using System;
 using Xwt;
 
 namespace Limaki.Drawing {
-    public class Matrice : IDisposable {
+
+    public class Matrice0 : IDisposable {
         // Internal state.
         /// <summary>
         /// scaleX
@@ -40,7 +41,7 @@ namespace Limaki.Drawing {
         protected double dy;
 
         // Constructors.
-        public Matrice() {
+        public Matrice0() {
             m11 = 1.0d;
             m12 = 0.0d;
             m21 = 0.0d;
@@ -50,7 +51,7 @@ namespace Limaki.Drawing {
         }
         
        
-        public Matrice(Rectangle rect, Point[] plgpts) {
+        public Matrice0(Rectangle rect, Point[] plgpts) {
             TransfRect2Poly(rect, plgpts);
         }
         // helper method, computes transformation from rectangle rect to polygon  plgpts
@@ -78,11 +79,11 @@ namespace Limaki.Drawing {
             this.m22 = v2.Y / rect.Height;
         }
 
-        public Matrice Clone() {
-            return new Matrice(this);
+        public Matrice0 Clone() {
+            return new Matrice0(this);
         }
 
-        public Matrice(double m11, double m12, double m21, double m22,
+        public Matrice0(double m11, double m12, double m21, double m22,
                       double dx, double dy) {
             this.m11 = m11;
             this.m12 = m12;
@@ -92,7 +93,7 @@ namespace Limaki.Drawing {
             this.dy = dy;
         }
 
-        internal Matrice(Matrice matrice) {
+        internal Matrice0(Matrice0 matrice) {
             this.m11 = matrice.m11;
             this.m12 = matrice.m12;
             this.m21 = matrice.m21;
@@ -156,7 +157,7 @@ namespace Limaki.Drawing {
 
         // Determine if two matrices are equal.
         public override bool Equals(Object obj) {
-            var other = (obj as Matrice);
+            var other = (obj as Matrice0);
             if (other != null) {
                 return (other.m11 == m11 && other.m12 == m12 &&
                         other.m21 == m21 && other.m22 == m22 &&
@@ -200,7 +201,7 @@ namespace Limaki.Drawing {
         }
 
         // Multiply two matrices and write the result into this one.
-        private void Multiply(Matrice matrix1, Matrice matrix2) {
+        private void Multiply(Matrice0 matrix1, Matrice0 matrix2) {
             double m11, m12, m21, m22, dx, dy;
 
             // Compute the result within temporary variables,
@@ -231,13 +232,13 @@ namespace Limaki.Drawing {
         }
 
         // Multiply two matrices.
-        public void Multiply(Matrice matrice) {
+        public void Multiply(Matrice0 matrice) {
             if (matrice == null) {
                 throw new ArgumentNullException("matrix");
             }
             Multiply(matrice, this);
         }
-        public void Multiply(Matrice matrice, MatrixOrder order) {
+        public void Multiply(Matrice0 matrice, MatrixOrder order) {
             if (matrice == null) {
                 throw new ArgumentNullException("matrix");
             }
@@ -460,9 +461,9 @@ namespace Limaki.Drawing {
         }
 
         // Clone a matrix.
-        public static Matrice Clone(Matrice matrice) {
+        public static Matrice0 Clone(Matrice0 matrice) {
             if (matrice != null) {
-                return new Matrice(matrice.m11, matrice.m12,
+                return new Matrice0(matrice.m11, matrice.m12,
                                   matrice.m21, matrice.m22,
                                   matrice.dx, matrice.dy);
             } else {

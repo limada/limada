@@ -224,6 +224,18 @@ namespace Limaki.Drawing {
 
         #endregion
 
+        public static Matrix Clone (this Matrix matrix) {
+            return new Matrix(matrix);
+        }
+
+        public static void VectorTransformPoints(this Matrix matrix, Point[] points) {
+            matrix.TransformVector(points);
+        }
+
+        public static double TransformFontSize (this Matrix matrix, double fIn) {
+            return Math.Abs(Math.Min(matrix.M11, matrix.M22) * fIn);
+        }
+
         static IDrawingUtils _drawingUtils = null;
         public static IDrawingUtils DrawingUtils {
             get {

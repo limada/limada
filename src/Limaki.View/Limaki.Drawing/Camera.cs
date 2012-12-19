@@ -14,22 +14,23 @@
 
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
     public abstract class CameraBase:ICamera {
         #region ICamera Member
-        public abstract Matrice Matrice { get; set;}
+        public abstract Matrix Matrix { get; set;}
 
         # region IShape
         public virtual void ToSource(IShape s) {
-            using (Matrice m = (Matrice)Matrice.Clone()) {
+            using (Matrix m = (Matrix)Matrix.Clone()) {
                 m.Invert();
                 s.Transform(m);
             }
         }
 
         public virtual void FromSource(IShape s) {
-            s.Transform(Matrice);
+            s.Transform(Matrix);
         }
 
         #endregion
@@ -37,7 +38,7 @@ namespace Limaki.Drawing {
         # region int
         public virtual Point ToSource(Point s) {
             Point[] result = { s };
-            using (Matrice m = (Matrice)Matrice.Clone()) {
+            using (Matrix m = (Matrix)Matrix.Clone()) {
                 m.Invert();
                 m.Transform(result);
             }
@@ -46,7 +47,7 @@ namespace Limaki.Drawing {
         
         public virtual Size ToSource(Size s) {
             Point[] result = { new Point(s.Width, s.Height) };
-            using (Matrice m = (Matrice)Matrice.Clone()) {
+            using (Matrix m = (Matrix)Matrix.Clone()) {
                 m.Invert();
                 m.VectorTransformPoints(result);
             }
@@ -55,7 +56,7 @@ namespace Limaki.Drawing {
 
         public virtual Rectangle ToSource(Rectangle r) {
             Point[] p = { r.Location, new Point(r.Right, r.Bottom) };
-            using (Matrice m = (Matrice)Matrice.Clone()) {
+            using (Matrix m = (Matrix)Matrix.Clone()) {
                 m.Invert();
                 m.Transform(p);
             }
@@ -65,14 +66,14 @@ namespace Limaki.Drawing {
        
 
         public virtual Point FromSource(Point s) {
-            Matrice m = Matrice;
+            Matrix m = Matrix;
             Point[] result = { s };
             m.Transform(result);
             return result[0];
         }
 
         public virtual Size FromSource(Size s) {
-            Matrice m = Matrice;
+            Matrix m = Matrix;
             Point[] result =  { new Point(s.Width, s.Height) };
             m.VectorTransformPoints(result);
             return new Size(result[0].X,result[0].Y);
@@ -80,7 +81,7 @@ namespace Limaki.Drawing {
        
         public virtual Rectangle FromSource(Rectangle r) {
             Point[] p = { r.Location, new Point(r.Right, r.Bottom) };
-            Matrice m = Matrice;
+            Matrix m = Matrix;
             m.Transform(p);
 
             return Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
@@ -106,26 +107,26 @@ namespace Limaki.Drawing {
     }
 
     public class Camera:CameraBase {
-        Matrice _matrice = null;
-        public Camera(Matrice matrice) {
-            this._matrice = matrice;
+        Matrix _matrix = null;
+        public Camera(Matrix matrix) {
+            this._matrix = matrix;
         }
 
 
         #region ITransformable Member
 
-        public override Matrice Matrice {
+        public override Matrix Matrix {
             get {
-                if (_matrice == null)
-                    _matrice = new Matrice ();
-                return _matrice;
+                if (_matrix == null)
+                    _matrix = new Matrix ();
+                return _matrix;
             }
             set {
-                if(_matrice != value) {
-                    _matrice.Dispose ();
-                    _matrice = null;
+                if(_matrix != value) {
+                    _matrix.Dispose ();
+                    _matrix = null;
                 }
-                _matrice = value;
+                _matrix = value;
             }
         }
         #endregion
@@ -133,15 +134,15 @@ namespace Limaki.Drawing {
         #region IDisposable Member
         public override void Dispose(bool disposing) {
             if (disposing) {
-                _matrice.Dispose();
-                _matrice = null;
+                _matrix.Dispose();
+                _matrix = null;
             }
         }
         #endregion
     }
 
     public class DelegatingCamera : CameraBase {
-        public delegate Matrice MatrixHandler();
+        public delegate Matrix MatrixHandler();
 
         MatrixHandler _transform = null;
         public DelegatingCamera(MatrixHandler transform) {
@@ -150,7 +151,7 @@ namespace Limaki.Drawing {
 
         #region ITransformable Member
 
-        public override Matrice Matrice {
+        public override Matrix Matrix {
             get {
                 if (_transform != null)
                     return _transform();

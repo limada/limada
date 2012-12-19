@@ -15,6 +15,7 @@
 
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing.Shapes {
 #if ! SILVERLIGHT    
@@ -105,11 +106,11 @@ namespace Limaki.Drawing.Shapes {
             set { this._data.Location = value; }
         }
 
-        public override void Transform(Matrice matrice) {
+        public override void Transform(Matrix matrix) {
             var dataX = _data.X;
             var dataY = _data.Y;
             Point[] p = { new Point(dataX, dataY), new Point(dataX + _data.Width, dataY + _data.Height) };
-            matrice.Transform(p);
+            matrix.Transform(p);
             _data = Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
         }
 
@@ -130,7 +131,7 @@ namespace Limaki.Drawing.Shapes {
             return Hull(_data,delta, extend);
         }
 
-        public override Point[] Hull(Matrice matrix, int delta, bool extend) {
+        public override Point[] Hull(Matrix matrix, int delta, bool extend) {
             var dataX = _data.X; var dataY = _data.Y;
             Point[] p = { new Point(dataX, dataY), new Point(dataX + _data.Width, dataY + _data.Height) };
 

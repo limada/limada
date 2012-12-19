@@ -15,6 +15,7 @@
 using System;
 using Limaki.Common;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing.Shapes {
 #if !SILVERLIGHT
@@ -37,7 +38,7 @@ namespace Limaki.Drawing.Shapes {
             }
         }
 
-        public override void Transform(Matrice matrice) {
+        public override void Transform(Matrix matrix) {
             throw new NotImplementedException();
         }
 
@@ -67,7 +68,7 @@ namespace Limaki.Drawing.Shapes {
             throw new NotImplementedException();
         }
 
-        public override Point[] Hull(Matrice matrix, int delta, bool extend) {
+        public override Point[] Hull(Matrix matrix, int delta, bool extend) {
             throw new NotImplementedException();
         }
     }

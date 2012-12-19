@@ -1,4 +1,4 @@
-﻿using Limaki.Graphs;
+using Limaki.Graphs;
 using Limaki.View.UI;
 using Limaki.Drawing.WPF;
 using Limaki.View.Rendering;
@@ -12,7 +12,7 @@ namespace Limaki.View.WPF.Display {
             var g = ((WPFSurface)e.Surface).Graphics;
 
             
-            var transform = this.Camera.Matrice;
+            var transform = this.Camera.Matrix;
             //g.RenderTransformOrigin = new System.Windows.Point (-transform.OffsetX, -transform.OffsetY);
             g.RenderTransform = new System.Windows.Media.TranslateTransform (transform.OffsetX, transform.OffsetY);
             // see also: MatrixTransform

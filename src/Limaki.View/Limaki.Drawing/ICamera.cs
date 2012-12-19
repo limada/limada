@@ -15,13 +15,14 @@
 
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
     public interface ICamera:IDisposable {
         /// <summary>
         /// The transformation matrix
         /// </summary>
-        Matrice Matrice { get; set; }
+        Matrix Matrix { get; set; }
 
         /// <summary>
         /// convert a transformed point into a source point (matrix.inverseTransform)

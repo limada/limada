@@ -30,7 +30,7 @@ namespace Limaki.View.Gdi.UI {
         public override void OnPaint (IRenderEventArgs e) {
             var g = ((GdiSurface) e.Surface).Graphics;
 
-            var transform = this.Camera.Matrice;
+            var transform = this.Camera.Matrix;
             g.Transform = GDIConverter.Convert(transform);
 
             if (AntiAlias) {

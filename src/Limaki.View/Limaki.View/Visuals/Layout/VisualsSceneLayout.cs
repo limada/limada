@@ -19,6 +19,7 @@ using Limaki.Graphs;
 using Limaki.View.Layout;
 using Limaki.Visuals;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.Visuals.Layout {
 
@@ -140,7 +141,7 @@ namespace Limaki.View.Visuals.Layout {
         public override void Perform(TItem item) { }
 
 
-        protected virtual Point[] GetDataHull(TItem item, IStyle style, Matrice matrix, int delta, bool extend) {
+        protected virtual Point[] GetDataHull(TItem item, IStyle style, Matrix matrix, int delta, bool extend) {
             Point[] result = null;
             if (style.PaintData && item.Data != null && item.Data.GetType() != typeof(Empty)) {
                 var painter = this.GetPainter(item.Data.GetType()) as IDataPainter;
@@ -167,10 +168,10 @@ namespace Limaki.View.Visuals.Layout {
             return result;
         }
 
-        public override Point[] GetDataHull(TItem item, Matrice matrix, int delta, bool extend) {
+        public override Point[] GetDataHull(TItem item, Matrix matrix, int delta, bool extend) {
             return this.GetDataHull(item, GetStyle(item), matrix, delta, extend);
         }
-        public override Point[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend) {
+        public override Point[] GetDataHull(TItem item, UiState uiState, Matrix matrix, int delta, bool extend) {
             return this.GetDataHull(item, GetStyle(item,uiState),matrix,delta,extend);
         }
         public override Point[] GetDataHull(TItem item, int delta, bool extend) {

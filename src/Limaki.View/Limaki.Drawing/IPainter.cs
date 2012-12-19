@@ -15,6 +15,7 @@
 
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
     /// <summary>
@@ -47,7 +48,7 @@ namespace Limaki.Drawing {
         /// the Hull of the shape with style
         /// </summary>
         /// <returns></returns>
-        Point[] Measure(Matrice matrix, int delta, bool extend);
+        Point[] Measure(Matrix matrix, int delta, bool extend);
         Point[] Measure(int delta, bool extend);
     }
 

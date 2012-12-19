@@ -15,6 +15,7 @@
 
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing.Shapes {
     public interface IEdgeShape {
@@ -107,9 +108,9 @@ namespace Limaki.Drawing.Shapes {
 
 
 
-        public override void Transform(Matrice matrice) {
+        public override void Transform(Matrix matrix) {
             Point[] p = { _data.Start, _data.End };
-            matrice.Transform(p);
+            matrix.Transform(p);
             _data.Start = p[0];
             _data.End = p[1];
         }
@@ -156,7 +157,7 @@ namespace Limaki.Drawing.Shapes {
             return _data.Hull(delta,extend);
         }
 
-        public override Point[] Hull(Matrice matrix, int delta, bool extend) {
+        public override Point[] Hull(Matrix matrix, int delta, bool extend) {
             Vector vector = _data;
             vector.Transform(matrix);
             return vector.Hull(delta, extend);

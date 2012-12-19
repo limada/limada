@@ -51,11 +51,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt</Name>
+      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xwt.Gdi\Xwt.GDI.csproj">
+    <ProjectReference Include="..\Xwt.GDI\Xwt.Gdi.csproj">
       <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
-      <Name>Xwt.GDI</Name>
+      <Name>Xwt.Gdi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

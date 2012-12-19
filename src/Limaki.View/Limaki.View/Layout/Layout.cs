@@ -18,6 +18,7 @@ using Limaki.Common;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.Layout {
 
@@ -130,8 +131,8 @@ namespace Limaki.View.Layout {
         #region Bounds-Handling
 
         public abstract void AddBounds(TItem item);
-        public abstract Point[] GetDataHull(TItem item, Matrice matrix, int delta, bool extend);
-        public abstract Point[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend);
+        public abstract Point[] GetDataHull(TItem item, Matrix matrix, int delta, bool extend);
+        public abstract Point[] GetDataHull(TItem item, UiState uiState, Matrix matrix, int delta, bool extend);
         public abstract Point[] GetDataHull(TItem item, int delta, bool extend);
         public abstract Point[] GetDataHull(TItem item, UiState uiState, int delta, bool extend);
 

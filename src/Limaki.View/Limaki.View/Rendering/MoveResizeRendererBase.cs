@@ -99,7 +99,7 @@ namespace Limaki.View.Rendering {
 
             var clipper = this.Clipper();
             if (this.Shape != null && clipper != null) {
-                var hull = this.Shape.Hull(this.Camera.Matrice, this.GripSize, true);
+                var hull = this.Shape.Hull(this.Camera.Matrix, this.GripSize, true);
                 clipper.Add(hull);
             }
         }

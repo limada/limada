@@ -16,6 +16,7 @@ using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.Layout {
 
@@ -73,14 +74,14 @@ namespace Limaki.View.Layout {
             return style;
         }
 
-        public override Point[] GetDataHull(IShape item, Matrice matrix, int delta, bool extend) {
+        public override Point[] GetDataHull(IShape item, Matrix matrix, int delta, bool extend) {
             Registry.Pool.TryGetCreate<IExceptionHandler>()
                 .Catch(new Exception("The method or operation is not implemented."), MessageType.OK);
             return new Point[0];
 
         }
 
-        public override Point[] GetDataHull(IShape item, UiState uiState, Matrice matrix, int delta, bool extend) {
+        public override Point[] GetDataHull(IShape item, UiState uiState, Matrix matrix, int delta, bool extend) {
             Registry.Pool.TryGetCreate<IExceptionHandler>()
                 .Catch(new Exception("The method or operation is not implemented."), MessageType.OK);
             return new Point[0];

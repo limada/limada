@@ -39,7 +39,7 @@ namespace Limaki.View.Modelling {
 
             if (data != null && data.Requests.Count != 0 && modeller != null && camera != null) {
                 bool clipChanged = false;
-                Matrice matrix = camera.Matrice.Clone ();
+                var matrix = camera.Matrix.Clone ();
 
                 if (clipper != null) {
                     Action<ICommand<TItem>> before = (request) => {

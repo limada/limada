@@ -27,8 +27,7 @@ namespace Limaki.Drawing.Painters {
                 return;
 
             var matrix = ((ContextSurface)surface).Matrix;
-            var elements = matrix.Elements;
-            if (elements[0] < 0.2d || elements[3] < 0.2d)
+            if (matrix.M11 < 0.2d || matrix.M22 < 0.2d)
                 return;
 
             var ctx = ((ContextSurface)surface).Context;

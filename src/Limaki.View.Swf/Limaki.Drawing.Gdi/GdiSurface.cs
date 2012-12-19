@@ -46,15 +46,10 @@ namespace Limaki.Drawing.Gdi {
                 base.Context = value;
             }
         }
-        public override Matrice Matrix {
+        public override Matrix Matrix {
             get {
                 if (base.Matrix == null) {
-                    var elements = new double[6];
-                    var gelements = this.Graphics.Transform.Elements;
-                    for (int i = 0; i < 6; i++)
-                        elements[i] = gelements[i];
-                    base.Matrix = new Matrice { Elements = elements };
-                    //base.Matrix = new GdiMatrice {Matrix = this.Graphics.Transform};
+                    base.Matrix = GDIConverter.Convert(this.Graphics.Transform);
                 }
                 return base.Matrix;
             }

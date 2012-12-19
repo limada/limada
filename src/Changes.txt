@@ -1,5 +1,6 @@
 [2012-12-19]
 introducing Xwt.Matrix
+refactoring to use Xwt.Matrix
 
 [2012-12-13]
 Iconeria: icons on the fly over Xwt

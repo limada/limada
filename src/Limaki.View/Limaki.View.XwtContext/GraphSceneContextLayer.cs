@@ -1,4 +1,4 @@
-﻿using Limaki.Graphs;
+using Limaki.Graphs;
 using Limaki.View.Rendering;
 using Limaki.XwtAdapter;
 using Limaki.Drawing;
@@ -14,7 +14,7 @@ namespace Limaki.View.XwtContext {
             var surface = ((ContextSurface) e.Surface);
             var ctx = surface.Context;
 
-            var transform = this.Camera.Matrice;
+            var transform = this.Camera.Matrix;
             
             ctx.SetTransform (transform);
             surface.Matrix = transform;

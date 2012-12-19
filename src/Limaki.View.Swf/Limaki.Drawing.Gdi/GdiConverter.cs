@@ -61,18 +61,18 @@ namespace Limaki.Drawing.Gdi {
             return result;
         }
 
-        public static System.Drawing.Drawing2D.Matrix Convert (Matrice matrice) {
+        public static System.Drawing.Drawing2D.Matrix Convert (Matrix matrix) {
             return new System.Drawing.Drawing2D.Matrix(
-                (float) matrice.Elements[0],
-                (float) matrice.Elements[1],
-                (float) matrice.Elements[2],
-                (float) matrice.Elements[3],
-                (float) matrice.Elements[4],
-                (float) matrice.Elements[5]);
+                (float) matrix.M11,
+                (float) matrix.M12,
+                (float) matrix.M21,
+                (float) matrix.M22,
+                (float) matrix.OffsetX,
+                (float) matrix.OffsetY);
         }
 
-        public static Matrice Convert (System.Drawing.Drawing2D.Matrix matrice) {
-            return new Matrice(
+        public static Matrix Convert (System.Drawing.Drawing2D.Matrix matrice) {
+            return new Matrix(
                matrice.Elements[0],
                matrice.Elements[1],
                matrice.Elements[2],
@@ -89,5 +89,7 @@ namespace Limaki.Drawing.Gdi {
         //internal static Point ToXwt (this System.Drawing.Point size) {
         //    throw new NotImplementedException ();
         //}
+
+       
     }
 }

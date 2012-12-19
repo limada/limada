@@ -14,6 +14,7 @@
 
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
 #if !SILVERLIGHT
@@ -46,9 +47,9 @@ namespace Limaki.Drawing {
             return Math.Sqrt ( a*a + b*b );
         }
 
-        public void Transform(Matrice matrice) {
+        public void Transform(Matrix matrix) {
             Point[] p = { Start, End };
-            matrice.Transform(p);
+            matrix.Transform(p);
             Start = p[0];
             End = p[1];
         }

@@ -227,7 +227,7 @@ namespace Limaki.View.Swf.Visuals {
         void StyleEditor() {
             var style = Layout.StyleSheet.ItemStyle.DefaultStyle;
             var newFont = new FontMemento(GdiEngine.Registry.GetBackend(style.Font) as System.Drawing.Font);
-            newFont.SizeInPoints = (float)camera.Matrice.TransformFontSize (newFont.SizeInPoints);
+            newFont.SizeInPoints = (float)camera.Matrix.TransformFontSize (newFont.SizeInPoints);
             editor.Font = gdiFontCache.GetFont(newFont);
             
             editor.BorderStyle = BorderStyle.FixedSingle;

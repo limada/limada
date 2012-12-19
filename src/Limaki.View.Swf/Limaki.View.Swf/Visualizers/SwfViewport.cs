@@ -8,7 +8,7 @@ using Point = System.Drawing.Point;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf.Visualizers {
-    public class SwfViewport : GdiViewport {
+    public class SwfViewport : Limaki.View.Visualizers.Viewport {
         protected SwfWidgetBackend device = null;
         public SwfViewport(SwfWidgetBackend userControl) {
             this.device = userControl;

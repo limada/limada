@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
     /// <summary>
@@ -63,8 +64,8 @@ namespace Limaki.Drawing {
         /// <summary>
         /// transforms the shape
         /// </summary>
-        /// <param name="matrice"></param>
-        void Transform(Matrice matrice);
+        /// <param name="matrix"></param>
+        void Transform(Matrix matrix);
 
         /// <summary>
         /// the clipping rectangle of the shape
@@ -89,7 +90,7 @@ namespace Limaki.Drawing {
 
         Point[] Hull ( int delta, bool extend );
 
-        Point[] Hull ( Matrice matrix, int delta, bool extend );
+        Point[] Hull ( Matrix matrix, int delta, bool extend );
     }
 
     public interface IShape<T> : IShape {

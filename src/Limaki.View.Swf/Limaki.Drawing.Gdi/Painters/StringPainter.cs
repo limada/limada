@@ -20,6 +20,8 @@ using Xwt;
 using Xwt.Engine;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
+using Xwt.Drawing;
+using Matrix = Xwt.Drawing.Matrix;
 
 namespace Limaki.Drawing.Gdi.Painters {
    
@@ -84,7 +86,7 @@ namespace Limaki.Drawing.Gdi.Painters {
         }
 
         private GraphicsPath linedTextPath = new GraphicsPath ();
-        private Matrice lineMatrice = new Matrice ();
+        private Matrix _lineMatrix = new Matrix ();
 
         public override void RenderGdi (ISurface surface) {
             Graphics g = ((GdiSurface) surface).Graphics;
@@ -101,13 +103,13 @@ namespace Limaki.Drawing.Gdi.Painters {
                     var vector = ((IVectorShape) shape).Data;
                     var vlen = (float) Vector.Length (vector);
                     var vheight = font.SizeInPoints + (font.SizeInPoints / 4f);
-                    lineMatrice.SetIdentity ();
+                    _lineMatrix.SetIdentity ();
                     var c = new PointF (
                         (float) (vector.Start.X + (vector.End.X - vector.Start.X) / 2f),
                         (float) (vector.Start.Y + (vector.End.Y - vector.Start.Y) / 2f));
 
-                    lineMatrice.Translate (c.X - 1, c.Y - 1);
-                    lineMatrice.Rotate (Vector.Angle (vector));
+                    _lineMatrix.Translate (c.X - 1, c.Y - 1);
+                    _lineMatrix.Rotate (Vector.Angle (vector));
 
                     linedTextPath.Reset ();
                     // TODO: something is wrong with emSize, it is too small:
@@ -116,7 +118,7 @@ namespace Limaki.Drawing.Gdi.Painters {
                         (Text, font.FontFamily, (int) font.Style, emSize,
                          new RectangleF (new PointF (-vlen / 2f, -vheight / 2f), new SizeF (vlen, vheight)), StringFormat);
 
-                    using (var matrix = GDIConverter.Convert(lineMatrice)) {
+                    using (var matrix = GDIConverter.Convert(_lineMatrix)) {
                         linedTextPath.Transform (matrix);
                     }
 

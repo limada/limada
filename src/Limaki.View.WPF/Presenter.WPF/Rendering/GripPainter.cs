@@ -53,7 +53,7 @@ namespace Limaki.View.WPF {
             InnerPainter.Render(surface);
 
             var _group = new GeometryGroup();
-            var camera = new Camera(this.Camera.Matrice);
+            var camera = new Camera(this.Camera.Matrix);
 
             foreach (Anchor anchor in Grips) {
                 Point anchorPoint = TargetShape[anchor];

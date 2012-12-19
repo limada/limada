@@ -14,6 +14,7 @@
 
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing.Shapes {
 #if !SILVERLIGHT
@@ -26,8 +27,8 @@ namespace Limaki.Drawing.Shapes {
             this.Points = points;
         }
 
-        public void Transform(Matrice matrice) {
-            matrice.Transform(Points);
+        public void Transform(Matrix matrix) {
+            matrix.Transform(Points);
         }
 
         #region Point in Polygon

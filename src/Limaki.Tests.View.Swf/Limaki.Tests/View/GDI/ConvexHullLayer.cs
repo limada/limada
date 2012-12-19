@@ -30,6 +30,8 @@ using Limaki.View;
 using Xwt;
 using Point = System.Drawing.Point;
 using Xwt.Gdi.Backend;
+using Xwt.Drawing;
+using Matrix = Xwt.Drawing.Matrix;
 
 namespace Limaki.Tests.View.GDI {
     /// <summary>
@@ -57,7 +59,7 @@ namespace Limaki.Tests.View.GDI {
         private System.Drawing.Pen backGroundPen = new System.Drawing.Pen(System.Drawing.Color.White);
         private GraphicsPath invPath = new GraphicsPath();
 
-        Point[] GetHull(IGraphScene<IVisual,IVisualEdge> scene, Matrice matrix, int delta) {
+        Point[] GetHull(IGraphScene<IVisual,IVisualEdge> scene, Matrix matrix, int delta) {
             Point[] result = new Point[0];
             var points = new Set<Xwt.Point> ();
             foreach(var visual in scene.Elements) {
@@ -75,7 +77,7 @@ namespace Limaki.Tests.View.GDI {
 
         void IReceiver.Execute() {
             var points = new Set<Xwt.Point>();
-            Matrice matrix = this.Camera.Matrice.Clone ();
+            Matrix matrix = this.Camera.Matrix.Clone ();
             var layout = this.Layout ();
             if (Data != null && Data.Requests.Count != 0) {
                 foreach (ICommand<IVisual> command in Data.Requests) {
@@ -122,11 +124,11 @@ namespace Limaki.Tests.View.GDI {
             var hull = 
             //CommandsHull;
             //hull = ClipHull(e);
-            GetHull(this.Data, Camera.Matrice, 5);
+            GetHull(this.Data, Camera.Matrix, 5);
 
             Graphics g = ((GdiSurface)e.Surface).Graphics;
-            Matrix save = g.Transform;
-            g.Transform = new Matrix();
+            System.Drawing.Drawing2D.Matrix save = g.Transform;
+            g.Transform = new System.Drawing.Drawing2D.Matrix();
 
             if (oldHull != null && oldHull.Length > 2) {
                 invPath.Reset();

@@ -77,7 +77,7 @@ namespace Limaki.Tests.View.Winform {
                 g.DrawRectangle(pen, r.ToGdi ());
 
                 if (Layout != null) {
-                    datahull = layout.GetDataHull(visual, Camera.Matrice, 0, true);
+                    datahull = layout.GetDataHull(visual, Camera.Matrix, 0, true);
                 }
                 //Point[] hull = visual.Shape.Hull(Transformer.Matrice,15, true);
 

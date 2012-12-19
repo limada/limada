@@ -41,7 +41,7 @@ namespace Limaki.Drawing.Painters {
             });
         }
 
-        protected Matrice Matrix = new Matrice ();
+        protected Matrix Matrix = new Matrix ();
 
         public Point DrawArrow (Context ctx, Vector v, double w, double h) {
             if (h == 0 || w == 0)

@@ -14,6 +14,7 @@
 
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
     public interface ILayout {
@@ -58,8 +59,8 @@ namespace Limaki.Drawing {
         IStyle GetStyle(TItem item);
         IStyle GetStyle(TItem item, UiState uiState);
 
-        Point[] GetDataHull(TItem item, Matrice matrix, int delta, bool extend);
-        Point[] GetDataHull(TItem item, UiState uiState, Matrice matrix, int delta, bool extend);
+        Point[] GetDataHull(TItem item, Matrix matrix, int delta, bool extend);
+        Point[] GetDataHull(TItem item, UiState uiState, Matrix matrix, int delta, bool extend);
 
         Point[] GetDataHull(TItem item, int delta, bool extend);
         Point[] GetDataHull(TItem item, UiState uiState, int delta, bool extend);

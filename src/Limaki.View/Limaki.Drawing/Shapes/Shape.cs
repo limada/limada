@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing.Shapes {
 #if !SILVERLIGHT
@@ -89,7 +90,7 @@ namespace Limaki.Drawing.Shapes {
         #endregion
 
         #region IShape Member
-        public abstract void Transform(Matrice matrice);
+        public abstract void Transform(Matrix matrix);
         public virtual Rectangle BoundsRect {
             get {
                 Point lt = this[Anchor.LeftTop];
@@ -115,7 +116,7 @@ namespace Limaki.Drawing.Shapes {
 
         public abstract Point[] Hull ( int delta, bool extend );
 
-        public abstract Point[] Hull ( Matrice matrix, int delta, bool extend );
+        public abstract Point[] Hull ( Matrix matrix, int delta, bool extend );
 
         #endregion
 

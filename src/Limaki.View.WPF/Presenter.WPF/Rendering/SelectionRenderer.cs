@@ -45,7 +45,7 @@ namespace Limaki.View.WPF {
 
                 // we paint the Shape transformed, otherwise it looses its line-size
                 // that means, that the linesize is zoomed which makes an ugly effect
-                var transform = this.Camera.Matrice;
+                var transform = this.Camera.Matrix;
                 //g.RenderTransformOrigin = new System.Windows.Point (-transform.OffsetX, -transform.OffsetY);
                 //g.RenderTransform = new System.Windows.Media.TranslateTransform(transform.OffsetX, transform.OffsetY);
    

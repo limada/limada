@@ -15,6 +15,7 @@
 using System;
 using Limaki.Drawing;
 using Xwt;
+using Xwt.Drawing;
 
 //using System.Runtime.Serialization;
 
@@ -77,7 +78,7 @@ namespace Limaki.Visuals {
                 return new Point[0];
         }
 
-        public virtual Point[] Hull(Matrice matrix, int delta, bool extend) {
+        public virtual Point[] Hull(Matrix matrix, int delta, bool extend) {
             if (Shape != null)
                 return Shape.Hull(delta, extend);
             else

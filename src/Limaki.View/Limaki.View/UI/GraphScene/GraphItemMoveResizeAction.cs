@@ -114,8 +114,8 @@ namespace Limaki.View.UI.GraphScene {
 
         protected virtual bool CheckResizing() {
             return Resolved && resizing &&
-                   this.Camera.Matrice.Elements[0] > 0.01f &&
-                   this.Camera.Matrice.Elements[3] > 0.01f;
+                   this.Camera.Matrix.M11> 0.01d &&
+                   this.Camera.Matrix.M22> 0.01d;
         }
 
         protected override void OnMouseMoveResolved(MouseActionEventArgs e) {
