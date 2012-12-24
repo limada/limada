@@ -20,13 +20,14 @@ using Limaki.View.Layout;
 using Limaki.Visuals;
 using Xwt;
 using Xwt.Drawing;
+using System;
 
 namespace Limaki.View.Visuals.Layout {
 
     public class VisualsSceneLayout<TItem, TEdge> : GraphSceneLayout<TItem, TEdge>
         where TItem :  IVisual
         where TEdge:  TItem, IEdge<TItem> {
-        public VisualsSceneLayout(Get<IGraphScene<TItem, TEdge>> handler, IStyleSheet stylesheet)
+        public VisualsSceneLayout(Func<IGraphScene<TItem, TEdge>> handler, IStyleSheet stylesheet)
             : base(handler, stylesheet) {
             
             this.EdgeRouter = new NearestAnchorRouter<TItem,TEdge>();
@@ -115,7 +116,7 @@ namespace Limaki.View.Visuals.Layout {
             }
         }
 
-        public override void AddBounds(TItem target) {
+        public override void BoundsChanged(TItem target) {
             Rectangle invalid = target.Shape.BoundsRect;
 
             Justify(target, target.Shape);

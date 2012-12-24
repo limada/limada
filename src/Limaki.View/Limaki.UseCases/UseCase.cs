@@ -63,8 +63,8 @@ namespace Limaki.UseCases {
         public SplitViewToolController SplitViewToolController { get; set; }
         public ArrangerToolController ArrangerToolController { get; set; }
 
-        public Get<object> GetCurrentControl { get; set; }
-        public Get<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
+        public Func<object> GetCurrentControl { get; set; }
+        public Func<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
 
 
         public Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow { get; set; }

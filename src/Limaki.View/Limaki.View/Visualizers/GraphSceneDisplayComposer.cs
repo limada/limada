@@ -20,14 +20,15 @@ using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Xwt;
+using System;
 
 namespace Limaki.View.Visualizers {
     public class GraphSceneDisplayComposer<TItem, TEdge> : DisplayComposer<IGraphScene<TItem, TEdge>>
         where TEdge : TItem, IEdge<TItem> {
 
-        public virtual Get<IGraphScene<TItem, TEdge>> GraphScene { get; set; }
-        public virtual Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
-        public virtual Get<IModelReceiver<TItem>> ModelReceiver { get; set; }
+        public virtual Func<IGraphScene<TItem, TEdge>> GraphScene { get; set; }
+        public virtual Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
+        public virtual Func<IModelReceiver<TItem>> ModelReceiver { get; set; }
 
         public override void Dispose() {
             base.Dispose();

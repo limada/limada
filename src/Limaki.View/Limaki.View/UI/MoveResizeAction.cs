@@ -17,6 +17,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.View.Rendering;
 using Xwt;
+using System;
 
 namespace Limaki.View.UI {
     /// <summary>
@@ -27,8 +28,8 @@ namespace Limaki.View.UI {
             this.Priority = ActionPriorities.SelectionPriority;
         }
 
-        public virtual Get<ICamera> CameraHandler { get; set; }
-        public virtual Get<ICursorHandler> CursorGetter { get; set; }
+        public virtual Func<ICamera> CameraHandler { get; set; }
+        public virtual Func<ICursorHandler> CursorGetter { get; set; }
 
         protected ICamera Camera {
             get { return CameraHandler ();}

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Limaki.Model.Streams {
     public abstract class ContentProvider : IContentProvider {
-        public abstract IEnumerable<StreamTypeInfo> SupportedStreamTypes { get; }
+        public abstract IEnumerable<ContentInfo> SupportedContents { get; }
 
         public abstract bool Saveable { get; }
         public abstract bool Readable { get; }
@@ -16,24 +16,24 @@ namespace Limaki.Model.Streams {
                 return new Content<Stream>(
                     stream,
                     info.Compression,
-                    info.StreamType);
+                    info.ContentType);
             }
             return null;
         }
 
-        public virtual StreamTypeInfo Info(Stream stream) {
-            return SupportedStreamTypes.Where(info => info.Magics != null)
+        public virtual ContentInfo Info(Stream stream) {
+            return SupportedContents.Where(info => info.Magics != null)
                 .Where (info => info.Magics.Any (magic => HasMagic (stream, magic.Bytes, magic.Offset)))
                 .FirstOrDefault();
         }
 
-        public virtual StreamTypeInfo Info (string extension) {
+        public virtual ContentInfo Info (string extension) {
             extension = extension.ToLower ().TrimStart ('.');
-            return SupportedStreamTypes.Where (type => type.Extension == extension).FirstOrDefault ();
+            return SupportedContents.Where (type => type.Extension == extension).FirstOrDefault ();
         }
 
-        public virtual StreamTypeInfo Info ( long streamType) {
-            return SupportedStreamTypes.Where (type => type.StreamType == streamType).FirstOrDefault();
+        public virtual ContentInfo Info ( long streamType) {
+            return SupportedContents.Where (type => type.ContentType == streamType).FirstOrDefault();
         }
 
         public virtual bool Supports (string something) {

@@ -61,7 +61,7 @@ namespace Limaki.View.Swf.DragDrop {
                 content.Data = new MemoryStream();
 
                 image.Save(content.Data, ImageFormat.Jpeg);
-                content.StreamType = StreamTypes.JPG;
+                content.StreamType = ContentTypes.JPG;
                 content.Compression = CompressionType.neverCompress;
 
                 image.Dispose();

@@ -5,6 +5,7 @@ using Limaki.Drawing.Gdi;
 using Limaki.View.Rendering;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
+using System;
 
 namespace Limaki.View.Swf.Visualizers {
     
@@ -36,7 +37,7 @@ namespace Limaki.View.Swf.Visualizers {
         }
 
         
-        public Get<global::Xwt.Drawing.Color> BackColor {get;set;}
+        public Func<global::Xwt.Drawing.Color> BackColor {get;set;}
 
         protected object lockRender = new object();
         

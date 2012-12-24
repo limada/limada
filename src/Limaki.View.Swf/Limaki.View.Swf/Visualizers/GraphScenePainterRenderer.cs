@@ -19,7 +19,7 @@ namespace Limaki.View.Visualizers {
             throw new NotImplementedException();
         }
 
-        public Get<global::Xwt.Drawing.Color> BackColor { get; set; }
+        public Func<global::Xwt.Drawing.Color> BackColor { get; set; }
 
         public void OnPaint(IRenderEventArgs e) {
             this.OnPaint(Converter.Convert(e));

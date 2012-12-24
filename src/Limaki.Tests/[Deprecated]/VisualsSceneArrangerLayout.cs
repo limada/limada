@@ -22,6 +22,7 @@ using Limaki.View.Layout;
 using Limaki.Visuals;
 using Xwt;
 using System.Linq;
+using System;
 
 namespace Limaki.View.Visuals.Layout {
     /// <summary>
@@ -33,7 +34,7 @@ namespace Limaki.View.Visuals.Layout {
         where TItem : IVisual
         where TEdge : IEdge<TItem>, TItem {
 
-        public VisualsSceneArrangerLayout(Get<IGraphScene<TItem, TEdge>> handler, IStyleSheet stylesheet) : base(handler, stylesheet) { }
+        public VisualsSceneArrangerLayout(Func<IGraphScene<TItem, TEdge>> handler, IStyleSheet stylesheet) : base(handler, stylesheet) { }
 
         public override void Invoke() {
             var data = Data;

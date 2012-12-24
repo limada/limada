@@ -54,13 +54,13 @@ namespace Limaki.View.Rendering {
                 return null;
             }
         }
-        Get<ICamera> _camera = null;
-        Get<ICamera> ISelectionRenderer.Camera {
+        Func<ICamera> _camera = null;
+        Func<ICamera> ISelectionRenderer.Camera {
             get { return _camera; }
             set { _camera = value; }
         }
 
-        public Get<IClipper> Clipper { get; set; }
+        public Func<IClipper> Clipper { get; set; }
         public Action<IShape> UpdateGrip { get; set; }
 
         protected GripPainterBase _gripPainter = null;

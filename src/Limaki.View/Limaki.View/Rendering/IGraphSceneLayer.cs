@@ -16,13 +16,14 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.Rendering;
+using System;
 
 namespace Limaki.View.Rendering {
 
     public interface IGraphSceneLayer<TItem, TEdge> : ILayer<IGraphScene<TItem, TEdge>> 
         where TEdge:TItem, IEdge<TItem> {
         
-        Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
+        Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
     
     }
 }

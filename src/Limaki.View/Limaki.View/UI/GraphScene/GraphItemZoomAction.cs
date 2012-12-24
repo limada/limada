@@ -16,6 +16,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Xwt;
+using System;
 
 namespace Limaki.View.UI.GraphScene {
     /// <summary>
@@ -25,7 +26,7 @@ namespace Limaki.View.UI.GraphScene {
         where TEdge : IEdge<TItem>, TItem{
         public GraphItemZoomAction():base() {}
 
-        public Get<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
+        public Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
         
         public IGraphScene<TItem, TEdge> Scene {
             get { return SceneHandler(); }

@@ -17,6 +17,7 @@ using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Xwt;
+using System;
 
 namespace Limaki.View.Rendering {
 
@@ -84,19 +85,19 @@ namespace Limaki.View.Rendering {
 
         #region ILayer<T> Member
 
-        protected Get<T> _data = null;
-        Get<T> ILayer<T>.Data {
+        protected Func<T> _data = null;
+        Func<T> ILayer<T>.Data {
             get { return _data; }
             set { _data = value; }
         }
 
-        protected Get<ICamera> _camera = null;
-        Get<ICamera> ILayer<T>.Camera {
+        protected Func<ICamera> _camera = null;
+        Func<ICamera> ILayer<T>.Camera {
             get { return _camera; }
             set { _camera = value; }
         }
-        protected Get<IContentRenderer<T>> _renderer = null;
-        Get<IContentRenderer<T>> ILayer<T>.Renderer {
+        protected Func<IContentRenderer<T>> _renderer = null;
+        Func<IContentRenderer<T>> ILayer<T>.Renderer {
             get { return _renderer; }
             set { _renderer = value; }
         }

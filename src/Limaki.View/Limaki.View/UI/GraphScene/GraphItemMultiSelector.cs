@@ -20,6 +20,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Xwt;
+using System;
 
 namespace Limaki.View.UI.GraphScene {
     public class GraphItemMultiSelector<TItem,TEdge>:SelectorAction, IKeyAction 
@@ -30,7 +31,7 @@ namespace Limaki.View.UI.GraphScene {
         }
 
 
-        public virtual Get<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
+        public virtual Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
         public IGraphScene<TItem, TEdge> Scene {
             get { return SceneHandler(); }
         }

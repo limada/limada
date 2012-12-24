@@ -32,7 +32,7 @@ namespace Limaki.View.UI.GraphScene {
             this.Priority = ActionPriorities.SelectionPriority - 20;
         }
 
-        public virtual Get<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
+        public virtual Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
         public IGraphScene<TItem, TEdge> Scene {
             get { return SceneHandler(); }
         }

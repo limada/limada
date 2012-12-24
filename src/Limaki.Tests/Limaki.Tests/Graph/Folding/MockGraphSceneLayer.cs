@@ -7,6 +7,7 @@ using Limaki.Drawing;
 using Limaki.Common;
 using Limaki.View.UI.GraphScene;
 using Xwt;
+using System;
 
 namespace Limaki.Tests.Graph.Wrappers {
 
@@ -43,7 +44,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
         public bool Opaque { get; set; }
 
-        public Get<Xwt.Drawing.Color> BackColor { get; set; }
+        public Func<Xwt.Drawing.Color> BackColor { get; set; }
 
         protected object lockRender = new object();
 

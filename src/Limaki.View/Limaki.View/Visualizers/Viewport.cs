@@ -71,8 +71,8 @@ namespace Limaki.View.Visualizers {
         /// <summary>
         /// DataLayer.Origin
         /// </summary>
-        public Get<Point> GetDataOrigin {get;set;}
-        public Get<Size> GetDataSize{get;set;}
+        public Func<Point> GetDataOrigin {get;set;}
+        public Func<Size> GetDataSize{get;set;}
 
         #endregion
 

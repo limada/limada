@@ -28,6 +28,7 @@ namespace Limaki.View.Layout {
     /// <typeparam name="TEdge"></typeparam>
     public class GraphSceneItemShapeLocator<TItem, TEdge> : ILocator<TItem>
         where TEdge : IEdge<TItem>, TItem {
+
         public IGraphScene<TItem, TEdge> GraphScene { get; set; }
 
         public Point GetLocation (TItem item) {

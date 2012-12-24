@@ -165,32 +165,32 @@ namespace Limaki.View.Modelling {
 
         #region IGraphSceneReceiver<TItem, TEdge> Member
 
-        protected Get<IGraphScene<TItem, TEdge>> _graphScene = null;
-        Get<IGraphScene<TItem, TEdge>> IGraphSceneReceiver<TItem, TEdge>.GraphScene {
+        protected Func<IGraphScene<TItem, TEdge>> _graphScene = null;
+        Func<IGraphScene<TItem, TEdge>> IGraphSceneReceiver<TItem, TEdge>.GraphScene {
             get { return _graphScene; }
             set { _graphScene = value; }
         }
 
-        protected Get<IGraphSceneLayout<TItem, TEdge>> _layout = null;
-        Get<IGraphSceneLayout<TItem, TEdge>> IGraphSceneReceiver<TItem, TEdge>.Layout {
+        protected Func<IGraphSceneLayout<TItem, TEdge>> _layout = null;
+        Func<IGraphSceneLayout<TItem, TEdge>> IGraphSceneReceiver<TItem, TEdge>.Layout {
             get { return _layout; }
             set { _layout = value; }
         }
 
-        protected Get<ICamera> _camera = null;
-        Get<ICamera> IGraphSceneReceiver<TItem, TEdge>.Camera {
+        protected Func<ICamera> _camera = null;
+        Func<ICamera> IGraphSceneReceiver<TItem, TEdge>.Camera {
             get { return _camera; }
             set { _camera = value; }
         }
 
-        protected Get<IClipper> _clipper = null;
-        Get<IClipper> IGraphSceneReceiver<TItem, TEdge>.Clipper {
+        protected Func<IClipper> _clipper = null;
+        Func<IClipper> IGraphSceneReceiver<TItem, TEdge>.Clipper {
             get { return _clipper; }
             set { _clipper = value; }
         }
 
-        protected Get<IModelReceiver<TItem>> _modelReceiver = null;
-        Get<IModelReceiver<TItem>> IGraphSceneReceiver<TItem, TEdge>.ModelReceiver {
+        protected Func<IModelReceiver<TItem>> _modelReceiver = null;
+        Func<IModelReceiver<TItem>> IGraphSceneReceiver<TItem, TEdge>.ModelReceiver {
             get { return _modelReceiver; }
             set { _modelReceiver = value; }
         }

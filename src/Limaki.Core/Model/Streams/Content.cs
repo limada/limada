@@ -21,7 +21,7 @@ namespace Limaki.Model.Streams {
 	
     public class Content {
         public CompressionType Compression = CompressionType.None;
-        public Id StreamType = StreamTypes.Unknown;
+        public Id StreamType = ContentTypes.Unknown;
         public object Description=null;
         public object Source=null;
     }

@@ -14,6 +14,7 @@
 
 using Limaki.Common;
 using Xwt.Drawing;
+using System;
 
 namespace Limaki.View.Rendering {
     /// <summary>
@@ -33,7 +34,7 @@ namespace Limaki.View.Rendering {
         /// <param name="clipper"></param>
         void Render(IClipper clipper);
 
-        Get<Color> BackColor { get; set; }
+        Func<Color> BackColor { get; set; }
 
         /// <summary>
         /// prepares the PaintEventArgs

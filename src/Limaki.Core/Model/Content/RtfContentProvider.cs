@@ -24,11 +24,11 @@ using Limaki.Model.Streams;
 namespace Limaki.Model.Content {
 
     public class RtfContentProvider : ContentProvider {
-        StreamTypeInfo[] _supportedStreamTypes =
-            new StreamTypeInfo[]{
-				new StreamTypeInfo(
+        ContentInfo[] _supportedContents =
+            new ContentInfo[]{
+				new ContentInfo(
 			        "Rich Text Format",
-                    StreamTypes.RTF,
+                    ContentTypes.RTF,
                     "rtf",
                     "application/rtf",
                     CompressionType.bZip2,
@@ -39,8 +39,8 @@ namespace Limaki.Model.Content {
 			
 		};
 
-        public override IEnumerable<StreamTypeInfo> SupportedStreamTypes {
-            get { return _supportedStreamTypes; }
+        public override IEnumerable<ContentInfo> SupportedContents {
+            get { return _supportedContents; }
         }
 
         public override bool Saveable { get { return true; } }

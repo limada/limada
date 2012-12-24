@@ -40,7 +40,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         }
 
         public override bool Supports(long streamType) {
-            return streamType == StreamTypes.RTF || streamType == StreamTypes.ASCII;
+            return streamType == ContentTypes.RTF || streamType == ContentTypes.ASCII;
         }
 
         double zoom = 1;
@@ -70,7 +70,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
             var rtfStreamType = RichTextBoxStreamType.PlainText;
 
             try {
-                if (content.StreamType == StreamTypes.RTF) {
+                if (content.StreamType == ContentTypes.RTF) {
                     rtfStreamType = RichTextBoxStreamType.RichText;
 
                     stream = PrepareRead(stream);
@@ -109,7 +109,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
                     stream.Position = 0;
 
 
-                    content.StreamType = StreamTypes.RTF;
+                    content.StreamType = ContentTypes.RTF;
                     content.Compression = CompressionType.bZip2;
                     content.Data = stream;
                 }

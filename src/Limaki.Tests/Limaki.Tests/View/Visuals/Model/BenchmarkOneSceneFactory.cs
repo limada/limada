@@ -42,7 +42,7 @@ namespace Limaki.Tests.Graph.Model {
                 );
 
         public class LongtermPerformanceSceneLayout : VisualsSceneLayout<IVisual,IVisualEdge> {
-            public LongtermPerformanceSceneLayout(Get<IGraphScene<IVisual, IVisualEdge>> handler, IStyleSheet stylesheet)
+            public LongtermPerformanceSceneLayout(Func<IGraphScene<IVisual, IVisualEdge>> handler, IStyleSheet stylesheet)
                 :
                     base(handler, stylesheet) { }
 

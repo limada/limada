@@ -15,17 +15,18 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Xwt;
+using System;
 
 namespace Limaki.View.Rendering {
     public interface ILayer<T> : IRenderAction {
-        Get<T> Data { get; set; }
+        Func<T> Data { get; set; }
         void DataChanged();
 
         Point Origin { get; set; }
         Size Size { get; set;}
         
-        Get<ICamera> Camera { get; set; }
-        Get<IContentRenderer<T>> Renderer { get; set; }
+        Func<ICamera> Camera { get; set; }
+        Func<IContentRenderer<T>> Renderer { get; set; }
 
         void OnPaint ( IRenderEventArgs e );
     }

@@ -56,7 +56,7 @@ namespace Limaki.View.Layout {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override void AddBounds(IShape item) {
+        public override void BoundsChanged(IShape item) {
             throw new Exception("The method or operation is not implemented.");
         }
 

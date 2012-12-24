@@ -79,7 +79,6 @@
     <Compile Include="Common\Localizer.cs" />
     <Compile Include="Common\OS.cs" />
     <Compile Include="Common\Copier.cs" />
-    <Compile Include="Common\Delegates.cs" />
     <Compile Include="Common\Empty.cs" />
     <Compile Include="Common\EventArgs_T.cs" />
     <Compile Include="Common\Factory.cs" />
@@ -261,8 +260,8 @@
     <Compile Include="Model\Streams\Content.cs" />
     <Compile Include="Model\Streams\ContentProvider.cs" />
     <Compile Include="Model\Streams\ContentProviders.cs" />
-    <Compile Include="Model\Streams\StreamTypeInfo.cs" />
-    <Compile Include="Model\Streams\StreamTypes.cs" />
+    <Compile Include="Model\Streams\ContentInfo.cs" />
+    <Compile Include="Model\Streams\ContentTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\Mono.Net.3.0\Mono.HashSet3.cs" />
     <Compile Include="Limada\UseCases\FileManagerBase.cs" />
@@ -275,7 +274,6 @@
     <Compile Include="Model\Content\HtmlContentProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Common\Text\MonoRTF\ChangeLog" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

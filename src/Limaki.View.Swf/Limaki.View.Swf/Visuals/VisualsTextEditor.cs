@@ -47,7 +47,7 @@ namespace Limaki.View.Swf.Visuals {
         IDisplay display = null;
 
         public VisualsTextEditor(
-            Get<IGraphScene<IVisual,IVisualEdge>> sceneHandler, 
+            Func<IGraphScene<IVisual,IVisualEdge>> sceneHandler, 
             ContainerControl device,
             IDisplay display,
             ICamera camera,
@@ -61,7 +61,7 @@ namespace Limaki.View.Swf.Visuals {
         }
 
 
-        Get<IGraphScene<IVisual, IVisualEdge>> _sceneHandler;
+        Func<IGraphScene<IVisual, IVisualEdge>> _sceneHandler;
         public IGraphScene<IVisual, IVisualEdge> Scene {
             get { return _sceneHandler(); }
         }

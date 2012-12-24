@@ -25,6 +25,7 @@ namespace Limaki.Iconerias {
         public virtual Color StrokeColor { get; set; }
         public virtual bool Fill { get; set; }
         public virtual bool Stroke { get; set; }
+        public virtual bool StrokeFirst { get; set; }
 
         public virtual void PaintIcon (Context c, double size, double x, double y, Action<Context> icon) {
             c.Save();
@@ -39,14 +40,20 @@ namespace Limaki.Iconerias {
             icon(c);
 
             c.SetLineWidth(size / 50);
+            
+            if (Stroke && StrokeFirst&&Fill) {
+                c.SetColor(StrokeColor);
+                c.StrokePreserve();
+            }
+
             if (Fill) {
                 c.SetColor(FillColor);
-                if (Stroke)
+                if (Stroke && ! StrokeFirst)
                     c.FillPreserve();
                 else
                     c.Fill();
             }
-            if (Stroke) {
+            if (Stroke && ! StrokeFirst) {
                 c.SetColor(StrokeColor);
                 c.Stroke();
             }

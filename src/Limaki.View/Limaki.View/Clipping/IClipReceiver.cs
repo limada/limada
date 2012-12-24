@@ -15,6 +15,7 @@
 
 using Limaki.Common;
 using Limaki.View.Rendering;
+using System;
 
 namespace Limaki.View.Clipping {
     /// <summary>
@@ -26,7 +27,7 @@ namespace Limaki.View.Clipping {
 
         IClipper Clipper { get; set; }
 
-        Get<IViewport> Viewport { get; set; }
-        Get<IBackendRenderer> Renderer { get; set; }
+        Func<IViewport> Viewport { get; set; }
+        Func<IBackendRenderer> Renderer { get; set; }
     }
 }

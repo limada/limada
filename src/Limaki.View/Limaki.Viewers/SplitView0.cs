@@ -450,7 +450,7 @@ namespace Limaki.Viewers {
                 return;
 
             Content<Stream> content = new Content<Stream>(
-                new MemoryStream(), CompressionType.bZip2, StreamTypes.RTF);
+                new MemoryStream(), CompressionType.bZip2, ContentTypes.RTF);
 
             content.Description = title;
 

@@ -43,7 +43,7 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         public override bool Supports(long streamType) {
-            return streamType == StreamTypes.LimadaSheet;
+            return streamType == ContentTypes.LimadaSheet;
         }
 
         public override void SetContent(Content<Stream> content) {

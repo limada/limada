@@ -43,7 +43,7 @@ namespace Limaki.View.Modelling {
                 } else if (layoutCommand.Parameter == LayoutActionType.Invoke) {
                     Layout.Invoke(layoutCommand.Subject);
                 } else if (layoutCommand.Parameter == LayoutActionType.AddBounds) {
-                    Layout.AddBounds(layoutCommand.Subject);
+                    Layout.BoundsChanged(layoutCommand.Subject);
                 }
             } else if (request is LayoutCommand<TItem, IShape>) {
                 LayoutCommand<TItem, IShape> layoutCommand = (LayoutCommand<TItem, IShape>)request;
@@ -54,7 +54,7 @@ namespace Limaki.View.Modelling {
                 } else if (layoutCommand.Parameter == LayoutActionType.Invoke) {
                     Layout.Invoke(layoutCommand.Subject, layoutCommand.Parameter2);
                 } else if (layoutCommand.Parameter == LayoutActionType.AddBounds) {
-                    Layout.AddBounds(layoutCommand.Subject);
+                    Layout.BoundsChanged(layoutCommand.Subject);
                 }
             } else if (request is DeleteCommand<TItem,TEdge>) {
                 request.Execute();

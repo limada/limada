@@ -16,6 +16,7 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using System;
 
 namespace Limaki.View.Modelling {
     /// <summary>
@@ -26,10 +27,10 @@ namespace Limaki.View.Modelling {
     /// <typeparam name="TEdge"></typeparam>
     public interface IGraphSceneReceiver<TItem, TEdge> : IReceiver
         where TEdge : TItem, IEdge<TItem> { // "Realizer"; == SceneController
-        Get<IGraphScene<TItem, TEdge>> GraphScene { get; set; }
-        Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
-        Get<ICamera> Camera { get; set; }
-        Get<IClipper> Clipper { get; set; }
-        Get<IModelReceiver<TItem>> ModelReceiver { get; set; }
+        Func<IGraphScene<TItem, TEdge>> GraphScene { get; set; }
+        Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
+        Func<ICamera> Camera { get; set; }
+        Func<IClipper> Clipper { get; set; }
+        Func<IModelReceiver<TItem>> ModelReceiver { get; set; }
     }
 }

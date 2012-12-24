@@ -26,16 +26,16 @@ namespace Limaki.Model.Content {
     public class HtmlContentProvider : ContentProvider {
         static long XHTML = 0x280efaf080c35e30;
 
-        StreamTypeInfo[] _supportedStreamTypes =
-            new StreamTypeInfo[]{
-				new StreamTypeInfo(
+        ContentInfo[] _supportedContents =
+            new ContentInfo[]{
+				new ContentInfo(
 			        "HTML",
-                    StreamTypes.HTML,
+                    ContentTypes.HTML,
                     "html",
                     "text/html",
                     CompressionType.bZip2
 			),
-            new StreamTypeInfo(
+            new ContentInfo(
 			        "XHTML",
                     XHTML,
                     "xhtml",
@@ -45,13 +45,13 @@ namespace Limaki.Model.Content {
 			
 		};
 
-        public override IEnumerable<StreamTypeInfo> SupportedStreamTypes {
-            get { return _supportedStreamTypes; }
+        public override IEnumerable<ContentInfo> SupportedContents {
+            get { return _supportedContents; }
         }
 
-        public override StreamTypeInfo Info(Stream stream) {
+        public override ContentInfo Info(Stream stream) {
 
-            StreamTypeInfo result = null;
+            ContentInfo result = null;
             
             var oldPos = stream.Position;
             int buflen = Math.Min(256, (int)stream.Length);
@@ -65,14 +65,14 @@ namespace Limaki.Model.Content {
                 s.Contains("<html") ||
                 s.Contains("<head") ||
                 s.Contains("<body")) {
-                result = _supportedStreamTypes[0];
+                result = _supportedContents[0];
             }
 
             if (
                s.Contains("<!doctype xhtml") ||
                s.Contains("<xhtml") 
                 ) {
-                result = _supportedStreamTypes[1];
+                result = _supportedContents[1];
             }
 
             stream.Position = oldPos;

@@ -45,7 +45,7 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         public override bool Supports(long streamType) {
-            return streamType == StreamTypes.HTML;
+            return streamType == ContentTypes.HTML;
         }
 
 

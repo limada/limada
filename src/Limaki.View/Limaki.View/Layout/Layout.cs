@@ -130,7 +130,7 @@ namespace Limaki.View.Layout {
 
         #region Bounds-Handling
 
-        public abstract void AddBounds(TItem item);
+        public abstract void BoundsChanged(TItem item);
         public abstract Point[] GetDataHull(TItem item, Matrix matrix, int delta, bool extend);
         public abstract Point[] GetDataHull(TItem item, UiState uiState, Matrix matrix, int delta, bool extend);
         public abstract Point[] GetDataHull(TItem item, int delta, bool extend);
@@ -145,19 +145,12 @@ namespace Limaki.View.Layout {
         public abstract IShape GetShape(TItem item);
         #endregion
 
-        public virtual Func<TItem, string> OrderBy { get; set; }
+        public virtual Func<TItem, double> OrderBy { get; set; }
 
     }
 
 
-    public class Row<TItem> {
-        public ICollection<TItem> Items = new Set<TItem>();
-        public Point Location;
-        public Size biggestItemSize;
-        public Size Size;
-        public bool SizeAdjusted = false;
-        public Row() { }
-    }
+   
 
 
 }

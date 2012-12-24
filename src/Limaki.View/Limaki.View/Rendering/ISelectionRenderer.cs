@@ -31,7 +31,7 @@ namespace Limaki.View.Rendering {
         void Clear();
 
         IWidgetBackend Backend { get; set; }
-        Get<IClipper> Clipper { get; set; }
-        Get<ICamera> Camera { get; set; }
+        Func<IClipper> Clipper { get; set; }
+        Func<ICamera> Camera { get; set; }
     }
 }

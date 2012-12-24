@@ -16,6 +16,7 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using System;
 
 namespace Limaki.View.Rendering {
     /// <summary>
@@ -27,12 +28,12 @@ namespace Limaki.View.Rendering {
     /// <typeparam name="T"></typeparam>
     public interface IContentRenderer<T>  {
         void Render(T data, IRenderEventArgs e);
-        Get<ICamera> Camera { get; set; }
+        Func<ICamera> Camera { get; set; }
     }
 
     public interface IGraphItemRenderer<TItem, TEdge> : IContentRenderer<TItem>
     where TEdge : TItem, IEdge<TItem> {
-        Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
+        Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
     }
 
     public interface IGraphSceneRenderer<TItem, TEdge> : IContentRenderer<IGraphScene<TItem, TEdge>>
@@ -40,7 +41,7 @@ namespace Limaki.View.Rendering {
         
         IGraphItemRenderer<TItem, TEdge> ItemRenderer { get; set; }
 
-        Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
+        Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
         
 
     }

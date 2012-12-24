@@ -32,7 +32,7 @@ namespace Limaki.Tests.View.Display {
         public ITestDevice TestDevice { get; set; }
         public object TestForm { get; set; }
 
-        public Get<IDisplay<T>> Factory { get; set; }
+        public Func<IDisplay<T>> Factory { get; set; }
         private IDisplay<T> _display = null;
         public virtual IDisplay<T> Display {
             get {

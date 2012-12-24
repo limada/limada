@@ -19,6 +19,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.Rendering;
 using Xwt;
+using System;
 
 namespace Limaki.View.UI.GraphScene {
     /// <summary>
@@ -27,7 +28,7 @@ namespace Limaki.View.UI.GraphScene {
     public class GraphItemDeleteAction<TItem,TEdge>:KeyActionBase 
         where TEdge:TItem,IEdge<TItem> {
         
-        public Get<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
+        public Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
         public IGraphScene<TItem, TEdge> Scene {
             get { return SceneHandler(); }
         }

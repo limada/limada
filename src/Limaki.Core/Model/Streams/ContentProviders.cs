@@ -11,12 +11,12 @@ namespace Limaki.Model.Streams {
 
         public virtual void Add(IContentProvider provider) {
             providers.Add(provider);
-            provider.SupportedStreamTypes.ForEach(t => MimeTypes[t.StreamType]=t.MimeType);
+            provider.SupportedContents.ForEach(t => MimeTypes[t.ContentType]=t.MimeType);
         }
 
         public virtual void Remove(IContentProvider provider) {
             providers.Remove(provider);
-            provider.SupportedStreamTypes.ForEach (t => MimeTypes.Remove (t.StreamType));
+            provider.SupportedContents.ForEach (t => MimeTypes.Remove (t.ContentType));
         }
 
         public virtual IContentProvider Find(string extension) {
@@ -46,14 +46,14 @@ namespace Limaki.Model.Streams {
             get {
                 if (_mimeTypes == null) {
                     _mimeTypes = new Dictionary<long, string> ();
-                    _mimeTypes.Add (StreamTypes.HTML, "text/html");
-                    _mimeTypes.Add (StreamTypes.ASCII, "text/plain");
-                    _mimeTypes.Add (StreamTypes.Doc, "application/msword");
-                    _mimeTypes.Add (StreamTypes.GIF, "image/gif");
-                    _mimeTypes.Add (StreamTypes.JPG, "image/jpeg");
-                    _mimeTypes.Add (StreamTypes.PNG, "image/png");
-                    _mimeTypes.Add (StreamTypes.RTF, "text/rtf");
-                    _mimeTypes.Add (StreamTypes.TIF, "image/tiff");
+                    _mimeTypes.Add (ContentTypes.HTML, "text/html");
+                    _mimeTypes.Add (ContentTypes.ASCII, "text/plain");
+                    _mimeTypes.Add (ContentTypes.Doc, "application/msword");
+                    _mimeTypes.Add (ContentTypes.GIF, "image/gif");
+                    _mimeTypes.Add (ContentTypes.JPG, "image/jpeg");
+                    _mimeTypes.Add (ContentTypes.PNG, "image/png");
+                    _mimeTypes.Add (ContentTypes.RTF, "text/rtf");
+                    _mimeTypes.Add (ContentTypes.TIF, "image/tiff");
                 }
                 return _mimeTypes;
             }

@@ -71,7 +71,7 @@ namespace Limada.Data {
                     things.Add(thing);
 
                     var streamThing = thing as IStreamThing;
-                    if (streamThing != null && streamThing.StreamType == StreamTypes.LimadaSheet) {
+                    if (streamThing != null && streamThing.StreamType == ContentTypes.LimadaSheet) {
 
                         ThingIdSerializer ser = new ThingIdSerializer();
                         ser.Graph = graph.Two as IThingGraph;

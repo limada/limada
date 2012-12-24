@@ -59,7 +59,7 @@ namespace Limaki.Tests.UseCases {
 
         public void CreateTestCases(UseCase useCase, SwfUseCaseComposer composer) {
             
-            Get<BenchmarkOneTests> displayTest = () => {
+            Func<BenchmarkOneTests> displayTest = () => {
                 var test = new BenchmarkOneTests();
                 var testinst = new WinformDisplayTestComposer<IGraphScene<IVisual, IVisualEdge>>();
 

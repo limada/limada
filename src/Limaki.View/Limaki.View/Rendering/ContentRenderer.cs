@@ -15,12 +15,13 @@
 
 using Limaki.Common;
 using Limaki.Drawing;
+using System;
 
 namespace Limaki.View.Rendering {
 
     public abstract class ContentRenderer<T> : IContentRenderer<T> {
 
-        public virtual Get<ICamera> Camera {get;set;}
+        public virtual Func<ICamera> Camera {get;set;}
 
         public abstract void Render(T data, IRenderEventArgs e);
 

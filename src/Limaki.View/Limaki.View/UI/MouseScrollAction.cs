@@ -24,7 +24,7 @@ namespace Limaki.View.UI {
     /// </summary>
     public class MouseScrollAction:MouseDragActionBase, ICheckable {
 
-        public virtual Get<IViewport> Viewport { get; set; }
+        public virtual Func<IViewport> Viewport { get; set; }
 
         public MouseScrollAction(): base() {
             Priority = ActionPriorities.ScrollActionPriority;

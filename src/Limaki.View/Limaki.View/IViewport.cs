@@ -16,6 +16,7 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Xwt;
+using System;
 
 namespace Limaki.View {
     /// <summary>
@@ -55,12 +56,12 @@ namespace Limaki.View {
         /// Origin of Data in
         /// World Coordinates
         /// </summary>
-        Get<Point> GetDataOrigin { get; set; }
+        Func<Point> GetDataOrigin { get; set; }
         /// <summary>
         /// size of Data in 
         /// World Coordinates  
         /// </summary>
-        Get<Size> GetDataSize { get; set; }
+        Func<Size> GetDataSize { get; set; }
         
 
         void Update();

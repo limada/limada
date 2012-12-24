@@ -15,12 +15,13 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using System;
 
 namespace Limaki.View.Rendering {
     public abstract class GraphItemRenderer<TItem, TEdge> : ContentRenderer<TItem>, IGraphItemRenderer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
-        public Get<IGraphSceneLayout<TItem, TEdge>> Layout {get;set;}
+        public Func<IGraphSceneLayout<TItem, TEdge>> Layout {get;set;}
 
 
     }

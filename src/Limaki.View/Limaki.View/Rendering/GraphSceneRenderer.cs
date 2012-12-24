@@ -20,6 +20,7 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using System;
 
 namespace Limaki.View.Rendering {
     public class GraphSceneRenderer<TItem, TEdge> : ContentRenderer<IGraphScene<TItem, TEdge>>,
@@ -28,7 +29,7 @@ namespace Limaki.View.Rendering {
 
         public virtual IGraphItemRenderer<TItem,TEdge> ItemRenderer { get; set; }
 
-        public Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
+        public Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
 
 
 #if countVisuals

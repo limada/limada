@@ -78,7 +78,7 @@ namespace Limaki.View.Swf.DragDrop {
                 if (dataObject.ContainsText(TextDataFormat.Rtf)) {
                     
                     textInfo.Data = dataObject.GetText(TextDataFormat.Rtf);
-                    textInfo.StreamType = StreamTypes.RTF;
+                    textInfo.StreamType = ContentTypes.RTF;
 
                 } else if (dataObject.ContainsText(TextDataFormat.Html)) {
                     string s = null;
@@ -86,7 +86,7 @@ namespace Limaki.View.Swf.DragDrop {
                     if (r!=null)
                         s = System.Text.Encoding.UTF8.GetString(r); 
                     textInfo = HTMLPostProcess(s);
-                    textInfo.StreamType = StreamTypes.HTML;
+                    textInfo.StreamType = ContentTypes.HTML;
                     if (false) {
                         var format = "HTML Format"; //"text/html";//
                         if (dataObject.GetDataPresent(format)) {
@@ -230,7 +230,7 @@ begin
        with txbStreamNode(lItem) do
        begin
           Text := PlainText;
-          StreamType := sTypHTML;
+          ContentType := sTypHTML;
           compress;
           Area := self.Area;
           write;

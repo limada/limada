@@ -19,6 +19,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Xwt;
+using System;
 
 namespace Limaki.View.UI.GraphScene {
     /// <summary>
@@ -33,8 +34,8 @@ namespace Limaki.View.UI.GraphScene {
             this.Priority = ActionPriorities.SelectionPriority - 10;
         }
 
-        public Get<ICamera> CameraHandler { get; set; }
-        public Get<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
+        public Func<ICamera> CameraHandler { get; set; }
+        public Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
 
         public IGraphScene<TItem, TEdge> Scene {
             get { return SceneHandler(); }

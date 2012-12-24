@@ -139,19 +139,19 @@ namespace Limaki.Drawing.Styles {
             return member;
         }
 
-        protected T Get<T>(Func<Nullable<T>> parentMemnber, Nullable<T> member, T deefault) where T : struct {
+        protected T Get<T>(Func<Nullable<T>> parentMember, Nullable<T> member, T deefault) where T : struct {
             if (member == null)
                 if (ParentStyle != null)
-                    return parentMemnber().Value;
+                    return parentMember().Value;
                 else
                     return deefault;
             return member.Value;
         }
 
-        protected void Set<T>(Func<Nullable<T>> parentMemnber, ref Nullable<T> member, T value) where T : struct {
-            if (ParentStyle == null || !parentMemnber().Equals(value))
+        protected void Set<T>(Func<Nullable<T>> parentMember, ref Nullable<T> member, T value) where T : struct {
+            if (ParentStyle == null || !parentMember().Equals(value))
                 member = value;
-            if (ParentStyle != null && parentMemnber().Equals(value))
+            if (ParentStyle != null && parentMember().Equals(value))
                 member = null;
         }
         #endregion

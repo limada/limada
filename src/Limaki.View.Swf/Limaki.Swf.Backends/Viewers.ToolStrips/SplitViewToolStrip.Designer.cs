@@ -83,7 +83,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // graphStreamViewButton
             // 
             this.graphStreamViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.graphStreamViewButton.Image = global::Limaki.View.Properties.Iconery.GraphDocView;
+            this.graphStreamViewButton.Image = global::Limaki.View.Properties.Iconery.GraphContentView;
             this.graphStreamViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.graphStreamViewButton.Name = "graphStreamViewButton";
             this.graphStreamViewButton.Size = new System.Drawing.Size(24, 24);

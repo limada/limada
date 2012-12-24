@@ -23,11 +23,11 @@ using Limaki.Model.Streams;
 
 namespace Limaki.Model.Content {
     public class ImageContentProvider : ContentProvider {
-        StreamTypeInfo[] _supportedStreamTypes =
-            new StreamTypeInfo[]{
-					new StreamTypeInfo(
+        ContentInfo[] _supportedContents =
+            new ContentInfo[]{
+					new ContentInfo(
 			            "JPEG image",
-	                    StreamTypes.JPG,
+	                    ContentTypes.JPG,
 	                    "jpg",
 	                    "image/jpeg",
 	                    CompressionType.neverCompress,
@@ -35,9 +35,9 @@ namespace Limaki.Model.Content {
 							new Magic(new byte[]{0xff,0xd8},0),
 							new Magic(ByteUtils.BytesOfArray(new int[]{377,330,377}),0)
 						}),
-                      new StreamTypeInfo(
+                      new ContentInfo(
 			            "Tagged Image File Format",
-	                    StreamTypes.TIF,
+	                    ContentTypes.TIF,
 	                    "tif",
 	                    "image/tiff",
 	                    CompressionType.bZip2,
@@ -45,18 +45,18 @@ namespace Limaki.Model.Content {
 							new Magic(new byte[]{0x49,0x49,0x2A,0x00},0),
                             new Magic(new byte[]{0x4D,0x4D,0x00,0x2A},0)
 						}),
-                      new StreamTypeInfo(
+                      new ContentInfo(
 			            "GIF image",
-	                    StreamTypes.GIF,
+	                    ContentTypes.GIF,
 	                    "gif",
 	                    "image/gif",
 	                    CompressionType.neverCompress,
 				 		new Magic[]{
 							new Magic(Encoding.ASCII.GetBytes(@"GIF"),0)
 						}),
-                     new StreamTypeInfo(
+                     new ContentInfo(
 			            "PNG image",
-	                    StreamTypes.PNG,
+	                    ContentTypes.PNG,
 	                    "png",
 	                    "image/png",
 	                    CompressionType.neverCompress,
@@ -67,8 +67,8 @@ namespace Limaki.Model.Content {
 		};
 
 
-        public override IEnumerable<StreamTypeInfo> SupportedStreamTypes {
-            get { return _supportedStreamTypes; }
+        public override IEnumerable<ContentInfo> SupportedContents {
+            get { return _supportedContents; }
         }
 
         public override bool Saveable { get { return true; } }

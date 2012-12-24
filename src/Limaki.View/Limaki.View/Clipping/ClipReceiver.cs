@@ -16,6 +16,7 @@
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.View.Rendering;
+using System;
 
 namespace Limaki.View.Clipping {
     /// <summary>
@@ -76,14 +77,14 @@ namespace Limaki.View.Clipping {
 
         #region IGraphicsPipeline Member
 
-        Get<IViewport> _viewport = null;
-        Get<IViewport> IClipReceiver.Viewport {
+        Func<IViewport> _viewport = null;
+        Func<IViewport> IClipReceiver.Viewport {
             get { return _viewport; }
             set { _viewport = value; }
         }
 
-        Get<IBackendRenderer> _renderer = null;
-        Get<IBackendRenderer> IClipReceiver.Renderer {
+        Func<IBackendRenderer> _renderer = null;
+        Func<IBackendRenderer> IClipReceiver.Renderer {
             get { return _renderer; }
             set { _renderer = value; }
         }

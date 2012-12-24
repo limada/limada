@@ -27,11 +27,11 @@ namespace Limaki.Model.Streams {
         bool Supports(long streamType);
         bool Supports (Stream stream);
 
-        IEnumerable<StreamTypeInfo> SupportedStreamTypes { get; }
+        IEnumerable<ContentInfo> SupportedContents { get; }
 
-        StreamTypeInfo Info (string extension);
-        StreamTypeInfo Info (long streamType);
-        StreamTypeInfo Info (Stream stream);
+        ContentInfo Info (string extension);
+        ContentInfo Info (long streamType);
+        ContentInfo Info (Stream stream);
 
         Content<Stream> Open(Stream stream);
         Content<Stream> Open(Uri uri);

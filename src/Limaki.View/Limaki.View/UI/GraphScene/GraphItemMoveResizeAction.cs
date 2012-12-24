@@ -33,7 +33,7 @@ namespace Limaki.View.UI.GraphScene {
             Priority = ActionPriorities.SelectionPriority - 10;
             FocusFilter = e => e;
         }
-        public Get<IGraphScene<TItem, TEdge>> SceneHandler;
+        public Func<IGraphScene<TItem, TEdge>> SceneHandler;
         public virtual IGraphScene<TItem, TEdge> Scene {
             get { return SceneHandler(); }
         }

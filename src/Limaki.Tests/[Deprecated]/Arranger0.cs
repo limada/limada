@@ -748,4 +748,13 @@ namespace Limaki.View.Layout {
 
         #endregion
     }
+
+    public class Row<TItem> {
+        public ICollection<TItem> Items = new Set<TItem>();
+        public Point Location;
+        public Size biggestItemSize;
+        public Size Size;
+        public bool SizeAdjusted = false;
+        public Row () { }
+    }
 }

@@ -47,6 +47,7 @@
     <Compile Include="Limaki.Drawing.Blind\BlindSystemFonts.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindSystemInformation.cs" />
     <Compile Include="Limaki.Drawing\IShaper.cs" />
+    <Compile Include="Limaki.Iconeria\LimadaIconeria.cs" />
     <Compile Include="Xwt\Matrix.cs" />
     <Compile Include="Limaki.Iconeria\AwesomeIconeria.cs" />
     <Compile Include="Limaki.Iconeria\AwesomeIconeria.Generated.cs" />

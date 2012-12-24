@@ -13,12 +13,12 @@ namespace Limaki.View.UI.GraphScene {
     public class GraphSceneFacade0<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
-        public GraphSceneFacade0 (Get<IGraphScene<TItem, TEdge>> sceneHandler, IGraphSceneLayout<TItem, TEdge> layout) {
+        public GraphSceneFacade0 (Func<IGraphScene<TItem, TEdge>> sceneHandler, IGraphSceneLayout<TItem, TEdge> layout) {
             this.SceneHandler = sceneHandler;
             this.Layout = layout;
         }
 
-        Get<IGraphScene<TItem, TEdge>> SceneHandler = null;
+        Func<IGraphScene<TItem, TEdge>> SceneHandler = null;
         IGraphScene<TItem, TEdge> _scene = null;
         public virtual IGraphScene<TItem, TEdge> Scene {
             get {

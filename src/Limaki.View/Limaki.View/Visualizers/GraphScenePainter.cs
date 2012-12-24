@@ -21,6 +21,7 @@ using Limaki.View.Visualizers;
 using Limaki.View.Rendering;
 using Xwt;
 using Xwt.Drawing;
+using System;
 
 namespace Limaki.View.Visualizers {
 
@@ -65,13 +66,13 @@ namespace Limaki.View.Visualizers {
     public class GraphScenePainterComposer<TItem, TEdge> : IComposer<GraphScenePainter<TItem, TEdge>>
     where TEdge : TItem, IEdge<TItem> {
 
-        public virtual Get<Size> DataSize { get; set; }
-        public virtual Get<Point> DataOrigin { get; set; }
-        public virtual Get<IClipper> Clipper { get; set; }
-        public virtual Get<IViewport> Viewport { get; set; }
-        public virtual Get<IBackendRenderer> BackRenderer { get; set; }
-        public virtual Get<ICamera> Camera { get; set; }
-        public virtual Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
+        public virtual Func<Size> DataSize { get; set; }
+        public virtual Func<Point> DataOrigin { get; set; }
+        public virtual Func<IClipper> Clipper { get; set; }
+        public virtual Func<IViewport> Viewport { get; set; }
+        public virtual Func<IBackendRenderer> BackRenderer { get; set; }
+        public virtual Func<ICamera> Camera { get; set; }
+        public virtual Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
 
         public virtual void Factor(GraphScenePainter<TItem, TEdge> painter) {
             var context = Registry.ConcreteContext;

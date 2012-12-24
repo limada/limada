@@ -11,7 +11,7 @@ namespace Limaki.View.XwtContext {
 
         public ILayer<T> Layer { get; set; }
 
-        public Get<Color> BackColor { get; set; }
+        public Func<Color> BackColor { get; set; }
 
         public void Render() {
             throw new NotImplementedException();

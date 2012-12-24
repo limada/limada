@@ -16,12 +16,13 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.UI;
+using System;
 
 namespace Limaki.View.Rendering {
     public class GraphSceneLayer<TItem, TEdge> : Layer<IGraphScene<TItem, TEdge>>
         where TEdge : TItem, IEdge<TItem> {
 
-        public virtual Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
+        public virtual Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
 
         public override void OnPaint(IRenderEventArgs e) {
             this.Renderer.Render(this.Data, e);

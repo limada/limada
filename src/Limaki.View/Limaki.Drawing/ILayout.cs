@@ -48,7 +48,7 @@ namespace Limaki.Drawing {
 
         bool Invoke(TItem item, IShape shape);
 
-        void AddBounds(TItem target);
+        void BoundsChanged(TItem target);
 
         /// <summary>
         /// Invalidates Item.Bounds to redraw the item
@@ -65,16 +65,7 @@ namespace Limaki.Drawing {
         Point[] GetDataHull(TItem item, int delta, bool extend);
         Point[] GetDataHull(TItem item, UiState uiState, int delta, bool extend);
 
-        Func<TItem, string> OrderBy { get; set; }
+        Func<TItem, double> OrderBy { get; set; }
     }
 
-    public enum Order {
-        Pre,
-        Post
-    }
-
-    public enum Algo {
-        DepthFirst,
-        BreathFirst
-    }
 }

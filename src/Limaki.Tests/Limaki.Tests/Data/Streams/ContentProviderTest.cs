@@ -26,13 +26,13 @@ namespace Limaki.Tests.Data.Streams {
             var providers = Registry.Pool.TryGetCreate<ContentProviders>();
             IContentProvider provider = null;
 
-            Assert.IsNotNull(providers.Find(StreamTypes.RTF), "rtf");
+            Assert.IsNotNull(providers.Find(ContentTypes.RTF), "rtf");
             Assert.IsNotNull(providers.Find("rtf"), "rtf");
 
-            Assert.IsNotNull(providers.Find(StreamTypes.HTML), "html");
+            Assert.IsNotNull(providers.Find(ContentTypes.HTML), "html");
             Assert.IsNotNull(providers.Find("html"), "html");
 
-            Assert.IsNotNull(providers.Find(StreamTypes.JPG), "jpg");
+            Assert.IsNotNull(providers.Find(ContentTypes.JPG), "jpg");
             Assert.IsNotNull(providers.Find("jpg"), "jpg");
         }
 
@@ -58,10 +58,10 @@ namespace Limaki.Tests.Data.Streams {
 
         [Test]
         public void ContentProviderFileTests() {
-            ContentProviderFileTest(GetTestDir() + "sampleDoc.rtf", StreamTypes.RTF);
-            ContentProviderFileTest(GetTestDir() + "sample.html", StreamTypes.HTML);
+            ContentProviderFileTest(GetTestDir() + "sampleDoc.rtf", ContentTypes.RTF);
+            ContentProviderFileTest(GetTestDir() + "sample.html", ContentTypes.HTML);
 
-            ContentProviderFileTest(GetTestDir() + "sample.jpg", StreamTypes.JPG);
+            ContentProviderFileTest(GetTestDir() + "sample.jpg", ContentTypes.JPG);
         }
 
         [Test]

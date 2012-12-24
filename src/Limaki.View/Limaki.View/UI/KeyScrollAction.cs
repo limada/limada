@@ -1,14 +1,15 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Xwt;
+using System;
 
 namespace Limaki.View.UI {
     /// <summary>
     /// Scrolls with cursor keys
     /// </summary>
     public class KeyScrollAction : KeyActionBase, ICheckable {
-        public virtual Get<IViewport> Viewport { get; set; }
-        public virtual Get<ICursorHandler> CursorGetter { get; set; }
+        public virtual Func<IViewport> Viewport { get; set; }
+        public virtual Func<ICursorHandler> CursorGetter { get; set; }
 
         public override void OnKeyPressed(KeyActionEventArgs e) {
             ProcessKey(e);

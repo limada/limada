@@ -20,6 +20,7 @@ using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
 using Xwt;
+using System;
 
 namespace Limaki.View.Visuals.UI {
     /// <summary>
@@ -30,7 +31,7 @@ namespace Limaki.View.Visuals.UI {
             this.Priority = ActionPriorities.SelectionPriority + 10;
         }
 
-        public virtual Get<IGraphSceneLayout<IVisual, IVisualEdge>> LayoutHandler { get; set; }
+        public virtual Func<IGraphSceneLayout<IVisual, IVisualEdge>> LayoutHandler { get; set; }
         public virtual IGraphSceneLayout<IVisual, IVisualEdge> Layout {
             get { return LayoutHandler(); }
         }

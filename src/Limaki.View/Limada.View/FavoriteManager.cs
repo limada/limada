@@ -99,7 +99,7 @@ namespace Limada.View {
         protected virtual bool DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, IThing thing, IThingGraph thingGraph ) {
             var streamThing = thing as IStreamThing;
             try {
-                if (streamThing != null && streamThing.StreamType == StreamTypes.LimadaSheet) {
+                if (streamThing != null && streamThing.StreamType == ContentTypes.LimadaSheet) {
                     var content = ThingStreamFacade.GetContent(thingGraph, streamThing);
                     content.Source = streamThing.Id;
                     DisplaySheet(display, content);
@@ -229,7 +229,7 @@ namespace Limada.View {
 
         public virtual bool AddToSheets(IThingGraph graph, Int64 sheetId) {
             var thing = graph.GetById(sheetId) as IStreamThing;
-                if (thing != null && thing.StreamType == StreamTypes.LimadaSheet) {
+                if (thing != null && thing.StreamType == ContentTypes.LimadaSheet) {
                     var add = graph.Edges(thing).Where(l => l.Marker.Id != CommonSchema.DescriptionMarker.Id).Count() == 0;
                     if(add) {
                         var sheets = TryAddSomeThing(graph, TopicSchema.Sheets);

@@ -25,13 +25,13 @@ namespace Limaki.View.Visualizers {
 
     public class DisplayComposer<TData>:IComposer<Display<TData>>, IDisposable {
         
-        public virtual Get<IClipper> Clipper { get; set; }
-        public virtual Get<IViewport> Viewport { get; set; }
-        public virtual Get<IBackendRenderer> Renderer { get; set; }
-        public virtual Get<ICamera> Camera { get; set; }
-        public virtual Get<Size> DataSize { get; set; }
-        public virtual Get<Point> DataOrigin { get; set; }
-        public virtual Get<ICursorHandler> DeviceCursor { get; set; }
+        public virtual Func<IClipper> Clipper { get; set; }
+        public virtual Func<IViewport> Viewport { get; set; }
+        public virtual Func<IBackendRenderer> Renderer { get; set; }
+        public virtual Func<ICamera> Camera { get; set; }
+        public virtual Func<Size> DataSize { get; set; }
+        public virtual Func<Point> DataOrigin { get; set; }
+        public virtual Func<ICursorHandler> DeviceCursor { get; set; }
 
 
         public virtual void Factor(Display<TData> display) {

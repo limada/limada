@@ -19,6 +19,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.Rendering;
 using Xwt;
+using System;
 
 namespace Limaki.View.UI.GraphScene {
 
@@ -28,8 +29,8 @@ namespace Limaki.View.UI.GraphScene {
 
         IBackendRenderer DeviceRenderer { get; set; }
         ISelectionRenderer MoveResizeRenderer { get; set; }
-        Get<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
-        Get<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
+        Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
+        Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
         GraphSceneFacade<TItem, TEdge> Folder { get; set; }
 
         void Clear ();
@@ -45,8 +46,8 @@ namespace Limaki.View.UI.GraphScene {
         public IBackendRenderer DeviceRenderer {get;set;}
         public virtual ISelectionRenderer MoveResizeRenderer { get; set; }
 
-        public Get<IGraphSceneLayout<TItem, TEdge>> Layout { get;set;}
-        public Get<IGraphScene<TItem, TEdge>> SceneHandler {get;set;}
+        public Func<IGraphSceneLayout<TItem, TEdge>> Layout { get;set;}
+        public Func<IGraphScene<TItem, TEdge>> SceneHandler {get;set;}
 
         private GraphSceneFacade<TItem,TEdge> _folder = null;
         public virtual GraphSceneFacade<TItem, TEdge> Folder {

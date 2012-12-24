@@ -21,7 +21,13 @@ namespace Limaki.Swf.Backends.Viewers {
     public partial class About : Form {
         public About() {
             InitializeComponent();
-            this.linkLabel1.Links[0].LinkData = "http://limada.sourceforge.net/";
+            this.linkLabel1.Links[0].LinkData = "http://www.limada.org/";
+            this.label2.Click += About_Click;
+            this.label2.Text =
+                "Credits:\r\n"
+                + "Icons: http://fortawesome.github.com/Font-Awesome \r\n"
+               
+                ;
         }
 
         private void About_Click(object sender, EventArgs e) {

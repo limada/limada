@@ -48,8 +48,8 @@ namespace Xwt.Html5.TestApp {
                 writer.Write (htmlstring);
                 writer.Flush ();
                 s.Position = 0;
-                var content = new Content<Stream> (s, CompressionType.None, StreamTypes.HTML);
-                content.StreamType = StreamTypes.HTML;
+                var content = new Content<Stream> (s, CompressionType.None, ContentTypes.HTML);
+                content.StreamType = ContentTypes.HTML;
                 r.AbsoluteUri = uri;
                 htmlViewer.SetContent (r, content);
 

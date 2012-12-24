@@ -352,7 +352,7 @@ namespace Limada.UseCases {
                     string name = dir + Path.DirectorySeparatorChar +
                                   scene.Focused.Data.ToString() + " " +
                                   pageName +
-                                  StreamTypes.Extension(streamThing.StreamType);
+                                  ContentTypes.Extension(streamThing.StreamType);
 
                     streamThing.Data.Position = 0;
                     using (FileStream fileStream = new FileStream(name, FileMode.Create)) {

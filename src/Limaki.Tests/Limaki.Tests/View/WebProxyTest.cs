@@ -17,7 +17,7 @@ namespace Limaki.Tests.View {
             if (scene != null ) {
                 foreach(var item in scene.Elements
                     .Select(v=>scene.Graph.ThingOf(v)).OfType<IStreamThing>()
-                    .Where(s=>s.StreamType==StreamTypes.HTML)) {
+                    .Where(s=>s.StreamType==ContentTypes.HTML)) {
                     scene.Focused = scene.Graph.VisualOf(item);
                     display.OnSceneFocusChanged();
                 }

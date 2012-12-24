@@ -26,11 +26,11 @@ namespace Limaki.UseCases {
             return null;
         }
 
-        protected virtual StreamTypeInfo GetStreamTypeInfo(Content stream) {
+        protected virtual ContentInfo GetStreamTypeInfo(Content stream) {
             var providers = Registry.Pool.TryGetCreate<ContentProviders>();
             var provider = providers.Find(stream.StreamType);
             if (provider != null) {
-                return provider.SupportedStreamTypes.Where(e => e.StreamType == stream.StreamType).First();
+                return provider.SupportedContents.Where(e => e.ContentType == stream.StreamType).First();
             }
             return null;
         }

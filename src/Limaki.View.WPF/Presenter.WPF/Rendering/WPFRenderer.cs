@@ -21,7 +21,7 @@ namespace Limaki.View.WPF.Display {
             OnPaint (new WPFRenderEventArgs (Device.Surface, clipper));
         }
 
-        public Get<Color> BackColor {get;set;}
+        public Func<Color> BackColor {get;set;}
 
 
         public void OnPaint(IRenderEventArgs e) {

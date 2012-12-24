@@ -121,7 +121,7 @@ namespace Limada.View {
             IThing result = thingGraph.GetById(id);
             if (result != null) {
                 if (!(result is IStreamThing && 
-                    ((IStreamThing)result).StreamType == StreamTypes.LimadaSheet)) {
+                    ((IStreamThing)result).StreamType == ContentTypes.LimadaSheet)) {
                     Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(
                         new ArgumentException("This id does not belong to a sheet")
                         , MessageType.OK);
@@ -143,7 +143,7 @@ namespace Limada.View {
             var thingGraph = GetThingGraph(target);
             var thing = GetSheetThing(thingGraph, info.Id) as IStreamThing;
             
-            var content = new Content<Stream>(source, CompressionType.bZip2, StreamTypes.LimadaSheet);
+            var content = new Content<Stream>(source, CompressionType.bZip2, ContentTypes.LimadaSheet);
             content.Description = info.Name;
 
             if (thing is IStreamThing || thing == null){
@@ -178,7 +178,7 @@ namespace Limada.View {
             if (thing is IStreamThing || thing == null) {
                 
                 Content<Stream> content = new Content<Stream>(
-                    new MemoryStream(), CompressionType.bZip2, StreamTypes.LimadaSheet);
+                    new MemoryStream(), CompressionType.bZip2, ContentTypes.LimadaSheet);
 
                 var sheet = new Sheet(scene, layout);
                 sheet.Save(content.Data);

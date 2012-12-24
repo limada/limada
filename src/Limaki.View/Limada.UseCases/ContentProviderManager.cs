@@ -22,7 +22,7 @@ namespace Limada.UseCases {
                     var providers = Registry.Pool.TryGetCreate<ContentProviders>();
                     string defaultFilter = null;
                     foreach (var provider in providers) {
-                        foreach (var info in provider.SupportedStreamTypes) {
+                        foreach (var info in provider.SupportedContents) {
                             string filter = info.Description + "|*" + info.Extension + "|";
                             if (info.Extension == DefaultExtension)
                                 defaultFilter = filter;

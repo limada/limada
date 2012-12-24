@@ -41,7 +41,7 @@ namespace Limaki.View.Swf.Visuals {
 
         ICamera camera = null;
         IDragDopControl control = null;
-        public VisualsDragDrop( Get<IGraphScene<IVisual,IVisualEdge>> sceneHandler, IDragDopControl control, ICamera camera , IGraphSceneLayout<IVisual,IVisualEdge> layout)
+        public VisualsDragDrop( Func<IGraphScene<IVisual,IVisualEdge>> sceneHandler, IDragDopControl control, ICamera camera , IGraphSceneLayout<IVisual,IVisualEdge> layout)
             : this() {
             this.control = control;
             this.camera = camera;
@@ -49,7 +49,7 @@ namespace Limaki.View.Swf.Visuals {
             this._layout = layout;
         }
 
-        Get<IGraphScene<IVisual, IVisualEdge>> SceneHandler;
+        Func<IGraphScene<IVisual, IVisualEdge>> SceneHandler;
         public IGraphScene<IVisual, IVisualEdge> Scene {
             get { return SceneHandler(); }
         }

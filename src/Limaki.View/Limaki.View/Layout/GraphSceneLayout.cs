@@ -20,13 +20,14 @@ using Limaki.Graphs;
 using Xwt;
 using Limaki.Graphs.Extensions;
 using System.Linq;
+using System;
 
 namespace Limaki.View.Layout {
 
     public abstract class GraphSceneLayout<TItem, TEdge> : Layout<TItem>, IGraphSceneLayout<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
-        public GraphSceneLayout(Get<IGraphScene<TItem, TEdge>> dataHandler, IStyleSheet styleSheet)
+        public GraphSceneLayout(Func<IGraphScene<TItem, TEdge>> dataHandler, IStyleSheet styleSheet)
             : base(styleSheet) {
             this.DataHandler = dataHandler;
             this.Dimension = Drawing.Dimension.X;
@@ -34,7 +35,7 @@ namespace Limaki.View.Layout {
             this.Align = true;
         }
 
-        public Get<IGraphScene<TItem, TEdge>> DataHandler { get; set; }
+        public Func<IGraphScene<TItem, TEdge>> DataHandler { get; set; }
 
         public virtual IGraphScene<TItem, TEdge> Data {
             get { return DataHandler(); }
@@ -65,6 +66,7 @@ namespace Limaki.View.Layout {
         }
 
         public bool Align { get; set; }
+
         public override void Invoke () {
             var data = Data;
             

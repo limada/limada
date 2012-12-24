@@ -40,7 +40,7 @@ namespace Limada.View {
         public virtual IGraphSceneLayout<IVisual,IVisualEdge> Layout {
             get {
                 if (_layout == null) {
-                    Get<IGraphScene<IVisual, IVisualEdge>> fScene = () => this.Scene;
+                    Func<IGraphScene<IVisual, IVisualEdge>> fScene = () => this.Scene;
                     _layout = Registry.Factory.Create <IGraphSceneLayout<IVisual, IVisualEdge>>(
                         fScene,
                         Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet);

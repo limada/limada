@@ -16,6 +16,7 @@ using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Xwt;
+using System;
 
 namespace Limaki.View.UI {
     /// <summary>
@@ -26,7 +27,7 @@ namespace Limaki.View.UI {
             Priority = ActionPriorities.ZoomActionPriority;
         }
 
-        public virtual Get<IViewport> Viewport { get; set; }
+        public virtual Func<IViewport> Viewport { get; set; }
         
         
         // ZoomState In 

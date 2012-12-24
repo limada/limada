@@ -8,6 +8,7 @@ using Limaki.View.UI.GraphScene;
 using Limaki.Viewers;
 using Xwt.Drawing;
 using Limaki.View.XwtContext;
+using System;
 
 namespace Limaki.View.Visualizers {
 
@@ -26,7 +27,7 @@ namespace Limaki.View.Visualizers {
 
             this.Scene = scene;
 
-            Get<IGraphScene<TItem, TEdge>> fScene = () => this.Scene;
+            Func<IGraphScene<TItem, TEdge>> fScene = () => this.Scene;
 
             if (StyleSheet == null) {
                 StyleSheet = Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet;

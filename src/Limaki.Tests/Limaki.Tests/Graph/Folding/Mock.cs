@@ -93,7 +93,7 @@ namespace Limaki.Tests.Graph.Wrappers {
     }
 
     public class MockVisualsDisplay : GraphSceneDisplay<IVisual, IVisualEdge> {
-        public Get<IGraphScene<IVisual, IVisualEdge>> DataHandler { get; set; }
+        public Func<IGraphScene<IVisual, IVisualEdge>> DataHandler { get; set; }
         public override IGraphScene<IVisual, IVisualEdge> Data {
             get {
                 base.Data = DataHandler ();
