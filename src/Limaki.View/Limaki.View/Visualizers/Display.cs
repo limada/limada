@@ -48,9 +48,11 @@ namespace Limaki.View.Visualizers {
         public virtual void DataChanged() {
             if (SelectAction != null)
                 SelectAction.Clear();
-            Viewport.ClipOrigin = Viewport.DataOrigin;
-            Invoke();
-            UpdateZoom();
+            if (!disposing) {
+                Viewport.ClipOrigin = Viewport.DataOrigin;
+                Invoke();
+                UpdateZoom();
+            }
         }
 
         //public virtual ILayout<TData> Layout { get; set; }
@@ -116,8 +118,9 @@ namespace Limaki.View.Visualizers {
         }
 
         #region IDisposable Member
-
+        bool disposing = true;
         public void Dispose() {
+            disposing = true;
             var instrumenter = this.Composer as IDisposable;
             this.Composer = null;
             instrumenter.Dispose();

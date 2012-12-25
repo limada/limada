@@ -40,7 +40,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         protected virtual void Compose () {
             var options = new AlignerOptions {
                 Dimension = Dimension.X,
-                PointOrderDelta=40,
+                PointOrderDelta = 40,
                 Collisions = Collisions.NextFree //| Collisions.Toggle
             };
             
@@ -54,6 +54,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.LogicalLayout,
                 Size = size,
+                ToolTipText = "arrange siblings of selected"
             };
 
             var fullLayout = new ToolStripCommand {
@@ -63,6 +64,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.FullLayout,
                 Size = size,
+                ToolTipText = "arrange all"
             };
 
             var columns = new ToolStripCommand {
@@ -72,6 +74,8 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.ArrageRows,
                 Size = size,
+                ToolTipText = "arrange in columns"
+
             };
             var oneColumn = new ToolStripCommand {
                 Action = (s) => {
@@ -80,6 +84,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeOneRow,
                 Size = size,
+                ToolTipText = "arrange in one column"
             };
             var arrangeLeft = new ToolStripCommand {
                 Action = (s) => {
@@ -88,6 +93,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeLeft,
                 Size = size,
+                ToolTipText = "align left"
             };
             var arrangeCenter = new ToolStripCommand {
                 Action = (s) => {
@@ -96,6 +102,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeCenter,
                 Size = size,
+                ToolTipText = "align center"
             };
             var arrangeRight = new ToolStripCommand {
                 Action = (s) => {
@@ -104,6 +111,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeRight,
                 Size = size,
+                ToolTipText = "align rigth"
             };
 
             var arrangeTop = new ToolStripCommand {
@@ -113,6 +121,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeTop,
                 Size = size,
+                ToolTipText = "align top"
             };
             var arrangeCenterV = new ToolStripCommand {
                 Action = (s) => {
@@ -121,6 +130,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeMiddle,
                 Size = size,
+                ToolTipText = "align middle"
             };
             var arrangeBottom = new ToolStripCommand {
                 Action = (s) => {
@@ -129,6 +139,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeBottom,
                 Size = size,
+                ToolTipText = "align bottom"
             };
 
             var dimensionX = new ToolStripCommand {
@@ -138,6 +149,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.DimensionX,
                 Size = size,
+                ToolTipText = "arrange left to right"
             };
 
             var dimensionY = new ToolStripCommand {
@@ -147,12 +159,14 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 },
                 Image = Limaki.View.Properties.Iconery.DimensionY,
                 Size = size,
+                ToolTipText = "arrange top to bottom"
             };
 
             var undo = new ToolStripCommand {
                 Action = (s) => Undo(),
                 Size = size,
                 Image = Limaki.View.Properties.Iconery.Undo,
+                ToolTipText = "undo last arrange"
             };
             var horizontalButton = new ToolStripDropDownButtonEx { Command = arrangeLeft };
             horizontalButton.DropDownItems.AddRange(new ToolStripItem[] {

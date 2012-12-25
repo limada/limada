@@ -24,6 +24,8 @@ using Limaki.Model.Content;
 using System;
 using Limaki;
 using Limaki.Tests;
+using Limaki.Data;
+using Limaki.Common.Linqish;
 
 namespace Limada.Tests.Schemata {
     [TestFixture]
@@ -124,10 +126,20 @@ namespace Limada.Tests.Schemata {
 
         [Test]
         public virtual void TestDocumentWithTestData() {
+            
+            IThingGraph thingGraph = new ThingGraph();
+            var prov = new Limada.Data.Db4oThingGraphProvider();
+            prov.Open(DataBaseInfo.FromFileName(TestLocations.GraphtestDir + "DocumentTest.limo"));
+            thingGraph = prov.Data;
+
+
+
             this.ReportDetail("**** TestDocumentWithTestData");
             var factory = new TestDocumentFactory();
             var docSchema = new DocumentSchema();
-            var graph = new SchemaThingGraph(new ThingGraph());
+            var graph = new SchemaThingGraph(thingGraph);
+            Limada.Schemata.Schema.IdentityGraph.ForEach(s => graph.Add(s));
+
             var root = DocumentSchema.DocumentsRoot;
             var path = TestLocations.BlobSource;
 
@@ -148,6 +160,7 @@ namespace Limada.Tests.Schemata {
                 }
 
             }
+            prov.Save();
         }
     }
 

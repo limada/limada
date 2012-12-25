@@ -47,8 +47,8 @@ namespace Limaki.View.Visualizers {
             matrice.Scale(zoomFactor, zoomFactor);
 
             matrice.Translate(
-                (-offset.X - scrollPosition.X) / zoomFactor,//
-                (-offset.Y - scrollPosition.Y) / zoomFactor);//
+                (-offset.X - scrollPosition.X) ,
+                (-offset.Y - scrollPosition.Y)) ;
 
             return matrice;
         }

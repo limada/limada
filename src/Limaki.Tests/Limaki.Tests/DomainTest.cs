@@ -22,6 +22,8 @@ namespace Limaki.Tests {
                 var loader = new ViewContextRecourceLoader();
                 Registry.ConcreteContext = new ApplicationContext();
                 loader.ApplyResources(Registry.ConcreteContext);
+
+                new LimakiCoreContextRecourceLoader().ApplyResources(Registry.ConcreteContext);
                 //var factory = new AppFactory<global::Limada.UseCases.AppResourceLoader>(loader as IBackendContextRecourceLoader);
                 
             }
