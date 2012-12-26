@@ -38,7 +38,7 @@ namespace Limaki.UseCases {
             FileManager.OpenFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
             FileManager.SaveFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
 
-            if (!FileManager.OpenCommandLine()) {
+            if (!FileManager.OpenCommandLineOptions() || !FileManager.OpenCommandLine()) {
                 FileManager.ShowEmptyThingGraph();
             }
         }
@@ -154,8 +154,8 @@ namespace Limaki.UseCases {
         }
 
         public Action<string,int,int> Progress {get; set;}
-
-       
+        public Action ApplicationQuit { get; set; }
+        public bool ApplicationQuitted { get; set; }
 
 
 

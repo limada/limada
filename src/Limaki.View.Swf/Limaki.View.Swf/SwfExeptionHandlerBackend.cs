@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Limaki.Common;
 
 namespace Limaki.View.Swf {
+    
     public class SwfExeptionHandlerBackend:IExceptionHandler {
 
         public virtual void Catch(Exception e, MessageType messageType) {

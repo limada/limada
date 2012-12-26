@@ -5,6 +5,7 @@ using Limaki.Swf.Backends.UseCases;
 using Limaki.Common.IOC;
 using Limaki.Common;
 using Xwt.WinformBackend;
+using System;
 
 namespace Limaki.App {
 
@@ -37,8 +38,13 @@ namespace Limaki.App {
             factory.Compose(useCase);
 
             CallPlugins(factory, useCase);
-
+            
             useCase.Start();
+
+            if (useCase.ApplicationQuitted) {
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
 
         public void CallPlugins(UseCaseFactory<UseCase> factory, UseCase useCase) {

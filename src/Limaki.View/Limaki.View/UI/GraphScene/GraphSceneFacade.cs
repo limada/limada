@@ -210,6 +210,16 @@ namespace Limaki.View.UI.GraphScene {
 
         }
 
+        public class LevelItemComparer<T>:Comparer<LevelItem<T>> {
+            public virtual DataComparer<T> OrderBy { get; set; }
+            public override int Compare (LevelItem<T> x, LevelItem<T> y) {
+                if(x.Level==y.Level) {
+                    return OrderBy.Compare(x.Node, y.Node);
+                } else {
+                    return x.Level.CompareTo(y.Level);
+                }
+            }
+        }
         public virtual void Expand (bool deep) {
             var scene = this.Scene;
             if (scene.Selected.Count > 0) {
@@ -230,9 +240,10 @@ namespace Limaki.View.UI.GraphScene {
                     var walk = (deep ? walker.DeepWalk(root, 1) : walker.ExpandWalk(root, 1))
                             .Where(l => !(l.Node is TEdge) && affected.Contains(l.Node))
                             ;// && !root.Equals(l.Node));
-                    if (OrderBy != null)
-                        walk = walk.OrderBy(l => l.Node, OrderBy);
                     walk = walk.ToArray();
+                    if (OrderBy != null)
+                        walk = walk.OrderBy(l => l, new LevelItemComparer<TItem>{OrderBy = this.OrderBy}).ToArray();
+                    
                     var bounds = new Rectangle(aligner.Locator.GetLocation(root), aligner.Locator.GetSize(root));
                     options.Collisions = Collisions.None;
                     var cols = aligner.MeasureWalk(walk, ref bounds, options);
@@ -335,7 +346,7 @@ namespace Limaki.View.UI.GraphScene {
             roots.ForEach(root => {
                 var walk = walker.DeepWalk(root, 1).Where(l => !(l.Node is TEdge));
                 if (OrderBy != null)
-                    walk = walk.OrderBy(l => l.Node, OrderBy);
+                    walk = walk.OrderBy(l => l, new LevelItemComparer<TItem> { OrderBy = this.OrderBy });
                 
                 var bounds = new Rectangle(pos, Size.Zero);
                 aligner.Columns(walk, ref bounds, options);

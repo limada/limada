@@ -29,6 +29,7 @@ namespace Limaki.Data {
         public abstract void Open();
         public abstract void Save();
         public abstract void SaveAs(T source, DataBaseInfo FileName);
+        public abstract void Merge (T source, T target);
         public abstract void Close();
         public abstract void SaveCurrent();
         public abstract IDataProvider<T> Clone();

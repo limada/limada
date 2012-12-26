@@ -47,6 +47,7 @@ namespace Limaki.View.Swf {
             );
 
             context.Factory.Add<IExceptionHandler,SwfExeptionHandlerBackend>();
+            context.Factory.Add<IProgressHandler, ProgressHandler>();
             context.Factory.Add<IDrawingUtils,GdiDrawingUtils>();
             context.Factory.Add<ISystemFonts, GdiSystemFonts>();
             context.Factory.Add<IPainterFactory, PainterFactory>();

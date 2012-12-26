@@ -35,6 +35,7 @@ namespace Limaki.View.Visuals.Visualizers {
             folding.Layout = this.Layout;
             folding.DeviceRenderer = display.BackendRenderer;
             folding.MoveResizeRenderer = display.MoveResizeRenderer;
+            folding.OrderBy = new VisualComparer();
             display.EventControler.Add (folding);
 
             var addGraphEdgeAction = new AddEdgeAction();

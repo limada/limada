@@ -118,7 +118,7 @@ namespace Limaki.View.Visualizers {
         }
 
         #region IDisposable Member
-        bool disposing = true;
+        bool disposing = false;
         public void Dispose() {
             disposing = true;
             var instrumenter = this.Composer as IDisposable;

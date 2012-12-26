@@ -25,6 +25,7 @@ namespace Limaki.Data {
         bool Readable { get; }
         void Save();
         void SaveAs(T source, DataBaseInfo FileName);
+        void Merge (T source, T target);
         void Close();
         void SaveCurrent();
         IDataProvider<T> Clone();

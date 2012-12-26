@@ -26,13 +26,14 @@ using System.Collections.Generic;
 using Limaki.Graphs.Extensions;
 using Limaki.Viewers;
 using Limaki.Visuals;
+using Mono.Options;
 
 namespace Limada.UseCases {
 	public class FileManager:FileManagerBase {
 
         public Action<IGraphScene<IVisual, IVisualEdge>> DataBound = null;
         public Action<string> DataPostProcess = null;
-
+        public Action ApplicationQuit = null;
         #region ThingGraph Open 
 
         public override bool OpenFile(DataBaseInfo fileName) {
@@ -70,9 +71,62 @@ namespace Limada.UseCases {
                 this.OpenFile(DataBaseInfo.FromFileName(OpenFileDialog.FileName));
             }
         }
-        
-        public bool OpenCommandLine() {
-            var args = Environment.GetCommandLineArgs();
+
+        public bool OpenCommandLineOptions () {
+            var result = false;
+            var filesToAdd = new List<string>();
+            string fileToOpen = null;
+            var exitAfterImport = false;
+
+            var p = new OptionSet() {
+                                        { "add=", a => filesToAdd .Add(a)}, 
+                                        { "file=", a => fileToOpen=a },
+                                        { "exit", a => exitAfterImport=a!=null },
+                                    };
+            var options = p.Parse(Environment.GetCommandLineArgs());
+            
+            if (fileToOpen != null) {
+                result = OpenCommandLine(new string[] { fileToOpen });
+            } else {
+                result = OpenCommandLine(options.ToArray());
+            }
+            if (result && filesToAdd.Count > 0) {
+                var progressSaved = this.Progress;
+                var progressHandler = Registry.Pool.TryGetCreate<IProgressHandler>();
+                this.Progress = (m, i, max) => progressHandler.Write(m, i, max);
+                try {
+                    foreach (var fileToAdd in filesToAdd) {
+                        if (File.Exists(fileToAdd)) {
+                            progressHandler.Show("Importing file " + fileToAdd);
+                            var db = DataBaseInfo.FromFileName(fileToAdd);
+                            var provider = GetThingGraphProvider(db);
+                            if (provider != null) {
+                                try {
+                                    provider.Open(db);
+                                    provider.Merge(provider.Data, this.ThingGraphProvider.Data);
+                                } catch (Exception ex) {
+                                    Registry.Pool.TryGetCreate<IExceptionHandler>()
+                                        .Catch(new Exception("Add file failed: " + ex.Message, ex), MessageType.OK);
+                                } finally {
+                                    provider.Close();
+                                    provider.Data = null;
+                                }
+                            }
+                        }
+                    }
+                    this.Progress = null;
+                    progressHandler.Close();
+                } finally {
+                    this.Progress = progressSaved;
+                }
+            }
+            if (exitAfterImport && ApplicationQuit!=null)
+                ApplicationQuit();
+            return result;
+        }
+
+        public bool OpenCommandLine (string [] args) {
+
             string fileName = null;
             if (args.Length > 1) {
                 if (File.Exists(args[1])) {
@@ -83,6 +137,10 @@ namespace Limada.UseCases {
                 return OpenFile(DataBaseInfo.FromFileName(fileName));
             }
             return false;
+        }
+
+	    public bool OpenCommandLine() {
+            return OpenCommandLine(Environment.GetCommandLineArgs());
         }
 
         public void ShowEmptyThingGraph() {

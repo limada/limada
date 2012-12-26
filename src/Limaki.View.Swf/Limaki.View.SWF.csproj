@@ -63,6 +63,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Limaki.Controls\MessageBoxShow.cs" />
+    <Compile Include="Limaki.Controls\ProgressHandler.cs" />
+    <Compile Include="Limaki.Controls\ProgressViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.Controls\ProgressViewer.Designer.cs">
+      <DependentUpon>ProgressViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Limaki.Controls\TextEditor\TextBoxEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>

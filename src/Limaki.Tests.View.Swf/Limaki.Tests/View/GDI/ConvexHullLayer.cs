@@ -77,10 +77,10 @@ namespace Limaki.Tests.View.GDI {
 
         void IReceiver.Execute() {
             var points = new Set<Xwt.Point>();
-            Matrix matrix = this.Camera.Matrix.Clone ();
+            var matrix = new Matrix(this.Camera.Matrix);
             var layout = this.Layout ();
             if (Data != null && Data.Requests.Count != 0) {
-                foreach (ICommand<IVisual> command in Data.Requests) {
+                foreach (var command in Data.Requests) {
                     if (command != null && command.Subject != null) {
                         if (command.Subject.Shape != null) {
                             var hull = command.Subject.Shape.Hull (tolerance, true);

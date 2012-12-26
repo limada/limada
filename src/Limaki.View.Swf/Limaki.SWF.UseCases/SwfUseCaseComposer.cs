@@ -98,6 +98,8 @@ namespace Limaki.Swf.Backends.UseCases {
                 useCase.Dispose ();
             };
 
+            useCase.ApplicationQuit = () => useCase.ApplicationQuitted = true;
+            
             InstrumentMenus (useCase);
 
             var utils = new SwfUtils ();

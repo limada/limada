@@ -55,6 +55,7 @@ namespace Limaki.UseCases {
             fileManager.DataPostProcess = useCase.DataPostProcess;
 
             fileManager.Progress = useCase.Progress;
+            fileManager.ApplicationQuit = useCase.ApplicationQuit;
             
             splitView.Check ();
 			

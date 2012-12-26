@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using NUnit.Framework;
+using Mono.Options;
 
 namespace Limaki.Tests.Common {
     public class IOUtilsTest : DomainTest {
@@ -18,5 +19,12 @@ namespace Limaki.Tests.Common {
             ReportDetail(nice);
         }
 
+        [Test]
+        public void OptionsTest() {
+            var args = new string[] { "-add=otherfile.limo", "myfile.limo" };
+            var p = new OptionSet() { { "add=", a => ReportDetail("add: "+a) }, { "file=", a => ReportDetail("file: "+a) }};
+            var options = p.Parse(args);
+            options.ForEach(o => ReportDetail(o));
+        }
     }
 }

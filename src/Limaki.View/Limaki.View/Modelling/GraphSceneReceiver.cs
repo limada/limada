@@ -19,6 +19,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.UI.GraphScene;
+using Xwt.Drawing;
 
 namespace Limaki.View.Modelling {
     /// <summary>
@@ -39,7 +40,7 @@ namespace Limaki.View.Modelling {
 
             if (data != null && data.Requests.Count != 0 && modeller != null && camera != null) {
                 bool clipChanged = false;
-                var matrix = camera.Matrix.Clone ();
+                var matrix = new Matrix(camera.Matrix);
 
                 if (clipper != null) {
                     Action<ICommand<TItem>> before = (request) => {

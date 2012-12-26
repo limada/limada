@@ -62,6 +62,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="3rdParty\Options.cs" />
     <Compile Include="Actions\ActionBase.cs" />
     <Compile Include="Actions\ActionPriorities.cs" />
     <Compile Include="Actions\Command.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Common\Collections\MultiDictiionary.cs" />
     <Compile Include="Common\Collections\MultiDictionaryBase.cs" />
     <Compile Include="Common\Collections\Set.cs" />
+    <Compile Include="Common\IProgressHandler.cs" />
     <Compile Include="Common\KeyMaker.cs" />
     <Compile Include="Common\Linqish\CompareExpressionBuilder.cs" />
     <Compile Include="Common\Linqish\EnumerableExtensions.cs" />
@@ -293,6 +295,7 @@
   <ItemGroup>
     <None Include="Common\Text\MonoRTF\ChangeLog" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

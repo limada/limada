@@ -23,7 +23,7 @@ namespace Limaki.Drawing {
 
         # region IShape
         public virtual void ToSource(IShape s) {
-            using (Matrix m = (Matrix)Matrix.Clone()) {
+            using (var m = new Matrix(Matrix)) {
                 m.Invert();
                 s.Transform(m);
             }
@@ -38,7 +38,7 @@ namespace Limaki.Drawing {
         # region int
         public virtual Point ToSource(Point s) {
             Point[] result = { s };
-            using (Matrix m = (Matrix)Matrix.Clone()) {
+            using (var m = new Matrix(Matrix)) {
                 m.Invert();
                 m.Transform(result);
             }
@@ -47,16 +47,16 @@ namespace Limaki.Drawing {
         
         public virtual Size ToSource(Size s) {
             Point[] result = { new Point(s.Width, s.Height) };
-            using (Matrix m = (Matrix)Matrix.Clone()) {
+            using (var m = new Matrix(Matrix)) {
                 m.Invert();
-                m.VectorTransformPoints(result);
+                m.TransformVector(result);
             }
             return new Size(result[0].X, result[0].Y);
         }
 
         public virtual Rectangle ToSource(Rectangle r) {
             Point[] p = { r.Location, new Point(r.Right, r.Bottom) };
-            using (Matrix m = (Matrix)Matrix.Clone()) {
+            using (var m = new Matrix(Matrix)) {
                 m.Invert();
                 m.Transform(p);
             }
@@ -66,16 +66,16 @@ namespace Limaki.Drawing {
        
 
         public virtual Point FromSource(Point s) {
-            Matrix m = Matrix;
+            var m = Matrix;
             Point[] result = { s };
             m.Transform(result);
             return result[0];
         }
 
         public virtual Size FromSource(Size s) {
-            Matrix m = Matrix;
+            var m = Matrix;
             Point[] result =  { new Point(s.Width, s.Height) };
-            m.VectorTransformPoints(result);
+            m.TransformVector(result);
             return new Size(result[0].X,result[0].Y);
         }
        

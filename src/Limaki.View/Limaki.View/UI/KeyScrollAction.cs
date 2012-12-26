@@ -35,7 +35,7 @@ namespace Limaki.View.UI {
             if (x != 0d || y != 0d) {
                 var pos = viewport.ClipOrigin;
                 var size = viewport.ClipSize;
-                var bounds = new Rectangle(viewport.DataOrigin, viewport.DataSize);
+                var bounds = new Rectangle(viewport.DataOrigin, new Size((int)viewport.DataSize.Width,(int)viewport.DataSize.Height));
 
                 var result = Rectangle.FromLTRB(
                     x == -1 && pos.X == bounds.X ? -1 : 0,

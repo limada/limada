@@ -207,7 +207,7 @@ namespace Limaki.Viewers {
             CurrentDisplay = Display1;
         }
 
-        #region StreamView
+        #region ContentView
 
         private ContentViewManager _contentViewManager = null;
         public ContentViewManager ContentViewManager {
