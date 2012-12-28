@@ -58,13 +58,11 @@ namespace Limaki.Swf.Backends.UseCases {
 
             var viewProviders = Registry.Pool.TryGetCreate<ContentViewProviders> ();
 
-            var htmlViewer = new HtmlViewerController ();
-            htmlViewer.BackendHandler = new WebBrowserBackendHandler ();
-            viewProviders.Add (htmlViewer);
+            viewProviders.Add (new HtmlViewerController {BackendHandler = new WebBrowserBackendHandler ()});
+            viewProviders.Add(new DocumentSchemaController());
             viewProviders.Add (new ImageViewerController ());
             viewProviders.Add (new TextViewerWithToolstripController ());
             viewProviders.Add (new SheetViewerController ());
-            viewProviders.Add (new DocumentSchemaController ());
 
         }
 
@@ -129,7 +127,7 @@ namespace Limaki.Swf.Backends.UseCases {
                     new ToolStripMenuItem(l["current view ..."], null, (s, e) => { useCase.ExportCurrentView(); }),
                     new ToolStripMenuItem(l["as image ..."], null, (s, e) => { this.ExportAsImage(useCase); }),
                     new ToolStripMenuItem(l["Content ..."], null, (s, e) => { useCase.ExportContent(); }),
-                    new ToolStripMenuItem(l["Report ..."], null, (s, e) => { useCase.ExportThings(); }),
+                    new ToolStripMenuItem(l["Report (pdf)..."], null, (s, e) => { useCase.ExportThings(); }),
                 }),
 				new ToolStripMenuItem(l["Import"], null, new ToolStripMenuItem[] { 
 					new ToolStripMenuItem(l["Content ..."], null, (s, e) => { useCase.ImportContent(); }),

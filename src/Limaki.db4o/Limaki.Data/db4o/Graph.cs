@@ -22,6 +22,7 @@ using Limaki.Common.Collections;
 using Limaki.Graphs;
 using Db4objects.Db4o.Linq;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Limaki.Data.db4o {
     public class Graph<TItem, TEdge> : DbGraph<TItem, TEdge>, IGatewayConnection
@@ -290,8 +291,8 @@ namespace Limaki.Data.db4o {
                         needsOpenClose = RefactorType(type) || needsOpenClose;
                     }
                 } catch (Exception e) {
-                    System.Console.WriteLine("Error with " + type.FullName + "\t" + e.Message);
-                    System.Console.WriteLine(e.StackTrace);
+                    Trace.WriteLine("Error with " + type.FullName + "\t" + e.Message);
+                    Trace.WriteLine(e.StackTrace);
                 }
                 typesDone.Add(type);
             }
@@ -320,8 +321,8 @@ namespace Limaki.Data.db4o {
                         ConfigureType(type);
                     }
                 } catch (Exception e) {
-                    System.Console.WriteLine("Error with " + type.FullName + "\t" + e.Message);
-                    System.Console.WriteLine(e.StackTrace);
+                    Trace.WriteLine("Error with " + type.FullName + "\t" + e.Message);
+                    Trace.WriteLine(e.StackTrace);
                 }
                 typesDone.Add(type);
             }

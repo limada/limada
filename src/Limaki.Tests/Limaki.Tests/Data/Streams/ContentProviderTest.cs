@@ -8,6 +8,7 @@ using NUnit.Framework;
 using Limaki.Common;
 using Limaki.Model.Streams;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Limaki.Tests.Data.Streams {
     [TestFixture]
@@ -73,9 +74,9 @@ namespace Limaki.Tests.Data.Streams {
                 stream.Read(buffer, 0, buffer.Length);
                 for (int i = 0; i < buffer.Length; i++) {
                     if (i % 8 == 0) {
-                        System.Console.WriteLine();
+                        Trace.WriteLine("");
                     }
-                    System.Console.Write(buffer[i].ToString("X") + "\t");
+                    Trace.Write(buffer[i].ToString("X") + "\t");
                 }
 
             } finally {

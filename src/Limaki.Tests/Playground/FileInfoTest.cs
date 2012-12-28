@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.IO;
 using Limaki.UnitTest;
 using NUnit.Framework;
+using System.Diagnostics;
 
 namespace Limaki.Tests.Sandbox {
     public class FileInfoTest:DomainTest {
@@ -16,9 +17,9 @@ namespace Limaki.Tests.Sandbox {
             string _path = file.DirectoryName + System.IO.Path.DirectorySeparatorChar;
             string _name = System.IO.Path.GetFileNameWithoutExtension(file.FullName);
             string _extension = System.IO.Path.GetExtension(file.FullName).ToLower();
-            System.Console.Out.WriteLine(_path);
-            System.Console.Out.WriteLine(_name);
-            System.Console.Out.WriteLine(_extension);
+            Trace.WriteLine(_path);
+            Trace.WriteLine(_name);
+            Trace.WriteLine(_extension);
         }
     }
 }

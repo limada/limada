@@ -97,7 +97,7 @@ namespace Limaki.Viewers {
         public IGraphSceneDisplay<IVisual, IVisualEdge> CurrentDisplay {
             get { return _currentDisplay; }
             protected set {
-                _currentDisplay = value;
+                //_currentDisplay = value;
                 CurrentWidget = value;
             }
         }
@@ -109,8 +109,10 @@ namespace Limaki.Viewers {
             protected set {
                 lock (locker) {
                     bool isChange = _currentWidget != value;
-                    if (value is IGraphSceneDisplay<IVisual, IVisualEdge>) {
-                        _currentDisplay = (IGraphSceneDisplay<IVisual, IVisualEdge>)value;
+                    var display = value as IGraphSceneDisplay<IVisual, IVisualEdge>;
+                    if (display!=null) {
+                        isChange = _currentDisplay != value;
+                        _currentDisplay = display;
                     }
                     _currentWidget = value;
                     if (isChange) {
@@ -242,19 +244,22 @@ namespace Limaki.Viewers {
 
             if (ViewMode != SplitViewMode.GraphStream)
                 return;
-            
-            var display = sender as IGraphSceneDisplay<IVisual,IVisualEdge>;
-            var adjacent = AdjacentDisplay(display);
-            try {
-                display.EventControler.UserEventsDisabled = true;
-                adjacent.EventControler.UserEventsDisabled = true;
-                ContentViewManager.SheetControl = adjacent;
-                ContentViewManager.ChangeViewer(sender, e);
-            } catch (Exception ex) {
-                ExceptionHandler.Catch(ex, MessageType.OK);
-            } finally {
-                display.EventControler.UserEventsDisabled = false;
-                adjacent.EventControler.UserEventsDisabled = false;
+            var display = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
+            CurrentDisplay = display;
+            lock (locker) {
+                var adjacent = AdjacentDisplay(display);
+                var contentViewManager = this.ContentViewManager;
+                try {
+                    display.EventControler.UserEventsDisabled = true;
+                    adjacent.EventControler.UserEventsDisabled = true;
+                    contentViewManager.SheetControl = adjacent;
+                    contentViewManager.ChangeViewer(sender, e);
+                } catch (Exception ex) {
+                    ExceptionHandler.Catch(ex, MessageType.OK);
+                } finally {
+                    display.EventControler.UserEventsDisabled = false;
+                    adjacent.EventControler.UserEventsDisabled = false;
+                }
             }
         }
 

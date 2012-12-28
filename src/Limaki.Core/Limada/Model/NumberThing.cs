@@ -291,5 +291,8 @@ namespace Limada.Model {
             this.W = w;
             this.H = h;
         }
+        public override string ToString () {
+            return string.Format("{{X={0} Y={1} W={2} H={3}}}",X,Y,W,H);
+        }
     }
 }

@@ -27,6 +27,7 @@ using Limaki.Graphs.Extensions;
 using Limaki.Viewers;
 using Limaki.Visuals;
 using Mono.Options;
+using Limada.Schemata;
 
 namespace Limada.UseCases {
 	public class FileManager:FileManagerBase {
@@ -406,9 +407,9 @@ namespace Limada.UseCases {
                     string pageName = i.ToString().PadLeft(5, '0');
                     if (streamThing.Description != null)
                         pageName = streamThing.Description.ToString().PadLeft(5, '0');
-
+                    var s = scene.Focused.Data==null?CommonSchema.NullString:scene.Focused.Data.ToString();
                     string name = dir + Path.DirectorySeparatorChar +
-                                  scene.Focused.Data.ToString() + " " +
+                                  s+ " " +
                                   pageName +
                                   ContentTypes.Extension(streamThing.StreamType);
 

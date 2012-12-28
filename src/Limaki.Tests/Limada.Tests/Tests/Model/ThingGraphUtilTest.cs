@@ -58,9 +58,9 @@ namespace Limada.Tests.Model {
             var result = new Set<IThing> ();
             result.UnionWith(completed);
 
-            System.Console.WriteLine("** Completed:");
+            ReportDetail("** Completed:");
             foreach (var thing in completed) {
-                System.Console.WriteLine(thing);
+                ReportDetail(thing.ToString());
             }
 
             

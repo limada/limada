@@ -22,6 +22,7 @@ using Limaki.Viewers;
 using Limaki.Visuals;
 using Limaki.Swf.Backends;
 using DialogResult=Limaki.Viewers.DialogResult;
+using System.Diagnostics;
 
 namespace Limaki.Swf.Backends.Viewers {
     public class  SwfSplitView : IDisposable {
@@ -184,20 +185,23 @@ namespace Limaki.Swf.Backends.Viewers {
                 return;
 
             var control = sender as Control;
-            var device = sender as GraphSceneDisplay<IVisual, IVisualEdge>;
-            if (device != null) {
-                control = device.Backend as Control;
+            var display = sender as GraphSceneDisplay<IVisual, IVisualEdge>;
+            if (display != null) {
+                control = display.Backend as Control;
             }
             var currentDisplay = this.View.CurrentDisplay.Backend as Control;
 
             SplitterPanel panel = null;
-            if (ViewBackend.Panel1.Controls.Contains(currentDisplay)) {
-                panel = ViewBackend.Panel2;
+            if (currentDisplay != control) {
+                if (ViewBackend.Panel1.Controls.Cast<Control>().Contains(currentDisplay)) {
+                    panel = ViewBackend.Panel2;
+                } else if (ViewBackend.Panel2.Controls.Cast<Control>().Contains(currentDisplay)) {
+                    panel = ViewBackend.Panel1;
+                }
             } else {
-                panel = ViewBackend.Panel1;
+                Trace.WriteLine("SplitView.AttachControl: currentDisplay == control");
             }
-
-            if (!panel.Controls.Contains(control)) {
+            if (panel != null && !panel.Controls.Cast<Control>().Contains(control)) {
                 panel.SuspendLayout();
                 panel.Controls.Clear();
                 panel.Controls.Add(control);

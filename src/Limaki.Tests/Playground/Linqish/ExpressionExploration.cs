@@ -20,7 +20,7 @@ using NUnit.Framework;
 
 namespace Limada.Tests.Linqish {
     [TestFixture]
-    public class ExpressionExplorationTest  {
+    public class ExpressionExplorationTest:Limaki.UnitTest.TestBase  {
         [Test]
         public void TestMemberExpressonBuilder() {
             var now = DateTime.Now;
@@ -33,9 +33,9 @@ namespace Limada.Tests.Linqish {
 
             var builder = new MemberByNameExpressionBuilder();
             foreach (var item in builder.OrderByKey(list, e => e.MyString))
-                System.Console.WriteLine(item.MyString);
+                ReportDetail(item.MyString);
 
-            System.Console.WriteLine("MemberByName.Ascending");
+            ReportDetail("MemberByName.Ascending");
 
             Assert.IsTrue(builder.IsValidMemberName<MyClass>("MyString"));
 
@@ -43,11 +43,11 @@ namespace Limada.Tests.Linqish {
             Assert.Throws(typeof (ArgumentException), () => builder.OrderByMemberName(list, "SomeThingStupid", false));
 
             foreach (var item in builder.OrderByMemberName(list, "MyString",false))
-                System.Console.WriteLine(item.MyString);
+                ReportDetail(item.MyString);
 
-            System.Console.WriteLine("MemberByName.Descending");
+            ReportDetail("MemberByName.Descending");
             foreach (var item in builder.OrderByMemberName(list, "MyString", true))
-                System.Console.WriteLine(item.MyString);
+                ReportDetail(item.MyString);
 
             var result1 = list.OrderBy(e => e.MyString).ToArray();
             var result2 = builder.OrderByMemberName(list, "MyString", false).ToArray();
@@ -101,9 +101,9 @@ namespace Limada.Tests.Linqish {
 
 
             var ex = result.Expression;
-            System.Console.WriteLine(ex.ToString());
+            ReportDetail(ex.ToString());
             foreach (var item in result)
-                System.Console.WriteLine(item.MyString);
+                ReportDetail(item.MyString);
 
             var result1 = list1.SelectMany(
                 c1 => list2,

@@ -40,11 +40,7 @@ namespace Limada.View {
             SceneExtensions.CleanScene(scene);
             var thingGraph = scene.Graph.ThingGraph();
 
-            var visuals = from thing in thingGraph.Search(name, false)
-                        let visual = graph.Get(thing)
-                        orderby visual.Data.ToString()
-                        select visual;
-
+            var visuals = thingGraph.Search(name, false).Select(t=>graph.Get(t)).OrderBy(v => v, new VisualComparer());
             new GraphSceneFacade<IVisual, IVisualEdge>(delegate() { return scene; }, layout).Add(visuals, false, true);
 
             scene.ClearSpatialIndex();

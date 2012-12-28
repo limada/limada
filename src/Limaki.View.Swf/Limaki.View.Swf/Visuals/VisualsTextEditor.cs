@@ -240,8 +240,9 @@ namespace Limaki.View.Swf.Visuals {
             var size = camera.FromSource(Current.Size);
             if (Current is IVisualEdge) {
                 location = camera.FromSource(Current.Shape[Anchor.Center]);
+                var text = Current.Data==null?"":Current.Data.ToString();
                 size = (Size)
-                    GdiUtils.GetTextDimension (editor.Font, Current.Data.ToString (),new System.Drawing.SizeF ())
+                    GdiUtils.GetTextDimension (editor.Font, text,new System.Drawing.SizeF ())
                     ;
                 size.Height = Math.Max(size.Height+2,(int)newFont.SizeInPoints+2);
                 size.Width = Math.Max (size.Width+2, (int)newFont.SizeInPoints*4);
@@ -275,12 +276,16 @@ namespace Limaki.View.Swf.Visuals {
 
         #region Data-Handling
         TypeConverter GetConverter(IVisual visual) {
+            if (visual.Data == null)
+                return TypeDescriptor.GetConverter(typeof (object));
             return TypeDescriptor.GetConverter(visual.Data.GetType());
         }
 
         string DataToText(IVisual visual) {
             TypeConverter converter = GetConverter(visual);
             if (converter != null) {
+                if(visual.Data==null)
+                    return Limada.Schemata.CommonSchema.NullString;
                 return converter.ConvertToString(visual.Data);
             } else {
                 return "<error>";

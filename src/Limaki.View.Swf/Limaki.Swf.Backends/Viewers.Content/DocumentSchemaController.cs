@@ -14,6 +14,8 @@ using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
 using Xwt;
+using System.Diagnostics;
+using Limada.Schemata;
 
 
 namespace Limaki.View.Swf.Backends {
@@ -118,7 +120,7 @@ namespace Limaki.View.Swf.Backends {
 
             display.DataId = 0;
             new State { Hollow = true }.CopyTo(display.State);
-            display.Text = sourceDocument.Data.ToString();
+            display.Text = sourceDocument.Data==null?CommonSchema.NullString:sourceDocument.Data.ToString();
             display.Viewport.Reset();
             display.BackendRenderer.Render();
 
