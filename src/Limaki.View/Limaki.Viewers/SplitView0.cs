@@ -110,7 +110,7 @@ namespace Limaki.Viewers {
                 lock (locker) {
                     bool isChange = _currentWidget != value;
                     var display = value as IGraphSceneDisplay<IVisual, IVisualEdge>;
-                    if (display!=null) {
+                    if (display!=null||value==null) {
                         isChange = _currentDisplay != value;
                         _currentDisplay = display;
                     }
