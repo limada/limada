@@ -76,7 +76,7 @@ namespace Limada.View {
                 serializer.Read(stream);
 
                 new GraphSceneFacade<IVisual, IVisualEdge>(() => this.Scene, this.Layout)
-                    .Add(serializer.VisualsCollection, false, false);
+                    .Add(serializer.VisualsCollection, true, false);
 
                 Scene.ClearSpatialIndex();
             }

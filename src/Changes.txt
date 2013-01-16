@@ -1,3 +1,19 @@
+[2013-01-16]
+sheet-loading doesn't need arrange, only align 
+
+[2012-12-28]
+modifierkeys as flag
+
+[2012-12-27]
+bug hunting session
+
+[2012-12-26]
+commandline: -add file, some bugs
+
+[2012-12-24]
+ViewPort: Xwt.Matrix.Translate does't need manual scaling
+some refactoring
+
 [2012-12-19]
 introducing Xwt.Matrix
 refactoring to use Xwt.Matrix

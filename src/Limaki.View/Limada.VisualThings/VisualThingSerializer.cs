@@ -20,6 +20,7 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Visuals;
+using System.Linq;
 using Xwt;
 
 namespace Limada.VisualThings {
@@ -75,26 +76,20 @@ namespace Limada.VisualThings {
         }
 
         protected virtual void ReadInto(ICollection<IVisual> visuals) {
-            foreach (XElement node in Things.Elements()) {
-                IVisual visual = ReadVisual(node);
+            foreach (var node in Things.Elements()) {
+                var visual = ReadVisual(node);
                 if (visual != null && !visuals.Contains(visual)) {
                     visuals.Add(visual);
                 }
             }
-            ICollection<IVisual> remove = new Set<IVisual> ();
-            foreach(IVisual visual in visuals) {
-                IVisualEdge edge = visual as IVisualEdge;
-                if (edge != null) {
-                    if (!visuals.Contains(edge.Root) || !visuals.Contains(edge.Leaf))
-                        remove.Add (visual);
-                }
-            }
-            foreach (IVisual visual in remove)
+           
+            foreach (var visual in visuals.OfType<IVisualEdge>()
+                .Where(edge => !visuals.Contains(edge.Root) || !visuals.Contains(edge.Leaf)).ToArray())
                 visuals.Remove (visual);
         }
 
         protected virtual IVisual ReadVisual(XElement node) {
-            IThing thing = Read (node);
+            var thing = Read (node);
             
             this.ThingCollection.Add (thing);
 
@@ -123,8 +118,8 @@ namespace Limada.VisualThings {
                 xmlthing = Write (thing);
                 xmlthing.Add( new XAttribute("x", ((int)visual.Location.X).ToString()));
                 xmlthing.Add( new XAttribute("y", ((int)visual.Location.Y).ToString()));
-                xmlthing.Add( new XAttribute("w", ((int)visual.Size.Width).ToString()));
-                xmlthing.Add( new XAttribute("h", ((int)visual.Size.Height).ToString()));
+                xmlthing.Add( new XAttribute("w", ((int)Math.Ceiling(visual.Size.Width)).ToString()));
+                xmlthing.Add( new XAttribute("h", ((int)Math.Ceiling(visual.Size.Height)).ToString()));
             }
 
             return xmlthing;

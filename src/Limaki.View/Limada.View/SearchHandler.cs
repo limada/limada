@@ -38,10 +38,14 @@ namespace Limada.View {
             }
 
             SceneExtensions.CleanScene(scene);
-            var thingGraph = scene.Graph.ThingGraph();
 
-            var visuals = thingGraph.Search(name, false).Select(t=>graph.Get(t)).OrderBy(v => v, new VisualComparer());
-            new GraphSceneFacade<IVisual, IVisualEdge>(delegate() { return scene; }, layout).Add(visuals, false, true);
+            var visuals = scene.Graph.ThingGraph()
+                .Search(name, false)
+                .Select(t => graph.Get(t))
+                .OrderBy(v => v, new VisualComparer());
+
+            new GraphSceneFacade<IVisual, IVisualEdge>(() => scene, layout)
+                .Add(visuals, false, true);
 
             scene.ClearSpatialIndex();
         }

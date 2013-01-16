@@ -11,6 +11,7 @@ using Limaki.Common;
 using Limaki.Data;
 using Limaki.Data.db4o;
 using Limaki.Model.Streams;
+using Id = System.Int64;
 
 namespace Limada.Data.db4o {
     public class Db4oRepairer {
@@ -68,6 +69,7 @@ namespace Limada.Data.db4o {
             var session = gateway.Session;
             
             ReportClazzes(gateway);
+            SchemaFacade.InitSchemata();
 
             var cache = new Dictionary<IReflectClass, Tuple<IReflectClass, List<IReflectField>, Type>>();
             foreach (var item in session.Query<object>()) {
@@ -129,9 +131,17 @@ namespace Limada.Data.db4o {
             }
             if (repair) {
                 ReportDetail("write links...");
+               
                 foreach (var link in links) {
-                    if (link.Marker == null)
-                        link.Marker = CommonSchema.EmptyMarker;
+                    var idLink = link as ILink<Id>;
+                    if (link.Marker == null && idLink.Marker != 0) {
+                        IThing marker = null;
+                        if (Schema.IdentityMap.TryGetValue(idLink.Marker, out marker))
+                            link.Marker = marker;
+                    }
+                    if (link.Marker == null) {
+                       link.Marker = CommonSchema.EmptyMarker;
+                    }
                     if (link.Root != null && link.Leaf != null)
                         graph.Add(link);
                 }

@@ -8,20 +8,23 @@ namespace Limaki.View.Properties {
         static Iconery () {
             var fillColor = new Xwt.Drawing.Color(.3, .3, .3, .8);
             var strokeColor = new Xwt.Drawing.Color(.1, .1, .1, .3);
-            strokeColor = fillColor.WithAlpha(.3);
+            fillColor = Xwt.Drawing.Colors.DarkSlateBlue.WithAlpha(.8);
+            strokeColor = Xwt.Drawing.Colors.LemonChiffon.WithAlpha(.3);
+            
+            //strokeColor = fillColor.WithAlpha(.3);
             var awesome = new AwesomeIconeria {
                 Fill = true,
                 FillColor = fillColor,
                 StrokeColor = strokeColor,
-                Stroke = false,
-                StrokeFirst= true,
+                Stroke = true,
+                StrokeFirst= false,
             };
             var limadaIcons = new LimadaIconeria {
-                Fill = true,
-                FillColor = fillColor,
-                StrokeColor = strokeColor,
-                Stroke = false,
-                StrokeFirst = true,
+                Fill = awesome.Fill,
+                FillColor = awesome.FillColor,
+                StrokeColor = awesome.StrokeColor,
+                Stroke = awesome.Stroke,
+                StrokeFirst = awesome.StrokeFirst,
             };
             var size = 24;
 
