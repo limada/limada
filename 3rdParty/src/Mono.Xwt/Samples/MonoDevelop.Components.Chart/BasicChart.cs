@@ -68,13 +68,14 @@ namespace MonoDevelop.Components.Chart
 		
 		ChartCursor selectionStart;
 		ChartCursor selectionEnd;
-		
-		Font chartFont = Font.FromName ("Tahoma", 8);
+
+	    private Font chartFont = null;
 
 		
 		public BasicChart ()
 		{
-			selectionStart = new ChartCursor ();
+            chartFont = Font.FromName(this.BackendHost.WidgetRegistry,"Tahoma", 8);
+            selectionStart = new ChartCursor ();
 			selectionStart.Visible = false;
 			selectionEnd = new ChartCursor ();
 			selectionEnd.Visible = false;

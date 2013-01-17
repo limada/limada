@@ -97,7 +97,11 @@ namespace Xwt.Engine
 		
 		public T CreateFrontend<T> (object backend)
 		{
-			return (T) Activator.CreateInstance (typeof(T), backend);
+            if (typeof(T) == typeof(Font)) {
+                var handler = CreateSharedBackend<IFontBackendHandler>(typeof (Font));
+                return (T) Activator.CreateInstance(typeof(T), handler, backend);
+            } else
+                return (T) Activator.CreateInstance(typeof(T), backend);
 		}
 		
 		public object GetNativeWidget (Widget w)
@@ -118,9 +122,6 @@ namespace Xwt.Engine
         public void Clear() {
             backendTypes.Clear();
             sharedBackends.Clear();
-            Drawing.Font.SetHandler(null);
-            Drawing.TextLayout.SetHandler(null);
-            Drawing.Context.SetHandler(null);
         }
     }
 	

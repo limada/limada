@@ -19,6 +19,7 @@ using System.Linq;
 using Limaki.Drawing.Styles;
 using Xwt;
 using Xwt.Drawing;
+using Xwt.Engine;
 
 //using System.Xml;
 
@@ -49,14 +50,14 @@ namespace Limaki.Drawing {
             var fam = node.Attribute("family").Value;
             var size = ReadDouble(node, "size");
             var style = ReadEnum<FontStyle>(node.Attribute("style").Value);
-            var result = Font.FromName(fam, size).WithStyle(style);
+            var result = Font.FromName(WidgetRegistry.MainRegistry, fam, size).WithStyle(style);
 
             return result;
         }
 
         public virtual Font ReadFont(XElement node) {
             var font = ReadBaseFont (node);
-            Font result = Font.FromName (font.Family,font.Size).WithStyle(font.Style);
+            Font result = Font.FromName(WidgetRegistry.MainRegistry, font.Family, font.Size).WithStyle(font.Style);
             return result;
         }
 
@@ -109,7 +110,7 @@ namespace Limaki.Drawing {
             } else {
                 var font = ReadBaseFont (node);
                 if (!style.ParentStyle.Font.Equals(font)) {
-                    var result = Font.FromName(font.Family, font.Size).WithStyle(font.Style);
+                    var result = Font.FromName(WidgetRegistry.MainRegistry, font.Family, font.Size).WithStyle(font.Style);
                     style.Font = result;
                 } 
             }

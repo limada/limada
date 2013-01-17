@@ -5,6 +5,7 @@ using System.Text;
 using Xwt;
 using Xwt.Drawing;
 using Xwt.Engine;
+using Xwt.Backends;
 
 namespace Limaki.XwtAdapter {
 
@@ -16,7 +17,8 @@ namespace Limaki.XwtAdapter {
             WidgetRegistry.MainRegistry = null;
             var c = new Canvas();
             new Context(new object());
-            new Font(new object());
+            var fontHandler = WidgetRegistry.MainRegistry.CreateSharedBackend<IFontBackendHandler>(typeof(Xwt.Drawing.Font));
+            new Font(fontHandler,new object());
 
         }
     }

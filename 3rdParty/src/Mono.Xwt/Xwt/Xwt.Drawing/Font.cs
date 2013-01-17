@@ -32,43 +32,46 @@ namespace Xwt.Drawing
 {
 	public sealed class Font: XwtObject
 	{
-		
-        static IFontBackendHandler _handler = null;
-        static IFontBackendHandler handler {
-            get { return _handler ?? (_handler = WidgetRegistry.MainRegistry.CreateSharedBackend<IFontBackendHandler>(typeof(Font))); }
 
+        protected IFontBackendHandler _handler = null;
+        protected IFontBackendHandler handler {
+            get { return _handler ?? (_handler = GetHandler(WidgetRegistry.MainRegistry)); }
+            set { _handler = value; }
         }
 
-        internal static void SetHandler(IFontBackendHandler handler) {
-            _handler = handler;
+        static IFontBackendHandler GetHandler (WidgetRegistry registry)
+{
+            return registry.CreateSharedBackend<IFontBackendHandler>(typeof(Font)); 
         }
 
-		static Font ()
-		{
-			
-		}
-		
 		protected override IBackendHandler BackendHandler {
 			get {
 				return handler;
 			}
 		}
-		
-		public Font (object backend)
+
+	    public Font (IBackendHandler handler, object backend)
 		{
-			if (backend == null)
+            var fontHandler = handler as IFontBackendHandler;
+            if (backend == null)
 				throw new ArgumentNullException ("backend");
-			Backend = backend;
+            if (fontHandler == null)
+                throw new ArgumentNullException("Handler");
+            _handler = fontHandler;
+            Backend = backend;
+			
 		}
-		
-		public static Font FromName (string name, double size)
-		{
-			return new Font (handler.CreateFromName (name, size));
-		}
-		
+
+        public static Font FromName (WidgetRegistry registry, string name, double size) 
+        {
+            var handler = GetHandler(registry);
+            var result = new Font(handler, handler.CreateFromName(name, size));
+            return result;
+        }
+
 		public Font WithFamily (string fontFamily)
 		{
-			return new Font (handler.SetFamily (Backend, fontFamily));
+			return new Font (handler, handler.SetFamily (Backend, fontFamily));
 		}
 		
 		public string Family {
@@ -88,7 +91,7 @@ namespace Xwt.Drawing
 		
 		public Font WithSize (double size)
 		{
-			return new Font (handler.SetSize (Backend, size));
+            return new Font(handler,handler.SetSize(Backend, size)) ;
 		}
 		
 		public FontStyle Style {
@@ -99,7 +102,7 @@ namespace Xwt.Drawing
 		
 		public Font WithStyle (FontStyle style)
 		{
-			return new Font (handler.SetStyle (Backend, style));
+            return new Font(handler,handler.SetStyle(Backend, style)) ;
 		}
 		
 		public FontWeight Weight {
@@ -110,7 +113,7 @@ namespace Xwt.Drawing
 		
 		public Font WithWeight (FontWeight weight)
 		{
-			return new Font (handler.SetWeight (Backend, weight));
+            return new Font(handler,handler.SetWeight(Backend, weight)) { handler = this.handler };
 		}
 		
 		public FontStretch Stretch {
@@ -121,7 +124,7 @@ namespace Xwt.Drawing
 		
 		public Font WithStretch (FontStretch stretch)
 		{
-			return new Font (handler.SetStretch (Backend, stretch));
+            return new Font(handler,handler.SetStretch(Backend, stretch)) { handler = this.handler };
 		}
 	}
 	

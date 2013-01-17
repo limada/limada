@@ -31,7 +31,9 @@ namespace Xwt.Html5.Backend {
         }
 
         public Font Font {
-            get { return _font ?? Font.FromName ("Default", 10); }
+            get {
+                return _font ?? Font.FromName (Html5Engine.Registry,"Default", 10);
+            }
             set {
 
                 _font = value;

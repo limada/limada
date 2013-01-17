@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Limaki.Common;
 using Xwt.Drawing;
+using Xwt.Engine;
 
 namespace Limaki.Drawing.Styles {
 
@@ -12,7 +13,7 @@ namespace Limaki.Drawing.Styles {
         IDrawingUtils _drawingUtils = null;
         protected IDrawingUtils drawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils> ()); } }
 
-        protected virtual Font CreateFont(string familiy, double size) { return Font.FromName(familiy, size); }
+        protected virtual Font CreateFont(string familiy, double size) { return Font.FromName(WidgetRegistry.MainRegistry ,familiy, size); }
 
         public IList<string> StyleSheetNames = new string[] { "Desktop", "TealSmoke", "WhiteGlass" };
 

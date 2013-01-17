@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using Xwt;
 using Xwt.Drawing;
+using Xwt.Engine;
 
 namespace Limada.Test {
     /// <summary>
@@ -87,8 +88,8 @@ namespace Limada.Test {
                 // Create image.
                 var builder = new ImageBuilder((int)size.Width, (int)size.Height,ImageFormat.RGB24);
                 var graphics = builder.Context;
-              
-                var font = Font.FromName("MS Sans Serif", 14);
+
+                var font = Font.FromName(WidgetRegistry.MainRegistry, "MS Sans Serif", 14);
                 var stringPos = new Point(0, 0);
                 var xInc = 10;
                 var yInc = 3;

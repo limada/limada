@@ -58,7 +58,7 @@ namespace Xwt.Gdi.Backend {
         }
 
         public Font Font {
-            get { return _font ?? Font.FromName ("Default", 10); }
+            get { return _font ?? Font.FromName (GdiEngine.Registry,"Default", 10); }
             set {
                 if (!Xwt.Drawing.XwtDrawingExtensions.Equals (_font, value))
                     _size = null;

@@ -2,13 +2,14 @@
 
 using Xwt.Drawing;
 using SystemFonts = System.Windows.SystemFonts;
+using Xwt.WPFBackend;
 
 namespace Limaki.Drawing.WPF {
     public class WPFSystemFonts : ISystemFonts {
 #if ! SILVERLIGHT
         public const double PixelToPoint = 1.5;
         Font CreateFont(System.Windows.Media.FontFamily family, double size) {
-            return Font.FromName(family.Source, size/PixelToPoint);
+            return Font.FromName(WPFEngine.Registry, family.Source, size/PixelToPoint);
         }
         public Font CaptionFont {
             get { return CreateFont(SystemFonts.CaptionFontFamily,SystemFonts.CaptionFontSize); }

@@ -21,7 +21,7 @@ namespace Limaki.Drawing.WPF {
        
 
         public virtual Font CreateFont(string familiy, double size) {
-            var result = Font.FromName(familiy,size);
+            var result = Font.FromName(WPFEngine.Registry,familiy, size);
             return result;
         }
 

@@ -216,7 +216,7 @@ namespace Limaki.Drawing {
 
         public static Font Clone (this Font value) {
             return
-                Font.FromName (value.Family, value.Size)
+                value.WithSize (value.Size)
                     .WithStretch (value.Stretch)
                     .WithStyle (value.Style)
                     .WithWeight (value.Weight);

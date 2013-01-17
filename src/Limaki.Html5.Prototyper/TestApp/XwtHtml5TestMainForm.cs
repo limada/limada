@@ -127,7 +127,7 @@ namespace Xwt.Html5.TestApp {
             ClearResources();
             ApplyResources();
 
-            refPainter.Font = Xwt.Drawing.Font.FromName ("Default",10);
+            refPainter.Font = Xwt.Drawing.Font.FromName (Html5Engine.Registry,"Default",10);
 
             this.FormClosing += (s, e) => htmlViewer.Dispose();
         }

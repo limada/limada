@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using Limaki.Common;
 using Xwt.Drawing;
+using Xwt.Engine;
 
 namespace Limaki.Drawing.Styles {
 
@@ -56,7 +57,7 @@ namespace Limaki.Drawing.Styles {
         }
 
         protected virtual Font CreateFont (string familiy, double size) {
-            return Font.FromName (familiy, size);
+            return Font.FromName(WidgetRegistry.MainRegistry, familiy, size);
         }
 
         private IDictionary<string, IStyle> styles = new Dictionary<string, IStyle>();
