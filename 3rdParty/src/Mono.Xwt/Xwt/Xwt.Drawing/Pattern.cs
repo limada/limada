@@ -28,11 +28,9 @@ using System;
 
 namespace Xwt.Drawing
 {
-	public abstract class Pattern: XwtObject
+	public interface IPattern
 	{
-		internal Pattern ()
-		{
-		}
+		
 	}
 }
 

@@ -31,7 +31,7 @@ namespace Limaki.Tests.Sandbox {
         }
 
         void CreateContext() {
-            var context = new Xwt.Drawing.Context(new object());
+            var context = new Xwt.Drawing.Context(WidgetRegistry.MainRegistry, new object());
             Assert.IsNotNull(context);
             
         }

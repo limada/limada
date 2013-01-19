@@ -86,7 +86,7 @@ namespace Limada.Test {
                 Stream result = new MemoryStream();
                 var size = new Size(1000, 3000);
                 // Create image.
-                var builder = new ImageBuilder((int)size.Width, (int)size.Height,ImageFormat.RGB24);
+                var builder = new ImageBuilder(WidgetRegistry.MainRegistry, (int)size.Width, (int)size.Height,ImageFormat.RGB24);
                 var graphics = builder.Context;
 
                 var font = Font.FromName(WidgetRegistry.MainRegistry, "MS Sans Serif", 14);

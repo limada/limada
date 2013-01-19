@@ -18,12 +18,13 @@ using Limaki.Iconerias;
 using Xwt.Drawing;
 using Xwt.Engine;
 using Image = System.Drawing.Image;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Properties {
     public static class IconeryExtensions {
         public static Image ToImage (this Iconeria iconeria, Action<Context> icon, int size) {
-            var img = iconeria.AsImage(icon, size);
-            return WidgetRegistry.MainRegistry.GetBackend(img) as System.Drawing.Image;
+            var img = iconeria.AsImage(GdiEngine.Registry, icon, size);
+            return (img as Xwt.Backends.IFrontend).Backend as System.Drawing.Image;
         }
     }
 }

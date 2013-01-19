@@ -29,24 +29,11 @@ using Xwt.Engine;
 
 namespace Xwt.Drawing
 {
-	public sealed class ImagePattern: Pattern
+    public sealed class ImagePattern : XwtObject<ImagePattern, IImagePatternBackendHandler>, IPattern
 	{
-		static IImagePatternBackendHandler handler;
-		
-		static ImagePattern ()
+		public ImagePattern (Image img):base(img.Registry)
 		{
-			handler = WidgetRegistry.MainRegistry.CreateSharedBackend<IImagePatternBackendHandler> (typeof(ImagePattern));
-		}
-		
-		protected override Xwt.Backends.IBackendHandler BackendHandler {
-			get {
-				return handler;
-			}
-		}
-		
-		public ImagePattern (Image img)
-		{
-			Backend = ((IImagePatternBackendHandler)BackendHandler).Create (GetBackend (img));
+			Backend = handler.Create (GetBackend (img));
 		}
 	}
 }

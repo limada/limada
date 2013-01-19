@@ -30,31 +30,36 @@ using Xwt.Engine;
 
 namespace Xwt.Drawing
 {
-	public sealed class ImageBuilder: XwtObject, IDisposable
+    public sealed class ImageBuilder : XwtObject<ImageBuilder, IImageBuilderBackendHandler>, IDisposable
 	{
 		Context ctx;
-		static IImageBuilderBackendHandler handler;
-		object backend;
-		int width;
+	    int width;
 		int height;
-		
-		static ImageBuilder ()
-		{
-			handler = WidgetRegistry.MainRegistry.CreateSharedBackend<IImageBuilderBackendHandler> (typeof(ImageBuilder));
-		}
-		
-		public ImageBuilder (int width, int height): this (width, height, ImageFormat.ARGB32)
-		{
-		}
-		
-		public ImageBuilder (int width, int height, ImageFormat format)
-		{
+
+        public ImageBuilder (WidgetRegistry registry, int width, int height): this(registry, width, height, ImageFormat.ARGB32) 
+        {
+        }
+
+        public ImageBuilder (WidgetRegistry registry, int width, int height, ImageFormat format): base(registry) 
+  	    {
 			this.width = width;
 			this.height = height;
 			backend = handler.CreateImageBuilder (width, height, format);
-			ctx = new Context (handler.CreateContext (backend));
+			ctx = new Context (Registry, handler.CreateContext (backend));
 		}
-		
+
+        #region constructors calling MainRegistry
+
+        public ImageBuilder (int width, int height): this(width, height, ImageFormat.ARGB32) 
+        {
+        }
+
+        public ImageBuilder (int width, int height, ImageFormat format): this(WidgetRegistry.MainRegistry, width, height, format) 
+        {
+        }
+
+        #endregion
+
 		public int Width {
 			get { return width; }
 		}
@@ -83,7 +88,7 @@ namespace Xwt.Drawing
 		
 		public Image ToImage ()
 		{
-			return new Image (handler.CreateImage (backend));
+            return new Image(Registry, handler.CreateImage(backend));
 		}
 	}
 }

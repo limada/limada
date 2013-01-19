@@ -30,20 +30,14 @@ using Xwt;
 
 namespace Limaki.Painting {
 
-    public class PaintContext : XwtObject, IDisposable {
+    public class PaintContext : XwtObject<PaintContext, IPaintContextBackendHandler>, IDisposable {
 
-        static IPaintContextBackendHandler handler;
+      
 
-        Pattern pattern;
+        IPattern pattern;
         Font font;
 
-        static PaintContext () {
-            handler = WidgetRegistry.MainRegistry.CreateSharedBackend<IPaintContextBackendHandler> (typeof (PaintContext));
-        }
-
-        protected override IBackendHandler BackendHandler { get { return handler;} }
-
-        public PaintContext (object backend) : base (backend) {
+        public PaintContext (object backend) : base (WidgetRegistry.MainRegistry,backend) {
             handler.InitBackend (backend);
         }
 
@@ -196,7 +190,7 @@ namespace Limaki.Painting {
             handler.Dispose (Backend);
         }
 
-        public Pattern Pattern {
+        public IPattern Pattern {
             get { return pattern; }
             set { pattern = value; handler.SetPattern (Backend, GetBackend (value)); }
         }
@@ -211,11 +205,11 @@ namespace Limaki.Painting {
         }
 
         public Xwt.Drawing.Context CreateContext() {
-            return new Xwt.Drawing.Context (Backend);
+            return new Xwt.Drawing.Context (Registry, Backend);
         }
 
         public Xwt.Drawing.TextLayout CreateTextLayout () {
-            return new TextLayout(new Xwt.Drawing.Context (Backend));
+            return new TextLayout(new Xwt.Drawing.Context (Registry,Backend));
         }
 
         public void DrawTextLayout (TextLayout layout, double x, double y, int height) {

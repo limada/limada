@@ -117,6 +117,7 @@
     <Compile Include="Xwt\ComboBoxCellView.cs" />
     <Compile Include="Xwt.Backends\ITreeViewBackend.cs" />
     <Compile Include="Xwt.Backends\ITreeStoreBackend.cs" />
+    <Compile Include="Xwt\XwtObject_S_H.cs" />
     <Compile Include="Xwt\XwtObject.cs" />
     <Compile Include="Xwt.Backends\IBackendHandler.cs" />
     <Compile Include="Xwt.Backends\ImageBackendHandler.cs" />

@@ -41,7 +41,7 @@ namespace Limaki.View.Html5 {
             get {
                 if (base.Context == null) {
                     var ctx = new Html5Context { Context = this.Html };
-                    base.Context = new Xwt.Drawing.Context (ctx);
+                    base.Context = new Xwt.Drawing.Context(Html5Engine.Registry, ctx);
                 }
                 return base.Context;
             }

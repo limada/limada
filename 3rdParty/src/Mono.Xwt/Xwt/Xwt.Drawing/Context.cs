@@ -3,6 +3,7 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
+//       Lytico (http://www.limada.org)
 // 
 // Copyright (c) 2011 Xamarin Inc
 // 
@@ -29,38 +30,16 @@ using Xwt.Engine;
 
 namespace Xwt.Drawing
 {
-	public sealed class Context: XwtObject, IDisposable
+    public sealed class Context : XwtObject<Context, IContextBackendHandler>, IDisposable
 	{
-        
-        static IContextBackendHandler _handler = null;
-        static IContextBackendHandler handler {
-            get { return _handler ?? (_handler = WidgetRegistry.MainRegistry.CreateSharedBackend<IContextBackendHandler>(typeof(Context))); }
-
-        }
-
-        internal static void SetHandler(IContextBackendHandler handler) {
-            _handler = handler;
-        }
-
-		Pattern pattern;
+		IPattern pattern;
 		Font font;
 		double globalAlpha = 1;
-		
-		static Context ()
-		{
-			
-		}
-		
-		protected override IBackendHandler BackendHandler {
-			get {
-				return handler;
-			}
-		}
-		
-		public Context (object backend): base (backend)
+
+        public Context (WidgetRegistry registry, object backend): base(registry,backend)
 		{
 		}
-		
+
 		/// <summary>
 		/// Makes a copy of the current state of the Context and saves it on an internal stack of saved states.
 		/// When Restore() is called, it will be restored to the saved state. 
@@ -471,11 +450,11 @@ namespace Xwt.Drawing
 			handler.Dispose (Backend);
 		}
 		
-		public Pattern Pattern {
+		public IPattern Pattern {
 			get { return pattern; }
 			set {
 				pattern = value;
-				handler.SetPattern (Backend, GetBackend (value));
+				handler.SetPattern (Backend, (value as IFrontend).Backend);
 			}
 		}
 		

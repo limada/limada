@@ -3,7 +3,7 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
-//       Lytico (http://limada.sourceforge.net)
+//       Lytico (http://www.limada.org)
 // 
 // Copyright (c) 2011 Xamarin Inc
 // 
@@ -31,42 +31,23 @@ using Xwt.Backends;
 
 namespace Xwt.Drawing
 {
-	public sealed class TextLayout: XwtObject
+    public sealed class TextLayout : XwtObject<TextLayout,ITextLayoutBackendHandler>
 	{
 
-        static ITextLayoutBackendHandler _handler = null;
-        static ITextLayoutBackendHandler handler {
-            get { return _handler ?? (_handler = WidgetRegistry.MainRegistry.CreateSharedBackend<ITextLayoutBackendHandler>(typeof(TextLayout))); }
-
-        }
-
-        internal static void SetHandler(ITextLayoutBackendHandler handler) {
-            _handler = handler;
-        }
 		Font font;
 		string text;
 		double width = -1;
 		double height = -1;
 		TextTrimming textTrimming;
 		
-		static TextLayout ()
+		public TextLayout (Canvas canvas):base(((IFrontend)canvas).Registry)
 		{
-			
-		}
-		
-		protected override IBackendHandler BackendHandler {
-			get {
-				return handler;
-			}
-		}
-		
-		public TextLayout (Canvas canvas)
-		{
-			Backend = handler.Create ((ICanvasBackend)WidgetRegistry.MainRegistry.GetBackend (canvas));
+			Backend = handler.Create ((ICanvasBackend)((IFrontend)canvas).Backend);
+            
 			Font = canvas.Font;
 		}
 		
-		public TextLayout (Context ctx)
+		public TextLayout (Context ctx):base(ctx.Registry)
 		{
 			Backend = handler.Create (ctx);
 		}

@@ -3,6 +3,7 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
+//       Lytico (http://www.limada.org)
 // 
 // Copyright (c) 2011 Xamarin Inc
 // 
@@ -32,61 +33,75 @@ using System.IO;
 
 namespace Xwt.Drawing
 {
-	public sealed class Image: XwtObject, IDisposable
+    public sealed class Image: XwtObject<Image,ImageBackendHandler>, IDisposable
 	{
-		static ImageBackendHandler handler;
-		
-		static Image ()
-		{
-			handler = WidgetRegistry.MainRegistry.CreateSharedBackend<ImageBackendHandler> (typeof(Image));
-		}
-		
-		protected override IBackendHandler BackendHandler {
-			get {
-				return handler;
-			}
-		}
-		
-		internal Image (object backend): base (backend)
+	
+		internal Image (WidgetRegistry registry, object backend): base(registry, backend) 
+        {
+        }
+
+		public Image (Image image): base (image.Registry,image.handler.Copy (image.Backend))
 		{
 		}
 		
-		public Image (Image image): base (handler.Copy (image.Backend))
+		public static Image FromResource (WidgetRegistry registry, Type type, string resource)
 		{
+		    return FromResource(registry, type.Assembly, resource);
 		}
-		
-		public static Image FromResource (Type type, string resource)
+
+        public static Image FromResource (WidgetRegistry registry, Assembly asm, string resource)
 		{
-			var img = handler.LoadFromResource (type.Assembly, resource);
+            var img = GetBackendHandler(registry).LoadFromResource(asm, resource);
 			if (img == null)
 				throw new InvalidOperationException ("Resource not found: " + resource);
-			return new Image (img);
+            return new Image(registry, img);
 		}
-		
-		public static Image FromResource (Assembly asm, string resource)
+
+        public static Image FromFile (WidgetRegistry registry, string file)
 		{
-			var img = handler.LoadFromResource (asm, resource);
-			if (img == null)
-				throw new InvalidOperationException ("Resource not found: " + resource);
-			return new Image (img);
+            return new Image(registry, GetBackendHandler(registry).LoadFromFile(file));
 		}
-		
-		public static Image FromFile (string file)
+
+        public static Image FromStream (WidgetRegistry registry, Stream stream)
 		{
-			return new Image (handler.LoadFromFile (file));
+            return new Image(registry, GetBackendHandler(registry).LoadFromStream(stream));
 		}
-		
-		public static Image FromStream (Stream stream)
+
+        public static Image FromIcon (WidgetRegistry registry, string id, IconSize size)
 		{
-			return new Image (handler.LoadFromStream (stream));
+            return new Image(registry, GetBackendHandler(registry).LoadFromIcon(id, size));
 		}
-		
-		public static Image FromIcon (string id, IconSize size)
-		{
-			return new Image (handler.LoadFromIcon (id, size));
-		}
-		
-		public Size Size {
+
+        #region static factory methods calling MainRegistry
+
+        public static Image FromResource (Type type, string resource) 
+        {
+            return Image.FromResource(WidgetRegistry.MainRegistry, type, resource);
+        }
+
+        public static Image FromResource (Assembly asm, string resource) 
+        {
+            return Image.FromResource(WidgetRegistry.MainRegistry, asm, resource);
+        }
+
+        public static Image FromFile (string file) 
+        {
+            return Image.FromFile(WidgetRegistry.MainRegistry, file);
+        }
+
+        public static Image FromStream (Stream stream) 
+        {
+            return Image.FromStream(WidgetRegistry.MainRegistry, stream);
+        }
+
+        public static Image FromIcon (string id, IconSize size) 
+        {
+            return Image.FromIcon(WidgetRegistry.MainRegistry, id, size);
+        }
+
+        #endregion
+
+        public Size Size {
 			get { return handler.GetSize (Backend); }
 		}
 		
@@ -104,25 +119,25 @@ namespace Xwt.Drawing
 		{
 			double w = Size.Width * scale;
 			double h = Size.Height * scale;
-			return new Image (handler.Resize (Backend, w, h));
+			return new Image (Registry, handler.Resize (Backend, w, h));
 		}
 		
 		public Image Scale (double scaleX, double scaleY)
 		{
 			double w = Size.Width * scaleX;
 			double h = Size.Height * scaleY;
-			return new Image (handler.Resize (Backend, w, h));
+            return new Image(Registry, handler.Resize(Backend, w, h));
 		}
 		
 		public Image Resize (double width, double height)
 		{
-			return new Image (handler.Resize (Backend, width, height));
+            return new Image(Registry, handler.Resize(Backend, width, height));
 		}
 		
 		public Image ResizeToFitBox (double width, double height)
 		{
 			double r = Math.Min (width / Size.Width, height / Size.Height);
-			return new Image (handler.Resize (Backend, Size.Width * r, Size.Height * r));
+            return new Image(Registry, handler.Resize(Backend, Size.Width * r, Size.Height * r));
 		}
 		
 		public Image ToGrayscale ()
@@ -132,7 +147,7 @@ namespace Xwt.Drawing
 		
 		public Image ChangeOpacity (double opacity)
 		{
-			return new Image (handler.ChangeOpacity (Backend, opacity));
+            return new Image(Registry, handler.ChangeOpacity(Backend, opacity));
 		}
 		
 		public void CopyArea (int srcX, int srcY, int width, int height, Image dest, int destX, int destY)
@@ -142,7 +157,7 @@ namespace Xwt.Drawing
 		
 		public Image Crop (int srcX, int srcY, int width, int height)
 		{
-			return new Image (handler.Crop (Backend, srcX, srcY, width, height));
+            return new Image(Registry, handler.Crop(Backend, srcX, srcY, width, height));
 		}
 		
 		public void Dispose ()

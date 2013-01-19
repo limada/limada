@@ -38,7 +38,10 @@ namespace Limaki.Tests.Sandbox {
         }
 
         PaintContextTestCase TestCase { get; set; }
+        WidgetRegistry Registry { get; set; }
         protected override void OnPaint (System.Windows.Forms.PaintEventArgs e) {
+
+            Registry = GdiEngine.Registry;
 
             base.OnPaint(e);
 
@@ -46,7 +49,7 @@ namespace Limaki.Tests.Sandbox {
 
             var graphics = new GdiContext(e.Graphics);
 
-            var context = new Xwt.Drawing.Context(graphics);
+            var context = new Xwt.Drawing.Context(this.Registry, graphics);
 
 
             if (TestCase == PaintContextTestCase.XwtSample)
@@ -65,7 +68,7 @@ namespace Limaki.Tests.Sandbox {
         }
 
         private void AwesomeIcons (Context ctx) {
-            ctx.Font = GdiEngine.Registry.CreateFrontend<Font>(this.Font);
+            ctx.Font = this.Registry.CreateFrontend<Font>(this.Font);
 
             var p = new ReferencePainter();
             p.Font = ctx.Font;
@@ -83,7 +86,7 @@ namespace Limaki.Tests.Sandbox {
 
             awesomeIcons.ForEach((icon, name, id) => {
 
-                var img = awesomeIcons.AsImage(icon, size);
+                var img = awesomeIcons.AsImage(ctx.Registry,icon, size);
                 ctx.DrawImage(img, x, y);
 
                 textLayout.Text = name.Remove(0, 5);

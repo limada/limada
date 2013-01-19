@@ -32,7 +32,7 @@ namespace Xwt
 {
 	public abstract class XwtObject: IFrontend
 	{
-		object backend;
+		protected object backend;
 		
 		protected XwtObject (object backend)
 		{
@@ -58,6 +58,10 @@ namespace Xwt
 		object IFrontend.Backend {
 			get { return Backend; }
 		}
+
+        WidgetRegistry IFrontend.Registry {
+            get { throw new NotImplementedException(); }
+        }
 
 		object IFrontend.GetBackendForRegistry (WidgetRegistry registry)
 		{
@@ -88,5 +92,6 @@ namespace Xwt
 			return w != null ? w.Backend : null;
 		}
 	}
+
 }
 

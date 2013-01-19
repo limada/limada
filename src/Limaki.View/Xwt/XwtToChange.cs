@@ -16,9 +16,8 @@ namespace Limaki.XwtAdapter {
             WidgetRegistry.MainRegistry.Clear();
             WidgetRegistry.MainRegistry = null;
             var c = new Canvas();
-            new Context(new object());
-            var fontHandler = WidgetRegistry.MainRegistry.CreateSharedBackend<IFontBackendHandler>(typeof(Xwt.Drawing.Font));
-            new Font(fontHandler,new object());
+            //new Context(new object());
+            new Font(WidgetRegistry.MainRegistry, new object());
 
         }
     }

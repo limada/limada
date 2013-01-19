@@ -71,7 +71,7 @@ namespace Xwt
 		{
 			Label = command.Label;
 			if (!string.IsNullOrEmpty (command.Icon))
-				Image = Image.FromIcon (command.Icon, IconSize.Small);
+				Image = Image.FromIcon (BackendHost.WidgetRegistry, command.Icon, IconSize.Small);
 		}
 		
 		public MenuItem (string label): this ()

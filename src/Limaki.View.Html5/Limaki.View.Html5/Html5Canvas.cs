@@ -11,7 +11,7 @@ namespace Limaki.View.Html5 {
 
         Xwt.Drawing.Context _context = null;
         public Xwt.Drawing.Context Context {
-            get { return _context ?? (_context = new Xwt.Drawing.Context (new Html5Context ())); }
+            get { return _context ?? (_context = new Xwt.Drawing.Context (Html5Engine.Registry, new Html5Context ())); }
         }
 
         public override string Html () {

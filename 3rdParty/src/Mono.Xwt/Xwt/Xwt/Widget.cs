@@ -502,8 +502,7 @@ namespace Xwt
 		/// </value>
 		public Font Font {
 			get {
-                var handler = BackendHost.WidgetRegistry.CreateSharedBackend<IFontBackendHandler>(typeof(Xwt.Drawing.Font));
-                return new Font (handler, Backend.Font);
+                return new Font(BackendHost.WidgetRegistry, Backend.Font);
 			}
 			set {
 				Backend.Font = BackendHost.WidgetRegistry.GetBackend (value);

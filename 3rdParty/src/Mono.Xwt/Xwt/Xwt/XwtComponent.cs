@@ -56,6 +56,10 @@ namespace Xwt
 			get { return backendHost.Backend; }
 		}
 
+        WidgetRegistry IFrontend.Registry {
+            get { return backendHost.WidgetRegistry; }
+        }
+
 		object IFrontend.GetBackendForRegistry (WidgetRegistry registry)
 		{
 			backendHost.WidgetRegistry = registry;

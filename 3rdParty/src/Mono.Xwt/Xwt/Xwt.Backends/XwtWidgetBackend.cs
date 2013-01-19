@@ -118,8 +118,7 @@ namespace Xwt.Backends
 				return XwtObject.GetBackend (Font);
 			}
 			set {
-			    var handler = BackendHost.WidgetRegistry.CreateSharedBackend<IFontBackendHandler>(typeof (Xwt.Drawing.Font));
-                Font = new Xwt.Drawing.Font(handler, value);
+                Font = new Xwt.Drawing.Font(BackendHost.WidgetRegistry, value);
 			}
 		}
 		

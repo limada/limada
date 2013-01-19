@@ -38,7 +38,7 @@ namespace Limaki.Drawing.Gdi {
             get {
                 if (base.Context == null) {
                     var ctx = new GdiContext { Graphics = this.Graphics };
-                    base.Context = new Xwt.Drawing.Context (ctx);
+                    base.Context = new Xwt.Drawing.Context(GdiEngine.Registry, ctx);
                 }
                 return base.Context;
             }

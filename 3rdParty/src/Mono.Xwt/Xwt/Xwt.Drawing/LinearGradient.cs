@@ -26,15 +26,27 @@
 
 using System;
 using Xwt.Backends;
+using Xwt.Engine;
 
 namespace Xwt.Drawing
 {
 	public sealed class LinearGradient: Gradient
 	{
-		public LinearGradient (double xStart, double yStart, double xEnd, double yEnd)
+     
+        public LinearGradient (WidgetRegistry registry, double xStart, double yStart, double xEnd, double yEnd): base(registry) 
 		{
-			Backend = ((IGradientBackendHandler)BackendHandler).CreateLinear (xStart, yStart, xEnd, yEnd);
+			Backend = handler.CreateLinear (xStart, yStart, xEnd, yEnd);
 		}
-	}
+
+        #region constructor calling MainRegistry
+
+        public LinearGradient (double xStart, double yStart, double xEnd, double yEnd): base(WidgetRegistry.MainRegistry) 
+        {
+
+        }
+
+        #endregion
+
+    }
 }
 

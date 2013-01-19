@@ -16,6 +16,7 @@ using Xwt.Drawing;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Xwt.Engine;
 
 namespace Limaki.Iconerias {
 
@@ -62,8 +63,8 @@ namespace Limaki.Iconerias {
 
         }
 
-        public virtual Image AsImage (Action<Context> icon, int size) {
-            var ib = new ImageBuilder(size, size, ImageFormat.ARGB32);
+        public virtual Image AsImage (WidgetRegistry registry, Action<Context> icon, int size) {
+            var ib = new ImageBuilder(registry, size, size, ImageFormat.ARGB32);
             PaintIcon(ib.Context, size, 0, 0, icon);
             var img = ib.ToImage();
             // remark: get backend like this:

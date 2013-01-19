@@ -67,7 +67,7 @@ namespace Xwt.Engine
 			return (T) res;
 		}
 
-		public EngineBackend FromEngine {
+        public EngineBackend FromEngine {
 			get;
 			set;
 		}
@@ -79,7 +79,7 @@ namespace Xwt.Engine
 				res = sharedBackends [widgetType] = CreateBackend<T> (widgetType);
 			return (T)res;
 		}
-		
+
 		public void RegisterBackend (Type widgetType, Type backendType)
 		{
 			backendTypes [widgetType] = backendType;
@@ -97,11 +97,10 @@ namespace Xwt.Engine
 		
 		public T CreateFrontend<T> (object backend)
 		{
-            if (typeof(T) == typeof(Font)) {
-                var handler = CreateSharedBackend<IFontBackendHandler>(typeof (Font));
-                return (T) Activator.CreateInstance(typeof(T), handler, backend);
-            } else
-                return (T) Activator.CreateInstance(typeof(T), backend);
+            if (typeof(IXwtHandledObject).IsAssignableFrom(typeof(T))) {
+                return (T) Activator.CreateInstance(typeof (T), this, backend);
+            }
+		    return (T) Activator.CreateInstance(typeof(T), backend);
 		}
 		
 		public object GetNativeWidget (Widget w)
