@@ -57,6 +57,15 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 ToolTipText = "arrange siblings of selected"
             };
 
+            var logicalLayoutLeaf = new ToolStripCommand {
+                Action = (s) => {
+                    action = () => LogicalLayoutLeaf(options);
+                    action();
+                },
+                Image = Limaki.View.Properties.Iconery.LogicalLayoutLeaf,
+                Size = size,
+                ToolTipText = "arrange leaf of selected"
+            };
             var fullLayout = new ToolStripCommand {
                 Action = (s) => {
                     action = () => FullLayout(options);
@@ -179,8 +188,9 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                   new ToolStripMenuItemEx {Command=arrangeBottom,ToggleOnClick=verticalButton},
             });
 
-            var layoutButton = new ToolStripDropDownButtonEx { Command = logicalLayout };
+            var layoutButton = new ToolStripDropDownButtonEx { Command = logicalLayoutLeaf };
             layoutButton.DropDownItems.AddRange(new ToolStripItem[] {
+                new ToolStripMenuItemEx {Command=logicalLayout,ToggleOnClick=layoutButton},    
                 new ToolStripMenuItemEx {Command=columns,ToggleOnClick=layoutButton},    
                 new ToolStripMenuItemEx {Command=oneColumn,ToggleOnClick=layoutButton},          
                 new ToolStripMenuItemEx {Command=fullLayout}, 
@@ -212,6 +222,9 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         }
         public virtual void LogicalLayout (AlignerOptions options) {
             Controller.LogicalLayout(options);
+        }
+        public virtual void LogicalLayoutLeaf (AlignerOptions options) {
+            Controller.LogicalLayoutLeaf(options);
         }
         public virtual void FullLayout (AlignerOptions options) {
             Controller.FullLayout(options);

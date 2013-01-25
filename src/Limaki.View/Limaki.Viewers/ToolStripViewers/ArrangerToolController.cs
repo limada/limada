@@ -120,6 +120,30 @@ namespace Limaki.Viewers.ToolStripViewers {
                 Call(CurrentDisplay, (aligner, items) => aligner.Columns(root, items, options), selected);
             }
         }
-        
+        public virtual void LogicalLayoutLeaf (AlignerOptions options) {
+            options.Distance = CurrentDisplay.Layout.Distance;
+            var display = this.CurrentDisplay;
+            if (display != null) {
+                var selected = display.Data.Selected.Elements;
+                var root = display.Data.Focused;
+                if (selected.Count() == 1) {
+                    selected = new Walker<IVisual, IVisualEdge>(display.Data.Graph)
+                        .DeepWalk(root, 0, e => {
+                            var edge = e.Node as IVisualEdge;
+                            if (edge == null || e.Path == null)
+                                return true;
+                            if (edge.Root == e.Path)
+                                return true;
+                            var pathEdge = e.Path as IVisualEdge;
+                            if (pathEdge != null && pathEdge.Leaf == e.Node)
+                                return true;
+                            return false;
+                        })
+                    
+                        .Select(l => l.Node);
+                }
+                Call(CurrentDisplay, (aligner, items) => aligner.Columns(root, items, options), selected);
+            }
+        }
     }
 }

@@ -42,10 +42,11 @@ namespace Limaki.View.Properties {
             DimensionX = limadaIcons.ToImage(limadaIcons.IconDimensionX, 26); //global::Limaki.View.Properties.Resources.DimensionX;
             DimensionY = limadaIcons.ToImage(limadaIcons.IconDimensionY, 26); //global::Limaki.View.Properties.Resources.DimensionY;
 
-            LogicalLayout = limadaIcons.ToImage(limadaIcons.IconLogicalLayout, size); //global::Limaki.View.Properties.Resources.LogicalLayout;
+            LogicalLayout = limadaIcons.ToImage(limadaIcons.IconLogicalLayoutSelected, size); //global::Limaki.View.Properties.Resources.LogicalLayout;
             FullLayout = awesome.ToImage(limadaIcons.IconFullLayout, size); //global::Limaki.View.Properties.Resources.ModifyLayout24;
 
-    
+            LogicalLayoutLeaf = limadaIcons.ToImage(limadaIcons.IconLogicalLayoutSelectedLeaf, size);
+
             Undo = awesome.ToImage(awesome.IconUndo, size); //global::Limaki.View.Properties.Resources.Undo;
 
             Cancel = awesome.ToImage(awesome.IconRemove, size); //global::Limaki.View.Properties.Resources.cancel;
@@ -153,5 +154,7 @@ namespace Limaki.View.Properties {
         public static Icon LimadaLogo { get; set; }
 
         public static Image LimadaLogoL32 { get; set; }
+
+        public static Image LogicalLayoutLeaf { get; set; }
     }
 }
