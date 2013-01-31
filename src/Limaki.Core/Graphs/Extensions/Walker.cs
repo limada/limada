@@ -156,7 +156,7 @@ namespace Limaki.Graphs.Extensions {
 
 
         public virtual IEnumerable<LevelItem<TItem>> ExpandWalk (TItem start, int level) {
-            return ExpandWalk(start, level);
+            return ExpandWalk(start, level, null);
         }
 
         public virtual IEnumerable<LevelItem<TItem>> ExpandWalk (TItem start, int level, Func<LevelItem<TItem>, bool> predicate) {

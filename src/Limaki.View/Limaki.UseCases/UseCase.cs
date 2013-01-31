@@ -25,7 +25,6 @@ using Limaki.Viewers.ToolStripViewers;
 using Limaki.Visuals;
 
 namespace Limaki.UseCases {
-
     public class UseCase:IDisposable {
         protected string _useCaseTitle = "limada::concept";
         public string UseCaseTitle {
