@@ -66,6 +66,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 Size = size,
                 ToolTipText = "arrange leaf of selected"
             };
+
             var fullLayout = new ToolStripCommand {
                 Action = (s) => {
                     action = () => FullLayout(options);

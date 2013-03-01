@@ -252,17 +252,7 @@ namespace Limaki.View.UI.GraphScene {
                     var bounds = new Rectangle(aligner.Locator.GetLocation(root), aligner.Locator.GetSize(root));
                     options.Collisions = Collisions.None;
                     var cols = aligner.MeasureWalk(walk, ref bounds, options);
-                    var rootCol = cols.Dequeue();
-
-                    if (options.Dimension == Dimension.X) {
-                        bounds.Location = new Point(
-                            bounds.X + rootCol.Item2.Width + options.Distance.Width, 
-                            bounds.Y - aligner.AlignDelta(bounds.Height, rootCol.Item2.Height, options.AlignY));
-                    } else {
-                        bounds.Location = new Point(
-                            bounds.X - aligner.AlignDelta(bounds.Width, rootCol.Item2.Width, options.AlignX), 
-                            bounds.Y + rootCol.Item2.Height + options.Distance.Height);
-                    }
+                    aligner.DequeColumn(cols, ref bounds, options);
                     options.Collisions = Collisions.NextFree | Collisions.PerColumn | Collisions.Toggle;
                     aligner.LocateColumns(cols, ref bounds, options);
                 });

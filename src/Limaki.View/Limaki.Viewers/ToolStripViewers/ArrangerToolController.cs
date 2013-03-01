@@ -8,6 +8,7 @@ using Limaki.View.Layout;
 using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
 using System.Diagnostics;
+using Xwt;
 
 namespace Limaki.Viewers.ToolStripViewers {
 
@@ -120,6 +121,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                 Call(CurrentDisplay, (aligner, items) => aligner.Columns(root, items, options), selected);
             }
         }
+
         public virtual void LogicalLayoutLeaf (AlignerOptions options) {
             options.Distance = CurrentDisplay.Layout.Distance;
             var display = this.CurrentDisplay;
@@ -127,22 +129,24 @@ namespace Limaki.Viewers.ToolStripViewers {
                 var selected = display.Data.Selected.Elements;
                 var root = display.Data.Focused;
                 if (selected.Count() == 1) {
-                    selected = new Walker<IVisual, IVisualEdge>(display.Data.Graph)
-                        .DeepWalk(root, 0, e => {
-                            var edge = e.Node as IVisualEdge;
-                            if (edge == null || e.Path == null)
-                                return true;
-                            if (edge.Root == e.Path)
-                                return true;
-                            var pathEdge = e.Path as IVisualEdge;
-                            if (pathEdge != null && pathEdge.Leaf == e.Node)
-                                return true;
-                            return false;
-                        })
-                    
-                        .Select(l => l.Node);
+                    var walk = new Walker<IVisual, IVisualEdge>(display.Data.Graph)
+                        .DeepWalk(root, 0, Walk.Leafs<IVisual, IVisualEdge>())
+                        .Where(l=>!(l.Node is IVisualEdge))
+                        .ToArray();
+
+                    var save = options.Collisions;
+
+                    Call(CurrentDisplay, (aligner, items) => {
+                        var bounds = new Rectangle(aligner.Locator.GetLocation(root), aligner.Locator.GetSize(root));
+                        options.Collisions = Collisions.None;
+                        var cols = aligner.MeasureWalk(walk, ref bounds, options);
+                        aligner.DequeColumn(cols, ref bounds, options);
+                        options.Collisions = Collisions.NextFree | Collisions.PerColumn | Collisions.Toggle;
+                        aligner.LocateColumns(cols, ref bounds, options);
+                    }
+                    , walk.Select(l=>l.Node));
+                    options.Collisions = save;
                 }
-                Call(CurrentDisplay, (aligner, items) => aligner.Columns(root, items, options), selected);
             }
         }
     }

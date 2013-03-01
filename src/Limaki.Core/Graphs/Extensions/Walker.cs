@@ -295,5 +295,25 @@ namespace Limaki.Graphs.Extensions {
                     yield return (TEdge) item.Node;
 
         }
+
+        
     }
+
+    public static class Walk {
+        public static Func<LevelItem<TItem>, bool> Leafs<TItem, TEdge> () where TEdge : IEdge<TItem>, TItem {
+                return e => {
+                    var edge = e.Node is TEdge ? (TEdge) e.Node : default(TEdge);
+                    if (edge == null || e.Path == null)
+                        return true;
+                    if (edge.Root.Equals(e.Path))
+                        return true;
+                    var pathEdge = e.Path is TEdge ? (TEdge) e.Path : default(TEdge);
+                    if (pathEdge != null && pathEdge.Leaf.Equals(e.Node))
+                        return true;
+                    return false;
+                };
+
+            }
+        }
+    
 }

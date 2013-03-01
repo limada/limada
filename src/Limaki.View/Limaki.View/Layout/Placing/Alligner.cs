@@ -106,6 +106,19 @@ namespace Limaki.View.Layout {
             LocateColumns(cols, ref bounds, options);
         }
 
+        public void DequeColumn( Queue<Tuple<IEnumerable<TItem>, Rectangle>> cols,ref Rectangle bounds, AlignerOptions options ) {
+            var rootCol = cols.Dequeue();
+            if (options.Dimension == Dimension.X) {
+                bounds.Location = new Point(
+                    bounds.X + rootCol.Item2.Width + options.Distance.Width,
+                    bounds.Y - AlignDelta(bounds.Height, rootCol.Item2.Height, options.AlignY));
+            } else {
+                bounds.Location = new Point(
+                    bounds.X - AlignDelta(bounds.Width, rootCol.Item2.Width, options.AlignX),
+                    bounds.Y + rootCol.Item2.Height + options.Distance.Height);
+            }
+        }
+
         public virtual Queue<Tuple<IEnumerable<TItem>, Rectangle>> MeasureWalk (IEnumerable<LevelItem<TItem>> walk, ref Rectangle bounds, AlignerOptions options) {
             var colPos = bounds.Location;
 

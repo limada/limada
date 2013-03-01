@@ -90,6 +90,7 @@ namespace Limaki.Swf.Backends.UseCases {
                 this.StatusLabel.Text = m;
                 Application.DoEvents ();
             };
+
             Mainform.FormClosing += (s, e) => useCase.Close ();
             Application.ApplicationExit += (s, e) => {
                 useCase.Close ();
