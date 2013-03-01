@@ -70,7 +70,7 @@
     <Compile Include="Limaki.Iconeria\IconAttribute.cs" />
     <Compile Include="Limaki.Iconeria\Iconeria.cs" />
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextVisualizer.cs" />
-    <Compile Include="Limaki.View\Layout\Placing\AllignerExtensions.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\AlignerExtensions.cs" />
     <Compile Include="Limaki.View\Layout\Placing\GraphSceneItemShapeLocator.cs" />
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextLayer.cs" />
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextPainter.cs" />
@@ -183,8 +183,8 @@
     <Compile Include="Limaki.View\IViewport.cs" />
     <Compile Include="Limaki.View\IZoomTarget.cs" />
     <Compile Include="Limaki.View\Layout\Placing\LocateVisitBuilder.cs" />
-    <Compile Include="Limaki.View\Layout\Placing\Alligner.cs" />
-    <Compile Include="Limaki.View\Layout\Placing\AllignerOptions.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\Aligner.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\AlignerOptions.cs" />
     <Compile Include="Limaki.View\Layout\GraphSceneLocator.cs" />
     <Compile Include="Limaki.View\Layout\GraphSceneLayout.cs" />
     <Compile Include="Limaki.View\Layout\Placing\ILocator.cs" />

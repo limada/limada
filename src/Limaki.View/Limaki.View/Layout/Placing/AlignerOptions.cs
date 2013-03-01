@@ -27,6 +27,18 @@ namespace Limaki.View.Layout {
         public Dimension Dimension { get; set; }
         public Size Distance{ get; set; }
         public Collisions Collisions { get; set; }
+
+        public AlignerOptions(){}
+
+        public AlignerOptions (AlignerOptions other) {
+            AlignX = other.AlignX;
+            AlignY = other.AlignY;
+            PointOrder = other.PointOrder;
+            PointOrderDelta = other.PointOrderDelta;
+            Dimension = other.Dimension;
+            Distance = other.Distance;
+            Collisions = other.Collisions;
+        }
     }
 
     [Flags]

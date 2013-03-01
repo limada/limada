@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Limaki 
  * 
  * This code is free software; you can redistribute it and/or modify it
@@ -105,7 +105,7 @@ namespace Limaki.Playground.View {
                 AlignX = Alignment.Start,
                 AlignY = Alignment.Center,
                 Dimension = Dimension.X,
-                PointOrder = PointOrder.LeftToRight
+                PointOrder = PointOrder.XY
             };
 
             var worker = SceneWorkerWithTestData(0, options);
@@ -184,7 +184,7 @@ namespace Limaki.Playground.View {
                 AlignX = Alignment.Center,
                 AlignY = Alignment.Center,
                 Dimension = Dimension.X,
-                PointOrder = PointOrder.LeftToRight,
+                PointOrder = PointOrder.XY,
                 Collisions = Limaki.View.Layout.Collisions.NextFree | Collisions.Toggle
             };
 
@@ -271,7 +271,7 @@ namespace Limaki.Playground.View {
                 AlignX = Alignment.Center,
                 AlignY = Alignment.Start,
                 Dimension = Dimension.X,
-                PointOrder = PointOrder.LeftToRight,
+                PointOrder = PointOrder.XY,
                 //Collisions = Collisions.NextFree
             };
 
@@ -330,7 +330,7 @@ namespace Limaki.Playground.View {
                                                  AlignX = Alignment.Start,
                                                  AlignY = Alignment.Center,
                                                  Dimension = Dimension.X,
-                                                 PointOrder = PointOrder.LeftToRight,
+                                                 PointOrder = PointOrder.XY,
                                                 
             };
 

@@ -9,6 +9,7 @@ using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
 using System.Diagnostics;
 using Xwt;
+using Limaki.Drawing;
 
 namespace Limaki.Viewers.ToolStripViewers {
 
@@ -27,18 +28,6 @@ namespace Limaki.Viewers.ToolStripViewers {
         public override void Attach(object sender) {
             base.Attach(sender);
         }
-
-        //public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Aligner<IVisual, IVisualEdge>> call) {
-        //    if (display == null)
-        //        return;
-
-        //    var aligner = new Aligner<IVisual, IVisualEdge>(display.Data, display.Layout);
-        //    var items = display.Data.Selected.Elements;
-        //    call(aligner);
-        //    StoreUndo(display, aligner, items);
-        //    aligner.Proxy.Commit(aligner.Data);
-        //    display.Execute();
-        //}
 
         public void Call(IGraphSceneDisplay<IVisual, IVisualEdge> display, Action<Aligner<IVisual, IVisualEdge>, IEnumerable<IVisual>> call) {
             if (display == null)
@@ -91,16 +80,27 @@ namespace Limaki.Viewers.ToolStripViewers {
             Undo(CurrentDisplay);
         }
        
-        public virtual void Columns(AlignerOptions options) {
+        public virtual void OptionsAndLayout(AlignerOptions options) {
             options.Distance = CurrentDisplay.Layout.Distance;
+            // TODO: CurrentDisplay.Layout.SetOptions(options);
+        }
+
+        public virtual void Columns(AlignerOptions options) {
+            OptionsAndLayout(options);
             Call(CurrentDisplay, (aligner, items) => aligner.Columns(items, options));
         }
+
         public void OneColumn(AlignerOptions options) {
-            options.Distance = CurrentDisplay.Layout.Distance;
+            OptionsAndLayout(options);
+            options = new AlignerOptions(options);
+            options.PointOrder = options.Dimension == Dimension.X ?
+                                 PointOrder.YX : PointOrder.XY;
+            options.PointOrderDelta = 0;
             Call(CurrentDisplay, (aligner, items) => aligner.OneColumn(items, options));
         }
+
         public virtual void FullLayout(AlignerOptions options) {
-            options.Distance = CurrentDisplay.Layout.Distance;
+            OptionsAndLayout(options);
             var display = this.CurrentDisplay;
             if (display != null) {
                 display.BackColor = display.StyleSheet.BackColor;
@@ -110,7 +110,7 @@ namespace Limaki.Viewers.ToolStripViewers {
         }
 
         public virtual void LogicalLayout(AlignerOptions options) {
-            options.Distance = CurrentDisplay.Layout.Distance;
+            OptionsAndLayout(options);
             var display = this.CurrentDisplay;
             if (display != null) {
                 var selected = display.Data.Selected.Elements;
@@ -123,7 +123,7 @@ namespace Limaki.Viewers.ToolStripViewers {
         }
 
         public virtual void LogicalLayoutLeaf (AlignerOptions options) {
-            options.Distance = CurrentDisplay.Layout.Distance;
+            OptionsAndLayout(options);
             var display = this.CurrentDisplay;
             if (display != null) {
                 var selected = display.Data.Selected.Elements;

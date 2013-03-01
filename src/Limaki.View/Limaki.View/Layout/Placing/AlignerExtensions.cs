@@ -28,7 +28,7 @@ namespace Limaki.View.Layout {
             var result = new AlignerOptions {
                 Dimension = layout.Dimension,
                 Distance = layout.Distance,
-                PointOrder = layout.Dimension == Dimension.X ? PointOrder.LeftToRight : PointOrder.TopToBottom,
+                PointOrder = layout.Dimension == Dimension.X ? PointOrder.XY : PointOrder.YX,
 
             };
             if (layout.Dimension == Dimension.X) {
