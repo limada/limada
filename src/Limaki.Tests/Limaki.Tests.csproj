@@ -77,6 +77,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -138,6 +139,8 @@
     <Compile Include="Playground\View\AllignerPrototyper.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
     <Compile Include="Playground\View\CollissionResolver.cs" />
+    <Compile Include="Playground\View\DragDrop.Swf\DragDropBackend.cs" />
+    <Compile Include="Playground\View\DragDrop.Swf\DragDropConverter.cs" />
     <Compile Include="Playground\View\ReferencePainterCanvas.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -153,9 +156,7 @@
     <Compile Include="Playground\View\Rectangle\TestRectangle.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintCanvasBackend.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintContextBackendHandler.cs" />
-    <Compile Include="Playground\View\XwtFrontend\PaintCanvas.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Playground\View\XwtFrontend\PaintCanvas.cs" />
     <Compile Include="Playground\View\XwtFrontend\PaintContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestLocations.cs" />
@@ -314,6 +315,7 @@
   <ItemGroup>
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
     <Folder Include="Playground\Graph\" />
+    <Folder Include="Playground\View\DragDrop\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

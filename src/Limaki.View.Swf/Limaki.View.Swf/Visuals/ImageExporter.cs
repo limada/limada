@@ -17,7 +17,6 @@ using System.Drawing.Imaging;
 using Limaki.Drawing;
 using Limaki.View.Gdi.UI;
 using Limaki.Visuals;
-using Xwt;
 using Rectangle = System.Drawing.Rectangle;
 using Size = Xwt.Size;
 
@@ -56,5 +55,9 @@ namespace Limaki.View.Swf.Visuals {
 
             return result;
         }
+
+       
     }
+
+   
 }

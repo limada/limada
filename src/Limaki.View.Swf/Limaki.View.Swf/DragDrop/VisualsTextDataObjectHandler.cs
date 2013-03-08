@@ -87,6 +87,8 @@ namespace Limaki.View.Swf.DragDrop {
                         s = System.Text.Encoding.UTF8.GetString(r); 
                     textInfo = HTMLPostProcess(s);
                     textInfo.StreamType = ContentTypes.HTML;
+                    textInfo.Compression = CompressionType.bZip2;
+
                     if (false) {
                         var format = "HTML Format"; //"text/html";//
                         if (dataObject.GetDataPresent(format)) {
@@ -103,7 +105,7 @@ namespace Limaki.View.Swf.DragDrop {
                 if (textInfo.Description == null)
                     textInfo.Description = description;
 
-                Content<Stream> content = new Content<Stream> (textInfo);
+                var content = new Content<Stream> (textInfo);
                 content.Data = new MemoryStream();
                 StreamWriter writer = new StreamWriter(content.Data, encoding);
                 writer.Write(textInfo.Data);

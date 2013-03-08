@@ -29,7 +29,9 @@ namespace Limaki.View.Swf.DragDrop {
     /// encapsulates operations to realise DragDrop or CopyPaste events
     /// </summary>
     public class DragDropFacade {
+        
         #region DataObject handling
+
         private DataObjectHandlerChain chain = new DataObjectHandlerChain();
 
         public DragDropFacade() {
@@ -64,6 +66,7 @@ namespace Limaki.View.Swf.DragDrop {
         public IVisual Clone(IGraph<IVisual, IVisualEdge> graph, IVisual item) {
             return new SerializedVisualsDataObjectHandler().Clone(graph,item);
         }
+
         #endregion
 
         #region Scene handling

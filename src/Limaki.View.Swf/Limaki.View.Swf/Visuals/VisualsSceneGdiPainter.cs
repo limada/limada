@@ -20,6 +20,14 @@ using Limaki.Visuals;
 using Xwt.Gdi;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Rendering;
+using Limaki.View.Rendering;
+using System;
+using Limaki.Graphs;
+using SWF = System.Windows.Forms;
+using Xwt.Gdi.Backend;
+using System.Drawing;
+using Limaki.View.Gdi.UI;
+using Limaki.Drawing;
 
 namespace Limaki.View.Swf.Visuals {
 
@@ -32,6 +40,56 @@ namespace Limaki.View.Swf.Visuals {
 
             composer.Factor(this);
             composer.Compose(this);
+        }
+
+        public class GraphSceneGdiPainterComposer<TItem, TEdge> : GraphScenePainterComposer<TItem, TEdge>
+      where TEdge : TItem, IEdge<TItem> {
+            public override void Factor (GraphScenePainter<TItem, TEdge> painter) {
+                base.Factor(painter);
+
+                var layer = new GdiGraphSceneLayer<TItem, TEdge>();
+                var renderer = new GraphScenePainterRenderer<IGraphScene<TItem, TEdge>>();
+                renderer.Layer = layer;
+
+                painter.BackendRenderer = renderer;
+                painter.DataLayer = layer;
+
+                painter.Viewport = new Viewport();
+            }
+
+            public override void Compose (GraphScenePainter<TItem, TEdge> display) {
+                base.Compose(display);
+
+            }
+
+        }
+
+        public class GraphScenePainterRenderer<T> : IBackendRenderer {
+            public ILayer<T> Layer { get; set; }
+
+            public void Render () {
+                throw new NotImplementedException();
+            }
+
+            public void Render (IClipper clipper) {
+                throw new NotImplementedException();
+            }
+
+            public Func<global::Xwt.Drawing.Color> BackColor { get; set; }
+
+            public void OnPaint (IRenderEventArgs e) {
+                this.OnPaint(Converter.Convert(e));
+            }
+
+            public virtual void OnPaint (SWF.PaintEventArgs e) {
+                var g = e.Graphics;
+
+                var b = new SolidBrush(GdiConverter.ToGdi(BackColor()));
+                g.FillRectangle(b, e.ClipRectangle);
+
+                Layer.OnPaint(Converter.Convert(e));
+
+            }
         }
              
     }

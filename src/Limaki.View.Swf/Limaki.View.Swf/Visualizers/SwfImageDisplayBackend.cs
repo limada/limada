@@ -8,7 +8,7 @@ namespace Limaki.View.Swf.Visualizers {
         public override DisplayFactory<Image> CreateDisplayFactory(SwfWidgetBackend<Image> device) {
             var result = new DisplayFactory<Image>();
             
-            var deviceInstrumenter = new ImageBackendComposer();
+            var deviceInstrumenter = new ImageDisplayBackendComposer();
             deviceInstrumenter.Backend = device;
             result.DeviceComposer = deviceInstrumenter;
             

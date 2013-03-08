@@ -5,7 +5,7 @@ using Limaki.View.Swf.Visualizers;
 
 namespace Limaki.View.Swf.Visualizers {
 
-    public class ImageBackendComposer : SwfBackendComposer<Image> {
+    public class ImageDisplayBackendComposer : SwfBackendComposer<Image> {
 
         public override void Factor(Display<Image> display) {
             base.Factor(display);

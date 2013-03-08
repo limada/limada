@@ -112,7 +112,7 @@ namespace Limaki.View.Swf.Visuals {
             if (Resolved && ! Dragging) {
                 Dragging = true;
                 try {
-                    IDataObject myDataObject = facade.SetVisual(this.control, Scene.Graph, Current);
+                    IDataObject myDataObject = DragDrop.SetVisual(this.control, Scene.Graph, Current);
                     DragDropEffects dropEffect =
                         control.DoDragDrop(myDataObject, DragDropEffects.All | DragDropEffects.Link);
                 } catch {
@@ -128,6 +128,7 @@ namespace Limaki.View.Swf.Visuals {
             Resolved = false;
             Dragging = false;
         }
+
         public override void OnMouseUp(MouseActionEventArgs e) {
             base.OnMouseUp(e);
         }
@@ -152,7 +153,7 @@ namespace Limaki.View.Swf.Visuals {
             }
         }
 
-        private DragDropFacade facade = new DragDropFacade();
+        private DragDropFacade DragDrop = new DragDropFacade();
 
 
         public virtual void OnDragDrop(DragEventArgs e) {
@@ -161,7 +162,7 @@ namespace Limaki.View.Swf.Visuals {
                 control.PointToClient(new Point(e.X, e.Y))
                 );
 
-            if (!facade.DoDragDrop (this.Scene, this.control, e.Data, this.Layout, pt, this.HitSize)) {
+            if (!DragDrop.DoDragDrop (this.Scene, this.control, e.Data, this.Layout, pt, this.HitSize)) {
                 e.Effect = DragDropEffects.None;
             } else {
                 ( (Control) this.control ).FindForm ().ActiveControl = ( (Control) this.control );
@@ -170,7 +171,7 @@ namespace Limaki.View.Swf.Visuals {
         }
 
         public virtual void OnDragOver(DragEventArgs e) {
-            if (!facade.IsValidData(e.Data)) {
+            if (!DragDrop.IsValidData(e.Data)) {
                 e.Effect = DragDropEffects.None;
                 return;
             }
@@ -245,14 +246,14 @@ namespace Limaki.View.Swf.Visuals {
         public virtual void Copy() {
             var scene = this.Scene;
             if (scene !=null && scene.Focused != null) {
-                Clipboard.SetDataObject(facade.SetVisual(scene.Graph,scene.Focused));
+                Clipboard.SetDataObject(DragDrop.SetVisual(scene.Graph,scene.Focused));
             }
         }
 
         public virtual void Paste() {
             if (this.Scene == null)
                 return;
-            var visual = facade.PlaceVisual(Clipboard.GetDataObject(), this.Scene, this.Layout);
+            var visual = DragDrop.PlaceVisual(Clipboard.GetDataObject(), this.Scene, this.Layout);
             //this.control.CommandsExecute();
 
 

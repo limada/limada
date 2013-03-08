@@ -120,14 +120,12 @@
     <Compile Include="Limaki.View.Gdi\UI\GdiGraphSceneLayer.cs" />
     <Compile Include="Limaki.View.Gdi\UI\GdiImageLayer.cs" />
     <Compile Include="Limaki.View.Gdi\UI\GdiRenderEventArgs.cs" />
-    <Compile Include="Limaki.View.Swf\Visualizers\GraphSceneGdiPainterComposer.cs" />
-    <Compile Include="Limaki.View.Swf\Visualizers\GraphScenePainterRenderer.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.Content\DocumentSchemaController.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripUtils.cs" />
     <Compile Include="Limaki.View.Swf\Converter.cs" />
     <Compile Include="Limaki.View.Swf\CursorHandlerBackend.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\DragDropCatcher.cs" />
-    <Compile Include="Limaki.View.Swf\Visualizers\ImageBackendComposer.cs" />
+    <Compile Include="Limaki.View.Swf\Visualizers\ImageDisplayBackendComposer.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\ImageDisplayComposer.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\SwfBackendComposer.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\SwfImageDisplayBackend.cs">
