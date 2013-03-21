@@ -1,4 +1,4 @@
-using Limada.UseCases;
+using Limada.Usecases;
 using Limaki.IOC;
 using System.Reflection;
 using System.Linq;

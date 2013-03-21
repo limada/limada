@@ -14,7 +14,9 @@
 
 
 using System.Collections.Generic;
-namespace Limaki.Model.Streams {
+
+namespace Limaki.Model.Content {
+    
     public class ContentTypes {
         public static  long ASCII  = unchecked((long)0xB658B74F191B9645);
         public static  long Doc   = unchecked((long)0xF4A5E7AF3232C887);

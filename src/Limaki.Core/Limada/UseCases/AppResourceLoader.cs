@@ -19,7 +19,7 @@ using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.Data;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 
     public class AppResourceLoader : ContextRecourceLoader {
         private IContextRecourceLoader deviceContext = null;

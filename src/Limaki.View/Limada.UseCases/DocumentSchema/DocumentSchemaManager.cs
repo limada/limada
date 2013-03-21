@@ -18,12 +18,12 @@ using Limada.Schemata;
 using Limaki.Graphs;
 using Limada.View;
 using Limada.VisualThings;
-using Limaki.Model.Streams;
-using System.Linq;
 using Limaki.Model.Content;
+using System.Linq;
+using Limaki.Model.Content.Providers;
 using Limaki.Visuals;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 
     public class DocumentSchemaManager {
         public IEnumerable<IVisual> Pages(IGraph<IVisual, IVisualEdge> source, IVisual document) {

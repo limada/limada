@@ -7,7 +7,7 @@ using Limaki.Common;
 using Limaki.Data;
 using System.Collections.Generic;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
 	public class FileManagerBase {
 		protected IThingGraphProvider _thingGraphProvider = null;
         public IThingGraphProvider ThingGraphProvider {

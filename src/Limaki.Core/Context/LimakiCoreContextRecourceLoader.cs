@@ -3,9 +3,9 @@ using System.Reflection;
 using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.Graphs.Extensions;
-using Limaki.Model.Streams;
-using Limada.Model;
 using Limaki.Model.Content;
+using Limada.Model;
+using Limaki.Model.Content.Providers;
 
 namespace Limaki.IOC {
     public class LimakiCoreContextRecourceLoader : ContextRecourceLoader {

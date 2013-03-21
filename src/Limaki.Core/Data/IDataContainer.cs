@@ -13,7 +13,7 @@
  */
 
 using System;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Id = System.Int64;
 
 namespace Limaki.Data {

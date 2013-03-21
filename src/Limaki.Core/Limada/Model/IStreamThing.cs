@@ -1,5 +1,5 @@
 using System;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using System.IO;
 using Id = System.Int64;
 

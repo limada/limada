@@ -22,7 +22,7 @@ using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limada.View;
 using Limada.VisualThings;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;

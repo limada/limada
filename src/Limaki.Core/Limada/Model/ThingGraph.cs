@@ -16,7 +16,7 @@ using Limaki.Graphs;
 using Id = System.Int64;
 using System.Collections.Generic;
 using Limaki.Common.Collections;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.Data;
 using System.Linq;
 using Limaki.Common;

@@ -21,7 +21,7 @@ using System.Windows.Forms;
 using Limaki.Graphs;
 using Limada.View;
 using Limada.VisualThings;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.Drawing.Imaging;
 using Limaki.Visuals;
 

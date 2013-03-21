@@ -7,7 +7,7 @@ using Limada.View;
 using Limada.VisualThings;
 using Limaki.Visuals;
 using Limada.Model;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.View.Visualizers;
 
 namespace Limaki.Tests.View {

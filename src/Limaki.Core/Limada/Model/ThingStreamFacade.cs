@@ -1,6 +1,6 @@
 using System.IO;
 using Limada.Schemata;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.Common;
 
 namespace Limada.Model {

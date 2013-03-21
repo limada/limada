@@ -24,7 +24,7 @@ using Limaki.View.Visualizers;
 using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
-using Limaki.UseCases;
+using Limaki.Usecases.Concept;
 using Limaki.View.Swf.Visualizers;
 using Limaki.Swf.Backends.UseCases;
 using Limaki.Tests.Graph.Model;
@@ -39,12 +39,13 @@ using Limaki.Visuals;
 using Limada.Schemata;
 using Limaki.Tests.View;
 using Limaki.Viewers;
+using Limaki.Usecases;
 
 
 namespace Limaki.Tests.UseCases {
 
-    public class TestCaseFactory : UseCaseFactory<UseCase> {
-        public override void Compose(UseCase useCase) {
+    public class TestCaseFactory : UsecaseFactory<ConceptUsecase> {
+        public override void Compose(ConceptUsecase useCase) {
             var deviceComposer = DeviceComposer as SwfUseCaseComposer;
             
             this.testMessage = (s, m) => {
@@ -57,7 +58,7 @@ namespace Limaki.Tests.UseCases {
     
         public MessageEventHandler testMessage = null;
 
-        public void CreateTestCases(UseCase useCase, SwfUseCaseComposer composer) {
+        public void CreateTestCases(ConceptUsecase useCase, SwfUseCaseComposer composer) {
             
             Func<BenchmarkOneTests> displayTest = () => {
                 var test = new BenchmarkOneTests();
@@ -118,7 +119,7 @@ namespace Limaki.Tests.UseCases {
             SetTests(useCase);
         }
 
-        public void ExampleOpen(UseCase useCase) {
+        public void ExampleOpen(ConceptUsecase useCase) {
 
             var dialog = new OpenExampleData();
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
@@ -147,7 +148,7 @@ namespace Limaki.Tests.UseCases {
 
 
         }
-        public void WCFServiceTest(UseCase sender) {
+        public void WCFServiceTest(ConceptUsecase sender) {
 #if WCF
             DataBaseInfo info = new DataBaseInfo();
             info.Server = "http://localhost";
@@ -178,7 +179,7 @@ namespace Limaki.Tests.UseCases {
             }
             display.EventControler.Add(renderAction);
         }
-        public void NoSchemaThingGraph(UseCase useCase) {
+        public void NoSchemaThingGraph(ConceptUsecase useCase) {
             var display = useCase.GetCurrentDisplay();
             var thingGraph = display.Data.Graph.ThingGraph();
             var schemaGraph = thingGraph as SchemaThingGraph;
@@ -188,7 +189,7 @@ namespace Limaki.Tests.UseCases {
             }
         }
 
-        public void SetTests(UseCase useCase) {
+        public void SetTests(ConceptUsecase useCase) {
             bool showBounds = false;
             bool runThreadTest = false;
             bool showSandbox = false;
@@ -215,7 +216,7 @@ namespace Limaki.Tests.UseCases {
 
         }
 
-        public void RepairDatabase(UseCase sender) {
+        public void RepairDatabase(ConceptUsecase sender) {
             sender.FileManager.DefaultDialogValues(sender.FileManager.OpenFileDialog);
             if (sender.FileDialogShow(sender.FileManager.OpenFileDialog, true) == Viewers.DialogResult.OK) {
                 sender.SaveChanges();
@@ -234,7 +235,7 @@ namespace Limaki.Tests.UseCases {
             }
         }
 
-        public void currentProblem(UseCase sender) {
+        public void currentProblem(ConceptUsecase sender) {
             try {
                 //var maint = new VisualThingGraphTest();
                 //maint.ExpandAndSaveLinks(sender.GetCurrentDisplay().Data.Graph);

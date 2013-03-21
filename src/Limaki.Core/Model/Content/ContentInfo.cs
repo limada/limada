@@ -1,4 +1,4 @@
-﻿namespace Limaki.Model.Streams {
+﻿namespace Limaki.Model.Content {
     public class ContentInfo {
 
         public ContentInfo(string streamTypeDescription, long streamType, string extension, string mimeType, CompressionType compression) {

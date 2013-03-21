@@ -23,7 +23,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limada.View;
 using Limada.VisualThings;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 

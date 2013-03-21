@@ -56,7 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Limada.UseCases\DocumentSchemaKeyScrollAction.cs" />
+    <Compile Include="Limada.UseCases\Cms\BackendController.cs" />
+    <Compile Include="Limada.UseCases\DocumentSchema\DocumentSchemaKeyScrollAction.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindDrawingUtils.cs" />
     <Compile Include="Limaki.Drawing\Dimension.cs" />
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
@@ -64,6 +65,12 @@
     <Compile Include="Limaki.Drawing.Blind\BlindSystemInformation.cs" />
     <Compile Include="Limaki.Drawing\IShaper.cs" />
     <Compile Include="Limaki.Iconeria\LimadaIconeria.cs" />
+    <Compile Include="Limada.UseCases\Cms\Models\ContentAndLinks.cs" />
+    <Compile Include="Limada.UseCases\Cms\Models\HtmlContent.cs" />
+    <Compile Include="Limada.UseCases\Cms\Models\LinkID.cs" />
+    <Compile Include="Limada.UseCases\Cms\Models\LinkIDs.cs" />
+    <Compile Include="Limada.UseCases\Cms\Models\StreamContent.cs" />
+    <Compile Include="Limada.UseCases\Cms\CmsSiteSchema.cs" />
     <Compile Include="Xwt\Matrix.cs" />
     <Compile Include="Limaki.Iconeria\AwesomeIconeria.cs" />
     <Compile Include="Limaki.Iconeria\AwesomeIconeria.Generated.cs" />
@@ -145,8 +152,8 @@
     <Compile Include="Limada.View\SearchHandler.cs" />
     <Compile Include="Limada.View\Sheet.cs" />
     <Compile Include="Limada.View\SheetManager.cs" />
-    <Compile Include="Limada.UseCases\ContentProviderManager.cs" />
-    <Compile Include="Limada.UseCases\DocumentSchemaManager.cs" />
+    <Compile Include="Limada.UseCases\Content\ContentProviderManager.cs" />
+    <Compile Include="Limada.UseCases\DocumentSchema\DocumentSchemaManager.cs" />
     <Compile Include="Limada.UseCases\FileManager.cs" />
     <Compile Include="Limada.VisualThings\ISceneProvider.cs" />
     <Compile Include="Limada.VisualThings\SceneProvider.cs" />
@@ -259,10 +266,10 @@
     <Compile Include="Limaki.View\Visuals\VisualsRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Limaki.Reporting\IReportOptions.cs" />
-    <Compile Include="Limaki.UseCases\UseCase.cs" />
-    <Compile Include="Limaki.UseCases\UseCaseComposer.cs" />
-    <Compile Include="Limaki.UseCases\UseCaseFactories.cs" />
-    <Compile Include="Limaki.UseCases\UseCaseFactory.cs" />
+    <Compile Include="Limaki.Usecases\Concept\ConceptUsecase.cs" />
+    <Compile Include="Limaki.Usecases\Concept\ConceptUsecaseComposer.cs" />
+    <Compile Include="Limaki.Usecases\UsecaseFactories.cs" />
+    <Compile Include="Limaki.Usecases\UsecaseFactory.cs" />
     <Compile Include="Limaki.Viewers\ContentViewManager.cs" />
     <Compile Include="Limaki.Viewers\ContentViewProviders.cs" />
     <Compile Include="Limaki.Widgets\DialogResult.cs" />

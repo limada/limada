@@ -10,7 +10,7 @@ using Limada.Schemata;
 using Limaki.Common;
 using Limaki.Data;
 using Limaki.Data.db4o;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Id = System.Int64;
 
 namespace Limada.Data.db4o {

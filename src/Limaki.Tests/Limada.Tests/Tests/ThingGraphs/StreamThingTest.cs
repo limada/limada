@@ -17,7 +17,7 @@ using System.IO;
 using Limada.Model;
 using Limada.Test;
 using Limaki.Data;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using NUnit.Framework;
 using Id = System.Int64;
 

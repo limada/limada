@@ -1,13 +1,13 @@
 using Limaki.Common;
 using Limada.View;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Visuals;
 
-namespace Limaki.UseCases {
-    public class UseCaseComposer : IComposer<UseCase> {
-        public void Factor(UseCase useCase) {
+namespace Limaki.Usecases.Concept {
+    public class ConceptUsecaseComposer : IComposer<ConceptUsecase> {
+        public void Factor(ConceptUsecase useCase) {
             useCase.SheetManager = Registry.Factory.Create<ISheetManager>();
             useCase.SceneHistory = new SceneHistory ();
             useCase.FileManager = new FileManager ();
@@ -20,7 +20,7 @@ namespace Limaki.UseCases {
             useCase.FavoriteManager = new FavoriteManager();
         }
 
-        public void Compose(UseCase useCase) {
+        public void Compose(ConceptUsecase useCase) {
             
             var splitView = useCase.SplitView;
             useCase.GetCurrentDisplay = () => splitView.CurrentDisplay;

@@ -17,7 +17,7 @@ using System.IO;
 using Limada.Model;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.Visuals;
 
 namespace Limada.VisualThings {

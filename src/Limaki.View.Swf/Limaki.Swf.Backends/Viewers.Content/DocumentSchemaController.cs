@@ -1,5 +1,5 @@
 using System.Linq;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limada.VisualThings;
 using Limaki.Common;
 using Limaki.Common.Collections;

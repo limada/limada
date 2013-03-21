@@ -1,15 +1,16 @@
 using System.Windows.Forms;
 using Limaki.View.Swf;
-using Limaki.UseCases;
+using Limaki.Usecases.Concept;
 using Limaki.Swf.Backends.UseCases;
 using Limaki.Common.IOC;
 using Limaki.Common;
 using Xwt.WinformBackend;
 using System;
+using Limaki.Usecases;
 
 namespace Limaki.App {
 
-    public class WinformAppFactory : AppFactory<global::Limada.UseCases.AppResourceLoader> {
+    public class WinformAppFactory : AppFactory<global::Limada.Usecases.AppResourceLoader> {
 
         public WinformAppFactory(): base(new SwfContextRecourceLoader()) {}
 
@@ -30,8 +31,8 @@ namespace Limaki.App {
             var deviceComposer = new SwfUseCaseComposer();
             deviceComposer.Mainform = mainform;
 
-            var factory = new UseCaseFactory<UseCase>();
-            factory.Composer = new UseCaseComposer();
+            var factory = new UsecaseFactory<ConceptUsecase>();
+            factory.Composer = new ConceptUsecaseComposer();
             factory.DeviceComposer = deviceComposer;
             
             var useCase = factory.Create();
@@ -47,8 +48,8 @@ namespace Limaki.App {
             }
         }
 
-        public void CallPlugins(UseCaseFactory<UseCase> factory, UseCase useCase) {
-            var factories = Registry.Pool.TryGetCreate < UseCaseFactories<UseCase>>();
+        public void CallPlugins(UsecaseFactory<ConceptUsecase> factory, ConceptUsecase useCase) {
+            var factories = Registry.Pool.TryGetCreate < UsecaseFactories<ConceptUsecase>>();
             foreach(var item in factories) {
                 item.Composer = factory.Composer;
                 item.DeviceComposer = factory.DeviceComposer;

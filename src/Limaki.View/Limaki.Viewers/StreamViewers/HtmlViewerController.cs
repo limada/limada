@@ -17,7 +17,7 @@ using System.Diagnostics;
 using System.IO;
 using Limada.Model;
 using Limaki.Common.Text.HTML;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.Net.WebProxyServer;
 
 namespace Limaki.Viewers.StreamViewers {

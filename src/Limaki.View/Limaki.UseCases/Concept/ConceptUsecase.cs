@@ -16,16 +16,16 @@ using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limada.View;
-using Limada.UseCases;
-using Limaki.Model.Streams;
+using Limada.Usecases;
+using Limaki.Model.Content;
 using System.IO;
 using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Viewers.ToolStripViewers;
 using Limaki.Visuals;
 
-namespace Limaki.UseCases {
-    public class UseCase:IDisposable {
+namespace Limaki.Usecases.Concept {
+    public class ConceptUsecase:IDisposable {
         protected string _useCaseTitle = "limada::concept";
         public string UseCaseTitle {
             get { return _useCaseTitle; }

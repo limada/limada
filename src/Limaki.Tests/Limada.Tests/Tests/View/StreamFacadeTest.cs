@@ -32,7 +32,7 @@ using Limaki.Visuals;
 using System.IO;
 using Limada.Test;
 using System;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limada.Tests.ThingGraphs;
 
 namespace Limada.Tests.ThingGraphs {

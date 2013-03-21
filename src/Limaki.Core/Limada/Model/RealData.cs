@@ -15,7 +15,7 @@
 using System;
 using Limaki.Common;
 using Id = System.Int64;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using System.Runtime.Serialization;
 
 namespace Limada.Model {

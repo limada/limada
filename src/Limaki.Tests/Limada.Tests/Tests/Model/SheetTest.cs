@@ -32,7 +32,7 @@ using System;
 using Limaki.Common;
 using System.Collections.Generic;
 using System.Xml;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.View.Layout;
 using Limaki.View.Visuals.UI;
 using Limaki.View.Visuals.Layout;

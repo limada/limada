@@ -28,7 +28,7 @@ using Db4objects.Db4o.Constraints;
 using Db4objects.Db4o.Foundation;
 using Limaki.Common.Collections;
 using Db4objects.Db4o.Ext;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Db4objects.Db4o.Linq;
 using System.Linq;
 

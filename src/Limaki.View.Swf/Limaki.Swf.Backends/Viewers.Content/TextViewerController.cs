@@ -17,7 +17,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Limaki.Common.Text.RTF;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.Viewers;
 using Limaki.Swf.Backends.TextEditor;
 using System;

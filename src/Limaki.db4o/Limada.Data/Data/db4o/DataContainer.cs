@@ -17,7 +17,7 @@ using Db4objects.Db4o;
 using Limada.Model;
 using Limaki.Data;
 using Limaki.Data.db4o;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Id = System.Int64;
 using Db4objects.Db4o.Query;
 

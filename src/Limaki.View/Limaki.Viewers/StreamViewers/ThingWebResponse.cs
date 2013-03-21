@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using Limada.Model;
 using Limada.Schemata;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.Net.WebProxyServer;
 using Limaki.Common;
 

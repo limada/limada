@@ -15,7 +15,7 @@
 
 using System.IO;
 using System.Windows.Forms;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.Viewers;
 using Limaki.Swf.Backends.TextEditor;
 

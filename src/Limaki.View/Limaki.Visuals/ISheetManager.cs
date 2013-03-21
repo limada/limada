@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 
 namespace Limaki.Visuals {
     /// <summary>

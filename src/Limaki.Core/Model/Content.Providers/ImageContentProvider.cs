@@ -19,9 +19,10 @@ using System.Collections.Generic;
 using Limaki.Common.Collections;
 using Limaki.Common;
 using System.Text;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content {
+namespace Limaki.Model.Content.Providers {
+
     public class ImageContentProvider : ContentProvider {
         ContentInfo[] _supportedContents =
             new ContentInfo[]{

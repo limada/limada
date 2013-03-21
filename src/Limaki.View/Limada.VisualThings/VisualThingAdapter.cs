@@ -21,7 +21,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Limaki.Visuals;
 
 namespace Limada.VisualThings {

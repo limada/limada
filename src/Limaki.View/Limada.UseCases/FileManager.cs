@@ -15,13 +15,13 @@ using System;
 using System.IO;
 using Limada.Data;
 using Limada.Model;
-using Limada.UseCases;
+using Limada.Usecases;
 using Limaki.Common;
 using Limaki.Data;
 using Limaki.Drawing;
 using Limada.View;
 using Limada.VisualThings;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using System.Collections.Generic;
 using Limaki.Graphs.Extensions;
 using Limaki.Viewers;
@@ -29,7 +29,8 @@ using Limaki.Visuals;
 using Mono.Options;
 using Limada.Schemata;
 
-namespace Limada.UseCases {
+namespace Limada.Usecases {
+
 	public class FileManager:FileManagerBase {
 
         public Action<IGraphScene<IVisual, IVisualEdge>> DataBound = null;

@@ -1,4 +1,4 @@
-﻿namespace Limaki.Model.Streams {
+﻿namespace Limaki.Model.Content {
     public class Magic {
         public Magic(){}
         public Magic(byte[] magic, int offset){

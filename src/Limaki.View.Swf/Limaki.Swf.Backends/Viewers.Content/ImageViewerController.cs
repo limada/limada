@@ -19,7 +19,7 @@ using System.Windows.Forms;
 using Limada.Model;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using System.IO;
 using Limaki.View.Swf;
 using Limaki.Viewers;

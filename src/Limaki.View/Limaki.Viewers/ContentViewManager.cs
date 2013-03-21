@@ -20,7 +20,7 @@ using Limaki.Drawing;
 using Limaki.Graphs.Extensions;
 using Limada.View;
 using Limada.VisualThings;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using System.Linq;
 using Limaki.Graphs;
 using Limaki.View.Visualizers;

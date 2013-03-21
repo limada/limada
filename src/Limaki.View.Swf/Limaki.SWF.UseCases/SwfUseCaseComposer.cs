@@ -8,7 +8,7 @@ using Limaki.Drawing;
 using Limaki.Swf.Backends.Viewers;
 using Limaki.Swf.Backends.Viewers.Content;
 using Limaki.Swf.Backends.Viewers.ToolStrips;
-using Limaki.UseCases;
+using Limaki.Usecases.Concept;
 using Limaki.View.Swf;
 using Limaki.View.Swf.Backends;
 using Limaki.View.Swf.Visuals;
@@ -20,7 +20,7 @@ using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
 
 namespace Limaki.Swf.Backends.UseCases {
 
-    public class SwfUseCaseComposer : IComposer<UseCase> {
+    public class SwfUseCaseComposer : IComposer<ConceptUsecase> {
 
         public Form Mainform { get; set; }
         public ToolStripContainer ToolStripContainer { get; set; }
@@ -37,7 +37,7 @@ namespace Limaki.Swf.Backends.UseCases {
         public ToolStripStatusLabel StatusLabel { get; set; }
         public StatusStrip StatusStrip { get; set; }
 
-        public void Factor (UseCase useCase) {
+        public void Factor (ConceptUsecase useCase) {
             ToolStripContainer = new ToolStripContainer ();
 
             StatusStrip = new StatusStrip ();
@@ -66,7 +66,7 @@ namespace Limaki.Swf.Backends.UseCases {
 
         }
 
-        public void Compose (UseCase useCase) {
+        public void Compose (ConceptUsecase useCase) {
             ToolStripContainer.Dock = DockStyle.Fill;
             Mainform.Controls.Add (ToolStripContainer);
 
@@ -115,7 +115,7 @@ namespace Limaki.Swf.Backends.UseCases {
 
         }
 
-        public void InstrumentMenus (UseCase useCase) {
+        public void InstrumentMenus (ConceptUsecase useCase) {
             var l = new Localizer ();
             this.MenuStrip.Items.AddRange (new ToolStripMenuItem[] {
             
@@ -226,7 +226,7 @@ namespace Limaki.Swf.Backends.UseCases {
         }
 
         Options options = null;
-        private void ShowLayoutEditor (UseCase useCase) {
+        private void ShowLayoutEditor (ConceptUsecase useCase) {
             options = new Options ();
             options.ApplyButton.Click += (s1, e1) => {
                 this.DisplayToolStrip.Controller.Layout ();
@@ -295,7 +295,7 @@ namespace Limaki.Swf.Backends.UseCases {
 
         }
 
-        private void ShowStyleEditor (UseCase useCase) {
+        private void ShowStyleEditor (ConceptUsecase useCase) {
             var options = ComposeStyleEditor (useCase.GetCurrentDisplay ().StyleSheet.Styles, useCase.OnDisplayStyleChanged);
             options.Show ();
         }
@@ -303,7 +303,7 @@ namespace Limaki.Swf.Backends.UseCases {
 
         #endregion
 
-        private void ExportAsImage (UseCase useCase) {
+        private void ExportAsImage (ConceptUsecase useCase) {
             var currentDisplay = useCase.GetCurrentDisplay ();
             if (currentDisplay != null && currentDisplay.Data != null) {
                 var saveFileDialog = new FileDialogMemento {
@@ -325,7 +325,7 @@ namespace Limaki.Swf.Backends.UseCases {
             }
         }
 
-        private void Print (UseCase useCase) {
+        private void Print (ConceptUsecase useCase) {
             using (PrintDialog printDialog = new PrintDialog ()) {
                 var currentDisplay = useCase.GetCurrentDisplay ();
                 PrintManager man = new PrintManager ();
@@ -339,7 +339,7 @@ namespace Limaki.Swf.Backends.UseCases {
             }
         }
 
-        private void PrintPreview (UseCase useCase) {
+        private void PrintPreview (ConceptUsecase useCase) {
             using (PrintPreviewDialog printDialog = new PrintPreviewDialog ()) {
                 var currentDisplay = useCase.GetCurrentDisplay ();
                 PrintManager man = new PrintManager ();

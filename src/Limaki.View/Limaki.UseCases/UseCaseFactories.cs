@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace Limaki.UseCases {
-    public class UseCaseFactories<T> : IEnumerable<UseCaseFactory<T>> where T:new() {
-        private ICollection<UseCaseFactory<T>> factories = new List<UseCaseFactory<T>>();
-        public void Add(UseCaseFactory<T> f) {
+namespace Limaki.Usecases {
+    public class UsecaseFactories<T> : IEnumerable<UsecaseFactory<T>> where T:new() {
+        private ICollection<UsecaseFactory<T>> factories = new List<UsecaseFactory<T>>();
+        public void Add(UsecaseFactory<T> f) {
             factories.Add(f); 
         }
-        public IEnumerator<UseCaseFactory<T>> GetEnumerator() {
+        public IEnumerator<UsecaseFactory<T>> GetEnumerator() {
             return factories.GetEnumerator();
         }
 

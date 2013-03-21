@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Limada.Schemata;
 using Limaki.Common;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Id = System.Int64;
 using Limaki.Graphs;
 

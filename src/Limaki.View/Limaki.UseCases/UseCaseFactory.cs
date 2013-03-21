@@ -14,8 +14,8 @@
 
 using Limaki.View.Visualizers;
 
-namespace Limaki.UseCases {
-    public class UseCaseFactory<T> where T:new() {
+namespace Limaki.Usecases {
+    public class UsecaseFactory<T> where T:new() {
 
         public virtual T Create() {
             var result = new T();

@@ -6,7 +6,7 @@ using System.IO;
 using Limaki.UnitTest;
 using NUnit.Framework;
 using Limaki.Common;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using System.Linq;
 using System.Diagnostics;
 

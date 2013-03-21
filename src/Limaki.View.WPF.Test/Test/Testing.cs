@@ -7,7 +7,7 @@ using Limaki.Visuals;
 using System.Diagnostics;
 using System;
 using System.IO;
-using Limada.UseCases;
+using Limada.Usecases;
 using System.Net;
 using System.Threading;
 using Limaki.Drawing;

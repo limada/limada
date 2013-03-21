@@ -15,7 +15,7 @@
 using System;
 using System.IO;
 using Limaki.Common;
-using Limaki.Model.Streams;
+using Limaki.Model.Content;
 using Id = System.Int64;
 namespace Limada.Model {
     public class ByteStreamWrapper {
