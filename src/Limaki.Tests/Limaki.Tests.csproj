@@ -134,6 +134,7 @@
     <Compile Include="Limada.Tests\Tests\View\ThingVisualMapperTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\VisualThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\Wrappers\WrapperTest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\MatrixTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\PointComparerTest.cs" />
     <Compile Include="Playground\DocumentObjectModel\DOM.cs" />
     <Compile Include="Playground\View\AllignerPrototyper.cs" />
@@ -217,8 +218,8 @@
     <Compile Include="Limaki.Tests\View\Visuals\SceneThreadTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\PolygonHulltest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\Shapes\ShapeTest.cs" />
-    <Compile Include="Limaki.Tests\View\Drawing\MatriceTest.cs" />
-    <Compile Include="Limaki.Tests\View\Drawing\TestMatrices.cs" />
+    <Compile Include="[Deprecated]\MatriceTest.cs" />
+    <Compile Include="[Deprecated]\CompareMatricesRuntime.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\BasicVisualGraphTest.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Model\BenchmarkOneSceneFactory.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Model\ISceneFactory.cs" />

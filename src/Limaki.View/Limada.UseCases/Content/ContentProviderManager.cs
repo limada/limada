@@ -13,7 +13,9 @@ using Limaki.Visuals;
 namespace Limada.Usecases {
 
     public class ContentProviderManager : ContentProviderManagerBase {
+
         public string DefaultExtension = null;
+
         string _streamProviderDialogFilter = null;
         public string StreamProviderDialogFilter {
             get {
@@ -51,6 +53,7 @@ namespace Limada.Usecases {
                 this.OpenFile(IOUtils.UriFromFileName(OpenFileDialog.FileName));
             }
         }
+
         public void SaveFile() {
             try {
                 DefaultDialogValues(SaveFileDialog);

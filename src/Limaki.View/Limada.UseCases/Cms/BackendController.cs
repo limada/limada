@@ -154,9 +154,11 @@ namespace Limada.Usecases.Cms {
                 return thing;
             }
         }
+
         public IThing DescribedThing (IThing thing) {
             return DescribedThing (this.ThingGraph, thing);
         }
+
         public IThing DescribedThing (IGraph<IThing, ILink> graph, IThing thing) {
             if (graph is SchemaThingGraph) {
                 return ((SchemaThingGraph) graph).DescribedThing (thing);
@@ -319,11 +321,13 @@ namespace Limada.Usecases.Cms {
                 }
             }
         }
+
+        public LinkID LinkOfThing (IThing t) {
+            return new LinkID(ThingDataToDisplay(t).ToString(), DescribedThing(t).Id.ToString("X16"));
+        }
+
         public IEnumerable<LinkID> LinksOfThings (IEnumerable<IThing> things) {
-            var links = things.Select(t => new LinkID(
-                                                ThingDataToDisplay(t).ToString(),
-                                                DescribedThing(t).Id.ToString("X16")));
-            return links;
+            return things.Select(t => LinkOfThing(t));
         }
 
 

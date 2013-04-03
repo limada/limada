@@ -1,7 +1,6 @@
 using System;
 using Limaki.Drawing;
 using Xwt.Drawing;
-//using Matrice = Limaki.Drawing.Matrice;
 
 namespace Limaki.XwtAdapter {
 

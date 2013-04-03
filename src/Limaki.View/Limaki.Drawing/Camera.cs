@@ -22,11 +22,11 @@ namespace Limaki.Drawing {
         public abstract Matrix Matrix { get; set;}
 
         # region IShape
-        public virtual void ToSource(IShape s) {
-            using (var m = new Matrix(Matrix)) {
-                m.Invert();
-                s.Transform(m);
-            }
+        public virtual void ToSource (IShape s) {
+            var m = new Matrix(Matrix);
+            m.Invert();
+            s.Transform(m);
+
         }
 
         public virtual void FromSource(IShape s) {
@@ -35,63 +35,47 @@ namespace Limaki.Drawing {
 
         #endregion
 
-        # region int
-        public virtual Point ToSource(Point s) {
-            Point[] result = { s };
-            using (var m = new Matrix(Matrix)) {
-                m.Invert();
-                m.Transform(result);
-            }
-            return result[0];
-        }
-        
-        public virtual Size ToSource(Size s) {
-            Point[] result = { new Point(s.Width, s.Height) };
-            using (var m = new Matrix(Matrix)) {
-                m.Invert();
-                m.TransformVector(result);
-            }
-            return new Size(result[0].X, result[0].Y);
+        # region Point / Size Transformations
+
+        public virtual Point ToSource (Point s) {
+            var m = new Matrix(Matrix);
+            m.Invert();
+            return m.Transform(s);
         }
 
-        public virtual Rectangle ToSource(Rectangle r) {
-            Point[] p = { r.Location, new Point(r.Right, r.Bottom) };
-            using (var m = new Matrix(Matrix)) {
-                m.Invert();
-                m.Transform(p);
-            }
-            return Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
-        }
-        
-       
-
-        public virtual Point FromSource(Point s) {
-            var m = Matrix;
-            Point[] result = { s };
-            m.Transform(result);
-            return result[0];
+        public virtual Size ToSource (Size s) {
+            var m = new Matrix(Matrix);
+            m.Invert();
+            var result = m.TransformVector(new Point(s.Width, s.Height));
+            return new Size(result.X, result.Y);
         }
 
-        public virtual Size FromSource(Size s) {
-            var m = Matrix;
-            Point[] result =  { new Point(s.Width, s.Height) };
-            m.TransformVector(result);
-            return new Size(result[0].X,result[0].Y);
-        }
-       
-        public virtual Rectangle FromSource(Rectangle r) {
-            Point[] p = { r.Location, new Point(r.Right, r.Bottom) };
-            Matrix m = Matrix;
+        public virtual Rectangle ToSource (Rectangle r) {
+            var p = new Point[]{r.Location, new Point(r.Right, r.Bottom)};
+            var m = new Matrix(Matrix);
+            m.Invert();
             m.Transform(p);
 
             return Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
         }
 
+        public virtual Point FromSource(Point s) {
+            return Matrix.Transform(s);
+        }
+
+        public virtual Size FromSource(Size s) {
+            var result = Matrix.TransformVector(new Point(s.Width, s.Height));
+            return new Size(result.X,result.Y);
+        }
        
+        public virtual Rectangle FromSource(Rectangle r) {
+            Point[] p = { r.Location, new Point(r.Right, r.Bottom) };
+            Matrix.Transform(p);
+
+            return Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
+        }
 
         # endregion
-
-       
 
         #endregion
 
