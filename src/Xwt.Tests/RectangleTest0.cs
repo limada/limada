@@ -10,7 +10,7 @@ namespace Xwt.Tests {
     // https://github.com/mono/mono/blob/master/mcs/class/WindowsBase/System.Windows/Rect.cs
 
     [TestFixture]
-    public class RectangleTest  {
+    public class RectangleTest0  {
 
         public static Rectangle IntersectMonoWindowBase(Rectangle r1, Rectangle r2) {
             var _x = Math.Max(r1.X, r2.X);

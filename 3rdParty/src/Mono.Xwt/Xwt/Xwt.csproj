@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Xwt.Drawing\Matrix.cs" />
     <Compile Include="Xwt\Widget.cs">
       <SubType>Component</SubType>
     </Compile>

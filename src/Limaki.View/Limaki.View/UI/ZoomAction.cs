@@ -29,7 +29,6 @@ namespace Limaki.View.UI {
 
         public virtual Func<IViewport> Viewport { get; set; }
         
-        
         // ZoomState In 
         public virtual void ZoomIn() {
             var zoomTarget = Viewport ();
@@ -54,6 +53,31 @@ namespace Limaki.View.UI {
             Resolved = false;
         }
 
+        public void Zoom(Point location, bool zoomIn) {
+            var zoomTarget = Viewport();
+            var camera = zoomTarget.Camera;
+
+            // get the mouse position as source coordinates
+            var mousePosSource = camera.ToSource(location);
+
+            if (zoomIn)
+                ZoomIn();
+            else
+                ZoomOut();
+
+            zoomTarget.UpdateCamera();
+            // get the transformed mouse position as transformed coordinates
+            var mousePosTransformed = camera.FromSource(mousePosSource);
+
+            var clipOrigin = zoomTarget.ClipOrigin;
+            zoomTarget.ClipOrigin =
+                new Point(
+                    mousePosTransformed.X - location.X + clipOrigin.X,
+                    mousePosTransformed.Y - location.Y + clipOrigin.Y);
+
+            zoomTarget.UpdateZoom();
+        }
+
         /// <summary>
         /// Zooms in with left click
         /// Zooms out with right click 
@@ -67,29 +91,7 @@ namespace Limaki.View.UI {
                  (e.Button == MouseActionButtons.Right))
                 && ( e.Modifiers== ModifierKeys.Control);
             if (doZoomInOut) {
-                var zoomTarget = Viewport();
-                var camera = zoomTarget.Camera;
-
-                // get the mouse position as source coordinates
-                var mousePosSource = camera.ToSource(e.Location);
-
-                if (e.Button == MouseActionButtons.Left)
-                    ZoomIn();
-                else
-                    ZoomOut();
-
-                zoomTarget.UpdateCamera();
-                // get the transformed mouse position as transformed coordinates
-                var mousePosTransformed = camera.FromSource(mousePosSource);
-
-                var clipOrigin = zoomTarget.ClipOrigin;
-                zoomTarget.ClipOrigin = 
-                    new Point(
-                        mousePosTransformed.X - e.X + clipOrigin.X,
-                        mousePosTransformed.Y - e.Y + clipOrigin.Y);
-
-                zoomTarget.UpdateZoom();
-
+                Zoom(e.Location, e.Button == MouseActionButtons.Left);
             }
             Resolved = doZoomInOut;
         }

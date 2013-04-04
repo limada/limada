@@ -278,6 +278,7 @@ namespace Xwt.Drawing {
                 point.X * M12 + point.Y * M22 + OffsetY);
         }
 
+        const bool oldCode = false;
         public void Transform (Point[] points) {
             double x;
             double y;
@@ -290,10 +291,17 @@ namespace Xwt.Drawing {
             var offsetY = this.OffsetY;
 
             for (int i = 0; i < len; i++) {
-                x = points[i].X;
-                y = points[i].Y;
-                points[i].X = x * m11 + y * m21 + offsetX;
-                points[i].Y = x * m12 + y * m22 + offsetY;
+                if (oldCode) {
+                    x = points[i].X;
+                    y = points[i].Y;
+                    points[i].X = x * m11 + y * m21 + offsetX;
+                    points[i].Y = x * m12 + y * m22 + offsetY;
+                } else {
+                    var p = points[i];
+                    points[i] = new Point(
+                        p.X * m11 + p.Y * m21 + offsetX,
+                        p.X * m12 + p.Y * m22 + offsetY);
+                }
             }
         }
 
@@ -311,10 +319,18 @@ namespace Xwt.Drawing {
             var m22 = this.M22;
 
             for (int i = 0; i < len; i++) {
-                x = vectors[i].X;
-                y = vectors[i].Y;
-                vectors[i].X = x * m11 + y * m21;
-                vectors[i].Y = x * m12 + y * m22;
+                if (oldCode) {
+                    x = vectors[i].X;
+                    y = vectors[i].Y;
+                    vectors[i].X = x * m11 + y * m21;
+                    vectors[i].Y = x * m12 + y * m22;
+                } else {
+                    var p = vectors[i];
+                    vectors[i] = new Point(
+                        p.X * m11 + p.Y * m21,
+                        p.X * m12 + p.Y * m22);
+                }
+
             }
         }
 

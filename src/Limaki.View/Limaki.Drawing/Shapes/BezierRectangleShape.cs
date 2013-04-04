@@ -22,6 +22,7 @@ namespace Limaki.Drawing.Shapes {
     [Serializable]
 #endif
     public class BezierRectangleShape : RectangleShapeBase, IBezierRectangleShape {
+
         public BezierRectangleShape():base() {}
         public BezierRectangleShape(Rectangle data):base(data) {}
         public BezierRectangleShape(Point location, Size size) : base(location,size) { }
@@ -113,39 +114,10 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public Point[] BezierPoints {
-            get { return GetRoundedRectBezier (this.Data, _offset); }
+            get { return BezierExtensions.GetRoundedRectBezier(this.Data, _offset); }
         }
 
-        private Point[] GetRoundedRectBezier(Rectangle rect, double aoffset) {
-            double grow = 0d;
-            Rectangle r = new Rectangle(rect.X + grow, rect.Y + grow, rect.Width + grow, rect.Height + grow);
-            // Create points for curve.
-            double offset = 0;
-            Point start = new Point(r.Left, r.Top + (r.Height / 2));
-            Point control1 = new Point(r.Left - offset, r.Top - offset);
-            Point control2 = new Point(r.Left - offset, r.Top - offset);
-            offset = 0;
-            Point end1 = new Point(r.Left + (r.Width / 2), r.Top);
-            Point control3 = new Point(r.Right + offset, r.Top - offset);
-            Point control4 = new Point(r.Right + offset, r.Top - offset);
-            Point end2 = new Point(r.Right, r.Top + (r.Height / 2));
-            Point control5 = new Point(r.Right + offset, r.Bottom + offset);
-            offset = aoffset;
-            Point control6 = new Point(r.Right + offset, r.Bottom + offset);
-            Point end3 = new Point(r.Left + (r.Width / 2), r.Bottom);
-
-            Point control7 = new Point(r.Left - offset, r.Bottom + offset);
-            offset = 0;
-            Point control8 = new Point(r.Left - offset, r.Bottom + offset);
-            return new Point[] {
-										start, control1, control2, end1,
-										control3, control4, end2,
-										control5, control6, end3,
-										control7, control8, start
-									};
-
-            
-        }
+       
 
         public override object Clone() {
             return new BezierRectangleShape(_data);

@@ -26,13 +26,10 @@ namespace Limaki.View.Swf.UI {
     /// </summary>
     public class SwfEventControler : EventControler,IDragDropAction {
 
-
-        
         public List<IDragDropAction> DragDropActions = new List<IDragDropAction>();
         
         public override void Add(IAction action)  {
             base.Add (action);
-
 
             if (action is IDragDropAction) {
                 DragDropActions.Add((IDragDropAction)action);
@@ -44,15 +41,11 @@ namespace Limaki.View.Swf.UI {
         public override void Remove(IAction action) {
             base.Remove (action);
 
-            
             if (action is IDragDropAction) {
                 DragDropActions.Remove((IDragDropAction)action);
             }
             
         }
-
-
-
 
         #region IDragDropAction Member
         bool _dragging = false;

@@ -60,9 +60,22 @@ namespace Limaki.Tests.Drawing.Toolkit {
 
         private TestData data = new TestData();
 
+        public void MatriceTransform (Matrice matrix) {
+            matrix.Transform(data.Points);
+            matrix.TransformVectors(data.Points);
+            
+        }
+
+        public void XwtMatrixTransform (Xwt.Drawing.Matrix matrix) {
+            matrix.Transform(data.Points);
+            matrix.TransformVector(data.Points);
+
+       
+        }
+
         public void MatriceTransform () {
             using (var matrix = new Matrice()) {
-                
+                MatriceTransform(matrix);
             }
         }
 
@@ -87,14 +100,20 @@ namespace Limaki.Tests.Drawing.Toolkit {
                 matrix.Scale(data.scaleX, data.scaleY, MatrixOrder.Prepend);
                 matrix.Shear(data.shearX, data.shearY);
                 matrix.Shear(data.shearX, data.shearY, MatrixOrder.Append);
-                matrix.Transform(data.Points);
-                matrix.Transform(data.PointsF);
-                matrix.TransformVectors(data.Points);
-                matrix.TransformVectors(data.PointsF);
+
+                MatriceTransform(matrix);
+
+
                 matrix.Translate(data.offsetX, data.offsetY);
                 matrix.Translate(data.offsetX, data.offsetY, MatrixOrder.Prepend);
             }
         }
+
+        public void XwtMatrixTransform () {
+            XwtMatrixTransform(new Xwt.Drawing.Matrix());
+        }
+       
+
         [Test]
         public void XwtMatrixCalculate () {
             var matrix = new Xwt.Drawing.Matrix();
@@ -119,12 +138,8 @@ namespace Limaki.Tests.Drawing.Toolkit {
 
             matrix.Skew(data.shearX, data.shearY);
             matrix.SkewPrepend(data.shearX, data.shearY);
-
-            matrix.Transform(data.Points);
-            matrix.Transform(data.Points);
-
-            matrix.TransformVector(data.Points);
-            matrix.TransformVector(data.Points);
+            
+            XwtMatrixTransform(matrix);
 
             matrix.Translate(data.offsetX, data.offsetY);
             matrix.TranslatePrepend(data.offsetX, data.offsetY);
@@ -157,14 +172,14 @@ namespace Limaki.Tests.Drawing.Toolkit {
             var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < testCount; i++)
-                MatriceCalculate();
+                MatriceTransform();
             sw.Stop();
             ReportDetail("MatriceCalculate:\t" + sw.ElapsedTicks.ToString("#,###"));
 
             sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < testCount; i++)
-                XwtMatrixCalculate();
+                XwtMatrixTransform();
             sw.Stop();
             ReportDetail("XwtMatrixCalculate:\t" + sw.ElapsedTicks.ToString("#,###"));
         }

@@ -8,7 +8,9 @@ using Point = System.Drawing.Point;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf.Visualizers {
+
     public class SwfViewport : Limaki.View.Visualizers.Viewport {
+
         protected SwfWidgetBackend device = null;
         public SwfViewport(SwfWidgetBackend userControl) {
             this.device = userControl;
@@ -114,8 +116,6 @@ namespace Limaki.View.Swf.Visualizers {
            
         }
 
-
-
         public virtual void OnSizeChanged(EventArgs e, Action<EventArgs> onSizeChanged) {
             if (!_scrollMinSizeChanging) {
                 if (this.ZoomState == ZoomState.FitToHeigth
@@ -127,8 +127,7 @@ namespace Limaki.View.Swf.Visualizers {
             onSizeChanged(e);
             Update();
         }
-
-
+        
         public event EventHandler ZoomChanged;
 
         public override void UpdateZoom() {

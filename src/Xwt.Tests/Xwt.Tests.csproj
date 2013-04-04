@@ -59,9 +59,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MatrixTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RectangleTest1.cs" />
     <Compile Include="ReferencePainter.cs" />
-    <Compile Include="RectangleTest.cs" />
+    <Compile Include="RectangleTest0.cs" />
+    <Compile Include="RectangleTest2.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

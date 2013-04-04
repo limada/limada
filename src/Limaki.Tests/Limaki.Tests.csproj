@@ -134,7 +134,6 @@
     <Compile Include="Limada.Tests\Tests\View\ThingVisualMapperTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\VisualThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\Wrappers\WrapperTest.cs" />
-    <Compile Include="Limaki.Tests\View\Drawing\MatrixTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\PointComparerTest.cs" />
     <Compile Include="Playground\DocumentObjectModel\DOM.cs" />
     <Compile Include="Playground\View\AllignerPrototyper.cs" />
@@ -146,7 +145,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Limaki.Tests\View\Visuals\SceneExamples.cs" />
-    <Compile Include="Playground\View\Html5DomainTest.cs" />
+    <Compile Include="Limaki.Tests\View\Html5DomainTest.cs" />
     <Compile Include="Playground\View\Rectangle\Mono.WindowBase.Rect.cs" />
     <Compile Include="Playground\View\Rectangle\RectTest.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\gdiRectangleD.cs" />
@@ -216,7 +215,7 @@
     <Compile Include="Playground\RegExTest.cs" />
     <Compile Include="Playground\Schema\SchemaArchitecture.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\SceneThreadTest.cs" />
-    <Compile Include="Limaki.Tests\View\Drawing\PolygonHulltest.cs" />
+    <Compile Include="Limaki.Tests\View\Drawing\VectorHulltest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\Shapes\ShapeTest.cs" />
     <Compile Include="[Deprecated]\MatriceTest.cs" />
     <Compile Include="[Deprecated]\CompareMatricesRuntime.cs" />

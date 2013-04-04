@@ -7,10 +7,10 @@
  * 
  * Authors: 
  * Peter Bartok	pbartok@novell.com
+ * Lytico
  * 
  * Copyright (c) 2004-2005 Novell, Inc.
- *
- * http://www.limada.org
+ * Copyright (c) 2009 - 20013 Lytico (http://www.limada.org)
  * 
  */
 
@@ -26,69 +26,33 @@ using Limaki.Drawing;
 using Xwt;
 
 namespace Limaki.View.UI {
-    public class MouseActionEventArgs : EventArgs {
-        private MouseActionButtons buttons;
-        private int clicks;
-        private double delta;
-        private double x;
-        private double y;
-        private ModifierKeys modifiers;
 
-        #region Public Constructors
+    public class MouseActionEventArgs : EventArgs {
+
+        public MouseActionButtons Button { get; protected set; }
         
+        public int Clicks { get; protected set; }
+        public double Delta { get; protected set; }
+        
+        public double X { get; protected set; }
+        public double Y { get; protected set; }
+        public ModifierKeys Modifiers { get; protected set; }
+        
+        public Point Location { get { return new Point(X, Y); } }
+
         public MouseActionEventArgs(
             MouseActionButtons button, ModifierKeys modifiers,
             int clicks, double x, double y, double delta) {
 
-            this.buttons = button;
-            this.modifiers = modifiers;
-            this.clicks = clicks;
-            this.delta = delta;
-            this.x = x;
-            this.y = y;
+            this.Button = button;
+            this.Modifiers = modifiers;
+            this.Clicks = clicks;
+            this.Delta = delta;
+            this.X = x;
+            this.Y = y;
 
         }
 
-        #endregion	// Public Constructors
-
-        #region Public Instance Properties
-        public MouseActionButtons Button {
-            get {
-                return this.buttons;
-            }
-        }
-
-        public int Clicks {
-            get {
-                return this.clicks;
-            }
-        }
-
-        public double Delta {
-            get {
-                return this.delta;
-            }
-        }
-
-        public double X {
-            get {
-                return this.x;
-            }
-        }
-
-        public double Y {
-            get {return this.y;}
-        }
-
-        public Point Location {
-            get { return new Point(this.x, this.y); }
-        }
-
-        public ModifierKeys Modifiers {
-            get { return modifiers; }
-        }
-
-        #endregion	// Public Instance Properties
     }
 
     [Flags]

@@ -221,10 +221,22 @@ namespace Limaki.View.Swf.Visualizers {
                 Display.EventControler.OnMouseMove(Converter.Convert(e));
         }
 
-        [TODO("implement mousewheel, currently disabled")]
-        protected override void OnMouseWheel(MouseEventArgs e) {
-            //base.OnMouseWheel(e);
+        protected override void OnMouseWheel (MouseEventArgs e) {
+            if (Display.Data != null) {
+                var ev = Converter.Convert(e);
+                if (ev.Modifiers == Xwt.ModifierKeys.None) {
+                    // remark: another possibility would be to call OnScroll or _backenViewPort.OnScroll
+                    base.OnMouseWheel(e);
+                    Display.Viewport.Update();
+                } else if (ev.Modifiers == Xwt.ModifierKeys.Control) {
+                    var zoomAction = Display.EventControler.GetAction<ZoomAction>();
+                    if (zoomAction != null) {
+                        zoomAction.Zoom(ev.Location, ev.Delta > 0);
+                    }
+                }
+            }
         }
+
         protected override void OnMouseUp(MouseEventArgs e) {
             base.OnMouseUp(e);
             if (Display.Data != null)

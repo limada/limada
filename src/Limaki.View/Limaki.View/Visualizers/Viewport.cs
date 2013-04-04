@@ -196,8 +196,6 @@ namespace Limaki.View.Visualizers {
         }
         #endregion
 
-
-
         #region ICheckable Member
 
         public bool Check() {

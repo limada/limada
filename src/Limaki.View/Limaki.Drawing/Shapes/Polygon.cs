@@ -13,6 +13,7 @@
  */
 
 using System;
+using System.Linq;
 using Xwt;
 using Xwt.Drawing;
 
@@ -22,12 +23,14 @@ namespace Limaki.Drawing.Shapes {
 #endif
 
     public struct Polygon {
-        public Point[] Points;
-        public Polygon(Point[] points) {
+
+        public Point[] Points { get; set; }
+
+        public Polygon (Point[] points): this() {
             this.Points = points;
         }
 
-        public void Transform(Matrix matrix) {
+        public void Transform (Matrix matrix) {
             matrix.Transform(Points);
         }
 
@@ -52,18 +55,18 @@ namespace Limaki.Drawing.Shapes {
         /// <param name="p">the point to test</param>
         /// <param name="v">polygon points</param>
         /// <returns></returns>
-        public static int WindingOfPoint(Point p, Point[] v) {
+        public static int WindingOfPoint (Point p, Point[] v) {
             int winding = 0;    // the winding number counter
             // loop through all edges of the polygon
-            for (int i = 0; i < v.Length-1; i++) {   // edge from V[0] to V[n]
-                Winding (v[i], v[i + 1], p, ref winding);
+            for (int i = 0; i < v.Length - 1; i++) {   // edge from V[0] to V[n]
+                Winding(v[i], v[i + 1], p, ref winding);
             }
             // edge V[n] to V[0]
-            Winding(v[v.Length-1], v[0], p, ref winding);
+            Winding(v[v.Length - 1], v[0], p, ref winding);
             return winding;
         }
 
-        private static void Winding(Point start, Point end, Point p, ref int wn) {
+        private static void Winding (Point start, Point end, Point p, ref int wn) {
             var pY = p.Y;
             if (start.Y <= pY) {         // start y <= P.y
                 if (end.Y > pY)      // an upward crossing
@@ -76,11 +79,64 @@ namespace Limaki.Drawing.Shapes {
             }
         }
 
-        public int WindingOfPoint(Point p) {
-            return WindingOfPoint (p, this.Points);
+        public int WindingOfPoint (Point p) {
+            return WindingOfPoint(p, this.Points);
         }
 
         #endregion
-        public static bool Intersect(Point p, Point[]v){ return WindingOfPoint (p, v) != 0; }
+
+        public static bool Intersect (Point p, Point[] v) { return WindingOfPoint(p, v) != 0; }
+
+        #region ConvexHull
+        /// <summary>
+        /// TODO: we have this already, take one of it
+        /// 2D cross product of OA and OB vectors
+        /// Returns a positive value, if OAB makes a counter-clockwise turn,
+        /// negative for clockwise turn, and zero if the points are collinear. 
+        /// </summary>
+        /// <param name="O"></param>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns></returns>
+        public static double PointCrossing (Point O, Point A, Point B) {
+            return (A.X - O.X) * (B.Y - O.Y) - (A.Y - O.Y) * (B.X - O.X);
+        }
+
+        /// <summary>
+        /// Returns a list of points on the convex hull in counter-clockwise order
+        /// see: http://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain
+        /// </summary>
+        /// <param name="polygon"></param>
+        /// <param name="isSorted"></param>
+        /// <returns></returns>
+        public static Point[] AndrewsMonotonChainHull (Point[] polygon, bool isSorted) {
+            var n = polygon.Count(); 
+            var k = 0;
+            var hull = new Point[2 * n];
+
+            // Sort points lexicographically
+            if (!isSorted)
+                //P = P.OrderBy(p => p, new PointComparer{Order=PointOrder.X}).ToArray();
+                Array.Sort<Point>(polygon, (a, b) => a.X == b.X ? a.Y.CompareTo(b.Y) : a.X.CompareTo(b.X));
+
+
+            // Build lower hull
+            for (int i = 0; i < n; i++) {
+                while (k >= 2 && PointCrossing(hull[k - 2], hull[k - 1], polygon[i]) <= 0) k--;
+                hull[k++] = polygon[i];
+            }
+
+            // Build upper hull
+            for (int i = n - 2, t = k + 1; i >= 0; i--) {
+                while (k >= t && PointCrossing(hull[k - 2], hull[k - 1], polygon[i]) <= 0) k--;
+                hull[k++] = polygon[i];
+            }
+
+            Array.Resize(ref hull, k - 1);
+            return hull;
+        }
+
+
+        #endregion
     }
 }

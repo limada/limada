@@ -25,6 +25,7 @@ namespace Limaki.Drawing.Shapes {
     public interface IBezierRectangleShape : IShape<Rectangle>, IBezierShape {
        
     }
+
     public interface IBezierShape : IShape {
         Point[] BezierPoints { get; }
     }
