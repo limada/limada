@@ -67,6 +67,7 @@
     <Compile Include="Limaki.Drawing\IShaper.cs" />
     <Compile Include="Limaki.Drawing\Painters\ContextPainterExtensions.cs" />
     <Compile Include="Limaki.Drawing\Shapes\BezierExtensions.cs" />
+    <Compile Include="Limaki.Drawing\Shapes\BezierSegment.cs" />
     <Compile Include="Limaki.Iconeria\LimadaIconeria.cs" />
     <Compile Include="Limada.UseCases\Cms\Models\ContentAndLinks.cs" />
     <Compile Include="Limada.UseCases\Cms\Models\HtmlContent.cs" />

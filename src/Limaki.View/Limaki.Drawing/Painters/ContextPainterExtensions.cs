@@ -13,6 +13,11 @@ namespace Limaki.Drawing.Painters {
 
         }
 
+        public static void DrawBezier (Context ctx, BezierSegment seg) {
+            ctx.MoveTo(seg.Start);
+            ctx.CurveTo(seg.Cp1, seg.Cp2, seg.End);
+        }
+
         public static void DrawPoligon (Context ctx, IList<Point> poligon) {
             ctx.MoveTo(poligon[0]);
             for (int i = 1; i < poligon.Count; i ++)
@@ -20,5 +25,7 @@ namespace Limaki.Drawing.Painters {
             ctx.ClosePath();
 
         }
+
+        
     }
 }

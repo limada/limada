@@ -117,8 +117,6 @@ namespace Limaki.Drawing.Shapes {
             get { return BezierExtensions.GetRoundedRectBezier(this.Data, _offset); }
         }
 
-       
-
         public override object Clone() {
             return new BezierRectangleShape(_data);
         }

@@ -16,6 +16,7 @@
 using Limaki.Drawing.Shapes;
 
 namespace Limaki.Drawing.Painters {
+
     public class BezierPainter : RectanglePainter, IPainter<IBezierRectangleShape, Xwt.Rectangle> {
 
         public override void Render (ISurface surface) {
