@@ -24,11 +24,7 @@ namespace Limaki.Drawing.Shapes {
     public abstract class RectangleShapeBase : Shape<Rectangle> {
         public RectangleShapeBase():base() {}
         public RectangleShapeBase(Rectangle data):base() {
-            this.Data = Rectangle.FromLTRB(
-                Math.Min(data.X,data.Right),
-                Math.Min(data.Y, data.Bottom),
-                Math.Max(data.X, data.Right),
-                Math.Max(data.Y, data.Bottom));
+            this.Data = data.NormalizedRectangle();
         }
 
         public RectangleShapeBase(Point location, Size size) : base() {
@@ -94,13 +90,21 @@ namespace Limaki.Drawing.Shapes {
 
             set {}
         }
+
         public override Rectangle BoundsRect {
             get { return this._data; }
         }
-        public override Size Size {
+
+        public override Size DataSize {
             get { return _data.Size;}
             set { _data.Size = value; }
         }
+
+        public override Size Size {
+            get { return DataSize; }
+            set { DataSize = value; }
+        }
+
         public override Point Location {
             get { return new Point(_data.X , _data.Y); }
             set { this._data.Location = value; }

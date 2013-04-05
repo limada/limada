@@ -78,9 +78,14 @@ namespace Limaki.Drawing {
         Point Location { get; set; }
 
         /// <summary>
-        /// size
+        /// size of the shape
         /// </summary>
         Size Size { get; set;}
+
+        /// <summary>
+        /// size of the Data; could be smaller than Size, so data.Size + some offset gives shape.Size
+        /// </summary>
+        Size DataSize { get; set; }
 
         /// <summary>
         /// a enumeration of anchors to be used as 
@@ -91,6 +96,8 @@ namespace Limaki.Drawing {
         Point[] Hull ( int delta, bool extend );
 
         Point[] Hull ( Matrix matrix, int delta, bool extend );
+
+
     }
 
     public interface IShape<T> : IShape {

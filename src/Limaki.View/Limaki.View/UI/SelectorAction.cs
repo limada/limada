@@ -18,6 +18,7 @@ using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.View.Rendering;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.UI {
     /// <summary>
@@ -110,7 +111,7 @@ namespace Limaki.View.UI {
 
 
                 if (Shape == null) {
-                    Shape = ShapeFactory.Shape(ShapeDataType, rect.Location, rect.Size);
+                    Shape = ShapeFactory.Shape(ShapeDataType, rect.Location, rect.Size,false);
                 } else {
                     // do not normalize Links!!
                     if (!(Shape is IEdgeShape)) {

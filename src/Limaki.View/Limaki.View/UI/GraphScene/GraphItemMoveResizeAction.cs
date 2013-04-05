@@ -21,6 +21,7 @@ using Limaki.Graphs;
 using System;
 using Limaki.View.Layout;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.UI.GraphScene {
     /// <summary>
@@ -127,7 +128,7 @@ namespace Limaki.View.UI.GraphScene {
                 if (Resolved) {
                     ICommand<TItem> command = null;
                     if (moving) {
-                        Rectangle delta = Camera.ToSource(
+                        var delta = Camera.ToSource(
                             Rectangle.FromLTRB(e.Location.X, e.Location.Y,
                                                 LastMousePos.X, LastMousePos.Y));
 
@@ -143,7 +144,7 @@ namespace Limaki.View.UI.GraphScene {
                         }
 
                     } else if (CheckResizing()) {
-                        Rectangle rect = Camera.ToSource(
+                        var rect = Camera.ToSource(
                             Rectangle.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
                                                 LastMousePos.X, LastMousePos.Y));
 

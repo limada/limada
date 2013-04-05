@@ -102,6 +102,10 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public override Size Size {
+            get { return DataSize; }
+            set { DataSize = value; }
+        }
+        public override Size DataSize {
             get { return new Size (_data.End.X - _data.Start.X, _data.End.Y - _data.Start.Y); }
             set { _data.End = _data.Start + value; }
         }

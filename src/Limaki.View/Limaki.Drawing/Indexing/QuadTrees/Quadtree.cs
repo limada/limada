@@ -53,6 +53,7 @@ For more information, contact:
 using System.Collections.Generic;
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.Drawing.Indexing.QuadTrees {
     /// <summary>

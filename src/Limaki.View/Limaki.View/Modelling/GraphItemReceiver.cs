@@ -35,7 +35,7 @@ namespace Limaki.View.Modelling {
 
         public virtual void Execute(ICommand<TItem> request) {
             if (request is LayoutCommand<TItem>) {
-                LayoutCommand<TItem> layoutCommand = (LayoutCommand<TItem>)request;
+                var layoutCommand = (LayoutCommand<TItem>)request;
                 if (layoutCommand.Parameter == LayoutActionType.Justify) {
                     Layout.Justify(layoutCommand.Subject);
                 } else if (layoutCommand.Parameter == LayoutActionType.Perform) {
@@ -46,7 +46,7 @@ namespace Limaki.View.Modelling {
                     Layout.BoundsChanged(layoutCommand.Subject);
                 }
             } else if (request is LayoutCommand<TItem, IShape>) {
-                LayoutCommand<TItem, IShape> layoutCommand = (LayoutCommand<TItem, IShape>)request;
+                var layoutCommand = (LayoutCommand<TItem, IShape>)request;
                 if (layoutCommand.Parameter == LayoutActionType.Justify) {
                     Layout.Justify(layoutCommand.Subject, layoutCommand.Parameter2);
                 } else if (layoutCommand.Parameter == LayoutActionType.Perform) {
@@ -73,7 +73,7 @@ namespace Limaki.View.Modelling {
                 else
                     Data.AddBounds(request.Subject);
             }
-            if(request is IDirtyCommand){
+            if (request is IDirtyCommand) {
                 Data.State.Dirty = true;
             }
         }

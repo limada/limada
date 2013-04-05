@@ -27,7 +27,6 @@ using Limaki.Drawing.Painters;
 using System.Linq;
 
 namespace Limaki.Tests.Drawing {
-
     public class PoligonAlgoTest : DomainTest {
         [TestFixtureSetUp]
         public override void Setup() {

@@ -55,13 +55,18 @@ namespace Limaki.Drawing.Shapes {
             }
         }
 
-        public override Size Size {
+        public override Size DataSize {
             get {
                 throw new NotImplementedException();
             }
             set {
                 throw new NotImplementedException();
             }
+        }
+
+        public override Size Size {
+            get { return DataSize; }
+            set { DataSize = value; }
         }
 
         public override Point[] Hull(int delta, bool extend) {

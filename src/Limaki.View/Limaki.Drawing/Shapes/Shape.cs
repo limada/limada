@@ -28,6 +28,7 @@ namespace Limaki.Drawing.Shapes {
             get { return _data; }
             set { _data = value; }
         }
+
         public virtual Type ShapeDataType {
             get { return typeof(T); }
         }
@@ -104,6 +105,7 @@ namespace Limaki.Drawing.Shapes {
         public abstract Point Location { get; set;}
 
         public abstract Size Size { get; set;}
+        public abstract Size DataSize { get; set; }
 
         public virtual IEnumerable<Anchor> Grips {
             get {

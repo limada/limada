@@ -32,7 +32,7 @@ namespace Limaki.View.Visuals.UI {
                 if (newShape != null) {
                     newShape = (IShape)newShape.Clone();
                     newShape.Location = visual.Shape.Location;
-                    newShape.Size = visual.Shape.Size;
+                    newShape.DataSize = visual.Shape.DataSize;
                     var changeShape =
                         new ActionCommand<IVisual, IShape>(
                             visual,

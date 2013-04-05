@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -25,12 +25,25 @@ namespace Limaki.Drawing.Shapes {
 
         public BezierRectangleShape():base() {}
         public BezierRectangleShape(Rectangle data):base(data) {}
-        public BezierRectangleShape(Point location, Size size) : base(location,size) { }
+        public BezierRectangleShape(Point location, Size size) {
+            this.Location = location;
+            this.Size = size;
+        }
 
         public override Rectangle BoundsRect {
             get {
-                return DrawingExtensions.Inflate(Data,(int)_offset+1,(int)_offset+1);
+                return DrawingExtensions.Inflate(Data, _offset, _offset);
             }
+        }
+
+        public override Point Location {
+            get { return new Point(_data.X - _offset, _data.Y - _offset); }
+            set { this._data.Location = new Point(value.X + _offset, value.Y + _offset); }
+        }
+
+        public override Size Size {
+            get { return new Size(_data.Size.Width + _offset * 2, _data.Size.Height + _offset * 2); }
+            set { _data.Size = new Size(value.Width - _offset * 2, value.Height - _offset * 2); }
         }
 
         public override Point this[Anchor i] {
@@ -40,7 +53,7 @@ namespace Limaki.Drawing.Shapes {
                     case Anchor.LeftTop:
                     case Anchor.MostLeft:
                     case Anchor.MostTop:
-                        return new Point(_data.X, _data.Y);
+                        return _data.Location;
 
                     case Anchor.LeftBottom:
                         return new Point(
@@ -118,7 +131,7 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public override object Clone() {
-            return new BezierRectangleShape(_data);
+            return new BezierRectangleShape(_data) { Offset = _offset };
         }
     }
 }

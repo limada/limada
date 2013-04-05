@@ -29,7 +29,7 @@ namespace Limaki.Drawing.Shapes {
         /// <param name="location"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public IShape<T> Shape<T>(Point location, Size size) {
+        public IShape<T> Shape<T>(Point location, Size size, bool isSizingForData) {
             T data = (T)System.Activator.CreateInstance(typeof(T), new object[] { location,size });
 
             var result = Create<IShape<T>>();
@@ -46,13 +46,16 @@ namespace Limaki.Drawing.Shapes {
         /// <param name="location"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public IShape Shape(Type typeofShapeData, Point location, Size size) {
+        public IShape Shape (Type typeofShapeData, Point location, Size size, bool isSizingForData) {
             //var rect = new RectangleD(location, size);
-            object data = System.Activator.CreateInstance(typeofShapeData);//, new object[] { rect });
+            object data = System.Activator.CreateInstance(typeofShapeData); //, new object[] { rect });
             Type clazzType = typeof (IShape<>).GetGenericTypeDefinition().MakeGenericType(typeofShapeData);
             IShape result = (IShape) this.Create(clazzType);
             result.Location = location;
-            result.Size = size;
+            if (isSizingForData)
+                result.DataSize = size;
+            else
+                result.Size = size;
             return result;
 
         }

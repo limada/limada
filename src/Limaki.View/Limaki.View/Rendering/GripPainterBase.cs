@@ -28,7 +28,7 @@ namespace Limaki.View.Rendering {
             get {
                 if (base.Shape == null) {
                     var factory = Registry.Pool.TryGetCreate<IShapeFactory>();
-                    base.Shape = factory.Shape<Rectangle>(new Point(), new Size(GripSize, GripSize));
+                    base.Shape = factory.Shape<Rectangle>(new Point(), new Size(GripSize, GripSize),false);
                 }
                 return base.Shape;
             }

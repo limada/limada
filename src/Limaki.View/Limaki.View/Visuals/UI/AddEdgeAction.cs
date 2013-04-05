@@ -77,7 +77,7 @@ namespace Limaki.View.Visuals.UI {
                 if (Current is IVisualEdge) {
                     rootAnchor = Anchor.Center;
                 } else {
-                    IShape shape = Layout.ShapeFactory.Shape<Vector>(p,new Size());
+                    IShape shape = Layout.ShapeFactory.Shape<Vector>(p,new Size(),false);
 
                     rootAnchor = NearestAnchorRouter<IVisual,IVisualEdge>.nearestAnchors(Current.Shape, shape,Current is IVisualEdge,true).One;
                 }

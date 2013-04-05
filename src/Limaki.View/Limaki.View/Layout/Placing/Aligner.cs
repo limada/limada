@@ -20,6 +20,7 @@ using Limaki.Graphs.Extensions;
 using System.Linq;
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.Layout {
 

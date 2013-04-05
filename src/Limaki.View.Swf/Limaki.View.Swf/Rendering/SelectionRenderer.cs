@@ -4,6 +4,7 @@ using Limaki.Drawing.Gdi;
 using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Xwt;
+using Xwt.Drawing;
 using Xwt.Gdi;
 
 

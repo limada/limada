@@ -110,8 +110,8 @@ namespace Limaki.View.UI.GraphScene {
             base.OnMouseUp(e);
             Exclusive = false;
             IShape oldShape = this.Shape;
-            this.Shape = ShapeFactory.Shape(ShapeDataType, Point.Zero, Size.Zero);
-            SelectionRenderer.InvalidateShapeOutline(oldShape, ShapeFactory.Shape(ShapeDataType, Point.Zero, Size.Zero));
+            this.Shape = ShapeFactory.Shape(ShapeDataType, Point.Zero, Size.Zero,false);
+            SelectionRenderer.InvalidateShapeOutline(oldShape, ShapeFactory.Shape(ShapeDataType, Point.Zero, Size.Zero, false));
         }
 
 

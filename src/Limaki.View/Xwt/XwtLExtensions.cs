@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2006-2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System;
 using Limaki.Drawing;
 using Xwt.Drawing;
@@ -7,6 +21,7 @@ namespace Limaki.XwtAdapter {
     public static class XwtLExtensions {
 
         public static double Degree = 180 / Math.PI;
+
         public static double Angle (this Matrix m) {
             if ((m.M21 != (-1 * m.M12)) ||
                 (m.M22 != m.M11) ) {

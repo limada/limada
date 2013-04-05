@@ -17,9 +17,19 @@ using Limaki.Drawing.Shapes;
 using NUnit.Framework;
 using Limaki.Common;
 using Xwt;
+using Xwt.Drawing;
+using Limaki.Drawing.Painters;
+using System;
 
 namespace Limaki.Tests.View.Drawing.Shapes {
+
     public class ShapeTest:DomainTest {
+
+        [TestFixtureSetUp]
+        public override void Setup () {
+            base.Setup();
+            ReportPainter.CanvasSize = new Size(1000, 3000);
+        }
 
         public void TestClone(IShape shape) {
             IShape clone = (IShape)shape.Clone();
@@ -57,11 +67,11 @@ namespace Limaki.Tests.View.Drawing.Shapes {
             var shapeFactory = new Limaki.Drawing.Shapes.ShapeFactory();
             var shapeR = shapeFactory.Shape<Rectangle>(
                 new Point(10, 10),
-                new Size(20, 100)
+                new Size(20, 100),true
                 );
             Assert.IsNotNull(shapeR);
             var shape = shapeFactory.Shape(typeof (Rectangle), new Point(10, 10),
-                                           new Size(20, 100));
+                                           new Size(20, 100),true);
             Assert.IsNotNull(shape);
         }
 
@@ -73,6 +83,67 @@ namespace Limaki.Tests.View.Drawing.Shapes {
             Assert.IsNotNull(_painter);
             _painter = factory.CreatePainter(typeof(string));
             Assert.IsNotNull(_painter);
+        }
+
+        [Test]
+        public void TestBezierRectangleShapeResize () {
+            var rect = new Rectangle(10, 10, 200, 100);
+            var shape = new BezierRectangleShape(rect);
+
+            ReportPainter.PushPaint(c => {
+                c.SetLineWidth(1);
+                c.SetColor(Colors.Red);
+                c.Rectangle(shape.Data);
+                c.Stroke();
+
+                c.SetColor(Colors.Blue);
+                ContextPainterExtensions.DrawBezier(c, shape.BezierPoints);
+                c.Stroke();
+
+                c.SetColor(Colors.Yellow);
+                c.Rectangle(shape.BoundsRect);
+                c.Stroke();
+
+
+            });
+
+            Action<Point, Size> prove = (l, s) => {
+                Assert.AreEqual(shape.BoundsRect.Location, shape.Location);
+                Assert.AreEqual(shape.BoundsRect.Size, shape.Size);
+                Assert.AreEqual(shape.DataSize, shape.Data.Size);
+                Assert.AreEqual(l, shape.Location);
+                Assert.AreEqual(s, shape.Size);
+            };
+
+            Assert.AreEqual(shape.DataSize, rect.Size);
+            prove(shape.BoundsRect.Location, shape.BoundsRect.Size);
+
+            Action<Rectangle> proveResize = (r) => {
+                var reset = shape.Data;
+                var resetBounds = shape.BoundsRect;
+                shape.Location = r.Location;
+                prove(r.Location, shape.Size);
+
+                shape.Size = r.Size;
+                prove(r.Location, r.Size);
+
+                shape.Data = reset;
+                prove(resetBounds.Location, resetBounds.Size);
+
+                shape.Location = r.Location;
+                shape.Size = r.Size;
+                prove(r.Location, r.Size);
+            };
+
+            var resize = shape.BoundsRect.Inflate(3, 3);
+            proveResize(resize);
+
+            resize = shape.BoundsRect.Inflate(-7, -7);
+            proveResize(resize);
+
+           
+
+            WritePainter();
         }
     }
 }

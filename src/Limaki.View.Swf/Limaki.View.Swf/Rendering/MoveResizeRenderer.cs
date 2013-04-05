@@ -18,6 +18,7 @@ using Limaki.Drawing.Gdi;
 using Limaki.View.Gdi.UI;
 using Limaki.View.Rendering;
 using Xwt;
+using Xwt.Drawing;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf {

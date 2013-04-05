@@ -7,6 +7,7 @@ using System.Windows.Media;
 using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.WPF {
 

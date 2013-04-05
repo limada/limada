@@ -17,7 +17,9 @@ using System;
 using System.Windows.Forms;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
+
     public class ToolStripShapeComboBox : ToolStripControlHost {
+
         public ToolStripShapeComboBox(): base(new ShapeComboBox()) {
             ShapeComboBoxControl.Margin = new Padding(0);
             ShapeComboBoxControl.FlatStyle = FlatStyle.Flat;

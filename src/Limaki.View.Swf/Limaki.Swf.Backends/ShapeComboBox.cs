@@ -27,7 +27,9 @@ using Limaki.View.Layout;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends.Viewers {
+
     public partial class ShapeComboBox : ComboBox {
+
         public ShapeComboBox() {
             this.DrawMode = DrawMode.OwnerDrawFixed;
             DropDownStyle = ComboBoxStyle.DropDownList;
@@ -44,7 +46,7 @@ namespace Limaki.Swf.Backends.Viewers {
             Items.Add(new RectangleShape());
             Items.Add(new RoundedRectangleShape());
             Items.Add(new VectorShape());
-            Items.Add (new BezierRectangleShape ());
+            Items.Add (new BezierRectangleShape {Offset=0});
         }
 
         private ShapeLayout _shapeLayout = null;

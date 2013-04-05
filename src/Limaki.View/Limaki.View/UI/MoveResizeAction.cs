@@ -164,7 +164,7 @@ namespace Limaki.View.UI {
                 CursorHandler.SaveCursor();
                 moving = HitTest(e.Location);
                 if (hitAnchor != Anchor.None) {
-                    Anchor anchor = AdjacentAnchor(hitAnchor);
+                    var anchor = AdjacentAnchor(hitAnchor);
                     resizing = anchor != Anchor.None;
                     this.Resolved = resizing;
                     if (Resolved) {

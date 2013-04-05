@@ -90,7 +90,7 @@ namespace Limaki.View.Visuals.Layout {
                 if (shape is VectorShape) {
                     size.Height = 0;
                 }
-                shape.Size = size;
+                shape.DataSize = size;
                 Data.UpdateBounds(visual, invalid);
             }
         }

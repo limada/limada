@@ -7,12 +7,13 @@ namespace Limaki.Drawing {
         /// <summary>
         /// Create a Shape with a given location and size 
         /// with a typeof(T) graphic data object
+        /// if sizingForData == true, then the inner DataSize of the Shape is set
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="location"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        IShape<T> Shape<T> ( Point location, Size size );
+        IShape<T> Shape<T> ( Point location, Size size, bool sizingForData );
 
     
 
@@ -23,6 +24,6 @@ namespace Limaki.Drawing {
         /// <param name="location"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        IShape Shape ( Type typeofShapeData, Point location, Size size );
+        IShape Shape (Type typeofShapeData, Point location, Size size, bool sizingForData);
     }
 }
