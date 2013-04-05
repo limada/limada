@@ -28,10 +28,11 @@ using System.Linq;
 
 namespace Limaki.Tests.Drawing {
 
-    public class PoligonAlgoTest : Html5DomainTest {
+    public class PoligonAlgoTest : DomainTest {
         [TestFixtureSetUp]
-        public void Setup() {
-            ReportPainter.PageSize = new Size(1000, 3000);
+        public override void Setup() {
+            base.Setup();
+            ReportPainter.CanvasSize = new Size(1000, 3000);
         }
         private int offsetY = 50;
         [Test]
@@ -55,7 +56,7 @@ namespace Limaki.Tests.Drawing {
         }
 
         public void TestBezierHull (IList<Point> bezier) {
-            base.ReportPainter.Paint(c => {
+            base.ReportPainter.PushPaint(c => {
                 c.SetColor(Colors.Blue);
                 c.SetLineWidth(2);
                 ContextPainterExtensions.DrawBezier(c, bezier);
@@ -63,7 +64,7 @@ namespace Limaki.Tests.Drawing {
             });
 
             var cps = BezierExtensions.ControlPoints(bezier);
-            base.ReportPainter.Paint(c => {
+            base.ReportPainter.PushPaint(c => {
                 c.SetColor(Colors.Red);
                 c.SetLineWidth(1);
                 foreach (var p in cps) {
@@ -74,7 +75,7 @@ namespace Limaki.Tests.Drawing {
             });
 
             var hull = BezierExtensions.BezierHull(bezier); 
-            base.ReportPainter.Paint(c => {
+            base.ReportPainter.PushPaint(c => {
                 c.SetColor(Colors.Green);
                 c.SetLineWidth(1);
                 foreach (var p in hull) {
@@ -124,7 +125,7 @@ namespace Limaki.Tests.Drawing {
                                    };
            
 
-            ReportPainter.Paint(c => {
+            ReportPainter.PushPaint(c => {
                 var iCol = 0;
                 foreach (var seg in segments) {
                     c.SetLineWidth(1);

@@ -147,15 +147,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Limaki.Tests\View\Visuals\SceneExamples.cs" />
-    <Compile Include="Limaki.Tests\View\Html5DomainTest.cs" />
     <Compile Include="Playground\View\Rectangle\Mono.WindowBase.Rect.cs" />
-    <Compile Include="Playground\View\Rectangle\RectTest.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\gdiRectangleD.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\gdiSizeD.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\gidPointD.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\xwtPoint.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\xwtSize.cs" />
-    <Compile Include="Playground\View\Rectangle\TestRectangle.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintCanvasBackend.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintContextBackendHandler.cs" />
     <Compile Include="Playground\View\XwtFrontend\PaintCanvas.cs" />

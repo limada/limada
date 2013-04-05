@@ -38,8 +38,7 @@ namespace Limaki.View.Html5 {
             engine.InitializeRegistry (new WidgetRegistry ());
             WidgetRegistry.MainRegistry = Html5Engine.Registry;
             Html5Engine.Registry.RegisterBackend (
-                typeof (Xwt.Drawing.SystemColors), typeof (SystemColorsBackend)
-                );
+                typeof (Xwt.Drawing.SystemColors), typeof (SystemColorsBackend));
 
             context.Factory.Add<IExceptionHandler, Html5ExeptionHandlerBackend> ();
             context.Factory.Add<IDrawingUtils, Html5DrawingUtils> ();

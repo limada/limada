@@ -347,8 +347,8 @@ namespace Xwt.WPFBackend
 		public void TransformPoint (object backend, ref double x, ref double y)
 		{
 			var m = ((DrawingContext)backend).Graphics.Transform;
-			var p = new PointF ((float)x, (float)y);
-			var pts = new PointF[] { p };
+			PointF p = new PointF ((float)x, (float)y);
+			PointF[] pts = new PointF[] { p };
 			m.TransformPoints (pts);
 			x = pts[0].X;
 			y = pts[0].Y;

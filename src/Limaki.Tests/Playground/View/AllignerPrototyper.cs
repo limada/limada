@@ -31,10 +31,13 @@ using Xwt.Drawing;
 using Limaki.View.Visuals;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Rendering;
+using Limaki.Tests;
 
 
 namespace Limaki.Playground.View {
-    public class AlignerPrototyper : Html5DomainTest {
+
+    public class AlignerPrototyper : DomainTest {
+
         IGraphScene<IVisual, IVisualEdge> SceneWithTestData (int exampleNr) {
             IGraphScene<IVisual, IVisualEdge> scene = null;
             var examples = new SceneExamples();
@@ -151,9 +154,9 @@ namespace Limaki.Playground.View {
             worker.Receiver.Execute();
             worker.Receiver.Done();
 
-            ReportPainter.Paint(ctx => worker.Painter.Paint(ctx));
+            ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
 
-            ReportPainter.Paint(ctx => {
+            ReportPainter.PushPaint(ctx => {
                 var translate = worker.Painter.Viewport.ClipOrigin;
                 ctx.Translate(-translate.X, -translate.Y);
                 ctx.SetLineWidth(.5);
@@ -194,7 +197,7 @@ namespace Limaki.Playground.View {
             ReportOptions(options);
             var scene = worker.Scene;
 
-            ReportPainter.Paint(ctx => worker.Painter.Paint(ctx));
+            ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
 
             ILocator<IVisual> locator = new GraphSceneItemShapeLocator<IVisual, IVisualEdge> { GraphScene = scene };
 
@@ -236,9 +239,9 @@ namespace Limaki.Playground.View {
             worker.Receiver.Execute();
             worker.Receiver.Done();
 
-            ReportPainter.Paint(ctx => worker.Painter.Paint(ctx));
+            ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
 
-            ReportPainter.Paint(ctx => {
+            ReportPainter.PushPaint(ctx => {
                 var translate = worker.Painter.Viewport.ClipOrigin;
                 ctx.Translate(-translate.X, -translate.Y);
                 ctx.SetLineWidth(.5);
@@ -318,7 +321,7 @@ namespace Limaki.Playground.View {
             allData();
             allData();
 
-            ReportPainter.Paint(ctx => worker.Painter.Paint(ctx));
+            ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
 
             WritePainter();
         }
@@ -372,7 +375,7 @@ namespace Limaki.Playground.View {
             worker.Receiver.Execute();
             worker.Receiver.Done();
 
-            ReportPainter.Paint(ctx => worker.Painter.Paint(ctx));
+            ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
 
             WritePainter();
         }

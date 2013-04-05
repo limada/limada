@@ -89,6 +89,7 @@
     <Compile Include="Limaki.View.XwtContext\RenderContextEventArgs.cs" />
     <Compile Include="Limaki.Drawing\Indexing\SpatialIndex.cs" />
     <Compile Include="Limaki.Drawing\Indexing\SpatialQuadTreeIndex.cs" />
+    <Compile Include="Limaki.View\Visualizers\ContextStreamWriter.cs" />
     <Compile Include="ViewContextRecourceLoader.cs" />
     <Compile Include="Limaki.Drawing\Anchor.cs" />
     <Compile Include="Limaki.Drawing\Camera.cs" />

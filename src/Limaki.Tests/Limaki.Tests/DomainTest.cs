@@ -4,8 +4,10 @@ using Limaki.IOC;
 using Limaki.UnitTest;
 using Limaki.View;
 using NUnit.Framework;
-using Xwt.Blind.Backend;
 using Xwt.Engine;
+using Limaki.View.Html5;
+using Limaki.View.Visualizers;
+using System.IO;
 
 
 namespace Limaki.Tests {
@@ -14,20 +16,31 @@ namespace Limaki.Tests {
         [TestFixtureSetUp]
         public override void Setup() {
             if (Registry.ConcreteContext == null) {
-                new BlindEngine ().InitializeRegistry (WidgetRegistry.MainRegistry);
-                BlindEngine.Registry.RegisterBackend(
-                    typeof (Xwt.Drawing.SystemColors), typeof (SystemColorsBackend)
-                );
-
-                var loader = new ViewContextRecourceLoader();
                 Registry.ConcreteContext = new ApplicationContext();
-                loader.ApplyResources(Registry.ConcreteContext);
-
-                new LimakiCoreContextRecourceLoader().ApplyResources(Registry.ConcreteContext);
-                //var factory = new AppFactory<global::Limada.UseCases.AppResourceLoader>(loader as IBackendContextRecourceLoader);
-                
+                var context = Registry.ConcreteContext;
+                new LimakiCoreContextRecourceLoader().ApplyResources(context);
+                new Html5ContextRecourceLoader().ApplyHtml5Resources(context);
+                new ViewContextRecourceLoader().ApplyResources(context);
             }
+            if (!Registry.Factory.Contains<Limaki.View.Visualizers.IContextWriter>())
+                Registry.Factory.Add<Limaki.View.Visualizers.IContextWriter, Html5ContextWriter>();
             base.Setup();
+        }
+
+        IContextWriter _reportPainter = null;
+        public virtual IContextWriter ReportPainter {
+            get {
+                return _reportPainter ?? (_reportPainter = Registry.Factory.Create<IContextWriter>());
+            }
+        }
+
+        public virtual void WritePainter (string fileName) {
+            using (var file = File.Create(fileName)) {
+                ReportPainter.Write(file);
+            }
+        }
+        public virtual void WritePainter () {
+            WritePainter(this.GetType().Name + ".html");
         }
     }
 }

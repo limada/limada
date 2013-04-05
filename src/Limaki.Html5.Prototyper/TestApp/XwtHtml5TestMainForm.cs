@@ -63,7 +63,7 @@ namespace Xwt.Html5.TestApp {
             butt2.Click += (s, e) =>
                            showInBrowser (TestDataOne.SimpleLine, "http://localhost/simpleline");
 
-            var renderer = new Html5PageRenderer();
+            var renderer = new Html5PageWriter{CanvasSize=new Size(1000,2000)};
 
             var butt3 = new System.Windows.Forms.Button { Text = "lineTest", Dock = DockStyle.Top };
             Action<Context> linetest = ctx => {
@@ -72,6 +72,7 @@ namespace Xwt.Html5.TestApp {
                 ctx.LineTo (450, 50);
                 ctx.Stroke();
             };
+
             butt3.Click += (s, e) =>
                            showInBrowser (renderer.Page (linetest), "http://localhost/LineTest");
             
@@ -118,7 +119,7 @@ namespace Xwt.Html5.TestApp {
                     example = 0;
             };
             butt7.Click += (s, e) =>
-                           showInBrowser (renderer.Page (VisualScene,new Size(1000,2000)), "http://localhost/VisualScene");
+                           showInBrowser (renderer.Page (VisualScene), "http://localhost/VisualScene");
 
             panel1.Controls.AddRange (new[] { butt7, butt6,butt5, butt4, butt3, butt2, butt1, });
 
