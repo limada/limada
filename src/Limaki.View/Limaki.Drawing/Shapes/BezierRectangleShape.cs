@@ -23,8 +23,14 @@ namespace Limaki.Drawing.Shapes {
 #endif
     public class BezierRectangleShape : RectangleShapeBase, IBezierRectangleShape {
 
-        public BezierRectangleShape():base() {}
-        public BezierRectangleShape(Rectangle data):base(data) {}
+        public BezierRectangleShape() {
+            Jitter = 5d;
+        }
+        
+        public BezierRectangleShape(Rectangle data) {
+            this.Data = data.NormalizedRectangle();
+        }
+
         public BezierRectangleShape(Point location, Size size) {
             this.Location = location;
             this.Size = size;
@@ -32,18 +38,34 @@ namespace Limaki.Drawing.Shapes {
 
         public override Rectangle BoundsRect {
             get {
-                return DrawingExtensions.Inflate(Data, _offset, _offset);
+                return Data.Inflate(Offset);
             }
         }
 
         public override Point Location {
-            get { return new Point(_data.X - _offset, _data.Y - _offset); }
-            set { this._data.Location = new Point(value.X + _offset, value.Y + _offset); }
+            get { return new Point(_data.X - Offset.Width, _data.Y - Offset.Height); }
+            set {
+                _offset = null;
+                this._data.Location = new Point(value.X + Offset.Width, value.Y + Offset.Height);
+            }
         }
 
         public override Size Size {
-            get { return new Size(_data.Size.Width + _offset * 2, _data.Size.Height + _offset * 2); }
-            set { _data.Size = new Size(value.Width - _offset * 2, value.Height - _offset * 2); }
+            get { return new Size(_data.Size.Width + Offset.Width * 2, _data.Size.Height + Offset.Height * 2); }
+            set {
+                _offset = null;
+                _data.Size = new Size(value.Width - Offset.Width * 2, value.Height - Offset.Height * 2);
+            }
+        }
+
+        public override Size DataSize {
+            get {
+                return base.DataSize;
+            }
+            set {
+                _offset = null;
+                base.DataSize = value;
+            }
         }
 
         public override Point this[Anchor i] {
@@ -120,18 +142,35 @@ namespace Limaki.Drawing.Shapes {
             return Hull( Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y), delta, extend);
         }
 
-        private double _offset = 5d;
-        public double Offset {
-            get { return _offset; }
-            set { _offset = value; }
+        protected double _jitter = 0;
+        public double Jitter {
+            get { return _jitter; }
+            set { _jitter = value;
+            _offset = null;
+            }
+        }
+
+        protected Size? _offset = null;
+        public Size Offset {
+            get {
+                if (_offset == null) {
+                    if(_data.IsEmpty) {
+                        _offset = new Size(Jitter, Jitter);
+                    } else {
+                        var bb = BezierExtensions.BezierBoundingBox(this.BezierPoints);
+                        _offset = new Size((bb.Size.Width - Data.Size.Width)/2, (bb.Size.Height - Data.Size.Height)/2);
+                    }
+                }
+                return _offset.Value;
+            }
         }
 
         public Point[] BezierPoints {
-            get { return BezierExtensions.GetRoundedRectBezier(this.Data, _offset); }
+            get { return BezierExtensions.GetRoundedRectBezier(this.Data, Jitter); }
         }
 
         public override object Clone() {
-            return new BezierRectangleShape(_data) { Offset = _offset };
+            return new BezierRectangleShape(_data) { Jitter = this.Jitter };
         }
     }
 }

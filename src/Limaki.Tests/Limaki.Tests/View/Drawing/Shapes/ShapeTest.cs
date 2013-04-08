@@ -87,6 +87,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
         [Test]
         public void TestBezierRectangleShapeResize () {
+
             var rect = new Rectangle(10, 10, 200, 100);
             var shape = new BezierRectangleShape(rect);
 

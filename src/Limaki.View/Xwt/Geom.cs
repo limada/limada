@@ -33,6 +33,10 @@ namespace Xwt.Drawing {
             return new Point(a.X < b.X ? a.X : b.X, a.Y < b.Y ? a.Y : b.Y);
         }
 
+        public static Point Offset (this Point a, Point b) {
+            return a.Offset(b.X,b.Y);
+        }
+
         public static Point Nearest (this Point xy, IEnumerable<Point> points) {
             var result = xy;
             var dmin = Double.MaxValue;
@@ -46,14 +50,6 @@ namespace Xwt.Drawing {
                 }
             }
             return result;
-        }
-
-        public static Point Add (Point pt, Size sz) {
-            return new Point(pt.X + sz.Width, pt.Y + sz.Height);
-        }
-
-        public static Point Subtract (Point pt, Size sz) {
-            return new Point(pt.X - sz.Width, pt.Y - sz.Height);
         }
 
         #endregion

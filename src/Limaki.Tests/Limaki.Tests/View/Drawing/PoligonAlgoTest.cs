@@ -27,6 +27,7 @@ using Limaki.Drawing.Painters;
 using System.Linq;
 
 namespace Limaki.Tests.Drawing {
+
     public class PoligonAlgoTest : DomainTest {
         [TestFixtureSetUp]
         public override void Setup() {
@@ -34,6 +35,7 @@ namespace Limaki.Tests.Drawing {
             ReportPainter.CanvasSize = new Size(1000, 3000);
         }
         private int offsetY = 50;
+
         [Test]
         public void TestBezierHullBezierRect () {
             var curve = new BezierTestData { Matrix = new Matrix { OffsetX = 50, OffsetY = offsetY } }
@@ -110,6 +112,7 @@ namespace Limaki.Tests.Drawing {
 
         }
 
+       
         private void PaintSegments (IList<Point> curve) {
             var segments = BezierExtensions.BezierSegments(curve);
             var cols = new Color[] {
@@ -151,5 +154,64 @@ namespace Limaki.Tests.Drawing {
 
         }
 
+        [Test]
+        public void TestBoundingBoxBezierRectangle () {
+            var curve = new BezierTestData { Matrix = new Matrix { OffsetX = 50, OffsetY = offsetY } }
+             .RoundedRectBezier;
+
+            ReportPainter.PushPaint(c => {
+                c.SetLineWidth(1);
+                var bb = BezierExtensions.BezierBoundingBox(curve);
+                c.SetColor(Colors.SpringGreen);
+                c.Rectangle(bb);
+                c.Stroke();
+
+                c.SetColor(Colors.Blue);
+                c.SetLineWidth(2);
+                ContextPainterExtensions.DrawBezier(c, curve);
+                c.Stroke();
+                               
+
+            });
+
+            WritePainter();
+
+            offsetY += 200;
+
+        }
+
+        [Test]
+        public void TestBezierRectJitterAndOffset () {
+            var jitter = 5d;
+            var rect = new Rectangle(0, 0, 400, 100);
+
+            Action prove = () => {
+                               
+                               var shape = new BezierRectangleShape(rect) {Jitter = jitter};
+              
+                               var bb = BezierExtensions.BezierBoundingBox(shape.BezierPoints);
+
+                               var offset = bb.Size-rect.Size;
+
+                               ReportDetail("{0} {1} W={2:0.####} H={3}", rect, jitter, offset.Width, offset.Height);
+
+                           };
+
+            ReportDetail("************* same jitter, rect growing");
+            for (int i = 100; i < 10000; i += 100) {
+               
+                rect = new Rectangle(0, 0, i*3, i);
+                prove();
+            }
+            ReportDetail("************* same rect, jitter growing");
+            rect = new Rectangle(0, 0, 400, 100);
+            for (int i = 1; i < rect.Size.Height; i += 5) {
+
+                jitter = i;
+                prove();
+            }
+        }
     }
+
+
 }

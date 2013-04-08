@@ -120,6 +120,20 @@ namespace Limaki.Drawing.Shapes {
             }
         }
 
+        public static Rectangle BezierBoundingBox (IList<Point> bezier) {
+            var result = Rectangle.Zero;
+            var first = true;
+            foreach (var seg in BezierSegments(bezier)) {
+                var bb = BezierBoundingBox(seg.Start, seg.Cp1, seg.Cp2, seg.End);
+                if (first) {
+                    result = bb;
+                    first = false;
+                } else
+                    result = result.Union(bb);
+            }
+            return result;
+        }
+
         public static Rectangle BezierBoundingBox (Point a, Point b, Point c, Point d) {
             var result = computeCubicBoundingBox(a.X, a.Y, b.X, b.Y, c.X, c.Y, d.X, d.Y);
             return Rectangle.FromLTRB(result[0], result[1], result[4], result[3]);
