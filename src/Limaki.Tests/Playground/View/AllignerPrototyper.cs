@@ -13,25 +13,25 @@
  */
 
 
-using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Limaki.Common.Linqish;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using System.Linq;
-using System;
-using Xwt;
-using Limaki.Visuals;
+using Limaki.Tests;
 using Limaki.Tests.View;
-using Limaki.Common.Linqish;
 using Limaki.View;
 using Limaki.View.Layout;
-using Xwt.Drawing;
-using Limaki.View.Visuals;
 using Limaki.View.Visualizers;
+using Limaki.View.Visuals;
 using Limaki.View.Visuals.Rendering;
-using Limaki.Tests;
+using Limaki.Visuals;
+using NUnit.Framework;
+using Xwt;
+using Xwt.Drawing;
 
 
 namespace Limaki.Playground.View {

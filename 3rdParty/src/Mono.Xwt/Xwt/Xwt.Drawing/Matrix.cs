@@ -180,18 +180,22 @@ namespace Xwt.Drawing {
         }
 
         public void Rotate (double angle) {
-            // R_theta==[costheta -sintheta; sintheta costheta],	
-            var theta = angle * pi180;
+            angle = angle % 360;
+            if (angle == 90 || angle == -270)
+                Append(0, 1, -1, 0, 0, 0);
+            else if (angle == -90 || angle == 270)
+                Append(0, -1, 1, 0, 0, 0);
+            else if (angle == 180 || angle == -180)
+                Append(-1, 0, 0, -1, 0, 0);
+            else if (angle == 0)
+                return;
+            else {
+                var theta = angle * pi180;
 
-            // r_theta = new Matrix(Math.Cos(theta), Math.Sin(theta),
-            //                -Math.Sin(theta), Math.Cos(theta),
-            //                0, 0);
-            // this.Append(r_theta);
-
-            var cos = Math.Cos(theta);
-            var sin = Math.Sin(theta);
-            Append(cos, sin, -sin, cos, 0, 0);
-
+                var cos = Math.Cos(theta);
+                var sin = Math.Sin(theta);
+                Append(cos, sin, -sin, cos, 0, 0);
+            }
         }
 
         public void RotateAt (double angle, double centerX, double centerY) {
