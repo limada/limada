@@ -45,6 +45,7 @@ namespace Limaki.View.Swf {
             return false;
         }
 
+        public System.Drawing.Color? ToolStripBackground = null;
         public void InitializeToolstripPositions(ToolStripPanel toolStripPanel, ToolStrip MenuStrip, ToolStrip[] toolStrips) {
 
             toolStripPanel.SuspendLayout();
@@ -57,6 +58,10 @@ namespace Limaki.View.Swf {
 
             toolStripPanel.SuspendLayout();
 
+            if (ToolStripBackground != null)
+                toolStripPanel.BackColor = ToolStripBackground.Value;
+           
+            
             if (MenuStrip != null) {
                 MenuStrip.Location = new System.Drawing.Point();
                 toolStripPanel.Controls.Add(MenuStrip);
@@ -72,6 +77,8 @@ namespace Limaki.View.Swf {
                     );
                 toolStrip.ResumeLayout(true);
                 toolStrip.Size = size;
+                if (ToolStripBackground != null)
+                    toolStrip.BackColor = ToolStripBackground.Value;
             });
 
             toolStrips.ForEach(toolStrip => {

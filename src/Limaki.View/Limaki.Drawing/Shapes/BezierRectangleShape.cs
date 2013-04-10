@@ -59,12 +59,18 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public override Size DataSize {
-            get {
-                return base.DataSize;
-            }
+            get { return base.DataSize; }
             set {
                 _offset = null;
                 base.DataSize = value;
+            }
+        }
+
+        public override Rectangle Data {
+            get { return base.Data; }
+            set {
+                _offset = null;
+                base.Data = value;
             }
         }
 
@@ -155,7 +161,7 @@ namespace Limaki.Drawing.Shapes {
             get {
                 if (_offset == null) {
                     if(_data.IsEmpty) {
-                        _offset = new Size(Jitter, Jitter);
+                        _offset = Size.Zero;
                     } else {
                         var bb = BezierExtensions.BezierBoundingBox(this.BezierPoints);
                         _offset = new Size((bb.Size.Width - Data.Size.Width)/2, (bb.Size.Height - Data.Size.Height)/2);

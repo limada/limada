@@ -62,7 +62,7 @@ namespace Limada.VisualThings {
         public override IVisual CreateItemOne(IGraph<IThing, ILink> sender,
             IGraph<IVisual, IVisualEdge> target, IThing a) {
             
-            IVisual result = VisualFactory.CreateItem(ThingDataToDisplay(sender,a));
+            var result = VisualFactory.CreateItem(ThingDataToDisplay(sender,a));
             if (SchemaFacade.DescriptionableThing(a)) {
                 if (a is IThing<Stream>) {
                     result.Shape = ShapeFactory.Create<IBezierRectangleShape>();

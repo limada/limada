@@ -85,7 +85,6 @@ namespace Limaki.Drawing.Shapes {
                     default:
                         return new Point(_data.X , _data.Y);
                 }
-
             }
 
             set {}

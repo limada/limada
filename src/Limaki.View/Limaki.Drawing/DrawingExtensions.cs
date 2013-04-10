@@ -183,15 +183,5 @@ namespace Limaki.Drawing {
             return DpiFactor(DrawingUtils.Resolution(context));
         }
 
-        #region Point
-
-        public static Point Add (Point pt, Size sz) {
-            return new Point(pt.X + sz.Width, pt.Y + sz.Height);
-        }
-
-        public static Point Subtract (Point pt, Size sz) {
-            return new Point(pt.X - sz.Width, pt.Y - sz.Height);
-        }
-        #endregion
     }
 }
