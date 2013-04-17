@@ -26,6 +26,9 @@ namespace Limaki.View.Clipping {
     /// </summary>
     public class ClipReceiver : ActionBase, IClipReceiver {
         
+        public ClipReceiver() {
+            this.Priority = int.MaxValue;
+        }
         public virtual IClipper Clipper { get; set; }
         
         public virtual IViewport Viewport {

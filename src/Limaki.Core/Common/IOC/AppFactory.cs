@@ -31,9 +31,10 @@ namespace Limaki.Common.IOC {
                 // only one IBackendContextRecourceLoader allowed:
                 if (type.GetInterface(typeof(IBackendContextRecourceLoader).FullName) != null && backendApplied)
                     return;
-
-                var loader = Activator.CreateInstance(type) as IContextRecourceLoader;
-                loader.ApplyResources(Registry.ConcreteContext);
+                if (type.GetConstructors().Any(tc => tc.GetParameters().Length == 0)) {
+                    var loader = Activator.CreateInstance(type) as IContextRecourceLoader;
+                    loader.ApplyResources(Registry.ConcreteContext);
+                }
 
             }
         }
@@ -41,7 +42,7 @@ namespace Limaki.Common.IOC {
         public void ResolveDirectory(string path, string filter) {
             var assemlies = new Set<Assembly>(AppDomain.CurrentDomain.GetAssemblies ());
             path = GetFullPath (path);
-            string[] files = Directory.GetFiles(path, filter);
+            var files = Directory.GetFiles(path, filter);
             foreach(var file in files) {
                 
                 var ass = LoadAssembly (file);

@@ -75,7 +75,7 @@ namespace Limaki.View.UI {
 
         public static Anchor AdjacentAnchor(Anchor hitAnchor) {
 
-            Anchor adjacentAnchor = Anchor.None;
+            var adjacentAnchor = Anchor.None;
 
             if (hitAnchor != Anchor.None)
                 switch (hitAnchor) {
