@@ -23,8 +23,9 @@ using Limaki.Visuals;
 using Xwt;
 using System.Linq;
 using System;
+using Limaki.View.Visuals.Layout;
 
-namespace Limaki.View.Visuals.Layout {
+namespace Limaki.Deprecated.View.Visuals.Layout {
     /// <summary>
     /// deprecate after testing VisualsSceneLayout
     /// </summary>

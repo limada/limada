@@ -141,7 +141,7 @@ namespace Limada.Tests.Model {
             
             
             var sheetManager = new SheetManager();
-            SceneExtensions.CleanScene(scene);
+            scene.CleanScene();
 
             using (var sheet = new Sheet(scene, layout)) {
                 s.Position = 0;

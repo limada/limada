@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2012 Lytico
+ * Copyright (C) 2012 - 2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -17,8 +17,9 @@ using Limaki.Graphs;
 using Xwt;
 using System.Linq;
 using System;
-using Limaki.Common.Linqish;
 using Limaki.Drawing;
+using Limaki.Common.Linqish;
+using Limaki.Graphs.Extensions;
 
 namespace Limaki.View.Layout {
 
@@ -75,33 +76,30 @@ namespace Limaki.View.Layout {
             aligner.AffectedEdges(ref visit);
             aligner.VisitItems(items, visit);
         }
-    }
 
-    public static class LocatorExtensions {
-        public static Rectangle Bounds<TItem> (this ILocator<TItem> loc, IEnumerable<TItem> items) {
-            Action<TItem> visit = null;
-            var measure = new MeasureVisitBuilder<TItem>(loc);
-            var fBounds = measure.Bounds(ref visit);
-            items.ForEach(e => visit(e));
-            return fBounds();
+        public static void FullLayout<TItem, TEdge> (this Aligner<TItem, TEdge> aligner, TItem focused, Point pos, AlignerOptions options, IComparer<TItem> comparer)
+        where TEdge : IEdge<TItem>, TItem {
+
+            var data = aligner.GraphScene;
+            var shaper = aligner.Shaper;
+
+            var roots = data.Graph.FindRoots(focused);
+            if (comparer == null)
+                roots = roots
+                    .OrderBy(e => shaper.GetShape(e).Location, new PointComparer { Order = options.Dimension == Dimension.X ? PointOrder.Y : PointOrder.X });
+            else
+                roots = roots.OrderBy(e => e, comparer);
+
+            var walker = new Walker<TItem, TEdge>(data.Graph);
+            roots.ForEach(root => {
+                var walk = walker.DeepWalk(root, 1).Where(l => !(l.Node is TEdge)).ToArray();
+                var bounds = new Rectangle(pos, Size.Zero);
+                aligner.Columns(walk, ref bounds, options);
+                pos = options.Dimension == Dimension.X ?
+                      new Point(pos.X, pos.Y + bounds.Size.Height + options.Distance.Height) :
+                      new Point(pos.X + bounds.Size.Width + options.Distance.Width, pos.Y);
+            });
         }
 
-        public static Size SizeToFit (this Size self, Size add,Dimension dimension) {
-            var w = self.Width;
-            var h = self.Height;
-            
-            if (dimension == Dimension.Y) {
-                h += add.Height;
-                if (w < add.Width)
-                    w = add.Width;
-
-            } else {
-                w += add.Width;
-                if (h < add.Height)
-                    h = add.Height;
-            }
-            return new Size(w, h);
-        }
     }
-
 }

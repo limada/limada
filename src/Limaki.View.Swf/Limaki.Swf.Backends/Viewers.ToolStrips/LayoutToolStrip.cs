@@ -67,7 +67,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             styleDialogButton.Click += (s, e) => {
                     var style = Controller.StyleToChange();
                     if (style != null) {
-                        var styleDialog = new SwfUseCaseComposer().ComposeStyleEditor(style, (s1, e1) => Controller.StyleChange(style));
+                        var styleDialog = new ConceptUseCaseComposer().ComposeStyleEditor(style, (s1, e1) => Controller.StyleChange(style));
                         styleDialog.Show();
                     }
                 };

@@ -21,31 +21,37 @@ using Limada.VisualThings;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.View.Layout;
+using Xwt;
 
 namespace Limada.View {
-    public class SearchHandler {
 
+    public class SearchHandler {
 
         public bool IsSearchable(IGraphScene<IVisual, IVisualEdge> scene) {
             return scene != null && scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>() != null;
         }
 
         public void LoadSearch(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, object name) {
+
             var graph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
             
             if (graph==null) {
                 throw new ArgumentException ("Search works only on ThingGraphs");
             }
 
-            SceneExtensions.CleanScene(scene);
+            scene.CleanScene();
 
             var visuals = scene.Graph.ThingGraph()
                 .Search(name, false)
-                .Select(t => graph.Get(t))
-                .OrderBy(v => v, new VisualComparer());
+                .Select(t => graph.Get(t));
 
             new GraphSceneFacade<IVisual, IVisualEdge>(() => scene, layout)
-                .Add(visuals, false, true);
+                .Add(visuals, false, false);
+
+            var aligner = new Aligner<IVisual, IVisualEdge>(scene, layout);
+            aligner.FullLayout(null, new Point(layout.Border.Width, layout.Border.Height), layout.Options(), new VisualComparer());
+            aligner.Commit();
 
             scene.ClearSpatialIndex();
         }

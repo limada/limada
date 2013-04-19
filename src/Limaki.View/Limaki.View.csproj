@@ -61,6 +61,7 @@
     <Compile Include="Limada.UseCases\DocumentSchema\DocumentSchemaKeyScrollAction.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindDrawingUtils.cs" />
     <Compile Include="Limaki.Drawing\Dimension.cs" />
+    <Compile Include="Limaki.View\Layout\Placing\LocatorExtensions.cs" />
     <Compile Include="Xwt\Geom.cs" />
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindSystemFonts.cs" />

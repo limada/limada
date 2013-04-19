@@ -131,7 +131,7 @@ namespace Limada.View {
         }
 
         public SceneInfo CreateSheet(IGraphScene<IVisual, IVisualEdge> scene) {
-            SceneExtensions.CleanScene(scene);
+            scene.CleanScene();
             var result = new SceneInfo();
             result.State.Hollow = true;
             result.Id = Isaac.Long;
@@ -226,7 +226,7 @@ namespace Limada.View {
         }
 
         protected void LoadFromStream(Stream source, IGraphScene<IVisual, IVisualEdge> target, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
-            SceneExtensions.CleanScene(target);
+            target.CleanScene();
             source.Position = 0;
             using (var sheet = new Sheet(target, layout)) {
                 sheet.Read(source);

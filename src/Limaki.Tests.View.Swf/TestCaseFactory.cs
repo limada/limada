@@ -46,7 +46,7 @@ namespace Limaki.Tests.UseCases {
 
     public class TestCaseFactory : UsecaseFactory<ConceptUsecase> {
         public override void Compose(ConceptUsecase useCase) {
-            var deviceComposer = DeviceComposer as SwfUseCaseComposer;
+            var deviceComposer = DeviceComposer as ConceptUseCaseComposer;
             
             this.testMessage = (s, m) => {
                 deviceComposer.StatusLabel.Text = m;
@@ -58,7 +58,7 @@ namespace Limaki.Tests.UseCases {
     
         public MessageEventHandler testMessage = null;
 
-        public void CreateTestCases(ConceptUsecase useCase, SwfUseCaseComposer composer) {
+        public void CreateTestCases(ConceptUsecase useCase, ConceptUseCaseComposer composer) {
             
             Func<BenchmarkOneTests> displayTest = () => {
                 var test = new BenchmarkOneTests();

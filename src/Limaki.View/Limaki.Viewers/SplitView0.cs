@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -314,17 +314,17 @@ namespace Limaki.Viewers {
 
         #region Search
 
-        public void Search(string name) {
+        public void Search (string name) {
             var currentDisplay = this.CurrentDisplay;
-            SceneHistory.Store (currentDisplay, SheetManager);
-            var search = new SearchHandler ();
-            search.LoadSearch (currentDisplay.Data, currentDisplay.Layout, name);
+            SceneHistory.Store(currentDisplay, SheetManager);
+            new SearchHandler()
+                .LoadSearch(currentDisplay.Data, currentDisplay.Layout, name);
             currentDisplay.DataId = 0;
-            new State { Hollow = true }.CopyTo(currentDisplay.State);
+            new State {Hollow = true}.CopyTo(currentDisplay.State);
             currentDisplay.Text = name;
-            currentDisplay.Viewport.Reset ();
-            currentDisplay.BackendRenderer.Render ();
-            OnViewChanged ();
+            currentDisplay.Viewport.Reset();
+            currentDisplay.Execute();
+            OnViewChanged();
         }
 
         public void DoSearch() {

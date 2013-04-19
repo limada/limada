@@ -30,9 +30,9 @@ namespace Limaki.View.Layout {
         public GraphSceneLayout(Func<IGraphScene<TItem, TEdge>> dataHandler, IStyleSheet styleSheet)
             : base(styleSheet) {
             this.DataHandler = dataHandler;
-            this.Dimension = Drawing.Dimension.X;
+            this.Dimension = Dimension.X;
             this.Centered = true;
-            this.Align = true;
+            this.AlignOnInvoke = true;
         }
 
         public Func<IGraphScene<TItem, TEdge>> DataHandler { get; set; }
@@ -41,9 +41,10 @@ namespace Limaki.View.Layout {
             get { return DataHandler(); }
         }
 
-        public Drawing.Dimension Dimension { get; set; }
-
+        public Dimension Dimension { get; set; }
         public bool Centered { get; set; }
+
+        public bool AlignOnInvoke { get; set; }
 
         public IEdgeRouter<TItem, TEdge> EdgeRouter { get; set; }
 
@@ -65,14 +66,13 @@ namespace Limaki.View.Layout {
             }
         }
 
-        public bool Align { get; set; }
-
         public override void Invoke () {
             var data = Data;
             
             if (data != null) {
                 data.SpatialIndex.Query(Rectangle.Zero);
                 var graph = data.Graph;
+
                 foreach (TItem item in graph) {
                     Invoke(item);
                     if (!(item is TEdge)) {
@@ -81,20 +81,9 @@ namespace Limaki.View.Layout {
                 }
                 InvokeEdges();
 
-                if (Align) {
+                if (AlignOnInvoke) {
                     var aligner = new Aligner<TItem, TEdge>(data, this);
-                    var options = this.Options();
-
-                    var pos = new Point(Border.Width, Border.Height);
-                    var walker = new Walker<TItem, TEdge>(data.Graph);
-                    var roots = data.Graph.FindRoots(data.Focused);
-                    roots.ForEach(root => {
-                        var walk = walker.DeepWalk(root, 1).Where(l => !(l.Node is TEdge)).ToArray();
-                        var bounds = new Rectangle(pos, Size.Zero);
-                        aligner.Columns(walk, ref bounds, options);
-                        pos = new Point(pos.X, pos.Y + bounds.Size.Height + options.Distance.Height);
-                    });
-
+                    aligner.FullLayout(data.Focused, new Point(Border.Width, Border.Height), this.Options(), this.Comparer);
                     aligner.Commit();
                 } 
             }

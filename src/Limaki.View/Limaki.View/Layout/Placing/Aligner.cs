@@ -50,7 +50,6 @@ namespace Limaki.View.Layout {
             VisitItems(items, visit);
         }
 
-
         public virtual void OneColumn (IEnumerable<TItem> items, Point at, AlignerOptions options) {
             var bounds = new Rectangle(int.MaxValue, int.MaxValue, 0, 0);
             MeasureColumn(items, options, ref bounds);

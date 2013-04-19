@@ -25,6 +25,7 @@ using Limaki.Visuals;
 using Xwt;
 
 namespace Limaki.View.Visuals.UI {
+
     public static class SceneExtensions {
 
         public static void ChangeShape(IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IShape newShape) {
@@ -130,7 +131,7 @@ namespace Limaki.View.Visuals.UI {
             return visual;
         }
 
-        public static void CleanScene(IGraphScene<IVisual, IVisualEdge> scene) {
+        public static void CleanScene(this IGraphScene<IVisual, IVisualEdge> scene) {
             if (scene != null) {
                 var graphView = scene.Graph as GraphView<IVisual, IVisualEdge>;
                 if (graphView!=null) {

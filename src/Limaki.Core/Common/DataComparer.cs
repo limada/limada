@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 
 namespace Limaki.Common {
+
     public abstract class DataComparer<T> : Comparer<T> {
+
         public virtual int CompareObjects(object aData, object bData) {
             if (aData == null && bData == null)
                 return 0;

@@ -124,8 +124,8 @@ namespace Limada.View {
                 Id = HomeId,
                 Name = "Favorites",
             };
-            homeInfo.State.Hollow = true;            
-            SceneExtensions.CleanScene(display.Data);
+            homeInfo.State.Hollow = true;
+            display.Data.CleanScene();
             display.BackendRenderer.Render();
             display.Info = homeInfo;
             

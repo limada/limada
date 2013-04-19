@@ -99,8 +99,8 @@ namespace Limaki.View.Layout {
 
         public abstract IStyle GetStyle(TItem item);
         public abstract IStyle GetStyle(TItem item, UiState uiState);
-        #endregion
 
+        #endregion
 
         #region Layout-Methods
 
@@ -140,12 +140,12 @@ namespace Limaki.View.Layout {
 
         #region Shape-Handling
 
-
         public abstract IShape CreateShape(TItem item);
         public abstract IShape GetShape(TItem item);
+
         #endregion
 
-        public virtual Func<TItem, double> OrderBy { get; set; }
+        public virtual IComparer<TItem> Comparer { get; set; }
 
     }
 

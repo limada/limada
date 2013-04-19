@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2010-2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -20,7 +34,7 @@ using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
 
 namespace Limaki.Swf.Backends.UseCases {
 
-    public class SwfUseCaseComposer : IComposer<ConceptUsecase> {
+    public class ConceptUseCaseComposer : IComposer<ConceptUsecase> {
 
         public Form Mainform { get; set; }
         public ToolStripContainer ToolStripContainer { get; set; }
@@ -102,6 +116,10 @@ namespace Limaki.Swf.Backends.UseCases {
             InstrumentMenus (useCase);
 
             var utils = new SwfUtils ();
+            
+            //utils.ToolStripBackground = Color.Gray;
+            //utils.ToolStripForeground = Color.White; // does nothing
+
             utils.InitializeToolstripPositions (
                 this.ToolStripContainer.TopToolStripPanel,
                 this.MenuStrip,

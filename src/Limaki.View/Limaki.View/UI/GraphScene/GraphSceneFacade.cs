@@ -189,18 +189,22 @@ namespace Limaki.View.UI.GraphScene {
             ApplyFilter();
             TItem curr = scene.Focused;
 
-            var affected = new GraphViewFacade<TItem, TEdge>(this.GraphView).Add(elements);
+            var affected = new GraphViewFacade<TItem, TEdge>(this.GraphView)
+                .Add(elements);
 
-            var aligner = CreateAligner(scene);
-            var options = Layout.Options();
-            if (arrange) {
-                options.Collisions = Collisions.NextFree | Collisions.Toggle;
-                aligner.Columns(affected, options);
+            if (justify || arrange) {
+                var aligner = CreateAligner(scene);
+                var options = Layout.Options();
+                if (arrange) {
+                    options.Collisions = Collisions.NextFree | Collisions.Toggle;
+                    aligner.Columns(affected, options);
 
-            } else if (justify) {
-                aligner.Justify(affected);
+                } else if (justify) {
+                    aligner.Justify(affected);
+                }
+                aligner.Commit();
             }
-            aligner.Commit();
+
             RestoreFocused(curr);
 
         }

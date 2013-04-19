@@ -20,6 +20,7 @@ using System;
 namespace Limaki.View.Layout {
 
     public class AlignerOptions {
+
         public Alignment AlignX { get; set; }
         public Alignment AlignY { get; set; }
         public PointOrder PointOrder { get; set; }

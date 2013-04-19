@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -20,7 +20,9 @@ using LinqKit;
 using System.Linq;
 
 namespace Limaki.View.Swf {
+
     public class SwfUtils {
+
         public void SetFont(System.Drawing.Font font, Control control) {
             control.Font = font;
             foreach (Control child in control.Controls) {
@@ -46,6 +48,8 @@ namespace Limaki.View.Swf {
         }
 
         public System.Drawing.Color? ToolStripBackground = null;
+        public System.Drawing.Color? ToolStripForeground = null;
+        
         public void InitializeToolstripPositions(ToolStripPanel toolStripPanel, ToolStrip MenuStrip, ToolStrip[] toolStrips) {
 
             toolStripPanel.SuspendLayout();
@@ -61,6 +65,8 @@ namespace Limaki.View.Swf {
             if (ToolStripBackground != null)
                 toolStripPanel.BackColor = ToolStripBackground.Value;
            
+            if (ToolStripForeground != null)
+                toolStripPanel.ForeColor = ToolStripForeground.Value;
             
             if (MenuStrip != null) {
                 MenuStrip.Location = new System.Drawing.Point();
@@ -79,6 +85,8 @@ namespace Limaki.View.Swf {
                 toolStrip.Size = size;
                 if (ToolStripBackground != null)
                     toolStrip.BackColor = ToolStripBackground.Value;
+                if (ToolStripForeground != null)
+                    toolStrip.ForeColor = ToolStripForeground.Value;
             });
 
             toolStrips.ForEach(toolStrip => {

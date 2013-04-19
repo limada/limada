@@ -59,7 +59,7 @@ namespace Limaki.Tests.Graph.Model {
             }
 
             public override void Invoke () {
-                Align = false;
+                AlignOnInvoke = false;
                 base.Invoke();
             }
         }

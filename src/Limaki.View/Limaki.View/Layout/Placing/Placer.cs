@@ -22,15 +22,18 @@ namespace Limaki.View.Layout {
 
     public class Placer<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
 
-        public Placer (IGraphScene<TItem, TEdge> scene, IShaper<TItem> layout) {
+        public Placer (IGraphScene<TItem, TEdge> scene, IShaper<TItem> shaper) {
             this.GraphScene = scene;
-            this.Shaper = layout;
+            this.Shaper = shaper;
         }
 
         public Placer (IGraphScene<TItem, TEdge> scene, IShaper<TItem> shaper, Action<Placer<TItem, TEdge>> call): this(scene, shaper) {
             call(this);
             Commit();
         }
+
+        public IShaper<TItem> Shaper { get; protected set; }
+        public IGraphScene<TItem, TEdge> GraphScene { get; protected set; }
 
         protected IGraphSceneLocator<TItem, TEdge> _locator = null;
         public virtual IGraphSceneLocator<TItem, TEdge> Locator {
@@ -42,21 +45,15 @@ namespace Limaki.View.Layout {
             return new GraphSceneLocator<TItem, TEdge>(shaper);
         }
      
-        public IShaper<TItem> Shaper { get; protected set; }
-        public IGraphScene<TItem, TEdge> GraphScene { get; protected set; }
-
         protected IGraph<TItem, TEdge> Graph {
             get { return GraphScene.Graph; }
         }
 
-        /// <summary>
-        /// testing if too much visits
-        /// </summary>
-        internal int visits = 0;
-
         public virtual void VisitItems (IEnumerable<TItem> items, Action<TItem> visitor) {
             foreach (var item in items.Where (i => !(i is TEdge))) {
+#if DEBUG
                 visits++;
+#endif
                 visitor (item);
             }
         }
@@ -64,5 +61,14 @@ namespace Limaki.View.Layout {
         public void Commit() {
             Locator.Commit(this.GraphScene.Requests);
         }
+
+
+#if DEBUG
+        /// <summary>
+        /// testing if too much visits
+        /// </summary>
+        internal int visits = 0;
+#endif
+
     }
 }

@@ -13,13 +13,16 @@
  */
 
 using System;
+using System.Collections.Generic;
 using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Drawing {
+
     public interface ILayout {
 
         IStyleSheet StyleSheet { get;set;}
+
         /// <summary>
         /// performs a full layout
         /// </summary>
@@ -36,7 +39,7 @@ namespace Limaki.Drawing {
     }
 
 
-    public interface ILayout<TItem> : ILayout,IShaper<TItem> {
+    public interface ILayout<TItem> : ILayout, IShaper<TItem> {
 
         /// <summary>
         /// Prepares TItem with Layout Data, eg. shapes
@@ -65,7 +68,7 @@ namespace Limaki.Drawing {
         Point[] GetDataHull(TItem item, int delta, bool extend);
         Point[] GetDataHull(TItem item, UiState uiState, int delta, bool extend);
 
-        Func<TItem, double> OrderBy { get; set; }
+        IComparer<TItem> Comparer { get; set; } 
     }
 
 }
