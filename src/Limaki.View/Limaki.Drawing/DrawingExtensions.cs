@@ -166,14 +166,7 @@ namespace Limaki.Drawing {
         }
 
         static IDrawingUtils _drawingUtils = null;
-        public static IDrawingUtils DrawingUtils {
-            get {
-                if (_drawingUtils == null) {
-                    _drawingUtils = Registry.Factory.Create<IDrawingUtils>();
-                }
-                return _drawingUtils;
-            }
-        }
+        static IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Factory.Create<IDrawingUtils>()); } }
 
         public static Size DpiFactor(Size dpi) {
             return new Size(DrawingUtils.ScreenResolution().Width / dpi.Width,DrawingUtils.ScreenResolution().Height / dpi.Height);

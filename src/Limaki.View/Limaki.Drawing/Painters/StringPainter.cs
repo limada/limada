@@ -67,26 +67,7 @@ namespace Limaki.Drawing.Painters {
                 ctx.Restore();
             } else {
                 var rect = shape.BoundsRect.Inflate(-5, -5);
-                //rect.Inflate(-PenWidth, -PenWidth);
-
-                var w = rect.Width;
-                var h = rect.Height;
-                if (w > 1 && h > 1) {
-                    var text = new TextLayout(ctx);
-                    text.Trimming = TextTrimming.WordElipsis;
-                    text.Text = this.Text;
-                    text.Font = font;
-                    text.Width = w;
-                    text.Height = h;
-                    var size = text.GetSize();
-                    w = size.Width < w ? (w - size.Width - 5) / 2d : 0;
-                    var lh = (font.Size + (font.Size / 2d)) / 2d;
-                    h = size.Height < h ? (h - size.Height - 5 + lh) / 2d : 0;
-                    ctx.SetColor(style.TextColor);
-                    ctx.SetLineWidth(1);
-                    ctx.DrawTextLayout(text, rect.X + w, rect.Y + h);
-
-                }
+                ContextPainterExtensions.DrawText(ctx, rect, this.Text, font, style.TextColor);
             }
 
         }

@@ -24,19 +24,11 @@ using Xwt.Engine;
 //using System.Xml;
 
 namespace Limaki.Drawing {
+
     public class DrawingPrimitivesSerializer : SerializerBase {
 
         static IDrawingUtils _drawingUtils = null;
-        protected static IDrawingUtils drawingUtils {
-            get {
-                if (_drawingUtils == null) {
-                    _drawingUtils = Registry.Factory.Create<IDrawingUtils>();
-                }
-                return _drawingUtils;
-            }
-        }
-
-
+        protected static IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Factory.Create<IDrawingUtils>()); } }
 
         public virtual XElement Write(Font font) {
             XElement xmlthing = new XElement("font");
@@ -93,7 +85,7 @@ namespace Limaki.Drawing {
 
         public virtual Pen ReadPen(XElement node) {
             var pen = ReadBasePen(node);
-            Pen result = drawingUtils.CreatePen(pen.Color);
+            Pen result = DrawingUtils.CreatePen(pen.Color);
             result.Thickness = pen.Thickness;
             result.StartCap = pen.StartCap;
             result.EndCap = pen.EndCap;
@@ -122,7 +114,7 @@ namespace Limaki.Drawing {
             } else {
                 var pen = ReadBasePen(node);
                 if (!style.ParentStyle.Pen.Equals(pen)) {
-                    var result = drawingUtils.CreatePen(pen.Color);
+                    var result = DrawingUtils.CreatePen(pen.Color);
                     result.Thickness = pen.Thickness;
                     result.StartCap = pen.StartCap;
                     result.EndCap = pen.EndCap;

@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -20,6 +20,8 @@ using Xwt;
 using Xwt.Drawing;
 using Limaki.Drawing.Painters;
 using System;
+using Limaki.Iconerias;
+using Limaki.Drawing.Styles;
 
 namespace Limaki.Tests.View.Drawing.Shapes {
 
@@ -144,6 +146,48 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
            
 
+            WritePainter();
+        }
+
+        [Test]
+        public void TestPaintDocumentNaviatator () {
+
+            var bounds = new Rectangle(10, 10, 500, 100);
+
+            var iconeria = new AwesomeIconeria { Fill = true, FillColor = Colors.Black };
+            
+            var utils = Registry.Pool.TryGetCreate<IDrawingUtils>();
+            var style = Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet.ItemStyle.DefaultStyle;
+
+            var pageNr = "XXXX";
+            var pageNrSize = utils.GetTextDimension(pageNr, style);
+
+            ReportPainter.PushPaint(ctx => {
+                ctx.SetLineWidth(1);
+                ctx.SetColor(Colors.Blue);
+
+                ContextPainterExtensions.DrawRoundedRect(ctx, bounds, 45);
+                ctx.ClosePath();
+                ctx.Stroke();
+                var iconSize = bounds.Height;
+
+                iconeria.PaintIcon(ctx, iconSize, bounds.X + iconSize / 2, bounds.Y, c => {
+                    c.Scale(-1, 1);
+                    iconeria.IconPlay(c);
+                });
+
+                iconeria.PaintIcon(ctx, iconSize, bounds.Right - ((iconSize * .7)), bounds.Y, c => {
+                    iconeria.IconPlay(c);
+                });
+
+                var textBounds = new Rectangle(new Point(), pageNrSize);
+                textBounds.Location = new Point(
+                    bounds.Location.X + (bounds.Width - textBounds.Width) / 2, 
+                    bounds.Location.Y + (bounds.Height - textBounds.Height) / 2);
+
+                ContextPainterExtensions.DrawText(ctx, textBounds, "123", style.Font, style.TextColor);
+
+            });
             WritePainter();
         }
     }

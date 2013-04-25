@@ -41,8 +41,8 @@ namespace Limaki.Iconerias {
             icon(c);
 
             c.SetLineWidth(size / 50);
-            
-            if (Stroke && StrokeFirst&&Fill) {
+
+            if (Stroke && StrokeFirst && Fill) {
                 c.SetColor(StrokeColor);
                 c.StrokePreserve();
             }
@@ -54,6 +54,7 @@ namespace Limaki.Iconerias {
                 else
                     c.Fill();
             }
+
             if (Stroke && ! StrokeFirst) {
                 c.SetColor(StrokeColor);
                 c.Stroke();

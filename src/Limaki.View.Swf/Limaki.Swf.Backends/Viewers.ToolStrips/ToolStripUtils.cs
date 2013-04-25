@@ -3,8 +3,11 @@ using Limaki.Common;
 using Limaki.View.UI;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
+
     public class ToolStripUtils {
+
         static IUISystemInformation _systemInformation = null;
+
         public static IUISystemInformation SystemInformation {
             get { return _systemInformation ?? (_systemInformation = Registry.Pool.TryGetCreate<IUISystemInformation>()); }
         }
@@ -27,5 +30,6 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 }
             }
         }
+
     }
 }

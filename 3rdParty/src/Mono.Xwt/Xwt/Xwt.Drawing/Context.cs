@@ -383,7 +383,6 @@ namespace Xwt.Drawing
 		
 		/// <summary>
 		/// Applies a rotation transformation
-		/// </summary>
 		/// <param name='angle'>
 		/// Angle in degrees
 		/// </param>

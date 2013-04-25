@@ -98,14 +98,7 @@ namespace Limaki.View.Layout {
         }
 
         static IDrawingUtils _drawingUtils = null;
-        protected static IDrawingUtils DrawingUtils {
-            get {
-                if (_drawingUtils == null) {
-                    _drawingUtils = Registry.Factory.Create<IDrawingUtils>();
-                }
-                return _drawingUtils;
-            }
-        }
+        protected static IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Factory.Create<IDrawingUtils>()); } }
 
     }
 }

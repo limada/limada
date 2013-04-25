@@ -39,30 +39,17 @@ namespace Limaki.Drawing.Painters {
             // half the width, or height (whichever is shorter) 
             // then return a capsule instead of a lozenge 
             if (radius >= (Math.Min (rectangle.Width, rectangle.Height)) / 2.0) {
-                GetCapsule (ctx, rectangle);
+                DrawCapsule (ctx, rectangle);
                 return;
             }
 
-            // create the arc for the Rectangle sides 
-            var l = rectangle.Left;
-            var t = rectangle.Top;
-            var w = rectangle.Width;
-            var h = rectangle.Height;
-
-            // top left  
-            ctx.Arc (l + radius, t + radius, radius, 180, 270);
-            // top right 
-            ctx.Arc (l + w - radius, t + radius, radius, 270, 0);
-            // bottom right  
-            ctx.Arc (l + w - radius, t + h - radius, radius, 0, 90);
-            // bottom left 
-            ctx.Arc (l + radius, t + h - radius, radius, 90, 180);
+            ContextPainterExtensions.DrawRoundedRect(ctx, rectangle, radius);
 
             ctx.ClosePath ();
 
         }
 
-        protected virtual void GetCapsule (Context ctx, Rectangle rectangle) {
+        protected virtual void DrawCapsule (Context ctx, Rectangle rectangle) {
             var radius = 0d;
             var l = rectangle.Left;
             var t = rectangle.Top;

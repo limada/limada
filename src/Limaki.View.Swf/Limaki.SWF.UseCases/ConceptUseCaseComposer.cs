@@ -115,12 +115,13 @@ namespace Limaki.Swf.Backends.UseCases {
             
             InstrumentMenus (useCase);
 
-            var utils = new SwfUtils ();
-            
-            //utils.ToolStripBackground = Color.Gray;
-            //utils.ToolStripForeground = Color.White; // does nothing
+            var utils = new SwfUtils {
+                //ToolStripBackground = Color.FromArgb(0xEF,0xEF,0xF2), //WhiteSmoke
+                //ToolStripForeground = Color.White, // does nothing
+                ToolStripItemSelectedColor = Color.White,
+            };
 
-            utils.InitializeToolstripPositions (
+            utils.InitializeToolstrips (
                 this.ToolStripContainer.TopToolStripPanel,
                 this.MenuStrip,
                 new ToolStrip[] {

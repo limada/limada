@@ -25,12 +25,6 @@ namespace Limaki.Drawing.Painters {
     /// </summary>
     public abstract class StringPainterBase : Painter<string>,IDataPainter<string>,IDataPainter {
 
-        protected IShape _shape;
-        public virtual IShape Shape {
-            get { return _shape; }
-            set { _shape = value; }
-        }
-
         public override RenderType RenderType {
             get { return RenderType.Fill; }
             set { }
@@ -44,14 +38,7 @@ namespace Limaki.Drawing.Painters {
 
 
         static IDrawingUtils _drawingUtils = null;
-        protected static IDrawingUtils drawingUtils {
-            get {
-                if (_drawingUtils == null) {
-                    _drawingUtils = Registry.Factory.Create<IDrawingUtils>();
-                }
-                return _drawingUtils;
-            }
-        }
+        protected static IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Factory.Create<IDrawingUtils>()); } }
 
         public override Point[] Measure(Matrix matrix, int delta, bool extend) {
             var shape = this.Shape;
@@ -63,7 +50,7 @@ namespace Limaki.Drawing.Painters {
                     var vLen = Vector.Length(vector);
                     var fontSize = font.Size + 2;
                     var size = new Size(vLen, fontSize);
-                    size = drawingUtils.GetTextDimension(this.Text, style);
+                    size = DrawingUtils.GetTextDimension(this.Text, style);
                     if (size.Width == 0) {
                         size.Width = vLen;
                         size.Height = fontSize;

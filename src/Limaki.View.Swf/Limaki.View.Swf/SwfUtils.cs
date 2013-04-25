@@ -49,8 +49,9 @@ namespace Limaki.View.Swf {
 
         public System.Drawing.Color? ToolStripBackground = null;
         public System.Drawing.Color? ToolStripForeground = null;
+        public System.Drawing.Color? ToolStripItemSelectedColor = null;
         
-        public void InitializeToolstripPositions(ToolStripPanel toolStripPanel, ToolStrip MenuStrip, ToolStrip[] toolStrips) {
+        public void InitializeToolstrips(ToolStripPanel toolStripPanel, ToolStrip menuStrip, ToolStrip[] toolStrips) {
 
             toolStripPanel.SuspendLayout();
 
@@ -58,24 +59,32 @@ namespace Limaki.View.Swf {
 
             toolStripPanel.Controls.Clear();
             toolStripPanel.ResumeLayout(true);
+            var renderer = toolStripPanel.Renderer;
+            renderer = new Limaki.Swf.Backends.Viewers.ToolStrips.ToolStripRenderer {
+                ToolStripButtonCheckedColor = this.ToolStripItemSelectedColor
+            };
+            toolStripPanel.Renderer = renderer;
             Application.DoEvents();
 
             toolStripPanel.SuspendLayout();
 
-            if (ToolStripBackground != null)
+            if (ToolStripBackground != null) {
                 toolStripPanel.BackColor = ToolStripBackground.Value;
-           
-            if (ToolStripForeground != null)
+                menuStrip.BackColor = ToolStripBackground.Value;
+            }
+            if (ToolStripForeground != null) {
                 toolStripPanel.ForeColor = ToolStripForeground.Value;
-            
-            if (MenuStrip != null) {
-                MenuStrip.Location = new System.Drawing.Point();
-                toolStripPanel.Controls.Add(MenuStrip);
-                location = MenuStrip.Location + new System.Drawing.Size(0, MenuStrip.Size.Height + 3);
+                menuStrip.ForeColor = ToolStripForeground.Value;
+            }
+            if (menuStrip != null) {
+                menuStrip.Location = new System.Drawing.Point();
+                toolStripPanel.Controls.Add(menuStrip);
+                location = menuStrip.Location + new System.Drawing.Size(0, menuStrip.Size.Height + 3);
             }
 
             toolStrips.ForEach(toolStrip => {
                 toolStrip.SuspendLayout();
+                toolStrip.Renderer = renderer;
                 var border = toolStrip.Items.Count;
                 var size = new System.Drawing.Size(4, toolStrip.Size.Height);
                 toolStrip.Items.Cast<ToolStripItem>().ForEach(s =>

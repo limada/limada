@@ -47,14 +47,10 @@ namespace Limaki.Drawing.Styles {
         }
 
         protected ISystemFonts _systemfonts = null;
-        protected ISystemFonts SystemFonts {
-            get { return _systemfonts ?? (_systemfonts = Registry.Pool.TryGetCreate<ISystemFonts> ()); }
-        }
+        protected ISystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = Registry.Pool.TryGetCreate<ISystemFonts>()); } }
 
         protected IDrawingUtils _drawingUtils = null;
-        protected IDrawingUtils DrawingUtils {
-            get { return _drawingUtils ?? (_drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils> ()); }
-        }
+        protected IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils>()); } }
 
         protected virtual Font CreateFont (string familiy, double size) {
             return Font.FromName(WidgetRegistry.MainRegistry, familiy, size);
