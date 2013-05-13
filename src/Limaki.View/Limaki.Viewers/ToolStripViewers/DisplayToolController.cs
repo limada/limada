@@ -21,6 +21,7 @@ using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 
 namespace Limaki.Viewers.ToolStripViewers {
+
     public class DisplayToolController : ToolController<IDisplay, IDisplayTool> {
 
         public object Control { get; set; }

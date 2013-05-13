@@ -121,7 +121,7 @@
     <Compile Include="Limaki.View.Gdi\UI\GdiGraphSceneLayer.cs" />
     <Compile Include="Limaki.View.Gdi\UI\GdiImageLayer.cs" />
     <Compile Include="Limaki.View.Gdi\UI\GdiRenderEventArgs.cs" />
-    <Compile Include="Limaki.Swf.Backends\Viewers.Content\DocumentSchemaController.cs" />
+    <Compile Include="Limaki.Swf.Backends\Viewers.Content\SwfDocumentSchemaViewer.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripUtils.cs" />
     <Compile Include="Limaki.View.Swf\Converter.cs" />
     <Compile Include="Limaki.View.Swf\CursorHandlerBackend.cs" />
@@ -213,9 +213,9 @@
       <DependentUpon>DocumentSchemaBackend.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.Content\WebBrowserBackendHandler.cs" />
-    <Compile Include="Limaki.Swf.Backends\Viewers.Content\ImageViewerController.cs" />
-    <Compile Include="Limaki.Swf.Backends\Viewers.Content\TextViewerController.cs" />
-    <Compile Include="Limaki.Swf.Backends\Viewers.Content\TextViewerWithToolstripController.cs" />
+    <Compile Include="Limaki.Swf.Backends\Viewers.Content\ImageViewer.cs" />
+    <Compile Include="Limaki.Swf.Backends\Viewers.Content\TextViewer.cs" />
+    <Compile Include="Limaki.Swf.Backends\Viewers.Content\TextViewerWithToolstrip.cs" />
     <Compile Include="Limaki.Swf.Backends\StyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>

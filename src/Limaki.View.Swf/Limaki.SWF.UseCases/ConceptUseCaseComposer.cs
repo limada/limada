@@ -68,15 +68,15 @@ namespace Limaki.Swf.Backends.UseCases {
             ArrangerToolStrip = new ArrangerToolStrip ();
 
             //TODO: move this to UseCaseContextResourceLoader
-            Registry.Factory.Add<ContentViewProviders, ThingContentViewProviders> ();
+            Registry.Factory.Add<ContentViewerProvider, ContentVisualViewerProvider> ();
 
-            var viewProviders = Registry.Pool.TryGetCreate<ContentViewProviders> ();
+            var viewProviders = Registry.Pool.TryGetCreate<ContentViewerProvider> ();
 
-            viewProviders.Add (new HtmlViewerController {BackendHandler = new WebBrowserBackendHandler ()});
-            viewProviders.Add(new DocumentSchemaController());
-            viewProviders.Add (new ImageViewerController ());
-            viewProviders.Add (new TextViewerWithToolstripController ());
-            viewProviders.Add (new SheetViewerController ());
+            viewProviders.Add (new HtmlViewer {BackendHandler = new WebBrowserBackendHandler ()});
+            viewProviders.Add(new SwfDocumentSchemaViewer());
+            viewProviders.Add (new ImageViewer ());
+            viewProviders.Add (new TextViewerWithToolstrip ());
+            viewProviders.Add (new SheetViewer ());
 
         }
 

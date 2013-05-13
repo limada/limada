@@ -18,10 +18,10 @@ using Limaki.Visuals;
 
 namespace Limaki.Viewers {
 
-    public class ThingContentViewProviders:ContentViewProviders {
+    public class ContentVisualViewerProvider:ContentViewerProvider {
 
-        public ThingViewerController Supports(IGraph<IVisual, IVisualEdge> graph, IVisual thing) {
-            return Viewers.OfType<ThingViewerController>().Where(v => v.Supports(graph, thing)).FirstOrDefault();
+        public virtual ContentVisualViewer Supports(IGraph<IVisual, IVisualEdge> graph, IVisual contentVisual) {
+            return Viewers.OfType<ContentVisualViewer>().Where(v => v.Supports(graph, contentVisual)).FirstOrDefault();
         }
     }
 }

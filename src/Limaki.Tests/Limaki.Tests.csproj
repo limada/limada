@@ -154,6 +154,7 @@
     <Compile Include="Playground\View\Rectangle\Refactoring\gidPointD.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\xwtPoint.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\xwtSize.cs" />
+    <Compile Include="Playground\View\ToolStrip.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintCanvasBackend.cs" />
     <Compile Include="Playground\View\XwtBackend\IPaintContextBackendHandler.cs" />
     <Compile Include="Playground\View\XwtFrontend\PaintCanvas.cs" />

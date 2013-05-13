@@ -13,7 +13,7 @@
 
 namespace Limaki.View {
 
-    public interface IDisplayBackend : IWidgetBackend {
+    public interface IDisplayBackend : IVidgetBackend {
         IDisplay Display { get; set; }
     }
     public interface IDisplayBackend<T> : IDisplayBackend  {

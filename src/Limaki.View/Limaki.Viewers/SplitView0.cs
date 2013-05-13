@@ -221,8 +221,8 @@ namespace Limaki.Viewers {
                 _contentViewManager.Parent = this.Parent;
                 _contentViewManager.BackColor = Display1.BackColor;
 
-                _contentViewManager.AttachControl -= this.AttachControl;
-                _contentViewManager.AttachControl += this.AttachControl;
+                _contentViewManager.AttachBackend -= this.AttachControl;
+                _contentViewManager.AttachBackend += this.AttachControl;
                 _contentViewManager.Attach -= this.FocusCatcher;
                 _contentViewManager.Attach += this.FocusCatcher;
 

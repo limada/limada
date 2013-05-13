@@ -46,7 +46,7 @@ namespace Limaki.View.WPF {
                     }
                     ((IDataPainter)dataPainter).Data = data;
                     dataPainter.Style = style;
-                    dataPainter.Shape = shape;
+                    dataPainter.Shape = shape as IShape<string>;
                     dataPainter.Render(e.Surface);
                 }
             } else {

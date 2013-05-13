@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2008-2011 Lytico
  *
  * http://www.limada.org
  * 
@@ -18,7 +18,8 @@ using Limaki.Model.Content;
 
 namespace Limaki.Viewers {
 
-    public abstract class StreamViewerController : ViewerController {
+    public abstract class ContentStreamViewer : ContentViewer {
+
         public virtual bool IsStreamOwner { get; set; }
         public abstract bool Supports ( Int64 streamType );
         public abstract bool CanSave();
@@ -26,6 +27,5 @@ namespace Limaki.Viewers {
         public abstract void SetContent ( Content<Stream> content );
         public abstract void Save( Content<Stream> content);
 
-       
     }
 }

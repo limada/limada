@@ -18,7 +18,7 @@ using System.Drawing.Drawing2D;
 
 namespace Limaki.View.Gdi.UI {
 
-    public interface IGdiBackend:IWidgetBackend {
+    public interface IGdiBackend:IVidgetBackend {
         void Invalidate(Region region);
         void Invalidate(GraphicsPath path);
     }

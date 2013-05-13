@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2012 Lytico
  *
  * http://www.limada.org
  * 
@@ -18,7 +18,7 @@ using Xwt;
 
 namespace Limaki.View {
 
-    public interface IWidgetBackend:IDisposable {
+    public interface IVidgetBackend:IDisposable {
         
         Rectangle ClientRectangle { get;}
         Size Size {get;}

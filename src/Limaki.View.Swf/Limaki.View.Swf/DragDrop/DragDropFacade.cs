@@ -57,7 +57,7 @@ namespace Limaki.View.Swf.DragDrop {
             return SetVisual(graph,visual, new DataObject());
         }
 
-        public IDataObject SetVisual(IWidgetBackend control, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
+        public IDataObject SetVisual(IVidgetBackend control, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
             ControlDataObject dataObject = new ControlDataObject();
             dataObject.control = control;
             return SetVisual(graph,visual, dataObject);
@@ -97,7 +97,7 @@ namespace Limaki.View.Swf.DragDrop {
 
 
 
-       public virtual bool DoDragDrop(IGraphScene<IVisual,IVisualEdge> scene, IWidgetBackend control, IDataObject dataObject, 
+       public virtual bool DoDragDrop(IGraphScene<IVisual,IVisualEdge> scene, IVidgetBackend control, IDataObject dataObject, 
            IGraphSceneLayout<IVisual,IVisualEdge> layout, Point pt, int hitsize) {
             IVisual item = null;
             bool itemIsRoot = false;

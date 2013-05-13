@@ -78,7 +78,7 @@ namespace Limaki.View.Rendering {
             set { _gripPainter = value; }
         }
         
-        public IWidgetBackend Backend { get; set; }
+        public IVidgetBackend Backend { get; set; }
         public abstract void InvalidateShapeOutline ( IShape oldShape, IShape newShape );
 
         public virtual void Clear() {

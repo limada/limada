@@ -125,11 +125,11 @@ namespace Limaki.View.WPF.Display {
             get { return new Size((int)this.Width, (int)this.Height); }
         }
 
-        void IWidgetBackend.Invalidate(Rectangle rect) {
+        void IVidgetBackend.Invalidate(Rectangle rect) {
             this.DeviceRenderer.Render(new BoundsClipper(rect));
         }
 
-        Xwt.Point IWidgetBackend.PointToClient(Xwt.Point source) {
+        Xwt.Point IVidgetBackend.PointToClient(Xwt.Point source) {
             return DrawingConverter.Convert(
                 this.PointFromScreen(DrawingConverter.Convert(source))
              );

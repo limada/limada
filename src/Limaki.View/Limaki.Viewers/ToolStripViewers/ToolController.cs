@@ -14,6 +14,7 @@
 
 using System.Diagnostics;
 namespace Limaki.Viewers.ToolStripViewers {
+
     public abstract class ToolController<TDisplay, TTool>
         where TDisplay : class {
         
@@ -27,6 +28,7 @@ namespace Limaki.Viewers.ToolStripViewers {
             else
                 Trace.WriteLine("ToolController: display not set");
         }
+
         public abstract void Detach(object sender);
     }
 }

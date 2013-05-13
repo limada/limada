@@ -21,14 +21,15 @@ using Limaki.View.Visualizers;
 using Limaki.Visuals;
 
 namespace Limaki.Viewers.StreamViewers {
-    public class SheetViewerController : StreamViewerController {
+
+    public class SheetViewer : ContentStreamViewer {
 
         protected IGraphSceneDisplay<IVisual, IVisualEdge> _sheetControl = null;
         public IGraphSceneDisplay<IVisual, IVisualEdge> SheetControl {
             get { return _sheetControl; }
             set {
                 if (value != null)
-                    this.CurrentThingId = value.DataId;
+                    this.ContentId = value.DataId;
                 if (_sheetControl != value && value != null) {
                     _sheetControl = value;
                     OnAttach(_sheetControl);
@@ -91,7 +92,7 @@ namespace Limaki.Viewers.StreamViewers {
             SheetControl.Execute();
             SheetControl.Info = sheetinfo;
            
-            this.CurrentThingId = SheetControl.DataId;
+            this.ContentId = SheetControl.DataId;
             Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(SheetControl.Data);
 
             if (isStreamOwner) {

@@ -70,27 +70,27 @@ namespace Limaki.Swf.Backends {
 
         #region IControl Member
 
-        Rectangle IWidgetBackend.ClientRectangle {
+        Rectangle IVidgetBackend.ClientRectangle {
             get { return this.ClientRectangle.ToXwt(); }
         }
 
-        Size IWidgetBackend.Size {
+        Size IVidgetBackend.Size {
             get { return this.Size.ToXwt (); }
         }
 
-        void IWidgetBackend.Update() {
+        void IVidgetBackend.Update() {
             this.Update();
         }
 
-        void IWidgetBackend.Invalidate() {
+        void IVidgetBackend.Invalidate() {
             this.Invalidate();
         }
 
-        void IWidgetBackend.Invalidate(Rectangle rect) {
+        void IVidgetBackend.Invalidate(Rectangle rect) {
             this.Invalidate(rect.ToGdi ());
         }
 
-        Point IWidgetBackend.PointToClient(Point source) {
+        Point IVidgetBackend.PointToClient(Point source) {
             return this.PointToClient (source.ToGdi()).ToXwt ();
         }
 

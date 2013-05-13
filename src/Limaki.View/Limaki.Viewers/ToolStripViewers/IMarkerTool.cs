@@ -16,6 +16,7 @@ using Limaki.Drawing;
 using Limaki.Visuals;
 
 namespace Limaki.Viewers.ToolStripViewers {
+
     public interface IMarkerTool {
         void Attach(IGraphScene<IVisual, IVisualEdge> scene);
         void Detach(IGraphScene<IVisual, IVisualEdge> oldScene);

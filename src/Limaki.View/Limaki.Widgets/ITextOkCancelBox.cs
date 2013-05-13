@@ -16,7 +16,7 @@ using System;
 using Limaki.View;
 
 namespace Limaki.Viewers {
-    public interface ITextOkCancelBox : IWidgetBackend {
+    public interface ITextOkCancelBox : IVidgetBackend {
         DialogResult Result { get; set; }
 
         string Title { get; set; }

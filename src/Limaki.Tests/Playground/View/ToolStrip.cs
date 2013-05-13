@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 
 namespace Limaki.Viewers.ToolStrips {
-
+    /// <summary>
+    ///  this is a prototype; not used so far
+    /// </summary>
     public class ToolStrip {
         public ICollection<ToolStripItem> Items { get; set; }
     }

@@ -20,13 +20,15 @@ using Limaki.Viewers;
 using Limaki.Swf.Backends.TextEditor;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
-    public class TextViewerWithToolstripController : StreamViewerController {
+
+    public class TextViewerWithToolstrip : ContentStreamViewer {
+
         TextBoxEditorWithToolStrip _control = null;
-        TextViewerController _controller=null;
-        TextViewerController controller {
+        TextViewer _controller=null;
+        TextViewer controller {
             get {
                 if (_controller == null) {
-                    _controller = new TextViewerController ();
+                    _controller = new TextViewer ();
                 }
                 return _controller;
             }

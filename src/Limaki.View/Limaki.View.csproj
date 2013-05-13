@@ -58,9 +58,11 @@
   <ItemGroup>
     <Compile Include="Limada.UseCases\Cms\AppController.cs" />
     <Compile Include="Limada.UseCases\Cms\BackendController.cs" />
-    <Compile Include="Limada.UseCases\DocumentSchema\DocumentSchemaKeyScrollAction.cs" />
+    <Compile Include="Limada.View\DocumentSchemaKeyScrollAction.cs" />
+    <Compile Include="Limada.View\DocumentSchemaViewer.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindDrawingUtils.cs" />
     <Compile Include="Limaki.Drawing\Dimension.cs" />
+    <Compile Include="Limaki.View\IVidget.cs" />
     <Compile Include="Limaki.View\Layout\Placing\LocatorExtensions.cs" />
     <Compile Include="Xwt\Geom.cs" />
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
@@ -86,8 +88,8 @@
     <Compile Include="Limaki.View\Layout\Placing\GraphSceneItemShapeLocator.cs" />
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextLayer.cs" />
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextPainter.cs" />
-    <Compile Include="Limaki.Viewers\StreamViewers\IWebResponse.cs" />
-    <Compile Include="Limaki.Viewers\StreamViewers\WebResponse.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewers\IWebResponse.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewers\WebResponse.cs" />
     <Compile Include="Limaki.View.XwtContext\RenderContextEventArgs.cs" />
     <Compile Include="Limaki.Drawing\Indexing\SpatialIndex.cs" />
     <Compile Include="Limaki.Drawing\Indexing\SpatialQuadTreeIndex.cs" />
@@ -170,7 +172,7 @@
     <Compile Include="Limada.VisualThings\VisualThingMarkerFacade.cs" />
     <Compile Include="Limada.VisualThings\VisualThingSerializer.cs" />
     <Compile Include="Limada.VisualThings\VisualThingStreamHelper.cs" />
-    <Compile Include="Limaki.Viewers\StreamViewers\IWebBrowserBackendHandler.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewers\IWebBrowserBackendHandler.cs" />
     <Compile Include="Limaki.View\Clipping\BoundsClipper.cs" />
     <Compile Include="Limaki.View\Clipping\ClipReceiver.cs" />
     <Compile Include="Limaki.View\Clipping\IClipReceiver.cs" />
@@ -187,7 +189,7 @@
     <Compile Include="Limaki.View\DisplayRecourceLoader.cs" />
     <Compile Include="Limaki.View\Visualizers\Viewport.cs" />
     <Compile Include="Limaki.View\IClipper.cs" />
-    <Compile Include="Limaki.View\IWidgetBackend.cs" />
+    <Compile Include="Limaki.View\IVidgetBackend.cs" />
     <Compile Include="Limaki.View\ICursorHandler.cs" />
     <Compile Include="Limaki.View\IDisplay.cs" />
     <Compile Include="Limaki.View\IDisplayBackend.cs" />
@@ -277,7 +279,7 @@
     <Compile Include="Limaki.Usecases\UsecaseFactories.cs" />
     <Compile Include="Limaki.Usecases\UsecaseFactory.cs" />
     <Compile Include="Limaki.Viewers\ContentViewManager.cs" />
-    <Compile Include="Limaki.Viewers\ContentViewProviders.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewerProvider.cs" />
     <Compile Include="Limaki.Widgets\DialogResult.cs" />
     <Compile Include="Limaki.Widgets\FileDialogMemento.cs" />
     <Compile Include="Limaki.View\Visualizers\GraphScenePainter.cs" />
@@ -286,10 +288,10 @@
     <Compile Include="Limaki.Widgets\ITextOkCancelBox.cs" />
     <Compile Include="Limaki.Widgets\IWebBrowser.cs" />
     <Compile Include="Limaki.Viewers\SplitView0.cs" />
-    <Compile Include="Limaki.Viewers\StreamViewerController.cs" />
-    <Compile Include="Limaki.Viewers\StreamViewers\HtmlViewerController.cs" />
-    <Compile Include="Limaki.Viewers\StreamViewers\SheetViewerController.cs" />
-    <Compile Include="Limaki.Viewers\StreamViewers\ThingWebResponse.cs" />
+    <Compile Include="Limaki.Viewers\ContentStreamViewer.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewers\HtmlViewer.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewers\SheetViewer.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewers\ThingWebResponse.cs" />
     <Compile Include="Limaki.Net.WebProxyServer\RequestInfo.cs" />
     <Compile Include="Limaki.Net.WebProxyServer\TimeoutStream.cs" />
     <Compile Include="Limaki.Net.WebProxyServer\WebContent.cs" />
@@ -297,21 +299,19 @@
     <Compile Include="Limaki.Net.WebProxyServer\WebServer.cs" />
     <Compile Include="Limaki.Net.WebProxyServer\WebServerBase.cs" />
     <Compile Include="Limaki.Widgets\TextOkCancelBoxEventArgs.cs" />
-    <Compile Include="Limaki.Viewers\ThingContentViewProviders.cs" />
-    <Compile Include="Limaki.Viewers\ThingViewerController.cs" />
-    <Compile Include="Limaki.Widgets\ToolStrip.cs" />
+    <Compile Include="Limaki.Viewers\ContentVisualViewerProvider.cs" />
+    <Compile Include="Limaki.Viewers\ContentVisualViewer.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ArrangerToolController.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\DisplayToolController.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\IDisplayTool.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ILayoutTool.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\IMarkerTool.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ISplitViewTool.cs" />
-    <Compile Include="Limaki.Viewers\ToolStripViewers\ITool.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\LayoutToolController.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\MarkerToolController.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\SplitViewToolController.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ToolController.cs" />
-    <Compile Include="Limaki.Viewers\ViewerController.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewer.cs" />
     <Compile Include="Limaki.Visuals\BruteForceIndex.cs" />
     <Compile Include="Limaki.Visuals\GraphItem2VisualAdapter.cs" />
     <Compile Include="Limaki.Visuals\GraphItemVisualMapping.cs" />
@@ -361,7 +361,6 @@
     <Content Include="Xwt\RelatedDocs.txt" />
     <Content Include="Xwt\XwtProblems.txt" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

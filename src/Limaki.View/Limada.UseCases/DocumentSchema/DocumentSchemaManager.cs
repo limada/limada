@@ -26,6 +26,7 @@ using Limaki.Visuals;
 namespace Limada.Usecases {
 
     public class DocumentSchemaManager {
+
         public IEnumerable<IVisual> Pages(IGraph<IVisual, IVisualEdge> source, IVisual document) {
             var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(document));
             return docSchema.Pages().Select(t => source.VisualOf(t));

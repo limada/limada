@@ -6,7 +6,7 @@ using Limaki.Drawing.WPF;
 using Limaki.View;
 
 namespace Limaki.View.WPF {
-    public interface IWPFControl : IWidgetBackend {
+    public interface IWPFControl : IVidgetBackend {
         WPFSurface Surface { get; }
         Cursor Cursor { get; set; }
     }

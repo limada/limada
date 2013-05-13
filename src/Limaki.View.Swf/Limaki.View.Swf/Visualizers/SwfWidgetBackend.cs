@@ -294,20 +294,20 @@ namespace Limaki.View.Swf.Visualizers {
 
         #region IControl Member
 
-        Xwt.Rectangle IWidgetBackend.ClientRectangle {
+        Xwt.Rectangle IVidgetBackend.ClientRectangle {
             get { return GdiConverter.ToXwt (this.ClientRectangle); }
         }
 
-        Size IWidgetBackend.Size {
+        Size IVidgetBackend.Size {
             get { return this.Size.ToXwt (); }
         }
 
 
-        void IWidgetBackend.Invalidate(Xwt.Rectangle rect) {
+        void IVidgetBackend.Invalidate(Xwt.Rectangle rect) {
             this.Invalidate (rect.ToGdi ());
         }
 
-        Point IWidgetBackend.PointToClient(Point source) {
+        Point IVidgetBackend.PointToClient(Point source) {
             return this.PointToClient (source.ToGdi ()).ToXwt ();
         }
 

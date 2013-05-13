@@ -24,18 +24,19 @@ using System;
 using Limaki.Common;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
-    public class TextViewerController : StreamViewerController {
-        TextBoxEditor _control = null;
+
+    public class TextViewer : ContentStreamViewer {
+        TextBoxEditor _backend = null;
         public override object Backend {
             get {
-                if (_control == null) {
-                    _control = new TextBoxEditor();
-                    _control.Multiline = true;
-                    _control.BorderStyle = BorderStyle.None;
-                    _control.EnableAutoDragDrop = true;
-                    OnAttach (_control );
+                if (_backend == null) {
+                    _backend = new TextBoxEditor();
+                    _backend.Multiline = true;
+                    _backend.BorderStyle = BorderStyle.None;
+                    _backend.EnableAutoDragDrop = true;
+                    OnAttach (_backend );
                 }
-                return _control;
+                return _backend;
             }
         }
 
@@ -87,13 +88,13 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         }
         
         public override bool CanSave() {
-            return _control != null && !_control.ReadOnly && _control.Modified;
+            return _backend != null && !_backend.ReadOnly && _backend.Modified;
         }
 
 
         public virtual Stream DoSave() {
             Stream stream = new MemoryStream();
-            _control.Save(stream, RichTextBoxStreamType.RichText);
+            _backend.Save(stream, RichTextBoxStreamType.RichText);
             return stream;
         }
 
@@ -114,7 +115,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
                     content.Data = stream;
                 }
             }
-            _control.Modified = false;
+            _backend.Modified = false;
         }
 
         public override void OnShow() {
@@ -122,25 +123,25 @@ namespace Limaki.Swf.Backends.Viewers.Content {
             // this is to bring textControl to show proper scrolloffset and zoom
             // but zoom does not work
             //Application.DoEvents(); // this disturbs VisualsDisplay.MouseTimerAction!
-            _control.AutoScrollOffset = new Point();
-            _control.ZoomFactor = this.zoom;
-            _control.ReadOnly = this.ReadOnly;
+            _backend.AutoScrollOffset = new Point();
+            _backend.ZoomFactor = this.zoom;
+            _backend.ReadOnly = this.ReadOnly;
             //Application.DoEvents();
-            _control.Modified = false;
+            _backend.Modified = false;
         }
 
 
 
         public override void Dispose() {
-            if (_control != null) {
-                _control.Dispose ();
+            if (_backend != null) {
+                _backend.Dispose ();
             }
         }
 
         public override void Clear() {
             base.Clear();
-            if (_control != null) {
-                var control = _control as TextBoxEditor;
+            if (_backend != null) {
+                var control = _backend as TextBoxEditor;
                 control.Clear ();
             }
         }

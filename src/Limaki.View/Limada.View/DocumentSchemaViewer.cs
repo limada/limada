@@ -1,4 +1,20 @@
+﻿/*
+ * Limada 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2006-2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+using System.IO;
 using System.Linq;
+using Limada.Schemata;
 using Limada.Usecases;
 using Limada.VisualThings;
 using Limaki.Common;
@@ -6,38 +22,40 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;
-using Limaki.Viewers;
-using Limaki.View.Visualizers;
+using Limaki.View;
 using Limaki.View.Layout;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
+using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Visualizers;
+using Limaki.Viewers;
 using Limaki.Visuals;
 using Xwt;
-using System.Diagnostics;
-using Limada.Schemata;
 
+namespace Limada.View {
 
-namespace Limaki.View.Swf.Backends {
-
-    public class DocumentSchemaController : ThingViewerController {
+    public abstract class DocumentSchemaViewer : ContentVisualViewer {
 
         public IGraphSceneDisplay<IVisual, IVisualEdge> GraphSceneDisplay { get; set; }
-        public IDisplay<System.Drawing.Image> ImageDisplay { get; set; }
 
-        public virtual void Compose() {
+        /// <summary>
+        /// TODO: refactor to IDisplay#Xwt.Image#
+        /// </summary>
+        public IDisplay ImageDisplay { get; set; }
+        /// <summary>
+        /// sets ImageDisplay.Data
+        /// </summary>
+        protected abstract Stream ImageStream { set; }
+
+        public virtual void Compose () {
             // link GraphSceneDisplay with ImageDisplay:
             GraphSceneDisplay.SceneFocusChanged += (s, e) => {
                 var docMan = new DocumentSchemaManager();
                 var pageStream = docMan.PageStream(e.Scene.Graph, e.Item);
                 if (pageStream != null) {
-                    var stream = pageStream.Data;
-                    if (stream != null)
-                        ImageDisplay.Data = System.Drawing.Image.FromStream(stream);
-                    else
-                        ImageDisplay.Data = null;
+                    ImageStream = pageStream.Data;
                 } else {
-                    ImageDisplay.Data = null;
+                    ImageStream = null;
                 }
             };
 
@@ -51,10 +69,10 @@ namespace Limaki.View.Swf.Backends {
             ImageDisplay.EventControler.Add(scroller);
         }
 
-        public int GetDefaultWidth() {
+        public int GetDefaultWidth () {
             var utils = Registry.Pool.TryGetCreate<IDrawingUtils>();
             var size = utils.GetTextDimension("".PadLeft(padding, '9'), DefaultStyleSheet.BaseStyle);
-            return (int)(size.Width + 32);
+            return (int) (size.Width + 32);
         }
 
         IStyleSheet _defaultStyleSheet = null;
@@ -69,9 +87,9 @@ namespace Limaki.View.Swf.Backends {
         }
 
         Size Border { get; set; }
-        public void Adjust(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
+        public void Adjust (IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             var layout = display.Layout;
-            Border = new Size( 0, -5 );
+            Border = new Size(0, -5);
             layout.StyleSheet = DefaultStyleSheet;
 
             var focusAction = GraphSceneDisplay.EventControler.GetAction<GraphSceneFocusAction<IVisual, IVisualEdge>>();
@@ -83,8 +101,10 @@ namespace Limaki.View.Swf.Backends {
         }
 
         private int padding = 4;
-        public IVisual Document { get; protected set; }
-        public override void SetContent(IGraph<IVisual, IVisualEdge> sourceGraph, IVisual sourceDocument) {
+
+        public IVisual DocumentVisual { get; protected set; }
+
+        public override void SetContent (IGraph<IVisual, IVisualEdge> sourceGraph, IVisual sourceDocument) {
             var display = this.GraphSceneDisplay;
             // bring the docpages into view:
             var docManager = new DocumentSchemaManager();
@@ -96,7 +116,7 @@ namespace Limaki.View.Swf.Backends {
             var doc = sourceGraph.ThingOf(sourceDocument);
             var targetDocument = targetGraph.VisualOf(doc);
 
-            this.Document = targetDocument;
+            this.DocumentVisual = targetDocument;
 
             // get the pages and add them to scene:
             var pages = docManager.Pages(targetGraph, targetDocument).OrderBy(e => e, new VisualComparer()).ToList();
@@ -108,19 +128,19 @@ namespace Limaki.View.Swf.Backends {
             var aligner = new Aligner<IVisual, IVisualEdge>(display.Data, display.Layout);
             var dd = this.Border.Height;
             var options = new AlignerOptions {
-                                                  Distance = new Size(dd, dd), 
-                                                  AlignX = Alignment.End, 
-                                                  AlignY = Alignment.Start, 
-                                                  Dimension = Dimension.X,
-                                                  PointOrderDelta=1
-                                              };
+                Distance = new Size(dd, dd),
+                AlignX = Alignment.End,
+                AlignY = Alignment.Start,
+                Dimension = Dimension.X,
+                PointOrderDelta = 1
+            };
 
             aligner.OneColumn(pages, (Point) this.Border, options);
             aligner.Locator.Commit(aligner.GraphScene.Requests);
 
             display.DataId = 0;
             new State { Hollow = true }.CopyTo(display.State);
-            display.Text = sourceDocument.Data==null?CommonSchema.NullString:sourceDocument.Data.ToString();
+            display.Text = sourceDocument.Data == null ? CommonSchema.NullString : sourceDocument.Data.ToString();
             display.Viewport.Reset();
             display.BackendRenderer.Render();
 
@@ -131,13 +151,11 @@ namespace Limaki.View.Swf.Backends {
                 display.OnSceneFocusChanged();
             }
             display.Execute();
-            // wrong: display.Layout.Distance = distance;
-            // TODO: Layout.Margin (Top,Left) and Layout.Padding (distance between visuals)
 
             var scroller = ImageDisplay.EventControler.GetAction<DocumentSchemaKeyScrollAction>();
             if (scroller != null) {
                 scroller.KeyProcessed = (r) => {
-                    var inc = (int)(r.X + r.Y + r.Bottom + r.Right);
+                    var inc = (int) (r.X + r.Y + r.Bottom + r.Right);
                     if (scene.Focused != null && inc != 0) {
                         var iPage = pages.IndexOf(scene.Focused);
                         if (iPage != -1 && pages.Count > iPage + inc && iPage + inc >= 0) {
@@ -161,36 +179,14 @@ namespace Limaki.View.Swf.Backends {
             var moveResize = display.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();
             moveResize.FocusFilter = e => pageCache.Contains(e) ? null : e;
         }
-
-        DocumentSchemaBackend _backend = null;
-        public override object Backend {
-            get {
-                if (_backend == null) {
-                    _backend = new DocumentSchemaBackend(this);
-                    OnAttach(_backend);
-                }
-                return _backend;
-            }
-        }
-
-        public override void Clear() {
-            var control = _backend as DocumentSchemaBackend;
-            if (control != null) {
-                control.GraphSceneDisplay.Data = null;
-                control.ImageDisplay.Data = null;
-            }
-            base.Clear();
-        }
-
-        public override void Dispose() {
+        
+        public override void Dispose () {
             Clear();
         }
 
-        public override bool Supports(IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
+        public override bool Supports (IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
             var docManager = new DocumentSchemaManager();
             return docManager.HasPages(graph, visual);
         }
-
-
     }
 }

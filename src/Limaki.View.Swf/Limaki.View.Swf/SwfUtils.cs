@@ -30,7 +30,7 @@ namespace Limaki.View.Swf {
             }
         }
 
-        public bool IsSameApp(IWidgetBackend a, IWidgetBackend b) {
+        public bool IsSameApp(IVidgetBackend a, IVidgetBackend b) {
             var control = a as Control;
             var thisControl = b as Control;
             if (control != null) {

@@ -19,7 +19,7 @@ using Limaki.Actions;
 
 
 namespace Limaki.View.Swf {
-    public interface IDragDopControl:IWidgetBackend {
+    public interface IDragDopControl:IVidgetBackend {
         bool AllowDrop { get; set; }
         DragDropEffects DoDragDrop(Object data, DragDropEffects allowedEffects);
     }

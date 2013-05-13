@@ -22,7 +22,7 @@ using Limaki.Net.WebProxyServer;
 
 namespace Limaki.Viewers.StreamViewers {
 
-    public class HtmlViewerController : StreamViewerController {
+    public class HtmlViewer : ContentStreamViewer {
 
         public IWebBrowserBackendHandler BackendHandler { get; set; }
         
@@ -30,7 +30,7 @@ namespace Limaki.Viewers.StreamViewers {
         public override object Backend {
             get {
                 if (_control == null) {
-                    _control = BackendHandler.CreateControl(this.Parent);
+                    _control = BackendHandler.CreateBackend(this.Parent);
                     OnAttach(_control);
                     UseWebServer = !OS.Mono;
                     UseProxy = BackendHandler.AcceptsProxy(_control);

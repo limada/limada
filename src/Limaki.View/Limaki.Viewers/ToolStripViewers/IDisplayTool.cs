@@ -13,6 +13,7 @@
  */
 
 namespace Limaki.Viewers.ToolStripViewers {
+
     public interface IDisplayTool {
         void Attach ( bool select, bool move, bool connect, bool add );
         void Detach();

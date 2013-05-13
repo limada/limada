@@ -12,7 +12,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
     public class WebBrowserBackendHandler:IWebBrowserBackendHandler {
 
         public static bool GeckoFailed = false ;
-        public object CreateControl(object parent) {
+        public object CreateBackend(object parent) {
             Control _control = null;
             if (GeckoFailed || OS.Mono || OS.IsWin64Process) { //(true){ //
                 _control = new Backends.WebBrowser();
@@ -28,7 +28,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
                         throw new Exception();
                 } catch {
                     GeckoFailed = true;
-                    return CreateControl(parent);
+                    return CreateBackend(parent);
                 }
                 _control.Parent = parent as Control;
                 Thread.Sleep(0);

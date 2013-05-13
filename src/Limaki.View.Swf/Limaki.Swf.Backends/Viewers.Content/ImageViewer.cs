@@ -27,15 +27,15 @@ using Limaki.View.Swf.Visualizers;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
 
-    public class ImageViewerController : StreamViewerController {
-        SwfImageDisplayBackend _control = null;
+    public class ImageViewer : ContentStreamViewer {
+        SwfImageDisplayBackend _backend = null;
         public override object Backend {
             get {
-                if (_control == null) {
-                    _control = new SwfImageDisplayBackend();
-                    OnAttach (_control);
+                if (_backend == null) {
+                    _backend = new SwfImageDisplayBackend();
+                    OnAttach (_backend);
                 }
-                return _control;
+                return _backend;
             }
         }
 
@@ -66,10 +66,10 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         }
 
         public override void SetContent(Content<Stream> content) {
-            var control = Backend as SwfImageDisplayBackend;
+            var backend = Backend as SwfImageDisplayBackend;
 
-            if (control != null) {
-                var display = control.Display;
+            if (backend != null) {
+                var display = backend.Display;
                 display.BackColor = this.BackColor;
 
                 display.Data = Image.FromStream(content.Data);
@@ -85,17 +85,17 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         public override void Save(Content<Stream> content) { }
 
         public override void Dispose() {
-            if (_control != null) {
-                _control.Dispose();
-                _control = null;
+            if (_backend != null) {
+                _backend.Dispose();
+                _backend = null;
             }
         }
 
         public override void Clear() {
             base.Clear();
-            var control = _control as SwfImageDisplayBackend;
-            if (control != null) {
-                control.Display.Data = null;
+            var backend = _backend as SwfImageDisplayBackend;
+            if (backend != null) {
+                backend.Display.Data = null;
             }
         }
     }

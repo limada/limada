@@ -5,7 +5,7 @@ namespace Limaki.Viewers.StreamViewers {
 
     public interface IWebBrowserBackendHandler {
 
-        object CreateControl(object parent);
+        object CreateBackend(object parent);
         bool AcceptsProxy(object webBrowser);
         void SetProxy(IPAddress adress, int port, object webBrowser);
 

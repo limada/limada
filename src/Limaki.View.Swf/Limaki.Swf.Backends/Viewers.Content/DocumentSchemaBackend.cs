@@ -6,16 +6,18 @@ using Limaki.Visuals;
 namespace Limaki.View.Swf.Backends {
     // couldn't this replaced by WinformSplitView??
     public partial class DocumentSchemaBackend : UserControl, IZoomTarget {
-        public DocumentSchemaBackend():this(new DocumentSchemaController()) {}
 
-        public DocumentSchemaBackend(DocumentSchemaController controller) {
-            Controller = controller;
+        public SwfDocumentSchemaViewer Controller { get; set; }
+
+        public DocumentSchemaBackend():this(new SwfDocumentSchemaViewer()) {}
+
+        public DocumentSchemaBackend(SwfDocumentSchemaViewer controller) {
+            this.Controller = controller;
             InitializeComponent();
             //this.SuspendLayout();
             this.WinVisualsDisplayBackend.TabStop = false;
             this.WinImageDisplayBackend.TabStop = false;
            
-            
             Controller.GraphSceneDisplay = this.WinVisualsDisplayBackend.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
             Controller.ImageDisplay = this.WinImageDisplayBackend.Display;
             Controller.Compose();
@@ -28,8 +30,7 @@ namespace Limaki.View.Swf.Backends {
         void SplitContainer_KeyDown(object sender, KeyEventArgs e) {
             e.Handled = false;
         }
-        public DocumentSchemaController Controller { get; set; }
-
+       
 
         protected override void OnKeyDown(KeyEventArgs e) {
             base.OnKeyDown(e);

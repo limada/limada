@@ -30,7 +30,7 @@ namespace Limaki.View.Rendering {
         void InvalidateShapeOutline(IShape oldShape, IShape newShape);
         void Clear();
 
-        IWidgetBackend Backend { get; set; }
+        IVidgetBackend Backend { get; set; }
         Func<IClipper> Clipper { get; set; }
         Func<ICamera> Camera { get; set; }
     }
