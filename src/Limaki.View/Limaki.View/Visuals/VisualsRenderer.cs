@@ -49,7 +49,7 @@ namespace Limaki.View.Visuals.Rendering {
                 if (dataPainter != null) {
                     dataPainter.Data = data;
                     dataPainter.Style = style;
-                    dataPainter.Shape = shape;
+                    dataPainter.OuterShape = shape;
                     dataPainter.Render(e.Surface);
                 }
             }

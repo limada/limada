@@ -63,6 +63,9 @@ namespace Limaki.Iconerias {
             c.Restore();
 
         }
+        public virtual Image AsImage (Action<Context> icon, int size) {
+            return AsImage(WidgetRegistry.MainRegistry, icon, size);
+        }
 
         public virtual Image AsImage (WidgetRegistry registry, Action<Context> icon, int size) {
             var ib = new ImageBuilder(registry, size, size, ImageFormat.ARGB32);

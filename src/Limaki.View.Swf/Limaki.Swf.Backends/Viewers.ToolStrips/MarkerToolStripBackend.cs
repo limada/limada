@@ -12,31 +12,31 @@
  * 
  */
 
-using System.Windows.Forms;
 using System;
-using Limaki.Common;
+using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.Viewers.ToolStripViewers;
 using Limaki.Visuals;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
-    public partial class MarkerToolStrip : ToolStrip, IMarkerTool {
-        public MarkerToolStrip() {
+
+    public partial class MarkerToolStripBackend : ToolStrip, IMarkerToolStripBackend {
+        public MarkerToolStripBackend () {
             InitializeComponent();
         }
 
-        MarkerToolController _controller = null;
-        public MarkerToolController Controller {
+        MarkerToolStrip _frontend = null;
+        public MarkerToolStrip Frontend {
             get {
-                if (_controller == null) {
-                    _controller = new MarkerToolController();
-                    _controller.Tool = this;
+                if (_frontend == null) {
+                    _frontend = new MarkerToolStrip();
+                    _frontend.Backend = this;
                 }
-                return _controller;
+                return _frontend;
             }
         }
 
-        public void Attach(IGraphScene<IVisual, IVisualEdge> scene) {
+        public void Attach (IGraphScene<IVisual, IVisualEdge> scene) {
             markerCombo.Items.Clear();
             markerCombo.Text = string.Empty;
             bool makeVisible = scene != null && scene.Markers != null;
@@ -46,20 +46,15 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             this.Visible = makeVisible;
         }
 
-        public void Detach(IGraphScene<IVisual, IVisualEdge> oldScene) {
+        public void Detach (IGraphScene<IVisual, IVisualEdge> oldScene) {
             markerCombo.Items.Clear();
             markerCombo.Text = string.Empty;
             this.Visible = false;
         }
 
-        private void markerCombo_SelectedIndexChanged(object sender, EventArgs e) {
-            Controller.ChangeMarkers(markerCombo.SelectedItem.ToString());
+        private void markerCombo_SelectedIndexChanged (object sender, EventArgs e) {
+            Frontend.ChangeMarkers(markerCombo.SelectedItem.ToString());
         }
 
- 
-
-        
-
- 
     }
 }

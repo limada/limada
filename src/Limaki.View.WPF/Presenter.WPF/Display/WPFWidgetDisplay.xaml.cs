@@ -53,7 +53,7 @@ namespace Limaki.View.WPF.Display {
             set { _display = value; }
         }
 
-        IDisplay IDisplayBackend.Display {
+        IDisplay IDisplayBackend.Frontend {
             get { return this.Display; }
             set { this.Display = value as IDisplay<T>; }
         }

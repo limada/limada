@@ -21,24 +21,24 @@ using Limaki.Viewers.ToolStripViewers;
 
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
-    public partial class DisplayToolStrip : ToolStrip, IDisplayTool {
-        public DisplayToolStrip() {
+    public partial class DisplayToolStripBackend : ToolStrip, IDisplayToolStripBackend {
+        public DisplayToolStripBackend() {
             InitializeComponent();
         }
 
-        DisplayToolController controller = null;
+        DisplayToolStrip _strip = null;
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public DisplayToolController Controller {
+        public DisplayToolStrip Strip {
             get {
-                if (controller == null) {
-                    controller = new DisplayToolController ();
-                    controller.Tool = this;
+                if (_strip == null) {
+                    _strip = new DisplayToolStrip ();
+                    _strip.Backend = this;
                 }
-                return controller;
+                return _strip;
             }
             set {
-                controller = value;
+                _strip = value;
             }
         }
 
@@ -93,7 +93,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // checkOnClick is false cause of mono bug so we have to toggle ourself
             activateToolInGroup(sender);
 
-            Controller.SelectOrMove (
+            Strip.SelectOrMove (
                 this.selectButton.Checked,
                 this.moveButton.Checked,
                 this.connectorButton.Checked,
@@ -113,7 +113,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             } else if (menuItem == this.zoomMenuOriginalSize) {
                 zoomState = Drawing.ZoomState.Original;
             }
-            Controller.ZoomState(zoomState);
+            Strip.ZoomState(zoomState);
             foreach (ToolStripMenuItem item in zoomButton.DropDownItems) {
                 if (menuItem != item) {
                     item.Checked = false;
@@ -124,16 +124,16 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         private void ZoomInOut(object sender, MouseEventArgs e) {
             if (!zoomButton.DropDownButtonPressed) {
                 if (e.Button == MouseButtons.Left)
-                    Controller.ZoomInOut (true);
+                    Strip.ZoomInOut (true);
                 else if (e.Button == MouseButtons.Right)
-                    Controller.ZoomInOut (false);
+                    Strip.ZoomInOut (false);
                 
             }
         }
     
 
         private void LayoutButton_Click(object sender, EventArgs e) {
-            Controller.Layout ();
+            Strip.Layout ();
         }
 
         

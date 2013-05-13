@@ -40,13 +40,13 @@ namespace Limaki.Swf.Backends.UseCases {
         public ToolStripContainer ToolStripContainer { get; set; }
         public MenuStrip MenuStrip { get; set; }
 
-        public SwfSplitView SplitView { get; set; }
+        public SwfSplitViewBackend SplitViewBackend { get; set; }
 
-        public DisplayToolStrip DisplayToolStrip { get; set; }
-        public SplitViewToolStrip SplitViewToolStrip { get; set; }
-        public MarkerToolStrip MarkerToolStrip { get; set; }
-        public LayoutToolStrip LayoutToolStrip { get; set; }
-        public ArrangerToolStrip ArrangerToolStrip { get; set; }
+        public DisplayToolStripBackend DisplayToolStrip { get; set; }
+        public SplitViewToolStripBackend SplitViewToolStripBackend { get; set; }
+        public MarkerToolStripBackend MarkerToolStrip { get; set; }
+        public LayoutToolStripBackend LayoutToolStripBackend { get; set; }
+        public ArrangerToolStripBackend ArrangerToolStripBackend { get; set; }
 
         public ToolStripStatusLabel StatusLabel { get; set; }
         public StatusStrip StatusStrip { get; set; }
@@ -59,13 +59,13 @@ namespace Limaki.Swf.Backends.UseCases {
 
             MenuStrip = new MenuStrip ();
 
-            SplitView = new SwfSplitView (ToolStripContainer.ContentPanel);
+            SplitViewBackend = new SwfSplitViewBackend (ToolStripContainer.ContentPanel);
 
-            DisplayToolStrip = new DisplayToolStrip ();
-            SplitViewToolStrip = new SplitViewToolStrip ();
-            LayoutToolStrip = new LayoutToolStrip ();
-            MarkerToolStrip = new MarkerToolStrip ();
-            ArrangerToolStrip = new ArrangerToolStrip ();
+            DisplayToolStrip = new DisplayToolStripBackend ();
+            SplitViewToolStripBackend = new SplitViewToolStripBackend ();
+            LayoutToolStripBackend = new LayoutToolStripBackend ();
+            MarkerToolStrip = new MarkerToolStripBackend ();
+            ArrangerToolStripBackend = new ArrangerToolStripBackend ();
 
             //TODO: move this to UseCaseContextResourceLoader
             Registry.Factory.Add<ContentViewerProvider, ContentVisualViewerProvider> ();
@@ -87,13 +87,13 @@ namespace Limaki.Swf.Backends.UseCases {
             ToolStripContainer.BottomToolStripPanel.Controls.Add (StatusStrip);
             this.StatusStrip.Items.Add (StatusLabel);
 
-            useCase.SplitView = SplitView.View;
+            useCase.SplitView = SplitViewBackend.Frontend;
 
-            useCase.DisplayToolController = DisplayToolStrip.Controller;
-            useCase.LayoutToolController = LayoutToolStrip.Controller;
-            useCase.MarkerToolController = MarkerToolStrip.Controller;
-            useCase.SplitViewToolController = SplitViewToolStrip.Controller;
-            useCase.ArrangerToolController = ArrangerToolStrip.Controller;
+            useCase.DisplayToolStrip = DisplayToolStrip.Strip;
+            useCase.LayoutToolController = LayoutToolStripBackend.Frontend;
+            useCase.MarkerToolStrip = MarkerToolStrip.Frontend;
+            useCase.SplitViewToolStrip = SplitViewToolStripBackend.Frontend;
+            useCase.ArrangerToolStrip = ArrangerToolStripBackend.Frontend;
 
             useCase.DataPostProcess =
                 dataName => Mainform.Text = dataName + " - " + useCase.UseCaseTitle;
@@ -125,10 +125,10 @@ namespace Limaki.Swf.Backends.UseCases {
                 this.ToolStripContainer.TopToolStripPanel,
                 this.MenuStrip,
                 new ToolStrip[] {
-                    ArrangerToolStrip,
-                    SplitViewToolStrip,
+                    ArrangerToolStripBackend,
+                    SplitViewToolStripBackend,
                     MarkerToolStrip,
-                    LayoutToolStrip,
+                    LayoutToolStripBackend,
                     DisplayToolStrip,
                 });
 
@@ -248,7 +248,7 @@ namespace Limaki.Swf.Backends.UseCases {
         private void ShowLayoutEditor (ConceptUsecase useCase) {
             options = new Options ();
             options.ApplyButton.Click += (s1, e1) => {
-                this.DisplayToolStrip.Controller.Layout ();
+                this.DisplayToolStrip.Strip.Layout ();
             };
 
             var editor = new LayoutEditor ();

@@ -21,7 +21,7 @@ using Limaki.Visuals;
 
 namespace Limaki.Viewers.ToolStripViewers {
 
-    public class LayoutToolController : ToolController<IGraphSceneDisplay<IVisual, IVisualEdge>, ILayoutTool> {
+    public class LayoutToolStrip : ToolStripViewer<IGraphSceneDisplay<IVisual, IVisualEdge>, ILayoutToolStripViewerBackend> {
 
         public void StyleSheetChange(string sheetName) {
             IStyleSheet styleSheet = null;
@@ -84,12 +84,12 @@ namespace Limaki.Viewers.ToolStripViewers {
             var display = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
             if (display != null) {
                 this.CurrentDisplay = display;
-                Tool.AttachStyleSheet(display.StyleSheet.Name);
+                Backend.AttachStyleSheet(display.StyleSheet.Name);
             }
         }
         public override void Detach(object sender) {
             this.CurrentDisplay = null;
-            Tool.DetachStyleSheet(null);
+            Backend.DetachStyleSheet(null);
         }
     }
 }

@@ -8,6 +8,8 @@ namespace Limaki.Drawing.Gdi.Painters {
 
     public abstract class StringPainterBase : GdiPainter<string>,IDataPainter<string>, IDataPainter {
 
+        public virtual IShape OuterShape { get; set; }
+
         protected System.Drawing.Pen _pen = null;
         protected virtual System.Drawing.Pen GetPen (System.Drawing.Color color) {
             if (_pen == null) {

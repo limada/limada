@@ -114,7 +114,7 @@ namespace Limaki.View.Swf.DragDrop {
                     var targetGraph =
                         scene.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
 
-					var display = ((IDisplayBackend)data.control).Display as IDisplay<IGraphScene<IVisual,IVisualEdge>>;
+					var display = ((IDisplayBackend)data.control).Frontend as IDisplay<IGraphScene<IVisual,IVisualEdge>>;
                     var sourceGraph =
                         display.Data.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
 

@@ -52,8 +52,10 @@ namespace Xwt.Gdi.Backend {
             Registry.RegisterBackend(typeof(Xwt.Drawing.Font), typeof(FontBackendHandler));
             Registry.RegisterBackend (typeof (Xwt.Drawing.TextLayout), typeof (TextLayoutBackendHandler));
             Registry.RegisterBackend (typeof (Xwt.Drawing.Context), typeof (ContextBackendHandler));
+            registry.RegisterBackend(typeof(Xwt.Drawing.Image), typeof(ImageHandler));
             Registry.RegisterBackend (typeof (Xwt.Drawing.ImageBuilder), typeof (ImageBuilderBackend));
             Registry.RegisterBackend(typeof(Xwt.Drawing.ImagePattern), typeof(ImagePatternBackendHandler));
+            
         }
 
         //public override void Invoke(Action action) {

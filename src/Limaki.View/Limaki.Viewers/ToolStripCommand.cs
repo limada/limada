@@ -1,15 +1,30 @@
-using System;
-using System.Windows.Forms;
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2012-2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
 
-namespace Limaki.Swf.Backends.Viewers.ToolStrips {
+using System;
+using Xwt;
+using Xwt.Drawing;
+
+namespace Limaki.Viewers {
 
     public class ToolStripCommand {
 
         public Action<object> Action { get; set; }
-        public System.Drawing.Image Image { get; set; }
+        public Image Image { get; set; }
         public string Text { get; set; }
         public string ToolTipText { get; set; }
-        public System.Drawing.Size Size { get; set; }
+        public Size Size { get; set; }
 
         public virtual void DoAction(object sender, EventArgs e) {
 
@@ -22,7 +37,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         }
 
         public virtual void Attach(object target) {
-            var control = target as ToolStripItem;
+            var control = target as IToolStripItem;
             if (control != null) {
                 control.Image = this.Image;
                 control.Text = this.Text;
@@ -33,7 +48,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         }
 
         public virtual void DeAttach(object target) {
-            var control = target as ToolStripItem;
+            var control = target as IToolStripItem;
             if (control != null) {
                 control.Image = null;
                 control.Text = string.Empty;

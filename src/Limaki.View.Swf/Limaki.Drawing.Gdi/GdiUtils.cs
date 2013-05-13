@@ -52,7 +52,7 @@ namespace Limaki.Drawing.Gdi {
                 if (_deviceContext == null) {
                     _deviceContext =
                         System.Drawing.Graphics.FromImage(
-                        new System.Drawing.Bitmap(1, 1,
+                        new System.Drawing.Bitmap(1000, 1000,
                             System.Drawing.Imaging.PixelFormat.Format32bppArgb));
                 }
                 return _deviceContext;

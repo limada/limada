@@ -20,7 +20,7 @@ using Xwt;
 
 namespace Limaki.Drawing.Painters {
 
-    public class StringPainter : StringPainterBase, IPainter<string> {
+    public class StringPainter : StringPainterBase {
 
         public override void Render(ISurface surface) {
             if (string.IsNullOrEmpty(this.Text))
@@ -32,7 +32,7 @@ namespace Limaki.Drawing.Painters {
 
             var ctx = ((ContextSurface)surface).Context;
             var style = this.Style;
-            var shape = this.Shape;
+            var shape = this.OuterShape;
             var font = Style.Font;
 
             if (AlignText && shape is IVectorShape) {

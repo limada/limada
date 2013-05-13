@@ -21,16 +21,16 @@ using Limaki.Viewers.ToolStripViewers;
 using Limaki.Swf.Backends.UseCases;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
-    public partial class LayoutToolStrip : ToolStrip, ILayoutTool {
+    public partial class LayoutToolStripBackend : ToolStrip, ILayoutToolStripViewerBackend {
         
-        public LayoutToolController Controller = new LayoutToolController();
+        public LayoutToolStrip Frontend = new LayoutToolStrip();
 
-        public LayoutToolStrip() {
+        public LayoutToolStripBackend() {
             InitializeComponent();
             Compose();
             InitLayoutTools();
            
-            Controller.Tool = this;
+            Frontend.Backend = this;
 
         }
         protected virtual void Compose () {
@@ -40,7 +40,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 Size = new System.Drawing.Size(80, 27),
                 ToolTipText = "change shape of visual",
             };
-            shapeCombo.SelectedIndexChanged += (s, e) => Controller.ShapeChange(shapeCombo.ShapeComboBoxControl.SelectedItem as IShape);
+            shapeCombo.SelectedIndexChanged += (s, e) => Frontend.ShapeChange(shapeCombo.ShapeComboBoxControl.SelectedItem as IShape);
             var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
             shapeCombo.ShapeComboBoxControl.ShapeLayout.StyleSheet = styleSheets[styleSheets.StyleSheetNames[1]];
 
@@ -60,14 +60,14 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                     CheckState = CheckState.Unchecked,
                     DisplayStyle = ToolStripItemDisplayStyle.Image,
                     Image = global::Limaki.View.Properties.Iconery.StyleItem,
-                    Size = new System.Drawing.Size(24, 24),
+                    Size = new Xwt.Size(24, 24),
                     ToolTipText = "set style for selected items",
                     Text = "SetStyle",
                 };
             styleDialogButton.Click += (s, e) => {
-                    var style = Controller.StyleToChange();
+                    var style = Frontend.StyleToChange();
                     if (style != null) {
-                        var styleDialog = new ConceptUseCaseComposer().ComposeStyleEditor(style, (s1, e1) => Controller.StyleChange(style));
+                        var styleDialog = new ConceptUseCaseComposer().ComposeStyleEditor(style, (s1, e1) => Frontend.StyleChange(style));
                         styleDialog.Show();
                     }
                 };
@@ -107,7 +107,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         private void StyleSheetSelectedIndexChanged(object sender, EventArgs e) {
             var styleSheetCombo = sender as ToolStripComboBox;
             if (styleSheetCombo != null)
-                Controller.StyleSheetChange(styleSheetCombo.SelectedItem.ToString());
+                Frontend.StyleSheetChange(styleSheetCombo.SelectedItem.ToString());
         }
 
         private void StyleSheetKeyDown(object sender, KeyEventArgs e) {

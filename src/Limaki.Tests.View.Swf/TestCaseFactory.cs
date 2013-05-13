@@ -72,7 +72,7 @@ namespace Limaki.Tests.UseCases {
                         
 
                 test.TestForm = this;
-                test.Display = composer.SplitView.Display1.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
+                test.Display = composer.SplitViewBackend.DisplayBackend1.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
 
                 test.Setup();
                 return test;

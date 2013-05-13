@@ -35,8 +35,9 @@ namespace Xwt.Drawing
 {
     public sealed class Image: XwtObject<Image,ImageBackendHandler>, IDisposable
 	{
-	
-		internal Image (WidgetRegistry registry, object backend): base(registry, backend) 
+
+        public Image (WidgetRegistry registry, object backend)
+            : base(registry, backend) 
         {
         }
 

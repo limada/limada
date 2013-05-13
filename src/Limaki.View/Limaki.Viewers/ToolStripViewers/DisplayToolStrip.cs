@@ -22,7 +22,7 @@ using Limaki.Visuals;
 
 namespace Limaki.Viewers.ToolStripViewers {
 
-    public class DisplayToolController : ToolController<IDisplay, IDisplayTool> {
+    public class DisplayToolStrip : ToolStripViewer<IDisplay, IDisplayToolStripBackend> {
 
         public object Control { get; set; }
         public virtual bool ActionEnabled<T>(IDisplay display) where T : IAction {
@@ -48,9 +48,9 @@ namespace Limaki.Viewers.ToolStripViewers {
             this.Control = sender;
             var device = sender as IDisplayBackend;
             if (device != null) {
-                display = device.Display;
+                display = device.Frontend;
             }
-            var tool = this.Tool;
+            var tool = this.Backend;
             if (display == null || tool == null) {
                 return;
             }

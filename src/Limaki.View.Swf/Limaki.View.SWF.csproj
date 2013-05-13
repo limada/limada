@@ -114,9 +114,15 @@
     <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainter.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainterBase.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\VectorPainter.cs" />
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\MarkerToolStripBackend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\MarkerToolStripBackend.Designer.cs">
+      <DependentUpon>MarkerToolStripBackend.cs</DependentUpon>
+    </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripRenderer.cs" />
     <Compile Include="Properties\IconeryExtensions.cs" />
-    <Compile Include="Properties\Iconery.cs" />
+    <Compile Include="Properties\GdiIconery.cs" />
     <Compile Include="Limaki.View.Gdi\UI\IGdiBackend.cs" />
     <Compile Include="Limaki.View.Gdi\UI\GdiGraphSceneLayer.cs" />
     <Compile Include="Limaki.View.Gdi\UI\GdiImageLayer.cs" />
@@ -222,45 +228,37 @@
     <Compile Include="Limaki.Swf.Backends\StyleEditor.Designer.cs">
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ArrangerToolStrip.cs">
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ArrangerToolStripBackend.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ArrangerToolStrip.Designer.cs">
-      <DependentUpon>ArrangerToolStrip.cs</DependentUpon>
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ArrangerToolStripBackend.Designer.cs">
+      <DependentUpon>ArrangerToolStripBackend.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\DisplayToolStrip.cs">
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\DisplayToolStripBackend.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\DisplayToolStrip.Designer.cs">
-      <DependentUpon>DisplayToolStrip.cs</DependentUpon>
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\DisplayToolStripBackend.Designer.cs">
+      <DependentUpon>DisplayToolStripBackend.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\IToolStripCommandItem.cs" />
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\LayoutToolStrip.cs">
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\LayoutToolStripBackend.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\LayoutToolStrip.Designer.cs">
-      <DependentUpon>LayoutToolStrip.cs</DependentUpon>
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\LayoutToolStripBackend.Designer.cs">
+      <DependentUpon>LayoutToolStripBackend.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\MarkerToolStrip.cs">
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\SplitViewToolStripBackend.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\MarkerToolStrip.Designer.cs">
-      <DependentUpon>MarkerToolStrip.cs</DependentUpon>
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\SplitViewToolStripBackend.Designer.cs">
+      <DependentUpon>SplitViewToolStripBackend.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\SplitViewToolStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\SplitViewToolStrip.Designer.cs">
-      <DependentUpon>SplitViewToolStrip.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripCommand.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripItemEx.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripShapeComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\SwfSplitView.cs" />
+    <Compile Include="Limaki.Swf.Backends\SwfSplitViewBackend.cs" />
     <Compile Include="Xwt.Gdi\SystemColorsBackend.cs" />
   </ItemGroup>
   <ItemGroup>

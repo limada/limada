@@ -13,7 +13,7 @@
  */
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
-    partial class DisplayToolStrip {
+    partial class DisplayToolStripBackend {
         /// <summary> 
         /// Erforderliche Designervariable.
         /// </summary>
@@ -67,7 +67,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             this.selectButton.Checked = true;
             this.selectButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.selectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.selectButton.Image = global::Limaki.View.Properties.Iconery.Select;
+            this.selectButton.Image = global::Limaki.View.Properties.GdiIconery.Select;
             this.selectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.selectButton.Name = "selectButton";
             this.selectButton.Size = new System.Drawing.Size(24, 24);
@@ -77,7 +77,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // LayoutButton
             // 
             this.LayoutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LayoutButton.Image = global::Limaki.View.Properties.Iconery.FullLayout;
+            this.LayoutButton.Image = global::Limaki.View.Properties.GdiIconery.FullLayout;
             this.LayoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LayoutButton.Name = "LayoutButton";
             this.LayoutButton.Size = new System.Drawing.Size(24, 24);
@@ -93,7 +93,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                                                                                                 this.zoomMenuFittoWidth,
                                                                                                 this.zoomMenuFittoHeigth,
                                                                                                 this.zoomMenuOriginalSize});
-            this.zoomButton.Image = global::Limaki.View.Properties.Iconery.Zoom;
+            this.zoomButton.Image = global::Limaki.View.Properties.GdiIconery.Zoom;
             this.zoomButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.zoomButton.Name = "zoomButton";
             this.zoomButton.Size = new System.Drawing.Size(36, 24);
@@ -104,7 +104,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // 
             this.zoomMenuFitToScreen.CheckOnClick = true;
             this.zoomMenuFitToScreen.Name = "zoomMenuFitToScreen";
-            this.zoomMenuFitToScreen.Size = new System.Drawing.Size(167, 24);
+            this.zoomMenuFitToScreen.Size = new Xwt.Size(167, 24);
             this.zoomMenuFitToScreen.Text = "Fit to Screen";
             this.zoomMenuFitToScreen.Click += new System.EventHandler(this.ZoomState);
             // 
@@ -112,7 +112,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // 
             this.zoomMenuFittoWidth.CheckOnClick = true;
             this.zoomMenuFittoWidth.Name = "zoomMenuFittoWidth";
-            this.zoomMenuFittoWidth.Size = new System.Drawing.Size(167, 24);
+            this.zoomMenuFittoWidth.Size = new Xwt.Size(167, 24);
             this.zoomMenuFittoWidth.Text = "Fit to Width";
             this.zoomMenuFittoWidth.Click += new System.EventHandler(this.ZoomState);
             // 
@@ -120,21 +120,21 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // 
             this.zoomMenuFittoHeigth.CheckOnClick = true;
             this.zoomMenuFittoHeigth.Name = "zoomMenuFittoHeigth";
-            this.zoomMenuFittoHeigth.Size = new System.Drawing.Size(167, 24);
+            this.zoomMenuFittoHeigth.Size = new Xwt.Size(167, 24);
             this.zoomMenuFittoHeigth.Text = "Fit to Heigth";
             this.zoomMenuFittoHeigth.Click += new System.EventHandler(this.ZoomState);
             // 
             // zoomMenuOriginalSize
             // 
             this.zoomMenuOriginalSize.Name = "zoomMenuOriginalSize";
-            this.zoomMenuOriginalSize.Size = new System.Drawing.Size(167, 24);
+            this.zoomMenuOriginalSize.Size = new Xwt.Size(167, 24);
             this.zoomMenuOriginalSize.Text = "Original Size";
             this.zoomMenuOriginalSize.Click += new System.EventHandler(this.ZoomState);
             // 
             // moveButton
             // 
             this.moveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.moveButton.Image = global::Limaki.View.Properties.Iconery.Panning;
+            this.moveButton.Image = global::Limaki.View.Properties.GdiIconery.Panning;
             this.moveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveButton.Name = "moveButton";
             this.moveButton.Size = new System.Drawing.Size(24, 24);
@@ -145,7 +145,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // AddVisualButton
             // 
             this.AddVisualButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddVisualButton.Image = global::Limaki.View.Properties.Iconery.AddVisual;
+            this.AddVisualButton.Image = global::Limaki.View.Properties.GdiIconery.AddVisual;
             this.AddVisualButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddVisualButton.Name = "AddVisualButton";
             this.AddVisualButton.Size = new System.Drawing.Size(24, 24);
@@ -156,7 +156,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // connectorButton
             // 
             this.connectorButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.connectorButton.Image = global::Limaki.View.Properties.Iconery.StraightConnector;
+            this.connectorButton.Image = global::Limaki.View.Properties.GdiIconery.StraightConnector;
             this.connectorButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.connectorButton.Name = "connectorButton";
             this.connectorButton.Size = new System.Drawing.Size(24, 24);

@@ -1,3 +1,18 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2010-2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+
 using System;
 using System.Windows.Forms;
 using System.Diagnostics;
@@ -5,34 +20,48 @@ using System.Reflection;
 using System.Drawing;
 using LinqKit;
 using System.Linq;
+using Xwt.Gdi.Backend;
+using Limaki.Viewers;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
-    public class ToolStripButtonEx : ToolStripButton, IToolStripCommandItem {
+    public class ToolStripButtonEx : ToolStripButton, IToolStripCommandItem, IToolStripItem {
+
         public ToolStripButtonEx () {
             ImageScaling = ToolStripItemImageScaling.None;
         }
+
         public ToolStripCommand _command = null;
         public ToolStripCommand Command {
             get { return _command; }
             set { ToolStripUtils.SetCommand(this, ref _command, value); }
         }
         public IToolStripCommandItem ToggleOnClick { get; set; }
+
+        public new Xwt.Size Size {
+            get { return base.Size.ToXwt(); }
+            set { base.Size = value.ToGdi(); }
+        }
+
+        public new Xwt.Drawing.Image Image {
+            get { return base.Image.ToXwt(); }
+            set { base.Image = value.ToGdi(); }
+        }
     }
 
-    public class ToolStripDropDownButtonEx : ToolStripDropDownButton, IToolStripCommandItem {
-        public ToolStripDropDownButtonEx() {
+    public class ToolStripDropDownButtonEx : ToolStripDropDownButton, IToolStripCommandItem, IToolStripItem {
+        public ToolStripDropDownButtonEx () {
             ImageScaling = ToolStripItemImageScaling.None;
         }
-    
+
         protected bool DropDownClicked = false;
-        protected override void OnClick(EventArgs e) {
-          
+        protected override void OnClick (EventArgs e) {
+
             if (!DropDownClicked)
                 base.OnClick(e);
         }
 
-        protected override void OnMouseDown(MouseEventArgs e) {
+        protected override void OnMouseDown (MouseEventArgs e) {
             var w = ToolStripUtils.DropdownWidth;
             var area = new Rectangle(this.Width - w, 0, w, this.Height);
             DropDownClicked = area.Contains(e.Location);
@@ -40,14 +69,14 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
             var size = DropDown.Size;
             DropDown.AutoSize = false;
-            DropDown.Width = Size.Width;
+            DropDown.Width = (int)Size.Width;
             DropDown.Height = size.Height;
 
             base.OnMouseDown(e);
             //this.DropDown.Visible = this.Pressed;
 
         }
-        
+
         public ToolStripCommand _command = null;
         public ToolStripCommand Command {
             get { return _command; }
@@ -55,31 +84,49 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         }
         public IToolStripCommandItem ToggleOnClick { get; set; }
 
-        
+        public new Xwt.Size Size {
+            get { return base.Size.ToXwt(); }
+            set { base.Size = value.ToGdi(); }
+        }
+
+        public new Xwt.Drawing.Image Image {
+            get { return base.Image.ToXwt(); }
+            set { base.Image = value.ToGdi(); }
+        }
     }
 
-    public class ToolStripMenuItemEx : ToolStripMenuItem, IToolStripCommandItem {
+    public class ToolStripMenuItemEx : ToolStripMenuItem, IToolStripCommandItem, IToolStripItem {
         public ToolStripMenuItemEx () {
             ImageScaling = ToolStripItemImageScaling.None;
-        //    DropDown.AutoSize = false;
-        //}
-        //public override Size Size {
-        //    get {
-        //        return base.Size;
-        //    }
-        //    set {
-        //        DropDown.AutoSize = false;
-        //        DropDown.Width = Size.Width;
-        //        base.Size = value;
-        //    }
+            //    DropDown.AutoSize = false;
+            //}
+            //public override Size Size {
+            //    get {
+            //        return base.Size;
+            //    }
+            //    set {
+            //        DropDown.AutoSize = false;
+            //        DropDown.Width = Size.Width;
+            //        base.Size = value;
+            //    }
         }
         public ToolStripCommand _command = null;
         public ToolStripCommand Command {
             get { return _command; }
-            set { ToolStripUtils.SetCommand(this, ref _command, value);
+            set {
+                ToolStripUtils.SetCommand(this, ref _command, value);
                 this.Size = value.Size;
             }
         }
         public IToolStripCommandItem ToggleOnClick { get; set; }
+
+        public new Xwt.Size Size {
+            get { return base.Size.ToXwt(); }
+            set { base.Size = value.ToGdi(); }
+        }
+        public new Xwt.Drawing.Image Image {
+            get { return base.Image.ToXwt(); }
+            set { base.Image = value.ToGdi(); }
+        }
     }
 }

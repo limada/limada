@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using Limaki.Common;
 using Limaki.View.UI;
+using Limaki.Viewers;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 

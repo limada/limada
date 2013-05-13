@@ -28,7 +28,7 @@ namespace Limaki.Usecases.Concept {
 
             useCase.SheetManager.SheetRegistered = sceneInfo => {
                 useCase.SceneHistory.Store(sceneInfo);
-                //useCase.SplitViewToolController.Attach(splitView.CurrentDisplay);
+                //useCase.SplitViewToolStrip.Attach(splitView.CurrentDisplay);
             };
             splitView.SceneHistory = useCase.SceneHistory;
             splitView.SheetManager = useCase.SheetManager;
@@ -36,14 +36,14 @@ namespace Limaki.Usecases.Concept {
             splitView.FavoriteManager = useCase.FavoriteManager;
             useCase.FavoriteManager.SheetManager = useCase.SheetManager;
 
-            useCase.SplitViewToolController.SplitView = useCase.SplitView;
-            useCase.SplitViewToolController.SheetManager = useCase.SheetManager;
+            useCase.SplitViewToolStrip.SplitView = useCase.SplitView;
+            useCase.SplitViewToolStrip.SheetManager = useCase.SheetManager;
 
-            splitView.CurrentWidgetChanged += (c) => useCase.DisplayToolController.Attach(c);
+            splitView.CurrentWidgetChanged += (c) => useCase.DisplayToolStrip.Attach(c);
             splitView.CurrentWidgetChanged += (c) => useCase.LayoutToolController.Attach(c);
-            splitView.CurrentWidgetChanged += (c) => useCase.MarkerToolController.Attach(c);
-            splitView.CurrentWidgetChanged += (c) => useCase.SplitViewToolController.Attach(c);
-            splitView.CurrentWidgetChanged += (c) => useCase.ArrangerToolController.Attach(c);
+            splitView.CurrentWidgetChanged += (c) => useCase.MarkerToolStrip.Attach(c);
+            splitView.CurrentWidgetChanged += (c) => useCase.SplitViewToolStrip.Attach(c);
+            splitView.CurrentWidgetChanged += (c) => useCase.ArrangerToolStrip.Attach(c);
             
             useCase.DisplayStyleChanged += splitView.DoDisplayStyleChanged;
 

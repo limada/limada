@@ -20,7 +20,7 @@ using Xwt.Drawing;
 
 namespace Limaki.View {
 
-    public interface IDisplay {
+    public interface IDisplay:IVidget {
 
         Color BackColor { get; set; }
         ZoomState ZoomState { get; set; }

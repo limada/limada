@@ -20,10 +20,13 @@ using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Drawing.Painters {
+    
     /// <summary>
     /// A painter that draws text
     /// </summary>
-    public abstract class StringPainterBase : Painter<string>,IDataPainter<string>,IDataPainter {
+    public abstract class StringPainterBase : Painter<string>, IDataPainter<string>, IDataPainter {
+
+        public virtual IShape OuterShape { get; set; }
 
         public override RenderType RenderType {
             get { return RenderType.Fill; }

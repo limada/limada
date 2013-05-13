@@ -236,6 +236,18 @@ namespace Xwt.Gdi.Backend {
 
             return StringTrimming.Word;
         }
+
+        public static Xwt.Drawing.Image ToXwt (this SD.Image value) {
+            if (value == null)
+                return null;
+            return new Xwt.Drawing.Image(GdiEngine.Registry,value);
+        }
+
+        public static SD.Image ToGdi (this  Xwt.Drawing.Image value) {
+            if (value == null)
+                return null;
+            return (value as Xwt.Backends.IFrontend).Backend as System.Drawing.Image;
+        }
         #endregion
 
         #region Font

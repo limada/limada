@@ -34,21 +34,21 @@ namespace Limaki.Swf.Backends.TextEditor {
             this.boldButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.boldButton.Image = Limaki.View.Properties.Iconery.FontBoldIcon;
             this.boldButton.Name = "boldButton";
-            this.boldButton.Size = new System.Drawing.Size(36, 36);
+            this.boldButton.Size = new Xwt.Size(36, 36);
             this.boldButton.Text = "Bold";
             this.boldButton.ToolTipText = "Bold";
 
             this.italicButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.italicButton.Image = Limaki.View.Properties.Iconery.FontItalicIcon;
             this.italicButton.Name = "italicButton";
-            this.italicButton.Size = new System.Drawing.Size(36, 36); 
+            this.italicButton.Size = new Xwt.Size(36, 36); 
             this.italicButton.Text = "Italic";
             this.italicButton.ToolTipText = "Italic";
 
             this.underlineButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.underlineButton.Image = Limaki.View.Properties.Iconery.FontUnderlineIcon;
             this.underlineButton.Name = "underlineButton";
-            this.underlineButton.Size = new System.Drawing.Size(36, 36);
+            this.underlineButton.Size = new Xwt.Size(36, 36);
             this.underlineButton.Text = "underline";
             this.underlineButton.ToolTipText = "Underline";
             //this.underlineButton.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.SizeToFit;

@@ -13,7 +13,7 @@
  */
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
-    partial class LayoutToolStrip {
+    partial class ArrangerToolStripBackend {
         /// <summary> 
         /// Erforderliche Designervariable.
         /// </summary>
@@ -38,15 +38,19 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         /// </summary>
         private void InitializeComponent() {
             components = new System.ComponentModel.Container();
+
             this.Dock = System.Windows.Forms.DockStyle.None;
-            this.Name = "layoutTools";
+            this.Name = "arrangeTools";
+            this.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.Size = new System.Drawing.Size(213, 27);
+            this.Size = new System.Drawing.Size(100, 36);
             this.TabIndex = 4;
         }
 
-        public System.Windows.Forms.ToolStripComboBox StyleSheetCombo;
- 
+        
+
         #endregion
+
+     
     }
 }

@@ -125,7 +125,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         public IDisplay<T> Display { get; set; }
 
 
-        IDisplay IDisplayBackend.Display {
+        IDisplay IDisplayBackend.Frontend {
             get { return this.Display; }
             set { this.Display = value as IDisplay<T>; }
         }
@@ -155,7 +155,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         public EventControler EventControler { get; set; }
         public override void Factor(Display<TData> display) {
             this.Backend = new MockDisplayBackend<TData>();
-            Backend.Display = display;
+            Backend.Frontend = display;
             display.Backend = Backend;
 
 			var deviceRenderer = new MockRenderer<TData>();
