@@ -195,7 +195,7 @@ namespace Xwt.Html5.Backend {
             c.Context.CommandLine ("fillStyle={0}", c.Color.ToStyle ());
             var tl = (TextLayoutBackend)Html5Engine.Registry.GetBackend(layout);
             var font = tl.Font;
-            c.Context.CommandLine ("font=\"{0} {1}em {2}\"", font.Family, font.Size.ToHtml (), font.Style.ToHtml());
+            c.Context.CommandLine("font=\"{1}pt {0} {2}\"", font.Family, font.Size.ToHtml(), font.Style.ToHtml());
 
             var text = layout.Text;
             text = text.Replace ("\r", "").Replace ("\n", "");

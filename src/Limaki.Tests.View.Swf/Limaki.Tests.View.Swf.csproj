@@ -66,7 +66,7 @@
     <Compile Include="Limaki.Tests\View\CreateDisplayTest.cs" />
     <Compile Include="Limaki.Tests\View\GDI\ConvexHullLayer.cs" />
     <Compile Include="Limaki.Tests\View\GDI\FontMeasure.cs" />
-    <Compile Include="Limaki.Tests\View\GDI\FontTest.cs" />
+    <Compile Include="Limaki.Tests\View\GDI\FontMeasureFactory.cs" />
     <Compile Include="Limaki.Tests\View\GDI\RegionLayer.cs" />
     <Compile Include="Limaki.Tests\View\GDI\RegionTest.cs" />
     <Compile Include="Limaki.Tests\View\Winform\ConverterTest.cs" />

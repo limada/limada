@@ -12,10 +12,12 @@ namespace Limaki.Drawing {
 
         /// <summary>
         /// x ... DpiX, y ... DpiY of Screen
+        /// Remark: points = pixels * 72 / DpiX;
         /// </summary>
         /// <returns></returns>
         Size ScreenResolution();
 
+        
         Size Resolution(Context context);
     }
 }

@@ -157,12 +157,16 @@ namespace Limaki.Tests.View.Drawing.Shapes {
             var iconeria = new AwesomeIconeria { Fill = true, FillColor = Colors.Black };
             
             var utils = Registry.Pool.TryGetCreate<IDrawingUtils>();
-            var style = Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet.ItemStyle.DefaultStyle;
+            var style = Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet.ItemStyle.DefaultStyle.Clone() as IStyle;
+
+            // points = pixels * 72 / g.DpiX;
+            style.Font = style.Font.WithSize((bounds.Height - bounds.Height / 10) * 72 / utils.ScreenResolution().Width);
 
             var pageNr = "XXXX";
             var pageNrSize = utils.GetTextDimension(pageNr, style);
 
             ReportPainter.PushPaint(ctx => {
+
                 ctx.SetLineWidth(1);
                 ctx.SetColor(Colors.Blue);
 
@@ -187,7 +191,11 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
                 ContextPainterExtensions.DrawText(ctx, textBounds, "123", style.Font, style.TextColor);
 
-            });
+                                        ctx.SetColor(Colors.Aqua);
+                                        ctx.Rectangle(textBounds);
+                                        ctx.Stroke();
+
+                                    });
             WritePainter();
         }
     }
