@@ -103,8 +103,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Playground\View\XwtRefactroring\SwfBackend\PaintCanvasBackend.cs" />
-    <None Include="Playground\View\XwtRefactroring\[Samples]\Mac.TextLayoutBackendHandler.cs" />
-    <None Include="Playground\View\XwtRefactroring\[Samples]\Mac.ContextBackendHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

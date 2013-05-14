@@ -156,7 +156,6 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             // connectorButton
             // 
             this.connectorButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.connectorButton.Image = global::Limaki.View.Properties.GdiIconery.StraightConnector;
             this.connectorButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.connectorButton.Name = "connectorButton";
             this.connectorButton.Size = new System.Drawing.Size(24, 24);

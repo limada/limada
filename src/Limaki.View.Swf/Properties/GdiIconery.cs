@@ -13,7 +13,6 @@ namespace Limaki.View.Properties {
             Zoom = Iconery.Zoom.ToGdi();
             Panning = Iconery.Panning.ToGdi();
                    
-            StraightConnector = global::Limaki.View.Properties.Resources.StraightConnector;
             AddVisual = global::Limaki.View.Properties.Resources.CreateWidget24;
 
             LimadaLogo = global::Limaki.View.Properties.Resources.LimadaLogo;
@@ -29,7 +28,6 @@ namespace Limaki.View.Properties {
         public static Image Panning { get; set; }
 
         public static Image AddVisual { get; set; }
-        public static Image StraightConnector { get; set; }
 
         public static Icon LimadaLogo { get; set; }
         public static Image LimadaLogoL32 { get; set; }

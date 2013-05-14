@@ -45,6 +45,7 @@ namespace Limaki.View.Xwt.Visuals {
         void Copy ();
         void Paste ();
     }
+
     /// <summary>
     /// DragDrop support
     /// TODO: merge with XwtDragDropBackend
@@ -138,8 +139,8 @@ namespace Limaki.View.Xwt.Visuals {
                     EndAction();
                 }
             }
-
         }
+
         protected override void EndAction () {
             base.EndAction();
             Resolved = false;
