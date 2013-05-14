@@ -60,11 +60,11 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         }
 
         public override void SetContent(Content<Stream> content) {
-            TextBoxEditor control = Backend as TextBoxEditor;
-            if (control == null)
+            var backend = Backend as TextBoxEditor;
+            if (backend == null)
                 return;
             
-            zoom = control.ZoomFactor;
+            zoom = backend.ZoomFactor;
 
             var stream = content.Data;
             
@@ -77,7 +77,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
                     stream = PrepareRead(stream);
                 }
 
-                control.Load(stream, rtfStreamType);
+                backend.Load(stream, rtfStreamType);
 
             } catch (Exception ex) {
                 ExceptionHandler.Catch(ex, MessageType.OK);
@@ -93,7 +93,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
 
 
         public virtual Stream DoSave() {
-            Stream stream = new MemoryStream();
+            var stream = new MemoryStream();
             _backend.Save(stream, RichTextBoxStreamType.RichText);
             return stream;
         }

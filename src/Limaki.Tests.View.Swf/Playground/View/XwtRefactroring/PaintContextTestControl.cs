@@ -37,7 +37,7 @@ namespace Limaki.Tests.Sandbox {
             this.TestCase = PaintContextTestCase.AwesomeIcons;
         }
 
-        PaintContextTestCase TestCase { get; set; }
+        public PaintContextTestCase TestCase { get; set; }
         WidgetRegistry Registry { get; set; }
         protected override void OnPaint (System.Windows.Forms.PaintEventArgs e) {
 

@@ -1,4 +1,18 @@
-﻿using System;
+﻿/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2012-2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +21,11 @@ using SWF = System.Windows.Forms;
 using SD = System.Drawing;
 using Xwt.Backends;
 
-namespace Limaki.View.DragDrop.Swf {
+namespace Limaki.View.Ui.DragDrop {
     /// <summary>
     /// this class is a placeholder for Xwt.Swf.WidgetBackend (see also: Xwt.WPFBackend.WidgetBackend)
     /// </summary>
-    public abstract class DragDropBackend {
+    public abstract class XwtDragDropBackend {
 
         public abstract DragStartData GetDragDataOnStart ();
 
@@ -64,7 +78,7 @@ namespace Limaki.View.DragDrop.Swf {
         }
 
         void WidgetMouseMoveForDragHandler (object o, SWF.MouseEventArgs e) {
-            if (enabledEvents.HasFlag(WidgetEvent.DragStarted) )
+            if (enabledEvents.HasFlag(WidgetEvent.DragStarted))
                 return;
             if (e.Button != SWF.MouseButtons.Left)
                 return;
@@ -103,7 +117,7 @@ namespace Limaki.View.DragDrop.Swf {
                 //AdornedWindow.DragOver += AdornedWindowOnDragOver;
             }
 
-            Widget.BeginInvoke((Action) (() => {
+            Widget.BeginInvoke((Action)(() => {
                 var effect = Widget.DoDragDrop(dataObj, data.DragAction.ToSwf());
 
                 OnDragFinished(this, new DragFinishedEventArgs(effect == SWF.DragDropEffects.Move));
@@ -119,9 +133,9 @@ namespace Limaki.View.DragDrop.Swf {
                 //}
             }));
         }
-        
+
         protected virtual void OnDragFinished (object sender, DragFinishedEventArgs e) {
-          
+
         }
 
 
@@ -129,7 +143,8 @@ namespace Limaki.View.DragDrop.Swf {
 
     public static class DragDropExtensions {
         public static SD.Point GetPosition (this SWF.MouseEventArgs e, SWF.Control widget) {
-            throw new NotImplementedException();
+            return widget.PointToClient(e.Location);
+
         }
 
     }

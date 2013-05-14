@@ -44,11 +44,12 @@ namespace Limaki.Viewers.ToolStripViewers {
         }
 
         public override void Attach(object sender) {
-            var display = sender as IDisplay;
             this.Control = sender;
-            var device = sender as IDisplayBackend;
-            if (device != null) {
-                display = device.Frontend;
+
+            var display = sender as IDisplay;
+            var backend = sender as IDisplayBackend;
+            if (backend != null) {
+                display = backend.Frontend;
             }
             var tool = this.Backend;
             if (display == null || tool == null) {

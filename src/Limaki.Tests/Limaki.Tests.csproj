@@ -141,8 +141,6 @@
     <Compile Include="Playground\View\AllignerPrototyper.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
     <Compile Include="Playground\View\CollissionResolver.cs" />
-    <Compile Include="Playground\View\DragDrop.Swf\DragDropBackend.cs" />
-    <Compile Include="Playground\View\DragDrop.Swf\DragDropConverter.cs" />
     <Compile Include="Playground\View\DrawingTests.cs" />
     <Compile Include="Playground\View\ReferencePainterCanvas.cs">
       <SubType>Component</SubType>

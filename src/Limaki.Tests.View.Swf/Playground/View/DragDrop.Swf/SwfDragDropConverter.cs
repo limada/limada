@@ -1,4 +1,18 @@
-﻿using System;
+﻿/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +20,9 @@ using Xwt;
 using SWF = System.Windows.Forms;
 using System.Collections.Specialized;
 
-namespace Limaki.View.DragDrop.Swf {
+namespace Limaki.View.Ui.DragDrop {
 
-    public static class DragDropConverter {
+    public static class SwfDragDropConverter {
 
         public static DragDropAction ToXwt (this SWF.DragDropEffects value) {
             var action = DragDropAction.None;
@@ -69,6 +83,17 @@ namespace Limaki.View.DragDrop.Swf {
                     result.SetFileDropList(uris);
                 } else
                     result.SetData(type.Id, TransferDataSource.SerializeValue(value));
+            }
+
+            return result;
+        }
+
+        public static TransferDataSource ToXwt (this SWF.IDataObject data) {
+            var result = new TransferDataSource();
+            foreach (var format in data.GetFormats()) {
+                var type = ToXwtTransferType(format);
+                result.AddType(type);
+                result.AddValue(data.GetData(format));
             }
 
             return result;

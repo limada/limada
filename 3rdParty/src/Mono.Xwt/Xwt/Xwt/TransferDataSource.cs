@@ -38,7 +38,7 @@ namespace Xwt
 	/// <summary>
 	/// A collection of data to be transferred through drag and drop or the clipboard
 	/// </summary>
-	public sealed class TransferDataSource
+	public class TransferDataSource
 	{
 		Dictionary<TransferDataType,object> data = new Dictionary<TransferDataType,object> ();
 

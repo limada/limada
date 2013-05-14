@@ -61,6 +61,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Playground\View\DragDrop.Swf\XwtDragDropBackend.cs" />
+    <Compile Include="Playground\View\DragDrop.Swf\SwfDragDropConverter.cs" />
+    <Compile Include="Playground\View\DragDrop.Xwt\TransferDataFormats.cs" />
+    <Compile Include="Playground\View\DragDrop.Xwt\StreamTransferDataHandler.cs" />
+    <Compile Include="Playground\View\DragDrop.Xwt\TranferDataHandlerChain.cs" />
+    <Compile Include="Playground\View\DragDrop.Xwt\TransferDataHandler.cs" />
+    <Compile Include="Playground\View\DragDrop.Xwt\TransferDataSourceExensions.cs" />
+    <Compile Include="Playground\View\DragDrop.Xwt\DragDropFacade.cs" />
+    <Compile Include="Playground\View\DragDrop.Swf\VisualsXwtragDrop.cs" />
+    <Compile Include="Playground\View\DragDrop.Xwt\VidgetBackendTransferDataSource.cs" />
+    <Compile Include="Playground\View\DragDrop.Xwt\VisualsImageTransferDataHandler.cs" />
+    <Compile Include="Playground\View\DragDrop.Xwt\VisualsTextTransferDataHandler.cs" />
+    <Compile Include="Playground\View\DragDrop.Xwt\VisualsTransferDataHandler.cs" />
     <Compile Include="[deprecated]\GdiMatrice.cs" />
     <Compile Include="[deprecated]\GdiViewport.cs" />
     <Compile Include="Limaki.Tests\View\CreateDisplayTest.cs" />
