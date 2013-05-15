@@ -16,11 +16,11 @@ namespace Limada.Usecases {
 
         public string DefaultExtension = null;
 
-        string _streamProviderDialogFilter = null;
-        public string StreamProviderDialogFilter {
+        string _contentProviderDialogFilter = null;
+        public string ContentProviderDialogFilter {
             get {
-                if (_streamProviderDialogFilter == null) {
-                    _streamProviderDialogFilter = string.Empty;
+                if (_contentProviderDialogFilter == null) {
+                    _contentProviderDialogFilter = string.Empty;
                     var providers = Registry.Pool.TryGetCreate<ContentProviders>();
                     string defaultFilter = null;
                     foreach (var provider in providers) {
@@ -29,15 +29,15 @@ namespace Limada.Usecases {
                             if (info.Extension == DefaultExtension)
                                 defaultFilter = filter;
                             else
-                                _streamProviderDialogFilter += filter;
+                                _contentProviderDialogFilter += filter;
 
                         }
                     }
                     if (defaultFilter != null) {
-                        _streamProviderDialogFilter = defaultFilter + _streamProviderDialogFilter;
+                        _contentProviderDialogFilter = defaultFilter + _contentProviderDialogFilter;
                     }
                 }
-                return _streamProviderDialogFilter;
+                return _contentProviderDialogFilter;
             }
         }
 
@@ -75,7 +75,7 @@ namespace Limada.Usecases {
         }
 
         public void DefaultDialogValues(FileDialogMemento dialog) {
-            dialog.Filter = this.StreamProviderDialogFilter + "All Files|*.*";
+            dialog.Filter = this.ContentProviderDialogFilter + "All Files|*.*";
             dialog.DefaultExt = "";
             dialog.AddExtension = true;
             dialog.CheckFileExists = false;

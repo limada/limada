@@ -6,28 +6,24 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Limada.Data;
 using Limada.Model;
-using Limada.Usecases;
+using Limada.VisualThings;
 using Limaki.Common;
 using Limaki.Data;
 using Limaki.Drawing;
-using Limada.View;
-using Limada.VisualThings;
-using Limaki.Model.Content;
-using System.Collections.Generic;
 using Limaki.Graphs.Extensions;
 using Limaki.Viewers;
 using Limaki.Visuals;
 using Mono.Options;
-using Limada.Schemata;
 
 namespace Limada.Usecases {
 
@@ -176,10 +172,10 @@ namespace Limada.Usecases {
                     this.ThingGraphProvider.Close();
                     this.ThingGraphProvider = provider;
 
-                    ISceneProvider handler = new SceneProvider();
-                    handler.DataBound = this.DataBound;
-                    handler.Provider = provider;
-                    handler.Open(() => { });
+                    var sceneProvider = new SceneProvider();
+                    sceneProvider.DataBound = this.DataBound;
+                    sceneProvider.Provider = provider;
+                    sceneProvider.Open(() => { });
                     DataPostProcess(fileName.Name);
                     result = true;
                 } catch (Exception ex) {
@@ -257,8 +253,8 @@ namespace Limada.Usecases {
         public Func<FileDialogMemento, bool, DialogResult> FileDialogShow { get; set; }
 
         public void DefaultDialogValues(FileDialogMemento dialog) {
-            dialog.Filter = this.ThingGraphFileProviderFilter + "All Files|*.*";
-            dialog.DefaultExt = DefaultExtension;
+            dialog.Filter = ThingGraphProviderManager.SaveFilter + "All Files|*.*";
+            dialog.DefaultExt = ThingGraphProviderManager.DefaultExtension;
             dialog.AddExtension = true;
             dialog.CheckFileExists = false;
             dialog.CheckPathExists = true;
@@ -269,43 +265,6 @@ namespace Limada.Usecases {
 
         }
 
-        public string DefaultExtension = "limo";
-        string _thingGraphFileProviderFilter = null;
-        public string ThingGraphFileProviderFilter {
-            get {
-                return _thingGraphFileProviderFilter ?? (_thingGraphFileProviderFilter = GetFileProviderFilter<IThingGraph>());
-            }
-        }
-
-        string _thingsProviderFilter = null;
-        public string ThingsProviderFilter {
-            get {
-                return _thingsProviderFilter ?? (_thingsProviderFilter = GetFileProviderFilter<IEnumerable<IThing>>());
-            }
-        }
-
-        public string GetFileProviderFilter<T>() {
-            string _fileProviderFilter = "";
-
-            var providers = Registry.Pool.TryGetCreate<DataProviders<T>>();
-            string defaultFilter = null;
-            foreach (var provider in providers) {
-                if (provider.Saveable) {
-                    string filter = provider.Description + "|*" + provider.Extension + "|";
-                    if (provider.Extension == "." + DefaultExtension)
-                        defaultFilter = filter;
-                    else
-                        _fileProviderFilter += filter;
-
-                }
-            }
-            if (defaultFilter != null) {
-                _fileProviderFilter = defaultFilter + _fileProviderFilter;
-            }
-
-            return _fileProviderFilter;
-
-        }
         #endregion
 
         #region Import
@@ -365,9 +324,9 @@ namespace Limada.Usecases {
                 if (thingsProvider == null)
                     return;
 
-                var provider = new SceneProvider() { Progress = this.Progress };
+                var sceneProvider = new SceneProvider{ Progress = this.Progress };
                 try {
-                    provider.ExportTo(scene, thingsProvider, fileName);
+                    sceneProvider.ExportTo(scene, thingsProvider, fileName);
                     thingsProvider.Close();
                 } catch(Exception ex) {
                     Message(ex.Message,-1,-1);
@@ -379,7 +338,7 @@ namespace Limada.Usecases {
             DefaultDialogValues(SaveFileDialog);
             if (scene != null && this.IsSceneExportable(scene)) {
 
-                SaveFileDialog.Filter = this.ThingsProviderFilter + "All Files|*.*";
+                SaveFileDialog.Filter = ThingsProviderManager.SaveFilter + "All Files|*.*";
                 SaveFileDialog.DefaultExt = "pdf";
 
                 if (FileDialogShow(SaveFileDialog, true) == DialogResult.OK) {
@@ -389,45 +348,8 @@ namespace Limada.Usecases {
             }
         }
 
-        public bool DocumentHasPages(IGraphScene<IVisual, IVisualEdge> scene) {
-            var graph = scene.Graph;
-            var document = scene.Focused;
-            var documentSchemaManager = new DocumentSchemaManager();
+	   
 
-            return documentSchemaManager.HasPages(graph, document);
-
-        }
-
-        public void ExportPages(string dir, IGraphScene<IVisual, IVisualEdge> scene) {
-            var graph = scene.Graph;
-            var document = scene.Focused;
-            var documentSchemaManager = new DocumentSchemaManager();
-            if (documentSchemaManager.HasPages(graph, document)) {
-                int i = 0;
-                foreach (var streamThing in documentSchemaManager.PageStreams(graph, document)) {
-                    string pageName = i.ToString().PadLeft(5, '0');
-                    if (streamThing.Description != null)
-                        pageName = streamThing.Description.ToString().PadLeft(5, '0');
-                    var s = scene.Focused.Data==null?CommonSchema.NullString:scene.Focused.Data.ToString();
-                    string name = dir + Path.DirectorySeparatorChar +
-                                  s+ " " +
-                                  pageName +
-                                  ContentTypes.Extension(streamThing.StreamType);
-
-                    streamThing.Data.Position = 0;
-                    using (FileStream fileStream = new FileStream(name, FileMode.Create)) {
-                        var buff = new byte[streamThing.Data.Length];
-                        streamThing.Data.Read(buff, 0, (int)streamThing.Data.Length);
-                        fileStream.Write(buff, 0, (int)streamThing.Data.Length);
-                        fileStream.Flush();
-                        fileStream.Close();
-                    }
-                    streamThing.Data.Dispose();
-                    streamThing.Data = null;
-                }
-            }
-        }
-        
-        #endregion
+	    #endregion
     }
 }

@@ -20,11 +20,13 @@ namespace Limaki.Data {
     /// </summary>
     public abstract class DataProvider<T> : IDataProvider<T> {
 
+        public abstract T Data { get; set; }
+
         public abstract string Extension { get; }
         public abstract string Description { get; }
         public abstract bool Saveable { get; }
         public abstract bool Readable { get; }
-        public abstract T Data { get; set; }
+       
         public abstract void Open(DataBaseInfo FileName);
         public abstract void Open();
         public abstract void Save();

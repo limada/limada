@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Limada.UseCases\Cms\AppController.cs" />
     <Compile Include="Limada.UseCases\Cms\BackendController.cs" />
+    <Compile Include="Limada.UseCases\DocumentSchemaDataProvider.cs" />
     <Compile Include="Limada.View\DocumentSchemaKeyScrollAction.cs" />
     <Compile Include="Limada.View\DocumentSchemaViewer.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindDrawingUtils.cs" />

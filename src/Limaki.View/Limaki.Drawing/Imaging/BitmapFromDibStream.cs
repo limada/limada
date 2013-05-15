@@ -14,16 +14,14 @@ namespace Limaki.Drawing.Imaging {
         }
 
         private void makeHeader() {
-            BinaryReader reader = new BinaryReader(dib);
+            var reader = new BinaryReader(dib);
 
             int headerSize = reader.ReadInt32();
             int pixelSize = (int) dib.Length - headerSize;
             int fileSize = 14 + headerSize + pixelSize;
 
-            MemoryStream bmp = new MemoryStream(14);
-            BinaryWriter writer = new BinaryWriter(bmp);
-
-
+            var bmp = new MemoryStream(14);
+            var writer = new BinaryWriter(bmp);
 
             /* Get the palette size
                    * The Palette size is stored as an int32 at offset 32

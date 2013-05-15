@@ -269,6 +269,7 @@
     <Compile Include="Limada\Schemata\ViewMetaSchema.cs" />
     <Compile Include="Limada\Data\ThingGraphProvider.cs" />
     <Compile Include="Limada\UseCases\AppResourceLoader.cs" />
+    <Compile Include="Limada\UseCases\DataProviderManager.cs" />
     <Compile Include="Model\Edge.cs" />
     <Compile Include="Model\GraphItem.cs" />
     <Compile Include="Model\Content\CompressionType.cs" />
