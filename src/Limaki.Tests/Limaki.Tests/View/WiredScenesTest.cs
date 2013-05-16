@@ -36,7 +36,7 @@ namespace Limaki.Tests.View.Visuals {
         /// <param name="targetTest"></param>
         public void PrepareTests<TFactory>(
             SceneFacadeTest<TFactory> sourceTest, SceneFacadeTest<TFactory> targetTest) 
-            where TFactory : GenericGraphFactory<IGraphItem, IGraphEdge>, new() {
+            where TFactory : GenericGraphFactory<IGraphEntity, IGraphEdge>, new() {
 
             WiredDisplays facade = new WiredDisplays();
 
@@ -46,17 +46,17 @@ namespace Limaki.Tests.View.Visuals {
 
             var targetGraph = 
                 targetTest.Mock.Scene.Graph.RootSource().Two
-                   as IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>;
+                   as IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>;
 
-            ((GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>)
+            ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
               targetTest.Mock.Factory).GraphPair = targetGraph;
 
             var sourceInnerFactory =
-                ((GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>)
+                ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
                   sourceTest.Mock.Factory).Factory;
 
             var targetInnerFactory =
-                ((GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>)
+                ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
                   targetTest.Mock.Factory).Factory;
 
             for (int i = 0; i < sourceInnerFactory.Node.Count; i++) {
@@ -80,14 +80,14 @@ namespace Limaki.Tests.View.Visuals {
 
             var sourceGraph =
                 sourceTest.Mock.Scene.Graph.RootSource().Two
-                   as IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>;
+                   as IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>;
 
             var sourceView =
                 sourceTest.Mock.Scene.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
 
             var targetGraph =
                 targetTest.Mock.Scene.Graph.RootSource().Two
-                   as IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>;
+                   as IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>;
 
 
             var targetView =

@@ -3,34 +3,34 @@ using Limaki.Model;
 using Limaki.Common;
 
 namespace Limaki.Visuals {
-    public class GraphItem2VisualAdapter : GraphModelAdapter<IGraphItem, IVisual, IGraphEdge, IVisualEdge> {
+    public class GraphItem2VisualAdapter : GraphModelAdapter<IGraphEntity, IVisual, IGraphEdge, IVisualEdge> {
 
-        public override IGraphItem CreateItemOne(IGraph<IVisual, IVisualEdge> sender,
-                                                 IGraph<IGraphItem, IGraphEdge> target, IVisual item) {
-            return new GraphItem<string>(item.ToString());
+        public override IGraphEntity CreateItemOne(IGraph<IVisual, IVisualEdge> sender,
+                                                 IGraph<IGraphEntity, IGraphEdge> target, IVisual item) {
+            return new GraphEntity<string>(item.ToString());
         }
 
         public override IGraphEdge CreateEdgeOne(IGraph<IVisual, IVisualEdge> sender,
-                                                 IGraph<IGraphItem, IGraphEdge> target, IVisualEdge item) {
+                                                 IGraph<IGraphEntity, IGraphEdge> target, IVisualEdge item) {
             return new GraphEdge();
         }
 
-        public override IVisual CreateItemTwo(IGraph<IGraphItem, IGraphEdge> sender,
-                                              IGraph<IVisual, IVisualEdge> target,IGraphItem item) {
+        public override IVisual CreateItemTwo(IGraph<IGraphEntity, IGraphEdge> sender,
+                                              IGraph<IVisual, IVisualEdge> target,IGraphEntity item) {
             return Registry.Pool.TryGetCreate<IVisualFactory>()
                 .CreateItem(item.ToString());
         }
 
-        public override IVisualEdge CreateEdgeTwo(IGraph<IGraphItem, IGraphEdge> sender,
+        public override IVisualEdge CreateEdgeTwo(IGraph<IGraphEntity, IGraphEdge> sender,
                                                   IGraph<IVisual, IVisualEdge> target, IGraphEdge item) {
             return Registry.Pool.TryGetCreate<IVisualFactory>()
                 .CreateEdge(item.ToString());
         }
-        public override void ChangeData(IGraph<IGraphItem, IGraphEdge> sender, IGraphItem item, object data) {
+        public override void ChangeData(IGraph<IGraphEntity, IGraphEdge> sender, IGraphEntity item, object data) {
             throw new System.Exception("The method or operation is not implemented.");
         }
         public override void ChangeData(IGraph<IVisual, IVisualEdge> sender, IVisual item, object data) {
-            var graph = sender as IGraphPair<IVisual, IGraphItem, IVisualEdge, IGraphEdge>;
+            var graph = sender as IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>;
             if (graph != null) {
                 var thing = graph.Get(item);
                 thing.Data = data;

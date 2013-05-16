@@ -94,7 +94,7 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         public virtual WebContent GetContentFromThing(IThingGraph graph, IThing thing) {
-            var info = ThingStreamFacade.GetContent(graph, thing);
+            var info = ThingContentFacade.ConentOf(graph, thing);
             var uri = GetUri(thing);
             return GetContentFromContent(info, uri);
         }

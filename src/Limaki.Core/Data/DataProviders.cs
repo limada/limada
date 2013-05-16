@@ -40,7 +40,7 @@ namespace Limaki.Data {
             return null;
         }
 
-        public virtual IDataProvider<T> Find(DataBaseInfo info) {
+        public virtual IDataProvider<T> Find(IoInfo info) {
             return FindByExtension(info.Extension);
         }
 

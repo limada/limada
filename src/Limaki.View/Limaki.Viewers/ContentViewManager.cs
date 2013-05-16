@@ -80,7 +80,7 @@ namespace Limaki.Viewers {
                 if (controller.ContentId != thing.Id) {
                     SaveStream(graph, controller);
 
-                    var info = ThingStreamFacade.GetContent(graph, thing);
+                    var info = ThingContentFacade.ConentOf(graph, thing);
                     if (controller is SheetViewer) {
                         info.Source = thing.Id;
                     }
@@ -157,7 +157,7 @@ namespace Limaki.Viewers {
                 if (thing != null) {
                     var info = new Content<Stream> ();
                     controller.Save (info);
-                    new ThingStreamFacade ().SetStream (graph, thing, info);
+                    new ThingContentFacade ().AssignContent (graph, thing, info);
                     info.Data.Dispose ();
                     info.Data = null;
                     info = null;

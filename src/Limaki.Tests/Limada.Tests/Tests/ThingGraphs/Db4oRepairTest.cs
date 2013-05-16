@@ -14,7 +14,7 @@ namespace Limada.Tests.Data.db4o {
                 var newFile = TestLocations.LimadaCloud008Repaired;
                 var repairer = new Db4oRepairer();
                 repairer.WriteDetail = (e)=>this.ReportDetail(e);
-                repairer.ReadAndSaveAs(DataBaseInfo.FromFileName(fileName), DataBaseInfo.FromFileName(newFile), false);
+                repairer.ReadAndSaveAs(IoInfo.FromFileName(fileName), IoInfo.FromFileName(newFile), false);
             }
         }
     }

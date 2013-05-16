@@ -40,7 +40,7 @@ namespace Limada.Tests.ThingGraphs {
 
         public virtual IThingGraph OnCreateGraph(string fileName) {
             if (ThingGraphProvider != null) {
-                var info = DataBaseInfo.FromFileName(fileName + ThingGraphProvider.Extension);
+                var info = IoInfo.FromFileName(fileName + ThingGraphProvider.Extension);
                 ThingGraphProvider.Open(info);
                 ReportDetail("*** file:\t" + fileName + ThingGraphProvider.Extension);
                 return ThingGraphProvider.Data;

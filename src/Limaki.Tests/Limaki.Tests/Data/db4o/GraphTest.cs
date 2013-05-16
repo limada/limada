@@ -60,7 +60,7 @@ namespace Limaki.Tests.Data.db4o {
         public void StringGraphTest() {
             StringGraphTest graphTest = new StringGraphTest();
 
-            Gateway.Open(DataBaseInfo.FromFileName(FileName));
+            Gateway.Open(IoInfo.FromFileName(FileName));
             Limaki.Data.db4o.Graph<string, Edge<string>> graph =
                 new Limaki.Data.db4o.Graph<string, Edge<string>>(Gateway);
 
@@ -75,7 +75,7 @@ namespace Limaki.Tests.Data.db4o {
         }
         [Test]
         public void EdgeIsItemTest() {
-            Gateway.Open(DataBaseInfo.FromFileName(FileName));
+            Gateway.Open(IoInfo.FromFileName(FileName));
             EdgeIsItemGraphTest graphTest = new EdgeIsItemGraphTest();
             Limaki.Data.db4o.Graph<Item<string>, EdgeItem<string>>
             graph = new Limaki.Data.db4o.Graph<Item<string>, EdgeItem<string>>(Gateway);
@@ -91,7 +91,7 @@ namespace Limaki.Tests.Data.db4o {
 
         [Test]
         public void IntGraphTest () {
-            Gateway.Open(DataBaseInfo.FromFileName(FileName));
+            Gateway.Open(IoInfo.FromFileName(FileName));
             IntGraphTest graphTest = new IntGraphTest();
             Limaki.Data.db4o.Graph<int, Edge<int>>
             graph = new Limaki.Data.db4o.Graph<int, Edge<int>>(Gateway);
@@ -106,12 +106,12 @@ namespace Limaki.Tests.Data.db4o {
         }
         [Test]
         public void BenchmarkOneTest() {
-            IGraphFactory<IGraphItem,IGraphEdge> sceneFactory = 
+            IGraphFactory<IGraphEntity,IGraphEdge> sceneFactory = 
                 new BenchmarkOneGraphFactory();
-            Gateway.Open(DataBaseInfo.FromFileName(FileName));
+            Gateway.Open(IoInfo.FromFileName(FileName));
 
-            IGraph<IGraphItem,IGraphEdge> graph =
-                new Limaki.Data.db4o.Graph<IGraphItem, IGraphEdge>(Gateway);
+            IGraph<IGraphEntity,IGraphEdge> graph =
+                new Limaki.Data.db4o.Graph<IGraphEntity, IGraphEdge>(Gateway);
             sceneFactory.Count = 10;
 
             sceneFactory.Populate(graph);

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 
 namespace Limaki.Model.Content {
-    public interface IConverter {
+    public interface ITextConverter {
         long SourceType { get; set; }
         long ResultType { get; set; }
 

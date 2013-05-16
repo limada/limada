@@ -37,8 +37,8 @@ namespace Limada.Tests.Wrappers {
         public void GenericBiGraphFactory() {
             IThingGraph thingGraph = new ThingGraph();
 
-            GenericBiGraphFactory<IThing, IGraphItem, ILink, IGraphEdge> factory =
-                new GenericBiGraphFactory<IThing, IGraphItem, ILink, IGraphEdge>(
+            GenericBiGraphFactory<IThing, IGraphEntity, ILink, IGraphEdge> factory =
+                new GenericBiGraphFactory<IThing, IGraphEntity, ILink, IGraphEdge>(
                 new ProgrammingLanguageFactory(),
                 new GraphItem2ThingAdapter()
                 );

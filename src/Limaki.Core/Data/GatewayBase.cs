@@ -22,13 +22,13 @@ namespace Limaki.Data {
 	public abstract class GatewayBase : IGateway {
 		#region IGateway Member
 
-        DataBaseInfo _dataBaseInfo = null;
-        public DataBaseInfo DataBaseInfo {
-            get { return _dataBaseInfo; }
-            set { _dataBaseInfo = value; }
+        IoInfo _ioInfo = null;
+        public IoInfo IoInfo {
+            get { return _ioInfo; }
+            set { _ioInfo = value; }
         }
 
-		public abstract void Open(DataBaseInfo dataBaseInfo);
+		public abstract void Open(IoInfo ioInfo);
 
 		public abstract void Close();
 

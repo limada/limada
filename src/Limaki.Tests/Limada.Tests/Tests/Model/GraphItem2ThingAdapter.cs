@@ -21,26 +21,26 @@ using System;
 using Limaki.Common;
 
 namespace Limada.Tests.Model {
-   public class GraphItem2ThingAdapter : GraphModelAdapter<IGraphItem, IThing, IGraphEdge, ILink> {
+   public class GraphItem2ThingAdapter : GraphModelAdapter<IGraphEntity, IThing, IGraphEdge, ILink> {
        private IThingFactory _factory = null;
        public IThingFactory Factory { get { return _factory ?? (_factory = Registry.Factory.Create<IThingFactory>()); } }
  
-       public override IGraphItem CreateItemOne(IGraph<IThing, ILink> sender,
-            IGraph<IGraphItem, IGraphEdge> target, IThing item) {
-            return new GraphItem<string>(item.ToString());
+       public override IGraphEntity CreateItemOne(IGraph<IThing, ILink> sender,
+            IGraph<IGraphEntity, IGraphEdge> target, IThing item) {
+            return new GraphEntity<string>(item.ToString());
         }
 
        public override IGraphEdge CreateEdgeOne(IGraph<IThing, ILink> sender, 
-           IGraph<IGraphItem, IGraphEdge> target,ILink item) {
+           IGraph<IGraphEntity, IGraphEdge> target,ILink item) {
             return new GraphEdge();
         }
 
-       public override IThing CreateItemTwo(IGraph<IGraphItem, IGraphEdge> sender,
-           IGraph<IThing, ILink> target, IGraphItem item) {
+       public override IThing CreateItemTwo(IGraph<IGraphEntity, IGraphEdge> sender,
+           IGraph<IThing, ILink> target, IGraphEntity item) {
             return Factory.CreateItem(item.Data);
         }
 
-       public override ILink CreateEdgeTwo(IGraph<IGraphItem, IGraphEdge> sender,
+       public override ILink CreateEdgeTwo(IGraph<IGraphEntity, IGraphEdge> sender,
            IGraph<IThing, ILink> target, IGraphEdge item) {
            return Factory.CreateEdge(CommonSchema.EmptyMarker);
         }
@@ -49,9 +49,9 @@ namespace Limada.Tests.Model {
            throw new Exception("The method or operation is not implemented.");
        }
 
-       public override void ChangeData(IGraph<IGraphItem, IGraphEdge> sender, IGraphItem item, object data) {
-           IGraphPair<IGraphItem, IThing, IGraphEdge, ILink> graph =
-               sender as IGraphPair<IGraphItem, IThing, IGraphEdge, ILink>;
+       public override void ChangeData(IGraph<IGraphEntity, IGraphEdge> sender, IGraphEntity item, object data) {
+           IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> graph =
+               sender as IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink>;
            if (graph !=null) {
                IThing thing = graph.Get (item);
                thing.Data = data;

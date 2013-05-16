@@ -35,7 +35,7 @@ namespace Limada.Data {
             SaveCurrent();
         }
 
-        public override void Merge (IThingGraph source, IThingGraph target) {
+        public override void Merge (IThingGraph source, IThingGraph sink) {
             Action<IThing> message = null;
             var i = 0;
             var iStreams = 0;
@@ -53,16 +53,16 @@ namespace Limada.Data {
                             streams ? "Streams" : type.Name, i, icount, iStreams), i, icount);
                     }
                 };
-            source.MergeThingsInto(target, message, () => {
+            source.MergeThingsInto(sink, message, () => {
                 streams = true;
                 i = 0;
                 count = iStreams;
             });
         }
 
-        public override void SaveAs(IThingGraph source, DataBaseInfo FileName) {
+        public override void SaveAs(IThingGraph source, IoInfo fileName) {
             this.Data = null;
-            Open(FileName);
+            Open(fileName);
             
         }
 
@@ -112,10 +112,10 @@ namespace Limada.Data {
             }
         }
 
-        public virtual void RawImport(DataBaseInfo source, IDataProvider<IThingGraph> target) {
+        public virtual void RawImport(IoInfo source, IDataProvider<IThingGraph> target) {
             Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(
                 new Exception(string.Format(
-                    "{0} RawImport of {1} not possible", this.Description, DataBaseInfo.ToFileName(source))), MessageType.OK);
+                    "{0} RawImport of {1} not possible", this.Description, IoInfo.ToFileName(source))), MessageType.OK);
         }
     }
 }

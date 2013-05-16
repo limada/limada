@@ -71,7 +71,7 @@ namespace Limaki.View.Swf.DragDrop {
                     content.Source = uri.AbsoluteUri;
                     content.Description = uri.Segments[uri.Segments.Length-1];
                 }
-                return new VisualThingStreamHelper ().CreateFromStream (container, content);
+                return new VisualThingContentFacade ().VisualOfContent (container, content);
 
             } else {
                 return null;

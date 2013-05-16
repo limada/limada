@@ -21,11 +21,11 @@ using System.Collections.Generic;
 using Limaki.Drawing;
 
 namespace Limaki.Tests.Visuals {
-    public class SceneFactory<T> : GenericBiGraphFactory<IVisual, IGraphItem, IVisualEdge, IGraphEdge>, ISceneFactory
-    where T : IGraphFactory<IGraphItem, IGraphEdge>, new() {
+    public class SceneFactory<T> : GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>, ISceneFactory
+    where T : IGraphFactory<IGraphEntity, IGraphEdge>, new() {
         public SceneFactory() : base(new T(), new GraphItem2VisualAdapter()) { }
 
-        public override IGraphFactory<IGraphItem, IGraphEdge> Factory {
+        public override IGraphFactory<IGraphEntity, IGraphEdge> Factory {
             get {
                 if (_factory == null) {
                     _factory = new T();

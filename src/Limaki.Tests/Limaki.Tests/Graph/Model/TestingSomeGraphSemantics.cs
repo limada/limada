@@ -75,17 +75,17 @@ namespace Limaki.Tests.Graph.MethodTests {
             }
         }
 
-        public void BreathFirstTwig(IGraph<IGraphItem, IGraphEdge> graph) {
-            foreach(IGraphItem item in graph) {
+        public void BreathFirstTwig(IGraph<IGraphEntity, IGraphEdge> graph) {
+            foreach(IGraphEntity item in graph) {
                 StringWriter sQueue = new StringWriter ();
                 StringWriter sRecursion = new StringWriter();
                 Set<IGraphEdge> queued = new Set<IGraphEdge> ();
                 Set<IGraphEdge> recursed = new Set<IGraphEdge>();
-                foreach(IGraphEdge edge in BreathFirstTwigQueue<IGraphItem,IGraphEdge>(graph,item,true)) {
+                foreach(IGraphEdge edge in BreathFirstTwigQueue<IGraphEntity,IGraphEdge>(graph,item,true)) {
                     queued.Add (edge);
                     sQueue.Write(edge.ToString() + " : ");
                 } 
-                foreach (IGraphEdge edge in BreathFirstTwigRecursion<IGraphItem, IGraphEdge>(graph, item, true)) {
+                foreach (IGraphEdge edge in BreathFirstTwigRecursion<IGraphEntity, IGraphEdge>(graph, item, true)) {
                     recursed.Add (edge);
                     sRecursion.Write(edge.ToString() + " : ");
                 }
@@ -184,11 +184,11 @@ where TEdge : IEdge<TItem> {
             foreach (GraphFactoryBase factory in this.Graphs) {
                 ReportDetail(factory.Name);
                 factory.Populate();
-                IGraph <IGraphItem, IGraphEdge> graph = factory.Graph;
-                foreach(IGraphItem item in graph) {
+                IGraph <IGraphEntity, IGraphEdge> graph = factory.Graph;
+                foreach(IGraphEntity item in graph) {
                     ReportDetail(
-                        GraphTestUtils.ReportItemAndEdges<IGraphItem, IGraphEdge>(
-                       item, ForkQueue<IGraphItem, IGraphEdge>(graph, item))
+                        GraphTestUtils.ReportItemAndEdges<IGraphEntity, IGraphEdge>(
+                       item, ForkQueue<IGraphEntity, IGraphEdge>(graph, item))
                        );
                     
                 }

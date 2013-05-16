@@ -129,7 +129,7 @@ namespace Limada.Tests.Schemata {
             
             IThingGraph thingGraph = new ThingGraph();
             var prov = new Limada.Data.Db4oThingGraphProvider();
-            prov.Open(DataBaseInfo.FromFileName(TestLocations.GraphtestDir + "DocumentTest.limo"));
+            prov.Open(IoInfo.FromFileName(TestLocations.GraphtestDir + "DocumentTest.limo"));
             thingGraph = prov.Data;
 
 
@@ -188,7 +188,7 @@ namespace Limada.Tests.Schemata {
             
             foreach (var file in Directory.GetFiles(path).OrderBy(f => f)) {
                 if (imageStreamProvider.Supports(Path.GetExtension(file))) {
-                    var stream = imageStreamProvider.Open(IOUtils.UriFromFileName(file));
+                    var stream = imageStreamProvider.ContentOf(IOUtils.UriFromFileName(file));
                     if (stream != null && stream.Data != null) {
                         docSchema.CreatePage(graph, document, stream, nr);
                         nr++;

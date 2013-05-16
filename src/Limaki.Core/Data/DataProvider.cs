@@ -27,11 +27,11 @@ namespace Limaki.Data {
         public abstract bool Saveable { get; }
         public abstract bool Readable { get; }
        
-        public abstract void Open(DataBaseInfo FileName);
+        public abstract void Open(IoInfo fileName);
         public abstract void Open();
         public abstract void Save();
-        public abstract void SaveAs(T source, DataBaseInfo FileName);
-        public abstract void Merge (T source, T target);
+        public abstract void SaveAs(T source, IoInfo fileName);
+        public abstract void Merge (T source, T sink);
         public abstract void Close();
         public abstract void SaveCurrent();
         public abstract IDataProvider<T> Clone();

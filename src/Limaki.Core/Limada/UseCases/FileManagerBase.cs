@@ -53,11 +53,11 @@ namespace Limada.Usecases {
             }
         }
 
-		public virtual IThingGraphProvider GetThingGraphProvider(DataBaseInfo info) {
+		public virtual IThingGraphProvider GetThingGraphProvider(IoInfo info) {
             return ThingGraphProviderManager.GetProvider(info) as IThingGraphProvider;
         }
 
-		public virtual bool OpenFile(DataBaseInfo fileName) {
+		public virtual bool OpenFile(IoInfo fileName) {
             IThingGraphProvider provider = GetThingGraphProvider(fileName);
             bool result = false;
             if (provider != null) {
@@ -80,7 +80,7 @@ namespace Limada.Usecases {
                 Progress(m,i,count);
         }
 
-        public virtual IDataProvider<IEnumerable<IThing>> GetThingsProvider (DataBaseInfo info) {
+        public virtual IDataProvider<IEnumerable<IThing>> GetThingsProvider (IoInfo info) {
             return ThingsProviderManager.GetProvider(info);
         }
 	}

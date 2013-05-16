@@ -87,7 +87,7 @@ namespace Limada.VisualThings {
             });
         }
 
-        public bool Open(DataBaseInfo FileName) {
+        public bool Open(IoInfo FileName) {
             return Open(() => {
                 Provider.Open(FileName);
             });
@@ -139,7 +139,7 @@ namespace Limada.VisualThings {
         }
 
 
-        public virtual void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene, DataBaseInfo fileName) {
+        public virtual void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene, IoInfo fileName) {
             var provider = Provider.Clone();
             provider.Open (fileName);
             ExportTo(scene, provider.Data);
@@ -156,7 +156,7 @@ namespace Limada.VisualThings {
             this.ThingGraph = null;
         }
 
-        public void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IDataProvider<IEnumerable<IThing>> exporter, DataBaseInfo fileName) {
+        public void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IDataProvider<IEnumerable<IThing>> exporter, IoInfo fileName) {
             var visuals = scene.Selected.Elements;
             if (visuals.Count() == 0)
                 visuals = scene.Graph.Where(v => !(v is IVisualEdge));

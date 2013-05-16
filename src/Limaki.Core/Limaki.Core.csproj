@@ -193,7 +193,7 @@
     <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\ZipConstants.cs" />
     <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\ZipException.cs" />
     <Compile Include="Context\LimakiCoreContextRecourceLoader.cs" />
-    <Compile Include="Data\DataBaseInfo.cs" />
+    <Compile Include="Data\IOInfo.cs" />
     <Compile Include="Data\DataProviders.cs" />
     <Compile Include="Data\DbGraph.cs" />
     <Compile Include="Data\GatewayBase.cs" />
@@ -219,6 +219,7 @@
     <Compile Include="Graphs\Graph.cs" />
     <Compile Include="Graphs\GraphBase.cs" />
     <Compile Include="Graphs\GraphChangeType.cs" />
+    <Compile Include="Graphs\GraphFocus.cs" />
     <Compile Include="Graphs\GraphMapper.cs" />
     <Compile Include="Graphs\GraphMapperOneTwo.cs" />
     <Compile Include="Graphs\GraphModelAdapter.cs" />
@@ -256,7 +257,7 @@
     <Compile Include="Limada\Model\ThingIdSerializer.cs" />
     <Compile Include="Limada\Model\ThingSerializer.cs" />
     <Compile Include="Limada\Model\ThingSerializerBase.cs" />
-    <Compile Include="Limada\Model\ThingStreamFacade.cs" />
+    <Compile Include="Limada\Model\ThingContentFacade.cs" />
     <Compile Include="Limada\Model\Thing_T.cs" />
     <Compile Include="Limada\Schemata\CommonSchema.cs" />
     <Compile Include="Limada\Schemata\DocumentSchema.cs" />
@@ -270,11 +271,19 @@
     <Compile Include="Limada\Data\ThingGraphProvider.cs" />
     <Compile Include="Limada\UseCases\AppResourceLoader.cs" />
     <Compile Include="Limada\UseCases\DataProviderManager.cs" />
+    <Compile Include="Model\Content.IO\ContentInfoSink.cs" />
+    <Compile Include="Model\Content.IO\ContentStreamSink.cs" />
+    <Compile Include="Model\Content.IO\HtmlContent.cs" />
+    <Compile Include="Model\Content.IO\ImageContent.cs" />
+    <Compile Include="Model\Content.IO\InOutMode.cs" />
+    <Compile Include="Model\Content.IO\ISink.cs" />
+    <Compile Include="Model\Content.IO\PdfContentInfo.cs" />
+    <Compile Include="Model\Content.IO\SinkExtensions.cs" />
     <Compile Include="Model\Edge.cs" />
-    <Compile Include="Model\GraphItem.cs" />
+    <Compile Include="Model\GraphEntity.cs" />
     <Compile Include="Model\Content\CompressionType.cs" />
     <Compile Include="Model\Content\ICompressionWorker.cs" />
-    <Compile Include="Model\Content\IConverter.cs" />
+    <Compile Include="Model\Content\ITextConverter.cs" />
     <Compile Include="Model\Content\IProxy.cs" />
     <Compile Include="Model\Content\IRealData.cs" />
     <Compile Include="Model\Content\Magic.cs" />

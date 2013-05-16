@@ -105,9 +105,9 @@ namespace Limada.Tests.ThingGraphs {
         [Test]
         public virtual void StorePerformanceTest() {
             IThingGraph target = this.Graph;
-            IGraphPair<IGraphItem, IThing, IGraphEdge, ILink> graphPair =
-                  new GraphPair<IGraphItem, IThing, IGraphEdge, ILink>(
-                      new Limaki.Graphs.Graph<IGraphItem, IGraphEdge>(), 
+            IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> graphPair =
+                  new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
+                      new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge>(), 
                       target, 
                       new GraphItem2ThingAdapter());
 
@@ -176,35 +176,35 @@ namespace Limada.Tests.ThingGraphs {
             IThing testThing3 = factory.Edge[1]; // Programming->Language
             IThing testThing4 = factory.Node[1]; // Programming
 
-            IGraphPair<IGraphItem, IThing, IGraphEdge, ILink> pair =
-                new GraphPair<IGraphItem, IThing, IGraphEdge, ILink>(
-                    new Limaki.Graphs.Graph<IGraphItem, IGraphEdge>(),
+            IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> pair =
+                new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
+                    new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge>(),
                     target,
                     new GraphItem2ThingAdapter()
                     );
 
             pair.Mapper.ConvertTwoOne();
 
-            IGraphItem testItem = pair.Get(testThing);
-            IGraphItem testItem4 = pair.Get(testThing4);
+            IGraphEntity testEntity = pair.Get(testThing);
+            IGraphEntity testItem4 = pair.Get(testThing4);
 
             Assert.IsTrue(target.Contains(testThing));
 
             ICollection<IGraphEdge> deleteCollection =
-                new List<IGraphEdge>(pair.PostorderTwig(testItem));
+                new List<IGraphEdge>(pair.PostorderTwig(testEntity));
 
             foreach (IGraphEdge link in deleteCollection) {// Java
                 pair.Remove(link);
             }
 
-            pair.Remove(testItem); // Java
+            pair.Remove(testEntity); // Java
 
 
             foreach (IGraphEdge link in deleteCollection) {// Java
                 pair.Remove(link);
             }
 
-            pair.Remove(testItem); // Java
+            pair.Remove(testEntity); // Java
 
             Walker<IThing, ILink> walker1 = new Walker<IThing, ILink>(pair.Two);
             foreach (LevelItem<IThing> item in walker1.DeepWalk(testThing4, 0)) {
@@ -217,14 +217,14 @@ namespace Limada.Tests.ThingGraphs {
                 }
             }
 
-            Walker<IGraphItem, IGraphEdge> walker = new Walker<IGraphItem, IGraphEdge>(pair);
-            foreach (LevelItem<IGraphItem> item in walker.DeepWalk(testItem4, 0)) {
-                IGraphItem thing = item.Node;
-                Assert.AreNotEqual(thing, testItem);
+            Walker<IGraphEntity, IGraphEdge> walker = new Walker<IGraphEntity, IGraphEdge>(pair);
+            foreach (LevelItem<IGraphEntity> item in walker.DeepWalk(testItem4, 0)) {
+                IGraphEntity thing = item.Node;
+                Assert.AreNotEqual(thing, testEntity);
                 if (thing is IGraphEdge) {
                     IGraphEdge link = (IGraphEdge)thing;
-                    Assert.AreNotEqual(link.Root, testItem);
-                    Assert.AreNotEqual(link.Leaf, testItem);
+                    Assert.AreNotEqual(link.Root, testEntity);
+                    Assert.AreNotEqual(link.Leaf, testEntity);
                 }
             }
             ReportSummary();

@@ -26,10 +26,10 @@ namespace Limada.Data.db4o {
                 Log.WriteLine(message);
         }
 
-        public void ReadAndSaveAs(DataBaseInfo file, DataBaseInfo newDb, bool repair) {
+        public void ReadAndSaveAs(IoInfo file, IoInfo newDb, bool repair) {
             IThingGraphProvider target = null;
             if (repair) {
-                var newFile = DataBaseInfo.ToFileName(newDb);
+                var newFile = IoInfo.ToFileName(newDb);
                 if (File.Exists(newFile))
                     File.Delete(newFile);
 
@@ -42,7 +42,7 @@ namespace Limada.Data.db4o {
             RawImport(file, target, repair);
         }
 
-        public void RawImport(DataBaseInfo source, IDataProvider<IThingGraph> target, bool repair) {
+        public void RawImport(IoInfo source, IDataProvider<IThingGraph> target, bool repair) {
             IThingGraph graph = null;
             var links = new List<ILink>();
             if (repair) {
@@ -150,7 +150,7 @@ namespace Limada.Data.db4o {
             gateway.Close();
             ReportDetail("done:\t");
             if (this.Log != null) {
-                var logfilename = DataBaseInfo.ToFileName(source) + ".log";
+                var logfilename = IoInfo.ToFileName(source) + ".log";
                 if (File.Exists(logfilename))
                     File.Delete(logfilename);
                 var logfile = new StreamWriter(logfilename);
@@ -177,7 +177,7 @@ namespace Limada.Data.db4o {
             if (gateway == null)
                 return;
 
-            ReportDetail(gateway.DataBaseInfo.ToString());
+            ReportDetail(gateway.IoInfo.ToString());
 
             var session = gateway.Session;
 

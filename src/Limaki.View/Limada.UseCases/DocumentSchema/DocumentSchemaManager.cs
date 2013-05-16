@@ -43,7 +43,7 @@ namespace Limada.Usecases {
             var imageStreamProvider = new ImageContentProvider();
             if (pageThing != null && imageStreamProvider.Supports(pageThing.StreamType)) {
                 try {
-                    result = ThingStreamFacade.GetContent(pageThing);
+                    result = ThingContentFacade.ConentOf(pageThing);
                 } finally {
                     pageThing.ClearRealSubject(true);
                 }

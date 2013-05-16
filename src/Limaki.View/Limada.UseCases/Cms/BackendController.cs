@@ -33,7 +33,7 @@ namespace Limada.Usecases.Cms {
             }
         }
 
-        public virtual DataBaseInfo DataBaseInfo { get; set; }
+        public virtual IoInfo IoInfo { get; set; }
         public IThingGraphProvider Provider { get; set; }
 
         public void Open () {
@@ -41,24 +41,24 @@ namespace Limada.Usecases.Cms {
                 Trace.WriteLine (string.Format ("Provider already opened {0}", Provider.Description));
                 var conn = Provider.Data as IGatewayConnection;
                 if (conn != null) {
-                    Trace.WriteLine (string.Format ("Connection already opened {0}/{1}", conn.Gateway.IsOpen (), DataBaseInfo.ToFileName (conn.Gateway.DataBaseInfo)));
+                    Trace.WriteLine (string.Format ("Connection already opened {0}/{1}", conn.Gateway.IsOpen (), IoInfo.ToFileName (conn.Gateway.IoInfo)));
                 }
             } else {
                 var fileManager = new FileManagerBase ();
                 try {
-                    if (fileManager.OpenFile (DataBaseInfo)) {
-                        Trace.WriteLine (string.Format ("DataBase opened {0}", DataBaseInfo.ToFileName (DataBaseInfo)));
+                    if (fileManager.OpenFile (IoInfo)) {
+                        Trace.WriteLine (string.Format ("DataBase opened {0}", IoInfo.ToFileName (IoInfo)));
                         Provider = fileManager.ThingGraphProvider;
                         var graph = new SchemaThingGraph (Provider.Data);
                         PrepareGraph (graph);
                         _thingGraph = graph;
                     } else {
-                        throw new Exception ("Database not found: " + DataBaseInfo.ToString ());
+                        throw new Exception ("Database not found: " + IoInfo.ToString ());
                     }
                 } catch (Exception e) {
                     Trace.WriteLine (e.Message);
                     _thingGraph = new ThingGraph ();
-                    Trace.WriteLine (string.Format ("Empty Graph created", DataBaseInfo.ToFileName (DataBaseInfo)));
+                    Trace.WriteLine (string.Format ("Empty Graph created", IoInfo.ToFileName (IoInfo)));
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace Limada.Usecases.Cms {
         public void Close () {
             if (Provider != null) {
                 Provider.Close ();
-                Trace.WriteLine (string.Format ("DataBase closed {0}", DataBaseInfo.ToFileName (DataBaseInfo)));
+                Trace.WriteLine (string.Format ("DataBase closed {0}", IoInfo.ToFileName (IoInfo)));
                 Provider = null;
             }
         }
@@ -193,7 +193,7 @@ namespace Limada.Usecases.Cms {
             if (thing == null)
                 return null;
 
-            var result = new StreamContent (ThingStreamFacade.GetContent (ThingGraph, thing));
+            var result = new StreamContent (ThingContentFacade.ConentOf (ThingGraph, thing));
             result.Source = thing.Id.ToString ("X16");
 
             var providers = Registry.Pool.TryGetCreate<ContentProviders> ();
@@ -243,7 +243,7 @@ namespace Limada.Usecases.Cms {
                 if (thing.StreamType == ContentTypes.RTF) {
 
                     thing.DeCompress ();
-                    var converter = Registry.Factory.Create<IConverter>();
+                    var converter = Registry.Factory.Create<ITextConverter>();
                     converter.Source = thing.Data;
                     converter.SourceType = ContentTypes.RTF;
                     converter.Read ();

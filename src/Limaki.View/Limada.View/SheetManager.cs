@@ -148,7 +148,7 @@ namespace Limada.View {
 
             if (thing is IStreamThing || thing == null){
                 var factory = target.ThingFactory();
-                var result =  new ThingStreamFacade(factory).SetStream(thingGraph, thing, content)!=null;
+                var result =  new ThingContentFacade(factory).AssignContent(thingGraph, thing, content)!=null;
                 info.State.Hollow = false;
                 info.State.Clean = true;
                 return result;
@@ -185,7 +185,7 @@ namespace Limada.View {
                 content.Data.Position = 0;
                 content.Description = name;
                 
-                thing = new VisualThingStreamHelper().SetStream(scene.Graph, thing, content);
+                thing = new VisualThingContentFacade().AssignContent(scene.Graph, thing, content);
                 
                 result = RegisterSheet(thing.Id, name);
                 result.State.Hollow = false;

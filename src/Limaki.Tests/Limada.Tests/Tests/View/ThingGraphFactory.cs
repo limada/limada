@@ -14,10 +14,10 @@ namespace Limada.Tests.Model {
     }
 
 
-    public class ThingGraphFactory<T> : GenericBiGraphFactory<IThing, IGraphItem, ILink, IGraphEdge> 
-    where T : IGraphFactory<IGraphItem,IGraphEdge>, new() {
+    public class ThingGraphFactory<T> : GenericBiGraphFactory<IThing, IGraphEntity, ILink, IGraphEdge> 
+    where T : IGraphFactory<IGraphEntity,IGraphEdge>, new() {
         public ThingGraphFactory():base(new T(),new GraphItem2ThingAdapter()) {}
-        public override IGraphFactory<IGraphItem, IGraphEdge> Factory {
+        public override IGraphFactory<IGraphEntity, IGraphEdge> Factory {
             get {
                 if (_factory == null) {
                     _factory = new T();

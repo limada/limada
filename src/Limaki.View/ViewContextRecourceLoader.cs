@@ -46,7 +46,7 @@ namespace Limaki.View {
             var styleSheets = context.Pool.TryGetCreate<StyleSheets>();
             styleSheets.Init();
 
-            GraphMapping.ChainGraphMapping<GraphItemVisualMapping>(context);
+            GraphMapping.ChainGraphMapping<GraphVisualEntityMapping>(context);
             GraphMapping.ChainGraphMapping<VisualThingGraphMapping>(context);
 
             var markerProcessor =

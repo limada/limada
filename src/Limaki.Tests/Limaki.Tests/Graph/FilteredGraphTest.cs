@@ -42,15 +42,15 @@ namespace Limaki.Tests.Sandbox.Graph {
 
         [Test]
         public void OnlyItemsInListTest() {
-            Set<IGraphItem> items = new Set<IGraphItem> ();
+            Set<IGraphEntity> items = new Set<IGraphEntity> ();
             GraphFactoryBase data = new BinaryTreeFactory ();
             data.Count = 1;
             data.Populate ();
 
-            FilteredGraph<IGraphItem, IGraphEdge> graph = 
-                new FilteredGraph<IGraphItem, IGraphEdge> (data.Graph);
+            FilteredGraph<IGraphEntity, IGraphEdge> graph = 
+                new FilteredGraph<IGraphEntity, IGraphEdge> (data.Graph);
             
-            graph.ItemFilter = delegate(IGraphItem item) {
+            graph.ItemFilter = delegate(IGraphEntity item) {
                                    return items.Contains(item);
                                };
 
@@ -64,7 +64,7 @@ namespace Limaki.Tests.Sandbox.Graph {
             items.Add(data.Node[1]);
             items.Add(data.Node[2]);
 
-            this.ReportDetail(GraphTestUtils.ReportGraph<IGraphItem, IGraphEdge> (graph, "Filtered Graph"));
+            this.ReportDetail(GraphTestUtils.ReportGraph<IGraphEntity, IGraphEdge> (graph, "Filtered Graph"));
 
         }
     }

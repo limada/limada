@@ -162,7 +162,7 @@ namespace Limaki.Net.WebProxyServer {
                 if (ContentGetter != null) {
                     content = ContentGetter(url);
                 }
-                //content = GetContent(url);
+                //content = ConentOf(url);
                 //if (content != null)
                 //    RemoveContent(url);
                 if (content == null) {

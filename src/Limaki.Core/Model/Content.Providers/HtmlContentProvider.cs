@@ -24,7 +24,7 @@ using Limaki.Model.Content;
 namespace Limaki.Model.Content.Providers {
 
     public class HtmlContentProvider : ContentProvider {
-        static long XHTML = 0x280efaf080c35e30;
+        public static long XHTML = unchecked((long)0x280efaf080c35e30);
 
         ContentInfo[] _supportedContents =
             new ContentInfo[]{

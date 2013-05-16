@@ -50,11 +50,11 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public virtual void Test() {
-            ReportDetail("ThingStreamFacade");
+            ReportDetail("ThingContentFacade");
             IThingGraph graph = this.Graph;
-            ThingStreamFacade thingStreamFacade = new ThingStreamFacade ();
+            ThingContentFacade thingContentFacade = new ThingContentFacade ();
            
-            IThing thing = thingStreamFacade.CreateAndAdd (
+            IThing thing = thingContentFacade.CreateAndAdd (
                 graph, new Content<Stream>(stream,CompressionType.None));
 
             Assert.IsInstanceOfType (typeof (Thing), thing);

@@ -19,17 +19,17 @@ using Limaki.Graphs;
 using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
-    public abstract class GraphFactoryBase : GenericGraphFactory<IGraphItem, IGraphEdge> {
+    public abstract class GraphFactoryBase : GenericGraphFactory<IGraphEntity, IGraphEdge> {
         private int _start = 0;
         public int Start {
             get { return _start; }
             set { _start = value; }
         }
 
-        public override IGraph<IGraphItem, IGraphEdge> Graph {
+        public override IGraph<IGraphEntity, IGraphEdge> Graph {
             get {
                 if (base.Graph == null) {
-                    base.Graph = new Graph<IGraphItem, IGraphEdge>();
+                    base.Graph = new Graph<IGraphEntity, IGraphEdge>();
                 }
                 return base.Graph;
             }
@@ -41,19 +41,19 @@ namespace Limaki.Tests.Graph.Model {
             Populate (this.Graph);
         }
 
-        public virtual void MakeEdgeStrings(IGraph<IGraphItem, IGraphEdge> Graph) {
+        public virtual void MakeEdgeStrings(IGraph<IGraphEntity, IGraphEdge> Graph) {
             foreach(IGraphEdge edge in Graph.Edges()) {
                 if (edge.Data is string) {
-                    edge.Data = GraphExtensions.EdgeString<IGraphItem, IGraphEdge> (edge);
+                    edge.Data = GraphExtensions.EdgeString<IGraphEntity, IGraphEdge> (edge);
                 }
             }
         }
 
-        public override void Populate(IGraph<IGraphItem, IGraphEdge> Graph) {
+        public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph) {
         
-            IGraphItem lastNode1 = null;
-            IGraphItem lastNode2 = null;
-            IGraphItem lastNode3 = null;
+            IGraphEntity lastNode1 = null;
+            IGraphEntity lastNode2 = null;
+            IGraphEntity lastNode3 = null;
             for (int i = 0; i < Count; i++) {
                 if (i > 0) {
                     lastNode1 = Node[1];
@@ -77,40 +77,40 @@ namespace Limaki.Tests.Graph.Model {
 
         }
 
-        public virtual void Populate(IGraph<IGraphItem, IGraphEdge> Graph, int start) {
-            var item = new GraphItem<int>((start++));
+        public virtual void Populate(IGraph<IGraphEntity, IGraphEdge> Graph, int start) {
+            var item = new GraphEntity<int>((start++));
             Graph.Add(item);
             Node[1] = item;
 
-            item = new GraphItem<int>(( start++ ));
+            item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
             Node[2] = item;
 
-            item = new GraphItem<int>(( start++ ));
+            item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
             Node[3] = item;
 
-            item = new GraphItem<int>(( start++ ));
+            item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
             Node[4] = item;
 
-            item = new GraphItem<int>(( start++ ));
+            item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
             Node[5] = item;
 
-            item = new GraphItem<int>(( start++ ));
+            item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
             Node[6] = item;
 
-            item = new GraphItem<int>(( start++ ));
+            item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
             Node[7] = item;
 
-            item = new GraphItem<int>(( start++ ));
+            item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
             Node[8] = item;
 
-            item = new GraphItem<int>(( start++ ));
+            item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
             Node[9] = item;
             this.Start = start;

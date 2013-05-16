@@ -23,17 +23,17 @@ namespace Limaki.Tests.Graph.Model {
             get { return "Word Game"; }
         }
 
-        public override void Populate(IGraph<IGraphItem, IGraphEdge> Graph, int start) {
-            GraphItem<string> node = null;
+        public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph, int start) {
+            GraphEntity<string> node = null;
             GraphEdge edge = null;
 
 
-            node = new GraphItem<string>("Tags");
+            node = new GraphEntity<string>("Tags");
             Graph.Add(node);
             Node[1] = node;
 
 
-            node = new GraphItem<string>("Word");
+            node = new GraphEntity<string>("Word");
             Graph.Add(node);
             Node[2] = node;
 
@@ -42,7 +42,7 @@ namespace Limaki.Tests.Graph.Model {
             Edge[1] = edge;
 
 
-            node = new GraphItem<string>("Game");
+            node = new GraphEntity<string>("Game");
             Graph.Add(node);
             Node[3] = node;
 
@@ -50,7 +50,7 @@ namespace Limaki.Tests.Graph.Model {
             Graph.Add(edge);
             Edge[2] = edge;
 
-            node = new GraphItem<string>("Something");
+            node = new GraphEntity<string>("Something");
             Graph.Add(node);
             Node[4] = node;
 

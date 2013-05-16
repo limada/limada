@@ -83,7 +83,7 @@ namespace Limaki.Data {
         }
 
         public override void ChangeEdge(TEdge edge, TItem newItem, bool changeRoot) {
-            TItem oldItem = default(TItem);
+            var oldItem = default(TItem);
             if (changeRoot) {
                 oldItem = edge.Root;
                 edge.Root = newItem;
@@ -136,8 +136,8 @@ namespace Limaki.Data {
         }
 
         public override IEnumerable<KeyValuePair<TItem, ICollection<TEdge>>> ItemsWithEdges() {
-            foreach (TItem item in this) {
-                ICollection<TEdge> result = Edges(item);
+            foreach (var item in this) {
+                var result = Edges(item);
                 if (result.Count != 0) {
                     yield return new KeyValuePair<TItem, ICollection<TEdge>>(item, result);
                 }
@@ -186,9 +186,9 @@ namespace Limaki.Data {
                 RemoveInternal((TEdge)(object)item);
             }
             try {
-                bool contained = Contains(item);
+                var contained = Contains(item);
                 if (contained || !ItemIsStorableClazz) {
-                    foreach (TEdge edge in DepthFirstTwig(item)) {
+                    foreach (var edge in DepthFirstTwig(item)) {
                         if (Remove(edge))
                             result = true; // Attention! lazy evaluation!
                     }

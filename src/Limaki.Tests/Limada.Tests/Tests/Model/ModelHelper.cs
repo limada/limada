@@ -10,12 +10,12 @@ using Limaki.Visuals;
 namespace Limada.Tests.Model {
     public static class ModelHelper {
         public static VisualThingGraph GetSourceGraph<TFactory>()
-            where TFactory : GenericGraphFactory<IGraphItem, IGraphEdge>, new() {
+            where TFactory : GenericGraphFactory<IGraphEntity, IGraphEdge>, new() {
             return GetSourceGraph<TFactory>(1);
         }
 
         public static VisualThingGraph GetSourceGraph<TFactory>(int count)
-            where TFactory : GenericGraphFactory<IGraphItem, IGraphEdge>, new() {
+            where TFactory : GenericGraphFactory<IGraphEntity, IGraphEdge>, new() {
             var mock = new Mock<ProgrammingLanguageFactory>();
 
             mock.Factory.Count = count;

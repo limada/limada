@@ -26,22 +26,22 @@ namespace Limaki.Tests.Visuals {
             }
         }
 
-        public override void Populate(IGraph<IGraphItem, IGraphEdge> scene, int start) {
-            var item = new GraphItem<string>("first node");
+        public override void Populate(IGraph<IGraphEntity, IGraphEdge> scene, int start) {
+            var item = new GraphEntity<string>("first node");
             scene.Add(item);
             Node[1] = item;
 
 
-            item = new GraphItem<string>("second node");
+            item = new GraphEntity<string>("second node");
             scene.Add(item);
             Node[2] = item;
 
 
-            item = new GraphItem<string>("third node");
+            item = new GraphEntity<string>("third node");
             scene.Add(item);
             Node[3] = item;
 
-            item = new GraphItem<string>("fourth node");
+            item = new GraphEntity<string>("fourth node");
             scene.Add(item);
             Node[4] = item;
 
@@ -60,20 +60,20 @@ namespace Limaki.Tests.Visuals {
 
             // second lattice
 
-            item = new GraphItem<string>("fifth node");
+            item = new GraphEntity<string>("fifth node");
             scene.Add(item);
             Node[5] = item;
 
-            item = new GraphItem<string>("sixth node");
+            item = new GraphEntity<string>("sixth node");
             scene.Add(item);
             Node[6] = item;
 
 
-            item = new GraphItem<string>("seventh node");
+            item = new GraphEntity<string>("seventh node");
             scene.Add(item);
             Node[7] = item;
 
-            item = new GraphItem<string>("eigth node");
+            item = new GraphEntity<string>("eigth node");
             scene.Add(item);
             Node[8] = item;
 

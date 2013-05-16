@@ -23,17 +23,17 @@ namespace Limaki.Tests.Graph.Model {
             get { return "Programming Language"; }
         }
 
-        public override void Populate(IGraph<IGraphItem, IGraphEdge> Graph, int start) {
-            GraphItem<string> node = null;
+        public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph, int start) {
+            GraphEntity<string> node = null;
             GraphEdge edge = null;
 
 
-            node = new GraphItem<string>("Programming");
+            node = new GraphEntity<string>("Programming");
             Graph.Add(node);
             Node[1] = node;
 
 
-            node = new GraphItem<string>("Language");
+            node = new GraphEntity<string>("Language");
             Graph.Add(node);
             Node[2] = node;
 
@@ -42,7 +42,7 @@ namespace Limaki.Tests.Graph.Model {
             Edge[1] = edge;
 
 
-            node = new GraphItem<string>("Java");
+            node = new GraphEntity<string>("Java");
             Graph.Add(node);
             Node[3] = node;
 
@@ -50,7 +50,7 @@ namespace Limaki.Tests.Graph.Model {
             Graph.Add(edge);
             Edge[2] = edge;
 
-            node = new GraphItem<string>(".NET");
+            node = new GraphEntity<string>(".NET");
             Graph.Add(node);
             Node[4] = node;
 
@@ -58,7 +58,7 @@ namespace Limaki.Tests.Graph.Model {
             Graph.Add(edge);
             Edge[3] = edge;
 
-            node = new GraphItem<string>("Libraries");
+            node = new GraphEntity<string>("Libraries");
             Graph.Add(node);
             Node[5] = node;
 
@@ -66,7 +66,7 @@ namespace Limaki.Tests.Graph.Model {
             Graph.Add(edge);
             Edge[4] = edge;
 
-            node = new GraphItem<string>("Collections");
+            node = new GraphEntity<string>("Collections");
             Graph.Add(node);
             Node[6] = node;
 
@@ -74,7 +74,7 @@ namespace Limaki.Tests.Graph.Model {
             Graph.Add(edge);
             Edge[5] = edge;
 
-            node = new GraphItem<string>("List");
+            node = new GraphEntity<string>("List");
             Graph.Add(node);
             Node[7] = node;
 
@@ -86,7 +86,7 @@ namespace Limaki.Tests.Graph.Model {
             Graph.Add(edge);
             Edge[9] = edge;
 
-            node = new GraphItem<string>("IList");
+            node = new GraphEntity<string>("IList");
             Graph.Add(node);
             Node[8] = node;
 
@@ -101,9 +101,9 @@ namespace Limaki.Tests.Graph.Model {
         }
 
         public override void Populate() {
-            IGraphItem lastNode1 = null;
-            IGraphItem lastNode2 = null;
-            IGraphItem lastNode3 = null;
+            IGraphEntity lastNode1 = null;
+            IGraphEntity lastNode2 = null;
+            IGraphEntity lastNode3 = null;
             for (int i = 0; i < Count; i++) {
                 if (i > 0) {
                     lastNode1 = Node[1];

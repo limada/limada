@@ -9,20 +9,6 @@ namespace Limaki.Model.Content {
 
         public abstract IEnumerable<ContentInfo> SupportedContents { get; }
 
-        public abstract bool Saveable { get; }
-        public abstract bool Readable { get; }
-
-        public virtual Content<Stream> Open(Stream stream) {
-            var info = Info (stream);
-            if (info != null) {
-                return new Content<Stream>(
-                    stream,
-                    info.Compression,
-                    info.ContentType);
-            }
-            return null;
-        }
-
         public virtual ContentInfo Info(Stream stream) {
             return SupportedContents.Where(info => info.Magics != null)
                 .Where (info => info.Magics.Any (magic => HasMagic (stream, magic.Bytes, magic.Offset)))
@@ -50,55 +36,6 @@ namespace Limaki.Model.Content {
             return Info (something) != null;
         }
 
-
-        public virtual void Save(Content<Stream> data, Uri uri) {
-            if (Saveable && uri.IsFile) {
-                var filename = IOUtils.UriToFileName(uri);
-                var file = new FileStream(filename, FileMode.Create);
-                var target = new BufferedStream(file);
-                var bufferSize = 1024 * 1024;
-                var buffer = new byte[bufferSize];
-                var source = data.Data;
-                var oldPos = source.Position;
-                int readByte = 0;
-                int position = 0;
-
-                long endpos = source.Length - 1;
-                while (position < endpos) {
-                    readByte = source.Read(buffer, 0, bufferSize);
-                    target.Write(buffer, 0, readByte);
-                    position += readByte;
-                }
-
-                target.Flush();
-                target.Close();
-                source.Position = oldPos;
-            }
-        }
-
-
-        public virtual Content<Stream> Open(Uri uri) {
-            var result = default(Content<Stream>);
-            if (Readable && uri.IsFile) {
-                var filename = IOUtils.UriToFileName(uri);
-                var file = new FileStream(filename, FileMode.Open);
-
-                result = Open(file);
-
-                if (result != null) {
-                    if (result.Source == null)
-                        result.Source = uri.AbsoluteUri;
-                    if (result.Description == null)
-                        result.Description = uri.Segments[uri.Segments.Length - 1];
-                } else {
-                    file.Close();
-                }
-            }
-            return result;
-        }
-
-       
-
         protected virtual bool BuffersAreEqual(byte[] a, byte[] b) {
             if (a.Length != b.Length)
                 return false;
@@ -120,6 +57,65 @@ namespace Limaki.Model.Content {
             var result = BuffersAreEqual(magic, buffer);
             stream.Position = pos;
             return result;
+        }
+
+        public abstract bool Saveable { get; }
+        public abstract bool Readable { get; }
+
+        public virtual Content<Stream> ContentOf (Stream stream) {
+            var info = Info(stream);
+            if (info != null) {
+                return new Content<Stream>(
+                    stream,
+                    info.Compression,
+                    info.ContentType);
+            }
+            return null;
+        }
+
+        public virtual Content<Stream> ContentOf (Uri uri) {
+            var result = default(Content<Stream>);
+            if (Readable && uri.IsFile) {
+                var filename = IOUtils.UriToFileName(uri);
+                var file = new FileStream(filename, FileMode.Open);
+
+                result = ContentOf(file);
+
+                if (result != null) {
+                    if (result.Source == null)
+                        result.Source = uri.AbsoluteUri;
+                    if (result.Description == null)
+                        result.Description = uri.Segments[uri.Segments.Length - 1];
+                } else {
+                    file.Close();
+                }
+            }
+            return result;
+        }
+
+        public virtual void Write (Content<Stream> content, Uri uri) {
+            if (Saveable && uri.IsFile) {
+                var filename = IOUtils.UriToFileName(uri);
+                var file = new FileStream(filename, FileMode.Create);
+                var target = new BufferedStream(file);
+                var bufferSize = 1024 * 1024;
+                var buffer = new byte[bufferSize];
+                var source = content.Data;
+                var oldPos = source.Position;
+                int readByte = 0;
+                int position = 0;
+
+                long endpos = source.Length - 1;
+                while (position < endpos) {
+                    readByte = source.Read(buffer, 0, bufferSize);
+                    target.Write(buffer, 0, readByte);
+                    position += readByte;
+                }
+
+                target.Flush();
+                target.Close();
+                source.Position = oldPos;
+            }
         }
     }
 }

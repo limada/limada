@@ -15,12 +15,17 @@
 using Id = System.Int64;
 
 namespace Limaki.Model.Content {
-	
+
     public class Content {
-        public CompressionType Compression = CompressionType.None;
-        public Id StreamType = ContentTypes.Unknown;
-        public object Description=null;
-        public object Source=null;
+        public Content() {
+            Compression = CompressionType.None;
+            StreamType = ContentTypes.Unknown;
+        }
+
+        public CompressionType Compression { get; set; }
+        public Id StreamType { get; set; }
+        public object Description { get; set; }
+        public object Source { get; set; }
     }
 
     public class Content<T>:Content {

@@ -21,6 +21,7 @@ using System.Text;
 
 
 namespace Limaki.Model.Content {
+
     public interface IContentProvider {
 
         bool Supports(string extension);
@@ -33,13 +34,13 @@ namespace Limaki.Model.Content {
         ContentInfo Info (long streamType);
         ContentInfo Info (Stream stream);
 
-        Content<Stream> Open(Stream stream);
-        Content<Stream> Open(Uri uri);
+        Content<Stream> ContentOf(Stream stream);
+        Content<Stream> ContentOf(Uri uri);
         
         bool Readable { get; }
         bool Saveable { get; }
 
-        void Save(Content<Stream> data, Uri uri);
+        void Write(Content<Stream> content, Uri uri);
 
     }
 

@@ -1,4 +1,5 @@
 ﻿namespace Limaki.Model.Content {
+
     public class ContentInfo {
 
         public ContentInfo(string streamTypeDescription, long streamType, string extension, string mimeType, CompressionType compression) {
@@ -21,5 +22,6 @@
         public string Extension { get; set; }
         public string MimeType { get; set; }
         public Magic[] Magics { get; set; }
+
     }
 }

@@ -34,14 +34,14 @@ namespace Limaki.Tests.Graph.Wrappers {
         /// </summary>
         [Test]
         public  void EdgeNotInView() {
-            IGraph<IGraphItem, IGraphEdge> data = new Graph<IGraphItem, IGraphEdge> ();
-            IGraph<IGraphItem, IGraphEdge> view = new Graph<IGraphItem, IGraphEdge>();
-            GraphView<IGraphItem, IGraphEdge> graphView = new GraphView<IGraphItem, IGraphEdge> (data,view);
+            IGraph<IGraphEntity, IGraphEdge> data = new Graph<IGraphEntity, IGraphEdge> ();
+            IGraph<IGraphEntity, IGraphEdge> view = new Graph<IGraphEntity, IGraphEdge>();
+            GraphView<IGraphEntity, IGraphEdge> graphView = new GraphView<IGraphEntity, IGraphEdge> (data,view);
             
 
-            IGraphItem one = new GraphItem<string> ("1");
-            IGraphItem two = new GraphItem<string>("2");
-            IGraphItem three = new GraphItem<string>("3");
+            IGraphEntity one = new GraphEntity<string> ("1");
+            IGraphEntity two = new GraphEntity<string>("2");
+            IGraphEntity three = new GraphEntity<string>("3");
             data.Add (one);
             data.Add(two);
             data.Add(three);
@@ -60,7 +60,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             Assert.IsFalse(graphView.Contains(linklink), "graphview must not contain linklink");
             view.Add (link);
 
-            IGraph<IGraphItem, IGraphEdge> graph = graphView;
+            IGraph<IGraphEntity, IGraphEdge> graph = graphView;
 
             foreach (IGraphEdge edge in graphView.Fork(three)) {
                 Assert.IsFalse(edge.Equals(linklink), "graphview must not contain linklink");
@@ -78,11 +78,11 @@ namespace Limaki.Tests.Graph.Wrappers {
 
         [Test]
         public void GraphViewAsGraphPairTest() {
-            var data = new Graph<IGraphItem, IGraphEdge>();
-            var view = new Graph<IGraphItem, IGraphEdge>();
-            var graphView = new GraphView<IGraphItem, IGraphEdge>(data, view);
+            var data = new Graph<IGraphEntity, IGraphEdge>();
+            var view = new Graph<IGraphEntity, IGraphEdge>();
+            var graphView = new GraphView<IGraphEntity, IGraphEdge>(data, view);
 
-            var graphView2 = new GraphView<IGraphItem, IGraphEdge>(graphView, view);
+            var graphView2 = new GraphView<IGraphEntity, IGraphEdge>(graphView, view);
 
             var result = graphView.RootSource();
             Assert.AreSame (graphView, result);

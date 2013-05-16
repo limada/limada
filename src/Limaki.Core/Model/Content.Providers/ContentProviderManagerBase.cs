@@ -26,7 +26,7 @@ namespace Limaki.Model.Content.Providers {
             return null;
         }
 
-        protected virtual ContentInfo GetStreamTypeInfo(Content stream) {
+        protected virtual ContentInfo GetContentInfo(Content stream) {
             var providers = Registry.Pool.TryGetCreate<ContentProviders>();
             var provider = providers.Find(stream.StreamType);
             if (provider != null) {
@@ -55,7 +55,7 @@ namespace Limaki.Model.Content.Providers {
             if (provider != null && provider.Readable) {
                 this.Close();
                 try {
-                    this.Content = provider.Open(uri);
+                    this.Content = provider.ContentOf(uri);
                     if (this.Content!=null){
                         OnImport(this.Content);
                     }	
@@ -76,7 +76,7 @@ namespace Limaki.Model.Content.Providers {
                 try {
                     // get the content:
                     if (this.Content != null) {
-                        provider.Save(this.Content, uri);
+                        provider.Write(this.Content, uri);
                         Close();
                         result = true;    
                     }

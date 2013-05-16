@@ -141,7 +141,7 @@ namespace Limaki.Usecases.Concept {
         public Content<Stream> ExtractContent() {
             var display = GetCurrentDisplay();
             if (display != null) {
-                return ContentProviderManager.ExtractContent(display.Data);
+                return ContentProviderManager.ContentOfFocused(display.Data);
             }
             return null;
         }

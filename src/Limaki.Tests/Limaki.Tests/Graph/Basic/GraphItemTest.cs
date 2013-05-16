@@ -21,22 +21,22 @@ using Limaki.Tests.Graph.Model;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Graph.Basic {
-    public class GraphItemDataFactory : BasicTestDataFactory<IGraphItem, IGraphEdge> {
+    public class GraphItemDataFactory : BasicTestDataFactory<IGraphEntity, IGraphEdge> {
         protected override void CreateItems() {
-            One = new GraphItem<string>("One");
-            Two = new GraphItem<string>("Two");
-            Three = new GraphItem<string>("Three");
-            Aside = new GraphItem<string>("Aside");
-            Single = new GraphItem<string>("Single");
+            One = new GraphEntity<string>("One");
+            Two = new GraphEntity<string>("Two");
+            Three = new GraphEntity<string>("Three");
+            Aside = new GraphEntity<string>("Aside");
+            Single = new GraphEntity<string>("Single");
         }
 
-        protected override IGraphEdge CreateEdge(IGraphItem root, IGraphItem leaf) {
+        protected override IGraphEdge CreateEdge(IGraphEntity root, IGraphEntity leaf) {
             return new GraphEdge(root, leaf);
         }
     }
 
-    public class GraphItemGraphTest : BasicGraphTests<IGraphItem, IGraphEdge> {
-        public override BasicTestDataFactory<IGraphItem, IGraphEdge> GetFactory() {
+    public class GraphItemGraphTest : BasicGraphTests<IGraphEntity, IGraphEdge> {
+        public override BasicTestDataFactory<IGraphEntity, IGraphEdge> GetFactory() {
             return new GraphItemDataFactory();
         }
         [Test]

@@ -14,6 +14,7 @@
 
 
 namespace Limaki.Graphs.Extensions {
+
     public interface IGraphMapping {
 
         IGraphMapping Next { get;set;}

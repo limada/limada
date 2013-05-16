@@ -223,11 +223,11 @@ namespace Limaki.Tests.UseCases {
                 sender.FileManager.Close();
                 sender.FileManager.ShowEmptyThingGraph();
                 var file = sender.FileManager.OpenFileDialog.FileName;
-                var fileInfo = DataBaseInfo.FromFileName(file);
+                var fileInfo = IoInfo.FromFileName(file);
                 if (fileInfo.Extension==".limo") {
                     var repairer = new global::Limada.Data.db4o.Db4oRepairer();
                     repairer.WriteDetail = (m)=> testMessage(repairer,m);
-                    var newFile = DataBaseInfo.FromFileName(file);
+                    var newFile = IoInfo.FromFileName(file);
                     newFile.Name = "repaired." + newFile.Name;
                     repairer.ReadAndSaveAs(fileInfo, newFile, true);
                     sender.FileManager.OpenFile(newFile);

@@ -17,10 +17,10 @@ using Limaki.Common.Collections;
 namespace Limaki.Data {
     public interface IGateway {
         void Close();
-        DataBaseInfo DataBaseInfo { get; set; }
+        IoInfo IoInfo { get; set; }
         string FileExtension { get; }
         bool IsOpen();
         bool IsClosed();
-        void Open( DataBaseInfo dataBaseInfo );
+        void Open( IoInfo ioInfo );
     }
 }

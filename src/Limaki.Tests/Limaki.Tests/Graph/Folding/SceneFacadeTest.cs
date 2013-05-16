@@ -27,7 +27,7 @@ using Limaki.Common.Collections;
 
 namespace Limaki.Tests.Graph.Wrappers {
     public abstract class SceneFacadeTest<TFactory> : DomainTest 
-        where TFactory : GenericGraphFactory<IGraphItem, IGraphEdge>, new() {
+        where TFactory : GenericGraphFactory<IGraphEntity, IGraphEdge>, new() {
 
         public void AreEquivalent(IEnumerable<IVisual> visuals, IGraph<IVisual, IVisualEdge> graph) {
             

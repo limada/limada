@@ -50,8 +50,8 @@ namespace Limaki.View.Xwt.Visuals {
     /// DragDrop support
     /// TODO: merge with XwtDragDropBackend
     /// </summary>
-    public class VisualsXwtragDrop : MouseDragActionBase, IXwtDragDropAction, IKeyAction, IDragDopActionPresenter {
-        public VisualsXwtragDrop ()
+    public class VisualsXwtDragDrop : MouseDragActionBase, IXwtDragDropAction, IKeyAction, IDragDopActionPresenter {
+        public VisualsXwtDragDrop ()
             : base() {
             this.Priority = ActionPriorities.SelectionPriority + 30;
             //dataObjectHandlerChain.InitDataObjectHanders();
@@ -59,7 +59,7 @@ namespace Limaki.View.Xwt.Visuals {
 
         ICamera camera = null;
         IXwtDragDopControl control = null;
-        public VisualsXwtragDrop (Func<IGraphScene<IVisual, IVisualEdge>> sceneHandler, IXwtDragDopControl control, ICamera camera, IGraphSceneLayout<IVisual, IVisualEdge> layout)
+        public VisualsXwtDragDrop (Func<IGraphScene<IVisual, IVisualEdge>> sceneHandler, IXwtDragDopControl control, ICamera camera, IGraphSceneLayout<IVisual, IVisualEdge> layout)
             : this() {
             this.control = control;
             this.camera = camera;

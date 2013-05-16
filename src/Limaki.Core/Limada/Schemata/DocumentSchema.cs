@@ -151,7 +151,7 @@ namespace Limada.Schemata {
             var page = Factory.CreateItem<Stream>(null) as IStreamThing;
             page.DataContainer = graph.DataContainer;
             if (stream != null) {
-                new ThingStreamFacade(Factory).SetStream(page, stream);
+                new ThingContentFacade(Factory).AssignContent(page, stream);
             }
             var pageEdge = Factory.CreateEdge(document, page, DocumentSchema.DocumentPage);
             graph.Add(pageEdge);
@@ -232,7 +232,7 @@ namespace Limada.Schemata {
 
             return Pages(graph, document)
                 .Where(page => page is IStreamThing)
-                .Select(page => ThingStreamFacade.GetContent(graph, page));
+                .Select(page => ThingContentFacade.ConentOf(graph, page));
         }
 
         #endregion

@@ -179,7 +179,7 @@
     <Compile Include="Limada.VisualThings\VisualThingGraphMapping.cs" />
     <Compile Include="Limada.VisualThings\VisualThingMarkerFacade.cs" />
     <Compile Include="Limada.VisualThings\VisualThingSerializer.cs" />
-    <Compile Include="Limada.VisualThings\VisualThingStreamHelper.cs" />
+    <Compile Include="Limada.VisualThings\VisualThingContentFacade.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\IWebBrowserBackendHandler.cs" />
     <Compile Include="Limaki.View\Clipping\BoundsClipper.cs" />
     <Compile Include="Limaki.View\Clipping\ClipReceiver.cs" />
@@ -320,7 +320,7 @@
     <Compile Include="Limaki.Viewers\ContentViewer.cs" />
     <Compile Include="Limaki.Visuals\BruteForceIndex.cs" />
     <Compile Include="Limaki.Visuals\GraphItem2VisualAdapter.cs" />
-    <Compile Include="Limaki.Visuals\GraphItemVisualMapping.cs" />
+    <Compile Include="Limaki.Visuals\GraphVisualEntityMapping.cs" />
     <Compile Include="Limaki.Visuals\ISheetManager.cs" />
     <Compile Include="Limaki.Visuals\IVisual.cs" />
     <Compile Include="Limaki.Visuals\IVisualEdge.cs" />

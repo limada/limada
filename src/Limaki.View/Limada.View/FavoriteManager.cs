@@ -100,7 +100,7 @@ namespace Limada.View {
             var streamThing = thing as IStreamThing;
             try {
                 if (streamThing != null && streamThing.StreamType == ContentTypes.LimadaSheet) {
-                    var content = ThingStreamFacade.GetContent(thingGraph, streamThing);
+                    var content = ThingContentFacade.ConentOf(thingGraph, streamThing);
                     content.Source = streamThing.Id;
                     DisplaySheet(display, content);
                     return true;

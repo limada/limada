@@ -107,16 +107,16 @@ namespace Limada.Tests.Model {
 
         }
 
-        public void TestBinaryData( IGraphFactory<IGraphItem, IGraphEdge> data ) {
+        public void TestBinaryData( IGraphFactory<IGraphEntity, IGraphEdge> data ) {
             data.Count = 10;
             data.Populate();
             this.ReportDetail(data.GetType().FullName + "\t"+data.Count);
 
             ThingGraph thingGraph = new ThingGraph();
-            GraphMapper<IGraphItem,IThing,IGraphEdge,ILink> mapper =
-                new GraphMapper<IGraphItem, IThing, IGraphEdge, ILink>(
+            GraphMapper<IGraphEntity,IThing,IGraphEdge,ILink> mapper =
+                new GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink>(
                 data.Graph, thingGraph, new GraphItem2ThingAdapter());
-            TestMapper<IGraphItem,IThing,IGraphEdge,ILink>(data.Graph,thingGraph,mapper);
+            TestMapper<IGraphEntity,IThing,IGraphEdge,ILink>(data.Graph,thingGraph,mapper);
         }
 
         [Test]

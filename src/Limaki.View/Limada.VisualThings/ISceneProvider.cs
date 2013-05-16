@@ -29,13 +29,13 @@ namespace Limada.VisualThings {
     public interface ISceneProvider {
         IThingGraphProvider Provider { get; set; }
         IGraphScene<IVisual, IVisualEdge> Scene { get; set; }
-        bool Open(DataBaseInfo FileName);
+        bool Open(IoInfo FileName);
         bool Open ( Action openProvider );
         bool Open();
         void SaveCurrent();
         void Save();
-        void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene, DataBaseInfo FileName);
-        void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IDataProvider<IEnumerable<IThing>> exporter, DataBaseInfo fileName);
+        void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene, IoInfo FileName);
+        void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IDataProvider<IEnumerable<IThing>> exporter, IoInfo fileName);
         //bool SaveAs(DataBaseInfo FileName);
         void Close();
 

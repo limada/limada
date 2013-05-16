@@ -69,7 +69,7 @@
     <Compile Include="Playground\View\DragDrop.Xwt\TransferDataHandler.cs" />
     <Compile Include="Playground\View\DragDrop.Xwt\TransferDataSourceExensions.cs" />
     <Compile Include="Playground\View\DragDrop.Xwt\DragDropFacade.cs" />
-    <Compile Include="Playground\View\DragDrop.Swf\VisualsXwtragDrop.cs" />
+    <Compile Include="Playground\View\DragDrop.Swf\VisualsXwtDragDrop.cs" />
     <Compile Include="Playground\View\DragDrop.Xwt\VidgetBackendTransferDataSource.cs" />
     <Compile Include="Playground\View\DragDrop.Xwt\VisualsImageTransferDataHandler.cs" />
     <Compile Include="Playground\View\DragDrop.Xwt\VisualsTextTransferDataHandler.cs" />

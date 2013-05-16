@@ -21,8 +21,17 @@ using Limaki.Model.Content;
 using Limaki.Visuals;
 
 namespace Limada.VisualThings {
-    public class VisualThingStreamHelper {
-        public virtual IVisual CreateFromStream( IGraph<IVisual, IVisualEdge> graph, Content<Stream> content ) {
+
+    public class VisualThingContentFacade {
+
+        /// <summary>
+        /// creates a visual, backed by a
+        /// StreamThing, created and assigned with content
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public virtual IVisual VisualOfContent( IGraph<IVisual, IVisualEdge> graph, Content<Stream> content ) {
             
             IVisual result = null;
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
@@ -30,14 +39,22 @@ namespace Limada.VisualThings {
                 var thingGraph = graph.ThingGraph();
                 var factory = graph.ThingFactory();
                 
-                var thing = new ThingStreamFacade(factory).SetStream(thingGraph, null, content);
+                var thing = new ThingContentFacade(factory).AssignContent(thingGraph, null, content);
                 
                 result = sourceGraph.Get(thing);
             }
             return result;
         }
 
-        public IThing SetStream(IGraph<IVisual,IVisualEdge> graph, IThing thing, Content<Stream> content) {
+        /// <summary>
+        /// assigns a content to the 
+        /// thing (if its a StreamThing)
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="thing"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public IThing AssignContent(IGraph<IVisual,IVisualEdge> graph, IThing thing, Content<Stream> content) {
             var thingGraph = graph.ThingGraph();
             var factory = graph.ThingFactory();
             var streamThing = thing as IStreamThing;
@@ -45,14 +62,21 @@ namespace Limada.VisualThings {
                 throw new ArgumentException ("stream can not be set");
             }
 
-            return new ThingStreamFacade(factory).SetStream(thingGraph, streamThing, content);
+            return new ThingContentFacade(factory).AssignContent(thingGraph, streamThing, content);
         }
 
-        public Content<Stream> GetStream(IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
+        /// <summary>
+        /// gives back the content of the
+        /// visual if this is backed by a StreamThing
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="visual"></param>
+        /// <returns></returns>
+        public Content<Stream> ContentOf(IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
              if (sourceGraph != null) {
                  var thingGraph = graph.ThingGraph();
-                 return ThingStreamFacade.GetContent (
+                 return ThingContentFacade.ConentOf (
                      thingGraph,
                      sourceGraph.Get(visual));
              }

@@ -23,17 +23,17 @@ namespace Limaki.Tests.Graph.Model {
             get { return "GC John going to Boston"; }
         }
 
-        public override void Populate(IGraph<IGraphItem, IGraphEdge> Graph,int start) {
-            GraphItem<string> node = null;
+        public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph,int start) {
+            GraphEntity<string> node = null;
             GraphEdge edge = null;
 
 
-            node = new GraphItem<string>("Person");
+            node = new GraphEntity<string>("Person");
             Graph.Add(node);
             Node[1] = node;
 
 
-            node = new GraphItem<string>("John");
+            node = new GraphEntity<string>("John");
             Graph.Add(node);
             Node[2] = node;
 
@@ -42,11 +42,11 @@ namespace Limaki.Tests.Graph.Model {
             Edge[1] = edge;
 
 
-            node = new GraphItem<string>("City");
+            node = new GraphEntity<string>("City");
             Graph.Add(node);
             Node[3] = node;
 
-            node = new GraphItem<string>("Boston");
+            node = new GraphEntity<string>("Boston");
             Graph.Add(node);
             Node[4] = node;
 
@@ -54,7 +54,7 @@ namespace Limaki.Tests.Graph.Model {
             Graph.Add(edge);
             Edge[2] = edge;
 
-            node = new GraphItem<string>("Go");
+            node = new GraphEntity<string>("Go");
             Graph.Add(node);
             Node[5] = node;
 
@@ -69,7 +69,7 @@ namespace Limaki.Tests.Graph.Model {
             Graph.Add(edge);
             Edge[4] = edge;
 
-            node = new GraphItem<string>("Bus");
+            node = new GraphEntity<string>("Bus");
             Graph.Add(node);
             Node[6] = node;
 

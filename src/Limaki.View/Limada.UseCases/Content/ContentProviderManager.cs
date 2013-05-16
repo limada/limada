@@ -59,7 +59,7 @@ namespace Limada.Usecases {
                 DefaultDialogValues(SaveFileDialog);
                 this.Content = OnExport();
                 if (this.Content != null) {
-                    var info = GetStreamTypeInfo(this.Content);
+                    var info = GetContentInfo(this.Content);
                     if (info != null) {
                         SaveFileDialog.DefaultExt = info.Extension;
                         SaveFileDialog.FileName = this.Content.Description.ToString();
@@ -89,7 +89,7 @@ namespace Limada.Usecases {
 
         public void ImportContent(Content<Stream> content, IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             var graph = scene.Graph;
-            var thing = new VisualThingStreamHelper().CreateFromStream(graph, content);
+            var thing = new VisualThingContentFacade().VisualOfContent(graph, content);
             if (scene.Focused != null) {
                 SceneExtensions.PlaceVisual(scene, scene.Focused, thing, layout);
             } else {
@@ -97,10 +97,10 @@ namespace Limada.Usecases {
             }
         }
 
-        public Content<Stream> ExtractContent(IGraphScene<IVisual, IVisualEdge> scene) {
+        public Content<Stream> ContentOfFocused(IGraphScene<IVisual, IVisualEdge> scene) {
             var graph = scene.Graph;
             if (graph!=null && scene.Focused != null) {
-                return new VisualThingStreamHelper ().GetStream (graph,scene.Focused);
+                return new VisualThingContentFacade ().ContentOf (graph,scene.Focused);
             }
             return null;
         }

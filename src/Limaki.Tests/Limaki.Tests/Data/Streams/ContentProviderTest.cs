@@ -47,7 +47,7 @@ namespace Limaki.Tests.Data.Streams {
             var uri = IOUtils.UriFromFileName(fileName);
             var content = default(Content<Stream>);
             try {
-                content = provider.Open(uri);
+                content = provider.ContentOf(uri);
                 Assert.IsNotNull(content);
                 Assert.AreNotEqual(content.Data.Length, 0);
             } finally {

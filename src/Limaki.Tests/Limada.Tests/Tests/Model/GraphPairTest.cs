@@ -23,27 +23,27 @@ using NUnit.Framework;
 
 namespace Limada.Tests.Model {
     public class GraphPairWithFactoryTest : DomainTest {
-        public void TestGraphPair(IGraphFactory<IGraphItem, IGraphEdge> source, ThingGraph target) {
+        public void TestGraphPair(IGraphFactory<IGraphEntity, IGraphEdge> source, ThingGraph target) {
             source.Count = 10;
             source.Populate();
             this.ReportDetail(source.GetType().FullName + "\t" + source.Count);
 
-            IGraphPair<IGraphItem, IThing, IGraphEdge, ILink> graphPair =
-                new GraphPair<IGraphItem, IThing, IGraphEdge, ILink>(
+            IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> graphPair =
+                new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                 source.Graph, 
                 target, 
                 new GraphItem2ThingAdapter());
 
-            GraphMapper<IGraphItem, IThing, IGraphEdge, ILink> mapper = graphPair.Mapper;
+            GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink> mapper = graphPair.Mapper;
             mapper.ConvertOneTwo();
 
-            MapperTester<IGraphItem, IThing, IGraphEdge, ILink>
-                convertionTesterOne = new MapperTester<IGraphItem, IThing, IGraphEdge, ILink>();
+            MapperTester<IGraphEntity, IThing, IGraphEdge, ILink>
+                convertionTesterOne = new MapperTester<IGraphEntity, IThing, IGraphEdge, ILink>();
             mapper.ConvertOneTwo();
             convertionTesterOne.ProveConversion(graphPair.One, graphPair.Two, mapper.Get);
 
-            IGraphItem newItem = new GraphItem<string>("new");
-            graphPair.Add(newItem);
+            IGraphEntity newEntity = new GraphEntity<string>("new");
+            graphPair.Add(newEntity);
             convertionTesterOne.ProveConversion(graphPair.One, graphPair.Two, mapper.Get);
 
         }
@@ -60,23 +60,23 @@ namespace Limada.Tests.Model {
 
     public class GraphPairTest : DomainTest {
 
-        public IGraphPair<IGraphItem, IThing, IGraphEdge, ILink> MakeGraphPair(
-            IGraphFactory<IGraphItem, IGraphEdge> source, ThingGraph target) {
+        public IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> MakeGraphPair(
+            IGraphFactory<IGraphEntity, IGraphEdge> source, ThingGraph target) {
 
             source.Count = 10;
             source.Populate();
 
-            GraphMapper<IGraphItem, IThing, IGraphEdge, ILink> mapper =
-                new GraphMapper<IGraphItem, IThing, IGraphEdge, ILink>(
+            GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink> mapper =
+                new GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink>(
                     source.Graph, 
                     target, 
                     new GraphItem2ThingAdapter());
 
             mapper.ConvertOneTwo ();
 
-            IGraphPair<IGraphItem, IThing, IGraphEdge, ILink> graphPair =
-                new LiveGraphPair<IGraphItem, IThing, IGraphEdge, ILink>(
-                    new Graph<IGraphItem, IGraphEdge>(), 
+            IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> graphPair =
+                new LiveGraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
+                    new Graph<IGraphEntity, IGraphEdge>(), 
                     target, 
                     new GraphItem2ThingAdapter());
 
@@ -86,13 +86,13 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void TestGraphPairGetSource() {
-            IGraphPair<IGraphItem, IThing, IGraphEdge, ILink> data =
+            IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> data =
                 MakeGraphPair (new BinaryGraphFactory (), new ThingGraph ());
 
-            var view = new Graph<IGraphItem, IGraphEdge>();
-            var graphView = new GraphView<IGraphItem, IGraphEdge>(data, view);
+            var view = new Graph<IGraphEntity, IGraphEdge>();
+            var graphView = new GraphView<IGraphEntity, IGraphEdge>(data, view);
 
-            var graphView2 = new GraphView<IGraphItem, IGraphEdge>(graphView, view);
+            var graphView2 = new GraphView<IGraphEntity, IGraphEdge>(graphView, view);
 
             var result = graphView.RootSource();
             Assert.AreSame(graphView, result);
@@ -100,11 +100,11 @@ namespace Limada.Tests.Model {
             result = graphView2.RootSource();
             Assert.AreSame(graphView, result);
 
-            var result2 = graphView.Source<IGraphItem, IGraphEdge,IThing, ILink>();
+            var result2 = graphView.Source<IGraphEntity, IGraphEdge,IThing, ILink>();
             
             Assert.AreSame(data, result2);
 
-            result2 = graphView2.Source<IGraphItem, IGraphEdge, IThing, ILink>();
+            result2 = graphView2.Source<IGraphEntity, IGraphEdge, IThing, ILink>();
             
 
             Assert.AreSame(data, result2);
@@ -116,25 +116,25 @@ namespace Limada.Tests.Model {
             var data =
                 MakeGraphPair (new BinaryGraphFactory (), new ThingGraph ());
 
-            var graphView1 = new GraphView<IGraphItem, IGraphEdge> (data, new Graph<IGraphItem, IGraphEdge> ());
-            var graphView2 = new GraphView<IGraphItem, IGraphEdge>(data, new Graph<IGraphItem, IGraphEdge>());
+            var graphView1 = new GraphView<IGraphEntity, IGraphEdge> (data, new Graph<IGraphEntity, IGraphEdge> ());
+            var graphView2 = new GraphView<IGraphEntity, IGraphEdge>(data, new Graph<IGraphEntity, IGraphEdge>());
 
             
 
             foreach (var ping in graphView1.Two) {
-                var back = graphView1.LookUp<IGraphItem, IGraphEdge,IThing, ILink>(graphView2, ping);
+                var back = graphView1.LookUp<IGraphEntity, IGraphEdge,IThing, ILink>(graphView2, ping);
                 Assert.IsNotNull (back);
                 Assert.AreSame (ping, back);
             }
 
-            data = new LiveGraphPair<IGraphItem, IThing, IGraphEdge, ILink> (
-                new Graph<IGraphItem, IGraphEdge>(), 
+            data = new LiveGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
+                new Graph<IGraphEntity, IGraphEdge>(), 
                 data.Two,new GraphItem2ThingAdapter());
 
-            graphView2 = new GraphView<IGraphItem, IGraphEdge>(data, new Graph<IGraphItem, IGraphEdge>());
+            graphView2 = new GraphView<IGraphEntity, IGraphEdge>(data, new Graph<IGraphEntity, IGraphEdge>());
             
-            foreach (IGraphItem ping in graphView1.Two) {
-                IGraphItem back = graphView1.LookUp<IGraphItem, IGraphEdge,IThing, ILink>(graphView2, ping);
+            foreach (IGraphEntity ping in graphView1.Two) {
+                IGraphEntity back = graphView1.LookUp<IGraphEntity, IGraphEdge,IThing, ILink>(graphView2, ping);
                 Assert.IsNotNull(back);
                 Assert.AreNotSame(ping, back);
                 Assert.AreEqual (ping.ToString(), back.ToString());

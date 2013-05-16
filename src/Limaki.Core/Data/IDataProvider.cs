@@ -19,13 +19,13 @@ namespace Limaki.Data {
         string Extension { get; }
         string Description { get; }
         T Data { get; set; }
-        void Open ( DataBaseInfo FileName );
+        void Open ( IoInfo fileName );
         void Open();
         bool Saveable { get; }
         bool Readable { get; }
         void Save();
-        void SaveAs(T source, DataBaseInfo FileName);
-        void Merge (T source, T target);
+        void SaveAs(T source, IoInfo fileName);
+        void Merge (T source, T sink);
         void Close();
         void SaveCurrent();
         IDataProvider<T> Clone();

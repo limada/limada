@@ -23,7 +23,7 @@ namespace Limaki.Tests.Graph.Model {
             get { return "Binary Tree"; }
         }
 
-        public override void Populate(IGraph<IGraphItem, IGraphEdge> Graph,int start) {
+        public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph,int start) {
 
             base.Populate(Graph,start);
 

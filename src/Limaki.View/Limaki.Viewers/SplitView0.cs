@@ -472,7 +472,7 @@ namespace Limaki.Viewers {
             content.Data.Position = 0;
 
 
-            var visual = new VisualThingStreamHelper().CreateFromStream(scene.Graph, content);
+            var visual = new VisualThingContentFacade().VisualOfContent(scene.Graph, content);
             var root = scene.Focused;
 
             var layout = currentDiplay.Layout;
