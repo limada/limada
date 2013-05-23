@@ -40,7 +40,7 @@ namespace Limaki.Model.Content.IO {
             }
         }
 
-        public virtual ContentInfo Sink (Stream stream) {
+        public virtual ContentInfo Use (Stream stream) {
             if (!StreamHasMagics)
                 return null;
             return SupportedContents
@@ -63,7 +63,7 @@ namespace Limaki.Model.Content.IO {
         }
 
         public virtual bool Supports (Stream stream) {
-            return Sink(stream) != null;
+            return Use(stream) != null;
         }
 
         public virtual bool Supports (long contentType) {
@@ -95,8 +95,8 @@ namespace Limaki.Model.Content.IO {
 
         #endregion
 
-        public virtual ContentInfo Sink (Stream source, ContentInfo sink) {
-            return SinkExtensions.Sink(source, sink, s => Sink(s));
+        public virtual ContentInfo Use (Stream source, ContentInfo sink) {
+            return SinkExtensions.Use(source, sink, s => Use(s));
         }
     }
 }

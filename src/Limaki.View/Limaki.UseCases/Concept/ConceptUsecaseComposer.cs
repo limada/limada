@@ -6,16 +6,18 @@ using Limaki.Viewers;
 using Limaki.Visuals;
 
 namespace Limaki.Usecases.Concept {
+
     public class ConceptUsecaseComposer : IComposer<ConceptUsecase> {
+
         public void Factor(ConceptUsecase useCase) {
             useCase.SheetManager = Registry.Factory.Create<ISheetManager>();
             useCase.SceneHistory = new SceneHistory ();
             useCase.FileManager = new FileManager ();
             useCase.FileManager.OpenFileDialog = new FileDialogMemento();
             useCase.FileManager.SaveFileDialog = new FileDialogMemento();
-            useCase.ContentProviderManager = new ContentProviderManager();
-            useCase.ContentProviderManager.OpenFileDialog = new FileDialogMemento();
-            useCase.ContentProviderManager.SaveFileDialog = new FileDialogMemento();
+            useCase.ContentStreamUiManager = new ContentStreamUiManager();
+            useCase.ContentStreamUiManager.OpenFileDialog = new FileDialogMemento();
+            useCase.ContentStreamUiManager.SaveFileDialog = new FileDialogMemento();
 
             useCase.FavoriteManager = new FavoriteManager();
         }
@@ -39,11 +41,11 @@ namespace Limaki.Usecases.Concept {
             useCase.SplitViewToolStrip.SplitView = useCase.SplitView;
             useCase.SplitViewToolStrip.SheetManager = useCase.SheetManager;
 
-            splitView.CurrentWidgetChanged += (c) => useCase.DisplayToolStrip.Attach(c);
-            splitView.CurrentWidgetChanged += (c) => useCase.LayoutToolController.Attach(c);
-            splitView.CurrentWidgetChanged += (c) => useCase.MarkerToolStrip.Attach(c);
-            splitView.CurrentWidgetChanged += (c) => useCase.SplitViewToolStrip.Attach(c);
-            splitView.CurrentWidgetChanged += (c) => useCase.ArrangerToolStrip.Attach(c);
+            splitView.CurrentWidgetChanged += c => useCase.DisplayToolStrip.Attach(c);
+            splitView.CurrentWidgetChanged += c => useCase.LayoutToolController.Attach(c);
+            splitView.CurrentWidgetChanged += c => useCase.MarkerToolStrip.Attach(c);
+            splitView.CurrentWidgetChanged += c => useCase.SplitViewToolStrip.Attach(c);
+            splitView.CurrentWidgetChanged += c => useCase.ArrangerToolStrip.Attach(c);
             
             useCase.DisplayStyleChanged += splitView.DoDisplayStyleChanged;
 
@@ -51,7 +53,7 @@ namespace Limaki.Usecases.Concept {
             fileManager.FileDialogShow = useCase.FileDialogShow;
             fileManager.MessageBoxShow = useCase.MessageBoxShow;
 
-            fileManager.DataBound = (scene) => splitView.ChangeData(scene);
+            fileManager.DataBound = scene => splitView.ChangeData(scene);
             fileManager.DataPostProcess = useCase.DataPostProcess;
 
             fileManager.Progress = useCase.Progress;
@@ -59,12 +61,9 @@ namespace Limaki.Usecases.Concept {
             
             splitView.Check ();
 			
-            var streamManager = useCase.ContentProviderManager;
+            var streamManager = useCase.ContentStreamUiManager;
             streamManager.FileDialogShow = useCase.FileDialogShow;
             streamManager.MessageBoxShow = useCase.MessageBoxShow;
-            streamManager.Import = useCase.ImportContent;
-            streamManager.Export = useCase.ExtractContent;
-
             
         }
     }

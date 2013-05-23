@@ -17,6 +17,7 @@ using Limada.Data;
 using Limada.Model;
 using Limaki.Data;
 using System.Collections.Generic;
+using Limaki.Model.Content.IO;
 
 namespace Limada.Usecases {
 
@@ -45,15 +46,7 @@ namespace Limada.Usecases {
             }
         }
 
-	    protected DataProviderManager<IEnumerable<IThing>> _thingsProviders = null;
-        protected DataProviderManager<IEnumerable<IThing>> ThingsProviderManager {
-            get {
-                return _thingsProviders ??
-                       (_thingsProviders = new DataProviderManager<IEnumerable<IThing>> { Progress = this.Progress });
-            }
-        }
-
-		public virtual IThingGraphProvider GetThingGraphProvider(IoInfo info) {
+        public virtual IThingGraphProvider GetThingGraphProvider (IoInfo info) {
             return ThingGraphProviderManager.GetProvider(info) as IThingGraphProvider;
         }
 
@@ -75,14 +68,8 @@ namespace Limada.Usecases {
         }
 
         public Action<string, int, int> Progress { get; set; }
-        protected virtual void Message(string m,int i, int count) {
-            if (Progress != null)
-                Progress(m,i,count);
-        }
 
-        public virtual IDataProvider<IEnumerable<IThing>> GetThingsProvider (IoInfo info) {
-            return ThingsProviderManager.GetProvider(info);
-        }
+
 	}
 }
 

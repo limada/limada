@@ -16,9 +16,15 @@
 
 namespace Limaki.Model.Content.IO {
 
+    /// <summary>
+    /// a morph, flux, transform, transition, flow
+    /// from source to sink
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TSink"></typeparam>
     public interface ISink<TSource, TSink> {
-        TSink Sink(TSource source);
-        TSink Sink(TSource source, TSink sink);
+        TSink Use(TSource source);
+        TSink Use(TSource source, TSink sink);
     }
 
 }

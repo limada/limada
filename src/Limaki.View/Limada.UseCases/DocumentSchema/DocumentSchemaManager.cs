@@ -20,8 +20,8 @@ using Limada.View;
 using Limada.VisualThings;
 using Limaki.Model.Content;
 using System.Linq;
-using Limaki.Model.Content.Providers;
 using Limaki.Visuals;
+using Limaki.Model.Content.IO;
 
 namespace Limada.Usecases {
 
@@ -40,7 +40,7 @@ namespace Limada.Usecases {
         public Content<Stream> PageStream(IGraph<IVisual, IVisualEdge> source, IVisual page) {
             Content<Stream> result = null;
             var pageThing = source.ThingOf(page) as IStreamThing;
-            var imageStreamProvider = new ImageContentProvider();
+            var imageStreamProvider = new ImageContentInfo();
             if (pageThing != null && imageStreamProvider.Supports(pageThing.StreamType)) {
                 try {
                     result = ThingContentFacade.ConentOf(pageThing);
@@ -72,8 +72,8 @@ namespace Limada.Usecases {
         public bool IsPage(IGraph<IVisual, IVisualEdge> source, IVisual page) {
             var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(page));
             var pageThing = source.ThingOf(page) as IStreamThing;
-            var imageStreamProvider = new ImageContentProvider();
-            return (pageThing != null && imageStreamProvider.Supports(pageThing.StreamType));
+            var info = new ImageContentInfo();
+            return (pageThing != null && info.Supports(pageThing.StreamType));
         }
     }
 }

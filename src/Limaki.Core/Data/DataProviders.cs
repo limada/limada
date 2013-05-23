@@ -44,22 +44,16 @@ namespace Limaki.Data {
             return FindByExtension(info.Extension);
         }
 
-        #region IEnumerable<T> Member
-
         public IEnumerator<IDataProvider<T>> GetEnumerator() {
             foreach (var type in providers) {
                 yield return Activator.CreateInstance(type) as IDataProvider<T>;
             }
         }
 
-        #endregion
-
-        #region IEnumerable Member
-
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
             return this.GetEnumerator ();
         }
 
-        #endregion
+
     }
 }

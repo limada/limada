@@ -1,4 +1,9 @@
-﻿namespace Limaki.Model.Content {
+﻿using System.Collections.Generic;
+using System;
+using System.Linq;
+using Limaki.Common.Linqish;
+
+namespace Limaki.Model.Content {
 
     public class ContentInfo {
 
@@ -23,5 +28,23 @@
         public string MimeType { get; set; }
         public Magic[] Magics { get; set; }
 
+    }
+
+    public class ContentInfos : IEnumerable<ContentInfo> {
+        private ISet<ContentInfo> _contentInfos = new HashSet<ContentInfo>();
+        public void AddRange (IEnumerable<ContentInfo> contentInfos) {
+            contentInfos.ForEach(ci => _contentInfos.Add(ci));
+        }
+        public void Add (ContentInfo contentInfo) {
+            _contentInfos.Add(contentInfo);
+        }
+
+        public IEnumerator<ContentInfo> GetEnumerator () {
+            return _contentInfos.GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator () {
+            return this.GetEnumerator();
+        }
     }
 }

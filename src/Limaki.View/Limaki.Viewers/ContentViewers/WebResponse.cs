@@ -1,17 +1,33 @@
-﻿using System;
+﻿/*
+ * Limaki 
+ 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2008-2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+using System;
 using System.IO;
 using Limaki.Common;
 using Limaki.Model.Content;
 using Limaki.Net.WebProxyServer;
 using System.Diagnostics;
+using Limaki.Model.Content.IO;
 
 namespace Limaki.Viewers.StreamViewers {
 
-    public class WebResponse:IWebResponse {
+    public class WebResponse : WebResponseBase, IWebResponse {
 
-        public bool IsStreamOwner { get; set; }
-
-        public bool Done { get; set; }
+        public virtual WebContent GetContentFromContent (Content<Stream> content, Uri uri) {
+            return base.GetContentFromContent(content, uri, true);
+        }
 
         public virtual Func<string, WebContent> Getter (Content<Stream> content) {
             var uri = new Uri (AbsoluteUri, UriKind.Absolute);
@@ -46,35 +62,12 @@ namespace Limaki.Viewers.StreamViewers {
 
         public virtual string AbsoluteUri { get; set; }
 
-        private ContentProviders _providers = null;
-        ContentProviders Providers {
-            get { return _providers ?? (_providers = Registry.Pool.TryGetCreate<ContentProviders> ()); }
+        private IoProvider<Stream,Content<Stream>> _provider = null;
+        IoProvider<Stream, Content<Stream>> Provider {
+            get { return _provider ?? (_provider = Registry.Pool.TryGetCreate<IoProvider<Stream, Content<Stream>>>()); }
         }
+        
 
-        // TODO: this is a copy of ThingWebResponse; unify usage
-
-        public virtual WebContent GetContentFromContent (Content<Stream> content, Uri uri) {
-            var webContent = new WebContent ();
-            webContent.ClearContentAfterServing = true;
-            webContent.ContentIsStream = true;
-            webContent.IsStreamOwner = this.IsStreamOwner;
-            webContent.ContentStream = content.Data;
-            webContent.Uri = uri;
-
-            webContent.MimeType = Providers.MimeType (content.StreamType);
-
-            var source = content.Source as string;
-            if (source != null && source != "about:blank") {
-                if (Uri.IsWellFormedUriString (source, UriKind.RelativeOrAbsolute)) {
-                    uri = null;
-                    Uri.TryCreate (source, UriKind.RelativeOrAbsolute, out uri);
-                    if (uri != null && !uri.IsUnc && !uri.IsFile) {
-                        webContent.Uri = uri;
-                    }
-                }
-            }
-
-            return webContent;
-        }
+      
     }
 }

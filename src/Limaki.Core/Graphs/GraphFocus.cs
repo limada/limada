@@ -13,12 +13,18 @@
  */
 
 namespace Limaki.Graphs {
+    
     public class GraphFocus<TItem, TEdge> where TEdge : IEdge<TItem> {
-        public GraphFocus (IGraph<TItem, TEdge> graph, TItem focused) {
-            this.Graph = graph;
+
+        public GraphFocus (IGraph<TItem, TEdge> graph, TItem focused):this(graph) {
             this.Focused = focused;
         }
+
+        public GraphFocus (IGraph<TItem, TEdge> graph) {
+            this.Graph = graph;
+        }
+
         public TItem Focused { get; set; }
-        public IGraph<TItem, TEdge> Graph { get; protected set; }
+        public IGraph<TItem, TEdge> Graph { get; set; }
     }
 }

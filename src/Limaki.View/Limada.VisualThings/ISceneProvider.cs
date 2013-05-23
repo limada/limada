@@ -20,6 +20,8 @@ using Limaki.Data;
 using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Visuals;
+using Limaki.Model.Content.IO;
+using System.IO;
 
 namespace Limada.VisualThings {
     /// <summary>
@@ -35,7 +37,7 @@ namespace Limada.VisualThings {
         void SaveCurrent();
         void Save();
         void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene, IoInfo FileName);
-        void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IDataProvider<IEnumerable<IThing>> exporter, IoInfo fileName);
+        
         //bool SaveAs(DataBaseInfo FileName);
         void Close();
 

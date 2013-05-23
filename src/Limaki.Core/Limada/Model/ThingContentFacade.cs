@@ -4,14 +4,15 @@ using Limaki.Model.Content;
 using Limaki.Common;
 
 namespace Limada.Model {
+
     public class ThingContentFacade {
         public ThingContentFacade (IThingFactory factory) {
             this._factory = factory;
         }
 
         public ThingContentFacade() {}
-        private IThingFactory _factory = null;
 
+        private IThingFactory _factory = null;
         public IThingFactory Factory {
             get {
                 if (_factory == null) {

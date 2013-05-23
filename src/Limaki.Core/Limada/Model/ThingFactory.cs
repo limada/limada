@@ -7,6 +7,7 @@ using Id = System.Int64;
 using Limaki.Graphs;
 
 namespace Limada.Model {
+
     public class ThingFactory : Factory, IThingFactory {
         public IThing CreateItem(IThingGraph graph, object data) {
             return CreateItem(Isaac.Long, graph, data);
@@ -99,6 +100,7 @@ namespace Limada.Model {
 
         protected override void InstrumentClazzes() {
 
+            Add<IThingGraph>(() => new ThingGraph());
             Add<IThing>(() => new Thing());
             Add<IThing<string>>(() => new Thing<string>()); //typeof(StringThing()); 
 

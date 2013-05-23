@@ -5,19 +5,22 @@ using Limaki.Common.IOC;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Content;
 using Limada.Model;
-using Limaki.Model.Content.Providers;
+
+using Limaki.Model.Content.IO;
+using System.IO;
 
 namespace Limaki.IOC {
+
     public class LimakiCoreContextRecourceLoader : ContextRecourceLoader {
         
         public override void ApplyResources(IApplicationContext context) {
             context.Factory.Add<ICompressionWorker, Limaki.Compression.CompressionWorker> ();
             context.Factory.Add<IThingFactory, ThingFactory>();
 			
-			var providers = Registry.Pool.TryGetCreate<ContentProviders>();
-			providers.Add(new RtfContentProvider());
-			providers.Add(new HtmlContentProvider());
-			providers.Add(new ImageContentProvider());
+			var streamProviders = Registry.Pool.TryGetCreate<IoProvider<Stream, Content<Stream>>>();
+            streamProviders.Add(new HtmlContentInStream()); streamProviders.Add(new HtmlContentOutStream());
+            streamProviders.Add(new RtfContentInStream()); streamProviders.Add(new RtfContentOutStream());
+            streamProviders.Add(new ImageContentInStream()); streamProviders.Add(new ImageContentOutStream());
         }
 
         public virtual void LoadCompression(IApplicationContext context) {

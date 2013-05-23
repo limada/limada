@@ -20,12 +20,12 @@ using System.IO;
 using System.Linq;
 using Limaki.Common;
 using Limaki.Model.Content;
-using Limaki.Model.Content.Providers;
 using System;
 using Limaki;
 using Limaki.Tests;
 using Limaki.Data;
 using Limaki.Common.Linqish;
+using Limaki.Model.Content.IO;
 
 namespace Limada.Tests.Schemata {
     [TestFixture]
@@ -183,12 +183,12 @@ namespace Limada.Tests.Schemata {
 
         public void ReadPagesFromDir(IThingGraph graph, IThing document, string path) {
             var docSchema = new DocumentSchema();
-            var imageStreamProvider = new ImageContentProvider();
+            var imageStreamProvider = new ImageContentInStream();
             var nr = 1;
             
             foreach (var file in Directory.GetFiles(path).OrderBy(f => f)) {
-                if (imageStreamProvider.Supports(Path.GetExtension(file))) {
-                    var stream = imageStreamProvider.ContentOf(IOUtils.UriFromFileName(file));
+                if (imageStreamProvider.InfoSink.Supports(Path.GetExtension(file))) {
+                    var stream = imageStreamProvider.Read(IOUtils.UriFromFileName(file));
                     if (stream != null && stream.Data != null) {
                         docSchema.CreatePage(graph, document, stream, nr);
                         nr++;

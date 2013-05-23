@@ -22,7 +22,9 @@ using Limaki.Common;
 using Limaki.Visuals;
 
 namespace Limada.VisualThings {
+
     public class VisualThingMarkerFacade:MarkerFacade<IVisual,IThing, IVisualEdge,ILink> {
+
         public VisualThingMarkerFacade(IGraph<IVisual, IVisualEdge> graph): base(graph) {}
 
         IVisualFactory _factory = null;

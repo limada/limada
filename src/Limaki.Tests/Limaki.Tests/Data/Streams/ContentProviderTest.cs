@@ -9,6 +9,7 @@ using Limaki.Common;
 using Limaki.Model.Content;
 using System.Linq;
 using System.Diagnostics;
+using Limaki.Model.Content.IO;
 
 namespace Limaki.Tests.Data.Streams {
     [TestFixture]
@@ -17,24 +18,23 @@ namespace Limaki.Tests.Data.Streams {
             return IOUtils.FindSubDirInRootPath("TestData") + Path.DirectorySeparatorChar;
         }
 
-        IContentProvider FindProvider(long streamType) {
-            var providers = Registry.Pool.TryGetCreate<ContentProviders>();
-            return providers.Find(streamType);
+        ISinkIo<Stream> FindProvider (long streamType) {
+            var provider = Registry.Pool.TryGetCreate<IoProvider<Stream,Content<Stream>>>();
+            return provider.Find(streamType);
         }
 
         [Test]
         public void ContentProvidersTest() {
-            var providers = Registry.Pool.TryGetCreate<ContentProviders>();
-            IContentProvider provider = null;
+            var provider = Registry.Pool.TryGetCreate<IoProvider<Stream, Content<Stream>>>();
 
-            Assert.IsNotNull(providers.Find(ContentTypes.RTF), "rtf");
-            Assert.IsNotNull(providers.Find("rtf"), "rtf");
+            Assert.IsNotNull(provider.Find(ContentTypes.RTF), "rtf");
+            Assert.IsNotNull(provider.Find("rtf",InOutMode.ReadWrite), "rtf");
 
-            Assert.IsNotNull(providers.Find(ContentTypes.HTML), "html");
-            Assert.IsNotNull(providers.Find("html"), "html");
+            Assert.IsNotNull(provider.Find(ContentTypes.HTML), "html");
+            Assert.IsNotNull(provider.Find("html", InOutMode.ReadWrite), "html");
 
-            Assert.IsNotNull(providers.Find(ContentTypes.JPG), "jpg");
-            Assert.IsNotNull(providers.Find("jpg"), "jpg");
+            Assert.IsNotNull(provider.Find(ContentTypes.JPG), "jpg");
+            Assert.IsNotNull(provider.Find("jpg", InOutMode.ReadWrite), "jpg");
         }
 
 
@@ -47,7 +47,8 @@ namespace Limaki.Tests.Data.Streams {
             var uri = IOUtils.UriFromFileName(fileName);
             var content = default(Content<Stream>);
             try {
-                content = provider.ContentOf(uri);
+                var sink = provider as ISink<Uri, Content<Stream>>;
+                content = sink.Use(uri);
                 Assert.IsNotNull(content);
                 Assert.AreNotEqual(content.Data.Length, 0);
             } finally {

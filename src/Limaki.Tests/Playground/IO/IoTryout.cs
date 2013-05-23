@@ -18,7 +18,7 @@ namespace Limaki.Playground.IO {
             ISink<Stream, IThingGraph> thingGraphProvider = null;
             ISink<IThingGraph, IGraphScene<IVisual, IVisualEdge>> sceneProvider = null;
 
-            var scene = sceneProvider.Sink(thingGraphProvider.Sink(file.Sink(input)));
+            var scene = sceneProvider.Use(thingGraphProvider.Use(file.Use(input)));
 
         }
 

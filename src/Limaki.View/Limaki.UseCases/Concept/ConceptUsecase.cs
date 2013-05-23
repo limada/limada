@@ -23,6 +23,7 @@ using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Viewers.ToolStripViewers;
 using Limaki.Visuals;
+using Limada.VisualThings;
 
 namespace Limaki.Usecases.Concept {
     public class ConceptUsecase:IDisposable {
@@ -94,12 +95,7 @@ namespace Limaki.Usecases.Concept {
             }
         }
 
-        public void ExportThings() {
-            var display = GetCurrentDisplay();
-            if (display != null) {
-                FileManager.ExportThingsAs(display.Data);
-            }
-        }
+        
         public void ImportThingGraphRaw() {
             SaveChanges();
             FileManager.ShowEmptyThingGraph();
@@ -122,28 +118,35 @@ namespace Limaki.Usecases.Concept {
             }
         }
 
-		public ContentProviderManager ContentProviderManager { get; set; }
-		public void ImportContent() {
-            ContentProviderManager.OpenFile ();
-        }
-		
-		public void ImportContent(Content<Stream> content){
-			var display=GetCurrentDisplay();
-			if(display!=null){
-				ContentProviderManager.ImportContent(content,display.Data,display.Layout);
-			}                  
-		}
+		public ContentStreamUiManager ContentStreamUiManager { get; set; }
 
-        public void ExportContent() {
-            ContentProviderManager.SaveFile();
-        }
-
-        public Content<Stream> ExtractContent() {
+        public void ExportThings () {
             var display = GetCurrentDisplay();
             if (display != null) {
-                return ContentProviderManager.ContentOfFocused(display.Data);
+                ContentStreamUiManager.WriteThings(display.Data);
             }
-            return null;
+        }
+
+        public void ImportContent () {
+            ContentStreamUiManager.ContentIn = content => {
+                var display = GetCurrentDisplay();
+                if (display != null) {
+                    display.Data.AddContent(content, display.Layout);
+                }
+            };
+            ContentStreamUiManager.ReadFile();
+        }
+
+
+        public void ExportContent () {
+            ContentStreamUiManager.ContentOut = () => {
+                var display = GetCurrentDisplay();
+                if (display != null) {
+                    return display.Data.ContentOfFocused();
+                }
+                return null;
+            };
+            ContentStreamUiManager.SaveFile();
         }
 
         public void SaveChanges() {

@@ -15,6 +15,7 @@ using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Content;
 using Limada.Usecases.Cms.Models;
+using Limaki.Model.Content.IO;
 
 namespace Limada.Usecases.Cms {
 
@@ -196,16 +197,16 @@ namespace Limada.Usecases.Cms {
             var result = new StreamContent (ThingContentFacade.ConentOf (ThingGraph, thing));
             result.Source = thing.Id.ToString ("X16");
 
-            var providers = Registry.Pool.TryGetCreate<ContentProviders> ();
-            var provider = providers.Find (thing.StreamType);
+            var providers = Registry.Pool.TryGetCreate<IoProvider<Stream, Content<Stream>>>();
+            var sink = providers.Find (thing.StreamType);
 
             string mimeType = "unknown";
-            if (provider != null) {
-                var info = provider.Info (result.Data);
+            if (sink != null) {
+                var info = sink.Use (result.Data);
                 if (info != null)
                     mimeType = info.MimeType;
                 else {
-                    info = provider.Info (thing.StreamType);
+                    info = sink.InfoSink.Info(thing.StreamType);
                     mimeType = info.MimeType;
                 }
             }

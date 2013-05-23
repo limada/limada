@@ -24,6 +24,7 @@ using Limaki.Graphs.Extensions;
 using Limaki.Viewers;
 using Limaki.Visuals;
 using Mono.Options;
+using Limaki.Model.Content.IO;
 
 namespace Limada.Usecases {
 
@@ -201,7 +202,7 @@ namespace Limada.Usecases {
 
         public void SaveAsFile() {
             DefaultDialogValues(SaveFileDialog);
-            if (FileDialogShow(SaveFileDialog, true) == DialogResult.OK) {
+            if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
                 this.SaveAs(IoInfo.FromFileName(SaveFileDialog.FileName));
             }
         }
@@ -215,16 +216,8 @@ namespace Limada.Usecases {
             return false;
         }
 
-        public bool IsSceneExportable(IGraphScene<IVisual, IVisualEdge> scene) {
-            if (scene != null) {
-                var graph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
-                return graph != null;
-            }
-            return false;
-        }
-
         public void ExportAsThingGraph(IoInfo fileName, IGraphScene<IVisual, IVisualEdge> scene) {
-            if (IsSceneExportable(scene)) {
+            if (scene.HasThingGraph()) {
                 var provider = new SceneProvider();
                 provider.Provider = GetThingGraphProvider(fileName);
                 provider.ExportAsThingGraph (scene, fileName);
@@ -234,8 +227,8 @@ namespace Limada.Usecases {
 
         public void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene) {
             DefaultDialogValues(SaveFileDialog);
-            if (scene != null && this.IsSceneExportable(scene)) {
-                if (FileDialogShow(SaveFileDialog, true) == DialogResult.OK) {
+            if (scene != null && scene.HasThingGraph()) {
+                if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
                     this.ExportAsThingGraph(
                         IoInfo.FromFileName(SaveFileDialog.FileName),
                         scene);
@@ -318,36 +311,7 @@ namespace Limada.Usecases {
 
         #region Export
 
-        public void ExportThingsAs(IoInfo fileName, IGraphScene<IVisual, IVisualEdge> scene) {
-            if (IsSceneExportable(scene)) {
-                var thingsProvider = GetThingsProvider(fileName);
-                if (thingsProvider == null)
-                    return;
-
-                var sceneProvider = new SceneProvider{ Progress = this.Progress };
-                try {
-                    sceneProvider.ExportTo(scene, thingsProvider, fileName);
-                    thingsProvider.Close();
-                } catch(Exception ex) {
-                    Message(ex.Message,-1,-1);
-                }
-            }
-        }
-
-        public void ExportThingsAs(IGraphScene<IVisual, IVisualEdge> scene) {
-            DefaultDialogValues(SaveFileDialog);
-            if (scene != null && this.IsSceneExportable(scene)) {
-
-                SaveFileDialog.Filter = ThingsProviderManager.SaveFilter + "All Files|*.*";
-                SaveFileDialog.DefaultExt = "pdf";
-
-                if (FileDialogShow(SaveFileDialog, true) == DialogResult.OK) {
-                    var fileName = IoInfo.FromFileName(SaveFileDialog.FileName);
-                    this.ExportThingsAs(fileName,scene);
-                }
-            }
-        }
-
+       
 	   
 
 	    #endregion

@@ -1,3 +1,16 @@
+/*
+ * Limada 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2008-2013 Lytico
+ *
+ * http://www.limada.org
+ */
+
 using System;
 using Limada.Data;
 using Limada.Model;
@@ -12,9 +25,13 @@ using System.Linq;
 using Limaki.Graphs.Extensions;
 using Limaki.Reporting;
 using Limaki.Visuals;
+using Limaki.Model.Content.IO;
+using System.IO;
 
 namespace Limada.VisualThings {
+
     public class SceneProvider : ISceneProvider {
+
         public IThingGraph ThingGraph {get;set;}
 
         public IGraphScene<IVisual, IVisualEdge> Scene { get; set; }
@@ -156,36 +173,9 @@ namespace Limada.VisualThings {
             this.ThingGraph = null;
         }
 
-        public void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IDataProvider<IEnumerable<IThing>> exporter, IoInfo fileName) {
-            var visuals = scene.Selected.Elements;
-            if (visuals.Count() == 0)
-                visuals = scene.Graph.Where(v => !(v is IVisualEdge));
-            if (visuals.Count() == 0)
-                return;
-            IEnumerable<IThing> things = null;
-            if (visuals.Count() == 1) {
-                var thing = scene.Graph.ThingOf(visuals.First());
-                var schema = new DocumentSchema(scene.Graph.ThingGraph(), thing);
-                if (schema.HasPages())
-                    things = schema.OrderedPages();
-                var report = exporter as IReport;
-                if(report!=null) {
-                    report.Options.MarginBottom = 0;
-                    report.Options.MarginLeft = 0;
-                    report.Options.MarginTop = 0;
-                    report.Options.MarginRight = 0;
-                }
-            }
-            if (things == null) {
-                things = SortedThings(scene.Graph, visuals);
-            }
-            exporter.SaveAs(things, fileName);
-        }
 
-        private IEnumerable<IThing> SortedThings(IGraph<IVisual, IVisualEdge> graph, IEnumerable<IVisual> items) {
-            var result = items.OrderBy(v => v.Location, new PointComparer{Delta=20});
-            return result.Select(v => graph.ThingOf(v));
-        }
+
+
 
         public Action<IGraphScene<IVisual, IVisualEdge>> BeforeOpen { get; set; }
         public Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
