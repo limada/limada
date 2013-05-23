@@ -18,7 +18,9 @@ using Limaki.Common;
 using Limaki.Data;
 
 namespace Limada.Data {
+
     public class MemoryThingGraphProvider:ThingGraphProvider {
+
         public override IThingGraph Data {
             get {
                 if (base.Data == null) {

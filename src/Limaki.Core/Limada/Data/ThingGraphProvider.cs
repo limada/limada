@@ -24,7 +24,9 @@ using Limaki.Common;
 using System;
 
 namespace Limada.Data {
+
     public abstract class ThingGraphProvider : DataProvider<IThingGraph>, IThingGraphProvider {
+
         protected IThingGraph _data = null;
         public override IThingGraph Data {
             get { return this._data; }

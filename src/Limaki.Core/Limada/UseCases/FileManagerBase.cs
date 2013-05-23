@@ -18,10 +18,11 @@ using Limada.Model;
 using Limaki.Data;
 using System.Collections.Generic;
 using Limaki.Model.Content.IO;
+using Limaki.Common;
 
 namespace Limada.Usecases {
 
-    public class FileManagerBase {
+    public class FileManagerBase:IProgress {
 
 		protected IThingGraphProvider _thingGraphProvider = null;
 	    public IThingGraphProvider ThingGraphProvider { 

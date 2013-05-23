@@ -31,6 +31,7 @@ using System.Linq;
 using Limada.Schemata;
 using Limaki.Reporting;
 using Limaki.Data;
+using Limaki.View.Layout;
 
 
 namespace Limada.Usecases {
@@ -87,7 +88,7 @@ namespace Limada.Usecases {
                         SaveFileDialog.Filter = ContentStreamIoManager.GetFilter(info, out ext) + "All Files|*.*";
                         SaveFileDialog.DefaultExt = ext;
                         SaveFileDialog.FileName = content.Description.ToString();
-                        if (FileDialogShow(SaveFileDialog, true) == DialogResult.OK) {
+                        if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
                             ContentStreamIoManager.WriteSink(content, IOUtils.UriFromFileName(SaveFileDialog.FileName));
                         }
                     }
@@ -115,6 +116,11 @@ namespace Limada.Usecases {
             }
         }
 
+        /// <summary>
+        /// TODO: maybe move later to SceneProvider
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <returns></returns>
         public IEnumerable<IThing> ThingsOut (IGraphScene<IVisual, IVisualEdge> scene) {
             var visuals = scene.Selected.Elements;
             if (visuals.Count() == 0)
@@ -152,6 +158,46 @@ namespace Limada.Usecases {
                  }
             } catch (Exception ex) {
                 Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex, MessageType.OK);
+            }
+        }
+
+       
+
+        public void ReadThingGraphFocus (IGraphScene<IVisual, IVisualEdge> scene) {
+            try {
+                DefaultDialogValues(OpenFileDialog, ThingGraphFocusIoManager.ReadFilter);
+                if (scene != null && scene.HasThingGraph()) {
+                    if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
+                        var graphFocus = new GraphFocus<IThing, ILink>(scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Two);
+                        var uri = IOUtils.UriFromFileName(OpenFileDialog.FileName);
+                        graphFocus = ThingGraphFocusIoManager.ReadSink(uri, graphFocus);
+                        SetDescription(scene, graphFocus.Focused, OpenFileDialog.FileName);
+                    }
+                }
+            } catch (Exception ex) {
+                Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex, MessageType.OK);
+            }
+        }
+
+        /// <summary>
+        /// TODO: maybe move later to SceneProvider
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <returns></returns>
+        public void SetDescription (IGraphScene<IVisual, IVisualEdge> scene, IThing thing, string fileName) {
+            if (thing != null) {
+                var thingGraph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Two as IThingGraph;
+                thingGraph.SetSource(thing, fileName);
+                var desc = thingGraph.Description(thing);
+                if (desc == null || desc.ToString() == string.Empty) {
+                    desc = Path.GetFileNameWithoutExtension(fileName);
+                    var vis = scene.Graph.VisualOf(thing);
+                    if (vis != null) {
+                        vis.Data = desc;
+                        scene.Requests.Add(new LayoutCommand<IVisual>(vis, LayoutActionType.Justify));
+                    }
+                }
+
             }
         }
         #endregion

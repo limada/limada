@@ -27,14 +27,6 @@ namespace Limaki.Tests {
 namespace Limaki.UnitTest {
     [TestFixture]
     public class TestBase {
-        public event ProgressChangedEventHandler ProgressChanged = null;
-
-        public void ReportProgress(Progress progress) {
-            if (ProgressChanged != null) {
-                ProgressChangedEventArgs e = new ProgressChangedEventArgs(progress);
-                ProgressChanged(this, e);
-            }
-        }
 
         public Tickers Tickers = new Tickers();
 

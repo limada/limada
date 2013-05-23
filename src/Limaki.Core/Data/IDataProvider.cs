@@ -13,9 +13,10 @@
  */
 
 
+using Limaki.Common;
 using System;
 namespace Limaki.Data {
-    public interface IDataProvider<T> {
+    public interface IDataProvider<T>:IProgress {
         string Extension { get; }
         string Description { get; }
         T Data { get; set; }

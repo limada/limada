@@ -26,7 +26,9 @@ using Limaki.Visuals;
 using Limada.VisualThings;
 
 namespace Limaki.Usecases.Concept {
-    public class ConceptUsecase:IDisposable {
+
+    public class ConceptUsecase:IDisposable, IProgress {
+
         protected string _useCaseTitle = "limada::concept";
         public string UseCaseTitle {
             get { return _useCaseTitle; }
@@ -132,11 +134,24 @@ namespace Limaki.Usecases.Concept {
                 var display = GetCurrentDisplay();
                 if (display != null) {
                     display.Data.AddContent(content, display.Layout);
+                    display.Execute();
                 }
             };
             ContentStreamUiManager.ReadFile();
         }
 
+        public void ImportGraphFocus () {
+            var display = GetCurrentDisplay();
+
+            if (display != null) {
+                var scene = display.Data;
+                ContentStreamUiManager.ThingGraphFocusIoManager.SinkIn = graphFocus => {
+                    scene.AddVisual(scene.Graph.VisualOf(graphFocus.Focused), display.Layout);
+                    display.Execute();
+                };
+                ContentStreamUiManager.ReadThingGraphFocus(display.Data);
+            }
+        }
 
         public void ExportContent () {
             ContentStreamUiManager.ContentOut = () => {

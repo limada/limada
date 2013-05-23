@@ -32,7 +32,7 @@ namespace Limada.VisualThings {
 
     public class SceneProvider : ISceneProvider {
 
-        public IThingGraph ThingGraph {get;set;}
+        public IThingGraph ThingGraph { get; set; }
 
         public IGraphScene<IVisual, IVisualEdge> Scene { get; set; }
 
@@ -41,15 +41,14 @@ namespace Limada.VisualThings {
         protected virtual IGraph<IVisual, IVisualEdge> CreateGraphView(IThingGraph thingGraph) {
             SchemaFacade.MakeMarkersUnique(thingGraph);
 
-            IThingGraph schemaGraph = thingGraph;
+            var schemaGraph = thingGraph;
             if (UseSchema && !(thingGraph is SchemaThingGraph)) {
-                schemaGraph = new SchemaThingGraph(this.ThingGraph);
+                schemaGraph = new SchemaThingGraph(thingGraph);
             }
 
             var visualThingGraph = new VisualThingGraph(new VisualGraph(), schemaGraph);
 
-            GraphView<IVisual, IVisualEdge> graphView =
-                new GraphView<IVisual, IVisualEdge>(visualThingGraph, new VisualGraph());
+            var graphView = new GraphView<IVisual, IVisualEdge>(visualThingGraph, new VisualGraph());
             return graphView;
         }
 
@@ -61,15 +60,7 @@ namespace Limada.VisualThings {
         }
 
         protected IThingGraphProvider _provider = null;
-        public virtual IThingGraphProvider Provider {
-            get {
-                if (_provider == null) {
-                    _provider = new MemoryThingGraphProvider();
-                }
-                return _provider;
-            }
-            set { _provider = value; }
-        }
+        public virtual IThingGraphProvider Provider { get { return _provider ?? (_provider = new MemoryThingGraphProvider()); } set { _provider = value; } }
 
         public virtual bool Open(Action openProvider) {
             //Close();
@@ -110,18 +101,6 @@ namespace Limada.VisualThings {
             });
         }
 
-        //public bool SaveAs(DataBaseInfo FileName) {
-        //    SaveCurrent ();
-        //    try {
-        //        Provider.SaveAs (FileName);
-        //    } catch (Exception ex) {
-        //        Registry.Pool.TryGetCreate<IExceptionHandler>()
-        //            .Catch(new Exception("Save as failed: " + ex.Message, ex), MessageType.OK);
-
-        //    }
-        //    return true;
-        //}
-
         public virtual void SaveCurrent() {
             if (Scene != null) {
                 var visualThingGraph = this.Scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
@@ -133,9 +112,7 @@ namespace Limada.VisualThings {
         }
 
 
-
         public virtual void Save() {
-
             SaveCurrent();
         }
 
@@ -172,10 +149,6 @@ namespace Limada.VisualThings {
             }
             this.ThingGraph = null;
         }
-
-
-
-
 
         public Action<IGraphScene<IVisual, IVisualEdge>> BeforeOpen { get; set; }
         public Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }

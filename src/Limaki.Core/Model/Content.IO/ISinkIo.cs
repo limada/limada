@@ -13,11 +13,12 @@
  * 
  */
 
+using Limaki.Common;
 using System;
 
 namespace Limaki.Model.Content.IO {
 
-    public interface ISinkIo<TSource> : ISink<TSource, ContentInfo> {
+    public interface ISinkIo<TSource> : ISink<TSource, ContentInfo>, IProgress {
 
         InOutMode IoMode { get; }
         ContentInfoSink InfoSink { get; }

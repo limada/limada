@@ -21,9 +21,12 @@ using Limaki.Common.Collections;
 using System.Linq;
 using Limaki.Graphs;
 using Id = System.Int64;
+using Limaki.Common;
 
 namespace Limada.Model {
+
     public static class ThingGraphExtensions {
+
         public static void DeepCopy(this IThingGraph source, IEnumerable<IThing> items, IThingGraph target) {
             if (source != null && target != null) {
                 Walker<IThing, ILink> walker = new Walker<IThing, ILink>(source);
@@ -99,7 +102,7 @@ namespace Limada.Model {
             var thingGraph = source as SchemaThingGraph;
 
             if (thingGraph != null) {
-                IThing desc = thingGraph.ThingToDisplay(thing);
+                var desc = thingGraph.ThingToDisplay(thing);
                 if (desc != null && desc != thing) {
                     name = desc.Data;
                 }
@@ -109,15 +112,49 @@ namespace Limada.Model {
             return name;
         }
 
+        public static void SetDescription (this IThingGraph source, IThing thing, object name) {
+            var thingGraph = source as SchemaThingGraph;
+
+            if (thingGraph != null) {
+                var desc = thingGraph.ThingToDisplay(thing);
+                if (desc != null) {
+                    if (desc != thing) {
+                        desc.Data = name;
+                    }
+                } else {
+                    var factory = Registry.Pool.TryGetCreate<IThingFactory>();
+                    new Schema(source, thing).SetTheLeaf(CommonSchema.DescriptionMarker,factory.CreateItem(source,name));
+                }
+            } else {
+                throw new ArgumentException("source must be a SchemaThingGraph");
+            }
+
+        }
+
         public static object Source(this IThingGraph source, IThing thing) {
             object name = null;
             if (source != null) {
-                IThing desc = new Schema(source, thing).GetTheLeaf(CommonSchema.SourceMarker);
+                var desc = new Schema(source, thing).GetTheLeaf(CommonSchema.SourceMarker);
                 if (desc != null && desc != thing) {
                     name = desc.Data;
                 }
             }
             return name;
+        }
+
+        public static void SetSource (this IThingGraph source, IThing thing, object name) {
+            if (source != null) {
+                var schema = new CommonSchema(source, thing);
+                var desc = schema.GetTheLeaf(CommonSchema.SourceMarker);
+                if (desc != null) {
+                    if (desc != thing) {
+                        desc.Data = name;
+                    }
+                } else {
+                    var factory = Registry.Pool.TryGetCreate<IThingFactory>();
+                    schema.SetTheLeaf(CommonSchema.SourceMarker, factory.CreateItem(source, name));
+                }
+            }
         }
 
         /// <summary>

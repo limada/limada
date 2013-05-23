@@ -17,7 +17,7 @@ using Limaki.Data;
 
 namespace Limada.Usecases {
 
-    public class DataProviderManager<T> {
+    public class DataProviderManager<T>:IProgress {
 
         public string DefaultExtension { get; set; }
         public Action<string, int, int> Progress { get; set; }

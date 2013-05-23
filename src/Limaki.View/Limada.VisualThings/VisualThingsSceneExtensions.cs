@@ -43,14 +43,19 @@ namespace Limada.VisualThings {
         /// <param name="content"></param>
         /// <param name="layout"></param>
         public static void AddContent (this IGraphScene<IVisual,IVisualEdge> scene, Content<Stream> content,  IGraphSceneLayout<IVisual, IVisualEdge> layout) {
-            var thing = new VisualThingContentFacade().VisualOfContent(scene.Graph, content);
+            var visualOfContent = new VisualThingContentFacade().VisualOfContent(scene.Graph, content);
+            scene.AddVisual(visualOfContent, layout);
+        }
+
+        public static void AddVisual (this IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             if (scene.Focused != null) {
-                SceneExtensions.PlaceVisual(scene, scene.Focused, thing, layout);
+                SceneExtensions.PlaceVisual(scene, scene.Focused, visual, layout);
             } else {
-                SceneExtensions.AddItem(scene, thing, layout, scene.NoHit);
+                SceneExtensions.AddItem(scene, visual, layout, scene.NoHit);
             }
         }
 
+      
         /// <summary>
         /// true if scene.Graph is backed by a ThingGraph
         /// </summary>

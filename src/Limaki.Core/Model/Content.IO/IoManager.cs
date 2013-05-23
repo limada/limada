@@ -21,11 +21,12 @@ using System.Linq;
 
 namespace Limaki.Model.Content.IO {
 
-    public class IoManager<TSource, TSink> {
+    public class IoManager<TSource, TSink>:IProgress {
 
         public string DefaultExtension { get; set; }
         public Action<string, int, int> Progress { get; set; }
 
+        
         public virtual ISinkIo<TSource> GetSinkIO(IoInfo info, InOutMode mode) {
             return GetSinkByExtension(info.Extension, mode);
         }
@@ -40,8 +41,7 @@ namespace Limaki.Model.Content.IO {
 
         public virtual ISinkIo<TSource> GetSinkByExtension (string extension, InOutMode mode) {
             var result = Provider.Find(extension, mode);
-            if (result != null)
-                result.Progress = this.Progress;
+            this.AttachProgress(result as IProgress);
             return result;
         }
 
@@ -107,29 +107,47 @@ namespace Limaki.Model.Content.IO {
 
         public Action<ISinkIo<TSource>> ConfigureSinkIo { get; set; }
 
-        public virtual TSink ReadSink (Uri uri) {
+        public virtual TSink ReadSink (Uri uri, TSink sink) {
             var sinkIo = GetSinkIO(uri, InOutMode.Read);
-            TSink result = default(TSink);
             if (sinkIo != null && sinkIo.IoMode.HasFlag(InOutMode.Read)) {
                 OnClose();
                 try {
-                    var streamSink = sinkIo as ISink<Uri, TSink>;
-                    if (streamSink != null) {
-                        result = streamSink.Use(uri);
-                        if (result != null && SinkIn != null) {
-                            SinkIn(result);
+                    if (ConfigureSinkIo != null)
+                        ConfigureSinkIo(sinkIo);
+                    this.AttachProgress(sinkIo as IProgress);
+
+                    var uriSink = sinkIo as ISink<Uri, TSink>;
+                    if (uriSink != null) {
+                        sink = uriSink.Use(uri, sink);
+                        if (sink != null && SinkIn != null) {
+                            SinkIn(sink);
                         }
                         OnClose();
+                    } else {
+                        var streamSink = sinkIo as ISink<Stream,TSink>;
+                        if (streamSink != null) {
+                            var filename = IOUtils.UriToFileName(uri);
+                            var file = new FileStream(filename, FileMode.Open);
+                            sink = streamSink.Use(file, sink);
+                            if (sink != null && SinkIn != null) {
+                                SinkIn(sink);
+                            }
+                            file.Close();
+                        }
                     }
                 } catch (Exception e) {
-                    result = default(TSink);
+                    sink = default(TSink);
                 }
             }
-            return result;
+            return sink;
+        }
+
+        public virtual TSink ReadSink (Uri uri) {
+            return ReadSink(uri, default(TSink));
         }
 
         public virtual void WriteSink (Uri uri) {
-            WriteSink(SinkOut(),uri);
+            WriteSink(SinkOut(), uri);
         }
 
         public virtual bool WriteSink (TSink sink, Uri uri) {
@@ -137,13 +155,15 @@ namespace Limaki.Model.Content.IO {
                 return false;
 
             var sinkIo = GetSinkIO(uri, InOutMode.Write);
-            
-            if (ConfigureSinkIo != null)
-                ConfigureSinkIo(sinkIo);
+           
 
             bool result = false;
             if (sinkIo != null && sinkIo.IoMode.HasFlag(InOutMode.Write)) {
                 try {
+                    this.AttachProgress(sinkIo as IProgress);
+                    if (ConfigureSinkIo != null)
+                        ConfigureSinkIo(sinkIo);
+
                     var uriSink = sinkIo as ISink<TSink, Uri>;
                     if (uriSink !=null) {
                         uriSink.Use(sink, uri);

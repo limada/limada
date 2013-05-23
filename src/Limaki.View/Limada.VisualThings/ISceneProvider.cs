@@ -22,13 +22,14 @@ using Limaki.Drawing;
 using Limaki.Visuals;
 using Limaki.Model.Content.IO;
 using System.IO;
+using Limaki.Common;
 
 namespace Limada.VisualThings {
     /// <summary>
     /// Attachs a Model from a DataSource
     /// to a Scene
     /// </summary>
-    public interface ISceneProvider {
+    public interface ISceneProvider : IProgress {
         IThingGraphProvider Provider { get; set; }
         IGraphScene<IVisual, IVisualEdge> Scene { get; set; }
         bool Open(IoInfo FileName);

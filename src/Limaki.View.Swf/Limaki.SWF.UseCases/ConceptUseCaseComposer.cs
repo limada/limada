@@ -144,12 +144,13 @@ namespace Limaki.Swf.Backends.UseCases {
                 new ToolStripMenuItem(l["SaveAs ..."], null, (s, e) => { useCase.SaveAsFile(); }),
                 new ToolStripMenuItem(l["Export"], null, new ToolStripMenuItem[] {
                     new ToolStripMenuItem(l["current view ..."], null, (s, e) => { useCase.ExportCurrentView(); }),
-                    new ToolStripMenuItem(l["as image ..."], null, (s, e) => { this.ExportAsImage(useCase); }),
+                    new ToolStripMenuItem(l["view as image ..."], null, (s, e) => { this.ExportAsImage(useCase); }),
                     new ToolStripMenuItem(l["Content ..."], null, (s, e) => { useCase.ExportContent(); }),
                     new ToolStripMenuItem(l["Report (pdf)..."], null, (s, e) => { useCase.ExportThings(); }),
                 }),
 				new ToolStripMenuItem(l["Import"], null, new ToolStripMenuItem[] { 
 					new ToolStripMenuItem(l["Content ..."], null, (s, e) => { useCase.ImportContent(); }),
+                    new ToolStripMenuItem(l["multi content ..."], null, (s, e) => { useCase.ImportGraphFocus(); }),
                     new ToolStripMenuItem(l["File from previous version ..."], null, (s, e) => { useCase.ImportThingGraphRaw(); })
 				}),
                 new ToolStripMenuItem(l["Print ..."], null, (s, e) => { this.Print(useCase); }),

@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -15,23 +15,16 @@
 using System;
 
 namespace Limaki.Common {
-    public struct Progress {
-        public int Current;
-        public int Maximum;
-        public Progress(int maximum) {
-            this.Maximum = maximum;
-            this.Current = 0;
-        }
 
+    public interface IProgress {
+        Action<string, int, int> Progress { get; set; }
     }
 
-    public delegate void ProgressChangedEventHandler (Object sender,ProgressChangedEventArgs e);
+    public static class ProgressExtensions {
+        public static void AttachProgress (this IProgress source, IProgress sink) {
+            if (sink != null)
+                sink.Progress = source.Progress;
 
-    public class ProgressChangedEventArgs : EventArgs {
-        public Progress Progress;
-        public ProgressChangedEventArgs(Progress progress) {
-            this.Progress = progress;
         }
-
     }
 }
