@@ -24,7 +24,7 @@ namespace Limada.Data {
         }
 
         protected override ThingGraphContent OpenInternal (IoInfo source) {
-            return new ThingGraphContent { Data = new ThingGraph(), Source = source, ContentType = MemoryThingGraphInfo.MemoryThingGraphContentType };
+            return new ThingGraphContent { Data = new ThingGraph(), Source = source, ContentType = MemoryThingGraphInfo.ContentType };
         }
 
         public override void Close (ThingGraphContent sink) { }

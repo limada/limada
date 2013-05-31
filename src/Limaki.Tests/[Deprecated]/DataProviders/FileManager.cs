@@ -27,7 +27,7 @@ namespace Limada.Usecases {
 
     //TODO: refactor to ThingGraphUiManager and remove
     
-    public class FileManager : FileManagerBase, IFileManager {
+    public class FileManager : FileManagerBase, IGraphSceneUiManager {
 
         public Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
         public Action<string> DataPostProcess { get; set; }
@@ -74,7 +74,7 @@ namespace Limada.Usecases {
         }
 
         //done
-        public bool OpenCommandLineOptions () {
+        public bool ProcessCommandLine () {
             var result = false;
             var filesToAdd = new List<string>();
             string fileToOpen = null;
@@ -146,7 +146,7 @@ namespace Limada.Usecases {
             return OpenCommandLine(Environment.GetCommandLineArgs());
         }
         //done
-        public void ShowEmptyThingGraph() {
+        public void ShowEmptyScene() {
             var provider = new MemoryThingGraphProvider();
             this.ThingGraphProvider.Close();
             this.ThingGraphProvider = provider;
@@ -234,7 +234,7 @@ namespace Limada.Usecases {
         }
 
         //done
-        public void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene) {
+        public void ExportSceneView(IGraphScene<IVisual, IVisualEdge> scene) {
             DefaultDialogValues(SaveFileDialog);
             if (scene != null && scene.HasThingGraph()) {
                 if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
@@ -271,7 +271,7 @@ namespace Limada.Usecases {
 
         #region Import
         //done
-        public void ImportThingGraphRaw() {
+        public void ImportRawSource() {
             Save();
             Close();
             bool tryIt = true;

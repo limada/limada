@@ -37,11 +37,11 @@ namespace Limaki.Usecases.Concept {
 
         public void Start() {
 
-            FileManager.OpenFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
-            FileManager.SaveFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
+            GraphSceneUiManager.OpenFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
+            GraphSceneUiManager.SaveFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
 
-            if (!FileManager.OpenCommandLineOptions() || !FileManager.OpenCommandLine()) {
-                FileManager.ShowEmptyThingGraph();
+            if (!GraphSceneUiManager.ProcessCommandLine() || !GraphSceneUiManager.OpenCommandLine()) {
+                GraphSceneUiManager.ShowEmptyScene();
             }
         }
 
@@ -49,7 +49,7 @@ namespace Limaki.Usecases.Concept {
         public void Close() {
             if (!closeDone) {
                 SaveChanges();
-                FileManager.Close();
+                GraphSceneUiManager.Close();
                 closeDone = true;
             }
         }
@@ -72,36 +72,36 @@ namespace Limaki.Usecases.Concept {
         public Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow { get; set; }
         public Func<FileDialogMemento, bool, DialogResult> FileDialogShow { get; set; }
 
-        public IFileManager FileManager { get; set; }
+        public IGraphSceneUiManager GraphSceneUiManager { get; set; }
         public Action<string> DataPostProcess { get; set; }
 
         public void OpenFile() {
             SaveChanges();
-            FileManager.OpenFile ();
+            GraphSceneUiManager.OpenFile ();
         }
 
         public virtual void SaveFile() {
             SaveChanges();
-            FileManager.Save();
+            GraphSceneUiManager.Save();
         }
 
         public void SaveAsFile() {
             SaveChanges();
-            FileManager.SaveAsFile ();
+            GraphSceneUiManager.SaveAsFile ();
         }
 
         public void ExportCurrentView() {
             var display = GetCurrentDisplay ();
             if (display != null) {
-                FileManager.ExportAsThingGraph (display.Data);
+                GraphSceneUiManager.ExportSceneView (display.Data);
             }
         }
 
         
         public void ImportThingGraphRaw() {
             SaveChanges();
-            FileManager.ShowEmptyThingGraph();
-            FileManager.ImportThingGraphRaw();
+            GraphSceneUiManager.ShowEmptyScene();
+            GraphSceneUiManager.ImportRawSource();
         }
 
         public void Search() {

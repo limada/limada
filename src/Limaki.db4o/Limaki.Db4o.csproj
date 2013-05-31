@@ -79,7 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limada.Data\Data\db4o\Db4oRepairer.cs" />
-    <Compile Include="Limada.Data\Data\db4o\Db4oThingGraphProvider.cs" />
     <Compile Include="Limada.Data\Db4oThingGraphInfo.cs" />
     <Compile Include="Limada.Data\Db4oThingGraphIo.cs" />
     <Compile Include="Limaki.Data\db4o\Gateway.cs" />
@@ -88,7 +87,7 @@
     <Compile Include="Limada.Data\Data\db4o\DataContainer.cs" />
     <Compile Include="Limada.Data\Data\db4o\ThingGraph.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceLoader.cs" />
+    <Compile Include="Db4oResourceLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq-2010.csproj">

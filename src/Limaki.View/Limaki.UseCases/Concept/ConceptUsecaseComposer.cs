@@ -12,9 +12,9 @@ namespace Limaki.Usecases.Concept {
         public void Factor(ConceptUsecase useCase) {
             useCase.SheetManager = Registry.Factory.Create<ISheetManager>();
             useCase.SceneHistory = new SceneHistory ();
-            useCase.FileManager = new ThingGraphUiManager();
-            useCase.FileManager.OpenFileDialog = new FileDialogMemento();
-            useCase.FileManager.SaveFileDialog = new FileDialogMemento();
+            useCase.GraphSceneUiManager = new ThingGraphUiManager();
+            useCase.GraphSceneUiManager.OpenFileDialog = new FileDialogMemento();
+            useCase.GraphSceneUiManager.SaveFileDialog = new FileDialogMemento();
             useCase.ContentStreamUiManager = new ContentStreamUiManager();
             useCase.ContentStreamUiManager.OpenFileDialog = new FileDialogMemento();
             useCase.ContentStreamUiManager.SaveFileDialog = new FileDialogMemento();
@@ -49,7 +49,7 @@ namespace Limaki.Usecases.Concept {
             
             useCase.DisplayStyleChanged += splitView.DoDisplayStyleChanged;
 
-            var fileManager = useCase.FileManager;
+            var fileManager = useCase.GraphSceneUiManager;
             fileManager.FileDialogShow = useCase.FileDialogShow;
             fileManager.MessageBoxShow = useCase.MessageBoxShow;
 

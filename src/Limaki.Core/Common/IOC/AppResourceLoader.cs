@@ -16,6 +16,7 @@
 using Limada.Data;
 using Limada.Model;
 using Limaki.Data;
+using Limaki.Model.Content.IO;
 
 namespace Limaki.Common.IOC {
     public class AppResourceLoader : ContextRecourceLoader {
@@ -29,8 +30,8 @@ namespace Limaki.Common.IOC {
             
             deviceContext.ApplyResources(context);
 
-            var providers = context.Pool.TryGetCreate<DataProviders<IThingGraph>>();
-            providers.Add(typeof(XMLThingGraphProvider));
+            var thingGraphProvider = context.Pool.TryGetCreate<IoProvider<IoInfo, ThingGraphContent>>();
+            thingGraphProvider.Add(new XmlThingGraphIo());
 
         }
     }

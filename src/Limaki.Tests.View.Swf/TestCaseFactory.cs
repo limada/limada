@@ -159,7 +159,7 @@ namespace Limaki.Tests.UseCases {
             var provider = new WCFThingGraphClientProvider();
 
             handler.Provider = provider;
-            handler.DataBound = sender.FileManager.DataBound;
+            handler.DataBound = sender.GraphSceneUiManager.DataBound;
             if (handler.Open(info)) {
                 sender.DataPostProcess (provider.host.baseAddress.AbsoluteUri);
             }

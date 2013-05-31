@@ -219,16 +219,6 @@ namespace Limaki.Model.Content.IO {
 
         #endregion
 
-        #region TODO: IoInfo-Handling
-
-
-       
-
-        public TSink ReadSink (IoInfo ioInfo) {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
+ 
     }
 }

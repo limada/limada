@@ -28,7 +28,7 @@ using System.IO;
 
 namespace Limada.Usecases {
 
-    public class ThingGraphUiManager : IoUiManager, IFileManager {
+    public class ThingGraphUiManager : IoUiManager, IGraphSceneUiManager {
 
         public ThingGraphContent Current { get; set; }
 
@@ -88,7 +88,7 @@ namespace Limada.Usecases {
             }
         }
 
-        public void ShowEmptyThingGraph () {
+        public void ShowEmptyScene () {
             var source = new MemoryThingGraphIo().Open(null);
             AttachCurrent(source, "unknown");
         }
@@ -151,7 +151,7 @@ namespace Limada.Usecases {
             }
         }
 
-        public void ExportAsThingGraph (IoInfo sinkInfo, IGraphScene<IVisual, IVisualEdge> scene) {
+        public void ExportSceneView (IoInfo sinkInfo, IGraphScene<IVisual, IVisualEdge> scene) {
             if (scene.HasThingGraph()) {
                 var sinkIo = ThingGraphIoManager.GetSinkIO(sinkInfo, InOutMode.Write) as ThingGraphIo;
                 if (sinkIo != null) {
@@ -163,11 +163,11 @@ namespace Limada.Usecases {
             }
         }
 
-        public void ExportAsThingGraph (IGraphScene<IVisual, IVisualEdge> scene) {
+        public void ExportSceneView (IGraphScene<IVisual, IVisualEdge> scene) {
             DefaultDialogValues(SaveFileDialog, WriteFilter);
             if (scene != null && scene.HasThingGraph()) {
                 if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
-                    ExportAsThingGraph(IoInfo.FromFileName(SaveFileDialog.FileName), scene);
+                    ExportSceneView(IoInfo.FromFileName(SaveFileDialog.FileName), scene);
                     SaveFileDialog.ResetFileName();
                 }
             }
@@ -218,7 +218,7 @@ namespace Limada.Usecases {
             return OpenCommandLine(Environment.GetCommandLineArgs());
         }
 
-        public bool OpenCommandLineOptions () {
+        public bool ProcessCommandLine () {
             var result = false;
             var filesToAdd = new List<string>();
             string fileToOpen = null;
@@ -272,7 +272,7 @@ namespace Limada.Usecases {
         }
         #endregion
 
-        public void ImportThingGraphRaw () {
+        public void ImportRawSource () {
             Save();
             Close(this.Current);
             bool tryIt = true;

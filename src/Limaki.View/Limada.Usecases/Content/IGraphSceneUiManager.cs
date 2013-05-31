@@ -18,7 +18,10 @@ using Limaki.Visuals;
 
 namespace Limada.Usecases {
 
-    public interface IFileManager {
+    public interface IGraphSceneUiManager {
+
+        Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
+        Action<string> DataPostProcess { get; set; }
 
         FileDialogMemento OpenFileDialog { get; set; }
         FileDialogMemento SaveFileDialog { get; set; }
@@ -29,18 +32,15 @@ namespace Limada.Usecases {
 
         Action ApplicationQuit { get; set; }
 
-        Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
-        Action<string> DataPostProcess { get; set; }
-
         void OpenFile ();
 
-        bool OpenCommandLineOptions ();
+        bool ProcessCommandLine ();
         bool OpenCommandLine ();
 
-        void ShowEmptyThingGraph ();
+        void ShowEmptyScene ();
 
-        void ExportAsThingGraph (IGraphScene<IVisual, IVisualEdge> graphScene);
-        void ImportThingGraphRaw ();
+        void ExportSceneView (IGraphScene<IVisual, IVisualEdge> graphScene);
+        void ImportRawSource ();
 
         void Save ();
         void SaveAsFile ();
