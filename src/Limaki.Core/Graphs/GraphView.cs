@@ -130,7 +130,7 @@ namespace Limaki.Graphs {
         }
 
         public override void CopyTo(TItem[] array, int arrayIndex) {
-            throw new Exception("The method or operation is not implemented.");
+            One.CopyTo(array, arrayIndex);
         }
 
         public override int Count {

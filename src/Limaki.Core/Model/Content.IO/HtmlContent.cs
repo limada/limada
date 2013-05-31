@@ -46,7 +46,7 @@ namespace Limaki.Model.Content.IO {
 
         public static long XHTML = 0x280efaf080c35e30;
 
-        public override bool StreamHasMagics { 
+        public override bool SupportsMagics { 
             get { return true; }
         }
 

@@ -22,9 +22,7 @@ namespace Limaki.Model.Content.IO {
 
     public class StreamSink : SinkIo<Stream> {
 
-        protected StreamSink(ContentInfoSink supportedContents)
-            : base(supportedContents) {
-        }
+        protected StreamSink(ContentInfoSink supportedContents): base(supportedContents) {}
 
         public override ContentInfo Use(Stream source) {
             return InfoSink.Use(source);
@@ -41,47 +39,44 @@ namespace Limaki.Model.Content.IO {
     }
 
     public class StreamOutSink : StreamSink, ISink<Stream, Uri> {
-        protected StreamOutSink(ContentInfoSink supportedContents)
-            : base(supportedContents) {
+
+        protected StreamOutSink(ContentInfoSink supportedContents) : base(supportedContents) {
             this.IoMode = InOutMode.Write;
         }
 
         public Uri Use(Stream source, Uri sink) {
-            {
-                if (sink == null)
-                    throw new ArgumentException("Uri must not be null");
 
-                if (IoMode.HasFlag(InOutMode.Write) && sink.IsFile) {
-                    var filename = IOUtils.UriToFileName(sink);
-                    var file = new FileStream(filename, FileMode.Create);
-                    var target = new BufferedStream(file);
-                    var bufferSize = 1024 * 1024;
-                    var buffer = new byte[bufferSize];
-                    var oldPos = source.Position;
-                    int readByte = 0;
-                    int position = 0;
+            if (sink == null)
+                throw new ArgumentException("Uri must not be null");
 
-                    long endpos = source.Length - 1;
-                    while (position < endpos) {
-                        readByte = source.Read(buffer, 0, bufferSize);
-                        target.Write(buffer, 0, readByte);
-                        position += readByte;
-                    }
+            if (IoMode.HasFlag(InOutMode.Write) && sink.IsFile) {
+                var filename = IOUtils.UriToFileName(sink);
+                var file = new FileStream(filename, FileMode.Create);
+                var target = new BufferedStream(file);
+                var bufferSize = 1024 * 1024;
+                var buffer = new byte[bufferSize];
+                var oldPos = source.Position;
+                int readByte = 0;
+                int position = 0;
 
-                    target.Flush();
-                    target.Close();
-                    source.Position = oldPos;
+                long endpos = source.Length - 1;
+                while (position < endpos) {
+                    readByte = source.Read(buffer, 0, bufferSize);
+                    target.Write(buffer, 0, readByte);
+                    position += readByte;
                 }
-                return sink;
+
+                target.Flush();
+                target.Close();
+                source.Position = oldPos;
             }
+            return sink;
         }
 
-        public new Uri Use(Stream source) {
-            return Use(source, null);
-        }
+        public new Uri Use(Stream source) { return Use(source, null); }
+
     }
-
-
+    
     public class StreamInSink : StreamSink, ISink<Uri, Stream>, ISink<Stream, ContentInfo> {
 
         protected StreamInSink(ContentInfoSink supportedContents)

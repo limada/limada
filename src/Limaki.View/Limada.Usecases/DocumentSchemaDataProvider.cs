@@ -30,7 +30,7 @@ namespace Limada.Usecases {
                     var name = dir + Path.DirectorySeparatorChar +
                                s + " " +
                                pageName +
-                               ContentTypes.Extension(streamThing.StreamType);
+                               ContentTypes.Extension(streamThing.ContentType);
 
                     streamThing.Data.Position = 0;
                     using (var fileStream = new FileStream(name, FileMode.Create)) {

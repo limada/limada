@@ -19,11 +19,11 @@ namespace Limaki.Model.Content {
     public class Content {
         public Content() {
             Compression = CompressionType.None;
-            StreamType = ContentTypes.Unknown;
+            ContentType = ContentTypes.Unknown;
         }
 
         public CompressionType Compression { get; set; }
-        public Id StreamType { get; set; }
+        public Id ContentType { get; set; }
         public object Description { get; set; }
         public object Source { get; set; }
     }
@@ -38,14 +38,14 @@ namespace Limaki.Model.Content {
         }
 
         public Content(T data, CompressionType compression, long streamType):this(data,compression) {
-            this.StreamType = streamType;
+            this.ContentType = streamType;
         }
 
         public Content(Content source) {
             this.Description = source.Description;
             this.Source = source.Source;
             this.Compression = source.Compression;
-            this.StreamType = source.StreamType;
+            this.ContentType = source.ContentType;
             var sourceT = source as Content<T>;
             if (sourceT != null)
                 this.Data = sourceT.Data;

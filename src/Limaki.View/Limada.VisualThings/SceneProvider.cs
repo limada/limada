@@ -30,7 +30,7 @@ using System.IO;
 
 namespace Limada.VisualThings {
 
-    public class SceneProvider : ISceneProvider {
+    public class SceneProvider  {
 
         public IThingGraph ThingGraph { get; set; }
 
@@ -38,6 +38,7 @@ namespace Limada.VisualThings {
 
         public bool UseSchema = true;
 
+        //done
         protected virtual IGraph<IVisual, IVisualEdge> CreateGraphView(IThingGraph thingGraph) {
             SchemaFacade.MakeMarkersUnique(thingGraph);
 
@@ -52,6 +53,7 @@ namespace Limada.VisualThings {
             return graphView;
         }
 
+        //done
         public virtual IGraphScene<IVisual, IVisualEdge> CreateScene (IThingGraph thingGraph) {
             var scene = new Scene();
             scene.Graph = CreateGraphView(thingGraph);
@@ -62,11 +64,9 @@ namespace Limada.VisualThings {
         protected IThingGraphProvider _provider = null;
         public virtual IThingGraphProvider Provider { get { return _provider ?? (_provider = new MemoryThingGraphProvider()); } set { _provider = value; } }
 
+        // done
         public virtual bool Open(Action openProvider) {
-            //Close();
-            if (BeforeOpen != null) {
-                BeforeOpen(this.Scene);
-            }
+
             try {
                 openProvider();
                 this.ThingGraph = Provider.Data;
@@ -101,6 +101,7 @@ namespace Limada.VisualThings {
             });
         }
 
+        //done
         public virtual void SaveCurrent() {
             if (Scene != null) {
                 var visualThingGraph = this.Scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
@@ -111,25 +112,27 @@ namespace Limada.VisualThings {
             }
         }
 
-
-        public virtual void Save() {
-            SaveCurrent();
-        }
-
-        public virtual void ExportTo(IGraphScene<IVisual, IVisualEdge> scene, IThingGraph target) {
+        //done
+        public virtual GraphView<IThing, ILink> ThingViewOf (IGraphScene<IVisual, IVisualEdge> scene) {
             var graph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
-            if (graph != null) {
-                // get a ThingGraphView with only the things that are in the view
-                var thingView = new GraphView<IThing, ILink>(graph.Two as IThingGraph, new ThingGraph());
-                foreach (var visual in scene.Elements) {
-                    var thing = graph.Get(visual);
-                    thingView.Add(thing);
-                }
+            if (graph == null)
+                return null;
 
-                Provider.Export(thingView, target);
+            // get a ThingGraphView with only the things that are in the view
+            var thingView = new GraphView<IThing, ILink>(graph.Two as IThingGraph, new ThingGraph());
+            foreach (var visual in scene.Elements) {
+                var thing = graph.Get(visual);
+                thingView.Add(thing);
             }
-            
+            return thingView;
+
+
+        }
+
+        public virtual void ExportTo (IGraphScene<IVisual, IVisualEdge> scene, IThingGraph target) {
+            var thingView = ThingViewOf(scene);
+            Provider.Export(thingView, target);
         }
 
 
@@ -140,21 +143,9 @@ namespace Limada.VisualThings {
             provider.Close ();
         }
 
-
-        public virtual void Close() {
-            SaveCurrent();
-            Provider.Close();
-            if (AfterClose != null) {
-                AfterClose(this.Scene);
-            }
-            this.ThingGraph = null;
-        }
-
-        public Action<IGraphScene<IVisual, IVisualEdge>> BeforeOpen { get; set; }
+ 
         public Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
-        public Action<IGraphScene<IVisual, IVisualEdge>> BeforeClose { get; set; }
-        public Action<IGraphScene<IVisual, IVisualEdge>> AfterClose { get; set; }
-        public Action<string,int,int> Progress { get; set; }
+
 
     }
 }

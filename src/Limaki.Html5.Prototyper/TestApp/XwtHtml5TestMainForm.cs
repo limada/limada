@@ -49,7 +49,7 @@ namespace Xwt.Html5.TestApp {
                 writer.Flush ();
                 s.Position = 0;
                 var content = new Content<Stream> (s, CompressionType.None, ContentTypes.HTML);
-                content.StreamType = ContentTypes.HTML;
+                content.ContentType = ContentTypes.HTML;
                 r.AbsoluteUri = uri;
                 htmlViewer.SetContent (r, content);
 

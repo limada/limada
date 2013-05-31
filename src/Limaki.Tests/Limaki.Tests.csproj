@@ -106,7 +106,6 @@
     <Compile Include="Limada.Tests\Tests\Model\DocumentSchemaTestFactory.cs" />
     <Compile Include="Limada.Tests\Tests\Model\ThingFactoryTest.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
-    <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oRepairTest.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\Sample4Test.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\SchemaGraph\SchemaGraphPerformanceTest.cs" />
@@ -140,6 +139,7 @@
     <Compile Include="Playground\DocumentObjectModel\DOM.cs" />
     <Compile Include="Playground\IO\IOPrototype.cs" />
     <Compile Include="Playground\IO\IoTryout.cs" />
+    <Compile Include="Playground\Limada.Model\HyperGraph.cs" />
     <Compile Include="Playground\View\AllignerPrototyper.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
     <Compile Include="Playground\View\CollissionResolver.cs" />
@@ -317,6 +317,7 @@
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
     <Folder Include="Playground\Graph\" />
     <Folder Include="Playground\View\DragDrop\" />
+    <Folder Include="[Deprecated]\DataProviders\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

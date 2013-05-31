@@ -102,7 +102,7 @@ namespace Limaki.Graphs {
         }
 
         public bool Contains(TEdgeOne item) {
-            TEdgeTwo edgeTwo = (TEdgeTwo)_graph.Mapper.Get(item);
+            var edgeTwo = (TEdgeTwo)_graph.Mapper.Get(item);
             if (edgeTwo == null)
                 return false;
             else

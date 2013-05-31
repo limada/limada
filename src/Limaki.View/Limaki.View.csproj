@@ -59,9 +59,12 @@
     <Compile Include="Limada.UseCases\Cms\AppController.cs" />
     <Compile Include="Limada.UseCases\Cms\BackendController.cs" />
     <Compile Include="Limada.UseCases\Content\ContentStreamUiManager.cs" />
+    <Compile Include="Limada.UseCases\Content\ThingGraphUiManager.cs" />
     <Compile Include="Limada.UseCases\DocumentSchemaDataProvider.cs" />
+    <Compile Include="Limada.UseCases\IFileManager.cs" />
     <Compile Include="Limada.View\DocumentSchemaKeyScrollAction.cs" />
     <Compile Include="Limada.View\DocumentSchemaViewer.cs" />
+    <Compile Include="Limada.VisualThings\SceneIo.cs" />
     <Compile Include="Limada.VisualThings\VisualThingsSceneExtensions.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindDrawingUtils.cs" />
     <Compile Include="Limaki.Drawing\Dimension.cs" />
@@ -174,7 +177,6 @@
     <Compile Include="Limada.View\SheetManager.cs" />
     <Compile Include="Limada.UseCases\DocumentSchema\DocumentSchemaManager.cs" />
     <Compile Include="Limada.UseCases\FileManager.cs" />
-    <Compile Include="Limada.VisualThings\ISceneProvider.cs" />
     <Compile Include="Limada.VisualThings\SceneProvider.cs" />
     <Compile Include="Limada.VisualThings\VisualThingAdapter.cs" />
     <Compile Include="Limada.VisualThings\VisualThingGraph.cs" />

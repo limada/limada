@@ -15,15 +15,21 @@
 
 using Limaki.Common;
 using System;
+using Limaki.Model.Content.IO;
 namespace Limaki.Data {
+
     public interface IDataProvider<T>:IProgress {
+
         string Extension { get; }
         string Description { get; }
+
+        bool Saveable { get; }
+        bool Readable { get; }
+
         T Data { get; set; }
         void Open ( IoInfo fileName );
         void Open();
-        bool Saveable { get; }
-        bool Readable { get; }
+
         void Save();
         void SaveAs(T source, IoInfo fileName);
         void Merge (T source, T sink);

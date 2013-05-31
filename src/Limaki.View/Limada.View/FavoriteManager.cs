@@ -168,7 +168,7 @@ namespace Limada.View {
                             Source = HomeId,
                             Description = homeInfo.Name,
                             Data = sheet,
-                            StreamType = TopicSchema.SheetMarker.Id
+                            ContentType = TopicSchema.SheetMarker.Id
                         };
                         DisplaySheet(display, content);
                         done = true;

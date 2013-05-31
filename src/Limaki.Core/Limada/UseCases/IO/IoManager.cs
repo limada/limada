@@ -21,12 +21,39 @@ using System.Linq;
 
 namespace Limaki.Model.Content.IO {
 
+    /// <summary>
+    /// manages core input-output-operations of 
+    /// ISink#TSource, TSink#-implementations
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TSink"></typeparam>
     public class IoManager<TSource, TSink>:IProgress {
+        
+        /// <summary>
+        /// called after sink is read
+        /// </summary>
+        public Action<TSink> SinkIn { get; set; }
+
+        /// <summary>
+        /// called to get the sink to be written
+        /// </summary>
+        public Func<TSink> SinkOut { get; set; }
+
+        /// <summary>
+        /// called after a SinkIo is found, and before using it
+        /// </summary>
+        public Action<ISinkIo<TSource>> ConfigureSinkIo { get; set; }
+
+        public Action Close { get; set; }
 
         public string DefaultExtension { get; set; }
         public Action<string, int, int> Progress { get; set; }
 
-        
+        private IoProvider<TSource, TSink> _provider = null;
+        public IoProvider<TSource, TSink> Provider { get { return _provider ?? (_provider = Registry.Pool.TryGetCreate<IoProvider<TSource, TSink>>()); } }
+
+        #region providing SinkIo
+
         public virtual ISinkIo<TSource> GetSinkIO(IoInfo info, InOutMode mode) {
             return GetSinkByExtension(info.Extension, mode);
         }
@@ -45,23 +72,29 @@ namespace Limaki.Model.Content.IO {
             return result;
         }
 
+        public object GetSinkIO (long streamType, InOutMode mode) {
+            var result = Provider.Find(streamType, mode);
+            this.AttachProgress(result as IProgress);
+            return result;
+        }
         public virtual ContentInfo GetContentInfo (Content stream) {
-            var sink = Provider.Find(stream.StreamType);
+            var sink = Provider.Find(stream.ContentType);
             if (sink != null) {
-                return sink.InfoSink.SupportedContents.Where(e => e.ContentType == stream.StreamType).First();
+                return sink.InfoSink.SupportedContents.Where(e => e.ContentType == stream.ContentType).First();
             }
             return null;
         }
+
+        #endregion
+
+        #region Dialog-Filter-Handling
 
         private string _saveFilter = null;
         public string WriteFilter { get { return _saveFilter ?? (_saveFilter = GetFilter(InOutMode.Write)); } }
 
         private string _readFilter = null;
         public string ReadFilter { get { return _readFilter ?? (_readFilter = GetFilter(InOutMode.Read)); } }
-
-        private IoProvider<TSource,TSink> _provider = null;
-        public IoProvider<TSource,TSink> Provider { get { return _provider ?? (_provider = Registry.Pool.TryGetCreate<IoProvider<TSource,TSink>>()); } }
-
+ 
         public string GetFilter (ContentInfo info, out string ext) {
             ext = info.Extension;
             if (ext[0] != '.')
@@ -69,15 +102,15 @@ namespace Limaki.Model.Content.IO {
             return info.Description + "|*" + ext + "|";
         }
 
-        public string GetFilter(InOutMode mode) {
+        public string GetFilter (InOutMode mode) {
             string filter = "";
             string defaultFilter = null;
             foreach (var sink in Provider) {
-                if (sink.IoMode == mode) {
+                if (sink.IoMode.HasFlag(mode)) {
                     foreach (var info in sink.InfoSink.SupportedContents) {
                         string ext = null;
                         var f = GetFilter(info, out ext);
-                       
+
                         if (DefaultExtension != null && ext == "." + DefaultExtension)
                             defaultFilter = f;
                         else
@@ -94,19 +127,9 @@ namespace Limaki.Model.Content.IO {
 
         }
 
+        #endregion
 
-        /// <summary>
-        /// called after sink is read
-        /// </summary>
-        public Action<TSink> SinkIn { get; set; }
-
-        /// <summary>
-        /// called to get the sink to be written
-        /// </summary>
-        public Func<TSink> SinkOut { get; set; }
-
-        public Action<ISinkIo<TSource>> ConfigureSinkIo { get; set; }
-
+        #region Uri-Handling
         public virtual TSink ReadSink (Uri uri, TSink sink) {
             var sinkIo = GetSinkIO(uri, InOutMode.Read);
             if (sinkIo != null && sinkIo.IoMode.HasFlag(InOutMode.Read)) {
@@ -186,7 +209,7 @@ namespace Limaki.Model.Content.IO {
             return result;
         }
 
-        public Action Close { get; set; }
+
         public virtual void OnClose () {
             if (Close != null) {
                 Close();
@@ -194,6 +217,18 @@ namespace Limaki.Model.Content.IO {
             }
         }
 
-        
+        #endregion
+
+        #region TODO: IoInfo-Handling
+
+
+       
+
+        public TSink ReadSink (IoInfo ioInfo) {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
     }
 }

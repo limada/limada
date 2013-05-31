@@ -20,7 +20,7 @@ using Limaki.Graphs;
 
 namespace Limada.Data {
     public interface IThingGraphProvider:IDataProvider<IThingGraph> {
-        void ReadIntoList ( ICollection<IThing> things, IGraph<IThing, ILink> view );
+        void ThingsOfView (IGraph<IThing, ILink> sourceView, ICollection<IThing> sink);
         void Export ( IGraph<IThing, ILink> view, IThingGraph target );
         void RawImport(IoInfo source, IDataProvider<IThingGraph> target);
     }

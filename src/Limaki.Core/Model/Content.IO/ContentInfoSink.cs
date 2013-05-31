@@ -30,18 +30,18 @@ namespace Limaki.Model.Content.IO {
 
         #region ContentInfo handling
 
-        protected bool? _supportedHasMagics = null;
-        public virtual bool StreamHasMagics {
+        protected bool? _streamHasMagics = null;
+        public virtual bool SupportsMagics {
             get {
-                if (!_supportedHasMagics.HasValue) {
-                    _supportedHasMagics = SupportedContents.Any(info => info.Magics != null && info.Magics.Count() > 0);
+                if (!_streamHasMagics.HasValue) {
+                    _streamHasMagics = SupportedContents.Any(info => info.Magics != null && info.Magics.Count() > 0);
                 }
-                return _supportedHasMagics.Value;
+                return _streamHasMagics.Value;
             }
         }
 
         public virtual ContentInfo Use (Stream stream) {
-            if (!StreamHasMagics)
+            if (!SupportsMagics)
                 return null;
             return SupportedContents
                 .Where(info => info.Magics != null)

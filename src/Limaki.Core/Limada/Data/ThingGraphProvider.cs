@@ -22,6 +22,7 @@ using Limaki.Model.Content;
 using System.IO;
 using Limaki.Common;
 using System;
+using Limaki.Model.Content.IO;
 
 namespace Limada.Data {
 
@@ -68,13 +69,21 @@ namespace Limada.Data {
             
         }
 
-        public void ReadIntoList(ICollection<IThing> things, IGraph<IThing, ILink> view) {
-            var graph = view.RootSource();
+        /// <summary>
+        /// adds all things of sourceView into sink
+        /// extract all things stored in a sheet
+        /// and adds it to sink
+        /// </summary>
+        /// <param name="sourceView"></param>
+        /// <param name="sink"></param>
+        public void ThingsOfView(IGraph<IThing, ILink> sourceView, ICollection<IThing> sink) {
+
+            var graph = sourceView.RootSource();
 
             if (graph != null) {
-                foreach (var thing in view) {
+                foreach (var thing in sourceView) {
 
-                    things.Add(thing);
+                    sink.Add(thing);
 
                     var streamThing = thing as IStreamThing;
                     if (streamThing != null && streamThing.StreamType == ContentTypes.LimadaSheet) {
@@ -91,7 +100,7 @@ namespace Limada.Data {
                         var thingView = new GraphView<IThing, ILink>(graph.Two, new ThingGraph());
                         new GraphViewFacade<IThing, ILink>(thingView).Add(ser.ThingCollection);
 
-                        ReadIntoList(things, thingView);
+                        ThingsOfView(thingView, sink);
                     }
                 }
             }
@@ -102,7 +111,7 @@ namespace Limada.Data {
             if (graph != null) {
                 var source = graph.Two as IThingGraph;
                 var things = new List<IThing>();
-                this.ReadIntoList(things, view);
+                this.ThingsOfView(view, things);
                 var completeThings =
                     things.Distinct ().CompletedThings(source).ToList ();
                 target.AddRange(completeThings);

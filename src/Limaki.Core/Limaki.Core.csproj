@@ -219,7 +219,7 @@
     <Compile Include="Graphs\Graph.cs" />
     <Compile Include="Graphs\GraphBase.cs" />
     <Compile Include="Graphs\GraphChangeType.cs" />
-    <Compile Include="Graphs\GraphFocus.cs" />
+    <Compile Include="Graphs\GraphCursor.cs" />
     <Compile Include="Graphs\GraphMapper.cs" />
     <Compile Include="Graphs\GraphMapperOneTwo.cs" />
     <Compile Include="Graphs\GraphModelAdapter.cs" />
@@ -234,7 +234,12 @@
     <Compile Include="Graphs\MultiDictionaryGraph.cs" />
     <Compile Include="Limada\Common\Isaac.cs" />
     <Compile Include="Limada\Data\IThingGraphProvider.cs" />
+    <Compile Include="Limada\Data.IO\IThingGraphRepair.cs" />
+    <Compile Include="Limada\Data.IO\MemoryThingGraphInfo.cs" />
+    <Compile Include="Limada\Data.IO\MemoryThingGraphIo.cs" />
     <Compile Include="Limada\Data\MemoryThingGraphProvider.cs" />
+    <Compile Include="Limada\Data.IO\ThingGraphContent.cs" />
+    <Compile Include="Limada\Data.IO\ThingGraphIo.cs" />
     <Compile Include="Limada\Data\XMLThingGraphProvider.cs" />
     <Compile Include="Limada\Model\ByteStreamWrapper.cs" />
     <Compile Include="Common\DataComparer.cs" />
@@ -273,7 +278,7 @@
     <Compile Include="Limada\UseCases\DataProviderManager.cs" />
     <Compile Include="Model\Content.IO\ContentInfoSink.cs" />
     <Compile Include="Model\Content.IO\ContentStreamSink.cs" />
-    <Compile Include="Model\Content.IO\IoManager.cs" />
+    <Compile Include="Limada\UseCases\IO\IoManager.cs" />
     <Compile Include="Model\Content.IO\IoProvider.cs" />
     <Compile Include="Model\Content.IO\StreamSink.cs" />
     <Compile Include="Model\Content.IO\HtmlContent.cs" />

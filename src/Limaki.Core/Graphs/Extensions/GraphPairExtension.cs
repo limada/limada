@@ -19,7 +19,9 @@ using System.Linq;
 using Limaki.Common;
 
 namespace Limaki.Graphs.Extensions {
+
     public static class GraphPairExtension {
+
         public static IGraphPair<TItem, TItem, TEdge, TEdge> RootSource<TItem, TEdge>(this IGraph<TItem, TEdge> graph)
             where TEdge : IEdge<TItem>, TItem {
             var result = graph as IGraphPair<TItem, TItem, TEdge, TEdge>;

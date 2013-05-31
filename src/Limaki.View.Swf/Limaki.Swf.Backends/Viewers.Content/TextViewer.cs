@@ -71,7 +71,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
             var rtfStreamType = RichTextBoxStreamType.PlainText;
 
             try {
-                if (content.StreamType == ContentTypes.RTF) {
+                if (content.ContentType == ContentTypes.RTF) {
                     rtfStreamType = RichTextBoxStreamType.RichText;
 
                     stream = PrepareRead(stream);
@@ -110,7 +110,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
                     stream.Position = 0;
 
 
-                    content.StreamType = ContentTypes.RTF;
+                    content.ContentType = ContentTypes.RTF;
                     content.Compression = CompressionType.bZip2;
                     content.Data = stream;
                 }

@@ -11,28 +11,25 @@
  * http://www.limada.org
  */
 
-using System;
-using System.IO;
+using Limada.Model;
+using Limada.Schemata;
 using Limada.VisualThings;
 using Limaki;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Model.Content;
-using Limaki.View.Visuals.UI;
-using Limaki.Viewers;
-using Limaki.Visuals;
-using Limaki.Model.Content.IO;
-using Limaki.Usecases;
-using Limada.Model;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using System.Collections.Generic;
-using System.Linq;
-using Limada.Schemata;
+using Limaki.Model.Content;
+using Limaki.Model.Content.IO;
 using Limaki.Reporting;
-using Limaki.Data;
+using Limaki.Usecases;
 using Limaki.View.Layout;
-
+using Limaki.Viewers;
+using Limaki.Visuals;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Limada.Usecases {
 
@@ -67,6 +64,7 @@ namespace Limada.Usecases {
                 var content = ContentStreamIoManager.ReadSink(IOUtils.UriFromFileName(OpenFileDialog.FileName));
                 if (content != null && content.Data != null)
                     ContentStreamIoManager.Close = () => content.Data.Close();
+                OpenFileDialog.ResetFileName();
             }
         }
 
@@ -87,9 +85,10 @@ namespace Limada.Usecases {
                         string ext = null;
                         SaveFileDialog.Filter = ContentStreamIoManager.GetFilter(info, out ext) + "All Files|*.*";
                         SaveFileDialog.DefaultExt = ext;
-                        SaveFileDialog.FileName = content.Description.ToString();
+                        SaveFileDialog.SetFileName(content.Source.ToString());
                         if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
                             ContentStreamIoManager.WriteSink(content, IOUtils.UriFromFileName(SaveFileDialog.FileName));
+                            SaveFileDialog.ResetFileName();
                         }
                     }
                 }
@@ -100,8 +99,8 @@ namespace Limada.Usecases {
 
         #region Things-Export
 
-        private IoManager<Stream, GraphFocus<IThing, ILink>> _thingGraphFocusIoManager = null;
-        public IoManager<Stream, GraphFocus<IThing, ILink>> ThingGraphFocusIoManager { get { return _thingGraphFocusIoManager ?? (_thingGraphFocusIoManager = new IoManager<Stream, GraphFocus<IThing, ILink>> { Progress = this.Progress }); } }
+        private IoManager<Stream, GraphCursor<IThing, ILink>> _thingGraphFocusIoManager = null;
+        public IoManager<Stream, GraphCursor<IThing, ILink>> ThingGraphFocusIoManager { get { return _thingGraphFocusIoManager ?? (_thingGraphFocusIoManager = new IoManager<Stream, GraphCursor<IThing, ILink>> { Progress = this.Progress }); } }
 
         protected IoManager<Stream, IEnumerable<IThing>> _thingsIoManager = null;
         protected IoManager<Stream, IEnumerable<IThing>> ThingsIoManager { get { return _thingsIoManager ?? (_thingsIoManager = new IoManager<Stream, IEnumerable<IThing>> { Progress = this.Progress }); } }
@@ -154,6 +153,7 @@ namespace Limada.Usecases {
                          ThingsIoManager.SinkOut = ()=> ThingsOut(scene);
                          ThingsIoManager.ConfigureSinkIo = s => ConfigureSink(s);
                          ThingsIoManager.WriteSink(uri);
+                         SaveFileDialog.ResetFileName();
                      }
                  }
             } catch (Exception ex) {
@@ -168,10 +168,11 @@ namespace Limada.Usecases {
                 DefaultDialogValues(OpenFileDialog, ThingGraphFocusIoManager.ReadFilter);
                 if (scene != null && scene.HasThingGraph()) {
                     if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
-                        var graphFocus = new GraphFocus<IThing, ILink>(scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Two);
+                        var graphFocus = new GraphCursor<IThing, ILink>(scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Two);
                         var uri = IOUtils.UriFromFileName(OpenFileDialog.FileName);
                         graphFocus = ThingGraphFocusIoManager.ReadSink(uri, graphFocus);
-                        SetDescription(scene, graphFocus.Focused, OpenFileDialog.FileName);
+                        SetDescription(scene, graphFocus.Cursor, OpenFileDialog.FileName);
+                        OpenFileDialog.ResetFileName();
                     }
                 }
             } catch (Exception ex) {

@@ -12,7 +12,7 @@ namespace Limaki.Usecases.Concept {
         public void Factor(ConceptUsecase useCase) {
             useCase.SheetManager = Registry.Factory.Create<ISheetManager>();
             useCase.SceneHistory = new SceneHistory ();
-            useCase.FileManager = new FileManager ();
+            useCase.FileManager = new ThingGraphUiManager();
             useCase.FileManager.OpenFileDialog = new FileDialogMemento();
             useCase.FileManager.SaveFileDialog = new FileDialogMemento();
             useCase.ContentStreamUiManager = new ContentStreamUiManager();

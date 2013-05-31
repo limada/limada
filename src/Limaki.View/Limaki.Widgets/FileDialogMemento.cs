@@ -13,6 +13,7 @@
  */
 
 using System.ComponentModel;
+using System.IO;
 
 namespace Limaki.Viewers {
     public class FileDialogMemento {
@@ -33,6 +34,7 @@ namespace Limaki.Viewers {
 
         [DefaultValue(true)]
         public bool DereferenceLinks { get; set; }
+
         [DefaultValue("")]
         public string FileName { get; set; }
 
@@ -54,10 +56,8 @@ namespace Limaki.Viewers {
         [DefaultValue(false)]
         public bool ShowHelp { get; set; }
 
-
         [DefaultValue(false)]
         public bool SupportMultiDottedExtensions { get; set; }
-
 
         [DefaultValue("")]
         [Localizable(true)]
@@ -66,5 +66,14 @@ namespace Limaki.Viewers {
         [DefaultValue(true)]
         public bool ValidateNames { get; set; }
 
+        public void SetFileName(string fileName) {
+            this.FileName = Path.GetFileNameWithoutExtension(fileName);
+            this.InitialDirectory = Path.GetDirectoryName(fileName);
+            this.Filter = Path.GetExtension(fileName);
+        }
+
+        public void ResetFileName () {
+            SetFileName(this.FileName);
+        }
     }
 }

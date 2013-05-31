@@ -34,7 +34,7 @@ namespace Limada.Model {
 
             var thing = Factory.CreateItem(graph, content.Data) as IStreamThing;
             thing.Compression = content.Compression;
-            thing.StreamType = content.StreamType;
+            thing.StreamType = content.ContentType;
 
             thing.Compress ();
             graph.Add(thing);
@@ -53,7 +53,7 @@ namespace Limada.Model {
             if (thing != null && thing.DataContainer != null) {
                 thing.Data = content.Data;
                 thing.Compression = content.Compression;
-                thing.StreamType = content.StreamType;
+                thing.StreamType = content.ContentType;
                 thing.Compress();
                 thing.Flush ();
                 thing.ClearRealSubject ();
@@ -140,7 +140,7 @@ namespace Limada.Model {
                 streamThing.DeCompress ();
                 result.Data = streamThing.Data as Stream;
                 result.Compression = streamThing.Compression;
-                result.StreamType = streamThing.StreamType;
+                result.ContentType = streamThing.StreamType;
                 streamThing.ClearRealSubject (false);
             }
             return result;

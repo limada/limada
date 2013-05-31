@@ -18,6 +18,7 @@ using Limada.Model;
 using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.Data;
+using Limaki.Model.Content.IO;
 
 namespace Limada.Usecases {
 
@@ -34,6 +35,9 @@ namespace Limada.Usecases {
 
             var providers = context.Pool.TryGetCreate<DataProviders<IThingGraph>>();
             providers.Add(typeof(XMLThingGraphProvider));
+
+            var thingGraphProvider = context.Pool.TryGetCreate<IoProvider<IThingGraph, IoInfo>>();
+            //thingGraphProvider.Add(new XmlThingGraphIo());
 
         }
     }

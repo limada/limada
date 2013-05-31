@@ -35,22 +35,24 @@ namespace Limada.Usecases.Cms {
         }
 
         public virtual IoInfo IoInfo { get; set; }
-        public IThingGraphProvider Provider { get; set; }
+        public ThingGraphContent Current { get; set; }
 
         public void Open () {
-            if (Provider != null) {
-                Trace.WriteLine (string.Format ("Provider already opened {0}", Provider.Description));
-                var conn = Provider.Data as IGatewayConnection;
+            if (Current != null) {
+                Trace.WriteLine (string.Format ("Provider already opened {0}", Current.Description));
+                var conn = Current.Data as IGatewayConnection;
                 if (conn != null) {
                     Trace.WriteLine (string.Format ("Connection already opened {0}/{1}", conn.Gateway.IsOpen (), IoInfo.ToFileName (conn.Gateway.IoInfo)));
                 }
             } else {
-                var fileManager = new FileManagerBase ();
+                var ioManager = new IoManager<IoInfo, ThingGraphContent> { };
+                var sinkIo = ioManager.GetSinkIO(IoInfo, InOutMode.Read) as ThingGraphIo;
                 try {
-                    if (fileManager.OpenFile (IoInfo)) {
+                    var sink = sinkIo.Open(IoInfo);
+                    if (sink != null) {
                         Trace.WriteLine (string.Format ("DataBase opened {0}", IoInfo.ToFileName (IoInfo)));
-                        Provider = fileManager.ThingGraphProvider;
-                        var graph = new SchemaThingGraph (Provider.Data);
+                        Current = sink;
+                        var graph = new SchemaThingGraph (Current.Data);
                         PrepareGraph (graph);
                         _thingGraph = graph;
                     } else {
@@ -64,11 +66,20 @@ namespace Limada.Usecases.Cms {
             }
         }
 
+        protected void Close (ThingGraphContent data) {
+            if (data == null)
+                return;
+            var sinkIo = new IoManager<IoInfo, ThingGraphContent> { }.GetSinkIO(data.ContentType, InOutMode.Write) as ThingGraphIo;
+            if (sinkIo != null)
+                sinkIo.Close(data);
+        }
+
         public void Close () {
-            if (Provider != null) {
-                Provider.Close ();
+            if (Current != null) {
+
+                Close(Current);
                 Trace.WriteLine (string.Format ("DataBase closed {0}", IoInfo.ToFileName (IoInfo)));
-                Provider = null;
+                Current = null;
             }
         }
 
@@ -237,7 +248,7 @@ namespace Limada.Usecases.Cms {
             var result = new HtmlContent {
                 Data = thing.Id.ToString ("X16"),
                 Description = ThingToDisplay (ThingGraph, thing).ToString (),
-                StreamType = ContentTypes.HTML,
+                ContentType = ContentTypes.HTML,
                 Source = thing.Id.ToString ("X16"),
             };
             try {
@@ -286,7 +297,7 @@ namespace Limada.Usecases.Cms {
 #else
                 result.Data = "Server überlastet. Bitte später nochmal probieren...";
 #endif
-                result.StreamType = ContentTypes.Unknown;
+                result.ContentType = ContentTypes.Unknown;
 
             }
             return result;

@@ -33,7 +33,7 @@ namespace Limaki.Playground.IO {
         }
 
         public void DataProviders () {
-            ISink<Content<Stream>, GraphFocus<IThing,ILink>> contentThingGraphProvider = null;
+            ISink<Content<Stream>, GraphCursor<IThing,ILink>> contentThingGraphProvider = null;
             ISink<IEnumerable<IThing>, IThingGraph> mergeGraph = null;
         }
     }

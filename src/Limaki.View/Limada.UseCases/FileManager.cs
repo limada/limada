@@ -11,30 +11,31 @@
  * http://www.limada.org
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Limada.Data;
-using Limada.Model;
 using Limada.VisualThings;
 using Limaki.Common;
 using Limaki.Data;
 using Limaki.Drawing;
-using Limaki.Graphs.Extensions;
 using Limaki.Viewers;
 using Limaki.Visuals;
 using Mono.Options;
-using Limaki.Model.Content.IO;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Limada.Usecases {
 
-	public class FileManager:FileManagerBase {
+    //TODO: refactor to ThingGraphUiManager and remove
+    
+    public class FileManager : FileManagerBase, IFileManager {
 
-        public Action<IGraphScene<IVisual, IVisualEdge>> DataBound = null;
-        public Action<string> DataPostProcess = null;
-        public Action ApplicationQuit = null;
+        public Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
+        public Action<string> DataPostProcess { get; set; }
+        public Action ApplicationQuit { get; set; }
+
         #region ThingGraph Open 
 
+        //done
         public override bool OpenFile(IoInfo fileName) {
             var provider = GetThingGraphProvider(fileName);
             bool result = false;
@@ -57,6 +58,7 @@ namespace Limada.Usecases {
             return result;
         }
 
+        //done
         public void OpenFile() {
             if (this.HasUnsavedData()) {
                 if (MessageBoxShow("You have an unsaved document. Do you want to save it?", "", MessageBoxButtons.YesNo) ==
@@ -71,6 +73,7 @@ namespace Limada.Usecases {
             }
         }
 
+        //done
         public bool OpenCommandLineOptions () {
             var result = false;
             var filesToAdd = new List<string>();
@@ -78,9 +81,9 @@ namespace Limada.Usecases {
             var exitAfterImport = false;
 
             var p = new OptionSet() {
-                                        { "add=", a => filesToAdd .Add(a)}, 
-                                        { "file=", a => fileToOpen=a },
-                                        { "exit", a => exitAfterImport=a!=null },
+                                        {"add=", a => filesToAdd.Add(a)},
+                                        {"file=", a => fileToOpen = a},
+                                        {"exit", a => exitAfterImport = a != null},
                                     };
             var options = p.Parse(Environment.GetCommandLineArgs());
             
@@ -123,7 +126,8 @@ namespace Limada.Usecases {
                 ApplicationQuit();
             return result;
         }
-
+       
+        //done
         public bool OpenCommandLine (string [] args) {
 
             string fileName = null;
@@ -137,11 +141,11 @@ namespace Limada.Usecases {
             }
             return false;
         }
-
+        //done
 	    public bool OpenCommandLine() {
             return OpenCommandLine(Environment.GetCommandLineArgs());
         }
-
+        //done
         public void ShowEmptyThingGraph() {
             var provider = new MemoryThingGraphProvider();
             this.ThingGraphProvider.Close();
@@ -160,6 +164,7 @@ namespace Limada.Usecases {
 
         #region Thinggraph Save 
 
+        //done
         public bool SaveAs(IoInfo fileName) {
 
             var provider = GetThingGraphProvider(fileName);
@@ -189,7 +194,7 @@ namespace Limada.Usecases {
             }
             return result;
         }
-
+        //done
         public void Save() {
             if (this.HasUnsavedData()) {
                 SaveAsFile();
@@ -200,6 +205,7 @@ namespace Limada.Usecases {
             }
         }
 
+        //done
         public void SaveAsFile() {
             DefaultDialogValues(SaveFileDialog);
             if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
@@ -207,6 +213,7 @@ namespace Limada.Usecases {
             }
         }
 
+        //done
         public bool HasUnsavedData() {
             if (_thingGraphProvider is MemoryThingGraphProvider) {
                 if (this.ThingGraphProvider.Data.Count > 0) {
@@ -216,6 +223,7 @@ namespace Limada.Usecases {
             return false;
         }
 
+        //done
         public void ExportAsThingGraph(IoInfo fileName, IGraphScene<IVisual, IVisualEdge> scene) {
             if (scene.HasThingGraph()) {
                 var provider = new SceneProvider();
@@ -225,6 +233,7 @@ namespace Limada.Usecases {
             }
         }
 
+        //done
         public void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene) {
             DefaultDialogValues(SaveFileDialog);
             if (scene != null && scene.HasThingGraph()) {
@@ -261,7 +270,7 @@ namespace Limada.Usecases {
         #endregion
 
         #region Import
-
+        //done
         public void ImportThingGraphRaw() {
             Save();
             Close();

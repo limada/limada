@@ -216,25 +216,6 @@ namespace Limaki.Tests.UseCases {
 
         }
 
-        public void RepairDatabase(ConceptUsecase sender) {
-            sender.FileManager.DefaultDialogValues(sender.FileManager.OpenFileDialog);
-            if (sender.FileDialogShow(sender.FileManager.OpenFileDialog, true) == Viewers.DialogResult.OK) {
-                sender.SaveChanges();
-                sender.FileManager.Close();
-                sender.FileManager.ShowEmptyThingGraph();
-                var file = sender.FileManager.OpenFileDialog.FileName;
-                var fileInfo = IoInfo.FromFileName(file);
-                if (fileInfo.Extension==".limo") {
-                    var repairer = new global::Limada.Data.db4o.Db4oRepairer();
-                    repairer.WriteDetail = (m)=> testMessage(repairer,m);
-                    var newFile = IoInfo.FromFileName(file);
-                    newFile.Name = "repaired." + newFile.Name;
-                    repairer.ReadAndSaveAs(fileInfo, newFile, true);
-                    sender.FileManager.OpenFile(newFile);
-                }
-            }
-        }
-
         public void currentProblem(ConceptUsecase sender) {
             try {
                 //var maint = new VisualThingGraphTest();

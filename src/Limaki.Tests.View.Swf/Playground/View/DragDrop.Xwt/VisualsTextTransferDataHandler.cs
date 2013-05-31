@@ -76,7 +76,7 @@ namespace Limaki.View.Ui.DragDrop {
                 if (dataObject.ContainsText(TextTransferDataFormat.Rtf)) {
 
                     textInfo.Data = dataObject.GetText(TextTransferDataFormat.Rtf);
-                    textInfo.StreamType = ContentTypes.RTF;
+                    textInfo.ContentType = ContentTypes.RTF;
 
                 } else if (dataObject.ContainsText(TextTransferDataFormat.Html)) {
                     string s = null;
@@ -84,7 +84,7 @@ namespace Limaki.View.Ui.DragDrop {
                     if (r != null)
                         s = System.Text.Encoding.UTF8.GetString(r);
                     textInfo = HTMLPostProcess(s);
-                    textInfo.StreamType = ContentTypes.HTML;
+                    textInfo.ContentType = ContentTypes.HTML;
                     textInfo.Compression = CompressionType.bZip2;
 
                     if (false) {

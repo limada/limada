@@ -1,58 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+﻿/*
+ * Limada 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2010-2013 Lytico
+ *
+ * http://www.limada.org
+ */
+
 using Db4objects.Db4o.Config;
 using Db4objects.Db4o.Reflect;
 using Db4objects.Db4o.Reflect.Generic;
 using Limada.Model;
 using Limada.Schemata;
-using Limaki.Common;
 using Limaki.Data;
 using Limaki.Data.db4o;
 using Limaki.Model.Content;
+using Limaki.Model.Content.IO;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using Id = System.Int64;
 
 namespace Limada.Data.db4o {
-    public class Db4oRepairer {
 
-        public Action<string> WriteDetail = null;
+    public class Db4oRepairer : SinkIo<IThingGraphRepair>, ISink<IoInfo, IThingGraph> {
+
         protected StringWriter Log { get; set; }
         public void ReportDetail(string message) {
-            if (WriteDetail != null) {
-                WriteDetail(message);
+            if (Progress != null) {
+                Progress(message, -1, -1);
             }
             if (Log != null)
                 Log.WriteLine(message);
         }
 
-        public void ReadAndSaveAs(IoInfo file, IoInfo newDb, bool repair) {
-            IThingGraphProvider target = null;
-            if (repair) {
-                var newFile = IoInfo.ToFileName(newDb);
-                if (File.Exists(newFile))
-                    File.Delete(newFile);
-
-                var p = Registry.Pool.TryGetCreate<DataProviders<IThingGraph>>().Find(newDb);
-                //new Limaki.Data.
-                //new Limaki.Data.dbLinq.Parts.Model1.PartsThingGraphProvider();
-                target.Open(newDb);
-            }
-
-            RawImport(file, target, repair);
-        }
-
-        public void RawImport(IoInfo source, IDataProvider<IThingGraph> target, bool repair) {
-            IThingGraph graph = null;
+        public IThingGraph RawImport (IoInfo source, IThingGraph sink, bool repair) {
+            
+            this.Log = new StringWriter();
+            
             var links = new List<ILink>();
             if (repair) {
-                this.Log = new StringWriter();
-                graph = target.Data;
-                var db4oGraph = graph as Limada.Data.db4o.ThingGraph;
-                if(db4oGraph!=null) {
+                var db4oGraph = sink as Limada.Data.db4o.ThingGraph;
+                if (db4oGraph != null) {
                     ReportClazzes(db4oGraph.Gateway as Gateway);
                 }
-                
             }
 
             var gateway = new Gateway();
@@ -119,12 +116,12 @@ namespace Limada.Data.db4o {
                     if (repair) {
                         var link = newThing as Link;
                         if (link != null) {
-                            link.GetByID = (id) => graph.GetById(id);
+                            link.GetByID = (id) => sink.GetById(id);
                             links.Add(newThing as ILink);
                         } else if (newThing is IThing) {
-                            graph.Add(newThing as IThing);
+                            sink.Add(newThing as IThing);
                         } else if (newThing is IRealData<long>) {
-                            graph.DataContainer.Add(newThing as IRealData<long>);
+                            sink.DataContainer.Add(newThing as IRealData<long>);
                         }
                     }
                 }
@@ -143,7 +140,7 @@ namespace Limada.Data.db4o {
                        link.Marker = CommonSchema.EmptyMarker;
                     }
                     if (link.Root != null && link.Leaf != null)
-                        graph.Add(link);
+                        sink.Add(link);
                 }
                 
             }
@@ -157,6 +154,7 @@ namespace Limada.Data.db4o {
                 logfile.Write(this.Log.ToString());
                 logfile.Close();
             }
+            return sink;
         }
 
         public IEnumerable<Tuple<string, IList<string>>> ClazzNames(IGateway gateway) {
@@ -190,10 +188,35 @@ namespace Limada.Data.db4o {
 
         protected virtual void ConfigureAliases(ICommonConfiguration configuration) {
             configuration.MarkTransient(typeof(Limaki.Common.TransientAttribute).FullName);
-            return;
-           
+          
         }
 
-       
+        public Db4oRepairer (): base(new Db4oThingGraphInfo()) {
+            this.IoMode = InOutMode.Read;
+        }
+
+        public override bool Supports (IThingGraphRepair source) {
+            return this.InfoSink.Supports(source.IoInfo.Extension);
+        }
+
+        public override ContentInfo Use (IThingGraphRepair source) {
+            if (Supports(source))
+                return InfoSink.SupportedContents.First();
+            return null;
+        }
+
+        public override ContentInfo Use (IThingGraphRepair source, ContentInfo sink) {
+            if (Supports(source))
+                return SinkExtensions.Use(source, sink, s => Use(s));
+            return null;
+        }
+
+        public IThingGraph Use (IoInfo source) {
+            throw new ArgumentException("Repairer needs a Graph to store into");
+        }
+
+        public IThingGraph Use (IoInfo source, IThingGraph sink) {
+            return this.RawImport(source, sink, true);
+        }
     }
 }

@@ -72,7 +72,7 @@ namespace Limaki.Usecases.Concept {
         public Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow { get; set; }
         public Func<FileDialogMemento, bool, DialogResult> FileDialogShow { get; set; }
 
-        public FileManager FileManager { get; set; }
+        public IFileManager FileManager { get; set; }
         public Action<string> DataPostProcess { get; set; }
 
         public void OpenFile() {
@@ -146,7 +146,7 @@ namespace Limaki.Usecases.Concept {
             if (display != null) {
                 var scene = display.Data;
                 ContentStreamUiManager.ThingGraphFocusIoManager.SinkIn = graphFocus => {
-                    scene.AddVisual(scene.Graph.VisualOf(graphFocus.Focused), display.Layout);
+                    scene.AddVisual(scene.Graph.VisualOf(graphFocus.Cursor), display.Layout);
                     display.Execute();
                 };
                 ContentStreamUiManager.ReadThingGraphFocus(display.Data);

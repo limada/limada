@@ -14,6 +14,8 @@
 
 
 using System;
+using Limaki.Model.Content;
+using Limaki.Model.Content.IO;
 namespace Limaki.Data {
     /// <summary>
     /// encapsulates the opening of a datasource
@@ -35,7 +37,9 @@ namespace Limaki.Data {
         public abstract void Close();
         public abstract void SaveCurrent();
         public abstract IDataProvider<T> Clone();
-
+       
         public Action<string, int, int> Progress { get; set; }
+
+
     }
 }

@@ -20,9 +20,27 @@ using Limada.Model;
 using Limaki.Common;
 using Limaki.Data;
 using Limaki.Graphs;
+using Limaki.Model.Content;
+using Limaki.Model.Content.IO;
 
 namespace Limada.Data {
+    public class XMLThingGraphInfo : ContentInfoSink {
+        public XMLThingGraphInfo () : base(
+                new ContentInfo[] {
+                                  new ContentInfo(
+                                      "Limada Things (XML)",
+                                      XMLThingGraphInfoContentType,
+                                      "limml",
+                                      "application/limml",
+                                      CompressionType.None
+                                      )
+                              }
+                ) { }
+
+        public static long XMLThingGraphInfoContentType = unchecked((long) 0x471cd142f3fc2634);
+    }
     public class XMLThingGraphProvider : ThingGraphProvider {
+
         public override string Extension {
             get { return ".limml"; }
         }

@@ -40,7 +40,7 @@ namespace Limaki.Viewers.StreamViewers {
             webContent.ContentStream = content.Data;
             webContent.Uri = uri;
 
-            webContent.MimeType = ContentInfos.Where(ci=>ci.ContentType==content.StreamType).Select(ci=>ci.MimeType).FirstOrDefault();
+            webContent.MimeType = ContentInfos.Where(ci=>ci.ContentType==content.ContentType).Select(ci=>ci.MimeType).FirstOrDefault();
             if (useContentSource) {
                 var source = content.Source as string;
                 if (source != null && source != "about:blank") {

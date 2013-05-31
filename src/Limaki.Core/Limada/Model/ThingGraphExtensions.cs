@@ -28,6 +28,7 @@ namespace Limada.Model {
     public static class ThingGraphExtensions {
 
         public static void DeepCopy(this IThingGraph source, IEnumerable<IThing> items, IThingGraph target) {
+
             if (source != null && target != null) {
                 Walker<IThing, ILink> walker = new Walker<IThing, ILink>(source);
                 Queue<IThing> queue = new Queue<IThing>(items);
@@ -252,19 +253,27 @@ namespace Limada.Model {
             }
         }
 
-        public static void MergeThingsInto(this IThingGraph source, IThingGraph target, Action<IThing> message, Action beforeStreamMerge) {
+        public static void MergeThingsInto(this IThingGraph source, IThingGraph sink, Action<IThing> message, Action beforeMerge) {
             // do not change to extension! 
-            GraphExtensions.MergeInto(source, target, message);
-            if (beforeStreamMerge != null)
-                beforeStreamMerge();
-            source.MergeStreamThingsInto(target,message);
+            GraphExtensions.MergeInto(source, sink, message);
+            if (beforeMerge != null)
+                beforeMerge();
+            source.MergeStreamThingsInto(sink,message);
         }
 
-        public static void MergeStreamThingsInto(this IThingGraph source, IThingGraph target, Action<IThing> message) {
+        public static void MergeStreamThingsInto(this IThingGraph source, IThingGraph sink, Action<IThing> message) {
+
             foreach (var thing in source.OfType<IStreamThing>()) {
                 message(thing);
                 var data = source.DataContainer.GetById(thing.Id);
-                target.DataContainer.Add(data);
+                sink.DataContainer.Add(data);
+            }
+        }
+
+        public static void AttachThings (this IThingGraph source, Action<IThing> message) {
+            foreach (var thing in source.OfType<IStreamThing>()) {
+                message(thing);
+                thing.DataContainer = source.DataContainer;
             }
         }
     }
