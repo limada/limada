@@ -19,6 +19,7 @@ namespace Limaki.db4o {
 
             var thingGraphRepairProvider = context.Pool.TryGetCreate<IoProvider<IThingGraphRepair, IoInfo>>();
             thingGraphRepairProvider.Add(new Limada.Data.db4o.Db4oRepairer());
+            
         }
     }
 }

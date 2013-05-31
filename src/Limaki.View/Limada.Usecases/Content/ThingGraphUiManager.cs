@@ -30,6 +30,7 @@ namespace Limada.Usecases {
 
     public class ThingGraphUiManager : IoUiManager, IGraphSceneUiManager {
 
+      
         public ThingGraphContent Current { get; set; }
 
         public Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
@@ -49,7 +50,16 @@ namespace Limada.Usecases {
         public string WriteFilter { get { return ThingGraphIoManager.WriteFilter; } }
 
         private IoManager<IoInfo, ThingGraphContent> _thingGraphIoManager = null;
-        public IoManager<IoInfo, ThingGraphContent> ThingGraphIoManager { get { return _thingGraphIoManager ?? (_thingGraphIoManager = new IoManager<IoInfo, ThingGraphContent> { Progress = this.Progress }); } }
+
+        public IoManager<IoInfo, ThingGraphContent> ThingGraphIoManager {
+            get {
+                return _thingGraphIoManager ?? (_thingGraphIoManager =
+                                                new IoManager<IoInfo, ThingGraphContent> {
+                                                    Progress = this.Progress,
+                                                    DefaultExtension = "limo",
+                                                });
+            }
+        }
 
         #region Open
 
@@ -66,6 +76,7 @@ namespace Limada.Usecases {
                 OpenFile(IoInfo.FromFileName(OpenFileDialog.FileName));
                 OpenFileDialog.ResetFileName();
             }
+
         }
 
         public bool OpenFile (IoInfo sourceInfo) {
@@ -74,6 +85,7 @@ namespace Limada.Usecases {
 
             try {
                 source = sinkIo.Open(sourceInfo);
+                OnProgress("", -1, -1);
                 AttachCurrent(source, sourceInfo.Name);
                 return true;
             } catch (Exception ex) {
@@ -89,8 +101,11 @@ namespace Limada.Usecases {
         }
 
         public void ShowEmptyScene () {
+            
+            OnProgress("", -1, -1);
             var source = new MemoryThingGraphIo().Open(null);
             AttachCurrent(source, "unknown");
+           
         }
 
         public bool AttachCurrent (ThingGraphContent source, string message) {
@@ -139,7 +154,7 @@ namespace Limada.Usecases {
 
             AttachCurrent(sink, sinkInfo.Name);
 
-            OnProgress(string.Format("{0} saved as {1}",oldSource,sinkInfo.Name), -1, -1);
+            OnProgress(string.Format("{0} saved as {1}",Path.GetFileNameWithoutExtension(oldSource),sinkInfo.Name), -1, -1);
             return true;
         }
 
