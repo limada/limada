@@ -20,9 +20,9 @@ using Limaki.Model.Content;
 
 namespace Limaki.Model.Content.IO {
 
-    public class StreamSink : SinkIo<Stream> {
+    public class StreamSinkIo : SinkIo<Stream>, ISink<Uri, Stream>, ISink<Stream, Uri> {
 
-        protected StreamSink(ContentInfoSink supportedContents): base(supportedContents) {}
+        protected StreamSinkIo(ContentInfoSink supportedContents): base(supportedContents) {}
 
         public override ContentInfo Use(Stream source) {
             return InfoSink.Use(source);
@@ -36,21 +36,22 @@ namespace Limaki.Model.Content.IO {
             return InfoSink.Supports(source);
         }
 
-    }
-
-    public class StreamOutSink : StreamSink, ISink<Stream, Uri> {
-
-        protected StreamOutSink(ContentInfoSink supportedContents) : base(supportedContents) {
-            this.IoMode = InOutMode.Write;
+        public virtual Stream Read (Uri uri) {
+            var result = default(Stream);
+            if (IoMode.HasFlag(IO.IoMode.Read) && uri.IsFile) {
+                var filename = IoUtils.UriToFileName(uri);
+                var file = new FileStream(filename, FileMode.Open);
+            }
+            return result;
         }
 
-        public Uri Use(Stream source, Uri sink) {
+        public virtual Uri Write (Stream source, Uri sink) {
 
             if (sink == null)
                 throw new ArgumentException("Uri must not be null");
 
-            if (IoMode.HasFlag(InOutMode.Write) && sink.IsFile) {
-                var filename = IOUtils.UriToFileName(sink);
+            if (IoMode.HasFlag(IO.IoMode.Write) && sink.IsFile) {
+                var filename = IoUtils.UriToFileName(sink);
                 var file = new FileStream(filename, FileMode.Create);
                 var target = new BufferedStream(file);
                 var bufferSize = 1024 * 1024;
@@ -73,37 +74,23 @@ namespace Limaki.Model.Content.IO {
             return sink;
         }
 
-        public new Uri Use(Stream source) { return Use(source, null); }
-
-    }
-    
-    public class StreamInSink : StreamSink, ISink<Uri, Stream>, ISink<Stream, ContentInfo> {
-
-        protected StreamInSink(ContentInfoSink supportedContents)
-            : base(supportedContents) {
-            this.IoMode = InOutMode.Read;
+        public virtual Uri Use (Stream source, Uri sink) {
+            return Write(source, sink);
         }
 
-        public Stream Use(Uri uri) {
-            var result = default(Stream);
-            if (IoMode.HasFlag(InOutMode.Read) && uri.IsFile) {
-                var filename = IOUtils.UriToFileName(uri);
-                var file = new FileStream(filename, FileMode.Open);
-            }
-            return result;
+        Uri ISink<Stream, Uri>.Use (Stream source) {
+            return Write(source, null);
         }
 
-        public Stream Use(Uri source, Stream sink) {
+        public virtual Stream Use (Uri source) {
+            return Read(source);
+        }
+
+        public virtual Stream Use (Uri source, Stream sink) {
+            throw new NotImplementedException("reading into existing stream");
             return sink;
         }
 
-        ContentInfo ISink<Stream, ContentInfo>.Use(Stream source) {
-            return this.InfoSink.Use(source);
-        }
-
-        ContentInfo ISink<Stream, ContentInfo>.Use(Stream source, ContentInfo sink) {
-            return this.InfoSink.Use(source, sink);
-        }
     }
 
 }

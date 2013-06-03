@@ -14,6 +14,7 @@
 
 
 namespace Limaki.Graphs {
+
     public abstract class GraphModelAdapter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>
         where TEdgeOne : IEdge<TItemOne>, TItemOne
         where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {

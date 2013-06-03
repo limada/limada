@@ -65,9 +65,9 @@ namespace Limada.Data {
             this.Data = new ThingGraph ();
         }
 
-        public override void Open(IoInfo fileName) {
+        public override void Open(Iori fileName) {
             try {
-                var file = new FileStream(IoInfo.ToFileName(fileName), FileMode.Open);
+                var file = new FileStream(Iori.ToFileName(fileName), FileMode.Open);
                 Open(file);
                 _lastFile = fileName;
             } catch (Exception ex) {
@@ -76,7 +76,7 @@ namespace Limada.Data {
             }
         }
 
-        IoInfo _lastFile = null;
+        Iori _lastFile = null;
         public override void Save() {
             //Registry.Pool.TryGetCreate<IExceptionHandler>()
             //    .Catch(new Exception(Extension+"-Files can't be saved."),MessageType.OK);
@@ -84,8 +84,8 @@ namespace Limada.Data {
                 SaveAs (this.Data, this._lastFile);
         }
 
-        public override void SaveAs(IThingGraph source, IoInfo fileName) {
-            var file = new FileStream(IoInfo.ToFileName(fileName), FileMode.Create);
+        public override void SaveAs(IThingGraph source, Iori fileName) {
+            var file = new FileStream(Iori.ToFileName(fileName), FileMode.Create);
 
             var serializer = new ThingSerializer{Graph = source,ThingCollection = this.Data.Elements().ToList()};
 

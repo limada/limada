@@ -36,7 +36,7 @@ namespace Limada.Usecases {
         #region ThingGraph Open 
 
         //done
-        public override bool OpenFile(IoInfo fileName) {
+        public override bool OpenFile(Iori fileName) {
             var provider = GetThingGraphProvider(fileName);
             bool result = false;
             if (provider != null) {
@@ -59,17 +59,17 @@ namespace Limada.Usecases {
         }
 
         //done
-        public void OpenFile() {
+        public void Open() {
             if (this.HasUnsavedData()) {
                 if (MessageBoxShow("You have an unsaved document. Do you want to save it?", "", MessageBoxButtons.YesNo) ==
                     DialogResult.Yes) {
-                    SaveAsFile();
+                    SaveAs();
                 }
             }
 
             DefaultDialogValues(OpenFileDialog);
             if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
-                this.OpenFile(IoInfo.FromFileName(OpenFileDialog.FileName));
+                this.OpenFile(Iori.FromFileName(OpenFileDialog.FileName));
             }
         }
 
@@ -100,7 +100,7 @@ namespace Limada.Usecases {
                     foreach (var fileToAdd in filesToAdd) {
                         if (File.Exists(fileToAdd)) {
                             progressHandler.Show("Importing file " + fileToAdd);
-                            var db = IoInfo.FromFileName(fileToAdd);
+                            var db = Iori.FromFileName(fileToAdd);
                             var provider = GetThingGraphProvider(db);
                             if (provider != null) {
                                 try {
@@ -137,7 +137,7 @@ namespace Limada.Usecases {
                 }
             }
             if (fileName != null) {
-                return OpenFile(IoInfo.FromFileName(fileName));
+                return OpenFile(Iori.FromFileName(fileName));
             }
             return false;
         }
@@ -165,7 +165,7 @@ namespace Limada.Usecases {
         #region Thinggraph Save 
 
         //done
-        public bool SaveAs(IoInfo fileName) {
+        public bool SaveAs(Iori fileName) {
 
             var provider = GetThingGraphProvider(fileName);
             bool result = false;
@@ -197,7 +197,7 @@ namespace Limada.Usecases {
         //done
         public void Save() {
             if (this.HasUnsavedData()) {
-                SaveAsFile();
+                SaveAs();
             } else {
                 if (_thingGraphProvider != null && _thingGraphProvider.Saveable) {
                     _thingGraphProvider.Save();
@@ -206,10 +206,10 @@ namespace Limada.Usecases {
         }
 
         //done
-        public void SaveAsFile() {
+        public void SaveAs() {
             DefaultDialogValues(SaveFileDialog);
             if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
-                this.SaveAs(IoInfo.FromFileName(SaveFileDialog.FileName));
+                this.SaveAs(Iori.FromFileName(SaveFileDialog.FileName));
             }
         }
 
@@ -224,7 +224,7 @@ namespace Limada.Usecases {
         }
 
         //done
-        public void ExportAsThingGraph(IoInfo fileName, IGraphScene<IVisual, IVisualEdge> scene) {
+        public void ExportAsThingGraph(Iori fileName, IGraphScene<IVisual, IVisualEdge> scene) {
             if (scene.HasThingGraph()) {
                 var provider = new SceneProvider();
                 provider.Provider = GetThingGraphProvider(fileName);
@@ -239,7 +239,7 @@ namespace Limada.Usecases {
             if (scene != null && scene.HasThingGraph()) {
                 if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
                     this.ExportAsThingGraph(
-                        IoInfo.FromFileName(SaveFileDialog.FileName),
+                        Iori.FromFileName(SaveFileDialog.FileName),
                         scene);
                 }
             }
@@ -293,12 +293,12 @@ namespace Limada.Usecases {
                                 break;
                             }
                             tryIt = false;
-                            var targetProvider = GetThingGraphProvider(IoInfo.FromFileName(target));
-                            var sourceProvider = GetThingGraphProvider(IoInfo.FromFileName(source));
+                            var targetProvider = GetThingGraphProvider(Iori.FromFileName(target));
+                            var sourceProvider = GetThingGraphProvider(Iori.FromFileName(source));
 
                             try {
-                                targetProvider.Open(IoInfo.FromFileName(target));
-                                sourceProvider.RawImport(IoInfo.FromFileName(source), targetProvider);
+                                targetProvider.Open(Iori.FromFileName(target));
+                                sourceProvider.RawImport(Iori.FromFileName(source), targetProvider);
                             } catch (Exception ex) {
                                 Registry.Pool.TryGetCreate<IExceptionHandler>()
                                     .Catch(new Exception("Raw import failed: " + ex.Message, ex), MessageType.OK);
@@ -308,7 +308,7 @@ namespace Limada.Usecases {
                             }
                             targetProvider.Close();
                             MessageBoxShow("Import successfull", "RawImport", MessageBoxButtons.OK);
-                            this.OpenFile(IoInfo.FromFileName(target));
+                            this.OpenFile(Iori.FromFileName(target));
                         }
                     }
                 }

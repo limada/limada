@@ -82,11 +82,8 @@ namespace Limaki.Model.Content.IO {
 
     }
 
-    public class HtmlContentInStream : ContentInStreamSink {
-        public HtmlContentInStream (): base(new HtmlContentInfo()) {}
+    public class HtmlContentStreamIo : ContentStreamSinkIo {
+        public HtmlContentStreamIo (): base(new HtmlContentInfo()) {}
     }
 
-    public class HtmlContentOutStream : ContentOutStreamSink {
-        public HtmlContentOutStream () : base(new HtmlContentInfo()) { }
-    }
 }

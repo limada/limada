@@ -64,7 +64,7 @@ namespace Limaki.Usecases.Concept {
             var streamManager = useCase.ContentStreamUiManager;
             streamManager.FileDialogShow = useCase.FileDialogShow;
             streamManager.MessageBoxShow = useCase.MessageBoxShow;
-            
+            streamManager.Progress = useCase.Progress;
         }
     }
 }

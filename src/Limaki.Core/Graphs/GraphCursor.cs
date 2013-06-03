@@ -13,6 +13,7 @@
  */
 
 using System.Collections.Generic;
+
 namespace Limaki.Graphs {
     
     public class GraphCursor<TItem, TEdge> where TEdge : IEdge<TItem> {
@@ -29,13 +30,13 @@ namespace Limaki.Graphs {
         public IGraph<TItem, TEdge> Graph { get; set; }
     }
 
-    public class GrapSelection<TItem, TEdge> where TEdge : IEdge<TItem> {
+    public class GraphSelection<TItem, TEdge> where TEdge : IEdge<TItem> {
 
-        public GrapSelection (IGraph<TItem, TEdge> graph, IEnumerable<TItem> selection): this(graph) {
+        public GraphSelection (IGraph<TItem, TEdge> graph, IEnumerable<TItem> selection): this(graph) {
             this.Selection = selection;
         }
 
-        public GrapSelection (IGraph<TItem, TEdge> graph) {
+        public GraphSelection (IGraph<TItem, TEdge> graph) {
             this.Graph = graph;
         }
 

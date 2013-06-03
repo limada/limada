@@ -49,19 +49,20 @@ namespace Limada.Usecases {
         public string ReadFilter { get { return ContentStreamIoManager.ReadFilter; } }
         public string WriteFilter { get { return ContentStreamIoManager.WriteFilter; } }
 
-        private IoManager<Stream, Content<Stream>> _contentStreamManager = null;
-        public IoManager<Stream, Content<Stream>> ContentStreamIoManager { get { return _contentStreamManager ?? (_contentStreamManager = new IoManager<Stream, Content<Stream>> { Progress = this.Progress }); } }
+        private IoUriManager<Stream, Content<Stream>> _contentStreamManager = null;
+        public IoUriManager<Stream, Content<Stream>> ContentStreamIoManager { get { return _contentStreamManager ?? (_contentStreamManager = new IoUriManager<Stream, Content<Stream>> { Progress = this.Progress }); } }
 
         /// <summary>
         /// reads a content from a file
         /// and provides it in ContentIn-Action
         /// </summary>
-        public void ReadFile () {
+        public void Read () {
 
             DefaultDialogValues(OpenFileDialog, ReadFilter);
 
             if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
-                var content = ContentStreamIoManager.ReadSink(IOUtils.UriFromFileName(OpenFileDialog.FileName));
+                ContentStreamIoManager.ConfigureSinkIo = s => ConfigureSink(s);
+                var content = ContentStreamIoManager.ReadSink(IoUtils.UriFromFileName(OpenFileDialog.FileName));
                 if (content != null && content.Data != null)
                     ContentStreamIoManager.Close = () => content.Data.Close();
                 OpenFileDialog.ResetFileName();
@@ -72,7 +73,7 @@ namespace Limada.Usecases {
         /// gets a content from ContentOut-Func
         /// and writes it into a file
         /// </summary>
-        public void SaveFile () {
+        public void Save () {
             if (ContentOut == null)
                 return;
 
@@ -87,7 +88,8 @@ namespace Limada.Usecases {
                         SaveFileDialog.DefaultExt = ext;
                         SaveFileDialog.SetFileName(content.Source.ToString());
                         if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
-                            ContentStreamIoManager.WriteSink(content, IOUtils.UriFromFileName(SaveFileDialog.FileName));
+                            ContentStreamIoManager.ConfigureSinkIo = s => ConfigureSink(s);
+                            ContentStreamIoManager.WriteSink(content, IoUtils.UriFromFileName(SaveFileDialog.FileName));
                             SaveFileDialog.ResetFileName();
                         }
                     }
@@ -97,13 +99,13 @@ namespace Limada.Usecases {
             }
         }
 
-        #region Things-Export
+        #region Things-Import-Export
 
-        private IoManager<Stream, GraphCursor<IThing, ILink>> _thingGraphFocusIoManager = null;
-        public IoManager<Stream, GraphCursor<IThing, ILink>> ThingGraphFocusIoManager { get { return _thingGraphFocusIoManager ?? (_thingGraphFocusIoManager = new IoManager<Stream, GraphCursor<IThing, ILink>> { Progress = this.Progress }); } }
+        private IoUriManager<Stream, GraphCursor<IThing, ILink>> _thingGraphFocusIoManager = null;
+        public IoUriManager<Stream, GraphCursor<IThing, ILink>> ThingGraphFocusIoManager { get { return _thingGraphFocusIoManager ?? (_thingGraphFocusIoManager = new IoUriManager<Stream, GraphCursor<IThing, ILink>> { Progress = this.Progress }); } }
 
-        protected IoManager<Stream, IEnumerable<IThing>> _thingsIoManager = null;
-        protected IoManager<Stream, IEnumerable<IThing>> ThingsIoManager { get { return _thingsIoManager ?? (_thingsIoManager = new IoManager<Stream, IEnumerable<IThing>> { Progress = this.Progress }); } }
+        protected IoUriManager<Stream, IEnumerable<IThing>> _thingsIoManager = null;
+        protected IoUriManager<Stream, IEnumerable<IThing>> ThingsIoManager { get { return _thingsIoManager ?? (_thingsIoManager = new IoUriManager<Stream, IEnumerable<IThing>> { Progress = this.Progress }); } }
 
         public void ConfigureSink<TSource, TSink> (ISink<TSource, TSink> sink) {
             var report = sink as IReport;
@@ -115,53 +117,22 @@ namespace Limada.Usecases {
             }
         }
 
-        /// <summary>
-        /// TODO: maybe move later to SceneProvider
-        /// </summary>
-        /// <param name="scene"></param>
-        /// <returns></returns>
-        public IEnumerable<IThing> ThingsOut (IGraphScene<IVisual, IVisualEdge> scene) {
-            var visuals = scene.Selected.Elements;
-            if (visuals.Count() == 0)
-                visuals = scene.Graph.Where(v => !(v is IVisualEdge));
-            if (visuals.Count() == 0)
-                return null;
-            IEnumerable<IThing> things = null;
-            if (visuals.Count() == 1) {
-                var thing = scene.Graph.ThingOf(visuals.First());
-                var schema = new DocumentSchema(scene.Graph.ThingGraph(), thing);
-                if (schema.HasPages())
-                    things = schema.OrderedPages();
-                
-            }
-            if (things == null) {
-                things = visuals
-                    .OrderBy(v => v.Location, new PointComparer { Delta = 20 })
-                    .Select(v => scene.Graph.ThingOf(v));
-            }
-            return things;
-
-        }
-
         public void WriteThings (IGraphScene<IVisual, IVisualEdge> scene) {
             try {
                 DefaultDialogValues(SaveFileDialog, ThingsIoManager.WriteFilter);
-                 if (scene != null && scene.HasThingGraph()) {
-                     SaveFileDialog.DefaultExt = "pdf";
-                     if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
-                         var uri = IOUtils.UriFromFileName(SaveFileDialog.FileName);
-                         ThingsIoManager.SinkOut = ()=> ThingsOut(scene);
-                         ThingsIoManager.ConfigureSinkIo = s => ConfigureSink(s);
-                         ThingsIoManager.WriteSink(uri);
-                         SaveFileDialog.ResetFileName();
-                     }
-                 }
+                if (scene != null && scene.HasThingGraph()) {
+                    SaveFileDialog.DefaultExt = "pdf";
+                    if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
+                        ThingsIoManager.SinkOut = () => new SceneIo().SelectedThings(scene);
+                        ThingsIoManager.ConfigureSinkIo = s => ConfigureSink(s);
+                        ThingsIoManager.WriteSink(IoUtils.UriFromFileName(SaveFileDialog.FileName));
+                        SaveFileDialog.ResetFileName();
+                    }
+                }
             } catch (Exception ex) {
                 Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex, MessageType.OK);
             }
         }
-
-       
 
         public void ReadThingGraphFocus (IGraphScene<IVisual, IVisualEdge> scene) {
             try {
@@ -169,9 +140,10 @@ namespace Limada.Usecases {
                 if (scene != null && scene.HasThingGraph()) {
                     if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
                         var graphFocus = new GraphCursor<IThing, ILink>(scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Two);
-                        var uri = IOUtils.UriFromFileName(OpenFileDialog.FileName);
+                        var uri = IoUtils.UriFromFileName(OpenFileDialog.FileName);
+                        ThingGraphFocusIoManager.ConfigureSinkIo = s => ConfigureSink(s);
                         graphFocus = ThingGraphFocusIoManager.ReadSink(uri, graphFocus);
-                        SetDescription(scene, graphFocus.Cursor, OpenFileDialog.FileName);
+                        new SceneIo().SetDescription(scene, graphFocus.Cursor, OpenFileDialog.FileName);
                         OpenFileDialog.ResetFileName();
                     }
                 }
@@ -179,28 +151,7 @@ namespace Limada.Usecases {
                 Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex, MessageType.OK);
             }
         }
-
-        /// <summary>
-        /// TODO: maybe move later to SceneProvider
-        /// </summary>
-        /// <param name="scene"></param>
-        /// <returns></returns>
-        public void SetDescription (IGraphScene<IVisual, IVisualEdge> scene, IThing thing, string fileName) {
-            if (thing != null) {
-                var thingGraph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Two as IThingGraph;
-                thingGraph.SetSource(thing, fileName);
-                var desc = thingGraph.Description(thing);
-                if (desc == null || desc.ToString() == string.Empty) {
-                    desc = Path.GetFileNameWithoutExtension(fileName);
-                    var vis = scene.Graph.VisualOf(thing);
-                    if (vis != null) {
-                        vis.Data = desc;
-                        scene.Requests.Add(new LayoutCommand<IVisual>(vis, LayoutActionType.Justify));
-                    }
-                }
-
-            }
-        }
+       
         #endregion
     }
 }

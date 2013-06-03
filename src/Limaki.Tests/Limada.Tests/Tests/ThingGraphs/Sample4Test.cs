@@ -31,7 +31,7 @@ namespace Limada.Tests.ThingGraphs {
             }
             if (ThingGraphProvider == null) {
                 var fileManager = new FileManagerBase();
-                var file = IoInfo.FromFileName(fileName);
+                var file = Iori.FromFileName(fileName);
                 var provider = fileManager.GetThingGraphProvider(file);
                 if (provider != null) {
                     provider.Open(file);

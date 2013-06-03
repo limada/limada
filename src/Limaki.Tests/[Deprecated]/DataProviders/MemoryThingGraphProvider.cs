@@ -51,7 +51,7 @@ namespace Limada.Data {
             
         }
 
-        public override void Open(IoInfo fileName) {
+        public override void Open(Iori fileName) {
             Registry.Pool.TryGetCreate<IExceptionHandler>()
                 .Catch(new Exception(this.Description+" opening currently not implemented"), MessageType.OK);
         }
@@ -61,7 +61,7 @@ namespace Limada.Data {
                 .Catch(new Exception(this.Description + " not possible. Use SaveAs "), MessageType.OK);
         }
 
-        public override void SaveAs(IThingGraph source, IoInfo fileName) {
+        public override void SaveAs(IThingGraph source, Iori fileName) {
             Registry.Pool.TryGetCreate<IExceptionHandler>()
                 .Catch(new Exception(this.Description + " saving currently not implemented"), MessageType.OK);
         }

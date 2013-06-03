@@ -23,10 +23,10 @@ namespace Limada.Data {
     public class Db4oThingGraphIo : ThingGraphIo {
 
         public Db4oThingGraphIo (): base(new Db4oThingGraphInfo()) {
-            this.IoMode = InOutMode.ReadWrite;
+            this.IoMode = Limaki.Model.Content.IO.IoMode.ReadWrite;
         }
 
-        protected override ThingGraphContent OpenInternal (IoInfo source) {
+        protected override ThingGraphContent OpenInternal (Iori source) {
             var gateway = new Limaki.Data.db4o.Gateway();
             try {
                 gateway.Open(source);

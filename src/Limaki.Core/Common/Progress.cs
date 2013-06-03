@@ -17,6 +17,11 @@ using System;
 namespace Limaki.Common {
 
     public interface IProgress {
+        /// <summary>
+        /// string must be of format "message {0} {1}"
+        /// if int0 == -1 && int0 == -1 then only string is displayed
+        /// else string.Format(message, int0, int0)
+        /// </summary>
         Action<string, int, int> Progress { get; set; }
     }
 

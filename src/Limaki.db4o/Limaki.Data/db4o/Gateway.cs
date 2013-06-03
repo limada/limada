@@ -45,7 +45,7 @@ namespace Limaki.Data.db4o {
                         } catch (Exception e) {
                             Exception ex = new Exception(
                                 e.Message + "\nFile open failed:\t" +
-                                IoInfo.Path + IoInfo.Name + this.FileExtension,
+                                Iori.Path + Iori.Name + this.FileExtension,
                                 e);
                             throw ex;
                         }
@@ -56,7 +56,7 @@ namespace Limaki.Data.db4o {
         }
 
         public virtual IObjectContainer CreateSession(IEmbeddedConfiguration config) {
-            var file = this.IoInfo.Path + this.IoInfo.Name +
+            var file = this.Iori.Path + this.Iori.Name +
                        this.FileExtension;
             if (!System.IO.File.Exists(file)) {
                 config.File.BlockSize = 16;
@@ -69,9 +69,9 @@ namespace Limaki.Data.db4o {
 
         #region IGateway Member
 
-        public override void Open(IoInfo ioInfo) {
+        public override void Open(Iori iori) {
             _isClosed = false;
-            this.IoInfo = ioInfo;
+            this.Iori = iori;
         }
 
         public override void Close() {
@@ -92,14 +92,14 @@ namespace Limaki.Data.db4o {
                     _configuration = null;
                 }
             }
-            this.IoInfo = null;
+            this.Iori = null;
         }
 
         public virtual bool HasSession() {
             return _session != null;
         }
         public override bool IsOpen() {
-            return IoInfo != null;
+            return Iori != null;
         }
         public override bool IsClosed() {
             return _isClosed;

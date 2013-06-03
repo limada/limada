@@ -63,7 +63,7 @@ namespace Limada.Data {
             });
         }
 
-        public override void SaveAs(IThingGraph source, IoInfo fileName) {
+        public override void SaveAs(IThingGraph source, Iori fileName) {
             this.Data = null;
             Open(fileName);
             
@@ -123,10 +123,10 @@ namespace Limada.Data {
             }
         }
 
-        public virtual void RawImport(IoInfo source, IDataProvider<IThingGraph> target) {
+        public virtual void RawImport(Iori source, IDataProvider<IThingGraph> target) {
             Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(
                 new Exception(string.Format(
-                    "{0} RawImport of {1} not possible", this.Description, IoInfo.ToFileName(source))), MessageType.OK);
+                    "{0} RawImport of {1} not possible", this.Description, Iori.ToFileName(source))), MessageType.OK);
         }
     }
 }

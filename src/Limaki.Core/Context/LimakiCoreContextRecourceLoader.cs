@@ -18,9 +18,9 @@ namespace Limaki.IOC {
             context.Factory.Add<IThingFactory, ThingFactory>();
 			
 			var streamProviders = Registry.Pool.TryGetCreate<IoProvider<Stream, Content<Stream>>>();
-            streamProviders.Add(new HtmlContentInStream()); streamProviders.Add(new HtmlContentOutStream());
-            streamProviders.Add(new RtfContentInStream()); streamProviders.Add(new RtfContentOutStream());
-            streamProviders.Add(new ImageContentInStream()); streamProviders.Add(new ImageContentOutStream());
+            streamProviders.Add(new HtmlContentStreamIo()); 
+            streamProviders.Add(new RtfContentStreamIo()); 
+            streamProviders.Add(new ImageContentStreamIo()); 
         }
 
         public virtual void LoadCompression(IApplicationContext context) {

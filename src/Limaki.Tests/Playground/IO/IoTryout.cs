@@ -13,8 +13,8 @@ namespace Limaki.Playground.IO {
 
     public class IoTryout {
         public void GraphProviders () {
-            IoInfo input = null;
-            ISink<IoInfo, Stream> file = null;
+            Iori input = null;
+            ISink<Iori, Stream> file = null;
             ISink<Stream, IThingGraph> thingGraphProvider = null;
             ISink<IThingGraph, IGraphScene<IVisual, IVisualEdge>> sceneProvider = null;
 
@@ -24,10 +24,10 @@ namespace Limaki.Playground.IO {
 
         public void ContentProviders () {
 
-            IoInfo input = null;
-            ISink<IoInfo, Stream> file = null;
+            Iori input = null;
+            ISink<Iori, Stream> file = null;
             ISink<Stream, Content<Stream>> contentProvider = null;
-            ISink<IoInfo, Content<Stream>> contentIoProvider = null;
+            ISink<Iori, Content<Stream>> contentIoProvider = null;
 
             ISink<Content<Stream>, IThing> contentThingProvider = null;
         }

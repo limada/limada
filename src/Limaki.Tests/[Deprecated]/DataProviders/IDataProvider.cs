@@ -27,11 +27,11 @@ namespace Limaki.Data {
         bool Readable { get; }
 
         T Data { get; set; }
-        void Open ( IoInfo fileName );
+        void Open ( Iori fileName );
         void Open();
 
         void Save();
-        void SaveAs(T source, IoInfo fileName);
+        void SaveAs(T source, Iori fileName);
         void Merge (T source, T sink);
         void Close();
         void SaveCurrent();

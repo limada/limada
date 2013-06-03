@@ -34,7 +34,7 @@ namespace Limada.Usecases.Cms {
             }
         }
 
-        public virtual IoInfo IoInfo { get; set; }
+        public virtual Iori Iori { get; set; }
         public ThingGraphContent Current { get; set; }
 
         public void Open () {
@@ -42,26 +42,26 @@ namespace Limada.Usecases.Cms {
                 Trace.WriteLine (string.Format ("Provider already opened {0}", Current.Description));
                 var conn = Current.Data as IGatewayConnection;
                 if (conn != null) {
-                    Trace.WriteLine (string.Format ("Connection already opened {0}/{1}", conn.Gateway.IsOpen (), IoInfo.ToFileName (conn.Gateway.IoInfo)));
+                    Trace.WriteLine (string.Format ("Connection already opened {0}/{1}", conn.Gateway.IsOpen (), Iori.ToFileName (conn.Gateway.Iori)));
                 }
             } else {
-                var ioManager = new IoManager<IoInfo, ThingGraphContent> { };
-                var sinkIo = ioManager.GetSinkIO(IoInfo, InOutMode.Read) as ThingGraphIo;
+                var ioManager = new IoManager<Iori, ThingGraphContent> { };
+                var sinkIo = ioManager.GetSinkIO(Iori, IoMode.Read) as ThingGraphIo;
                 try {
-                    var sink = sinkIo.Open(IoInfo);
+                    var sink = sinkIo.Open(Iori);
                     if (sink != null) {
-                        Trace.WriteLine (string.Format ("DataBase opened {0}", IoInfo.ToFileName (IoInfo)));
+                        Trace.WriteLine (string.Format ("DataBase opened {0}", Iori.ToFileName (Iori)));
                         Current = sink;
                         var graph = new SchemaThingGraph (Current.Data);
                         PrepareGraph (graph);
                         _thingGraph = graph;
                     } else {
-                        throw new Exception ("Database not found: " + IoInfo.ToString ());
+                        throw new Exception ("Database not found: " + Iori.ToString ());
                     }
                 } catch (Exception e) {
                     Trace.WriteLine (e.Message);
                     _thingGraph = new ThingGraph ();
-                    Trace.WriteLine (string.Format ("Empty Graph created", IoInfo.ToFileName (IoInfo)));
+                    Trace.WriteLine (string.Format ("Empty Graph created", Iori.ToFileName (Iori)));
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace Limada.Usecases.Cms {
         protected void Close (ThingGraphContent data) {
             if (data == null)
                 return;
-            var sinkIo = new IoManager<IoInfo, ThingGraphContent> { }.GetSinkIO(data.ContentType, InOutMode.Write) as ThingGraphIo;
+            var sinkIo = new IoManager<Iori, ThingGraphContent> { }.GetSinkIO(data.ContentType, IoMode.Write) as ThingGraphIo;
             if (sinkIo != null)
                 sinkIo.Close(data);
         }
@@ -78,7 +78,7 @@ namespace Limada.Usecases.Cms {
             if (Current != null) {
 
                 Close(Current);
-                Trace.WriteLine (string.Format ("DataBase closed {0}", IoInfo.ToFileName (IoInfo)));
+                Trace.WriteLine (string.Format ("DataBase closed {0}", Iori.ToFileName (Iori)));
                 Current = null;
             }
         }

@@ -7,11 +7,11 @@ namespace Limaki.Drawing {
         X,  // same as Dimension ?
         Y,  // same as Dimension ?
         /// <summary>
-        /// compare Y; if(Y==X) then compare X
+        /// compare Y; if(aY == bY) then compare X
         /// </summary>
         YX,
         /// <summary>
-        /// compare X; if(X == Y ) then compare Y
+        /// compare X; if(aX == bX ) then compare Y
         /// </summary>
         XY
     }

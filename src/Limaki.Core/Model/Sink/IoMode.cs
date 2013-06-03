@@ -18,7 +18,7 @@ using System;
 namespace Limaki.Model.Content.IO {
 
     [Flags]
-    public enum InOutMode {
+    public enum IoMode {
 
         None = 0,
         Read = 1 << 0,

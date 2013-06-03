@@ -33,11 +33,9 @@ namespace Limaki.Model.Content.IO {
                 ) {}
     }
 
-    public class RtfContentInStream : ContentInStreamSink {
-        public RtfContentInStream () : base(new RtfContentInfo()) { }
+    public class RtfContentStreamIo : ContentStreamSinkIo {
+        public RtfContentStreamIo () : base(new RtfContentInfo()) { }
     }
 
-    public class RtfContentOutStream : ContentOutStreamSink {
-        public RtfContentOutStream () : base(new RtfContentInfo()) { }
-    }
+   
 }

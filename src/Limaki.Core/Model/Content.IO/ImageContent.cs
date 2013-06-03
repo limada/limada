@@ -71,11 +71,8 @@ namespace Limaki.Model.Content.IO {
         
     }
 
-    public class ImageContentInStream : ContentInStreamSink {
-        public ImageContentInStream () : base(new ImageContentInfo()) { }
+    public class ImageContentStreamIo : ContentStreamSinkIo {
+        public ImageContentStreamIo () : base(new ImageContentInfo()) { }
     }
 
-    public class ImageContentOutStream : ContentOutStreamSink {
-        public ImageContentOutStream () : base(new ImageContentInfo()) { }
-    }
 }

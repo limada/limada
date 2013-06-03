@@ -32,7 +32,7 @@ namespace Limada.Usecases {
 
         Action ApplicationQuit { get; set; }
 
-        void OpenFile ();
+        void Open ();
 
         bool ProcessCommandLine ();
         bool OpenCommandLine ();
@@ -43,7 +43,7 @@ namespace Limada.Usecases {
         void ImportRawSource ();
 
         void Save ();
-        void SaveAsFile ();
+        void SaveAs ();
 
         void Close ();
         

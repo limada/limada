@@ -40,7 +40,7 @@ namespace Limada.Data {
             get { return true; }
         }
 
-        public override void Open(IoInfo fileName) {
+        public override void Open(Iori fileName) {
             Close();
             var gateway = new Limaki.Data.db4o.Gateway();
             try {
@@ -100,7 +100,7 @@ namespace Limada.Data {
             return new Db4oThingGraphProvider() { Progress = this.Progress };
         }
 
-        public override void RawImport (IoInfo source, IDataProvider<IThingGraph> target) {
+        public override void RawImport (Iori source, IDataProvider<IThingGraph> target) {
             var repairer = new Limada.Data.db4o.Db4oRepairer { Progress = this.Progress };
             repairer.Use(source, target.Data);
         }

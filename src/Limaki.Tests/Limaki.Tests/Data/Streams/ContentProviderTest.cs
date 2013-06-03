@@ -15,7 +15,7 @@ namespace Limaki.Tests.Data.Streams {
     [TestFixture]
     public class ContentProviderTest : DomainTest {
         string GetTestDir() {
-            return IOUtils.FindSubDirInRootPath("TestData") + Path.DirectorySeparatorChar;
+            return IoUtils.FindSubDirInRootPath("TestData") + Path.DirectorySeparatorChar;
         }
 
         ISinkIo<Stream> FindProvider (long streamType) {
@@ -28,13 +28,13 @@ namespace Limaki.Tests.Data.Streams {
             var provider = Registry.Pool.TryGetCreate<IoProvider<Stream, Content<Stream>>>();
 
             Assert.IsNotNull(provider.Find(ContentTypes.RTF), "rtf");
-            Assert.IsNotNull(provider.Find("rtf",InOutMode.ReadWrite), "rtf");
+            Assert.IsNotNull(provider.Find("rtf",IoMode.ReadWrite), "rtf");
 
             Assert.IsNotNull(provider.Find(ContentTypes.HTML), "html");
-            Assert.IsNotNull(provider.Find("html", InOutMode.ReadWrite), "html");
+            Assert.IsNotNull(provider.Find("html", IoMode.ReadWrite), "html");
 
             Assert.IsNotNull(provider.Find(ContentTypes.JPG), "jpg");
-            Assert.IsNotNull(provider.Find("jpg", InOutMode.ReadWrite), "jpg");
+            Assert.IsNotNull(provider.Find("jpg", IoMode.ReadWrite), "jpg");
         }
 
 
@@ -44,7 +44,7 @@ namespace Limaki.Tests.Data.Streams {
             Assert.IsNotNull(provider, "No Provider found");
 
             Assert.IsTrue(File.Exists(fileName));
-            var uri = IOUtils.UriFromFileName(fileName);
+            var uri = IoUtils.UriFromFileName(fileName);
             var content = default(Content<Stream>);
             try {
                 var sink = provider as ISink<Uri, Content<Stream>>;

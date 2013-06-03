@@ -35,11 +35,8 @@ namespace Limaki.Model.Content.IO {
         public static long PdfContentType = unchecked((long) 0x90b88c3977443860);
     }
 
-    public class PdfContentInStream : ContentInStreamSink {
-        public PdfContentInStream () : base(new PdfContentInfo()) { }
+    public class PdfContentStreamIo : ContentStreamSinkIo {
+        public PdfContentStreamIo () : base(new PdfContentInfo()) { }
     }
 
-    public class PdfContentOutStream : ContentOutStreamSink {
-        public PdfContentOutStream () : base(new PdfContentInfo()) { }
-    }
 }

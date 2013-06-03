@@ -26,12 +26,12 @@ namespace Limada.Data {
     public class XmlThingGraphIo : ThingGraphIo {
 
         public XmlThingGraphIo (): base(new XmlThingGraphInfo()) {
-            this.IoMode = InOutMode.ReadWrite;
+            this.IoMode = Limaki.Model.Content.IO.IoMode.ReadWrite;
         }
 
-        protected override ThingGraphContent OpenInternal (IoInfo source) {
+        protected override ThingGraphContent OpenInternal (Iori source) {
             try {
-                var file = new FileStream(IoInfo.ToFileName(source), FileMode.Open);
+                var file = new FileStream(Iori.ToFileName(source), FileMode.Open);
                 var thingGraph = Open(file);
                 return new ThingGraphContent { Data = new ThingGraph(), Source = source, ContentType = XmlThingGraphInfo.ContentType };
 
@@ -62,11 +62,11 @@ namespace Limada.Data {
             return sink;
         }
 
-        public virtual void Save (ThingGraphContent source, IoInfo sinkInfo) {
+        public virtual void Save (ThingGraphContent source, Iori sinkInfo) {
             if (source == null)
                 return;
 
-            var sink = new FileStream(IoInfo.ToFileName(sinkInfo), FileMode.Create);
+            var sink = new FileStream(Iori.ToFileName(sinkInfo), FileMode.Create);
 
             var serializer = new ThingSerializer { Graph = source.Data, ThingCollection = source.Data.Elements().ToList() };
 
@@ -83,7 +83,7 @@ namespace Limada.Data {
         }
 
         public override void Flush (ThingGraphContent sink) {
-            Save(sink, sink.Source as IoInfo);
+            Save(sink, sink.Source as Iori);
         }
     }
 }

@@ -27,41 +27,41 @@ using Limaki.Data;
 
 namespace Limada.Data {
 
-    public abstract class ThingGraphIo : SinkIo<IoInfo>, ISink<IoInfo,ThingGraphContent>, ISink<ThingGraphContent, IoInfo> {
+    public abstract class ThingGraphIo : SinkIo<Iori>, ISink<Iori,ThingGraphContent>, ISink<ThingGraphContent, Iori> {
 
         protected ThingGraphIo(ContentInfoSink supportedContents) : base(supportedContents) {}
 
-        public override bool Supports (IoInfo source) {
+        public override bool Supports (Iori source) {
             return InfoSink.Supports(source.Extension);
         }
 
-        public override ContentInfo Use (IoInfo source) {
+        public override ContentInfo Use (Iori source) {
             if (Supports(source))
                 return InfoSink.SupportedContents.First();
             return null;
         }
 
-        public override ContentInfo Use (IoInfo source, ContentInfo sink) {
+        public override ContentInfo Use (Iori source, ContentInfo sink) {
             if (Supports(source))
                 return SinkExtensions.Use(source, sink, s => Use(s));
             return null;
         }
 
-        protected abstract ThingGraphContent OpenInternal(IoInfo source);
+        protected abstract ThingGraphContent OpenInternal(Iori source);
         public abstract void Flush (ThingGraphContent sink);
         public abstract void Close(ThingGraphContent sink);
 
-        ThingGraphContent ISink<IoInfo,ThingGraphContent>.Use (IoInfo source) {
+        ThingGraphContent ISink<Iori,ThingGraphContent>.Use (Iori source) {
             return Open(source);
         }
 
-        public virtual ThingGraphContent Open (IoInfo source) {
+        public virtual ThingGraphContent Open (Iori source) {
             var result = OpenInternal(source);
             result.Source = source;
             return result;
         }
 
-        public virtual ThingGraphContent Use (IoInfo source, ThingGraphContent sink) {
+        public virtual ThingGraphContent Use (Iori source, ThingGraphContent sink) {
             var result = Open(source);
             if (sink.Data == null)
                 return result;
@@ -70,12 +70,12 @@ namespace Limada.Data {
             }
         }
 
-        public virtual IoInfo Use (ThingGraphContent source) {
+        public virtual Iori Use (ThingGraphContent source) {
             Close(source);
-            return source.Source as IoInfo;
+            return source.Source as Iori;
         }
 
-        public virtual IoInfo Use (ThingGraphContent source, IoInfo sink) {
+        public virtual Iori Use (ThingGraphContent source, Iori sink) {
             source.Source = sink;
             Close(source);
             return sink;

@@ -77,7 +77,7 @@ namespace Limaki.Usecases.Concept {
 
         public void OpenFile() {
             SaveChanges();
-            GraphSceneUiManager.OpenFile ();
+            GraphSceneUiManager.Open ();
         }
 
         public virtual void SaveFile() {
@@ -87,7 +87,7 @@ namespace Limaki.Usecases.Concept {
 
         public void SaveAsFile() {
             SaveChanges();
-            GraphSceneUiManager.SaveAsFile ();
+            GraphSceneUiManager.SaveAs ();
         }
 
         public void ExportCurrentView() {
@@ -137,7 +137,7 @@ namespace Limaki.Usecases.Concept {
                     display.Execute();
                 }
             };
-            ContentStreamUiManager.ReadFile();
+            ContentStreamUiManager.Read();
         }
 
         public void ImportGraphFocus () {
@@ -161,7 +161,7 @@ namespace Limaki.Usecases.Concept {
                 }
                 return null;
             };
-            ContentStreamUiManager.SaveFile();
+            ContentStreamUiManager.Save();
         }
 
         public void SaveChanges() {

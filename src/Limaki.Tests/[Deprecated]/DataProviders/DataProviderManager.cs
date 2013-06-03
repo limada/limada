@@ -22,7 +22,7 @@ namespace Limada.Usecases {
         public string DefaultExtension { get; set; }
         public Action<string, int, int> Progress { get; set; }
 
-        public virtual IDataProvider<T> GetProvider (IoInfo info) {
+        public virtual IDataProvider<T> GetProvider (Iori info) {
             var result = Providers.Find(info);
             if (result != null)
                 result.Progress = this.Progress;

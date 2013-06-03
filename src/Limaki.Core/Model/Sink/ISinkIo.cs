@@ -20,7 +20,7 @@ namespace Limaki.Model.Content.IO {
 
     public interface ISinkIo<TSource> : ISink<TSource, ContentInfo>, IProgress {
 
-        InOutMode IoMode { get; }
+        IoMode IoMode { get; }
         ContentInfoSink InfoSink { get; }
         bool Supports(TSource source);
 
@@ -32,7 +32,7 @@ namespace Limaki.Model.Content.IO {
             this.InfoSink = supportedContents;
         }
 
-        public virtual InOutMode IoMode { get; protected set; }
+        public virtual IoMode IoMode { get; protected set; }
         public virtual ContentInfoSink InfoSink { get; protected set; }
         public Action<string, int, int> Progress { get; set; }
 

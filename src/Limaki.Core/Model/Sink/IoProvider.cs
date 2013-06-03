@@ -39,15 +39,15 @@ namespace Limaki.Model.Content.IO {
             _sinkIos.Remove(sinkIo);
         }
 
-        public virtual ISinkIo<TSource> Find (string extension, InOutMode mode) {
+        public virtual ISinkIo<TSource> Find (string extension, IoMode mode) {
             return _sinkIos.Where(provider => provider.InfoSink.Supports(extension)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
         }
 
-        public virtual ISinkIo<TSource> Find (long streamType, InOutMode mode) {
+        public virtual ISinkIo<TSource> Find (long streamType, IoMode mode) {
             return _sinkIos.Where(provider => provider.InfoSink.Supports(streamType)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
         }
 
-        public virtual ISinkIo<TSource> Find (TSource stream, InOutMode mode) {
+        public virtual ISinkIo<TSource> Find (TSource stream, IoMode mode) {
             return _sinkIos.Where(provider => provider.Supports(stream)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
         }
 

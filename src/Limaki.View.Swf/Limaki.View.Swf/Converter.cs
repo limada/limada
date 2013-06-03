@@ -303,7 +303,7 @@ namespace Limaki.View.Swf {
             target.CheckPathExists = source.CheckPathExists;
             target.DefaultExt = source.DefaultExt;
             target.DereferenceLinks = source.DereferenceLinks;
-            target.FileName = IOUtils.NiceFileName(source.FileName);
+            target.FileName = IoUtils.NiceFileName(source.FileName);
             target.Filter = source.Filter;
             target.FilterIndex = source.FilterIndex;
             target.InitialDirectory = source.InitialDirectory;

@@ -101,7 +101,10 @@ namespace Limaki.Swf.Backends.UseCases {
             useCase.MessageBoxShow = this.MessageBoxShow;
             useCase.FileDialogShow = this.FileDialogShow;
             useCase.Progress = (m, i, count) => {
-                this.StatusLabel.Text = m;
+                if (i == -1 && count == -1)
+                    this.StatusLabel.Text = m;
+                else
+                    this.StatusLabel.Text = string.Format(m, i, count);
                 Application.DoEvents ();
             };
 

@@ -27,8 +27,8 @@ namespace Limaki.Model.Content.IO {
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TSink"></typeparam>
-    public class IoManager<TSource, TSink>:IProgress {
-        
+    public class IoManager<TSource, TSink> : IProgress {
+
         /// <summary>
         /// called after sink is read
         /// </summary>
@@ -44,8 +44,6 @@ namespace Limaki.Model.Content.IO {
         /// </summary>
         public Action<ISinkIo<TSource>> ConfigureSinkIo { get; set; }
 
-        public Action Close { get; set; }
-
         public string DefaultExtension { get; set; }
         public Action<string, int, int> Progress { get; set; }
 
@@ -54,30 +52,31 @@ namespace Limaki.Model.Content.IO {
 
         #region providing SinkIo
 
-        public virtual ISinkIo<TSource> GetSinkIO(IoInfo info, InOutMode mode) {
-            return GetSinkByExtension(info.Extension, mode);
+        public virtual ISinkIo<TSource> GetSinkIO(Iori iori, IoMode mode) {
+            return GetSinkByExtension(iori.Extension, mode);
         }
 
-        public virtual ISinkIo<TSource> GetSinkIO (Uri uri, InOutMode mode) {
+        public virtual ISinkIo<TSource> GetSinkIO(Uri uri, IoMode mode) {
             if (uri.IsFile) {
-                var filename = IOUtils.UriToFileName(uri);
+                var filename = IoUtils.UriToFileName(uri);
                 return GetSinkByExtension(Path.GetExtension(filename).Trim('.'), mode);
             }
             return null;
         }
 
-        public virtual ISinkIo<TSource> GetSinkByExtension (string extension, InOutMode mode) {
+        public virtual ISinkIo<TSource> GetSinkByExtension(string extension, IoMode mode) {
             var result = Provider.Find(extension, mode);
             this.AttachProgress(result as IProgress);
             return result;
         }
 
-        public object GetSinkIO (long streamType, InOutMode mode) {
+        public object GetSinkIO(long streamType, IoMode mode) {
             var result = Provider.Find(streamType, mode);
             this.AttachProgress(result as IProgress);
             return result;
         }
-        public virtual ContentInfo GetContentInfo (Content stream) {
+
+        public virtual ContentInfo GetContentInfo(Content stream) {
             var sink = Provider.Find(stream.ContentType);
             if (sink != null) {
                 return sink.InfoSink.SupportedContents.Where(e => e.ContentType == stream.ContentType).First();
@@ -90,19 +89,19 @@ namespace Limaki.Model.Content.IO {
         #region Dialog-Filter-Handling
 
         private string _saveFilter = null;
-        public string WriteFilter { get { return _saveFilter ?? (_saveFilter = GetFilter(InOutMode.Write)); } }
+        public string WriteFilter { get { return _saveFilter ?? (_saveFilter = GetFilter(IoMode.Write)); } }
 
         private string _readFilter = null;
-        public string ReadFilter { get { return _readFilter ?? (_readFilter = GetFilter(InOutMode.Read)); } }
- 
-        public string GetFilter (ContentInfo info, out string ext) {
+        public string ReadFilter { get { return _readFilter ?? (_readFilter = GetFilter(IoMode.Read)); } }
+
+        public string GetFilter(ContentInfo info, out string ext) {
             ext = info.Extension;
             if (ext[0] != '.')
                 ext = "." + ext;
             return info.Description + "|*" + ext + "|";
         }
 
-        public string GetFilter (InOutMode mode) {
+        public string GetFilter(IoMode mode) {
             string filter = "";
             string defaultFilter = null;
             foreach (var sink in Provider) {
@@ -128,97 +127,5 @@ namespace Limaki.Model.Content.IO {
         }
 
         #endregion
-
-        #region Uri-Handling
-        public virtual TSink ReadSink (Uri uri, TSink sink) {
-            var sinkIo = GetSinkIO(uri, InOutMode.Read);
-            if (sinkIo != null && sinkIo.IoMode.HasFlag(InOutMode.Read)) {
-                OnClose();
-                try {
-                    if (ConfigureSinkIo != null)
-                        ConfigureSinkIo(sinkIo);
-                    this.AttachProgress(sinkIo as IProgress);
-
-                    var uriSink = sinkIo as ISink<Uri, TSink>;
-                    if (uriSink != null) {
-                        sink = uriSink.Use(uri, sink);
-                        if (sink != null && SinkIn != null) {
-                            SinkIn(sink);
-                        }
-                        OnClose();
-                    } else {
-                        var streamSink = sinkIo as ISink<Stream,TSink>;
-                        if (streamSink != null) {
-                            var filename = IOUtils.UriToFileName(uri);
-                            var file = new FileStream(filename, FileMode.Open);
-                            sink = streamSink.Use(file, sink);
-                            if (sink != null && SinkIn != null) {
-                                SinkIn(sink);
-                            }
-                            file.Close();
-                        }
-                    }
-                } catch (Exception e) {
-                    sink = default(TSink);
-                }
-            }
-            return sink;
-        }
-
-        public virtual TSink ReadSink (Uri uri) {
-            return ReadSink(uri, default(TSink));
-        }
-
-        public virtual void WriteSink (Uri uri) {
-            WriteSink(SinkOut(), uri);
-        }
-
-        public virtual bool WriteSink (TSink sink, Uri uri) {
-            if (sink == null)
-                return false;
-
-            var sinkIo = GetSinkIO(uri, InOutMode.Write);
-           
-
-            bool result = false;
-            if (sinkIo != null && sinkIo.IoMode.HasFlag(InOutMode.Write)) {
-                try {
-                    this.AttachProgress(sinkIo as IProgress);
-                    if (ConfigureSinkIo != null)
-                        ConfigureSinkIo(sinkIo);
-
-                    var uriSink = sinkIo as ISink<TSink, Uri>;
-                    if (uriSink !=null) {
-                        uriSink.Use(sink, uri);
-                        OnClose();
-                        result = true;
-                    } else {
-                        var streamSink = sinkIo as ISink<TSink, Stream>;
-                        if (streamSink != null) {
-                            var filename = IOUtils.UriToFileName(uri);
-                            var file = new FileStream(filename, FileMode.Create);
-                            streamSink.Use(sink, file);
-                            file.Close();
-                            result = true;
-                        }
-                    }
-                } catch (Exception e) {
-                    result = false;
-                }
-            }
-            return result;
-        }
-
-
-        public virtual void OnClose () {
-            if (Close != null) {
-                Close();
-                Close = null;
-            }
-        }
-
-        #endregion
-
- 
     }
 }

@@ -13,11 +13,13 @@
  */
 
 namespace Limaki.Data {
+
     ///<summary>
+    /// Input Output Resource Identifier
     /// provides information needed to connect to a database
     /// </summary>
     ///  <stereotype>description</stereotype>
-    public class IoInfo {
+    public class Iori {
         public string Server { get; set; }
 
         public string Path { get; set; }
@@ -40,33 +42,33 @@ namespace Limaki.Data {
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="dataBaseInfo"></param>
-        public static IoInfo FromFileName(string fileName) {
-            var dataBaseInfo = new IoInfo ();
+        public static Iori FromFileName(string fileName) {
+            var dataBaseInfo = new Iori ();
             FromFileName (dataBaseInfo,fileName);
             return dataBaseInfo;
         }
 
-        public static void FromFileName (IoInfo ioInfo, string fileName) {
+        public static void FromFileName (Iori iori, string fileName) {
             System.IO.FileInfo file = new System.IO.FileInfo (fileName);
-            ioInfo.Server = "localhost";
-            ioInfo.Path = file.DirectoryName + System.IO.Path.DirectorySeparatorChar;
-            ioInfo.Name = System.IO.Path.GetFileNameWithoutExtension (file.FullName);
-            ioInfo.Extension = System.IO.Path.GetExtension (file.FullName).ToLower ();
-            if (ioInfo.Extension == ".limfb") {
-                ioInfo.Provider = "FirebirdProvider";
-                ioInfo.User = "SYSDBA";
-                ioInfo.Password = "masterkey";
-            } else if (ioInfo.Extension == ".limo") {
-                ioInfo.Provider = "Db4oProvider";
-            } else if (ioInfo.Extension == ".pib") {
-                ioInfo.Provider = "PartsProvider";
-                ioInfo.User = "SYSDBA";
-                ioInfo.Password = "masterkey";
+            iori.Server = "localhost";
+            iori.Path = file.DirectoryName + System.IO.Path.DirectorySeparatorChar;
+            iori.Name = System.IO.Path.GetFileNameWithoutExtension (file.FullName);
+            iori.Extension = System.IO.Path.GetExtension (file.FullName).ToLower ();
+            if (iori.Extension == ".limfb") {
+                iori.Provider = "FirebirdProvider";
+                iori.User = "SYSDBA";
+                iori.Password = "masterkey";
+            } else if (iori.Extension == ".limo") {
+                iori.Provider = "Db4oProvider";
+            } else if (iori.Extension == ".pib") {
+                iori.Provider = "PartsProvider";
+                iori.User = "SYSDBA";
+                iori.Password = "masterkey";
             }
         }
 
-        public static string ToFileName(IoInfo ioInfo) {
-            return ioInfo.Path+ioInfo.Name+ioInfo.Extension;
+        public static string ToFileName(Iori iori) {
+            return iori.Path+iori.Name+iori.Extension;
         }
         public override string ToString() {
             return (this.Path ?? "") + (this.Name ?? "") + (this.Extension ?? "");

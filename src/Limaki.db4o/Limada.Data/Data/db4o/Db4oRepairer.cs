@@ -29,7 +29,7 @@ using Id = System.Int64;
 
 namespace Limada.Data.db4o {
 
-    public class Db4oRepairer : SinkIo<IThingGraphRepair>, ISink<IoInfo, IThingGraph> {
+    public class Db4oRepairer : SinkIo<IThingGraphRepair>, ISink<Iori, IThingGraph> {
 
         protected StringWriter Log { get; set; }
         public void ReportDetail(string message) {
@@ -40,7 +40,7 @@ namespace Limada.Data.db4o {
                 Log.WriteLine(message);
         }
 
-        public IThingGraph RawImport (IoInfo source, IThingGraph sink, bool repair) {
+        public IThingGraph RawImport (Iori source, IThingGraph sink, bool repair) {
             
             this.Log = new StringWriter();
             
@@ -147,7 +147,7 @@ namespace Limada.Data.db4o {
             gateway.Close();
             ReportDetail("done:\t");
             if (this.Log != null) {
-                var logfilename = IoInfo.ToFileName(source) + ".log";
+                var logfilename = Iori.ToFileName(source) + ".log";
                 if (File.Exists(logfilename))
                     File.Delete(logfilename);
                 var logfile = new StreamWriter(logfilename);
@@ -175,7 +175,7 @@ namespace Limada.Data.db4o {
             if (gateway == null)
                 return;
 
-            ReportDetail(gateway.IoInfo.ToString());
+            ReportDetail(gateway.Iori.ToString());
 
             var session = gateway.Session;
 
@@ -192,11 +192,11 @@ namespace Limada.Data.db4o {
         }
 
         public Db4oRepairer (): base(new Db4oThingGraphInfo()) {
-            this.IoMode = InOutMode.Read;
+            this.IoMode = Limaki.Model.Content.IO.IoMode.Read;
         }
 
         public override bool Supports (IThingGraphRepair source) {
-            return this.InfoSink.Supports(source.IoInfo.Extension);
+            return this.InfoSink.Supports(source.Iori.Extension);
         }
 
         public override ContentInfo Use (IThingGraphRepair source) {
@@ -211,11 +211,11 @@ namespace Limada.Data.db4o {
             return null;
         }
 
-        public IThingGraph Use (IoInfo source) {
+        public IThingGraph Use (Iori source) {
             throw new ArgumentException("Repairer needs a Graph to store into");
         }
 
-        public IThingGraph Use (IoInfo source, IThingGraph sink) {
+        public IThingGraph Use (Iori source, IThingGraph sink) {
             return this.RawImport(source, sink, true);
         }
     }

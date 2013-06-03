@@ -89,7 +89,7 @@ namespace Limada.VisualThings {
             });
         }
 
-        public bool Open(IoInfo FileName) {
+        public bool Open(Iori FileName) {
             return Open(() => {
                 Provider.Open(FileName);
             });
@@ -130,7 +130,7 @@ namespace Limada.VisualThings {
         }
 
 
-        public virtual void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene, IoInfo fileName) {
+        public virtual void ExportAsThingGraph(IGraphScene<IVisual, IVisualEdge> scene, Iori fileName) {
             var provider = Provider.Clone();
             provider.Open (fileName);
             ExportTo(scene, provider.Data);

@@ -60,7 +60,7 @@ namespace Limaki.Tests.Data.db4o {
         public void StringGraphTest() {
             StringGraphTest graphTest = new StringGraphTest();
 
-            Gateway.Open(IoInfo.FromFileName(FileName));
+            Gateway.Open(Iori.FromFileName(FileName));
             Limaki.Data.db4o.Graph<string, Edge<string>> graph =
                 new Limaki.Data.db4o.Graph<string, Edge<string>>(Gateway);
 
@@ -75,7 +75,7 @@ namespace Limaki.Tests.Data.db4o {
         }
         [Test]
         public void EdgeIsItemTest() {
-            Gateway.Open(IoInfo.FromFileName(FileName));
+            Gateway.Open(Iori.FromFileName(FileName));
             EdgeIsItemGraphTest graphTest = new EdgeIsItemGraphTest();
             Limaki.Data.db4o.Graph<Item<string>, EdgeItem<string>>
             graph = new Limaki.Data.db4o.Graph<Item<string>, EdgeItem<string>>(Gateway);
@@ -91,7 +91,7 @@ namespace Limaki.Tests.Data.db4o {
 
         [Test]
         public void IntGraphTest () {
-            Gateway.Open(IoInfo.FromFileName(FileName));
+            Gateway.Open(Iori.FromFileName(FileName));
             IntGraphTest graphTest = new IntGraphTest();
             Limaki.Data.db4o.Graph<int, Edge<int>>
             graph = new Limaki.Data.db4o.Graph<int, Edge<int>>(Gateway);
@@ -108,7 +108,7 @@ namespace Limaki.Tests.Data.db4o {
         public void BenchmarkOneTest() {
             IGraphFactory<IGraphEntity,IGraphEdge> sceneFactory = 
                 new BenchmarkOneGraphFactory();
-            Gateway.Open(IoInfo.FromFileName(FileName));
+            Gateway.Open(Iori.FromFileName(FileName));
 
             IGraph<IGraphEntity,IGraphEdge> graph =
                 new Limaki.Data.db4o.Graph<IGraphEntity, IGraphEdge>(Gateway);

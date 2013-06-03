@@ -2,9 +2,9 @@ using Limaki.Data;
 
 namespace Limada.Data {
     public interface IThingGraphRepair {
-        IoInfo IoInfo { get; }
+        Iori Iori { get; }
     }
     public class ThingGraphRepair : IThingGraphRepair {
-        public IoInfo IoInfo { get; set; }
+        public Iori Iori { get; set; }
     }
 }

@@ -14,15 +14,15 @@ namespace Limada.Usecases.Cms {
         public virtual void OpenBackend () {
 
             if (Backend == null) {
-                Backend = new BackendController { IoInfo = new IoInfo() };
-                GetAppSettings(Backend.IoInfo);
+                Backend = new BackendController { Iori = new Iori() };
+                GetAppSettings(Backend.Iori);
                 Backend.Open();
             }
         }
 
         public Func<NameValueCollection> AppSettingsGetter { get; set; }
 
-        protected void GetAppSettings (IoInfo ioInfo) {
+        protected void GetAppSettings (Iori iori) {
 
             var appSettings = AppSettingsGetter();//;
 
@@ -31,26 +31,26 @@ namespace Limada.Usecases.Cms {
                 string data = appSettings.Get(i);
 
                 if (key == "DataBaseFileName") {
-                    IoInfo.FromFileName(ioInfo, data);
+                    Iori.FromFileName(iori, data);
                 }
 
                 if (key == "DataBaseServer") {
-                    ioInfo.Server = data;
+                    iori.Server = data;
                 }
                 if (key == "DataBaseName") {
-                    ioInfo.Name = data;
+                    iori.Name = data;
                 }
                 if (key == "DataBasePath") {
-                    ioInfo.Path = data;
+                    iori.Path = data;
                 }
                 if (key == "DataBaseUser") {
-                    ioInfo.User = data;
+                    iori.User = data;
                 }
                 if (key == "DataBasePassword") {
-                    ioInfo.Password = data;
+                    iori.Password = data;
                 }
                 if (key == "DataBaseProvider") {
-                    ioInfo.Provider = data;
+                    iori.Provider = data;
                 }
 
                 if (key == "SiteName") {

@@ -193,7 +193,7 @@
     <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\ZipConstants.cs" />
     <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\ZipException.cs" />
     <Compile Include="Context\LimakiCoreContextRecourceLoader.cs" />
-    <Compile Include="Data\IOInfo.cs" />
+    <Compile Include="Data\Iori.cs" />
     <Compile Include="Data\DbGraph.cs" />
     <Compile Include="Data\GatewayBase.cs" />
     <Compile Include="Data\IDataContainer.cs" />
@@ -271,13 +271,14 @@
     <Compile Include="Limada\Schemata\UniqueThingAttribute.cs" />
     <Compile Include="Limada\Schemata\ViewMetaSchema.cs" />
     <Compile Include="Model\Sink\ContentInfoSink.cs" />
-    <Compile Include="Model\Content.IO\ContentStreamSink.cs" />
+    <Compile Include="Model\Content.IO\ContentStreamSinkIo.cs" />
     <Compile Include="Model\Sink\IoManager.cs" />
     <Compile Include="Model\Sink\IoProvider.cs" />
-    <Compile Include="Model\Content.IO\StreamSink.cs" />
+    <Compile Include="Model\Content.IO\StreamSinkIo.cs" />
     <Compile Include="Model\Content.IO\HtmlContent.cs" />
     <Compile Include="Model\Content.IO\ImageContent.cs" />
-    <Compile Include="Model\Sink\InOutMode.cs" />
+    <Compile Include="Model\Sink\IoMode.cs" />
+    <Compile Include="Model\Sink\IoUriManager.cs" />
     <Compile Include="Model\Sink\ISink.cs" />
     <Compile Include="Model\Sink\ISinkIo.cs" />
     <Compile Include="Model\Content.IO\PdfContent.cs" />

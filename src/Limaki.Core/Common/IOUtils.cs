@@ -9,7 +9,7 @@ namespace Limaki
 {
 
 
-	public class IOUtils 
+	public class IoUtils 
 	{
 		public static string FindSubDirInRootPath(string subdirToFind){
 			return FindSubDirInRootPath(Directory.GetCurrentDirectory(),subdirToFind);
