@@ -19,24 +19,25 @@ using Limada.Model;
 using Limaki.Common.Text.HTML;
 using Limaki.Model.Content;
 using Limaki.Net.WebProxyServer;
+using Limaki.View;
 
 namespace Limaki.Viewers.StreamViewers {
 
     public class HtmlViewer : ContentStreamViewer {
 
         public IWebBrowserBackendHandler BackendHandler { get; set; }
-        
-        object _control = null;
-        public override object Backend {
+
+        IVidgetBackend _backend = null;
+        public override IVidgetBackend Backend {
             get {
-                if (_control == null) {
-                    _control = BackendHandler.CreateBackend(this.Parent);
-                    OnAttach(_control);
+                if (_backend == null) {
+                    _backend = BackendHandler.CreateBackend(this.Parent);
+                    OnAttach(_backend);
                     UseWebServer = !OS.Mono;
-                    UseProxy = BackendHandler.AcceptsProxy(_control);
+                    UseProxy = BackendHandler.AcceptsProxy(_backend);
                 }
 
-                return _control;
+                return _backend;
             }
         }
 
@@ -152,10 +153,10 @@ namespace Limaki.Viewers.StreamViewers {
         public override bool CanSave() {return false;}
 
         public override void Dispose() {
-            if (_control is IDisposable) {
-                ((IDisposable)_control).Dispose ();
+            if (_backend is IDisposable) {
+                ((IDisposable)_backend).Dispose ();
             }
-            _control = null;
+            _backend = null;
             if (_webServer != null) {
                 _webServer.Dispose ();
                 _webServer = null;
@@ -166,7 +167,7 @@ namespace Limaki.Viewers.StreamViewers {
             if (_webServer != null) {
                 
             }
-            if (_control != null) {
+            if (_backend != null) {
                 WebBrowser.Navigate ("about:blank");
             }
         }

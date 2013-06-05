@@ -252,7 +252,7 @@ namespace Limaki.Viewers {
                 try {
                     display.EventControler.UserEventsDisabled = true;
                     adjacent.EventControler.UserEventsDisabled = true;
-                    contentViewManager.SheetControl = adjacent;
+                    contentViewManager.SheetViewer = adjacent;
                     contentViewManager.ChangeViewer(sender, e);
                 } catch (Exception ex) {
                     ExceptionHandler.Catch(ex, MessageType.OK);

@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using Limaki.Model.Content;
 using Limaki.Viewers;
 using Limaki.Swf.Backends.TextEditor;
+using Limaki.View;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
 
@@ -34,7 +35,8 @@ namespace Limaki.Swf.Backends.Viewers.Content {
             }
         }
 
-        public override object Backend {
+        //TODO: replace with factory methods
+        public override IVidgetBackend Backend {
             get {
                 if (_control == null) {
                     _control = new TextBoxEditorWithToolStrip();

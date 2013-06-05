@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2006-2013 Lytico
+ *
+ * http://www.limada.org
+ */
+
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,12 +22,13 @@ using System.IO;
 using System.Text;
 using Limaki.Drawing;
 using Limaki.View;
-
+using Xwt.Gdi.Backend;
 
 // this control uses ideas from RicherTextBox by ???
 
 namespace Limaki.Swf.Backends.TextEditor {
-    public partial class TextBoxEditor : UserControl, IZoomTarget {
+
+    public partial class TextBoxEditor : UserControl, IZoomTarget, IVidgetBackend {
         public TextBoxEditor() {
             InitializeComponent();
             innerTextBox.Enter += (sender, args) => {this.OnEnter (args); };
@@ -128,6 +143,23 @@ namespace Limaki.Swf.Backends.TextEditor {
 
         #endregion
 
+        #region IVidgetBackend-Implementation
+
+        Xwt.Rectangle IVidgetBackend.ClientRectangle {
+            get { return this.ClientRectangle.ToXwt(); }
+        }
+
+        Xwt.Size IVidgetBackend.Size {
+            get { return this.Size.ToXwt(); }
+        }
+
+
+        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
+            this.Invalidate(rect.ToGdi());
+        }
+
+        Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        #endregion
     }
 }
 

@@ -22,12 +22,15 @@ using Limaki.Viewers;
 using Limaki.Swf.Backends.TextEditor;
 using System;
 using Limaki.Common;
+using Limaki.View;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
 
     public class TextViewer : ContentStreamViewer {
+        
+        //TODO: replace with factory methods
         TextBoxEditor _backend = null;
-        public override object Backend {
+        public override IVidgetBackend Backend {
             get {
                 if (_backend == null) {
                     _backend = new TextBoxEditor();

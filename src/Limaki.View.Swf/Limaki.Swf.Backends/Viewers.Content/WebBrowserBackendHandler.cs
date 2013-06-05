@@ -6,13 +6,14 @@ using System.Windows.Forms;
 using Limaki.Viewers;
 using Limaki.Viewers.StreamViewers;
 using Limaki.Common;
+using Limaki.View;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
 
     public class WebBrowserBackendHandler:IWebBrowserBackendHandler {
 
         public static bool GeckoFailed = false ;
-        public object CreateBackend(object parent) {
+        public IVidgetBackend CreateBackend (object parent) {
             Control _control = null;
             if (GeckoFailed || OS.Mono || OS.IsWin64Process) { //(true){ //
                 _control = new Backends.WebBrowser();
@@ -33,7 +34,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
                 _control.Parent = parent as Control;
                 Thread.Sleep(0);
             }
-            return _control;
+            return _control as IVidgetBackend;
         }
 
         public bool AcceptsProxy(object control) {

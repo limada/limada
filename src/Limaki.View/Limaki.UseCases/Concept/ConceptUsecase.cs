@@ -35,12 +35,12 @@ namespace Limaki.Usecases.Concept {
             set { _useCaseTitle = value; }
         }
 
-        public void Start() {
+        public void Start () {
 
             GraphSceneUiManager.OpenFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
             GraphSceneUiManager.SaveFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
 
-            if (!GraphSceneUiManager.ProcessCommandLine() || !GraphSceneUiManager.OpenCommandLine()) {
+            if (!GraphSceneUiManager.ProcessCommandLine()) {
                 GraphSceneUiManager.ShowEmptyScene();
             }
         }

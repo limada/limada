@@ -17,6 +17,7 @@ using System.IO;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Model.Content;
+using Limaki.View;
 using Limaki.View.Visualizers;
 using Limaki.Visuals;
 
@@ -24,23 +25,23 @@ namespace Limaki.Viewers.StreamViewers {
 
     public class SheetViewer : ContentStreamViewer {
 
-        protected IGraphSceneDisplay<IVisual, IVisualEdge> _sheetControl = null;
-        public IGraphSceneDisplay<IVisual, IVisualEdge> SheetControl {
-            get { return _sheetControl; }
+        protected IGraphSceneDisplay<IVisual, IVisualEdge> _sheetDisplay = null;
+        public IGraphSceneDisplay<IVisual, IVisualEdge> SheetDisplay {
+            get { return _sheetDisplay; }
             set {
                 if (value != null)
                     this.ContentId = value.DataId;
-                if (_sheetControl != value && value != null) {
-                    _sheetControl = value;
-                    OnAttach(_sheetControl);
+                if (_sheetDisplay != value && value != null) {
+                    _sheetDisplay = value;
+                    OnAttach(_sheetDisplay.Backend);
                 }
             }
         }
 
         public ISheetManager SheetManager { get;set;}
 
-        public override object Backend {
-            get { return SheetControl; }
+        public override IVidgetBackend Backend {
+            get { return SheetDisplay.Backend; }
         }
 
         public override bool Supports(long streamType) {
@@ -48,17 +49,17 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         public override void SetContent(Content<Stream> content) {
-            if (SheetControl == null) {
+            if (SheetDisplay == null) {
                 throw new ArgumentException("sheetControl must not be null");
             }
 
-            SheetControl.Execute();
+            SheetDisplay.Execute();
 
-            if (SheetControl.DataId == 0) 
-                SheetControl.DataId = Isaac.Long;
+            if (SheetDisplay.DataId == 0) 
+                SheetDisplay.DataId = Isaac.Long;
             
-            SheetManager.SaveInStore(SheetControl.Data, SheetControl.Layout, SheetControl.DataId);
-            SheetManager.RegisterSheet(SheetControl.Info);
+            SheetManager.SaveInStore(SheetDisplay.Data, SheetDisplay.Layout, SheetDisplay.DataId);
+            SheetManager.RegisterSheet(SheetDisplay.Info);
 
             var loadFromMemory = false;
             var isStreamOwner = this.IsStreamOwner;
@@ -81,19 +82,19 @@ namespace Limaki.Viewers.StreamViewers {
 
             SceneInfo sheetinfo = null;
             if (!loadFromMemory) {
-                sheetinfo = SheetManager.LoadFromContent(content, SheetControl.Data, SheetControl.Layout);
+                sheetinfo = SheetManager.LoadFromContent(content, SheetDisplay.Data, SheetDisplay.Layout);
             } else {
-                SheetManager.LoadFromStore(SheetControl.Data, SheetControl.Layout, stored.Id);
+                SheetManager.LoadFromStore(SheetDisplay.Data, SheetDisplay.Layout, stored.Id);
                 sheetinfo = stored;
                 isStreamOwner = false;
             }
-            SheetControl.BackendRenderer.Render ();
+            SheetDisplay.BackendRenderer.Render ();
 
-            SheetControl.Execute();
-            SheetControl.Info = sheetinfo;
+            SheetDisplay.Execute();
+            SheetDisplay.Info = sheetinfo;
            
-            this.ContentId = SheetControl.DataId;
-            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(SheetControl.Data);
+            this.ContentId = SheetDisplay.DataId;
+            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(SheetDisplay.Data);
 
             if (isStreamOwner) {
                 content.Data.Close();
@@ -107,7 +108,7 @@ namespace Limaki.Viewers.StreamViewers {
         public override bool CanSave() {return false;}
 
         public override void Dispose() {
-            SheetControl = null;
+            SheetDisplay = null;
         }
     }
 }

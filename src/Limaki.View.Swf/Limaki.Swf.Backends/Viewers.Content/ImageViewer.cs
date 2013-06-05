@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -24,12 +24,15 @@ using System.IO;
 using Limaki.View.Swf;
 using Limaki.Viewers;
 using Limaki.View.Swf.Visualizers;
+using Limaki.View;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
 
     public class ImageViewer : ContentStreamViewer {
+
+        //TODO: replace with factory methods
         SwfImageDisplayBackend _backend = null;
-        public override object Backend {
+        public override IVidgetBackend Backend {
             get {
                 if (_backend == null) {
                     _backend = new SwfImageDisplayBackend();

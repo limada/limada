@@ -1,57 +1,115 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2010-2013 Lytico
+ *
+ * http://www.limada.org
+ */
+
+
 using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.View.Visualizers;
 using Limaki.Visuals;
+using Limaki.View.Swf.Visualizers;
+using System.Drawing;
+using Limada.View;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf.Backends {
-    // couldn't this replaced by WinformSplitView??
-    public partial class DocumentSchemaBackend : UserControl, IZoomTarget {
 
-        public SwfDocumentSchemaViewer Controller { get; set; }
+    public partial class DocumentSchemaBackend : UserControl, IZoomTarget, IVidgetBackend {
 
+        public DocumentSchemaViewer Viewer { get; set; }
+        
+        //TODO: replace with factory methods
         public DocumentSchemaBackend():this(new SwfDocumentSchemaViewer()) {}
 
-        public DocumentSchemaBackend(SwfDocumentSchemaViewer controller) {
-            this.Controller = controller;
-            InitializeComponent();
-            //this.SuspendLayout();
-            this.WinVisualsDisplayBackend.TabStop = false;
-            this.WinImageDisplayBackend.TabStop = false;
-           
-            Controller.GraphSceneDisplay = this.WinVisualsDisplayBackend.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
-            Controller.ImageDisplay = this.WinImageDisplayBackend.Display;
-            Controller.Compose();
+        public DocumentSchemaBackend(DocumentSchemaViewer viewer) {
+            this.Viewer = viewer;
+            Compose();
+        }
+
+        private void Compose () {
+
+            var pagesDisplayBackend = new SwfVisualsDisplayBackend() {
+                Dock = System.Windows.Forms.DockStyle.Right,
+                Width = Viewer.GetDefaultWidth(),
+                TabStop = false
+            };
+
+            var panel = new Panel { Dock = System.Windows.Forms.DockStyle.Fill, BackColor = Color.White };
+            this.SuspendLayout();
+
+            Viewer.PagesDisplay = pagesDisplayBackend.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
+            Viewer.Compose();
+
+            var splitter = new System.Windows.Forms.Splitter { Dock = DockStyle.Right };
+            this.Controls.AddRange(new Control[] { panel, splitter, pagesDisplayBackend });
+
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
             this.PerformLayout();
             Application.DoEvents();
-            //this.SplitContainer.TabStop = false;
-            //this.SplitContainer.KeyDown += new KeyEventHandler(SplitContainer_KeyDown);
+
+            Viewer.AttachContentViewerBackend = contentViewer => {
+                var contentControl = (contentViewer.Backend as System.Windows.Forms.Control);
+                if (contentControl.Dock != DockStyle.Fill)
+                    contentControl.Dock = DockStyle.Fill;
+                
+                if (!panel.Controls.Contains(contentControl)) {
+                    panel.Controls.Clear();
+                    panel.Controls.Add(contentControl);
+                    Application.DoEvents();
+                }
+            };
+
         }
 
         void SplitContainer_KeyDown(object sender, KeyEventArgs e) {
             e.Handled = false;
         }
-       
-
-        protected override void OnKeyDown(KeyEventArgs e) {
-            base.OnKeyDown(e);
-        }
 
         #region IZoomTarget Member
 
         public ZoomState ZoomState {
-            get { return Controller.ImageDisplay.ZoomState; }
-            set { Controller.ImageDisplay.ZoomState = value; }
+            get { return Viewer.ZoomState; }
+            set { Viewer.ZoomState = value; }
         }
 
         public double ZoomFactor {
-            get { return Controller.ImageDisplay.Viewport.ZoomFactor; }
-            set { Controller.ImageDisplay.Viewport.ZoomFactor = value; }
+            get { return Viewer.ZoomFactor; }
+            set { Viewer.ZoomFactor = value; }
         }
 
-        public void UpdateZoom() {
-            Controller.ImageDisplay.Viewport.UpdateZoom();
+        public void UpdateZoom () {
+            Viewer.UpdateZoom();
         }
 
+        #endregion
+
+        #region IVidgetBackend-Implementation
+
+        Xwt.Rectangle IVidgetBackend.ClientRectangle {
+            get { return this.ClientRectangle.ToXwt(); }
+        }
+
+        Xwt.Size IVidgetBackend.Size {
+            get { return this.Size.ToXwt(); }
+        }
+
+
+        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
+            this.Invalidate(rect.ToGdi());
+        }
+
+        Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
         #endregion
     }
 }

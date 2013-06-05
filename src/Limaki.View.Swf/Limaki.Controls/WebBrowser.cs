@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  */
@@ -20,9 +20,10 @@ using System.Net;
 using Limaki.Drawing;
 using Limaki.View;
 using Limaki.Viewers;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends {
-    public class WebBrowser:System.Windows.Forms.WebBrowser,IWebBrowser, IHistoryAware, IZoomTarget {
+    public class WebBrowser : System.Windows.Forms.WebBrowser, IWebBrowser, IHistoryAware, IZoomTarget, IVidgetBackend {
 
         public void Navigatewithproxy(string uri, string host, int port) {
             var webRequest = (HttpWebRequest)WebRequest.Create(uri);
@@ -206,6 +207,24 @@ namespace Limaki.Swf.Backends {
                 }
             }
         }
+
+        #region IVidgetBackend-Implementation
+
+        Xwt.Rectangle IVidgetBackend.ClientRectangle {
+            get { return this.ClientRectangle.ToXwt(); }
+        }
+
+        Xwt.Size IVidgetBackend.Size {
+            get { return this.Size.ToXwt(); }
+        }
+
+   
+        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
+            this.Invalidate(rect.ToGdi());
+        }
+
+        Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        #endregion
 
     }
 }

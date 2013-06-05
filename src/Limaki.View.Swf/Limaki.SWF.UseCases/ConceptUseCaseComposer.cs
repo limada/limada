@@ -70,13 +70,13 @@ namespace Limaki.Swf.Backends.UseCases {
             //TODO: move this to UseCaseContextResourceLoader
             Registry.Factory.Add<ContentViewerProvider, ContentVisualViewerProvider> ();
 
-            var viewProviders = Registry.Pool.TryGetCreate<ContentViewerProvider> ();
+            var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider> ();
 
-            viewProviders.Add (new HtmlViewer {BackendHandler = new WebBrowserBackendHandler ()});
-            viewProviders.Add(new SwfDocumentSchemaViewer());
-            viewProviders.Add (new ImageViewer ());
-            viewProviders.Add (new TextViewerWithToolstrip ());
-            viewProviders.Add (new SheetViewer ());
+            viewerProvider.Add (new HtmlViewer {BackendHandler = new WebBrowserBackendHandler ()});
+            viewerProvider.Add(new SwfDocumentSchemaViewer());
+            viewerProvider.Add (new ImageViewer ());
+            viewerProvider.Add (new TextViewerWithToolstrip ());
+            viewerProvider.Add (new SheetViewer ());
 
         }
 

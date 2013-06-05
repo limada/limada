@@ -26,7 +26,7 @@ namespace Limaki.Viewers {
         
         public virtual void OnShow() { }
 
-        public abstract object Backend { get; }
+        public abstract IVidgetBackend Backend { get; }
 
         private Color? _backColor;
         public virtual Color BackColor {
@@ -35,10 +35,10 @@ namespace Limaki.Viewers {
         }
         public object Parent { get; set; }
 
-        public event Action<object> Attach = null;
-        public event Action<object> DeAttach = null;
+        public event Action<IVidgetBackend> Attach = null;
+        public event Action<IVidgetBackend> DeAttach = null;
 
-        protected virtual void OnAttach(object backend) {
+        protected virtual void OnAttach (IVidgetBackend backend) {
             if (Attach != null) {
                 Attach(backend);
             }

@@ -114,6 +114,10 @@
     <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainter.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainterBase.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\VectorPainter.cs" />
+    <Compile Include="Limaki.Swf.Backends\Viewers.Content\DocumentSchemaBackend.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.Swf.Backends\Viewers.Content\SwfDocumentSchemaViewer.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\MarkerToolStripBackend.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -127,7 +131,6 @@
     <Compile Include="Limaki.View.Gdi\UI\GdiGraphSceneLayer.cs" />
     <Compile Include="Limaki.View.Gdi\UI\GdiImageLayer.cs" />
     <Compile Include="Limaki.View.Gdi\UI\GdiRenderEventArgs.cs" />
-    <Compile Include="Limaki.Swf.Backends\Viewers.Content\SwfDocumentSchemaViewer.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripUtils.cs" />
     <Compile Include="Limaki.View.Swf\Converter.cs" />
     <Compile Include="Limaki.View.Swf\CursorHandlerBackend.cs" />
@@ -211,12 +214,6 @@
     </Compile>
     <Compile Include="Limaki.Swf.Backends\ShapeComboBox.Designer.cs">
       <DependentUpon>ShapeComboBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.Content\DocumentSchemaBackend.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.Content\DocumentSchemaBackend.Designer.cs">
-      <DependentUpon>DocumentSchemaBackend.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.Content\WebBrowserBackendHandler.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.Content\ImageViewer.cs" />

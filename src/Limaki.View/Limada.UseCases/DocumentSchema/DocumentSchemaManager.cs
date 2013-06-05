@@ -37,11 +37,10 @@ namespace Limada.Usecases {
             return docSchema.PageStreams();
         }
 
-        public Content<Stream> PageStream(IGraph<IVisual, IVisualEdge> source, IVisual page) {
+        public Content<Stream> PageContent(IGraph<IVisual, IVisualEdge> source, IVisual page) {
             Content<Stream> result = null;
             var pageThing = source.ThingOf(page) as IStreamThing;
-            var imageStreamProvider = new ImageContentInfo();
-            if (pageThing != null && imageStreamProvider.Supports(pageThing.StreamType)) {
+            if (pageThing != null ) {
                 try {
                     result = ThingContentFacade.ConentOf(pageThing);
                 } finally {
