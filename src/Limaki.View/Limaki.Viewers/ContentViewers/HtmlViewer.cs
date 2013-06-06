@@ -32,7 +32,7 @@ namespace Limaki.Viewers.StreamViewers {
             get {
                 if (_backend == null) {
                     _backend = BackendHandler.CreateBackend(this.Parent);
-                    OnAttach(_backend);
+                    OnAttachBackend(_backend);
                     UseWebServer = !OS.Mono;
                     UseProxy = BackendHandler.AcceptsProxy(_backend);
                 }

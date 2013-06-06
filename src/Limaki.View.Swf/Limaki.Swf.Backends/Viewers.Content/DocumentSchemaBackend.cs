@@ -22,16 +22,20 @@ using Limada.View;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf.Backends {
+    
+    public partial class DocumentSchemaBackend : UserControl, IZoomTarget, IDocumentSchemaBackend {
 
-    public partial class DocumentSchemaBackend : UserControl, IZoomTarget, IVidgetBackend {
+        public DocumentSchemaViewer Frontend { get; set; }
 
-        public DocumentSchemaViewer Viewer { get; set; }
-        
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (DocumentSchemaViewer)frontend;
+        }
+
         //TODO: replace with factory methods
         public DocumentSchemaBackend():this(new SwfDocumentSchemaViewer()) {}
 
-        public DocumentSchemaBackend(DocumentSchemaViewer viewer) {
-            this.Viewer = viewer;
+        public DocumentSchemaBackend(DocumentSchemaViewer frontend) {
+            this.Frontend = frontend;
             Compose();
         }
 
@@ -39,15 +43,15 @@ namespace Limaki.View.Swf.Backends {
 
             var pagesDisplayBackend = new SwfVisualsDisplayBackend() {
                 Dock = System.Windows.Forms.DockStyle.Right,
-                Width = Viewer.GetDefaultWidth(),
+                Width = Frontend.GetDefaultWidth(),
                 TabStop = false
             };
 
             var panel = new Panel { Dock = System.Windows.Forms.DockStyle.Fill, BackColor = Color.White };
             this.SuspendLayout();
 
-            Viewer.PagesDisplay = pagesDisplayBackend.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
-            Viewer.Compose();
+            Frontend.PagesDisplay = pagesDisplayBackend.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
+            Frontend.Compose();
 
             var splitter = new System.Windows.Forms.Splitter { Dock = DockStyle.Right };
             this.Controls.AddRange(new Control[] { panel, splitter, pagesDisplayBackend });
@@ -58,7 +62,7 @@ namespace Limaki.View.Swf.Backends {
             this.PerformLayout();
             Application.DoEvents();
 
-            Viewer.AttachContentViewerBackend = contentViewer => {
+            Frontend.AttachContentViewerBackend = contentViewer => {
                 var contentControl = (contentViewer.Backend as System.Windows.Forms.Control);
                 if (contentControl.Dock != DockStyle.Fill)
                     contentControl.Dock = DockStyle.Fill;
@@ -79,17 +83,17 @@ namespace Limaki.View.Swf.Backends {
         #region IZoomTarget Member
 
         public ZoomState ZoomState {
-            get { return Viewer.ZoomState; }
-            set { Viewer.ZoomState = value; }
+            get { return Frontend.ZoomState; }
+            set { Frontend.ZoomState = value; }
         }
 
         public double ZoomFactor {
-            get { return Viewer.ZoomFactor; }
-            set { Viewer.ZoomFactor = value; }
+            get { return Frontend.ZoomFactor; }
+            set { Frontend.ZoomFactor = value; }
         }
 
         public void UpdateZoom () {
-            Viewer.UpdateZoom();
+            Frontend.UpdateZoom();
         }
 
         #endregion
@@ -110,6 +114,7 @@ namespace Limaki.View.Swf.Backends {
         }
 
         Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+
         #endregion
     }
 }

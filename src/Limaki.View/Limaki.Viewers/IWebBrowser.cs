@@ -18,6 +18,7 @@ using System.IO;
 using System.Net;
 
 namespace Limaki.Viewers {
+
     public interface IWebBrowser {
         [DefaultValue(true)]
         bool AllowNavigation { get; set; }
@@ -32,8 +33,6 @@ namespace Limaki.Viewers {
         [BrowsableAttribute(false)]
         [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
         bool CanGoForward { get; }
-
-
 
         [BrowsableAttribute(false)]
         [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
@@ -58,9 +57,6 @@ namespace Limaki.Viewers {
         [BrowsableAttribute(false)]
         [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
         bool IsOffline { get; }
-
-
-
 
         [BrowsableAttribute(false)]
         [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
@@ -98,15 +94,12 @@ namespace Limaki.Viewers {
         [BrowsableAttribute(false)]
         event EventHandler CanGoForwardChanged;
 
-        
-
         [BrowsableAttribute(false)]
         event EventHandler DocumentTitleChanged;
 
         event EventHandler FileDownload;
         
         event CancelEventHandler NewWindow;
-        
 
         [BrowsableAttribute(false)]
         event EventHandler StatusTextChanged;

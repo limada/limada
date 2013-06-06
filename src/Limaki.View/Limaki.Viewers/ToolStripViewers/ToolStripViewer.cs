@@ -1,9 +1,11 @@
+using Limaki.View;
 using System.Diagnostics;
 
 namespace Limaki.Viewers.ToolStripViewers {
-    public interface IToolStripViewerBackend {}
 
-    public abstract class ToolStripViewer<TDisplay, TBackend>
+    public interface IToolStripViewerBackend:IVidgetBackend {}
+
+    public abstract class ToolStripViewer<TDisplay, TBackend>:IVidget
         where TDisplay : class
         where TBackend : IToolStripViewerBackend {
 
@@ -20,5 +22,9 @@ namespace Limaki.Viewers.ToolStripViewers {
 
         public abstract void Detach (object sender);
 
+
+        public void Dispose () {
+            CurrentDisplay = null;
+        }
     }
 }

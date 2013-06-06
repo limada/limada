@@ -14,27 +14,27 @@ namespace Limaki.Swf.Backends.Viewers.Content {
 
         public static bool GeckoFailed = false ;
         public IVidgetBackend CreateBackend (object parent) {
-            Control _control = null;
+            Control _backend = null;
             if (GeckoFailed || OS.Mono || OS.IsWin64Process) { //(true){ //
-                _control = new Backends.WebBrowser();
-                _control.Parent = parent as Control;
+                _backend = new Backends.WebBrowserBackend();
+                _backend.Parent = parent as Control;
                 GeckoFailed = true;
                 Trace.WriteLine("No Gecko");
             } else {
                 try {
                     var gecko = Registry.Factory.Create<IGeckoWebBrowser>();
                     if (gecko !=null)
-                        _control = (Control)gecko;
+                        _backend = (Control)gecko;
                     else
                         throw new Exception();
                 } catch {
                     GeckoFailed = true;
                     return CreateBackend(parent);
                 }
-                _control.Parent = parent as Control;
+                _backend.Parent = parent as Control;
                 Thread.Sleep(0);
             }
-            return _control as IVidgetBackend;
+            return _backend as IVidgetBackend;
         }
 
         public bool AcceptsProxy(object control) {

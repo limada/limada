@@ -31,5 +31,6 @@ namespace Limaki.View {
         // Helper Functions:
         Point PointToClient(Point source);
 
+        void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
     }
 }

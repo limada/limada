@@ -1,4 +1,5 @@
 namespace Limaki.View.Visualizers {
+
     public class DisplayFactory<TData> {
 
         public virtual Display<TData> Create() {
@@ -17,15 +18,13 @@ namespace Limaki.View.Visualizers {
             set { _displayComposer = value; }
         }
 
-        public virtual IComposer<Display<TData>> DeviceComposer { get; set; }
-
-
+        public virtual IComposer<Display<TData>> BackendComposer { get; set; }
 
         public virtual void Compose(Display<TData> display) {
             DisplayComposer.Factor(display);
-            DeviceComposer.Factor(display);
+            BackendComposer.Factor(display);
 
-            DeviceComposer.Compose(display);
+            BackendComposer.Compose(display);
             DisplayComposer.Compose(display);
 
         }

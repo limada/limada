@@ -16,14 +16,17 @@ using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.View;
 using Xwt.Gdi.Backend;
+using Limaki.Swf.Backends.Viewers.Content;
 
 namespace Limaki.Swf.Backends.TextEditor {
-    public partial class TextBoxEditorWithToolStrip : ToolStripContainer, IZoomTarget, IVidgetBackend {
-        public TextBoxEditorWithToolStrip() {
+
+    public partial class TextViewerWithToolstripBackend : ToolStripContainer, IZoomTarget, IVidgetBackend {
+        
+        public TextViewerWithToolstripBackend() {
             InitializeComponent();
         }
 
-        void SetEditor(TextBoxEditor editor) {
+        void SetEditor(TextViewerBackend editor) {
             this.SuspendLayout ();
             this.ContentPanel.Controls.Clear();
             if (editor != null) {
@@ -36,17 +39,17 @@ namespace Limaki.Swf.Backends.TextEditor {
             this.ResumeLayout ();
         }
 
-        public TextBoxEditor TextBoxEditor {
+        public TextViewerBackend TextViewerBackend {
             get {
-                if (_textBoxEditor == null) {
-                    _textBoxEditor = new TextBoxEditor();
-                    SetEditor (_textBoxEditor);
+                if (_textViewerBackend == null) {
+                    _textViewerBackend = new TextViewerBackend();
+                    SetEditor (_textViewerBackend);
                 }
-                return _textBoxEditor;
+                return _textViewerBackend;
             }
             set {
-                _textBoxEditor = value;
-                SetEditor(_textBoxEditor);
+                _textViewerBackend = value;
+                SetEditor(_textViewerBackend);
             }
         }
 
@@ -56,15 +59,15 @@ namespace Limaki.Swf.Backends.TextEditor {
             if (toolstrip != null) {
                 this.TopToolStripPanel.Controls.Add (toolstrip);
             }
-            TextBoxEditor.ToolStrip = toolstrip;
+            TextViewerBackend.ToolStrip = toolstrip;
             this.ResumeLayout ();
         }
 
         //bool _toolStripEnabled = false;
         //public bool ToolStripEnabled {
-        //    get { return _textBoxEditor != null && _textBoxEditor.ToolStrip != null; }
+        //    get { return _textViewerBackend != null && _textViewerBackend.ToolStrip != null; }
         //    set {
-        //        if (_textBoxEditor != null) {
+        //        if (_textViewerBackend != null) {
         //            if (value) {
         //                TextBoxEditorToolStrip strip = _textBoxEditorToolStrip;
         //                if (strip == null)
@@ -92,50 +95,56 @@ namespace Limaki.Swf.Backends.TextEditor {
             }
         }
 
-        private TextBoxEditor _textBoxEditor=null;
+        private TextViewerBackend _textViewerBackend=null;
         private TextBoxEditorToolStrip _textBoxEditorToolStrip=null;
 
         #region IZoomTarget Member
 
         public ZoomState ZoomState {
             get {
-                if (_textBoxEditor != null) {
-                    return _textBoxEditor.ZoomState;
+                if (_textViewerBackend != null) {
+                    return _textViewerBackend.ZoomState;
                 } else {
                     return ZoomState.Original;
                 }
             }
             set {
-                if (_textBoxEditor != null) {
-                    _textBoxEditor.ZoomState = value;
+                if (_textViewerBackend != null) {
+                    _textViewerBackend.ZoomState = value;
                 }
             }
         }
 
         public double ZoomFactor {
             get {
-                if (_textBoxEditor != null) {
-                    return _textBoxEditor.ZoomFactor;
+                if (_textViewerBackend != null) {
+                    return _textViewerBackend.ZoomFactor;
                 } else {
                     return 1d;
                 }
             }
             set {
-                if (_textBoxEditor != null) {
-                    _textBoxEditor.ZoomFactor = value;
+                if (_textViewerBackend != null) {
+                    _textViewerBackend.ZoomFactor = value;
                 }
             }
         }
 
         public void UpdateZoom() {
-            if (_textBoxEditor != null) {
-                _textBoxEditor.UpdateZoom ();
+            if (_textViewerBackend != null) {
+                _textViewerBackend.UpdateZoom ();
             }
         }
 
         #endregion
 
         #region IVidgetBackend-Implementation
+
+        public TextViewerWithToolstrip Frontend { get; protected set; }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (TextViewerWithToolstrip)frontend;
+        }
 
         Xwt.Rectangle IVidgetBackend.ClientRectangle {
             get { return this.ClientRectangle.ToXwt(); }

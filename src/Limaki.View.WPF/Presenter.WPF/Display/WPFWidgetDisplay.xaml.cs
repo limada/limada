@@ -58,6 +58,11 @@ namespace Limaki.View.WPF.Display {
             set { this.Display = value as IDisplay<T>; }
         }
 
+        IDisplay<T> IDisplayBackend<T>.Frontend {
+            get { return this.Display; }
+            set { this.Display = value; }
+        }
+
         protected WPFRenderer<T> _deviceRenderer = null;
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -268,5 +273,10 @@ namespace Limaki.View.WPF.Display {
         #endregion
 
         public void Dispose(){}
+
+
+        public void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -29,15 +29,15 @@ namespace Limaki.Swf.Backends.Viewers.Content {
     public class TextViewer : ContentStreamViewer {
         
         //TODO: replace with factory methods
-        TextBoxEditor _backend = null;
+        TextViewerBackend _backend = null;
         public override IVidgetBackend Backend {
             get {
                 if (_backend == null) {
-                    _backend = new TextBoxEditor();
+                    _backend = new TextViewerBackend();
                     _backend.Multiline = true;
                     _backend.BorderStyle = BorderStyle.None;
                     _backend.EnableAutoDragDrop = true;
-                    OnAttach (_backend );
+                    OnAttachBackend (_backend );
                 }
                 return _backend;
             }
@@ -63,7 +63,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         }
 
         public override void SetContent(Content<Stream> content) {
-            var backend = Backend as TextBoxEditor;
+            var backend = Backend as TextViewerBackend;
             if (backend == null)
                 return;
             
@@ -144,7 +144,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         public override void Clear() {
             base.Clear();
             if (_backend != null) {
-                var control = _backend as TextBoxEditor;
+                var control = _backend as TextViewerBackend;
                 control.Clear ();
             }
         }

@@ -59,7 +59,7 @@ namespace Limaki.Tests.Graph.Wrappers {
                     var factory = new VisualsDisplayFactory ();
                     var inst = new MockBackendComposer<IGraphScene<IVisual, IVisualEdge>> ();
                     inst.DataLayer = new MockGraphSceneLayer<IVisual, IVisualEdge> ();
-                    factory.DeviceComposer = inst;
+                    factory.BackendComposer = inst;
                     var display = new GraphSceneDisplay<IVisual, IVisualEdge>();
                     factory.Compose(display);
                     display.Data = this.Scene;

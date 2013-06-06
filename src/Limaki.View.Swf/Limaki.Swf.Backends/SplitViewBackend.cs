@@ -23,21 +23,24 @@ using Limaki.Visuals;
 using Limaki.Swf.Backends;
 using DialogResult=Limaki.Viewers.DialogResult;
 using System.Diagnostics;
+using Limaki.View;
 
 namespace Limaki.Swf.Backends.Viewers {
 
-    public class  SwfSplitViewBackend : IDisposable {
+    public class  SplitViewBackend : IDisposable, ISplitViewBackend {
 
-        public SwfSplitViewBackend(Control parent) {
+        public SplitViewBackend(Control parent) {
             this.Parent = parent;
             Initialize();
         }
 
         #region Parent-Handling
-        
-        public Control Parent = null;
-        
-        public Control ActiveControl {
+
+        object ISplitViewBackend.Parent { get { return this.Parent; } }
+
+        protected Control Parent { get; set; }
+
+        protected Control ActiveControl {
             get { return Container.ActiveControl as Control; }
             set { Container.ActiveControl = value; }
         }
@@ -46,12 +49,12 @@ namespace Limaki.Swf.Backends.Viewers {
        
         public SplitView0 Frontend { get; set; }
 
-        public SplitContainer Container { get; set; }
+        protected SplitContainer Container { get; set; }
         public SwfVisualsDisplayBackend DisplayBackend1 { get; set; }
-        public SwfVisualsDisplayBackend DisplayBackend2 { get; set; }
+        protected SwfVisualsDisplayBackend DisplayBackend2 { get; set; }
 
 
-        public void InitializeComponent() {
+        protected void InitializeComponent () {
             var parent = this.Parent as Control;
 
             parent.SuspendLayout();
@@ -82,23 +85,14 @@ namespace Limaki.Swf.Backends.Viewers {
             Container.SplitterDistance = (int)(parent.Width / 2);
         }
 
-        public void Initialize() {
+        protected void Initialize () {
             InitializeComponent();
 
             Frontend = new SplitView0 ();
+            Frontend.Backend = this;
+
             Frontend.Display1 = this.DisplayBackend1.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
             Frontend.Display2 = this.DisplayBackend2.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
-            Frontend.Parent = this.Parent;
-            Frontend.BackendInitializeDisplay += this.InitializeDisplay;
-            
-
-            Frontend.BackendGraphGraphView += this.GraphGraphView;
-            //View.DeviceGraphStreamView += this.GraphStreamView;
-            Frontend.BackendToggleView += this.ToggleView;
-            
-            Frontend.FocusCatcher = this.SetFocusCatcher;
-            Frontend.ShowTextDialog = this.ShowTextOkCancelDialog;
-            Frontend.AttachControl = this.AttachControl;
 
             Frontend.Initialize ();
 
@@ -110,37 +104,47 @@ namespace Limaki.Swf.Backends.Viewers {
         }
 
 
-        void InitializeDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> target) {
-            var display = target.Backend as Control;
-            display.Enter -= DisplayGotFocus;
-            display.MouseUp -= DisplayGotFocus;
-            display.Enter += DisplayGotFocus;
-            display.MouseUp += DisplayGotFocus;
+        public void InitializeDisplay (IVidgetBackend displayBackend) {
+            var backend = displayBackend as Control;
+            backend.Enter -= DisplayGotFocus;
+            backend.MouseUp -= DisplayGotFocus;
+            backend.Enter += DisplayGotFocus;
+            backend.MouseUp += DisplayGotFocus;
         }
 
         void DisplayGotFocus(object sender, EventArgs e) {
-            var display = sender as SwfVisualsDisplayBackend;
-            if (display != null) {
-                Frontend.DisplayGotFocus (display.Display);
+            var backend = sender as SwfVisualsDisplayBackend;
+            if (backend != null) {
+                Frontend.DisplayGotFocus (backend.Display);
             }
         }
 
         void ControlGotFocus(object sender, EventArgs e) {
-            var display = sender as SwfVisualsDisplayBackend;
-            if (display != null) sender = display.Display;
-
-            Frontend.WidgetGotFocus (sender);
+            var displayBackend = sender as SwfVisualsDisplayBackend;
+            if (displayBackend != null) {
+                Frontend.DisplayGotFocus(displayBackend.Display);
+            } else {
+                Frontend.WidgetGotFocus(sender);
+            }
         }
 
-        void SetFocusCatcher(object target) {
-            var control = target as Control;
+        public void SetFocusCatcher (IVidgetBackend backend) {
+            var control = backend as Control;
             if (control != null) {
                 control.Enter += ControlGotFocus;
                 control.MouseUp += ControlGotFocus;
                 control.GotFocus += ControlGotFocus;
             }
         }
-        
+
+        public void ReleaseFocusCatcher (IVidgetBackend backend) {
+            var control = backend as Control;
+            if (control != null) {
+                control.Enter -= ControlGotFocus;
+                control.MouseUp -= ControlGotFocus;
+                control.GotFocus -= ControlGotFocus;
+            }
+        }
         #region View-Switching
         
         public void ToggleView() {
@@ -157,7 +161,11 @@ namespace Limaki.Swf.Backends.Viewers {
             Container.ResumeLayout();
         }
 
-        protected void GraphGraphView() {
+        public void GraphContentView() {
+            // nothing do to; everything is managed by Frontend.ContentViewManager
+        }
+
+        public void GraphGraphView () {
             Container.SuspendLayout();
 
             Container.Panel1.SuspendLayout();
@@ -180,27 +188,26 @@ namespace Limaki.Swf.Backends.Viewers {
             Container.ResumeLayout();
 
         }
-        
-        private void AttachControl(object sender, Action onShowAction) {
-            if (sender == null)
+
+        /// <summary>
+        /// called in ContentViewManager when a ContentViewer is attached
+        /// </summary>
+        public void AttachViewerBackend (IVidgetBackend backend, Action onShowAction) {
+            if (backend == null)
                 return;
 
-            var control = sender as Control;
-            var display = sender as GraphSceneDisplay<IVisual, IVisualEdge>;
-            if (display != null) {
-                control = display.Backend as Control;
-            }
-            var currentDisplay = this.Frontend.CurrentDisplay.Backend as Control;
+            var control = backend as Control;
+            var currentDisplayBackend = this.Frontend.CurrentDisplay.Backend as Control;
 
             SplitterPanel panel = null;
-            if (currentDisplay != control) {
-                if (Container.Panel1.Controls.Cast<Control>().Contains(currentDisplay)) {
+            if (currentDisplayBackend != control) {
+                if (Container.Panel1.Controls.Cast<Control>().Contains(currentDisplayBackend)) {
                     panel = Container.Panel2;
-                } else if (Container.Panel2.Controls.Cast<Control>().Contains(currentDisplay)) {
+                } else if (Container.Panel2.Controls.Cast<Control>().Contains(currentDisplayBackend)) {
                     panel = Container.Panel1;
                 }
             } else {
-                Trace.WriteLine("SplitViewBackend.AttachControl: currentDisplay == control");
+                Trace.WriteLine("SplitViewBackend.AttachBackend: currentDisplayBackend == control");
             }
             if (panel != null && !panel.Controls.Cast<Control>().Contains(control)) {
                 panel.SuspendLayout();
@@ -219,7 +226,7 @@ namespace Limaki.Swf.Backends.Viewers {
 
         void FinishTextOkCancelDialog(object sender, TextOkCancelBoxEventArgs e) {
             var cd = this.Frontend.CurrentDisplay;
-            var control = (sender as TextOkCancelBox);
+            var control = (sender as TextOkCancelBoxBackend);
 
             if (e.Arg == DialogResult.OK) {
                 e.OnOK (control.Text);
@@ -234,10 +241,10 @@ namespace Limaki.Swf.Backends.Viewers {
 
         }
 
-        protected void ShowTextOkCancelDialog(string title, string text, Action<string> OnOk) {
-            var nameDialog = new TextOkCancelBox();
+        public void ShowTextDialog(string title, string text, Action<string> onOk) {
+            var nameDialog = new TextOkCancelBoxBackend();
             nameDialog.Finish += FinishTextOkCancelDialog;
-            nameDialog.OnOk = OnOk;
+            nameDialog.OnOk = onOk;
 
             var currentDisplay = this.Frontend.CurrentDisplay.Backend as Control;
             if (Container.Panel1.Contains(currentDisplay)) {

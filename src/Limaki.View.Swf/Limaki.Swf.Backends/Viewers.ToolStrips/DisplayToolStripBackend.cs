@@ -21,7 +21,7 @@ using Limaki.Viewers.ToolStripViewers;
 
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
-    public partial class DisplayToolStripBackend : ToolStrip, IDisplayToolStripBackend {
+    public partial class DisplayToolStripBackend : ToolStripBackend, IDisplayToolStripBackend {
         public DisplayToolStripBackend() {
             InitializeComponent();
         }

@@ -1,5 +1,5 @@
 namespace Limaki.Swf.Backends {
-    partial class TextOkCancelBox {
+    partial class TextOkCancelBoxBackend {
         /// <summary> 
         /// Erforderliche Designervariable.
         /// </summary>
@@ -111,14 +111,14 @@ namespace Limaki.Swf.Backends {
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // TextOkCancelBox
+            // TextOkCancelBoxBackend
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Name = "TextOkCancelBox";
+            this.Name = "TextOkCancelBoxBackend";
             this.Size = new System.Drawing.Size(364, 24);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);

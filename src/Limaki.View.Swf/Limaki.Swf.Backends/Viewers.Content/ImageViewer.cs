@@ -30,15 +30,23 @@ namespace Limaki.Swf.Backends.Viewers.Content {
 
     public class ImageViewer : ContentStreamViewer {
 
-        //TODO: replace with factory methods
-        SwfImageDisplayBackend _backend = null;
         public override IVidgetBackend Backend {
             get {
-                if (_backend == null) {
-                    _backend = new SwfImageDisplayBackend();
-                    OnAttach (_backend);
+                return Display.Backend;
+            }
+            protected set {
+                base.Backend = value;
+            }
+        }
+        IDisplay<Image> _display = null;
+        public virtual IDisplay<Image> Display {
+            get {
+                if (_display == null) {
+                    _display = new ImageDisplay();
+                    OnAttachBackend(_display.Backend);
+                    _display.ZoomState = ZoomState.FitToScreen;
                 }
-                return _backend;
+                return _display;
             }
         }
 
@@ -69,15 +77,10 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         }
 
         public override void SetContent(Content<Stream> content) {
-            var backend = Backend as SwfImageDisplayBackend;
-
-            if (backend != null) {
-                var display = backend.Display;
+            if (Display != null) {
+                var display = Display;
                 display.BackColor = this.BackColor;
-
                 display.Data = Image.FromStream(content.Data);
-
-                display.ZoomState = ZoomState.FitToScreen;
             }
             if (IsStreamOwner) {
                 content.Data.Close ();
@@ -88,17 +91,16 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         public override void Save(Content<Stream> content) { }
 
         public override void Dispose() {
-            if (_backend != null) {
-                _backend.Dispose();
-                _backend = null;
+            if (_display != null) {
+                _display.Dispose();
+                _display = null;
             }
         }
 
         public override void Clear() {
             base.Clear();
-            var backend = _backend as SwfImageDisplayBackend;
-            if (backend != null) {
-                backend.Display.Data = null;
+            if (_display != null) {
+                _display.Data = null;
             }
         }
     }

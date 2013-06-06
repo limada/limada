@@ -1,5 +1,5 @@
 namespace Limaki.Swf.Backends.TextEditor {
-    partial class TextBoxEditorWithToolStrip {
+    partial class TextViewerWithToolstripBackend {
         /// <summary>
         /// Erforderliche Designervariable.
         /// </summary>
@@ -28,7 +28,7 @@ namespace Limaki.Swf.Backends.TextEditor {
             this.SuspendLayout();
             
             // 
-            // TextBoxEditorWithToolStrip
+            // TextViewerWithToolstripBackend
             // 
             // 
             // 

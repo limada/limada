@@ -26,8 +26,10 @@ using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends {
-    public partial class TextOkCancelBox : UserControl, ITextOkCancelBox {
-        public TextOkCancelBox() {
+
+    public partial class TextOkCancelBoxBackend : UserControl, ITextOkCancelBox,IVidgetBackend {
+
+        public TextOkCancelBoxBackend() {
             InitializeComponent();
             ActiveControl = this.TextBox;
             Result = DialogResult.None;
@@ -53,6 +55,7 @@ namespace Limaki.Swf.Backends {
 
         public Action<string> OnOk { get; set; }
         public event EventHandler<TextOkCancelBoxEventArgs> Finish = null;
+        
         void DoFinish(DialogResult result) {
             if (Finish != null) {
                 Finish(this, new TextOkCancelBoxEventArgs(result, OnOk));
@@ -68,7 +71,13 @@ namespace Limaki.Swf.Backends {
             }
         }
 
-        #region IControl Member
+        #region IVidgetBackend Member
+
+        public TextOkCancelBox Frontend { get; set; }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (TextOkCancelBox)frontend;
+        }
 
         Rectangle IVidgetBackend.ClientRectangle {
             get { return this.ClientRectangle.ToXwt(); }

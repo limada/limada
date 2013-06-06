@@ -122,12 +122,18 @@ namespace Limaki.Tests.Graph.Wrappers {
     }
 
     public class MockDisplayBackend<T> : IDisplayBackend<T> where T : class {
+
         public IDisplay<T> Display { get; set; }
 
 
         IDisplay IDisplayBackend.Frontend {
             get { return this.Display; }
             set { this.Display = value as IDisplay<T>; }
+        }
+
+        IDisplay<T> IDisplayBackend<T>.Frontend {
+            get { return this.Display; }
+            set { this.Display = value; }
         }
 
         public Rectangle ClientRectangle {
@@ -148,6 +154,10 @@ namespace Limaki.Tests.Graph.Wrappers {
             return source;
         }
         public void Dispose(){}
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Display = (Display<T>)frontend;
+        }
     }
 
     public class MockBackendComposer<TData> : BackendComposer<TData, IDisplayBackend<TData>>

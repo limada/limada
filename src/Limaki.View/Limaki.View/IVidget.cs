@@ -15,6 +15,7 @@
 using System;
 using Limaki.Drawing;
 using Xwt;
+using Xwt.Backends;
 
 namespace Limaki.View {
     /// <summary>
@@ -22,5 +23,28 @@ namespace Limaki.View {
     /// will be replaced by Xwt.Widget in the future
     /// is like a controller for a concrete backend
     /// </summary>
-    public interface IVidget:IDisposable { }
+    public interface IVidget : IDisposable {
+    }
+
+    [BackendType(typeof(IVidgetBackend))]
+    public abstract class Vidget : IVidget {
+
+        private VidgetBackendHost _backendHost;
+        public Vidget ()
+		{
+			_backendHost = CreateBackendHost ();
+			_backendHost.Frontend = this;
+		}
+		
+		protected virtual VidgetBackendHost CreateBackendHost ()
+		{
+            return new VidgetBackendHost();
+		}
+
+        protected VidgetBackendHost BackendHost {
+			get { return _backendHost; }
+		}
+
+        public abstract void Dispose();
+    }
 }

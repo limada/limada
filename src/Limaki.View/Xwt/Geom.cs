@@ -104,3 +104,6 @@ namespace Xwt.Drawing {
 
     }
 }
+
+namespace Xwt.Backends {
+}

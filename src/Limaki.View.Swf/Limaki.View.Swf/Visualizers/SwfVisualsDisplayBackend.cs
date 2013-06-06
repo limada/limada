@@ -22,18 +22,17 @@ using Limaki.Visuals;
 
 
 namespace Limaki.View.Swf.Visualizers {
+
     public class SwfVisualsDisplayBackend : SwfGraphSceneBackend<IVisual, IVisualEdge> {
 
-        public override DisplayFactory<IGraphScene<IVisual, IVisualEdge>> CreateDisplayFactory(SwfWidgetBackend<IGraphScene<IVisual, IVisualEdge>> device) {
+        public override DisplayFactory<IGraphScene<IVisual, IVisualEdge>> CreateDisplayFactory(DisplayBackend<IGraphScene<IVisual, IVisualEdge>> backend) {
             var result = new VisualsDisplayFactory();
             var deviceInstrumenter = new SwfVisualsDeviceInstrumenter();
-            deviceInstrumenter.Backend = device;
-            result.DeviceComposer = deviceInstrumenter;
+            deviceInstrumenter.Backend = backend;
+            result.BackendComposer = deviceInstrumenter;
             result.DisplayComposer = new WinformVisualsDisplayIntrumenter ();
             return result;
         }
-
-        
     }
 
     public class WinformVisualsDisplayIntrumenter:VisualsDisplayComposer {

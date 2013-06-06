@@ -11,8 +11,8 @@ namespace Limaki.View.Swf.Visualizers {
 
     public class SwfViewport : Limaki.View.Visualizers.Viewport {
 
-        protected SwfWidgetBackend device = null;
-        public SwfViewport(SwfWidgetBackend userControl) {
+        protected DisplayBackend device = null;
+        public SwfViewport(DisplayBackend userControl) {
             this.device = userControl;
         }
 

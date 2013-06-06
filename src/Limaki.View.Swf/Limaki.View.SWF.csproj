@@ -70,11 +70,11 @@
     <Compile Include="Limaki.Controls\ProgressViewer.Designer.cs">
       <DependentUpon>ProgressViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Controls\TextEditor\TextBoxEditor.cs">
+    <Compile Include="Limaki.Controls\TextEditor\TextViewerBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.Controls\TextEditor\TextBoxEditor.Designer.cs">
-      <DependentUpon>TextBoxEditor.cs</DependentUpon>
+    <Compile Include="Limaki.Controls\TextEditor\TextViewerBackend.Designer.cs">
+      <DependentUpon>TextViewerBackend.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.Controls\TextEditor\TextBoxEditorControler.cs" />
     <Compile Include="Limaki.Controls\TextEditor\TextBoxEditorToolStrip.cs">
@@ -83,19 +83,19 @@
     <Compile Include="Limaki.Controls\TextEditor\TextBoxEditorToolStrip.Designer.cs">
       <DependentUpon>TextBoxEditorToolStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Controls\TextEditor\TextBoxEditorWithToolStrip.cs">
+    <Compile Include="Limaki.Controls\TextEditor\TextViewerWithToolstripBackend.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.Controls\TextEditor\TextBoxEditorWithToolStrip.Designer.cs">
-      <DependentUpon>TextBoxEditorWithToolStrip.cs</DependentUpon>
+    <Compile Include="Limaki.Controls\TextEditor\TextViewerWithToolstripBackend.Designer.cs">
+      <DependentUpon>TextViewerWithToolstripBackend.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Controls\TextOkCancelBox.cs">
+    <Compile Include="Limaki.Controls\TextOkCancelBoxBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.Controls\TextOkCancelBox.Designer.cs">
-      <DependentUpon>TextOkCancelBox.cs</DependentUpon>
+    <Compile Include="Limaki.Controls\TextOkCancelBoxBackend.Designer.cs">
+      <DependentUpon>TextOkCancelBoxBackend.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Controls\WebBrowser.cs">
+    <Compile Include="Limaki.Controls\WebBrowserBackend.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Limaki.Drawing.Gdi\FontMemento.cs" />
@@ -124,6 +124,9 @@
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\MarkerToolStripBackend.Designer.cs">
       <DependentUpon>MarkerToolStripBackend.cs</DependentUpon>
     </Compile>
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripBackend.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripRenderer.cs" />
     <Compile Include="Properties\IconeryExtensions.cs" />
     <Compile Include="Properties\GdiIconery.cs" />
@@ -141,7 +144,7 @@
     <Compile Include="Limaki.View.Swf\Visualizers\SwfImageDisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.View.Swf\Visualizers\SwfWidgetBackend.cs">
+    <Compile Include="Limaki.View.Swf\Visualizers\DisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Limaki.View.Swf\Visualizers\SwfGraphSceneBackend.cs">
@@ -255,7 +258,7 @@
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripShapeComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\SwfSplitViewBackend.cs" />
+    <Compile Include="Limaki.Swf.Backends\SplitViewBackend.cs" />
     <Compile Include="Xwt.Gdi\SystemColorsBackend.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -289,14 +292,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Limaki.Controls\TextEditor\TextBoxEditor.resx">
-      <DependentUpon>TextBoxEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Limaki.Controls\TextEditor\TextViewerBackend.resx">
+      <DependentUpon>TextViewerBackend.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Limaki.Controls\TextEditor\TextBoxEditorWithToolStrip.resx">
-      <DependentUpon>TextBoxEditorWithToolStrip.cs</DependentUpon>
+    <EmbeddedResource Include="Limaki.Controls\TextEditor\TextViewerWithToolstripBackend.resx">
+      <DependentUpon>TextViewerWithToolstripBackend.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Limaki.Controls\TextOkCancelBox.resx">
-      <DependentUpon>TextOkCancelBox.cs</DependentUpon>
+    <EmbeddedResource Include="Limaki.Controls\TextOkCancelBoxBackend.resx">
+      <DependentUpon>TextOkCancelBoxBackend.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Limaki.Swf.Backends\About.resx">

@@ -19,11 +19,16 @@ using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Viewers.ToolStripViewers;
 using Limaki.Swf.Backends.UseCases;
+using Limaki.View;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
-    public partial class LayoutToolStripBackend : ToolStrip, ILayoutToolStripViewerBackend {
+    public partial class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripViewerBackend {
         
         public LayoutToolStrip Frontend = new LayoutToolStrip();
+        
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (LayoutToolStrip)frontend;
+        }
 
         public LayoutToolStripBackend() {
             InitializeComponent();

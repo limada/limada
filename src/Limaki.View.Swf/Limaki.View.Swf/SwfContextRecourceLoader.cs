@@ -31,6 +31,8 @@ using Xwt.Engine;
 
 
 namespace Limaki.View.Swf {
+
+   
     /// <summary>
     /// ApplicationContextRecourceLoader to use
     /// System.Windows.Forms
@@ -65,7 +67,7 @@ namespace Limaki.View.Swf {
                     // this is needed to avoid loading win86-Assembly:
                     var gecko = Activator.CreateInstance(
                         this.GetType().Assembly.FullName,
-                        typeof(WebBrowser).Namespace + ".GeckoWebBrowser");
+                        typeof(WebBrowserBackend).Namespace + ".GeckoWebBrowser");
                     if (gecko != null)
                         return (IGeckoWebBrowser)gecko.Unwrap();
                     return null;
@@ -73,12 +75,28 @@ namespace Limaki.View.Swf {
 
             new ViewContextRecourceLoader().ApplyResources(context);
 
-            
+            RegisterBackends(context);
+
         }
-        
+
+        public virtual void RegisterBackends (IApplicationContext context) {
+            var engine = new SwfVidgetToolkitEngineBackend();
+            engine.Initialize();
+            VidgetToolkit.CurrentEngine = new VidgetToolkit { Backend = engine };
+        }
 
 
+    }
 
+    public class SwfVidgetToolkitEngineBackend : VidgetToolkitEngineBackend {
+
+        public override void InitializeBackends () {
+            
+            base.InitializeBackends();
+
+            RegisterBackend<IImageDisplayBackend, SwfImageDisplayBackend>();
+            RegisterBackend<IDisplayBackend<IGraphScene<IVisual, IVisualEdge>>, SwfVisualsDisplayBackend>();
+        }
     }
 }
 

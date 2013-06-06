@@ -22,7 +22,7 @@ using Limaki.Viewers.ToolStripViewers;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
-    public partial class SplitViewToolStripBackend : ToolStrip, ISplitViewToolStripBackend {
+    public partial class SplitViewToolStripBackend : ToolStripBackend, ISplitViewToolStripBackend {
 
         public SplitViewToolStripBackend () {
             InitializeComponent();

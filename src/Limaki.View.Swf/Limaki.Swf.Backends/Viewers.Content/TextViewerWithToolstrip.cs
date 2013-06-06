@@ -24,42 +24,43 @@ namespace Limaki.Swf.Backends.Viewers.Content {
 
     public class TextViewerWithToolstrip : ContentStreamViewer {
 
-        TextBoxEditorWithToolStrip _control = null;
-        TextViewer _controller=null;
-        TextViewer controller {
+       
+        TextViewer _textViewer=null;
+        TextViewer TextViewer {
             get {
-                if (_controller == null) {
-                    _controller = new TextViewer ();
+                if (_textViewer == null) {
+                    _textViewer = new TextViewer ();
                 }
-                return _controller;
+                return _textViewer;
             }
         }
 
         //TODO: replace with factory methods
+        TextViewerWithToolstripBackend _backend = null;
         public override IVidgetBackend Backend {
             get {
-                if (_control == null) {
-                    _control = new TextBoxEditorWithToolStrip();
-                    _control.TextBoxEditor = controller.Backend as TextBoxEditor;
-                    this.OnAttach (_control);
+                if (_backend == null) {
+                    _backend = new TextViewerWithToolstripBackend();
+                    _backend.TextViewerBackend = TextViewer.Backend as TextViewerBackend;
+                    this.OnAttachBackend (_backend);
                 }
-                return _control;
+                return _backend;
             }
         }
 
         public override bool Supports(long streamType) {
-            return controller.Supports(streamType);
+            return TextViewer.Supports(streamType);
         }
 
         public override bool CanSave() {
-            return controller.CanSave ();
+            return TextViewer.CanSave ();
         }
 
         public override void SetContent(Content<Stream> content) {
-            controller.SetContent(content);
+            TextViewer.SetContent(content);
 
-            ((TextBoxEditorWithToolStrip)Backend).TextBoxEditorToolStrip.Visible = 
-                !_controller.ReadOnly;
+            ((TextViewerWithToolstripBackend)Backend).TextBoxEditorToolStrip.Visible = 
+                !_textViewer.ReadOnly;
 
             if (IsStreamOwner) {
                 content.Data.Close();
@@ -68,19 +69,19 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         }
 
         public override void Save(Content<Stream> content) {
-            controller.Save (content);
+            TextViewer.Save (content);
         }
 
         public override void OnShow() {
-            controller.OnShow();
+            TextViewer.OnShow();
         }
 
         public override void Dispose() {
-            controller.Dispose ();
+            TextViewer.Dispose ();
         }
         public override void Clear() {
             base.Clear();
-            controller.Clear ();
+            TextViewer.Clear ();
         }
     }
 }

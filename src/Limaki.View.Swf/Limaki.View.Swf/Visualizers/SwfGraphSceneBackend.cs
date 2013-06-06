@@ -4,7 +4,7 @@ using Limaki.View.Visualizers;
 using Limaki.View.Gdi.UI;
 
 namespace Limaki.View.Swf.Visualizers {
-    public abstract class SwfGraphSceneBackend<TItem, TEdge> : SwfWidgetBackend<IGraphScene<TItem, TEdge>>
+    public abstract class SwfGraphSceneBackend<TItem, TEdge> : DisplayBackend<IGraphScene<TItem, TEdge>>
         where TEdge : TItem, IEdge<TItem> {
     }
 

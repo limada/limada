@@ -40,11 +40,11 @@ namespace Limaki.Swf.Backends.UseCases {
         public ToolStripContainer ToolStripContainer { get; set; }
         public MenuStrip MenuStrip { get; set; }
 
-        public SwfSplitViewBackend SplitViewBackend { get; set; }
+        public SplitViewBackend SplitViewBackend { get; set; }
 
-        public DisplayToolStripBackend DisplayToolStrip { get; set; }
+        public DisplayToolStripBackend DisplayToolStripBackend { get; set; }
         public SplitViewToolStripBackend SplitViewToolStripBackend { get; set; }
-        public MarkerToolStripBackend MarkerToolStrip { get; set; }
+        public MarkerToolStripBackend MarkerToolStripBackend { get; set; }
         public LayoutToolStripBackend LayoutToolStripBackend { get; set; }
         public ArrangerToolStripBackend ArrangerToolStripBackend { get; set; }
 
@@ -59,24 +59,24 @@ namespace Limaki.Swf.Backends.UseCases {
 
             MenuStrip = new MenuStrip ();
 
-            SplitViewBackend = new SwfSplitViewBackend (ToolStripContainer.ContentPanel);
+            SplitViewBackend = new SplitViewBackend (ToolStripContainer.ContentPanel);
 
-            DisplayToolStrip = new DisplayToolStripBackend ();
+            DisplayToolStripBackend = new DisplayToolStripBackend ();
             SplitViewToolStripBackend = new SplitViewToolStripBackend ();
             LayoutToolStripBackend = new LayoutToolStripBackend ();
-            MarkerToolStrip = new MarkerToolStripBackend ();
+            MarkerToolStripBackend = new MarkerToolStripBackend ();
             ArrangerToolStripBackend = new ArrangerToolStripBackend ();
 
             //TODO: move this to UseCaseContextResourceLoader
             Registry.Factory.Add<ContentViewerProvider, ContentVisualViewerProvider> ();
 
-            var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider> ();
+            var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
 
-            viewerProvider.Add (new HtmlViewer {BackendHandler = new WebBrowserBackendHandler ()});
+            viewerProvider.Add(new HtmlViewer { BackendHandler = new WebBrowserBackendHandler() });
             viewerProvider.Add(new SwfDocumentSchemaViewer());
-            viewerProvider.Add (new ImageViewer ());
-            viewerProvider.Add (new TextViewerWithToolstrip ());
-            viewerProvider.Add (new SheetViewer ());
+            viewerProvider.Add(new ImageViewer());
+            viewerProvider.Add(new TextViewerWithToolstrip());
+            viewerProvider.Add(new SheetViewer());
 
         }
 
@@ -89,9 +89,9 @@ namespace Limaki.Swf.Backends.UseCases {
 
             useCase.SplitView = SplitViewBackend.Frontend;
 
-            useCase.DisplayToolStrip = DisplayToolStrip.Strip;
+            useCase.DisplayToolStrip = DisplayToolStripBackend.Strip;
             useCase.LayoutToolController = LayoutToolStripBackend.Frontend;
-            useCase.MarkerToolStrip = MarkerToolStrip.Frontend;
+            useCase.MarkerToolStrip = MarkerToolStripBackend.Frontend;
             useCase.SplitViewToolStrip = SplitViewToolStripBackend.Frontend;
             useCase.ArrangerToolStrip = ArrangerToolStripBackend.Frontend;
 
@@ -130,9 +130,9 @@ namespace Limaki.Swf.Backends.UseCases {
                 new ToolStrip[] {
                     ArrangerToolStripBackend,
                     SplitViewToolStripBackend,
-                    MarkerToolStrip,
+                    MarkerToolStripBackend,
                     LayoutToolStripBackend,
-                    DisplayToolStrip,
+                    DisplayToolStripBackend,
                 });
 
         }
@@ -252,7 +252,7 @@ namespace Limaki.Swf.Backends.UseCases {
         private void ShowLayoutEditor (ConceptUsecase useCase) {
             options = new Options ();
             options.ApplyButton.Click += (s1, e1) => {
-                this.DisplayToolStrip.Strip.Layout ();
+                this.DisplayToolStripBackend.Strip.Layout ();
             };
 
             var editor = new LayoutEditor ();

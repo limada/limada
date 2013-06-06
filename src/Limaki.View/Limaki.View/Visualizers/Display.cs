@@ -21,11 +21,22 @@ using Xwt.Drawing;
 
 namespace Limaki.View.Visualizers {
 
-    public class Display<TData> : IDisplay<TData>, IDisposable, ICheckable {
+    public class Display<TData> : Vidget,IDisplay<TData>, IDisposable, ICheckable {
 
         public Display() { }
 
         public virtual IComposer<Display<TData>> Composer { get; set; }
+
+        IDisplayBackend<TData> _backend = null;
+        public virtual IDisplayBackend<TData> Backend {
+            get {
+                if (_backend == null) {
+                    _backend = BackendHost.Backend as IDisplayBackend<TData>;
+                }
+                return _backend;
+            }
+            set { _backend = value; }
+        }
 
         protected TData _data = default(TData);
         public virtual TData Data {
@@ -68,7 +79,6 @@ namespace Limaki.View.Visualizers {
         public virtual IClipper Clipper { get; set; }
         public virtual IClipReceiver ClipReceiver { get; set; }
 
-        public virtual IDisplayBackend<TData> Backend { get; set; }
         public virtual IBackendRenderer BackendRenderer { get; set; }
         public virtual ICursorHandler CursorHandler { get; set; }
 
@@ -119,7 +129,7 @@ namespace Limaki.View.Visualizers {
 
         #region IDisposable Member
         bool disposing = false;
-        public void Dispose() {
+        public override void Dispose() {
             disposing = true;
             var instrumenter = this.Composer as IDisposable;
             this.Composer = null;

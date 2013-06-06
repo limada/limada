@@ -34,6 +34,8 @@ using Xwt.Drawing;
 namespace Limaki.Viewers {
     public class SplitView0 : ISplitView, IDisposable, ICheckable {
 
+        public ISplitViewBackend Backend { get; set; }
+        
         #region Initialize
         public void Initialize() {
             Display1.BackColor = SystemColors.Window;
@@ -60,9 +62,11 @@ namespace Limaki.Viewers {
 
             display.SceneFocusChanged -= SceneFocusChanged;
             display.SceneFocusChanged += SceneFocusChanged;
+            
+            Backend.SetFocusCatcher(display.Backend);
 
-            if (BackendInitializeDisplay !=null) {
-                BackendInitializeDisplay (display);
+            if (Backend !=null) {
+                Backend.InitializeDisplay(display.Backend);
             }
         }
 
@@ -70,12 +74,6 @@ namespace Limaki.Viewers {
 
         public IGraphSceneDisplay<IVisual, IVisualEdge> Display1 { get; set; }
         public IGraphSceneDisplay<IVisual, IVisualEdge> Display2 { get; set; }
-        public object Parent { get; set; }
-
-        public event Action<IGraphSceneDisplay<IVisual, IVisualEdge>> BackendInitializeDisplay = null;
-
-        public Action<object, Action> AttachControl { get; set; }
-        public Action<string, string, Action<string>> ShowTextDialog { get; set; }
 
         #region View-Switching
         SplitViewMode _viewMode = SplitViewMode.GraphStream;
@@ -84,7 +82,7 @@ namespace Limaki.Viewers {
             set {
                 if (_viewMode != value) {
                     if (value == SplitViewMode.GraphStream)
-                        this.GraphStreamView();
+                        this.GraphContentView();
                     else if (value == SplitViewMode.GraphGraph)
                         this.GraphGraphView();
                     _viewMode = value;
@@ -123,8 +121,6 @@ namespace Limaki.Viewers {
             }
         }
 
-        public Action<object> FocusCatcher { get; set; }
-        
         public void DisplayGotFocus(object sender) {
             CurrentDisplay = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
         }
@@ -133,17 +129,13 @@ namespace Limaki.Viewers {
             CurrentWidget = sender;
         }
 
-        public Action BackendGraphGraphView = null;
-        public Action BackendGraphStreamView = null;
-        public Action BackendToggleView = null;
-
         protected IExceptionHandler ExceptionHandler {
             get { return Registry.Pool.TryGetCreate<IExceptionHandler>(); }
         }
 
         public void ToggleView() {
-            if (BackendToggleView != null) {
-                BackendToggleView();
+            if (Backend != null) {
+                Backend.ToggleView();
             }
             var display = Display1;
             Display1 = Display2;
@@ -151,12 +143,12 @@ namespace Limaki.Viewers {
         }
 
         public void GraphGraphView() {
-            if (BackendGraphGraphView != null) {
-                BackendGraphGraphView();
+            if (Backend != null) {
+                Backend.GraphGraphView();
             }
         }
 
-        public void GraphStreamView() {
+        public void GraphContentView() {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null &&
                 currentDisplay.Data != null &&
@@ -164,8 +156,8 @@ namespace Limaki.Viewers {
                 var fce = new GraphSceneEventArgs<IVisual, IVisualEdge>(currentDisplay.Data, currentDisplay.Data.Focused);
                 ContentViewManager.ChangeViewer(currentDisplay, fce);
             }
-            if (BackendGraphStreamView != null) {
-                BackendGraphStreamView();
+            if (Backend != null) {
+                Backend.GraphContentView();
             }
         }
 
@@ -204,7 +196,7 @@ namespace Limaki.Viewers {
             Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(Display2.Data);
 
             GraphGraphView();
-            GraphStreamView();
+            GraphContentView();
 
             CurrentDisplay = Display1;
         }
@@ -218,14 +210,12 @@ namespace Limaki.Viewers {
                     _contentViewManager = new ContentViewManager();
                 }
                 
-                _contentViewManager.Parent = this.Parent;
+                _contentViewManager.Parent = Backend.Parent;
                 _contentViewManager.BackColor = Display1.BackColor;
 
-                _contentViewManager.AttachBackend -= this.AttachControl;
-                _contentViewManager.AttachBackend += this.AttachControl;
-                _contentViewManager.Attach -= this.FocusCatcher;
-                _contentViewManager.Attach += this.FocusCatcher;
-
+                _contentViewManager.AttachViewerBackend = Backend.AttachViewerBackend;
+                _contentViewManager.ViewersAttachBackend = Backend.SetFocusCatcher;
+               
                 _contentViewManager.SheetManager = this.SheetManager;
                 
                 return _contentViewManager;
@@ -274,7 +264,7 @@ namespace Limaki.Viewers {
                 var display = this.CurrentDisplay;
                 if (SheetManager.IsSaveable(display.Data)) {
                     var info = display.Info;
-                    ShowTextDialog("Sheet:", info.Name, SaveSheet);
+                    Backend.ShowTextDialog("Sheet:", info.Name, SaveSheet);
                 }
             } else {
                 this.ContentViewManager.SaveStream(CurrentDisplay.Data.Graph.ThingGraph());
@@ -330,7 +320,7 @@ namespace Limaki.Viewers {
         public void DoSearch() {
             var currentDisplay = this.CurrentDisplay;
             if (new SearchHandler().IsSearchable(currentDisplay.Data)) {
-                ShowTextDialog("Search:", currentDisplay.Text,this.Search);
+                Backend.ShowTextDialog("Search:", currentDisplay.Text, this.Search);
             }
         }
 
@@ -443,7 +433,7 @@ namespace Limaki.Viewers {
         #region Notes
 
         public void NewNote() {
-            ShowTextDialog("Note:", "new note", CreateNewNote);
+            Backend.ShowTextDialog("Note:", "new note", CreateNewNote);
         }
 
         public void CreateNewNote(string title) {
@@ -518,8 +508,8 @@ namespace Limaki.Viewers {
             if (this.Display2 == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IGraphSceneDisplay<IVisual, IVisualEdge>));
             }
-            if (this.ShowTextDialog == null) {
-                throw new CheckFailedException(this.GetType()+"needs a ShowTextDialogAction");
+            if (this.Backend == null) {
+                throw new CheckFailedException(this.GetType()+"needs a Backend");
             }
             
             Display1.Check ();

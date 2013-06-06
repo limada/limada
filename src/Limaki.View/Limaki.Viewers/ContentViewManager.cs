@@ -6,27 +6,26 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  */
 
 
-using System;
-using System.IO;
 using Limada.Model;
-using Limaki.Common;
-using Limaki.Drawing;
-using Limaki.Graphs.Extensions;
-using Limada.View;
 using Limada.VisualThings;
-using Limaki.Model.Content;
-using System.Linq;
+using Limaki.Common;
 using Limaki.Graphs;
-using Limaki.View.Visualizers;
+using Limaki.Graphs.Extensions;
+using Limaki.Model.Content;
+using Limaki.View;
 using Limaki.View.UI.GraphScene;
+using Limaki.View.Visualizers;
 using Limaki.Viewers.StreamViewers;
 using Limaki.Visuals;
+using System;
+using System.IO;
+using System.Linq;
 using Xwt.Drawing;
 
 namespace Limaki.Viewers {
@@ -39,9 +38,20 @@ namespace Limaki.Viewers {
         public Color BackColor = SystemColors.Background;
         public object Parent = null;
 
-        public event Action<object, Action> AttachBackend = null;
-        public event Action<object> Attach = null;
-        public event Action<object> DeAttach = null;
+        /// <summary>
+        /// called in AttachViewer
+        /// </summary>
+        public Action<IVidgetBackend, Action> AttachViewerBackend { get; set; }
+
+        /// <summary>
+        /// delegated to Viewer.AttachBackend
+        /// </summary>
+        public Action<IVidgetBackend> ViewersAttachBackend { get; set; }
+
+        /// <summary>
+        /// delegated to Viewer.DetachBackend
+        /// </summary>
+        public Action<IVidgetBackend> ViewersDetachBackend { get; set; }
 
         protected IExceptionHandler ExceptionHandler {
             get { return Registry.Pool.TryGetCreate<IExceptionHandler> (); }
@@ -62,13 +72,12 @@ namespace Limaki.Viewers {
 
             viewer.BackColor = this.BackColor;
             viewer.Parent = this.Parent;
-            if (this.Attach != null) {
-                viewer.Attach -= this.Attach;
-                viewer.Attach += this.Attach;
+            if (this.ViewersAttachBackend != null) {
+                viewer.AttachBackend = this.ViewersAttachBackend;
             }
 
-            if (AttachBackend != null) {
-                AttachBackend(viewer.Backend, () => viewer.OnShow());
+            if (AttachViewerBackend != null) {
+                AttachViewerBackend(viewer.Backend, () => viewer.OnShow());
             }
         }
 

@@ -37,6 +37,8 @@ using System;
 
 namespace Limada.View {
 
+    public interface IDocumentSchemaBackend : IVidgetBackend { }
+
     public abstract class DocumentSchemaViewer : ContentVisualViewer {
 
         public IGraphSceneDisplay<IVisual, IVisualEdge> PagesDisplay { get; set; }
@@ -55,14 +57,13 @@ namespace Limada.View {
                         viewer.BackColor = Xwt.Drawing.Colors.White;
                         viewer.SetContent(value);
                         if (ContentViewer != viewer) {
-                            AttachContentViewerBackend(viewer);
                             ContentViewer = viewer;
+                            AttachContentViewerBackend(viewer);
                         }
                         var displayBackend = viewer.Backend as IDisplayBackend;
                         if (displayBackend != null) {
                             var display = displayBackend.Frontend;
                             if (ContentDisplay != display) {
-
                                 ContentDisplay = display;
                                 AttachContentDisplay(display);
                             }

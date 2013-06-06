@@ -4,20 +4,20 @@ using Limaki.View.Swf.Visualizers;
 
 namespace Limaki.View.Swf.Visualizers {
 
-    public class SwfImageDisplayBackend:SwfWidgetBackend<Image> {
+    public class SwfImageDisplayBackend:DisplayBackend<Image>,IImageDisplayBackend {
        
-        public override DisplayFactory<Image> CreateDisplayFactory(SwfWidgetBackend<Image> device) {
-            var result = new DisplayFactory<Image>();
+        public override DisplayFactory<Image> CreateDisplayFactory(DisplayBackend<Image> backend) {
+
+            var result = new ImageDisplayFactory();
             
-            var deviceInstrumenter = new ImageDisplayBackendComposer();
-            deviceInstrumenter.Backend = device;
-            result.DeviceComposer = deviceInstrumenter;
-            
+            var backendComposer = new ImageDisplayBackendComposer();
+            backendComposer.Backend = backend;
+
+            result.BackendComposer = backendComposer;
             result.DisplayComposer = new ImageDisplayComposer ();
-            //device.AutoScroll = false;
-            //device.ScrollBarsVisible = false;
 
             return result;
         }
+
     }
 }

@@ -33,7 +33,7 @@ namespace Limaki.Viewers.StreamViewers {
                     this.ContentId = value.DataId;
                 if (_sheetDisplay != value && value != null) {
                     _sheetDisplay = value;
-                    OnAttach(_sheetDisplay.Backend);
+                    OnAttachBackend(_sheetDisplay.Backend);
                 }
             }
         }

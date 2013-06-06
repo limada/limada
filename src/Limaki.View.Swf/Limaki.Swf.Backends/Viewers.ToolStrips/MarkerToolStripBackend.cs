@@ -13,14 +13,13 @@
  */
 
 using System;
-using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.Viewers.ToolStripViewers;
 using Limaki.Visuals;
+using Limaki.View;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
-
-    public partial class MarkerToolStripBackend : ToolStrip, IMarkerToolStripBackend {
+    public partial class MarkerToolStripBackend : ToolStripBackend, IMarkerToolStripBackend {
         public MarkerToolStripBackend () {
             InitializeComponent();
         }
@@ -34,6 +33,11 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                 }
                 return _frontend;
             }
+            protected set { _frontend = value; }
+        }
+
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (MarkerToolStrip) frontend;
         }
 
         public void Attach (IGraphScene<IVisual, IVisualEdge> scene) {
@@ -56,5 +60,6 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             Frontend.ChangeMarkers(markerCombo.SelectedItem.ToString());
         }
 
+       
     }
 }

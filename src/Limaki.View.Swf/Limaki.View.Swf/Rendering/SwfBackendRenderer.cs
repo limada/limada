@@ -12,7 +12,7 @@ namespace Limaki.View.Swf.Visualizers {
     public class SwfBackendRenderer<T>:IBackendRenderer {
         public SwfBackendRenderer () { }
 
-        public virtual SwfWidgetBackend<T> Backend { get; set; }
+        public virtual DisplayBackend<T> Backend { get; set; }
         public virtual IDisplay<T> Display { get; set; }
 
         public void Render() {

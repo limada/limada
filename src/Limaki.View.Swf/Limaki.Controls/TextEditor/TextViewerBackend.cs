@@ -23,13 +23,14 @@ using System.Text;
 using Limaki.Drawing;
 using Limaki.View;
 using Xwt.Gdi.Backend;
+using Limaki.Swf.Backends.Viewers.Content;
 
 // this control uses ideas from RicherTextBox by ???
 
 namespace Limaki.Swf.Backends.TextEditor {
 
-    public partial class TextBoxEditor : UserControl, IZoomTarget, IVidgetBackend {
-        public TextBoxEditor() {
+    public partial class TextViewerBackend : UserControl, IZoomTarget, IVidgetBackend {
+        public TextViewerBackend() {
             InitializeComponent();
             innerTextBox.Enter += (sender, args) => {this.OnEnter (args); };
             innerTextBox.MouseUp += (sender, args) => { this.OnMouseUp(args); };
@@ -145,6 +146,12 @@ namespace Limaki.Swf.Backends.TextEditor {
 
         #region IVidgetBackend-Implementation
 
+        public TextViewer Frontend { get; protected set; }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (TextViewer)frontend;
+        }
+
         Xwt.Rectangle IVidgetBackend.ClientRectangle {
             get { return this.ClientRectangle.ToXwt(); }
         }
@@ -159,6 +166,7 @@ namespace Limaki.Swf.Backends.TextEditor {
         }
 
         Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+
         #endregion
     }
 }

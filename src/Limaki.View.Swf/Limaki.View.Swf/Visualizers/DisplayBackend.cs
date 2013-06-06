@@ -35,7 +35,7 @@ using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf.Visualizers {
 
-    public abstract class SwfWidgetBackend: UserControl {
+    public abstract class DisplayBackend: UserControl {
         public bool ScrollBarsVisible {
             set {
                 this.HScroll = value;
@@ -44,13 +44,13 @@ namespace Limaki.View.Swf.Visualizers {
         }
     }
 
-    public abstract class SwfWidgetBackend<T> : SwfWidgetBackend, IGdiBackend, IDisplayBackend<T>, IDragDopControl {
+    public abstract class DisplayBackend<T> : DisplayBackend, IGdiBackend, IDisplayBackend<T>, IDragDopControl {
 
-        public SwfWidgetBackend() {
+        public DisplayBackend() {
             Initialize();
         }
 
-        public abstract DisplayFactory<T> CreateDisplayFactory(SwfWidgetBackend<T> device);
+        public abstract DisplayFactory<T> CreateDisplayFactory(DisplayBackend<T> backend);
 
         protected void Initialize() {
             if (Registry.ConcreteContext == null) {
@@ -59,14 +59,8 @@ namespace Limaki.View.Swf.Visualizers {
                 resourceLoader.ApplyResources(Registry.ConcreteContext);
             }
 
-
             this.AllowDrop = true;
             this.AutoScroll = true;
-
-            var factory = CreateDisplayFactory(this);
-            var display = factory.Create ();
-			_display = display;
-            factory.Compose (display);
             
             if (!this.DesignMode) {
                 var Opaque = true;//!Commons.Mono; // opaque works on mono too, but is slower
@@ -81,7 +75,21 @@ namespace Limaki.View.Swf.Visualizers {
                 }
 
                 this.SetStyle(controlStyle, true);
-                this._backendRenderer.Opaque = Opaque;
+
+            }
+        }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            Display<T> display = null;
+            var factory = CreateDisplayFactory(this);
+            if (frontend != null)
+                display = (Display<T>)frontend;
+            else
+                display = factory.Create();
+            _display = display;
+            factory.Compose(display);
+            if (!this.DesignMode) {
+                this._backendRenderer.Opaque = true;
             }
         }
 
@@ -89,13 +97,23 @@ namespace Limaki.View.Swf.Visualizers {
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDisplay<T> Display { 
-			get {return _display;}
+			get {
+                if(_display==null) {
+                    InitializeBackend(null, null);
+                }
+			    return _display;
+			}
 			set {_display = value;} 
 		}
 
         IDisplay IDisplayBackend.Frontend {
             get { return this.Display; }
             set { this.Display = value as IDisplay<T>; }
+        }
+
+        IDisplay<T> IDisplayBackend<T>.Frontend {
+            get { return this.Display; }
+            set { this.Display = value; }
         }
 
         protected SwfBackendRenderer<T> _backendRenderer = null;
@@ -292,7 +310,9 @@ namespace Limaki.View.Swf.Visualizers {
 
         #endregion
 
-        #region IControl Member
+        #region IVidgetBackend Member
+
+     
 
         Xwt.Rectangle IVidgetBackend.ClientRectangle {
             get { return GdiConverter.ToXwt (this.ClientRectangle); }

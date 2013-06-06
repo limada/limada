@@ -5,8 +5,20 @@ using Limaki.View.UI;
 using Point = Xwt.Point;
 using Size = Xwt.Size;
 using Xwt.Gdi.Backend;
+using Xwt.Backends;
 
 namespace Limaki.View.Swf.Visualizers {
+
+    [BackendType(typeof(IImageDisplayBackend))]
+    public class ImageDisplay:Display<Image> {}
+    
+    public interface IImageDisplayBackend : IDisplayBackend<Image> { }
+    
+    public class ImageDisplayFactory:DisplayFactory<Image> {
+        public override Display<Image> Create () {
+            return new ImageDisplay();
+        }
+    }
 
     public class ImageDisplayComposer: DisplayComposer<Image> {
 

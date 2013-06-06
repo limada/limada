@@ -1,5 +1,5 @@
 namespace Limaki.Swf.Backends.TextEditor {
-    partial class TextBoxEditor {
+    partial class TextViewerBackend {
         /// <summary> 
         /// Erforderliche Designervariable.
         /// </summary>
@@ -37,12 +37,12 @@ namespace Limaki.Swf.Backends.TextEditor {
             this.innerTextBox.TabIndex = 0;
             this.innerTextBox.Text = "";
             // 
-            // TextBoxEditor
+            // TextViewerBackend
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.innerTextBox);
-            this.Name = "TextBoxEditor";
+            this.Name = "TextViewerBackend";
             this.Size = new System.Drawing.Size(354, 227);
             this.ResumeLayout(false);
 

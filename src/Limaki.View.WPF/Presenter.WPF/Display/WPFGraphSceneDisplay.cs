@@ -28,7 +28,7 @@ namespace Limaki.View.WPF.Display {
             var result = new VisualsDisplayFactory();
             var deviceInstrumenter = new WPFVisualsDeviceComposer();
             deviceInstrumenter.Backend = device;
-            result.DeviceComposer = deviceInstrumenter;
+            result.BackendComposer = deviceInstrumenter;
             result.DisplayComposer = new WpfVisualsDisplayComposer();
             return result;
         }

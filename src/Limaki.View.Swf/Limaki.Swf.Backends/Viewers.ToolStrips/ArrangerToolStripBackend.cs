@@ -23,7 +23,8 @@ using Limaki.Viewers;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
-    public partial class ArrangerToolStripBackend : ToolStrip, IToolStripViewerBackend {
+    public partial class ArrangerToolStripBackend : ToolStripBackend, IToolStripViewerBackend {
+
         private ArrangerToolStrip _frontend = null;
 
         [Browsable(false)]

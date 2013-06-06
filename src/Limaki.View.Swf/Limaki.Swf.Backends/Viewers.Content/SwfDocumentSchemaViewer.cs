@@ -29,7 +29,7 @@ namespace Limaki.View.Swf.Backends {
             get {
                 if (_backend == null) {
                     _backend = new DocumentSchemaBackend(this);
-                    OnAttach(_backend);
+                    OnAttachBackend(_backend);
                 }
                 return _backend;
             }

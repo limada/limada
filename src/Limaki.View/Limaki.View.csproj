@@ -70,6 +70,7 @@
     <Compile Include="Limaki.Drawing\Dimension.cs" />
     <Compile Include="Limaki.Usecases\IoUiManager.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\WebResponseBase.cs" />
+    <Compile Include="Limaki.Viewers\ISplitViewBackend.cs" />
     <Compile Include="Limaki.Viewers\IToolStripCommandItem.cs" />
     <Compile Include="Limaki.Viewers\IToolStripItem.cs" />
     <Compile Include="Limaki.Viewers\ToolStripCommand.cs" />
@@ -79,6 +80,9 @@
     <Compile Include="Limaki.Viewers\ToolStripViewers\ToolStripViewer.cs" />
     <Compile Include="Limaki.View\IVidget.cs" />
     <Compile Include="Limaki.View\Layout\Placing\LocatorExtensions.cs" />
+    <Compile Include="Limaki.View\VidgetBackendHost.cs" />
+    <Compile Include="Limaki.View\VidgetToolkit.cs" />
+    <Compile Include="Xwt\BackendTypeAttribute.cs" />
     <Compile Include="Xwt\Geom.cs" />
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindSystemFonts.cs" />
@@ -291,13 +295,13 @@
     <Compile Include="Limaki.Usecases\UsecaseFactory.cs" />
     <Compile Include="Limaki.Viewers\ContentViewManager.cs" />
     <Compile Include="Limaki.Viewers\ContentViewerProvider.cs" />
-    <Compile Include="Limaki.Widgets\DialogResult.cs" />
-    <Compile Include="Limaki.Widgets\FileDialogMemento.cs" />
+    <Compile Include="Limaki.Viewers\DialogResult.cs" />
+    <Compile Include="Limaki.Viewers\FileDialogMemento.cs" />
     <Compile Include="Limaki.View\Visualizers\GraphScenePainter.cs" />
-    <Compile Include="Limaki.Widgets\IMessageBoxShow.cs" />
+    <Compile Include="Limaki.Viewers\IMessageBoxShow.cs" />
     <Compile Include="Limaki.Viewers\ISplitView.cs" />
-    <Compile Include="Limaki.Widgets\ITextOkCancelBox.cs" />
-    <Compile Include="Limaki.Widgets\IWebBrowser.cs" />
+    <Compile Include="Limaki.Viewers\ITextOkCancelBox.cs" />
+    <Compile Include="Limaki.Viewers\IWebBrowser.cs" />
     <Compile Include="Limaki.Viewers\SplitView0.cs" />
     <Compile Include="Limaki.Viewers\ContentStreamViewer.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\HtmlViewer.cs" />
@@ -309,7 +313,7 @@
     <Compile Include="Limaki.Net.WebProxyServer\WebProxyContent.cs" />
     <Compile Include="Limaki.Net.WebProxyServer\WebServer.cs" />
     <Compile Include="Limaki.Net.WebProxyServer\WebServerBase.cs" />
-    <Compile Include="Limaki.Widgets\TextOkCancelBoxEventArgs.cs" />
+    <Compile Include="Limaki.Viewers\TextOkCancelBoxEventArgs.cs" />
     <Compile Include="Limaki.Viewers\ContentVisualViewerProvider.cs" />
     <Compile Include="Limaki.Viewers\ContentVisualViewer.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ArrangerToolStrip.cs" />
