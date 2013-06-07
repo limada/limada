@@ -50,8 +50,8 @@ namespace Limaki.Swf.Backends.Viewers {
         public SplitView0 Frontend { get; set; }
 
         protected SplitContainer Container { get; set; }
-        public SwfVisualsDisplayBackend DisplayBackend1 { get; set; }
-        protected SwfVisualsDisplayBackend DisplayBackend2 { get; set; }
+        public VisualsDisplayBackend DisplayBackend1 { get; set; }
+        protected VisualsDisplayBackend DisplayBackend2 { get; set; }
 
 
         protected void InitializeComponent () {
@@ -70,12 +70,12 @@ namespace Limaki.Swf.Backends.Viewers {
                 Container.TabIndex = 1;
             }
             if (DisplayBackend1 == null) {
-                DisplayBackend1 = new SwfVisualsDisplayBackend();
+                DisplayBackend1 = new VisualsDisplayBackend();
                 DisplayBackend1.Dock = DockStyle.Fill;
                 Container.Panel1.Controls.Add(DisplayBackend1);
             }
             if (DisplayBackend2 == null) {
-                DisplayBackend2 = new SwfVisualsDisplayBackend();
+                DisplayBackend2 = new VisualsDisplayBackend();
                 DisplayBackend2.Dock = DockStyle.Fill;
                 Container.Panel2.Controls.Add(DisplayBackend2);
             }
@@ -113,14 +113,14 @@ namespace Limaki.Swf.Backends.Viewers {
         }
 
         void DisplayGotFocus(object sender, EventArgs e) {
-            var backend = sender as SwfVisualsDisplayBackend;
+            var backend = sender as VisualsDisplayBackend;
             if (backend != null) {
                 Frontend.DisplayGotFocus (backend.Display);
             }
         }
 
         void ControlGotFocus(object sender, EventArgs e) {
-            var displayBackend = sender as SwfVisualsDisplayBackend;
+            var displayBackend = sender as VisualsDisplayBackend;
             if (displayBackend != null) {
                 Frontend.DisplayGotFocus(displayBackend.Display);
             } else {

@@ -28,16 +28,16 @@ using Limaki.View;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
 
-    public class ImageViewer : ContentStreamViewer {
+    public class ImageContentViewer : ContentStreamViewer {
+
+        public override IVidget Frontend {
+            get { return Display; }
+        }
 
         public override IVidgetBackend Backend {
-            get {
-                return Display.Backend;
-            }
-            protected set {
-                base.Backend = value;
-            }
+            get { return Display.Backend;}
         }
+
         IDisplay<Image> _display = null;
         public virtual IDisplay<Image> Display {
             get {

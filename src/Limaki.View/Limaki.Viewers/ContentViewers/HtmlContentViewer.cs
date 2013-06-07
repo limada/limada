@@ -23,7 +23,7 @@ using Limaki.View;
 
 namespace Limaki.Viewers.StreamViewers {
 
-    public class HtmlViewer : ContentStreamViewer {
+    public class HtmlContentViewer : ContentStreamViewer {
 
         public IWebBrowserBackendHandler BackendHandler { get; set; }
 
@@ -39,6 +39,10 @@ namespace Limaki.Viewers.StreamViewers {
 
                 return _backend;
             }
+        }
+
+        public override IVidget Frontend {
+            get { throw new NotImplementedException(); }
         }
 
         protected IWebBrowser WebBrowser {
@@ -152,7 +156,7 @@ namespace Limaki.Viewers.StreamViewers {
         public override void Save(Content<Stream> content) { }
         public override bool CanSave() {return false;}
 
-        public override void Dispose() {
+        public override void Dispose () {
             if (_backend is IDisposable) {
                 ((IDisposable)_backend).Dispose ();
             }

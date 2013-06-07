@@ -1,10 +1,11 @@
 using System.Drawing;
 using Limaki.View.Visualizers;
 using Limaki.View.Swf.Visualizers;
+using Limaki.View.Gdi.UI;
 
 namespace Limaki.View.Swf.Visualizers {
 
-    public class SwfImageDisplayBackend:DisplayBackend<Image>,IImageDisplayBackend {
+    public class ImageDisplayBackend:DisplayBackend<Image>,IImageDisplayBackend {
        
         public override DisplayFactory<Image> CreateDisplayFactory(DisplayBackend<Image> backend) {
 
@@ -19,5 +20,14 @@ namespace Limaki.View.Swf.Visualizers {
             return result;
         }
 
+    }
+
+    public class ImageDisplayBackendComposer : SwfBackendComposer<Image> {
+
+        public override void Factor (Display<Image> display) {
+            base.Factor(display);
+
+            this.DataLayer = new GdiImageLayer();
+        }
     }
 }

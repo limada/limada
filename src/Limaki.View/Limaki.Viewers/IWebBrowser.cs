@@ -12,13 +12,13 @@
  */
 
 #define nowinform
+using Limaki.View;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
 
 namespace Limaki.Viewers {
-
     public interface IWebBrowser {
         [DefaultValue(true)]
         bool AllowNavigation { get; set; }
@@ -112,9 +112,11 @@ namespace Limaki.Viewers {
 
     }
 
+    public interface IWebBrowserBackend : IWebBrowser, IVidgetBackend {}
+
     public interface IWebBrowserWithProxy {
         void SetProxy(IPAddress adress, int port, object webBrowser);
     }
 
-    public interface IGeckoWebBrowser : IWebBrowser, IWebBrowserWithProxy { }
+    public interface IGeckoWebBrowser : IWebBrowserBackend, IWebBrowserWithProxy { }
 }

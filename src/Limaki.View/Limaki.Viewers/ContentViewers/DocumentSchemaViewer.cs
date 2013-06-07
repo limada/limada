@@ -34,19 +34,24 @@ using Xwt;
 using Limaki.Model.Content;
 using System.Collections.Generic;
 using System;
+using Xwt.Drawing;
 
-namespace Limada.View {
+namespace Limaki.Viewers.StreamViewers {
 
-    public interface IDocumentSchemaBackend : IVidgetBackend { }
+    public interface IDocumentSchemaViewerBackend : IVidgetBackend { }
 
-    public abstract class DocumentSchemaViewer : ContentVisualViewer {
+    public abstract class DocumentSchemaViewer : ContentVisualViewer, IVidget {
 
+        public override IVidget Frontend {
+            get { return this; }
+        }
         public IGraphSceneDisplay<IVisual, IVisualEdge> PagesDisplay { get; set; }
 
         public IDisplay ContentDisplay { get; set; }
-        public Action<ContentStreamViewer> AttachContentViewerBackend { get; set; }
         ContentStreamViewer ContentViewer { get; set; }
-        
+
+        public Action<ContentStreamViewer> AttachContentViewer { get; set; }
+
         protected virtual Content<Stream> PageContent {
             set {
                 if (value != null) {
@@ -54,11 +59,11 @@ namespace Limada.View {
                     var viewer = viewerProvider.Supports(value.ContentType);
 
                     if (viewer != null) {
-                        viewer.BackColor = Xwt.Drawing.Colors.White;
+                        viewer.BackColor = Colors.White;
                         viewer.SetContent(value);
                         if (ContentViewer != viewer) {
                             ContentViewer = viewer;
-                            AttachContentViewerBackend(viewer);
+                            AttachContentViewer(viewer);
                         }
                         var displayBackend = viewer.Backend as IDisplayBackend;
                         if (displayBackend != null) {
@@ -228,7 +233,7 @@ namespace Limada.View {
             moveResize.FocusFilter = e => pageCache.Contains(e) ? null : e;
            
         }
-        
+
         public override void Dispose () {
             Clear();
         }

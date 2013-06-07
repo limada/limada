@@ -20,6 +20,7 @@ using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
 using Limaki.Drawing.Gdi.Painters;
 using Limaki.Drawing.Shapes;
+using Limaki.Viewers.Vidgets;
 using Limaki.View.Swf.Visualizers;
 using Limaki.Viewers;
 using Limaki.View.UI;
@@ -28,6 +29,8 @@ using Limaki.Swf.Backends;
 using Xwt.WinformBackend;
 using System;
 using Xwt.Engine;
+using Limaki.Swf.Backends.Viewers.Content;
+using Limaki.Swf.Backends.TextEditor;
 
 
 namespace Limaki.View.Swf {
@@ -59,7 +62,7 @@ namespace Limaki.View.Swf {
             context.Factory.Add<IVisualFactory,VisualFactory>();
             
             context.Factory.Add<ICursorHandler, CursorHandlerBackend>();
-            context.Factory.Add<IDisplay<IGraphScene<IVisual, IVisualEdge>>>(() => new SwfVisualsDisplayBackend().Display);
+            context.Factory.Add<IDisplay<IGraphScene<IVisual, IVisualEdge>>>(() => new VisualsDisplayBackend().Display);
             context.Factory.Add<IMessageBoxShow, MessageBoxShow>();
 
             if (!OS.IsWin64Process)
@@ -72,6 +75,8 @@ namespace Limaki.View.Swf {
                         return (IGeckoWebBrowser)gecko.Unwrap();
                     return null;
                 });
+            
+            context.Factory.Add<IWebBrowserBackend>(() => new WebBrowserBackend());
 
             new ViewContextRecourceLoader().ApplyResources(context);
 
@@ -94,8 +99,12 @@ namespace Limaki.View.Swf {
             
             base.InitializeBackends();
 
-            RegisterBackend<IImageDisplayBackend, SwfImageDisplayBackend>();
-            RegisterBackend<IDisplayBackend<IGraphScene<IVisual, IVisualEdge>>, SwfVisualsDisplayBackend>();
+            RegisterBackend<IImageDisplayBackend, ImageDisplayBackend>();
+            RegisterBackend<IDisplayBackend<IGraphScene<IVisual, IVisualEdge>>, VisualsDisplayBackend>();
+
+            RegisterBackend<ITextViewerBackend, TextViewerBackend>();
+            RegisterBackend<ITextViewerWithToolstripBackend, TextViewerWithToolstripBackend>();
+            RegisterBackend<IWebBrowserBackend, WebBrowserBackend>();
         }
     }
 }

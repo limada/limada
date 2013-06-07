@@ -44,6 +44,10 @@ namespace Limaki.Viewers.StreamViewers {
             get { return SheetDisplay.Backend; }
         }
 
+        public override IVidget Frontend {
+            get { return SheetDisplay; }
+        }
+
         public override bool Supports(long streamType) {
             return streamType == ContentTypes.LimadaSheet;
         }

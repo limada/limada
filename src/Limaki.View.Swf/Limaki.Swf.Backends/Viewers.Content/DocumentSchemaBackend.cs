@@ -20,10 +20,11 @@ using Limaki.View.Swf.Visualizers;
 using System.Drawing;
 using Limada.View;
 using Xwt.Gdi.Backend;
+using Limaki.Viewers.StreamViewers;
 
 namespace Limaki.View.Swf.Backends {
     
-    public partial class DocumentSchemaBackend : UserControl, IZoomTarget, IDocumentSchemaBackend {
+    public partial class DocumentSchemaBackend : UserControl, IZoomTarget, IDocumentSchemaViewerBackend {
 
         public DocumentSchemaViewer Frontend { get; set; }
 
@@ -41,7 +42,7 @@ namespace Limaki.View.Swf.Backends {
 
         private void Compose () {
 
-            var pagesDisplayBackend = new SwfVisualsDisplayBackend() {
+            var pagesDisplayBackend = new VisualsDisplayBackend() {
                 Dock = System.Windows.Forms.DockStyle.Right,
                 Width = Frontend.GetDefaultWidth(),
                 TabStop = false
@@ -62,7 +63,7 @@ namespace Limaki.View.Swf.Backends {
             this.PerformLayout();
             Application.DoEvents();
 
-            Frontend.AttachContentViewerBackend = contentViewer => {
+            Frontend.AttachContentViewer = contentViewer => {
                 var contentControl = (contentViewer.Backend as System.Windows.Forms.Control);
                 if (contentControl.Dock != DockStyle.Fill)
                     contentControl.Dock = DockStyle.Fill;

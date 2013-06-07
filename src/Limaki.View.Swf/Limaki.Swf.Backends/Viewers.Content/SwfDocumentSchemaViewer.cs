@@ -18,6 +18,7 @@ using Limaki.Common;
 using Limaki.Model.Content;
 using Limaki.Viewers;
 using System;
+using Limaki.Viewers.StreamViewers;
 
 namespace Limaki.View.Swf.Backends {
 
@@ -35,13 +36,6 @@ namespace Limaki.View.Swf.Backends {
             }
         }
 
-        public override void Clear () {
-       
-            var control = _backend as DocumentSchemaBackend;
-            if (control != null) {
-                
-            }
-            base.Clear();
-        }
+      
     }
 }

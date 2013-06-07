@@ -20,13 +20,18 @@ using Xwt.Drawing;
 
 namespace Limaki.Viewers {
     
-    public abstract class ContentViewer : Vidget {
+    public abstract class ContentViewer:IDisposable  {
 
         public Int64 ContentId { get; set; }
-        
-        public virtual void OnShow() { }
 
-        public virtual IVidgetBackend Backend { get; protected set; }
+        /// <summary>
+        /// attention! this is strange
+        /// ContentViewer is not a Vidget in reality, so it has no backend
+        /// its a composition of ImageDisplay and ContentStreamViewer
+        /// </summary>
+        public abstract IVidgetBackend Backend { get; }
+
+        public abstract IVidget Frontend { get; }
 
         private Color? _backColor;
         public virtual Color BackColor {
@@ -44,6 +49,8 @@ namespace Limaki.Viewers {
             }
         }
 
+        public virtual void OnShow () { }
+
         public virtual void Clear() {
             ContentId = 0;
         }
@@ -51,5 +58,7 @@ namespace Limaki.Viewers {
         protected IExceptionHandler ExceptionHandler {
             get { return Registry.Pool.TryGetCreate<IExceptionHandler>(); }
         }
+
+        public abstract void Dispose();
     }
 }

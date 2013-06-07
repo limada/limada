@@ -92,8 +92,8 @@ namespace Limaki.Viewers {
                         info.Source = thing.Id;
                     }
 
-                    if (viewer is HtmlViewer) {
-                        var htmlViewr = (HtmlViewer)viewer;
+                    if (viewer is HtmlContentViewer) {
+                        var htmlViewr = (HtmlContentViewer)viewer;
                         htmlViewr.ContentThing = thing;
                         htmlViewr.ThingGraph = graph;
                     }
@@ -194,8 +194,8 @@ namespace Limaki.Viewers {
         }
 
         public void Dispose() {
-            foreach (var controller in Providers.Viewers) {
-                controller.Dispose ();
+            foreach (var viewer in Providers.Viewers) {
+                viewer.Dispose ();
             }
             
 

@@ -64,7 +64,7 @@ namespace Limaki.Tests.UseCases {
                 var test = new BenchmarkOneTests();
                 var testinst = new WinformDisplayTestComposer<IGraphScene<IVisual, IVisualEdge>>();
 
-                testinst.Factory = () => new SwfVisualsDisplayBackend().Display;
+                testinst.Factory = () => new VisualsDisplayBackend().Display;
                 testinst.Factor(test);
                 testinst.Compose(test);
 
@@ -134,7 +134,7 @@ namespace Limaki.Tests.UseCases {
 
         public void ShowQuadTree(IGraphScene<IVisual, IVisualEdge> scene) {
             var form = new Form();
-            var display = new SwfVisualsDisplayBackend();
+            var display = new VisualsDisplayBackend();
             display.Dock = DockStyle.Fill;
             form.Controls.Add(display);
 

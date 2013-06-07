@@ -32,6 +32,7 @@ using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Viewers {
+
     public class SplitView0 : ISplitView, IDisposable, ICheckable {
 
         public ISplitViewBackend Backend { get; set; }

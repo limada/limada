@@ -11,6 +11,8 @@ using System.Text;
 using System.Diagnostics;
 using Limaki.View;
 using System.Collections.Generic;
+using Limaki.Viewers.Vidgets;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends {
     
@@ -48,7 +50,6 @@ namespace Limaki.Swf.Backends {
                 ZoomFactor = ZoomFactor / 1.1f;
             }
         }
-
 
         #region IWebBrowser Member
 
@@ -283,6 +284,32 @@ namespace Limaki.Swf.Backends {
 
             }
         }
+
+        #endregion
+
+
+        #region IVidgetBackend-Implementation
+
+        public WebBrowserVidget Frontend { get; protected set; }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (WebBrowserVidget)frontend;
+        }
+
+        Xwt.Rectangle IVidgetBackend.ClientRectangle {
+            get { return this.ClientRectangle.ToXwt(); }
+        }
+
+        Xwt.Size IVidgetBackend.Size {
+            get { return this.Size.ToXwt(); }
+        }
+
+
+        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
+            this.Invalidate(rect.ToGdi());
+        }
+
+        Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
     }

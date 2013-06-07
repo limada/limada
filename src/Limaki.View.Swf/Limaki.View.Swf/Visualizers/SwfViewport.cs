@@ -11,9 +11,9 @@ namespace Limaki.View.Swf.Visualizers {
 
     public class SwfViewport : Limaki.View.Visualizers.Viewport {
 
-        protected DisplayBackend device = null;
+        protected DisplayBackend backend = null;
         public SwfViewport(DisplayBackend userControl) {
-            this.device = userControl;
+            this.backend = userControl;
         }
 
         bool scrollChanged = false;
@@ -21,7 +21,7 @@ namespace Limaki.View.Swf.Visualizers {
         public override Xwt.Point ClipOrigin {
             get {
                 if (!useOnScroll) {
-                    var point = device.AutoScrollPosition;
+                    var point = backend.AutoScrollPosition;
                     _scrollPosition = new Xwt.Point(-point.X, -point.Y);
                     scrollChanged = false;
                 }
@@ -30,7 +30,7 @@ namespace Limaki.View.Swf.Visualizers {
             set {
                 if (_scrollPosition != value) {
                     _scrollPosition = value;
-                    device.AutoScrollPosition = _scrollPosition.ToGdi();
+                    backend.AutoScrollPosition = _scrollPosition.ToGdi();
 
                     scrollChanged = true;
                 }
@@ -39,7 +39,7 @@ namespace Limaki.View.Swf.Visualizers {
         }
 
         public override Size ClipSize {
-            get { return device.ClientSize.ToXwt(); }
+            get { return backend.ClientSize.ToXwt(); }
         }
 
         private bool _scrollMinSizeChanging = false;
@@ -48,12 +48,12 @@ namespace Limaki.View.Swf.Visualizers {
                 if (useOnScroll) {
                     return _scrollMinSize;
                 } else {
-                    return device.AutoScrollMinSize.ToXwt();
+                    return backend.AutoScrollMinSize.ToXwt();
                 }
             }
             set {
                 _scrollMinSizeChanging = true;
-                device.AutoScrollMinSize = value.ToGdi();
+                backend.AutoScrollMinSize = value.ToGdi();
                 _scrollMinSize = value;
                 _scrollMinSizeChanging = false;
                 //device.ScrollBarsVisible = false;
@@ -71,7 +71,7 @@ namespace Limaki.View.Swf.Visualizers {
                         var deltaX = 0d;
                         var deltaY = 0d;
 
-                        var point = device.AutoScrollPosition;
+                        var point = backend.AutoScrollPosition;
                         deltaX = _scrollPosition.X + point.X;
                         deltaY = _scrollPosition.Y + point.Y;
 
@@ -90,7 +90,7 @@ namespace Limaki.View.Swf.Visualizers {
 #endif
                             UpdateCamera ();
 
-                            device.Invalidate ();
+                            backend.Invalidate ();
                         }
                     } else {
                         if (se.ScrollOrientation == ScrollOrientation.HorizontalScroll) {
@@ -110,7 +110,7 @@ namespace Limaki.View.Swf.Visualizers {
         public override void Update() {
             base.Update();
             if (useOnScroll) {
-                var point = device.AutoScrollPosition;
+                var point = backend.AutoScrollPosition;
                 _scrollPosition = new Xwt.Point(-point.X, -point.Y);
             }
            
@@ -136,7 +136,7 @@ namespace Limaki.View.Swf.Visualizers {
 
             Update();
 
-            device.Invalidate();
+            backend.Invalidate();
 
             if (ZoomChanged != null)
                 ZoomChanged(this, null);

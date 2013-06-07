@@ -36,7 +36,7 @@ namespace Xwt.Html5.TestApp {
 
             var panel1 = new System.Windows.Forms.Panel { Dock = DockStyle.Left, Width = 100 };
 
-            var htmlViewer = new HtmlViewer ();
+            var htmlViewer = new HtmlContentViewer ();
             htmlViewer.BackendHandler = new WebBrowserBackendHandler ();
             var browser = (Control) htmlViewer.Backend;
             browser.Dock = DockStyle.Fill;

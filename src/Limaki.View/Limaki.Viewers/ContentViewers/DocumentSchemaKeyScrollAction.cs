@@ -3,7 +3,7 @@ using Limaki.Drawing;
 using Limaki.View.UI;
 using Xwt;
 
-namespace Limada.View {
+namespace Limaki.Viewers.StreamViewers {
 
     public class DocumentSchemaKeyScrollAction:KeyScrollAction {
         protected override Rectangle ProcessKey(KeyActionEventArgs e) {

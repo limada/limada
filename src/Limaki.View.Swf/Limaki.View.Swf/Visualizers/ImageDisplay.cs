@@ -1,11 +1,9 @@
-using System.Drawing;
-using Limaki.Drawing.Gdi;
-using Limaki.View.Visualizers;
 using Limaki.View.UI;
-using Point = Xwt.Point;
-using Size = Xwt.Size;
-using Xwt.Gdi.Backend;
+using Limaki.View.Visualizers;
+using Xwt;
 using Xwt.Backends;
+using Xwt.Gdi.Backend;
+using Image = System.Drawing.Image;
 
 namespace Limaki.View.Swf.Visualizers {
 
@@ -52,4 +50,6 @@ namespace Limaki.View.Swf.Visualizers {
             
         }
     }
+
+  
 }

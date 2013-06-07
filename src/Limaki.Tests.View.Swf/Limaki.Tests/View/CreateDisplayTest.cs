@@ -14,7 +14,7 @@ namespace Limaki.Tests.View.Display {
 		[Test]
 		public void Test ()
 		{
-			var display = new Limaki.View.Swf.Visualizers.SwfVisualsDisplayBackend();
+			var display = new Limaki.View.Swf.Visualizers.VisualsDisplayBackend();
 			                      
 			
 		}

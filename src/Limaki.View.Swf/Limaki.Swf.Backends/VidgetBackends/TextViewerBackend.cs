@@ -12,30 +12,27 @@
  */
 
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Forms;
-using System.Drawing;
-using Limaki.Common.Text.RTF;
-using System.IO;
-using System.Text;
 using Limaki.Drawing;
-using Limaki.View;
-using Xwt.Gdi.Backend;
 using Limaki.Swf.Backends.Viewers.Content;
+using Limaki.Viewers.Vidgets;
+using Limaki.View;
+using System.ComponentModel;
+using System.IO;
+using System.Windows.Forms;
+using Xwt.Gdi.Backend;
 
 // this control uses ideas from RicherTextBox by ???
 
 namespace Limaki.Swf.Backends.TextEditor {
 
-    public partial class TextViewerBackend : UserControl, IZoomTarget, IVidgetBackend {
-        public TextViewerBackend() {
+    public partial class TextViewerBackend : UserControl, IZoomTarget, ITextViewerBackend {
+
+        public TextViewerBackend () {
             InitializeComponent();
-            innerTextBox.Enter += (sender, args) => {this.OnEnter (args); };
+            innerTextBox.Enter += (sender, args) => { this.OnEnter(args); };
             innerTextBox.MouseUp += (sender, args) => { this.OnMouseUp(args); };
             innerTextBox.GotFocus += (sender, args) => { this.OnGotFocus(args); };
-            
+
         }
 
         TextBoxEditorControler _controller = null;
@@ -43,7 +40,7 @@ namespace Limaki.Swf.Backends.TextEditor {
         public TextBoxEditorControler Controller {
             get {
                 if (_controller == null) {
-                    _controller = new TextBoxEditorControler (this.innerTextBox);
+                    _controller = new TextBoxEditorControler(this.innerTextBox);
                 }
                 return _controller;
             }
@@ -89,33 +86,34 @@ namespace Limaki.Swf.Backends.TextEditor {
             set { this.innerTextBox.Modified = value; }
         }
 
-        public void Clear() {
-            this.innerTextBox.Clear ();
+        public void Clear () {
+            this.innerTextBox.Clear();
         }
 
-        protected virtual void AfterLoadRTF() {
-            if (this._toolStrip!=null) {
-                _toolStrip.Reset ();
+        protected virtual void AfterLoadRTF () {
+            if (this._toolStrip != null) {
+                _toolStrip.Reset();
             }
         }
 
         public string Rtf {
             get { return this.innerTextBox.Rtf; }
-            set { this.innerTextBox.Rtf = value;
-                AfterLoadRTF ();  
+            set {
+                this.innerTextBox.Rtf = value;
+                AfterLoadRTF();
             }
         }
 
-        public void Load(Stream stream, RichTextBoxStreamType streamType) {
+        public void Load (Stream stream, TextViewerRtfType streamType) {
             //innerTextBox.Clear ();
             var color = innerTextBox.BackColor;
-            innerTextBox.LoadFile (stream, streamType);
+            innerTextBox.LoadFile(stream, (RichTextBoxStreamType)streamType);
             innerTextBox.BackColor = color;
-            AfterLoadRTF ();
+            AfterLoadRTF();
         }
 
-        public void Save(Stream stream, RichTextBoxStreamType streamType) {
-            innerTextBox.SaveFile(stream, streamType);
+        public void Save (Stream stream, TextViewerRtfType streamType) {
+            innerTextBox.SaveFile(stream, (RichTextBoxStreamType)streamType);
         }
 
         #region IZoomTarget Member
@@ -138,7 +136,7 @@ namespace Limaki.Swf.Backends.TextEditor {
             set { this.innerTextBox.ZoomFactor = (float)value; }
         }
 
-        public void UpdateZoom() {
+        public void UpdateZoom () {
             //base.Window.TextZoom = ZoomFactor;
         }
 
@@ -168,6 +166,17 @@ namespace Limaki.Swf.Backends.TextEditor {
         Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
+
+        VidgetBorderStyle ITextViewerBackend.BorderStyle {
+            get { return (VidgetBorderStyle)this.BorderStyle; }
+            set { this.BorderStyle = (BorderStyle)value; }
+        }
+
+        Xwt.Point ITextViewerBackend.AutoScrollOffset {
+            get { return this.AutoScrollOffset.ToXwt(); }
+            set { this.AutoScrollOffset = value.ToGdi(); }
+        }
+
     }
 }
 

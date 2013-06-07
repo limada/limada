@@ -72,10 +72,10 @@ namespace Limaki.Swf.Backends.UseCases {
 
             var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
 
-            viewerProvider.Add(new HtmlViewer { BackendHandler = new WebBrowserBackendHandler() });
+            viewerProvider.Add(new HtmlContentViewer { BackendHandler = new WebBrowserBackendHandler() });
             viewerProvider.Add(new SwfDocumentSchemaViewer());
-            viewerProvider.Add(new ImageViewer());
-            viewerProvider.Add(new TextViewerWithToolstrip());
+            viewerProvider.Add(new ImageContentViewer());
+            viewerProvider.Add(new TextContentViewerWithToolstrip());
             viewerProvider.Add(new SheetViewer());
 
         }

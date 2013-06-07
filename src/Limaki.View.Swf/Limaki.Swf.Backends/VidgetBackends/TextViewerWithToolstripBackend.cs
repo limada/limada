@@ -17,13 +17,44 @@ using Limaki.Drawing;
 using Limaki.View;
 using Xwt.Gdi.Backend;
 using Limaki.Swf.Backends.Viewers.Content;
+using Limaki.Viewers.Vidgets;
 
 namespace Limaki.Swf.Backends.TextEditor {
 
-    public partial class TextViewerWithToolstripBackend : ToolStripContainer, IZoomTarget, IVidgetBackend {
+    public partial class TextViewerWithToolstripBackend : ToolStripContainer, IZoomTarget, ITextViewerWithToolstripBackend {
         
         public TextViewerWithToolstripBackend() {
             InitializeComponent();
+        }
+
+        TextViewerWithToolstrip _frontend = null;
+        public TextViewerWithToolstrip Frontend {
+            get { return _frontend; }
+            protected set {
+                if(_frontend!=value) {
+                    TextViewerBackend = value.TextViewer.Backend as TextViewerBackend;
+                }
+                _frontend = value;
+            }
+        }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (TextViewerWithToolstrip)frontend;
+        }
+
+        private TextViewerBackend _textViewerBackend = null;
+        public TextViewerBackend TextViewerBackend {
+            get {
+                if (_textViewerBackend == null) {
+                    _textViewerBackend = new TextViewerBackend();
+                    SetEditor(_textViewerBackend);
+                }
+                return _textViewerBackend;
+            }
+            set {
+                _textViewerBackend = value;
+                SetEditor(_textViewerBackend);
+            }
         }
 
         void SetEditor(TextViewerBackend editor) {
@@ -39,18 +70,9 @@ namespace Limaki.Swf.Backends.TextEditor {
             this.ResumeLayout ();
         }
 
-        public TextViewerBackend TextViewerBackend {
-            get {
-                if (_textViewerBackend == null) {
-                    _textViewerBackend = new TextViewerBackend();
-                    SetEditor (_textViewerBackend);
-                }
-                return _textViewerBackend;
-            }
-            set {
-                _textViewerBackend = value;
-                SetEditor(_textViewerBackend);
-            }
+        public bool ToolStripVisible {
+            get { return this.TextBoxEditorToolStrip.Visible; }
+            set { this.TextBoxEditorToolStrip.Visible = value; }
         }
 
         void SetToolStrip(TextBoxEditorToolStrip toolstrip) {
@@ -63,24 +85,7 @@ namespace Limaki.Swf.Backends.TextEditor {
             this.ResumeLayout ();
         }
 
-        //bool _toolStripEnabled = false;
-        //public bool ToolStripEnabled {
-        //    get { return _textViewerBackend != null && _textViewerBackend.ToolStrip != null; }
-        //    set {
-        //        if (_textViewerBackend != null) {
-        //            if (value) {
-        //                TextBoxEditorToolStrip strip = _textBoxEditorToolStrip;
-        //                if (strip == null)
-        //                    strip = this.TextBoxEditorToolStrip;
-        //                else
-        //                    SetToolStrip(strip);
-        //            } else {
-        //                SetToolStrip(null);
-        //            }
-        //        }
-        //    }
-        //}
-        
+        private TextBoxEditorToolStrip _textBoxEditorToolStrip = null;
         public virtual TextBoxEditorToolStrip TextBoxEditorToolStrip {
             get {
                 if (_textBoxEditorToolStrip ==null) {
@@ -94,9 +99,6 @@ namespace Limaki.Swf.Backends.TextEditor {
                   SetToolStrip(_textBoxEditorToolStrip);
             }
         }
-
-        private TextViewerBackend _textViewerBackend=null;
-        private TextBoxEditorToolStrip _textBoxEditorToolStrip=null;
 
         #region IZoomTarget Member
 
@@ -140,12 +142,6 @@ namespace Limaki.Swf.Backends.TextEditor {
 
         #region IVidgetBackend-Implementation
 
-        public TextViewerWithToolstrip Frontend { get; protected set; }
-
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (TextViewerWithToolstrip)frontend;
-        }
-
         Xwt.Rectangle IVidgetBackend.ClientRectangle {
             get { return this.ClientRectangle.ToXwt(); }
         }
@@ -162,5 +158,7 @@ namespace Limaki.Swf.Backends.TextEditor {
         Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
         
         #endregion
+
+       
     }
 }

@@ -23,7 +23,7 @@ using Limaki.Visuals;
 
 namespace Limaki.View.Swf.Visualizers {
 
-    public class SwfVisualsDisplayBackend : SwfGraphSceneBackend<IVisual, IVisualEdge> {
+    public class VisualsDisplayBackend : GraphSceneBackend<IVisual, IVisualEdge> {
 
         public override DisplayFactory<IGraphScene<IVisual, IVisualEdge>> CreateDisplayFactory(DisplayBackend<IGraphScene<IVisual, IVisualEdge>> backend) {
             var result = new VisualsDisplayFactory();
