@@ -16,12 +16,12 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
     public class SchemaGraphTestBase : ThingGraphTestBase {
         public override IThingGraph Graph {
             get {
-                if (!(_graph is SchemaThingGraph)) {
-                    _graph = new SchemaThingGraph(base.Graph);
+                if (!(base.Graph is SchemaThingGraph)) {
+                    base.Graph = new SchemaThingGraph(base.Graph);
                     SchemaFacade.MakeMarkersUnique(base.Graph);
                 }
 
-                return _graph;
+                return base.Graph;
             }
         }
     }

@@ -128,9 +128,9 @@ namespace Limada.Tests.Schemata {
         public virtual void TestDocumentWithTestData() {
             
             IThingGraph thingGraph = new ThingGraph();
-            var prov = new Limada.Data.Db4oThingGraphProvider();
-            prov.Open(Iori.FromFileName(TestLocations.GraphtestDir + "DocumentTest.limo"));
-            thingGraph = prov.Data;
+            var prov = new Limada.Data.Db4oThingGraphIo();
+            var d = prov.Open(Iori.FromFileName(TestLocations.GraphtestDir + "DocumentTest.limo"));
+            thingGraph = d.Data;
 
 
 
@@ -160,7 +160,7 @@ namespace Limada.Tests.Schemata {
                 }
 
             }
-            prov.Save();
+            prov.Flush(d);
         }
     }
 

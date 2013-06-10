@@ -74,14 +74,6 @@
     <Compile Include="Playground\View\DragDrop.Xwt\VisualsImageTransferDataHandler.cs" />
     <Compile Include="Playground\View\DragDrop.Xwt\VisualsTextTransferDataHandler.cs" />
     <Compile Include="Playground\View\DragDrop.Xwt\VisualsTransferDataHandler.cs" />
-    <Compile Include="[deprecated]\DisplayToolStripBackend.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="[deprecated]\DisplayToolStripBackend.Designer.cs">
-      <DependentUpon>DisplayToolStripBackend.cs</DependentUpon>
-    </Compile>
-    <Compile Include="[deprecated]\GdiMatrice.cs" />
-    <Compile Include="[deprecated]\GdiViewport.cs" />
     <Compile Include="Limaki.Tests\View\CreateDisplayTest.cs" />
     <Compile Include="Limaki.Tests\View\GDI\ConvexHullLayer.cs" />
     <Compile Include="Limaki.Tests\View\GDI\FontMeasure.cs" />
@@ -158,6 +150,7 @@
   <ItemGroup>
     <Folder Include="Limaki.Tests\View\Drawing\" />
     <Folder Include="Playground\View\XwtRefactroring\LimakiView\" />
+    <Folder Include="[deprecated]\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Limaki.Tests\View\Winform\OpenExampleData.resx">

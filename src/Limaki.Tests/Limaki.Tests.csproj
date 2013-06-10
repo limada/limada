@@ -218,21 +218,6 @@
     <Compile Include="Limaki.Tests\View\Visuals\SceneThreadTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\VectorHulltest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\Shapes\ShapeTest.cs" />
-    <Compile Include="[Deprecated]\DataProviders\DataProvider.cs" />
-    <Compile Include="[Deprecated]\DataProviders\DataProviderManager.cs" />
-    <Compile Include="[Deprecated]\DataProviders\DataProviders.cs" />
-    <Compile Include="[Deprecated]\DataProviders\Db4oThingGraphProvider.cs" />
-    <Compile Include="[Deprecated]\DataProviders\FileManager.cs" />
-    <Compile Include="[Deprecated]\DataProviders\FileManagerBase.cs" />
-    <Compile Include="[Deprecated]\DataProviders\IDataProvider.cs" />
-    <Compile Include="[Deprecated]\DataProviders\IThingGraphProvider.cs" />
-    <Compile Include="[Deprecated]\DataProviders\MemoryThingGraphProvider.cs" />
-    <Compile Include="[Deprecated]\DataProviders\SceneProvider.cs" />
-    <Compile Include="[Deprecated]\DataProviders\ThingGraphProvider.cs" />
-    <Compile Include="[Deprecated]\DataProviders\XMLThingGraphProvider.cs" />
-    <Compile Include="[Deprecated]\DisplayToolStrip.cs" />
-    <Compile Include="[Deprecated]\MatriceTest.cs" />
-    <Compile Include="[Deprecated]\CompareMatricesRuntime.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\BasicVisualGraphTest.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Model\BenchmarkOneSceneFactory.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Model\ISceneFactory.cs" />
@@ -241,12 +226,6 @@
     <Compile Include="Playground\MonoGenericError2.cs" />
     <Compile Include="Playground\MonoMarshalByRefError.cs" />
     <Compile Include="Limaki.Tests\Data\Streams\ContentProviderTest.cs" />
-    <Compile Include="[Deprecated]\Arranger0.cs" />
-    <Compile Include="[Deprecated]\GraphSceneFacade0.cs" />
-    <Compile Include="[Deprecated]\Matrice0.cs" />
-    <Compile Include="[Deprecated]\ProxyShape.cs" />
-    <Compile Include="[Deprecated]\VisualsSceneArrangerLayout.cs" />
-    <Compile Include="[Deprecated]\VisualsSpatialIndex.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq-2010.csproj">
@@ -330,6 +309,7 @@
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
     <Folder Include="Playground\Graph\" />
     <Folder Include="Playground\View\DragDrop\" />
+    <Folder Include="[Deprecated]\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

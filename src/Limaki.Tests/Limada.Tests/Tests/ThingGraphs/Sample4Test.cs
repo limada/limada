@@ -13,6 +13,8 @@ using Limaki.Model.Content;
 using System.Collections.Generic;
 using Limaki.Graphs.Extensions;
 using Limaki.Common.IOC;
+using Limaki.Model.Content.IO;
+using System.IO;
 
 
 namespace Limada.Tests.ThingGraphs {
@@ -22,21 +24,21 @@ namespace Limada.Tests.ThingGraphs {
             get { return Registry.Factory.Create<IThingFactory>(); }
         }
 
-        public IThingGraphProvider ThingGraphProvider { get; set; }
+        public ThingGraphIo ThingGraphProvider { get; set; }
 
         public virtual SchemaThingGraph OpenFile(string fileName) {
             if (ThingGraphProvider != null) {
-                ThingGraphProvider.Close();
+                ThingGraphProvider.Close(GraphContent);
                 ThingGraphProvider = null;
             }
             if (ThingGraphProvider == null) {
-                var fileManager = new FileManagerBase();
+                var fileManager = new IoManager<Iori, ThingGraphContent>();
                 var file = Iori.FromFileName(fileName);
-                var provider = fileManager.GetThingGraphProvider(file);
+                var provider = fileManager.GetSinkIO(file, IoMode.Read);
                 if (provider != null) {
-                    provider.Open(file);
-                    ThingGraphProvider = provider;
-                    return new SchemaThingGraph(ThingGraphProvider.Data);
+                    ThingGraphProvider = provider as ThingGraphIo;
+                    GraphContent = ThingGraphProvider.Open(file);
+                    return new SchemaThingGraph(GraphContent.Data);
                 }
             } else {
                 throw new Exception("File " + fileName + " could not be opened");
@@ -48,15 +50,15 @@ namespace Limada.Tests.ThingGraphs {
 
         public virtual void Close() {
             if (ThingGraphProvider != null) {
-                ThingGraphProvider.Close();
+                ThingGraphProvider.Close(GraphContent);
             }
         }
 
 
         public virtual void OnFlush(IThingGraph graph) {
             if (ThingGraphProvider != null) {
-                if (ThingGraphProvider.Saveable)
-                    ThingGraphProvider.Save();
+                if (ThingGraphProvider.IoMode == IoMode.Write)
+                    ThingGraphProvider.Flush(GraphContent);
             }
         }
         
@@ -240,5 +242,7 @@ namespace Limada.Tests.ThingGraphs {
                 }
             }
         }
+
+        public ThingGraphContent GraphContent { get; set; }
     }
 }

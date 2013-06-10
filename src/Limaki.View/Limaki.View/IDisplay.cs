@@ -21,7 +21,7 @@ using Xwt.Backends;
 
 namespace Limaki.View {
 
-    public interface IDisplay:IVidget {
+    public interface IDisplay : IVidget {
 
         Color BackColor { get; set; }
         ZoomState ZoomState { get; set; }
@@ -35,20 +35,21 @@ namespace Limaki.View {
         IViewport Viewport { get; set; }
         IBackendRenderer BackendRenderer { get; set; }
 
-        void Invoke();
-        void Execute();
+        void Invoke ();
+        void Execute ();
 
         object ActiveControl { get; set; }
-        
+
     }
 
-    public interface IDisplay<T>:IDisplay {
+    public interface IDisplay<T> : IDisplay {
+
         T Data { get; set; }
         Int64 DataId { get; set; }
         string Text { get; set; }
         IDisplayBackend<T> Backend { get; set; }
         State State { get; }
         //ILayout<T> Layout { get; set; }
-        
+
     }
 }
