@@ -29,6 +29,8 @@ using Limaki.View.Swf.Visuals;
 using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Viewers.StreamViewers;
+using Limaki.View.Layout;
+
 using DialogResult = Limaki.Viewers.DialogResult;
 using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
 
@@ -40,13 +42,8 @@ namespace Limaki.Swf.Backends.UseCases {
         public ToolStripContainer ToolStripContainer { get; set; }
         public MenuStrip MenuStrip { get; set; }
 
-        public SplitViewBackend SplitViewBackend { get; set; }
-
-        public DisplayToolStripBackend DisplayToolStripBackend { get; set; }
-        public SplitViewToolStripBackend SplitViewToolStripBackend { get; set; }
         public MarkerToolStripBackend MarkerToolStripBackend { get; set; }
         public LayoutToolStripBackend LayoutToolStripBackend { get; set; }
-        public ArrangerToolStripBackend ArrangerToolStripBackend { get; set; }
 
         public ToolStripStatusLabel StatusLabel { get; set; }
         public StatusStrip StatusStrip { get; set; }
@@ -59,24 +56,28 @@ namespace Limaki.Swf.Backends.UseCases {
 
             MenuStrip = new MenuStrip ();
 
-            SplitViewBackend = new SplitViewBackend (ToolStripContainer.ContentPanel);
+            var splitViewBackend = useCase.SplitView.Backend as SplitContainer;
+            ToolStripContainer.SuspendLayout();
+            ToolStripContainer.ContentPanel.Controls.Add(splitViewBackend);
+            ToolStripContainer.ResumeLayout();
+            ToolStripContainer.PerformLayout();
+            splitViewBackend.SplitterDistance = (int)(ToolStripContainer.Width / 2);
 
-            DisplayToolStripBackend = new DisplayToolStripBackend ();
-            SplitViewToolStripBackend = new SplitViewToolStripBackend ();
             LayoutToolStripBackend = new LayoutToolStripBackend ();
             MarkerToolStripBackend = new MarkerToolStripBackend ();
-            ArrangerToolStripBackend = new ArrangerToolStripBackend ();
 
             //TODO: move this to UseCaseContextResourceLoader
             Registry.Factory.Add<ContentViewerProvider, ContentVisualViewerProvider> ();
 
             var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
 
-            viewerProvider.Add(new HtmlContentViewer { BackendHandler = new WebBrowserBackendHandler() });
-            viewerProvider.Add(new SwfDocumentSchemaViewer());
-            viewerProvider.Add(new ImageContentViewer());
+            viewerProvider.Add(new HtmlContentViewer());
+            viewerProvider.Add(new DocumentSchemaContentViewer());
             viewerProvider.Add(new TextContentViewerWithToolstrip());
             viewerProvider.Add(new SheetViewer());
+
+            viewerProvider.Add(new ImageContentViewer());
+
 
         }
 
@@ -87,13 +88,8 @@ namespace Limaki.Swf.Backends.UseCases {
             ToolStripContainer.BottomToolStripPanel.Controls.Add (StatusStrip);
             this.StatusStrip.Items.Add (StatusLabel);
 
-            useCase.SplitView = SplitViewBackend.Frontend;
-
-            useCase.DisplayToolStrip = DisplayToolStripBackend.Strip;
             useCase.LayoutToolController = LayoutToolStripBackend.Frontend;
             useCase.MarkerToolStrip = MarkerToolStripBackend.Frontend;
-            useCase.SplitViewToolStrip = SplitViewToolStripBackend.Frontend;
-            useCase.ArrangerToolStrip = ArrangerToolStripBackend.Frontend;
 
             useCase.DataPostProcess =
                 dataName => Mainform.Text = dataName + " - " + useCase.UseCaseTitle;
@@ -128,11 +124,11 @@ namespace Limaki.Swf.Backends.UseCases {
                 this.ToolStripContainer.TopToolStripPanel,
                 this.MenuStrip,
                 new ToolStrip[] {
-                    ArrangerToolStripBackend,
-                    SplitViewToolStripBackend,
+                    useCase.ArrangerToolStrip.Backend as ToolStrip,
+                    useCase.SplitViewToolStrip.Backend as ToolStrip,
                     MarkerToolStripBackend,
                     LayoutToolStripBackend,
-                    DisplayToolStripBackend,
+                    useCase.DisplayToolStrip.Backend as ToolStrip,
                 });
 
         }
@@ -252,7 +248,7 @@ namespace Limaki.Swf.Backends.UseCases {
         private void ShowLayoutEditor (ConceptUsecase useCase) {
             options = new Options ();
             options.ApplyButton.Click += (s1, e1) => {
-                this.DisplayToolStripBackend.Strip.Layout ();
+                useCase.ArrangerToolStrip.FullLayout(useCase.GetCurrentDisplay().Layout.Options());
             };
 
             var editor = new LayoutEditor ();

@@ -40,6 +40,7 @@ using Limada.Schemata;
 using Limaki.Tests.View;
 using Limaki.Viewers;
 using Limaki.Usecases;
+using Limaki.View.Visuals.Visualizers;
 
 
 namespace Limaki.Tests.UseCases {
@@ -64,17 +65,14 @@ namespace Limaki.Tests.UseCases {
                 var test = new BenchmarkOneTests();
                 var testinst = new WinformDisplayTestComposer<IGraphScene<IVisual, IVisualEdge>>();
 
-                testinst.Factory = () => new VisualsDisplayBackend().Display;
+                testinst.Factory = () => new VisualsDisplay();
                 testinst.Factor(test);
                 testinst.Compose(test);
 
                 test.WriteDetail += testMessage;
-                        
-
                 test.TestForm = this;
-                test.Display = composer.SplitViewBackend.DisplayBackend1.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
-
                 test.Setup();
+
                 return test;
             };
 

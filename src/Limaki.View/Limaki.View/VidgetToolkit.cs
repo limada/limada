@@ -38,6 +38,7 @@
      THE SOFTWARE.
  */
 
+using Limaki.Common;
 using Limaki.View;
 using System;
 using System.Collections.Generic;
@@ -126,7 +127,7 @@ namespace Limaki.View {
             backendTypes[typeof(Backend)] = typeof(Implementation);
         }
 
-        void CheckInitialized () {
+        public void CheckInitialized () {
             if (backendTypes == null)
                 throw new InvalidOperationException("XWT toolkit not initialized");
         }

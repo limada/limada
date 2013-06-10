@@ -21,9 +21,11 @@ using Xwt.Drawing;
 
 namespace Limaki.View.Visualizers {
 
-    public class Display<TData> : Vidget,IDisplay<TData>, IDisposable, ICheckable {
+    public class Display<TData> : Vidget, IDisplay<TData>, IDisposable, ICheckable, IZoomTarget {
 
-        public Display() { }
+        public Display () {
+            Backend.InitializeBackend(this, null);
+        }
 
         public virtual IComposer<Display<TData>> Composer { get; set; }
 
@@ -111,6 +113,11 @@ namespace Limaki.View.Visualizers {
             set { Viewport.ZoomState = value; }
         }
 
+        public virtual double ZoomFactor {
+            get { return Viewport.ZoomFactor; }
+            set { Viewport.ZoomFactor = value; }
+        }
+
         public virtual void UpdateZoom() {
             Viewport.UpdateZoom();
         }
@@ -131,9 +138,9 @@ namespace Limaki.View.Visualizers {
         bool disposing = false;
         public override void Dispose() {
             disposing = true;
-            var instrumenter = this.Composer as IDisposable;
+            var composer = this.Composer as IDisposable;
             this.Composer = null;
-            instrumenter.Dispose();
+            composer.Dispose();
 
             // the rest should be done in instrumenter!!!
             var eventController = this.EventControler;

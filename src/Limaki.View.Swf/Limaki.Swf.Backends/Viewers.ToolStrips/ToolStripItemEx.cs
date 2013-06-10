@@ -62,16 +62,17 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         }
 
         protected override void OnMouseDown (MouseEventArgs e) {
+
             var w = ToolStripUtils.DropdownWidth;
             var area = new Rectangle(this.Width - w, 0, w, this.Height);
             DropDownClicked = area.Contains(e.Location);
             this.DropDown.Visible = !DropDownClicked;
-
-            var size = DropDown.Size;
-            DropDown.AutoSize = false;
-            DropDown.Width = (int)Size.Width;
-            DropDown.Height = size.Height;
-
+            if (Image != null && Text == null && DisplayStyle == ToolStripItemDisplayStyle.Image) {
+                var size = DropDown.Size;
+                DropDown.AutoSize = false;
+                DropDown.Width = (int) Size.Width;
+                DropDown.Height = size.Height;
+            }
             base.OnMouseDown(e);
             //this.DropDown.Visible = this.Pressed;
 

@@ -58,12 +58,15 @@ namespace Limaki.Usecases.Concept {
         public SceneHistory SceneHistory { get; set; }
         public ISheetManager SheetManager {get;set;}
         public FavoriteManager FavoriteManager { get; set; }
-        
-        public DisplayToolStrip DisplayToolStrip { get; set; }
+
+        public ArrangerToolStrip ArrangerToolStrip { get; set; }
+        public DisplayModeToolStrip DisplayToolStrip { get; set; }
+        public SplitViewToolStrip SplitViewToolStrip { get; set; }
+
         public LayoutToolStrip LayoutToolController { get; set; }
         public MarkerToolStrip MarkerToolStrip { get; set; }
-        public SplitViewToolStrip SplitViewToolStrip { get; set; }
-        public ArrangerToolStrip ArrangerToolStrip { get; set; }
+        
+        
 
         public Func<object> GetCurrentControl { get; set; }
         public Func<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }

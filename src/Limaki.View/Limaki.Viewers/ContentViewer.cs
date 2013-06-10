@@ -38,7 +38,6 @@ namespace Limaki.Viewers {
             get { return (_backColor ?? (_backColor = SystemColors.Background)).Value; }
             set { _backColor = value; }
         }
-        public object Parent { get; set; }
 
         public Action<IVidgetBackend> AttachBackend { get; set; }
         public Action<IVidgetBackend> DetachBackend { get; set; }

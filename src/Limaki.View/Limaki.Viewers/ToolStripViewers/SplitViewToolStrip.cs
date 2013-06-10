@@ -19,9 +19,11 @@ using Limaki.Drawing;
 using Limaki.View.Visualizers;
 using Limaki.Visuals;
 using Limaki.View.Properties;
+using Xwt.Backends;
 
 namespace Limaki.Viewers.ToolStripViewers {
 
+    [BackendType(typeof(ISplitViewToolStripBackend))]
     public class SplitViewToolStrip : ToolStripViewer<IGraphSceneDisplay<IVisual, IVisualEdge>, ISplitViewToolStripBackend> {
 
         public ToolStripCommand GraphStreamViewCommand { get; set; }

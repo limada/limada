@@ -10,7 +10,7 @@ namespace Limaki.Viewers.ToolStripViewers {
         void Detach (IGraphScene<IVisual, IVisualEdge> oldScene);
     }
 
-    public class MarkerToolStrip : ToolStripViewer<IGraphSceneDisplay<IVisual, IVisualEdge>, IMarkerToolStripBackend> {
+    public class MarkerToolStrip : ToolStripViewer0<IGraphSceneDisplay<IVisual, IVisualEdge>, IMarkerToolStripBackend> {
         
         public override void Attach (object sender) {
             var display = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;

@@ -24,83 +24,50 @@ using Limaki.Swf.Backends;
 using DialogResult=Limaki.Viewers.DialogResult;
 using System.Diagnostics;
 using Limaki.View;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends.Viewers {
 
-    public class  SplitViewBackend : IDisposable, ISplitViewBackend {
+    public class SplitViewBackend : SplitContainer, ISplitViewBackend, IDisposable {
 
-        public SplitViewBackend(Control parent) {
-            this.Parent = parent;
-            Initialize();
+        public SplitViewBackend() {
+            InitializeComponent();
         }
 
-        #region Parent-Handling
-
-        object ISplitViewBackend.Parent { get { return this.Parent; } }
-
-        protected Control Parent { get; set; }
-
-        protected Control ActiveControl {
-            get { return Container.ActiveControl as Control; }
-            set { Container.ActiveControl = value; }
+        public SplitView0 Frontend { get; protected set; }
+        public void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (SplitView0) frontend;
+            this.Compose();
         }
-        
-        #endregion
-       
-        public SplitView0 Frontend { get; set; }
 
-        protected SplitContainer Container { get; set; }
-        public VisualsDisplayBackend DisplayBackend1 { get; set; }
-        protected VisualsDisplayBackend DisplayBackend2 { get; set; }
+        protected SplitContainer SplitContainer { get { return this; } }
 
 
         protected void InitializeComponent () {
-            var parent = this.Parent as Control;
 
-            parent.SuspendLayout();
-            
-            if (Container == null) {
-                Container = new SplitContainer();
-                parent.Controls.Add(Container);
-                Container.Dock = System.Windows.Forms.DockStyle.Fill;
-                Container.Margin = new System.Windows.Forms.Padding(2);
-                Container.Name = "SplitContainer";
-                Container.Panel2MinSize = 0;
-                Container.SplitterWidth = 3;
-                Container.TabIndex = 1;
-            }
-            if (DisplayBackend1 == null) {
-                DisplayBackend1 = new VisualsDisplayBackend();
-                DisplayBackend1.Dock = DockStyle.Fill;
-                Container.Panel1.Controls.Add(DisplayBackend1);
-            }
-            if (DisplayBackend2 == null) {
-                DisplayBackend2 = new VisualsDisplayBackend();
-                DisplayBackend2.Dock = DockStyle.Fill;
-                Container.Panel2.Controls.Add(DisplayBackend2);
-            }
-            parent.ResumeLayout();
-            parent.PerformLayout();
-
-            Container.SplitterDistance = (int)(parent.Width / 2);
+            this.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Name = "SplitView";
+            this.Panel2MinSize = 0;
+            this.SplitterWidth = 3;
+            this.TabIndex = 1;
         }
 
-        protected void Initialize () {
-            InitializeComponent();
+        protected void Compose () {
 
-            Frontend = new SplitView0 ();
-            Frontend.Backend = this;
+            var displayBackend1 = Frontend.Display1.Backend as Control;
+            displayBackend1.Dock = DockStyle.Fill;
+            SplitContainer.Panel1.Controls.Add(displayBackend1);
 
-            Frontend.Display1 = this.DisplayBackend1.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
-            Frontend.Display2 = this.DisplayBackend2.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
+            var displayBackend2 = Frontend.Display2.Backend as Control;
+            displayBackend2.Dock = DockStyle.Fill;
+            SplitContainer.Panel2.Controls.Add(displayBackend2);
 
-            Frontend.Initialize ();
+            SplitContainer.Panel1.BackColor = displayBackend1.BackColor;
+            SplitContainer.Panel2.BackColor = displayBackend1.BackColor;
 
-            Container.Panel1.BackColor = DisplayBackend1.BackColor;
-            Container.Panel2.BackColor = DisplayBackend1.BackColor;
-            
             // this is for mono on linux:
-            ActiveControl = DisplayBackend1;
+            ActiveControl = displayBackend1;
         }
 
 
@@ -145,20 +112,21 @@ namespace Limaki.Swf.Backends.Viewers {
                 control.GotFocus -= ControlGotFocus;
             }
         }
+
         #region View-Switching
         
         public void ToggleView() {
-            var one = Container.Panel1.Controls.Cast<Control>().ToArray();
-            var two = Container.Panel2.Controls.Cast<Control>().ToArray();
+            var one = SplitContainer.Panel1.Controls.Cast<Control>().ToArray();
+            var two = SplitContainer.Panel2.Controls.Cast<Control>().ToArray();
 
-            Container.SuspendLayout();
+            SplitContainer.SuspendLayout();
 
-            Container.Panel1.Controls.Clear();
-            Container.Panel2.Controls.Clear();
-            Container.Panel1.Controls.AddRange(two);
-            Container.Panel2.Controls.AddRange(one);
+            SplitContainer.Panel1.Controls.Clear();
+            SplitContainer.Panel2.Controls.Clear();
+            SplitContainer.Panel1.Controls.AddRange(two);
+            SplitContainer.Panel2.Controls.AddRange(one);
 
-            Container.ResumeLayout();
+            SplitContainer.ResumeLayout();
         }
 
         public void GraphContentView() {
@@ -166,26 +134,26 @@ namespace Limaki.Swf.Backends.Viewers {
         }
 
         public void GraphGraphView () {
-            Container.SuspendLayout();
+            SplitContainer.SuspendLayout();
 
-            Container.Panel1.SuspendLayout();
+            SplitContainer.Panel1.SuspendLayout();
             var display1 = this.Frontend.Display1.Backend as Control;
             
-            if (!Container.Panel1.Contains(display1)) {
-                Container.Panel1.Controls.Clear();
-                Container.Panel1.Controls.Add(display1);
+            if (!SplitContainer.Panel1.Contains(display1)) {
+                SplitContainer.Panel1.Controls.Clear();
+                SplitContainer.Panel1.Controls.Add(display1);
             }
 
-            Container.Panel2.SuspendLayout();
+            SplitContainer.Panel2.SuspendLayout();
             var display2 = this.Frontend.Display2.Backend as Control;
-            if (!Container.Panel2.Contains(display2)) {
-                Container.Panel2.Controls.Clear();
-                Container.Panel2.Controls.Add(display2);
+            if (!SplitContainer.Panel2.Contains(display2)) {
+                SplitContainer.Panel2.Controls.Clear();
+                SplitContainer.Panel2.Controls.Add(display2);
             }
 
-            Container.Panel1.ResumeLayout();
-            Container.Panel2.ResumeLayout();
-            Container.ResumeLayout();
+            SplitContainer.Panel1.ResumeLayout();
+            SplitContainer.Panel2.ResumeLayout();
+            SplitContainer.ResumeLayout();
 
         }
 
@@ -201,10 +169,10 @@ namespace Limaki.Swf.Backends.Viewers {
 
             SplitterPanel panel = null;
             if (currentDisplayBackend != control) {
-                if (Container.Panel1.Controls.Cast<Control>().Contains(currentDisplayBackend)) {
-                    panel = Container.Panel2;
-                } else if (Container.Panel2.Controls.Cast<Control>().Contains(currentDisplayBackend)) {
-                    panel = Container.Panel1;
+                if (SplitContainer.Panel1.Controls.Cast<Control>().Contains(currentDisplayBackend)) {
+                    panel = SplitContainer.Panel2;
+                } else if (SplitContainer.Panel2.Controls.Cast<Control>().Contains(currentDisplayBackend)) {
+                    panel = SplitContainer.Panel1;
                 }
             } else {
                 Trace.WriteLine("SplitViewBackend.AttachBackend: currentDisplayBackend == control");
@@ -247,10 +215,10 @@ namespace Limaki.Swf.Backends.Viewers {
             nameDialog.OnOk = onOk;
 
             var currentDisplay = this.Frontend.CurrentDisplay.Backend as Control;
-            if (Container.Panel1.Contains(currentDisplay)) {
-                Container.Panel1.Controls.Add(nameDialog);
-            } else if (Container.Panel2.Contains(currentDisplay)) {
-                Container.Panel2.Controls.Add(nameDialog);
+            if (SplitContainer.Panel1.Contains(currentDisplay)) {
+                SplitContainer.Panel1.Controls.Add(nameDialog);
+            } else if (SplitContainer.Panel2.Contains(currentDisplay)) {
+                SplitContainer.Panel2.Controls.Add(nameDialog);
             }
             nameDialog.Dock = DockStyle.Top;
             nameDialog.TextBox.Text = text;
@@ -259,13 +227,34 @@ namespace Limaki.Swf.Backends.Viewers {
 
         }
 
+        #region IVidgetBackend-Implementation
+
+        Xwt.Rectangle IVidgetBackend.ClientRectangle {
+            get { return this.ClientRectangle.ToXwt(); }
+        }
+
+        Xwt.Size IVidgetBackend.Size {
+            get { return this.Size.ToXwt(); }
+        }
+
+        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
+            this.Invalidate(rect.ToGdi());
+        }
+
+        Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+
+        #endregion
+
         #region IDisposable Member
 
         public void Dispose() {
             this.Frontend.Dispose ();
-            this.Container.Dispose ();
+            this.SplitContainer.Dispose ();
         }
 
         #endregion
+
+
+     
     }
 }

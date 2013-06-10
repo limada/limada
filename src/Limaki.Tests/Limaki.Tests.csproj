@@ -230,6 +230,7 @@
     <Compile Include="[Deprecated]\DataProviders\SceneProvider.cs" />
     <Compile Include="[Deprecated]\DataProviders\ThingGraphProvider.cs" />
     <Compile Include="[Deprecated]\DataProviders\XMLThingGraphProvider.cs" />
+    <Compile Include="[Deprecated]\DisplayToolStrip.cs" />
     <Compile Include="[Deprecated]\MatriceTest.cs" />
     <Compile Include="[Deprecated]\CompareMatricesRuntime.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\BasicVisualGraphTest.cs" />

@@ -21,7 +21,7 @@ using Limaki.Visuals;
 
 namespace Limaki.Viewers.ToolStripViewers {
 
-    public class LayoutToolStrip : ToolStripViewer<IGraphSceneDisplay<IVisual, IVisualEdge>, ILayoutToolStripViewerBackend> {
+    public class LayoutToolStrip : ToolStripViewer0<IGraphSceneDisplay<IVisual, IVisualEdge>, ILayoutToolStripViewerBackend> {
 
         public void StyleSheetChange(string sheetName) {
             IStyleSheet styleSheet = null;

@@ -24,10 +24,14 @@ using Limaki.Visuals;
 using System.Diagnostics;
 using Xwt;
 using Limaki.Drawing;
+using Xwt.Backends;
 
 namespace Limaki.Viewers.ToolStripViewers {
 
-    public class ArrangerToolStrip : ToolStripViewer<IGraphSceneDisplay<IVisual, IVisualEdge>, IToolStripViewerBackend> {
+    public interface IArrangerToolStripBackend:IToolStripViewerBackend{}
+
+    [BackendType(typeof(IArrangerToolStripBackend))]
+    public class ArrangerToolStrip : ToolStripViewer<IGraphSceneDisplay<IVisual, IVisualEdge>, IArrangerToolStripBackend> {
 
         public ToolStripCommand LogicalLayoutCommand { get; set; }
         public ToolStripCommand LogicalLayoutLeafCommand { get; set; }
@@ -193,7 +197,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                 Collisions = Collisions.NextFree //| Collisions.Toggle
             };
 
-            var size = new Xwt.Size(36, 36);
+            
             Action action = () => Columns(options);
 
             LogicalLayoutCommand = new ToolStripCommand {
@@ -202,7 +206,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.LogicalLayout,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "arrange siblings of selected"
             };
 
@@ -212,7 +216,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.LogicalLayoutLeaf,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "arrange leaf of selected"
             };
 
@@ -222,7 +226,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.FullLayout,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "arrange all"
             };
 
@@ -232,7 +236,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.ArrageRows,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "arrange in columns"
 
             };
@@ -242,7 +246,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeOneRow,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "arrange in one column"
             };
             ArrangeLeftCommand = new ToolStripCommand {
@@ -251,7 +255,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeLeft,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "align left"
             };
             ArrangeCenterCommand = new ToolStripCommand {
@@ -260,7 +264,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeCenter,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "align center"
             };
             ArrangeRightCommand = new ToolStripCommand {
@@ -269,7 +273,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeRight,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "align rigth"
             };
 
@@ -279,7 +283,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeTop,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "align top"
             };
             ArrangeCenterVCommand = new ToolStripCommand {
@@ -288,7 +292,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeMiddle,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "align middle"
             };
             ArrangeBottomCommand = new ToolStripCommand {
@@ -297,7 +301,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.ArrangeBottom,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "align bottom"
             };
 
@@ -307,7 +311,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.DimensionX,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "arrange left to right"
             };
 
@@ -317,13 +321,13 @@ namespace Limaki.Viewers.ToolStripViewers {
                     action();
                 },
                 Image = Limaki.View.Properties.Iconery.DimensionY,
-                Size = size,
+                Size = DefaultSize,
                 ToolTipText = "arrange top to bottom"
             };
 
             UndoCommand = new ToolStripCommand {
                 Action = (s) => Undo(),
-                Size = size,
+                Size = DefaultSize,
                 Image = Limaki.View.Properties.Iconery.Undo,
                 ToolTipText = "undo last arrange"
             };

@@ -20,36 +20,29 @@ using Limaki.Common.Text.HTML;
 using Limaki.Model.Content;
 using Limaki.Net.WebProxyServer;
 using Limaki.View;
+using Limaki.Viewers.Vidgets;
 
 namespace Limaki.Viewers.StreamViewers {
 
     public class HtmlContentViewer : ContentStreamViewer {
 
-        public IWebBrowserBackendHandler BackendHandler { get; set; }
-
-        IVidgetBackend _backend = null;
-        public override IVidgetBackend Backend {
+        WebBrowserVidget _webBrowser = null;
+        protected WebBrowserVidget WebBrowser {
             get {
-                if (_backend == null) {
-                    _backend = BackendHandler.CreateBackend(this.Parent);
-                    OnAttachBackend(_backend);
+                if (_webBrowser == null) {
+                    _webBrowser = new WebBrowserVidget();
+                    OnAttachBackend(WebBrowser.Backend);
                     UseWebServer = !OS.Mono;
-                    UseProxy = BackendHandler.AcceptsProxy(_backend);
+                    UseProxy = WebBrowser.Backend is IWebBrowserWithProxy;
                 }
-
-                return _backend;
+                return _webBrowser;
             }
         }
 
-        public override IVidget Frontend {
-            get { throw new NotImplementedException(); }
-        }
+        public override IVidget Frontend { get { return WebBrowser; } }
+        public override IVidgetBackend Backend { get { return WebBrowser.Backend; } }
 
-        protected IWebBrowser WebBrowser {
-            get { return Backend as IWebBrowser; }
-        }
-
-        public override bool Supports(long streamType) {
+        public override bool Supports (long streamType) {
             return streamType == ContentTypes.HTML;
         }
 
@@ -99,12 +92,16 @@ namespace Limaki.Viewers.StreamViewers {
 
                 WebBrowser.MakeReady ();
                 if (UseProxy) {
-                    BackendHandler.SetProxy (WebServer.Addr, WebServer.Port, this.Backend);
+                    var browserWithProxy = this.Backend as IWebBrowserWithProxy;
+                    if (browserWithProxy != null) {
+                        browserWithProxy.SetProxy(WebServer.Addr, WebServer.Port, this.Backend);
+                    }
+                    
                 }
 
                 WebBrowser.Navigate (response.AbsoluteUri);
+                WebBrowser.AfterNavigate(() => response.Done);
 
-                BackendHandler.AfterNavigate (WebBrowser, () => response.Done);
                 Trace.WriteLine ("Navigated to " + response.AbsoluteUri);
             }
         }
@@ -157,10 +154,10 @@ namespace Limaki.Viewers.StreamViewers {
         public override bool CanSave() {return false;}
 
         public override void Dispose () {
-            if (_backend is IDisposable) {
-                ((IDisposable)_backend).Dispose ();
+            if (_webBrowser is IDisposable) {
+                ((IDisposable)_webBrowser).Dispose();
             }
-            _backend = null;
+            _webBrowser = null;
             if (_webServer != null) {
                 _webServer.Dispose ();
                 _webServer = null;
@@ -171,7 +168,7 @@ namespace Limaki.Viewers.StreamViewers {
             if (_webServer != null) {
                 
             }
-            if (_backend != null) {
+            if (_webBrowser != null) {
                 WebBrowser.Navigate ("about:blank");
             }
         }

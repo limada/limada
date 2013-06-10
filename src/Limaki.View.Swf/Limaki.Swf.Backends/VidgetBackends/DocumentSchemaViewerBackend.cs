@@ -24,34 +24,27 @@ using Limaki.Viewers.StreamViewers;
 
 namespace Limaki.View.Swf.Backends {
     
-    public partial class DocumentSchemaBackend : UserControl, IZoomTarget, IDocumentSchemaViewerBackend {
+    public partial class DocumentSchemaViewerBackend : UserControl, IZoomTarget, IDocumentSchemaViewerBackend {
+
+        public DocumentSchemaViewerBackend () {}
 
         public DocumentSchemaViewer Frontend { get; set; }
 
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (DocumentSchemaViewer)frontend;
-        }
-
-        //TODO: replace with factory methods
-        public DocumentSchemaBackend():this(new SwfDocumentSchemaViewer()) {}
-
-        public DocumentSchemaBackend(DocumentSchemaViewer frontend) {
-            this.Frontend = frontend;
             Compose();
         }
 
         private void Compose () {
 
-            var pagesDisplayBackend = new VisualsDisplayBackend() {
-                Dock = System.Windows.Forms.DockStyle.Right,
-                Width = Frontend.GetDefaultWidth(),
-                TabStop = false
-            };
-
             var panel = new Panel { Dock = System.Windows.Forms.DockStyle.Fill, BackColor = Color.White };
             this.SuspendLayout();
 
-            Frontend.PagesDisplay = pagesDisplayBackend.Display as IGraphSceneDisplay<IVisual, IVisualEdge>;
+            var pagesDisplayBackend = Frontend.PagesDisplay.Backend as Control;
+            pagesDisplayBackend.Dock = System.Windows.Forms.DockStyle.Right;
+            pagesDisplayBackend.Width = Frontend.GetDefaultWidth();
+            pagesDisplayBackend.TabStop = false;
+            
             Frontend.Compose();
 
             var splitter = new System.Windows.Forms.Splitter { Dock = DockStyle.Right };
@@ -108,7 +101,6 @@ namespace Limaki.View.Swf.Backends {
         Xwt.Size IVidgetBackend.Size {
             get { return this.Size.ToXwt(); }
         }
-
 
         void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
             this.Invalidate(rect.ToGdi());

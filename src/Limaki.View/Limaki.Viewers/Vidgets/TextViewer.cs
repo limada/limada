@@ -2,6 +2,7 @@ using Limaki.View;
 using Xwt.Backends;
 
 namespace Limaki.Viewers.Vidgets {
+
     [BackendType(typeof(ITextViewerBackend))]
     public class TextViewer : Vidget {
         ITextViewerBackend _backend = null;
@@ -14,8 +15,7 @@ namespace Limaki.Viewers.Vidgets {
             }
             set { _backend = value; }
         }
-        public override void Dispose () {
 
-        }
+        public override void Dispose () {}
     }
 }

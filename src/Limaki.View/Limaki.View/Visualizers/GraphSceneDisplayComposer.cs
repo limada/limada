@@ -23,6 +23,7 @@ using Xwt;
 using System;
 
 namespace Limaki.View.Visualizers {
+
     public class GraphSceneDisplayComposer<TItem, TEdge> : DisplayComposer<IGraphScene<TItem, TEdge>>
         where TEdge : TItem, IEdge<TItem> {
 
@@ -50,8 +51,6 @@ namespace Limaki.View.Visualizers {
 
             display.DataRenderer = new GraphSceneRenderer<TItem, TEdge>();
             
-            
-
         }
 
         public override void Compose(Display<IGraphScene<TItem, TEdge>> aDisplay) {

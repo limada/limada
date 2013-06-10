@@ -114,10 +114,15 @@
     <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainter.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainterBase.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\VectorPainter.cs" />
-    <Compile Include="Limaki.Swf.Backends\Viewers.Content\DocumentSchemaBackend.cs">
+    <Compile Include="Limaki.Swf.Backends\VidgetBackends\DocumentSchemaViewerBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.Content\SwfDocumentSchemaViewer.cs" />
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\DisplayModeToolStripBackend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\DisplayModeToolStripBackend.Designer.cs">
+      <DependentUpon>DisplayModeToolStripBackend.cs</DependentUpon>
+    </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\MarkerToolStripBackend.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -139,14 +144,14 @@
     <Compile Include="Limaki.View.Swf\CursorHandlerBackend.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\DragDropCatcher.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\ImageDisplay.cs" />
-    <Compile Include="Limaki.View.Swf\Visualizers\SwfBackendComposer.cs" />
+    <Compile Include="Limaki.View.Swf\Visualizers\DisplayBackendComposer.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\ImageDisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Limaki.View.Swf\Visualizers\DisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.View.Swf\Visualizers\GraphSceneBackend.cs">
+    <Compile Include="Limaki.View.Swf\Visualizers\GraphSceneDisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Limaki.View.Swf\Visualizers\SwfViewport.cs" />
@@ -217,7 +222,6 @@
     <Compile Include="Limaki.Swf.Backends\ShapeComboBox.Designer.cs">
       <DependentUpon>ShapeComboBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.Content\WebBrowserBackendHandler.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.Content\ImageContentViewer.cs" />
     <Compile Include="Limaki.Swf.Backends\StyleEditor.cs">
       <SubType>UserControl</SubType>
@@ -230,12 +234,6 @@
     </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ArrangerToolStripBackend.Designer.cs">
       <DependentUpon>ArrangerToolStripBackend.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\DisplayToolStripBackend.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\DisplayToolStripBackend.Designer.cs">
-      <DependentUpon>DisplayToolStripBackend.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\LayoutToolStripBackend.cs">
       <SubType>Component</SubType>
@@ -255,7 +253,9 @@
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripShapeComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\SplitViewBackend.cs" />
+    <Compile Include="Limaki.Swf.Backends\SplitViewBackend.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Xwt.Gdi\SystemColorsBackend.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -319,9 +319,7 @@
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Limaki.Controls\TextEditor\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

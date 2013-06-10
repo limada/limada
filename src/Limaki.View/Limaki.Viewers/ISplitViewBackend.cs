@@ -17,9 +17,8 @@ using Limaki.View;
 
 namespace Limaki.Viewers {
 
-    public interface ISplitViewBackend {
+    public interface ISplitViewBackend:IVidgetBackend {
 
-        object Parent { get; }
         void InitializeDisplay (IVidgetBackend displayBackend);
 
         void GraphGraphView ();

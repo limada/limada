@@ -12,34 +12,31 @@
  * 
  */
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-using Limada.Model;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Model.Content;
-using System.IO;
-using Limaki.View.Swf;
-using Limaki.Viewers;
-using Limaki.View.Swf.Visualizers;
 using Limaki.View;
+using Limaki.View.Swf.Visualizers;
+using Limaki.Viewers;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
 
     public class ImageContentViewer : ContentStreamViewer {
 
         public override IVidget Frontend {
-            get { return Display; }
+            get { return ImageDisplay; }
         }
 
         public override IVidgetBackend Backend {
-            get { return Display.Backend;}
+            get { return ImageDisplay.Backend;}
         }
 
         IDisplay<Image> _display = null;
-        public virtual IDisplay<Image> Display {
+        public virtual IDisplay<Image> ImageDisplay {
             get {
                 if (_display == null) {
                     _display = new ImageDisplay();
@@ -77,8 +74,8 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         }
 
         public override void SetContent(Content<Stream> content) {
-            if (Display != null) {
-                var display = Display;
+            if (ImageDisplay != null) {
+                var display = ImageDisplay;
                 display.BackColor = this.BackColor;
                 display.Data = Image.FromStream(content.Data);
             }

@@ -16,8 +16,7 @@ using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends {
     
-    public class GeckoWebBrowser:Gecko.GeckoWebBrowser, IWebBrowserWithProxy,
-        IWebBrowser, IZoomTarget, IHistoryAware, IGeckoWebBrowser {
+    public class GeckoWebBrowser:Gecko.GeckoWebBrowser, IGeckoWebBrowser, IZoomTarget, IHistoryAware {
 
         public string XulDir(string basedir) {
             foreach (var dir in new string[]{ @"Plugins\",@"..\3rdParty\bin\"}) {
@@ -49,6 +48,21 @@ namespace Limaki.Swf.Backends {
             if (!e.ShiftKey && !e.AltKey && e.CtrlKey && keyCode == 'm') {
                 ZoomFactor = ZoomFactor / 1.1f;
             }
+        }
+
+        public void AfterNavigate (Func<bool> done) {
+            if (!OS.Mono) {
+                // try to resolve timing problems 
+                // does not work so well, but better than nothing
+                int i = 0;
+                while (!done() && i < 10) {
+                    Thread.Sleep(5);
+                    i++;
+                }
+            }
+            // fails with IExplorer, not necessry with gecko:
+            // control.Refresh();
+            Application.DoEvents();
         }
 
         #region IWebBrowser Member

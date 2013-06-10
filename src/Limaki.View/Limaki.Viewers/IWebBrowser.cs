@@ -80,7 +80,9 @@ namespace Limaki.Viewers {
         void Navigate(string urlString, string targetFrameName, byte[] postData, string additionalHeaders);
         void Navigate(Uri url, string targetFrameName, byte[] postData, string additionalHeaders);
         void Refresh();
-        
+
+        void AfterNavigate (Func<bool> done);
+
         void Stop();
         void GoSearch();
         void ShowPageSetupDialog();
@@ -112,7 +114,9 @@ namespace Limaki.Viewers {
 
     }
 
-    public interface IWebBrowserBackend : IWebBrowser, IVidgetBackend {}
+    public interface IWebBrowserBackend : IWebBrowser, IVidgetBackend {
+        
+    }
 
     public interface IWebBrowserWithProxy {
         void SetProxy(IPAddress adress, int port, object webBrowser);

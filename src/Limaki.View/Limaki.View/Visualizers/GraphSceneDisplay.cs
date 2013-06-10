@@ -22,6 +22,7 @@ using Limaki.View.Rendering;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Xwt.Drawing;
+using Xwt.Backends;
 
 namespace Limaki.View.Visualizers {
 

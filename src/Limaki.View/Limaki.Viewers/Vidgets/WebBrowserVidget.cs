@@ -1,3 +1,4 @@
+using Limaki.Common;
 using Limaki.View;
 using System;
 using System.IO;
@@ -8,7 +9,18 @@ namespace Limaki.Viewers.Vidgets {
     [BackendType(typeof(IWebBrowserBackend))]
     public class WebBrowserVidget : Vidget, IWebBrowser {
 
-        IWebBrowserBackend Backend { get { return BackendHost.Backend as IWebBrowserBackend; } }
+        public class WebBrowserBackendHost : VidgetBackendHost {
+            protected override IVidgetBackend OnCreateBackend () {
+                this.ToolkitEngine.Backend.CheckInitialized();
+                return Registry.Factory.Create<IWebBrowserBackend>();
+            }
+        }
+
+        protected override VidgetBackendHost CreateBackendHost () {
+            return new WebBrowserBackendHost();
+        }
+
+        public IWebBrowserBackend Backend { get { return BackendHost.Backend as IWebBrowserBackend; } }
 
         public bool AllowNavigation { get { return Backend.AllowNavigation; } set { Backend.AllowNavigation = value; } }
 
@@ -60,6 +72,10 @@ namespace Limaki.Viewers.Vidgets {
 
         public void Navigate (System.Uri url, string targetFrameName, byte[] postData, string additionalHeaders) {
             Backend.Navigate(url, targetFrameName, postData, additionalHeaders);
+        }
+
+        public void AfterNavigate (Func<bool> done) {
+            Backend.AfterNavigate(done);
         }
 
         public void Refresh () { Backend.Refresh(); }

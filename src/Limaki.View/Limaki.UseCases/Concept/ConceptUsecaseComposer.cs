@@ -1,25 +1,51 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2010-2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Limaki.Common;
 using Limada.View;
 using Limada.Usecases;
 using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Visuals;
+using Limaki.Viewers.ToolStripViewers;
 
 namespace Limaki.Usecases.Concept {
 
     public class ConceptUsecaseComposer : IComposer<ConceptUsecase> {
 
         public void Factor(ConceptUsecase useCase) {
+
+            useCase.SplitView = new SplitView0();
+
             useCase.SheetManager = Registry.Factory.Create<ISheetManager>();
             useCase.SceneHistory = new SceneHistory ();
-            useCase.GraphSceneUiManager = new ThingGraphUiManager();
-            useCase.GraphSceneUiManager.OpenFileDialog = new FileDialogMemento();
-            useCase.GraphSceneUiManager.SaveFileDialog = new FileDialogMemento();
-            useCase.ContentStreamUiManager = new ContentStreamUiManager();
-            useCase.ContentStreamUiManager.OpenFileDialog = new FileDialogMemento();
-            useCase.ContentStreamUiManager.SaveFileDialog = new FileDialogMemento();
+
+            useCase.GraphSceneUiManager = new ThingGraphUiManager {
+                OpenFileDialog = new FileDialogMemento(),
+                SaveFileDialog = new FileDialogMemento()
+            };
+
+            useCase.ContentStreamUiManager = new ContentStreamUiManager {
+                OpenFileDialog = new FileDialogMemento(),
+                SaveFileDialog = new FileDialogMemento()
+            };
 
             useCase.FavoriteManager = new FavoriteManager();
+
+            useCase.DisplayToolStrip = new DisplayModeToolStrip();
+            useCase.ArrangerToolStrip = new ArrangerToolStrip();
+            useCase.SplitViewToolStrip = new SplitViewToolStrip();
         }
 
         public void Compose(ConceptUsecase useCase) {
@@ -49,6 +75,8 @@ namespace Limaki.Usecases.Concept {
             
             useCase.DisplayStyleChanged += splitView.DoDisplayStyleChanged;
 
+            splitView.Check();
+
             var fileManager = useCase.GraphSceneUiManager;
             fileManager.FileDialogShow = useCase.FileDialogShow;
             fileManager.MessageBoxShow = useCase.MessageBoxShow;
@@ -59,8 +87,6 @@ namespace Limaki.Usecases.Concept {
             fileManager.Progress = useCase.Progress;
             fileManager.ApplicationQuit = useCase.ApplicationQuit;
             
-            splitView.Check ();
-			
             var streamManager = useCase.ContentStreamUiManager;
             streamManager.FileDialogShow = useCase.FileDialogShow;
             streamManager.MessageBoxShow = useCase.MessageBoxShow;

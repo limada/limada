@@ -1,19 +1,17 @@
-﻿/*
- * Limada 
+/*
+ * Limaki 
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2013 Lytico
+ * Copyright (C) 2010-2013 Lytico
  *
  * http://www.limada.org
  * 
  */
 
-using System.IO;
-using System.Linq;
 using Limada.Schemata;
 using Limada.Usecases;
 using Limada.VisualThings;
@@ -22,33 +20,50 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;
+using Limaki.Model.Content;
 using Limaki.View;
 using Limaki.View.Layout;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Visualizers;
-using Limaki.Viewers;
 using Limaki.Visuals;
-using Xwt;
-using Limaki.Model.Content;
-using System.Collections.Generic;
 using System;
+using System.IO;
+using System.Linq;
+using Xwt;
+using Xwt.Backends;
 using Xwt.Drawing;
 
 namespace Limaki.Viewers.StreamViewers {
 
     public interface IDocumentSchemaViewerBackend : IVidgetBackend { }
 
-    public abstract class DocumentSchemaViewer : ContentVisualViewer, IVidget {
+    [BackendType(typeof(IDocumentSchemaViewerBackend))]
+    public class DocumentSchemaViewer : Vidget, IZoomTarget {
 
-        public override IVidget Frontend {
-            get { return this; }
+        IDocumentSchemaViewerBackend _backend = null;
+        public virtual IDocumentSchemaViewerBackend Backend {
+            get {
+                if (_backend == null) {
+                    _backend = BackendHost.Backend as IDocumentSchemaViewerBackend;
+                }
+                return _backend;
+            }
+            set { _backend = value; }
         }
-        public IGraphSceneDisplay<IVisual, IVisualEdge> PagesDisplay { get; set; }
 
-        public IDisplay ContentDisplay { get; set; }
-        ContentStreamViewer ContentViewer { get; set; }
+        IGraphSceneDisplay<IVisual, IVisualEdge> _pagesDisplay = null;
+        public IGraphSceneDisplay<IVisual, IVisualEdge> PagesDisplay {
+            get {
+                if (_pagesDisplay == null) {
+                    _pagesDisplay = new VisualsDisplay();
+                }
+                return _pagesDisplay;
+            }
+        }
+
+        public virtual ContentStreamViewer ContentViewer { get; set; }
 
         public Action<ContentStreamViewer> AttachContentViewer { get; set; }
 
@@ -57,39 +72,55 @@ namespace Limaki.Viewers.StreamViewers {
                 if (value != null) {
                     var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
                     var viewer = viewerProvider.Supports(value.ContentType);
-
                     if (viewer != null) {
-                        viewer.BackColor = Colors.White;
                         viewer.SetContent(value);
                         if (ContentViewer != viewer) {
                             ContentViewer = viewer;
-                            AttachContentViewer(viewer);
+                            OnAttachContentViewer(viewer);
                         }
-                        var displayBackend = viewer.Backend as IDisplayBackend;
-                        if (displayBackend != null) {
-                            var display = displayBackend.Frontend;
-                            if (ContentDisplay != display) {
-                                ContentDisplay = display;
-                                AttachContentDisplay(display);
-                            }
-                        }
-
                     }
+
                 } else {
-                    ContentDisplay = null;
+                    ContentViewer = null;
+                }
+            }
+        }
+
+        public void OnAttachContentViewer (ContentStreamViewer viewer) {
+            if (viewer == null)
+                return;
+
+            viewer.BackColor = Colors.White;
+            if (ContentViewer != viewer) {
+                ContentViewer = viewer;
+                if (AttachContentViewer != null)
+                    AttachContentViewer(viewer);
+
+                var display = viewer.Frontend as IDisplay;
+                if (display == null)
+                    return;
+
+                display.ZoomState = ZoomState.FitToWidth;
+                display.EventControler.Remove(display.EventControler.GetAction<KeyScrollAction>());
+
+                var scroller = display.EventControler.GetAction<DocumentSchemaKeyScrollAction>();
+                if (scroller == null) {
+                    scroller = new DocumentSchemaKeyScrollAction();
+                    scroller.Viewport = () => display.Viewport;
+                    display.EventControler.Add(scroller);
                 }
             }
         }
 
         public virtual void Compose () {
             ComposePagesDisplay(PagesDisplay);
-           
         }
 
-        public int GetDefaultWidth () {
+        protected int padding = 4;
+        public virtual int GetDefaultWidth () {
             var utils = Registry.Pool.TryGetCreate<IDrawingUtils>();
             var size = utils.GetTextDimension("".PadLeft(padding, '9'), DefaultStyleSheet.BaseStyle);
-            return (int) (size.Width + 32);
+            return (int)(size.Width + 32);
         }
 
         IStyleSheet _defaultStyleSheet = null;
@@ -103,10 +134,10 @@ namespace Limaki.Viewers.StreamViewers {
             }
         }
 
-        Size Border { get; set; }
-        
-        public void ComposePagesDisplay (IGraphSceneDisplay<IVisual, IVisualEdge> display) {
-            
+        protected virtual Size Border { get; set; }
+
+        protected virtual void ComposePagesDisplay (IGraphSceneDisplay<IVisual, IVisualEdge> display) {
+
             display.SceneFocusChanged += (s, e) => {
                 var docMan = new DocumentSchemaManager();
                 var pageContent = docMan.PageContent(e.Scene.Graph, e.Item);
@@ -115,7 +146,7 @@ namespace Limaki.Viewers.StreamViewers {
                 } else {
                     PageContent = null;
                 }
-                AttachScroller(display, ContentDisplay);
+                AttachScroller(display, ContentViewer.Frontend as IDisplay);
             };
 
             var layout = display.Layout;
@@ -130,25 +161,9 @@ namespace Limaki.Viewers.StreamViewers {
             folding.Folder.RemoveOrhpans = false;
         }
 
-        public void AttachContentDisplay (IDisplay contentDisplay) {
-            if (contentDisplay == null)
-                return;
-            contentDisplay.ZoomState = ZoomState.FitToWidth;
-            contentDisplay.EventControler.Remove(contentDisplay.EventControler.GetAction<KeyScrollAction>());
 
-            var scroller = contentDisplay.EventControler.GetAction<DocumentSchemaKeyScrollAction>();
-            if (scroller == null) {
-                scroller = new DocumentSchemaKeyScrollAction();
-                scroller.Viewport = () => contentDisplay.Viewport;
-                contentDisplay.EventControler.Add(scroller);
-            }
-        }
 
-        private int padding = 4;
-
-        public IVisual DocumentVisual { get; protected set; }
-
-        protected void AttachScroller (IGraphSceneDisplay<IVisual, IVisualEdge> pagesDisplay, IDisplay contentDisplay) {
+        protected virtual void AttachScroller (IGraphSceneDisplay<IVisual, IVisualEdge> pagesDisplay, IDisplay contentDisplay) {
             if (contentDisplay == null)
                 return;
 
@@ -178,18 +193,19 @@ namespace Limaki.Viewers.StreamViewers {
             }
         }
 
-        public override void SetContent (IGraph<IVisual, IVisualEdge> sourceGraph, IVisual sourceDocument) {
+        public virtual IVisual DocumentVisual { get; set; }
+        public virtual void SetDocument (GraphCursor<IVisual, IVisualEdge> source) {
 
             var pagesDisplay = this.PagesDisplay;
-           
+
             // bring the docpages into view:
             var docManager = new DocumentSchemaManager();
             var scene = new Scene();
-            var targetGraph = new WiredDisplays().CreateTargetGraph(sourceGraph);
+            var targetGraph = new WiredDisplays().CreateTargetGraph(source.Graph);
             scene.Graph = targetGraph;
             pagesDisplay.Data = scene;
 
-            var doc = sourceGraph.ThingOf(sourceDocument);
+            var doc = source.Graph.ThingOf(source.Cursor);
             var targetDocument = targetGraph.VisualOf(doc);
 
             this.DocumentVisual = targetDocument;
@@ -211,12 +227,12 @@ namespace Limaki.Viewers.StreamViewers {
                 PointOrderDelta = 1
             };
 
-            aligner.OneColumn(pages, (Point) this.Border, options);
+            aligner.OneColumn(pages, (Point)this.Border, options);
             aligner.Locator.Commit(aligner.GraphScene.Requests);
 
             pagesDisplay.DataId = 0;
             new State { Hollow = true }.CopyTo(pagesDisplay.State);
-            pagesDisplay.Text = sourceDocument.Data == null ? CommonSchema.NullString : sourceDocument.Data.ToString();
+            pagesDisplay.Text = source.Cursor.Data == null ? CommonSchema.NullString : source.Cursor.Data.ToString();
             pagesDisplay.Viewport.Reset();
             pagesDisplay.BackendRenderer.Render();
 
@@ -231,40 +247,49 @@ namespace Limaki.Viewers.StreamViewers {
             var pageCache = new Set<IVisual>(pages);
             var moveResize = pagesDisplay.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();
             moveResize.FocusFilter = e => pageCache.Contains(e) ? null : e;
-           
+
         }
 
         public override void Dispose () {
             Clear();
         }
 
-        public override bool Supports (IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
-            var docManager = new DocumentSchemaManager();
-            return docManager.HasPages(graph, visual);
-        }
-
-        public override void Clear () {
+        public virtual void Clear () {
             if (PagesDisplay != null) {
                 PagesDisplay.Data = null;
                 PageContent = null;
             }
-         
-            base.Clear();
         }
+
         #region IZoomTarget Member
 
+        private ZoomState _zoomState = ZoomState.FitToWidth;
         public ZoomState ZoomState {
-            get { return ContentDisplay.ZoomState; }
-            set { ContentDisplay.ZoomState = value; }
+            get { return _zoomState; }
+            set {
+                _zoomState = value;
+                var zoom = ContentViewer.Frontend as IZoomTarget;
+                if (zoom != null)
+                    zoom.ZoomState = value;
+
+            }
         }
 
+        private double _zoomFactor = 0;
         public double ZoomFactor {
-            get { return ContentDisplay.Viewport.ZoomFactor; }
-            set { ContentDisplay.Viewport.ZoomFactor = value; }
+            get { return _zoomFactor; }
+            set {
+                _zoomFactor = value;
+                var zoom = ContentViewer.Frontend as IZoomTarget;
+                if (zoom != null)
+                    zoom.ZoomFactor = value;
+            }
         }
 
         public void UpdateZoom () {
-            ContentDisplay.Viewport.UpdateZoom();
+            var zoom = ContentViewer.Frontend as IZoomTarget;
+            if (zoom != null)
+                zoom.UpdateZoom();
         }
 
         #endregion

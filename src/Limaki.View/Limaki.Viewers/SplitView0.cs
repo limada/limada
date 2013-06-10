@@ -30,15 +30,25 @@ using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Xwt;
 using Xwt.Drawing;
+using Xwt.Backends;
 
 namespace Limaki.Viewers {
 
-    public class SplitView0 : ISplitView, IDisposable, ICheckable {
+    [BackendType(typeof(ISplitViewBackend))]
+    public class SplitView0 : Vidget, ISplitView, IDisposable, ICheckable {
 
-        public ISplitViewBackend Backend { get; set; }
-        
+        public SplitView0 () {
+            Compose();
+        }
+
+        public ISplitViewBackend Backend { get { return BackendHost.Backend as ISplitViewBackend; } }
+
         #region Initialize
-        public void Initialize() {
+
+        public virtual void Compose () {
+            Display1 = new VisualsDisplay();
+            Display2 = new VisualsDisplay();
+            
             Display1.BackColor = SystemColors.Window;
 
             Display1.ZoomState = ZoomState.Original;
@@ -65,10 +75,8 @@ namespace Limaki.Viewers {
             display.SceneFocusChanged += SceneFocusChanged;
             
             Backend.SetFocusCatcher(display.Backend);
+            Backend.InitializeDisplay(display.Backend);
 
-            if (Backend !=null) {
-                Backend.InitializeDisplay(display.Backend);
-            }
         }
 
         #endregion 
@@ -211,7 +219,6 @@ namespace Limaki.Viewers {
                     _contentViewManager = new ContentViewManager();
                 }
                 
-                _contentViewManager.Parent = Backend.Parent;
                 _contentViewManager.BackColor = Display1.BackColor;
 
                 _contentViewManager.AttachViewerBackend = Backend.AttachViewerBackend;
@@ -490,9 +497,17 @@ namespace Limaki.Viewers {
             }
         }
 
-        public void Dispose() {
-            Clear ();
-            this.ContentViewManager.Dispose();
+        public override void Dispose () {
+            Clear();
+
+            if (_contentViewManager != null)
+                this.ContentViewManager.Dispose();
+
+            Display1.Dispose();
+            Display1 = null;
+            Display2.Dispose();
+            Display2 = null;
+
 
         }
 

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Limaki.Swf.Backends.TextEditor {
+
     public partial class TextBoxEditorToolStrip : ToolStrip {
         public TextBoxEditorToolStrip() {
             InitializeComponent();

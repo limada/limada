@@ -42,8 +42,7 @@ namespace Limaki.Viewers.StreamViewers {
             }
         }
 
-        public override IVidgetBackend Backend {
-            get { return TextViewerWithToolstrip.Backend; } }
+        public override IVidgetBackend Backend { get { return TextViewerWithToolstrip.Backend; } }
 
         public override void SetContent(Content<Stream> content) {
             base.SetContent(content);

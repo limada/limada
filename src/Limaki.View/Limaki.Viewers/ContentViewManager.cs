@@ -36,7 +36,6 @@ namespace Limaki.Viewers {
         public ISheetManager SheetManager { get; set; }
 
         public Color BackColor = SystemColors.Background;
-        public object Parent = null;
 
         /// <summary>
         /// called in AttachViewer
@@ -57,7 +56,6 @@ namespace Limaki.Viewers {
             get { return Registry.Pool.TryGetCreate<IExceptionHandler> (); }
         }
 
-        IThing currentThing = null;
         bool IsStreamOwner = true;
         private ContentViewerProvider _providers = null;
         public ContentViewerProvider Providers { get { return _providers ?? (_providers = Registry.Pool.TryGetCreate<ContentViewerProvider>()); } }
@@ -71,7 +69,7 @@ namespace Limaki.Viewers {
             }
 
             viewer.BackColor = this.BackColor;
-            viewer.Parent = this.Parent;
+
             if (this.ViewersAttachBackend != null) {
                 viewer.AttachBackend = this.ViewersAttachBackend;
             }
@@ -103,7 +101,6 @@ namespace Limaki.Viewers {
                     viewer.ContentId = thing.Id;
                 }
 
-                currentThing = thing;
 
             } catch (Exception ex) {
                 ExceptionHandler.Catch(ex, MessageType.OK);
@@ -123,7 +120,6 @@ namespace Limaki.Viewers {
                     viewer.SetContent(graph, visual);
                 }
 
-                currentThing = thing;
 
             } catch (Exception ex) {
                 ExceptionHandler.Catch(ex, MessageType.OK);
@@ -190,7 +186,6 @@ namespace Limaki.Viewers {
             foreach (var viewer in Providers.Viewers) {
                 viewer.Clear();
             }
-            currentThing = null;
         }
 
         public void Dispose() {

@@ -24,6 +24,7 @@ namespace Limaki.Viewers.Vidgets {
             }
             set { _backend = value; }
         }
+
         public override void Dispose () {
 
         }

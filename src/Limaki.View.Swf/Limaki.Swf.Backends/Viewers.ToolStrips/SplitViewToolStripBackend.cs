@@ -26,15 +26,17 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
         public SplitViewToolStripBackend () {
             InitializeComponent();
+           
+        }
+
+        public override void InitializeBackend (Limaki.View.IVidget frontend, Limaki.View.VidgetApplicationContext context) {
+            this.Frontend = (SplitViewToolStrip)frontend;
             Compose();
         }
 
-        SplitViewToolStrip _frontend = null;
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SplitViewToolStrip Frontend {
-            get { return _frontend ?? (_frontend = new SplitViewToolStrip { Backend = this }); }
-        }
+        public SplitViewToolStrip Frontend { get; protected set; }
 
         private ToolStripButtonEx graphStreamViewButton;
         private ToolStripButtonEx graphGraphViewButton;

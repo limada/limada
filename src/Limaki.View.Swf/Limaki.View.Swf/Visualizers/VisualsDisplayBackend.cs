@@ -6,42 +6,35 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2008-2013 Lytico
  *
  * http://www.limada.org
  */
 
-using System.Windows.Forms;
 using Limaki.Drawing;
-using Limaki.View.Visualizers;
 using Limaki.View.Swf.Visuals;
 using Limaki.View.UI.GraphScene;
-using Limaki.View.Visuals.Visualizers;
+using Limaki.View.Visualizers;
 using Limaki.View.Visuals.UI;
+using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
-
+using System.Windows.Forms;
 
 namespace Limaki.View.Swf.Visualizers {
 
-    public class VisualsDisplayBackend : GraphSceneBackend<IVisual, IVisualEdge> {
+    public class VisualsDisplayBackend : GraphSceneDisplayBackend<IVisual, IVisualEdge>, IVisualsDisplayBackend {
 
-        public override DisplayFactory<IGraphScene<IVisual, IVisualEdge>> CreateDisplayFactory(DisplayBackend<IGraphScene<IVisual, IVisualEdge>> backend) {
-            var result = new VisualsDisplayFactory();
-            var deviceInstrumenter = new SwfVisualsDeviceInstrumenter();
-            deviceInstrumenter.Backend = backend;
-            result.BackendComposer = deviceInstrumenter;
-            result.DisplayComposer = new WinformVisualsDisplayIntrumenter ();
-            return result;
+        public override DisplayFactory<IGraphScene<IVisual, IVisualEdge>> CreateDisplayFactory (DisplayBackend<IGraphScene<IVisual, IVisualEdge>> backend) {
+           return new VisualsDisplayFactory {
+                BackendComposer = new VisualsDisplayBackendComposer { Backend = backend },
+                DisplayComposer = new SwfVisualsDisplayComposer()
+            };
         }
     }
 
-    public class WinformVisualsDisplayIntrumenter:VisualsDisplayComposer {
+    public class SwfVisualsDisplayComposer:VisualsDisplayComposer {
 
         public VisualsDragDrop DragDrop { get; set; }
-        public override void Factor(Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
-            base.Factor(aDisplay);
-            
-        }
 
         public override void Compose(Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
             var display = aDisplay;
@@ -78,15 +71,5 @@ namespace Limaki.View.Swf.Visualizers {
         }
     }
 
-
-    public class SwfVisualsDeviceInstrumenter : SwfGraphSceneBackendComposer<IVisual, IVisualEdge> {
-        public override void Factor(Display<IGraphScene<IVisual, IVisualEdge>> display) {
-            base.Factor(display);
-        }
-
-        public override void Compose(Display<IGraphScene<IVisual, IVisualEdge>> display) {
-            base.Compose(display);
-           
-        }
-    }
+    public class VisualsDisplayBackendComposer : GraphSceneDisplayBackendComposer<IVisual, IVisualEdge> {}
 }

@@ -5,7 +5,7 @@ using Limaki.Viewers.ToolStripViewers;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
-    public partial class ToolStripBackend : ToolStrip, IToolStripViewerBackend {
+    public abstract partial class ToolStripBackend : ToolStrip, IToolStripViewerBackend {
         #region IVidgetBackend Member
 
         Xwt.Rectangle IVidgetBackend.ClientRectangle {
@@ -32,13 +32,12 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             return this.PointToClient(source.ToGdi()).ToXwt();
         }
 
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            throw new System.NotImplementedException();
-        }
+        public abstract void InitializeBackend(IVidget frontend, VidgetApplicationContext context);
+
 
         #endregion
 
 
-      
+
     }
 }

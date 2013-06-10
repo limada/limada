@@ -63,12 +63,13 @@
     <Compile Include="Limada.UseCases\Content\ThingGraphUiManager.cs" />
     <Compile Include="Limada.UseCases\DocumentSchemaDataProvider.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\DocumentSchemaKeyScrollAction.cs" />
-    <Compile Include="Limaki.Viewers\ContentViewers\DocumentSchemaViewer.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewers\DocumentSchemaContentViewer.cs" />
     <Compile Include="Limada.VisualThings\SceneIo.cs" />
     <Compile Include="Limada.VisualThings\VisualThingsSceneExtensions.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindDrawingUtils.cs" />
     <Compile Include="Limaki.Drawing\Dimension.cs" />
     <Compile Include="Limaki.Usecases\IoUiManager.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewers\DocumentSchemaViewer.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\TextContentViewer.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\TextContentViewerWithToolstrip.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\WebResponseBase.cs" />
@@ -76,10 +77,12 @@
     <Compile Include="Limaki.Viewers\IToolStripCommandItem.cs" />
     <Compile Include="Limaki.Viewers\IToolStripItem.cs" />
     <Compile Include="Limaki.Viewers\ToolStripCommand.cs" />
+    <Compile Include="Limaki.Viewers\ToolStripViewers\DisplayModeToolStrip.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\SplitViewDumnmy.cs" />
     <Compile Include="Limaki.Iconeria\Iconery.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\MarkerToolStrip.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ToolStripViewer.cs" />
+    <Compile Include="Limaki.Viewers\ToolStripViewers\ToolStripViewer0.cs" />
     <Compile Include="Limaki.Viewers\Vidgets\ITextViewerBackend.cs" />
     <Compile Include="Limaki.Viewers\Vidgets\ITextViewerWithToolstripBackend.cs" />
     <Compile Include="Limaki.Viewers\Vidgets\TextViewer.cs" />
@@ -196,7 +199,6 @@
     <Compile Include="Limada.VisualThings\VisualThingMarkerFacade.cs" />
     <Compile Include="Limada.VisualThings\VisualThingSerializer.cs" />
     <Compile Include="Limada.VisualThings\VisualThingContentFacade.cs" />
-    <Compile Include="Limaki.Viewers\ContentViewers\IWebBrowserBackendHandler.cs" />
     <Compile Include="Limaki.View\Clipping\BoundsClipper.cs" />
     <Compile Include="Limaki.View\Clipping\ClipReceiver.cs" />
     <Compile Include="Limaki.View\Clipping\IClipReceiver.cs" />
@@ -287,8 +289,7 @@
     <Compile Include="Limaki.View\Rendering\MoveResizeRendererBase.cs" />
     <Compile Include="Limaki.View\UI\SelectorAction.cs" />
     <Compile Include="Limaki.View\UI\ZoomAction.cs" />
-    <Compile Include="Limaki.View\Visuals\Visualizers\VisualsDisplayComposer.cs" />
-    <Compile Include="Limaki.View\Visuals\Visualizers\VisualsDisplayFactory.cs" />
+    <Compile Include="Limaki.View\Visuals\Visualizers\VisualsDisplay.cs" />
     <Compile Include="Limaki.View\Visuals\Visualizers\VisualsRecourceLoader.cs" />
     <Compile Include="Limaki.View\Visuals\Visualizers\WiredDisplays.cs" />
     <Compile Include="Limaki.View\Visuals\Layout\VisualsSceneLayout.cs" />
@@ -326,7 +327,6 @@
     <Compile Include="Limaki.Viewers\ContentVisualViewerProvider.cs" />
     <Compile Include="Limaki.Viewers\ContentVisualViewer.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ArrangerToolStrip.cs" />
-    <Compile Include="Limaki.Viewers\ToolStripViewers\DisplayToolStrip.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\IDisplayToolStripBackend.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ILayoutToolStripViewerBackend.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\IMarkerTool.cs" />

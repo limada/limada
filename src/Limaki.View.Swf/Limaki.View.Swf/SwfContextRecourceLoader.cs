@@ -31,6 +31,15 @@ using System;
 using Xwt.Engine;
 using Limaki.Swf.Backends.Viewers.Content;
 using Limaki.Swf.Backends.TextEditor;
+using Limaki.Viewers.StreamViewers;
+using Limaki.View.Swf.Backends;
+using Limaki.View.Visuals.Visualizers;
+using System.Windows.Forms;
+using System.Diagnostics;
+using System.Threading;
+using Limaki.Viewers.ToolStripViewers;
+using Limaki.Swf.Backends.Viewers.ToolStrips;
+using Limaki.Swf.Backends.Viewers;
 
 
 namespace Limaki.View.Swf {
@@ -62,21 +71,10 @@ namespace Limaki.View.Swf {
             context.Factory.Add<IVisualFactory,VisualFactory>();
             
             context.Factory.Add<ICursorHandler, CursorHandlerBackend>();
-            context.Factory.Add<IDisplay<IGraphScene<IVisual, IVisualEdge>>>(() => new VisualsDisplayBackend().Display);
             context.Factory.Add<IMessageBoxShow, MessageBoxShow>();
 
-            if (!OS.IsWin64Process)
-                context.Factory.Add<IGeckoWebBrowser>(() => {
-                    // this is needed to avoid loading win86-Assembly:
-                    var gecko = Activator.CreateInstance(
-                        this.GetType().Assembly.FullName,
-                        typeof(WebBrowserBackend).Namespace + ".GeckoWebBrowser");
-                    if (gecko != null)
-                        return (IGeckoWebBrowser)gecko.Unwrap();
-                    return null;
-                });
-            
-            context.Factory.Add<IWebBrowserBackend>(() => new WebBrowserBackend());
+
+            context.Factory.Add<IWebBrowserBackend>(() => CreateWebBrowserBackend());
 
             new ViewContextRecourceLoader().ApplyResources(context);
 
@@ -90,7 +88,30 @@ namespace Limaki.View.Swf {
             VidgetToolkit.CurrentEngine = new VidgetToolkit { Backend = engine };
         }
 
-
+        public static bool GeckoFailed = false;
+        public IWebBrowserBackend CreateWebBrowserBackend () {
+            Control _backend = null;
+            if (GeckoFailed || OS.Mono || OS.IsWin64Process) { //(true){ //
+                _backend = new WebBrowserBackend();
+                GeckoFailed = true;
+                Trace.WriteLine("No Gecko");
+            } else {
+                try {
+                    var gecko = Activator.CreateInstance(
+                       this.GetType().Assembly.FullName,
+                       typeof(WebBrowserBackend).Namespace + ".GeckoWebBrowser");
+                    if (gecko != null)
+                        _backend = (Control)gecko.Unwrap();
+                    else
+                        throw new Exception();
+                } catch {
+                    GeckoFailed = true;
+                    return CreateWebBrowserBackend();
+                }
+                Thread.Sleep(0);
+            }
+            return _backend as IWebBrowserBackend;
+        }
     }
 
     public class SwfVidgetToolkitEngineBackend : VidgetToolkitEngineBackend {
@@ -100,11 +121,21 @@ namespace Limaki.View.Swf {
             base.InitializeBackends();
 
             RegisterBackend<IImageDisplayBackend, ImageDisplayBackend>();
-            RegisterBackend<IDisplayBackend<IGraphScene<IVisual, IVisualEdge>>, VisualsDisplayBackend>();
+            RegisterBackend<IVisualsDisplayBackend, VisualsDisplayBackend>();
 
             RegisterBackend<ITextViewerBackend, TextViewerBackend>();
             RegisterBackend<ITextViewerWithToolstripBackend, TextViewerWithToolstripBackend>();
             RegisterBackend<IWebBrowserBackend, WebBrowserBackend>();
+
+            RegisterBackend<ISplitViewBackend, SplitViewBackend>();
+
+            RegisterBackend<IDocumentSchemaViewerBackend, DocumentSchemaViewerBackend>();
+
+            RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend>();
+            RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend>();
+            RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend>();
+
+
         }
     }
 }

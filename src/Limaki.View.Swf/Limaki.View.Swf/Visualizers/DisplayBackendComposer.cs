@@ -4,7 +4,7 @@ using Limaki.View.UI;
 
 namespace Limaki.View.Swf.Visualizers {
 
-    public class SwfBackendComposer<TData> : BackendComposer<TData, DisplayBackend<TData>> {
+    public class DisplayBackendComposer<TData> : BackendComposer<TData, DisplayBackend<TData>> {
         
         public EventControler EventControler { get; set; }
         public override void Factor(Display<TData> display) {
