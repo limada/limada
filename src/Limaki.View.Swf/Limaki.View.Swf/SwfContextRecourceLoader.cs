@@ -136,6 +136,8 @@ namespace Limaki.View.Swf {
             RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend>();
             RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend>();
             RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend>();
+            RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend>();
+            RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend>();
 
 
         }

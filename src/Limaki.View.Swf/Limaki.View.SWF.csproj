@@ -123,6 +123,12 @@
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\DisplayModeToolStripBackend.Designer.cs">
       <DependentUpon>DisplayModeToolStripBackend.cs</DependentUpon>
     </Compile>
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\LayoutToolStripBackend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\LayoutToolStripBackend.Designer.cs">
+      <DependentUpon>LayoutToolStripBackend.cs</DependentUpon>
+    </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\MarkerToolStripBackend.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -234,12 +240,6 @@
     </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ArrangerToolStripBackend.Designer.cs">
       <DependentUpon>ArrangerToolStripBackend.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\LayoutToolStripBackend.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\LayoutToolStripBackend.Designer.cs">
-      <DependentUpon>LayoutToolStripBackend.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\SplitViewToolStripBackend.cs">
       <SubType>Component</SubType>

@@ -46,6 +46,9 @@ namespace Limaki.Usecases.Concept {
             useCase.DisplayToolStrip = new DisplayModeToolStrip();
             useCase.ArrangerToolStrip = new ArrangerToolStrip();
             useCase.SplitViewToolStrip = new SplitViewToolStrip();
+            useCase.LayoutToolStrip = new LayoutToolStrip();
+            useCase.MarkerToolStrip = new MarkerToolStrip();
+
         }
 
         public void Compose(ConceptUsecase useCase) {
@@ -68,7 +71,7 @@ namespace Limaki.Usecases.Concept {
             useCase.SplitViewToolStrip.SheetManager = useCase.SheetManager;
 
             splitView.CurrentWidgetChanged += c => useCase.DisplayToolStrip.Attach(c);
-            splitView.CurrentWidgetChanged += c => useCase.LayoutToolController.Attach(c);
+            splitView.CurrentWidgetChanged += c => useCase.LayoutToolStrip.Attach(c);
             splitView.CurrentWidgetChanged += c => useCase.MarkerToolStrip.Attach(c);
             splitView.CurrentWidgetChanged += c => useCase.SplitViewToolStrip.Attach(c);
             splitView.CurrentWidgetChanged += c => useCase.ArrangerToolStrip.Attach(c);

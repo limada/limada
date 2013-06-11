@@ -42,9 +42,6 @@ namespace Limaki.Swf.Backends.UseCases {
         public ToolStripContainer ToolStripContainer { get; set; }
         public MenuStrip MenuStrip { get; set; }
 
-        public MarkerToolStripBackend MarkerToolStripBackend { get; set; }
-        public LayoutToolStripBackend LayoutToolStripBackend { get; set; }
-
         public ToolStripStatusLabel StatusLabel { get; set; }
         public StatusStrip StatusStrip { get; set; }
 
@@ -62,9 +59,6 @@ namespace Limaki.Swf.Backends.UseCases {
             ToolStripContainer.ResumeLayout();
             ToolStripContainer.PerformLayout();
             splitViewBackend.SplitterDistance = (int)(ToolStripContainer.Width / 2);
-
-            LayoutToolStripBackend = new LayoutToolStripBackend ();
-            MarkerToolStripBackend = new MarkerToolStripBackend ();
 
             //TODO: move this to UseCaseContextResourceLoader
             Registry.Factory.Add<ContentViewerProvider, ContentVisualViewerProvider> ();
@@ -87,9 +81,6 @@ namespace Limaki.Swf.Backends.UseCases {
 
             ToolStripContainer.BottomToolStripPanel.Controls.Add (StatusStrip);
             this.StatusStrip.Items.Add (StatusLabel);
-
-            useCase.LayoutToolController = LayoutToolStripBackend.Frontend;
-            useCase.MarkerToolStrip = MarkerToolStripBackend.Frontend;
 
             useCase.DataPostProcess =
                 dataName => Mainform.Text = dataName + " - " + useCase.UseCaseTitle;
@@ -126,8 +117,8 @@ namespace Limaki.Swf.Backends.UseCases {
                 new ToolStrip[] {
                     useCase.ArrangerToolStrip.Backend as ToolStrip,
                     useCase.SplitViewToolStrip.Backend as ToolStrip,
-                    MarkerToolStripBackend,
-                    LayoutToolStripBackend,
+                    useCase.MarkerToolStrip.Backend as ToolStrip,
+                    useCase.LayoutToolStrip.Backend as ToolStrip,
                     useCase.DisplayToolStrip.Backend as ToolStrip,
                 });
 

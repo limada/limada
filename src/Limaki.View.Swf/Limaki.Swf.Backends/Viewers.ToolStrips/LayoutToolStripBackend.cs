@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2008-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -17,77 +17,76 @@ using System.Windows.Forms;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
-using Limaki.Viewers.ToolStripViewers;
 using Limaki.Swf.Backends.UseCases;
 using Limaki.View;
+using Limaki.Viewers.ToolStripViewers;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
-    public partial class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripViewerBackend {
-        
-        public LayoutToolStrip Frontend = new LayoutToolStrip();
-        
+
+    public partial class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripBackend {
+
+        public LayoutToolStrip Frontend { get; set; }
+
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (LayoutToolStrip)frontend;
-        }
-
-        public LayoutToolStripBackend() {
-            InitializeComponent();
             Compose();
-            InitLayoutTools();
-           
-            Frontend.Backend = this;
-
         }
+
+        public LayoutToolStripBackend () {
+            InitializeComponent();
+        }
+
         protected virtual void Compose () {
             var shapeCombo = new ToolStripShapeComboBox {
-                AutoSize = false,
-                Margin = new System.Windows.Forms.Padding(0),
-                Size = new System.Drawing.Size(80, 27),
-                ToolTipText = "change shape of visual",
-            };
+                                                            AutoSize = false,
+                                                            Margin = new System.Windows.Forms.Padding(0),
+                                                            Size = new System.Drawing.Size(80, 27),
+                                                            ToolTipText = "change shape of visual",
+                                                        };
             shapeCombo.SelectedIndexChanged += (s, e) => Frontend.ShapeChange(shapeCombo.ShapeComboBoxControl.SelectedItem as IShape);
             var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
             shapeCombo.ShapeComboBoxControl.ShapeLayout.StyleSheet = styleSheets[styleSheets.StyleSheetNames[1]];
 
             this.StyleSheetCombo = new ToolStripComboBox {
-                                                            AutoSize = false,
-                                                            Name = "styleSheetCombo",
-                                                            Size = new System.Drawing.Size(121, 27),
-                                                            ToolTipText = "Stylesheet",
+                                                             AutoSize = false,
+                                                             Name = "styleSheetCombo",
+                                                             Size = new System.Drawing.Size(121, 27),
+                                                             ToolTipText = "Stylesheet",
 
-                                                        };
+                                                         };
 
             StyleSheetCombo.SelectedIndexChanged += StyleSheetSelectedIndexChanged;
             StyleSheetCombo.KeyDown += StyleSheetKeyDown;
 
             var styleDialogButton = new ToolStripButtonEx {
-                    Checked = false,
-                    CheckState = CheckState.Unchecked,
-                    DisplayStyle = ToolStripItemDisplayStyle.Image,
-                    Image = global::Limaki.View.Properties.Iconery.StyleItem,
-                    Size = new Xwt.Size(24, 24),
-                    ToolTipText = "set style for selected items",
-                    Text = "SetStyle",
-                };
+                                                              Checked = false,
+                                                              CheckState = CheckState.Unchecked,
+                                                              DisplayStyle = ToolStripItemDisplayStyle.Image,
+                                                              Image = global::Limaki.View.Properties.Iconery.StyleItem,
+                                                              Size = new Xwt.Size(24, 24),
+                                                              ToolTipText = "set style for selected items",
+                                                              Text = "SetStyle",
+                                                          };
             styleDialogButton.Click += (s, e) => {
-                    var style = Frontend.StyleToChange();
-                    if (style != null) {
-                        var styleDialog = new ConceptUseCaseComposer().ComposeStyleEditor(style, (s1, e1) => Frontend.StyleChange(style));
-                        styleDialog.Show();
-                    }
-                };
+                                           var style = Frontend.StyleToChange();
+                                           if (style != null) {
+                                               var styleDialog = new ConceptUseCaseComposer().ComposeStyleEditor(style, (s1, e1) => Frontend.StyleChange(style));
+                                               styleDialog.Show();
+                                           }
+                                       };
 
             this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                this.StyleSheetCombo,
-                shapeCombo
-            });
+                                                                             this.StyleSheetCombo,
+                                                                             shapeCombo
+                                                                         });
 #if ! DISTRI
             this.Items.Add(styleDialogButton);
 #endif
+            InitLayoutTools();
         }
 
-       
-        void InitLayoutTools() {
+
+        void InitLayoutTools () {
             StyleSheetCombo.Items.Clear();
             var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
             foreach (var styleSheet in styleSheets.Values) {
@@ -96,26 +95,26 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             Application.DoEvents();
         }
 
-        public void AttachStyleSheet(string sheetName) {
+        public void AttachStyleSheet (string sheetName) {
             StyleSheetCombo.SelectedIndexChanged -= StyleSheetSelectedIndexChanged;
             StyleSheetCombo.SelectedItem = sheetName;
             StyleSheetCombo.SelectedIndexChanged += StyleSheetSelectedIndexChanged;
         }
 
-        public void DetachStyleSheet(string oldSheetName) {
+        public void DetachStyleSheet (string oldSheetName) {
             StyleSheetCombo.SelectedItem = null;
             StyleSheetCombo.SelectedIndexChanged -= StyleSheetSelectedIndexChanged;
             InitLayoutTools();
         }
 
 
-        private void StyleSheetSelectedIndexChanged(object sender, EventArgs e) {
+        private void StyleSheetSelectedIndexChanged (object sender, EventArgs e) {
             var styleSheetCombo = sender as ToolStripComboBox;
             if (styleSheetCombo != null)
                 Frontend.StyleSheetChange(styleSheetCombo.SelectedItem.ToString());
         }
 
-        private void StyleSheetKeyDown(object sender, KeyEventArgs e) {
+        private void StyleSheetKeyDown (object sender, KeyEventArgs e) {
             var styleSheetCombo = sender as ToolStripComboBox;
             if (styleSheetCombo != null) {
                 if (e.KeyCode == Keys.Enter) {
@@ -125,7 +124,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             }
         }
 
-       
+
 
     }
 }

@@ -77,9 +77,10 @@
     <Compile Include="Limaki.Viewers\IToolStripItem.cs" />
     <Compile Include="Limaki.Viewers\ToolStripCommand.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\DisplayModeToolStrip.cs" />
+    <Compile Include="Limaki.Viewers\ToolStripViewers\LayoutToolStrip.cs" />
+    <Compile Include="Limaki.Viewers\ToolStripViewers\MarkerToolStrip.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\SplitViewDumnmy.cs" />
     <Compile Include="Limaki.Iconeria\Iconery.cs" />
-    <Compile Include="Limaki.Viewers\ToolStripViewers\MarkerToolStrip.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ToolStripViewer.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ToolStripViewer0.cs" />
     <Compile Include="Limaki.Viewers\Vidgets\ITextViewerBackend.cs" />
@@ -326,11 +327,9 @@
     <Compile Include="Limaki.Viewers\ContentVisualViewerProvider.cs" />
     <Compile Include="Limaki.Viewers\ContentVisualViewer.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ArrangerToolStrip.cs" />
-    <Compile Include="Limaki.Viewers\ToolStripViewers\IDisplayToolStripBackend.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ILayoutToolStripViewerBackend.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\IMarkerTool.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ISplitViewToolStripBackend.cs" />
-    <Compile Include="Limaki.Viewers\ToolStripViewers\LayoutToolStrip.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\SplitViewToolStrip.cs" />
     <Compile Include="Limaki.Viewers\ContentViewer.cs" />
     <Compile Include="Limaki.Visuals\BruteForceIndex.cs" />

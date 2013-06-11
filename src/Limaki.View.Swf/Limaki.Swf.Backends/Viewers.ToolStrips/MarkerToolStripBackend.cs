@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2008-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -14,30 +14,22 @@
 
 using System;
 using Limaki.Drawing;
+using Limaki.View;
 using Limaki.Viewers.ToolStripViewers;
 using Limaki.Visuals;
-using Limaki.View;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
+
     public partial class MarkerToolStripBackend : ToolStripBackend, IMarkerToolStripBackend {
         public MarkerToolStripBackend () {
             InitializeComponent();
         }
 
-        MarkerToolStrip _frontend = null;
-        public MarkerToolStrip Frontend {
-            get {
-                if (_frontend == null) {
-                    _frontend = new MarkerToolStrip();
-                    _frontend.Backend = this;
-                }
-                return _frontend;
-            }
-            protected set { _frontend = value; }
-        }
+
+        public MarkerToolStrip Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (MarkerToolStrip) frontend;
+            this.Frontend = (MarkerToolStrip)frontend;
         }
 
         public void Attach (IGraphScene<IVisual, IVisualEdge> scene) {
@@ -60,6 +52,6 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             Frontend.ChangeMarkers(markerCombo.SelectedItem.ToString());
         }
 
-       
+
     }
 }

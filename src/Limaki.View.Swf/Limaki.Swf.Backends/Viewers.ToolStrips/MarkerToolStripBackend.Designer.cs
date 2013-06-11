@@ -6,14 +6,13 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2013 Lytico
+ * Copyright (C) 2008-2013 Lytico
  *
  * http://www.limada.org
  * 
  */
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
-
     partial class MarkerToolStripBackend {
         /// <summary> 
         /// Erforderliche Designervariable.
@@ -49,7 +48,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             this.markerCombo.SelectedIndexChanged += new System.EventHandler(this.markerCombo_SelectedIndexChanged);
             this.Dock = System.Windows.Forms.DockStyle.None;
             this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.markerCombo});
+                                                                             this.markerCombo});
 
             this.Name = "markerStrip";
             this.Size = new System.Drawing.Size(133, 27);

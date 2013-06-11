@@ -1,29 +1,18 @@
-/*
- * Limaki 
- * 
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
- * 
- * Author: Lytico
- * Copyright (C) 2006-2010 Lytico
- *
- * http://www.limada.org
- * 
- */
-
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using Xwt.Backends;
 
 namespace Limaki.Viewers.ToolStripViewers {
 
-    public class LayoutToolStrip : ToolStripViewer0<IGraphSceneDisplay<IVisual, IVisualEdge>, ILayoutToolStripViewerBackend> {
+    [BackendType(typeof(ILayoutToolStripBackend))]
+    public class LayoutToolStrip : ToolStripViewer<IGraphSceneDisplay<IVisual, IVisualEdge>, ILayoutToolStripBackend> {
+    
 
-        public void StyleSheetChange(string sheetName) {
+        public void StyleSheetChange (string sheetName) {
             IStyleSheet styleSheet = null;
             var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
             if (!styleSheets.TryGetValue(sheetName, out styleSheet)) {
@@ -38,22 +27,22 @@ namespace Limaki.Viewers.ToolStripViewers {
             }
         }
 
-        public void ShapeChange(IShape shape) {
+        public void ShapeChange (IShape shape) {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
                 foreach (IVisual visual in currentDisplay.Data.Selected.Elements) {
-                    SceneExtensions.ChangeShape (currentDisplay.Data, visual, shape);
+                    SceneExtensions.ChangeShape(currentDisplay.Data, visual, shape);
                 }
-                currentDisplay.Execute ();
+                currentDisplay.Execute();
             }
         }
 
-        public IStyleGroup StyleToChange() {
+        public IStyleGroup StyleToChange () {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
                 var visual = currentDisplay.Data.Focused;
                 if (visual != null) {
-                    if (visual.Style!=null)
+                    if (visual.Style != null)
                         return visual.Style;
                     else {
                         var result = visual is IVisualEdge ? currentDisplay.StyleSheet.EdgeStyle : currentDisplay.StyleSheet.ItemStyle;
@@ -63,12 +52,12 @@ namespace Limaki.Viewers.ToolStripViewers {
 
                     }
                 }
-                    
+
             }
             return null;
         }
 
-        public void StyleChange(IStyleGroup style) {
+        public void StyleChange (IStyleGroup style) {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
                 foreach (IVisual visual in currentDisplay.Data.Selected.Elements) {
@@ -80,16 +69,26 @@ namespace Limaki.Viewers.ToolStripViewers {
             }
         }
 
-        public override void Attach(object sender) {
+        public override void Attach (object sender) {
             var display = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
             if (display != null) {
                 this.CurrentDisplay = display;
                 Backend.AttachStyleSheet(display.StyleSheet.Name);
             }
         }
-        public override void Detach(object sender) {
+
+        public override void Detach (object sender) {
+            var display = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
+            if (display != null) {
+                Backend.DetachStyleSheet(display.StyleSheet.Name);
+            }
             this.CurrentDisplay = null;
-            Backend.DetachStyleSheet(null);
         }
+    }
+
+
+    public interface ILayoutToolStripBackend : IToolStripViewerBackend {
+        void AttachStyleSheet (string sheetName);
+        void DetachStyleSheet (string sheetName);
     }
 }

@@ -62,12 +62,9 @@ namespace Limaki.Usecases.Concept {
         public ArrangerToolStrip ArrangerToolStrip { get; set; }
         public DisplayModeToolStrip DisplayToolStrip { get; set; }
         public SplitViewToolStrip SplitViewToolStrip { get; set; }
-
-        public LayoutToolStrip LayoutToolController { get; set; }
+        public LayoutToolStrip LayoutToolStrip { get; set; }
         public MarkerToolStrip MarkerToolStrip { get; set; }
         
-        
-
         public Func<object> GetCurrentControl { get; set; }
         public Func<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
 
