@@ -71,6 +71,7 @@ namespace Limaki.Tests.UseCases {
 
                 test.WriteDetail += testMessage;
                 test.TestForm = this;
+                test.Display = useCase.SplitView.Display1;
                 test.Setup();
 
                 return test;
@@ -132,12 +133,12 @@ namespace Limaki.Tests.UseCases {
 
         public void ShowQuadTree(IGraphScene<IVisual, IVisualEdge> scene) {
             var form = new Form();
-            var display = new VisualsDisplayBackend();
-            display.Dock = DockStyle.Fill;
-            form.Controls.Add(display);
+            var displayBackend = new VisualsDisplayBackend();
+            displayBackend.Dock = DockStyle.Fill;
+            form.Controls.Add(displayBackend);
 
             var quadTreeVisualizer = new QuadTreeVisualizer();
-            quadTreeVisualizer.VisualsDisplay = display.Display as GraphSceneDisplay<IVisual, IVisualEdge>;
+            quadTreeVisualizer.VisualsDisplay = displayBackend.Display as GraphSceneDisplay<IVisual, IVisualEdge>;
             quadTreeVisualizer.Data = (scene.SpatialIndex as VisualsQuadTreeIndex).GeoIndex;
 
 

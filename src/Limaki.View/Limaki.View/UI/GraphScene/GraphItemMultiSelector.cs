@@ -46,8 +46,8 @@ namespace Limaki.View.UI.GraphScene {
 
         public static void Select(IGraphScene<TItem, TEdge> scene, IEnumerable<TItem> selection, ModifierKeys modifiers) {
             bool isLinkKey = modifiers.HasFlag(ModifierKeys.Shift);
-            Set<TItem> oldSelected = new Set<TItem>();
-            foreach (TItem item in scene.Selected.Elements) {
+            var oldSelected = new Set<TItem>();
+            foreach (var item in scene.Selected.Elements) {
                 oldSelected.Add(item);
             }
 
@@ -55,7 +55,7 @@ namespace Limaki.View.UI.GraphScene {
                 scene.Selected.Clear();
             }
 
-            foreach (TItem item in selection) {
+            foreach (var item in selection) {
                 bool isLink = item is TEdge;
                 bool add = (isLinkKey && isLink) || (!isLinkKey && !isLink);
                 if (add) {
@@ -66,7 +66,7 @@ namespace Limaki.View.UI.GraphScene {
                     oldSelected.Remove(item);
                 }
             }
-            foreach (TItem item in oldSelected) {
+            foreach (var item in oldSelected) {
                 scene.Requests.Add(new Command<TItem>(item));
             }            
         }
@@ -88,7 +88,7 @@ namespace Limaki.View.UI.GraphScene {
 
         bool TestSceneHit(Point p) {
             bool result = true;
-            Point pt = Camera.ToSource(p);
+            var pt = Camera.ToSource(p);
             if (Scene.Hovered != null)
                 result = !Scene.ItemShape(Scene.Hovered).IsHit(pt, this.HitSize);
             if (result && Scene.Focused != null)
@@ -109,7 +109,7 @@ namespace Limaki.View.UI.GraphScene {
             canStart = false;
             base.OnMouseUp(e);
             Exclusive = false;
-            IShape oldShape = this.Shape;
+            var oldShape = this.Shape;
             this.Shape = ShapeFactory.Shape(ShapeDataType, Point.Zero, Size.Zero,false);
             SelectionRenderer.InvalidateShapeOutline(oldShape, ShapeFactory.Shape(ShapeDataType, Point.Zero, Size.Zero, false));
         }

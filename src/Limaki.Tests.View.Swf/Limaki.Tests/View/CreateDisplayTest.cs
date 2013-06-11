@@ -4,6 +4,7 @@ using Limaki.View.UI;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
+using Limaki.View.Visuals.Visualizers;
 
 namespace Limaki.Tests.View.Display {
 
@@ -14,9 +15,9 @@ namespace Limaki.Tests.View.Display {
 		[Test]
 		public void Test ()
 		{
-			var display = new Limaki.View.Swf.Visualizers.VisualsDisplayBackend();
-			                      
-			
+			var display = new VisualsDisplay();
+		    Assert.IsNotNull(display.Backend);
+
 		}
 	}
 }

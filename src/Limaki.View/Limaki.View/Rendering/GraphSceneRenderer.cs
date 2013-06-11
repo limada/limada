@@ -41,17 +41,17 @@ namespace Limaki.View.Rendering {
             var clipBounds = camera.ToSource(e.Clipper.Bounds);
 
 #if TraceRender
-            System.Console.WriteLine ("***** clipBounds:\t" + clipBounds);
+            Trace.WriteLine ("***** clipBounds:\t" + clipBounds);
             //+"\toffset(g)"+new SizeS(g.Transform.OffsetX, g.Transform.OffsetY)
 #endif
 
-            TItem focused = data.Focused;
-            TItem hovered = data.Hovered;
+            var focused = data.Focused;
+            var hovered = data.Hovered;
             
             var layout = this.Layout();
             ItemRenderer.Layout = this.Layout;
 
-            foreach (TItem item in data.ElementsIn(clipBounds, ZOrder.EdgesFirst)) {
+            foreach (var item in data.ElementsIn(clipBounds, ZOrder.EdgesFirst)) {
                 bool rendered = true;
                 if (!item.Equals(focused) && !item.Equals(hovered)) {
                     ItemRenderer.Render(item, e);
@@ -71,11 +71,6 @@ namespace Limaki.View.Rendering {
                 ItemRenderer.Render(focused, e);
             }
         }
-
-
-
-        
-
 
     }
 }

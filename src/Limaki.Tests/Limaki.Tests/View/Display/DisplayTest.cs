@@ -50,10 +50,6 @@ namespace Limaki.Tests.View.Display {
         }
 
         public DisplayTest() {}
-        public DisplayTest(IDisplay<T> display) {
-            this.Display = display;
-            this.TestForm = TestDevice.FindForm(display);
-        }
 
         protected FrameTicker ticker = new FrameTicker();
         
@@ -87,7 +83,7 @@ namespace Limaki.Tests.View.Display {
 
 
         public int VisualsCount() {
-            ILayer<T> layer = Display.EventControler.GetAction<ILayer<T>>();
+            var layer = Display.EventControler.GetAction<ILayer<T>>();
             if (layer != null) {
                 var renderer = layer.Renderer() as GraphSceneRenderer<IVisual, IVisualEdge>;
                 if (renderer != null)
@@ -99,7 +95,7 @@ namespace Limaki.Tests.View.Display {
         [Test]
         public virtual void RunSelectorTest() {
 
-            IAction zoomAction = Display.EventControler.GetAction<ZoomAction> ();
+            var zoomAction = Display.EventControler.GetAction<ZoomAction> ();
 
             bool zoomEnabled = zoomAction.Enabled;
             zoomAction.Enabled= false;
@@ -119,9 +115,7 @@ namespace Limaki.Tests.View.Display {
 
             ticker.Start();
 
-            MouseActionEventArgs e = 
-                new MouseActionEventArgs(MouseActionButtons.Left, ModifierKeys.None,
-                    0, position.X, position.Y, 0);
+            var e = new MouseActionEventArgs(MouseActionButtons.Left, ModifierKeys.None, 0, position.X, position.Y, 0);
 
             selection.OnMouseHover(e);
             selection.OnMouseDown(e);
@@ -165,23 +159,24 @@ namespace Limaki.Tests.View.Display {
 
             ticker.Start();
 
-            Rectangle rect = new Rectangle(new Point(),Display.Viewport.ClipSize);
+            var rect = new Rectangle(new Point(),Display.Viewport.ClipSize);
             int div = 2;
             if (frame == Frame.Quarter) {
                 div = 4;
             }
-            Size deflate = new Size(rect.Width / div, rect.Height / div);
+            var deflate = new Size(rect.Width / div, rect.Height / div);
             rect = new Rectangle(
                 new Point(rect.Location.X + deflate.Width, rect.Location.Y + deflate.Height), deflate);
 
             int time = (secToTest * 1000) + Environment.TickCount;
+            var backend = Display.Backend;
             while (ticker.Elapsed > Environment.TickCount) {
                 if (frame == Frame.Full) {
-                    ((IVidgetBackend)Display).Invalidate();
+                    backend.Invalidate();
                 } else {
-                    ((IVidgetBackend)Display).Invalidate(rect);
+                    backend.Invalidate(rect);
                 }
-                ((IVidgetBackend)Display).Update();
+                backend.Update();
                 DoEvents();
             }
 
@@ -197,8 +192,7 @@ namespace Limaki.Tests.View.Display {
         #region helper-functions
         
         public void NeutralPosition() {
-            var e =
-                new MouseActionEventArgs(MouseActionButtons.Left, ModifierKeys.None, 0, 1, 1, 0);
+            var e = new MouseActionEventArgs(MouseActionButtons.Left, ModifierKeys.None, 0, 1, 1, 0);
             Display.EventControler.OnMouseDown(e);
             DoEvents();
             Display.EventControler.OnMouseMove(e);

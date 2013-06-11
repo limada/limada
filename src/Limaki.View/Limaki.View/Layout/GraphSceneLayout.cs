@@ -27,8 +27,7 @@ namespace Limaki.View.Layout {
     public abstract class GraphSceneLayout<TItem, TEdge> : Layout<TItem>, IGraphSceneLayout<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 
-        public GraphSceneLayout(Func<IGraphScene<TItem, TEdge>> dataHandler, IStyleSheet styleSheet)
-            : base(styleSheet) {
+        public GraphSceneLayout(Func<IGraphScene<TItem, TEdge>> dataHandler, IStyleSheet styleSheet): base(styleSheet) {
             this.DataHandler = dataHandler;
             this.Dimension = Dimension.X;
             this.Centered = true;
@@ -52,9 +51,9 @@ namespace Limaki.View.Layout {
             var scene = this.Data;
             if (scene != null) {
                 var graph = scene.Graph;
-                foreach (TItem item in graph) {
+                foreach (var item in graph) {
                     if (!(item is TEdge)) {
-                        foreach (TEdge edge in graph.Twig(item)) {
+                        foreach (var edge in graph.Twig(item)) {
                             Invoke(edge);
                             Justify(edge);
                         }
@@ -73,7 +72,7 @@ namespace Limaki.View.Layout {
                 data.SpatialIndex.Query(Rectangle.Zero);
                 var graph = data.Graph;
 
-                foreach (TItem item in graph) {
+                foreach (var item in graph) {
                     Invoke(item);
                     if (!(item is TEdge)) {
                         Justify(item);

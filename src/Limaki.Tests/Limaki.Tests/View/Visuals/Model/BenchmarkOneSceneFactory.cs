@@ -113,7 +113,6 @@ namespace Limaki.Tests.Graph.Model {
             vector.Start = Node[1].Shape[Anchor.RightMiddle];
             vector.End = Node[6].Shape[Anchor.LeftMiddle];
             ((VectorShape)Line1.Shape).Data = vector;
-
         }
 
         public override void Populate (IGraphScene<IVisual, IVisualEdge> scene) {

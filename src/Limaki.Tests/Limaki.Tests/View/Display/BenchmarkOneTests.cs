@@ -72,6 +72,7 @@ namespace Limaki.Tests.View.Display {
             base.Setup();
             
             factory.Arrange (Display.Data);
+            Display.Data.ClearSpatialIndex();
             Display.Invoke ();
 
             var editAction = Display.EventControler.GetAction<IEditAction> ();
