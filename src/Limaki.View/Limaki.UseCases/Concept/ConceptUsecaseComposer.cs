@@ -29,7 +29,7 @@ namespace Limaki.Usecases.Concept {
             useCase.SplitView = new SplitView0();
 
             useCase.SheetManager = Registry.Factory.Create<ISheetManager>();
-            useCase.SceneHistory = new SceneHistory ();
+            useCase.VisualsDisplayHistory = new VisualsDisplayHistory ();
 
             useCase.GraphSceneUiManager = new ThingGraphUiManager {
                 OpenFileDialog = new FileDialogMemento(),
@@ -55,10 +55,10 @@ namespace Limaki.Usecases.Concept {
             useCase.GetCurrentControl = () => splitView.CurrentWidget;
 
             useCase.SheetManager.SheetRegistered = sceneInfo => {
-                useCase.SceneHistory.Store(sceneInfo);
+                useCase.VisualsDisplayHistory.Store(sceneInfo);
                 //useCase.SplitViewToolStrip.Attach(splitView.CurrentDisplay);
             };
-            splitView.SceneHistory = useCase.SceneHistory;
+            splitView.VisualsDisplayHistory = useCase.VisualsDisplayHistory;
             splitView.SheetManager = useCase.SheetManager;
             
             splitView.FavoriteManager = useCase.FavoriteManager;

@@ -111,7 +111,7 @@ namespace Limaki.View.Swf.DragDrop {
                 writer.Write(textInfo.Data);
                 writer.Flush();
                 
-                result = new VisualThingContentFacade().VisualOfContent(container, content);
+                result = new VisualThingsContentViz().VisualOfContent(container, content);
 
                 writer.Dispose();
 

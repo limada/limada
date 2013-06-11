@@ -44,7 +44,7 @@ namespace Limaki.Viewers.StreamViewers {
         }
         
         public override bool Supports (IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
-            var docManager = new DigidocManager();
+            var docManager = new DigidocViz();
             return docManager.HasPages(graph, visual);
         }
 

@@ -26,7 +26,10 @@ using Xwt;
 
 namespace Limada.View {
 
-    public class SearchHandler {
+    /// <summary>
+    /// searchs in a VisualScene backed by a ThingGraph
+    /// </summary>
+    public class VisualThingSearch {
 
         public bool IsSearchable(IGraphScene<IVisual, IVisualEdge> scene) {
             return scene != null && scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>() != null;

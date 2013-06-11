@@ -139,7 +139,7 @@ namespace Limaki.Viewers.StreamViewers {
         protected virtual void ComposePagesDisplay (IGraphSceneDisplay<IVisual, IVisualEdge> display) {
 
             display.SceneFocusChanged += (s, e) => {
-                var docMan = new DigidocManager();
+                var docMan = new DigidocViz();
                 var pageContent = docMan.PageContent(e.Scene.Graph, e.Item);
                 if (pageContent != null) {
                     PageContent = pageContent;
@@ -199,7 +199,7 @@ namespace Limaki.Viewers.StreamViewers {
             var pagesDisplay = this.PagesDisplay;
 
             // bring the docpages into view:
-            var docManager = new DigidocManager();
+            var docManager = new DigidocViz();
             var scene = new Scene();
             var targetGraph = new WiredDisplays().CreateTargetGraph(source.Graph);
             scene.Graph = targetGraph;

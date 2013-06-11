@@ -123,7 +123,7 @@ namespace Limada.Usecases {
                 if (scene != null && scene.HasThingGraph()) {
                     SaveFileDialog.DefaultExt = "pdf";
                     if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
-                        ThingsIoManager.SinkOut = () => new SceneIo().SelectedThings(scene);
+                        ThingsIoManager.SinkOut = () => new VisualThingsSceneViz().SelectedThings(scene);
                         ThingsIoManager.ConfigureSinkIo = s => ConfigureSink(s);
                         ThingsIoManager.WriteSink(IoUtils.UriFromFileName(SaveFileDialog.FileName));
                         SaveFileDialog.ResetFileName();
@@ -143,7 +143,7 @@ namespace Limada.Usecases {
                         var uri = IoUtils.UriFromFileName(OpenFileDialog.FileName);
                         ThingGraphFocusIoManager.ConfigureSinkIo = s => ConfigureSink(s);
                         graphFocus = ThingGraphFocusIoManager.ReadSink(uri, graphFocus);
-                        new SceneIo().SetDescription(scene, graphFocus.Cursor, OpenFileDialog.FileName);
+                        new VisualThingsSceneViz().SetDescription(scene, graphFocus.Cursor, OpenFileDialog.FileName);
                         OpenFileDialog.ResetFileName();
                     }
                 }

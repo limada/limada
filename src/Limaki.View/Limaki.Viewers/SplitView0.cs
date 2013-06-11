@@ -301,7 +301,7 @@ namespace Limaki.Viewers {
 
         public void NewSheet() {
             var currentDisplay = this.CurrentDisplay;
-            SceneHistory.Store(currentDisplay, SheetManager);
+            VisualsDisplayHistory.Store(currentDisplay, SheetManager);
             var info = SheetManager.CreateSheet(currentDisplay.Data);
             currentDisplay.Info = info;
             currentDisplay.BackendRenderer.Render();
@@ -314,8 +314,8 @@ namespace Limaki.Viewers {
 
         public void Search (string name) {
             var currentDisplay = this.CurrentDisplay;
-            SceneHistory.Store(currentDisplay, SheetManager);
-            new SearchHandler()
+            VisualsDisplayHistory.Store(currentDisplay, SheetManager);
+            new VisualThingSearch()
                 .LoadSearch(currentDisplay.Data, currentDisplay.Layout, name);
             currentDisplay.DataId = 0;
             new State {Hollow = true}.CopyTo(currentDisplay.State);
@@ -327,7 +327,7 @@ namespace Limaki.Viewers {
 
         public void DoSearch() {
             var currentDisplay = this.CurrentDisplay;
-            if (new SearchHandler().IsSearchable(currentDisplay.Data)) {
+            if (new VisualThingSearch().IsSearchable(currentDisplay.Data)) {
                 Backend.ShowTextDialog("Search:", currentDisplay.Text, this.Search);
             }
         }
@@ -337,12 +337,12 @@ namespace Limaki.Viewers {
         #region History
 
 
-        public SceneHistory SceneHistory { get; set; }
+        public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
         
         
         private void Clear() {
-            if (SceneHistory != null) {
-                SceneHistory.Clear ();
+            if (VisualsDisplayHistory != null) {
+                VisualsDisplayHistory.Clear ();
             }
 
             if (SheetManager != null) {
@@ -363,7 +363,7 @@ namespace Limaki.Viewers {
             var display = this.CurrentDisplay;
             if (display != null) {
                 Trace.WriteLine(string.Format("Before Home\tId\t{0}\tName\t{1}",display.Info.Id,display.Info.Name));
-                SceneHistory.Store(display, SheetManager);
+                VisualsDisplayHistory.Store(display, SheetManager);
                
                 FavoriteManager.GoHome(display, false);
                 OnViewChanged();
@@ -372,16 +372,16 @@ namespace Limaki.Viewers {
         }
 
         public bool CanGoBackOrForward(bool forward) {
-            if (SceneHistory == null)
+            if (VisualsDisplayHistory == null)
                 return false;
 
             var currentDisplay = this.CurrentDisplay;
             var currentControl = this.CurrentWidget;
             if (currentControl == currentDisplay && currentDisplay != null) {
                 if (forward)
-                    return SceneHistory.CanGoForward();
+                    return VisualsDisplayHistory.CanGoForward();
                 else
-                    return SceneHistory.CanGoBack();
+                    return VisualsDisplayHistory.CanGoBack();
             } else if (currentControl is IHistoryAware) {
                 if (forward)
                     return ((IHistoryAware)currentControl).CanGoForward;
@@ -397,7 +397,7 @@ namespace Limaki.Viewers {
             info = SheetManager.GetSheetInfo(info.Id);
             var display = this.CurrentDisplay;
             if (info != null) {
-                SceneHistory.Store(display, SheetManager);
+                VisualsDisplayHistory.Store(display, SheetManager);
                 if (SheetManager.Load(display.Data, display.Layout, info.Id)) {
                     info = SheetManager.GetSheetInfo(info.Id);
                     display.Info = info;
@@ -411,7 +411,7 @@ namespace Limaki.Viewers {
             var currentDisplay = this.CurrentDisplay;
             var currentControl = this.CurrentWidget;
             if (currentControl == currentDisplay && currentDisplay != null) {
-                SceneHistory.Navigate(currentDisplay, SheetManager, forward);
+                VisualsDisplayHistory.Navigate(currentDisplay, SheetManager, forward);
             } else if (currentControl is IHistoryAware) {
                 if (forward)
                     ((IHistoryAware)currentControl).GoForward();
@@ -470,7 +470,7 @@ namespace Limaki.Viewers {
             content.Data.Position = 0;
 
 
-            var visual = new VisualThingContentFacade().VisualOfContent(scene.Graph, content);
+            var visual = new VisualThingsContentViz().VisualOfContent(scene.Graph, content);
             var root = scene.Focused;
 
             var layout = currentDiplay.Layout;
@@ -512,8 +512,8 @@ namespace Limaki.Viewers {
         }
 
         public virtual bool Check() {
-            if (this.SceneHistory == null) {
-                throw new CheckFailedException(this.GetType(), typeof(SceneHistory));
+            if (this.VisualsDisplayHistory == null) {
+                throw new CheckFailedException(this.GetType(), typeof(VisualsDisplayHistory));
             }
             if (this.SheetManager == null) {
                 throw new CheckFailedException(this.GetType(), typeof(SheetManager));

@@ -26,9 +26,12 @@ using System.Linq;
 
 namespace Limada.Usecases {
 
-    public class SceneIo {
+    /// <summary>
+    /// helper class to manage VisualGraphScenes backed by ThingGraphs
+    /// </summary>
+    public class VisualThingsSceneViz {
 
-        public SceneIo () {
+        public VisualThingsSceneViz () {
             UseSchema = true;
         }
 
@@ -79,7 +82,7 @@ namespace Limada.Usecases {
 
         /// <summary>
         /// enumerates all things of scene's selected elements
-        /// if a Document is the only selected, then the Pages of the Document are enumerated
+        /// if a Digidoc is the only selected, then the Pages of the Digidoc are enumerated
         /// </summary>
         /// <param name="scene"></param>
         /// <returns></returns>

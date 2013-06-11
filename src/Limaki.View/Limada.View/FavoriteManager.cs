@@ -12,24 +12,23 @@
  * 
  */
 
-using System;
-using System.Linq;
 using Limada.Model;
 using Limada.Schemata;
+using Limada.VisualThings;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limada.View;
-using Limada.VisualThings;
 using Limaki.Model.Content;
+using Limaki.View.UI.GraphScene;
+using Limaki.View.Visualizers;
+using Limaki.View.Visuals.UI;
+using Limaki.Visuals;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using Limaki.View.Visualizers;
-using Limaki.View.UI.GraphScene;
-using Limaki.View.Visuals.UI;
-using Limaki.Visuals;
+using System.Linq;
 
 namespace Limada.View {
     public class FavoriteManager {

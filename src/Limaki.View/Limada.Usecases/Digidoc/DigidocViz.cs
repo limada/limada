@@ -22,10 +22,11 @@ using Limaki.Model.Content;
 using System.Linq;
 using Limaki.Visuals;
 using Limaki.Model.Content.IO;
+using Limaki.Drawing;
 
 namespace Limada.Usecases {
 
-    public class DigidocManager {
+    public class DigidocViz {
 
         public IEnumerable<IVisual> Pages(IGraph<IVisual, IVisualEdge> source, IVisual document) {
             var digidoc = new DigidocSchema(source.ThingGraph(), source.ThingOf(document));
@@ -50,22 +51,8 @@ namespace Limada.Usecases {
             return result;
         }
 
-        //public Stream StreamFrom(StreamInfo<Stream> streamInfo) {
-        //    var result = streamInfo.Data;
-        //    result.Position = 0;
-        //    var compWorker = Registry.Factory.Create<ICompressionWorker>();
-        //    if (compWorker.Compressable(streamInfo.Compression))
-        //        try {
-        //            result = compWorker.DeCompress(streamInfo.Data, streamInfo.Compression);
-        //        } catch (Exception e) {
-        //            result = null;
-        //        }
-        //    return result;
-        //}
-
         public bool HasPages(IGraph<IVisual, IVisualEdge> source, IVisual visual) {
-            var digidoc = new DigidocSchema(source.ThingGraph(), source.ThingOf(visual));
-            return digidoc.HasPages();
+            return new DigidocSchema(source.ThingGraph(), source.ThingOf(visual)).HasPages();
         }
 
         public bool IsPage(IGraph<IVisual, IVisualEdge> source, IVisual page) {
@@ -73,6 +60,38 @@ namespace Limada.Usecases {
             var pageThing = source.ThingOf(page) as IStreamThing;
             var info = new ImageContentInfo();
             return (pageThing != null && info.Supports(pageThing.StreamType));
+        }
+
+
+        public void ExportPages (string dir, GraphCursor<IVisual, IVisualEdge> source) {
+            var graph = source.Graph;
+            var digidocVisual = source.Cursor;
+
+            if (HasPages(graph, digidocVisual)) {
+                int i = 0;
+                foreach (var streamThing in PageStreams(graph, digidocVisual)) {
+                    var pageName = i.ToString().PadLeft(5, '0');
+                    if (streamThing.Description != null)
+                        pageName = streamThing.Description.ToString().PadLeft(5, '0');
+
+                    var s = source.Cursor.Data == null ? CommonSchema.NullString : source.Cursor.Data.ToString();
+                    var name = dir + Path.DirectorySeparatorChar +
+                               s + " " +
+                               pageName +
+                               ContentTypes.Extension(streamThing.ContentType);
+
+                    streamThing.Data.Position = 0;
+                    using (var fileStream = new FileStream(name, FileMode.Create)) {
+                        var buff = new byte[streamThing.Data.Length];
+                        streamThing.Data.Read(buff, 0, (int)streamThing.Data.Length);
+                        fileStream.Write(buff, 0, (int)streamThing.Data.Length);
+                        fileStream.Flush();
+                        fileStream.Close();
+                    }
+                    streamThing.Data.Dispose();
+                    streamThing.Data = null;
+                }
+            }
         }
     }
 }

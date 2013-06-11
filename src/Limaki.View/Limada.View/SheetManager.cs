@@ -184,7 +184,7 @@ namespace Limada.View {
                 content.Data.Position = 0;
                 content.Description = name;
                 
-                thing = new VisualThingContentFacade().AssignContent(scene.Graph, thing, content);
+                thing = new VisualThingsContentViz().AssignContent(scene.Graph, thing, content);
                 
                 result = RegisterSheet(thing.Id, name);
                 result.State.Hollow = false;

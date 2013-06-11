@@ -19,12 +19,28 @@ using System.Text;
 
 namespace Limaki.Playground.DOM {
 
-    public class Document {}
+    public class Document {
+        public IEnumerable<Page> Pages { get { return null; } }
+        public IEnumerable<Paragraph> Paragraphs { get { return null; } }
+        
+    }
 
-    public class Page {}
+    public class Page {
+        public IEnumerable<Paragraph> Paragraphs { get { return null; } }
+    }
 
-    public class Paragraph {}
+    public class Paragraph {
+        public IEnumerable<Section> Sections { get { return null; } }
+    }
 
-    public class Section { }
+    /// <summary>
+    /// is a chunk of text with the same attributs
+    /// eg: /b/some text/b/ would be a section
+    /// </summary>
+    public class Section {
+        public IEnumerable<Attribute> Attributes { get { return null; } }
+    }
+
+    public class Attribute {}
 
 }

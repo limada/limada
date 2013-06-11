@@ -114,7 +114,7 @@ namespace Limada.Usecases {
             if (ThingGraphIn != null)
                 ThingGraphIn(source);
 
-            var scene = new SceneIo().CreateScene(source.Data);
+            var scene = new VisualThingsSceneViz().CreateScene(source.Data);
             if (this.DataBound != null)
                 this.DataBound(scene);
 
@@ -172,7 +172,7 @@ namespace Limada.Usecases {
             if (scene.HasThingGraph()) {
                 var sinkIo = ThingGraphIoManager.GetSinkIO(sinkIori, IoMode.Write) as ThingGraphIo;
                 if (sinkIo != null) {
-                    var source = new SceneIo().CreateThingsView(scene);
+                    var source = new VisualThingsSceneViz().CreateThingsView(scene);
                     var sink = sinkIo.Open(sinkIori);
                     new ThingGraphExportSink { Progress = this.Progress }.Use(source, sink.Data);
                     sinkIo.Close(sink);

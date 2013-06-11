@@ -20,6 +20,9 @@ using Limaki.Common;
 using Limaki.Visuals;
 
 namespace Limada.VisualThings {
+    /// <summary>
+    /// extensions of VisualGraphs backed by ThingGraphs
+    /// </summary>
     public static class VisualThingGraphExtension {
 
         public static IThingGraph ThingGraph(this IGraph<IVisual, IVisualEdge> graph) {

@@ -22,7 +22,10 @@ using Limaki.Visuals;
 
 namespace Limada.VisualThings {
 
-    public class VisualThingContentFacade {
+    /// <summary>
+    /// helper class to manage VisualGraphs backed by StreamThings
+    /// </summary>
+    public class VisualThingsContentViz {
 
         /// <summary>
         /// creates a visual, backed by a

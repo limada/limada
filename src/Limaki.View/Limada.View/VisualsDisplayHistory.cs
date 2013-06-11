@@ -11,25 +11,26 @@
  * http://www.limada.org
  */
 
-using System.IO;
 using Limaki.Common;
 using Limaki.Common.Collections;
-using System;
-using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using System.Linq;
 using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Visuals;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Limada.View {
+
     public class SceneStream {
         public Int64 Id = 0;
         public Stream Stream = null;
     }
 
-    public class SceneHistory {
+    public class VisualsDisplayHistory {
         private History<long> _history = null;
         protected History<long> history {
             get {
@@ -67,9 +68,7 @@ namespace Limada.View {
                 }
             }
         }
-
         
-
         protected void Load(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, Int64 id) {
             if (id == 0)
                 return;

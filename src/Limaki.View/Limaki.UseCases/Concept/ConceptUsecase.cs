@@ -55,7 +55,7 @@ namespace Limaki.Usecases.Concept {
         }
 
         public SplitView0 SplitView { get; set; }
-        public SceneHistory SceneHistory { get; set; }
+        public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
         public ISheetManager SheetManager {get;set;}
         public FavoriteManager FavoriteManager { get; set; }
 
@@ -169,7 +169,7 @@ namespace Limaki.Usecases.Concept {
 
         public void SaveChanges() {
             var displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { SplitView.Display1, SplitView.Display2 };
-            SceneHistory.SaveChanges(displays, SheetManager, MessageBoxShow);
+            VisualsDisplayHistory.SaveChanges(displays, SheetManager, MessageBoxShow);
             FavoriteManager.SaveChanges(displays);
         }
 
