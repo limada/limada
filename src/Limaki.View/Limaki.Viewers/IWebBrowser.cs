@@ -122,5 +122,5 @@ namespace Limaki.Viewers {
         void SetProxy(IPAddress adress, int port, object webBrowser);
     }
 
-    public interface IGeckoWebBrowser : IWebBrowserBackend, IWebBrowserWithProxy { }
+    public interface IGeckoWebBrowserBackend : IWebBrowserBackend, IWebBrowserWithProxy { }
 }

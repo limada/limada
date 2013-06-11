@@ -16,7 +16,7 @@ using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends {
     
-    public class GeckoWebBrowser:Gecko.GeckoWebBrowser, IGeckoWebBrowser, IZoomTarget, IHistoryAware {
+    public class GeckoWebBrowserBackend:Gecko.GeckoWebBrowser, IGeckoWebBrowserBackend, IZoomTarget, IHistoryAware {
 
         public string XulDir(string basedir) {
             foreach (var dir in new string[]{ @"Plugins\",@"..\3rdParty\bin\"}) {
@@ -31,7 +31,7 @@ namespace Limaki.Swf.Backends {
             return null;
         }
 
-        public GeckoWebBrowser() {
+        public GeckoWebBrowserBackend() {
             string xulDir = XulDir(AppDomain.CurrentDomain.BaseDirectory);
             if (xulDir == null)
                 throw new ArgumentException("xulrunner is missing");
@@ -285,7 +285,7 @@ namespace Limaki.Swf.Backends {
         #region IWebBrowserWithProxy Members
 
         public void SetProxy(IPAddress adress, int port, object webBrowser) {
-            var control = webBrowser as GeckoWebBrowser;
+            var control = webBrowser as GeckoWebBrowserBackend;
             if (control != null) {
                 var prefs = GeckoPreferences.User;
 

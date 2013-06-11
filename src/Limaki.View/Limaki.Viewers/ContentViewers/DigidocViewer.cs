@@ -37,16 +37,16 @@ using Xwt.Drawing;
 
 namespace Limaki.Viewers.StreamViewers {
 
-    public interface IDocumentSchemaViewerBackend : IVidgetBackend { }
+    public interface IDigidocViewerBackend : IVidgetBackend { }
 
-    [BackendType(typeof(IDocumentSchemaViewerBackend))]
+    [BackendType(typeof(IDigidocViewerBackend))]
     public class DigidocViewer : Vidget, IZoomTarget {
 
-        IDocumentSchemaViewerBackend _backend = null;
-        public virtual IDocumentSchemaViewerBackend Backend {
+        IDigidocViewerBackend _backend = null;
+        public virtual IDigidocViewerBackend Backend {
             get {
                 if (_backend == null) {
-                    _backend = BackendHost.Backend as IDocumentSchemaViewerBackend;
+                    _backend = BackendHost.Backend as IDigidocViewerBackend;
                 }
                 return _backend;
             }

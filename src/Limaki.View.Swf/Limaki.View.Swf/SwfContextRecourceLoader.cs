@@ -101,7 +101,7 @@ namespace Limaki.View.Swf {
                 try {
                     var gecko = Activator.CreateInstance(
                        this.GetType().Assembly.FullName,
-                       typeof(WebBrowserBackend).Namespace + ".GeckoWebBrowser");
+                       typeof(WebBrowserBackend).Namespace + ".GeckoWebBrowserBackend");
                     if (gecko != null)
                         _backend = (Control)gecko.Unwrap();
                     else
@@ -131,7 +131,7 @@ namespace Limaki.View.Swf {
 
             RegisterBackend<ISplitViewBackend, SplitViewBackend>();
 
-            RegisterBackend<IDocumentSchemaViewerBackend, DocumentSchemaViewerBackend>();
+            RegisterBackend<IDigidocViewerBackend, DigidocViewerBackend>();
 
             RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend>();
             RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend>();

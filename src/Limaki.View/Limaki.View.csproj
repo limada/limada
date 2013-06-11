@@ -82,7 +82,6 @@
     <Compile Include="Limaki.Viewers\ToolStripViewers\SplitViewDumnmy.cs" />
     <Compile Include="Limaki.Iconeria\Iconery.cs" />
     <Compile Include="Limaki.Viewers\ToolStripViewers\ToolStripViewer.cs" />
-    <Compile Include="Limaki.Viewers\ToolStripViewers\ToolStripViewer0.cs" />
     <Compile Include="Limaki.Viewers\Vidgets\ITextViewerBackend.cs" />
     <Compile Include="Limaki.Viewers\Vidgets\ITextViewerWithToolstripBackend.cs" />
     <Compile Include="Limaki.Viewers\Vidgets\TextViewer.cs" />

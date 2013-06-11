@@ -24,9 +24,9 @@ using Limaki.Viewers.StreamViewers;
 
 namespace Limaki.View.Swf.Backends {
     
-    public partial class DocumentSchemaViewerBackend : UserControl, IZoomTarget, IDocumentSchemaViewerBackend {
+    public partial class DigidocViewerBackend : UserControl, IDigidocViewerBackend, IZoomTarget{
 
-        public DocumentSchemaViewerBackend () {}
+        public DigidocViewerBackend () {}
 
         public DigidocViewer Frontend { get; set; }
 

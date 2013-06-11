@@ -21,7 +21,7 @@ using System.Collections.Generic;
 
 namespace Limaki.Viewers.StreamViewers {
 
-    public class DigidocContentViewer : ContentVisualViewer, IVidget {
+    public class DigidocContentViewer : ContentVisualViewer {
         DigidocViewer _digidocViewer = null;
 
         public DigidocViewer DigidocViewer {

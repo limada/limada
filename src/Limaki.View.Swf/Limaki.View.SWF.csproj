@@ -59,7 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Limaki.Swf.Backends\VidgetBackends\GeckoWebBrowser.cs">
+    <Compile Include="Limaki.Swf.Backends\VidgetBackends\GeckoWebBrowserBackend.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Limaki.Controls\MessageBoxShow.cs" />
@@ -114,7 +114,7 @@
     <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainter.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainterBase.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\VectorPainter.cs" />
-    <Compile Include="Limaki.Swf.Backends\VidgetBackends\DocumentSchemaViewerBackend.cs">
+    <Compile Include="Limaki.Swf.Backends\VidgetBackends\DigidocViewerBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\DisplayModeToolStripBackend.cs">
