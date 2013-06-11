@@ -61,15 +61,15 @@
     <Compile Include="Limada.UseCases\Content\ContentStreamUiManager.cs" />
     <Compile Include="Limada.UseCases\Content\IGraphSceneUiManager.cs" />
     <Compile Include="Limada.UseCases\Content\ThingGraphUiManager.cs" />
-    <Compile Include="Limada.UseCases\DocumentSchemaDataProvider.cs" />
-    <Compile Include="Limaki.Viewers\ContentViewers\DocumentSchemaKeyScrollAction.cs" />
-    <Compile Include="Limaki.Viewers\ContentViewers\DocumentSchemaContentViewer.cs" />
+    <Compile Include="Limada.UseCases\Digidoc\DigidocIo.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewers\DigidocKeyScrollAction.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewers\DigidocContentViewer.cs" />
     <Compile Include="Limada.VisualThings\SceneIo.cs" />
     <Compile Include="Limada.VisualThings\VisualThingsSceneExtensions.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindDrawingUtils.cs" />
     <Compile Include="Limaki.Drawing\Dimension.cs" />
     <Compile Include="Limaki.Usecases\IoUiManager.cs" />
-    <Compile Include="Limaki.Viewers\ContentViewers\DocumentSchemaViewer.cs" />
+    <Compile Include="Limaki.Viewers\ContentViewers\DigidocViewer.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\TextContentViewer.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\TextContentViewerWithToolstrip.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\WebResponseBase.cs" />
@@ -191,7 +191,7 @@
     <Compile Include="Limada.View\SearchHandler.cs" />
     <Compile Include="Limada.View\Sheet.cs" />
     <Compile Include="Limada.View\SheetManager.cs" />
-    <Compile Include="Limada.UseCases\DocumentSchema\DocumentSchemaManager.cs" />
+    <Compile Include="Limada.UseCases\Digidoc\DigidocManager.cs" />
     <Compile Include="Limada.VisualThings\VisualThingAdapter.cs" />
     <Compile Include="Limada.VisualThings\VisualThingGraph.cs" />
     <Compile Include="Limada.VisualThings\VisualThingGraphExtension.cs" />
@@ -358,9 +358,6 @@
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextPainterRenderer.cs" />
     <Compile Include="Limaki.View.XwtContext\VisualSceneContextPainter.cs" />
     <Compile Include="Xwt\ISystemColorsBackend.cs" />
-    <Compile Include="Limaki.Widgets\Xwt\ScrollableCanvas.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Xwt\SystemColors.cs" />
     <Compile Include="Xwt\XwtLExtensions.cs" />
     <Compile Include="Xwt\XwtToChange.cs" />

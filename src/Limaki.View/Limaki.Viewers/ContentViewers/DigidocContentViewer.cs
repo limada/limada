@@ -21,40 +21,40 @@ using System.Collections.Generic;
 
 namespace Limaki.Viewers.StreamViewers {
 
-    public class DocumentSchemaContentViewer : ContentVisualViewer, IVidget {
-        DocumentSchemaViewer _documentViewer = null;
+    public class DigidocContentViewer : ContentVisualViewer, IVidget {
+        DigidocViewer _digidocViewer = null;
 
-        public DocumentSchemaViewer DocumentViewer {
+        public DigidocViewer DigidocViewer {
             get {
-                if (_documentViewer == null) {
-                    _documentViewer = new DocumentSchemaViewer();
+                if (_digidocViewer == null) {
+                    _digidocViewer = new DigidocViewer();
                 }
-                return _documentViewer;
+                return _digidocViewer;
             }
 
-            protected set { _documentViewer = value; }
+            protected set { _digidocViewer = value; }
         }
 
         public override IVidget Frontend {
-            get { return DocumentViewer; }
+            get { return DigidocViewer; }
         }
 
         public override IVidgetBackend Backend {
-            get { return DocumentViewer.Backend; }
+            get { return DigidocViewer.Backend; }
         }
         
         public override bool Supports (IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
-            var docManager = new DocumentSchemaManager();
+            var docManager = new DigidocManager();
             return docManager.HasPages(graph, visual);
         }
 
         public override void SetContent (IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
-            DocumentViewer.SetDocument(new GraphCursor<IVisual, IVisualEdge>(graph, visual));
+            DigidocViewer.SetDocument(new GraphCursor<IVisual, IVisualEdge>(graph, visual));
         }
 
         public override void Dispose () {
-            DocumentViewer.Dispose();
-            DocumentViewer = null;
+            DigidocViewer.Dispose();
+            DigidocViewer = null;
         }
     }
 }

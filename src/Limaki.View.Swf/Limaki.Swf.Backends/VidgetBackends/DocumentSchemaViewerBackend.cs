@@ -28,10 +28,10 @@ namespace Limaki.View.Swf.Backends {
 
         public DocumentSchemaViewerBackend () {}
 
-        public DocumentSchemaViewer Frontend { get; set; }
+        public DigidocViewer Frontend { get; set; }
 
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (DocumentSchemaViewer)frontend;
+            this.Frontend = (DigidocViewer)frontend;
             Compose();
         }
 

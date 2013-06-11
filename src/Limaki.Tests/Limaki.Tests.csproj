@@ -103,7 +103,7 @@
     <Compile Include="Limada.Tests\Tests\Basic\BasicThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\Basic\ThingTest.cs" />
     <Compile Include="Limada.Tests\Tests\Model\DescriptionTestFactory.cs" />
-    <Compile Include="Limada.Tests\Tests\Model\DocumentSchemaTestFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\DigidocTestFactory.cs" />
     <Compile Include="Limada.Tests\Tests\Model\ThingFactoryTest.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
@@ -122,7 +122,7 @@
     <Compile Include="Limada.Tests\Tests\Model\ModelHelper.cs" />
     <Compile Include="Limada.Tests\Tests\Model\SheetTest.cs" />
     <Compile Include="Limada.Tests\Tests\Schema\CommonSchemaTest.cs" />
-    <Compile Include="Limada.Tests\Tests\Schema\DocumentSchemaTest.cs" />
+    <Compile Include="Limada.Tests\Tests\Schema\DigidocTest.cs" />
     <Compile Include="Limada.Tests\Tests\Schema\SchemaTest.cs" />
     <Compile Include="Limada.Tests\Tests\Schema\SchemaTest1.cs" />
     <Compile Include="Limada.Tests\Tests\Schema\SchemaViewTestData.cs" />
@@ -144,6 +144,9 @@
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
     <Compile Include="Playground\View\CollissionResolver.cs" />
     <Compile Include="Playground\View\DrawingTests.cs" />
+    <Compile Include="Playground\View\XwtFrontend\ScrollableCanvas.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Playground\View\ReferencePainterCanvas.cs">
       <SubType>Component</SubType>
     </Compile>

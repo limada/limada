@@ -23,7 +23,7 @@ namespace Limada.Schemata {
             schema = new MetaSchema();
             schema = new TopicSchema();
             schema = new ViewMetaSchema();
-            schema = new DocumentSchema();
+            schema = new DigidocSchema();
         }
 
         public static void MakeMarkersUnique(IThingGraph thingGraph) {

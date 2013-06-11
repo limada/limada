@@ -151,7 +151,7 @@ namespace Limada.Tests.ThingGraphs {
                 
                 if (disp != nullStringThing) {
                     ReportDetail(string.Format("+\t{0}\t[{1}]", nullStringThing.Data ?? "<null>", nullStringThing.Id.ToString("X")));
-                    var titleLink = edges.FirstOrDefault(l => l.Marker.Id == DocumentSchema.DocumentTitle.Id);
+                    var titleLink = edges.FirstOrDefault(l => l.Marker.Id == DigidocSchema.DocumentTitle.Id);
                     if (titleLink != null && titleLink.Leaf == disp) {
                         ReportDetail(string.Format("\t-\t{0}\t[{1}]", disp.Data ?? "<null>", disp.Id.ToString("X")));
                         if (true) {
@@ -166,9 +166,9 @@ namespace Limada.Tests.ThingGraphs {
                             graph.Remove(disp);
                         }
                     }
-                    var documentLink = edges.FirstOrDefault(l => l.Marker.Id == DocumentSchema.Document.Id);
+                    var documentLink = edges.FirstOrDefault(l => l.Marker.Id == DigidocSchema.Document.Id);
                     if(documentLink!=null) {
-                        ReportDetail(string.Format("\t<>\t{0}\t{1}", DocumentSchema.Document.Data, CommonSchema.CommonMarker.Data));
+                        ReportDetail(string.Format("\t<>\t{0}\t{1}", DigidocSchema.Document.Data, CommonSchema.CommonMarker.Data));
                         if (act) {
                             documentLink.Marker = CommonSchema.CommonMarker;
                             graph.Add(documentLink);

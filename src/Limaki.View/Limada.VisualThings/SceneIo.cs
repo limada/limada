@@ -92,9 +92,9 @@ namespace Limada.Usecases {
             IEnumerable<IThing> things = null;
             if (visuals.Count() == 1) {
                 var thing = scene.Graph.ThingOf(visuals.First());
-                var schema = new DocumentSchema(scene.Graph.ThingGraph(), thing);
-                if (schema.HasPages())
-                    things = schema.OrderedPages();
+                var digidoc = new DigidocSchema(scene.Graph.ThingGraph(), thing);
+                if (digidoc.HasPages())
+                    things = digidoc.OrderedPages();
 
             }
             if (things == null) {

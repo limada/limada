@@ -262,7 +262,7 @@
     <Compile Include="Limada\Model\ThingContentFacade.cs" />
     <Compile Include="Limada\Model\Thing_T.cs" />
     <Compile Include="Limada\Schemata\CommonSchema.cs" />
-    <Compile Include="Limada\Schemata\DocumentSchema.cs" />
+    <Compile Include="Limada\Schemata\DigidocSchema.cs" />
     <Compile Include="Limada\Schemata\MetaSchema.cs" />
     <Compile Include="Limada\Schemata\Schema.cs" />
     <Compile Include="Limada\Schemata\SchemaFacade.cs" />

@@ -51,7 +51,7 @@ namespace Limaki.Tests.View {
                     _examples.Add(new TypeChoose<SceneFactory<WordGameGraphFactory>>());
                     _examples.Add(new TypeChoose<SceneFactory<LimakiShortHelpFactory>>());
                     _examples.Add(new TypeChoose<BenchmarkOneSceneFactory>());
-                    _examples.Add(new TypeChoose<SchemaViewTestData<DocumentSchema>>());
+                    _examples.Add(new TypeChoose<SchemaViewTestData<DigidocSchema>>());
                     Selected = _examples[0];
                 }
                 return _examples;

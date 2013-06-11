@@ -6,11 +6,11 @@ using Limaki.Visuals;
 
 namespace Limada.Usecases {
 
-    public class DocumentSchemaDataProvider {
+    public class DigidocIo {
         public bool DocumentHasPages (IGraphScene<IVisual, IVisualEdge> scene) {
             var graph = scene.Graph;
             var document = scene.Focused;
-            var documentSchemaManager = new DocumentSchemaManager();
+            var documentSchemaManager = new DigidocManager();
 
             return documentSchemaManager.HasPages(graph, document);
 
@@ -19,7 +19,7 @@ namespace Limada.Usecases {
         public void ExportPages (string dir, IGraphScene<IVisual, IVisualEdge> scene) {
             var graph = scene.Graph;
             var document = scene.Focused;
-            var documentSchemaManager = new DocumentSchemaManager();
+            var documentSchemaManager = new DigidocManager();
             if (documentSchemaManager.HasPages(graph, document)) {
                 int i = 0;
                 foreach (var streamThing in documentSchemaManager.PageStreams(graph, document)) {

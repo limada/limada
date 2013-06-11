@@ -40,7 +40,7 @@ namespace Limaki.Viewers.StreamViewers {
     public interface IDocumentSchemaViewerBackend : IVidgetBackend { }
 
     [BackendType(typeof(IDocumentSchemaViewerBackend))]
-    public class DocumentSchemaViewer : Vidget, IZoomTarget {
+    public class DigidocViewer : Vidget, IZoomTarget {
 
         IDocumentSchemaViewerBackend _backend = null;
         public virtual IDocumentSchemaViewerBackend Backend {
@@ -103,9 +103,9 @@ namespace Limaki.Viewers.StreamViewers {
                 display.ZoomState = ZoomState.FitToWidth;
                 display.EventControler.Remove(display.EventControler.GetAction<KeyScrollAction>());
 
-                var scroller = display.EventControler.GetAction<DocumentSchemaKeyScrollAction>();
+                var scroller = display.EventControler.GetAction<DigidocKeyScrollAction>();
                 if (scroller == null) {
-                    scroller = new DocumentSchemaKeyScrollAction();
+                    scroller = new DigidocKeyScrollAction();
                     scroller.Viewport = () => display.Viewport;
                     display.EventControler.Add(scroller);
                 }
@@ -139,7 +139,7 @@ namespace Limaki.Viewers.StreamViewers {
         protected virtual void ComposePagesDisplay (IGraphSceneDisplay<IVisual, IVisualEdge> display) {
 
             display.SceneFocusChanged += (s, e) => {
-                var docMan = new DocumentSchemaManager();
+                var docMan = new DigidocManager();
                 var pageContent = docMan.PageContent(e.Scene.Graph, e.Item);
                 if (pageContent != null) {
                     PageContent = pageContent;
@@ -167,7 +167,7 @@ namespace Limaki.Viewers.StreamViewers {
             if (contentDisplay == null)
                 return;
 
-            var scroller = contentDisplay.EventControler.GetAction<DocumentSchemaKeyScrollAction>();
+            var scroller = contentDisplay.EventControler.GetAction<DigidocKeyScrollAction>();
             var scene = pagesDisplay.Data;
             var pages = scene.Elements.Where(e => !(e is IVisualEdge)).OrderBy(e => e.Location.Y).ToList();
             if (scroller != null) {
@@ -199,7 +199,7 @@ namespace Limaki.Viewers.StreamViewers {
             var pagesDisplay = this.PagesDisplay;
 
             // bring the docpages into view:
-            var docManager = new DocumentSchemaManager();
+            var docManager = new DigidocManager();
             var scene = new Scene();
             var targetGraph = new WiredDisplays().CreateTargetGraph(source.Graph);
             scene.Graph = targetGraph;

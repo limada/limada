@@ -72,7 +72,7 @@ namespace Limaki.Swf.Backends.UseCases {
             var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
 
             viewerProvider.Add(new HtmlContentViewer());
-            viewerProvider.Add(new DocumentSchemaContentViewer());
+            viewerProvider.Add(new DigidocContentViewer());
             viewerProvider.Add(new TextContentViewerWithToolstrip());
             viewerProvider.Add(new SheetViewer());
 

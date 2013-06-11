@@ -5,7 +5,7 @@ using Xwt;
 
 namespace Limaki.Viewers.StreamViewers {
 
-    public class DocumentSchemaKeyScrollAction:KeyScrollAction {
+    public class DigidocKeyScrollAction:KeyScrollAction {
         protected override Rectangle ProcessKey(KeyActionEventArgs e) {
             var result = base.ProcessKey(e);
             if (KeyProcessed != null) {

@@ -73,9 +73,9 @@ namespace Limada.Tests.Model {
         }
 
         [Test]
-        public void CompletedThingsDocumentTest() {
+        public void CompletedThingsDigidocTest() {
             var thingGraph = new ThingGraph();
-            var factory = new DocumentSchemaTestFactory();
+            var factory = new DigidocTestFactory();
             factory.Graph = thingGraph;
             factory.Populate();
 
@@ -86,9 +86,9 @@ namespace Limada.Tests.Model {
 
                 new IThing[] { factory.Node[1], 
                                factory.Node[2], 
-                               DocumentSchema.Document,
-                               DocumentSchema.DocumentTitle, 
-                               DocumentSchema.DocumentDefaultLink,
+                               DigidocSchema.Document,
+                               DigidocSchema.DocumentTitle, 
+                               DigidocSchema.DocumentDefaultLink,
                                MetaSchema.DescriptionMarker,
                                factory.Edge[1] },
                 graph);
@@ -101,21 +101,21 @@ namespace Limada.Tests.Model {
                                factory.Node[3], 
                                factory.Node[4], 
 
-                               DocumentSchema.Document, 
-                               DocumentSchema.DocumentTitle, 
+                               DigidocSchema.Document, 
+                               DigidocSchema.DocumentTitle, 
                                
-                               DocumentSchema.DocumentPage,
-                               DocumentSchema.PageNumber,
+                               DigidocSchema.DocumentPage,
+                               DigidocSchema.PageNumber,
                                
-                               DocumentSchema.DocumentDefaultLink,
-                               DocumentSchema.PageDefaultLink,
-                               //DocumentSchema.HidePagesLink,
+                               DigidocSchema.DocumentDefaultLink,
+                               DigidocSchema.PageDefaultLink,
+                               //DigidocSchema.HidePagesLink,
                                //ViewMetaSchema.Hide,
                                MetaSchema.DescriptionMarker,
                                
                                
-                               //DocumentSchema.Author,
-                               //DocumentSchema.AuthorHasDocument,
+                               //DigidocSchema.Author,
+                               //DigidocSchema.AuthorHasDocument,
                                //MetaSchema.Root,
 
                                factory.Edge[1], 

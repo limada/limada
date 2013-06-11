@@ -25,16 +25,16 @@ using Limaki.Model.Content.IO;
 
 namespace Limada.Usecases {
 
-    public class DocumentSchemaManager {
+    public class DigidocManager {
 
         public IEnumerable<IVisual> Pages(IGraph<IVisual, IVisualEdge> source, IVisual document) {
-            var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(document));
-            return docSchema.Pages().Select(t => source.VisualOf(t));
+            var digidoc = new DigidocSchema(source.ThingGraph(), source.ThingOf(document));
+            return digidoc.Pages().Select(t => source.VisualOf(t));
         }
 
         public IEnumerable<Content<Stream>> PageStreams(IGraph<IVisual, IVisualEdge> source, IVisual document) {
-            var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(document));
-            return docSchema.PageStreams();
+            var digidoc = new DigidocSchema(source.ThingGraph(), source.ThingOf(document));
+            return digidoc.PageStreams();
         }
 
         public Content<Stream> PageContent(IGraph<IVisual, IVisualEdge> source, IVisual page) {
@@ -64,12 +64,12 @@ namespace Limada.Usecases {
         //}
 
         public bool HasPages(IGraph<IVisual, IVisualEdge> source, IVisual visual) {
-            var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(visual));
-            return docSchema.HasPages();
+            var digidoc = new DigidocSchema(source.ThingGraph(), source.ThingOf(visual));
+            return digidoc.HasPages();
         }
 
         public bool IsPage(IGraph<IVisual, IVisualEdge> source, IVisual page) {
-            var docSchema = new DocumentSchema(source.ThingGraph(), source.ThingOf(page));
+            var digidoc = new DigidocSchema(source.ThingGraph(), source.ThingOf(page));
             var pageThing = source.ThingOf(page) as IStreamThing;
             var info = new ImageContentInfo();
             return (pageThing != null && info.Supports(pageThing.StreamType));

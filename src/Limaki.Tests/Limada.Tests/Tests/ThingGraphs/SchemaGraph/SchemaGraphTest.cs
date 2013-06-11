@@ -109,7 +109,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
 
         [Test]
         public virtual void DocumentSchemaTest() {
-            var factory = new DocumentSchemaTestFactory();
+            var factory = new DigidocTestFactory();
             factory.Graph = this.Graph;
             factory.Populate();
             ((SchemaThingGraph)Graph).Initialize();
