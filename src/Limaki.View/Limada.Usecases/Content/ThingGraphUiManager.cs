@@ -90,7 +90,8 @@ namespace Limada.Usecases {
                 Registry.Pool.TryGetCreate<IExceptionHandler>()
                     .Catch(new Exception("Open failed: " + ex.Message, ex), MessageType.OK);
                 try {
-                    sinkIo.Close(source);
+                    if (source != null)
+                        sinkIo.Close(source);
                 } catch { }
 
                 return false;
@@ -130,7 +131,7 @@ namespace Limada.Usecases {
             } else {
                 var sinkIo = ThingGraphIoManager.GetSinkIO(this.Data.ContentType, IoMode.Write) as ThingGraphIo;
                 if (sinkIo != null) {
-                    sinkIo.Use(this.Data);
+                    sinkIo.Flush(this.Data);
                 }
             }
         }
@@ -150,9 +151,13 @@ namespace Limada.Usecases {
             var sink = sinkIo.Open(sinkInfo);
 
             // saveAs:
-            new ThingGraphMergeSink { Progress = this.Progress }.Use(this.Data.Data, sink.Data);
-            sinkIo.Flush(sink);
-            sink.Data.AttachThings(t => {});
+            var merger = new ThingGraphMerger { Progress = this.Progress };
+            merger.Use(this.Data.Data, sink.Data);
+            merger.AttachThings(sink.Data);
+
+            // close and reopen; flush and attach does't work in all cases
+            sinkIo.Close(sink);
+            sink = sinkIo.Open(sinkInfo);
 
             AttachCurrent(sink, sinkInfo.Name);
 
@@ -174,7 +179,7 @@ namespace Limada.Usecases {
                 if (sinkIo != null) {
                     var source = new VisualThingsSceneViz().CreateThingsView(scene);
                     var sink = sinkIo.Open(sinkIori);
-                    new ThingGraphExportSink { Progress = this.Progress }.Use(source, sink.Data);
+                    new ThingGraphExporter { Progress = this.Progress }.Use(source, sink.Data);
                     sinkIo.Close(sink);
                 }
             }
@@ -266,7 +271,7 @@ namespace Limada.Usecases {
                                 ThingGraphContent source = null;
                                 try {
                                     source = sourceIo.Open(sourceIori);
-                                    new ThingGraphMergeSink().Use(source.Data, this.Data.Data);
+                                    new ThingGraphMerger { Progress = this.Progress }.Use(source.Data, this.Data.Data);
                                 } catch (Exception ex) {
                                     Registry.Pool.TryGetCreate<IExceptionHandler>()
                                         .Catch(new Exception("Add file failed: " + ex.Message, ex), MessageType.OK);

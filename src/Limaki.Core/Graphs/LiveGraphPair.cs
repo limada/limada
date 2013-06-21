@@ -45,7 +45,7 @@ namespace Limaki.Graphs {
 
         public override ICollection<TEdgeOne> Edges(TItemOne item) {
             //ICollection<TEdgeOne> result = One.Edges (item);
-            if (true){//(result == emptyEgdes){
+            if (true){//(result == EmptyEgdes){
                 TItemTwo itemTwo = Get(item);
                 ICollection<TEdgeTwo> _edgesTwo = null;
                 if (itemTwo != null) {

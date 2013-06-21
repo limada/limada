@@ -65,7 +65,7 @@ namespace Limaki.Model.Content.IO {
         }
 
         public virtual ISinkIo<TSource> GetSinkByExtension(string extension, IoMode mode) {
-            var result = Provider.Find(extension, mode);
+            var result = Provider.Find(extension.ToLower(), mode);
             this.AttachProgress(result as IProgress);
             return result;
         }

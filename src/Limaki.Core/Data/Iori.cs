@@ -12,6 +12,8 @@
  * 
  */
 
+using Limaki.Model.Content.IO;
+using System.Runtime.Serialization;
 namespace Limaki.Data {
 
     ///<summary>
@@ -19,22 +21,31 @@ namespace Limaki.Data {
     /// provides information needed to connect to a database
     /// </summary>
     ///  <stereotype>description</stereotype>
+    [DataContract]
     public class Iori {
-        public string Server { get; set; }
 
+        [DataMember]
         public string Path { get; set; }
-
+        [DataMember]
         public string Name { get; set; }
-
-        public string User { get; set; }
-
-        public string Password { get; set; }
-
-        public string Provider { get; set; }
-
+        [DataMember]
         public string Extension { get; set; }
 
+        [DataMember]
+        public string Server { get; set; }
+        [DataMember]
         public int Port { get; set; }
+        
+        [DataMember]
+        public string User { get; set; }
+        [DataMember]
+        public string Password { get; set; }
+        
+        [DataMember]
+        public string Provider { get; set; }
+        
+        [DataMember]
+        public IoMode AccessMode { get; set; }
 
         /// <summary>
         /// extracts the information of filename and fills dataBaseInfo 
@@ -55,20 +66,23 @@ namespace Limaki.Data {
             iori.Name = System.IO.Path.GetFileNameWithoutExtension (file.FullName);
             iori.Extension = System.IO.Path.GetExtension (file.FullName).ToLower ();
             if (iori.Extension == ".limfb") {
-                iori.Provider = "FirebirdProvider";
+                iori.Provider = "Firebird";
                 iori.User = "SYSDBA";
                 iori.Password = "masterkey";
             } else if (iori.Extension == ".limo") {
-                iori.Provider = "Db4oProvider";
+                iori.Provider = "Db4o";
             } else if (iori.Extension == ".pib") {
-                iori.Provider = "PartsProvider";
+                iori.Provider = "Parts";
                 iori.User = "SYSDBA";
                 iori.Password = "masterkey";
-            }
+            } 
         }
 
-        public static string ToFileName(Iori iori) {
-            return iori.Path+iori.Name+iori.Extension;
+        public static string ToFileName (Iori iori) {
+            var extension = iori.Extension;
+            if (!extension.StartsWith("."))
+                extension = "." + extension;
+            return iori.Path + iori.Name + extension;
         }
         public override string ToString() {
             return (this.Path ?? "") + (this.Name ?? "") + (this.Extension ?? "");

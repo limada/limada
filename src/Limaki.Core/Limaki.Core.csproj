@@ -231,11 +231,14 @@
     <Compile Include="Graphs\MultiDictionaryGraph.cs" />
     <Compile Include="Limada\AppResourceLoader.cs" />
     <Compile Include="Limada\Common\Isaac.cs" />
+    <Compile Include="Limada\Data\IoriThingGraphInfo.cs" />
     <Compile Include="Limada\Data\IThingGraphRepair.cs" />
     <Compile Include="Limada\Data\MemoryThingGraphInfo.cs" />
     <Compile Include="Limada\Data\MemoryThingGraphIo.cs" />
     <Compile Include="Limada\Data\ThingGraphContent.cs" />
+    <Compile Include="Limada\Data\ThingGraphExporter.cs" />
     <Compile Include="Limada\Data\ThingGraphIo.cs" />
+    <Compile Include="Limada\Data\ThingGraphMerger.cs" />
     <Compile Include="Limada\Data\XmlThingGraphInfo.cs" />
     <Compile Include="Limada\Data\XmlThingGraphIo.cs" />
     <Compile Include="Limada\Model\ByteStreamWrapper.cs" />

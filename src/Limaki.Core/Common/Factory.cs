@@ -69,7 +69,11 @@ namespace Limaki.Common {
             }
         }
         public IEnumerable<Type> KnownClasses {
-            get { return knownClazzes.Values; }
+            get {
+                if (_clazzes == null)
+                    InstrumentClazzes();
+                return knownClazzes.Values;
+            }
         }
 
         private IDictionary<Type, Delegate> _clazzes = null;

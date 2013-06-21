@@ -39,52 +39,58 @@ namespace Limaki.Graphs {
             return String.Format("[{0}->{1}]", root, leaf);
         }
 
-        public static void MergeInto<TItem, TEdge>(this IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> target)
+        public static void MergeInto<TItem, TEdge>(this IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> sink)
             where TEdge : IEdge<TItem>, TItem {
-            source.MergeInto(target, null, null, null);
+            source.MergeInto(sink, null, null, null,null);
         }
 
-        public static void MergeInto<TItem, TEdge>(this IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> target, Action<TItem> message)
+        public static void MergeInto<TItem, TEdge> (this IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> sink, Action<TItem> touch, Action<TItem> doMerge)
             where TEdge : IEdge<TItem>, TItem {
-            source.MergeInto(target, null, null, message);
+            source.MergeInto(sink, null, null, touch, doMerge);
         }
 
-        public static void MergeInto<TItem, TEdge>(this IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> target,
-                                                   Func<TItem, bool> whereItem, Func<TEdge, bool> whereEdge, Action<TItem> message)
+        public static void MergeInto<TItem, TEdge>(this IGraph<TItem, TEdge> source, IGraph<TItem, TEdge> sink,
+                                                   Func<TItem, bool> whereItem, Func<TEdge, bool> whereEdge, Action<TItem> touch, Action<TItem> doMerge)
             where TEdge : IEdge<TItem>, TItem {
-            if (source != null && target != null) {
+            if (source != null && sink != null) {
                 Func<TEdge, bool> checkEdge = e => {
-                                                  var result = source.ValidEdge(e);
-                                                  // TODO: show warning here
-                                                  return result;
-                                              };
+                    var result = source.ValidEdge(e);
+                    // TODO: show warning here
+                    return result;
+                };
                 Func<TItem, bool> checkItem = i => {
-                                                  TEdge e = default(TEdge);
-                                                  if (i is TEdge) e = (TEdge) i;
-                                                  var result = e == null || checkEdge(e);
-                                                  return result;
-                                              };
+                    TEdge e = default(TEdge);
+                    if (i is TEdge) e = (TEdge)i;
+                    var result = e == null || checkEdge(e);
+                    return result;
+                };
                 Action<TItem> state = i => {
-                                          if (message != null)
-                                              message(i);
-                                      };
+                    if (touch != null)
+                        touch(i);
+                };
+                Action<TItem> merge = i => {
+                    if (doMerge != null)
+                        doMerge(i);
+                    else
+                        sink.Add(i);
+                };
                 Walker<TItem, TEdge> walker = new Walker<TItem, TEdge>(source);
                 foreach (TItem item in source) {
                     if (!walker.Visited.Contains(item)) {
                         state(item);
                         if (checkItem(item) && (whereItem == null || whereItem(item))) {
-                            target.Add(item);
+                            merge(item);
                         }
                         foreach (LevelItem<TItem> levelItem in walker.DeepWalk(item, 0)) {
                             state(levelItem.Node);
                             if (levelItem.Node is TEdge) {
                                 var edge = (TEdge) levelItem.Node;
                                 if (checkEdge(edge) && (whereEdge == null || whereEdge(edge))) {
-                                    target.Add(edge);
+                                    merge(edge);
                                 }
 
                             } else if (checkItem(levelItem.Node) && (whereItem == null || whereItem(levelItem.Node))) {
-                                target.Add(levelItem.Node);
+                                merge(levelItem.Node);
                             }
                         }
                     }

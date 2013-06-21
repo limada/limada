@@ -101,11 +101,18 @@ namespace Limada.Model {
         protected override void InstrumentClazzes() {
 
             Add<IThingGraph>(() => new ThingGraph());
+            AddKnown<IThingGraph, ThingGraph>();
+
             Add<IThing>(() => new Thing());
+            AddKnown<IThing, Thing>();
+
             Add<IThing<string>>(() => new Thing<string>()); //typeof(StringThing()); 
+            AddKnown<IThing<string>, Thing<string>>();
 
             Add<IThing<Stream>>(() => new StreamThing());
             Add<IStreamThing>(() => new StreamThing());
+            AddKnown<IThing<Stream>, StreamThing>();
+            AddKnown<IStreamThing, StreamThing>();
 
             Add<IThing<long>>(() => new NumberThing());
             Add<IThing<double>>(() => new NumberThing());
@@ -115,7 +122,16 @@ namespace Limada.Model {
             Add<INumberThing>(() => new NumberThing());
 
             Add<ILink>(() => new Link());
-            
+
+
+            AddKnown<IThing<long>, NumberThing>();
+            AddKnown<IThing<double>, NumberThing>();
+            AddKnown<IThing<DateTime>, NumberThing>();
+            AddKnown<IThing<Quad16>, NumberThing>();
+            AddKnown<IThing<int>, NumberThing>();
+            AddKnown<INumberThing, NumberThing>();
+
+            AddKnown<ILink, Link>();
         }
 
         ILink IGraphModelFactory<IThing, ILink>.CreateEdge(IThing root, IThing leaf, object data){

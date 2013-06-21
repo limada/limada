@@ -12,10 +12,11 @@ namespace Limada.Model {
     public class ThingSerializer : ThingSerializerBase {
         public virtual XmlWriterSettings Settings {
             get {
-                var settings = new XmlWriterSettings();
-                settings.OmitXmlDeclaration = true;
-                settings.ConformanceLevel = ConformanceLevel.Fragment;
-                settings.CloseOutput = false;
+                var settings = new XmlWriterSettings {
+                    OmitXmlDeclaration = true,
+                    ConformanceLevel = ConformanceLevel.Fragment,
+                    CloseOutput = false,
+                };
                 return settings;
             }
         }
@@ -96,11 +97,11 @@ namespace Limada.Model {
                 reader.ReadStartElement("things");
                 var streamThings = new Dictionary<Id, IStreamThing>();
                 while (Serializer.IsStartObject(reader)) {
-                    IThing thing = Serializer.ReadObject(reader) as IThing;
+                    var thing = Serializer.ReadObject(reader) as IThing;
                     ThingCollection.Add(thing);
                     var streamThing = thing as IStreamThing;
-                    if (streamThing!=null) {
-                        streamThings.Add(thing.Id, streamThing);
+                    if (streamThing != null) {
+                        streamThings[thing.Id] = streamThing;
                     }
                 }
 

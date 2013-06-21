@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -22,7 +22,8 @@ using System.Linq;
 using Limaki.Common;
 
 namespace Limada.Model {
-    public class ThingGraph:Graph<IThing,ILink>,IThingGraph {
+
+    public class ThingGraph : Graph<IThing, ILink>, IThingGraph {
 
         #region ID-Handling
         private IDictionary<Id, IThing> _ids = new Dictionary<Id, IThing> ();
@@ -157,53 +158,67 @@ namespace Limada.Model {
 
         public virtual ICollection<IThing> Markers() {
             ICollection<IThing> result = new Set<IThing>();
-            foreach (Id id in markerIds)
+            foreach (var id in markerIds)
                 result.Add(GetById (id));
             return result;
         }
 
-        protected virtual void Replace(IThing oldThing, IThing newThing) {
-            var links = Edges (oldThing);
-            bool hasLinks = false;
-            foreach (ILink link in links) {
-                hasLinks = true;
-                if(link.Root==oldThing) {
+        protected virtual void Replace (IThing oldThing, IThing newThing) {
+            var replaceLinks = Edges(oldThing);
+            if (!items.Contains(oldThing) && replaceLinks.Count == 0 && items.Contains(newThing))
+                return;
+
+            foreach (var link in replaceLinks) {
+                var llink = (ILink<Id>) link;
+                if (llink.Root == oldThing.Id) {
                     link.Root = newThing;
                 }
-                if (link.Leaf == oldThing) {
+                if (llink.Leaf == oldThing.Id) {
                     link.Leaf = newThing;
                 }
-                if (link.Marker == oldThing) {
+                if (llink.Marker == oldThing.Id) {
                     link.Marker = newThing;
                 }
             }
-            ILink oldLink = oldThing as ILink;
-            ILink newLink = newThing as ILink;
+            var oldLink = oldThing as ILink;
+            var newLink = newThing as ILink;
             if (oldLink != null) {
                 edges.Remove(oldLink);
-                edges.Add(newLink);
+                if(!edges.Contains(newLink))
+                    edges.Add(newLink);
             }
-            items.Remove (oldThing);
-            if (hasLinks) {
-                items.Add (newThing, links);
+            items.Remove(oldThing);
+
+            var links = Edges(newThing);
+            if (links.Count == 0) {
+                if (replaceLinks.Count > 0) {
+                    items[newThing] = replaceLinks;
+                } else {
+                    items[newThing] = null;
+                }
             } else {
-                items.Add(newThing, default(ICollection<ILink>));
+                foreach (var link in replaceLinks) {
+                    Add(link);
+                }
             }
+
             if (markerIds.Contains(oldThing.Id)) {
-                foreach(ILink link in this.edges) {
-                    if (link.Marker.Id == oldThing.Id) {
+                foreach (var link in this.edges) {
+                    if (((ILink<Id>)link).Marker == oldThing.Id) {
                         link.Marker = newThing;
                     }
                 }
             }
+
+            ReplaceId(newThing);
         }
-        public virtual IThing UniqueThing(IThing thing) {
+
+        public virtual IThing UniqueThing (IThing thing) {
             IThing result = thing;
             if (thing != null) {
-                IThing stored = this.GetById(thing.Id);
-                if (stored !=null && ! object.ReferenceEquals(stored,thing)) {
-                    Replace (stored, thing);
-                    ReplaceId (thing);
+                var stored = this.GetById(thing.Id);
+                if (stored != null && !object.ReferenceEquals(stored, thing)) {
+                    Replace(stored, thing);
                 }
             }
             return result;

@@ -44,7 +44,7 @@ namespace Limaki.Graphs {
         
         #region TEdge
 
-        public static ICollection<TEdge> emptyEgdes = new EmptyCollection<TEdge> ();
+        public static ICollection<TEdge> EmptyEgdes = new EmptyCollection<TEdge> ();
 
         protected abstract void AddEdge(TEdge edge, TItem item);
         protected abstract bool RemoveEdge(TEdge edge, TItem item);

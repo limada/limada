@@ -180,7 +180,7 @@ namespace Limaki.Graphs {
                     return list;
                 }
             }
-            return emptyEgdes;
+            return EmptyEgdes;
         }
 
         public override IEnumerable<TEdge> Edges() {

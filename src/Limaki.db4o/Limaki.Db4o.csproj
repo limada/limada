@@ -90,9 +90,21 @@
     <Compile Include="Db4oResourceLoader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.CS.Optional\Db4objects.Db4o.CS.Optional-2010.csproj">
+      <Project>{2dc5a1fa-7bd9-4937-9e36-2eed126b7809}</Project>
+      <Name>Db4objects.Db4o.CS.Optional-2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.CS\Db4objects.Db4o.CS-2010.csproj">
+      <Project>{9fa8178a-3e77-42c5-a252-6690ea9ba257}</Project>
+      <Name>Db4objects.Db4o.CS-2010</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq-2010.csproj">
       <Project>{23531440-0922-43EB-A483-6592FFC2F093}</Project>
       <Name>Db4objects.Db4o.Linq-2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Optional\Db4objects.Db4o.Optional-2010.csproj">
+      <Project>{e9588fe7-c19d-445e-bb53-ae539ea4f0e6}</Project>
+      <Name>Db4objects.Db4o.Optional-2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o\Db4objects.Db4o-2010.csproj">
       <Project>{600CD3BF-2ED2-4183-87F7-ADD78A968AE0}</Project>

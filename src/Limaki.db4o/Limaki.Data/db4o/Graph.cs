@@ -278,35 +278,6 @@ namespace Limaki.Data.db4o {
         }
 
         /// <summary>
-        /// not working:
-        /// </summary>
-        protected void Refactor() {
-            // attention! this avoids having new classes:
-            //Configuration.DetectSchemaChanges = false;
-            var typesDone = new Set<Type>();
-            var needsOpenClose = false;
-            foreach (Type type in TypesToConfigure) {
-                try {
-                    if (!typesDone.Contains(type) && IsClassConfigurable(type)) {
-                        needsOpenClose = RefactorType(type) || needsOpenClose;
-                    }
-                } catch (Exception e) {
-                    Trace.WriteLine("Error with " + type.FullName + "\t" + e.Message);
-                    Trace.WriteLine(e.StackTrace);
-                }
-                typesDone.Add(type);
-            }
-
-            if (needsOpenClose) {
-                var configuration = Db4oEmbedded.NewConfiguration();
-                configuration.Common.DetectSchemaChanges = false;
-                var sessíon = _gateway.CreateSession(configuration);
-
-                sessíon.Close();
-            }
-        }
-
-        /// <summary>
         /// Calls configureclass for every type in typesToConfigure
         /// calls ConfigureAliases
         /// this is called before opening the database; no valid session here

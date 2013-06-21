@@ -34,6 +34,7 @@ namespace Limada.Usecases {
             deviceContext.ApplyResources(context);
             var thingGraphProvider = context.Pool.TryGetCreate<IoProvider<Iori, ThingGraphContent>>();
             thingGraphProvider.Add(new XmlThingGraphIo());
+            thingGraphProvider.Add(new IoriThingGraphIo());
 
         }
     }

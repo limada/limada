@@ -252,29 +252,6 @@ namespace Limada.Model {
                 }
             }
         }
-
-        public static void MergeThingsInto(this IThingGraph source, IThingGraph sink, Action<IThing> message, Action beforeMerge) {
-            // do not change to extension! 
-            GraphExtensions.MergeInto(source, sink, message);
-            if (beforeMerge != null)
-                beforeMerge();
-            source.MergeStreamThingsInto(sink,message);
-        }
-
-        public static void MergeStreamThingsInto(this IThingGraph source, IThingGraph sink, Action<IThing> message) {
-
-            foreach (var thing in source.OfType<IStreamThing>()) {
-                message(thing);
-                var data = source.DataContainer.GetById(thing.Id);
-                sink.DataContainer.Add(data);
-            }
-        }
-
-        public static void AttachThings (this IThingGraph source, Action<IThing> message) {
-            foreach (var thing in source.OfType<IStreamThing>()) {
-                message(thing);
-                thing.DataContainer = source.DataContainer;
-            }
-        }
+       
     }
 }

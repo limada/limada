@@ -31,9 +31,15 @@ namespace Limada.Data {
 
         protected override ThingGraphContent OpenInternal (Iori source) {
             try {
-                var file = new FileStream(Iori.ToFileName(source), FileMode.Open);
-                var thingGraph = Open(file);
-                return new ThingGraphContent { Data = new ThingGraph(), Source = source, ContentType = XmlThingGraphInfo.ContentType };
+                IThingGraph thingGraph = null;
+                var fileName = Iori.ToFileName(source);
+                if (File.Exists(fileName)) {
+                    using (var file = new FileStream(fileName, FileMode.Open))
+                        thingGraph = Open(file);
+                } else {
+                    thingGraph = new ThingGraph();
+                }
+                return new ThingGraphContent { Data = thingGraph, Source = source, ContentType = XmlThingGraphInfo.ContentType };
 
             } catch (Exception ex) {
                 Registry.Pool.TryGetCreate<IExceptionHandler>()
@@ -66,15 +72,15 @@ namespace Limada.Data {
             if (source == null)
                 return;
 
-            var sink = new FileStream(Iori.ToFileName(sinkInfo), FileMode.Create);
+            using (var sink = new FileStream(Iori.ToFileName(sinkInfo), FileMode.Create)) {
 
-            var serializer = new ThingSerializer { Graph = source.Data, ThingCollection = source.Data.Elements().ToList() };
+                var serializer = new ThingSerializer { Graph = source.Data, ThingCollection = source.Data.Elements().ToList() };
 
-            serializer.Write(sink);
+                serializer.Write(sink);
 
-            sink.Flush();
-            sink.Close();
-
+                sink.Flush();
+                sink.Close();
+            }
             source.Source = sinkInfo;
         }
 

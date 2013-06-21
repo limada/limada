@@ -23,8 +23,11 @@ namespace Limaki.Model.Content.IO {
         None = 0,
         Read = 1 << 0,
         Write = 1 << 1,
+        Client = 1 << 2,
+        Server = 1 << 3,
 
-        ReadWrite = Read | Write
+        ReadWrite = Read | Write,
+        ClientServer = Client | Server
 
     }
 }

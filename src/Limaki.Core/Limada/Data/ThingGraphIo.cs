@@ -13,16 +13,10 @@
  */
 
 using System.Linq;
-using Limada.Model;
 using Limaki.Model.Content;
 using Limaki.Model.Content.IO;
 using System;
-using Limaki.Common;
-using Limaki.Graphs;
-using System.Collections.Generic;
-using Limaki.Graphs.Extensions;
 using System.IO;
-using Limaki.Common.Linqish;
 using Limaki.Data;
 
 namespace Limada.Data {
@@ -57,7 +51,8 @@ namespace Limada.Data {
 
         public virtual ThingGraphContent Open (Iori source) {
             var result = OpenInternal(source);
-            result.Source = source;
+            if (source == null)
+                result.Source = source;
             return result;
         }
 
@@ -80,110 +75,6 @@ namespace Limada.Data {
             Close(source);
             return sink;
 
-        }
-    }
-
-    /// <summary>
-    /// returns all things of source
-    /// extract all things of source stored in a sheet
-    /// and returns them
-    /// </summary>
-    public class ThingGraphExportSink : ISink<IGraph<IThing, ILink>, IThingGraph>, IProgress {
-
-        public Action<string, int, int> Progress { get; set; }
-
-        /// <summary>
-        /// returns all things of source
-        /// extract all things of source stored in a sheet
-        /// and returns them
-        /// </summary>
-        /// <param name="sourceView"></param>
-        /// <param name="sink"></param>
-        public virtual IEnumerable<IThing> ExpandThings (IThingGraph thingGraph, IEnumerable<IThing> source) {
-
-            var result = new Stack<IThing>(source);
-
-            while (result.Count > 0) {
-
-                var thing = result.Pop();
-                yield return thing;
-
-                var streamThing = thing as IStreamThing;
-                if (streamThing != null && streamThing.StreamType == ContentTypes.LimadaSheet) {
-
-                    var ser = new ThingIdSerializer();
-                    ser.Graph = thingGraph;
-
-                    streamThing.DeCompress();
-
-                    ser.Read(streamThing.Data);
-
-                    streamThing.ClearRealSubject();
-                    ser.ThingCollection.ForEach(t => result.Push(t));
-
-                }
-            }
-        }
-
-        public virtual IThingGraph Use (IGraph<IThing, ILink> source, IThingGraph sink) {
-            
-            var thingGraph = Use(source);
-            
-            if (thingGraph != null) {
-                var things = ExpandThings(thingGraph, source);
-                var completeThings =
-                    things.Distinct().CompletedThings(thingGraph)
-                        .ToList();
-                sink.AddRange(completeThings);
-                foreach (var thing in completeThings.OfType<IStreamThing>()) {
-                    var data = thingGraph.DataContainer.GetById(thing.Id);
-                    sink.DataContainer.Add(data);
-                }
-
-            }
-            return sink;
-        }
-
-        public virtual IThingGraph Use (IGraph<IThing, ILink> source) {
-             var graph = source.RootSource();
-             if (graph == null)
-                 return null;
-             return graph.Two as IThingGraph;
-        }
-    }
-
-    public class ThingGraphMergeSink : ISink<IThingGraph, IThingGraph>, IProgress {
-       
-        public Action<string, int, int> Progress { get; set; }
-
-        public IThingGraph Use (IThingGraph source, IThingGraph sink) {
-            Action<IThing> message = null;
-            var i = 0;
-            var iStreams = 0;
-            var count = source.Count;
-            bool streams = false;
-            if (this.Progress != null)
-                message = thing => {
-                    i++;
-                    if (thing != null) {
-                        var type = thing.GetType();
-                        if (!streams && Reflector.Implements(type, typeof(IStreamThing)))
-                            iStreams++;
-                        var icount = streams ? count : count + iStreams;
-                        this.Progress(string.Format("merging {2} of {3} ({4} Streams / {1} {0} )", thing.Id.ToString("X"),
-                            streams ? "Streams" : type.Name, i, icount, iStreams), i, icount);
-                    }
-                };
-            source.MergeThingsInto(sink, message, () => {
-                streams = true;
-                i = 0;
-                count = iStreams;
-            });
-            return sink;
-        }
-
-        public IThingGraph Use (IThingGraph source) {
-            return source;
         }
     }
 }

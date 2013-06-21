@@ -69,4 +69,15 @@ namespace Limaki.Model.Content {
     //stypJPG2  = $AB0B4E3B9C3A5FE2;
     //stypIco  = $86821E40ADD3F1B3;
     //stypCur  = $05D07C8AA5646706;
+
+    // some unused ids:
+    //0xf7ecf4a0c9ea2472
+    //0xa389c5274651f7fa
+    //0x57043ae9a883edfc
+    //0xbf51ed1b3e8ab598
+    //0x48ff1e12b887fe9f
+    //0x459d75b7026b2b37
+    //0xb4764a9d78c73d90
+    //0x273d44bf29878947
+
 }

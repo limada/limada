@@ -12,6 +12,7 @@
  * 
  */
 
+using Db4objects.Db4o.Ext;
 using Limada.Model;
 using Limaki.Data;
 using Limaki.Model.Content.IO;
@@ -32,18 +33,23 @@ namespace Limada.Data {
                 gateway.Open(source);
 
                 var sink = new ThingGraphContent {
-                    Data = new Limada.Data.db4o.ThingGraph(gateway),
-                    Source = source,
-                    ContentType = Db4oThingGraphInfo.Db4oThingGraphContentType,
-                };
+                                                     Data = new Limada.Data.db4o.ThingGraph(gateway),
+                                                     Source = source,
+                                                     ContentType = Db4oThingGraphInfo.Db4oThingGraphContentType,
+                                                 };
                 return sink;
-
+            } catch (DatabaseFileLockedException ex) {
+                throw;
             } catch (Exception ex) {
-                var olderVersion = ProveIfOlderVersion(gateway);
-                if (olderVersion != null)
-                    throw new NotSupportedException(olderVersion, ex);
-                else
-                    throw;
+                if (ex.InnerException != null && ex.InnerException is DatabaseFileLockedException)
+                    throw ex.InnerException;
+                else {
+                    var olderVersion = ProveIfOlderVersion(gateway);
+                    if (olderVersion != null)
+                        throw new NotSupportedException(olderVersion, ex);
+                    else
+                        throw;
+                }
             }
         }
 
