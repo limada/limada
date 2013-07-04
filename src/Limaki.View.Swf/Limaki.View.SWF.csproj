@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Limaki.Swf.Backends\VidgetBackends\CanvasVidgetBackend.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Limaki.Swf.Backends\VidgetBackends\GeckoWebBrowserBackend.cs">
       <SubType>Component</SubType>
     </Compile>

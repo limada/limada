@@ -6,6 +6,7 @@ using Xwt.Backends;
 
 namespace Limaki.Viewers.Vidgets {
 
+
     [BackendType(typeof(IWebBrowserBackend))]
     public class WebBrowserVidget : Vidget, IWebBrowser {
 
