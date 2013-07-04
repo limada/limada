@@ -70,7 +70,11 @@ namespace Xwt
 				throw new ArgumentNullException ("value");
 			data [TransferDataType.FromType (typeof (T))] = value;
 		}
-		
+
+        public void AddValue (TransferDataType type, object value) {
+            data[type] = value;
+        }
+
 		/// <summary>
 		/// Registers that the data store contains data of the provided type
 		/// </summary>
@@ -155,7 +159,9 @@ namespace Xwt
 				return bf.Deserialize (ms);
 			}
 		}
-	}
+
+        
+    }
 	
 	public delegate object DataRequestDelegate (TransferDataType type);
 }

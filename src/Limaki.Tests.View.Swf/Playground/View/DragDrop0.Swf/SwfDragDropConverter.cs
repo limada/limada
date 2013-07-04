@@ -13,14 +13,11 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections.Specialized;
 using Xwt;
 using SWF = System.Windows.Forms;
-using System.Collections.Specialized;
 
-namespace Limaki.View.Ui.DragDrop {
+namespace Limaki.View.Ui.DragDrop1 {
 
     public static class SwfDragDropConverter {
 
@@ -90,12 +87,27 @@ namespace Limaki.View.Ui.DragDrop {
 
         public static TransferDataSource ToXwt (this SWF.IDataObject data) {
             var result = new TransferDataSource();
+            result.DataRequestCallback = type => data.GetData(type.ToSwf());
+                
             foreach (var format in data.GetFormats()) {
-                var type = ToXwtTransferType(format);
-                result.AddType(type);
-                result.AddValue(data.GetData(format));
+                result.AddType(ToXwtTransferType(format));
             }
 
+            return result;
+        }
+
+     
+        public static DragOverEventArgs ToXwtDragOver (this SWF.DragEventArgs args) {
+            var result = new DragOverEventArgs(new Point(args.X, args.Y), args.Data.ToXwt(), args.AllowedEffect.ToXwt()) {
+                AllowedAction = args.Effect.ToXwt(),
+            };
+            return result;
+        }
+
+        public static DragEventArgs ToXwt (this SWF.DragEventArgs args) {
+            var result = new DragEventArgs(new Point(args.X, args.Y), args.Data.ToXwt(), args.Effect.ToXwt()) {
+               
+            };
             return result;
         }
     }

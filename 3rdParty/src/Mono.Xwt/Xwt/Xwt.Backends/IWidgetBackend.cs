@@ -203,8 +203,8 @@ namespace Xwt.Backends
 		public object ImageBackend { get; private set; }
 		public double HotX { get; private set; }
 		public double HotY { get; private set; }
-		
-		internal DragStartData (TransferDataSource data, DragDropAction action, object imageBackend, double hotX, double hotY)
+
+        public DragStartData (TransferDataSource data, DragDropAction action, object imageBackend, double hotX, double hotY)
 		{
 			Data = data;
 			DragAction = action;
