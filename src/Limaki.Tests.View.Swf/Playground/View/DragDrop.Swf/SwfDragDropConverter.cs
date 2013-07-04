@@ -16,8 +16,11 @@ using System;
 using System.Collections.Specialized;
 using Xwt;
 using SWF = System.Windows.Forms;
+using Limaki.View.DragDrop;
+using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
+using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 
-namespace Limaki.View.Ui.DragDrop1 {
+namespace Limaki.View.Swf.Backends {
 
     public static class SwfDragDropConverter {
 

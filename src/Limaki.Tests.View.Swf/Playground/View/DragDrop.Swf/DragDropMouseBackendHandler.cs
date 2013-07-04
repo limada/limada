@@ -1,31 +1,47 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+using Limaki.View.DragDrop;
 using Limaki.View.Swf;
 using Limaki.View.UI;
 using Xwt;
 using Xwt.Backends;
 
-namespace Limaki.View.Ui.DragDrop1 {
+namespace Limaki.View.Swf.Backends {
 
     public class DragDropMouseBackendHandler : DragDropBackendHandler, IDragDropMouseBackendHandler {
 
-        public DragDropMouseBackendHandler (IVidgetBackend backend) : base(backend) { }
-
-        public override void SetDragSource (DragDropAction dragAction, params TransferDataType[] types) {
-            base.SetDragSource(dragAction, types);
-            Backend.MouseUp += (s, e) => {
-                var ev = Converter.Convert(e);
-                MouseUp(ev);
-            };
-            Backend.MouseMove += (s, e) => {
-                var ev = Converter.Convert(e);
-                MouseMove(ev);
-            };
+        public DragDropMouseBackendHandler(IVidgetBackend backend) : base(backend) {
         }
 
-        public virtual void MouseUp (MouseActionEventArgs e) {
+        public override void SetDragSource(DragDropAction dragAction, params TransferDataType[] types) {
+            base.SetDragSource(dragAction, types);
+            Backend.MouseUp += (s, e) => {
+                                   var ev = Converter.Convert(e);
+                                   MouseUp(ev);
+                               };
+            Backend.MouseMove += (s, e) => {
+                                     var ev = Converter.Convert(e);
+                                     MouseMove(ev);
+                                 };
+        }
+
+        public virtual void MouseUp(MouseActionEventArgs e) {
             DragDropInfo.DragRect = Rectangle.Zero;
         }
 
-        public virtual void MouseMove (MouseActionEventArgs e) {
+        public virtual void MouseMove(MouseActionEventArgs e) {
             if (EnabledEvents.HasFlag(WidgetEvent.DragStarted))
                 return;
             if (e.Button != MouseActionButtons.Left)
@@ -45,7 +61,7 @@ namespace Limaki.View.Ui.DragDrop1 {
             DragDropInfo.DragRect = Rectangle.Zero;
         }
 
-       public DragDropAction DragDropActionFromKeyState (int keyState, DragDropAction allowedEffect) {
+        public virtual DragDropAction DragDropActionFromKeyState(int keyState, DragDropAction allowedEffect) {
 
             // Set the effect based upon the KeyState.
             if ((keyState & (8 + 32)) == (8 + 32) &&

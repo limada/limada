@@ -20,6 +20,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Xwt;
 using System;
+using System.Diagnostics;
 
 namespace Limaki.View.UI.GraphScene {
     /// <summary>
@@ -150,6 +151,7 @@ namespace Limaki.View.UI.GraphScene {
 
 
         public override void OnMouseMove(MouseActionEventArgs e) {
+            Trace.WriteLine("MouseMove Focusaction ");
             if (Scene == null)
                 return;
             
@@ -173,6 +175,7 @@ namespace Limaki.View.UI.GraphScene {
             }
 
             if (!object.ReferenceEquals(before,Current)) {
+                
                 if (before != null) {
                     Scene.Requests.Add(
                         new StateChangeCommand<TItem>(before,
@@ -180,6 +183,7 @@ namespace Limaki.View.UI.GraphScene {
 
                 }
                 if (Current != null) {
+                    Trace.WriteLine("Hovered Changed "+Current.ToString());
                     Scene.Requests.Add(
                         new StateChangeCommand<TItem>(Current,
                                                       new Pair<UiState>(UiState.None, UiState.Hovered))
@@ -199,6 +203,7 @@ namespace Limaki.View.UI.GraphScene {
 
 
             Resolved = false;
+            
         }
 
 

@@ -23,7 +23,7 @@ using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Xwt;
 
-namespace Limaki.View.Ui.DragDrop1 {
+namespace Limaki.View.DragDrop {
 
     public class DragDropViz {
 

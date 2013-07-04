@@ -9,11 +9,21 @@ using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Xwt;
 using Xwt.Backends;
+using Limaki.Graphs.Extensions;
 
-namespace Limaki.View.Ui.DragDrop1 {
+namespace Limaki.View.DragDrop {
 
     public interface IDropAction:IAction, IDropHandler {
         bool Dragging { get; set; }
+    }
+
+    /// <summary>
+    /// this class is used as an applicationwide dragdrop container
+    /// </summary>
+    public class DragDropContainer {
+        public bool Dragging { get; set; }
+        public bool Dropping { get; set; }
+        public object Data { get; set; }
     }
 
     /// <summary>
@@ -50,6 +60,12 @@ namespace Limaki.View.Ui.DragDrop1 {
             }
         }
 
+        DragDropContainer _dragDropContainer=null;
+
+        protected virtual DragDropContainer AppDragDrop {
+            get { return _dragDropContainer ?? (_dragDropContainer = Registry.Pool.TryGetCreate<DragDropContainer>()); }
+        }
+
         protected Func<IGraphScene<IVisual, IVisualEdge>> SceneHandler { get; set; }
         public IGraphScene<IVisual, IVisualEdge> Scene { get { return SceneHandler(); } }
 
@@ -70,7 +86,6 @@ namespace Limaki.View.Ui.DragDrop1 {
         }
 
         public override bool Exclusive { get; protected set; }
-
         public virtual bool Dragging { get; set; }
 
         public override void OnMouseDown (MouseActionEventArgs e) {
@@ -84,22 +99,24 @@ namespace Limaki.View.Ui.DragDrop1 {
         }
 
         public override void OnMouseMove (MouseActionEventArgs e) {
-            if (Scene == null) return;
-            if (Source == null) return;
+            Trace.WriteLine("MouseMove DragDrop ");
             base.OnMouseMove(e);
             Resolved = Resolved && Source != null;
+
             if (Resolved && (e.Button != MouseActionButtons.Left)) {
                 EndAction();
             }
             if (Resolved && !Dragging) {
                 Dragging = true;
+                AppDragDrop.Dragging = true;
+                AppDragDrop.Data = new GraphCursor<IVisual, IVisualEdge>(Scene.Graph, Source);
                 try {
                     var startData =
                         new DragStartData(GetTransferData(Scene.Graph, Source), 
                             DragDropAction.All,
                             GetDragImageBackend(Scene.Graph, Source), 
                             e.Location.X, e.Location.Y);
-
+                    
                     DragDropHandler.DragStart(startData);
                 } catch {
 
@@ -121,6 +138,7 @@ namespace Limaki.View.Ui.DragDrop1 {
 
         protected virtual void DragFinished (DragFinishedEventArgs e) {
             Dragging = false;
+            AppDragDrop.Dragging = false;
         }
 
         DragDropViz _dragDropViz = null;
@@ -129,29 +147,54 @@ namespace Limaki.View.Ui.DragDrop1 {
             //TODO
             var result = new TransferDataSource();
             result.AddValue<string>(visual.Data.ToString());
+            result.AddValue<IVisual>(visual);
             return result;
         }
 
-        public virtual  void Dropped (DragEventArgs e) {
+        public virtual void Dropped (DragEventArgs e) {
+            var pt = this.backend.PointToClient(e.Position);
+            var target = Scene.Hovered;
+            IVisual item = null;
+
             if (Dragging && Dropping) {
                 // the current Drop has started in this instance
                 // so we make a link
-                var pt = this.backend.PointToClient(e.Position);
-                var target = Scene.Hovered;
-               
-                if (target !=null && Source != target) {
+                if (target != null && Source != target) {
                     SceneExtensions.CreateEdge(Scene, Source, target);
+                }
+                return;
+            }  
+            
+            if (AppDragDrop.Dragging) {
+                var source = AppDragDrop.Data as GraphCursor<IVisual,IVisualEdge>;
+                if (source != null && source.Cursor != target) {
+                    item = GraphMapping.Mapping.LookUp(source.Graph, Scene.Graph, source.Cursor);
+                }
+            }
+            if (item == null) {
+               // TODO
+            }
+
+            if (item != null) {
+                if (target != null) {
+                    SceneExtensions.CreateEdge(Scene, target, item);
+                } else {
+                    SceneExtensions.AddItem(Scene, item, Layout, pt);
                 }
 
             } else {
-                //TODO
-                Trace.WriteLine(e.Data.GetValue(TransferDataType.Text));
+                // no known type found to import
+                string dt = "not found:\t";
+                foreach (var d in e.Data.DataTypes) dt += d.Id + " | ";
+                Trace.WriteLine(dt);
             }
+
         }
 
         public bool Dropping { get; set; }
         public void DragOver (DragOverEventArgs e) {
             Dropping = true;
+            AppDragDrop.Dropping = true;
             //TODO:
             DragDropHandler.SetDragTarget(DragDropAction.All, TransferDataType.Text);
             DragDropHandler.DragOver(e);
@@ -160,11 +203,39 @@ namespace Limaki.View.Ui.DragDrop1 {
         public void OnDrop (DragEventArgs e) {
             DragDropHandler.OnDrop(e);
             Dropping = false;
+            AppDragDrop.Dropping = false;
         }
 
         public void DragLeave (EventArgs e) {
             DragDropHandler.DragLeave(e);
             Dropping = false;
         }
+    }
+
+    public class DragDropCatcher<T> : ActionBase, IDropAction
+    where T : IMouseAction {
+        public DragDropCatcher () : base() { }
+
+        public DragDropCatcher (T baseAction, IVidgetBackend control): base() {
+            this.Priority = baseAction.Priority;
+            this.control = control;
+            this.baseAction = baseAction;
+            this.Dragging = true;
+        }
+        IVidgetBackend control = null;
+        T baseAction = default(T);
+
+        public virtual bool Dragging { get; set; }
+
+        public void DragOver (DragOverEventArgs e) {
+            if (baseAction.Enabled) {
+                var pt = control.PointToClient(e.Position);
+                baseAction.OnMouseMove(new MouseActionEventArgs(MouseActionButtons.None, ModifierKeys.None, 0, pt.X, pt.Y, 0));
+            }
+        }
+
+        public void OnDrop (DragEventArgs e) {}
+        public void DragLeave (EventArgs e) {}
+
     }
 }

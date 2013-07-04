@@ -17,7 +17,7 @@ using Limaki.View.UI;
 using Xwt;
 using Xwt.Backends;
 
-namespace Limaki.View.Ui.DragDrop1 {
+namespace Limaki.View.DragDrop {
     public interface IDropHandler {
         void DragOver (DragOverEventArgs args);
         void OnDrop (DragEventArgs args);

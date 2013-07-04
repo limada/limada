@@ -1,7 +1,7 @@
 using System;
 using Xwt;
 
-namespace Limaki.View.Ui.DragDrop1 {
+namespace Limaki.View.DragDrop {
 
     public class DragEventArgs : EventArgs {
         public DragEventArgs (Point position, TransferDataSource data, DragDropAction action) {

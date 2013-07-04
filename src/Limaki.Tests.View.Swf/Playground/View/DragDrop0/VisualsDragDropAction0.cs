@@ -17,13 +17,13 @@
 using System;
 using Limaki.Actions;
 using Limaki.Drawing;
-using Limaki.View.Ui.DragDrop1;
+using Limaki.View.Swf.Backends;
 using Limaki.View.UI;
 using Limaki.Visuals;
 using Xwt;
 using Clipboard = System.Windows.Forms.Clipboard;
-using DragEventArgs = Limaki.View.Ui.DragDrop1.DragEventArgs;
-using DragOverEventArgs = Limaki.View.Ui.DragDrop1.DragOverEventArgs;
+using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
+using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 
 using Key = Xwt.Key;
 using ModifierKeys = Xwt.ModifierKeys;
@@ -40,7 +40,7 @@ namespace Limaki.View.Ui.DragDrop0 {
         bool Dragging { get; set; }
         
         void OnDragOver (DragOverEventArgs e);
-        void OnDragDrop (Limaki.View.Ui.DragDrop1.DragEventArgs e);
+        void OnDragDrop (DragEventArgs e);
         void OnDragLeave (EventArgs e);
         void Copy ();
         void Paste ();

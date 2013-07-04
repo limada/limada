@@ -19,8 +19,9 @@ using Limaki.Common;
 using Limaki.View.Swf.Visualizers;
 using Xwt;
 using SWF = System.Windows.Forms;
+using Limaki.View.DragDrop;
 
-namespace Limaki.View.Ui.DragDrop1 {
+namespace Limaki.View.Swf.Backends {
 
     /// <summary>
     /// this is for prototyping; should be moved to VisualsDisplayBackend if done
@@ -30,7 +31,6 @@ namespace Limaki.View.Ui.DragDrop1 {
         public VisualsDisplayDragDopBackend () {
             // remove this, just for debug:
             Registry.Factory.Add<IDragDropBackendHandler>(args => new DragDropBackendHandler(args[0] as IVidgetBackend));
-        
         
         }
 

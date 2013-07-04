@@ -34,5 +34,8 @@ namespace Limaki.Graphs.Extensions {
             IGraphPair<TItem, TItem, TEdge, TEdge> sourceGraph,
             IGraphPair<TItem, TItem, TEdge, TEdge> targetGraph,
             TItem sourceitem ) where TEdge : IEdge<TItem>, TItem;
+
+        TItem LookUp<TItem, TEdge>(IGraph<TItem, TEdge> sourceGraph, IGraph<TItem, TEdge> targetGraph, TItem sourceitem)
+            where TEdge : IEdge<TItem>, TItem;
     }
 }

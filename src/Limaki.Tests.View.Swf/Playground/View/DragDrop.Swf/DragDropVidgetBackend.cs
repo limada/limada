@@ -1,10 +1,32 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+using Limaki.View.DragDrop;
+using Limaki.View.Swf.Backends;
 using System;
 using System.Diagnostics;
-using System.Windows.Forms;
 using Xwt;
+using SWF = System.Windows.Forms;
+using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
+using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 
-namespace Limaki.View.Ui.DragDrop1 {
+namespace Limaki.View.Swf.Backends {
+    /// <summary>
+    /// example how to implement DragDrop on Windows.Forms.Controls 
+    /// </summary>
     public class DragDropVidgetBackend:CanvasVidgetBackend {
+
         public DragDropVidgetBackend () {
             // remove this, just for debug:
             BackendHandler.SetDragSource(DragDropAction.All, TransferDataType.Text);
@@ -17,6 +39,7 @@ namespace Limaki.View.Ui.DragDrop1 {
             result.AddValue<string>("hello drag");
             return result;
         }
+
         protected virtual void Dropped (DragEventArgs args) {
             Trace.WriteLine(args.Data.GetValue(TransferDataType.Text));
         }
@@ -34,24 +57,16 @@ namespace Limaki.View.Ui.DragDrop1 {
         }
 
         //this is called by Control.DoDragDrop
-        protected override void OnGiveFeedback (GiveFeedbackEventArgs e) {
-
-
+        protected override void OnGiveFeedback (SWF.GiveFeedbackEventArgs e) {
             base.OnGiveFeedback(e);
-
         }
 
         //this is called by Control.DoDragDrop
-        protected override void OnQueryContinueDrag (QueryContinueDragEventArgs e) {
-
-
+        protected override void OnQueryContinueDrag (SWF.QueryContinueDragEventArgs e) {
             base.OnQueryContinueDrag(e);
-
         }
 
-     
-
-        protected override void OnDragOver (System.Windows.Forms.DragEventArgs e) {
+        protected override void OnDragOver (SWF.DragEventArgs e) {
             var ev = e.ToXwtDragOver();
             ev.AllowedAction = BackendHandler.DragDropActionFromKeyState(e.KeyState, ev.Action);
             BackendHandler.DragOver(ev);
@@ -60,7 +75,7 @@ namespace Limaki.View.Ui.DragDrop1 {
 
         }
 
-        protected override void OnDragDrop (System.Windows.Forms.DragEventArgs e) {
+        protected override void OnDragDrop (SWF.DragEventArgs e) {
             var ev = e.ToXwt();
             BackendHandler.OnDrop(ev);
             base.OnDragDrop(e);

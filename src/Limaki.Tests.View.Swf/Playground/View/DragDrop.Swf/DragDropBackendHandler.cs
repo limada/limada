@@ -19,8 +19,12 @@ using Limaki.View.UI;
 using Xwt;
 using Xwt.Backends;
 using SWF = System.Windows.Forms;
+using Limaki.View.DragDrop;
 
-namespace Limaki.View.Ui.DragDrop1 {
+using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
+using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
+
+namespace Limaki.View.Swf.Backends {
     /// <summary>
     /// implements Windows.Forms DragDrop over Xwt.DragDrop
     /// it handles dragdrop 
@@ -106,13 +110,13 @@ namespace Limaki.View.Ui.DragDrop1 {
 
             var dataObj = data.Data.ToSwf();
 
-            Backend.BeginInvoke((Action)(() => {
+            //Backend.BeginInvoke((Action)(() => {
                 var effect = Backend.DoDragDrop(dataObj, data.DragAction.ToSwf());
 
                 OnDragFinished(new DragFinishedEventArgs(effect == SWF.DragDropEffects.Move));
 
                 HideDragImage();
-            }));
+            //}));
         }
 
         protected virtual object GetDragImageBackend () { return null; }
@@ -178,7 +182,6 @@ namespace Limaki.View.Ui.DragDrop1 {
         
 
     }
-
 
     public class DragDropInfo {
         // Source

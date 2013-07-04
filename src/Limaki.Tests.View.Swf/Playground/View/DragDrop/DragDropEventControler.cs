@@ -1,9 +1,23 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System;
 using System.Collections.Generic;
 using Limaki.Actions;
 using Limaki.View.UI;
 
-namespace Limaki.View.Ui.DragDrop1 {
+namespace Limaki.View.DragDrop {
 
     public class DragDropEventControler : EventControler, IDropAction {
 

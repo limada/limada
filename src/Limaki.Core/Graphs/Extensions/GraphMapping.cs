@@ -47,6 +47,10 @@ namespace Limaki.Graphs.Extensions {
                                                    IGraphPair<TItem, TItem, TEdge, TEdge> targetGraph,
                                                    TItem sourceitem) where TEdge : IEdge<TItem>, TItem;
 
+        public TItem LookUp<TItem, TEdge> (IGraph<TItem, TEdge> sourceGraph, IGraph<TItem, TEdge> targetGraph, TItem sourceitem)
+            where TEdge : IEdge<TItem>, TItem {
+            return LookUp(sourceGraph as IGraphPair<TItem, TItem, TEdge, TEdge>, targetGraph as IGraphPair<TItem, TItem, TEdge, TEdge>, sourceitem);
+        }
 
         public static void ChainGraphMapping<TMapping>(IApplicationContext context) where TMapping : IGraphMapping {
             IGraphMapping currentmapping = null;

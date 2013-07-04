@@ -9,7 +9,7 @@ using System;
 using Limaki.Common.Collections;
 using System.Text;
 
-namespace Limaki.View.Ui.DragDrop1 {
+namespace Limaki.View.DragDrop {
     /// <summary>
     /// this class handles clipboard and drag-drop
     /// </summary>
