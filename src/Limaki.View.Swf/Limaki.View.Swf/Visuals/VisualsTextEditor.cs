@@ -252,8 +252,8 @@ namespace Limaki.View.Swf.Visuals {
             editor.Location = location.ToGdi();
             editor.Size = size.ToGdi();
             editor.AllowDrop = true;
-            editor.DragOver += new DragEventHandler(editor_DragOver);
-            editor.DragDrop += new DragEventHandler(editor_DragDrop);
+            editor.DragOver += editor_DragOver;
+            editor.DragDrop += editor_DragDrop;
             // does not work:
             //editor.Scale (new SizeF (camera.Matrice.Elements[0], transformer.Matrice.Elements[3]));
         }

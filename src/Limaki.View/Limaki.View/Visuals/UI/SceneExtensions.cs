@@ -89,7 +89,7 @@ namespace Limaki.View.Visuals.UI {
 
         public static void CreateEdge(IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual leaf) {
             if (scene != null && leaf != null && root != null && root != leaf) {
-                IVisualEdge edge = CreateEdge (scene);
+                var edge = CreateEdge (scene);
                 
                 edge.Root = root;
                 edge.Leaf = leaf;

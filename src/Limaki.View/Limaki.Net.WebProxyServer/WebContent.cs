@@ -93,7 +93,7 @@ namespace Limaki.Net.WebProxyServer {
         }
 
         public string HtmlMessage(string message) {
-            StringWriter writer = new StringWriter();
+            var writer = new StringWriter();
             writer.Write("<HTML>");
             writer.Write(@"<head>
 <style type=""text/css"">
@@ -140,7 +140,7 @@ namespace Limaki.Net.WebProxyServer {
                     stream.Position = 0;
                 }
             } else {
-                string content = Content;
+                var content = Content;
                 if (ContentIsEmpty)
                     content = defaultContent();
                 result.Data = Encoding.Convert(Encoding.Unicode, Encoding.ASCII,

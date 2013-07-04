@@ -40,19 +40,19 @@ namespace Limaki.Model.Content.IO {
         }
 
         public virtual ISinkIo<TSource> Find (string extension, IoMode mode) {
-            return _sinkIos.Where(provider => provider.InfoSink.Supports(extension)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
+            return _sinkIos.Where(sinkIo => sinkIo.InfoSink.Supports(extension)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
         }
 
         public virtual ISinkIo<TSource> Find (long streamType, IoMode mode) {
-            return _sinkIos.Where(provider => provider.InfoSink.Supports(streamType)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
+            return _sinkIos.Where(sinkIo => sinkIo.InfoSink.Supports(streamType)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
         }
 
         public virtual ISinkIo<TSource> Find (TSource stream, IoMode mode) {
-            return _sinkIos.Where(provider => provider.Supports(stream)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
+            return _sinkIos.Where(sinkIo => sinkIo.Supports(stream)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
         }
 
         public virtual ISinkIo<TSource> Find(long streamType) {
-            return _sinkIos.Where(provider => provider.InfoSink.Supports(streamType)).FirstOrDefault();
+            return _sinkIos.Where(sinkIo => sinkIo.InfoSink.Supports(streamType)).FirstOrDefault();
         }
 
 

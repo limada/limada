@@ -18,8 +18,9 @@ using System.Collections.Generic;
 namespace Limaki.Model.Content {
     
     public class ContentTypes {
+        public static long Text = unchecked((long) 0xf7ecf4a0c9ea2472);
         public static  long ASCII  = unchecked((long)0xB658B74F191B9645);
-        public static  long Doc   = unchecked((long)0xF4A5E7AF3232C887);
+        public static  long Word97   = unchecked((long)0xF4A5E7AF3232C887);
         public static  long RTF    = unchecked((long)0x720F7A018B8FF1D5);
         public static  long HTML   = unchecked((long)0x97BC58EE45132F1E);
         public static  long OLE   = unchecked((long)0x37606B1DFB0EB3DF);
@@ -41,7 +42,7 @@ namespace Limaki.Model.Content {
                 if (_extensions == null) {
                     _extensions = new Dictionary<long, string> ();
                     _extensions.Add (ASCII, "txt");
-                    _extensions.Add(Doc, "doc");
+                    _extensions.Add(Word97, "doc");
                     _extensions.Add(RTF, "rtf");
                     _extensions.Add(HTML, "html");
                     _extensions.Add(TIF, "tif");
@@ -71,7 +72,7 @@ namespace Limaki.Model.Content {
     //stypCur  = $05D07C8AA5646706;
 
     // some unused ids:
-    //0xf7ecf4a0c9ea2472
+    //
     //0xa389c5274651f7fa
     //0x57043ae9a883edfc
     //0xbf51ed1b3e8ab598
