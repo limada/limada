@@ -22,7 +22,7 @@ using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 
 namespace Limaki.View.Swf.Backends {
 
-    public static class SwfDragDropConverter {
+    public static class DragDropConverter {
 
         public static DragDropAction ToXwt (this SWF.DragDropEffects value) {
             var action = DragDropAction.None;

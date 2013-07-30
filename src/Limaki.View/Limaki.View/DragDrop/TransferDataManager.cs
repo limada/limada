@@ -24,12 +24,12 @@ namespace Limaki.View.DragDrop {
         private TransferContentTypes _transferContentTypes;
         public TransferContentTypes TransferContentTypes { get { return _transferContentTypes ?? (_transferContentTypes = Registry.Pool.TryGetCreate<TransferContentTypes>()); } }
 
-        protected IEnumerable<ISinkIo<Stream>> SinksOf (IEnumerable<TransferDataType> sources) {
+        public virtual IEnumerable<Tuple<TransferDataType,ISinkIo<Stream>>> SinksOf (IEnumerable<TransferDataType> sources) {
             foreach (var source in sources) {
                 var sourceId = source.Id;
                 long contentType = 0;
                 Func<ISinkIo<Stream>, bool> lookUp = null;
-                if (TransferContentTypes.TryGetValue(sourceId, out contentType)) {
+                if (TransferContentTypes.TryGetValue(sourceId.ToLower(), out contentType)) {
                     lookUp = sinkIo => sinkIo.InfoSink.SupportedContents
                         .Any(info => info.ContentType == contentType);
                 } else {
@@ -39,11 +39,11 @@ namespace Limaki.View.DragDrop {
                 var done = new Set<long>();
                 foreach (var sinkIo in TransferContentProvider.Where(lookUp)) {
                     done.AddRange(sinkIo.InfoSink.SupportedContents.Select(info => info.ContentType));
-                    yield return sinkIo;
+                    yield return Tuple.Create(source,sinkIo);
                 }
                 foreach (var sinkIo in ContentProvider.Where(lookUp)
                     .Where(io => ! io.InfoSink.SupportedContents.Any(info => done.Contains(info.ContentType)))) {
-                    yield return sinkIo;
+                        yield return Tuple.Create(source, sinkIo);
                 }
             }
         }
@@ -61,10 +61,10 @@ namespace Limaki.View.DragDrop {
         }
 
         // move this to Resourceloader of OS:
-        protected void RegisterSome() {
-            TransferContentTypes.Add("Text", ContentTypes.Text);
-            TransferContentTypes.Add("HTML", ContentTypes.HTML);
-            TransferContentTypes.Add("RTF", ContentTypes.RTF);
+        public void RegisterSome() {
+            TransferContentTypes.Add("text", ContentTypes.Text);
+            TransferContentTypes.Add("html", ContentTypes.HTML);
+            TransferContentTypes.Add("rtf", ContentTypes.RTF);
             //...
         }
     }

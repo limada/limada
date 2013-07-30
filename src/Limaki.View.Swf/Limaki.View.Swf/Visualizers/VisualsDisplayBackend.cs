@@ -12,6 +12,7 @@
  */
 
 using Limaki.Drawing;
+using Limaki.View.DragDrop;
 using Limaki.View.Swf.Visuals;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
@@ -34,31 +35,42 @@ namespace Limaki.View.Swf.Visualizers {
 
     public class SwfVisualsDisplayComposer:VisualsDisplayComposer {
 
-        public VisualsDragDrop DragDrop { get; set; }
-
         public override void Compose(Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
             var display = aDisplay;
             base.Compose(display);
-            
-            var DragDrop = new VisualsDragDrop(
-               this.GraphScene,
-               display.Backend as IDragDopControl,
-               this.Camera(),
-               this.Layout());
-            DragDrop.Enabled = true;
-            display.EventControler.Add(DragDrop);
 
-            var selector = display.EventControler.GetAction<GraphSceneFocusAction<IVisual,IVisualEdge>> ();
-            if (selector != null) {
-                var catcher = new DragDropCatcher<GraphSceneFocusAction<IVisual, IVisualEdge>>(selector, display.Backend as IVidgetBackend);
-                display.EventControler.Add (catcher);
+            if (false) {
+                var dragDrop = new VisualsDragDrop(
+                    this.GraphScene,
+                    display.Backend as IDragDopControl,
+                    this.Camera(),
+                    this.Layout());
+                dragDrop.Enabled = true;
+                display.EventControler.Add(dragDrop);
+
+                var selector = display.EventControler.GetAction<GraphSceneFocusAction<IVisual, IVisualEdge>>();
+                if (selector != null) {
+                    var catcher = new DragDropCatcher<GraphSceneFocusAction<IVisual, IVisualEdge>>(selector, display.Backend as IVidgetBackend);
+                    display.EventControler.Add(catcher);
+                }
+
+                var addEdgeAction = display.EventControler.GetAction<AddEdgeAction>();
+                if (addEdgeAction != null) {
+                    var catcher = new DragDropCatcher<AddEdgeAction>(addEdgeAction, display.Backend as IVidgetBackend);
+                    display.EventControler.Add(catcher);
+                }
+            } else {
+                var dragDrop = new VisualsDragDropAction(
+                    () => display.Data,
+                    display.Backend,
+                    display.Viewport.Camera,
+                    ((IGraphSceneDisplay<IVisual, IVisualEdge>)display).Layout) {
+                        Enabled = true
+                    };
+
+                display.EventControler.Add(dragDrop);
             }
 
-            var addEdgeAction = display.EventControler.GetAction<AddEdgeAction>();
-            if (addEdgeAction != null) {
-                var catcher = new DragDropCatcher<AddEdgeAction>(addEdgeAction, display.Backend as IVidgetBackend);
-                display.EventControler.Add(catcher);
-            }
             var editor = new VisualsTextEditor (
                 this.GraphScene,
                 display.Backend as ContainerControl,

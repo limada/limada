@@ -12,30 +12,29 @@
  * 
  */
 
+#define dragdropnew
+
+using Limaki.Common;
+using Limaki.View.DragDrop;
+using Limaki.View.Gdi.UI;
+using Limaki.View.Rendering;
+using Limaki.View.Swf.Backends;
+using Limaki.View.UI;
+using Limaki.View.Visualizers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
-using Limaki.Common;
-using Limaki.Drawing;
-using Limaki.Drawing.Gdi;
-using Limaki.View.Visualizers;
-using Limaki.View.Gdi.UI;
-using Limaki.View.Rendering;
-using Limaki.View.Swf.UI;
-using Limaki.View.UI;
 using Xwt;
+using Xwt.Gdi.Backend;
 using ApplicationContext = Limaki.Common.IOC.ApplicationContext;
-using DragEventArgs = System.Windows.Forms.DragEventArgs;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using Point = Xwt.Point;
 using Size = Xwt.Size;
-using Xwt.Gdi;
-using Xwt.Gdi.Backend;
+using SWF = System.Windows.Forms;
 
 namespace Limaki.View.Swf.Visualizers {
 
-    public abstract class DisplayBackend: UserControl {
+    public abstract class DisplayBackend: SWF.UserControl {
         public bool ScrollBarsVisible {
             set {
                 this.HScroll = value;
@@ -65,13 +64,13 @@ namespace Limaki.View.Swf.Visualizers {
             if (!this.DesignMode) {
                 var Opaque = true;//!Commons.Mono; // opaque works on mono too, but is slower
 
-                ControlStyles controlStyle =
-                    ControlStyles.UserPaint
-                    | ControlStyles.AllPaintingInWmPaint
-                    | ControlStyles.OptimizedDoubleBuffer;
+                var controlStyle =
+                    SWF.ControlStyles.UserPaint
+                    | SWF.ControlStyles.AllPaintingInWmPaint
+                    | SWF.ControlStyles.OptimizedDoubleBuffer;
 
                 if (Opaque) {
-                    controlStyle = controlStyle | ControlStyles.Opaque;
+                    controlStyle = controlStyle | SWF.ControlStyles.Opaque;
                 }
 
                 this.SetStyle(controlStyle, true);
@@ -144,7 +143,7 @@ namespace Limaki.View.Swf.Visualizers {
             }
         }
 
-        protected override void OnPaint(PaintEventArgs e) {
+        protected override void OnPaint (SWF.PaintEventArgs e) {
             base.OnPaint(e);
             _backendRenderer.OnPaint(e);
         }
@@ -158,7 +157,7 @@ namespace Limaki.View.Swf.Visualizers {
             
         }
 
-        protected override void OnScroll(ScrollEventArgs se) {
+        protected override void OnScroll (SWF.ScrollEventArgs se) {
             if (_backendViewPort != null) {
                 _backendViewPort.OnScroll(se);
             } else {
@@ -177,10 +176,10 @@ namespace Limaki.View.Swf.Visualizers {
         /// <param name="msg"></param>
         /// <param name="keyData"></param>
         /// <returns></returns>
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
+        protected override bool ProcessCmdKey (ref SWF.Message msg, SWF.Keys keyData) {
             bool result = false;
             if (this.Focused &&
-                (keyData == Keys.Down || keyData == Keys.Up || keyData==Keys.Left || keyData== Keys.Right)) {
+                (keyData == SWF.Keys.Down || keyData == SWF.Keys.Up || keyData == SWF.Keys.Left || keyData == SWF.Keys.Right)) {
                 var e = new KeyEventArgs(keyData);
                 if (msg.Msg == WM_KEYDOWN)
                     OnKeyDown(e);
@@ -201,7 +200,7 @@ namespace Limaki.View.Swf.Visualizers {
                 base.OnKeyDown(e);
         }
 
-        protected override void OnKeyPress(KeyPressEventArgs e) {
+        protected override void OnKeyPress (SWF.KeyPressEventArgs e) {
             base.OnKeyPress(e);
             //if (Display.Data != null)
             //    Display.EventControler.OnKeyPress(new KeyActionPressEventArgs(e.KeyChar));
@@ -213,7 +212,7 @@ namespace Limaki.View.Swf.Visualizers {
                 Display.EventControler.OnKeyReleased(Converter.Convert(e,this.PointToClient(MousePosition)));
         }
 
-        protected override void OnMouseDown(MouseEventArgs e) {
+        protected override void OnMouseDown (SWF.MouseEventArgs e) {
             base.OnMouseDown(e);
             if (Display.Data != null)
                 Display.EventControler.OnMouseDown(Converter.Convert(e));
@@ -226,20 +225,20 @@ namespace Limaki.View.Swf.Visualizers {
             MouseActionEventArgs mouseEventArgs =
                 new MouseActionEventArgs(
                     Converter.Convert(MouseButtons),
-                    Converter.ConvertModifiers(Form.ModifierKeys),
+                    Converter.ConvertModifiers(SWF.Form.ModifierKeys),
                     0, pos.X, pos.Y, 0);
             if (Display.Data != null)
                 Display.EventControler.OnMouseHover(mouseEventArgs);
 
         }
 
-        protected override void OnMouseMove(MouseEventArgs e) {
+        protected override void OnMouseMove (SWF.MouseEventArgs e) {
             base.OnMouseMove(e);
             if (Display.Data != null)
                 Display.EventControler.OnMouseMove(Converter.Convert(e));
         }
 
-        protected override void OnMouseWheel (MouseEventArgs e) {
+        protected override void OnMouseWheel (SWF.MouseEventArgs e) {
             if (Display.Data != null) {
                 var ev = Converter.Convert(e);
                 if (ev.Modifiers == Xwt.ModifierKeys.None) {
@@ -255,13 +254,14 @@ namespace Limaki.View.Swf.Visualizers {
             }
         }
 
-        protected override void OnMouseUp(MouseEventArgs e) {
+        protected override void OnMouseUp (SWF.MouseEventArgs e) {
             base.OnMouseUp(e);
             if (Display.Data != null)
                 Display.EventControler.OnMouseUp(Converter.Convert(e));
         }
 
-        #region dragdrop
+        #region dragdrop old
+#if dragdropold
         protected override void OnGiveFeedback(GiveFeedbackEventArgs gfbevent) {
             var EventControler = Display.EventControler as SwfEventControler;
             if (EventControler != null && Display.Data != null)
@@ -298,6 +298,95 @@ namespace Limaki.View.Swf.Visualizers {
                 EventControler.OnDragLeave(e);
             base.OnDragLeave(e);
         }
+#endif
+#endregion
+
+        #region dragdrop
+#if dragdropnew
+
+        //this is called by Control.DoDragDrop
+        protected override void OnGiveFeedback (SWF.GiveFeedbackEventArgs e) {
+
+
+            base.OnGiveFeedback(e);
+
+        }
+
+        //this is called by Control.DoDragDrop
+        protected override void OnQueryContinueDrag (SWF.QueryContinueDragEventArgs e) {
+
+
+            base.OnQueryContinueDrag(e);
+
+        }
+
+        DragDropAction DragDropActionFromKeyState (int keyState, DragDropAction allowedEffect) {
+
+            // Set the effect based upon the KeyState.
+            if ((keyState & (8 + 32)) == (8 + 32) &&
+                (allowedEffect & DragDropAction.Link) == DragDropAction.Link) {
+                // KeyState 8 + 32 = CTL + ALT
+
+                // Link drag and drop effect.
+                return DragDropAction.Link;
+
+            } else if ((keyState & 32) == 32 &&
+                       (allowedEffect & DragDropAction.Link) == DragDropAction.Link) {
+
+                // ALT KeyState for link.
+                return DragDropAction.Link;
+
+            } else if ((keyState & 4) == 4 &&
+                       (allowedEffect & DragDropAction.Move) == DragDropAction.Move) {
+
+                // SHIFT KeyState for move.
+                return DragDropAction.Move;
+
+            } else if ((keyState & 8) == 8 &&
+                       (allowedEffect & DragDropAction.Copy) == DragDropAction.Copy) {
+
+                // CTL KeyState for copy.
+                return DragDropAction.Copy;
+
+            } else if ((allowedEffect & DragDropAction.Move) == DragDropAction.Move) {
+
+                // By default, the drop action should be copy, if allowed.
+                return DragDropAction.Copy;
+
+            }
+            return DragDropAction.Copy;
+        }
+
+        protected override void OnDragOver (SWF.DragEventArgs e) {
+            var dropHandler = Display.EventControler as IDropHandler;
+            if (dropHandler != null && Display.Data != null) {
+                var ev = e.ToXwtDragOver();
+                ev.AllowedAction = DragDropActionFromKeyState(e.KeyState, ev.Action);
+                dropHandler.DragOver(ev);
+                e.Effect = ev.AllowedAction.ToSwf();
+            }
+            base.OnDragOver(e);
+
+        }
+
+        protected override void OnDragDrop (SWF.DragEventArgs e) {
+            var dropHandler = Display.EventControler as IDropHandler;
+            if (dropHandler != null && Display.Data != null) {
+                dropHandler.OnDrop(e.ToXwt());
+            }
+            base.OnDragDrop(e);
+
+        }
+
+        protected override void OnDragLeave (EventArgs e) {
+            var dropHandler = Display.EventControler as IDropHandler;
+            if (dropHandler != null && Display.Data != null) {
+                dropHandler.DragLeave(e);
+            }
+            base.OnDragLeave(e);
+        }
+
+#endif
         #endregion
 
         #region IGDIControl Member

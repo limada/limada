@@ -33,7 +33,7 @@ namespace Limaki.View.Swf.Visuals {
     /// <summary>
     /// DragDrop support
     /// </summary>
-    public class VisualsDragDrop : MouseDragActionBase, IDragDropAction, IKeyAction, IDragDopActionPresenter {
+    public class VisualsDragDrop : MouseDragActionBase, IDragDropAction, IKeyAction {
         public VisualsDragDrop():base() {
             this.Priority = ActionPriorities.SelectionPriority + 30;
             //dataObjectHandlerChain.InitDataObjectHanders();

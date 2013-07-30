@@ -18,25 +18,9 @@ using Xwt;
 using Xwt.Backends;
 
 namespace Limaki.View.DragDrop {
-    public interface IDropHandler {
-        void DragOver (DragOverEventArgs args);
-        void OnDrop (DragEventArgs args);
-        /// <summary>
-        /// dragging leaves the widget; opposite of DragOver
-        /// </summary>
-        /// <param name="e"></param>
-        void DragLeave (EventArgs e);
 
-        
-    }
-
-    public interface IDragDropMouseBackendHandler :IDragDropBackendHandler {
-        void MouseUp (MouseActionEventArgs e);
-        void MouseMove (MouseActionEventArgs e);
-        DragDropAction DragDropActionFromKeyState (int keyState, DragDropAction allowedEffect);
-    }
     /// <summary>
-    /// it handles dragdrop 
+    /// handles dragdrop 
     /// <remarks>see: Xwt.IWidgetBackend / Xwt.Widget</remarks>
     /// </summary>
     public interface IDragDropBackendHandler : IDropHandler {
@@ -59,11 +43,13 @@ namespace Limaki.View.DragDrop {
         
         void DropCheck(DragCheckEventArgs args);
         
-       
-
         WidgetEvent EnabledEvents { get; set; }
 
     }
 
-   
+    public interface IDragDropMouseBackendHandler : IDragDropBackendHandler {
+        void MouseUp (MouseActionEventArgs e);
+        void MouseMove (MouseActionEventArgs e);
+        DragDropAction DragDropActionFromKeyState (int keyState, DragDropAction allowedEffect);
+    }  
 }

@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using Limaki.Actions;
 using Limaki.View.Rendering;
+using Limaki.View.DragDrop;
 
 namespace Limaki.View.UI {
     /// <summary>
@@ -24,7 +25,7 @@ namespace Limaki.View.UI {
     /// to Invoke commands (Invoker of the Command Pattern)
     /// to Execute commands by the Actions stored in the ReceiverActions (Receiver of the Command Pattern)
     /// </summary>
-    public class EventControler : ActionBase, IEventControler, IDisposable {
+    public class EventControler : ActionBase, IEventControler, IDropAction, IDisposable {
 
         IDictionary<Type, IAction> _actions = null;
         public IDictionary<Type, IAction> Actions {
@@ -44,7 +45,9 @@ namespace Limaki.View.UI {
         // Receivers:
         public List<IReceiver> ReceiverActions = new List<IReceiver>();
         public List<IRenderAction> RenderActions = new List<IRenderAction>();
-        
+
+        // DragDrop:
+        public List<IDropAction> DragDropActions = new List<IDropAction>();
 
         protected int ActionsSort(IAction x, IAction y) {
             return x.Priority.CompareTo(y.Priority);
@@ -73,6 +76,12 @@ namespace Limaki.View.UI {
                 ReceiverActions.Add((IReceiver)action);
                 ReceiverActions.Sort(ActionsSort);
             }
+
+
+            if (action is IDropAction) {
+                DragDropActions.Add((IDropAction)action);
+                DragDropActions.Sort(ActionsSort);
+            }
         }
 
         public virtual void Remove(IAction action) {
@@ -95,6 +104,10 @@ namespace Limaki.View.UI {
 
             if (action is IReceiver) {
                 ReceiverActions.Remove((IReceiver)action);
+            }
+
+            if (action is IDropAction) {
+                DragDropActions.Remove((IDropAction)action);
             }
         }
 
@@ -271,6 +284,54 @@ namespace Limaki.View.UI {
             foreach (IReceiver action in ReceiverActions) {
                 if (action.Enabled)
                     action.Invoke();
+            }
+            Execute();
+        }
+
+        #endregion
+
+        #region DragDrop
+
+        public virtual bool Dragging { get; set; }
+
+        public virtual void DragOver (DragOverEventArgs e) {
+            Resolved = false;
+            foreach (var dragDropAction in DragDropActions) {
+                if (dragDropAction.Enabled) {
+                    dragDropAction.DragOver(e);
+                    Resolved = dragDropAction.Resolved || Resolved;
+                    if (dragDropAction.Exclusive) {//} || !dragDropAction.Dragging) {
+                        break;
+                    }
+                }
+            }
+            Execute();
+        }
+
+        public virtual void OnDrop (DragEventArgs e) {
+            Resolved = false;
+            foreach (var dragDropAction in DragDropActions) {
+                if (dragDropAction.Enabled) {
+                    dragDropAction.OnDrop(e);
+                    Resolved = dragDropAction.Resolved || Resolved;
+                    if (dragDropAction.Exclusive) {//} || ! dragDropAction.Dragging) {
+                        break;
+                    }
+                }
+            }
+            Execute();
+        }
+
+        public virtual void DragLeave (EventArgs e) {
+            Resolved = false;
+            foreach (var dragDropAction in DragDropActions) {
+                if (dragDropAction.Enabled) {
+                    dragDropAction.DragLeave(e);
+                    Resolved = dragDropAction.Resolved || Resolved;
+                    if (dragDropAction.Exclusive || !dragDropAction.Dragging) {
+                        break;
+                    }
+                }
             }
             Execute();
         }
