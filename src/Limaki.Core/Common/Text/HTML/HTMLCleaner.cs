@@ -5,8 +5,8 @@ using System;
 
 namespace Limaki.Common.Text.HTML {
 
-    public class HTMLCleaner {
-        public HTMLCleaner(string content) {
+    public class HtmlCleaner {
+        public HtmlCleaner(string content) {
             this.Stuff = new Stuff(content);
         }
 

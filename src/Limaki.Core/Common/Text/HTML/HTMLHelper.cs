@@ -18,16 +18,16 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 
 namespace Limaki.Common.Text.HTML {
-    public class HTMLHelper {
-        static Regex tags =
+    public class HtmlHelper {
+        private static Regex tags =
             new Regex(@"<A[^>]*?HREF\s*=\s*[""']?" + "|" +
                       @"<IMG[^>]*?SRC\s*=\s*[""']?" + "|" +
                       @"[ '""].*?>",
-                      RegexOptions.IgnoreCase 
+                      RegexOptions.IgnoreCase
 #if!SILVERLIGHT
                       | RegexOptions.Compiled
-#endif                      
-                      );
+#endif
+                );
 
         private static Regex links =
             new Regex(
@@ -35,9 +35,9 @@ namespace Limaki.Common.Text.HTML {
                 + "|" + @"<IMG[^>]*?SRC\s*=\s*[""']?([^'"" >]+?)[ '""].*?>"
                 , RegexOptions.IgnoreCase
 #if!SILVERLIGHT
-                      | RegexOptions.Compiled
+                  | RegexOptions.Compiled
 #endif
-);
+                );
 
         public static IEnumerable<string> Links(string content) {
 
@@ -60,6 +60,19 @@ namespace Limaki.Common.Text.HTML {
 
             Debug.WriteLine(status);
 #endif
+
+        }
+
+        public static bool IsUnicode(byte[] buffer) {
+            var isUnicode = false;
+            for (int i = 1; i < buffer.Length; i += 2) {
+                if (buffer[i] == 0)
+                    isUnicode = true;
+                else
+                    return false;
+            }
+            return isUnicode;
+
         }
     }
 }

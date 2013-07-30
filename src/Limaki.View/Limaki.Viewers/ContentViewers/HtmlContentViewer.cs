@@ -130,7 +130,7 @@ namespace Limaki.Viewers.StreamViewers {
 
                             // this is testing coulde; should be removed!
                             if (text != null)
-                                foreach (var s in HTMLHelper.Links(text)) {
+                                foreach (var s in HtmlHelper.Links(text)) {
                                     //System.Console.WriteLine (s);
                                 }
                         }

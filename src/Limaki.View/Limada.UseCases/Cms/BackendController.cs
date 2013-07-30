@@ -267,7 +267,7 @@ namespace Limada.Usecases.Cms {
                     
                     var resultS = converter.StringResult;
                     if (true) {
-                        var cleaner = new HTMLCleaner (resultS) {
+                        var cleaner = new HtmlCleaner (resultS) {
 
                             RemoveSpan = true,
                             RemoveFonts = true,

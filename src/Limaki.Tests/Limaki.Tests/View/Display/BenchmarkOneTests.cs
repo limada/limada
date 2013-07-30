@@ -75,21 +75,25 @@ namespace Limaki.Tests.View.Display {
             Display.Data.ClearSpatialIndex();
             Display.Invoke ();
 
-            var editAction = Display.EventControler.GetAction<IEditAction> ();
-            editorEnabled = editAction.Enabled;
-            var dragDropAction = Display.EventControler.GetAction<IDragDopActionPresenter>();
-            dragDropEnabled = dragDropAction.Enabled;
-
-            IAction action = Display.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();
+            IAction action = Display.EventControler.GetAction<IEditAction>();
+            if (action != null) {
+                editorEnabled = action.Enabled;
+                action.Enabled = false;
+            }
+            action = Display.EventControler.GetAction<IDropAction>();
+            if (action != null) {
+                dragDropEnabled = action.Enabled;
+                action.Enabled = false;
+            }
+            action = Display.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();
+            if (action != null)
             action.Enabled = true;
             action = Display.EventControler.GetAction<GraphEdgeChangeAction<IVisual, IVisualEdge>>();
+            if (action != null)
             action.Enabled = true;
             
             // this is neccessary as the mouse cursor returns after a long time
             // back to its position and activates VisualsTextEditor
-
-            editAction.Enabled = false;
-            dragDropAction.Enabled = false;
 
             action = Display.EventControler.GetAction<GraphItemAddAction<IVisual,IVisualEdge>>();
             action.Enabled = false;
@@ -100,12 +104,14 @@ namespace Limaki.Tests.View.Display {
 
         }
 
-        public override void TearDown() {
+        public override void TearDown () {
             base.TearDown();
             IAction action = Display.EventControler.GetAction<IEditAction>();
-            action.Enabled = editorEnabled;
-            action = Display.EventControler.GetAction<IDragDopActionPresenter>();
-            action.Enabled = dragDropEnabled;
+            if (action != null)
+                action.Enabled = editorEnabled;
+            action = Display.EventControler.GetAction<IDropAction>();
+            if (action != null)
+                action.Enabled = dragDropEnabled;
             if (oldlayout != null)
                 Display.Layout = oldlayout;
         }

@@ -54,7 +54,6 @@ namespace Limaki.View.Visualizers {
 
         public virtual void Compose(Display<TData> display) {
             
-
             display.HitSize = 6;
             display.GripSize = 4;
 
@@ -93,7 +92,7 @@ namespace Limaki.View.Visualizers {
 
         }
 
-        public virtual void Compose(Display<TData> display, ISelectionRenderer selectionRenderer) {
+        public virtual ISelectionRenderer Compose (Display<TData> display, ISelectionRenderer selectionRenderer) {
             
             selectionRenderer.Enabled = true;
             selectionRenderer.Style = display.StyleSheet[StyleNames.ResizerToolStyle];
@@ -102,9 +101,10 @@ namespace Limaki.View.Visualizers {
             selectionRenderer.Camera = this.Camera;
             
             display.EventControler.Add(selectionRenderer);
+            return selectionRenderer;
         }
 
-        public virtual void Compose(Display<TData> display, MoveResizeAction action, bool isSelection) {
+        public virtual MoveResizeAction Compose (Display<TData> display, MoveResizeAction action, bool isSelection) {
             
             action.HitSize = display.HitSize;
             action.CameraHandler = this.Camera;
@@ -114,7 +114,11 @@ namespace Limaki.View.Visualizers {
                 action.SelectionRenderer = display.SelectionRenderer;
             else
                 action.SelectionRenderer = display.MoveResizeRenderer;
-            
+
+            action.SelectionRenderer.Enabled = action.Enabled;
+
+            return action;
+
         }
 
         public virtual void Dispose() {

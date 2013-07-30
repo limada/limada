@@ -110,56 +110,63 @@ namespace Limaki.View.Visualizers {
             renderer.Layout = this.Layout;
             renderer.Camera = this.Camera;
 
-            var graphItemSelector = new GraphSceneFocusAction<TItem, TEdge> ();
-            graphItemSelector.SceneHandler = this.GraphScene;
-            graphItemSelector.CameraHandler = this.Camera;
-            display.EventControler.Add(graphItemSelector);
+            var selector = new GraphSceneFocusAction<TItem, TEdge> {
+                SceneHandler = this.GraphScene,
+                CameraHandler = this.Camera,
+            };
+            display.EventControler.Add(selector);
+            display.EventControler.Add(new DragDropCatcher<GraphSceneFocusAction<TItem, TEdge>>(selector, display.Backend));
 
             Compose(display, display.SelectionRenderer);
             Compose(display, display.MoveResizeRenderer);
 
-            var graphItemChanger = new GraphItemMoveResizeAction<TItem,TEdge>();
-            Compose(display, graphItemChanger, false);
-            graphItemChanger.SceneHandler = this.GraphScene;
-            display.EventControler.Add (graphItemChanger);
+            var graphItemChanger = Compose(display,
+                new GraphItemMoveResizeAction<TItem, TEdge> {
+                    SceneHandler = this.GraphScene
+                }, false);
+            display.EventControler.Add(graphItemChanger);
 
-            var selectAction = new GraphItemMultiSelector<TItem,TEdge>();
-            Compose (display, selectAction,true);
-            selectAction.SceneHandler = this.GraphScene;
-            selectAction.ShowGrips = false;
-            selectAction.Enabled = true;
+            display.EventControler.Add(Compose(display,
+                new GraphEdgeChangeAction<TItem, TEdge> {
+                    SceneHandler = this.GraphScene,
+                    HitSize = graphItemChanger.HitSize + 1
+                }, false));
 
-            display.SelectAction = selectAction;
-            display.EventControler.Add(selectAction);
-            
-            var graphEdgeChangeAction = new GraphEdgeChangeAction<TItem,TEdge>();
-            Compose(display, graphEdgeChangeAction,false);
-            graphEdgeChangeAction.SceneHandler = this.GraphScene;
-            graphEdgeChangeAction.HitSize = graphItemChanger.HitSize + 1;
-            display.EventControler.Add (graphEdgeChangeAction);
+            display.SelectAction = Compose(display,
+                new GraphItemMultiSelector<TItem, TEdge> {
+                    SceneHandler = this.GraphScene,
+                    ShowGrips = false,
+                    Enabled = true,
+                }, true);
+            display.EventControler.Add(display.SelectAction);
 
-            var addGraphItemAction = new GraphItemAddAction<TItem, TEdge>();
-            Compose(display, addGraphItemAction,false);
-            addGraphItemAction.SceneHandler = this.GraphScene;
-            addGraphItemAction.ModelFactory = display.ModelFactory;
-            addGraphItemAction.Enabled = false;
-            display.EventControler.Add(addGraphItemAction);
+            display.EventControler.Add(Compose(display,
+                new GraphItemAddAction<TItem, TEdge> {
+                    SceneHandler = this.GraphScene,
+                    ModelFactory = display.ModelFactory,
+                    Enabled = false
+                }, false));
 
-            var deleter = new GraphItemDeleteAction<TItem, TEdge>();
-            deleter.SceneHandler = this.GraphScene;
-            deleter.MoveResizeRenderer = display.MoveResizeRenderer;
-            display.EventControler.Add(deleter);
+            display.EventControler.Add(
+                new GraphItemDeleteAction<TItem, TEdge> {
+                    SceneHandler = this.GraphScene,
+                    MoveResizeRenderer = display.MoveResizeRenderer,
+                });
 
+            display.EventControler.Add(
+                new DelegatingMouseAction {
+                    MouseDown = e => display.OnSceneFocusChanged()
+                });
 
             var oldZoomAction = display.EventControler.GetAction<ZoomAction> ();
             display.EventControler.Remove(oldZoomAction);
 
-            var zoomAction = new GraphItemZoomAction<TItem, TEdge> ();
-            zoomAction.Viewport = this.Viewport;
-            zoomAction.SceneHandler = this.GraphScene;
-            display.EventControler.Add(zoomAction);
+            display.EventControler.Add(
+                new GraphItemZoomAction<TItem, TEdge> {
+                    Viewport = this.Viewport,
+                    SceneHandler = this.GraphScene
+                });
 
-            
             display.LayoutChanged ();
         }
 

@@ -59,6 +59,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropBackendHandler.cs" />
+    <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropConverter.cs" />
+    <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropMouseBackendHandler.cs" />
+    <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropVidgetBackend.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Limaki.Swf.Backends\DragDrop\VisualsDisplayDragDopBackend.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Limaki.Swf.Backends\VidgetBackends\CanvasVidgetBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -142,6 +151,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripRenderer.cs" />
+    <Compile Include="Limaki.View.Swf\SwfVidgetToolkitEngineBackend.cs" />
     <Compile Include="Properties\IconeryExtensions.cs" />
     <Compile Include="Properties\GdiIconery.cs" />
     <Compile Include="Limaki.View.Gdi\UI\IGdiBackend.cs" />

@@ -23,6 +23,7 @@ using Xwt;
 using System;
 
 namespace Limaki.View.UI.GraphScene {
+
     public class GraphItemMultiSelector<TItem,TEdge>:SelectorAction, IKeyAction 
     where TEdge:TItem,IEdge<TItem>{
         public GraphItemMultiSelector() : base() {

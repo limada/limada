@@ -20,7 +20,6 @@ using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
 using Limaki.Drawing.Gdi.Painters;
 using Limaki.Drawing.Shapes;
-using Limaki.Viewers.Vidgets;
 using Limaki.View.Swf.Visualizers;
 using Limaki.Viewers;
 using Limaki.View.UI;
@@ -30,16 +29,13 @@ using Xwt.WinformBackend;
 using System;
 using Xwt.Engine;
 using Limaki.Swf.Backends.Viewers.Content;
-using Limaki.Swf.Backends.TextEditor;
-using Limaki.Viewers.StreamViewers;
-using Limaki.View.Swf.Backends;
 using Limaki.View.Visuals.Visualizers;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
-using Limaki.Viewers.ToolStripViewers;
-using Limaki.Swf.Backends.Viewers.ToolStrips;
-using Limaki.Swf.Backends.Viewers;
+using Limaki.View.DragDrop;
+using Limaki.Model.Content;
+using Limaki.View.Swf.Backends;
 
 
 namespace Limaki.View.Swf {
@@ -81,7 +77,7 @@ namespace Limaki.View.Swf {
             new ViewContextRecourceLoader().ApplyResources(context);
 
             RegisterBackends(context);
-
+            RegisterDragDropFormats(context);
         }
 
         public virtual void RegisterBackends (IApplicationContext context) {
@@ -114,31 +110,18 @@ namespace Limaki.View.Swf {
             }
             return _backend as IWebBrowserBackend;
         }
-    }
 
-    public class SwfVidgetToolkitEngineBackend : VidgetToolkitEngineBackend {
+        public virtual void RegisterDragDropFormats (IApplicationContext context) {
 
-        public override void InitializeBackends () {
-            
-            base.InitializeBackends();
+            Registry.Factory.Add<IDragDropBackendHandler>(args => new DragDropBackendHandler(args[0] as IVidgetBackend));
 
-            RegisterBackend<IImageDisplayBackend, ImageDisplayBackend>();
-            RegisterBackend<IVisualsDisplayBackend, VisualsDisplayBackend>();
+            var man = new TransferDataManager();
+            man.RegisterSome();
+            man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.Html.ToLower(), ContentTypes.HTML);
+            man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.Rtf.ToLower(), ContentTypes.RTF);
 
-            RegisterBackend<ITextViewerBackend, TextViewerBackend>();
-            RegisterBackend<ITextViewerWithToolstripBackend, TextViewerWithToolstripBackend>();
-            RegisterBackend<IWebBrowserBackend, WebBrowserBackend>();
-
-            RegisterBackend<ISplitViewBackend, SplitViewBackend>();
-
-            RegisterBackend<IDigidocViewerBackend, DigidocViewerBackend>();
-
-            RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend>();
-            RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend>();
-            RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend>();
-            RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend>();
-            RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend>();
-
+            // TODO: register the others
+            //man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.UnicodeText, 0);
 
         }
     }

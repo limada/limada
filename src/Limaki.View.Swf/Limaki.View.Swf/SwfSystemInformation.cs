@@ -6,6 +6,7 @@ using Xwt;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf {
+
     public class SwfSystemInformation : IUISystemInformation {
         public Size DragSize {
             get {

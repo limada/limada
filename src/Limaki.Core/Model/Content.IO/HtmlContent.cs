@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
+using Limaki.Common.Text.HTML;
 
 namespace Limaki.Model.Content.IO {
 
@@ -55,12 +56,12 @@ namespace Limaki.Model.Content.IO {
             ContentInfo result = null;
 
             var oldPos = stream.Position;
-            int buflen = Math.Min(256, (int)stream.Length);
+            int buflen = Math.Min(2048, (int)stream.Length);
             var buffer = new byte[buflen];
 
             stream.Read(buffer, 0, buflen);
-
-            var s = Encoding.ASCII.GetString(buffer).ToLower();
+            
+            var s = (HtmlHelper.IsUnicode(buffer) ? Encoding.Unicode.GetString(buffer) : Encoding.ASCII.GetString(buffer)).ToLower();
             if (
                 s.Contains("<!doctype html") ||
                 s.Contains("<html") ||

@@ -151,7 +151,7 @@ namespace Limaki.View.UI.GraphScene {
 
 
         public override void OnMouseMove(MouseActionEventArgs e) {
-            Trace.WriteLine("MouseMove Focusaction ");
+
             if (Scene == null)
                 return;
             
@@ -221,5 +221,6 @@ namespace Limaki.View.UI.GraphScene {
         }
 
         #endregion
+
     }
 }

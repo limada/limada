@@ -12,8 +12,6 @@
  * 
  */
 
-using System;
-using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
@@ -62,49 +60,27 @@ namespace Limaki.View.Visuals.Visualizers {
 
             base.Compose(display);
 
-            IGraphSceneFolding<IVisual, IVisualEdge> folding = new GraphSceneFolding<IVisual, IVisualEdge>();
-            folding.SceneHandler = this.GraphScene;
-            folding.Layout = this.Layout;
-            folding.DeviceRenderer = display.BackendRenderer;
-            folding.MoveResizeRenderer = display.MoveResizeRenderer;
-            folding.OrderBy = new VisualComparer();
-            display.EventControler.Add(folding);
+            display.EventControler.Add(new GraphSceneFolding<IVisual, IVisualEdge> {
+                SceneHandler = this.GraphScene,
+                Layout = this.Layout,
+                DeviceRenderer = display.BackendRenderer,
+                MoveResizeRenderer = display.MoveResizeRenderer,
+                OrderBy = new VisualComparer()
+            });
 
-            var addGraphEdgeAction = new AddEdgeAction();
-            addGraphEdgeAction.SceneHandler = this.GraphScene;
+            var addGraphEdgeAction = new AddEdgeAction {
+                SceneHandler = this.GraphScene,
+                LayoutHandler = this.Layout,
+                Enabled = false
+            };
+
             Compose(display, addGraphEdgeAction, false);
-            addGraphEdgeAction.LayoutHandler = this.Layout;
-            addGraphEdgeAction.Enabled = false;
+
             display.EventControler.Add(addGraphEdgeAction);
+            display.EventControler.Add(new DragDropCatcher<AddEdgeAction>(addGraphEdgeAction, display.Backend));
 
-            var focusCatcher = new FocusCatcher();
-            focusCatcher.OnSceneFocusChanged = display.OnSceneFocusChanged;
-            display.EventControler.Add(focusCatcher);
+           
 
         }
-    }
-
-    public class FocusCatcher : MouseActionBase, ICheckable {
-        public FocusCatcher ()
-            : base() {
-            this.Priority = ActionPriorities.SelectionPriority;
-        }
-
-        public Action OnSceneFocusChanged { get; set; }
-        public override void OnMouseDown (MouseActionEventArgs e) {
-            base.OnMouseDown(e);
-            OnSceneFocusChanged();
-        }
-
-        public override void OnMouseMove (MouseActionEventArgs e) { }
-
-        public bool Check () {
-            if (this.OnSceneFocusChanged == null) {
-                throw new CheckFailedException(this.GetType(), typeof(Action));
-            }
-            return true;
-        }
-
-
     }
 }

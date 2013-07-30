@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2012 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 

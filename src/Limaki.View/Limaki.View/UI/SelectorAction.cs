@@ -192,7 +192,8 @@ namespace Limaki.View.UI {
                 if (value != oldVal) {
                     SelectionRenderer.InvalidateShapeOutline(this.Shape, this.Shape);
                 }
-                SelectionRenderer.Enabled = value;
+                if (SelectionRenderer != null)
+                    SelectionRenderer.Enabled = value;
             }
         }
 

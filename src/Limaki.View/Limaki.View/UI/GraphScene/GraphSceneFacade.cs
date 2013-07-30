@@ -163,7 +163,7 @@ namespace Limaki.View.UI.GraphScene {
             if (scene == null || item == null)
                 return;
             ApplyFilter ();
-            TItem curr = scene.Focused;
+            var curr = scene.Focused;
 
             var affected = new GraphViewFacade<TItem, TEdge> (this.GraphView).Add (item);
 

@@ -104,9 +104,8 @@ namespace Limada.Tests.ThingGraphs {
         public int StoreCount = 150;
         [Test]
         public virtual void StorePerformanceTest() {
-            IThingGraph target = this.Graph;
-            IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> graphPair =
-                  new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
+            var target = this.Graph;
+            var graphPair = new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                       new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge>(), 
                       target, 
                       new GraphItem2ThingAdapter());
@@ -164,20 +163,18 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public virtual void ProgramminglanguageJavaDeleteTest2() {
-            IThingGraph target = this.Graph;
+            var target = this.Graph;
 
-            ThingGraphFactory<ProgrammingLanguageFactory> factory =
-                new ThingGraphFactory<ProgrammingLanguageFactory>();
+            var factory = new ThingGraphFactory<ProgrammingLanguageFactory>();
 
             factory.Populate(target);
 
-            IThing testThing = factory.Node[3];// Java
-            IThing testThing2 = factory.Node[7]; // List
-            IThing testThing3 = factory.Edge[1]; // Programming->Language
-            IThing testThing4 = factory.Node[1]; // Programming
+            var testThing = factory.Node[3];// Java
+            var testThing2 = factory.Node[7]; // List
+            var testThing3 = factory.Edge[1]; // Programming->Language
+            var testThing4 = factory.Node[1]; // Programming
 
-            IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> pair =
-                new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
+            var pair =new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                     new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge>(),
                     target,
                     new GraphItem2ThingAdapter()
@@ -185,8 +182,8 @@ namespace Limada.Tests.ThingGraphs {
 
             pair.Mapper.ConvertTwoOne();
 
-            IGraphEntity testEntity = pair.Get(testThing);
-            IGraphEntity testItem4 = pair.Get(testThing4);
+            var testEntity = pair.Get(testThing);
+            var testItem4 = pair.Get(testThing4);
 
             Assert.IsTrue(target.Contains(testThing));
 
@@ -206,23 +203,23 @@ namespace Limada.Tests.ThingGraphs {
 
             pair.Remove(testEntity); // Java
 
-            Walker<IThing, ILink> walker1 = new Walker<IThing, ILink>(pair.Two);
-            foreach (LevelItem<IThing> item in walker1.DeepWalk(testThing4, 0)) {
-                IThing thing = item.Node;
+            var walker1 = new Walker<IThing, ILink>(pair.Two);
+            foreach (var item in walker1.DeepWalk(testThing4, 0)) {
+                var thing = item.Node;
                 Assert.AreNotEqual(thing, testThing);
                 if (thing is ILink) {
-                    ILink link = (ILink)thing;
+                    var link = (ILink)thing;
                     Assert.AreNotEqual(link.Root, testThing);
                     Assert.AreNotEqual(link.Leaf, testThing);
                 }
             }
 
-            Walker<IGraphEntity, IGraphEdge> walker = new Walker<IGraphEntity, IGraphEdge>(pair);
-            foreach (LevelItem<IGraphEntity> item in walker.DeepWalk(testItem4, 0)) {
-                IGraphEntity thing = item.Node;
+            var walker = new Walker<IGraphEntity, IGraphEdge>(pair);
+            foreach (var item in walker.DeepWalk(testItem4, 0)) {
+                var thing = item.Node;
                 Assert.AreNotEqual(thing, testEntity);
                 if (thing is IGraphEdge) {
-                    IGraphEdge link = (IGraphEdge)thing;
+                    var link = (IGraphEdge)thing;
                     Assert.AreNotEqual(link.Root, testEntity);
                     Assert.AreNotEqual(link.Leaf, testEntity);
                 }

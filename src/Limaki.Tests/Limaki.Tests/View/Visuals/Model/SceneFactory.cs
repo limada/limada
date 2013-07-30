@@ -34,8 +34,6 @@ namespace Limaki.Tests.Visuals {
             }
         }
 
-        #region ISceneTestData Member
-
         /// <summary>
         /// Creates a new scene and populates it
         /// </summary>
@@ -53,6 +51,5 @@ namespace Limaki.Tests.Visuals {
             scene.ClearSpatialIndex ();
         }
 
-        #endregion
     }
 }
