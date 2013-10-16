@@ -25,7 +25,11 @@ using Limaki.Model.Content;
 using Limaki.Visuals;
 
 namespace Limada.VisualThings {
-    public class VisualThingAdapter:GraphModelAdapter<IVisual,IThing,IVisualEdge,ILink> {
+
+    /// <summary>
+    /// transforms a IThing into a IVisual
+    /// </summary>
+    public class VisualThingTransformer:GraphItemTransformer<IVisual,IThing,IVisualEdge,ILink> {
         private IThingFactory _thingFactory = null;
         public IThingFactory ThingFactory {
             get {
@@ -74,8 +78,7 @@ namespace Limada.VisualThings {
             return result;
         }
 
-        public override IVisualEdge CreateSinkEdge(IGraph<IThing, ILink> source, 
-            IGraph<IVisual, IVisualEdge>sink, ILink a) {
+        public override IVisualEdge CreateSinkEdge (IGraph<IThing, ILink> source, IGraph<IVisual, IVisualEdge> sink, ILink a) {
             //if (a.Marker == null) { // this should never happen!:
             //    a.Marker = CommonSchema.EmptyMarker;
             //}
@@ -153,15 +156,15 @@ namespace Limada.VisualThings {
         }
 
         public override void ChangeData(IGraph<IVisual, IVisualEdge> sink, IVisual visual, object data) {
-            VisualThingGraph graph = sink as VisualThingGraph;
+            var graph = sink as VisualThingGraph;
             
             if (graph == null)
                 throw new ArgumentException();
 
-            IThing thing = graph.Get(visual);
+            var thing = graph.Get(visual);
             if ( thing != null ) {
                 if (thing is ILink) {
-                    ILink link = (ILink) thing;
+                    var link = (ILink) thing;
                     if (data is IThing) {
                         
                         link.Marker = (IThing) data;

@@ -22,8 +22,8 @@ namespace Limaki.Graphs {
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
         public LiveGraphPair (IGraph<TSinkItem, TSinkEdge> sink, IGraph<TSourceItem, TSourceEdge> source,
-            GraphModelAdapter<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> adapter)
-            : base(sink, source, adapter) { }
+            GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Transformer)
+            : base(sink, source, Transformer) { }
 
 
         public override TSinkItem Get (TSourceItem source) {
@@ -46,7 +46,7 @@ namespace Limaki.Graphs {
         public override ICollection<TSinkEdge> Edges (TSinkItem item) {
             //ICollection<TEdgeOne> result = Sink.Edges (item);
             if (true) {//(result == EmptyEgdes){
-                TSourceItem itemTwo = Get(item);
+                var itemTwo = Get(item);
                 ICollection<TSourceEdge> _edgesTwo = null;
                 if (itemTwo != null) {
                     _edgesTwo = Source.Edges(itemTwo);
@@ -61,13 +61,13 @@ namespace Limaki.Graphs {
         }
 
         public override int EdgeCount (TSinkItem item) {
-            TSourceItem itemTwo = Get(item);
+            var itemTwo = Get(item);
             return Source.EdgeCount(itemTwo);
         }
 
         public override IEnumerator<TSinkItem> GetEnumerator () {
-            foreach (TSourceItem itemTwo in Source) {
-                TSinkItem itemOne = Mapper.TryGetCreate(itemTwo);
+            foreach (var itemTwo in Source) {
+                var itemOne = Mapper.TryGetCreate(itemTwo);
                 yield return itemOne;
             }
         }

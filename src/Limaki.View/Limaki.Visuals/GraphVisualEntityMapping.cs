@@ -22,7 +22,7 @@ namespace Limaki.Visuals {
                 targetGraph = new LiveGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>(
                                   new VisualGraph(),
                                   ((IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)source).Source,
-                                  new GraphItem2VisualAdapter().ReverseAdapter())
+                                  new GraphItem2VisualTransformer().ReverseAdapter())
                               as IGraph<TItem, TEdge> ;
             } else  if (Next != null) {
                 Next.CloneGraphPair<TItem, TEdge> (source);

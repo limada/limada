@@ -40,7 +40,7 @@ namespace Limada.Tests.Wrappers {
             GenericBiGraphFactory<IThing, IGraphEntity, ILink, IGraphEdge> factory =
                 new GenericBiGraphFactory<IThing, IGraphEntity, ILink, IGraphEdge>(
                 new ProgrammingLanguageFactory(),
-                new GraphItem2ThingAdapter()
+                new GraphItem2ThingTransformer()
                 );
             
             factory.Mapper.Source = thingGraph;

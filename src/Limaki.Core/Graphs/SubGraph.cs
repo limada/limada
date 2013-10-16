@@ -29,6 +29,7 @@ namespace Limaki.Graphs {
         where TEdge : IEdge<TItem>, TItem {
 
         public SubGraph(){}
+
         public SubGraph(IGraph<TItem,TEdge> source,  IGraph<TItem,TEdge> sink ) {
             this.Source = source;
             this.Sink = sink;

@@ -115,7 +115,7 @@ namespace Limada.Tests.Model {
             ThingGraph thingGraph = new ThingGraph();
             GraphMapper<IGraphEntity,IThing,IGraphEdge,ILink> mapper =
                 new GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink>(
-                data.Graph, thingGraph, new GraphItem2ThingAdapter());
+                data.Graph, thingGraph, new GraphItem2ThingTransformer());
             TestMapper<IGraphEntity,IThing,IGraphEdge,ILink>(data.Graph,thingGraph,mapper);
         }
 

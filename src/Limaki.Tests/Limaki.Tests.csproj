@@ -114,7 +114,7 @@
     <Compile Include="Limada.Tests\Tests\ThingGraphs\ThingGraphDeleteItemsTest.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\ThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\ThingGraphTestBase.cs" />
-    <Compile Include="Limada.Tests\Tests\Model\GraphItem2ThingAdapter.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\GraphItem2ThingTransformer.cs" />
     <Compile Include="Limada.Tests\Tests\Model\GraphMapperTest.cs" />
     <Compile Include="Limada.Tests\Tests\Model\GraphPairTest.cs" />
     <Compile Include="Limada.Tests\Tests\Model\SimpleDescriptionTestFactory.cs" />
@@ -177,7 +177,7 @@
     <Compile Include="Limaki.Tests\Graph\Wrappers\BasicGraphPairTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Wrappers\BasicVisualItemGraphPairTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Wrappers\GraphPairTest.cs" />
-    <Compile Include="Limaki.Tests\Graph\Wrappers\GraphViewTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Wrappers\SubGraphTest.cs" />
     <Compile Include="Limaki.Tests\View\Display\BenchmarkOneTests.cs" />
     <Compile Include="Limaki.Tests\View\Display\DisplayTest.cs" />
     <Compile Include="Limaki.Tests\View\Display\FrameTicker.cs" />

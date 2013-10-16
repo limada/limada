@@ -108,7 +108,7 @@ namespace Limada.Tests.ThingGraphs {
             var graphPair = new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                       new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge>(), 
                       target, 
-                      new GraphItem2ThingAdapter());
+                      new GraphItem2ThingTransformer());
 
             GraphFactoryBase factory = new BinaryGraphFactory();
             factory.Graph = graphPair;
@@ -177,7 +177,7 @@ namespace Limada.Tests.ThingGraphs {
             var pair =new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                     new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge>(),
                     target,
-                    new GraphItem2ThingAdapter()
+                    new GraphItem2ThingTransformer()
                     );
 
             pair.Mapper.ConvertSourceSink();

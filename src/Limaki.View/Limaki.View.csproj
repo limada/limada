@@ -203,7 +203,7 @@
     <Compile Include="Limada.View\Sheet.cs" />
     <Compile Include="Limada.View\SheetManager.cs" />
     <Compile Include="Limada.UseCases\Digidoc\DigidocViz.cs" />
-    <Compile Include="Limada.VisualThings\VisualThingAdapter.cs" />
+    <Compile Include="Limada.VisualThings\VisualThingTransformer.cs" />
     <Compile Include="Limada.VisualThings\VisualThingGraph.cs" />
     <Compile Include="Limada.VisualThings\VisualThingGraphExtension.cs" />
     <Compile Include="Limada.VisualThings\VisualThingGraphMapping.cs" />
@@ -344,7 +344,7 @@
     <Compile Include="Limaki.Viewers\ToolStripViewers\SplitViewToolStrip.cs" />
     <Compile Include="Limaki.Viewers\ContentViewer.cs" />
     <Compile Include="Limaki.Visuals\BruteForceIndex.cs" />
-    <Compile Include="Limaki.Visuals\GraphItem2VisualAdapter.cs" />
+    <Compile Include="Limaki.Visuals\GraphItem2VisualTransformer.cs" />
     <Compile Include="Limaki.Visuals\GraphVisualEntityMapping.cs" />
     <Compile Include="Limaki.Visuals\ISheetManager.cs" />
     <Compile Include="Limaki.Visuals\IVisual.cs" />

@@ -9,7 +9,7 @@ namespace Limaki.Tests.Graph.Model {
         where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
         public GenericBiGraphFactory(
             IGraphFactory<TItemTwo, TEdgeTwo> data, 
-            GraphModelAdapter<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> adapter) {
+            GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> adapter) {
             this._factory = data;
             this._adapter = adapter;
             this._mapper = 
@@ -37,8 +37,8 @@ namespace Limaki.Tests.Graph.Model {
         }
 
 
-        private GraphModelAdapter<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> _adapter = null;
-        public GraphModelAdapter<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> Adapter {
+        private GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> _adapter = null;
+        public GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> Adapter {
             get { return _adapter; }
         }
 

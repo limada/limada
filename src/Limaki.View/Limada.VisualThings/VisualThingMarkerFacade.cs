@@ -92,14 +92,14 @@ namespace Limada.VisualThings {
 
         public override string[] MarkersAsStrings() {
             
-            if (adapter == null) return null;
+            if (Transformer == null) return null;
             IThingGraph graph = GetThingGraph (this.Graph);
             int count = Markers.Count;
             if (count != 0) {
                 string[] result = new string[Markers.Count];
                 int i = 0;
                 foreach (IThing marker in Markers) {
-                    result[i] = adapter.ThingDataToDisplay(graph,marker).ToString();
+                    result[i] = Transformer.ThingDataToDisplay(graph,marker).ToString();
                     i++;
                 }
                 Array.Sort<string>(result);
@@ -109,21 +109,21 @@ namespace Limada.VisualThings {
             }
         }
 
-        public virtual VisualThingAdapter adapter {
+        public virtual VisualThingTransformer Transformer {
             get {
                 var graph = this.Graph.Source<IVisual, IVisualEdge, IThing, ILink>() as VisualThingGraph;
 
                 if (graph != null) {
-                    return ( graph.Mapper.Adapter as VisualThingAdapter );
+                    return ( graph.Mapper.Adapter as VisualThingTransformer );
                 } else {
                     return null;
                 }
             }
         }
         public override IThing CreateMarker(object data) {
-            if (adapter != null){
+            if (Transformer != null){
 
-                IThing marker = adapter.ThingFactory.CreateItem (data);
+                IThing marker = Transformer.ThingFactory.CreateItem (data);
 
                 if (!Markers.Contains(marker)) {
                     Markers.Add(marker);

@@ -32,7 +32,7 @@ namespace Limada.Tests.Model {
                 new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                 source.Graph, 
                 target, 
-                new GraphItem2ThingAdapter());
+                new GraphItem2ThingTransformer());
 
             GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink> mapper = graphPair.Mapper;
             mapper.ConvertSinkSource();
@@ -70,7 +70,7 @@ namespace Limada.Tests.Model {
                 new GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink>(
                     source.Graph, 
                     target, 
-                    new GraphItem2ThingAdapter());
+                    new GraphItem2ThingTransformer());
 
             mapper.ConvertSinkSource ();
 
@@ -78,7 +78,7 @@ namespace Limada.Tests.Model {
                 new LiveGraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                     new Graph<IGraphEntity, IGraphEdge>(), 
                     target, 
-                    new GraphItem2ThingAdapter());
+                    new GraphItem2ThingTransformer());
 
             return graphPair;
 
@@ -129,7 +129,7 @@ namespace Limada.Tests.Model {
 
             data = new LiveGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
                 new Graph<IGraphEntity, IGraphEdge>(), 
-                data.Source,new GraphItem2ThingAdapter());
+                data.Source,new GraphItem2ThingTransformer());
 
             graphView2 = new SubGraph<IGraphEntity, IGraphEdge>(data, new Graph<IGraphEntity, IGraphEdge>());
             

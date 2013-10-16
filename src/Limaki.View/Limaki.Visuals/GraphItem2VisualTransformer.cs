@@ -3,7 +3,7 @@ using Limaki.Model;
 using Limaki.Common;
 
 namespace Limaki.Visuals {
-    public class GraphItem2VisualAdapter : GraphModelAdapter<IGraphEntity, IVisual, IGraphEdge, IVisualEdge> {
+    public class GraphItem2VisualTransformer : GraphItemTransformer<IGraphEntity, IVisual, IGraphEdge, IVisualEdge> {
 
         public override IGraphEntity CreateSinkItem(IGraph<IVisual, IVisualEdge> source,
                                                  IGraph<IGraphEntity, IGraphEdge> sink, IVisual item) {

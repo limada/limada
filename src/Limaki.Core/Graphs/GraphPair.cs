@@ -32,12 +32,12 @@ namespace Limaki.Graphs {
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
         public GraphPair(IGraph<TSinkItem, TSinkEdge> sink, IGraph<TSourceItem, TSourceEdge> source,
-            GraphModelAdapter<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> adapter)
+            GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Transformer)
             : base() {
-            this.Mapper = new GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(adapter);
+            this.Mapper = new GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(Transformer);
             this.Sink = sink;
             this.Source = source;
-            this.ChangeData = adapter.ChangeData;
+            this.ChangeData = Transformer.ChangeData;
         }
 
         public virtual TSourceItem Get(TSinkItem a) {

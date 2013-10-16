@@ -20,18 +20,13 @@ using Limaki.Visuals;
 namespace Limada.VisualThings {
     public class VisualThingGraph : LiveGraphPair<IVisual, IThing, IVisualEdge, ILink> {
         public VisualThingGraph( IGraph<IVisual, IVisualEdge> sink, IThingGraph source):
-            this(sink, source, new VisualThingAdapter()) { }
+            this(sink, source, new VisualThingTransformer()) { }
 
-        public VisualThingGraph ()
-            : this(null, null, new VisualThingAdapter()) {
+        public VisualThingGraph (): this(null, null, new VisualThingTransformer()) {
             this.Sink = new VisualGraph ();
             this.Source = new ThingGraph ();
         }
 
-        public VisualThingGraph (
-            IGraph<IVisual, IVisualEdge> sink, IThingGraph source,
-            VisualThingAdapter adapter )
-            : base(sink, source, adapter) {
-        }
+        public VisualThingGraph (IGraph<IVisual, IVisualEdge> sink, IThingGraph source, VisualThingTransformer transformer ) : base(sink, source, transformer) {}
     }
 }
