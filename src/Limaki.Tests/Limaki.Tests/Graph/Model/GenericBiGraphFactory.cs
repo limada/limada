@@ -9,11 +9,11 @@ namespace Limaki.Tests.Graph.Model {
         where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
         public GenericBiGraphFactory(
             IGraphFactory<TItemTwo, TEdgeTwo> data, 
-            GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> adapter) {
+            GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> transformer) {
             this._factory = data;
-            this._adapter = adapter;
+            this._transformer = transformer;
             this._mapper = 
-                new GraphMapper<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> (adapter);
+                new GraphMapper<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> (transformer);
         }
 
         public override string Name {
@@ -37,9 +37,9 @@ namespace Limaki.Tests.Graph.Model {
         }
 
 
-        private GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> _adapter = null;
-        public GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> Adapter {
-            get { return _adapter; }
+        private GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> _transformer = null;
+        public GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> Transformer {
+            get { return _transformer; }
         }
 
         private GraphMapper<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> _mapper = null;
@@ -63,7 +63,7 @@ namespace Limaki.Tests.Graph.Model {
                 new LiveGraphPair<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne>(
                     new Graph<TItemTwo, TEdgeTwo>(),
                     graph,
-                    this.Mapper.Adapter
+                    this.Mapper.Transformer
                     );
             
             graphPair.Mapper = this.Mapper;
@@ -73,7 +73,7 @@ namespace Limaki.Tests.Graph.Model {
 
             this.GraphPair = new LiveGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>(
                         graphPair.Source, graphPair.Sink, 
-                        Mapper.Adapter.ReverseAdapter()
+                        Mapper.Transformer.Reverted()
                         );
             this.GraphPair.Mapper = this.Mapper.ReverseMapper ();
 

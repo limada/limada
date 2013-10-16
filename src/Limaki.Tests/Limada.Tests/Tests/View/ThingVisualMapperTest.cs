@@ -45,7 +45,7 @@ namespace Limada.Tests.View {
                 new GraphMapper<IThing, IVisual, ILink, IVisualEdge>(
                 (IThingGraph)this.Graph, 
                 visualGraph,
-                new VisualThingTransformer().ReverseAdapter());
+                new VisualThingTransformer().Reverted());
 
             //mapper.showMarkers = false;
             mapper.ConvertSinkSource();

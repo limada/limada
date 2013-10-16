@@ -30,8 +30,8 @@ namespace Limaki.Graphs {
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
-        public GraphMapper(GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> adapter) {
-            this.Adapter = adapter;    
+        public GraphMapper(GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> transformer) {
+            this.Transformer = transformer;    
         }
 
         public GraphMapper() {}
@@ -39,22 +39,22 @@ namespace Limaki.Graphs {
         public GraphMapper( IGraph<TSinkItem, TSinkEdge> sink, IGraph<TSourceItem, TSourceEdge> source,
             GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> adapter)
             : this() {
-            this.Adapter = adapter;
+            this.Transformer = adapter;
             this.Sink = sink;
             this.Source = source;
         }
 
-        private GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> _adapter = null;
-        public GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Adapter {
-            get { return _adapter; }
+        private GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> _transformer = null;
+        public GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Transformer {
+            get { return _transformer; }
             set {
-                _adapter = value;
-                CreateSinkItem = Adapter.CreateSinkItem;
-                CreateSinkEdge = Adapter.CreateSinkEdge;
-                CreateSourceItem = Adapter.CreateSourceItem;
-                CreateSourceEdge = Adapter.CreateSourceEdge;
-                EdgeCreatedSinkSource = Adapter.EdgeCreated;
-                EdgeCreatedSourceSink = Adapter.EdgeCreated;
+                _transformer = value;
+                CreateSinkItem = Transformer.CreateSinkItem;
+                CreateSinkEdge = Transformer.CreateSinkEdge;
+                CreateSourceItem = Transformer.CreateSourceItem;
+                CreateSourceEdge = Transformer.CreateSourceEdge;
+                EdgeCreatedSinkSource = Transformer.EdgeCreated;
+                EdgeCreatedSourceSink = Transformer.EdgeCreated;
             }
         }
 
@@ -205,7 +205,7 @@ namespace Limaki.Graphs {
                 this.SourceSinkMapper, 
                 this.SinkSourceMapper);
 
-            result.Adapter = this.Adapter.ReverseAdapter ();
+            result.Transformer = this.Transformer.Reverted ();
             result.Sink = this.Source;
             result.Source = this.Sink;
 

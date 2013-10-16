@@ -114,7 +114,7 @@ namespace Limada.VisualThings {
                 var graph = this.Graph.Source<IVisual, IVisualEdge, IThing, ILink>() as VisualThingGraph;
 
                 if (graph != null) {
-                    return ( graph.Mapper.Adapter as VisualThingTransformer );
+                    return ( graph.Mapper.Transformer as VisualThingTransformer );
                 } else {
                     return null;
                 }

@@ -30,7 +30,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
             return
                 new GraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>(
-                one, two, new GraphItem2VisualTransformer().ReverseAdapter());
+                one, two, new GraphItem2VisualTransformer().Reverted());
         }
 
         [Test]

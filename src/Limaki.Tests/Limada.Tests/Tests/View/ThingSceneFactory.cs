@@ -107,7 +107,7 @@ namespace Limada.Tests.View {
 
 
         public void Populate(IGraph<IVisual, IVisualEdge> graph) {
-            var adapter = new VisualThingTransformer().ReverseAdapter();
+            var adapter = new VisualThingTransformer().Reverted();
             var mapper = new GraphMapper<IThing, IVisual, ILink, IVisualEdge>(ThingGraph, graph, adapter);
 
             mapper.ConvertSinkSource();

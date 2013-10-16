@@ -10,7 +10,7 @@ namespace Limada.Tests.Model {
         where T : IGraphFactory<IThing, ILink>, new() {
         public ThingSceneFactoryNew() : 
             base(new T(), 
-            new VisualThingTransformer().ReverseAdapter()) { }
+            new VisualThingTransformer().Reverted()) { }
     }
 
 

@@ -43,7 +43,7 @@ namespace Limada.VisualThings {
 
             if (sourceGraph != null) {
                 var thingGraph = sourceGraph.Source as IThingGraph;
-                var adapter = sourceGraph.Mapper.Adapter as VisualThingTransformer;
+                var adapter = sourceGraph.Mapper.Transformer as VisualThingTransformer;
                 result = adapter.ThingFactory;
             }
             if (result == null)
