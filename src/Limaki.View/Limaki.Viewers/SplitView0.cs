@@ -470,7 +470,7 @@ namespace Limaki.Viewers {
             content.Data.Position = 0;
 
 
-            var visual = new VisualThingsContentViz().VisualOfContent(scene.Graph, content);
+            var visual = Registry.Pool.TryGetCreate<IVisualContentViz>().VisualOfContent(scene.Graph, content);
             var root = scene.Focused;
 
             var layout = currentDiplay.Layout;

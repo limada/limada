@@ -22,8 +22,9 @@ using System.Text;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Xwt;
-using Limada.VisualThings;
 using Limaki.Model.Content;
+using Limaki.Common;
+using Limaki.View.DragDrop;
 
 namespace Limaki.View.DragDrop {
 
@@ -47,6 +48,12 @@ namespace Limaki.View.DragDrop {
         TransferDataManager _transferDataManager = null;
         public virtual TransferDataManager DataManager { get { return _transferDataManager ?? (_transferDataManager = new TransferDataManager()); } }
 
+        IVisualContentViz _visualContentViz = null;
+        public IVisualContentViz VisualContentViz { get { return _visualContentViz ?? (_visualContentViz = Registry.Pool.TryGetCreate<IVisualContentViz>()); } }
+
+        IContentEnrichManager _contentEnrichManager = null;
+        public virtual IContentEnrichManager ContentEnrichManager { get { return _contentEnrichManager ?? (_contentEnrichManager = new ContentEnrichManager()); } }
+
         public virtual IVisual VisualOfTransferData (IGraph<IVisual, IVisualEdge> graph, TransferDataSource data) {
             var value = data.GetValue(TransferDataType.FromType(typeof(IVisual)));
             var bytes = value as byte[];
@@ -61,17 +68,18 @@ namespace Limaki.View.DragDrop {
                 if (bytes != null)
                     stream = new MemoryStream(bytes);
                 var text = value as string;
-                if(text!=null)
+                if (text != null)
                     stream = DataManager.AsUnicodeStream(text);
                 if (stream != null) {
                     var info = sink.Use(stream);
                     if (info != null) {
                         var content = new Content<Stream> { Data = stream, ContentType = info.ContentType, Compression = info.Compression };
-                        return new VisualThingsContentViz().VisualOfContent(graph, content);
+                        content = ContentEnrichManager.Use(content);
+                        return VisualContentViz.VisualOfRichContent(graph, content);
                     }
                 }
             }
-                
+
             return null;
         }
     }

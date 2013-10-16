@@ -18,6 +18,7 @@ using Limaki.Visuals;
 using Limaki.View.Visuals.UI;
 using Limaki.Graphs.Extensions;
 using Limada.Model;
+using Limaki.Common;
 
 namespace Limada.VisualThings {
 
@@ -25,6 +26,12 @@ namespace Limada.VisualThings {
     /// extensions of VisualGraphScenes backed by ThingGraphs
     /// </summary>
     public static class VisualThingsSceneExtensions {
+
+        static IVisualContentViz _visualContentViz = null;
+        public static IVisualContentViz VisualContentViz {
+            get { return _visualContentViz ?? (_visualContentViz = Registry.Pool.TryGetCreate<IVisualContentViz>()); }
+        }
+
         /// <summary>
         /// gives back the conntent of the scene's focused if it is backed by a StreamThing
         /// </summary>
@@ -33,7 +40,7 @@ namespace Limada.VisualThings {
         public static Content<Stream> ContentOfFocused (this IGraphScene<IVisual, IVisualEdge> scene) {
             var graph = scene.Graph;
             if (graph != null && scene.Focused != null) {
-                return new VisualThingsContentViz().ContentOf(graph, scene.Focused);
+                return VisualContentViz.ContentOf(graph, scene.Focused);
             }
             return null;
         }
@@ -46,7 +53,7 @@ namespace Limada.VisualThings {
         /// <param name="content"></param>
         /// <param name="layout"></param>
         public static void AddContent (this IGraphScene<IVisual,IVisualEdge> scene, Content<Stream> content,  IGraphSceneLayout<IVisual, IVisualEdge> layout) {
-            var visualOfContent = new VisualThingsContentViz().VisualOfContent(scene.Graph, content);
+            var visualOfContent = VisualContentViz.VisualOfContent(scene.Graph, content);
             scene.AddVisual(visualOfContent, layout);
         }
 

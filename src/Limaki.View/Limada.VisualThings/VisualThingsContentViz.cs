@@ -21,11 +21,10 @@ using Limaki.Model.Content;
 using Limaki.Visuals;
 
 namespace Limada.VisualThings {
-
     /// <summary>
     /// helper class to manage VisualGraphs backed by StreamThings
     /// </summary>
-    public class VisualThingsContentViz {
+    public class VisualThingsContentViz : IVisualContentViz<IThing> {
 
         /// <summary>
         /// creates a visual, backed by a
@@ -50,22 +49,29 @@ namespace Limada.VisualThings {
         }
 
         /// <summary>
-        /// assigns a content to the 
-        /// thing (if its a StreamThing)
+        /// creates a visual, backed by a
+        /// StreamThing, created and assigned with content
+        /// tries to get out the most information in content
         /// </summary>
         /// <param name="graph"></param>
-        /// <param name="thing"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public IThing AssignContent(IGraph<IVisual,IVisualEdge> graph, IThing thing, Content<Stream> content) {
-            var thingGraph = graph.ThingGraph();
-            var factory = graph.ThingFactory();
-            var streamThing = thing as IStreamThing;
-            if ((streamThing==null && thing!=null) || (thingGraph==null)||(factory ==null)){
-                throw new ArgumentException ("stream can not be set");
-            }
+        public virtual IVisual VisualOfRichContent (IGraph<IVisual, IVisualEdge> graph, Content<Stream> content) {
+            
+            IVisual result = null;
+            var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
+            if (sourceGraph != null) {
+                var thingGraph = graph.ThingGraph();
+                var factory = graph.ThingFactory();
 
-            return new ThingContentFacade(factory).AssignContent(thingGraph, streamThing, content);
+                var thing = new ThingContentFacade(factory).AssignContent(thingGraph, null, content);
+                // TODO: analyse content here and be sure that content stream is not disposed
+                // have own classes to analyse content like: 
+                // Enrich(thingGraph, thing, content)
+                
+                result = sourceGraph.Get(thing);
+            }
+            return result;
         }
 
         /// <summary>
@@ -75,15 +81,36 @@ namespace Limada.VisualThings {
         /// <param name="graph"></param>
         /// <param name="visual"></param>
         /// <returns></returns>
-        public Content<Stream> ContentOf(IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
+        public Content<Stream> ContentOf (IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
-             if (sourceGraph != null) {
-                 var thingGraph = graph.ThingGraph();
-                 return ThingContentFacade.ConentOf (
-                     thingGraph,
-                     sourceGraph.Get(visual));
-             }
-             return null;
+            if (sourceGraph != null) {
+                var thingGraph = graph.ThingGraph();
+                return ThingContentFacade.ConentOf(
+                    thingGraph,
+                    sourceGraph.Get(visual));
+            }
+            return null;
         }
+
+        /// <summary>
+        /// assigns a content to the 
+        /// thing (if its a StreamThing)
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="store"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public virtual IThing AssignContent(IGraph<IVisual,IVisualEdge> graph, IThing store, Content<Stream> content) {
+            var thingGraph = graph.ThingGraph();
+            var factory = graph.ThingFactory();
+            var streamThing = store as IStreamThing;
+            if ((streamThing==null && store!=null) || (thingGraph==null)||(factory ==null)){
+                throw new ArgumentException ("stream can not be set");
+            }
+
+            return new ThingContentFacade(factory).AssignContent(thingGraph, streamThing, content);
+        }
+
+        
     }
 }

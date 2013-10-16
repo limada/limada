@@ -78,6 +78,10 @@ namespace Limaki.View {
             context.Factory.Add<IGraphSceneLayout<IVisual, IVisualEdge>>(args =>
                      new VisualsSceneLayout<IVisual, IVisualEdge>(args[0] as Func<IGraphScene<IVisual, IVisualEdge>>, args[1] as IStyleSheet)
              );
+
+            context.Factory.Add<IVisualContentViz, VisualThingsContentViz>();
+            context.Factory.Add<IVisualContentViz<IThing>, VisualThingsContentViz>();
+
         }
 
         public virtual IMarkerFacade<IVisual, IVisualEdge> MarkerFacade (IGraph<IVisual, IVisualEdge> graph) {
