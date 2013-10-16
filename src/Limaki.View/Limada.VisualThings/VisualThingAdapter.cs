@@ -59,10 +59,10 @@ namespace Limada.VisualThings {
             set { _shapeFactory = value; }
         }
 
-        public override IVisual CreateItemOne(IGraph<IThing, ILink> sender,
-            IGraph<IVisual, IVisualEdge> target, IThing a) {
+        public override IVisual CreateSinkItem(IGraph<IThing, ILink> source,
+            IGraph<IVisual, IVisualEdge> sink, IThing a) {
             
-            var result = VisualFactory.CreateItem(ThingDataToDisplay(sender,a));
+            var result = VisualFactory.CreateItem(ThingDataToDisplay(source,a));
             if (SchemaFacade.DescriptionableThing(a)) {
                 if (a is IThing<Stream>) {
                     result.Shape = ShapeFactory.Create<IBezierRectangleShape>();
@@ -74,26 +74,26 @@ namespace Limada.VisualThings {
             return result;
         }
 
-        public override IVisualEdge CreateEdgeOne(IGraph<IThing, ILink> sender, 
-            IGraph<IVisual, IVisualEdge>target, ILink a) {
+        public override IVisualEdge CreateSinkEdge(IGraph<IThing, ILink> source, 
+            IGraph<IVisual, IVisualEdge>sink, ILink a) {
             //if (a.Marker == null) { // this should never happen!:
             //    a.Marker = CommonSchema.EmptyMarker;
             //}
-            return VisualFactory.CreateEdge(ThingDataToDisplay(sender,a.Marker));
+            return VisualFactory.CreateEdge(ThingDataToDisplay(source,a.Marker));
 
         }
 
-        public override IThing CreateItemTwo(IGraph<IVisual, IVisualEdge> sender, 
-            IGraph<IThing, ILink> target, IVisual b) {
+        public override IThing CreateSourceItem(IGraph<IVisual, IVisualEdge> sink, 
+            IGraph<IThing, ILink> source, IVisual b) {
             
-            var result =  ThingFactory.CreateItem(target as IThingGraph, b.Data);
+            var result =  ThingFactory.CreateItem(source as IThingGraph, b.Data);
             
             return result;
         }
 
-        public override ILink CreateEdgeTwo(IGraph<IVisual, IVisualEdge> sender,
-            IGraph<IThing, ILink> target, IVisualEdge b) {
-            return ThingFactory.CreateEdge(target as IThingGraph, b.Data);
+        public override ILink CreateSourceEdge(IGraph<IVisual, IVisualEdge> sink,
+            IGraph<IThing, ILink> source, IVisualEdge b) {
+            return ThingFactory.CreateEdge(source as IThingGraph, b.Data);
         }
 
         public virtual void SetVisualByThing(IGraph<IThing, ILink> graph, IVisual target, IThing source) {
@@ -152,8 +152,8 @@ namespace Limada.VisualThings {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override void ChangeData(IGraph<IVisual, IVisualEdge> sender, IVisual visual, object data) {
-            VisualThingGraph graph = sender as VisualThingGraph;
+        public override void ChangeData(IGraph<IVisual, IVisualEdge> sink, IVisual visual, object data) {
+            VisualThingGraph graph = sink as VisualThingGraph;
             
             if (graph == null)
                 throw new ArgumentException();
@@ -166,14 +166,14 @@ namespace Limada.VisualThings {
                         
                         link.Marker = (IThing) data;
                         // this is necessary because db4o.graph does not save by itself
-                        graph.Two.Add (link.Marker);
+                        graph.Source.Add (link.Marker);
 
-                        SetVisualByThing(graph.Two, visual, link.Marker);
+                        SetVisualByThing(graph.Source, visual, link.Marker);
 
                     }
                 } else {
-                    thing = SetThingByData (graph.Two,thing, data);
-                    SetVisualByThing (graph.Two, visual, thing);
+                    thing = SetThingByData (graph.Source,thing, data);
+                    SetVisualByThing (graph.Source, visual, thing);
                 }
             }
         }

@@ -36,7 +36,7 @@ namespace Limada.VisualThings {
         public override IThingGraph Graph {
             get { 
                 if (VisualThingGraph !=null) {
-                    return VisualThingGraph.Two as IThingGraph;
+                    return VisualThingGraph.Source as IThingGraph;
                 }
                 return null;
             }

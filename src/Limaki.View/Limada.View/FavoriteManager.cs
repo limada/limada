@@ -65,7 +65,7 @@ namespace Limada.View {
             if (graph == null)
                 return;
 
-            var thingGraph = graph.Two as IThingGraph;
+            var thingGraph = graph.Source as IThingGraph;
             if (graph != null && thingGraph != null && scene.Focused != null) {
                 var thing = graph.Get(scene.Focused);
                 if (thing != null) {
@@ -134,7 +134,7 @@ namespace Limada.View {
             var graph = view.Source<IVisual, IVisualEdge,IThing, ILink>() as VisualThingGraph;
             IThingGraph thingGraph = null;
             if (graph != null) 
-                thingGraph = graph.Two as IThingGraph;
+                thingGraph = graph.Source as IThingGraph;
             
             var done = false;
 
@@ -216,7 +216,7 @@ namespace Limada.View {
 
             if (! done && view != null) {
                 // it seems not to be a ThingGraph based Scene:
-                foreach (var item in  view.Two.FindRoots(null)) {
+                foreach (var item in  view.Source.FindRoots(null)) {
                     view.Add(item);
                 }
                 display.Invoke();

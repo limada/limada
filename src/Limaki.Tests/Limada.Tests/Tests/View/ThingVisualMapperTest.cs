@@ -48,11 +48,11 @@ namespace Limada.Tests.View {
                 new VisualThingAdapter().ReverseAdapter());
 
             //mapper.showMarkers = false;
-            mapper.ConvertOneTwo();
+            mapper.ConvertSinkSource();
             Assert.AreEqual(this.Graph.Count,visualGraph.Count);
             this.Graph.Clear();
             mapper.Clear();
-            mapper.ConvertTwoOne();
+            mapper.ConvertSourceSink();
             this.ReportGraph(this.Graph, "Reread");
             Assert.AreEqual(this.Graph.Count, visualGraph.Count);
 

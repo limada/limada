@@ -46,20 +46,20 @@ namespace Limaki.Tests.Graph.Wrappers {
                 Assert.IsTrue(pair.Contains(edge.Root), edge.Root.ToString());
                 Assert.IsTrue(pair.Contains(edge.Leaf), edge.Leaf.ToString());
 
-                Assert.IsTrue(pair.One.Contains(edge), edge.ToString());
-                Assert.IsTrue(pair.One.Contains(edge.Root), edge.Root.ToString());
-                Assert.IsTrue(pair.One.Contains(edge.Leaf), edge.Leaf.ToString());
+                Assert.IsTrue(pair.Sink.Contains(edge), edge.ToString());
+                Assert.IsTrue(pair.Sink.Contains(edge.Root), edge.Root.ToString());
+                Assert.IsTrue(pair.Sink.Contains(edge.Leaf), edge.Leaf.ToString());
 
                 IGraphEdge edge2 = (IGraphEdge)pair.Get(edge);
                 IGraphEntity root2 = pair.Get (edge.Root);
                 IGraphEntity leaf2 = pair.Get(edge.Leaf);
 
-                Assert.IsTrue(pair.Two.Contains(edge2), edge2.ToString());
-                Assert.IsTrue(pair.Two.Contains(edge2.Root), edge2.Root.ToString());
-                Assert.IsTrue(pair.Two.Contains(edge2.Leaf), edge2.Leaf.ToString());
+                Assert.IsTrue(pair.Source.Contains(edge2), edge2.ToString());
+                Assert.IsTrue(pair.Source.Contains(edge2.Root), edge2.Root.ToString());
+                Assert.IsTrue(pair.Source.Contains(edge2.Leaf), edge2.Leaf.ToString());
 
-                Assert.IsTrue(pair.Two.Contains(root2), root2.ToString());
-                Assert.IsTrue(pair.Two.Contains(leaf2), leaf2.ToString());
+                Assert.IsTrue(pair.Source.Contains(root2), root2.ToString());
+                Assert.IsTrue(pair.Source.Contains(leaf2), leaf2.ToString());
 
 
             }
@@ -68,9 +68,9 @@ namespace Limaki.Tests.Graph.Wrappers {
             pair.Remove(factory.One);
 
             Assert.IsFalse(pair.Contains(factory.One), factory.One.ToString());
-            Assert.IsFalse(pair.One.Contains(factory.One), factory.One.ToString());
+            Assert.IsFalse(pair.Sink.Contains(factory.One), factory.One.ToString());
 
-            Assert.IsFalse(pair.Two.Contains(item2), "pair.Two contains:\t" + item2.ToString());
+            Assert.IsFalse(pair.Source.Contains(item2), "pair.Source contains:\t" + item2.ToString());
 
             var pingback = pair.Get(item2);
             Assert.IsNull(pingback, "pair.Get(item) must be null\t" + item2.ToString());

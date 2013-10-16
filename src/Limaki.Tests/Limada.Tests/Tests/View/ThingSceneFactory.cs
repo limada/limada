@@ -110,7 +110,7 @@ namespace Limada.Tests.View {
             var adapter = new VisualThingAdapter().ReverseAdapter();
             var mapper = new GraphMapper<IThing, IVisual, ILink, IVisualEdge>(ThingGraph, graph, adapter);
 
-            mapper.ConvertOneTwo();
+            mapper.ConvertSinkSource();
         }
 
         #endregion

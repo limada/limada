@@ -154,7 +154,7 @@ namespace Xwt.Html5.TestApp {
             scene = examples.GetScene (testData.Data);
 
             var view = scene.Graph as GraphView<IVisual, IVisualEdge>;
-            var graph = view.Two;
+            var graph = view.Source;
 
             foreach (var item in graph.FindRoots (null)) {
                 //if (!graph.IsMarker (item))

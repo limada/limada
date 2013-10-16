@@ -86,7 +86,7 @@ namespace Limada.Tests.Basic {
         protected override void CreateItems() {
             marker = Factory.CreateItem("Marker");
             One = Factory.CreateItem("One");
-            Two = Factory.CreateItem("Two");
+            Two = Factory.CreateItem("Source");
             Three = Factory.CreateItem("Three");
             Aside = Factory.CreateItem("Aside");
             Single = Factory.CreateItem("Single");

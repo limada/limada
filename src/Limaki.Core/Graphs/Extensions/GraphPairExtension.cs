@@ -26,31 +26,31 @@ namespace Limaki.Graphs.Extensions {
             where TEdge : IEdge<TItem>, TItem {
             var result = graph as IGraphPair<TItem, TItem, TEdge, TEdge>;
             if (result != null) {
-                while (result.Two is IGraphPair<TItem, TItem, TEdge, TEdge>) {
-                    result = (IGraphPair<TItem, TItem, TEdge, TEdge>)result.Two;
+                while (result.Source is IGraphPair<TItem, TItem, TEdge, TEdge>) {
+                    result = (IGraphPair<TItem, TItem, TEdge, TEdge>)result.Source;
                 }
             }
             return result;
         }
-        
 
-        public static IGraphPair<TItem, TTwo, TEdge, TEdgeTwo> Source<TItem, TEdge, TTwo, TEdgeTwo>(this IGraph<TItem, TEdge> graph)
-            where TEdge : IEdge<TItem>, TItem
-            where TEdgeTwo : IEdge<TTwo>, TTwo {
 
-            var result = graph as IGraphPair<TItem, TItem, TEdge, TEdge>;
+        public static IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (this IGraph<TSinkItem, TSinkEdge> graph)
+            where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+            where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
+
+            var result = graph as IGraphPair<TSinkItem, TSinkItem, TSinkEdge, TSinkEdge>;
 
             if (result != null) {
                 result = graph.RootSource();
 
-                if (result != null && result.Two is IGraphPair<TItem, TTwo, TEdge, TEdgeTwo>) {
-                    return (IGraphPair<TItem, TTwo, TEdge, TEdgeTwo>)result.Two;
+                if (result != null && result.Source is IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>) {
+                    return (IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>)result.Source;
                 }
-                if (result != null && result is IGraphPair<TItem, TTwo, TEdge, TEdgeTwo>) {
-                    return (IGraphPair<TItem, TTwo, TEdge, TEdgeTwo>)result;
+                if (result != null && result is IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>) {
+                    return (IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>)result;
                 }
-            } else if (graph is IGraphPair<TItem, TTwo, TEdge, TEdgeTwo>) {
-                return (IGraphPair<TItem, TTwo, TEdge, TEdgeTwo>)graph;
+            } else if (graph is IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>) {
+                return (IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>)graph;
             }
             return null;
         }
@@ -64,14 +64,14 @@ namespace Limaki.Graphs.Extensions {
                 yield return graph;
             else {
                 while (result is IGraphPair<TItem, TItem, TEdge, TEdge>) {
-                    yield return result.One;
-                    if (result.Two is IGraphPair<TItem, TItem, TEdge, TEdge>) {
-                        result = (IGraphPair<TItem, TItem, TEdge, TEdge>)result.Two;
+                    yield return result.Sink;
+                    if (result.Source is IGraphPair<TItem, TItem, TEdge, TEdge>) {
+                        result = (IGraphPair<TItem, TItem, TEdge, TEdge>)result.Source;
                     } else {
-                        if (result is IBaseGraphPair<TItem, TEdge>) {
-                            yield return ((IBaseGraphPair<TItem, TEdge>)result).One;
+                        if (result is ISinkGraph<TItem, TEdge>) {
+                            yield return ((ISinkGraph<TItem, TEdge>)result).Sink;
                         } else {
-                            yield return result.Two;
+                            yield return result.Source;
                         }
                         yield break;
                     }
@@ -81,14 +81,14 @@ namespace Limaki.Graphs.Extensions {
 
 
 
-        public static TItem LookUp<TItem, TEdge, TTwo, TEdgeTwo>(this IGraphPair<TItem, TItem, TEdge, TEdge> graphPair1,
+        public static TItem LookUp<TItem, TEdge, TSourceItem, TSourceEdge>(this IGraphPair<TItem, TItem, TEdge, TEdge> graphPair1,
             IGraphPair<TItem, TItem, TEdge, TEdge> graphPair2,
             TItem item)
             where TEdge : IEdge<TItem>, TItem
-            where TEdgeTwo : IEdge<TTwo>, TTwo {
+            where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
             var back = default(TItem);
-            var source1 = graphPair1.Source<TItem, TEdge, TTwo, TEdgeTwo>();
-            var source2 = graphPair2.Source<TItem, TEdge, TTwo, TEdgeTwo>();
+            var source1 = graphPair1.Source<TItem, TEdge, TSourceItem, TSourceEdge>();
+            var source2 = graphPair2.Source<TItem, TEdge, TSourceItem, TSourceEdge>();
             if (source1 != null && source2 != null) {
                 var ping = source1.Get(item);
                 if (ping != null) {
@@ -159,13 +159,13 @@ namespace Limaki.Graphs.Extensions {
 
         }
 
-        public static void PopulateWithRoots<TItem, TEdge, TTwo, TEdgeTwo>(this GraphView<TItem, TEdge> graphView)
+        public static void PopulateWithRoots<TItem, TEdge, TSourceItem, TSourceEdge>(this GraphView<TItem, TEdge> graphView)
             where TEdge : IEdge<TItem>, TItem
-            where TEdgeTwo : IEdge<TTwo>, TTwo {
-            IGraphPair<TItem, TTwo, TEdge, TEdgeTwo> source = graphView.Source<TItem, TEdge, TTwo, TEdgeTwo>();
+            where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
+            IGraphPair<TItem, TSourceItem, TEdge, TSourceEdge> source = graphView.Source<TItem, TEdge, TSourceItem, TSourceEdge>();
             if (source != null) {
-                foreach (TTwo item in source.Two.FindRoots<TTwo, TEdgeTwo>(default(TTwo))) {
-                    graphView.One.Add(source.Get(item));
+                foreach (var item in source.Source.FindRoots<TSourceItem, TSourceEdge>(default(TSourceItem))) {
+                    graphView.Sink.Add(source.Get(item));
                 }
             }
 

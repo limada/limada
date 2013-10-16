@@ -58,7 +58,7 @@ namespace Limada.Usecases {
                 return;
             var visualThingGraph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
             if (visualThingGraph != null) {
-                visualThingGraph.Mapper.ConvertOneTwo();
+                visualThingGraph.Mapper.ConvertSinkSource();
             }
 
         }
@@ -73,7 +73,7 @@ namespace Limada.Usecases {
             if (graph == null)
                 return null;
 
-            var thingView = new GraphView<IThing, ILink>(graph.Two as IThingGraph, new ThingGraph());
+            var thingView = new GraphView<IThing, ILink>(graph.Source as IThingGraph, new ThingGraph());
             thingView.AddRange(scene.Elements.Select(v => graph.Get(v)));
 
             return thingView;
@@ -111,7 +111,7 @@ namespace Limada.Usecases {
 
        public void SetDescription (IGraphScene<IVisual, IVisualEdge> scene, IThing thing, string fileName) {
             if (thing != null) {
-                var thingGraph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Two as IThingGraph;
+                var thingGraph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Source as IThingGraph;
                 thingGraph.SetSource(thing, fileName);
                 var desc = thingGraph.Description(thing);
                 if (desc == null || desc.ToString() == string.Empty) {

@@ -20,10 +20,10 @@ namespace Limaki.Tests.Graph.Wrappers {
 
         public override void Contains(TItemOne item) {
             base.Contains(item);
-            Pair.One.Contains (item);
+            Pair.Sink.Contains (item);
             TItemTwo item2 = Pair.Get (item);
             Assert.IsNotNull (item2);
-            Assert.IsTrue (Pair.Two.Contains (item2));
+            Assert.IsTrue (Pair.Source.Contains (item2));
 
             if (item is TEdgeOne) {
                 TEdgeOne edge = (TEdgeOne)item;
@@ -34,12 +34,12 @@ namespace Limaki.Tests.Graph.Wrappers {
 
                 Assert.AreSame (edge2.Root, root2);
                 Assert.AreSame(edge2.Leaf, leaf2);
-                Assert.IsTrue(Pair.Two.Contains(edge2), edge2.ToString());
-                Assert.IsTrue(Pair.Two.Contains(edge2.Root), edge2.Root.ToString());
-                Assert.IsTrue(Pair.Two.Contains(edge2.Leaf), edge2.Leaf.ToString());
+                Assert.IsTrue(Pair.Source.Contains(edge2), edge2.ToString());
+                Assert.IsTrue(Pair.Source.Contains(edge2.Root), edge2.Root.ToString());
+                Assert.IsTrue(Pair.Source.Contains(edge2.Leaf), edge2.Leaf.ToString());
 
-                Assert.IsTrue(Pair.Two.Contains(root2), root2.ToString());
-                Assert.IsTrue(Pair.Two.Contains(leaf2), leaf2.ToString());
+                Assert.IsTrue(Pair.Source.Contains(root2), root2.ToString());
+                Assert.IsTrue(Pair.Source.Contains(leaf2), leaf2.ToString());
             }
         }
 
@@ -54,14 +54,14 @@ namespace Limaki.Tests.Graph.Wrappers {
             else
                 Assert.AreEqual(edge2.Leaf, newItem2);
 
-            Assert.IsFalse(Pair.Two.Edges(oldItem2).Contains(edge2));
-            Assert.IsTrue(Pair.Two.Edges(newItem2).Contains(edge2));
+            Assert.IsFalse(Pair.Source.Edges(oldItem2).Contains(edge2));
+            Assert.IsTrue(Pair.Source.Edges(newItem2).Contains(edge2));
         }
 
         public override void IsRemoved(TItemOne item) {
             base.IsRemoved(item);
             Assert.IsFalse(Pair.Contains(item), item.ToString());
-            Assert.IsFalse(Pair.One.Contains(item), item.ToString());
+            Assert.IsFalse(Pair.Sink.Contains(item), item.ToString());
 
             TItemTwo item2 = Pair.Get(item);
             Assert.IsNull(item2, "pair.Get(item) must be null\t" + item.ToString());
@@ -80,7 +80,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             Graph.Remove (Data.Three);
             IsRemoved (Data.Three);
 
-            Assert.IsFalse(Pair.Two.Contains(item2), "pair.Two contains:\t" + item2.ToString());
+            Assert.IsFalse(Pair.Source.Contains(item2), "pair.Source contains:\t" + item2.ToString());
 
             TItemOne pingback = Pair.Get(item2);
             Assert.IsNull(pingback, "pair.Get(item) must be null\t" + item2.ToString());

@@ -59,7 +59,7 @@ namespace Limaki.View.Visuals.UI {
 
         protected virtual void Remove(IVisual item) {
             ICollection<IVisualEdge> deleteQueue = 
-                new List<IVisualEdge>(TargetGraph.Two.PostorderTwig(item));
+                new List<IVisualEdge>(TargetGraph.Source.PostorderTwig(item));
 
             foreach (var delete in deleteQueue) {
                 if (Target.Contains (delete)) {
@@ -68,7 +68,7 @@ namespace Limaki.View.Visuals.UI {
                     Target.Requests.Add(new RemoveBoundsCommand<IVisual,IVisualEdge>(delete, Target));
                     Target.Remove (delete);
                 } else {
-                    TargetGraph.Two.Remove (delete);
+                    TargetGraph.Source.Remove (delete);
                 }
             }
 
@@ -81,7 +81,7 @@ namespace Limaki.View.Visuals.UI {
                 Target.Requests.Add(new RemoveBoundsCommand<IVisual, IVisualEdge>(item, Target));
                 TargetGraph.Remove(item);
             } else {
-                TargetGraph.Two.Remove (item);
+                TargetGraph.Source.Remove (item);
             }
         }
 
@@ -100,37 +100,37 @@ namespace Limaki.View.Visuals.UI {
             IVisual leaf = LookUp(sourceEdge.Leaf);
             if (targetEdge.Root != root || targetEdge.Leaf != leaf) {
                 
-                bool isEdgeVisible = TargetGraph.One.Contains(targetEdge);
-                bool makeEdgeVisible = TargetGraph.One.Contains(root) && TargetGraph.One.Contains(leaf);
+                bool isEdgeVisible = TargetGraph.Sink.Contains(targetEdge);
+                bool makeEdgeVisible = TargetGraph.Sink.Contains(root) && TargetGraph.Sink.Contains(leaf);
 
                 if (targetEdge.Root != root) {
                     if (makeEdgeVisible)
                         TargetGraph.ChangeEdge(targetEdge, root, true);
                     else
-                        TargetGraph.Two.ChangeEdge(targetEdge, root, true);
+                        TargetGraph.Source.ChangeEdge(targetEdge, root, true);
                 }
 
                 if (targetEdge.Leaf != leaf) {
                     if (makeEdgeVisible)
                         TargetGraph.ChangeEdge(targetEdge, leaf, false);
                     else
-                        TargetGraph.Two.ChangeEdge(targetEdge, leaf, false);
+                        TargetGraph.Source.ChangeEdge(targetEdge, leaf, false);
                 }
 
 
                 if (makeEdgeVisible) {
                     List<IVisualEdge> changeList = new List<IVisualEdge>();
                     changeList.Add(targetEdge);
-                    changeList.AddRange(TargetGraph.Two.Twig(targetEdge));
+                    changeList.AddRange(TargetGraph.Source.Twig(targetEdge));
 
                     foreach (IVisualEdge edge in changeList) {
                         bool showTwig = (Target.Contains(edge.Root) && Target.Contains(edge.Leaf));
 
                         bool doAdd = ( edge == targetEdge && !isEdgeVisible ) ||
-                                     ( !TargetGraph.One.Contains (edge) && showTwig );
+                                     ( !TargetGraph.Sink.Contains (edge) && showTwig );
 
                         if (doAdd) {
-                            TargetGraph.One.Add(edge);
+                            TargetGraph.Sink.Add(edge);
                             if (edge.Shape == null) {
                                 Target.Requests.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Invoke));
                             } else {
@@ -141,10 +141,10 @@ namespace Limaki.View.Visuals.UI {
                             Target.Requests.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Justify));
                     }
                 } else {
-                    ICollection<IVisualEdge> changeList = new List<IVisualEdge>(TargetGraph.One.Twig(targetEdge));
+                    ICollection<IVisualEdge> changeList = new List<IVisualEdge>(TargetGraph.Sink.Twig(targetEdge));
                     changeList.Add(targetEdge);
                     foreach (IVisualEdge edge in changeList) {
-                        TargetGraph.One.Remove(edge);
+                        TargetGraph.Sink.Remove(edge);
                         Target.Requests.Add(new RemoveBoundsCommand<IVisual, IVisualEdge>(edge, Target));
                     }
                 }
@@ -152,7 +152,7 @@ namespace Limaki.View.Visuals.UI {
                 //    if (makeEdgeVisible) {
                 //        target.Commands.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Justify));
                 //    } else {
-                //        targetGraph.One.Remove(edge);
+                //        targetGraph.Sink.Remove(edge);
                 //        target.Commands.Add(new RemoveBoundsCommand(edge, target));
                 //    }
                 //}

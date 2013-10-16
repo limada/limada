@@ -45,7 +45,7 @@ namespace Limaki.Tests.View.Visuals {
             facade.WireScene(sourceTest.Mock.Display, targetTest.Mock.Scene, sourceTest.Mock.Scene);
 
             var targetGraph = 
-                targetTest.Mock.Scene.Graph.RootSource().Two
+                targetTest.Mock.Scene.Graph.RootSource().Source
                    as IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>;
 
             ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
@@ -79,14 +79,14 @@ namespace Limaki.Tests.View.Visuals {
             targetTest.Net();
 
             var sourceGraph =
-                sourceTest.Mock.Scene.Graph.RootSource().Two
+                sourceTest.Mock.Scene.Graph.RootSource().Source
                    as IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>;
 
             var sourceView =
                 sourceTest.Mock.Scene.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
 
             var targetGraph =
-                targetTest.Mock.Scene.Graph.RootSource().Two
+                targetTest.Mock.Scene.Graph.RootSource().Source
                    as IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>;
 
 
@@ -104,7 +104,7 @@ namespace Limaki.Tests.View.Visuals {
             targetTest.Mock.SceneFacade.Expand (false);
             targetTest.Mock.Display.Execute();
 
-            // make a new link, add it to source, look if in targetGraph.Two
+            // make a new link, add it to source, look if in targetGraph.Source
             var sourceEdge =
                 new VisualEdge<string>(".Net->Programming",
                 sourceTest.Mock.Factory.Node[4], // .NET
@@ -118,13 +118,13 @@ namespace Limaki.Tests.View.Visuals {
 
             // testing the data source
             var graphEdge = sourceGraph.Get(sourceEdge) as IGraphEdge;
-            Assert.IsTrue(targetGraph.Two.Contains(graphEdge));
+            Assert.IsTrue(targetGraph.Source.Contains(graphEdge));
 
             // testing the targetTest
             IVisualEdge targetEdge = targetGraph.Get (graphEdge) as IVisualEdge;
             Assert.IsNotNull (targetEdge);
 
-            Assert.IsTrue (targetView.One.Contains(targetEdge));
+            Assert.IsTrue (targetView.Sink.Contains(targetEdge));
 
 
             // change the link in targetTest

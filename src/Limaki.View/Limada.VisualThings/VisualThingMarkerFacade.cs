@@ -73,7 +73,7 @@ namespace Limada.VisualThings {
             var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>() as VisualThingGraph;
 
             if (graph != null) {
-                return graph.Two as IThingGraph;
+                return graph.Source as IThingGraph;
             }
             return null;
         }

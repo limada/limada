@@ -21,71 +21,71 @@ namespace Limaki.Graphs {
     /// GraphPair couples two graphs of different type
     /// the coupling is done by the GraphMapper
     /// </summary>
-    /// <typeparam name="TItemOne"></typeparam>
-    /// <typeparam name="TItemTwo"></typeparam>
-    /// <typeparam name="TEdgeOne"></typeparam>
-    /// <typeparam name="TEdgeTwo"></typeparam>
-    public class GraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : 
-        GraphBase<TItemOne, TEdgeOne>,
-        IGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>
-        where TEdgeOne : IEdge<TItemOne>, TItemOne
-        where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
+    /// <typeparam name="TSinkItem"></typeparam>
+    /// <typeparam name="TSourceItem"></typeparam>
+    /// <typeparam name="TSinkEdge"></typeparam>
+    /// <typeparam name="TSourceEdge"></typeparam>
+    public class GraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : 
+        GraphBase<TSinkItem, TSinkEdge>,
+        IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>
+        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+        where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
-        public GraphPair(IGraph<TItemOne, TEdgeOne> one, IGraph<TItemTwo, TEdgeTwo> two,
-            GraphModelAdapter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> adapter)
+        public GraphPair(IGraph<TSinkItem, TSinkEdge> sink, IGraph<TSourceItem, TSourceEdge> source,
+            GraphModelAdapter<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> adapter)
             : base() {
-            this.Mapper = new GraphMapper<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>(adapter);
-            this.One = one;
-            this.Two = two;
+            this.Mapper = new GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(adapter);
+            this.Sink = sink;
+            this.Source = source;
             this.ChangeData = adapter.ChangeData;
         }
 
-        public virtual TItemTwo Get(TItemOne a) {
+        public virtual TSourceItem Get(TSinkItem a) {
             return Mapper.Get (a);
         }
 
-        public virtual TItemOne Get(TItemTwo a) {
+        public virtual TSinkItem Get(TSourceItem a) {
             return Mapper.Get(a);
         }
 
-        #region GraphBase<TItemOne,TEdgeOne>-Member
+        #region GraphBase<TSinkItem,TSinkEdge>-Member
 
-        protected override void AddEdge( TEdgeOne edge, TItemOne item ) {
+        protected override void AddEdge( TSinkEdge edge, TSinkItem item ) {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        protected override bool RemoveEdge( TEdgeOne edge, TItemOne item ) {
+        protected override bool RemoveEdge( TSinkEdge edge, TSinkItem item ) {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override void ChangeEdge(TEdgeOne edge, TItemOne newItem, bool changeRoot) {
-            TItemTwo two = Get(edge);
-            One.ChangeEdge(edge, newItem, changeRoot);
+        public override void ChangeEdge(TSinkEdge edge, TSinkItem newItem, bool changeRoot) {
+            TSourceItem two = Get(edge);
+            Sink.ChangeEdge(edge, newItem, changeRoot);
             if (two != null) {
-                TEdgeTwo edgeTwo = (TEdgeTwo) two;
+                TSourceEdge edgeTwo = (TSourceEdge) two;
                 //TItemTwo oldTwo = Mapper.Get(oldItem);
-                TItemTwo newTwo = Mapper.TryGetCreate(newItem);
-                Two.ChangeEdge(edgeTwo, newTwo, changeRoot);
+                TSourceItem newTwo = Mapper.TryGetCreate(newItem);
+                Source.ChangeEdge(edgeTwo, newTwo, changeRoot);
             }
         }
 
-        public override void RevertEdge(TEdgeOne edge) {
-            TItemTwo two = Get(edge);
-            One.RevertEdge (edge);
+        public override void RevertEdge(TSinkEdge edge) {
+            TSourceItem two = Get(edge);
+            Sink.RevertEdge (edge);
             if (two != null) {
-                TEdgeTwo edgeTwo = (TEdgeTwo) two;
-                Two.RevertEdge (edgeTwo);
+                TSourceEdge edgeTwo = (TSourceEdge) two;
+                Source.RevertEdge (edgeTwo);
             }
         }
 
-        public override bool Contains( TEdgeOne edge ) {
-            return One.Contains(edge);
+        public override bool Contains( TSinkEdge edge ) {
+            return Sink.Contains(edge);
         }
 
-        public override void Add( TEdgeOne edge ) {
-            One.Add(edge);
-            TEdgeTwo edgeTwo = (TEdgeTwo)Mapper.TryGetCreate(edge);
-            Two.Add(edgeTwo);
+        public override void Add( TSinkEdge edge ) {
+            Sink.Add(edge);
+            TSourceEdge edgeTwo = (TSourceEdge)Mapper.TryGetCreate(edge);
+            Source.Add(edgeTwo);
         }
 
         /// <summary>
@@ -93,157 +93,153 @@ namespace Limaki.Graphs {
         /// </summary>
         /// <param name="edge"></param>
         /// <returns></returns>
-        protected virtual bool RemoveEdge(IEnumerable<TEdgeOne> edges) {
-            foreach (TEdgeOne edge in edges) {
-               Mapper.One2Two.Remove(edge);
+        protected virtual bool RemoveEdge(IEnumerable<TSinkEdge> edges) {
+            foreach (TSinkEdge edge in edges) {
+               Mapper.Sink2Source.Remove(edge);
             }
             return true;
         }
 
-        protected virtual bool RemoveEdge(IEnumerable<TEdgeTwo> edges) {
-            foreach (TEdgeTwo edge in edges) {
-                Mapper.Two2One.Remove(edge);
+        protected virtual bool RemoveEdge(IEnumerable<TSourceEdge> edges) {
+            foreach (TSourceEdge edge in edges) {
+                Mapper.Source2Sink.Remove(edge);
             }
             return true;
         }
 
-        public override bool Remove( TEdgeOne edge ) {
-            return Remove ((TItemOne) edge);
+        public override bool Remove( TSinkEdge edge ) {
+            return Remove ((TSinkItem) edge);
         }
 
-        public override bool Remove(TItemOne item) {
+        public override bool Remove(TSinkItem item) {
             if (item == null) return false;
-            RemoveEdge (One.DepthFirstTwig (item));
-            bool result = One.Remove(item);
-            TItemTwo itemTwo = Get(item);
-            if (itemTwo != null) {
-                RemoveEdge(Two.DepthFirstTwig(itemTwo));
-                Two.Remove(itemTwo);
-                Mapper.Two2One.Remove(itemTwo);
+            RemoveEdge (Sink.DepthFirstTwig (item));
+            bool result = Sink.Remove(item);
+            var sourceItem = Get(item);
+            if (sourceItem != null) {
+                RemoveEdge(Source.DepthFirstTwig(sourceItem));
+                Source.Remove(sourceItem);
+                Mapper.Source2Sink.Remove(sourceItem);
             }
-            Mapper.One2Two.Remove(item);
+            Mapper.Sink2Source.Remove(item);
 
             return result;
         }
 
-        public override int EdgeCount( TItemOne item ) {
-            return One.EdgeCount(item);
+        public override int EdgeCount( TSinkItem item ) {
+            return Sink.EdgeCount(item);
         }
 
 
-        public override ICollection<TEdgeOne> Edges( TItemOne item ) {
-            return One.Edges(item);
+        public override ICollection<TSinkEdge> Edges( TSinkItem item ) {
+            return Sink.Edges(item);
         }
 
-        public override IEnumerable<TEdgeOne> Edges() {
-            return One.Edges();
+        public override IEnumerable<TSinkEdge> Edges() {
+            return Sink.Edges();
         }
 
-        public override IEnumerable<KeyValuePair<TItemOne, ICollection<TEdgeOne>>> ItemsWithEdges() {
-            return One.ItemsWithEdges();
+        public override IEnumerable<KeyValuePair<TSinkItem, ICollection<TSinkEdge>>> ItemsWithEdges() {
+            return Sink.ItemsWithEdges();
         }
 
-        public override void Add( TItemOne item ) {
+        public override void Add( TSinkItem item ) {
             if (item == null) return;
-            One.Add(item);
-            TItemTwo itemTwo = Mapper.TryGetCreate(item);
-            Two.Add(itemTwo);
+            Sink.Add(item);
+            TSourceItem itemTwo = Mapper.TryGetCreate(item);
+            Source.Add(itemTwo);
         }
 
         public override void Clear() {
-            One.Clear();
-            Two.Clear();
+            Sink.Clear();
+            Source.Clear();
             Mapper.Clear();
         }
 
-        public override bool Contains( TItemOne item ) {
-            return One.Contains(item);
+        public override bool Contains( TSinkItem item ) {
+            return Sink.Contains(item);
         }
 
-        public override void CopyTo( TItemOne[] array, int arrayIndex ) {
+        public override void CopyTo( TSinkItem[] array, int arrayIndex ) {
             //throw new Exception("The method or operation is not implemented.");
-            One.CopyTo (array, arrayIndex);
+            Sink.CopyTo (array, arrayIndex);
         }
 
         public override int Count {
-            get { return One.Count; }
+            get { return Sink.Count; }
         }
 
         public override bool IsReadOnly {
-            get { return One.IsReadOnly; }
+            get { return Sink.IsReadOnly; }
         }
 
 
 
-        public override IEnumerator<TItemOne> GetEnumerator() {
-            return One.GetEnumerator();
+        public override IEnumerator<TSinkItem> GetEnumerator() {
+            return Sink.GetEnumerator();
         }
 
-        public override void OnDataChanged( TItemOne item ) {
+        public override void OnDataChanged( TSinkItem item ) {
             base.OnDataChanged(item);
-            One.OnDataChanged(item);
-            TItemTwo itemTwo = Get(item);
-            Two.OnDataChanged(itemTwo);
+            Sink.OnDataChanged(item);
+            var sourceItem = Get(item);
+            Source.OnDataChanged(sourceItem);
         }
 
-        public override void OnChangeData(TItemOne item, object data) {
-            TItemTwo itemTwo = Get(item);
-            Two.OnChangeData (itemTwo, data);
-            One.OnChangeData (item, data);
+        public override void OnChangeData(TSinkItem item, object data) {
+            var sourceItem = Get(item);
+            Source.OnChangeData (sourceItem, data);
+            Sink.OnChangeData (item, data);
             base.OnChangeData(item, data);
         }
 
-        public override void OnGraphChanged(TItemOne item, GraphChangeType changeType) {
+        public override void OnGraphChanged(TSinkItem item, GraphChangeType changeType) {
             base.OnGraphChanged(item, changeType);
-            One.OnGraphChanged(item, changeType);
-            TItemTwo itemTwo = Get(item);
-            Two.OnGraphChanged(itemTwo, changeType);
+            Sink.OnGraphChanged(item, changeType);
+            var sourceItem = Get(item);
+            Source.OnGraphChanged(sourceItem, changeType);
         }
 
         #endregion
 
-        #region IGraphPair<TItemOne,TItemTwo,TEdgeOne,TEdgeTwo> Member
+        #region IGraphPair<TSinkItem,TSourceItem,TSinkEdge,TSourceEdge> Member
 
-        IGraph<TItemOne, TEdgeOne> _one = null;
-        public virtual IGraph<TItemOne, TEdgeOne> One {
-            get { return _one; }
+        IGraph<TSinkItem, TSinkEdge> _sink = null;
+        public virtual IGraph<TSinkItem, TSinkEdge> Sink {
+            get { return _sink; }
             set {
-                _one = value;
-                Mapper.One = value;
+                _sink = value;
+                Mapper.Sink = value;
             }
         }
-        IGraph<TItemTwo, TEdgeTwo> _two = null;
-        public virtual IGraph<TItemTwo, TEdgeTwo> Two {
-            get { return _two; }
+        IGraph<TSourceItem, TSourceEdge> _source = null;
+        public virtual IGraph<TSourceItem, TSourceEdge> Source {
+            get { return _source; }
             set {
-                _two = value;
-                Mapper.Two = value;
+                _source = value;
+                Mapper.Source = value;
             }
         }
 
 
-        public virtual IDictionary<TItemOne, TItemTwo> One2Two {
-            get { return Mapper.One2Two; }
-            set { Mapper.One2Two = value; }
+        public virtual IDictionary<TSinkItem, TSourceItem> Sink2Source {
+            get { return Mapper.Sink2Source; }
+            set { Mapper.Sink2Source = value; }
         }
 
-        public virtual IDictionary<TItemTwo, TItemOne> Two2One {
-            get { return Mapper.Two2One; }
-            set { Mapper.Two2One = value; }
+        public virtual IDictionary<TSourceItem, TSinkItem> Source2Sink {
+            get { return Mapper.Source2Sink; }
+            set { Mapper.Source2Sink = value; }
         }
 
-        GraphMapper<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> _mapper = null;
-        public virtual GraphMapper<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> Mapper {
-            get {return _mapper;}
-            set {_mapper = value;}
-        }
 
+        public virtual GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Mapper { get; set; }
 
         #endregion
 
         #region IFactoryListener<TItemOne> Member
 
-        Action<TItemOne> IFactoryListener<TItemOne>.ItemCreated {
+        Action<TSinkItem> IFactoryListener<TSinkItem>.ItemCreated {
             get { return Mapper.ItemCreated; }
             set { Mapper.ItemCreated = value; }
         }
@@ -252,10 +248,10 @@ namespace Limaki.Graphs {
 
         #region special algos
 
-        public virtual IEnumerable<TEdgeOne> ComplementEdges(TItemOne item, IGraph<TItemOne,TEdgeOne> graph) {
-            TItemTwo itemTwo = Get (item);
+        public virtual IEnumerable<TSinkEdge> ComplementEdges(TSinkItem item, IGraph<TSinkItem,TSinkEdge> graph) {
+            TSourceItem itemTwo = Get (item);
 
-            foreach (TEdgeTwo edge in Two.Fork(itemTwo)) {
+            foreach (TSourceEdge edge in Source.Fork(itemTwo)) {
                 var rootOne = Mapper.Get(edge.Root);
                 bool doyield = rootOne != null && graph.Contains(rootOne);
                 if (doyield) {
@@ -263,8 +259,8 @@ namespace Limaki.Graphs {
                     doyield = leafOne != null && graph.Contains(leafOne);
                     if (doyield) {
                         var result = Get(edge);
-                        if (result is TEdgeOne)
-                            yield return (TEdgeOne)result;
+                        if (result is TSinkEdge)
+                            yield return (TSinkEdge)result;
                     }
                 }
             }
@@ -272,8 +268,8 @@ namespace Limaki.Graphs {
 
         #endregion
 
-        public override IEnumerable<TItemOne> Where(System.Linq.Expressions.Expression<Func<TItemOne, bool>> predicate) {
-            return One.Where(predicate);
+        public override IEnumerable<TSinkItem> Where(System.Linq.Expressions.Expression<Func<TSinkItem, bool>> predicate) {
+            return Sink.Where(predicate);
         }
     }
 }

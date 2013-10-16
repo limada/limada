@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -17,57 +17,57 @@ using System.Collections.Generic;
 using Limaki.Common.Collections;
 
 namespace Limaki.Graphs {
-    public class LiveGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : GraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>
-        where TEdgeOne : IEdge<TItemOne>, TItemOne
-        where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
+    public class LiveGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : GraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>
+        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+        where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
-        public LiveGraphPair(IGraph<TItemOne, TEdgeOne> one, IGraph<TItemTwo, TEdgeTwo> two,
-            GraphModelAdapter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> adapter)
-            : base(one, two, adapter) { }
+        public LiveGraphPair (IGraph<TSinkItem, TSinkEdge> sink, IGraph<TSourceItem, TSourceEdge> source,
+            GraphModelAdapter<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> adapter)
+            : base(sink, source, adapter) { }
 
 
-        public override TItemOne Get(TItemTwo a) {
+        public override TSinkItem Get (TSourceItem source) {
             bool contains = false;
-            if (a is TEdgeTwo) {
-                contains = Two.Contains ((TEdgeTwo) a);
+            if (source is TSourceEdge) {
+                contains = Source.Contains((TSourceEdge)source);
             } else {
-                contains = Two.Contains(a);
+                contains = Source.Contains(source);
             }
             if (contains)
-                return Mapper.TryGetCreate(a);
+                return Mapper.TryGetCreate(source);
             else
-                return default(TItemOne);
+                return default(TSinkItem);
         }
 
-        public override TItemTwo Get(TItemOne a) {
-            return base.Get(a);
+        public override TSourceItem Get (TSinkItem sink) {
+            return base.Get(sink);
         }
 
-        public override ICollection<TEdgeOne> Edges(TItemOne item) {
-            //ICollection<TEdgeOne> result = One.Edges (item);
-            if (true){//(result == EmptyEgdes){
-                TItemTwo itemTwo = Get(item);
-                ICollection<TEdgeTwo> _edgesTwo = null;
+        public override ICollection<TSinkEdge> Edges (TSinkItem item) {
+            //ICollection<TEdgeOne> result = Sink.Edges (item);
+            if (true) {//(result == EmptyEgdes){
+                TSourceItem itemTwo = Get(item);
+                ICollection<TSourceEdge> _edgesTwo = null;
                 if (itemTwo != null) {
-                    _edgesTwo = Two.Edges(itemTwo);
+                    _edgesTwo = Source.Edges(itemTwo);
                 } else {
-                    _edgesTwo = new EmptyCollection<TEdgeTwo>();
+                    _edgesTwo = new EmptyCollection<TSourceEdge>();
                 }
-                foreach(TEdgeTwo edgeTwo in _edgesTwo) {
-                    One.Add((TEdgeOne)Mapper.TryGetCreate(edgeTwo));
+                foreach (TSourceEdge edgeTwo in _edgesTwo) {
+                    Sink.Add((TSinkEdge)Mapper.TryGetCreate(edgeTwo));
                 }
             }
-            return One.Edges(item);
+            return Sink.Edges(item);
         }
 
-        public override int EdgeCount(TItemOne item) {
-            TItemTwo itemTwo = Get (item);
-            return Two.EdgeCount(itemTwo);
+        public override int EdgeCount (TSinkItem item) {
+            TSourceItem itemTwo = Get(item);
+            return Source.EdgeCount(itemTwo);
         }
 
-        public override IEnumerator<TItemOne> GetEnumerator() {
-            foreach (TItemTwo itemTwo in Two) {
-                TItemOne itemOne = Mapper.TryGetCreate(itemTwo);
+        public override IEnumerator<TSinkItem> GetEnumerator () {
+            foreach (TSourceItem itemTwo in Source) {
+                TSinkItem itemOne = Mapper.TryGetCreate(itemTwo);
                 yield return itemOne;
             }
         }
@@ -75,54 +75,54 @@ namespace Limaki.Graphs {
 
 
 
-    public class LiveEdgeCollection<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : ICollection<TEdgeOne>
-        where TEdgeOne : IEdge<TItemOne>, TItemOne
-        where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
-        
-        private GraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> _graph;
-        private ICollection<TEdgeTwo> _edgesTwo;
-        
-        public LiveEdgeCollection(GraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> graph, TItemOne item) {
+    public class LiveEdgeCollection<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : ICollection<TSinkEdge>
+        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+        where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
+
+        private GraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> _graph;
+        private ICollection<TSourceEdge> _sourceEdges;
+
+        public LiveEdgeCollection (GraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> graph, TSinkItem item) {
             this._graph = graph;
-            TItemTwo itemTwo = _graph.Mapper.Get (item);
-            if (itemTwo != null) {
-                _edgesTwo = _graph.Two.Edges (itemTwo);
+            var sourceItem = _graph.Mapper.Get(item);
+            if (sourceItem != null) {
+                _sourceEdges = _graph.Source.Edges(sourceItem);
             } else {
-                _edgesTwo = new EmptyCollection<TEdgeTwo> ();
+                _sourceEdges = new EmptyCollection<TSourceEdge>();
             }
         }
         #region ICollection<TEdgeOne> Member
 
-        public void Add(TEdgeOne item) {
+        public void Add (TSinkEdge item) {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public void Clear() {
+        public void Clear () {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public bool Contains(TEdgeOne item) {
-            var edgeTwo = (TEdgeTwo)_graph.Mapper.Get(item);
-            if (edgeTwo == null)
+        public bool Contains (TSinkEdge item) {
+            var sourceEdge = (TSourceEdge)_graph.Mapper.Get(item);
+            if (sourceEdge == null)
                 return false;
             else
-                return _graph.Two.Contains(edgeTwo);
+                return _graph.Source.Contains(sourceEdge);
 
         }
 
-        public void CopyTo(TEdgeOne[] array, int arrayIndex) {
+        public void CopyTo (TSinkEdge[] array, int arrayIndex) {
             throw new Exception("The method or operation is not implemented.");
         }
 
         public int Count {
-            get { return _graph.Two.Count; }
+            get { return _graph.Source.Count; }
         }
 
         public bool IsReadOnly {
-            get { return true;  }
+            get { return true; }
         }
 
-        public bool Remove(TEdgeOne item) {
+        public bool Remove (TSinkEdge item) {
             throw new Exception("The method or operation is not implemented.");
         }
 
@@ -130,10 +130,10 @@ namespace Limaki.Graphs {
 
         #region IEnumerable<TEdgeOne> Member
 
-        public IEnumerator<TEdgeOne> GetEnumerator() {
-            foreach(TEdgeTwo edgeTwo in _edgesTwo) {
-                TEdgeOne edgeOne = (TEdgeOne)_graph.Mapper.TryGetCreate(edgeTwo);
-                yield return edgeOne;
+        public IEnumerator<TSinkEdge> GetEnumerator () {
+            foreach (var sourceEdge in _sourceEdges) {
+                var sinkEdge = (TSinkEdge)_graph.Mapper.TryGetCreate(sourceEdge);
+                yield return sinkEdge;
             }
         }
 
@@ -141,10 +141,10 @@ namespace Limaki.Graphs {
 
         #region IEnumerable Member
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            return this.GetEnumerator ();
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator () {
+            return this.GetEnumerator();
         }
 
         #endregion
-        }
+    }
 }

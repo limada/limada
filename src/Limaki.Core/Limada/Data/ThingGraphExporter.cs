@@ -88,7 +88,7 @@ namespace Limada.Data {
             var graph = source.RootSource();
             if (graph == null)
                 return null;
-            return graph.Two as IThingGraph;
+            return graph.Source as IThingGraph;
         }
     }
 }

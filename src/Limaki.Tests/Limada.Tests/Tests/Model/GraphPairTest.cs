@@ -35,16 +35,16 @@ namespace Limada.Tests.Model {
                 new GraphItem2ThingAdapter());
 
             GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink> mapper = graphPair.Mapper;
-            mapper.ConvertOneTwo();
+            mapper.ConvertSinkSource();
 
             MapperTester<IGraphEntity, IThing, IGraphEdge, ILink>
                 convertionTesterOne = new MapperTester<IGraphEntity, IThing, IGraphEdge, ILink>();
-            mapper.ConvertOneTwo();
-            convertionTesterOne.ProveConversion(graphPair.One, graphPair.Two, mapper.Get);
+            mapper.ConvertSinkSource();
+            convertionTesterOne.ProveConversion(graphPair.Sink, graphPair.Source, mapper.Get);
 
             IGraphEntity newEntity = new GraphEntity<string>("new");
             graphPair.Add(newEntity);
-            convertionTesterOne.ProveConversion(graphPair.One, graphPair.Two, mapper.Get);
+            convertionTesterOne.ProveConversion(graphPair.Sink, graphPair.Source, mapper.Get);
 
         }
 
@@ -72,7 +72,7 @@ namespace Limada.Tests.Model {
                     target, 
                     new GraphItem2ThingAdapter());
 
-            mapper.ConvertOneTwo ();
+            mapper.ConvertSinkSource ();
 
             IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> graphPair =
                 new LiveGraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
@@ -121,7 +121,7 @@ namespace Limada.Tests.Model {
 
             
 
-            foreach (var ping in graphView1.Two) {
+            foreach (var ping in graphView1.Source) {
                 var back = graphView1.LookUp<IGraphEntity, IGraphEdge,IThing, ILink>(graphView2, ping);
                 Assert.IsNotNull (back);
                 Assert.AreSame (ping, back);
@@ -129,11 +129,11 @@ namespace Limada.Tests.Model {
 
             data = new LiveGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
                 new Graph<IGraphEntity, IGraphEdge>(), 
-                data.Two,new GraphItem2ThingAdapter());
+                data.Source,new GraphItem2ThingAdapter());
 
             graphView2 = new GraphView<IGraphEntity, IGraphEdge>(data, new Graph<IGraphEntity, IGraphEdge>());
             
-            foreach (IGraphEntity ping in graphView1.Two) {
+            foreach (IGraphEntity ping in graphView1.Source) {
                 IGraphEntity back = graphView1.LookUp<IGraphEntity, IGraphEdge,IThing, ILink>(graphView2, ping);
                 Assert.IsNotNull(back);
                 Assert.AreNotSame(ping, back);

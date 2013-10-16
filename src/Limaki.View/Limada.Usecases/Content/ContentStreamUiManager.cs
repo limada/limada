@@ -139,7 +139,7 @@ namespace Limada.Usecases {
                 DefaultDialogValues(OpenFileDialog, ThingGraphFocusIoManager.ReadFilter);
                 if (scene != null && scene.HasThingGraph()) {
                     if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
-                        var graphFocus = new GraphCursor<IThing, ILink>(scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Two);
+                        var graphFocus = new GraphCursor<IThing, ILink>(scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Source);
                         var uri = IoUtils.UriFromFileName(OpenFileDialog.FileName);
                         ThingGraphFocusIoManager.ConfigureSinkIo = s => ConfigureSink(s);
                         graphFocus = ThingGraphFocusIoManager.ReadSink(uri, graphFocus);

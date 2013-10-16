@@ -27,11 +27,11 @@ namespace Limaki.Graphs.Extensions {
             this.RemoveOrphans = true;
         }
         public IGraph<TItem, TEdge> Data {
-            get { return graphView.Two; }
+            get { return graphView.Source; }
         }
 
         protected IGraph<TItem, TEdge> View {
-            get { return graphView.One; }
+            get { return graphView.Sink; }
         }
 
         public bool RemoveOrphans { get; set; }
@@ -120,7 +120,7 @@ namespace Limaki.Graphs.Extensions {
                 View.Add(item);
 
                 // look if we have invisible, but valid edges
-                var data = Data as IBaseGraphPair<TItem, TEdge>;
+                var data = Data as ISinkGraph<TItem, TEdge>;
                 if (data != null) {
                     foreach (TEdge edge in data.ComplementEdges(item, View)) {
                         if (!viewBuilder.Changes.Contains(edge)) {

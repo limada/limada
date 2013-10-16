@@ -43,7 +43,7 @@ namespace Limada.Tests.Wrappers {
                 new GraphItem2ThingAdapter()
                 );
             
-            factory.Mapper.Two = thingGraph;
+            factory.Mapper.Source = thingGraph;
             factory.Populate(thingGraph);
 
             Console.Out.Write(
@@ -54,9 +54,9 @@ namespace Limada.Tests.Wrappers {
             VisualThingGraph graph = new VisualThingGraph ();
 
             ThingGraphFactory<ProgrammingLanguageFactory> factory = new ThingGraphFactory<ProgrammingLanguageFactory> ();
-            factory.Populate (graph.Two);
+            factory.Populate (graph.Source);
             Console.Out.Write (
-                GraphTestUtils.ReportGraph<IThing, ILink> (graph.Two, factory.Name));
+                GraphTestUtils.ReportGraph<IThing, ILink> (graph.Source, factory.Name));
         }
 
         [Test]
@@ -96,17 +96,17 @@ namespace Limada.Tests.Wrappers {
 
             ThingGraphFactory<ProgrammingLanguageFactory> factory = new ThingGraphFactory<ProgrammingLanguageFactory>();
             factory.Count = 10;
-            factory.Populate(graph.Two);
+            factory.Populate(graph.Source);
 
 
             test.Mock.Scene.Focused = graph.Get (factory.Node[1]);
             Console.Out.Write(
-                    GraphTestUtils.ReportGraph<IVisual, IVisualEdge>(graph.One, factory.Name));
+                    GraphTestUtils.ReportGraph<IVisual, IVisualEdge>(graph.Sink, factory.Name));
 
             test.Mock.SceneFacade.Expand (false);
 
             Console.Out.Write(
-                GraphTestUtils.ReportGraph<IVisual, IVisualEdge>(graph.One, factory.Name));
+                GraphTestUtils.ReportGraph<IVisual, IVisualEdge>(graph.Sink, factory.Name));
 
         }
     }

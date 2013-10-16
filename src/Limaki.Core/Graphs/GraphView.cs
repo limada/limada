@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -19,8 +19,8 @@ using Limaki.Common.Collections;
 namespace Limaki.Graphs {
     /// <summary>
     /// a pair of two graphs of same type
-    /// Data is a Graph which holds all items
-    /// View is a a subgraph of Data
+    /// Source is a Graph which holds all items
+    /// Sink is a a subgraph of Data
     /// every operation (add,remove etc.) is performed on both graphs
     /// </summary>
     /// <typeparam name="TItem"></typeparam>
@@ -29,28 +29,21 @@ namespace Limaki.Graphs {
         where TEdge : IEdge<TItem>, TItem {
 
         public GraphView(){}
-        public GraphView(IGraph<TItem,TEdge> data,  IGraph<TItem,TEdge> view ) {
-            this.One = view;
-            this.Two = data;
+        public GraphView(IGraph<TItem,TEdge> source,  IGraph<TItem,TEdge> sink ) {
+            this.Source = source;
+            this.Sink = sink;
         }
 
-        IGraph<TItem, TEdge> _view = null;
+       
         /// <summary>
-        /// the sub-graph of Two with the visible items
+        /// the sub-graph of Source with the visible items
         /// </summary>
-        public virtual IGraph<TItem, TEdge> One {
-            get { return _view; }
-            set { _view = value; }
-        }
+        public virtual IGraph<TItem, TEdge> Sink { get; set; }
 
-        IGraph<TItem, TEdge> _source = null;
         /// <summary>
         /// the full graph
         /// </summary>
-        public virtual IGraph<TItem, TEdge> Two {
-            get { return _source; }
-            set { _source = value; }
-        }
+        public virtual IGraph<TItem, TEdge> Source { get; set; }
 
 
         protected override void AddEdge(TEdge edge, TItem item) {
@@ -65,118 +58,118 @@ namespace Limaki.Graphs {
             TItem rootBefore = edge.Root;
             TItem leafBefore = edge.Leaf;
 
-            One.ChangeEdge (edge, newItem, changeRoot);
+            Sink.ChangeEdge (edge, newItem, changeRoot);
 
             //edge.Root = rootBefore;
             //edge.Leaf = leafBefore;
-            Two.ChangeEdge (edge, newItem, changeRoot);
+            Source.ChangeEdge (edge, newItem, changeRoot);
         }
 
         public override void RevertEdge(TEdge edge) {
             TItem rootBefore = edge.Root;
             TItem leafBefore = edge.Leaf;
-            One.RevertEdge(edge);
+            Sink.RevertEdge(edge);
 
             edge.Root = rootBefore;
             edge.Leaf = leafBefore;
-            Two.RevertEdge(edge);
+            Source.RevertEdge(edge);
         }
 
         public override bool Contains(TEdge edge) {
-            return One.Contains(edge);
+            return Sink.Contains(edge);
         }
 
         public override void Add(TEdge edge) {
-            Two.Add(edge);
-            One.Add(edge);
+            Source.Add(edge);
+            Sink.Add(edge);
             //OnGraphChanged(edge, GraphChangeType.Add);
         }
 
         public override bool Remove(TEdge edge) {
-            Two.Remove(edge);
-            bool result = One.Remove(edge);
+            Source.Remove(edge);
+            bool result = Sink.Remove(edge);
             //OnGraphChanged(edge, GraphChangeType.Remove);
             return result;
         }
 
         public override int EdgeCount(TItem item) {
-            return One.EdgeCount(item);
+            return Sink.EdgeCount(item);
         }
 
         public override ICollection<TEdge> Edges(TItem item) {
-            return One.Edges(item);
+            return Sink.Edges(item);
         }
 
         public override IEnumerable<TEdge> Edges() {
-            return One.Edges();
+            return Sink.Edges();
         }
 
         public override IEnumerable<KeyValuePair<TItem, ICollection<TEdge>>> ItemsWithEdges() {
-            return One.ItemsWithEdges();
+            return Sink.ItemsWithEdges();
         }
 
         public override void Add(TItem item) {
-            One.Add(item);
-            Two.Add(item);
+            Sink.Add(item);
+            Source.Add(item);
             //OnGraphChanged(item, GraphChangeType.Add);
         }
 
         public override void Clear() {
-            One.Clear();
+            Sink.Clear();
         }
 
         public override bool Contains(TItem item) {
-            return One.Contains(item);
+            return Sink.Contains(item);
         }
 
         public override void CopyTo(TItem[] array, int arrayIndex) {
-            One.CopyTo(array, arrayIndex);
+            Sink.CopyTo(array, arrayIndex);
         }
 
         public override int Count {
-            get { return One.Count; }
+            get { return Sink.Count; }
         }
 
         public override bool IsReadOnly {
-            get { return One.IsReadOnly; }
+            get { return Sink.IsReadOnly; }
         }
 
         public override bool Remove(TItem item) {
-            Two.Remove(item);
-            bool result = One.Remove(item);
+            Source.Remove(item);
+            bool result = Sink.Remove(item);
             //OnGraphChanged (item, GraphChangeType.Remove);
             return result;
         }
 
         public override IEnumerator<TItem> GetEnumerator() {
-            return One.GetEnumerator();
+            return Sink.GetEnumerator();
         }
 
         public override void OnDataChanged(TItem item) {
             // change the data graph first, then call view change-event
-            Two.OnDataChanged (item);
+            Source.OnDataChanged (item);
             base.OnDataChanged(item);
         }
 
         public override void OnChangeData(TItem item, object data) {
-            Two.OnChangeData(item, data);
+            Source.OnChangeData(item, data);
             base.OnChangeData(item, data);
         }
         public override void OnGraphChanged( TItem item, GraphChangeType changeType ) {
-            Two.OnGraphChanged(item, changeType);
+            Source.OnGraphChanged(item, changeType);
             base.OnGraphChanged(item, changeType);
         }
 
         
         #region IGraphPair<TItem,TEdge,TItem,TEdge> Member
 
-        IDictionary<TItem, TItem> IGraphPair<TItem, TItem, TEdge, TEdge>.One2Two {
-            get { return new DictionaryAdapter<TItem> (this.Two); }
+        IDictionary<TItem, TItem> IGraphPair<TItem, TItem, TEdge, TEdge>.Sink2Source {
+            get { return new DictionaryAdapter<TItem> (this.Source); }
             set { throw new Exception("The method or operation is not implemented."); }
         }
 
-        IDictionary<TItem, TItem> IGraphPair<TItem, TItem, TEdge, TEdge>.Two2One {
-            get { return new DictionaryAdapter<TItem>(this.Two); }
+        IDictionary<TItem, TItem> IGraphPair<TItem, TItem, TEdge, TEdge>.Source2Sink {
+            get { return new DictionaryAdapter<TItem>(this.Source); }
             set { throw new Exception("The method or operation is not implemented."); }
         }
 
@@ -189,34 +182,14 @@ namespace Limaki.Graphs {
             throw new NotImplementedException("ComplementEdges not implemented in "+this.GetType().Name);
         }
 
-        //TItem IGraphPair<TItem, TItem, TEdge, TEdge>.Get(TItem a) { return a; }
-        //IGraph<TItem, TEdge> IGraphPair<TItem, TItem, TEdge, TEdge>.One {
-        //    get { return One; }
-        //    set { One = value; }
-        //}
-
-        //IGraph<TItem, TEdge> IGraphPair<TItem, TItem, TEdge, TEdge>.Two {
-        //    get { return this.Two; }
-        //    set { Two = value; }
-        //}
-
         public virtual TItem Get(TItem a) { return a; }
 
         #endregion
 
-
-        #region IFactoryListener<TItem> Member
-
-        private Action<TItem> _createListener = null;
-        Action<TItem> IFactoryListener<TItem>.ItemCreated {
-            get { return _createListener; }
-            set {_createListener = value;}
-        }
-
-        #endregion
+        Action<TItem> IFactoryListener<TItem>.ItemCreated { get; set; }
 
         public override IEnumerable<TItem> Where(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
-            return One.Where(predicate);
+            return Sink.Where(predicate);
         }
     }
 }

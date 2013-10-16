@@ -64,7 +64,7 @@ namespace Limaki.View.Visuals.Visualizers {
             if (sourceGraph != null) {
                 sourceGraph = sourceGraph.RootSource();
 
-                var data = sourceGraph.Two;
+                var data = sourceGraph.Source;
                 var result = GraphMapping.Mapping.CloneGraphPair<IVisual, IVisualEdge>(data);
 
                 if (result != null) {

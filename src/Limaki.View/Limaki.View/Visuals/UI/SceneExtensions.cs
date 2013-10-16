@@ -135,7 +135,7 @@ namespace Limaki.View.Visuals.UI {
             if (scene != null) {
                 var graphView = scene.Graph as GraphView<IVisual, IVisualEdge>;
                 if (graphView!=null) {
-                    graphView.One.Clear ();
+                    graphView.Sink.Clear ();
                     scene.ClearView ();
                     Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(scene);
                 } else {

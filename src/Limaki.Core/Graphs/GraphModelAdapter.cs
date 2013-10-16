@@ -15,74 +15,74 @@
 
 namespace Limaki.Graphs {
 
-    public abstract class GraphModelAdapter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>
-        where TEdgeOne : IEdge<TItemOne>, TItemOne
-        where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
-        public abstract TItemOne CreateItemOne(IGraph<TItemTwo, TEdgeTwo> sender,
-            IGraph<TItemOne, TEdgeOne> target, TItemTwo item);
-        public abstract TEdgeOne CreateEdgeOne(IGraph<TItemTwo, TEdgeTwo> sender,
-            IGraph<TItemOne, TEdgeOne> target, TEdgeTwo item);
+    public abstract class GraphModelAdapter<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>
+        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+        where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
+        public abstract TSinkItem CreateSinkItem(IGraph<TSourceItem, TSourceEdge> source,
+            IGraph<TSinkItem, TSinkEdge> sink, TSourceItem item);
+        public abstract TSinkEdge CreateSinkEdge(IGraph<TSourceItem, TSourceEdge> source,
+            IGraph<TSinkItem, TSinkEdge> sink, TSourceEdge item);
 
-        public abstract TItemTwo CreateItemTwo(IGraph<TItemOne, TEdgeOne> sender, 
-            IGraph<TItemTwo, TEdgeTwo> target, TItemOne item);
-        public abstract TEdgeTwo CreateEdgeTwo(IGraph<TItemOne, TEdgeOne> sender, 
-            IGraph<TItemTwo, TEdgeTwo> target, TEdgeOne item);
+        public abstract TSourceItem CreateSourceItem(IGraph<TSinkItem, TSinkEdge> sink, 
+            IGraph<TSourceItem, TSourceEdge> source, TSinkItem item);
+        public abstract TSourceEdge CreateSourceEdge(IGraph<TSinkItem, TSinkEdge> sink, 
+            IGraph<TSourceItem, TSourceEdge> source, TSinkEdge item);
 
-        public abstract void ChangeData ( IGraph<TItemOne, TEdgeOne> sender, TItemOne item, object data );
-        public abstract void ChangeData ( IGraph<TItemTwo, TEdgeTwo> sender, TItemTwo item, object data);
-        public virtual void EdgeCreated ( TEdgeOne one, TEdgeTwo two) {}
-        public virtual void EdgeCreated ( TEdgeTwo two, TEdgeOne one) {}
+        public abstract void ChangeData ( IGraph<TSinkItem, TSinkEdge> sink, TSinkItem item, object data );
+        public abstract void ChangeData ( IGraph<TSourceItem, TSourceEdge> source, TSourceItem item, object data);
+        public virtual void EdgeCreated ( TSinkEdge sinkEdge, TSourceEdge sourceEdge) {}
+        public virtual void EdgeCreated ( TSourceEdge sourceEdge, TSinkEdge sinkEdge) {}
 
-        public virtual GraphModelAdapter<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> ReverseAdapter() {
+        public virtual GraphModelAdapter<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> ReverseAdapter() {
             return
-                new ReverseGraphModelAdapter<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne>(this);
+                new ReverseGraphModelAdapter<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge>(this);
         }
     }
 
-    public class ReverseGraphModelAdapter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : 
-        GraphModelAdapter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>
-        where TEdgeOne : IEdge<TItemOne>, TItemOne
-        where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
+    public class ReverseGraphModelAdapter<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : 
+        GraphModelAdapter<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>
+        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+        where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
-        GraphModelAdapter<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> source = null;
+        GraphModelAdapter<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> source = null;
 
-        public ReverseGraphModelAdapter(GraphModelAdapter<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> source) {
+        public ReverseGraphModelAdapter(GraphModelAdapter<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> source) {
             this.source = source;
         }
 
-        public override TItemOne CreateItemOne(IGraph<TItemTwo, TEdgeTwo> sender,
-            IGraph<TItemOne, TEdgeOne> target, TItemTwo item) {
-            return source.CreateItemTwo(sender,target,item);
+        public override TSinkItem CreateSinkItem(IGraph<TSourceItem, TSourceEdge> source,
+            IGraph<TSinkItem, TSinkEdge> sink, TSourceItem item) {
+            return this.source.CreateSourceItem(source,sink,item);
         }
 
-        public override TEdgeOne CreateEdgeOne(IGraph<TItemTwo, TEdgeTwo> sender,
-            IGraph<TItemOne, TEdgeOne> target, TEdgeTwo item) {
-            return source.CreateEdgeTwo(sender,target,item);
+        public override TSinkEdge CreateSinkEdge(IGraph<TSourceItem, TSourceEdge> source,
+            IGraph<TSinkItem, TSinkEdge> sink, TSourceEdge item) {
+            return this.source.CreateSourceEdge(source,sink,item);
         }
 
-        public override TItemTwo CreateItemTwo(IGraph<TItemOne, TEdgeOne> sender,
-            IGraph<TItemTwo, TEdgeTwo> target, TItemOne item) {
-            return source.CreateItemOne(sender,target,item);
+        public override TSourceItem CreateSourceItem(IGraph<TSinkItem, TSinkEdge> sink,
+            IGraph<TSourceItem, TSourceEdge> source, TSinkItem item) {
+            return this.source.CreateSinkItem(sink,source,item);
         }
 
-        public override TEdgeTwo CreateEdgeTwo(IGraph<TItemOne, TEdgeOne> sender,
-            IGraph<TItemTwo, TEdgeTwo> target, TEdgeOne item) {
-            return source.CreateEdgeOne(sender,target,item);
+        public override TSourceEdge CreateSourceEdge(IGraph<TSinkItem, TSinkEdge> sink,
+            IGraph<TSourceItem, TSourceEdge> source, TSinkEdge item) {
+            return this.source.CreateSinkEdge(sink,source,item);
         }
-        public override void EdgeCreated(TEdgeOne one, TEdgeTwo two) {
-            source.EdgeCreated (one, two);
+        public override void EdgeCreated(TSinkEdge sinkEdge, TSourceEdge sourceEdge) {
+            source.EdgeCreated (sinkEdge, sourceEdge);
         }
-        public override void EdgeCreated(TEdgeTwo two, TEdgeOne one) {
-            source.EdgeCreated (two, one);
+        public override void EdgeCreated(TSourceEdge sourceEdge, TSinkEdge sinkEdge) {
+            source.EdgeCreated (sourceEdge, sinkEdge);
         }
-        public override void ChangeData(IGraph<TItemOne, TEdgeOne> sender, TItemOne item, object data) {
-            source.ChangeData (sender, item, data);
+        public override void ChangeData(IGraph<TSinkItem, TSinkEdge> sink, TSinkItem item, object data) {
+            source.ChangeData (sink, item, data);
         }
-        public override void ChangeData(IGraph<TItemTwo, TEdgeTwo> sender, TItemTwo item, object data) {
-            source.ChangeData(sender, item, data);
+        public override void ChangeData(IGraph<TSourceItem, TSourceEdge> source, TSourceItem item, object data) {
+            source.ChangeData(source, item, data);
         }
 
-        public override GraphModelAdapter<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> ReverseAdapter() {
+        public override GraphModelAdapter<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> ReverseAdapter() {
             return source;
         }
     }

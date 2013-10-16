@@ -19,19 +19,19 @@ using Limaki.Visuals;
 
 namespace Limada.VisualThings {
     public class VisualThingGraph : LiveGraphPair<IVisual, IThing, IVisualEdge, ILink> {
-        public VisualThingGraph( IGraph<IVisual, IVisualEdge> one, IThingGraph two):
-            this(one, two, new VisualThingAdapter()) { }
+        public VisualThingGraph( IGraph<IVisual, IVisualEdge> sink, IThingGraph source):
+            this(sink, source, new VisualThingAdapter()) { }
 
         public VisualThingGraph ()
             : this(null, null, new VisualThingAdapter()) {
-            this.One = new VisualGraph ();
-            this.Two = new ThingGraph ();
+            this.Sink = new VisualGraph ();
+            this.Source = new ThingGraph ();
         }
 
         public VisualThingGraph (
-            IGraph<IVisual, IVisualEdge> one, IThingGraph two,
+            IGraph<IVisual, IVisualEdge> sink, IThingGraph source,
             VisualThingAdapter adapter )
-            : base(one, two, adapter) {
+            : base(sink, source, adapter) {
         }
     }
 }

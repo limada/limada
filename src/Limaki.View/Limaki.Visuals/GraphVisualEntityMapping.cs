@@ -21,7 +21,7 @@ namespace Limaki.Visuals {
             if (source is IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) {
                 targetGraph = new LiveGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>(
                                   new VisualGraph(),
-                                  ((IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)source).Two,
+                                  ((IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)source).Source,
                                   new GraphItem2VisualAdapter().ReverseAdapter())
                               as IGraph<TItem, TEdge> ;
             } else  if (Next != null) {

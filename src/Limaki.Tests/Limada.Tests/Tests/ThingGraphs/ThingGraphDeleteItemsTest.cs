@@ -132,7 +132,7 @@ namespace Limada.Tests.ThingGraphs {
             // expand viewOne:
             Walker<IVisual, IVisualEdge> walker = new Walker<IVisual, IVisualEdge>(pairOne);
             foreach (LevelItem<IVisual> item in walker.DeepWalk(programming.one, 0)) {
-                viewOne.One.Add(item.Node);
+                viewOne.Sink.Add(item.Node);
             }
 
             ICollection<IVisualEdge> pairOneTwigs = GetTwigCollection<IVisual,IVisualEdge> (pairOne, java.one);

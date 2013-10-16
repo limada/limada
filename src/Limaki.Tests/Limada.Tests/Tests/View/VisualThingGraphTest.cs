@@ -95,7 +95,7 @@ namespace Limada.Tests.View {
             InitGraphTest("** ChangeData\t" +
               Data.One.ToString() + "\tto\t" + newData.ToString());
 
-            //Data.One.Data = newData;
+            //Data.Sink.Data = newData;
             Pair.OnChangeData(Data.One, newData);
             Assert.AreEqual(newData, Data.One.Data);
 

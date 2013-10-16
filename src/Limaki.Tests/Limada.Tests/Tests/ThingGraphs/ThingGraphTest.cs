@@ -180,7 +180,7 @@ namespace Limada.Tests.ThingGraphs {
                     new GraphItem2ThingAdapter()
                     );
 
-            pair.Mapper.ConvertTwoOne();
+            pair.Mapper.ConvertSourceSink();
 
             var testEntity = pair.Get(testThing);
             var testItem4 = pair.Get(testThing4);
@@ -203,7 +203,7 @@ namespace Limada.Tests.ThingGraphs {
 
             pair.Remove(testEntity); // Java
 
-            var walker1 = new Walker<IThing, ILink>(pair.Two);
+            var walker1 = new Walker<IThing, ILink>(pair.Source);
             foreach (var item in walker1.DeepWalk(testThing4, 0)) {
                 var thing = item.Node;
                 Assert.AreNotEqual(thing, testThing);

@@ -98,7 +98,7 @@ namespace Limada.Tests.Model {
             var scene = new Scene();
             scene.Graph = sourceGraph;
 
-            IThingGraph thingGraph = sourceGraph.Two as IThingGraph;
+            IThingGraph thingGraph = sourceGraph.Source as IThingGraph;
             
             IGraphSceneLayout<IVisual,IVisualEdge> layout = this.GetLayout();
 
@@ -180,7 +180,7 @@ namespace Limada.Tests.Model {
         [Test]
         public void TestDataContractSerializer() {
             var sourceGraph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>(1);
-            var thingGraph = sourceGraph.Two as IThingGraph;
+            var thingGraph = sourceGraph.Source as IThingGraph;
 
             var s = new MemoryStream();
 
@@ -238,7 +238,7 @@ namespace Limada.Tests.Model {
         [Test]
         public void TestThingSerializer() {
             var sourceGraph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>(10);
-            var thingGraph = sourceGraph.Two as IThingGraph;
+            var thingGraph = sourceGraph.Source as IThingGraph;
             
             var dataStream = new StreamWriter (new MemoryStream ());
             var streamContent = "This is the streamcontent";

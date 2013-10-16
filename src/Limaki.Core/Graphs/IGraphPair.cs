@@ -17,44 +17,44 @@ using System.Collections.Generic;
 
 namespace Limaki.Graphs {
     /// <summary>
-    /// A Graph that transforms domain-data #TItemTwo,TEdgeTwo# 
-    /// into view-data #TItemOne,TEdgeOne# (similar to Fowler's Transform View).
+    /// A Graph that transforms domain-data #TSourceItem,TSourceEdge# 
+    /// into view-data #TSinkItem,TSinkEdge# (similar to Fowler's Transform View).
     /// A GraphPair connects to Graphs of different types
     /// every operation concerns both graphs
-    /// eg. Add(TItemOne) result in
-    /// One.Add(TItemOne) and Two.Add(TItemTwo)
+    /// eg. Add(TSinkItem) result in
+    /// Sink.Add(TSinkItem) and Source.Add(TSourceItem)
     /// </summary>
-    /// <typeparam name="TItemOne"></typeparam>
-    /// <typeparam name="TItemTwo"></typeparam>
-    /// <typeparam name="TEdgeOne"></typeparam>
-    /// <typeparam name="TEdgeTwo"></typeparam>
-    public interface IGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> :
-        IGraph<TItemOne, TEdgeOne>, IFactoryListener<TItemOne>, IBaseGraphPair<TItemOne, TEdgeOne>
-        where TEdgeOne : IEdge<TItemOne>, TItemOne
-        where TEdgeTwo : IEdge<TItemTwo>, TItemTwo 
+    /// <typeparam name="TSinkItem"></typeparam>
+    /// <typeparam name="TSourceItem"></typeparam>
+    /// <typeparam name="TSinkEdge"></typeparam>
+    /// <typeparam name="TSourceEdge"></typeparam>
+    public interface IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> :
+        IGraph<TSinkItem, TSinkEdge>, IFactoryListener<TSinkItem>, ISinkGraph<TSinkItem, TSinkEdge>
+        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+        where TSourceEdge : IEdge<TSourceItem>, TSourceItem 
     {
 
-        //IGraph<TItemOne, TEdgeOne> One { get;set;}
-        IGraph<TItemTwo, TEdgeTwo> Two { get;set;}
-        IDictionary<TItemOne, TItemTwo> One2Two { get;set;}
-        IDictionary<TItemTwo, TItemOne> Two2One { get;set;}
-        GraphMapper<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> Mapper { get;set;}
+        //IGraph<TItemOne, TEdgeOne> Sink { get;set;}
+        IGraph<TSourceItem, TSourceEdge> Source { get;set;}
+        IDictionary<TSinkItem, TSourceItem> Sink2Source { get;set;}
+        IDictionary<TSourceItem, TSinkItem> Source2Sink { get;set;}
+        GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Mapper { get;set;}
 
-        TItemTwo Get ( TItemOne a );
-        TItemOne Get ( TItemTwo a );
+        TSourceItem Get ( TSinkItem sink );
+        TSinkItem Get ( TSourceItem source );
 
         
     }
 
     /// <summary>
-    /// this is to get the One-Graph of a Graphpair without
-    /// knowing the types of the Two-Graph
+    /// this is to get the SinkGraph of a Graphpair without
+    /// knowing the types of the SourceGraph
     /// </summary>
-    /// <typeparam name="TItemOne"></typeparam>
-    /// <typeparam name="TEdgeOne"></typeparam>
-    public interface IBaseGraphPair<TItemOne,TEdgeOne> :IGraph<TItemOne, TEdgeOne>
-    where TEdgeOne : IEdge<TItemOne>, TItemOne {
-        IGraph<TItemOne, TEdgeOne> One { get; }
-        IEnumerable<TEdgeOne> ComplementEdges(TItemOne item, IGraph<TItemOne, TEdgeOne> graph);
+    /// <typeparam name="TSinkItem"></typeparam>
+    /// <typeparam name="TSinkEdge"></typeparam>
+    public interface ISinkGraph<TSinkItem,TSinkEdge> :IGraph<TSinkItem, TSinkEdge>
+    where TSinkEdge : IEdge<TSinkItem>, TSinkItem {
+        IGraph<TSinkItem, TSinkEdge> Sink { get; }
+        IEnumerable<TSinkEdge> ComplementEdges(TSinkItem item, IGraph<TSinkItem, TSinkEdge> graph);
     }
 }

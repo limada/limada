@@ -93,12 +93,12 @@ namespace Limada.Tests.Model {
 
             MapperTester<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>
                 testerOne = new MapperTester<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>();
-            mapper.ConvertOneTwo();
+            mapper.ConvertSinkSource();
 
             testerOne.ProveConversion(source, target, mapper.Get);
 
             //mapper.Clear();
-            mapper.ConvertTwoOne();
+            mapper.ConvertSourceSink();
             MapperTester<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne>
                 testerTwo = new MapperTester<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne>();
 

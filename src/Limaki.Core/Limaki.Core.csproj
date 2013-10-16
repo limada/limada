@@ -218,13 +218,14 @@
     <Compile Include="Graphs\GraphChangeType.cs" />
     <Compile Include="Graphs\GraphCursor.cs" />
     <Compile Include="Graphs\GraphMapper.cs" />
-    <Compile Include="Graphs\GraphMapperOneTwo.cs" />
+    <Compile Include="Graphs\GraphSourceSinkMapper.cs" />
     <Compile Include="Graphs\GraphModelAdapter.cs" />
     <Compile Include="Graphs\GraphPair.cs" />
     <Compile Include="Graphs\GraphExtensions.cs" />
     <Compile Include="Graphs\GraphView.cs" />
     <Compile Include="Graphs\IEdge.cs" />
     <Compile Include="Graphs\IGraph.cs" />
+    <Compile Include="Data\IGraphContext.cs" />
     <Compile Include="Graphs\IGraphModelFactory.cs" />
     <Compile Include="Graphs\IGraphPair.cs" />
     <Compile Include="Graphs\LiveGraphPair.cs" />

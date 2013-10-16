@@ -145,7 +145,7 @@ namespace Limaki.Viewers {
                          
                          if (streamViewer != null) {
                              AttachViewer(streamViewer, graph, visual);
-                             LoadStreamThing(streamViewer, graph.Two as IThingGraph, streamThing);
+                             LoadStreamThing(streamViewer, graph.Source as IThingGraph, streamThing);
                          }
                      }
                  }

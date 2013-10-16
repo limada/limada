@@ -23,7 +23,7 @@ namespace Limaki.Tests.Graph.Model {
         public override IGraph<TItemOne, TEdgeOne> Graph {
             get {
                 if (_graph == null) {
-                    _graph = Mapper.Two;
+                    _graph = Mapper.Source;
                 }
                 return _graph;
 
@@ -72,7 +72,7 @@ namespace Limaki.Tests.Graph.Model {
             Factory.Populate();
 
             this.GraphPair = new LiveGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>(
-                        graphPair.Two, graphPair.One, 
+                        graphPair.Source, graphPair.Sink, 
                         Mapper.Adapter.ReverseAdapter()
                         );
             this.GraphPair.Mapper = this.Mapper.ReverseMapper ();

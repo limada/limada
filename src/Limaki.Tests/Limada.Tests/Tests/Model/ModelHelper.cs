@@ -24,14 +24,14 @@ namespace Limada.Tests.Model {
             mock.SceneFacade.ShowAllData();
             mock.Display.Execute();
 
-            var visualGraph = (mock.Scene.Graph as GraphView<IVisual, IVisualEdge>).One;
+            var visualGraph = (mock.Scene.Graph as GraphView<IVisual, IVisualEdge>).Sink;
             visualGraph.ChangeData = null;
             visualGraph.DataChanged = null;
             visualGraph.GraphChanged = null;
 
 
             var sourceGraph = new VisualThingGraph(visualGraph, new ThingGraph());
-            sourceGraph.Mapper.ConvertOneTwo();
+            sourceGraph.Mapper.ConvertSinkSource();
             return sourceGraph;
         }
     }

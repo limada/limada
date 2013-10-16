@@ -65,7 +65,7 @@ namespace Limaki.View.UI.GraphScene {
                 var graph = _graph;
                 var scene = this.Scene;
                 if (scene.Graph is GraphView<TItem, TEdge>) {
-                    _graph = ((GraphView<TItem, TEdge>) scene.Graph).Two;
+                    _graph = ((GraphView<TItem, TEdge>) scene.Graph).Source;
                 } else {
                     _graph = scene.Graph;
                 }
@@ -89,7 +89,7 @@ namespace Limaki.View.UI.GraphScene {
         protected IGraph<TItem, TEdge> View {
             get {
                 if (this.Scene.Graph is GraphView<TItem, TEdge>) {
-                    _view = ((GraphView<TItem, TEdge>) this.Scene.Graph).One;
+                    _view = ((GraphView<TItem, TEdge>) this.Scene.Graph).Sink;
                 } else if (_view == null) {
                     _view = new Graph<TItem, TEdge> ();
                 }
@@ -359,9 +359,9 @@ namespace Limaki.View.UI.GraphScene {
         }
 
         public virtual bool IsExpanded (GraphView<TItem, TEdge> graphView, TItem target) {
-            var walker = new Walker<TItem, TEdge> (graphView.Two);
+            var walker = new Walker<TItem, TEdge> (graphView.Source);
             foreach (var item in walker.ExpandWalk (target, 0)) {
-                if (!graphView.One.Contains (item.Node)) {
+                if (!graphView.Sink.Contains (item.Node)) {
                     return false;
                 }
             }

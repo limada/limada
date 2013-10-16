@@ -30,7 +30,7 @@ namespace Limaki.Tests.View.Visuals {
         protected override void CreateItems() {
             var factory = Registry.Pool.TryGetCreate<IVisualFactory> ();
             One = factory.CreateItem("One");
-            Two = factory.CreateItem("Two");
+            Two = factory.CreateItem("Source");
             Three = factory.CreateItem("Three");
             Aside = factory.CreateItem("Aside");
             Single = factory.CreateItem("Single");

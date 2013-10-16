@@ -30,8 +30,8 @@ namespace Limada.VisualThings {
         /// - VisualThingGraphPair
         /// if so, 
         /// creates a new GraphPair according to source
-        /// source.One = new VisualGraph
-        /// target.Two = source.Two (ThingGraph or IGraphPair<IGraphItem, IGraphEdge> as
+        /// source.Sink = new VisualGraph
+        /// target.Source = source.Source (ThingGraph or IGraphPair<IGraphItem, IGraphEdge> as
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
@@ -42,7 +42,7 @@ namespace Limada.VisualThings {
             if (source is VisualThingGraph) {
                 targetGraph = new VisualThingGraph(
                                   new VisualGraph(),
-                                  ((VisualThingGraph)source).Two as IThingGraph)
+                                  ((VisualThingGraph)source).Source as IThingGraph)
                               as IGraph<TItem, TEdge>;
 
             } else if (Next!=null){

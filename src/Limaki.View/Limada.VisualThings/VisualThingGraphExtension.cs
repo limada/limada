@@ -31,8 +31,8 @@ namespace Limada.VisualThings {
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
 
-            if (sourceGraph != null && (sourceGraph.Two is IThingGraph)) {
-                result = sourceGraph.Two as IThingGraph;
+            if (sourceGraph != null && (sourceGraph.Source is IThingGraph)) {
+                result = sourceGraph.Source as IThingGraph;
             }
             return result;
         }
@@ -42,7 +42,7 @@ namespace Limada.VisualThings {
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (sourceGraph != null) {
-                var thingGraph = sourceGraph.Two as IThingGraph;
+                var thingGraph = sourceGraph.Source as IThingGraph;
                 var adapter = sourceGraph.Mapper.Adapter as VisualThingAdapter;
                 result = adapter.ThingFactory;
             }
@@ -79,13 +79,13 @@ namespace Limada.VisualThings {
             var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (graph != null) {
-                if (graph.Two is FilteredGraph<IThing, ILink>) {
-                    graph.Two = ((FilteredGraph<IThing, ILink>)graph.Two).Source;
+                if (graph.Source is FilteredGraph<IThing, ILink>) {
+                    graph.Source = ((FilteredGraph<IThing, ILink>)graph.Source).Source;
                 } else {
-                    graph.Two = new SchemaThingGraph(graph.Two as IThingGraph);
+                    graph.Source = new SchemaThingGraph(graph.Source as IThingGraph);
                 }
-                result = graph.Two is FilteredGraph<IThing, ILink>;
-                graph.One.Clear();
+                result = graph.Source is FilteredGraph<IThing, ILink>;
+                graph.Sink.Clear();
             }
             return result;
         }

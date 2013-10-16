@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -21,197 +21,193 @@ namespace Limaki.Graphs {
     /// Converts one graph into an other graph
     /// in both directions (bidirectional)
     /// </summary>
-    /// <typeparam name="TItemOne"></typeparam>
-    /// <typeparam name="TItemTwo"></typeparam>
-    /// <typeparam name="TEdgeOne"></typeparam>
-    /// <typeparam name="TEdgeTwo"></typeparam>
-    public class GraphMapper<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>:
-        IFactoryListener<TItemOne>
-        where TEdgeOne : IEdge<TItemOne>, TItemOne
-        where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
+    /// <typeparam name="TSinkItem"></typeparam>
+    /// <typeparam name="TSourceItem"></typeparam>
+    /// <typeparam name="TSinkEdge"></typeparam>
+    /// <typeparam name="TSourceEdge"></typeparam>
+    public class GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>:
+        IFactoryListener<TSinkItem>
+        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+        where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
-        public GraphMapper(GraphModelAdapter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> adapter) {
+        public GraphMapper(GraphModelAdapter<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> adapter) {
             this.Adapter = adapter;    
         }
 
         public GraphMapper() {}
 
-        public GraphMapper( IGraph<TItemOne, TEdgeOne> graphA, IGraph<TItemTwo, TEdgeTwo> graphB,
-            GraphModelAdapter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> adapter)
+        public GraphMapper( IGraph<TSinkItem, TSinkEdge> sink, IGraph<TSourceItem, TSourceEdge> source,
+            GraphModelAdapter<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> adapter)
             : this() {
             this.Adapter = adapter;
-            this.One = graphA;
-            this.Two = graphB;
+            this.Sink = sink;
+            this.Source = source;
         }
 
-        private GraphModelAdapter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> _adapter = null;
-        public GraphModelAdapter<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> Adapter {
+        private GraphModelAdapter<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> _adapter = null;
+        public GraphModelAdapter<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Adapter {
             get { return _adapter; }
             set {
                 _adapter = value;
-                CreateItemOne = Adapter.CreateItemOne;
-                CreateEdgeOne = Adapter.CreateEdgeOne;
-                CreateItemTwo = Adapter.CreateItemTwo;
-                CreateEdgeTwo = Adapter.CreateEdgeTwo;
-                EdgeCreatedOneTwo = Adapter.EdgeCreated;
-                EdgeCreatedTwoOne = Adapter.EdgeCreated;
+                CreateSinkItem = Adapter.CreateSinkItem;
+                CreateSinkEdge = Adapter.CreateSinkEdge;
+                CreateSourceItem = Adapter.CreateSourceItem;
+                CreateSourceEdge = Adapter.CreateSourceEdge;
+                EdgeCreatedSinkSource = Adapter.EdgeCreated;
+                EdgeCreatedSourceSink = Adapter.EdgeCreated;
             }
         }
 
-        protected GraphMapper(GraphMapperOneTwo<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> oneTwoMapper,
-            GraphMapperOneTwo<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> twoOneMapper)
+        protected GraphMapper(GraphSourceSinkMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> sinkSourceMapper,
+            GraphSourceSinkMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> sourceSinkMapper)
             : this() {
-            this._oneTwoMapper = oneTwoMapper;
-            this._twoOneMapper = twoOneMapper;
+            this._sinkSourceMapper = sinkSourceMapper;
+            this._sourceSinkMapper = sourceSinkMapper;
         }
 
-        GraphMapperOneTwo<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> _oneTwoMapper = null;
-        GraphMapperOneTwo<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> OneTwoMapper {
+        GraphSourceSinkMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> _sinkSourceMapper = null;
+        GraphSourceSinkMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> SinkSourceMapper {
             get {
-                if (_oneTwoMapper == null) {
-                    _oneTwoMapper = new GraphMapperOneTwo<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>();
-                    _oneTwoMapper.CreateItem = this.CreateItemTwo;
-                    _oneTwoMapper.CreateEdge = this.CreateEdgeTwo;
-                    _oneTwoMapper.EdgeCreated = this.EdgeCreatedOneTwo;
-                    _oneTwoMapper.RegisterPair = this.RegisterPair;
+                if (_sinkSourceMapper == null) {
+                    _sinkSourceMapper = new GraphSourceSinkMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>();
+                    _sinkSourceMapper.CreateItem = this.CreateSourceItem;
+                    _sinkSourceMapper.CreateEdge = this.CreateSourceEdge;
+                    _sinkSourceMapper.EdgeCreated = this.EdgeCreatedSinkSource;
+                    _sinkSourceMapper.RegisterPair = this.RegisterPair;
                 }
-                return _oneTwoMapper;
+                return _sinkSourceMapper;
             }
         }
 
-        GraphMapperOneTwo<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> _twoOneMapper;
-        GraphMapperOneTwo<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> TwoOneMapper {
+        GraphSourceSinkMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> _sourceSinkMapper;
+        GraphSourceSinkMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> SourceSinkMapper {
             get {
-                if (_twoOneMapper == null) {
-                    _twoOneMapper = new GraphMapperOneTwo<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne>();
-                    _twoOneMapper.CreateItem = this.CreateItemOne;
-                    _twoOneMapper.CreateEdge = this.CreateEdgeOne;
-                    _twoOneMapper.EdgeCreated = this.EdgeCreatedTwoOne;
-                    _twoOneMapper.RegisterPair = this.RegisterPair;
+                if (_sourceSinkMapper == null) {
+                    _sourceSinkMapper = new GraphSourceSinkMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge>();
+                    _sourceSinkMapper.CreateItem = this.CreateSinkItem;
+                    _sourceSinkMapper.CreateEdge = this.CreateSinkEdge;
+                    _sourceSinkMapper.EdgeCreated = this.EdgeCreatedSourceSink;
+                    _sourceSinkMapper.RegisterPair = this.RegisterPair;
                 }
-                return _twoOneMapper;
+                return _sourceSinkMapper;
             }
         }
 
-        public virtual IGraph<TItemOne, TEdgeOne> One {
-            get { return OneTwoMapper.One; }
+        public virtual IGraph<TSinkItem, TSinkEdge> Sink {
+            get { return SinkSourceMapper.Source; }
             set {
-                OneTwoMapper.One = value;
-                TwoOneMapper.Two = value;
+                SinkSourceMapper.Source = value;
+                SourceSinkMapper.Sink = value;
             }
         }
 
-        public virtual IGraph<TItemTwo, TEdgeTwo> Two {
-            get { return OneTwoMapper.Two; }
+        public virtual IGraph<TSourceItem, TSourceEdge> Source {
+            get { return SinkSourceMapper.Sink; }
             set {
-                OneTwoMapper.Two = value;
-                TwoOneMapper.One = value;
+                SinkSourceMapper.Sink = value;
+                SourceSinkMapper.Source = value;
             }
         }
 
-        public IDictionary<TItemOne, TItemTwo> One2Two {
-            get { return OneTwoMapper.Dict; }
-            set { OneTwoMapper.Dict = value; }
+        public IDictionary<TSinkItem, TSourceItem> Sink2Source {
+            get { return SinkSourceMapper.Dict; }
+            set { SinkSourceMapper.Dict = value; }
         }
 
-        public virtual void RegisterPair( TItemOne a, TItemTwo b ) {
-            OneTwoMapper.Dict[a] = b;
-            TwoOneMapper.Dict[b] = a;
-            //if (!OneTwoMapper.Dict.ContainsKey(a))
-            //    OneTwoMapper.Dict.Add(a, b);
-            //if (!TwoOneMapper.Dict.ContainsKey(b))
-            //    TwoOneMapper.Dict.Add(b, a);
+        public virtual void RegisterPair( TSinkItem sink, TSourceItem source ) {
+            SinkSourceMapper.Dict[sink] = source;
+            SourceSinkMapper.Dict[source] = sink;
         }
 
-        public virtual void RegisterPair( TItemTwo b, TItemOne a ) {
+        public virtual void RegisterPair( TSourceItem b, TSinkItem a ) {
             RegisterPair(a, b);
         }
 
-        #region OneTwo
+        #region SinkSource
 
-        public IDictionary<TItemTwo,TItemOne> Two2One {
-            get { return TwoOneMapper.Dict; }
-            set { TwoOneMapper.Dict = value; }
+        public IDictionary<TSourceItem,TSinkItem> Source2Sink {
+            get { return SourceSinkMapper.Dict; }
+            set { SourceSinkMapper.Dict = value; }
         }
 
-        public virtual TItemTwo TryGetCreate( TItemOne a ) {
-            return OneTwoMapper.TryGetCreate(a);
+        public virtual TSourceItem TryGetCreate( TSinkItem a ) {
+            return SinkSourceMapper.TryGetCreate(a);
         }
 
-        public virtual void ConvertOneTwo() {
-            OneTwoMapper.Convert();
+        public virtual void ConvertSinkSource() {
+            SinkSourceMapper.Convert();
         }
 
-        public virtual TItemTwo Get( TItemOne a ) {
-            TItemTwo result = default(TItemTwo);
-            if (a == null)
+        public virtual TSourceItem Get( TSinkItem sink ) {
+            var result = default(TSourceItem);
+            if (sink == null)
                 return result;
-            OneTwoMapper.Dict.TryGetValue(a, out result);
+            SinkSourceMapper.Dict.TryGetValue(sink, out result);
             return result;
 
         }
         #endregion
 
-        #region TwoOne
+        #region SourceSink
 
-        public virtual TItemOne TryGetCreate( TItemTwo b ) {
-            return TwoOneMapper.TryGetCreate(b);
+        public virtual TSinkItem TryGetCreate( TSourceItem b ) {
+            return SourceSinkMapper.TryGetCreate(b);
         }
 
-        public virtual TItemOne Get( TItemTwo b ) {
-            TItemOne result = default(TItemOne);
+        public virtual TSinkItem Get( TSourceItem b ) {
+            TSinkItem result = default(TSinkItem);
             if (b == null)
                 return result;
-            TwoOneMapper.Dict.TryGetValue(b, out result);
+            SourceSinkMapper.Dict.TryGetValue(b, out result);
             return result;
 
         }
-        public virtual void ConvertTwoOne() {
-            TwoOneMapper.Convert();
+        public virtual void ConvertSourceSink() {
+            SourceSinkMapper.Convert();
         }
 
         public virtual void Clear() {
-            OneTwoMapper.Dict = null;
-            OneTwoMapper.Done = null;
-            TwoOneMapper.Dict = null;
-            TwoOneMapper.Done = null;
+            SinkSourceMapper.Dict = null;
+            SinkSourceMapper.Done = null;
+            SourceSinkMapper.Dict = null;
+            SourceSinkMapper.Done = null;
         }
 
         #endregion
 
         #region Factory-Methods
 
-        public Func<IGraph<TItemOne, TEdgeOne>, IGraph<TItemTwo, TEdgeTwo>, TItemOne, TItemTwo> 
-            CreateItemTwo = null;
-        public Func<IGraph<TItemOne, TEdgeOne>, IGraph<TItemTwo, TEdgeTwo>, TEdgeOne, TEdgeTwo> 
-            CreateEdgeTwo = null;
-        public Action<TEdgeOne, TEdgeTwo> EdgeCreatedOneTwo=null;
+        public Func<IGraph<TSinkItem, TSinkEdge>, IGraph<TSourceItem, TSourceEdge>, TSinkItem, TSourceItem> 
+            CreateSourceItem = null;
+        public Func<IGraph<TSinkItem, TSinkEdge>, IGraph<TSourceItem, TSourceEdge>, TSinkEdge, TSourceEdge> 
+            CreateSourceEdge = null;
+        public Action<TSinkEdge, TSourceEdge> EdgeCreatedSinkSource=null;
 
-        public Func<IGraph<TItemTwo, TEdgeTwo>, IGraph<TItemOne, TEdgeOne>, TItemTwo, TItemOne> 
-            CreateItemOne = null;
-        public Func<IGraph<TItemTwo, TEdgeTwo>, IGraph<TItemOne, TEdgeOne>, TEdgeTwo, TEdgeOne> 
-            CreateEdgeOne = null;
-        public Action<TEdgeTwo,TEdgeOne> EdgeCreatedTwoOne=null;
+        public Func<IGraph<TSourceItem, TSourceEdge>, IGraph<TSinkItem, TSinkEdge>, TSourceItem, TSinkItem> 
+            CreateSinkItem = null;
+        public Func<IGraph<TSourceItem, TSourceEdge>, IGraph<TSinkItem, TSinkEdge>, TSourceEdge, TSinkEdge> 
+            CreateSinkEdge = null;
+        public Action<TSourceEdge,TSinkEdge> EdgeCreatedSourceSink=null;
 
         #endregion
 
         #region IFactoryListener<TItemOne> Member
-        public virtual Action<TItemOne> ItemCreated {
-            get { return TwoOneMapper.ItemCreated; }
-            set { TwoOneMapper.ItemCreated = value; }
+        public virtual Action<TSinkItem> ItemCreated {
+            get { return SourceSinkMapper.ItemCreated; }
+            set { SourceSinkMapper.ItemCreated = value; }
         }
 
         #endregion
 
-        public GraphMapper<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> ReverseMapper() {
-            GraphMapper<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> result =
-                new GraphMapper<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne>(
-                this.TwoOneMapper, 
-                this.OneTwoMapper);
+        public GraphMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> ReverseMapper() {
+            GraphMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> result =
+                new GraphMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge>(
+                this.SourceSinkMapper, 
+                this.SinkSourceMapper);
 
             result.Adapter = this.Adapter.ReverseAdapter ();
-            result.One = this.Two;
-            result.Two = this.One;
+            result.Sink = this.Source;
+            result.Source = this.Sink;
 
             return result;
         }
