@@ -153,7 +153,7 @@ namespace Xwt.Html5.TestApp {
             //testData.Data.AddDensity = true;
             scene = examples.GetScene (testData.Data);
 
-            var view = scene.Graph as GraphView<IVisual, IVisualEdge>;
+            var view = scene.Graph as SubGraph<IVisual, IVisualEdge>;
             var graph = view.Source;
 
             foreach (var item in graph.FindRoots (null)) {

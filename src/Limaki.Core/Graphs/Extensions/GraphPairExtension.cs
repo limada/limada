@@ -159,13 +159,13 @@ namespace Limaki.Graphs.Extensions {
 
         }
 
-        public static void PopulateWithRoots<TItem, TEdge, TSourceItem, TSourceEdge>(this GraphView<TItem, TEdge> graphView)
+        public static void PopulateWithRoots<TItem, TEdge, TSourceItem, TSourceEdge>(this SubGraph<TItem, TEdge> subGraph)
             where TEdge : IEdge<TItem>, TItem
             where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
-            IGraphPair<TItem, TSourceItem, TEdge, TSourceEdge> source = graphView.Source<TItem, TEdge, TSourceItem, TSourceEdge>();
+            IGraphPair<TItem, TSourceItem, TEdge, TSourceEdge> source = subGraph.Source<TItem, TEdge, TSourceItem, TSourceEdge>();
             if (source != null) {
                 foreach (var item in source.Source.FindRoots<TSourceItem, TSourceEdge>(default(TSourceItem))) {
-                    graphView.Sink.Add(source.Get(item));
+                    subGraph.Sink.Add(source.Get(item));
                 }
             }
 

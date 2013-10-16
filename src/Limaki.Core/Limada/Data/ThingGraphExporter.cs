@@ -26,7 +26,7 @@ using Limaki.Model.Content.IO;
 namespace Limada.Data {
     /// <summary>
     /// returns all things of source
-    /// source can be a subgraph (a GraphView)
+    /// source can be a subgraph (a SubGraph)
     /// </summary>
     public class ThingGraphExporter : ISink<IGraph<IThing, ILink>, IThingGraph>, IProgress {
 

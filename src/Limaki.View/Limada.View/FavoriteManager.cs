@@ -129,7 +129,7 @@ namespace Limada.View {
             display.Info = homeInfo;
             
 
-            var view = display.Data.Graph as GraphView<IVisual, IVisualEdge>;
+            var view = display.Data.Graph as SubGraph<IVisual, IVisualEdge>;
 
             var graph = view.Source<IVisual, IVisualEdge,IThing, ILink>() as VisualThingGraph;
             IThingGraph thingGraph = null;

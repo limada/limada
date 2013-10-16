@@ -80,8 +80,8 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
             ReportDetail("Reading");
             this.Tickers.Start();
             var schemaGraph = this.Graph as SchemaThingGraph;
-            var view = new GraphView<IThing, ILink>(this.Graph, new Graph<IThing, ILink>());
-            var facade = new GraphViewFacade<IThing, ILink>(view);
+            var view = new SubGraph<IThing, ILink>(this.Graph, new Graph<IThing, ILink>());
+            var facade = new SubGraphWorker<IThing, ILink>(view);
 
             view.Add(root);
 

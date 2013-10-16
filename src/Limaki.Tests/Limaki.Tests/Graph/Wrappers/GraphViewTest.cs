@@ -27,8 +27,8 @@ using Limaki.Tests.Graph.Model;
 namespace Limaki.Tests.Graph.Wrappers {
     public class GraphViewTest: DomainTest {
         /// <summary>
-        /// this tests a semantic error in GraphView
-        /// GraphView should only contain edges contained in view
+        /// this tests a semantic error in SubGraph
+        /// SubGraph should only contain edges contained in view
         /// under all cirumstances
         /// but e.g. Graph.Fork breaks this rule
         /// </summary>
@@ -36,7 +36,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         public  void EdgeNotInView() {
             IGraph<IGraphEntity, IGraphEdge> data = new Graph<IGraphEntity, IGraphEdge> ();
             IGraph<IGraphEntity, IGraphEdge> view = new Graph<IGraphEntity, IGraphEdge>();
-            GraphView<IGraphEntity, IGraphEdge> graphView = new GraphView<IGraphEntity, IGraphEdge> (data,view);
+            SubGraph<IGraphEntity, IGraphEdge> subGraph = new SubGraph<IGraphEntity, IGraphEdge> (data,view);
             
 
             IGraphEntity one = new GraphEntity<string> ("1");
@@ -54,15 +54,15 @@ namespace Limaki.Tests.Graph.Wrappers {
             Assert.IsTrue(data.Contains(link), "view has to contain link");
             Assert.IsTrue(data.Contains(linklink), "view has to contain linklink");
             Assert.IsFalse (view.Contains (linklink),"view must not contain linklink");
-            Assert.IsFalse(graphView.Contains(linklink), "graphview must not contain linklink");
+            Assert.IsFalse(subGraph.Contains(linklink), "graphview must not contain linklink");
             view.Add (linklink);
             view.Remove (link);
-            Assert.IsFalse(graphView.Contains(linklink), "graphview must not contain linklink");
+            Assert.IsFalse(subGraph.Contains(linklink), "graphview must not contain linklink");
             view.Add (link);
 
-            IGraph<IGraphEntity, IGraphEdge> graph = graphView;
+            IGraph<IGraphEntity, IGraphEdge> graph = subGraph;
 
-            foreach (IGraphEdge edge in graphView.Fork(three)) {
+            foreach (IGraphEdge edge in subGraph.Fork(three)) {
                 Assert.IsFalse(edge.Equals(linklink), "graphview must not contain linklink");
             }
 
@@ -80,9 +80,9 @@ namespace Limaki.Tests.Graph.Wrappers {
         public void GraphViewAsGraphPairTest() {
             var data = new Graph<IGraphEntity, IGraphEdge>();
             var view = new Graph<IGraphEntity, IGraphEdge>();
-            var graphView = new GraphView<IGraphEntity, IGraphEdge>(data, view);
+            var graphView = new SubGraph<IGraphEntity, IGraphEdge>(data, view);
 
-            var graphView2 = new GraphView<IGraphEntity, IGraphEdge>(graphView, view);
+            var graphView2 = new SubGraph<IGraphEntity, IGraphEdge>(graphView, view);
 
             var result = graphView.RootSource();
             Assert.AreSame (graphView, result);

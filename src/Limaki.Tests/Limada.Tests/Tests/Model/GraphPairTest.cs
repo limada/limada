@@ -90,9 +90,9 @@ namespace Limada.Tests.Model {
                 MakeGraphPair (new BinaryGraphFactory (), new ThingGraph ());
 
             var view = new Graph<IGraphEntity, IGraphEdge>();
-            var graphView = new GraphView<IGraphEntity, IGraphEdge>(data, view);
+            var graphView = new SubGraph<IGraphEntity, IGraphEdge>(data, view);
 
-            var graphView2 = new GraphView<IGraphEntity, IGraphEdge>(graphView, view);
+            var graphView2 = new SubGraph<IGraphEntity, IGraphEdge>(graphView, view);
 
             var result = graphView.RootSource();
             Assert.AreSame(graphView, result);
@@ -116,8 +116,8 @@ namespace Limada.Tests.Model {
             var data =
                 MakeGraphPair (new BinaryGraphFactory (), new ThingGraph ());
 
-            var graphView1 = new GraphView<IGraphEntity, IGraphEdge> (data, new Graph<IGraphEntity, IGraphEdge> ());
-            var graphView2 = new GraphView<IGraphEntity, IGraphEdge>(data, new Graph<IGraphEntity, IGraphEdge>());
+            var graphView1 = new SubGraph<IGraphEntity, IGraphEdge> (data, new Graph<IGraphEntity, IGraphEdge> ());
+            var graphView2 = new SubGraph<IGraphEntity, IGraphEdge>(data, new Graph<IGraphEntity, IGraphEdge>());
 
             
 
@@ -131,7 +131,7 @@ namespace Limada.Tests.Model {
                 new Graph<IGraphEntity, IGraphEdge>(), 
                 data.Source,new GraphItem2ThingAdapter());
 
-            graphView2 = new GraphView<IGraphEntity, IGraphEdge>(data, new Graph<IGraphEntity, IGraphEdge>());
+            graphView2 = new SubGraph<IGraphEntity, IGraphEdge>(data, new Graph<IGraphEntity, IGraphEdge>());
             
             foreach (IGraphEntity ping in graphView1.Source) {
                 IGraphEntity back = graphView1.LookUp<IGraphEntity, IGraphEdge,IThing, ILink>(graphView2, ping);

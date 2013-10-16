@@ -62,9 +62,9 @@ namespace Limaki.Playground.View {
 
             var scene2 = SceneWithTestData(exampleNr);
 
-            var view = scene.Graph as GraphView<IVisual, IVisualEdge>;
+            var view = scene.Graph as SubGraph<IVisual, IVisualEdge>;
             var graph = view.Source;
-            var graph2 = (scene2.Graph as GraphView<IVisual, IVisualEdge>).Source;
+            var graph2 = (scene2.Graph as SubGraph<IVisual, IVisualEdge>).Source;
             graph2.Where(e => e is Visual<string>).ForEach(e => { e.Data += "1"; });
 
             var root = graph.FindRoots(null).First();
@@ -128,7 +128,7 @@ namespace Limaki.Playground.View {
             reportExtent(visibleItems);
 
 
-            IEnumerable<IVisual> itemsToPlace = Walker.Create((scene.Graph as GraphView<IVisual, IVisualEdge>).Source)
+            IEnumerable<IVisual> itemsToPlace = Walker.Create((scene.Graph as SubGraph<IVisual, IVisualEdge>).Source)
                 .DeepWalk(scene.Focused, 0)
                 .Select(l => l.Node)
                 .ToArray();
@@ -210,7 +210,7 @@ namespace Limaki.Playground.View {
             reportExtent(visibleItems);
 
 
-            IEnumerable<IVisual> itemsToPlace = Walker.Create((scene.Graph as GraphView<IVisual, IVisualEdge>).Source)
+            IEnumerable<IVisual> itemsToPlace = Walker.Create((scene.Graph as SubGraph<IVisual, IVisualEdge>).Source)
                 .DeepWalk(scene.Focused, 0)
                 .Select(l => l.Node)
                 .ToArray();
@@ -279,10 +279,10 @@ namespace Limaki.Playground.View {
             };
 
             var scene = SceneWithTestData(0);
-            var graphView = scene.Graph as GraphView<IVisual, IVisualEdge>;
+            var graphView = scene.Graph as SubGraph<IVisual, IVisualEdge>;
             var graph = graphView.Source;
             for (int i = 1; i < 6; i++)
-                (SceneWithTestData(i).Graph as GraphView<IVisual, IVisualEdge>)
+                (SceneWithTestData(i).Graph as SubGraph<IVisual, IVisualEdge>)
                     .Source.ForEach(item => graph.Add(item));
 
             var worker = new GraphSceneContextVisualizer<IVisual, IVisualEdge>();
@@ -343,9 +343,9 @@ namespace Limaki.Playground.View {
             var roots = new IVisual[] {worker.Scene.Focused};
             var aligner = new Aligner<IVisual, IVisualEdge>(worker.Scene, worker.Layout);
             var deep = false;
-            var graphView = worker.Scene.Graph as GraphView<IVisual, IVisualEdge>;
+            var graphView = worker.Scene.Graph as SubGraph<IVisual, IVisualEdge>;
 
-            var affected = new GraphViewFacade<IVisual, IVisualEdge>
+            var affected = new SubGraphWorker<IVisual, IVisualEdge>
                     (graphView).Expand(roots, deep);
 
            

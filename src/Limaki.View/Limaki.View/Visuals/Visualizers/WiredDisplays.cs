@@ -28,7 +28,7 @@ namespace Limaki.View.Visuals.Visualizers {
     public class WiredDisplays {
         /// <summary>
         /// makes a new Scene in sourceDisplay
-        /// with a GraphView which Data is same as targetDisplay.Graph(View).Data
+        /// with a SubGraph which Source is same as targetDisplay.Graph(View).Source
         /// copies Properites
         /// crosslinks the sourceDisplay and targetDisplay graphs with each other
         /// </summary>
@@ -60,15 +60,15 @@ namespace Limaki.View.Visuals.Visualizers {
 
         public IGraph<IVisual, IVisualEdge> CreateTargetGraph(IGraph<IVisual, IVisualEdge> source) {
             IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge> sourceGraph =
-                source as GraphView<IVisual, IVisualEdge>;
+                source as SubGraph<IVisual, IVisualEdge>;
             if (sourceGraph != null) {
                 sourceGraph = sourceGraph.RootSource();
 
-                var data = sourceGraph.Source;
-                var result = GraphMapping.Mapping.CloneGraphPair<IVisual, IVisualEdge>(data);
+                var so = sourceGraph.Source;
+                var result = GraphMapping.Mapping.CloneGraphPair<IVisual, IVisualEdge>(so);
 
                 if (result != null) {
-                    return new GraphView<IVisual, IVisualEdge>(result, new VisualGraph());
+                    return new SubGraph<IVisual, IVisualEdge>(result, new VisualGraph());
                 }
             }
             return null;

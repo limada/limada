@@ -161,8 +161,8 @@ namespace Limada.Tests.Model {
             var scene = new Scene();
 
             scene.Graph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>();
-            if (!(scene.Graph is GraphView<IVisual,IVisualEdge>)){
-                scene.Graph = new GraphView<IVisual, IVisualEdge> (new VisualGraph (), scene.Graph);
+            if (!(scene.Graph is SubGraph<IVisual,IVisualEdge>)){
+                scene.Graph = new SubGraph<IVisual, IVisualEdge> (new VisualGraph (), scene.Graph);
             }
 
             var layout = this.GetLayout();
@@ -318,8 +318,8 @@ namespace Limada.Tests.Model {
             var scene = new Scene();
 
             scene.Graph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>();
-            if (!(scene.Graph is GraphView<IVisual, IVisualEdge>)) {
-                scene.Graph = new GraphView<IVisual, IVisualEdge>(scene.Graph,new VisualGraph());
+            if (!(scene.Graph is SubGraph<IVisual, IVisualEdge>)) {
+                scene.Graph = new SubGraph<IVisual, IVisualEdge>(scene.Graph,new VisualGraph());
             }
 
             var layout = this.GetLayout();

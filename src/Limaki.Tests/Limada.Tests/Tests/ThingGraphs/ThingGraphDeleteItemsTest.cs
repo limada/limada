@@ -124,8 +124,8 @@ namespace Limada.Tests.ThingGraphs {
             IGraphPair<IVisual, IThing, IVisualEdge, ILink> pairOne =
                 new VisualThingGraph(new Limaki.Visuals.VisualGraph(), dataSource);
 
-            GraphView<IVisual, IVisualEdge> viewOne =
-                new GraphView<IVisual, IVisualEdge>(pairOne, new Limaki.Visuals.VisualGraph());
+            SubGraph<IVisual, IVisualEdge> viewOne =
+                new SubGraph<IVisual, IVisualEdge>(pairOne, new Limaki.Visuals.VisualGraph());
 
             programming.one = pairOne.Get(programming.thing); // Programming
 
@@ -141,8 +141,8 @@ namespace Limada.Tests.ThingGraphs {
             IGraphPair<IVisual, IThing, IVisualEdge, ILink> pairTwo =
                 new VisualThingGraph(new Limaki.Visuals.VisualGraph(), dataSource);
 
-            GraphView<IVisual, IVisualEdge> viewTwo =
-                new GraphView<IVisual, IVisualEdge>(pairTwo, new Limaki.Visuals.VisualGraph());
+            SubGraph<IVisual, IVisualEdge> viewTwo =
+                new SubGraph<IVisual, IVisualEdge>(pairTwo, new Limaki.Visuals.VisualGraph());
 
             java.one = pairOne.Get(java.thing);
             java.two = pairTwo.Get(java.thing);

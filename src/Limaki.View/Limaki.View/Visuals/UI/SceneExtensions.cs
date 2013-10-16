@@ -133,13 +133,13 @@ namespace Limaki.View.Visuals.UI {
 
         public static void CleanScene(this IGraphScene<IVisual, IVisualEdge> scene) {
             if (scene != null) {
-                var graphView = scene.Graph as GraphView<IVisual, IVisualEdge>;
+                var graphView = scene.Graph as SubGraph<IVisual, IVisualEdge>;
                 if (graphView!=null) {
                     graphView.Sink.Clear ();
                     scene.ClearView ();
                     Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(scene);
                 } else {
-                    throw new ArgumentException ("scene.Graph must be a GraphView");
+                    throw new ArgumentException ("scene.Graph must be a SubGraph");
                 }
             }
         }

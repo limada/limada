@@ -46,7 +46,7 @@ namespace Limada.Usecases {
                 schemaGraph = new SchemaThingGraph(thingGraph);
             }
 
-            return new GraphView<IVisual, IVisualEdge>(new VisualThingGraph(new VisualGraph(), schemaGraph), new VisualGraph());
+            return new SubGraph<IVisual, IVisualEdge>(new VisualThingGraph(new VisualGraph(), schemaGraph), new VisualGraph());
         }
 
         public virtual IGraphScene<IVisual, IVisualEdge> CreateScene (IThingGraph thingGraph) {
@@ -68,12 +68,12 @@ namespace Limada.Usecases {
         /// </summary>
         /// <param name="scene"></param>
         /// <returns></returns>
-        public virtual GraphView<IThing, ILink> CreateThingsView (IGraphScene<IVisual, IVisualEdge> scene) {
+        public virtual SubGraph<IThing, ILink> CreateThingsView (IGraphScene<IVisual, IVisualEdge> scene) {
             var graph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
             if (graph == null)
                 return null;
 
-            var thingView = new GraphView<IThing, ILink>(graph.Source as IThingGraph, new ThingGraph());
+            var thingView = new SubGraph<IThing, ILink>(graph.Source as IThingGraph, new ThingGraph());
             thingView.AddRange(scene.Elements.Select(v => graph.Get(v)));
 
             return thingView;

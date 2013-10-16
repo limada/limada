@@ -153,9 +153,9 @@ namespace Limaki.WPF008 {
             layout.Dimension = Dimension.Y;
 
             var view = 
-            	new GraphView<IVisual,IVisualEdge>(graph,new VisualGraph());
+            	new SubGraph<IVisual,IVisualEdge>(graph,new VisualGraph());
             
-            var fac = new GraphViewFacade<IVisual, IVisualEdge>(view);
+            var fac = new SubGraphWorker<IVisual, IVisualEdge>(view);
             
             fac.Expand(graph,false);
             
@@ -185,9 +185,9 @@ namespace Limaki.WPF008 {
                 var graph = new WidgetThingGraph(new WidgetGraph(), thingGraph);
 
                 var view =
-                    new GraphView<IWidget, IEdgeWidget>(graph, new WidgetGraph());
+                    new SubGraph<IWidget, IEdgeWidget>(graph, new WidgetGraph());
 
-                var fac = new GraphViewFacade<IWidget, IEdgeWidget>(view);
+                var fac = new SubGraphWorker<IWidget, IEdgeWidget>(view);
 
                 fac.Expand(graph, false);
 

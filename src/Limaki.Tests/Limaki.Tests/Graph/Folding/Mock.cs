@@ -36,7 +36,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             get {
                 if (_scene == null) {
                     var g = this.Factory.Scene.Graph;
-                    g = new GraphView<IVisual, IVisualEdge>(
+                    g = new SubGraph<IVisual, IVisualEdge>(
                         ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)this.Factory).GraphPair,
                         new VisualGraph());
                     _scene = new Scene();

@@ -71,7 +71,7 @@ namespace Limaki.Tests.View {
                 data = factory.Graph;
             }
 
-            scene.Graph = new GraphView<IVisual, IVisualEdge> (data, new VisualGraph ());
+            scene.Graph = new SubGraph<IVisual, IVisualEdge> (data, new VisualGraph ());
             return scene;
         }
     }

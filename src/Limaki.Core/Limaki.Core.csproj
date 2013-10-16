@@ -203,12 +203,12 @@
     <Compile Include="Graphs\EdgeComparer.cs" />
     <Compile Include="Graphs\Extensions\GraphMapping.cs" />
     <Compile Include="Graphs\Extensions\GraphPairExtension.cs" />
-    <Compile Include="Graphs\Extensions\GraphViewFacade.cs" />
+    <Compile Include="Graphs\Extensions\SubGraphWorker.cs" />
     <Compile Include="Graphs\Extensions\IGraphMapping.cs" />
     <Compile Include="Graphs\Extensions\IMarkerFacade.cs" />
     <Compile Include="Graphs\Extensions\LevelItem.cs" />
     <Compile Include="Graphs\Extensions\MarkerFacade.cs" />
-    <Compile Include="Graphs\Extensions\ViewBuilder.cs" />
+    <Compile Include="Graphs\Extensions\WalkerWorker.cs" />
     <Compile Include="Graphs\Extensions\Walker.cs" />
     <Compile Include="Graphs\Extensions\WalkerBase.cs" />
     <Compile Include="Graphs\Extensions\Walker_.cs" />
@@ -222,7 +222,7 @@
     <Compile Include="Graphs\GraphModelAdapter.cs" />
     <Compile Include="Graphs\GraphPair.cs" />
     <Compile Include="Graphs\GraphExtensions.cs" />
-    <Compile Include="Graphs\GraphView.cs" />
+    <Compile Include="Graphs\SubGraph.cs" />
     <Compile Include="Graphs\IEdge.cs" />
     <Compile Include="Graphs\IGraph.cs" />
     <Compile Include="Data\IGraphContext.cs" />
