@@ -29,5 +29,10 @@ namespace Limaki.Common.Linqish {
             foreach (var item in items)
                 yield return item;
         }
+
+        public static IEnumerable<T> OnEach<T> (this IEnumerable<T> items, Func<T, T> func) {
+            foreach (var item in items)
+                yield return func(item);
+        }
     }
 }
