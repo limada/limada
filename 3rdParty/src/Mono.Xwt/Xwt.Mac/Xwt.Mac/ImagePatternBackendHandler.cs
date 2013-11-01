@@ -24,18 +24,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Drawing;
 using Xwt.Backends;
 using MonoMac.AppKit;
+using MonoMac.CoreGraphics;
 
 namespace Xwt.Mac
 {
-	public class ImagePatternBackendHandler: IImagePatternBackendHandler
+	public class MacImagePatternBackendHandler: ImagePatternBackendHandler
 	{
-		public object Create (object img)
+		public override object Create (ImageDescription img)
 		{
-			NSImage nimg = (NSImage) img;
-			return NSColor.FromPatternImage (nimg);
+			NSImage nimg = img.ToNSImage ();
+			return new ImagePatternInfo () {
+				Image = nimg,
+				Alpha = img.Alpha
+			};
 		}
+
+		public override void Dispose (object img)
+		{
+		}
+	}
+
+	class ImagePatternInfo
+	{
+		public NSImage Image;
+		public double Alpha;
 	}
 }
 

@@ -28,8 +28,9 @@ using System;
 using Xwt.Backends;
 using MonoMac.AppKit;
 using MonoMac.Foundation;
-using Xwt.Engine;
+
 using MonoMac.ObjCRuntime;
+using Xwt.Drawing;
 
 namespace Xwt.Mac
 {
@@ -42,8 +43,7 @@ namespace Xwt.Mac
 		#region IButtonBackend implementation
 		public override void Initialize ()
 		{
-			ViewObject = new MacButton (EventSink);
-			Widget.SizeToFit ();
+			ViewObject = new MacButton (EventSink, ApplicationContext);
 		}
 
 		public void EnableEvent (Xwt.Backends.ButtonEvent ev)
@@ -56,34 +56,44 @@ namespace Xwt.Mac
 			((MacButton)Widget).DisableEvent (ev);
 		}
 		
-		public void SetContent (string label, object imageBackend, ContentPosition imagePosition)
+		public void SetContent (string label, bool useMnemonic, ImageDescription image, ContentPosition imagePosition)
 		{
+			switch (((Button)Frontend).Type) {
+			case ButtonType.Help:
+			case ButtonType.Disclosure:
+				return;
+			}
+			if (useMnemonic)
+				label = label.RemoveMnemonic ();
 			Widget.Title = label ?? "";
 			if (string.IsNullOrEmpty (label))
 				imagePosition = ContentPosition.Center;
-			if (imageBackend != null) {
-				Widget.Image = (NSImage)imageBackend;
+			if (!image.IsNull) {
+				var img = image.ToNSImage ();
+				Widget.Image = (NSImage)img;
+				Widget.Cell.ImageScale = NSImageScale.None;
 				switch (imagePosition) {
 				case ContentPosition.Bottom: Widget.ImagePosition = NSCellImagePosition.ImageBelow; break;
 				case ContentPosition.Left: Widget.ImagePosition = NSCellImagePosition.ImageLeft; break;
 				case ContentPosition.Right: Widget.ImagePosition = NSCellImagePosition.ImageRight; break;
 				case ContentPosition.Top: Widget.ImagePosition = NSCellImagePosition.ImageAbove; break;
-				case ContentPosition.Center: Widget.ImagePosition = NSCellImagePosition.ImageOverlaps; break;
+				case ContentPosition.Center: Widget.ImagePosition = string.IsNullOrEmpty (label) ? NSCellImagePosition.ImageOnly : NSCellImagePosition.ImageOverlaps; break;
 				}
 			}
-			Widget.SizeToFit ();
+			ResetFittingSize ();
 		}
 		
 		public void SetButtonStyle (ButtonStyle style)
 		{
 			switch (style) {
 			case ButtonStyle.Normal:
-				Widget.BezelStyle = NSBezelStyle.RoundRect;
+				Widget.BezelStyle = NSBezelStyle.Rounded;
 				Widget.SetButtonType (NSButtonType.MomentaryPushIn);
 				Messaging.void_objc_msgSend_bool (Widget.Handle, selSetShowsBorderOnlyWhileMouseInside.Handle, false);
 				break;
+			case ButtonStyle.Borderless:
 			case ButtonStyle.Flat:
-				Widget.BezelStyle = NSBezelStyle.RoundRect;
+				Widget.BezelStyle = NSBezelStyle.ShadowlessSquare;
 				Messaging.void_objc_msgSend_bool (Widget.Handle, selSetShowsBorderOnlyWhileMouseInside.Handle, true);
 				break;
 			}
@@ -94,40 +104,67 @@ namespace Xwt.Mac
 		public void SetButtonType (ButtonType type)
 		{
 			switch (type) {
-			case ButtonType.Disclosure: Widget.BezelStyle = NSBezelStyle.Disclosure; break;
-			default: Widget.BezelStyle = NSBezelStyle.RoundRect; break;
+			case ButtonType.Disclosure:
+				Widget.BezelStyle = NSBezelStyle.Disclosure;
+				Widget.Title = "";
+				break;
+			case ButtonType.Help:
+				Widget.BezelStyle = NSBezelStyle.HelpButton;
+				Widget.Title = "";
+				break;
+			default:
+				Widget.BezelStyle = NSBezelStyle.Rounded;
+				break;
 			}
 		}
 		
 		#endregion
 	}
 	
-	public class MacButton: NSButton, IViewObject
+	class MacButton: NSButton, IViewObject
 	{
+		//
+		// This is necessary since the Activated event for NSControl in AppKit does 
+		// not take a list of handlers, instead it supports only one handler.
+		//
+		// This event is used by the RadioButton backend to implement radio groups
+		//
+		internal event Action <MacButton> ActivatedInternal;
+
 		public MacButton (IntPtr p): base (p)
 		{
 		}
 		
-		public MacButton (IButtonEventSink eventSink)
+		public MacButton (IButtonEventSink eventSink, ApplicationContext context)
 		{
 			BezelStyle = NSBezelStyle.Rounded;
 			Activated += delegate {
-				Toolkit.Invoke (delegate {
+				context.InvokeUserCode (delegate {
 					eventSink.OnClicked ();
 				});
+				OnActivatedInternal ();
 			};
 		}
 		
-		public MacButton (ICheckBoxEventSink eventSink)
+		public MacButton ()
 		{
 			Activated += delegate {
-				Toolkit.Invoke (delegate {
+				OnActivatedInternal ();
+			};
+
+		}
+
+		public MacButton (IRadioButtonEventSink eventSink, ApplicationContext context)
+		{
+			Activated += delegate {
+				context.InvokeUserCode (delegate {
 					eventSink.OnClicked ();
 				});
+				OnActivatedInternal ();
 			};
 		}
-		
-		public Widget Frontend { get; set; }
+
+		public ViewBackend Backend { get; set; }
 		
 		public NSView View {
 			get { return this; }
@@ -139,6 +176,14 @@ namespace Xwt.Mac
 
 		public void DisableEvent (Xwt.Backends.ButtonEvent ev)
 		{
+		}
+
+		void OnActivatedInternal ()
+		{
+			if (ActivatedInternal == null)
+				return;
+
+			ActivatedInternal (this);
 		}
 	}
 }

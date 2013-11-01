@@ -35,46 +35,77 @@ using MonoMac.Foundation;
 using MonoMac.ObjCRuntime;
 using Xwt;
 using Xwt.Backends;
-using Xwt.Engine;
+using MonoMac.CoreGraphics;
+using MonoMac.CoreAnimation;
+
 
 namespace Xwt.Mac
 {
-	public abstract class ViewBackend<T,S>: IWidgetBackend,IMacViewBackend where T:NSView where S:IWidgetEventSink
+	public abstract class ViewBackend<T,S>: ViewBackend where T:NSView where S:IWidgetEventSink
+	{
+		public new S EventSink {
+			get { return (S) base.EventSink; }
+		}
+		
+		public new T Widget {
+			get { return (T) base.Widget; }
+		}
+	}
+
+	public abstract class ViewBackend: IWidgetBackend
 	{
 		Widget frontend;
-		S eventSink;
+		IWidgetEventSink eventSink;
 		IViewObject viewObject;
 		WidgetEvent currentEvents;
-		
-		void IBackend.InitializeBackend (object frontend)
+		bool autosize;
+		Size lastFittingSize;
+		bool sizeCalcPending = true;
+		bool sensitive = true;
+		bool canGetFocus = true;
+		Xwt.Drawing.Color backgroundColor;
+
+		void IBackend.InitializeBackend (object frontend, ApplicationContext context)
 		{
+			ApplicationContext = context;
 			this.frontend = (Widget) frontend;
-			if (viewObject != null)
-				viewObject.Frontend = (Widget) frontend;
 		}
 		
 		void IWidgetBackend.Initialize (IWidgetEventSink sink)
 		{
-			eventSink = (S) sink;
+			eventSink = (IWidgetEventSink) sink;
 			Initialize ();
+			ResetFittingSize ();
+			canGetFocus = Widget.AcceptsFirstResponder ();
 		}
+
+		// To be called when the widget is a root and is not inside a Xwt window. For example, when it is in a popover or a tooltip
+		// In that case, the widget has to listen to the change event of the children and resize itself
+		public void SetAutosizeMode (bool autosize)
+		{
+			this.autosize = autosize;
+			if (autosize)
+				AutoUpdateSize ();
+		}
+
 		
 		public virtual void Initialize ()
 		{
 		}
 		
-		public S EventSink {
+		public IWidgetEventSink EventSink {
 			get { return eventSink; }
 		}
 		
-		IWidgetEventSink IMacViewBackend.EventSink {
-			get { return EventSink; }
-		}
-
 		public Widget Frontend {
 			get {
 				return this.frontend;
 			}
+		}
+		
+		public ApplicationContext ApplicationContext {
+			get;
+			private set;
 		}
 		
 		public object NativeWidget {
@@ -83,15 +114,15 @@ namespace Xwt.Mac
 			}
 		}
 		
-		public T Widget {
-			get { return (T) ViewObject.View; }
+		public NSView Widget {
+			get { return (NSView) ViewObject.View; }
 		}
 		
 		public IViewObject ViewObject {
 			get { return viewObject; }
 			set {
 				viewObject = value;
-				viewObject.Frontend = frontend;
+				viewObject.Backend = this;
 			}
 		}
 		
@@ -99,23 +130,64 @@ namespace Xwt.Mac
 			get { return !Widget.Hidden; }
 			set { Widget.Hidden = !value; }
 		}
-		
-		public virtual bool Sensitive {
-			get { return true; }
-			set { }
+
+		public double Opacity {
+			get { return Widget.AlphaValue; }
+			set { Widget.AlphaValue = (float)value; }
 		}
 		
+		public virtual bool Sensitive {
+			get { return sensitive; }
+			set {
+				sensitive = value;
+				UpdateSensitiveStatus (Widget, sensitive && ParentIsSensitive ());
+			}
+		}
+
+		bool ParentIsSensitive ()
+		{
+			IViewObject parent = Widget.Superview as IViewObject;
+			if (parent == null) {
+				var wb = Widget.Window as WindowBackend;
+				return wb == null || wb.Sensitive;
+			}
+			if (!parent.Backend.Sensitive)
+				return false;
+			return parent.Backend.ParentIsSensitive ();
+		}
+
+		internal void UpdateSensitiveStatus (NSView view, bool parentIsSensitive)
+		{
+			if (view is NSControl)
+				((NSControl)view).Enabled = parentIsSensitive && sensitive;
+
+			foreach (var s in view.Subviews) {
+				if (s is IViewObject)
+					((IViewObject)s).Backend.UpdateSensitiveStatus (s, parentIsSensitive);
+				else
+					UpdateSensitiveStatus (s, sensitive && parentIsSensitive);
+			}
+		}
+
 		public virtual bool CanGetFocus {
-			get { return true; }
-			set { }
+			get { return canGetFocus; }
+			set {
+				canGetFocus = value;
+				if (!Widget.AcceptsFirstResponder ())
+					canGetFocus = false;
+			}
 		}
 		
 		public virtual bool HasFocus {
-			get { return false; }
+			get {
+				return Widget.Window != null && Widget.Window.FirstResponder == Widget;
+			}
 		}
 		
-		public void SetFocus ()
+		public virtual void SetFocus ()
 		{
+			if (Widget.Window != null && CanGetFocus)
+				Widget.Window.MakeFirstResponder (Widget);
 		}
 		
 		public string TooltipText {
@@ -175,54 +247,137 @@ namespace Xwt.Mac
 		{
 		}
 		
-		public virtual SizeRequestMode SizeRequestMode {
-			get { return SizeRequestMode.HeightForWidth; }
-		}
-		
 		Size IWidgetBackend.Size {
 			get { return new Size (Widget.WidgetWidth (), Widget.WidgetHeight ()); }
 		}
 		
-		NSView IMacViewBackend.View {
-			get { return (NSView) Widget; }
-		}
-		
 		public static NSView GetWidget (IWidgetBackend w)
 		{
-			return ((IMacViewBackend)w).View;
+			return ((ViewBackend)w).Widget;
 		}
 
 		public static NSView GetWidget (Widget w)
 		{
-			return GetWidget ((IWidgetBackend)MacEngine.Registry.GetBackend (w));
+			return GetWidget ((IWidgetBackend)Toolkit.GetBackend (w));
+		}
+
+		public static NSView GetWidgetWithPlacement (IWidgetBackend childBackend)
+		{
+			var backend = (ViewBackend)childBackend;
+			var child = backend.Widget;
+			var wrapper = child.Superview as WidgetPlacementWrapper;
+			if (wrapper != null)
+				return wrapper;
+
+			if (!NeedsAlignmentWrapper (backend.Frontend))
+				return child;
+
+			wrapper = new WidgetPlacementWrapper ();
+			wrapper.SetChild (child, backend.Frontend);
+			return wrapper;
+		}
+
+		public static NSView SetChildPlacement (IWidgetBackend childBackend)
+		{
+			var backend = (ViewBackend)childBackend;
+			var child = backend.Widget;
+			var wrapper = child.Superview as WidgetPlacementWrapper;
+			var fw = backend.Frontend;
+
+			if (!NeedsAlignmentWrapper (fw)) {
+				if (wrapper != null) {
+					var parent = wrapper.Superview;
+					child.RemoveFromSuperview ();
+					ReplaceSubview (wrapper, child);
+				}
+				return child;
+			}
+
+			if (wrapper == null) {
+				wrapper = new WidgetPlacementWrapper ();
+				var f = child.Frame;
+				ReplaceSubview (child, wrapper);
+				wrapper.SetChild (child, backend.Frontend);
+				wrapper.Frame = f;
+			} else
+				wrapper.UpdateChildPlacement ();
+			return wrapper;
+		}
+
+		public static void RemoveChildPlacement (NSView w)
+		{
+			if (w == null)
+				return;
+			if (w is WidgetPlacementWrapper) {
+				var wp = (WidgetPlacementWrapper)w;
+				wp.Subviews [0].RemoveFromSuperview ();
+			}
 		}
 		
+		static bool NeedsAlignmentWrapper (Widget fw)
+		{
+			return fw.HorizontalPlacement != WidgetPlacement.Fill || fw.VerticalPlacement != WidgetPlacement.Fill || fw.Margin.VerticalSpacing != 0 || fw.Margin.HorizontalSpacing != 0;
+		}
+
+		public virtual void UpdateChildPlacement (IWidgetBackend childBackend)
+		{
+			SetChildPlacement (childBackend);
+		}
+
+		public static void ReplaceSubview (NSView oldChild, NSView newChild)
+		{
+			var vo = oldChild as IViewObject;
+			if (vo != null && vo.Backend.Frontend.GetInternalParent () != null) {
+				var ba = vo.Backend.Frontend.GetInternalParent ().GetBackend () as ViewBackend;
+				if (ba != null) {
+					ba.ReplaceChild (oldChild, newChild);
+					return;
+				}
+			}
+			var f = oldChild.Frame;
+			oldChild.Superview.ReplaceSubviewWith (oldChild, newChild);
+			newChild.Frame = f;
+		}
+
+		public virtual void ReplaceChild (NSView oldChild, NSView newChild)
+		{
+			var f = oldChild.Frame;
+			oldChild.Superview.ReplaceSubviewWith (oldChild, newChild);
+			newChild.Frame = f;
+		}
+
 		public virtual object Font {
 			get {
-				if (Widget is NSControl)
-					return ((NSControl)(object)Widget).Font;
-				if (Widget is NSText)
-					return ((NSText)(object)Widget).Font;
+				var widget = Widget;
+				if (widget is CustomAlignedContainer)
+					widget = ((CustomAlignedContainer)widget).Child;
+				if (widget is NSControl)
+					return ((NSControl)(object)widget).Font;
+				if (widget is NSText)
+					return ((NSText)(object)widget).Font;
 				return NSFont.ControlContentFontOfSize (NSFont.SystemFontSize);
 			}
 			set {
-				if (Widget is NSControl)
-					((NSControl)(object)Widget).Font = (NSFont) value;
-				if (Widget is NSText)
-					((NSText)(object)Widget).Font = (NSFont) value;
+				var widget = Widget;
+				if (widget is CustomAlignedContainer)
+					widget = ((CustomAlignedContainer)widget).Child;
+				if (widget is NSControl)
+					((NSControl)(object)widget).Font = (NSFont) value;
+				if (widget is NSText)
+					((NSText)(object)widget).Font = (NSFont) value;
+				ResetFittingSize ();
 			}
 		}
 		
 		public virtual Xwt.Drawing.Color BackgroundColor {
 			get {
-				if (Widget.Layer != null)
-					return Widget.Layer.BackgroundColor.ToXwtColor ();
-				else
-					return Xwt.Drawing.Colors.Black;
+				return this.backgroundColor;
 			}
 			set {
-				if (Widget.Layer != null)
-					Widget.Layer.BackgroundColor = value.ToCGColor ();
+				this.backgroundColor = value;
+				if (Widget.Layer == null)
+					Widget.WantsLayer = true;
+				Widget.Layer.BackgroundColor = value.ToCGColor ();
 			}
 		}
 		
@@ -232,111 +387,93 @@ namespace Xwt.Mac
 		{
 			var lo = Widget.ConvertPointToBase (new PointF ((float)widgetCoordinates.X, (float)widgetCoordinates.Y));
 			lo = Widget.Window.ConvertBaseToScreen (lo);
-			return new Point (lo.X, lo.Y);
+			return MacDesktopBackend.ToDesktopRect (new RectangleF (lo.X, lo.Y, 0, Widget.IsFlipped ? 0 : Widget.Frame.Height)).Location;
 		}
 		
 		protected virtual Size GetNaturalSize ()
 		{
-//			double w1 = Widget.FittingSize.Width;
-			return new Size (Widget.WidgetWidth(), Widget.WidgetHeight ());
+			if (sizeCalcPending) {
+				sizeCalcPending = false;
+				var f = Widget.Frame;
+				SizeToFit ();
+				lastFittingSize = new Size (Widget.WidgetWidth (), Widget.WidgetHeight ());
+				Widget.Frame = f;
+			}
+			return lastFittingSize;
 		}
 
-		public WidgetSize GetPreferredWidth ()
+		public virtual Size GetPreferredSize (SizeConstraint widthConstraint, SizeConstraint heightConstraint)
 		{
-			var w = GetNaturalSize ().Width;
-			var s = new Xwt.WidgetSize (w, w);
-			if (minWidth != -1 && s.MinSize > minWidth)
-				s.MinSize = minWidth;
-			return s;
+			return GetNaturalSize ();
 		}
 		
-		public WidgetSize GetPreferredHeight ()
-		{
-			var h = GetNaturalSize ().Height;
-			var s = new Xwt.WidgetSize (h, h);
-			if (minHeight != -1 && s.MinSize > minHeight)
-				s.MinSize = minHeight;
-			return s;
-		}
-
-		public WidgetSize GetPreferredHeightForWidth (double width)
-		{
-			return GetPreferredHeight ();
-		}
-
-		public WidgetSize GetPreferredWidthForHeight (double height)
-		{
-			return GetPreferredWidth ();
-		}
-		
-		double minWidth = -1, minHeight = -1;
+		protected double minWidth = -1, minHeight = -1;
 		
 		public void SetMinSize (double width, double height)
 		{
 			minWidth = width;
 			minHeight = height;
 		}
+
+		protected void ResetFittingSize ()
+		{
+			sizeCalcPending = true;
+		}
+
+		public void SizeToFit ()
+		{
+			OnSizeToFit ();
+//			if (minWidth != -1 && Widget.Frame.Width < minWidth || minHeight != -1 && Widget.Frame.Height < minHeight)
+//				Widget.SetFrameSize (new SizeF (Math.Max (Widget.Frame.Width, (float)minWidth), Math.Max (Widget.Frame.Height, (float)minHeight)));
+		}
 		
-		public void SetNaturalSize (double width, double height)
+		protected virtual Size CalcFittingSize ()
+		{
+			return Size.Zero;
+		}
+
+		static readonly Selector sizeToFitSel = new Selector ("sizeToFit");
+
+		protected virtual void OnSizeToFit ()
+		{
+			if (Widget.RespondsToSelector (sizeToFitSel)) {
+				Messaging.void_objc_msgSend (Widget.Handle, sizeToFitSel.Handle);
+			} else {
+				var s = CalcFittingSize ();
+				if (!s.IsZero)
+					Widget.SetFrameSize (new SizeF ((float)s.Width, (float)s.Height));
+			}
+		}
+		
+		public void SetSizeRequest (double width, double height)
 		{
 			// Nothing to do
 		}
 		
 		public virtual void UpdateLayout ()
 		{
-			IViewContainer parent = Widget.Superview as IViewContainer;
-			if (parent != null)
-				parent.UpdateChildMargins (this);
+			if (autosize)
+				AutoUpdateSize ();
 		}
-		
-		public static NSView AddMargins (IMacViewBackend backend, NSView currentChild)
-		{
-			if (backend == null)
-				return null;
-			if (backend.Frontend.Margin.HorizontalSpacing == 0 && backend.Frontend.Margin.VerticalSpacing == 0) {
-				if (currentChild is MarginView)
-					backend.View.RemoveFromSuperview ();
-				return backend.View;
-			}
-			else if (currentChild is MarginView) {
-				((MarginView)currentChild).UpdateLayout ();
-				return currentChild;
-			}
-			else {
-				var f = backend.Frontend;
-				var newFrame = backend.View.Frame;
-				newFrame.Width += (float) f.Margin.HorizontalSpacing;
-				newFrame.Height += (float) f.Margin.VerticalSpacing;
-				if (backend.View.Superview != null)
-					backend.View.RemoveFromSuperview ();
-				MarginView marginView = new MarginView (backend);
-				marginView.Frame = newFrame;
-				Rectangle frame = new Rectangle ((int)f.Margin.Left, (int)f.Margin.Top, (int)marginView.Frame.Width - f.Margin.HorizontalSpacing, (int)marginView.Frame.Height - f.Margin.VerticalSpacing);
-				return marginView;
-			}
+
+		void AutoUpdateSize ()
+		{	var s = Frontend.Surface.GetPreferredSize ();
+			Widget.SetFrameSize (new SizeF ((float)s.Width, (float)s.Height));
 		}
-		
-/*		protected void UpdateChildMargins (IMenuBackend backend)
-		{
-			var viewObject = (IViewObject) view;
-			
-			MarginView marginView = new MarginView () { Frontend = frontend };
-			marginView.Frame = viewObject.View.Frame;
-			
-			view.RemoveFromSuperview ();
-			Widget.AddSubview (marginView);
-			
-			marginView.AddSubview (viewObject.View);
-			var f = viewObject.Frontend;
-			Rectangle frame = new Rectangle ((int)f.Margin.Left, (int)f.Margin.Top, (int)marginView.Frame.Width - f.Margin.HorizontalSpacing, (int)marginView.Frame.Height - f.Margin.VerticalSpacing);
-			viewObject.View.SetWidgetBounds (frame);
-		}*/
+
+		NSObject gotFocusObserver;
 		
 		public virtual void EnableEvent (object eventId)
 		{
 			if (eventId is WidgetEvent) {
 				WidgetEvent ev = (WidgetEvent) eventId;
 				currentEvents |= ev;
+				switch (ev) {
+				case WidgetEvent.GotFocus:
+				case WidgetEvent.LostFocus:
+					SetupFocusEvents (Widget.GetType ());
+					break;
+				}
 			}
 		}
 		
@@ -354,8 +491,12 @@ namespace Xwt.Mac
 		static Selector prepareForDragOperationSel = new Selector ("prepareForDragOperation:");
 		static Selector performDragOperationSel = new Selector ("performDragOperation:");
 		static Selector concludeDragOperationSel = new Selector ("concludeDragOperation:");
+		static Selector becomeFirstResponderSel = new Selector ("becomeFirstResponder");
+		static Selector resignFirstResponderSel = new Selector ("resignFirstResponder");
+
 		static HashSet<Type> typesConfiguredForDragDrop = new HashSet<Type> ();
-		
+		static HashSet<Type> typesConfiguredForFocusEvents = new HashSet<Type> ();
+
 		static void SetupForDragDrop (Type type)
 		{
 			lock (typesConfiguredForDragDrop) {
@@ -367,6 +508,17 @@ namespace Xwt.Mac
 					c.AddMethod (prepareForDragOperationSel.Handle, new Func<IntPtr,IntPtr,IntPtr,bool> (PrepareForDragOperation), "B@:@");
 					c.AddMethod (performDragOperationSel.Handle, new Func<IntPtr,IntPtr,IntPtr,bool> (PerformDragOperation), "B@:@");
 					c.AddMethod (concludeDragOperationSel.Handle, new Action<IntPtr,IntPtr,IntPtr> (ConcludeDragOperation), "v@:@");
+				}
+			}
+		}
+
+		static void SetupFocusEvents (Type type)
+		{
+			lock (typesConfiguredForFocusEvents) {
+				if (typesConfiguredForFocusEvents.Add (type)) {
+					Class c = new Class (type);
+					c.AddMethod (becomeFirstResponderSel.Handle, new Func<IntPtr,IntPtr,bool> (OnBecomeFirstResponder), "B@:");
+					c.AddMethod (resignFirstResponderSel.Handle, new Func<IntPtr,IntPtr,bool> (OnResignFirstResponder), "B@:");
 				}
 			}
 		}
@@ -408,7 +560,7 @@ namespace Xwt.Mac
 			IViewObject ob = Runtime.GetNSObject (sender) as IViewObject;
 			if (ob == null)
 				return NSDragOperation.None;
-			var backend = (ViewBackend<T,S>) MacEngine.Registry.GetBackend (ob.Frontend);
+			var backend = ob.Backend;
 			
 			NSDraggingInfo di = new NSDraggingInfo (dragInfo);
 			var types = di.DraggingPasteboard.Types.Select (t => ToXwtDragType (t)).ToArray ();
@@ -441,8 +593,8 @@ namespace Xwt.Mac
 		{
 			IViewObject ob = Runtime.GetNSObject (sender) as IViewObject;
 			if (ob != null) {
-				var backend = (ViewBackend<T,S>) MacEngine.Registry.GetBackend (ob.Frontend);
-				Toolkit.Invoke (delegate {
+				var backend = ob.Backend;
+				backend.ApplicationContext.InvokeUserCode (delegate {
 					backend.eventSink.OnDragLeave (EventArgs.Empty);
 				});
 			}
@@ -454,7 +606,7 @@ namespace Xwt.Mac
 			if (ob == null)
 				return false;
 			
-			var backend = (ViewBackend<T,S>) MacEngine.Registry.GetBackend (ob.Frontend);
+			var backend = ob.Backend;
 			
 			NSDraggingInfo di = new NSDraggingInfo (dragInfo);
 			var types = di.DraggingPasteboard.Types.Select (t => ToXwtDragType (t)).ToArray ();
@@ -462,7 +614,7 @@ namespace Xwt.Mac
 			
 			if ((backend.currentEvents & WidgetEvent.DragDropCheck) != 0) {
 				var args = new DragCheckEventArgs (pos, types, ConvertAction (di.DraggingSourceOperationMask));
-				bool res = Toolkit.Invoke (delegate {
+				bool res = backend.ApplicationContext.InvokeUserCode (delegate {
 					backend.eventSink.OnDragDropCheck (args);
 				});
 				if (args.Result == DragDropResult.Canceled || !res)
@@ -477,7 +629,7 @@ namespace Xwt.Mac
 			if (ob == null)
 				return false;
 			
-			var backend = (ViewBackend<T,S>) MacEngine.Registry.GetBackend (ob.Frontend);
+			var backend = ob.Backend;
 			
 			NSDraggingInfo di = new NSDraggingInfo (dragInfo);
 			var pos = new Point (di.DraggingLocation.X, di.DraggingLocation.Y);
@@ -486,7 +638,7 @@ namespace Xwt.Mac
 				TransferDataStore store = new TransferDataStore ();
 				FillDataStore (store, di.DraggingPasteboard, ob.View.RegisteredDragTypes ());
 				var args = new DragEventArgs (pos, store, ConvertAction (di.DraggingSourceOperationMask));
-				Toolkit.Invoke (delegate {
+				backend.ApplicationContext.InvokeUserCode (delegate {
 					backend.eventSink.OnDragDrop (args);
 				});
 				return args.Success;
@@ -501,14 +653,14 @@ namespace Xwt.Mac
 		
 		protected virtual void OnDragOverCheck (NSDraggingInfo di, DragOverCheckEventArgs args)
 		{
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				eventSink.OnDragOverCheck (args);
 			});
 		}
 		
 		protected virtual void OnDragOver (NSDraggingInfo di, DragOverEventArgs args)
 		{
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				eventSink.OnDragOver (args);
 			});
 		}
@@ -573,6 +725,7 @@ namespace Xwt.Mac
 			if (type == TransferDataType.Uri) return NSPasteboard.NSFilenamesType;
 			if (type == TransferDataType.Image) return NSPasteboard.NSPictType;
 			if (type == TransferDataType.Rtf) return NSPasteboard.NSRtfType;
+			if (type == TransferDataType.Html) return NSPasteboard.NSHtmlType;
 			return type.Id;
 		}
 		
@@ -586,62 +739,98 @@ namespace Xwt.Mac
 				return TransferDataType.Image;
 			if (type == NSPasteboard.NSRtfType)
 				return TransferDataType.Rtf;
+			if (type == NSPasteboard.NSHtmlType)
+				return TransferDataType.Html;
 			return TransferDataType.FromId (type);
 		}
+
+		static bool OnBecomeFirstResponder (IntPtr sender, IntPtr sel)
+		{
+			IViewObject ob = Runtime.GetNSObject (sender) as IViewObject;
+			var canGetIt = ob.Backend.canGetFocus;
+			if (canGetIt)
+				ob.Backend.ApplicationContext.InvokeUserCode (ob.Backend.EventSink.OnGotFocus);
+			return canGetIt;
+		}
 		
+		static bool OnResignFirstResponder (IntPtr sender, IntPtr sel)
+		{
+			IViewObject ob = Runtime.GetNSObject (sender) as IViewObject;
+			ob.Backend.ApplicationContext.InvokeUserCode (ob.Backend.EventSink.OnLostFocus);
+			return true;
+		}
+
 		#endregion
 	}
-	
-	class MarginView: NSView, IViewObject, IViewContainer
+
+	sealed class WidgetPlacementWrapper: NSControl, IViewObject
 	{
-		public MarginView (IMacViewBackend c)
+		NSView child;
+		Widget w;
+
+		public WidgetPlacementWrapper ()
 		{
-			AddSubview (c.View);
-			ChildBackend = c;
 		}
-		
-		public NSView View {
+
+		NSView IViewObject.View {
+			get { return this; }
+		}
+
+		ViewBackend IViewObject.Backend {
 			get {
-				return this;
+				var vo = child as IViewObject;
+				return vo != null ? vo.Backend : null;
+			}
+			set {
+				var vo = child as IViewObject;
+				if (vo != null)
+					vo.Backend = value;
 			}
 		}
-		
-		public IMacViewBackend ChildBackend { get; set; }
-		
-		public void UpdateLayout ()
-		{
-			var rect = this.WidgetBounds ();
-			var f = ChildBackend.Frontend;
-			rect.X += f.Margin.Left;
-			rect.Width -= f.Margin.HorizontalSpacing;
-			rect.Y += f.Margin.Top;
-			rect.Height -= f.Margin.VerticalSpacing;
-			ChildBackend.View.SetWidgetBounds (rect);
+
+		public override bool IsFlipped {
+			get {
+				return true;
+			}
 		}
-		
+
+		public void SetChild (NSView child, Widget w)
+		{
+			this.child = child;
+			this.w = w;
+			AddSubview (child);
+		}
+
 		public override void SetFrameSize (SizeF newSize)
 		{
 			base.SetFrameSize (newSize);
-			UpdateLayout ();
+			if (w != null)
+				UpdateChildPlacement ();
 		}
 
-		public Widget Frontend { get; set; }
-
-		public void UpdateChildMargins (IMacViewBackend view)
+		public void UpdateChildPlacement ()
 		{
-			if (view != ChildBackend)
-				throw new InvalidOperationException ();
-			
-			UpdateLayout ();
+			double cheight = Frame.Height - w.Margin.VerticalSpacing;
+			double cwidth = Frame.Width - w.Margin.HorizontalSpacing;
+			double cx = w.MarginLeft;
+			double cy = w.MarginTop;
+
+			var s = w.Surface.GetPreferredSize (cwidth, cheight);
+			if (w.HorizontalPlacement != WidgetPlacement.Fill) {
+				cx += (cwidth - s.Width) * w.HorizontalPlacement.GetValue ();
+				cwidth = s.Width;
+			}
+			if (w.VerticalPlacement != WidgetPlacement.Fill) {
+				cy += (cheight - s.Height) * w.VerticalPlacement.GetValue ();
+				cheight = s.Height;
+			}
+			child.Frame = new RectangleF ((float)cx, (float)cy, (float)cwidth, (float)cheight);
 		}
-	}
-	
-	public interface IMacViewBackend
-	{
-		NSView View { get; }
-		Widget Frontend { get; }
-		void NotifyPreferredSizeChanged ();
-		IWidgetEventSink EventSink { get; }
+
+		public override void SizeToFit ()
+		{
+			base.SizeToFit ();
+		}
 	}
 }
 

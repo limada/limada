@@ -30,10 +30,11 @@ using Xwt.Drawing;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt
 {
+	[BackendType (typeof(ITreeViewBackend))]
 	public class TreeView: Widget, IColumnContainer, IScrollableWidget
 	{
 		ListViewColumnCollection columns;
@@ -54,6 +55,21 @@ namespace Xwt
 				((TreeView)Parent).OnSelectionChanged (EventArgs.Empty);
 			}
 			
+			public void OnRowActivated (TreePosition position)
+			{
+				((TreeView)Parent).OnRowActivated (new TreeViewRowEventArgs (position));
+			}
+
+			public void OnRowExpanded (TreePosition position)
+			{
+				((TreeView)Parent).OnRowExpanded (new TreeViewRowEventArgs (position));
+			}
+			
+			public void OnRowExpanding (TreePosition position)
+			{
+				((TreeView)Parent).OnRowExpanding (new TreeViewRowEventArgs (position));
+			}
+			
 			public override Size GetDefaultNaturalSize ()
 			{
 				return Xwt.Backends.DefaultNaturalSizes.TreeView;
@@ -63,6 +79,9 @@ namespace Xwt
 		static TreeView ()
 		{
 			MapEvent (TableViewEvent.SelectionChanged, typeof(TreeView), "OnSelectionChanged");
+			MapEvent (TreeViewEvent.RowActivated, typeof(TreeView), "OnRowActivated");
+			MapEvent (TreeViewEvent.RowExpanded, typeof(TreeView), "OnRowExpanded");
+			MapEvent (TreeViewEvent.RowExpanding, typeof(TreeView), "OnRowExpanding");
 		}
 	
 		/// <summary>
@@ -82,6 +101,7 @@ namespace Xwt
 		/// </param>
 		public TreeView (ITreeDataSource source): this ()
 		{
+			VerifyConstructorCall (this);
 			DataSource = source;
 		}
 		
@@ -93,7 +113,7 @@ namespace Xwt
 		ITreeViewBackend Backend {
 			get { return (ITreeViewBackend) BackendHost.Backend; }
 		}
-
+		
 		public ScrollPolicy VerticalScrollPolicy {
 			get { return Backend.VerticalScrollPolicy; }
 			set { Backend.VerticalScrollPolicy = value; }
@@ -128,8 +148,8 @@ namespace Xwt
 			}
 			set {
 				if (dataSource != value) {
+					Backend.SetSource (value, value is IFrontend ? (IBackend)BackendHost.ToolkitEngine.GetSafeBackend (value) : null);
 					dataSource = value;
-					Backend.SetSource (dataSource, dataSource is IFrontend ? (IBackend)BackendHost.WidgetRegistry.GetBackend (dataSource) : null);
 				}
 			}
 		}
@@ -162,6 +182,20 @@ namespace Xwt
 			set {
 				mode = value;
 				Backend.SetSelectionMode (mode);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the row the current event applies to.
+		/// The behavior of this property is undefined when used outside an
+		/// event that supports it.
+		/// </summary>
+		/// <value>
+		/// The current event row.
+		/// </value>
+		public TreePosition CurrentEventRow {
+			get {
+				return Backend.CurrentEventRow;
 			}
 		}
 		
@@ -283,6 +317,20 @@ namespace Xwt
 		{
 			Backend.CollapseRow (pos);
 		}
+
+		/// <summary>
+		/// Recursively expands all nodes of the tree
+		/// </summary>
+		public void ExpandAll ()
+		{
+			if (DataSource != null) {
+				var nc = DataSource.GetChildrenCount (null);
+				for (int n=0; n<nc; n++) {
+					var p = DataSource.GetChild (null, n);
+					Backend.ExpandRow (p, true);
+				}
+			}
+		}
 		
 		/// <summary>
 		/// Saves the status of the tree
@@ -369,6 +417,84 @@ namespace Xwt
 			remove {
 				selectionChanged -= value;
 				BackendHost.OnAfterEventRemove (TableViewEvent.SelectionChanged, selectionChanged);
+			}
+		}
+
+		/// <summary>
+		/// Raises the row activated event.
+		/// </summary>
+		/// <param name="a">The alpha component.</param>
+		protected virtual void OnRowActivated (TreeViewRowEventArgs a)
+		{
+			if (rowActivated != null)
+				rowActivated (this, a);
+		}
+		
+		EventHandler<TreeViewRowEventArgs> rowActivated;
+
+		/// <summary>
+		/// Occurs when the user double-clicks on a row
+		/// </summary>
+		public event EventHandler<TreeViewRowEventArgs> RowActivated {
+			add {
+				BackendHost.OnBeforeEventAdd (TreeViewEvent.RowActivated, rowActivated);
+				rowActivated += value;
+			}
+			remove {
+				rowActivated -= value;
+				BackendHost.OnAfterEventRemove (TreeViewEvent.RowActivated, rowActivated);
+			}
+		}
+		
+		/// <summary>
+		/// Raises the row expanding event.
+		/// </summary>
+		/// <param name="a">The alpha component.</param>
+		protected virtual void OnRowExpanding (TreeViewRowEventArgs a)
+		{
+			if (rowExpanding != null)
+				rowExpanding (this, a);
+		}
+		
+		EventHandler<TreeViewRowEventArgs> rowExpanding;
+		
+		/// <summary>
+		/// Occurs just before a row is expanded
+		/// </summary>
+		public event EventHandler<TreeViewRowEventArgs> RowExpanding {
+			add {
+				BackendHost.OnBeforeEventAdd (TreeViewEvent.RowExpanding, rowExpanding);
+				rowExpanding += value;
+			}
+			remove {
+				rowExpanding -= value;
+				BackendHost.OnAfterEventRemove (TreeViewEvent.RowExpanding, rowExpanding);
+			}
+		}
+		
+		/// <summary>
+		/// Raises the row expanding event.
+		/// </summary>
+		/// <param name="a">The alpha component.</param>
+		protected virtual void OnRowExpanded (TreeViewRowEventArgs a)
+		{
+			if (rowExpanded != null)
+				rowExpanded (this, a);
+		}
+		
+		EventHandler<TreeViewRowEventArgs> rowExpanded;
+		
+		/// <summary>
+		/// Occurs just before a row is expanded
+		/// </summary>
+		public event EventHandler<TreeViewRowEventArgs> RowExpanded {
+			add {
+				BackendHost.OnBeforeEventAdd (TreeViewEvent.RowExpanded, rowExpanded);
+				rowExpanded += value;
+			}
+			remove {
+				rowExpanded -= value;
+				BackendHost.OnAfterEventRemove (TreeViewEvent.RowExpanded, rowExpanded);
 			}
 		}
 	}

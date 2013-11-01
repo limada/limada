@@ -32,9 +32,9 @@ namespace Samples
 	{
 		public Windows ()
 		{
-			Button b = new Button ("Show borderless window");
-			PackStart (b);
-			b.Clicked += delegate {
+			Button bp = new Button ("Show borderless window");
+			PackStart (bp);
+			bp.Clicked += delegate {
 				Window w = new Window ();
 				w.Decorated = false;
 				Button c = new Button ("This is a window");
@@ -43,11 +43,11 @@ namespace Samples
 				c.Clicked += delegate {
 					w.Dispose ();
 				};
-				var bpos = b.ScreenBounds;
-				w.ScreenBounds = new Rectangle (bpos.X, bpos.Y + b.Size.Height, w.Width, w.Height);
+				var bpos = bp.ScreenBounds;
+				w.ScreenBounds = new Rectangle (bpos.X, bpos.Y + bp.Size.Height, w.Width, w.Height);
 				w.Show ();
 			};
-			b = new Button ("Show message dialog");
+			Button b = new Button ("Show message dialog");
 			PackStart (b);
 			b.Clicked += delegate {
 				MessageDialog.ShowMessage (ParentWindow, "Hi there!");
@@ -59,10 +59,10 @@ namespace Samples
 				Dialog d = new Dialog ();
 				d.Title = "This is a dialog";
 				Table t = new Table ();
-				t.Attach (new Label ("Some field:"), 0, 1, 0, 1);
-				t.Attach (new TextEntry (), 1, 2, 0, 1);
-				t.Attach (new Label ("Another field:"), 0, 1, 1, 2);
-				t.Attach (new TextEntry (), 1, 2, 1, 2);
+				t.Add (new Label ("Some field:"), 0, 0);
+				t.Add (new TextEntry (), 1, 0);
+				t.Add (new Label ("Another field:"), 0, 1);
+				t.Add (new TextEntry (), 1, 1);
 				d.Content = t;
 				
 				Command custom = new Command ("Custom");
@@ -117,7 +117,17 @@ namespace Samples
 				if (dlg.Run ())
 					MessageDialog.ShowMessage ("Folders have been selected!", string.Join ("\n", dlg.Folders));
 			};
-			
+
+			b = new Button ("Show Select Folder dialog (Single select, allow creation)");
+			PackStart (b);
+			b.Clicked += delegate {
+				SelectFolderDialog dlg = new SelectFolderDialog ("Select or create a folder");
+				dlg.Multiselect = false;
+				dlg.CanCreateFolders = true;
+				if (dlg.Run ())
+					MessageDialog.ShowMessage ("Folders have been selected/created!", string.Join ("\n", dlg.Folders));
+			};
+
 			b = new Button ("Show Select Color dialog");
 			PackStart (b);
 			b.Clicked += delegate {
@@ -145,6 +155,19 @@ namespace Samples
 
 				w.Show();
 				
+			};
+
+			b = new Button("Show dialog with dynamically updating content");
+			PackStart(b);
+			b.Clicked += delegate
+			{
+				var dialog = new Dialog ();
+				dialog.Content = new Label ("Hello World");
+				Xwt.Application.TimeoutInvoke (TimeSpan.FromSeconds (2), () => {
+					dialog.Content = new Label ("Goodbye World");
+					return false;
+				});
+				dialog.Run ();
 			};
 		}
 	}

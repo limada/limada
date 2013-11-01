@@ -11,7 +11,8 @@ namespace Samples
 			Notebook nb = new Notebook ();
 			nb.Add (new Label ("First tab content"), "First Tab");
 			nb.Add (new MyWidget (), "Second Tab");
-			PackStart (nb, BoxMode.FillAndExpand);
+			nb.TabOrientation = NotebookTabOrientation.Bottom;
+			PackStart (nb, true);
 		}
 	}
 	

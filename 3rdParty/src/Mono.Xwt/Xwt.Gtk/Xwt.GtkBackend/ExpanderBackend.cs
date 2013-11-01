@@ -1,12 +1,12 @@
 using System;
 
 using Xwt;
-using Xwt.Engine;
+
 using Xwt.Backends;
 
 namespace Xwt.GtkBackend
 {
-	public class ExpanderBackend : WidgetBackend, IExpandBackend
+	public class ExpanderBackend : WidgetBackend, IExpanderBackend
 	{
 		public ExpanderBackend ()
 		{
@@ -43,7 +43,8 @@ namespace Xwt.GtkBackend
 
 		public void SetContent (IWidgetBackend child)
 		{
-			Widget.Child = GetWidget (child);
+			RemoveChildPlacement (Widget.Child);
+			Widget.Child = GetWidgetWithPlacement (child);
 		}
 
 		public override void EnableEvent (object eventId)
@@ -60,13 +61,13 @@ namespace Xwt.GtkBackend
 			base.DisableEvent (eventId);
 			if (eventId is ExpandEvent) {
 				if ((ExpandEvent)eventId == ExpandEvent.ExpandChanged)
-					Widget.Activated += HandleExpandedChanged;
+					Widget.Activated -= HandleExpandedChanged;
 			}
 		}
 
 		void HandleExpandedChanged (object sender, EventArgs e)
 		{
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.ExpandChanged ();
 			});
 		}

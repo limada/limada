@@ -31,6 +31,37 @@ namespace Xwt.GtkBackend
 {
 	public class ListViewBackend: TableViewBackend, IListViewBackend
 	{
+		bool showBorder;
+		
+		protected new IListViewEventSink EventSink {
+			get { return (IListViewEventSink)base.EventSink; }
+		}
+		
+		public override void EnableEvent (object eventId)
+		{
+			base.EnableEvent (eventId);
+			if (eventId is ListViewEvent) {
+				if (((ListViewEvent)eventId) == ListViewEvent.RowActivated)
+					Widget.RowActivated += HandleRowActivated;
+			}
+		}
+		
+		public override void DisableEvent (object eventId)
+		{
+			base.DisableEvent (eventId);
+			if (eventId is ListViewEvent) {
+				if (((ListViewEvent)eventId) == ListViewEvent.RowActivated)
+					Widget.RowActivated -= HandleRowActivated;
+			}
+		}
+		
+		void HandleRowActivated (object o, Gtk.RowActivatedArgs args)
+		{
+			ApplicationContext.InvokeUserCode (delegate {
+				EventSink.OnRowActivated (args.Path.Indices[0]);
+			});
+		}
+
 		public void SetSource (IListDataSource source, IBackend sourceBackend)
 		{
 			ListStoreBackend b = sourceBackend as ListStoreBackend;
@@ -65,6 +96,25 @@ namespace Xwt.GtkBackend
 					res [n] = sel [n].Indices[0];
 				return res;
 			}
+		}
+
+		public bool BorderVisible {
+			get {
+				return ScrolledWindow.ShadowType == Gtk.ShadowType.In;
+			}
+			set {
+				showBorder = value;
+				UpdateBorder ();
+			}
+		}
+		
+		void UpdateBorder ()
+		{
+			var shadowType = showBorder ? Gtk.ShadowType.In : Gtk.ShadowType.None;
+			if (ScrolledWindow.Child is Gtk.Viewport)
+				((Gtk.Viewport) ScrolledWindow.Child).ShadowType = shadowType;
+			else
+				ScrolledWindow.ShadowType = shadowType;
 		}
 		
 		public bool HeadersVisible {

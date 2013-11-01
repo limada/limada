@@ -25,15 +25,17 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt
 {
-	public class SelectFolderDialog: XwtComponent
+	[BackendType (typeof(ISelectFolderDialogBackend))]
+	public sealed class SelectFolderDialog: XwtComponent
 	{
 		bool running;
 		bool multiselect;
 		string currentFolder;
+		bool canCreateFolders;
 		string title = "";
 		string folder;
 		string[] folders = new string[0];
@@ -101,7 +103,21 @@ namespace Xwt
 					currentFolder = value;
 			}
 		}
-		
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this instance can create folders.
+		/// </summary>
+		/// <value><c>true</c> if this instance can create folders; otherwise, <c>false</c>.</value>
+		public bool CanCreateFolders {
+			get { return running ? Backend.CanCreateFolders : canCreateFolders; }
+			set {
+				if (running)
+					Backend.CanCreateFolders = value;
+				else
+					canCreateFolders = value;
+			}
+		}
+
 		/// <summary>
 		/// Gets or sets a value indicating whether the user can select multiple files
 		/// </summary>
@@ -139,7 +155,8 @@ namespace Xwt
 					Backend.CurrentFolder = currentFolder;
 				if (!string.IsNullOrEmpty (title))
 					Backend.Title = title;
-				return Backend.Run ((IWindowFrameBackend)WidgetRegistry.MainRegistry.GetBackend (parentWindow));
+				Backend.CanCreateFolders = canCreateFolders;
+				return Backend.Run ((IWindowFrameBackend)BackendHost.ToolkitEngine.GetSafeBackend (parentWindow));
 			} finally {
 				currentFolder = Backend.CurrentFolder;
 				folder = Backend.Folder;

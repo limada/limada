@@ -28,13 +28,14 @@ using System;
 using Xwt.Backends;
 using System.Collections.Generic;
 
+
 namespace Xwt.GtkBackend
 {
 	public class MenuBackend: IMenuBackend
 	{
 		Gtk.MenuShell menu;
 		
-		public void InitializeBackend (object frontend)
+		public void InitializeBackend (object frontend, ApplicationContext context)
 		{
 			menu = new Gtk.Menu ();
 			menu.Visible = true;

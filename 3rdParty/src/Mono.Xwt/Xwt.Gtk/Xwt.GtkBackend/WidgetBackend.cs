@@ -29,7 +29,7 @@ using Xwt.Backends;
 using Xwt;
 using System.Collections.Generic;
 using System.Linq;
-using Xwt.Engine;
+
 using Xwt.Drawing;
 
 namespace Xwt.GtkBackend
@@ -38,11 +38,13 @@ namespace Xwt.GtkBackend
 	{
 		Gtk.Widget widget;
 		Widget frontend;
-		Gtk.Alignment alignment;
 		Gtk.EventBox eventBox;
 		IWidgetEventSink eventSink;
 		WidgetEvent enabledEvents;
-		
+		bool destroyed;
+		SizeConstraint currentWidthConstraint = SizeConstraint.Unconstrained;
+		SizeConstraint currentHeightConstraint = SizeConstraint.Unconstrained;
+
 		bool minSizeSet;
 		
 		class DragDropData
@@ -60,11 +62,11 @@ namespace Xwt.GtkBackend
 		DragDropData dragDropInfo;
 
 		const WidgetEvent dragDropEvents = WidgetEvent.DragDropCheck | WidgetEvent.DragDrop | WidgetEvent.DragOver | WidgetEvent.DragOverCheck;
-		const WidgetEvent sizeCheckEvents = WidgetEvent.PreferredWidthCheck | WidgetEvent.PreferredHeightCheck | WidgetEvent.PreferredHeightForWidthCheck | WidgetEvent.PreferredWidthForHeightCheck;
-		
-		void IBackend.InitializeBackend (object frontend)
+
+		void IBackend.InitializeBackend (object frontend, ApplicationContext context)
 		{
 			this.frontend = (Widget) frontend;
+			ApplicationContext = context;
 		}
 		
 		void IWidgetBackend.Initialize (IWidgetEventSink sink)
@@ -84,10 +86,15 @@ namespace Xwt.GtkBackend
 		public Widget Frontend {
 			get { return frontend; }
 		}
-		
+
+		public ApplicationContext ApplicationContext {
+			get;
+			private set;
+		}
+
 		public object NativeWidget {
 			get {
-				return Widget;
+				return RootWidget;
 			}
 		}
 		
@@ -104,7 +111,7 @@ namespace Xwt.GtkBackend
 		
 		public Gtk.Widget RootWidget {
 			get {
-				return alignment ?? eventBox ?? (Gtk.Widget) Widget;
+				return eventBox ?? (Gtk.Widget) Widget;
 			}
 		}
 		
@@ -112,13 +119,30 @@ namespace Xwt.GtkBackend
 			get { return Widget.Visible; }
 			set {
 				Widget.Visible = value; 
-				if (alignment != null)
-					alignment.Visible = value;
 				if (eventBox != null)
 					eventBox.Visible = value;
 			}
 		}
-		
+
+		double opacity = 1d;
+		public double Opacity {
+			get { return opacity; }
+			set { opacity = value; }
+		}
+
+		void RunWhenRealized (Action a)
+		{
+			if (Widget.IsRealized)
+				a ();
+			else {
+				EventHandler h = null;
+				h = delegate {
+					a ();
+				};
+				EventsRootWidget.Realized += h;
+			}
+		}
+
 		public virtual bool Sensitive {
 			get { return Widget.Sensitive; }
 			set {
@@ -134,14 +158,24 @@ namespace Xwt.GtkBackend
 		}
 		
 		public bool HasFocus {
-			get { return Widget.HasFocus; }
+			get { return Widget.IsFocus; }
 		}
 		
 		public void SetFocus ()
 		{
-			Widget.GrabFocus ();
+			Widget.IsFocus = true;
+//			SetFocus (Widget);
 		}
-		
+
+		void SetFocus (Gtk.Widget w)
+		{
+			if (w.Parent != null)
+				SetFocus (w.Parent);
+			w.GrabFocus ();
+			w.IsFocus = true;
+			w.HasFocus = true;
+		}
+
 		public string TooltipText {
 			get {
 				return Widget.TooltipText;
@@ -153,9 +187,13 @@ namespace Xwt.GtkBackend
 		
 		static Dictionary<CursorType,Gdk.Cursor> gtkCursors = new Dictionary<CursorType, Gdk.Cursor> ();
 		
+		Gdk.Cursor gdkCursor;
+		internal CursorType CurrentCursor { get; private set; }
+
 		public void SetCursor (CursorType cursor)
 		{
 			AllocEventBox ();
+			CurrentCursor = cursor;
 			Gdk.Cursor gc;
 			if (!gtkCursors.TryGetValue (cursor, out gc)) {
 				Gdk.CursorType ctype;
@@ -184,15 +222,28 @@ namespace Xwt.GtkBackend
 				
 				gtkCursors [cursor] = gc = new Gdk.Cursor (ctype);
 			}
-			if (EventsRootWidget.GdkWindow == null) {
-				EventHandler h = null;
-				h = delegate {
-					EventsRootWidget.GdkWindow.Cursor = gc;
-					EventsRootWidget.Realized -= h;
-				};
-				EventsRootWidget.Realized += h;
-			} else
+
+			gdkCursor = gc;
+
+			if (EventsRootWidget.GdkWindow == null)
+				SubscribeRealizedEvent ();
+			else
 				EventsRootWidget.GdkWindow.Cursor = gc;
+		}
+
+		bool realizedEventSubscribed;
+		void SubscribeRealizedEvent ()
+		{
+			if (!realizedEventSubscribed) {
+				realizedEventSubscribed = true;
+				EventsRootWidget.Realized += OnRealized;
+			}
+		}
+
+		void OnRealized (Object s, EventArgs e)
+		{
+			if (gdkCursor != null)
+				EventsRootWidget.GdkWindow.Cursor = gdkCursor;
 		}
 		
 		~WidgetBackend ()
@@ -208,14 +259,30 @@ namespace Xwt.GtkBackend
 		
 		protected virtual void Dispose (bool disposing)
 		{
-			if (Widget != null && disposing && Widget.Parent == null)
+			if (Widget != null && disposing && Widget.Parent == null && !destroyed) {
+				MarkDestroyed (Frontend);
 				Widget.Destroy ();
+			}
 		}
-		
+
+		void MarkDestroyed (Widget w)
+		{
+			var bk = (WidgetBackend) Toolkit.GetBackend (w);
+			bk.destroyed = true;
+			foreach (var c in w.Surface.Children)
+				MarkDestroyed (c);
+		}
+
 		public Size Size {
 			get {
 				return new Size (Widget.Allocation.Width, Widget.Allocation.Height);
 			}
+		}
+
+		public void SetSizeConstraints (SizeConstraint widthConstraint, SizeConstraint heightConstraint)
+		{
+			currentWidthConstraint = widthConstraint;
+			currentHeightConstraint = heightConstraint;
 		}
 		
 		DragDropData DragDropInfo {
@@ -238,85 +305,36 @@ namespace Xwt.GtkBackend
 			return new Point (x + widgetCoordinates.X, y + widgetCoordinates.Y);
 		}
 		
-		public virtual WidgetSize GetPreferredWidth ()
+		public virtual Size GetPreferredSize (SizeConstraint widthConstraint, SizeConstraint heightConstraint)
 		{
-			bool oldFlag = doubleSizeRequestCheckSupported;
 			try {
+				SetSizeConstraints (widthConstraint, heightConstraint);
 				gettingPreferredSize = true;
-				doubleSizeRequestCheckSupported = false;
-				var s = new WidgetSize (Widget.SizeRequest ().Width);
-				if (minSizeSet && Frontend.MinWidth != -1)
-					s.MinSize = Frontend.MinWidth;
-				return s;
+				var sr = Widget.SizeRequest ();
+				return new Size (sr.Width, sr.Height);
 			} finally {
 				gettingPreferredSize = false;
-				doubleSizeRequestCheckSupported = oldFlag;
 			}
 		}
-		
-		public virtual WidgetSize GetPreferredHeight ()
-		{
-			bool oldFlag = doubleSizeRequestCheckSupported;
-			try {
-				gettingPreferredSize = true;
-				doubleSizeRequestCheckSupported = false;
-				var s = new WidgetSize (Widget.SizeRequest ().Height);
-				if (minSizeSet && Frontend.MinHeight != -1)
-					s.MinSize = Frontend.MinHeight;
-				return s;
-			} finally {
-				gettingPreferredSize = false;
-				doubleSizeRequestCheckSupported = oldFlag;
-			}
-		}
-		
-		public virtual WidgetSize GetPreferredHeightForWidth (double width)
-		{
-			bool oldFlag = doubleSizeRequestCheckSupported;
-			try {
-				gettingPreferredSize = true;
-				doubleSizeRequestCheckSupported = false;
-				var s = new WidgetSize (Widget.SizeRequest ().Height);
-				if (minSizeSet && Frontend.MinHeight != -1)
-					s.MinSize = Frontend.MinHeight;
-				return s;
-			} finally {
-				gettingPreferredSize = false;
-				doubleSizeRequestCheckSupported = oldFlag;
-			}
-		}
-		
-		public virtual WidgetSize GetPreferredWidthForHeight (double height)
-		{
-			bool oldFlag = doubleSizeRequestCheckSupported;
-			try {
-				gettingPreferredSize = true;
-				doubleSizeRequestCheckSupported = false;
-				var s = new WidgetSize (Widget.SizeRequest ().Width);
-				if (minSizeSet && Frontend.MinWidth != -1)
-					s.MinSize = Frontend.MinWidth;
-				return s;
-			} finally {
-				gettingPreferredSize = false;
-				doubleSizeRequestCheckSupported = oldFlag;
-			}
-		}
-		
+
 		public void SetMinSize (double width, double height)
 		{
 			if (width != -1 || height != -1) {
 				EnableSizeCheckEvents ();
 				minSizeSet = true;
+				Widget.QueueResize ();
 			}
 			else {
 				minSizeSet = false;
 				DisableSizeCheckEvents ();
+				Widget.QueueResize ();
 			}
 		}
 		
-		public void SetNaturalSize (double width, double height)
+		public void SetSizeRequest (double width, double height)
 		{
-			// Nothing to do
+			Widget.WidthRequest = (int)width;
+			Widget.HeightRequest = (int)height;
 		}
 		
 		Pango.FontDescription customFont;
@@ -336,11 +354,12 @@ namespace Xwt.GtkBackend
 		
 		public virtual Color BackgroundColor {
 			get {
-				return customBackgroundColor.HasValue ? customBackgroundColor.Value : Util.ToXwtColor (Widget.Style.Background (Gtk.StateType.Normal));
+				return customBackgroundColor.HasValue ? customBackgroundColor.Value : Widget.Style.Background (Gtk.StateType.Normal).ToXwtValue ();
 			}
 			set {
 				customBackgroundColor = value;
-				Widget.ModifyBg (Gtk.StateType.Normal, Util.ToGdkColor (value));
+				AllocEventBox (visibleWindow: true);
+				EventsRootWidget.ModifyBg (Gtk.StateType.Normal, value.ToGtkValue ());
 			}
 		}
 		
@@ -360,44 +379,99 @@ namespace Xwt.GtkBackend
 		{
 			return w != null ? ((IGtkWidgetBackend)w).Widget : null;
 		}
+
+		public virtual void UpdateChildPlacement (IWidgetBackend childBackend)
+		{
+			SetChildPlacement (childBackend);
+		}
+
+		public static Gtk.Widget GetWidgetWithPlacement (IWidgetBackend childBackend)
+		{
+			var backend = (WidgetBackend)childBackend;
+			var child = backend.RootWidget;
+			var wrapper = child.Parent as WidgetPlacementWrapper;
+			if (wrapper != null)
+				return wrapper;
+
+			if (!NeedsAlignmentWrapper (backend.Frontend))
+				return child;
+
+			wrapper = new WidgetPlacementWrapper ();
+			wrapper.UpdatePlacement (backend.Frontend);
+			wrapper.Show ();
+			wrapper.Add (child);
+			return wrapper;
+		}
+
+		public static void RemoveChildPlacement (Gtk.Widget w)
+		{
+			if (w == null)
+				return;
+			if (w is WidgetPlacementWrapper) {
+				var wp = (WidgetPlacementWrapper)w;
+				wp.Remove (wp.Child);
+			}
+		}
+
+		static bool NeedsAlignmentWrapper (Widget fw)
+		{
+			return fw.HorizontalPlacement != WidgetPlacement.Fill || fw.VerticalPlacement != WidgetPlacement.Fill || fw.Margin.VerticalSpacing != 0 || fw.Margin.HorizontalSpacing != 0;
+		}
+
+		public static void SetChildPlacement (IWidgetBackend childBackend)
+		{
+			var backend = (WidgetBackend)childBackend;
+			var child = backend.RootWidget;
+			var wrapper = child.Parent as WidgetPlacementWrapper;
+			var fw = backend.Frontend;
+
+			if (!NeedsAlignmentWrapper (fw)) {
+				if (wrapper != null) {
+					wrapper.Remove (child);
+					GtkEngine.ReplaceChild (wrapper, child);
+				}
+				return;
+			}
+
+			if (wrapper == null) {
+				wrapper = new WidgetPlacementWrapper ();
+				wrapper.Show ();
+				GtkEngine.ReplaceChild (child, wrapper);
+				wrapper.Add (child);
+			}
+			wrapper.UpdatePlacement (fw);
+		}
 		
 		public virtual void UpdateLayout ()
 		{
-			if (frontend.Margin.HorizontalSpacing == 0 && frontend.Margin.VerticalSpacing == 0) {
-				if (alignment != null) {
-					alignment.Remove (alignment.Child);
-					GtkEngine.ReplaceChild (alignment, EventsRootWidget);
-					alignment.Destroy ();
-					alignment = null;
-				}
-			} else {
-				if (alignment == null) {
-					alignment = new Gtk.Alignment (0, 0, 1, 1);
-					GtkEngine.ReplaceChild (EventsRootWidget, alignment);
-					alignment.Add (EventsRootWidget);
-					alignment.Visible = Widget.Visible;
-				}
-				alignment.LeftPadding = (uint) frontend.Margin.Left;
-				alignment.RightPadding = (uint) frontend.Margin.Right;
-				alignment.TopPadding = (uint) frontend.Margin.Top;
-				alignment.BottomPadding = (uint) frontend.Margin.Bottom;
+			Widget.QueueResize ();
+
+			if (!Widget.IsRealized) {
+				// This is a workaround to a GTK bug. When a widget is inside a ScrolledWindow, sometimes the QueueResize call on
+				// the widget is ignored if the widget is not realized.
+				var p = Widget.Parent;
+				while (p != null && !(p is Gtk.ScrolledWindow))
+					p = p.Parent;
+				if (p != null)
+					p.QueueResize ();
 			}
 		}
 		
-		void AllocEventBox ()
+		protected void AllocEventBox (bool visibleWindow = false)
 		{
 			// Wraps the widget with an event box. Required for some
 			// widgets such as Label which doesn't have its own gdk window
 
 			if (eventBox == null && EventsRootWidget.IsNoWindow) {
+				if (EventsRootWidget is Gtk.EventBox) {
+					((Gtk.EventBox)EventsRootWidget).VisibleWindow = true;
+					return;
+				}
 				eventBox = new Gtk.EventBox ();
 				eventBox.Visible = Widget.Visible;
 				eventBox.Sensitive = Widget.Sensitive;
-				if (alignment != null) {
-					alignment.Remove (alignment.Child);
-					alignment.Add (eventBox);
-				} else
-					GtkEngine.ReplaceChild (Widget, eventBox);
+				eventBox.VisibleWindow = visibleWindow;
+				GtkEngine.ReplaceChild (Widget, eventBox);
 				eventBox.Add (Widget);
 			}
 		}
@@ -422,39 +496,46 @@ namespace Xwt.GtkBackend
 					Widget.KeyReleaseEvent += HandleKeyReleaseEvent;
 					break;
 				case WidgetEvent.GotFocus:
-					Widget.FocusInEvent += HandleWidgetFocusInEvent;
+					EventsRootWidget.AddEvents ((int)Gdk.EventMask.FocusChangeMask);
+					Widget.FocusGrabbed += HandleWidgetFocusInEvent;
 					break;
 				case WidgetEvent.LostFocus:
+					EventsRootWidget.AddEvents ((int)Gdk.EventMask.FocusChangeMask);
 					Widget.FocusOutEvent += HandleWidgetFocusOutEvent;
 					break;
 				case WidgetEvent.MouseEntered:
 					AllocEventBox ();
-					EventsRootWidget.Events |= Gdk.EventMask.EnterNotifyMask;
+					EventsRootWidget.AddEvents ((int)Gdk.EventMask.EnterNotifyMask);
 					EventsRootWidget.EnterNotifyEvent += HandleEnterNotifyEvent;
 					break;
 				case WidgetEvent.MouseExited:
 					AllocEventBox ();
-					EventsRootWidget.Events |= Gdk.EventMask.LeaveNotifyMask;
+					EventsRootWidget.AddEvents ((int)Gdk.EventMask.LeaveNotifyMask);
 					EventsRootWidget.LeaveNotifyEvent += HandleLeaveNotifyEvent;
 					break;
 				case WidgetEvent.ButtonPressed:
 					AllocEventBox ();
-					EventsRootWidget.Events |= Gdk.EventMask.ButtonPressMask;
+					EventsRootWidget.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
 					EventsRootWidget.ButtonPressEvent += HandleButtonPressEvent;
 					break;
 				case WidgetEvent.ButtonReleased:
 					AllocEventBox ();
-					EventsRootWidget.Events |= Gdk.EventMask.ButtonReleaseMask;
+					EventsRootWidget.AddEvents ((int)Gdk.EventMask.ButtonReleaseMask);
 					EventsRootWidget.ButtonReleaseEvent += HandleButtonReleaseEvent;
 					break;
 				case WidgetEvent.MouseMoved:
 					AllocEventBox ();
-					EventsRootWidget.Events |= Gdk.EventMask.PointerMotionMask;
+					EventsRootWidget.AddEvents ((int)Gdk.EventMask.PointerMotionMask);
 					EventsRootWidget.MotionNotifyEvent += HandleMotionNotifyEvent;
 					break;
 				case WidgetEvent.BoundsChanged:
 					Widget.SizeAllocated += HandleWidgetBoundsChanged;
 					break;
+                case WidgetEvent.MouseScrolled:
+                    AllocEventBox();
+					EventsRootWidget.AddEvents ((int)Gdk.EventMask.ScrollMask);
+                    Widget.ScrollEvent += HandleScrollEvent;
+                    break;
 				}
 				if ((ev & dragDropEvents) != 0 && (enabledEvents & dragDropEvents) == 0) {
 					// Enabling a drag&drop event for the first time
@@ -463,19 +544,18 @@ namespace Xwt.GtkBackend
 					EventsRootWidget.DragMotion += HandleWidgetDragMotion;
 					EventsRootWidget.DragDataReceived += HandleWidgetDragDataReceived;
 				}
-				if ((ev & sizeCheckEvents) != 0) {
+				if ((ev & WidgetEvent.PreferredSizeCheck) != 0) {
 					EnableSizeCheckEvents ();
 				}
 				enabledEvents |= ev;
 			}
 		}
-		
+
 		void EnableSizeCheckEvents ()
 		{
-			if ((enabledEvents & sizeCheckEvents) == 0 && !minSizeSet) {
+			if ((enabledEvents & WidgetEvent.PreferredSizeCheck) == 0 && !minSizeSet) {
 				// Enabling a size request event for the first time
 				Widget.SizeRequested += HandleWidgetSizeRequested;
-				Widget.SizeAllocated += HandleWidgetSizeAllocated;;
 			}
 		}
 		
@@ -509,20 +589,28 @@ namespace Xwt.GtkBackend
 					EventsRootWidget.LeaveNotifyEvent -= HandleLeaveNotifyEvent;
 					break;
 				case WidgetEvent.ButtonPressed:
-					EventsRootWidget.Events &= ~Gdk.EventMask.ButtonPressMask;
+					if (!EventsRootWidget.IsRealized)
+						EventsRootWidget.Events &= ~Gdk.EventMask.ButtonPressMask;
 					EventsRootWidget.ButtonPressEvent -= HandleButtonPressEvent;
 					break;
 				case WidgetEvent.ButtonReleased:
-					EventsRootWidget.Events &= Gdk.EventMask.ButtonReleaseMask;
+					if (!EventsRootWidget.IsRealized)
+						EventsRootWidget.Events &= Gdk.EventMask.ButtonReleaseMask;
 					EventsRootWidget.ButtonReleaseEvent -= HandleButtonReleaseEvent;
 					break;
 				case WidgetEvent.MouseMoved:
-					EventsRootWidget.Events &= Gdk.EventMask.PointerMotionMask;
+					if (!EventsRootWidget.IsRealized)
+						EventsRootWidget.Events &= Gdk.EventMask.PointerMotionMask;
 					EventsRootWidget.MotionNotifyEvent -= HandleMotionNotifyEvent;
 					break;
 				case WidgetEvent.BoundsChanged:
 					Widget.SizeAllocated -= HandleWidgetBoundsChanged;
 					break;
+                case WidgetEvent.MouseScrolled:
+					if (!EventsRootWidget.IsRealized)
+						EventsRootWidget.Events &= ~Gdk.EventMask.ScrollMask;
+                    Widget.ScrollEvent -= HandleScrollEvent;
+                    break;
 				}
 				
 				enabledEvents &= ~ev;
@@ -533,142 +621,59 @@ namespace Xwt.GtkBackend
 					EventsRootWidget.DragMotion -= HandleWidgetDragMotion;
 					EventsRootWidget.DragDataReceived -= HandleWidgetDragDataReceived;
 				}
-				if ((ev & sizeCheckEvents) != 0) {
+				if ((ev & WidgetEvent.PreferredSizeCheck) != 0) {
 					DisableSizeCheckEvents ();
+				}
+				if ((ev & WidgetEvent.GotFocus) == 0 && (enabledEvents & WidgetEvent.LostFocus) == 0 && !EventsRootWidget.IsRealized) {
+					EventsRootWidget.Events &= ~Gdk.EventMask.FocusChangeMask;
 				}
 			}
 		}
 		
 		void DisableSizeCheckEvents ()
 		{
-			if ((enabledEvents & sizeCheckEvents) == 0 && !minSizeSet) {
+			if ((enabledEvents & WidgetEvent.PreferredSizeCheck) == 0 && !minSizeSet) {
 				// All size request events have been disabled
 				Widget.SizeRequested -= HandleWidgetSizeRequested;
-				Widget.SizeAllocated -= HandleWidgetSizeAllocated;;
+			}
+		}
+
+		Gdk.Rectangle lastAllocation;
+		void HandleWidgetBoundsChanged (object o, Gtk.SizeAllocatedArgs args)
+		{
+			if (Widget.Allocation != lastAllocation) {
+				lastAllocation = Widget.Allocation;
+				ApplicationContext.InvokeUserCode (delegate {
+					EventSink.OnBoundsChanged ();
+				});
 			}
 		}
 		
-		void HandleWidgetBoundsChanged (object o, Gtk.SizeAllocatedArgs args)
-		{
-			Toolkit.Invoke (delegate {
-				EventSink.OnBoundsChanged ();
-			});
-		}
-		
-		enum SizeCheckStep
-		{
-			SizeRequest,
-			PreAllocate,
-			AdjustSize,
-			FinalAllocate
-		}
-		
-		SizeCheckStep sizeCheckStep = SizeCheckStep.SizeRequest;
-		int realRequestedWidth;
-		int realRequestedHeight;
 		bool gettingPreferredSize;
-		static bool doubleSizeRequestCheckSupported = true;
-		
-		public bool IsPreallocating {
-			get { return sizeCheckStep == SizeCheckStep.AdjustSize || sizeCheckStep == SizeCheckStep.PreAllocate; }
-		}
 
 		void HandleWidgetSizeRequested (object o, Gtk.SizeRequestedArgs args)
 		{
-			if (gettingPreferredSize)
-				return;
-			
 			var req = args.Requisition;
-			
-			if ((enabledEvents & sizeCheckEvents) == 0) {
-				// If no sizing event is set, it means this handler was set because there is a min size.
-				if (Frontend.MinWidth != -1)
-					req.Width = (int) Frontend.MinWidth;
-				if (Frontend.MinHeight != -1)
-					req.Height = (int) Frontend.MinHeight;
-				return;
-			}
-			
-			if (sizeCheckStep == SizeCheckStep.AdjustSize) {
-				req.Width = realRequestedWidth;
-				req.Height = realRequestedHeight;
-				sizeCheckStep = SizeCheckStep.FinalAllocate;
-			}
-			else {
-				Toolkit.Invoke (delegate {
-					if (EventSink.GetSizeRequestMode () == SizeRequestMode.HeightForWidth) {
-						if ((enabledEvents & WidgetEvent.PreferredWidthCheck) != 0) {
-						    var w = eventSink.OnGetPreferredWidth ();
-							req.Width = (int) w.MinSize;
-						}
-						if ((enabledEvents & WidgetEvent.PreferredHeightForWidthCheck) != 0) {
-							if (doubleSizeRequestCheckSupported) {
-								sizeCheckStep = SizeCheckStep.PreAllocate;
-								realRequestedWidth = req.Width; // Store the width, since it will be used in the next iteration
-							} else {
-								var h = eventSink.OnGetPreferredHeightForWidth (req.Width);
-								req.Height = (int) h.MinSize;
-								sizeCheckStep = SizeCheckStep.FinalAllocate;
-							}
-						}
-						else if ((enabledEvents & WidgetEvent.PreferredHeightCheck) != 0) {
-							var h = eventSink.OnGetPreferredHeight ();
-							req.Height = (int) h.MinSize;
-							sizeCheckStep = SizeCheckStep.FinalAllocate;
-						}
-					} else {
-						if ((enabledEvents & WidgetEvent.PreferredHeightCheck) != 0) {
-							var h = eventSink.OnGetPreferredHeight ();
-							req.Height = (int) h.MinSize;
-						}
-						if ((enabledEvents & WidgetEvent.PreferredWidthForHeightCheck) != 0) {
-							if (doubleSizeRequestCheckSupported) {
-								sizeCheckStep = SizeCheckStep.PreAllocate;
-								realRequestedHeight = req.Height; // Store the height, since it will be used in the next iteration
-							} else {
-								var w = eventSink.OnGetPreferredWidthForHeight (req.Height);
-								req.Width = (int) w.MinSize;
-								sizeCheckStep = SizeCheckStep.FinalAllocate;
-							}
-						}
-						else if ((enabledEvents & WidgetEvent.PreferredWidthCheck) != 0) {
-						    var w = eventSink.OnGetPreferredWidth ();
-							req.Width = (int) w.MinSize;
-							sizeCheckStep = SizeCheckStep.FinalAllocate;
-						}
-					}
+
+			if (!gettingPreferredSize && (enabledEvents & WidgetEvent.PreferredSizeCheck) != 0) {
+				SizeConstraint wc = SizeConstraint.Unconstrained, hc = SizeConstraint.Unconstrained;
+				var cp = Widget.Parent as IConstraintProvider;
+				if (cp != null)
+					cp.GetConstraints (Widget, out wc, out hc);
+
+				ApplicationContext.InvokeUserCode (delegate {
+					var w = eventSink.GetPreferredSize (wc, hc);
+					req.Width = (int) w.Width;
+					req.Height = (int) w.Height;
 				});
 			}
-			args.Requisition = req;
-		}
 
-		void HandleWidgetSizeAllocated (object o, Gtk.SizeAllocatedArgs args)
-		{
-			if ((enabledEvents & sizeCheckEvents) == 0) {
-				// If no sizing event is set, it means this handler was set because there is a min size.
-				// In that case, there isn't any thing left to do here
-				return;
-			}
-			
-			Toolkit.Invoke (delegate {
-				if (sizeCheckStep == SizeCheckStep.SizeRequest && (enabledEvents & sizeCheckEvents) != sizeCheckEvents) {
-					var ev = EventSink.GetSizeRequestMode () == SizeRequestMode.HeightForWidth ? WidgetEvent.PreferredWidthCheck | WidgetEvent.PreferredHeightForWidthCheck : WidgetEvent.PreferredHeightCheck | WidgetEvent.PreferredWidthForHeightCheck;
-					// If all size request methods are overriden, the widget's size request won't be called, so this status is correct
-					if ((enabledEvents & ev) != ev)
-						Console.WriteLine ("SizeRequest not called. Should not happen.");
-				}
-				else if (sizeCheckStep == SizeCheckStep.PreAllocate || sizeCheckStep == SizeCheckStep.AdjustSize) {
-					if (EventSink.GetSizeRequestMode () == SizeRequestMode.HeightForWidth) {
-						realRequestedHeight = (int) eventSink.OnGetPreferredHeightForWidth (args.Allocation.Width).MinSize;
-						sizeCheckStep = SizeCheckStep.AdjustSize;
-						Widget.QueueResize ();
-					} else {
-						realRequestedWidth = (int) eventSink.OnGetPreferredWidthForHeight (args.Allocation.Height).MinSize;
-						sizeCheckStep = SizeCheckStep.AdjustSize;
-						Widget.QueueResize ();
-					}
-				}
-			});
+			if (Frontend.MinWidth != -1 && Frontend.MinWidth > req.Width)
+				req.Width = (int) Frontend.MinWidth;
+			if (Frontend.MinHeight != -1 && Frontend.MinHeight > req.Height)
+				req.Height = (int) Frontend.MinHeight;
+
+			args.Requisition = req;
 		}
 
 		[GLib.ConnectBefore]
@@ -683,7 +688,7 @@ namespace Xwt.GtkBackend
 			if ((args.Event.State & Gdk.ModifierType.Mod1Mask) != 0)
 				m |= ModifierKeys.Alt;
 			KeyEventArgs kargs = new KeyEventArgs (k, m, false, (long)args.Event.Time);
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnKeyReleased (kargs);
 			});
 			if (kargs.Handled)
@@ -694,31 +699,41 @@ namespace Xwt.GtkBackend
 		void HandleKeyPressEvent (object o, Gtk.KeyPressEventArgs args)
 		{
 			Key k = (Key)args.Event.KeyValue;
-			ModifierKeys m = ModifierKeys.None;
-			if ((args.Event.State & Gdk.ModifierType.ShiftMask) != 0)
-				m |= ModifierKeys.Shift;
-			if ((args.Event.State & Gdk.ModifierType.ControlMask) != 0)
-				m |= ModifierKeys.Control;
-			if ((args.Event.State & Gdk.ModifierType.Mod1Mask) != 0)
-				m |= ModifierKeys.Alt;
+			ModifierKeys m = args.Event.State.ToXwtValue ();
 			KeyEventArgs kargs = new KeyEventArgs (k, m, false, (long)args.Event.Time);
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnKeyPressed (kargs);
 			});
 			if (kargs.Handled)
 				args.RetVal = true;
 		}
 
+        [GLib.ConnectBefore]
+        void HandleScrollEvent(object o, Gtk.ScrollEventArgs args)
+        {
+			var direction = args.Event.Direction.ToXwtValue ();
+
+            var a = new MouseScrolledEventArgs ((long) args.Event.Time, args.Event.X, args.Event.Y, direction);
+            ApplicationContext.InvokeUserCode (delegate {
+                EventSink.OnMouseScrolled(a);
+            });
+            if (a.Handled)
+                args.RetVal = true;
+        }
+        
+
 		void HandleWidgetFocusOutEvent (object o, Gtk.FocusOutEventArgs args)
 		{
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnLostFocus ();
 			});
 		}
 
-		void HandleWidgetFocusInEvent (object o, Gtk.FocusInEventArgs args)
+		void HandleWidgetFocusInEvent (object o, EventArgs args)
 		{
-			Toolkit.Invoke (delegate {
+			if (!CanGetFocus)
+				return;
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnGotFocus ();
 			});
 		}
@@ -727,7 +742,7 @@ namespace Xwt.GtkBackend
 		{
 			if (args.Event.Detail == Gdk.NotifyType.Inferior)
 				return;
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnMouseExited ();
 			});
 		}
@@ -736,16 +751,15 @@ namespace Xwt.GtkBackend
 		{
 			if (args.Event.Detail == Gdk.NotifyType.Inferior)
 				return;
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnMouseEntered ();
 			});
 		}
 
 		void HandleMotionNotifyEvent (object o, Gtk.MotionNotifyEventArgs args)
 		{
-			var sc = ConvertToScreenCoordinates (new Point (0, 0));
-			var a = new MouseMovedEventArgs ((long) args.Event.Time, args.Event.XRoot - sc.X, args.Event.YRoot - sc.Y);
-			Toolkit.Invoke (delegate {
+			var a = new MouseMovedEventArgs ((long) args.Event.Time, args.Event.X, args.Event.Y);
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnMouseMoved (a);
 			});
 			if (a.Handled)
@@ -758,7 +772,7 @@ namespace Xwt.GtkBackend
 			a.X = args.Event.X;
 			a.Y = args.Event.Y;
 			a.Button = (PointerButton) args.Event.Button;
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnButtonReleased (a);
 			});
 			if (a.Handled)
@@ -771,6 +785,7 @@ namespace Xwt.GtkBackend
 			var a = new ButtonEventArgs ();
 			a.X = args.Event.X;
 			a.Y = args.Event.Y;
+
 			a.Button = (PointerButton) args.Event.Button;
 			if (args.Event.Type == Gdk.EventType.TwoButtonPress)
 				a.MultiplePress = 2;
@@ -778,7 +793,7 @@ namespace Xwt.GtkBackend
 				a.MultiplePress = 3;
 			else
 				a.MultiplePress = 1;
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnButtonPressed (a);
 			});
 			if (a.Handled)
@@ -812,7 +827,7 @@ namespace Xwt.GtkBackend
 				var target = Gtk.Drag.DestFindTarget (EventsRootWidget, context, null);
 				var targetTypes = Util.GetDragTypes (new Gdk.Atom[] { target });
 				DragOverCheckEventArgs da = new DragOverCheckEventArgs (new Point (x, y), targetTypes, cact);
-				Toolkit.Invoke (delegate {
+				ApplicationContext.InvokeUserCode (delegate {
 					EventSink.OnDragOverCheck (da);
 				});
 				ac = da.AllowedAction;
@@ -856,7 +871,7 @@ namespace Xwt.GtkBackend
 			}
 			else {
 				DragCheckEventArgs da = new DragCheckEventArgs (new Point (x, y), Util.GetDragTypes (context.Targets), cda);
-				Toolkit.Invoke (delegate {
+				ApplicationContext.InvokeUserCode (delegate {
 					EventSink.OnDragDropCheck (da);
 				});
 				res = da.Result;
@@ -880,7 +895,7 @@ namespace Xwt.GtkBackend
 
 		void HandleWidgetDragLeave (object o, Gtk.DragLeaveArgs args)
 		{
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				eventSink.OnDragLeave (EventArgs.Empty);
 			});
 		}
@@ -912,20 +927,28 @@ namespace Xwt.GtkBackend
 			
 			DragDropInfo.DragDataRequests--;
 			
-			if (!Util.GetSelectionData (selectionData, DragDropInfo.DragData)) {
+			if (!Util.GetSelectionData (ApplicationContext, selectionData, DragDropInfo.DragData)) {
 				return false;
 			}
 
 			if (DragDropInfo.DragDataRequests == 0) {
 				if (DragDropInfo.DragDataForMotion) {
-					// This is a workaround to what seems to be a mac gtk bug.
-					// Suggested action is set to all when no control key is pressed
+					// If no specific action is set, it means that no key has been pressed.
+					// In that case, use Move or Copy or Link as default (when allowed, in this order).
 					var cact = ConvertDragAction (context.Actions);
-					if (cact == DragDropAction.All)
-						cact = DragDropAction.Move;
-					
+					if (cact != DragDropAction.Copy && cact != DragDropAction.Move && cact != DragDropAction.Link) {
+						if (cact.HasFlag (DragDropAction.Move))
+							cact = DragDropAction.Move;
+						else if (cact.HasFlag (DragDropAction.Copy))
+							cact = DragDropAction.Copy;
+						else if (cact.HasFlag (DragDropAction.Link))
+							cact = DragDropAction.Link;
+						else
+							cact = DragDropAction.None;
+					}
+
 					DragOverEventArgs da = new DragOverEventArgs (DragDropInfo.LastDragPosition, DragDropInfo.DragData, cact);
-					Toolkit.Invoke (delegate {
+					ApplicationContext.InvokeUserCode (delegate {
 						EventSink.OnDragOver (da);
 					});
 					OnSetDragStatus (context, (int)DragDropInfo.LastDragPosition.X, (int)DragDropInfo.LastDragPosition.Y, time, ConvertDragAction (da.AllowedAction));
@@ -935,7 +958,7 @@ namespace Xwt.GtkBackend
 					// Use Context.Action here since that's the action selected in DragOver
 					var cda = ConvertDragAction (context.Action);
 					DragEventArgs da = new DragEventArgs (DragDropInfo.LastDragPosition, DragDropInfo.DragData, cda);
-					Toolkit.Invoke (delegate {
+					ApplicationContext.InvokeUserCode (delegate {
 						EventSink.OnDragDrop (da);
 					});
 					Gtk.Drag.Finish (context, da.Success, cda == DragDropAction.Move, time);
@@ -957,7 +980,7 @@ namespace Xwt.GtkBackend
 				return;
 
 			DragStartData sdata = null;
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				sdata = EventSink.OnDragStarted ();
 			});
 			
@@ -966,8 +989,11 @@ namespace Xwt.GtkBackend
 			
 			DragDropInfo.CurrentDragData = sdata.Data;
 			
-			if (sdata.ImageBackend != null)
-				Gtk.Drag.SetIconPixbuf (args.Context, (Gdk.Pixbuf) sdata.ImageBackend, (int)sdata.HotX, (int)sdata.HotY);
+			if (sdata.ImageBackend != null) {
+				var gi = (GtkImage)sdata.ImageBackend;
+				var img = gi.ToPixbuf (ApplicationContext, Widget);
+				Gtk.Drag.SetIconPixbuf (args.Context, img, (int)sdata.HotX, (int)sdata.HotY);
+			}
 			
 			HandleDragBegin (null, args);
 		}
@@ -1001,9 +1027,11 @@ namespace Xwt.GtkBackend
 			Gdk.DragAction action = ConvertDragAction (sdata.DragAction);
 			DragDropInfo.CurrentDragData = sdata.Data;
 			EventsRootWidget.DragBegin += HandleDragBegin;
-			if (sdata.ImageBackend != null)
-				IconInitializer.Init (EventsRootWidget, (Gdk.Pixbuf) sdata.ImageBackend, sdata.HotX, sdata.HotY);
-			Gtk.Drag.Begin (EventsRootWidget, Util.BuildTargetTable (sdata.Data.DataTypes), action, 1, Gtk.Global.CurrentEvent);
+			if (sdata.ImageBackend != null) {
+				var img = ((GtkImage)sdata.ImageBackend).ToPixbuf (ApplicationContext, Widget);
+				IconInitializer.Init (EventsRootWidget, img, sdata.HotX, sdata.HotY);
+			}
+			Gtk.Drag.Begin (EventsRootWidget, Util.BuildTargetTable (sdata.Data.DataTypes), action, 1, Gtk.Global.CurrentEvent ?? new Gdk.Event (IntPtr.Zero));
 		}
 
 		void HandleDragBegin (object o, Gtk.DragBeginArgs args)
@@ -1046,7 +1074,7 @@ namespace Xwt.GtkBackend
 			EventsRootWidget.DragFailed -= HandleDragFailed;
 			EventsRootWidget.DragDataDelete -= HandleDragDataDelete;
 			EventsRootWidget.DragBegin -= HandleDragBegin; // This event is subscribed only when manualy starting a drag
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				eventSink.OnDragFinished (new DragFinishedEventArgs (delete));
 			});
 		}
@@ -1106,6 +1134,37 @@ namespace Xwt.GtkBackend
 	public interface IGtkWidgetBackend
 	{
 		Gtk.Widget Widget { get; }
+	}
+
+	class WidgetPlacementWrapper: Gtk.Alignment, IConstraintProvider
+	{
+		public WidgetPlacementWrapper (): base (0, 0, 1, 1)
+		{
+		}
+
+		public void UpdatePlacement (Xwt.Widget widget)
+		{
+			LeftPadding = (uint)widget.MarginLeft;
+			RightPadding = (uint)widget.MarginRight;
+			TopPadding = (uint)widget.MarginTop;
+			BottomPadding = (uint)widget.MarginBottom;
+			Xalign = (float) widget.HorizontalPlacement.GetValue ();
+			Yalign = (float) widget.VerticalPlacement.GetValue ();
+			Xscale = (widget.HorizontalPlacement == WidgetPlacement.Fill) ? 1 : 0;
+			Yscale = (widget.VerticalPlacement == WidgetPlacement.Fill) ? 1 : 0;
+		}
+
+		#region IConstraintProvider implementation
+
+		public void GetConstraints (Gtk.Widget target, out SizeConstraint width, out SizeConstraint height)
+		{
+			if (Parent is IConstraintProvider)
+				((IConstraintProvider)Parent).GetConstraints (this, out width, out height);
+			else
+				width = height = SizeConstraint.Unconstrained;
+		}
+
+		#endregion
 	}
 }
 

@@ -26,7 +26,7 @@
 
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 using MonoMac.AppKit;
 using System.Collections.Generic;
 
@@ -37,6 +37,9 @@ namespace Xwt.Mac
 		NSMenuItem item;
 		IMenuItemEventSink eventSink;
 		List<MenuItemEvent> enabledEvents;
+		ApplicationContext context;
+		string label;
+		bool useMnemonic;
 		
 		public MenuItemBackend (): this (new NSMenuItem ())
 		{
@@ -66,17 +69,27 @@ namespace Xwt.Mac
 
 		public string Label {
 			get {
-				return item.Title;
+				return label;
 			}
 			set {
-				item.Title = value;
+				item.Title = UseMnemonic ? value.RemoveMnemonic () : value;
+				label = value;
+			}
+		}
+
+		public bool UseMnemonic {
+			get {
+				return useMnemonic;
+			}
+			set { 
+				useMnemonic = value;
+				Label = label ?? string.Empty;
 			}
 		}
 		
-		public void SetImage (object imageBackend)
+		public void SetImage (ImageDescription image)
 		{
-			var img = (NSImage) imageBackend;
-			item.Image = img;
+			item.Image = image.ToNSImage ();
 		}
 		
 		public bool Visible {
@@ -110,8 +123,9 @@ namespace Xwt.Mac
 		}
 		
 		#region IBackend implementation
-		public void InitializeBackend (object frontend)
+		public void InitializeBackend (object frontend, ApplicationContext context)
 		{
+			this.context = context;
 		}
 
 		public void EnableEvent (object eventId)
@@ -137,7 +151,7 @@ namespace Xwt.Mac
 		
 		void HandleItemActivated (object sender, EventArgs e)
 		{
-			Toolkit.Invoke (delegate {
+			context.InvokeUserCode (delegate {
 				eventSink.OnClicked ();
 			});
 		}

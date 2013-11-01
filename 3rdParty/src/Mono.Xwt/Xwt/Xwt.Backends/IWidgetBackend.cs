@@ -32,12 +32,24 @@ namespace Xwt.Backends
 	public interface IWidgetBackend: IBackend
 	{
 		void Initialize (IWidgetEventSink eventSink);
+
+		/// <summary>
+		/// Releases all resource used by the widget
+		/// </summary>
+		/// <remarks>
+		/// This method is called to free all managed and unmanaged resources held by the backend.
+		/// In general, the backend should destroy the native widget at this point.
+		/// When a widget that has children is disposed, the Dispose method is called on all
+		/// backends of all widgets in the children hierarchy.
+		/// </remarks>
 		void Dispose ();
 		
 		bool Visible { get; set; }
 		bool Sensitive { get; set; }
 		bool CanGetFocus { get; set; }
 		bool HasFocus { get; }
+		double Opacity { get; set; }
+
 		Size Size { get; }
 		Point ConvertToScreenCoordinates (Point widgetCoordinates);
 		
@@ -51,16 +63,14 @@ namespace Xwt.Backends
 		/// Minimum height. If the value is -1, it means no minimum height.
 		/// </param>
 		void SetMinSize (double width, double height);
-		void SetNaturalSize (double width, double height);
+		void SetSizeRequest (double width, double height);
 		
 		void SetFocus ();
 		
 		void UpdateLayout ();
-		WidgetSize GetPreferredWidth ();
-		WidgetSize GetPreferredHeightForWidth (double width);
-		WidgetSize GetPreferredHeight ();
-		WidgetSize GetPreferredWidthForHeight (double height);
-		
+
+		Size GetPreferredSize (SizeConstraint widthConstraint, SizeConstraint heightConstraint);
+
 		object NativeWidget { get; }
 		
 		/// <summary>
@@ -131,13 +141,11 @@ namespace Xwt.Backends
 		void OnButtonReleased (ButtonEventArgs args);
 		void OnMouseMoved (MouseMovedEventArgs args);
 		void OnBoundsChanged ();
+        void OnMouseScrolled(MouseScrolledEventArgs args);
 
 		// Events
-		WidgetSize OnGetPreferredWidth ();
-		WidgetSize OnGetPreferredHeight ();
-		WidgetSize OnGetPreferredHeightForWidth (double width);
-		WidgetSize OnGetPreferredWidthForHeight (double height);
-		
+		Size GetPreferredSize (SizeConstraint widthConstraint = default(SizeConstraint), SizeConstraint heightConstraint = default(SizeConstraint));
+
 		/// <summary>
 		/// Notifies the frontend that the preferred size of this widget has changed
 		/// </summary>
@@ -151,8 +159,7 @@ namespace Xwt.Backends
 		/// a result of clicking on it.
 		/// </remarks>
 		void OnPreferredSizeChanged ();
-		SizeRequestMode GetSizeRequestMode ();
-		
+
 		bool SupportsCustomScrolling ();
 		void SetScrollAdjustments (IScrollAdjustmentBackend horizontal, IScrollAdjustmentBackend vertical);
 		
@@ -169,6 +176,7 @@ namespace Xwt.Backends
 		/// </remarks>
 		Size GetDefaultNaturalSize ();
 	}
+
 	
 	[Flags]
 	public enum WidgetEvent
@@ -180,19 +188,17 @@ namespace Xwt.Backends
 		DragLeave = 1 << 4,
 		KeyPressed = 1 << 5,
 		KeyReleased = 1 << 6,
-		PreferredWidthCheck = 1 << 7,
-		PreferredHeightCheck = 1 << 8,
-		PreferredWidthForHeightCheck = 1 << 9,
-		PreferredHeightForWidthCheck = 1 << 10,
-		GotFocus = 1 << 11,
-		LostFocus = 1 << 12,
-		MouseEntered = 1 << 13,
-		MouseExited = 1 << 14,
-		ButtonPressed = 1 << 15,
-		ButtonReleased = 1 << 16,
-		MouseMoved = 1 << 17,
-		DragStarted = 1 << 18,
-		BoundsChanged = 1 << 19
+		PreferredSizeCheck = 1 << 7,
+		GotFocus = 1 << 8,
+		LostFocus = 1 << 9,
+		MouseEntered = 1 << 10,
+		MouseExited = 1 << 11,
+		ButtonPressed = 1 << 12,
+		ButtonReleased = 1 << 13,
+		MouseMoved = 1 << 14,
+		DragStarted = 1 << 15,
+		BoundsChanged = 1 << 16,
+        MouseScrolled = 1 << 17
 	}
 	
 	public class DragStartData
@@ -203,8 +209,8 @@ namespace Xwt.Backends
 		public object ImageBackend { get; private set; }
 		public double HotX { get; private set; }
 		public double HotY { get; private set; }
-
-        public DragStartData (TransferDataSource data, DragDropAction action, object imageBackend, double hotX, double hotY)
+		
+		public DragStartData (TransferDataSource data, DragDropAction action, object imageBackend, double hotX, double hotY)
 		{
 			Data = data;
 			DragAction = action;

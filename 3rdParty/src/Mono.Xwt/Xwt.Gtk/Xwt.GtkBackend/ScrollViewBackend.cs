@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.GtkBackend
 {
@@ -48,8 +48,12 @@ namespace Xwt.GtkBackend
 			get { return (IScrollViewEventSink)base.EventSink; }
 		}
 
+		Gtk.Widget currentChild;
+
 		public void SetChild (IWidgetBackend child)
 		{
+			RemoveChildPlacement (currentChild);
+
 			if (Widget.Child != null) {
 				if (Widget.Child is Gtk.Bin) {
 					Gtk.Bin vp = (Gtk.Bin) Widget.Child;
@@ -60,7 +64,7 @@ namespace Xwt.GtkBackend
 			
 			if (child != null) {
 				
-				var w = GetWidget (child);
+				var w = currentChild = GetWidgetWithPlacement (child);
 				
 				WidgetBackend wb = (WidgetBackend) child;
 				
@@ -112,7 +116,7 @@ namespace Xwt.GtkBackend
 		[GLib.ConnectBefore]
 		void HandleValueChanged (object sender, EventArgs e)
 		{
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnVisibleRectChanged ();
 			});
 		}
@@ -146,19 +150,19 @@ namespace Xwt.GtkBackend
 		
 		public ScrollPolicy VerticalScrollPolicy {
 			get {
-				return Util.ConvertScrollPolicy (Widget.VscrollbarPolicy);
+				return Widget.VscrollbarPolicy.ToXwtValue ();
 			}
 			set {
-				Widget.VscrollbarPolicy = Util.ConvertScrollPolicy (value);
+				Widget.VscrollbarPolicy = value.ToGtkValue ();
 			}
 		}
 		
 		public ScrollPolicy HorizontalScrollPolicy {
 			get {
-				return Util.ConvertScrollPolicy (Widget.HscrollbarPolicy);
+				return Widget.HscrollbarPolicy.ToXwtValue ();
 			}
 			set {
-				Widget.HscrollbarPolicy = Util.ConvertScrollPolicy (value);
+				Widget.HscrollbarPolicy = value.ToGtkValue ();
 			}
 		}
 	}

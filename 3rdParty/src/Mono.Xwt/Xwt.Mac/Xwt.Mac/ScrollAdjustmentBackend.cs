@@ -27,6 +27,7 @@ using System;
 using Xwt.Backends;
 using MonoMac.AppKit;
 
+
 namespace Xwt.Mac
 {
 	class ScrollAdjustmentBackend: IScrollAdjustmentBackend
@@ -34,9 +35,7 @@ namespace Xwt.Mac
 		bool vertical;
 		NSScrollView scrollView;
 		IScrollAdjustmentEventSink eventSink;
-		double lower;
-		double upper;
-		
+
 		public ScrollAdjustmentBackend (NSScrollView scrollView, bool vertical)
 		{
 			this.vertical = vertical;
@@ -44,7 +43,7 @@ namespace Xwt.Mac
 		}
 
 		#region IBackend implementation
-		public void InitializeBackend (object frontend)
+		public void InitializeBackend (object frontend, ApplicationContext context)
 		{
 		}
 
@@ -68,68 +67,50 @@ namespace Xwt.Mac
 			this.eventSink = eventSink;
 		}
 
+		CustomClipView ClipView {
+			get { return ((CustomClipView)scrollView.ContentView); }
+		}
+
 		public double Value {
 			get {
 				if (vertical)
-					return scrollView.DocumentVisibleRect.Top;
+					return ClipView.CurrentY;
 				else
-					return scrollView.DocumentVisibleRect.Left;
-			}
-			set {
-			}
-		}
-
-		public double LowerValue {
-			get {
-				return lower;
-			}
-			set {
-				lower = value;
-			}
-		}
-
-		public double UpperValue {
-			get {
-				return upper;
-			}
-			set {
-				upper = value;
-			}
-		}
-
-		public double PageIncrement {
-			get {
-				return 10;
-			}
-			set {
-			}
-		}
-
-		public double StepIncrement {
-			get {
-				if (vertical)
-					return scrollView.VerticalLineScroll;
-				else
-					return scrollView.HorizontalLineScroll;
+					return ClipView.CurrentX;
 			}
 			set {
 				if (vertical)
-					scrollView.VerticalLineScroll = (float)value;
+					ClipView.CurrentY = (float)value;
 				else
-					scrollView.HorizontalLineScroll = (float)value;
+					ClipView.CurrentX = (float)value;
 			}
 		}
 
-		public double PageSize {
-			get {
-				if (vertical)
-					return scrollView.DocumentVisibleRect.Height;
-				else
-					return scrollView.DocumentVisibleRect.Width;
-			}
-			set {
-			}
+		public void SetRange (double lowerValue, double upperValue, double pageSize, double pageIncrement, double stepIncrement, double value)
+		{
+			LowerValue = lowerValue;
+			UpperValue = upperValue;
+			PageSize = pageSize;
+			PageIncrement = pageIncrement;
+
+			if (vertical)
+				scrollView.VerticalLineScroll = (float)stepIncrement;
+			else
+				scrollView.HorizontalLineScroll = (float)stepIncrement;
+
+			ClipView.UpdateDocumentSize ();
+			if (Value != value)
+				Value = value;
 		}
+
+		public double LowerValue { get; private set; }
+
+		public double UpperValue { get; private set; }
+
+		public double PageIncrement { get; private set; }
+
+		public double PageSize { get; private set; }
+
 		#endregion
 	}
 }

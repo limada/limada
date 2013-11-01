@@ -28,90 +28,120 @@ using System;
 using System.ComponentModel;
 using System.Collections.Generic;
 using Xwt.Backends;
-using Xwt.Engine;
+
 using Xwt.Drawing;
 using System.Reflection;
 using System.Xaml;
 using System.Linq;
+using System.Windows.Markup;
+using System.Text;
+using System.Globalization;
 
 namespace Xwt
 {
-	public class WidgetSpacing
+	[TypeConverter (typeof(WidgetSpacingValueConverter))]
+	[ValueSerializer (typeof(WidgetSpacingValueSerializer))]
+	public struct WidgetSpacing
 	{
-		ISpacingListener parent;
-		double top, left, right, bottom;
-		
-		internal WidgetSpacing (ISpacingListener parent)
+		static public implicit operator WidgetSpacing (double value)
 		{
-			this.parent = parent;
+			return new WidgetSpacing (value, value, value, value);
 		}
-		
-		void NotifyChanged ()
+
+		public WidgetSpacing (double left = 0, double top = 0, double right = 0, double bottom = 0): this ()
 		{
-			parent.OnSpacingChanged (this);
+			Left = left;
+			Top = top;
+			Bottom = bottom;
+			Right = right;
 		}
-		
-		public double Left {
-			get { return left; }
-			set { left = value; NotifyChanged (); }
-		}
-		
-		public double Bottom {
-			get {
-				return this.bottom;
-			}
-			set {
-				bottom = value; NotifyChanged ();
-			}
-		}
+
+		public double Left { get; internal set; }
+
+		public double Bottom { get; internal set; }
 	
-		public double Right {
-			get {
-				return this.right;
-			}
-			set {
-				right = value; NotifyChanged ();
-			}
-		}
+		public double Right { get; internal set; }
 	
-		public double Top {
-			get {
-				return this.top;
-			}
-			set {
-				top = value; NotifyChanged ();
-			}
-		}
-		
+		public double Top { get; internal set; }
+
 		public double HorizontalSpacing {
-			get { return left + right; }
+			get { return Left + Right; }
 		}
 		
 		public double VerticalSpacing {
-			get { return top + bottom; }
+			get { return Top + Bottom; }
+		}
+
+		public double GetSpacingForOrientation (Orientation orientation)
+		{
+			if (orientation == Orientation.Vertical)
+				return Top + Bottom;
+			else
+				return Left + Right;
+		}
+	}
+
+	
+	class WidgetSpacingValueConverter: TypeConverter
+	{
+		public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+		{
+			return destinationType == typeof(string);
 		}
 		
-		public void Set (double left, double top, double right, double bottom)
+		public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
 		{
-			this.left = left;
-			this.top = top;
-			this.bottom = bottom;
-			this.right = right;
-			NotifyChanged ();
-		}
-		
-		public void SetAll (double padding)
-		{
-			this.left = padding;
-			this.top = padding;
-			this.bottom = padding;
-			this.right = padding;
-			NotifyChanged ();
+			return sourceType == typeof(string);
 		}
 	}
 	
-	public interface ISpacingListener
+	class WidgetSpacingValueSerializer: ValueSerializer
 	{
-		void OnSpacingChanged (WidgetSpacing source);
+		public override bool CanConvertFromString (string value, IValueSerializerContext context)
+		{
+			return true;
+		}
+		
+		public override bool CanConvertToString (object value, IValueSerializerContext context)
+		{
+			return true;
+		}
+		
+		public override string ConvertToString (object value, IValueSerializerContext context)
+		{
+			WidgetSpacing s = (WidgetSpacing) value;
+			if (s.Left == s.Right && s.Right == s.Top && s.Top == s.Bottom)
+				return s.Left.ToString (CultureInfo.InvariantCulture);
+			if (s.Bottom != 0)
+				return s.Left.ToString (CultureInfo.InvariantCulture) + " " + s.Top.ToString (CultureInfo.InvariantCulture) + " " + s.Right.ToString (CultureInfo.InvariantCulture) + " " + s.Bottom.ToString (CultureInfo.InvariantCulture);
+			if (s.Right != 0)
+				return s.Left.ToString (CultureInfo.InvariantCulture) + " " + s.Top.ToString (CultureInfo.InvariantCulture) + " " + s.Right.ToString (CultureInfo.InvariantCulture);
+			return s.Left.ToString (CultureInfo.InvariantCulture) + " " + s.Top.ToString (CultureInfo.InvariantCulture);
+		}
+		
+		public override object ConvertFromString (string value, IValueSerializerContext context)
+		{
+			WidgetSpacing c = new WidgetSpacing ();
+			string[] values = value.Split (new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+			if (values.Length == 0)
+				return c;
+
+			double v;
+			if (double.TryParse (values [0], NumberStyles.Any, CultureInfo.InvariantCulture, out v))
+				c.Left = v;
+
+			if (value.Length == 1) {
+				c.Top = c.Right = c.Bottom = v;
+				return c;
+			}
+
+			if (value.Length >= 2 && double.TryParse (values [1], NumberStyles.Any, CultureInfo.InvariantCulture, out v))
+				c.Top = v;
+			if (value.Length >= 3 && double.TryParse (values [2], NumberStyles.Any, CultureInfo.InvariantCulture, out v))
+				c.Right = v;
+			if (value.Length >= 4 && double.TryParse (values [3], NumberStyles.Any, CultureInfo.InvariantCulture, out v))
+				c.Bottom = v;
+			return c;
+		}
 	}
 }

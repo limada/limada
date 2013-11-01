@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.GtkBackend
 {
@@ -33,6 +33,7 @@ namespace Xwt.GtkBackend
 	{
 		Gtk.Adjustment adjustment;
 		IScrollAdjustmentEventSink eventSink;
+		ApplicationContext context;
 		
 		public Gtk.Adjustment Adjustment {
 			get { return adjustment; }
@@ -48,8 +49,9 @@ namespace Xwt.GtkBackend
 		}
 		
 		#region IBackend implementation
-		public void InitializeBackend (object frontend)
+		public void InitializeBackend (object frontend, ApplicationContext context)
 		{
+			this.context = context;
 			if (adjustment == null)
 				adjustment = new Gtk.Adjustment (0, 0, 0, 0, 0, 0);
 		}
@@ -77,64 +79,29 @@ namespace Xwt.GtkBackend
 
 		void HandleValueChanged (object sender, EventArgs e)
 		{
-			Toolkit.Invoke (delegate {
+			context.InvokeUserCode (delegate {
 				eventSink.OnValueChanged ();
 			});
 		}
 		#endregion
 
 		#region IScrollAdjustmentBackend implementation
+
+		double lowerValue;
+
+		public void SetRange (double lowerValue, double upperValue, double pageSize, double pageIncrement, double stepIncrement, double value)
+		{
+			this.lowerValue = lowerValue;
+			adjustment.SetBounds (0, upperValue - lowerValue, stepIncrement, pageIncrement, pageSize);
+			Value = value;
+		}
+
 		public double Value {
 			get {
-				return adjustment.Value;
+				return lowerValue + adjustment.Value;
 			}
 			set {
-				adjustment.Value = value;
-			}
-		}
-
-		public double LowerValue {
-			get {
-				return adjustment.Lower;
-			}
-			set {
-				adjustment.Lower = value;
-			}
-		}
-
-		public double UpperValue {
-			get {
-				return adjustment.Upper;
-			}
-			set {
-				adjustment.Upper = value;
-			}
-		}
-
-		public double PageIncrement {
-			get {
-				return adjustment.PageIncrement;
-			}
-			set {
-				adjustment.PageIncrement = value;
-			}
-		}
-
-		public double StepIncrement {
-			get {
-				return adjustment.StepIncrement;
-			}
-			set {
-				adjustment.StepIncrement = value;
-			}
-		}
-
-		public double PageSize {
-			get {
-				return adjustment.PageSize;
-			}
-			set {
-				adjustment.PageSize = value;
+				adjustment.Value = value - lowerValue;
 			}
 		}
 		#endregion

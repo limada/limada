@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Xwt.Engine;
+
 using Xwt.WPFBackend.Utilities;
 using SWC = System.Windows.Controls;
 using Xwt.Backends;
@@ -53,6 +53,24 @@ namespace Xwt.WPFBackend
 		public ScrollPolicy HorizontalScrollPolicy {
 			get { return ScrollViewer.GetHorizontalScrollBarVisibility (this.ListView).ToXwtScrollPolicy (); }
 			set { ScrollViewer.SetHorizontalScrollBarVisibility (ListView, value.ToWpfScrollBarVisibility ()); }
+		}
+
+		private bool borderVisible = true;
+		public bool BorderVisible
+		{
+			get { return this.borderVisible; }
+			set
+			{
+				if (this.borderVisible == value)
+					return;
+
+				if (value)
+					ListView.ClearValue (Control.BorderBrushProperty);
+				else
+					ListView.BorderBrush = null;
+
+				this.borderVisible = value;
+			}
 		}
 
 		public bool HeadersVisible {
@@ -180,7 +198,7 @@ namespace Xwt.WPFBackend
 
 		private void OnSelectionChanged (object sender, SelectionChangedEventArgs e)
 		{
-			Toolkit.Invoke (ListViewEventSink.OnSelectionChanged);
+			Context.InvokeUserCode (ListViewEventSink.OnSelectionChanged);
 		}
 
 		private bool headersVisible;

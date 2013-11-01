@@ -25,26 +25,36 @@
 // THE SOFTWARE.
 
 using System;
-using Xwt.Engine;
+
 using Xwt.Backends;
 
 namespace Xwt
 {
 	public abstract class XwtObject: IFrontend
 	{
-		protected object backend;
+		object backend;
+
+		internal Toolkit ToolkitEngine { get; set; }
 		
-		protected XwtObject (object backend)
+		protected XwtObject (object backend): this (backend, Toolkit.CurrentEngine)
+		{
+		}
+		
+		protected XwtObject (object backend, Toolkit toolkit)
 		{
 			this.backend = backend;
+            ToolkitEngine = toolkit;
 		}
 
 		protected XwtObject ()
 		{
+			ToolkitEngine = Toolkit.CurrentEngine;
 		}
 
-		protected abstract IBackendHandler BackendHandler { get; }
-		
+		Toolkit IFrontend.ToolkitEngine {
+			get { return ToolkitEngine; }
+		}
+
 		protected object Backend {
 			get {
 				LoadBackend ();
@@ -59,15 +69,6 @@ namespace Xwt
 			get { return Backend; }
 		}
 
-        WidgetRegistry IFrontend.Registry {
-            get { throw new NotImplementedException(); }
-        }
-
-		object IFrontend.GetBackendForRegistry (WidgetRegistry registry)
-		{
-            return registry.CreateBackend<IBackend>(this.GetType());
-		}
-		
 		protected void LoadBackend ()
 		{
 			if (backend == null) {
@@ -92,6 +93,5 @@ namespace Xwt
 			return w != null ? w.Backend : null;
 		}
 	}
-
 }
 

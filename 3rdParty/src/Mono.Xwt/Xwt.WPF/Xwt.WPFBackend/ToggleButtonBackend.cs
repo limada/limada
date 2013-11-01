@@ -89,7 +89,7 @@ namespace Xwt.WPFBackend
 
 		private void OnButtonToggled (object s, RoutedEventArgs e)
 		{
-			Xwt.Engine.Toolkit.Invoke (EventSink.OnToggled);
+			Context.InvokeUserCode (EventSink.OnToggled);
 		}
 	}
 }

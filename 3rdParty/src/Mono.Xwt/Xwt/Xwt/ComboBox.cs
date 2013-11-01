@@ -25,10 +25,12 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+using System.ComponentModel;
+
 
 namespace Xwt
 {
+	[BackendType (typeof(IComboBoxBackend))]
 	public class ComboBox: Widget
 	{
 		CellViewCollection views;
@@ -76,6 +78,7 @@ namespace Xwt
 			get { return views; }
 		}
 		
+		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public ItemCollection Items {
 			get {
 				if (itemCollection == null) {
@@ -89,9 +92,12 @@ namespace Xwt
 			}
 		}
 		
+		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public IListDataSource ItemsSource {
 			get { return source; }
 			set {
+				BackendHost.ToolkitEngine.ValidateObject (value);
+
 				if (source != null) {
 					source.RowChanged -= HandleModelChanged;
 					source.RowDeleted -= HandleModelChanged;
@@ -100,8 +106,8 @@ namespace Xwt
 				}
 				
 				source = value;
-				Backend.SetSource (source, source is IFrontend ? (IBackend) BackendHost.WidgetRegistry.GetBackend (source) : null);
-				
+				Backend.SetSource (source, source is IFrontend ? (IBackend) Toolkit.GetBackend (source) : null);
+
 				if (source != null) {
 					source.RowChanged += HandleModelChanged;
 					source.RowDeleted += HandleModelChanged;
@@ -115,12 +121,14 @@ namespace Xwt
 		{
 			OnPreferredSizeChanged ();
 		}
-		
+
+		[DefaultValue (-1)]
 		public int SelectedIndex {
 			get { return Backend.SelectedRow; }
 			set { Backend.SelectedRow = value; }
 		}
-		
+
+		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public object SelectedItem {
 			get {
 				if (Backend.SelectedRow == -1)
@@ -128,21 +136,23 @@ namespace Xwt
 				return Items [Backend.SelectedRow];
 			}
 			set {
-				SelectedIndex = Items.IndexOf (value);
+				SelectedIndex = Items.IndexOf (withItem: value);
 			}
 		}
 		
-		public object SelectedText {
+		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		public string SelectedText {
 			get {
 				if (Backend.SelectedRow == -1)
 					return null;
-				return Items [Backend.SelectedRow];
+				return (string)Items.DataSource.GetValue (Backend.SelectedRow, 0);
 			}
 			set {
-				SelectedIndex = Items.IndexOf (value);
+				SelectedIndex = Items.IndexOf (withLabel: value);
 			}
 		}
 		
+		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public Func<int,bool> RowSeparatorCheck {
 			get; set;
 		}

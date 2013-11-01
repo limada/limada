@@ -35,20 +35,39 @@ namespace Xwt.Mac
 {
 	class TextTableCell: NSTextFieldCell, ICellRenderer
 	{
-		TextCellView cellView;
+		ITextCellViewFrontend cellView;
+		
+		public TextTableCell ()
+		{
+		}
 		
 		public TextTableCell (IntPtr p): base (p)
 		{
 		}
 		
-		public TextTableCell (TextCellView cellView)
+		public TextTableCell (ITextCellViewFrontend cellView)
 		{
 			this.cellView = cellView;
 		}
 		
-		public void Fill (ICellSource source, object pos)
+		public CompositeCell CellContainer { get; set; }
+
+		public void Fill ()
 		{
-			StringValue = (string) source.GetValue (pos, cellView.TextField.Index) ?? "";
+			if (cellView.Markup != null)
+				AttributedStringValue = FormattedText.FromMarkup (cellView.Markup).ToAttributedString ();
+			else
+				StringValue = cellView.Text ?? "";
+		}
+		
+		public ICellViewFrontend Frontend {
+			get { return cellView; }
+		}
+
+		public void CopyFrom (object other)
+		{
+			var ob = (TextTableCell)other;
+			cellView = ob.cellView;
 		}
 	}
 }

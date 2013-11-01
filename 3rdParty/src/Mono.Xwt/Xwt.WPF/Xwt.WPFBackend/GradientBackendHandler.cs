@@ -1,4 +1,4 @@
-﻿// 
+// 
 // GradientBackendHandler.cs
 //  
 // Author:
@@ -26,45 +26,45 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+using System.Linq;
+
 using Xwt.Backends;
 using Color = Xwt.Drawing.Color;
-using DrawingColor = System.Drawing.Color;
+using System.Windows.Media;
+using SW = System.Windows;
 
 namespace Xwt.WPFBackend
 {
-	public class GradientBackendHandler
-		: Backend, IGradientBackendHandler
+	public class WpfGradientBackendHandler
+		: GradientBackendHandler
 	{
-		public object CreateLinear (double x0, double y0, double x1, double y1)
+		public override object CreateLinear (double x0, double y0, double x1, double y1)
 		{
-			return new LinearGradient (
-				new PointF ((float) x0, (float) y0),
-				new PointF ((float) x1, (float) y1));
+			return new LinearGradientBrush () {
+				StartPoint = new SW.Point (x0, y0),
+				EndPoint = new SW.Point (x1, y1),
+				MappingMode = BrushMappingMode.Absolute
+			};
 		}
 
-		public void AddColorStop (object backend, double position, Color color)
+		public override void Dispose (object backend)
 		{
-			((GradientBase)backend).ColorStops.Add (new Tuple<double, Color> (position, color));
-		}
-	}
-
-	internal class LinearGradient
-		: GradientBase
-	{
-		public LinearGradient (PointF start, PointF end)
-		{
-			Start = start;
-			End = end;
 		}
 
-		internal readonly PointF Start;
-		internal readonly PointF End;
-	}
+		public override object CreateRadial (double cx0, double cy0, double radius0, double cx1, double cy1, double radius1)
+		{
+			return new RadialGradientBrush () {
+				GradientOrigin = new SW.Point (cx0, cy0),
+				Center = new SW.Point (cx1, cy1),
+				RadiusX = radius1,
+				RadiusY = radius1,
+				MappingMode = BrushMappingMode.Absolute
+			};
+		}
 
-	internal abstract class GradientBase
-	{
-		internal readonly List<Tuple<double, Color>> ColorStops = new List<Tuple<double, Color>> ();
+		public override void AddColorStop (object backend, double position, Color color)
+		{
+			((GradientBrush)backend).GradientStops.Add (new GradientStop (color.ToWpfColor (), position));
+		}
 	}
 }

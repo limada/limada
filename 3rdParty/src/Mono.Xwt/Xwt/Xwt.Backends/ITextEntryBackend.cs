@@ -30,19 +30,23 @@ namespace Xwt.Backends
 	public interface ITextEntryBackend: IWidgetBackend
 	{
 		string Text { get; set; }
+		Alignment TextAlignment { get; set; }
 		string PlaceholderText { get; set; }
 		bool ReadOnly { get; set; }
 		bool ShowFrame { get; set; }
+		bool MultiLine { get; set; }
 	}
 	
 	public interface ITextEntryEventSink: IWidgetEventSink
 	{
 		void OnChanged ();
+		void OnActivated ();
 	}
 	
 	public enum TextEntryEvent
 	{
-		Changed
+		Changed,
+		Activated
 	}
 }
 

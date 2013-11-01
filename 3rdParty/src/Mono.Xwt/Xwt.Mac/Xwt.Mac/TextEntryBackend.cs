@@ -26,11 +26,11 @@
 using System;
 using Xwt.Backends;
 using MonoMac.AppKit;
-using Xwt.Engine;
+
 
 namespace Xwt.Mac
 {
-	public class TextEntryBackend: ViewBackend<NSTextField,ITextEntryEventSink>, ITextEntryBackend
+	public class TextEntryBackend: ViewBackend<NSView,ITextEntryEventSink>, ITextEntryBackend
 	{
 		public TextEntryBackend ()
 		{
@@ -47,11 +47,24 @@ namespace Xwt.Mac
 			if (ViewObject is MacComboBox) {
 				((MacComboBox)ViewObject).SetEntryEventSink (EventSink);
 			} else {
-				ViewObject = new CustomTextField (EventSink);
-				Widget.SizeToFit ();
+				ViewObject = new CustomAlignedContainer (new CustomTextField (EventSink, ApplicationContext));
 			}
+			MultiLine = false;
 		}
 		
+		protected override void OnSizeToFit ()
+		{
+			Container.SizeToFit ();
+		}
+
+		CustomAlignedContainer Container {
+			get { return (CustomAlignedContainer)base.Widget; }
+		}
+
+		public new NSTextField Widget {
+			get { return (NSTextField) Container.Child; }
+		}
+
 		protected override Size GetNaturalSize ()
 		{
 			var s = base.GetNaturalSize ();
@@ -64,7 +77,16 @@ namespace Xwt.Mac
 				return Widget.StringValue;
 			}
 			set {
-				Widget.StringValue = value;
+				Widget.StringValue = value ?? string.Empty;
+			}
+		}
+
+		public Alignment TextAlignment {
+			get {
+				return Widget.Alignment.ToAlignment ();
+			}
+			set {
+				Widget.Alignment = value.ToNSTextAlignment ();
 			}
 		}
 
@@ -94,15 +116,40 @@ namespace Xwt.Mac
 				((NSTextFieldCell) Widget.Cell).PlaceholderString = value;
 			}
 		}
+
+		public bool MultiLine {
+			get {
+				return Widget.Cell.UsesSingleLineMode;
+			}
+			set {
+				if (value) {
+					Widget.Cell.UsesSingleLineMode = false;
+					Widget.Cell.Scrollable = false;
+					Widget.Cell.Wraps = true;
+				} else {
+					Widget.Cell.UsesSingleLineMode = true;
+					Widget.Cell.Scrollable = true;
+					Widget.Cell.Wraps = false;
+				}
+				Container.ExpandVertically = value;
+			}
+		}
+
+		public override void SetFocus ()
+		{
+			Widget.BecomeFirstResponder ();
+		}
 		#endregion
 	}
 	
 	class CustomTextField: NSTextField, IViewObject
 	{
 		ITextEntryEventSink eventSink;
+		ApplicationContext context;
 		
-		public CustomTextField (ITextEntryEventSink eventSink)
+		public CustomTextField (ITextEntryEventSink eventSink, ApplicationContext context)
 		{
+			this.context = context;
 			this.eventSink = eventSink;
 		}
 		
@@ -112,12 +159,12 @@ namespace Xwt.Mac
 			}
 		}
 
-		public Widget Frontend { get; set; }
+		public ViewBackend Backend { get; set; }
 		
 		public override void DidChange (MonoMac.Foundation.NSNotification notification)
 		{
 			base.DidChange (notification);
-			Toolkit.Invoke (delegate {
+			context.InvokeUserCode (delegate {
 				eventSink.OnChanged ();
 			});
 		}

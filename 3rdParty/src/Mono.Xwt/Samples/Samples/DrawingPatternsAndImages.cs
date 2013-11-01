@@ -45,7 +45,8 @@ namespace Samples
 			
 			ctx.SetColor (Colors.Black);
 			// Dashed lines
-			
+
+			ctx.SetLineWidth (2);
 			ctx.SetLineDash (15, 10, 10, 5, 5);
 			ctx.Rectangle (10, 10, 100, 100);
 			ctx.Stroke ();
@@ -53,14 +54,14 @@ namespace Samples
 			
 			// Image
 			var arcColor = new Color (1, 0, 1);
-			ImageBuilder ib = new ImageBuilder (30, 30, ImageFormat.ARGB32);
+			ImageBuilder ib = new ImageBuilder (30, 30);
 			ib.Context.Arc (15, 15, 15, 0, 360);
 			ib.Context.SetColor (arcColor);
 			ib.Context.Fill ();
 			ib.Context.SetColor (Colors.DarkKhaki);
 			ib.Context.Rectangle (0, 0, 5, 5);
 			ib.Context.Fill ();
-			var img = ib.ToImage ();
+			var img = ib.ToVectorImage ();
 			ctx.DrawImage (img, 0, 0);
 			ctx.DrawImage (img, 0, 50, 50, 10);
 			

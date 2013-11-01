@@ -26,13 +26,15 @@
 
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+using Xwt.Drawing;
+
 
 namespace Xwt.GtkBackend
 {
 	public class ButtonBackend: WidgetBackend, IButtonBackend
 	{
 		protected bool ignoreClickEvents;
+		ImageDescription image;
 		
 		public ButtonBackend ()
 		{
@@ -54,13 +56,16 @@ namespace Xwt.GtkBackend
 			get { return (IButtonEventSink)base.EventSink; }
 		}
 		
-		public void SetContent (string label, object imageBackend, ContentPosition position)
-		{
+		public void SetContent (string label, bool useMnemonic, ImageDescription image, ContentPosition position)
+		{			
+			Widget.UseUnderline = useMnemonic;
+			this.image = image;
+
 			if (label != null && label.Length == 0)
 				label = null;
 			
 			Button b = (Button) Frontend;
-			if (label != null && imageBackend == null && b.Type == ButtonType.Normal) {
+			if (label != null && image.Backend == null && b.Type == ButtonType.Normal) {
 				Widget.Label = label;
 				return;
 			}
@@ -75,18 +80,18 @@ namespace Xwt.GtkBackend
 			Gtk.Widget contentWidget = null;
 			
 			Gtk.Widget imageWidget = null;
-			if (imageBackend != null)
-				imageWidget = new Gtk.Image ((Gdk.Pixbuf)imageBackend);
-			
+			if (image.Backend != null)
+				imageWidget = new ImageBox (ApplicationContext, image.WithDefaultSize (Gtk.IconSize.Button));
+
 			if (label != null && imageWidget == null) {
-				contentWidget = new Gtk.Label (label); 
+				contentWidget = new Gtk.Label (label) { UseUnderline = useMnemonic }; 
 			}
 			else if (label == null && imageWidget != null) {
 				contentWidget = imageWidget;
 			}
 			else if (label != null && imageWidget != null) {
 				Gtk.Box box = position == ContentPosition.Left || position == ContentPosition.Right ? (Gtk.Box) new Gtk.HBox (false, 3) : (Gtk.Box) new Gtk.VBox (false, 3);
-				var lab = new Gtk.Label (label);
+				var lab = new Gtk.Label (label) { UseUnderline = useMnemonic };
 				
 				if (position == ContentPosition.Left || position == ContentPosition.Top) {
 					box.PackStart (imageWidget, false, false, 0);
@@ -101,7 +106,8 @@ namespace Xwt.GtkBackend
 			if (b.Type == ButtonType.DropDown) {
 				if (contentWidget != null) {
 					Gtk.HBox box = new Gtk.HBox (false, 3);
-					box.PackStart (contentWidget, true, true, 0);
+					box.PackStart (contentWidget, true, true, 3);
+					box.PackStart (new Gtk.VSeparator (), true, true, 0);
 					box.PackStart (new Gtk.Arrow (Gtk.ArrowType.Down, Gtk.ShadowType.Out), false, false, 0);
 					contentWidget = box;
 				} else
@@ -136,7 +142,7 @@ namespace Xwt.GtkBackend
 		public void SetButtonType (ButtonType type)
 		{
 			Button b = (Button) Frontend;
-			SetContent (b.Label, WidgetRegistry.MainRegistry.GetBackend (b.Image), b.ImagePosition);
+			SetContent (b.Label, b.UseMnemonic, image, b.ImagePosition);
 		}
 		
 		public override void EnableEvent (object eventId)
@@ -162,7 +168,7 @@ namespace Xwt.GtkBackend
 		void HandleWidgetClicked (object sender, EventArgs e)
 		{
 			if (!ignoreClickEvents) {
-				Toolkit.Invoke (delegate {
+				ApplicationContext.InvokeUserCode (delegate {
 					EventSink.OnClicked ();
 				});
 			}

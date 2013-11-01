@@ -27,48 +27,73 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gtk;
+using Xwt.Backends;
 
 namespace Xwt.GtkBackend
 {
 	public static class CellUtil
 	{
-		public static Gtk.CellRenderer CreateCellRenderer (ICellRendererTarget col, object target, CellView view)
+		class CellDataSource: ICellDataSource
 		{
-			if (view is TextCellView) {
-				Gtk.CellRendererText cr = new Gtk.CellRendererText ();
-				col.PackStart (target, cr, false);
-				col.AddAttribute (target, cr, "text", ((TextCellView)view).TextField.Index);
+			TreeIter iter;
+			TreeModel treeModel;
+
+			public CellDataSource (TreeIter iter, TreeModel treeModel)
+			{
+				this.iter = iter;
+				this.treeModel = treeModel;
+			}
+
+			public object GetValue (IDataField field)
+			{
+				return treeModel.GetValue (iter, field.Index);
+			}
+		}
+
+		public static Gtk.CellRenderer CreateCellRenderer (ApplicationContext actx, ICellRendererTarget col, object target, ICellViewFrontend view, Gtk.TreeModel model)
+		{
+			if (view is ITextCellViewFrontend) {
+				var cr = new CustomCellRendererText ((ITextCellViewFrontend)view);
+				col.PackStart (target, cr, true);
+				col.SetCellDataFunc (target, cr, (cell_layout, cell, treeModel, iter) => cr.LoadData (col as TreeViewBackend, treeModel, iter));
 				return cr;
 			}
-			else if (view is CheckBoxCellView) {
-				Gtk.CellRendererToggle cr = new Gtk.CellRendererToggle ();
+			else if (view is ICheckBoxCellViewFrontend) {
+				CustomCellRendererToggle cr = new CustomCellRendererToggle ((ICheckBoxCellViewFrontend)view);
 				col.PackStart (target, cr, false);
-				col.AddAttribute (target, cr, "active", ((CheckBoxCellView)view).ActiveField.Index);
+				col.SetCellDataFunc (target, cr, (cellLayout, cell, treeModel, iter) => cr.LoadData (col as TreeViewBackend, treeModel, iter));
 				return cr;
 			}
-			else if (view is ImageCellView) {
-				Gtk.CellRendererPixbuf cr = new Gtk.CellRendererPixbuf ();
+			else if (view is IImageCellViewFrontend) {
+				CustomCellRendererImage cr = new CustomCellRendererImage (actx, (IImageCellViewFrontend)view);
 				col.PackStart (target, cr, false);
-				col.AddAttribute (target, cr, "pixbuf", ((ImageCellView)view).ImageField.Index);
+				col.SetCellDataFunc (target, cr, (cellLayout, cell, treeModel, iter) => cr.LoadData (col as TreeViewBackend, treeModel, iter));
+				return cr;
+			}
+			else if (view is ICanvasCellViewFrontend) {
+				var cr = new CustomCellRenderer ((ICanvasCellViewFrontend) view);
+				col.PackStart (target, cr, false);
+				col.SetCellDataFunc (target, cr, (cellLayout, cell, treeModel, iter) => cr.LoadData (col as TreeViewBackend, treeModel, iter));
 				return cr;
 			}
 			throw new NotSupportedException ("Unknown cell view type: " + view.GetType ());
 		}
 		
-		public static Gtk.Widget CreateCellRenderer (ICollection<CellView> views)
+		public static Gtk.Widget CreateCellRenderer (ApplicationContext actx, ICollection<CellView> views)
 		{
 			if (views.Count == 1) {
 				Gtk.HBox box = new Gtk.HBox ();
 				foreach (var v in views)
-					box.PackStart (CreateCellRenderer (v), false, false, 0);
+					box.PackStart (CreateCellRenderer (actx, v), false, false, 0);
 				box.ShowAll ();
 				return box;
 			}
 			else
-				return CreateCellRenderer (views.First ());
+				return CreateCellRenderer (actx, views.First ());
 		}
 		
-		public static Gtk.Widget CreateCellRenderer (CellView view)
+		public static Gtk.Widget CreateCellRenderer (ApplicationContext actx, CellView view)
 		{
 			if (view is TextCellView) {
 				Gtk.Label lab = new Gtk.Label ();
@@ -78,6 +103,45 @@ namespace Xwt.GtkBackend
 			}
 			throw new NotImplementedException ();
 		}
+
+		public static void SetModelValue (Gtk.TreeModel store, Gtk.TreeIter it, int column, Type type, object value)
+		{
+			if (type == typeof(ObjectWrapper) && value != null)
+				store.SetValue (it, column, new ObjectWrapper (value));
+			else if (value is string)
+				store.SetValue (it, column, (string)value);
+			else
+				store.SetValue (it, column, value ?? DBNull.Value);
+		}
+
+		public static object GetModelValue (Gtk.TreeModel store, Gtk.TreeIter it, int column)
+		{
+			object val = store.GetValue (it, column);
+			if (val is DBNull)
+				return null;
+			else if (val is ObjectWrapper)
+				return ((ObjectWrapper)val).Object;
+			else
+				return val;
+		}
+
+		public static void SetCurrentEventRow (TreeViewBackend treeBackend, string path)
+		{
+			if (treeBackend != null) {
+				var treeFrontend = (TreeView)treeBackend.Frontend;
+
+				TreePosition toggledItem = null;
+
+				var pathParts = path.Split (':').Select (part => int.Parse (part));
+
+				foreach (int pathPart in pathParts) {
+					toggledItem = treeFrontend.DataSource.GetChild (toggledItem, pathPart);
+				}
+
+				treeBackend.CurrentEventRow = toggledItem;
+			}
+		}
+
 	}
 	
 	public interface ICellRendererTarget
@@ -85,6 +149,8 @@ namespace Xwt.GtkBackend
 		void PackStart (object target, Gtk.CellRenderer cr, bool expand);
 		void PackEnd (object target, Gtk.CellRenderer cr, bool expand);
 		void AddAttribute (object target, Gtk.CellRenderer cr, string field, int column);
+		void SetCellDataFunc (object target, Gtk.CellRenderer cr, Gtk.CellLayoutDataFunc dataFunc);
 	}
+
 }
 

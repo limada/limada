@@ -29,22 +29,23 @@ using MonoMac.AppKit;
 using Xwt.Backends;
 using MonoMac.Foundation;
 
+
 namespace Xwt.Mac
 {
 	public class MenuBackend: NSMenu, IMenuBackend
 	{
-		public void InitializeBackend (object frontend)
+		public void InitializeBackend (object frontend, ApplicationContext context)
 		{
 		}
 
 		public void InsertItem (int index, IMenuItemBackend menuItem)
 		{
-			InsertItematIndex (((MenuItemBackend)menuItem).Item, index);
+			base.InsertItem (((MenuItemBackend)menuItem).Item, index);
 		}
 
 		public void RemoveItem (IMenuItemBackend menuItem)
 		{
-			RemoveItem ((NSMenuItem)menuItem);
+			RemoveItem (((MenuItemBackend)menuItem).Item);
 		}
 		
 		public void SetMainMenuMode ()
@@ -66,12 +67,13 @@ namespace Xwt.Mac
 		
 		public void Popup ()
 		{
-			NSMenu.PopUpContextMenu (this, null, null, null);
+			var evt = NSApplication.SharedApplication.CurrentEvent;
+			NSMenu.PopUpContextMenu (this, evt, evt.Window.ContentView, null);
 		}
 		
 		public void Popup (IWidgetBackend widget, double x, double y)
 		{
-			NSMenu.PopUpContextMenu (this, null, ((IMacViewBackend)widget).View, null);
+			NSMenu.PopUpContextMenu (this, NSApplication.SharedApplication.CurrentEvent, ((ViewBackend)widget).Widget, null);
 		}
 	}
 }

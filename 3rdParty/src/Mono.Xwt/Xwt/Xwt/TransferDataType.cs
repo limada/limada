@@ -31,7 +31,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Xwt.Drawing;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt
 {
@@ -56,12 +56,17 @@ namespace Xwt
 		/// The RTF data type
 		/// </summary>
 		public static readonly TransferDataType Rtf = FromId ("rtf");
-		
+
 		/// <summary>
 		/// The image data type
 		/// </summary>
 		public static readonly TransferDataType Image = FromId ("image");
-		
+
+		/// <summary>
+		/// The HTML data type
+		/// </summary>
+		public static readonly TransferDataType Html = FromId ("html");
+
 		private TransferDataType (string id)
 		{
 			this.id = id;

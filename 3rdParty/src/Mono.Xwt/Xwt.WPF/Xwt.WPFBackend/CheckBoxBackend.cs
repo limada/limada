@@ -28,7 +28,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using Xwt.Backends;
-using Xwt.Engine;
+
 using WindowsCheckBox = System.Windows.Controls.CheckBox;
 
 namespace Xwt.WPFBackend
@@ -44,9 +44,9 @@ namespace Xwt.WPFBackend
 		public void SetContent (IWidgetBackend widget)
 		{
 			if (widget == null)
-				throw new ArgumentNullException ("widget");
-
-			CheckBox.Content = widget.NativeWidget;
+				CheckBox.Content = null;
+			else
+				CheckBox.Content = widget.NativeWidget;
 		}
 
 		public void SetContent (string label)
@@ -54,21 +54,21 @@ namespace Xwt.WPFBackend
 			CheckBox.Content = new TextBlock { Text = label };
 		}
 
-		public bool Active
+		public CheckBoxState State
 		{
-			get { return CheckBox.IsChecked.HasValue && CheckBox.IsChecked.Value; }
-			set { CheckBox.IsChecked = value; }
-		}
-
-		public bool Mixed
-		{
-			get { return !CheckBox.IsChecked.HasValue; }
-			set
-			{
-				if (value)
+			get {
+				if (!CheckBox.IsChecked.HasValue)
+					return CheckBoxState.Mixed;
+				else if (CheckBox.IsChecked.Value)
+					return CheckBoxState.On;
+				else
+					return CheckBoxState.Off;
+			}
+			set {
+				if (value == CheckBoxState.Mixed)
 					CheckBox.IsChecked = null;
 				else
-					CheckBox.IsChecked = false;
+					CheckBox.IsChecked = value == CheckBoxState.On;
 			}
 		}
 
@@ -89,6 +89,7 @@ namespace Xwt.WPFBackend
 
 				case CheckBoxEvent.Toggled:
 					CheckBox.Checked += OnChecked;
+					CheckBox.Unchecked += OnChecked;
 					break;
 				}
 			}
@@ -105,6 +106,7 @@ namespace Xwt.WPFBackend
 
 				case CheckBoxEvent.Toggled:
 					CheckBox.Checked -= OnChecked;
+					CheckBox.Unchecked -= OnChecked;
 					break;
 				}
 			}
@@ -112,12 +114,12 @@ namespace Xwt.WPFBackend
 
 		private void OnChecked (object sender, RoutedEventArgs routedEventArgs)
 		{
-			Toolkit.Invoke (CheckBoxEventSink.OnToggled);
+			Context.InvokeUserCode (CheckBoxEventSink.OnToggled);
 		}
 
 		private void OnClicked (object sender, RoutedEventArgs e)
 		{
-			Toolkit.Invoke (CheckBoxEventSink.OnClicked);
+			Context.InvokeUserCode (CheckBoxEventSink.OnClicked);
 		}
 
 		protected ICheckBoxEventSink CheckBoxEventSink

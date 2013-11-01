@@ -29,11 +29,26 @@ using Xwt;
 
 namespace Xwt.Backends
 {
-	public interface IWindowBackend: IWindowFrameBackend
+	public interface IWindowBackend: IWindowFrameBackend, IChildPlacementHandler
 	{
 		void SetChild (IWidgetBackend child);
 		void SetMainMenu (IMenuBackend menu);
 		void SetPadding (double left, double top, double right, double bottom);
+
+		/// <summary>
+		/// Get size information about the window
+		/// </summary>
+		/// <param name="minSize">The minimum size that the content area can have.
+		/// For example, in a dialog the content are must be at least as wide as the width
+		/// of the button bar</param>
+		/// <param name="decorationSize">the size of the decorations around
+		/// the content widget. It should include for example the size required
+		/// by the menu bar, dialog button bar, etc.</param>
+		void GetMetrics (out Size minSize, out Size decorationSize);
+
+		/// <summary>
+		/// Sets the minimum size of the window
+		/// </summary>
 		void SetMinSize (Size size);
 	}
 	

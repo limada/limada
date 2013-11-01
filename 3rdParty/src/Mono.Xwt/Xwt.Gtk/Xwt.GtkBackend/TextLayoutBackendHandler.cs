@@ -28,74 +28,191 @@
 using System;
 using Xwt.Backends;
 using Xwt.Drawing;
-using Xwt.Engine;
+
 using Xwt.CairoBackend;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Xwt.GtkBackend
 {
-	public class TextLayoutBackendHandler: ITextLayoutBackendHandler
+	public class GtkTextLayoutBackendHandler: TextLayoutBackendHandler
 	{
 		static Cairo.Context SharedContext;
 		
 		public double Heigth = -1;
-		
-		static TextLayoutBackendHandler ()
+
+		internal class PangoBackend : IDisposable
 		{
-			Cairo.Surface sf = new Cairo.ImageSurface (Cairo.Format.ARGB32, 1, 1);
-			SharedContext = new Cairo.Context (sf);
-		}
-		
-		public object Create (Context context)
-		{
-			CairoContextBackend c = (CairoContextBackend) GtkEngine.Registry.GetBackend (context);
-			return Pango.CairoHelper.CreateLayout (c.Context);
-		}
-		
-		public object Create (ICanvasBackend canvas)
-		{
-			return Pango.CairoHelper.CreateLayout (SharedContext);
+			Pango.Layout layout;
+			public Pango.Layout Layout {
+				get {
+					if (hasUnassignedAttributes) {
+						attributes.AssignTo (layout);
+						hasUnassignedAttributes = false;
+					}
+					return layout;
+				}
+				set {
+					layout = value;
+				}
+			}
+
+			FastPangoAttrList attributes;
+			bool hasUnassignedAttributes = false;
+			public FastPangoAttrList Attributes {
+				get {
+					if (attributes == null)
+						attributes = new FastPangoAttrList ();
+					hasUnassignedAttributes = true;
+					return attributes;
+				}
+				private set {
+					attributes = value;
+				}
+			}
+
+			string text;
+			public string Text {
+				get {
+					return text;
+				}
+				set {
+					text = value;
+					indexer = null;
+					if (attributes != null) {
+						attributes.Dispose ();
+						attributes = null;
+					}
+				}
+			}
+			
+			TextIndexer indexer;
+			public TextIndexer TextIndexer {
+				get {
+					if (indexer == null)
+						indexer = new TextIndexer (Text);
+					return indexer;
+				}
+			}
+
+			public void ClearAttributes ()
+			{
+				if (attributes != null) {
+					attributes.Dispose ();
+					attributes = new FastPangoAttrList ();
+					hasUnassignedAttributes = true;
+				}
+			}
+
+			public void Dispose ()
+			{
+				if (layout != null) {
+					layout.Dispose ();
+					layout = null;
+				}
+				if (attributes != null) {
+					attributes.Dispose ();
+					attributes = null;
+				}
+			}
 		}
 
-		public void SetText (object backend, string text)
+		static GtkTextLayoutBackendHandler ()
 		{
-			Pango.Layout tl = (Pango.Layout) backend;
-			tl.SetText (text);
+			using (Cairo.Surface sf = new Cairo.ImageSurface (Cairo.Format.ARGB32, 1, 1)) {
+				SharedContext = new Cairo.Context (sf);
+			}
 		}
 
-		public void SetFont (object backend, Xwt.Drawing.Font font)
+		public static void DisposeResources ()
 		{
-			Pango.Layout tl = (Pango.Layout)backend;
-			tl.FontDescription = (Pango.FontDescription)GtkEngine.Registry.GetBackend (font);
+			((IDisposable)SharedContext).Dispose ();
 		}
 		
-		public void SetWidth (object backend, double value)
+		public override object Create ()
 		{
-			Pango.Layout tl = (Pango.Layout)backend;
-			tl.Width = (int) (value * Pango.Scale.PangoScale);
+			return new PangoBackend {
+				Layout = Pango.CairoHelper.CreateLayout (SharedContext)
+			};
+		}
+
+        public override object Create (Context context) {
+            throw new NotImplementedException();
+        }
+
+		public override void SetText (object backend, string text)
+		{
+			var tl = (PangoBackend) backend;
+			tl.Layout.SetText (text);
+			tl.Text = text;
+		}
+
+		public override void SetFont (object backend, Xwt.Drawing.Font font)
+		{
+			var tl = (PangoBackend)backend;
+			tl.Layout.FontDescription = (Pango.FontDescription)Toolkit.GetBackend (font);
 		}
 		
-		public void SetHeight (object backend, double value)
+		public override void SetWidth (object backend, double value)
+		{
+			var tl = (PangoBackend) backend;
+			tl.Layout.Width = (int) (value * Pango.Scale.PangoScale);
+		}
+		
+		public override void SetHeight (object backend, double value)
 		{
 			this.Heigth = value;
 		}
 		
-		public void SetTrimming (object backend, TextTrimming textTrimming)
+		public override void SetTrimming (object backend, TextTrimming textTrimming)
 		{
-			Pango.Layout tl = (Pango.Layout)backend;
+			var tl = (PangoBackend)backend;
 			if (textTrimming == TextTrimming.WordElipsis)
-				tl.Ellipsize = Pango.EllipsizeMode.End;
+				tl.Layout.Ellipsize = Pango.EllipsizeMode.End;
 			if (textTrimming == TextTrimming.Word)
-				tl.Ellipsize = Pango.EllipsizeMode.None;
+				tl.Layout.Ellipsize = Pango.EllipsizeMode.None;
 			
 		}
 		
-		public Size GetSize (object backend)
+		public override Size GetSize (object backend)
 		{
-			Pango.Layout tl = (Pango.Layout) backend;
+			var tl = (PangoBackend)backend;
 			int w, h;
-			tl.GetPixelSize (out w, out h);
+			tl.Layout.GetPixelSize (out w, out h);
 			return new Size ((double)w, (double)h);
+		}
+
+		public override void AddAttribute (object backend, TextAttribute attribute)
+		{
+			var tl = (PangoBackend) backend;
+			tl.Attributes.AddAttribute (tl.TextIndexer, attribute);
+		}
+
+		public override void ClearAttributes (object backend)
+		{
+			var tl = (PangoBackend) backend;
+			tl.ClearAttributes ();
+		}
+
+		public override int GetIndexFromCoordinates (object backend, double x, double y)
+		{
+			var tl = (PangoBackend) backend;
+			int index, trailing;
+			tl.Layout.XyToIndex ((int)x, (int)y, out index, out trailing);
+			return tl.TextIndexer.ByteIndexToIndex (index);
+		}
+
+		public override Point GetCoordinateFromIndex (object backend, int index)
+		{
+			var tl = (PangoBackend) backend;
+			var pos = tl.Layout.IndexToPos (tl.TextIndexer.IndexToByteIndex (index));
+			return new Point (pos.X / Pango.Scale.PangoScale, pos.Y / Pango.Scale.PangoScale);
+		}
+
+		public override void Dispose (object backend)
+		{
+			var tl = (IDisposable) backend;
+			tl.Dispose ();
 		}
 	}
 }
-

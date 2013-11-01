@@ -28,7 +28,8 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 using Xwt.Drawing;
-using Xwt.Engine;
+using Xwt.Backends;
+
 
 namespace Xwt.WPFBackend.Utilities
 {
@@ -41,7 +42,7 @@ namespace Xwt.WPFBackend.Utilities
 			if (image == null)
 				return null;
 
-            return DataConverter.AsImageSource(WPFEngine.Registry.GetBackend(image));
+			return image.ToImageDescription ();
 		}
 
 		public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)

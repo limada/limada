@@ -6,28 +6,41 @@
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B7C1673E-5124-4BE5-8D21-EC8B12F85B6B}</ProjectGuid>
-    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>Xwt.Mac</RootNamespace>
     <AssemblyName>Xwt.Mac</AssemblyName>
+    <SuppressXamMacMigration>True</SuppressXamMacMigration>
+    <UseMSBuildEngine>False</UseMSBuildEngine>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <ConsolePause>False</ConsolePause>
+    <EnableCodeSigning>False</EnableCodeSigning>
+    <CreatePackage>False</CreatePackage>
+    <EnablePackageSigning>False</EnablePackageSigning>
+    <IncludeMonoRuntime>False</IncludeMonoRuntime>
+    <UseSGen>False</UseSGen>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <ConsolePause>False</ConsolePause>
+    <EnableCodeSigning>False</EnableCodeSigning>
+    <CreatePackage>False</CreatePackage>
+    <EnablePackageSigning>False</EnablePackageSigning>
+    <IncludeMonoRuntime>False</IncludeMonoRuntime>
+    <UseSGen>False</UseSGen>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -37,7 +50,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="MonoMac">
     </Reference>
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -89,9 +101,33 @@
     <Compile Include="Xwt.Mac\ProgressBarBackend.cs" />
     <Compile Include="Xwt.Mac\SpinButtonBackend.cs" />
     <Compile Include="Xwt.Mac\ExpanderBackend.cs" />
+    <Compile Include="Xwt.Mac\SpinnerBackend.cs" />
+    <Compile Include="Xwt.Mac\PopoverBackend.cs" />
+    <Compile Include="Xwt.Mac\LinkLabelBackend.cs" />
+    <Compile Include="Xwt.Mac\FileDialogBackend.cs" />
+    <Compile Include="Xwt.Mac\SelectFolderDialogBackend.cs" />
+    <Compile Include="Xwt.Mac\OpenFileDialogBackend.cs" />
+    <Compile Include="Xwt.Mac\MacClipboardBackend.cs" />
+    <Compile Include="Xwt.Mac\PathBackendHandler.cs" />
+    <Compile Include="Xwt.Mac\CustomWidgetBackend.cs" />
+    <Compile Include="Xwt.Mac\MacDesktopBackend.cs" />
+    <Compile Include="Xwt.Mac\MenuButtonBackend.cs" />
+    <Compile Include="Xwt.Mac.CellViews\CanvasTableCell.cs" />
+    <Compile Include="Xwt.Mac\ListBoxBackend.cs" />
+    <Compile Include="Xwt.Mac\DialogBackend.cs" />
+    <Compile Include="Xwt.Mac\MacSystemInformation.cs" />
+    <Compile Include="Xwt.Mac\RichTextViewBackend.cs" />
+    <Compile Include="Xwt.Mac\RadioButtonBackend.cs" />
+    <Compile Include="Xwt.Mac\ScrollbarBackend.cs" />
+    <Compile Include="Xwt.Mac\DatePickerBackend.cs" />
+    <Compile Include="Xwt.Mac\SliderBackend.cs" />
+    <Compile Include="Xwt.Mac.CellViews\CheckBoxTableCell.cs" />
+    <Compile Include="Xwt.Mac\EmbedNativeWidgetBackend.cs" />
+    <Compile Include="Xwt.Mac\MacKeyboardHandler.cs" />
+    <Compile Include="Xwt.Mac\PasswordEntryBackend.cs" />
   </ItemGroup>
+  <Import Project="..\BuildHelpers.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
@@ -103,14 +139,6 @@
     <Folder Include="Xwt.Mac.CellViews\" />
     <Folder Include="icons\" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="icons\magnifier-zoom-in.png">
-      <LogicalName>magnifier-zoom-in.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="icons\magnifier-zoom-out.png">
-      <LogicalName>magnifier-zoom-out.png</LogicalName>
-    </EmbeddedResource>
-  </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
@@ -120,4 +148,18 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <EmbeddedResource Include="icons\zoom-in.png">
+      <LogicalName>zoom-in.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="icons\zoom-in%402x.png">
+      <LogicalName>zoom-in@2x.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="icons\zoom-out.png">
+      <LogicalName>zoom-out.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="icons\zoom-out%402x.png">
+      <LogicalName>zoom-out@2x.png</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

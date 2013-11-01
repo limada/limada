@@ -25,50 +25,96 @@
 // THE SOFTWARE.
 
 using System;
-using System.Reflection;
 using Xwt.Backends;
-using Xwt.Engine;
+
+using System.Threading.Tasks;
 
 namespace Xwt
 {
 	public static class Application
 	{
-		static EngineBackend engine;
-		
-		internal static EngineBackend EngineBackend {
-			get { return engine; }
+		static Toolkit toolkit;
+		static ToolkitEngineBackend engine;
+		static UILoop mainLoop;
+
+		public static TaskScheduler UITaskScheduler {
+			get { return Toolkit.CurrentEngine.Scheduler; }
 		}
-		
+
+		public static UILoop MainLoop {
+			get { return mainLoop; }
+		}
+
+		internal static System.Threading.Thread UIThread {
+			get;
+			private set;
+		}
+
 		public static void Initialize ()
 		{
 			if (engine != null)
 				return;
-			InitBackend (null);
-			engine.InitializeApplication ();
-			engine.InitializeRegistry (WidgetRegistry.MainRegistry);
+			Initialize (null);
 		}
 		
+		public static void Initialize (ToolkitType type)
+		{
+			Initialize (Toolkit.GetBackendType (type));
+		}
+
 		public static void Initialize (string backendType)
 		{
-			InitBackend (backendType);
-			engine.InitializeApplication ();
-			engine.InitializeRegistry (WidgetRegistry.MainRegistry);
+			if (engine != null)
+				return;
+
+			toolkit = Toolkit.Load (backendType, false);
+			toolkit.SetActive ();
+			engine = toolkit.Backend;
+			mainLoop = new UILoop (toolkit);
+
+			UIThread = System.Threading.Thread.CurrentThread;
+
+			toolkit.EnterUserCode ();
 		}
 		
+		public static void InitializeAsGuest (ToolkitType type)
+		{
+			Initialize (type);
+			toolkit.ExitUserCode (null);
+		}
+		
+		public static void InitializeAsGuest (string backendType)
+		{
+			Initialize (backendType);
+			toolkit.ExitUserCode (null);
+		}
+
 		public static void Run ()
 		{
-			Toolkit.InvokePlatformCode (delegate {
+			toolkit.InvokePlatformCode (delegate {
 				engine.RunApplication ();
 			});
 		}
 		
 		public static void Exit ()
 		{
-			Toolkit.InvokePlatformCode (delegate {
+			toolkit.InvokePlatformCode (delegate {
 				engine.ExitApplication ();
 			});
 		}
-			/// <summary>
+
+		/// <summary>
+		/// Releases all resource used by the application
+		/// </summary>
+		/// <remarks>This method must be called before the application process ends</remarks>
+		public static void Dispose ()
+		{
+			ResourceManager.Dispose ();
+			Toolkit.DisposeAll ();
+		}
+
+
+		/// <summary>
 		/// Invokes an action in the GUI thread
 		/// </summary>
 		/// <param name='action'>
@@ -76,13 +122,16 @@ namespace Xwt
 		/// </param>
 		public static void Invoke (Action action)
 		{
+			if (action == null)
+				throw new ArgumentNullException ("action");
+
 			engine.InvokeAsync (delegate {
 				try {
-					Toolkit.EnterUserCode ();
+					toolkit.EnterUserCode ();
 					action ();
-					Toolkit.ExitUserCode (null);
+					toolkit.ExitUserCode (null);
 				} catch (Exception ex) {
-					Toolkit.ExitUserCode (ex);
+					toolkit.ExitUserCode (ex);
 				}
 			});
 		}
@@ -104,6 +153,11 @@ namespace Xwt
 		/// </remarks>
 		public static IDisposable TimeoutInvoke (int ms, Func<bool> action)
 		{
+			if (action == null)
+				throw new ArgumentNullException ("action");
+			if (ms < 0)
+				throw new ArgumentException ("ms can't be negative");
+
 			return TimeoutInvoke (TimeSpan.FromMilliseconds (ms), action);
 		}
 		
@@ -124,25 +178,32 @@ namespace Xwt
 		/// </remarks>
 		public static IDisposable TimeoutInvoke (TimeSpan timeSpan, Func<bool> action)
 		{
+			if (action == null)
+				throw new ArgumentNullException ("action");
+			if (timeSpan.Ticks < 0)
+				throw new ArgumentException ("timeSpan can't be negative");
+
 			Timer t = new Timer ();
 			t.Id = engine.TimerInvoke (delegate {
 				bool res = false;
 				try {
-					Toolkit.EnterUserCode ();
+					toolkit.EnterUserCode ();
 					res = action ();
-					Toolkit.ExitUserCode (null);
+					toolkit.ExitUserCode (null);
 				} catch (Exception ex) {
-					Toolkit.ExitUserCode (ex);
+					toolkit.ExitUserCode (ex);
 				}
 				return res;
 			}, timeSpan);
 			return t;
 		}
-		
+
 		public static StatusIcon CreateStatusIcon ()
 		{
 			return new StatusIcon ();
 		}
+
+		public static event EventHandler<ExceptionEventArgs> UnhandledException;
 		
 		class Timer: IDisposable
 		{
@@ -152,50 +213,56 @@ namespace Xwt
 				Application.engine.CancelTimerInvoke (Id);
 			}
 		}
-		
-		static bool LoadBackend (string type)
-		{
-			int i = type.IndexOf (',');
-			string assembly = type.Substring (i+1).Trim ();
-			type = type.Substring (0, i).Trim ();
-			try {
-				Assembly asm = Assembly.Load (assembly);
-				if (asm != null) {
-					Type t = asm.GetType (type);
-					if (t != null) {
-						engine = (EngineBackend) Activator.CreateInstance (t);
-						return true;
-					}
-				}
-			}
-			catch (Exception ex) {
-				Console.WriteLine (ex);
-			}
-			return false;
-		}
-		
-		static void InitBackend (string type)
-		{
-			Toolkit.EnterUserCode ();
-			if (type != null && LoadBackend (type))
-				return;
-			
-			if (LoadBackend ("Xwt.GtkBackend.GtkEngine, Xwt.Gtk, Version=1.0.0.0"))
-				return;
-			
-			if (LoadBackend ("Xwt.Mac.MacEngine, Xwt.Mac, Version=1.0.0.0"))
-				return;
-			
-			if (LoadBackend ("Xwt.WPFBackend.WPFEngine, Xwt.WPF, Version=1.0.0.0"))
-				return;
-			
-			throw new InvalidOperationException ("Xwt engine not found");
-		}
-		
+
 		internal static void NotifyException (Exception ex)
 		{
-			Console.WriteLine (ex);
+			var unhandledException = UnhandledException;
+			if (unhandledException != null)
+			{
+				unhandledException (null, new ExceptionEventArgs (ex));
+			}
+			else
+			{
+				Console.WriteLine (ex);
+			}
 		}
+	}
+
+	public class UILoop
+	{
+		Toolkit toolkit;
+
+		internal UILoop (Toolkit toolkit)
+		{
+			this.toolkit = toolkit;
+		}
+
+		public void DispatchPendingEvents ()
+		{
+			try {
+				toolkit.ExitUserCode (null);
+				toolkit.Backend.DispatchPendingEvents ();
+			} finally {
+				toolkit.EnterUserCode ();
+			}
+		}
+
+		public void QueueExitAction (Action action)
+		{
+			if (action == null)
+				throw new ArgumentNullException ("action");
+			toolkit.QueueExitAction (action);
+		}
+	}
+
+
+	public enum ToolkitType
+	{
+		Other = 0,
+        Gtk = 1,
+		Cocoa = 2,
+		Wpf = 3,
+		XamMac = 4
 	}
 }
 

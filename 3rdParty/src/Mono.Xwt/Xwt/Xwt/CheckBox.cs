@@ -26,9 +26,12 @@
 using System;
 using System.ComponentModel;
 using Xwt.Backends;
+using System.Windows.Markup;
 
 namespace Xwt
 {
+	[BackendType (typeof(ICheckBoxBackend))]
+	[ContentProperty("Content")]
 	public class CheckBox: Widget
 	{
 		Widget content;
@@ -50,15 +53,17 @@ namespace Xwt
 		
 		static CheckBox ()
 		{
-			MapEvent (ButtonEvent.Clicked, typeof(CheckBox), "OnClicked");
+			MapEvent (CheckBoxEvent.Clicked, typeof(CheckBox), "OnClicked");
+			MapEvent (CheckBoxEvent.Toggled, typeof(CheckBox), "OnToggled");
 		}
 		
 		public CheckBox ()
 		{
 		}
 		
-		public CheckBox (string label): this ()
+		public CheckBox (string label)
 		{
+			VerifyConstructorCall (this);
 			Label = label;
 		}
 		
@@ -80,7 +85,8 @@ namespace Xwt
 				OnPreferredSizeChanged ();
 			}
 		}
-		
+
+		[DefaultValue (null)]
 		public new Widget Content {
 			get { return content; }
 			set {
@@ -96,14 +102,18 @@ namespace Xwt
 		
 		[DefaultValue (false)]
 		public bool Active {
-			get { return Backend.Active; }
-			set { Backend.Active = value; }
+			get { return State == CheckBoxState.On;}
+			set { State = value.ToCheckBoxState (); }
 		}
 		
 		[DefaultValue (false)]
-		public bool Mixed {
-			get { return Backend.Mixed; }
-			set { Backend.Mixed = value; }
+		public CheckBoxState State {
+			get { return Backend.State; }
+			set {
+				if (!value.IsValid ())
+					throw new ArgumentOutOfRangeException ("Invalid check box state value");
+				Backend.State = value;
+			}
 		}
 		
 		[DefaultValue (false)]

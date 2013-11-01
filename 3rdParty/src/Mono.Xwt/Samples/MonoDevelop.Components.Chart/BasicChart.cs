@@ -68,14 +68,13 @@ namespace MonoDevelop.Components.Chart
 		
 		ChartCursor selectionStart;
 		ChartCursor selectionEnd;
-
-	    private Font chartFont = null;
+		
+		Font chartFont = Font.FromName ("Tahoma 8");
 
 		
 		public BasicChart ()
 		{
-            chartFont = Font.FromName(this.BackendHost.WidgetRegistry,"Tahoma", 8);
-            selectionStart = new ChartCursor ();
+			selectionStart = new ChartCursor ();
 			selectionStart.Visible = false;
 			selectionEnd = new ChartCursor ();
 			selectionEnd.Visible = false;
@@ -500,7 +499,7 @@ namespace MonoDevelop.Components.Chart
 			TextLayout layout = null;
 			
 			if (showLabels) {
-				layout = new TextLayout (ctx);
+				layout = new TextLayout ();
 				layout.Font = chartFont;
 			}
 			
@@ -646,7 +645,7 @@ namespace MonoDevelop.Components.Chart
 		double MeasureTicksSize (Context ctx, TickEnumerator e, AxisDimension ad)
 		{
 			double max = 0;
-			TextLayout layout = new TextLayout (ctx);
+			TextLayout layout = new TextLayout ();
 			layout.Font = chartFont;
 			
 			double start = GetStart (ad);
@@ -754,7 +753,7 @@ namespace MonoDevelop.Components.Chart
 				}
 				
 				if (text != null && text.Length > 0) {
-					TextLayout layout = new TextLayout (ctx);
+					TextLayout layout = new TextLayout ();
 					layout.Font = chartFont;
 					layout.Text = text;
 					

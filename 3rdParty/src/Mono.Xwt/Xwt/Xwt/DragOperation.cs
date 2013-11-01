@@ -31,7 +31,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Xwt.Drawing;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt
 {
@@ -73,6 +73,7 @@ namespace Xwt
 		{
 			if (started)
 				throw new InvalidOperationException ("The drag image must be set before starting the drag operation");
+			source.Surface.ToolkitEngine.ValidateObject (image);
 			this.image = image;
 			this.hotX = hotX;
 			this.hotY = hotY;
@@ -94,7 +95,9 @@ namespace Xwt
 		
 		internal DragStartData GetStartData ()
 		{
-			return new DragStartData (data, action, WidgetRegistry.MainRegistry.GetBackend (image), hotX, hotY);
+			if (image == null)
+				throw new InvalidOperationException ("The drag image must be set before starting the drag operation");
+			return new DragStartData (data, action, image.ToBitmap ().GetBackend (), hotX, hotY);
 		}
 		
 	}

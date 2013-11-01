@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.GtkBackend
 {
@@ -42,7 +42,7 @@ namespace Xwt.GtkBackend
 		
 		public void Load (Widget w)
 		{
-			var wb = (IGtkWidgetBackend) GtkEngine.Registry.GetBackend (w);
+			var wb = (IGtkWidgetBackend) Toolkit.GetBackend (w);
 			box.Add (wb.Widget);
 		}
 	}
@@ -53,6 +53,8 @@ namespace Xwt.GtkBackend
 		
 		public DesignerBox ()
 		{
+			GtkWorkarounds.FixContainerLeak (this);
+
 			surface = new Gtk.EventBox ();
 			surface.ShowAll ();
 			surface.VisibleWindow = false;

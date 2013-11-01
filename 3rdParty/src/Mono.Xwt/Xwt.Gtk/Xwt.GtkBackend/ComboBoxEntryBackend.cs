@@ -35,17 +35,10 @@ namespace Xwt.GtkBackend
 		protected override Gtk.Widget CreateWidget ()
 		{
 			var c = new Gtk.ComboBoxEntry ();
-			c.Clear ();
 			entryBackend = new CustomComboEntryBackend ((Gtk.Entry)c.Child);
 			return c;
 		}
-		
-		public override void Initialize ()
-		{
-			base.Initialize ();
-			((Gtk.ComboBoxEntry)Widget).TextColumn = 0;
-		}
-		
+
 		public void SetTextColumn (int column)
 		{
 			((Gtk.ComboBoxEntry)Widget).TextColumn = column;

@@ -33,27 +33,55 @@ namespace Xwt.Mac
 	public class FrameBackend: ViewBackend<NSBox,IFrameEventSink>, IFrameBackend
 	{
 		Color borderColor;
+		NSView currentChild;
 		
 		public override void Initialize ()
 		{
 			ViewObject = new MacFrame ();
-			Widget.ContentViewMargins = new System.Drawing.SizeF (0,0);
-			Widget.SizeToFit ();
 		}
 
 		#region IFrameBackend implementation
 		public void SetFrameType (FrameType type)
 		{
 			switch (type) {
-			case FrameType.WidgetBox: Widget.BoxType = NSBoxType.NSBoxPrimary; break;
-			case FrameType.Custom: Widget.BoxType = NSBoxType.NSBoxCustom; break;
+			case FrameType.WidgetBox:
+				Widget.BoxType = NSBoxType.NSBoxPrimary;
+				Widget.ContentViewMargins = new System.Drawing.SizeF (5,5);
+				break;
+			case FrameType.Custom:
+				Widget.BoxType = NSBoxType.NSBoxCustom;
+				Widget.ContentViewMargins = new System.Drawing.SizeF (0,0);
+				break;
 			}
 		}
 
 		public void SetContent (IWidgetBackend child)
 		{
-			Widget.ContentView = AddMargins ((IMacViewBackend)child, null);
-			Widget.SizeToFit ();
+			if (currentChild != null) {
+				currentChild.RemoveFromSuperview ();
+				currentChild = null;
+			}
+			if (child == null)
+				return;
+
+			var childBackend = (ViewBackend) child;
+
+			currentChild = GetWidget (childBackend);
+
+			var contentView = (NSView)Widget.ContentView;
+			contentView.AddSubview (currentChild);
+			ResetFittingSize ();
+		}
+
+		protected override void OnSizeToFit ()
+		{
+			if (currentChild != null) {
+				var s = ((IViewObject)currentChild).Backend.Frontend.Surface.GetPreferredSize ();
+				var frame = (Frame)Frontend;
+				currentChild.Frame = new System.Drawing.RectangleF (0, 0, (float)s.Width, (float)s.Height);
+				Widget.SizeToFit ();
+				Widget.SetFrameSize (new System.Drawing.SizeF ((float)(Widget.Frame.Width + frame.Padding.HorizontalSpacing), (float)(Widget.Frame.Height + frame.Padding.VerticalSpacing)));
+			}
 		}
 
 		public void SetBorderSize (double left, double right, double top, double bottom)
@@ -62,6 +90,14 @@ namespace Xwt.Mac
 
 		public void SetPadding (double left, double right, double top, double bottom)
 		{
+			var cv = (CustomContentView)Widget.ContentView;
+			cv.UpdatePlacement ();
+		}
+
+		public override void UpdateChildPlacement (IWidgetBackend childBackend)
+		{
+			var cv = (CustomContentView)Widget.ContentView;
+			cv.UpdatePlacement ();
 		}
 
 		public string Label {
@@ -95,8 +131,14 @@ namespace Xwt.Mac
 		#endregion
 	}
 	
-	class MacFrame: NSBox, IViewObject, IViewContainer
+	class MacFrame: NSBox, IViewObject
 	{
+		public MacFrame ()
+		{
+			Title = "";
+			ContentView = new CustomContentView ();
+		}
+
 		#region IViewObject implementation
 		public NSView View {
 			get {
@@ -104,13 +146,33 @@ namespace Xwt.Mac
 			}
 		}
 
-		public Widget Frontend { get; set; }
+		public ViewBackend Backend { get; set; }
 		
 		#endregion
-		
-		void IViewContainer.UpdateChildMargins (IMacViewBackend view)
+	}
+
+	class CustomContentView: NSView
+	{
+		public override bool IsFlipped {
+			get {
+				return true;
+			}
+		}
+		public override void SetFrameSize (System.Drawing.SizeF newSize)
 		{
-			ContentView = FrameBackend.AddMargins (view, (NSView)ContentView);
+			base.SetFrameSize (newSize);
+			UpdatePlacement ();
+		}
+
+		public void UpdatePlacement ()
+		{
+			if (Subviews.Length > 0) {
+				var frame = (Frame) ((IViewObject)Superview).Backend.Frontend;
+				var v = Subviews [0];
+				var r = new Rectangle (frame.PaddingLeft, frame.PaddingTop, Frame.Width - frame.Padding.HorizontalSpacing, Frame.Height - frame.Padding.VerticalSpacing);
+				r = ((IViewObject)v).Backend.Frontend.Surface.GetPlacementInRect (r);
+				v.Frame = r.ToRectangleF ();
+			}
 		}
 	}
 }

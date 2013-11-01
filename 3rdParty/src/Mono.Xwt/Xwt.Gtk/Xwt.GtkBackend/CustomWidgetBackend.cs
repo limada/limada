@@ -47,7 +47,15 @@ namespace Xwt.GtkBackend
 
 		public void SetContent (IWidgetBackend widget)
 		{
-			Widget.Child = GetWidget (widget);
+			var newWidget = GetWidgetWithPlacement (widget);
+			var oldWidget = Widget.Child;
+
+			if (oldWidget == null)
+				Widget.Child = newWidget;
+			else {
+				GtkEngine.ReplaceChild (oldWidget, newWidget);
+				RemoveChildPlacement (oldWidget);
+			}
 		}
 	}
 }

@@ -28,10 +28,11 @@ using System;
 using Xwt.Backends;
 using System.ComponentModel;
 using Xwt.Drawing;
-using Xwt.Engine;
+
 
 namespace Xwt
 {
+	[BackendType (typeof(IMenuItemBackend))]
 	public class MenuItem: XwtComponent, ICellContainer
 	{
 		CellViewCollection cells;
@@ -65,28 +66,62 @@ namespace Xwt
 		
 		public MenuItem ()
 		{
+			if (!IsSeparator)
+				UseMnemonic = true;
 		}
 		
-		public MenuItem (Command command): this ()
+		public MenuItem (Command command)
+		{
+			VerifyConstructorCall (this);
+			LoadCommandProperties (command);
+		}
+		
+		public MenuItem (string label)
+		{
+			VerifyConstructorCall (this);
+			Label = label;
+		}
+
+		protected void LoadCommandProperties (Command command)
 		{
 			Label = command.Label;
-			if (!string.IsNullOrEmpty (command.Icon))
-				Image = Image.FromIcon (BackendHost.WidgetRegistry, command.Icon, IconSize.Small);
-		}
-		
-		public MenuItem (string label): this ()
-		{
-			Label = label;
+			Image = command.Icon;
 		}
 		
 		IMenuItemBackend Backend {
 			get { return (IMenuItemBackend) base.BackendHost.Backend; }
 		}
+
+		bool IsSeparator {
+			get { return this is SeparatorMenuItem; }
+		}
 		
 		[DefaultValue ("")]
 		public string Label {
 			get { return Backend.Label; }
-			set { Backend.Label = value; }
+			set {
+				if (IsSeparator)
+					throw new NotSupportedException ();
+				Backend.Label = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="Xwt.Button"/> uses a mnemonic.
+		/// </summary>
+		/// <value><c>true</c> if it uses a mnemonic; otherwise, <c>false</c>.</value>
+		/// <remarks>
+		/// When set to true, the character after the first underscore character in the Label property value is
+		/// interpreted as the mnemonic for that Label.
+		/// </remarks>
+		[DefaultValue(true)]
+		public bool UseMnemonic { 
+			get { return Backend.UseMnemonic; }
+			set {
+				if (IsSeparator)
+					throw new NotSupportedException ();
+				Backend.UseMnemonic = value;
+			}
 		}
 		
 		[DefaultValue (true)]
@@ -103,7 +138,13 @@ namespace Xwt
 		
 		public Image Image {
 			get { return image; }
-			set { image = value; Backend.SetImage (XwtObject.GetBackend (value)); }
+			set {
+				if (IsSeparator)
+					throw new NotSupportedException ();
+				image = value; 
+				if (!IsSeparator)
+					Backend.SetImage (image != null ? image.ImageDescription : ImageDescription.Null);
+			}
 		}
 		
 		public void Show ()
@@ -127,8 +168,10 @@ namespace Xwt
 		public Menu SubMenu {
 			get { return subMenu; }
 			set {
+				if (IsSeparator)
+					throw new NotSupportedException ();
+				Backend.SetSubmenu ((IMenuBackend)BackendHost.ToolkitEngine.GetSafeBackend (value));
 				subMenu = value;
-				Backend.SetSubmenu ((IMenuBackend)BackendHost.WidgetRegistry.GetBackend (subMenu));
 			}
 		}
 		

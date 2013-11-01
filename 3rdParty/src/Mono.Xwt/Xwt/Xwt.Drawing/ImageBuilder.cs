@@ -26,70 +26,74 @@
 using System;
 using Xwt;
 using Xwt.Backends;
-using Xwt.Engine;
+using System.Collections.Generic;
+
 
 namespace Xwt.Drawing
 {
-    public sealed class ImageBuilder : XwtObject<ImageBuilder, IImageBuilderBackendHandler>, IDisposable
+	public sealed class ImageBuilder: XwtObject, IDisposable
 	{
 		Context ctx;
-	    int width;
-		int height;
+		VectorBackend backend;
+		double width;
+		double height;
 
-        public ImageBuilder (WidgetRegistry registry, int width, int height): this(registry, width, height, ImageFormat.ARGB32) 
-        {
-        }
-
-        public ImageBuilder (WidgetRegistry registry, int width, int height, ImageFormat format): base(registry) 
-  	    {
+		public ImageBuilder (double width, double height)
+		{
+			backend = new VectorContextBackend (ToolkitEngine, width, height);
+			ctx = new Context (backend, ToolkitEngine, ToolkitEngine.VectorImageRecorderContextHandler);
+			ctx.Reset (null);
 			this.width = width;
 			this.height = height;
-			backend = handler.CreateImageBuilder (width, height, format);
-			ctx = new Context (Registry, handler.CreateContext (backend));
-		}
-
-        #region constructors calling MainRegistry
-
-        public ImageBuilder (int width, int height): this(width, height, ImageFormat.ARGB32) 
-        {
-        }
-
-        public ImageBuilder (int width, int height, ImageFormat format): this(WidgetRegistry.MainRegistry, width, height, format) 
-        {
-        }
-
-        #endregion
-
-		public int Width {
-			get { return width; }
 		}
 		
-		public int Height {
+		public double Width {
+			get { return width; } 
+		}
+		
+		public double Height {
 			get { return height; }
 		}
 		
 		public void Dispose ()
 		{
 			ctx.Dispose ();
-			handler.Dispose (backend);
 		}
-		
-		protected override IBackendHandler BackendHandler {
-			get {
-				return handler;
-			}
-		}
-		
+
 		public Context Context {
 			get {
 				return ctx;
 			}
 		}
 		
-		public Image ToImage ()
+		public Image ToVectorImage ()
 		{
-            return new Image(Registry, handler.CreateImage(backend));
+			return new VectorImage (new Size (width, height), backend.ToVectorImageData ());
+		}
+
+		public BitmapImage ToBitmap (ImageFormat format = ImageFormat.ARGB32)
+		{
+			return ToVectorImage ().ToBitmap (format);
+		}
+
+		public BitmapImage ToBitmap (Widget renderTarget, ImageFormat format = ImageFormat.ARGB32)
+		{
+			return ToVectorImage ().ToBitmap (renderTarget, format);
+		}
+
+		public BitmapImage ToBitmap (Window renderTarget, ImageFormat format = ImageFormat.ARGB32)
+		{
+			return ToVectorImage ().ToBitmap (renderTarget, format);
+		}
+
+		public BitmapImage ToBitmap (Screen renderTarget, ImageFormat format = ImageFormat.ARGB32)
+		{
+			return ToVectorImage ().ToBitmap (renderTarget, format);
+		}
+
+		public BitmapImage ToBitmap (double scaleFactor, ImageFormat format = ImageFormat.ARGB32)
+		{
+			return ToVectorImage ().ToBitmap (scaleFactor, format);
 		}
 	}
 }
-

@@ -36,8 +36,6 @@ using System.Windows.Input;
 using SW = System.Windows;
 using SWC = System.Windows.Controls;
 using SWM = System.Windows.Media;
-using SD = System.Drawing;
-using SDI = System.Drawing.Imaging;
 using Xwt.Drawing;
 using Color = Xwt.Drawing.Color;
 using FontStretch = Xwt.Drawing.FontStretch;
@@ -62,11 +60,6 @@ namespace Xwt.WPFBackend
 			return new SW.Rect (rect.X, rect.Y, rect.Width, rect.Height);
 		}
 
-		public static SD.RectangleF ToSDRectF (this Rectangle rect)
-		{
-			return new SD.RectangleF ((float) rect.X, (float) rect.Y, (float) rect.Width, (float) rect.Height);
-		}
-
 		public static Int32Rect ToInt32Rect (this Rectangle rect)
 		{
 			return new Int32Rect ((int) rect.X, (int) rect.Y, (int) rect.Width, (int) rect.Height);
@@ -82,11 +75,6 @@ namespace Xwt.WPFBackend
 			return new SW.Point (point.X, point.Y);
 		}
 
-		public static Size ToXwtSize (this SD.SizeF self)
-		{
-			return new Size (self.Width, self.Height);
-		}
-
 		//
 		// Alignment
 		//
@@ -99,12 +87,30 @@ namespace Xwt.WPFBackend
 			}
 		}
 
+		public static Alignment ToXwtAlignment (this SW.TextAlignment alignment)
+		{
+			switch (alignment) {
+				case SW.TextAlignment.Left: return Alignment.Start;
+				case SW.TextAlignment.Center: return Alignment.Center;
+				default: return Alignment.End;
+			}
+		}
+
 		public static SW.HorizontalAlignment ToWpfAlignment (this Alignment alignment)
 		{
 			switch (alignment) {
 				case Alignment.Start: return SW.HorizontalAlignment.Left;
 				case Alignment.Center: return SW.HorizontalAlignment.Center;
 				default: return SW.HorizontalAlignment.Right;
+			}
+		}
+
+		public static SW.TextAlignment ToTextAlignment (this Alignment alignment)
+		{
+			switch (alignment) {
+				case Alignment.Start: return SW.TextAlignment.Left;
+				case Alignment.Center: return SW.TextAlignment.Center;
+				default: return SW.TextAlignment.Right;
 			}
 		}
 
@@ -134,35 +140,6 @@ namespace Xwt.WPFBackend
 				(byte)(color.Blue * 255.0));
 		}
 
-		public static System.Drawing.Color ToDrawingColor (this Color color)
-		{
-			return System.Drawing.Color.FromArgb (
-				(byte) (color.Alpha * 255.0),
-				(byte) (color.Red * 255.0),
-				(byte) (color.Green * 255.0),
-				(byte) (color.Blue * 255.0));
-		}
-
-		//
-		// Font
-		//
-		public static SD.Font ToDrawingFont (this Font font)
-		{
-			SD.FontStyle style = font.Style.ToDrawingFontStyle ();
-			if (font.Weight > FontWeight.Normal)
-				style |= SD.FontStyle.Bold;
-
-			return new SD.Font (font.Family, (float)font.Size, style);
-		}
-		
-		public static SD.StringTrimming ToDrawingStringTrimming (this Xwt.Drawing.TextTrimming value)
-		{
-			if (value == Xwt.Drawing.TextTrimming.Word) return SD.StringTrimming.Word;
-			if (value == Xwt.Drawing.TextTrimming.WordElipsis) return SD.StringTrimming.EllipsisWord;
-
-			return SD.StringTrimming.Word;
-		}
-		
 		public static FontStyle ToXwtFontStyle (this SW.FontStyle value)
 		{
 			// No, SW.FontStyles is not an enum
@@ -178,19 +155,6 @@ namespace Xwt.WPFBackend
 			if (value == FontStyle.Oblique) return SW.FontStyles.Oblique;
 			
 			return SW.FontStyles.Normal;
-		}
-
-		public static SD.FontStyle ToDrawingFontStyle (this FontStyle value)
-		{
-			switch (value) {
-				case FontStyle.Normal:
-					return SD.FontStyle.Regular;
-				case FontStyle.Italic:
-					return SD.FontStyle.Italic;
-				
-				default:
-					throw new NotImplementedException();
-			}
 		}
 
 		public static FontStretch ToXwtFontStretch (this SW.FontStretch value)
@@ -288,83 +252,18 @@ namespace Xwt.WPFBackend
 			}
 		}
 
-		public static SDI.PixelFormat ToPixelFormat (this ImageFormat self)
-		{
-			switch (self) {
-				case ImageFormat.ARGB32:
-					return SDI.PixelFormat.Format32bppArgb;
-				case ImageFormat.RGB24:
-					return SDI.PixelFormat.Format24bppRgb;
-				default:
-					throw new ArgumentException();
-			}
-		}
-
-		public static SDI.PixelFormat ToPixelFormat (this SW.Media.PixelFormat self)
-		{
-			if (self == SWM.PixelFormats.Rgb24)
-				return SDI.PixelFormat.Format24bppRgb;
-			if (self == SWM.PixelFormats.Bgra32)
-				return SDI.PixelFormat.Format32bppArgb;
-			if (self == SWM.PixelFormats.Pbgra32)
-				return SDI.PixelFormat.Format32bppPArgb;
-			if (self == SWM.PixelFormats.Prgba64)
-				return SDI.PixelFormat.Format64bppPArgb;
-			if (self == SWM.PixelFormats.Indexed1)
-				return SDI.PixelFormat.Format1bppIndexed;
-			if (self == SWM.PixelFormats.Indexed4)
-				return SDI.PixelFormat.Format4bppIndexed;
-			if (self == SWM.PixelFormats.Indexed8)
-				return SDI.PixelFormat.Format8bppIndexed;
-			if (self == SWM.PixelFormats.Gray16)
-				return SDI.PixelFormat.Format16bppGrayScale;
-			if (self == SWM.PixelFormats.Bgr24)
-				return SDI.PixelFormat.Format24bppRgb;
-			if (self == SWM.PixelFormats.Bgr32)
-				return SDI.PixelFormat.Format32bppRgb;
-
-			throw new ArgumentException();
-		}
-
-		public static SD.Bitmap AsBitmap (object backend)
-		{
-			var bmp = backend as SD.Bitmap;
-			if (bmp == null) {
-				var bs = backend as SWM.Imaging.BitmapSource;
-				if (bs != null) {
-					bmp = new SD.Bitmap (bs.PixelWidth, bs.PixelHeight, bs.Format.ToPixelFormat ());
-					SDI.BitmapData data = bmp.LockBits (new System.Drawing.Rectangle (0, 0, bmp.Width, bmp.Height), SDI.ImageLockMode.WriteOnly,
-					                                bmp.PixelFormat);
-					bs.CopyPixels (new Int32Rect (0, 0, bmp.Width, bmp.Height), data.Scan0, data.Height * data.Stride, data.Stride);
-					bmp.UnlockBits (data);
-				}
-			}
-
-			return bmp;
-		}
-
 		[DllImport ("gdi32")]
 		private static extern int DeleteObject (IntPtr o);
 
 		public static SWM.ImageSource AsImageSource (object nativeImage)
 		{
-			var source = nativeImage as SWM.ImageSource;
-			if (source == null) {
-				var bitmap = nativeImage as SD.Bitmap;
-				if (bitmap != null) {
-					IntPtr ptr = bitmap.GetHbitmap ();
+			var source = nativeImage as WpfImage;
+			return source.MainFrame;
+		}
 
-					try {
-						return SW.Interop.Imaging.CreateBitmapSourceFromHBitmap (ptr, IntPtr.Zero, Int32Rect.Empty,
-																	  SWM.Imaging.BitmapSizeOptions.FromEmptyOptions ());
-					}
-					finally {
-						DeleteObject (ptr);
-					}
-				}
-			}
-
-			return source;
+		public static SWM.ImageSource ToImageSource (this Xwt.Backends.ImageDescription img)
+		{
+			return AsImageSource (img.Backend);
 		}
 
 		//
@@ -392,6 +291,7 @@ namespace Xwt.WPFBackend
 		{
 			if (type == TransferDataType.Text) return DataFormats.UnicodeText;
 			if (type == TransferDataType.Rtf) return DataFormats.Rtf;
+			if (type == TransferDataType.Html) return DataFormats.Html;
 			if (type == TransferDataType.Uri) return DataFormats.FileDrop;
 			if (type == TransferDataType.Image) return DataFormats.Bitmap;
 			return type.Id;
@@ -403,6 +303,7 @@ namespace Xwt.WPFBackend
 			if (type == DataFormats.Rtf) return TransferDataType.Rtf;
 			if (type == DataFormats.FileDrop) return TransferDataType.Uri;
 			if (type == DataFormats.Bitmap) return TransferDataType.Image;
+			if (type == DataFormats.Html) return TransferDataType.Html;
 			return TransferDataType.FromId (type);
 		}
 

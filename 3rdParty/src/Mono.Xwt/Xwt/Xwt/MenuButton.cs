@@ -26,10 +26,11 @@
 using System;
 using Xwt.Backends;
 using Xwt.Drawing;
-using Xwt.Engine;
+
 
 namespace Xwt
 {
+	[BackendType (typeof(IMenuButtonBackend))]
 	public class MenuButton: Button
 	{
 		Menu menu;
@@ -49,19 +50,22 @@ namespace Xwt
 			Type = ButtonType.DropDown;
 		}
 		
-		public MenuButton (string label): this ()
+		public MenuButton (string label)
 		{
+			VerifyConstructorCall (this);
 			Label = label;
 		}
 		
-		public MenuButton (Image img, string label): this ()
+		public MenuButton (Image img, string label)
 		{
+			VerifyConstructorCall (this);
 			Label = label;
 			Image = img;
 		}
 		
-		public MenuButton (Image img): this ()
+		public MenuButton (Image img)
 		{
+			VerifyConstructorCall (this);
 			Image = img;
 		}
 		
@@ -86,7 +90,11 @@ namespace Xwt
 		
 		IMenuBackend CreateMenu ()
 		{
-			return ((IMenuBackend)BackendHost.WidgetRegistry.GetBackend (OnCreateMenu()));
+			Menu menu = null;
+			BackendHost.ToolkitEngine.Invoke (delegate {
+				menu = OnCreateMenu();
+			});
+			return ((IMenuBackend)BackendHost.ToolkitEngine.GetSafeBackend (menu));
 		}
 		
 		protected virtual Menu OnCreateMenu ()

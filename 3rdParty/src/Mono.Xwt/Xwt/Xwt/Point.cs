@@ -65,7 +65,14 @@ namespace Xwt {
 		
 		public override int GetHashCode ()
 		{
-			return X.GetHashCode () ^ Y.GetHashCode ();
+			unchecked {
+				return (X.GetHashCode () * 397) ^ Y.GetHashCode ();
+			}
+		}
+
+		public Point Offset (Point offset)
+		{
+			return Offset (offset.X, offset.Y);
 		}
 		
 		public Point Offset (double dx, double dy)
@@ -75,7 +82,15 @@ namespace Xwt {
 			p.Y += dy;
 			return p;
 		}
-		
+
+		public Point Round ()
+		{
+			return new Point (
+				Math.Round (X),
+				Math.Round (Y)
+			);
+		}
+
 		public bool IsEmpty {
 			get {
 				return ((X == 0) && (Y == 0));

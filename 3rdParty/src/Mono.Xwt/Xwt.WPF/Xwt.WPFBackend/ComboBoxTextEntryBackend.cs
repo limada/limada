@@ -30,7 +30,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.WPFBackend
 {
@@ -51,6 +51,12 @@ namespace Xwt.WPFBackend
 		{
 			get { return this.combobox.Text ?? String.Empty; }
 			set { this.combobox.Text = value ?? String.Empty; }
+		}
+
+		public Alignment TextAlignment
+		{
+			get { return DataConverter.ToXwtAlignment (this.combobox.HorizontalContentAlignment); }
+			set { this.combobox.HorizontalContentAlignment = DataConverter.ToWpfAlignment (value); }
 		}
 
 		public string PlaceholderText
@@ -89,6 +95,8 @@ namespace Xwt.WPFBackend
 			}
 		}
 
+		public bool MultiLine { get; set; }
+
 		public override void EnableEvent (object eventId)
 		{
 			base.EnableEvent (eventId);
@@ -122,7 +130,7 @@ namespace Xwt.WPFBackend
 
 		private void OnTextChanged (object sender, EventArgs e)
 		{
-			Toolkit.Invoke (TextEntryEventSink.OnChanged);
+			Context.InvokeUserCode (TextEntryEventSink.OnChanged);
 		}
 
 		private void UpdatePlaceholder (string newPlaceholder, bool focused)

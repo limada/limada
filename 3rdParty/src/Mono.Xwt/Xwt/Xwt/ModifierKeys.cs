@@ -28,13 +28,13 @@ using System;
 namespace Xwt
 {
 	[Flags]
-    public enum ModifierKeys
+	public enum ModifierKeys
 	{
-        None = 0,
-        Alt = 0x1 << 0,
-        Control = 0x1 << 1,
-        Shift = 0x1 << 2,
-        Command = 0x1 << 3
+		None = 0,
+		Alt = 0x1 << 0,
+		Control = 0x1 << 1,
+		Shift = 0x1 << 2,
+		Command = 0x1 << 3
 	}
 }
 

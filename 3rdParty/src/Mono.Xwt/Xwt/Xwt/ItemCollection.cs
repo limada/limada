@@ -50,6 +50,14 @@ namespace Xwt
 			store = new ListStore (labelField, dataField);
 		}
 		
+		internal DataField<string> LabelField {
+			get { return labelField; }
+		}
+
+		internal DataField<object> DataField {
+			get { return dataField; }
+		}
+
 		public void Add (object item, string label)
 		{
 			Add (new ItemWithLabel () { Item = item, Label = label });
@@ -68,13 +76,24 @@ namespace Xwt
 				store.InsertRowBefore (index);
 				store.SetValue (index, labelField, itl.Label);
 				store.SetValue (index, dataField, itl.Item);
-				item = itl.Item;
 			} else {
 				base.InsertItem (index, item);
 				store.InsertRowBefore (index);
 				store.SetValue (index, labelField, item.ToString ());
 				store.SetValue (index, dataField, item);
 			}
+		}
+
+		public int IndexOf (object withItem = null, string withLabel = null)
+		{
+			for (int i = 0; i < Count; i++) {
+				if (withItem != null && withItem.Equals (store.GetValue (i, dataField)))
+					return i;
+				if (withLabel != null && withLabel.Equals (store.GetValue (i, labelField)))
+					return i;
+			}
+
+			return -1;
 		}
 		
 		protected override void RemoveItem (int index)

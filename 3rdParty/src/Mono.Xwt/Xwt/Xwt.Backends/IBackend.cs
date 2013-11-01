@@ -26,11 +26,12 @@
 
 using System;
 
-namespace Xwt
+
+namespace Xwt.Backends
 {
 	public interface IBackend
 	{
-		void InitializeBackend (object frontend);
+		void InitializeBackend (object frontend, ApplicationContext context);
 		void EnableEvent (object eventId);
 		void DisableEvent (object eventId);
 	}

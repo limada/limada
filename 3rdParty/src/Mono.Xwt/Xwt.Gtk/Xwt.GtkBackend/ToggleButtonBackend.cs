@@ -51,7 +51,7 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.GtkBackend
 {
@@ -112,7 +112,7 @@ namespace Xwt.GtkBackend
 		void HandleToggled (object sender, EventArgs e)
 		{
 			ChangeImageIfDisclosure ();
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnToggled ();
 			});
 		}

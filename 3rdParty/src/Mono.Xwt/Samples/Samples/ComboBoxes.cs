@@ -73,7 +73,9 @@ namespace Samples
 			box.PackStart (c3);
 			box.PackStart (la3);
 			c3.SelectionChanged += delegate {
-				la3.Text = "Selected item: " + c3.SelectedItem;
+				la3.Text = string.Format ("Selected item: {0} with label {1}",
+				                          c3.SelectedItem,
+				                          c3.SelectedText);
 			};
 			PackStart (box);
 			
@@ -91,7 +93,12 @@ namespace Samples
 				la4.Text = "Selected text: " + c4.TextEntry.Text;
 			};
 			PackStart (box);
-			
+
+			var c5 = new ComboBoxEntry ();
+			c5.TextEntry.TextAlignment = Alignment.Center;
+			c5.TextEntry.Text = "centered text";
+			PackStart (c5);
+
 			// A complex combobox
 			
 			// Three data fields
@@ -106,15 +113,15 @@ namespace Samples
 			var r = store.AddRow ();
 			store.SetValue (r, textField, "Information");
 			store.SetValue (r, descField, "Icons are duplicated on purpose");
-			store.SetValue (r, imgField, Image.FromIcon (StockIcons.Information, IconSize.Small));
+			store.SetValue (r, imgField, StockIcons.Information);
 			r = store.AddRow ();
 			store.SetValue (r, textField, "Error");
 			store.SetValue (r, descField, "Another item");
-			store.SetValue (r, imgField, Image.FromIcon (StockIcons.Error, IconSize.Small));
+			store.SetValue (r, imgField, StockIcons.Error);
 			r = store.AddRow ();
 			store.SetValue (r, textField, "Warning");
 			store.SetValue (r, descField, "A third item");
-			store.SetValue (r, imgField, Image.FromIcon (StockIcons.Warning, IconSize.Small));
+			store.SetValue (r, imgField, StockIcons.Warning);
 			
 			// Four views to show three data fields
 			cbox.Views.Add (new ImageCellView (imgField));

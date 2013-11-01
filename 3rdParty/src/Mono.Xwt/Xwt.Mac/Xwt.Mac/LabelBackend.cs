@@ -27,45 +27,67 @@
 using System;
 using MonoMac.AppKit;
 using Xwt.Backends;
+using MonoMac.Foundation;
+using MonoMac.ObjCRuntime;
 
 namespace Xwt.Mac
 {
-	public class LabelBackend: ViewBackend<NSTextField,IWidgetEventSink>, ILabelBackend
+	public class LabelBackend: ViewBackend<NSView,IWidgetEventSink>, ILabelBackend
 	{
 		public LabelBackend ()
+			: this (new TextFieldView ())
 		{
-			ViewObject = new TextFieldView ();
+		}
+
+		protected LabelBackend (IViewObject viewObject)
+		{
+			ViewObject = new CustomAlignedContainer ((NSView)viewObject);
 			Widget.Editable = false;
 			Widget.Bezeled = false;
 			Widget.DrawsBackground = false;
-			Widget.SizeToFit ();
 		}
 
-		public string Text {
+		protected override void OnSizeToFit ()
+		{
+			Container.SizeToFit ();
+		}
+
+		CustomAlignedContainer Container {
+			get { return (CustomAlignedContainer)base.Widget; }
+		}
+
+		public new NSTextField Widget {
+			get { return (NSTextField) Container.Child; }
+		}
+
+		public virtual string Text {
 			get {
 				return Widget.StringValue;
 			}
 			set {
-				Widget.StringValue = value;
-				Widget.SizeToFit ();
+				Widget.StringValue = value ?? string.Empty;
+				ResetFittingSize ();
 			}
+		}
+
+		public void SetFormattedText (FormattedText text)
+		{
+			Widget.AllowsEditingTextAttributes = true;
+			Widget.Selectable = true;
+			Widget.AttributedStringValue = text.ToAttributedString ();
+		}
+
+		public Xwt.Drawing.Color TextColor {
+			get { return Widget.TextColor.ToXwtColor (); }
+			set { Widget.TextColor = value.ToNSColor (); }
 		}
 		
 		public Alignment TextAlignment {
 			get {
-				switch (Widget.Alignment) {
-				case NSTextAlignment.Left: return Alignment.Start;
-				case NSTextAlignment.Center: return Alignment.Center;
-				case NSTextAlignment.Right: return Alignment.End;
-				}
-				return Alignment.Start;
+				return Widget.Alignment.ToAlignment ();
 			}
 			set {
-				switch (value) {
-				case Alignment.Start: Widget.Alignment = NSTextAlignment.Left; break;
-				case Alignment.Center: Widget.Alignment = NSTextAlignment.Center; break;
-				case Alignment.End: Widget.Alignment = NSTextAlignment.Right; break;
-				}
+				Widget.Alignment = value.ToNSTextAlignment ();
 			}
 		}
 		
@@ -95,13 +117,105 @@ namespace Xwt.Mac
 				Widget.DrawsBackground = true;
 			}
 		}
+
+		// FIXME: technically not possible if we keep NSTextField
+		// as the backend because it's one-line only
+		public WrapMode Wrap {
+			get {
+				if (!Widget.Cell.Wraps)
+					return WrapMode.None;
+				switch (Widget.Cell.LineBreakMode) {
+				case NSLineBreakMode.ByWordWrapping:
+					return WrapMode.Word;
+				case NSLineBreakMode.CharWrapping:
+					return WrapMode.Character;
+				default:
+					return WrapMode.None;
+				}
+			}
+			set {
+				if (value == WrapMode.None) {
+					Widget.Cell.Wraps = false;
+				} else {
+					Widget.Cell.Wraps = true;
+					switch (value) {
+					case WrapMode.Word:
+					case WrapMode.WordAndCharacter:
+						Widget.Cell.LineBreakMode = NSLineBreakMode.ByWordWrapping;
+						break;
+					case WrapMode.Character:
+						Widget.Cell.LineBreakMode = NSLineBreakMode.CharWrapping;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	sealed class CustomAlignedContainer: NSView, IViewObject
+	{
+		public NSView Child;
+
+		public CustomAlignedContainer (NSView child)
+		{
+			Child = child;
+			AddSubview (child);
+			UpdateTextFieldFrame ();
+		}
+
+		public ViewBackend Backend { get; set; }
+
+		public NSView View {
+			get { return this; }
+		}
+
+		static readonly Selector sizeToFitSel = new Selector ("sizeToFit");
+
+		public void SizeToFit ()
+		{
+			if (Child.RespondsToSelector (sizeToFitSel))
+				Messaging.void_objc_msgSend (Child.Handle, sizeToFitSel.Handle);
+			else
+				throw new NotSupportedException ();
+			Frame = new System.Drawing.RectangleF (Frame.X, Frame.Y, Child.Frame.Width, Child.Frame.Height);
+		}
+
+		bool expandVertically;
+		public bool ExpandVertically {
+			get {
+				return expandVertically;
+			}
+			set {
+				expandVertically = value;
+				UpdateTextFieldFrame ();
+			}
+		}
+
+		public override void SetFrameSize (System.Drawing.SizeF newSize)
+		{
+			base.SetFrameSize (newSize);
+			UpdateTextFieldFrame ();
+		}
+
+		void UpdateTextFieldFrame ()
+		{
+			if (expandVertically)
+				Child.Frame = Frame;
+			else
+				Child.Frame = new System.Drawing.RectangleF (0, (Frame.Height - Child.Frame.Height) / 2, Frame.Width, Child.Frame.Height);
+		}
 	}
 	
 	class TextFieldView: NSTextField, IViewObject
 	{
-		public Widget Frontend { get; set; }
+		public ViewBackend Backend { get; set; }
 		public NSView View {
 			get { return this; }
+		}
+
+		public override bool AcceptsFirstResponder ()
+		{
+			return false;
 		}
 	}
 }

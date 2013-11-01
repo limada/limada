@@ -73,6 +73,16 @@ namespace Xwt.WPFBackend
 
 		public WidgetBackend Backend { get; set; }
 
+		public Action<System.Windows.Media.DrawingContext> RenderAction;
+
+		protected override void OnRender (System.Windows.Media.DrawingContext dc)
+		{
+			var render = RenderAction;
+			if (render != null)
+				render (dc);
+			base.OnRender (dc);
+		}
+
 		protected override System.Windows.Size MeasureOverride (System.Windows.Size constraint)
 		{
 			var s = base.MeasureOverride (constraint);
@@ -110,10 +120,15 @@ namespace Xwt.WPFBackend
 					// because WPF widgets my cache some measurement information based on the
 					// constraints provided in the last Measure call (which when calculating the
 					// preferred size is normally set to infinite.
-					element.InvalidateMeasure ();
-					element.Measure (new SW.Size (rects[i].Width, rects[i].Height));
 
-					element.Arrange (DataConverter.ToWpfRect (rects[i]));
+					var r = rects[i].WithPositiveSize ();
+					if (force) {
+						// Don't recalculate the size unless a relayout is being forced
+						element.InvalidateMeasure ();
+						element.Measure (new SW.Size (r.Width, r.Height));
+					}
+          
+					element.Arrange (r.ToWpfRect ());
 					element.UpdateLayout ();
 				}
 			}

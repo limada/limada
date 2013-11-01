@@ -26,7 +26,7 @@
 using System;
 using System.Collections.Generic;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt
 {
@@ -144,12 +144,12 @@ namespace Xwt
 		}
 		#endregion
 		
-		static Command GenericAlert (WindowFrame parent, string icon, string primaryText, string secondaryText, params Command[] buttons)
+		static Command GenericAlert (WindowFrame parent, Xwt.Drawing.Image icon, string primaryText, string secondaryText, params Command[] buttons)
 		{
 			return GenericAlert (parent, icon, primaryText, secondaryText, buttons.Length - 1, buttons);
 		}
 		
-		static Command GenericAlert (WindowFrame parent, string icon, string primaryText, string secondaryText, int defaultButton, params Command[] buttons)
+		static Command GenericAlert (WindowFrame parent, Xwt.Drawing.Image icon, string primaryText, string secondaryText, int defaultButton, params Command[] buttons)
 		{
 			GenericMessage message = new GenericMessage () {
 				Icon = icon,
@@ -168,8 +168,9 @@ namespace Xwt
 			if (message.ApplyToAllButton != null)
 				return message.ApplyToAllButton;
 
-			IAlertDialogBackend backend = WidgetRegistry.MainRegistry.CreateBackend<IAlertDialogBackend> (typeof(IAlertDialogBackend));
-			
+			IAlertDialogBackend backend = Toolkit.CurrentEngine.Backend.CreateBackend<IAlertDialogBackend> ();
+			backend.Initialize (Toolkit.CurrentEngine.Context);
+
 			using (backend) {
 				var res = backend.Run (parent ?? RootWindow, message);
 				
@@ -195,7 +196,7 @@ namespace Xwt
 		
 		internal Command ApplyToAllButton { get; set; }
 		
-		public string Icon { get; set; }
+		public Xwt.Drawing.Image Icon { get; set; }
 		
 		public string Text { get; set; }
 		public string SecondaryText { get; set; }

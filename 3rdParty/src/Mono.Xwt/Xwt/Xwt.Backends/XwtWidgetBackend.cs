@@ -24,8 +24,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+
+
+
 namespace Xwt.Backends
 {
+	/// <summary>
+	/// Base backend class for XWT-based widgets
+	/// </summary>
+	/// <remarks>
+	/// This class can be used to implement backends fully based on XWT widgets.
+	/// For example, XWT has an implementation of a color selector. If a backend
+	/// doesn't have native color selector, the XWT one will be used. 
+	/// </remarks>
 	public class XwtWidgetBackend: Widget, IWidgetBackend
 	{
 		protected Widget Frontend {
@@ -41,7 +52,7 @@ namespace Xwt.Backends
 		}
 
 		#region IBackend implementation
-		void IBackend.InitializeBackend (object frontend)
+		void IBackend.InitializeBackend (object frontend, ApplicationContext toolkit)
 		{
 			Frontend = (Widget) frontend;
 		}
@@ -67,10 +78,10 @@ namespace Xwt.Backends
 			MinHeight = height;
 		}
 
-		void IWidgetBackend.SetNaturalSize (double width, double height)
+		void IWidgetBackend.SetSizeRequest (double width, double height)
 		{
-			NaturalWidth = width;
-			NaturalHeight = height;
+			WidthRequest = width;
+			HeightRequest = height;
 		}
 
 		void IWidgetBackend.UpdateLayout ()
@@ -78,24 +89,9 @@ namespace Xwt.Backends
 			Surface.Reallocate ();
 		}
 
-		WidgetSize IWidgetBackend.GetPreferredWidth ()
+		Size IWidgetBackend.GetPreferredSize (SizeConstraint widthConstraint, SizeConstraint heightConstraint)
 		{
-			return Surface.GetPreferredWidth ();
-		}
-
-		WidgetSize IWidgetBackend.GetPreferredHeightForWidth (double width)
-		{
-			return Surface.GetPreferredHeightForWidth (width);
-		}
-
-		WidgetSize IWidgetBackend.GetPreferredHeight ()
-		{
-			return Surface.GetPreferredHeight ();
-		}
-
-		WidgetSize IWidgetBackend.GetPreferredWidthForHeight (double height)
-		{
-			return Surface.GetPreferredWidthForHeight (height);
+			return Surface.GetPreferredSize (widthConstraint, heightConstraint);
 		}
 
 		void IWidgetBackend.SetDragSource (TransferDataType[] types, DragDropAction dragAction)
@@ -118,7 +114,7 @@ namespace Xwt.Backends
 				return XwtObject.GetBackend (Font);
 			}
 			set {
-                Font = new Xwt.Drawing.Font(BackendHost.WidgetRegistry, value);
+				Font = new Xwt.Drawing.Font (value);
 			}
 		}
 		

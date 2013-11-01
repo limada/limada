@@ -27,7 +27,7 @@
 using System;
 using Xwt.Backends;
 using MonoMac.AppKit;
-using Xwt.Engine;
+using MonoMac.CoreGraphics;
 
 namespace Xwt.Mac
 {
@@ -41,10 +41,16 @@ namespace Xwt.Mac
 
 		public override void Initialize ()
 		{
-			view = new CanvasView (EventSink);
+			view = new CanvasView (EventSink, ApplicationContext);
 			ViewObject = view;
 		}
-		
+
+		protected override void OnSizeToFit ()
+		{
+			var s = EventSink.GetPreferredSize ();
+			Widget.SetFrameSize (new System.Drawing.SizeF ((float)s.Width, (float)s.Height)); 
+		}
+
 		public Rectangle Bounds {
 			get {
 				return new Rectangle (0, 0, view.Frame.Width, view.Frame.Height);
@@ -87,105 +93,29 @@ namespace Xwt.Mac
 		}
 	}
 	
-	class CanvasView: NSView, IViewObject
+	class CanvasView: WidgetView
 	{
 		ICanvasEventSink eventSink;
 		
-		public CanvasView (ICanvasEventSink eventSink)
+		public CanvasView (ICanvasEventSink eventSink, ApplicationContext context): base (eventSink, context)
 		{
 			this.eventSink = eventSink;
-		}
-		
-		public Widget Frontend { get; set; }
-		
-		public NSView View {
-			get { return this; }
-		}
-		
-		public override bool IsFlipped {
-			get {
-				return true;
-			}
 		}
 
 		public override void DrawRect (System.Drawing.RectangleF dirtyRect)
 		{
-			Toolkit.Invoke (delegate {
-				eventSink.OnDraw (new ContextInfo (), new Rectangle (dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height));
-			});
-		}
-		
-		public override void RightMouseDown (NSEvent theEvent)
-		{
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			ButtonEventArgs args = new ButtonEventArgs ();
-			args.X = p.X;
-			args.Y = p.Y;
-			args.Button = PointerButton.Right;
-			Toolkit.Invoke (delegate {
-				eventSink.OnButtonPressed (args);
-			});
-		}
-		
-		public override void RightMouseUp (NSEvent theEvent)
-		{
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			ButtonEventArgs args = new ButtonEventArgs ();
-			args.X = p.X;
-			args.Y = p.Y;
-			args.Button = PointerButton.Right;
-			Toolkit.Invoke (delegate {
-				eventSink.OnButtonReleased (args);
-			});
-		}
-		
-		public override void MouseDown (NSEvent theEvent)
-		{
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			ButtonEventArgs args = new ButtonEventArgs ();
-			args.X = p.X;
-			args.Y = p.Y;
-			args.Button = PointerButton.Left;
-			Toolkit.Invoke (delegate {
-				eventSink.OnButtonPressed (args);
-			});
-		}
-		
-		public override void MouseUp (NSEvent theEvent)
-		{
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			ButtonEventArgs args = new ButtonEventArgs ();
-			args.X = p.X;
-			args.Y = p.Y;
-			args.Button = (PointerButton) theEvent.ButtonNumber + 1;
-			Toolkit.Invoke (delegate {
-				eventSink.OnButtonReleased (args);
-			});
-		}
-		
-		public override void MouseMoved (NSEvent theEvent)
-		{
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			MouseMovedEventArgs args = new MouseMovedEventArgs ((long) TimeSpan.FromSeconds (theEvent.Timestamp).TotalMilliseconds, p.X, p.Y);
-			Toolkit.Invoke (delegate {
-				eventSink.OnMouseMoved (args);
-			});
-		}
-		
-		public override void MouseDragged (NSEvent theEvent)
-		{
-			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
-			MouseMovedEventArgs args = new MouseMovedEventArgs ((long) TimeSpan.FromSeconds (theEvent.Timestamp).TotalMilliseconds, p.X, p.Y);
-			Toolkit.Invoke (delegate {
-				eventSink.OnMouseMoved (args);
-			});
-		}
-		
-		public override void SetFrameSize (System.Drawing.SizeF newSize)
-		{
-			base.SetFrameSize (newSize);
-			Toolkit.Invoke (delegate {
-				eventSink.OnBoundsChanged ();
+			context.InvokeUserCode (delegate {
+				CGContext ctx = NSGraphicsContext.CurrentContext.GraphicsPort;
+
+				//fill BackgroundColor
+				ctx.SetFillColor (Backend.Frontend.BackgroundColor.ToCGColor ());
+				ctx.FillRect (Bounds);
+
+				var backend = new CGContextBackend {
+					Context = ctx,
+					InverseViewTransform = ctx.GetCTM ().Invert ()
+				};
+				eventSink.OnDraw (backend, new Rectangle (dirtyRect.X, dirtyRect.Y, dirtyRect.Width, dirtyRect.Height));
 			});
 		}
 	}

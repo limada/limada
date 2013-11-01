@@ -37,6 +37,21 @@ namespace Xwt.Mac
 	{
 		ITreeDataSource source;
 		TreeSource tsource;
+
+		class TreeDelegate: NSOutlineViewDelegate
+		{
+			public TreeViewBackend Backend;
+
+			public override void ItemDidExpand (NSNotification notification)
+			{
+				Backend.EventSink.OnRowExpanded (((TreeItem)notification.UserInfo["NSObject"]).Position);
+			}
+
+			public override void ItemWillExpand (NSNotification notification)
+			{
+				Backend.EventSink.OnRowExpanding (((TreeItem)notification.UserInfo["NSObject"]).Position);
+			}
+		}
 		
 		NSOutlineView Tree {
 			get { return (NSOutlineView) Table; }
@@ -44,13 +59,17 @@ namespace Xwt.Mac
 		
 		protected override NSTableView CreateView ()
 		{
-			return new NSOutlineView ();
+			var t = new NSOutlineView ();
+			t.Delegate = new TreeDelegate () { Backend = this };
+			return t;
 		}
 		
 		protected override string SelectionChangeEventName {
 			get { return "NSOutlineViewSelectionDidChangeNotification"; }
 		}
-		
+
+		public TreePosition CurrentEventRow { get; set; }
+
 		public override object AddColumn (ListViewColumn col)
 		{
 			NSTableColumn tcol = (NSTableColumn) base.AddColumn (col);
@@ -70,13 +89,20 @@ namespace Xwt.Mac
 		{
 			return source.GetValue ((TreePosition)pos, nField);
 		}
+
+		public override void SetValue (object pos, int nField, object value)
+		{
+			source.SetValue ((TreePosition)pos, nField, value);
+		}
 		
 		public TreePosition[] SelectedRows {
 			get {
 				TreePosition[] res = new TreePosition [Table.SelectedRowCount];
 				int n = 0;
-				foreach (var i in Table.SelectedRows) {
-					res [n] = ((TreeItem)Tree.ItemAtRow ((int)i)).Position;
+				if (Table.SelectedRowCount > 0) {
+					foreach (var i in Table.SelectedRows) {
+						res [n] = ((TreeItem)Tree.ItemAtRow ((int)i)).Position;
+					}
 				}
 				return res;
 			}

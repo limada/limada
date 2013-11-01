@@ -3,7 +3,8 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
-// 
+//       Alex Corrado <corrado@xamarin.com>
+//
 // Copyright (c) 2011 Xamarin Inc
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,372 +27,375 @@
 
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 using MonoMac.AppKit;
 using Xwt.Drawing;
 using MonoMac.Foundation;
 using MonoMac.CoreGraphics;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace Xwt.Mac
 {
-	public class ContextBackendHandler: IContextBackendHandler
+	class CGContextBackend {
+		public CGContext Context;
+		public SizeF Size;
+		public CGAffineTransform? InverseViewTransform;
+		public Stack<ContextStatus> StatusStack = new Stack<ContextStatus> ();
+		public ContextStatus CurrentStatus = new ContextStatus ();
+	}
+
+	class ContextStatus
 	{
-		public ContextBackendHandler ()
+		public object Pattern;
+	}
+
+	public class MacContextBackendHandler: ContextBackendHandler
+	{
+		const double degrees = System.Math.PI / 180d;
+
+		public override void Save (object backend)
 		{
+			var ct = (CGContextBackend) backend;
+			ct.Context.SaveState ();
+			ct.StatusStack.Push (ct.CurrentStatus);
+			var newStatus = new ContextStatus ();
+			newStatus.Pattern = ct.CurrentStatus.Pattern;
+			ct.CurrentStatus = newStatus;
 		}
 		
-		ContextInfo GetContext (object backend)
+		public override void Restore (object backend)
 		{
-			var ctx = (ContextInfo) backend;
-			ctx.SetFocus ();
-			return ctx;
+			var ct = (CGContextBackend) backend;
+			ct.Context.RestoreState ();
+			ct.CurrentStatus = ct.StatusStack.Pop ();
 		}
 
-		public void Save (object backend)
+		public override void SetGlobalAlpha (object backend, double alpha)
 		{
-			GetContext (backend);
-			NSGraphicsContext.CurrentContext.SaveGraphicsState ();
-		}
-		
-		public void Restore (object backend)
-		{
-			GetContext (backend);
-			NSGraphicsContext.CurrentContext.RestoreGraphicsState ();
+			((CGContextBackend)backend).Context.SetAlpha ((float)alpha);
 		}
 
-		public void SetGlobalAlpha (object backend, double alpha)
+		public override void Arc (object backend, double xc, double yc, double radius, double angle1, double angle2)
 		{
-			// TODO
+			CGContext ctx = ((CGContextBackend)backend).Context;
+			ctx.AddArc ((float)xc, (float)yc, (float)radius, (float)(angle1 * degrees), (float)(angle2 * degrees), false);
 		}
 
-		public void Arc (object backend, double xc, double yc, double radius, double angle1, double angle2)
+		public override void ArcNegative (object backend, double xc, double yc, double radius, double angle1, double angle2)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.AppendPathWithArc (new System.Drawing.PointF ((float)xc, (float)yc), (float)radius, (float)angle1, (float)angle2);
+			CGContext ctx = ((CGContextBackend)backend).Context;
+			ctx.AddArc ((float)xc, (float)yc, (float)radius, (float)(angle1 * degrees), (float)(angle2 * degrees), true);
 		}
 
-		public void Clip (object backend)
+		public override void Clip (object backend)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.AddClip ();
-			ctx.Path.Dispose ();
-			ctx.Path = new NSBezierPath ();
+			((CGContextBackend)backend).Context.Clip ();
 		}
 
-		public void ClipPreserve (object backend)
+		public override void ClipPreserve (object backend)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.AddClip ();
-		}
-
-		public void ResetClip (object backend)
-		{
-			GetContext (backend);
-			var path = new NSBezierPath ();
-			path.AppendPathWithRect (new System.Drawing.RectangleF (0, 0, float.MaxValue, float.MaxValue));
-			path.SetClip ();
-		}
-		
-		public void ClosePath (object backend)
-		{
-			var ctx = GetContext (backend);
-			ctx.Path.ClosePath ();
-		}
-
-		public void CurveTo (object backend, double x1, double y1, double x2, double y2, double x3, double y3)
-		{
-			var ctx = GetContext (backend);
-			ctx.Path.CurveTo (new System.Drawing.PointF ((float)x1, (float)y1),
-				new System.Drawing.PointF ((float)x2, (float)y2),
-				new System.Drawing.PointF ((float)x3, (float)y3));
-		}
-
-		public void Fill (object backend)
-		{
-			var ctx = GetContext (backend);
-			if (ctx.Pattern is GradientInfo) {
-				GradientInfo gr = (GradientInfo) ctx.Pattern;
-				NSGradient g = new NSGradient (gr.Colors.ToArray (), gr.Stops.ToArray ());
-				g.DrawInBezierPath (ctx.Path, 0f);
+			CGContext ctx = ((CGContextBackend)backend).Context;
+			using (CGPath oldPath = ctx.CopyPath ()) {
+				ctx.Clip ();
+				ctx.AddPath (oldPath);
 			}
-			else if (ctx.Pattern is NSColor) {
-				NSColor col = (NSColor) ctx.Pattern;
-				col.Set ();
-				col.SetFill ();
+		}
+
+		public override void ClosePath (object backend)
+		{
+			((CGContextBackend)backend).Context.ClosePath ();
+		}
+
+		public override void CurveTo (object backend, double x1, double y1, double x2, double y2, double x3, double y3)
+		{
+			((CGContextBackend)backend).Context.AddCurveToPoint ((float)x1, (float)y1, (float)x2, (float)y2, (float)x3, (float)y3);
+		}
+
+		public override void Fill (object backend)
+		{
+			CGContextBackend gc = (CGContextBackend)backend;
+			CGContext ctx = gc.Context;
+			SetupContextForDrawing (ctx);
+
+			if (gc.CurrentStatus.Pattern is GradientInfo) {
+				MacGradientBackendHandler.Draw (ctx, ((GradientInfo)gc.CurrentStatus.Pattern));
+			}
+			else if (gc.CurrentStatus.Pattern is ImagePatternInfo) {
+				SetupPattern (gc);
+				ctx.DrawPath (CGPathDrawingMode.Fill);
 			}
 			else {
-				ctx.Path.Fill ();
+				ctx.DrawPath (CGPathDrawingMode.Fill);
 			}
-			ctx.Pattern = null;
-			ctx.Path.Dispose ();
-			ctx.Path = new NSBezierPath ();
 		}
 
-		public void FillPreserve (object backend)
+		public override void FillPreserve (object backend)
 		{
-			var ctx = GetContext (backend);
-			NSGraphicsContext.CurrentContext.SaveGraphicsState ();
-			ctx.Path.Fill ();
-			NSGraphicsContext.CurrentContext.RestoreGraphicsState ();
+			CGContext ctx = ((CGContextBackend)backend).Context;
+			using (CGPath oldPath = ctx.CopyPath ()) {
+				Fill (backend);
+				ctx.AddPath (oldPath);
+			}
 		}
 
-		public void LineTo (object backend, double x, double y)
+		public override void LineTo (object backend, double x, double y)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.LineTo (new System.Drawing.PointF ((float)x, (float)y));
+			((CGContextBackend)backend).Context.AddLineToPoint ((float)x, (float)y);
 		}
 
-		public void MoveTo (object backend, double x, double y)
+		public override void MoveTo (object backend, double x, double y)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.MoveTo (new System.Drawing.PointF ((float)x, (float)y));
+			((CGContextBackend)backend).Context.MoveTo ((float)x, (float)y);
 		}
 
-		public void NewPath (object backend)
+		public override void NewPath (object backend)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path = new NSBezierPath ();
+			((CGContextBackend)backend).Context.BeginPath ();
 		}
 
-		public void Rectangle (object backend, double x, double y, double width, double height)
+		public override void Rectangle (object backend, double x, double y, double width, double height)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.AppendPathWithRect (new System.Drawing.RectangleF ((float)x, (float)y, (float)width, (float)height));
+			((CGContextBackend)backend).Context.AddRect (new RectangleF ((float)x, (float)y, (float)width, (float)height));
 		}
 
-		public void RelCurveTo (object backend, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3)
+		public override void RelCurveTo (object backend, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.RelativeCurveTo (new System.Drawing.PointF ((float)dx1, (float)dy1),
-				new System.Drawing.PointF ((float)dx2, (float)dy2),
-				new System.Drawing.PointF ((float)dx3, (float)dy3));
+			CGContext ctx = ((CGContextBackend)backend).Context;
+			PointF p = ctx.GetPathCurrentPoint ();
+			ctx.AddCurveToPoint ((float)(p.X + dx1), (float)(p.Y + dy1), (float)(p.X + dx2), (float)(p.Y + dy2), (float)(p.X + dx3), (float)(p.Y + dy3));
 		}
 
-		public void RelLineTo (object backend, double dx, double dy)
+		public override void RelLineTo (object backend, double dx, double dy)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.RelativeLineTo (new System.Drawing.PointF ((float)dx, (float)dy));
+			CGContext ctx = ((CGContextBackend)backend).Context;
+			PointF p = ctx.GetPathCurrentPoint ();
+			ctx.AddLineToPoint ((float)(p.X + dx), (float)(p.Y + dy));
 		}
 
-		public void RelMoveTo (object backend, double dx, double dy)
+		public override void RelMoveTo (object backend, double dx, double dy)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.RelativeMoveTo (new System.Drawing.PointF ((float)dx, (float)dy));
+			CGContext ctx = ((CGContextBackend)backend).Context;
+			PointF p = ctx.GetPathCurrentPoint ();
+			ctx.MoveTo ((float)(p.X + dx), (float)(p.Y + dy));
 		}
 
-		public void Stroke (object backend)
+		public override void Stroke (object backend)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.Stroke ();
-			ctx.Path.Dispose ();
-			ctx.Path = new NSBezierPath ();
+			CGContext ctx = ((CGContextBackend)backend).Context;
+			SetupContextForDrawing (ctx);
+			ctx.DrawPath (CGPathDrawingMode.Stroke);
 		}
 
-		public void StrokePreserve (object backend)
+		public override void StrokePreserve (object backend)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.Stroke ();
+			CGContext ctx = ((CGContextBackend)backend).Context;
+			SetupContextForDrawing (ctx);
+			using (CGPath oldPath = ctx.CopyPath ()) {
+				ctx.DrawPath (CGPathDrawingMode.Stroke);
+				ctx.AddPath (oldPath);
+			}
 		}
 		
-		public void SetColor (object backend, Xwt.Drawing.Color color)
+		public override void SetColor (object backend, Xwt.Drawing.Color color)
 		{
-			GetContext (backend);
-			NSColor col = NSColor.FromDeviceRgba ((float)color.Red, (float)color.Green, (float)color.Blue, (float)color.Alpha);
-			col.Set ();
-			col.SetFill ();
+			CGContextBackend gc = (CGContextBackend)backend;
+			gc.CurrentStatus.Pattern = null;
+			CGContext ctx = gc.Context;
+			ctx.SetFillColorSpace (Util.DeviceRGBColorSpace);
+			ctx.SetStrokeColorSpace (Util.DeviceRGBColorSpace);
+			ctx.SetFillColor ((float)color.Red, (float)color.Green, (float)color.Blue, (float)color.Alpha);
+			ctx.SetStrokeColor ((float)color.Red, (float)color.Green, (float)color.Blue, (float)color.Alpha);
 		}
 		
-		public void SetLineWidth (object backend, double width)
+		public override void SetLineWidth (object backend, double width)
 		{
-			var ctx = GetContext (backend);
-			ctx.Path.LineWidth = (float) width;
+			((CGContextBackend)backend).Context.SetLineWidth ((float)width);
 		}
 		
-		public void SetLineDash (object backend, double offset, params double[] pattern)
+		public override void SetLineDash (object backend, double offset, params double[] pattern)
 		{
-			var ctx = GetContext (backend);
 			float[] array = new float[pattern.Length];
 			for (int n=0; n<pattern.Length; n++)
 				array [n] = (float) pattern[n];
 			if (array.Length == 0)
-				array = new float [] { 0 };
-			ctx.Path.SetLineDash (array, (float)offset);
+				array = new float [] { 1 };
+			((CGContextBackend)backend).Context.SetLineDash ((float)offset, array);
 		}
 		
-		public void SetPattern (object backend, object p)
+		public override void SetPattern (object backend, object p)
 		{
-			var ctx = GetContext (backend);
-			ctx.Pattern = p;
-		}
-		
-		public void SetFont (object backend, Xwt.Drawing.Font font)
-		{
-		}
-		
-		public void DrawTextLayout (object backend, TextLayout layout, double x, double y)
-		{
-			GetContext (backend);
-			TextLayoutBackendHandler.Draw (null, MacEngine.Registry.GetBackend (layout), x, y);
-		}
-		
-		public void DrawImage (object backend, object img, double x, double y, double alpha)
-		{
-			GetContext (backend);
-			var image = (NSImage) img;
-			image.Draw (new PointF ((float)x, (float)y), RectangleF.Empty, NSCompositingOperation.SourceOver, (float)alpha);
-		}
-		
-		public void DrawImage (object backend, object img, double x, double y, double width, double height, double alpha)
-		{
-			GetContext (backend);
-			var image = (NSImage) img;
-			image.DrawInRect (new RectangleF ((float)x, (float)y, (float)width, (float)height), RectangleF.Empty, NSCompositingOperation.SourceOver, (float)alpha);
+			CGContextBackend gc = (CGContextBackend)backend;
+			gc.CurrentStatus.Pattern = p;
 		}
 
-		public void DrawImage (object backend, object img, Rectangle srcRect, Rectangle destRect, double alpha)
+		void SetupPattern (CGContextBackend gc)
 		{
-			// TODO
+			gc.Context.SetPatternPhase (new SizeF (0, 0));
+
+			if (gc.CurrentStatus.Pattern is GradientInfo)
+				return;
+
+			if (gc.CurrentStatus.Pattern is ImagePatternInfo) {
+
+				var pi = (ImagePatternInfo) gc.CurrentStatus.Pattern;
+				RectangleF bounds = new RectangleF (PointF.Empty, new SizeF (pi.Image.Size.Width, pi.Image.Size.Height));
+				var t = CGAffineTransform.Multiply (CGAffineTransform.MakeScale (1f, -1f), gc.Context.GetCTM ());
+
+				CGPattern pattern;
+				if (pi.Image is CustomImage) {
+					pattern = new CGPattern (bounds, t, bounds.Width, bounds.Height, CGPatternTiling.ConstantSpacing, true, c => {
+						c.TranslateCTM (0, bounds.Height);
+						c.ScaleCTM (1f, -1f);
+						((CustomImage)pi.Image).DrawInContext (c);
+					});
+				} else {
+					RectangleF empty = RectangleF.Empty;
+					CGImage cgimg = ((NSImage)pi.Image).AsCGImage (ref empty, null, null);
+					pattern = new CGPattern (bounds, t, bounds.Width, bounds.Height,
+					                         CGPatternTiling.ConstantSpacing, true, c => c.DrawImage (bounds, cgimg));
+				}
+
+				CGContext ctx = gc.Context;
+				float[] alpha = new[] { (float)pi.Alpha };
+				ctx.SetFillColorSpace (Util.PatternColorSpace);
+				ctx.SetStrokeColorSpace (Util.PatternColorSpace);
+				ctx.SetFillPattern (pattern, alpha);
+				ctx.SetStrokePattern (pattern, alpha);
+			}
 		}
 		
-		public void ResetTransform (object backend)
+		public override void DrawTextLayout (object backend, TextLayout layout, double x, double y)
 		{
-			GetContext (backend);
-			NSAffineTransform t = new NSAffineTransform ();
-			t.Set ();
+			CGContext ctx = ((CGContextBackend)backend).Context;
+			SetupContextForDrawing (ctx);
+			MacTextLayoutBackendHandler.Draw (ctx, Toolkit.GetBackend (layout), x, y);
+		}
+
+		public override void DrawImage (object backend, ImageDescription img, double x, double y)
+		{
+			var srcRect = new Rectangle (Point.Zero, img.Size);
+			var destRect = new Rectangle (x, y, img.Size.Width, img.Size.Height);
+			DrawImage (backend, img, srcRect, destRect);
+		}
+
+		public override void DrawImage (object backend, ImageDescription img, Rectangle srcRect, Rectangle destRect)
+		{
+			CGContext ctx = ((CGContextBackend)backend).Context;
+			NSImage image = img.ToNSImage ();
+			ctx.SaveState ();
+			ctx.SetAlpha ((float)img.Alpha);
+
+			double rx = destRect.Width / srcRect.Width;
+			double ry = destRect.Height / srcRect.Height;
+			ctx.AddRect (new RectangleF ((float)destRect.X, (float)destRect.Y, (float)destRect.Width, (float)destRect.Height));
+			ctx.Clip ();
+			ctx.TranslateCTM ((float)(destRect.X - (srcRect.X * rx)), (float)(destRect.Y - (srcRect.Y * ry)));
+			ctx.ScaleCTM ((float)rx, (float)ry);
+
+			if (image is CustomImage) {
+				((CustomImage)image).DrawInContext ((CGContextBackend)backend);
+			} else {
+				RectangleF rr = new RectangleF (0, 0, (float)image.Size.Width, image.Size.Height);
+				ctx.ScaleCTM (1f, -1f);
+				ctx.DrawImage (new RectangleF (0, -image.Size.Height, image.Size.Width, image.Size.Height), image.AsCGImage (ref rr, NSGraphicsContext.CurrentContext, null));
+			}
+
+			ctx.RestoreState ();
 		}
 		
-		public void Rotate (object backend, double angle)
+		public override void Rotate (object backend, double angle)
 		{
-			GetContext (backend);
-			NSAffineTransform t = new NSAffineTransform ();
-			t.RotateByDegrees ((float)angle);
-			t.Concat ();
+			((CGContextBackend)backend).Context.RotateCTM ((float)(angle * degrees));
 		}
 		
-		public void Scale (object backend, double scaleX, double scaleY)
+		public override void Scale (object backend, double scaleX, double scaleY)
 		{
-			GetContext (backend);
-			NSAffineTransform t = new NSAffineTransform ();
-			t.Scale ((float)scaleX, (float)scaleY);
-			t.Concat ();
+			((CGContextBackend)backend).Context.ScaleCTM ((float)scaleX, (float)scaleY);
 		}
 		
-		public void Translate (object backend, double tx, double ty)
+		public override void Translate (object backend, double tx, double ty)
 		{
-			GetContext (backend);
-			NSAffineTransform t = new NSAffineTransform ();
-			t.Translate ((float)tx, (float)ty);
-			t.Concat ();
+			((CGContextBackend)backend).Context.TranslateCTM ((float)tx, (float)ty);
 		}
 		
-		public void TransformPoint (object backend, ref double x, ref double y)
+		public override void ModifyCTM (object backend, Matrix m)
 		{
-			GetContext (backend);
-			CGContext gp = NSGraphicsContext.CurrentContext.GraphicsPort;
-			CGAffineTransform t = gp.GetCTM();
-
-			PointF p = t.TransformPoint (new PointF ((float)x, (float)y));
-			x = p.X;
-			y = p.Y;
+			CGAffineTransform t = new CGAffineTransform ((float)m.M11, (float)m.M12,
+			                                             (float)m.M21, (float)m.M22,
+			                                             (float)m.OffsetX, (float)m.OffsetY);
+			((CGContextBackend)backend).Context.ConcatCTM (t);
 		}
 
-		public void TransformDistance (object backend, ref double dx, ref double dy)
+		public override Matrix GetCTM (object backend)
 		{
-			GetContext (backend);
-			CGContext gp = NSGraphicsContext.CurrentContext.GraphicsPort;
-			CGAffineTransform t = gp.GetCTM();
-			// remove translational elements from CTM
-			t.x0 = 0;
-			t.y0 = 0;
-
-			PointF p = t.TransformPoint (new PointF ((float)dx, (float)dy));
-			dx = p.X;
-			dy = p.Y;
+			CGAffineTransform t = GetContextTransform ((CGContextBackend)backend);
+			Matrix ctm = new Matrix (t.xx, t.yx, t.xy, t.yy, t.x0, t.y0);
+			return ctm;
 		}
 
-		public void TransformPoints (object backend, Point[] points)
+		public override object CreatePath ()
 		{
-			GetContext (backend);
-			CGContext gp = NSGraphicsContext.CurrentContext.GraphicsPort;
-			CGAffineTransform t = gp.GetCTM();
+			return new CGPath ();
+		}
 
-			PointF p;
-			for (int i = 0; i < points.Length; ++i) {
-				p = t.TransformPoint (new PointF ((float)points[i].X, (float)points[i].Y));
-				points[i].X = p.X;
-				points[i].Y = p.Y;
+		public override object CopyPath (object backend)
+		{
+			return ((CGContextBackend)backend).Context.CopyPath ();
+		}
+
+		public override void AppendPath (object backend, object otherBackend)
+		{
+			CGContext dest = ((CGContextBackend)backend).Context;
+			CGContextBackend src = otherBackend as CGContextBackend;
+
+			if (src != null) {
+				using (var path = src.Context.CopyPath ())
+					dest.AddPath (path);
+			} else {
+				dest.AddPath ((CGPath)otherBackend);
 			}
 		}
 
-		public void TransformDistances (object backend, Distance[] vectors)
+		public override bool IsPointInFill (object backend, double x, double y)
 		{
-			GetContext (backend);
-			CGContext gp = NSGraphicsContext.CurrentContext.GraphicsPort;
-			CGAffineTransform t = gp.GetCTM();
-			t.x0 = 0;
-			t.y0 = 0;
-			PointF p;
-			for (int i = 0; i < vectors.Length; ++i) {
-				p = t.TransformPoint (new PointF ((float)vectors[i].Dx, (float)vectors[i].Dy));
-				vectors[i].Dx = p.X;
-				vectors[i].Dy = p.Y;
-			}
+			return ((CGContextBackend)backend).Context.PathContainsPoint (new PointF ((float)x, (float)y), CGPathDrawingMode.Fill);
 		}
 
-		public void Dispose (object backend)
+		public override bool IsPointInStroke (object backend, double x, double y)
 		{
-			ContextInfo ctx = (ContextInfo) backend;
-			ctx.Dispose ();
+			return ((CGContextBackend)backend).Context.PathContainsPoint (new PointF ((float)x, (float)y), CGPathDrawingMode.Stroke);
+		}
+
+		public override void Dispose (object backend)
+		{
+			((CGContextBackend)backend).Context.Dispose ();
+		}
+
+		static CGAffineTransform GetContextTransform (CGContextBackend gc)
+		{
+			CGAffineTransform t = gc.Context.GetCTM ();
+
+			// The CTM returned above actually includes the full view transform.
+			//  We only want the transform that is applied to the context, so concat
+			//  the inverse of the view transform to nullify that part.
+			if (gc.InverseViewTransform.HasValue)
+				t.Multiply (gc.InverseViewTransform.Value);
+
+			return t;
+		}
+
+		static void SetupContextForDrawing (CGContext ctx)
+		{
+			if (ctx.IsPathEmpty ())
+				return;
+
+			// setup pattern drawing to better match the behavior of Cairo
+			var drawPoint = ctx.GetCTM ().TransformPoint (ctx.GetPathBoundingBox ().Location);
+			var patternPhase = new SizeF (drawPoint.X, drawPoint.Y);
+			if (patternPhase != SizeF.Empty)
+				ctx.SetPatternPhase (patternPhase);
 		}
 	}
-	
-	public class ContextInfo
-	{
-		static ContextInfo CurrentFocus;
-		
-		public NSBezierPath Path = new NSBezierPath ();
-		public object Pattern;
-		public NSImage TargetImage;
-		
-		public ContextInfo ()
-		{
-		}
-		
-		public ContextInfo (NSImage targetImage)
-		{
-			this.TargetImage = targetImage;
-		}
-		
-		public void SetFocus ()
-		{
-			if (CurrentFocus != this) {
-				if (CurrentFocus != null)
-					CurrentFocus.UnlockFocus ();
-				CurrentFocus = this;
-				LockFocus ();
-			}
-		}
-		
-		public void Dispose ()
-		{
-			Path.Dispose ();
-			if (CurrentFocus == this)
-				UnlockFocus ();
-		}
-		
-		public virtual void LockFocus ()
-		{
-			if (TargetImage != null)
-				TargetImage.LockFocus ();
-		}
-		
-		public virtual void UnlockFocus ()
-		{
-			if (TargetImage != null)
-				TargetImage.UnlockFocus ();
-		}
-	}
-		
 }
 

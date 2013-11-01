@@ -27,37 +27,67 @@ using System;
 using Xwt.Backends;
 using Xwt.Drawing;
 using MonoMac.AppKit;
+using MonoMac.CoreGraphics;
 using System.Drawing;
 
 namespace Xwt.Mac
 {
-	public class ImageBuilderBackendHandler: IImageBuilderBackendHandler
+	public class MacImageBuilderBackendHandler: ImageBuilderBackendHandler
 	{
-		public ImageBuilderBackendHandler ()
+		public MacImageBuilderBackendHandler ()
 		{
 		}
 
 		#region IImageBuilderBackendHandler implementation
-		public object CreateImageBuilder (int width, int height, ImageFormat format)
+		public override object CreateImageBuilder (int width, int height, ImageFormat format)
 		{
-			return new NSImage (new SizeF (width, height));
+			var flags = CGBitmapFlags.ByteOrderDefault;
+			int bytesPerRow;
+			switch (format) {
+
+			case ImageFormat.ARGB32:
+				bytesPerRow = width * 4;
+				flags |= CGBitmapFlags.PremultipliedFirst;
+				break;
+
+			case ImageFormat.RGB24:
+				bytesPerRow = width * 3;
+				flags |= CGBitmapFlags.None;
+				break;
+
+			default:
+				throw new NotImplementedException ("ImageFormat: " + format.ToString ());
+			}
+
+			var bmp = new CGBitmapContext (IntPtr.Zero, width, height, 8, bytesPerRow, Util.DeviceRGBColorSpace, flags);
+			bmp.TranslateCTM (0, height);
+			bmp.ScaleCTM (1, -1);
+			return new CGContextBackend {
+				Context = bmp,
+				Size = new SizeF (width, height),
+				InverseViewTransform = bmp.GetCTM ().Invert ()
+			};
 		}
 
-		public object CreateContext (object backend)
+		public override object CreateContext (object backend)
 		{
-			NSImage img = (NSImage) backend;
-			return new ContextInfo (img);
+			return backend;
 		}
 
-		public object CreateImage (object backend)
+		public override object CreateImage (object backend)
 		{
-			return (NSImage) backend;
+			var gc = (CGContextBackend)backend;
+			var img = new NSImage (((CGBitmapContext)gc.Context).ToImage (), gc.Size);
+			var imageData = img.AsTiff ();
+			var imageRep = (NSBitmapImageRep) NSBitmapImageRep.ImageRepFromData (imageData);
+			var im = new NSImage ();
+			im.AddRepresentation (imageRep);
+			return im;
 		}
 
-		public void Dispose (object backend)
+		public override void Dispose (object backend)
 		{
-			NSImage img = (NSImage) backend;
-			img.Dispose ();
+			((CGContextBackend)backend).Context.Dispose ();
 		}
 		#endregion
 

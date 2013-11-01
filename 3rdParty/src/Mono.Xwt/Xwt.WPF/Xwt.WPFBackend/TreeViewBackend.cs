@@ -32,7 +32,7 @@ using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Xwt.Engine;
+
 using Xwt.Backends;
 using Xwt.WPFBackend.Utilities;
 using System.Windows;
@@ -58,6 +58,8 @@ namespace Xwt.WPFBackend
 			Tree.ItemTemplate = new HierarchicalDataTemplate { ItemsSource = new Binding ("Children") };
 			Tree.SetValue (VirtualizingStackPanel.IsVirtualizingProperty, true);
 		}
+
+		public TreePosition CurrentEventRow { get; set;  }
 		
 		public ScrollPolicy VerticalScrollPolicy {
 			get { return ScrollViewer.GetVerticalScrollBarVisibility (Tree).ToXwtScrollPolicy (); }
@@ -212,9 +214,6 @@ namespace Xwt.WPFBackend
 			nodePosition = null;
 			this.dropPosition = pos = RowDropPosition.Into;
 
-			x *= WidthPixelRatio;
-			y *= HeightPixelRatio;
-
 			var result = VisualTreeHelper.HitTest (Tree, new System.Windows.Point (x, y)) as PointHitTestResult;
 
 			var element = (result != null) ? result.VisualHit as FrameworkElement : null;
@@ -285,29 +284,14 @@ namespace Xwt.WPFBackend
 			get { return -1; }
 		}
 
-		public override WidgetSize GetPreferredHeight()
+		public override Size GetPreferredSize (SizeConstraint widthConstraint, SizeConstraint heightConstraint)
 		{
-			return new WidgetSize (0);
-		}
-
-		public override WidgetSize GetPreferredHeightForWidth(double width)
-		{
-			return GetPreferredHeight ();
-		}
-
-		public override WidgetSize GetPreferredWidth()
-		{
-			return new WidgetSize (0);
-		}
-
-		public override WidgetSize GetPreferredWidthForHeight(double height)
-		{
-			return GetPreferredWidth ();
+			return Size.Zero;
 		}
 
 		private void OnSelectedItemsChanged (object sender, EventArgs e)
 		{
-			Toolkit.Invoke (TreeViewEventSink.OnSelectionChanged);
+			Context.InvokeUserCode (TreeViewEventSink.OnSelectionChanged);
 		}
 
 		protected override void OnDragOver (object sender, DragOverEventArgs e)

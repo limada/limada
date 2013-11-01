@@ -32,91 +32,104 @@ using MonoMac.Foundation;
 
 namespace Xwt.Mac
 {
-	public class FontBackendHandler: IFontBackendHandler
+	public class MacFontBackendHandler: FontBackendHandler
 	{
-		public object CreateFromName (string fontName, double size)
+		public override object GetSystemDefaultFont ()
 		{
-			object o  = NSFont.FromFontName (fontName, (float)size);
+			return NSFont.SystemFontOfSize (0);
+		}
+
+		public override object GetSystemDefaultMonospaceFont ()
+		{
+			var font = NSFont.SystemFontOfSize (0);
+			return Create ("Menlo", font.PointSize, FontStyle.Normal, FontWeight.Normal, FontStretch.Normal);
+		}
+
+		public override System.Collections.Generic.IEnumerable<string> GetInstalledFonts ()
+		{
+			return NSFontManager.SharedFontManager.AvailableFontFamilies;
+		}
+
+		public override object Create (string fontName, double size, FontStyle style, FontWeight weight, FontStretch stretch)
+		{
+			object o = NSFont.FromFontName (fontName, (float)size);
+			o = SetStyle (o, style);
+			o = SetWeight (o, weight);
+			o = SetStretch (o, stretch);
 			return o;
 		}
 
 		#region IFontBackendHandler implementation
-		public object Copy (object handle)
+		public override object Copy (object handle)
 		{
 			NSFont f = (NSFont) handle;
-			return NSFont.FromDescription (f.FontDescriptor, f.FontDescriptor.Matrix);
+			return f.Copy ();
 		}
 		
-		public object SetSize (object handle, double size)
+		public override object SetSize (object handle, double size)
 		{
 			NSFont f = (NSFont) handle;
-			var matrix = f.FontDescriptor.Matrix ?? new NSAffineTransform ();
-			return NSFont.FromDescription (f.FontDescriptor.FontDescriptorWithSize ((float)size), matrix);
+			return NSFontManager.SharedFontManager.ConvertFont (f, (float)size);
 		}
 
-		public object SetFamily (object handle, string family)
+		public override object SetFamily (object handle, string family)
 		{
 			NSFont f = (NSFont) handle;
-			return NSFont.FromDescription (f.FontDescriptor.FontDescriptorWithFamily (family), f.FontDescriptor.Matrix);
+			return NSFontManager.SharedFontManager.ConvertFontToFamily (f, family);
 		}
 
-		public object SetStyle (object handle, FontStyle style)
+		public override object SetStyle (object handle, FontStyle style)
 		{
 			NSFont f = (NSFont) handle;
-			NSFontSymbolicTraits traits = f.FontDescriptor.SymbolicTraits;
+			NSFontTraitMask mask;
 			if (style == FontStyle.Italic || style == FontStyle.Oblique)
-				traits |= NSFontSymbolicTraits.ItalicTrait;
+				mask = NSFontTraitMask.Italic;
 			else
-				traits &= ~NSFontSymbolicTraits.ItalicTrait;
-			
-			return NSFont.FromDescription (f.FontDescriptor.FontDescriptorWithSymbolicTraits (traits), f.FontDescriptor.Matrix);
+				mask = NSFontTraitMask.Unitalic;
+			return NSFontManager.SharedFontManager.ConvertFont (f, mask);
 		}
 
-		public object SetWeight (object handle, FontWeight weight)
+		public override object SetWeight (object handle, FontWeight weight)
 		{
 			NSFont f = (NSFont) handle;
-			NSFontSymbolicTraits traits = f.FontDescriptor.SymbolicTraits;
+			NSFontTraitMask mask;
 			if (weight > FontWeight.Normal)
-				traits |= NSFontSymbolicTraits.BoldTrait;
+				mask = NSFontTraitMask.Bold;
 			else
-				traits &= ~NSFontSymbolicTraits.BoldTrait;
-			
-			return NSFont.FromDescription (f.FontDescriptor.FontDescriptorWithSymbolicTraits (traits), f.FontDescriptor.Matrix);
+				mask = NSFontTraitMask.Unbold;
+			return NSFontManager.SharedFontManager.ConvertFont (f, mask);
 		}
 
-		public object SetStretch (object handle, FontStretch stretch)
+		public override object SetStretch (object handle, FontStretch stretch)
 		{
 			NSFont f = (NSFont) handle;
-			NSFontSymbolicTraits traits = f.FontDescriptor.SymbolicTraits;
 			if (stretch < FontStretch.Normal) {
-				traits |= NSFontSymbolicTraits.CondensedTrait;
-				traits &= ~NSFontSymbolicTraits.ExpandedTrait;
+				f = NSFontManager.SharedFontManager.ConvertFont (f, NSFontTraitMask.Condensed);
+				f = NSFontManager.SharedFontManager.ConvertFontToNotHaveTrait (f, NSFontTraitMask.Expanded);
 			}
 			else if (stretch > FontStretch.Normal) {
-				traits |= NSFontSymbolicTraits.ExpandedTrait;
-				traits &= ~NSFontSymbolicTraits.CondensedTrait;
+				f = NSFontManager.SharedFontManager.ConvertFont (f, NSFontTraitMask.Expanded);
+				f = NSFontManager.SharedFontManager.ConvertFontToNotHaveTrait (f, NSFontTraitMask.Condensed);
 			}
 			else {
-				traits &= ~NSFontSymbolicTraits.ExpandedTrait;
-				traits &= ~NSFontSymbolicTraits.CondensedTrait;
+				f = NSFontManager.SharedFontManager.ConvertFontToNotHaveTrait (f, NSFontTraitMask.Condensed | NSFontTraitMask.Expanded);
 			}
-			
-			return NSFont.FromDescription (f.FontDescriptor.FontDescriptorWithSymbolicTraits (traits), f.FontDescriptor.Matrix);
+			return f;
 		}
 		
-		public double GetSize (object handle)
+		public override double GetSize (object handle)
 		{
 			NSFont f = (NSFont) handle;
-			return f.FontDescriptor.PointSize;
+			return f.PointSize;
 		}
 
-		public string GetFamily (object handle)
+		public override string GetFamily (object handle)
 		{
 			NSFont f = (NSFont) handle;
 			return f.FamilyName;
 		}
 
-		public FontStyle GetStyle (object handle)
+		public override FontStyle GetStyle (object handle)
 		{
 			NSFont f = (NSFont) handle;
 			if ((f.FontDescriptor.SymbolicTraits & NSFontSymbolicTraits.ItalicTrait) != 0)
@@ -125,7 +138,7 @@ namespace Xwt.Mac
 				return FontStyle.Normal;
 		}
 
-		public FontWeight GetWeight (object handle)
+		public override FontWeight GetWeight (object handle)
 		{
 			NSFont f = (NSFont) handle;
 			if ((f.FontDescriptor.SymbolicTraits & NSFontSymbolicTraits.BoldTrait) != 0)
@@ -134,12 +147,13 @@ namespace Xwt.Mac
 				return FontWeight.Normal;
 		}
 
-		public FontStretch GetStretch (object handle)
+		public override FontStretch GetStretch (object handle)
 		{
 			NSFont f = (NSFont) handle;
-			if ((f.FontDescriptor.SymbolicTraits & NSFontSymbolicTraits.CondensedTrait) != 0)
+			var traits = NSFontManager.SharedFontManager.TraitsOfFont (f);
+			if ((traits & NSFontTraitMask.Condensed) != 0)
 				return FontStretch.Condensed;
-			else if ((f.FontDescriptor.SymbolicTraits & NSFontSymbolicTraits.ExpandedTrait) != 0)
+			else if ((traits & NSFontTraitMask.Expanded) != 0)
 				return FontStretch.Expanded;
 			else
 				return FontStretch.Normal;

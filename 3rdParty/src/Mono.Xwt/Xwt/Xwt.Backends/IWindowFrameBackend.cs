@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using Xwt.Drawing;
 
 namespace Xwt.Backends
 {
@@ -31,22 +32,54 @@ namespace Xwt.Backends
 	{
 		void Initialize (IWindowFrameEventSink eventSink);
 		void Dispose ();
-		
+
+		/// <summary>
+		/// Size and position of the window content in screen coordinates
+		/// </summary>
 		Rectangle Bounds { get; set; }
 		void Move (double x, double y);
-		void Resize (double width, double height);
+
+		/// <summary>
+		/// Sets the size of the window
+		/// </summary>
+		/// <param name='width'>
+		/// New width, or -1 if the width doesn't have to be changed
+		/// </param>
+		/// <param name='height'>
+		/// New height, or -1 if the height doesn't have to be changed
+		/// </param>
+		/// <remarks>
+		/// </remarks>
+		void SetSize (double width, double height);
 
 		bool Visible { get; set; }
 		string Title { get; set; }
 		
 		bool Decorated { get; set; }
 		bool ShowInTaskbar { get; set; }
+		void SetTransientFor (IWindowFrameBackend window);
+		bool Resizable { get; set; }
+		double Opacity { get; set; }
+
+		void SetIcon (ImageDescription image);
 		
 		/// <summary>
 		/// Presents a window to the user. This may mean raising the window in the stacking order,
 		/// deiconifying it, moving it to the current desktop, and/or giving it the keyboard focus
 		/// </summary>
 		void Present ();
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this window is in full screen mode
+		/// </summary>
+		/// <value><c>true</c> if the window is in full screen mode; otherwise, <c>false</c>.</value>
+		bool FullScreen { get; set; }
+
+		/// <summary>
+		/// Gets the screen on which most of the area of this window is placed
+		/// </summary>
+		/// <value>The screen.</value>
+		object Screen { get; }
 	}
 	
 	public interface IWindowFrameEventSink
@@ -54,6 +87,7 @@ namespace Xwt.Backends
 		void OnBoundsChanged (Rectangle bounds);
 		void OnShown ();
 		void OnHidden ();
+		bool OnCloseRequested ();
 	}
 
 	[Flags]
@@ -61,7 +95,8 @@ namespace Xwt.Backends
 	{
 		BoundsChanged = 1,
 		Shown = 2,
-		Hidden = 4
+		Hidden = 4,
+		CloseRequested = 8
 	}
 }
 

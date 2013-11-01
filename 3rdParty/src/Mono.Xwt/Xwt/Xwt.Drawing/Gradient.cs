@@ -26,20 +26,15 @@
 
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.Drawing
 {
-    public abstract class Gradient : XwtObject<Gradient, IGradientBackendHandler>, IPattern
+	public abstract class Gradient: Pattern
 	{
-		protected Gradient(WidgetRegistry registry):base(registry) 
-        {
-		    
-		}
-
-        public Gradient AddColorStop (double pos, Color color)
+		public Gradient AddColorStop (double pos, Color color)
 		{
-			handler.AddColorStop (Backend, pos, color);
+			ToolkitEngine.GradientBackendHandler.AddColorStop (Backend, pos, color);
 			return this;
 		}
 	}

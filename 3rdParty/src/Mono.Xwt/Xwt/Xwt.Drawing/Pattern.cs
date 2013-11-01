@@ -25,12 +25,41 @@
 // THE SOFTWARE.
 
 using System;
+using Xwt.Backends;
 
 namespace Xwt.Drawing
 {
-	public interface IPattern
+	public abstract class Pattern: XwtObject, IDisposable
 	{
-		
+		DisposableResourceBackendHandler handler;
+
+		internal Pattern ()
+		{
+		}
+
+		internal void SetBackend (DisposableResourceBackendHandler handler, object backend)
+		{
+			Backend = backend;
+			this.handler = handler;
+			if (handler.DisposeHandleOnUiThread)
+				ResourceManager.RegisterResource (backend, handler.Dispose);
+			else
+				GC.SuppressFinalize (this);
+		}
+
+		~Pattern ()
+		{
+			ResourceManager.FreeResource (Backend);
+		}
+
+		public void Dispose ()
+		{
+			if (handler.DisposeHandleOnUiThread) {
+				GC.SuppressFinalize (this);
+				ResourceManager.FreeResource (Backend);
+			} else
+				handler.Dispose (Backend);
+		}
 	}
 }
 

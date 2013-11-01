@@ -26,7 +26,7 @@
 using System;
 using Xwt.Backends;
 using Xwt.Drawing;
-using Xwt.Engine;
+
 
 namespace Xwt.GtkBackend
 {
@@ -50,11 +50,25 @@ namespace Xwt.GtkBackend
 		}
 
 		public string Text {
+			get { return Widget.Text; }
+			set { Widget.Text = value ?? ""; } // null value causes GTK error
+		}
+
+		public Alignment TextAlignment {
 			get {
-				return Widget.Text;
+				if (Widget.Xalign == 0)
+					return Alignment.Start;
+				else if (Widget.Xalign == 1)
+					return Alignment.End;
+				else
+					return Alignment.Center;
 			}
 			set {
-				Widget.Text = value;
+				switch (value) {
+				case Alignment.Start: Widget.Xalign = 0; break;
+				case Alignment.End: Widget.Xalign = 1; break;
+				case Alignment.Center: Widget.Xalign = 0.5f; break;
+				}
 			}
 		}
 		
@@ -77,7 +91,7 @@ namespace Xwt.GtkBackend
 			}
 			set {
 				base.BackgroundColor = value;
-				Widget.ModifyBase (Gtk.StateType.Normal, Util.ToGdkColor (value));
+				Widget.ModifyBase (Gtk.StateType.Normal, value.ToGtkValue ());
 			}
 		}
 
@@ -85,20 +99,25 @@ namespace Xwt.GtkBackend
 		
 		void HandleWidgetExposeEvent (object o, Gtk.ExposeEventArgs args)
 		{
+			RenderPlaceholderText (Widget, args, placeHolderText, ref layout);
+		}
+
+		internal static void RenderPlaceholderText (Gtk.Entry entry, Gtk.ExposeEventArgs args, string placeHolderText, ref Pango.Layout layout)
+		{
 			// The Entry's GdkWindow is the top level window onto which
 			// the frame is drawn; the actual text entry is drawn into a
 			// separate window, so we can ensure that for themes that don't
 			// respect HasFrame, we never ever allow the base frame drawing
 			// to happen
-			if (args.Event.Window == Widget.GdkWindow)
+			if (args.Event.Window == entry.GdkWindow)
 				return;
 			
-			if (Widget.Text.Length > 0)
+			if (entry.Text.Length > 0)
 				return;
 			
 			if (layout == null) {
-				layout = new Pango.Layout (Widget.PangoContext);
-				layout.FontDescription = Widget.PangoContext.FontDescription.Copy ();
+				layout = new Pango.Layout (entry.PangoContext);
+				layout.FontDescription = entry.PangoContext.FontDescription.Copy ();
 			}
 			
 			int wh, ww;
@@ -107,14 +126,14 @@ namespace Xwt.GtkBackend
 			int width, height;
 			layout.SetText (placeHolderText);
 			layout.GetPixelSize (out width, out height);
-			Gdk.GC gc = new Gdk.GC (args.Event.Window);
-			gc.Copy (Widget.Style.TextGC (Gtk.StateType.Normal));
-			Color color_a = Util.ToXwtColor (Widget.Style.Base (Gtk.StateType.Normal));
-			Color color_b = Util.ToXwtColor (Widget.Style.Text (Gtk.StateType.Normal));
-			gc.RgbFgColor = Util.ToGdkColor (color_b.BlendWith (color_a, 0.5));
-			
-			args.Event.Window.DrawLayout (gc, 2, (wh - height) / 2 + 1, layout);
-			gc.Dispose ();
+			using (var gc = new Gdk.GC (args.Event.Window)) {
+				gc.Copy (entry.Style.TextGC (Gtk.StateType.Normal));
+				Color color_a = entry.Style.Base (Gtk.StateType.Normal).ToXwtValue ();
+				Color color_b = entry.Style.Text (Gtk.StateType.Normal).ToXwtValue ();
+				gc.RgbFgColor = color_b.BlendWith (color_a, 0.5).ToGtkValue ();
+
+				args.Event.Window.DrawLayout (gc, 2, (wh - height) / 2 + 1, layout);
+			}
 		}
 		
 		public bool ReadOnly {
@@ -134,6 +153,10 @@ namespace Xwt.GtkBackend
 				Widget.HasFrame = value;
 			}
 		}
+
+		public bool MultiLine {
+			get; set;
+		}
 		
 		public override void EnableEvent (object eventId)
 		{
@@ -141,6 +164,7 @@ namespace Xwt.GtkBackend
 			if (eventId is TextEntryEvent) {
 				switch ((TextEntryEvent)eventId) {
 				case TextEntryEvent.Changed: Widget.Changed += HandleChanged; break;
+				case TextEntryEvent.Activated: Widget.Activated += HandleActivated; break;
 				}
 			}
 		}
@@ -151,15 +175,35 @@ namespace Xwt.GtkBackend
 			if (eventId is TextEntryEvent) {
 				switch ((TextEntryEvent)eventId) {
 				case TextEntryEvent.Changed: Widget.Changed -= HandleChanged; break;
+				case TextEntryEvent.Activated: Widget.Activated -= HandleActivated; break;
 				}
 			}
 		}
 
 		void HandleChanged (object sender, EventArgs e)
 		{
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnChanged ();
 			});
+		}
+
+		void HandleActivated (object sender, EventArgs e)
+		{
+			ApplicationContext.InvokeUserCode (delegate {
+				EventSink.OnActivated ();
+			});
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			if (disposing) {
+				var l = layout;
+				if (l != null) {
+					l.Dispose ();
+					layout = null;
+				}
+			}
+			base.Dispose (disposing);
 		}
 	}
 }

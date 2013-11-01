@@ -25,16 +25,12 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using Xwt.Engine;
+
 
 namespace Xwt.Backends
 {
 	public class BackendHost<T,B>: BackendHost where B:IBackend
 	{
-		public BackendHost ()
-		{
-		}
-		
 		public new T Parent {
 			get { return (T)base.Parent; }
 			set { base.Parent = value; }
@@ -44,19 +40,20 @@ namespace Xwt.Backends
 			get { return (B)base.Backend; }
 		}
 	}
-	
+
 	public class BackendHost
 	{
 		IBackend backend;
 		bool usingCustomBackend;
-		WidgetRegistry registry;
-		
+		Toolkit engine;
+
 		HashSet<object> defaultEnabledEvents;
 		
 		public BackendHost ()
 		{
+			engine = Toolkit.CurrentEngine;
 		}
-		
+
 		public void SetCustomBackend (IBackend backend)
 		{
 			this.backend = backend;
@@ -72,17 +69,21 @@ namespace Xwt.Backends
 			}
 		}
 
-		public WidgetRegistry WidgetRegistry {
+		public Toolkit ToolkitEngine {
 			get {
-				if (registry != null)
-					return registry;
-				return registry = WidgetRegistry.MainRegistry;
+				if (engine != null)
+					return engine;
+				return engine = Toolkit.CurrentEngine;
 			}
 			internal set {
-				registry = value;
+				engine = value;
 			}
 		}
-		
+
+		internal ToolkitEngineBackend EngineBackend {
+			get { return ToolkitEngine.Backend; }
+		}
+
 		internal bool BackendCreated {
 			get { return backend != null; }
 		}
@@ -95,17 +96,10 @@ namespace Xwt.Backends
 		
 		protected virtual IBackend OnCreateBackend ()
 		{
-			Type t = Parent.GetType ();
-			while (t != typeof(object)) {
-				IBackend b = WidgetRegistry.CreateBackend<IBackend> (t);
-				if (b != null)
-					return b;
-				t = t.BaseType;
-			}
-			return null;
+			return EngineBackend.CreateBackendForFrontend (Parent.GetType ());
 		}
 		
-		public void EnsureBackendLoaded ()
+		internal void EnsureBackendLoaded ()
 		{
 			if (backend == null)
 				LoadBackend ();
@@ -115,14 +109,14 @@ namespace Xwt.Backends
 		{
 			if (usingCustomBackend) {
 				usingCustomBackend = false;
-				backend.InitializeBackend (Parent);
+				backend.InitializeBackend (Parent, engine.Context);
 				OnBackendCreated ();
 			}
 			else if (backend == null) {
 				backend = OnCreateBackend ();
 				if (backend == null)
 					throw new InvalidOperationException ("No backend found for object: " + Parent.GetType ());
-				backend.InitializeBackend (Parent);
+				backend.InitializeBackend (Parent, engine.Context);
 				OnBackendCreated ();
 			}
 		}
@@ -135,7 +129,7 @@ namespace Xwt.Backends
 		
 		public void OnAfterEventRemove (object eventId, Delegate eventDelegate)
 		{
-			if (eventDelegate != null && !DefaultEnabledEvents.Contains (eventId))
+			if (eventDelegate == null && !DefaultEnabledEvents.Contains (eventId))
 				Backend.DisableEvent (eventId);
 		}
 		

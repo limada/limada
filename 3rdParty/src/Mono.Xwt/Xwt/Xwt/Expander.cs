@@ -2,9 +2,12 @@ using System;
 using Xwt.Backends;
 using System.ComponentModel;
 using Xwt.Drawing;
+using System.Windows.Markup;
 
 namespace Xwt
 {
+	[BackendType (typeof(IExpanderBackend))]
+	[ContentProperty("Content")]
 	public class Expander: Widget
 	{
 		EventHandler expandChanged;
@@ -23,32 +26,37 @@ namespace Xwt
 			return new WidgetBackendHost ();
 		}
 		
-		IExpandBackend Backend {
-			get { return (IExpandBackend)BackendHost.Backend; }
+		IExpanderBackend Backend {
+			get { return (IExpanderBackend)BackendHost.Backend; }
 		}
 
 		public Expander ()
 		{
 		}
 
+		[DefaultValue ("")]
 		public string Label {
 			get {
-				return Backend.Label;
+				return Backend.Label ?? "";
 			}
 			set {
 				Backend.Label = value;
+				OnPreferredSizeChanged ();
 			}
 		}
 
+		[DefaultValue (false)]
 		public bool Expanded {
 			get {
 				return Backend.Expanded;
 			}
 			set {
-				Backend.Expanded = true;
+				Backend.Expanded = value;
+				OnPreferredSizeChanged ();
 			}
 		}
 
+		[DefaultValue (null)]
 		public new Widget Content {
 			get { return child; }
 			set {

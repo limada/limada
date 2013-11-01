@@ -27,7 +27,7 @@ using System;
 using Xwt.Backends;
 using System.Collections.Generic;
 using System.Linq;
-using Xwt.Engine;
+
 
 namespace Xwt.GtkBackend
 {
@@ -44,6 +44,7 @@ namespace Xwt.GtkBackend
 		{
 			Window = new Gtk.Dialog ();
 			Window.VBox.PackStart (CreateMainLayout ());
+			Window.ActionArea.Hide ();
 		}
 		
 		new Gtk.Dialog Window {
@@ -68,11 +69,20 @@ namespace Xwt.GtkBackend
 			
 			for (int n=0; n<dialogButtons.Length; n++) {
 				var db = dialogButtons[n];
-				Gtk.Button b = (Gtk.Button) Window.AddButton (db.Label, Gtk.ResponseType.None);
+				Gtk.Button b = new Gtk.Button ();
+				b.Show ();
+				b.Label = db.Label;
+				Window.ActionArea.Add (b);
 				UpdateButton (db, b);
 				buttons[n] = b;
 				buttons[n].Clicked += HandleButtonClicked;
 			}
+			UpdateActionAreaVisibility ();
+		}
+
+		void UpdateActionAreaVisibility ()
+		{
+			Window.ActionArea.Visible = Window.ActionArea.Children.Any (c => c.Visible);
 		}
 		
 		void UpdateButton (DialogButton btn, Gtk.Button b)
@@ -80,12 +90,12 @@ namespace Xwt.GtkBackend
 			if (!string.IsNullOrEmpty (btn.Label) && btn.Image == null) {
 				b.Label = btn.Label;
 			} else if (string.IsNullOrEmpty (btn.Label) && btn.Image != null) {
-				var pix = (Gdk.Pixbuf) GtkEngine.Registry.GetBackend (btn.Image);
-				b.Image = new Gtk.Image (pix);
+				var pix = btn.Image.ToImageDescription ();
+				b.Image = new ImageBox (ApplicationContext, pix);
 			} else if (!string.IsNullOrEmpty (btn.Label)) {
 				Gtk.Box box = new Gtk.HBox (false, 3);
-				var pix = (Gdk.Pixbuf) GtkEngine.Registry.GetBackend (btn.Image);
-				box.PackStart (new Gtk.Image (pix), false, false, 0);
+				var pix = btn.Image.ToImageDescription ();
+				box.PackStart (new ImageBox (ApplicationContext, pix), false, false, 0);
 				box.PackStart (new Gtk.Label (btn.Label), true, true, 0);
 				b.Image = box;
 			}
@@ -94,12 +104,13 @@ namespace Xwt.GtkBackend
 			else
 				b.Hide ();
 			b.Sensitive = btn.Sensitive;
+			UpdateActionAreaVisibility ();
 		}
 		
 		void HandleButtonClicked (object o, EventArgs a)
 		{
 			int i = Array.IndexOf (buttons, (Gtk.Button) o);
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnDialogButtonClicked (dialogButtons[i]);
 			});
 		}
@@ -112,6 +123,8 @@ namespace Xwt.GtkBackend
 
 		public void RunLoop (IWindowFrameBackend parent)
 		{
+			// GTK adds a border to the root widget, for some unknown reason
+			((Gtk.Container)Window.Child).BorderWidth = 0;
 			var p = (WindowFrameBackend) parent;
 			MessageService.RunCustomDialog (Window, p != null ? p.Window : null);
 		}
@@ -119,6 +132,15 @@ namespace Xwt.GtkBackend
 		public void EndLoop ()
 		{
 			Window.Respond (Gtk.ResponseType.Ok);
+		}
+
+		public override void GetMetrics (out Size minSize, out Size decorationSize)
+		{
+			base.GetMetrics (out minSize, out decorationSize);
+			var rq = Window.ActionArea.Visible ? Window.ActionArea.SizeRequest () : new Gtk.Requisition ();
+			if (rq.Width > minSize.Width)
+				minSize.Width = rq.Width;
+			decorationSize.Height += rq.Height;
 		}
 	}
 }

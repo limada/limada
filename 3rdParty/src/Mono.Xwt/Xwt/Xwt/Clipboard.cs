@@ -27,20 +27,14 @@ using System;
 using System.Linq;
 using Xwt.Backends;
 using Xwt.Drawing;
-using Xwt.Engine;
+
 
 namespace Xwt
 {
 	public static class Clipboard
 	{
-		static IClipboardBackend _backend;
-		
-		static IClipboardBackend Backend {
-			get {
-				if (_backend == null)
-					_backend = WidgetRegistry.MainRegistry.CreateSharedBackend<IClipboardBackend> (typeof(Clipboard));
-				return _backend;
-			}
+		static ClipboardBackend Backend {
+			get { return Toolkit.CurrentEngine.ClipboardBackend; }
 		}
 		
 		public static void Clear ()

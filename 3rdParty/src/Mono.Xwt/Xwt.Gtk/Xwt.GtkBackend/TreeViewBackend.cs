@@ -33,6 +33,76 @@ namespace Xwt.GtkBackend
 	{
 		Gtk.TreePath autoExpandPath;
 		uint expandTimer;
+
+		protected new ITreeViewEventSink EventSink {
+			get { return (ITreeViewEventSink)base.EventSink; }
+		}
+		
+		public override void EnableEvent (object eventId)
+		{
+			base.EnableEvent (eventId);
+			if (eventId is TreeViewEvent) {
+				switch ((TreeViewEvent)eventId) {
+				case TreeViewEvent.RowActivated:
+					Widget.RowActivated += HandleRowActivated;
+					break;
+				case TreeViewEvent.RowExpanding:
+					Widget.TestExpandRow += HandleTestExpandRow;;
+					break;
+				case TreeViewEvent.RowExpanded:
+					Widget.RowExpanded += HandleRowExpanded;;
+					break;
+				}
+			}
+		}
+
+		public override void DisableEvent (object eventId)
+		{
+			base.DisableEvent (eventId);
+			if (eventId is TreeViewEvent) {
+				switch ((TreeViewEvent)eventId) {
+				case TreeViewEvent.RowActivated:
+					Widget.RowActivated -= HandleRowActivated;
+					break;
+				case TreeViewEvent.RowExpanding:
+					Widget.TestExpandRow -= HandleTestExpandRow;;
+					break;
+				case TreeViewEvent.RowExpanded:
+					Widget.RowExpanded -= HandleRowExpanded;;
+					break;
+				}
+			}
+		}
+		
+		void HandleRowExpanded (object o, Gtk.RowExpandedArgs args)
+		{
+			Gtk.TreeIter it;
+			if (Widget.Model.GetIter (out it, args.Path)) {
+				ApplicationContext.InvokeUserCode (delegate {
+					EventSink.OnRowExpanded (new IterPos (-1, it));
+				});
+			}
+		}
+		
+		void HandleTestExpandRow (object o, Gtk.TestExpandRowArgs args)
+		{
+			Gtk.TreeIter it;
+			if (Widget.Model.GetIter (out it, args.Path)) {
+				ApplicationContext.InvokeUserCode (delegate {
+					EventSink.OnRowExpanding (new IterPos (-1, it));
+				});
+			}
+		}
+
+		void HandleRowActivated (object o, Gtk.RowActivatedArgs args)
+		{
+			Gtk.TreeIter it;
+			if (Widget.Model.GetIter (out it, args.Path)) {
+				ApplicationContext.InvokeUserCode (delegate {
+					EventSink.OnRowActivated (new IterPos (-1, it));
+				});
+			}
+		}
 		
 		protected override void OnSetDragTarget (Gtk.TargetEntry[] table, Gdk.DragAction actions)
 		{
@@ -58,7 +128,7 @@ namespace Xwt.GtkBackend
 			if (!Widget.GetDestRowAtPos (x, y, out path, out tpos))
 				path = null;
 			
-			if (expandTimer == 0 || autoExpandPath != path) {
+			if (expandTimer == 0 || !object.Equals (autoExpandPath, path)) {
 				if (expandTimer != 0)
 					GLib.Source.Remove (expandTimer);
 				if (path != null) {
@@ -104,6 +174,11 @@ namespace Xwt.GtkBackend
 				}
 				return sel;
 			}
+		}
+
+		public TreePosition CurrentEventRow {
+			get;
+			internal set;
 		}
 		
 		public void SelectRow (TreePosition pos)

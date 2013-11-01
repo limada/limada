@@ -31,7 +31,7 @@ using System.Text;
 using System.Windows;
 
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.WPFBackend
 {
@@ -40,14 +40,16 @@ namespace Xwt.WPFBackend
 		System.Windows.Window window;
 		IWindowFrameEventSink eventSink;
 		WindowFrame frontend;
+		bool resizable = true;
 
 		public WindowFrameBackend ()
 		{
 		}
 
-		void IBackend.InitializeBackend (object frontend)
+		void IBackend.InitializeBackend (object frontend, ApplicationContext context)
 		{
 			this.frontend = (WindowFrame) frontend;
+			Context = context;
 		}
 
 		void IWindowFrameBackend.Initialize (IWindowFrameEventSink eventSink)
@@ -55,6 +57,8 @@ namespace Xwt.WPFBackend
 			this.eventSink = eventSink;
 			Initialize ();
 		}
+
+		public ApplicationContext Context { get; private set; }
 
 		public virtual void Initialize ()
 		{
@@ -85,12 +89,59 @@ namespace Xwt.WPFBackend
 
 		bool IWindowFrameBackend.Decorated {
 			get { return window.WindowStyle != WindowStyle.None; }
-			set { window.WindowStyle = value ? WindowStyle.SingleBorderWindow : WindowStyle.None; }
+			set {
+				window.WindowStyle = value ? WindowStyle.SingleBorderWindow : WindowStyle.None;
+				UpdateResizeMode ();
+			}
 		}
 
 		bool IWindowFrameBackend.ShowInTaskbar {
 			get { return window.ShowInTaskbar; }
 			set { window.ShowInTaskbar = value; }
+		}
+
+		void IWindowFrameBackend.SetTransientFor (IWindowFrameBackend window)
+		{
+			this.Window.Owner = ((WindowFrameBackend) window).Window;
+		}
+
+		bool IWindowFrameBackend.Resizable {
+			get {
+				return resizable;
+			}
+			set {
+				if (value != resizable) {
+					resizable = value;
+					UpdateResizeMode ();
+					var bounds = Bounds;
+					window.ResizeMode = value ? ResizeMode.CanResize : ResizeMode.NoResize;
+					if (window.IsLoaded && bounds != Bounds) {
+						// The size of the border of resizable windows is different from fixed windows.
+						// If we change the resize mode, the border size will change, and the client
+						// area will then change. Here, we restore the client area to the size it
+						// had before the mode change.
+						Bounds = bounds;
+					}
+				}
+			}
+		}
+
+		void UpdateResizeMode ()
+		{
+			var m = resizable && window.WindowStyle == WindowStyle.SingleBorderWindow ? ResizeMode.CanResize : ResizeMode.NoResize;
+			if (m != window.ResizeMode) {
+				window.ResizeMode = m;
+				OnResizeModeChanged ();
+			}
+		}
+
+		protected virtual void OnResizeModeChanged ()
+		{
+		}
+
+		public void SetIcon (ImageDescription imageBackend)
+		{
+			window.Icon = imageBackend.ToImageSource ();
 		}
 
 		string IWindowFrameBackend.Title {
@@ -101,7 +152,18 @@ namespace Xwt.WPFBackend
 		bool IWindowFrameBackend.Visible
 		{
 			get { return window.Visibility == Visibility.Visible; }
-			set { window.Visibility = value ? Visibility.Visible : Visibility.Hidden; }
+			set {
+				if (value)
+					window.Show ();
+				else
+					window.Hide ();
+			}
+		}
+
+		public double Opacity
+		{
+			get { return window.Opacity; }
+			set { window.Opacity = value; }
 		}
 
 		void IWindowFrameBackend.Present ()
@@ -109,29 +171,42 @@ namespace Xwt.WPFBackend
 			window.Activate ();
 		}
 
+		
+		bool IWindowFrameBackend.FullScreen {
+			get {
+				return false;
+			}
+			set {
+			}
+		}
+
+		object IWindowFrameBackend.Screen {
+			get {
+				var sb = Bounds;
+				return System.Windows.Forms.Screen.FromRectangle (new System.Drawing.Rectangle ((int)sb.X, (int)sb.Y, (int)sb.Width, (int)sb.Height));
+			}
+		}
+
 		public void Move (double x, double y)
 		{
 			var value = ToNonClientRect (new Rectangle (x, y, 1, 1));
 			window.Top = value.Top;
 			window.Left = value.Left;
-			Toolkit.Invoke (delegate
+			Context.InvokeUserCode (delegate
 			{
 				eventSink.OnBoundsChanged (Bounds);
 			});
 		}
 
-		public void Resize (double width, double height)
+		public void SetSize (double width, double height)
 		{
-			var value = ToNonClientRect (new Rectangle (0, 0, width, height));
-			window.Width = value.Width;
-			window.Height = value.Height;
-			Toolkit.Invoke (delegate
-			{
-				eventSink.OnBoundsChanged (Bounds);
-			});
+			var r = Bounds;
+			r.Width = width;
+			r.Height = height;
+			Bounds = r;
 		}
 
-		public Rectangle Bounds {
+		public virtual Rectangle Bounds {
 			get {
 				double width = Double.IsNaN (window.Width) ? window.ActualWidth : window.Width;
 				double height = Double.IsNaN (window.Height) ? window.ActualHeight : window.Height;
@@ -143,7 +218,7 @@ namespace Xwt.WPFBackend
 				window.Left = value.Left;
 				window.Width = value.Width;
 				window.Height = value.Height;
-				Toolkit.Invoke (delegate {
+				Context.InvokeUserCode (delegate {
 					eventSink.OnBoundsChanged (Bounds);
 				});
 			}
@@ -162,6 +237,9 @@ namespace Xwt.WPFBackend
 						break;
 					case WindowFrameEvent.Hidden:
 						window.IsVisibleChanged += HiddenHandler;
+						break;
+					case WindowFrameEvent.CloseRequested:
+						window.Closing += ClosingHandler;
 						break;
 				}
 			}
@@ -183,22 +261,30 @@ namespace Xwt.WPFBackend
 					case WindowFrameEvent.Hidden:
 						window.IsVisibleChanged -= HiddenHandler;
 						break;
+					case WindowFrameEvent.CloseRequested:
+						window.Closing -= ClosingHandler;
+						break;
 				}
 			}
 		}
 
 		void BoundsChangedHandler (object o, EventArgs args)
 		{
-			Toolkit.Invoke (delegate () {
+			Context.InvokeUserCode (delegate () {
 				eventSink.OnBoundsChanged (Bounds);
 			});
 		}
 
 		private void ShownHandler (object sender, DependencyPropertyChangedEventArgs e)
 		{
+			// delay shown event until window is loaded
+			if (!window.IsLoaded) {
+				window.Loaded += (sender2, e2) => ShownHandler (sender, e);
+				return;
+			}
 			if((bool)e.NewValue)
 			{
-				Toolkit.Invoke (delegate ()
+				Context.InvokeUserCode (delegate ()
 				{
 					eventSink.OnShown ();
 				});
@@ -209,22 +295,44 @@ namespace Xwt.WPFBackend
 		{
 			if((bool)e.NewValue == false)
 			{
-				Toolkit.Invoke (delegate ()
+				Context.InvokeUserCode (delegate ()
 				{
 					eventSink.OnHidden ();
 				});
 			}
 		}
 
+		private void ClosingHandler (object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			Context.InvokeUserCode (delegate ()
+			{
+				e.Cancel = eventSink.OnCloseRequested ();
+			});
+		}
+
+		Size GetBorderSize ()
+		{
+			if (window.ResizeMode == ResizeMode.CanResize)
+				return new Size (SystemParameters.ResizeFrameVerticalBorderWidth, SystemParameters.ResizeFrameHorizontalBorderHeight);
+			else
+				return new Size (SystemParameters.FixedFrameVerticalBorderWidth, SystemParameters.FixedFrameHorizontalBorderHeight);
+		}
+
 		protected Rectangle ToNonClientRect (Rectangle rect)
 		{
+			// WARNING: SystemParameters.ResizeFrameHorizontalBorderHeight is known to return invalid values in some cases, due to
+			// a workaround in the Windows API to support legacy applications running on Aero.
+			// We can't rely then on ToNonClientRect and ToClientRect to return 100% correct values, so they are not used for calculating
+			// the required client area. However, the result of those methods is good enough for calculating the position of the window.
+
 			var size = rect.Size;
 			var loc = rect.Location;
 
-			size.Height += SystemParameters.ResizeFrameHorizontalBorderHeight * 2;
-			size.Width += SystemParameters.ResizeFrameVerticalBorderWidth * 2;
-			loc.X -= SystemParameters.ResizeFrameVerticalBorderWidth;
-			loc.Y -= SystemParameters.ResizeFrameHorizontalBorderHeight;
+			var border = GetBorderSize ();
+			size.Height += border.Height * 2;
+			size.Width += border.Width * 2;
+			loc.X -= border.Width;
+			loc.Y -= border.Height;
 
 			if (((IWindowFrameBackend)this).Decorated) {
 				size.Height += SystemParameters.WindowCaptionHeight;
@@ -243,14 +351,15 @@ namespace Xwt.WPFBackend
 			var size = rect.Size;
 			var loc = rect.Location;
 
-			size.Height -= SystemParameters.ResizeFrameHorizontalBorderHeight * 2;
-			size.Width -= SystemParameters.ResizeFrameVerticalBorderWidth * 2;
-			loc.X += SystemParameters.ResizeFrameVerticalBorderWidth;
-			loc.Y += SystemParameters.ResizeFrameHorizontalBorderHeight;
+			var border = GetBorderSize ();
+			size.Height -= border.Height * 2;
+			size.Width -= border.Width * 2;
+			loc.X += border.Width;
+			loc.Y += border.Height;
 
 			if (((IWindowFrameBackend)this).Decorated) {
-				size.Height -= SystemParameters.CaptionHeight;
-				loc.Y += SystemParameters.CaptionHeight;
+                size.Height -= SystemParameters.WindowCaptionHeight;
+                loc.Y += SystemParameters.WindowCaptionHeight;
 			}
 			if (HasMenu) {
 				size.Height -= SystemParameters.MenuBarHeight;

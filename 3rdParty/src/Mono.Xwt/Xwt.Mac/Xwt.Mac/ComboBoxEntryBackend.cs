@@ -27,7 +27,7 @@ using System;
 using Xwt.Backends;
 using MonoMac.AppKit;
 using MonoMac.Foundation;
-using Xwt.Engine;
+
 
 namespace Xwt.Mac
 {
@@ -45,8 +45,7 @@ namespace Xwt.Mac
 		public override void Initialize ()
 		{
 			base.Initialize ();
-			ViewObject = new MacComboBox (EventSink);
-			Widget.SizeToFit ();
+			ViewObject = new MacComboBox (EventSink, ApplicationContext);
 		}
 		
 		protected override Size GetNaturalSize ()
@@ -101,9 +100,11 @@ namespace Xwt.Mac
 	{
 		IComboBoxEventSink eventSink;
 		ITextEntryEventSink entryEventSink;
+		ApplicationContext context;
 		
-		public MacComboBox (IComboBoxEventSink eventSink)
+		public MacComboBox (IComboBoxEventSink eventSink, ApplicationContext context)
 		{
+			this.context = context;
 			this.eventSink = eventSink;
 		}
 		
@@ -118,13 +119,13 @@ namespace Xwt.Mac
 			}
 		}
 
-		public Widget Frontend { get; set; }
+		public ViewBackend Backend { get; set; }
 		
 		public override void DidChange (MonoMac.Foundation.NSNotification notification)
 		{
 			base.DidChange (notification);
 			if (entryEventSink != null) {
-				Toolkit.Invoke (delegate {
+				context.InvokeUserCode (delegate {
 					entryEventSink.OnChanged ();
 				});
 			}

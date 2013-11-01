@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.GtkBackend
 {
@@ -58,14 +58,14 @@ namespace Xwt.GtkBackend
 		{
 			theColumn.Clear ();
 			foreach (var v in views)
-				CellUtil.CreateCellRenderer (this, theColumn, v);
+				CellUtil.CreateCellRenderer (ApplicationContext, this, theColumn, v, Widget.Model);
 		}
 		
 		public override void EnableEvent (object eventId)
 		{
 			base.EnableEvent (eventId);
-			if (eventId is ListBoxEvent) {
-				if (((ListBoxEvent)eventId) == ListBoxEvent.SelectionChanged)
+			if (eventId is TableViewEvent) {
+				if (((TableViewEvent)eventId) == TableViewEvent.SelectionChanged)
 					Widget.Selection.Changed += HandleWidgetSelectionChanged;
 			}
 		}
@@ -73,15 +73,15 @@ namespace Xwt.GtkBackend
 		public override void DisableEvent (object eventId)
 		{
 			base.DisableEvent (eventId);
-			if (eventId is ListBoxEvent) {
-				if (((ListBoxEvent)eventId) == ListBoxEvent.SelectionChanged)
+			if (eventId is TableViewEvent) {
+				if (((TableViewEvent)eventId) == TableViewEvent.SelectionChanged)
 					Widget.Selection.Changed -= HandleWidgetSelectionChanged;
 			}
 		}
 
 		void HandleWidgetSelectionChanged (object sender, EventArgs e)
 		{
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnSelectionChanged ();
 			});
 		}

@@ -28,7 +28,7 @@ using System;
 using Xwt.Backends;
 using MonoMac.AppKit;
 using MonoMac.Foundation;
-using Xwt.Engine;
+
 using MonoMac.ObjCRuntime;
 
 namespace Xwt.Mac
@@ -43,7 +43,6 @@ namespace Xwt.Mac
 		{
 			var widget = new ProgressIndicatorView ();
 			ViewObject = widget;
-			Widget.SizeToFit ();
 
 			widget.MinValue = 0.0;
 			widget.MaxValue = 1.0;
@@ -80,7 +79,7 @@ namespace Xwt.Mac
 		{
 		}
 		
-		public Widget Frontend { get; set; }
+		public ViewBackend Backend { get; set; }
 		
 		public NSView View {
 			get { return this; }

@@ -104,12 +104,12 @@ namespace Xwt.WPFBackend
 
 		public void LineLeft()
 		{
-			SetVerticalOffset (HorizontalOffset - HorizontalStepIncrement);
+			SetHorizontalOffset (HorizontalOffset - HorizontalStepIncrement);
 		}
 
 		public void LineRight()
 		{
-			SetVerticalOffset (HorizontalOffset + HorizontalStepIncrement);
+			SetHorizontalOffset (HorizontalOffset + HorizontalStepIncrement);
 		}
 
 		public void LineUp()
@@ -119,13 +119,35 @@ namespace Xwt.WPFBackend
 
 		public Rect MakeVisible (Visual visual, Rect rectangle)
 		{
-			if (rectangle.Top < VerticalOffset || rectangle.Top + rectangle.Height > VerticalOffset + this.viewport.Height)
-				SetVerticalOffset (rectangle.Top);
+			// This is the area which is currently visible
+			var visibleRect = new Rect (HorizontalOffset, VerticalOffset, ViewportWidth, ViewportHeight);
 
-			if (rectangle.Left < HorizontalOffset || rectangle.Left + rectangle.Width > VerticalOffset + this.viewport.Width)
-				SetHorizontalOffset (rectangle.Left);
+			// This is the area we wish to be visible
+			rectangle = visual.TransformToAncestor (this).TransformBounds (rectangle);
 
-			return new Rect (HorizontalOffset, VerticalOffset, this.viewport.Width, this.viewport.Height);
+			if (visibleRect == rectangle)
+				return rectangle;
+
+			// The co-ordinates are relative to the visible area, so we need to add the visible area offset
+			// to convert to values we can use in VerticalOffset/HorizontalOffset
+			rectangle.X += visibleRect.X;
+			rectangle.Y += visibleRect.Y;
+
+			SetHorizontalOffset (ClampOffset (visibleRect.Left, visibleRect.Right, rectangle.Left, rectangle.Right));
+			SetVerticalOffset (ClampOffset (visibleRect.Top, visibleRect.Bottom, rectangle.Top, rectangle.Bottom));
+
+			return rectangle;
+		}
+
+		private double ClampOffset (double lowerVisible, double upperVisible, double desiredLower, double desiredUpper)
+		{
+			// This is not entirely correct. The 'else' statement needs to be improved
+			// so we scroll the minimum required distance as opposed to just jumping
+			// to 'desiredLower' if our element doesn't already fit perfectly
+			if (desiredLower >= lowerVisible && desiredUpper < upperVisible)
+				return lowerVisible;
+			else
+				return desiredLower; 
 		}
 
 		public void MouseWheelDown()
@@ -182,13 +204,12 @@ namespace Xwt.WPFBackend
 				offset = this.extent.Width - this.viewport.Width;
 
 			this.contentOffset.X = offset;
-			if (ScrollOwner != null)
-				ScrollOwner.InvalidateScrollInfo();
-
 			if (usingCustomScrolling)
 				this.horizontalBackend.SetOffset (offset);
 			else
 				this.transform.X = -offset;
+			if (ScrollOwner != null)
+				ScrollOwner.InvalidateScrollInfo ();
 		}
 
 		public void SetVerticalOffset (double offset)
@@ -199,13 +220,12 @@ namespace Xwt.WPFBackend
 				offset = this.extent.Height - this.viewport.Height;
 
 			this.contentOffset.Y = offset;
-			if (ScrollOwner != null)
-				ScrollOwner.InvalidateScrollInfo ();
-
 			if (usingCustomScrolling)
 				this.verticalBackend.SetOffset (offset);
 			else
 				this.transform.Y = -offset;
+			if (ScrollOwner != null)
+				ScrollOwner.InvalidateScrollInfo ();
 		}
 
 		public void SetOffset (ScrollAdjustmentBackend scroller, double offset)
@@ -232,7 +252,7 @@ namespace Xwt.WPFBackend
 				viewport = newViewport;
 				if (!viewportAdjustmentQueued) {
 					viewportAdjustmentQueued = true;
-					Xwt.Engine.Toolkit.QueueExitAction (delegate
+					Application.MainLoop.QueueExitAction (delegate
 					{
 						// Adjust the position, if it now falls outside the extents.
 						// Doing it in an exit action to make sure the adjustement
@@ -331,7 +351,8 @@ namespace Xwt.WPFBackend
 
 			child.Arrange (new Rect (0, 0, childSize.Width, childSize.Height));
 			child.UpdateLayout ();
-			((IWidgetSurface)(((IWpfWidget)child).Backend.Frontend)).Reallocate ();
+			if (child is IWpfWidget)
+				((IWidgetSurface)(((IWpfWidget)child).Backend.Frontend)).Reallocate ();
 
 			return finalSize;
 		}

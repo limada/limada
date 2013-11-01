@@ -25,13 +25,13 @@
 // THE SOFTWARE.
 using System;
 
+
 namespace Xwt.Backends
 {
 	public interface IFrontend
 	{
 		object Backend { get; }
-		object GetBackendForRegistry (Xwt.Engine.WidgetRegistry registry);
-        Xwt.Engine.WidgetRegistry Registry { get; }
+		Toolkit ToolkitEngine { get; }
 	}
 }
 

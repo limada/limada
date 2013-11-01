@@ -31,16 +31,24 @@ using MonoMac.Foundation;
 using Xwt.Backends;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace Xwt.Mac
 {
-	class CompositeCell: NSCell
+	class CompositeCell: NSCell, ICopiableObject, ICellDataSource
 	{
 		ICellSource source;
 		NSObject val;
 		List<ICellRenderer> cells = new List<ICellRenderer> ();
 		Orientation direction;
-		
+		NSCell trackingCell;
+		ITablePosition tablePosition;
+
+		static CompositeCell ()
+		{
+			Util.MakeCopiable<CompositeCell> ();
+		}
+
 		public CompositeCell (Orientation dir, ICellSource source)
 		{
 			direction = dir;
@@ -50,6 +58,38 @@ namespace Xwt.Mac
 		public CompositeCell (IntPtr p): base (p)
 		{
 		}
+
+		#region ICellDataSource implementation
+
+		object ICellDataSource.GetValue (IDataField field)
+		{
+			return source.GetValue (tablePosition.Position, field.Index);
+		}
+
+		#endregion
+
+		public void SetValue (IDataField field, object value)
+		{
+			source.SetValue (tablePosition.Position, field.Index, value);
+		}
+
+		void ICopiableObject.CopyFrom (object other)
+		{
+			var ob = (CompositeCell)other;
+			source = ob.source;
+			val = ob.val;
+			tablePosition = ob.tablePosition;
+			direction = ob.direction;
+			trackingCell = ob.trackingCell;
+			cells = new List<ICellRenderer> ();
+			foreach (var c in ob.cells) {
+				var copy = (ICellRenderer) Activator.CreateInstance (c.GetType ());
+				copy.CopyFrom (c);
+				AddCell (copy);
+			}
+			if (tablePosition != null)
+				Fill ();
+		}
 		
 		public override NSObject ObjectValue {
 			get {
@@ -57,60 +97,76 @@ namespace Xwt.Mac
 			}
 			set {
 				val = value;
-				if (val is ITablePosition)
-					Fill (((ITablePosition)val).Position);
+				if (val is ITablePosition) {
+					tablePosition = (ITablePosition) val;
+					Fill ();
+				}
+				else if (val is NSNumber) {
+					tablePosition = new TableRow () {
+						Row = ((NSNumber)val).Int32Value
+					};
+					Fill ();
+				} else
+					tablePosition = null;
+			}
+		}
+
+		public override bool IsOpaque {
+			get {
+				var b = base.IsOpaque;
+				return true;
 			}
 		}
 		
 		public void AddCell (ICellRenderer cell)
 		{
+			cell.CellContainer = this;
 			cells.Add (cell);
 		}
 		
-		public void Fill (object pos)
+		public void Fill ()
 		{
-			if (source == null || pos == null)
-				return;
+			foreach (var c in cells) {
+				c.Frontend.Initialize (this);
+				c.Fill ();
+			}
+
 			var s = CellSize;
 			if (s.Height > source.RowHeight)
 				source.RowHeight = s.Height;
-			foreach (var c in cells)
-				c.Fill (source, pos);
 		}
 		
 		public override void CalcDrawInfo (RectangleF aRect)
 		{
 			base.CalcDrawInfo (aRect);
 		}
-		
+
+		IEnumerable<ICellRenderer> VisibleCells {
+			get { return cells.Where (c => c.Frontend.Visible); }
+		}
+
+		SizeF CalcSize ()
+		{
+			float w = 0;
+			float h = 0;
+			foreach (NSCell c in VisibleCells) {
+				var s = c.CellSize;
+				if (direction == Orientation.Horizontal) {
+					w += s.Width;
+					if (s.Height > h)
+						h = s.Height;
+				} else {
+					h += s.Height;
+					if (s.Width > w)
+						w = s.Width;
+				}
+			}
+			return new SizeF (w, h);
+		}
+
 		public override SizeF CellSizeForBounds (RectangleF bounds)
 		{
-			return base.CellSizeForBounds (bounds);
-		}
-		
-		public override SizeF CellSize {
-			get {
-				float w = 0;
-				float h = 0;
-				foreach (NSCell c in cells) {
-					var s = c.CellSize;
-					if (direction == Orientation.Horizontal) {
-						w += s.Width;
-						if (s.Height > h)
-							h = s.Height;
-					} else {
-						h += s.Height;
-						if (s.Width > w)
-							w = s.Width;
-					}
-				}
-				return new SizeF (w, h);
-			}
-		}
-		
-		public override RectangleF DrawingRectForBounds (RectangleF theRect)
-		{
-			return base.DrawingRectForBounds (theRect);
+			return CalcSize ();
 		}
 		
 		public override NSCellStateValue State {
@@ -135,11 +191,10 @@ namespace Xwt.Mac
 			}
 		}
 		
-		public override void DrawWithFrame (RectangleF cellFrame, NSView inView)
+		public override void DrawInteriorWithFrame (RectangleF cellFrame, NSView inView)
 		{
-			foreach (CellPos cp in GetCells(cellFrame)) {
-				cp.Cell.DrawWithFrame (cp.Frame, inView);
-			}
+			foreach (CellPos cp in GetCells(cellFrame))
+				cp.Cell.DrawInteriorWithFrame (cp.Frame, inView);
 		}
 		
 		public override void Highlight (bool flag, RectangleF withFrame, NSView inView)
@@ -158,61 +213,49 @@ namespace Xwt.Mac
 			}
 			return NSCellHit.None;
 		}
-		
-		NSCell trackingCell;
-		
-		public override bool StartTracking (PointF startPoint, NSView inView)
+
+		public override bool TrackMouse (NSEvent theEvent, RectangleF cellFrame, NSView controlView, bool untilMouseUp)
 		{
-			foreach (NSCell c in cells) {
-				if (c.StartTracking (startPoint, inView)) {
-					trackingCell = c;
-					return true;
-				}
-			}
-			return false;
-		}
-		
-		public override void StopTracking (PointF lastPoint, PointF stopPoint, NSView inView, bool mouseIsUp)
-		{
-			if (trackingCell != null) {
-				try {
-					trackingCell.StopTracking (lastPoint, stopPoint, inView, mouseIsUp);
-				} finally {
-					trackingCell = null;
-				}
-			}
-		}
-		
-		public override bool ContinueTracking (PointF lastPoint, PointF currentPoint, NSView inView)
-		{
-			if (trackingCell != null)
-				return trackingCell.ContinueTracking (lastPoint, currentPoint, inView);
+			var c = GetHitCell (theEvent, cellFrame, controlView);
+			if (c != null)
+				return c.Cell.TrackMouse (theEvent, c.Frame, controlView, untilMouseUp);
 			else
-				return false;
+				return base.TrackMouse (theEvent, cellFrame, controlView, untilMouseUp);
+		}
+
+		CellPos GetHitCell (NSEvent theEvent, RectangleF cellFrame, NSView controlView)
+		{
+			foreach (CellPos cp in GetCells(cellFrame)) {
+				var h = cp.Cell.HitTest (theEvent, cp.Frame, controlView);
+				if (h != NSCellHit.None)
+					return cp;
+			}
+			return null;
 		}
 		
 		IEnumerable<CellPos> GetCells (RectangleF cellFrame)
 		{
 			if (direction == Orientation.Horizontal) {
-				float x = cellFrame.X;
-				foreach (NSCell c in cells) {
+				foreach (NSCell c in VisibleCells) {
 					var s = c.CellSize;
-					RectangleF f = new RectangleF (x, cellFrame.Y, s.Width, s.Height);
-					x += s.Width;
+					var w = Math.Min (cellFrame.Width, s.Width);
+					RectangleF f = new RectangleF (cellFrame.X, cellFrame.Y, w, cellFrame.Height);
+					cellFrame.X += w;
+					cellFrame.Width -= w;
 					yield return new CellPos () { Cell = c, Frame = f };
 				}
 			} else {
 				float y = cellFrame.Y;
-				foreach (NSCell c in cells) {
+				foreach (NSCell c in VisibleCells) {
 					var s = c.CellSize;
-					RectangleF f = new RectangleF (cellFrame.X, y, s.Width, s.Height);
+					RectangleF f = new RectangleF (cellFrame.X, y, s.Width, cellFrame.Height);
 					y += s.Height;
 					yield return new CellPos () { Cell = c, Frame = f };
 				}
 			}
 		}
 		
-		struct CellPos
+		class CellPos
 		{
 			public NSCell Cell;
 			public RectangleF Frame;

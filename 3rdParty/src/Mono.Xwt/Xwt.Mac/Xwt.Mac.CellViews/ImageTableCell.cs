@@ -26,7 +26,7 @@
 
 using System;
 using MonoMac.AppKit;
-using Xwt.Engine;
+
 using Xwt.Drawing;
 using Xwt.Backends;
 
@@ -34,22 +34,26 @@ namespace Xwt.Mac
 {
 	class ImageTableCell: NSImageCell, ICellRenderer
 	{
-		ImageCellView cellView;
+		IImageCellViewFrontend cellView;
+		
+		public ImageTableCell ()
+		{
+		}
 		
 		public ImageTableCell (IntPtr p): base (p)
 		{
 		}
 		
-		public ImageTableCell (ImageCellView cellView)
+		public ImageTableCell (IImageCellViewFrontend cellView)
 		{
 			this.cellView = cellView;
 		}
 		
-		public void Fill (ICellSource source, object pos)
+		public CompositeCell CellContainer { get; set; }
+
+		public void Fill ()
 		{
-			Image img = (Image) source.GetValue (pos, cellView.ImageField.Index);
-			if (img != null)
-				ObjectValue = (NSImage) MacEngine.Registry.GetBackend (img);
+			ObjectValue = cellView.Image.ToImageDescription ().ToNSImage ();
 		}
 		
 		public override System.Drawing.SizeF CellSize {
@@ -60,6 +64,16 @@ namespace Xwt.Mac
 				else
 					return base.CellSize;
 			}
+		}
+		
+		public ICellViewFrontend Frontend {
+			get { return cellView; }
+		}
+
+		public void CopyFrom (object other)
+		{
+			var ob = (ImageTableCell)other;
+			cellView = ob.cellView;
 		}
 	}
 }

@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Xwt.Engine;
+
 using SWC = System.Windows.Controls;
 using Xwt.Backends;
 
@@ -46,6 +46,19 @@ namespace Xwt.WPFBackend
 		public int CurrentTab {
 			get { return TabControl.SelectedIndex; }
 			set { TabControl.SelectedIndex = value; }
+		}
+
+		public Xwt.NotebookTabOrientation TabOrientation {
+			get {
+				Xwt.NotebookTabOrientation tabPos = Xwt.NotebookTabOrientation.Top;
+				Enum.TryParse (TabControl.TabStripPlacement.ToString (), out tabPos);
+				return tabPos;
+			}
+			set {
+				SWC.Dock tabPos = SWC.Dock.Top;
+				Enum.TryParse (value.ToString (), out tabPos);
+				TabControl.TabStripPlacement = tabPos;
+			}
 		}
 
 		public void Add (IWidgetBackend widget, NotebookTab tab)
@@ -121,7 +134,7 @@ namespace Xwt.WPFBackend
 
 		private void OnCurrentTabChanged (object sender, SelectionChangedEventArgs e)
 		{
-			Toolkit.Invoke (NotebookEventSink.OnCurrentTabChanged);
+			Context.InvokeUserCode (NotebookEventSink.OnCurrentTabChanged);
 		}
 
 		protected TabControl TabControl {

@@ -28,20 +28,93 @@ using System;
 using Xwt.Drawing;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Xwt.Backends;
 
 namespace Xwt
 {
-	public class TextCellView: CellView
+	public sealed class TextCellView: CellView, ITextCellViewFrontend
 	{
+		string text;
+		string markup;
+		bool editable;
+		EllipsizeMode ellipsize;
+
+		public IDataField TextField { get; set; }
+		public IDataField<string> MarkupField { get; set; }
+		public IDataField<bool> EditableField { get; set; }
+		public IDataField<EllipsizeMode> EllipsizeField { get; set; }
+
 		public TextCellView ()
 		{
 		}
 		
-		public TextCellView (DataField textField)
+		public TextCellView (IDataField textField)
 		{
 			TextField = textField;
 		}
 		
-		public DataField TextField { get; set; }
+		public TextCellView (string text)
+		{
+			this.text = text;
+		}
+		
+		[DefaultValue (null)]
+		public string Text {
+			get {
+				if (TextField != null && DataSource != null)
+					return Convert.ToString (DataSource.GetValue (TextField));
+				else
+					return text;
+			}
+			set {
+				text = value;
+			}
+		}
+
+		[DefaultValue (null)]
+		public string Markup {
+			get {
+				return GetValue (MarkupField, markup);
+			}
+			set {
+				markup = value;
+			}
+		}
+
+		[DefaultValue (false)]
+		public bool Editable {
+			get {
+				return GetValue (EditableField, editable);
+			}
+			set {
+				editable = value;
+			}
+		}
+
+		[DefaultValue (EllipsizeMode.None)]
+		public EllipsizeMode Ellipsize {
+			get {
+				return GetValue (EllipsizeField, ellipsize);
+			}
+			set {
+				ellipsize = value;
+			}
+		}
+
+		/// <summary>
+		/// Occurs when the text of the cell is modified.
+		/// </summary>
+		public event EventHandler<WidgetEventArgs> TextChanged;
+
+		bool ITextCellViewFrontend.RaiseTextChanged ()
+		{
+			if (TextChanged != null) {
+				var args = new WidgetEventArgs ();
+				TextChanged (this, args);
+				return args.Handled;
+			}
+			return false;
+		}
 	}
 }

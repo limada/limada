@@ -26,31 +26,26 @@
 using System;
 using Xwt.Backends;
 
+using Xwt.Drawing;
+
 namespace Xwt.GtkBackend
 {
 	public class ImageViewBackend: WidgetBackend, IImageViewBackend
 	{
 		public override void Initialize ()
 		{
-			Widget = new Gtk.Image ();
+			Widget = new ImageBox (ApplicationContext);
 			Widget.Show ();
 		}
 		
-		protected new Gtk.Image Widget {
-			get { return (Gtk.Image)base.Widget; }
+		protected new ImageBox Widget {
+			get { return (ImageBox)base.Widget; }
 			set { base.Widget = value; }
 		}
 		
-		public void SetImage (object nativeImage)
+		public void SetImage (ImageDescription image)
 		{
-			if (nativeImage == null)
-				throw new ArgumentNullException ("nativeImage");
-
-			Gdk.Pixbuf pbuf = nativeImage as Gdk.Pixbuf;
-			if (pbuf == null)
-				throw new ArgumentException ("nativeImage is not of the expected type", "nativeImage");
-
-			Widget.Pixbuf = pbuf;
+			Widget.Image = image;
 		}
 	}
 }

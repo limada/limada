@@ -25,15 +25,15 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.Drawing
 {
-    public sealed class ImagePattern : XwtObject<ImagePattern, IImagePatternBackendHandler>, IPattern
+	public sealed class ImagePattern: Pattern
 	{
-		public ImagePattern (Image img):base(img.Registry)
+		public ImagePattern (Image image)
 		{
-			Backend = handler.Create (GetBackend (img));
+			SetBackend (ToolkitEngine.ImagePatternBackendHandler, ToolkitEngine.ImagePatternBackendHandler.Create (image != null ? image.ImageDescription : ImageDescription.Null));
 		}
 	}
 }

@@ -26,26 +26,58 @@
 
 using System.Windows.Controls;
 using Xwt.Backends;
+using SW = System.Windows;
 
 namespace Xwt.WPFBackend
 {
 	public class CustomWidgetBackend
 		: WidgetBackend, ICustomWidgetBackend
 	{
+		Widget child;
+
 		public CustomWidgetBackend()
 		{
-			Widget = new UserControl();
+			Widget = new ExUserControl ();
 		}
 
 		public void SetContent (IWidgetBackend widget)
 		{
-			if (widget != null)
+			if (widget != null) {
+				child = (Widget)((WidgetBackend)widget).Frontend;
 				UserControl.Content = widget.NativeWidget;
+			}
+			else {
+				child = null;
+				UserControl.Content = null;
+			}
 		}
 
 		protected UserControl UserControl
 		{
 			get { return (UserControl) Widget; }
+		}
+
+		// The size of the container is the size of the child,
+		// so we redirect size calculations to the child.
+
+		public override Size GetPreferredSize (SizeConstraint widthConstraint, SizeConstraint heightConstraint)
+		{
+			return child != null ? child.Surface.GetPreferredSize (widthConstraint, heightConstraint) : Size.Zero;
+		}
+	}
+
+	class ExUserControl : UserControl, IWpfWidget
+	{
+		public WidgetBackend Backend
+		{
+			get;
+			set;
+		}
+
+		protected override SW.Size MeasureOverride (SW.Size constraint)
+		{
+			var s = base.MeasureOverride (constraint);
+			return Backend.MeasureOverride (constraint, s);
 		}
 	}
 }

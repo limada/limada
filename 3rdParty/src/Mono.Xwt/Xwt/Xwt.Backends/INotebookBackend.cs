@@ -28,12 +28,13 @@ using System;
 
 namespace Xwt.Backends
 {
-	public interface INotebookBackend: IWidgetBackend
+	public interface INotebookBackend: IWidgetBackend, IChildPlacementHandler
 	{
 		void Add (IWidgetBackend widget, NotebookTab tab);
 		void Remove (IWidgetBackend widget);
 		void UpdateLabel (NotebookTab tab, string hint);
 		int CurrentTab { get; set; }
+		NotebookTabOrientation TabOrientation { get; set; }
 	}
 	
 	public interface INotebookEventSink: IWidgetEventSink

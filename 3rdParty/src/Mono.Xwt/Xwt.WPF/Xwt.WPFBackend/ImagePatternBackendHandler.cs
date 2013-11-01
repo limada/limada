@@ -1,4 +1,4 @@
-﻿//
+//
 // ImagePatternBackendHandler.cs
 //
 // Author:
@@ -26,17 +26,54 @@
 
 using System;
 using Xwt.Backends;
-using System.Drawing;
+using System.Windows.Media;
 
 namespace Xwt.WPFBackend
 {
-	public class ImagePatternBackendHandler
-		: IImagePatternBackendHandler
+	public class WpfImagePatternBackendHandler
+		: ImagePatternBackendHandler
 	{
-		public object Create (object img)
+		public override object Create (ImageDescription img)
 		{
-			Bitmap bmp = DataConverter.AsBitmap (img);
-			return new TextureBrush (bmp, System.Drawing.Drawing2D.WrapMode.Tile);
+			return new ImagePattern (ApplicationContext, img);
+		}
+
+		public override void Dispose (object img)
+		{
+		}
+	}
+
+	class ImagePattern
+	{
+		ApplicationContext actx;
+		ImageDescription image;
+		double scaleFactor;
+		ImageBrush brush;
+
+		public ImagePattern (ApplicationContext actx, ImageDescription im)
+		{
+			this.actx = actx;
+			this.image = im;
+		}
+
+		public ImageBrush GetBrush (double scaleFactor)
+		{
+			if (brush == null || scaleFactor != this.scaleFactor) {
+				this.scaleFactor = scaleFactor;
+				var ib = (WpfImage)image.Backend;
+				var bmp = ib.GetBestFrame (actx, scaleFactor, image.Size.Width, image.Size.Height, true);
+				brush = new ImageBrush (bmp) {
+					TileMode = TileMode.Tile,
+					ViewportUnits = BrushMappingMode.Absolute,
+					AlignmentY = System.Windows.Media.AlignmentY.Top,
+					AlignmentX = System.Windows.Media.AlignmentX.Left,
+					Stretch = System.Windows.Media.Stretch.None,
+					Viewport = new System.Windows.Rect (0, 0, image.Size.Width * scaleFactor, image.Size.Height * scaleFactor),
+					Opacity = image.Alpha
+				};
+				brush.RelativeTransform = new ScaleTransform (1d/scaleFactor, 1d/scaleFactor);
+			}
+			return brush;
 		}
 	}
 }

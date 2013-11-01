@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.GtkBackend
 {
@@ -42,6 +42,7 @@ namespace Xwt.GtkBackend
 		public override void Initialize ()
 		{
 			Widget = new Gtk.CheckButton ();
+			Widget.Toggled += HandleWidgetActivated;
 			Widget.Show ();
 		}
 		
@@ -53,35 +54,23 @@ namespace Xwt.GtkBackend
 		protected new ICheckBoxEventSink EventSink {
 			get { return (ICheckBoxEventSink)base.EventSink; }
 		}
-		
-		public bool Active {
-			get {
-				return Widget.Active && !Widget.Inconsistent;
-			}
-			set {
-				Widget.Active = value;
-			}
-		}
-		
+
 		public bool AllowMixed {
 			get {
 				return allowMixed;
 			}
 			set {
-				if (value)
-					UpdateToggleEventStatus (true);
 				allowMixed = value;
-				if (!value)
-					UpdateToggleEventStatus (false);
 			}
 		}
-		
-		public bool Mixed {
-			get { return Widget.Inconsistent; }
+
+		public CheckBoxState State {
+			get { return Widget.Inconsistent ?
+				CheckBoxState.Mixed : Widget.Active ? CheckBoxState.On : CheckBoxState.Off; }
 			set {
+				Widget.Inconsistent = value == CheckBoxState.Mixed;
 				internalActiveUpdate = true;
-				Widget.Inconsistent = value;
-				Widget.Active = value;
+				Widget.Active = value == CheckBoxState.On;
 				internalActiveUpdate = false;
 			}
 		}
@@ -93,7 +82,12 @@ namespace Xwt.GtkBackend
 		
 		public void SetContent (IWidgetBackend widget)
 		{
-			throw new NotImplementedException ();
+			var w = (WidgetBackend)widget;
+			if (Widget.Children.Length > 0)
+				Widget.Remove(Widget.Children[0]);
+
+			if (w != null)
+				Widget.Add(w.Widget);
 		}
 		
 		public override object Font {
@@ -112,7 +106,7 @@ namespace Xwt.GtkBackend
 			base.EnableEvent (eventId);
 			if (eventId is CheckBoxEvent) {
 				switch ((CheckBoxEvent)eventId) {
-				case CheckBoxEvent.Toggled: UpdateToggleEventStatus (true); toggleEventEnabled = true; break;
+				case CheckBoxEvent.Toggled: toggleEventEnabled = true; break;
 				case CheckBoxEvent.Clicked: Widget.Clicked += HandleWidgetClicked; break;
 				}
 			}
@@ -123,20 +117,12 @@ namespace Xwt.GtkBackend
 			base.DisableEvent (eventId);
 			if (eventId is CheckBoxEvent) {
 				switch ((CheckBoxEvent)eventId) {
-				case CheckBoxEvent.Toggled: toggleEventEnabled = false; UpdateToggleEventStatus (false); break;
+				case CheckBoxEvent.Toggled: toggleEventEnabled = false; break;
 				case CheckBoxEvent.Clicked: Widget.Clicked -= HandleWidgetClicked; break;
 				}
 			}
 		}
-		
-		void UpdateToggleEventStatus (bool enable)
-		{
-			if (enable && !toggleEventEnabled && !allowMixed)
-				Widget.Toggled += HandleWidgetActivated;
-			else if (!enable && !toggleEventEnabled && !allowMixed)
-				Widget.Toggled -= HandleWidgetActivated;
-		}
-		
+
 		void HandleWidgetActivated (object sender, EventArgs e)
 		{
 			if (internalActiveUpdate)
@@ -153,10 +139,13 @@ namespace Xwt.GtkBackend
 						internalActiveUpdate = false;
 					}
 				}
+			} else if (Widget.Inconsistent) {
+				Widget.Inconsistent = false;
+				Widget.Active = false;
 			}
-			
+
 			if (toggleEventEnabled) {
-				Toolkit.Invoke (delegate {
+				ApplicationContext.InvokeUserCode (delegate {
 					EventSink.OnToggled ();
 				});
 			}
@@ -167,7 +156,7 @@ namespace Xwt.GtkBackend
 			if (internalActiveUpdate)
 				return;
 			
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnClicked ();
 			});
 		}

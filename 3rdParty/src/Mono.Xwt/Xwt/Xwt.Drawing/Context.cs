@@ -3,7 +3,6 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
-//       Lytico (http://www.limada.org)
 // 
 // Copyright (c) 2011 Xamarin Inc
 // 
@@ -25,21 +24,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.Drawing
 {
-    public sealed class Context : XwtObject<Context, IContextBackendHandler>, IDisposable
+	public sealed class Context: DrawingPath
 	{
-		IPattern pattern;
-		Font font;
+		ContextBackendHandler handler;
+		Pattern pattern;
 		double globalAlpha = 1;
-
-        public Context (WidgetRegistry registry, object backend): base(registry,backend)
+		Stack<double> alphaStack = new Stack<double> ();
+		
+		public Context (object backend, Toolkit toolkit): this (backend, toolkit, toolkit.ContextBackendHandler)
 		{
 		}
 
+        public Context (object backend, Toolkit toolkit, ContextBackendHandler handler): base(backend, toolkit, handler)
+		{
+			this.handler = handler;
+		}
+
+		internal ContextBackendHandler Handler {
+			get { return handler; }
+		}
+
+		internal void Reset (Widget forWidget)
+		{
+		}
+		
 		/// <summary>
 		/// Makes a copy of the current state of the Context and saves it on an internal stack of saved states.
 		/// When Restore() is called, it will be restored to the saved state. 
@@ -49,11 +63,14 @@ namespace Xwt.Drawing
 		public void Save ()
 		{
 			handler.Save (Backend);
+			alphaStack.Push (globalAlpha);
 		}
 		
 		public void Restore ()
 		{
 			handler.Restore (Backend);
+			if (alphaStack.Count > 0)
+				globalAlpha = alphaStack.Pop ();
 		}
 		
 		public double GlobalAlpha {
@@ -68,39 +85,7 @@ namespace Xwt.Drawing
 		{
 			handler.SetColor (Backend, color);
 		}
-		
-		/// <summary>
-		/// Adds a circular arc of the given radius to the current path.
-		/// The arc is centered at (xc, yc), 
-		/// begins at angle1 and proceeds in the direction 
-		/// of increasing angles to end at angle2. 
-		/// If angle2 is less than angle1,
-		/// it will be progressively increased by 1 degree until it is greater than angle1.
-		/// If there is a current point, an initial line segment will be added to the path 
-		/// to connect the current point to the beginning of the arc. 
-		/// If this initial line is undesired, 
-		/// it can be avoided by calling NewPath() before calling Arc().
-		/// </summary>
-		/// <param name='xc'>
-		/// Xc.
-		/// </param>
-		/// <param name='yc'>
-		/// Yc.
-		/// </param>
-		/// <param name='radius'>
-		/// Radius.
-		/// </param>
-		/// <param name='angle1'>
-		/// Angle1 in degrees
-		/// </param>
-		/// <param name='angle2'>
-		/// Angle2 in degrees
-		/// </param>
-		public void Arc (double xc, double yc, double radius, double angle1, double angle2)
-		{
-			handler.Arc (Backend, xc, yc, radius, angle1, angle2);
-		}
-		
+
 		/// <summary>
 		/// Establishes a new clip region by intersecting the current clip region with the current Path 
 		/// as it would be filled by fill() and according to the current fill rule.
@@ -122,48 +107,6 @@ namespace Xwt.Drawing
 			handler.ClipPreserve (Backend);
 		}
 		
-		public void ResetClip ()
-		{
-			handler.ResetClip (Backend);
-		}
-		
-		public void ClosePath ()
-		{
-			handler.ClosePath (Backend);
-		}
-		
-		public void CurveTo (Point p1, Point p2, Point p3)
-		{
-			CurveTo (p1.X, p1.Y, p2.X, p2.Y, p3.X, p3.Y);
-		}
-		
-		/// <summary>
-		/// Adds a cubic Bezier spline to the path from the current point to position (x3, y3) in user-space coordinates, 
-		/// using (x1, y1) and (x2, y2) as the control points. 
-		/// </summary>
-		/// <param name='x1'>
-		/// X1.
-		/// </param>
-		/// <param name='y1'>
-		/// Y1.
-		/// </param>
-		/// <param name='x2'>
-		/// X2.
-		/// </param>
-		/// <param name='y2'>
-		/// Y2.
-		/// </param>
-		/// <param name='x3'>
-		/// X3.
-		/// </param>
-		/// <param name='y3'>
-		/// Y3.
-		/// </param>
-		public void CurveTo (double x1, double y1, double x2, double y2, double x3, double y3)
-		{
-			handler.CurveTo (Backend, x1, y1, x2, y2, x3, y3);
-		}
-		
 		public void Fill ()
 		{
 			handler.Fill (Backend);
@@ -173,136 +116,12 @@ namespace Xwt.Drawing
 		{
 			handler.FillPreserve (Backend);
 		}
-		
-		public void LineTo (Point p)
-		{
-			LineTo (p.X, p.Y);
-		}
-		
-		public void LineTo (double x, double y)
-		{
-			handler.LineTo (Backend, x, y);
-		}
-		
-		public void MoveTo (Point p)
-		{
-			MoveTo (p.X, p.Y);
-		}
-		
-		/// <summary>
-		/// If the current subpath is not empty, begin a new subpath.
-		/// After this call the current point will be (x, y).
-		/// </summary>
-		/// <param name='x'>
-		/// X.
-		/// </param>
-		/// <param name='y'>
-		/// Y.
-		/// </param>
-		public void MoveTo (double x, double y)
-		{
-			handler.MoveTo (Backend, x, y);
-		}
-		
+
 		public void NewPath ()
 		{
 			handler.NewPath (Backend);
 		}
-		
-		public void Rectangle (Rectangle rectangle)
-		{
-			Rectangle (rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
-		}
-		
-		public void Rectangle (Point p, double width, double height)
-		{
-			Rectangle (p.X, p.Y, width, height);
-		}
-		
-		public void Rectangle (double x, double y, double width, double height)
-		{
-			handler.Rectangle (Backend, x, y, width, height);
-		}
-		
-		public void RelCurveTo (Distance d1, Distance d2, Distance d3)
-		{
-			RelCurveTo (d1.Dx, d1.Dy, d2.Dx, d2.Dy, d3.Dx, d3.Dy);
-		}
-		
-		/// <summary>
-		/// Relative-coordinate version of curve_to().
-		/// All offsets are relative to the current point. 
-		/// Adds a cubic Bezier spline to the path from the current point to a point offset 
-		/// from the current point by (dx3, dy3), using points offset by (dx1, dy1) and (dx2, dy2) 
-		/// as the control points. After this call the current point will be offset by (dx3, dy3).
-		/// Given a current point of (x, y), RelCurveTo(dx1, dy1, dx2, dy2, dx3, dy3)
-		/// is logically equivalent to CurveTo(x + dx1, y + dy1, x + dx2, y + dy2, x + dx3, y + dy3).
-		/// </summary>
-		/// <param name='dx1'>
-		/// Dx1.
-		/// </param>
-		/// <param name='dy1'>
-		/// Dy1.
-		/// </param>
-		/// <param name='dx2'>
-		/// Dx2.
-		/// </param>
-		/// <param name='dy2'>
-		/// Dy2.
-		/// </param>
-		/// <param name='dx3'>
-		/// Dx3.
-		/// </param>
-		/// <param name='dy3'>
-		/// Dy3.
-		/// </param>
-		public void RelCurveTo (double dx1, double dy1, double dx2, double dy2, double dx3, double dy3)
-		{
-			handler.RelCurveTo (Backend, dx1, dy1, dx2, dy2, dx3, dy3);
-		}
-		
-		public void RelLineTo (Distance d)
-		{
-			RelLineTo (d.Dx, d.Dy);
-		}
-		
-		/// <summary>
-		/// Adds a line to the path from the current point to a point that 
-		/// is offset from the current point by (dx, dy) in user space. 
-		/// After this call the current point will be offset by (dx, dy).
-		/// Given a current point of (x, y), 
-		/// RelLineTo(dx, dy) is logically equivalent to LineTo(x + dx, y + dy).
-		/// </summary>
-		/// <param name='dx'>
-		/// Dx.
-		/// </param>
-		/// <param name='dy'>
-		/// Dy.
-		/// </param>
-		public void RelLineTo (double dx, double dy)
-		{
-			handler.RelLineTo (Backend, dx, dy);
-		}
-		
-		/// <summary>
-		/// If the current subpath is not empty, begin a new subpath.
-		/// After this call the current point will offset by (x, y).
-		/// Given a current point of (x, y), 
-		/// RelMoveTo(dx, dy) is logically equivalent to MoveTo(x + dx, y + dy).
-		/// </summary>
-		/// <param name='d'>
-		/// D.
-		/// </param>
-		public void RelMoveTo (Distance d)
-		{
-			RelMoveTo (d.Dx, d.Dy);
-		}
-		
-		public void RelMoveTo (double dx, double dy)
-		{
-			handler.RelMoveTo (Backend, dx, dy);
-		}
-		
+
 		public void Stroke ()
 		{
 			handler.Stroke (Backend);
@@ -327,62 +146,53 @@ namespace Xwt.Drawing
 		{
 			handler.DrawTextLayout (Backend, layout, x, y);
 		}
-		
-		public void DrawImage (Image img, Point location)
+
+		public void DrawImage (Image img, Point location, double alpha = 1)
 		{
-			handler.DrawImage (Backend, GetBackend (img), location.X, location.Y, 1);
+			DrawImage (img, location.X, location.Y, alpha);
 		}
 		
-		public void DrawImage (Image img, double x, double y)
+		public void DrawImage (Image img, double x, double y, double alpha = 1)
 		{
-			handler.DrawImage (Backend, GetBackend (img), x, y, 1);
-		}
-		
-		public void DrawImage (Image img, Point location, double alpha)
-		{
-			handler.DrawImage (Backend, GetBackend (img), location.X, location.Y, alpha);
-		}
-		
-		public void DrawImage (Image img, double x, double y, double alpha)
-		{
-			handler.DrawImage (Backend, GetBackend (img), x, y, alpha);
-		}
-		
-		public void DrawImage (Image img, Rectangle rect)
-		{
-			handler.DrawImage (Backend, GetBackend (img), rect.X, rect.Y, rect.Width, rect.Height, 1);
-		}
-		
-		public void DrawImage (Image img, double x, double y, double width, double height)
-		{
-			handler.DrawImage (Backend, GetBackend (img), x, y, width, height, 1);
-		}
-		
-		public void DrawImage (Image img, Rectangle rect, double alpha)
-		{
-			handler.DrawImage (Backend, GetBackend (img), rect.X, rect.Y, rect.Width, rect.Height, alpha);
+			if (!img.HasFixedSize)
+				throw new InvalidOperationException ("Image doesn't have a fixed size");
+
+			var idesc = img.ImageDescription;
+			idesc.Alpha *= alpha;
+			handler.DrawImage (Backend, idesc, x, y);
 		}
 
+		public void DrawImage (Image img, Rectangle rect, double alpha = 1)
+		{
+			DrawImage (img, rect.X, rect.Y, rect.Width, rect.Height, alpha);
+		}
+		
+		public void DrawImage (Image img, double x, double y, double width, double height, double alpha = 1)
+		{
+			var idesc = img.ImageDescription;
+			idesc.Alpha *= alpha;
+			idesc.Size = new Size (width, height);
+			handler.DrawImage (Backend, idesc, x, y);
+		}
+		
 		public void DrawImage (Image img, Rectangle srcRect, Rectangle destRect)
 		{
-			handler.DrawImage (Backend, GetBackend (img), srcRect, destRect, 1);
+			DrawImage (img, srcRect, destRect, 1);
 		}
 
 		public void DrawImage (Image img, Rectangle srcRect, Rectangle destRect, double alpha)
 		{
-			handler.DrawImage (Backend, GetBackend (img), srcRect, destRect, alpha);
+			if (!img.HasFixedSize)
+				throw new InvalidOperationException ("Image doesn't have a fixed size");
+
+			var idesc = img.ImageDescription;
+			idesc.Alpha *= alpha;
+			handler.DrawImage (Backend, idesc, srcRect, destRect);
 		}
 
 		/// <summary>
-		/// Resets the current trasnformation matrix (CTM) to the Identity Matrix
-		/// </summary>
-		public void ResetTransform ()
-		{
-			handler.ResetTransform (Backend);
-		}
-		
-		/// <summary>
 		/// Applies a rotation transformation
+		/// </summary>
 		/// <param name='angle'>
 		/// Angle in degrees
 		/// </param>
@@ -411,21 +221,67 @@ namespace Xwt.Drawing
 		{
 			handler.Translate (Backend, p.X, p.Y);
 		}
-		
+
+		/// <summary>
+		/// Modifies the Current Transformation Matrix (CTM) by prepending the Matrix transform specified
+		/// </summary>
+		/// <remarks>
+		/// This enables any 'non-standard' transforms (eg skew, reflection) to be used for drawing,
+		/// and provides the link to the extra transform capabilities provided by Xwt.Drawing.Matrix
+		/// </remarks>
+		public void ModifyCTM (Matrix transform)
+		{
+			handler.ModifyCTM (Backend, transform);
+		}
+
+		/// <summary>
+		/// Returns a copy of the current transformation matrix (CTM)
+		/// </summary>
+		public Matrix GetCTM ()
+		{
+			return handler.GetCTM (Backend);
+		}
+
 		/// <summary>
 		/// Transforms the point (x, y) by the current transformation matrix (CTM)
 		/// </summary>
 		public void TransformPoint (ref double x, ref double y)
 		{
-			handler.TransformPoint (Backend, ref x, ref y);
+			Matrix m = GetCTM ();
+			Point p = m.Transform (new Point (x, y));
+			x = p.X;
+			y = p.Y;
 		}
 
+		/// <summary>
+		/// Transforms the point (x, y) by the current transformation matrix (CTM)
+		/// </summary>
+		public Point TransformPoint (Point p)
+		{
+			Matrix m = GetCTM ();
+			return m.Transform (p);
+		}
+		
 		/// <summary>
 		/// Transforms the distance (dx, dy) by the scale and rotation elements (only) of the CTM
 		/// </summary>
 		public void TransformDistance (ref double dx, ref double dy)
 		{
-			handler.TransformDistance (Backend, ref dx, ref dy);
+			Matrix m = GetCTM ();
+			Point p = m.TransformVector (new Point (dx, dy));
+			dx = p.X;
+			dy = p.Y;
+		}
+		
+		/// <summary>
+		/// Transforms the distance (dx, dy) by the scale and rotation elements (only) of the CTM
+		/// </summary>
+		public Distance TransformDistance (Distance distance)
+		{
+			double dx = distance.Dx;
+			double dy = distance.Dy;
+			TransformDistance (ref dx, ref dy);
+			return new Distance (dx, dy);
 		}
 
 		/// <summary>
@@ -433,7 +289,8 @@ namespace Xwt.Drawing
 		/// </summary>
 		public void TransformPoints (Point[] points)
 		{
-			handler.TransformPoints (Backend, points);
+			Matrix m = GetCTM ();
+			m.Transform (points);
 		}
 
 		/// <summary>
@@ -441,27 +298,43 @@ namespace Xwt.Drawing
 		/// </summary>
 		public void TransformDistances (Distance[] vectors)
 		{
-			handler.TransformDistances (Backend, vectors);
+			Point p;
+			Matrix m = GetCTM ();
+			for (int i = 0; i < vectors.Length; ++i) {
+				p = (Point)vectors[i];
+				m.TransformVector (p);
+				vectors[i].Dx = p.X;
+				vectors[i].Dy = p.Y;
+			}
 		}
 
-		public void Dispose ()
+		public bool IsPointInStroke (Point p)
 		{
-			handler.Dispose (Backend);
+			return IsPointInStroke (p.X, p.Y);
 		}
 		
-		public IPattern Pattern {
+		/// <summary>
+		/// Tests whether the given point is inside the area that would be affected if Stroke were called on this Context.
+		/// </summary>
+		/// <returns>
+		/// <c>true</c> if the specified point would be in the stroke; otherwise, <c>false</c>.
+		/// </returns>
+		/// <param name='x'>
+		/// The x coordinate.
+		/// </param>
+		/// <param name='y'>
+		/// The y coordinate.
+		/// </param>
+		public bool IsPointInStroke (double x, double y)
+		{
+			return handler.IsPointInStroke (Backend, x, y);
+		}
+
+		public Pattern Pattern {
 			get { return pattern; }
 			set {
 				pattern = value;
-				handler.SetPattern (Backend, (value as IFrontend).Backend);
-			}
-		}
-		
-		public Font Font {
-			get { return font; }
-			set {
-				font = value;
-				handler.SetFont (Backend, value);
+				handler.SetPattern (Backend, GetBackend (value));
 			}
 		}
 		
@@ -485,6 +358,7 @@ namespace Xwt.Drawing
 		{
 			handler.SetLineDash (Backend, offset, pattern);
 		}
-	}
+
+    }
 }
 

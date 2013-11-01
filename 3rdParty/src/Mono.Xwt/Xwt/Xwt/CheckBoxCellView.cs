@@ -29,28 +29,91 @@ using System;
 using Xwt.Drawing;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Xwt.Backends;
 
 namespace Xwt
 {
-	public class CheckBoxCellView: CellView
+	public sealed class CheckBoxCellView: CellView, ICheckBoxCellViewFrontend
 	{
+		CheckBoxState state;
+		bool editable;
+		bool allowMixed;
+
+		public IDataField<bool> ActiveField { get; set; }
+		public IDataField<CheckBoxState> StateField { get; set; }
+		public IDataField<bool> EditableField { get; set; }
+		public IDataField<bool> AllowMixedField { get; set; }
+
 		public CheckBoxCellView ()
 		{
 		}
 		
-		public CheckBoxCellView (DataField field)
+		public CheckBoxCellView (IDataField<CheckBoxState> field)
+		{
+			StateField = field;
+		}
+
+		public CheckBoxCellView (IDataField<bool> field)
 		{
 			ActiveField = field;
 		}
+
+		[DefaultValue (false)]
+		public bool Active {
+			get { return State == CheckBoxState.On; }
+			set { State = value.ToCheckBoxState (); }
+		}
+
+		[DefaultValue (CheckBoxState.Off)]
+		public CheckBoxState State {
+			get {
+				if (StateField != null)
+					return GetValue (StateField, state);
+				return GetValue (ActiveField).ToCheckBoxState ();
+			}
+			set {
+				if (!value.IsValid ()) {
+					throw new ArgumentOutOfRangeException ("Invalid checkbox state");
+				}
+				state = value;
+			}
+		}
 		
-		public DataField ActiveField { get; set; }
-		
-		public event EventHandler ActiveChanged;
-		
-		public void RaiseActiveChanged ()
+		[DefaultValue (false)]
+		public bool Editable {
+			get {
+				return GetValue (EditableField, editable);
+			}
+			set {
+				editable = value;
+			}
+		}
+
+		[DefaultValue (false)]
+		public bool AllowMixed {
+			get {
+				return GetValue (AllowMixedField, allowMixed);
+			}
+			set {
+				allowMixed = value;
+			}
+		}
+
+		public event EventHandler<WidgetEventArgs> Toggled;
+
+		/// <summary>
+		/// Raises the toggled event
+		/// </summary>
+		/// <returns><c>true</c>, if the event was handled, <c>false</c> otherwise.</returns>
+		public bool RaiseToggled ()
 		{
-			if (ActiveChanged != null)
-				ActiveChanged (this, EventArgs.Empty);
+			if (Toggled != null) {
+				var args = new WidgetEventArgs ();
+				Toggled (this, args);
+				return args.Handled;
+			}
+			return false;
 		}
 	}
 }

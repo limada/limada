@@ -46,16 +46,32 @@ namespace Xwt.Backends
 		bool HeadersVisible { get; set; }
 		
 		bool GetDropTargetRow (double x, double y, out RowDropPosition pos, out TreePosition nodePosition);
+
+		TreePosition CurrentEventRow { get; }
 	}
 	
 	public enum ListViewColumnChange
 	{
 		Title,
-		Cells
+		Cells,
+		CanResize,
+		SortDirection,
+		SortDataField,
+		SortIndicatorVisible
 	}
 	
+	public enum TreeViewEvent
+	{
+		RowActivated,
+		RowExpanding,
+		RowExpanded
+	}
+
 	public interface ITreeViewEventSink: ITableViewEventSink
 	{
+		void OnRowActivated (TreePosition position);
+		void OnRowExpanding (TreePosition position);
+		void OnRowExpanded (TreePosition position);
 	}
 }
 

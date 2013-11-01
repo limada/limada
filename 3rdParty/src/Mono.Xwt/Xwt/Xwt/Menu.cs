@@ -26,10 +26,11 @@
 
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt
 {
+	[BackendType (typeof(IMenuBackend))]
 	public class Menu: XwtComponent
 	{
 		MenuItemCollection items;
@@ -49,22 +50,31 @@ namespace Xwt
 		
 		internal void InsertItem (int n, MenuItem item)
 		{
-			Backend.InsertItem (n, (IMenuItemBackend)BackendHost.WidgetRegistry.GetBackend (item));
+			Backend.InsertItem (n, (IMenuItemBackend)BackendHost.ToolkitEngine.GetSafeBackend (item));
 		}
 		
 		internal void RemoveItem (MenuItem item)
 		{
-			Backend.RemoveItem ((IMenuItemBackend)BackendHost.WidgetRegistry.GetBackend (item));
+			Backend.RemoveItem ((IMenuItemBackend)BackendHost.ToolkitEngine.GetSafeBackend (item));
 		}
-		
+
+		/// <summary>
+		/// Shows the menu at the current position of the cursor
+		/// </summary>
 		public void Popup ()
 		{
 			Backend.Popup ();
 		}
-		
+
+		/// <summary>
+		/// Shows the menu at the specified location
+		/// </summary>
+		/// <param name="parentWidget">Widget upon which to show the menu</param>
+		/// <param name="x">The x coordinate, relative to the widget origin</param>
+		/// <param name="y">The y coordinate, relative to the widget origin</param>
 		public void Popup (Widget parentWidget, double x, double y)
 		{
-			Backend.Popup ((IWidgetBackend)BackendHost.WidgetRegistry.GetBackend (parentWidget), x, y);
+			Backend.Popup ((IWidgetBackend)BackendHost.ToolkitEngine.GetSafeBackend (parentWidget), x, y);
 		}
 		
 		/// <summary>

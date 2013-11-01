@@ -131,7 +131,7 @@ namespace Xwt.WPFBackend
 
 		private void OnSelectionChanged (object sender, SelectionChangedEventArgs e)
 		{
-			Xwt.Engine.Toolkit.Invoke (ComboBoxEventSink.OnSelectionChanged);
+			Context.InvokeUserCode (ComboBoxEventSink.OnSelectionChanged);
 		}
 
 		private DataTemplate GetDataTemplate (IList<CellView> views)

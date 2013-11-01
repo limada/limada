@@ -28,7 +28,7 @@ using System;
 using Xwt.Backends;
 using Xwt.Drawing;
 using System.Collections.Generic;
-using Xwt.Engine;
+
 
 namespace Xwt.GtkBackend
 {
@@ -39,6 +39,7 @@ namespace Xwt.GtkBackend
 		Gtk.Label label;
 		List<MenuItemEvent> enabledEvents;
 		bool changingCheck;
+		ApplicationContext context;
 		
 		public MenuItemBackend ()
 			: this (new Gtk.ImageMenuItem (""))
@@ -71,15 +72,16 @@ namespace Xwt.GtkBackend
 			}
 		}
 		
-		public void SetImage (object imageBackend)
+		public void SetImage (ImageDescription image)
 		{
 			Gtk.ImageMenuItem it = item as Gtk.ImageMenuItem;
 			if (it == null)
 				return;
-			if (imageBackend != null) {
-				var img = new Gtk.Image ((Gdk.Pixbuf) imageBackend);
+			if (!image.IsNull) {
+				var img = new ImageBox (context, image);
 				img.ShowAll ();
 				it.Image = img;
+				GtkWorkarounds.ForceImageOnMenuItem (it);
 			}
 			else
 				it.Image = null;
@@ -87,11 +89,19 @@ namespace Xwt.GtkBackend
 
 		public string Label {
 			get {
-				return label.Text;
+				return label != null ? (label.UseUnderline ? label.LabelProp : label.Text) : "";
 			}
 			set {
-				label.Text = value;
+				if (label.UseUnderline)
+					label.TextWithMnemonic = value;
+				else
+					label.Text = value;
 			}
+		}
+
+		public bool UseMnemonic {
+			get { return label.UseUnderline; }
+			set { label.UseUnderline = value; }
 		}
 		
 		public bool Sensitive {
@@ -172,8 +182,9 @@ namespace Xwt.GtkBackend
 			}
 		}*/
 		
-		public void InitializeBackend (object frontend)
+		public void InitializeBackend (object frontend, ApplicationContext context)
 		{
+			this.context = context;
 		}
 
 		public void EnableEvent (object eventId)
@@ -199,7 +210,7 @@ namespace Xwt.GtkBackend
 		void HandleItemActivated (object sender, EventArgs e)
 		{
 			if (!changingCheck) {
-				Toolkit.Invoke (delegate {
+				context.InvokeUserCode (delegate {
 					eventSink.OnClicked ();
 				});
 			}

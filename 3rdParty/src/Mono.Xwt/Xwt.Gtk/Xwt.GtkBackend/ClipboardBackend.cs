@@ -29,26 +29,27 @@ using Xwt.Backends;
 using System.Collections.Generic;
 using System.Threading;
 
+
 namespace Xwt.GtkBackend
 {
-	public class ClipboardBackend: IClipboardBackend
+	public class GtkClipboardBackend: ClipboardBackend
 	{
 //		Gtk.Clipboard primaryClipboard;
 		Gtk.Clipboard clipboard;
 		
-		public ClipboardBackend ()
+		public GtkClipboardBackend ()
 		{
 			clipboard = Gtk.Clipboard.Get (Gdk.Atom.Intern ("CLIPBOARD", false));
 //			primaryClipboard = Gtk.Clipboard.Get (Gdk.Atom.Intern ("PRIMARY", false));
 		}
 
 		#region IClipboardBackend implementation
-		public void Clear ()
+		public override void Clear ()
 		{
 			clipboard.Clear ();
 		}
 
-		public void SetData (TransferDataType type, Func<object> dataSource)
+		public override void SetData (TransferDataType type, Func<object> dataSource)
 		{
 			clipboard.SetWithData ((Gtk.TargetEntry[])Util.BuildTargetTable (new TransferDataType[] { type }), 
 			  delegate (Gtk.Clipboard cb, Gtk.SelectionData data, uint id) {
@@ -60,7 +61,7 @@ namespace Xwt.GtkBackend
 			});
 		}
 
-		public bool IsTypeAvailable (TransferDataType type)
+		public override bool IsTypeAvailable (TransferDataType type)
 		{
 			if (type == TransferDataType.Text)
 				return clipboard.WaitIsTextAvailable ();
@@ -80,7 +81,7 @@ namespace Xwt.GtkBackend
 				yield return Gdk.Atom.Intern (te.Target, false);
 		}
 
-		public object GetData (TransferDataType type)
+		public override object GetData (TransferDataType type)
 		{
 			if (type == TransferDataType.Text)
 				return clipboard.WaitForText ();
@@ -91,18 +92,18 @@ namespace Xwt.GtkBackend
 			
 			foreach (var at in GetAtomsForType (type)) {
 				var data = clipboard.WaitForContents (at);
-				Util.GetSelectionData (data, store);
+				Util.GetSelectionData (ApplicationContext, data, store);
 			}
 			return ((ITransferData)store).GetValue (type);
 		}
 
-		public IAsyncResult BeginGetData (TransferDataType type, AsyncCallback callback, object state)
+		public override IAsyncResult BeginGetData (TransferDataType type, AsyncCallback callback, object state)
 		{
 			var atts = GetAtomsForType (type).ToArray ();
-			return new DataRequest (clipboard, callback, state, type, atts);
+			return new DataRequest (ApplicationContext, clipboard, callback, state, type, atts);
 		}
 
-		public object EndGetData (IAsyncResult ares)
+		public override object EndGetData (IAsyncResult ares)
 		{
 			return ((DataRequest)ares).Result;
 		}
@@ -119,9 +120,11 @@ namespace Xwt.GtkBackend
 		bool complete;
 		TransferDataType type;
 		AsyncCallback callback;
+		ApplicationContext context;
 		
-		public DataRequest (Gtk.Clipboard clipboard, AsyncCallback callback, object state, TransferDataType type, Gdk.Atom[] atoms)
+		public DataRequest (ApplicationContext context, Gtk.Clipboard clipboard, AsyncCallback callback, object state, TransferDataType type, Gdk.Atom[] atoms)
 		{
+			this.context = context;
 			this.callback = callback;
 			this.type = type;
 			AsyncState = state;
@@ -140,7 +143,7 @@ namespace Xwt.GtkBackend
 		void DataReceived (Gtk.Clipboard cb, Gtk.SelectionData data)
 		{
 			TransferDataStore store = new TransferDataStore ();
-			if (Util.GetSelectionData (data, store)) {
+			if (Util.GetSelectionData (context, data, store)) {
 				Result = ((ITransferData)store).GetValue (type);
 				SetComplete ();
 			} else {

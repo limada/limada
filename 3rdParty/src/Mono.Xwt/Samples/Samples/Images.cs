@@ -54,12 +54,12 @@ namespace Samples
 
 				var vbox = new VBox ();
 
-				var stockId = (string)stockIcons [i].GetValue (null);
+				var stockImage = (Image)stockIcons [i].GetValue (null);
 				var imageView = new ImageView ();
-				var label = new Label (stockId);
+				var label = new Label (stockIcons [i].Name);
 
 				try {
-					var icon = Image.FromIcon (stockId, IconSize.Medium);
+					var icon = stockImage.WithSize (IconSize.Medium);
 					if (icon != null)
 						imageView.Image = icon;
 				} catch { }

@@ -32,7 +32,8 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using Xwt.Backends;
-using Xwt.Engine;
+using System.Linq;
+
 using SWC = System.Windows.Controls;
 
 namespace Xwt.WPFBackend
@@ -44,10 +45,11 @@ namespace Xwt.WPFBackend
 		{
 			var panelFactory = new FrameworkElementFactory (typeof (StackPanel));
 			panelFactory.SetValue (StackPanel.OrientationProperty, SWC.Orientation.Horizontal);
+			panelFactory.SetValue (StackPanel.MarginProperty, new Thickness (0, 7, 7, 7));
 
 			PanelTemplate = new ItemsPanelTemplate (panelFactory);
 
-			ButtonStyle.Setters.Add (new Setter (FrameworkElement.MarginProperty, new Thickness (5)));
+			ButtonStyle.Setters.Add (new Setter (FrameworkElement.MarginProperty, new Thickness (7, 0, 0, 0)));
 			ButtonStyle.Setters.Add (new Setter (FrameworkElement.MinWidthProperty, 80d));
 		}
 
@@ -64,12 +66,14 @@ namespace Xwt.WPFBackend
 
 			this.rootPanel.RowDefinitions.Add (new RowDefinition { Height = new GridLength (0, GridUnitType.Auto) });
 			separator = new SWC.Separator ();
+			separator.Visibility = Visibility.Collapsed;
 			Grid.SetRow (separator, 2);
 			this.rootPanel.Children.Add (separator);
 
 			this.rootPanel.RowDefinitions.Add (new RowDefinition { Height = new GridLength (0, GridUnitType.Auto) });
 			Grid.SetRow (this.buttonContainer, 3);
 			this.rootPanel.Children.Add (this.buttonContainer);
+			this.buttonContainer.Visibility = Visibility.Collapsed;
 		}
 
 		public override void SetMinSize (Size s)
@@ -81,6 +85,7 @@ namespace Xwt.WPFBackend
 			separator.InvalidateMeasure ();
 			separator.Measure (new System.Windows.Size (double.PositiveInfinity, double.PositiveInfinity));
 			s.Height += buttonContainer.DesiredSize.Height + separator.DesiredSize.Height;
+			s.Width = System.Math.Max(buttonContainer.DesiredSize.Width, separator.DesiredSize.Width);
 			base.SetMinSize (s);
 		}
 
@@ -90,6 +95,7 @@ namespace Xwt.WPFBackend
 			foreach (var button in newButtons) {
 				this.buttons.Add (button);
 			}
+			UpdateSeparatorVisibility ();
 		}
 
 		public void UpdateButton (DialogButton updatedButton)
@@ -102,12 +108,19 @@ namespace Xwt.WPFBackend
 					break;
 				}
 			}
+			UpdateSeparatorVisibility ();
+		}
+
+		void UpdateSeparatorVisibility ()
+		{
+			buttonContainer.Visibility = separator.Visibility = buttons.Any (b => b.Visible) ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		public void RunLoop (IWindowFrameBackend parent)
 		{
 			if (parent != null)
 				Window.Owner = ((WindowFrameBackend) parent).Window;
+			Window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 			Window.ShowDialog ();
 		}
 
@@ -126,7 +139,7 @@ namespace Xwt.WPFBackend
 
 		private void OnButtonClicked (DialogButton button)
 		{
-			Toolkit.Invoke (() => DialogEventSink.OnDialogButtonClicked (button));
+			Context.InvokeUserCode (() => DialogEventSink.OnDialogButtonClicked (button));
 		}
 
 		private static readonly ItemsPanelTemplate PanelTemplate;

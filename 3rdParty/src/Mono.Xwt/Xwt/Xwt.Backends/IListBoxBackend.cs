@@ -27,6 +27,9 @@ using System;
 
 namespace Xwt.Backends
 {
+	/// <summary>
+	/// ListBox backend
+	/// </summary>
 	public interface IListBoxBackend: IWidgetBackend, IScrollableWidgetBackend
 	{
 		void SetViews (CellViewCollection views);
@@ -38,15 +41,15 @@ namespace Xwt.Backends
 		void SelectRow (int pos);
 		void UnselectRow (int pos);
 	}
-	
-	public interface IListBoxEventSink: IWidgetEventSink
+
+	/// <summary>
+	/// Event sink for IListBoxBackend implementations
+	/// </summary>
+	/// <remarks>
+	/// Event IDs: ListViewEvent, TableViewEvent
+	/// </remarks>
+	public interface IListBoxEventSink: IListViewEventSink
 	{
-		void OnSelectionChanged ();
-	}
-	
-	public enum ListBoxEvent
-	{
-		SelectionChanged
 	}
 }
 

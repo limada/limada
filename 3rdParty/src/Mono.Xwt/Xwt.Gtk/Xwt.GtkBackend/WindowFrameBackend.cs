@@ -25,7 +25,8 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
+using Xwt.Drawing;
 
 namespace Xwt.GtkBackend
 {
@@ -34,23 +35,41 @@ namespace Xwt.GtkBackend
 		Gtk.Window window;
 		IWindowFrameEventSink eventSink;
 		WindowFrame frontend;
-		
+		Size requestedSize;
+
 		public WindowFrameBackend ()
 		{
 		}
 		
 		public Gtk.Window Window {
 			get { return window; }
-			set { window = value; }
+			set {
+				if (window != null)
+					window.Realized -= HandleRealized;
+				window = value;
+				window.Realized += HandleRealized;
+			}
+		}
+
+		void HandleRealized (object sender, EventArgs e)
+		{
+			if (opacity != 1d)
+				window.GdkWindow.Opacity = opacity;
 		}
 		
 		protected WindowFrame Frontend {
 			get { return frontend; }
 		}
 		
-		void IBackend.InitializeBackend (object frontend)
+		public ApplicationContext ApplicationContext {
+			get;
+			private set;
+		}
+
+		void IBackend.InitializeBackend (object frontend, ApplicationContext context)
 		{
 			this.frontend = (WindowFrame) frontend;
+			ApplicationContext = context;
 		}
 
 		public virtual void ReplaceChild (Gtk.Widget oldWidget, Gtk.Widget newWidget)
@@ -63,6 +82,16 @@ namespace Xwt.GtkBackend
 		{
 			this.eventSink = eventSink;
 			Initialize ();
+			Window.SizeRequested += delegate(object o, Gtk.SizeRequestedArgs args) {
+				if (!Window.Resizable) {
+					int w = args.Requisition.Width, h = args.Requisition.Height;
+					if (w < (int) requestedSize.Width)
+						w = (int) requestedSize.Width;
+					if (h < (int) requestedSize.Height)
+						h = (int) requestedSize.Height;
+					args.Requisition = new Gtk.Requisition () { Width = w, Height = h };
+				}
+			};
 		}
 		
 		public virtual void Initialize ()
@@ -81,35 +110,47 @@ namespace Xwt.GtkBackend
 		public void Move (double x, double y)
 		{
 			Window.Move ((int)x, (int)y);
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnBoundsChanged (Bounds);
 			});
 		}
 
-		public void Resize (double width, double height)
+		public virtual void SetSize (double width, double height)
 		{
-			Window.Resize ((int)width, (int)height);
 			Window.SetDefaultSize ((int)width, (int)height);
-			Toolkit.Invoke (delegate {
-				EventSink.OnBoundsChanged (Bounds);
-			});
+			if (width == -1)
+				width = Bounds.Width;
+			if (height == -1)
+				height = Bounds.Height;
+			requestedSize = new Size (width, height);
+			Window.Resize ((int)width, (int)height);
 		}
 
 		public Rectangle Bounds {
 			get {
 				int w, h, x, y;
-				Window.GetPosition (out x, out y);
-				Window.GetSize (out w, out h);
+				if (Window.GdkWindow != null) {
+					Window.GdkWindow.GetOrigin (out x, out y);
+					Window.GdkWindow.GetSize (out w, out h);
+				} else {
+					Window.GetPosition (out x, out y);
+					Window.GetSize (out w, out h);
+				}
 				return new Rectangle (x, y, w, h);
 			}
 			set {
+				requestedSize = value.Size;
 				Window.Move ((int)value.X, (int)value.Y);
 				Window.Resize ((int)value.Width, (int)value.Height);
 				Window.SetDefaultSize ((int)value.Width, (int)value.Height);
-				Toolkit.Invoke (delegate {
+				ApplicationContext.InvokeUserCode (delegate {
 					EventSink.OnBoundsChanged (Bounds);
 				});
 			}
+		}
+
+		public Size RequestedSize {
+			get { return requestedSize; }
 		}
 
 		bool IWindowFrameBackend.Visible {
@@ -118,6 +159,18 @@ namespace Xwt.GtkBackend
 			}
 			set {
 				window.Visible = value;
+			}
+		}
+
+		double opacity = 1d;
+		double IWindowFrameBackend.Opacity {
+			get {
+				return opacity;
+			}
+			set {
+				opacity = value;
+				if (Window.GdkWindow != null)
+					Window.GdkWindow.Opacity = value;
 			}
 		}
 
@@ -143,7 +196,47 @@ namespace Xwt.GtkBackend
 				Window.SkipTaskbarHint = !value;
 			}
 		}
-		
+
+		void IWindowFrameBackend.SetTransientFor (IWindowFrameBackend window)
+		{
+			Window.TransientFor = ((WindowFrameBackend)window).Window;
+		}
+
+		public bool Resizable {
+			get {
+				return Window.Resizable;
+			}
+			set {
+				Window.Resizable = value;
+			}
+		}
+
+		bool fullScreen;
+		bool IWindowFrameBackend.FullScreen {
+			get {
+				return fullScreen;
+			}
+			set {
+				if (value != fullScreen) {
+					fullScreen = value;
+					if (fullScreen)
+						Window.Fullscreen ();
+					else
+						Window.Unfullscreen ();
+				}
+			}
+		}
+
+		object IWindowFrameBackend.Screen {
+			get {
+				return Window.Screen.GetMonitorAtWindow (Window.GdkWindow);
+			}
+		}
+
+		public void SetIcon(ImageDescription icon)
+		{
+			// TODO
+		}
 		#endregion
 
 		public virtual void EnableEvent (object ev)
@@ -151,7 +244,14 @@ namespace Xwt.GtkBackend
 			if (ev is WindowFrameEvent) {
 				switch ((WindowFrameEvent)ev) {
 				case WindowFrameEvent.BoundsChanged:
-					Window.SizeAllocated += HandleWidgetSizeAllocated; break;
+					Window.AddEvents ((int)Gdk.EventMask.StructureMask);
+					Window.ConfigureEvent += HandleConfigureEvent; break;
+				case WindowFrameEvent.CloseRequested:
+					Window.DeleteEvent += HandleCloseRequested; break;
+				case WindowFrameEvent.Shown:
+					Window.Shown += HandleShown; break;
+				case WindowFrameEvent.Hidden:
+					Window.Hidden += HandleHidden; break;
 				}
 			}
 		}
@@ -161,23 +261,57 @@ namespace Xwt.GtkBackend
 			if (ev is WindowFrameEvent) {
 				switch ((WindowFrameEvent)ev) {
 				case WindowFrameEvent.BoundsChanged:
-					Window.SizeAllocated -= HandleWidgetSizeAllocated; break;
+					Window.ConfigureEvent -= HandleConfigureEvent; break;
+				case WindowFrameEvent.CloseRequested:
+					Window.DeleteEvent -= HandleCloseRequested; break;
+				case WindowFrameEvent.Shown:
+					Window.Shown -= HandleShown; break;
+				case WindowFrameEvent.Hidden:
+					Window.Hidden -= HandleHidden; break;
 				}
 			}
 		}
-
-		void HandleWidgetSizeAllocated (object o, Gtk.SizeAllocatedArgs args)
+		
+		void HandleHidden (object sender, EventArgs e)
 		{
-			Toolkit.Invoke (delegate {
+			ApplicationContext.InvokeUserCode (delegate {
+				EventSink.OnHidden ();
+			});
+		}
+
+		void HandleShown (object sender, EventArgs e)
+		{
+			ApplicationContext.InvokeUserCode (delegate {
+				EventSink.OnShown ();
+			});
+		}
+
+		[GLib.ConnectBefore]
+		void HandleConfigureEvent (object o, Gtk.ConfigureEventArgs args)
+		{
+			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnBoundsChanged (Bounds);
+			});
+		}
+
+		void HandleCloseRequested (object o, Gtk.DeleteEventArgs args)
+		{
+			ApplicationContext.InvokeUserCode(delegate {
+				args.RetVal = EventSink.OnCloseRequested ();
 			});
 		}
 
 		public void Present ()
 		{
+			if (Platform.IsMac)
+				GtkWorkarounds.GrabDesktopFocus ();
 			Window.Present ();
 		}
-	
+
+		public virtual void GetMetrics (out Size minSize, out Size decorationSize)
+		{
+			minSize = decorationSize = Size.Zero;
+		}
 	}
 }
 

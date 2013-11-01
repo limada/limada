@@ -26,7 +26,7 @@
 
 using System;
 using Xwt.Drawing;
-using Xwt.Engine;
+
 using Xwt.Backends;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +38,18 @@ namespace Xwt.GtkBackend
 		static uint targetIdCounter = 0;
 		static Dictionary<TransferDataType, Gtk.TargetEntry[]> dragTargets = new Dictionary<TransferDataType, Gtk.TargetEntry[]> ();
 		static Dictionary<string, TransferDataType> atomToType = new Dictionary<string, TransferDataType> ();
+		static Size[] iconSizes = new Size[7];
+		
+		static Util ()
+		{
+			for (int i = 0; i < iconSizes.Length; i++) {
+				int w, h;
+				if (!Gtk.Icon.SizeLookup ((Gtk.IconSize)i, out w, out h))
+					w = h = -1;
+				iconSizes[i].Width = w;
+				iconSizes[i].Height = h;
+			}
+		}
 
 		public static void SetDragData (TransferDataSource data, Gtk.DragDataGetArgs args)
 		{
@@ -53,15 +65,17 @@ namespace Xwt.GtkBackend
 				return;
 			if (val is string)
 				data.Text = (string)val;
-			else if (val is Xwt.Drawing.Image)
-				data.SetPixbuf ((Gdk.Pixbuf) GtkEngine.Registry.GetBackend (val));
+			else if (val is Xwt.Drawing.Image) {
+				var bmp = ((Image)val).ToBitmap ();
+				data.SetPixbuf (((GtkImage)Toolkit.GetBackend (bmp)).Frames[0].Pixbuf);
+			}
 			else {
 				var at = Gdk.Atom.Intern (atomType, false);
 				data.Set (at, 0, TransferDataSource.SerializeValue (val));
 			}
 		}
 		
-		public static bool GetSelectionData (Gtk.SelectionData data, TransferDataStore target)
+		public static bool GetSelectionData (ApplicationContext context, Gtk.SelectionData data, TransferDataStore target)
 		{
 			TransferDataType type = Util.AtomToType (data.Target.Name);
 			if (type == null || data.Length <= 0)
@@ -70,7 +84,7 @@ namespace Xwt.GtkBackend
 			if (type == TransferDataType.Text)
 				target.AddText (data.Text);
 			else if (data.TargetsIncludeImage (false))
-				target.AddImage (GtkEngine.Registry.CreateFrontend<Xwt.Drawing.Image> (data.Pixbuf));
+				target.AddImage (context.Toolkit.WrapImage (data.Pixbuf));
 			else if (type == TransferDataType.Uri) {
 				var uris = System.Text.Encoding.UTF8.GetString (data.Data).Split ('\n').Where (u => !string.IsNullOrEmpty(u)).Select (u => new Uri (u)).ToArray ();
 				target.AddUris (uris);
@@ -130,17 +144,30 @@ namespace Xwt.GtkBackend
 						list.Remove ("STRING");
 					}
 					entries = (Gtk.TargetEntry[])list;
-				}
-				else if (type == TransferDataType.Rtf) {
+				} else if (type == TransferDataType.Rtf) {
 					Gdk.Atom atom;
-					if (Platform.IsMac)
+					if (Platform.IsMac) {
 						atom = Gdk.Atom.Intern ("NSRTFPboardType", false); //TODO: use public.rtf when dep on MacOS 10.6
-					else
+					} else if (Platform.IsWindows) {
+						atom = Gdk.Atom.Intern ("Rich Text Format", false);
+					} else {
 						atom = Gdk.Atom.Intern ("text/rtf", false);
+					}
+					entries = new Gtk.TargetEntry[] { new Gtk.TargetEntry (atom, 0, id) };
+				}
+				else if (type == TransferDataType.Html) {
+					Gdk.Atom atom;
+					if (Platform.IsMac) {
+						atom = Gdk.Atom.Intern ("Apple HTML pasteboard type", false); //TODO: use public.rtf when dep on MacOS 10.6
+					} else if (Platform.IsWindows) {
+						atom = Gdk.Atom.Intern ("HTML Format", false);
+					} else {
+						atom = Gdk.Atom.Intern ("text/html", false);
+					}
 					entries = new Gtk.TargetEntry[] { new Gtk.TargetEntry (atom, 0, id) };
 				}
 				else {
-					entries = new Gtk.TargetEntry[] { new Gtk.TargetEntry (Gdk.Atom.Intern ("application/" + type, false), 0, id) };
+					entries = new Gtk.TargetEntry[] { new Gtk.TargetEntry (Gdk.Atom.Intern ("application/" + type.Id, false), 0, id) };
 				}
 				
 				foreach (var a in entries.Select (e => e.Target))
@@ -151,74 +178,93 @@ namespace Xwt.GtkBackend
 		
 		static Dictionary<string,string> icons;
 
-		public static string ToGtkStock (string id)
+		public static GtkImage ToGtkStock (string id)
 		{
 			if (icons == null) {
 				icons = new Dictionary<string, string> ();
-				icons [StockIcons.ZoomIn] = Gtk.Stock.ZoomIn;
-				icons [StockIcons.ZoomOut] = Gtk.Stock.ZoomOut;
-				icons [StockIcons.Zoom100] = Gtk.Stock.Zoom100;
-				icons [StockIcons.ZoomFit] = Gtk.Stock.ZoomFit;
-				icons [StockIcons.OrientationPortrait] = Gtk.Stock.OrientationPortrait;
-				icons [StockIcons.OrientationLandscape] = Gtk.Stock.OrientationLandscape;
-				icons [StockIcons.Add] = Gtk.Stock.Add;
-				icons [StockIcons.Remove] = Gtk.Stock.Remove;
-				icons [StockIcons.Warning] = Gtk.Stock.DialogWarning;
-				icons [StockIcons.Error] = Gtk.Stock.DialogError;
-				icons [StockIcons.Information] = Gtk.Stock.DialogInfo;
+				icons [StockIconId.ZoomIn] = Gtk.Stock.ZoomIn;
+				icons [StockIconId.ZoomOut] = Gtk.Stock.ZoomOut;
+				icons [StockIconId.Zoom100] = Gtk.Stock.Zoom100;
+				icons [StockIconId.ZoomFit] = Gtk.Stock.ZoomFit;
+				icons [StockIconId.OrientationPortrait] = Gtk.Stock.OrientationPortrait;
+				icons [StockIconId.OrientationLandscape] = Gtk.Stock.OrientationLandscape;
+				icons [StockIconId.Add] = Gtk.Stock.Add;
+				icons [StockIconId.Remove] = Gtk.Stock.Remove;
+				icons [StockIconId.Warning] = Gtk.Stock.DialogWarning;
+				icons [StockIconId.Error] = Gtk.Stock.DialogError;
+				icons [StockIconId.Information] = Gtk.Stock.DialogInfo;
+				icons [StockIconId.Question] = Gtk.Stock.DialogQuestion;
 			}
 			string res;
-			icons.TryGetValue (id, out res);
-			return res;
+			if (!icons.TryGetValue (id, out res))
+				throw new NotSupportedException ("Unknown image: " + id);
+			return new GtkImage (res);
 		}
-		
-		public static Gtk.IconSize ToGtkSize (Xwt.IconSize size)
+
+
+		public static Gtk.IconSize GetBestSizeFit (double size, Gtk.IconSize[] availablesizes = null)
 		{
-			switch (size) {
-			case IconSize.Small:
-				return Gtk.IconSize.Menu;
-			case IconSize.Medium:
-				return Gtk.IconSize.Button;
-			case IconSize.Large:
+			// Find the size that better fits the requested size
+
+			for (int n=0; n<iconSizes.Length; n++) {
+				if (availablesizes != null && !availablesizes.Contains ((Gtk.IconSize)n))
+					continue;
+				if (size <= iconSizes [n].Width)
+					return (Gtk.IconSize)n;
+			}
+			if (availablesizes == null || availablesizes.Contains (Gtk.IconSize.Dialog))
 				return Gtk.IconSize.Dialog;
+			else
+				return Gtk.IconSize.Invalid;
+		}
+
+		public static double GetBestSizeFitSize (double size)
+		{
+			var s = GetBestSizeFit (size);
+			return iconSizes [(int)s].Width;
+		}
+		
+		public static ImageDescription WithDefaultSize (this ImageDescription image, Gtk.IconSize defaultIconSize)
+		{
+			if (image.Size.IsZero) {
+				var s = iconSizes [(int)defaultIconSize];
+				image.Size = s;
 			}
-			return Gtk.IconSize.Dialog;
+			return image;
 		}
-		
-		public static Gdk.Color ToGdkColor (this Xwt.Drawing.Color color)
+
+		public static double GetScaleFactor (Gtk.Widget w)
 		{
-			return new Gdk.Color ((byte)(color.Red * 255), (byte)(color.Green * 255), (byte)(color.Blue * 255));
+			return GtkWorkarounds.GetScaleFactor (w);
 		}
-		
-		public static Color ToXwtColor (this Gdk.Color color)
+
+		public static double GetDefaultScaleFactor ()
 		{
-			return new Color ((double)color.Red / (double)ushort.MaxValue, (double)color.Green / (double)ushort.MaxValue, (double)color.Blue / (double)ushort.MaxValue);
+			return 1;
 		}
-		
-		public static ScrollPolicy ConvertScrollPolicy (Gtk.PolicyType p)
+
+		internal static void SetSourceColor (this Cairo.Context cr, Cairo.Color color)
 		{
-			switch (p) {
-			case Gtk.PolicyType.Always:
-				return ScrollPolicy.Always;
-			case Gtk.PolicyType.Automatic:
-				return ScrollPolicy.Automatic;
-			case Gtk.PolicyType.Never:
-				return ScrollPolicy.Never;
-			}
-			throw new InvalidOperationException ("Invalid policy value:" + p);
+			cr.SetSourceRGBA (color.R, color.G, color.B, color.A);
 		}
-		
-		public static Gtk.PolicyType ConvertScrollPolicy (ScrollPolicy p)
+
+		//this is needed for building against old Mono.Cairo versions
+		[Obsolete]
+		internal static void SetSource (this Cairo.Context cr, Cairo.Pattern pattern)
 		{
-			switch (p) {
-			case ScrollPolicy.Always:
-				return Gtk.PolicyType.Always;
-			case ScrollPolicy.Automatic:
-				return Gtk.PolicyType.Automatic;
-			case ScrollPolicy.Never:
-				return Gtk.PolicyType.Never;
-			}
-			throw new InvalidOperationException ("Invalid policy value:" + p);
+			cr.Pattern = pattern;
+		}
+
+		[Obsolete]
+		internal static Cairo.Surface GetTarget (this Cairo.Context cr)
+		{
+			return cr.Target;
+		}
+
+		[Obsolete]
+		internal static void Dispose (this Cairo.Context cr)
+		{
+			((IDisposable)cr).Dispose ();
 		}
 	}
 }

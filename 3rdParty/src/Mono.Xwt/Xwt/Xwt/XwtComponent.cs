@@ -26,14 +26,15 @@
 
 using System;
 using System.ComponentModel;
-using Xwt.Engine;
+
 using System.Collections.Generic;
 using System.Reflection;
 using Xwt.Backends;
 
 namespace Xwt
 {
-	public abstract class XwtComponent: Component, IFrontend
+	[System.ComponentModel.DesignerCategory ("Code")]
+	public abstract class XwtComponent : Component, IFrontend
 	{
 		BackendHost backendHost;
 		
@@ -47,28 +48,28 @@ namespace Xwt
 		{
 			return new BackendHost ();
 		}
-		
+
 		protected BackendHost BackendHost {
 			get { return backendHost; }
+		}
+		
+		Toolkit IFrontend.ToolkitEngine {
+			get { return backendHost.ToolkitEngine; }
 		}
 		
 		object IFrontend.Backend {
 			get { return backendHost.Backend; }
 		}
 
-        WidgetRegistry IFrontend.Registry {
-            get { return backendHost.WidgetRegistry; }
-        }
-
-		object IFrontend.GetBackendForRegistry (WidgetRegistry registry)
-		{
-			backendHost.WidgetRegistry = registry;
-			return backendHost.Backend;
-		}
-		
 		protected static void MapEvent (object eventId, Type type, string methodName)
 		{
 			EventUtil.MapEvent (eventId, type, methodName);
+		}
+		
+		internal void VerifyConstructorCall<T> (T t)
+		{
+			if (GetType () != typeof(T))
+				throw new InvalidConstructorInvocation (typeof(T));
 		}
 	}
 	

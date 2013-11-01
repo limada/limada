@@ -34,17 +34,19 @@ using System.Windows;
 using SWC = System.Windows.Controls;
 using SWMI = System.Windows.Media.Imaging;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.WPFBackend
 {
-	public class MenuItemBackend : IMenuItemBackend
+	public class MenuItemBackend : Backend, IMenuItemBackend
 	{
 		object item;
 		SWC.MenuItem menuItem;
 		MenuBackend subMenu;
 		MenuItemType type;
 		IMenuItemEventSink eventSink;
+		string label;
+		bool useMnemonic;
 
 		public MenuItemBackend ()
 			: this (new SWC.MenuItem())
@@ -55,15 +57,12 @@ namespace Xwt.WPFBackend
 		{
 			this.item = item;
 			this.menuItem = item as SWC.MenuItem;
+			useMnemonic = true;
 		}
 
 		public void Initialize (IMenuItemEventSink eventSink)
 		{
 			this.eventSink = eventSink;
-		}
-
-		public void InitializeBackend (object frontend)
-		{
 		}
 
 		public object Item {
@@ -88,8 +87,20 @@ namespace Xwt.WPFBackend
 		}
 
 		public string Label {
-			get { return this.menuItem.Header.ToString (); }
-			set { this.menuItem.Header = value; }
+			get { return label; }
+			set {
+				label = value;
+				menuItem.Header = UseMnemonic ? value : value.Replace ("_", "__");
+			}
+		}
+
+		public bool UseMnemonic {
+			get { return useMnemonic; }
+			set
+			{
+				useMnemonic = value;
+				Label = label;
+			}
 		}
 
 		public bool Sensitive {
@@ -102,20 +113,12 @@ namespace Xwt.WPFBackend
 			set { this.menuItem.Visibility = (value) ? Visibility.Visible : Visibility.Collapsed; }
 		}
 
-		public void SetImage (object imageBackend)
+		public void SetImage (ImageDescription imageBackend)
 		{
-			if (imageBackend == null)
+			if (imageBackend.IsNull)
 				this.menuItem.Icon = null;
 			else
-			{
-				var img = (SWMI.BitmapSource) imageBackend;
-				this.menuItem.Icon = new System.Windows.Controls.Image
-				{
-					Source = img,
-					Width = img.Width,
-					Height = img.Height
-				};
-			}
+				this.menuItem.Icon = new ImageBox (Context) { ImageSource = imageBackend };
 		}
 
 		public void SetSubmenu (IMenuBackend menu)
@@ -155,7 +158,7 @@ namespace Xwt.WPFBackend
 			this.type = type;
 		}
 
-		public void EnableEvent (object eventId)
+		public override void EnableEvent (object eventId)
 		{
 			if (menuItem == null)
 				return;
@@ -169,7 +172,7 @@ namespace Xwt.WPFBackend
 			}
 		}
 
-		public void DisableEvent (object eventId)
+		public override void DisableEvent (object eventId)
 		{
 			if (menuItem == null)
 				return;
@@ -185,7 +188,7 @@ namespace Xwt.WPFBackend
 
 		void MenuItemClickHandler (object sender, EventArgs args)
 		{
-			Toolkit.Invoke (eventSink.OnClicked);
+			Context.InvokeUserCode (eventSink.OnClicked);
 		}
 	}
 }

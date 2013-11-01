@@ -51,7 +51,7 @@ namespace Xwt.WPFBackend
 		{
 			// The offset is relative to 0, it has to be converted to the lower/upper value range
 			scrollValue = LowerValue + offset;
-			Xwt.Engine.Toolkit.Invoke (EventSink.OnValueChanged);
+			Context.InvokeUserCode (EventSink.OnValueChanged);
 		}
 
 		public double Value
@@ -64,34 +64,43 @@ namespace Xwt.WPFBackend
 			}
 		}
 
+		public void SetRange (double lowerValue, double upperValue, double pageSize, double pageIncrement, double stepIncrement, double value)
+		{
+			this.lowerValue = lowerValue;
+			this.upperValue = upperValue;
+			this.pageSize = pageSize;
+			InvalidateExtent ();
+
+			this.pageIncrement = pageIncrement;
+			this.stepIncrement = stepIncrement;
+			InvalidateScrollInfo ();
+
+			Value = value;
+		}
+
 		public double LowerValue
 		{
 			get { return lowerValue; }
-			set { lowerValue = value; InvalidateExtent (); }
 		}
 
 		public double UpperValue
 		{
 			get { return upperValue; }
-			set { upperValue = value; InvalidateExtent (); }
 		}
 
 		public double PageIncrement
 		{
 			get { return pageIncrement; }
-			set { pageIncrement = value; InvalidateScrollInfo (); }
 		}
 
 		public double StepIncrement
 		{
 			get { return stepIncrement; }
-			set { stepIncrement = value; InvalidateScrollInfo (); }
 		}
 
 		public double PageSize
 		{
 			get { return pageSize; }
-			set { pageSize = value; InvalidateExtent (); }
 		}
 
 		void InvalidateScrollInfo ()

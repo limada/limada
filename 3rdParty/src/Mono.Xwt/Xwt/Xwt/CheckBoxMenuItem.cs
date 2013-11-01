@@ -29,6 +29,7 @@ using Xwt.Backends;
 
 namespace Xwt
 {
+	[BackendType (typeof(ICheckBoxMenuItemBackend))]
 	public class CheckBoxMenuItem: MenuItem
 	{
 		public CheckBoxMenuItem ()
@@ -37,10 +38,14 @@ namespace Xwt
 		
 		public CheckBoxMenuItem (Command command): base (command)
 		{
+			VerifyConstructorCall (this);
+			LoadCommandProperties (command);
 		}
 		
-		public CheckBoxMenuItem (string label): base (label)
+		public CheckBoxMenuItem (string label)
 		{
+			VerifyConstructorCall (this);
+			Label = label;
 		}
 		
 		ICheckBoxMenuItemBackend Backend {

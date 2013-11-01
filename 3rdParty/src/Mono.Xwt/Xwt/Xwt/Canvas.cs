@@ -24,52 +24,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// 
-// Canvas.cs
-//  
-// Author:
-//       Lluis Sanchez <lluis@xamarin.com>
-// 
-// Copyright (c) 2011 Xamarin Inc
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-
 using System;
 using System.Collections.Generic;
 using Xwt.Backends;
 using Xwt.Drawing;
 using System.Windows.Markup;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Xwt
 {
+	[BackendType (typeof(ICanvasBackend))]
 	public class Canvas: Widget
 	{
 		Dictionary<Widget,Rectangle> positions;
 		
 		protected new class WidgetBackendHost: Widget.WidgetBackendHost, ICanvasEventSink
 		{
-			public virtual void OnDraw (object context, Rectangle dirtyRect)
+			public void OnDraw (object context, Rectangle dirtyRect)
 			{
 				Context ctx = null;
 				try {
-					ctx = new Context (this.WidgetRegistry,context);
+					ctx = new Context (context, ToolkitEngine);
+					ctx.Reset (Parent);
 					((Canvas)Parent).OnDraw (ctx, dirtyRect);
 				}
 				finally {
@@ -115,8 +92,8 @@ namespace Xwt
 		/// </remarks>
 		public void AddChild (Widget w, double x, double y)
 		{
-			var pw = w.Surface.GetPreferredWidth ().NaturalSize;
-			AddChild (w, new Rectangle (x, y, pw, w.Surface.GetPreferredHeightForWidth (pw).NaturalSize));
+			var s = w.Surface.GetPreferredSize (SizeConstraint.Unconstrained, SizeConstraint.Unconstrained);
+			AddChild (w, new Rectangle (x, y, s.Width, s.Height));
 		}
 		
 		/// <summary>
@@ -139,9 +116,8 @@ namespace Xwt
 			
 			positions [widget] = bounds;
 			var bk = (IWidgetBackend)Widget.GetBackend (widget);
-			Backend.AddChild (bk, bounds);
 			RegisterChild (widget);
-			OnPreferredSizeChanged ();
+			Backend.AddChild (bk, bounds);
 		}
 		
 		/// <summary>
@@ -153,13 +129,9 @@ namespace Xwt
 		/// <exception cref="System.ArgumentException">If the widget is not a child of this canvas</exception>
 		public void RemoveChild (Widget widget)
 		{
-			if (positions == null || widget.Parent != this)
-				throw new ArgumentException ("Widget is not a child of the canvas");
-			
+			UnregisterChild (widget);
 			positions.Remove (widget);
 			Backend.RemoveChild ((IWidgetBackend)Widget.GetBackend (widget));
-			UnregisterChild (widget);
-			OnPreferredSizeChanged ();
 		}
 		
 		/// <summary>
@@ -174,12 +146,11 @@ namespace Xwt
 		/// <exception cref="System.ArgumentException">If the widget is not a child of this canvas</exception>
 		public void SetChildBounds (Widget widget, Rectangle bounds)
 		{
-			if (positions == null || widget.Parent != this)
+			if (positions == null || !positions.ContainsKey (widget))
 				throw new ArgumentException ("Widget is not a child of the canvas");
 			
 			positions [widget] = bounds;
 			Backend.SetChildBounds ((IWidgetBackend)Widget.GetBackend (widget), bounds);
-			OnPreferredSizeChanged ();
 		}
 		
 		/// <summary>
@@ -205,11 +176,18 @@ namespace Xwt
 		public Rectangle GetChildBounds (Widget widget)
 		{
 			Rectangle rect;
-			if (positions == null || widget.Parent != this)
-				throw new ArgumentException ("Widget is not a child of the canvas");
-			if (positions.TryGetValue (widget, out rect))
+			if (positions != null && positions.TryGetValue (widget, out rect))
 				return rect;
-			return Rectangle.Zero;
+			throw new ArgumentException ("Widget is not a child of the canvas");
+		}
+
+		/// <summary>
+		/// Removes all children of the Canvas
+		/// </summary>
+		public void Clear ()
+		{
+			foreach (var c in Children.ToArray ())
+				RemoveChild (c);
 		}
 		
 		protected override BackendHost CreateBackendHost ()

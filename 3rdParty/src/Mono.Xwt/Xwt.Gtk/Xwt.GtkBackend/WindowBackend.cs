@@ -3,6 +3,7 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
+//       Konrad Kruczyński <kkruczynski@antmicro.com>
 // 
 // Copyright (c) 2011 Xamarin Inc
 // 
@@ -29,7 +30,7 @@ using Xwt.Backends;
 
 namespace Xwt.GtkBackend
 {
-	public class WindowBackend: WindowFrameBackend, IWindowBackend
+	public class WindowBackend: WindowFrameBackend, IWindowBackend, IConstraintProvider
 	{
 		Gtk.Alignment alignment;
 		Gtk.MenuBar mainMenu;
@@ -45,7 +46,7 @@ namespace Xwt.GtkBackend
 		{
 			mainBox = new Gtk.VBox ();
 			mainBox.Show ();
-			alignment = new Gtk.Alignment (0, 0, 1, 1);
+			alignment = new RootWindowAlignment (this);
 			mainBox.PackStart (alignment, true, true, 0);
 			alignment.Show ();
 			return mainBox;
@@ -54,13 +55,33 @@ namespace Xwt.GtkBackend
 		public Gtk.VBox MainBox {
 			get { return mainBox; }
 		}
-		
+
+		public override void GetMetrics (out Size minSize, out Size decorationSize)
+		{
+			if (mainMenu != null) {
+				var ms = mainMenu.SizeRequest ();
+				minSize = new Size (ms.Width, 0);
+				decorationSize = new Size (0, ms.Height);
+			}
+			else {
+				minSize = decorationSize = Size.Zero;
+			}
+		}
+
 		public void SetChild (IWidgetBackend child)
 		{
-			var w = (IGtkWidgetBackend) child;
-			alignment.Child = w.Widget;
+			if (alignment.Child != null) {
+				WidgetBackend.RemoveChildPlacement (alignment.Child);
+				alignment.Remove (alignment.Child);
+			}
+			alignment.Child = WidgetBackend.GetWidgetWithPlacement (child);
 		}
 		
+		public virtual void UpdateChildPlacement (IWidgetBackend childBackend)
+		{
+			WidgetBackend.SetChildPlacement (childBackend);
+		}
+
 		public void SetMainMenu (IMenuBackend menu)
 		{
 			if (mainMenu != null)
@@ -86,6 +107,34 @@ namespace Xwt.GtkBackend
 		public void SetMinSize (Size s)
 		{
 			// Not required
+		}
+
+		public override void SetSize (double width, double height)
+		{
+			base.SetSize (width, height);
+			if (alignment.Child != null)
+				alignment.Child.QueueResize ();
+		}
+		
+		public void GetConstraints (Gtk.Widget target, out SizeConstraint width, out SizeConstraint height)
+		{
+			width = RequestedSize.Width;
+			height = RequestedSize.Height;
+		}
+	}
+
+	class RootWindowAlignment: Gtk.Alignment, IConstraintProvider
+	{
+		WindowBackend backend;
+
+		public RootWindowAlignment (WindowBackend backend): base (0, 0, 1, 1)
+		{
+			this.backend = backend;
+		}
+
+		public void GetConstraints (Gtk.Widget target, out SizeConstraint width, out SizeConstraint height)
+		{
+			backend.GetConstraints (this, out width, out height);
 		}
 	}
 }

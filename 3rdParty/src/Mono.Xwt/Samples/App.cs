@@ -7,19 +7,18 @@ namespace Samples
 {
 	public class App
 	{
-		public static void Run (string engineType)
+		public static void Run (ToolkitType type)
 		{
-			Application.Initialize (engineType);
+			Application.Initialize (type);
 			
 			MainWindow w = new MainWindow ();
-			w.Title = "Xwt Demo Application";
-			w.Width = 500;
-			w.Height = 400;
 			w.Show ();
 			
 			Application.Run ();
 			
 			w.Dispose ();
+
+			Application.Dispose ();
 		}
 	}
 }	

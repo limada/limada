@@ -29,13 +29,15 @@ using System.ComponentModel;
 
 namespace Xwt
 {
+	[BackendType (typeof(ITextEntryBackend))]
 	public class TextEntry: Widget
 	{
-		EventHandler changed;
+		EventHandler changed, activated;
 		
 		static TextEntry ()
 		{
 			MapEvent (TextEntryEvent.Changed, typeof(TextEntry), "OnChanged");
+			MapEvent (TextEntryEvent.Activated, typeof(TextEntry), "OnActivated");
 		}
 		
 		protected new class WidgetBackendHost: Widget.WidgetBackendHost, ITextEntryEventSink
@@ -44,10 +46,15 @@ namespace Xwt
 			{
 				((TextEntry)Parent).OnChanged (EventArgs.Empty);
 			}
+
+			public void OnActivated ()
+			{
+				((TextEntry)Parent).OnActivated (EventArgs.Empty);
+			}
 			
 			public override Size GetDefaultNaturalSize ()
 			{
-				return Xwt.Backends.DefaultNaturalSizes.TextEntry;
+				return DefaultNaturalSizes.TextEntry;
 			}
 		}
 		
@@ -69,7 +76,12 @@ namespace Xwt
 			get { return Backend.Text; }
 			set { Backend.Text = value; }
 		}
-		
+
+		public Alignment TextAlignment {
+			get { return Backend.TextAlignment; }
+			set { Backend.TextAlignment = value; }
+		}
+
 		[DefaultValue ("")]
 		public string PlaceholderText {
 			get { return Backend.PlaceholderText; }
@@ -88,6 +100,12 @@ namespace Xwt
 			set { Backend.ShowFrame = value; }
 		}
 		
+		[DefaultValue (true)]
+		public bool MultiLine {
+			get { return Backend.MultiLine; }
+			set { Backend.MultiLine = value; }
+		}
+
 		protected virtual void OnChanged (EventArgs e)
 		{
 			if (changed != null)
@@ -102,6 +120,23 @@ namespace Xwt
 			remove {
 				changed -= value;
 				BackendHost.OnAfterEventRemove (TextEntryEvent.Changed, changed);
+			}
+		}
+
+		protected virtual void OnActivated (EventArgs e)
+		{
+			if (activated != null)
+				activated (this, e);
+		}
+
+		public event EventHandler Activated {
+			add {
+				BackendHost.OnBeforeEventAdd (TextEntryEvent.Activated, activated);
+				activated += value;
+			}
+			remove {
+				activated -= value;
+				BackendHost.OnAfterEventRemove (TextEntryEvent.Activated, activated);
 			}
 		}
 	}

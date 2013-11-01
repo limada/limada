@@ -28,91 +28,186 @@ using System;
 using Xwt.Backends;
 using MonoMac.AppKit;
 using MonoMac.Foundation;
-using Xwt.Engine;
+using MonoMac.CoreText;
+using MonoMac.CoreGraphics;
 using Xwt.Drawing;
+
+using PointF = System.Drawing.PointF;
+using SizeF = System.Drawing.SizeF;
+using RectangleF = System.Drawing.RectangleF;
+using System.Collections.Generic;
 
 namespace Xwt.Mac
 {
-	public class TextLayoutBackendHandler: ITextLayoutBackendHandler
+	public class MacTextLayoutBackendHandler: TextLayoutBackendHandler
 	{
 		class LayoutInfo
 		{
-			public NSAttributedString Text;
+			public string Text;
 			public NSFont Font;
-			public string PlainText;
-			public double Width = -1;
-			public double Heigth = -1;
+			public float? Width, Height;
 			public TextTrimming TextTrimming;
 		}
 		
-		public object Create (Xwt.Drawing.Context context)
+		public override object Create ()
 		{
 			return new LayoutInfo ();
 		}
 		
-		public object Create (ICanvasBackend canvas)
+		public override void SetText (object backend, string text)
 		{
-			return new LayoutInfo ();
+			LayoutInfo li = (LayoutInfo)backend;
+			li.Text = text.Replace ("\r\n", "\n");
 		}
 
-		public void SetText (object backend, string text)
+		public override void SetFont (object backend, Xwt.Drawing.Font font)
 		{
 			LayoutInfo li = (LayoutInfo)backend;
-			li.PlainText = text;
-			UpdateInfo (li);
-		}
-
-		public void SetFont (object backend, Xwt.Drawing.Font font)
-		{
-			LayoutInfo li = (LayoutInfo)backend;
-			li.Font = (NSFont)MacEngine.Registry.GetBackend (font);
-			UpdateInfo (li);
+			li.Font = (NSFont)Toolkit.GetBackend (font);
 		}
 		
-		public void SetWidth (object backend, double value)
+		public override void SetWidth (object backend, double value)
 		{
 			LayoutInfo li = (LayoutInfo)backend;
-			li.Width = value;
+			li.Width = value < 0 ? null : (float?)value;
 		}
 		
-		public void SetHeight (object backend, double value)
+		public override void SetHeight (object backend, double value)
 		{
 			LayoutInfo li = (LayoutInfo)backend;
-			li.Heigth = value;
+			li.Height = value < 0 ? null : (float?)value;
 		}
 		
-		public void SetTrimming (object backend, TextTrimming value)
+		public override void SetTrimming (object backend, TextTrimming value)
 		{
 			LayoutInfo li = (LayoutInfo)backend;
 			li.TextTrimming = value;
 		}
-		
-		void UpdateInfo (LayoutInfo li)
+
+		public override Size GetSize (object backend)
 		{
-			if (li.PlainText == null)
-				return;
-			if (li.Font != null) {
-				NSDictionary dict = NSDictionary.FromObjectsAndKeys (
-					new object[] { li.Font },
-				    new object[] { NSAttributedString.FontAttributeName }
-				);
-				li.Text = new NSAttributedString (li.PlainText, dict);
-			} else {
-				li.Text = new NSAttributedString (li.PlainText);
+			LayoutInfo li = (LayoutInfo)backend;
+			using (CTFrame frame = CreateFrame (li)) {
+				if (frame == null)
+					return Size.Zero;
+
+				Size result = Size.Zero;
+				CTLine [] lines = frame.GetLines ();
+				float lineHeight = li.Font.Ascender - li.Font.Descender + li.Font.Leading;
+
+				CTLine ellipsis = null;
+				bool ellipsize = li.Width.HasValue && li.TextTrimming == TextTrimming.WordElipsis;
+				if (ellipsize)
+					ellipsis = new CTLine (CreateAttributedString (li, "..."));
+
+				// try to approximate Pango's layout
+				foreach (var line in lines) {
+					var l = line;
+					if (ellipsize) { // we need to create a new CTLine here because the framesetter already truncated the text for the line
+						l = new CTLine (CreateAttributedString (li, li.Text.Substring (line.StringRange.Location)))
+							.GetTruncatedLine (li.Width.Value, CTLineTruncation.End, ellipsis);
+						line.Dispose ();
+					}
+
+					result.Width = Math.Max (result.Width, l.GetTypographicBounds ());
+					result.Height += lineHeight;
+
+					// clean up after ourselves as we go
+					l.Dispose ();
+				}
+
+				// CoreText throws away trailing line breaks..
+				if (li.Text.EndsWith ("\n"))
+					result.Height += lineHeight;
+
+				result.Width = Math.Ceiling (result.Width);
+				result.Height = Math.Ceiling (result.Height);
+				return result;
 			}
 		}
 
-		public Size GetSize (object backend)
+		static CTFrame CreateFrame (LayoutInfo li)
 		{
-			LayoutInfo li = (LayoutInfo)backend;
-			var s = li.Text.Size;
-			return new Xwt.Size (s.Width, s.Height);
+			if (string.IsNullOrEmpty (li.Text))
+				return null;
+
+			using (CTFramesetter framesetter = new CTFramesetter (CreateAttributedString (li))) {
+				CGPath path = new CGPath ();
+				bool ellipsize = li.Width.HasValue && li.TextTrimming == TextTrimming.WordElipsis;
+				path.AddRect (new RectangleF (0, 0, li.Width.HasValue && !ellipsize ? li.Width.Value : float.MaxValue, li.Height ?? float.MaxValue));
+
+				return framesetter.GetFrame (new NSRange (0, li.Text.Length), path, null);
+			}
+		}
+
+		static NSAttributedString CreateAttributedString (LayoutInfo li, string overrideText = null)
+		{
+			NSDictionary dict;
+			if (li.Font != null) {
+				dict = NSDictionary.FromObjectsAndKeys (
+					new object[] { li.Font, new NSNumber (true) },
+					new object[] { CTStringAttributeKey.Font, CTStringAttributeKey.ForegroundColorFromContext }
+				);
+			} else {
+				dict = NSDictionary.FromObjectsAndKeys (
+					new object[] { new NSNumber (true) },
+					new object[] { CTStringAttributeKey.ForegroundColorFromContext }
+				);
+			}
+			return new NSAttributedString (overrideText ?? li.Text, dict);
 		}
 		
-		public static void Draw (object ctx, object layout, double x, double y)
+		internal static void Draw (CGContext ctx, object layout, double x, double y)
 		{
-			LayoutInfo li = (LayoutInfo) layout;
-			li.Text.DrawString (new System.Drawing.PointF ((float)x, (float)y));
+			LayoutInfo li = (LayoutInfo)layout;
+			using (CTFrame frame = CreateFrame (li)) {
+				if (frame == null)
+					return;
+
+				CTLine ellipsis = null;
+				bool ellipsize = li.Width.HasValue && li.TextTrimming == TextTrimming.WordElipsis;
+				if (ellipsize)
+					ellipsis = new CTLine (CreateAttributedString (li, "..."));
+
+				float lineHeight = li.Font.Ascender - li.Font.Descender + li.Font.Leading;
+
+				ctx.SaveState ();
+				ctx.TextMatrix = CGAffineTransform.MakeScale (1f, -1f);
+				ctx.TranslateCTM ((float)x, (float)y + li.Font.Ascender);
+				foreach (var line in frame.GetLines ()) {
+					ctx.TextPosition = PointF.Empty;
+					if (ellipsize) // we need to create a new CTLine here because the framesetter already truncated the text for the line
+						new CTLine (CreateAttributedString (li, li.Text.Substring (line.StringRange.Location)))
+							.GetTruncatedLine (li.Width.Value, CTLineTruncation.End, ellipsis).Draw (ctx);
+					else
+						line.Draw (ctx);
+					ctx.TranslateCTM (0, lineHeight);
+				}
+				ctx.RestoreState ();
+			}
+		}
+
+		public override void AddAttribute (object backend, TextAttribute attribute)
+		{
+		}
+
+		public override void ClearAttributes (object backend)
+		{
+		}
+		
+		public override int GetIndexFromCoordinates (object backend, double x, double y)
+		{
+			return 0;
+		}
+		
+		public override Point GetCoordinateFromIndex (object backend, int index)
+		{
+			return new Point (0,0);
+		}
+
+		public override void Dispose (object backend)
+		{
+			// nothing
 		}
 	}
 }

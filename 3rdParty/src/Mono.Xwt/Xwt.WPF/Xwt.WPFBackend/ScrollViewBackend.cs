@@ -51,6 +51,22 @@ namespace Xwt.WPFBackend
 			set { ScrollViewer.HorizontalScrollBarVisibility = GetScrollVisibility (value); }
 		}
 
+		protected override double DefaultNaturalHeight
+		{
+			get
+			{
+				return VerticalScrollPolicy != ScrollPolicy.Never ? - 1 : -2;
+			}
+		}
+
+		protected override double DefaultNaturalWidth
+		{
+			get
+			{
+				return HorizontalScrollPolicy != ScrollPolicy.Never ? -1 : -2;
+			}
+		}
+
 		private bool borderVisible = true;
 		public bool BorderVisible
 		{
@@ -82,16 +98,19 @@ namespace Xwt.WPFBackend
 			if (child == null)
 				return;
 
+			SetChildPlacement (child);
 			ScrollAdjustmentBackend vbackend = null, hbackend = null;
 			var widget = (WidgetBackend)child;
 
 			if (widget.EventSink.SupportsCustomScrolling ()) {
 				vbackend = new ScrollAdjustmentBackend ();
 				hbackend = new ScrollAdjustmentBackend ();
-				widget.EventSink.SetScrollAdjustments (hbackend, vbackend);
 			}
 			ScrollViewer.Content = new CustomScrollViewPort (widget.NativeWidget, vbackend, hbackend);
 			ScrollViewer.CanContentScroll = true;
+
+			if (vbackend != null)
+				widget.EventSink.SetScrollAdjustments (hbackend, vbackend);
 		}
 		
 		public void SetChildSize (Size s)
@@ -103,12 +122,10 @@ namespace Xwt.WPFBackend
 		{
 			get
 			{
-				double wratio = WidthPixelRatio;
-				double hratio = HeightPixelRatio;
-				return new Rectangle (	ScrollViewer.HorizontalOffset * hratio,
-										ScrollViewer.VerticalOffset * hratio,
-										ScrollViewer.ViewportWidth * wratio,
-										ScrollViewer.ViewportHeight * hratio);
+				return new Rectangle (	ScrollViewer.HorizontalOffset,
+										ScrollViewer.VerticalOffset,
+										ScrollViewer.ViewportWidth,
+										ScrollViewer.ViewportHeight);
 			}
 		}
 

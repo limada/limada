@@ -32,6 +32,7 @@ using Xwt.Backends;
 
 namespace Xwt
 {
+	[BackendType (typeof(IStatusIconBackend))]
 	public class StatusIcon : XwtComponent
 	{
 		Image image;
@@ -48,7 +49,7 @@ namespace Xwt
 
 		public Image Image {
 			get { return image; }
-			set { image = value; Backend.SetImage (XwtObject.GetBackend (value)); }
+			set { image = value; Backend.SetImage (image != null ? image.ImageDescription : ImageDescription.Null); }
 		}
 
 		IStatusIconBackend Backend {

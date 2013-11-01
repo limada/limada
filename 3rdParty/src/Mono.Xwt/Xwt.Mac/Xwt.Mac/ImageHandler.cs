@@ -34,6 +34,8 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Xwt.Drawing;
+using System.IO;
+using MonoMac.CoreGraphics;
 
 namespace Xwt.Mac
 {
@@ -46,7 +48,7 @@ namespace Xwt.Mac
 
 		static Dictionary<string, NSImage> stockIcons = new Dictionary<string, NSImage> ();
 		
-		public override object LoadFromStream (System.IO.Stream stream)
+		public override object LoadFromStream (Stream stream)
 		{
 			using (NSData data = NSData.FromStream (stream)) {
 				return new NSImage (data);
@@ -57,18 +59,100 @@ namespace Xwt.Mac
 		{
 			return new NSImage (file);
 		}
-		
-		public override object LoadFromIcon (string id, IconSize size)
+
+		public override object CreateMultiResolutionImage (IEnumerable<object> images)
+		{
+			NSImage res = new NSImage ();
+			foreach (NSImage img in images)
+				res.AddRepresentations (img.Representations ());
+			return res;
+		}
+
+		public override object CreateCustomDrawn (ImageDrawCallback drawCallback)
+		{
+			return new CustomImage (ApplicationContext, drawCallback);
+		}
+
+		public override Xwt.Drawing.Image GetStockIcon (string id)
 		{
 			NSImage img;
-			if (!stockIcons.TryGetValue (id + size, out img)) {
-				img = LoadStockIcon (id, size);
-				stockIcons [id + size] = img;
+			if (!stockIcons.TryGetValue (id, out img)) {
+				img = LoadStockIcon (id);
+				stockIcons [id] = img;
 			}
-			return img;
+			return ApplicationContext.Toolkit.WrapImage (img);
+		}
+
+		public override void SaveToStream (object backend, System.IO.Stream stream, ImageFileType fileType)
+		{
+			NSImage img = backend as NSImage;
+			if (img == null)
+				throw new NotSupportedException ();
+
+			var imageData = img.AsTiff ();
+			var imageRep = (NSBitmapImageRep) NSBitmapImageRep.ImageRepFromData (imageData);
+			var props = new NSDictionary ();
+			imageData = imageRep.RepresentationUsingTypeProperties (fileType.ToMacFileType (), props);
+			using (var s = imageData.AsStream ()) {
+				s.CopyTo (stream);
+			}
+		}
+
+		public override bool IsBitmap (object handle)
+		{
+			NSImage img = handle as NSImage;
+			return img != null && img.Representations ().OfType<NSBitmapImageRep> ().Any ();
+		}
+
+		public override object ConvertToBitmap (object handle, double width, double height, double scaleFactor, ImageFormat format)
+		{
+			int pixelWidth = (int)(width * scaleFactor);
+			int pixelHeight = (int)(height * scaleFactor);
+
+			if (handle is CustomImage) {
+				var flags = CGBitmapFlags.ByteOrderDefault;
+				int bytesPerRow;
+				switch (format) {
+				case ImageFormat.ARGB32:
+					bytesPerRow = pixelWidth * 4;
+					flags |= CGBitmapFlags.PremultipliedFirst;
+					break;
+
+				case ImageFormat.RGB24:
+					bytesPerRow = pixelWidth * 3;
+					flags |= CGBitmapFlags.None;
+					break;
+
+				default:
+					throw new NotImplementedException ("ImageFormat: " + format.ToString ());
+				}
+
+				var bmp = new CGBitmapContext (IntPtr.Zero, pixelWidth, pixelHeight, 8, bytesPerRow, Util.DeviceRGBColorSpace, flags);
+				bmp.TranslateCTM (0, pixelHeight);
+				bmp.ScaleCTM (1, -1);
+
+				var ctx = new CGContextBackend {
+					Context = bmp,
+					Size = new SizeF (pixelWidth, pixelHeight),
+					InverseViewTransform = bmp.GetCTM ().Invert ()
+				};
+
+				var ci = (CustomImage)handle;
+				ci.DrawInContext (ctx);
+
+				var img = new NSImage (((CGBitmapContext)bmp).ToImage (), new SizeF (pixelWidth, pixelHeight));
+				var imageData = img.AsTiff ();
+				var imageRep = (NSBitmapImageRep) NSBitmapImageRep.ImageRepFromData (imageData);
+				var im = new NSImage ();
+				im.AddRepresentation (imageRep);
+				im.Size = new SizeF ((float)width, (float)height);
+				return im;
+			}
+			else
+				return handle;
 		}
 		
-		public override Xwt.Drawing.Color GetPixel (object handle, int x, int y)
+		public override Xwt.Drawing.Color GetBitmapPixel (object handle, int x, int y)
 		{
 			NSImage img = (NSImage)handle;
 			NSBitmapImageRep bitmap = img.Representations ().OfType<NSBitmapImageRep> ().FirstOrDefault ();
@@ -78,7 +162,7 @@ namespace Xwt.Mac
 				throw new InvalidOperationException ("Not a bitmnap image");
 		}
 		
-		public override void SetPixel (object handle, int x, int y, Xwt.Drawing.Color color)
+		public override void SetBitmapPixel (object handle, int x, int y, Xwt.Drawing.Color color)
 		{
 			NSImage img = (NSImage)handle;
 			NSBitmapImageRep bitmap = img.Representations ().OfType<NSBitmapImageRep> ().FirstOrDefault ();
@@ -87,6 +171,12 @@ namespace Xwt.Mac
 			else
 				throw new InvalidOperationException ("Not a bitmnap image");
 		}
+
+		public override bool HasMultipleSizes (object handle)
+		{
+			NSImage img = (NSImage)handle;
+			return img.Size.Width == 0 && img.Size.Height == 0;
+		}
 		
 		public override Size GetSize (object handle)
 		{
@@ -94,27 +184,17 @@ namespace Xwt.Mac
 			return new Size ((int)img.Size.Width, (int)img.Size.Height);
 		}
 		
-		public override object Resize (object handle, double width, double height)
+		public override object CopyBitmap (object handle)
+		{
+			return ((NSImage)handle).Copy ();
+		}
+		
+		public override void CopyBitmapArea (object backend, int srcX, int srcY, int width, int height, object dest, int destX, int destY)
 		{
 			throw new NotImplementedException ();
 		}
 		
-		public override object Copy (object handle)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public override void CopyArea (object backend, int srcX, int srcY, int width, int height, object dest, int destX, int destY)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public override object Crop (object backend, int srcX, int srcY, int width, int height)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public override object ChangeOpacity (object backend, double opacity)
+		public override object CropBitmap (object backend, int srcX, int srcY, int width, int height)
 		{
 			throw new NotImplementedException ();
 		}
@@ -127,16 +207,20 @@ namespace Xwt.Mac
 				return new NSImage (data);
 			}
 		}
-		
-		static NSImage LoadStockIcon (string id, IconSize size)
-		{
-			NSImage image = null;
 
+		static NSImage NSImageFromResource (string id)
+		{
+			return (NSImage) Toolkit.GetBackend (Xwt.Drawing.Image.FromResource (typeof(ImageHandler), id));
+		}
+		
+		static NSImage LoadStockIcon (string id)
+		{
 			switch (id) {
-			case StockIcons.ZoomIn:  image = FromResource ("magnifier-zoom-in.png"); break;
-			case StockIcons.ZoomOut: image = FromResource ("magnifier-zoom-out.png"); break;
+			case StockIconId.ZoomIn: return NSImageFromResource ("zoom-in.png");
+			case StockIconId.ZoomOut: return NSImageFromResource ("zoom-out.png");
 			}
 
+			NSImage image = null;
 			IntPtr iconRef;
 			var type = Util.ToIconType (id);
 			if (type != 0 && GetIconRef (-32768/*kOnSystemDisk*/, 1835098995/*kSystemIconsCreator*/, type, out iconRef) == 0) {
@@ -149,8 +233,6 @@ namespace Xwt.Mac
 				}
 			}
 
-			if (image != null)
-				image.Size = Util.ToIconSize (size);
 			return image;
 		}
 
@@ -158,6 +240,56 @@ namespace Xwt.Mac
 		static extern int GetIconRef (short vRefNum, int creator, int iconType, out IntPtr iconRef);
 		[DllImport ("/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/LaunchServices")]
 		static extern int ReleaseIconRef (IntPtr iconRef);
+	}
+
+
+	public class CustomImage: NSImage
+	{
+		ImageDrawCallback drawCallback;
+		ApplicationContext actx;
+		NSCustomImageRep imgRep;
+
+		public CustomImage (ApplicationContext actx, ImageDrawCallback drawCallback)
+		{
+			this.actx = actx;
+			this.drawCallback = drawCallback;
+			imgRep = new NSCustomImageRep (new Selector ("drawIt:"), this);
+			AddRepresentation (imgRep);
+		}
+
+		[Export ("drawIt:")]
+		public void DrawIt (NSObject ob)
+		{
+			CGContext ctx = NSGraphicsContext.CurrentContext.GraphicsPort;
+			DrawInContext (ctx);
+		}
+
+		internal void DrawInContext (CGContext ctx)
+		{
+			var backend = new CGContextBackend {
+				Context = ctx,
+				InverseViewTransform = ctx.GetCTM ().Invert ()
+			};
+			DrawInContext (backend);
+		}
+
+		internal void DrawInContext (CGContextBackend ctx)
+		{
+			var s = ctx.Size != SizeF.Empty ? ctx.Size : Size;
+			actx.InvokeUserCode (delegate {
+				drawCallback (ctx, new Rectangle (0, 0, s.Width, s.Height));
+			});
+		}
+
+		public override CGImage AsCGImage (ref RectangleF proposedDestRect, NSGraphicsContext referenceContext, NSDictionary hints)
+		{
+			return base.AsCGImage (ref proposedDestRect, referenceContext, hints);
+		}
+
+		public CustomImage Clone ()
+		{
+			return new CustomImage (actx, drawCallback);
+		}
 	}
 }
 

@@ -26,7 +26,7 @@
 
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.GtkBackend
 {
@@ -72,17 +72,17 @@ namespace Xwt.GtkBackend
 		
 		public void Add (IWidgetBackend widget, NotebookTab tab)
 		{
-			Widget.AppendPage (GetWidget (widget), CreateLabel (tab));
+			Widget.AppendPage (GetWidgetWithPlacement (widget), CreateLabel (tab));
 		}
 
 		public void Remove (IWidgetBackend widget)
 		{
-			Widget.Remove (GetWidget (widget));
+			Widget.Remove (GetWidgetWithPlacement (widget));
 		}
 		
 		public void UpdateLabel (NotebookTab tab, string hint)
 		{
-			IWidgetBackend widget = (IWidgetBackend) GtkEngine.Registry.GetBackend (tab.Child);
+			IWidgetBackend widget = (IWidgetBackend) Toolkit.GetBackend (tab.Child);
 			Widget.SetTabLabel (GetWidget (widget), CreateLabel (tab));
 		}
 		
@@ -92,6 +92,19 @@ namespace Xwt.GtkBackend
 			}
 			set {
 				Widget.CurrentPage = value;
+			}
+		}
+
+		public Xwt.NotebookTabOrientation TabOrientation {
+			get {
+				Xwt.NotebookTabOrientation tabPos = Xwt.NotebookTabOrientation.Top;
+				Enum.TryParse (Widget.TabPos.ToString (), out tabPos);
+				return tabPos;
+			}
+			set {
+				Gtk.PositionType tabPos = Gtk.PositionType.Top;
+				Enum.TryParse (value.ToString (), out tabPos);
+				Widget.TabPos = tabPos;
 			}
 		}
 		

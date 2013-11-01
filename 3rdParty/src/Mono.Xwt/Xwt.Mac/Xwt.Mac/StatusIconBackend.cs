@@ -30,6 +30,7 @@ using Xwt.Backends;
 using Xwt.Drawing;
 using MonoMac.AppKit;
 
+
 namespace Xwt.Mac
 {
 	public class StatusIconBackend : IStatusIconBackend
@@ -39,7 +40,7 @@ namespace Xwt.Mac
 		
 		NSStatusItem statusItem;
 		
-		public void InitializeBackend (object frontend)
+		public void InitializeBackend (object frontend, ApplicationContext context)
 		{
 			statusItem = NSStatusBar.SystemStatusBar.CreateStatusItem (NSVariableStatusItemLength);
 		}
@@ -52,12 +53,9 @@ namespace Xwt.Mac
 			statusItem.Menu = (NSMenu)menuBackend;
 		}
 		
-		public void SetImage (object imageBackend) {
-			if (imageBackend == null) {
-				throw new ArgumentNullException ("imageBackend");
-			}
-			
-			statusItem.Image = (NSImage)imageBackend;
+		public void SetImage (ImageDescription image)
+		{
+			statusItem.Image = image.ToNSImage ();
 		}
 		
 		public void EnableEvent (object eventId) { throw new NotImplementedException (); }

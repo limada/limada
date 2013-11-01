@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Drawing;
-using Xwt.Engine;
+
 using Xwt.Backends;
 
 namespace Xwt
@@ -85,11 +85,11 @@ namespace Xwt
 		/// </summary>
 		public bool Run (WindowFrame parentWindow)
 		{
-			var backend = WidgetRegistry.MainRegistry.CreateBackend<ISelectColorDialogBackend> (GetType ());
+			var backend = Toolkit.CurrentEngine.Backend.CreateBackend<ISelectColorDialogBackend> ();
 			try {
 				if (color != Colors.Transparent)
 					backend.Color = color;
-				return backend.Run ((IWindowFrameBackend)WidgetRegistry.MainRegistry.GetBackend (parentWindow), title, supportsAlpha);
+				return backend.Run ((IWindowFrameBackend)Toolkit.CurrentEngine.GetSafeBackend (parentWindow), title, supportsAlpha);
 			} finally {
 				color = backend.Color;
 				backend.Dispose ();

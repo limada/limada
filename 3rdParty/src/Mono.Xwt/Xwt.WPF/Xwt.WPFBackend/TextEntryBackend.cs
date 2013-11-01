@@ -27,6 +27,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using Xwt.Backends;
@@ -37,10 +38,21 @@ namespace Xwt.WPFBackend
 	public class TextEntryBackend
 		: WidgetBackend, ITextEntryBackend
 	{
+		bool multiline;
+
+		PlaceholderTextAdorner Adorner {
+			get; set;
+		}
 		public TextEntryBackend()
 		{
-			Widget = new ExTextBox();
-			TextBox.IsReadOnlyCaretVisible = true;
+			Widget = new ExTextBox { IsReadOnlyCaretVisible = true };
+			Adorner = new PlaceholderTextAdorner (TextBox);
+			TextBox.Loaded += delegate {
+				var layer = AdornerLayer.GetAdornerLayer (TextBox);
+				if (layer != null)
+					layer.Add (Adorner);
+			};
+			TextBox.VerticalContentAlignment = VerticalAlignment.Center;
 		}
 
 		protected override double DefaultNaturalWidth
@@ -54,10 +66,16 @@ namespace Xwt.WPFBackend
 			set { TextBox.Text = value; }
 		}
 
+		public virtual Alignment TextAlignment
+		{
+			get { return DataConverter.ToXwtAlignment (TextBox.TextAlignment); }
+			set { TextBox.TextAlignment = DataConverter.ToTextAlignment (value); }
+		}
+
 		public string PlaceholderText
 		{
-			get { return TextBox.PlaceholderText; }
-			set { TextBox.PlaceholderText = value; }
+			get { return Adorner.PlaceholderText; }
+			set { Adorner.PlaceholderText = value; }
 		}
 
 		public bool ReadOnly
@@ -72,6 +90,19 @@ namespace Xwt.WPFBackend
 			set { TextBox.ShowFrame = value; }
 		}
 
+		// TODO
+		public bool MultiLine {
+			get { return multiline; }
+			set
+			{
+				multiline = value;
+				if (multiline)
+					TextBox.VerticalContentAlignment = VerticalAlignment.Top;
+				else
+					TextBox.VerticalContentAlignment = VerticalAlignment.Center;
+			}
+		}
+
 		public override void EnableEvent (object eventId)
 		{
 			base.EnableEvent (eventId);
@@ -83,6 +114,9 @@ namespace Xwt.WPFBackend
 					// TODO: Should we ignore this for placeholder changes?
 					case TextEntryEvent.Changed:
 						TextBox.TextChanged += OnTextChanged;
+						break;
+					case TextEntryEvent.Activated:
+						TextBox.KeyDown += OnActivated;
 						break;
 				}
 			}
@@ -99,6 +133,9 @@ namespace Xwt.WPFBackend
 					case TextEntryEvent.Changed:
 						TextBox.TextChanged -= OnTextChanged;
 						break;
+					case TextEntryEvent.Activated:
+						TextBox.KeyDown -= OnActivated;
+						break;
 				}
 			}
 		}
@@ -111,10 +148,16 @@ namespace Xwt.WPFBackend
 		protected new ITextEntryEventSink EventSink {
 			get { return (ITextEntryEventSink)base.EventSink; }
 		}
+		
+		private void OnActivated(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			if (e.Key == System.Windows.Input.Key.Enter || e.Key == System.Windows.Input.Key.Return)
+				Context.InvokeUserCode (EventSink.OnActivated);
+		}
 
 		private void OnTextChanged (object s, TextChangedEventArgs e)
 		{
-			Xwt.Engine.Toolkit.Invoke (EventSink.OnChanged);
+			Context.InvokeUserCode (EventSink.OnChanged);
 		}
 	}
 }

@@ -52,7 +52,7 @@
 using System;
 using Xwt.Backends;
 using MonoMac.AppKit;
-using Xwt.Engine;
+
 
 namespace Xwt.Mac
 {
@@ -69,13 +69,12 @@ namespace Xwt.Mac
 			base.Initialize ();
 			ViewObject = new PopUpButton ();
 			Widget.Menu = new NSMenu ();
-			Widget.SizeToFit ();
 			Widget.Activated += delegate {
-				Toolkit.Invoke (delegate {
+				ApplicationContext.InvokeUserCode (delegate {
 					EventSink.OnSelectionChanged ();
 				});
 				Widget.SynchronizeTitleAndSelectedItem ();
-				Widget.SizeToFit ();
+				ResetFittingSize ();
 			};
 		}
 
@@ -122,27 +121,27 @@ namespace Xwt.Mac
 			NSMenuItem mi = Widget.ItemAtIndex (e.Row);
 			if (EventSink.RowIsSeparator (e.Row)) {
 				if (!mi.IsSeparatorItem) {
-					Widget.Menu.InsertItematIndex (NSMenuItem.SeparatorItem, e.Row);
+					Widget.Menu.InsertItem (NSMenuItem.SeparatorItem, e.Row);
 					Widget.Menu.RemoveItemAt (e.Row + 1);
 				}
 			}
 			else {
 				if (mi.IsSeparatorItem) {
 					mi = new NSMenuItem ();
-					Widget.Menu.InsertItematIndex (mi, e.Row);
+					Widget.Menu.InsertItem (mi, e.Row);
 					Widget.Menu.RemoveItemAt (e.Row + 1);
 				}
 				UpdateItem (mi, e.Row);
 				Widget.SynchronizeTitleAndSelectedItem ();
 			}
-			Widget.SizeToFit ();
+			ResetFittingSize ();
 		}
 
 		void HandleSourceRowDeleted (object sender, ListRowEventArgs e)
 		{
 			Widget.RemoveItem (e.Row);
 			Widget.SynchronizeTitleAndSelectedItem ();
-			Widget.SizeToFit ();
+			ResetFittingSize ();
 		}
 
 		void HandleSourceRowInserted (object sender, ListRowEventArgs e)
@@ -154,9 +153,9 @@ namespace Xwt.Mac
 				mi = new NSMenuItem ();
 				UpdateItem (mi, e.Row);
 			}
-			Widget.Menu.InsertItematIndex (mi, e.Row);
+			Widget.Menu.InsertItem (mi, e.Row);
 			Widget.SynchronizeTitleAndSelectedItem ();
-			Widget.SizeToFit ();
+			ResetFittingSize ();
 		}
 		
 		void UpdateItem (NSMenuItem mi, int index)
@@ -170,11 +169,11 @@ namespace Xwt.Mac
 			}
 			set {
 				Widget.SelectItem (value);
-				Toolkit.Invoke (delegate {
+				ApplicationContext.InvokeUserCode (delegate {
 					EventSink.OnSelectionChanged ();
 				});
 				Widget.SynchronizeTitleAndSelectedItem ();
-				Widget.SizeToFit ();
+				ResetFittingSize ();
 			}
 		}
 
@@ -197,7 +196,7 @@ namespace Xwt.Mac
 			}
 		}
 
-		public Widget Frontend { get; set; }
+		public ViewBackend Backend { get; set; }
 	}
 }
 

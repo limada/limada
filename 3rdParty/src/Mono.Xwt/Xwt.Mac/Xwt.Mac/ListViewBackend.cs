@@ -36,12 +36,12 @@ namespace Xwt.Mac
 	{
 		IListDataSource source;
 		ListSource tsource;
-		
+
 		protected override NSTableView CreateView ()
 		{
 			return new NSTableView ();
 		}
-		
+
 		protected override string SelectionChangeEventName {
 			get { return "NSTableViewSelectionDidChangeNotification"; }
 		}
@@ -77,6 +77,14 @@ namespace Xwt.Mac
 		{
 			return source.GetValue ((int)pos, nField);
 		}
+		
+		public override void SetValue (object pos, int nField, object value)
+		{
+			source.SetValue ((int)pos, nField, value);
+		}
+
+		// TODO
+		public bool BorderVisible { get; set; }
 	}
 	
 	class TableRow: NSObject, ITablePosition
@@ -109,7 +117,7 @@ namespace Xwt.Mac
 
 		public override MonoMac.Foundation.NSObject GetObjectValue (NSTableView tableView, NSTableColumn tableColumn, int row)
 		{
-			return new TableRow () { Row = row };
+			return NSObject.FromObject (row);
 		}
 
 		public override int GetRowCount (NSTableView tableView)

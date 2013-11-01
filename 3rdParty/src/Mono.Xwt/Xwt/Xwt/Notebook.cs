@@ -30,6 +30,7 @@ using System.Windows.Markup;
 
 namespace Xwt
 {
+	[BackendType (typeof(INotebookBackend))]
 	public class Notebook: Widget
 	{
 		ChildrenCollection<NotebookTab> tabs;
@@ -134,6 +135,11 @@ namespace Xwt
 			get { return Backend.CurrentTab; }
 			set { Backend.CurrentTab = value; }
 		}
+
+		public NotebookTabOrientation TabOrientation {
+			get { return Backend.TabOrientation; }
+			set { Backend.TabOrientation = value; }
+		}
 		
 		protected virtual void OnCurrentTabChanged (EventArgs e)
 		{
@@ -186,6 +192,13 @@ namespace Xwt
 				parent.ChildReplaced (this, oldVal, value);
 			}
 		}
+	}
+
+	public enum NotebookTabOrientation {
+		Top,
+		Left,
+		Right,
+		Bottom
 	}
 }
 

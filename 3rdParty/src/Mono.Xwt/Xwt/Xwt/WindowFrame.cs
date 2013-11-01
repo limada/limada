@@ -51,27 +51,33 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 using System.ComponentModel;
+using Xwt.Drawing;
+using Xwt.Motion;
 
 namespace Xwt
 {
-	public class WindowFrame: XwtComponent
+	[BackendType (typeof(IWindowFrameBackend))]
+	public class WindowFrame: XwtComponent, IAnimatable
 	{
 		EventHandler boundsChanged;
 		EventHandler shown;
 		EventHandler hidden;
+		CloseRequestedHandler closeRequested;
 
 		Point location;
 		Size size;
 		bool pendingReallocation;
+        Image icon;
+		WindowFrame transientFor;
 		
 		protected class WindowBackendHost: BackendHost<WindowFrame,IWindowFrameBackend>, IWindowFrameEventSink
 		{
 			protected override void OnBackendCreated ()
 			{
-				base.OnBackendCreated ();
 				Backend.Initialize (this);
+				base.OnBackendCreated ();
 				Parent.location = Backend.Bounds.Location;
 				Parent.size = Backend.Bounds.Size;
 				Backend.EnableEvent (WindowFrameEvent.BoundsChanged);
@@ -91,12 +97,18 @@ namespace Xwt
 			{
 				Parent.OnHidden ();
 			}
+
+			public virtual bool OnCloseRequested ()
+			{
+				return Parent.OnCloseRequested ();
+			}
 		}
 
 		static WindowFrame ()
 		{
 			MapEvent (WindowFrameEvent.Shown, typeof(WindowFrame), "OnShown");
 			MapEvent (WindowFrameEvent.Hidden, typeof(WindowFrame), "OnHidden");
+			MapEvent (WindowFrameEvent.CloseRequested, typeof(WindowFrame), "OnCloseRequested");
 		}
 
 		public WindowFrame ()
@@ -143,6 +155,8 @@ namespace Xwt
 				if (value.Height < 0)
 					value.Height = 0;
 				BackendBounds = value;
+				if (Visible)
+					AdjustSize ();
 			}
 		}
 
@@ -162,6 +176,8 @@ namespace Xwt
 				if (value < 0)
 					value = 0;
 				SetBackendSize (value, -1);
+				if (Visible)
+					AdjustSize ();
 			}
 		}
 		
@@ -171,9 +187,15 @@ namespace Xwt
 				if (value < 0)
 					value = 0;
 				SetBackendSize (-1, value);
+				if (Visible)
+					AdjustSize ();
 			}
 		}
-		
+
+		/// <summary>
+		/// Size of the window, not including the decorations
+		/// </summary>
+		/// <value>The size.</value>
 		public Size Size {
 			get { return BackendBounds.Size; }
 			set {
@@ -182,6 +204,8 @@ namespace Xwt
 				if (value.Height < 0)
 					value.Height = 0;
 				SetBackendSize (value.Width, value.Height);
+				if (Visible)
+					AdjustSize ();
 			}
 		}
 		
@@ -194,6 +218,11 @@ namespace Xwt
 			get { return Backend.Title; }
 			set { Backend.Title = value; }
 		}
+
+        public Image Icon {
+            get { return icon; }
+			set { icon = value; Backend.SetIcon (icon != null ? icon.ImageDescription : ImageDescription.Null); }
+        }
 		
 		public bool Decorated {
 			get { return Backend.Decorated; }
@@ -204,17 +233,63 @@ namespace Xwt
 			get { return Backend.ShowInTaskbar; }
 			set { Backend.ShowInTaskbar = value; }
 		}
+
+		public WindowFrame TransientFor {
+			get { return transientFor; }
+			set {
+				transientFor = value;
+				Backend.SetTransientFor ((IWindowFrameBackend)(value as IFrontend).Backend);
+			}
+		}
+
+		public bool Resizable {
+			get { return Backend.Resizable; }
+			set { Backend.Resizable = value; }
+		}
 		
 		public bool Visible {
 			get { return Backend.Visible; }
 			set { Backend.Visible = value; }
 		}
-		
-		public void Show ()
-		{
-			Visible = true;
+
+		public double Opacity {
+			get { return Backend.Opacity; }
+			set { Backend.Opacity = value; }
 		}
 		
+		/// <summary>
+		/// Gets or sets a value indicating whether this window is in full screen mode
+		/// </summary>
+		/// <value><c>true</c> if the window is in full screen mode; otherwise, <c>false</c>.</value>
+		public bool FullScreen {
+			get { return Backend.FullScreen; }
+			set { Backend.FullScreen = value; }
+		}
+
+		/// <summary>
+		/// Gets the screen on which most of the area of this window is placed
+		/// </summary>
+		/// <value>The screen.</value>
+		public Screen Screen {
+			get {
+				if (!Visible)
+					throw new InvalidOperationException ("The window is not visible");
+				return Desktop.GetScreen (Backend.Screen);
+			}
+		}
+
+		public void Show ()
+		{
+			if (!Visible) {
+				AdjustSize ();
+				Visible = true;
+			}
+		}
+		
+		internal virtual void AdjustSize ()
+		{
+		}
+
 		/// <summary>
 		/// Presents a window to the user. This may mean raising the window in the stacking order,
 		/// deiconifying it, moving it to the current desktop, and/or giving it the keyboard focus
@@ -241,10 +316,18 @@ namespace Xwt
 				hidden (this, EventArgs.Empty);
 		}
 
+		protected virtual bool OnCloseRequested ()
+		{
+			if (closeRequested == null)
+				return false;
+			var eventArgs = new CloseRequestedEventArgs();
+			closeRequested (this, eventArgs);
+			return eventArgs.Handled;
+		}
+
 		internal virtual void SetBackendSize (double width, double height)
 		{
-			size = new Size (width != -1 ? width : Width, height != -1 ? height : Height);
-			Backend.Resize (size.Width, size.Height);
+			Backend.SetSize (width, height);
 		}
 
 		internal virtual void SetBackendLocation (double x, double y)
@@ -281,7 +364,7 @@ namespace Xwt
 		{
 			if (!pendingReallocation) {
 				pendingReallocation = true;
-				Toolkit.QueueExitAction (delegate {
+				BackendHost.ToolkitEngine.QueueExitAction (delegate {
 					pendingReallocation = false;
 					OnReallocate ();
 				});
@@ -292,6 +375,14 @@ namespace Xwt
 		{
 		}
 		
+		void IAnimatable.BatchBegin ()
+		{
+		}
+
+		void IAnimatable.BatchCommit ()
+		{
+		}
+
 		public event EventHandler BoundsChanged {
 			add {
 				boundsChanged += value;
@@ -320,6 +411,17 @@ namespace Xwt
 			remove {
 				hidden -= value;
 				BackendHost.OnAfterEventRemove (WindowFrameEvent.Hidden, hidden);
+			}
+		}
+
+		public event CloseRequestedHandler CloseRequested {
+			add {
+				BackendHost.OnBeforeEventAdd (WindowFrameEvent.CloseRequested, closeRequested);
+				closeRequested += value;
+			}
+			remove {
+				closeRequested -= value;
+				BackendHost.OnAfterEventRemove (WindowFrameEvent.CloseRequested, closeRequested);
 			}
 		}
 	}

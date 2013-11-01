@@ -3,7 +3,7 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
-//       Lytico (http://www.limada.org)
+//       Lytico (http://limada.sourceforge.net)
 // 
 // Copyright (c) 2011 Xamarin Inc
 // 
@@ -26,43 +26,99 @@
 // THE SOFTWARE.
 
 using System;
-using Xwt.Engine;
+
 using Xwt.Backends;
+using System.Collections.Generic;
 
 namespace Xwt.Drawing
 {
-    public sealed class TextLayout : XwtObject<TextLayout,ITextLayoutBackendHandler>
+	public sealed class TextLayout: XwtObject, IDisposable
 	{
+		TextLayoutBackendHandler handler;
 
 		Font font;
 		string text;
 		double width = -1;
 		double height = -1;
 		TextTrimming textTrimming;
-		
-		public TextLayout (Canvas canvas):base(((IFrontend)canvas).Registry)
+		List<TextAttribute> attributes;
+
+		public TextLayout ()
 		{
-			Backend = handler.Create ((ICanvasBackend)((IFrontend)canvas).Backend);
-            
+			handler = ToolkitEngine.TextLayoutBackendHandler;
+			Backend = handler.Create ();
+			Font = Font.SystemFont;
+			Setup ();
+		}
+
+		public TextLayout (Canvas canvas)
+		{
+			ToolkitEngine = canvas.Surface.ToolkitEngine;
+			handler = ToolkitEngine.TextLayoutBackendHandler;
+			Backend = handler.Create ();
 			Font = canvas.Font;
+			Setup ();
 		}
-		
-		public TextLayout (Context ctx):base(ctx.Registry)
+
+		internal TextLayout (Toolkit tk)
 		{
-			Backend = handler.Create (ctx);
+			ToolkitEngine = tk;
+			handler = ToolkitEngine.TextLayoutBackendHandler;
+			Backend = handler.Create ();
+			Setup ();
+		}
+
+        public TextLayout (Context ctx) {
+            ToolkitEngine = ctx.ToolkitEngine;
+            handler = ToolkitEngine.TextLayoutBackendHandler;
+            Backend = handler.Create(ctx);
+        }
+
+		void Setup ()
+		{
+			if (handler.DisposeHandleOnUiThread)
+				ResourceManager.RegisterResource (Backend, handler.Dispose);
+			else
+				GC.SuppressFinalize (this);
 		}
 		
+		public void Dispose ()
+		{
+			if (handler.DisposeHandleOnUiThread) {
+				GC.SuppressFinalize (this);
+				ResourceManager.FreeResource (Backend);
+			} else
+				handler.Dispose (Backend);
+		}
+
+		~TextLayout ()
+		{
+			ResourceManager.FreeResource (Backend);
+		}
+
+		internal TextLayoutData GetData ()
+		{
+			return new TextLayoutData () {
+				Width = width,
+				Height = height,
+				Text = text,
+				Font = font,
+				TextTrimming = textTrimming,
+				Attributes = attributes != null ? new List<TextAttribute> (attributes) : null
+			};
+		}
+
 		public Font Font {
 			get { return font; }
 			set { font = value; handler.SetFont (Backend, value); }
 		}
-		
+
 		public string Text {
 			get { return text; }
 			set { text = value;
 				handler.SetText (Backend, text); }
 		}
-		
+
 		/// <summary>
 		/// Gets or sets the desired width.
 		/// </summary>
@@ -73,7 +129,7 @@ namespace Xwt.Drawing
 			get { return width; }
 			set { width = value; handler.SetWidth (Backend, value); }
 		}
-		
+
 		/// <summary>
 		/// Gets or sets desired Height.
 		/// </summary>
@@ -84,7 +140,7 @@ namespace Xwt.Drawing
 			get { return this.height; }
 			set { this.height = value; handler.SetHeight (Backend, value); }
 		}
-		
+
 		/// <summary>
 		/// measures the text
 		/// if Width is other than -1, it measures the height according to Width
@@ -97,16 +153,189 @@ namespace Xwt.Drawing
 		{
 			return handler.GetSize (Backend);
 		}
-		
+
 		public TextTrimming Trimming {
 			get { return textTrimming; }
 			set { textTrimming = value; handler.SetTrimming (Backend, value); }
 		}
+
+		/// <summary>
+		/// Converts from a X and Y position within the layout to the character at this position.
+		/// </summary>
+		/// <returns>The index of the character.</returns>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		public int GetIndexFromCoordinates (double x, double y)
+		{
+			return handler.GetIndexFromCoordinates (Backend, x, y);
+		}
+
+		/// <summary>
+		/// Converts from a Position within the layout to the character at this position.
+		/// </summary>
+		/// <returns>The index of the character.</returns>
+		/// <param name="p">The position.</param>
+		public int GetIndexFromCoordinates (Point p)
+		{
+			return handler.GetIndexFromCoordinates (Backend, p.X, p.Y);
+		}
+
+		/// <summary>
+		/// Obtains the graphical coordinate of an character in the layout.
+		/// </summary>
+		/// <returns>The extends from the character at index.</returns>
+		/// <param name="index">The index of the character.</param>
+		public Point GetCoordinateFromIndex (int index)
+		{
+			return handler.GetCoordinateFromIndex (Backend, index);
+		}
+
+		List<TextAttribute> Attributes {
+			get {
+				if (attributes == null)
+					attributes = new List<TextAttribute> ();
+				return attributes;
+			}
+		}
+
+		string markup;
+
+		public string Markup {
+			get { return markup; }
+			set {
+				markup = value;
+				var t = FormattedText.FromMarkup (markup);
+				Text = t.Text;
+				ClearAttributes ();
+				foreach (var at in t.Attributes)
+					AddAttribute (at);
+			}
+		}
+
+		public void AddAttribute (TextAttribute attribute)
+		{
+			Attributes.Add (attribute.Clone ());
+			handler.AddAttribute (Backend, attribute);
+		}
+
+		public void ClearAttributes ()
+		{
+			Attributes.Clear ();
+			handler.ClearAttributes (Backend);
+		}
+
+		/// <summary>
+		/// Sets the foreground color of a part of text inside the <see cref="T:Xwt.Drawing.TextLayout"/> object.
+		/// </summary>
+		/// <param name="color">The color of the text.</param>
+		/// <param name="startIndex">Start index of the first character to apply the foreground color to.</param>
+		/// <param name="count">The number of characters to apply the foreground color to.</param>
+		public void SetForeground (Color color, int startIndex, int count)
+		{
+			AddAttribute (new ColorTextAttribute () { StartIndex = startIndex, Count = count, Color = color });
+		}
+
+		/// <summary>
+		/// Sets the background color of a part of text inside the <see cref="T:Xwt.Drawing.TextLayout"/> object.
+		/// </summary>
+		/// <param name="color">The color of the text background.</param>
+		/// <param name="startIndex">Start index of the first character to apply the background color to.</param>
+		/// <param name="count">The number of characters to apply the background color to.</param>
+		public void SetBackground (Color color, int startIndex, int count)
+		{
+			AddAttribute (new BackgroundTextAttribute () { StartIndex = startIndex, Count = count, Color = color });
+		}
+
+		/// <summary>
+		/// Sets the font weight of a part of text inside the <see cref="T:Xwt.Drawing.TextLayout"/> object.
+		/// </summary>
+		/// <param name="weight">The font weight of the text.</param>
+		/// <param name="startIndex">Start index of the first character to apply the font weight to.</param>
+		/// <param name="count">The number of characters to apply the font weight to.</param>
+		public void SetFontWeight (FontWeight weight, int startIndex, int count)
+		{
+			AddAttribute (new FontWeightTextAttribute () { StartIndex = startIndex, Count = count, Weight = weight });
+		}
+
+		/// <summary>
+		/// Sets the font style of a part of text inside the <see cref="T:Xwt.Drawing.TextLayout"/> object.
+		/// </summary>
+		/// <param name="style">The font style of the text.</param>
+		/// <param name="startIndex">Start index of the first character to apply the font style to.</param>
+		/// <param name="count">The number of characters to apply the font style to.</param>
+		public void SetFontStyle (FontStyle style, int startIndex, int count)
+		{
+			AddAttribute (new FontStyleTextAttribute () { StartIndex = startIndex, Count = count, Style = style });
+		}
+
+		/// <summary>
+		/// Underlines a part of text inside the <see cref="T:Xwt.Drawing.TextLayout"/> object.
+		/// </summary>
+		/// <param name="startIndex">Start index of the first character to underline.</param>
+		/// <param name="count">The number of characters to underline.</param>
+		public void SetUnderline (int startIndex, int count)
+		{
+			AddAttribute (new UnderlineTextAttribute () { StartIndex = startIndex, Count = count});
+		}
+
+		/// <summary>
+		/// Adds a strike-through to a part of text inside the <see cref="T:Xwt.Drawing.TextLayout"/> object.
+		/// </summary>
+		/// <param name="startIndex">Start index of the first character to strike-through.</param>
+		/// <param name="count">The number of characters to strike-through.</param>
+		public void SetStrikethrough (int startIndex, int count)
+		{
+			AddAttribute (new StrikethroughTextAttribute () { StartIndex = startIndex, Count = count});
+		}
 	}
-	
+
 	public enum TextTrimming {
 		Word,
 		WordElipsis
+	}
+	
+	public class TextLayoutData
+	{
+		public double Width = -1;
+		public double Height = -1;
+		public string Text;
+		public Font Font;
+		public TextTrimming TextTrimming;
+		public List<TextAttribute> Attributes;
+
+		public void InitLayout (TextLayout la)
+		{
+			if (Width != -1)
+				la.Width = Width;
+			if (Height != -1)
+				la.Height = Height;
+			if (Text != null)
+				la.Text = Text;
+			if (Font != null)
+				la.Font = Font;
+			if (TextTrimming != default(TextTrimming))
+				la.Trimming = TextTrimming;
+			if (Attributes != null) {
+				foreach (var at in Attributes)
+					la.AddAttribute (at);
+			}
+		}
+
+		public bool Equals (TextLayoutData other)
+		{
+			if (Width != other.Width || Height != other.Height || Text != other.Text || Font != other.Font || TextTrimming != other.TextTrimming)
+				return false;
+			if (Attributes == null && other.Attributes == null)
+				return true;
+			if (Attributes != null || other.Attributes != null)
+				return false;
+			if (Attributes.Count != other.Attributes.Count)
+				return false;
+			for (int n=0; n<Attributes.Count; n++)
+				if (!Attributes [n].Equals (other.Attributes [n]))
+					return false;
+			return true;
+		}
 	}
 }
 
