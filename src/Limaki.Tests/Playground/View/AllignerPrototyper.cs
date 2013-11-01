@@ -158,6 +158,7 @@ namespace Limaki.Playground.View {
 
             ReportPainter.PushPaint(ctx => {
                 var translate = worker.Painter.Viewport.ClipOrigin;
+                ctx.Save();
                 ctx.Translate(-translate.X, -translate.Y);
                 ctx.SetLineWidth(.5);
                 ctx.SetColor(Colors.Black);
@@ -174,8 +175,8 @@ namespace Limaki.Playground.View {
                 ctx.SetColor(Colors.LawnGreen);
                 ctx.Rectangle(free2);
                 ctx.Stroke();
+                ctx.Restore();
                 ctx.SetColor(Colors.White);
-                ctx.ResetTransform();
             });
 
             WritePainter();
@@ -243,6 +244,7 @@ namespace Limaki.Playground.View {
 
             ReportPainter.PushPaint(ctx => {
                 var translate = worker.Painter.Viewport.ClipOrigin;
+                ctx.Save();
                 ctx.Translate(-translate.X, -translate.Y);
                 ctx.SetLineWidth(.5);
                 ctx.SetColor(Colors.Black);
@@ -259,8 +261,9 @@ namespace Limaki.Playground.View {
                 ctx.SetColor(Colors.LawnGreen);
                 ctx.Rectangle(free2);
                 ctx.Stroke();
+                ctx.Restore();
                 ctx.SetColor(Colors.White);
-                ctx.ResetTransform();
+                
             });
 
 

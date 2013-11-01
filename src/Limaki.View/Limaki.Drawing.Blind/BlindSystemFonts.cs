@@ -1,41 +1,41 @@
 ﻿using Xwt.Drawing;
-using Xwt.Engine;
 using Xwt.Blind.Backend;
+using Xwt;
+using Xwt.Backends;
 
 namespace Limaki.Drawing {
 
     public class BlindSystemFonts:ISystemFonts {
-
         public Font CaptionFont {
-            get { return BlindEngine.Registry.CreateFrontend<Font> (new Xwt.Blind.Backend.FontData()); }
+            get { return new Xwt.Blind.Backend.FontData().ToXwt(); }
         }
 
         public Font DefaultFont {
-            get { return BlindEngine.Registry.CreateFrontend<Font>(new Xwt.Blind.Backend.FontData()); }
+            get { return new Xwt.Blind.Backend.FontData().ToXwt(); }
         }
 
         public Font DialogFont {
-            get { return BlindEngine.Registry.CreateFrontend<Font>(new Xwt.Blind.Backend.FontData()); }
+            get { return new Xwt.Blind.Backend.FontData().ToXwt(); }
         }
 
         public Font IconTitleFont {
-            get { return BlindEngine.Registry.CreateFrontend<Font>(new Xwt.Blind.Backend.FontData()); }
+            get { return new Xwt.Blind.Backend.FontData().ToXwt(); }
         }
 
         public Font MenuFont {
-            get { return BlindEngine.Registry.CreateFrontend<Font>(new Xwt.Blind.Backend.FontData()); }
+            get { return new Xwt.Blind.Backend.FontData().ToXwt(); }
         }
 
         public Font MessageBoxFont {
-            get { return BlindEngine.Registry.CreateFrontend<Font>(new Xwt.Blind.Backend.FontData()); }
+            get { return new Xwt.Blind.Backend.FontData().ToXwt(); }
         }
 
         public Font SmallCaptionFont {
-            get { return BlindEngine.Registry.CreateFrontend<Font>(new Xwt.Blind.Backend.FontData()); }
+            get { return new Xwt.Blind.Backend.FontData().ToXwt(); }
         }
 
         public Font StatusFont {
-            get { return BlindEngine.Registry.CreateFrontend<Font>(new Xwt.Blind.Backend.FontData()); }
+            get { return new Xwt.Blind.Backend.FontData().ToXwt(); }
         }
 
     }

@@ -5,6 +5,7 @@ using Limaki.View.UI;
 using Xwt;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using Point = System.Windows.Point;
+using Keyboard = System.Windows.Input.Keyboard;
 
 namespace Limaki.View.WPF {
     public class Converter {

@@ -93,22 +93,6 @@ namespace Xwt.WinformBackend {
             throw new System.NotImplementedException();
         }
 
-        public Xwt.WidgetSize GetPreferredWidth() {
-            throw new System.NotImplementedException();
-        }
-
-        public Xwt.WidgetSize GetPreferredHeightForWidth(double width) {
-            throw new System.NotImplementedException();
-        }
-
-        public Xwt.WidgetSize GetPreferredHeight() {
-            throw new System.NotImplementedException();
-        }
-
-        public Xwt.WidgetSize GetPreferredWidthForHeight(double height) {
-            throw new System.NotImplementedException();
-        }
-
         public object NativeWidget {
             get { throw new System.NotImplementedException(); }
         }
@@ -177,6 +161,28 @@ namespace Xwt.WinformBackend {
 
         public void SetCursor (CursorType cursorType) {
             throw new System.NotImplementedException ();
+        }
+
+
+        public double Opacity {
+            get {
+                throw new System.NotImplementedException();
+            }
+            set {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public void SetSizeRequest (double width, double height) {
+            throw new System.NotImplementedException();
+        }
+
+        public Size GetPreferredSize (SizeConstraint widthConstraint, SizeConstraint heightConstraint) {
+            throw new System.NotImplementedException();
+        }
+
+        public void InitializeBackend (object frontend, ApplicationContext context) {
+            throw new System.NotImplementedException();
         }
     }
 

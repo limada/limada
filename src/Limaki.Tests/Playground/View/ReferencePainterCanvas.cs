@@ -38,8 +38,6 @@ namespace Samples
 		{
 			base.OnDraw (ctx, dirtyRect);
 
-		    ctx.Font = this.Font;
-
 			var p = new ReferencePainter ();
 
 		    p.All(ctx);

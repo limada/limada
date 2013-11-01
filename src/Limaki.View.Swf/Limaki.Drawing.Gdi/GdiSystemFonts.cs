@@ -12,44 +12,43 @@
  * 
  */
 
+using Xwt.Backends;
 using Xwt.Drawing;
-using Xwt.Engine;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.Drawing.Gdi {
 
     public class GdiSystemFonts:ISystemFonts {
-
         public Font CaptionFont {
-            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.CaptionFont); }
+            get { return System.Drawing.SystemFonts.CaptionFont.ToXwt(); }
         }
 
         public Font DefaultFont {
-            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.DefaultFont); }
+            get { return System.Drawing.SystemFonts.DefaultFont.ToXwt(); }
         }
 
         public Font DialogFont {
-            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.DialogFont); }
+            get { return System.Drawing.SystemFonts.DialogFont.ToXwt(); }
         }
 
         public Font IconTitleFont {
-            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.IconTitleFont); }
+            get { return System.Drawing.SystemFonts.IconTitleFont.ToXwt(); }
         }
 
         public Font MenuFont {
-            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.MenuFont); }
+            get { return System.Drawing.SystemFonts.MenuFont.ToXwt(); }
         }
 
         public Font MessageBoxFont {
-            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.MessageBoxFont); }
+            get { return System.Drawing.SystemFonts.MessageBoxFont.ToXwt(); }
         }
 
         public Font SmallCaptionFont {
-            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.SmallCaptionFont); }
+            get { return System.Drawing.SystemFonts.SmallCaptionFont.ToXwt(); }
         }
 
         public Font StatusFont {
-            get { return GdiEngine.Registry.CreateFrontend<Font>(System.Drawing.SystemFonts.StatusFont); }
+            get { return System.Drawing.SystemFonts.StatusFont.ToXwt(); }
         }
 
 

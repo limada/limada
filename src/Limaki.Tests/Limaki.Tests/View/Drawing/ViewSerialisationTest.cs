@@ -19,7 +19,6 @@ using Limaki.Drawing.Styles;
 using NUnit.Framework;
 using Xwt;
 using Xwt.Drawing;
-using Xwt.Engine;
 
 namespace Limaki.Tests.View.Drawing.Shapes {
     public class ViewSerialisationTest:DomainTest {
@@ -27,7 +26,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         [Test]
         public void FontTest() {
             var ser = new DrawingPrimitivesSerializer ();
-            var font = Font.FromName(WidgetRegistry.MainRegistry, "Tahoma", 10);
+            var font = Font.FromName("Tahoma 10");
             var elem = ser.Write (font);
             this.ReportDetail (elem.ToString());
 

@@ -108,7 +108,7 @@
     <Compile Include="Limaki.View\VidgetBackendHost.cs" />
     <Compile Include="Limaki.View\VidgetToolkit.cs" />
     <Compile Include="Limaki.View\UI\DelegatingMouseAction.cs" />
-    <Compile Include="Xwt\BackendTypeAttribute.cs" />
+    <Compile Include="Xwt.Blind.Backend\BlindConverter.cs" />
     <Compile Include="Xwt\Geom.cs" />
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
     <Compile Include="Limaki.Drawing.Blind\BlindSystemFonts.cs" />
@@ -362,14 +362,14 @@
     <Compile Include="Limaki.Visuals\VisualEdge.cs" />
     <Compile Include="Limaki.Visuals\VisualFactory.cs" />
     <Compile Include="Limaki.Visuals\VisualGraph.cs" />
-    <Compile Include="Xwt.Blind.Backend\FontBackendHandler.cs" />
+    <Compile Include="Xwt.Blind.Backend\FontBlindBackendHandler.cs" />
     <Compile Include="Xwt.Blind.Backend\FontData.cs" />
     <Compile Include="Xwt.Blind.Backend\BlindEngine.cs" />
     <Compile Include="Xwt.Blind.Backend\SystemColorsBackend.cs" />
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextPainterComposer.cs" />
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextPainterRenderer.cs" />
     <Compile Include="Limaki.View.XwtContext\VisualSceneContextPainter.cs" />
-    <Compile Include="Xwt\ISystemColorsBackend.cs" />
+    <Compile Include="Xwt\SystemColorsBackend.cs" />
     <Compile Include="Xwt\SystemColors.cs" />
     <Compile Include="Xwt\XwtLExtensions.cs" />
     <Compile Include="Xwt\XwtToChange.cs" />

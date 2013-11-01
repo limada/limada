@@ -3,8 +3,8 @@ using Xwt;
 using SystemColors = System.Windows.SystemColors;
 using Xwt.Drawing;
 using System.Drawing.Drawing2D;
-using Xwt.Engine;
 using Xwt.WPFBackend;
+using System.Globalization;
 
 namespace Limaki.Drawing.WPF {
 
@@ -21,7 +21,7 @@ namespace Limaki.Drawing.WPF {
        
 
         public virtual Font CreateFont(string familiy, double size) {
-            var result = Font.FromName(WPFEngine.Registry,familiy, size);
+            var result = Font.FromName(familiy+" "+size.ToString(CultureInfo.InvariantCulture));
             return result;
         }
 
@@ -89,8 +89,7 @@ namespace Limaki.Drawing.WPF {
         }
 
         public Size Resolution(Context context) {
-            var ctx = (Xwt.WPFBackend.DrawingContext)WPFEngine.Registry.GetBackend(context);
-            return new Size(ctx.Graphics.DpiX, ctx.Graphics.DpiY);
+            return new Size(96,96);
         }
         #endif
     }

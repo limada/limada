@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using Limaki.Common;
 using Xwt.Gdi.Backend;
 using Limaki.Viewers.Vidgets;
+using Xwt;
 
 namespace Limaki.View.Swf.Backends {
 
@@ -28,7 +29,7 @@ namespace Limaki.View.Swf.Backends {
 
             if (Frontend != null)
                 using (var graphics = new GdiContext(e.Graphics)) {
-                    Frontend.DrawContext(new Xwt.Drawing.Context(GdiEngine.Registry, graphics), e.ClipRectangle.ToXwt());
+                    Frontend.DrawContext(new Xwt.Drawing.Context(graphics, Toolkit.Engine<GdiEngine>()), e.ClipRectangle.ToXwt());
                 }
         }
 

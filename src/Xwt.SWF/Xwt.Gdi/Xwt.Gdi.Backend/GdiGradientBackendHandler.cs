@@ -1,5 +1,5 @@
 ﻿// 
-// ImagePatternBackendHandler.cs
+// GdiGradientBackendHandler.cs
 //  
 // Author:
 //       Lytico 
@@ -24,15 +24,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using Xwt.Backends;
 
 namespace Xwt.Gdi.Backend {
-    public class ImagePatternBackendHandler : IImagePatternBackendHandler {
-        public object Create(object img) {
-            var image = (Image)img;
-            return new TextureBrush (image, System.Drawing.Drawing2D.WrapMode.Tile);
+    /// <summary>
+    /// todo
+    /// </summary>
+    public class GdiGradientBackendHandler : GradientBackendHandler {
+        /// <summary>
+        /// todo: make a GradientData-class
+        /// </summary>
+        public override object CreateLinear (double x0, double y0, double x1, double y1) {
+            var color1 = Color.Black;
+            var color2 = Color.Black;
+            return new LinearGradientBrush(new PointF((float)x0, (float)y0), new PointF((float)x1, (float)y1), color1,color2);
+        }
+
+        /// <summary>
+        /// todo: make a GradientData-class and set a color
+        /// </summary>
+        public override void AddColorStop (object backend, double position, Xwt.Drawing.Color color) {
+            var g = (LinearGradientBrush)backend;
+           
+        }
+
+        public override object CreateRadial (double cx0, double cy0, double radius0, double cx1, double cy1, double radius1) {
+            throw new System.NotImplementedException();
         }
     }
 }

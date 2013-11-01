@@ -79,7 +79,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Drawing.WPF\SystemColorsBackend.cs" />
+    <Compile Include="Drawing.WPF\WpfSystemColorsBackend.cs" />
     <Compile Include="Presenter.WPF\Display\WPFGraphSceneDisplay.cs" />
     <Compile Include="Presenter.WPF\Display\WPFWidgetDisplay.xaml.cs">
       <DependentUpon>WPFWidgetDisplay.xaml</DependentUpon>

@@ -20,6 +20,7 @@ using Limaki.Drawing.Gdi;
 using Limaki.Drawing.Styles;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
+using Xwt.Backends;
 
 namespace Limaki.Swf.Backends.Viewers {
     public partial class StyleEditor : BaseStyleEditor<IStyle> {
@@ -47,11 +48,11 @@ namespace Limaki.Swf.Backends.Viewers {
             try {
                 if (style == null)
                     return;
-                this.FillColor = GdiConverter.ToGdi (style.FillColor);
-                this.TextColor = GdiConverter.ToGdi (style.TextColor);
-                this.PenColor = GdiConverter.ToGdi (style.PenColor);
+                this.FillColor = style.FillColor.ToGdi();
+                this.TextColor = style.TextColor.ToGdi();
+                this.PenColor = style.PenColor.ToGdi();
                 if ( style.Font != null ) {
-                    var swfFont = GdiEngine.Registry.GetBackend( style.Font ) as Font;
+                    var swfFont = style.Font.ToGdi();
                     if ( swfFont != null )
                         this.StyleFont = swfFont;
                 }
@@ -72,7 +73,7 @@ namespace Limaki.Swf.Backends.Viewers {
             set {
                 _fillColor = value;
                 SetColor (_fillColor, fillColorButton, fillTransparency);
-                SelectedObject.FillColor = GdiConverter.ToXwt (_fillColor);
+                SelectedObject.FillColor = _fillColor.ToXwt(); 
             }
         }
 
@@ -102,7 +103,7 @@ namespace Limaki.Swf.Backends.Viewers {
                 _font = value;
                 if (value != null) {
                     fontButton.Font = _font;
-                    var font = GdiEngine.Registry.CreateFrontend<global::Xwt.Drawing.Font>( _font );
+                    var font =  _font.ToXwt();
                     SelectedObject.Font = font;
                 }
                 DoPropertyValueChanged();

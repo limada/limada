@@ -16,7 +16,6 @@ using Limaki.View.UI.GraphScene;
 using Limaki.Viewers.StreamViewers;
 using Limaki.Visuals;
 using Xwt.Drawing;
-using Xwt.Engine;
 using Xwt.Html5.Backend;
 using Xwt.Tests;
 using Limaki.View.Visualizers;
@@ -127,22 +126,20 @@ namespace Xwt.Html5.TestApp {
             ClearResources();
             ApplyResources();
 
-            refPainter.Font = Xwt.Drawing.Font.FromName (Html5Engine.Registry,"Default",10);
+            refPainter.Font = Xwt.Drawing.Font.FromName ("Default 10");
 
             this.FormClosing += (s, e) => htmlViewer.Dispose();
         }
 
 
         public void ClearResources () {
-            WidgetRegistry.MainRegistry.Clear();
-            WidgetRegistry.MainRegistry = null;
+
         }
 
         public void ApplyResources () {
             var loader = new Html5ContextRecourceLoader ();
             Registry.ConcreteContext = new Limaki.Common.IOC.ApplicationContext ();
             loader.ApplyResources (Registry.ConcreteContext);
-            WidgetRegistry.MainRegistry = Html5Engine.Registry;
         }
 
         IGraphScene<IVisual, IVisualEdge> SceneWithTestData (int example) {

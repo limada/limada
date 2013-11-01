@@ -6,6 +6,7 @@ using Limaki.Drawing;
 using Xwt;
 using Xwt.Drawing;
 using Xwt.Html5.Backend;
+using Xwt.Backends;
 
 namespace Limaki.View.Html5 {
 
@@ -19,10 +20,10 @@ namespace Limaki.View.Html5 {
             return new Pen (color);
         }
 
-        private static TextLayoutBackend tl = new TextLayoutBackend();
+        private static HtmlTextLayoutBackend tl = new HtmlTextLayoutBackend();
         public Size GetTextDimension (string text, IStyle style) {
             //return new Size (text.Length * 10, 10);
-            var f = Html5Engine.Registry.GetBackend(style.Font) as FontData;
+            var f = style.Font.GetBackend() as FontData;
             return tl.MeasureString(text, f, new Size(0,f.Size));
         }
 

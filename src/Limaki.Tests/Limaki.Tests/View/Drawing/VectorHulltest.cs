@@ -75,7 +75,7 @@ namespace Limaki.Tests.Drawing {
 
             var lineMatrice = new Matrix();
             var angle = Vector.Angle(_data);
-            lineMatrice.Rotate(-angle);
+            lineMatrice.RotateAppend(-angle);
             lineMatrice.Transform(line);
             var poly = new Point[] {
                 new Point (line[0].X - delta, line[0].Y - delta),
@@ -84,7 +84,7 @@ namespace Limaki.Tests.Drawing {
                 new Point (line[0].X - delta, line[0].Y + delta)
             };
             lineMatrice.SetIdentity();
-            lineMatrice.Rotate(angle);
+            lineMatrice.RotateAppend(angle);
             lineMatrice.Transform(poly);
             return poly;
 

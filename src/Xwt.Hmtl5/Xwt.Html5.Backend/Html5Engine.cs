@@ -26,16 +26,10 @@
 
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
 
 namespace Xwt.Html5.Backend {
 
-    public class Html5Engine : Xwt.Backends.EngineBackend {
-
-        public static WidgetRegistry Registry {
-            get;
-            set;
-        }
+    public class Html5Engine : Xwt.Backends.ToolkitEngineBackend {
 
         public override void RunApplication () {
         
@@ -44,17 +38,12 @@ namespace Xwt.Html5.Backend {
         public override void InitializeApplication() {
             base.InitializeApplication();
         }
-
-        public override void InitializeRegistry(WidgetRegistry registry) {
-            Registry = registry;
-            registry.FromEngine = this;
-
-            Registry.RegisterBackend(typeof(Xwt.Drawing.Font), typeof(FontBackendHandler));
-            Registry.RegisterBackend(typeof(Xwt.Drawing.TextLayout), typeof(TextLayoutBackendHandler));
-            Registry.RegisterBackend(typeof(Xwt.Drawing.Context), typeof(ContextBackendHandler));
+        public override void InitializeBackends () {
+            RegisterBackend<FontBackendHandler, HtmlFontBackendHandler>();
+            RegisterBackend<TextLayoutBackendHandler, HmtlTextLayoutBackendHandler>();
+            RegisterBackend<ContextBackendHandler, HtmlContextBackendHandler>();
         }
-
-       
+        
         public override object GetNativeWidget (Widget w) {
             throw new NotImplementedException ();
         }
@@ -77,6 +66,14 @@ namespace Xwt.Html5.Backend {
 
         public override void CancelTimerInvoke (object id) {
             throw new NotImplementedException ();
+        }
+
+        public override void DispatchPendingEvents () {
+            throw new NotImplementedException();
+        }
+
+        public override bool HasNativeParent (Widget w) {
+            throw new NotImplementedException();
         }
     }
 }

@@ -26,17 +26,10 @@
 
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
 
 namespace Xwt.Gdi.Backend {
 
-    public class GdiEngine : Xwt.Backends.EngineBackend {
-
-        public static WidgetRegistry Registry {
-            get;
-            set;
-        }
-
+    public class GdiEngine : Xwt.Backends.ToolkitEngineBackend {
         public override void RunApplication() {
             
         }
@@ -45,30 +38,16 @@ namespace Xwt.Gdi.Backend {
             base.InitializeApplication();
         }
 
-        public override void InitializeRegistry(Xwt.Engine.WidgetRegistry registry) {
-            Registry = registry;
-            registry.FromEngine = this;
+        public override void InitializeBackends () {
 
-            Registry.RegisterBackend(typeof(Xwt.Drawing.Font), typeof(FontBackendHandler));
-            Registry.RegisterBackend (typeof (Xwt.Drawing.TextLayout), typeof (TextLayoutBackendHandler));
-            Registry.RegisterBackend (typeof (Xwt.Drawing.Context), typeof (ContextBackendHandler));
-            registry.RegisterBackend(typeof(Xwt.Drawing.Image), typeof(ImageHandler));
-            Registry.RegisterBackend (typeof (Xwt.Drawing.ImageBuilder), typeof (ImageBuilderBackend));
-            Registry.RegisterBackend(typeof(Xwt.Drawing.ImagePattern), typeof(ImagePatternBackendHandler));
+            RegisterBackend<FontBackendHandler, GdiFontBackendHandler>();
+            RegisterBackend<TextLayoutBackendHandler, GdiTextLayoutBackendHandler>();
+            RegisterBackend<ContextBackendHandler, GdiContextBackendHandler>();
+            RegisterBackend<ImageBackendHandler, GdiImageBackendHandler>();
+            RegisterBackend<ImageBuilderBackendHandler,GdiImageBuilderBackend>();
+            RegisterBackend<ImagePatternBackendHandler, GdiImagePatternBackendHandler>();
             
         }
-
-        //public override void Invoke(Action action) {
-        //    action();
-        //}
-
-        //public override object TimeoutInvoke(Func<bool> action, TimeSpan timeSpan) {
-        //    throw new NotImplementedException();
-        //}
-
-        //public override void CancelTimeoutInvoke(object id) {
-        //    throw new NotImplementedException();
-        //}
 
         public override object GetNativeWidget(Widget w) {
             throw new NotImplementedException();
@@ -91,6 +70,14 @@ namespace Xwt.Gdi.Backend {
         }
 
         public override void CancelTimerInvoke(object id) {
+            throw new NotImplementedException();
+        }
+
+        public override void DispatchPendingEvents () {
+            throw new NotImplementedException();
+        }
+
+        public override bool HasNativeParent (Widget w) {
             throw new NotImplementedException();
         }
     }

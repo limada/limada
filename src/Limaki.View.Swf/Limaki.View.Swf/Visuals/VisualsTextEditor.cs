@@ -11,9 +11,6 @@
  * http://www.limada.org
  */
 
-using System;
-using System.ComponentModel;
-using System.Windows.Forms;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
@@ -23,14 +20,15 @@ using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using System;
+using System.ComponentModel;
+using System.Windows.Forms;
 using Xwt;
-using Xwt.Gdi;
+using Xwt.Backends;
+using Xwt.Gdi.Backend;
 using DragEventArgs = System.Windows.Forms.DragEventArgs;
-using WidgetRegistry = Xwt.Engine.WidgetRegistry;
-using ModifierKeys = Xwt.ModifierKeys;
 using Key = Xwt.Key;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
-using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf.Visuals {
     
@@ -226,7 +224,7 @@ namespace Limaki.View.Swf.Visuals {
         private GdiFontCache gdiFontCache = new GdiFontCache();
         void StyleEditor() {
             var style = Layout.StyleSheet.ItemStyle.DefaultStyle;
-            var newFont = new FontMemento(GdiEngine.Registry.GetBackend(style.Font) as System.Drawing.Font);
+            var newFont = new FontMemento(style.Font.GetBackend() as System.Drawing.Font);
             newFont.SizeInPoints = (float)camera.Matrix.TransformFontSize (newFont.SizeInPoints);
             editor.Font = gdiFontCache.GetFont(newFont);
             

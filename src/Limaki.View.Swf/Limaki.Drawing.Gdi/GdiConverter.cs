@@ -14,49 +14,53 @@
 
 
 using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using Limaki.Drawing;
-using Xwt;
-using Xwt.Drawing;
+using Xwt.Backends;
 using Xwt.Gdi.Backend;
+using Font = Xwt.Drawing.Font;
+using Matrix = Xwt.Drawing.Matrix;
+using Point = Xwt.Point;
 
 namespace Limaki.Drawing.Gdi {
 
     public static class GDIConverter {
 
        public static System.Drawing.Point[] Convert(Point[] value) {
-            return Array.ConvertAll<Point, System.Drawing.Point> (value, GdiConverter.ToGdi);
+            return Array.ConvertAll (value, GdiConverter.ToGdi);
         }
 
-        public static System.Drawing.PointF[] ConvertF(Point[] value) {
-            return Array.ConvertAll<Point, System.Drawing.PointF> (value, GdiConverter.ToGdiF);
+        public static PointF[] ConvertF(Point[] value) {
+            return Array.ConvertAll (value, GdiConverter.ToGdiF);
         }
 
-        public static Point[] Convert(System.Drawing.PointF[] value) {
-            return Array.ConvertAll<System.Drawing.PointF, Point> (value, GdiConverter.ToXwt);
+        public static Point[] Convert(PointF[] value) {
+            return Array.ConvertAll (value, GdiConverter.ToXwt);
         }
 
-        public static System.Drawing.Drawing2D.LineCap Convert(PenLineCap linecap) {
-            var result = new System.Drawing.Drawing2D.LineCap();
+        public static LineCap Convert(PenLineCap linecap) {
+            var result = new LineCap();
             if (linecap == PenLineCap.Flat) {
-                result |= System.Drawing.Drawing2D.LineCap.Flat;
+                result |= LineCap.Flat;
             } else if (linecap == PenLineCap.Round) {
-                result |= System.Drawing.Drawing2D.LineCap.Round;
+                result |= LineCap.Round;
             } else if (linecap == PenLineCap.Square) {
-                result |= System.Drawing.Drawing2D.LineCap.Square;
+                result |= LineCap.Square;
             } else if (linecap == PenLineCap.Triangle) {
-                result |= System.Drawing.Drawing2D.LineCap.Triangle;
+                result |= LineCap.Triangle;
             }
             return result;
         }
 
-        public static System.Drawing.Drawing2D.LineJoin Convert(PenLineJoin linecap) {
-            var result = new System.Drawing.Drawing2D.LineJoin();
+        public static LineJoin Convert(PenLineJoin linecap) {
+            var result = new LineJoin();
             if (linecap == PenLineJoin.Bevel) {
-                result |= System.Drawing.Drawing2D.LineJoin.Bevel;
+                result |= LineJoin.Bevel;
             } else if (linecap == PenLineJoin.Miter) {
-                result |= System.Drawing.Drawing2D.LineJoin.Miter;
+                result |= LineJoin.Miter;
             } else if (linecap == PenLineJoin.Round) {
-                result |= System.Drawing.Drawing2D.LineJoin.Round;
+                result |= LineJoin.Round;
             }
             return result;
         }
@@ -80,15 +84,6 @@ namespace Limaki.Drawing.Gdi {
                matrice.Elements[4],
                matrice.Elements[5]);
         }
-
-       
-        //internal static Size ToXwt (this System.Drawing.Size size) {
-        //    throw new NotImplementedException ();
-        //}
-
-        //internal static Point ToXwt (this System.Drawing.Point size) {
-        //    throw new NotImplementedException ();
-        //}
 
        
     }

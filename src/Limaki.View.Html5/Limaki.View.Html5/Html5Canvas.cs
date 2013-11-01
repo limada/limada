@@ -1,5 +1,6 @@
-﻿using Xwt.Engine;
+﻿using Xwt;
 using Xwt.Html5.Backend;
+using Xwt.Backends;
 
 namespace Limaki.View.Html5 {
 
@@ -11,12 +12,12 @@ namespace Limaki.View.Html5 {
 
         Xwt.Drawing.Context _context = null;
         public Xwt.Drawing.Context Context {
-            get { return _context ?? (_context = new Xwt.Drawing.Context (Html5Engine.Registry, new Html5Context ())); }
+            get { return _context ?? (_context = new Xwt.Drawing.Context (new Html5Context (),Toolkit.Engine<Html5Engine>())); }
         }
 
         public override string Html () {
 
-            var ctx = ((Html5Context) Html5Engine.Registry.GetBackend(Context));
+            var ctx = (Html5Context)Context.GetBackend();
 
             return string.Format (@"function() {{
                 var {0} = document.getElementById(""{1}"");

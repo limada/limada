@@ -2,10 +2,8 @@ using NUnit.Framework;
 
 
 using Xwt.Backends;
-using Xwt.Engine;
 using Xwt.Drawing;
 using System;
-using Limaki.Painting;
 using System.Threading;
 using Xwt;
 
@@ -31,7 +29,7 @@ namespace Limaki.Tests.Sandbox {
         }
 
         void CreateContext() {
-            var context = new Xwt.Drawing.Context(WidgetRegistry.MainRegistry, new object());
+            var context = new Xwt.Drawing.Context(new object(), Toolkit.CurrentEngine);
             Assert.IsNotNull(context);
             
         }

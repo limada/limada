@@ -107,7 +107,7 @@ namespace Limaki.Drawing {
             }
             set {
                 if(_matrix != value) {
-                    _matrix.Dispose ();
+                    //_matrix.Dispose ();
                     _matrix = null;
                 }
                 _matrix = value;
@@ -118,7 +118,7 @@ namespace Limaki.Drawing {
         #region IDisposable Member
         public override void Dispose(bool disposing) {
             if (disposing) {
-                _matrix.Dispose();
+                //_matrix.Dispose();
                 _matrix = null;
             }
         }

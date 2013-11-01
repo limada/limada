@@ -41,7 +41,7 @@ namespace Limaki.View.Html5 {
             get {
                 if (base.Context == null) {
                     var ctx = new Html5Context { Context = this.Html };
-                    base.Context = new Xwt.Drawing.Context(Html5Engine.Registry, ctx);
+                    base.Context = new Xwt.Drawing.Context(ctx, Toolkit.Engine<Html5Engine>());
                 }
                 return base.Context;
             }
@@ -49,6 +49,7 @@ namespace Limaki.View.Html5 {
                 base.Context = value;
             }
         }
+
         public override Matrix Matrix {
             get {
                 if (base.Matrix == null) {

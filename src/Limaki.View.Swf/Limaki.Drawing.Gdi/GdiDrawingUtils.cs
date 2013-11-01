@@ -19,8 +19,8 @@ using Xwt.Drawing;
 using System.Drawing.Drawing2D;
 using SystemColors = System.Drawing.SystemColors;
 using Xwt;
-using Xwt.Engine;
 using Xwt.Gdi.Backend;
+using Xwt.Backends;
 
 namespace Limaki.Drawing.Gdi {
 
@@ -55,7 +55,7 @@ namespace Limaki.Drawing.Gdi {
 
         public virtual Size GetTextDimension(string text, IStyle style) {
             return GdiUtils.GetTextDimension(
-                (System.Drawing.Font)GdiEngine.Registry.GetBackend(style.Font),
+                (System.Drawing.Font)style.Font.GetBackend(),
                 text,
                 style.AutoSize.ToGdi());
         }
@@ -65,7 +65,7 @@ namespace Limaki.Drawing.Gdi {
         }
 
         public Size Resolution(Context context) {
-            var ctx = (Xwt.Gdi.Backend.GdiContext)GdiEngine.Registry.GetBackend(context);
+            var ctx = (Xwt.Gdi.Backend.GdiContext)context.GetBackend();
             if (ctx.Graphics.PageUnit == System.Drawing.GraphicsUnit.Point)
                 return new Size(72, 72);
             return new Size(ctx.Graphics.DpiX, ctx.Graphics.DpiY);

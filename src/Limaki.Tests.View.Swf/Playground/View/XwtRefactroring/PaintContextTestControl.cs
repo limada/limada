@@ -1,5 +1,4 @@
-using Limaki.Painting;
-using Limaki.GDI.Painting;
+
 using Xwt.Drawing;
 using Xwt.Gdi.Backend;
 using Xwt.Gdi;
@@ -9,8 +8,9 @@ using System.Diagnostics;
 using Xwt.Tests;
 using Limaki.Iconerias;
 using System.Linq;
-using Xwt.Engine;
+
 using System.Linq.Expressions;
+using Xwt;
 
 namespace Limaki.Tests.Sandbox {
 
@@ -38,10 +38,10 @@ namespace Limaki.Tests.Sandbox {
         }
 
         public PaintContextTestCase TestCase { get; set; }
-        WidgetRegistry Registry { get; set; }
+        Toolkit Toolkit { get; set; }
         protected override void OnPaint (System.Windows.Forms.PaintEventArgs e) {
 
-            Registry = GdiEngine.Registry;
+            this.Toolkit = Toolkit.Engine<GdiEngine>();
 
             base.OnPaint(e);
 
@@ -49,7 +49,7 @@ namespace Limaki.Tests.Sandbox {
 
             var graphics = new GdiContext(e.Graphics);
 
-            var context = new Xwt.Drawing.Context(this.Registry, graphics);
+            var context = new Xwt.Drawing.Context(graphics,this.Toolkit);
 
 
             if (TestCase == PaintContextTestCase.XwtSample)
@@ -68,10 +68,8 @@ namespace Limaki.Tests.Sandbox {
         }
 
         private void AwesomeIcons (Context ctx) {
-            ctx.Font = this.Registry.CreateFrontend<Font>(this.Font);
-
             var p = new ReferencePainter();
-            p.Font = ctx.Font;
+            p.Font = this.Toolkit.CreateFrontend<Font>(this.Font);
 
             p.Bounds = this.Bounds.ToXwt();
             var awesomeIcons = new AwesomeIconeria { Fill = true, FillColor = Colors.Black };
@@ -82,11 +80,11 @@ namespace Limaki.Tests.Sandbox {
             var y = border * 2;
             var textSize = 8;
             var textLayout = new TextLayout(ctx);
-            textLayout.Font = ctx.Font.WithSize(8);
+            textLayout.Font = p.Font.WithSize(8);
 
             awesomeIcons.ForEach((icon, name, id) => {
 
-                var img = awesomeIcons.AsImage(ctx.Registry,icon, size);
+                var img = awesomeIcons.AsImage(icon, size);
                 ctx.DrawImage(img, x, y);
 
                 textLayout.Text = name.Remove(0, 5);
@@ -109,10 +107,8 @@ namespace Limaki.Tests.Sandbox {
         //    Expression.Call(ix, iconMethod,ic), ic).Compile();
 
         protected virtual void XwtSample (Xwt.Drawing.Context ctx) {
-            ctx.Font = GdiEngine.Registry.CreateFrontend<Font>(this.Font);
-
             var p = new ReferencePainter();
-            p.Font = GdiEngine.Registry.CreateFrontend<Font>(this.Font);
+            p.Font = Toolkit.CreateFrontend<Font>(this.Font);
             p.Bounds = this.Bounds.ToXwt();
             p.All(ctx);
 
@@ -120,7 +116,7 @@ namespace Limaki.Tests.Sandbox {
 
         protected virtual void SpeedTest (Xwt.Drawing.Context ctx) {
             var p = new ReferencePainter();
-            p.Font = GdiEngine.Registry.CreateFrontend<Font>(this.Font);
+            p.Font = Toolkit.CreateFrontend<Font>(this.Font);
             p.Bounds = this.Bounds.ToXwt();
             p.SpeedTest(ctx, 0, 0);
         }

@@ -26,55 +26,46 @@
 
 using System;
 using Xwt.Backends;
-using Xwt.Engine;
+
 
 namespace Xwt.Blind.Backend {
-
-    public class BlindEngine : Xwt.Backends.EngineBackend {
-
-        public static WidgetRegistry Registry {
-            get;
-            set;
-        }
-
-        public override void RunApplication() {
-        
-        }
-
-        public override void InitializeApplication() {
-            base.InitializeApplication();
-        }
-
-        public override void InitializeRegistry(WidgetRegistry registry) {
-            Registry = registry;
-            registry.FromEngine = this;
-
-            Registry.RegisterBackend(typeof(Xwt.Drawing.Font), typeof(FontBackendHandler));
-        }
-       
-
-        public override object GetNativeWidget(Widget w) {
+    public class BlindEngine : ToolkitEngineBackend {
+        public override void RunApplication () {
             throw new NotImplementedException();
         }
 
-        public override IWindowFrameBackend GetBackendForWindow(object nativeWindow) {
+        public override void ExitApplication () {
             throw new NotImplementedException();
         }
 
-        public override void ExitApplication() {
+        public override void InvokeAsync (Action action) {
             throw new NotImplementedException();
         }
 
-        public override void InvokeAsync(Action action) {
+        public override object TimerInvoke (Func<bool> action, TimeSpan timeSpan) {
             throw new NotImplementedException();
         }
 
-        public override object TimerInvoke(Func<bool> action, TimeSpan timeSpan) {
+        public override void CancelTimerInvoke (object id) {
             throw new NotImplementedException();
         }
 
-        public override void CancelTimerInvoke(object id) {
+        public override object GetNativeWidget (Widget w) {
+            throw new NotImplementedException();
+        }
+
+        public override void DispatchPendingEvents () {
+            throw new NotImplementedException();
+        }
+
+        public override IWindowFrameBackend GetBackendForWindow (object nativeWindow) {
+            throw new NotImplementedException();
+        }
+
+        public override bool HasNativeParent (Widget w) {
             throw new NotImplementedException();
         }
     }
+
+   
 }

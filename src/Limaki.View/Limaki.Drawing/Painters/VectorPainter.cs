@@ -55,8 +55,8 @@ namespace Limaki.Drawing.Painters {
                         };
             Matrix.SetIdentity ();
             var angle = Vector.Angle (v) + (v.Start.X - v.End.X > 0 ? 90d : -90d);
-            Matrix.Rotate (angle);
-            Matrix.Translate (v.End.X, v.End.Y);
+            Matrix.RotateAppend (angle);
+            Matrix.TranslateAppend (v.End.X, v.End.Y);
             Matrix.Transform (arrow);
             ctx.MoveTo (arrow[0]);
             ctx.LineTo (arrow[1]);

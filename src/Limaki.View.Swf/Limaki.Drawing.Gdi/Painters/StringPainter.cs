@@ -17,7 +17,6 @@ using System.Drawing.Drawing2D;
 using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using Xwt;
-using Xwt.Engine;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 using Xwt.Drawing;
@@ -97,7 +96,7 @@ namespace Limaki.Drawing.Gdi.Painters {
             if (isVisible) {
                 var style = this.Style;
                 var shape = this.Shape;
-                var font = (System.Drawing.Font)GdiEngine.Registry.GetBackend(Style.Font);
+                var font = Style.Font.ToGdi();
 
                 if (AlignText && shape is IVectorShape) {
                     var vector = ((IVectorShape) shape).Data;
@@ -108,8 +107,8 @@ namespace Limaki.Drawing.Gdi.Painters {
                         (float) (vector.Start.X + (vector.End.X - vector.Start.X) / 2f),
                         (float) (vector.Start.Y + (vector.End.Y - vector.Start.Y) / 2f));
 
-                    _lineMatrix.Translate (c.X - 1, c.Y - 1);
-                    _lineMatrix.Rotate (Vector.Angle (vector));
+                    _lineMatrix.TranslateAppend (c.X - 1, c.Y - 1);
+                    _lineMatrix.RotateAppend (Vector.Angle (vector));
 
                     linedTextPath.Reset ();
                     // TODO: something is wrong with emSize, it is too small:

@@ -24,9 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Xwt.Engine;
+
 using SWF = System.Windows.Forms;
 using Xwt.Gdi.Backend;
+using Xwt.Backends;
 
 namespace Xwt.WinformBackend {
 
@@ -58,7 +59,7 @@ namespace Xwt.WinformBackend {
         //}
 
         public override object GetNativeWidget(Widget w) {
-            var backend = (IWinformWidgetBackend)SwfEngine.Registry.GetBackend(w);
+            var backend = (IWinformWidgetBackend)w.GetBackend();
             return backend.Control;
         }
 

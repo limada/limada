@@ -20,8 +20,8 @@ namespace Limaki.View.XwtContext {
             surface.Matrix = transform;
 
             this.Renderer.Render (this.Data, e);
-
             ctx.ResetTransform();
+
         }
 
         public override void DataChanged () { }

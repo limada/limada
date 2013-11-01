@@ -25,16 +25,16 @@
 // THE SOFTWARE.
 
 using Xwt.Backends;
-using Xwt.Engine;
+
 namespace Xwt.Drawing {
 
-    public static class SystemColors {
+    public class SystemColors {
 
         static SystemColors() {
-            backend = WidgetRegistry.MainRegistry.CreateBackend<ISystemColorsBackend>(typeof(SystemColors));
+            backend = Toolkit.CurrentEngine.CreateBackendHandler<SystemColorsBackend>();
         }
 
-        static ISystemColorsBackend backend;
+        static SystemColorsBackend backend;
 
         public static Color ScrollBar { get { return backend.ScrollBar; } }
         public static Color Background { get { return backend.Background; } }

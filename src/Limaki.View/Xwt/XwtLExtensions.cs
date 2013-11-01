@@ -32,6 +32,15 @@ namespace Limaki.XwtAdapter {
             }
         }
 
+        public static void ResetTransform (this Context context) {
+            // TODO: get Matrix and calculate the inverse matrix to the Identity-Matrix
+            var m = context.GetCTM();
+            if(!m.IsIdentity) {
+                m.Invert();
+                context.ModifyCTM(m);
+            }
+        }
+
         public static void SetTransform (this Context context, Matrix transform) {
             context.ResetTransform();
             if (!transform.IsIdentity) {
@@ -41,10 +50,7 @@ namespace Limaki.XwtAdapter {
             }
         }
 
-        public static Matrix GetTransform (this Context context) {
-            throw new NotImplementedException();
-        }
-
+       
         public static void SetElements(this Matrix m, double[] value) {
                 m.M11 = value[0];
                 m.M12 = value[1];

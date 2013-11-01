@@ -3,7 +3,7 @@ using Xwt.Backends;
 
 namespace Xwt.Blind.Backend {
 
-    public class SystemColorsBackend : ISystemColorsBackend {
+    public class SystemColorsBackend  {
 
         public Color ScrollBar { get { return Colors.Black; } }
         public Color Background { get { return Colors.Black; } }

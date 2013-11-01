@@ -39,7 +39,7 @@ namespace Limaki.View.Swf {
             new System.Drawing.Drawing2D.Matrix();
 
         public override void OnPaint(IRenderEventArgs e) {
-            IShape shape = this.Shape;
+            var shape = this.Shape;
             if ((shape != null) && (ShowGrips)) {
                 var g = ((GdiSurface)e.Surface).Graphics;
                 //save

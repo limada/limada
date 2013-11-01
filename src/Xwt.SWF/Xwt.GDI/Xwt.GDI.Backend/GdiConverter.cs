@@ -27,13 +27,15 @@
 
 using System.Drawing;
 using SD = System.Drawing;
+using SDI = System.Drawing.Imaging;
 using System.Drawing.Text;
 using Xwt.Drawing;
-using Xwt.Engine;
 using Color = Xwt.Drawing.Color;
 using Font = Xwt.Drawing.Font;
 using FontStyle = Xwt.Drawing.FontStyle;
 using System.Drawing.Drawing2D;
+using Xwt.Backends;
+using System;
 
 
 namespace Xwt.Gdi.Backend {
@@ -240,13 +242,42 @@ namespace Xwt.Gdi.Backend {
         public static Xwt.Drawing.Image ToXwt (this SD.Image value) {
             if (value == null)
                 return null;
-            return new Xwt.Drawing.Image(GdiEngine.Registry,value);
+            return CreateFrontend<Xwt.Drawing.Image>(new GdiImage(value));
         }
 
         public static SD.Image ToGdi (this  Xwt.Drawing.Image value) {
             if (value == null)
                 return null;
-            return (value as Xwt.Backends.IFrontend).Backend as System.Drawing.Image;
+            var image = value.GetBackend() as GdiImage;
+            if (image == null)
+                return null;
+            return image.Image;
+        }
+
+        public static SDI.PixelFormat ToGdi (this  ImageFormat value) {
+            if (value == ImageFormat.ARGB32)
+                return SDI.PixelFormat.Format32bppPArgb;
+            else if (value == ImageFormat.RGB24)
+                return SDI.PixelFormat.Format24bppRgb;
+            return SDI.PixelFormat.DontCare;
+        }
+
+        public static Xwt.Drawing.ImageFormat ToXwt (this SD.Imaging.PixelFormat value) {
+            if (value == SDI.PixelFormat.Format32bppPArgb)
+                return ImageFormat.ARGB32;
+            else if (value == SDI.PixelFormat.Format24bppRgb)
+                return ImageFormat.RGB24;
+            throw new ArgumentException();
+        }
+
+        public static SDI.ImageFormat ToGdi(this ImageFileType value) {
+            if (value == ImageFileType.Bmp)
+                return SDI.ImageFormat.Bmp;
+            else if (value == ImageFileType.Jpeg)
+                return SDI.ImageFormat.Jpeg;
+            else if (value == ImageFileType.Png)
+                return SDI.ImageFormat.Png;
+            throw new ArgumentException();
         }
         #endregion
 
@@ -292,10 +323,10 @@ namespace Xwt.Gdi.Backend {
         }
 
         public static SD.Font ToGdi (this Font value) {
-            return (SD.Font) GdiEngine.Registry.GetBackend (value);
+            return (SD.Font) value.GetBackend();
         }
 
-        public static SD.FontStyle ToGdi (FontStyle style, FontWeight weight) {
+        public static SD.FontStyle ToGdi (this FontStyle style, FontWeight weight) {
             var result = SD.FontStyle.Regular;
             if (FontStyle.Italic == style || FontStyle.Oblique == style)
                 result |= SD.FontStyle.Italic;
@@ -304,7 +335,15 @@ namespace Xwt.Gdi.Backend {
             return result;
         }
 
+        public static Font ToXwt (this System.Drawing.Font backend) {
+            return CreateFrontend<Font>(backend);
+        }
+
+        
         #endregion
 
+        public static T CreateFrontend<T> (object backend) {
+            return ToolkitEngineBackend.GetToolkitBackend<GdiEngine>().CreateFrontend<T>(backend);
+        }
     }
 }

@@ -27,7 +27,6 @@ using Limaki.Visuals;
 using Limaki.Swf.Backends;
 using Xwt.WinformBackend;
 using System;
-using Xwt.Engine;
 using Limaki.Swf.Backends.Viewers.Content;
 using Limaki.View.Visuals.Visualizers;
 using System.Windows.Forms;
@@ -36,6 +35,8 @@ using System.Threading;
 using Limaki.View.DragDrop;
 using Limaki.Model.Content;
 using Limaki.View.Swf.Backends;
+using Xwt;
+using Xwt.Gdi.Backend;
 
 
 namespace Limaki.View.Swf {
@@ -51,10 +52,10 @@ namespace Limaki.View.Swf {
 
             new LimakiCoreContextRecourceLoader ().ApplyResources (context);
 
-            new SwfEngine().InitializeRegistry(WidgetRegistry.MainRegistry);
-            WidgetRegistry.MainRegistry.RegisterBackend(
-                typeof (Xwt.Drawing.SystemColors),typeof (Xwt.Gdi.Backend.SystemColorsBackend)
-            );
+            var tk = Toolkit.CreateToolkit<GdiEngine>(false);
+            tk.RegisterBackend<Xwt.Backends.SystemColorsBackend, Xwt.Gdi.Backend.SystemColorsGdiBackend>();
+            tk.SetActive();
+            
 
             context.Factory.Add<IExceptionHandler,SwfExeptionHandlerBackend>();
             context.Factory.Add<IProgressHandler, ProgressHandler>();

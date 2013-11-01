@@ -1,5 +1,5 @@
 // 
-// ContextBackendHandler.cs
+// GdiContextBackendHandler.cs
 //  
 // Author:
 //       Lytico 
@@ -28,24 +28,11 @@ using System;
 
 using System.Drawing.Drawing2D;
 using Xwt.Backends;
-using Xwt.Engine;
 using SD = System.Drawing;
 
 namespace Xwt.Gdi.Backend {
 
-    public class ContextBackendHandler : IContextBackendHandler {
-
-        public virtual object CreateContext (Widget w) {
-            var b = (IGdiGraphicsBackend)GdiEngine.Registry.GetBackend(w);
-
-            var ctx = new GdiContext ();
-            if (b.Graphics != null) {
-                ctx.Graphics = b.Graphics;
-            } else {
-                //ctx.Graphics = System.Drawing.BufferedGraphicsManager.Current.Allocate();
-            }
-            return ctx;
-        }
+    public class GdiContextBackendHandler : ContextBackendHandler {
 
         /// <summary>
         /// Makes a copy of the current state of the Context and saves it on an internal stack of saved states.
@@ -53,12 +40,12 @@ namespace Xwt.Gdi.Backend {
         /// Multiple calls to Save() and Restore() can be nested; 
         /// each call to Restore() restores the state from the matching paired save().
         /// </summary>
-        public virtual void Save (object backend) {
+        public override void Save (object backend) {
             var gc = (GdiContext) backend;
             gc.Save ();
         }
 
-        public virtual void Restore (object backend) {
+        public override void Restore (object backend) {
             var gc = (GdiContext) backend;
             gc.Restore ();
         }
@@ -84,7 +71,7 @@ namespace Xwt.Gdi.Backend {
         /// <param name="radius"></param>
         /// <param name="angle1"></param>
         /// <param name="angle2"></param>
-        public virtual void Arc (object backend, double xc, double yc, double radius, double angle1, double angle2) {
+        public override void Arc (object backend, double xc, double yc, double radius, double angle1, double angle2) {
             var c = (GdiContext) backend;
             if (radius == 0)
                 return;
@@ -110,24 +97,24 @@ namespace Xwt.Gdi.Backend {
         /// so a temporary restriction of the clip region can be achieved by calling clip() within a save()/restore() pair. 
         /// The only other means of increasing the size of the clip region is reset_clip().
         /// </summary>
-        public virtual void Clip (object backend) {
+        public override void Clip (object backend) {
             ClipPreserve (backend);
             var gc = (GdiContext) backend;
             gc.Path.Dispose ();
             gc.Path = new GraphicsPath ();
         }
 
-        public virtual void ClipPreserve (object backend) {
+        public override void ClipPreserve (object backend) {
             var gc = (GdiContext) backend;
             gc.Graphics.Clip = new SD.Region (gc.Path);
         }
 
-        public virtual void ResetClip (object backend) {
+        public void ResetClip (object backend) {
             var gc = (GdiContext) backend;
             gc.Graphics.ResetClip ();
         }
 
-        public virtual void ClosePath (object backend) {
+        public override void ClosePath (object backend) {
             var gc = (GdiContext) backend;
             gc.CloseFigure ();
         }
@@ -136,7 +123,7 @@ namespace Xwt.Gdi.Backend {
         /// Adds a cubic Bezier spline to the path from the current point to position (x3, y3) in user-space coordinates, 
         /// using (x1, y1) and (x2, y2) as the control points. 
         /// </summary>
-        public virtual void CurveTo (object backend, double x1, double y1, double x2, double y2, double x3, double y3) {
+        public override void CurveTo (object backend, double x1, double y1, double x2, double y2, double x3, double y3) {
             var gc = (GdiContext) backend;
             gc.Path.AddBezier (
                 (float) gc.Current.X, (float) gc.Current.Y,
@@ -146,19 +133,19 @@ namespace Xwt.Gdi.Backend {
             gc.Current = new SD.PointF ((float) x3, (float) y3);
         }
 
-        public virtual void Fill (object backend) {
+        public override void Fill (object backend) {
             FillPreserve (backend);
             var gc = (GdiContext) backend;
             gc.Path = null;
         }
 
-        public virtual void FillPreserve (object backend) {
+        public override void FillPreserve (object backend) {
             var gc = (GdiContext) backend;
             gc.Transform ();
             gc.Graphics.FillPath (gc.Brush, gc.Path);
         }
 
-        public virtual void LineTo (object backend, double x, double y) {
+        public override void LineTo (object backend, double x, double y) {
             var gc = (GdiContext) backend;
             var dest = new SD.PointF ((float) x, (float) y);
             gc.Path.AddLine (gc.Current, dest);
@@ -173,7 +160,7 @@ namespace Xwt.Gdi.Backend {
         /// <param name="backend"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public virtual void MoveTo (object backend, double x, double y) {
+        public override void MoveTo (object backend, double x, double y) {
             var gc = (GdiContext) backend;
 
             if (gc.Current.X != x || gc.Current.Y != y) {
@@ -183,12 +170,12 @@ namespace Xwt.Gdi.Backend {
 
         }
 
-        public virtual void NewPath (object backend) {
+        public override void NewPath (object backend) {
             var gc = (GdiContext) backend;
             gc.Path = new GraphicsPath ();
         }
 
-        public virtual void Rectangle (object backend, double x, double y, double width, double height) {
+        public override void Rectangle (object backend, double x, double y, double width, double height) {
             var gc = (GdiContext) backend;
             if (gc.Current.X != x || gc.Current.Y != y) {
                 gc.Path.StartFigure ();
@@ -209,7 +196,7 @@ namespace Xwt.Gdi.Backend {
         /// Given a current point of (x, y), RelCurveTo(dx1, dy1, dx2, dy2, dx3, dy3)
         /// is logically equivalent to CurveTo(x + dx1, y + dy1, x + dx2, y + dy2, x + dx3, y + dy3).
         /// </summary>
-        public virtual void RelCurveTo (object backend, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3) {
+        public override void RelCurveTo (object backend, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3) {
             var gc = (GdiContext) backend;
             RelCurveTo (backend,
                 gc.Current.X + dx1, gc.Current.Y + dy1,
@@ -224,7 +211,7 @@ namespace Xwt.Gdi.Backend {
         /// Given a current point of (x, y), 
         /// RelLineTo(dx, dy) is logically equivalent to LineTo(x + dx, y + dy).
         /// </summary>
-        public virtual void RelLineTo (object backend, double dx, double dy) {
+        public override void RelLineTo (object backend, double dx, double dy) {
             var gc = (GdiContext) backend;
             LineTo (backend, gc.Current.X + dx, gc.Current.Y + dy);
         }
@@ -235,12 +222,12 @@ namespace Xwt.Gdi.Backend {
         /// Given a current point of (x, y), 
         /// RelMoveTo(dx, dy) is logically equivalent to MoveTo(x + dx, y + dy).
         /// </summary>
-        public virtual void RelMoveTo (object backend, double dx, double dy) {
+        public override void RelMoveTo (object backend, double dx, double dy) {
             var gc = (GdiContext) backend;
             gc.Current = new SD.PointF ((float) (gc.Current.X + dx), (float) (gc.Current.Y + dy));
         }
 
-        public virtual void Stroke (object backend) {
+        public override void Stroke (object backend) {
             var gc = (GdiContext) backend;
             gc.Transform ();
             gc.Graphics.DrawPath (gc.Pen, gc.Path);
@@ -248,18 +235,18 @@ namespace Xwt.Gdi.Backend {
 
         }
 
-        public virtual void StrokePreserve (object backend) {
+        public override void StrokePreserve (object backend) {
             var gc = (GdiContext) backend;
             gc.Transform ();
             gc.Graphics.DrawPath (gc.Pen, gc.Path);
         }
 
-        public virtual void SetColor (object backend, Xwt.Drawing.Color color) {
+        public override void SetColor (object backend, Xwt.Drawing.Color color) {
             var gc = (GdiContext) backend;
             gc.Color = GdiConverter.ToGdi (color);
         }
 
-        public virtual void SetLineWidth (object backend, double width) {
+        public override void SetLineWidth (object backend, double width) {
             var gc = (GdiContext) backend;
             gc.LineWidth = width;
         }
@@ -273,7 +260,7 @@ namespace Xwt.Gdi.Backend {
         /// It is invalid for any value in dashes to be negative, or for all values to be 0. 
         /// If this is the case, an exception will be thrown
         /// </summary>
-        public virtual void SetLineDash (object backend, double offset, params double[] pattern) {
+        public override void SetLineDash (object backend, double offset, params double[] pattern) {
             var gc = (GdiContext) backend;
             if (pattern.Length != 0) {
                 gc.Pen.DashOffset = (float) (offset / gc.LineWidth);
@@ -287,23 +274,23 @@ namespace Xwt.Gdi.Backend {
             }
         }
 
-        public virtual void SetPattern (object backend, object p) {
+        public override void SetPattern (object backend, object p) {
             var gc = (GdiContext) backend;
             gc.Brush = (SD.TextureBrush) p;
         }
 
-        public virtual void SetFont (object backend, Xwt.Drawing.Font font) {
-            var gc = (GdiContext) backend;
-            gc.Font = font.ToGdi ();
-        }
+        //public void SetFont (object backend, Xwt.Drawing.Font font) {
+        //    var gc = (GdiContext) backend;
+        //    gc.Font = font.ToGdi ();
+        //}
 
-        public virtual void DrawTextLayout (object backend, Xwt.Drawing.TextLayout layout, double x, double y) {
+        public override void DrawTextLayout (object backend, Xwt.Drawing.TextLayout layout, double x, double y) {
 
             if (layout.Text == null)
                 return;
 
             var gc = (GdiContext) backend;
-            var tl = (TextLayoutBackend)GdiEngine.Registry.GetBackend(layout);
+            var tl = (GdiTextLayoutBackend)Toolkit.GetBackend(layout);
             var font = tl.Font.ToGdi ();
             var w = layout.Width;
             var h = layout.Height;
@@ -345,26 +332,26 @@ namespace Xwt.Gdi.Backend {
 
         }
 
-        public virtual void DrawImage (object backend, object img, double x, double y, double alpha) {
-            var context = (GdiContext) backend;
-            var image = (SD.Image) img;
-            var q = context.Graphics.SetQuality (GdiConverter.DrawHighQuality);
-            context.Graphics.DrawImage (image, (float) x, (float) y);
-            context.Graphics.SetQuality (q);
-
-
+        public override void DrawImage (object backend, ImageDescription img, double x, double y) {
+            var context = (GdiContext)backend;
+            var image = (SD.Image)img.Backend;
+            var q = context.Graphics.SetQuality(GdiConverter.DrawHighQuality);
+            context.Graphics.DrawImage(image, (float)x, (float)y);
+            context.Graphics.SetQuality(q);
         }
 
-        public virtual void DrawImage (object backend, object img, double x, double y, double width, double height, double alpha) {
-            var context = (GdiContext) backend;
-            var image = (SD.Image) img;
-            var r = new SD.RectangleF ((float) x, (float) y, (float) width, (float) height);
-            var q = context.Graphics.SetQuality (GdiConverter.DrawHighQuality);
-            context.Graphics.DrawImage (image, r);
-            context.Graphics.SetQuality (q);
+        public override void DrawImage (object backend, ImageDescription img, Rectangle srcRect, Rectangle destRect) {
+            var context = (GdiContext)backend;
+            var image = (SD.Image)img.Backend;
+            
+            var q = context.Graphics.SetQuality(GdiConverter.DrawHighQuality);
+            context.Graphics.DrawImage(image, srcRect .ToGdi(), destRect.ToGdi(), SD.GraphicsUnit.Pixel);
+            context.Graphics.SetQuality(q);
         }
 
-        public virtual void Rotate (object backend, double angle) {
+
+
+        public override void Rotate (object backend, double angle) {
             var gc = (GdiContext) backend;
             gc.Rotate ((float) angle);
             //if (gc.Path.PointCount != 0) {
@@ -372,51 +359,64 @@ namespace Xwt.Gdi.Backend {
             //} 
         }
 
-        public void Scale (object backend, double scaleX, double scaleY) {
+        public override void Scale (object backend, double scaleX, double scaleY) {
             var context = (GdiContext) backend;
             context.Scale ((float) scaleX, (float) scaleY);
         }
 
-        public virtual void Translate (object backend, double tx, double ty) {
+        public override void Translate (object backend, double tx, double ty) {
             var gc = (GdiContext) backend;
             gc.Translate ((float) tx, (float) ty);
         }
 
-        public virtual void ResetTransform (object backend) {
-            var gc = (GdiContext) backend;
-            gc.ResetTransform ();
-        }
+        //public void ResetTransform (object backend) {
+        //    var gc = (GdiContext) backend;
+        //    gc.ResetTransform ();
+        //}
 
-        public virtual void Dispose (object backend) {
+        public override void Dispose (object backend) {
             var gc = (GdiContext) backend;
             gc.Dispose ();
         }
 
 
 
-        public void SetGlobalAlpha (object backend, double globalAlpha) {
+        public override void SetGlobalAlpha (object backend, double globalAlpha) {
 
         }
 
-
-        public void DrawImage(object backend, object img, Rectangle srcRect, Rectangle destRect, double alpha) {
+        public override void ModifyCTM (object backend, Drawing.Matrix transform) {
             throw new NotImplementedException();
         }
 
-        public void TransformPoint(object backend, ref double x, ref double y) {
+        public override Drawing.Matrix GetCTM (object backend) {
             throw new NotImplementedException();
         }
 
-        public void TransformDistance(object backend, ref double dx, ref double dy) {
+        public override bool IsPointInStroke (object backend, double x, double y) {
             throw new NotImplementedException();
         }
 
-        public void TransformPoints(object backend, Point[] points) {
+        public override bool IsPointInFill (object backend, double x, double y) {
             throw new NotImplementedException();
         }
 
-        public void TransformDistances(object backend, Distance[] vectors) {
+        public override void ArcNegative (object backend, double xc, double yc, double radius, double angle1, double angle2) {
             throw new NotImplementedException();
         }
+
+        public override object CreatePath () {
+            throw new NotImplementedException();
+        }
+
+        public override object CopyPath (object backend) {
+            throw new NotImplementedException();
+        }
+
+        public override void AppendPath (object backend, object otherBackend) {
+            throw new NotImplementedException();
+        }
+
+       
     }
 }

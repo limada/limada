@@ -1,5 +1,5 @@
 // 
-// FontBackendHandler.cs
+// GdiFontBackendHandler.cs
 //  
 // Author:
 //       Lytico 
@@ -27,22 +27,45 @@
 using Font = System.Drawing.Font;
 using Xwt.Backends;
 using Xwt.Drawing;
+using Xwt.Gdi.Backend;
 
 namespace Xwt.Gdi.Backend {
 
-    public class FontBackendHandler : IFontBackendHandler {
+    public class GdiFontBackendHandler : FontBackendHandler {
 
-        public object CreateFromName(string fontName, double size) {
-            return new Font(fontName, (float)size);
+        public override object GetSystemDefaultFont () {
+            return System.Drawing.SystemFonts.DefaultFont;
         }
 
-        public object Copy(object handle) {
+        public override System.Collections.Generic.IEnumerable<string> GetInstalledFonts () {
+            foreach (var family in System.Drawing.FontFamily.Families) {
+                bool usable = true;
+                try {
+                    if (!family.IsStyleAvailable((System.Drawing.FontStyle)0xF)) {
+                        usable = false;
+                    }
+
+                } catch {
+                    usable = false;
+                }
+                if (usable)
+                    yield return family.Name;
+
+            }
+        }
+
+        public override object Create (string fontName, double size, FontStyle style, FontWeight weight, FontStretch stretch) {
+            return new Font(fontName, (float) size, style.ToGdi(weight), System.Drawing.GraphicsUnit.Point);
+        }
+
+
+        public override object Copy (object handle) {
             Font d = (Font)handle;
             return d.Clone();
         }
 
 
-        public object SetSize(object handle, double size) {
+        public override object SetSize (object handle, double size) {
             var d = (Font)handle;
             if (d.Size != (int)size) {
                 d = new Font(d.FontFamily, (float)size, d.Style);
@@ -50,7 +73,7 @@ namespace Xwt.Gdi.Backend {
             return d;
         }
 
-        public object SetFamily(object handle, string family) {
+        public override object SetFamily (object handle, string family) {
             var d = (Font)handle;
             if (d.FontFamily.Name != family) {
                 d = new Font(family, d.Size, d.Style);
@@ -58,7 +81,7 @@ namespace Xwt.Gdi.Backend {
             return d;
         }
 
-        public object SetStyle(object handle, FontStyle style) {
+        public override object SetStyle (object handle, FontStyle style) {
             var d = (Font)handle;
             var oldStyle = GdiConverter.ToXwt (d.Style);
             var w = GdiConverter.ToXwtWeight(d.Style);
@@ -70,7 +93,7 @@ namespace Xwt.Gdi.Backend {
 
         }
 
-        public object SetWeight(object handle, FontWeight weight) {
+        public override object SetWeight (object handle, FontWeight weight) {
             var d = (Font)handle;
             var oldW = GdiConverter.ToXwtWeight(d.Style);
             var s = GdiConverter.ToXwt (d.Style);
@@ -81,37 +104,40 @@ namespace Xwt.Gdi.Backend {
             return d;
         }
 
-        public object SetStretch(object handle, FontStretch stretch) {
+        public override object SetStretch (object handle, FontStretch stretch) {
            
             return handle;
         }
 
-        public double GetSize(object handle) {
+        public override double GetSize (object handle) {
             var d = (Font)handle;
             return d.SizeInPoints;
         }
 
-        public string GetFamily(object handle) {
+        public override string GetFamily (object handle) {
             var d = (Font)handle;
             return d.FontFamily.Name;
         }
 
-        public FontStyle GetStyle(object handle) {
+        public override FontStyle GetStyle (object handle) {
             var d = (Font)handle;
             return GdiConverter.ToXwt (d.Style);
         }
 
-        public FontWeight GetWeight(object handle) {
+        public override FontWeight GetWeight (object handle) {
             var d = (Font)handle;
             return GdiConverter.ToXwtWeight(d.Style);
         }
 
-        public FontStretch GetStretch(object handle) {
+        public override FontStretch GetStretch (object handle) {
             return FontStretch.Normal;
         }
 
 
 
+
+       
     }
 }
+
 

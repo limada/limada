@@ -17,6 +17,7 @@ using SD = System.Drawing;
 using Xwt.Drawing;
 using Xwt.Gdi.Backend;
 using System;
+using Xwt;
 
 namespace Limaki.Drawing.Gdi {
 
@@ -38,7 +39,7 @@ namespace Limaki.Drawing.Gdi {
             get {
                 if (base.Context == null) {
                     var ctx = new GdiContext { Graphics = this.Graphics };
-                    base.Context = new Xwt.Drawing.Context(GdiEngine.Registry, ctx);
+                    base.Context = new Xwt.Drawing.Context(ctx, Toolkit.Engine<GdiEngine>());
                 }
                 return base.Context;
             }

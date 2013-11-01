@@ -144,12 +144,8 @@
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
     <Compile Include="Playground\View\CollissionResolver.cs" />
     <Compile Include="Playground\View\DrawingTests.cs" />
-    <Compile Include="Playground\View\XwtFrontend\ScrollableCanvas.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Playground\View\ReferencePainterCanvas.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Playground\View\XwtFrontend\ScrollableCanvas.cs" />
+    <Compile Include="Playground\View\ReferencePainterCanvas.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\SceneExamples.cs" />
     <Compile Include="Playground\View\Rectangle\Mono.WindowBase.Rect.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\gdiRectangleD.cs" />
@@ -158,10 +154,6 @@
     <Compile Include="Playground\View\Rectangle\Refactoring\xwtPoint.cs" />
     <Compile Include="Playground\View\Rectangle\Refactoring\xwtSize.cs" />
     <Compile Include="Playground\View\ToolStrip.cs" />
-    <Compile Include="Playground\View\XwtBackend\IPaintCanvasBackend.cs" />
-    <Compile Include="Playground\View\XwtBackend\IPaintContextBackendHandler.cs" />
-    <Compile Include="Playground\View\XwtFrontend\PaintCanvas.cs" />
-    <Compile Include="Playground\View\XwtFrontend\PaintContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestLocations.cs" />
     <Compile Include="Limaki.Tests\Common\IOUtilsTest.cs" />

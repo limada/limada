@@ -44,9 +44,9 @@ namespace Limaki.View.Visualizers {
             var scrollPosition = this.ClipOrigin;
             var offset = this.DataOrigin;
             var matrice = CreateMatrix();
-            matrice.Scale(zoomFactor, zoomFactor);
+            matrice.ScaleAppend(zoomFactor, zoomFactor);
 
-            matrice.Translate(
+            matrice.TranslateAppend(
                 (-offset.X - scrollPosition.X) ,
                 (-offset.Y - scrollPosition.Y)) ;
 

@@ -1,5 +1,5 @@
 // 
-// ISystemColorsBackend.cs
+// GdiImageBuilderBackend.cs
 //  
 // Author:
 //       Lytico 
@@ -24,39 +24,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Xwt.Drawing;
+using Xwt.Backends;
+using System;
 
-namespace Xwt.Backends {
+namespace Xwt.Gdi.Backend {
 
-    public interface ISystemColorsBackend {
-        Color ScrollBar { get; }
-        Color Background { get; }
-        Color ActiveCaption { get; }
-        Color InactiveCaption { get; }
-        Color Menu { get; }
-        Color Window { get; }
-        Color WindowFrame { get; }
-        Color MenuText { get; }
-        Color WindowText { get; }
-        Color CaptionText { get; }
-        Color ActiveBorder { get; }
-        Color InactiveBorder { get; }
-        Color ApplicationWorkspace { get; }
-        Color Highlight { get; }
-        Color HighlightText { get; }
-        Color ButtonFace { get; }
-        Color ButtonShadow { get; }
-        Color GrayText { get; }
-        Color ButtonText { get; }
-        Color InactiveCaptionText { get; }
-        Color ButtonHighlight { get; }
-        Color TooltipText { get; }
-        Color TooltipBackground { get; }
-        Color MenuHighlight { get; }
-        Color MenuBar { get; }
+    public class GdiImageBuilderBackend : ImageBuilderBackendHandler {
+
+        public override object CreateImageBuilder (int width, int height, Drawing.ImageFormat format) {
+            return new GdiImage(width, height, format);
+        }
+
+        public override object CreateContext (object backend) {
+            var b = (IGdiGraphicsBackend)backend;
+
+            var ctx = new GdiContext();
+            if (b.Graphics != null) {
+                ctx.Graphics = b.Graphics;
+            } else {
+                throw new ArgumentException();
+            }
+            return ctx;
+        }
+
+        public override object CreateImage (object backend) {
+            var b = (GdiImage) backend;
+            return b.Image;
+        }
+
+        public override void Dispose (object backend) {
+            var b = (GdiImage)backend;
+            b.Dispose();
+        }
     }
-
-}
-
-namespace Xwt.Widgets {
 }

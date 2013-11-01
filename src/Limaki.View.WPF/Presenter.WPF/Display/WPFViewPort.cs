@@ -51,12 +51,12 @@ namespace Limaki.View.WPF.Display {
             var scrollPosition = this.ClipOrigin;
             var offset = this.DataOrigin;
             var matrice = CreateMatrix();
-            matrice.Scale(zoomFactor, zoomFactor);
+            matrice.ScaleAppend(zoomFactor, zoomFactor);
 
             //matrice.Translate(
             //    (-offset.X - scrollPosition.X) / zoomFactor,
             //    (-offset.Y - scrollPosition.Y) / zoomFactor);
-            matrice.Translate(
+            matrice.TranslateAppend(
                 (-offset.X ) / zoomFactor,
                 (-offset.Y ) / zoomFactor);
             //transformSandBox(matrice);

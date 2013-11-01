@@ -26,19 +26,17 @@ using Limaki.IOC;
 using Limaki.Viewers;
 
 using Limaki.Drawing.Painters;
+using Xwt.Backends;
 
-using Xwt.Engine;
 
 namespace Limaki.View.Html5 {
 
     public class Html5ContextRecourceLoader : IBackendContextRecourceLoader {
 
         public virtual void ApplyHtml5Resources (IApplicationContext context) {
-            var engine = new Html5Engine ();
-            engine.InitializeRegistry (new WidgetRegistry ());
-            WidgetRegistry.MainRegistry = Html5Engine.Registry;
-            Html5Engine.Registry.RegisterBackend (
-                typeof (Xwt.Drawing.SystemColors), typeof (SystemColorsBackend));
+            var tk = Toolkit.CreateToolkit<Html5Engine>(false);
+            tk.SetActive();
+            tk.RegisterBackend<SystemColorsBackend, HtmlSystemColorsBackend>();
 
             context.Factory.Add<IExceptionHandler, Html5ExeptionHandlerBackend> ();
             context.Factory.Add<IDrawingUtils, Html5DrawingUtils> ();

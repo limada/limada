@@ -8,7 +8,8 @@ using Limaki.Drawing.WPF.Shapes;
 using Limaki.View.UI;
 using Limaki.Visuals;
 using Limaki.Visuals.WPF;
-using Xwt.Engine;
+using Xwt;
+
 
 namespace Limaki.View.WPF {
     /// <summary>
@@ -19,7 +20,8 @@ namespace Limaki.View.WPF {
         public override void ApplyResources(IApplicationContext context) {
 
             new LimakiCoreContextRecourceLoader().ApplyResources(context);
-            new Xwt.WPFBackend.WPFEngine().InitializeRegistry(WidgetRegistry.MainRegistry);
+            var tk = Toolkit.CreateToolkit<Xwt.WPFBackend.WPFEngine>(false);
+            tk.SetActive();
 
             context.Factory.Add<IExceptionHandler, WPFExeptionHandler>();
             context.Factory.Add<IDrawingUtils, WPFDrawingUtils>();

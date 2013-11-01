@@ -269,7 +269,7 @@
     <Compile Include="Limaki.Swf.Backends\SplitViewBackend.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Xwt.Gdi\SystemColorsBackend.cs" />
+    <Compile Include="Xwt.Gdi\SystemColorsGdiBackend.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

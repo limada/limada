@@ -1,13 +1,12 @@
 using Xwt.Drawing;
-using Xwt.Engine;
 using System.Linq;
 using System;
+using Xwt.Backends;
 
 namespace Xwt.Html5.Backend {
 
-    public class TextLayoutBackend {
+    public class HtmlTextLayoutBackend {
 
-        public Html5Context Context { get; set; }
         private double _width;
         private string _text;
         private Xwt.Drawing.Font _font;
@@ -32,7 +31,7 @@ namespace Xwt.Html5.Backend {
 
         public Font Font {
             get {
-                return _font ?? Font.FromName (Html5Engine.Registry,"Default", 10);
+                return _font ?? Font.FromName ("Default 10");
             }
             set {
 
@@ -44,7 +43,7 @@ namespace Xwt.Html5.Backend {
         public Size Size {
             get {
                 if (_size == null) {
-                    var font = (FontData)Html5Engine.Registry.GetBackend(this.Font);
+                    var font = (FontData)this.Font.GetBackend();
                     var size = new Size (this.Width, 0);
                     _size = MeasureString (this.Text, font, size);
                 }

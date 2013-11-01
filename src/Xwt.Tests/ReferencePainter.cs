@@ -193,14 +193,14 @@ namespace Xwt.Tests {
 
             // Image
             var arcColor = new Color(1, 0, 1);
-            var ib = new ImageBuilder(ctx.Registry, 30, 30, ImageFormat.ARGB32);
+            var ib = new ImageBuilder(30, 30);
             ib.Context.Arc(15, 15, 15, 0, 360);
             ib.Context.SetColor(arcColor);
             ib.Context.Fill();
             ib.Context.SetColor(Colors.DarkKhaki);
             ib.Context.Rectangle(0, 0, 5, 5);
             ib.Context.Fill();
-            var img = ib.ToImage();
+            var img = ib.ToBitmap();
             ctx.DrawImage(img, 0, 0);
             ctx.DrawImage(img, 0, 50, 50, 10);
 
@@ -391,7 +391,7 @@ namespace Xwt.Tests {
                 ctx.Restore();
             }
 
-            ctx.ResetTransform();
+            //ctx.ResetTransform();
             ctx.Restore();
         }
 

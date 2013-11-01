@@ -24,7 +24,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Xwt.Engine;
 using Xwt.Backends;
 using System;
 using SWF=System.Windows.Forms;
@@ -40,9 +39,6 @@ namespace Xwt.WinformBackend {
         public WindowFrameBackend() {
         }
 
-        void IBackend.InitializeBackend(object frontend) {
-            this.frontend = (WindowFrame)frontend;
-        }
 
         void IWindowFrameBackend.Initialize(IWindowFrameEventSink eventSink) {
             this.eventSink = eventSink;
@@ -98,7 +94,7 @@ namespace Xwt.WinformBackend {
                 form.Left = (int)value.Left;
                 form.Width = (int)value.Width;
                 form.Height = (int)value.Height;
-                Toolkit.Invoke(delegate {
+                Toolkit.CurrentEngine.Invoke(delegate {
                                    eventSink.OnBoundsChanged(Bounds);
                                });
             }
@@ -127,7 +123,7 @@ namespace Xwt.WinformBackend {
         }
 
         void BoundsChangedHandler(object o, EventArgs args) {
-            Toolkit.Invoke(delegate() {
+            Toolkit.CurrentEngine.Invoke(delegate() {
                 eventSink.OnBoundsChanged(Bounds);
             });
         }
@@ -147,6 +143,54 @@ namespace Xwt.WinformBackend {
         }
 
         public void Present() {
+            throw new NotImplementedException();
+        }
+
+
+        public void SetSize (double width, double height) {
+            throw new NotImplementedException();
+        }
+
+        public void SetTransientFor (IWindowFrameBackend window) {
+            throw new NotImplementedException();
+        }
+
+        public bool Resizable {
+            get {
+                throw new NotImplementedException();
+            }
+            set {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double Opacity {
+            get {
+                throw new NotImplementedException();
+            }
+            set {
+                throw new NotImplementedException();
+            }
+        }
+
+        public void SetIcon (ImageDescription image) {
+            throw new NotImplementedException();
+        }
+
+        public bool FullScreen {
+            get {
+                throw new NotImplementedException();
+            }
+            set {
+                throw new NotImplementedException();
+            }
+        }
+
+        public object Screen {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void InitializeBackend (object frontend, ApplicationContext context) {
             throw new NotImplementedException();
         }
     }

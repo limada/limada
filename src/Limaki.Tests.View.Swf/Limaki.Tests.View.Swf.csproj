@@ -94,11 +94,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceLoader.cs" />
     <Compile Include="TestCaseFactory.cs" />
-    <Compile Include="Playground\View\XwtRefactroring\GdiBackend\PaintContextBackendHandler.cs" />
     <Compile Include="Playground\View\XwtRefactroring\PaintContextTestControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Playground\View\XwtRefactroring\SwfBackend\PaintCanvasBackend.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

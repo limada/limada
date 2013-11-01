@@ -1,5 +1,5 @@
 // 
-// ContextBackendHandler.cs
+// HtmlContextBackendHandler.cs
 //  
 // Author:
 //       Lytico 
@@ -28,41 +28,40 @@ using System;
 
 
 using Xwt.Backends;
-using Xwt.Engine;
 using System.Globalization;
 
 
 namespace Xwt.Html5.Backend {
     
-    public class ContextBackendHandler : IContextBackendHandler {
+    public class HtmlContextBackendHandler : ContextBackendHandler {
 
         public virtual object CreateContext (Widget w) {
-            var b = (IHtml5CanvasBackend)Html5Engine.Registry.GetBackend(w);
+            var b = (IHtml5CanvasBackend)w.GetBackend();
 
-            var ctx = new Html5Context ();
+            var ctx = new Html5Context();
             if (b.Context != null) {
                 ctx.Context = b.Context;
-            } 
+            }
             return ctx;
         }
 
-        public void Save (object backend) {
+        public override void Save (object backend) {
             var c = (Html5Context) backend;
             c.Context.CommandLine("save()");
             c.Save();
         }
 
-        public void Restore (object backend) {
+        public override void Restore (object backend) {
             var c = (Html5Context) backend;
             c.Context.CommandLine ("restore()");
             c.Restore();
         }
 
-        public void Clip (object backend) {
+        public override void Clip (object backend) {
             var c = (Html5Context) backend;
         }
 
-        public void ClipPreserve (object backend) {
+        public override void ClipPreserve (object backend) {
             var c = (Html5Context) backend;
         }
 
@@ -70,19 +69,19 @@ namespace Xwt.Html5.Backend {
             var c = (Html5Context) backend;
         }
 
-        public void NewPath (object backend) {
+        public override void NewPath (object backend) {
             var c = (Html5Context) backend;
             c.Context.CommandLine ("beginPath()");
         }
 
-        public void ClosePath (object backend) {
+        public override void ClosePath (object backend) {
             var c = (Html5Context) backend;
             c.Context.CommandLine ("closePath()");
         }
 
         const double degrees = System.Math.PI / 180d;
 
-        public void Arc (object backend, double xc, double yc, double radius, double angle1, double angle2) {
+        public override void Arc (object backend, double xc, double yc, double radius, double angle1, double angle2) {
             var c = (Html5Context) backend;
             if (angle1 > 0 && angle2 == 0)
                 angle2 = 360;
@@ -95,7 +94,7 @@ namespace Xwt.Html5.Backend {
 
         }
 
-        public void CurveTo (object backend, double x1, double y1, double x2, double y2, double x3, double y3) {
+        public override void CurveTo (object backend, double x1, double y1, double x2, double y2, double x3, double y3) {
             var c = (Html5Context) backend;
             c.Context.CommandLine ("bezierCurveTo ({0},{1},{2},{3},{4},{5})",
                                    x1.ToHtml(), y1.ToHtml(),
@@ -104,24 +103,24 @@ namespace Xwt.Html5.Backend {
             c.Current = new Point (x3, y3);
         }
 
-        public void LineTo (object backend, double x, double y) {
+        public override void LineTo (object backend, double x, double y) {
             var c = (Html5Context) backend;
             c.Context.CommandLine ("lineTo ({0},{1})", x.ToHtml (), y.ToHtml ());
             c.Current = new Point (x, y);
         }
 
-        public void MoveTo (object backend, double x, double y) {
+        public override void MoveTo (object backend, double x, double y) {
             var c = (Html5Context) backend;
             c.Context.CommandLine ("moveTo ({0},{1})", x.ToHtml (), y.ToHtml ());
             c.Current = new Point (x, y);
         }
 
-        public void Rectangle (object backend, double x, double y, double width, double height) {
+        public override void Rectangle (object backend, double x, double y, double width, double height) {
             var c = (Html5Context) backend;
             c.Context.CommandLine ("rect ({0},{1},{2},{3})", x.ToHtml (), y.ToHtml (), width.ToHtml (), height.ToHtml ());
         }
 
-        public void RelCurveTo (object backend, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3) {
+        public override void RelCurveTo (object backend, double dx1, double dy1, double dx2, double dy2, double dx3, double dy3) {
             var c = (Html5Context) backend;
             c.Context.CommandLine("bezierCurveTo ({0},{1},{2},{3},{4},{5})",
                 (c.Current.X + dx1).ToHtml(), (c.Current.Y + dy1).ToHtml(),
@@ -131,57 +130,57 @@ namespace Xwt.Html5.Backend {
 
         }
 
-        public void RelLineTo (object backend, double dx, double dy) {
+        public override void RelLineTo (object backend, double dx, double dy) {
             var c = (Html5Context) backend;
             c.Current += new Size (dx, dy);
             c.Context.CommandLine("lineTo({0},{1})", c.Current.X.ToHtml(), c.Current.Y.ToHtml());
         }
 
-        public void RelMoveTo (object backend, double dx, double dy) {
+        public override void RelMoveTo (object backend, double dx, double dy) {
             var c = (Html5Context) backend;
             c.Current += new Size (dx, dy);
             c.Context.CommandLine ("moveTo({0},{1})", c.Current.X.ToHtml (), c.Current.Y.ToHtml ());
         }
 
-        public void Fill (object backend) {
+        public override void Fill (object backend) {
             FillPreserve(backend);
             NewPath(backend);
         }
 
-        public void FillPreserve (object backend) {
+        public override void FillPreserve (object backend) {
             var c = (Html5Context) backend;
             c.Context.CommandLine("fillStyle={0}", c.Color.ToStyle());
             c.Context.CommandLine("fill()");
            
         }
 
-        public void Stroke (object backend) {
+        public override void Stroke (object backend) {
             StrokePreserve(backend);
             NewPath(backend);
         }
 
-        public void StrokePreserve (object backend) {
+        public override void StrokePreserve (object backend) {
             var c = (Html5Context)backend;
             c.Context.CommandLine("strokeStyle={0}", c.Color.ToStyle());
             c.Context.CommandLine("stroke()");
         }
 
-        public void SetColor (object backend, Drawing.Color color) {
+        public override void SetColor (object backend, Drawing.Color color) {
             var c = (Html5Context) backend;
             c.Color = color;
         }
 
-        public void SetLineWidth (object backend, double width) {
+        public override void SetLineWidth (object backend, double width) {
             var c = (Html5Context) backend;
             c.LineWidth = width;
             c.Context.CommandLine ("lineWidth = {0}", width.ToHtml ());
         }
 
-        public void SetLineDash (object backend, double offset, params double[] pattern) {
+        public override void SetLineDash (object backend, double offset, params double[] pattern) {
             var c = (Html5Context) backend;
         }
 
-        public void SetPattern (object backend, object p) {
+        public override void SetPattern (object backend, object p) {
             var c = (Html5Context) backend;
         }
 
@@ -190,10 +189,10 @@ namespace Xwt.Html5.Backend {
             c.Font = font;
         }
 
-        public void DrawTextLayout (object backend, Drawing.TextLayout layout, double x, double y) {
+        public override void DrawTextLayout (object backend, Drawing.TextLayout layout, double x, double y) {
             var c = (Html5Context) backend;
             c.Context.CommandLine ("fillStyle={0}", c.Color.ToStyle ());
-            var tl = (TextLayoutBackend)Html5Engine.Registry.GetBackend(layout);
+            var tl = (HtmlTextLayoutBackend)layout.GetBackend();
             var font = tl.Font;
             c.Context.CommandLine("font=\"{1}pt {0} {2}\"", font.Family, font.Size.ToHtml(), font.Style.ToHtml());
 
@@ -221,20 +220,20 @@ namespace Xwt.Html5.Backend {
             //c.Context.CommandLine ("resetTransform()");
         }
 
-        public void Rotate (object backend, double angle) {
+        public override void Rotate (object backend, double angle) {
             var c = (Html5Context) backend;
             c.Angle = angle;
             c.Context.CommandLine ("rotate({0})", (angle * degrees).ToHtml ());
         }
 
-        public void Scale (object backend, double scaleX, double scaleY) {
+        public override void Scale (object backend, double scaleX, double scaleY) {
             var c = (Html5Context) backend;
             c.ScaleX = scaleX;
             c.ScaleY = scaleY;
             c.Context.CommandLine ("scale({0},{1})", scaleX.ToHtml (), scaleY.ToHtml ());
         }
 
-        public void Translate (object backend, double tx, double ty) {
+        public override void Translate (object backend, double tx, double ty) {
             var c = (Html5Context) backend;
             c.TranslateX = tx;
             c.TranslateX = ty;
@@ -242,31 +241,53 @@ namespace Xwt.Html5.Backend {
             
         }
 
-        public void SetGlobalAlpha (object backend, double globalAlpha) {
+        public override void SetGlobalAlpha (object backend, double globalAlpha) {
             
         }
 
-        public void Dispose (object backend) {
+        public override void Dispose (object backend) {
           
         }
 
-        public void DrawImage(object backend, object img, Rectangle srcRect, Rectangle destRect, double alpha) {
+
+
+        public override void DrawImage (object backend, ImageDescription img, double x, double y) {
             throw new NotImplementedException();
         }
 
-        public void TransformPoint(object backend, ref double x, ref double y) {
+        public override void DrawImage (object backend, ImageDescription img, Rectangle srcRect, Rectangle destRect) {
             throw new NotImplementedException();
         }
 
-        public void TransformDistance(object backend, ref double dx, ref double dy) {
+        public override void ModifyCTM (object backend, Drawing.Matrix transform) {
             throw new NotImplementedException();
         }
 
-        public void TransformPoints(object backend, Point[] points) {
+        public override Drawing.Matrix GetCTM (object backend) {
             throw new NotImplementedException();
         }
 
-        public void TransformDistances(object backend, Distance[] vectors) {
+        public override bool IsPointInStroke (object backend, double x, double y) {
+            throw new NotImplementedException();
+        }
+
+        public override void ArcNegative (object backend, double xc, double yc, double radius, double angle1, double angle2) {
+            throw new NotImplementedException();
+        }
+
+        public override object CreatePath () {
+            throw new NotImplementedException();
+        }
+
+        public override object CopyPath (object backend) {
+            throw new NotImplementedException();
+        }
+
+        public override void AppendPath (object backend, object otherBackend) {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsPointInFill (object backend, double x, double y) {
             throw new NotImplementedException();
         }
     }

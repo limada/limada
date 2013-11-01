@@ -1,5 +1,5 @@
-// 
-// ImageBuilderBackend.cs
+﻿// 
+// GdiImagePatternBackendHandler.cs
 //  
 // Author:
 //       Lytico 
@@ -24,37 +24,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+
+using System.Drawing;
 using Xwt.Backends;
-using System;
 
 namespace Xwt.Gdi.Backend {
-
-    public class ImageBuilderBackend : IImageBuilderBackendHandler {
-
-        public object CreateImageBuilder (int width, int height, Drawing.ImageFormat format) {
-            return new ImageGraphics(width, height, format);
-        }
-
-        public object CreateContext (object backend) {
-            var b = (IGdiGraphicsBackend)backend;
-
-            var ctx = new GdiContext();
-            if (b.Graphics != null) {
-                ctx.Graphics = b.Graphics;
-            } else {
-                throw new ArgumentException();
-            }
-            return ctx;
-        }
-
-        public object CreateImage (object backend) {
-            var b = (ImageGraphics) backend;
-            return b.Image;
-        }
-
-        public void Dispose (object backend) {
-            var b = (ImageGraphics)backend;
-            b.Dispose();
+    public class GdiImagePatternBackendHandler : ImagePatternBackendHandler {
+        public override object Create (ImageDescription img) {
+            var image = img.Backend as Image;
+            return new TextureBrush(image, System.Drawing.Drawing2D.WrapMode.Tile);
         }
     }
 }

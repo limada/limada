@@ -24,7 +24,7 @@ namespace Limaki.Swf.Backends.TextEditor {
 
 
         public IEnumerable<string> FontsUsable() {
-            RichTextBox tryer = new RichTextBox ();
+            var tryer = new RichTextBox ();
             tryer.Text = "123";
             tryer.SelectionStart = 0;
             tryer.SelectionLength = 3;

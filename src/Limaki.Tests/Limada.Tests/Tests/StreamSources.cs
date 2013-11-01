@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.IO;
 using Xwt;
 using Xwt.Drawing;
-using Xwt.Engine;
 
 namespace Limada.Test {
     /// <summary>
@@ -79,17 +78,17 @@ namespace Limada.Test {
 
        
        /// <summary>
-        /// produces a tif-image with some text
+        /// produces a bmp-image with some text
         /// </summary>
         public Stream Image {
             get {
                 Stream result = new MemoryStream();
                 var size = new Size(1000, 3000);
                 // Create image.
-                var builder = new ImageBuilder(WidgetRegistry.MainRegistry, (int)size.Width, (int)size.Height,ImageFormat.RGB24);
+                var builder = new ImageBuilder(size.Width, size.Height);
                 var graphics = builder.Context;
 
-                var font = Font.FromName(WidgetRegistry.MainRegistry, "MS Sans Serif", 14);
+                var font = Font.FromName("MS Sans Serif 14");
                 var stringPos = new Point(0, 0);
                 var xInc = 10;
                 var yInc = 3;
@@ -109,9 +108,9 @@ namespace Limada.Test {
                     stringPos.Y += textLayout.GetSize().Height + yInc;
                     stringPos.X += xInc;
                 }
-                var image = builder.ToImage();
+                var image = builder.ToBitmap(ImageFormat.RGB24);
 
-                image.Save(result, "image/tiff");
+                image.Save(result,ImageFileType.Bmp);
                 result.Flush();
                 image.Dispose();
                 graphics.Dispose();
