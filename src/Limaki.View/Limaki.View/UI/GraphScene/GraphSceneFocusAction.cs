@@ -156,7 +156,7 @@ namespace Limaki.View.UI.GraphScene {
                 return;
             
             Exclusive = false;
-            TItem before = Scene.Hovered;
+            var before = Scene.Hovered;
 
             Current = HitTest(e.Location);
 

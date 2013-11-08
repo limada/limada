@@ -42,7 +42,7 @@ namespace Limaki.View.UI.GraphScene {
         public Func<TItem, TItem> FocusFilter { get; set; }
         public virtual TItem GraphItem {
             get {
-                IGraphScene<TItem, TEdge> scene = SceneHandler();
+                var scene = SceneHandler();
                 if (scene == null) return default(TItem);
                 return FocusFilter(scene.Focused);
             }
@@ -53,7 +53,7 @@ namespace Limaki.View.UI.GraphScene {
         // get rid of ShapeSelectionBase-Inheritance
         public override IShape Shape {
             get {
-                TItem item = this.GraphItem;
+                var item = this.GraphItem;
                 if (item != null)
                     return Scene.ItemShape(item);
                 else
@@ -63,12 +63,12 @@ namespace Limaki.View.UI.GraphScene {
         }
 
         public override bool HitTest(Point p) {
-            Point sp = Camera.ToSource(p);
-            TItem item = this.GraphItem;
-            bool result = ((item != null) && 
+            var sp = Camera.ToSource(p);
+            var item = this.GraphItem;
+            var result = ((item != null) && 
                 (Scene.ItemShape(item)!= null) &&
                 (Scene.ItemShape(item).IsBorderHit(sp, HitSize)));
-            Anchor anchor = Anchor.None;
+            var anchor = Anchor.None;
             if (result && ShowGrips) {
                 anchor = HitAnchor(p);
                 if (!Resolved) {
@@ -84,7 +84,7 @@ namespace Limaki.View.UI.GraphScene {
 
         public override void OnMouseDown(MouseActionEventArgs e) {
             Resolved = false;
-            TItem item = this.GraphItem;
+            var item = this.GraphItem;
             if (item != null && !(item is TEdge)) {
                 base.OnMouseDown(e);
             }
@@ -120,7 +120,7 @@ namespace Limaki.View.UI.GraphScene {
         }
 
         protected override void OnMouseMoveResolved(MouseActionEventArgs e) {
-            TItem item = this.GraphItem;
+            var item = this.GraphItem;
             if (!(item is TEdge) && (moving || resizing)) {
                 ShowGrips = true;
 

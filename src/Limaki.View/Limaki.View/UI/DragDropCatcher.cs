@@ -36,7 +36,9 @@ namespace Limaki.View.UI {
 
         public virtual bool Dragging { get; set; }
 
-        public void DragOver(DragOverEventArgs e) { MouseActionBase.ForewardDragOver(baseAction, backend, e); }
+        public void DragOver(DragOverEventArgs e) {
+            MouseActionBase.ForewardDragOver(baseAction, backend, e);
+        }
 
         public void OnDrop(DragEventArgs e) {}
 

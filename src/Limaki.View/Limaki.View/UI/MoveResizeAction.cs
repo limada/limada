@@ -225,6 +225,7 @@ namespace Limaki.View.UI {
                 if (_selectionRenderer != null) {
                     _selectionRenderer.Shape = this.Shape;
                     _selectionRenderer.ShowGrips = this.ShowGrips;
+                    _selectionRenderer.Enabled = this.Enabled;
                 }
                 return _selectionRenderer;
             }
