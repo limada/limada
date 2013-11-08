@@ -25,6 +25,7 @@ using Xwt;
 using Limaki.Model.Content;
 using Limaki.Common;
 using Limaki.View.DragDrop;
+using Limaki.Model.Content.IO;
 
 namespace Limaki.View.DragDrop {
 
@@ -48,11 +49,11 @@ namespace Limaki.View.DragDrop {
         TransferDataManager _transferDataManager = null;
         public virtual TransferDataManager DataManager { get { return _transferDataManager ?? (_transferDataManager = new TransferDataManager()); } }
 
+        ContentDiggProvider _contentDiggProvider = null;
+        public virtual ContentDiggProvider ContentDiggProvider { get { return _contentDiggProvider ?? (_contentDiggProvider = Registry.Pool.TryGetCreate<ContentDiggProvider>()); } }
+
         IVisualContentViz _visualContentViz = null;
         public IVisualContentViz VisualContentViz { get { return _visualContentViz ?? (_visualContentViz = Registry.Pool.TryGetCreate<IVisualContentViz>()); } }
-
-        IContentEnrichManager _contentEnrichManager = null;
-        public virtual IContentEnrichManager ContentEnrichManager { get { return _contentEnrichManager ?? (_contentEnrichManager = new ContentEnrichManager()); } }
 
         public virtual IVisual VisualOfTransferData (IGraph<IVisual, IVisualEdge> graph, TransferDataSource data) {
             var value = data.GetValue(TransferDataType.FromType(typeof(IVisual)));
@@ -74,8 +75,13 @@ namespace Limaki.View.DragDrop {
                     var info = sink.Use(stream);
                     if (info != null) {
                         var content = new Content<Stream> { Data = stream, ContentType = info.ContentType, Compression = info.Compression };
-                        content = ContentEnrichManager.Use(content);
-                        return VisualContentViz.VisualOfRichContent(graph, content);
+
+                        ContentDiggProvider.Use(content);
+
+                        var result =  VisualContentViz.VisualOfRichContent(graph, content);
+                       
+
+                        return result;
                     }
                 }
             }

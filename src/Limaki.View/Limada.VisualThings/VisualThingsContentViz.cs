@@ -19,6 +19,7 @@ using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Content;
 using Limaki.Visuals;
+using Limaki.View.DragDrop;
 
 namespace Limada.VisualThings {
     /// <summary>
@@ -48,6 +49,8 @@ namespace Limada.VisualThings {
             return result;
         }
 
+
+
         /// <summary>
         /// creates a visual, backed by a
         /// StreamThing, created and assigned with content
@@ -65,10 +68,9 @@ namespace Limada.VisualThings {
                 var factory = graph.ThingFactory();
 
                 var thing = new ThingContentFacade(factory).AssignContent(thingGraph, null, content);
-                // TODO: analyse content here and be sure that content stream is not disposed
-                // have own classes to analyse content like: 
-                // Enrich(thingGraph, thing, content)
-                
+
+                // TODO: use ContentThingDiggers here (over its provider), similar to a ContentDigger, but with graph and thing as parameters
+
                 result = sourceGraph.Get(thing);
             }
             return result;

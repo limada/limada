@@ -274,6 +274,7 @@
     <Compile Include="Limada\Schemata\TopicSchema.cs" />
     <Compile Include="Limada\Schemata\UniqueThingAttribute.cs" />
     <Compile Include="Limada\Schemata\ViewMetaSchema.cs" />
+    <Compile Include="Model\Sink\ContentDigger.cs" />
     <Compile Include="Model\Sink\ContentInfoSink.cs" />
     <Compile Include="Model\Content.IO\ContentStreamSinkIo.cs" />
     <Compile Include="Model\Sink\IoManager.cs" />
@@ -299,6 +300,7 @@
     <Compile Include="Model\Content\Content.cs" />
     <Compile Include="Model\Content\ContentInfo.cs" />
     <Compile Include="Model\Content\ContentTypes.cs" />
+    <Compile Include="Model\Sink\SinkProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\Mono.Net.3.0\Mono.HashSet3.cs" />
     <Compile Include="Common\IOUtils.cs" />

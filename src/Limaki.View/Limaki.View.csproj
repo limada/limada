@@ -61,8 +61,6 @@
     <Compile Include="Limada.UseCases\Content\ContentStreamUiManager.cs" />
     <Compile Include="Limada.UseCases\Content\IGraphSceneUiManager.cs" />
     <Compile Include="Limada.UseCases\Content\ThingGraphUiManager.cs" />
-    <Compile Include="Limaki.View\DragDrop\ContentEnrichManager.cs" />
-    <Compile Include="Limaki.View\DragDrop\IContentEnrichManager.cs" />
     <Compile Include="Limaki.Visuals\IVisualContentViz.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\DigidocKeyScrollAction.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\DigidocContentViewer.cs" />

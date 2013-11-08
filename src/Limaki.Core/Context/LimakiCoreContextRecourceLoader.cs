@@ -20,7 +20,10 @@ namespace Limaki.IOC {
 			var streamProviders = Registry.Pool.TryGetCreate<IoProvider<Stream, Content<Stream>>>();
             streamProviders.Add(new HtmlContentStreamIo()); 
             streamProviders.Add(new RtfContentStreamIo()); 
-            streamProviders.Add(new ImageContentStreamIo()); 
+            streamProviders.Add(new ImageContentStreamIo());
+
+            var diggProvider = Registry.Pool.TryGetCreate<ContentDiggProvider>();
+            diggProvider.Add(new HtmlContentDigger());
         }
 
         public virtual void LoadCompression(IApplicationContext context) {

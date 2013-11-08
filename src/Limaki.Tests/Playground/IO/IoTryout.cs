@@ -36,5 +36,13 @@ namespace Limaki.Playground.IO {
             ISink<Content<Stream>, GraphCursor<IThing,ILink>> contentThingGraphProvider = null;
             ISink<IEnumerable<IThing>, IThingGraph> mergeGraph = null;
         }
+
+        public void ContentDiggProviders () {
+            var provider = new ContentDiggProvider();
+            var digger = new ContentDigger((so,si)=> si);
+            provider.Add(digger);
+            var content = new Content<Stream>();
+            provider.Use(content, content);
+        }
     }
 }
