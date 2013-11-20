@@ -9,11 +9,11 @@ namespace Limaki.Common.Text.HTML.Parser {
             _stack = new Stack<string>();
         }
 
-        public bool Set(string name, Status status) {
-           if (status == Status.Endtag) {
+        public bool Set(string name, State state) {
+           if (state == State.Endtag) {
                 return Remove(name);
             } else {
-                Add(name,status);
+                Add(name,state);
                 return true;
             }
         }
@@ -31,8 +31,8 @@ namespace Limaki.Common.Text.HTML.Parser {
             return name;
         }
 
-        public bool Add(string tag, Status status) {
-            var result = (status == Status.Name || status == Status.Attribute || status == Status.Value);
+        public bool Add(string tag, State state) {
+            var result = (state == State.Name || state == State.Attribute || state == State.Value);
             if (result)
                 _stack.Push(tag);
             return result;

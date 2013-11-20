@@ -33,7 +33,7 @@ namespace Limaki.Common.Text.HTML.Parser{
 		}
 
         private void Go(){
-			_stuff.Status = Status.None;
+			_stuff.State = Parser.State.None;
 			_stuff.Position++;
 			_stuff.TagPosition = _stuff.Position;
 			while (_stuff.Position < _stuff.Text.Length){
@@ -42,7 +42,7 @@ namespace Limaki.Common.Text.HTML.Parser{
 					_stuff.Position--;
 					_stuff.Origin = _stuff.Position;
 					OnElement();
-                    State = Status.Text;
+                    State = Parser.State.Text;
                     Stop();
 					break;
 				}
@@ -57,56 +57,56 @@ namespace Limaki.Common.Text.HTML.Parser{
                 _actual.Equals('>')) {
                 //Style ends - Attention:  a Style in a commenttag differs!!!
                 _newStyle = false;
-                State = Status.None;
+                State = Parser.State.None;
                 OnElement();
                 base.Stop();
             }
-            else if(_stuff.Status.Equals(Status.None)) {
+            else if(_stuff.State.Equals(Parser.State.None)) {
                 //start of tagname
                 if (Letter(_actual) ||
                     (_actual.Equals('-')) ||
                     (_actual.Equals('#')) ||
                     (_actual.Equals('.')) ||
                     (_actual.Equals('_'))){
-                    State = Status.Prename;
+                    State = Parser.State.Prename;
                     OnElement();
                     _stuff.Origin = _stuff.Position;
                 }
             }
-            else if(_stuff.Status.Equals(Status.Prename)) {
+            else if(_stuff.State.Equals(Parser.State.Prename)) {
                 //end of tagname
                 if(_actual.Equals('{') ||
                     _actual.Equals(' ') ||
                     _actual.Equals('\r') ||
                     _actual.Equals('\n') ||
                     _actual.Equals('\t')) {
-                    State = Status.Name;
+                    State = Parser.State.Name;
                     OnElement();
                     _stuff.Origin = _stuff.Position;
                     if (_actual.Equals('{')){
-                        State = Status.Attribute;
+                        State = Parser.State.Attribute;
                     }
                 }
             }
-            else if(_stuff.Status.Equals(Status.Solotag)) {
+            else if(_stuff.State.Equals(Parser.State.Solotag)) {
                 //start of next tagname
                 if (Letter(_actual) ||
                     (_actual.Equals('-')) ||
                     (_actual.Equals('#')) ||
                     (_actual.Equals('.')) ||
                     (_actual.Equals('_'))){
-                    State = Status.Name;
+                    State = Parser.State.Name;
                     _stuff.Origin = _stuff.Position;
                 }
             }
-            else if(_stuff.Status.Equals(Status.Name)) {
+            else if(_stuff.State.Equals(Parser.State.Name)) {
                 //end of tagname; its already registered
                 if (_actual.Equals('{')){
-                    State = Status.Attribute;
+                    State = Parser.State.Attribute;
                     _stuff.Origin = _stuff.Position + 1;
                 }
             }
-            else if(_stuff.Status.Equals(Status.Attribute)) {
+            else if(_stuff.State.Equals(Parser.State.Attribute)) {
                 //start of attribute-name
                 if(Letter(_actual)) {
                     if(_inAttr == false) {
@@ -116,25 +116,25 @@ namespace Limaki.Common.Text.HTML.Parser{
                 }
                 if(_actual.Equals(':')) {
                     OnElement();
-                    State = Status.Value;
+                    State = Parser.State.Value;
                     _stuff.Origin = Stuff.Position + 1;
                 }
                 else if(_actual.Equals('}')) {
                     // something is wrong, the value of the attibute is missing
-                    State = Status.Prename;
+                    State = Parser.State.Prename;
                 }
             }
-            else if(_stuff.Status.Equals(Status.Value)) {
+            else if(_stuff.State.Equals(Parser.State.Value)) {
                 //end of a value
                 if(_actual.Equals(';')) {
                     OnElement();
-                    State = Status.Attribute;
+                    State = Parser.State.Attribute;
                     _stuff.Origin = _stuff.Position + 1;
                 }
                 else if(_actual.Equals('}')) {
                     //end of a tag
                     OnElement();
-                    State = Status.Solotag;
+                    State = Parser.State.Solotag;
                 }
             }
 
@@ -146,44 +146,44 @@ namespace Limaki.Common.Text.HTML.Parser{
 //				}else{
 					//end of stylse
 //					_newStyle = false;
-//					State(Status.None);
+//					State(State.None);
 //					OnElement();
 //					base.Stop();
 //				}
 //			}
 //			else{
-//				if(_stuff.Status == Status.None){
+//				if(_stuff.State == State.None){
 					//maybe a stylename begins
 //					if(Letter(_actual) || 
 //						(_actual.Equals('-')) ||
 //						(_actual.Equals('#')) ||
 //						(_actual.Equals('.')) || 
 //						(_actual.Equals('_'))){
-//						State(Status.Prename);
+//						State(State.Prename);
 //					}
 //				}
-//				else if ((_stuff.Status == Status.Prename) || 
-//							(_stuff.Status == Status.Solotag)){
+//				else if ((_stuff.State == State.Prename) || 
+//							(_stuff.State == State.Solotag)){
 //					if (Letter(_actual) ||
 //							_actual.Equals('.') ||
 //                            _actual.Equals('#')){
 						//Stylename starts definitiv
 //						if(_newStyle == false){
-//							State(Status.Prename);
+//							State(State.Prename);
 //							OnElement();
 //						}		
 //						_newStyle = true;
-//						State(Status.Name);
+//						State(State.Name);
 //						_stuff.Origin = _stuff.Position - 1;
 //					}
 //					else if (_actual.Equals('{')){
 //                      // entrance in the zone of attributes and values
 //						_stuff.Origin = _stuff.Position;
 //						_inAttr = true;
-//						State(Status.Attribute);
+//						State(State.Attribute);
 //					}
 //							}
-//				else if(_stuff.Status == Status.Name){
+//				else if(_stuff.State == State.Name){
 					
 //					if(Letter(_actual)==false && 
 //								_actual.Equals('-')==false &&
@@ -191,10 +191,10 @@ namespace Limaki.Common.Text.HTML.Parser{
 //								_actual.Equals('.') == false
 //								){
 //						OnElement(); 
-//						State(Status.Solotag);
+//						State(State.Solotag);
 //					}
 //				}
-//				else if(_stuff.Status == Status.Attribute){
+//				else if(_stuff.State == State.Attribute){
 //					
 //                    if((_actual.Equals('\r')) ||
 //                        (_actual.Equals('\n')) ||
@@ -205,19 +205,19 @@ namespace Limaki.Common.Text.HTML.Parser{
 //				    }
 //					if(_actual.Equals(':')){
 //						OnElement();
-//						State(Status.Value);
+//						State(State.Value);
 //						_stuff.Origin = _stuff.Position + 1;
 //					}
 //				}
-//				else if(_stuff.Status.Equals(Status.Value)){
+//				else if(_stuff.State.Equals(State.Value)){
 //					if (_actual.Equals(';')){
 //						OnElement();
-//						State(Status.Attribute);
+//						State(State.Attribute);
 //						_stuff.Origin = _stuff.Position + 1;
 //					}
 //					else if (_actual.Equals('}')){
 //						OnElement();//Die Attribut/Wert-Sequenz wird abgeschickt
-//						State(Status.None);
+//						State(State.None);
 //						_stuff.Origin = _stuff.Position + 1;
 //					}
 //				}

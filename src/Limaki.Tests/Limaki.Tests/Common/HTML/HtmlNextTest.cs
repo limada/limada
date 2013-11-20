@@ -39,17 +39,17 @@ namespace Limaki.Tests.Common.HTML {
 
 
             TagParser.DoElement = stuff => {
-                if (stuff.Status.Equals(Status.Name)) {
+                if (stuff.State.Equals(State.Name)) {
                     if (stuff.Element.Equals("span")) {
                         deleteat = stuff.TagPosition;
                     } else if (stuff.Element.Equals("style")) {
                         styleit = true;
                     }
-                } else if (stuff.Status.Equals(Status.Endtag)) {
+                } else if (stuff.State.Equals(State.Endtag)) {
                     if (stuff.Element.Equals("/span")) {
                         deleteat = stuff.TagPosition;
                     }
-                } else if (stuff.Status.Equals(Status.Value)) {
+                } else if (stuff.State.Equals(State.Value)) {
                     if (stuff.Element.Equals("Flieatext")) {
                         TagParser.Replace(stuff.Origin, stuff.Position, "Inhalt");
                     }
@@ -111,16 +111,16 @@ namespace Limaki.Tests.Common.HTML {
 
 
             StyleParser.DoElement = stuff => {
-                if (stuff.Status.Equals(Status.Prename)) {
+                if (stuff.State.Equals(State.Prename)) {
                     style = new Style();
                     style.Starts = stuff.TagPosition;
-                } else if (stuff.Status.Equals(Status.Name)) {
+                } else if (stuff.State.Equals(State.Name)) {
                     if (tag != null) {
                         style.Add(tag);
                     }
                     tag = new Tag(stuff.Element, stuff.Origin, stuff.Position);
                     tag.Starts = stuff.TagPosition;
-                } else if (stuff.Status.Equals(Status.None)) {
+                } else if (stuff.State.Equals(State.None)) {
 
                     if (style != null) {
                         if (tag != null) {
@@ -131,37 +131,37 @@ namespace Limaki.Tests.Common.HTML {
                         styles.Add(style);
                         style = null;
                     }
-                } else if (stuff.Status.Equals(Status.Attribute)) {
+                } else if (stuff.State.Equals(State.Attribute)) {
 
                     if (att != null) {
                         tag.AddAttribute(att);
                     }
                     att = new Attribute(stuff.Element, stuff.Origin, stuff.Position);
-                } else if (stuff.Status.Equals(Status.Value)) {
+                } else if (stuff.State.Equals(State.Value)) {
 
                     if (att != null) {
                         att.SetValue(stuff.Element, stuff.Origin, stuff.Position);
                         tag.AddAttribute(att);
                         att = null;
                     }
-                } else if (stuff.Status.Equals(Status.Cite)) {
+                } else if (stuff.State.Equals(State.Cite)) {
 
-                } else if (stuff.Status.Equals(Status.Commenttag)) {
+                } else if (stuff.State.Equals(State.Commenttag)) {
 
-                } else if (stuff.Status.Equals(Status.Endtag)) {
+                } else if (stuff.State.Equals(State.Endtag)) {
 
-                } else if (stuff.Status.Equals(Status.Solotag)) {
+                } else if (stuff.State.Equals(State.Solotag)) {
 
-                } else if (stuff.Status.Equals(Status.Text)) {
+                } else if (stuff.State.Equals(State.Text)) {
 
                 } else {
                     // this could be an error
                 }
 
-                if (stuff.Status.Equals(Status.Prename)) {
+                if (stuff.State.Equals(State.Prename)) {
                     style = new Style();
                     style.Starts = stuff.TagPosition;
-                } else if (stuff.Status.Equals(Status.Text)) {
+                } else if (stuff.State.Equals(State.Text)) {
                     if (stuff.Position > stuff.Origin) {
                         att = new Attribute(stuff.Element, stuff.Origin, stuff.Position);
                         tag.AddAttribute(att);
@@ -169,20 +169,20 @@ namespace Limaki.Tests.Common.HTML {
                     tag.Ends = stuff.Position;
                     style.Add(tag);
                     tag = null;
-                } else if (stuff.Status.Equals(Status.Attribute)) {
+                } else if (stuff.State.Equals(State.Attribute)) {
                     att = new Attribute(stuff.Element, stuff.Origin, stuff.Position);
-                } else if (stuff.Status.Equals(Status.Value)) {
+                } else if (stuff.State.Equals(State.Value)) {
                     att.SetValue(stuff.Element, stuff.Origin, stuff.Position);
                     tag.AddAttribute(att);
                     att = null;
-                } else if (stuff.Status.Equals(Status.None)) {
+                } else if (stuff.State.Equals(State.None)) {
                     if (style != null) {
                         style.Add(tag);
                         style.Ends = stuff.Position;
                         styles.Add(style);
                         style = null;
                     }
-                } else if (stuff.Status.Equals(Status.Name)) {
+                } else if (stuff.State.Equals(State.Name)) {
                     if (tag != null) {
                         style.Add(tag);
                     }
@@ -197,28 +197,28 @@ namespace Limaki.Tests.Common.HTML {
                 if (tag == null) {
                     tag = new Tag();
                 }
-                if (stuff.Status.Equals(Status.Name)) {
+                if (stuff.State.Equals(State.Name)) {
                     if (stuff.Element.Equals("style")) {
                         styleit = true;
                     }
                     tag.Me.Name = stuff.Element;
                     tag.Me.Starts = stuff.Origin;
                     tag.Me.Ends = stuff.Position;
-                } else if (stuff.Status.Equals(Status.Commenttag)) {
+                } else if (stuff.State.Equals(State.Commenttag)) {
                     tag.Me.Name = stuff.Element;
                     tag.Me.Starts = stuff.Origin;
                     tag.Me.Ends = stuff.Position;
-                } else if (stuff.Status.Equals(Status.Endtag)) {
+                } else if (stuff.State.Equals(State.Endtag)) {
                     tag.Me.Name = stuff.Element;
                     tag.Me.Starts = stuff.Origin;
                     tag.Me.Ends = stuff.Position;
-                } else if (stuff.Status.Equals(Status.Solotag)) {
+                } else if (stuff.State.Equals(State.Solotag)) {
                     tag.Me.Name = stuff.Element;
                     tag.Me.Starts = stuff.Origin;
                     tag.Me.Ends = stuff.Position;
-                } else if (stuff.Status.Equals(Status.Attribute)) {
+                } else if (stuff.State.Equals(State.Attribute)) {
                     att = new Attribute(stuff.Element, stuff.Origin, stuff.Position);
-                } else if (stuff.Status.Equals(Status.Value)) {
+                } else if (stuff.State.Equals(State.Value)) {
                     att.SetValue(stuff.Element, stuff.Origin, stuff.Position);
                     tag.AddAttribute(att);
                     att = null;
@@ -229,7 +229,7 @@ namespace Limaki.Tests.Common.HTML {
                 if (tag != null) {
                     tag.Starts = stuff.TagPosition;
                     tag.Ends = stuff.Position;
-                    tag.SetStatus(stuff.Status);
+                    tag.SetStatus(stuff.State);
                     tags.Add(tag);
                     tag = null;
                 }
@@ -276,12 +276,12 @@ namespace Limaki.Tests.Common.HTML {
             string result = "";
 
             TagParser.DoElement = stuff => {
-                if (stuff.Status == Status.Name && stuff.Element == tagname) {
+                if (stuff.State == State.Name && stuff.Element == tagname) {
                     start = true;
                 }
             };
 
-            TagParser.DoTag = stuff => { tagender.Set(stuff.Tag, stuff.Status); };
+            TagParser.DoTag = stuff => { tagender.Set(stuff.Tag, stuff.State); };
 
             TagParser.DoText = stuff => {
                 if (start) {
@@ -326,7 +326,7 @@ namespace Limaki.Tests.Common.HTML {
 
             TagParser.DoTag = stuff => {
                 var tag = tagender.Name(stuff.Tag);
-                if (!tagender.Set(tag, stuff.Status)) {
+                if (!tagender.Set(tag, stuff.State)) {
                     var tagsend = tagender.CloseTag(tag);
                     TagParser.Insert(lastTagPosition, tagsend);
                 }
@@ -362,7 +362,7 @@ namespace Limaki.Tests.Common.HTML {
             TagParser.DoElement = stuff => {
                                       result = stuff.Element;
                                       if(!doRemove)
-                doRemove = stuff.Status == Status.Name && stuff.Element == "img";
+                doRemove = stuff.State == State.Name && stuff.Element == "img";
                                   };
 
             TagParser.DoTag = stuff => {

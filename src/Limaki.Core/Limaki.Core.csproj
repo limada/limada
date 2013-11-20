@@ -131,7 +131,7 @@
     <Compile Include="Common\Text\HTML\Parser\Attribute.cs" />
     <Compile Include="Common\Text\HTML\Parser\Entry.cs" />
     <Compile Include="Common\Text\HTML\Parser\ParserBase.cs" />
-    <Compile Include="Common\Text\HTML\Parser\Status.cs" />
+    <Compile Include="Common\Text\HTML\Parser\State.cs" />
     <Compile Include="Common\Text\HTML\Parser\Stuff.cs" />
     <Compile Include="Common\Text\HTML\Parser\Style.cs" />
     <Compile Include="Common\Text\HTML\Parser\StyleParser.cs" />

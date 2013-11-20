@@ -30,13 +30,13 @@ namespace Limaki.Common.Text.HTML.Parser {
         }
 
         private void Go() {
-            _stuff.Status = Status.Text;
+            _stuff.State = Parser.State.Text;
             while (_stuff.Position < _stuff.Text.Length) {
                 if (_stop) {
                     break;
                 }
                 _actual = _stuff.Text[_stuff.Position]; //Position ist das Zeichen an der aktuellen Stelle
-                Watch(); //Auf zur Untersuchung von Position und status
+                Watch(); //Auf zur Untersuchung von Position und State
                 _stuff.Position++; //Auf zum nächsten Zeichen
             }
         }
@@ -69,82 +69,82 @@ namespace Limaki.Common.Text.HTML.Parser {
 
         private void Watch() {
             //Bei diesen Zeichen ist u.U. etwas zu unternehmen
-            if (_stuff.Status.Equals(Status.Prename)) {
+            if (_stuff.State.Equals(Parser.State.Prename)) {
                 if (Letter(_actual)) {
-                    State = Status.Text;
+                    State = Parser.State.Text;
                     _stuff.Position--;
                     OnText();
                     _stuff.Position++;
                     _stuff.Origin = _stuff.Position;
-                    State = Status.Name;
+                    State = Parser.State.Name;
                 }
             }
             if (_actual.Equals('<')) {
                 //Möglicherweise beginnt ein Tag
                 _stuff.TagPosition = _stuff.Position;
-                State = Status.Prename;
+                State = Parser.State.Prename;
             } else if (_actual.Equals('>')) {
-                if (_stuff.Status.Equals(Status.Text) == false) {
-                    if (_stuff.Status.Equals(Status.Cite) == false) {
+                if (_stuff.State.Equals(Parser.State.Text) == false) {
+                    if (_stuff.State.Equals(Parser.State.Cite) == false) {
                         //Ein Tag endet
                         OnElement();
                         _stuff.Position++;
                         OnTag();
                         _stuff.Position--;
                         _stuff.Origin = _stuff.Position + 1;
-                        State = Status.Text;
+                        State = Parser.State.Text;
                     }
                 }
             } else if (_actual.Equals('!')) {
-                if (_stuff.Status.Equals(Status.Prename)) {
-                    State = Status.Text;
+                if (_stuff.State.Equals(Parser.State.Prename)) {
+                    State = Parser.State.Text;
                     _stuff.Position--;
                     OnText();
                     _stuff.Position++;
                     _stuff.Origin = _stuff.Position;
-                    State = Status.Commenttag;
+                    State = Parser.State.Commenttag;
                 }
             } else if (_actual.Equals('/')) {
-                if (_stuff.Status.Equals(Status.Prename)) {
-                    State = Status.Text;
+                if (_stuff.State.Equals(Parser.State.Prename)) {
+                    State = Parser.State.Text;
                     _stuff.Position--;
                     OnText();
                     _stuff.Position++;
                     _stuff.Origin = _stuff.Position;
-                    State = Status.Endtag;
-                } else if (_stuff.Status.Equals(Status.Name)) {
-                    State = Status.Solotag;
-                } else if (_stuff.Status.Equals(Status.Value)) {
-                    State = Status.Solotag;
-                } else if (_stuff.Status.Equals(Status.Attribute)) {
+                    State = Parser.State.Endtag;
+                } else if (_stuff.State.Equals(Parser.State.Name)) {
+                    State = Parser.State.Solotag;
+                } else if (_stuff.State.Equals(Parser.State.Value)) {
+                    State = Parser.State.Solotag;
+                } else if (_stuff.State.Equals(Parser.State.Attribute)) {
                     //Sollte nicht sein: Tag endet mit Attribut-Namen und Slash
-                    State = Status.Solotag;
+                    State = Parser.State.Solotag;
                 }
             } else if (_actual.Equals('\"')) {
-                if (_stuff.Status.Equals(Status.Value)) {
-                    State = Status.Cite;
-                } else if (_stuff.Status.Equals(Status.Cite)) {
-                    State = Status.Value;
+                if (_stuff.State.Equals(Parser.State.Value)) {
+                    State = Parser.State.Cite;
+                } else if (_stuff.State.Equals(Parser.State.Cite)) {
+                    State = Parser.State.Value;
                 }
             } else if (_actual.Equals('=')) {
-                if (_stuff.Status.Equals(Status.Attribute)) {
+                if (_stuff.State.Equals(Parser.State.Attribute)) {
                     OnElement();
                     _stuff.Origin = _stuff.Position + 1;
-                    State = Status.Value;
+                    State = Parser.State.Value;
                 }
             } else if (_actual.Equals(' ')) {
-                if (_stuff.Status.Equals(Status.Prename)) {
-                    State = Status.Text;
+                if (_stuff.State.Equals(Parser.State.Prename)) {
+                    State = Parser.State.Text;
                 }
-                if (_stuff.Status.Equals(Status.Name)) {
+                if (_stuff.State.Equals(Parser.State.Name)) {
                     OnElement();
                     _stuff.Origin = _stuff.Position + 1;
-                    State = Status.Attribute;
+                    State = Parser.State.Attribute;
                 }
-                if (_stuff.Status.Equals(Status.Value)) {
+                if (_stuff.State.Equals(Parser.State.Value)) {
                     OnElement();
                     _stuff.Origin = _stuff.Position + 1;
-                    State = Status.Attribute;
+                    State = Parser.State.Attribute;
                 }
             }
         }
@@ -165,8 +165,8 @@ namespace Limaki.Common.Text.HTML.Parser {
 
         public override bool Remove(int from, int to) {
             bool result = base.Remove(from, to);
-            if (result && _stuff.Status.Equals(Status.Text) == false) {
-                State = Status.Text;
+            if (result && _stuff.State.Equals(Parser.State.Text) == false) {
+                State = Parser.State.Text;
             }
             return result;
         }

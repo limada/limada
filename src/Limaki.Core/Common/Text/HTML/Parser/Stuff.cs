@@ -8,7 +8,7 @@ namespace Limaki.Common.Text.HTML.Parser {
             Position = 0;
             Origin = 0;
             TagPosition = 0;
-            Status = Status.None;
+            State = State.None;
         }
 
         public StringBuilder Text { get; set; }
@@ -22,7 +22,7 @@ namespace Limaki.Common.Text.HTML.Parser {
 
         public int TagPosition { get; set; }
 
-        public Status Status { get; set; }
+        public State State { get; set; }
 
 
 	    public string Element {

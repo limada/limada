@@ -40,7 +40,7 @@ namespace Limaki.Common.Text.HTML {
                 var doRemove = false;
                 TagParser.DoElement += stuff => {
                                            if (!doRemove)
-                                               doRemove = stuff.Status == Status.Name && stuff.Element.ToLower() == "img";
+                                               doRemove = stuff.State == Parser.State.Name && stuff.Element.ToLower() == "img";
                                        };
 
                 TagParser.DoTag += stuff => {
@@ -58,8 +58,8 @@ namespace Limaki.Common.Text.HTML {
                                            var element = stuff.Element.ToLower();
                                            if (!doRemove)
                                                doRemove = 
-                                                   stuff.Status == Status.Name && element== "span" ||
-                                                   stuff.Status == Status.Endtag && element == "/span";
+                                                   stuff.State == Parser.State.Name && element== "span" ||
+                                                   stuff.State == Parser.State.Endtag && element == "/span";
                                        };
 
                 TagParser.DoTag += stuff => {
@@ -76,8 +76,8 @@ namespace Limaki.Common.Text.HTML {
                                            var element = stuff.Element.ToLower();
                                            if (!doRemove)
                                                doRemove =
-                                                   stuff.Status == Status.Name && element == "font" ||
-                                                   stuff.Status == Status.Endtag && element == "/font";
+                                                   stuff.State == Parser.State.Name && element == "font" ||
+                                                   stuff.State == Parser.State.Endtag && element == "/font";
                                        };
 
                 TagParser.DoTag += stuff => {
@@ -94,8 +94,8 @@ namespace Limaki.Common.Text.HTML {
                                            var element = stuff.Element.ToLower();
                                            if (!doRemove)
                                                doRemove =
-                                                   stuff.Status == Status.Name && element == "strong" ||
-                                                   stuff.Status == Status.Endtag && element == "/strong";
+                                                   stuff.State == Parser.State.Name && element == "strong" ||
+                                                   stuff.State == Parser.State.Endtag && element == "/strong";
                                        };
 
                 TagParser.DoTag += stuff => {
@@ -113,7 +113,7 @@ namespace Limaki.Common.Text.HTML {
                                            var element = stuff.Element;
                                            if (!doRemove)
                                                doRemove =
-                                                   stuff.Status == Status.Commenttag && element.StartsWith("![CDATA");
+                                                   stuff.State == Parser.State.Commenttag && element.StartsWith("![CDATA");
                                        };
 
                 TagParser.DoTag += stuff => {
@@ -137,8 +137,8 @@ namespace Limaki.Common.Text.HTML {
                                            var element = stuff.Element.ToLower();
                                            if (!doRemove)
                                                doRemove =
-                                                   (stuff.Status == Status.Name && (element == "table" || element == "td" || element == "tr"|| element == "th")) ||
-                                                   (stuff.Status == Status.Endtag && (element == "/table" || element == "/td" || element == "/tr"|| element == "/th"));
+                                                   (stuff.State == Parser.State.Name && (element == "table" || element == "td" || element == "tr"|| element == "th")) ||
+                                                   (stuff.State == Parser.State.Endtag && (element == "/table" || element == "/td" || element == "/tr"|| element == "/th"));
                                        };
 
                 TagParser.DoTag += stuff => {
@@ -157,8 +157,8 @@ namespace Limaki.Common.Text.HTML {
                     var element = stuff.Element.ToLower ();
 
                     if (!firstPara)
-                        firstPara = stuff.Status == Status.Name && element == "p" ||
-                                    stuff.Status == Status.Endtag && element == "/p";
+                        firstPara = stuff.State == Parser.State.Name && element == "p" ||
+                                    stuff.State == Parser.State.Endtag && element == "/p";
                 };
 
                 TagParser.DoTag += stuff => {
@@ -175,7 +175,7 @@ namespace Limaki.Common.Text.HTML {
                 TagParser.DoElement += stuff => {
                                            var element = stuff.Tag.ToLower();
                                            if (!wasBr)
-                                               wasBr = stuff.Status == Status.Solotag && element == "br />";
+                                               wasBr = stuff.State == Parser.State.Solotag && element == "br />";
                                        };
 
                 TagParser.DoTag += stuff => {
@@ -192,8 +192,8 @@ namespace Limaki.Common.Text.HTML {
                                            var element = stuff.Element.ToLower();
                                            if (!doRemove)
                                                doRemove = 
-                                                   stuff.Status == Status.Name && element== "style" ||
-                                                   stuff.Status == Status.Endtag && element == "/style";
+                                                   stuff.State == Parser.State.Name && element== "style" ||
+                                                   stuff.State == Parser.State.Endtag && element == "/style";
                                        };
 
                 TagParser.DoTag += stuff => {
@@ -209,7 +209,7 @@ namespace Limaki.Common.Text.HTML {
                 TagParser.DoElement += stuff => {
                     var element = stuff.Element.ToLower();
                     if (!doRemove)
-                        doRemove = stuff.Status == Status.Commenttag;
+                        doRemove = stuff.State == Parser.State.Commenttag;
                 };
 
                 TagParser.DoTag += stuff => {

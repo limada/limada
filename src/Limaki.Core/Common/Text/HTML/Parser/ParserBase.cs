@@ -66,7 +66,7 @@ namespace Limaki.Common.Text.HTML.Parser {
         }
 
 
-        protected Status State { set { _stuff.Status = value; } }
+        protected State State { set { _stuff.State = value; } }
 
         public static bool Letter(char source) {
             return (source >= 'a' && source <= 'z') || (source >= 'A' && source <= 'Z');

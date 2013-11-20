@@ -5,7 +5,7 @@ namespace Limaki.Common.Text.HTML.Parser{
 	public class Tag{
 		public int Starts;
 		public int Ends;
-		public Status Status;
+		public State State;
 		public Entry Me = null;
 		public List<Attribute> Attributes = null;
 		public Tag(){
@@ -20,8 +20,8 @@ namespace Limaki.Common.Text.HTML.Parser{
 			}
 			Attributes.Add(attribute);
 		}
-		public void SetStatus(Status status){
-		    Status = status;
+		public void SetStatus(State state){
+		    State = state;
 		}
 	}
 }
