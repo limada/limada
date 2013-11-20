@@ -311,6 +311,9 @@ namespace Limaki.View.Swf {
             target.ShowHelp = source.ShowHelp;
             target.Title = source.Title;
             target.ValidateNames = source.ValidateNames;
+            var saveDialog = target as SaveFileDialog;
+            if (saveDialog != null)
+                saveDialog.OverwritePrompt = source.OverwritePrompt;
         }
 
         public static void FileDialogSetValue(FileDialogMemento target, FileDialog source) {
@@ -331,7 +334,9 @@ namespace Limaki.View.Swf {
 
             target.FileName = source.FileName;
             target.FileNames = source.FileNames;
-
+            var saveDialog = source as SaveFileDialog;
+            if (saveDialog != null)
+                target.OverwritePrompt = saveDialog.OverwritePrompt;
         }
     }
 

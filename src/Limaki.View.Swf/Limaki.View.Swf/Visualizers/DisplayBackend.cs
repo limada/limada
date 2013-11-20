@@ -11,20 +11,15 @@
  * http://www.limada.org
  * 
  */
-
-#define dragdropnew
-
 using Limaki.Common;
-using Limaki.View.DragDrop;
 using Limaki.View.Gdi.UI;
 using Limaki.View.Rendering;
-using Limaki.View.Swf.Backends;
+using Limaki.View.Swf.UI;
 using Limaki.View.UI;
 using Limaki.View.Visualizers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using Xwt;
 using Xwt.Gdi.Backend;
 using ApplicationContext = Limaki.Common.IOC.ApplicationContext;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
@@ -260,16 +255,16 @@ namespace Limaki.View.Swf.Visualizers {
                 Display.EventControler.OnMouseUp(Converter.Convert(e));
         }
 
-        #region dragdrop old
-#if dragdropold
-        protected override void OnGiveFeedback(GiveFeedbackEventArgs gfbevent) {
+        #region DragDrop
+#if SwfDragDrop
+        protected override void OnGiveFeedback(SWF.GiveFeedbackEventArgs gfbevent) {
             var EventControler = Display.EventControler as SwfEventControler;
             if (EventControler != null && Display.Data != null)
                 EventControler.OnGiveFeedback(gfbevent);
             base.OnGiveFeedback(gfbevent);
 
         }
-        protected override void OnQueryContinueDrag(QueryContinueDragEventArgs qcdevent) {
+        protected override void OnQueryContinueDrag(SWF.QueryContinueDragEventArgs qcdevent) {
             var EventControler = Display.EventControler as SwfEventControler;
             if (EventControler != null && Display.Data != null)
                 EventControler.OnQueryContinueDrag(qcdevent);
@@ -277,7 +272,7 @@ namespace Limaki.View.Swf.Visualizers {
 
         }
 
-        protected override void OnDragOver(DragEventArgs drgevent) {
+        protected override void OnDragOver(SWF.DragEventArgs drgevent) {
             var EventControler = Display.EventControler as SwfEventControler;
             if (EventControler != null && Display.Data != null)
                 EventControler.OnDragOver(drgevent);
@@ -285,7 +280,7 @@ namespace Limaki.View.Swf.Visualizers {
 
         }
 
-        protected override void OnDragDrop(DragEventArgs drgevent) {
+        protected override void OnDragDrop(SWF.DragEventArgs drgevent) {
             var EventControler = Display.EventControler as SwfEventControler;
             if (EventControler != null && Display.Data != null)
                 EventControler.OnDragDrop(drgevent);
@@ -298,11 +293,8 @@ namespace Limaki.View.Swf.Visualizers {
                 EventControler.OnDragLeave(e);
             base.OnDragLeave(e);
         }
-#endif
-#endregion
 
-        #region dragdrop
-#if dragdropnew
+#else
 
         //this is called by Control.DoDragDrop
         protected override void OnGiveFeedback (SWF.GiveFeedbackEventArgs e) {

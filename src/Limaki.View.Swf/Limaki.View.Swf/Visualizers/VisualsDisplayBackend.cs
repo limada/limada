@@ -39,7 +39,7 @@ namespace Limaki.View.Swf.Visualizers {
             var display = aDisplay;
             base.Compose(display);
 
-            if (false) {
+#if SwfDragDrop
                 var dragDrop = new VisualsDragDrop(
                     this.GraphScene,
                     display.Backend as IDragDopControl,
@@ -59,7 +59,7 @@ namespace Limaki.View.Swf.Visualizers {
                     var catcher = new DragDropCatcher<AddEdgeAction>(addEdgeAction, display.Backend as IVidgetBackend);
                     display.EventControler.Add(catcher);
                 }
-            } else {
+#else
                 var dragDrop = new VisualsDragDropAction(
                     () => display.Data,
                     display.Backend,
@@ -69,7 +69,7 @@ namespace Limaki.View.Swf.Visualizers {
                     };
 
                 display.EventControler.Add(dragDrop);
-            }
+#endif            
 
             var editor = new VisualsTextEditor (
                 this.GraphScene,
