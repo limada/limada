@@ -12,7 +12,6 @@
  */
 
 using Limada.Model;
-using Limada.Schemata;
 using Limada.VisualThings;
 using Limaki;
 using Limaki.Common;
@@ -23,13 +22,11 @@ using Limaki.Model.Content;
 using Limaki.Model.Content.IO;
 using Limaki.Reporting;
 using Limaki.Usecases;
-using Limaki.View.Layout;
 using Limaki.Viewers;
 using Limaki.Visuals;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Limada.Usecases {
 

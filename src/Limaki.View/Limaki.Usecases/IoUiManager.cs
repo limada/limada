@@ -23,6 +23,7 @@ namespace Limaki.Usecases {
             dialog.DefaultExt = "";
             dialog.AddExtension = true;
             dialog.CheckFileExists = false;
+            dialog.OverwritePrompt = true;
             dialog.CheckPathExists = true;
             dialog.AutoUpgradeEnabled = true;
             dialog.SupportMultiDottedExtensions = true;

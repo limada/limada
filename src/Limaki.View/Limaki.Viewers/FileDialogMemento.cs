@@ -29,6 +29,9 @@ namespace Limaki.Viewers {
         [DefaultValue(true)]
         public bool CheckPathExists { get; set; }
 
+        [DefaultValue(true)]
+        public bool OverwritePrompt { get; set; }
+
         [DefaultValue("")]
         public string DefaultExt { get; set; }
 
@@ -75,5 +78,7 @@ namespace Limaki.Viewers {
         public void ResetFileName () {
             SetFileName(this.FileName);
         }
+
+       
     }
 }

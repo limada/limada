@@ -167,6 +167,7 @@ namespace Limada.Usecases {
 
         public void SaveAs () {
             DefaultDialogValues(SaveFileDialog, WriteFilter);
+            SaveFileDialog.OverwritePrompt = false;
             if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
                 SaveAs(Iori.FromFileName(SaveFileDialog.FileName));
                 SaveFileDialog.ResetFileName();
@@ -188,6 +189,7 @@ namespace Limada.Usecases {
         public void ExportSceneView (IGraphScene<IVisual, IVisualEdge> scene) {
             DefaultDialogValues(SaveFileDialog, WriteFilter);
             if (scene != null && scene.HasThingGraph()) {
+                SaveFileDialog.OverwritePrompt = false;
                 if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
                     ExportSceneView(Iori.FromFileName(SaveFileDialog.FileName), scene);
                     SaveFileDialog.ResetFileName();
