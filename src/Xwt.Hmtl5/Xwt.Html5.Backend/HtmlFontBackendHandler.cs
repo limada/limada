@@ -6,11 +6,11 @@ namespace Xwt.Html5.Backend {
     public class HtmlFontBackendHandler : FontBackendHandler {
         
         public override object GetSystemDefaultFont () {
-            throw new System.NotImplementedException();
+            return new FontData { Family = "Default", Size = 10 };
         }
 
         public override System.Collections.Generic.IEnumerable<string> GetInstalledFonts () {
-            throw new System.NotImplementedException();
+            yield break;
         }
 
         public override object Create (string fontName, double size, FontStyle style, FontWeight weight, FontStretch stretch) {
