@@ -122,7 +122,9 @@ namespace Db4objects.Db4o.Internal.Handlers
 
 		public override IPreparedComparison InternalPrepareComparison(object source)
 		{
-			long sourceLong = ((long)source);
+            if (!(source is long))
+                return null;
+            long sourceLong = ((long)source);
 			return new _IPreparedComparison_102(sourceLong);
 		}
 

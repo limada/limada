@@ -60,6 +60,9 @@ namespace Db4objects.Db4o.Internal.Query.Processor
 			{
 				return prepareComparison is Null;
 			}
+            if (prepareComparison == null)
+                return false;
+
 			if (prepareComparison is PreparedArrayContainsComparison)
 			{
 				return ((PreparedArrayContainsComparison)prepareComparison).IsEqual(obj);
