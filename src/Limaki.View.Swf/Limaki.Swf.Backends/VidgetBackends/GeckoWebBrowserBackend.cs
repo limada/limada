@@ -1,43 +1,34 @@
-using System;
-using System.IO;
-using Limaki.Drawing;
-using Limaki.Viewers;
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2008 - 2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Gecko;
-using System.Windows.Forms;
-using System.Threading;
-using System.Net.Sockets;
-using System.Net;
-using System.Text;
-using System.Diagnostics;
+using Limaki.Drawing;
 using Limaki.View;
-using System.Collections.Generic;
+using Limaki.Viewers;
 using Limaki.Viewers.Vidgets;
+using System;
+using System.Net;
+using System.Threading;
+using System.Windows.Forms;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends {
-    
+
     public class GeckoWebBrowserBackend:Gecko.GeckoWebBrowser, IGeckoWebBrowserBackend, IZoomTarget, IHistoryAware {
 
-        public string XulDir(string basedir) {
-            var xulrunner = "xulrunner18.0-" + (OS.IsWin64Process ? "64" : "32");
-            foreach (var dir in new string[]{ @"Plugins\",@"..\3rdParty\bin\"}) {
-                var s = dir;
-                for (int i = 0; i <= 10; i++) {
-                    var xuldir = basedir + s + xulrunner;
-                    if (Directory.Exists(xuldir))
-                        return xuldir;
-                    s = @"..\" + s;
-                }
-            }
-            return null;
-        }
-
         public GeckoWebBrowserBackend() {
-            string xulDir = XulDir(AppDomain.CurrentDomain.BaseDirectory);
-            if (xulDir == null)
-                throw new ArgumentException("xulrunner is missing");
-            Xpcom.Initialize(xulDir);
-
+            new XulRunner().Initialize();
             this.DomKeyUp += new EventHandler<DomKeyEventArgs>(GeckoWebBrowser_DomKeyUp);
         }
 

@@ -126,6 +126,7 @@
     <Compile Include="Limaki.Swf.Backends\VidgetBackends\DigidocViewerBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Limaki.Swf.Backends\VidgetBackends\XulRunner.cs" />
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\DisplayModeToolStripBackend.cs">
       <SubType>Component</SubType>
     </Compile>
