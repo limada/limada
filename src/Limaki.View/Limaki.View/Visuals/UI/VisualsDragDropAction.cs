@@ -14,6 +14,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.UI;

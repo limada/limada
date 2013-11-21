@@ -164,6 +164,7 @@
     <Compile Include="Common\Text\MonoRTF\StyleType.cs" />
     <Compile Include="Common\Text\MonoRTF\TextMap.cs" />
     <Compile Include="Common\Text\MonoRTF\TokenClass.cs" />
+    <Compile Include="Common\Text\TextHelper.cs" />
     <Compile Include="Common\TODOAttribute.cs" />
     <Compile Include="Common\Transient.cs" />
     <Compile Include="Compression\CompressionWorker.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="Limada\Schemata\TopicSchema.cs" />
     <Compile Include="Limada\Schemata\UniqueThingAttribute.cs" />
     <Compile Include="Limada\Schemata\ViewMetaSchema.cs" />
+    <Compile Include="Model\Content.IO\HtmlContentDigger.cs" />
     <Compile Include="Model\Sink\ContentDigger.cs" />
     <Compile Include="Model\Sink\ContentInfoSink.cs" />
     <Compile Include="Model\Content.IO\ContentStreamSinkIo.cs" />

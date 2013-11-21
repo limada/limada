@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SwfDragDrop</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NoSwfDragDrop</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -63,9 +63,6 @@
     <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropConverter.cs" />
     <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropMouseBackendHandler.cs" />
     <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropVidgetBackend.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Limaki.Swf.Backends\DragDrop\VisualsDisplayDragDopBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Limaki.Swf.Backends\VidgetBackends\CanvasVidgetBackend.cs">

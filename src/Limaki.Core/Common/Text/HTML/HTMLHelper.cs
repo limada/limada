@@ -62,17 +62,5 @@ namespace Limaki.Common.Text.HTML {
 #endif
 
         }
-
-        public static bool IsUnicode(byte[] buffer) {
-            var isUnicode = false;
-            for (int i = 1; i < buffer.Length; i += 2) {
-                if (buffer[i] == 0)
-                    isUnicode = true;
-                else
-                    return false;
-            }
-            return isUnicode;
-
-        }
     }
 }

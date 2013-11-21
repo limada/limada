@@ -72,7 +72,14 @@ namespace Limaki.View.DragDrop {
     /// <summary>
     /// class to register the type values for Clipboard and DragDrop operations
     /// </summary>
-    public class TransferContentTypes : Dictionary<string, long> {}
+    public class TransferContentTypes : Dictionary<string, long> {
+        public virtual IEnumerable<TransferDataType> DataTypes {
+            get {
+                foreach (var c in this.Keys)
+                    yield return TransferDataType.FromId(c);
+            }
+        }
+    }
 
     /// <summary>
     /// class to register special SinkIo's for Clipboard and DragDrop operations

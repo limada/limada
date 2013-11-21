@@ -50,6 +50,9 @@ namespace Limaki.Common.Text.HTML.Parser {
             }
         }
 
+        /// <summary>
+        /// a tag was parsed; either <tag> or </tag>
+        /// </summary>
         public Action<Stuff> DoTag;
 
         private void OnTag() {

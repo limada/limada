@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
@@ -71,11 +72,16 @@ namespace Limaki.View.UI {
         }
 
         public bool Dropping { get; set; }
+        
+        public virtual void SetDragTarget() {
+            var targets = DragDropViz.DataManager.TransferContentTypes.DataTypes.ToArray();
+            DragDropHandler.SetDragTarget(DragDropAction.All, targets);
+        }
+
         public virtual void DragOver (DragOverEventArgs e) {
             Dropping = true;
             InprocDragDrop.Dropping = true;
-            //TODO:
-            DragDropHandler.SetDragTarget(DragDropAction.All, TransferDataType.Text);
+            SetDragTarget();
             DragDropHandler.DragOver(e);
         }
 
