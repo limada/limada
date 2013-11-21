@@ -47,6 +47,7 @@ namespace Limaki.View.Html5 {
 <html>
     <head>     
         <meta http-equiv=""X-UA-Compatible"" content=""IE=Edge""/>
+        <meta charset=""UTF-8"" />
         <style> 
             body {{ 
                     margin: 0px; 

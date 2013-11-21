@@ -24,6 +24,7 @@ namespace Limaki.View.Html5 {
         }
 
         public string Page (Action<Context> draw) {
+            paintStack = null;
             PushPaint(draw);
             Flush();
             return CanvasPage;

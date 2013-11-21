@@ -49,11 +49,15 @@ namespace Xwt.Html5.Backend {
         public object Pattern { get; set; }
         public Font Font { get; set; }
 
-        public double Angle { get; set; }
-        public double ScaleX { get; set; }
-        public double ScaleY { get; set; }
-        public double TranslateX { get; set; }
-        public double TranslateY { get; set; }
+        Matrix _ctm = null;
+        public Matrix CTM { get { return _ctm ?? (_ctm = new Matrix()); } set { _ctm = value; } }
+
+        public double Angle { set { CTM.Rotate(value); } }
+        public double ScaleX { get { return CTM.M11; } set { CTM.Scale(value,1); } }
+        public double ScaleY { get { return CTM.M22; } set { CTM.Scale(1, value); } }
+        public double TranslateX { get { return CTM.OffsetX; } set { CTM.Translate(value,0); } }
+        public double TranslateY { get { return CTM.OffsetY; } set { CTM.Translate(0,value); } }
+        
 
         public Html5Context (Html5Context c): this () {
             c.SaveTo (this, false);
@@ -73,11 +77,8 @@ namespace Xwt.Html5.Backend {
             c.Current = this.Current;
             c.Context = this.Context;
             c.Pattern = this.Pattern;
-            c.Angle = this.Angle;
-            c.ScaleX = this.ScaleX;
-            c.ScaleY = this.ScaleY;
-            c.TranslateX = this.TranslateX;
-            c.TranslateX = this.TranslateX;
+            c.CTM = new Matrix(this.CTM);
+
         }
 
         public void Save () {
@@ -98,5 +99,7 @@ namespace Xwt.Html5.Backend {
 
         }
 
+
+        
     }
 }

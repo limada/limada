@@ -198,6 +198,7 @@ namespace Xwt.Html5.Backend {
 
             var text = layout.Text;
             text = text.Replace ("\r", "").Replace ("\n", "");
+            // NO: text = System.Net.WebUtility.HtmlEncode(text);
             c.Context.CommandLine ("fillText(\"{0}\",{1},{2})",text,x.ToHtml(),y.ToHtml());
         }
 
@@ -209,13 +210,19 @@ namespace Xwt.Html5.Backend {
             var c = (Html5Context) backend;
         }
 
+        public override void ModifyCTM (object backend, Drawing.Matrix transform) {
+            var c = (Html5Context)backend;
+            c.CTM.Prepend(transform);
+        }
+
+        public override Drawing.Matrix GetCTM (object backend) {
+            var c = (Html5Context)backend;
+            return c.CTM;
+        }
+
         public void ResetTransform (object backend) {
             var c = (Html5Context) backend;
-            c.Angle = 0;
-            c.ScaleX = 1;
-            c.ScaleY = 1;
-            c.TranslateX = 0;
-            c.TranslateX = 0;
+            c.CTM.SetIdentity();
             c.Context.CommandLine ("setTransform(1, 0, 0, 1, 0, 0)");
             //c.Context.CommandLine ("resetTransform()");
         }
@@ -259,13 +266,7 @@ namespace Xwt.Html5.Backend {
             throw new NotImplementedException();
         }
 
-        public override void ModifyCTM (object backend, Drawing.Matrix transform) {
-            throw new NotImplementedException();
-        }
-
-        public override Drawing.Matrix GetCTM (object backend) {
-            throw new NotImplementedException();
-        }
+       
 
         public override bool IsPointInStroke (object backend, double x, double y) {
             throw new NotImplementedException();

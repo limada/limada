@@ -100,10 +100,6 @@
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\3rdParty\src\Skybound.Gecko.11.0\Skybound.Gecko.csproj">
-      <Project>{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}</Project>
-      <Name>Skybound.Gecko</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
       <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
       <Name>Limaki.Core</Name>

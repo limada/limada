@@ -38,6 +38,8 @@ namespace Xwt.Html5.TestApp {
             var htmlViewer = new HtmlContentViewer ();
             var browser = (Control) htmlViewer.Backend;
             browser.Dock = DockStyle.Fill;
+            htmlViewer.Clear();
+
             Action<string, string> showInBrowser = (htmlstring, uri) => {
                 var r = new WebResponse ();
                 var s = new MemoryStream ();
