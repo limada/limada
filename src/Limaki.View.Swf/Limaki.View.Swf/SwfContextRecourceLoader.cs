@@ -90,7 +90,7 @@ namespace Limaki.View.Swf {
         public static bool GeckoFailed = false;
         public IWebBrowserBackend CreateWebBrowserBackend () {
             Control _backend = null;
-            if (GeckoFailed || OS.Mono || OS.IsWin64Process) { //(true){ //
+            if (GeckoFailed || OS.Mono) { //(true) { //|| OS.IsWin64Process
                 _backend = new WebBrowserBackend();
                 GeckoFailed = true;
                 Trace.WriteLine("No Gecko");

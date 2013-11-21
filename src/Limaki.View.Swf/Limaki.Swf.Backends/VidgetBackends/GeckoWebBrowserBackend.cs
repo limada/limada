@@ -19,10 +19,11 @@ namespace Limaki.Swf.Backends {
     public class GeckoWebBrowserBackend:Gecko.GeckoWebBrowser, IGeckoWebBrowserBackend, IZoomTarget, IHistoryAware {
 
         public string XulDir(string basedir) {
+            var xulrunner = "xulrunner18.0-" + (OS.IsWin64Process ? "64" : "32");
             foreach (var dir in new string[]{ @"Plugins\",@"..\3rdParty\bin\"}) {
                 var s = dir;
                 for (int i = 0; i <= 10; i++) {
-                    var xuldir = basedir + s + @"xulrunner11.0";
+                    var xuldir = basedir + s + xulrunner;
                     if (Directory.Exists(xuldir))
                         return xuldir;
                     s = @"..\" + s;
@@ -37,13 +38,13 @@ namespace Limaki.Swf.Backends {
                 throw new ArgumentException("xulrunner is missing");
             Xpcom.Initialize(xulDir);
 
-            this.DomKeyUp += new EventHandler<GeckoDomKeyEventArgs>(GeckoWebBrowser_DomKeyUp);
+            this.DomKeyUp += new EventHandler<DomKeyEventArgs>(GeckoWebBrowser_DomKeyUp);
         }
 
-        void GeckoWebBrowser_DomKeyUp(object sender, GeckoDomKeyEventArgs e) {
-            char keyCode = Convert.ToChar (e.KeyCode);
-            if (!e.ShiftKey && ! e.AltKey && e.CtrlKey && keyCode == 'k') {
-                ZoomFactor = ZoomFactor*1.1f;
+        void GeckoWebBrowser_DomKeyUp (object sender, DomKeyEventArgs e) {
+            char keyCode = Convert.ToChar(e.KeyCode);
+            if (!e.ShiftKey && !e.AltKey && e.CtrlKey && keyCode == 'k') {
+                ZoomFactor = ZoomFactor * 1.1f;
             }
             if (!e.ShiftKey && !e.AltKey && e.CtrlKey && keyCode == 'm') {
                 ZoomFactor = ZoomFactor / 1.1f;
@@ -97,9 +98,6 @@ namespace Limaki.Swf.Backends {
             }
         }
 
-        public new System.Windows.Forms.HtmlDocument Document {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
 
         public System.IO.Stream DocumentStream {
             get {
@@ -132,14 +130,14 @@ namespace Limaki.Swf.Backends {
             //does nothing: base.Document.TextContent = content;
         }
 
-        void SetDocumentTextOverPostData(string content) {
-            // does not work:
-            byte[] buf = 
-                Encoding.Convert(Encoding.Unicode, Encoding.ASCII, Encoding.Unicode.GetBytes(content));
-            string header = "Content-Type: text/html\r\nContent-Length:"+buf.Length.ToString();
-            Navigate("http://localhost/", 0, null, buf, header);
+        //void SetDocumentTextOverPostData(string content) {
+        //    // does not work:
+        //    byte[] buf = 
+        //        Encoding.Convert(Encoding.Unicode, Encoding.ASCII, Encoding.Unicode.GetBytes(content));
+        //    string header = "Content-Type: text/html\r\nContent-Length:"+buf.Length.ToString();
+        //    Navigate("http://localhost/", 0, null, buf, header);
 
-        }
+        //}
 
         // mono-webbrowser-render
         //public void Render(string html, string uri, string contentType) {

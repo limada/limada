@@ -269,13 +269,17 @@
     <Compile Include="Xwt.Gdi\SystemColorsGdiBackend.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Geckofx-18.0\Geckofx-Core\Geckofx-Core.csproj">
+      <Project>{e925051d-665a-4192-83ba-3c8c2ffc409c}</Project>
+      <Name>Geckofx-Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\Geckofx-18.0\Geckofx-Winforms\Geckofx-Winforms.csproj">
+      <Project>{d7adc901-e1c4-480e-8f6d-b1ffd5cf87e8}</Project>
+      <Name>Geckofx-Winforms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\3rdParty\src\Skybound.Gecko.11.0\Skybound.Gecko.csproj">
-      <Project>{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}</Project>
-      <Name>Skybound.Gecko</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
       <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
