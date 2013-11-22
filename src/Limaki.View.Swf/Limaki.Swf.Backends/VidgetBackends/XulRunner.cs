@@ -35,12 +35,29 @@ namespace Limaki.Swf.Backends {
             return null;
         }
 
+        string _ProfileDirectory;
+
+        protected string ProfileDirectory {
+            get {
+                if (_ProfileDirectory == null) {
+                    _ProfileDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Path.Combine("Limada", "GeckoDefaultProfile"));
+
+                    if (!Directory.Exists(_ProfileDirectory)) {
+                        Directory.CreateDirectory(_ProfileDirectory);
+                    }
+                }
+                return _ProfileDirectory;
+            }
+        }
+
         protected static bool Running = false;
         public bool Initialize() {
             if(!Running) {
                 string xulDir = XulDir(AppDomain.CurrentDomain.BaseDirectory);
                 if (xulDir == null)
                     throw new ArgumentException("xulrunner is missing");
+
+                Xpcom.ProfileDirectory = this.ProfileDirectory;
                 Xpcom.Initialize(xulDir);
                 // this makes troubles:
                 //Application.ApplicationExit += (sender, e) => {

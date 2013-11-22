@@ -17,6 +17,7 @@ using Xwt.Drawing;
 using Limaki.View.Html5;
 
 namespace Limaki.View.Html5 {
+
     public class Html5PageWriter : Html5ContextWriter {
         
         public string Page () {
@@ -24,14 +25,11 @@ namespace Limaki.View.Html5 {
         }
 
         public string Page (Action<Context> draw) {
-            paintStack = null;
+            ClearPaint();
             PushPaint(draw);
             Flush();
             return CanvasPage;
         }
 
-        
-
-      
     }
 }

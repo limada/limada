@@ -130,9 +130,11 @@ namespace Limaki.Net.WebProxyServer {
             var result = new ResponseInfo();
 
             if (ContentIsStream && !ContentIsEmpty) {
-                Stream stream = ContentStream;
+                var stream = ContentStream;
                 if (stream is MemoryStream) {
-                    result.Data = ((MemoryStream)stream).GetBuffer();
+                    result.Data = new byte[stream.Length];
+                    // GetBuffer gives back the whole buffer, that is more than stream.Lenght
+                    Array.Copy(((MemoryStream)stream).GetBuffer(), 0, result.Data, 0, stream.Length);
                 } else {
                     result.Data = new byte[stream.Length];
                     stream.Position = 0;

@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using Limaki.Common.Collections;
+using System;
 
 namespace Limaki.Net.WebProxyServer {
     public class WebProxyContent : WebContent {
@@ -70,7 +71,9 @@ namespace Limaki.Net.WebProxyServer {
                         totalReceived += bytesReceived;
                         stream.Write(buff, 0, bytesReceived);
                     }
-                    result.Data = stream.GetBuffer();
+                    result.Data = new byte[stream.Length];
+                    // GetBuffer gives back the whole buffer, that is more than stream.Lenght
+                    Array.Copy(stream.GetBuffer(), 0, result.Data, 0, stream.Length);
                     stream.Close ();
                     result.Success = true;
                 }
