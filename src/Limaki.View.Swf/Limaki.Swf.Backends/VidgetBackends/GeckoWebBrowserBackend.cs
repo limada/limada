@@ -62,6 +62,7 @@ namespace Limaki.Swf.Backends {
         public void MakeReady() {
             if (base.Document == null) {
                 base.Navigate("about:blank");
+                
                 for (int i = 0; i < 200 && base.IsBusy; i++) {
                     Application.DoEvents();
                     Thread.Sleep(5);
@@ -70,6 +71,47 @@ namespace Limaki.Swf.Backends {
                 base.Stop();
             }
         }
+
+     
+
+        public string DocumentText {
+            get {return base.Document.TextContent;}
+            set {
+                SetDocumentTextOverAboutBlank(value);
+                //SetDocumentTextOverPostData (value);
+            }
+        }
+
+        void SetDocumentTextOverAboutBlank(string content) {
+            if (base.Document == null) {
+                base.Navigate("about:blank");
+            }
+            for (int i = 0; i < 200 && base.IsBusy; i++) {
+                Application.DoEvents();
+                Thread.Sleep(5);
+            }
+
+            //base.Document.DocumentElement.InnerHtml = content;
+
+            //does nothing: base.Document.TextContent = content;
+        }
+
+        public void Navigate (Uri url) {
+            base.Navigate(url.AbsoluteUri);
+        }
+
+        public void Refresh (System.Windows.Forms.WebBrowserRefreshOption opt) {
+            base.Refresh();
+        }
+
+       
+
+        public new Uri Url {
+            get {return base.Url;}
+            set { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        #region NotImplemented
 
         public bool AllowNavigation {
             get {
@@ -98,64 +140,6 @@ namespace Limaki.Swf.Backends {
                 throw new Exception("The method or operation is not implemented.");
             }
         }
-
-        public string DocumentText {
-            get {return base.Document.TextContent;}
-            set {
-                SetDocumentTextOverAboutBlank(value);
-                //SetDocumentTextOverPostData (value);
-            }
-        }
-
-        void SetDocumentTextOverAboutBlank(string content) {
-            if (base.Document == null) {
-                base.Navigate("about:blank");
-            }
-            for (int i = 0; i < 200 && base.IsBusy; i++) {
-                Application.DoEvents();
-                Thread.Sleep(5);
-            }
-
-            //base.Document.DocumentElement.InnerHtml = content;
-
-            //does nothing: base.Document.TextContent = content;
-        }
-
-        //void SetDocumentTextOverPostData(string content) {
-        //    // does not work:
-        //    byte[] buf = 
-        //        Encoding.Convert(Encoding.Unicode, Encoding.ASCII, Encoding.Unicode.GetBytes(content));
-        //    string header = "Content-Type: text/html\r\nContent-Length:"+buf.Length.ToString();
-        //    Navigate("http://localhost/", 0, null, buf, header);
-
-        //}
-
-        // mono-webbrowser-render
-        //public void Render(string html, string uri, string contentType) {
-
-        //    nsIWebBrowserStream stream;
-        //    if (Navigation != null) {
-        //        stream = (nsIWebBrowserStream)navigation.navigation;
-        //    } else
-        //        throw new Mono.WebBrowser.Exception(Mono.WebBrowser.Exception.ErrorCodes.Navigation);
-        //    AsciiString asciiUri = new AsciiString(uri);
-        //    nsIURI ret;
-        //    IOService.newURI(asciiUri.Handle, null, null, out ret);
-
-        //    AsciiString ctype = new AsciiString(contentType);
-
-        //    HandleRef han = ctype.Handle;
-
-        //    stream.openStream(ret, han);
-
-        //    IntPtr native_html = Marshal.StringToHGlobalAnsi(html);
-        //    stream.appendToStream(native_html, (uint)html.Length);
-        //    Marshal.FreeHGlobal(native_html);
-
-        //    stream.closeStream();
-
-        //}
-
         public string DocumentType {
             get { throw new Exception("The method or operation is not implemented."); }
         }
@@ -168,18 +152,8 @@ namespace Limaki.Swf.Backends {
         public System.Windows.Forms.WebBrowserReadyState ReadyState {
             get { throw new Exception("The method or operation is not implemented."); }
         }
-
-        public new Uri Url {
-            get {return base.Url;}
-            set { throw new Exception("The method or operation is not implemented."); }
-        }
-
         public void GoHome() {
             throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void Navigate(Uri url) {
-            base.Navigate (url.AbsoluteUri);
         }
 
         public void Navigate(string urlString, bool newWindow) {
@@ -206,10 +180,6 @@ namespace Limaki.Swf.Backends {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public void Refresh(System.Windows.Forms.WebBrowserRefreshOption opt) {
-            base.Refresh ();
-        }
-
         public void GoSearch() {
             throw new Exception("The method or operation is not implemented.");
         }
@@ -230,7 +200,7 @@ namespace Limaki.Swf.Backends {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public new event System.Windows.Forms.WebBrowserDocumentCompletedEventHandler DocumentCompleted;
+        //public new event System.Windows.Forms.WebBrowserDocumentCompletedEventHandler DocumentCompleted;
 
         public event EventHandler FileDownload;
 
@@ -241,6 +211,8 @@ namespace Limaki.Swf.Backends {
         public event System.ComponentModel.CancelEventHandler NewWindow;
 
         public new event System.Windows.Forms.WebBrowserProgressChangedEventHandler ProgressChanged;
+        
+        #endregion
 
         #endregion
 

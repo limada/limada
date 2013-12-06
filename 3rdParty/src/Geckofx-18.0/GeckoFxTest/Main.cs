@@ -35,8 +35,8 @@ namespace GeckoFxTest
 			// Uncomment the follow line to enable CustomPrompt's
 			// GeckoPreferences.User["browser.xul.error_pages.enabled"] = false;
 			
-			GeckoPreferences.User["gfx.font_rendering.graphite.enabled"] = true;			
-			
+			GeckoPreferences.User["gfx.font_rendering.graphite.enabled"] = true;
+            GeckoPreferences.User["pdfjs.disabled"] = false;
 			Application.ApplicationExit += (sender, e) => 
 			{
         		Xpcom.Shutdown();
@@ -238,6 +238,7 @@ namespace GeckoFxTest
 				filePicker.Init(browser.Window.DomWindow, new nsAString("hello"), nsIFilePickerConsts.modeOpen);
 				filePicker.AppendFilter(new nsAString("png"), new nsAString("*.png"));
 				filePicker.AppendFilter(new nsAString("html"), new nsAString("*.html"));
+                filePicker.AppendFilter(new nsAString("pdf"), new nsAString("*.pdf"));
 				if (nsIFilePickerConsts.returnOK == filePicker.Show())
 				{
 					using(nsACString str = new nsACString())

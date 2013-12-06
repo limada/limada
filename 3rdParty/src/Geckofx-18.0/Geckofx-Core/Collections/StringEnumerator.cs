@@ -7,13 +7,13 @@ namespace Gecko.Collections
 	/// <summary>
 	/// String Enumerator
 	/// </summary>
-	internal sealed class StringEnumerator
+	public sealed class StringEnumerator
 		:IEnumerator<string>
 	{
 		private nsIStringEnumerator _enumerator;
 		private string _current;
 
-		internal StringEnumerator(nsIStringEnumerator enumerator)
+		public StringEnumerator(nsIStringEnumerator enumerator)
 		{
 			_enumerator = enumerator;
 		}
@@ -62,13 +62,13 @@ namespace Gecko.Collections
 		}
 	}
 
-	internal sealed class Utf8StringEnumerator
+	public sealed class Utf8StringEnumerator
 		:IEnumerator<string>
 	{
 		private nsIUTF8StringEnumerator _enumerator;
 		private string _current;
 
-		internal Utf8StringEnumerator(nsIUTF8StringEnumerator enumerator)
+		public Utf8StringEnumerator(nsIUTF8StringEnumerator enumerator)
 		{
 			_enumerator = enumerator;
 		}
