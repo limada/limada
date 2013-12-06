@@ -6,19 +6,22 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
  */
 
+using System;
 using System.Collections.Generic;
 using Limaki.Common.Collections;
+
 namespace Limaki.Data {
-    public interface IGateway {
+
+    public interface IGateway:IDisposable {
         void Close();
         Iori Iori { get; set; }
-        string FileExtension { get; }
+
         bool IsOpen();
         bool IsClosed();
         void Open( Iori iori );

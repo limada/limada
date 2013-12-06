@@ -74,7 +74,7 @@ namespace Limaki.Data.db4o {
                         } catch (Exception e) {
                             Exception ex = new Exception(
                                 e.Message + "\nFile open failed:\t" +
-                                Iori.Path + Iori.Name + this.FileExtension,
+                                Iori.Path + Iori.Name + Iori.Extension,
                                 e);
                             throw ex;
                         }
@@ -166,10 +166,9 @@ namespace Limaki.Data.db4o {
             configuration.MarkTransient(typeof(Limaki.Common.TransientAttribute).FullName);
         }
 
-        public override string FileExtension {
-            get { return ".limo"; }
+        public override void Dispose () {
+            
         }
-
         #endregion
     }
 }

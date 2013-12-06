@@ -34,12 +34,11 @@ namespace Limaki.Data {
 
 		public abstract bool IsOpen();
         public abstract bool IsClosed();
-		public abstract string FileExtension {
-			get;
-		}
-
-		#endregion
-
 		
+	    public abstract void Dispose();
+
+	    #endregion
+
+
 	}
 }
