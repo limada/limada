@@ -74,12 +74,8 @@ namespace Limaki.Viewers.StreamViewers {
                     var viewer = viewerProvider.Supports(value.ContentType);
                     if (viewer != null) {
                         viewer.SetContent(value);
-                        if (ContentViewer != viewer) {
-                            ContentViewer = viewer;
-                            OnAttachContentViewer(viewer);
-                        }
                     }
-
+                    OnAttachContentViewer(viewer);
                 } else {
                     ContentViewer = null;
                 }
@@ -141,12 +137,9 @@ namespace Limaki.Viewers.StreamViewers {
             display.SceneFocusChanged += (s, e) => {
                 var docMan = new DigidocViz();
                 var pageContent = docMan.PageContent(e.Scene.Graph, e.Item);
-                if (pageContent != null) {
-                    PageContent = pageContent;
-                } else {
-                    PageContent = null;
-                }
-                AttachScroller(display, ContentViewer.Frontend as IDisplay);
+                PageContent = pageContent;
+                if (pageContent != null && ContentViewer != null)
+                    AttachScroller(display, ContentViewer.Frontend as IDisplay);
             };
 
             var layout = display.Layout;
