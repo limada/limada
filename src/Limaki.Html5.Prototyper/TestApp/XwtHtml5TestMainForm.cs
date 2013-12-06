@@ -21,6 +21,7 @@ using Xwt.Tests;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals;
 using Limaki.View.Visuals.Rendering;
+using Limaki.Swf.Backends;
 
 namespace Xwt.Html5.TestApp {
 
@@ -36,7 +37,7 @@ namespace Xwt.Html5.TestApp {
             var panel1 = new System.Windows.Forms.Panel { Dock = DockStyle.Left, Width = 100 };
 
             var htmlViewer = new HtmlContentViewer ();
-            var browser = (Control) htmlViewer.Backend;
+            var browser = (GeckoWebBrowserBackend) htmlViewer.Backend;
             browser.Dock = DockStyle.Fill;
             htmlViewer.Clear();
 
@@ -54,6 +55,12 @@ namespace Xwt.Html5.TestApp {
                 htmlViewer.SetContent (r, content);
 
             };
+            //works, but throws some errors in GeckoWebBrowsre (Uristring too long)
+            Action<string, string> showInBrowser1 = (htmlstring, uri) => {
+                                                       browser.LoadHtml(htmlstring);
+                                                       browser.AfterNavigate(()=>!browser.IsBusy);
+                                                   };
+
             var serverUri = htmlViewer.WebServer.Uri;
             var butt1 = new System.Windows.Forms.Button { Text = "Hello", Dock = DockStyle.Top };
             butt1.Click += (s, e) =>
@@ -123,7 +130,7 @@ namespace Xwt.Html5.TestApp {
 
             panel1.Controls.AddRange (new[] { butt7, butt6,butt5, butt4, butt3, butt2, butt1, });
 
-            this.Controls.AddRange (new[] { browser, panel1 });
+            this.Controls.AddRange (new Control[] { browser, panel1 });
 
             ClearResources();
             ApplyResources();

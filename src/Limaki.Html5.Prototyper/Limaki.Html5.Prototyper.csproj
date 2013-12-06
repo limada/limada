@@ -96,6 +96,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Geckofx-18.0\Geckofx-Core\Geckofx-Core.csproj">
+      <Project>{e925051d-665a-4192-83ba-3c8c2ffc409c}</Project>
+      <Name>Geckofx-Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\Geckofx-18.0\Geckofx-Winforms\Geckofx-Winforms.csproj">
+      <Project>{d7adc901-e1c4-480e-8f6d-b1ffd5cf87e8}</Project>
+      <Name>Geckofx-Winforms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
