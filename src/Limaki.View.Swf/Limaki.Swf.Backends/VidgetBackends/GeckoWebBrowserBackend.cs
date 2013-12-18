@@ -29,6 +29,7 @@ namespace Limaki.Swf.Backends {
 
         public GeckoWebBrowserBackend() {
             new XulRunner().Initialize();
+            Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
             this.DomKeyUp += new EventHandler<DomKeyEventArgs>(GeckoWebBrowser_DomKeyUp);
         }
 

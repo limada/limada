@@ -22,7 +22,7 @@ namespace Limaki.Swf.Backends {
     public class XulRunner {
 
         public string XulDir (string basedir) {
-            var xulrunner = "xulrunner18.0-" + (OS.IsWin64Process ? "64" : "32");
+            var xulrunner = "xulrunner22.0-" + (OS.IsWin64Process ? "64" : "32");
             foreach (var dir in new string[] { @"Plugins\", @"..\3rdParty\bin\" }) {
                 var s = dir;
                 for (int i = 0; i <= 10; i++) {
