@@ -23,7 +23,7 @@ namespace Limada.Data {
 
     public class Db4oThingGraphIo : ThingGraphIo {
 
-        public Db4oThingGraphIo (): base(new Db4oThingGraphInfo()) {
+        public Db4oThingGraphIo (): base(new Db4oThingGraphSpot()) {
             this.IoMode = Limaki.Model.Content.IO.IoMode.ReadWrite;
         }
 
@@ -35,7 +35,7 @@ namespace Limada.Data {
                 var sink = new ThingGraphContent {
                                                      Data = new Limada.Data.db4o.ThingGraph(gateway),
                                                      Source = source,
-                                                     ContentType = Db4oThingGraphInfo.Db4oThingGraphContentType,
+                                                     ContentType = Db4oThingGraphSpot.Db4oThingGraphContentType,
                                                  };
                 return sink;
             } catch (DatabaseFileLockedException ex) {

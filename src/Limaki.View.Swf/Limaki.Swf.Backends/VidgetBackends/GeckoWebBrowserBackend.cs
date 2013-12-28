@@ -14,22 +14,27 @@
 
 using Gecko;
 using Limaki.Drawing;
+using Limaki.Model.Content;
+using Limaki.Model.Content.IO;
 using Limaki.View;
 using Limaki.Viewers;
 using Limaki.Viewers.Vidgets;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using Xwt.Gdi.Backend;
+using System.Linq;
 
 namespace Limaki.Swf.Backends {
 
-    public class GeckoWebBrowserBackend:Gecko.GeckoWebBrowser, IGeckoWebBrowserBackend, IZoomTarget, IHistoryAware {
+    public class GeckoWebBrowserBackend:Gecko.GeckoWebBrowser, IGeckoWebBrowserBackend, IZoomTarget, IHistoryAware, IContentSpec {
 
         public GeckoWebBrowserBackend() {
             new XulRunner().Initialize();
             Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
+            //Gecko.GeckoPreferences.Default["pdfjs.disabled"] = false;
             this.DomKeyUp += new EventHandler<DomKeyEventArgs>(GeckoWebBrowser_DomKeyUp);
         }
 
@@ -263,7 +268,50 @@ namespace Limaki.Swf.Backends {
 
         #endregion
 
+        #region Workarounds
 
+        /// <summary>
+        /// GeckoWebBrowser doesnt call OnEnter, OnLeave
+        /// </summary>
+        /// <param name="m"></param>
+        protected override void WndProc (ref Message m) {
+
+            base.WndProc(ref m);
+            
+            const int WM_GETDLGCODE = 0x87;
+            const int DLGC_WANTALLKEYS = 0x4;
+            const int WM_MOUSEACTIVATE = 0x21;
+            const int MA_ACTIVATE = 0x1;
+            const int WM_IME_SETCONTEXT = 0x0281;
+            const int WM_PAINT = 0x000F;
+            const int WM_SETFOCUS = 0x0007;
+            const int WM_KILLFOCUS = 0x0008;
+
+
+            const int ISC_SHOWUICOMPOSITIONWINDOW = unchecked((int)0x80000000);
+            if (!DesignMode) {
+                IntPtr focus;
+                switch (m.Msg) {
+                    case WM_KILLFOCUS:
+                        base.OnLeave(new EventArgs());
+                        break;
+                    case WM_SETFOCUS:
+                    case WM_MOUSEACTIVATE:
+                        base.OnGotFocus(new EventArgs());
+                        break;
+                    case WM_IME_SETCONTEXT:
+                        if (WebBrowserFocus != null) {
+                            if (m.WParam == IntPtr.Zero)
+                                base.OnLeave(new EventArgs());
+                            else
+                                base.OnGotFocus(new EventArgs());
+                        }
+                        break;
+                }
+            }
+        }
+
+        #endregion
         #region IVidgetBackend-Implementation
 
         public WebBrowserVidget Frontend { get; protected set; }
@@ -288,5 +336,16 @@ namespace Limaki.Swf.Backends {
         Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
+
+        IEnumerable<ContentInfo> _supportedContents = null;
+        public IEnumerable<ContentInfo> ContentSpecs {
+            get {
+                return _supportedContents ?? (_supportedContents =
+                    new HtmlContentSpot().ContentSpecs
+                    .Union(new PdfContentSpot().ContentSpecs)
+                    .ToArray()
+                );
+            }
+        }
     }
 }

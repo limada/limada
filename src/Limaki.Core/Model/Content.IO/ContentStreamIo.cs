@@ -18,9 +18,9 @@ using System.IO;
 
 namespace Limaki.Model.Content.IO {
 
-    public class ContentStreamSinkIo : StreamSinkIo, ISink<Uri, Content<Stream>>, ISink<Content<Stream>, Uri> {
+    public class ContentStreamIo : StreamIo, ISink<Uri, Content<Stream>>, ISink<Content<Stream>, Uri> {
 
-        protected ContentStreamSinkIo (ContentInfoSink supportedContents) : base(supportedContents) { } 
+        protected ContentStreamIo (ContentDetector detector) : base(detector) { } 
 
         public virtual Content<Stream> Read (Stream stream, ContentInfo info) {
             if (info != null) {
@@ -40,11 +40,11 @@ namespace Limaki.Model.Content.IO {
                 var filename = IoUtils.UriToFileName(source);
                 var file = new FileStream(filename, FileMode.Open);
 
-                result = Read(file, InfoSink.Use(file));
+                result = Read(file, Detector.Use(file));
 
                 // test if there is a provider with file's extension:
                 if (result == null) {
-                    var info = InfoSink.Info(Path.GetExtension(filename).Replace(".", ""));
+                    var info = Detector.Find(Path.GetExtension(filename).Replace(".", ""));
                     if (info.Magics == null || info.Magics.Length == 0) {
                         result = Read(file, info);
                     }

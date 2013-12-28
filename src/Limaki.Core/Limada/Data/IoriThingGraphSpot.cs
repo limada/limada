@@ -24,8 +24,8 @@ using System.Linq;
 
 namespace Limada.Data {
 
-    public class IoriThingGraphInfo : ContentInfoSink {
-        public IoriThingGraphInfo (): base(
+    public class IoriThingGraphSpot : ContentDetector {
+        public IoriThingGraphSpot (): base(
             new ContentInfo[] {
                                   new ContentInfo(
                                       "Connection to Limada Things",
@@ -46,7 +46,7 @@ namespace Limada.Data {
     /// </summary>
     public class IoriThingGraphIo : ThingGraphIo {
 
-        public IoriThingGraphIo (): base(new IoriThingGraphInfo()) {
+        public IoriThingGraphIo (): base(new IoriThingGraphSpot()) {
             this.IoMode = Limaki.Model.Content.IO.IoMode.Read;
         }
 
@@ -56,7 +56,7 @@ namespace Limada.Data {
                 return _thingGraphIoManager ?? (_thingGraphIoManager =
                                                 new IoManager<Iori, ThingGraphContent> {
                                                     Progress = this.Progress,
-                                                    DefaultExtension = this.InfoSink.SupportedContents.First().Extension,
+                                                    DefaultExtension = this.Detector.ContentSpecs.First().Extension,
                                                 });
             }
         }

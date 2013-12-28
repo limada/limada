@@ -17,8 +17,8 @@ using System.Text;
 
 namespace Limaki.Model.Content.IO {
 
-    public class RtfContentInfo : ContentInfoSink {
-        public RtfContentInfo()
+    public class RtfContentSpot : ContentDetector {
+        public RtfContentSpot()
             : base(
                 new ContentInfo[] {
                                       new ContentInfo(
@@ -33,8 +33,10 @@ namespace Limaki.Model.Content.IO {
                 ) {}
     }
 
-    public class RtfContentStreamIo : ContentStreamSinkIo {
-        public RtfContentStreamIo () : base(new RtfContentInfo()) { }
+    public class RtfContentStreamIo : ContentStreamIo {
+        public RtfContentStreamIo () : base(new RtfContentSpot()) {
+            this.IoMode = IO.IoMode.ReadWrite;
+        }
     }
 
    

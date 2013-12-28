@@ -79,7 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limada.Data\Data\db4o\Db4oRepairer.cs" />
-    <Compile Include="Limada.Data\Db4oThingGraphInfo.cs" />
+    <Compile Include="Limada.Data\Db4oThingGraphSpot.cs" />
     <Compile Include="Limada.Data\Db4oThingGraphIo.cs" />
     <Compile Include="Limaki.Data\db4o\Gateway.cs" />
     <Compile Include="Limaki.Data\db4o\Graph.cs" />

@@ -18,7 +18,6 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Reflection;
 using System.Drawing;
-using LinqKit;
 using System.Linq;
 using Xwt.Gdi.Backend;
 using Limaki.Viewers;

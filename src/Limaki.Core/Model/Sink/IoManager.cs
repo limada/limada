@@ -40,9 +40,9 @@ namespace Limaki.Model.Content.IO {
         public Func<TSink> SinkOut { get; set; }
 
         /// <summary>
-        /// called after a SinkIo is found, and before using it
+        /// called after a ContentIo is found, and before using it
         /// </summary>
-        public Action<ISinkIo<TSource>> ConfigureSinkIo { get; set; }
+        public Action<IContentIo<TSource>> ConfigureSinkIo { get; set; }
 
         public string DefaultExtension { get; set; }
         public Action<string, int, int> Progress { get; set; }
@@ -50,13 +50,13 @@ namespace Limaki.Model.Content.IO {
         private IoProvider<TSource, TSink> _provider = null;
         public IoProvider<TSource, TSink> Provider { get { return _provider ?? (_provider = Registry.Pool.TryGetCreate<IoProvider<TSource, TSink>>()); } }
 
-        #region providing SinkIo
+        #region providing ContentIo
 
-        public virtual ISinkIo<TSource> GetSinkIO(Iori iori, IoMode mode) {
+        public virtual IContentIo<TSource> GetSinkIO(Iori iori, IoMode mode) {
             return GetSinkByExtension(iori.Extension, mode);
         }
 
-        public virtual ISinkIo<TSource> GetSinkIO(Uri uri, IoMode mode) {
+        public virtual IContentIo<TSource> GetSinkIO(Uri uri, IoMode mode) {
             if (uri.IsFile) {
                 var filename = IoUtils.UriToFileName(uri);
                 return GetSinkByExtension(Path.GetExtension(filename).Trim('.'), mode);
@@ -64,7 +64,7 @@ namespace Limaki.Model.Content.IO {
             return null;
         }
 
-        public virtual ISinkIo<TSource> GetSinkByExtension(string extension, IoMode mode) {
+        public virtual IContentIo<TSource> GetSinkByExtension(string extension, IoMode mode) {
             var result = Provider.Find(extension.ToLower(), mode);
             this.AttachProgress(result as IProgress);
             return result;
@@ -79,7 +79,7 @@ namespace Limaki.Model.Content.IO {
         public virtual ContentInfo GetContentInfo(Content stream) {
             var sink = Provider.Find(stream.ContentType);
             if (sink != null) {
-                return sink.InfoSink.SupportedContents.Where(e => e.ContentType == stream.ContentType).First();
+                return sink.Detector.ContentSpecs.Where(e => e.ContentType == stream.ContentType).First();
             }
             return null;
         }
@@ -106,7 +106,7 @@ namespace Limaki.Model.Content.IO {
             string defaultFilter = null;
             foreach (var sink in Provider) {
                 if (sink.IoMode.HasFlag(mode)) {
-                    foreach (var info in sink.InfoSink.SupportedContents) {
+                    foreach (var info in sink.Detector.ContentSpecs) {
                         string ext = null;
                         var f = GetFilter(info, out ext);
 

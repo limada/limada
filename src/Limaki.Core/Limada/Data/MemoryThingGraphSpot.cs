@@ -17,8 +17,8 @@ using Limaki.Model.Content.IO;
 
 namespace Limada.Data {
 
-    public class MemoryThingGraphInfo : ContentInfoSink {
-        public MemoryThingGraphInfo ()
+    public class MemoryThingGraphSpot : ContentDetector {
+        public MemoryThingGraphSpot ()
             : base(
                 new ContentInfo[] {
                                   new ContentInfo(

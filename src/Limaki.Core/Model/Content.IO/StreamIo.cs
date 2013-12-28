@@ -20,20 +20,20 @@ using Limaki.Model.Content;
 
 namespace Limaki.Model.Content.IO {
 
-    public class StreamSinkIo : SinkIo<Stream>, ISink<Uri, Stream>, ISink<Stream, Uri> {
+    public class StreamIo : ContentIo<Stream>, ISink<Uri, Stream>, ISink<Stream, Uri> {
 
-        protected StreamSinkIo(ContentInfoSink supportedContents): base(supportedContents) {}
+        protected StreamIo(ContentDetector detector): base(detector) {}
 
         public override ContentInfo Use(Stream source) {
-            return InfoSink.Use(source);
+            return Detector.Use(source);
         }
 
         public override ContentInfo Use(Stream source, ContentInfo sink) {
-            return InfoSink.Use(source, sink);
+            return Detector.Use(source, sink);
         }
 
         public override bool Supports(Stream source) {
-            return InfoSink.Supports(source);
+            return Detector.Supports(source);
         }
 
         public virtual Stream Read (Uri uri) {

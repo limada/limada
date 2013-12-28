@@ -23,9 +23,9 @@ using Limaki.Common.Text;
 
 namespace Limaki.Model.Content.IO {
 
-    public class HtmlContentInfo : ContentInfoSink {
+    public class HtmlContentSpot : ContentDetector {
 
-        public HtmlContentInfo (): base (
+        public HtmlContentSpot (): base (
 
                 new ContentInfo[]{
                                  new ContentInfo(
@@ -67,14 +67,14 @@ namespace Limaki.Model.Content.IO {
                 s.Contains("<html") ||
                 s.Contains("<head") ||
                 s.Contains("<body")) {
-                    result = SupportedContents.First(t => t.ContentType == ContentTypes.HTML);
+                    result = ContentSpecs.First(t => t.ContentType == ContentTypes.HTML);
             }
 
             if (
                 s.Contains("<!doctype xhtml") ||
                 s.Contains("<xhtml")
                 ) {
-                    result = SupportedContents.First(t => t.ContentType == XHTML);
+                    result = ContentSpecs.First(t => t.ContentType == XHTML);
             }
 
             stream.Position = oldPos;
@@ -83,7 +83,9 @@ namespace Limaki.Model.Content.IO {
 
     }
 
-    public class HtmlContentStreamIo : ContentStreamSinkIo {
-        public HtmlContentStreamIo (): base(new HtmlContentInfo()) {}
+    public class HtmlContentStreamIo : ContentStreamIo {
+        public HtmlContentStreamIo () : base(new HtmlContentSpot()) {
+            this.IoMode = IO.IoMode.ReadWrite;
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace Limada.Data {
 
     public class XmlThingGraphIo : ThingGraphIo {
 
-        public XmlThingGraphIo (): base(new XmlThingGraphInfo()) {
+        public XmlThingGraphIo (): base(new XmlThingGraphSpot()) {
             this.IoMode = Limaki.Model.Content.IO.IoMode.ReadWrite;
         }
 
@@ -39,7 +39,7 @@ namespace Limada.Data {
                 } else {
                     thingGraph = new ThingGraph();
                 }
-                return new ThingGraphContent { Data = thingGraph, Source = source, ContentType = XmlThingGraphInfo.ContentType };
+                return new ThingGraphContent { Data = thingGraph, Source = source, ContentType = XmlThingGraphSpot.ContentType };
 
             } catch (Exception ex) {
                 Registry.Pool.TryGetCreate<IExceptionHandler>()

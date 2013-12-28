@@ -18,8 +18,8 @@ using System.Text;
 
 namespace Limaki.Model.Content.IO {
 
-    public class PdfContentInfo : ContentInfoSink {
-        public PdfContentInfo(): base(
+    public class PdfContentSpot : ContentDetector {
+        public PdfContentSpot(): base(
             new ContentInfo[] {
                                   new ContentInfo(
                                       "Portable Document Format",
@@ -35,8 +35,10 @@ namespace Limaki.Model.Content.IO {
         public static long PdfContentType = unchecked((long) 0x90b88c3977443860);
     }
 
-    public class PdfContentStreamIo : ContentStreamSinkIo {
-        public PdfContentStreamIo () : base(new PdfContentInfo()) { }
+    public class PdfContentStreamIo : ContentStreamIo {
+        public PdfContentStreamIo (): base(new PdfContentSpot()) {
+            this.IoMode = IO.IoMode.ReadWrite;
+        }
     }
 
 }

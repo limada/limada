@@ -23,7 +23,7 @@ namespace Limaki.Model.Content.IO {
 
     public class HtmlContentDigger : ContentDigger {
 
-        private static HtmlContentInfo _info = new HtmlContentInfo();
+        private static HtmlContentSpot _spot = new HtmlContentSpot();
 
         public HtmlContentDigger ()
             : base() {
@@ -31,7 +31,7 @@ namespace Limaki.Model.Content.IO {
         }
 
         protected virtual Content<Stream> Digg (Content<Stream> source, Content<Stream> sink) {
-            if (!_info.Supports(source.ContentType))
+            if (!_spot.Supports(source.ContentType))
                 return sink;
             var buffer = new byte[source.Data.Length];
             source.Data.Read(buffer, 0, buffer.Length);

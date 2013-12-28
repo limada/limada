@@ -11,7 +11,7 @@ using System.Linq;
 namespace Limada.Tests.ThingGraphs {
     public static class ThingGraphIoExtensions {
         public static string Extension(this ThingGraphIo source) {
-            return "."+source.InfoSink.SupportedContents.First().Extension;
+            return "."+source.Detector.ContentSpecs.First().Extension;
         }
     }
     public class ThingGraphTestBase : DomainTest {

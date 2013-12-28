@@ -2,8 +2,9 @@ using Limaki.Model.Content;
 using Limaki.Model.Content.IO;
 
 namespace Limada.Data {
-    public class Db4oThingGraphInfo : ContentInfoSink {
-        public Db4oThingGraphInfo ()
+
+    public class Db4oThingGraphSpot : ContentDetector {
+        public Db4oThingGraphSpot ()
             : base(
                 new ContentInfo[] {
                                       new ContentInfo(

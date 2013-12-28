@@ -8,7 +8,12 @@ using System.Text;
 
 namespace Limaki.Model.Content.IO {
 
+    /// <summary>
+    /// a ContentDigger analyses the source content and 
+    /// adds information 
+    /// </summary>
     public interface IContentDigger : ISink<Content<Stream>, Content<Stream>> { }
+
 
     public class ContentDigger : IContentDigger {
         public ContentDigger () { }

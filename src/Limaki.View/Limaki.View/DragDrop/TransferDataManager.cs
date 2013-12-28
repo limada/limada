@@ -24,25 +24,25 @@ namespace Limaki.View.DragDrop {
         private TransferContentTypes _transferContentTypes;
         public TransferContentTypes TransferContentTypes { get { return _transferContentTypes ?? (_transferContentTypes = Registry.Pool.TryGetCreate<TransferContentTypes>()); } }
 
-        public virtual IEnumerable<Tuple<TransferDataType,ISinkIo<Stream>>> SinksOf (IEnumerable<TransferDataType> sources) {
+        public virtual IEnumerable<Tuple<TransferDataType,IContentIo<Stream>>> SinksOf (IEnumerable<TransferDataType> sources) {
             foreach (var source in sources) {
                 var sourceId = source.Id;
                 long contentType = 0;
-                Func<ISinkIo<Stream>, bool> lookUp = null;
+                Func<IContentIo<Stream>, bool> lookUp = null;
                 if (TransferContentTypes.TryGetValue(sourceId.ToLower(), out contentType)) {
-                    lookUp = sinkIo => sinkIo.InfoSink.SupportedContents
+                    lookUp = sinkIo => sinkIo.Detector.ContentSpecs
                         .Any(info => info.ContentType == contentType);
                 } else {
-                    lookUp = sinkIo => sinkIo.InfoSink.SupportedContents
+                    lookUp = sinkIo => sinkIo.Detector.ContentSpecs
                         .Any(info => info.MimeType == sourceId);
                 }
                 var done = new Set<long>();
                 foreach (var sinkIo in TransferContentProvider.Where(lookUp)) {
-                    done.AddRange(sinkIo.InfoSink.SupportedContents.Select(info => info.ContentType));
+                    done.AddRange(sinkIo.Detector.ContentSpecs.Select(info => info.ContentType));
                     yield return Tuple.Create(source,sinkIo);
                 }
                 foreach (var sinkIo in ContentProvider.Where(lookUp)
-                    .Where(io => ! io.InfoSink.SupportedContents.Any(info => done.Contains(info.ContentType)))) {
+                    .Where(io => ! io.Detector.ContentSpecs.Any(info => done.Contains(info.ContentType)))) {
                         yield return Tuple.Create(source, sinkIo);
                 }
             }
@@ -82,7 +82,7 @@ namespace Limaki.View.DragDrop {
     }
 
     /// <summary>
-    /// class to register special SinkIo's for Clipboard and DragDrop operations
+    /// class to register special ContentIo's for Clipboard and DragDrop operations
     /// they override the common IoProvider<Stream, Content<Stream>>
     /// </summary>
     public class TransferContentProvider:IoProvider<Stream, Content<Stream>> {}

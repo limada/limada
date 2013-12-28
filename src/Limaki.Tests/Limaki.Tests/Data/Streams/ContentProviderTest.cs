@@ -18,7 +18,7 @@ namespace Limaki.Tests.Data.Streams {
             return IoUtils.FindSubDirInRootPath("TestData") + Path.DirectorySeparatorChar;
         }
 
-        ISinkIo<Stream> FindProvider (long streamType) {
+        IContentIo<Stream> FindProvider (long streamType) {
             var provider = Registry.Pool.TryGetCreate<IoProvider<Stream,Content<Stream>>>();
             return provider.Find(streamType);
         }

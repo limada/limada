@@ -19,55 +19,28 @@ using System.Linq;
 using Limaki.Model.Content;
 
 namespace Limaki.Model.Content.IO {
+    /// <summary>
+    /// gives back a ContentInfo describing the stream
+    /// if the stream is supported by ContentSpecs
+    /// wording: detector, spotter, finder
+    /// </summary>
+    public class ContentDetector : ContentSpec, ISink<Stream, ContentInfo>  {
 
-    public class ContentInfoSink : ISink<Stream, ContentInfo> {
-
-        protected ContentInfoSink (IEnumerable<ContentInfo> supportedContents) {
-            this.SupportedContents = supportedContents;
-        }
-
-        public virtual IEnumerable<ContentInfo> SupportedContents { get; protected set; }
+        protected ContentDetector (IEnumerable<ContentInfo> specs) : base(specs) { }
 
         #region ContentInfo handling
-
-        protected bool? _streamHasMagics = null;
-        public virtual bool SupportsMagics {
-            get {
-                if (!_streamHasMagics.HasValue) {
-                    _streamHasMagics = SupportedContents.Any(info => info.Magics != null && info.Magics.Count() > 0);
-                }
-                return _streamHasMagics.Value;
-            }
-        }
 
         public virtual ContentInfo Use (Stream stream) {
             if (!SupportsMagics)
                 return null;
-            return SupportedContents
+            return ContentSpecs
                 .Where(info => info.Magics != null)
                 .Where(info => info.Magics.Any(magic => HasMagic(stream, magic.Bytes, magic.Offset)))
                 .FirstOrDefault();
         }
 
-        public virtual ContentInfo Info (string extension) {
-            extension = extension.ToLower().TrimStart('.');
-            return SupportedContents.Where(type => type.Extension == extension).FirstOrDefault();
-        }
-
-        public virtual ContentInfo Info (long contentType) {
-            return SupportedContents.Where(type => type.ContentType == contentType).FirstOrDefault();
-        }
-
-        public virtual bool Supports (string extension) {
-            return Info(extension) != null;
-        }
-
         public virtual bool Supports (Stream stream) {
             return Use(stream) != null;
-        }
-
-        public virtual bool Supports (long contentType) {
-            return Info(contentType) != null;
         }
 
         protected virtual bool BuffersAreEqual (byte[] a, byte[] b) {

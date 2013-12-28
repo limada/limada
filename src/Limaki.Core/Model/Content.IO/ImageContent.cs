@@ -19,8 +19,8 @@ using System.Text;
 
 namespace Limaki.Model.Content.IO {
 
-    public class ImageContentInfo : ContentInfoSink {
-        public ImageContentInfo (): base(
+    public class ImageContentSpot : ContentDetector {
+        public ImageContentSpot (): base(
 
                 new ContentInfo[]{
                                      new ContentInfo(
@@ -71,8 +71,10 @@ namespace Limaki.Model.Content.IO {
         
     }
 
-    public class ImageContentStreamIo : ContentStreamSinkIo {
-        public ImageContentStreamIo () : base(new ImageContentInfo()) { }
+    public class ImageContentStreamIo : ContentStreamIo {
+        public ImageContentStreamIo() : base(new ImageContentSpot()) {
+            this.IoMode = IO.IoMode.ReadWrite;
+        }
     }
-
 }
+

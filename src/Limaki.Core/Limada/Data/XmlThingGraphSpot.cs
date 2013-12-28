@@ -16,8 +16,8 @@ using Limaki.Model.Content;
 using Limaki.Model.Content.IO;
 
 namespace Limada.Data {
-    public class XmlThingGraphInfo : ContentInfoSink {
-        public XmlThingGraphInfo () : base(
+    public class XmlThingGraphSpot : ContentDetector {
+        public XmlThingGraphSpot () : base(
             new ContentInfo[] {
                                   new ContentInfo(
                                       "Limada Things (XML)",

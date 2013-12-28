@@ -18,22 +18,22 @@ using System;
 
 namespace Limaki.Model.Content.IO {
 
-    public interface ISinkIo<TSource> : ISink<TSource, ContentInfo>, IProgress {
+    public interface IContentIo<TSource> : ISink<TSource, ContentInfo>, IProgress {
 
         IoMode IoMode { get; }
-        ContentInfoSink InfoSink { get; }
+        ContentDetector Detector { get; }
         bool Supports(TSource source);
 
         Action<string, int, int> Progress { get; set; }
     }
 
-    public abstract class SinkIo<TSource> : ISinkIo<TSource> {
-        protected SinkIo (ContentInfoSink supportedContents) {
-            this.InfoSink = supportedContents;
+    public abstract class ContentIo<TSource> : IContentIo<TSource> {
+        protected ContentIo (ContentDetector detector) {
+            this.Detector = detector;
         }
 
         public virtual IoMode IoMode { get; protected set; }
-        public virtual ContentInfoSink InfoSink { get; protected set; }
+        public virtual ContentDetector Detector { get; protected set; }
         public Action<string, int, int> Progress { get; set; }
 
         public abstract bool Supports(TSource source);

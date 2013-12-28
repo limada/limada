@@ -217,7 +217,7 @@ namespace Limada.Usecases.Cms {
                 if (info != null)
                     mimeType = info.MimeType;
                 else {
-                    info = sink.InfoSink.Info(thing.StreamType);
+                    info = sink.Detector.Find(thing.StreamType);
                     mimeType = info.MimeType;
                 }
             }

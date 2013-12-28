@@ -21,6 +21,7 @@ using Limaki.Model.Content;
 using Limaki.Net.WebProxyServer;
 using Limaki.View;
 using Limaki.Viewers.Vidgets;
+using System.Linq;
 
 namespace Limaki.Viewers.StreamViewers {
 
@@ -43,6 +44,10 @@ namespace Limaki.Viewers.StreamViewers {
         public override IVidgetBackend Backend { get { return WebBrowser.Backend; } }
 
         public override bool Supports (long streamType) {
+            var supporter = WebBrowser.Backend as IContentSpec;
+            if (supporter != null)
+                return supporter.ContentSpecs.Any(i => i.ContentType == streamType);
+
             return streamType == ContentTypes.HTML;
         }
 

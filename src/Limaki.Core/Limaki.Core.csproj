@@ -109,17 +109,7 @@
     <Compile Include="Common\IOC\IContextRecourceLoader.cs" />
     <Compile Include="Common\IOC\IBackendContextRecourceLoader.cs" />
     <Compile Include="Common\IPool.cs" />
-    <Compile Include="Common\LinqKit\ExpandableQuery.cs" />
-    <Compile Include="Common\LinqKit\ExpressionExpander.cs" />
-    <Compile Include="Common\LinqKit\ExpressionVisitor.cs" />
-    <Compile Include="Common\LinqKit\Extensions.cs" />
-    <Compile Include="Common\LinqKit\Linq.cs" />
-    <Compile Include="Common\LinqKit\PredicateBuilder.cs" />
     <Compile Include="Common\Message.cs" />
-    <Compile Include="Common\Mono.Net.3.0\Mono.System.Actions.cs" />
-    <Compile Include="Common\Mono.Net.3.0\Mono.System.Funcs.cs" />
-    <Compile Include="Common\Mono.Net.4.0\Tuple.cs" />
-    <Compile Include="Common\Mono.Net.4.0\Tuples.cs" />
     <Compile Include="Common\Pair.cs" />
     <Compile Include="Common\Pool.cs" />
     <Compile Include="Common\Progress.cs" />
@@ -233,15 +223,15 @@
     <Compile Include="Graphs\MultiDictionaryGraph.cs" />
     <Compile Include="Limada\AppResourceLoader.cs" />
     <Compile Include="Limada\Common\Isaac.cs" />
-    <Compile Include="Limada\Data\IoriThingGraphInfo.cs" />
+    <Compile Include="Limada\Data\IoriThingGraphSpot.cs" />
     <Compile Include="Limada\Data\IThingGraphRepair.cs" />
-    <Compile Include="Limada\Data\MemoryThingGraphInfo.cs" />
+    <Compile Include="Limada\Data\MemoryThingGraphSpot.cs" />
     <Compile Include="Limada\Data\MemoryThingGraphIo.cs" />
     <Compile Include="Limada\Data\ThingGraphContent.cs" />
     <Compile Include="Limada\Data\ThingGraphExporter.cs" />
     <Compile Include="Limada\Data\ThingGraphIo.cs" />
     <Compile Include="Limada\Data\ThingGraphMerger.cs" />
-    <Compile Include="Limada\Data\XmlThingGraphInfo.cs" />
+    <Compile Include="Limada\Data\XmlThingGraphSpot.cs" />
     <Compile Include="Limada\Data\XmlThingGraphIo.cs" />
     <Compile Include="Limada\Model\ByteStreamWrapper.cs" />
     <Compile Include="Common\DataComparer.cs" />
@@ -277,17 +267,18 @@
     <Compile Include="Limada\Schemata\ViewMetaSchema.cs" />
     <Compile Include="Model\Content.IO\HtmlContentDigger.cs" />
     <Compile Include="Model\Sink\ContentDigger.cs" />
-    <Compile Include="Model\Sink\ContentInfoSink.cs" />
-    <Compile Include="Model\Content.IO\ContentStreamSinkIo.cs" />
+    <Compile Include="Model\Sink\ContentDetector.cs" />
+    <Compile Include="Model\Content.IO\ContentStreamIo.cs" />
+    <Compile Include="Model\Content\ContentSpec.cs" />
     <Compile Include="Model\Sink\IoManager.cs" />
     <Compile Include="Model\Sink\IoProvider.cs" />
-    <Compile Include="Model\Content.IO\StreamSinkIo.cs" />
+    <Compile Include="Model\Content.IO\StreamIo.cs" />
     <Compile Include="Model\Content.IO\HtmlContent.cs" />
     <Compile Include="Model\Content.IO\ImageContent.cs" />
     <Compile Include="Model\Sink\IoMode.cs" />
     <Compile Include="Model\Sink\IoUriManager.cs" />
     <Compile Include="Model\Sink\ISink.cs" />
-    <Compile Include="Model\Sink\ISinkIo.cs" />
+    <Compile Include="Model\Sink\IContentIo.cs" />
     <Compile Include="Model\Content.IO\PdfContent.cs" />
     <Compile Include="Model\Content.IO\RtfContent.cs" />
     <Compile Include="Model\Sink\SinkExtensions.cs" />
@@ -304,14 +295,12 @@
     <Compile Include="Model\Content\ContentTypes.cs" />
     <Compile Include="Model\Sink\SinkProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Common\Mono.Net.3.0\Mono.HashSet3.cs" />
     <Compile Include="Common\IOUtils.cs" />
     <Compile Include="Common\ByteUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Common\Text\MonoRTF\ChangeLog" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

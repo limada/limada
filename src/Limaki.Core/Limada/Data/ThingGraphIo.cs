@@ -21,17 +21,17 @@ using Limaki.Data;
 
 namespace Limada.Data {
 
-    public abstract class ThingGraphIo : SinkIo<Iori>, ISink<Iori,ThingGraphContent>, ISink<ThingGraphContent, Iori> {
+    public abstract class ThingGraphIo : ContentIo<Iori>, ISink<Iori,ThingGraphContent>, ISink<ThingGraphContent, Iori> {
 
-        protected ThingGraphIo(ContentInfoSink supportedContents) : base(supportedContents) {}
+        protected ThingGraphIo(ContentDetector detector) : base(detector) {}
 
         public override bool Supports (Iori source) {
-            return InfoSink.Supports(source.Extension);
+            return Detector.Supports(source.Extension);
         }
 
         public override ContentInfo Use (Iori source) {
             if (Supports(source))
-                return InfoSink.SupportedContents.First();
+                return Detector.ContentSpecs.First();
             return null;
         }
 

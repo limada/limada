@@ -29,7 +29,7 @@ using Id = System.Int64;
 
 namespace Limada.Data.db4o {
 
-    public class Db4oRepairer : SinkIo<IThingGraphRepair>, ISink<Iori, IThingGraph> {
+    public class Db4oRepairer : ContentIo<IThingGraphRepair>, ISink<Iori, IThingGraph> {
 
         protected StringWriter Log { get; set; }
         public void ReportDetail(string message) {
@@ -191,17 +191,17 @@ namespace Limada.Data.db4o {
           
         }
 
-        public Db4oRepairer (): base(new Db4oThingGraphInfo()) {
+        public Db4oRepairer (): base(new Db4oThingGraphSpot()) {
             this.IoMode = Limaki.Model.Content.IO.IoMode.Read;
         }
 
         public override bool Supports (IThingGraphRepair source) {
-            return this.InfoSink.Supports(source.Iori.Extension);
+            return this.Detector.Supports(source.Iori.Extension);
         }
 
         public override ContentInfo Use (IThingGraphRepair source) {
             if (Supports(source))
-                return InfoSink.SupportedContents.First();
+                return Detector.ContentSpecs.First();
             return null;
         }
 

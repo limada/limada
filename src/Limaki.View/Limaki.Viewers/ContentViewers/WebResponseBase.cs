@@ -25,8 +25,8 @@ namespace Limaki.Viewers.StreamViewers {
 
     public class WebResponseBase {
 
-        ContentInfos _contentInfos = null;
-        protected ContentInfos ContentInfos { get { return _contentInfos ?? (_contentInfos = Registry.Pool.TryGetCreate<ContentInfos>()); } }
+        ContentInfos _contentInfoPool = null;
+        protected ContentInfos ContentInfoPool { get { return _contentInfoPool ?? (_contentInfoPool = Registry.Pool.TryGetCreate<ContentInfos>()); } }
 
 
         public bool IsStreamOwner { get; set; }
@@ -40,7 +40,7 @@ namespace Limaki.Viewers.StreamViewers {
             webContent.ContentStream = content.Data;
             webContent.Uri = uri;
 
-            webContent.MimeType = ContentInfos.Where(ci=>ci.ContentType==content.ContentType).Select(ci=>ci.MimeType).FirstOrDefault();
+            webContent.MimeType = ContentInfoPool.Where(ci=>ci.ContentType==content.ContentType).Select(ci=>ci.MimeType).FirstOrDefault();
             if (useContentSource) {
                 var source = content.Source as string;
                 if (source != null && source != "about:blank") {

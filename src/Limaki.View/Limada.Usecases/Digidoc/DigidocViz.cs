@@ -58,7 +58,7 @@ namespace Limada.Usecases {
         public bool IsPage(IGraph<IVisual, IVisualEdge> source, IVisual page) {
             var digidoc = new DigidocSchema(source.ThingGraph(), source.ThingOf(page));
             var pageThing = source.ThingOf(page) as IStreamThing;
-            var info = new ImageContentInfo();
+            var info = new ImageContentSpot();
             return (pageThing != null && info.Supports(pageThing.StreamType));
         }
 

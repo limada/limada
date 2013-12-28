@@ -17,7 +17,7 @@
 namespace Limaki.Model.Content.IO {
 
     /// <summary>
-    /// a morph, flux, transform, transition, flow
+    /// a morph, flux, transform, transition, flow, pipe, tube
     /// from source to sink
     /// </summary>
     /// <typeparam name="TSource"></typeparam>

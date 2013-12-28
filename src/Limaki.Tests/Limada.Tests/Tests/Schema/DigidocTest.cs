@@ -187,7 +187,7 @@ namespace Limada.Tests.Schemata {
             var nr = 1;
             
             foreach (var file in Directory.GetFiles(path).OrderBy(f => f)) {
-                if (imageStreamProvider.InfoSink.Supports(Path.GetExtension(file))) {
+                if (imageStreamProvider.Detector.Supports(Path.GetExtension(file))) {
                     var stream = imageStreamProvider.ReadContent(IoUtils.UriFromFileName(file));
                     if (stream != null && stream.Data != null) {
                         digidoc.CreatePage(graph, document, stream, nr);
