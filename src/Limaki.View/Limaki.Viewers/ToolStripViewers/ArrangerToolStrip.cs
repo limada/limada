@@ -118,6 +118,8 @@ namespace Limaki.Viewers.ToolStripViewers {
         }
 
         public virtual void OptionsAndLayout (AlignerOptions options) {
+            if (CurrentDisplay == null)
+                return;
             options.Distance = CurrentDisplay.Layout.Distance;
             // TODO: CurrentDisplay.Layout.SetOptions(options);
         }

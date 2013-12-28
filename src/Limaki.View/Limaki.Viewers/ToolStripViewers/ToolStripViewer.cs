@@ -29,10 +29,9 @@ namespace Limaki.Viewers.ToolStripViewers {
             if (sender == null)
                 return;
             var display = sender as TDisplay;
-            if (display != null)
-                CurrentDisplay = display;
-            else
+            if (display == null)
                 Trace.WriteLine(this.GetType().Name + ": display not set");
+            CurrentDisplay = display;
         }
 
         public abstract void Detach (object sender);

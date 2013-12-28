@@ -22,7 +22,7 @@ using Xwt.Backends;
 namespace Limaki.Viewers.ToolStripViewers {
 
     [BackendType(typeof(IDisplayModeToolStripBackend))]
-    public class DisplayModeToolStrip : ToolStripViewer<IVidget, IDisplayModeToolStripBackend> {
+    public class DisplayModeToolStrip : ToolStripViewer<object, IDisplayModeToolStripBackend> {
 
         public ToolStripCommand SelectCommand { get; set; }
         public ToolStripCommand PanningCommand { get; set; }
@@ -114,6 +114,10 @@ namespace Limaki.Viewers.ToolStripViewers {
                 return;
             var zoomIn = e.Button == MouseActionButtons.Left;
             var display = this.CurrentDisplay as IDisplay;
+
+            if (this.CurrentDisplay is IDisplayBackend)
+                display = (this.CurrentDisplay as IDisplayBackend).Frontend;
+
             if (display != null) {
                 if (display.ActiveControl == null) {
                     var action = display.EventControler.GetAction<ZoomAction>();
