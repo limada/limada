@@ -16,8 +16,8 @@
 using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
-using LinqKit;
 using System.Linq;
+using Limaki.Common.Linqish;
 
 namespace Limaki.View.Swf {
 

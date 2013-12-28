@@ -87,6 +87,7 @@ namespace Limaki.Swf.Backends.Viewers {
         }
 
         void ControlGotFocus(object sender, EventArgs e) {
+            Trace.WriteLine(string.Format("{0} {1}", sender.GetType().Name,sender.GetHashCode()));
             var displayBackend = sender as VisualsDisplayBackend;
             if (displayBackend != null) {
                 Frontend.DisplayGotFocus(displayBackend.Display);

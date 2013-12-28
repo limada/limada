@@ -15,9 +15,24 @@ namespace Gecko
 	/// </summary>
 	public static class XULRunnerLocator
 	{
-		private static string FindSpecialXulRunnerDirectory(string applicationPath)
-		{
-			string rootPath = Path.GetPathRoot(applicationPath);
+        public static string XulDir (string basedir) {
+            var xulrunner = "xulrunner22.0-" + (IntPtr.Size == 8 ? "64" : "32");
+            foreach (var dir in new string[] { @"Plugins\", @"..\3rdParty\bin\" }) {
+                var s = dir;
+                for (int i = 0; i <= 10; i++) {
+                    var xuldir = basedir + s + xulrunner;
+                    if (Directory.Exists(xuldir))
+                        return xuldir;
+                    s = @"..\" + s;
+                }
+            }
+            return null;
+        }
+
+		private static string FindSpecialXulRunnerDirectory(string applicationPath) {
+		    return XulDir(applicationPath);
+
+            string rootPath = Path.GetPathRoot(applicationPath);
 			string path = applicationPath;
 
 			while (!rootPath.Equals(path, StringComparison.CurrentCultureIgnoreCase))

@@ -183,7 +183,6 @@ namespace Limaki.View.UI.GraphScene {
 
                 }
                 if (Current != null) {
-                    Trace.WriteLine("Hovered Changed "+Current.ToString());
                     Scene.Requests.Add(
                         new StateChangeCommand<TItem>(Current,
                                                       new Pair<UiState>(UiState.None, UiState.Hovered))

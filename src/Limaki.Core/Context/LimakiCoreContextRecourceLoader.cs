@@ -21,19 +21,11 @@ namespace Limaki.IOC {
             streamProviders.Add(new HtmlContentStreamIo()); 
             streamProviders.Add(new RtfContentStreamIo()); 
             streamProviders.Add(new ImageContentStreamIo());
+            streamProviders.Add(new PdfContentStreamIo());
 
             var diggProvider = Registry.Pool.TryGetCreate<ContentDiggProvider>();
             diggProvider.Add(new HtmlContentDigger());
         }
 
-        public virtual void LoadCompression(IApplicationContext context) {
-            Assembly ass = Assembly.Load("Limaki.Compression");
-            foreach (Type type in ass.GetTypes()) {
-                if (Reflector.Implements(type, typeof(ICompressionWorker))) {
-                    context.Factory.Add(typeof(ICompressionWorker), type);
-                    break;
-                }
-            }
-        }
     }
 }
