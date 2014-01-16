@@ -52,6 +52,7 @@
     <CodeAnalysisRuleDirectories>;D:\programme\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -158,31 +159,31 @@
     <Compile Include="Common\TODOAttribute.cs" />
     <Compile Include="Common\Transient.cs" />
     <Compile Include="Compression\CompressionWorker.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\BZip2\BZip2.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\BZip2\BZip2Constants.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\BZip2\BZip2Exception.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\BZip2\BZip2InputStream.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\BZip2\BZip2OutputStream.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Checksums\Adler32.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Checksums\CRC32.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Checksums\IChecksum.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Checksums\StrangeCRC.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\SharpZipBaseException.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\Deflater.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterConstants.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterEngine.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterHuffman.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterPending.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\Inflater.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\InflaterDynHeader.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\InflaterHuffmanTree.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\PendingBuffer.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\Streams\DeflaterOutputStream.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\Streams\InflaterInputStream.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\Streams\OutputWindow.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\Compression\Streams\StreamManipulator.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\ZipConstants.cs" />
-    <Compile Include="Compression\ICSharpCode.SharpZipLib\Zip\ZipException.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2Constants.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2Exception.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2InputStream.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2OutputStream.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Checksums\Adler32.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Checksums\CRC32.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Checksums\IChecksum.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Checksums\StrangeCRC.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\SharpZipBaseException.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Deflater.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterConstants.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterEngine.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterHuffman.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\DeflaterPending.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Inflater.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\InflaterDynHeader.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\InflaterHuffmanTree.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\PendingBuffer.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Streams\DeflaterOutputStream.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Streams\InflaterInputStream.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Streams\OutputWindow.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\Compression\Streams\StreamManipulator.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\ZipConstants.cs" />
+    <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\ZipException.cs" />
     <Compile Include="Context\LimakiCoreContextRecourceLoader.cs" />
     <Compile Include="Data\Iori.cs" />
     <Compile Include="Data\DbGraph.cs" />
