@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Limaki.Common.Collections {
-#if ! MonoCollectionBug
     
     public class MultiDictionaryBase <K, V,TDictionary, TCollection> : IMultiDictionary<K, V>
         where TDictionary : class,IDictionary<K, ICollection<V>>, new() 
@@ -30,17 +29,7 @@ namespace Limaki.Common.Collections {
 
         ICollection<V> CreateCollection(){ return new TCollection();}
 
-#else
 
-    public class MultiDictionary <K, V> : IMultiDictionary<K, V> {
-
-        protected IDictionary<K, ICollection<V>> _list= null;
-
-        public MultiDictionary() { _list = new Dictionary<K, ICollection<V>>(); }
-
-        ICollection<V> CreateCollection() { return new Set<V>(); }
-
-#endif
 
         #region MultiDictionary
 

@@ -17,12 +17,10 @@ using System.Collections.Generic;
 
 namespace Limaki.Common.Collections {
 
-#if ! MonoCollectionBug
 
     public class MultiDictionary<K, V> :
         MultiDictionaryBase<K, V, Dictionary<K, ICollection<V>>, Set<V>> {
     }
 
-#endif
 
 }
