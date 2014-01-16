@@ -82,7 +82,20 @@ namespace Xwt
 			Label = label;
 		}
 
-		protected void LoadCommandProperties (Command command)
+        public MenuItem (string label, Image image, EventHandler clicked):this(label) {
+            Clicked += clicked;
+            Image = image;
+        }
+
+        public MenuItem (string label, Image image, EventHandler clicked, params MenuItem[] subItems)
+            : this(label, image, clicked) {
+
+            SubMenu = new Menu();
+            for (int i = 0; i < subItems.Length; i++)
+                SubMenu.InsertItem(i, subItems[i]);
+        }
+
+	    protected void LoadCommandProperties (Command command)
 		{
 			Label = command.Label;
 			Image = command.Icon;

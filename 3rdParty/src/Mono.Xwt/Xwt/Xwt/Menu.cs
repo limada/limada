@@ -39,6 +39,11 @@ namespace Xwt
 		{
 			items = new MenuItemCollection (this);
 		}
+
+        public Menu (params MenuItem[] subItems):this() {
+            foreach (var item in subItems)
+                items.Add(item);
+        }
 		
 		internal IMenuBackend Backend {
 			get { return (IMenuBackend) BackendHost.Backend; }
