@@ -9,11 +9,14 @@ using Limaki.Common.Collections;
 namespace Limaki.Common.IOC {
     public class AppFactory<T>
     where T : ContextRecourceLoader {
-        public AppFactory() { }
+        protected AppFactory() { }
 
         bool backendApplied = false;
-        public AppFactory(IBackendContextRecourceLoader backendContextRecourceLoader) {
-            
+        public AppFactory (IBackendContextRecourceLoader backendContextRecourceLoader) {
+            Create(backendContextRecourceLoader);
+        }
+
+        protected virtual void Create(IBackendContextRecourceLoader backendContextRecourceLoader){    
             var resourceLoader = Activator.CreateInstance(typeof(T),new object[]{backendContextRecourceLoader}) as T;
             Registry.ConcreteContext = resourceLoader.CreateContext();
             resourceLoader.ApplyResources(Registry.ConcreteContext);
