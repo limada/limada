@@ -39,7 +39,7 @@ namespace Limaki.Swf.Backends.Viewers.Content {
         public virtual IDisplay<Image> ImageDisplay {
             get {
                 if (_display == null) {
-                    _display = new ImageDisplay();
+                    _display = new SdImageDisplay();
                     OnAttachBackend(_display.Backend);
                     _display.ZoomState = ZoomState.FitToScreen;
                 }

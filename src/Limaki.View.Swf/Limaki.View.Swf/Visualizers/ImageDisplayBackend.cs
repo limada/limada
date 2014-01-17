@@ -19,13 +19,13 @@ using Limaki.View.Gdi.UI;
 
 namespace Limaki.View.Swf.Visualizers {
 
-    public class ImageDisplayBackend : DisplayBackend<Image>, IImageDisplayBackend {
+    public class SdImageDisplayBackend : DisplayBackend<Image>, ISdImageDisplayBackend {
 
         public override DisplayFactory<Image> CreateDisplayFactory (DisplayBackend<Image> backend) {
 
-            return new ImageDisplayFactory {
+            return new SdImageDisplayFactory {
                 BackendComposer = new ImageDisplayBackendComposer { Backend = backend },
-                DisplayComposer = new ImageDisplayComposer(),
+                DisplayComposer = new SdImageDisplayComposer(),
             };
         }
     }

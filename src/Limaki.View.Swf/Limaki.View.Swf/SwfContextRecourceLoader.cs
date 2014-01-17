@@ -68,7 +68,7 @@ namespace Limaki.View.Swf {
             context.Factory.Add<ICursorHandler, CursorHandlerBackend>();
             context.Factory.Add<IMessageBoxShow, MessageBoxShow>();
 
-            context.Factory.Add<IDisplay<System.Drawing.Image>, ImageDisplay>();
+            context.Factory.Add<IDisplay<System.Drawing.Image>, SdImageDisplay>();
             context.Factory.Add<IDisplay<IGraphScene<IVisual,IVisualEdge>>, VisualsDisplay>();
 
             context.Factory.Add<IWebBrowserBackend>(() => CreateWebBrowserBackend());

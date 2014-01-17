@@ -21,18 +21,21 @@ using Image = System.Drawing.Image;
 
 namespace Limaki.View.Swf.Visualizers {
 
-    [BackendType(typeof(IImageDisplayBackend))]
-    public class ImageDisplay : Display<Image> { }
+    [BackendType(typeof(ISdImageDisplayBackend))]
+    public class SdImageDisplay : Display<Image> { }
     
-    public interface IImageDisplayBackend : IDisplayBackend<Image> { }
+    /// <summary>
+    /// a display based on System.Drawing.Image
+    /// </summary>
+    public interface ISdImageDisplayBackend : IDisplayBackend<Image> { }
     
-    public class ImageDisplayFactory:DisplayFactory<Image> {
+    public class SdImageDisplayFactory:DisplayFactory<Image> {
         public override Display<Image> Create () {
-            return new ImageDisplay();
+            return new SdImageDisplay();
         }
     }
 
-    public class ImageDisplayComposer: DisplayComposer<Image> {
+    public class SdImageDisplayComposer: DisplayComposer<Image> {
 
         public override void Compose(Display<Image> display) {
             

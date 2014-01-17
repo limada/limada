@@ -160,7 +160,7 @@
     <Compile Include="Limaki.View.Swf\Converter.cs" />
     <Compile Include="Limaki.View.Swf\CursorHandlerBackend.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\DragDropCatcher.cs" />
-    <Compile Include="Limaki.View.Swf\Visualizers\ImageDisplay.cs" />
+    <Compile Include="Limaki.View.Swf\Visualizers\SdImageDisplay.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\DisplayBackendComposer.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\ImageDisplayBackend.cs">
       <SubType>UserControl</SubType>

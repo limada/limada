@@ -17,7 +17,7 @@ namespace Limaki.View.Swf {
             
             base.InitializeBackends();
 
-            RegisterBackend<IImageDisplayBackend, ImageDisplayBackend>();
+            RegisterBackend<ISdImageDisplayBackend, SdImageDisplayBackend>();
             RegisterBackend<IVisualsDisplayBackend, VisualsDisplayBackend>();
 
             RegisterBackend<ITextViewerBackend, TextViewerBackend>();
