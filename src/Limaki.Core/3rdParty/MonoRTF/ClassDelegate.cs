@@ -26,21 +26,29 @@
 
 // COMPLETE
 
+#define RTF_LIB
+
+using System;
+
 namespace Limaki.Common.Text.RTF.Parser {
 
-#if RTF_LIB
-	public
-#else
-	internal
-#endif
-	struct KeyStruct {
-		public KeyStruct(Major major, Minor minor, string symbol) {
-			Major = major;
-			Minor = minor;
-			Symbol = symbol;
+	public delegate void ClassDelegate(Parser.RTF sender);
+
+	public class ClassCallback {
+		ClassDelegate[]	callbacks;
+
+		public ClassCallback() {
+			callbacks = new ClassDelegate[Enum.GetValues(typeof(Major)).Length];
 		}
-		public Major	Major;
-		public Minor	Minor;
-		public string	Symbol;
+
+		public ClassDelegate this[TokenClass c] {
+			get {
+				return callbacks[(int)c];
+			}
+
+			set {
+				callbacks[(int)c] = value;
+			}
+		}
 	}
 }

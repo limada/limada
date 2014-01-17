@@ -28,11 +28,19 @@
 
 namespace Limaki.Common.Text.RTF.Parser {
 
-
+#if RTF_LIB
 	public
-
-	enum CharsetType {
-		General		= 0,
-		Symbol		= 1,
+#else
+	internal
+#endif
+	struct KeyStruct {
+		public KeyStruct(Major major, Minor minor, string symbol) {
+			Major = major;
+			Minor = minor;
+			Symbol = symbol;
+		}
+		public Major	Major;
+		public Minor	Minor;
+		public string	Symbol;
 	}
 }

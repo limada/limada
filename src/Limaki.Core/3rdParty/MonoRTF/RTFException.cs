@@ -27,32 +27,59 @@
 // COMPLETE
 
 using System;
+using System.Text;
 
 namespace Limaki.Common.Text.RTF.Parser {
 
 
 	public
 
-	delegate void DestinationDelegate(Parser.RTF Sender);
+	class RTFException : ApplicationException {
+		#region Local Variables
+		private int		pos;
+		private int		line;
+		private TokenClass	token_class;
+		private Major		major;
+		private Minor		minor;
+		private int		param;
+		private string		text;
+		private string		error_message;
+		#endregion	// Local Variables
 
-
-	public
-
-	class DestinationCallback {
-		DestinationDelegate[]	callbacks;
-
-		public DestinationCallback() {
-			callbacks = new DestinationDelegate[Enum.GetValues(typeof(Minor)).Length];
+		#region Constructors
+		public RTFException(Parser.RTF rtf, string error_message) {
+			this.pos = rtf.LinePos;
+			this.line = rtf.LineNumber;
+			this.token_class = rtf.TokenClass;
+			this.major = rtf.Major;
+			this.minor = rtf.Minor;
+			this.param = rtf.Param;
+			this.text = rtf.Text;
+			this.error_message = error_message;
 		}
+		#endregion	// Constructors
 
-		public DestinationDelegate this[Minor c] {
+		#region Properties
+		public override string Message {
 			get {
-				return callbacks[(int)c];
-			}
+				StringBuilder	sb;
 
-			set {
-				callbacks[(int)c] = value;
+				sb = new StringBuilder();
+				sb.Append(error_message);
+				sb.Append("\n");
+
+				sb.Append("RTF Stream Info: Pos:" + pos + " Line:" + line);
+				sb.Append("\n");
+
+				sb.Append("TokenClass:" + token_class + ", ");
+				sb.Append("Major:" + String.Format("{0}", (int)major) + ", ");
+				sb.Append("Minor:" + String.Format("{0}", (int)minor) + ", ");
+				sb.Append("Param:" + String.Format("{0}", param) + ", ");
+				sb.Append("Text:" + text);
+
+				return sb.ToString();
 			}
 		}
+		#endregion	// Properties
 	}
 }

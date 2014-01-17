@@ -26,39 +26,95 @@
 
 // COMPLETE
 
-#define RTF_LIB
-
-using System;
-
 namespace Limaki.Common.Text.RTF.Parser {
 
-#if RTF_LIB
-	public
-#else
-	internal
-#endif
-	delegate void ClassDelegate(Parser.RTF sender);
 
-#if RTF_LIB
 	public
-#else
-	internal
-#endif
-	class ClassCallback {
-		ClassDelegate[]	callbacks;
 
-		public ClassCallback() {
-			callbacks = new ClassDelegate[Enum.GetValues(typeof(Major)).Length];
+	class StyleElement {
+		#region Local Variables
+		private TokenClass	token_class;
+		private Major		major;
+		private Minor		minor;
+		private int		param;
+		private string		text;
+		private StyleElement	next;
+		#endregion Local Variables
+
+		#region Constructors
+		public StyleElement(Style s, TokenClass token_class, Major major, Minor minor, int param, string text) {
+			this.token_class = token_class;
+			this.major = major;
+			this.minor = minor;
+			this.param = param;
+			this.text = text;
+
+			lock (s) {
+				if (s.Elements == null) {
+					s.Elements = this;
+				} else {
+					StyleElement se = s.Elements;
+					while (se.next != null)
+						se = se.next;
+					se.next = this;
+				}
+			}
 		}
+		#endregion	// Constructors
 
-		public ClassDelegate this[TokenClass c] {
+		#region Properties
+		public TokenClass TokenClass {
 			get {
-				return callbacks[(int)c];
+				return token_class;
 			}
 
 			set {
-				callbacks[(int)c] = value;
+				token_class = value;
 			}
 		}
+
+		public Major Major {
+			get {
+				return major;
+			}
+
+			set {
+				major = value;
+			}
+		}
+
+		public Minor Minor {
+			get {
+				return minor;
+			}
+
+			set {
+				minor = value;
+			}
+		}
+
+		public int Param {
+			get {
+				return param;
+			}
+
+			set {
+				param = value;
+			}
+		}
+
+		public string Text {
+			get {
+				return text;
+			}
+
+			set {
+				text = value;
+			}
+		}
+		#endregion	// Properties
+
+		#region	Methods
+		#endregion	// Methods
 	}
 }

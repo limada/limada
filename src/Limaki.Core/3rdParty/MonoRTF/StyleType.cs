@@ -29,41 +29,11 @@
 namespace Limaki.Common.Text.RTF.Parser {
 
 
-	public enum Major {
-		// Group class
-		BeginGroup,
-		EndGroup,
+	public
 
-		// Control
-		Version,
-		DefFont,
-		CharSet,
-
-		Destination,
-		FontFamily,
-		ColorName,
-		SpecialChar,
-		StyleAttr,
-		DocAttr,
-		SectAttr,
-		TblAttr,
-		ParAttr,
-		CharAttr,
-		PictAttr,
-		BookmarkAttr,
-		NeXTGrAttr,
-		FieldAttr,
-		TOCAttr,
-		PosAttr,
-		ObjAttr,
-		FNoteAttr,
-		KeyCodeAttr,
-		ACharAttr,
-		FontAttr,
-		FileAttr,
-		FileSource,
-		DrawAttr,
-		IndexAttr,
-		Unicode		
+	enum StyleType {
+		Paragraph	= 0,
+		Character	= 1,
+		Section		= 2
 	}
 }

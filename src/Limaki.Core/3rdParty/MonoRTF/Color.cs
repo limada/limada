@@ -28,7 +28,6 @@
 
 namespace Limaki.Common.Text.RTF.Parser {
 
-
 	public class Color {
 		#region	Local Variables
 		private int		red;
