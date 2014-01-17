@@ -77,7 +77,7 @@ namespace Limaki.Viewers.StreamViewers {
                     if (dialog.Show(
                         "Warning",
                         string.Format("You try to load the a changed sheet again.\r\nYou'll lose all changes on sheet {0}",stored.Name), 
-                        MessageBoxButtons.OKCancel)
+                        MessageBoxButtons.OkCancel)
                         == DialogResult.Cancel) {
                        loadFromMemory = true;
                     }

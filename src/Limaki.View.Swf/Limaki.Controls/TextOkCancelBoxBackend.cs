@@ -40,7 +40,7 @@ namespace Limaki.Swf.Backends {
 
         private void buttonOk_Click(object sender, EventArgs e) {
             Text = TextBox.Text;
-            DoFinish (DialogResult.OK);
+            DoFinish (DialogResult.Ok);
         }
 
         private void buttonCancel_Click(object sender, EventArgs e) {
@@ -65,7 +65,7 @@ namespace Limaki.Swf.Backends {
         private void TextBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return) {
                 Text = TextBox.Text;
-                DoFinish(DialogResult.OK);
+                DoFinish(DialogResult.Ok);
             } else if (e.KeyCode == Keys.Escape) {
                 DoFinish (DialogResult.Cancel);
             }

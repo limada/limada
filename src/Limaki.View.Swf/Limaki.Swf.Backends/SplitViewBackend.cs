@@ -197,7 +197,7 @@ namespace Limaki.Swf.Backends.Viewers {
             var cd = this.Frontend.CurrentDisplay;
             var control = (sender as TextOkCancelBoxBackend);
 
-            if (e.Arg == DialogResult.OK) {
+            if (e.Arg == DialogResult.Ok) {
                 e.OnOK (control.Text);
 
             }

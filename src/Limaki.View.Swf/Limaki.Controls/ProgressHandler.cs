@@ -115,6 +115,7 @@ namespace Limaki.Swf.Backends {
         public void Write(string m, int count) {
             Write(m, ++progress, count, null);
         }
+
         #region IDisposable Members
 
         public Action Disposing { get; set; }

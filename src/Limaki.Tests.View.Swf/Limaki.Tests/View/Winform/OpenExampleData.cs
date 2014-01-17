@@ -17,7 +17,7 @@ namespace Limaki.Tests.View.Winform {
                 SceneExamples.Selected = SceneExamples.Examples[comboBox1.SelectedIndex];
 
             this.openButton.Click += (s, o) => {
-                this.SceneExamples.DialogResult = Viewers.DialogResult.OK;
+                this.SceneExamples.DialogResult = Viewers.DialogResult.Ok;
                 this.DialogResult = DialogResult.OK;
             };
 

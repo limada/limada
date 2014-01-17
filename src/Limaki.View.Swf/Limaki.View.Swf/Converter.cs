@@ -209,7 +209,7 @@ namespace Limaki.View.Swf {
         public static Limaki.Viewers.DialogResult Convert(DialogResult value) {
             var result = Limaki.Viewers.DialogResult.None;
             if (value == DialogResult.OK) {
-                result = Limaki.Viewers.DialogResult.OK;
+                result = Limaki.Viewers.DialogResult.Ok;
             }
             if (value == DialogResult.Cancel) {
                 result = Limaki.Viewers.DialogResult.Cancel;
@@ -237,7 +237,7 @@ namespace Limaki.View.Swf {
             var result = DialogResult.None;
             if (value == null)
                 return result;
-            if ( value == Limaki.Viewers.DialogResult.OK ) {
+            if ( value == Limaki.Viewers.DialogResult.Ok ) {
                 result = DialogResult.OK;
             }
             if ( value == Limaki.Viewers.DialogResult.Cancel ) {
@@ -266,7 +266,7 @@ namespace Limaki.View.Swf {
             var result = MessageBoxButtons.OK;
             if (value == null)
                 return result;
-            if (value == Limaki.Viewers.MessageBoxButtons.OKCancel)
+            if (value == Limaki.Viewers.MessageBoxButtons.OkCancel)
                 return MessageBoxButtons.OKCancel;
             if (value == Limaki.Viewers.MessageBoxButtons.AbortRetryIgnore)
                 return MessageBoxButtons.AbortRetryIgnore;
@@ -280,11 +280,11 @@ namespace Limaki.View.Swf {
         }
 
         public static Limaki.Viewers.MessageBoxButtons Convert(MessageBoxButtons value) {
-            var result = Limaki.Viewers.MessageBoxButtons.OK;
+            var result = Limaki.Viewers.MessageBoxButtons.Ok;
             if (value == null)
                 return result;
             if (value == MessageBoxButtons.OKCancel)
-                return Limaki.Viewers.MessageBoxButtons.OKCancel;
+                return Limaki.Viewers.MessageBoxButtons.OkCancel;
             if (value == MessageBoxButtons.AbortRetryIgnore)
                 return Limaki.Viewers.MessageBoxButtons.AbortRetryIgnore;
             if (value == MessageBoxButtons.YesNoCancel)

@@ -70,7 +70,7 @@ namespace Limada.Usecases {
             }
 
             DefaultDialogValues(OpenFileDialog, ReadFilter);
-            if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
+            if (FileDialogShow(OpenFileDialog, true) == DialogResult.Ok) {
                 Open(Iori.FromFileName(OpenFileDialog.FileName));
                 OpenFileDialog.ResetFileName();
             }
@@ -168,7 +168,7 @@ namespace Limada.Usecases {
         public void SaveAs () {
             DefaultDialogValues(SaveFileDialog, WriteFilter);
             SaveFileDialog.OverwritePrompt = false;
-            if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
+            if (FileDialogShow(SaveFileDialog, false) == DialogResult.Ok) {
                 SaveAs(Iori.FromFileName(SaveFileDialog.FileName));
                 SaveFileDialog.ResetFileName();
             }
@@ -190,7 +190,7 @@ namespace Limada.Usecases {
             DefaultDialogValues(SaveFileDialog, WriteFilter);
             if (scene != null && scene.HasThingGraph()) {
                 SaveFileDialog.OverwritePrompt = false;
-                if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
+                if (FileDialogShow(SaveFileDialog, false) == DialogResult.Ok) {
                     ExportSceneView(Iori.FromFileName(SaveFileDialog.FileName), scene);
                     SaveFileDialog.ResetFileName();
                 }
@@ -300,24 +300,24 @@ namespace Limada.Usecases {
             Close(this.Data);
             bool tryIt = true;
 
-            while (tryIt && MessageBoxShow("Open a new, non exisiting file", "RawImport", MessageBoxButtons.OKCancel) == DialogResult.OK) {
+            while (tryIt && MessageBoxShow("Open a new, non exisiting file", "RawImport", MessageBoxButtons.OkCancel) == DialogResult.Ok) {
                 
                 var fileDialog = new FileDialogMemento();
                 DefaultDialogValues(fileDialog,WriteFilter);
                 DefaultDialogValues(OpenFileDialog,ReadFilter);
 
-                if (FileDialogShow(fileDialog, true) == DialogResult.OK) {
+                if (FileDialogShow(fileDialog, true) == DialogResult.Ok) {
                     var sinkFile = fileDialog.FileName;
                     fileDialog.ResetFileName();
                     if (File.Exists(sinkFile)) {
                         continue;
                     }
-                    if (tryIt = MessageBoxShow("Open the file to import", "RawImport", MessageBoxButtons.OKCancel) == DialogResult.OK) {
-                        if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
+                    if (tryIt = MessageBoxShow("Open the file to import", "RawImport", MessageBoxButtons.OkCancel) == DialogResult.Ok) {
+                        if (FileDialogShow(OpenFileDialog, true) == DialogResult.Ok) {
 
                             var sourceFile = OpenFileDialog.FileName;
                             if (!File.Exists(sourceFile)) {
-                                MessageBoxShow("File does not exist", "RawImport", MessageBoxButtons.OK);
+                                MessageBoxShow("File does not exist", "RawImport", MessageBoxButtons.Ok);
                                 break;
                             }
 
@@ -341,7 +341,7 @@ namespace Limada.Usecases {
                                 File.Delete(sinkFile);
                             }
                             sinkIo.Close(sink);
-                            MessageBoxShow("Import successfull", "RawImport", MessageBoxButtons.OK);
+                            MessageBoxShow("Import successfull", "RawImport", MessageBoxButtons.Ok);
                             this.Open(Iori.FromFileName(sinkFile));
                             OpenFileDialog.ResetFileName();
                         }

@@ -57,7 +57,7 @@ namespace Limada.Usecases {
 
             DefaultDialogValues(OpenFileDialog, ReadFilter);
 
-            if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
+            if (FileDialogShow(OpenFileDialog, true) == DialogResult.Ok) {
                 ContentStreamIoManager.ConfigureSinkIo = s => ConfigureSink(s);
                 var content = ContentStreamIoManager.ReadSink(IoUtils.UriFromFileName(OpenFileDialog.FileName));
                 if (content != null && content.Data != null)
@@ -84,7 +84,7 @@ namespace Limada.Usecases {
                         SaveFileDialog.Filter = ContentStreamIoManager.GetFilter(info, out ext) + "All Files|*.*";
                         SaveFileDialog.DefaultExt = ext;
                         SaveFileDialog.SetFileName(content.Source.ToString());
-                        if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
+                        if (FileDialogShow(SaveFileDialog, false) == DialogResult.Ok) {
                             ContentStreamIoManager.ConfigureSinkIo = s => ConfigureSink(s);
                             ContentStreamIoManager.WriteSink(content, IoUtils.UriFromFileName(SaveFileDialog.FileName));
                             SaveFileDialog.ResetFileName();
@@ -119,7 +119,7 @@ namespace Limada.Usecases {
                 DefaultDialogValues(SaveFileDialog, ThingsIoManager.WriteFilter);
                 if (scene != null && scene.HasThingGraph()) {
                     SaveFileDialog.DefaultExt = "pdf";
-                    if (FileDialogShow(SaveFileDialog, false) == DialogResult.OK) {
+                    if (FileDialogShow(SaveFileDialog, false) == DialogResult.Ok) {
                         ThingsIoManager.SinkOut = () => new VisualThingsSceneViz().SelectedThings(scene);
                         ThingsIoManager.ConfigureSinkIo = s => ConfigureSink(s);
                         ThingsIoManager.WriteSink(IoUtils.UriFromFileName(SaveFileDialog.FileName));
@@ -135,7 +135,7 @@ namespace Limada.Usecases {
             try {
                 DefaultDialogValues(OpenFileDialog, ThingGraphFocusIoManager.ReadFilter);
                 if (scene != null && scene.HasThingGraph()) {
-                    if (FileDialogShow(OpenFileDialog, true) == DialogResult.OK) {
+                    if (FileDialogShow(OpenFileDialog, true) == DialogResult.Ok) {
                         var graphFocus = new GraphCursor<IThing, ILink>(scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Source);
                         var uri = IoUtils.UriFromFileName(OpenFileDialog.FileName);
                         ThingGraphFocusIoManager.ConfigureSinkIo = s => ConfigureSink(s);

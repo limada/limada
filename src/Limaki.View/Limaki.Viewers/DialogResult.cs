@@ -6,25 +6,34 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2010 Lytico
+ * Copyright (C) 2006-2014 Lytico
  *
  * http://www.limada.org
  * 
  */
 
+using System;
 namespace Limaki.Viewers {
+    [Flags]
     public enum MessageBoxButtons {
-        OK = 0,
-        OKCancel = 1,
-        AbortRetryIgnore = 2,
-        YesNoCancel = 3,
-        YesNo = 4,
-        RetryCancel = 5,
+        None = 0,
+        Ok = 1,
+        Cancel = 1 << 1,
+        Abort = 1 << 2,
+        Retry = 1 << 3,
+        Ignore = 1 << 4,
+        Yes = 1 << 5,
+        No = 1 << 6,
+        OkCancel = Ok | Cancel,
+        AbortRetryIgnore = Abort | Retry | Ignore,
+        YesNoCancel = Yes | No | Cancel,
+        YesNo = Yes | No,
+        RetryCancel = Retry | Cancel,
     }
 
     public enum DialogResult {
         None = 0,
-        OK = 1,
+        Ok = 1,
         Cancel = 2,
         Abort = 3,
         Retry = 4,
