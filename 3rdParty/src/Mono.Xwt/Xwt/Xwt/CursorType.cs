@@ -37,7 +37,7 @@ namespace Xwt
 		string id;
 		static Dictionary<string,CursorType> cursors = new Dictionary<string, CursorType> ();
 
-		internal CursorType (string id)
+		public CursorType (string id)
 		{
 			// Maybe some day we'll support creating custom cursors
 			this.id = id;

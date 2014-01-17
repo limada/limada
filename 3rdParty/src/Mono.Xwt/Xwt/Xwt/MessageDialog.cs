@@ -86,10 +86,17 @@ namespace Xwt
 		{
 			ShowMessage (RootWindow, primaryText, secondaryText);
 		}
+        public static void ShowMessage (Xwt.Drawing.Image icon, string primaryText, string secondaryText) 
+        {
+            ShowMessage (RootWindow, icon, primaryText, secondaryText);
+        }
 		public static void ShowMessage (WindowFrame parent, string primaryText, string secondaryText)
 		{
-			GenericAlert (parent, StockIcons.Information, primaryText, secondaryText, Command.Ok);
+            ShowMessage (parent, StockIcons.Information, primaryText, secondaryText);
 		}
+        public static void ShowMessage (WindowFrame parent, Xwt.Drawing.Image icon, string primaryText, string secondaryText) {
+            GenericAlert (parent, icon, primaryText, secondaryText, Command.Ok);
+        }
 		#endregion
 		
 		#region Confirm
@@ -184,7 +191,7 @@ namespace Xwt
 	
 	public class MessageDescription
 	{
-		internal MessageDescription ()
+        public MessageDescription ()
 		{
 			DefaultButton = -1;
 			Buttons = new List<Command> ();
