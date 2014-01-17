@@ -61,7 +61,9 @@ namespace Xwt
 		}
 
         public static Toolkit Engine<T> () where T : ToolkitEngineBackend {
-            return toolkits[typeof(T)];
+            if (toolkits.ContainsKey(typeof(T)))
+                return toolkits[typeof(T)];
+            return null;
         }
         
 		internal ToolkitEngineBackend Backend {
