@@ -162,7 +162,7 @@
     <Compile Include="Limaki.View.Swf\Visualizers\DragDropCatcher.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\SdImageDisplay.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\DisplayBackendComposer.cs" />
-    <Compile Include="Limaki.View.Swf\Visualizers\ImageDisplayBackend.cs">
+    <Compile Include="Limaki.View.Swf\Visualizers\SdImageDisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Limaki.View.Swf\Visualizers\DisplayBackend.cs">
