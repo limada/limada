@@ -396,12 +396,6 @@ namespace Limaki.View.Swf.Visualizers {
 
         #region IVidgetBackend Member
 
-     
-
-        Xwt.Rectangle IVidgetBackend.ClientRectangle {
-            get { return GdiConverter.ToXwt (this.ClientRectangle); }
-        }
-
         Size IVidgetBackend.Size {
             get { return this.Size.ToXwt (); }
         }

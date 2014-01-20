@@ -31,7 +31,7 @@ using SWF = System.Windows.Forms;
 
 namespace Limaki.View.Ui.DragDrop0 {
 
-    public interface IXwtDragDopControl : IVidgetBackend {
+    public interface IXwtDragDopControl : IVidgetBackend, Limaki.View.Swf.IDragDropControl {
         bool AllowDrop { get; set; }
         DragDropAction DoDragDrop (object data, DragDropAction allowedEffects);
     }

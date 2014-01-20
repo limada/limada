@@ -231,10 +231,6 @@ namespace Limaki.Swf.Backends.Viewers {
 
         #region IVidgetBackend-Implementation
 
-        Xwt.Rectangle IVidgetBackend.ClientRectangle {
-            get { return this.ClientRectangle.ToXwt(); }
-        }
-
         Xwt.Size IVidgetBackend.Size {
             get { return this.Size.ToXwt(); }
         }

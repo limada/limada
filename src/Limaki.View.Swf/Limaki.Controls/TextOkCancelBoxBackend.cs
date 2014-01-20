@@ -79,10 +79,6 @@ namespace Limaki.Swf.Backends {
             this.Frontend = (TextOkCancelBox)frontend;
         }
 
-        Rectangle IVidgetBackend.ClientRectangle {
-            get { return this.ClientRectangle.ToXwt(); }
-        }
-
         Size IVidgetBackend.Size {
             get { return this.Size.ToXwt (); }
         }

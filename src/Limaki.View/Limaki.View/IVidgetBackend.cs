@@ -20,7 +20,6 @@ namespace Limaki.View {
 
     public interface IVidgetBackend:IDisposable {
         
-        Rectangle ClientRectangle { get;}
         Size Size {get;}
         
         // Renderer:

@@ -30,7 +30,7 @@ namespace Limaki.View.Swf.Backends {
     /// it handles dragdrop 
     /// needs a Windows.Forms.Control 
     /// usage: extend a Backend with DragDrop features
-    /// <remarks>see: Xwt.Backends.IWidgetBackend / Xwt.WPFBackend.WidgetBackend</remarks>
+    /// <remarks>see: Xwt.Backends.IVidgetBackend / Xwt.WPFBackend.VidgetBackend</remarks>
     /// </summary>
     public class DragDropBackendHandler : IDragDropBackendHandler {
 

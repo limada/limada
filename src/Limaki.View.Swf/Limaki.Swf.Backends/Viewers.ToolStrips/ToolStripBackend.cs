@@ -22,10 +22,6 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
     public abstract partial class ToolStripBackend : ToolStrip, IToolStripViewerBackend {
         #region IVidgetBackend Member
 
-        Xwt.Rectangle IVidgetBackend.ClientRectangle {
-            get { return this.ClientRectangle.ToXwt(); }
-        }
-
         Xwt.Size IVidgetBackend.Size {
             get { return this.Size.ToXwt(); }
         }

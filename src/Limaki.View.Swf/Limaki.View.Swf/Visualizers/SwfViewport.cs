@@ -46,7 +46,7 @@ namespace Limaki.View.Swf.Visualizers {
         public override Size DataSize {
             get {
                 if (useOnScroll) {
-                    return _scrollMinSize;
+                    return _dataSize;
                 } else {
                     return backend.AutoScrollMinSize.ToXwt();
                 }
@@ -54,7 +54,7 @@ namespace Limaki.View.Swf.Visualizers {
             set {
                 _scrollMinSizeChanging = true;
                 backend.AutoScrollMinSize = value.ToGdi();
-                _scrollMinSize = value;
+                _dataSize = value;
                 _scrollMinSizeChanging = false;
                 //device.ScrollBarsVisible = false;
             }
