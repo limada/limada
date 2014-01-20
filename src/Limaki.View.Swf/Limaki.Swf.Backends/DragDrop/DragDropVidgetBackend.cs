@@ -67,7 +67,7 @@ namespace Limaki.View.Swf.Backends {
         }
 
         protected override void OnDragOver (SWF.DragEventArgs e) {
-            var ev = e.ToXwtDragOver();
+            var ev = e.ToXwtDragOver(this);
             ev.AllowedAction = BackendHandler.DragDropActionFromKeyState(e.KeyState, ev.Action);
             BackendHandler.DragOver(ev);
             e.Effect = ev.AllowedAction.ToSwf();
@@ -76,7 +76,7 @@ namespace Limaki.View.Swf.Backends {
         }
 
         protected override void OnDragDrop (SWF.DragEventArgs e) {
-            var ev = e.ToXwt();
+            var ev = e.ToXwt(this);
             BackendHandler.OnDrop(ev);
             base.OnDragDrop(e);
 

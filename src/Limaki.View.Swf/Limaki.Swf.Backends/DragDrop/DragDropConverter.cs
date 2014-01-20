@@ -16,6 +16,8 @@ using System;
 using System.Collections.Specialized;
 using Xwt;
 using SWF = System.Windows.Forms;
+using SD = System.Drawing;
+using Xwt.Gdi.Backend;
 using Limaki.View.DragDrop;
 using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
@@ -99,16 +101,18 @@ namespace Limaki.View.Swf.Backends {
             return result;
         }
 
-     
-        public static DragOverEventArgs ToXwtDragOver (this SWF.DragEventArgs args) {
-            var result = new DragOverEventArgs(new Point(args.X, args.Y), args.Data.ToXwt(), args.AllowedEffect.ToXwt()) {
+
+        public static DragOverEventArgs ToXwtDragOver (this SWF.DragEventArgs args, SWF.Control control) {
+            var pt = control.PointToClient(new SD.Point(args.X, args.Y));
+            var result = new DragOverEventArgs(pt.ToXwt(), args.Data.ToXwt(), args.AllowedEffect.ToXwt()) {
                 AllowedAction = args.Effect.ToXwt(),
             };
             return result;
         }
 
-        public static DragEventArgs ToXwt (this SWF.DragEventArgs args) {
-            var result = new DragEventArgs(new Point(args.X, args.Y), args.Data.ToXwt(), args.Effect.ToXwt()) {
+        public static DragEventArgs ToXwt (this SWF.DragEventArgs args, SWF.Control control) {
+            var pt = control.PointToClient(new SD.Point(args.X, args.Y));
+            var result = new DragEventArgs(pt.ToXwt(), args.Data.ToXwt(), args.Effect.ToXwt()) {
                
             };
             return result;
