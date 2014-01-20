@@ -28,12 +28,12 @@ namespace Limaki.View.Swf.Visualizers {
     where T:IMouseAction {
         public DragDropCatcher():base() {}
 
-        public DragDropCatcher(T baseAction, IVidgetBackend control): base() {
+        public DragDropCatcher(T baseAction, IDragDopControl control): base() {
             this.Priority = baseAction.Priority;
             this.control = control;
             this.baseAction = baseAction;
         }
-        IVidgetBackend control = null;
+        IDragDopControl control = null;
         T baseAction = default(T);
 
         #region IDragDropAction Member
@@ -53,7 +53,7 @@ namespace Limaki.View.Swf.Visualizers {
                     control.PointToClient (new Point (e.X, e.Y))
                     ;
 
-                MouseActionEventArgs em =
+                var em =
                     new MouseActionEventArgs (MouseActionButtons.None,
                                               Converter.ConvertModifiers (e.KeyState), 0, pt.X, pt.Y, 0);
 

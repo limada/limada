@@ -28,9 +28,6 @@ namespace Limaki.View {
         void Invalidate();
         void Invalidate(Rectangle rect);
 
-        // Helper Functions:
-        Point PointToClient(Point source);
-
         void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
 
     }

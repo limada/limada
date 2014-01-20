@@ -20,12 +20,13 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 using Xwt.Gdi.Backend;
+using Limaki.View.Swf;
 
 // this control uses ideas from RicherTextBox by ???
 
 namespace Limaki.Swf.Backends.TextEditor {
 
-    public partial class TextViewerBackend : UserControl, IZoomTarget, ITextViewerBackend {
+    public partial class TextViewerBackend : UserControl, IZoomTarget, ITextViewerBackend, IDragDopControl {
 
         public TextViewerBackend () {
             InitializeComponent();
@@ -163,7 +164,7 @@ namespace Limaki.Swf.Backends.TextEditor {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        Xwt.Point IDragDopControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
 

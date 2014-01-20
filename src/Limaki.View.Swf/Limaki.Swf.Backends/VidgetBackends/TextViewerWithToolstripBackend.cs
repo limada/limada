@@ -18,10 +18,11 @@ using Limaki.View;
 using Xwt.Gdi.Backend;
 using Limaki.Swf.Backends.Viewers.Content;
 using Limaki.Viewers.Vidgets;
+using Limaki.View.Swf;
 
 namespace Limaki.Swf.Backends.TextEditor {
 
-    public partial class TextViewerWithToolstripBackend : ToolStripContainer, IZoomTarget, ITextViewerWithToolstripBackend {
+    public partial class TextViewerWithToolstripBackend : ToolStripContainer, IZoomTarget, ITextViewerWithToolstripBackend, IDragDopControl {
         
         public TextViewerWithToolstripBackend() {
             InitializeComponent();
@@ -155,7 +156,7 @@ namespace Limaki.Swf.Backends.TextEditor {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        Xwt.Point IDragDopControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
         
         #endregion
 

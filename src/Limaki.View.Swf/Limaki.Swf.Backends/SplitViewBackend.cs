@@ -25,10 +25,11 @@ using DialogResult=Limaki.Viewers.DialogResult;
 using System.Diagnostics;
 using Limaki.View;
 using Xwt.Gdi.Backend;
+using Limaki.View.Swf;
 
 namespace Limaki.Swf.Backends.Viewers {
 
-    public class SplitViewBackend : SplitContainer, ISplitViewBackend, IDisposable {
+    public class SplitViewBackend : SplitContainer, ISplitViewBackend, IDisposable, IDragDopControl {
 
         public SplitViewBackend() {
             InitializeComponent();
@@ -242,7 +243,7 @@ namespace Limaki.Swf.Backends.Viewers {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        Xwt.Point IDragDopControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
 

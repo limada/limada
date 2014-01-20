@@ -23,10 +23,11 @@ using Limaki.Viewers;
 using Xwt.Gdi.Backend;
 using Limaki.Viewers.StreamViewers;
 using Limaki.Viewers.Vidgets;
+using Limaki.View.Swf;
 
 namespace Limaki.Swf.Backends {
 
-    public class WebBrowserBackend : System.Windows.Forms.WebBrowser, IWebBrowserBackend, IHistoryAware, IZoomTarget {
+    public class WebBrowserBackend : System.Windows.Forms.WebBrowser, IWebBrowserBackend, IHistoryAware, IZoomTarget, IDragDopControl {
 
         public void Navigatewithproxy(string uri, string host, int port) {
             var webRequest = (HttpWebRequest)WebRequest.Create(uri);
@@ -247,7 +248,7 @@ namespace Limaki.Swf.Backends {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        Xwt.Point IDragDopControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
 

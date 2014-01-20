@@ -22,6 +22,8 @@ namespace Limaki.View.Swf {
     public interface IDragDopControl:IVidgetBackend {
         bool AllowDrop { get; set; }
         DragDropEffects DoDragDrop(Object data, DragDropEffects allowedEffects);
+        // Helper Functions:
+        Xwt.Point PointToClient (Xwt.Point source);
     }
 
     public interface IDragDropAction:IAction {

@@ -99,9 +99,6 @@ namespace Limaki.Swf.Backends {
             this.Invalidate(rect.ToGdi ());
         }
 
-        Point IVidgetBackend.PointToClient(Point source) {
-            return this.PointToClient (source.ToGdi()).ToXwt ();
-        }
 
         #endregion
     }

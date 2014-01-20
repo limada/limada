@@ -42,10 +42,6 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) {
-            return this.PointToClient(source.ToGdi()).ToXwt();
-        }
-
         public abstract void InitializeBackend(IVidget frontend, VidgetApplicationContext context);
 
 

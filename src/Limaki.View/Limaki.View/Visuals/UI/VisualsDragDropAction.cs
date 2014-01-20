@@ -108,7 +108,7 @@ namespace Limaki.View.DragDrop {
         }
 
         public override void Dropped (DragEventArgs e) {
-            var pt = Camera.ToSource(this.Backend.PointToClient(e.Position));
+            var pt = Camera.ToSource(e.Position);
             var scene = this.Scene;
             var target = scene.Hovered;
             IVisual item = null;

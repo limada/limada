@@ -13,6 +13,8 @@
 
 using Limaki.Actions;
 using Xwt;
+using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
+using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 
 namespace Limaki.View.UI {
     /// <summary>
@@ -53,9 +55,9 @@ namespace Limaki.View.UI {
             EndAction ();
         }
 
-        public static void ForewardDragOver (IMouseAction baseAction, IVidgetBackend backend, Limaki.View.DragDrop.DragOverEventArgs e) {
+        public static void ForewardDragOver (IMouseAction baseAction, IVidgetBackend backend, DragOverEventArgs e) {
             if (baseAction.Enabled) {
-                var pt = backend.PointToClient(e.Position);
+                var pt = e.Position;
                 baseAction.OnMouseMove(new MouseActionEventArgs(MouseActionButtons.None, ModifierKeys.None, 0, pt.X, pt.Y, 0));
             }
         }

@@ -411,7 +411,7 @@ namespace Limaki.View.Swf.Visualizers {
             this.Invalidate (rect.ToGdi ());
         }
 
-        Point IVidgetBackend.PointToClient(Point source) {
+        Point IDragDopControl.PointToClient(Point source) {
             return this.PointToClient (source.ToGdi ()).ToXwt ();
         }
 

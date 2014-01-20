@@ -26,10 +26,11 @@ using System.Threading;
 using System.Windows.Forms;
 using Xwt.Gdi.Backend;
 using System.Linq;
+using Limaki.View.Swf;
 
 namespace Limaki.Swf.Backends {
 
-    public class GeckoWebBrowserBackend:Gecko.GeckoWebBrowser, IGeckoWebBrowserBackend, IZoomTarget, IHistoryAware, IContentSpec {
+    public class GeckoWebBrowserBackend : Gecko.GeckoWebBrowser, IGeckoWebBrowserBackend, IZoomTarget, IHistoryAware, IContentSpec, IDragDopControl {
 
         public GeckoWebBrowserBackend() {
             new XulRunner().Initialize();
@@ -333,7 +334,7 @@ namespace Limaki.Swf.Backends {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IVidgetBackend.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        Xwt.Point IDragDopControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
 
