@@ -62,10 +62,10 @@ namespace Limaki.View.Visualizers {
             protected set { _offset = value; }
         }
 
-        protected Size _scrollMinSize = new Size();
+        protected Size _dataSize = new Size();
         public virtual Size DataSize {
-            get { return _scrollMinSize; }
-            set { _scrollMinSize = value; }
+            get { return _dataSize; }
+            set { _dataSize = value; }
         }
 
         /// <summary>
@@ -130,15 +130,15 @@ namespace Limaki.View.Visualizers {
 #if TraceInvalidate
             System.Console.Out.WriteLine("Data.Bounds\t" + DataSize);
 #endif
-            var scrollMinSize = this.Camera.FromSource(GetDataSize());
+            var dataSize = this.Camera.FromSource(GetDataSize());
             var offset = (Point)this.Camera.FromSource((Size)GetDataOrigin());
-            this._scrollMinSize = scrollMinSize;
+            this._dataSize = dataSize;
             this._offset = offset;
         }
 
         public virtual void Update() {// == UpdateScrollSize
             UpdateCamera();
-            this.DataSize = _scrollMinSize;
+            this.DataSize = _dataSize;
             this.DataOrigin = this._offset;
             
 #if TraceInvalidate
