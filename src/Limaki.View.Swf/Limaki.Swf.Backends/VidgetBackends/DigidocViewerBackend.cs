@@ -24,7 +24,7 @@ using Limaki.Viewers.StreamViewers;
 
 namespace Limaki.View.Swf.Backends {
 
-    public partial class DigidocViewerBackend : UserControl, IDigidocViewerBackend, IZoomTarget, IDragDopControl {
+    public partial class DigidocViewerBackend : UserControl, IDigidocViewerBackend, IZoomTarget, IDragDropControl {
 
         public DigidocViewerBackend () {}
 
@@ -106,7 +106,7 @@ namespace Limaki.View.Swf.Backends {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IDragDopControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        Xwt.Point IDragDropControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
     }

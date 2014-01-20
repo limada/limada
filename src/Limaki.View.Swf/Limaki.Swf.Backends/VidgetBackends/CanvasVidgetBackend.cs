@@ -21,7 +21,7 @@ using Xwt;
 
 namespace Limaki.View.Swf.Backends {
 
-    public class CanvasVidgetBackend : UserControl, ICanvasVidgetBackend, IDragDopControl {
+    public class CanvasVidgetBackend : UserControl, ICanvasVidgetBackend, IDragDropControl {
 
         protected override void OnPaint (PaintEventArgs e) {
 
@@ -54,7 +54,7 @@ namespace Limaki.View.Swf.Backends {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IDragDopControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        Xwt.Point IDragDropControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
 

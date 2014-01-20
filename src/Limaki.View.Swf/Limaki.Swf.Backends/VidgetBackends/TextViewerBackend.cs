@@ -26,7 +26,7 @@ using Limaki.View.Swf;
 
 namespace Limaki.Swf.Backends.TextEditor {
 
-    public partial class TextViewerBackend : UserControl, IZoomTarget, ITextViewerBackend, IDragDopControl {
+    public partial class TextViewerBackend : UserControl, IZoomTarget, ITextViewerBackend, IDragDropControl {
 
         public TextViewerBackend () {
             InitializeComponent();
@@ -164,7 +164,7 @@ namespace Limaki.Swf.Backends.TextEditor {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IDragDopControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        Xwt.Point IDragDropControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
 

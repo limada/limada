@@ -28,12 +28,12 @@ namespace Limaki.View.Swf.Visualizers {
     where T:IMouseAction {
         public DragDropCatcher():base() {}
 
-        public DragDropCatcher(T baseAction, IDragDopControl control): base() {
+        public DragDropCatcher(T baseAction, IDragDropControl control): base() {
             this.Priority = baseAction.Priority;
             this.control = control;
             this.baseAction = baseAction;
         }
-        IDragDopControl control = null;
+        IDragDropControl control = null;
         T baseAction = default(T);
 
         #region IDragDropAction Member

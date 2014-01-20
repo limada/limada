@@ -30,7 +30,7 @@ using Limaki.View.Swf;
 
 namespace Limaki.Swf.Backends {
 
-    public class GeckoWebBrowserBackend : Gecko.GeckoWebBrowser, IGeckoWebBrowserBackend, IZoomTarget, IHistoryAware, IContentSpec, IDragDopControl {
+    public class GeckoWebBrowserBackend : Gecko.GeckoWebBrowser, IGeckoWebBrowserBackend, IZoomTarget, IHistoryAware, IContentSpec, IDragDropControl {
 
         public GeckoWebBrowserBackend() {
             new XulRunner().Initialize();
@@ -334,7 +334,7 @@ namespace Limaki.Swf.Backends {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IDragDopControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        Xwt.Point IDragDropControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
 

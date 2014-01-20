@@ -29,7 +29,7 @@ using Limaki.View.Swf;
 
 namespace Limaki.Swf.Backends.Viewers {
 
-    public class SplitViewBackend : SplitContainer, ISplitViewBackend, IDisposable, IDragDopControl {
+    public class SplitViewBackend : SplitContainer, ISplitViewBackend, IDisposable, IDragDropControl {
 
         public SplitViewBackend() {
             InitializeComponent();
@@ -243,7 +243,7 @@ namespace Limaki.Swf.Backends.Viewers {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IDragDopControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        Xwt.Point IDragDropControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion
 

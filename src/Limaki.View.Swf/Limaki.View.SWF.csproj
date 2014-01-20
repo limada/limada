@@ -192,7 +192,7 @@
     <Compile Include="Limaki.View.Swf\DragDrop\VisualsImageDataObjectHandler.cs" />
     <Compile Include="Limaki.View.Swf\DragDrop\VisualsInprocDataObjectHandler.cs" />
     <Compile Include="Limaki.View.Swf\DragDrop\VisualsTextDataObjectHandler.cs" />
-    <Compile Include="Limaki.View.Swf\IDragDopControl.cs" />
+    <Compile Include="Limaki.View.Swf\IDragDropControl.cs" />
     <Compile Include="Limaki.View.Swf\Rendering\GripPainter.cs" />
     <Compile Include="Limaki.View.Swf\Rendering\MoveResizeRenderer.cs" />
     <Compile Include="Limaki.View.Swf\Rendering\SelectionRenderer.cs" />
