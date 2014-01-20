@@ -41,7 +41,7 @@ namespace Limaki.View.Swf.Visualizers {
         }
     }
 
-    public abstract class DisplayBackend<T> : DisplayBackend, IGdiBackend, IDisplayBackend<T>, IDragDopControl {
+    public abstract class DisplayBackend<T> : DisplayBackend, IGdiBackend, IDisplayBackend<T>, IDragDropControl {
 
         public DisplayBackend() {
             Initialize();
@@ -355,7 +355,7 @@ namespace Limaki.View.Swf.Visualizers {
         protected override void OnDragOver (SWF.DragEventArgs e) {
             var dropHandler = Display.EventControler as IDropHandler;
             if (dropHandler != null && Display.Data != null) {
-                var ev = e.ToXwtDragOver();
+                var ev = e.ToXwtDragOver(this);
                 ev.AllowedAction = DragDropActionFromKeyState(e.KeyState, ev.Action);
                 dropHandler.DragOver(ev);
                 e.Effect = ev.AllowedAction.ToSwf();
@@ -367,7 +367,7 @@ namespace Limaki.View.Swf.Visualizers {
         protected override void OnDragDrop (SWF.DragEventArgs e) {
             var dropHandler = Display.EventControler as IDropHandler;
             if (dropHandler != null && Display.Data != null) {
-                dropHandler.OnDrop(e.ToXwt());
+                dropHandler.OnDrop(e.ToXwt(this));
             }
             base.OnDragDrop(e);
 
@@ -411,7 +411,7 @@ namespace Limaki.View.Swf.Visualizers {
             this.Invalidate (rect.ToGdi ());
         }
 
-        Point IDragDopControl.PointToClient(Point source) {
+        Point IDragDropControl.PointToClient(Point source) {
             return this.PointToClient (source.ToGdi ()).ToXwt ();
         }
 
