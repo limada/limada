@@ -19,6 +19,7 @@ using Limaki.Drawing.Gdi;
 using Limaki.Graphs;
 using Limaki.View.Rendering;
 using Limaki.View.UI.GraphScene;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Gdi.UI {
 
@@ -31,7 +32,7 @@ namespace Limaki.View.Gdi.UI {
             var g = ((GdiSurface) e.Surface).Graphics;
 
             var transform = this.Camera.Matrix;
-            g.Transform = GDIConverter.Convert(transform);
+            g.Transform = transform.ToGdi();
 
             if (AntiAlias) {
                 // this is hiqh quality mode:

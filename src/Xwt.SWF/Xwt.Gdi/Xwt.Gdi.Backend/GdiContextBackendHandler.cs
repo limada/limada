@@ -386,7 +386,8 @@ namespace Xwt.Gdi.Backend {
         }
 
         public override void ModifyCTM (object backend, Drawing.Matrix transform) {
-            throw new NotImplementedException();
+            var gc = (GdiContext)backend;
+            gc.Matrix.Multiply(transform.ToGdi());
         }
 
         public override Drawing.Matrix GetCTM (object backend) {

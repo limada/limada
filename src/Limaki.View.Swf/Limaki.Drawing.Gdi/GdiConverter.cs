@@ -65,25 +65,7 @@ namespace Limaki.Drawing.Gdi {
             return result;
         }
 
-        public static System.Drawing.Drawing2D.Matrix Convert (Matrix matrix) {
-            return new System.Drawing.Drawing2D.Matrix(
-                (float) matrix.M11,
-                (float) matrix.M12,
-                (float) matrix.M21,
-                (float) matrix.M22,
-                (float) matrix.OffsetX,
-                (float) matrix.OffsetY);
-        }
-
-        public static Matrix Convert (System.Drawing.Drawing2D.Matrix matrice) {
-            return new Matrix(
-               matrice.Elements[0],
-               matrice.Elements[1],
-               matrice.Elements[2],
-               matrice.Elements[3],
-               matrice.Elements[4],
-               matrice.Elements[5]);
-        }
+        
 
        
     }

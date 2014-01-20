@@ -50,7 +50,7 @@ namespace Limaki.Drawing.Gdi {
         public override Matrix Matrix {
             get {
                 if (base.Matrix == null) {
-                    base.Matrix = GDIConverter.Convert(this.Graphics.Transform);
+                    base.Matrix = this.Graphics.Transform.ToXwt();
                 }
                 return base.Matrix;
             }

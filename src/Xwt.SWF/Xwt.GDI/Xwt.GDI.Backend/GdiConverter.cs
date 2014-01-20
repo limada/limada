@@ -33,6 +33,7 @@ using Xwt.Drawing;
 using Color = Xwt.Drawing.Color;
 using Font = Xwt.Drawing.Font;
 using FontStyle = Xwt.Drawing.FontStyle;
+using Matrix = Xwt.Drawing.Matrix;
 using System.Drawing.Drawing2D;
 using Xwt.Backends;
 using System;
@@ -279,6 +280,30 @@ namespace Xwt.Gdi.Backend {
                 return SDI.ImageFormat.Png;
             throw new ArgumentException();
         }
+        #endregion
+
+        #region Matrix
+
+        public static System.Drawing.Drawing2D.Matrix ToGdi (this Matrix matrix) {
+            return new System.Drawing.Drawing2D.Matrix(
+                (float)matrix.M11,
+                (float)matrix.M12,
+                (float)matrix.M21,
+                (float)matrix.M22,
+                (float)matrix.OffsetX,
+                (float)matrix.OffsetY);
+        }
+
+        public static Matrix ToXwt (this System.Drawing.Drawing2D.Matrix matrice) {
+            return new Matrix(
+               matrice.Elements[0],
+               matrice.Elements[1],
+               matrice.Elements[2],
+               matrice.Elements[3],
+               matrice.Elements[4],
+               matrice.Elements[5]);
+        }
+
         #endregion
 
         #region Font

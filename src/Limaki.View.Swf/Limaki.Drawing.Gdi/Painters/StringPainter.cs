@@ -117,7 +117,7 @@ namespace Limaki.Drawing.Gdi.Painters {
                         (Text, font.FontFamily, (int) font.Style, emSize,
                          new RectangleF (new PointF (-vlen / 2f, -vheight / 2f), new SizeF (vlen, vheight)), StringFormat);
 
-                    using (var matrix = GDIConverter.Convert(_lineMatrix)) {
+                    using (var matrix = _lineMatrix.ToGdi()) {
                         linedTextPath.Transform (matrix);
                     }
 

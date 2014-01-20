@@ -91,7 +91,7 @@ namespace Limaki.Tests.View.GDI {
 
             var g = ((GdiSurface)e.Surface).Graphics;
             var save = g.Transform;
-            g.Transform = GDIConverter.Convert(Camera.Matrix);
+            g.Transform = Camera.Matrix.ToGdi();
 
             var start = new Point(200, 100);
             var size = new Size(0, -100);
@@ -153,7 +153,7 @@ namespace Limaki.Tests.View.GDI {
         public override void OnPaint(IRenderEventArgs e) {
             Graphics g = ((GdiSurface)e.Surface).Graphics;
             System.Drawing.Drawing2D.Matrix save = g.Transform;
-            g.Transform = GDIConverter.Convert(Camera.Matrix);
+            g.Transform = Camera.Matrix.ToGdi();
 
             Rectangle smaller = new Rectangle(start, new Size(50, 20));
             Rectangle bigger = new Rectangle(start, new Size(55, 25));
@@ -199,7 +199,7 @@ namespace Limaki.Tests.View.GDI {
         public void OnPaintTest2(IRenderEventArgs e) {
             Graphics g = ((GdiSurface)e.Surface).Graphics;
             System.Drawing.Drawing2D.Matrix save = g.Transform;
-            g.Transform = GDIConverter.Convert(Camera.Matrix);
+            g.Transform = Camera.Matrix.ToGdi();
 
             Rectangle smaller = new Rectangle(start, new Size(50, 20));
             Rectangle bigger = new Rectangle(start, new Size(55, 25));
