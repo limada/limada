@@ -147,12 +147,6 @@
     <Compile Include="Playground\View\XwtFrontend\ScrollableCanvas.cs" />
     <Compile Include="Playground\View\ReferencePainterCanvas.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\SceneExamples.cs" />
-    <Compile Include="Playground\View\Rectangle\Mono.WindowBase.Rect.cs" />
-    <Compile Include="Playground\View\Rectangle\Refactoring\gdiRectangleD.cs" />
-    <Compile Include="Playground\View\Rectangle\Refactoring\gdiSizeD.cs" />
-    <Compile Include="Playground\View\Rectangle\Refactoring\gidPointD.cs" />
-    <Compile Include="Playground\View\Rectangle\Refactoring\xwtPoint.cs" />
-    <Compile Include="Playground\View\Rectangle\Refactoring\xwtSize.cs" />
     <Compile Include="Playground\View\ToolStrip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestLocations.cs" />
@@ -303,7 +297,6 @@
   <ItemGroup>
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
     <Folder Include="Playground\Graph\" />
-    <Folder Include="Playground\View\DragDrop\" />
     <Folder Include="[Deprecated]\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
