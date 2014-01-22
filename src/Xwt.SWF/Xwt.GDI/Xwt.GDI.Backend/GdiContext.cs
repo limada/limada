@@ -35,6 +35,7 @@ namespace Xwt.Gdi.Backend {
         public GdiContext () {
             Color = Color.Black;
             LineWidth = 1;
+            ScaleFactor = 1;
         }
 
         public GdiContext (Graphics g): this() {
@@ -280,5 +281,11 @@ namespace Xwt.Gdi.Backend {
             if (_path != null)
                 _path.CloseFigure();
         }
+
+
+        /// <summary>
+        /// a general scalefactor, eg. the scalefactor of the control on which is drawn
+        /// </summary>
+        public double ScaleFactor { get; set; }
     }
 }

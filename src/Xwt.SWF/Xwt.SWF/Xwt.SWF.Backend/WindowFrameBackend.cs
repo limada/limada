@@ -193,5 +193,10 @@ namespace Xwt.WinformBackend {
         public void InitializeBackend (object frontend, ApplicationContext context) {
             throw new NotImplementedException();
         }
+
+
+        public bool Close () {
+            throw new NotImplementedException();
+        }
     }
 }

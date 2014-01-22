@@ -364,6 +364,11 @@ namespace Xwt.Gdi.Backend {
             context.Scale ((float) scaleX, (float) scaleY);
         }
 
+        public override double GetScaleFactor (object backend) {
+            var gc = (GdiContext) backend;
+            return gc.ScaleFactor;
+        }
+
         public override void Translate (object backend, double tx, double ty) {
             var gc = (GdiContext) backend;
             gc.Translate ((float) tx, (float) ty);

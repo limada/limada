@@ -255,9 +255,6 @@ namespace Xwt.Html5.Backend {
         public override void Dispose (object backend) {
           
         }
-
-
-
         public override void DrawImage (object backend, ImageDescription img, double x, double y) {
             throw new NotImplementedException();
         }
@@ -289,6 +286,10 @@ namespace Xwt.Html5.Backend {
         }
 
         public override bool IsPointInFill (object backend, double x, double y) {
+            throw new NotImplementedException();
+        }
+
+        public override double GetScaleFactor (object backend) {
             throw new NotImplementedException();
         }
     }
