@@ -27,14 +27,14 @@ using System;
 
 namespace Xwt
 {
-    public class ScrollViewTests : WidgetTests
+	public class ScrollViewTests: ContainerTests
 	{
 		public override Widget CreateWidget ()
 		{
 			return new ScrollView ();
 		}
-
-        protected virtual void AddChild (Widget parent, Widget child)
+		
+		protected override void AddChild (Widget parent, Widget child)
 		{
 			((ScrollView)parent).Content = child;
 		}

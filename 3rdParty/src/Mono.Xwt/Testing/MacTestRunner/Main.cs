@@ -13,12 +13,12 @@ namespace MacTest
 			Xwt.Application.Initialize (Xwt.ToolkitType.Cocoa);
 			ReferenceImageManager.Init ("MacTestRunner");
 
-			var list = new List<string> ();
+			var list = new List<string> (args);
 			list.Add ("-domain=None");
 			list.Add ("-noshadow");
 			list.Add ("-nothread");
-			if (!list.Contains (typeof (MainClass).Assembly.Location))
-				list.Add (typeof (MainClass).Assembly.Location);
+			//			if (!list.Contains (typeof (MainClass).Assembly.Location))
+			//	list.Add (typeof (MainClass).Assembly.Location);
 			NUnit.ConsoleRunner.Runner.Main (list.ToArray ());
 			ReferenceImageManager.ShowImageVerifier ();
 		}

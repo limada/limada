@@ -35,7 +35,8 @@ using System.Windows;
 
 namespace Xwt.WPFBackend
 {
-	public class WpfTextLayoutBackendHandler: TextLayoutBackendHandler
+	public class WpfTextLayoutBackendHandler
+		: TextLayoutBackendHandler
 	{
 		public override object Create ()
 		{
@@ -139,9 +140,7 @@ namespace Xwt.WPFBackend
 		public override void ClearAttributes (object backend)
 		{
 		}
-
-      
-    }
+	}
 
 	class TextLayoutBackend
 	{

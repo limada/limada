@@ -68,6 +68,16 @@ namespace Xwt
 				if (btn.Command != null)
 					Parent.OnCommandActivated (btn.Command);
 			}
+
+			public override bool OnCloseRequested ()
+			{
+				return Parent.RequestClose ();
+			}
+
+			protected override System.Collections.Generic.IEnumerable<object> GetDefaultEnabledEvents ()
+			{
+				yield return WindowFrameEvent.CloseRequested;
+			}
 		}
 		
 		protected override BackendHost CreateBackendHost ()
@@ -82,7 +92,11 @@ namespace Xwt
 		public DialogButtonCollection Buttons {
 			get { return commands; }
 		}
-		
+
+		/// <summary>
+		/// Called when a dialog button is clicked
+		/// </summary>
+		/// <param name="cmd">The command</param>
 		protected virtual void OnCommandActivated (Command cmd)
 		{
 			Respond (cmd);
@@ -100,18 +114,39 @@ namespace Xwt
 				TransientFor = parent;
 			AdjustSize ();
 
+			loopEnded = false;
 			BackendHost.ToolkitEngine.InvokePlatformCode (delegate {
 				Backend.RunLoop ((IWindowFrameBackend) Toolkit.GetBackend (parent));
 			});
 			return resultCommand;
 		}
+
+		bool responding;
+		bool requestingClose;
 		
 		public void Respond (Command cmd)
 		{
 			resultCommand = cmd;
-			if (!loopEnded) {
-				loopEnded = true;
+			responding = true;
+			if (!loopEnded && !requestingClose) {
 				Backend.EndLoop ();
+			}
+		}
+
+		bool RequestClose ()
+		{
+			requestingClose = true;
+			try {
+				if (OnCloseRequested ()) {
+					if (!responding)
+						resultCommand = null;
+					loopEnded = true;
+					return true;
+				} else
+					return false;
+			} finally {
+				responding = false;
+				requestingClose = false;
 			}
 		}
 		

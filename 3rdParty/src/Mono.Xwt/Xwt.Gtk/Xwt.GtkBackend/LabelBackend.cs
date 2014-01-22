@@ -175,14 +175,19 @@ namespace Xwt.GtkBackend
 			Label.Layout.GetPixelSize (out unused, out wrapHeight);
 			if (wrapWidth != args.Allocation.Width || oldHeight != wrapHeight) {
 				wrapWidth = args.Allocation.Width;
-				// GTK renders the text using the calculated pixel width, not the allocated width.
-				// If the calculated width is smaller and text is not left aligned, then a gap is
-				// shown at the right of the label. We then have the adjust the allocation.
-				if (Label.Justify == Gtk.Justification.Right)
-					Label.Xpad = wrapWidth - unused;
-				else if (Label.Justify == Gtk.Justification.Center)
-					Label.Xpad = (wrapWidth - unused) / 2;
 				Label.QueueResize ();
+			}
+			// GTK renders the text using the calculated pixel width, not the allocated width.
+			// If the calculated width is smaller and text is not left aligned, then a gap is
+			// shown at the right of the label. We then have the adjust the allocation.
+			if (Label.Justify == Gtk.Justification.Right) {
+				var w = wrapWidth - unused;
+				if (w != Label.Xpad)
+					Label.Xpad = w;
+			} else if (Label.Justify == Gtk.Justification.Center) {
+				var w = (wrapWidth - unused) / 2;
+				if (w != Label.Xpad)
+					Label.Xpad = w;
 			}
 		}
 
@@ -255,30 +260,34 @@ namespace Xwt.GtkBackend
 			}
 		}
 
+
+		Alignment alignment;
+
 		public Alignment TextAlignment {
 			get {
-				if (Label.Justify == Gtk.Justification.Left)
-					return Alignment.Start;
-				else if (Label.Justify == Gtk.Justification.Right)
-					return Alignment.End;
-				else
-					return Alignment.Center;
+				return alignment;
 			}
 			set {
-				switch (value) {
-				case Alignment.Start:
-					Label.Justify = Gtk.Justification.Left;
-					Label.Xalign = 0;
-					break;
-				case Alignment.End:
-					Label.Justify = Gtk.Justification.Right;
-					Label.Xalign = 1; 
-					break;
-				case Alignment.Center:
-					Label.Justify = Gtk.Justification.Center;
-					Label.Xalign = 0.5f;
-					break;
-				}
+				alignment = value;
+				SetAlignment ();
+			}
+		}
+
+		void SetAlignment ()
+		{
+			switch (alignment) {
+			case Alignment.Start:
+				Label.Justify = Gtk.Justification.Left;
+				Label.Xalign = 0f;
+				break;
+			case Alignment.End:
+				Label.Justify = Gtk.Justification.Right;
+				Label.Xalign = Label.LineWrap ? 0 : 1;
+				break;
+			case Alignment.Center:
+				Label.Justify = Gtk.Justification.Center;
+				Label.Xalign = Label.LineWrap ? 0 : 0.5f;
+				break;
 			}
 		}
 		
@@ -333,6 +342,7 @@ namespace Xwt.GtkBackend
 						break;
 					}
 				}
+				SetAlignment ();
 			}
 		}
 	}

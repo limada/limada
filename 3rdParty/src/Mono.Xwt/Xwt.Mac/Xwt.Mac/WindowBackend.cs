@@ -63,6 +63,10 @@ namespace Xwt.Mac
 			// TODO: do it only if mouse move events are enabled in a widget
 			AcceptsMouseMovedEvents = true;
 
+			WillClose += delegate {
+				OnClosed ();
+			};
+
 			Center ();
 		}
 
@@ -176,23 +180,53 @@ namespace Xwt.Mac
 			if (eventId is WindowFrameEvent) {
 				var @event = (WindowFrameEvent)eventId;
 				switch (@event) {
-					case WindowFrameEvent.BoundsChanged:
-						DidResize += HandleDidResize;
-						DidMoved += HandleDidResize;
-						break;
-					case WindowFrameEvent.Hidden:
-						EnableVisibilityEvent (@event);
-						this.WillClose += OnWillClose;
-						break;
-					case WindowFrameEvent.Shown:
-						EnableVisibilityEvent (@event);
-						break;
+				case WindowFrameEvent.BoundsChanged:
+					DidResize += HandleDidResize;
+					DidMoved += HandleDidResize;
+					break;
+				case WindowFrameEvent.Hidden:
+					EnableVisibilityEvent (@event);
+					this.WillClose += OnWillClose;
+					break;
+				case WindowFrameEvent.Shown:
+					EnableVisibilityEvent (@event);
+					break;
+				case WindowFrameEvent.CloseRequested:
+					WindowShouldClose = OnShouldClose;
+					break;
 				}
 			}
 		}
 		
 		void OnWillClose (object sender, EventArgs args) {
 			OnHidden ();
+		}
+
+		bool OnShouldClose (NSObject ob)
+		{
+			return closePerformed = RequestClose ();
+		}
+
+		internal bool RequestClose ()
+		{
+			bool res = true;
+			ApplicationContext.InvokeUserCode (() => res = eventSink.OnCloseRequested ());
+			return res;
+		}
+
+		protected virtual void OnClosed ()
+		{
+			if (!disposing)
+				ApplicationContext.InvokeUserCode (eventSink.OnClosed);
+		}
+
+		bool closePerformed;
+
+		bool IWindowFrameBackend.Close ()
+		{
+			closePerformed = true;
+			PerformClose (this);
+			return closePerformed;
 		}
 		
 		bool VisibilityEventsEnabled ()
@@ -396,10 +430,17 @@ namespace Xwt.Mac
 		#endregion
 
 		static Selector closeSel = new Selector ("close");
-		
+
+		bool disposing;
+
 		void IWindowFrameBackend.Dispose ()
 		{
-			Messaging.void_objc_msgSend (this.Handle, closeSel.Handle);
+			disposing = true;
+			try {
+				Messaging.void_objc_msgSend (this.Handle, closeSel.Handle);
+			} finally {
+				disposing = false;
+			}
 		}
 		
 		public void DragStart (TransferDataSource data, DragDropAction dragAction, object dragImage, double xhot, double yhot)

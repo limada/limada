@@ -74,7 +74,7 @@ namespace Xwt.Backends
 
 		public abstract Matrix GetCTM (object backend);
 
-        public abstract bool IsPointInStroke (object backend, double x, double y);
+		public abstract bool IsPointInStroke (object backend, double x, double y);
 
 		/// <summary>
 		/// Sets a global alpha to be applied to all drawing operations.
@@ -82,7 +82,7 @@ namespace Xwt.Backends
 		/// </summary>
 		public abstract void SetGlobalAlpha (object backend, double globalAlpha);
 
-	   
+		public abstract double GetScaleFactor (object backend);
 	}
 }
 

@@ -58,6 +58,7 @@ namespace Xwt.Backends
 		{
 			this.backend = backend;
 			usingCustomBackend = true;
+			OnBackendCreated ();
 		}
 		
 		public object Parent { get; internal set; }
@@ -135,11 +136,21 @@ namespace Xwt.Backends
 		
 		internal HashSet<object> DefaultEnabledEvents {
 			get {
-				if (defaultEnabledEvents == null)
-					defaultEnabledEvents = EventUtil.GetDefaultEnabledEvents (Parent.GetType ());
+				if (defaultEnabledEvents == null) {
+					defaultEnabledEvents = EventUtil.GetDefaultEnabledEvents (Parent.GetType (), GetDefaultEnabledEvents);
+				}
 				return defaultEnabledEvents;
 			}
-		}	
+		}
+
+		/// <summary>
+		/// Gets the events which are enabled by default for this widget
+		/// </summary>
+		/// <returns>The enabled events (must be valid event enum values)</returns>
+		protected virtual IEnumerable<object> GetDefaultEnabledEvents ()
+		{
+			yield break;
+		}
 	}
 }
 

@@ -146,11 +146,8 @@ namespace Xwt
 			CheckMatrix (new Matrix (1, 0, 0, 0.5, -5, -2.5), m);
 
 			m = new Matrix (0, 2, 4, 0, 5, 5);
-		    var m1 = new Matrix(m);
 			m.Invert ();
 			CheckMatrix (new Matrix (0, 0.25, 0.5, 0, -2.5, -1.25), m);
-
-            CheckMatrix(Matrix.Identity, m*m1);
 		}
 
 		[Test]

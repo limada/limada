@@ -65,6 +65,7 @@ namespace Xwt
 		EventHandler shown;
 		EventHandler hidden;
 		CloseRequestedHandler closeRequested;
+		EventHandler closed;
 
 		Point location;
 		Size size;
@@ -102,6 +103,11 @@ namespace Xwt
 			{
 				return Parent.OnCloseRequested ();
 			}
+
+			public virtual void OnClosed ()
+			{
+				Parent.OnClosed ();
+			}
 		}
 
 		static WindowFrame ()
@@ -109,6 +115,7 @@ namespace Xwt
 			MapEvent (WindowFrameEvent.Shown, typeof(WindowFrame), "OnShown");
 			MapEvent (WindowFrameEvent.Hidden, typeof(WindowFrame), "OnHidden");
 			MapEvent (WindowFrameEvent.CloseRequested, typeof(WindowFrame), "OnCloseRequested");
+			MapEvent (WindowFrameEvent.Closed, typeof(WindowFrame), "OnClosed");
 		}
 
 		public WindowFrame ()
@@ -316,13 +323,43 @@ namespace Xwt
 				hidden (this, EventArgs.Empty);
 		}
 
+		/// <summary>
+		/// Closes the window
+		/// </summary>
+		/// <remarks>>
+		/// Closes the window like if the user clicked on the close window button.
+		/// The CloseRequested event is fired and subscribers can cancel the closing,
+		/// so there is no guarantee that the window will actually close.
+		/// This method doesn't dispose the window. The Dispose method has to be called.
+		/// </remarks>
+		public bool Close ()
+		{
+			return Backend.Close ();
+		}
+
+		/// <summary>
+		/// Called to check if the window can be closed
+		/// </summary>
+		/// <returns><c>true<c> if the window can be closed, <c>false</c> otherwise</returns>
 		protected virtual bool OnCloseRequested ()
 		{
 			if (closeRequested == null)
-				return false;
+				return true;
 			var eventArgs = new CloseRequestedEventArgs();
 			closeRequested (this, eventArgs);
-			return eventArgs.Handled;
+			return eventArgs.AllowClose;
+		}
+
+		/// <summary>
+		/// Called when the window has been closed by the user, or by a call to Close
+		/// </summary>
+		/// <remarks>
+		/// This method is not called when the window is disposed, only when explicitly closed (either by code or by the user)
+		/// </remarks>
+		protected virtual void OnClosed ()
+		{
+			if (closed != null)
+				closed (this, EventArgs.Empty);
 		}
 
 		internal virtual void SetBackendSize (double width, double height)
@@ -422,6 +459,23 @@ namespace Xwt
 			remove {
 				closeRequested -= value;
 				BackendHost.OnAfterEventRemove (WindowFrameEvent.CloseRequested, closeRequested);
+			}
+		}
+
+		/// <summary>
+		/// Raised when the window has been closed by the user, or by a call to Close
+		/// </summary>
+		/// <remarks>
+		/// This event is not raised when the window is disposed, only when explicitly closed (either by code or by the user)
+		/// </remarks>
+		public event EventHandler Closed {
+			add {
+				BackendHost.OnBeforeEventAdd (WindowFrameEvent.Closed, closed);
+				closed += value;
+			}
+			remove {
+				closed -= value;
+				BackendHost.OnAfterEventRemove (WindowFrameEvent.Closed, closed);
 			}
 		}
 	}

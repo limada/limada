@@ -69,6 +69,13 @@ namespace Xwt.WPFBackend
 			Window.Close ();
 		}
 
+		public bool Close ()
+		{
+			closePerformed = true;
+			Window.Close ();
+			return closePerformed;
+		}
+
 		public System.Windows.Window Window {
 			get { return window; }
 			set { window = value; }
@@ -241,11 +248,12 @@ namespace Xwt.WPFBackend
 					case WindowFrameEvent.CloseRequested:
 						window.Closing += ClosingHandler;
 						break;
+					case WindowFrameEvent.Closed:
+						window.Closed += ClosedHandler;
+						break;
 				}
 			}
 		}
-
-	
 
 		public virtual void DisableEvent (object eventId)
 		{
@@ -264,8 +272,17 @@ namespace Xwt.WPFBackend
 					case WindowFrameEvent.CloseRequested:
 						window.Closing -= ClosingHandler;
 						break;
+					case WindowFrameEvent.Closed:
+						window.Closing -= ClosedHandler;
+						break;
 				}
 			}
+		}
+
+		private void ClosedHandler (object sender, EventArgs e)
+		{
+			if (!InhibitCloseRequested)
+				Context.InvokeUserCode (eventSink.OnClosed);
 		}
 
 		void BoundsChangedHandler (object o, EventArgs args)
@@ -302,11 +319,18 @@ namespace Xwt.WPFBackend
 			}
 		}
 
+		protected bool InhibitCloseRequested { get; set; }
+
+		bool closePerformed;
+
 		private void ClosingHandler (object sender, System.ComponentModel.CancelEventArgs e)
 		{
+			if (InhibitCloseRequested)
+				return;
 			Context.InvokeUserCode (delegate ()
 			{
-				e.Cancel = eventSink.OnCloseRequested ();
+				e.Cancel = !eventSink.OnCloseRequested ();
+				closePerformed = !e.Cancel;
 			});
 		}
 
@@ -336,7 +360,7 @@ namespace Xwt.WPFBackend
 
 			if (((IWindowFrameBackend)this).Decorated) {
 				size.Height += SystemParameters.WindowCaptionHeight;
-				loc.Y -= SystemParameters.CaptionHeight;
+				loc.Y -= SystemParameters.WindowCaptionHeight;
 			}
 			if (HasMenu) {
 				size.Height += SystemParameters.MenuBarHeight;

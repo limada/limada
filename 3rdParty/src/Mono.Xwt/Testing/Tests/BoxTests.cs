@@ -28,7 +28,7 @@ using NUnit.Framework;
 
 namespace Xwt
 {
-    public abstract class BoxTests : WidgetTests
+	public abstract class BoxTests: ContainerTests
 	{
 		public override Widget CreateWidget ()
 		{
@@ -37,7 +37,7 @@ namespace Xwt
 			return box;
 		}
 		
-		protected virtual void AddChild (Widget parent, Widget child)
+		protected override void AddChild (Widget parent, Widget child)
 		{
 			((Box)parent).Clear ();
 			((Box)parent).PackStart (child, true);

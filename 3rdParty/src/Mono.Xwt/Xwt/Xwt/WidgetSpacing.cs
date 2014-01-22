@@ -56,13 +56,13 @@ namespace Xwt
 			Right = right;
 		}
 
-		public double Left { get; internal set; }
+		public double Left { get; set; }
 
-		public double Bottom { get; internal set; }
+		public double Bottom { get; set; }
 	
-		public double Right { get; internal set; }
+		public double Right { get; set; }
 	
-		public double Top { get; internal set; }
+		public double Top { get; set; }
 
 		public double HorizontalSpacing {
 			get { return Left + Right; }

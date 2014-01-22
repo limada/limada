@@ -129,12 +129,13 @@ namespace Xwt.Mac
 
 				var bmp = new CGBitmapContext (IntPtr.Zero, pixelWidth, pixelHeight, 8, bytesPerRow, Util.DeviceRGBColorSpace, flags);
 				bmp.TranslateCTM (0, pixelHeight);
-				bmp.ScaleCTM (1, -1);
+				bmp.ScaleCTM ((float)scaleFactor, (float)-scaleFactor);
 
 				var ctx = new CGContextBackend {
 					Context = bmp,
-					Size = new SizeF (pixelWidth, pixelHeight),
-					InverseViewTransform = bmp.GetCTM ().Invert ()
+					Size = new SizeF ((float)width, (float)height),
+					InverseViewTransform = bmp.GetCTM ().Invert (),
+					ScaleFactor = scaleFactor
 				};
 
 				var ci = (CustomImage)handle;
@@ -142,14 +143,26 @@ namespace Xwt.Mac
 
 				var img = new NSImage (((CGBitmapContext)bmp).ToImage (), new SizeF (pixelWidth, pixelHeight));
 				var imageData = img.AsTiff ();
-				var imageRep = (NSBitmapImageRep) NSBitmapImageRep.ImageRepFromData (imageData);
+				var imageRep = (NSBitmapImageRep)NSBitmapImageRep.ImageRepFromData (imageData);
 				var im = new NSImage ();
 				im.AddRepresentation (imageRep);
 				im.Size = new SizeF ((float)width, (float)height);
+				bmp.Dispose ();
 				return im;
 			}
-			else
+			else {
+				NSImage img = (NSImage)handle;
+				NSBitmapImageRep bitmap = img.Representations ().OfType<NSBitmapImageRep> ().FirstOrDefault ();
+				if (bitmap == null) {
+					var imageData = img.AsTiff ();
+					var imageRep = (NSBitmapImageRep)NSBitmapImageRep.ImageRepFromData (imageData);
+					var im = new NSImage ();
+					im.AddRepresentation (imageRep);
+					im.Size = new SizeF ((float)width, (float)height);
+					return im;
+				}
 				return handle;
+			}
 		}
 		
 		public override Xwt.Drawing.Color GetBitmapPixel (object handle, int x, int y)
@@ -181,7 +194,11 @@ namespace Xwt.Mac
 		public override Size GetSize (object handle)
 		{
 			NSImage img = (NSImage)handle;
-			return new Size ((int)img.Size.Width, (int)img.Size.Height);
+			NSBitmapImageRep bitmap = img.Representations ().OfType<NSBitmapImageRep> ().FirstOrDefault ();
+			if (bitmap != null)
+				return new Size (bitmap.PixelsWide, bitmap.PixelsHigh);
+			else
+				return new Size ((int)img.Size.Width, (int)img.Size.Height);
 		}
 		
 		public override object CopyBitmap (object handle)
@@ -196,7 +213,17 @@ namespace Xwt.Mac
 		
 		public override object CropBitmap (object backend, int srcX, int srcY, int width, int height)
 		{
-			throw new NotImplementedException ();
+			NSImage img = (NSImage)backend;
+			NSBitmapImageRep bitmap = img.Representations ().OfType<NSBitmapImageRep> ().FirstOrDefault ();
+			if (bitmap != null) {
+				RectangleF empty = RectangleF.Empty;
+				var cgi = bitmap.AsCGImage (ref empty, null, null).WithImageInRect (new RectangleF (srcX, srcY, width, height));
+				NSImage res = new NSImage (cgi, new SizeF (width, height));
+				cgi.Dispose ();
+				return res;
+			}
+			else
+				throw new InvalidOperationException ("Not a bitmnap image");
 		}
 		
 		static NSImage FromResource (string res)
@@ -261,6 +288,11 @@ namespace Xwt.Mac
 		public void DrawIt (NSObject ob)
 		{
 			CGContext ctx = NSGraphicsContext.CurrentContext.GraphicsPort;
+			if (!NSGraphicsContext.CurrentContext.IsFlipped) {
+				// Custom drawing is done using flipped order, so if the target surface is not flipped, we need to flip it
+				ctx.TranslateCTM (0, Size.Height);
+				ctx.ScaleCTM (1, -1);
+			}
 			DrawInContext (ctx);
 		}
 

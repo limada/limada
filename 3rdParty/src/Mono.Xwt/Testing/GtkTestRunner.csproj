@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -56,6 +56,9 @@
       <HintPath>libs\nunit.util.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GtkTestRunner\Main.cs" />
@@ -107,6 +110,12 @@
     <Compile Include="Tests\WindowTests.cs" />
     <Compile Include="Tests\XwtTest.cs" />
     <Compile Include="Tests\InternalChildrenTests.cs" />
+    <Compile Include="Tests\LinkLabelTests.cs" />
+    <Compile Include="Tests\FormattedTextTests.cs" />
+    <Compile Include="GtkTests\GtkIntegrationTests.cs" />
+    <Compile Include="Tests\DrawingTestsBase.cs" />
+    <Compile Include="Tests\NinePatchTests.cs" />
+    <Compile Include="Tests\DialogTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -116,7 +125,36 @@
     </ProjectReference>
     <ProjectReference Include="..\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GtkTests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tests\ninep-ss.9.png">
+      <LogicalName>ninep-ss.9.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tests\ninep-st.9.png">
+      <LogicalName>ninep-st.9.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tests\ninep-ts.9.png">
+      <LogicalName>ninep-ts.9.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tests\ninep-tt.9.png">
+      <LogicalName>ninep-tt.9.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tests\ninep-ss.9%402x.png">
+      <LogicalName>ninep-ss.9@2x.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tests\ninep-st.9%402x.png">
+      <LogicalName>ninep-st.9@2x.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tests\ninep-ts.9%402x.png">
+      <LogicalName>ninep-ts.9@2x.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tests\ninep-tt.9%402x.png">
+      <LogicalName>ninep-tt.9@2x.png</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

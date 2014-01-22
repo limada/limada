@@ -27,7 +27,7 @@ using System;
 
 namespace Xwt
 {
-    public class TableTests : WidgetTests
+	public class TableTests: ContainerTests
 	{
 		public override Widget CreateWidget ()
 		{
@@ -35,8 +35,8 @@ namespace Xwt
 			t.Add (new Label ("Hello Worlds"), 0, 0);
 			return t;
 		}
-
-        protected virtual void AddChild (Widget parent, Widget child)
+		
+		protected override void AddChild (Widget parent, Widget child)
 		{
 			((Table)parent).Clear ();
 			((Table)parent).Add (child, 0, 0, hexpand: true, vexpand: true);

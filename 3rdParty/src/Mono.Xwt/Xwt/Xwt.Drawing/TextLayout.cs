@@ -199,7 +199,6 @@ namespace Xwt.Drawing
 		}
 
 		string markup;
-
 		public string Markup {
 			get { return markup; }
 			set {

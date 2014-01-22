@@ -98,7 +98,7 @@ namespace Xwt
 		[Test]
 		public void Margin ()
 		{
-			var w = CreateWidget ();
+            //var w = CreateWidget ();
             //Assert.AreEqual (0, w.Margin.Left);
             //Assert.AreEqual (0, w.Margin.Top);
             //Assert.AreEqual (0, w.Margin.Right);
@@ -151,13 +151,13 @@ namespace Xwt
 				win.Present ();
 
 //				for (int n=0; n < 500; n++) {
-					Application.MainLoop.DispatchPendingEvents ();
+                    //Application.DispatchPendingEvents ();
 //					System.Threading.Thread.Sleep (10);
 //				}
 
 				e.SetFocus ();
 
-				Application.MainLoop.DispatchPendingEvents ();
+                //Application.DispatchPendingEvents ();
 
 				Assert.IsFalse (w.HasFocus);
 		//		Assert.IsTrue (w.CanGetFocus);
@@ -195,7 +195,7 @@ namespace Xwt
 			win.Content = w;
 			win.Show ();
 
-			Application.MainLoop.DispatchPendingEvents ();
+            //Application.DispatchPendingEvents ();
 
 			var defw = w.Size.Width;
 			var defh = w.Size.Height;
@@ -228,7 +228,7 @@ namespace Xwt
 			win.Content = w;
 			win.Show ();
 
-			Application.MainLoop.DispatchPendingEvents ();
+            //Application.DispatchPendingEvents ();
 
 			Assert.AreEqual (w.ScreenBounds, win.ScreenBounds);
 

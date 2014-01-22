@@ -129,7 +129,7 @@ namespace Xwt.GtkBackend
 		protected override void OnSizeRequested (ref Gtk.Requisition requisition)
 		{
 			base.OnSizeRequested (ref requisition);
-			foreach (var cr in children)
+			foreach (var cr in children.ToArray ())
 				cr.Key.SizeRequest ();
 		}
 		
@@ -186,8 +186,12 @@ namespace Xwt.GtkBackend
 			} else {
 				ctx.Context = Gdk.CairoHelper.Create (GdkWindow);
 			}
-			if (!VisibleWindow)
+			if (!VisibleWindow) {
 				ctx.Context.Translate (Allocation.X, Allocation.Y);
+				// Set ContextBackend Origin
+				ctx.Origin.X = Allocation.X;
+				ctx.Origin.Y = Allocation.Y;
+			}
 			return ctx;
 		}
 	}

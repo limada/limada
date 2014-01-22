@@ -27,16 +27,12 @@ using System;
 
 namespace Xwt
 {
-    public class VPanedTests : WidgetTests
+	public class VPanedTests: PanedTests
 	{
-        public virtual Paned CreatePaned ()
+		public override Paned CreatePaned ()
 		{
 			return new VPaned ();
 		}
-
-        public override Widget CreateWidget () {
-            return CreatePaned();
-        }
-    }
+	}
 }
 

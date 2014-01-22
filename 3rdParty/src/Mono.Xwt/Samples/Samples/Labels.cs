@@ -35,8 +35,24 @@ namespace Samples
 			Label la = new Label ("Simple label");
 			PackStart (la);
 
+			la = new Label ("Centered Text, Centered Text, Centered Text, Centered Text, Centered Text, Centered Text, Centered Text");
+			la.Wrap = WrapMode.Word;
+			la.TextAlignment = Alignment.Center;
+			PackStart (la);
+
+			la = new Label ("Left Aligned, Left Aligned, Left Aligned, Left Aligned, Left Aligned, Left Aligned, Left Aligned, Left Aligned");
+			la.Wrap = WrapMode.Word;
+			la.TextAlignment = Alignment.Start;
+			PackStart (la);
+
+			la = new Label ("Right Aligned, Right Aligned, Right Aligned, Right Aligned, Right Aligned, Right Aligned, Right Aligned");
+			la.Wrap = WrapMode.Word;
+			la.TextAlignment = Alignment.End;
+			PackStart (la);
+
 			la = new Label ("Label with red background") {
-				BackgroundColor = new Xwt.Drawing.Color (1, 0, 0)
+				BackgroundColor = new Xwt.Drawing.Color (1, 0, 0),
+				HeightRequest = 40
 			};
 			PackStart (la);
 

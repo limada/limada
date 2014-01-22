@@ -337,14 +337,18 @@ namespace Xwt.GtkBackend
 
 		Gdk.Pixbuf RenderFrame (ApplicationContext actx, double scaleFactor, double width, double height)
 		{
-			using (var sf = new Cairo.ImageSurface (Cairo.Format.ARGB32, (int)(width * scaleFactor), (int)(height * scaleFactor)))
+			var swidth = Math.Max ((int)(width * scaleFactor), 1);
+			var sheight = Math.Max ((int)(height * scaleFactor), 1);
+
+			using (var sf = new Cairo.ImageSurface (Cairo.Format.ARGB32, swidth, sheight))
 			using (var ctx = new Cairo.Context (sf)) {
 				ImageDescription idesc = new ImageDescription () {
 					Alpha = 1,
-					Size = new Size (width * scaleFactor, height * scaleFactor)
+					Size = new Size (width, height)
 				};
+				ctx.Scale (scaleFactor, scaleFactor);
 				Draw (actx, ctx, scaleFactor, 0, 0, idesc);
-				var f = new ImageFrame (ImageBuilderBackend.CreatePixbuf (sf), (int)width, (int)height, true);
+				var f = new ImageFrame (ImageBuilderBackend.CreatePixbuf (sf), Math.Max((int)width,1), Math.Max((int)height,1), true);
 				AddFrame (f);
 				return f.Pixbuf;
 			}
@@ -395,7 +399,18 @@ namespace Xwt.GtkBackend
 			ctx.Translate (x, y);
 			ctx.Scale (idesc.Size.Width / (double)img.Width, idesc.Size.Height / (double)img.Height);
 			Gdk.CairoHelper.SetSourcePixbuf (ctx, img, 0, 0);
-			if (idesc.Alpha == 1)
+
+			#pragma warning disable 618
+			using (var pattern = (Cairo.SurfacePattern)ctx.Source) {
+				if (idesc.Size.Width > img.Width || idesc.Size.Height > img.Height) {
+					// Fixes blur issue when rendering on an image surface
+					pattern.Filter = Cairo.Filter.Fast;
+				} else
+					pattern.Filter = Cairo.Filter.Good;
+			}
+			#pragma warning restore 618
+
+			if (idesc.Alpha >= 1)
 				ctx.Paint ();
 			else
 				ctx.PaintWithAlpha (idesc.Alpha);

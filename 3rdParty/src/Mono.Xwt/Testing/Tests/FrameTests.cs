@@ -28,14 +28,14 @@ using NUnit.Framework;
 
 namespace Xwt
 {
-    public class FrameTests : WidgetTests
+	public class FrameTests: ContainerTests
 	{
 		public override Widget CreateWidget ()
 		{
 			return new Frame () { Label = "Hi there" };
 		}
 
-		protected virtual void AddChild (Widget parent, Widget child)
+		protected override void AddChild (Widget parent, Widget child)
 		{
 			((Frame)parent).Content = child;
 		}
