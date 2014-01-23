@@ -191,6 +191,8 @@ namespace Xwt.GtkBackend
 				// Set ContextBackend Origin
 				ctx.Origin.X = Allocation.X;
 				ctx.Origin.Y = Allocation.Y;
+                ctx.Context.Rectangle(0,0,Allocation.Width,Allocation.Height);
+                ctx.Context.Clip();
 			}
 			return ctx;
 		}
