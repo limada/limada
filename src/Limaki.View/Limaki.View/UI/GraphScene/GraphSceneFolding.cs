@@ -13,13 +13,12 @@
  */
 
 
-using System.ComponentModel;
+using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.Rendering;
 using Xwt;
-using System;
 
 namespace Limaki.View.UI.GraphScene {
 
@@ -35,9 +34,6 @@ namespace Limaki.View.UI.GraphScene {
         DataComparer<TItem> OrderBy { get; set; }
         void Clear ();
         bool Check ();
-
-
-        
     }
 
     public class GraphSceneFolding<TItem, TEdge> : KeyActionBase, ICheckable, IGraphSceneFolding<TItem, TEdge> 
