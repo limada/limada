@@ -12,7 +12,6 @@ namespace Limaki.View.XwtBackend {
     [BackendType(typeof(IImageDisplayBackend))]
     public class ImageDisplay : Display<Image> { }
     
-
     public interface IImageDisplayBackend : IDisplayBackend<Image> { }
 
     public class ImageDisplayFactory : DisplayFactory<Image> {
