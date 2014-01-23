@@ -1,10 +1,14 @@
 using Xwt.Drawing;
 namespace Limaki.Drawing {
     /// <summary>
-    /// a Surface providing a Xwt.Context
+    /// a Surface providing a Xwt.Drawing.Context
     /// </summary>
     public class ContextSurface : ISurface {
         public virtual Context Context { get; set; }
-        public virtual Matrix Matrix { get; set; }
+        private Matrix _matrix = null;
+        public virtual Matrix Matrix {
+            get { return _matrix ?? (_matrix = new Matrix()); }
+            set { _matrix = value; }
+        }
     }
 }

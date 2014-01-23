@@ -21,12 +21,15 @@ namespace Limaki.View.XwtContext {
             throw new NotImplementedException();
         }
 
-        public void OnPaint(IRenderEventArgs e) {
-            var surface = (ContextSurface)e.Surface;
+        public void OnPaint (IRenderEventArgs e) {
+            var surface = (ContextSurface) e.Surface;
             var ctx = surface.Context;
-            ctx.SetColor (BackColor());
-            ctx.Rectangle (e.Clipper.Bounds); //??
+
+            // paint background
+            ctx.SetColor(BackColor());
+            ctx.Rectangle (e.Clipper.Bounds); 
             ctx.Fill();
+
             Layer.OnPaint (e);
         }
     }

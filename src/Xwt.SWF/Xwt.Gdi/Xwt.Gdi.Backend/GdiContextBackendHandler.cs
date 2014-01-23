@@ -116,7 +116,8 @@ namespace Xwt.Gdi.Backend {
 
         public override void ClosePath (object backend) {
             var gc = (GdiContext) backend;
-            gc.CloseFigure ();
+            if (gc.Path.PointCount != 0)
+                gc.CloseFigure ();
         }
 
         /// <summary>
@@ -172,7 +173,8 @@ namespace Xwt.Gdi.Backend {
 
         public override void NewPath (object backend) {
             var gc = (GdiContext) backend;
-            gc.Path = new GraphicsPath ();
+            if (gc.Path.PointCount != 0)
+                gc.Path = new GraphicsPath();
         }
 
         public override void Rectangle (object backend, double x, double y, double width, double height) {

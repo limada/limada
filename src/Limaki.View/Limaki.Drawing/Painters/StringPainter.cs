@@ -23,14 +23,15 @@ namespace Limaki.Drawing.Painters {
     public class StringPainter : StringPainterBase {
 
         public override void Render(ISurface surface) {
+            var contextSurface = (ContextSurface) surface;
             if (string.IsNullOrEmpty(this.Text))
                 return;
 
-            var matrix = ((ContextSurface)surface).Matrix;
+            var matrix = contextSurface.Matrix;
             if (matrix.M11 < 0.2d || matrix.M22 < 0.2d)
                 return;
 
-            var ctx = ((ContextSurface)surface).Context;
+            var ctx = contextSurface.Context;
             var style = this.Style;
             var shape = this.OuterShape;
             var font = Style.Font;

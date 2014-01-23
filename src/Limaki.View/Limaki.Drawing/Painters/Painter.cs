@@ -43,24 +43,26 @@ namespace Limaki.Drawing.Painters {
 
         public abstract void Render ( ISurface surface );
 
-        public virtual void Render (Context ctx, Action<Context, T> draw, 
+        public virtual void Render (Context ctx, Action<Context, T> draw,
             RenderType renderType, Color fillColor, Color penColor, double thickness) {
-
-            draw (ctx, Shape.Data);
-            if (renderType.HasFlag (RenderType.Fill)) {
-                ctx.SetColor (fillColor);
-                ctx.FillPreserve ();
+            ctx.NewPath();
+            draw(ctx, Shape.Data);
+            if (renderType.HasFlag(RenderType.Fill)) {
+                ctx.SetColor(fillColor);
+                ctx.FillPreserve();
             }
-            if (renderType.HasFlag (RenderType.Draw)) {
-                ctx.SetColor (penColor);
-                ctx.SetLineWidth (thickness);
-                ctx.Stroke ();
+            if (renderType.HasFlag(RenderType.Draw)) {
+                ctx.SetColor(penColor);
+                ctx.SetLineWidth(thickness);
+                ctx.Stroke();
             }
+            ctx.ClosePath();
         }
 
         public virtual void Render (Context ctx, Action<Context, T> draw) {
             var style = this.Style;
             var renderType = this.RenderType;
+            ctx.NewPath();
             draw (ctx, Shape.Data);
             if (renderType.HasFlag (RenderType.Fill)) {
                 ctx.SetColor (style.FillColor);
@@ -71,6 +73,7 @@ namespace Limaki.Drawing.Painters {
                 ctx.SetLineWidth (style.Pen.Thickness);
                 ctx.Stroke ();
             }
+            ctx.ClosePath();
         }
 
         public virtual Point[] Measure(Matrix matrix, int delta, bool extend) {
