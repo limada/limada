@@ -20,6 +20,7 @@ using Limaki.Tests.Graph;
 using Limaki.UnitTest;
 using NUnit.Framework;
 using Limaki.Common;
+using System.Diagnostics;
 
 namespace Limada.Tests.Schemata {
     [TestFixture]
@@ -53,9 +54,9 @@ namespace Limada.Tests.Schemata {
         }
 
         public void TestSchema(Schema schema) {
-            Console.WriteLine(GraphTestUtils.ReportGraph<IThing, ILink>(
+            Trace.WriteLine(GraphTestUtils.ReportGraph<IThing, ILink>(
                                   schema.SchemaGraph, schema.GetType().FullName + ".Graph"));
-            Console.WriteLine(GraphTestUtils.ReportGraph<IThing, ILink>(
+            Trace.WriteLine(GraphTestUtils.ReportGraph<IThing, ILink>(
                                   Schema.IdentityGraph, "Schema.IdentityGraph"));
 
             TestIdentity(schema.SchemaGraph);

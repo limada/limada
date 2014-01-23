@@ -91,7 +91,7 @@ namespace Limaki.UnitTest {
         }
 
         void TestBase_WriteMessage(object sender, string message) {
-            System.Console.WriteLine(message);
+            Trace.WriteLine(message);
         }
 
         [TestFixtureTearDown]

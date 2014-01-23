@@ -30,6 +30,7 @@ using Limaki.Tests.Graph;
 using Limada.Tests.Model;
 using Limaki.Visuals;
 using Limaki.Tests.Graph.Wrappers;
+using System.Diagnostics;
 
 
 namespace Limada.Tests.Wrappers {
@@ -46,7 +47,7 @@ namespace Limada.Tests.Wrappers {
             factory.Mapper.Source = thingGraph;
             factory.Populate(thingGraph);
 
-            Console.Out.Write(
+            Trace.Write(
                 GraphTestUtils.ReportGraph<IThing, ILink>(thingGraph, factory.Name));
         }
         [Test]
@@ -55,7 +56,7 @@ namespace Limada.Tests.Wrappers {
 
             ThingGraphFactory<ProgrammingLanguageFactory> factory = new ThingGraphFactory<ProgrammingLanguageFactory> ();
             factory.Populate (graph.Source);
-            Console.Out.Write (
+            Trace.Write (
                 GraphTestUtils.ReportGraph<IThing, ILink> (graph.Source, factory.Name));
         }
 
@@ -100,12 +101,12 @@ namespace Limada.Tests.Wrappers {
 
 
             test.Mock.Scene.Focused = graph.Get (factory.Node[1]);
-            Console.Out.Write(
+            Trace.Write(
                     GraphTestUtils.ReportGraph<IVisual, IVisualEdge>(graph.Sink, factory.Name));
 
             test.Mock.SceneFacade.Expand (false);
 
-            Console.Out.Write(
+            Trace.Write(
                 GraphTestUtils.ReportGraph<IVisual, IVisualEdge>(graph.Sink, factory.Name));
 
         }
