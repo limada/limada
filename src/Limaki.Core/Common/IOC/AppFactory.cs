@@ -25,15 +25,21 @@ namespace Limaki.Common.IOC {
             ResolveDirectory ("", "Lima*.dll");
         }
 
-        public void ResolveAssembly(Assembly assembly) {
-            foreach (var type in assembly.GetTypes().Where(
-                t => t.IsClass && 
-                     ! t.IsAbstract &&
-                     t.GetInterface(typeof(IContextRecourceLoader).FullName) != null)) {
+        public virtual bool TakeType (Type type) {
+            // only one IBackendContextRecourceLoader allowed
+            if (type.GetInterface(typeof(IBackendContextRecourceLoader).FullName) != null && backendApplied)
+                return false;
+            return true;
+        }
 
-                // only one IBackendContextRecourceLoader allowed:
-                if (type.GetInterface(typeof(IBackendContextRecourceLoader).FullName) != null && backendApplied)
-                    return;
+        public virtual void ResolveAssembly (Assembly assembly) {
+            foreach (var type in assembly.GetTypes().Where(
+                t =>
+                    t.IsClass && 
+                     ! t.IsAbstract &&
+                     t.GetInterface(typeof(IContextRecourceLoader).FullName) != null &&
+                     TakeType(t))) {
+                         
                 if (type.GetConstructors().Any(tc => tc.GetParameters().Length == 0)) {
                     var loader = Activator.CreateInstance(type) as IContextRecourceLoader;
                     loader.ApplyResources(Registry.ConcreteContext);
