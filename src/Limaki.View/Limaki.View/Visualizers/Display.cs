@@ -40,6 +40,8 @@ namespace Limaki.View.Visualizers {
             set { _backend = value; }
         }
 
+        IDisplayBackend IDisplay.Backend { get { return this.Backend; } }
+
         protected TData _data = default(TData);
         public virtual TData Data {
             get { return _data; }
@@ -63,7 +65,7 @@ namespace Limaki.View.Visualizers {
                 SelectAction.Clear();
             if (!disposing) {
                 Viewport.ClipOrigin = Viewport.DataOrigin;
-                Invoke();
+                Reset();
                 UpdateZoom();
             }
         }
@@ -84,7 +86,7 @@ namespace Limaki.View.Visualizers {
         public virtual IBackendRenderer BackendRenderer { get; set; }
         public virtual ICursorHandler CursorHandler { get; set; }
 
-        public virtual object ActiveControl { get; set; }
+        public virtual object ActiveVidget { get; set; }
 
         public virtual ILayer<TData> DataLayer { get; set; }
         public virtual IContentRenderer<TData> DataRenderer { get; set; }
@@ -122,16 +124,16 @@ namespace Limaki.View.Visualizers {
             Viewport.UpdateZoom();
         }
 
-        public virtual void Invoke() {
-            EventControler.Invoke();
+        public virtual void Reset() {
+            EventControler.Reset();
         }
 
-        public virtual void Execute() {
-            EventControler.Execute();
+        public virtual void Perform() {
+            EventControler.Perform();
         }
 
-        public virtual void Done() {
-            EventControler.Done();
+        public virtual void Finish() {
+            EventControler.Finish();
         }
 
         #region IDisposable Member
@@ -154,8 +156,6 @@ namespace Limaki.View.Visualizers {
         }
 
         #endregion
-
-
 
         public virtual bool Check() {
             if (this.Viewport == null) {

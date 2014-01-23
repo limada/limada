@@ -58,9 +58,9 @@ namespace Limaki.Tests.Graph.Model {
                 }
             }
 
-            public override void Invoke () {
-                AlignOnInvoke = false;
-                base.Invoke();
+            public override void Reset () {
+                AlignOnReset = false;
+                base.Reset();
             }
         }
 
@@ -135,7 +135,7 @@ namespace Limaki.Tests.Graph.Model {
             var layout = new LongtermPerformanceSceneLayout(
                 delegate() { return result; }, this.styleSheet);
             Populate(result);
-            layout.Invoke();
+            layout.Reset();
             Arrange(result);
             result.ClearSpatialIndex();
             return result;

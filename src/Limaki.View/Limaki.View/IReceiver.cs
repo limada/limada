@@ -21,8 +21,19 @@ namespace Limaki.View {
     /// on the receiver's subject
     /// </summary>
     public interface IReceiver : IAction {
-        void Execute();
-        void Invoke();
-        void Done();
+        /// <summary>
+        /// set initial values
+        /// </summary>
+        void Reset ();
+
+        /// <summary>
+        /// performs the requests
+        /// </summary>
+        void Perform ();
+        
+        /// <summary>
+        /// actions to do on the end of the performance
+        /// </summary>
+        void Finish ();
     }
 }

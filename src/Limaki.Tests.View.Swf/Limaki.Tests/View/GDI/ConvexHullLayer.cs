@@ -43,8 +43,6 @@ namespace Limaki.Tests.View.GDI {
             this.Priority = ActionPriorities.DataLayerPriority - 500;
         }
 
-
-
         public override void DataChanged() {}
 
         private SolidBrush regionBrush = 
@@ -75,7 +73,7 @@ namespace Limaki.Tests.View.GDI {
         private int tolerance = 1;
         Point[] CommandsHull = new Point[0];
 
-        void IReceiver.Execute() {
+        void IReceiver.Perform() {
             var points = new Set<Xwt.Point>();
             var matrix = new Matrix(this.Camera.Matrix);
             var layout = this.Layout ();
@@ -155,21 +153,9 @@ namespace Limaki.Tests.View.GDI {
             g.Transform = save;
         }
 
+        void IReceiver.Reset() { }
 
-
-
-
-
-        void IReceiver.Invoke() {
-            
-        }
-
-        void IReceiver.Done() {
-            
-        }
-
-
-
+        void IReceiver.Finish() { }
 
     }
 }

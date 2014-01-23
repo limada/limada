@@ -68,8 +68,8 @@ namespace Limaki.Tests.View.Winform {
                     if (visual.Shape != null)
                         VisualsDisplay.Layout.Justify (visual);
                 }
-                this.VisualsDisplay.Invoke();
-                this.VisualsDisplay.Execute ();
+                this.VisualsDisplay.Reset();
+                this.VisualsDisplay.Perform ();
                 this.VisualsDisplay.BackendRenderer.Render ();
                 this.VisualsDisplay.StyleSheet.BaseStyle.AutoSize = autoSize;
             }

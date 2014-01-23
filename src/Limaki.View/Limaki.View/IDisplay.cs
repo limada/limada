@@ -35,10 +35,12 @@ namespace Limaki.View {
         IViewport Viewport { get; set; }
         IBackendRenderer BackendRenderer { get; set; }
 
-        void Invoke ();
-        void Execute ();
+        void Reset ();
+        void Perform ();
 
-        object ActiveControl { get; set; }
+        IDisplayBackend Backend { get; }
+
+        object ActiveVidget { get; set; }
 
     }
 
@@ -47,7 +49,7 @@ namespace Limaki.View {
         T Data { get; set; }
         Int64 DataId { get; set; }
         string Text { get; set; }
-        IDisplayBackend<T> Backend { get; set; }
+        new IDisplayBackend<T> Backend { get; set; }
         State State { get; }
         //ILayout<T> Layout { get; set; }
 

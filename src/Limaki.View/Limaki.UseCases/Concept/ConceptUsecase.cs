@@ -134,7 +134,7 @@ namespace Limaki.Usecases.Concept {
                 var display = GetCurrentDisplay();
                 if (display != null) {
                     display.Data.AddContent(content, display.Layout);
-                    display.Execute();
+                    display.Perform();
                 }
             };
             ContentStreamUiManager.Read();
@@ -147,7 +147,7 @@ namespace Limaki.Usecases.Concept {
                 var scene = display.Data;
                 ContentStreamUiManager.ThingGraphFocusIoManager.SinkIn = graphFocus => {
                     scene.AddVisual(scene.Graph.VisualOf(graphFocus.Cursor), display.Layout);
-                    display.Execute();
+                    display.Perform();
                 };
                 ContentStreamUiManager.ReadThingGraphFocus(display.Data);
             }

@@ -91,7 +91,7 @@ namespace Limada.View {
 
         protected virtual void DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, Content<Stream> content) {
             var info = SheetManager.LoadFromContent(content, display.Data, display.Layout);
-            display.Execute();
+            display.Perform();
             display.Info = info;
         }
 
@@ -193,7 +193,7 @@ namespace Limada.View {
                     view.Add(topicVisual);
                     display.Data.Focused = topicVisual;
                     new GraphSceneFacade<IVisual,IVisualEdge>(() => display.Data,  display.Layout).Expand(false);
-                    display.Invoke();
+                    display.Reset();
                     done = true;
 
                 }
@@ -205,7 +205,7 @@ namespace Limada.View {
                         if (!thingGraph.IsMarker(item))
                             view.Add(graph.Get(item));
                     }
-                    display.Invoke();
+                    display.Reset();
                     done = true;
                 }
                 #endregion
@@ -219,7 +219,7 @@ namespace Limada.View {
                 foreach (var item in  view.Source.FindRoots(null)) {
                     view.Add(item);
                 }
-                display.Invoke();
+                display.Reset();
             }
 
             #endregion

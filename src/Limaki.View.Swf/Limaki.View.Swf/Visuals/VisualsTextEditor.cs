@@ -78,7 +78,7 @@ namespace Limaki.View.Swf.Visuals {
              ActivateMarkers();
              editor.Focus();
              device.ActiveControl = editor;
-             display.ActiveControl = editor;
+             display.ActiveVidget = editor;
          }
 
 
@@ -123,7 +123,7 @@ namespace Limaki.View.Swf.Visuals {
              device.Controls.Remove(editor);
              device.Focus();
 
-             display.ActiveControl = null;
+             display.ActiveVidget = null;
          }
 
          private GdiFontCache gdiFontCache = new GdiFontCache();
@@ -235,7 +235,7 @@ namespace Limaki.View.Swf.Visuals {
                      SceneExtensions.PlaceVisual(scene, root, Current, Layout);
                  }
 
-                 display.Execute();
+                 display.Perform();
                  TextToData(Current, string.Empty);
 
                  AttachEditor();

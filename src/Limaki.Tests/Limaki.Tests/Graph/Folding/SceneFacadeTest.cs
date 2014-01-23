@@ -55,7 +55,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             //    if (!AlwaysInvoke)
             //        invoked = true;
             //}
-            Mock.Display.Execute ();
+            Mock.Display.Perform ();
             Mock.Scene.Requests.Clear ();           
         }
 
@@ -105,7 +105,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         [Test]
         public void InvokeTest() {
             CommandsExecute();
-            Mock.Display.Invoke ();
+            Mock.Display.Reset ();
             TestShapes (Mock.Scene);
         }
 

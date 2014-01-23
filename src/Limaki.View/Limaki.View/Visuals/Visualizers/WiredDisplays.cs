@@ -88,13 +88,13 @@ namespace Limaki.View.Visuals.Visualizers {
             Action<IGraph<IVisual, IVisualEdge>, IVisual, GraphChangeType> graphChanged =
                delegate(IGraph<IVisual, IVisualEdge> sender, IVisual visual, GraphChangeType changeType) {
                    new WiredScenes(sourceScene, targetScene).GraphChanged(visual, changeType);
-                   targetDisplay.Execute();
+                   targetDisplay.Perform();
                };
 
             Action<IGraph<IVisual, IVisualEdge>, IVisual> dataChanged =
                 delegate(IGraph<IVisual, IVisualEdge> sender, IVisual visual) {
                     new WiredScenes(sourceScene, targetScene).DataChanged(visual);
-                    targetDisplay.Execute();
+                    targetDisplay.Perform();
                 };
 
             sourceScene.Graph.GraphChanged += graphChanged;

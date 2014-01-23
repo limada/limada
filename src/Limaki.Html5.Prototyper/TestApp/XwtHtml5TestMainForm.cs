@@ -185,8 +185,8 @@ namespace Xwt.Html5.TestApp {
             worker.Compose(scene, new VisualsRenderer());
 
             worker.Folder.ShowAllData();
-            worker.Receiver.Execute();
-            worker.Receiver.Done();
+            worker.Receiver.Perform();
+            worker.Receiver.Finish();
 
             worker.Painter.Paint(ctx);
             return scene.Shape.Size;

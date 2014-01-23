@@ -97,12 +97,12 @@ namespace Limaki.Tests.View.Visuals {
             sourceTest.Mock.Scene.Selected.Clear();
             sourceTest.Mock.Scene.Focused = sourceTest.Mock.Factory.Node[1]; // Programming
             sourceTest.Mock.SceneFacade.Expand(true);
-            sourceTest.Mock.Display.Execute();
+            sourceTest.Mock.Display.Perform();
 
             targetTest.Mock.Scene.Selected.Clear();
             targetTest.Mock.Scene.Focused = targetTest.Mock.Factory.Node[1]; // Programming
             targetTest.Mock.SceneFacade.Expand (false);
-            targetTest.Mock.Display.Execute();
+            targetTest.Mock.Display.Perform();
 
             // make a new link, add it to source, look if in targetGraph.Source
             var sourceEdge =
@@ -114,7 +114,7 @@ namespace Limaki.Tests.View.Visuals {
             sourceView.OnGraphChanged (sourceEdge, GraphChangeType.Add);
 
             sourceTest.Mock.SceneFacade.Add (sourceEdge, new Point (10, 10));
-            sourceTest.Mock.Display.Execute();
+            sourceTest.Mock.Display.Perform();
 
             // testing the data source
             var graphEdge = sourceGraph.Get(sourceEdge) as IGraphEdge;
@@ -138,7 +138,7 @@ namespace Limaki.Tests.View.Visuals {
                 targetTest.Mock.Scene.Requests.Add(new LayoutCommand<IVisual>(visualEdge, LayoutActionType.Justify));
             }
 
-            targetTest.Mock.Display.Execute();
+            targetTest.Mock.Display.Perform();
 
             // test in target
             Assert.AreSame (targetEdge.Root, targetNewRoot);

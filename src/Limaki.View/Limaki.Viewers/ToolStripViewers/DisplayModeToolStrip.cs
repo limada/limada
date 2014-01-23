@@ -119,7 +119,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                 display = (this.CurrentDisplay as IDisplayBackend).Frontend;
 
             if (display != null) {
-                if (display.ActiveControl == null) {
+                if (display.ActiveVidget == null) {
                     var action = display.EventControler.GetAction<ZoomAction>();
                     if (zoomIn)
                         action.ZoomIn();

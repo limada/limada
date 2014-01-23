@@ -57,7 +57,7 @@ namespace Limaki.Viewers.StreamViewers {
                 throw new ArgumentException("sheetControl must not be null");
             }
 
-            SheetDisplay.Execute();
+            SheetDisplay.Perform();
 
             if (SheetDisplay.DataId == 0) 
                 SheetDisplay.DataId = Isaac.Long;
@@ -94,7 +94,7 @@ namespace Limaki.Viewers.StreamViewers {
             }
             SheetDisplay.BackendRenderer.Render ();
 
-            SheetDisplay.Execute();
+            SheetDisplay.Perform();
             SheetDisplay.Info = sheetinfo;
            
             this.ContentId = SheetDisplay.DataId;

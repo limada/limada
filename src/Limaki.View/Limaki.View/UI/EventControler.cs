@@ -169,7 +169,7 @@ namespace Limaki.View.UI {
                     //}
                 }
             }
-            Execute();
+            Perform();
         }
 
         public void OnMouseMove(MouseActionEventArgs e) {
@@ -185,7 +185,7 @@ namespace Limaki.View.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         public void OnMouseHover(MouseActionEventArgs e) {
@@ -196,7 +196,7 @@ namespace Limaki.View.UI {
                     mouseAction.OnMouseHover(e);
                 }
             }
-            Execute();
+            Perform();
         }
 
         public void OnMouseUp(MouseActionEventArgs e) {
@@ -213,7 +213,7 @@ namespace Limaki.View.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         #endregion
@@ -233,7 +233,7 @@ namespace Limaki.View.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         public void OnKeyReleased(KeyActionEventArgs e) {
@@ -248,7 +248,7 @@ namespace Limaki.View.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         #endregion
@@ -265,27 +265,27 @@ namespace Limaki.View.UI {
         #endregion
 
         #region IReceiver Member
-        public void Execute() {
-            foreach (IReceiver action in ReceiverActions) {
+        public void Perform() {
+            foreach (var action in ReceiverActions) {
                 if (action.Enabled)
-                    action.Execute();
+                    action.Perform();
             }
-            Done();
+            Finish();
         }
 
-        public void Done() {
-            foreach (IReceiver action in ReceiverActions) {
+        public void Finish() {
+            foreach (var action in ReceiverActions) {
                 if (action.Enabled)
-                    action.Done();
+                    action.Finish();
             }
         }
 
-        public void Invoke() {
-            foreach (IReceiver action in ReceiverActions) {
+        public void Reset() {
+            foreach (var action in ReceiverActions) {
                 if (action.Enabled)
-                    action.Invoke();
+                    action.Reset();
             }
-            Execute();
+            Perform();
         }
 
         #endregion
@@ -305,7 +305,7 @@ namespace Limaki.View.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         public virtual void OnDrop (DragEventArgs e) {
@@ -319,7 +319,7 @@ namespace Limaki.View.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         public virtual void DragLeave (EventArgs e) {
@@ -333,7 +333,7 @@ namespace Limaki.View.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         #endregion

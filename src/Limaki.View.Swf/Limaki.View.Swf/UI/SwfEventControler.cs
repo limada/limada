@@ -65,7 +65,7 @@ namespace Limaki.View.Swf.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         public void OnQueryContinueDrag( QueryContinueDragEventArgs qcdevent ) {
@@ -79,7 +79,7 @@ namespace Limaki.View.Swf.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         public void OnDragOver( DragEventArgs drgevent ) {
@@ -93,7 +93,7 @@ namespace Limaki.View.Swf.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         public void OnDragDrop( DragEventArgs drgevent ) {
@@ -107,7 +107,7 @@ namespace Limaki.View.Swf.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         public void OnDragLeave( EventArgs e ) {
@@ -121,7 +121,7 @@ namespace Limaki.View.Swf.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         public void Copy() {
@@ -135,7 +135,7 @@ namespace Limaki.View.Swf.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
 
         public void Paste() {
@@ -149,7 +149,7 @@ namespace Limaki.View.Swf.UI {
                     }
                 }
             }
-            Execute();
+            Perform();
         }
         #endregion
     }

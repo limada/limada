@@ -26,7 +26,7 @@ namespace Limaki.Drawing {
         /// <summary>
         /// performs a full layout
         /// </summary>
-        void Invoke();
+        void Reset();
 
         IShapeFactory ShapeFactory { get; set; }
 
@@ -47,16 +47,16 @@ namespace Limaki.Drawing {
         /// gives back false if item was already invoked
         /// </summary>
         /// <param name="item"></param>
-        bool Invoke(TItem item);
+        bool Perform(TItem item);
 
-        bool Invoke(TItem item, IShape shape);
+        bool Perform(TItem item, IShape shape);
 
         void BoundsChanged(TItem target);
 
         /// <summary>
         /// Invalidates Item.Bounds to redraw the item
         /// </summary>
-        void Perform(TItem item);
+        void Refresh(TItem item);
 
 
         IStyle GetStyle(TItem item);

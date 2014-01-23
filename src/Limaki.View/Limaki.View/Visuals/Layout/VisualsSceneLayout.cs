@@ -40,7 +40,7 @@ namespace Limaki.View.Visuals.Layout {
             return item.Shape;
         }
 
-        public override bool Invoke(TItem item) {
+        public override bool Perform(TItem item) {
             if (item.Shape == null) {
                 item.Shape = CreateShape(item);
                 return true;
@@ -48,7 +48,7 @@ namespace Limaki.View.Visuals.Layout {
             return false;
         }
 
-        public override bool Invoke(TItem item, IShape shape) {
+        public override bool Perform(TItem item, IShape shape) {
             if (item.Shape != shape) {
                 item.Shape = shape;
                 return true;
@@ -139,7 +139,7 @@ namespace Limaki.View.Visuals.Layout {
             }
         }
 
-        public override void Perform(TItem item) { }
+        public override void Refresh(TItem item) { }
 
 
         protected virtual Point[] GetDataHull(TItem item, IStyle style, Matrix matrix, int delta, bool extend) {

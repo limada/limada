@@ -83,7 +83,7 @@ namespace Limaki.Viewers.ToolStripViewers {
 
             StoreUndo(display, aligner, items);
 
-            display.Execute();
+            display.Perform();
         }
 
         private List<ICommand<IVisual>> _undo;
@@ -107,7 +107,7 @@ namespace Limaki.Viewers.ToolStripViewers {
             if (_undo != null && _undoID == display.DataId) {
                 foreach (var comm in _undo)
                     display.Data.Requests.Add(comm);
-                display.Execute();
+                display.Perform();
                 _undo = null;
                 _undoID = 0;
             }
@@ -143,7 +143,7 @@ namespace Limaki.Viewers.ToolStripViewers {
             var display = this.CurrentDisplay;
             if (display != null) {
                 display.BackColor = display.StyleSheet.BackColor;
-                display.Invoke();
+                display.Reset();
                 display.BackendRenderer.Render();
             }
         }

@@ -31,7 +31,7 @@ namespace Limaki.View.Layout {
             this.DataHandler = dataHandler;
             this.Dimension = Dimension.X;
             this.Centered = true;
-            this.AlignOnInvoke = true;
+            this.AlignOnReset = true;
         }
 
         public Func<IGraphScene<TItem, TEdge>> DataHandler { get; set; }
@@ -43,46 +43,47 @@ namespace Limaki.View.Layout {
         public Dimension Dimension { get; set; }
         public bool Centered { get; set; }
 
-        public bool AlignOnInvoke { get; set; }
+        public bool AlignOnReset { get; set; }
 
         public IEdgeRouter<TItem, TEdge> EdgeRouter { get; set; }
 
-        protected virtual void InvokeEdges() {
+        protected virtual void PerformEdges() {
             var scene = this.Data;
             if (scene != null) {
                 var graph = scene.Graph;
                 foreach (var item in graph) {
                     if (!(item is TEdge)) {
                         foreach (var edge in graph.Twig(item)) {
-                            Invoke(edge);
+                            Perform(edge);
                             Justify(edge);
                         }
 
                     } else {
-                        Invoke(item);
+                        Perform(item);
                     }
                 }
             }
         }
 
-        public override void Invoke () {
-            var data = Data;
+        public override void Reset () {
+            var scene = Data;
             
-            if (data != null) {
-                data.SpatialIndex.Query(Rectangle.Zero);
-                var graph = data.Graph;
+            if (scene != null) {
+                scene.SpatialIndex.Query(Rectangle.Zero);
+                var graph = scene.Graph;
 
                 foreach (var item in graph) {
-                    Invoke(item);
+                    Perform(item);
                     if (!(item is TEdge)) {
                         Justify(item);
                     }
                 }
-                InvokeEdges();
 
-                if (AlignOnInvoke) {
-                    var aligner = new Aligner<TItem, TEdge>(data, this);
-                    aligner.FullLayout(data.Focused, new Point(Border.Width, Border.Height), this.Options(), this.Comparer);
+                PerformEdges();
+
+                if (AlignOnReset) {
+                    var aligner = new Aligner<TItem, TEdge>(scene, this);
+                    aligner.FullLayout(scene.Focused, new Point(Border.Width, Border.Height), this.Options(), this.Comparer);
                     aligner.Commit();
                 } 
             }

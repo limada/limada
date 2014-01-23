@@ -149,7 +149,7 @@ namespace Limaki.Tests.View.Display {
             
             zoomAction.Enabled = zoomEnabled;
             Display.MouseScrollAction.Enabled = trackerEnabled;
-            Display.Execute ();
+            Display.Perform ();
             DoEvents();
 
         }

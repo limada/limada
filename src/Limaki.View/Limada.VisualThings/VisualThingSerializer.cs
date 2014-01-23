@@ -97,7 +97,7 @@ namespace Limada.VisualThings {
             if (thing != null) {
                 visual = VisualThingGraph.Get (thing);
                 if (visual!=null && Layout != null) {
-                    Layout.Invoke (visual);
+                    Layout.Perform (visual);
                     int x = (int)ReadInt(node, "x", false);
                     int y = (int)ReadInt(node, "y", false);
                     int w = (int)ReadInt(node, "w", false);

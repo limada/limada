@@ -24,7 +24,7 @@ namespace Limaki.View.Layout {
 
         public ShapeLayout(IStyleSheet stylesheet):base(stylesheet) { }
 
-        public override void Invoke() {
+        public override void Reset() {
             throw new Exception("The method or operation is not implemented.");
         }
 
@@ -36,11 +36,11 @@ namespace Limaki.View.Layout {
             return item;
         }
 
-        public override bool Invoke(IShape item) {
+        public override bool Perform(IShape item) {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override bool Invoke(IShape item, IShape shape) {
+        public override bool Perform(IShape item, IShape shape) {
             throw new Exception("The method or operation is not implemented.");
         }
 
@@ -52,7 +52,7 @@ namespace Limaki.View.Layout {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override void Perform(IShape item) {
+        public override void Refresh(IShape item) {
             throw new Exception("The method or operation is not implemented.");
         }
 

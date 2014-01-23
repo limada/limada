@@ -73,7 +73,7 @@ namespace Limaki.Tests.View.Display {
             
             factory.Arrange (Display.Data);
             Display.Data.ClearSpatialIndex();
-            Display.Invoke ();
+            Display.Reset ();
 
             IAction action = Display.EventControler.GetAction<IEditAction>();
             if (action != null) {

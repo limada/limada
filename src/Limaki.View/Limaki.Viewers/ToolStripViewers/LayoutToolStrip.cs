@@ -33,7 +33,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                 foreach (IVisual visual in currentDisplay.Data.Selected.Elements) {
                     SceneExtensions.ChangeShape(currentDisplay.Data, visual, shape);
                 }
-                currentDisplay.Execute();
+                currentDisplay.Perform();
             }
         }
 
@@ -63,7 +63,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                 foreach (IVisual visual in currentDisplay.Data.Selected.Elements) {
                     SceneExtensions.ChangeStyle(currentDisplay.Data, visual, style);
                 }
-                currentDisplay.Execute();
+                currentDisplay.Perform();
                 currentDisplay.Backend.Invalidate();
 
             }

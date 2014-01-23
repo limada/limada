@@ -88,7 +88,7 @@ namespace Limaki.View.Layout {
         public Size Border { get; set; }
         #endregion
 
-        public abstract void Invoke();
+        public abstract void Reset();
     }
 
     public abstract class Layout<TItem> : Layout, ILayout<TItem> {
@@ -108,9 +108,9 @@ namespace Limaki.View.Layout {
         /// performs a layout on a single item
         /// </summary>
         /// <param name="item"></param>
-        public abstract bool Invoke(TItem item);
+        public abstract bool Perform(TItem item);
 
-        public abstract bool Invoke(TItem item, IShape shape);
+        public abstract bool Perform(TItem item, IShape shape);
 
         /// <summary>
         /// Sets position of item
@@ -122,9 +122,7 @@ namespace Limaki.View.Layout {
         /// <summary>
         /// Sets Shape and Style of item
         /// </summary>
-        public abstract void Perform(TItem item);
-
-
+        public abstract void Refresh(TItem item);
 
         #endregion
 

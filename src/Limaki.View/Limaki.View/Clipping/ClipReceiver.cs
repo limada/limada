@@ -49,14 +49,14 @@ namespace Limaki.View.Clipping {
             }
         }
 
-        public virtual void Execute() {
+        public virtual void Perform() {
             if (!Clipper.IsEmpty) {
                 Viewport.Update (Clipper);
                 Render();
             }
         }
 
-        public virtual void Invoke() {
+        public virtual void Reset() {
             Viewport.Update();
 
             if (OS.Mono) {
@@ -64,7 +64,7 @@ namespace Limaki.View.Clipping {
             }
         }
 
-        public virtual void Done() {
+        public virtual void Finish() {
             Clipper.Clear();
         }
 

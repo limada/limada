@@ -32,7 +32,7 @@ namespace Limaki.View.Modelling {
 
         protected int tolerance = 5;
 
-        public virtual void Execute () {
+        public virtual void Perform () {
             var data = GraphScene;
             var camera = this.Camera;
             var clipper = this.Clipper;
@@ -99,19 +99,19 @@ namespace Limaki.View.Modelling {
             }
         }
 
-        public virtual void Done () {
+        public virtual void Finish () {
             var data = this.GraphScene;
             if (data != null)
                 data.Requests.Clear ();
         }
 
-        public virtual void Invoke () {
+        public virtual void Reset () {
             var layout = this.Layout;
             var data = this.GraphScene;
 
             if (layout != null && data != null) {
                 data.SpatialIndex.BoundsDirty = true;
-                layout.Invoke ();
+                layout.Reset ();
             }
         }
 

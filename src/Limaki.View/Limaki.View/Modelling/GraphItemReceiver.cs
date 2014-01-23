@@ -39,9 +39,9 @@ namespace Limaki.View.Modelling {
                 if (layoutCommand.Parameter == LayoutActionType.Justify) {
                     Layout.Justify(layoutCommand.Subject);
                 } else if (layoutCommand.Parameter == LayoutActionType.Perform) {
-                    Layout.Perform(layoutCommand.Subject);
+                    Layout.Refresh(layoutCommand.Subject);
                 } else if (layoutCommand.Parameter == LayoutActionType.Invoke) {
-                    Layout.Invoke(layoutCommand.Subject);
+                    Layout.Perform(layoutCommand.Subject);
                 } else if (layoutCommand.Parameter == LayoutActionType.AddBounds) {
                     Layout.BoundsChanged(layoutCommand.Subject);
                 }
@@ -50,9 +50,9 @@ namespace Limaki.View.Modelling {
                 if (layoutCommand.Parameter == LayoutActionType.Justify) {
                     Layout.Justify(layoutCommand.Subject, layoutCommand.Parameter2);
                 } else if (layoutCommand.Parameter == LayoutActionType.Perform) {
-                    Layout.Perform(layoutCommand.Subject);
+                    Layout.Refresh(layoutCommand.Subject);
                 } else if (layoutCommand.Parameter == LayoutActionType.Invoke) {
-                    Layout.Invoke(layoutCommand.Subject, layoutCommand.Parameter2);
+                    Layout.Perform(layoutCommand.Subject, layoutCommand.Parameter2);
                 } else if (layoutCommand.Parameter == LayoutActionType.AddBounds) {
                     Layout.BoundsChanged(layoutCommand.Subject);
                 }

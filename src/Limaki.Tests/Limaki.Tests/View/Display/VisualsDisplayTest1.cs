@@ -12,8 +12,8 @@ namespace Limaki.Tests.View.Display {
             var factory = Registry.Pool.TryGetCreate<IVisualFactory>();
             var w = factory.CreateItem ("SelectorVersusMulitSelectTest");
             Scene.Add (w);
-            Display.Layout.Invoke ();
-            Display.Execute();
+            Display.Layout.Reset ();
+            Display.Perform();
 
             var p = w.Shape[Anchor.LeftBottom];
             p = Display.Viewport.Camera.FromSource (p);

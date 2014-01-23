@@ -321,7 +321,7 @@ namespace Limaki.Viewers {
             new State {Hollow = true}.CopyTo(currentDisplay.State);
             currentDisplay.Text = name;
             currentDisplay.Viewport.Reset();
-            currentDisplay.Execute();
+            currentDisplay.Perform();
             OnViewChanged();
         }
 
@@ -483,7 +483,7 @@ namespace Limaki.Viewers {
             }
             scene.Selected.Clear();
             scene.Focused = visual;
-            currentDiplay.Execute();
+            currentDiplay.Perform();
             currentDiplay.OnSceneFocusChanged();
         }
         #endregion

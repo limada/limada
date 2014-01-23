@@ -20,9 +20,9 @@ namespace Limada.Tests.Model {
 
             mock.Factory.Count = count;
 
-            mock.Display.Invoke();
+            mock.Display.Reset();
             mock.SceneFacade.ShowAllData();
-            mock.Display.Execute();
+            mock.Display.Perform();
 
             var visualGraph = (mock.Scene.Graph as SubGraph<IVisual, IVisualEdge>).Sink;
             visualGraph.ChangeData = null;

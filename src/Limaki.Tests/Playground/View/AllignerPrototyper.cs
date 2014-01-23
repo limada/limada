@@ -57,8 +57,8 @@ namespace Limaki.Playground.View {
             worker.StyleSheet.BackColor = Colors.WhiteSmoke;
             worker.Layout.SetOptions(options);
             worker.Folder.ShowAllData();
-            worker.Receiver.Execute();
-            worker.Receiver.Done();
+            worker.Receiver.Perform();
+            worker.Receiver.Finish();
 
             var scene2 = SceneWithTestData(exampleNr);
 
@@ -75,8 +75,8 @@ namespace Limaki.Playground.View {
 
             scene.Focused = root2;
 
-            worker.Receiver.Execute();
-            worker.Receiver.Done();
+            worker.Receiver.Perform();
+            worker.Receiver.Finish();
             return worker;
         }
 
@@ -151,8 +151,8 @@ namespace Limaki.Playground.View {
             itemsToPlace.ForEach(e => aligner.Locator.SetLocation(e, aligner.Locator.GetLocation(e) - dist));
 
             aligner.Commit();
-            worker.Receiver.Execute();
-            worker.Receiver.Done();
+            worker.Receiver.Perform();
+            worker.Receiver.Finish();
 
             ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
 
@@ -237,8 +237,8 @@ namespace Limaki.Playground.View {
             aligner.Columns(scene.Focused, selected, options);
 
             aligner.Commit();
-            worker.Receiver.Execute();
-            worker.Receiver.Done();
+            worker.Receiver.Perform();
+            worker.Receiver.Finish();
 
             ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
 
@@ -318,8 +318,8 @@ namespace Limaki.Playground.View {
                 });
 
                 aligner.Commit();
-                worker.Receiver.Execute();
-                worker.Receiver.Done();
+                worker.Receiver.Perform();
+                worker.Receiver.Finish();
             };
             allData();
             allData();
@@ -375,8 +375,8 @@ namespace Limaki.Playground.View {
             });
 
             aligner.Commit();
-            worker.Receiver.Execute();
-            worker.Receiver.Done();
+            worker.Receiver.Perform();
+            worker.Receiver.Finish();
 
             ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
 

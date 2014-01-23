@@ -177,7 +177,7 @@ namespace Limaki.Viewers.StreamViewers {
                             scene.Requests.Add(
                                 new StateChangeCommand<IVisual>(scene.Focused, new Pair<UiState>(UiState.None, UiState.Focus))
                                 );
-                            pagesDisplay.Execute();
+                            pagesDisplay.Perform();
                             pagesDisplay.OnSceneFocusChanged();
                         }
 
@@ -235,7 +235,7 @@ namespace Limaki.Viewers.StreamViewers {
                 scene.Focused = firstPage;
                 pagesDisplay.OnSceneFocusChanged();
             }
-            pagesDisplay.Execute();
+            pagesDisplay.Perform();
 
             var pageCache = new Set<IVisual>(pages);
             var moveResize = pagesDisplay.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();

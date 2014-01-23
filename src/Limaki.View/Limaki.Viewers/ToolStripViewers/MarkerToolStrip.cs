@@ -42,7 +42,7 @@ namespace Limaki.Viewers.ToolStripViewers {
                 if (scene.Markers != null) {
                     SceneExtensions.ChangeMarkers(scene, scene.Selected.Elements, marker);
                 }
-                display.Execute();
+                display.Perform();
             }
         }
     }
