@@ -7,7 +7,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2014 Lytico
  *
  * http://www.limada.org
  * 
@@ -18,12 +18,14 @@ using System.ComponentModel;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
+using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.Rendering {
 
-    public abstract class MoveResizeRendererBase : ISelectionRenderer {
+    public class MoveResizeRenderer : ISelectionRenderer {
         
-        public MoveResizeRendererBase() {
+        public MoveResizeRenderer() {
             Priority = ActionPriorities.ToolsLayerPriority;
         }
         [DefaultValue(ActionPriorities.ToolsLayerPriority)]
@@ -63,9 +65,11 @@ namespace Limaki.View.Rendering {
         public Func<IClipper> Clipper { get; set; }
         public Action<IShape> UpdateGrip { get; set; }
 
-        protected GripPainterBase _gripPainter = null;
-        public virtual GripPainterBase GripPainter {
+        protected GripPainter _gripPainter = null;
+        public virtual GripPainter GripPainter {
             get {
+                if (_gripPainter == null)
+                    _gripPainter = new GripPainter();
                 if(_gripPainter!=null) {
                     _gripPainter.GripSize = this.GripSize;
                     _gripPainter.Camera = this.Camera;
@@ -79,7 +83,47 @@ namespace Limaki.View.Rendering {
         }
         
         public IVidgetBackend Backend { get; set; }
-        public abstract void InvalidateShapeOutline ( IShape oldShape, IShape newShape );
+
+        public virtual void InvalidateShapeOutline (IShape oldShape, IShape newShape) {
+            if (oldShape != null) {
+                int halfborder = GripSize + 1;
+
+                var a = oldShape.BoundsRect;
+                var b = newShape.BoundsRect;
+
+                var bigger = DrawingExtensions.Union(a, b);
+                bigger = Camera.FromSource(bigger);
+                bigger = bigger.NormalizedRectangle();
+
+                if (bigger.Width <= halfborder || bigger.Height <= halfborder) {
+                    bigger = bigger.Inflate(halfborder, halfborder);
+                    Backend.Invalidate(bigger);
+                    Backend.Update();
+                } else {
+                    bigger = bigger.Inflate(halfborder, halfborder);
+
+                    var smaller = DrawingExtensions.Intersect(a, b);
+                    smaller = Camera.FromSource(smaller);
+                    smaller = smaller.NormalizedRectangle();
+                    smaller = smaller.Inflate(-halfborder, -halfborder);
+
+                    Backend.Invalidate(
+                        Rectangle.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top));
+                    Backend.Update();
+                    Backend.Invalidate(
+                        Rectangle.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom));
+                    Backend.Update();
+                    Backend.Invalidate(
+                        Rectangle.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom));
+                    Backend.Update();
+
+                    Backend.Invalidate(
+                        Rectangle.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom));
+                    Backend.Update();
+
+                }
+            }
+        }
 
         public virtual void Clear() {
             this.Shape = null;
@@ -104,7 +148,21 @@ namespace Limaki.View.Rendering {
             }
         }
 
-        public abstract void OnPaint ( IRenderEventArgs e );
+        public Func<ISurface, object> SaveMatrix { get; set; }
+        public Action<ISurface> SetMatrix { get; set; }
+        public Action<ISurface, object> RestoreMatrix { get; set; }
+
+        public virtual void OnPaint (IRenderEventArgs e) {
+            var shape = this.Shape;
+            if ((shape != null) && (ShowGrips)) {
+
+                var save = SaveMatrix(e.Surface);
+                SetMatrix(e.Surface);
+
+                GripPainter.Render(e.Surface);
+                RestoreMatrix(e.Surface, save);
+            }
+        }
 
         protected virtual void Dispose(bool disposing) {
             if (disposing) {

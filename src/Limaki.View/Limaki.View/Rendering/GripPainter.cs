@@ -7,7 +7,7 @@ using Xwt;
 
 namespace Limaki.View.Rendering {
 
-    public abstract class GripPainterBase : Painter<Rectangle> {
+    public class GripPainter : Painter<Rectangle> {
         
         public int GripSize {get;set;}
         public IShape TargetShape { get; set; }
@@ -65,6 +65,26 @@ namespace Limaki.View.Rendering {
                 }
             }
         }
+
+        public override void Render (ISurface surface) {
+            Shape.Size = new Size(GripSize, GripSize);
+            InnerPainter.Style = this.Style;
+            int halfWidth = GripSize / 2;
+            int halfHeight = GripSize / 2;
+
+            // get near:
+            var camera = new Camera(this.Camera.Matrix);
+
+            foreach (Anchor anchor in Grips) {
+                var anchorPoint = TargetShape[anchor];
+                anchorPoint = camera.FromSource(anchorPoint);
+                Shape.Location = new Point(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
+
+                InnerPainter.Render(surface);
+
+            }
+        }
+
         public override void Dispose(bool disposing) {
             if (disposing) {
                 InnerPainter.Dispose();

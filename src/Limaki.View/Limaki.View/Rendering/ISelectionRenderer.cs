@@ -18,6 +18,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 
 namespace Limaki.View.Rendering {
+
     public interface ISelectionRenderer : IRenderAction {
         IShape Shape { get; set; }
         
@@ -33,5 +34,9 @@ namespace Limaki.View.Rendering {
         IVidgetBackend Backend { get; set; }
         Func<IClipper> Clipper { get; set; }
         Func<ICamera> Camera { get; set; }
+
+        Func<ISurface, object> SaveMatrix { get; set; }
+        Action<ISurface> SetMatrix { get; set; }
+        Action<ISurface, object> RestoreMatrix { get; set; }
     }
 }
