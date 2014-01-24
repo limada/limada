@@ -11,15 +11,11 @@
  * http://www.limada.org
  */
 
-using System.Windows.Forms;
-
 using System;
-using System.ComponentModel;
-using Limaki.Actions;
+using System.Windows.Forms;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
-using Limaki.View.Layout;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.UI;
@@ -30,21 +26,18 @@ using Xwt.Gdi.Backend;
 using SWF = System.Windows.Forms;
 
 namespace Limaki.View.Swf.Visuals {
+
      public class VisualsTextEditor:VisualsTextEditorBase {
 
-         public VisualsTextEditor (
-            Func<IGraphScene<IVisual, IVisualEdge>> sceneHandler, 
-            ContainerControl device,
-            IDisplay display,
-            ICamera camera,
-            IGraphSceneLayout<IVisual, IVisualEdge> layout)
-             : base(sceneHandler,display,camera,layout) {
+         public VisualsTextEditor ( Func<IGraphScene<IVisual, IVisualEdge>> sceneHandler,
+            IDisplay display, ICamera camera,
+            IGraphSceneLayout<IVisual, IVisualEdge> layout): base(sceneHandler, display, camera, layout) {
 
-            this.device = device;
+             this.displayBackend = display.Backend as ContainerControl;
 
-        }
+         }
 
-         ContainerControl device = null;
+         ContainerControl displayBackend = null;
 
          #region Editor-Handling
 
@@ -70,14 +63,14 @@ namespace Limaki.View.Swf.Visuals {
 
              StyleEditor();
 
-             device.Controls.Add(editor);
+             displayBackend.Controls.Add(editor);
 
              editor.Text = DataToText(Current);
 
              editor.Visible = true;
              ActivateMarkers();
              editor.Focus();
-             device.ActiveControl = editor;
+             displayBackend.ActiveControl = editor;
              display.ActiveVidget = editor;
          }
 
@@ -106,7 +99,7 @@ namespace Limaki.View.Swf.Visuals {
              editor.Text = String.Empty;
              if (hoverAfteredit && !focusAfterEdit) { // this does not work!
                  Cursor.Position =
-                     device.PointToScreen(editor.Location +
+                     displayBackend.PointToScreen(editor.Location +
                                           new System.Drawing.Size(editor.Size.Width / 2, editor.Size.Height / 2));
                  //Scene scene = Scene;
                  //if (scene.Hovered != null)
@@ -119,9 +112,10 @@ namespace Limaki.View.Swf.Visuals {
              editor.AutoCompleteCustomSource = null;
              editor.AutoCompleteSource = AutoCompleteSource.None;
 
-             device.ActiveControl = null;
-             device.Controls.Remove(editor);
-             device.Focus();
+             displayBackend.ActiveControl = null;
+             display.ActiveVidget = null;
+             displayBackend.Controls.Remove(editor);
+             displayBackend.Focus();
 
              display.ActiveVidget = null;
          }
@@ -228,7 +222,7 @@ namespace Limaki.View.Swf.Visuals {
                  IVisual root = scene.Focused;
 
                  if (root == null) {
-                     var pt = device.PointToClient(Cursor.Position).ToXwt();
+                     var pt = displayBackend.PointToClient(Cursor.Position).ToXwt();
                      pt = camera.ToSource(pt) - Layout.Distance;
                      SceneExtensions.AddItem(scene, Current, Layout, pt);
                  } else {

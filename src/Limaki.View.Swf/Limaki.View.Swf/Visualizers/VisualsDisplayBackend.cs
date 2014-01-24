@@ -73,7 +73,6 @@ namespace Limaki.View.Swf.Visualizers {
 
             var editor = new VisualsTextEditor (
                 this.GraphScene,
-                display.Backend as ContainerControl,
                 display,
                 this.Camera (),
                 this.Layout()

@@ -17,14 +17,14 @@ namespace Limaki.View.Visuals.UI {
     /// Activates a propriate editor for the selected visual
     /// </summary>
     public abstract class VisualsTextEditorBase:MouseTimerActionBase, IKeyAction, IEditAction {
+
         protected VisualsTextEditorBase (): base() {
             this.Priority = ActionPriorities.SelectionPriority - 30;
         }
 
         protected VisualsTextEditorBase (
             Func<IGraphScene<IVisual, IVisualEdge>> sceneHandler, 
-            IDisplay display,
-            ICamera camera,
+            IDisplay display, ICamera camera,
             IGraphSceneLayout<IVisual,IVisualEdge> layout): this() {
 
             this.display = display;
