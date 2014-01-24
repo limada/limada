@@ -25,12 +25,11 @@ using DialogResult = System.Windows.Forms.DialogResult;
 using ModifierKeys = Xwt.ModifierKeys;
 using Key = Xwt.Key;
 using MessageBoxButtons = System.Windows.Forms.MessageBoxButtons;
+using SD2 = System.Drawing.Drawing2D;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf {
-    /// <summary>
-    /// Converts Windows.Forms.PaintEventArgs and Limaki.PaintActionEventArgs
-    /// </summary>
+
     public class Converter {
 
         public static IRenderEventArgs Convert(PaintEventArgs e) {
@@ -338,7 +337,10 @@ namespace Limaki.View.Swf {
             if (saveDialog != null)
                 target.OverwritePrompt = saveDialog.OverwritePrompt;
         }
+
+       
+
     }
 
-
+   
 }

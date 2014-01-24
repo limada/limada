@@ -62,6 +62,7 @@
     <Compile Include="Limada.UseCases\Content\IGraphSceneUiManager.cs" />
     <Compile Include="Limada.UseCases\Content\ThingGraphUiManager.cs" />
     <Compile Include="Limaki.View.XwtContext\IToolkitAware.cs" />
+    <Compile Include="Limaki.View\Rendering\SelectionRenderer.cs" />
     <Compile Include="Limaki.View\Visualizers\ImageDisplay.cs" />
     <Compile Include="Limaki.View\Visuals\UI\VisualsTextEditorBase.cs" />
     <Compile Include="Limaki.Visuals\IVisualContentViz.cs" />
@@ -281,7 +282,7 @@
     <Compile Include="Limaki.View\Rendering\GraphSceneLayer.cs" />
     <Compile Include="Limaki.View\Rendering\IGraphSceneLayer.cs" />
     <Compile Include="Limaki.View\Layout\ShapeCommands.cs" />
-    <Compile Include="Limaki.View\Rendering\GripPainterBase.cs" />
+    <Compile Include="Limaki.View\Rendering\GripPainter.cs" />
     <Compile Include="Limaki.View\UI\IDropAction.cs" />
     <Compile Include="Limaki.View\UI\IEditAction.cs" />
     <Compile Include="Limaki.View\UI\IEventControler.cs" />
@@ -301,7 +302,7 @@
     <Compile Include="Limaki.View\UI\MouseScrollAction.cs" />
     <Compile Include="Limaki.View\UI\MouseTimerActionBase.cs" />
     <Compile Include="Limaki.View\UI\MoveResizeAction.cs" />
-    <Compile Include="Limaki.View\Rendering\MoveResizeRendererBase.cs" />
+    <Compile Include="Limaki.View\Rendering\MoveResizeRenderer.cs" />
     <Compile Include="Limaki.View\UI\SelectorAction.cs" />
     <Compile Include="Limaki.View\UI\ZoomAction.cs" />
     <Compile Include="Limaki.View\Visuals\Visualizers\VisualsDisplay.cs" />

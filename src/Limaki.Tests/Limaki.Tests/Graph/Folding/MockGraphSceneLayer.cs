@@ -77,12 +77,12 @@ namespace Limaki.Tests.Graph.Wrappers {
         public void RestoreCursor() { }
     }
 
-    public class MockGripPainter : GripPainterBase {
+    public class MockGripPainter : GripPainter {
         public override void Render(ISurface surface) { }
     }
 
-    public class MockMoveResizeRenderer : MoveResizeRendererBase {
-        public override GripPainterBase GripPainter {
+    public class MockMoveResizeRenderer : MoveResizeRenderer {
+        public override GripPainter GripPainter {
             get {
                 if (base.GripPainter == null) {
                     base.GripPainter = new MockGripPainter();
