@@ -48,7 +48,7 @@ namespace Xwt
 
 	public class FileDialogFilterCollection: ObjectCollection<FileDialogFilter>
 	{
-		internal FileDialogFilterCollection (Action<FileDialogFilter,bool> changeHandler): base (changeHandler)
+		public FileDialogFilterCollection (Action<FileDialogFilter,bool> changeHandler): base (changeHandler)
 		{
 		}
 	}
