@@ -108,18 +108,16 @@ namespace Limaki.View.Rendering {
                     smaller = smaller.Inflate(-halfborder, -halfborder);
 
                     Backend.Invalidate(
-                        Rectangle.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top));
-                    Backend.Update();
-                    Backend.Invalidate(
-                        Rectangle.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom));
-                    Backend.Update();
-                    Backend.Invalidate(
-                        Rectangle.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom));
-                    Backend.Update();
+                        Rectangle.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top).NormalizedRectangle());
 
                     Backend.Invalidate(
-                        Rectangle.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom));
-                    Backend.Update();
+                        Rectangle.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom).NormalizedRectangle());
+
+                    Backend.Invalidate(
+                        Rectangle.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom).NormalizedRectangle());
+
+                    Backend.Invalidate(
+                        Rectangle.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom).NormalizedRectangle());
 
                 }
             }

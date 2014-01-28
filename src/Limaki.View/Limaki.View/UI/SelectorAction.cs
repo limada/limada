@@ -93,6 +93,9 @@ namespace Limaki.View.UI {
             }
         }
 
+        public override void OnMouseMove (MouseActionEventArgs e) {
+            base.OnMouseMove(e);
+        }
 
         protected override void OnMouseMoveResolved(MouseActionEventArgs e) {
             // save previous shape
