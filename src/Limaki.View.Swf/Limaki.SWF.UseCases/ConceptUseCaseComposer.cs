@@ -33,6 +33,7 @@ using Limaki.View.Layout;
 
 using DialogResult = Limaki.Viewers.DialogResult;
 using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
+using Limaki.Viewers.Vidgets;
 
 namespace Limaki.Swf.Backends.UseCases {
 
@@ -86,7 +87,7 @@ namespace Limaki.Swf.Backends.UseCases {
                 dataName => Mainform.Text = dataName + " - " + useCase.UseCaseTitle;
 
             useCase.MessageBoxShow = this.MessageBoxShow;
-            useCase.FileDialogShow = this.FileDialogShow;
+           
             useCase.Progress = (m, i, count) => {
                 if (i == -1 && count == -1)
                     this.StatusLabel.Text = m;
@@ -199,25 +200,7 @@ namespace Limaki.Swf.Backends.UseCases {
         public DialogResult MessageBoxShow (string text, string title, MessageBoxButtons buttons) {
             return Converter.Convert (MessageBox.Show (Mainform, text, title, Converter.Convert (buttons)));
         }
-
-        public DialogResult FileDialogShow (FileDialogMemento value, bool open) {
-            FileDialog fileDialog = null;
-            if (open)
-                fileDialog = new OpenFileDialog ();
-            else
-                fileDialog = new SaveFileDialog ();
-
-            Converter.FileDialogSetValue (fileDialog, value);
-            Application.DoEvents ();
-
-            var result = fileDialog.ShowDialog (this.Mainform);
-
-            Application.DoEvents ();
-
-            Converter.FileDialogSetValue (value, fileDialog);
-            return Converter.Convert (result);
-        }
-
+        
         #region Menu - Format
 
         Rectangle ControlSize (Control control) {
@@ -319,8 +302,6 @@ namespace Limaki.Swf.Backends.UseCases {
                 var saveFileDialog = new FileDialogMemento {
                     DefaultExt = "tif",
                     Filter = "TIF-Image|*.tif|All Files|*.*",
-                    AddExtension = true,
-                    ValidateNames = true,
                 };
 
                 if (useCase.FileDialogShow (saveFileDialog, false) == DialogResult.Ok) {

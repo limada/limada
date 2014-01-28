@@ -19,6 +19,7 @@ using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Visuals;
 using Limaki.Viewers.ToolStripViewers;
+using Limaki.Viewers.Vidgets;
 
 namespace Limaki.Usecases.Concept {
 
@@ -49,6 +50,7 @@ namespace Limaki.Usecases.Concept {
             useCase.LayoutToolStrip = new LayoutToolStrip();
             useCase.MarkerToolStrip = new MarkerToolStrip();
 
+            useCase.FileDialogShow = this.FileDialogShow;
         }
 
         public void Compose(ConceptUsecase useCase) {
@@ -94,6 +96,20 @@ namespace Limaki.Usecases.Concept {
             streamManager.FileDialogShow = useCase.FileDialogShow;
             streamManager.MessageBoxShow = useCase.MessageBoxShow;
             streamManager.Progress = useCase.Progress;
+        }
+
+        public DialogResult FileDialogShow (FileDialogMemento value, bool open) {
+            FileDialogVidget fileDialog = null;
+            if (open) {
+                fileDialog = new OpenfileDialogVidget(value);
+            } else
+                fileDialog = new SavefileDialogVidget(value);
+            var result = DialogResult.Cancel;
+            if (fileDialog.Run())
+                result = DialogResult.Ok;
+            fileDialog.Dispose();
+
+            return result;
         }
     }
 }

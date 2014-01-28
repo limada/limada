@@ -296,40 +296,32 @@ namespace Limaki.View.Swf {
         }
 
         public static void FileDialogSetValue(FileDialog target, FileDialogMemento source) {
-            target.AddExtension = source.AddExtension;
-            target.AutoUpgradeEnabled = source.AutoUpgradeEnabled;
-            target.CheckFileExists = source.CheckFileExists;
-            target.CheckPathExists = source.CheckPathExists;
+            target.AddExtension = true;
+            target.AutoUpgradeEnabled = true;
+            target.CheckFileExists = false;
+            target.CheckPathExists = false;
             target.DefaultExt = source.DefaultExt;
-            target.DereferenceLinks = source.DereferenceLinks;
+            target.DereferenceLinks = true;
             target.FileName = IoUtils.NiceFileName(source.FileName);
             target.Filter = source.Filter;
             target.FilterIndex = source.FilterIndex;
             target.InitialDirectory = source.InitialDirectory;
-            target.RestoreDirectory = source.RestoreDirectory;
-            target.ShowHelp = source.ShowHelp;
+            target.RestoreDirectory = false;
+            target.ShowHelp = false;
             target.Title = source.Title;
-            target.ValidateNames = source.ValidateNames;
+            target.ValidateNames = true;
             var saveDialog = target as SaveFileDialog;
             if (saveDialog != null)
                 saveDialog.OverwritePrompt = source.OverwritePrompt;
         }
 
         public static void FileDialogSetValue(FileDialogMemento target, FileDialog source) {
-            target.AddExtension = source.AddExtension;
-            target.AutoUpgradeEnabled = source.AutoUpgradeEnabled;
-            target.CheckFileExists = source.CheckFileExists;
-            target.CheckPathExists = source.CheckPathExists;
             target.DefaultExt = source.DefaultExt;
-            target.DereferenceLinks = source.DereferenceLinks;
 
             target.Filter = source.Filter;
             target.FilterIndex = source.FilterIndex;
             target.InitialDirectory = source.InitialDirectory;
-            target.RestoreDirectory = source.RestoreDirectory;
-            target.ShowHelp = source.ShowHelp;
             target.Title = source.Title;
-            target.ValidateNames = source.ValidateNames;
 
             target.FileName = source.FileName;
             target.FileNames = source.FileNames;

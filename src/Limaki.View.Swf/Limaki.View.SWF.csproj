@@ -79,6 +79,7 @@
     <Compile Include="Limaki.Controls\ProgressViewer.Designer.cs">
       <DependentUpon>ProgressViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Limaki.Swf.Backends\VidgetBackends\FileDialogBackend.cs" />
     <Compile Include="Limaki.Swf.Backends\VidgetBackends\TextViewerBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>

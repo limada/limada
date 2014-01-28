@@ -21,15 +21,7 @@ namespace Limaki.Usecases {
         public void DefaultDialogValues (FileDialogMemento dialog, string filter) {
             dialog.Filter = filter + "All Files|*.*";
             dialog.DefaultExt = "";
-            dialog.AddExtension = true;
-            dialog.CheckFileExists = false;
             dialog.OverwritePrompt = true;
-            dialog.CheckPathExists = true;
-            dialog.AutoUpgradeEnabled = true;
-            dialog.SupportMultiDottedExtensions = true;
-            // Important! under windows this adds the fileextension!
-            dialog.ValidateNames = true;
-
         }
 
         public virtual Action<string, int, int> Progress { get; set; }
