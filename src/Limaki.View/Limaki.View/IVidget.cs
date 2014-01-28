@@ -24,6 +24,7 @@ namespace Limaki.View {
     /// is like a controller for a concrete backend
     /// </summary>
     public interface IVidget : IDisposable {
+        IVidgetBackend Backend { get; }
     }
 
     [BackendType(typeof(IVidgetBackend))]
@@ -46,5 +47,9 @@ namespace Limaki.View {
 		}
 
         public abstract void Dispose();
+
+        public virtual IVidgetBackend Backend {
+            get { return BackendHost.Backend; }
+        }
     }
 }
