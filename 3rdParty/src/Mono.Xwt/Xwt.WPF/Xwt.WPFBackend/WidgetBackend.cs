@@ -589,17 +589,20 @@ namespace Xwt.WPFBackend
 			});
 			if (args.Handled)
 				e.Handled = true;
+            Mouse.Capture(this.Widget);
 		}
 
 		void WidgetMouseUpHandler (object o, MouseButtonEventArgs e)
 		{
-			var args = ToXwtButtonArgs (e);
+            Mouse.Capture(null);
+            var args = ToXwtButtonArgs (e);
 			Context.InvokeUserCode (delegate ()
 			{
 				eventSink.OnButtonReleased (args);
 			});
 			if (args.Handled)
 				e.Handled = true;
+            
 		}
 
 		ButtonEventArgs ToXwtButtonArgs (MouseButtonEventArgs e)
