@@ -20,7 +20,6 @@ using Xwt.Backends;
 using Xwt.Drawing;
 
 namespace Limaki.Viewers.Vidgets {
-
     [BackendType(typeof(ICanvasVidgetBackend))]
     public class CanvasVidget : Vidget, ICanvasVidget {
 
@@ -33,7 +32,9 @@ namespace Limaki.Viewers.Vidgets {
             }
         }
 
-        protected override VidgetBackendHost CreateBackendHost () { return new CanvasVidgetBackendHost(); }
+        protected override VidgetBackendHost CreateBackendHost () {
+            return new CanvasVidgetBackendHost();
+        }
 
         public virtual ICanvasVidgetBackend Backend { get { return BackendHost.Backend as ICanvasVidgetBackend; } }
 

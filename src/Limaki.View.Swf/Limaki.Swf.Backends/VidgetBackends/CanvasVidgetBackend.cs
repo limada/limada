@@ -12,7 +12,6 @@
  * 
  */
 
-using System;
 using System.Windows.Forms;
 using Limaki.Common;
 using Xwt.Gdi.Backend;
@@ -20,7 +19,6 @@ using Limaki.Viewers.Vidgets;
 using Xwt;
 
 namespace Limaki.View.Swf.Backends {
-
     public class CanvasVidgetBackend : UserControl, ICanvasVidgetBackend, IDragDropControl {
 
         protected override void OnPaint (PaintEventArgs e) {
