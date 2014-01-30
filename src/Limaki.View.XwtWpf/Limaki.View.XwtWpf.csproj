@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AC4DE976-2546-4B77-B040-F2B819BE9DC8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki.View.Wpf</RootNamespace>
+    <AssemblyName>Limaki.View.Wpf</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Limaki.View.Xwt\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Limaki.View.WpfBackends\DrawingConverter.cs" />
+    <Compile Include="Limaki.View.WpfBackends\Monitor.cs" />
+    <Compile Include="TODO\BitmapCanvasBackend.cs" />
+    <Compile Include="TODO\WebBrowserBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\WpfContextRecourceLoader.cs" />
+    <Compile Include="Limaki.View.WpfBackends\WpfSystemColorsBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\WpfSystemFonts.cs" />
+    <Compile Include="Limaki.View.WpfBackends\WpfSystemInformation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.WPF\Xwt.WPF.csproj">
+      <Project>{c93d746e-1586-4d4f-b411-bf5a966e6a08}</Project>
+      <Name>Xwt.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35fa-4dc9-bde9-3a3e87ac49d3}</Project>
+      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
+      <Project>{b28433e8-bba2-4cb5-a7a2-10ae6aeddfb7}</Project>
+      <Name>Limaki.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
+      <Project>{3434f6bc-d6aa-4c53-b359-a1b114364025}</Project>
+      <Name>Limaki.View</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
