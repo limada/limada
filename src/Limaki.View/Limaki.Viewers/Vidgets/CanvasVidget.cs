@@ -20,25 +20,11 @@ using Xwt.Backends;
 using Xwt.Drawing;
 
 namespace Limaki.Viewers.Vidgets {
+
     [BackendType(typeof(ICanvasVidgetBackend))]
     public class CanvasVidget : Vidget, ICanvasVidget {
 
-        #region backend-handling
-
-        public class CanvasVidgetBackendHost : VidgetBackendHost {
-            protected override IVidgetBackend OnCreateBackend () {
-                this.ToolkitEngine.Backend.CheckInitialized();
-                return Registry.Factory.Create<ICanvasVidgetBackend>();
-            }
-        }
-
-        protected override VidgetBackendHost CreateBackendHost () {
-            return new CanvasVidgetBackendHost();
-        }
-
         public virtual ICanvasVidgetBackend Backend { get { return BackendHost.Backend as ICanvasVidgetBackend; } }
-
-        #endregion
 
         public override void Dispose () { }
 

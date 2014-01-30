@@ -48,7 +48,9 @@ namespace Limaki.View.Swf.Backends {
             this.Invalidate(rect.ToGdi());
         }
 
-        Xwt.Point IDragDropControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
+        Xwt.Point IDragDropControl.PointToClient (Xwt.Point source) {
+            return PointToClient(source.ToGdi()).ToXwt();
+        }
 
         #endregion
 

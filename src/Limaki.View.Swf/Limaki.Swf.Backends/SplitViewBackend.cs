@@ -136,22 +136,21 @@ namespace Limaki.Swf.Backends.Viewers {
         }
 
         public void GraphGraphView () {
+
             SplitContainer.SuspendLayout();
 
-            SplitContainer.Panel1.SuspendLayout();
-            var display1 = this.Frontend.Display1.Backend as Control;
-            
-            if (!SplitContainer.Panel1.Contains(display1)) {
-                SplitContainer.Panel1.Controls.Clear();
-                SplitContainer.Panel1.Controls.Add(display1);
-            }
+            Action<IDisplay, SplitterPanel> setDisplay = (display, panel) => {
+                panel.SuspendLayout();
+                var backend = display.Backend as Control;
 
-            SplitContainer.Panel2.SuspendLayout();
-            var display2 = this.Frontend.Display2.Backend as Control;
-            if (!SplitContainer.Panel2.Contains(display2)) {
-                SplitContainer.Panel2.Controls.Clear();
-                SplitContainer.Panel2.Controls.Add(display2);
-            }
+                if (!panel.Contains(backend)) {
+                    panel.Controls.Clear();
+                    panel.Controls.Add(backend);
+                }
+            };
+
+            setDisplay(Frontend.Display1, SplitContainer.Panel1);
+            setDisplay(Frontend.Display2, SplitContainer.Panel2);
 
             SplitContainer.Panel1.ResumeLayout();
             SplitContainer.Panel2.ResumeLayout();
@@ -247,7 +246,6 @@ namespace Limaki.Swf.Backends.Viewers {
 
         public void Dispose() {
             this.Frontend.Dispose ();
-            this.SplitContainer.Dispose ();
         }
 
         #endregion

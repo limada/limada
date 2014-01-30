@@ -1,3 +1,18 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2013 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
@@ -5,10 +20,7 @@ using Limaki.Graphs;
 using Limaki.View.Modelling;
 using Limaki.View.Rendering;
 using Limaki.View.UI.GraphScene;
-using Limaki.Viewers;
-using Xwt.Drawing;
 using Limaki.View.XwtContext;
-using System;
 
 namespace Limaki.View.Visualizers {
 

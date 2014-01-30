@@ -1,4 +1,18 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2006-2011 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+using System.Collections.Generic;
 using Limaki.Common;
 using Xwt.Drawing;
 using System.Globalization;
@@ -11,9 +25,7 @@ namespace Limaki.Drawing.Styles {
         protected ISystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = Registry.Pool.TryGetCreate<ISystemFonts> ()); } }
 
         IDrawingUtils _drawingUtils = null;
-        protected IDrawingUtils drawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils> ()); } }
-
-        protected virtual Font CreateFont (string familiy, double size) { return Font.FromName(familiy + " " + size.ToString(CultureInfo.InvariantCulture)); }
+        protected IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils> ()); } }
 
         public IList<string> StyleSheetNames = new string[] { "Desktop", "TealSmoke", "WhiteGlass" };
 
@@ -25,7 +37,7 @@ namespace Limaki.Drawing.Styles {
                 var style = StyleSheet.CreateStyleWithSystemSettings();
                 style.Name = name+"."+StyleNames.BaseStyle;
                 //style.Pen.Color = style.PenColor;
-                style.Font = (Font)SystemFonts.MessageBoxFont.Clone();
+                style.Font = SystemFonts.MessageBoxFont.Clone();
 
                 _styleSheet = new StyleSheet(name, style);
                 _styleSheet.ItemStyle.SelectedStyle.FillColor = SystemColors.ActiveCaption;
@@ -40,7 +52,7 @@ namespace Limaki.Drawing.Styles {
                 style.FillColor = DrawingExtensions.FromArgb(200, Colors.WhiteSmoke);
                 style.PenColor = DrawingExtensions.FromArgb(200, Colors.Teal);
                 //style.Pen.Color = style.PenColor;
-                style.Font = CreateFont(style.Font.Family, 10);
+                style.Font = style.Font.WithSize(10);
                 _styleSheet = new StyleSheet(name, style);
                 _styleSheet.ItemStyle.SelectedStyle.FillColor = Colors.Teal;
                 _styleSheet.ItemStyle.SelectedStyle.TextColor = Colors.WhiteSmoke;
@@ -54,14 +66,14 @@ namespace Limaki.Drawing.Styles {
                 style.FillColor = DrawingExtensions.FromArgb(200, Colors.White);
                 style.PenColor = DrawingExtensions.FromArgb(200, Colors.White);
                 //style.Pen.Color = style.PenColor;
-                style.Font = (Font)SystemFonts.MessageBoxFont.Clone();
+                style.Font = SystemFonts.MessageBoxFont.Clone();
 
                 _styleSheet = new StyleSheet(name, style);
 
                 _styleSheet.ItemStyle.SelectedStyle.PenColor = DrawingExtensions.FromArgb(50, 150, 150, 150);
                 //_styleSheet.ItemStyle.SelectedStyle.Pen.Thickness = style.Pen.Thickness;
 
-                var font = (Font)_styleSheet.BaseStyle.Font.Clone();
+                var font = _styleSheet.BaseStyle.Font.Clone();
                 //TODO: font.Style = FontStyle.Underline;
                 _styleSheet.ItemStyle.SelectedStyle.Font = font;
 
@@ -70,7 +82,7 @@ namespace Limaki.Drawing.Styles {
 
                 _styleSheet.EdgeStyle.TextColor = DrawingExtensions.FromArgb(150, 100, 100, 100);
                 _styleSheet.EdgeStyle.FillColor = Colors.White;
-                _styleSheet.EdgeStyle.Font = CreateFont(style.Font.Family, style.Font.Size - 2.0d);
+                _styleSheet.EdgeStyle.Font = style.Font.WithSize(style.Font.Size - 2.0d);
 
                 var pen = (Pen)_styleSheet.EdgeStyle.Pen.Clone();
                 pen.Thickness = 0.5d;

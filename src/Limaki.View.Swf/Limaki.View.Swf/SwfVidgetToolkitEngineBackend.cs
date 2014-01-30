@@ -34,6 +34,8 @@ namespace Limaki.View.Swf {
             RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend>();
             RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend>();
 
+            RegisterBackend<ICanvasVidgetBackend, CanvasVidgetBackend>();
+
             RegisterBackend<IOpenfileDialogBackend, OpenFileDialogBackend>();
             RegisterBackend<ISavefileDialogBackend, SaveFileDialogBackend>();
         }

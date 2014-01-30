@@ -51,6 +51,8 @@ namespace Limaki.Usecases.Concept {
             useCase.MarkerToolStrip = new MarkerToolStrip();
 
             useCase.FileDialogShow = this.FileDialogShow;
+
+            Registry.Factory.Add<ContentViewerProvider, ContentVisualViewerProvider>();
         }
 
         public void Compose(ConceptUsecase useCase) {

@@ -27,6 +27,7 @@ using Limaki.View.Visuals.Layout;
 using Limaki.Common;
 using Limaki.View.UI;
 using System;
+using Limaki.Viewers;
 
 namespace Limaki.View {
 
@@ -81,6 +82,7 @@ namespace Limaki.View {
 
             context.Factory.Add<IVisualContentViz, VisualThingsContentViz>();
             context.Factory.Add<IVisualContentViz<IThing>, VisualThingsContentViz>();
+
 
         }
 

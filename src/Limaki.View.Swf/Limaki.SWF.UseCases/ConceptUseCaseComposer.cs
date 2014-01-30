@@ -21,19 +21,15 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Swf.Backends.Viewers;
 using Limaki.Swf.Backends.Viewers.Content;
-using Limaki.Swf.Backends.Viewers.ToolStrips;
 using Limaki.Usecases.Concept;
+using Limaki.View.Layout;
 using Limaki.View.Swf;
-using Limaki.View.Swf.Backends;
 using Limaki.View.Swf.Visuals;
 using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Viewers.StreamViewers;
-using Limaki.View.Layout;
-
 using DialogResult = Limaki.Viewers.DialogResult;
 using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
-using Limaki.Viewers.Vidgets;
 
 namespace Limaki.Swf.Backends.UseCases {
 
@@ -60,9 +56,6 @@ namespace Limaki.Swf.Backends.UseCases {
             ToolStripContainer.ResumeLayout();
             ToolStripContainer.PerformLayout();
             splitViewBackend.SplitterDistance = (int)(ToolStripContainer.Width / 2);
-
-            //TODO: move this to UseCaseContextResourceLoader
-            Registry.Factory.Add<ContentViewerProvider, ContentVisualViewerProvider> ();
 
             var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
 

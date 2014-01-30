@@ -64,6 +64,7 @@
     <Compile Include="Limaki.View.XwtContext\IToolkitAware.cs" />
     <Compile Include="Limaki.Viewers\Vidgets\FileDialogVidget.cs" />
     <Compile Include="Limaki.View\Rendering\SelectionRenderer.cs" />
+    <Compile Include="Limaki.View\UI\ICopyPasteAction.cs" />
     <Compile Include="Limaki.View\Visualizers\ImageDisplay.cs" />
     <Compile Include="Limaki.View\Visuals\UI\VisualsTextEditorBase.cs" />
     <Compile Include="Limaki.Visuals\IVisualContentViz.cs" />
