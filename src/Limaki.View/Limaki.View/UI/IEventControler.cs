@@ -19,12 +19,14 @@ using System;
 using Limaki.View.Rendering;
 
 namespace Limaki.View.UI {
-    public interface IEventControler : IMouseAction, IRenderAction, IReceiver, IKeyAction {
+    public interface IEventControler : IMouseAction, IRenderAction, IReceiver, IKeyAction, ICopyPasteAction {
         void Add ( IAction action );
         void Remove ( IAction action );
         void Add<T> ( T value, ref T action ) where T : class, IAction;
         T GetAction<T>();
         IDictionary<Type, IAction> Actions { get;}
         bool UserEventsDisabled { get; set; }
+
+       
     }
 }

@@ -338,5 +338,14 @@ namespace Limaki.View.UI {
 
         #endregion
 
+        public void Copy () {
+
+        }
+
+        public void Paste () {
+           
+        }
+
+        
     }
 }
