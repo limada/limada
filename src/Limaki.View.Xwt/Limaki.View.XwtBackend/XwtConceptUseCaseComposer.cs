@@ -15,9 +15,9 @@
 using Limaki.Common;
 using Limaki.Usecases.Concept;
 using Limaki.View.Visualizers;
+using Limaki.Viewers;
 using Xwt;
 using Xwt.Drawing;
-
 
 namespace Limaki.View.XwtBackend {
 
@@ -30,7 +30,7 @@ namespace Limaki.View.XwtBackend {
             MainWindow.MainMenu = CreateMenu(useCase);
 
             this.Menu = MainWindow.MainMenu;
-           
+
             var splitViewBackend = useCase.SplitView.Backend as Widget;
 
             StatusLabel = new Label {
@@ -39,29 +39,28 @@ namespace Limaki.View.XwtBackend {
                 HeightRequest = 20,
                 Text = "hello",
                 TextColor = Colors.Black,
+                TextAlignment = Alignment.Center,
+                Name = "asdsf",
             };
             var box = new VBox {
                 //VerticalPlacement = WidgetPlacement.Fill,
                 //HorizontalPlacement = WidgetPlacement.Fill
-                
+
             };
 
-            box.PackStart(splitViewBackend,true);
+            box.PackStart(splitViewBackend, true);
             box.PackEnd(StatusLabel);
 
             MainWindow.Content = box;
 
-           
- 
+            (splitViewBackend as Paned).Position = MainWindow.Size.Width / 2;
         }
-
-       
 
         public void Compose (ConceptUsecase useCase) {
 
             useCase.DataPostProcess =
                dataName => MainWindow.Title = dataName + " - " + useCase.UseCaseTitle;
-            useCase.MessageBoxShow = (text, title, buttons) => 
+            useCase.MessageBoxShow = (text, title, buttons) =>
                 new XwtMessageBoxShow().Show(text, title, buttons);
 
 
@@ -89,7 +88,7 @@ namespace Limaki.View.XwtBackend {
             var l = new Localizer();
             menu.AddItems(
 
-            new MenuItem(l["File"], null, null,new MenuItem[] {
+            new MenuItem(l["File"], null, null, new MenuItem[] {
                 new MenuItem(l["Open ..."], null, (s, e) => { useCase.OpenFile(); }),
                 new MenuItem(l["Save"], null, (s, e) => { useCase.SaveFile(); }),
                 new MenuItem(l["SaveAs ..."], null, (s, e) => { useCase.SaveAsFile(); }),
@@ -109,7 +108,7 @@ namespace Limaki.View.XwtBackend {
                 new MenuItem(l["Exit"], null, (s, e) => { Application.Exit();}),
             }),
 
-            new MenuItem(l["Edit"], null,null, new MenuItem[] {
+            new MenuItem(l["Edit"], null, null, new MenuItem[] {
                 new MenuItem(l["Copy"], null, (s, e) => {
                     var display = useCase.GetCurrentDisplay();
                     if (display != null) display.EventControler.Copy();
@@ -121,12 +120,12 @@ namespace Limaki.View.XwtBackend {
                 new MenuItem(l["Search"], null, (s, e) => { useCase.Search(); }),
             }),
 
-            new MenuItem(l["Style"], null, null,new MenuItem[] {
+            new MenuItem(l["Style"], null, null, new MenuItem[] {
                 new MenuItem(l["Layout"], null, (s, e) => { this.ShowLayoutEditor(useCase); }),
                 new MenuItem(l["StyleSheet"], null, (s, e) => { this.ShowStyleEditor(useCase); }),
             }),
 
-            new MenuItem(l["Favorites"], null, null,new MenuItem[] {
+            new MenuItem(l["Favorites"], null, null, new MenuItem[] {
                 new MenuItem(l["Add to favorites"], null, (s, e) => 
                      useCase.FavoriteManager.AddToFavorites(useCase.GetCurrentDisplay().Data)),
                 new MenuItem(l["View on open "], null, (s, e) => 
@@ -137,19 +136,42 @@ namespace Limaki.View.XwtBackend {
                 if (About == null) About = new About();
                 About.Show();
             })
-
-
-
-                );
+            );
             return menu;
         }
 
         private void ExportAsImage (ConceptUsecase useCase) {
-            throw new System.NotImplementedException();
+            var currentDisplay = useCase.GetCurrentDisplay();
+            if (currentDisplay != null && currentDisplay.Data != null) {
+                var saveFileDialog = new FileDialogMemento {
+                    DefaultExt = "png",
+                    Filter = "PNG-Image|*.png|All Files|*.*",
+                };
+
+                if (useCase.FileDialogShow(saveFileDialog, false) == DialogResult.Ok) {
+                    var image =
+                        new ImageExporter(currentDisplay.Data, currentDisplay.Layout) { StyleSheet = currentDisplay.StyleSheet }
+                            .ExportImage();
+                    if (image != null) {
+                        image.Save(saveFileDialog.FileName, ImageFileType.Png);
+                        image.Dispose();
+                    }
+                }
+            }
         }
 
         private void Print (ConceptUsecase useCase) {
-            throw new System.NotImplementedException();
+            using (var printDialog = new PrintDialog()) {
+                var currentDisplay = useCase.GetCurrentDisplay();
+                var man = new PrintManager();
+                using (var doc = man.CreatePrintDocument(currentDisplay.Data, currentDisplay.Layout)) {
+                    printDialog.Document = doc;
+                    if (printDialog.Show() == DialogResult.Ok) {
+                        doc.Print();
+                    }
+                    printDialog.Document = null;
+                }
+            }
         }
 
         private void PrintPreview (ConceptUsecase useCase) {
@@ -157,11 +179,11 @@ namespace Limaki.View.XwtBackend {
         }
 
         private void ShowStyleEditor (ConceptUsecase useCase) {
-            
+            var editor = new StyleEditor();
         }
 
         private void ShowLayoutEditor (ConceptUsecase useCase) {
-            
+            var editor = new LayoutEditor();
         }
 
         About About { get; set; }

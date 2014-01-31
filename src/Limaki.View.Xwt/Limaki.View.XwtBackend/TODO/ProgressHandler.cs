@@ -16,7 +16,7 @@ using System;
 using Limaki.Common;
 
 namespace Limaki.View.XwtBackend {
-    public class XwtProgressHandler : IDisposable, IProgressHandler {
+    public class ProgressHandler : IDisposable, IProgressHandler {
        
         public void Write (string m, int progress, int count, params object[] param) {
             

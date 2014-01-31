@@ -64,7 +64,7 @@ namespace Limaki.Swf.Backends.UseCases {
             viewerProvider.Add(new TextContentViewerWithToolstrip());
             viewerProvider.Add(new SheetViewer());
 
-            viewerProvider.Add(new ImageContentViewer());
+            viewerProvider.Add(new SdImageContentViewer());
 
 
         }

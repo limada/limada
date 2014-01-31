@@ -43,7 +43,7 @@ namespace Limaki.View.XwtBackend {
 
             context.Factory.Add<ICursorHandler, XwtCursorHandlerBackend> ();
             context.Factory.Add<IMessageBoxShow, XwtMessageBoxShow> ();
-            context.Factory.Add<IProgressHandler, XwtProgressHandler>();
+            context.Factory.Add<IProgressHandler, ProgressHandler>();
         }
 
         public virtual void ApplyResources (IApplicationContext context) {
