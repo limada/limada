@@ -14,23 +14,23 @@
 
 
 using System;
+using System.Diagnostics;
 using System.IO;
+using Limada.View;
+using Limada.VisualThings;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
-using Limada.View;
-using Limada.VisualThings;
 using Limaki.Model.Content;
-using System.Diagnostics;
 using Limaki.View;
-using Limaki.View.Visualizers;
 using Limaki.View.UI.GraphScene;
-using Limaki.View.Visuals.Visualizers;
+using Limaki.View.Visualizers;
 using Limaki.View.Visuals.UI;
+using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
 using Xwt;
-using Xwt.Drawing;
 using Xwt.Backends;
+using Xwt.Drawing;
 
 namespace Limaki.Viewers {
 

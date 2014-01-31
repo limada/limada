@@ -1,14 +1,28 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Limaki.Viewers;
 using Xwt;
-using System.Linq;
 
 namespace Limaki.View.XwtBackend {
 
     public class SplitViewBackend : HPaned, ISplitViewBackend {
 
-        public SplitViewBackend () {  }
+        public SplitViewBackend () { }
 
         public SplitView0 Frontend { get; protected set; }
         public void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
@@ -18,9 +32,8 @@ namespace Limaki.View.XwtBackend {
 
         protected HPaned SplitContainer { get { return this; } }
 
-
         protected void Compose () {
-           // this.PositionFraction = 50;
+            //this.PositionFraction = 50; // crashes on Wpf
 
             var displayBackend1 = Frontend.Display1.ScrollView();
             SplitContainer.Panel1.Content = displayBackend1;
@@ -135,7 +148,7 @@ namespace Limaki.View.XwtBackend {
                 control.VerticalPlacement = WidgetPlacement.Fill;
                 control.HorizontalPlacement = WidgetPlacement.Fill;
             }
-            
+
             SplitContainer.QueueForReallocate();
 
             if (onShowAction != null) {
@@ -144,7 +157,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         public void ShowTextDialog (string title, string text, System.Action<string> onOk) {
-
+            var nameDialog = new TextOkCancelBoxBackend();
         }
 
 
@@ -153,8 +166,6 @@ namespace Limaki.View.XwtBackend {
         void IVidgetBackend.Invalidate () { XwtBackendHelper.VidgetBackendInvalidate(this); }
 
         void IVidgetBackend.Invalidate (Rectangle rect) { XwtBackendHelper.VidgetBackendInvalidate(this, rect); }
-
-
 
         public void Dispose () {
 

@@ -12,6 +12,9 @@
  * 
  */
 
+using System;
+using System.IO;
+using System.Linq;
 using Limada.Schemata;
 using Limada.Usecases;
 using Limada.VisualThings;
@@ -28,9 +31,6 @@ using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
-using System;
-using System.IO;
-using System.Linq;
 using Xwt;
 using Xwt.Backends;
 using Xwt.Drawing;
