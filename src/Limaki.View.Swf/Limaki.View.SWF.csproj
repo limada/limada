@@ -237,7 +237,7 @@
     <Compile Include="Limaki.Swf.Backends\ShapeComboBox.Designer.cs">
       <DependentUpon>ShapeComboBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Swf.Backends\Viewers.Content\ImageContentViewer.cs" />
+    <Compile Include="Limaki.Swf.Backends\Viewers.Content\SdImageContentViewer.cs" />
     <Compile Include="Limaki.Swf.Backends\StyleEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>

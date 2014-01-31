@@ -25,7 +25,10 @@ using System.IO;
 
 namespace Limaki.Swf.Backends.Viewers.Content {
 
-    public class ImageContentViewer : ContentStreamViewer {
+    /// <summary>
+    /// ContentViewer working with System.Drawing.Image
+    /// </summary>
+    public class SdImageContentViewer : ContentStreamViewer {
 
         public override IVidget Frontend {
             get { return ImageDisplay; }

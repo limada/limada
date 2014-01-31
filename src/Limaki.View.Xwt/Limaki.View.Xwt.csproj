@@ -58,12 +58,29 @@
     <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Limaki.View.XwtBackend\TODO\ArrangerToolStripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\DigidocViewerBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\DisplayModeToolStripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\DragDropBackendHandler.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\DragDropMouseBackendHandler.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\ImageExporter.cs" />
     <Compile Include="Limaki.View.XwtBackend\TODO\ImageMissingStuffExtension.cs" />
     <Compile Include="Limaki.View.XwtBackend\TODO\About.cs" />
-    <Compile Include="Limaki.View.XwtBackend\TODO\DummyBackends.cs" />
+    <Compile Include="Sandbox\DummyBackends.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\LayoutEditor.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\LayoutToolStripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\MarkerToolStripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\PrintDialog.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\PrintDocument.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\PrintManager.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\SplitViewToolStripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\StyleEditor.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\TextViewerBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\TextViewerWithToolstripBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\TODO\WebBrowserBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\SplitViewBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\FileDialogBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\TextOkCancelBoxBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\Visualizers\Converter.cs" />
     <Compile Include="Limaki.View.XwtBackend\Visualizers\DisplayBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\Visualizers\XwtBackendRenderer.cs" />
@@ -80,7 +97,7 @@
     <Compile Include="Limaki.View.XwtBackend\XwtDrawingUtils.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtExeptionHandlerBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtMessager.cs" />
-    <Compile Include="Limaki.View.XwtBackend\TODO\XwtProgressHandler.cs" />
+    <Compile Include="Limaki.View.XwtBackend\TODO\ProgressHandler.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtSurface.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtSystemFonts.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtSystemInformation.cs" />
@@ -90,7 +107,7 @@
     <Compile Include="Sandbox\MainWindow.cs" />
     <Compile Include="Sandbox\PrototypeData.cs" />
     <Compile Include="XwtAppFactory.cs" />
-    <Compile Include="Limaki.View.XwtBackend\TODO\XwtConceptUseCaseComposer.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtConceptUseCaseComposer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Sandbox\PrototypeWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
