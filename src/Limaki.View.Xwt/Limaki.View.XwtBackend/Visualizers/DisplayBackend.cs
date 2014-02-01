@@ -24,6 +24,8 @@ using Limaki.Common;
 using Limaki.Common.IOC;
 using System.ComponentModel;
 using Xwt.Drawing;
+using System.Diagnostics;
+using WidgetEvent = Xwt.Backends.WidgetEvent;
 
 namespace Limaki.View.XwtBackend {
 
@@ -45,6 +47,9 @@ namespace Limaki.View.XwtBackend {
                 Registry.ConcreteContext = new ApplicationContext();
                 resourceLoader.ApplyResources(Registry.ConcreteContext);
             }
+
+            // this enables Key-Events
+            CanGetFocus = true;
         }
 
         
@@ -57,6 +62,7 @@ namespace Limaki.View.XwtBackend {
                 display = factory.Create();
             _display = display;
             factory.Compose(display);
+            
         }
 
         protected IDisplay<T> _display = null;
@@ -134,6 +140,9 @@ namespace Limaki.View.XwtBackend {
         private UI.MouseActionButtons lastButton = UI.MouseActionButtons.None;
         protected override void OnButtonPressed (ButtonEventArgs args) {
             base.OnButtonPressed(args);
+
+            Trace.WriteLine(string.Format("ButtonPressed {0} == {1}",  MouseLocation(), args.Position));
+
             lastButton = args.Button.ToLmk();
             Display.EventControler.OnMouseDown(new UI.MouseActionEventArgs(
                 lastButton,
@@ -178,6 +187,31 @@ namespace Limaki.View.XwtBackend {
         protected override void OnMouseExited (EventArgs args) {
             base.OnMouseExited(args);
         }
+
+        protected virtual Point MouseLocation () {
+            var ml = Desktop.MouseLocation;
+            var sb = this.ScreenBounds.Location;
+            var scale = Desktop.GetScreenAtLocation(ml).ScaleFactor;
+
+            return new Point(ml.X - sb.X / scale, ml.Y - sb.Y / scale);
+        }
+
+        protected override void OnKeyPressed (KeyEventArgs args) {
+            base.OnKeyPressed(args);
+            var ml = MouseLocation();
+            Trace.WriteLine("KeyPressed " + ml.ToString());
+
+            Display.EventControler.OnKeyPressed(new UI.KeyActionEventArgs(args.Key, args.Modifiers, ml));
+        }
+
+        protected override void OnKeyReleased (KeyEventArgs args) {
+            base.OnKeyReleased(args);
+            var ml = MouseLocation();
+            Trace.WriteLine("KeyReleased " + ml.ToString());
+
+            Display.EventControler.OnKeyReleased(new UI.KeyActionEventArgs(args.Key, args.Modifiers, ml));
+        }
+    }
 
     public abstract class ScrollDisplayBackend : ScrollView {
         public ScrollDisplayBackend () {
