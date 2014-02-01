@@ -40,6 +40,10 @@ namespace Xwt.WinformBackend {
             
         }
 
+        public override void InitializeBackends () {
+            base.InitializeBackends();
+            RegisterBackend<DesktopBackend, SwfDesktopBackend>();
+        }
     
         public override void RunApplication() {
             SWF.Application.Run();

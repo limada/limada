@@ -243,7 +243,7 @@ namespace Xwt.Gdi.Backend {
         public static Xwt.Drawing.Image ToXwt (this SD.Image value) {
             if (value == null)
                 return null;
-            return CreateFrontend<Xwt.Drawing.Image>(new GdiImage(value));
+            return new Xwt.Drawing.Image(value);
         }
 
         public static SD.Image ToGdi (this  Xwt.Drawing.Image value) {
@@ -361,14 +361,11 @@ namespace Xwt.Gdi.Backend {
         }
 
         public static Font ToXwt (this System.Drawing.Font backend) {
-            return CreateFrontend<Font>(backend);
+            return new Font(backend);
         }
 
         
         #endregion
 
-        public static T CreateFrontend<T> (object backend) {
-            return ToolkitEngineBackend.GetToolkitBackend<GdiEngine>().CreateFrontend<T>(backend);
-        }
     }
 }

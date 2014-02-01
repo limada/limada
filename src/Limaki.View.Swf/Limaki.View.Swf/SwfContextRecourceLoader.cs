@@ -46,13 +46,14 @@ namespace Limaki.View.Swf {
     /// </summary>
     public class SwfContextRecourceLoader : IBackendContextRecourceLoader {
 
+        public Toolkit Toolkit { get; set; }
         public virtual void ApplyResources(IApplicationContext context) {
 
             new LimakiCoreContextRecourceLoader ().ApplyResources (context);
 
-            var tk = Toolkit.CreateToolkit<GdiEngine>(false);
-            tk.RegisterBackend<Xwt.Backends.SystemColorsBackend, Xwt.Gdi.Backend.SystemColorsGdiBackend>();
-            tk.SetActive();
+            Toolkit = Toolkit.CreateToolkit<Xwt.WinformBackend.SwfEngine>(false);
+            Toolkit.RegisterBackend<Xwt.Backends.SystemColorsBackend, Xwt.Gdi.Backend.SystemColorsGdiBackend>();
+            Toolkit.SetActive();
             
 
             context.Factory.Add<IExceptionHandler,SwfExeptionHandlerBackend>();

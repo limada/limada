@@ -27,7 +27,7 @@ namespace Limaki.View.Swf.Backends {
 
             if (Frontend != null)
                 using (var graphics = new GdiContext(e.Graphics)) {
-                    Frontend.DrawContext(new Xwt.Drawing.Context(graphics, Toolkit.Engine<GdiEngine>()), e.ClipRectangle.ToXwt());
+                    Frontend.DrawContext(new Xwt.Drawing.Context(graphics, Toolkit.CurrentEngine), e.ClipRectangle.ToXwt());
                 }
         }
 

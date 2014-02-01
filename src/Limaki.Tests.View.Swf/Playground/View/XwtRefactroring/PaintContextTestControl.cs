@@ -41,7 +41,7 @@ namespace Limaki.Tests.Sandbox {
         Toolkit Toolkit { get; set; }
         protected override void OnPaint (System.Windows.Forms.PaintEventArgs e) {
 
-            this.Toolkit = Toolkit.Engine<GdiEngine>();
+            this.Toolkit = Toolkit.CurrentEngine;
 
             base.OnPaint(e);
 
