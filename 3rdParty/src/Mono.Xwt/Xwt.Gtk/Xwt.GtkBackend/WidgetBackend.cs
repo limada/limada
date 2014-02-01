@@ -490,6 +490,7 @@ namespace Xwt.GtkBackend
 					EventsRootWidget.DragBegin += HandleWidgetDragBegin;
 					break;
 				case WidgetEvent.KeyPressed:
+                    EventsRootWidget.AddEvents((int)Gdk.EventMask.KeyPressMask);
 					Widget.KeyPressEvent += HandleKeyPressEvent;
 					break;
 				case WidgetEvent.KeyReleased:

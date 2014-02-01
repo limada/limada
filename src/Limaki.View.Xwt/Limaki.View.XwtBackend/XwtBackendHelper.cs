@@ -12,6 +12,7 @@ namespace Limaki.View.XwtBackend {
             backend.VerticalPlacement = WidgetPlacement.Fill;
             backend.HorizontalPlacement = WidgetPlacement.Fill;
             var scroll = new ScrollView();
+            //scroll.CanGetFocus = true;
             scroll.Content = backend;
             return scroll;
         }

@@ -205,7 +205,7 @@ namespace Xwt.WPFBackend
 			control.FontStretch = font.Stretch;
 		}
 
-		public bool CanGetFocus {
+		public virtual bool CanGetFocus {
 			get { return Widget.Focusable; }
 			set { Widget.Focusable = value; }
 		}

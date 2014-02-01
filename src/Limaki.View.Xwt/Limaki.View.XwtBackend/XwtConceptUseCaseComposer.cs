@@ -32,6 +32,7 @@ namespace Limaki.View.XwtBackend {
             this.Menu = MainWindow.MainMenu;
 
             var splitViewBackend = useCase.SplitView.Backend as Widget;
+            splitViewBackend.CanGetFocus = false;
 
             StatusLabel = new Label {
                 //HorizontalPlacement = WidgetPlacement.End,
@@ -52,6 +53,7 @@ namespace Limaki.View.XwtBackend {
             box.PackEnd(StatusLabel);
 
             MainWindow.Content = box;
+            MainWindow.Content.CanGetFocus = false;
 
             (splitViewBackend as Paned).Position = MainWindow.Size.Width / 2;
         }

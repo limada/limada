@@ -28,6 +28,7 @@ using System;
 using Xwt.Backends;
 using Xwt.WPFBackend;
 using System.Windows.Controls;
+using SWC = System.Windows.Controls;
 
 namespace Xwt.WPFBackend
 {
@@ -188,5 +189,7 @@ namespace Xwt.WPFBackend
 					throw new NotSupportedException();
 			}
 		}
+
+
 	}
 }
