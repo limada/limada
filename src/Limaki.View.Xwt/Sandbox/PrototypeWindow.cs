@@ -64,6 +64,14 @@ namespace Limaki.View.XwtBackend {
                     Application.Exit();
             };
 
+            Action popover = () => {
+                               var popV = new Popover(new Label{Text="hy"});
+                               popV.Show(Popover.Position.Bottom, box.Panel1.Content);
+                            };
+            Action edit = () => {
+                              var edite = new TextEntry();
+                              (visualsDisplay.Backend as Canvas).AddChild(edite,new Rectangle(40,40,100,20));
+                          };
             MainMenu = new Menu(
                 new MenuItem("_File", null, null,
                     new MenuItem("_Open"),
@@ -73,6 +81,7 @@ namespace Limaki.View.XwtBackend {
                 new MenuItem("_Edit", null, null,
                     new MenuItem("_Copy"),
                     new MenuItem("Cu_t"),
+                    new MenuItem("_Paste", null, (s, e) => edit())
                     )
                 );
         }
