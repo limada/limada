@@ -47,7 +47,7 @@ namespace Limaki.Tests.UseCases {
 
     public class TestCaseFactory : UsecaseFactory<ConceptUsecase> {
         public override void Compose(ConceptUsecase useCase) {
-            var deviceComposer = DeviceComposer as ConceptUseCaseComposer;
+            var deviceComposer = BackendComposer as ConceptUseCaseComposer;
             
             this.testMessage = (s, m) => {
                 deviceComposer.StatusLabel.Text = m;

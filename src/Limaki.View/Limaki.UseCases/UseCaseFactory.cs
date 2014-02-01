@@ -23,13 +23,13 @@ namespace Limaki.Usecases {
         }
 
         public IComposer<T> Composer { get; set; }
-        public IComposer<T> DeviceComposer { get; set; }
+        public IComposer<T> BackendComposer { get; set; }
 
         public virtual void Compose(T useCase) {
             Composer.Factor(useCase);
-            DeviceComposer.Factor(useCase);
+            BackendComposer.Factor(useCase);
 
-            DeviceComposer.Compose(useCase);
+            BackendComposer.Compose(useCase);
             Composer.Compose(useCase);
 
         }

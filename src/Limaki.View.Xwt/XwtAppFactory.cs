@@ -26,7 +26,7 @@ namespace Limaki.View.XwtBackend {
     public class XwtAppFactory : AppFactory<Limada.Usecases.AppResourceLoader> {
         
         ToolkitType ToolkitType {
-            get { return Xwt.ToolkitType.Wpf; }
+            get { return Xwt.ToolkitType.Gtk; }
         }
 
         public XwtAppFactory () : base() { }
@@ -36,8 +36,8 @@ namespace Limaki.View.XwtBackend {
             Application.Initialize(this.ToolkitType);
             this.Create(new XwtContextRecourceLoader());
 
-            
-            var w = MainWindow();// ();//new PrototypeWindow ();
+
+            var w = MainWindow();// new PrototypeWindow ();// ();
             //w.Compose();
             w.Show();
 
@@ -71,14 +71,18 @@ namespace Limaki.View.XwtBackend {
 
         public void CreateUseCase (Window mainWindow) {
 
-            //mainWindow.Icon = Limaki.View.Properties.GdiIconery.LimadaLogo;
-            mainWindow.Size = new Size(800, 600);
+            var backendComposer = new XwtConceptUseCaseComposer {
+                MainWindow = mainWindow, 
+                WindowSize = new Size(800, 600)
+            };
+            
 
-            var deviceComposer = new XwtConceptUseCaseComposer { MainWindow = mainWindow };
+            //mainWindow.Icon = Limaki.View.Properties.GdiIconery.LimadaLogo;
+
 
             var factory = new UsecaseFactory<ConceptUsecase>();
             factory.Composer = new ConceptUsecaseComposer();
-            factory.DeviceComposer = deviceComposer;
+            factory.BackendComposer = backendComposer;
 
             var useCase = factory.Create();
             factory.Compose(useCase);
@@ -96,7 +100,7 @@ namespace Limaki.View.XwtBackend {
             var factories = Registry.Pool.TryGetCreate<UsecaseFactories<ConceptUsecase>>();
             foreach (var item in factories) {
                 item.Composer = factory.Composer;
-                item.DeviceComposer = factory.DeviceComposer;
+                item.BackendComposer = factory.BackendComposer;
                 item.Compose(useCase);
             }
         }

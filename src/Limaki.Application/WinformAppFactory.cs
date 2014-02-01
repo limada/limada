@@ -33,7 +33,7 @@ namespace Limaki.App {
 
             var factory = new UsecaseFactory<ConceptUsecase>();
             factory.Composer = new ConceptUsecaseComposer();
-            factory.DeviceComposer = deviceComposer;
+            factory.BackendComposer = deviceComposer;
             
             var useCase = factory.Create();
             factory.Compose(useCase);
@@ -52,7 +52,7 @@ namespace Limaki.App {
             var factories = Registry.Pool.TryGetCreate < UsecaseFactories<ConceptUsecase>>();
             foreach(var item in factories) {
                 item.Composer = factory.Composer;
-                item.DeviceComposer = factory.DeviceComposer;
+                item.BackendComposer = factory.BackendComposer;
                 item.Compose(useCase);
             }
         }
