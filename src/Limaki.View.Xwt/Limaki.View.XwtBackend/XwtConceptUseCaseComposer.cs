@@ -27,7 +27,9 @@ namespace Limaki.View.XwtBackend {
         public Menu Menu { get; set; }
 
         public void Factor (ConceptUsecase useCase) {
+            MainWindow.Size = WindowSize;
             MainWindow.MainMenu = CreateMenu(useCase);
+           
 
             this.Menu = MainWindow.MainMenu;
 
@@ -55,7 +57,7 @@ namespace Limaki.View.XwtBackend {
             MainWindow.Content = box;
             MainWindow.Content.CanGetFocus = false;
 
-            (splitViewBackend as Paned).Position = MainWindow.Size.Width / 2;
+            (splitViewBackend as Paned).Position = WindowSize.Width / 2;
         }
 
         public void Compose (ConceptUsecase useCase) {
@@ -190,5 +192,7 @@ namespace Limaki.View.XwtBackend {
 
         About About { get; set; }
         public Label StatusLabel { get; set; }
+
+        public Size WindowSize { get; set; }
     }
 }

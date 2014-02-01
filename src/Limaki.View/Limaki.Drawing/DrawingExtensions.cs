@@ -146,20 +146,6 @@ namespace Limaki.Drawing {
         }
         #endregion
         
-        #region Font
-        public static void Dispose (this Font font) {
-
-        }
-
-        public static Font Clone (this Font value) {
-            return
-                value.WithSize (value.Size)
-                    .WithStretch (value.Stretch)
-                    .WithStyle (value.Style)
-                    .WithWeight (value.Weight);
-        }
-
-        #endregion
 
         public static double TransformFontSize (this Matrix matrix, double fIn) {
             return Math.Abs(Math.Min(matrix.M11, matrix.M22) * fIn);

@@ -20,6 +20,7 @@ using Limaki.Drawing;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Xwt;
+using Limaki.View.UI;
 
 namespace Limaki.View.XwtBackend.Visualizers {
 
@@ -48,7 +49,7 @@ namespace Limaki.View.XwtBackend.Visualizers {
             
         }
 
-        public override void OnKeyPressed (UI.KeyActionEventArgs e) {
+        public override void OnKeyPressed (KeyActionEventArgs e) {
             
         }
     }

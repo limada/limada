@@ -31,30 +31,6 @@ namespace Limaki.View.XwtBackend {
         
     }
 
-    public abstract class DisplayBackend1 : ScrollView {
-        public DisplayBackend1 () {
-            this.Canvas = new DisplayCanvas();
-            this.Content = this.Canvas;
-        }
-
-        public class DisplayCanvas:Canvas {
-            internal virtual void InternalDraw (Context ctx, Rectangle dirtyRect) {
-                this.OnDraw(ctx, dirtyRect);
-            }
-        }
-
-        public DisplayCanvas Canvas { get; set; }
-
-        protected virtual void OnDraw (Context ctx, Rectangle dirtyRect) {
-            Canvas.InternalDraw(ctx, dirtyRect);
-        }
-
-        public void QueueDraw () { Canvas.QueueDraw(); }
-
-        public void QueueDraw (Rectangle rectangle) { Canvas.QueueDraw(rectangle); }
-        public Rectangle Bounds { get { return Canvas.Bounds; } }
-    }
-
     public abstract class DisplayBackend<T> : DisplayBackend, IVidgetBackend, IDisplayBackend<T> {
 
         public DisplayBackend () {
@@ -171,14 +147,14 @@ namespace Limaki.View.XwtBackend {
 
         protected override void OnMouseMoved (MouseMovedEventArgs args) {
             base.OnMouseMoved(args);
-             Display.EventControler.OnMouseMove(new UI.MouseActionEventArgs(
-                lastButton,
-                Keyboard.CurrentModifiers,
-                0,
-                args.X,
-                args.Y,
-                0
-                ));
+            Display.EventControler.OnMouseMove(new UI.MouseActionEventArgs(
+               lastButton,
+               Keyboard.CurrentModifiers,
+               0,
+               args.X,
+               args.Y,
+               0
+               ));
         }
 
         protected override void OnMouseScrolled (MouseScrolledEventArgs args) {
@@ -202,6 +178,28 @@ namespace Limaki.View.XwtBackend {
         protected override void OnMouseExited (EventArgs args) {
             base.OnMouseExited(args);
         }
-        
+
+    public abstract class ScrollDisplayBackend : ScrollView {
+        public ScrollDisplayBackend () {
+            this.Canvas = new DisplayCanvas();
+            this.Content = this.Canvas;
+        }
+
+        public class DisplayCanvas : Canvas {
+            internal virtual void InternalDraw (Context ctx, Rectangle dirtyRect) {
+                this.OnDraw(ctx, dirtyRect);
+            }
+        }
+
+        public DisplayCanvas Canvas { get; set; }
+
+        protected virtual void OnDraw (Context ctx, Rectangle dirtyRect) {
+            Canvas.InternalDraw(ctx, dirtyRect);
+        }
+
+        public void QueueDraw () { Canvas.QueueDraw(); }
+
+        public void QueueDraw (Rectangle rectangle) { Canvas.QueueDraw(rectangle); }
+        public Rectangle Bounds { get { return Canvas.Bounds; } }
     }
 }

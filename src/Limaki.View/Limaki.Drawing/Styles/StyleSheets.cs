@@ -33,11 +33,12 @@ namespace Limaki.Drawing.Styles {
 
         public virtual IStyleSheet PredefinedStyleSheets(string name) {
             IStyleSheet _styleSheet = null;
+            var scale = Xwt.Desktop.PrimaryScreen.ScaleFactor;
             if (name == "Desktop") {
                 var style = StyleSheet.CreateStyleWithSystemSettings();
                 style.Name = name+"."+StyleNames.BaseStyle;
                 //style.Pen.Color = style.PenColor;
-                style.Font = SystemFonts.MessageBoxFont.Clone();
+                style.Font = SystemFonts.MessageBoxFont;
 
                 _styleSheet = new StyleSheet(name, style);
                 _styleSheet.ItemStyle.SelectedStyle.FillColor = SystemColors.ActiveCaption;
@@ -52,7 +53,7 @@ namespace Limaki.Drawing.Styles {
                 style.FillColor = DrawingExtensions.FromArgb(200, Colors.WhiteSmoke);
                 style.PenColor = DrawingExtensions.FromArgb(200, Colors.Teal);
                 //style.Pen.Color = style.PenColor;
-                style.Font = style.Font.WithSize(10);
+                style.Font = style.Font.WithSize(10*scale);
                 _styleSheet = new StyleSheet(name, style);
                 _styleSheet.ItemStyle.SelectedStyle.FillColor = Colors.Teal;
                 _styleSheet.ItemStyle.SelectedStyle.TextColor = Colors.WhiteSmoke;
@@ -66,14 +67,14 @@ namespace Limaki.Drawing.Styles {
                 style.FillColor = DrawingExtensions.FromArgb(200, Colors.White);
                 style.PenColor = DrawingExtensions.FromArgb(200, Colors.White);
                 //style.Pen.Color = style.PenColor;
-                style.Font = SystemFonts.MessageBoxFont.Clone();
+                style.Font = SystemFonts.MessageBoxFont;
 
                 _styleSheet = new StyleSheet(name, style);
 
                 _styleSheet.ItemStyle.SelectedStyle.PenColor = DrawingExtensions.FromArgb(50, 150, 150, 150);
                 //_styleSheet.ItemStyle.SelectedStyle.Pen.Thickness = style.Pen.Thickness;
 
-                var font = _styleSheet.BaseStyle.Font.Clone();
+                var font = _styleSheet.BaseStyle.Font;
                 //TODO: font.Style = FontStyle.Underline;
                 _styleSheet.ItemStyle.SelectedStyle.Font = font;
 

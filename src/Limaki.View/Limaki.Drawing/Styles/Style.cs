@@ -164,7 +164,6 @@ namespace Limaki.Drawing.Styles {
 
         public virtual void Dispose(bool disposing) {
             if (_font != null) {
-                _font.Dispose ();
                 _font = null;
             }
             if (_pen != null) {
@@ -222,7 +221,7 @@ namespace Limaki.Drawing.Styles {
         public virtual void CopyTo(IStyle target) {
             target.AutoSize = this.AutoSize;
             target.FillColor = this.FillColor;
-            target.Font = (Font)this.Font.Clone();
+            target.Font = this.Font;
             target.PaintData = this.PaintData;
             target.Pen = (Pen)this.Pen.Clone();
             target.PenColor = this.PenColor;

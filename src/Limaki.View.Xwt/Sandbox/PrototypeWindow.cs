@@ -8,6 +8,7 @@ using Xwt.Drawing;
 
 namespace Limaki.View.XwtBackend {
     public class PrototypeWindow : Window {
+
         private Image icon;
 
         private StatusIcon statusIcon;
@@ -27,18 +28,7 @@ namespace Limaki.View.XwtBackend {
                 Trace.WriteLine("Status icon could not be shown");
             }
 
-            MainMenu = new Menu(
-                new MenuItem("_File", null, null,
-                    new MenuItem("_Open"),
-                    new MenuItem("_New"),
-                    new MenuItem("_Close", null, (s, e) => this.Close())
-                    ),
-                new MenuItem("_Edit", null, null,
-                    new MenuItem("_Copy"),
-                    new MenuItem("Cu_t"),
-                    new MenuItem("_Paste")
-                    )
-                );
+           
 
             
             var data = new PrototypeData();
@@ -67,14 +57,24 @@ namespace Limaki.View.XwtBackend {
             };
 
             Content = box;
-
+            
             CloseRequested += (s, e) => {
                 e.AllowClose = MessageDialog.Confirm("Samples will be closed", Command.Ok);
                 if (e.AllowClose)
                     Application.Exit();
             };
 
-            
+            MainMenu = new Menu(
+                new MenuItem("_File", null, null,
+                    new MenuItem("_Open"),
+                    new MenuItem("_New"),
+                    new MenuItem("_Close", null, (s, e) => this.Close())
+                    ),
+                new MenuItem("_Edit", null, null,
+                    new MenuItem("_Copy"),
+                    new MenuItem("Cu_t"),
+                    )
+                );
         }
 
         protected override void Dispose(bool disposing) {

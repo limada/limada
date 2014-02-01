@@ -158,7 +158,7 @@ namespace Limaki.Drawing.Styles {
             var systemfonts = Registry.Pool.TryGetCreate<ISystemFonts>();
             var drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils>();
 
-            result.Font = (Font) systemfonts.DefaultFont.Clone ();
+            result.Font = systemfonts.DefaultFont;
             result.Pen = drawingUtils.CreatePen (SystemColors.ActiveCaption);
 
             result.PenColor = result.Pen.Color;
