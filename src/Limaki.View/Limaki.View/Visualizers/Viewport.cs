@@ -6,17 +6,17 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2014 Lytico
  *
  * http://www.limada.org
  * 
  */
 
 
-using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
+using System;
 using Xwt;
 using Xwt.Drawing;
 
@@ -35,8 +35,9 @@ namespace Limaki.View.Visualizers {
             set { _camera = value; }
         }
 
-        public virtual Matrix CreateMatrix() {
-            return new Matrix();
+        Matrix _matrix = null;
+        public virtual Matrix Matrix  {
+            get { return _matrix??(_matrix=new Matrix()); }
         }
 
         public virtual Matrix GetMatrix() {
@@ -46,14 +47,15 @@ namespace Limaki.View.Visualizers {
             var zoomFactor = this.ZoomFactor;
             var scrollPosition = this.ClipOrigin;
             var offset = this.DataOrigin;
-            var matrice = CreateMatrix();
-            matrice.ScaleAppend(zoomFactor, zoomFactor);
 
-            matrice.TranslateAppend(
+            Matrix.SetIdentity();
+            Matrix.ScaleAppend(zoomFactor, zoomFactor);
+
+            Matrix.TranslateAppend(
                 (-offset.X - scrollPosition.X) ,
                 (-offset.Y - scrollPosition.Y)) ;
 
-            return matrice;
+            return Matrix;
         }
 
         #endregion
