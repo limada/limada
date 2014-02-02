@@ -132,7 +132,12 @@ namespace Limaki.View.XwtBackend {
             base.OnBoundsChanged();
             _backendViewPort.OnBoundsChanged();
         }
-        
+
+        protected override void OnReallocate () {
+            base.OnReallocate();
+            _backendViewPort.UpdateZoom();
+        }
+
         protected override void OnMouseEntered (EventArgs args) {
             base.OnMouseEntered(args);
             if (!HasFocus)

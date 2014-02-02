@@ -40,6 +40,9 @@ namespace Limaki.View.Visualizers {
         }
 
         public virtual Matrix GetMatrix() {
+            if (ZoomNeedsUpdate)
+                FitToZoom(ZoomState);
+
             var zoomFactor = this.ZoomFactor;
             var scrollPosition = this.ClipOrigin;
             var offset = this.DataOrigin;
@@ -172,13 +175,17 @@ namespace Limaki.View.Visualizers {
             Update ();
         }
 
+        protected bool ZoomNeedsUpdate { get; set; }
         // Fit to selected zoom
         protected virtual void FitToZoom(ZoomState zoomState) {
-            Size rc = this.ClipSize;
-            Size dataSize = this.GetDataSize ();
-            dataSize = new Size(dataSize.Width - 1, dataSize.Height - 1);
             var rc = this.ClipSize;
             var dataSize = this.GetDataSize ();
+            if (rc.IsZero || dataSize.IsZero) {
+                ZoomNeedsUpdate = true;
+                return;
+            }
+            ZoomNeedsUpdate = false;
+            dataSize = new Size(dataSize.Width + 2, dataSize.Height + 2);
             switch (zoomState) {
                 case ZoomState.FitToScreen:
                     _zoomFactor = Math.Min(

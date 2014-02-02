@@ -25,7 +25,12 @@ namespace Limaki.View.XwtBackend {
     /// </summary>
     
     [BackendType(typeof(IImageDisplayBackend))]
-    public class ImageDisplay : Display<Image> { }
+    public class ImageDisplay : Display<Image> {
+        public override void DataChanged () {
+            base.DataChanged();
+            Backend.Invalidate();
+        }
+    }
     
     public interface IImageDisplayBackend : IDisplayBackend<Image> { }
 
