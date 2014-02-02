@@ -21,21 +21,21 @@ using Limaki.Common;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {
-    [TODO()]
-    public class XwtViewport:Viewport {
+
+    public class XwtViewport : Viewport {
         private DisplayBackend Backend;
 
         public XwtViewport (DisplayBackend Backend) {
             this.Backend = Backend;
         }
 
-        public override Xwt.Point ClipOrigin {
+        public override Point ClipOrigin {
             get { return base.ClipOrigin; }
             set {
-                if(hscroll!=null)
-                hscroll.Value = value.X;
+                if (hscroll != null)
+                    hscroll.Value = value.X;
                 if (vscroll != null)
-                vscroll.Value = value.Y;
+                    vscroll.Value = value.Y;
                 base.ClipOrigin = value;
             }
         }
@@ -70,10 +70,10 @@ namespace Limaki.View.XwtBackend {
             };
 
             hscroll.UpperValue = DataSize.Width;
-            hscroll.ValueChanged += (s, e) => changed(s,e);
+            hscroll.ValueChanged += (s, e) => changed(s, e);
             vscroll.UpperValue = DataSize.Height;
             vscroll.ValueChanged += (s, e) => changed(s, e);
-            
+
         }
 
         public void OnBoundsChanged () {
@@ -84,6 +84,6 @@ namespace Limaki.View.XwtBackend {
             base.ClipOrigin = new Point(hscroll.Value, vscroll.Value);
         }
 
-        
+
     }
 }

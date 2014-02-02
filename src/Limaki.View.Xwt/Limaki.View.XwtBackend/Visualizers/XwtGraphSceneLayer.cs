@@ -33,8 +33,8 @@ namespace Limaki.View.XwtBackend.Visualizers {
             ctx.Save();
             
             try {
-                
-                ctx.ModifyCTM(matrix);
+                if(!matrix.IsIdentity)
+                    ctx.ModifyCTM(matrix);
                 this.Renderer.Render(this.Data, e);
 
             } catch(Exception ex) {

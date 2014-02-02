@@ -177,17 +177,19 @@ namespace Limaki.View.Visualizers {
             Size rc = this.ClipSize;
             Size dataSize = this.GetDataSize ();
             dataSize = new Size(dataSize.Width - 1, dataSize.Height - 1);
+            var rc = this.ClipSize;
+            var dataSize = this.GetDataSize ();
             switch (zoomState) {
                 case ZoomState.FitToScreen:
                     _zoomFactor = Math.Min(
-                        (float)rc.Width / dataSize.Width,
-                        (float)rc.Height / dataSize.Height);
+                        rc.Width / dataSize.Width,
+                        rc.Height / dataSize.Height);
                     break;
                 case ZoomState.FitToWidth:
-                    _zoomFactor = (float)rc.Width / dataSize.Width;
+                    _zoomFactor = rc.Width / dataSize.Width;
                     break;
                 case ZoomState.FitToHeigth:
-                    _zoomFactor = (float)rc.Height / dataSize.Height;
+                    _zoomFactor = rc.Height / dataSize.Height;
                     break;
                 case ZoomState.Original:
                     _zoomFactor = 1.0f;

@@ -145,7 +145,7 @@ namespace Limaki.View.XwtBackend {
             if (!HasFocus)
                 SetFocus();
 
-            Trace.WriteLine(string.Format("ButtonPressed {0} == {1}",  MouseLocation(), args.Position));
+            Trace.WriteLine(string.Format("ButtonPressed {0} == {1} | {2}",  MouseLocation(), args.Position, this.GetType().Name));
 
             lastButton = args.Button.ToLmk();
             Display.EventControler.OnMouseDown(new UI.MouseActionEventArgs(
@@ -203,7 +203,7 @@ namespace Limaki.View.XwtBackend {
         protected override void OnKeyPressed (KeyEventArgs args) {
             base.OnKeyPressed(args);
             var ml = MouseLocation();
-            Trace.WriteLine("KeyPressed " + ml.ToString());
+            Trace.WriteLine(string.Format("KeyPressed {0} | {1}", ml, this.GetType().Name));
 
             Display.EventControler.OnKeyPressed(new UI.KeyActionEventArgs(args.Key, args.Modifiers, ml));
         }
@@ -211,7 +211,7 @@ namespace Limaki.View.XwtBackend {
         protected override void OnKeyReleased (KeyEventArgs args) {
             base.OnKeyReleased(args);
             var ml = MouseLocation();
-            Trace.WriteLine("KeyReleased " + ml.ToString());
+            Trace.WriteLine(string.Format("KeyReleased {0} | {1}", ml, this.GetType().Name));
 
             Display.EventControler.OnKeyReleased(new UI.KeyActionEventArgs(args.Key, args.Modifiers, ml));
         }

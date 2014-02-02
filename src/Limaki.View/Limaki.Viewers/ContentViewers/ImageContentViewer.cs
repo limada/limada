@@ -26,7 +26,7 @@ using Limaki.View.XwtBackend;
 namespace Limaki.Viewers.StreamViewers {
 
     /// <summary>
-    /// ContentViewer working with System.Drawing.Image
+    /// ContentViewer working with Xwt.Drawing.Image
     /// </summary>
     public class ImageContentViewer : ContentStreamViewer {
 
@@ -55,13 +55,10 @@ namespace Limaki.Viewers.StreamViewers {
             get {
                 if (_imageStreamTypes == null) {
                     _imageStreamTypes = new Set<Int64>();
-                    _imageStreamTypes.Add(ContentTypes.TIF);
                     _imageStreamTypes.Add(ContentTypes.JPG);
                     _imageStreamTypes.Add(ContentTypes.GIF);
                     _imageStreamTypes.Add(ContentTypes.PNG);
                     _imageStreamTypes.Add(ContentTypes.BMP);
-                    _imageStreamTypes.Add(ContentTypes.EMF);
-                    _imageStreamTypes.Add(ContentTypes.WMF);
                 }
                 return _imageStreamTypes;
             }

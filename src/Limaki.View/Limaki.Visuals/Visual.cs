@@ -130,9 +130,9 @@ namespace Limaki.Visuals {
         //    throw new ArgumentException("Shape must not be null.");
         //}
 
-        //public void Transform(Matrice matrice) {
+        //public void Transform(Matrice Matrix) {
         //    if (Shape != null)
-        //        Shape.Transform(matrice);
+        //        Shape.Transform(Matrix);
         //    throw new ArgumentException("Shape must not be null.");
         //}
 
