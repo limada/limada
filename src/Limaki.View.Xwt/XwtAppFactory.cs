@@ -36,10 +36,19 @@ namespace Limaki.View.XwtBackend {
             Application.Initialize(this.ToolkitType);
             this.Create(new XwtContextRecourceLoader());
 
-
-            var w = MainWindow();// new PrototypeWindow ();// ();
-            //w.Compose();
+            Window w = null;
+            Action onShow = null;
+            if (true) {
+                var com = CreateUseCase();
+                w = com.MainWindow;
+                if (com.OnShow != null)
+                    onShow += com.OnShow;
+            } else {
+                w = new PrototypeWindow().Composed();
+            }
             w.Show();
+            if (onShow != null)
+                onShow();
 
             MessageDialog.RootWindow = w;
 
@@ -60,25 +69,14 @@ namespace Limaki.View.XwtBackend {
             return base.TakeType(type);
         }
 
-        public Window MainWindow () {
-
-            var result = new MainWindow();
-
-            CreateUseCase(result);
-
-            return result;
-        }
-
-        public void CreateUseCase (Window mainWindow) {
+        public XwtConceptUseCaseComposer CreateUseCase () {
 
             var backendComposer = new XwtConceptUseCaseComposer {
-                MainWindow = mainWindow, 
+                MainWindow = new MainWindow(), 
                 WindowSize = new Size(800, 600)
             };
             
-
             //mainWindow.Icon = Limaki.View.Properties.GdiIconery.LimadaLogo;
-
 
             var factory = new UsecaseFactory<ConceptUsecase>();
             factory.Composer = new ConceptUsecaseComposer();
@@ -94,6 +92,7 @@ namespace Limaki.View.XwtBackend {
             if (useCase.ApplicationQuitted) {
                 Application.Exit();
             }
+            return backendComposer;
         }
 
         public void CallPlugins (UsecaseFactory<ConceptUsecase> factory, ConceptUsecase useCase) {

@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -13,7 +27,7 @@ namespace Limaki.View.XwtBackend {
 
         private StatusIcon statusIcon;
 
-        public void Compose() {
+        public PrototypeWindow Composed () {
             Title = "Limada Xwt Prototype";
             var width = 500;
             Width = width;
@@ -28,14 +42,12 @@ namespace Limaki.View.XwtBackend {
                 Trace.WriteLine("Status icon could not be shown");
             }
 
-           
-
-            
             var data = new PrototypeData();
 
             var imageDisplay = new ImageDisplay {
                 Data = data.Image(ctx=>data.FontTest(ctx)),
-                BackColor = Colors.White
+                BackColor = Colors.White,
+                ZoomState = ZoomState.FitToScreen,
             };
             
             var visualsDisplay = new VisualsDisplay {
@@ -47,8 +59,8 @@ namespace Limaki.View.XwtBackend {
             visualsDisplay.Data = data.Scene;
 
             var box = new HPaned();
-            box.Panel1.Content = visualsDisplay.ScrollView();
-            box.Panel2.Content = imageDisplay.ScrollView();
+            box.Panel1.Content = visualsDisplay.WithScrollView();
+            box.Panel2.Content = imageDisplay.WithScrollView();
             //box.Panel2.Content = new Label();
             box.Panel2.Resize = true;
             box.Position = width / 2;
@@ -65,13 +77,34 @@ namespace Limaki.View.XwtBackend {
             };
 
             Action popover = () => {
-                               var popV = new Popover(new Label{Text="hy"});
-                               popV.Show(Popover.Position.Bottom, box.Panel1.Content);
-                            };
+                var popV = new Popover(new Label { Text = "hy" });
+                popV.Show(Popover.Position.Bottom, box.Panel1.Content);
+            };
             Action edit = () => {
-                              var edite = new TextEntry();
-                              (visualsDisplay.Backend as Canvas).AddChild(edite,new Rectangle(40,40,100,20));
-                          };
+                var edite = new TextEntry();
+                (visualsDisplay.Backend as Canvas).AddChild(edite, new Rectangle(40, 40, 100, 20));
+            };
+            Action changeView = () => {
+                var one = box.Panel1.Content;
+                var two = box.Panel2.Content;
+                box.Panel1.Content = null;
+                box.Panel2.Content = null;
+                box.Panel1.Content = two;
+                box.Panel2.Content = one;
+            };
+            Action newImageDisplay = () => {
+                imageDisplay = new ImageDisplay {
+                    Data = data.Image(ctx => data.FontTest(ctx)),
+                    BackColor = Colors.White
+                };
+                box.Panel2.Content = imageDisplay.Backend as Widget;
+            };
+            Action nextImage = () => {
+                                   imageDisplay.Data = data.Image(ctx => data.FontTest(ctx));
+                               };
+            visualsDisplay.SceneFocusChanged += (s, e) => nextImage();
+            //(visualsDisplay.Backend as Widget).ButtonPressed += (s, e) => nextImage();
+
             MainMenu = new Menu(
                 new MenuItem("_File", null, null,
                     new MenuItem("_Open"),
@@ -79,11 +112,12 @@ namespace Limaki.View.XwtBackend {
                     new MenuItem("_Close", null, (s, e) => this.Close())
                     ),
                 new MenuItem("_Edit", null, null,
-                    new MenuItem("_Copy"),
-                    new MenuItem("Cu_t"),
-                    new MenuItem("_Paste", null, (s, e) => edit())
+                    new MenuItem("Change View",null,(s, e) => changeView()),
+                    new MenuItem("Edit", null, (s, e) => edit())
                     )
                 );
+
+            return this;
         }
 
         protected override void Dispose(bool disposing) {

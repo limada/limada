@@ -16,6 +16,7 @@ using Limaki.Common;
 using Limaki.Usecases.Concept;
 using Limaki.View.Visualizers;
 using Limaki.Viewers;
+using Limaki.Viewers.StreamViewers;
 using Xwt;
 using Xwt.Drawing;
 
@@ -30,34 +31,25 @@ namespace Limaki.View.XwtBackend {
             MainWindow.Size = WindowSize;
             MainWindow.MainMenu = CreateMenu(useCase);
            
-
             this.Menu = MainWindow.MainMenu;
 
             var splitViewBackend = useCase.SplitView.Backend as Widget;
-            splitViewBackend.CanGetFocus = false;
 
             StatusLabel = new Label {
-                //HorizontalPlacement = WidgetPlacement.End,
-                //VerticalPlacement = WidgetPlacement.Fill,
                 HeightRequest = 20,
                 Text = "hello",
                 TextColor = Colors.Black,
                 TextAlignment = Alignment.Center,
                 Name = "asdsf",
             };
-            var box = new VBox {
-                //VerticalPlacement = WidgetPlacement.Fill,
-                //HorizontalPlacement = WidgetPlacement.Fill
-
-            };
+            var box = new VBox {};
 
             box.PackStart(splitViewBackend, true);
             box.PackEnd(StatusLabel);
 
             MainWindow.Content = box;
-            MainWindow.Content.CanGetFocus = false;
 
-            (splitViewBackend as Paned).Position = WindowSize.Width / 2;
+            OnShow += () => (splitViewBackend as Paned).PositionFraction = 0.50;// WindowSize.Width / 2;
         }
 
         public void Compose (ConceptUsecase useCase) {
@@ -83,6 +75,16 @@ namespace Limaki.View.XwtBackend {
                     Application.Exit();
                 }
             };
+
+
+            var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
+
+            viewerProvider.Add(new SheetViewer());
+            viewerProvider.Add(new ImageContentViewer());
+
+            //viewerProvider.Add(new HtmlContentViewer());
+            //viewerProvider.Add(new DigidocContentViewer());
+            //viewerProvider.Add(new TextContentViewerWithToolstrip());
 
         }
 
@@ -194,5 +196,7 @@ namespace Limaki.View.XwtBackend {
         public Label StatusLabel { get; set; }
 
         public Size WindowSize { get; set; }
+
+        public System.Action OnShow { get; set; }
     }
 }
