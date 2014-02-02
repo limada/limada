@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Xwt;
 using System.Collections.Generic;
 using System;
@@ -7,49 +21,72 @@ namespace Limaki.View.XwtBackend {
 
     public static class XwtBackendHelper {
 
-        public static ScrollView ScrollView (this IDisplay display) {
-            var backend = display.Backend as Widget;
+        public static ScrollView WithScrollView (this IDisplay display) {
+            return (display.Backend as Widget).WithScrollView();
+        }
+
+        public static ScrollView WithScrollView (this Widget backend) {
+            if (backend is ScrollView)
+                return (ScrollView) backend;
+
             backend.VerticalPlacement = WidgetPlacement.Fill;
             backend.HorizontalPlacement = WidgetPlacement.Fill;
             var scroll = new ScrollView();
-            //scroll.CanGetFocus = true;
             scroll.Content = backend;
             return scroll;
+
         }
 
-        public static Widget ScrollViewContent (this Widget sender) {
-            if (sender is ScrollView)
-                return ((ScrollView) sender).Content;
-            return sender;
+        /// <summary>
+        /// gives back the Content of the ScrollView if sender is Scrollview
+        /// else sender
+        /// </summary>
+        /// <param name="widget"></param>
+        /// <returns></returns>
+        public static Widget PeeledScrollView (this Widget widget) {
+            if (widget is ScrollView)
+                return ((ScrollView) widget).Content;
+            return widget;
         }
 
-        public static IEnumerable<Widget> Children (this Widget widget) {
-            widget = widget.ScrollViewContent();
+        /// <summary>
+        /// gives back the widged.Peeled 
+        /// and all its children if any
+        /// </summary>
+        /// <param name="widget"></param>
+        /// <returns></returns>
+        public static IEnumerable<Widget> ScrollPeeledChildren (this Widget widget) {
+            widget = widget.PeeledScrollView();
+            yield return widget;
             var box = widget as Box;
             if (box != null)
                 foreach(var child in box.Children)
-                    yield return child.ScrollViewContent();
+                    yield return child.PeeledScrollView();
 
             var paned = widget as Paned;
             if(paned != null) {
-                yield return paned.Panel1.Content.ScrollViewContent();
-                yield return paned.Panel2.Content.ScrollViewContent();
+                yield return paned.Panel1.Content.PeeledScrollView();
+                yield return paned.Panel2.Content.PeeledScrollView();
             }
 
             var table = widget as Table;
             if (table != null)
                 foreach (var child in table.Children)
-                    yield return child.ScrollViewContent();
+                    yield return child.PeeledScrollView();
 
             var notebook = widget as Notebook;
             if (notebook != null)
                 foreach (var child in notebook.Tabs)
-                    yield return child.Child.ScrollViewContent();
+                    yield return child.Child.PeeledScrollView();
 
             var frame = widget as Frame;
             if (frame != null)
-                yield return frame.Content.ScrollViewContent();
+                yield return frame.Content.PeeledScrollView();
 
+            var canvas = widget as Canvas;
+            if (canvas != null)
+                foreach (var child in canvas.Children)
+                    yield return child.PeeledScrollView();
         }
 
         public static void VidgetBackendUpdate (Widget widget) {
