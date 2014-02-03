@@ -61,17 +61,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Playground\View\DragDrop0\TransferDataFormats.cs" />
-    <Compile Include="Playground\View\DragDrop0\StreamTransferDataHandler.cs" />
-    <Compile Include="Playground\View\DragDrop0\TranferDataHandlerChain.cs" />
-    <Compile Include="Playground\View\DragDrop0\TransferDataHandler.cs" />
-    <Compile Include="Playground\View\DragDrop0\TransferDataSourceExensions.cs" />
-    <Compile Include="Playground\View\DragDrop0\DragDropViz0.cs" />
-    <Compile Include="Playground\View\DragDrop0\VisualsDragDropAction0.cs" />
-    <Compile Include="Playground\View\DragDrop0\VidgetBackendTransferDataSource.cs" />
-    <Compile Include="Playground\View\DragDrop0\VisualsImageTransferDataHandler.cs" />
-    <Compile Include="Playground\View\DragDrop0\VisualsTextTransferDataHandler.cs" />
-    <Compile Include="Playground\View\DragDrop0\VisualsTransferDataHandler.cs" />
     <Compile Include="Limaki.Tests\View\CreateDisplayTest.cs" />
     <Compile Include="Limaki.Tests\View\GDI\ConvexHullLayer.cs" />
     <Compile Include="Limaki.Tests\View\GDI\FontMeasure.cs" />
