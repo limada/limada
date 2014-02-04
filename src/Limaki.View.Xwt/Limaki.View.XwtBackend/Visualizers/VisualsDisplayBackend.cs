@@ -48,7 +48,7 @@ namespace Limaki.View.XwtBackend {
 
             display.EventControler.Add(dragDrop);
 
-            var editor = new VisualsTextEditor(
+            var editor = new VisualsTextEditAction(
                 this.GraphScene,
                 display,
                 this.Camera(),

@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2008 - 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System;
 using System.ComponentModel;
 using Limaki.Actions;
@@ -16,13 +30,13 @@ namespace Limaki.View.Visuals.UI {
     /// <summary>
     /// Activates a propriate editor for the selected visual
     /// </summary>
-    public abstract class VisualsTextEditorBase:MouseTimerActionBase, IKeyAction, IEditAction {
+    public abstract class VisualsTextEditActionBase:MouseTimerActionBase, IKeyAction, IEditAction {
 
-        protected VisualsTextEditorBase (): base() {
+        protected VisualsTextEditActionBase (): base() {
             this.Priority = ActionPriorities.SelectionPriority - 30;
         }
 
-        protected VisualsTextEditorBase (
+        protected VisualsTextEditActionBase (
             Func<IGraphScene<IVisual, IVisualEdge>> sceneHandler, 
             IDisplay display, ICamera camera,
             IGraphSceneLayout<IVisual,IVisualEdge> layout): this() {
@@ -108,6 +122,7 @@ namespace Limaki.View.Visuals.UI {
         #endregion
 
         #region Data-Handling
+
         protected TypeConverter GetConverter(IVisual visual) {
             if (visual.Data == null)
                 return TypeDescriptor.GetConverter(typeof (object));
@@ -128,7 +143,7 @@ namespace Limaki.View.Visuals.UI {
         protected void TextToData (IVisual visual, string text) {
             var scene = this.Scene;
             
-            TypeConverter converter = GetConverter (visual);
+            var converter = GetConverter (visual);
             if (converter == null) return;
 
             object data = converter.ConvertFromString (text);
@@ -147,6 +162,21 @@ namespace Limaki.View.Visuals.UI {
             scene.Requests.Add (new LayoutCommand<IVisual> (visual, LayoutActionType.Justify));
         }
 
+        protected virtual void AfterEdit () {
+            var scene = Scene;
+            if (focusAfterEdit) {
+             
+                scene.Selected.Clear();
+                if (scene.Focused != null)
+                    scene.Requests.Add(new StateChangeCommand<IVisual>(scene.Focused, new Pair<UiState>(UiState.Selected, UiState.None)));
+                scene.Focused = Current;
+            }
+            if (Current != null) {
+                var aligner = new Aligner<IVisual, IVisualEdge>(scene, this.Layout);
+                aligner.Justify(new IVisual[] {Current});
+                aligner.Commit();
+            }
+        }
         #endregion
 
         #region IKeyAction Member

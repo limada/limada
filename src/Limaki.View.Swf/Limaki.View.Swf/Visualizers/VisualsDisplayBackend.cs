@@ -71,7 +71,7 @@ namespace Limaki.View.Swf.Visualizers {
                 display.EventControler.Add(dragDrop);
 #endif            
 
-            var editor = new VisualsTextEditor (
+            var editor = new VisualsTextEditAction (
                 this.GraphScene,
                 display,
                 this.Camera (),

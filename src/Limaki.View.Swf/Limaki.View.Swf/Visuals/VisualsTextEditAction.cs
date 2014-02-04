@@ -27,9 +27,9 @@ using SWF = System.Windows.Forms;
 
 namespace Limaki.View.Swf.Visuals {
 
-     public class VisualsTextEditor:VisualsTextEditorBase {
+     public class VisualsTextEditAction:VisualsTextEditActionBase {
 
-         public VisualsTextEditor ( Func<IGraphScene<IVisual, IVisualEdge>> sceneHandler,
+         public VisualsTextEditAction ( Func<IGraphScene<IVisual, IVisualEdge>> sceneHandler,
             IDisplay display, ICamera camera,
             IGraphSceneLayout<IVisual, IVisualEdge> layout): base(sceneHandler, display, camera, layout) {
 
@@ -81,13 +81,8 @@ namespace Limaki.View.Swf.Visuals {
              if (writeData) {
                  TextToData(Current, editor.Text);
              }
-             if (focusAfterEdit) {
-                 var scene = Scene;
-                 scene.Selected.Clear();
-                 if (scene.Focused != null)
-                     scene.Requests.Add(new StateChangeCommand<IVisual>(scene.Focused, new Pair<UiState>(UiState.Selected, UiState.None)));
-                 scene.Focused = Current;
-             }
+             
+             AfterEdit();
 
              Current = null;
 
@@ -206,7 +201,7 @@ namespace Limaki.View.Swf.Visuals {
              focusAfterEdit = false;
              hoverAfteredit = false;
              bool insert = false;
-             if (e.Key == Key.Return) {
+             if (e.Key == Key.Return && e.Modifiers==ModifierKeys.Control) {
                  insert = true;
              }
              if (e.Key == Key.Insert) {
@@ -219,7 +214,7 @@ namespace Limaki.View.Swf.Visuals {
                  Exclusive = Resolved = true;
                  Current = Registry.Pool.TryGetCreate<IVisualFactory>().CreateItem<string>("XXXXXXXX");
                  var scene = Scene;
-                 IVisual root = scene.Focused;
+                 var root = scene.Focused;
 
                  if (root == null) {
                      var pt = displayBackend.PointToClient(Cursor.Position).ToXwt();
