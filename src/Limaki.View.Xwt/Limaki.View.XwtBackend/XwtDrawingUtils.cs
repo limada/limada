@@ -29,7 +29,7 @@ namespace Limaki.View.XwtBackend {
             return new Pen (color);
         }
 
-        private TextLayout tl = new TextLayout{Trimming=TextTrimming.WordElipsis};
+        private TextLayout tl = new TextLayout { Trimming = TextTrimming.WordElipsis };
         public Size GetTextDimension (string text, IStyle style) {
             var result = default(Size);
             lock (tl) {

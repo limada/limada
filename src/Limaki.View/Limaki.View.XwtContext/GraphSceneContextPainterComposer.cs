@@ -32,6 +32,7 @@ namespace Limaki.View.XwtContext {
             painter.DataLayer = layer;
 
             painter.Viewport = new Viewport();
+
         }
 
         public override void Compose(GraphScenePainter<TItem, TEdge> painter) {

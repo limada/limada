@@ -23,6 +23,7 @@ using Limaki.View.Visualizers;
 using Limaki.View.XwtBackend.Visualizers;
 
 namespace Limaki.View.XwtBackend {
+
     public abstract class GraphSceneDisplayBackend<TItem, TEdge> : DisplayBackend<IGraphScene<TItem, TEdge>>
         where TEdge : TItem, IEdge<TItem> {
     }

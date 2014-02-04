@@ -120,7 +120,7 @@ namespace Limaki.View.Visuals.UI {
 
         public static IVisual PlaceVisual(IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual visual, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             if (visual != null && scene !=null) {
-                Point pt = (Point)layout.Border;
+                var pt = (Point)layout.Border;
                 if (root != null) {
                     pt = root.Shape[Anchor.LeftBottom];
                 }

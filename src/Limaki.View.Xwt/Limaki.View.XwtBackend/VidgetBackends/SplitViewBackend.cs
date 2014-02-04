@@ -151,19 +151,18 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
-        public void ShowTextDialog (string title, string text, System.Action<string> onOk) {
-            var nameDialog = new TextOkCancelBoxBackend();
+        public void ShowTextDialog (string title, string text, Action<string> onOk) {
+            var nameDialog = new TextOkCancelBoxBackend { Title = title, Text = text };
         }
 
 
-        void IVidgetBackend.Update () { XwtBackendHelper.VidgetBackendUpdate(this); }
+        void IVidgetBackend.Update () { this.VidgetBackendUpdate(); }
 
-        void IVidgetBackend.Invalidate () { XwtBackendHelper.VidgetBackendInvalidate(this); }
+        void IVidgetBackend.Invalidate () { this.VidgetBackendInvalidate(); }
 
-        void IVidgetBackend.Invalidate (Rectangle rect) { XwtBackendHelper.VidgetBackendInvalidate(this, rect); }
+        void IVidgetBackend.Invalidate (Rectangle rect) { this.VidgetBackendInvalidate(rect); }
 
-        public void Dispose () {
+        public void Dispose () { }
 
-        }
     }
 }

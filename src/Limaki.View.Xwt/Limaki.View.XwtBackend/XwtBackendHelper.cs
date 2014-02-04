@@ -89,15 +89,15 @@ namespace Limaki.View.XwtBackend {
                     yield return child.PeeledScrollView();
         }
 
-        public static void VidgetBackendUpdate (Widget widget) {
+        public static void VidgetBackendUpdate (this Widget widget) {
             widget.QueueForReallocate();
         }
 
-        public static void VidgetBackendInvalidate (Widget widget) {
+        public static void VidgetBackendInvalidate (this Widget widget) {
             widget.QueueForReallocate();
         }
 
-        public static void VidgetBackendInvalidate (Widget widget, Rectangle rect) {
+        public static void VidgetBackendInvalidate (this Widget widget, Rectangle rect) {
             widget.QueueForReallocate();
         }
     }

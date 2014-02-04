@@ -26,7 +26,7 @@ namespace Limaki.View.XwtBackend {
     public class XwtAppFactory : AppFactory<Limada.Usecases.AppResourceLoader> {
         
         ToolkitType ToolkitType {
-            get { return Xwt.ToolkitType.Gtk; }
+            get { return Xwt.ToolkitType.Wpf; }
         }
 
         public XwtAppFactory () : base() { }

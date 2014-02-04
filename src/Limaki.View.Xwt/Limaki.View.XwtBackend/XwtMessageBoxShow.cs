@@ -19,7 +19,7 @@ using Xwt;
 namespace Limaki.View.XwtBackend {
 
     public class XwtMessageBoxShow : XwtMessager, IMessageBoxShow {
-        
+
         public DialogResult Show (string title, string text, MessageBoxButtons buttons) {
             var result = DialogResult.None;
             if (buttons == MessageBoxButtons.None) {
@@ -37,6 +37,7 @@ namespace Limaki.View.XwtBackend {
                 var question = MessageDialog.AskQuestion(title, text, 0, ToXwt(buttons));
                 return ToLim(question);
             }
+
             if (false) {
                 var confirm = MessageDialog.Confirm(title, text, ToXwt(buttons).First());
                 if (confirm)

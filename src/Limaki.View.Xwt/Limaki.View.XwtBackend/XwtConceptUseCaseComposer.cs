@@ -12,6 +12,7 @@
  * 
  */
 
+using System;
 using Limaki.Common;
 using Limaki.Usecases.Concept;
 using Limaki.View.Visualizers;
@@ -166,6 +167,7 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
+        [TODO]
         private void Print (ConceptUsecase useCase) {
             using (var printDialog = new PrintDialog()) {
                 var currentDisplay = useCase.GetCurrentDisplay();
@@ -180,10 +182,12 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
+        [TODO]
         private void PrintPreview (ConceptUsecase useCase) {
             throw new System.NotImplementedException();
         }
 
+        [TODO]
         private void ShowStyleEditor (ConceptUsecase useCase) {
             var editor = new StyleEditor();
         }
@@ -193,10 +197,11 @@ namespace Limaki.View.XwtBackend {
         }
 
         About About { get; set; }
+
         public Label StatusLabel { get; set; }
 
         public Size WindowSize { get; set; }
 
-        public System.Action OnShow { get; set; }
+        public Action OnShow { get; set; }
     }
 }
