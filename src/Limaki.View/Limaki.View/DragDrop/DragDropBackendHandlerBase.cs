@@ -26,7 +26,9 @@ namespace Limaki.View.DragDrop {
 
     public abstract class DragDropBackendHandlerBase : IDragDropBackendHandler {
 
-
+        /// <summary>
+        /// gives back the TransferDataSources
+        /// </summary>
         public Func<TransferDataSource> DragDataSource { get; set; }
         public Action<DragFinishedEventArgs> DragFinished { get; set; }
         public Action<DragEventArgs> Dropped { get; set; }
@@ -120,7 +122,7 @@ namespace Limaki.View.DragDrop {
         }
 
         public virtual void DragOver (DragOverEventArgs args) {
-            if (!args.Data.DataTypes.Intersect(this.TargetTypes).Any()) {
+            if (!TargetTypes.Any(t => args.Info.HasType(t))) {
                 args.AllowedAction = DragDropAction.None;
             }
         }

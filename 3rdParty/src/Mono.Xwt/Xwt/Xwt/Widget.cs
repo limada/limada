@@ -664,7 +664,7 @@ namespace Xwt
 			return currentDragOperation;
 		}
 		
-		internal void DragStart (DragStartData sdata)
+		public void DragStart (DragStartData sdata)
 		{
 			Backend.DragStart (sdata);
 		}

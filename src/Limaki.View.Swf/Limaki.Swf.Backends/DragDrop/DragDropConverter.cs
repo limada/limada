@@ -19,6 +19,7 @@ using SWF = System.Windows.Forms;
 using SD = System.Drawing;
 using Xwt.Gdi.Backend;
 using Limaki.View.DragDrop;
+using System.Linq;
 using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 
@@ -101,10 +102,18 @@ namespace Limaki.View.Swf.Backends {
             return result;
         }
 
+        public class TransferDataInfo:ITransferDataInfo {
+            public TransferDataInfo(SWF.IDataObject dob ) {
+                this.Dob = dob;
+            }
+            public bool HasType (TransferDataType typeId) { return Dob.GetFormats().Any(t => t.ToLower() == typeId.Id.ToLower()); }
 
+            public SWF.IDataObject Dob { get; set; }
+        }
         public static DragOverEventArgs ToXwtDragOver (this SWF.DragEventArgs args, SWF.Control control) {
             var pt = control.PointToClient(new SD.Point(args.X, args.Y));
-            var result = new DragOverEventArgs(pt.ToXwt(), args.Data.ToXwt(), args.AllowedEffect.ToXwt()) {
+
+            var result = new DragOverEventArgs(pt.ToXwt(), new TransferDataInfo(args.Data), args.AllowedEffect.ToXwt()) {
                 AllowedAction = args.Effect.ToXwt(),
             };
             return result;

@@ -18,6 +18,8 @@ using Limaki.Drawing;
 using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using Limaki.IOC;
+using Limaki.Model.Content;
+using Limaki.View.DragDrop;
 using Limaki.View.UI;
 using Limaki.Viewers;
 using Limaki.Visuals;
@@ -25,6 +27,7 @@ using Xwt;
 using Xwt.Backends;
 
 namespace Limaki.View.XwtBackend {
+
     public class XwtContextRecourceLoader : IBackendContextRecourceLoader {
 
         public virtual void ApplyXwtResources (IApplicationContext context) {
@@ -55,12 +58,28 @@ namespace Limaki.View.XwtBackend {
             new ViewContextRecourceLoader().ApplyResources(context);
 
             RegisterBackends(context);
+            RegisterDragDropFormats(context);
         }
 
         public virtual void RegisterBackends (IApplicationContext context) {
             var engine = new XwtVidgetToolkitEngineBackend();
             engine.Initialize();
             VidgetToolkit.CurrentEngine = new VidgetToolkit { Backend = engine };
+        }
+
+        [TODO]
+        public virtual void RegisterDragDropFormats (IApplicationContext context) {
+
+            Registry.Factory.Add<IDragDropBackendHandler>(args => new DragDropBackendHandler(args[0] as IVidgetBackend));
+
+            var man = new TransferDataManager();
+            man.RegisterSome();
+            man.TransferContentTypes.Add("html format", ContentTypes.HTML);
+            man.TransferContentTypes.Add("rich text format", ContentTypes.RTF);
+
+            // TODO: register the others
+            //man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.UnicodeText, 0);
+
         }
     }
 }

@@ -26,6 +26,9 @@ using System.ComponentModel;
 using Xwt.Drawing;
 using System.Diagnostics;
 using WidgetEvent = Xwt.Backends.WidgetEvent;
+using Limaki.View.UI;
+
+
 
 namespace Limaki.View.XwtBackend {
 
@@ -50,6 +53,7 @@ namespace Limaki.View.XwtBackend {
 
             // this enables Key-Events
             CanGetFocus = true;
+
         }
 
         
@@ -62,7 +66,9 @@ namespace Limaki.View.XwtBackend {
                 display = factory.Create();
             _display = display;
             factory.Compose(display);
-            
+            // we need to register at least one target
+            // other
+            SetDragDropTarget(DragDropAction.All, TransferDataType.Text);
         }
 
         protected IDisplay<T> _display = null;
@@ -138,6 +144,9 @@ namespace Limaki.View.XwtBackend {
             _backendViewPort.UpdateZoom();
         }
 
+#region Mouse
+
+  
         protected override void OnMouseEntered (EventArgs args) {
             base.OnMouseEntered(args);
             if (!HasFocus)
@@ -150,7 +159,7 @@ namespace Limaki.View.XwtBackend {
             if (!HasFocus)
                 SetFocus();
 
-            Trace.WriteLine(string.Format("ButtonPressed {0} == {1} | {2}",  MouseLocation(), args.Position, this.GetType().Name));
+            Trace.WriteLine(string.Format("ButtonPressed {0} == {1} | {2}", this.MouseLocation(), args.Position, this.GetType().Name));
 
             lastButton = args.Button.ToLmk();
             Display.EventControler.OnMouseDown(new UI.MouseActionEventArgs(
@@ -197,52 +206,85 @@ namespace Limaki.View.XwtBackend {
             base.OnMouseExited(args);
         }
 
-        protected virtual Point MouseLocation () {
-            var ml = Desktop.MouseLocation;
-            var sb = this.ScreenBounds.Location;
-            var scale = Desktop.GetScreenAtLocation(ml).ScaleFactor;
-
-            return new Point(ml.X - sb.X / scale, ml.Y - sb.Y / scale);
-        }
-
         protected override void OnKeyPressed (KeyEventArgs args) {
             base.OnKeyPressed(args);
-            var ml = MouseLocation();
+            var ml = this.MouseLocation();
             Trace.WriteLine(string.Format("KeyPressed {0} | {1}", ml, this.GetType().Name));
 
             Display.EventControler.OnKeyPressed(new UI.KeyActionEventArgs(args.Key, args.Modifiers, ml));
         }
 
+#endregion
+        
+        #region Keyboard
+
         protected override void OnKeyReleased (KeyEventArgs args) {
             base.OnKeyReleased(args);
-            var ml = MouseLocation();
+            var ml = this.MouseLocation();
             Trace.WriteLine(string.Format("KeyReleased {0} | {1}", ml, this.GetType().Name));
 
             Display.EventControler.OnKeyReleased(new UI.KeyActionEventArgs(args.Key, args.Modifiers, ml));
         }
-    }
 
-    public abstract class ScrollDisplayBackend : ScrollView {
-        public ScrollDisplayBackend () {
-            this.Canvas = new DisplayCanvas();
-            this.Content = this.Canvas;
+        #endregion
+
+        [TODO]
+        protected override void OnDragStarted (DragStartedEventArgs args) {
+            base.OnDragStarted(args);
         }
 
-        public class DisplayCanvas : Canvas {
-            internal virtual void InternalDraw (Context ctx, Rectangle dirtyRect) {
-                this.OnDraw(ctx, dirtyRect);
+        #region Drop
+
+        [TODO]
+        protected override void OnDragDropCheck (DragCheckEventArgs args) {
+            base.OnDragDropCheck(args);
+        }
+
+        protected override void OnDragOver (DragOverEventArgs args) {
+            var dropHandler = Display.EventControler as IDropAction;
+            if (dropHandler != null && Display.Data != null) {
+
+                var ev = new DragDrop.DragOverEventArgs(
+                    args.Position,
+                    new TransferDataInfo(args.Data),
+                    args.Action);
+                ev.AllowedAction = args.AllowedAction;
+                dropHandler.DragOver(ev);
+                args.AllowedAction = ev.AllowedAction;
             }
+            base.OnDragOver(args);
         }
 
-        public DisplayCanvas Canvas { get; set; }
-
-        protected virtual void OnDraw (Context ctx, Rectangle dirtyRect) {
-            Canvas.InternalDraw(ctx, dirtyRect);
+        [TODO]
+        protected override void OnDragOverCheck (DragOverCheckEventArgs args) {
+            base.OnDragOverCheck(args);
         }
 
-        public void QueueDraw () { Canvas.QueueDraw(); }
+        [TODO]
+        protected override void OnDragDrop (DragEventArgs args) {
+            var dropHandler = Display.EventControler as DragDrop.IDropHandler;
+            if (dropHandler != null && Display.Data != null) {
+                var e = new DragDrop.DragEventArgs(
+                    args.Position,
+                    new TransferDataSource(),//args.Data,
+                    args.Action
+                    );
+                dropHandler.OnDrop(e);
+                args.Success = e.Success;
+            }
 
-        public void QueueDraw (Rectangle rectangle) { Canvas.QueueDraw(rectangle); }
-        public Rectangle Bounds { get { return Canvas.Bounds; } }
+            base.OnDragDrop(args);
+        }
+
+        protected override void OnDragLeave (EventArgs args) {
+            var dropHandler = Display.EventControler as DragDrop.IDropHandler;
+            if (dropHandler != null && Display.Data != null) {
+                dropHandler.DragLeave(args);
+            }
+            base.OnDragLeave(args);
+            base.OnDragLeave(args);
+        }
+
+        #endregion
     }
 }

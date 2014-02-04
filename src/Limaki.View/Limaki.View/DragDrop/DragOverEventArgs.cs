@@ -2,16 +2,19 @@ using System;
 using Xwt;
 
 namespace Limaki.View.DragDrop {
-
+    public interface ITransferDataInfo {
+        bool HasType (TransferDataType typeId);
+    }
+	
     public class DragOverEventArgs : EventArgs {
-        public DragOverEventArgs (Point position, TransferDataSource data, DragDropAction action) {
+        public DragOverEventArgs (Point position, ITransferDataInfo info, DragDropAction action) {
             Position = position;
-            Data = data;
+            Info = info;
             Action = action;
             AllowedAction = DragDropAction.Default;
         }
 
-        public TransferDataSource Data { get; private set; }
+        public ITransferDataInfo Info { get; private set; }
 
         /// <summary>
         /// Drop coordinates (in widget coordinates)

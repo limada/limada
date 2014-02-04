@@ -24,6 +24,7 @@ namespace Limaki.View.DragDrop {
     /// <remarks>see: Xwt.IWidgetBackend / Xwt.Widget</remarks>
     /// </summary>
     public interface IDragDropBackendHandler : IDropHandler {
+
         void SetDragSource (DragDropAction dragAction, params TransferDataType[] types);
         Func<TransferDataSource> DragDataSource { get; set; }
 

@@ -107,6 +107,12 @@ namespace Limaki.View.DragDrop {
             return GetTransferData(this.Scene.Graph, this.Source);
         }
 
+        public override void DragOver (DragOverEventArgs e) {
+            base.DragOver(e);
+            if (InprocDragDrop.Dragging && InprocDragDrop.Data is GraphCursor<IVisual, IVisualEdge>)
+                e.AllowedAction = DragDropAction.All;
+        }
+
         public override void Dropped (DragEventArgs e) {
             var pt = Camera.ToSource(e.Position);
             var scene = this.Scene;
