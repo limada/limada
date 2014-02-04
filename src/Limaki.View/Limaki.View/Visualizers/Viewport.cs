@@ -26,36 +26,33 @@ namespace Limaki.View.Visualizers {
         #region Camera
         ICamera _camera;
         public virtual ICamera Camera {
-            get {
-                if (_camera == null) {
-                    _camera = new DelegatingCamera(GetMatrix);
-                }
-                return _camera;
-            }
+            get { return _camera ?? (_camera = new DelegatingCamera(() => Matrix)); } 
             set { _camera = value; }
         }
 
         Matrix _matrix = null;
-        public virtual Matrix Matrix  {
-            get { return _matrix??(_matrix=new Matrix()); }
+        protected virtual Matrix CachedMatrix {
+            get { return _matrix ?? (_matrix = new Matrix()); }
         }
 
-        public virtual Matrix GetMatrix() {
-            if (ZoomNeedsUpdate)
-                FitToZoom(ZoomState);
+        public virtual Matrix Matrix {
+            get {
+                if (ZoomNeedsUpdate)
+                    FitToZoom(ZoomState);
 
-            var zoomFactor = this.ZoomFactor;
-            var scrollPosition = this.ClipOrigin;
-            var offset = this.DataOrigin;
+                var zoomFactor = this.ZoomFactor;
+                var scrollPosition = this.ClipOrigin;
+                var offset = this.DataOrigin;
 
-            Matrix.SetIdentity();
-            Matrix.ScaleAppend(zoomFactor, zoomFactor);
+                CachedMatrix.SetIdentity();
+                CachedMatrix.ScaleAppend(zoomFactor, zoomFactor);
 
-            Matrix.TranslateAppend(
-                (-offset.X - scrollPosition.X) ,
-                (-offset.Y - scrollPosition.Y)) ;
+                CachedMatrix.TranslateAppend(
+                    (-offset.X - scrollPosition.X),
+                    (-offset.Y - scrollPosition.Y));
 
-            return Matrix;
+                return CachedMatrix;
+            }
         }
 
         #endregion

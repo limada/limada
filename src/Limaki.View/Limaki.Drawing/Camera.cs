@@ -128,17 +128,17 @@ namespace Limaki.Drawing {
     public class DelegatingCamera : CameraBase {
         public delegate Matrix MatrixHandler();
 
-        MatrixHandler _transform = null;
-        public DelegatingCamera(MatrixHandler transform) {
-            this._transform = transform;
+        MatrixHandler _matrix = null;
+        public DelegatingCamera(MatrixHandler matrix) {
+            this._matrix = matrix;
         }
 
         #region ITransformable Member
 
         public override Matrix Matrix {
             get {
-                if (_transform != null)
-                    return _transform();
+                if (_matrix != null)
+                    return _matrix();
                 else
                     return null;
             }
@@ -149,7 +149,7 @@ namespace Limaki.Drawing {
         #region IDisposable Member
         public override void Dispose(bool disposing) {
             if (disposing) {
-                _transform = null;
+                _matrix = null;
             }
         }
         #endregion
