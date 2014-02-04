@@ -53,7 +53,7 @@ namespace Limaki.Drawing.Styles {
                 style.FillColor = DrawingExtensions.FromArgb(200, Colors.WhiteSmoke);
                 style.PenColor = DrawingExtensions.FromArgb(200, Colors.Teal);
                 //style.Pen.Color = style.PenColor;
-                style.Font = style.Font.WithSize(10*scale);
+                style.Font = style.Font.WithSize(10);
                 _styleSheet = new StyleSheet(name, style);
                 _styleSheet.ItemStyle.SelectedStyle.FillColor = Colors.Teal;
                 _styleSheet.ItemStyle.SelectedStyle.TextColor = Colors.WhiteSmoke;
