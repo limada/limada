@@ -24,7 +24,7 @@ namespace Limaki.View.Visualizers {
     public class Display<TData> : Vidget, IDisplay<TData>, IDisposable, ICheckable, IZoomTarget {
 
         public Display () {
-            Backend.InitializeBackend(this, null);
+            BackendHost.EnsureBackendLoaded();
         }
 
         public virtual IComposer<Display<TData>> Composer { get; set; }
