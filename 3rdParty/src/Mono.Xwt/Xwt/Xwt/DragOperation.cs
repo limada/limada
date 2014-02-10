@@ -95,9 +95,12 @@ namespace Xwt
 		
 		internal DragStartData GetStartData ()
 		{
-			if (image == null)
-				throw new InvalidOperationException ("The drag image must be set before starting the drag operation");
-			return new DragStartData (data, action, image.ToBitmap ().GetBackend (), hotX, hotY);
+            //if (image == null)
+            //    throw new InvalidOperationException("The drag image must be set before starting the drag operation");
+            object img = null;
+            if(image !=null)
+                img = image.ToBitmap().GetBackend();
+            return new DragStartData (data, action, img, hotX, hotY);
 		}
 		
 	}
