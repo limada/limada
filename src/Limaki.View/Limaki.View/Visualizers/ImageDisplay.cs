@@ -14,12 +14,12 @@
 
 using Limaki.View.UI;
 using Limaki.View.Visualizers;
+using Limaki.View.XwtBackend;
 using Xwt;
 using Xwt.Backends;
 using Xwt.Drawing;
 
-namespace Limaki.View.XwtBackend {
-
+namespace Limaki.View.Visualizers {
     /// <summary>
     /// a display based on Xwt.Drawing.Image
     /// </summary>
@@ -31,7 +31,9 @@ namespace Limaki.View.XwtBackend {
             Backend.Invalidate();
         }
     }
-    
+}
+
+namespace Limaki.View.XwtBackend {
     public interface IImageDisplayBackend : IDisplayBackend<Image> { }
 
     public class ImageDisplayFactory : DisplayFactory<Image> {

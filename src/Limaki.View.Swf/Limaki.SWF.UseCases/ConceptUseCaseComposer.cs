@@ -29,6 +29,7 @@ using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Viewers.StreamViewers;
 using DialogResult = Limaki.Viewers.DialogResult;
+using ImageExporter = Limaki.View.Swf.Visuals.ImageExporter;
 using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
 
 namespace Limaki.Swf.Backends.UseCases {

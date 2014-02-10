@@ -65,7 +65,6 @@
     <Compile Include="Limaki.View.XwtBackend\[todo]\DisplayModeToolStripBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\Visualizers\DragDropBackendHandler.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DragDropMouseBackendHandler.cs" />
-    <Compile Include="Limaki.View.XwtBackend\Visualizers\ImageExporter.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\ImageMissingStuffExtension.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\About.cs" />
     <Compile Include="Sandbox\DummyBackends.cs" />

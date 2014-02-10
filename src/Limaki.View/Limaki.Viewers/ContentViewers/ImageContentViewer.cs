@@ -16,6 +16,7 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Model.Content;
 using Limaki.View;
+using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using System;
 using System.Collections.Generic;

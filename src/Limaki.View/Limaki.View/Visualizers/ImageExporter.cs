@@ -24,7 +24,7 @@ using Limaki.Visuals;
 using Xwt;
 using Xwt.Drawing;
 
-namespace Limaki.View.XwtBackend {
+namespace Limaki.View.Visualizers {
 
     public class ImageExporter {
         private IGraphScene<IVisual, IVisualEdge> Scene;

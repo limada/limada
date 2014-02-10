@@ -69,6 +69,7 @@
     <Compile Include="Limaki.View\Rendering\SelectionRenderer.cs" />
     <Compile Include="Limaki.View\UI\ICopyPasteAction.cs" />
     <Compile Include="Limaki.View\Visualizers\ImageDisplay.cs" />
+    <Compile Include="Limaki.View\Visualizers\ImageExporter.cs" />
     <Compile Include="Limaki.View\Visuals\UI\VisualsTextEditActionBase.cs" />
     <Compile Include="Limaki.Visuals\IVisualContentViz.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\DigidocKeyScrollAction.cs" />
