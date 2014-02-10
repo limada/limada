@@ -69,6 +69,7 @@
     <Compile Include="Xwt.Html5.Backend\IHtmlChunk.cs" />
     <Compile Include="Xwt.Html5.Backend\HtmlTextLayoutBackend.cs" />
     <Compile Include="Xwt.Html5.Backend\HmtlTextLayoutBackendHandler.cs" />
+    <Compile Include="Xwt.Html5.Backend\Html5DesktopBackend.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

@@ -42,6 +42,7 @@ namespace Xwt.Html5.Backend {
             RegisterBackend<FontBackendHandler, HtmlFontBackendHandler>();
             RegisterBackend<TextLayoutBackendHandler, HmtlTextLayoutBackendHandler>();
             RegisterBackend<ContextBackendHandler, HtmlContextBackendHandler>();
+            RegisterBackend<DesktopBackend, Html5DesktopBackend>();
         }
         
         public override object GetNativeWidget (Widget w) {
