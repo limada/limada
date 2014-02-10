@@ -41,7 +41,9 @@ namespace Xwt.Backends
 	public class TransferDataStore: ITransferData
 	{
 		Dictionary<TransferDataType,object> data = new Dictionary<TransferDataType,object> ();
-		
+
+        public DataRequestDelegate DataRequestCallback { get; set; }
+
 		public void AddText (string text)
 		{
 			data [TransferDataType.Text] = text;
@@ -77,6 +79,8 @@ namespace Xwt.Backends
 			if (data.TryGetValue (type, out val)) {
 				if (val != null)
 					return val;
+                if (DataRequestCallback != null)
+                    return DataRequestCallback(type);
 			}
 			return null;
 		}
