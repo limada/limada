@@ -33,7 +33,7 @@ using Limaki.View.UI;
 namespace Limaki.View.XwtBackend {
 
     public abstract class DisplayBackend : Canvas {
-        
+
     }
 
     public abstract class DisplayBackend<T> : DisplayBackend, IVidgetBackend, IDisplayBackend<T> {
@@ -56,7 +56,7 @@ namespace Limaki.View.XwtBackend {
 
         }
 
-        
+
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             Display<T> display = null;
             var factory = CreateDisplayFactory(this);
@@ -66,6 +66,7 @@ namespace Limaki.View.XwtBackend {
                 display = factory.Create();
             _display = display;
             factory.Compose(display);
+            
             // we need to register at least one target
             // other
             SetDragDropTarget(DragDropAction.All, TransferDataType.Text);
@@ -131,7 +132,7 @@ namespace Limaki.View.XwtBackend {
 
         protected override void SetScrollAdjustments (ScrollAdjustment horizontal, ScrollAdjustment vertical) {
             base.SetScrollAdjustments(horizontal, vertical);
-            _backendViewPort.SetScrollAdjustments (horizontal, vertical);
+            _backendViewPort.SetScrollAdjustments(horizontal, vertical);
         }
 
         protected override void OnBoundsChanged () {
@@ -144,9 +145,8 @@ namespace Limaki.View.XwtBackend {
             _backendViewPort.UpdateZoom();
         }
 
-#region Mouse
+        #region Mouse
 
-  
         protected override void OnMouseEntered (EventArgs args) {
             base.OnMouseEntered(args);
             if (!HasFocus)
@@ -214,8 +214,8 @@ namespace Limaki.View.XwtBackend {
             Display.EventControler.OnKeyPressed(new UI.KeyActionEventArgs(args.Key, args.Modifiers, ml));
         }
 
-#endregion
-        
+        #endregion
+
         #region Keyboard
 
         protected override void OnKeyReleased (KeyEventArgs args) {
@@ -230,6 +230,7 @@ namespace Limaki.View.XwtBackend {
 
         [TODO]
         protected override void OnDragStarted (DragStartedEventArgs args) {
+
             base.OnDragStarted(args);
         }
 

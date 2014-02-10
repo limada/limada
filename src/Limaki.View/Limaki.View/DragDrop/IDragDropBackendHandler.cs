@@ -40,8 +40,8 @@ namespace Limaki.View.DragDrop {
         Action<DragEventArgs> Dropped { get; set; }
         void SetDragTarget (DragDropAction dragAction, params TransferDataType[] types);
         TransferDataType[] TargetTypes { get; }
+
         void DragOverCheck (DragOverCheckEventArgs args);
-        
         void DropCheck(DragCheckEventArgs args);
         
         WidgetEvent EnabledEvents { get; set; }

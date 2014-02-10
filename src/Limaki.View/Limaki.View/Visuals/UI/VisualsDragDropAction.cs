@@ -156,8 +156,6 @@ namespace Limaki.View.DragDrop {
             } else {
                 // no known type found to import
                 string dt = "not found:\t";
-                foreach (var d in e.Data.DataTypes) dt += d.Id + " | ";
-                Trace.WriteLine(dt);
             }
 
         }

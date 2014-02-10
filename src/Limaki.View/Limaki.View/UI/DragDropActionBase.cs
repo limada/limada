@@ -18,6 +18,7 @@ namespace Limaki.View.UI {
         public DragDropActionBase (): base() {
             this.Priority = ActionPriorities.SelectionPriority + 30;
             this.HitSize = 5;
+            
         }
         public DragDropActionBase (IVidgetBackend backend, ICamera camera)
             : this() {
@@ -36,7 +37,6 @@ namespace Limaki.View.UI {
                     _dragDropHandler.Dropped = this.Dropped;
                     _dragDropHandler.DragDataSource = () => this.GetTransferData();
                     _dragDropHandler.DragFinished = e => this.DragFinished(e);
-
                 }
                 return _dragDropHandler;
             }
