@@ -6,13 +6,26 @@ namespace Samples
 {
 	public class DragDrop: VBox
 	{
-		Button b2;
+
+	    public class MyCanvas : Canvas {
+            protected override void OnMouseEntered (EventArgs args) {
+                base.OnMouseEntered(args);
+                if (!HasFocus)
+                    SetFocus();
+            }
+	    }
+
+	    Button b2;
 		public DragDrop ()
 		{
 			HBox box = new HBox ();
-			
-			SimpleBox b1 = new SimpleBox (30);
-			box.PackStart (b1);
+
+            var b1 = new MyCanvas(); // new SimpleBox(30);
+		    b1.BackgroundColor = Colors.Red;
+		    b1.HeightRequest = 30;
+		    b1.WidthRequest = 30;
+		    var sw = new ScrollView(b1);
+            box.PackStart(sw, false);
 			
 			b2 = new Button ("Drop here");
 			box.PackEnd (b2);
@@ -27,10 +40,13 @@ namespace Samples
 			};
 			
 			b2.SetDragDropTarget (TransferDataType.Text, TransferDataType.Uri);
+            b1.SetDragDropTarget(TransferDataType.Text, TransferDataType.Uri);
 			PackStart (box);
 			
 			b2.DragDrop += HandleB2DragDrop;
 			b2.DragOver += HandleB2DragOver;
+            b1.DragDrop += HandleB2DragDrop;
+            b1.DragOver += HandleB2DragOver;
 		}
 
 		void HandleB2DragOver (object sender, DragOverEventArgs e)
