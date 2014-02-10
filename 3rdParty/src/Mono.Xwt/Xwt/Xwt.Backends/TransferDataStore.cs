@@ -122,5 +122,10 @@ namespace Xwt.Backends
 				return (Xwt.Drawing.Image) GetValue (TransferDataType.Image);
 			}
 		}
-	}
+
+
+        public IEnumerable<TransferDataType> DataTypes {
+            get { return data.Keys; }
+        }
+    }
 }

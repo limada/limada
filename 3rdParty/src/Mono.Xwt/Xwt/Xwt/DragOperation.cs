@@ -101,7 +101,10 @@ namespace Xwt
 		}
 		
 	}
-	
+
+    /// <summary>
+    /// A collection of data that has been transferred through drag & drop or the clipboard
+    /// </summary>
 	public interface ITransferData
 	{
 		string Text { get; }
@@ -111,6 +114,8 @@ namespace Xwt
 		object GetValue (TransferDataType type);
 		T GetValue<T> () where T:class;
 		bool HasType (TransferDataType type);
-	}
+
+	    IEnumerable<TransferDataType> DataTypes { get; }
+    }
 }
 
