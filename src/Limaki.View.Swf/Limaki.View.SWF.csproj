@@ -65,6 +65,7 @@
     <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropVidgetBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Limaki.Swf.Backends\DragDrop\SwfTransferDataStore.cs" />
     <Compile Include="Limaki.Swf.Backends\VidgetBackends\CanvasVidgetBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>

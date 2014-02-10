@@ -246,7 +246,7 @@ namespace Limaki.View.XwtBackend {
 
                 var ev = new DragDrop.DragOverEventArgs(
                     args.Position,
-                    new TransferDataInfo(args.Data),
+                    args.Data,
                     args.Action);
                 ev.AllowedAction = args.AllowedAction;
                 dropHandler.DragOver(ev);
@@ -266,7 +266,7 @@ namespace Limaki.View.XwtBackend {
             if (dropHandler != null && Display.Data != null) {
                 var e = new DragDrop.DragEventArgs(
                     args.Position,
-                    new TransferDataSource(),//args.Data,
+                    args.Data,
                     args.Action
                     );
                 dropHandler.OnDrop(e);

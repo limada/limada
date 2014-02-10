@@ -7,14 +7,14 @@ namespace Limaki.View.DragDrop {
     }
 	
     public class DragOverEventArgs : EventArgs {
-        public DragOverEventArgs (Point position, ITransferDataInfo info, DragDropAction action) {
+        public DragOverEventArgs (Point position, ITransferData info, DragDropAction action) {
             Position = position;
             Info = info;
             Action = action;
             AllowedAction = DragDropAction.Default;
         }
 
-        public ITransferDataInfo Info { get; private set; }
+        public ITransferData Info { get; private set; }
 
         /// <summary>
         /// Drop coordinates (in widget coordinates)

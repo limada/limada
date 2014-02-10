@@ -4,14 +4,14 @@ using Xwt;
 namespace Limaki.View.DragDrop {
 
     public class DragEventArgs : EventArgs {
-        public DragEventArgs (Point position, TransferDataSource data, DragDropAction action) {
+        public DragEventArgs (Point position, ITransferData data, DragDropAction action) {
             Data = data;
             Position = position;
             Action = action;
             Success = false;
         }
 
-        public TransferDataSource Data { get; private set; }
+        public ITransferData Data { get; private set; }
 
         public Point Position { get; private set; }
 

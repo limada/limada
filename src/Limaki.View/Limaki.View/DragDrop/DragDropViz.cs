@@ -55,7 +55,7 @@ namespace Limaki.View.DragDrop {
         IVisualContentViz _visualContentViz = null;
         public IVisualContentViz VisualContentViz { get { return _visualContentViz ?? (_visualContentViz = Registry.Pool.TryGetCreate<IVisualContentViz>()); } }
 
-        public virtual IVisual VisualOfTransferData (IGraph<IVisual, IVisualEdge> graph, TransferDataSource data) {
+        public virtual IVisual VisualOfTransferData (IGraph<IVisual, IVisualEdge> graph, ITransferData data) {
             var value = data.GetValue(TransferDataType.FromType(typeof(IVisual)));
             var bytes = value as byte[];
             if (bytes != null) {
