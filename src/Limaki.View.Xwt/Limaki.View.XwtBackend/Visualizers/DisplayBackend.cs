@@ -68,8 +68,15 @@ namespace Limaki.View.XwtBackend {
             factory.Compose(display);
             
             // we need to register at least one target
-            // other
-            SetDragDropTarget(DragDropAction.All, TransferDataType.Text);
+            // otherwise XwtGtk.DragDrop doesnt work
+            //SetDragDropTarget(DragDropAction.All, TransferDataType.Text);
+
+            // we need to register drag-handlers
+            // XwtGtk.DragDrop doesnt work without Handlers
+            this.DragDropCheck += (s, e) => this.HandleDragDropCheck(e);
+            this.DragOver += (s, e) => this.HandleDragOver(e);
+            this.DragDrop += (s, e) => this.HandleDragDrop(e);
+            this.DragLeave += (s, e) => this.HandleDragLeave(e);
         }
 
         protected IDisplay<T> _display = null;
@@ -235,13 +242,13 @@ namespace Limaki.View.XwtBackend {
         }
 
         #region Drop
+        protected virtual void HandleDragDropCheck (DragCheckEventArgs args) {
+            var dropHandler = Display.EventControler as IDropAction;
+            SetDragDropTarget(args.DataTypes);
 
-        [TODO]
-        protected override void OnDragDropCheck (DragCheckEventArgs args) {
-            base.OnDragDropCheck(args);
         }
 
-        protected override void OnDragOver (DragOverEventArgs args) {
+        protected virtual void HandleDragOver (DragOverEventArgs args) {
             var dropHandler = Display.EventControler as IDropAction;
             if (dropHandler != null && Display.Data != null) {
 
@@ -253,19 +260,12 @@ namespace Limaki.View.XwtBackend {
                 dropHandler.DragOver(ev);
                 args.AllowedAction = ev.AllowedAction;
             }
-            base.OnDragOver(args);
         }
 
-        [TODO]
-        protected override void OnDragOverCheck (DragOverCheckEventArgs args) {
-            base.OnDragOverCheck(args);
-        }
-
-        [TODO]
-        protected override void OnDragDrop (DragEventArgs args) {
+        protected virtual void HandleDragDrop (DragEventArgs args) {
             var dropHandler = Display.EventControler as DragDrop.IDropHandler;
             if (dropHandler != null && Display.Data != null) {
-                var e = new DragDrop.DragEventArgs(
+               var e = new DragDrop.DragEventArgs(
                     args.Position,
                     args.Data,
                     args.Action
@@ -273,17 +273,13 @@ namespace Limaki.View.XwtBackend {
                 dropHandler.OnDrop(e);
                 args.Success = e.Success;
             }
-
-            base.OnDragDrop(args);
         }
 
-        protected override void OnDragLeave (EventArgs args) {
+        protected virtual void HandleDragLeave (EventArgs args) {
             var dropHandler = Display.EventControler as DragDrop.IDropHandler;
             if (dropHandler != null && Display.Data != null) {
                 dropHandler.DragLeave(args);
             }
-            base.OnDragLeave(args);
-            base.OnDragLeave(args);
         }
 
         #endregion
