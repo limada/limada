@@ -9,13 +9,14 @@ using Limaki.Visuals;
 using Xwt;
 using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
+using Limaki.View.Properties;
 
 namespace Limaki.View.UI {
     /// <summary>
     /// DragDrop support
     /// </summary>
     public abstract class DragDropActionBase : MouseDragActionBase, IDropAction {
-        public DragDropActionBase (): base() {
+        protected DragDropActionBase (): base() {
             this.Priority = ActionPriorities.SelectionPriority + 30;
             this.HitSize = 5;
             
@@ -24,6 +25,7 @@ namespace Limaki.View.UI {
             : this() {
             this.Backend = backend;
             this.Camera = camera;
+            SetDragTarget();
         }
 
         protected virtual ICamera Camera { get; set; }
@@ -76,8 +78,8 @@ namespace Limaki.View.UI {
 
         public virtual void DragOver (DragOverEventArgs e) {
             Dropping = true;
+            DragLeft = false;
             InprocDragDrop.Dropping = true;
-            SetDragTarget();
             DragDropHandler.DragOver(e);
         }
 
@@ -87,11 +89,28 @@ namespace Limaki.View.UI {
             InprocDragDrop.Dropping = false;
         }
 
+        private bool DragLeft = false;
+
         public virtual void DragLeave (EventArgs e) {
             DragDropHandler.DragLeave(e);
-            Dropping = false;
+            // sometimes DragLeave is called before Drop
+            DragLeft = true;
         }
 
+        public override void OnMouseMove (MouseActionEventArgs e) {
+            if (DragLeft) {
+                Dropping = false;
+                DragLeft = false;
+            }
+            base.OnMouseMove(e);
+        }
 
+        public override void OnMouseUp (MouseActionEventArgs e) {
+            if (DragLeft) {
+                Dropping = false;
+                DragLeft = false;
+            }
+            base.OnMouseUp(e);
+        }
     }
 }

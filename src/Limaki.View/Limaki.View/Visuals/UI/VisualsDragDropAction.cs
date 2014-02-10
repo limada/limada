@@ -23,6 +23,7 @@ using Limaki.Visuals;
 using Xwt;
 using Xwt.Backends;
 using Limaki.Graphs.Extensions;
+using Limaki.View.Properties;
 
 namespace Limaki.View.DragDrop {
     /// <summary>
@@ -129,6 +130,7 @@ namespace Limaki.View.DragDrop {
                 if (target != null && Source != target) {
                     SceneExtensions.CreateEdge(scene, Source, target);
                 }
+                e.Success = true;
                 return;
             }
 
