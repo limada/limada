@@ -21,6 +21,7 @@ using Xwt.Backends;
 
 using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
+using Xwt.Drawing;
 
 namespace Limaki.View.DragDrop {
 
@@ -84,7 +85,7 @@ namespace Limaki.View.DragDrop {
         /// </param>
         public abstract void DragStart (DragStartData data);
 
-        protected virtual object GetDragImageBackend () { return null; }
+        protected virtual Image GetDragImage () { return null; }
         protected virtual void ShowDragImage (DragStartData data) { }
         protected virtual void HideDragImage () { }
 

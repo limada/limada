@@ -57,10 +57,6 @@ namespace Limaki.View.UI {
         public abstract void Dropped (DragEventArgs e);
         public abstract TransferDataSource GetTransferData ();
 
-        protected virtual object GetDragImageBackend (IGraph<IVisual, IVisualEdge> graph, IVisual Current) {
-            return null;
-        }
-
         protected override void EndAction () {
             base.EndAction();
             Resolved = false;

@@ -93,6 +93,10 @@ namespace Limaki.View.DragDrop {
             }
         }
 
+        protected virtual object GetDragImageBackend (IGraph<IVisual, IVisualEdge> graph, IVisual Current) {
+            return Iconery.NewSheet;
+        }
+
         public virtual TransferDataSource GetTransferData (IGraph<IVisual,IVisualEdge> graph, IVisual visual) {
             if (graph == null || visual == null)
                 return null;

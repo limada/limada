@@ -15,14 +15,14 @@ namespace Limaki.View.XwtBackend {
         public Widget Widget { get; set; }
 
         protected override DragStartData GetDragStartData () {
-            object imageBackend = GetDragImageBackend();
+            var image = GetDragImage();
             var hot = Widget.MouseLocation();
-            return new DragStartData(DragDataSource(), DragDropAction.All, imageBackend, hot.X,hot.Y);
+            return new DragStartData(DragDataSource(), DragDropAction.All, image, hot.X, hot.Y);
 
         }
 
-        protected override object GetDragImageBackend () {
-            return null;
+        protected override Image GetDragImage () {
+            return Iconery.NewSheet;
         }
 
         public override void DragStart (DragStartData data) {
