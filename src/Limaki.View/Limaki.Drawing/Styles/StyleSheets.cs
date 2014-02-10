@@ -33,7 +33,9 @@ namespace Limaki.Drawing.Styles {
 
         public virtual IStyleSheet PredefinedStyleSheets(string name) {
             IStyleSheet _styleSheet = null;
-            var scale = Xwt.Desktop.PrimaryScreen.ScaleFactor;
+            var scale = 1d;
+            if(Xwt.Desktop.PrimaryScreen!=null)
+                scale = Xwt.Desktop.PrimaryScreen.ScaleFactor;
             if (name == "Desktop") {
                 var style = StyleSheet.CreateStyleWithSystemSettings();
                 style.Name = name+"."+StyleNames.BaseStyle;
