@@ -20,15 +20,19 @@ using Limaki.Viewers;
 using Limaki.Viewers.StreamViewers;
 using Xwt;
 using Xwt.Drawing;
+using Limaki.View.XwtContext;
 
 namespace Limaki.View.XwtBackend {
-
-    public class XwtConceptUseCaseComposer : IComposer<ConceptUsecase> {
+   
+    public class XwtConceptUseCaseComposer : IXwtConceptUseCaseComposer {
 
         public Window MainWindow { get; set; }
         public Menu Menu { get; set; }
+        public Label StatusLabel { get; set; }
+        public Size WindowSize { get; set; }
+        public Action OnShow { get; set; }
 
-        public void Factor (ConceptUsecase useCase) {
+        public virtual void Factor (ConceptUsecase useCase) {
             MainWindow.Size = WindowSize;
             MainWindow.MainMenu = CreateMenu(useCase);
            
@@ -53,7 +57,7 @@ namespace Limaki.View.XwtBackend {
             OnShow += () => (splitViewBackend as Paned).PositionFraction = 0.50;// WindowSize.Width / 2;
         }
 
-        public void Compose (ConceptUsecase useCase) {
+        public virtual void Compose (ConceptUsecase useCase) {
 
             useCase.DataPostProcess =
                dataName => MainWindow.Title = dataName + " - " + useCase.UseCaseTitle;
@@ -198,10 +202,6 @@ namespace Limaki.View.XwtBackend {
 
         About About { get; set; }
 
-        public Label StatusLabel { get; set; }
 
-        public Size WindowSize { get; set; }
-
-        public Action OnShow { get; set; }
     }
 }

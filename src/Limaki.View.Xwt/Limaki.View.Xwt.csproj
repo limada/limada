@@ -35,7 +35,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;xLINUX</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -136,14 +136,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.Gtk\Xwt.Gtk.csproj">
-      <Project>{c3887a93-b2bd-4097-8e2f-3a063eff32fd}</Project>
-      <Name>Xwt.Gtk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.WPF\Xwt.WPF.csproj">
-      <Project>{c93d746e-1586-4d4f-b411-bf5a966e6a08}</Project>
-      <Name>Xwt.WPF</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35fa-4dc9-bde9-3a3e87ac49d3}</Project>
       <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
@@ -156,11 +148,29 @@
       <Project>{b1bc3ef8-5ec7-491a-ba83-70cb38f1823f}</Project>
       <Name>Limaki.Tests</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.XwtGtk\Limaki.View.XwtGtk.csproj">
+      <Project>{0577142f-b5d1-4271-8795-fe4615c2d728}</Project>
+      <Name>Limaki.View.XwtGtk</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.XwtWpf\Limaki.View.XwtWpf.csproj">
+      <Project>{ac4de976-2546-4b77-b040-f2b819be9dc8}</Project>
+      <Name>Limaki.View.XwtWpf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
       <Project>{3434f6bc-d6aa-4c53-b359-a1b114364025}</Project>
       <Name>Limaki.View</Name>
     </ProjectReference>
   </ItemGroup>
+  <Choose>
+    <When Condition="!$(DefineConstants.Contains('LINUX'))">
+      <ItemGroup>
+        <ProjectReference Include="..\Limaki.View.XwtWpf\Limaki.View.XwtWpf.csproj">
+          <Project>{ac4de976-2546-4b77-b040-f2b819be9dc8}</Project>
+          <Name>Limaki.View.XwtWpf</Name>
+        </ProjectReference>
+      </ItemGroup>
+    </When>
+  </Choose>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>

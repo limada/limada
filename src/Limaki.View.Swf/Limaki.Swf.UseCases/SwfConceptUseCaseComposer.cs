@@ -34,7 +34,7 @@ using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
 
 namespace Limaki.Swf.Backends.UseCases {
 
-    public class ConceptUseCaseComposer : IComposer<ConceptUsecase> {
+    public class SwfConceptUseCaseComposer : IComposer<ConceptUsecase> {
 
         public Form Mainform { get; set; }
         public ToolStripContainer ToolStripContainer { get; set; }

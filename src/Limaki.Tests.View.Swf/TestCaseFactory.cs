@@ -14,20 +14,13 @@
 using System;
 using System.Windows.Forms;
 using Limaki.Common;
-using Limaki.Data;
 using Limaki.Drawing;
-using Limaki.Graphs;
-using Limada.View;
 using Limada.VisualThings;
-using Limaki.Model;
 using Limaki.View.Visualizers;
 using Limaki.View.Rendering;
-using Limaki.View.UI;
-using Limaki.View.UI.GraphScene;
 using Limaki.Usecases.Concept;
 using Limaki.View.Swf.Visualizers;
 using Limaki.Swf.Backends.UseCases;
-using Limaki.Tests.Graph.Model;
 using Limaki.Tests.View.Display;
 using Limaki.Tests.View.GDI;
 using Limaki.Tests.View.Winform;
@@ -38,7 +31,6 @@ using Limaki.WCF.Data;
 using Limaki.Visuals;
 using Limada.Schemata;
 using Limaki.Tests.View;
-using Limaki.Viewers;
 using Limaki.Usecases;
 using Limaki.View.Visuals.Visualizers;
 
@@ -47,7 +39,7 @@ namespace Limaki.Tests.UseCases {
 
     public class TestCaseFactory : UsecaseFactory<ConceptUsecase> {
         public override void Compose(ConceptUsecase useCase) {
-            var deviceComposer = BackendComposer as ConceptUseCaseComposer;
+            var deviceComposer = BackendComposer as SwfConceptUseCaseComposer;
             
             this.testMessage = (s, m) => {
                 deviceComposer.StatusLabel.Text = m;
@@ -59,7 +51,7 @@ namespace Limaki.Tests.UseCases {
     
         public MessageEventHandler testMessage = null;
 
-        public void CreateTestCases(ConceptUsecase useCase, ConceptUseCaseComposer composer) {
+        public void CreateTestCases(ConceptUsecase useCase, SwfConceptUseCaseComposer composer) {
             
             Func<BenchmarkOneTests> displayTest = () => {
                 var test = new BenchmarkOneTests();

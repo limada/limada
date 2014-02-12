@@ -69,12 +69,12 @@ namespace Limaki.View.XwtBackend {
             return base.TakeType(type);
         }
 
-        public XwtConceptUseCaseComposer CreateUseCase () {
+        public IXwtConceptUseCaseComposer CreateUseCase () {
 
-            var backendComposer = new XwtConceptUseCaseComposer {
-                MainWindow = new MainWindow(), 
-                WindowSize = new Size(800, 600)
-            };
+            var backendComposer = Registry.Pool.TryGetCreate<IXwtConceptUseCaseComposer>();
+            backendComposer.MainWindow = new MainWindow();
+            backendComposer.WindowSize = new Size(800, 600);
+            
             
             //mainWindow.Icon = Limaki.View.Properties.GdiIconery.LimadaLogo;
 

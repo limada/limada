@@ -21,6 +21,7 @@ using Limaki.IOC;
 using Limaki.Model.Content;
 using Limaki.View.DragDrop;
 using Limaki.View.UI;
+using Limaki.View.XwtContext;
 using Limaki.Viewers;
 using Limaki.Visuals;
 using Xwt;
@@ -47,6 +48,8 @@ namespace Limaki.View.XwtBackend {
             context.Factory.Add<ICursorHandler, XwtCursorHandlerBackend> ();
             context.Factory.Add<IMessageBoxShow, XwtMessageBoxShow> ();
             context.Factory.Add<IProgressHandler, ProgressHandler>();
+
+            context.Factory.Add<IXwtConceptUseCaseComposer, XwtConceptUseCaseComposer>();
         }
 
         public virtual void ApplyResources (IApplicationContext context) {
