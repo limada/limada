@@ -20,6 +20,15 @@ using Limaki.Model.Content;
 
 namespace Limaki.Contents {
 
+    public interface IContentConverter<T> : IPipe<Content<T>, Content<T>> {
+        /// <summary>
+        /// a list of ContentTypes, where Item1 is source, Item2 is sink-Type
+        /// </summary>
+        IEnumerable<Tuple<long, long>> SupportedTypes { get; }
+
+        Content<T> Use (Content<T> source, long sinkType);
+    }
+
     public class ConverterPool<T>:List<IContentConverter<T>> {
         public IContentConverter<T> Find(long source, long sink) {
             return this.Where (c => c.SupportedTypes.Any (t => t.Item1 == source && t.Item2 == sink))

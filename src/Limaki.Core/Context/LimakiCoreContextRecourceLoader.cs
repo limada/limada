@@ -19,10 +19,10 @@ namespace Limaki.IOC {
             context.Factory.Add<IThingFactory, ThingFactory>();
 			
 			var contentIoPool = Registry.Pool.TryGetCreate<ContentIoPool<Stream, Content<Stream>>>();
-            contentIoPool.Add(new HtmlContentStreamIo()); 
-            contentIoPool.Add(new RtfContentStreamIo()); 
-            contentIoPool.Add(new ImageContentStreamIo());
-            contentIoPool.Add(new PdfContentStreamIo());
+            contentIoPool.Add(new HtmlStreamContentIo()); 
+            contentIoPool.Add(new RtfStreamContentIo()); 
+            contentIoPool.Add(new ImageStreamContentIo());
+            contentIoPool.Add(new PdfStreamContentIo());
 
             var diggProvider = Registry.Pool.TryGetCreate<ContentDiggPool>();
             diggProvider.Add(new HtmlContentDigger());

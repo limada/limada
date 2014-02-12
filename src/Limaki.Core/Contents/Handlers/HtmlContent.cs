@@ -84,8 +84,8 @@ namespace Limaki.Contents.IO {
 
     }
 
-    public class HtmlContentStreamIo : ContentStreamIo {
-        public HtmlContentStreamIo () : base(new HtmlContentSpot()) {
+    public class HtmlStreamContentIo : StreamContentIo {
+        public HtmlStreamContentIo () : base(new HtmlContentSpot()) {
             this.IoMode = IO.IoMode.ReadWrite;
         }
     }

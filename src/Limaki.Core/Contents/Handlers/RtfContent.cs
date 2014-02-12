@@ -34,8 +34,8 @@ namespace Limaki.Contents.IO {
                 ) {}
     }
 
-    public class RtfContentStreamIo : ContentStreamIo {
-        public RtfContentStreamIo () : base(new RtfContentSpot()) {
+    public class RtfStreamContentIo : StreamContentIo {
+        public RtfStreamContentIo () : base(new RtfContentSpot()) {
             this.IoMode = IO.IoMode.ReadWrite;
         }
     }

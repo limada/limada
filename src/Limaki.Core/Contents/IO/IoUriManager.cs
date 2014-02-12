@@ -18,8 +18,18 @@ using Limaki.Common;
 
 namespace Limaki.Contents.IO {
 
+    /// <summary>
+    /// manages core input-output-operations of 
+    /// IPipe#TSource, TSink#-implementations
+    /// uses Uri as resource identifier
+    /// </summary>
     public class IoUriManager<TSource, TSink> : IoUriManager<TSource, TSink, ContentIoPool<TSource, TSink>> { }
-    
+
+    /// <summary>
+    /// manages core input-output-operations of 
+    /// IPipe#TSource, TSink#-implementations
+    /// uses Uri as resource identifier
+    /// </summary>
     public class IoUriManager<TSource, TSink, TIoPool> : IoManager<TSource, TSink, TIoPool>
            where TIoPool : ContentIoPool<TSource, TSink> {
 

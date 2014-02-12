@@ -36,8 +36,8 @@ namespace Limaki.Contents.IO {
         public static long PdfContentType = unchecked((long) 0x90b88c3977443860);
     }
 
-    public class PdfContentStreamIo : ContentStreamIo {
-        public PdfContentStreamIo (): base(new PdfContentSpot()) {
+    public class PdfStreamContentIo : StreamContentIo {
+        public PdfStreamContentIo (): base(new PdfContentSpot()) {
             this.IoMode = IO.IoMode.ReadWrite;
         }
     }

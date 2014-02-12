@@ -20,6 +20,11 @@ using Limaki.Common.Collections;
 
 namespace Limaki.Contents.IO {
 
+    /// <summary>
+    /// a pool of ContentIo's
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TSink"></typeparam>
     public class ContentIoPool<TSource,TSink> : IEnumerable<IContentIo<TSource>> {
 
         private ICollection<IContentIo<TSource>> _contentIos = new Set<IContentIo<TSource>>();

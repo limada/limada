@@ -72,8 +72,8 @@ namespace Limaki.Contents.IO {
         
     }
 
-    public class ImageContentStreamIo : ContentStreamIo {
-        public ImageContentStreamIo() : base(new ImageContentSpot()) {
+    public class ImageStreamContentIo : StreamContentIo {
+        public ImageStreamContentIo() : base(new ImageContentSpot()) {
             this.IoMode = IO.IoMode.ReadWrite;
         }
     }

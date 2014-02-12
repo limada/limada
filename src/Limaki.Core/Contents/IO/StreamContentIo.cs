@@ -19,9 +19,14 @@ using Limaki.Model.Content;
 
 namespace Limaki.Contents.IO {
 
-    public class ContentStreamIo : StreamIo, IPipe<Uri, Content<Stream>>, IPipe<Content<Stream>, Uri> {
+    /// <summary>
+    /// reads and writes Content<Stream> based on a Uri
+    /// uses ContentInfo to fill the Content
+    /// uses IoMode
+    /// </summary>
+    public class StreamContentIo : StreamIo, IPipe<Uri, Content<Stream>>, IPipe<Content<Stream>, Uri> {
 
-        protected ContentStreamIo (ContentDetector detector) : base(detector) { } 
+        protected StreamContentIo (ContentDetector detector) : base(detector) { } 
 
         public virtual Content<Stream> Read (Stream stream, ContentInfo info) {
             if (info != null) {
@@ -32,9 +37,7 @@ namespace Limaki.Contents.IO {
             }
             return null;
         }
-
-       
-
+        
         public virtual Content<Stream> Read (Uri source, Content<Stream> sink) {
             var result = default(Content<Stream>);
             if (IoMode.HasFlag(IO.IoMode.Read) && source.IsFile) {

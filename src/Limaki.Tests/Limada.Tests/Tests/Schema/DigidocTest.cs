@@ -183,7 +183,7 @@ namespace Limada.Tests.Schemata {
 
         public void ReadPagesFromDir(IThingGraph graph, IThing document, string path) {
             var digidoc = new DigidocSchema();
-            var imageStreamProvider = new ImageContentStreamIo();
+            var imageStreamProvider = new ImageStreamContentIo();
             var nr = 1;
             
             foreach (var file in Directory.GetFiles(path).OrderBy(f => f)) {

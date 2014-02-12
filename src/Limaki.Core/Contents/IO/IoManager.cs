@@ -22,16 +22,25 @@ using Limaki.Model.Content;
 
 namespace Limaki.Contents.IO {
 
-    public class IoManager<TSource, TSink>:IoManager<TSource, TSink,ContentIoPool<TSource, TSink>>{}
-
     /// <summary>
     /// manages core input-output-operations of 
-    /// ISink#TSource, TSink#-implementations
+    /// IPipe#TSource, TSink#-implementations
+    /// uses ContentIoPool#TSource, TSink# to find the ContentIo's
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TSink"></typeparam>
-    public class IoManager<TSource, TSink, TIoPool> : IProgress 
-        where TIoPool : ContentIoPool<TSource, TSink> {
+    public class IoManager<TSource, TSink> : IoManager<TSource, TSink, ContentIoPool<TSource, TSink>> { }
+
+    /// <summary>
+    /// manages core input-output-operations of 
+    /// IPipe#TSource, TSink#-implementations
+    /// uses Iori as resource identifier
+    /// uses a specific TContentIoPool to find the ContentIo's
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TSink"></typeparam>
+    public class IoManager<TSource, TSink, TContentIoPool> : IProgress 
+        where TContentIoPool : ContentIoPool<TSource, TSink> {
 
         /// <summary>
         /// called after sink is read
@@ -51,8 +60,8 @@ namespace Limaki.Contents.IO {
         public string DefaultExtension { get; set; }
         public Action<string, int, int> Progress { get; set; }
 
-        protected ContentIoPool<TSource, TSink> _pool = null;
-        public virtual ContentIoPool<TSource, TSink> ContentIoPool { get { return _pool ?? (_pool = Registry.Pool.TryGetCreate<TIoPool>()); } }
+        protected TContentIoPool _pool = null;
+        public virtual TContentIoPool ContentIoPool { get { return _pool ?? (_pool = Registry.Pool.TryGetCreate<TContentIoPool>()); } }
 
         #region providing ContentIo
 

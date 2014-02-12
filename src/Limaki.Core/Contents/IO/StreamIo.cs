@@ -20,6 +20,11 @@ using Limaki.Model.Content;
 
 namespace Limaki.Contents.IO {
 
+    /// <summary>
+    /// a pipe that returns the ContentInfo of a Stream
+    /// and reads and writes streams based on a Uri
+    /// uses IoMode
+    /// </summary>
     public class StreamIo : ContentIo<Stream>, IPipe<Uri, Stream>, IPipe<Stream, Uri> {
 
         protected StreamIo(ContentDetector detector): base(detector) {}

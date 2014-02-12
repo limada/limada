@@ -19,6 +19,12 @@ using Limaki.Model.Content;
 
 namespace Limaki.Contents.IO {
 
+    /// <summary>
+    /// a pipe that returns the ContentInfo of source
+    /// uses IoMode
+    /// uses a ContentDetector
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
     public interface IContentIo<TSource> : IPipe<TSource, ContentInfo>, IProgress {
 
         IoMode IoMode { get; }
@@ -28,6 +34,13 @@ namespace Limaki.Contents.IO {
         Action<string, int, int> Progress { get; set; }
     }
 
+
+    /// <summary>
+    /// a pipe that returns the ContentInfo of source
+    /// uses IoMode
+    /// uses a ContentDetector
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
     public abstract class ContentIo<TSource> : IContentIo<TSource> {
         protected ContentIo (ContentDetector detector) {
             this.Detector = detector;
