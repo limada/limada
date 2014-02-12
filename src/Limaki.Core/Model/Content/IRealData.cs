@@ -15,6 +15,7 @@
 using System;
 
 namespace Limaki.Model.Content {
+
     public interface IRealData<TKey> {
         TKey Id { get; }
         object Data { get; set; }

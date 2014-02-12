@@ -13,6 +13,7 @@
  */
 
 namespace Limaki.Model.Content {
+
     public enum CompressionType:short {
         None = 0, 
         Zip = 1, 

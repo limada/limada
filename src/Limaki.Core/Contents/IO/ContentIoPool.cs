@@ -13,14 +13,10 @@
  * 
  */
 
-using Limaki.Common.Collections;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Limaki.Common.Linqish;
-using System.IO;
 using Limaki.Common;
-using Limaki.Model.Content;
+using Limaki.Common.Collections;
 
 namespace Limaki.Contents.IO {
 

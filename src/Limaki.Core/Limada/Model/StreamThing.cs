@@ -15,6 +15,7 @@
 using System;
 using System.IO;
 using Limaki.Common;
+using Limaki.Contents;
 using Limaki.Model.Content;
 using Id = System.Int64;
 using Limaki.Data;

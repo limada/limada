@@ -288,14 +288,13 @@
     <Compile Include="Model\Edge.cs" />
     <Compile Include="Model\GraphEntity.cs" />
     <Compile Include="Model\Content\CompressionType.cs" />
-    <Compile Include="Model\Content\ICompressionWorker.cs" />
-    <Compile Include="Contents\ITextConverter.cs" />
+    <Compile Include="Contents\ICompressionWorker.cs" />
     <Compile Include="Model\Content\IProxy.cs" />
     <Compile Include="Model\Content\IRealData.cs" />
     <Compile Include="Contents\Magic.cs" />
     <Compile Include="Contents\Content.cs" />
     <Compile Include="Contents\ContentInfo.cs" />
-    <Compile Include="Model\Content\ContentTypes.cs" />
+    <Compile Include="Contents\ContentTypes.cs" />
     <Compile Include="Contents\PipePool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\IOUtils.cs" />
