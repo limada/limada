@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using System.IO;
 using Limaki.Common.Collections;
+using System.Diagnostics;
 
 namespace Limaki.Common.IOC {
     public class AppFactory<T>
@@ -33,18 +34,23 @@ namespace Limaki.Common.IOC {
         }
 
         public virtual void ResolveAssembly (Assembly assembly) {
-            foreach (var type in assembly.GetTypes().Where(
-                t =>
-                    t.IsClass && 
-                     ! t.IsAbstract &&
-                     t.GetInterface(typeof(IContextRecourceLoader).FullName) != null &&
-                     TakeType(t))) {
-                         
-                if (type.GetConstructors().Any(tc => tc.GetParameters().Length == 0)) {
-                    var loader = Activator.CreateInstance(type) as IContextRecourceLoader;
-                    loader.ApplyResources(Registry.ConcreteContext);
-                }
+            Trace.WriteLine(string.Format("loading assembly {0}", assembly.FullName));
+            try {
+                foreach (var type in assembly.GetTypes().Where(
+                    t =>
+                        t.IsClass &&
+                         !t.IsAbstract &&
+                         t.GetInterface(typeof(IContextRecourceLoader).FullName) != null &&
+                         TakeType(t))) {
 
+                    if (type.GetConstructors().Any(tc => tc.GetParameters().Length == 0)) {
+                        var loader = Activator.CreateInstance(type) as IContextRecourceLoader;
+                        loader.ApplyResources(Registry.ConcreteContext);
+                    }
+
+                }
+            } catch (Exception ex) {
+                Trace.WriteLine(string.Format("Error loading assembly {0}:{1}", assembly.FullName, ex.Message));
             }
         }
 
@@ -53,10 +59,13 @@ namespace Limaki.Common.IOC {
             path = GetFullPath (path);
             var files = Directory.GetFiles(path, filter);
             foreach(var file in files) {
-                
-                var ass = LoadAssembly (file);
-                if (ass != null && ! assemlies.Contains(ass)) {
-                    ResolveAssembly (ass);
+                try {
+                    var ass = LoadAssembly(file);
+                    if (ass != null && !assemlies.Contains(ass)) {
+                        ResolveAssembly(ass);
+                    }
+                } catch(Exception ex) {
+                    Trace.WriteLine(string.Format("Error loading assembly {0}:{1}", file, ex.Message));
                 }
             }
         }
