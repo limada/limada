@@ -145,7 +145,7 @@ namespace Limaki.Usecases.Concept {
 
             if (display != null) {
                 var scene = display.Data;
-                ContentStreamUiManager.ThingGraphFocusIoManager.SinkIn = graphFocus => {
+                ContentStreamUiManager.ThingGraphCursorIoManager.SinkIn = graphFocus => {
                     scene.AddVisual(scene.Graph.VisualOf(graphFocus.Cursor), display.Layout);
                     display.Perform();
                 };

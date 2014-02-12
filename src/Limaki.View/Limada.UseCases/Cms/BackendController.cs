@@ -45,7 +45,7 @@ namespace Limada.Usecases.Cms {
                     Trace.WriteLine (string.Format ("Connection already opened {0}/{1}", conn.Gateway.IsOpen (), Iori.ToFileName (conn.Gateway.Iori)));
                 }
             } else {
-                var ioManager = new IoManager<Iori, ThingGraphContent> { };
+                var ioManager = new ThingGraphIoManager { };
                 var sinkIo = ioManager.GetSinkIO(Iori, IoMode.Read) as ThingGraphIo;
                 try {
                     var sink = sinkIo.Open(Iori);
@@ -69,7 +69,7 @@ namespace Limada.Usecases.Cms {
         protected void Close (ThingGraphContent data) {
             if (data == null)
                 return;
-            var sinkIo = new IoManager<Iori, ThingGraphContent> { }.GetSinkIO(data.ContentType, IoMode.Write) as ThingGraphIo;
+            var sinkIo = new ThingGraphIoManager { }.GetSinkIO(data.ContentType, IoMode.Write) as ThingGraphIo;
             if (sinkIo != null)
                 sinkIo.Close(data);
         }

@@ -14,11 +14,11 @@ namespace Limaki.db4o {
     public class Db4oResourceLoader : IContextRecourceLoader {
 
         public void ApplyResources(IApplicationContext context) {
-            var thingGraphProvider = context.Pool.TryGetCreate<ContentIoPool<Iori,ThingGraphContent>>();
-            thingGraphProvider.Add(new Db4oThingGraphIo());
+            var thingGraphContentPool = context.Pool.TryGetCreate<ThingGraphIoPool>();
+            thingGraphContentPool.Add(new Db4oThingGraphIo());
 
-            var thingGraphRepairProvider = context.Pool.TryGetCreate<ContentIoPool<IThingGraphRepair, Iori>>();
-            thingGraphRepairProvider.Add(new Limada.Data.db4o.Db4oRepairer());
+            var repairPool = context.Pool.TryGetCreate<ThingGraphRepairPool>();
+            repairPool.Add(new Limada.Data.db4o.Db4oRepairer());
             
         }
     }

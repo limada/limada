@@ -32,7 +32,7 @@ namespace Limada.Tests.ThingGraphs {
                 ThingGraphProvider = null;
             }
             if (ThingGraphProvider == null) {
-                var fileManager = new IoManager<Iori, ThingGraphContent>();
+                var fileManager = new ThingGraphIoManager();
                 var file = Iori.FromFileName(fileName);
                 var provider = fileManager.GetSinkIO(file, IoMode.Read);
                 if (provider != null) {

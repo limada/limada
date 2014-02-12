@@ -28,6 +28,7 @@ using Limaki.Visuals;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Limada.Data;
 
 namespace Limada.Usecases {
 
@@ -99,11 +100,13 @@ namespace Limada.Usecases {
 
         #region Things-Import-Export
 
-        private IoUriManager<Stream, GraphCursor<IThing, ILink>> _thingGraphFocusIoManager = null;
-        public IoUriManager<Stream, GraphCursor<IThing, ILink>> ThingGraphFocusIoManager { get { return _thingGraphFocusIoManager ?? (_thingGraphFocusIoManager = new IoUriManager<Stream, GraphCursor<IThing, ILink>> { Progress = this.Progress }); } }
+        private ThingGraphCursorIoManager _thingGraphCursorIoManager = null;
+        public ThingGraphCursorIoManager ThingGraphCursorIoManager { get {
+            return _thingGraphCursorIoManager ?? (_thingGraphCursorIoManager = new ThingGraphCursorIoManager { Progress = this.Progress });
+        } }
 
-        protected IoUriManager<Stream, IEnumerable<IThing>> _thingsIoManager = null;
-        protected IoUriManager<Stream, IEnumerable<IThing>> ThingsIoManager { get { return _thingsIoManager ?? (_thingsIoManager = new IoUriManager<Stream, IEnumerable<IThing>> { Progress = this.Progress }); } }
+        protected ThingsStreamIoManager _thingsStreamIoManager = null;
+        protected ThingsStreamIoManager ThingsStreamIoManager { get { return _thingsStreamIoManager ?? (_thingsStreamIoManager = new ThingsStreamIoManager { Progress = this.Progress }); } }
 
         public void ConfigureSink<TSource, TSink> (IPipe<TSource, TSink> sink) {
             var report = sink as IReport;
@@ -117,13 +120,13 @@ namespace Limada.Usecases {
 
         public void WriteThings (IGraphScene<IVisual, IVisualEdge> scene) {
             try {
-                DefaultDialogValues(SaveFileDialog, ThingsIoManager.WriteFilter);
+                DefaultDialogValues(SaveFileDialog, ThingsStreamIoManager.WriteFilter);
                 if (scene != null && scene.HasThingGraph()) {
                     SaveFileDialog.DefaultExt = "pdf";
                     if (FileDialogShow(SaveFileDialog, false) == DialogResult.Ok) {
-                        ThingsIoManager.SinkOut = () => new VisualThingsSceneViz().SelectedThings(scene);
-                        ThingsIoManager.ConfigureSinkIo = s => ConfigureSink(s);
-                        ThingsIoManager.WriteSink(IoUtils.UriFromFileName(SaveFileDialog.FileName));
+                        ThingsStreamIoManager.SinkOut = () => new VisualThingsSceneViz().SelectedThings(scene);
+                        ThingsStreamIoManager.ConfigureSinkIo = s => ConfigureSink(s);
+                        ThingsStreamIoManager.WriteSink(IoUtils.UriFromFileName(SaveFileDialog.FileName));
                         SaveFileDialog.ResetFileName();
                     }
                 }
@@ -134,13 +137,13 @@ namespace Limada.Usecases {
 
         public void ReadThingGraphFocus (IGraphScene<IVisual, IVisualEdge> scene) {
             try {
-                DefaultDialogValues(OpenFileDialog, ThingGraphFocusIoManager.ReadFilter);
+                DefaultDialogValues(OpenFileDialog, ThingGraphCursorIoManager.ReadFilter);
                 if (scene != null && scene.HasThingGraph()) {
                     if (FileDialogShow(OpenFileDialog, true) == DialogResult.Ok) {
                         var graphFocus = new GraphCursor<IThing, ILink>(scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Source);
                         var uri = IoUtils.UriFromFileName(OpenFileDialog.FileName);
-                        ThingGraphFocusIoManager.ConfigureSinkIo = s => ConfigureSink(s);
-                        graphFocus = ThingGraphFocusIoManager.ReadSink(uri, graphFocus);
+                        ThingGraphCursorIoManager.ConfigureSinkIo = s => ConfigureSink(s);
+                        graphFocus = ThingGraphCursorIoManager.ReadSink(uri, graphFocus);
                         new VisualThingsSceneViz().SetDescription(scene, graphFocus.Cursor, OpenFileDialog.FileName);
                         OpenFileDialog.ResetFileName();
                     }

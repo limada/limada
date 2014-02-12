@@ -51,11 +51,11 @@ namespace Limada.Data {
             this.IoMode = Limaki.Contents.IO.IoMode.Read;
         }
 
-        private IoManager<Iori, ThingGraphContent> _thingGraphIoManager = null;
-        public IoManager<Iori, ThingGraphContent> ThingGraphIoManager {
+        private ThingGraphIoManager _thingGraphIoManager = null;
+        public ThingGraphIoManager ThingGraphIoManager {
             get {
                 return _thingGraphIoManager ?? (_thingGraphIoManager =
-                                                new IoManager<Iori, ThingGraphContent> {
+                                                new ThingGraphIoManager {
                                                     Progress = this.Progress,
                                                     DefaultExtension = this.Detector.ContentSpecs.First().Extension,
                                                 });

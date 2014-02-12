@@ -11,21 +11,21 @@
  * http://www.limada.org
  */
 
+using System;
+using System.Collections.Generic;
+using System.IO;
 using Limada.Data;
 using Limada.Model;
 using Limada.VisualThings;
 using Limaki.Common;
 using Limaki.Contents;
+using Limaki.Contents.IO;
 using Limaki.Data;
 using Limaki.Drawing;
-using Limaki.Contents.IO;
 using Limaki.Usecases;
 using Limaki.Viewers;
 using Limaki.Visuals;
 using Mono.Options;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Limada.Usecases {
 
@@ -49,11 +49,11 @@ namespace Limada.Usecases {
         public string ReadFilter { get { return ThingGraphIoManager.ReadFilter; } }
         public string WriteFilter { get { return ThingGraphIoManager.WriteFilter; } }
 
-        private IoManager<Iori, ThingGraphContent> _thingGraphIoManager = null;
-        public IoManager<Iori, ThingGraphContent> ThingGraphIoManager {
+        private ThingGraphIoManager _thingGraphIoManager = null;
+        public ThingGraphIoManager ThingGraphIoManager {
             get {
                 return _thingGraphIoManager ?? (_thingGraphIoManager =
-                                                new IoManager<Iori, ThingGraphContent> {
+                                                new ThingGraphIoManager {
                                                     Progress = this.Progress,
                                                     DefaultExtension = "limo",
                                                 });
@@ -330,7 +330,7 @@ namespace Limada.Usecases {
                             try {
 
                                 sink = sinkIo.Open(Iori.FromFileName(sinkFile));
-                                var repairer = Registry.Pool.TryGetCreate<ContentIoPool<IThingGraphRepair, Iori>>()
+                                var repairer = Registry.Pool.TryGetCreate<ThingGraphRepairPool>()
                                     .Find(sourceInfo.Extension,IoMode.Read) as IPipe<Iori, IThingGraph>;
                                 this.AttachProgress(repairer as IProgress);
                                 repairer.Use(Iori.FromFileName(sourceFile), sink.Data);
