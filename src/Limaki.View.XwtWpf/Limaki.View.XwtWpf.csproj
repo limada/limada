@@ -45,6 +45,14 @@
   <ItemGroup>
     <Compile Include="Limaki.View.WpfBackends\DrawingConverter.cs" />
     <Compile Include="Limaki.View.WpfBackends\Monitor.cs" />
+    <Compile Include="Limaki.View.WpfBackends\WpfUsecaseFactory.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\ArrangerToolStripBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\DisplayModeToolStripBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\LayoutToolStripBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\MarkerToolStripBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\SplitViewToolStripBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\ToolStripBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\WpfBackendHelper.cs" />
     <Compile Include="TODO\BitmapCanvasBackend.cs" />
     <Compile Include="TODO\WebBrowserBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\WpfContextRecourceLoader.cs" />
