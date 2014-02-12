@@ -18,7 +18,10 @@ using Limaki.Common;
 
 namespace Limaki.Contents.IO {
 
-    public class IoUriManager<TSource, TSink>:IoManager<TSource, TSink>  {
+    public class IoUriManager<TSource, TSink> : IoUriManager<TSource, TSink, ContentIoPool<TSource, TSink>> { }
+    
+    public class IoUriManager<TSource, TSink, TIoPool> : IoManager<TSource, TSink, TIoPool>
+           where TIoPool : ContentIoPool<TSource, TSink> {
 
         public Action Close { get; set; }
 

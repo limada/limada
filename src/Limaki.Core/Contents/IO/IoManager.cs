@@ -22,13 +22,16 @@ using Limaki.Model.Content;
 
 namespace Limaki.Contents.IO {
 
+    public class IoManager<TSource, TSink>:IoManager<TSource, TSink,ContentIoPool<TSource, TSink>>{}
+
     /// <summary>
     /// manages core input-output-operations of 
     /// ISink#TSource, TSink#-implementations
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TSink"></typeparam>
-    public class IoManager<TSource, TSink> : IProgress {
+    public class IoManager<TSource, TSink, TIoPool> : IProgress 
+        where TIoPool : ContentIoPool<TSource, TSink> {
 
         /// <summary>
         /// called after sink is read
@@ -48,8 +51,8 @@ namespace Limaki.Contents.IO {
         public string DefaultExtension { get; set; }
         public Action<string, int, int> Progress { get; set; }
 
-        private ContentIoPool<TSource, TSink> _pool = null;
-        public ContentIoPool<TSource, TSink> ContentIoPool { get { return _pool ?? (_pool = Registry.Pool.TryGetCreate<ContentIoPool<TSource, TSink>>()); } }
+        protected ContentIoPool<TSource, TSink> _pool = null;
+        public virtual ContentIoPool<TSource, TSink> ContentIoPool { get { return _pool ?? (_pool = Registry.Pool.TryGetCreate<TIoPool>()); } }
 
         #region providing ContentIo
 
