@@ -16,7 +16,7 @@
 using Limada.Data;
 using Limada.Model;
 using Limaki.Data;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 
 namespace Limaki.Common.IOC {
     public class AppResourceLoader : ContextRecourceLoader {

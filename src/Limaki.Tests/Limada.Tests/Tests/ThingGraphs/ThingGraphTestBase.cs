@@ -5,7 +5,7 @@ using Limada.Data;
 using Limaki.Data;
 using Limaki.Common;
 using Limaki;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 using System.Linq;
 
 namespace Limada.Tests.ThingGraphs {

@@ -16,7 +16,7 @@ using System;
 using System.IO;
 using Limaki.Common;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents.IO {
 
     public class IoUriManager<TSource, TSink>:IoManager<TSource, TSink>  {
 

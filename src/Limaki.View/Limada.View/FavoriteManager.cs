@@ -16,6 +16,7 @@ using Limada.Model;
 using Limada.Schemata;
 using Limada.VisualThings;
 using Limaki.Common;
+using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;

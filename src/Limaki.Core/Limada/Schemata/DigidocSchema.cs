@@ -15,6 +15,7 @@
 using Limada.Model;
 using Limada.Schemata;
 using System.IO;
+using Limaki.Contents;
 using Limaki.Model.Content;
 using System.Collections.Generic;
 using System.Linq;

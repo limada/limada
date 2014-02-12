@@ -15,6 +15,7 @@
 
 using Limaki.Common;
 using Limaki.Common.Text.RTF;
+using Limaki.Contents;
 using Limaki.Model.Content;
 using Limaki.Viewers.Vidgets;
 using Limaki.View;

@@ -16,6 +16,7 @@
 using System.Collections.Generic;
 using Limada.Model;
 using Limada.Tests.Model;
+using Limaki.Contents;
 using Limaki.Data;
 using Limaki.Data.db4o;
 using Limaki.Graphs;

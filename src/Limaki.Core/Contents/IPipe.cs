@@ -14,7 +14,7 @@
  */
 
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents {
 
     /// <summary>
     /// a morph, flux, transform, transition, flow, pipe, tube

@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using Limaki.Model.Content;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents.IO {
 
     public class StreamIo : ContentIo<Stream>, IPipe<Uri, Stream>, IPipe<Stream, Uri> {
 

@@ -20,8 +20,9 @@ using System.Linq;
 using Limaki.Common.Linqish;
 using System.IO;
 using Limaki.Common;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents.IO {
 
     public class ContentIoPool<TSource,TSink> : IEnumerable<IContentIo<TSource>> {
 

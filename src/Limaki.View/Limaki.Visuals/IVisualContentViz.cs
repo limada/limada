@@ -1,4 +1,5 @@
 using System.IO;
+using Limaki.Contents;
 using Limaki.Graphs;
 using Limaki.Model.Content;
 

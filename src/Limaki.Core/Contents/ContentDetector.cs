@@ -18,7 +18,7 @@ using System.IO;
 using System.Linq;
 using Limaki.Model.Content;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents {
     /// <summary>
     /// gives back a ContentInfo describing the stream
     /// if the stream is supported by ContentSpecs

@@ -12,6 +12,7 @@
  */
 
 using System.IO;
+using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Model.Content;
 using Limaki.Visuals;

@@ -19,14 +19,14 @@ using Limada.Model;
 using Limaki.Common;
 using Limaki.Data;
 using Limaki.Graphs;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 
 namespace Limada.Data {
 
     public class XmlThingGraphIo : ThingGraphIo {
 
         public XmlThingGraphIo (): base(new XmlThingGraphSpot()) {
-            this.IoMode = Limaki.Model.Content.IO.IoMode.ReadWrite;
+            this.IoMode = Limaki.Contents.IO.IoMode.ReadWrite;
         }
 
         protected override ThingGraphContent OpenInternal (Iori source) {

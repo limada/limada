@@ -15,13 +15,14 @@ using System.Collections.Generic;
 using System.IO;
 using Limada.Model;
 using Limada.Schemata;
+using Limaki.Contents;
 using Limaki.Graphs;
 using Limada.View;
 using Limada.VisualThings;
 using Limaki.Model.Content;
 using System.Linq;
 using Limaki.Visuals;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 using Limaki.Drawing;
 
 namespace Limada.Usecases {

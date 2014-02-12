@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Limaki.Contents;
 using Limaki.Drawing;
 using Limada.View;
 using Limada.VisualThings;

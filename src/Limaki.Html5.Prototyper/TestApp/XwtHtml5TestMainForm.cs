@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using Limaki.Common;
+using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;

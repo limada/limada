@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content {
+namespace Limaki.Contents {
 
     public class ConverterPool<T>:List<IContentConverter<T>> {
         public IContentConverter<T> Find(long source, long sink) {

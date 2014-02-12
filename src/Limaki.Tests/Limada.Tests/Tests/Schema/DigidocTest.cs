@@ -25,7 +25,7 @@ using Limaki;
 using Limaki.Tests;
 using Limaki.Data;
 using Limaki.Common.Linqish;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 
 namespace Limada.Tests.Schemata {
     [TestFixture]

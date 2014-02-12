@@ -18,8 +18,9 @@ using System.Text;
 using Limaki.Common.Text;
 using Limaki.Common.Text.HTML.Parser;
 using System.Linq;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents.IO {
 
     public class HtmlContentDigger : ContentDigger {
 

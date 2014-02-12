@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Limaki.Model.Content {
+namespace Limaki.Contents {
    
     public interface ITextConverter {
         long SourceType { get; set; }

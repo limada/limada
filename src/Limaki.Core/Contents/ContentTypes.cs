@@ -15,7 +15,7 @@
 
 using System.Collections.Generic;
 
-namespace Limaki.Model.Content {
+namespace Limaki.Contents {
     
     public class ContentTypes {
         public static long Text = unchecked((long) 0xf7ecf4a0c9ea2472);

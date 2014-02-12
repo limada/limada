@@ -14,6 +14,7 @@
 
 using System;
 using System.IO;
+using Limaki.Contents;
 using Limaki.Model.Content;
 
 namespace Limaki.Viewers {

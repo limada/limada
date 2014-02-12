@@ -13,8 +13,9 @@
  */
 
 using System.Linq;
+using Limaki.Contents;
 using Limaki.Model.Content;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 using System;
 using System.IO;
 using Limaki.Data;

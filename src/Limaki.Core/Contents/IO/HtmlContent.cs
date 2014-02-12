@@ -20,8 +20,9 @@ using System.Text;
 using System.Linq;
 using Limaki.Common.Text.HTML;
 using Limaki.Common.Text;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents.IO {
 
     public class HtmlContentSpot : ContentDetector {
 

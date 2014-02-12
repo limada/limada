@@ -14,8 +14,9 @@
  */
 
 using System.Text;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents.IO {
 
     public class RtfContentSpot : ContentDetector {
         public RtfContentSpot()

@@ -13,7 +13,7 @@ using Limaki.Model.Content;
 using System.Collections.Generic;
 using Limaki.Graphs.Extensions;
 using Limaki.Common.IOC;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 using System.IO;
 
 

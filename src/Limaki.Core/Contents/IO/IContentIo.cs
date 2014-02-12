@@ -15,8 +15,9 @@
 
 using Limaki.Common;
 using System;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents.IO {
 
     public interface IContentIo<TSource> : IPipe<TSource, ContentInfo>, IProgress {
 

@@ -19,6 +19,7 @@ using System.IO;
 using Limada.View;
 using Limada.VisualThings;
 using Limaki.Common;
+using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Model.Content;

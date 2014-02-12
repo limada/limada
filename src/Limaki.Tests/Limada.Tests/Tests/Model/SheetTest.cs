@@ -14,6 +14,7 @@
 
 using System.IO;
 using Limada.Model;
+using Limaki.Contents;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;
 using Limada.View;

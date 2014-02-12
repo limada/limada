@@ -16,10 +16,11 @@ using Db4objects.Db4o.Reflect;
 using Db4objects.Db4o.Reflect.Generic;
 using Limada.Model;
 using Limada.Schemata;
+using Limaki.Contents;
 using Limaki.Data;
 using Limaki.Data.db4o;
 using Limaki.Model.Content;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -192,7 +193,7 @@ namespace Limada.Data.db4o {
         }
 
         public Db4oRepairer (): base(new Db4oThingGraphSpot()) {
-            this.IoMode = Limaki.Model.Content.IO.IoMode.Read;
+            this.IoMode = Limaki.Contents.IO.IoMode.Read;
         }
 
         public override bool Supports (IThingGraphRepair source) {

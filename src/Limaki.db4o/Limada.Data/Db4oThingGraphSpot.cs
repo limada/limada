@@ -1,5 +1,6 @@
 using Limaki.Model.Content;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
+using Limaki.Contents;
 
 namespace Limada.Data {
 

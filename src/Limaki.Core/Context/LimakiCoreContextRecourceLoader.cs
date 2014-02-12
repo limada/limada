@@ -6,8 +6,9 @@ using Limaki.Graphs.Extensions;
 using Limaki.Model.Content;
 using Limada.Model;
 
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 using System.IO;
+using Limaki.Contents;
 
 namespace Limaki.IOC {
 

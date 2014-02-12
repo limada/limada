@@ -18,8 +18,9 @@ using Limaki.Data;
 using System;
 using System.IO;
 using System.Linq;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents.IO {
 
     /// <summary>
     /// manages core input-output-operations of 

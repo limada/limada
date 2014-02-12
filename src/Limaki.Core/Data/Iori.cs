@@ -12,7 +12,7 @@
  * 
  */
 
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 using System.Runtime.Serialization;
 namespace Limaki.Data {
 

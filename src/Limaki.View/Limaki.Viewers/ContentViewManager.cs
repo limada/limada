@@ -15,6 +15,7 @@
 using Limada.Model;
 using Limada.VisualThings;
 using Limaki.Common;
+using Limaki.Contents;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Content;

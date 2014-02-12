@@ -1,12 +1,12 @@
 ﻿using Limaki.Model.Content;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents {
 
     /// <summary>
     /// a ContentDigger analyses the source content and 

@@ -1,5 +1,6 @@
 using System.IO;
 using Limada.Schemata;
+using Limaki.Contents;
 using Limaki.Model.Content;
 using Limaki.Common;
 

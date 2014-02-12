@@ -15,7 +15,7 @@
 using Gecko;
 using Limaki.Drawing;
 using Limaki.Model.Content;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 using Limaki.View;
 using Limaki.Viewers;
 using Limaki.Viewers.Vidgets;
@@ -27,6 +27,7 @@ using System.Windows.Forms;
 using Xwt.Gdi.Backend;
 using System.Linq;
 using Limaki.View.Swf;
+using Limaki.Contents;
 
 namespace Limaki.Swf.Backends {
 

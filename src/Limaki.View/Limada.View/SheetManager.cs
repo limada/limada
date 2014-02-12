@@ -18,6 +18,7 @@ using System.IO;
 using Limada.Model;
 using Limada.Schemata;
 using Limaki.Common;
+using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limada.View;

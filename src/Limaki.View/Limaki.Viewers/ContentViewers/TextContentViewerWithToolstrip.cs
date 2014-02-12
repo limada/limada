@@ -13,6 +13,7 @@
  */
 
 
+using Limaki.Contents;
 using Limaki.Model.Content;
 using Limaki.Viewers.Vidgets;
 using Limaki.View;

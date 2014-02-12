@@ -12,9 +12,10 @@
  * 
  */
 
+using Limaki.Model.Content;
 using Id = System.Int64;
 
-namespace Limaki.Model.Content {
+namespace Limaki.Contents {
 
     public class Content {
         public Content() {

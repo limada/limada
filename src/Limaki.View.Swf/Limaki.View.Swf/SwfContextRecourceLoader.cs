@@ -15,6 +15,7 @@
 
 using Limaki.Common;
 using Limaki.Common.IOC;
+using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
 using Limaki.Drawing.Gdi.Painters;

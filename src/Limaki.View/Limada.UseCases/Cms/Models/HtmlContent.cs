@@ -1,4 +1,5 @@
 ﻿using Limaki.Common;
+using Limaki.Contents;
 using Limaki.Model.Content;
 
 namespace Limada.Usecases.Cms.Models {

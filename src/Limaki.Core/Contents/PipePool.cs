@@ -16,7 +16,7 @@
 using System.Collections.Generic;
 using Limaki.Common.Collections;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents {
 
     public interface IPipePool<TSource, TSink> : IEnumerable<IPipe<TSource,TSink>> {}
 

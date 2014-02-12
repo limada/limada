@@ -15,8 +15,9 @@
 
 using System;
 using System.IO;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents.IO {
 
     public class ContentStreamIo : StreamIo, IPipe<Uri, Content<Stream>>, IPipe<Content<Stream>, Uri> {
 

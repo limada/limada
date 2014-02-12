@@ -2,8 +2,9 @@
 using System;
 using System.Linq;
 using Limaki.Common.Linqish;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content {
+namespace Limaki.Contents {
 
     public class ContentInfo {
 

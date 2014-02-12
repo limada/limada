@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Limaki.Contents;
 using Limaki.Model.Content;
 using Limaki.Common;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 
 namespace Limaki.Playground.IO {
    

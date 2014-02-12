@@ -21,7 +21,7 @@ using Limaki.Common.Linqish;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Content;
-using Limaki.Model.Content.IO;
+using Limaki.Contents;
 
 namespace Limada.Data {
     /// <summary>

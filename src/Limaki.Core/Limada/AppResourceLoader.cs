@@ -18,7 +18,7 @@ using Limada.Model;
 using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.Data;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 
 namespace Limada.Usecases {
 

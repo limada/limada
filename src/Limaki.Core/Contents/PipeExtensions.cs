@@ -14,20 +14,12 @@
  */
 
 using System;
+using Limaki.Common;
 
-namespace Limaki.Model.Content.IO {
-
-    [Flags]
-    public enum IoMode {
-
-        None = 0,
-        Read = 1 << 0,
-        Write = 1 << 1,
-        Client = 1 << 2,
-        Server = 1 << 3,
-
-        ReadWrite = Read | Write,
-        ClientServer = Client | Server
-
+namespace Limaki.Contents {
+    public static class PipeExtensions {
+        public static TSink Use<TSource, TSink> (TSource source, TSink sink, Func<TSource, TSink> sinkOf) {
+            return new Copier<TSink>(CopierOptions.ValueTypes).Copy(sinkOf(source), sink);
+        }
     }
 }

@@ -14,13 +14,13 @@
 
 using Limada.Model;
 using Limaki.Data;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 
 namespace Limada.Data {
     public class MemoryThingGraphIo : ThingGraphIo {
 
         public MemoryThingGraphIo (): base(new MemoryThingGraphSpot()) {
-            this.IoMode = Limaki.Model.Content.IO.IoMode.None;
+            this.IoMode = Limaki.Contents.IO.IoMode.None;
         }
 
         protected override ThingGraphContent OpenInternal (Iori source) {

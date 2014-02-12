@@ -19,7 +19,7 @@ using System.Diagnostics;
 using Db4objects.Db4o.CS;
 using Db4objects.Db4o.CS.Config;
 using System.IO;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 
 namespace Limaki.Data.db4o {
 

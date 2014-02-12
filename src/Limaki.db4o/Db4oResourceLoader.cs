@@ -7,7 +7,7 @@ using Limada.Model;
 using Limaki.Common.IOC;
 using Limaki.Data;
 using Limada.Data;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 
 namespace Limaki.db4o {
 

@@ -20,6 +20,7 @@ using Limada.Usecases;
 using Limada.VisualThings;
 using Limaki.Common;
 using Limaki.Common.Collections;
+using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;

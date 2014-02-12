@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Limaki.Contents;
 using Limaki.UnitTest;
 using NUnit.Framework;
 using Limaki.Common;
 using Limaki.Model.Content;
 using System.Linq;
 using System.Diagnostics;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
 
 namespace Limaki.Tests.Data.Streams {
     [TestFixture]

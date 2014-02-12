@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Limaki.Model.Content {
+namespace Limaki.Contents {
     
     public interface IContentSpec {
         IEnumerable<ContentInfo> ContentSpecs { get; }

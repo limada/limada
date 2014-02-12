@@ -15,8 +15,9 @@
 
 
 using System.Text;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content.IO {
+namespace Limaki.Contents.IO {
 
     public class PdfContentSpot : ContentDetector {
         public PdfContentSpot(): base(

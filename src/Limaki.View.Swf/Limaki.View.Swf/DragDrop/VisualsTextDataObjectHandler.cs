@@ -17,6 +17,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Limaki.Contents;
 using Limaki.Graphs;
 using Limada.View;
 using Limada.VisualThings;

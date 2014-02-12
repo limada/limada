@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Limaki.Model.Content.IO;
+using Limaki.Contents.IO;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content {
+namespace Limaki.Contents {
     public interface IContentConverter<T>:IPipe<Content<T>,Content<T>> {
         /// <summary>
         /// a list of ContentTypes, where Item1 is source, Item2 is sink-Type
