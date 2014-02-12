@@ -18,7 +18,6 @@ using Limaki.XwtAdapter;
 using Limaki.Drawing;
 
 namespace Limaki.View.XwtContext {
-
     public class GraphSceneContextLayer<TItem, TEdge> : GraphSceneLayer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
 

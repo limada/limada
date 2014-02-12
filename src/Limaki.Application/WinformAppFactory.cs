@@ -28,12 +28,12 @@ namespace Limaki.App {
             mainform.Icon = Limaki.View.Properties.GdiIconery.LimadaLogo;
             mainform.ClientSize = new System.Drawing.Size(800, 600);
 
-            var deviceComposer = new ConceptUseCaseComposer();
-            deviceComposer.Mainform = mainform;
+            var backendComposer = new SwfConceptUseCaseComposer();
+            backendComposer.Mainform = mainform;
 
             var factory = new UsecaseFactory<ConceptUsecase>();
             factory.Composer = new ConceptUsecaseComposer();
-            factory.BackendComposer = deviceComposer;
+            factory.BackendComposer = backendComposer;
             
             var useCase = factory.Create();
             factory.Compose(useCase);
