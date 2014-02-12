@@ -16,8 +16,8 @@ namespace Limaki.View.DragDrop {
     /// </summary>
     public class TransferDataManager {
 
-        private ContentIoPool<Stream, Content<Stream>> _contentPool;
-        public ContentIoPool<Stream, Content<Stream>> ContentIoPool { get { return _contentPool ?? (_contentPool = Registry.Pool.TryGetCreate<ContentIoPool<Stream, Content<Stream>>>()); } }
+        private StreamContentIoPool _contentPool;
+        public StreamContentIoPool ContentIoPool { get { return _contentPool ?? (_contentPool = Registry.Pool.TryGetCreate<StreamContentIoPool>()); } }
 
         private TransferContentPool _transferContentPool;
         public TransferContentPool TransferContentPool { get { return _transferContentPool ?? (_transferContentPool = Registry.Pool.TryGetCreate<TransferContentPool>()); } }

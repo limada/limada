@@ -30,7 +30,7 @@ namespace Limaki.Common.IOC {
             
             deviceContext.ApplyResources(context);
 
-            var contentIoPool = context.Pool.TryGetCreate<ContentIoPool<Iori, ThingGraphContent>>();
+            var contentIoPool = context.Pool.TryGetCreate<ThingGraphIoPool>();
             contentIoPool.Add(new XmlThingGraphIo());
 
         }

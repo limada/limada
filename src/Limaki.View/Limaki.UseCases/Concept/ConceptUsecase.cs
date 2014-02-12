@@ -120,24 +120,24 @@ namespace Limaki.Usecases.Concept {
             }
         }
 
-		public ContentStreamUiManager ContentStreamUiManager { get; set; }
+		public StreamContentUiManager StreamContentUiManager { get; set; }
 
         public void ExportThings () {
             var display = GetCurrentDisplay();
             if (display != null) {
-                ContentStreamUiManager.WriteThings(display.Data);
+                StreamContentUiManager.WriteThings(display.Data);
             }
         }
 
         public void ImportContent () {
-            ContentStreamUiManager.ContentIn = content => {
+            StreamContentUiManager.ContentIn = content => {
                 var display = GetCurrentDisplay();
                 if (display != null) {
                     display.Data.AddContent(content, display.Layout);
                     display.Perform();
                 }
             };
-            ContentStreamUiManager.Read();
+            StreamContentUiManager.Read();
         }
 
         public void ImportGraphFocus () {
@@ -145,23 +145,23 @@ namespace Limaki.Usecases.Concept {
 
             if (display != null) {
                 var scene = display.Data;
-                ContentStreamUiManager.ThingGraphCursorIoManager.SinkIn = graphFocus => {
+                StreamContentUiManager.ThingGraphCursorIoManager.SinkIn = graphFocus => {
                     scene.AddVisual(scene.Graph.VisualOf(graphFocus.Cursor), display.Layout);
                     display.Perform();
                 };
-                ContentStreamUiManager.ReadThingGraphFocus(display.Data);
+                StreamContentUiManager.ReadThingGraphFocus(display.Data);
             }
         }
 
         public void ExportContent () {
-            ContentStreamUiManager.ContentOut = () => {
+            StreamContentUiManager.ContentOut = () => {
                 var display = GetCurrentDisplay();
                 if (display != null) {
                     return display.Data.ContentOfFocused();
                 }
                 return null;
             };
-            ContentStreamUiManager.Save();
+            StreamContentUiManager.Save();
         }
 
         public void SaveChanges() {

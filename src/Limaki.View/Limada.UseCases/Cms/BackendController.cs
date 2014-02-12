@@ -208,7 +208,7 @@ namespace Limada.Usecases.Cms {
             var result = new StreamContent (ThingContentFacade.ConentOf (ThingGraph, thing));
             result.Source = thing.Id.ToString ("X16");
 
-            var contentIoPool = Registry.Pool.TryGetCreate<ContentIoPool<Stream, Content<Stream>>>();
+            var contentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool>();
             var streamType = thing.StreamType;
 
             if (streamType == ContentTypes.TIF) {

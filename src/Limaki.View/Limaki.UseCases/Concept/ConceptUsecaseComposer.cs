@@ -37,7 +37,7 @@ namespace Limaki.Usecases.Concept {
                 SaveFileDialog = new FileDialogMemento()
             };
 
-            useCase.ContentStreamUiManager = new ContentStreamUiManager {
+            useCase.StreamContentUiManager = new StreamContentUiManager {
                 OpenFileDialog = new FileDialogMemento(),
                 SaveFileDialog = new FileDialogMemento()
             };
@@ -94,7 +94,7 @@ namespace Limaki.Usecases.Concept {
             fileManager.Progress = useCase.Progress;
             fileManager.ApplicationQuit = useCase.ApplicationQuit;
             
-            var streamManager = useCase.ContentStreamUiManager;
+            var streamManager = useCase.StreamContentUiManager;
             streamManager.FileDialogShow = useCase.FileDialogShow;
             streamManager.MessageBoxShow = useCase.MessageBoxShow;
             streamManager.Progress = useCase.Progress;

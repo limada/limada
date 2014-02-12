@@ -17,15 +17,15 @@ namespace Limaki.IOC {
         public override void ApplyResources(IApplicationContext context) {
             context.Factory.Add<ICompressionWorker, Limaki.Compression.CompressionWorker> ();
             context.Factory.Add<IThingFactory, ThingFactory>();
-			
-			var contentIoPool = Registry.Pool.TryGetCreate<ContentIoPool<Stream, Content<Stream>>>();
-            contentIoPool.Add(new HtmlStreamContentIo()); 
-            contentIoPool.Add(new RtfStreamContentIo()); 
-            contentIoPool.Add(new ImageStreamContentIo());
-            contentIoPool.Add(new PdfStreamContentIo());
 
-            var diggProvider = Registry.Pool.TryGetCreate<ContentDiggPool>();
-            diggProvider.Add(new HtmlContentDigger());
+            var streamContentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool>();
+            streamContentIoPool.Add(new HtmlStreamContentIo()); 
+            streamContentIoPool.Add(new RtfStreamContentIo()); 
+            streamContentIoPool.Add(new ImageStreamContentIo());
+            streamContentIoPool.Add(new PdfStreamContentIo());
+
+            var contentDiggPool = Registry.Pool.TryGetCreate<ContentDiggPool>();
+            contentDiggPool.Add(new HtmlContentDigger());
         }
 
     }

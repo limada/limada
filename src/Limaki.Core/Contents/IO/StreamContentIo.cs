@@ -18,7 +18,6 @@ using System.IO;
 using Limaki.Model.Content;
 
 namespace Limaki.Contents.IO {
-
     /// <summary>
     /// reads and writes Content<Stream> based on a Uri
     /// uses ContentInfo to fill the Content

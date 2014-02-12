@@ -214,7 +214,7 @@
     <Compile Include="UnitTest\TestBase.cs" />
     <Compile Include="Playground\MonoGenericError2.cs" />
     <Compile Include="Playground\MonoMarshalByRefError.cs" />
-    <Compile Include="Limaki.Tests\Data\Streams\ContentProviderTest.cs" />
+    <Compile Include="Limaki.Tests\Data\Streams\ContentPoolTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq-2010.csproj">

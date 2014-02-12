@@ -58,7 +58,7 @@
   <ItemGroup>
     <Compile Include="Limada.UseCases\Cms\AppController.cs" />
     <Compile Include="Limada.UseCases\Cms\BackendController.cs" />
-    <Compile Include="Limada.UseCases\Content\ContentStreamUiManager.cs" />
+    <Compile Include="Limada.UseCases\Content\StreamContentUiManager.cs" />
     <Compile Include="Limada.UseCases\Content\IGraphSceneUiManager.cs" />
     <Compile Include="Limada.UseCases\Content\ThingGraphUiManager.cs" />
     <Compile Include="Limaki.View.XwtContext\IToolkitAware.cs" />
