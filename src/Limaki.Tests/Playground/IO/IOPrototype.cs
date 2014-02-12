@@ -9,7 +9,7 @@ namespace Limaki.Playground.IO {
    
 
     public interface ISinkPipe<TSource, TOver, TSink> {
-        TSink Sink(TSource source, ISink<TSource, TOver> sourceOver, ISink<TOver, TSink> overSink);
+        TSink Sink(TSource source, IPipe<TSource, TOver> sourceOver, IPipe<TOver, TSink> overSink);
     }
 
     public interface IInOut<TSource, TSink> {

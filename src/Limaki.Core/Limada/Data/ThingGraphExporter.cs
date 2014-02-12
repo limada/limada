@@ -28,7 +28,7 @@ namespace Limada.Data {
     /// returns all things of source
     /// source can be a subgraph (a SubGraph)
     /// </summary>
-    public class ThingGraphExporter : ISink<IGraph<IThing, ILink>, IThingGraph>, IProgress {
+    public class ThingGraphExporter : IPipe<IGraph<IThing, ILink>, IThingGraph>, IProgress {
 
         public Action<string, int, int> Progress { get; set; }
 

@@ -62,9 +62,9 @@ namespace Limaki.Viewers.StreamViewers {
 
         public virtual string AbsoluteUri { get; set; }
 
-        private IoProvider<Stream,Content<Stream>> _provider = null;
-        IoProvider<Stream, Content<Stream>> Provider {
-            get { return _provider ?? (_provider = Registry.Pool.TryGetCreate<IoProvider<Stream, Content<Stream>>>()); }
+        private ContentIoPool<Stream,Content<Stream>> _pool = null;
+        ContentIoPool<Stream, Content<Stream>> ContentIoPool {
+            get { return _pool ?? (_pool = Registry.Pool.TryGetCreate<ContentIoPool<Stream, Content<Stream>>>()); }
         }
         
 

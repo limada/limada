@@ -14,9 +14,9 @@ namespace Limaki.Playground.IO {
     public class IoTryout {
         public void GraphProviders () {
             Iori input = null;
-            ISink<Iori, Stream> file = null;
-            ISink<Stream, IThingGraph> thingGraphProvider = null;
-            ISink<IThingGraph, IGraphScene<IVisual, IVisualEdge>> sceneProvider = null;
+            IPipe<Iori, Stream> file = null;
+            IPipe<Stream, IThingGraph> thingGraphProvider = null;
+            IPipe<IThingGraph, IGraphScene<IVisual, IVisualEdge>> sceneProvider = null;
 
             var scene = sceneProvider.Use(thingGraphProvider.Use(file.Use(input)));
 
@@ -25,20 +25,20 @@ namespace Limaki.Playground.IO {
         public void ContentProviders () {
 
             Iori input = null;
-            ISink<Iori, Stream> file = null;
-            ISink<Stream, Content<Stream>> contentProvider = null;
-            ISink<Iori, Content<Stream>> contentIoProvider = null;
+            IPipe<Iori, Stream> file = null;
+            IPipe<Stream, Content<Stream>> contentProvider = null;
+            IPipe<Iori, Content<Stream>> contentIoProvider = null;
 
-            ISink<Content<Stream>, IThing> contentThingProvider = null;
+            IPipe<Content<Stream>, IThing> contentThingProvider = null;
         }
 
         public void DataProviders () {
-            ISink<Content<Stream>, GraphCursor<IThing,ILink>> contentThingGraphProvider = null;
-            ISink<IEnumerable<IThing>, IThingGraph> mergeGraph = null;
+            IPipe<Content<Stream>, GraphCursor<IThing,ILink>> contentThingGraphProvider = null;
+            IPipe<IEnumerable<IThing>, IThingGraph> mergeGraph = null;
         }
 
         public void ContentDiggProviders () {
-            var provider = new ContentDiggProvider();
+            var provider = new ContentDiggPool();
             var digger = new ContentDigger((so,si)=> si);
             provider.Add(digger);
             var content = new Content<Stream>();

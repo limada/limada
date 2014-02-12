@@ -32,7 +32,7 @@ namespace Limada.Usecases {
         public override void ApplyResources(IApplicationContext context) {
             
             deviceContext.ApplyResources(context);
-            var thingGraphProvider = context.Pool.TryGetCreate<IoProvider<Iori, ThingGraphContent>>();
+            var thingGraphProvider = context.Pool.TryGetCreate<ContentIoPool<Iori, ThingGraphContent>>();
             thingGraphProvider.Add(new XmlThingGraphIo());
             thingGraphProvider.Add(new IoriThingGraphIo());
 

@@ -29,7 +29,7 @@ using Id = System.Int64;
 
 namespace Limada.Data.db4o {
 
-    public class Db4oRepairer : ContentIo<IThingGraphRepair>, ISink<Iori, IThingGraph> {
+    public class Db4oRepairer : ContentIo<IThingGraphRepair>, IPipe<Iori, IThingGraph> {
 
         protected StringWriter Log { get; set; }
         public void ReportDetail(string message) {
@@ -207,7 +207,7 @@ namespace Limada.Data.db4o {
 
         public override ContentInfo Use (IThingGraphRepair source, ContentInfo sink) {
             if (Supports(source))
-                return SinkExtensions.Use(source, sink, s => Use(s));
+                return PipeExtensions.Use(source, sink, s => Use(s));
             return null;
         }
 

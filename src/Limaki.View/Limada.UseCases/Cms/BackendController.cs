@@ -208,16 +208,19 @@ namespace Limada.Usecases.Cms {
             var result = new StreamContent (ThingContentFacade.ConentOf (ThingGraph, thing));
             result.Source = thing.Id.ToString ("X16");
 
-            var providers = Registry.Pool.TryGetCreate<IoProvider<Stream, Content<Stream>>>();
-            var sink = providers.Find (thing.StreamType);
+            var contentIoPool = Registry.Pool.TryGetCreate<ContentIoPool<Stream, Content<Stream>>>();
+            var streamType = thing.StreamType;
+
+
+            var contentIo = contentIoPool.Find(streamType);
 
             string mimeType = "unknown";
-            if (sink != null) {
-                var info = sink.Use (result.Data);
+            if (contentIo != null) {
+                var info = contentIo.Use(result.Data);
                 if (info != null)
                     mimeType = info.MimeType;
                 else {
-                    info = sink.Detector.Find(thing.StreamType);
+                    info = contentIo.Detector.Find(streamType);
                     mimeType = info.MimeType;
                 }
             }

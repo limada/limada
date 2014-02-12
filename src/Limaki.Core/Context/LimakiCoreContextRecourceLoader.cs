@@ -17,13 +17,13 @@ namespace Limaki.IOC {
             context.Factory.Add<ICompressionWorker, Limaki.Compression.CompressionWorker> ();
             context.Factory.Add<IThingFactory, ThingFactory>();
 			
-			var streamProviders = Registry.Pool.TryGetCreate<IoProvider<Stream, Content<Stream>>>();
-            streamProviders.Add(new HtmlContentStreamIo()); 
-            streamProviders.Add(new RtfContentStreamIo()); 
-            streamProviders.Add(new ImageContentStreamIo());
-            streamProviders.Add(new PdfContentStreamIo());
+			var contentIoPool = Registry.Pool.TryGetCreate<ContentIoPool<Stream, Content<Stream>>>();
+            contentIoPool.Add(new HtmlContentStreamIo()); 
+            contentIoPool.Add(new RtfContentStreamIo()); 
+            contentIoPool.Add(new ImageContentStreamIo());
+            contentIoPool.Add(new PdfContentStreamIo());
 
-            var diggProvider = Registry.Pool.TryGetCreate<ContentDiggProvider>();
+            var diggProvider = Registry.Pool.TryGetCreate<ContentDiggPool>();
             diggProvider.Add(new HtmlContentDigger());
         }
 

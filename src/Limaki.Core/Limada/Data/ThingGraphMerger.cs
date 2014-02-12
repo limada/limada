@@ -21,7 +21,7 @@ using System.Linq;
 
 namespace Limada.Data {
 
-    public class ThingGraphMerger : ISink<IThingGraph, IThingGraph>, IProgress {
+    public class ThingGraphMerger : IPipe<IThingGraph, IThingGraph>, IProgress {
        
         public Action<string, int, int> Progress { get; set; }
 

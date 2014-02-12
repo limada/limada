@@ -329,8 +329,8 @@ namespace Limada.Usecases {
                             try {
 
                                 sink = sinkIo.Open(Iori.FromFileName(sinkFile));
-                                var repairer = Registry.Pool.TryGetCreate<IoProvider<IThingGraphRepair, Iori>>()
-                                    .Find(sourceInfo.Extension,IoMode.Read) as ISink<Iori, IThingGraph>;
+                                var repairer = Registry.Pool.TryGetCreate<ContentIoPool<IThingGraphRepair, Iori>>()
+                                    .Find(sourceInfo.Extension,IoMode.Read) as IPipe<Iori, IThingGraph>;
                                 this.AttachProgress(repairer as IProgress);
                                 repairer.Use(Iori.FromFileName(sourceFile), sink.Data);
 

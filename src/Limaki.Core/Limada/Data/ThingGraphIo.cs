@@ -21,7 +21,7 @@ using Limaki.Data;
 
 namespace Limada.Data {
 
-    public abstract class ThingGraphIo : ContentIo<Iori>, ISink<Iori,ThingGraphContent>, ISink<ThingGraphContent, Iori> {
+    public abstract class ThingGraphIo : ContentIo<Iori>, IPipe<Iori,ThingGraphContent>, IPipe<ThingGraphContent, Iori> {
 
         protected ThingGraphIo(ContentDetector detector) : base(detector) {}
 
@@ -37,7 +37,7 @@ namespace Limada.Data {
 
         public override ContentInfo Use (Iori source, ContentInfo sink) {
             if (Supports(source))
-                return SinkExtensions.Use(source, sink, s => Use(s));
+                return PipeExtensions.Use(source, sink, s => Use(s));
             return null;
         }
 
@@ -45,7 +45,7 @@ namespace Limada.Data {
         public abstract void Flush (ThingGraphContent sink);
         public abstract void Close(ThingGraphContent sink);
 
-        ThingGraphContent ISink<Iori,ThingGraphContent>.Use (Iori source) {
+        ThingGraphContent IPipe<Iori,ThingGraphContent>.Use (Iori source) {
             return Open(source);
         }
 

@@ -18,36 +18,36 @@ namespace Limaki.Tests.Data.Streams {
             return IoUtils.FindSubDirInRootPath("TestData") + Path.DirectorySeparatorChar;
         }
 
-        IContentIo<Stream> FindProvider (long streamType) {
-            var provider = Registry.Pool.TryGetCreate<IoProvider<Stream,Content<Stream>>>();
-            return provider.Find(streamType);
+        IContentIo<Stream> FindIo (long streamType) {
+            var contentIoPool = Registry.Pool.TryGetCreate<ContentIoPool<Stream,Content<Stream>>>();
+            return contentIoPool.Find(streamType);
         }
 
         [Test]
-        public void ContentProvidersTest() {
-            var provider = Registry.Pool.TryGetCreate<IoProvider<Stream, Content<Stream>>>();
+        public void ContentIoPoolTest() {
+            var contentIoPool = Registry.Pool.TryGetCreate<ContentIoPool<Stream, Content<Stream>>>();
 
-            Assert.IsNotNull(provider.Find(ContentTypes.RTF), "rtf");
-            Assert.IsNotNull(provider.Find("rtf",IoMode.ReadWrite), "rtf");
+            Assert.IsNotNull(contentIoPool.Find(ContentTypes.RTF), "rtf");
+            Assert.IsNotNull(contentIoPool.Find("rtf",IoMode.ReadWrite), "rtf");
 
-            Assert.IsNotNull(provider.Find(ContentTypes.HTML), "html");
-            Assert.IsNotNull(provider.Find("html", IoMode.ReadWrite), "html");
+            Assert.IsNotNull(contentIoPool.Find(ContentTypes.HTML), "html");
+            Assert.IsNotNull(contentIoPool.Find("html", IoMode.ReadWrite), "html");
 
-            Assert.IsNotNull(provider.Find(ContentTypes.JPG), "jpg");
-            Assert.IsNotNull(provider.Find("jpg", IoMode.ReadWrite), "jpg");
+            Assert.IsNotNull(contentIoPool.Find(ContentTypes.JPG), "jpg");
+            Assert.IsNotNull(contentIoPool.Find("jpg", IoMode.ReadWrite), "jpg");
         }
 
 
         public void ContentProviderFileTest(string fileName, long streamtype) {
             ReportDetail(fileName);
-            var provider = FindProvider(streamtype);
+            var provider = FindIo(streamtype);
             Assert.IsNotNull(provider, "No Provider found");
 
             Assert.IsTrue(File.Exists(fileName));
             var uri = IoUtils.UriFromFileName(fileName);
             var content = default(Content<Stream>);
             try {
-                var sink = provider as ISink<Uri, Content<Stream>>;
+                var sink = provider as IPipe<Uri, Content<Stream>>;
                 content = sink.Use(uri);
                 Assert.IsNotNull(content);
                 Assert.AreNotEqual(content.Data.Length, 0);

@@ -104,7 +104,7 @@ namespace Limada.Usecases {
         protected IoUriManager<Stream, IEnumerable<IThing>> _thingsIoManager = null;
         protected IoUriManager<Stream, IEnumerable<IThing>> ThingsIoManager { get { return _thingsIoManager ?? (_thingsIoManager = new IoUriManager<Stream, IEnumerable<IThing>> { Progress = this.Progress }); } }
 
-        public void ConfigureSink<TSource, TSink> (ISink<TSource, TSink> sink) {
+        public void ConfigureSink<TSource, TSink> (IPipe<TSource, TSink> sink) {
             var report = sink as IReport;
             if (report != null) {
                 report.Options.MarginBottom = 0;
