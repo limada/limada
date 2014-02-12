@@ -260,43 +260,22 @@ namespace Limada.Usecases.Cms {
                 return null;
 
             var result = new HtmlContent {
-                Data = thing.Id.ToString ("X16"),
+                Data = thing.Id.ToString ("X16"), // dummy value
                 Description = ThingToDisplay (ThingGraph, thing).ToString (),
                 ContentType = ContentTypes.HTML,
                 Source = thing.Id.ToString ("X16"),
             };
             try {
                 if (thing.StreamType == ContentTypes.RTF) {
-
-                    thing.DeCompress ();
-                    var converter = Registry.Factory.Create<ITextConverter>();
-                    converter.Source = thing.Data;
-                    converter.SourceType = ContentTypes.RTF;
-                    converter.Read ();
-                    thing.ClearRealSubject ();
-
-                    converter.RemovePmTags ();
-                    converter.ResultType = ContentTypes.HTML;
-                    converter.Write ();
-                    
-                    var resultS = converter.StringResult;
-                    if (true) {
-                        var cleaner = new HtmlCleaner (resultS) {
-
-                            RemoveSpan = true,
-                            RemoveFonts = true,
-                            RemoveStrong = true,
-                            RemoveTable = false,
-                            RemoveCData = true,
-                            RemoveStyle = true,
-                            RemoveComment = true,
-
-                        };
-
-                        resultS = cleaner.Clean ();
+                    var sinkType = ContentTypes.HTML;
+                    var converter = Registry.Pool.TryGetCreate<ConverterPool<Stream>>()
+                            .Find(thing.StreamType, sinkType);
+                    if (converter != null) {
+                        var source = ThingContentFacade.ConentOf (thing);
+                        using (var reader = new StreamReader(converter.Use(source, sinkType).Data))
+                            result.Data = reader.ReadToEnd();
+                        source.Data.Dispose();
                     }
-                    result.Data = resultS;
-
                 } else if (thing.StreamType == ContentTypes.HTML) {
                     thing.DeCompress ();
                     var reader = new StreamReader (thing.Data);

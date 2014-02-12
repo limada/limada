@@ -1,3 +1,17 @@
+/*
+ * Limada 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,6 +37,12 @@ namespace Limaki.Contents {
 
         public virtual Content<T> Use (Content<T> source, long sinkType) {
             return Use(source, new Content<T> { ContentType = sinkType });
+        }
+
+        protected bool ProveTypes (Content<Stream> source, long sourceType, Content<Stream> sink, long sinkType) {
+            if (source.ContentType != sourceType || source.ContentType != sinkType)
+                throw new ArgumentException ("Conversion not supported");
+            return true;
         }
 
         public abstract IEnumerable<Tuple<long, long>> SupportedTypes { get; }
