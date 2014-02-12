@@ -1053,7 +1053,7 @@ namespace Xwt.GtkBackend
 
 		void HandleDragFailed (object o, Gtk.DragFailedArgs args)
 		{
-			Console.WriteLine ("FAILED");
+            Console.WriteLine("HandleDragFailed");
 		}
 		
 		void HandleDragDataDelete (object o, Gtk.DragDataDeleteArgs args)
