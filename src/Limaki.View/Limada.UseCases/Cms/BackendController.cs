@@ -211,6 +211,17 @@ namespace Limada.Usecases.Cms {
             var contentIoPool = Registry.Pool.TryGetCreate<ContentIoPool<Stream, Content<Stream>>>();
             var streamType = thing.StreamType;
 
+            if (streamType == ContentTypes.TIF) {
+                var sinkType = ContentTypes.PNG;
+                var converter = Registry.Pool.TryGetCreate<ConverterPool<Stream>>()
+                    .Find(ContentTypes.TIF, sinkType);
+                if (converter != null) {
+                    var conv = converter.Use(result, sinkType);
+                    result.Data.Dispose();
+                    result.Data = conv.Data;
+                    result.ContentType = conv.ContentType;
+                }
+            }
 
             var contentIo = contentIoPool.Find(streamType);
 
