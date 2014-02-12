@@ -18,7 +18,7 @@ using System;
 
 namespace Limaki.Model.Content.IO {
 
-    public interface IContentIo<TSource> : ISink<TSource, ContentInfo>, IProgress {
+    public interface IContentIo<TSource> : IPipe<TSource, ContentInfo>, IProgress {
 
         IoMode IoMode { get; }
         ContentDetector Detector { get; }

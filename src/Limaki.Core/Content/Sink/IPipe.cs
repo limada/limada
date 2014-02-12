@@ -22,7 +22,7 @@ namespace Limaki.Model.Content.IO {
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TSink"></typeparam>
-    public interface ISink<TSource, TSink> {
+    public interface IPipe<TSource, TSink> {
         TSink Use(TSource source);
         TSink Use(TSource source, TSink sink);
     }

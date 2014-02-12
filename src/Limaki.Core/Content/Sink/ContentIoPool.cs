@@ -23,7 +23,7 @@ using Limaki.Common;
 
 namespace Limaki.Model.Content.IO {
 
-    public class IoProvider<TSource,TSink> : IEnumerable<IContentIo<TSource>> {
+    public class ContentIoPool<TSource,TSink> : IEnumerable<IContentIo<TSource>> {
 
         private ICollection<IContentIo<TSource>> _contentIos = new Set<IContentIo<TSource>>();
         

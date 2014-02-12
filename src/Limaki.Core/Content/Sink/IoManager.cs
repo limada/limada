@@ -47,8 +47,8 @@ namespace Limaki.Model.Content.IO {
         public string DefaultExtension { get; set; }
         public Action<string, int, int> Progress { get; set; }
 
-        private IoProvider<TSource, TSink> _provider = null;
-        public IoProvider<TSource, TSink> Provider { get { return _provider ?? (_provider = Registry.Pool.TryGetCreate<IoProvider<TSource, TSink>>()); } }
+        private ContentIoPool<TSource, TSink> _pool = null;
+        public ContentIoPool<TSource, TSink> ContentIoPool { get { return _pool ?? (_pool = Registry.Pool.TryGetCreate<ContentIoPool<TSource, TSink>>()); } }
 
         #region providing ContentIo
 
@@ -65,19 +65,19 @@ namespace Limaki.Model.Content.IO {
         }
 
         public virtual IContentIo<TSource> GetSinkByExtension(string extension, IoMode mode) {
-            var result = Provider.Find(extension.ToLower(), mode);
+            var result = ContentIoPool.Find(extension.ToLower(), mode);
             this.AttachProgress(result as IProgress);
             return result;
         }
 
         public object GetSinkIO(long streamType, IoMode mode) {
-            var result = Provider.Find(streamType, mode);
+            var result = ContentIoPool.Find(streamType, mode);
             this.AttachProgress(result as IProgress);
             return result;
         }
 
         public virtual ContentInfo GetContentInfo(Content stream) {
-            var sink = Provider.Find(stream.ContentType);
+            var sink = ContentIoPool.Find(stream.ContentType);
             if (sink != null) {
                 return sink.Detector.ContentSpecs.Where(e => e.ContentType == stream.ContentType).First();
             }
@@ -104,7 +104,7 @@ namespace Limaki.Model.Content.IO {
         public string GetFilter(IoMode mode) {
             string filter = "";
             string defaultFilter = null;
-            foreach (var sink in Provider) {
+            foreach (var sink in ContentIoPool) {
                 if (sink.IoMode.HasFlag(mode)) {
                     foreach (var info in sink.Detector.ContentSpecs) {
                         string ext = null;

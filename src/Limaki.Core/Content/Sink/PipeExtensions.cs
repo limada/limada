@@ -17,7 +17,7 @@ using System;
 using Limaki.Common;
 
 namespace Limaki.Model.Content.IO {
-    public static class SinkExtensions {
+    public static class PipeExtensions {
         public static TSink Use<TSource, TSink> (TSource source, TSink sink, Func<TSource, TSink> sinkOf) {
             return new Copier<TSink>(CopierOptions.ValueTypes).Copy(sinkOf(source), sink);
         }

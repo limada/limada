@@ -18,19 +18,19 @@ using Limaki.Common.Collections;
 
 namespace Limaki.Model.Content.IO {
 
-    public interface ISinkProvider<TSource, TSink> : IEnumerable<ISink<TSource,TSink>> {}
+    public interface IPipePool<TSource, TSink> : IEnumerable<IPipe<TSource,TSink>> {}
 
-    public class SinkProvider<TSource, TSink> : ISinkProvider<TSource, TSink> {
-        protected ICollection<ISink<TSource, TSink>> _sinks = new Set<ISink<TSource, TSink>>();
-        public virtual void Add (ISink<TSource, TSink> sinkIo) {
-            _sinks.Add(sinkIo);
+    public class PipePool<TSource, TSink> : IPipePool<TSource, TSink> {
+        protected ICollection<IPipe<TSource, TSink>> _sinks = new Set<IPipe<TSource, TSink>>();
+        public virtual void Add (IPipe<TSource, TSink> sink) {
+            _sinks.Add(sink);
         }
 
-        public virtual void Remove (ISink<TSource, TSink> sinkIo) {
-            _sinks.Remove(sinkIo);
+        public virtual void Remove (IPipe<TSource, TSink> sink) {
+            _sinks.Remove(sink);
         }
 
-        public virtual IEnumerator<ISink<TSource, TSink>> GetEnumerator () {
+        public virtual IEnumerator<IPipe<TSource, TSink>> GetEnumerator () {
             return _sinks.GetEnumerator();
         }
 

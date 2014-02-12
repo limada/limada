@@ -12,7 +12,7 @@ namespace Limaki.Model.Content.IO {
     /// a ContentDigger analyses the source content and 
     /// adds information 
     /// </summary>
-    public interface IContentDigger : ISink<Content<Stream>, Content<Stream>> { }
+    public interface IContentDigger : IPipe<Content<Stream>, Content<Stream>> { }
 
 
     public class ContentDigger : IContentDigger {
@@ -33,7 +33,7 @@ namespace Limaki.Model.Content.IO {
         public Func<Content<Stream>, Content<Stream>, Content<Stream>> DiggUse { get; protected set; }
     }
 
-    public class ContentDiggProvider : SinkProvider<Content<Stream>, Content<Stream>> {
+    public class ContentDiggPool : PipePool<Content<Stream>, Content<Stream>> {
         public virtual Content<Stream> Use (Content<Stream> content) {
             return base.Use(content, content);
         }

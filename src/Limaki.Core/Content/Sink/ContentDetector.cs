@@ -24,7 +24,7 @@ namespace Limaki.Model.Content.IO {
     /// if the stream is supported by ContentSpecs
     /// wording: detector, spotter, finder
     /// </summary>
-    public class ContentDetector : ContentSpec, ISink<Stream, ContentInfo>  {
+    public class ContentDetector : ContentSpec, IPipe<Stream, ContentInfo>  {
 
         protected ContentDetector (IEnumerable<ContentInfo> specs) : base(specs) { }
 
@@ -69,7 +69,7 @@ namespace Limaki.Model.Content.IO {
         #endregion
 
         public virtual ContentInfo Use (Stream source, ContentInfo sink) {
-            return SinkExtensions.Use(source, sink, s => Use(s));
+            return PipeExtensions.Use(source, sink, s => Use(s));
         }
     }
 }

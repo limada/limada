@@ -20,7 +20,7 @@ using Limaki.Model.Content;
 
 namespace Limaki.Model.Content.IO {
 
-    public class StreamIo : ContentIo<Stream>, ISink<Uri, Stream>, ISink<Stream, Uri> {
+    public class StreamIo : ContentIo<Stream>, IPipe<Uri, Stream>, IPipe<Stream, Uri> {
 
         protected StreamIo(ContentDetector detector): base(detector) {}
 
@@ -78,7 +78,7 @@ namespace Limaki.Model.Content.IO {
             return Write(source, sink);
         }
 
-        Uri ISink<Stream, Uri>.Use (Stream source) {
+        Uri IPipe<Stream, Uri>.Use (Stream source) {
             return Write(source, null);
         }
 
