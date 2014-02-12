@@ -16,6 +16,7 @@ using System;
 using System.IO;
 using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using Limaki.Contents;
 using Limaki.Model.Content;
 
 namespace Limaki.Compression {

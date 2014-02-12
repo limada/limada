@@ -13,8 +13,10 @@
  */
 
 using System.IO;
+using Limaki.Model.Content;
 
-namespace Limaki.Model.Content {
+namespace Limaki.Contents {
+
     public interface ICompressionWorker {
         bool Compressable ( CompressionType compression );
         Stream Compress ( Stream stream, CompressionType compression );
