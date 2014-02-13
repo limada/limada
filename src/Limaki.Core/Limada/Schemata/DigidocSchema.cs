@@ -198,17 +198,23 @@ namespace Limada.Schemata {
         public IEnumerable<IThing> OrderedPages() {
             return this.OrderedPages(this.Graph, this.Target);
         }
-        public IEnumerable<IThing> Pages(IThingGraph graph, IThing document) {
+
+        public IEnumerable<IThing> Pages (IThingGraph graph, IThing document) {
+            return PageLinks(graph, document)
+                .Select(link => link.Leaf);
+        }
+
+        public IEnumerable<ILink> PageLinks (IThingGraph graph, IThing document) {
             var filteredGraph = graph as FilteredGraph<IThing, ILink>;
             if (filteredGraph != null)
                 graph = filteredGraph.Source as IThingGraph;
-                
+
             if (graph == null || document == null)
-                return new IThing[0];
+                return new ILink[0];
             return graph.Edges(document)
-                .Where(link => link.Marker.Id == DigidocSchema.DocumentPage.Id)
-                .Select(link => link.Leaf);
+                .Where(link => link.Marker.Id == DigidocSchema.DocumentPage.Id);
         }
+
         public IEnumerable<IThing> OrderedPages(IThingGraph graph, IThing document) {
             var pages = Pages(graph, document);
             Func<IThing, IThing> order = t => t;
@@ -223,8 +229,11 @@ namespace Limada.Schemata {
             return HasPages(this.Graph, this.Target);
         }
 
-        public bool HasPages(IThingGraph thinggraph, IThing document) {
-            IGraph<IThing, ILink> graph = thinggraph;
+        public bool HasPages (GraphCursor<IThing, ILink> cursor) {
+            return HasPages(cursor.Graph , cursor.Cursor);
+        }
+
+        public bool HasPages (IGraph<IThing, ILink> graph, IThing document) {
             var filteredGraph = graph as FilteredGraph<IThing, ILink>;
             if (filteredGraph != null)
                 graph = filteredGraph.Source;
