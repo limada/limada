@@ -53,6 +53,16 @@ namespace Limaki.Graphs {
             return !ItemIsStorable || (edge.Root != null && edge.Leaf != null);
         }
 
+        public virtual bool HasSingleEdge (TItem item) {
+            var first = false;
+            foreach (var link in Edges(item)) {
+                if (first)
+                    return false;
+                first = true;
+            }
+            return first;
+        }
+
         protected void CheckEdge(TEdge edge) {
             if (!ValidEdge(edge)) {
                 var m =  "Edge " + edge + "\tRoot or Leaf is null";

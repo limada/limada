@@ -249,6 +249,32 @@ namespace Limada.Data.db4o {
             }
         }
 
+        public override bool HasSingleEdge (IThing item) {
+            var result = false;
+            if (item != null) {
+                var links = getCached (item);
+                if (links == null) {
+                    try {
+                        var query = Session.Query();
+
+                        query.Constrain (LinkType);
+
+                        query.Descend (LeafIdField).Constrain (item.Id);
+                        var count = query.Execute().Count;
+                        if (count <= 1) {
+                            query.Descend (RootIdField).Constrain (item.Id);
+                            count += query.Execute().Count;
+                        }
+                        result = count == 1;
+                    } catch (Exception e) {
+                        throw e;
+                    } finally {}
+                } else {
+                    return links.Count == 1;
+                }
+            }
+            return result;
+        }
         //protected virtual bool IsEdge(bool root, ILink<Id> edge) {
         //    if (edge!= null)
         //        try {

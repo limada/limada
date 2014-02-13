@@ -173,5 +173,7 @@ namespace Limaki.Graphs {
         IEnumerable<TItem> Where(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate);
 
         bool ValidEdge(TEdge edge);
+
+        bool HasSingleEdge (TItem item);
     }
 }

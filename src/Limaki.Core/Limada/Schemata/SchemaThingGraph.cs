@@ -307,15 +307,10 @@ namespace Limada.Schemata {
 
 
         public virtual bool RemoveThingToDisplay(IThing item) {
-            IThing description = ThingToDisplay (item);
-            if (description != item) {
-                int i = 0;
-                foreach(ILink link in Source.Edges(description)) {
-                    if ( i>0 ) break;
-                    i++;
-                }
-                if (i <= 1)
-                    return Remove(description);
+            var thingToDisplay = ThingToDisplay (item);
+            if (thingToDisplay != item) {
+                if (Source.HasSingleEdge(thingToDisplay))
+                    return Remove(thingToDisplay);
             }
             return false;
         }
