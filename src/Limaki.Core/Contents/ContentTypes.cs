@@ -36,34 +36,7 @@ namespace Limaki.Contents {
 
         public static long LimadaSheet = unchecked((long)0x5a835878a618b44d);
 
-        static IDictionary<long, string> _extensions = null;
-        public static IDictionary<long,string> Extensions {
-            get {
-                if (_extensions == null) {
-                    _extensions = new Dictionary<long, string> ();
-                    _extensions.Add (ASCII, "txt");
-                    _extensions.Add(Word97, "doc");
-                    _extensions.Add(RTF, "rtf");
-                    _extensions.Add(HTML, "html");
-                    _extensions.Add(TIF, "tif");
-                    _extensions.Add(JPG, "jpg");
-                    _extensions.Add(GIF, "gif");
-                    _extensions.Add(PNG, "png");
-                    _extensions.Add(EMF, "emf");
-                    _extensions.Add(WMF, "wmf");
-                    _extensions.Add(BMP, "bmp");
-                }
-                return _extensions;
-            }
-        }
-
-        public static string Extension(long streamType) {
-            string result = null;
-            if (Extensions.TryGetValue(streamType, out result))
-                return "."+result;
-            return ".unkown";
-        }
-    }
+ }
 
     
     //stypPic  = $C5409109CB0C4137;

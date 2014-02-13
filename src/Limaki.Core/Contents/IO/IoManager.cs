@@ -71,10 +71,13 @@ namespace Limaki.Contents.IO {
 
         public virtual IContentIo<TSource> GetSinkIO(Uri uri, IoMode mode) {
             if (uri.IsFile) {
-                var filename = IoUtils.UriToFileName(uri);
-                return GetSinkByExtension(Path.GetExtension(filename).Trim('.'), mode);
+                return GetSinkIO(IoUtils.UriToFileName(uri), mode);
             }
             return null;
+        }
+
+        public virtual IContentIo<TSource> GetSinkIO (string filename, IoMode mode) {
+            return GetSinkByExtension(Path.GetExtension(filename).Trim('.'), mode);
         }
 
         public virtual IContentIo<TSource> GetSinkByExtension(string extension, IoMode mode) {
@@ -83,16 +86,16 @@ namespace Limaki.Contents.IO {
             return result;
         }
 
-        public object GetSinkIO(long streamType, IoMode mode) {
-            var result = ContentIoPool.Find(streamType, mode);
+        public IContentIo<TSource> GetSinkIO (long contentType, IoMode mode) {
+            var result = ContentIoPool.Find(contentType, mode);
             this.AttachProgress(result as IProgress);
             return result;
         }
 
-        public virtual ContentInfo GetContentInfo(Content stream) {
-            var sink = ContentIoPool.Find(stream.ContentType);
+        public virtual ContentInfo GetContentInfo(Content content) {
+            var sink = ContentIoPool.Find(content.ContentType);
             if (sink != null) {
-                return sink.Detector.ContentSpecs.Where(e => e.ContentType == stream.ContentType).First();
+                return sink.Detector.ContentSpecs.Where(e => e.ContentType == content.ContentType).First();
             }
             return null;
         }
@@ -118,10 +121,10 @@ namespace Limaki.Contents.IO {
             string filter = "";
             string defaultFilter = null;
             foreach (var sink in ContentIoPool) {
-                if (sink.IoMode.HasFlag(mode)) {
+                if (sink.IoMode.HasFlag (mode)) {
                     foreach (var info in sink.Detector.ContentSpecs) {
                         string ext = null;
-                        var f = GetFilter(info, out ext);
+                        var f = GetFilter (info, out ext);
 
                         if (DefaultExtension != null && ext == "." + DefaultExtension)
                             defaultFilter = f;
