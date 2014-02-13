@@ -49,9 +49,13 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         public override void SetContent (IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
-            DigidocViewer.SetDocument(new GraphCursor<IVisual, IVisualEdge>(graph, visual));
+            DigidocViewer.SetDocument (GraphCursor.Create (graph, visual));
         }
 
+        public override void OnShow () {
+            base.OnShow();
+            DigidocViewer.OnShow();
+        }
         public override void Dispose () {
             DigidocViewer.Dispose();
             DigidocViewer = null;

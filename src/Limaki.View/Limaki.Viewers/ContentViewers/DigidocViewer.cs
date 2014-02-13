@@ -30,6 +30,7 @@ using Limaki.View.Layout;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
+using Limaki.View.Visuals.UI;
 using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
 using Xwt;
@@ -67,7 +68,7 @@ namespace Limaki.Viewers.StreamViewers {
         public virtual ContentStreamViewer ContentViewer { get; set; }
 
         public Action<ContentStreamViewer> AttachContentViewer { get; set; }
-
+        Content<Stream> _pageContent = null;
         protected virtual Content<Stream> PageContent {
             set {
                 if (value != null) {
@@ -80,6 +81,7 @@ namespace Limaki.Viewers.StreamViewers {
                 } else {
                     ContentViewer = null;
                 }
+                _pageContent = value;
             }
         }
 
@@ -107,6 +109,12 @@ namespace Limaki.Viewers.StreamViewers {
                     display.EventControler.Add(scroller);
                 }
             }
+        }
+
+        public virtual void OnShow () {
+            if (AttachContentViewer != null && ContentViewer != null)
+                AttachContentViewer(ContentViewer);
+            PageContent = _pageContent;
         }
 
         public virtual void Compose () {
@@ -139,8 +147,11 @@ namespace Limaki.Viewers.StreamViewers {
                 var docMan = new DigidocViz();
                 var pageContent = docMan.PageContent(e.Scene.Graph, e.Item);
                 PageContent = pageContent;
-                if (pageContent != null && ContentViewer != null)
-                    AttachScroller(display, ContentViewer.Frontend as IDisplay);
+                if (pageContent != null && ContentViewer != null) {
+                    AttachScroller (display, ContentViewer.Frontend as IDisplay);
+                    var thing = e.Scene.Graph.ThingOf (e.Item);
+                    ContentViewer.ContentId = thing.Id;
+                }
             };
 
             var layout = display.Layout;
@@ -195,16 +206,34 @@ namespace Limaki.Viewers.StreamViewers {
 
             // bring the docpages into view:
             var docManager = new DigidocViz();
-            var scene = new Scene();
+            var pageScene = new Scene();
             var targetGraph = new WiredDisplays().CreateTargetGraph(source.Graph);
-            scene.Graph = targetGraph;
-            pagesDisplay.Data = scene;
+            pageScene.Graph = targetGraph;
+
+            source.Graph.GraphChanged += (sourceGraph, visual, changeType) => {
+                new WiredScenes(sourceGraph, pageScene).GraphChanged(visual, changeType);
+                pagesDisplay.Perform();
+            };
+
+           
+            pagesDisplay.Data = pageScene;
 
             var doc = source.Graph.ThingOf(source.Cursor);
             var targetDocument = targetGraph.VisualOf(doc);
 
             this.DocumentVisual = targetDocument;
 
+            var thingGraph = source.Graph.ThingGraph();
+            if (thingGraph != null) {
+                thingGraph.GraphChanged += (tg, t, c) => {
+                    if (pageScene.Graph.ContainsVisualOf(t)) {
+                        var visual = pageScene.Graph.VisualOf(t);
+                        new SceneChanger(pageScene).GraphChanged(visual, c);
+                        if (c==GraphChangeType.Remove && ContentViewer != null && ContentViewer.ContentId == t.Id)
+                            ContentViewer.Clear();
+                    }
+                };
+            }
             // get the pages and add them to scene:
             var pages = docManager.Pages(targetGraph, targetDocument).OrderBy(e => e, new VisualComparer()).ToList();
             pages.ForEach(page => pagesDisplay.Data.Add(page));
@@ -234,7 +263,7 @@ namespace Limaki.Viewers.StreamViewers {
             // show first page:
             var firstPage = pages.FirstOrDefault();
             if (firstPage != null) {
-                scene.Focused = firstPage;
+                pageScene.Focused = firstPage;
                 pagesDisplay.OnSceneFocusChanged();
             }
             pagesDisplay.Perform();

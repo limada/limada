@@ -81,7 +81,13 @@ namespace Limaki.Swf.Backends.Viewers.Content {
             if (ImageDisplay != null) {
                 var display = ImageDisplay;
                 display.BackColor = this.BackColor;
-                display.Data = Image.FromStream(content.Data);
+                if (content.Data != null)
+                    display.Data = Image.FromStream(content.Data);
+                else {
+                    display.Data = null;
+                    display.Reset();
+                    return;
+                }
             }
             if (IsStreamOwner) {
                 content.Data.Close ();
