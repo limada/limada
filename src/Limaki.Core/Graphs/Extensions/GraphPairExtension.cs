@@ -92,7 +92,9 @@ namespace Limaki.Graphs.Extensions {
             if (source1 != null && source2 != null) {
                 var ping = source1.Get(item);
                 if (ping != null) {
-                    back = source2.Get(ping);
+                    var contains = ping is TSourceEdge ? source2.Source.Contains((TSourceEdge)ping) : source2.Source.Contains(ping);
+                    if (contains)
+                        back = source2.Get(ping);
                 }
             }
             return back;
