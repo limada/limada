@@ -142,6 +142,12 @@ namespace Limaki.Graphs {
             return result;
         }
 
+        public virtual bool RemoveInSink (TItem item) {
+            if (item is TEdge)
+                return Sink.Remove((TEdge) item);
+            return Sink.Remove(item);
+        }
+
         public override IEnumerator<TItem> GetEnumerator() {
             return Sink.GetEnumerator();
         }

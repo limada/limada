@@ -56,5 +56,11 @@ namespace Limaki.Graphs {
     where TSinkEdge : IEdge<TSinkItem>, TSinkItem {
         IGraph<TSinkItem, TSinkEdge> Sink { get; }
         IEnumerable<TSinkEdge> ComplementEdges(TSinkItem item, IGraph<TSinkItem, TSinkEdge> graph);
+        /// <summary>
+        /// removes in sink, but not in source
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        bool RemoveInSink (TSinkItem item);
     }
 }
