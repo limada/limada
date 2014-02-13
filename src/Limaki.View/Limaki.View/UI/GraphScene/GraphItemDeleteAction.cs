@@ -37,17 +37,22 @@ namespace Limaki.View.UI.GraphScene {
         public virtual ISelectionRenderer MoveResizeRenderer { get; set; }
 
         public void Delete ( TItem deleteRoot, Set<TItem> done ) {
+            Action<TItem> doDelete = delete => {
+                if (!done.Contains(delete)) {
+                    Scene.Requests.Add(new DeleteEdgeCommand<TItem, TEdge>(delete, Scene));
+                    done.Add(delete);
+                };
+            };
+
             if ( !done.Contains(deleteRoot) ) {
-                foreach (TItem delete in Scene.Graph.PostorderTwig(deleteRoot)) {
-                    if (!done.Contains(delete)) {
-                        Scene.Requests.Add(new DeleteEdgeCommand<TItem,TEdge>(delete, Scene));
-                        done.Add(delete);
-                    }
+                foreach (var item in Scene.Graph.PostorderTwig(deleteRoot)) {
+                    doDelete (item);
                 }
-                
-                Scene.Requests.Add(new DeleteCommand<TItem,TEdge>(deleteRoot, Scene));
-                
-                done.Add(deleteRoot);
+
+                var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<TItem,TEdge>>();
+                dependencies.DependentItems(GraphCursor.Create(Scene.Graph, deleteRoot), doDelete, GraphChangeType.Remove);
+
+                doDelete (deleteRoot);
             }
         }
 

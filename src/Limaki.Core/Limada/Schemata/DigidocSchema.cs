@@ -138,7 +138,14 @@ namespace Limada.Schemata {
 
         #region Data-Handling
         
-        public DigidocSchema():base() {}
+        public DigidocSchema():base() {
+            SchemaFacade.Dependencies.Visitor += (source, action , changeType) => {
+                DependsOn (source, changeType).ForEach (action);
+
+            };
+        }
+
+        
         public DigidocSchema(IThingGraph graph, IThing document) : base(graph,document) { }
 
         public IThing Title {
@@ -241,6 +248,25 @@ namespace Limada.Schemata {
                 .Select(page => ThingContentFacade.ConentOf(graph, page));
         }
 
+
+        public IEnumerable<IThing> DependsOn(GraphCursor<IThing,ILink> source, GraphChangeType changeType) {
+            if (HasPages(source)) {
+                var doc = source.Cursor;
+                var graph = source.Graph;
+                if (graph is SchemaThingGraph)
+                    graph = ((SchemaThingGraph) graph).Source;
+
+                foreach (var link in PageLinks(graph as IThingGraph, doc).ToArray()) {
+                    var page = link.Leaf;
+                    var singleEdge = graph.HasSingleEdge(page);
+                    yield return link;
+
+                    if (singleEdge || changeType != GraphChangeType.Remove)
+                        yield return page;
+                }
+
+            }
+        }
         #endregion
     }
 }

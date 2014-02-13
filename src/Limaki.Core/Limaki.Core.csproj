@@ -211,6 +211,7 @@
     <Compile Include="Graphs\GraphBase.cs" />
     <Compile Include="Graphs\GraphChangeType.cs" />
     <Compile Include="Graphs\GraphCursor.cs" />
+    <Compile Include="Graphs\GraphDepencencies.cs" />
     <Compile Include="Graphs\GraphMapper.cs" />
     <Compile Include="Graphs\GraphSourceSinkMapper.cs" />
     <Compile Include="Graphs\GraphItemTransformer.cs" />

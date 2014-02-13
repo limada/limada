@@ -42,5 +42,10 @@ namespace Limada.Schemata {
             
             return thing.GetType ().Equals (typeof (Thing))|| (thing is IStreamThing)||thing.Data==null;
         }
+
+        private static GraphDepencencies<IThing, ILink> _dependencies = null;
+        public static GraphDepencencies<IThing, ILink> Dependencies {
+            get { return _dependencies ?? (_dependencies = new GraphDepencencies<IThing, ILink>()); }
+        }
     }
 }

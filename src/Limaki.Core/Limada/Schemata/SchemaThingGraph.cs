@@ -323,7 +323,15 @@ namespace Limada.Schemata {
             return Source.Remove(edge);
         }
 
-        public override bool Remove(IThing item) {
+        public override bool Remove (IThing item) {
+            SchemaFacade.Dependencies.DependentItems(
+                GraphCursor.Create(this, item),
+                d => {
+                    RemoveThingToDisplay(d);
+                    this.GraphChanged(this, d, GraphChangeType.Remove);
+                    Source.Remove(d);
+                },
+                GraphChangeType.Remove);
             RemoveThingToDisplay(item);
             return Source.Remove(item);
         }
