@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using Limaki.Common.Collections;
 
 namespace Limaki.Graphs {
+
     public class LiveGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : GraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
@@ -91,6 +92,7 @@ namespace Limaki.Graphs {
                 _sourceEdges = new EmptyCollection<TSourceEdge>();
             }
         }
+
         #region ICollection<TEdgeOne> Member
 
         public void Add (TSinkEdge item) {

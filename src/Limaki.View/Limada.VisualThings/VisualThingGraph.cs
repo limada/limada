@@ -18,7 +18,9 @@ using Limaki.Graphs;
 using Limaki.Visuals;
 
 namespace Limada.VisualThings {
+
     public class VisualThingGraph : LiveGraphPair<IVisual, IThing, IVisualEdge, ILink> {
+
         public VisualThingGraph( IGraph<IVisual, IVisualEdge> sink, IThingGraph source):
             this(sink, source, new VisualThingTransformer()) { }
 
@@ -28,5 +30,6 @@ namespace Limada.VisualThings {
         }
 
         public VisualThingGraph (IGraph<IVisual, IVisualEdge> sink, IThingGraph source, VisualThingTransformer transformer ) : base(sink, source, transformer) {}
+   
     }
 }

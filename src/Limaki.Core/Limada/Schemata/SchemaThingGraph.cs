@@ -22,8 +22,10 @@ using Limaki.Graphs;
 using Id = System.Int64;
 using System.Linq.Expressions;
 using System.Linq;
+using Limaki.Common;
 
 namespace Limada.Schemata {
+
     public class SchemaThingGraph:FilteredGraph<IThing,ILink>,IThingGraph {
         public SchemaThingGraph(IThingGraph source):base(source) {
             this.EdgeFilter = SchemaEdgeFilter;
@@ -305,6 +307,7 @@ namespace Limada.Schemata {
             Source.Add(item);
         }
 
+        
 
         public virtual bool RemoveThingToDisplay(IThing item) {
             var thingToDisplay = ThingToDisplay (item);
@@ -314,6 +317,7 @@ namespace Limada.Schemata {
             }
             return false;
         }
+
         public override bool Remove(ILink edge) {
             RemoveThingToDisplay (edge);
             return Source.Remove(edge);

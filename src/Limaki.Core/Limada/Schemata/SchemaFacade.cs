@@ -14,8 +14,10 @@
 
 using Limada.Model;
 using Limada.Schemata;
+using Limaki.Graphs;
 
 namespace Limada.Schemata {
+
     public class SchemaFacade {
         
         public static void InitSchemata() {
@@ -28,7 +30,7 @@ namespace Limada.Schemata {
 
         public static void MakeMarkersUnique(IThingGraph thingGraph) {
             InitSchemata();
-            foreach (IThing marker in Schemata.Schema.IdentityGraph) {
+            foreach (var marker in Schemata.Schema.IdentityGraph) {
                 thingGraph.UniqueThing(marker);
             }
 

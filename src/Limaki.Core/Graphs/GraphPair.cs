@@ -249,9 +249,9 @@ namespace Limaki.Graphs {
         #region special algos
 
         public virtual IEnumerable<TSinkEdge> ComplementEdges(TSinkItem item, IGraph<TSinkItem,TSinkEdge> graph) {
-            TSourceItem itemTwo = Get (item);
+            var itemTwo = Get (item);
 
-            foreach (TSourceEdge edge in Source.Fork(itemTwo)) {
+            foreach (var edge in Source.Fork(itemTwo)) {
                 var rootOne = Mapper.Get(edge.Root);
                 bool doyield = rootOne != null && graph.Contains(rootOne);
                 if (doyield) {

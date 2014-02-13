@@ -187,6 +187,7 @@ namespace Limada.Schemata {
         public IEnumerable<IThing> Pages() {
             return this.Pages(this.Graph, this.Target);
         }
+
         public IEnumerable<IThing> OrderedPages() {
             return this.OrderedPages(this.Graph, this.Target);
         }

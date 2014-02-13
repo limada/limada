@@ -21,6 +21,7 @@ using Limaki.View.Rendering;
 using Xwt;
 using System;
 
+
 namespace Limaki.View.UI.GraphScene {
     /// <summary>
     /// Deletes an item
@@ -53,8 +54,8 @@ namespace Limaki.View.UI.GraphScene {
         public override void OnKeyPressed( KeyActionEventArgs e ) {
             base.OnKeyPressed(e);
             if (e.Key == Key.Delete && (e.Modifiers==ModifierKeys.Control)) {
-                if (Scene.Selected.Count >0) {
-                    Set<TItem> done = new Set<TItem>();
+                if (Scene.Selected.Count > 0) {
+                    var done = new Set<TItem>();
                     foreach(TItem item in Scene.Selected.Elements) {
                         Delete (item, done);
                     }

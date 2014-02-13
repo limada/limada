@@ -11,19 +11,18 @@
  * http://www.limada.org
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Limada.Model;
 using Limada.Schemata;
-using Limaki.Contents;
-using Limaki.Graphs;
-using Limada.View;
 using Limada.VisualThings;
-using Limaki.Model.Content;
-using System.Linq;
-using Limaki.Visuals;
+using Limaki.Contents;
 using Limaki.Contents.IO;
-using Limaki.Drawing;
+using Limaki.Graphs;
+using Limaki.Visuals;
+using Limaki.Common.Linqish;
 
 namespace Limada.Usecases {
 

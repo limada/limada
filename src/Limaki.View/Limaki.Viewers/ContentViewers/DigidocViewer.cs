@@ -188,6 +188,7 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         public virtual IVisual DocumentVisual { get; set; }
+
         public virtual void SetDocument (GraphCursor<IVisual, IVisualEdge> source) {
 
             var pagesDisplay = this.PagesDisplay;
@@ -287,5 +288,7 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         #endregion
+
+        
     }
 }

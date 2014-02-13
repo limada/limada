@@ -102,7 +102,7 @@ namespace Limada.Data.db4o {
                 // Attention! Here we use RealData and NOT IRealData as of query-index-usage
                 query.Constrain(realDataBaseType);
                 query.Descend("_id").Constrain(id);
-                IObjectSet set = query.Execute();
+                var set = query.Execute();
                 if (set.HasNext())
                     result = set.Next() as IRealData<Id>;
             } catch (Exception e) {
