@@ -33,6 +33,13 @@ namespace Limaki.Graphs {
         public IGraph<TItem, TEdge> Graph { get; set; }
     }
 
+    public class GraphCursor {
+        public static GraphCursor<TItem, TEdge> Create<TItem, TEdge> (IGraph<TItem, TEdge> graph, TItem cursor)
+            where TEdge : IEdge<TItem> {
+            return new GraphCursor<TItem, TEdge>(graph, cursor);
+        }
+    }
+
     public class GraphSelection<TItem, TEdge> where TEdge : IEdge<TItem> {
 
         public GraphSelection (IGraph<TItem, TEdge> graph, IEnumerable<TItem> selection): this(graph) {
