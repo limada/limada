@@ -66,6 +66,15 @@ namespace Limada.VisualThings {
             }
             return null;
         }
+
+        public static bool ContainsVisualOf (this IGraph<IVisual, IVisualEdge> source, IThing thing) {
+            var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>();
+            if (thing != null && graph != null) {
+                return graph.Source2Sink.ContainsKey (thing);
+            }
+            return false;
+        }
+
         public static object Description(this IGraph<IVisual, IVisualEdge> source, IVisual visual) {
             return source.ThingGraph().Description(source.ThingOf(visual));
         }
