@@ -21,6 +21,7 @@ using Limaki.Graphs;
 using Limaki.View.Layout;
 using Limaki.View.UI.GraphScene;
 using Xwt;
+using System.Linq;
 
 namespace Limaki.View.Modelling {
 
@@ -83,7 +84,7 @@ namespace Limaki.View.Modelling {
             if (Data != null && Data.Requests.Count != 0) {
                 bool clipChanged = false;
 
-                foreach (var command in requests) {
+                foreach (var command in requests.ToArray()) {
                     if (command != null && command.Subject != null) {
 
                         if (BeforeExecute != null) {
