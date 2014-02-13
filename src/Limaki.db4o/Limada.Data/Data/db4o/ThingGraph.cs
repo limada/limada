@@ -37,6 +37,11 @@ namespace Limada.Data.db4o {
         public ThingGraph(IGateway g) : base(g) { }
 
         #region Configuration
+        public static readonly string RootIdField = "_rootId";
+        public static readonly string LeafIdField = "_leafId";
+
+        // Attention! Here we use Link and NOT ILink as of query-index-usage
+        public static readonly Type LinkType = typeof (Link);
 
         protected override void DeclareTypesToConfigure() {
             
@@ -93,8 +98,8 @@ namespace Limada.Data.db4o {
 
             if (Reflector.Implements(type, typeof(ILink))) {
                 clazz.UpdateDepth(1);
-                clazz.ObjectField("_rootId").Indexed(true);
-                clazz.ObjectField("_leafId").Indexed(true);
+                clazz.ObjectField(RootIdField).Indexed(true);
+                clazz.ObjectField(LeafIdField).Indexed(true);
                 clazz.ObjectField("_markerId").Indexed(true);
             } else {
                 FieldInfo fieldType =
@@ -167,15 +172,15 @@ namespace Limada.Data.db4o {
             if (item != null) 
             try {
                 IQuery query = Session.Query();
-                // Attention! Here we use Link and NOT ILink as of query-index-usage
-                query.Constrain(typeof(Link));
+                
+                query.Constrain(LinkType);
 
-                query.Descend("_rootId").Constrain(item.Id);
+                query.Descend(RootIdField).Constrain(item.Id);
                 result = new NativeQueryWrapper<ILink>(query.Execute());
                 
                 query = Session.Query();
                 query.Constrain(typeof(Link));
-                query.Descend("_leafId").Constrain(item.Id);
+                query.Descend(LeafIdField).Constrain(item.Id);
                 result.AddSet (query.Execute());
                 
 
