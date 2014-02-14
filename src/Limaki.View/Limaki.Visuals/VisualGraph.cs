@@ -16,5 +16,22 @@
 using Limaki.Graphs;
 
 namespace Limaki.Visuals {
-    public class VisualGraph:Graph<IVisual,IVisualEdge> {}
+
+    public class VisualGraph:Graph<IVisual,IVisualEdge> {
+        public override void DoChangeData (Limaki.Visuals.IVisual item, object data) {
+            base.DoChangeData(item, data);
+            EnsureChangeData (item, data);
+        }
+
+        public bool EnsureChangeData (IVisual item, object data) {
+            if (item == null)
+                return false;
+            if (!object.Equals(item.Data, data)) {
+                item.Data = data;
+                this.Add(item);
+                return true;
+            }
+            return false;
+        }
+    }
 }

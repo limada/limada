@@ -99,10 +99,6 @@ namespace Limada.VisualThings {
             return ThingFactory.CreateEdge(source as IThingGraph, b.Data);
         }
 
-        public virtual void SetVisualByThing(IGraph<IThing, ILink> graph, IVisual target, IThing source) {
-            target.Data = ThingDataToDisplay (graph, source);
-        }
-
         public object ThingDataToDisplay(IGraph<IThing, ILink> graph, IThing thing) {
             if (thing == null)
                 return CommonSchema.NullString;
@@ -138,21 +134,17 @@ namespace Limada.VisualThings {
         }
 
         public virtual IThing SetThingByData(IGraph<IThing, ILink> graph, IThing thing, object data) {
-            IThing itemToChange = ThingToDisplay(graph,thing);
+            var itemToChange = graph.ThingToDisplay (thing);
             if (thing != null && itemToChange == thing && SchemaFacade.DescriptionableThing(thing)) {
                 itemToChange = ThingFactory.CreateItem(data);
                 graph.Add(new Link(thing, itemToChange, CommonSchema.DescriptionMarker));
 
             } else {
-                itemToChange.Data = data;
-                // this is necessary because db4o.graph does not save by itself
-                graph.Add (itemToChange);
+                graph.DoChangeData (itemToChange, data);
             }
             return itemToChange;
         }
 
-        public override void ChangeData(IGraph<IThing, ILink> graph, IThing item, object data) {
-            throw new Exception("The method or operation is not implemented.");
         /// <summary>
         /// sets Target.Data to ThingDataToDisplay of source
         /// </summary>
@@ -174,19 +166,18 @@ namespace Limada.VisualThings {
                 if (thing is ILink) {
                     var link = (ILink) thing;
                     if (data is IThing) {
-                        
-                        link.Marker = (IThing) data;
-                        // this is necessary because db4o.graph does not save by itself
-                        graph.Source.Add (link.Marker);
-
+                        graph.Source.DoChangeData (link.Marker, data);
                         SetVisualByThing(graph.Source, visual, link.Marker);
-
                     }
                 } else {
-                    thing = SetThingByData (graph.Source,thing, data);
+                    thing = SetThingByData (graph.Source, thing, data);
                     SetVisualByThing (graph.Source, visual, thing);
                 }
             }
+        }
+
+        public override void ChangeData (IGraph<IThing, ILink> graph, IThing item, object data) {
+            throw new Exception("The method or operation is not implemented.");
         }
     }
 }

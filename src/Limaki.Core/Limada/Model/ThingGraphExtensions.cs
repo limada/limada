@@ -252,6 +252,28 @@ namespace Limada.Model {
                 }
             }
         }
-       
+
+        public static bool EnsureChangeData (this IThingGraph thingGraph, IThing item, object data) {
+            if (item == null)
+                return false;
+            var result = false;
+
+            var link = item as ILink;
+            if (link != null) {
+                var marker = data as IThing;
+                if (marker != null && link.Marker != marker) {
+                    link.Marker = marker;
+                    result = true;
+                }
+                return false;
+            } else if (!object.Equals (item.Data, data)) {
+                item.Data = data;
+                result = true;
+            }
+            if (result) {
+                thingGraph.Add (item);
+            }
+            return result;
+        }
     }
 }

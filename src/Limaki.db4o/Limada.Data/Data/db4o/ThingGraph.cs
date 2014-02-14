@@ -139,6 +139,12 @@ namespace Limada.Data.db4o {
             }
         }
 
+        public override void DoChangeData (IThing item, object data) {
+            if (ChangeData != null) {
+                ChangeData(this, item, data);
+            }
+            this.EnsureChangeData (item, data);
+        }
         
         void CheckProxy(object o) {
             if (o is IStreamThing) {

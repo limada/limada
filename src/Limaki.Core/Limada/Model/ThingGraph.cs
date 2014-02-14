@@ -69,6 +69,11 @@ namespace Limada.Model {
             AddMarker (edge.Marker);
         }
 
+        public override void DoChangeData (IThing item, object data) {
+            base.DoChangeData(item, data);
+            this.EnsureChangeData(item, data);
+        }
+
         public override bool Remove(ILink edge) {
             bool result = base.Remove(edge);
             RemoveId(edge);
@@ -258,8 +263,9 @@ namespace Limada.Model {
     }
 
     public class DataContainer:IDataContainer<Id>{
-        private IDictionary<Id, IRealData<Id>> dataList = 
-            new Dictionary<Id, IRealData<Id>>();
+
+        private IDictionary<Id, IRealData<Id>> dataList = new Dictionary<Id, IRealData<Id>>();
+       
         #region IDataContainer Member
 
         public bool Contains(IRealData<Id> item) {
