@@ -96,8 +96,8 @@ namespace Limada.Model {
             set {
                 try {
                     long data = 0;
-                    NumberType numberType = Model.NumberType.Long;
-                    Type type = value.GetType();
+                    var numberType = NumberType.Long;
+                    var type = value.GetType();
                     if (type == typeof(long)) {
                         data = (long)value;
                         numberType = NumberType.Long;
@@ -136,7 +136,21 @@ namespace Limada.Model {
             get { return this.Data; }
             set {
                 if (value is long)
-                    Data = (long)value;
+                    Data = (long) value;
+                else  if (value is int)
+                    Data = LongConverters.IntToLong ((int) value);
+                else if (value is string) {
+                    FromString ((string) value);
+                }
+            }
+        }
+
+        public virtual void FromString (string s) {
+            if (this.NumberType.HasFlag(NumberType.Long) || this.NumberType.HasFlag(NumberType.Integer)) {
+                long number = 0;
+                if (long.TryParse(s, out number)) {
+                    Data = number;
+                }
             }
         }
 
@@ -272,11 +286,9 @@ namespace Limada.Model {
         }
 
         public static long IntToLong(int value) {
-            long result = 0;
+            return value;
             //				byte[] bytes = BitConverter.GetBytes(value);
             //				result = BitConverter.ToInt64(bytes,0);
-            result = value;
-            return result;
         }
     }
 
