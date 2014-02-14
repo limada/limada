@@ -200,6 +200,23 @@ namespace Limaki.Viewers.StreamViewers {
 
         public virtual IVisual DocumentVisual { get; set; }
 
+        [Obsolete]
+        void GraphChangedAction0 (IGraph<IVisual, IVisualEdge> sourceGraph, IVisual visual, GraphEventType changeType) {
+            var pageScene = PagesDisplay.Data;
+            new WiredScenes(sourceGraph, pageScene).GraphChanged(visual, changeType);
+            PagesDisplay.Perform();
+        }
+
+        [Obsolete]
+        void ThingGraphChangedAction0 (IGraph<IThing, ILink> sourceGraph, IThing t, GraphEventType c) {
+            var pageScene = PagesDisplay.Data;
+            if (pageScene.Graph.ContainsVisualOf(t)) {
+                var visual = pageScene.Graph.VisualOf(t);
+                new SceneChanger(pageScene).GraphChanged(visual, c);
+                if (c == GraphEventType.Remove && ContentViewer != null && ContentViewer.ContentId == t.Id)
+                    ContentViewer.Clear();
+            }
+        }
         public virtual void SetDocument (GraphCursor<IVisual, IVisualEdge> source) {
 
             var pagesDisplay = this.PagesDisplay;
@@ -207,33 +224,25 @@ namespace Limaki.Viewers.StreamViewers {
             // bring the docpages into view:
             var docManager = new DigidocViz();
             var pageScene = new Scene();
-            var targetGraph = new WiredDisplays().CreateTargetGraph(source.Graph);
-            pageScene.Graph = targetGraph;
-
-            source.Graph.GraphChanged += (sourceGraph, visual, changeType) => {
-                new WiredScenes(sourceGraph, pageScene).GraphChanged(visual, changeType);
-                pagesDisplay.Perform();
-            };
-
-           
             pagesDisplay.Data = pageScene;
 
-            var doc = source.Graph.ThingOf(source.Cursor);
-            var targetDocument = targetGraph.VisualOf(doc);
+            var doc = source.Graph.ThingOf (source.Cursor);
+            IGraph<IVisual, IVisualEdge> targetGraph = null;
+                targetGraph = new WiredDisplays ().CreateTargetGraph (source.Graph);
+                source.Graph.GraphChanged -= GraphChangedAction0;
+                source.Graph.GraphChanged += GraphChangedAction0;
+                var thingGraph = source.Graph.ThingGraph ();
+                if (thingGraph != null) {
+                    thingGraph.GraphChanged -= ThingGraphChangedAction0;
+                    thingGraph.GraphChanged += ThingGraphChangedAction0;
+                }
+            }
 
+            pageScene.Graph = targetGraph;
+
+            var targetDocument = targetGraph.VisualOf (doc);
             this.DocumentVisual = targetDocument;
 
-            var thingGraph = source.Graph.ThingGraph();
-            if (thingGraph != null) {
-                thingGraph.GraphChanged += (tg, t, c) => {
-                    if (pageScene.Graph.ContainsVisualOf(t)) {
-                        var visual = pageScene.Graph.VisualOf(t);
-                        new SceneChanger(pageScene).GraphChanged(visual, c);
-                        if (c==GraphChangeType.Remove && ContentViewer != null && ContentViewer.ContentId == t.Id)
-                            ContentViewer.Clear();
-                    }
-                };
-            }
             // get the pages and add them to scene:
             var pages = docManager.Pages(targetGraph, targetDocument).OrderBy(e => e, new VisualComparer()).ToList();
             pages.ForEach(page => pagesDisplay.Data.Add(page));

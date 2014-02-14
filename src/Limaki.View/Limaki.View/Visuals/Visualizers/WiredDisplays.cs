@@ -25,6 +25,7 @@ namespace Limaki.View.Visuals.Visualizers {
     /// <summary>
     /// Methods to make Displays aware of each other
     /// </summary>
+    [Obsolete ("use Mesh instead")]
     public class WiredDisplays {
         /// <summary>
         /// makes a new Scene in sourceDisplay
@@ -37,10 +38,10 @@ namespace Limaki.View.Visuals.Visualizers {
         public virtual void MakeSideDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> sourceDisplay, IGraphSceneDisplay<IVisual, IVisualEdge> targetDisplay) {
             CopyDisplayProperties(sourceDisplay, targetDisplay);
 
-            targetDisplay.Data = CreateTargetScene(sourceDisplay.Data);
+            targetDisplay.Data = CreateTargetScene(sourceDisplay.Data.Graph);
 
-            WireScene(targetDisplay, sourceDisplay.Data, targetDisplay.Data);
-            WireScene(sourceDisplay, targetDisplay.Data, sourceDisplay.Data);
+            WireScene(targetDisplay, sourceDisplay.Data.Graph, targetDisplay.Data);
+            WireScene(sourceDisplay, targetDisplay.Data.Graph, sourceDisplay.Data);
         }
 
         /// <summary>
@@ -74,29 +75,29 @@ namespace Limaki.View.Visuals.Visualizers {
             return null;
         }
 
-        public IGraphScene<IVisual, IVisualEdge> CreateTargetScene (IGraphScene<IVisual, IVisualEdge> source) {
+        public IGraphScene<IVisual, IVisualEdge> CreateTargetScene (IGraph<IVisual, IVisualEdge> sourceGraph) {
             var result = new Scene ();
-            var targetGraph = CreateTargetGraph(source.Graph);
+            var targetGraph = CreateTargetGraph(sourceGraph);
             if (targetGraph != null)
                 result.Graph = targetGraph;
             
             return result;
         }
 
-        public virtual void WireScene(IGraphSceneDisplay<IVisual, IVisualEdge> targetDisplay, IGraphScene<IVisual, IVisualEdge> sourceScene, IGraphScene<IVisual, IVisualEdge> targetScene) {
+        public virtual void WireScene(IGraphSceneDisplay<IVisual, IVisualEdge> targetDisplay, IGraph<IVisual, IVisualEdge> sourceGraph, IGraphScene<IVisual, IVisualEdge> targetScene) {
 
-            Action<IGraph<IVisual, IVisualEdge>, IVisual, GraphChangeType> graphChanged = (sender, visual, changeType) => {
-                   new WiredScenes(sourceScene, targetScene).GraphChanged(visual, changeType);
+            Action<IGraph<IVisual, IVisualEdge>, IVisual, GraphEventType> graphChanged = (sender, visual, changeType) => {
+                   new WiredScenes(sourceGraph, targetScene).GraphChanged(visual, changeType);
                    targetDisplay.Perform();
                };
 
             Action<IGraph<IVisual, IVisualEdge>, IVisual> dataChanged = (sender, visual) => {
-                    new WiredScenes(sourceScene, targetScene).DataChanged(visual);
+                    new WiredScenes(sourceGraph, targetScene).DataChanged(visual);
                     targetDisplay.Perform();
                 };
 
-            sourceScene.Graph.GraphChanged += graphChanged;
-            sourceScene.Graph.DataChanged += dataChanged;
+            sourceGraph.GraphChanged += graphChanged;
+            sourceGraph.DataChanged += dataChanged;
 
         }
 
