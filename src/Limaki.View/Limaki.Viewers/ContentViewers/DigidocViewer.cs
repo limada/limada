@@ -36,6 +36,7 @@ using Limaki.Visuals;
 using Xwt;
 using Xwt.Backends;
 using Xwt.Drawing;
+using Limada.Model;
 
 namespace Limaki.Viewers.StreamViewers {
 
@@ -217,6 +218,10 @@ namespace Limaki.Viewers.StreamViewers {
                     ContentViewer.Clear();
             }
         }
+
+        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
+        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+
         public virtual void SetDocument (GraphCursor<IVisual, IVisualEdge> source) {
 
             var pagesDisplay = this.PagesDisplay;
@@ -228,6 +233,12 @@ namespace Limaki.Viewers.StreamViewers {
 
             var doc = source.Graph.ThingOf (source.Cursor);
             IGraph<IVisual, IVisualEdge> targetGraph = null;
+            var useMesh = true;
+            if (useMesh) {
+                var copier = new MeshSceneComposer ();
+                targetGraph = copier.CreateTargetGraph (source.Graph);
+               
+            } else {
                 targetGraph = new WiredDisplays ().CreateTargetGraph (source.Graph);
                 source.Graph.GraphChanged -= GraphChangedAction0;
                 source.Graph.GraphChanged += GraphChangedAction0;
@@ -239,6 +250,9 @@ namespace Limaki.Viewers.StreamViewers {
             }
 
             pageScene.Graph = targetGraph;
+            if (useMesh) {
+                Mesh.AddScene (pageScene);
+            }
 
             var targetDocument = targetGraph.VisualOf (doc);
             this.DocumentVisual = targetDocument;

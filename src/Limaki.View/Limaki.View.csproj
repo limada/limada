@@ -71,8 +71,13 @@
     <Compile Include="Limaki.View\UI\ICopyPasteAction.cs" />
     <Compile Include="Limaki.View\Visualizers\ImageDisplay.cs" />
     <Compile Include="Limaki.View\Visualizers\ImageExporter.cs" />
+    <Compile Include="Limaki.View\Visuals\Mesh\IGraphSceneMesh.cs" />
+    <Compile Include="Limaki.View\Visuals\Mesh\MeshGraphVisitor.cs" />
+    <Compile Include="Limaki.View\Visuals\Mesh\VisualSceneEvents.cs" />
     <Compile Include="Limaki.View\Visuals\UI\SceneChanger.cs" />
     <Compile Include="Limaki.View\Visuals\UI\VisualsTextEditActionBase.cs" />
+    <Compile Include="Limaki.View\Visuals\Mesh\SceneMesh.cs" />
+    <Compile Include="Limaki.View\Visuals\Mesh\VisualSceneComposer.cs" />
     <Compile Include="Limaki.Visuals\IVisualContentViz.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\DigidocKeyScrollAction.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\DigidocContentViewer.cs" />

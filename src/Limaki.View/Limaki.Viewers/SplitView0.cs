@@ -62,6 +62,9 @@ namespace Limaki.Viewers {
             CurrentDisplay = Display1;
         }
 
+        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
+        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>>()); } }
+
         public void InitializeDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
             IStyleSheet styleSheet = null;
@@ -77,6 +80,8 @@ namespace Limaki.Viewers {
             
             Backend.SetFocusCatcher(display.Backend);
             Backend.InitializeDisplay(display.Backend);
+
+            Mesh.AddDisplay (display);
 
         }
 
@@ -188,6 +193,10 @@ namespace Limaki.Viewers {
         #endregion
 
         public void ChangeData(IGraphScene<IVisual, IVisualEdge> scene) {
+
+            Mesh.RemoveScene (Display1.Data);
+            Mesh.RemoveScene (Display2.Data);
+
             Clear();
 
             CurrentDisplay = null;
@@ -199,11 +208,23 @@ namespace Limaki.Viewers {
 
             ContentViewManager.Clear();
 
-            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(Display1.Data);
+            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (Display1.Data);
+            var useMesh = true;
+            if (useMesh) {
+                var copier = new MeshSceneComposer();
+                copier.CopyDisplayProperties(Display1, Display2);
+                Display2.Data = copier.CreateTargetScene(Display1.Data.Graph);
+                
+            } else {
+                new WiredDisplays().MakeSideDisplay(Display1, Display2);
+            }
 
-            new WiredDisplays().MakeSideDisplay(Display1, Display2);
-
-            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(Display2.Data);
+            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (Display2.Data);
+            
+            if (useMesh) {
+                Mesh.AddScene (Display1.Data);
+                Mesh.AddScene (Display2.Data);
+            }
 
             GraphGraphView();
             GraphContentView();
@@ -503,6 +524,9 @@ namespace Limaki.Viewers {
 
             if (_contentViewManager != null)
                 this.ContentViewManager.Dispose();
+
+            Mesh.RemoveDisplay (Display1);
+            Mesh.RemoveDisplay (Display2);
 
             Display1.Dispose();
             Display1 = null;

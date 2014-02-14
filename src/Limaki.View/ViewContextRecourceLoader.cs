@@ -29,6 +29,7 @@ using Limaki.View.UI;
 using System;
 using Limaki.Viewers;
 using Limada.Usecases;
+using Limaki.View.Visuals.UI;
 
 namespace Limaki.View {
 
@@ -83,6 +84,8 @@ namespace Limaki.View {
 
             context.Factory.Add<IVisualContentViz, VisualThingsContentViz>();
             context.Factory.Add<IVisualContentViz<IThing>, VisualThingsContentViz>();
+
+            context.Factory.Add<IGraphSceneMesh<IVisual, IVisualEdge>, VisualThingSceneMesh>();
 
             // TODO: find a better place for this
             var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<IVisual, IVisualEdge>>();
