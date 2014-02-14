@@ -86,7 +86,7 @@ namespace Limaki.View.Swf.Backends {
                     uris.Add(((Uri) value).LocalPath);
                     result.SetFileDropList(uris);
                 } else
-                    result.SetData(type.Id, TransferDataSource.SerializeValue(value));
+                    result.SetData(type.Id, value);
             }
 
             return result;
