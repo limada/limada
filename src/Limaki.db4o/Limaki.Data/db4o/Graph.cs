@@ -162,8 +162,8 @@ namespace Limaki.Data.db4o {
             this.Add(item);
         }
 
-        public override void OnChangeData(TItem item, object data) {
-            base.OnChangeData(item, data);
+        public override void DoChangeData(TItem item, object data) {
+            base.DoChangeData(item, data);
             this.Add(item);
         }
 
@@ -350,6 +350,7 @@ namespace Limaki.Data.db4o {
         public override IEnumerable<TItem> Where(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
             return Session.AsQueryable<TItem>().Where(predicate);
         }
+
     }
 
 }

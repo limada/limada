@@ -40,9 +40,9 @@ namespace Limaki.Tests.View.Visuals {
 
             WiredDisplays facade = new WiredDisplays();
 
-            targetTest.Mock.Scene = facade.CreateTargetScene(sourceTest.Mock.Scene);
-            facade.WireScene(sourceTest.Mock.Display, sourceTest.Mock.Scene, targetTest.Mock.Scene);
-            facade.WireScene(sourceTest.Mock.Display, targetTest.Mock.Scene, sourceTest.Mock.Scene);
+            targetTest.Mock.Scene = facade.CreateTargetScene(sourceTest.Mock.Scene.Graph);
+            facade.WireScene(sourceTest.Mock.Display, sourceTest.Mock.Scene.Graph, targetTest.Mock.Scene);
+            facade.WireScene(sourceTest.Mock.Display, targetTest.Mock.Scene.Graph, sourceTest.Mock.Scene);
 
             var targetGraph = 
                 targetTest.Mock.Scene.Graph.RootSource().Source
@@ -111,7 +111,7 @@ namespace Limaki.Tests.View.Visuals {
                 sourceTest.Mock.Factory.Node[1]); // Programming);
 
             sourceGraph.Add (sourceEdge);
-            sourceView.OnGraphChanged (sourceEdge, GraphChangeType.Add);
+            sourceView.OnGraphChanged (sourceEdge, GraphEventType.Add);
 
             sourceTest.Mock.SceneFacade.Add (sourceEdge, new Point (10, 10));
             sourceTest.Mock.Display.Perform();
@@ -131,7 +131,7 @@ namespace Limaki.Tests.View.Visuals {
             var targetNewRoot = targetTest.Mock.Factory.Node[3]; // java
             var targetOldRoot = targetEdge.Root;
             targetTest.Mock.Scene.ChangeEdge(targetEdge, targetNewRoot, true);
-            targetTest.Mock.Scene.Graph.OnGraphChanged(targetEdge, GraphChangeType.Update);
+            targetTest.Mock.Scene.Graph.OnGraphChanged(targetEdge, GraphEventType.Update);
 
             targetTest.Mock.Scene.Requests.Add(new LayoutCommand<IVisual>(targetEdge, LayoutActionType.Justify));
             foreach (var visualEdge in targetTest.Mock.Scene.Twig(targetEdge)) {

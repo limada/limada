@@ -21,24 +21,19 @@ using Limaki.View.Layout;
 using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
 using Xwt;
+using System;
 
 namespace Limaki.View.Visuals.UI {
     /// <summary>
-    /// encaspulates some operations on Scenes wich are linked to each other
+    /// encapsulates some operations on Scenes wich are linked to each other
     /// used to build Graph.DataChanged and Graph.GraphChanged events
     /// </summary>
+    [Obsolete ("use Mesh instead")]
     public class WiredScenes : SceneChanger {
         public WiredScenes (IGraph<IVisual, IVisualEdge> sourceGraph, IGraphScene<IVisual, IVisualEdge> target)
             : base(target) {
             this.SourceGraph = sourceGraph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
         }
-
-        public WiredScenes (IGraphScene<IVisual, IVisualEdge> source, IGraphScene<IVisual, IVisualEdge> target)
-            : base(target) {
-
-            this.SourceGraph = source.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
-        }
-
 
         public virtual IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge> SourceGraph { get; protected set; }
 
@@ -61,14 +56,14 @@ namespace Limaki.View.Visuals.UI {
             base.ChangeEdge(root, leaf, targetEdge);
         }
 
-        public override void GraphChanged (IVisual sourceItem, GraphChangeType changeType) {
+        public override void GraphChanged (IVisual sourceItem, GraphEventType eventType) {
             var item = LookUp(sourceItem);
             if (item != null) {
-                if (changeType == GraphChangeType.Update && item is IVisualEdge) {
+                if (eventType == GraphEventType.Update && item is IVisualEdge) {
                     ChangeEdge((IVisualEdge) sourceItem, (IVisualEdge) item);
                     return;
                 } else {
-                    base.GraphChanged(item, changeType);
+                    base.GraphChanged(item, eventType);
                 }
             }
 

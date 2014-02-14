@@ -166,14 +166,14 @@ namespace Limaki.Graphs {
             return Source.LeafIsEdge(curr);
         }
 
-        public override void OnChangeData(TItem item, object data) {
-            Source.OnChangeData (item, data);
-            base.OnChangeData(item, data);
+        public override void DoChangeData(TItem item, object data) {
+            Source.DoChangeData (item, data);
+            base.DoChangeData(item, data);
         }
 
-        public override void OnGraphChanged(TItem item, GraphChangeType changeType) {
-            base.OnGraphChanged(item, changeType);
-            Source.OnChangeData (item, changeType);
+        public override void OnGraphChanged(TItem item, GraphEventType eventType) {
+            base.OnGraphChanged(item, eventType);
+            Source.DoChangeData (item, eventType);
         }
 
         public override void OnDataChanged(TItem item) {

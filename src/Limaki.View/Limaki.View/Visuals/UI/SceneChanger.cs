@@ -5,9 +5,11 @@ using Limaki.View.Layout;
 using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
 using Xwt;
+using System;
 
 namespace Limaki.View.Visuals.UI {
 
+    [Obsolete ("use Mesh instead")]
     public class SceneChanger {
 
         public SceneChanger (IGraphScene<IVisual, IVisualEdge> target) {
@@ -119,13 +121,13 @@ namespace Limaki.View.Visuals.UI {
             }
         }
 
-        public virtual void GraphChanged (IVisual item, GraphChangeType changeType) {
+        public virtual void GraphChanged (IVisual item, GraphEventType eventType) {
             if (item != null) {
-                if (changeType == GraphChangeType.Remove) {
+                if (eventType == GraphEventType.Remove) {
                     Remove(item);
                     return;
                 }
-                if (changeType == GraphChangeType.Add && item is IVisualEdge) {
+                if (eventType == GraphEventType.Add && item is IVisualEdge) {
                     Add((IVisualEdge) item);
                     return;
                 }

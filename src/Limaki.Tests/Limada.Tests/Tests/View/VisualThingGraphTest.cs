@@ -96,7 +96,7 @@ namespace Limada.Tests.View {
               Data.One.ToString() + "\tto\t" + newData.ToString());
 
             //Data.Sink.Data = newData;
-            Pair.OnChangeData(Data.One, newData);
+            Pair.DoChangeData(Data.One, newData);
             Assert.AreEqual(newData, Data.One.Data);
 
             Pair.OnDataChanged (Data.One);

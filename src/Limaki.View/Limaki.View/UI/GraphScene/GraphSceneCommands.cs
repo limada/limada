@@ -27,7 +27,7 @@ namespace Limaki.View.UI.GraphScene {
     where TEdge : TItem, IEdge<TItem> {
         public DeleteCommand(TItem target, IGraphScene<TItem, TEdge> parameter) : base(target, parameter) { }
         public override void Execute() {
-            this.Parameter.Graph.OnGraphChanged(Subject, GraphChangeType.Remove);
+            this.Parameter.Graph.OnGraphChanged(Subject, GraphEventType.Remove);
             this.Parameter.Remove(Subject);
         }
     }
@@ -36,7 +36,7 @@ namespace Limaki.View.UI.GraphScene {
     where TEdge : TItem, IEdge<TItem> {
         public DeleteEdgeCommand(TItem target, IGraphScene<TItem, TEdge> parameter) : base(target, parameter) { }
         public override void Execute() {
-            this.Parameter.Graph.OnGraphChanged(Subject, GraphChangeType.Remove);
+            this.Parameter.Graph.OnGraphChanged(Subject, GraphEventType.Remove);
             this.Parameter.RemoveBounds(Subject); // edges are deleted on scene.remove()!
         }
     }

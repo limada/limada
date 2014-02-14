@@ -209,7 +209,7 @@
     <Compile Include="Graphs\FilteredGraph.cs" />
     <Compile Include="Graphs\Graph.cs" />
     <Compile Include="Graphs\GraphBase.cs" />
-    <Compile Include="Graphs\GraphChangeType.cs" />
+    <Compile Include="Graphs\GraphEventType.cs" />
     <Compile Include="Graphs\GraphCursor.cs" />
     <Compile Include="Graphs\GraphDepencencies.cs" />
     <Compile Include="Graphs\GraphMapper.cs" />

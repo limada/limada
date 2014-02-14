@@ -154,12 +154,12 @@ namespace Limaki.Graphs {
         /// </summary>
         /// <param name="item"></param>
         /// <param name="data"></param>
-        void OnChangeData(TItem item, object data);
+        void DoChangeData(TItem item, object data);
 
         /// <summary>
         /// this is fired "outside" of the graph by the user-interface
         /// </summary>
-        Action<IGraph<TItem, TEdge>, TItem, GraphChangeType> GraphChanged { get;set;}
+        Action<IGraph<TItem, TEdge>, TItem, GraphEventType> GraphChanged { get;set;}
 
         /// <summary>
         /// fires the GraphChange-event
@@ -167,8 +167,8 @@ namespace Limaki.Graphs {
         /// a graph 
         /// </summary>
         /// <param name="item"></param>
-        /// <param name="changeType"></param>
-        void OnGraphChanged( TItem item, GraphChangeType changeType );
+        /// <param name="eventType"></param>
+        void OnGraphChanged( TItem item, GraphEventType eventType );
 
         #endregion
 

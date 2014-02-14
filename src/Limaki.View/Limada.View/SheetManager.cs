@@ -167,7 +167,7 @@ namespace Limada.View {
             var sheetVisual = scene.Graph.VisualOf(sheetThing);
             if (sheetVisual != null) {
                 //sheetVisual.Data = info.Name;
-                scene.Graph.OnChangeData(sheetVisual,info.Name);
+                scene.Graph.DoChangeData(sheetVisual,info.Name);
                 scene.Graph.OnDataChanged(sheetVisual);
             }
             saved.State.CopyTo(info.State);

@@ -50,7 +50,7 @@ namespace Limaki.View.UI.GraphScene {
                 }
 
                 var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<TItem,TEdge>>();
-                dependencies.DependentItems(GraphCursor.Create(Scene.Graph, deleteRoot), doDelete, GraphChangeType.Remove);
+                dependencies.DependentItems(GraphCursor.Create(Scene.Graph, deleteRoot), doDelete, GraphEventType.Remove);
 
                 doDelete (deleteRoot);
             }

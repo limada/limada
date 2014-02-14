@@ -96,9 +96,9 @@ namespace Limaki.View.Visuals.UI {
                 scene.Add(edge);
                 if (scene.Markers != null) {
                     object marker = scene.Markers.DefaultMarker;
-                    scene.Graph.OnChangeData (edge, marker);
+                    scene.Graph.DoChangeData (edge, marker);
                 }
-                scene.Graph.OnGraphChanged(edge, GraphChangeType.Add);
+                scene.Graph.OnGraphChanged(edge, GraphEventType.Add);
                 scene.Requests.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Invoke));
                 scene.Requests.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Justify));
             }

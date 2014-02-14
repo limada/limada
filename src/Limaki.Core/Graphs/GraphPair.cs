@@ -20,6 +20,7 @@ namespace Limaki.Graphs {
     /// <summary>
     /// GraphPair couples two graphs of different type
     /// the coupling is done by the GraphMapper
+    /// the rules for the mapping are in the GraphItemTransformer
     /// </summary>
     /// <typeparam name="TSinkItem"></typeparam>
     /// <typeparam name="TSourceItem"></typeparam>
@@ -32,12 +33,12 @@ namespace Limaki.Graphs {
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
         public GraphPair(IGraph<TSinkItem, TSinkEdge> sink, IGraph<TSourceItem, TSourceEdge> source,
-            GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Transformer)
+            GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> transformer)
             : base() {
-            this.Mapper = new GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(Transformer);
+            this.Mapper = new GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(transformer);
             this.Sink = sink;
             this.Source = source;
-            this.ChangeData = Transformer.ChangeData;
+            this.ChangeData = transformer.ChangeData;
         }
 
         public virtual TSourceItem Get(TSinkItem a) {
@@ -135,12 +136,9 @@ namespace Limaki.Graphs {
             return Remove(item, false);
         }
 
-        
-
         public override int EdgeCount( TSinkItem item ) {
             return Sink.EdgeCount(item);
         }
-
 
         public override ICollection<TSinkEdge> Edges( TSinkItem item ) {
             return Sink.Edges(item);
@@ -197,18 +195,18 @@ namespace Limaki.Graphs {
             Source.OnDataChanged(sourceItem);
         }
 
-        public override void OnChangeData(TSinkItem item, object data) {
+        public override void DoChangeData(TSinkItem item, object data) {
             var sourceItem = Get(item);
-            Source.OnChangeData (sourceItem, data);
-            Sink.OnChangeData (item, data);
-            base.OnChangeData(item, data);
+            Source.DoChangeData (sourceItem, data);
+            Sink.DoChangeData (item, data);
+            base.DoChangeData(item, data);
         }
 
-        public override void OnGraphChanged(TSinkItem item, GraphChangeType changeType) {
-            base.OnGraphChanged(item, changeType);
-            Sink.OnGraphChanged(item, changeType);
+        public override void OnGraphChanged(TSinkItem item, GraphEventType eventType) {
+            base.OnGraphChanged(item, eventType);
+            Sink.OnGraphChanged(item, eventType);
             var sourceItem = Get(item);
-            Source.OnGraphChanged(sourceItem, changeType);
+            Source.OnGraphChanged(sourceItem, eventType);
         }
 
         #endregion

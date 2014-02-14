@@ -70,10 +70,10 @@ namespace Limada.Usecases {
             return (pageThing != null && info.Supports(pageThing.StreamType));
         }
 
-        public void DependencyVisitor (GraphCursor<IVisual, IVisualEdge> source, Action<IVisual> visit, GraphChangeType changeType) {
+        public void DependencyVisitor (GraphCursor<IVisual, IVisualEdge> source, Action<IVisual> visit, GraphEventType eventType) {
             if (HasPages(source)) {
                 var digidoc = new DigidocSchema();
-                digidoc.DependsOn(GraphCursor.Create(source.Graph.ThingGraph(), source.Graph.ThingOf(source.Cursor)), changeType)
+                digidoc.DependsOn(GraphCursor.Create(source.Graph.ThingGraph(), source.Graph.ThingOf(source.Cursor)), eventType)
                     .Where(t => source.Graph.ContainsVisualOf(t))
                     .Select(t => source.Graph.VisualOf(t))
                     .ForEach(visit);

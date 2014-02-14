@@ -8,15 +8,15 @@ namespace Limaki.Graphs {
 
     public class GraphDepencencies<TItem, TEdge> where TEdge : TItem, IEdge<TItem> {
 
-        public Action<GraphCursor<TItem, TEdge>, Action<TItem>, GraphChangeType> Visitor { get; set; }
+        public Action<GraphCursor<TItem, TEdge>, Action<TItem>, GraphEventType> Visitor { get; set; }
 
         public virtual void DependentItems (
             GraphCursor<TItem, TEdge> graphCursor, 
             Action<TItem> visit, 
-            GraphChangeType changeType) {
+            GraphEventType eventType) {
 
             if (Visitor != null)
-                Visitor(graphCursor, visit, changeType);
+                Visitor(graphCursor, visit, eventType);
         }
     }
 }

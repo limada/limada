@@ -258,7 +258,7 @@ namespace Limada.Schemata {
         }
 
 
-        public IEnumerable<IThing> DependsOn(GraphCursor<IThing,ILink> source, GraphChangeType changeType) {
+        public IEnumerable<IThing> DependsOn(GraphCursor<IThing,ILink> source, GraphEventType eventType) {
             if (HasPages(source)) {
                 var doc = source.Cursor;
                 var graph = source.Graph;
@@ -270,7 +270,7 @@ namespace Limada.Schemata {
                     var singleEdge = graph.HasSingleEdge(page);
                     yield return link;
 
-                    if (singleEdge || changeType != GraphChangeType.Remove)
+                    if (singleEdge || eventType != GraphEventType.Remove)
                         yield return page;
                 }
 

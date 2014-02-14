@@ -157,7 +157,7 @@ namespace Limaki.View.Visuals.UI {
                 data = marker;
                 scene.Markers.DefaultMarker = marker;
             } 
-            scene.Graph.OnChangeData(visual, data);
+            scene.Graph.DoChangeData(visual, data);
             scene.Graph.OnDataChanged(visual);
             scene.Requests.Add (new LayoutCommand<IVisual> (visual, LayoutActionType.Justify));
         }

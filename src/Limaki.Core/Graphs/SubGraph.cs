@@ -158,13 +158,13 @@ namespace Limaki.Graphs {
             base.OnDataChanged(item);
         }
 
-        public override void OnChangeData(TItem item, object data) {
-            Source.OnChangeData(item, data);
-            base.OnChangeData(item, data);
+        public override void DoChangeData(TItem item, object data) {
+            Source.DoChangeData(item, data);
+            base.DoChangeData(item, data);
         }
-        public override void OnGraphChanged( TItem item, GraphChangeType changeType ) {
-            Source.OnGraphChanged(item, changeType);
-            base.OnGraphChanged(item, changeType);
+        public override void OnGraphChanged( TItem item, GraphEventType eventType ) {
+            Source.OnGraphChanged(item, eventType);
+            base.OnGraphChanged(item, eventType);
         }
 
         
