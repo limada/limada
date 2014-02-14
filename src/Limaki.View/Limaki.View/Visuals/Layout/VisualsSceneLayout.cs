@@ -97,7 +97,7 @@ namespace Limaki.View.Visuals.Layout {
 
         public virtual void AjustSize(TItem visual) {
             if (!(visual is TEdge)) {
-                //RectangleD invalid = visual.Shape.BoundsRect;
+                //var invalid = visual.Shape.BoundsRect;
                 AjustSize (visual, visual.Shape);
                 //Data.UpdateBounds(visual, invalid);
             }
@@ -108,9 +108,13 @@ namespace Limaki.View.Visuals.Layout {
                 var edge = (IVisualEdge)target;
                 EdgeRouter.RouteEdge((TEdge)edge);
 
-                IEdgeShape shape = (IEdgeShape)tshape;
-                shape.Start = edge.Root.Shape[edge.RootAnchor];
-                shape.End = edge.Leaf.Shape[edge.LeafAnchor];
+                var shape = (IEdgeShape)tshape;
+                var rootShape = edge.Root.Shape;
+                var leafShape = edge.Leaf.Shape;
+                if (rootShape != null)
+                    shape.Start = rootShape[edge.RootAnchor];
+                if (leafShape != null)
+                    shape.End = leafShape[edge.LeafAnchor];
             } else {
                 AjustSize (target, tshape);
             }
