@@ -144,10 +144,6 @@
       <Project>{b28433e8-bba2-4cb5-a7a2-10ae6aeddfb7}</Project>
       <Name>Limaki.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.Tests\Limaki.Tests.csproj">
-      <Project>{b1bc3ef8-5ec7-491a-ba83-70cb38f1823f}</Project>
-      <Name>Limaki.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Limaki.View.XwtGtk\Limaki.View.XwtGtk.csproj">
       <Project>{0577142f-b5d1-4271-8795-fe4615c2d728}</Project>
       <Name>Limaki.View.XwtGtk</Name>

@@ -114,12 +114,12 @@ namespace Limada.Data.db4o {
         public virtual bool Remove(Id id) {
             bool result = false;
             try {
-                bool contained = Contains (id);
+                bool contained = Contains(id);
                 if (contained) {
                     // TODO: this is stupid: 
                     // get the expensive object only to delete it!
                     IRealData<Id> item = GetById(id);
-                    Session.Delete (item);
+                    Session.Delete(item);
                 }
             } catch (Exception e) {
                 throw e;

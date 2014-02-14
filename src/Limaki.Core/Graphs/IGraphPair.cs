@@ -53,9 +53,12 @@ namespace Limaki.Graphs {
     /// <typeparam name="TSinkItem"></typeparam>
     /// <typeparam name="TSinkEdge"></typeparam>
     public interface ISinkGraph<TSinkItem,TSinkEdge> :IGraph<TSinkItem, TSinkEdge>
-    where TSinkEdge : IEdge<TSinkItem>, TSinkItem {
+        where TSinkEdge : IEdge<TSinkItem>, TSinkItem {
+
         IGraph<TSinkItem, TSinkEdge> Sink { get; }
+
         IEnumerable<TSinkEdge> ComplementEdges(TSinkItem item, IGraph<TSinkItem, TSinkEdge> graph);
+
         /// <summary>
         /// removes in sink, but not in source
         /// </summary>

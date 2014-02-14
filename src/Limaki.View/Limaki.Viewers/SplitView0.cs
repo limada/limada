@@ -42,7 +42,7 @@ namespace Limaki.Viewers {
             Compose();
         }
 
-        public ISplitViewBackend Backend { get { return BackendHost.Backend as ISplitViewBackend; } }
+        public new ISplitViewBackend Backend { get { return BackendHost.Backend as ISplitViewBackend; } }
 
         #region Initialize
 

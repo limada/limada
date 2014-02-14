@@ -18,13 +18,13 @@ using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Tests.View;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.Layout;
 using Limaki.Visuals;
 using Xwt;
 using Xwt.Drawing;
 using System.Linq;
+
 
 namespace Limaki.View.XwtBackend {
     public class PrototypeData {
@@ -81,29 +81,29 @@ namespace Limaki.View.XwtBackend {
         public IGraphScene<IVisual, IVisualEdge> Scene {
             get {
                 IGraphScene<IVisual, IVisualEdge> scene = null;
-                var examples = new SceneExamples();
-                var testData = examples.Examples[1];
-                testData.Data.Count = new Random().Next(10, 30);
-                //testData.Data.AddDensity = true;
-                scene = examples.GetScene(testData.Data);
+                //var examples = new SceneExamples();
+                //var testData = examples.Examples[1];
+                //testData.Data.Count = new Random().Next(10, 30);
+                ////testData.Data.AddDensity = true;
+                //scene = examples.GetScene(testData.Data);
 
-                var view = scene.Graph as SubGraph<IVisual, IVisualEdge>;
-                var graph = view.Source;
+                //var view = scene.Graph as SubGraph<IVisual, IVisualEdge>;
+                //var graph = view.Source;
 
-                foreach (var item in graph.FindRoots(null)) {
-                    //if (!graph.IsMarker (item))
-                    view.Add(item);
-                }
-                scene.Focused = scene.Elements.First();
-                var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
-                var styleSheet = styleSheets.DefaultStyleSheet;
+                //foreach (var item in graph.FindRoots(null)) {
+                //    //if (!graph.IsMarker (item))
+                //    view.Add(item);
+                //}
+                //scene.Focused = scene.Elements.First();
+                //var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+                //var styleSheet = styleSheets.DefaultStyleSheet;
 
-                var expander = new GraphSceneFolding<IVisual, IVisualEdge>();
-                expander.SceneHandler = () => scene;
-                var layout = new VisualsSceneLayout<IVisual, IVisualEdge>(expander.SceneHandler, styleSheet);
-                layout.Dimension = Dimension.Y;
-                expander.Layout = () => layout;
-                expander.Folder.Expand(true);
+                //var expander = new GraphSceneFolding<IVisual, IVisualEdge>();
+                //expander.SceneHandler = () => scene;
+                //var layout = new VisualsSceneLayout<IVisual, IVisualEdge>(expander.SceneHandler, styleSheet);
+                //layout.Dimension = Dimension.Y;
+                //expander.Layout = () => layout;
+                //expander.Folder.Expand(true);
                 return scene;
             }
         }

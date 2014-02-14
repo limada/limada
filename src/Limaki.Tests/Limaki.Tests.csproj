@@ -137,6 +137,7 @@
     <Compile Include="Limaki.Tests\View\Drawing\PointComparerTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\PolyAlgoPrototyper.cs" />
     <Compile Include="Playground\DocumentObjectModel\DOM.cs" />
+    <Compile Include="Playground\Graph\GraphEvents.cs" />
     <Compile Include="Playground\IO\IOPrototype.cs" />
     <Compile Include="Playground\IO\IoTryout.cs" />
     <Compile Include="Playground\Limada.Model\HyperGraph.cs" />
@@ -296,7 +297,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
-    <Folder Include="Playground\Graph\" />
     <Folder Include="[Deprecated]\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

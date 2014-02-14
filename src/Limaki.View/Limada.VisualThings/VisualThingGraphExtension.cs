@@ -59,6 +59,14 @@ namespace Limada.VisualThings {
             return null;
         }
 
+        public static IThing ThingToDisplay (this IGraph<IThing, ILink> graph, IThing thing) {
+            if (graph is SchemaThingGraph) {
+                return ((SchemaThingGraph) graph).ThingToDisplay(thing);
+            } else {
+                return thing;
+            }
+        }
+
         public static IVisual VisualOf(this IGraph<IVisual, IVisualEdge> source, IThing thing) {
             var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>();
             if (thing != null && graph != null) {

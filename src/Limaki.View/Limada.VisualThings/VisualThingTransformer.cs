@@ -103,7 +103,7 @@ namespace Limada.VisualThings {
             if (thing == null)
                 return CommonSchema.NullString;
 
-            thing = ThingToDisplay (graph, thing);
+            thing = graph.ThingToDisplay (thing);
             object result = null;
             if (thing is IProxy) {
                 result = CommonSchema.ProxyString;
@@ -122,15 +122,6 @@ namespace Limada.VisualThings {
                 result = CommonSchema.ThingString;
 
             return result;
-        }
-
-
-        public IThing ThingToDisplay(IGraph<IThing, ILink> graph, IThing thing) {
-            if (graph is SchemaThingGraph) {
-                return( (SchemaThingGraph) graph ).ThingToDisplay (thing);
-            } else {
-                return thing;
-            }
         }
 
         public virtual IThing SetThingByData(IGraph<IThing, ILink> graph, IThing thing, object data) {

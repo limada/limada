@@ -52,9 +52,9 @@ namespace Limada.Tests.Wrappers {
         }
         [Test]
         public void ThingGraphFactory() {
-            VisualThingGraph graph = new VisualThingGraph ();
+            var graph = new VisualThingGraph ();
 
-            ThingGraphFactory<ProgrammingLanguageFactory> factory = new ThingGraphFactory<ProgrammingLanguageFactory> ();
+            var factory = new ThingGraphFactory<ProgrammingLanguageFactory> ();
             factory.Populate (graph.Source);
             Trace.Write (
                 GraphTestUtils.ReportGraph<IThing, ILink> (graph.Source, factory.Name));
