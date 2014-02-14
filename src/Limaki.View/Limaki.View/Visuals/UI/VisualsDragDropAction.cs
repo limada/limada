@@ -104,7 +104,7 @@ namespace Limaki.View.DragDrop {
 
             var result = new TransferDataSource();
             result.AddValue<string>(visual.Data.ToString());
-            result.AddValue<IVisual>(visual);
+            // TODO: serialize that: result.AddValue<IVisual>(visual);
             return result;
         }
 

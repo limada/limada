@@ -142,12 +142,14 @@ namespace Limaki.Graphs {
 
 
         /// <summary>
-        /// this is fired "outside" of the graph by the user-interface
+        /// changes the items data
+        /// this is fired "outside" of the graph by calling DoChangeData
         /// </summary>
         Action<IGraph<TItem, TEdge>, TItem, object> ChangeData { get;set;}
 
         /// <summary>
-        /// fires the ChangeData-event
+        /// changes the items data
+        /// by calling the ChangeData-event
         /// this is called "outside" of the graph by the user-interface
         /// </summary>
         /// <param name="item"></param>

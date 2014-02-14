@@ -22,6 +22,15 @@ namespace Limaki.Graphs.Extensions {
 
     public static class GraphPairExtension {
 
+        /// <summary>
+        /// iterates through a GraphPair tree 
+        /// while graph is GraphPair TItem, TItem, TEdge, TEdge
+        ///     result = result.Source
+        /// </summary>
+        /// <typeparam name="TItem"></typeparam>
+        /// <typeparam name="TEdge"></typeparam>
+        /// <param name="graph"></param>
+        /// <returns></returns>
         public static IGraphPair<TItem, TItem, TEdge, TEdge> RootSource<TItem, TEdge>(this IGraph<TItem, TEdge> graph)
             where TEdge : IEdge<TItem>, TItem {
             var result = graph as IGraphPair<TItem, TItem, TEdge, TEdge>;
@@ -33,7 +42,13 @@ namespace Limaki.Graphs.Extensions {
             return result;
         }
 
-
+        /// <summary>
+        /// iterates through a GraphPair tree 
+        /// while graph is GraphPair TItem, TItem, TEdge, TEdge
+        ///     result = result.Source
+        /// then gives back GraphPair TSinkItem, TSourceItem, TSinkEdge, TSourceEdge
+        ///     if result.Source or result
+        /// </summary>
         public static IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (this IGraph<TSinkItem, TSinkEdge> graph)
             where TSinkEdge : IEdge<TSinkItem>, TSinkItem
             where TSourceEdge : IEdge<TSourceItem>, TSourceItem {

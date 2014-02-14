@@ -153,6 +153,14 @@ namespace Limada.VisualThings {
 
         public override void ChangeData(IGraph<IThing, ILink> graph, IThing item, object data) {
             throw new Exception("The method or operation is not implemented.");
+        /// <summary>
+        /// sets Target.Data to ThingDataToDisplay of source
+        /// </summary>
+        /// <param name="thingGraph"></param>
+        /// <param name="visual"></param>
+        /// <param name="thing"></param>
+        public virtual void SetVisualByThing (IGraph<IThing, ILink> thingGraph, IVisual visual, IThing thing) {
+            visual.Data = ThingDataToDisplay(thingGraph, thing);
         }
 
         public override void ChangeData(IGraph<IVisual, IVisualEdge> sink, IVisual visual, object data) {
