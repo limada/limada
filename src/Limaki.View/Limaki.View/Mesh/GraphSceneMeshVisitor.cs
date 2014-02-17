@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2008-2014 Lytico
+ * Copyright (C) 2014 Lytico
  *
  * http://www.limada.org
  * 
@@ -25,67 +25,80 @@ using Limaki.Visuals;
 
 namespace Limaki.View.Visuals.UI {
 
-    public class MeshGraphVisitor<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> 
+    public class GraphSceneMeshVisitor<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IGraphSceneMeshVisitor<TSinkItem, TSinkEdge>
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem
-        where TSourceEdge : IEdge<TSourceItem>, TSourceItem
-    {
+        where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
-        public IGraphSceneMesh<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Mesh { get; private set; }
+        public IGraphSceneMesh<TSinkItem, TSinkEdge> Mesh { get; private set; }
+        public GraphSceneMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> BackHandler { get; private set; }
         public IGraph<TSinkItem, TSinkEdge> SourceGraph { get; private set; }
         public TSinkItem SourceItem { get; private set; }
-        public IGraphSceneDisplay<TSinkItem, TSinkEdge> SourceDisplay { get; private set; }
-        public IGraphScene<TSinkItem, TSinkEdge> SourceScene { get; private set; }
-        public IGraph<TSourceItem, TSourceEdge> BackGraph { get; private set; }
-        public TSourceItem BackItem { get; private set; }
 
-        public IEnumerable<IGraphScene<TSinkItem, TSinkEdge>> SinkScenes {
-            get {
-                return Mesh.ScenesOfBackGraph (BackGraph).Where (s => s != SourceScene);
-            }
-        }
+        protected IGraphSceneDisplay<TSinkItem, TSinkEdge> SourceDisplay { get; private set; }
+        protected IGraphScene<TSinkItem, TSinkEdge> SourceScene { get; private set; }
+        protected IGraph<TSourceItem, TSourceEdge> BackGraph { get; private set; }
+        protected TSourceItem BackItem { get; private set; }
 
-        public MeshGraphVisitor (IGraphSceneMesh<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> mesh, IGraph<TSinkItem, TSinkEdge> graph, TSinkItem item) {
+        public GraphSceneMeshVisitor (
+                IGraphSceneMesh<TSinkItem, TSinkEdge> mesh, 
+                IGraphSceneMeshBackHandler<TSinkItem, TSinkEdge> backHandler,
+                IGraph<TSinkItem, TSinkEdge> graph, 
+                TSinkItem item) {
+
             this.Mesh = mesh;
+            this.BackHandler = backHandler as GraphSceneMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>;
             this.SourceGraph = graph;
             this.SourceItem = item;
+
             this.SourceDisplay = Mesh.Displays.FirstOrDefault (d => d.Data.Graph == SourceGraph);
             this.SourceScene = Mesh.Scenes.FirstOrDefault (s => s.Graph == SourceGraph);
             this.BackGraph = BackGraphOf (SourceGraph);
             this.BackItem =  BackItemOf (SourceGraph,item);
+
         }
 
-        public void ChangeDataVisit (Action<TSinkItem, TSinkItem, IGraphScene<TSinkItem, TSinkEdge>, IGraphSceneDisplay<TSinkItem, TSinkEdge>> visitor) {
+        protected IEnumerable<IGraphScene<TSinkItem, TSinkEdge>> SinkScenes {
+            get {
+                if (BackGraph == null)
+                    return new IGraphScene<TSinkItem, TSinkEdge>[0];
+                return Mesh.Scenes.Where (s => s.Graph != SourceGraph && BackGraphOf (s.Graph) == BackGraph);
+            }
+        }
+
+        public void ChangeDataVisit (Action<TSinkItem, TSinkItem, IGraphScene<TSinkItem, TSinkEdge>, IGraphSceneDisplay<TSinkItem, TSinkEdge>> visit) {
             foreach (var sinkScene in SinkScenes) {
                 var sinkGraph = sinkScene.Graph;
-                if (ContainsVisualOf (sinkGraph, BackItem)) {
-                    var sinkItem = VisualOf (sinkGraph, BackItem);
+                if (ContainsSourceOf (sinkGraph, BackItem)) {
+                    var sinkItem = SourceOf (sinkGraph, BackItem);
                     var sinkDisplay = Mesh.Displays.FirstOrDefault (d => d != SourceDisplay && d.Data == sinkScene);
-                    visitor (SourceItem, sinkItem, sinkScene, sinkDisplay);
+
+                    visit (SourceItem, sinkItem, sinkScene, sinkDisplay);
                 }
             }
         }
 
-        public void GraphChangedVisit (
-            Action<IGraph<TSinkItem, TSinkEdge>, TSinkItem,
-                    TSinkItem, IGraphScene<TSinkItem, TSinkEdge>,
-                    IGraphSceneDisplay<TSinkItem, TSinkEdge>, GraphEventType
-            > visitor, GraphEventType eventType) {
+        public void GraphChangedVisit (Action<
+                                            IGraph<TSinkItem, TSinkEdge>, TSinkItem,
+                                            TSinkItem, IGraphScene<TSinkItem, TSinkEdge>,
+                                            IGraphSceneDisplay<TSinkItem, TSinkEdge>, GraphEventType
+                                        > visit, GraphEventType eventType) {
 
             foreach (var sinkScene in SinkScenes) {
                 var sinkGraph = sinkScene.Graph;
-                if (ContainsVisualOf (sinkGraph.RootSource (), BackItem) || eventType == GraphEventType.Add) {
-                    var sinkItem = VisualOf (sinkGraph, BackItem);
+                if (ContainsSourceOf (sinkGraph.RootSource (), BackItem) || eventType == GraphEventType.Add) {
+                    var sinkItem = SourceOf (sinkGraph, BackItem);
                     var sinkDisplay = Mesh.Displays.FirstOrDefault (d => d != SourceDisplay && d.Data == sinkScene);
-                    visitor (SourceGraph, SourceItem, sinkItem, sinkScene, sinkDisplay, eventType);
+
+                    visit (SourceGraph, SourceItem, sinkItem, sinkScene, sinkDisplay, eventType);
                 }
             }
         }
 
         public bool IsVisible (IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem backItem) {
-            return ContainsVisualOf (sinkGraph, backItem);
+            return ContainsSourceOf (sinkGraph, backItem);
         }
 
-        public TSinkItem VisualOf (IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem backItem) {
+        public TSinkItem SourceOf (IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem backItem) {
             var graph = sinkGraph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
             if (backItem != null && graph != null) {
                 return graph.Get (backItem);
@@ -93,7 +106,7 @@ namespace Limaki.View.Visuals.UI {
             return default(TSinkItem);
         }
 
-        public bool ContainsVisualOf (IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem backItem) {
+        public bool ContainsSourceOf (IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem backItem) {
             var graph = sinkGraph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
             if (backItem != null && graph != null) {
                 return graph.Source2Sink.ContainsKey (backItem);

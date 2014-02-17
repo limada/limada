@@ -25,25 +25,17 @@ using Limaki.Common;
 
 namespace Limaki.View.Visuals.UI {
 
-    public interface IGraphSceneMesh { }
+    public interface IGraphSceneMesh<TItem, TEdge>  where TEdge : TItem, IEdge<TItem> {
 
-    public interface IGraphSceneMesh<TItem, TEdge> : IGraphSceneMesh where TEdge : TItem, IEdge<TItem> {
         void AddScene (IGraphScene<TItem, TEdge> scene);
         void RemoveScene (IGraphScene<TItem, TEdge> scene);
         void AddDisplay (IGraphSceneDisplay<TItem, TEdge> display);
         void RemoveDisplay (IGraphSceneDisplay<TItem, TEdge> display);
-    }
+        ICollection<IGraphScene<TItem, TEdge>> Scenes { get; }
+        ICollection<IGraphSceneDisplay<TItem, TEdge>> Displays { get; }
 
-
-    public interface IGraphSceneMesh<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IGraphSceneMesh<TSinkItem, TSinkEdge>
-        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
-        where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
-
-        ICollection<IGraphScene<TSinkItem, TSinkEdge>> Scenes { get; }
-        ICollection<IGraphSceneDisplay<TSinkItem, TSinkEdge>> Displays { get; }
-        ICollection<IGraph<TSourceItem, TSourceEdge>> BackGraphs { get; }
-
-        IEnumerable<IGraphScene<TSinkItem, TSinkEdge>> ScenesOfBackGraph (IGraph<TSourceItem, TSourceEdge> backGraph);
-
+        void CopyDisplayProperties (IGraphSceneDisplay<TItem, TEdge> sourceDisplay, IGraphSceneDisplay<TItem, TEdge> targetDisplay);
+        IGraph<TItem, TEdge> CreateTargetGraph (IGraph<TItem, TEdge> source);
+        IGraphScene<TItem, TEdge> CreateTargetScene (IGraph<TItem, TEdge> sourceGraph);
     }
 }
