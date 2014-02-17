@@ -25,7 +25,7 @@ using Xwt;
 
 namespace Limaki.View.Visuals.UI {
 
-    public class VisualSceneEvents {
+    public class VisualGraphSceneEvents : IGraphSceneEvents<IVisual, IVisualEdge> {
 
         public void GraphDataChanged (IVisual sourceItem, IVisual sinkItem, IGraphScene<IVisual, IVisualEdge> sinkScene, IGraphSceneDisplay<IVisual, IVisualEdge> sinkDisplay) {
             sinkItem.Data = sourceItem.Data;
