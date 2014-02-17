@@ -71,6 +71,38 @@ namespace Limaki.Graphs.Extensions {
         }
 
 
+        /// <summary>
+        /// iterates through a GraphPair tree 
+        /// while graph is GraphPair TItem, TItem, TEdge, TEdge
+        ///     root = root.Source
+        /// returns root.Source as ISinkGraph (sink part of a GraphPair)
+        /// </summary>
+        public static ISinkGraph<TSinkItem, TSinkEdge> 
+            RootSink<TSinkItem, TSinkEdge> (this IGraph<TSinkItem, TSinkEdge> graph) where TSinkEdge : IEdge<TSinkItem>, TSinkItem {
+
+            var root = graph.RootSource ();
+            if (root != null)
+                return root.Source as ISinkGraph<TSinkItem, TSinkEdge>;
+            return null;
+        }
+
+        /// <summary>
+        /// give back the generic type parameters of graph
+        /// if graph is a <see cref="IGraphPair{TSinkItem, TSourceItem, TSinkEdge, TSourceEdge}"/> 
+        /// </summary>
+        /// <typeparam name="TSinkItem"></typeparam>
+        /// <typeparam name="TSinkEdge"></typeparam>
+        /// <param name="graph"></param>
+        /// <returns></returns>
+        public static Type[]
+           GraphPairTypes<TSinkItem, TSinkEdge> (this IGraph<TSinkItem, TSinkEdge> graph) where TSinkEdge : IEdge<TSinkItem>, TSinkItem {
+
+            var graphPairType = graph.GetType ().GetInterfaces ().Where (i => i.IsGenericType && i.GetGenericTypeDefinition () == typeof (IGraphPair<,,,>)).FirstOrDefault ();
+            if (graphPairType != null)
+                return graphPairType.GetGenericArguments ();
+            return null;
+        }
+
 
         public static IEnumerable<IGraph<TItem, TEdge>> Graphs<TItem, TEdge>(this IGraph<TItem, TEdge> graph)
         where TEdge : IEdge<TItem>, TItem {
