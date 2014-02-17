@@ -20,29 +20,31 @@ using Limaki.Tests;
 using Limaki.Tests.Graph.Model;
 using Limaki.UnitTest;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Limada.Tests.Model {
+
     public class GraphPairWithFactoryTest : DomainTest {
+
         public void TestGraphPair(IGraphFactory<IGraphEntity, IGraphEdge> source, ThingGraph target) {
             source.Count = 10;
             source.Populate();
             this.ReportDetail(source.GetType().FullName + "\t" + source.Count);
 
-            IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> graphPair =
+            var graphPair =
                 new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                 source.Graph, 
                 target, 
                 new GraphItem2ThingTransformer());
 
-            GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink> mapper = graphPair.Mapper;
+            var mapper = graphPair.Mapper;
             mapper.ConvertSinkSource();
 
-            MapperTester<IGraphEntity, IThing, IGraphEdge, ILink>
-                convertionTesterOne = new MapperTester<IGraphEntity, IThing, IGraphEdge, ILink>();
+            var convertionTesterOne = new MapperTester<IGraphEntity, IThing, IGraphEdge, ILink>();
             mapper.ConvertSinkSource();
             convertionTesterOne.ProveConversion(graphPair.Sink, graphPair.Source, mapper.Get);
 
-            IGraphEntity newEntity = new GraphEntity<string>("new");
+            var newEntity = new GraphEntity<string>("new");
             graphPair.Add(newEntity);
             convertionTesterOne.ProveConversion(graphPair.Sink, graphPair.Source, mapper.Get);
 
@@ -66,7 +68,7 @@ namespace Limada.Tests.Model {
             source.Count = 10;
             source.Populate();
 
-            GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink> mapper =
+            var mapper =
                 new GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink>(
                     source.Graph, 
                     target, 
@@ -74,7 +76,7 @@ namespace Limada.Tests.Model {
 
             mapper.ConvertSinkSource ();
 
-            IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> graphPair =
+            var graphPair =
                 new LiveGraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                     new Graph<IGraphEntity, IGraphEdge>(), 
                     target, 
@@ -86,7 +88,7 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void TestGraphPairGetSource() {
-            IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> data =
+            var data =
                 MakeGraphPair (new BinaryGraphFactory (), new ThingGraph ());
 
             var view = new Graph<IGraphEntity, IGraphEdge>();
@@ -133,8 +135,8 @@ namespace Limada.Tests.Model {
 
             graphView2 = new SubGraph<IGraphEntity, IGraphEdge>(data, new Graph<IGraphEntity, IGraphEdge>());
             
-            foreach (IGraphEntity ping in graphView1.Source) {
-                IGraphEntity back = graphView1.LookUp<IGraphEntity, IGraphEdge,IThing, ILink>(graphView2, ping);
+            foreach (var ping in graphView1.Source) {
+                var back = graphView1.LookUp<IGraphEntity, IGraphEdge,IThing, ILink>(graphView2, ping);
                 Assert.IsNotNull(back);
                 Assert.AreNotSame(ping, back);
                 Assert.AreEqual (ping.ToString(), back.ToString());
@@ -142,7 +144,21 @@ namespace Limada.Tests.Model {
 
         }
 
-        
+        [Test]
+        public void TestGraphRootSource () {
+
+            var data =
+                MakeGraphPair (new BinaryGraphFactory(), new ThingGraph());
+
+            IGraph<IGraphEntity, IGraphEdge> graph = new SubGraph<IGraphEntity, IGraphEdge> (data, new Graph<IGraphEntity, IGraphEdge>());
+
+            var args = graph.RootSink().GraphPairTypes();
+            if (args != null) {
+                ReportDetail ("IGraphPair<{0},{1},{2},{3}>", args[0],args[1],args[2],args[3]);
+            }
+   
+            
+        }
     }
 
 }

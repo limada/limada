@@ -31,8 +31,9 @@ namespace Limaki.Graphs.Extensions {
         /// <typeparam name="TEdge"></typeparam>
         /// <param name="graph"></param>
         /// <returns></returns>
-        public static IGraphPair<TItem, TItem, TEdge, TEdge> RootSource<TItem, TEdge>(this IGraph<TItem, TEdge> graph)
-            where TEdge : IEdge<TItem>, TItem {
+        public static IGraphPair<TItem, TItem, TEdge, TEdge> 
+            RootSource<TItem, TEdge>(this IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem>, TItem {
+
             var result = graph as IGraphPair<TItem, TItem, TEdge, TEdge>;
             if (result != null) {
                 while (result.Source is IGraphPair<TItem, TItem, TEdge, TEdge>) {
@@ -49,9 +50,9 @@ namespace Limaki.Graphs.Extensions {
         /// then gives back GraphPair TSinkItem, TSourceItem, TSinkEdge, TSourceEdge
         ///     if result.Source or result
         /// </summary>
-        public static IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (this IGraph<TSinkItem, TSinkEdge> graph)
-            where TSinkEdge : IEdge<TSinkItem>, TSinkItem
-            where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
+        public static IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> 
+            Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> 
+            (this IGraph<TSinkItem, TSinkEdge> graph) where TSinkEdge : IEdge<TSinkItem>, TSinkItem where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
             var result = graph as IGraphPair<TSinkItem, TSinkItem, TSinkEdge, TSinkEdge>;
 
@@ -103,9 +104,9 @@ namespace Limaki.Graphs.Extensions {
             return null;
         }
 
+        public static IEnumerable<IGraph<TItem, TEdge>> 
+            Graphs<TItem, TEdge>(this IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem>, TItem {
 
-        public static IEnumerable<IGraph<TItem, TEdge>> Graphs<TItem, TEdge>(this IGraph<TItem, TEdge> graph)
-        where TEdge : IEdge<TItem>, TItem {
             var result = graph as IGraphPair<TItem, TItem, TEdge, TEdge>;
             if (result == null)
                 yield return graph;
@@ -128,7 +129,10 @@ namespace Limaki.Graphs.Extensions {
 
 
 
-        public static TItem LookUp<TItem, TEdge, TSourceItem, TSourceEdge>(this IGraphPair<TItem, TItem, TEdge, TEdge> graphPair1,
+        public static 
+            TItem 
+            LookUp<TItem, TEdge, TSourceItem, TSourceEdge>(
+            this IGraphPair<TItem, TItem, TEdge, TEdge> graphPair1,
             IGraphPair<TItem, TItem, TEdge, TEdge> graphPair2,
             TItem item)
             where TEdge : IEdge<TItem>, TItem

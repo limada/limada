@@ -257,6 +257,13 @@ namespace Limaki.Graphs {
 
         #region special algos
 
+        /// <summary>
+        /// gives back all (fork)egdes of item 
+        /// contained in Source (the complement graph)
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="graph"></param>
+        /// <returns></returns>
         public virtual IEnumerable<TSinkEdge> ComplementEdges(TSinkItem item, IGraph<TSinkItem,TSinkEdge> graph) {
             var itemTwo = Get (item);
 

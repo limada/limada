@@ -85,7 +85,7 @@ namespace Limaki.View {
             context.Factory.Add<IVisualContentViz, VisualThingsContentViz>();
             context.Factory.Add<IVisualContentViz<IThing>, VisualThingsContentViz>();
 
-            context.Factory.Add<IGraphSceneMesh<IVisual, IVisualEdge>, VisualThingSceneMesh>();
+            context.Factory.Add<IGraphSceneMesh<IVisual, IVisualEdge>, VisualGraphSceneMesh>();
 
             // TODO: find a better place for this
             var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<IVisual, IVisualEdge>>();

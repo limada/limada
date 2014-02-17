@@ -211,9 +211,8 @@ namespace Limaki.Viewers {
             Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (Display1.Data);
             var useMesh = true;
             if (useMesh) {
-                var copier = new MeshSceneComposer();
-                copier.CopyDisplayProperties(Display1, Display2);
-                Display2.Data = copier.CreateTargetScene(Display1.Data.Graph);
+                Mesh.CopyDisplayProperties (Display1, Display2);
+                Display2.Data = Mesh.CreateTargetScene (Display1.Data.Graph);
                 
             } else {
                 new WiredDisplays().MakeSideDisplay(Display1, Display2);

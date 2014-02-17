@@ -235,8 +235,7 @@ namespace Limaki.Viewers.StreamViewers {
             IGraph<IVisual, IVisualEdge> targetGraph = null;
             var useMesh = true;
             if (useMesh) {
-                var copier = new MeshSceneComposer ();
-                targetGraph = copier.CreateTargetGraph (source.Graph);
+                targetGraph = Mesh.CreateTargetGraph (source.Graph);
                
             } else {
                 targetGraph = new WiredDisplays ().CreateTargetGraph (source.Graph);
