@@ -42,8 +42,10 @@ namespace Limaki.View.Swf.Backends {
         }
 
         public virtual void MouseMove(MouseActionEventArgs e) {
+
             if (EnabledEvents.HasFlag(WidgetEvent.DragStarted))
                 return;
+
             if (e.Button != MouseActionButtons.Left)
                 return;
 

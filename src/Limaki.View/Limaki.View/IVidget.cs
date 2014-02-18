@@ -25,22 +25,21 @@ namespace Limaki.View {
     /// </summary>
     public interface IVidget : IDisposable {
         IVidgetBackend Backend { get; }
+        Size Size { get; }
     }
 
     [BackendType(typeof(IVidgetBackend))]
     public abstract class Vidget : IVidget {
 
         private VidgetBackendHost _backendHost;
-        public Vidget ()
-		{
-			_backendHost = CreateBackendHost ();
-			_backendHost.Frontend = this;
-		}
-		
-		protected virtual VidgetBackendHost CreateBackendHost ()
-		{
-            return new VidgetBackendHost();
-		}
+        public Vidget () {
+            _backendHost = CreateBackendHost ();
+            _backendHost.Frontend = this;
+        }
+
+        protected virtual VidgetBackendHost CreateBackendHost () {
+            return new VidgetBackendHost ();
+        }
 
         protected VidgetBackendHost BackendHost {
 			get { return _backendHost; }
@@ -51,5 +50,8 @@ namespace Limaki.View {
         public virtual IVidgetBackend Backend {
             get { return BackendHost.Backend; }
         }
+
+        public virtual Size Size { get { return Backend.Size; } }
+
     }
 }

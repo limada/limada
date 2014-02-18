@@ -19,6 +19,7 @@ using Limada.Model;
 using Limaki.Graphs;
 using Limada.View;
 using Limada.VisualThings;
+using Limaki.View.Mesh;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
@@ -49,17 +50,6 @@ namespace Limaki.View {
 
             if (!context.Factory.Contains<IVisualFactory>())
                 context.Factory.Add<IVisualFactory, VisualFactory>();
-
-
-            if (!context.Factory.Contains<IDrawingUtils>())
-                context.Factory.Add<IDrawingUtils, BlindDrawingUtils>();
-
-            if (!context.Factory.Contains<ISystemFonts>())
-                context.Factory.Add<ISystemFonts, BlindSystemFonts>();
-
-            if (!context.Factory.Contains<IUISystemInformation>())
-                context.Factory.Add<IUISystemInformation, BlindSystemInformation>();
-
 
             var styleSheets = context.Pool.TryGetCreate<StyleSheets>();
             styleSheets.Init();

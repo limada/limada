@@ -21,6 +21,8 @@ using Xwt.Drawing;
 
 namespace Limaki.Viewers.Vidgets {
 
+
+
     [BackendType(typeof(ICanvasVidgetBackend))]
     public class CanvasVidget : Vidget, ICanvasVidget {
 

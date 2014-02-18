@@ -19,8 +19,8 @@ using Xwt;
 namespace Limaki.View {
 
     public interface IVidgetBackend:IDisposable {
-        
-        Size Size {get;}
+
+        Size Size { get; }
         
         // Renderer:
         void Update();

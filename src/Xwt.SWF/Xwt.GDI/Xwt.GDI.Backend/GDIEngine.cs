@@ -49,6 +49,10 @@ namespace Xwt.Gdi.Backend {
             
         }
 
+        public override void DispatchPendingEvents () {
+            throw new NotImplementedException ();
+        }
+
         public override object GetNativeWidget(Widget w) {
             throw new NotImplementedException();
         }
@@ -73,9 +77,7 @@ namespace Xwt.Gdi.Backend {
             throw new NotImplementedException();
         }
 
-        public override void DispatchPendingEvents () {
-            throw new NotImplementedException();
-        }
+       
 
         public override bool HasNativeParent (Widget w) {
             throw new NotImplementedException();

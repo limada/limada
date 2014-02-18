@@ -38,13 +38,18 @@ namespace Xwt.Html5.Backend {
         public override void InitializeApplication() {
             base.InitializeApplication();
         }
+
         public override void InitializeBackends () {
             RegisterBackend<FontBackendHandler, HtmlFontBackendHandler>();
             RegisterBackend<TextLayoutBackendHandler, HmtlTextLayoutBackendHandler>();
             RegisterBackend<ContextBackendHandler, HtmlContextBackendHandler>();
             RegisterBackend<DesktopBackend, Html5DesktopBackend>();
         }
+
+        public override void DispatchPendingEvents () {
         
+        }
+
         public override object GetNativeWidget (Widget w) {
             throw new NotImplementedException ();
         }
@@ -67,10 +72,6 @@ namespace Xwt.Html5.Backend {
 
         public override void CancelTimerInvoke (object id) {
             throw new NotImplementedException ();
-        }
-
-        public override void DispatchPendingEvents () {
-            throw new NotImplementedException();
         }
 
         public override bool HasNativeParent (Widget w) {
