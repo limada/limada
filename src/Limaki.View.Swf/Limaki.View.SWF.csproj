@@ -106,6 +106,9 @@
     <Compile Include="Limaki.Controls\TextOkCancelBoxBackend.Designer.cs">
       <DependentUpon>TextOkCancelBoxBackend.cs</DependentUpon>
     </Compile>
+    <Compile Include="Limaki.Swf.Backends\VidgetBackends\VindowBackend.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Limaki.Swf.Backends\VidgetBackends\WebBrowserBackend.cs">
       <SubType>Component</SubType>
     </Compile>

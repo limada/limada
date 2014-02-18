@@ -40,7 +40,7 @@ namespace Limaki.View.XwtBackend {
             Action onShow = null;
             if (true) {
                 var com = CreateUseCase();
-                w = com.MainWindow;
+                w = com.MainWindowBackend as Window;
                 if (com.OnShow != null)
                     onShow += com.OnShow;
             } else {
@@ -72,9 +72,8 @@ namespace Limaki.View.XwtBackend {
         public IXwtConceptUseCaseComposer CreateUseCase () {
 
             var backendComposer = Registry.Pool.TryGetCreate<IXwtConceptUseCaseComposer>();
-            backendComposer.MainWindow = new MainWindow();
+            backendComposer.MainWindowBackend = new MainWindowBackend();
             backendComposer.WindowSize = new Size(800, 600);
-            
             
             //mainWindow.Icon = Limaki.View.Properties.GdiIconery.LimadaLogo;
 

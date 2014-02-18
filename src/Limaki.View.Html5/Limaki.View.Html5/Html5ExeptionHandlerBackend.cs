@@ -9,11 +9,11 @@ namespace Limaki.View.Html5 {
     public class Html5ExeptionHandlerBackend :IExceptionHandler {
       
         public void Catch (Exception e) {
-            throw new NotImplementedException ();
+           
         }
 
         public void Catch (Exception e, MessageType messageType) {
-            throw new NotImplementedException ();
+           
         }
 
     

@@ -18,11 +18,11 @@ using Xwt.Drawing;
 
 namespace Limaki.View.XwtBackend {
 
-    public class MainWindow : Window {
+    public class MainWindowBackend : VindowBackend {
 
        protected StatusIcon StatusIcon{get;set;}
 
-        public MainWindow () {
+        public MainWindowBackend () {
             try {
                 StatusIcon = Application.CreateStatusIcon();
                 StatusIcon.Menu = new Menu();

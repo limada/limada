@@ -24,10 +24,14 @@ using Limaki.Viewers;
 using Limaki.Viewers.ToolStripViewers;
 using Limaki.Visuals;
 using Limada.VisualThings;
+using Limaki.View;
+
 
 namespace Limaki.Usecases.Concept {
 
     public class ConceptUsecase:IDisposable, IProgress {
+
+        public virtual IVindow MainWindow { get; set; }
 
         protected string _useCaseTitle = "limada::concept";
         public string UseCaseTitle {
@@ -173,7 +177,6 @@ namespace Limaki.Usecases.Concept {
         public Action<string,int,int> Progress {get; set;}
         public Action ApplicationQuit { get; set; }
         public bool ApplicationQuitted { get; set; }
-
 
 
         

@@ -21,23 +21,27 @@ using Limaki.Viewers.StreamViewers;
 using Xwt;
 using Xwt.Drawing;
 using Limaki.View.XwtContext;
+using Limaki.Viewers.Vidgets;
 
 namespace Limaki.View.XwtBackend {
    
     public class XwtConceptUseCaseComposer : IXwtConceptUseCaseComposer {
 
-        public Window MainWindow { get; set; }
+        public IVindowBackend MainWindowBackend { get; set; }
         public Menu Menu { get; set; }
         public Label StatusLabel { get; set; }
         public Size WindowSize { get; set; }
         public Action OnShow { get; set; }
 
         public virtual void Factor (ConceptUsecase useCase) {
-            MainWindow.Size = WindowSize;
-            MainWindow.MainMenu = CreateMenu(useCase);
-           
-            this.Menu = MainWindow.MainMenu;
+            useCase.MainWindow = new Vindow (MainWindowBackend);
 
+            var mainWindowBackend = MainWindowBackend as Window;
+            mainWindowBackend.Size = WindowSize;
+            mainWindowBackend.MainMenu = CreateMenu (useCase);
+
+            this.Menu = mainWindowBackend.MainMenu;
+                
             var splitViewBackend = useCase.SplitView.Backend as Widget;
 
             StatusLabel = new Label {
@@ -52,15 +56,18 @@ namespace Limaki.View.XwtBackend {
             box.PackStart(splitViewBackend, true);
             box.PackEnd(StatusLabel);
 
-            MainWindow.Content = box;
+            mainWindowBackend.Content = box;
 
             OnShow += () => (splitViewBackend as Paned).PositionFraction = 0.50;// WindowSize.Width / 2;
         }
 
         public virtual void Compose (ConceptUsecase useCase) {
 
+            var mainWindowBackend = MainWindowBackend as Window;
+
             useCase.DataPostProcess =
-               dataName => MainWindow.Title = dataName + " - " + useCase.UseCaseTitle;
+               dataName => mainWindowBackend.Title = dataName + " - " + useCase.UseCaseTitle;
+
             useCase.MessageBoxShow = (text, title, buttons) =>
                 new XwtMessageBoxShow().Show(text, title, buttons);
 
@@ -73,7 +80,7 @@ namespace Limaki.View.XwtBackend {
                 Application.MainLoop.DispatchPendingEvents();
             };
 
-            MainWindow.CloseRequested += (s, e) => {
+            mainWindowBackend.CloseRequested += (s, e) => {
                 e.AllowClose = MessageDialog.Confirm("Close?", Command.Ok);
                 if (e.AllowClose) {
                     useCase.Close();
