@@ -22,7 +22,7 @@ using System.Windows.Forms;
 
 namespace Limaki.Tests.View.Winform {
     public class WinformVisualsDisplayTest<T>:DomainTest
-    where T : DisplayTest<IGraphScene<IVisual, IVisualEdge>>, new() {
+    where T : DisplayTest008<IGraphScene<IVisual, IVisualEdge>>, new() {
         public T Test { get; set; }
         public override void Setup() {
             base.Setup();

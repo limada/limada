@@ -9,11 +9,11 @@ namespace Limaki.Tests.View.Winform {
 
         public object CreateForm(IDisplay display) {
             var disp = display as Display<T>;
-            var device = disp.Backend as Control;
+            var backend = disp.Backend as Control;
 
             var form = new Form();
-            form.Controls.Add(device);
-            device.Dock = DockStyle.Fill;
+            form.Controls.Add(backend);
+            backend.Dock = DockStyle.Fill;
             form.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             form.BackColor = System.Drawing.Color.WhiteSmoke;
             DoEvents();
@@ -24,8 +24,8 @@ namespace Limaki.Tests.View.Winform {
 
         public object FindForm(IDisplay display) {
             var disp = display as Display<T>;
-            var device = disp.Backend as Control;
-            return device.FindForm();
+            var backend = disp.Backend as Control;
+            return backend.FindForm();
         }
 
         public void DoEvents() {

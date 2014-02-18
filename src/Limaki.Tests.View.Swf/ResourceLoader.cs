@@ -13,7 +13,7 @@ namespace Limada.Tests {
     public class ResourceLoader : IContextRecourceLoader {
         public void ApplyResources(IApplicationContext context) {
             var factories = context.Pool.TryGetCreate<UsecaseFactories<ConceptUsecase>>();
-            factories.Add(new TestCaseFactory());
+            factories.Add(new TestCaseFactory008());
         }
     }
 }

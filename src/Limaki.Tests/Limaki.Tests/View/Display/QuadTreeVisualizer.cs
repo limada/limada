@@ -9,7 +9,8 @@ using Limaki.View.Visuals;
 using Limaki.View.Visualizers;
 using Xwt;
 
-namespace Limaki.Tests.View.Winform {
+namespace Limaki.Tests.View {
+
     public class QuadTreeVisualizer {
         private Quadtree<IVisual> _data = null;
 
