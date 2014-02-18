@@ -17,7 +17,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.Visualizers;
 
-namespace Limaki.View.Visuals.UI {
+namespace Limaki.View.Mesh {
 
     public interface IGraphSceneMeshVisitor<TSinkItem, TSinkEdge>
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem {

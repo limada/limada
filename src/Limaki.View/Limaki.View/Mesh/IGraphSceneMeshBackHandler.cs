@@ -17,8 +17,14 @@ using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Graphs;
 
-namespace Limaki.View.Visuals.UI {
+namespace Limaki.View.Mesh {
 
+    /// <summary>
+    /// the sink side of a
+    /// <see cref="GraphSceneMeshBackHandler{TSinkItem, TSourceItem, TSinkEdge, TSourceEdge}"/>
+    /// </summary>
+    /// <typeparam name="TSinkItem"></typeparam>
+    /// <typeparam name="TSinkEdge"></typeparam>
     public interface IGraphSceneMeshBackHandler<TSinkItem, TSinkEdge> where TSinkEdge : IEdge<TSinkItem>, TSinkItem {
 
         void RegisterBackGraph (IGraph<TSinkItem, TSinkEdge> graph);

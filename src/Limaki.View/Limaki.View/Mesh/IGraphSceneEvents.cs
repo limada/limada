@@ -16,14 +16,20 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.Visualizers;
 
-namespace Limaki.View.Visuals.UI {
+namespace Limaki.View.Mesh {
 
-    public interface IGraphSceneEvents<IVisual, IVisualEdge> where IVisualEdge : IEdge<IVisual>, IVisual {
+    /// <summary>
+    /// events handling the changes of the 
+    /// sink in a meshed GraphScene
+    /// </summary>
+    /// <typeparam name="TItem"></typeparam>
+    /// <typeparam name="TEdge"></typeparam>
+    public interface IGraphSceneEvents<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
         void GraphChanged (
-            IGraph<IVisual, IVisualEdge> sourceGraph, IVisual sourceItem,
-            IVisual sinkItem, IGraphScene<IVisual, IVisualEdge> sinkScene,
-            IGraphSceneDisplay<IVisual, IVisualEdge> sinkDisplay, GraphEventType eventType);
+            IGraph<TItem, TEdge> sourceGraph, TItem sourceItem,
+            TItem sinkItem, IGraphScene<TItem, TEdge> sinkScene,
+            IGraphSceneDisplay<TItem, TEdge> sinkDisplay, GraphEventType eventType);
 
-        void GraphDataChanged (IVisual sourceItem, IVisual sinkItem, IGraphScene<IVisual, IVisualEdge> sinkScene, IGraphSceneDisplay<IVisual, IVisualEdge> sinkDisplay);
+        void GraphDataChanged (TItem sourceItem, TItem sinkItem, IGraphScene<TItem, TEdge> sinkScene, IGraphSceneDisplay<TItem, TEdge> sinkDisplay);
     }
 }

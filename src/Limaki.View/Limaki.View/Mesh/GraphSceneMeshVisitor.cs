@@ -15,15 +15,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Limada.Model;
-using Limada.VisualThings;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.View.Visualizers;
-using Limaki.Visuals;
 
-namespace Limaki.View.Visuals.UI {
+namespace Limaki.View.Mesh {
 
     public class GraphSceneMeshVisitor<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IGraphSceneMeshVisitor<TSinkItem, TSinkEdge>
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem

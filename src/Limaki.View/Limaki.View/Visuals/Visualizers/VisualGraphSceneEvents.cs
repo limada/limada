@@ -17,6 +17,7 @@ using System.Linq;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
+using Limaki.View.Mesh;
 using Limaki.View.Layout;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;

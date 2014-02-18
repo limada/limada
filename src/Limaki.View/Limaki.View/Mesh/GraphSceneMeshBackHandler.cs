@@ -18,10 +18,18 @@ using System.Linq;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Visuals;
 
-namespace Limaki.View.Visuals.UI {
+namespace Limaki.View.Mesh {
 
+    /// <summary>
+    /// handles the backing Graphs of Scenes
+    /// that is the <see cref="IGraphPair{TSinkItem, TSourceItem, TSinkEdge, TSourceEdge}.Source"/>
+    /// containing the entities
+    /// </summary>
+    /// <typeparam name="TSinkItem"></typeparam>
+    /// <typeparam name="TSourceItem"></typeparam>
+    /// <typeparam name="TSinkEdge"></typeparam>
+    /// <typeparam name="TSourceEdge"></typeparam>
     public class GraphSceneMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IGraphSceneMeshBackHandler<TSinkItem, TSinkEdge>
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
@@ -62,6 +70,11 @@ namespace Limaki.View.Visuals.UI {
             }
         }
 
+        /// <summary>
+        /// returns the backing Graph
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <returns></returns>
         public IGraph<TSourceItem, TSourceEdge> BackGraphOf (IGraph<TSinkItem, TSinkEdge> graph) {
             var source = graph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
             if (source != null)

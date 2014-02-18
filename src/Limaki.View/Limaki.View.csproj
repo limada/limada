@@ -65,6 +65,7 @@
     <Compile Include="Limaki.View.XwtContext\IXwtConceptUseCaseComposer.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\ImageContentViewer.cs" />
     <Compile Include="Limaki.Viewers\Vidgets\FileDialogVidget.cs" />
+    <Compile Include="Limaki.Viewers\Vidgets\Vindow.cs" />
     <Compile Include="Limaki.View\DragDrop\DragDropBackendHandlerBase.cs" />
     <Compile Include="Limaki.View\DragDrop\DragDropInfo.cs" />
     <Compile Include="Limaki.View\Rendering\SelectionRenderer.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Limaki.View\Mesh\GraphSceneMeshBackHandler.cs" />
     <Compile Include="Limaki.View\Visuals\Visualizers\VisualGraphSceneEvents.cs" />
     <Compile Include="Limaki.View\Visuals\Visualizers\VisualGraphSceneMesh.cs" />
-    <Compile Include="Limaki.View\Visuals\UI\SceneChanger.cs" />
+    <Compile Include="[Obsolete]\SceneChanger.cs" />
     <Compile Include="Limaki.View\Visuals\UI\VisualsTextEditActionBase.cs" />
     <Compile Include="Limaki.View\Mesh\GraphSceneMesh.cs" />
     <Compile Include="Limaki.Visuals\IVisualContentViz.cs" />
@@ -87,7 +88,6 @@
     <Compile Include="Limaki.Viewers\ContentViewers\DigidocContentViewer.cs" />
     <Compile Include="Limada.VisualThings\VisualThingsSceneViz.cs" />
     <Compile Include="Limada.VisualThings\VisualThingsSceneExtensions.cs" />
-    <Compile Include="Limaki.Drawing.Blind\BlindDrawingUtils.cs" />
     <Compile Include="Limaki.Drawing\Dimension.cs" />
     <Compile Include="Limaki.Usecases\IoUiManager.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\DigidocViewer.cs" />
@@ -127,11 +127,8 @@
     <Compile Include="Limaki.View\VidgetBackendHost.cs" />
     <Compile Include="Limaki.View\VidgetToolkit.cs" />
     <Compile Include="Limaki.View\UI\DelegatingMouseAction.cs" />
-    <Compile Include="Xwt.Blind.Backend\BlindConverter.cs" />
     <Compile Include="Xwt\Geom.cs" />
     <Compile Include="Limaki.Drawing\IGraphSceneLayout.cs" />
-    <Compile Include="Limaki.Drawing.Blind\BlindSystemFonts.cs" />
-    <Compile Include="Limaki.Drawing.Blind\BlindSystemInformation.cs" />
     <Compile Include="Limaki.Drawing\IShaper.cs" />
     <Compile Include="Limaki.Drawing\Painters\ContextPainterExtensions.cs" />
     <Compile Include="Limaki.Drawing\Shapes\BezierExtensions.cs" />
@@ -324,11 +321,11 @@
     <Compile Include="Limaki.View\UI\ZoomAction.cs" />
     <Compile Include="Limaki.View\Visuals\Visualizers\VisualsDisplay.cs" />
     <Compile Include="Limaki.View\Visuals\Visualizers\VisualsRecourceLoader.cs" />
-    <Compile Include="Limaki.View\Visuals\Visualizers\WiredDisplays.cs" />
+    <Compile Include="[Obsolete]\WiredDisplays.cs" />
     <Compile Include="Limaki.View\Visuals\Layout\VisualsSceneLayout.cs" />
     <Compile Include="Limaki.View\Visuals\UI\AddEdgeAction.cs" />
     <Compile Include="Limaki.View\Visuals\UI\SceneExtensions.cs" />
-    <Compile Include="Limaki.View\Visuals\UI\WiredScenes.cs" />
+    <Compile Include="[Obsolete]\WiredScenes.cs" />
     <Compile Include="Limaki.View\Visuals\VisualsRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Limaki.Reporting\IReportOptions.cs" />
@@ -381,10 +378,6 @@
     <Compile Include="Limaki.Visuals\VisualEdge.cs" />
     <Compile Include="Limaki.Visuals\VisualFactory.cs" />
     <Compile Include="Limaki.Visuals\VisualGraph.cs" />
-    <Compile Include="Xwt.Blind.Backend\FontBlindBackendHandler.cs" />
-    <Compile Include="Xwt.Blind.Backend\FontData.cs" />
-    <Compile Include="Xwt.Blind.Backend\BlindEngine.cs" />
-    <Compile Include="Xwt.Blind.Backend\SystemColorsBackend.cs" />
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextPainterComposer.cs" />
     <Compile Include="Limaki.View.XwtContext\GraphSceneContextPainterRenderer.cs" />
     <Compile Include="Limaki.View.XwtContext\VisualSceneContextPainter.cs" />

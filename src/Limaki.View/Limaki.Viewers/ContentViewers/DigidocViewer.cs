@@ -24,6 +24,7 @@ using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;
+using Limaki.View.Mesh;
 using Limaki.Model.Content;
 using Limaki.View;
 using Limaki.View.Layout;

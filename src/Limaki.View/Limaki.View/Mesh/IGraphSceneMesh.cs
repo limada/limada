@@ -16,15 +16,14 @@
 using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
-using Limaki.Visuals;
-using Limada.Model;
-using System.Linq;
 using Limaki.View.Visualizers;
-using Limaki.Common;
 
-namespace Limaki.View.Visuals.UI {
-
+namespace Limaki.View.Mesh {
+    /// <summary>
+    /// a central place to register Displays and Scenes
+    /// registered scenes and their backing 
+    /// Graphs are notified of changes
+    /// </summary>
     public interface IGraphSceneMesh<TItem, TEdge>  where TEdge : TItem, IEdge<TItem> {
 
         void AddScene (IGraphScene<TItem, TEdge> scene);
