@@ -2,7 +2,7 @@
 
 namespace Limaki.View.UI {
 
-    public class BlindSystemInformation : IUISystemInformation {
+    public class HeadlessSystemInformation : IUISystemInformation {
         public Size DragSize {
             get { return new Size (1, 1); }
         }

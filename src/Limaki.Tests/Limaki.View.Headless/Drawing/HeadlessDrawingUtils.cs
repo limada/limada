@@ -3,7 +3,7 @@ using Xwt.Drawing;
 
 namespace Limaki.Drawing {
 
-    public class BlindDrawingUtils:IDrawingUtils {
+    public class HeadlessDrawingUtils:IDrawingUtils {
         public object GetCustomLineCap (double arrowWidth, double arrowHeigth) {
             return new object();
         }

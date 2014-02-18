@@ -4,7 +4,7 @@
 // Author:
 //       Lytico 
 // 
-// Copyright (c) 2012 Lytico (http://limada.sourceforge.net)
+// Copyright (c) 2012 Lytico (www.limada.org)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,25 @@ using System;
 using Xwt.Backends;
 
 
-namespace Xwt.Blind.Backend {
-    public class BlindEngine : ToolkitEngineBackend {
+namespace Xwt.Headless.Backend {
+
+   
+    public class HeadlessEngine : ToolkitEngineBackend {
+        public override void InitializeApplication () {
+            base.InitializeApplication ();
+        }
+
+        public override void InitializeBackends () {
+            RegisterBackend<FontBackendHandler, HeadlessFontBackendHandler> ();
+            RegisterBackend<DesktopBackend, HeadlessDesktopBackend> ();
+        }
+
+        public override void DispatchPendingEvents () {
+            
+        }
+
         public override void RunApplication () {
-            throw new NotImplementedException();
+            
         }
 
         public override void ExitApplication () {
@@ -54,9 +69,7 @@ namespace Xwt.Blind.Backend {
             throw new NotImplementedException();
         }
 
-        public override void DispatchPendingEvents () {
-            throw new NotImplementedException();
-        }
+       
 
         public override IWindowFrameBackend GetBackendForWindow (object nativeWindow) {
             throw new NotImplementedException();

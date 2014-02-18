@@ -1,9 +1,9 @@
 using Xwt.Drawing;
 using Xwt.Backends;
 
-namespace Xwt.Blind.Backend {
+namespace Xwt.Headless.Backend {
 
-    public class FontBlindBackendHandler : FontBackendHandler {
+    public class HeadlessFontBackendHandler : FontBackendHandler {
 
         public override object Create (string fontName, double size, FontStyle style, FontWeight weight, FontStretch stretch) {
             return new FontData { Family = fontName, Size = size, Style = style, Stretch = stretch, Weight = weight };
@@ -74,11 +74,11 @@ namespace Xwt.Blind.Backend {
 
 
         public override object GetSystemDefaultFont () {
-            throw new System.NotImplementedException();
+            return new FontData { Family = "Default", Size = 10 };
         }
 
         public override System.Collections.Generic.IEnumerable<string> GetInstalledFonts () {
-            throw new System.NotImplementedException();
+            yield break;
         }
 
        
