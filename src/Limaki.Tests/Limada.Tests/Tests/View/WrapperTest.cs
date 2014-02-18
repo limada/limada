@@ -80,7 +80,7 @@ namespace Limada.Tests.Wrappers {
             factory.Populate (graph.Source);
 
 
-            test.Mock.Scene.Focused = graph.Get (factory.Node[1]);
+            test.Mock.SetFocused (graph.Get (factory.Nodes[1]));
             Trace.Write (
                 GraphTestUtils.ReportGraph<IVisual, IVisualEdge> (graph.Sink, factory.Name));
 

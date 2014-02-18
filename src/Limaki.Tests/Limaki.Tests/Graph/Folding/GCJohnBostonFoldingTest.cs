@@ -62,7 +62,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         [Test]
         public void Person () {
             Mock.Scene.Selected.Clear ();
-            Mock.Scene.Focused = Mock.Factory.Node[1]; // Person
+            Mock.SetFocused (Mock.Factory.Nodes[1]); // Person
             Mock.SceneFacade.CollapseToFocused ();
 
             Assert.AreEqual (Mock.Scene.Graph.Count, 1);
@@ -82,7 +82,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             TestShapes (Mock.Scene);
 
             Mock.Scene.Selected.Clear ();
-            Mock.Scene.Focused = Mock.Factory.Node[5]; // Go
+            Mock.SetFocused (Mock.Factory.Nodes[5]); // Go
             Mock.SceneFacade.Expand (false);
 
             AreEquivalent (FullExpanded, Mock.Scene.Graph);
@@ -93,7 +93,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             TestShapes (Mock.Scene);
 
             Mock.Scene.Selected.Clear ();
-            Mock.Scene.Focused = Mock.Factory.Edge[1]; // [Person->John]
+            Mock.SetFocused (Mock.Factory.Edges[1]); // [Person->John]
             Mock.SceneFacade.Expand (false);
 
             AreEquivalent (FullExpanded, Mock.Scene.Graph);

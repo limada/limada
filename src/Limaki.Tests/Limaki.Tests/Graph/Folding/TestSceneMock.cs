@@ -65,5 +65,14 @@ namespace Limaki.Tests.Graph.Wrappers {
             _display = null;
         }
 
+        public void SetFocused (IVisual item) {
+            this.Scene.Focused = item;
+            this.Display.Layout.Perform (this.Scene.Focused);
+            this.Scene.Requests.Add (
+                new StateChangeCommand<IVisual> (
+                    item,
+                    new Pair<UiState> (UiState.None, UiState.Focus))
+                );
+        }
     }
 }

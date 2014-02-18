@@ -94,7 +94,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             CommandsExecute ();
             Mock.Reset ();
             Mock.Scene.Selected.Clear ();
-            Mock.Scene.Focused = Mock.Factory.Node[1];
+            Mock.SetFocused (Mock.Factory.Nodes[1]);
             Mock.SceneFacade.Expand (true);
             AreEquivalent (FullExpanded, Mock.Scene.Graph);
             TestShapes (Mock.Scene);

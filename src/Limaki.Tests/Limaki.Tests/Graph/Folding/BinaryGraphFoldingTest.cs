@@ -38,7 +38,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         [Test]
         public void N1 () {
             Mock.Scene.Selected.Clear ();
-            Mock.Scene.Focused = Mock.Factory.Node[1]; // 1
+            Mock.SetFocused ( Mock.Factory.Nodes[1]); // 1
             Mock.SceneFacade.CollapseToFocused ();
 
             Assert.AreEqual (Mock.Scene.Graph.Count, 1);
@@ -60,7 +60,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             TestShapes (Mock.Scene);
 
             Mock.Scene.Selected.Clear ();
-            Mock.Scene.Focused = Mock.Factory.Node[4]; // 4
+            Mock.SetFocused ( Mock.Factory.Nodes[4]); // 4
             Mock.SceneFacade.Expand (false);
 
             var N4Expanded = new IVisual[] {
@@ -81,7 +81,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             TestShapes (Mock.Scene);
 
             Mock.Scene.Selected.Clear ();
-            Mock.Scene.Focused = Mock.Factory.Node[5];
+            Mock.SetFocused (Mock.Factory.Nodes[5]);
             Mock.SceneFacade.Expand (false);
 
             var N5Expanded = new IVisual[] {
@@ -125,7 +125,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             TestShapes (Mock.Scene);
 
             Mock.Scene.Selected.Clear ();
-            Mock.Scene.Focused = Mock.Factory.Node[8];
+            Mock.SetFocused (Mock.Factory.Nodes[8]);
             Mock.SceneFacade.Expand (false);
 
             AreEquivalent (FullExpanded, Mock.Scene.Graph);
