@@ -7,6 +7,10 @@ using NUnit.Framework;
 using Limaki.View.Html5;
 using Limaki.View.Visualizers;
 using System.IO;
+using Limaki.View.HeadlessBackends;
+using Limaki.Drawing;
+using Limaki.View.UI;
+using Limaki.View.Headless;
 
 
 namespace Limaki.Tests {
@@ -17,13 +21,25 @@ namespace Limaki.Tests {
             if (Registry.ConcreteContext == null) {
                 Registry.ConcreteContext = new ApplicationContext();
                 var context = Registry.ConcreteContext;
-                new LimakiCoreContextRecourceLoader().ApplyResources(context);
-                new Html5ContextRecourceLoader().ApplyHtml5Resources(context);
-                new ViewContextRecourceLoader().ApplyResources(context);
+               
+                RegisterHeadless (context);
+                
             }
             if (!Registry.Factory.Contains<Limaki.View.Visualizers.IContextWriter>())
                 Registry.Factory.Add<Limaki.View.Visualizers.IContextWriter, Html5ContextWriter>();
+            
             base.Setup();
+        }
+
+        public void RegisterHeadless (IApplicationContext context) {
+            new LimakiCoreContextRecourceLoader ().ApplyResources (context);
+            var headless = new HeadlessContextRecourceLoader ();
+            headless.ApplyHeadlessResources (context);
+            //new Html5ContextRecourceLoader ().ApplyHtml5Resources (context);
+            new ViewContextRecourceLoader ().ApplyResources (context);
+            headless.RegisterBackends (context);
+            headless.RegisterDragDropFormats (context);
+
         }
 
         IContextWriter _reportPainter = null;
