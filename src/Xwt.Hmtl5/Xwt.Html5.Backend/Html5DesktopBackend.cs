@@ -34,8 +34,6 @@ namespace Xwt.Html5.Backend {
 
 	public class Html5DesktopBackend: DesktopBackend
 	{
-		// http://msdn.microsoft.com/en-us/library/windows/desktop/dd464660(v=vs.85).aspx#determining_the_dpi_scale_factor
-		const double BASELINE_DPI = 96d;
 
 		public Html5DesktopBackend ()
 		{

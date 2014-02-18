@@ -4,7 +4,7 @@
 // Author:
 //       Lytico 
 // 
-// Copyright (c) 2012 Lytico (http://limada.sourceforge.net)
+// Copyright (c) 2012 Lytico (www.limada.org)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,10 @@ namespace Xwt.WinformBackend {
     
         public override void RunApplication() {
             SWF.Application.Run();
+        }
+
+        public override void DispatchPendingEvents () {
+            SWF.Application.DoEvents();
         }
 
         //public override void Invoke(System.Action action) {
