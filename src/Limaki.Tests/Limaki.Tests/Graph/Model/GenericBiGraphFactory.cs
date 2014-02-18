@@ -178,7 +178,7 @@ namespace Limaki.Tests.Graph.Model {
         #region IEnumerable Member
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
-            throw new System.Exception("The method or operation is not implemented.");
+            return GetEnumerator ();
         }
 
         #endregion
