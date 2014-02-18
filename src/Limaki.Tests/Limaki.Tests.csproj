@@ -133,6 +133,7 @@
     <Compile Include="Limada.Tests\Tests\View\ThingVisualMapperTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\VisualThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\WrapperTest.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\ImageMissingStuffExtension.cs" />
     <Compile Include="[Obsolete]\WrapperTest008.cs" />
     <Compile Include="Limaki.Tests\Graph\Folding\BinaryGraphFoldingTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Folding\GCJohnBostonFoldingTest.cs" />

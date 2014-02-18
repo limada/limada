@@ -42,7 +42,7 @@ namespace Limaki.View.UI.GraphScene {
         IGraphScene<TItem, TEdge> _scene = null;
         public virtual IGraphScene<TItem, TEdge> Scene {
             get {
-                IGraphScene<TItem, TEdge> scene = _scene;
+                var scene = _scene;
 
                 if (SceneHandler != null)
                     scene = SceneHandler ();
@@ -185,9 +185,9 @@ namespace Limaki.View.UI.GraphScene {
         /// <param name="item"></param>
         /// <param name="pt"></param>
         public virtual void Add (IEnumerable<TItem> elements, bool justify, bool arrange) {
-            IGraphScene<TItem, TEdge> scene = this.Scene;
+            var scene = this.Scene;
             ApplyFilter();
-            TItem curr = scene.Focused;
+            var curr = scene.Focused;
 
             var affected = new SubGraphWorker<TItem, TEdge>(this.SubGraph)
                 .Add(elements);
@@ -210,7 +210,7 @@ namespace Limaki.View.UI.GraphScene {
         }
 
         public virtual void AddRaw (IEnumerable<TItem> elements) {
-            IGraphScene<TItem, TEdge> scene = this.Scene;
+            var scene = this.Scene;
             ApplyFilter ();
             TItem curr = scene.Focused;
 
@@ -235,7 +235,7 @@ namespace Limaki.View.UI.GraphScene {
                 ApplyFilter ();
                 var roots = scene.Selected.Elements;
                 
-                TItem curr = scene.Focused;
+                var curr = scene.Focused;
                 var affected = new SubGraphWorker<TItem, TEdge>
                     (this.SubGraph).Expand(roots, deep);
 
@@ -274,7 +274,7 @@ namespace Limaki.View.UI.GraphScene {
             if (Scene.Selected.Count > 0) {
                 ApplyFilter ();
                 var scene = this.Scene;
-                TItem curr = scene.Focused;
+                var curr = scene.Focused;
                 var affected = new SubGraphWorker<TItem, TEdge> (this.SubGraph) { RemoveOrphans = this.RemoveOrhpans }
                     .Collapse (scene.Selected.Elements);
                 UpdateRemoved (affected);
@@ -287,7 +287,7 @@ namespace Limaki.View.UI.GraphScene {
         public virtual void CollapseToFocused () {
             if (Scene.Focused != null) {
                 ApplyFilter ();
-                TItem curr = Scene.Focused;
+                var curr = Scene.Focused;
 
                 UpdateRemoved (new SubGraphWorker<TItem, TEdge> (this.SubGraph)
                     .CollapseToFocused (Scene.Selected.Elements));
@@ -312,7 +312,7 @@ namespace Limaki.View.UI.GraphScene {
         }
 
         public virtual void UpdateRemoved (ICollection<TItem> removed) {
-            foreach (TItem remove in removed) {
+            foreach (var remove in removed) {
                 Scene.Requests.Add (new RemoveBoundsCommand<TItem, TEdge> (remove, this.Scene));
                 if (remove.Equals(this.Scene.Hovered)) {
                     this.Scene.Hovered = default(TItem);
@@ -329,7 +329,7 @@ namespace Limaki.View.UI.GraphScene {
         public virtual void ShowAllData () {
             ApplyFilter ();
             var scene = this.Scene;
-            TItem curr = scene.Focused;
+            var curr = scene.Focused;
 
             var roots = new Queue<TItem> (
                 this.Graph.FindRoots (curr));

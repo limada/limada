@@ -8,7 +8,7 @@ namespace Limaki.View.Visuals.UI {
 
     public class VisualGraphSceneMesh : GraphSceneMesh<IVisual, IVisualEdge> {
 
-        public override IGraphScene<IVisual, IVisualEdge> CreateTargetScene (IGraph<IVisual, IVisualEdge> sourceGraph) {
+        public override IGraphScene<IVisual, IVisualEdge> CreateSinkScene (IGraph<IVisual, IVisualEdge> sourceGraph) {
             var result = new Scene ();
             var targetGraph = CreateTargetGraph (sourceGraph);
             if (targetGraph != null)

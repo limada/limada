@@ -155,7 +155,7 @@ namespace Limaki.View.Mesh {
             targetDisplay.MouseScrollAction.Enabled = sourceDisplay.MouseScrollAction.Enabled;
         }
 
-        public abstract IGraphScene<TItem, TEdge> CreateTargetScene (IGraph<TItem, TEdge> sourceGraph);
+        public abstract IGraphScene<TItem, TEdge> CreateSinkScene (IGraph<TItem, TEdge> sourceGraph);
         public abstract IGraph<TItem, TEdge> CreateTargetGraph (IGraph<TItem, TEdge> source);
 
 

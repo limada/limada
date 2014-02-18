@@ -213,7 +213,7 @@ namespace Limaki.Viewers {
             var useMesh = true;
             if (useMesh) {
                 Mesh.CopyDisplayProperties (Display1, Display2);
-                Display2.Data = Mesh.CreateTargetScene (Display1.Data.Graph);
+                Display2.Data = Mesh.CreateSinkScene (Display1.Data.Graph);
                 
             } else {
                 new WiredDisplays().MakeSideDisplay(Display1, Display2);

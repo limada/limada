@@ -12,6 +12,7 @@ using Limaki.Model.Content;
 using Limaki.View.Visualizers;
 
 namespace Limaki.Tests.View {
+
     public class WebProxyTest {
         public void CircleFocusToHtml(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             var scene = display.Data;
