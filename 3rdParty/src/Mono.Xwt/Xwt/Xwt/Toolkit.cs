@@ -66,7 +66,7 @@ namespace Xwt
             return null;
         }
         
-		internal ToolkitEngineBackend Backend {
+		public ToolkitEngineBackend Backend {
 			get { return backend; }
 		}
 
