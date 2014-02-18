@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using Limaki.Common;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
+using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
 using NUnit.Framework;
 
@@ -33,11 +35,6 @@ namespace Limaki.Tests.Graph.Wrappers {
         bool invoked = false;
 
         public void CommandsExecute () {
-            //if (!invoked) {
-            //    Mock.SceneControler.Invoke ();
-            //    if (!AlwaysInvoke)
-            //        invoked = true;
-            //}
             Mock.Display.Perform ();
             Mock.Scene.Requests.Clear ();
         }
@@ -82,7 +79,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         public abstract IEnumerable<IVisual> FullExpanded { get; }
 
         public virtual IEnumerable<IVisual> FirstNode {
-            get { yield return Mock.Factory.Node[1]; }
+            get { yield return Mock.Factory.Nodes[1]; }
         }
 
         [Test]

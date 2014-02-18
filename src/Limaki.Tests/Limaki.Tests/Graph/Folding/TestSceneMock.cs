@@ -1,3 +1,4 @@
+using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Model;
@@ -30,7 +31,7 @@ namespace Limaki.Tests.Graph.Wrappers {
                 if (_scene == null) {
                     var g = this.Factory.Scene.Graph;
                     g = new SubGraph<IVisual, IVisualEdge> (
-                        ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)this.Factory).GraphPair,
+                        ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) this.Factory).GraphPair,
                         new VisualGraph ());
                     _scene = new Scene ();
                     _scene.Graph = g;
@@ -64,5 +65,5 @@ namespace Limaki.Tests.Graph.Wrappers {
             _display = null;
         }
 
-        }
+    }
 }

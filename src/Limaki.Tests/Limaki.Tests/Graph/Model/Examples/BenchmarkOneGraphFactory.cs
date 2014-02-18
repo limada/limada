@@ -29,67 +29,67 @@ namespace Limaki.Tests.Visuals {
         public override void Populate(IGraph<IGraphEntity, IGraphEdge> scene, int start) {
             var item = new GraphEntity<string>("first node");
             scene.Add(item);
-            Node[1] = item;
+            Nodes[1] = item;
 
 
             item = new GraphEntity<string>("second node");
             scene.Add(item);
-            Node[2] = item;
+            Nodes[2] = item;
 
 
             item = new GraphEntity<string>("third node");
             scene.Add(item);
-            Node[3] = item;
+            Nodes[3] = item;
 
             item = new GraphEntity<string>("fourth node");
             scene.Add(item);
-            Node[4] = item;
+            Nodes[4] = item;
 
-            var edge = new GraphEdge(Node[1],Node[2]);
+            var edge = new GraphEdge(Nodes[1],Nodes[2]);
             scene.Add(edge);
-            Edge[1] = edge;
+            Edges[1] = edge;
 
-            edge = new GraphEdge (Node[3], Edge[1]);
+            edge = new GraphEdge (Nodes[3], Edges[1]);
             scene.Add(edge);
-            Edge[2] = edge;
+            Edges[2] = edge;
 
 
-            edge = new GraphEdge(Node[4], Edge[2]);
+            edge = new GraphEdge(Nodes[4], Edges[2]);
             scene.Add(edge);
-            Edge[3] = edge;
+            Edges[3] = edge;
 
             // second lattice
 
             item = new GraphEntity<string>("fifth node");
             scene.Add(item);
-            Node[5] = item;
+            Nodes[5] = item;
 
             item = new GraphEntity<string>("sixth node");
             scene.Add(item);
-            Node[6] = item;
+            Nodes[6] = item;
 
 
             item = new GraphEntity<string>("seventh node");
             scene.Add(item);
-            Node[7] = item;
+            Nodes[7] = item;
 
             item = new GraphEntity<string>("eigth node");
             scene.Add(item);
-            Node[8] = item;
+            Nodes[8] = item;
 
 
-            edge = new GraphEdge(Node[5],Node[6]);
+            edge = new GraphEdge(Nodes[5],Nodes[6]);
             scene.Add(edge);
-            Edge[4] = edge;
+            Edges[4] = edge;
 
-            edge = new GraphEdge(Node[7], Node[8]);
+            edge = new GraphEdge(Nodes[7], Nodes[8]);
             scene.Add(edge);
-            Edge[5] = edge;
+            Edges[5] = edge;
 
 
-            edge = new GraphEdge(Edge[4],Edge[5]);
+            edge = new GraphEdge(Edges[4],Edges[5]);
             scene.Add(edge);
-            Edge[6] = edge;
+            Edges[6] = edge;
         }
     }
 }

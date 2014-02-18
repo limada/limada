@@ -169,10 +169,10 @@ namespace Limada.Tests.ThingGraphs {
 
             factory.Populate(target);
 
-            var testThing = factory.Node[3];// Java
-            var testThing2 = factory.Node[7]; // List
-            var testThing3 = factory.Edge[1]; // Programming->Language
-            var testThing4 = factory.Node[1]; // Programming
+            var testThing = factory.Nodes[3];// Java
+            var testThing2 = factory.Nodes[7]; // List
+            var testThing3 = factory.Edges[1]; // Programming->Language
+            var testThing4 = factory.Nodes[1]; // Programming
 
             var pair =new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                     new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge>(),

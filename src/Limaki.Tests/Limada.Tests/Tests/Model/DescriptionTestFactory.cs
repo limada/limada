@@ -19,16 +19,16 @@ namespace Limada.Tests.Model {
 
         public override void Populate(IGraph<IThing, ILink> graph) {
             
-            Node[1] = factory.CreateItem ();
-            Node[2] = factory.CreateItem ("a thing with simple description");
-            Edge[1] = factory.CreateEdge(Node[1], Node[2], CommonSchema.DescriptionMarker);
+            Nodes[1] = factory.CreateItem ();
+            Nodes[2] = factory.CreateItem ("a thing with simple description");
+            Edges[1] = factory.CreateEdge(Nodes[1], Nodes[2], CommonSchema.DescriptionMarker);
 
-            Node[3] = factory.CreateItem ();
-            Node[4] = factory.CreateItem ("a thing with a metaschema description");
-            Node[5] = factory.CreateItem ("this marker is a description");
-            Node[6] = factory.CreateItem ("this marker is a dummy");
-            Edge[2] = factory.CreateEdge(Node[3], Node[4], Node[5]);
-            Edge[3] = factory.CreateEdge(Node[6], Node[5], MetaSchema.DescriptionMarker);
+            Nodes[3] = factory.CreateItem ();
+            Nodes[4] = factory.CreateItem ("a thing with a metaschema description");
+            Nodes[5] = factory.CreateItem ("this marker is a description");
+            Nodes[6] = factory.CreateItem ("this marker is a dummy");
+            Edges[2] = factory.CreateEdge(Nodes[3], Nodes[4], Nodes[5]);
+            Edges[3] = factory.CreateEdge(Nodes[6], Nodes[5], MetaSchema.DescriptionMarker);
             
             
             AddSamplesToGraph(graph);
@@ -43,15 +43,15 @@ namespace Limada.Tests.Model {
 
             for (int i = 0; i < this.Count; i++) {
                 Populate(this.Graph);
-                Graph.Add(new Link(Root, Node[1], CommonSchema.CommonMarker));
-                Node[2].Data = "Node " + i.ToString();
-                Graph.Add(Node[2]);
-                IThing subRoot = Node[1];
+                Graph.Add(new Link(Root, Nodes[1], CommonSchema.CommonMarker));
+                Nodes[2].Data = "Node " + i.ToString();
+                Graph.Add(Nodes[2]);
+                IThing subRoot = Nodes[1];
                 for (int j = 0; j < this.Count; j++) {
                     Populate(this.Graph);
-                    Graph.Add(new Link(subRoot, Node[1], CommonSchema.CommonMarker));
-                    Node[2].Data = "SubNode " + i.ToString();
-                    Graph.Add(Node[2]);
+                    Graph.Add(new Link(subRoot, Nodes[1], CommonSchema.CommonMarker));
+                    Nodes[2].Data = "SubNode " + i.ToString();
+                    Graph.Add(Nodes[2]);
                 }
 
             }

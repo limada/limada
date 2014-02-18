@@ -107,10 +107,10 @@ namespace Limada.Tests.ThingGraphs {
 
             factory.Populate(dataSource);
 
-            TestItem java = new TestItem(factory.Node[3].Id, null, null, null);// Java
-            TestItem list = new TestItem(factory.Node[7].Id, null, null, null);// List
-            TestItem programming = new TestItem(factory.Node[1].Id, null, null, null);// Programming
-            TestItem programming2Language = new TestItem(factory.Edge[1].Id, null, null, null);// Programming->Language
+            TestItem java = new TestItem(factory.Nodes[3].Id, null, null, null);// Java
+            TestItem list = new TestItem(factory.Nodes[7].Id, null, null, null);// List
+            TestItem programming = new TestItem(factory.Nodes[1].Id, null, null, null);// Programming
+            TestItem programming2Language = new TestItem(factory.Edges[1].Id, null, null, null);// Programming->Language
 
 
             this.Close();
@@ -195,9 +195,9 @@ namespace Limada.Tests.ThingGraphs {
 
             factory.Populate(dataSource);
 
-            TestItem java = new TestItem(factory.Node[3].Id, null, null, null);// Java
-            TestItem programming = new TestItem(factory.Node[1].Id, null, null, null);// Programming
-            TestItem programming2Language = new TestItem(factory.Edge[1].Id, null, null, null);// Programming->Language
+            TestItem java = new TestItem(factory.Nodes[3].Id, null, null, null);// Java
+            TestItem programming = new TestItem(factory.Nodes[1].Id, null, null, null);// Programming
+            TestItem programming2Language = new TestItem(factory.Edges[1].Id, null, null, null);// Programming->Language
 
             this.Close();
             dataSource = this.Graph;
@@ -225,9 +225,9 @@ namespace Limada.Tests.ThingGraphs {
 
             factory.Populate(dataSource);
 
-            TestItem java = new TestItem(factory.Node[3].Id, null, null, null);// Java
-            TestItem programming = new TestItem(factory.Node[1].Id, null, null, null);// Programming
-            TestItem programming2Language = new TestItem(factory.Edge[1].Id, null, null, null);// Programming->Language
+            TestItem java = new TestItem(factory.Nodes[3].Id, null, null, null);// Java
+            TestItem programming = new TestItem(factory.Nodes[1].Id, null, null, null);// Programming
+            TestItem programming2Language = new TestItem(factory.Edges[1].Id, null, null, null);// Programming->Language
 
             this.Close();
             dataSource = this.Graph;

@@ -16,9 +16,9 @@ namespace Limada.Tests.Model {
 
         public override void Populate(IGraph<IThing, ILink> graph) {
             var factory = Registry.Factory.Create<IThingFactory>();;
-            Node[1] = factory.CreateItem();
-            Node[2] = factory.CreateItem("a thing with description");
-            Edge[1] = factory.CreateEdge (Node[1], Node[2], CommonSchema.DescriptionMarker);
+            Nodes[1] = factory.CreateItem();
+            Nodes[2] = factory.CreateItem("a thing with description");
+            Edges[1] = factory.CreateEdge (Nodes[1], Nodes[2], CommonSchema.DescriptionMarker);
 
             AddSamplesToGraph(graph);
         }

@@ -56,20 +56,20 @@ namespace Limaki.Tests.Graph.Model {
             IGraphEntity lastNode3 = null;
             for (int i = 0; i < Count; i++) {
                 if (i > 0) {
-                    lastNode1 = Node[1];
-                    lastNode2 = Node[5];
-                    lastNode3 = Node[8];
+                    lastNode1 = Nodes[1];
+                    lastNode2 = Nodes[5];
+                    lastNode3 = Nodes[8];
                 }
                 Populate(Graph,Start+1);
                 if (i > 0) {
-                    var edge = new GraphEdge(lastNode1, Node[1]);
+                    var edge = new GraphEdge(lastNode1, Nodes[1]);
                     Graph.Add(edge);
                     if (SeperateLattice) {
-                        edge = new GraphEdge(lastNode2, Node[5]);
+                        edge = new GraphEdge(lastNode2, Nodes[5]);
                         Graph.Add(edge);
                     }
                     if (AddDensity) {
-                        edge = new GraphEdge(Node[2], lastNode3);
+                        edge = new GraphEdge(Nodes[2], lastNode3);
                         Graph.Add(edge);
                     }
                 }
@@ -80,39 +80,39 @@ namespace Limaki.Tests.Graph.Model {
         public virtual void Populate(IGraph<IGraphEntity, IGraphEdge> Graph, int start) {
             var item = new GraphEntity<int>((start++));
             Graph.Add(item);
-            Node[1] = item;
+            Nodes[1] = item;
 
             item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
-            Node[2] = item;
+            Nodes[2] = item;
 
             item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
-            Node[3] = item;
+            Nodes[3] = item;
 
             item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
-            Node[4] = item;
+            Nodes[4] = item;
 
             item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
-            Node[5] = item;
+            Nodes[5] = item;
 
             item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
-            Node[6] = item;
+            Nodes[6] = item;
 
             item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
-            Node[7] = item;
+            Nodes[7] = item;
 
             item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
-            Node[8] = item;
+            Nodes[8] = item;
 
             item = new GraphEntity<int>(( start++ ));
             Graph.Add(item);
-            Node[9] = item;
+            Nodes[9] = item;
             this.Start = start;
 
         }

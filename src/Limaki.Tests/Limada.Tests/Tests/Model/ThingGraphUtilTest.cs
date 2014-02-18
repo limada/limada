@@ -46,8 +46,8 @@ namespace Limada.Tests.Model {
             var graph = new SchemaThingGraph(thingGraph);
 
             Prove (
-                new IThing[] {factory.Node[1]},
-                new IThing[] { factory.Node[1], factory.Node[2], factory.Edge[1],CommonSchema.DescriptionMarker },
+                new IThing[] {factory.Nodes[1]},
+                new IThing[] { factory.Nodes[1], factory.Nodes[2], factory.Edges[1],CommonSchema.DescriptionMarker },
                 graph);
 
         }
@@ -82,24 +82,24 @@ namespace Limada.Tests.Model {
             var graph = new SchemaThingGraph(thingGraph);
 
             Prove(
-                new IThing[] { factory.Node[1] },
+                new IThing[] { factory.Nodes[1] },
 
-                new IThing[] { factory.Node[1], 
-                               factory.Node[2], 
+                new IThing[] { factory.Nodes[1], 
+                               factory.Nodes[2], 
                                DigidocSchema.Document,
                                DigidocSchema.DocumentTitle, 
                                DigidocSchema.DocumentDefaultLink,
                                MetaSchema.DescriptionMarker,
-                               factory.Edge[1] },
+                               factory.Edges[1] },
                 graph);
 
             Prove(
-                new IThing[] { factory.Node[1], factory.Node[3], factory.Edge[2] },
+                new IThing[] { factory.Nodes[1], factory.Nodes[3], factory.Edges[2] },
                 
-                new IThing[] { factory.Node[1], 
-                               factory.Node[2], 
-                               factory.Node[3], 
-                               factory.Node[4], 
+                new IThing[] { factory.Nodes[1], 
+                               factory.Nodes[2], 
+                               factory.Nodes[3], 
+                               factory.Nodes[4], 
 
                                DigidocSchema.Document, 
                                DigidocSchema.DocumentTitle, 
@@ -118,9 +118,9 @@ namespace Limada.Tests.Model {
                                //DigidocSchema.AuthorHasDocument,
                                //MetaSchema.Root,
 
-                               factory.Edge[1], 
-                               factory.Edge[2],
-                               factory.Edge[3]},
+                               factory.Edges[1], 
+                               factory.Edges[2],
+                               factory.Edges[3]},
                 graph);
         }
     }

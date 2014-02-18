@@ -63,12 +63,12 @@ namespace Limaki.Tests.View.Visuals {
                 ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
                   targetTest.Mock.Factory).Factory;
 
-            for (int i = 0; i < sourceInnerFactory.Node.Count; i++) {
-                targetInnerFactory.Node[i] = sourceInnerFactory.Node[i];
+            for (int i = 0; i < sourceInnerFactory.Nodes.Count; i++) {
+                targetInnerFactory.Nodes[i] = sourceInnerFactory.Nodes[i];
             }
 
-            for (int i = 0; i < sourceInnerFactory.Edge.Count; i++) {
-                targetInnerFactory.Edge[i] = sourceInnerFactory.Edge[i];
+            for (int i = 0; i < sourceInnerFactory.Edges.Count; i++) {
+                targetInnerFactory.Edges[i] = sourceInnerFactory.Edges[i];
             }
             
         }
@@ -99,20 +99,20 @@ namespace Limaki.Tests.View.Visuals {
 
 
             sourceTest.Mock.Scene.Selected.Clear();
-            sourceTest.Mock.Scene.Focused = sourceTest.Mock.Factory.Node[1]; // Programming
+            sourceTest.Mock.Scene.Focused = sourceTest.Mock.Factory.Nodes[1]; // Programming
             sourceTest.Mock.SceneFacade.Expand(true);
             sourceTest.Mock.Display.Perform();
 
             targetTest.Mock.Scene.Selected.Clear();
-            targetTest.Mock.Scene.Focused = targetTest.Mock.Factory.Node[1]; // Programming
+            targetTest.Mock.Scene.Focused = targetTest.Mock.Factory.Nodes[1]; // Programming
             targetTest.Mock.SceneFacade.Expand (false);
             targetTest.Mock.Display.Perform();
 
             // make a new link, add it to source, look if in targetGraph.Source
             var sourceEdge =
                 new VisualEdge<string>(".Net->Programming",
-                sourceTest.Mock.Factory.Node[4], // .NET
-                sourceTest.Mock.Factory.Node[1]); // Programming);
+                sourceTest.Mock.Factory.Nodes[4], // .NET
+                sourceTest.Mock.Factory.Nodes[1]); // Programming);
 
             sourceGraph.Add (sourceEdge);
             sourceView.OnGraphChanged (sourceEdge, GraphEventType.Add);
@@ -132,7 +132,7 @@ namespace Limaki.Tests.View.Visuals {
 
 
             // change the link in targetTest
-            var targetNewRoot = targetTest.Mock.Factory.Node[3]; // java
+            var targetNewRoot = targetTest.Mock.Factory.Nodes[3]; // java
             var targetOldRoot = targetEdge.Root;
             targetTest.Mock.Scene.ChangeEdge(targetEdge, targetNewRoot, true);
             targetTest.Mock.Scene.Graph.OnGraphChanged(targetEdge, GraphEventType.Update);
@@ -151,8 +151,8 @@ namespace Limaki.Tests.View.Visuals {
             Assert.IsFalse(targetView.Edges(targetOldRoot).Contains(targetEdge));
             
             // test in source
-            var sourceNewRoot = sourceTest.Mock.Factory.Node[3];
-            var sourceOldRoot = sourceTest.Mock.Factory.Node[4];
+            var sourceNewRoot = sourceTest.Mock.Factory.Nodes[3];
+            var sourceOldRoot = sourceTest.Mock.Factory.Nodes[4];
             Assert.AreSame(sourceEdge.Root, sourceNewRoot);
             Assert.AreNotSame(sourceEdge.Root, sourceOldRoot);
             Assert.IsTrue(sourceView.Edges(sourceNewRoot).Contains(sourceEdge));

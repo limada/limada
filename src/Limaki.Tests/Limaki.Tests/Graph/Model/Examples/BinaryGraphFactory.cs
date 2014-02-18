@@ -31,39 +31,39 @@ namespace Limaki.Tests.Graph.Model {
 
             #region Binarytree Edges
 
-            edge = new GraphEdge(Node[1], Node[2]);
+            edge = new GraphEdge(Nodes[1], Nodes[2]);
             Graph.Add(edge);
-            Edge[1] = edge;
+            Edges[1] = edge;
 
-            edge = new GraphEdge(Node[4], Node[3]);
+            edge = new GraphEdge(Nodes[4], Nodes[3]);
             Graph.Add(edge);
-            Edge[2] = edge;
+            Edges[2] = edge;
 
-            edge = new GraphEdge(Node[1], Edge[2]);
+            edge = new GraphEdge(Nodes[1], Edges[2]);
             Graph.Add(edge);
-            Edge[3] = edge;
+            Edges[3] = edge;
 
-            edge = new GraphEdge(Node[5], Node[8]);
+            edge = new GraphEdge(Nodes[5], Nodes[8]);
             Graph.Add(edge);
-            Edge[4] = edge;
+            Edges[4] = edge;
 
 
-            edge = new GraphEdge(Node[5], Node[6]);
+            edge = new GraphEdge(Nodes[5], Nodes[6]);
             Graph.Add(edge);
-            Edge[5] = edge;
+            Edges[5] = edge;
 
-            edge = new GraphEdge(Node[5], Node[7]);
+            edge = new GraphEdge(Nodes[5], Nodes[7]);
             Graph.Add(edge);
-            Edge[6] = edge;
+            Edges[6] = edge;
 
-            edge = new GraphEdge(Node[8], Node[9]);
+            edge = new GraphEdge(Nodes[8], Nodes[9]);
             Graph.Add(edge);
-            Edge[7] = edge;
+            Edges[7] = edge;
 
             if (!SeperateLattice) {
-                edge = new GraphEdge (Edge[2], Edge[4]);
+                edge = new GraphEdge (Edges[2], Edges[4]);
                 Graph.Add (edge);
-                Edge[8] = edge;
+                Edges[8] = edge;
             }
 
             #endregion

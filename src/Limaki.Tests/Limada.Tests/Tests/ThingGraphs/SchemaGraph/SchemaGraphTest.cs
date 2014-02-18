@@ -87,11 +87,11 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
             graph.Initialize ();
 
 
-            TestDescription (factory.Node[1], factory.Node[2], factory.Edge[1]);
-            TestDescription(factory.Node[3], factory.Node[4], factory.Edge[2]);
+            TestDescription (factory.Nodes[1], factory.Nodes[2], factory.Edges[1]);
+            TestDescription(factory.Nodes[3], factory.Nodes[4], factory.Edges[2]);
             
             
-            TestFindRoots(factory.Node[1], factory.Node[2], factory.Edge[1]);
+            TestFindRoots(factory.Nodes[1], factory.Nodes[2], factory.Edges[1]);
             ReportSummary();
         }
 
@@ -114,8 +114,8 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
             factory.Populate();
             ((SchemaThingGraph)Graph).Initialize();
 
-            TestDescription(factory.Node[1], factory.Node[2], factory.Edge[1]);
-            TestDescription(factory.Node[3], factory.Node[4], factory.Edge[3]);
+            TestDescription(factory.Nodes[1], factory.Nodes[2], factory.Edges[1]);
+            TestDescription(factory.Nodes[3], factory.Nodes[4], factory.Edges[3]);
             ReportSummary();
         }
 

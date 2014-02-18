@@ -1,6 +1,7 @@
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Limaki.Tests.Graph.Model {
     public class GenericBiGraphFactory<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : 
@@ -79,17 +80,17 @@ namespace Limaki.Tests.Graph.Model {
 
         }
 
-        public override IList<TEdgeOne> Edge {
+        public override IList<TEdgeOne> Edges {
             get {
                 return new EdgeList<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>(
-                    this.GraphPair, Factory.Edge);
+                    this.GraphPair, Factory.Edges);
             }
         }
 
-        public override IList<TItemOne> Node {
+        public override IList<TItemOne> Nodes {
             get {
                 return new ItemList<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>(
-                    this.GraphPair, Factory.Node);
+                    this.GraphPair, Factory.Nodes);
             }
         }
 
@@ -169,7 +170,7 @@ namespace Limaki.Tests.Graph.Model {
         #region IEnumerable<T> Member
 
         public IEnumerator<TItemOne> GetEnumerator() {
-            throw new System.Exception("The method or operation is not implemented.");
+            return listTwo.Select (item => graphPair.Get (item)).GetEnumerator ();
         }
 
         #endregion

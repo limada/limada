@@ -30,37 +30,37 @@ namespace Limaki.Tests.Graph.Model {
 
             node = new GraphEntity<string>("Tags");
             Graph.Add(node);
-            Node[1] = node;
+            Nodes[1] = node;
 
 
             node = new GraphEntity<string>("Word");
             Graph.Add(node);
-            Node[2] = node;
+            Nodes[2] = node;
 
-            edge = new GraphEdge(Node[1], Node[2]);
+            edge = new GraphEdge(Nodes[1], Nodes[2]);
             Graph.Add(edge);
-            Edge[1] = edge;
+            Edges[1] = edge;
 
 
             node = new GraphEntity<string>("Game");
             Graph.Add(node);
-            Node[3] = node;
+            Nodes[3] = node;
 
-            edge = new GraphEdge(Node[2], Node[3]);
+            edge = new GraphEdge(Nodes[2], Nodes[3]);
             Graph.Add(edge);
-            Edge[2] = edge;
+            Edges[2] = edge;
 
             node = new GraphEntity<string>("Something");
             Graph.Add(node);
-            Node[4] = node;
+            Nodes[4] = node;
 
-            edge = new GraphEdge(Edge[2], Node[4]);
+            edge = new GraphEdge(Edges[2], Nodes[4]);
             Graph.Add(edge);
-            Edge[3] = edge;
+            Edges[3] = edge;
 
-            edge = new GraphEdge(Node[1], Edge[2]);
+            edge = new GraphEdge(Nodes[1], Edges[2]);
             Graph.Add(edge);
-            Edge[4] = edge;
+            Edges[4] = edge;
 
             
 

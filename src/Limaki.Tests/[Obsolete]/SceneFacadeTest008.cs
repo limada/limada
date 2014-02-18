@@ -101,7 +101,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         public abstract IEnumerable<IVisual> FullExpanded { get; }
         
         public virtual IEnumerable<IVisual> FirstNode {
-            get { yield return Mock.Factory.Node[1]; }
+            get { yield return Mock.Factory.Nodes[1]; }
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             CommandsExecute();
             Mock.Reset();
             Mock.Scene.Selected.Clear();
-            Mock.Scene.Focused = Mock.Factory.Node[1];
+            Mock.Scene.Focused = Mock.Factory.Nodes[1];
             Mock.SceneFacade.Expand (true);
             AreEquivalent(FullExpanded, Mock.Scene.Graph);
             TestShapes(Mock.Scene);

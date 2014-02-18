@@ -24,8 +24,8 @@ namespace Limaki.Tests.Graph.Model {
         void Populate();
         bool SeperateLattice { get;set;}
         bool AddDensity { get;set;}
-        IList<TItem> Node { get; }
-        IList<TEdge> Edge { get; }
+        IList<TItem> Nodes { get; }
+        IList<TEdge> Edges { get; }
 
 		void Populate( IGraph<TItem,TEdge> graph );
 	}

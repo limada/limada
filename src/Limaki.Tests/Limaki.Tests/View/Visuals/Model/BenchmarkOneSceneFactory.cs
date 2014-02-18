@@ -67,51 +67,51 @@ namespace Limaki.Tests.Graph.Model {
         public virtual void Arrange (IGraphScene<IVisual, IVisualEdge> scene) {
             var location = startAt;
 
-            var level2Width = Node[2].Size.Width + distance.Width + Node[3].Size.Width;
+            var level2Width = Nodes[2].Size.Width + distance.Width + Nodes[3].Size.Width;
             var ident = startAt.X;
-            Node[1].Location = new Point(
-                ident + (level2Width - Node[1].Size.Width) / 2,
+            Nodes[1].Location = new Point(
+                ident + (level2Width - Nodes[1].Size.Width) / 2,
                 startAt.Y);
 
-            var level2Y = Node[1].Location.Y + Node[1].Size.Height + distance.Height;
+            var level2Y = Nodes[1].Location.Y + Nodes[1].Size.Height + distance.Height;
 
-            Node[2].Location = new Point(
+            Nodes[2].Location = new Point(
                 ident,
                 level2Y);
 
-            Node[3].Location = new Point(
-                ident + level2Width - Node[3].Size.Width,
+            Nodes[3].Location = new Point(
+                ident + level2Width - Nodes[3].Size.Width,
                 level2Y);
 
-            Node[4].Location = new Point(
-                ident + (level2Width - Node[4].Size.Width) / 2,
-                level2Y + Node[3].Size.Height + distance.Height);
+            Nodes[4].Location = new Point(
+                ident + (level2Width - Nodes[4].Size.Width) / 2,
+                level2Y + Nodes[3].Size.Height + distance.Height);
 
 
             ident = ident + level2Width + distance.Width;
-            level2Width = Node[6].Size.Width + distance.Width + Node[7].Size.Width;
+            level2Width = Nodes[6].Size.Width + distance.Width + Nodes[7].Size.Width;
 
-            Node[5].Location = new Point(
-                ident + (level2Width - Node[5].Size.Width) / 2,
-                Node[1].Location.Y);
+            Nodes[5].Location = new Point(
+                ident + (level2Width - Nodes[5].Size.Width) / 2,
+                Nodes[1].Location.Y);
 
-            level2Y = Node[5].Location.Y + Node[5].Size.Height + distance.Height;
+            level2Y = Nodes[5].Location.Y + Nodes[5].Size.Height + distance.Height;
 
-            Node[6].Location = new Point(
+            Nodes[6].Location = new Point(
                 ident,
                 level2Y);
 
-            Node[7].Location = new Point(
-                ident + level2Width - Node[7].Size.Width,
+            Nodes[7].Location = new Point(
+                ident + level2Width - Nodes[7].Size.Width,
                 level2Y);
 
-            Node[8].Location = new Point(
-                ident + (level2Width - Node[8].Size.Width) / 2,
-                level2Y + Node[7].Size.Height + distance.Height);
+            Nodes[8].Location = new Point(
+                ident + (level2Width - Nodes[8].Size.Width) / 2,
+                level2Y + Nodes[7].Size.Height + distance.Height);
 
             var vector = new Vector();
-            vector.Start = Node[1].Shape[Anchor.RightMiddle];
-            vector.End = Node[6].Shape[Anchor.LeftMiddle];
+            vector.Start = Nodes[1].Shape[Anchor.RightMiddle];
+            vector.End = Nodes[6].Shape[Anchor.LeftMiddle];
             ((VectorShape)Line1.Shape).Data = vector;
         }
 

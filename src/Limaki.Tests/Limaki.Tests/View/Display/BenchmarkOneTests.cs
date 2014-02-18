@@ -97,13 +97,13 @@ namespace Limaki.Tests.View.Display {
 
 
         public void MoveLinks (Rectangle bounds) {
-            MoveLink (factory.Edge[4], factory.Edge[1]);
-            MoveLink (factory.Edge[5], factory.Edge[3]);
+            MoveLink (factory.Edges[4], factory.Edges[1]);
+            MoveLink (factory.Edges[5], factory.Edges[3]);
         }
 
         public void MoveNode1 (Rectangle bounds) {
             NeutralPosition ();
-            var startposition = factory.Node[1].Shape[Anchor.LeftTop] + new Size (10, 0);
+            var startposition = factory.Nodes[1].Shape[Anchor.LeftTop] + new Size (10, 0);
             var position = camera.FromSource (startposition);
 
             var e =
@@ -112,7 +112,7 @@ namespace Limaki.Tests.View.Display {
                     0, position.X, position.Y, 0);
             Display.EventControler.OnMouseDown (e);
 
-            Assert.AreSame (Scene.Focused, factory.Node[1]);
+            Assert.AreSame (Scene.Focused, factory.Nodes[1]);
 
 
             var v = new Vector ();

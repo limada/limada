@@ -30,52 +30,52 @@ namespace Limaki.Tests.Graph.Model {
 
             node = new GraphEntity<string>("Person");
             Graph.Add(node);
-            Node[1] = node;
+            Nodes[1] = node;
 
 
             node = new GraphEntity<string>("John");
             Graph.Add(node);
-            Node[2] = node;
+            Nodes[2] = node;
 
-            edge = new GraphEdge(Node[1], Node[2]);
+            edge = new GraphEdge(Nodes[1], Nodes[2]);
             Graph.Add(edge);
-            Edge[1] = edge;
+            Edges[1] = edge;
 
 
             node = new GraphEntity<string>("City");
             Graph.Add(node);
-            Node[3] = node;
+            Nodes[3] = node;
 
             node = new GraphEntity<string>("Boston");
             Graph.Add(node);
-            Node[4] = node;
+            Nodes[4] = node;
 
-            edge = new GraphEdge(Node[3], Node[4]);
+            edge = new GraphEdge(Nodes[3], Nodes[4]);
             Graph.Add(edge);
-            Edge[2] = edge;
+            Edges[2] = edge;
 
             node = new GraphEntity<string>("Go");
             Graph.Add(node);
-            Node[5] = node;
+            Nodes[5] = node;
 
 
-            edge = new GraphEdge(Edge[1], Node[5]);
+            edge = new GraphEdge(Edges[1], Nodes[5]);
             Graph.Add(edge);
-            Edge[3] = edge;
+            Edges[3] = edge;
 
 
 
-            edge = new GraphEdge(Edge[3],Edge[2]);
+            edge = new GraphEdge(Edges[3],Edges[2]);
             Graph.Add(edge);
-            Edge[4] = edge;
+            Edges[4] = edge;
 
             node = new GraphEntity<string>("Bus");
             Graph.Add(node);
-            Node[6] = node;
+            Nodes[6] = node;
 
-            edge = new GraphEdge(Edge[4], Node[6]);
+            edge = new GraphEdge(Edges[4], Nodes[6]);
             Graph.Add(edge);
-            Edge[5] = edge;
+            Edges[5] = edge;
 
             
 

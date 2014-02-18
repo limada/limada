@@ -83,7 +83,7 @@ namespace Limada.Tests.View {
             set { _addDensity = value; }
         }
         IList<IVisual> _node = null;
-        public IList<IVisual> Node {
+        public IList<IVisual> Nodes {
             get {
                 if (_node == null) {
                     _node = new IVisual[11];
@@ -93,7 +93,7 @@ namespace Limada.Tests.View {
         }
 
         IList<IVisualEdge> _link = null;
-        public IList<IVisualEdge> Edge {
+        public IList<IVisualEdge> Edges {
             get {
                 if (_link == null) {
                     _link = new IVisualEdge[11];

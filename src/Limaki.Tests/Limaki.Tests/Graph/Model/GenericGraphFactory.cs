@@ -56,7 +56,7 @@ namespace Limaki.Tests.Graph.Model {
         public abstract void Populate(IGraph<TItem, TEdge> graph);
 
         IList<TItem> _node = null;
-        public virtual IList<TItem> Node {
+        public virtual IList<TItem> Nodes {
             get {
                 if (_node == null) {
                     _node = new TItem[11];
@@ -67,7 +67,7 @@ namespace Limaki.Tests.Graph.Model {
 
 
         IList<TEdge> _link = null;
-        public virtual IList<TEdge> Edge {
+        public virtual IList<TEdge> Edges {
             get {
                 if (_link == null) {
                     _link = new TEdge[11];
@@ -77,12 +77,12 @@ namespace Limaki.Tests.Graph.Model {
         }
 
         public virtual void AddSamplesToGraph(IGraph<TItem,TEdge> graph) {
-            foreach(TItem item in Node) {
+            foreach(TItem item in Nodes) {
                 if (item != null) {
                     graph.Add (item);
                 }
             }
-            foreach (TEdge item in Edge) {
+            foreach (TEdge item in Edges) {
                 if (item != null) {
                     graph.Add(item);
                 }

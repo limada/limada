@@ -18,18 +18,18 @@ namespace Limada.Tests.Model {
         public IThingFactory factory { get { return _factory ?? (_factory = Registry.Factory.Create<IThingFactory>()); } }
 
         public override void Populate(IGraph<IThing, ILink> graph) {
-            Node[1] = factory.CreateItem();
+            Nodes[1] = factory.CreateItem();
 
-            Node[2] = factory.CreateItem("");
-            Node[2].Data = "Document " + Node[2].Id.ToString ("X");
+            Nodes[2] = factory.CreateItem("");
+            Nodes[2].Data = "Document " + Nodes[2].Id.ToString ("X");
 
-            Edge[1] = factory.CreateEdge(Node[1], Node[2], DigidocSchema.DocumentTitle);
+            Edges[1] = factory.CreateEdge(Nodes[1], Nodes[2], DigidocSchema.DocumentTitle);
 
-            Node[3] = factory.CreateItem<Stream>(null);
-            Edge[2] = factory.CreateEdge(Node[1], Node[3], DigidocSchema.DocumentPage);
+            Nodes[3] = factory.CreateItem<Stream>(null);
+            Edges[2] = factory.CreateEdge(Nodes[1], Nodes[3], DigidocSchema.DocumentPage);
 
-            Node[4] = factory.CreateItem<int>(1);
-            Edge[3] = factory.CreateEdge(Edge[2], Node[4], DigidocSchema.PageNumber);
+            Nodes[4] = factory.CreateItem<int>(1);
+            Edges[3] = factory.CreateEdge(Edges[2], Nodes[4], DigidocSchema.PageNumber);
 
             AddSamplesToGraph (graph);
         }

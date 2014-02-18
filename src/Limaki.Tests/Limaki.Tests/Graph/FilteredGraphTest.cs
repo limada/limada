@@ -61,8 +61,8 @@ namespace Limaki.Tests.Sandbox.Graph {
                                        items.Contains(edge.Leaf);
                                };
 
-            items.Add(data.Node[1]);
-            items.Add(data.Node[2]);
+            items.Add(data.Nodes[1]);
+            items.Add(data.Nodes[2]);
 
             this.ReportDetail(GraphTestUtils.ReportGraph<IGraphEntity, IGraphEdge> (graph, "Filtered Graph"));
 
