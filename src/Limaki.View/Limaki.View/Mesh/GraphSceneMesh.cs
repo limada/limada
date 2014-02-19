@@ -12,12 +12,13 @@
  * 
  */
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.View.Visualizers;
-using System;
 using Limaki.Graphs.Extensions;
+using Limaki.View.Visualizers;
 
 namespace Limaki.View.Mesh {
 
@@ -65,12 +66,16 @@ namespace Limaki.View.Mesh {
         public void AddDisplay (IGraphSceneDisplay<TItem, TEdge> display) {
             if (display != null) {
                 Displays.Add (display);
+                AddScene (display.Data);
             }
         }
 
         public void RemoveDisplay (IGraphSceneDisplay<TItem, TEdge> display) {
             if (display != null) {
                 Displays.Remove (display);
+                if (display.Data != null &&
+                    !Displays.Any (d => d != display && display.Data == d.Data))
+                    RemoveScene (display.Data);
             }
         }
 

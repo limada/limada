@@ -84,6 +84,9 @@ namespace Limaki.View.Mesh {
                 var sinkGraph = sinkScene.Graph;
                 if (ContainsSourceOf (sinkGraph.RootSource (), BackItem) || eventType == GraphEventType.Add) {
                     var sinkItem = SourceOf (sinkGraph, BackItem);
+                    if (sinkItem == null)
+                        continue;
+
                     var sinkDisplay = Mesh.Displays.FirstOrDefault (d => d != SourceDisplay && d.Data == sinkScene);
 
                     visit (SourceGraph, SourceItem, sinkItem, sinkScene, sinkDisplay, eventType);

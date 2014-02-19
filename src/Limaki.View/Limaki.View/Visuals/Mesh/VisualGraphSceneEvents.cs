@@ -47,7 +47,8 @@ namespace Limaki.View.Visuals.UI {
             } else if (eventType == GraphEventType.Add && sinkItem is IVisualEdge) {
                 VisualGraphEdgeAdd (sinkScene, (IVisualEdge) sinkItem);
             }
-            sinkDisplay.Perform ();
+            if (sinkDisplay != null)
+                sinkDisplay.Perform ();
         }
 
         protected virtual void VisualGraphEdgeAdd (IGraphScene<IVisual, IVisualEdge> sinkScene, IVisualEdge sinkEdge) {
