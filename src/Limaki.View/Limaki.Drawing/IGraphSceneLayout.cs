@@ -15,5 +15,7 @@ namespace Limaki.Drawing {
 
         bool Centered { get; set; }
 
+        void AdjustSize (TItem visual);
+
     }
 }

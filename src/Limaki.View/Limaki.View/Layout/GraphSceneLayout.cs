@@ -100,5 +100,9 @@ namespace Limaki.View.Layout {
         static IDrawingUtils _drawingUtils = null;
         protected static IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Factory.Create<IDrawingUtils>()); } }
 
+        public abstract void AdjustSize (TItem item, IShape shape);
+
+        public abstract void AdjustSize (TItem item);
+
     }
 }
