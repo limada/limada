@@ -54,7 +54,7 @@ namespace Limaki.Graphs {
                 } else {
                     _edgesTwo = new EmptyCollection<TSourceEdge>();
                 }
-                foreach (TSourceEdge edgeTwo in _edgesTwo) {
+                foreach (var edgeTwo in _edgesTwo) {
                     Sink.Add((TSinkEdge)Mapper.TryGetCreate(edgeTwo));
                 }
             }

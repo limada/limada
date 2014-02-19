@@ -14,6 +14,7 @@
 
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Limaki.Actions;
 using Limaki.Common.Collections;
@@ -85,9 +86,9 @@ namespace Limaki.View.Layout {
 
         public virtual void Commit (ICollection<ICommand<TItem>> requests) {
 
-            ICollection<TItem> invokeDone = new Set<TItem>();
+            var invokeDone = new Set<TItem>();
 
-            foreach (KeyValuePair<TItem, IShape> kvp in itemsToInvoke) {
+            foreach (var kvp in itemsToInvoke) {
                 // if kvp.Value (Shape) == null: item has a valid shape
                 if (kvp.Value != null) {
                     requests.Add(new LayoutCommand<TItem>(kvp.Key, LayoutActionType.Invoke));
@@ -98,8 +99,8 @@ namespace Limaki.View.Layout {
                 }
             }
 
-            foreach (KeyValuePair<TItem, Point> kvp in changedLocations) {
-                IShape shape = ShapeGetter(kvp.Key);
+            foreach (var kvp in changedLocations) {
+                var shape = ShapeGetter(kvp.Key);
                 if (shape != null && shape.Location.Equals(kvp.Value) && !invokeDone.Contains(kvp.Key)) {
                     requests.Add(new LayoutCommand<TItem>(kvp.Key, LayoutActionType.AddBounds));
                 } else {
@@ -112,7 +113,7 @@ namespace Limaki.View.Layout {
                     (ShapeGetter(edge.Root)!=null || changedLocations.ContainsKey (edge.Root))&& 
                     (ShapeGetter(edge.Leaf)!=null || changedLocations.ContainsKey (edge.Leaf));
 
-            foreach (TEdge edge in AffectedEdges) {
+            foreach (var edge in AffectedEdges) {
                 if (ShapeGetter(edge) == null) {
                     if (!invokeDone.Contains(edge)) {
                         requests.Add(
@@ -123,7 +124,7 @@ namespace Limaki.View.Layout {
                 }
             }
 
-            foreach (TEdge edge in AffectedEdges) {
+            foreach (var edge in AffectedEdges) {
                 if (invokeDone.Contains(edge))
                     requests.Add(new LayoutCommand<TItem>(edge, LayoutActionType.Justify));
                 else {

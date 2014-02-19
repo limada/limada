@@ -75,8 +75,8 @@ namespace Limaki.Graphs {
             if (newItem == null ) {
                 throw new ArgumentException("ChangeEdge: Root or Leaf would be null");
             }
-            TItem oldItem = default(TItem);
-            TItem adjacent = default(TItem);
+            var oldItem = default(TItem);
+            var adjacent = default(TItem);
             if (changeRoot) {
                 oldItem = edge.Root;
                 adjacent = edge.Leaf;
@@ -99,7 +99,7 @@ namespace Limaki.Graphs {
         }
 
         protected virtual void RevertEdgeInternal ( TEdge edge ) {
-            TItem root = edge.Root;
+            var root = edge.Root;
             edge.Root = edge.Leaf;
             edge.Leaf = root;
         }
@@ -155,9 +155,9 @@ namespace Limaki.Graphs {
         # region Basic Algorithms
 
         public virtual IEnumerable<TEdge> Edges ( IEnumerable<TItem> source ) {
-            Set<TEdge> done = new Set<TEdge>();
-            foreach(TItem item in source) {
-                foreach (TEdge edge in this.Edges(item)) {
+            var done = new Set<TEdge>();
+            foreach(var item in source) {
+                foreach (var edge in this.Edges(item)) {
                     if (! done.Contains(edge)) {
                         done.Add(edge);
                         yield return edge;
@@ -167,13 +167,13 @@ namespace Limaki.Graphs {
         }
 
         public virtual IEnumerable<TEdge> Twig ( TItem source ) {
-            Queue<IEnumerable<TEdge>> work = new Queue<IEnumerable<TEdge>>();
+            var work = new Queue<IEnumerable<TEdge>>();
             work.Enqueue(Edges(source));
             while ( work.Count > 0 ) {
-                IEnumerable<TEdge> curr = work.Dequeue();
-                foreach ( TEdge edge in curr ) {
+                var curr = work.Dequeue();
+                foreach ( var edge in curr ) {
                     if ( EdgeIsItem ) {
-                        TItem edgeAsItem = (TItem) (object) edge;
+                        var edgeAsItem = (TItem) (object) edge;
                         work.Enqueue(Edges(edgeAsItem));
                     }
                     yield return edge;
@@ -182,15 +182,15 @@ namespace Limaki.Graphs {
         }
 
         public virtual IEnumerable<TEdge> DepthFirstTwig(TItem source) {
-            Stack<IEnumerable<TEdge>> work = new Stack<IEnumerable<TEdge>>();
-            Set<TEdge> done = new Set<TEdge>();
+            var work = new Stack<IEnumerable<TEdge>>();
+            var done = new Set<TEdge>();
             work.Push(Edges(source));
             while ( work.Count>0 ) {
-                IEnumerable<TEdge> curr = work.Pop();
-                foreach ( TEdge edge in curr ) {
+                var curr = work.Pop();
+                foreach ( var edge in curr ) {
                     if (EdgeIsItem && ! done.Contains(edge)) {
                         done.Add(edge);
-                        ICollection<TEdge> next = Edges((TItem) (object) edge);
+                        var next = Edges((TItem) (object) edge);
                         if (next.Count !=0) {
                             work.Push(next);
                         }
@@ -201,10 +201,10 @@ namespace Limaki.Graphs {
         }
 
         public virtual IEnumerable<TEdge> PostorderTwig(TItem source) {
-            foreach (TEdge edge in Edges(source)) {
+            foreach (var edge in Edges(source)) {
                 if (EdgeIsItem) {
-                    TItem edgeAsItem = (TItem)(object)edge;
-                    foreach ( TEdge recurse in PostorderTwig(edgeAsItem) ) {
+                    var edgeAsItem = (TItem)(object)edge;
+                    foreach ( var recurse in PostorderTwig(edgeAsItem) ) {
                         yield return recurse;
                     }
                 }
@@ -221,9 +221,9 @@ namespace Limaki.Graphs {
         /// <returns></returns>
         public virtual IEnumerable<TEdge> PreorderLatticeEdges(TItem root) {
             if (EdgeIsItem) {
-                Set<TItem> visited = new Set<TItem>();
-                foreach (TEdge edge in Edges(root)) {
-                    TItem edgeAsItem = (TItem)(object)edge;
+                var visited = new Set<TItem>();
+                foreach (var edge in Edges(root)) {
+                    var edgeAsItem = (TItem)(object)edge;
                     if (!visited.Contains(edgeAsItem)) {
                         visited.Add(edgeAsItem);
                         
@@ -254,10 +254,10 @@ namespace Limaki.Graphs {
         }
 
         public virtual IEnumerable<TEdge> Fork (TItem source) {
-            Queue<TEdge> work = new Queue<TEdge>();
-            Set<TEdge> done = new Set<TEdge>();
+            var work = new Queue<TEdge>();
+            var done = new Set<TEdge>();
             if (source is TEdge) {
-                TEdge curr = (TEdge)(object)source;
+                var curr = (TEdge)(object)source;
                 work.Enqueue (curr);
             }
 
@@ -266,7 +266,7 @@ namespace Limaki.Graphs {
             }
 
             while (work.Count > 0) {
-                TEdge curr = work.Dequeue();
+                var curr = work.Dequeue();
                 if (!done.Contains(curr)) {
                     if (RootIsEdge(curr)) {
                         work.Enqueue((TEdge)(object)curr.Root);
@@ -283,7 +283,7 @@ namespace Limaki.Graphs {
         }
 
         public virtual IEnumerable<TEdge> Fork(TItem item, Func<TItem,bool> pred) {
-            foreach (TEdge edge in Fork(item)) {
+            foreach (var edge in Fork(item)) {
                 if (pred(edge.Root) && pred(edge.Leaf)) {
                     yield return edge;
                 }

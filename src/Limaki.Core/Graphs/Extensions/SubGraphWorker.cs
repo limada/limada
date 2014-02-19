@@ -226,7 +226,7 @@ namespace Limaki.Graphs.Extensions {
 
             foreach (var item in elements) {
                 worker.Remove(item);
-                foreach (TEdge edge in this.Sink.Twig(item)) {
+                foreach (var edge in this.Sink.Twig(item)) {
                     worker.Remove(edge);
                 }
             }

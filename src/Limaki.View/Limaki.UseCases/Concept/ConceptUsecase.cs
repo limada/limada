@@ -144,16 +144,17 @@ namespace Limaki.Usecases.Concept {
             StreamContentUiManager.Read();
         }
 
-        public void ImportGraphFocus () {
+        public void ImportGraphCursor () {
             var display = GetCurrentDisplay();
 
             if (display != null) {
                 var scene = display.Data;
-                StreamContentUiManager.ThingGraphCursorIoManager.SinkIn = graphFocus => {
-                    scene.AddVisual(scene.Graph.VisualOf(graphFocus.Cursor), display.Layout);
+                StreamContentUiManager.ThingGraphCursorIoManager.SinkIn = graphCursor => {
+                    scene.AddVisual(scene.Graph.VisualOf(graphCursor.Cursor), display.Layout);
                     display.Perform();
                 };
-                StreamContentUiManager.ReadThingGraphFocus(display.Data);
+                StreamContentUiManager.ReadThingGraphCursor(display.Data);
+                display.Perform ();
             }
         }
 

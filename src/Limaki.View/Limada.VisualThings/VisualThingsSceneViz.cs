@@ -111,9 +111,12 @@ namespace Limada.Usecases {
 
        public void SetDescription (IGraphScene<IVisual, IVisualEdge> scene, IThing thing, string fileName) {
             if (thing != null) {
+
                 var thingGraph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Source as IThingGraph;
                 thingGraph.SetSource(thing, fileName);
+
                 var desc = thingGraph.Description(thing);
+
                 if (desc == null || desc.ToString() == string.Empty) {
                     desc = Path.GetFileNameWithoutExtension(fileName);
                     var vis = scene.Graph.VisualOf(thing);

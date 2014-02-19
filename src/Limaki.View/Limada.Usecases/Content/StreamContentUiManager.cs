@@ -137,16 +137,19 @@ namespace Limada.Usecases {
             }
         }
 
-        public void ReadThingGraphFocus (IGraphScene<IVisual, IVisualEdge> scene) {
+        public void ReadThingGraphCursor (IGraphScene<IVisual, IVisualEdge> scene) {
             try {
                 DefaultDialogValues(OpenFileDialog, ThingGraphCursorIoManager.ReadFilter);
                 if (scene != null && scene.HasThingGraph()) {
                     if (FileDialogShow(OpenFileDialog, true) == DialogResult.Ok) {
-                        var graphFocus = new GraphCursor<IThing, ILink>(scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Source);
+
+                        var graphCursor = new GraphCursor<IThing, ILink>(scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Source);
                         var uri = IoUtils.UriFromFileName(OpenFileDialog.FileName);
                         ThingGraphCursorIoManager.ConfigureSinkIo = s => ConfigureSink(s);
-                        graphFocus = ThingGraphCursorIoManager.ReadSink(uri, graphFocus);
-                        new VisualThingsSceneViz().SetDescription(scene, graphFocus.Cursor, OpenFileDialog.FileName);
+                        
+                        graphCursor = ThingGraphCursorIoManager.ReadSink(uri, graphCursor);
+                        new VisualThingsSceneViz().SetDescription(scene, graphCursor.Cursor, OpenFileDialog.FileName);
+                        
                         OpenFileDialog.ResetFileName();
                     }
                 }

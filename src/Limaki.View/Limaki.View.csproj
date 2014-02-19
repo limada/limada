@@ -78,8 +78,8 @@
     <Compile Include="Limaki.View\Mesh\IGraphSceneMeshVisitor.cs" />
     <Compile Include="Limaki.View\Mesh\GraphSceneMeshVisitor.cs" />
     <Compile Include="Limaki.View\Mesh\GraphSceneMeshBackHandler.cs" />
-    <Compile Include="Limaki.View\Visuals\Visualizers\VisualGraphSceneEvents.cs" />
-    <Compile Include="Limaki.View\Visuals\Visualizers\VisualGraphSceneMesh.cs" />
+    <Compile Include="Limaki.View\Visuals\Mesh\VisualGraphSceneEvents.cs" />
+    <Compile Include="Limaki.View\Visuals\Mesh\VisualGraphSceneMesh.cs" />
     <Compile Include="[Obsolete]\SceneChanger.cs" />
     <Compile Include="Limaki.View\Visuals\UI\VisualsTextEditActionBase.cs" />
     <Compile Include="Limaki.View\Mesh\GraphSceneMesh.cs" />

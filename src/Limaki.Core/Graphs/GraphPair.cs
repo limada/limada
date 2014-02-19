@@ -60,21 +60,21 @@ namespace Limaki.Graphs {
         }
 
         public override void ChangeEdge(TSinkEdge edge, TSinkItem newItem, bool changeRoot) {
-            TSourceItem two = Get(edge);
+            var two = Get(edge);
             Sink.ChangeEdge(edge, newItem, changeRoot);
             if (two != null) {
-                TSourceEdge edgeTwo = (TSourceEdge) two;
-                //TItemTwo oldTwo = Mapper.Get(oldItem);
-                TSourceItem newTwo = Mapper.TryGetCreate(newItem);
+                var edgeTwo = (TSourceEdge) two;
+                //var oldTwo = Mapper.Get(oldItem);
+                var newTwo = Mapper.TryGetCreate(newItem);
                 Source.ChangeEdge(edgeTwo, newTwo, changeRoot);
             }
         }
 
         public override void RevertEdge(TSinkEdge edge) {
-            TSourceItem two = Get(edge);
+            var two = Get(edge);
             Sink.RevertEdge (edge);
             if (two != null) {
-                TSourceEdge edgeTwo = (TSourceEdge) two;
+                var edgeTwo = (TSourceEdge) two;
                 Source.RevertEdge (edgeTwo);
             }
         }
@@ -85,7 +85,7 @@ namespace Limaki.Graphs {
 
         public override void Add( TSinkEdge edge ) {
             Sink.Add(edge);
-            TSourceEdge edgeTwo = (TSourceEdge)Mapper.TryGetCreate(edge);
+            var edgeTwo = (TSourceEdge)Mapper.TryGetCreate(edge);
             Source.Add(edgeTwo);
         }
 
@@ -155,7 +155,7 @@ namespace Limaki.Graphs {
         public override void Add( TSinkItem item ) {
             if (item == null) return;
             Sink.Add(item);
-            TSourceItem itemTwo = Mapper.TryGetCreate(item);
+            var itemTwo = Mapper.TryGetCreate(item);
             Source.Add(itemTwo);
         }
 

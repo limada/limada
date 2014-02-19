@@ -78,7 +78,7 @@ namespace Limaki.View.Visuals.Layout {
             return styleGroup.DefaultStyle;
         }
 
-        public virtual void AjustSize(TItem visual, IShape shape) {
+        public override void AdjustSize(TItem visual, IShape shape) {
             if (!(visual is TEdge)) {
                 var style = GetStyle(visual);
                 var invalid = shape.BoundsRect;
@@ -95,10 +95,10 @@ namespace Limaki.View.Visuals.Layout {
             }
         }
 
-        public virtual void AjustSize(TItem visual) {
+        public override void AdjustSize (TItem visual) {
             if (!(visual is TEdge)) {
                 //var invalid = visual.Shape.BoundsRect;
-                AjustSize (visual, visual.Shape);
+                AdjustSize (visual, visual.Shape);
                 //Data.UpdateBounds(visual, invalid);
             }
         }
@@ -116,7 +116,7 @@ namespace Limaki.View.Visuals.Layout {
                 if (leafShape != null)
                     shape.End = leafShape[edge.LeafAnchor];
             } else {
-                AjustSize (target, tshape);
+                AdjustSize (target, tshape);
             }
         }
 
@@ -135,11 +135,11 @@ namespace Limaki.View.Visuals.Layout {
 
         public override void Justify(TItem target) {
             if ((target is TEdge) && (target.Shape is IEdgeShape)) {
-                Rectangle invalid = target.Shape.BoundsRect;
+                var invalid = target.Shape.BoundsRect;
                 Justify (target, target.Shape);
                 Data.UpdateBounds(target, invalid);
             } else {
-                AjustSize(target, target.Shape);
+                AdjustSize(target, target.Shape);
             }
         }
 

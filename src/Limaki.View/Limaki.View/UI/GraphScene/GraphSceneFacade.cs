@@ -134,7 +134,7 @@ namespace Limaki.View.UI.GraphScene {
         public bool IsFiltered = false;
         public virtual void ApplyFilter () {
             if (Scene.Graph != SubGraph) {
-                TItem curr = Scene.Focused;
+                var curr = Scene.Focused;
                 Scene.Graph = SubGraph;
                 Scene.Focused = curr;
             }
@@ -159,7 +159,7 @@ namespace Limaki.View.UI.GraphScene {
         /// <param name="item"></param>
         /// <param name="pt"></param>
         public virtual void Add (TItem item, Point pt) {
-            IGraphScene<TItem, TEdge> scene = this.Scene;
+            var scene = this.Scene;
             if (scene == null || item == null)
                 return;
             ApplyFilter ();

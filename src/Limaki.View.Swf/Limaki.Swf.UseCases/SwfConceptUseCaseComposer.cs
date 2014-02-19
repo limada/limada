@@ -135,7 +135,7 @@ namespace Limaki.Swf.Backends.UseCases {
                 }),
 				new ToolStripMenuItem(l["Import"], null, new ToolStripMenuItem[] { 
 					new ToolStripMenuItem(l["Content ..."], null, (s, e) => { useCase.ImportContent(); }),
-                    new ToolStripMenuItem(l["multi content ..."], null, (s, e) => { useCase.ImportGraphFocus(); }),
+                    new ToolStripMenuItem(l["multi content ..."], null, (s, e) => { useCase.ImportGraphCursor(); }),
                     new ToolStripMenuItem(l["File from previous version ..."], null, (s, e) => { useCase.ImportThingGraphRaw(); })
 				}),
                 new ToolStripMenuItem(l["Print ..."], null, (s, e) => { this.Print(useCase); }),

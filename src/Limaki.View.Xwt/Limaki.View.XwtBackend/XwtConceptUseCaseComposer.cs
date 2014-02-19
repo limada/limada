@@ -118,7 +118,7 @@ namespace Limaki.View.XwtBackend {
                 }),
 				new MenuItem(l["Import"], null, null,new MenuItem[] { 
 					new MenuItem(l["Content ..."], null, (s, e) => { useCase.ImportContent(); }),
-                    new MenuItem(l["multi content ..."], null, (s, e) => { useCase.ImportGraphFocus(); }),
+                    new MenuItem(l["multi content ..."], null, (s, e) => { useCase.ImportGraphCursor(); }),
                     new MenuItem(l["File from previous version ..."], null, (s, e) => { useCase.ImportThingGraphRaw(); })
 				}),
                 new MenuItem(l["Print ..."], null, (s, e) => { this.Print(useCase); }),

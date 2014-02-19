@@ -20,8 +20,8 @@ namespace Limaki.Graphs {
     /// <summary>
     /// a pair of two graphs of same type
     /// Source is a Graph which holds all items
-    /// Sink is a a subgraph of Data
-    /// every operation (add,remove etc.) is performed on both graphs
+    /// Sink is a a subgraph of Source
+    /// every operation (add, remove etc.) is performed on both graphs
     /// </summary>
     /// <typeparam name="TItem"></typeparam>
     /// <typeparam name="TEdge"></typeparam>
@@ -35,9 +35,8 @@ namespace Limaki.Graphs {
             this.Sink = sink;
         }
 
-       
         /// <summary>
-        /// the sub-graph of Source with the visible items
+        /// the sub-graph of Source
         /// </summary>
         public virtual IGraph<TItem, TEdge> Sink { get; set; }
 
@@ -83,13 +82,11 @@ namespace Limaki.Graphs {
         public override void Add(TEdge edge) {
             Source.Add(edge);
             Sink.Add(edge);
-            //OnGraphChanged(edge, GraphChangeType.Add);
         }
 
         public override bool Remove(TEdge edge) {
             Source.Remove(edge);
             bool result = Sink.Remove(edge);
-            //OnGraphChanged(edge, GraphChangeType.Remove);
             return result;
         }
 
@@ -112,7 +109,6 @@ namespace Limaki.Graphs {
         public override void Add(TItem item) {
             Sink.Add(item);
             Source.Add(item);
-            //OnGraphChanged(item, GraphChangeType.Add);
         }
 
         public override void Clear() {
@@ -138,7 +134,6 @@ namespace Limaki.Graphs {
         public override bool Remove(TItem item) {
             Source.Remove(item);
             bool result = Sink.Remove(item);
-            //OnGraphChanged (item, GraphChangeType.Remove);
             return result;
         }
 
@@ -153,7 +148,7 @@ namespace Limaki.Graphs {
         }
 
         public override void OnDataChanged(TItem item) {
-            // change the data graph first, then call view change-event
+            // change the full graph first, then call subgraph change-event
             Source.OnDataChanged (item);
             base.OnDataChanged(item);
         }
@@ -162,12 +157,12 @@ namespace Limaki.Graphs {
             Source.DoChangeData(item, data);
             base.DoChangeData(item, data);
         }
+
         public override void OnGraphChanged( TItem item, GraphEventType eventType ) {
             Source.OnGraphChanged(item, eventType);
             base.OnGraphChanged(item, eventType);
         }
 
-        
         #region IGraphPair<TItem,TEdge,TItem,TEdge> Member
 
         IDictionary<TItem, TItem> IGraphPair<TItem, TItem, TEdge, TEdge>.Sink2Source {
