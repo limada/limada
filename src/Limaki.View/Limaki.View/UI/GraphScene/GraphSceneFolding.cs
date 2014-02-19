@@ -71,24 +71,24 @@ namespace Limaki.View.UI.GraphScene {
 
             bool wasFiltered = Folder.IsFiltered;
 
-            if ((e.Key == Key.NumPadAdd && e.Modifiers==ModifierKeys.None)) {
+            if ((e.Key == Key.NumPadAdd || e.Key == Key.Plus) && e.Modifiers == ModifierKeys.None) {
                 Folder.Expand (false);
             }
 
-            if ((e.Key == Key.NumPadSubtract && e.Modifiers == ModifierKeys.None)) {
+            if ((e.Key == Key.NumPadSubtract || e.Key == Key.Minus) && e.Modifiers == ModifierKeys.None) {
                 Folder.Collapse ();
             }
 
-            if ((e.Key == Key.NumPadDivide )) {
+            if ((e.Key == Key.NumPadDivide || e.Key == Key.Slash)) {
                 Folder.CollapseToFocused ();
             }
 
-            if (e.Key == Key.NumPadMultiply && e.Modifiers == ModifierKeys.Control){
+            if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.Control) {
                 Folder.ShowAllData ();
             }
 
-            if (e.Key == Key.NumPadMultiply && e.Modifiers == ModifierKeys.None) {
-                Folder.Expand(true);
+            if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.None) {
+                Folder.Expand (true);
             }
 
             if ((e.Key == Key.Space && e.Modifiers == ModifierKeys.None)) {
