@@ -146,8 +146,15 @@ namespace Limaki.View.Visuals.UI {
             var converter = GetConverter (visual);
             if (converter == null) return;
 
-            object data = converter.ConvertFromString (text);
-            if (data==null) return;
+            object data = null;
+            try {
+                data = converter.ConvertFromString (text);
+
+            } catch (Exception ex) {
+                Registry.Pool.TryGetCreate<IExceptionHandler> ().Catch (ex, MessageType.OK);
+            }
+            if (data == null) return;
+           
 
             if (visual is IVisualEdge && scene.Markers !=null) {
                 object marker = scene.Markers.FittingMarker(data);
