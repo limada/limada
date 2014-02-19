@@ -16,7 +16,7 @@ namespace Limaki.Tests.Visuals {
         public IVisual Line1 {
             get {
                 if (_line1 == null) {
-                    Vector vector = new Vector ();
+                    var vector = new Vector ();
                     _line1 = Registry.Pool.TryGetCreate<IVisualFactory>()
                         .CreateItem("line");
                     _line1.Shape = new VectorShape(vector);

@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using Limaki.Graphs;
 
 namespace Limaki.Tests.Graph.Model {
+
     public class Item<T> {
         protected T _data = default( T );
         public virtual T Data {

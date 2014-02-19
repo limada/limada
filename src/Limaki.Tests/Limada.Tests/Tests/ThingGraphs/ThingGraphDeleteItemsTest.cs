@@ -102,8 +102,8 @@ namespace Limada.Tests.ThingGraphs {
             ReportDetail ("ProgramminglanguageJavaDeleteTestPingBack");
             IThingGraph dataSource = this.Graph;
 
-            ThingGraphFactory<ProgrammingLanguageFactory> factory =
-                new ThingGraphFactory<ProgrammingLanguageFactory>();
+           var factory =
+                new ThingGraphFactory<ProgrammingLanguageFactory> ();
 
             factory.Populate(dataSource);
 

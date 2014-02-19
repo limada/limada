@@ -19,8 +19,10 @@ using Limaki.Graphs;
 using System.Runtime.Serialization;
 
 namespace Limada.Model {
+
     [DataContract]
     public class Link : Thing, IThing<IThing>, ILink, ILink<Id> {
+
         public Link() { }
 
         public Link(IThing marker):base() {
@@ -100,14 +102,6 @@ namespace Limada.Model {
                 
             }
         }
-        //public virtual IThing Adjacent(IThing thing) {
-        //    if (thing.Equals(this.Root)) {
-        //        return this.Leaf;
-        //    } else if (thing.Equals(this.Leaf)) {
-        //        return this.Root;
-        //    }
-        //    return WalkerBase<IThing,ILink>.Adjacent(this, thing); ;
-        //}
 
         protected void setThing(ref Id id, ref IThing data, IThing value) {
             if (value == null) {

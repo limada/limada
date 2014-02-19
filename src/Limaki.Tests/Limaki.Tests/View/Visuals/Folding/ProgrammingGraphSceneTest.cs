@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;

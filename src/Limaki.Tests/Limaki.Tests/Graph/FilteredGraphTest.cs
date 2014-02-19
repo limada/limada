@@ -42,12 +42,12 @@ namespace Limaki.Tests.Sandbox.Graph {
 
         [Test]
         public void OnlyItemsInListTest() {
-            Set<IGraphEntity> items = new Set<IGraphEntity> ();
-            EntityGraphFactory data = new BinaryTreeFactory ();
+            var items = new Set<IGraphEntity> ();
+            var data = new BinaryTreeFactory ();
             data.Count = 1;
             data.Populate ();
 
-            FilteredGraph<IGraphEntity, IGraphEdge> graph = 
+            var graph = 
                 new FilteredGraph<IGraphEntity, IGraphEdge> (data.Graph);
             
             graph.ItemFilter = delegate(IGraphEntity item) {

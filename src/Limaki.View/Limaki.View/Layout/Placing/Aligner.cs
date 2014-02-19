@@ -92,9 +92,9 @@ namespace Limaki.View.Layout {
             if (itemCache.Count == 0)
                 return;
 
-            var walk = new Walker<TItem, TEdge>(this.Graph).DeepWalk(root, 1)
-                .Where(l => !(l.Node is TEdge) && itemCache.Contains(l.Node))
-                .ToArray();
+            var walk = new Walker<TItem, TEdge> (this.Graph).DeepWalk (root, 1)
+                .Where (l => !(l.Node is TEdge) && itemCache.Contains (l.Node))
+                .ToArray ();
 
             var bounds = new Rectangle(int.MaxValue, int.MaxValue, 0, 0);
             Columns(walk, ref bounds, options);
