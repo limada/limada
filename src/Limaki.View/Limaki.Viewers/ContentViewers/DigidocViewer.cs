@@ -62,6 +62,8 @@ namespace Limaki.Viewers.StreamViewers {
             get {
                 if (_pagesDisplay == null) {
                     _pagesDisplay = new VisualsDisplay();
+                    if (useMesh)
+                        Mesh.AddDisplay (_pagesDisplay);
                 }
                 return _pagesDisplay;
             }
@@ -222,6 +224,7 @@ namespace Limaki.Viewers.StreamViewers {
 
         IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
         IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+        bool useMesh = true;
 
         public virtual void SetDocument (GraphCursor<IVisual, IVisualEdge> source) {
 
@@ -234,10 +237,9 @@ namespace Limaki.Viewers.StreamViewers {
 
             var doc = source.Graph.ThingOf (source.Cursor);
             IGraph<IVisual, IVisualEdge> targetGraph = null;
-            var useMesh = true;
+            
             if (useMesh) {
                 targetGraph = Mesh.CreateTargetGraph (source.Graph);
-               
             } else {
                 targetGraph = new WiredDisplays ().CreateTargetGraph (source.Graph);
                 source.Graph.GraphChanged -= GraphChangedAction0;
