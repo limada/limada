@@ -18,7 +18,9 @@ using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
-    public class BinaryGraphFactory : EntityGraphFactory {
+    public class BinaryGraphFactory: BinaryGraphFactory<IGraphEntity, IGraphEdge> { }
+    public class BinaryGraphFactory<IGraphEntity, IGraphEdge> : BasicTestGraphFactory<IGraphEntity, IGraphEdge>
+        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
 
         public override string Name {
             get { return "Binary Graph"; }
@@ -28,41 +30,41 @@ namespace Limaki.Tests.Graph.Model {
 
             base.Populate(Graph,start);
 
-            GraphEdge edge = null;
+            IGraphEdge edge = default (IGraphEdge); ;
 
             #region Binarytree Edges
 
-            edge = new GraphEdge(Nodes[1], Nodes[2]);
+            edge = CreateEdge(Nodes[1], Nodes[2]);
             Graph.Add(edge);
             Edges[1] = edge;
 
-            edge = new GraphEdge(Nodes[4], Nodes[3]);
+            edge = CreateEdge(Nodes[4], Nodes[3]);
             Graph.Add(edge);
             Edges[2] = edge;
 
-            edge = new GraphEdge(Nodes[1], Edges[2]);
+            edge = CreateEdge(Nodes[1], Edges[2]);
             Graph.Add(edge);
             Edges[3] = edge;
 
-            edge = new GraphEdge(Nodes[5], Nodes[8]);
+            edge = CreateEdge(Nodes[5], Nodes[8]);
             Graph.Add(edge);
             Edges[4] = edge;
 
 
-            edge = new GraphEdge(Nodes[5], Nodes[6]);
+            edge = CreateEdge(Nodes[5], Nodes[6]);
             Graph.Add(edge);
             Edges[5] = edge;
 
-            edge = new GraphEdge(Nodes[5], Nodes[7]);
+            edge = CreateEdge(Nodes[5], Nodes[7]);
             Graph.Add(edge);
             Edges[6] = edge;
 
-            edge = new GraphEdge(Nodes[8], Nodes[9]);
+            edge = CreateEdge(Nodes[8], Nodes[9]);
             Graph.Add(edge);
             Edges[7] = edge;
 
             if (!SeperateLattice) {
-                edge = new GraphEdge (Edges[2], Edges[4]);
+                edge = CreateEdge (Edges[2], Edges[4]);
                 Graph.Add (edge);
                 Edges[8] = edge;
             }

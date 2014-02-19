@@ -17,10 +17,11 @@ using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
 using System;
+using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Wrappers {
     [Obsolete]
-    public class BinaryGraphFoldingTest008 : SceneFacadeTest008<BinaryGraphFactory> {
+    public class BinaryGraphFoldingTest008 : SceneFacadeTest008<BinaryGraphFactory<IGraphEntity, IGraphEdge>> {
         public override IEnumerable<IVisual> FullExpanded {
             get {
                 yield return Mock.Factory.Nodes[1]; // 1

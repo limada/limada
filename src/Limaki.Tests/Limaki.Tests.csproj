@@ -240,7 +240,7 @@
     <Compile Include="Limaki.Tests\Graph\Examples\WordGameGraphFactory.cs" />
     <Compile Include="Limaki.Tests\Graph\Model\TestGraphPairFactory.cs" />
     <Compile Include="Limaki.Tests\Graph\Model\TestGraphFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Model\EntityGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\BasicTestGraphFactory.cs" />
     <Compile Include="Limaki.Tests\Graph\Model\ITestGraphFactory.cs" />
     <Compile Include="Limaki.Tests\Graph\Model\Item.cs" />
     <Compile Include="Limaki.Tests\Graph\Model\TestingSomeGraphSemantics.cs" />

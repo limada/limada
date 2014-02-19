@@ -27,11 +27,11 @@ using Limaki.Common.Collections;
 namespace Limaki.Tests.Graph.MethodTests {
     
     public class TestingSomeGraphSemantics:DomainTest {
-        private IList<EntityGraphFactory> _graphs = null;
-        public IList<EntityGraphFactory> Graphs {
+        private IList<BasicTestGraphFactory<IGraphEntity, IGraphEdge>> _graphs = null;
+        public IList<BasicTestGraphFactory<IGraphEntity, IGraphEdge>> Graphs {
             get {
                 if (_graphs == null) {
-                    _graphs = new List<EntityGraphFactory>();
+                    _graphs = new List<BasicTestGraphFactory<IGraphEntity, IGraphEdge>> ();
                     _graphs.Add (new BinaryTreeFactory());
                     _graphs.Add (new BinaryGraphFactory ());
                 }

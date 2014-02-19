@@ -4,17 +4,18 @@ using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
-    public class SimpleGraphFactory : EntityGraphFactory {
+    public class SimpleGraphFactory<IGraphEntity, IGraphEdge> : BasicTestGraphFactory<IGraphEntity, IGraphEdge> 
+    where IGraphEdge : IEdge<IGraphEntity> , IGraphEntity {
         public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph, int start) {
-            IGraphEntity item = new GraphEntity<int>((start++));
+            IGraphEntity item = CreateItem<int>((start++));
             Graph.Add(item);
             Nodes[1] = item;
 
-            item = new GraphEntity<int>((start++));
+            item = CreateItem<int>((start++));
             Graph.Add(item);
             Nodes[2] = item;
 
-            Edges[1] = new GraphEdge(Nodes[1], Nodes[2]);
+            Edges[1] = CreateEdge(Nodes[1], Nodes[2]);
             Graph.Add(Edges[1]);
         }
 

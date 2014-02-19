@@ -19,10 +19,11 @@ using Limaki.Visuals;
 using NUnit.Framework;
 using Xwt;
 using System;
+using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Wrappers {
     [Obsolete]
-    public class ProgrammingLanguageFoldingTest008 : SceneFacadeTest008<ProgrammingLanguageFactory> {
+    public class ProgrammingLanguageFoldingTest008 : SceneFacadeTest008<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> {
         public override IEnumerable<IVisual> FullExpanded {
             get {
                 yield return Mock.Factory.Nodes[1]; // Programming

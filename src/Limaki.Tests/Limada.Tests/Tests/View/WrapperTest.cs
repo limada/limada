@@ -19,7 +19,7 @@ namespace Limada.Tests.Wrappers {
 
             TestGraphPairFactory<IThing, IGraphEntity, ILink, IGraphEdge> factory =
                 new TestGraphPairFactory<IThing, IGraphEntity, ILink, IGraphEdge> (
-                    new ProgrammingLanguageFactory (),
+                    new ProgrammingLanguageFactory<IGraphEntity, IGraphEdge> (),
                     new GraphItem2ThingTransformer ()
                     );
 
@@ -34,7 +34,7 @@ namespace Limada.Tests.Wrappers {
         public void ThingGraphFactory () {
             var graph = new VisualThingGraph ();
 
-            var factory = new ThingGraphFactory<ProgrammingLanguageFactory> ();
+            var factory = new ThingGraphFactory<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
             factory.Populate (graph.Source);
             Trace.Write (
                 GraphTestUtils.ReportGraph<IThing, ILink> (graph.Source, factory.Name));
@@ -75,7 +75,7 @@ namespace Limada.Tests.Wrappers {
             test.Mock.Scene = new Scene ();
             test.Mock.Scene.Graph = graph;
 
-            var factory = new ThingGraphFactory<ProgrammingLanguageFactory> ();
+            var factory = new ThingGraphFactory<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
             factory.Count = 10;
             factory.Populate (graph.Source);
 

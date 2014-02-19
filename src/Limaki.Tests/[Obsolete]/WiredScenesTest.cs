@@ -78,7 +78,7 @@ namespace Limaki.Tests.View.Visuals {
             var sourceTest = new ProgrammingLanguageFoldingTest008();
             var targetTest = new ProgrammingLanguageFoldingTest008();
 
-            PrepareTests<ProgrammingLanguageFactory> (sourceTest, targetTest);
+            PrepareTests<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> (sourceTest, targetTest);
 
             targetTest.Net();
 

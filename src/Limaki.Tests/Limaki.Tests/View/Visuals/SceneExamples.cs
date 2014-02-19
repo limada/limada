@@ -44,12 +44,12 @@ namespace Limaki.Tests.View {
             get {
                 if(_examples ==null) {
                     _examples = new List<ITypeChoose> ();
-                    _examples.Add(new TypeChoose<SceneFactory<ProgrammingLanguageFactory>>());
-                    _examples.Add(new TypeChoose<SceneFactory<BinaryTreeFactory>>());
-                    _examples.Add(new TypeChoose<SceneFactory<BinaryGraphFactory>>());
-                    _examples.Add(new TypeChoose<SceneFactory<GCJohnBostonGraphFactory>>());
-                    _examples.Add(new TypeChoose<SceneFactory<WordGameGraphFactory>>());
-                    _examples.Add(new TypeChoose<SceneFactory<LimakiShortHelpFactory>>());
+                    _examples.Add (new TypeChoose<SceneFactory<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>>> ());
+                    _examples.Add (new TypeChoose<SceneFactory<BinaryTreeFactory<IGraphEntity, IGraphEdge>>> ());
+                    _examples.Add (new TypeChoose<SceneFactory<BinaryGraphFactory<IGraphEntity, IGraphEdge>>> ());
+                    _examples.Add (new TypeChoose<SceneFactory<GCJohnBostonGraphFactory<IGraphEntity, IGraphEdge>>> ());
+                    _examples.Add (new TypeChoose<SceneFactory<WordGameGraphFactory<IGraphEntity, IGraphEdge>>> ());
+                    _examples.Add (new TypeChoose<SceneFactory<LimakiShortHelpFactory<IGraphEntity, IGraphEdge>>> ());
                     _examples.Add(new TypeChoose<BenchmarkOneSceneFactory>());
                     _examples.Add(new TypeChoose<SchemaViewTestData<DigidocSchema>>());
                     Selected = _examples[0];

@@ -16,7 +16,7 @@ namespace Limada.Tests.Model {
 
         public static VisualThingGraph GetSourceGraph<TFactory>(int count)
             where TFactory : TestGraphFactory<IGraphEntity, IGraphEdge>, new() {
-            var mock = new TestSceneMock<ProgrammingLanguageFactory>();
+                var mock = new TestSceneMock<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
 
             mock.Factory.Count = count;
 

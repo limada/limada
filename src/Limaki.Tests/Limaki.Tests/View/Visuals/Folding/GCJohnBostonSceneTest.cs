@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Graph.Wrappers {
 
-    public class GCJohnBostonSceneTest : SceneFacadeTest<GCJohnBostonGraphFactory> {
+    public class GCJohnBostonSceneTest : SceneFacadeTest<GCJohnBostonGraphFactory<IGraphEntity, IGraphEdge>> {
         public IEnumerable<IVisual> JohnGoBostonNodes {
             get {
                 yield return Mock.Factory.Nodes[1]; // Person

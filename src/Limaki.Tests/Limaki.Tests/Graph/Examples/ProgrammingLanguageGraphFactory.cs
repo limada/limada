@@ -18,93 +18,96 @@ using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
-    public class ProgrammingLanguageFactory : EntityGraphFactory {
+    public class ProgrammingLanguageFactory : ProgrammingLanguageFactory<IGraphEntity, IGraphEdge> { }
+
+    public class ProgrammingLanguageFactory <IGraphEntity, IGraphEdge> : BasicTestGraphFactory<IGraphEntity, IGraphEdge>
+        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
 
         public override string Name {
             get { return "Programming Language"; }
         }
 
         public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph, int start) {
-            GraphEntity<string> node = null;
-            GraphEdge edge = null;
+            IGraphEntity node = default (IGraphEntity);
+            IGraphEdge edge = default (IGraphEdge);
 
 
-            node = new GraphEntity<string>("Programming");
+            node = CreateItem<string>("Programming");
             Graph.Add(node);
             Nodes[1] = node;
 
 
-            node = new GraphEntity<string>("Language");
+            node = CreateItem<string>("Language");
             Graph.Add(node);
             Nodes[2] = node;
 
-            edge = new GraphEdge(Nodes[1], Nodes[2]);
+            edge = CreateEdge(Nodes[1], Nodes[2]);
             Graph.Add(edge);
             Edges[1] = edge;
 
 
-            node = new GraphEntity<string>("Java");
+            node = CreateItem<string>("Java");
             Graph.Add(node);
             Nodes[3] = node;
 
-            edge = new GraphEdge(Edges[1], Nodes[3]);
+            edge = CreateEdge(Edges[1], Nodes[3]);
             Graph.Add(edge);
             Edges[2] = edge;
 
-            node = new GraphEntity<string>(".NET");
+            node = CreateItem<string>(".NET");
             Graph.Add(node);
             Nodes[4] = node;
 
-            edge = new GraphEdge(Edges[1], Nodes[4]);
+            edge = CreateEdge(Edges[1], Nodes[4]);
             Graph.Add(edge);
             Edges[3] = edge;
 
-            node = new GraphEntity<string>("Libraries");
+            node = CreateItem<string>("Libraries");
             Graph.Add(node);
             Nodes[5] = node;
 
-            edge = new GraphEdge(Nodes[1], Nodes[5]);
+            edge = CreateEdge(Nodes[1], Nodes[5]);
             Graph.Add(edge);
             Edges[4] = edge;
 
-            node = new GraphEntity<string>("Collections");
+            node = CreateItem<string>("Collections");
             Graph.Add(node);
             Nodes[6] = node;
 
-            edge = new GraphEdge(Edges[4], Nodes[6]);
+            edge = CreateEdge(Edges[4], Nodes[6]);
             Graph.Add(edge);
             Edges[5] = edge;
 
-            node = new GraphEntity<string>("List");
+            node = CreateItem<string>("List");
             Graph.Add(node);
             Nodes[7] = node;
 
-            edge = new GraphEdge(Edges[5], Nodes[7]);
+            edge = CreateEdge(Edges[5], Nodes[7]);
             Graph.Add(edge);
             Edges[6] = edge;
 
-            edge = new GraphEdge(Edges[2], Nodes[7]);
+            edge = CreateEdge(Edges[2], Nodes[7]);
             Graph.Add(edge);
             Edges[9] = edge;
 
-            node = new GraphEntity<string>("IList");
+            node = CreateItem<string>("IList");
             Graph.Add(node);
             Nodes[8] = node;
 
-            edge = new GraphEdge(Edges[5], Nodes[8]);
+            edge = CreateEdge(Edges[5], Nodes[8]);
             Graph.Add(edge);
             Edges[7] = edge;
 
-            edge = new GraphEdge(Edges[3], Nodes[8]);
+            edge = CreateEdge(Edges[3], Nodes[8]);
             Graph.Add(edge);
             Edges[8] = edge;
 
         }
 
         public override void Populate() {
-            IGraphEntity lastNode1 = null;
-            IGraphEntity lastNode2 = null;
-            IGraphEntity lastNode3 = null;
+            IGraphEntity lastNode1 = default (IGraphEntity); ;
+            IGraphEntity lastNode2 = default (IGraphEntity); ;
+            IGraphEntity lastNode3 = default (IGraphEntity); ;
             for (int i = 0; i < Count; i++) {
                 if (i > 0) {
                     lastNode1 = Nodes[1];
@@ -113,9 +116,9 @@ namespace Limaki.Tests.Graph.Model {
                 }
                 Populate(this.Graph,Start + 1);
                 if (i > 0) {
-                    GraphEdge edge = null;
+                    IGraphEdge edge = default (IGraphEdge); ;
                     if (!SeperateLattice) {
-                        edge = new GraphEdge();
+                        edge = CreateEdge();
                         edge.Root = lastNode1;
                         edge.Leaf = Nodes[1];
                         Graph.Add(edge);
@@ -123,7 +126,7 @@ namespace Limaki.Tests.Graph.Model {
 
                     }
                     if (AddDensity) {
-                        edge = new GraphEdge(Nodes[2], lastNode3);
+                        edge = CreateEdge(Nodes[2], lastNode3);
                         Graph.Add(edge);
                     }
                 }

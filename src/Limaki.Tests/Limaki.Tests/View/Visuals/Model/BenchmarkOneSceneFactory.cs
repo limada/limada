@@ -24,9 +24,11 @@ using Limaki.Tests.Graph.Model;
 using System;
 using Limaki.View.Visuals.Layout;
 using Xwt;
+using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
-    public class BenchmarkOneSceneFactory : SceneFactory<BenchmarkOneGraphFactory> {
+
+    public class BenchmarkOneSceneFactory : SceneFactory<BenchmarkOneGraphFactory<IGraphEntity,IGraphEdge>> {
         public BenchmarkOneSceneFactory () {
             this.Count = 10;
         }

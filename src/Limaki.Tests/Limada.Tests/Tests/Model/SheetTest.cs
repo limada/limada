@@ -93,8 +93,8 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void TestSheet() {
-            VisualThingGraph sourceGraph = 
-                ModelHelper.GetSourceGraph<ProgrammingLanguageFactory> ();
+            VisualThingGraph sourceGraph =
+                ModelHelper.GetSourceGraph<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
 
             var scene = new Scene();
             scene.Graph = sourceGraph;

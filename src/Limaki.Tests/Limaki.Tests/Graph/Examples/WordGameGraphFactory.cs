@@ -18,48 +18,49 @@ using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
-    public class WordGameGraphFactory : EntityGraphFactory {
+    public class WordGameGraphFactory<IGraphEntity, IGraphEdge> : BasicTestGraphFactory<IGraphEntity, IGraphEdge>
+        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
 
         public override string Name {
             get { return "Word Game"; }
         }
 
         public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph, int start) {
-            GraphEntity<string> node = null;
-            GraphEdge edge = null;
+            IGraphEntity node = default (IGraphEntity);
+            IGraphEdge edge = default (IGraphEdge);
 
 
-            node = new GraphEntity<string>("Tags");
+            node = CreateItem<string>("Tags");
             Graph.Add(node);
             Nodes[1] = node;
 
 
-            node = new GraphEntity<string>("Word");
+            node = CreateItem<string>("Word");
             Graph.Add(node);
             Nodes[2] = node;
 
-            edge = new GraphEdge(Nodes[1], Nodes[2]);
+            edge = CreateEdge(Nodes[1], Nodes[2]);
             Graph.Add(edge);
             Edges[1] = edge;
 
 
-            node = new GraphEntity<string>("Game");
+            node = CreateItem<string>("Game");
             Graph.Add(node);
             Nodes[3] = node;
 
-            edge = new GraphEdge(Nodes[2], Nodes[3]);
+            edge = CreateEdge(Nodes[2], Nodes[3]);
             Graph.Add(edge);
             Edges[2] = edge;
 
-            node = new GraphEntity<string>("Something");
+            node = CreateItem<string>("Something");
             Graph.Add(node);
             Nodes[4] = node;
 
-            edge = new GraphEdge(Edges[2], Nodes[4]);
+            edge = CreateEdge(Edges[2], Nodes[4]);
             Graph.Add(edge);
             Edges[3] = edge;
 
-            edge = new GraphEdge(Nodes[1], Edges[2]);
+            edge = CreateEdge(Nodes[1], Edges[2]);
             Graph.Add(edge);
             Edges[4] = edge;
 

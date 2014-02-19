@@ -20,6 +20,10 @@ using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
+    public class EntityGraphFactory : BasicTestGraphFactory<IGraphEntity, IGraphEdge> {
+
+    }
+
     public class BasicTestGraphFactory<IGraphEntity, IGraphEdge> : TestGraphFactory<IGraphEntity, IGraphEdge> 
        where IGraphEdge : IEdge<IGraphEntity> , IGraphEntity {
         

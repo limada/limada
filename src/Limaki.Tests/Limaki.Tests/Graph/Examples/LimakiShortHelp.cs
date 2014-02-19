@@ -19,92 +19,93 @@ using System.IO;
 using Limaki.Graphs;
 
 namespace Limaki.Tests.Visuals {
-    public class LimakiShortHelpFactory : EntityGraphFactory {
+    public class LimakiShortHelpFactory<IGraphEntity, IGraphEdge> : BasicTestGraphFactory<IGraphEntity, IGraphEdge>
+        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
         public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph,int start) {
-            IGraphEntity item = new GraphEntity<string>("Limaki");
+            IGraphEntity item = CreateItem<string>("Limaki");
             Graph.Add(item);
             Nodes[1] = item;
 
-            item = new GraphEntity<string>("How To");
+            item = CreateItem<string>("How To");
             Graph.Add(item);
             Nodes[2] = item;
 
-            Edges[1] = new GraphEdge(Nodes[1], Nodes[2]);
+            Edges[1] = CreateEdge(Nodes[1], Nodes[2]);
             Graph.Add(Edges[1]);
 
 
-            item = new GraphEntity<string>("Warning");
+            item = CreateItem<string>("Warning");
             Graph.Add(item);
             Nodes[3] = item;
 
-            Edges[2] = new GraphEdge(Nodes[1], Nodes[3]);
+            Edges[2] = CreateEdge(Nodes[1], Nodes[3]);
             Graph.Add(Edges[2]);
 
-            item = new GraphEntity<string>("This is a pre-alpha release");
+            item = CreateItem<string>("This is a pre-alpha release");
             Graph.Add(item);
-            Graph.Add(new GraphEdge(Nodes[3], item));
+            Graph.Add(CreateEdge(Nodes[3], item));
 
-            item = new GraphEntity<string>("Saved files will NOT be supported in later releases");
+            item = CreateItem<string>("Saved files will NOT be supported in later releases");
             Graph.Add(item);
-            Graph.Add(new GraphEdge(Nodes[3], item));
+            Graph.Add(CreateEdge(Nodes[3], item));
 
-            IGraphEntity topic = new GraphEntity<string>("add new nodes");
+            IGraphEntity topic = CreateItem<string>("add new nodes");
             Graph.Add(topic);
-            Graph.Add(new GraphEdge(Nodes[2], topic));
+            Graph.Add(CreateEdge(Nodes[2], topic));
 
-            IGraphEntity subtopic = new GraphEntity<string>("click the Add Shape button");
-            IGraphEdge subLink = null;
+            IGraphEntity subtopic = CreateItem<string>("click the Add Shape button");
+            IGraphEdge subLink = default (IGraphEdge); ;
 
             Graph.Add(subtopic);
-            Graph.Add(new GraphEdge(topic, subtopic));
+            Graph.Add(CreateEdge(topic, subtopic));
 
-            item = new GraphEntity<string>("Draw new nodes");
+            item = CreateItem<string>("Draw new nodes");
             Graph.Add(item);
-            Graph.Add(new GraphEdge(subtopic, item));
+            Graph.Add(CreateEdge(subtopic, item));
 
 
-            topic = new GraphEntity<string>("connect nodes");
+            topic = CreateItem<string>("connect nodes");
             Graph.Add(topic);
-            Graph.Add(new GraphEdge(Nodes[2], topic));
+            Graph.Add(CreateEdge(Nodes[2], topic));
 
             
-            subtopic = new GraphEntity<string>("click the select button");
+            subtopic = CreateItem<string>("click the select button");
             Graph.Add(subtopic);
-            Graph.Add(subLink = new GraphEdge(topic, subtopic));
+            Graph.Add(subLink = CreateEdge(topic, subtopic));
 
-            item = new GraphEntity<string>("Drag a node(or link) over an other node (or link)");
+            item = CreateItem<string>("Drag a node(or link) over an other node (or link)");
             Graph.Add(item);
-            Graph.Add(new GraphEdge(subLink, item));
+            Graph.Add(CreateEdge(subLink, item));
 
-            topic = new GraphEntity<string>("edit nodes or links");
+            topic = CreateItem<string>("edit nodes or links");
             Graph.Add(topic);
-            Graph.Add(new GraphEdge(Nodes[2], topic));
-            Graph.Add(subLink = new GraphEdge(topic, subtopic));
+            Graph.Add(CreateEdge(Nodes[2], topic));
+            Graph.Add(subLink = CreateEdge(topic, subtopic));
 
-            item = new GraphEntity<string>("Press F2, edit, cancel with ESC or save with F2 again");
+            item = CreateItem<string>("Press F2, edit, cancel with ESC or save with F2 again");
             Graph.Add(item);
-            Graph.Add(new GraphEdge(subLink, item));
+            Graph.Add(CreateEdge(subLink, item));
 
 
-            topic = new GraphEntity<string>("expand and collapse nodes");
+            topic = CreateItem<string>("expand and collapse nodes");
             Graph.Add(topic);
-            Graph.Add(new GraphEdge(Nodes[2], topic));
+            Graph.Add(CreateEdge(Nodes[2], topic));
 
-            subtopic = new GraphEntity<string>("press + to expand");
+            subtopic = CreateItem<string>("press + to expand");
             Graph.Add(subtopic);
-            Graph.Add(new GraphEdge(topic, subtopic));
+            Graph.Add(CreateEdge(topic, subtopic));
 
-            subtopic = new GraphEntity<string>("press - to collapse");
+            subtopic = CreateItem<string>("press - to collapse");
             Graph.Add(subtopic);
-            Graph.Add(new GraphEdge(topic, subtopic));
+            Graph.Add(CreateEdge(topic, subtopic));
 
-            subtopic = new GraphEntity<string>("press / to reduce to focused item");
+            subtopic = CreateItem<string>("press / to reduce to focused item");
             Graph.Add(subtopic);
-            Graph.Add(new GraphEdge(topic, subtopic));
+            Graph.Add(CreateEdge(topic, subtopic));
 
-            subtopic = new GraphEntity<string>("press * to show all items");
+            subtopic = CreateItem<string>("press * to show all items");
             Graph.Add(subtopic);
-            Graph.Add(new GraphEdge(topic, subtopic));
+            Graph.Add(CreateEdge(topic, subtopic));
 
         }
 
