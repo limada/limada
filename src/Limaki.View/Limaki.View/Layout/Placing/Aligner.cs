@@ -36,20 +36,8 @@ namespace Limaki.View.Layout {
         }
 
         public virtual void AffectedEdges (ref Action<TItem> visitor) {
-            visitor += item => {
-                var edges = new HashSet<TEdge> ();
-                Action<TItem> checkIfEdge = i => {
-                    if (i is TEdge)
-                        edges.Add ((TEdge) i);
-                };
-
-                foreach (var edge in this.Graph.Twig (item)) {
-                    edges.Add (edge);
-                    checkIfEdge (edge.Root);
-                    checkIfEdge (edge.Leaf);
-                }
-                edges.ForEach (e => Locator.AffectedEdges.Add (e));
-            };
+            visitor += item => 
+                Graph.Twig (item).ForEach (edge => Locator.AffectedEdges.Add (edge));
         }
 
         public virtual void Justify (IEnumerable<TItem> items) {

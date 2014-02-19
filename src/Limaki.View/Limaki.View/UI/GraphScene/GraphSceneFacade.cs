@@ -245,20 +245,27 @@ namespace Limaki.View.UI.GraphScene {
                 var walker = new Walker<TItem, TEdge>(this.SubGraph);
                 
                 roots.ForEach(root => {
-                    affected.Add(root);
-                    var walk = (deep ? walker.DeepWalk(root, 1) : walker.ExpandWalk(root, 1))
-                            .Where(l => !(l.Node is TEdge) && affected.Contains(l.Node))
-                            ;// && !root.Equals(l.Node));
-                    walk = walk.ToArray();
+                    affected.Add (root);
+                    var walk = new List<LevelItem<TItem>> ();
+                    (deep ? walker.DeepWalk (root, 1) : walker.ExpandWalk (root, 1))
+                        .Where (l => affected.Contains (l.Node))
+                        .ForEach (l => {
+                            if (l.Node is TEdge)
+                                aligner.Locator.AffectedEdges.Add ((TEdge) l.Node);
+                            else
+                                walk.Add (l);
+                        });
+
                     if (OrderBy != null)
-                        walk = walk.OrderBy(l => l, new LevelItemComparer<TItem>{OrderBy = this.OrderBy}).ToArray();
-                    
-                    var bounds = new Rectangle(aligner.Locator.GetLocation(root), aligner.Locator.GetSize(root));
+                        walk = walk.OrderBy (l => l, new LevelItemComparer<TItem> { OrderBy = this.OrderBy })
+                            .ToList ();
+
+                    var bounds = new Rectangle (aligner.Locator.GetLocation (root), aligner.Locator.GetSize (root));
                     options.Collisions = Collisions.None;
-                    var cols = aligner.MeasureWalk(walk, ref bounds, options);
-                    aligner.DequeColumn(cols, ref bounds, options);
+                    var cols = aligner.MeasureWalk (walk, ref bounds, options);
+                    aligner.DequeColumn (cols, ref bounds, options);
                     options.Collisions = Collisions.NextFree | Collisions.PerColumn | Collisions.Toggle;
-                    aligner.LocateColumns(cols, ref bounds, options);
+                    aligner.LocateColumns (cols, ref bounds, options);
                 });
 
                 aligner.Commit();

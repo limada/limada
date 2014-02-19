@@ -90,14 +90,21 @@ namespace Limaki.View.Layout {
             else
                 roots = roots.OrderBy(e => e, comparer);
 
-            var walker = new Walker<TItem, TEdge>(data.Graph);
-            roots.ForEach(root => {
-                var walk = walker.DeepWalk(root, 1).Where(l => !(l.Node is TEdge)).ToArray();
-                var bounds = new Rectangle(pos, Size.Zero);
-                aligner.Columns(walk, ref bounds, options);
+            var walker = new Walker<TItem, TEdge> (data.Graph);
+            roots.ForEach (root => {
+                var walk = new List<LevelItem<TItem>> ();
+                walker.DeepWalk (root, 1)
+                    .ForEach (l => {
+                        if (l.Node is TEdge)
+                            aligner.Locator.AffectedEdges.Add ((TEdge) l.Node);
+                        else
+                            walk.Add (l);
+                    });
+                var bounds = new Rectangle (pos, Size.Zero);
+                aligner.Columns (walk, ref bounds, options);
                 pos = options.Dimension == Dimension.X ?
-                      new Point(pos.X, pos.Y + bounds.Size.Height + options.Distance.Height) :
-                      new Point(pos.X + bounds.Size.Width + options.Distance.Width, pos.Y);
+                      new Point (pos.X, pos.Y + bounds.Size.Height + options.Distance.Height) :
+                      new Point (pos.X + bounds.Size.Width + options.Distance.Width, pos.Y);
             });
         }
 
