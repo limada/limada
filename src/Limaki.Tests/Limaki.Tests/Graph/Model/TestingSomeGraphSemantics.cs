@@ -27,11 +27,11 @@ using Limaki.Common.Collections;
 namespace Limaki.Tests.Graph.MethodTests {
     
     public class TestingSomeGraphSemantics:DomainTest {
-        private IList<GraphFactoryBase> _graphs = null;
-        public IList<GraphFactoryBase> Graphs {
+        private IList<EntityGraphFactory> _graphs = null;
+        public IList<EntityGraphFactory> Graphs {
             get {
                 if (_graphs == null) {
-                    _graphs = new List<GraphFactoryBase>();
+                    _graphs = new List<EntityGraphFactory>();
                     _graphs.Add (new BinaryTreeFactory());
                     _graphs.Add (new BinaryGraphFactory ());
                 }
@@ -101,7 +101,7 @@ namespace Limaki.Tests.Graph.MethodTests {
 
         [Test]
         public void TestTwig() {
-            foreach (GraphFactoryBase factory in this.Graphs) {
+            foreach (EntityGraphFactory factory in this.Graphs) {
                 ReportDetail (factory.Name);
                 factory.Count = 15;
                 factory.AddDensity = false;
@@ -112,6 +112,7 @@ namespace Limaki.Tests.Graph.MethodTests {
         }
 
         #endregion
+
         #region Fork and Clique
         // Fork: alle Edges wich are connected without touching a Item 
         // CliqueEdges: alle Edges wich are connected including touching Items
@@ -181,7 +182,7 @@ where TEdge : IEdge<TItem> {
 
         [Test]
         public void TestFork() {
-            foreach (GraphFactoryBase factory in this.Graphs) {
+            foreach (EntityGraphFactory factory in this.Graphs) {
                 ReportDetail(factory.Name);
                 factory.Populate();
                 IGraph <IGraphEntity, IGraphEdge> graph = factory.Graph;

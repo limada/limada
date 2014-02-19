@@ -17,8 +17,8 @@ namespace Limada.Tests.Wrappers {
         public void GenericBiGraphFactory () {
             IThingGraph thingGraph = new ThingGraph ();
 
-            GenericBiGraphFactory<IThing, IGraphEntity, ILink, IGraphEdge> factory =
-                new GenericBiGraphFactory<IThing, IGraphEntity, ILink, IGraphEdge> (
+            TestGraphPairFactory<IThing, IGraphEntity, ILink, IGraphEdge> factory =
+                new TestGraphPairFactory<IThing, IGraphEntity, ILink, IGraphEdge> (
                     new ProgrammingLanguageFactory (),
                     new GraphItem2ThingTransformer ()
                     );
@@ -44,7 +44,7 @@ namespace Limada.Tests.Wrappers {
         public void FoldingTest1 () {
             var graph = new VisualThingGraph ();
 
-            var test = new ProgrammingLanguageFoldingTest ();
+            var test = new ProgrammingGraphSceneTest ();
             test.Mock.Factory.Graph = graph;
             test.Net ();
 
@@ -54,7 +54,7 @@ namespace Limada.Tests.Wrappers {
         public void Mock2 () {
             var graph = new VisualThingGraph ();
 
-            var test = new ProgrammingLanguageFoldingTest ();
+            var test = new ProgrammingGraphSceneTest ();
             test.Mock.Factory.Populate (graph);
             test.Mock.Factory.Graph = graph;
             var scene = new Scene ();
@@ -70,7 +70,7 @@ namespace Limada.Tests.Wrappers {
         public void FoldingExpandTest () {
             var graph = new VisualThingGraph ();
 
-            var test = new ProgrammingLanguageFoldingTest ();
+            var test = new ProgrammingGraphSceneTest ();
             test.Mock.Factory.Graph = graph;
             test.Mock.Scene = new Scene ();
             test.Mock.Scene.Graph = graph;

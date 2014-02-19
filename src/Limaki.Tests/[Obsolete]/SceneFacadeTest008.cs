@@ -29,7 +29,7 @@ using System;
 namespace Limaki.Tests.Graph.Wrappers {
     [Obsolete]
     public abstract class SceneFacadeTest008<TFactory> : DomainTest 
-        where TFactory : GenericGraphFactory<IGraphEntity, IGraphEdge>, new() {
+        where TFactory : TestGraphFactory<IGraphEntity, IGraphEdge>, new() {
 
         public void AreEquivalent(IEnumerable<IVisual> visuals, IGraph<IVisual, IVisualEdge> graph) {
             

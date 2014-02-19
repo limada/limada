@@ -18,7 +18,7 @@ using Limaki.View.Visuals.UI;
 namespace Limaki.Tests.Graph.Wrappers {
     [Obsolete]
     public class Mock008<TFactory>
-        where TFactory : GenericGraphFactory<IGraphEntity, IGraphEdge>, new() {
+        where TFactory : TestGraphFactory<IGraphEntity, IGraphEdge>, new() {
 
         protected ISceneFactory _factory;
         public virtual ISceneFactory Factory {
@@ -37,7 +37,7 @@ namespace Limaki.Tests.Graph.Wrappers {
                 if (_scene == null) {
                     var g = this.Factory.Scene.Graph;
                     g = new SubGraph<IVisual, IVisualEdge>(
-                        ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)this.Factory).GraphPair,
+                        ((TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)this.Factory).GraphPair,
                         new VisualGraph());
                     _scene = new Scene();
                     _scene.Graph = g;

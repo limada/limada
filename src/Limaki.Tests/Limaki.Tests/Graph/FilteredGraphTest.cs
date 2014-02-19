@@ -43,7 +43,7 @@ namespace Limaki.Tests.Sandbox.Graph {
         [Test]
         public void OnlyItemsInListTest() {
             Set<IGraphEntity> items = new Set<IGraphEntity> ();
-            GraphFactoryBase data = new BinaryTreeFactory ();
+            EntityGraphFactory data = new BinaryTreeFactory ();
             data.Count = 1;
             data.Populate ();
 

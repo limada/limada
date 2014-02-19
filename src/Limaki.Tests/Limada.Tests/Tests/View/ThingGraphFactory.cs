@@ -6,18 +6,18 @@ using Limaki.Visuals;
 using Limaki.Tests.Graph.Model;
 
 namespace Limada.Tests.Model {
-    public class ThingSceneFactoryNew<T> : GenericBiGraphFactory<IVisual, IThing, IVisualEdge, ILink>
-        where T : IGraphFactory<IThing, ILink>, new() {
+    public class ThingSceneFactoryNew<T> : TestGraphPairFactory<IVisual, IThing, IVisualEdge, ILink>
+        where T : ITestGraphFactory<IThing, ILink>, new() {
         public ThingSceneFactoryNew() : 
             base(new T(), 
             new VisualThingTransformer().Reverted()) { }
     }
 
 
-    public class ThingGraphFactory<T> : GenericBiGraphFactory<IThing, IGraphEntity, ILink, IGraphEdge> 
-    where T : IGraphFactory<IGraphEntity,IGraphEdge>, new() {
+    public class ThingGraphFactory<T> : TestGraphPairFactory<IThing, IGraphEntity, ILink, IGraphEdge> 
+    where T : ITestGraphFactory<IGraphEntity,IGraphEdge>, new() {
         public ThingGraphFactory():base(new T(),new GraphItem2ThingTransformer()) {}
-        public override IGraphFactory<IGraphEntity, IGraphEdge> Factory {
+        public override ITestGraphFactory<IGraphEntity, IGraphEdge> Factory {
             get {
                 if (_factory == null) {
                     _factory = new T();

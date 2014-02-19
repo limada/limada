@@ -40,7 +40,7 @@ namespace Limaki.Tests.View.Visuals {
         public void PrepareTests<TFactory>(
 
             SceneFacadeTest008<TFactory> sourceTest, SceneFacadeTest008<TFactory> targetTest) 
-            where TFactory : GenericGraphFactory<IGraphEntity, IGraphEdge>, new() {
+            where TFactory : TestGraphFactory<IGraphEntity, IGraphEdge>, new() {
 
             var facade = new WiredDisplays();
 
@@ -52,15 +52,15 @@ namespace Limaki.Tests.View.Visuals {
                 targetTest.Mock.Scene.Graph.RootSource().Source
                    as IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>;
 
-            ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
+            ((TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
               targetTest.Mock.Factory).GraphPair = targetGraph;
 
             var sourceInnerFactory =
-                ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
+                ((TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
                   sourceTest.Mock.Factory).Factory;
 
             var targetInnerFactory =
-                ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
+                ((TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
                   targetTest.Mock.Factory).Factory;
 
             for (int i = 0; i < sourceInnerFactory.Nodes.Count; i++) {

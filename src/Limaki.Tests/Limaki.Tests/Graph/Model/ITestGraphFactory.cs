@@ -17,7 +17,14 @@ using Limaki.Graphs;
 using System.Collections.Generic;
 
 namespace Limaki.Tests.Graph.Model {
-    public interface IGraphFactory<TItem, TEdge> where TEdge : IEdge<TItem> {
+
+    /// <summary>
+    /// fills a <see cref="IGraph{TItemOne, TEdgeOne}"/>
+    /// with items
+    /// </summary>
+    /// 
+    public interface ITestGraphFactory<TItem, TEdge> where TEdge : IEdge<TItem> {
+
         IGraph<TItem, TEdge> Graph { get;set;}
         int Count { get; set; }
         string Name { get; }

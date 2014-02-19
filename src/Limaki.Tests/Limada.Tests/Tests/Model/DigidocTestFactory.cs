@@ -8,7 +8,7 @@ using Limaki.Common;
 namespace Limada.Tests.Model {
     
 
-    public class DigidocTestFactory : GenericGraphFactory<IThing, ILink> {
+    public class DigidocTestFactory : TestGraphFactory<IThing, ILink> {
 
         public override string Name {
             get { return "DigidocSchema Things"; }

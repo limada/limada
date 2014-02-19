@@ -5,7 +5,8 @@ using Limaki.Tests.Graph.Model;
 using Limaki.Common;
 
 namespace Limada.Tests.Model {
-    public class DescriptionTestFactory:GenericGraphFactory<IThing,ILink> {
+
+    public class DescriptionTestFactory:TestGraphFactory<IThing,ILink> {
 
         public override string Name {
             get { return "Things with Description"; }

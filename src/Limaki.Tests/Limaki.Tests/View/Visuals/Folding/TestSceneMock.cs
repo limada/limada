@@ -8,11 +8,12 @@ using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
+using Xwt;
 
 namespace Limaki.Tests.Graph.Wrappers {
 
     public class TestSceneMock<TFactory>
-        where TFactory : GenericGraphFactory<IGraphEntity, IGraphEdge>, new () {
+        where TFactory : TestGraphFactory<IGraphEntity, IGraphEdge>, new () {
 
         protected ISceneFactory _factory;
         public virtual ISceneFactory Factory {
@@ -31,7 +32,7 @@ namespace Limaki.Tests.Graph.Wrappers {
                 if (_scene == null) {
                     var g = this.Factory.Scene.Graph;
                     g = new SubGraph<IVisual, IVisualEdge> (
-                        ((GenericBiGraphFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) this.Factory).GraphPair,
+                        ((TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) this.Factory).GraphPair,
                         new VisualGraph ());
                     _scene = new Scene ();
                     _scene.Graph = g;
@@ -65,14 +66,20 @@ namespace Limaki.Tests.Graph.Wrappers {
             _display = null;
         }
 
+        /// <summary>
+        /// sets Scene.Focus to item and 
+        /// calls Layout.Perform and Layout.AdjustSize
+        /// item is added if not in view
+        /// </summary>
         public void SetFocused (IVisual item) {
             this.Scene.Focused = item;
-            this.Display.Layout.Perform (this.Scene.Focused);
-            this.Scene.Requests.Add (
-                new StateChangeCommand<IVisual> (
-                    item,
-                    new Pair<UiState> (UiState.None, UiState.Focus))
-                );
+            EnsureShape (item);
+            this.Scene.AddBounds (item);
+        }
+
+        public void EnsureShape (IVisual item) {
+            this.Display.Layout.Perform (item);
+            this.Display.Layout.AdjustSize (item);
         }
     }
 }

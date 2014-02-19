@@ -110,7 +110,7 @@ namespace Limada.Tests.ThingGraphs {
                       target, 
                       new GraphItem2ThingTransformer());
 
-            GraphFactoryBase factory = new BinaryGraphFactory();
+            EntityGraphFactory factory = new BinaryGraphFactory();
             factory.Graph = graphPair;
             factory.Count = StoreCount;
             factory.AddDensity = true;
