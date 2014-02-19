@@ -9,14 +9,20 @@ using Limada.Model;
 using Limaki.Contents.IO;
 using System.IO;
 using Limaki.Contents;
+using Limaki.Graphs;
+using Limaki.Model;
 
 namespace Limaki.IOC {
 
     public class LimakiCoreContextRecourceLoader : ContextRecourceLoader {
         
         public override void ApplyResources(IApplicationContext context) {
+
             context.Factory.Add<ICompressionWorker, Limaki.Compression.CompressionWorker> ();
             context.Factory.Add<IThingFactory, ThingFactory>();
+
+            context.Factory.Add<IThingFactory, ThingFactory> ();
+            context.Factory.Add<IGraphModelFactory<IGraphEntity, IGraphEdge>, GraphEntityFactory> ();
 
             var streamContentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool>();
             streamContentIoPool.Add(new HtmlStreamContentIo()); 

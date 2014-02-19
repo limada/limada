@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 
 namespace Limaki.Visuals {
+
     public class VisualFactory : IVisualFactory {
         
         public static string NullString = ((char)(0x2260)).ToString(); // not equal
@@ -39,5 +40,26 @@ namespace Limaki.Visuals {
             }
         }
 
+
+
+        public Graphs.IGraph<IVisual, IVisualEdge> Graph () {
+            throw new NotImplementedException ();
+        }
+
+        public IVisualEdge CreateEdge (IVisual root, IVisual leaf) {
+            throw new NotImplementedException ();
+        }
+
+        public IVisualEdge CreateEdge () {
+            throw new NotImplementedException ();
+        }
+
+        public void SetData (IVisual item, object data) {
+            throw new NotImplementedException ();
+        }
+
+        public object GetData (IVisual item) {
+            throw new NotImplementedException ();
+        }
     }
 }

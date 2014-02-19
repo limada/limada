@@ -217,6 +217,7 @@
     <Compile Include="Graphs\GraphItemTransformer.cs" />
     <Compile Include="Graphs\GraphPair.cs" />
     <Compile Include="Graphs\GraphExtensions.cs" />
+    <Compile Include="Graphs\IGraphModelPropertyChanger.cs" />
     <Compile Include="Graphs\SubGraph.cs" />
     <Compile Include="Graphs\IEdge.cs" />
     <Compile Include="Graphs\IGraph.cs" />

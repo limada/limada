@@ -2,7 +2,9 @@ using Limaki.Graphs;
 using Limaki.Common;
 using Id = System.Int64;
 using System;
+
 namespace Limada.Model {
+
     public interface IThingFactory : IGraphModelFactory<IThing, ILink>, IFactory {
         
         IThing CreateItem();

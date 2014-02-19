@@ -26,11 +26,8 @@ namespace Limaki.Model {
         public GraphEntity( T data ) {
             this.Data = data;
         }
-        protected T _data = default( T );
-        public virtual T Data {
-            get { return _data; }
-            set { _data = value; }
-        }
+
+        public virtual T Data { get; set; }
 
         public override string ToString() {
             return Data.ToString();
@@ -62,30 +59,58 @@ namespace Limaki.Model {
             this.Leaf = leaf;
         }
 
-        #region IEdge<IGraphEntity> Member
-        IGraphEntity _Root = null;
-        public virtual IGraphEntity Root {
-            get { return _Root; }
-            set { _Root = value; }
-        }
-        IGraphEntity _Leaf = null;
-        public virtual IGraphEntity Leaf {
-            get { return _Leaf; }
-            set { _Leaf = value; }
-        }
+        public virtual IGraphEntity Root { get; set; }
 
-        #endregion
+        public virtual IGraphEntity Leaf { get; set; }
+
         public override string ToString() {
             return GraphExtensions.EdgeString<IGraphEntity, IGraphEdge>(this);
         }
-
-        #region IGraphEntity Member
 
         object IGraphEntity.Data {
             get { return new Common.Empty(); }
             set { }
         }
 
-        #endregion
+
+    }
+
+    public class GraphEntityFactory : IGraphModelFactory<IGraphEntity, IGraphEdge>, IGraphModelPropertyChanger<IGraphEntity, IGraphEdge> {
+
+        public IGraph<IGraphEntity, IGraphEdge> Graph () {
+            return new Graph<IGraphEntity, IGraphEdge> ();
+        }
+
+        public IGraphEdge CreateEdge (IGraphEntity root, IGraphEntity leaf) {
+            return new GraphEdge (root, leaf);
+        }
+
+        public IGraphEdge CreateEdge () {
+            return new GraphEdge ();
+        }
+
+        public IGraphEntity CreateItem<T> (T data) {
+            return new GraphEntity<T> (data);
+        }
+
+        public IGraphEntity CreateItem<T> () {
+            return new GraphEntity<T> (default (T));
+        }
+
+        public void SetProperty (IGraphEntity item, object data) {
+            item.Data = data;
+        }
+
+        public object GetProperty (IGraphEntity item) {
+            return item.Data;
+        }
+
+        public IGraphEdge CreateEdge<T> (T data) {
+            return new GraphEdge ();
+        }
+
+        public IGraphEdge CreateEdge (IGraphEntity root, IGraphEntity leaf, object data) {
+            return CreateEdge (root, leaf);
+        }
     }
 }
