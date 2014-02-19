@@ -121,7 +121,7 @@ namespace Limada.Usecases {
                     desc = Path.GetFileNameWithoutExtension(fileName);
                     var vis = scene.Graph.VisualOf(thing);
                     if (vis != null) {
-                        vis.Data = desc;
+                        scene.Graph.DoChangeData (vis, desc);
                         scene.Requests.Add(new LayoutCommand<IVisual>(vis, LayoutActionType.Justify));
                     }
                 }

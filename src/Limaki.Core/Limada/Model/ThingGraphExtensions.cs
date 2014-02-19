@@ -120,7 +120,7 @@ namespace Limada.Model {
                 var desc = thingGraph.ThingToDisplay(thing);
                 if (desc != null) {
                     if (desc != thing) {
-                        desc.Data = name;
+                        source.DoChangeData (desc, name);
                     }
                 } else {
                     var factory = Registry.Pool.TryGetCreate<IThingFactory>();
@@ -149,7 +149,7 @@ namespace Limada.Model {
                 var desc = schema.GetTheLeaf(CommonSchema.SourceMarker);
                 if (desc != null) {
                     if (desc != thing) {
-                        desc.Data = name;
+                        source.DoChangeData (desc, name);
                     }
                 } else {
                     var factory = Registry.Pool.TryGetCreate<IThingFactory>();
