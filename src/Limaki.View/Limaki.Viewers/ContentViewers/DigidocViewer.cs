@@ -62,8 +62,7 @@ namespace Limaki.Viewers.StreamViewers {
             get {
                 if (_pagesDisplay == null) {
                     _pagesDisplay = new VisualsDisplay();
-                    if (useMesh)
-                        Mesh.AddDisplay (_pagesDisplay);
+                    Mesh.AddDisplay (_pagesDisplay);
                 }
                 return _pagesDisplay;
             }
@@ -204,27 +203,9 @@ namespace Limaki.Viewers.StreamViewers {
 
         public virtual IVisual DocumentVisual { get; set; }
 
-        [Obsolete]
-        void GraphChangedAction0 (IGraph<IVisual, IVisualEdge> sourceGraph, IVisual visual, GraphEventType changeType) {
-            var pageScene = PagesDisplay.Data;
-            new WiredScenes(sourceGraph, pageScene).GraphChanged(visual, changeType);
-            PagesDisplay.Perform();
-        }
-
-        [Obsolete]
-        void ThingGraphChangedAction0 (IGraph<IThing, ILink> sourceGraph, IThing t, GraphEventType c) {
-            var pageScene = PagesDisplay.Data;
-            if (pageScene.Graph.ContainsVisualOf(t)) {
-                var visual = pageScene.Graph.VisualOf(t);
-                new SceneChanger(pageScene).GraphChanged(visual, c);
-                if (c == GraphEventType.Remove && ContentViewer != null && ContentViewer.ContentId == t.Id)
-                    ContentViewer.Clear();
-            }
-        }
 
         IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
         IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
-        bool useMesh = true;
 
         public virtual void SetDocument (GraphCursor<IVisual, IVisualEdge> source) {
 
@@ -237,24 +218,11 @@ namespace Limaki.Viewers.StreamViewers {
 
             var doc = source.Graph.ThingOf (source.Cursor);
             IGraph<IVisual, IVisualEdge> targetGraph = null;
-            
-            if (useMesh) {
-                targetGraph = Mesh.CreateTargetGraph (source.Graph);
-            } else {
-                targetGraph = new WiredDisplays ().CreateTargetGraph (source.Graph);
-                source.Graph.GraphChanged -= GraphChangedAction0;
-                source.Graph.GraphChanged += GraphChangedAction0;
-                var thingGraph = source.Graph.ThingGraph ();
-                if (thingGraph != null) {
-                    thingGraph.GraphChanged -= ThingGraphChangedAction0;
-                    thingGraph.GraphChanged += ThingGraphChangedAction0;
-                }
-            }
+            targetGraph = Mesh.CreateTargetGraph (source.Graph);
 
             pageScene.Graph = targetGraph;
-            if (useMesh) {
-                Mesh.AddScene (pageScene);
-            }
+
+            Mesh.AddScene (pageScene);
 
             var targetDocument = targetGraph.VisualOf (doc);
             this.DocumentVisual = targetDocument;

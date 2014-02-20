@@ -80,7 +80,6 @@
     <Compile Include="Limaki.View\Mesh\GraphSceneMeshBackHandler.cs" />
     <Compile Include="Limaki.View\Visuals\Mesh\VisualGraphSceneEvents.cs" />
     <Compile Include="Limaki.View\Visuals\Mesh\VisualGraphSceneMesh.cs" />
-    <Compile Include="[Obsolete]\SceneChanger.cs" />
     <Compile Include="Limaki.View\Visuals\UI\VisualsTextEditActionBase.cs" />
     <Compile Include="Limaki.View\Mesh\GraphSceneMesh.cs" />
     <Compile Include="Limaki.Visuals\IVisualContentViz.cs" />
@@ -321,11 +320,9 @@
     <Compile Include="Limaki.View\UI\ZoomAction.cs" />
     <Compile Include="Limaki.View\Visuals\Visualizers\VisualsDisplay.cs" />
     <Compile Include="Limaki.View\Visuals\Visualizers\VisualsRecourceLoader.cs" />
-    <Compile Include="[Obsolete]\WiredDisplays.cs" />
     <Compile Include="Limaki.View\Visuals\Layout\VisualsSceneLayout.cs" />
     <Compile Include="Limaki.View\Visuals\UI\AddEdgeAction.cs" />
     <Compile Include="Limaki.View\Visuals\UI\SceneExtensions.cs" />
-    <Compile Include="[Obsolete]\WiredScenes.cs" />
     <Compile Include="Limaki.View\Visuals\VisualsRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Limaki.Reporting\IReportOptions.cs" />
@@ -403,6 +400,9 @@
   <ItemGroup>
     <Content Include="Xwt\RelatedDocs.txt" />
     <Content Include="Xwt\XwtProblems.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="[Obsolete]\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

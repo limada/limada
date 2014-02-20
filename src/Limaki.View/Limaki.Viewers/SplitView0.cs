@@ -210,21 +210,13 @@ namespace Limaki.Viewers {
             ContentViewManager.Clear();
 
             Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (Display1.Data);
-            var useMesh = true;
-            if (useMesh) {
-                Mesh.CopyDisplayProperties (Display1, Display2);
-                Display2.Data = Mesh.CreateSinkScene (Display1.Data.Graph);
-                
-            } else {
-                new WiredDisplays().MakeSideDisplay(Display1, Display2);
-            }
+            Mesh.CopyDisplayProperties (Display1, Display2);
+            Display2.Data = Mesh.CreateSinkScene (Display1.Data.Graph);
 
             Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (Display2.Data);
-            
-            if (useMesh) {
-                Mesh.AddScene (Display1.Data);
-                Mesh.AddScene (Display2.Data);
-            }
+
+            Mesh.AddScene (Display1.Data);
+            Mesh.AddScene (Display2.Data);
 
             GraphGraphView();
             GraphContentView();
