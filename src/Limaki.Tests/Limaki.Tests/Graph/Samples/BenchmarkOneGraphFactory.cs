@@ -1,12 +1,10 @@
+using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
-using Limaki.Model;
-using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
-using Limaki.Common;
 
-namespace Limaki.Tests.Visuals {
+namespace Limaki.Tests.Graph.Model {
 
     public class BenchmarkOneGraphFactory<TItem, TEdge> : SampleGraphFactory<TItem, TEdge>
         where TEdge : IEdge<TItem>, TItem {

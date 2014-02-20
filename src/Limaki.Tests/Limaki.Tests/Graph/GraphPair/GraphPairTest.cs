@@ -15,14 +15,14 @@
 
 using Limaki.Graphs;
 using Limaki.Model;
+using Limaki.Tests;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.View.Visuals;
-using Limaki.Tests.Visuals;
 using Limaki.UnitTest;
 using Limaki.Visuals;
 using NUnit.Framework;
 
-namespace Limaki.Tests.Graph.Wrappers {
+namespace Limaki.Tests.Graph.GraphPair {
 
     public class GraphPairTest : DomainTest {
 
@@ -39,7 +39,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         public void RemoveTest() {
             var pair = GetPair();
 
-            var factory = new VisualDataFactory();
+            var factory = new VisualGraphTestDataFactory();
             foreach (var item in factory.Edges) {
                 pair.Add(item);
             }

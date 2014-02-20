@@ -2,11 +2,11 @@ using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Basic;
 using Limaki.Tests.View.Visuals;
-using Limaki.Tests.Visuals;
 using Limaki.Visuals;
 
-namespace Limaki.Tests.Graph.Wrappers {
-    public class BasicVisualItemGraphPairTest : BasicGraphPairTest<IVisual, IGraphEntity, IVisualEdge, IGraphEdge> {
+namespace Limaki.Tests.Graph.GraphPair {
+
+    public class BasicVisualEntityGraphPairTest : BasicGraphPairTest<IVisual, IGraphEntity, IVisualEdge, IGraphEdge> {
         public override IGraph<IVisual, IVisualEdge> Graph {
             get {
                 if (!(base.Graph is IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)) {
@@ -20,8 +20,8 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
             set { base.Graph = value; }
         }
-        public override BasicTestDataFactory<IVisual, IVisualEdge> GetFactory() {
-            return new VisualDataFactory();
+        public override BasicGraphTestDataFactory<IVisual, IVisualEdge> GetFactory() {
+            return new VisualGraphTestDataFactory();
         }
     }
 }

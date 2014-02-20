@@ -24,42 +24,6 @@ using System.Linq;
 
 namespace Limada.Tests.Model {
 
-    public class GraphPairWithFactoryTest : DomainTest {
-
-        public void TestGraphPair(ISampleGraphFactory<IGraphEntity, IGraphEdge> source, ThingGraph target) {
-            source.Count = 10;
-            source.Populate();
-            this.ReportDetail(source.GetType().FullName + "\t" + source.Count);
-
-            var graphPair =
-                new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
-                source.Graph, 
-                target, 
-                new GraphItem2ThingTransformer());
-
-            var mapper = graphPair.Mapper;
-            mapper.ConvertSinkSource();
-
-            var convertionTesterOne = new MapperTester<IGraphEntity, IThing, IGraphEdge, ILink>();
-            mapper.ConvertSinkSource();
-            convertionTesterOne.ProveConversion(graphPair.Sink, graphPair.Source, mapper.Get);
-
-            var newEntity = new GraphEntity<string>("new");
-            graphPair.Add(newEntity);
-            convertionTesterOne.ProveConversion(graphPair.Sink, graphPair.Source, mapper.Get);
-
-        }
-
-        [Test]
-        public void TestGraphPairWithFactoryGraph() {
-            TestGraphPair(new BinaryTreeFactory(),new ThingGraph ());
-            TestGraphPair(new BinaryGraphFactory(), new ThingGraph());
-            ReportSummary();
-        }
-
-
-    }
-
     public class GraphPairTest : DomainTest {
 
         public IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> MakeGraphPair(
@@ -161,4 +125,39 @@ namespace Limada.Tests.Model {
         }
     }
 
+    public class GraphPairWithFactoryTest : DomainTest {
+
+        public void TestGraphPair (ISampleGraphFactory<IGraphEntity, IGraphEdge> source, ThingGraph target) {
+            source.Count = 10;
+            source.Populate ();
+            this.ReportDetail (source.GetType ().FullName + "\t" + source.Count);
+
+            var graphPair =
+                new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
+                source.Graph,
+                target,
+                new GraphItem2ThingTransformer ());
+
+            var mapper = graphPair.Mapper;
+            mapper.ConvertSinkSource ();
+
+            var convertionTesterOne = new MapperTester<IGraphEntity, IThing, IGraphEdge, ILink> ();
+            mapper.ConvertSinkSource ();
+            convertionTesterOne.ProveConversion (graphPair.Sink, graphPair.Source, mapper.Get);
+
+            var newEntity = new GraphEntity<string> ("new");
+            graphPair.Add (newEntity);
+            convertionTesterOne.ProveConversion (graphPair.Sink, graphPair.Source, mapper.Get);
+
+        }
+
+        [Test]
+        public void TestGraphPairWithFactoryGraph () {
+            TestGraphPair (new BinaryTreeFactory (), new ThingGraph ());
+            TestGraphPair (new BinaryGraphFactory (), new ThingGraph ());
+            ReportSummary ();
+        }
+
+
+    }
 }

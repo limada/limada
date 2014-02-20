@@ -3,15 +3,15 @@ using Limada.Model;
 using Limada.VisualThings;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Tests.Visuals;
+using Limaki.Tests.View.Visuals;
 using Limaki.Visuals;
 
 namespace Limada.Tests.View {
 
-    public abstract class ThingSceneFactory0:ISceneFactory {
+    public abstract class ThingSceneFactory0:ISampleGraphSceneFactory {
         public ThingSceneFactory0() { }
 
-        #region ISceneFactory Member
+        #region ISampleGraphSceneFactory Member
 
         IGraph<IVisual, IVisualEdge> _graph = null;
         public virtual IGraph<IVisual, IVisualEdge> Graph {

@@ -1,21 +1,21 @@
-﻿using System.Collections.Generic;
-using Limada.Schemata;
-using Limaki.Tests.Graph.Model;
-using Limaki.Tests.Visuals;
+﻿using Limada.Schemata;
 using Limada.Tests.View;
 using Limaki.Drawing;
-using Limaki.Visuals;
 using Limaki.Graphs;
 using Limaki.Model;
+using Limaki.Tests.Graph.Model;
+using Limaki.Tests.View.Visuals;
+using Limaki.Visuals;
+using System.Collections.Generic;
 
 namespace Limaki.Tests.View {
     
     public class SceneExamples {
         public interface ITypeChoose {
-            ISceneFactory Data { get; }
+            ISampleGraphSceneFactory Data { get; }
         }
 
-        public class TypeChoose<T> : ITypeChoose where T : class, ISceneFactory, new() {
+        public class TypeChoose<T> : ITypeChoose where T : class, ISampleGraphSceneFactory, new() {
             public TypeChoose() { }
             private T _data = default(T);
 
@@ -33,7 +33,7 @@ namespace Limaki.Tests.View {
             }
 
 
-            ISceneFactory ITypeChoose.Data {
+            ISampleGraphSceneFactory ITypeChoose.Data {
                 get { return this.Data; }
             }
 
@@ -44,12 +44,12 @@ namespace Limaki.Tests.View {
             get {
                 if(_examples ==null) {
                     _examples = new List<ITypeChoose> ();
-                    _examples.Add (new TypeChoose<SceneFactory<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>>> ());
-                    _examples.Add (new TypeChoose<SceneFactory<BinaryTreeFactory<IGraphEntity, IGraphEdge>>> ());
-                    _examples.Add (new TypeChoose<SceneFactory<BinaryGraphFactory<IGraphEntity, IGraphEdge>>> ());
-                    _examples.Add (new TypeChoose<SceneFactory<GCJohnBostonGraphFactory<IGraphEntity, IGraphEdge>>> ());
-                    _examples.Add (new TypeChoose<SceneFactory<WordGameGraphFactory<IGraphEntity, IGraphEdge>>> ());
-                    _examples.Add (new TypeChoose<SceneFactory<LimakiShortHelpFactory<IGraphEntity, IGraphEdge>>> ());
+                    _examples.Add (new TypeChoose<SampleSceneFactory<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>>> ());
+                    _examples.Add (new TypeChoose<SampleSceneFactory<BinaryTreeFactory<IGraphEntity, IGraphEdge>>> ());
+                    _examples.Add (new TypeChoose<SampleSceneFactory<BinaryGraphFactory<IGraphEntity, IGraphEdge>>> ());
+                    _examples.Add (new TypeChoose<SampleSceneFactory<GCJohnBostonGraphFactory<IGraphEntity, IGraphEdge>>> ());
+                    _examples.Add (new TypeChoose<SampleSceneFactory<WordGameGraphFactory<IGraphEntity, IGraphEdge>>> ());
+                    _examples.Add (new TypeChoose<SampleSceneFactory<LimakiShortHelpFactory<IGraphEntity, IGraphEdge>>> ());
                     _examples.Add(new TypeChoose<BenchmarkOneSceneFactory>());
                     _examples.Add(new TypeChoose<SchemaViewTestData<DigidocSchema>>());
                     Selected = _examples[0];
@@ -61,7 +61,7 @@ namespace Limaki.Tests.View {
         public Viewers.DialogResult DialogResult { get; set; }
         public ITypeChoose Selected { get; set; }
 
-        public IGraphScene<IVisual, IVisualEdge> GetScene (ISceneFactory factory) {
+        public IGraphScene<IVisual, IVisualEdge> GetScene (ISampleGraphSceneFactory factory) {
             var scene = factory.Scene;
 
             IGraph<IVisual, IVisualEdge> data = null;

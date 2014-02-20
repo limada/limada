@@ -5,7 +5,7 @@ using Limaki.View.Visuals.Visualizers;
 using Limaki.View.XwtBackend;
 using Limaki.Visuals;
 
-namespace Limaki.View.HeadlessBackends {
+namespace Limaki.View.Headless {
     public class HeadlessVidgetToolkitEngineBackend : VidgetToolkitEngineBackend {
 
         public override void InitializeBackends () {

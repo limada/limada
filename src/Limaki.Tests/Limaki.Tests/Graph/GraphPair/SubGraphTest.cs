@@ -18,13 +18,14 @@ using System.Collections.Generic;
 using System.Text;
 using Limaki.Graphs.Extensions;
 using Limaki.Model;
+using Limaki.Tests;
 using NUnit.Framework;
 using Limaki.Common;
 using Limaki.Graphs;
 using Limaki.UnitTest;
 using Limaki.Tests.Graph.Model;
 
-namespace Limaki.Tests.Graph.Wrappers {
+namespace Limaki.Tests.Graph.GraphPair {
 
     public class SubGraphTest: DomainTest {
 

@@ -21,6 +21,7 @@ using System;
 using Limaki.Common;
 
 namespace Limada.Tests.Model {
+
    public class GraphItem2ThingTransformer : GraphItemTransformer<IGraphEntity, IThing, IGraphEdge, ILink> {
        private IThingFactory _factory = null;
        public IThingFactory Factory { get { return _factory ?? (_factory = Registry.Factory.Create<IThingFactory>()); } }

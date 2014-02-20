@@ -1,10 +1,24 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.Graph.Wrappers;
+using Limaki.Tests.Graph.GraphPair;
 using Limaki.View.Layout;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
@@ -13,8 +27,9 @@ using NUnit.Framework;
 
 namespace Limaki.Tests.View.Visuals {
 
-    public class SceneFacadeTestWrapper<TFactory> 
-        where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new () {
+    public class SceneTestWrap<IGraphEntity, IGraphEdge,TFactory>
+        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity
+        where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new () {
 
         /// <summary>
         /// sets Scene.Focus to item and 
@@ -131,7 +146,7 @@ namespace Limaki.Tests.View.Visuals {
             ProveNotContains (this.View.Sink, visuals);
         }
 
-        public SceneFacadeTestWrapper (SceneFacadeTest<TFactory> test) {
+        public SceneTestWrap (SceneFacadeTest<IGraphEntity, IGraphEdge, TFactory> test) {
 
             this.Mock = test.Mock;
             this.Test = test;
@@ -148,8 +163,8 @@ namespace Limaki.Tests.View.Visuals {
                 Mock.Scene.Graph
                 as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
 
-            this.Nodes = Mock.Factory.Nodes;
-            this.Edges = Mock.Factory.Edges;
+            this.Nodes = Mock.SampleFactory.Nodes;
+            this.Edges = Mock.SampleFactory.Edges;
 
             this.Scene = Mock.Scene;
 
@@ -177,11 +192,11 @@ namespace Limaki.Tests.View.Visuals {
         /// </summary>
         public IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge> Graph { get; protected set; }
 
-        public SceneFacadeTest<TFactory> Test { get; protected set; }
+        public SceneFacadeTest<IGraphEntity, IGraphEdge, TFactory> Test { get; protected set; }
 
-        public TestSceneMock<TFactory> Mock { get; protected set; }
+        public SceneTestEnvironment<IGraphEntity, IGraphEdge, TFactory> Mock { get; protected set; }
 
-        public T TestAs<T> () where T : SceneFacadeTest<TFactory> {
+        public T TestAs<T> () where T : SceneFacadeTest<IGraphEntity, IGraphEdge, TFactory> {
             return this.Test as T;
         }
 

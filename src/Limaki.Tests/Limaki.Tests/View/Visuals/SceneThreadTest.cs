@@ -20,7 +20,8 @@ using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using Xwt;
 
-namespace Limaki.Tests.Visuals {
+namespace Limaki.Tests.View.Visuals {
+
     public class SceneThreadTest {
        public class SceneTreadTester {
             public static int testCount = 0;

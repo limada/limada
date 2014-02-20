@@ -41,8 +41,8 @@ namespace Limada.Tests.Basic {
                 }
             }
         }
-        public override BasicTestDataFactory<IThing, ILink> GetFactory() {
-            return new BasicThingDataFactory();
+        public override BasicGraphTestDataFactory<IThing, ILink> GetFactory() {
+            return new BasicThingGraphDataFactory();
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Limada.Tests.Basic {
         }
     }
 
-    public class BasicThingDataFactory : BasicTestDataFactory<IThing, ILink> {
+    public class BasicThingGraphDataFactory : BasicGraphTestDataFactory<IThing, ILink> {
         private IThingFactory _factory = null;
         public IThingFactory Factory { get { return _factory ?? (_factory = Registry.Factory.Create<IThingFactory>()); } }
 

@@ -6,11 +6,11 @@ using Limaki.Model;
 using Limaki.Tests;
 using Limaki.Tests.Graph;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.Graph.Wrappers;
+using Limaki.Tests.View.Visuals;
 using Limaki.Visuals;
 using NUnit.Framework;
 
-namespace Limada.Tests.Wrappers {
+namespace Limada.Tests.View {
 
     public class WrapperTest : DomainTest {
 
@@ -46,7 +46,7 @@ namespace Limada.Tests.Wrappers {
             var graph = new VisualThingGraph ();
 
             var test = new ProgrammingGraphSceneTest ();
-            test.Mock.Factory.Graph = graph;
+            test.Mock.SampleFactory.Graph = graph;
             test.Net ();
 
         }
@@ -56,8 +56,8 @@ namespace Limada.Tests.Wrappers {
             var graph = new VisualThingGraph ();
 
             var test = new ProgrammingGraphSceneTest ();
-            test.Mock.Factory.Populate (graph);
-            test.Mock.Factory.Graph = graph;
+            test.Mock.SampleFactory.Populate (graph);
+            test.Mock.SampleFactory.Graph = graph;
             var scene = new Scene ();
             scene.Graph = graph;
             test.Mock.Scene = scene;
@@ -72,7 +72,7 @@ namespace Limada.Tests.Wrappers {
             var graph = new VisualThingGraph ();
 
             var test = new ProgrammingGraphSceneTest ();
-            test.Mock.Factory.Graph = graph;
+            test.Mock.SampleFactory.Graph = graph;
             test.Mock.Scene = new Scene ();
             test.Mock.Scene.Graph = graph;
 

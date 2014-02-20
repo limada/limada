@@ -23,6 +23,7 @@ using Limaki.Visuals;
 using NUnit.Framework;
 using Xwt;
 using System;
+using Limaki.Tests.View.Visuals;
 
 namespace Limaki.Tests.View.Display {
     [Obsolete]

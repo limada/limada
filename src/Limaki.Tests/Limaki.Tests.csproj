@@ -134,15 +134,16 @@
     <Compile Include="Limada.Tests\Tests\View\ThingVisualMapperTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\BasicVisualThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\WrapperTest.cs" />
-    <Compile Include="Limaki.Tests\Graph\Examples\EntityGraphFactorys.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Folding\SceneFacadeTestWrapper.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Model\GraphSceneFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\EntityGraphFactorys.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\GraphEntityTests.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\SceneTestWrap.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Samples\SampleGraphSceneFactory.cs" />
     <Compile Include="Limaki.View.Headless\VidgetBackends\ImageMissingStuffExtension.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Folding\BinaryGraphSceneTest.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Folding\GCJohnBostonSceneTest.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Folding\ProgrammingGraphSceneTest.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Folding\TestSceneMock.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Folding\SceneFacadeTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\BinaryGraphSceneTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\GCJohnBostonSceneTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\ProgrammingGraphSceneTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\SceneTestEnvironment.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\SceneFacadeTest.cs" />
     <Compile Include="Limaki.Tests\View\Display\BenchmarkOneTests.cs" />
     <Compile Include="Limaki.Tests\View\Display\DisplayTest.cs" />
     <Compile Include="Limaki.Tests\View\Display\MoreVisualsDisplayTest.cs" />
@@ -201,7 +202,7 @@
     <Compile Include="Limaki.Tests\Data\db4o\GraphTest.cs" />
     <Compile Include="Limaki.Tests\DomainTest.cs" />
     <Compile Include="Limaki.Tests\Graph\GraphPair\BasicGraphPairTest.cs" />
-    <Compile Include="Limaki.Tests\Graph\GraphPair\BasicVisualItemGraphPairTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\GraphPair\BasicVisualEntityGraphPairTest.cs" />
     <Compile Include="Limaki.Tests\Graph\GraphPair\GraphPairTest.cs" />
     <Compile Include="Limaki.Tests\Graph\GraphPair\SubGraphTest.cs" />
     <Compile Include="Limaki.Tests\View\Display\FrameTicker.cs" />
@@ -213,25 +214,25 @@
     <Compile Include="Limaki.Tests\View\Drawing\PoligonAlgoTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\ViewSerialisationTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Basic\BasicGraphTests.cs" />
-    <Compile Include="Limaki.Tests\Graph\Basic\BasicTestDataFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\BasicGraphTestDataFactory.cs" />
     <Compile Include="Limaki.Tests\Graph\Basic\EdgeIsItemTest.cs" />
-    <Compile Include="Limaki.Tests\Graph\Basic\GraphItemTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\BasicEntityGraphTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Basic\IntGraphTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Basic\StringGraphTest.cs" />
     <Compile Include="Limaki.Tests\Graph\FilteredGraphTest.cs" />
     <Compile Include="Limaki.Tests\Graph\GraphTestUtils.cs" />
-    <Compile Include="Limaki.Tests\Graph\Examples\BenchmarkOneGraphFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Examples\BinaryGraphFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Examples\BinaryTreeFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Examples\GCJohnBostonGraphFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Examples\LimakiShortHelp.cs" />
-    <Compile Include="Limaki.Tests\Graph\Examples\ProgrammingLanguageGraphFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Examples\SimpleGraphFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Examples\WordGameGraphFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Model\SampleGraphPairFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Model\SampleGraphFactoryBase.cs" />
-    <Compile Include="Limaki.Tests\Graph\Model\SampleGraphFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Model\ISampleGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\BenchmarkOneGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\BinaryGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\BinaryTreeFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\GCJohnBostonGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\LimakiShortHelp.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\ProgrammingLanguageGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\SimpleGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Samples\WordGameGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\SampleGraphPairFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\SampleGraphFactoryBase.cs" />
+    <Compile Include="Limaki.Tests\Graph\SampleGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\ISampleGraphFactory.cs" />
     <Compile Include="Limaki.Tests\Graph\Model\Item.cs" />
     <Compile Include="Limaki.Tests\Graph\Model\TestingSomeGraphSemantics.cs" />
     <Compile Include="Playground\FileInfoTest.cs" />
@@ -242,9 +243,9 @@
     <Compile Include="Limaki.Tests\View\Drawing\VectorHulltest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\Shapes\ShapeTest.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\BasicVisualGraphTest.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Model\BenchmarkOneSceneFactory.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Model\ISceneFactory.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Model\SceneFactory.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Samples\BenchmarkOneSceneFactory.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Samples\ISampleGraphSceneFactory.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Samples\SampleSceneFactory.cs" />
     <Compile Include="UnitTest\TestBase.cs" />
     <Compile Include="Playground\MonoGenericError2.cs" />
     <Compile Include="Playground\MonoMarshalByRefError.cs" />
@@ -331,6 +332,9 @@
   <ItemGroup>
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
     <Folder Include="[Obsolete]\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Limaki.Tests\View\Visuals\Scene\SceneTests.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

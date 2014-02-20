@@ -13,14 +13,8 @@
  */
 
 
-using System;
-using Limaki.Graphs;
-using Limaki.Tests.Visuals;
-using Limaki.Visuals;
+
 using Limada.Model;
-using System.Collections;
-using System.Collections.Generic;
-using Limaki.Common.Collections;
 using Limada.Schemata;
 
 namespace Limada.Tests.View {

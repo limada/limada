@@ -28,7 +28,7 @@ using NUnit.Framework;
 using Limaki.Tests.View.Visuals;
 
 using Id = System.Int64;
-using Limaki.Tests.Graph.Wrappers;
+using Limaki.Tests.Graph.GraphPair;
 using Limaki.Tests.Graph.Basic;
 using Limada.Schemata;
 
@@ -52,8 +52,8 @@ namespace Limada.Tests.View {
             }
         }
 
-        public override BasicTestDataFactory<IVisual, IVisualEdge> GetFactory() {
-            return new VisualDataFactory();
+        public override BasicGraphTestDataFactory<IVisual, IVisualEdge> GetFactory() {
+            return new VisualGraphTestDataFactory();
         }
 
         public void ProveEdge(IThingGraph thingGraph, ILink link) {

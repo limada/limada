@@ -4,21 +4,23 @@ using Limada.View;
 using Limada.VisualThings;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.Graph.Wrappers;
+using Limaki.Tests.View.Visuals;
 using Limaki.Visuals;
 
 namespace Limada.Tests.Model {
+
     public static class ModelHelper {
-        public static VisualThingGraph GetSourceGraph<TFactory>()
-            where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new() {
-            return GetSourceGraph<TFactory>(1);
+
+        public static VisualThingGraph GetSourceGraph<TFactory> ()
+            where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new () {
+            return GetSourceGraph<TFactory> (1);
         }
 
-        public static VisualThingGraph GetSourceGraph<TFactory>(int count)
-            where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new() {
-                var mock = new TestSceneMock<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
+        public static VisualThingGraph GetSourceGraph<TFactory> (int count)
+            where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new () {
+            var mock = new SceneTestEnvironment<IGraphEntity, IGraphEdge, ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
 
-            mock.Factory.Count = count;
+            mock.SampleFactory.Count = count;
 
             mock.Display.Reset();
             mock.SceneFacade.ShowAllData();

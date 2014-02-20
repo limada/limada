@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Limaki.Tests.View.Visuals.SceneFacadeTest&lt;TItem, TEdge, TFactory&gt;">
+    <Position X="0.75" Y="0.5" Width="3" />
+    <Members>
+      <Field Name="_mock" Hidden="true" />
+      <Field Name="AlwaysInvoke" Hidden="true" />
+      <Field Name="invoked" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>EAAhAIAAICAAAAABAAQgAgAAAAAAAAAAAAAQAAAAEAA=</HashCode>
+      <FileName>Limaki.Tests\View\Visuals\Scene\SceneFacadeTest.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Mock" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Limaki.Tests.View.Visuals.SceneTestEnvironment&lt;TItem, TEdge, TFactory&gt;">
+    <Position X="4.75" Y="0.5" Width="3.5" />
+    <Members>
+      <Field Name="_display" Hidden="true" />
+      <Field Name="_factory" Hidden="true" />
+      <Field Name="_scene" Hidden="true" />
+      <Field Name="_sceneFacade" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="SceneFacade" Type="Limaki.View.UI.GraphScene.GraphSceneFacade&lt;TItem, TEdge&gt;" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.562" Y="1.842" />
+        <Point X="6.562" Y="3" />
+        <Point X="6.75" Y="3" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Scene" Type="Limaki.Drawing.IGraphScene&lt;TItem, TEdge&gt;" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.359" Y="1.842" />
+        <Point X="6.359" Y="3.75" />
+        <Point X="6.75" Y="3.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="SampleFactory" Type="Limaki.Tests.View.Visuals.ISampleGraphSceneFactory" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="1.842" />
+        <Point X="5" Y="3.25" />
+        <Point X="5" Y="3.25" />
+        <Point X="5" Y="5.944" />
+        <Point X="6.75" Y="5.944" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAABAAAgAAABQAAAAAAKAAAAAKCAAAAQAA=</HashCode>
+      <FileName>Limaki.Tests\View\Visuals\Scene\SceneTestEnvironment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SceneFacade" />
+      <Property Name="Scene" />
+      <Property Name="Display" />
+      <Property Name="SampleFactory" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Limaki.Tests.View.Visuals.SceneTestWrap&lt;IGraphEntity, IGraphEdge, TFactory&gt;">
+    <Position X="10.75" Y="1" Width="3.75" />
+    <AssociationLine Name="Test" Type="Limaki.Tests.View.Visuals.SceneFacadeTest&lt;TItem, TEdge, TFactory&gt;" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.312" Y="1" />
+        <Point X="12.312" Y="0.26" />
+        <Point X="3.375" Y="0.26" />
+        <Point X="3.375" Y="0.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Scene" Type="Limaki.Drawing.IGraphScene&lt;TItem, TEdge&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="10.75" Y="3.812" />
+        <Point X="9" Y="3.812" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Display" Type="Limaki.View.Visualizers.IGraphSceneDisplay&lt;TItem, TEdge&gt;" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.75" Y="4.688" />
+        <Point X="10.375" Y="4.688" />
+        <Point X="10.375" Y="4.812" />
+        <Point X="9.5" Y="4.812" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AQBkgAAAIAAABAAIiAAABQAAAAABJAgABAAACIAAQAA=</HashCode>
+      <FileName>Limaki.Tests\View\Visuals\Scene\SceneTestWrap.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Mock" />
+      <Property Name="Test" />
+      <Property Name="SceneFacade" />
+      <Property Name="Scene" />
+      <Property Name="Display" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Limaki.Tests.View.Visuals.BinaryGraphSceneTest&lt;TItem, TEdge&gt;" Collapsed="true">
+    <Position X="0.5" Y="4" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAIAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Limaki.Tests\View\Visuals\Scene\BinaryGraphSceneTest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Limaki.Tests.View.Visuals.GCJohnBostonSceneTest&lt;TItem, TEdge&gt;" Collapsed="true">
+    <Position X="0.5" Y="5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AIABAAABAAAAAAACAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Limaki.Tests\View\Visuals\Scene\GCJohnBostonSceneTest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Limaki.Tests.View.Visuals.ProgrammingGraphSceneTest&lt;TItem, TEdge&gt;" Collapsed="true">
+    <Position X="0.5" Y="6" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAABEgAAAAAAECAAAAAAAEQAABAAQAAAAAQAAABAAAA=</HashCode>
+      <FileName>Limaki.Tests\View\Visuals\Scene\ProgrammingGraphSceneTest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Limaki.View.UI.GraphScene.GraphSceneFacade&lt;TItem, TEdge&gt;" Collapsed="true">
+    <Position X="6.75" Y="2.75" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="Limaki.Drawing.IGraphScene&lt;TItem, TEdge&gt;" Collapsed="true">
+    <Position X="6.75" Y="3.5" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Limaki.View.Visualizers.IGraphSceneDisplay&lt;TItem, TEdge&gt;" Collapsed="true">
+    <Position X="6.75" Y="4.25" Width="2.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Limaki.Tests.View.Visuals.ISampleGraphSceneFactory">
+    <Position X="6.75" Y="5.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Limaki.Tests\View\Visuals\Samples\ISampleGraphSceneFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Limaki.Tests.Graph.Model.ISampleGraphFactory&lt;TItem, TEdge&gt;">
+    <Position X="6.75" Y="7.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>CAAggAAAAAAAAAAAAIAAAAQAAAAAAAgAAAgAAAAAAAA=</HashCode>
+      <FileName>Limaki.Tests\Graph\ISampleGraphFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.55" />
+</ClassDiagram>

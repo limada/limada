@@ -25,6 +25,7 @@ using Id = System.Int64;
 using Limaki.Common;
 
 namespace Limada.Tests.Basic {
+
     public class ThingTest:DomainTest {
 
         IThing aLeaf = null;

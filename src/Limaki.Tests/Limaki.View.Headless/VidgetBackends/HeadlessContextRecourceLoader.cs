@@ -7,7 +7,7 @@ using Limaki.Drawing.Shapes;
 using Limaki.IOC;
 using Limaki.View.DragDrop;
 using Limaki.View.Headless.VidgetBackends;
-using Limaki.View.HeadlessBackends;
+using Limaki.View.Headless;
 using Limaki.View.UI;
 using Limaki.View.XwtContext;
 using Limaki.Viewers;

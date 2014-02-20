@@ -1,19 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Limaki.Common;
 using Limaki.Common.Linqish;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.Graph.Wrappers;
-using Limaki.Tests.Visuals;
 using Limaki.View.Mesh;
-using Limaki.View.Visuals.UI;
-using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using Xwt;
 
 namespace Limaki.Tests.View.Visuals {
@@ -23,9 +32,9 @@ namespace Limaki.Tests.View.Visuals {
         IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
         protected IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
 
-        public IEnumerable<SceneFacadeTestWrapper<TFactory>> MeshTests<TFactory> (
-            params SceneFacadeTestWrapper<TFactory>[] sources)
-            where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new () {
+        public IEnumerable<SceneTestWrap<IGraphEntity, IGraphEdge,TFactory>> MeshTests<TFactory> (
+            params SceneTestWrap<IGraphEntity, IGraphEdge, TFactory>[] sources)
+            where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new () {
 
             var source = sources[0];
             Mesh.AddDisplay (source.Display);
@@ -36,17 +45,17 @@ namespace Limaki.Tests.View.Visuals {
                 Mesh.AddDisplay (sink.Display);
 
                 ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
-                 sink.Mock.Factory).GraphPair =
+                 sink.Mock.SampleFactory).GraphPair =
                     // no, its not sink.Graph, and not sink.Scene.... but:
                     sink.Mock.Scene.Graph.Source<IVisual, IVisualEdge, IGraphEntity, IGraphEdge> ();
                 ;
 
                 // take the inner factorys:
                 var sourceFactory = ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
-                                     source.Mock.Factory).Factory;
+                                     source.Mock.SampleFactory).Factory;
 
                 var sinkFactory = ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
-                                   sink.Mock.Factory).Factory;
+                                   sink.Mock.SampleFactory).Factory;
 
                 // copy Nodes and Edges
                 var i = 0;
@@ -63,8 +72,8 @@ namespace Limaki.Tests.View.Visuals {
         [Test]
         public void EdgeAddAndChange () {
 
-            var sources = MeshTests<ProgrammingLanguageFactory> (
-                new ProgrammingGraphSceneTest ().Wraps (7));
+            var sources = MeshTests<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> (
+                new ProgrammingGraphSceneTest<IGraphEntity, IGraphEdge> ().Wraps (7));
 
             var source = sources.First ();
 
@@ -153,7 +162,8 @@ namespace Limaki.Tests.View.Visuals {
         [Test]
         public void RegisterMesh () {
 
-            var sources = MeshTests<ProgrammingLanguageFactory> (new ProgrammingGraphSceneTest ().Wraps (5));
+            var sources = MeshTests<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> (
+                new ProgrammingGraphSceneTest<IGraphEntity, IGraphEdge> ().Wraps (5));
             var source = sources.First ();
             foreach (var sink in sources.Skip (1)) {
                 Assert.AreSame (source.Scene, source.Display.Data);
@@ -181,7 +191,7 @@ namespace Limaki.Tests.View.Visuals {
             var Programming2Language = 101;  //[Programming->Language]
             var Programming2Libraries = 104; //[Programming->Libraries]
 
-            var source = new ProgrammingGraphSceneTest ().Wrap ();
+            var source = new ProgrammingGraphSceneTest<IGraphEntity, IGraphEdge> ().Wrap ();
             EdgeAddChangeRemove (source, iProgramming, iNet, iJava);
             EdgeAddChangeRemove (source, iProgramming, iNet, iJava);
             EdgeAddChangeRemove (source, iLibraries, iLanguage, iJava);
@@ -192,8 +202,9 @@ namespace Limaki.Tests.View.Visuals {
         /// this tests if a link is added, changed and removed 
         /// </summary>
 
-        public void EdgeAddChangeRemove<TFactory> (SceneFacadeTestWrapper<TFactory> source, int iOne, int iTwo, int iThree)
-            where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new () {
+        public void EdgeAddChangeRemove<TItem, TEdge, TFactory> (SceneTestWrap<TItem, TEdge, TFactory> source, int iOne, int iTwo, int iThree)
+            where TEdge : IEdge<TItem>, TItem
+            where TFactory : ISampleGraphFactory<TItem, TEdge>, new () {
 
             source.EnsureShape (source.Nodes[iThree]);
 

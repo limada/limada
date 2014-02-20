@@ -2,12 +2,11 @@ using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.View.Visuals;
-using Limaki.Tests.Visuals;
 using Limaki.Visuals;
 using NUnit.Framework;
 using Limaki.Tests.Graph.Basic;
 
-namespace Limaki.Tests.Graph.Wrappers {
+namespace Limaki.Tests.Graph.GraphPair {
 
     public abstract class BasicGraphPairTest<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : BasicGraphTests<TItemOne,TEdgeOne>
 

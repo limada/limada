@@ -21,9 +21,6 @@ using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 
 namespace Limada.Tests.View {
-}
-
-namespace Limada.Tests.Model {
 
     public class VisualThingSampleFactory<T> : SampleGraphPairFactory<IVisual, IThing, IVisualEdge, ILink>
         where T : ISampleGraphFactory<IThing, ILink>, new() {

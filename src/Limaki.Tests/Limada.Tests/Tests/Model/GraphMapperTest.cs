@@ -25,6 +25,7 @@ using Limaki.Tests.Graph.Model;
 using NUnit.Framework;
 
 namespace Limada.Tests.Model {
+
     public class MapperTester<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> 
         where TEdgeOne : IEdge<TItemOne>, TItemOne
         where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {

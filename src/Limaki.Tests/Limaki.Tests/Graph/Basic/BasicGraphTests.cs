@@ -27,10 +27,10 @@ namespace Limaki.Tests.Graph.Basic {
     public abstract class BasicGraphTests<TItem, TEdge> : DomainTest
         where TEdge : IEdge<TItem> {
 
-        public abstract BasicTestDataFactory<TItem, TEdge> GetFactory();
+        public abstract BasicGraphTestDataFactory<TItem, TEdge> GetFactory();
 
-        BasicTestDataFactory<TItem, TEdge> _data = null;
-        public virtual BasicTestDataFactory<TItem, TEdge> Data {
+        BasicGraphTestDataFactory<TItem, TEdge> _data = null;
+        public virtual BasicGraphTestDataFactory<TItem, TEdge> Data {
             get {
                 if (_data == null) {
                     _data = GetFactory();
@@ -72,13 +72,13 @@ namespace Limaki.Tests.Graph.Basic {
             }
         }
 
-        public void FillGraph(IGraph<TItem, TEdge> graph, BasicTestDataFactory<TItem, TEdge> data) {
+        public void FillGraph(IGraph<TItem, TEdge> graph, BasicGraphTestDataFactory<TItem, TEdge> data) {
             foreach (TEdge edge in data.Edges) {
                 graph.Add(edge);
             }
         }
 
-        void ResetAndFillGraph(IGraph<TItem, TEdge> graph, BasicTestDataFactory<TItem, TEdge> data) {
+        void ResetAndFillGraph(IGraph<TItem, TEdge> graph, BasicGraphTestDataFactory<TItem, TEdge> data) {
             graph.Clear();
             FillGraph(graph, data);
         }
