@@ -201,7 +201,7 @@
     <Compile Include="Limaki.Tests\Data\db4o\GraphTest.cs" />
     <Compile Include="Limaki.Tests\DomainTest.cs" />
     <Compile Include="Limaki.Tests\Graph\GraphPair\BasicGraphPairTest.cs" />
-    <Compile Include="Limaki.Tests\Graph\GraphPair\BasicVisualItemGraphPairTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\GraphPair\BasicVisualEntityGraphPairTest.cs" />
     <Compile Include="Limaki.Tests\Graph\GraphPair\GraphPairTest.cs" />
     <Compile Include="Limaki.Tests\Graph\GraphPair\SubGraphTest.cs" />
     <Compile Include="Limaki.Tests\View\Display\FrameTicker.cs" />
@@ -213,9 +213,9 @@
     <Compile Include="Limaki.Tests\View\Drawing\PoligonAlgoTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\ViewSerialisationTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Basic\BasicGraphTests.cs" />
-    <Compile Include="Limaki.Tests\Graph\Basic\BasicTestDataFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\BasicGraphTestDataFactory.cs" />
     <Compile Include="Limaki.Tests\Graph\Basic\EdgeIsItemTest.cs" />
-    <Compile Include="Limaki.Tests\Graph\Basic\GraphItemTest.cs" />
+    <Compile Include="Limaki.Tests\Graph\Basic\BasicEntityGraphTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Basic\IntGraphTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Basic\StringGraphTest.cs" />
     <Compile Include="Limaki.Tests\Graph\FilteredGraphTest.cs" />
@@ -331,6 +331,9 @@
   <ItemGroup>
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
     <Folder Include="[Obsolete]\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

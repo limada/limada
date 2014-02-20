@@ -26,8 +26,10 @@ using Limaki.Tests;
 using Limaki.Data;
 using Limaki.Common.Linqish;
 using Limaki.Contents.IO;
+using Limada.Tests.Model;
 
 namespace Limada.Tests.Schemata {
+
     [TestFixture]
     public class DigidocTest : SchemaTest {
         public override Schema Schema {
@@ -105,7 +107,7 @@ namespace Limada.Tests.Schemata {
         [Test]
         public virtual void TestDocumentWithPages() {
             this.ReportDetail("**** TestDocumentWithPages");
-            var factory = new TestDocumentFactory();
+            var factory = new DigidocSampleFactory();
             var graph = new SchemaThingGraph(new ThingGraph());
             var root = DigidocSchema.DocumentsRoot;
             factory.CreateDocuments(graph, root, 1);
@@ -132,10 +134,8 @@ namespace Limada.Tests.Schemata {
             var d = prov.Open(Iori.FromFileName(TestLocations.GraphtestDir + "DocumentTest.limo"));
             thingGraph = d.Data;
 
-
-
             this.ReportDetail("**** TestDocumentWithTestData");
-            var factory = new TestDocumentFactory();
+            var factory = new DigidocSampleFactory();
             var digidoc = new DigidocSchema();
             var graph = new SchemaThingGraph(thingGraph);
             Limada.Schemata.Schema.IdentityGraph.ForEach(s => graph.Add(s));
@@ -164,37 +164,5 @@ namespace Limada.Tests.Schemata {
         }
     }
 
-    public class TestDocumentFactory {
-        private IThingFactory _factory = null;
-        public IThingFactory Factory { get { return _factory ?? (_factory = Registry.Factory.Create<IThingFactory>()); } }
-
-        public void CreateDocuments(IThingGraph graph, IThing root, int count) {
-            var digidoc = new DigidocSchema();
-            for (int i = 0; i < count; i++) {
-
-                var document = digidoc.CreateDocument(graph, null);
-                digidoc.CreatePage(graph, document, null, 1);
-                graph.Add(Factory.CreateEdge(root, document, DigidocSchema.Document));
-
-               
-            }
-
-        }
-
-        public void ReadPagesFromDir(IThingGraph graph, IThing document, string path) {
-            var digidoc = new DigidocSchema();
-            var imageStreamProvider = new ImageStreamContentIo();
-            var nr = 1;
-            
-            foreach (var file in Directory.GetFiles(path).OrderBy(f => f)) {
-                if (imageStreamProvider.Detector.Supports(Path.GetExtension(file))) {
-                    var stream = imageStreamProvider.ReadContent(IoUtils.UriFromFileName(file));
-                    if (stream != null && stream.Data != null) {
-                        digidoc.CreatePage(graph, document, stream, nr);
-                        nr++;
-                    }
-                }
-            }
-        }
-    }
+   
 }

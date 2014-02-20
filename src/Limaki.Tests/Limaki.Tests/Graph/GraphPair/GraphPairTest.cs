@@ -39,7 +39,7 @@ namespace Limaki.Tests.Graph.Wrappers {
         public void RemoveTest() {
             var pair = GetPair();
 
-            var factory = new VisualDataFactory();
+            var factory = new VisualGraphTestDataFactory();
             foreach (var item in factory.Edges) {
                 pair.Add(item);
             }

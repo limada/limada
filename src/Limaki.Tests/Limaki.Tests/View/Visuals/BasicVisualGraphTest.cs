@@ -26,7 +26,8 @@ using Limaki.Tests.Graph.Basic;
 using Limaki.Tests.Graph;
 
 namespace Limaki.Tests.View.Visuals {
-    public class VisualDataFactory : BasicTestDataFactory<IVisual, IVisualEdge> {
+
+    public class VisualGraphTestDataFactory : BasicGraphTestDataFactory<IVisual, IVisualEdge> {
         protected override void CreateItems() {
             var factory = Registry.Pool.TryGetCreate<IVisualFactory> ();
             One = factory.CreateItem("One");
@@ -44,8 +45,8 @@ namespace Limaki.Tests.View.Visuals {
     }
 
     public class BasicVisualGraphTest : BasicGraphTests<IVisual, IVisualEdge> {
-        public override BasicTestDataFactory<IVisual, IVisualEdge> GetFactory() {
-            return new VisualDataFactory();
+        public override BasicGraphTestDataFactory<IVisual, IVisualEdge> GetFactory() {
+            return new VisualGraphTestDataFactory();
         }
     }
 }

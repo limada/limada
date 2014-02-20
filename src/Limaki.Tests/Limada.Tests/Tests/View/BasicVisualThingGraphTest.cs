@@ -52,8 +52,8 @@ namespace Limada.Tests.View {
             }
         }
 
-        public override BasicTestDataFactory<IVisual, IVisualEdge> GetFactory() {
-            return new VisualDataFactory();
+        public override BasicGraphTestDataFactory<IVisual, IVisualEdge> GetFactory() {
+            return new VisualGraphTestDataFactory();
         }
 
         public void ProveEdge(IThingGraph thingGraph, ILink link) {

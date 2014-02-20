@@ -24,24 +24,24 @@ namespace Limaki.Tests.Graph.Model {
 
         #region ItemFactory
 
-        public IGraphModelFactory<TItem, TEdge> Creator {
-            get { return Registry.Factory.Create<IGraphModelFactory<TItem, TEdge>> (); }
-        }
+        IGraphModelFactory<TItem, TEdge> _creator = null;
+        public IGraphModelFactory<TItem, TEdge> Factory {
+            get { return _creator ?? (_creator = Registry.Factory.Create<IGraphModelFactory<TItem, TEdge>>()); } }
 
         public virtual TEdge CreateEdge (TItem root, TItem leaf) {
-            return Creator.CreateEdge (root, leaf);
+            return Factory.CreateEdge (root, leaf);
         }
 
         public virtual TEdge CreateEdge () {
-            return Creator.CreateEdge ();
+            return Factory.CreateEdge ();
         }
 
         public virtual TItem CreateItem<T> (T data) {
-            return Creator.CreateItem<T> (data);
+            return Factory.CreateItem<T> (data);
         }
 
         public virtual TItem CreateItem<T> () {
-            return Creator.CreateItem<T> (default (T));
+            return Factory.CreateItem<T> (default (T));
         }
 
         #endregion
@@ -57,7 +57,7 @@ namespace Limaki.Tests.Graph.Model {
         }
 
         public override IGraph<TItem, TEdge> Graph {
-            get { return base.Graph ?? (base.Graph = Creator.Graph ()); }
+            get { return base.Graph ?? (base.Graph = Factory.Graph ()); }
             set { base.Graph = value; }
         }
 
@@ -66,7 +66,7 @@ namespace Limaki.Tests.Graph.Model {
         }
 
         public virtual void MakeEdgeStrings (IGraph<TItem, TEdge> Graph) {
-            var changer = Creator as IGraphModelPropertyChanger<TItem, TEdge>;
+            var changer = Factory as IGraphModelPropertyChanger<TItem, TEdge>;
             if (changer != null)
                 foreach (var edge in Graph.Edges ()) {
                     changer.SetProperty (edge, GraphExtensions.EdgeString<TItem, TEdge> (edge));

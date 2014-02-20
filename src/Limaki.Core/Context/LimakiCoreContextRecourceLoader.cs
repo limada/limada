@@ -19,9 +19,10 @@ namespace Limaki.IOC {
         public override void ApplyResources(IApplicationContext context) {
 
             context.Factory.Add<ICompressionWorker, Limaki.Compression.CompressionWorker> ();
-            context.Factory.Add<IThingFactory, ThingFactory>();
 
             context.Factory.Add<IThingFactory, ThingFactory> ();
+            context.Factory.Add<IGraphModelFactory<IThing, ILink>, ThingFactory> ();
+
             context.Factory.Add<IGraphModelFactory<IGraphEntity, IGraphEdge>, GraphEntityFactory> ();
             
             var streamContentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool>();

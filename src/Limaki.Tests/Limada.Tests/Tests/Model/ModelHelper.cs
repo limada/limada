@@ -8,7 +8,9 @@ using Limaki.Tests.Graph.Wrappers;
 using Limaki.Visuals;
 
 namespace Limada.Tests.Model {
+
     public static class ModelHelper {
+
         public static VisualThingGraph GetSourceGraph<TFactory>()
             where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new() {
             return GetSourceGraph<TFactory>(1);
