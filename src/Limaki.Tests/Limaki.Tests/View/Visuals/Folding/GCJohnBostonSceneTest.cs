@@ -3,10 +3,14 @@ using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
+using Limaki.Graphs;
 
 namespace Limaki.Tests.Graph.Wrappers {
 
-    public class GCJohnBostonSceneTest : SceneFacadeTest<GCJohnBostonGraphFactory<IGraphEntity, IGraphEdge>> {
+    public class GCJohnBostonSceneTest<IGraphEntity, IGraphEdge>: 
+        SceneFacadeTest<IGraphEntity, IGraphEdge, GCJohnBostonGraphFactory<IGraphEntity, IGraphEdge>>
+        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
+
         public IEnumerable<IVisual> JohnGoBostonNodes {
             get {
                 yield return Mock.Factory.Nodes[1]; // Person

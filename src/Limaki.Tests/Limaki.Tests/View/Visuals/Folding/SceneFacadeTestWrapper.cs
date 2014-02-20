@@ -13,8 +13,15 @@ using NUnit.Framework;
 
 namespace Limaki.Tests.View.Visuals {
 
-    public class SceneFacadeTestWrapper<TFactory> 
-        where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new () {
+    public class SceneFacadeTestWrapper<TFactory> : SceneFacadeTestWrapper<IGraphEntity, IGraphEdge, TFactory>
+        where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new () {
+
+        public SceneFacadeTestWrapper (SceneFacadeTest<IGraphEntity, IGraphEdge, TFactory> test):base(test){ }
+        }
+
+    public class SceneFacadeTestWrapper<IGraphEntity, IGraphEdge,TFactory>
+        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity
+        where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new () {
 
         /// <summary>
         /// sets Scene.Focus to item and 
@@ -131,7 +138,7 @@ namespace Limaki.Tests.View.Visuals {
             ProveNotContains (this.View.Sink, visuals);
         }
 
-        public SceneFacadeTestWrapper (SceneFacadeTest<TFactory> test) {
+        public SceneFacadeTestWrapper (SceneFacadeTest<IGraphEntity, IGraphEdge, TFactory> test) {
 
             this.Mock = test.Mock;
             this.Test = test;
@@ -177,11 +184,11 @@ namespace Limaki.Tests.View.Visuals {
         /// </summary>
         public IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge> Graph { get; protected set; }
 
-        public SceneFacadeTest<TFactory> Test { get; protected set; }
+        public SceneFacadeTest<IGraphEntity, IGraphEdge, TFactory> Test { get; protected set; }
 
-        public TestSceneMock<TFactory> Mock { get; protected set; }
+        public TestSceneMock<IGraphEntity, IGraphEdge, TFactory> Mock { get; protected set; }
 
-        public T TestAs<T> () where T : SceneFacadeTest<TFactory> {
+        public T TestAs<T> () where T : SceneFacadeTest<IGraphEntity, IGraphEdge, TFactory> {
             return this.Test as T;
         }
 

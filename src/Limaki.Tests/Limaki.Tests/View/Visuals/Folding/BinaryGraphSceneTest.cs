@@ -3,10 +3,14 @@ using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
+using Limaki.Graphs;
 
 namespace Limaki.Tests.Graph.Wrappers {
 
-    public class BinaryGraphSceneTest : SceneFacadeTest<BinaryGraphFactory<IGraphEntity, IGraphEdge>> {
+    public class BinaryGraphSceneTest<IGraphEntity, IGraphEdge> :
+         SceneFacadeTest<IGraphEntity, IGraphEdge, BinaryGraphFactory<IGraphEntity, IGraphEdge>>
+         where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
+
         public override IEnumerable<IVisual> FullExpanded {
             get {
                 yield return Mock.Factory.Nodes[1]; // 1

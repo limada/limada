@@ -4,10 +4,15 @@ using Limaki.Tests.Graph.Model;
 using Limaki.Visuals;
 using NUnit.Framework;
 using Xwt;
+using Limaki.Graphs;
 
 namespace Limaki.Tests.Graph.Wrappers {
 
-    public class ProgrammingGraphSceneTest : SceneFacadeTest<ProgrammingLanguageFactory> {
+    public class ProgrammingGraphSceneTest: ProgrammingGraphSceneTest<IGraphEntity, IGraphEdge> { }
+
+    public class ProgrammingGraphSceneTest<IGraphEntity, IGraphEdge> : 
+         SceneFacadeTest<IGraphEntity, IGraphEdge, ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>>
+         where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
 
         public override IEnumerable<IVisual> FullExpanded {
             get {

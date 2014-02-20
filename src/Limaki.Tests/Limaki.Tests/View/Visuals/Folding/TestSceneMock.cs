@@ -12,14 +12,20 @@ using Xwt;
 
 namespace Limaki.Tests.Graph.Wrappers {
 
-    public class TestSceneMock<TFactory>
-        where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new () {
+    public class TestSceneMock<TFactory> : TestSceneMock<IGraphEntity, IGraphEdge, TFactory>
+        where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new() {
+        }
+
+
+    public class TestSceneMock<IGraphEntity, IGraphEdge,TFactory>
+        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity
+        where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new () {
 
         protected ISceneFactory _factory;
         public virtual ISceneFactory Factory {
             get {
                 if (_factory == null) {
-                    _factory = new SceneFactory<TFactory> ();
+                    _factory = new SceneFactory<IGraphEntity, IGraphEdge, TFactory> ();
                 }
                 return _factory;
             }

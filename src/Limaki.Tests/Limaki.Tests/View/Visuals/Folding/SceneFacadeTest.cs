@@ -14,9 +14,13 @@ using NUnit.Framework;
 
 namespace Limaki.Tests.Graph.Wrappers {
 
-    public abstract class SceneFacadeTest<TFactory> : DomainTest
+    public abstract class SceneFacadeTest<TFactory> : SceneFacadeTest<IGraphEntity, IGraphEdge, TFactory>
+        where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new () {
+    }
 
-        where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new () {
+    public abstract class SceneFacadeTest<TItem, TEdge, TFactory> : DomainTest
+        where TEdge : IEdge<TItem>, TItem
+        where TFactory : ISampleGraphFactory<TItem, TEdge>, new () {
 
         public void AreEquivalent (IEnumerable<IVisual> visuals, IGraph<IVisual, IVisualEdge> graph) {
 
@@ -69,11 +73,11 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
         }
 
-        protected TestSceneMock<TFactory> _mock = null;
-        public virtual TestSceneMock<TFactory> Mock {
+        protected TestSceneMock<TItem, TEdge, TFactory> _mock = null;
+        public virtual TestSceneMock<TItem, TEdge, TFactory> Mock {
             get {
                 if (_mock == null) {
-                    _mock = new TestSceneMock<TFactory> ();
+                    _mock = new TestSceneMock<TItem, TEdge, TFactory> ();
                 }
                 return _mock;
             }
@@ -105,16 +109,16 @@ namespace Limaki.Tests.Graph.Wrappers {
             this.ReportSummary ();
         }
 
-        public SceneFacadeTestWrapper<TFactory> Wrap () {
-            return new SceneFacadeTestWrapper<TFactory> (this);
+        public SceneFacadeTestWrapper<TItem, TEdge, TFactory> Wrap () {
+            return new SceneFacadeTestWrapper<TItem, TEdge, TFactory> (this);
         }
 
-        public SceneFacadeTestWrapper<TFactory>[] Wraps (int count) {
-            var tests = new SceneFacadeTestWrapper<TFactory>[count];
+        public SceneFacadeTestWrapper<TItem, TEdge, TFactory>[] Wraps (int count) {
+            var tests = new SceneFacadeTestWrapper<TItem, TEdge, TFactory>[count];
             var i = 0;
             tests.ForEach (t => {
                 var test = Activator.CreateInstance (this.GetType ()) as
-                           SceneFacadeTest<TFactory>;
+                           SceneFacadeTest<TItem, TEdge, TFactory>;
                 tests[i++] = test.Wrap ();
             });
             return tests;
