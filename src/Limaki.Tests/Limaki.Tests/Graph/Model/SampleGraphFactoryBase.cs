@@ -20,10 +20,10 @@ using Limaki.Graphs;
 namespace Limaki.Tests.Graph.Model {
 
     /// <summary>
-    /// a <see cref="ITestGraphFactory{TItem,TEdge}"/> producing 
+    /// a <see cref="ISampleGraphFactory{TItem,TEdge}"/> producing 
     /// a <see cref="IGraph{TItemOne, TEdgeOne}"/>
     /// </summary>
-    public abstract class TestGraphFactory<TItem, TEdge> : ITestGraphFactory<TItem, TEdge>
+    public abstract class SampleGraphFactoryBase<TItem, TEdge> : ISampleGraphFactory<TItem, TEdge>
         where TEdge : IEdge<TItem> {
 
         #region IGraphFactory<TItem,TEdge> Member

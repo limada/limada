@@ -16,7 +16,7 @@ namespace Limaki.Tests.Graph.Wrappers {
 
     public abstract class SceneFacadeTest<TFactory> : DomainTest
 
-        where TFactory : TestGraphFactory<IGraphEntity, IGraphEdge>, new () {
+        where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new () {
 
         public void AreEquivalent (IEnumerable<IVisual> visuals, IGraph<IVisual, IVisualEdge> graph) {
 

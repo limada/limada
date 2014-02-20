@@ -19,10 +19,11 @@ using System.IO;
 using Limaki.Graphs;
 
 namespace Limaki.Tests.Visuals {
-    public class LimakiShortHelpFactory<IGraphEntity, IGraphEdge> : BasicTestGraphFactory<IGraphEntity, IGraphEdge>
-        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
-        public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph,int start) {
-            IGraphEntity item = CreateItem<string>("Limaki");
+
+    public class LimakiShortHelpFactory<TItem, TEdge> : SampleGraphFactory<TItem, TEdge>
+        where TEdge : IEdge<TItem>, TItem {
+        public override void Populate(IGraph<TItem, TEdge> Graph,int start) {
+            TItem item = CreateItem<string>("Limaki");
             Graph.Add(item);
             Nodes[1] = item;
 
@@ -49,12 +50,12 @@ namespace Limaki.Tests.Visuals {
             Graph.Add(item);
             Graph.Add(CreateEdge(Nodes[3], item));
 
-            IGraphEntity topic = CreateItem<string>("add new nodes");
+            TItem topic = CreateItem<string>("add new nodes");
             Graph.Add(topic);
             Graph.Add(CreateEdge(Nodes[2], topic));
 
-            IGraphEntity subtopic = CreateItem<string>("click the Add Shape button");
-            IGraphEdge subLink = default (IGraphEdge); ;
+            TItem subtopic = CreateItem<string>("click the Add Shape button");
+            TEdge subLink = default (TEdge); ;
 
             Graph.Add(subtopic);
             Graph.Add(CreateEdge(topic, subtopic));

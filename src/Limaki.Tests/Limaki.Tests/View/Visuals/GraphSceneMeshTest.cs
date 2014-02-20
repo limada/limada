@@ -25,7 +25,7 @@ namespace Limaki.Tests.View.Visuals {
 
         public IEnumerable<SceneFacadeTestWrapper<TFactory>> MeshTests<TFactory> (
             params SceneFacadeTestWrapper<TFactory>[] sources)
-            where TFactory : TestGraphFactory<IGraphEntity, IGraphEdge>, new () {
+            where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new () {
 
             var source = sources[0];
             Mesh.AddDisplay (source.Display);
@@ -35,17 +35,17 @@ namespace Limaki.Tests.View.Visuals {
 
                 Mesh.AddDisplay (sink.Display);
 
-                ((TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
+                ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
                  sink.Mock.Factory).GraphPair =
                     // no, its not sink.Graph, and not sink.Scene.... but:
                     sink.Mock.Scene.Graph.Source<IVisual, IVisualEdge, IGraphEntity, IGraphEdge> ();
                 ;
 
                 // take the inner factorys:
-                var sourceFactory = ((TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
+                var sourceFactory = ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
                                      source.Mock.Factory).Factory;
 
-                var sinkFactory = ((TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
+                var sinkFactory = ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
                                    sink.Mock.Factory).Factory;
 
                 // copy Nodes and Edges
@@ -193,7 +193,7 @@ namespace Limaki.Tests.View.Visuals {
         /// </summary>
 
         public void EdgeAddChangeRemove<TFactory> (SceneFacadeTestWrapper<TFactory> source, int iOne, int iTwo, int iThree)
-            where TFactory : TestGraphFactory<IGraphEntity, IGraphEdge>, new () {
+            where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new () {
 
             source.EnsureShape (source.Nodes[iThree]);
 

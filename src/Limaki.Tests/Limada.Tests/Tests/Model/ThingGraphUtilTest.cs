@@ -39,7 +39,7 @@ namespace Limada.Tests.Model {
         [Test]
         public void CompletedThingsSimpleTest() {
             var thingGraph = new ThingGraph ();
-            var factory = new SimpleDescriptionTestFactory();
+            var factory = new SimpleDescriptionSampleFactory();
             factory.Graph = thingGraph;
             factory.Populate ();
 
@@ -75,7 +75,7 @@ namespace Limada.Tests.Model {
         [Test]
         public void CompletedThingsDigidocTest() {
             var thingGraph = new ThingGraph();
-            var factory = new DigidocTestFactory();
+            var factory = new DigidocSampleFactory();
             factory.Graph = thingGraph;
             factory.Populate();
 

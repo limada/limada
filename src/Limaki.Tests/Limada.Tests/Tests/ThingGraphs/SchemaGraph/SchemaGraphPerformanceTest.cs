@@ -51,7 +51,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
         public void WriteDescriptionTest() {
             
             ReportDetail ("Writing");
-            var factory = new DescriptionTestFactory();
+            var factory = new DescriptionSampleFactory();
             factory.Graph = this.Graph;
             factory.Count = Count;
             factory.TestMarker = this.TestMarker;

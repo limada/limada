@@ -18,16 +18,16 @@ using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
-    public class WordGameGraphFactory<IGraphEntity, IGraphEdge> : BasicTestGraphFactory<IGraphEntity, IGraphEdge>
-        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
+    public class WordGameGraphFactory<TItem, TEdge> : SampleGraphFactory<TItem, TEdge>
+        where TEdge : IEdge<TItem>, TItem {
 
         public override string Name {
             get { return "Word Game"; }
         }
 
-        public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph, int start) {
-            IGraphEntity node = default (IGraphEntity);
-            IGraphEdge edge = default (IGraphEdge);
+        public override void Populate(IGraph<TItem, TEdge> Graph, int start) {
+            TItem node = default (TItem);
+            TEdge edge = default (TEdge);
 
 
             node = CreateItem<string>("Tags");

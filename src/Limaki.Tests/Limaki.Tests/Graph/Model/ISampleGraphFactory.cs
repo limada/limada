@@ -20,10 +20,11 @@ namespace Limaki.Tests.Graph.Model {
 
     /// <summary>
     /// fills a <see cref="IGraph{TItemOne, TEdgeOne}"/>
-    /// with items
+    /// with sample-items
+    /// the sample items are accessible in Nodes // Edges
     /// </summary>
     /// 
-    public interface ITestGraphFactory<TItem, TEdge> where TEdge : IEdge<TItem> {
+    public interface ISampleGraphFactory<TItem, TEdge> where TEdge : IEdge<TItem> {
 
         IGraph<TItem, TEdge> Graph { get;set;}
         int Count { get; set; }

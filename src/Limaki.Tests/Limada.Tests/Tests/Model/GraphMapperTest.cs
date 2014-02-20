@@ -107,7 +107,7 @@ namespace Limada.Tests.Model {
 
         }
 
-        public void TestBinaryData( ITestGraphFactory<IGraphEntity, IGraphEdge> data ) {
+        public void TestBinaryData( ISampleGraphFactory<IGraphEntity, IGraphEdge> data ) {
             data.Count = 10;
             data.Populate();
             this.ReportDetail(data.GetType().FullName + "\t"+data.Count);

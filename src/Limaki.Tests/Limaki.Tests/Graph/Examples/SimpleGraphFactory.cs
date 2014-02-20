@@ -4,10 +4,10 @@ using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
-    public class SimpleGraphFactory<IGraphEntity, IGraphEdge> : BasicTestGraphFactory<IGraphEntity, IGraphEdge> 
-    where IGraphEdge : IEdge<IGraphEntity> , IGraphEntity {
-        public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph, int start) {
-            IGraphEntity item = CreateItem<int>((start++));
+    public class SimpleGraphFactory<TItem, TEdge> : SampleGraphFactory<TItem, TEdge> 
+        where TEdge : IEdge<TItem> , TItem {
+        public override void Populate(IGraph<TItem, TEdge> Graph, int start) {
+            TItem item = CreateItem<int>((start++));
             Graph.Add(item);
             Nodes[1] = item;
 

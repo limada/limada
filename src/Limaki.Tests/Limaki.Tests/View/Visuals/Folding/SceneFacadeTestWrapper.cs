@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace Limaki.Tests.View.Visuals {
 
     public class SceneFacadeTestWrapper<TFactory> 
-        where TFactory : TestGraphFactory<IGraphEntity, IGraphEdge>, new () {
+        where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new () {
 
         /// <summary>
         /// sets Scene.Focus to item and 

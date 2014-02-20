@@ -7,8 +7,9 @@ using Limaki.Visuals;
 using Limaki.Common;
 
 namespace Limaki.Tests.Visuals {
-    public class BenchmarkOneGraphFactory<IGraphEntity, IGraphEdge> : BasicTestGraphFactory<IGraphEntity, IGraphEdge>
-        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
+
+    public class BenchmarkOneGraphFactory<TItem, TEdge> : SampleGraphFactory<TItem, TEdge>
+        where TEdge : IEdge<TItem>, TItem {
         public override string Name {
             get { return "Benchmark 1"; }
         }
@@ -27,7 +28,7 @@ namespace Limaki.Tests.Visuals {
             }
         }
 
-        public override void Populate(IGraph<IGraphEntity, IGraphEdge> scene, int start) {
+        public override void Populate(IGraph<TItem, TEdge> scene, int start) {
             var item = CreateItem<string>("first node");
             scene.Add(item);
             Nodes[1] = item;

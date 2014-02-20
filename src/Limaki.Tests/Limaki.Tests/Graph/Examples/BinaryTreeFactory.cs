@@ -18,20 +18,18 @@ using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
-    public class BinaryTreeFactory : BinaryTreeFactory<IGraphEntity, IGraphEdge> { }
-
-    public class BinaryTreeFactory<IGraphEntity, IGraphEdge> : BasicTestGraphFactory<IGraphEntity, IGraphEdge>
-        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
+    public class BinaryTreeFactory<TItem, TEdge> : SampleGraphFactory<TItem, TEdge>
+        where TEdge : IEdge<TItem>, TItem {
 
         public override string Name {
             get { return "Binary Tree"; }
         }
 
-        public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph,int start) {
+        public override void Populate(IGraph<TItem, TEdge> Graph,int start) {
 
             base.Populate(Graph,start);
 
-            IGraphEdge edge = default (IGraphEdge);
+            TEdge edge = default (TEdge);
 
             #region Binarytree Links
 

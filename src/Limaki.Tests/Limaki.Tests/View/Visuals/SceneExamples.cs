@@ -65,8 +65,8 @@ namespace Limaki.Tests.View {
             var scene = factory.Scene;
 
             IGraph<IVisual, IVisualEdge> data = null;
-            if (factory is TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) {
-                data = ((TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) factory).GraphPair;
+            if (factory is SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) {
+                data = ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) factory).GraphPair;
             } else {
                 data = factory.Graph;
             }

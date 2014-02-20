@@ -26,7 +26,7 @@ namespace Limada.Tests.Model {
 
     public class GraphPairWithFactoryTest : DomainTest {
 
-        public void TestGraphPair(ITestGraphFactory<IGraphEntity, IGraphEdge> source, ThingGraph target) {
+        public void TestGraphPair(ISampleGraphFactory<IGraphEntity, IGraphEdge> source, ThingGraph target) {
             source.Count = 10;
             source.Populate();
             this.ReportDetail(source.GetType().FullName + "\t" + source.Count);
@@ -63,7 +63,7 @@ namespace Limada.Tests.Model {
     public class GraphPairTest : DomainTest {
 
         public IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> MakeGraphPair(
-            ITestGraphFactory<IGraphEntity, IGraphEdge> source, ThingGraph target) {
+            ISampleGraphFactory<IGraphEntity, IGraphEdge> source, ThingGraph target) {
 
             source.Count = 10;
             source.Populate();

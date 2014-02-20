@@ -13,7 +13,7 @@ using Xwt;
 namespace Limaki.Tests.Graph.Wrappers {
 
     public class TestSceneMock<TFactory>
-        where TFactory : TestGraphFactory<IGraphEntity, IGraphEdge>, new () {
+        where TFactory : SampleGraphFactoryBase<IGraphEntity, IGraphEdge>, new () {
 
         protected ISceneFactory _factory;
         public virtual ISceneFactory Factory {
@@ -32,7 +32,7 @@ namespace Limaki.Tests.Graph.Wrappers {
                 if (_scene == null) {
                     var g = this.Factory.Scene.Graph;
                     g = new SubGraph<IVisual, IVisualEdge> (
-                        ((TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) this.Factory).GraphPair,
+                        ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) this.Factory).GraphPair,
                         new VisualGraph ());
                     _scene = new Scene ();
                     _scene.Graph = g;

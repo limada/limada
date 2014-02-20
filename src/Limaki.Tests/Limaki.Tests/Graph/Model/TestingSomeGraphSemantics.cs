@@ -27,11 +27,12 @@ using Limaki.Common.Collections;
 namespace Limaki.Tests.Graph.MethodTests {
     
     public class TestingSomeGraphSemantics:DomainTest {
-        private IList<BasicTestGraphFactory<IGraphEntity, IGraphEdge>> _graphs = null;
-        public IList<BasicTestGraphFactory<IGraphEntity, IGraphEdge>> Graphs {
+
+        private IList<ISampleGraphFactory<IGraphEntity, IGraphEdge>> _graphs = null;
+        public IList<ISampleGraphFactory<IGraphEntity, IGraphEdge>> Graphs {
             get {
                 if (_graphs == null) {
-                    _graphs = new List<BasicTestGraphFactory<IGraphEntity, IGraphEdge>> ();
+                    _graphs = new List<ISampleGraphFactory<IGraphEntity, IGraphEdge>> ();
                     _graphs.Add (new BinaryTreeFactory());
                     _graphs.Add (new BinaryGraphFactory ());
                 }
@@ -114,6 +115,7 @@ namespace Limaki.Tests.Graph.MethodTests {
         #endregion
 
         #region Fork and Clique
+
         // Fork: alle Edges wich are connected without touching a Item 
         // CliqueEdges: alle Edges wich are connected including touching Items
         // remark: This Algos form a Clique (see:http://en.wikipedia.org/wiki/Clique_problem)
@@ -136,6 +138,7 @@ namespace Limaki.Tests.Graph.MethodTests {
                 }
             }
         }
+
         IEnumerable<TEdge> Fork<TItem, TEdge>(IGraph<TItem, TEdge> graph, TItem source)
         where TEdge : IEdge<TItem> {
                 foreach(TEdge edge in graph.Edges(source)) {

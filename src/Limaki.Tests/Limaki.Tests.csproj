@@ -102,8 +102,8 @@
     <Compile Include="FunctionPoints\FunctionPointReport.cs" />
     <Compile Include="Limada.Tests\Tests\Basic\BasicThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\Basic\ThingTest.cs" />
-    <Compile Include="Limada.Tests\Tests\Model\DescriptionTestFactory.cs" />
-    <Compile Include="Limada.Tests\Tests\Model\DigidocTestFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\DescriptionSampleFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\DigidocSampleFactory.cs" />
     <Compile Include="Limada.Tests\Tests\Model\ThingFactoryTest.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
@@ -117,7 +117,7 @@
     <Compile Include="Limada.Tests\Tests\Model\GraphItem2ThingTransformer.cs" />
     <Compile Include="Limada.Tests\Tests\Model\GraphMapperTest.cs" />
     <Compile Include="Limada.Tests\Tests\Model\GraphPairTest.cs" />
-    <Compile Include="Limada.Tests\Tests\Model\SimpleDescriptionTestFactory.cs" />
+    <Compile Include="Limada.Tests\Tests\Model\SimpleDescriptionSampleFactory.cs" />
     <Compile Include="Limada.Tests\Tests\Model\ThingGraphUtilTest.cs" />
     <Compile Include="Limada.Tests\Tests\Model\ModelHelper.cs" />
     <Compile Include="Limada.Tests\Tests\Model\SheetTest.cs" />
@@ -238,10 +238,10 @@
     <Compile Include="Limaki.Tests\Graph\Examples\ProgrammingLanguageGraphFactory.cs" />
     <Compile Include="Limaki.Tests\Graph\Examples\SimpleGraphFactory.cs" />
     <Compile Include="Limaki.Tests\Graph\Examples\WordGameGraphFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Model\TestGraphPairFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Model\TestGraphFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Model\BasicTestGraphFactory.cs" />
-    <Compile Include="Limaki.Tests\Graph\Model\ITestGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\SampleGraphPairFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\SampleGraphFactoryBase.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\SampleGraphFactory.cs" />
+    <Compile Include="Limaki.Tests\Graph\Model\ISampleGraphFactory.cs" />
     <Compile Include="Limaki.Tests\Graph\Model\Item.cs" />
     <Compile Include="Limaki.Tests\Graph\Model\TestingSomeGraphSemantics.cs" />
     <Compile Include="Playground\FileInfoTest.cs" />

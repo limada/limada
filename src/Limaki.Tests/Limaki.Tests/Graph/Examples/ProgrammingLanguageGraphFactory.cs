@@ -18,18 +18,16 @@ using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
-    public class ProgrammingLanguageFactory : ProgrammingLanguageFactory<IGraphEntity, IGraphEdge> { }
-
-    public class ProgrammingLanguageFactory <IGraphEntity, IGraphEdge> : BasicTestGraphFactory<IGraphEntity, IGraphEdge>
-        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity {
+    public class ProgrammingLanguageFactory <TItem, TEdge> : SampleGraphFactory<TItem, TEdge>
+        where TEdge : IEdge<TItem>, TItem {
 
         public override string Name {
             get { return "Programming Language"; }
         }
 
-        public override void Populate(IGraph<IGraphEntity, IGraphEdge> Graph, int start) {
-            IGraphEntity node = default (IGraphEntity);
-            IGraphEdge edge = default (IGraphEdge);
+        public override void Populate(IGraph<TItem, TEdge> Graph, int start) {
+            TItem node = default (TItem);
+            TEdge edge = default (TEdge);
 
 
             node = CreateItem<string>("Programming");
@@ -105,9 +103,9 @@ namespace Limaki.Tests.Graph.Model {
         }
 
         public override void Populate() {
-            IGraphEntity lastNode1 = default (IGraphEntity); ;
-            IGraphEntity lastNode2 = default (IGraphEntity); ;
-            IGraphEntity lastNode3 = default (IGraphEntity); ;
+            TItem lastNode1 = default (TItem); ;
+            TItem lastNode2 = default (TItem); ;
+            TItem lastNode3 = default (TItem); ;
             for (int i = 0; i < Count; i++) {
                 if (i > 0) {
                     lastNode1 = Nodes[1];
@@ -116,7 +114,7 @@ namespace Limaki.Tests.Graph.Model {
                 }
                 Populate(this.Graph,Start + 1);
                 if (i > 0) {
-                    IGraphEdge edge = default (IGraphEdge); ;
+                    TEdge edge = default (TEdge); ;
                     if (!SeperateLattice) {
                         edge = CreateEdge();
                         edge.Root = lastNode1;

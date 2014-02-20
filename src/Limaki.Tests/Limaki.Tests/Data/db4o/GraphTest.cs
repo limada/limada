@@ -106,7 +106,7 @@ namespace Limaki.Tests.Data.db4o {
         }
         [Test]
         public void BenchmarkOneTest() {
-            ITestGraphFactory<IGraphEntity,IGraphEdge> sceneFactory =
+            ISampleGraphFactory<IGraphEntity,IGraphEdge> sceneFactory =
                 new BenchmarkOneGraphFactory<IGraphEntity, IGraphEdge> ();
             Gateway.Open(Iori.FromFileName(FileName));
 

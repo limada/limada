@@ -1,3 +1,4 @@
+using Limaki.Common;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using System.Collections.Generic;
@@ -6,29 +7,29 @@ using System.Linq;
 namespace Limaki.Tests.Graph.Model {
 
     /// <summary>
-    /// a <see cref="ITestGraphFactory{TItemOne, TEdgeOne}"/> producing 
+    /// a <see cref="ISamleGraphFactorySamleGraphFactory{TItem,TEdge}"/> producing 
     /// a <see cref="IGraphPair{TItemOne, TItemTwo, TEdgeOne, TEdgeTwo}"/>
     /// </summary>
 
-    public class TestGraphPairFactory<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : 
-        TestGraphFactory<TItemOne, TEdgeOne>
-        where TEdgeOne : class, IEdge<TItemOne>, TItemOne
-        where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
+    public class SampleGraphPairFactory<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : SampleGraphFactoryBase<TSinkItem, TSinkEdge>
+        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+        where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
-        public TestGraphPairFactory(
-            ITestGraphFactory<TItemTwo, TEdgeTwo> data, 
-            GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> transformer) {
+        public SampleGraphPairFactory(
+            ISampleGraphFactory<TSourceItem, TSourceEdge> data, 
+            GraphItemTransformer<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> transformer) {
+
             this._factory = data;
             this._transformer = transformer;
             this._mapper = 
-                new GraphMapper<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> (transformer);
+                new GraphMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> (Transformer);
         }
 
         public override string Name {
             get { return Factory.Name; }
         }
 
-        public override IGraph<TItemOne, TEdgeOne> Graph {
+        public override IGraph<TSinkItem, TSinkEdge> Graph {
             get {
                 if (_graph == null) {
                     _graph = Mapper.Source;
@@ -39,37 +40,36 @@ namespace Limaki.Tests.Graph.Model {
             set { _graph = value; }
         }
 
-        protected ITestGraphFactory<TItemTwo, TEdgeTwo> _factory = null;
-        public virtual ITestGraphFactory<TItemTwo, TEdgeTwo> Factory {
+        protected ISampleGraphFactory<TSourceItem, TSourceEdge> _factory = null;
+        public virtual ISampleGraphFactory<TSourceItem, TSourceEdge> Factory {
             get { return _factory; }
         }
 
-
-        private GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> _transformer = null;
-        public GraphItemTransformer<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> Transformer {
-            get { return _transformer; }
+        private GraphItemTransformer<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> _transformer = null;
+        public GraphItemTransformer<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> Transformer {
+            get { return _transformer ?? (Registry.Factory.Create<GraphItemTransformer<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge>> ()); }
         }
 
-        private GraphMapper<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> _mapper = null;
-        public GraphMapper<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne> Mapper {
+        private GraphMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> _mapper = null;
+        public GraphMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> Mapper {
             get { return _mapper; }
         }
 
-        private IGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> _graphPair = null;
-        public IGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> GraphPair {
+        private IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> _graphPair = null;
+        public IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> GraphPair {
             get { return _graphPair; }
             set { _graphPair = value; }
         }
 
 
-        public override void Populate(IGraph<TItemOne, TEdgeOne> graph) {
+        public override void Populate(IGraph<TSinkItem, TSinkEdge> graph) {
             Factory.Count = this.Count;
             Factory.AddDensity = this.AddDensity;
             Factory.SeperateLattice = this.SeperateLattice;
 
             var graphPair = 
-                new LiveGraphPair<TItemTwo, TItemOne, TEdgeTwo, TEdgeOne>(
-                    new Graph<TItemTwo, TEdgeTwo>(),
+                new LiveGraphPair<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge>(
+                    new Graph<TSourceItem, TSourceEdge>(),
                     graph,
                     this.Mapper.Transformer
                     );
@@ -79,7 +79,7 @@ namespace Limaki.Tests.Graph.Model {
             Factory.Graph = graphPair;
             Factory.Populate();
 
-            this.GraphPair = new LiveGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>(
+            this.GraphPair = new LiveGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(
                         graphPair.Source, graphPair.Sink, 
                         Mapper.Transformer.Reverted()
                         );
@@ -87,41 +87,41 @@ namespace Limaki.Tests.Graph.Model {
 
         }
 
-        public override IList<TEdgeOne> Edges {
+        public override IList<TSinkEdge> Edges {
             get {
-                return new EdgeList<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>(
+                return new EdgeList<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(
                     this.GraphPair, Factory.Edges);
             }
         }
 
-        public override IList<TItemOne> Nodes {
+        public override IList<TSinkItem> Nodes {
             get {
-                return new ItemList<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>(
+                return new ItemList<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(
                     this.GraphPair, Factory.Nodes);
             }
         }
     }
 
-    public class ItemList<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : IList<TItemOne>
-        where TEdgeOne : class, IEdge<TItemOne>, TItemOne
-        where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
+    public class ItemList<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IList<TSinkItem>
+        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+        where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
 
-        public ItemList(IGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> graphPair, IList<TItemTwo> listTwo) {
+        public ItemList(IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> graphPair, IList<TSourceItem> listTwo) {
             this.graphPair = graphPair;
             this.listTwo = listTwo;
         }
 
-        IList<TItemTwo> listTwo = null;
-        IGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> graphPair = null;
+        IList<TSourceItem> listTwo = null;
+        IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> graphPair = null;
 
         #region IList<T> Member
 
-        public int IndexOf(TItemOne item) {
+        public int IndexOf(TSinkItem item) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
-        public void Insert(int index, TItemOne item) {
+        public void Insert(int index, TSinkItem item) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
@@ -129,7 +129,7 @@ namespace Limaki.Tests.Graph.Model {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
-        public TItemOne this [int index] {
+        public TSinkItem this [int index] {
             get { return graphPair.Get (listTwo[index]); } 
             set { throw new System.ArgumentException (); }
         }
@@ -138,7 +138,7 @@ namespace Limaki.Tests.Graph.Model {
 
         #region ICollection<T> Member
 
-        public void Add(TItemOne item) {
+        public void Add(TSinkItem item) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
@@ -146,11 +146,11 @@ namespace Limaki.Tests.Graph.Model {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
-        public bool Contains(TItemOne item) {
+        public bool Contains(TSinkItem item) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
-        public void CopyTo(TItemOne[] array, int arrayIndex) {
+        public void CopyTo(TSinkItem[] array, int arrayIndex) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
@@ -162,15 +162,15 @@ namespace Limaki.Tests.Graph.Model {
             get { throw new System.Exception("The method or operation is not implemented."); }
         }
 
-        public bool Remove(TItemOne item) {
+        public bool Remove(TSinkItem item) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
         #endregion
 
         #region IEnumerable<T> Member
-        protected IEnumerable<TItemOne> Items { get { return listTwo.Select (item => graphPair.Get (item)); } }
-        public IEnumerator<TItemOne> GetEnumerator() {
+        protected IEnumerable<TSinkItem> Items { get { return listTwo.Select (item => graphPair.Get (item)); } }
+        public IEnumerator<TSinkItem> GetEnumerator() {
             return Items.GetEnumerator ();
         }
 
@@ -185,27 +185,27 @@ namespace Limaki.Tests.Graph.Model {
         #endregion
     }
 
-    public class EdgeList<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : IList<TEdgeOne>
-        where TEdgeOne : class, IEdge<TItemOne>, TItemOne
-        where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
+    public class EdgeList<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IList<TSinkEdge>
+        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+        where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
 
-        public EdgeList(IGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> graphPair, IList<TEdgeTwo> listTwo) {
+        public EdgeList(IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> graphPair, IList<TSourceEdge> listTwo) {
             this.graphPair = graphPair;
             this.listTwo = listTwo;
         }
 
 
-        IList<TEdgeTwo> listTwo = null;
-        IGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> graphPair = null;
+        IList<TSourceEdge> listTwo = null;
+        IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> graphPair = null;
 
         #region IList<T> Member
 
-        public int IndexOf(TEdgeOne item) {
+        public int IndexOf(TSinkEdge item) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
-        public void Insert(int index, TEdgeOne item) {
+        public void Insert(int index, TSinkEdge item) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
@@ -213,9 +213,9 @@ namespace Limaki.Tests.Graph.Model {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
-        public TEdgeOne this[int index] {
+        public TSinkEdge this[int index] {
             get {
-                return (TEdgeOne) graphPair.Get(listTwo[index]);
+                return (TSinkEdge) graphPair.Get(listTwo[index]);
             }
             set {
                 throw new System.Exception("The method or operation is not implemented.");
@@ -226,7 +226,7 @@ namespace Limaki.Tests.Graph.Model {
 
         #region ICollection<T> Member
 
-        public void Add(TEdgeOne item) {
+        public void Add(TSinkEdge item) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
@@ -234,11 +234,11 @@ namespace Limaki.Tests.Graph.Model {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
-        public bool Contains(TEdgeOne item) {
+        public bool Contains(TSinkEdge item) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
-        public void CopyTo(TEdgeOne[] array, int arrayIndex) {
+        public void CopyTo(TSinkEdge[] array, int arrayIndex) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
@@ -250,7 +250,7 @@ namespace Limaki.Tests.Graph.Model {
             get { return true; }
         }
 
-        public bool Remove(TEdgeOne item) {
+        public bool Remove(TSinkEdge item) {
             throw new System.Exception("The method or operation is not implemented.");
         }
 
@@ -258,11 +258,11 @@ namespace Limaki.Tests.Graph.Model {
 
         #region IEnumerable<T> Member
 
-        protected IEnumerable<TEdgeOne> Items {
-            get { return listTwo.Select (item => graphPair.Get (item) as TEdgeOne); }
+        protected IEnumerable<TSinkEdge> Items {
+            get { return listTwo.Select (item => (TSinkEdge) graphPair.Get (item) ); }
         }
 
-        public IEnumerator<TEdgeOne> GetEnumerator () {
+        public IEnumerator<TSinkEdge> GetEnumerator () {
             return Items.GetEnumerator ();
         }
 
