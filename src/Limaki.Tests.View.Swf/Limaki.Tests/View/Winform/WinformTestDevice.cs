@@ -4,6 +4,7 @@ using Limaki.View;
 using Limaki.View.Visualizers;
 
 namespace Limaki.Tests.View.Winform {
+
     public class WinformTestDevice<T> : ITestDevice
         where T : class {
 

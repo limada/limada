@@ -85,6 +85,10 @@
     <Compile Include="Playground\View\XwtRefactroring\PaintContextTestControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="[Obosolete]\BenchmarkOneTests008.cs" />
+    <Compile Include="[Obosolete]\DisplayTest008.cs" />
+    <Compile Include="[Obosolete]\TestDevice.cs" />
+    <Compile Include="[Obosolete]\VisualsDisplayTest008.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
@@ -134,7 +138,6 @@
   <ItemGroup>
     <Folder Include="Limaki.Tests\View\Drawing\" />
     <Folder Include="Playground\View\XwtRefactroring\LimakiView\" />
-    <Folder Include="[Obosolete]\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Limaki.Tests\View\Winform\OpenExampleData.resx">
