@@ -103,7 +103,7 @@ namespace Limada.Tests.ThingGraphs {
             IThingGraph dataSource = this.Graph;
 
            var factory =
-                new ThingGraphFactory<ProgrammingLanguageFactory> ();
+                new ThingGraphFactory0<ProgrammingLanguageFactory> ();
 
             factory.Populate(dataSource);
 
@@ -190,8 +190,8 @@ namespace Limada.Tests.ThingGraphs {
             ReportDetail ("ProgramminglanguageJavaDeleteTest");
             IThingGraph dataSource = this.Graph;
 
-            ThingGraphFactory<ProgrammingLanguageFactory> factory =
-                new ThingGraphFactory<ProgrammingLanguageFactory>();
+            ThingGraphFactory0<ProgrammingLanguageFactory> factory =
+                new ThingGraphFactory0<ProgrammingLanguageFactory>();
 
             factory.Populate(dataSource);
 
@@ -220,8 +220,8 @@ namespace Limada.Tests.ThingGraphs {
         public void ProgramminglanguageJavaDeleteOverPair() {
             ReportDetail("ProgramminglanguageJavaDeleteOverPair");
             var dataSource = this.Graph;
-            ThingGraphFactory<ProgrammingLanguageFactory> factory =
-                new ThingGraphFactory<ProgrammingLanguageFactory>();
+            ThingGraphFactory0<ProgrammingLanguageFactory> factory =
+                new ThingGraphFactory0<ProgrammingLanguageFactory>();
 
             factory.Populate(dataSource);
 

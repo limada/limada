@@ -1,32 +1,15 @@
-/*
- * Limaki 
- 
- * 
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
- * 
- * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
- *
- * http://www.limada.org
- * 
- */
-
-
-using Limada.Model;
-using Limaki.Graphs;
-using Limada.View;
-using Limada.VisualThings;
-using Limaki.Tests.Visuals;
-using Limaki.Tests.Graph.Model;
-using Limaki.Visuals;
 using System.Collections.Generic;
+using Limada.Model;
+using Limada.VisualThings;
 using Limaki.Drawing;
+using Limaki.Graphs;
+using Limaki.Tests.Visuals;
+using Limaki.Visuals;
 
 namespace Limada.Tests.View {
-    public abstract class ThingSceneFactory:ISceneFactory {
-        public ThingSceneFactory() { }
+
+    public abstract class ThingSceneFactory0:ISceneFactory {
+        public ThingSceneFactory0() { }
 
         #region ISceneFactory Member
 
@@ -48,7 +31,7 @@ namespace Limada.Tests.View {
         public virtual IGraphScene<IVisual, IVisualEdge> Scene {
             get {
                 var result = new Scene();
-                Populate(result);
+                PopulateScene(result);
                 return result;
             }
         }
@@ -61,14 +44,14 @@ namespace Limada.Tests.View {
 
         public string Name { get { return this.GetType().Name; } }
 
-        public void Populate (IGraphScene<IVisual, IVisualEdge> scene) {
+        public void PopulateScene (IGraphScene<IVisual, IVisualEdge> scene) {
             if (ThingGraph != null) {
                 this.Graph = new VisualThingGraph (new VisualGraph (), this.ThingGraph);
                 scene.Graph = this.Graph;
             }
         }
         public void Populate() {
-            Populate (this.Scene);
+            PopulateScene (this.Scene);
         }
 
         protected bool _seperateLattice = false;
@@ -114,5 +97,6 @@ namespace Limada.Tests.View {
         }
 
         #endregion
+    
     }
 }

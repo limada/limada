@@ -165,7 +165,7 @@ namespace Limada.Tests.ThingGraphs {
         public virtual void ProgramminglanguageJavaDeleteTest2() {
             var target = this.Graph;
 
-            var factory = new ThingGraphFactory<ProgrammingLanguageFactory>();
+            var factory = new ThingGraphFactory0<ProgrammingLanguageFactory>();
 
             factory.Populate(target);
 

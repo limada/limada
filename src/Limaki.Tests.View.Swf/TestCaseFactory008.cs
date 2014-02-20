@@ -211,7 +211,7 @@ namespace Limaki.Tests.UseCases {
 
         public void CurrentProblem(ConceptUsecase sender) {
             try {
-                //var maint = new VisualThingGraphTest();
+                //var maint = new BasicVisualThingGraphTest();
                 //maint.ExpandAndSaveLinks(sender.GetCurrentDisplay().Data.Graph);
 
                 //var test = new SchemaGraphPerformanceTest();
