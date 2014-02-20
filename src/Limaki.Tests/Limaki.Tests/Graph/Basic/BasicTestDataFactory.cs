@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using Limaki.Graphs;
 
 namespace Limaki.Tests.Graph.Basic {
+
     public abstract class BasicTestDataFactory<TItem, TEdge>
         where TEdge : IEdge<TItem> {
 

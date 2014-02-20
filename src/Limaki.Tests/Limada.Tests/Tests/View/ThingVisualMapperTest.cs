@@ -30,6 +30,7 @@ using Id = System.Int64;
 
 
 namespace Limada.Tests.View {
+
     public class ThingVisualMapperTest : BasicThingGraphTest {
         
         public override void Setup() {

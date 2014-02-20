@@ -27,6 +27,7 @@ using Limaki.Tests.Graph.Model;
 namespace Limaki.Tests.Graph.Wrappers {
 
     public class SubGraphTest: DomainTest {
+
         /// <summary>
         /// this tests a semantic error in SubGraph
         /// SubGraph should only contain edges contained in sink

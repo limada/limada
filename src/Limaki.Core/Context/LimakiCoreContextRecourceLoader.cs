@@ -23,7 +23,7 @@ namespace Limaki.IOC {
 
             context.Factory.Add<IThingFactory, ThingFactory> ();
             context.Factory.Add<IGraphModelFactory<IGraphEntity, IGraphEdge>, GraphEntityFactory> ();
-
+            
             var streamContentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool>();
             streamContentIoPool.Add(new HtmlStreamContentIo()); 
             streamContentIoPool.Add(new RtfStreamContentIo()); 

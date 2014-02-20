@@ -23,6 +23,7 @@ using Limaki.UnitTest;
 using System.Linq;
 
 namespace Limaki.Tests.Graph.Basic {
+
     public abstract class BasicGraphTests<TItem, TEdge> : DomainTest
         where TEdge : IEdge<TItem> {
 

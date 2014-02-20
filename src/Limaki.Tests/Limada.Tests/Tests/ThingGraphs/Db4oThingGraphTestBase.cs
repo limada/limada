@@ -25,7 +25,7 @@ namespace Limada.Tests.Data.db4o {
         }
     }
 
-    public class StreamFacadeTest : Limada.Tests.ThingGraphs.StreamFacadeTest {
+    public class ThingContentFacadeTest : Limada.Tests.ThingGraphs.ThingContentFacadeTest {
         public override void Setup() {
             this.ThingGraphProvider = new Db4oThingGraphIo();
             base.Setup();

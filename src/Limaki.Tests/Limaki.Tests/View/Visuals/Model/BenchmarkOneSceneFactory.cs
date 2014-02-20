@@ -29,6 +29,7 @@ using Limaki.Model;
 namespace Limaki.Tests.Graph.Model {
 
     public class BenchmarkOneSceneFactory : SceneFactory<BenchmarkOneGraphFactory<IGraphEntity,IGraphEdge>> {
+
         public BenchmarkOneSceneFactory () {
             this.Count = 10;
         }
@@ -117,10 +118,10 @@ namespace Limaki.Tests.Graph.Model {
             ((VectorShape)Line1.Shape).Data = vector;
         }
 
-        public override void Populate (IGraphScene<IVisual, IVisualEdge> scene) {
+        public override void PopulateScene (IGraphScene<IVisual, IVisualEdge> scene) {
             int oldCount = this.Count;
             this.Count = 1;
-            base.Populate (scene);
+            base.PopulateScene (scene);
             this.Count = oldCount;
 
             var vector = new Vector();
@@ -136,7 +137,7 @@ namespace Limaki.Tests.Graph.Model {
             result.Graph = this.Graph;
             var layout = new LongtermPerformanceSceneLayout(
                 delegate() { return result; }, this.styleSheet);
-            Populate(result);
+            PopulateScene(result);
             layout.Reset();
             Arrange(result);
             result.ClearSpatialIndex();

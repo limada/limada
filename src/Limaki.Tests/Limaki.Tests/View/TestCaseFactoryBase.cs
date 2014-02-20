@@ -20,7 +20,6 @@ namespace Limaki.Tests.UseCases {
         public Func<BenchmarkOneTests> DisplayTest { get; protected set; }
         public MessageEventHandler TestMessage { get; protected set; }
 
-
         public override void Compose (ConceptUsecase useCase) {
 
             this.TestMessage = (s, m) => useCase.Progress (m, -1, -1);

@@ -8,8 +8,9 @@ using NUnit.Framework;
 using Limaki.Tests.Graph.Basic;
 
 namespace Limaki.Tests.Graph.Wrappers {
-    public abstract class BasicGraphPairTest<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : 
-        BasicGraphTests<TItemOne,TEdgeOne>
+
+    public abstract class BasicGraphPairTest<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> : BasicGraphTests<TItemOne,TEdgeOne>
+
         where TEdgeOne : IEdge<TItemOne>, TItemOne
         where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
 

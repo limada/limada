@@ -23,7 +23,9 @@ using Limaki.Visuals;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Graph.Wrappers {
+
     public class GraphPairTest : DomainTest {
+
         protected virtual IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge> GetPair() {
             IGraph<IVisual, IVisualEdge> one = new Graph<IVisual, IVisualEdge>();
             IGraph<IGraphEntity, IGraphEdge> two = new Graph<IGraphEntity, IGraphEdge>();
@@ -41,7 +43,7 @@ namespace Limaki.Tests.Graph.Wrappers {
             foreach (var item in factory.Edges) {
                 pair.Add(item);
             }
-            foreach (IVisualEdge edge in factory.Edges) {
+            foreach (var edge in factory.Edges) {
                 Assert.IsTrue(pair.Contains(edge), edge.ToString());
                 Assert.IsTrue(pair.Contains(edge.Root), edge.Root.ToString());
                 Assert.IsTrue(pair.Contains(edge.Leaf), edge.Leaf.ToString());
@@ -50,9 +52,9 @@ namespace Limaki.Tests.Graph.Wrappers {
                 Assert.IsTrue(pair.Sink.Contains(edge.Root), edge.Root.ToString());
                 Assert.IsTrue(pair.Sink.Contains(edge.Leaf), edge.Leaf.ToString());
 
-                IGraphEdge edge2 = (IGraphEdge)pair.Get(edge);
-                IGraphEntity root2 = pair.Get (edge.Root);
-                IGraphEntity leaf2 = pair.Get(edge.Leaf);
+                var edge2 = (IGraphEdge)pair.Get(edge);
+                var root2 = pair.Get (edge.Root);
+                var leaf2 = pair.Get(edge.Leaf);
 
                 Assert.IsTrue(pair.Source.Contains(edge2), edge2.ToString());
                 Assert.IsTrue(pair.Source.Contains(edge2.Root), edge2.Root.ToString());
