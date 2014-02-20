@@ -28,7 +28,7 @@ using NUnit.Framework;
 using Limaki.Tests.View.Visuals;
 
 using Id = System.Int64;
-using Limaki.Tests.Graph.Wrappers;
+using Limaki.Tests.Graph.GraphPair;
 using Limaki.Tests.Graph.Basic;
 using Limada.Schemata;
 

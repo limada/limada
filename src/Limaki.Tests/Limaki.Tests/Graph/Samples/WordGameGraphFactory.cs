@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2014 Lytico
  *
  * http://www.limada.org
  * 
@@ -14,7 +14,6 @@
 
 
 using Limaki.Graphs;
-using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
@@ -26,8 +25,8 @@ namespace Limaki.Tests.Graph.Model {
         }
 
         public override void Populate(IGraph<TItem, TEdge> Graph, int start) {
-            TItem node = default (TItem);
-            TEdge edge = default (TEdge);
+            var node = default (TItem);
+            var edge = default (TEdge);
 
 
             node = CreateItem<string>("Tags");
@@ -63,8 +62,6 @@ namespace Limaki.Tests.Graph.Model {
             edge = CreateEdge(Nodes[1], Edges[2]);
             Graph.Add(edge);
             Edges[4] = edge;
-
-            
 
         }
 

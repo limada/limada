@@ -1,15 +1,31 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2008-2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 
-namespace Limaki.Tests.Visuals {
+namespace Limaki.Tests.View.Visuals {
 
-    public abstract class GraphSceneFactory<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge, TFactory> : SampleGraphPairFactory<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>
+    public abstract class SampleGraphSceneFactory<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge, TFactory> : 
+        SampleGraphPairFactory<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>
+
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem
         where TFactory : ISampleGraphFactory<TSourceItem, TSourceEdge>, new() {
 
-        public GraphSceneFactory () : base (new TFactory (), null) { }
+        public SampleGraphSceneFactory () : base (new TFactory (), null) { }
 
         public override ISampleGraphFactory<TSourceItem, TSourceEdge> Factory {
             get { return _factory ?? (_factory = new TFactory ()); }

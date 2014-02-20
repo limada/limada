@@ -21,7 +21,7 @@ using Limada.View;
 using Limada.VisualThings;
 using Limaki.Tests;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.Graph.Wrappers;
+using Limaki.Tests.Graph.GraphPair;
 using Limaki.Visuals;
 using NUnit.Framework;
 using Id = System.Int64;

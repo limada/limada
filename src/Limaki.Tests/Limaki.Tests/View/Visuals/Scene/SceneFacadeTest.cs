@@ -12,15 +12,13 @@ using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
 using NUnit.Framework;
 
-namespace Limaki.Tests.Graph.Wrappers {
-
-    public abstract class SceneFacadeTest<TFactory> : SceneFacadeTest<IGraphEntity, IGraphEdge, TFactory>
-        where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new () {
-    }
+namespace Limaki.Tests.View.Visuals {
 
     public abstract class SceneFacadeTest<TItem, TEdge, TFactory> : DomainTest
         where TEdge : IEdge<TItem>, TItem
         where TFactory : ISampleGraphFactory<TItem, TEdge>, new () {
+
+        public abstract IEnumerable<IVisual> FullExpanded { get; }
 
         public void AreEquivalent (IEnumerable<IVisual> visuals, IGraph<IVisual, IVisualEdge> graph) {
 
@@ -73,22 +71,17 @@ namespace Limaki.Tests.Graph.Wrappers {
             }
         }
 
-        protected TestSceneMock<TItem, TEdge, TFactory> _mock = null;
-        public virtual TestSceneMock<TItem, TEdge, TFactory> Mock {
+        protected SceneTestEnvironment<TItem, TEdge, TFactory> _mock = null;
+        public virtual SceneTestEnvironment<TItem, TEdge, TFactory> Mock {
             get {
                 if (_mock == null) {
-                    _mock = new TestSceneMock<TItem, TEdge, TFactory> ();
+                    _mock = new SceneTestEnvironment<TItem, TEdge, TFactory> ();
                 }
                 return _mock;
             }
             set { _mock = value; }
         }
 
-        public abstract IEnumerable<IVisual> FullExpanded { get; }
-
-        public virtual IEnumerable<IVisual> FirstNode {
-            get { yield return Mock.Factory.Nodes[1]; }
-        }
 
         [Test]
         public void InvokeTest () {
@@ -102,19 +95,19 @@ namespace Limaki.Tests.Graph.Wrappers {
             CommandsPerform ();
             Mock.Reset ();
             Mock.Scene.Selected.Clear ();
-            Mock.SetFocused (Mock.Factory.Nodes[1]);
+            Mock.SetFocused (Mock.SampleFactory.Nodes[1]);
             Mock.SceneFacade.Expand (true);
             AreEquivalent (FullExpanded, Mock.Scene.Graph);
             ProoveShapes (Mock.Scene);
             this.ReportSummary ();
         }
 
-        public SceneFacadeTestWrapper<TItem, TEdge, TFactory> Wrap () {
-            return new SceneFacadeTestWrapper<TItem, TEdge, TFactory> (this);
+        public SceneTestWrap<TItem, TEdge, TFactory> Wrap () {
+            return new SceneTestWrap<TItem, TEdge, TFactory> (this);
         }
 
-        public SceneFacadeTestWrapper<TItem, TEdge, TFactory>[] Wraps (int count) {
-            var tests = new SceneFacadeTestWrapper<TItem, TEdge, TFactory>[count];
+        public SceneTestWrap<TItem, TEdge, TFactory>[] Wraps (int count) {
+            var tests = new SceneTestWrap<TItem, TEdge, TFactory>[count];
             var i = 0;
             tests.ForEach (t => {
                 var test = Activator.CreateInstance (this.GetType ()) as

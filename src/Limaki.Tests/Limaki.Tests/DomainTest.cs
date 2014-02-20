@@ -7,7 +7,6 @@ using NUnit.Framework;
 using Limaki.View.Html5;
 using Limaki.View.Visualizers;
 using System.IO;
-using Limaki.View.HeadlessBackends;
 using Limaki.Drawing;
 using Limaki.View.UI;
 using Limaki.View.Headless;

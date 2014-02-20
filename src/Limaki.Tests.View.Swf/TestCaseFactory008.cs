@@ -24,7 +24,7 @@ using Limaki.Swf.Backends.UseCases;
 using Limaki.Tests.View.Display;
 using Limaki.Tests.View.GDI;
 using Limaki.Tests.View.Winform;
-using Limaki.Tests.Visuals;
+
 #if WCF
 using Limaki.WCF.Data;
 #endif
@@ -33,6 +33,7 @@ using Limada.Schemata;
 using Limaki.Tests.View;
 using Limaki.Usecases;
 using Limaki.View.Visuals.Visualizers;
+using Limaki.Tests.View.Visuals;
 
 
 namespace Limaki.Tests.UseCases {

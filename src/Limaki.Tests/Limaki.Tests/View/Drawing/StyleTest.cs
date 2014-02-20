@@ -3,7 +3,8 @@ using NUnit.Framework;
 using Limaki.Drawing;
 using Limaki.Common;
 
-namespace Limaki.Tests.Graphic {
+namespace Limaki.Tests.Drawing {
+
     public class StyleTest : DomainTest {
         
         [Test]

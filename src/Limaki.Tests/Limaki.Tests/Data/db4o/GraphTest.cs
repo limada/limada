@@ -13,22 +13,14 @@
  */
 
 
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Limaki.Data;
 using Limaki.Data.db4o;
+using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Basic;
 using Limaki.Tests.Graph.Model;
+using Limaki.Tests.View.Visuals;
 using NUnit.Framework;
-using Limaki.Common;
-using Limaki.Graphs;
-using Limaki.UnitTest;
-using Limaki.Tests.Graph;
-using Limaki.Data;
-using Limaki.Visuals;
-using Limaki.Tests.Visuals;
-using Limada.Model;
 
 namespace Limaki.Tests.Data.db4o {
     /// <summary>

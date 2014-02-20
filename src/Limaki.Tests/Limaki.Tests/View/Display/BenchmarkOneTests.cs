@@ -1,6 +1,6 @@
 using Limaki.Actions;
 using Limaki.Drawing;
-using Limaki.Tests.Graph.Model;
+using Limaki.Tests.View.Visuals;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.UI;

@@ -2,10 +2,9 @@ using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Basic;
 using Limaki.Tests.View.Visuals;
-using Limaki.Tests.Visuals;
 using Limaki.Visuals;
 
-namespace Limaki.Tests.Graph.Wrappers {
+namespace Limaki.Tests.Graph.GraphPair {
 
     public class BasicVisualEntityGraphPairTest : BasicGraphPairTest<IVisual, IGraphEntity, IVisualEdge, IGraphEdge> {
         public override IGraph<IVisual, IVisualEdge> Graph {

@@ -14,58 +14,58 @@
 
 
 using Limaki.Graphs;
-using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
-    public class BinaryTreeFactory<TItem, TEdge> : SampleGraphFactory<TItem, TEdge>
+    public class BinaryGraphFactory<TItem, TEdge> : SampleGraphFactory<TItem, TEdge>
         where TEdge : IEdge<TItem>, TItem {
 
         public override string Name {
-            get { return "Binary Tree"; }
+            get { return "Binary Graph"; }
         }
 
-        public override void Populate(IGraph<TItem, TEdge> Graph,int start) {
+        public override void Populate(IGraph<TItem, TEdge> Graph, int start) {
 
             base.Populate(Graph,start);
 
-            TEdge edge = default (TEdge);
+            var edge = default (TEdge); ;
 
-            #region Binarytree Links
+            #region Binarytree Edges
 
             edge = CreateEdge(Nodes[1], Nodes[2]);
             Graph.Add(edge);
             Edges[1] = edge;
 
-            edge = CreateEdge(Nodes[1], Nodes[4]);
+            edge = CreateEdge(Nodes[4], Nodes[3]);
             Graph.Add(edge);
             Edges[2] = edge;
 
-            edge = CreateEdge(Nodes[2], Nodes[3]);
+            edge = CreateEdge(Nodes[1], Edges[2]);
             Graph.Add(edge);
             Edges[3] = edge;
 
-            edge = CreateEdge(Nodes[4], Nodes[5]);
+            edge = CreateEdge(Nodes[5], Nodes[8]);
             Graph.Add(edge);
             Edges[4] = edge;
 
 
-            edge = CreateEdge(Nodes[4], Nodes[8]);
+            edge = CreateEdge(Nodes[5], Nodes[6]);
             Graph.Add(edge);
             Edges[5] = edge;
 
-            edge = CreateEdge(Nodes[5], Nodes[6]);
+            edge = CreateEdge(Nodes[5], Nodes[7]);
             Graph.Add(edge);
             Edges[6] = edge;
 
-            edge = CreateEdge(Nodes[5], Nodes[7]);
+            edge = CreateEdge(Nodes[8], Nodes[9]);
             Graph.Add(edge);
             Edges[7] = edge;
 
-
-            edge = CreateEdge(Nodes[8], Nodes[9]);
-            Graph.Add(edge);
-            Edges[8] = edge;
+            if (!SeperateLattice) {
+                edge = CreateEdge (Edges[2], Edges[4]);
+                Graph.Add (edge);
+                Edges[8] = edge;
+            }
 
             #endregion
         }

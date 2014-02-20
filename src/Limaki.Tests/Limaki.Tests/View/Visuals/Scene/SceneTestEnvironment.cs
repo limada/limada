@@ -1,31 +1,39 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 20012-2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.Visuals;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
 using Xwt;
 
-namespace Limaki.Tests.Graph.Wrappers {
+namespace Limaki.Tests.View.Visuals {
 
-    public class TestSceneMock<TFactory> : TestSceneMock<IGraphEntity, IGraphEdge, TFactory>
-        where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new() {
-        }
+    public class SceneTestEnvironment<TItem, TEdge, TFactory>
+        where TEdge : IEdge<TItem>, TItem
+        where TFactory : ISampleGraphFactory<TItem, TEdge>, new () {
 
-
-    public class TestSceneMock<IGraphEntity, IGraphEdge,TFactory>
-        where IGraphEdge : IEdge<IGraphEntity>, IGraphEntity
-        where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new () {
-
-        protected ISceneFactory _factory;
-        public virtual ISceneFactory Factory {
+        protected ISampleGraphSceneFactory _factory;
+        public virtual ISampleGraphSceneFactory SampleFactory {
             get {
                 if (_factory == null) {
-                    _factory = new SceneFactory<IGraphEntity, IGraphEdge, TFactory> ();
+                    _factory = new SampleSceneFactory<TItem, TEdge, TFactory> ();
                 }
                 return _factory;
             }
@@ -36,9 +44,9 @@ namespace Limaki.Tests.Graph.Wrappers {
         public virtual IGraphScene<IVisual, IVisualEdge> Scene {
             get {
                 if (_scene == null) {
-                    var g = this.Factory.Scene.Graph;
+                    var g = this.SampleFactory.Scene.Graph;
                     g = new SubGraph<IVisual, IVisualEdge> (
-                        ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) this.Factory).GraphPair,
+                        ((SampleGraphPairFactory<IVisual, TItem, IVisualEdge, TEdge>) this.SampleFactory).GraphPair,
                         new VisualGraph ());
                     _scene = new Scene ();
                     _scene.Graph = g;
@@ -52,7 +60,6 @@ namespace Limaki.Tests.Graph.Wrappers {
                 }
             }
         }
-
 
         IGraphSceneDisplay<IVisual, IVisualEdge> _display = null;
         public IGraphSceneDisplay<IVisual, IVisualEdge> Display {

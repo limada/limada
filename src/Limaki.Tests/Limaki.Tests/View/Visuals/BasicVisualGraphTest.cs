@@ -12,18 +12,10 @@
  * 
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
 using Limaki.Common;
 using Limaki.Graphs;
-using Limaki.UnitTest;
-using Limaki.Tests.Graph.Model;
-using Limaki.Visuals;
-using Limaki.Tests.Visuals;
 using Limaki.Tests.Graph.Basic;
-using Limaki.Tests.Graph;
+using Limaki.Visuals;
 
 namespace Limaki.Tests.View.Visuals {
 

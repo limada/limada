@@ -14,7 +14,6 @@
 
 
 using Limaki.Graphs;
-using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
@@ -26,8 +25,8 @@ namespace Limaki.Tests.Graph.Model {
         }
 
         public override void Populate(IGraph<TItem, TEdge> Graph, int start) {
-            TItem node = default (TItem);
-            TEdge edge = default (TEdge);
+            var node = default (TItem);
+            var edge = default (TEdge);
 
 
             node = CreateItem<string>("Programming");
@@ -103,16 +102,20 @@ namespace Limaki.Tests.Graph.Model {
         }
 
         public override void Populate() {
-            TItem lastNode1 = default (TItem); ;
-            TItem lastNode2 = default (TItem); ;
-            TItem lastNode3 = default (TItem); ;
+
+            var lastNode1 = default (TItem); ;
+            var lastNode2 = default (TItem); ;
+            var lastNode3 = default (TItem); ;
+
             for (int i = 0; i < Count; i++) {
                 if (i > 0) {
                     lastNode1 = Nodes[1];
                     lastNode2 = Nodes[5];
                     lastNode3 = Nodes[8];
                 }
+
                 Populate(this.Graph,Start + 1);
+
                 if (i > 0) {
                     TEdge edge = default (TEdge); ;
                     if (!SeperateLattice) {

@@ -1,13 +1,14 @@
 
 using Limaki.Graphs;
-using Limaki.Model;
 
 namespace Limaki.Tests.Graph.Model {
 
     public class SimpleGraphFactory<TItem, TEdge> : SampleGraphFactory<TItem, TEdge> 
         where TEdge : IEdge<TItem> , TItem {
+
         public override void Populate(IGraph<TItem, TEdge> Graph, int start) {
-            TItem item = CreateItem<int>((start++));
+
+            var item = CreateItem<int>((start++));
             Graph.Add(item);
             Nodes[1] = item;
 
