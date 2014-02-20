@@ -4,9 +4,11 @@ using Limaki.Tests.Graph.Model;
 using Limaki.Drawing;
 
 namespace Limaki.Tests.Visuals {
-    public interface ISceneFactory:ITestGraphFactory<IVisual, IVisualEdge> {
+
+    public interface ISceneFactory:ISampleGraphFactory<IVisual, IVisualEdge> {
         IGraphScene<IVisual, IVisualEdge> Scene { get; }
-        void Populate (IGraphScene<IVisual, IVisualEdge> scene);
+
+        void PopulateScene (IGraphScene<IVisual, IVisualEdge> scene);
     }
 
 }

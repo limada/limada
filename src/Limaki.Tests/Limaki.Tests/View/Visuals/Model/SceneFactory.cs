@@ -22,36 +22,14 @@ using Limaki.Drawing;
 
 namespace Limaki.Tests.Visuals {
 
-    public class SceneFactory<T> : TestGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>, ISceneFactory
-        where T : ITestGraphFactory<IGraphEntity, IGraphEdge>, new() {
+    public class SceneFactory<T> : SceneFactory<IGraphEntity, IGraphEdge, T> where T : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new() { }
 
-        public SceneFactory() : base(new T(), new GraphItem2VisualTransformer()) { }
+    public class SceneFactory<Item, TEdge, T> : GraphSceneFactory<IVisual, Item, IVisualEdge, TEdge,T>, ISceneFactory
+        where TEdge : IEdge<Item>, Item
+        where T : ISampleGraphFactory<Item, TEdge>, new() {
 
-        public override ITestGraphFactory<IGraphEntity, IGraphEdge> Factory {
-            get {
-                if (_factory == null) {
-                    _factory = new T();
-                }
-                return _factory;
-            }
+        protected override IGraphScene<IVisual, IVisualEdge> CreateScene () {
+            return new Scene();
         }
-
-        /// <summary>
-        /// Creates a new scene and populates it
-        /// </summary>
-        public virtual IGraphScene<IVisual, IVisualEdge> Scene {
-            get {
-                var result = new Scene();
-                Populate ();
-                result.Graph = this.Graph;
-                return result;
-            }
         }
-
-        public virtual void Populate (IGraphScene<IVisual, IVisualEdge> scene) {
-            Populate (scene.Graph);
-            scene.ClearSpatialIndex ();
-        }
-
-    }
 }
