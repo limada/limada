@@ -36,7 +36,10 @@ namespace Limaki.View.Layout {
         where TEdge : IEdge<TItem>, TItem {
 
         public GraphSceneLocator(IShaper<TItem> shaper) {
-            this.AffectedEdges = new Set<TEdge>();
+
+            // must be a list, cause order of adding is important, and can occur more than once
+            this.AffectedEdges = new List<TEdge>(); 
+            
             this.ShapeGetter = shaper.GetShape;
             this.ShapeCreator = shaper.CreateShape;
             this.ShapeJustifier = shaper.Justify;
