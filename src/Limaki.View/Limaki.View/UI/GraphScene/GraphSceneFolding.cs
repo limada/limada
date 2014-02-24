@@ -32,6 +32,7 @@ namespace Limaki.View.UI.GraphScene {
         Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
         GraphSceneFacade<TItem, TEdge> Folder { get; set; }
         DataComparer<TItem> OrderBy { get; set; }
+        bool RemoveOrphans { get; set; }
         void Clear ();
         bool Check ();
     }
@@ -55,12 +56,15 @@ namespace Limaki.View.UI.GraphScene {
                 }
                 _folder.Layout = Layout();
                 _folder.OrderBy = this.OrderBy;
+                _folder.RemoveOrphans = this.RemoveOrphans;
                 return _folder;
             }
             set { _folder = value; }
         }
 
         public DataComparer<TItem> OrderBy { get; set; }
+
+        public bool RemoveOrphans { get; set; }
 
         public virtual void Clear() {
             Folder.Clear ();

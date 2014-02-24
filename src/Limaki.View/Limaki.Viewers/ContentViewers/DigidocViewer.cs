@@ -166,7 +166,7 @@ namespace Limaki.Viewers.StreamViewers {
                 focusAction.HitSize = -1;
 
             var folding = display.EventControler.GetAction<IGraphSceneFolding<IVisual, IVisualEdge>>();
-            folding.Folder.RemoveOrhpans = false;
+            folding.Folder.RemoveOrphans = false;
         }
 
 

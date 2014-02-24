@@ -275,14 +275,14 @@ namespace Limaki.View.UI.GraphScene {
             }
         }
 
-        public bool RemoveOrhpans { get; set; }
+        public bool RemoveOrphans { get; set; }
 
         public virtual void Collapse () {
             if (Scene.Selected.Count > 0) {
                 ApplyFilter ();
                 var scene = this.Scene;
                 var curr = scene.Focused;
-                var affected = new SubGraphWorker<TItem, TEdge> (this.SubGraph) { RemoveOrphans = this.RemoveOrhpans }
+                var affected = new SubGraphWorker<TItem, TEdge> (this.SubGraph) { RemoveOrphans = this.RemoveOrphans }
                     .Collapse (scene.Selected.Elements);
                 UpdateRemoved (affected);
 

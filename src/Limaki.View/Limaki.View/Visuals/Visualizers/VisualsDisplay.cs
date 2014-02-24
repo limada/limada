@@ -65,7 +65,8 @@ namespace Limaki.View.Visuals.Visualizers {
                 Layout = this.Layout,
                 DeviceRenderer = display.BackendRenderer,
                 MoveResizeRenderer = display.MoveResizeRenderer,
-                OrderBy = new VisualComparer()
+                OrderBy = new VisualComparer(),
+                RemoveOrphans = true
             });
 
             var addGraphEdgeAction = new AddEdgeAction {
