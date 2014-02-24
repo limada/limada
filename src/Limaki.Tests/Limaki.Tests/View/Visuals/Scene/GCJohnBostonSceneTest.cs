@@ -70,38 +70,40 @@ namespace Limaki.Tests.View.Visuals {
             Mock.SceneFacade.CollapseToFocused ();
 
             Assert.AreEqual (Mock.Scene.Graph.Count, 1);
-            AreEquivalent (new IVisual[] { Mock.SampleFactory.Nodes[1] }, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (new IVisual[] { Mock.SampleFactory.Nodes[1] }, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             Mock.SceneFacade.Expand (false);
 
-            IVisual[] PersonExpanded = new IVisual[] {
-                                                         Mock.SampleFactory.Nodes[1], // Person
-                                                         Mock.SampleFactory.Nodes[2], // John
-                                                         Mock.SampleFactory.Nodes[5], // Go
-                                                         Mock.SampleFactory.Edges[1], // [Person->John]
-                                                         Mock.SampleFactory.Edges[3], // [[Person->John]->Go]
-                                                     };
-            AreEquivalent (PersonExpanded, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            var personExpanded = new IVisual[] {
+                Mock.SampleFactory.Nodes[1], // Person
+                Mock.SampleFactory.Nodes[2], // John
+                Mock.SampleFactory.Nodes[5], // Go
+                Mock.SampleFactory.Edges[1], // [Person->John]
+                Mock.SampleFactory.Edges[3], // [[Person->John]->Go]
+            };
+
+            Mock.AreEquivalent (personExpanded, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             Mock.Scene.Selected.Clear ();
             Mock.SetFocused (Mock.SampleFactory.Nodes[5]); // Go
             Mock.SceneFacade.Expand (false);
 
-            AreEquivalent (FullExpanded, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (FullExpanded, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
+            Mock.SceneFacade.RemoveOrphans = true;
             Mock.SceneFacade.Collapse ();
-            AreEquivalent (PersonExpanded, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (personExpanded, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             Mock.Scene.Selected.Clear ();
             Mock.SetFocused (Mock.SampleFactory.Edges[1]); // [Person->John]
             Mock.SceneFacade.Expand (false);
 
-            AreEquivalent (FullExpanded, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (FullExpanded, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             this.ReportSummary ();
 

@@ -45,7 +45,7 @@ namespace Limada.Tests.View {
         public void FoldingTest1 () {
             var graph = new VisualThingGraph ();
 
-            var test = new ProgrammingGraphSceneTest ();
+            var test = new ProgrammingEntitySceneTest ();
             test.Mock.SampleFactory.Graph = graph;
             test.Net ();
 
@@ -55,7 +55,7 @@ namespace Limada.Tests.View {
         public void Mock2 () {
             var graph = new VisualThingGraph ();
 
-            var test = new ProgrammingGraphSceneTest ();
+            var test = new ProgrammingEntitySceneTest ();
             test.Mock.SampleFactory.Populate (graph);
             test.Mock.SampleFactory.Graph = graph;
             var scene = new Scene ();
@@ -71,7 +71,7 @@ namespace Limada.Tests.View {
         public void FoldingExpandTest () {
             var graph = new VisualThingGraph ();
 
-            var test = new ProgrammingGraphSceneTest ();
+            var test = new ProgrammingEntitySceneTest ();
             test.Mock.SampleFactory.Graph = graph;
             test.Mock.Scene = new Scene ();
             test.Mock.Scene.Graph = graph;

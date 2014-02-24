@@ -26,7 +26,7 @@ using Xwt;
 
 namespace Limaki.Tests.View.Visuals {
 
-    public class BenchmarkOneSceneFactory : SampleSceneFactory<BenchmarkOneGraphFactory<IGraphEntity,IGraphEdge>> {
+    public class BenchmarkOneSceneFactory : EntitySampleSceneFactory<BenchmarkOneGraphFactory<IGraphEntity,IGraphEdge>> {
 
         public BenchmarkOneSceneFactory () {
             this.Count = 10;

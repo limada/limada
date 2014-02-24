@@ -7,7 +7,7 @@ using Limaki.Graphs;
 
 namespace Limaki.Tests.View.Visuals {
 
-    public class BinaryGraphSceneTest<TItem, TEdge> : SceneFacadeTest<TItem, TEdge, BinaryGraphFactory<TItem, TEdge>>
+    public class BinarySceneTest<TItem, TEdge> : SceneFacadeTest<TItem, TEdge, BinaryGraphFactory<TItem, TEdge>>
          where TEdge : IEdge<TItem>, TItem {
 
         public override IEnumerable<IVisual> FullExpanded {
@@ -46,8 +46,8 @@ namespace Limaki.Tests.View.Visuals {
             Mock.SceneFacade.CollapseToFocused ();
 
             Assert.AreEqual (Mock.Scene.Graph.Count, 1);
-            AreEquivalent (new IVisual[] { Mock.SampleFactory.Nodes[1] }, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (new IVisual[] { Mock.SampleFactory.Nodes[1] }, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             var N1Expanded = new IVisual[] {
                 Mock.SampleFactory.Nodes[1], // 1
@@ -60,8 +60,8 @@ namespace Limaki.Tests.View.Visuals {
             };
 
             Mock.SceneFacade.Expand (false);
-            AreEquivalent (N1Expanded, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (N1Expanded, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             Mock.Scene.Selected.Clear ();
             Mock.SetFocused ( Mock.SampleFactory.Nodes[4]); // 4
@@ -81,8 +81,8 @@ namespace Limaki.Tests.View.Visuals {
                 Mock.SampleFactory.Edges[8], //[[4->3]->[5->8]]
             };
 
-            AreEquivalent (N4Expanded, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (N4Expanded, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             Mock.Scene.Selected.Clear ();
             Mock.SetFocused (Mock.SampleFactory.Nodes[5]);
@@ -106,8 +106,8 @@ namespace Limaki.Tests.View.Visuals {
                 Mock.SampleFactory.Edges[8], //[[4->3]->[5->8]]
             };
 
-            AreEquivalent (N5Expanded, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (N5Expanded, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             var N5Collapsed = new IVisual[] {
                 Mock.SampleFactory.Nodes[1], // 1
@@ -121,24 +121,24 @@ namespace Limaki.Tests.View.Visuals {
             };
 
             Mock.SceneFacade.Collapse ();
-            AreEquivalent (N5Collapsed, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (N5Collapsed, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             Mock.SceneFacade.Expand (false);
-            AreEquivalent (N5Expanded, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (N5Expanded, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             Mock.Scene.Selected.Clear ();
             Mock.SetFocused (Mock.SampleFactory.Nodes[8]);
             Mock.SceneFacade.Expand (false);
 
-            AreEquivalent (FullExpanded, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (FullExpanded, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             Mock.SceneFacade.Collapse ();
 
-            AreEquivalent (N5Expanded, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (N5Expanded, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
 
             this.ReportSummary ();
         }

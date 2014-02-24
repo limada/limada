@@ -135,13 +135,13 @@
     <Compile Include="Limada.Tests\Tests\View\BasicVisualThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\WrapperTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Samples\EntityGraphFactorys.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\GraphEntityTests.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Scene\SceneTestWrap.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\EntityTests.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Samples\SampleGraphSceneFactory.cs" />
     <Compile Include="Limaki.View.Headless\VidgetBackends\ImageMissingStuffExtension.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Scene\BinaryGraphSceneTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\BinarySceneTest.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Scene\GCJohnBostonSceneTest.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\Scene\ProgrammingGraphSceneTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\Scene\ProgrammingSceneTest.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Scene\SceneTestEnvironment.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Scene\SceneFacadeTest.cs" />
     <Compile Include="Limaki.Tests\View\Display\BenchmarkOneTests.cs" />
