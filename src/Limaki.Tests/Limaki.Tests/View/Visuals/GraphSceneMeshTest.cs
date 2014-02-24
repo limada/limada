@@ -32,30 +32,28 @@ namespace Limaki.Tests.View.Visuals {
         IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
         protected IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
 
-        public IEnumerable<SceneTestWrap<IGraphEntity, IGraphEdge,TFactory>> MeshTests<TFactory> (
-            params SceneTestWrap<IGraphEntity, IGraphEdge, TFactory>[] sources)
-            where TFactory : ISampleGraphFactory<IGraphEntity, IGraphEdge>, new () {
+        public IEnumerable<SceneTestEnvironment<IGraphEntity, IGraphEdge>> MeshTests ( params SceneTestEnvironment<IGraphEntity, IGraphEdge>[] sources) { 
 
             var source = sources[0];
             Mesh.AddDisplay (source.Display);
 
             foreach (var sink in sources.Skip (1)) {
-                sink.Mock.Scene = Mesh.CreateSinkScene (source.Scene.Graph);
+                sink.Scene = Mesh.CreateSinkScene (source.Scene.Graph);
 
                 Mesh.AddDisplay (sink.Display);
 
                 ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
-                 sink.Mock.SampleFactory).GraphPair =
+                 sink.SampleFactory).GraphPair =
                     // no, its not sink.Graph, and not sink.Scene.... but:
-                    sink.Mock.Scene.Graph.Source<IVisual, IVisualEdge, IGraphEntity, IGraphEdge> ();
+                    sink.Scene.Graph.Source<IVisual, IVisualEdge, IGraphEntity, IGraphEdge> ();
                 ;
 
                 // take the inner factorys:
                 var sourceFactory = ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
-                                     source.Mock.SampleFactory).Factory;
+                                     source.SampleFactory).Factory;
 
                 var sinkFactory = ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
-                                   sink.Mock.SampleFactory).Factory;
+                                   sink.SampleFactory).Factory;
 
                 // copy Nodes and Edges
                 var i = 0;
@@ -63,7 +61,7 @@ namespace Limaki.Tests.View.Visuals {
                 i = 0;
                 foreach (var n in sourceFactory.Edges) sinkFactory.Edges[i++] = n;
 
-                sink.Reset ();
+                sink.EnsureScene ();
             }
 
             return sources;
@@ -72,8 +70,8 @@ namespace Limaki.Tests.View.Visuals {
         [Test]
         public void EdgeAddAndChange () {
 
-            var sources = MeshTests<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> (
-                new ProgrammingGraphSceneTest<IGraphEntity, IGraphEdge> ().Wraps (7));
+            var sources = MeshTests (
+                SceneTestEnvironment<IGraphEntity, IGraphEdge>.Create<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> (7));
 
             var source = sources.First ();
 
@@ -102,17 +100,17 @@ namespace Limaki.Tests.View.Visuals {
             
                 var sourceEdge = source.AddEdge (source.Nodes[iNet], source.Nodes[iProgramming]);
                 source.ProveViewContains (sourceEdge);
-                var backEdge = source.Graph.Get (sourceEdge) as IGraphEdge;
+                var backEdge = source.Source.Get (sourceEdge) as IGraphEdge;
 
                 // testing the sinkGraph
-                Assert.IsTrue (sink.Graph.Source.Contains (backEdge));
+                Assert.IsTrue (sink.Source.Source.Contains (backEdge));
 
                 // adding to view
                 source.SceneFacade.Add (sourceEdge, new Point (10, 10));
                 source.Display.Perform ();
 
                 // testing the sinkView
-                var sinkEdge = sink.Graph.Get (backEdge) as IVisualEdge;
+                var sinkEdge = sink.Source.Get (backEdge) as IVisualEdge;
                 Assert.IsNotNull (sinkEdge);
 
                 sink.ProveViewContains (sinkEdge);
@@ -130,7 +128,7 @@ namespace Limaki.Tests.View.Visuals {
                 source.ProoveChangedLink (sourceEdge, source.Nodes[iNewRoot], source.Nodes[iOldRoot], true);
 
                 sources.ForEach (t => {
-                    var tEdge = t.Graph.Get (backEdge) as IVisualEdge;
+                    var tEdge = t.Source.Get (backEdge) as IVisualEdge;
                     t.ProoveChangedLink (tEdge, t.Nodes[iNewRoot], t.Nodes[iOldRoot], true,
                         // there could be a display without visible root and leaf
                         t.Scene.Contains (tEdge.Root) && t.Scene.Contains (tEdge.Leaf)
@@ -141,15 +139,15 @@ namespace Limaki.Tests.View.Visuals {
                 sink.RemoveEdge (sinkEdge);
 
                 sink.ProveViewNotContains (sinkEdge);
-                sink.ProveNotContains (sink.Graph, sinkEdge);
+                sink.ProveNotContains (sink.Source, sinkEdge);
                 source.ProveViewNotContains (sourceEdge);
 
-                Assert.IsFalse (sink.Graph.Source.Contains (backEdge));
+                Assert.IsFalse (sink.Source.Source.Contains (backEdge));
 
                 sources.ForEach (t => {
-                    var tEdge = t.Graph.Get (backEdge) as IVisualEdge;
+                    var tEdge = t.Source.Get (backEdge) as IVisualEdge;
                     Assert.IsNull (tEdge);
-                    Assert.IsFalse (t.Graph.Any (e => e.Data == sourceEdge.Data));
+                    Assert.IsFalse (t.Source.Any (e => e.Data == sourceEdge.Data));
                 });
 
                 sink.Expand (sink.Nodes[iProgramming], true);
@@ -162,13 +160,14 @@ namespace Limaki.Tests.View.Visuals {
         [Test]
         public void RegisterMesh () {
 
-            var sources = MeshTests<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> (
-                new ProgrammingGraphSceneTest<IGraphEntity, IGraphEdge> ().Wraps (5));
+            var sources = MeshTests ( SceneTestEnvironment<IGraphEntity, IGraphEdge>
+                .Create<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> (5));
+
             var source = sources.First ();
             foreach (var sink in sources.Skip (1)) {
                 Assert.AreSame (source.Scene, source.Display.Data);
                 Assert.AreSame (sink.Scene, sink.Display.Data);
-                Assert.AreSame (source.Graph.Source, sink.Graph.Source);
+                Assert.AreSame (source.Source.Source, sink.Source.Source);
 
                 Assert.IsTrue (Mesh.Scenes.Contains (source.Scene));
                 Assert.IsTrue (Mesh.Scenes.Contains (sink.Scene));
@@ -191,7 +190,7 @@ namespace Limaki.Tests.View.Visuals {
             var Programming2Language = 101;  //[Programming->Language]
             var Programming2Libraries = 104; //[Programming->Libraries]
 
-            var source = new ProgrammingGraphSceneTest<IGraphEntity, IGraphEdge> ().Wrap ();
+            var source = new SceneTestEnvironment<IGraphEntity, IGraphEdge, ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
             EdgeAddChangeRemove (source, iProgramming, iNet, iJava);
             EdgeAddChangeRemove (source, iProgramming, iNet, iJava);
             EdgeAddChangeRemove (source, iLibraries, iLanguage, iJava);
@@ -202,7 +201,7 @@ namespace Limaki.Tests.View.Visuals {
         /// this tests if a link is added, changed and removed 
         /// </summary>
 
-        public void EdgeAddChangeRemove<TItem, TEdge, TFactory> (SceneTestWrap<TItem, TEdge, TFactory> source, int iOne, int iTwo, int iThree)
+        public void EdgeAddChangeRemove<TItem, TEdge, TFactory> (SceneTestEnvironment<TItem, TEdge, TFactory> source, int iOne, int iTwo, int iThree)
             where TEdge : IEdge<TItem>, TItem
             where TFactory : ISampleGraphFactory<TItem, TEdge>, new () {
 

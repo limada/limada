@@ -20,101 +20,34 @@ namespace Limaki.Tests.View.Visuals {
 
         public abstract IEnumerable<IVisual> FullExpanded { get; }
 
-        public void AreEquivalent (IEnumerable<IVisual> visuals, IGraph<IVisual, IVisualEdge> graph) {
-
-            foreach (var visual in visuals) {
-                string s = "graph.Contains( " + visual.Data.ToString () + " )";
-                if (visual is IVisualEdge) {
-                    Assert.IsTrue (graph.Contains ((IVisualEdge)visual), s);
-                } else {
-                    Assert.IsTrue (graph.Contains (visual), s);
-                }
-            }
-            var visualsCollection = new List<IVisual> (visuals);
-            foreach (var visual in graph) {
-                var s = "visuals.Contains( " + visual.Data.ToString () + " )";
-                Assert.IsTrue (visualsCollection.Contains (visual), s);
-            }
-        }
-
         public bool AlwaysInvoke = false;
         bool invoked = false;
 
-        public void CommandsPerform () {
-            Mock.Display.Perform ();
-            Mock.Scene.Requests.Clear ();
-        }
-
-        public void ProoveShapes (IGraphScene<IVisual, IVisualEdge> scene) {
-            CommandsPerform ();
-            var indexList = new Set<IVisual> ();
-            foreach (var visual in scene.SpatialIndex.Query ()) {
-                if (!indexList.Contains (visual)) {
-                    indexList.Add (visual);
-                } else {
-                    Assert.Fail (visual + " two times in SpatialIndex");
-                }
-                bool found = false;
-                if (visual is IVisualEdge)
-                    found = scene.Contains ((IVisualEdge)visual);
-                else
-                    found = scene.Contains (visual);
-
-                Assert.IsTrue (found,
-                               "to much items in SpatialIndex: ! scene.Contains ( " + visual.ToString () + " ) of Spatialindex");
-            }
-
-            foreach (var visual in scene.Graph) {
-                if (visual.Shape != null)
-                    Assert.IsTrue (indexList.Contains (visual),
-                                   "to less items in SpatialIndex: ! SpatialIndex.Contains ( " + visual.ToString () + " ) of scene.Graph");
-            }
-        }
-
         protected SceneTestEnvironment<TItem, TEdge, TFactory> _mock = null;
         public virtual SceneTestEnvironment<TItem, TEdge, TFactory> Mock {
-            get {
-                if (_mock == null) {
-                    _mock = new SceneTestEnvironment<TItem, TEdge, TFactory> ();
-                }
-                return _mock;
-            }
+            get { return _mock ?? (_mock = new SceneTestEnvironment<TItem, TEdge, TFactory> ()); }
             set { _mock = value; }
         }
 
-
         [Test]
         public void InvokeTest () {
-            CommandsPerform ();
+            Mock.CommandsPerform ();
             Mock.Display.Reset ();
-            ProoveShapes (Mock.Scene);
+            Mock.ProveShapes (Mock.Scene);
         }
 
         [Test]
         public virtual void FullExpandTest () {
-            CommandsPerform ();
-            Mock.Reset ();
+            Mock.CommandsPerform ();
+            Mock.Clear ();
             Mock.Scene.Selected.Clear ();
             Mock.SetFocused (Mock.SampleFactory.Nodes[1]);
             Mock.SceneFacade.Expand (true);
-            AreEquivalent (FullExpanded, Mock.Scene.Graph);
-            ProoveShapes (Mock.Scene);
+            Mock.AreEquivalent (FullExpanded, Mock.Scene.Graph);
+            Mock.ProveShapes (Mock.Scene);
             this.ReportSummary ();
         }
 
-        public SceneTestWrap<TItem, TEdge, TFactory> Wrap () {
-            return new SceneTestWrap<TItem, TEdge, TFactory> (this);
-        }
-
-        public SceneTestWrap<TItem, TEdge, TFactory>[] Wraps (int count) {
-            var tests = new SceneTestWrap<TItem, TEdge, TFactory>[count];
-            var i = 0;
-            tests.ForEach (t => {
-                var test = Activator.CreateInstance (this.GetType ()) as
-                           SceneFacadeTest<TItem, TEdge, TFactory>;
-                tests[i++] = test.Wrap ();
-            });
-            return tests;
-        }
+        
     }
 }

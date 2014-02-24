@@ -13,6 +13,7 @@
  */
 
 using Limaki.Common;
+using Limaki.Common.Linqish;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Model;
@@ -21,36 +22,36 @@ using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 using Xwt;
+using Limaki.Graphs.Extensions;
+using NUnit.Framework;
+using Limaki.View.Layout;
+using Limaki.Common.Collections;
 
 namespace Limaki.Tests.View.Visuals {
 
-    public class SceneTestEnvironment<TItem, TEdge, TFactory>
+    public class SceneTestEnvironment<TItem, TEdge, TFactory> : SceneTestEnvironment<TItem, TEdge>
         where TEdge : IEdge<TItem>, TItem
         where TFactory : ISampleGraphFactory<TItem, TEdge>, new () {
+        public SceneTestEnvironment () : base (new SampleSceneFactory<TItem, TEdge, TFactory> ()) { }
+    }
 
-        protected ISampleGraphSceneFactory _factory;
-        public virtual ISampleGraphSceneFactory SampleFactory {
-            get {
-                if (_factory == null) {
-                    _factory = new SampleSceneFactory<TItem, TEdge, TFactory> ();
-                }
-                return _factory;
-            }
-            set { _factory = value; }
+    public class SceneTestEnvironment<TItem, TEdge>
+        where TEdge : IEdge<TItem>, TItem {
+
+        public SceneTestEnvironment(ISampleGraphSceneFactory sampleFactory) {
+            this.SampleFactory = sampleFactory;
         }
+
+        public virtual ISampleGraphSceneFactory SampleFactory { get; set; }
 
         protected IGraphScene<IVisual, IVisualEdge> _scene;
         public virtual IGraphScene<IVisual, IVisualEdge> Scene {
             get {
-                if (_scene == null) {
-                    var g = this.SampleFactory.Scene.Graph;
-                    g = new SubGraph<IVisual, IVisualEdge> (
-                        ((SampleGraphPairFactory<IVisual, TItem, IVisualEdge, TEdge>) this.SampleFactory).GraphPair,
-                        new VisualGraph ());
-                    _scene = new Scene ();
-                    _scene.Graph = g;
-                }
+                EnsureScene();
                 return _scene;
             }
             set {
@@ -58,6 +59,21 @@ namespace Limaki.Tests.View.Visuals {
                 if (_display != null) {
                     _display.Data = value;
                 }
+            }
+        }
+
+        public void EnsureScene () {
+            if (_scene == null) {
+                var g = this.SampleFactory.Scene.Graph;
+                g = new SubGraph<IVisual, IVisualEdge> (
+                    ((SampleGraphPairFactory<IVisual, TItem, IVisualEdge, TEdge>)this.SampleFactory).GraphPair,
+                    new VisualGraph ());
+                _scene = new Scene ();
+                _scene.Graph = g;
+                if (_display != null) {
+                    _display.Data = _scene;
+                }
+                _sceneFacade = null;
             }
         }
 
@@ -72,12 +88,35 @@ namespace Limaki.Tests.View.Visuals {
             get { return _sceneFacade ?? (_sceneFacade = new GraphSceneFacade<IVisual, IVisualEdge> (() => this.Scene, Display.Layout)); }
         }
 
-        public virtual void Reset () {
+        public virtual void Clear () {
             _scene = null;
-            _factory = null;
             _sceneFacade = null;
             _display = null;
         }
+
+        #region accessor facade
+
+        public IList<IVisual> Nodes { get { EnsureScene (); return SampleFactory.Nodes; } }
+
+        public IList<IVisualEdge> Edges { get { EnsureScene (); return SampleFactory.Edges; } }
+
+        /// <summary>
+        /// Scene.Graph as <see cref="IGraphPair{IVisual, IVisual, IVisualEdge, IVisualEdge}"/>
+        /// </summary>
+        public IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge> View {
+            get { return Scene.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>; }
+        }
+
+        /// <summary>
+        /// Scene.Graph.RootSource().Source as <see cref="IGraphPair{IVisual, IGraphEntity, IVisualEdge, IGraphEdge}"/>
+        /// </summary>
+        public IGraphPair<IVisual, TItem, IVisualEdge, TEdge> Source {
+            get { return Scene.Graph.RootSource ().Source as IGraphPair<IVisual, TItem, IVisualEdge, TEdge>; }
+        }
+
+        #endregion
+
+        #region method facade
 
         /// <summary>
         /// sets Scene.Focus to item and 
@@ -94,5 +133,173 @@ namespace Limaki.Tests.View.Visuals {
             this.Display.Layout.Perform (item);
             this.Display.Layout.AdjustSize (item);
         }
+
+        public void CommandsPerform () {
+            this.Display.Perform ();
+            this.Scene.Requests.Clear ();
+        }
+
+        /// <summary>
+        /// sets Scene.Focus to item and 
+        /// Expands(deep) it
+        /// item is added if not in view
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="deep"></param>
+        public void Expand (IVisual item, bool deep) {
+            Scene.Selected.Clear ();
+            SetFocused (item);
+            SceneFacade.Expand (deep);
+            CommandsPerform ();
+        }
+
+        public IVisual ChangeLink (IVisualEdge edge, IVisual item, bool root) {
+
+            var newItem = item;
+            var oldItem = root ? edge.Root : edge.Leaf;
+
+            Scene.ChangeEdge (edge, newItem, root);
+            Scene.Graph.OnGraphChanged (edge, GraphEventType.Update);
+
+            Scene.Requests.Add (new LayoutCommand<IVisual> (edge, LayoutActionType.Justify));
+            foreach (var twig in Scene.Twig (edge)) {
+                Scene.Requests.Add (new LayoutCommand<IVisual> (twig, LayoutActionType.Justify));
+            }
+
+            CommandsPerform ();
+
+            return oldItem;
+        }
+
+        /// <summary>
+        /// make a new link
+        /// add it to Scene
+        /// call View.OnGraphChanged 
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="leaf"></param>
+        /// <returns></returns>
+        public IVisualEdge AddEdge (IVisual root, IVisual leaf) {
+
+            var sourceEdge = new VisualEdge<string> ("", root, leaf);
+            sourceEdge.Data = GraphExtensions.EdgeString<IVisual, IVisualEdge> (sourceEdge);
+
+            Scene.Add (sourceEdge);
+            Scene.Graph.OnGraphChanged (sourceEdge, GraphEventType.Add);
+            return sourceEdge;
+        }
+
+        public void RemoveEdge (IVisualEdge edge) {
+            this.Scene.Graph.OnGraphChanged (edge, GraphEventType.Remove);
+            this.Scene.Remove (edge);
+        }
+
+        public static SceneTestEnvironment<TItem, TEdge>[] Create<TFactory> (int count) where TFactory : ISampleGraphFactory<TItem, TEdge>, new () {
+            var tests = new SceneTestEnvironment<TItem, TEdge, TFactory>[count];
+            var i = 0;
+            tests.ForEach (t => {
+                var test = new SceneTestEnvironment<TItem, TEdge, TFactory>();
+                tests[i++] = test;
+            });
+            return tests;
+        }
+
+        #endregion
+
+        #region Proves
+
+        public void AreEquivalent (IEnumerable<IVisual> visuals, IGraph<IVisual, IVisualEdge> graph) {
+
+            foreach (var visual in visuals) {
+                string s = "graph.Contains( " + visual.Data.ToString () + " )";
+                if (visual is IVisualEdge) {
+                    Assert.IsTrue (graph.Contains ((IVisualEdge)visual), s);
+                } else {
+                    Assert.IsTrue (graph.Contains (visual), s);
+                }
+            }
+
+            var visualsCollection = visuals.ToArray();
+            foreach (var visual in graph) {
+                var s = "visuals.Contains( " + visual.Data.ToString () + " )";
+                Assert.IsTrue (visualsCollection.Contains (visual), s);
+            }
+        }
+
+        public void ProveShapes (IGraphScene<IVisual, IVisualEdge> scene) {
+            CommandsPerform ();
+            var indexList = new Set<IVisual> ();
+            foreach (var visual in scene.SpatialIndex.Query ()) {
+                if (!indexList.Contains (visual)) {
+                    indexList.Add (visual);
+                } else {
+                    Assert.Fail (visual + " two times in SpatialIndex");
+                }
+                bool found = false;
+                if (visual is IVisualEdge)
+                    found = scene.Contains ((IVisualEdge)visual);
+                else
+                    found = scene.Contains (visual);
+
+                Assert.IsTrue (found,
+                               "to much items in SpatialIndex: ! scene.Contains ( " + visual.ToString () + " ) of Spatialindex");
+            }
+
+            foreach (var visual in scene.Graph) {
+                if (visual.Shape != null)
+                    Assert.IsTrue (indexList.Contains (visual),
+                                   "to less items in SpatialIndex: ! SpatialIndex.Contains ( " + visual.ToString () + " ) of scene.Graph");
+            }
+        }
+
+        public void ProoveChangedLink (IVisualEdge edge, IVisual newItem, IVisual oldItem, bool root) {
+            ProoveChangedLink (edge, newItem, oldItem, root, true);
+        }
+
+        public void ProoveChangedLink (IVisualEdge edge, IVisual newItem, IVisual oldItem, bool root, bool inView) {
+
+            Assert.IsNotNull (edge);
+            Assert.AreSame (root ? edge.Root : edge.Leaf, newItem);
+            Assert.AreNotSame (root ? edge.Root : edge.Leaf, oldItem);
+
+            if (inView) {
+                Assert.IsTrue (View.Edges (newItem).Contains (edge));
+                Assert.IsFalse (View.Edges (oldItem).Contains (edge));
+            } else {
+                Assert.IsTrue (Source.Edges (newItem).Contains (edge));
+                Assert.IsFalse (Source.Edges (oldItem).Contains (edge));
+            }
+        }
+
+        public void ProveContains (IGraph<IVisual, IVisualEdge> graph, params IVisual[] visuals) {
+            foreach (var item in visuals)
+                if (item is IVisualEdge)
+                    Assert.IsTrue (graph.Contains ((IVisualEdge)item));
+                else
+                    Assert.IsTrue (graph.Contains (item));
+        }
+
+        public void ProveNotContains (IGraph<IVisual, IVisualEdge> graph, params IVisual[] visuals) {
+            foreach (var item in visuals)
+                if (item is IVisualEdge)
+                    Assert.IsFalse (graph.Contains ((IVisualEdge)item));
+                else
+                    Assert.IsFalse (graph.Contains (item));
+        }
+
+        /// <summary>
+        /// tests if View.Sink contains visuals
+        /// </summary>
+        /// <param name="visuals"></param>
+        public void ProveViewContains (params IVisual[] visuals) {
+            ProveContains (this.View.Sink, visuals);
+        }
+
+        public void ProveViewNotContains (params IVisual[] visuals) {
+            ProveNotContains (this.View.Sink, visuals);
+        }
+        #endregion
+
+       
     }
 }
