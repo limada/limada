@@ -53,7 +53,7 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         public override bool Supports (long streamType) {
-            return streamType == ContentTypes.RTF || streamType == ContentTypes.ASCII;
+            return streamType == ContentTypes.RTF || streamType == ContentTypes.ASCII || streamType == ContentTypes.Text;
         }
 
         double zoom = 1;
@@ -86,6 +86,8 @@ namespace Limaki.Viewers.StreamViewers {
                     rtfStreamType = TextViewerRtfType.RichText;
 
                     stream = PrepareRead(stream);
+                } else if (content.ContentType == ContentTypes.Text) {
+                    rtfStreamType = TextViewerRtfType.UnicodePlainText;
                 }
 
                 backend.Load(stream, rtfStreamType);

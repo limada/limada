@@ -73,6 +73,8 @@ namespace Limada.VisualThings {
                 } else {
                     result.Shape = ShapeFactory.Create<IRectangleShape>();
                 }
+            } else {
+                result.Shape = ShapeFactory.Create<IRoundedRectangleShape>();
             }
 
             return result;

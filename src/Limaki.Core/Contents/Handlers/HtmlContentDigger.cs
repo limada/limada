@@ -34,8 +34,7 @@ namespace Limaki.Contents.IO {
         protected virtual Content<Stream> Digg (Content<Stream> source, Content<Stream> sink) {
             if (!_spot.Supports(source.ContentType))
                 return sink;
-            var buffer = new byte[source.Data.Length];
-            source.Data.Read(buffer, 0, buffer.Length);
+            var buffer = _spot.GetBuffer(source.Data, (int)source.Data.Length); 
             var s = (TextHelper.IsUnicode(buffer) ? Encoding.Unicode.GetString(buffer) : Encoding.ASCII.GetString(buffer));
             if (!Fragment2Html(s, sink)) {
                 // TODO: find source
@@ -66,6 +65,7 @@ namespace Limaki.Contents.IO {
                 if (!int.TryParse(subText, out endIndex))
                     return false;
                 if (startIndex != -1 && endIndex != -1) {
+                    endIndex = Math.Max(endIndex, source.IndexOf("</body>") + 7);
                     endIndex = Math.Min(source.Length, endIndex);
                     sink.Source = source.Between("SourceURL:", "\r\n", 0);
                     sink.Data = new MemoryStream(Encoding.Default.GetBytes(source.Substring(startIndex, endIndex - startIndex)));
@@ -99,7 +99,7 @@ namespace Limaki.Contents.IO {
                                 new Element { Name = "h4", Text = "" },
                                 firstText,
                             };
-
+                var plainText = "";
                 parser.DoElement += stuff => {
                     var tag = stuff.Element.ToLower();
                     foreach (var element in elements) {
@@ -130,13 +130,22 @@ namespace Limaki.Contents.IO {
                         if (element.Parsing)
                             element.Text += text;
                     }
+                    if (firstText.Parsed || firstText.Parsing)
+                        plainText += text;
                 };
                 parser.Parse();
 
+                plainText = System.Net.WebUtility.HtmlDecode (plainText.Replace ("\r\n", ""));
+                string description = null;
                 foreach (var element in elements.Where(e => e.Parsed)) {
-                    sink.Description = System.Net.WebUtility.HtmlDecode(element.Text.Replace("\r\n",""));
-                    break;
+                    description = System.Net.WebUtility.HtmlDecode(element.Text.Replace("\r\n",""));
+                    if (!string.IsNullOrEmpty (description))
+                        break;
                 }
+                sink.Description = description;
+                if (description == plainText)
+                    sink.Data = null;
+
             } catch (Exception e) {
                 throw e;
             }

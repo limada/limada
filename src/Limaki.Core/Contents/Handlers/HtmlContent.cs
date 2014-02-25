@@ -56,11 +56,7 @@ namespace Limaki.Contents.IO {
 
             ContentInfo result = null;
 
-            var oldPos = stream.Position;
-            int buflen = Math.Min(2048, (int)stream.Length);
-            var buffer = new byte[buflen];
-
-            stream.Read(buffer, 0, buflen);
+            var buffer = GetBuffer(stream, 2048);
             
             var s = (TextHelper.IsUnicode(buffer) ? Encoding.Unicode.GetString(buffer) : Encoding.ASCII.GetString(buffer)).ToLower();
             if (
@@ -78,7 +74,7 @@ namespace Limaki.Contents.IO {
                     result = ContentSpecs.First(t => t.ContentType == XHTML);
             }
 
-            stream.Position = oldPos;
+
             return result;
         }
 

@@ -13,6 +13,7 @@
  * 
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -41,6 +42,16 @@ namespace Limaki.Contents {
 
         public virtual bool Supports (Stream stream) {
             return Use(stream) != null;
+        }
+
+        public byte[] GetBuffer (Stream stream, int buflen) {
+            var oldPos = stream.Position;
+            buflen = Math.Min(buflen, (int) stream.Length);
+            var buffer = new byte[buflen];
+
+            stream.Read(buffer, 0, buflen);
+            stream.Position = oldPos;
+            return buffer;
         }
 
         protected virtual bool BuffersAreEqual (byte[] a, byte[] b) {

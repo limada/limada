@@ -185,6 +185,7 @@
     <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\ZipConstants.cs" />
     <Compile Include="3rdParty\ICSharpCode.SharpZipLib\Zip\ZipException.cs" />
     <Compile Include="Contents\ContentConverter.cs" />
+    <Compile Include="Contents\Handlers\TextContent.cs" />
     <Compile Include="Contents\IO\StreamContentIoPool.cs" />
     <Compile Include="Context\LimakiCoreContextRecourceLoader.cs" />
     <Compile Include="Data\Iori.cs" />
