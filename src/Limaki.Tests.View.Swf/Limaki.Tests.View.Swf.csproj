@@ -87,6 +87,14 @@
     </Compile>
     <Compile Include="[Obosolete]\BenchmarkOneTests008.cs" />
     <Compile Include="[Obosolete]\DisplayTest008.cs" />
+    <Compile Include="[Obosolete]\Painters\BezierPainter.cs" />
+    <Compile Include="[Obosolete]\Painters\GdiPainter.cs" />
+    <Compile Include="[Obosolete]\Painters\PainterFactory.cs" />
+    <Compile Include="[Obosolete]\Painters\RectanglePainter.cs" />
+    <Compile Include="[Obosolete]\Painters\RoundedRectanglePainter.cs" />
+    <Compile Include="[Obosolete]\Painters\StringPainter.cs" />
+    <Compile Include="[Obosolete]\Painters\StringPainterBase.cs" />
+    <Compile Include="[Obosolete]\Painters\VectorPainter.cs" />
     <Compile Include="[Obosolete]\TestDevice.cs" />
     <Compile Include="[Obosolete]\VisualsDisplayTest008.cs" />
   </ItemGroup>
