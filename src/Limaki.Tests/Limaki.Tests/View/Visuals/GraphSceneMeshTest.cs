@@ -124,12 +124,12 @@ namespace Limaki.Tests.View.Visuals {
                 var sinkOldRoot = sink.ChangeLink (sinkEdge, sink.Nodes[iNewRoot], true);
 
                 // test if changed 
-                sink.ProoveChangedLink (sinkEdge, sink.Nodes[iNewRoot], sinkOldRoot, true);
-                source.ProoveChangedLink (sourceEdge, source.Nodes[iNewRoot], source.Nodes[iOldRoot], true);
+                sink.ProveChangedEdge (sinkEdge, sink.Nodes[iNewRoot], sinkOldRoot, true);
+                source.ProveChangedEdge (sourceEdge, source.Nodes[iNewRoot], source.Nodes[iOldRoot], true);
 
                 sources.ForEach (t => {
                     var tEdge = t.Source.Get (backEdge) as IVisualEdge;
-                    t.ProoveChangedLink (tEdge, t.Nodes[iNewRoot], t.Nodes[iOldRoot], true,
+                    t.ProveChangedEdge (tEdge, t.Nodes[iNewRoot], t.Nodes[iOldRoot], true,
                         // there could be a display without visible root and leaf
                         t.Scene.Contains (tEdge.Root) && t.Scene.Contains (tEdge.Leaf)
                         );

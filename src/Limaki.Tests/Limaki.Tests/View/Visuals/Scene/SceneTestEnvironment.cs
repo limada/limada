@@ -256,11 +256,32 @@ namespace Limaki.Tests.View.Visuals {
             }
         }
 
-        public void ProoveChangedLink (IVisualEdge edge, IVisual newItem, IVisual oldItem, bool root) {
-            ProoveChangedLink (edge, newItem, oldItem, root, true);
+        public void ProveChangedEdge (IVisualEdge edge, IVisual newItem, IVisual oldItem, bool root) {
+            ProveChangedEdge (edge, newItem, oldItem, root, true);
         }
 
-        public void ProoveChangedLink (IVisualEdge edge, IVisual newItem, IVisual oldItem, bool root, bool inView) {
+        public void ProveEdgesContainRootLeaf (IGraph<IVisual, IVisualEdge> graph) {
+            foreach (var edge in graph.Edges ()) {
+                if (edge.Root is IVisualEdge)
+                    Assert.IsTrue (graph.Contains ((IVisualEdge)edge.Root));
+                else
+                    Assert.IsTrue (graph.Contains (edge.Root));
+
+                if (edge.Leaf is IVisualEdge)
+                    Assert.IsTrue (graph.Contains ((IVisualEdge)edge.Leaf));
+                else
+                    Assert.IsTrue (graph.Contains (edge.Leaf));
+            }
+
+        }
+
+        public void ProveLocationNotZero (params IVisual[] visuals) {
+            foreach (var item in visuals) {
+                Assert.AreNotEqual (item.Location, Point.Zero,"{0} has a zero location",item.Data);
+            }
+        }
+
+        public void ProveChangedEdge (IVisualEdge edge, IVisual newItem, IVisual oldItem, bool root, bool inView) {
 
             Assert.IsNotNull (edge);
             Assert.AreSame (root ? edge.Root : edge.Leaf, newItem);
