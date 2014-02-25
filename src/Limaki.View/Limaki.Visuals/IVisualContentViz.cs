@@ -14,8 +14,6 @@ namespace Limaki.Visuals {
         /// <returns></returns>
         IVisual VisualOfContent(IGraph<IVisual, IVisualEdge> graph, Content<Stream> content);
 
-        IVisual VisualOfRichContent(IGraph<IVisual, IVisualEdge> graph, Content<Stream> content);
-
 
         /// <summary>
         /// gives back the content of the

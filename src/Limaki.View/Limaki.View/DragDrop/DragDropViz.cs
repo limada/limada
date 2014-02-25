@@ -79,7 +79,7 @@ namespace Limaki.View.DragDrop {
 
                         ContentDiggPool.Use(content);
 
-                        var result =  VisualContentViz.VisualOfRichContent(graph, content);
+                        var result =  VisualContentViz.VisualOfContent(graph, content);
                        
 
                         return result;

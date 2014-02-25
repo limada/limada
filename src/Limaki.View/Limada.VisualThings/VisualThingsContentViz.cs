@@ -42,31 +42,6 @@ namespace Limada.VisualThings {
             if (sourceGraph != null) {
                 var thingGraph = graph.ThingGraph();
                 var factory = graph.ThingFactory();
-                
-                var thing = new ThingContentFacade(factory).AssignContent(thingGraph, null, content);
-                
-                result = sourceGraph.Get(thing);
-            }
-            return result;
-        }
-
-
-
-        /// <summary>
-        /// creates a visual, backed by a
-        /// StreamThing, created and assigned with content
-        /// tries to get out the most information in content
-        /// </summary>
-        /// <param name="graph"></param>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public virtual IVisual VisualOfRichContent (IGraph<IVisual, IVisualEdge> graph, Content<Stream> content) {
-            
-            IVisual result = null;
-            var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
-            if (sourceGraph != null) {
-                var thingGraph = graph.ThingGraph();
-                var factory = graph.ThingFactory();
 
                 var thing = new ThingContentFacade(factory).AssignContent(thingGraph, null, content);
 
