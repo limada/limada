@@ -47,7 +47,7 @@ namespace Limada.Usecases {
             var pageThing = source.ThingOf(page) as IStreamThing;
             if (pageThing != null ) {
                 try {
-                    result = ThingContentFacade.ConentOf(pageThing);
+                    result = ThingContentFacade.ContentOf(pageThing);
                 } finally {
                     pageThing.ClearRealSubject(true);
                 }

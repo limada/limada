@@ -98,9 +98,11 @@ namespace Limaki.Graphs.Extensions {
         public static Type[]
            GraphPairTypes<TSinkItem, TSinkEdge> (this IGraph<TSinkItem, TSinkEdge> graph) where TSinkEdge : IEdge<TSinkItem>, TSinkItem {
 
-            var graphPairType = graph.GetType ().GetInterfaces ().Where (i => i.IsGenericType && i.GetGenericTypeDefinition () == typeof (IGraphPair<,,,>)).FirstOrDefault ();
+            if (graph == null)
+                return null;
+            var graphPairType = graph.GetType().GetInterfaces().Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof (IGraphPair<,,,>)).FirstOrDefault();
             if (graphPairType != null)
-                return graphPairType.GetGenericArguments ();
+                return graphPairType.GetGenericArguments();
             return null;
         }
 

@@ -12,7 +12,7 @@
  * 
  */
 
-
+using SD = System.Drawing;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using Limaki.Actions;
@@ -30,6 +30,7 @@ using Xwt.Gdi.Backend;
 using Xwt.Drawing;
 using Matrix = Xwt.Drawing.Matrix;
 
+
 namespace Limaki.Tests.View.GDI {
     public class RegionSandbox : Layer<Empty> {
         public override Empty Data {
@@ -42,14 +43,12 @@ namespace Limaki.Tests.View.GDI {
 
         public override void DataChanged () { }
         private SolidBrush regionBrush = 
-            new SolidBrush(System.Drawing.Color.FromArgb(100, 
-                                                         System.Drawing.Color.Fuchsia));
+            new SolidBrush(SD.Color.FromArgb(100, SD.Color.Fuchsia));
         private SolidBrush clipregionBrush = 
-            new SolidBrush(System.Drawing.Color.FromArgb(100, 
-                                                         System.Drawing.Color.Plum));
+            new SolidBrush(SD.Color.FromArgb(100, SD.Color.Plum));
 
-        private System.Drawing.Pen rectPen = new System.Drawing.Pen(System.Drawing.Color.Green);
-        private System.Drawing.Pen pathPen = new System.Drawing.Pen(System.Drawing.Color.Red);
+        private SD.Pen rectPen = new SD.Pen(SD.Color.Green);
+        private SD.Pen pathPen = new SD.Pen(SD.Color.Red);
         Region region = new Region();
         private Point start = new Point(200, 100);
         private GraphicsPath invPath = new GraphicsPath();
@@ -76,12 +75,12 @@ namespace Limaki.Tests.View.GDI {
             
             g.DrawPath(pathPen, invPath);
             var count = shape[Anchor.MostLeft].ToGdi();
-            g.DrawString(i.ToString(), SystemFonts.StatusFont, SystemBrushes.Control, count);
+            g.DrawString(i.ToString(), SD.SystemFonts.StatusFont, SystemBrushes.Control, count);
 
             invPath.Reset();
             invPath.AddPolygon(GetHull(shape,Camera.Matrix,2));
             var save = g.Transform;
-            g.Transform = new System.Drawing.Drawing2D.Matrix ();
+            g.Transform = new SD.Drawing2D.Matrix ();
             g.DrawPath(pathPen, invPath);
             g.Transform = save;
 
@@ -152,7 +151,7 @@ namespace Limaki.Tests.View.GDI {
 
         public override void OnPaint(IRenderEventArgs e) {
             Graphics g = ((GdiSurface)e.Surface).Graphics;
-            System.Drawing.Drawing2D.Matrix save = g.Transform;
+            SD.Drawing2D.Matrix save = g.Transform;
             g.Transform = Camera.Matrix.ToGdi();
 
             Rectangle smaller = new Rectangle(start, new Size(50, 20));
@@ -198,7 +197,7 @@ namespace Limaki.Tests.View.GDI {
 
         public void OnPaintTest2(IRenderEventArgs e) {
             Graphics g = ((GdiSurface)e.Surface).Graphics;
-            System.Drawing.Drawing2D.Matrix save = g.Transform;
+            SD.Drawing2D.Matrix save = g.Transform;
             g.Transform = Camera.Matrix.ToGdi();
 
             Rectangle smaller = new Rectangle(start, new Size(50, 20));

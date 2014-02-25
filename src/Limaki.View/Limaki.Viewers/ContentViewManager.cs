@@ -86,7 +86,7 @@ namespace Limaki.Viewers {
                 if (viewer.ContentId != thing.Id) {
                     SaveStream(graph, viewer);
 
-                    var info = ThingContentFacade.ConentOf(graph, thing);
+                    var info = ThingContentFacade.ContentOf(graph, thing);
                     if (viewer is SheetViewer) {
                         info.Source = thing.Id;
                     }

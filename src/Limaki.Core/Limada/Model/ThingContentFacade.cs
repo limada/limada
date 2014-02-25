@@ -118,8 +118,8 @@ namespace Limada.Model {
         /// <param name="graph"></param>
         /// <param name="thing"></param>
         /// <returns></returns>
-        public static Content<Stream> ConentOf(IThingGraph graph, IThing thing) {
-            var result = ConentOf (thing);
+        public static Content<Stream> ContentOf(IThingGraph graph, IThing thing) {
+            var result = ContentOf (thing);
             if (result !=null && graph is SchemaThingGraph) {
                 result.Description = graph.Description(thing);
                 result.Source = graph.Source(thing);
@@ -132,7 +132,7 @@ namespace Limada.Model {
         /// </summary>
         /// <param name="thing"></param>
         /// <returns></returns>
-        public static Content<Stream> ConentOf(IThing thing) {
+        public static Content<Stream> ContentOf(IThing thing) {
             var result = default( Content<Stream> );
             var streamThing = thing as IStreamThing;
             if (streamThing!=null) {

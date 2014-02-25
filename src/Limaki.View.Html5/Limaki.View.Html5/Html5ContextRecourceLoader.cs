@@ -34,10 +34,11 @@ namespace Limaki.View.Html5 {
     public class Html5ContextRecourceLoader : IBackendContextRecourceLoader {
 
         public virtual void RegisterXwtBackends (bool asGuest) {
-            var tk = Toolkit.CreateToolkit<Html5Engine> (asGuest);
-            tk.SetActive ();
-            tk.RegisterBackend<SystemColorsBackend, HtmlSystemColorsBackend> ();
-            tk.RegisterBackend<SystemFontBackend, Html5SystemFontBackend> ();
+            var tk = Toolkit.CreateToolkit<Html5Engine>(asGuest);
+            if (!asGuest)
+                tk.SetActive();
+            tk.RegisterBackend<SystemColorsBackend, HtmlSystemColorsBackend>();
+            tk.RegisterBackend<SystemFontBackend, Html5SystemFontBackend>();
         }
 
         public virtual void ApplyHtml5Resources (IApplicationContext context) {

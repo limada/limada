@@ -205,7 +205,7 @@ namespace Limada.Usecases.Cms {
             if (thing == null)
                 return null;
 
-            var result = new StreamContent (ThingContentFacade.ConentOf (ThingGraph, thing));
+            var result = new StreamContent (ThingContentFacade.ContentOf (ThingGraph, thing));
             result.Source = thing.Id.ToString ("X16");
 
             var contentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool>();
@@ -271,7 +271,7 @@ namespace Limada.Usecases.Cms {
                     var converter = Registry.Pool.TryGetCreate<ConverterPool<Stream>>()
                             .Find(thing.StreamType, sinkType);
                     if (converter != null) {
-                        var source = ThingContentFacade.ConentOf (thing);
+                        var source = ThingContentFacade.ContentOf (thing);
                         using (var reader = new StreamReader(converter.Use(source, sinkType).Data))
                             result.Data = reader.ReadToEnd();
                         source.Data.Dispose();

@@ -466,7 +466,7 @@ namespace Limaki.Viewers {
             if (scene == null)
                 return;
 
-            Content<Stream> content = new Content<Stream>(
+            var content = new Content<Stream>(
                 new MemoryStream(), CompressionType.bZip2, ContentTypes.RTF);
 
             content.Description = title;

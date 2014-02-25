@@ -14,16 +14,14 @@
 
 using System;
 using System.Collections.Generic;
-using Limaki.Actions;
 using System.Linq;
-using Limaki.Graphs.Extensions;
-using Limaki.View.Visualizers;
-using Limaki.View.Layout;
-using Limaki.View.UI.GraphScene;
-using Limaki.Visuals;
-using System.Diagnostics;
-using Xwt;
+using Limaki.Actions;
 using Limaki.Drawing;
+using Limaki.Graphs.Extensions;
+using Limaki.View.Layout;
+using Limaki.View.Visualizers;
+using Limaki.Visuals;
+using Xwt;
 using Xwt.Backends;
 
 namespace Limaki.Viewers.ToolStripViewers {

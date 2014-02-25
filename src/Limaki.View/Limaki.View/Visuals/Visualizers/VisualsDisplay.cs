@@ -63,7 +63,7 @@ namespace Limaki.View.Visuals.Visualizers {
             display.EventControler.Add(new GraphSceneFolding<IVisual, IVisualEdge> {
                 SceneHandler = this.GraphScene,
                 Layout = this.Layout,
-                DeviceRenderer = display.BackendRenderer,
+                BackendRenderer = display.BackendRenderer,
                 MoveResizeRenderer = display.MoveResizeRenderer,
                 OrderBy = new VisualComparer(),
                 RemoveOrphans = true

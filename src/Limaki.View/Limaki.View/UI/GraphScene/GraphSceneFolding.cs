@@ -26,7 +26,7 @@ namespace Limaki.View.UI.GraphScene {
         where TItem: class 
         where TEdge: TItem, IEdge<TItem> {
 
-        IBackendRenderer DeviceRenderer { get; set; }
+        IBackendRenderer BackendRenderer { get; set; }
         ISelectionRenderer MoveResizeRenderer { get; set; }
         Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
         Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
@@ -42,7 +42,7 @@ namespace Limaki.View.UI.GraphScene {
 
         public GraphSceneFolding(): base() {}
 
-        public IBackendRenderer DeviceRenderer {get;set;}
+        public IBackendRenderer BackendRenderer {get;set;}
         public virtual ISelectionRenderer MoveResizeRenderer { get; set; }
 
         public Func<IGraphSceneLayout<TItem, TEdge>> Layout { get;set;}
@@ -108,7 +108,7 @@ namespace Limaki.View.UI.GraphScene {
             }
 
             if (wasFiltered != Folder.IsFiltered)
-                DeviceRenderer.Render ();
+                BackendRenderer.Render ();
 
         }
 
@@ -121,7 +121,7 @@ namespace Limaki.View.UI.GraphScene {
             if (this.Layout == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IGraphSceneLayout<TItem, TEdge>));
             }
-            if (this.DeviceRenderer == null) {
+            if (this.BackendRenderer == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IBackendRenderer));
             }
             return true;

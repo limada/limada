@@ -254,7 +254,7 @@ namespace Limada.Schemata {
 
             return Pages(graph, document)
                 .Where(page => page is IStreamThing)
-                .Select(page => ThingContentFacade.ConentOf(graph, page));
+                .Select(page => ThingContentFacade.ContentOf(graph, page));
         }
 
 
