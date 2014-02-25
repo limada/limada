@@ -72,32 +72,9 @@ namespace Limaki.View.UI.GraphScene {
 
         public override void OnKeyPressed( KeyActionEventArgs e ) {
             base.OnKeyPressed(e);
+            bool act = !(Folder.Scene.Focused is TEdge);
 
             bool wasFiltered = Folder.IsFiltered;
-
-            if ((e.Key == Key.NumPadAdd || e.Key == Key.Plus) && e.Modifiers == ModifierKeys.None) {
-                Folder.Expand (false);
-            }
-
-            if ((e.Key == Key.NumPadSubtract || e.Key == Key.Minus) && e.Modifiers == ModifierKeys.None) {
-                Folder.Collapse ();
-            }
-
-            if ((e.Key == Key.NumPadDivide || e.Key == Key.Slash)) {
-                Folder.CollapseToFocused ();
-            }
-
-            if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.Control) {
-                Folder.ShowAllData ();
-            }
-
-            if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.None) {
-                Folder.Expand (true);
-            }
-
-            if ((e.Key == Key.Space && e.Modifiers == ModifierKeys.None)) {
-                Folder.Toggle ();
-            }
 
             if (e.Key == Key.Delete && e.Modifiers == ModifierKeys.None) {
                 if (MoveResizeRenderer != null) {
@@ -105,7 +82,29 @@ namespace Limaki.View.UI.GraphScene {
                     MoveResizeRenderer.ShowGrips = false;
                 }
                 Folder.Hide();
-            }
+            } else
+                if (act) { // don't handle edges, as this has errors
+
+                    if ((e.Key == Key.NumPadAdd || e.Key == Key.Plus) && e.Modifiers == ModifierKeys.None) {
+                        Folder.Expand(false);
+
+                    } else if ((e.Key == Key.NumPadSubtract || e.Key == Key.Minus) && e.Modifiers == ModifierKeys.None) {
+                        Folder.Collapse();
+
+                    } else if ((e.Key == Key.NumPadDivide || e.Key == Key.Slash)) {
+                        Folder.CollapseToFocused();
+
+                    } else if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.Control) {
+                        Folder.ShowAllData();
+
+                    } else if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.None) {
+                        Folder.Expand(true);
+
+                    } else if ((e.Key == Key.Space && e.Modifiers == ModifierKeys.None)) {
+                        Folder.Toggle();
+                    }
+
+                }
 
             if (wasFiltered != Folder.IsFiltered)
                 BackendRenderer.Render ();
