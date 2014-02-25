@@ -42,10 +42,13 @@ namespace Limada.VisualThings {
             if (sourceGraph != null) {
                 var thingGraph = graph.ThingGraph();
                 var factory = graph.ThingFactory();
-
-                var thing = new ThingContentFacade(factory).AssignContent(thingGraph, null, content);
-
-                // TODO: use ContentThingDiggers here (over its provider), similar to a ContentDigger, but with graph and thing as parameters
+                IThing thing = null;
+                if (content.Data != null)
+                    thing = new ThingContentFacade(factory).AssignContent(thingGraph, null, content);
+                else {
+                    thing = factory.CreateItem(content.Description);
+                    thingGraph.Add(thing);
+                }
 
                 result = sourceGraph.Get(thing);
             }
