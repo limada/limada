@@ -16,13 +16,14 @@ using System.Collections.Generic;
 using Limaki.Common;
 using Xwt.Drawing;
 using System.Globalization;
+using Xwt;
 
 namespace Limaki.Drawing.Styles {
 
     public class StyleSheets : Dictionary<string, IStyleSheet> {
 
-        ISystemFonts _systemfonts = null;
-        protected ISystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = Registry.Pool.TryGetCreate<ISystemFonts> ()); } }
+        SystemFonts _systemfonts = null;
+        protected SystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = new SystemFonts()); } }
 
         IDrawingUtils _drawingUtils = null;
         protected IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils> ()); } }
@@ -106,7 +107,7 @@ namespace Limaki.Drawing.Styles {
             return _styleSheet;
         }
 
-        public virtual void Init() {
+        public virtual StyleSheets Compose() {
             foreach (var name in StyleSheetNames) {
                 var sheet = PredefinedStyleSheets(name);
                 if (sheet != null) {
@@ -114,6 +115,7 @@ namespace Limaki.Drawing.Styles {
                         this.Add(sheet.Name, sheet);
                 }
             }
+            return this;
         }
 
         public new void Clear() {

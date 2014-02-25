@@ -57,7 +57,7 @@
     <Compile Include="TODO\WebBrowserBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\WpfContextRecourceLoader.cs" />
     <Compile Include="Limaki.View.WpfBackends\WpfSystemColorsBackend.cs" />
-    <Compile Include="Limaki.View.WpfBackends\WpfSystemFonts.cs" />
+    <Compile Include="Limaki.View.WpfBackends\WpfSystemFontBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\WpfSystemInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

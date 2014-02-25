@@ -31,6 +31,7 @@ using Limaki.Viewers.StreamViewers;
 using DialogResult = Limaki.Viewers.DialogResult;
 using ImageExporter = Limaki.View.Swf.Visuals.ImageExporter;
 using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
+using SD = System.Drawing;
 
 namespace Limaki.Swf.Backends.UseCases {
 
@@ -173,7 +174,7 @@ namespace Limaki.Swf.Backends.UseCases {
                 })
             });
 
-            var font = SystemFonts.MenuFont;
+            var font = SD.SystemFonts.MenuFont;
             MenuStrip.Font = font;
 
             Action<ToolStripMenuItem> setFont = null;

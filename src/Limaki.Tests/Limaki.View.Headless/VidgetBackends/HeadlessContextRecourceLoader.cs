@@ -30,10 +30,11 @@ namespace Limaki.View.Headless {
             
             if (tk.Backend is HeadlessEngine) {
                 tk.RegisterBackend<SystemColorsBackend, HeadlessSystemColorsBackend>();
+                tk.RegisterBackend<SystemFontBackend, HeadlessSystemFontsBackend> ();
 
                 context.Factory.Add<IExceptionHandler, HeadlessExeptionHandlerBackend>();
                 context.Factory.Add<IDrawingUtils, HeadlessDrawingUtils>();
-                context.Factory.Add<ISystemFonts, HeadlessSystemFonts>();
+                
 
                 context.Factory.Add<IPainterFactory, DefaultPainterFactory>();
 

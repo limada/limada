@@ -12,17 +12,10 @@
  * 
  */
 
+using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Drawing {
-    public interface ISystemFonts {
-        Font CaptionFont { get; }
-        Font DefaultFont {get; }
-        Font DialogFont {get; }
-        Font IconTitleFont {get; }
-        Font MenuFont {get; }
-        Font MessageBoxFont {get; }
-        Font SmallCaptionFont {get; }
-        Font StatusFont { get; }
-    }
+
+   
 }

@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using Limaki.Common;
 using Xwt.Drawing;
 using System.Globalization;
+using Xwt;
 
 namespace Limaki.Drawing.Styles {
 
@@ -46,8 +47,8 @@ namespace Limaki.Drawing.Styles {
             }
         }
 
-        protected ISystemFonts _systemfonts = null;
-        protected ISystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = Registry.Pool.TryGetCreate<ISystemFonts>()); } }
+        protected SystemFonts _systemfonts = null;
+        protected SystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = new SystemFonts()); } }
 
         protected IDrawingUtils _drawingUtils = null;
         protected IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils>()); } }
@@ -155,7 +156,7 @@ namespace Limaki.Drawing.Styles {
 
         public static IStyle CreateStyleWithSystemSettings() {
             var result = new Style ("SystemStyle");
-            var systemfonts = Registry.Pool.TryGetCreate<ISystemFonts>();
+            var systemfonts = new SystemFonts();
             var drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils>();
 
             result.Font = systemfonts.DefaultFont;

@@ -155,7 +155,7 @@
     <Compile Include="Limaki.Tests\View\Drawing\PointComparerTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\PolyAlgoPrototyper.cs" />
     <Compile Include="Limaki.View.Headless\Drawing\HeadlessDrawingUtils.cs" />
-    <Compile Include="Limaki.View.Headless\Drawing\HeadlessSystemFonts.cs" />
+    <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessSystemFontsBackend.cs" />
     <Compile Include="Limaki.View.Headless\Drawing\HeadlessSystemInformation.cs" />
     <Compile Include="Limaki.View.Headless\VidgetBackends\DisplayBackend.cs" />
     <Compile Include="Limaki.View.Headless\VidgetBackends\DisplayBackendComposer.cs" />

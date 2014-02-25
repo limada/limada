@@ -35,11 +35,10 @@ namespace Limaki.View.XwtBackend {
         public virtual void ApplyXwtResources (IApplicationContext context) {
             var tk = Toolkit.CurrentEngine;
             tk.RegisterBackend<SystemColorsBackend, XwtSystemColorsBackend>();
+            tk.RegisterBackend<SystemFontBackend, XwtSystemFontBackend> ();
 
             context.Factory.Add<IExceptionHandler, XwtExeptionHandlerBackend>();
             context.Factory.Add<IDrawingUtils, XwtDrawingUtils>();
-            context.Factory.Add<ISystemFonts, XwtSystemFonts>();
-
             context.Factory.Add<IPainterFactory, DefaultPainterFactory>();
 
             context.Factory.Add<IUISystemInformation, XwtSystemInformation>();

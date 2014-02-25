@@ -53,7 +53,7 @@ namespace Limaki.View {
                 context.Factory.Add<IVisualFactory, VisualFactory>();
 
             var styleSheets = context.Pool.TryGetCreate<StyleSheets>();
-            styleSheets.Init();
+            styleSheets.Compose();
 
             GraphMapping.ChainGraphMapping<GraphVisualEntityMapping>(context);
             GraphMapping.ChainGraphMapping<VisualThingGraphMapping>(context);

@@ -118,7 +118,7 @@
     <Compile Include="Limaki.Drawing.Gdi\GdiFontCache.cs" />
     <Compile Include="Limaki.Drawing.Gdi\GdiPen.cs" />
     <Compile Include="Limaki.Drawing.Gdi\GdiSurface.cs" />
-    <Compile Include="Limaki.Drawing.Gdi\GdiSystemFonts.cs" />
+    <Compile Include="Limaki.Drawing.Gdi\GdiSystemFontBackend.cs" />
     <Compile Include="Limaki.Drawing.Gdi\GdiUtils.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\BezierPainter.cs" />
     <Compile Include="Limaki.Drawing.Gdi\Painters\GdiPainter.cs" />

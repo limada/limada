@@ -100,7 +100,7 @@
     <Compile Include="Limaki.View.XwtBackend\XwtMessager.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\ProgressHandler.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtSurface.cs" />
-    <Compile Include="Limaki.View.XwtBackend\XwtSystemFonts.cs" />
+    <Compile Include="Limaki.View.XwtBackend\XwtSystemFontBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtSystemInformation.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtSystemColorsBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtVidgetToolkitEngineBackend.cs" />

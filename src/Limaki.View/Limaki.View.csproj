@@ -185,7 +185,7 @@
     <Compile Include="Limaki.Drawing\IStyle.cs" />
     <Compile Include="Limaki.Drawing\IStyleSheet.cs" />
     <Compile Include="Limaki.Drawing\ISurface.cs" />
-    <Compile Include="Limaki.Drawing\ISystemFonts.cs" />
+    <Compile Include="Limaki.Drawing\SystemFontBackend.cs" />
     <Compile Include="Limaki.Drawing\Painters\BezierPainter.cs" />
     <Compile Include="Limaki.Drawing\Painters\RectanglePainter.cs" />
     <Compile Include="Limaki.Drawing\Painters\RoundedRectanglePainter.cs" />
@@ -380,6 +380,8 @@
     <Compile Include="Limaki.View.XwtContext\VisualSceneContextPainter.cs" />
     <Compile Include="Xwt\SystemColorsBackend.cs" />
     <Compile Include="Xwt\SystemColors.cs" />
+    <Compile Include="Xwt\SystemFontBackend.cs" />
+    <Compile Include="Xwt\SystemFonts.cs" />
     <Compile Include="Xwt\XwtLExtensions.cs" />
     <Compile Include="Xwt\XwtToChange.cs" />
   </ItemGroup>

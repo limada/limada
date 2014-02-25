@@ -25,8 +25,9 @@
 // THE SOFTWARE.
 
 using Xwt.Backends;
+using Xwt.Drawing;
 
-namespace Xwt.Drawing {
+namespace Xwt {
 
     public class SystemColors {
 

@@ -62,7 +62,7 @@
     <Compile Include="Limaki.View.Html5\Html5ExeptionHandlerBackend.cs" />
     <Compile Include="Limaki.View.Html5\Html5PageWriter.cs" />
     <Compile Include="Limaki.View.Html5\Html5Surface.cs" />
-    <Compile Include="Limaki.View.Html5\Html5SystemFonts.cs" />
+    <Compile Include="Limaki.View.Html5\Html5SystemFontBackend.cs" />
     <Compile Include="Limaki.View.Html5\Html5SystemInformation.cs" />
     <Compile Include="Limaki.View.Html5\Html5Canvas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

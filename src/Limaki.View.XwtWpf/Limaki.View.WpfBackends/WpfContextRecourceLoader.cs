@@ -36,8 +36,7 @@ namespace Limaki.View.WpfBackend {
         public override void ApplyResources(IApplicationContext context) {
             var tk = Toolkit.CurrentEngine;
             tk.RegisterBackend<SystemColorsBackend, WpfSystemColorsBackend>();
-
-            context.Factory.Add<ISystemFonts, WpfSystemFonts>();
+            tk.RegisterBackend<SystemFontBackend, WpfSystemFontBackend> ();
             context.Factory.Add<IUISystemInformation, WpfSystemInformation>();
 
             var factories = context.Pool.TryGetCreate<UsecaseFactories<ConceptUsecase>>();

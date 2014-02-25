@@ -54,13 +54,15 @@ namespace Limaki.View.Swf {
 
             Toolkit = Toolkit.CreateToolkit<Xwt.WinformBackend.SwfEngine>(false);
             Toolkit.RegisterBackend<Xwt.Backends.SystemColorsBackend, Xwt.Gdi.Backend.SystemColorsGdiBackend>();
+            Toolkit.RegisterBackend<SystemFontBackend, GdiSystemFontBackend> ();
+
             Toolkit.SetActive();
             
 
             context.Factory.Add<IExceptionHandler,SwfExeptionHandlerBackend>();
             context.Factory.Add<IProgressHandler, ProgressHandler>();
             context.Factory.Add<IDrawingUtils,GdiDrawingUtils>();
-            context.Factory.Add<ISystemFonts, GdiSystemFonts>();
+            
             context.Factory.Add<IPainterFactory, PainterFactory>();
 
             context.Factory.Add<IUISystemInformation, SwfSystemInformation>();
