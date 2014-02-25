@@ -120,14 +120,6 @@
     <Compile Include="Limaki.Drawing.Gdi\GdiSurface.cs" />
     <Compile Include="Limaki.Drawing.Gdi\GdiSystemFontBackend.cs" />
     <Compile Include="Limaki.Drawing.Gdi\GdiUtils.cs" />
-    <Compile Include="Limaki.Drawing.Gdi\Painters\BezierPainter.cs" />
-    <Compile Include="Limaki.Drawing.Gdi\Painters\GdiPainter.cs" />
-    <Compile Include="Limaki.Drawing.Gdi\Painters\PainterFactory.cs" />
-    <Compile Include="Limaki.Drawing.Gdi\Painters\RectanglePainter.cs" />
-    <Compile Include="Limaki.Drawing.Gdi\Painters\RoundedRectanglePainter.cs" />
-    <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainter.cs" />
-    <Compile Include="Limaki.Drawing.Gdi\Painters\StringPainterBase.cs" />
-    <Compile Include="Limaki.Drawing.Gdi\Painters\VectorPainter.cs" />
     <Compile Include="Limaki.Swf.Backends\VidgetBackends\DigidocViewerBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
