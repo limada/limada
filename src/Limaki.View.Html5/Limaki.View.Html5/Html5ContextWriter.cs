@@ -79,6 +79,16 @@ namespace Limaki.View.Html5 {
             CanvasPage = null;
         }
 
-        
+
+
+        public override object Save () {
+            Toolkit.Engine<Html5Engine>().SetActive();
+            return Toolkit.CurrentEngine;
+        }
+
+        public override void Restore (object saved) {
+            var engine = saved as Toolkit;
+            engine.SetActive();
+        }
     }
 }

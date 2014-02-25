@@ -10,6 +10,7 @@ using System.IO;
 using Limaki.Drawing;
 using Limaki.View.UI;
 using Limaki.View.Headless;
+using Xwt;
 
 
 namespace Limaki.Tests {
@@ -24,6 +25,9 @@ namespace Limaki.Tests {
                 RegisterHeadless (context);
                 
             }
+
+            new Html5ContextRecourceLoader ().RegisterXwtBackends (true);
+            
             if (!Registry.Factory.Contains<Limaki.View.Visualizers.IContextWriter>())
                 Registry.Factory.Add<Limaki.View.Visualizers.IContextWriter, Html5ContextWriter>();
             
@@ -34,11 +38,9 @@ namespace Limaki.Tests {
             new LimakiCoreContextRecourceLoader ().ApplyResources (context);
             var headless = new HeadlessContextRecourceLoader ();
             headless.ApplyHeadlessResources (context);
-            //new Html5ContextRecourceLoader ().ApplyHtml5Resources (context);
             new ViewContextRecourceLoader ().ApplyResources (context);
             headless.RegisterBackends (context);
             headless.RegisterDragDropFormats (context);
-
         }
 
         IContextWriter _reportPainter = null;

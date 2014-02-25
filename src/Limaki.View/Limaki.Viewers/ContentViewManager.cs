@@ -18,7 +18,6 @@ using Limaki.Common;
 using Limaki.Contents;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Model.Content;
 using Limaki.View;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
@@ -27,6 +26,7 @@ using Limaki.Visuals;
 using System;
 using System.IO;
 using System.Linq;
+using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Viewers {

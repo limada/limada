@@ -30,6 +30,8 @@ using Limaki.Graphs.Extensions;
 using NUnit.Framework;
 using Limaki.View.Layout;
 using Limaki.Common.Collections;
+using Limaki.View.Visuals.Rendering;
+using System.IO;
 
 namespace Limaki.Tests.View.Visuals {
 
@@ -37,6 +39,8 @@ namespace Limaki.Tests.View.Visuals {
         where TEdge : IEdge<TItem>, TItem
         where TFactory : ISampleGraphFactory<TItem, TEdge>, new () {
         public SceneTestEnvironment () : base (new SampleSceneFactory<TItem, TEdge, TFactory> ()) { }
+
+
     }
 
     public class SceneTestEnvironment<TItem, TEdge>
@@ -297,6 +301,26 @@ namespace Limaki.Tests.View.Visuals {
 
         public void ProveViewNotContains (params IVisual[] visuals) {
             ProveNotContains (this.View.Sink, visuals);
+        }
+
+        IContextWriter _reportPainter = null;
+        public virtual IContextWriter ReportPainter { get { return _reportPainter ?? (_reportPainter = Registry.Factory.Create<IContextWriter> ()); } }
+        public virtual void ReportScene(IGraphScene<IVisual,IVisualEdge> scene) {
+            var engine = ReportPainter.Save();
+
+            var worker = new GraphSceneContextVisualizer<IVisual, IVisualEdge> () {
+                Folder = this.SceneFacade,
+                //Layout = this.Display.Layout,
+                //StyleSheet = this.Display.StyleSheet
+            };
+            worker.Compose (scene, new VisualsRenderer ());
+            worker.Receiver.Perform ();
+            worker.Receiver.Finish ();
+            ReportPainter.PushPaint (ctx => worker.Painter.Paint (ctx));
+            using (var file = File.Create (this.GetType().Name+".html")) {
+                ReportPainter.Write (file);
+            }
+            ReportPainter.Restore (engine);
         }
         #endregion
 

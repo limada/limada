@@ -21,6 +21,7 @@ using Limaki.View.Modelling;
 using Limaki.View.Rendering;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.XwtContext;
+using Xwt.Drawing;
 
 namespace Limaki.View.Visualizers {
 
@@ -42,7 +43,9 @@ namespace Limaki.View.Visualizers {
             Func<IGraphScene<TItem, TEdge>> fScene = () => this.Scene;
 
             if (StyleSheet == null) {
-                StyleSheet = Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet;
+                StyleSheet = new StyleSheets().Compose().DefaultStyleSheet;
+                StyleSheet.BackColor = Colors.WhiteSmoke;
+                // maybe created with wrong toolkit! Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet;
             }
 
             if (Layout == null) {
