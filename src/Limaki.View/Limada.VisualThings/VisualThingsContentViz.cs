@@ -35,7 +35,7 @@ namespace Limada.VisualThings {
         /// <param name="graph"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public virtual IVisual VisualOfContent( IGraph<IVisual, IVisualEdge> graph, Content<Stream> content ) {
+        public virtual IVisual VisualOfContent (IGraph<IVisual, IVisualEdge> graph, Content<Stream> content) {
             
             IVisual result = null;
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
@@ -88,7 +88,7 @@ namespace Limada.VisualThings {
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
             if (sourceGraph != null) {
                 var thingGraph = graph.ThingGraph();
-                return ThingContentFacade.ConentOf(
+                return ThingContentFacade.ContentOf(
                     thingGraph,
                     sourceGraph.Get(visual));
             }

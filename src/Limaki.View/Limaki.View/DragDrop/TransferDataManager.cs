@@ -26,6 +26,7 @@ namespace Limaki.View.DragDrop {
         public TransferContentTypes TransferContentTypes { get { return _transferContentTypes ?? (_transferContentTypes = Registry.Pool.TryGetCreate<TransferContentTypes>()); } }
 
         public virtual IEnumerable<Tuple<TransferDataType,IContentIo<Stream>>> SinksOf (IEnumerable<TransferDataType> sources) {
+            
             foreach (var source in sources) {
                 var sourceId = source.Id;
                 long contentType = 0;

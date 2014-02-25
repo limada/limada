@@ -18,7 +18,6 @@ using Limaki.Common.IOC;
 using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
-using Limaki.Drawing.Gdi.Painters;
 using Limaki.Drawing.Shapes;
 using Limaki.IOC;
 using Limaki.Model.Content;
@@ -36,6 +35,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Xwt;
 using Xwt.Gdi.Backend;
+using Xwt.Backends;
 
 
 namespace Limaki.View.Swf {
@@ -63,7 +63,6 @@ namespace Limaki.View.Swf {
             context.Factory.Add<IProgressHandler, ProgressHandler>();
             context.Factory.Add<IDrawingUtils,GdiDrawingUtils>();
             
-            context.Factory.Add<IPainterFactory, PainterFactory>();
 
             context.Factory.Add<IUISystemInformation, SwfSystemInformation>();
             context.Factory.Add<IShapeFactory, ShapeFactory>();
