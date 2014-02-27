@@ -117,7 +117,7 @@ namespace Limaki.View.Swf {
 
             Registry.Factory.Add<IDragDropBackendHandler>(args => new DragDropBackendHandler(args[0] as IVidgetBackend));
 
-            var man = new TransferDataManager();
+            var man = Registry.Pool.TryGetCreate<TransferDataManager>();
             man.RegisterSome();
             man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.Html.ToLower(), ContentTypes.HTML);
             man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.Rtf.ToLower(), ContentTypes.RTF);

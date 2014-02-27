@@ -75,7 +75,7 @@ namespace Limaki.View.XwtBackend {
 
             Registry.Factory.Add<IDragDropBackendHandler>(args => new DragDropBackendHandler(args[0] as IVidgetBackend));
 
-            var man = new TransferDataManager();
+            var man = Registry.Pool.TryGetCreate <TransferDataManager>();
             man.RegisterSome();
             man.TransferContentTypes.Add("html format", ContentTypes.HTML);
             man.TransferContentTypes.Add("rich text format", ContentTypes.RTF);
