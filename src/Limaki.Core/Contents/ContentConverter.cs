@@ -49,7 +49,7 @@ namespace Limaki.Contents {
         }
 
         protected bool ProveTypes (Content<Stream> source, long sourceType, Content<Stream> sink, long sinkType) {
-            if (source.ContentType != sourceType || source.ContentType != sinkType)
+            if (source.ContentType != sourceType || sink.ContentType != sinkType)
                 throw new ArgumentException ("Conversion not supported");
             return true;
         }
