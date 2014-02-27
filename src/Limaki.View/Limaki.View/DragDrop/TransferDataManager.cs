@@ -101,6 +101,25 @@ namespace Limaki.View.DragDrop {
     }
 
     /// <summary>
+    /// class to register fingerprints of applications for Clipboard and DragDrop operations
+    /// key = <see cref="TransferDataType.Id"/>, value = <see cref="Content.ContentType"/>
     /// </summary>
-    public class TransferContentPool:ContentIoPool<Stream, Content<Stream>> {}
+    public class TransferFingerPrints  {
+        /// <summary>
+        /// order is important, the first wins!
+        /// 
+        /// PreferedFormats({"Star Object Descriptor (XML)"}, {"Rich Text Format"}) // if OpenOffice, then take Rtf 
+        /// PreferedFormats({"text/x-moz-url"}, {"text/uri-list"})
+        /// PreferedFormats({"text/_moz_htmlinfo"}, {"HTML Format"}) // if Firefox, then take HTML
+        /// </summary>
+        /// <param name="transferId"></param>
+        /// <param name="allowedIds"></param>
+        public virtual void PreferedFormats(IEnumerable<string> fingerprints, IEnumerable<string> allowedIds) {
+            
+        }
+        public virtual IEnumerable<TransferDataType> DataTypesFor(IEnumerable<string> transferIds) {
+            // if (transferIds.Contains(fingerprints)) return allowedIds
+            return null;
+        }
+    }
 }
