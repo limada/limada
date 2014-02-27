@@ -19,6 +19,8 @@ using Limaki.Common.Text;
 using Limaki.Common.Text.HTML.Parser;
 using System.Linq;
 using Limaki.Model.Content;
+using Limaki.Common;
+using LCHP = Limaki.Common.Text.HTML.Parser;
 
 namespace Limaki.Contents.IO {
 
@@ -34,7 +36,7 @@ namespace Limaki.Contents.IO {
         protected virtual Content<Stream> Digg (Content<Stream> source, Content<Stream> sink) {
             if (!_spot.Supports(source.ContentType))
                 return sink;
-            var buffer = _spot.GetBuffer(source.Data, (int)source.Data.Length); 
+            var buffer = ByteUtils.GetBuffer(source.Data, (int)source.Data.Length); 
             var s = (TextHelper.IsUnicode(buffer) ? Encoding.Unicode.GetString(buffer) : Encoding.ASCII.GetString(buffer));
             if (!Fragment2Html(s, sink)) {
                 // TODO: find source
@@ -103,7 +105,7 @@ namespace Limaki.Contents.IO {
                 parser.DoElement += stuff => {
                     var tag = stuff.Element.ToLower();
                     foreach (var element in elements) {
-                        if (!element.Parsing && !element.Parsed && stuff.State == State.Name && tag == element.Name) {
+                        if (!element.Parsing && !element.Parsed && stuff.State == LCHP.State.Name && tag == element.Name) {
                             element.Starts = stuff.TagPosition;
                             element.Parsing = true;
                         }
@@ -113,7 +115,7 @@ namespace Limaki.Contents.IO {
                 parser.DoTag += stuff => {
                     var tag = stuff.Tag.ToLower();
                     foreach (var element in elements) {
-                        if (element.Parsing && !element.Parsed && stuff.State == State.Endtag && tag == element.EndTag) {
+                        if (element.Parsing && !element.Parsed && stuff.State == LCHP.State.Endtag && tag == element.EndTag) {
                             element.Ends = stuff.Position;
                             element.Parsing = false;
                             element.Parsed = true;

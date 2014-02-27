@@ -50,17 +50,7 @@ namespace Limaki.View.DragDrop {
             }
         }
 
-        public Stream AsUnicodeStream (string source) {
-            var buffer = Encoding.Unicode.GetBytes(source);
-            return new MemoryStream(buffer);
-            Encoding.Convert(Encoding.Unicode, Encoding.ASCII, buffer);
-        }
-
-        public Stream AsAsciiStream (string source) {
-            var buffer = Encoding.Convert(Encoding.Unicode, Encoding.ASCII, 
-                Encoding.Unicode.GetBytes(source));
-            return new MemoryStream(buffer);
-        }
+      
 
         // move this to Resourceloader of OS:
         public void RegisterSome() {

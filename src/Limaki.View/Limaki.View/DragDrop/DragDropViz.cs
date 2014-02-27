@@ -71,7 +71,7 @@ namespace Limaki.View.DragDrop {
                     stream = new MemoryStream(bytes);
                 var text = value as string;
                 if (text != null)
-                    stream = DataManager.AsUnicodeStream(text);
+                    stream = ByteUtils.AsUnicodeStream (text);
                 if (stream != null) {
                     var info = sink.Use(stream);
                     if (info != null) {

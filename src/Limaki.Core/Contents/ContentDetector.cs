@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Limaki.Model.Content;
+using Limaki.Common;
 
 namespace Limaki.Contents {
     /// <summary>
@@ -44,25 +45,7 @@ namespace Limaki.Contents {
             return Use(stream) != null;
         }
 
-        public byte[] GetBuffer (Stream stream, int buflen) {
-            var oldPos = stream.Position;
-            buflen = Math.Min(buflen, (int) stream.Length);
-            var buffer = new byte[buflen];
 
-            stream.Read(buffer, 0, buflen);
-            stream.Position = oldPos;
-            return buffer;
-        }
-
-        protected virtual bool BuffersAreEqual (byte[] a, byte[] b) {
-            if (a.Length != b.Length)
-                return false;
-            for (int i = 0; i < a.Length; i++) {
-                if (a[i] != b[i])
-                    return false;
-            }
-            return true;
-        }
 
         protected virtual bool HasMagic (Stream stream, byte[] magic, int offset) {
             if (stream.Length <= magic.Length)
@@ -72,7 +55,7 @@ namespace Limaki.Contents {
             stream.Position = offset;
             stream.Read(buffer, 0, buffer.Length);
 
-            var result = BuffersAreEqual(magic, buffer);
+            var result = ByteUtils.BuffersAreEqual (magic, buffer);
             stream.Position = pos;
             return result;
         }

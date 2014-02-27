@@ -21,6 +21,7 @@ using System.Linq;
 using Limaki.Common.Text.HTML;
 using Limaki.Common.Text;
 using Limaki.Model.Content;
+using Limaki.Common;
 
 namespace Limaki.Contents.IO {
 
@@ -56,7 +57,7 @@ namespace Limaki.Contents.IO {
 
             ContentInfo result = null;
 
-            var buffer = GetBuffer(stream, 2048);
+            var buffer = ByteUtils.GetBuffer (stream, 2048);
             
             var s = (TextHelper.IsUnicode(buffer) ? Encoding.Unicode.GetString(buffer) : Encoding.ASCII.GetString(buffer)).ToLower();
             if (
