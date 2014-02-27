@@ -26,14 +26,12 @@ namespace Limaki.View.Swf {
         Xwt.Point PointToClient (Xwt.Point source);
     }
 
-    public interface IDragDropAction:IAction {
+    public interface IDragDropAction:IAction, Limaki.View.UI.ICopyPasteAction {
         bool Dragging { get;set; }
         void OnGiveFeedback( GiveFeedbackEventArgs e );
         void OnQueryContinueDrag( QueryContinueDragEventArgs e );
         void OnDragOver( DragEventArgs e );
         void OnDragDrop( DragEventArgs e );
         void OnDragLeave( EventArgs e );
-        void Copy();
-        void Paste();
     }
 }

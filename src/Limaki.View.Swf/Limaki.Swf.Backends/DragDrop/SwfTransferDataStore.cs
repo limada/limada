@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xwt;
+using Xwt.WinformBackend;
 using SWF = System.Windows.Forms;
 using SD = System.Drawing;
 

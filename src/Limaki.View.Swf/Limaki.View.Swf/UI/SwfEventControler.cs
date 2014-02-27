@@ -124,7 +124,9 @@ namespace Limaki.View.Swf.UI {
             Perform();
         }
 
-        public void Copy() {
+        public override void Copy() {
+            base.Copy();
+
             Resolved = false;
             foreach (IDragDropAction dragDropAction in DragDropActions) {
                 if (dragDropAction.Enabled) {
@@ -138,7 +140,8 @@ namespace Limaki.View.Swf.UI {
             Perform();
         }
 
-        public void Paste() {
+        public override void Paste() {
+            base.Paste();
             Resolved = false;
             foreach (IDragDropAction dragDropAction in DragDropActions) {
                 if (dragDropAction.Enabled) {

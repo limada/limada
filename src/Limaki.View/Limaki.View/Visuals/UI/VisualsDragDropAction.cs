@@ -29,7 +29,7 @@ namespace Limaki.View.DragDrop {
     /// <summary>
     /// DragDrop support
     /// </summary>
-    public class VisualsDragDropAction : DragDropActionBase {
+    public class VisualsDragDropAction : DragDropActionBase, ICopyPasteAction {
         
         public VisualsDragDropAction(Func<IGraphScene<IVisual, IVisualEdge>> sceneHandler, IVidgetBackend backend, ICamera camera, IGraphSceneLayout<IVisual, IVisualEdge> layout)
             : base(backend,camera) {
@@ -80,7 +80,8 @@ namespace Limaki.View.DragDrop {
                 
                 try {
                     var startData =
-                        new DragStartData(GetTransferData(Scene.Graph, Source), 
+                        new DragStartData (
+                            DragDropViz.TransferDataOfVisual (Scene.Graph, Source), 
                             DragDropAction.All,
                             GetDragImageBackend(Scene.Graph, Source), 
                             e.Location.X, e.Location.Y);
@@ -98,18 +99,8 @@ namespace Limaki.View.DragDrop {
             return Iconery.NewSheet;
         }
 
-        public virtual TransferDataSource GetTransferData (IGraph<IVisual,IVisualEdge> graph, IVisual visual) {
-            if (graph == null || visual == null)
-                return null;
-
-            var result = new TransferDataSource();
-            result.AddValue<string>(visual.Data.ToString());
-            // TODO: serialize that: result.AddValue<IVisual>(visual);
-            return result;
-        }
-
         public override TransferDataSource GetTransferData () {
-            return GetTransferData(this.Scene.Graph, this.Source);
+            return DragDropViz.TransferDataOfVisual (this.Scene.Graph, this.Scene.Focused);
         }
 
         public override void DragOver (DragOverEventArgs e) {
@@ -162,6 +153,38 @@ namespace Limaki.View.DragDrop {
 
         }
 
-        
+
+        public virtual void Paste() {
+
+            var scene = this.Scene;
+            IVisual item = null;
+            //var visual = DragDropViz.Paste (scene.Graph);
+            if (InprocDragDrop.ClipboardData != null) {
+                // TODO: refactor to use same code as above
+                var source = InprocDragDrop.ClipboardData as GraphCursor<IVisual, IVisualEdge>;
+                if (source != null && source.Cursor != item) {
+                    item = GraphMapping.Mapping.LookUp (source.Graph, scene.Graph, source.Cursor);
+                    if (item == null) {
+                        //TODO: error here
+                        //return;
+                    }
+                }
+            }
+
+            if (item == null) {
+                item = DragDropViz.VisualOfTransferData (scene.Graph, Clipboard.GetTransferData (DragDropViz.DataManager.TransferContentTypes.DataTypes));
+            }
+            if (item != null) {
+                SceneExtensions.PlaceVisual (scene, scene.Focused, item, Layout);
+            }
+
+        }
+
+        public virtual void Copy () {
+            InprocDragDrop.ClipboardData = new GraphCursor<IVisual, IVisualEdge>(Scene.Graph, Scene.Focused);
+            Clipboard.SetTransferData(DragDropViz.TransferDataOfVisual(Scene.Graph, Scene.Focused));
+        }
     }
+
+
 }

@@ -6,5 +6,7 @@ namespace Limaki.View.DragDrop {
         public bool Dragging { get; set; }
         public bool Dropping { get; set; }
         public object Data { get; set; }
+
+        public object ClipboardData { get; set; }
     }
 }

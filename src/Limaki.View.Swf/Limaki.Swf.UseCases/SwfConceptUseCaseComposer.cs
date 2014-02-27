@@ -147,11 +147,11 @@ namespace Limaki.Swf.Backends.UseCases {
             new ToolStripMenuItem(l["Edit"], null, new ToolStripMenuItem[] {
                 new ToolStripMenuItem(l["Copy"], null, (s, e) => {
                     var display = useCase.GetCurrentDisplay();
-                    if (display != null) ((IDragDropAction)display.EventControler).Copy();
+                    if (display != null) ((Limaki.View.UI.ICopyPasteAction)display.EventControler).Copy();
                 }),
                 new ToolStripMenuItem(l["Paste"], null, (s, e) => {
                     var display = useCase.GetCurrentDisplay();
-                    if (display != null) ((IDragDropAction)display.EventControler).Paste();
+                    if (display != null) ((Limaki.View.UI.ICopyPasteAction) display.EventControler).Paste ();
                 }),
                 new ToolStripMenuItem(l["Search"], null, (s, e) => { useCase.Search(); }),
             }),

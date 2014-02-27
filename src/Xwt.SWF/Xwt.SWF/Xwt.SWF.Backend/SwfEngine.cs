@@ -43,6 +43,7 @@ namespace Xwt.WinformBackend {
         public override void InitializeBackends () {
             base.InitializeBackends();
             RegisterBackend<DesktopBackend, SwfDesktopBackend>();
+            RegisterBackend<ClipboardBackend, SwfClipboardBackend> ();
         }
     
         public override void RunApplication() {

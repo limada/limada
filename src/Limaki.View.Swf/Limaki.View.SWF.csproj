@@ -60,11 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropBackendHandler.cs" />
-    <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropConverter.cs" />
+    <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropEventConverter.cs" />
     <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropMouseBackendHandler.cs" />
     <Compile Include="Limaki.Swf.Backends\DragDrop\DragDropVidgetBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Limaki.Swf.Backends\DragDrop\SwfTransferDataInfo.cs" />
     <Compile Include="Limaki.Swf.Backends\DragDrop\SwfTransferDataStore.cs" />
     <Compile Include="Limaki.Swf.Backends\VidgetBackends\CanvasVidgetBackend.cs">
       <SubType>UserControl</SubType>

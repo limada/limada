@@ -131,6 +131,21 @@ namespace Limaki.View.Visuals.UI {
             return visual;
         }
 
+        public static void LinkItem (IGraphScene<IVisual, IVisualEdge> scene, IVisual item, Point pt, int hitSize, bool itemIsRoot) {
+            if (item != null) {
+                var target = scene.Hovered;
+                if (target == null && scene.Focused != null && scene.Focused.Shape.IsHit (pt, hitSize)) {
+                    target = scene.Focused;
+                }
+                if (item != target) {
+                    if (itemIsRoot)
+                        CreateEdge (scene, item, target);
+                    else
+                        CreateEdge (scene, target, item);
+                }
+            }
+        }
+
         public static void CleanScene(this IGraphScene<IVisual, IVisualEdge> scene) {
             if (scene != null) {
                 var graphView = scene.Graph as SubGraph<IVisual, IVisualEdge>;

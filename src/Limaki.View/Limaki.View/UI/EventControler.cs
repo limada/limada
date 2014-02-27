@@ -25,7 +25,7 @@ namespace Limaki.View.UI {
     /// to Invoke commands (Invoker of the Command Pattern)
     /// to Execute commands by the Actions stored in the ReceiverActions (Receiver of the Command Pattern)
     /// </summary>
-    public class EventControler : ActionBase, IEventControler, IDropAction, IDisposable {
+    public class EventControler : ActionBase, IEventControler, IDropAction, IDisposable, ICopyPasteAction {
 
         IDictionary<Type, IAction> _actions = null;
         public IDictionary<Type, IAction> Actions {
@@ -48,6 +48,9 @@ namespace Limaki.View.UI {
 
         // DragDrop:
         public List<IDropAction> DragDropActions = new List<IDropAction>();
+
+        // CopyPaste:
+        public List<ICopyPasteAction> CopyPasteActions = new List<ICopyPasteAction> ();
 
         protected int ActionsSort(IAction x, IAction y) {
             return x.Priority.CompareTo(y.Priority);
@@ -81,6 +84,11 @@ namespace Limaki.View.UI {
             if (action is IDropAction) {
                 DragDropActions.Add((IDropAction)action);
                 DragDropActions.Sort(ActionsSort);
+            }
+
+            if (action is ICopyPasteAction) {
+                CopyPasteActions.Add ((ICopyPasteAction) action);
+                CopyPasteActions.Sort (ActionsSort);
             }
         }
 
@@ -338,12 +346,32 @@ namespace Limaki.View.UI {
 
         #endregion
 
-        public void Copy () {
-
+        public virtual void Copy () {
+            Resolved = false;
+            foreach (var action in CopyPasteActions) {
+                if (action.Enabled) {
+                    action.Copy ();
+                    Resolved = action.Resolved || Resolved;
+                    if (action.Exclusive) {
+                        break;
+                    }
+                }
+            }
+            Perform ();
         }
 
-        public void Paste () {
-           
+        public virtual void Paste () {
+            Resolved = false;
+            foreach (var action in CopyPasteActions) {
+                if (action.Enabled) {
+                    action.Paste ();
+                    Resolved = action.Resolved || Resolved;
+                    if (action.Exclusive) {
+                        break;
+                    }
+                }
+            }
+            Perform ();
         }
 
         

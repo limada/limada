@@ -1,7 +1,10 @@
-namespace Limaki.View.UI {
-    public interface ICopyPasteAction {
-        void Paste ();
+using Limaki.Actions;
 
+namespace Limaki.View.UI {
+
+    public interface ICopyPasteAction:IAction {
         void Copy ();
+        void Paste ();
+        
     }
 }

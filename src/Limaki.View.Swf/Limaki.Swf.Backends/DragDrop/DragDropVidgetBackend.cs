@@ -17,6 +17,7 @@ using Limaki.View.Swf.Backends;
 using System;
 using System.Diagnostics;
 using Xwt;
+using Xwt.WinformBackend;
 using SWF = System.Windows.Forms;
 using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
