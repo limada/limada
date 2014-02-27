@@ -127,20 +127,8 @@ namespace Limaki.Viewers.StreamViewers {
                     SetContent (response, content);
                 } else {
                     WebBrowser.MakeReady();
-                    if (OS.Mono) {
-                        WebBrowser.DocumentStream = content.Data;
-                    } else
-                        using (StreamReader reader = new StreamReader(content.Data)) {
-                            string text = reader.ReadToEnd();
-                            WebBrowser.DocumentText = text;
-
-                            // this is testing coulde; should be removed!
-                            if (text != null)
-                                foreach (var s in HtmlHelper.Links(text)) {
-                                    //System.Console.WriteLine (s);
-                                }
-                        }
-                }
+                    WebBrowser.DocumentStream = content.Data;
+               }
 
             } catch (Exception e) {
                 Trace.WriteLine ("content load failed:\t" + e.Message);  

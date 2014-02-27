@@ -64,8 +64,10 @@
     <Compile Include="Limaki.View.XwtContext\IToolkitAware.cs" />
     <Compile Include="Limaki.View.XwtContext\IXwtConceptUseCaseComposer.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\ImageContentViewer.cs" />
+    <Compile Include="Limaki.Viewers\IWebBrowserEx.cs" />
     <Compile Include="Limaki.Viewers\Vidgets\FileDialogVidget.cs" />
     <Compile Include="Limaki.Viewers\Vidgets\Vindow.cs" />
+    <Compile Include="Limaki.Viewers\Vidgets\WebBrowserVidgetEx.cs" />
     <Compile Include="Limaki.View\DragDrop\DragDropBackendHandlerBase.cs" />
     <Compile Include="Limaki.View\DragDrop\DragDropInfo.cs" />
     <Compile Include="Limaki.View\Rendering\SelectionRenderer.cs" />

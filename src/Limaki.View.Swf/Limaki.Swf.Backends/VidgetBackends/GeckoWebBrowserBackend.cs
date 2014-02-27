@@ -12,22 +12,22 @@
  * 
  */
 
-using Gecko;
-using Limaki.Drawing;
-using Limaki.Model.Content;
-using Limaki.Contents.IO;
-using Limaki.View;
-using Limaki.Viewers;
-using Limaki.Viewers.Vidgets;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-using Xwt.Gdi.Backend;
-using System.Linq;
-using Limaki.View.Swf;
+using Gecko;
 using Limaki.Contents;
+using Limaki.Contents.IO;
+using Limaki.Drawing;
+using Limaki.View;
+using Limaki.View.Swf;
+using Limaki.Viewers;
+using Limaki.Viewers.Vidgets;
+using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends {
 
@@ -80,12 +80,10 @@ namespace Limaki.Swf.Backends {
             }
         }
 
-     
-
         public string DocumentText {
-            get {return base.Document.TextContent;}
+            get { return base.Document.TextContent; }
             set {
-                SetDocumentTextOverAboutBlank(value);
+                SetDocumentTextOverAboutBlank (value);
                 //SetDocumentTextOverPostData (value);
             }
         }
@@ -112,115 +110,25 @@ namespace Limaki.Swf.Backends {
             base.Refresh();
         }
 
-       
-
         public new Uri Url {
-            get {return base.Url;}
-            set { throw new Exception("The method or operation is not implemented."); }
+            get { return base.Url; }
+            set { Navigate (value.AbsoluteUri); }
         }
 
-        #region NotImplemented
-
-        public bool AllowNavigation {
+        public Stream DocumentStream {
             get {
-                throw new Exception("The method or operation is not implemented.");
+                throw new NotImplementedException ();
             }
             set {
-                throw new Exception("The method or operation is not implemented.");
+                using (var reader = new StreamReader (value)) {
+                    string text = reader.ReadToEnd ();
+                    this.DocumentText = text;
+                }
             }
         }
 
-        public bool AllowWebBrowserDrop {
-            get {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-
-
-        public System.IO.Stream DocumentStream {
-            get {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
-        public string DocumentType {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-        public bool IsOffline {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-
-
-        public System.Windows.Forms.WebBrowserReadyState ReadyState {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
-        public void GoHome() {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void Navigate(string urlString, bool newWindow) {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void Navigate(string urlString, string targetFrameName) {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void Navigate(Uri url, bool newWindow) {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void Navigate(Uri url, string targetFrameName) {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void Navigate(string urlString, string targetFrameName, byte[] postData, string additionalHeaders) {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void Navigate(Uri url, string targetFrameName, byte[] postData, string additionalHeaders) {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void GoSearch() {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void ShowPageSetupDialog() {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void ShowPrintPreviewDialog() {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void ShowPropertiesDialog() {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void ShowSaveAsDialog() {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        //public new event System.Windows.Forms.WebBrowserDocumentCompletedEventHandler DocumentCompleted;
-
-        public event EventHandler FileDownload;
-
-        public new event System.Windows.Forms.WebBrowserNavigatedEventHandler Navigated;
-
-        public new event System.Windows.Forms.WebBrowserNavigatingEventHandler Navigating;
-
-        public event System.ComponentModel.CancelEventHandler NewWindow;
-
-        public new event System.Windows.Forms.WebBrowserProgressChangedEventHandler ProgressChanged;
-        
-        #endregion
+        public void GoHome () { base.Navigate("about:blank"); }
+  
 
         #endregion
 
@@ -314,6 +222,7 @@ namespace Limaki.Swf.Backends {
         }
 
         #endregion
+       
         #region IVidgetBackend-Implementation
 
         public WebBrowserVidget Frontend { get; protected set; }
@@ -345,5 +254,7 @@ namespace Limaki.Swf.Backends {
                 );
             }
         }
+
+     
     }
 }
