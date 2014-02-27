@@ -27,8 +27,9 @@ namespace Gecko
 		private nsIWebBrowserFocus _webBrowserFocus;
 		#endregion
 
+	    protected nsIWebNavigation WebNav { get { return _webNav; } }
 
-		#region WPF fields
+	    #region WPF fields
 		private HwndSource _source;
 		#endregion
 
