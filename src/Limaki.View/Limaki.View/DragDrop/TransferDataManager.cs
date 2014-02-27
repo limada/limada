@@ -1,14 +1,26 @@
-using System.IO;
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2013-2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Limaki.Common;
-using Limaki.Contents;
-using Limaki.Model.Content;
-using Limaki.Contents.IO;
-using Xwt;
-using System.Linq;
-using System.Collections.Generic;
-using System;
 using Limaki.Common.Collections;
-using System.Text;
+using Limaki.Contents;
+using Limaki.Contents.IO;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Xwt;
 
 namespace Limaki.View.DragDrop {
     /// <summary>
@@ -19,11 +31,12 @@ namespace Limaki.View.DragDrop {
         private StreamContentIoPool _contentPool;
         public StreamContentIoPool ContentIoPool { get { return _contentPool ?? (_contentPool = Registry.Pool.TryGetCreate<StreamContentIoPool>()); } }
 
-        private TransferContentPool _transferContentPool;
-        public TransferContentPool TransferContentPool { get { return _transferContentPool ?? (_transferContentPool = Registry.Pool.TryGetCreate<TransferContentPool>()); } }
 
         private TransferContentTypes _transferContentTypes;
-        public TransferContentTypes TransferContentTypes { get { return _transferContentTypes ?? (_transferContentTypes = Registry.Pool.TryGetCreate<TransferContentTypes>()); } }
+        /// <summary>
+        /// register the type values for Clipboard and DragDrop operations here
+        /// </summary>
+        public TransferContentTypes TransferContentTypes { get { return _transferContentTypes ?? (_transferContentTypes = new TransferContentTypes()); } }
 
         public virtual IEnumerable<Tuple<TransferDataType,IContentIo<Stream>>> SinksOf (IEnumerable<TransferDataType> sources) {
             
@@ -39,10 +52,7 @@ namespace Limaki.View.DragDrop {
                         .Any(info => info.MimeType == sourceId);
                 }
                 var done = new Set<long>();
-                foreach (var sinkIo in TransferContentPool.Where(lookUp)) {
-                    done.AddRange(sinkIo.Detector.ContentSpecs.Select(info => info.ContentType));
-                    yield return Tuple.Create(source,sinkIo);
-                }
+
                 foreach (var sinkIo in ContentIoPool.Where(lookUp)
                     .Where(io => ! io.Detector.ContentSpecs.Any(info => done.Contains(info.ContentType)))) {
                         yield return Tuple.Create(source, sinkIo);
@@ -59,23 +69,38 @@ namespace Limaki.View.DragDrop {
             TransferContentTypes.Add("rtf", ContentTypes.RTF);
             //...
         }
+
+        #region not used
+        private TransferContentPool _transferContentPool;
+        /// <summary>
+        /// register special ContentIo's for Clipboard and DragDrop operations here
+        /// they override 
+        /// </summary>
+        private TransferContentPool _TransferContentPool { get { return _transferContentPool ?? (_transferContentPool = new TransferContentPool ()); } }
+        /// <summary>
+        /// class to register special ContentIo's for Clipboard and DragDrop operations
+        /// they override the common <see cref="StreamContentIoPool"/>
+        /// </summary>
+        public class TransferContentPool : ContentIoPool<Stream, Content<Stream>> { }
+        #endregion
     }
+
+   
 
     /// <summary>
     /// class to register the type values for Clipboard and DragDrop operations
+    /// key = <see cref="TransferDataType.Id"/>, value = <see cref="Content.ContentType"/>
     /// </summary>
     public class TransferContentTypes : Dictionary<string, long> {
         public virtual IEnumerable<TransferDataType> DataTypes {
             get {
                 foreach (var c in this.Keys)
-                    yield return TransferDataType.FromId(c);
+                    yield return TransferDataType.FromId (c);
             }
         }
     }
 
     /// <summary>
-    /// class to register special ContentIo's for Clipboard and DragDrop operations
-    /// they override the common IoProvider<Stream, Content<Stream>>
     /// </summary>
     public class TransferContentPool:ContentIoPool<Stream, Content<Stream>> {}
 }
