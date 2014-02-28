@@ -50,13 +50,14 @@ namespace Limaki.View.DragDrop {
             if (bytes != null) {
                 return TransferDataSource.DeserializeValue(bytes) as IVisual;
             }
-
-            foreach (var s in DataManager.SinksOf(data.DataTypes)) {
 #if TRACE
             var dt = "";
             data.DataTypes.ForEach (d => dt += d.Id+" | ");
             Trace.WriteLine (dt);
 #endif
+            var dataTypes = data.DataTypes;
+            Content<Stream> content = null;
+            foreach (var s in DataManager.SinksOf(dataTypes)) {
                 value = data.GetValue(s.Item1);
                 var sink = s.Item2;
                 var stream = value as Stream;
@@ -67,20 +68,37 @@ namespace Limaki.View.DragDrop {
                 if (text != null)
                     stream = ByteUtils.AsUnicodeStream (text);
                 if (stream != null) {
-                    var info = sink.Use(stream);
+                    var info = sink.Use (stream);
+
+                    if (info == null) {
+                        info = DataManager.InfoOf (sink, dataTypes).FirstOrDefault();
+                    }
+
                     if (info != null) {
-                        var content = new Content<Stream> { Data = stream, ContentType = info.ContentType, Compression = info.Compression };
+                        bool newContent = content == null || stream != content.Data;
 
-                        ContentDiggPool.Use(content);
+                        content = new Content<Stream> (content) {
+                            Data = newContent ? stream : content.Data,
+                            ContentType = newContent ? info.ContentType : content.ContentType,
+                            Compression = newContent ? info.Compression : content.Compression,
+                        };
+                        
 
-                        var result =  VisualContentViz.VisualOfContent(graph, content);
-                       
-
-                        return result;
+                        content = ContentDiggPool.Use (content);
+                        // TODO: find a better handling of preferences; maybe MimeFingerPrints does the job?
+                        if (content.Data == null && (string.IsNullOrEmpty(content.Description.ToString())))
+                            continue;
+                        else
+                            break;
                     }
                 }
+
             }
 
+            if (content != null) {
+                var result = VisualContentViz.VisualOfContent (graph, content);
+                return result;
+            }
             return null;
         }
 
