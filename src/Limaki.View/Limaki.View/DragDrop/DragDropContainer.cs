@@ -7,6 +7,9 @@ namespace Limaki.View.DragDrop {
         public bool Dropping { get; set; }
         public object Data { get; set; }
 
-        public object ClipboardData { get; set; }
+        /// <summary>
+        /// disabled until Clipboard.Pasted-event is implemented
+        /// </summary>
+        public object ClipboardData { get { return null; } set { ; } }
     }
 }

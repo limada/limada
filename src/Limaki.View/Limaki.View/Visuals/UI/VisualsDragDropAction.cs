@@ -159,7 +159,7 @@ namespace Limaki.View.DragDrop {
 
             var scene = this.Scene;
             IVisual item = null;
-            //var visual = DragDropViz.Paste (scene.Graph);
+
             if (InprocDragDrop.ClipboardData != null) {
                 // TODO: refactor to use same code as above
                 var source = InprocDragDrop.ClipboardData as GraphCursor<IVisual, IVisualEdge>;
@@ -182,7 +182,11 @@ namespace Limaki.View.DragDrop {
         }
 
         public virtual void Copy () {
-            InprocDragDrop.ClipboardData = new GraphCursor<IVisual, IVisualEdge>(Scene.Graph, Scene.Focused);
+            if (false) {
+                // TODO: it has to be cleared, if the next stuff is copied into clipboard
+                // a clipboard Pasted-Event is needed
+                InprocDragDrop.ClipboardData = new GraphCursor<IVisual, IVisualEdge>(Scene.Graph, Scene.Focused);
+            }
             Clipboard.SetTransferData(DragDropViz.TransferDataOfVisual(Scene.Graph, Scene.Focused));
         }
     }
