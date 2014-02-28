@@ -17,12 +17,16 @@ using System.IO;
 using Limaki.Common;
 using Limaki.Model.Content;
 using Id = System.Int64;
+
 namespace Limada.Model {
+
     public class ByteStreamWrapper {
         private Id _id; 
+
         public ByteStreamWrapper(Id id) {
             this._id = id;
         }
+
         public ByteStreamWrapper(IRealData<Id,byte[]> innerData) {
             this.InnerData = innerData;
             this._id = innerData.Id;
@@ -42,12 +46,13 @@ namespace Limada.Model {
             set { _innerData = value; }
         }
 
-        
         Stream _stream = null;
         public virtual Stream Stream {
             get {
-                if ((_stream == null) && (InnerData.Data != null)) {
-                    _stream = new MemoryStream(InnerData.Data,0,InnerData.Data.Length,true,true);
+                if ((_stream == null || !_stream.CanRead) && (InnerData.Data != null)) {
+                    if (_stream != null)
+                        _stream.Dispose ();
+                    _stream = new MemoryStream (InnerData.Data, 0, InnerData.Data.Length, true, true);
                     _stream.Position = 0;
                 }
                 return _stream;
