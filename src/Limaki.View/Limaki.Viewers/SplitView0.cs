@@ -125,7 +125,7 @@ namespace Limaki.Viewers {
                     bool isChange = _currentWidget != value;
                     var display = value as IGraphSceneDisplay<IVisual, IVisualEdge>;
                     if (display != null || value == null) {
-                        isChange = _currentDisplay != value;
+                        //isChange = _currentDisplay != value;
                         _currentDisplay = display;
                     }
                     _currentWidget = value;
