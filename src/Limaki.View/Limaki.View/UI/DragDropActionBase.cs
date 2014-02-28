@@ -72,7 +72,7 @@ namespace Limaki.View.UI {
         public bool Dropping { get; set; }
         
         public virtual void SetDragTarget() {
-            var targets = DragDropViz.DataManager.TransferContentTypes.DataTypes.ToArray();
+            var targets = DragDropViz.DataManager.DataTypes.ToArray();
             DragDropHandler.SetDragTarget(DragDropAction.All, targets);
         }
 

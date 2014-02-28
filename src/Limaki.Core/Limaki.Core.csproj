@@ -188,6 +188,7 @@
     <Compile Include="Contents\ContentConverter.cs" />
     <Compile Include="Contents\Handlers\TextContent.cs" />
     <Compile Include="Contents\IO\StreamContentIoPool.cs" />
+    <Compile Include="Contents\MimeFingerPrints.cs" />
     <Compile Include="Context\LimakiCoreContextRecourceLoader.cs" />
     <Compile Include="Data\Iori.cs" />
     <Compile Include="Data\DbGraph.cs" />

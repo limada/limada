@@ -151,6 +151,7 @@ namespace Limaki.View.DragDrop {
                 string dt = "not found:\t";
             }
 
+            InprocDragDrop.Data = null;
         }
 
 
@@ -172,7 +173,7 @@ namespace Limaki.View.DragDrop {
             }
 
             if (item == null) {
-                item = DragDropViz.VisualOfTransferData (scene.Graph, Clipboard.GetTransferData (DragDropViz.DataManager.TransferContentTypes.DataTypes));
+                item = DragDropViz.VisualOfTransferData (scene.Graph, Clipboard.GetTransferData (DragDropViz.DataManager.DataTypes));
             }
             if (item != null) {
                 SceneExtensions.PlaceVisual (scene, scene.Focused, item, Layout);

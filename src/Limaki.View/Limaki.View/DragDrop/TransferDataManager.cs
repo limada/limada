@@ -31,6 +31,13 @@ namespace Limaki.View.DragDrop {
         private StreamContentIoPool _contentPool;
         public StreamContentIoPool ContentIoPool { get { return _contentPool ?? (_contentPool = Registry.Pool.TryGetCreate<StreamContentIoPool>()); } }
 
+        private MimeFingerPrints _mimeFingerPrints;
+
+        /// <summary>
+        /// registered fingerprints of ContentInfo.MimeTypes
+        /// register with <see cref=" Registry.Pool.TryGetCreate{MimeFingerPrints}()"/>
+        /// </summary>
+        public MimeFingerPrints MimeFingerPrints { get { return _mimeFingerPrints ?? (_mimeFingerPrints = Registry.Pool.TryGetCreate<MimeFingerPrints>()); } }
 
         private TransferContentTypes _transferContentTypes;
 
@@ -39,24 +46,60 @@ namespace Limaki.View.DragDrop {
         /// </summary>
         public TransferContentTypes TransferContentTypes { get { return _transferContentTypes ?? (_transferContentTypes = new TransferContentTypes()); } }
 
-        public virtual IEnumerable<Tuple<TransferDataType,IContentIo<Stream>>> SinksOf (IEnumerable<TransferDataType> sources) {
-            
+        public virtual IEnumerable<TransferDataType> DataTypes {
+            get {
+                foreach (var t in this.TransferContentTypes.DataTypes) {
+                    var syn = MimeFingerPrints.Synonym (t.Id);
+                    var result = t;
+                    //if (syn != t.Id) {
+                    //    result = TransferDataType.FromId (syn);
+                    //}
+                    yield return result;
+                    //if (result.Id != result.Id.ToUpper ())
+                    //    yield return TransferDataType.FromId (result.Id.ToUpper ());
+
+                }
+            }
+        }
+
+        public virtual IEnumerable<ContentInfo> InfoOf (IContentIo<Stream> io, IEnumerable<TransferDataType> sources) {
             foreach (var source in sources) {
-                var sourceId = source.Id;
+                var sourceId = MimeFingerPrints.Synonym (source.Id);
                 long contentType = 0;
-                Func<IContentIo<Stream>, bool> lookUp = null;
-                if (TransferContentTypes.TryGetValue(sourceId.ToLower(), out contentType)) {
+                Func<IContentIo<Stream>, IEnumerable<ContentInfo>> lookUp = null;
+                if (TransferContentTypes.TryGetValue (sourceId.ToLower(), out contentType)) {
                     lookUp = sinkIo => sinkIo.Detector.ContentSpecs
-                        .Any(info => info.ContentType == contentType);
+                                           .Where (info => info.ContentType == contentType);
                 } else {
                     lookUp = sinkIo => sinkIo.Detector.ContentSpecs
-                        .Any(info => info.MimeType == sourceId);
+                                           .Where (info => info.MimeType == sourceId);
+                }
+                var done = new Set<long> ();
+
+                return lookUp(io);
+                   
+            }
+            return null;
+        }
+
+        public virtual IEnumerable<Tuple<TransferDataType, IContentIo<Stream>>> SinksOf (IEnumerable<TransferDataType> sources) {
+
+            foreach (var source in sources) {
+                var sourceId = MimeFingerPrints.Synonym (source.Id);
+                long contentType = 0;
+                Func<IContentIo<Stream>, bool> lookUp = null;
+                if (TransferContentTypes.TryGetValue (sourceId.ToLower(), out contentType)) {
+                    lookUp = sinkIo => sinkIo.Detector.ContentSpecs
+                                           .Any (info => info.ContentType == contentType);
+                } else {
+                    lookUp = sinkIo => sinkIo.Detector.ContentSpecs
+                                           .Any (info => info.MimeType == sourceId);
                 }
                 var done = new Set<long>();
 
-                foreach (var sinkIo in ContentIoPool.Where(lookUp)
-                    .Where(io => ! io.Detector.ContentSpecs.Any(info => done.Contains(info.ContentType)))) {
-                        yield return Tuple.Create(source, sinkIo);
+                foreach (var sinkIo in ContentIoPool.Where (lookUp)
+                    .Where (io => ! io.Detector.ContentSpecs.Any (info => done.Contains (info.ContentType)))) {
+                    yield return Tuple.Create (source, sinkIo);
                 }
             }
         }
@@ -65,9 +108,9 @@ namespace Limaki.View.DragDrop {
 
         // move this to Resourceloader of OS:
         public void RegisterSome() {
-            TransferContentTypes.Add("text", ContentTypes.Text);
-            TransferContentTypes.Add("html", ContentTypes.HTML);
-            TransferContentTypes.Add("rtf", ContentTypes.RTF);
+            TransferContentTypes.Add ("text", ContentTypes.Text);
+            TransferContentTypes.Add ("html", ContentTypes.HTML);
+            TransferContentTypes.Add ("rtf", ContentTypes.RTF);
             //...
         }
 
@@ -81,16 +124,20 @@ namespace Limaki.View.DragDrop {
         /// register special ContentIo's for Clipboard and DragDrop operations here
         /// they override 
         /// </summary>
-        private TransferContentPool _TransferContentPool { get { return _transferContentPool ?? (_transferContentPool = new TransferContentPool ()); } }
+        private TransferContentPool _TransferContentPool { get { return _transferContentPool ?? (_transferContentPool = new TransferContentPool()); } }
+
         /// <summary>
         /// class to register special ContentIo's for Clipboard and DragDrop operations
         /// they override the common <see cref="StreamContentIoPool"/>
         /// </summary>
-        public class TransferContentPool : ContentIoPool<Stream, Content<Stream>> { }
+        public class TransferContentPool : ContentIoPool<Stream, Content<Stream>> {
+        }
+
         #endregion
+
     }
 
-   
+
 
     /// <summary>
     /// class to register the type values for Clipboard and DragDrop operations
@@ -105,26 +152,5 @@ namespace Limaki.View.DragDrop {
         }
     }
 
-    /// <summary>
-    /// class to register fingerprints of applications for Clipboard and DragDrop operations
-    /// key = <see cref="TransferDataType.Id"/>, value = <see cref="Content.ContentType"/>
-    /// </summary>
-    public class TransferFingerPrints  {
-        /// <summary>
-        /// order is important, the first wins!
-        /// 
-        /// PreferedFormats({"Star Object Descriptor (XML)"}, {"Rich Text Format"}) // if OpenOffice, then take Rtf 
-        /// PreferedFormats({"text/x-moz-url"}, {"text/uri-list"})
-        /// PreferedFormats({"text/_moz_htmlinfo"}, {"HTML Format"}) // if Firefox, then take HTML
-        /// </summary>
-        /// <param name="transferId"></param>
-        /// <param name="allowedIds"></param>
-        public virtual void PreferedFormats(IEnumerable<string> fingerprints, IEnumerable<string> allowedIds) {
-            
-        }
-        public virtual IEnumerable<TransferDataType> DataTypesFor(IEnumerable<string> transferIds) {
-            // if (transferIds.Contains(fingerprints)) return allowedIds
-            return null;
-        }
-    }
+    
 }
