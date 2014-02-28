@@ -92,14 +92,14 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         public virtual WebContent GetContentFromGraph(IThingGraph graph, IThing thing, Uri uri) {
-            CommonSchema schema = new CommonSchema();
+            var schema = new CommonSchema();
             WebContent result = null;
             try {
                 var schemaGraph = graph as SchemaThingGraph;
                 if (thing != null && schemaGraph != null) {
                     var searchGraph = schemaGraph.Source;
-                    string content = uri.Segments[uri.Segments.Length - 1];
-                    foreach (ILink link in searchGraph.Edges(thing)) {
+                    var content = uri.Segments[uri.Segments.Length - 1];
+                    foreach (var link in searchGraph.Edges(thing)) {
                         var adj = link.Leaf;
                         if (adj != thing && (adj is IStreamThing)) {
                             var desc = schemaGraph.Description(adj);

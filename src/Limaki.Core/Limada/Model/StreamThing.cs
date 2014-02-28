@@ -52,7 +52,7 @@ namespace Limada.Model {
             get {
                 if (_streamWrapper == null) {
                     if (!State.Hollow && DataContainer!=null) {
-                        IRealData<Id, Byte[]> realData =
+                        var realData =
                             DataContainer.GetById(this.Id) as IRealData<Id, Byte[]>;
                         if (realData != null) {
                             _streamWrapper = new ByteStreamWrapper (realData);

@@ -12,22 +12,17 @@
  * 
  */
 
-using Limaki.Drawing.Gdi;
-using Limaki.Viewers;
-using Limaki.View.Visuals;
-using Limaki.View.Swf.Visualizers;
-using Limaki.Visuals;
-using Xwt.Gdi;
+using System;
+using System.Drawing;
+using Limaki.Drawing;
+using Limaki.Graphs;
+using Limaki.View.Gdi.UI;
+using Limaki.View.Rendering;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Rendering;
-using Limaki.View.Rendering;
-using System;
-using Limaki.Graphs;
-using SWF = System.Windows.Forms;
+using Limaki.Visuals;
 using Xwt.Gdi.Backend;
-using System.Drawing;
-using Limaki.View.Gdi.UI;
-using Limaki.Drawing;
+using SWF = System.Windows.Forms;
 
 namespace Limaki.View.Swf.Visuals {
 
@@ -43,7 +38,7 @@ namespace Limaki.View.Swf.Visuals {
         }
 
         public class GraphSceneGdiPainterComposer<TItem, TEdge> : GraphScenePainterComposer<TItem, TEdge>
-      where TEdge : TItem, IEdge<TItem> {
+        where TEdge : TItem, IEdge<TItem> {
             public override void Factor (GraphScenePainter<TItem, TEdge> painter) {
                 base.Factor(painter);
 

@@ -50,10 +50,6 @@ namespace Limaki.Viewers.ToolStripViewers {
             Compose();
         }
 
-        public virtual void Attach (object sender, EventArgs e) {
-            Attach(sender);
-        }
-
         public override void Detach (object sender) {
 
         }

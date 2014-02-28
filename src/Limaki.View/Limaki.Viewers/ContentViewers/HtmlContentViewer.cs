@@ -92,6 +92,7 @@ namespace Limaki.Viewers.StreamViewers {
             bool closeStream = this.IsStreamOwner;
             lock (lockObject) {
               
+
                 closeStream = !response.IsStreamOwner;
 
                 WebServer.ContentGetter = response.Getter (content);

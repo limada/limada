@@ -77,6 +77,7 @@ namespace Limaki.Net.WebProxyServer {
             sock = null;
             base.Sleep();
         }
+
         public override void Close() {
 
             base.Close();
