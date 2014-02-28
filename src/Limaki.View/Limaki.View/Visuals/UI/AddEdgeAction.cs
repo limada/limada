@@ -120,7 +120,7 @@ namespace Limaki.View.Visuals.UI {
         protected override void SetTarget(IVisualEdge edge, IVisual target) {
             if ((target != edge.Root) && (target != edge.Leaf)) {
                 Scene.ChangeEdge(edge, target, false); 
-                Scene.Graph.OnGraphChanged(edge, GraphEventType.Add);
+                Scene.Graph.OnGraphChange(edge, GraphEventType.Add);
             }
         }
 

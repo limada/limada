@@ -355,15 +355,15 @@ namespace Limaki.Graphs {
             }
         }
 
-        private Action<IGraph<TItem, TEdge>, TItem, GraphEventType> _graphChanged = null;
-        public virtual Action<IGraph<TItem, TEdge>, TItem, GraphEventType> GraphChanged {
-            get { return _graphChanged; }
-            set { _graphChanged = value; }
+        private Action<IGraph<TItem, TEdge>, TItem, GraphEventType> _graphChange = null;
+        public virtual Action<IGraph<TItem, TEdge>, TItem, GraphEventType> GraphChange {
+            get { return _graphChange; }
+            set { _graphChange = value; }
         }
 
-        public virtual void OnGraphChanged(TItem item, GraphEventType eventType) {
-            if (GraphChanged != null) {
-                GraphChanged(this, item, eventType);
+        public virtual void OnGraphChange(TItem item, GraphEventType eventType) {
+            if (GraphChange != null) {
+                GraphChange(this, item, eventType);
             }
         }
         #endregion

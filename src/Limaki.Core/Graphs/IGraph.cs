@@ -159,16 +159,19 @@ namespace Limaki.Graphs {
         /// <summary>
         /// this is fired "outside" of the graph by the user-interface
         /// </summary>
-        Action<IGraph<TItem, TEdge>, TItem, GraphEventType> GraphChanged { get;set;}
+        Action<IGraph<TItem, TEdge>, TItem, GraphEventType> GraphChange { get;set;}
 
         /// <summary>
         /// fires the GraphChange-event
         /// this is called "outside" of the graph by the user-interface
+        /// it is called 
+        ///     after adding
+        ///     before deleting
         /// a graph 
         /// </summary>
         /// <param name="item"></param>
         /// <param name="eventType"></param>
-        void OnGraphChanged( TItem item, GraphEventType eventType );
+        void OnGraphChange( TItem item, GraphEventType eventType );
 
         #endregion
 

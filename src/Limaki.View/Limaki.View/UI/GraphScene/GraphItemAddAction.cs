@@ -82,7 +82,7 @@ namespace Limaki.View.UI.GraphScene {
                     }
                     Scene.Requests.Add(new Command<TItem>(NewItem));
                 } else {
-                    Scene.Graph.OnGraphChanged(NewItem, GraphEventType.Add);
+                    Scene.Graph.OnGraphChange(NewItem, GraphEventType.Add);
                 }
             }
             NewItem = default(TItem);

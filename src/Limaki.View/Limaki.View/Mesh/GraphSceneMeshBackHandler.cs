@@ -50,8 +50,8 @@ namespace Limaki.View.Mesh {
         public void RegisterBackGraph (IGraph<TSourceItem, TSourceEdge> root) {
             if (!BackGraphs.Contains (root)) {
                 BackGraphs.Add (root);
-                root.GraphChanged -= this.BackGraphChanged;
-                root.GraphChanged += this.BackGraphChanged;
+                root.GraphChange -= this.BackGraphChanged;
+                root.GraphChange += this.BackGraphChanged;
                 root.ChangeData -= this.BackGraphChangeData;
                 root.ChangeData += this.BackGraphChangeData;
                 root.DataChanged -= this.BackGraphDataChanged;
@@ -62,7 +62,7 @@ namespace Limaki.View.Mesh {
 
         public void UnregisterBackGraph (IGraph<TSourceItem, TSourceEdge> root) {
             if (BackGraphs.Contains (root) && !ScenesOfBackGraph (root).Any ()) {
-                root.GraphChanged -= this.BackGraphChanged;
+                root.GraphChange -= this.BackGraphChanged;
                 root.ChangeData -= this.BackGraphChangeData;
                 root.DataChanged -= this.BackGraphDataChanged;
                 BackGraphs.Remove (root);

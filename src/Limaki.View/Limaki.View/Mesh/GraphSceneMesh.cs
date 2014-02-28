@@ -41,8 +41,8 @@ namespace Limaki.View.Mesh {
                 Scenes.Add (scene);
                 var graph = scene.Graph;
                 RegisterBackGraph (graph);
-                graph.GraphChanged -= this.VisualGraphChanged;
-                graph.GraphChanged += this.VisualGraphChanged;
+                graph.GraphChange -= this.VisualGraphChanged;
+                graph.GraphChange += this.VisualGraphChanged;
                 graph.ChangeData -= this.VisualGraphChangeData;
                 graph.ChangeData += this.VisualGraphChangeData;
                 graph.DataChanged -= this.VisualGraphDataChanged;
@@ -54,7 +54,7 @@ namespace Limaki.View.Mesh {
         public void RemoveScene (IGraphScene<TItem, TEdge> scene) {
             if (scene != null) {
                 var graph = scene.Graph;
-                graph.GraphChanged -= this.VisualGraphChanged;
+                graph.GraphChange -= this.VisualGraphChanged;
                 graph.ChangeData -= this.VisualGraphChangeData;
                 graph.DataChanged -= this.VisualGraphDataChanged;
                 Scenes.Remove (scene);

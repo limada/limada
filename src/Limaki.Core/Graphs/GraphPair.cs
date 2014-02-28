@@ -202,11 +202,11 @@ namespace Limaki.Graphs {
             base.DoChangeData(item, data);
         }
 
-        public override void OnGraphChanged(TSinkItem item, GraphEventType eventType) {
-            base.OnGraphChanged(item, eventType);
-            Sink.OnGraphChanged(item, eventType);
+        public override void OnGraphChange(TSinkItem item, GraphEventType eventType) {
+            base.OnGraphChange(item, eventType);
+            Sink.OnGraphChange(item, eventType);
             var sourceItem = Get(item);
-            Source.OnGraphChanged(sourceItem, eventType);
+            Source.OnGraphChange(sourceItem, eventType);
         }
 
         #endregion

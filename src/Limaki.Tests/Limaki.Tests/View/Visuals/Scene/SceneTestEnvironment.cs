@@ -163,7 +163,7 @@ namespace Limaki.Tests.View.Visuals {
             var oldItem = root ? edge.Root : edge.Leaf;
 
             Scene.ChangeEdge (edge, newItem, root);
-            Scene.Graph.OnGraphChanged (edge, GraphEventType.Update);
+            Scene.Graph.OnGraphChange (edge, GraphEventType.Update);
 
             Scene.Requests.Add (new LayoutCommand<IVisual> (edge, LayoutActionType.Justify));
             foreach (var twig in Scene.Twig (edge)) {
@@ -189,12 +189,12 @@ namespace Limaki.Tests.View.Visuals {
             sourceEdge.Data = GraphExtensions.EdgeString<IVisual, IVisualEdge> (sourceEdge);
 
             Scene.Add (sourceEdge);
-            Scene.Graph.OnGraphChanged (sourceEdge, GraphEventType.Add);
+            Scene.Graph.OnGraphChange (sourceEdge, GraphEventType.Add);
             return sourceEdge;
         }
 
         public void RemoveEdge (IVisualEdge edge) {
-            this.Scene.Graph.OnGraphChanged (edge, GraphEventType.Remove);
+            this.Scene.Graph.OnGraphChange (edge, GraphEventType.Remove);
             this.Scene.Remove (edge);
         }
 

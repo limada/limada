@@ -181,7 +181,7 @@ namespace Limaki.View.UI.GraphScene {
         protected virtual void SetTarget(TEdge edge, TItem target) {
             if (target != null & !target.Equals(edge.Root) && !target.Equals(edge.Leaf)) {
                 Scene.ChangeEdge(edge, target, rootMoving);
-                Scene.Graph.OnGraphChanged(edge, GraphEventType.Update);
+                Scene.Graph.OnGraphChange(edge, GraphEventType.Update);
             }
         }
 

@@ -82,7 +82,7 @@ namespace Limada.View {
                     }
                     if (link != null) {
                         var edge = graph.Get(link);
-                        scene.Graph.OnGraphChanged(edge, Limaki.Graphs.GraphEventType.Add);
+                        scene.Graph.OnGraphChange(edge, Limaki.Graphs.GraphEventType.Add);
                     }
                 }
             }

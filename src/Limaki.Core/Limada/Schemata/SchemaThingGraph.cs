@@ -328,7 +328,7 @@ namespace Limada.Schemata {
                 GraphCursor.Create(this, item),
                 d => {
                     RemoveThingToDisplay(d);
-                    OnGraphChanged(d, GraphEventType.Remove);
+                    OnGraphChange(d, GraphEventType.Remove);
                     Source.Remove(d);
                 },
                 GraphEventType.Remove);
