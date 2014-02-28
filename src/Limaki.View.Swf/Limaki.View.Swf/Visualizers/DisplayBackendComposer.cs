@@ -35,7 +35,10 @@ namespace Limaki.View.Swf.Visualizers {
 			
             this.BackendRenderer = surfaceRenderer;
 
+            this.EventControler = new EventControler ();
+#if SwfDragDrop
             this.EventControler = new SwfEventControler ();
+#endif
             this.ViewPort = new SwfViewport (Backend);
             this.CursorHandler = new CursorHandlerBackend (Backend);
 

@@ -1,3 +1,6 @@
+using System;
+using System.ComponentModel;
+using System.Drawing;
 /*
  * Limaki 
  * 
@@ -11,17 +14,13 @@
  * http://www.limada.org
  * 
  */
+
 using Limaki.Common;
 using Limaki.View.DragDrop;
 using Limaki.View.Gdi.UI;
 using Limaki.View.Rendering;
-using Limaki.View.Swf.UI;
-using Limaki.View.Swf.Backends;
 using Limaki.View.UI;
 using Limaki.View.Visualizers;
-using System;
-using System.ComponentModel;
-using System.Drawing;
 using Xwt;
 using Xwt.Gdi.Backend;
 using Xwt.WinformBackend;
@@ -302,7 +301,6 @@ namespace Limaki.View.Swf.Visualizers {
 
         //this is called by Control.DoDragDrop
         protected override void OnGiveFeedback (SWF.GiveFeedbackEventArgs e) {
-
 
             base.OnGiveFeedback(e);
 
