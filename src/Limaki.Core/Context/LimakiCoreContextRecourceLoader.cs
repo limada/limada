@@ -35,7 +35,7 @@ namespace Limaki.IOC {
             var contentDiggPool = Registry.Pool.TryGetCreate<ContentDiggPool>();
             contentDiggPool.Add(new TextContentDigger());
             contentDiggPool.Add(new HtmlContentDigger());
-            
+
         }
 
     }

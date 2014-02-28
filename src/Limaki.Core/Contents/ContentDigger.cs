@@ -1,7 +1,6 @@
 ﻿using Limaki.Model.Content;
 using Limaki.Contents.IO;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,6 +19,7 @@ namespace Limaki.Contents {
         public ContentDigger (Func<Content<Stream>, Content<Stream>, Content<Stream>> digg) {
             this.DiggUse = digg;
         }
+
         public virtual Content<Stream> Use (Content<Stream> source) {
             return Use(source, source);
         }

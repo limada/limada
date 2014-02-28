@@ -18,8 +18,6 @@ using System.IO;
 using System.Text;
 
 namespace Limaki.Common {
-
-
     public class ByteUtils {
 
         public static byte[] BytesOfArray (Array data) {

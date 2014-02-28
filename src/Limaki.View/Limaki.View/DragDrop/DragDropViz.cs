@@ -19,6 +19,8 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using System.Text;
+using System.Linq;
+using Limaki.Common.Linqish;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Xwt;
@@ -27,6 +29,7 @@ using Limaki.Common;
 using Limaki.View.DragDrop;
 using Limaki.Contents.IO;
 using Limaki.Contents;
+using System.Diagnostics;
 
 namespace Limaki.View.DragDrop {
 
@@ -49,6 +52,11 @@ namespace Limaki.View.DragDrop {
             }
 
             foreach (var s in DataManager.SinksOf(data.DataTypes)) {
+#if TRACE
+            var dt = "";
+            data.DataTypes.ForEach (d => dt += d.Id+" | ");
+            Trace.WriteLine (dt);
+#endif
                 value = data.GetValue(s.Item1);
                 var sink = s.Item2;
                 var stream = value as Stream;

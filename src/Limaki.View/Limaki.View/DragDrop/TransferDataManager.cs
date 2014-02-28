@@ -33,6 +33,7 @@ namespace Limaki.View.DragDrop {
 
 
         private TransferContentTypes _transferContentTypes;
+
         /// <summary>
         /// register the type values for Clipboard and DragDrop operations here
         /// </summary>
@@ -60,7 +61,7 @@ namespace Limaki.View.DragDrop {
             }
         }
 
-      
+
 
         // move this to Resourceloader of OS:
         public void RegisterSome() {
@@ -70,8 +71,12 @@ namespace Limaki.View.DragDrop {
             //...
         }
 
+
+
         #region not used
+
         private TransferContentPool _transferContentPool;
+
         /// <summary>
         /// register special ContentIo's for Clipboard and DragDrop operations here
         /// they override 
