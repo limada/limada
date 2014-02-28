@@ -79,6 +79,7 @@ namespace Limaki.View.XwtBackend {
             man.RegisterSome();
             man.TransferContentTypes.Add("html format", ContentTypes.HTML);
             man.TransferContentTypes.Add("rich text format", ContentTypes.RTF);
+            man.TransferContentTypes.Add ("DeviceIndependentBitmap", ContentTypes.DIB);
 
             // TODO: register the others
             //man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.UnicodeText, 0);

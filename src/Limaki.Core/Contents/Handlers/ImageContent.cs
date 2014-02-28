@@ -17,6 +17,7 @@
 using Limaki.Common;
 using System.Text;
 using Limaki.Model.Content;
+using System.IO;
 
 namespace Limaki.Contents.IO {
 
@@ -65,10 +66,31 @@ namespace Limaki.Contents.IO {
                                          new Magic[]{
                                                         new Magic(new byte[]{0x89,0x50,0x4e,0x47},0)
                                                     }),
-			
+
+                                    new ContentInfo(
+                                         "Device Independent Bitmap",
+                                         ContentTypes.DIB,
+                                         "dib",
+                                         "DeviceIndependentBitmap", // TODO:look for dib mime, or register with MimeFingerPrints
+                                         CompressionType.bZip2,
+                                         null),
+                                         
+			                       new ContentInfo(
+                                         "Bitmap",
+                                         ContentTypes.BMP,
+                                         "bmp",
+                                         "image/bmp", // TODO:look for dib mime, or register with MimeFingerPrints
+                                         CompressionType.bZip2,
+                                         new Magic[]{
+                                                        new Magic(new byte[]{ 0x42, 0x4D},0)
+                                                    }),
                                  }
                 ) { }
 
+
+        public override ContentInfo Use (Stream source, ContentInfo sink) {
+            return base.Use (source, sink);
+        }
         
     }
 

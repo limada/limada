@@ -32,6 +32,10 @@ using Limaki.Viewers;
 using Limada.Usecases;
 using Limaki.View.Visuals.UI;
 using Limaki.Model;
+using Limaki.View.DragDrop;
+using Limaki.Contents.IO;
+using System.Linq;
+using Limaki.Contents;
 
 namespace Limaki.View {
 
@@ -79,6 +83,13 @@ namespace Limaki.View {
             context.Factory.Add<IGraphSceneMesh<IVisual, IVisualEdge>, VisualGraphSceneMesh>();
 
             context.Factory.Add<GraphItemTransformer<IGraphEntity, IVisual, IGraphEdge, IVisualEdge>, GraphItem2VisualTransformer> ();
+
+            var mimeFingerPrints = Registry.Pool.TryGetCreate<MimeFingerPrints> ();
+            mimeFingerPrints.SynonymFormats ("DeviceIndependentBitmap", new ImageContentSpot().ContentSpecs.First (s => s.ContentType == ContentTypes.DIB).MimeType);
+            mimeFingerPrints.SynonymFormats ("CF_DIB", new ImageContentSpot ().ContentSpecs.First (s => s.ContentType == ContentTypes.DIB).MimeType);
+
+            var contentDiggPool = Registry.Pool.TryGetCreate<ContentDiggPool> ();
+            contentDiggPool.Add (new ImageContentDigger ());
 
             // TODO: find a better place for this
             var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<IVisual, IVisualEdge>>();

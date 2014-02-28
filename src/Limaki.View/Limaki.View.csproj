@@ -61,6 +61,7 @@
     <Compile Include="Limada.UseCases\Content\StreamContentUiManager.cs" />
     <Compile Include="Limada.UseCases\Content\IGraphSceneUiManager.cs" />
     <Compile Include="Limada.UseCases\Content\ThingGraphUiManager.cs" />
+    <Compile Include="Limaki.Content\ImageContentDigger.cs" />
     <Compile Include="Limaki.View.XwtContext\IToolkitAware.cs" />
     <Compile Include="Limaki.View.XwtContext\IXwtConceptUseCaseComposer.cs" />
     <Compile Include="Limaki.Viewers\ContentViewers\ImageContentViewer.cs" />

@@ -43,13 +43,15 @@ namespace Limaki.Contents {
         }
 
         public Content(Content source) {
-            this.Description = source.Description;
-            this.Source = source.Source;
-            this.Compression = source.Compression;
-            this.ContentType = source.ContentType;
-            var sourceT = source as Content<T>;
-            if (sourceT != null)
-                this.Data = sourceT.Data;
+            if (source != null) {
+                this.Description = source.Description;
+                this.Source = source.Source;
+                this.Compression = source.Compression;
+                this.ContentType = source.ContentType;
+                var sourceT = source as Content<T>;
+                if (sourceT != null)
+                    this.Data = sourceT.Data;
+            }
         }
     }
 }

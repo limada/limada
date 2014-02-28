@@ -31,6 +31,7 @@ namespace Limaki.Contents {
         public static  long EMF = unchecked((long)0x04E1CDD3A8B6E72F);
         public static  long WMF = unchecked((long)0xD4BE7EA976152B1D);
         public static  long BMP = unchecked((long)0xF7D9A1343B792E0E);
+        public static long DIB = unchecked ((long)0xa389c5274651f7fa);
         
         public static  long Unknown= unchecked((long)0x716D9CE0F33B086A);
 
@@ -45,8 +46,7 @@ namespace Limaki.Contents {
     //stypCur  = $05D07C8AA5646706;
 
     // some unused ids:
-    //
-    //0xa389c5274651f7fa
+
     //0x57043ae9a883edfc
     //0xbf51ed1b3e8ab598
     //0x48ff1e12b887fe9f
