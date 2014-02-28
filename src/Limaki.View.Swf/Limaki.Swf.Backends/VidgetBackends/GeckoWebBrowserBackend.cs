@@ -169,6 +169,11 @@ namespace Limaki.Swf.Backends {
                 prefs["network.proxy.http"] = adress.ToString();
                 prefs["network.proxy.http_port"] = port;
 
+                if (false) {
+                    prefs["network.proxy.ssl"] = adress.ToString();
+                    prefs["network.proxy.ssl_port"] = port;
+                }
+
                 prefs["network.proxy.no_proxies_on"] = "";
                 prefs["network.proxy.type"] = 1;
 

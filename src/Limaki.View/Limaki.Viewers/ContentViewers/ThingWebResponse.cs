@@ -125,7 +125,14 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         public string AbsoluteUri {
-            get { return WebContent.Uri.AbsoluteUri; }
+            get {
+                var result = WebContent.Uri.AbsoluteUri;
+                // workaround for https:
+                if (result.StartsWith("https:")) {
+                    result = "http" + result.Substring(5);
+                }
+                return result;
+            }
         }
  
 
