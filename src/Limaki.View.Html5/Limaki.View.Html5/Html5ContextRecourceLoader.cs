@@ -35,8 +35,10 @@ namespace Limaki.View.Html5 {
 
         public virtual void RegisterXwtBackends (bool asGuest) {
             var tk = Toolkit.CreateToolkit<Html5Engine>(asGuest);
-            if (!asGuest)
+            if (!asGuest) {
                 tk.SetActive();
+                Xwt.Application.Initialize (tk);
+            }
             tk.RegisterBackend<SystemColorsBackend, HtmlSystemColorsBackend>();
             tk.RegisterBackend<SystemFontBackend, Html5SystemFontBackend>();
         }
