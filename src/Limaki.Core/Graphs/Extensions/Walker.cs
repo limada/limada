@@ -17,16 +17,23 @@ using System.Collections.Generic;
 using System;
 
 namespace Limaki.Graphs.Extensions {
+
+    /// <summary>
+    /// iterates through a <see cref="IGraph{TItem, TEdge}"/>
+    /// </summary>
+    /// <typeparam name="TItem"></typeparam>
+    /// <typeparam name="TEdge"></typeparam>
     public class Walker<TItem, TEdge> : WalkerBase<TItem, TEdge>
         where TEdge : IEdge<TItem>, TItem {
 
         public Walker (IGraph<TItem, TEdge> graph) : base(graph) { }
 
         /// <summary>
-        /// Maybe a Trail???
-        /// Iterates over all Nodes and Vertices which are connected to each other
-        /// starting with the start-item
+        /// Iterates over all items and links which are connected to each other
+        /// beginning with item start
+        /// items and links are distinct (they dont repeat if there are circles)
         /// </summary>
+        /// <remarks>the clique containing the start-item, but with multiple egdes allowed</remarks>
         /// <param name="start"></param>
         /// <param name="level"></param>
         /// <returns></returns>
@@ -79,11 +86,11 @@ namespace Limaki.Graphs.Extensions {
         }
 
         /// <summary>
-        /// maybe same as deepwalk???
         /// iterates over all edges and nodes connected with start
         /// iterates over all edges of edges recursivly
         /// if edge.Root or edge.Leaf is an edge, it is iterated too
         /// </summary>
+        /// <remarks>maybe same as deepwalk</remarks>
         /// <param name="start"></param>
         /// <param name="level"></param>
         /// <returns></returns>
@@ -153,7 +160,6 @@ namespace Limaki.Graphs.Extensions {
                 }
             }
         }
-
 
         public virtual IEnumerable<LevelItem<TItem>> ExpandWalk (TItem start, int level) {
             return ExpandWalk(start, level, null);
@@ -300,18 +306,22 @@ namespace Limaki.Graphs.Extensions {
     }
 
     public static class Walk {
+
         public static Func<LevelItem<TItem>, bool> Leafs<TItem, TEdge> () where TEdge : IEdge<TItem>, TItem {
-                return e => {
-                    var edge = e.Node is TEdge ? (TEdge) e.Node : default(TEdge);
-                    if (edge == null || e.Path == null)
-                        return true;
-                    if (edge.Root.Equals(e.Path))
-                        return true;
-                    var pathEdge = e.Path is TEdge ? (TEdge) e.Path : default(TEdge);
-                    if (pathEdge != null && pathEdge.Leaf.Equals(e.Node))
-                        return true;
-                    return false;
-                };
+            return e => {
+                var edge = e.Node is TEdge ? (TEdge) e.Node : default (TEdge);
+                if (edge == null || e.Path == null)
+                    return true;
+                if (edge.Root.Equals(e.Path))
+                    return true;
+                var pathEdge = e.Path is TEdge ? (TEdge) e.Path : default (TEdge);
+                if (pathEdge != null && pathEdge.Leaf.Equals(e.Node))
+                    return true;
+                return false;
+            };
+
+        }
+
         public static Func<LevelItem<TItem>, bool> Roots<TItem, TEdge> () where TEdge : IEdge<TItem>, TItem {
             return e => {
                 var edge = e.Node is TEdge ? (TEdge) e.Node : default (TEdge);
@@ -325,7 +335,8 @@ namespace Limaki.Graphs.Extensions {
                 return false;
             };
 
-            }
         }
-    
+
+    }
+
 }

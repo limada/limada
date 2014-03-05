@@ -13,19 +13,15 @@
  */
 
 using System;
-using System.Linq;
-using Limaki.Common;
-using Limaki.View.UI;
+using Limaki.View.DragDrop;
 using Xwt;
 using Xwt.Backends;
 using Xwt.WinformBackend;
 using SWF = System.Windows.Forms;
-using Limaki.View.DragDrop;
 
-using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
-using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 
 namespace Limaki.View.Swf.Backends {
+
     /// <summary>
     /// implements Windows.Forms DragDrop over Xwt.DragDrop
     /// it handles dragdrop 

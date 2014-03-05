@@ -29,10 +29,10 @@ namespace Limaki.View.DragDrop {
     /// <summary>
     /// DragDrop support
     /// </summary>
-    public class VisualsDragDropAction : DragDropActionBase, ICopyPasteAction {
-        
-        public VisualsDragDropAction(Func<IGraphScene<IVisual, IVisualEdge>> sceneHandler, IVidgetBackend backend, ICamera camera, IGraphSceneLayout<IVisual, IVisualEdge> layout)
-            : base(backend,camera) {
+    public class VisualsDragDropAction : DragDropActionBase, ICopyPasteAction, IKeyAction {
+
+        public VisualsDragDropAction (Func<IGraphScene<IVisual, IVisualEdge>> sceneHandler, IVidgetBackend backend, ICamera camera, IGraphSceneLayout<IVisual, IVisualEdge> layout)
+            : base(backend, camera) {
 
             this.SceneHandler = sceneHandler;
             this.Layout = layout;
@@ -44,7 +44,7 @@ namespace Limaki.View.DragDrop {
 
         public IVisual Source { get; set; }
 
-        protected virtual IVisual HitTest(Point p) {
+        protected virtual IVisual HitTest (Point p) {
             IVisual result = null;
             var sp = Camera.ToSource(p);
             var scene = this.Scene;
@@ -77,31 +77,25 @@ namespace Limaki.View.DragDrop {
                 Dragging = true;
                 InprocDragDrop.Dragging = true;
                 InprocDragDrop.Data = new GraphCursor<IVisual, IVisualEdge>(Scene.Graph, Source);
-                
+
                 try {
                     var startData =
-                        new DragStartData (
-                            DragDropViz.TransferDataOfVisual (Scene.Graph, Source), 
+                        new DragStartData(
+                            DragDropViz.TransferDataOfVisual(Scene.Graph, Source),
                             DragDropAction.All,
-                            GetDragImageBackend(Scene.Graph, Source), 
+                            GetDragImageBackend(Scene.Graph, Source),
                             e.Location.X, e.Location.Y);
-                    
-                    DragDropHandler.DragStart(startData);
-                } catch {
 
-                } finally {
+                    DragDropHandler.DragStart(startData);
+                } catch {} finally {
                     EndAction();
                 }
             }
         }
 
-        protected virtual object GetDragImageBackend (IGraph<IVisual, IVisualEdge> graph, IVisual Current) {
-            return Iconery.NewSheet;
-        }
+        protected virtual object GetDragImageBackend (IGraph<IVisual, IVisualEdge> graph, IVisual Current) { return Iconery.NewSheet; }
 
-        public override TransferDataSource GetTransferData () {
-            return DragDropViz.TransferDataOfVisual (this.Scene.Graph, this.Scene.Focused);
-        }
+        public override TransferDataSource GetTransferData () { return DragDropViz.TransferDataOfVisual(this.Scene.Graph, this.Scene.Focused); }
 
         public override void DragOver (DragOverEventArgs e) {
             base.DragOver(e);
@@ -137,7 +131,7 @@ namespace Limaki.View.DragDrop {
             }
 
             if (item == null) {
-                item = DragDropViz.VisualOfTransferData(scene.Graph,e.Data);
+                item = DragDropViz.VisualOfTransferData(scene.Graph, e.Data);
                 if (item != null)
                     item.Location = pt;
             }
@@ -155,7 +149,7 @@ namespace Limaki.View.DragDrop {
         }
 
 
-        public virtual void Paste() {
+        public virtual void Paste () {
 
             var scene = this.Scene;
             IVisual item = null;
@@ -164,7 +158,7 @@ namespace Limaki.View.DragDrop {
                 // TODO: refactor to use same code as above
                 var source = InprocDragDrop.ClipboardData as GraphCursor<IVisual, IVisualEdge>;
                 if (source != null && source.Cursor != item) {
-                    item = GraphMapping.Mapping.LookUp (source.Graph, scene.Graph, source.Cursor);
+                    item = GraphMapping.Mapping.LookUp(source.Graph, scene.Graph, source.Cursor);
                     if (item == null) {
                         //TODO: error here
                         //return;
@@ -173,10 +167,10 @@ namespace Limaki.View.DragDrop {
             }
 
             if (item == null) {
-                item = DragDropViz.VisualOfTransferData (scene.Graph, Clipboard.GetTransferData (DragDropViz.DataManager.DataTypes));
+                item = DragDropViz.VisualOfTransferData(scene.Graph, Clipboard.GetTransferData(DragDropViz.DataManager.DataTypes));
             }
             if (item != null) {
-                SceneExtensions.PlaceVisual (scene, scene.Focused, item, Layout);
+                SceneExtensions.PlaceVisual(scene, scene.Focused, item, Layout);
             }
 
         }
@@ -189,7 +183,6 @@ namespace Limaki.View.DragDrop {
             }
             Clipboard.SetTransferData(DragDropViz.TransferDataOfVisual(Scene.Graph, Scene.Focused));
         }
-    }
 
 
 }

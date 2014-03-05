@@ -30,7 +30,8 @@ namespace Limaki.Tests.View.Winform {
         }
 
         public void DoEvents() {
-            Application.DoEvents();
+            //Application.DoEvents();
+            Xwt.Application.MainLoop.DispatchPendingEvents();
         }
 
 

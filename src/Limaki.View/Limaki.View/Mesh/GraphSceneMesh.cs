@@ -105,12 +105,14 @@ namespace Limaki.View.Mesh {
 
         private void RegisterBackGraph (IGraph<TItem, TEdge> graph) {
             var backMesh = BackHandler (graph);
-            backMesh.RegisterBackGraph (graph);
+            if (backMesh != null)
+                backMesh.RegisterBackGraph (graph);
         }
 
         private void UnregisterBackGraph (IGraph<TItem, TEdge> graph) {
             var backMesh = BackHandler (graph);
-            backMesh.UnregisterBackGraph (graph);
+            if (backMesh != null)
+                backMesh.UnregisterBackGraph (graph);
         }
 
         #endregion

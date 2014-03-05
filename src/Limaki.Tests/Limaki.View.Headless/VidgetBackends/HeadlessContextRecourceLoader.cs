@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.Contents;
@@ -7,9 +21,7 @@ using Limaki.Drawing.Shapes;
 using Limaki.IOC;
 using Limaki.View.DragDrop;
 using Limaki.View.Headless.VidgetBackends;
-using Limaki.View.Headless;
 using Limaki.View.UI;
-using Limaki.View.XwtContext;
 using Limaki.Viewers;
 using Limaki.Visuals;
 using Xwt;
@@ -27,7 +39,6 @@ namespace Limaki.View.Headless {
                 tk.SetActive();
             }
 
-            
             if (tk.Backend is HeadlessEngine) {
                 tk.RegisterBackend<SystemColorsBackend, HeadlessSystemColorsBackend>();
                 tk.RegisterBackend<SystemFontBackend, HeadlessSystemFontsBackend> ();
@@ -35,7 +46,6 @@ namespace Limaki.View.Headless {
                 context.Factory.Add<IExceptionHandler, HeadlessExeptionHandlerBackend>();
                 context.Factory.Add<IDrawingUtils, HeadlessDrawingUtils>();
                 
-
                 context.Factory.Add<IPainterFactory, DefaultPainterFactory>();
 
                 context.Factory.Add<IUISystemInformation, HeadlessSystemInformation>();

@@ -16,8 +16,9 @@ using System;
 using System.Collections.Generic;
 
 namespace Limaki.Graphs {
+
     /// <summary>
-    /// a graph consists of items which are connected with links
+    /// a graph consists of items which are connected with edges
     /// </summary>
     /// <typeparam name="TItem"></typeparam>
     /// <typeparam name="TEdge"></typeparam>
