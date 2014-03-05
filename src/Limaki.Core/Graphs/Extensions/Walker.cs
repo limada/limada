@@ -312,6 +312,18 @@ namespace Limaki.Graphs.Extensions {
                         return true;
                     return false;
                 };
+        public static Func<LevelItem<TItem>, bool> Roots<TItem, TEdge> () where TEdge : IEdge<TItem>, TItem {
+            return e => {
+                var edge = e.Node is TEdge ? (TEdge) e.Node : default (TEdge);
+                if (edge == null || e.Path == null)
+                    return true;
+                if (edge.Leaf.Equals(e.Path))
+                    return true;
+                var pathEdge = e.Path is TEdge ? (TEdge) e.Path : default (TEdge);
+                if (pathEdge != null && pathEdge.Root.Equals(e.Node))
+                    return true;
+                return false;
+            };
 
             }
         }
