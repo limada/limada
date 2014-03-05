@@ -402,6 +402,7 @@ namespace Limaki.View.Swf.Visualizers {
 
         void IVidgetBackend.Invalidate(Xwt.Rectangle rect) {
             this.Invalidate (rect.ToGdi ());
+            SWF.Application.DoEvents();
         }
 
         Point IDragDropControl.PointToClient(Point source) {
