@@ -321,30 +321,30 @@ namespace Limada.Usecases.Cms {
             return string.Empty;
         }
 
-       public IEnumerable<IThing> Leafs (IThing thing) {
-            var walker = new Walker<IThing, ILink> (ThingGraph);
-            foreach (var item in walker.ExpandWalk (thing, 0)) {
-                var link = item.Node as ILink;
-                if (link != null && (link.Root == item.Path || link.Root == thing)) {
-                    var result = link.Leaf;
-                    if (!(result is ILink)) {
-                        yield return result;
-                    }
-                }
-            }
+        /// <summary>
+        /// an expandwalk with leafs of thing
+        /// attention! use it only once, or make tolist or toarray
+        /// </summary>
+        /// <param name="thing"></param>
+        /// <returns></returns>
+        public IEnumerable<IThing> Leafs (IThing thing) {
+            return new Walker<IThing, ILink> (ThingGraph)
+                 .ExpandWalk (thing, 0, Walk.Leafs<IThing, ILink> ())
+                 .Where (item => !(item.Node is ILink || item.Node == thing))
+                 .Select (item => item.Node);
         }
 
+        /// <summary>
+        /// an expandwalk with roots of thing
+        /// attention! use it only once, or make tolist or toarray
+        /// </summary>
+        /// <param name="thing"></param>
+        /// <returns></returns>
         public IEnumerable<IThing> Roots (IThing thing) {
-            var walker = new Walker<IThing, ILink> (ThingGraph);
-            foreach (var item in walker.ExpandWalk (thing, 0)) {
-                var link = item.Node as ILink;
-                if (link != null && (link.Leaf == item.Path || link.Leaf == thing)) {
-                    var result = link.Root;
-                    if (!(result is ILink)) {
-                        yield return result;
-                    }
-                }
-            }
+            return new Walker<IThing, ILink> (ThingGraph)
+                .ExpandWalk (thing, 0, Walk.Roots<IThing, ILink> ())
+                .Where (item => !(item.Node is ILink || item.Node == thing))
+                .Select (item => item.Node);
         }
 
         public LinkID LinkOfThing (IThing t) {
