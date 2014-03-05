@@ -214,6 +214,25 @@ namespace Limada.Usecases.Cms {
             return null;
         }
 
+        public StreamContent SetMimeType (StreamContent content) {
+
+            var contentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool> ();
+            var contentIo = contentIoPool.Find (content.ContentType);
+
+            content.MimeType = "unknown";
+            if (contentIo != null) {
+                var info = contentIo.Use (content.Data);
+                if (info == null)
+                    info = contentIo.Detector.Find (content.ContentType);
+                if (info != null) {
+                    content.MimeType = info.MimeType;
+                    content.ContentType = info.ContentType;
+                }
+            }
+
+            return content;
+        }
+
         public StreamContent StreamContent (IStreamThing thing) {
             if (thing == null)
                 return null;
@@ -221,34 +240,23 @@ namespace Limada.Usecases.Cms {
             var result = new StreamContent (ThingContentFacade.ContentOf (ThingGraph, thing));
             result.Source = thing.Id.ToString ("X16");
 
-            var contentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool>();
-            var streamType = thing.StreamType;
+            SetMimeType(result);
 
-            if (streamType == ContentTypes.TIF) {
+            if (result.ContentType == ContentTypes.TIF) {
                 var sinkType = ContentTypes.PNG;
                 var converter = Registry.Pool.TryGetCreate<ConverterPool<Stream>>()
                     .Find(ContentTypes.TIF, sinkType);
+
                 if (converter != null) {
                     var conv = converter.Use(result, sinkType);
                     result.Data.Dispose();
                     result.Data = conv.Data;
                     result.ContentType = conv.ContentType;
+
+                    SetMimeType (result);
                 }
             }
 
-            var contentIo = contentIoPool.Find(streamType);
-
-            string mimeType = "unknown";
-            if (contentIo != null) {
-                var info = contentIo.Use(result.Data);
-                if (info != null)
-                    mimeType = info.MimeType;
-                else {
-                    info = contentIo.Detector.Find(streamType);
-                    mimeType = info.MimeType;
-                }
-            }
-            result.MimeType = mimeType;
             return result;
         }
 
@@ -308,7 +316,6 @@ namespace Limada.Usecases.Cms {
             }
             return result;
         }
-
 
         public string RenderSheet (IStreamThing streamThing) {
             return string.Empty;
