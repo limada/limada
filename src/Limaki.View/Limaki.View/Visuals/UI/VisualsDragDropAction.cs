@@ -185,4 +185,28 @@ namespace Limaki.View.DragDrop {
         }
 
 
+        #region IKeyAction Member
+
+        void IKeyAction.OnKeyPressed (KeyActionEventArgs e) {
+            if (e.Key == Key.C &&
+                e.Modifiers == ModifierKeys.Control) {
+                if (Scene.Focused != null) {
+                    this.Copy();
+                    e.Handled = true;
+                }
+            }
+
+            if (e.Key == Key.V
+                && e.Modifiers == ModifierKeys.Control) {
+                this.Paste();
+                e.Handled = true;
+            }
+        }
+
+
+        void IKeyAction.OnKeyReleased (KeyActionEventArgs e) { }
+
+        #endregion
+
+    }
 }
