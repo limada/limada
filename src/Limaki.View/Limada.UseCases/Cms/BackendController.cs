@@ -351,9 +351,9 @@ namespace Limada.Usecases.Cms {
            return new LinkID (ThingDataToDisplay (t).ToString (), DescribedThing (t).Id.ToString ("X16"));
        }
 
-        public IEnumerable<LinkID> LinksOfThings (IEnumerable<IThing> things) {
-            return things.Select(t => LinkOfThing(t));
-        }
+       public IEnumerable<LinkID> LinksOfThings (IEnumerable<IThing> things) {
+           return things.Select (t => LinkOfThing (t));
+       }
 
 
     }
