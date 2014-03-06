@@ -216,6 +216,9 @@ namespace Limada.Model {
                         addThing (link);
                     }
                 }
+
+                SchemaFacade.Dependencies.VisitItems (
+                    GraphCursor.Create (graph, thing), d => addThing (d), GraphEventType.Add);
             }
 
             foreach (var item in stack)
