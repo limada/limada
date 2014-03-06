@@ -324,7 +324,7 @@ namespace Limada.Schemata {
         }
 
         public override bool Remove (IThing item) {
-            SchemaFacade.Dependencies.DependentItems(
+            SchemaFacade.Dependencies.VisitItems(
                 GraphCursor.Create(this, item),
                 d => {
                     RemoveThingToDisplay(d);

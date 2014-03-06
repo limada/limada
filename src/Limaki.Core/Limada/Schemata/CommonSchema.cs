@@ -12,8 +12,15 @@
  * 
  */
 
+using System.Collections.Generic;
+using System.Linq;
 using Limada.Model;
 using Limada.Schemata;
+using Limaki.Graphs;
+using Limaki.Graphs.Extensions;
+using Limaki.Common.Linqish;
+
+using Id = System.Int64;
 
 namespace Limada.Schemata {
     /// <summary>
@@ -78,9 +85,11 @@ namespace Limada.Schemata {
             get { return GetTheLeaf(SourceMarker); }
             set { SetTheLeaf(SourceMarker, value); }
         }
+
         public virtual IThing SourceTarget {
             get { return GetTheRoot(this.Graph, this.Target, SourceMarker); }
         }
+
         #endregion
 
         #region Data-Handling
@@ -97,5 +106,7 @@ namespace Limada.Schemata {
         public CommonSchema(IThingGraph graph,IThing thing):base(graph,thing) { }
 
         #endregion
+
+       
     }
 }

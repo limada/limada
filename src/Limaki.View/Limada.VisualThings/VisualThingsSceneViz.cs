@@ -25,7 +25,6 @@ using System.IO;
 using System.Linq;
 
 namespace Limada.Usecases {
-
     /// <summary>
     /// helper class to manage VisualGraphScenes backed by ThingGraphs
     /// </summary>

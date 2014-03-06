@@ -41,8 +41,8 @@ namespace Limaki.View.Mesh {
                 Scenes.Add (scene);
                 var graph = scene.Graph;
                 RegisterBackGraph (graph);
-                graph.GraphChange -= this.VisualGraphChanged;
-                graph.GraphChange += this.VisualGraphChanged;
+                graph.GraphChange -= this.VisualGraphChange;
+                graph.GraphChange += this.VisualGraphChange;
                 graph.ChangeData -= this.VisualGraphChangeData;
                 graph.ChangeData += this.VisualGraphChangeData;
                 graph.DataChanged -= this.VisualGraphDataChanged;
@@ -54,7 +54,7 @@ namespace Limaki.View.Mesh {
         public void RemoveScene (IGraphScene<TItem, TEdge> scene) {
             if (scene != null) {
                 var graph = scene.Graph;
-                graph.GraphChange -= this.VisualGraphChanged;
+                graph.GraphChange -= this.VisualGraphChange;
                 graph.ChangeData -= this.VisualGraphChangeData;
                 graph.DataChanged -= this.VisualGraphDataChanged;
                 Scenes.Remove (scene);
@@ -96,6 +96,7 @@ namespace Limaki.View.Mesh {
                     backHandler = Activator.CreateInstance (typeof (GraphSceneMeshBackHandler<,,,>).MakeGenericType (types)) as IGraphSceneMeshBackHandler<TItem, TEdge>;
                     _backHandlers.Add (key, backHandler);
                     backHandler.Scenes = () => this.Scenes;
+                    backHandler.Displays = () => this.Displays;
                 }
 
                 return backHandler;
@@ -137,7 +138,7 @@ namespace Limaki.View.Mesh {
             visitor.ChangeDataVisit (sceneEvents.GraphDataChanged);
         }
 
-        protected void VisualGraphChanged (IGraph<TItem, TEdge> graph, TItem visual, GraphEventType eventType) {
+        protected void VisualGraphChange (IGraph<TItem, TEdge> graph, TItem visual, GraphEventType eventType) {
             var visitor = CreateVisitor (graph, visual);
             var sceneEvents = CreateSceneEvents ();
             visitor.GraphChangedVisit (sceneEvents.GraphChanged, eventType);

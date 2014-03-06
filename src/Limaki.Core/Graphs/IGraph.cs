@@ -158,7 +158,11 @@ namespace Limaki.Graphs {
         void DoChangeData(TItem item, object data);
 
         /// <summary>
-        /// this is fired "outside" of the graph by the user-interface
+        /// called in <see cref="OnGraphChange"/>
+        ///     after adding
+        ///     before deleting
+        /// a graph 
+        /// is called "outside" of the graph by the user-interface
         /// </summary>
         Action<IGraph<TItem, TEdge>, TItem, GraphEventType> GraphChange { get;set;}
 

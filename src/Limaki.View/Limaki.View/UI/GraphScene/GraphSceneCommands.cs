@@ -25,7 +25,9 @@ namespace Limaki.View.UI.GraphScene {
     
     public class DeleteCommand<TItem, TEdge> : Command<TItem, IGraphScene<TItem, TEdge>>, IDirtyCommand
     where TEdge : TItem, IEdge<TItem> {
-        public DeleteCommand(TItem target, IGraphScene<TItem, TEdge> parameter) : base(target, parameter) { }
+        
+        public DeleteCommand(TItem subject, IGraphScene<TItem, TEdge> parameter) : base(subject, parameter) { }
+        
         public override void Execute() {
             this.Parameter.Graph.OnGraphChange(Subject, GraphEventType.Remove);
             this.Parameter.Remove(Subject);
@@ -34,7 +36,9 @@ namespace Limaki.View.UI.GraphScene {
 
     public class DeleteEdgeCommand<TItem, TEdge> : DeleteCommand<TItem, TEdge>
     where TEdge : TItem, IEdge<TItem> {
-        public DeleteEdgeCommand(TItem target, IGraphScene<TItem, TEdge> parameter) : base(target, parameter) { }
+
+        public DeleteEdgeCommand(TItem subject, IGraphScene<TItem, TEdge> parameter) : base(subject, parameter) { }
+        
         public override void Execute() {
             this.Parameter.Graph.OnGraphChange(Subject, GraphEventType.Remove);
             this.Parameter.RemoveBounds(Subject); // edges are deleted on scene.remove() of leaf or root (see above)
@@ -43,14 +47,14 @@ namespace Limaki.View.UI.GraphScene {
 
     public class RemoveBoundsCommand<TItem, TEdge> : DeleteCommand<TItem, TEdge>
     where TEdge : TItem, IEdge<TItem> {
-        public RemoveBoundsCommand(TItem target, IGraphScene<TItem, TEdge> parameter) : base(target, parameter) { }
+        public RemoveBoundsCommand(TItem subject, IGraphScene<TItem, TEdge> parameter) : base(subject, parameter) { }
         public override void Execute() {
             this.Parameter.RemoveBounds(Subject);
         }
     }
 
     public class StateChangeCommand<TItem> : Command<TItem, Pair<UiState>> {
-        public StateChangeCommand(TItem target, Pair<UiState> param) : base(target, param) { }
+        public StateChangeCommand(TItem subject, Pair<UiState> param) : base(subject, param) { }
 
         public override void Execute() { }
 

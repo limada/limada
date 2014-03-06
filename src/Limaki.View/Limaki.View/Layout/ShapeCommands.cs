@@ -8,7 +8,7 @@ namespace Limaki.View.Layout {
     public interface IDirtyCommand { }
 
     public class MoveCommand<TItem> : Command<TItem, Func<TItem, IShape>, Point>,IDirtyCommand {
-        public MoveCommand(TItem target, Func<TItem, IShape> shape, Point param) : base(target, shape, param) { }
+        public MoveCommand(TItem subject, Func<TItem, IShape> shape, Point param) : base(subject, shape, param) { }
         public override void Execute() {
             var shape = this.Parameter (this.Subject);
             shape.Location = this.Parameter2;
@@ -16,7 +16,7 @@ namespace Limaki.View.Layout {
     }
 
     public class MoveByCommand<TItem> : Command<TItem, Func<TItem, IShape>, Size>, IDirtyCommand {
-        public MoveByCommand (TItem target, Func<TItem, IShape> shape, Size param) : base (target, shape, param) { }
+        public MoveByCommand (TItem subject, Func<TItem, IShape> shape, Size param) : base (subject, shape, param) { }
         public override void Execute () {
             var shape = this.Parameter (Subject);
             shape.Location -= this.Parameter2;
@@ -24,7 +24,7 @@ namespace Limaki.View.Layout {
     }
 
     public class ResizeCommand<TItem> : Command<TItem, Func<TItem, IShape>, Rectangle>, IDirtyCommand {
-        public ResizeCommand (TItem target, Func<TItem, IShape> shape, Rectangle param) : base (target, shape, param) { }
+        public ResizeCommand (TItem subject, Func<TItem, IShape> shape, Rectangle param) : base (subject, shape, param) { }
 
         public override void Execute () {
             var shape = this.Parameter (Subject);

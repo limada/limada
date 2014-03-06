@@ -10,7 +10,7 @@ namespace Limaki.Graphs {
 
         public Action<GraphCursor<TItem, TEdge>, Action<TItem>, GraphEventType> Visitor { get; set; }
 
-        public virtual void DependentItems (
+        public virtual void VisitItems (
             GraphCursor<TItem, TEdge> graphCursor, 
             Action<TItem> visit, 
             GraphEventType eventType) {

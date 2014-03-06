@@ -33,12 +33,12 @@ namespace Limaki.Actions {
     }
 
     public class Command<T> : Command,ICommand<T> {
-        private T _target = default(T);
+        private T _subject = default(T);
         public T Subject {
-            get { return _target; }
-            set { _target = value; }
+            get { return _subject; }
+            set { _subject = value; }
         }
-        public Command(T target) { this.Subject = target;}
+        public Command(T subject) { this.Subject = subject;}
         protected override void Dispose(bool disposing) {
             Subject = default( T );
         }
@@ -51,7 +51,7 @@ namespace Limaki.Actions {
             set { _parameter = value; }
         }
 
-        public Command(T target, P parameter):base(target) {
+        public Command(T subject, P parameter):base(subject) {
             this.Parameter = parameter;
         }
 
@@ -71,13 +71,13 @@ namespace Limaki.Actions {
             set { _parameter2 = value; }
         }
 
-        public Command(T target, P parameter, P2 parameter2): base(target,parameter) {
+        public Command(T subject, P parameter, P2 parameter2): base(subject,parameter) {
             this.Parameter2 = parameter2;
         }
     }
 
     public class ActionCommand<T, P> : Command<T,P> {
-        public ActionCommand(T target, P parameter, Action<T, P> action) : base(target, parameter) { this.Action = action; }
+        public ActionCommand(T subject, P parameter, Action<T, P> action) : base(subject, parameter) { this.Action = action; }
 
         private Action<T,P> _act = null;
         public Action<T,P> Action {
