@@ -15,9 +15,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
+using Limaki.View.UI.GraphScene;
+using Limaki.View.Visualizers;
+using Limaki.Common.Linqish;
 
 namespace Limaki.View.Mesh {
 
@@ -38,6 +42,7 @@ namespace Limaki.View.Mesh {
         public ICollection<IGraph<TSourceItem, TSourceEdge>> BackGraphs { get { return _backGraphs; } }
 
         public Func<ICollection<IGraphScene<TSinkItem, TSinkEdge>>> Scenes { get; set; }
+        public Func<ICollection<IGraphSceneDisplay<TSinkItem, TSinkEdge>>> Displays { get; set; }
 
         public void RegisterBackGraph (IGraph<TSinkItem, TSinkEdge> graph) {
             RegisterBackGraph (BackGraphOf (graph));
@@ -89,13 +94,69 @@ namespace Limaki.View.Mesh {
             return Scenes().Where (s => BackGraphOf (s.Graph) == backGraph);
         }
 
+        public IGraphSceneDisplay<TSinkItem, TSinkEdge> DisplayOf(IGraphScene<TSinkItem, TSinkEdge> scene) {
+            return Displays ().Where (d => d.Data == scene).FirstOrDefault ();
+        }
+
         #region BackGraphEvents
 
         private void BackGraphChangeData (IGraph<TSourceItem, TSourceEdge> graph, TSourceItem backItem, object data) { }
 
         private void BackGraphDataChanged (IGraph<TSourceItem, TSourceEdge> graph, TSourceItem backItem) { }
 
-        private void BackGraphChanged (IGraph<TSourceItem, TSourceEdge> graph, TSourceItem backItem, GraphEventType eventType) { }
+        protected ICollection<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> changing = new HashSet<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> ();
+
+        protected virtual void BackGraphChange (IGraph<TSourceItem, TSourceEdge> graph, TSourceItem backItem, GraphEventType eventType) {
+
+            var change = Tuple.Create (graph, backItem, eventType);
+            if (changing.Contains (change))
+                return;
+
+            try {
+                changing.Add (change);
+
+                var toPerform = new HashSet<IGraphSceneDisplay<TSinkItem, TSinkEdge>> ();
+                var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<TSourceItem, TSourceEdge>> ();
+                dependencies.VisitItems (GraphCursor.Create (graph, backItem),
+                    t => {
+                        foreach (var scene in ScenesOfBackGraph (graph)) {
+
+                            var sg = scene.Graph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
+                           
+                            var s = default (TSinkItem);
+                            if (sg.Count==0 || !sg.Source2Sink.TryGetValue (t, out s))
+                                continue;
+
+                            var visible = scene.Contains (s);
+                            if (eventType == GraphEventType.Remove) {
+                                if (visible &&
+                                    !scene.Requests
+                                         .OfType<DeleteCommand<TSinkItem, TSinkEdge>> ()
+                                         .Any (r => s.Equals (r.Subject))) {
+
+                                    scene.RequestDelete (s, null);
+                                    toPerform.Add(DisplayOf (scene));
+                                }
+                            }
+
+                            if (!visible)
+                                foreach (var dg in scene.Graph.Graphs ())
+                                    if (eventType == GraphEventType.Remove) {
+                                        dg.OnGraphChange (s, eventType);
+                                        dg.Remove (s);
+                                    }
+
+                        }
+                    }
+                    , eventType);
+
+                toPerform.ForEach (d => d.Perform ());
+
+            } finally {
+                changing.Remove (change);
+            }
+
+        }
 
         #endregion
         

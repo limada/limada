@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.View.Visualizers;
 
 namespace Limaki.View.Mesh {
 
@@ -31,5 +32,6 @@ namespace Limaki.View.Mesh {
         void UnregisterBackGraph (IGraph<TSinkItem, TSinkEdge> graph);
 
         Func<ICollection<IGraphScene<TSinkItem, TSinkEdge>>> Scenes { get; set; }
+        Func<ICollection<IGraphSceneDisplay<TSinkItem, TSinkEdge>>> Displays { get; set; }
     }
 }
