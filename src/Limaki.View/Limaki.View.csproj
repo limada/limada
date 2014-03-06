@@ -84,6 +84,7 @@
     <Compile Include="Limaki.View\Mesh\GraphSceneMeshBackHandler.cs" />
     <Compile Include="Limaki.View\Visuals\Mesh\VisualGraphSceneEvents.cs" />
     <Compile Include="Limaki.View\Visuals\Mesh\VisualGraphSceneMesh.cs" />
+    <Compile Include="Limaki.View\UI\GraphScene\GraphSceneExtensions.cs" />
     <Compile Include="Limaki.View\Visuals\UI\VisualsTextEditActionBase.cs" />
     <Compile Include="Limaki.View\Mesh\GraphSceneMesh.cs" />
     <Compile Include="Limaki.Visuals\IVisualContentViz.cs" />

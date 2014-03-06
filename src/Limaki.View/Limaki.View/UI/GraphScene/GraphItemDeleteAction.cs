@@ -36,40 +36,13 @@ namespace Limaki.View.UI.GraphScene {
 
         public virtual ISelectionRenderer MoveResizeRenderer { get; set; }
 
-        public void Delete ( TItem deleteRoot, Set<TItem> done ) {
-
-            Action<TItem> doDelete = delete => {
-                if (!done.Contains (delete)) {
-                    if (delete is TEdge)
-                        Scene.Requests.Add (new DeleteEdgeCommand<TItem, TEdge> (delete, Scene));
-                    else
-                        Scene.Requests.Add (new DeleteCommand<TItem, TEdge> (delete, Scene));
-                    done.Add (delete);
-                };
-            };
-
-            if ( !done.Contains(deleteRoot) ) {
-                foreach (var edge in Scene.Graph.PostorderTwig(deleteRoot)) {
-                    doDelete (edge);
-                }
-
-                var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<TItem,TEdge>>();
-                dependencies.DependentItems(
-                    GraphCursor.Create(Scene.Graph, deleteRoot), 
-                    doDelete, 
-                    GraphEventType.Remove);
-
-                doDelete (deleteRoot);
-            }
-        }
-
         public override void OnKeyPressed( KeyActionEventArgs e ) {
             base.OnKeyPressed(e);
             if (e.Key == Key.Delete && (e.Modifiers==ModifierKeys.Control)) {
                 if (Scene.Selected.Count > 0) {
                     var done = new Set<TItem>();
-                    foreach(TItem item in Scene.Selected.Elements) {
-                        Delete (item, done);
+                    foreach(var item in Scene.Selected.Elements) {
+                        Scene.Delete (item, done);
                     }
                     if (Scene.Focused != null) {
                         Scene.Requests.Add (
