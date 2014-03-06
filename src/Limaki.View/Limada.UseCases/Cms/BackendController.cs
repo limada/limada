@@ -164,7 +164,8 @@ namespace Limada.Usecases.Cms {
                 result = CommonSchema.EmtpyMarkerString;
             } else if (thing.GetType () == typeof (Thing))
                 result = CommonSchema.ThingString;
-
+            if (result == null)
+                return CommonSchema.NullString;
             return result;
         }
 
@@ -194,21 +195,15 @@ namespace Limada.Usecases.Cms {
 
         public virtual IEnumerable<IThing> ResolveRequest (string request) {
             if (string.IsNullOrEmpty(request)) {
-                var thing = this.Topic ();
-                return new IThing[] { thing };
+                return new IThing[] { this.Topic () };
             } else {
                 Int64 id = 0;
-                if (Int64.TryParse(request, NumberStyles.HexNumber, null, out id)) {
-                    var thing = ThingGraph.GetById(id);
-                    return new IThing[] {thing};
+                if (Int64.TryParse (request, NumberStyles.HexNumber, null, out id)) {
+                    var thing = ThingGraph.GetById (id);
+                    return new IThing[] { thing };
                 } else {
-                    var things = ThingGraph.GetByData(request, false).ToArray();
-                    if (things.Count() == 1) {
-                        var thing = DescribedThing(ThingGraph, things.First());
-                        return new IThing[] {thing};
-                    } else if (things.Count() > 1) {
-                        return things;
-                    }
+                    var things = ThingGraph.Search (request, false);
+                    return things;
                 }
             }
             return null;
@@ -348,7 +343,8 @@ namespace Limada.Usecases.Cms {
         }
 
        public LinkID LinkOfThing (IThing t) {
-           return new LinkID (ThingDataToDisplay (t).ToString (), DescribedThing (t).Id.ToString ("X16"));
+           var d = ThingDataToDisplay (t);
+           return new LinkID (d.ToString (), t.Id.ToString ("X16"));//DescribedThing (t).Id.ToString ("X16"));
        }
 
        public IEnumerable<LinkID> LinksOfThings (IEnumerable<IThing> things) {

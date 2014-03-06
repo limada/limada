@@ -218,7 +218,7 @@ namespace Limada.Schemata {
                 if (itemDone.Contains(result))
                     break;
                 itemDone.Add(result);
-                foreach (ILink link in Source.Edges(result)) {
+                foreach (var link in Source.Edges(result)) {
                     var resultId = result.Id;
                     var idLink = (ILink<Id>)link;
                     if (idLink.Marker == 0)
