@@ -93,7 +93,7 @@ namespace Limaki.View {
 
             // TODO: find a better place for this
             var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<IVisual, IVisualEdge>>();
-            dependencies.Visitor += (c, a, t) => new DigidocViz().DependencyVisitor (c, a, t);
+            dependencies.Visitor += (c, a, t) => new VisualThingsViz ().DependencyVisitor (c, a, t);
 
         }
 
