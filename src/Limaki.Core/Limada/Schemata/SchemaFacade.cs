@@ -14,6 +14,7 @@
 
 using Limada.Model;
 using Limada.Schemata;
+using Limaki.Common;
 using Limaki.Graphs;
 
 namespace Limada.Schemata {
@@ -45,7 +46,7 @@ namespace Limada.Schemata {
 
         private static GraphDepencencies<IThing, ILink> _dependencies = null;
         public static GraphDepencencies<IThing, ILink> Dependencies {
-            get { return _dependencies ?? (_dependencies = new GraphDepencencies<IThing, ILink>()); }
+            get { return _dependencies ?? (_dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<IThing, ILink>>()); }
         }
     }
 }

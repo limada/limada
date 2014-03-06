@@ -92,6 +92,16 @@ namespace Limada.Schemata {
 
         #endregion
 
+        public static IEnumerable<IThing> DependsOn (GraphCursor<IThing, ILink> source, GraphEventType eventType) {
+            var graph = source.Graph;
+            if (graph is SchemaThingGraph)
+                graph = ((SchemaThingGraph) graph).Source;
+            return graph.Edges (source.Cursor)
+                .Where (l => Deps.Contains (l.Marker.Id))
+                .Select (l => l.Leaf)
+                .ToArray ();
+        }
+
         #region Data-Handling
 
         public virtual IThing GetDescription(IThingGraph graph, IThing thing) {
@@ -105,6 +115,17 @@ namespace Limada.Schemata {
         public CommonSchema():base(){}
         public CommonSchema(IThingGraph graph,IThing thing):base(graph,thing) { }
 
+        protected static HashSet<Id> Deps { get; set; }
+        static CommonSchema () {
+            Deps = new HashSet<Id> ();
+            Deps.Add (SourceMarker.Id);
+            Deps.Add (DescriptionMarker.Id);
+
+            SchemaFacade.Dependencies.Visitor += (source, action, changeType) => {
+                DependsOn (source, changeType).ForEach (action);
+            };
+        }
+       
         #endregion
 
        

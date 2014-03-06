@@ -138,15 +138,16 @@ namespace Limada.Schemata {
 
         #region Data-Handling
         
-        public DigidocSchema():base() {
-            SchemaFacade.Dependencies.Visitor += (source, action , changeType) => {
-                DependsOn (source, changeType).ForEach (action);
+        public DigidocSchema():base() { }
 
+        public DigidocSchema(IThingGraph graph, IThing document) : base(graph,document) { }
+
+        static DigidocSchema () {
+
+            SchemaFacade.Dependencies.Visitor += (source, action, changeType) => {
+                new DigidocSchema ().DependsOn (source, changeType).ForEach (action);
             };
         }
-
-        
-        public DigidocSchema(IThingGraph graph, IThing document) : base(graph,document) { }
 
         public IThing Title {
             get { return GetTheLeaf ( DocumentTitle ); }
