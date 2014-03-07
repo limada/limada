@@ -19,6 +19,7 @@ using Limaki.Common.Collections;
 using System.Linq;
 
 namespace Limaki.Graphs {
+
     public class FilteredGraph<TItem, TEdge> : GraphBase<TItem, TEdge>
         where TEdge : IEdge<TItem> {
 
@@ -128,12 +129,16 @@ namespace Limaki.Graphs {
             return ItemFilter(item) && Source.Contains(item);
         }
 
-        public override void CopyTo(TItem[] array, int arrayIndex) {
-            throw new Exception("The method or operation is not implemented.");
+        public override void CopyTo (TItem[] array, int arrayIndex) {
+            foreach (var item in this)
+                array[arrayIndex++] = item;
         }
 
+        /// <summary>
+        /// this is expensive!
+        /// </summary>
         public override int Count {
-            get { throw new Exception("The method or operation is not implemented."); }
+            get { int i = 0; foreach (var item in this) i++; return i; }
         }
 
         public override bool IsReadOnly {
