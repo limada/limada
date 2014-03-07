@@ -36,16 +36,17 @@ namespace Limada.VisualThings {
         /// <param name="source"></param>
         /// <returns></returns>
         public override IGraph<TItem, TEdge> CloneGraphPair<TItem, TEdge>(IGraph<TItem, TEdge> source) {
-            
+
             IGraph<TItem, TEdge> targetGraph = null;
 
-            if (source is VisualThingGraph) {
-                targetGraph = new VisualThingGraph(
-                                  new VisualGraph(),
-                                  ((VisualThingGraph)source).Source as IThingGraph)
+            var visualThingGraph = source as IGraphPair<IVisual, IThing, IVisualEdge, ILink>;
+            if (visualThingGraph != null) {
+                targetGraph = new VisualThingGraph (
+                                  new VisualGraph (),
+                                  visualThingGraph.Source as IThingGraph)
                               as IGraph<TItem, TEdge>;
 
-            } else if (Next!=null){
+            } else if (Next != null) {
                 targetGraph = Next.CloneGraphPair<TItem, TEdge> (source);
             }
 

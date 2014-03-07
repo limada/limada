@@ -91,10 +91,10 @@ namespace Limaki.View.Mesh {
             if (backGraph == null)
                 return new IGraphScene<TSinkItem, TSinkEdge>[0];
 
-            return Scenes().Where (s => BackGraphOf (s.Graph) == backGraph);
+            return Scenes ().Where (s => BackGraphOf (s.Graph) == backGraph);
         }
 
-        public IGraphSceneDisplay<TSinkItem, TSinkEdge> DisplayOf(IGraphScene<TSinkItem, TSinkEdge> scene) {
+        public IGraphSceneDisplay<TSinkItem, TSinkEdge> DisplayOf (IGraphScene<TSinkItem, TSinkEdge> scene) {
             return Displays ().Where (d => d.Data == scene).FirstOrDefault ();
         }
 
@@ -118,39 +118,39 @@ namespace Limaki.View.Mesh {
                 var toPerform = new HashSet<IGraphSceneDisplay<TSinkItem, TSinkEdge>> ();
                 var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<TSourceItem, TSourceEdge>> ();
                 dependencies.VisitItems (GraphCursor.Create (graph, backItem),
-                    t => {
+                    sourceItem => {
                         foreach (var scene in ScenesOfBackGraph (graph)) {
 
                             var sg = scene.Graph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
-                           
-                            var s = default (TSinkItem);
-                            if (sg.Count==0 || !sg.Source2Sink.TryGetValue (t, out s))
+
+                            var sinkItem = default (TSinkItem);
+                            if (sg.Count == 0 || !sg.Source2Sink.TryGetValue (sourceItem, out sinkItem))
                                 continue;
 
-                            var visible = scene.Contains (s);
+                            var visible = scene.Contains (sinkItem);
                             if (eventType == GraphEventType.Remove) {
                                 if (visible &&
                                     !scene.Requests
                                          .OfType<DeleteCommand<TSinkItem, TSinkEdge>> ()
-                                         .Any (r => s.Equals (r.Subject))) {
+                                         .Any (r => sinkItem.Equals (r.Subject))) {
 
-                                    scene.RequestDelete (s, null);
-                                    toPerform.Add(DisplayOf (scene));
+                                    scene.RequestDelete (sinkItem, null);
+                                    toPerform.Add (DisplayOf (scene));
                                 }
                             }
 
                             if (!visible)
                                 foreach (var dg in scene.Graph.Graphs ())
                                     if (eventType == GraphEventType.Remove) {
-                                        dg.OnGraphChange (s, eventType);
-                                        dg.Remove (s);
+                                        dg.OnGraphChange (sinkItem, eventType);
+                                        dg.Remove (sinkItem);
                                     }
 
                         }
                     }
                     , eventType);
 
-                toPerform.ForEach (d => d.Perform ());
+                toPerform.ForEach (display => display.Perform ());
 
             } finally {
                 changing.Remove (change);
@@ -159,6 +159,6 @@ namespace Limaki.View.Mesh {
         }
 
         #endregion
-        
+
     }
 }

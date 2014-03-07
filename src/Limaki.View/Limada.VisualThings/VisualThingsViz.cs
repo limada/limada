@@ -20,6 +20,7 @@ using Limada.VisualThings;
 using Limaki.Common;
 using Limaki.Common.Linqish;
 using Limaki.Graphs;
+using Limaki.Graphs.Extensions;
 using Limaki.Visuals;
 
 namespace Limada.Usecases {
@@ -29,18 +30,26 @@ namespace Limada.Usecases {
     /// </summary>
     public class VisualThingsViz {
 
-        public void DependencyVisitor (GraphCursor<IVisual, IVisualEdge> source, Action<IVisual> visit, GraphEventType eventType) {
+        public void DependencyVisitor (GraphCursor<IVisual, IVisualEdge> sink, Action<IVisual> visit, GraphEventType eventType) {
+
+            var rs = sink.Graph.Source<IVisual, IVisualEdge, IThing, ILink> ();
+            if (rs == null)
+                return;
+            var sg = rs.Source;
+            var sourceItem = sink.Graph.SourceItemOf<IVisual, IVisualEdge, IThing, ILink> (sink.Cursor);
+            if (sg == null || sourceItem == null)
+                return;
 
             var things = new Queue<IThing> ();
 
             var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<IThing, ILink>> ();
             dependencies.VisitItems (
-                GraphCursor.Create (source.Graph.ThingGraph (), source.Graph.ThingOf (source.Cursor)),
+                GraphCursor.Create (sink.Graph.ThingGraph(), sink.Graph.ThingOf (sink.Cursor)),
                 t => things.Enqueue (t), eventType);
 
             things
-                .Where (t => source.Graph.ContainsVisualOf (t))
-                .Select (t => source.Graph.VisualOf (t))
+                .Where (t => sink.Graph.ContainsVisualOf (t))
+                .Select (t => sink.Graph.VisualOf (t))
                 .ForEach (visit);
         }
 
