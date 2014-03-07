@@ -16,22 +16,41 @@ namespace Limada.Tests.Model {
             get { return "DigidocSchema Things"; }
         }
 
-        public new IThingFactory Factory { get { return base.Factory as IThingFactory; } }
+        public override IGraph<IThing, ILink> Graph {
+            get {
+                if (_graph == null) {
+                    _graph = new SchemaThingGraph (new ThingGraph ());
+                }
+                return _graph;
+            }
+            set {
+                base.Graph = value;
+                // _thingGraph = value as IThingGraph;
+            }
+        }
 
         public override void Populate(IGraph<IThing, ILink> graph) {
-            Nodes[1] = Factory.CreateItem();
+            Nodes[1] = Factory.CreateItem<object>(null);
 
             Nodes[2] = Factory.CreateItem("");
             Nodes[2].Data = "Document " + Nodes[2].Id.ToString ("X");
 
             Edges[1] = Factory.CreateEdge(Nodes[1], Nodes[2], DigidocSchema.DocumentTitle);
+            var iEdge = 2;
+            var iNode = 3;
+            var pageNr = 1;
 
-            Nodes[3] = Factory.CreateItem<Stream>(null);
-            Edges[2] = Factory.CreateEdge(Nodes[1], Nodes[3], DigidocSchema.DocumentPage);
-
-            Nodes[4] = Factory.CreateItem<int>(1);
-            Edges[3] = Factory.CreateEdge(Edges[2], Nodes[4], DigidocSchema.PageNumber);
-
+            for (int i = 0; i < 3; i++) {
+                Nodes[iNode] = Factory.CreateItem<Stream> (null);
+                Edges[iEdge] = Factory.CreateEdge (Nodes[1], Nodes[iNode], DigidocSchema.DocumentPage);
+                iNode++;
+                iEdge++;
+                Nodes[iNode] = Factory.CreateItem<int> (pageNr);
+                Edges[iEdge] = Factory.CreateEdge (Edges[iEdge - 1], Nodes[iNode], DigidocSchema.PageNumber);
+                pageNr++;
+                iNode++;
+                iEdge++;
+            }
             AddSamplesToGraph (graph);
         }
 
