@@ -130,6 +130,7 @@
     <Compile Include="Limada.Tests\Tests\View\ThingContentFacadeTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\ThingGraphFactory0.cs" />
     <Compile Include="Limada.Tests\Tests\View\ThingSceneFactory0.cs" />
+    <Compile Include="Limada.Tests\Tests\View\VisualThingSceneMeshTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\VisualThingSampleFactory.cs" />
     <Compile Include="Limada.Tests\Tests\View\ThingVisualMapperTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\BasicVisualThingGraphTest.cs" />
