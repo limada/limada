@@ -12,60 +12,17 @@
  * 
  */
 
-using Limaki.Common;
 using Limaki.Common.Linqish;
-using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
-using Limaki.View.Mesh;
 using Limaki.Visuals;
 using NUnit.Framework;
-using System.Collections.Generic;
 using System.Linq;
 using Xwt;
 
 namespace Limaki.Tests.View.Visuals {
 
-    public class GraphSceneMeshTest : DomainTest {
-
-        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
-        protected IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
-
-        public IEnumerable<SceneTestEnvironment<IGraphEntity, IGraphEdge>> MeshTests ( params SceneTestEnvironment<IGraphEntity, IGraphEdge>[] sources) { 
-
-            var source = sources[0];
-            Mesh.AddDisplay (source.Display);
-
-            foreach (var sink in sources.Skip (1)) {
-                sink.Scene = Mesh.CreateSinkScene (source.Scene.Graph);
-
-                Mesh.AddDisplay (sink.Display);
-
-                ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
-                 sink.SampleFactory).GraphPair =
-                    // no, its not sink.Graph, and not sink.Scene.... but:
-                    sink.Scene.Graph.Source<IVisual, IVisualEdge, IGraphEntity, IGraphEdge> ();
-                ;
-
-                // take the inner factorys:
-                var sourceFactory = ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
-                                     source.SampleFactory).Factory;
-
-                var sinkFactory = ((SampleGraphPairFactory<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)
-                                   sink.SampleFactory).Factory;
-
-                // copy Nodes and Edges
-                var i = 0;
-                foreach (var n in sourceFactory.Nodes) sinkFactory.Nodes[i++] = n;
-                i = 0;
-                foreach (var n in sourceFactory.Edges) sinkFactory.Edges[i++] = n;
-
-                sink.EnsureScene ();
-            }
-
-            return sources;
-        }
+    public class EntitySceneMeshTest : SceneMeshTest<IGraphEntity, IGraphEdge> {
 
         [Test]
         public void EdgeAddAndChange () {
@@ -197,31 +154,5 @@ namespace Limaki.Tests.View.Visuals {
            
         }
 
-        /// <summary>
-        /// this tests if a link is added, changed and removed 
-        /// </summary>
-
-        public void EdgeAddChangeRemove<TItem, TEdge, TFactory> (SceneTestEnvironment<TItem, TEdge, TFactory> source, int iOne, int iTwo, int iThree)
-            where TEdge : IEdge<TItem>, TItem
-            where TFactory : ISampleGraphFactory<TItem, TEdge>, new () {
-
-            source.EnsureShape (source.Nodes[iThree]);
-
-            source.SetFocused (source.Nodes[iOne]);
-            source.SceneFacade.CollapseToFocused ();
-
-            source.Expand (source.Nodes[iTwo], false);
-
-            var sourceEdge = source.AddEdge (source.Nodes[iOne], source.Nodes[iTwo]);
-
-            source.ChangeLink (sourceEdge, source.Nodes[iThree], true);
-
-            source.RemoveEdge (sourceEdge);
-
-            source.Expand (source.Nodes[iTwo], true);
-
-            source.ProveViewNotContains (sourceEdge);
-
-        }
-    }
+         }
 }

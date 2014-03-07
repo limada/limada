@@ -137,6 +137,7 @@
     <Compile Include="Limaki.Tests\Graph\Samples\EntityGraphFactorys.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\EntityTests.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Samples\SampleGraphSceneFactory.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\SceneMeshTest.cs" />
     <Compile Include="Limaki.View.Headless\VidgetBackends\ImageMissingStuffExtension.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Scene\BinarySceneTest.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Scene\GCJohnBostonSceneTest.cs" />
@@ -148,7 +149,7 @@
     <Compile Include="Limaki.Tests\View\Display\MoreVisualsDisplayTest.cs" />
     <Compile Include="Limaki.Tests\View\Display\QuadTreeVisualizer.cs" />
     <Compile Include="Limaki.Tests\View\Display\VisualsDisplayTest.cs" />
-    <Compile Include="Limaki.Tests\View\Visuals\GraphSceneMeshTest.cs" />
+    <Compile Include="Limaki.Tests\View\Visuals\EntitySceneMeshTest.cs" />
     <Compile Include="Limaki.Tests\View\TestCaseFactoryBase.cs" />
     <Compile Include="Limaki.View.Headless\HeadlessVidgetToolkitEngineBackend.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\BezierTestData.cs" />
