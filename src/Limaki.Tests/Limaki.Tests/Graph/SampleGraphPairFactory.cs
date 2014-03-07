@@ -58,7 +58,10 @@ namespace Limaki.Tests.Graph.Model {
         private IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> _graphPair = null;
         public IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> GraphPair {
             get { return _graphPair; }
-            set { _graphPair = value; }
+            set {
+                _graphPair = value;
+                //_graph = value;
+            }
         }
 
 

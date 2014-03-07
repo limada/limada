@@ -143,10 +143,7 @@ namespace Limada.Schemata {
         public DigidocSchema(IThingGraph graph, IThing document) : base(graph,document) { }
 
         static DigidocSchema () {
-
-            SchemaFacade.Dependencies.Visitor += (source, action, changeType) => {
-                new DigidocSchema ().DependsOn (source, changeType).ForEach (action);
-            };
+            ComposeDependencies ();
         }
 
         public IThing Title {
@@ -258,17 +255,26 @@ namespace Limada.Schemata {
                 .Select(page => ThingContentFacade.ContentOf(graph, page));
         }
 
+        #endregion
 
-        public IEnumerable<IThing> DependsOn(GraphCursor<IThing,ILink> source, GraphEventType eventType) {
-            if (HasPages(source)) {
+        #region Dependencies
+
+        protected static void ComposeDependencies () {
+            SchemaFacade.Dependencies.Visitor += (source, action, changeType) => {
+                new DigidocSchema ().DependsOn (source, changeType).ForEach (action);
+            };
+        }
+
+        public virtual IEnumerable<IThing> DependsOn (GraphCursor<IThing, ILink> source, GraphEventType eventType) {
+            if (HasPages (source)) {
                 var doc = source.Cursor;
                 var graph = source.Graph;
                 if (graph is SchemaThingGraph)
                     graph = ((SchemaThingGraph) graph).Source;
 
-                foreach (var link in PageLinks(graph as IThingGraph, doc).ToArray()) {
+                foreach (var link in PageLinks (graph as IThingGraph, doc).ToArray ()) {
                     var page = link.Leaf;
-                    var singleEdge = graph.HasSingleEdge(page);
+                    var singleEdge = graph.HasSingleEdge (page);
                     yield return link;
 
                     if (singleEdge || eventType != GraphEventType.Remove)
@@ -277,6 +283,8 @@ namespace Limada.Schemata {
 
             }
         }
+
         #endregion
+
     }
 }

@@ -144,10 +144,10 @@ namespace Limaki.Graphs {
             return ItemFilter(item) && Source.Remove(item);
         }
 
-        public override IEnumerator<TItem> GetEnumerator() {
-            foreach (TItem item in Source) {
+        public override IEnumerator<TItem> GetEnumerator () {
+            foreach (var item in Source) {
                 if (item is TEdge) {
-                    if(EdgeFilter((TEdge)(object)item)) {
+                    if (EdgeFilter ((TEdge) (object) item)) {
                         yield return item;
                     }
                 } else {

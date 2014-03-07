@@ -32,6 +32,7 @@ namespace Limada.Tests.Schemata {
 
     [TestFixture]
     public class DigidocTest : SchemaTest {
+
         public override Schema Schema {
             get { return new DigidocSchema(); }
         }
@@ -102,7 +103,6 @@ namespace Limada.Tests.Schemata {
         }
         #endregion
 
-        
 
         [Test]
         public virtual void TestDocumentWithPages() {

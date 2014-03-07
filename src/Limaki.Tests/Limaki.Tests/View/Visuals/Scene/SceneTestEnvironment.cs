@@ -296,20 +296,27 @@ namespace Limaki.Tests.View.Visuals {
             }
         }
 
-        public void ProveContains (IGraph<IVisual, IVisualEdge> graph, params IVisual[] visuals) {
-            foreach (var item in visuals)
-                if (item is IVisualEdge)
-                    Assert.IsTrue (graph.Contains ((IVisualEdge)item));
+        public void ProveContains<TItem, TEdge> (IGraph<TItem, TEdge> graph, params TItem[] items)
+        where TEdge : IEdge<TItem> {
+            foreach (var item in items) {
+                var m = string.Format ("contains {0}", item);
+                if (item is TEdge)
+                    Assert.IsTrue (graph.Contains ((TEdge) (object) item), m);
                 else
-                    Assert.IsTrue (graph.Contains (item));
+                    Assert.IsTrue (graph.Contains (item), m);
+            }
         }
 
-        public void ProveNotContains (IGraph<IVisual, IVisualEdge> graph, params IVisual[] visuals) {
-            foreach (var item in visuals)
-                if (item is IVisualEdge)
-                    Assert.IsFalse (graph.Contains ((IVisualEdge)item));
+        public void ProveNotContains<TItem, TEdge> (IGraph<TItem, TEdge> graph, params TItem[] items)
+         where TEdge : IEdge<TItem> {
+
+            foreach (var item in items) {
+                var m = string.Format ("contains {0}", item);
+                if (item is TEdge)
+                    Assert.IsFalse (graph.Contains ((TEdge) (object) item), m);
                 else
-                    Assert.IsFalse (graph.Contains (item));
+                    Assert.IsFalse (graph.Contains (item), m);
+            }
         }
 
         /// <summary>

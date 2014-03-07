@@ -22,8 +22,11 @@ namespace Limaki.View.UI.GraphScene {
             };
         }
 
-        public static void Delete<TItem, TEdge> (this IGraphScene<TItem,TEdge> scene, TItem item, ICollection<TItem> done) 
-            where TEdge:TItem,IEdge<TItem> {
+        public static void Delete<TItem, TEdge> (this IGraphScene<TItem, TEdge> scene, TItem item, ICollection<TItem> done)
+            where TEdge : TItem, IEdge<TItem> {
+
+            if (done == null)
+                done = new Set<TItem> ();
 
             Action<TItem> requestDelete = cand => scene.RequestDelete (cand, done);
 

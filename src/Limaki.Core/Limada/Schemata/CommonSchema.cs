@@ -59,6 +59,13 @@ namespace Limada.Schemata {
 
         private static readonly long max = unchecked((long)0xFFFFFFFFFFFFFFFF);
 
+        public CommonSchema () : base () { }
+        public CommonSchema (IThingGraph graph, IThing thing) : base (graph, thing) { }
+
+        static CommonSchema () {
+            ComposeDependencies ();
+        }
+
         #region Description
         
         /// <summary>
@@ -92,6 +99,22 @@ namespace Limada.Schemata {
 
         #endregion
 
+        #region Data-Handling
+
+        public virtual IThing GetDescription(IThingGraph graph, IThing thing) {
+            return GetTheLeaf(graph, thing, DescriptionMarker);
+        }
+
+        public virtual ILink SetDescription(IThingGraph graph, IThing thing, IThing value) {
+            return SetTheLeaf(graph, thing, DescriptionMarker, value);
+        }
+        
+        #endregion
+        
+        #region Dependencies
+
+        protected static HashSet<Id> Deps { get; set; }
+
         public static IEnumerable<IThing> DependsOn (GraphCursor<IThing, ILink> source, GraphEventType eventType) {
             var graph = source.Graph;
             if (graph is SchemaThingGraph)
@@ -102,21 +125,7 @@ namespace Limada.Schemata {
                 .ToArray ();
         }
 
-        #region Data-Handling
-
-        public virtual IThing GetDescription(IThingGraph graph, IThing thing) {
-            return GetTheLeaf(graph, thing, DescriptionMarker);
-        }
-
-        public virtual ILink SetDescription(IThingGraph graph, IThing thing, IThing value) {
-            return SetTheLeaf(graph, thing, DescriptionMarker, value);
-        }
-
-        public CommonSchema():base(){}
-        public CommonSchema(IThingGraph graph,IThing thing):base(graph,thing) { }
-
-        protected static HashSet<Id> Deps { get; set; }
-        static CommonSchema () {
+        protected static void ComposeDependencies () {
             Deps = new HashSet<Id> ();
             Deps.Add (SourceMarker.Id);
             Deps.Add (DescriptionMarker.Id);
@@ -125,7 +134,7 @@ namespace Limada.Schemata {
                 DependsOn (source, changeType).ForEach (action);
             };
         }
-       
+
         #endregion
 
        

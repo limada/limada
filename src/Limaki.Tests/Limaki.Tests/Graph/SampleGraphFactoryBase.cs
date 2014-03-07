@@ -82,12 +82,12 @@ namespace Limaki.Tests.Graph.Model {
         }
 
         public virtual void AddSamplesToGraph(IGraph<TItem,TEdge> graph) {
-            foreach(TItem item in Nodes) {
+            foreach(var item in Nodes) {
                 if (item != null) {
                     graph.Add (item);
                 }
             }
-            foreach (TEdge item in Edges) {
+            foreach (var item in Edges) {
                 if (item != null) {
                     graph.Add(item);
                 }

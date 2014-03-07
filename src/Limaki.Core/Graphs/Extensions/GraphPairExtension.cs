@@ -106,8 +106,8 @@ namespace Limaki.Graphs.Extensions {
             return null;
         }
 
-        public static IEnumerable<IGraph<TItem, TEdge>> 
-            Graphs<TItem, TEdge>(this IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem>, TItem {
+        public static IEnumerable<IGraph<TItem, TEdge>>
+            Graphs<TItem, TEdge> (this IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem>, TItem {
 
             var result = graph as IGraphPair<TItem, TItem, TEdge, TEdge>;
             if (result == null)
@@ -130,15 +130,13 @@ namespace Limaki.Graphs.Extensions {
         }
 
 
+        public static TItem 
+            LookUp<TItem, TEdge, TSourceItem, TSourceEdge> (
+                this IGraphPair<TItem, TItem, TEdge, TEdge> graphPair1,
+                IGraphPair<TItem, TItem, TEdge, TEdge> graphPair2,
+                TItem item) where TEdge : IEdge<TItem>, TItem
+                            where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
-        public static 
-            TItem 
-            LookUp<TItem, TEdge, TSourceItem, TSourceEdge>(
-            this IGraphPair<TItem, TItem, TEdge, TEdge> graphPair1,
-            IGraphPair<TItem, TItem, TEdge, TEdge> graphPair2,
-            TItem item)
-            where TEdge : IEdge<TItem>, TItem
-            where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
             var back = default(TItem);
             var source1 = graphPair1.Source<TItem, TEdge, TSourceItem, TSourceEdge>();
             var source2 = graphPair2.Source<TItem, TEdge, TSourceItem, TSourceEdge>();
@@ -153,13 +151,16 @@ namespace Limaki.Graphs.Extensions {
             return back;
         }
 
-        public static int InEdgeCount<TItem, TEdge>(this IGraph<TItem, TEdge> graph, TItem item)
-        where TEdge : IEdge<TItem>, TItem {
-            return graph.Edges(item).Count(edge => edge.Leaf.Equals(item));
+        public static int
+            InEdgeCount<TItem, TEdge> (
+                this IGraph<TItem, TEdge> graph, TItem item) where TEdge : IEdge<TItem>, TItem {
+
+            return graph.Edges (item).Count (edge => edge.Leaf.Equals (item));
         }
 
-        public static IEnumerable<TItem> FindRoots<TItem, TEdge>(this IGraph<TItem, TEdge> graph, TItem focused)
-        where TEdge : IEdge<TItem>, TItem {
+        public static IEnumerable<TItem>
+            FindRoots<TItem, TEdge> (this IGraph<TItem, TEdge> graph, TItem focused) where TEdge : IEdge<TItem>, TItem {
+
             if (graph != null) {
                 var graphroots = new List<Pair<TItem, int>>();
                 var walker = new Walker<TItem, TEdge>(graph);
@@ -214,13 +215,15 @@ namespace Limaki.Graphs.Extensions {
 
         }
 
-        public static void PopulateWithRoots<TItem, TEdge, TSourceItem, TSourceEdge>(this SubGraph<TItem, TEdge> subGraph)
-            where TEdge : IEdge<TItem>, TItem
-            where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
-            IGraphPair<TItem, TSourceItem, TEdge, TSourceEdge> source = subGraph.Source<TItem, TEdge, TSourceItem, TSourceEdge>();
+        public static void
+            PopulateWithRoots<TItem, TEdge, TSourceItem, TSourceEdge> (
+                this SubGraph<TItem, TEdge> subGraph)
+                    where TEdge : IEdge<TItem>, TItem where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
+
+            var source = subGraph.Source<TItem, TEdge, TSourceItem, TSourceEdge> ();
             if (source != null) {
-                foreach (var item in source.Source.FindRoots<TSourceItem, TSourceEdge>(default(TSourceItem))) {
-                    subGraph.Sink.Add(source.Get(item));
+                foreach (var item in source.Source.FindRoots<TSourceItem, TSourceEdge> (default (TSourceItem))) {
+                    subGraph.Sink.Add (source.Get (item));
                 }
             }
 

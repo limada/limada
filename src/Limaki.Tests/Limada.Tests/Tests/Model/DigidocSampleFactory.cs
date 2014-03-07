@@ -10,7 +10,6 @@ using Limaki;
 
 namespace Limada.Tests.Model {
     
-
     public class DigidocSampleFactory : SampleGraphFactory<IThing, ILink> {
 
         public override string Name {

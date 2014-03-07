@@ -10,7 +10,8 @@ using Limaki.Tests.View.Visuals;
 using Limaki.Visuals;
 using NUnit.Framework;
 
-namespace Limada.Tests.View {
+namespace Limaki.Tests.View.Visuals {
+
 
     public class WrapperTest : DomainTest {
 
