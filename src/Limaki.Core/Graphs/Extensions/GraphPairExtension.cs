@@ -228,6 +228,44 @@ namespace Limaki.Graphs.Extensions {
             }
 
         }
+
+        public static TSinkItem
+            SinkItemOf<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (
+                this IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem sourceItem)
+                        where TSinkEdge : IEdge<TSinkItem>, TSinkItem where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
+            
+            var graph = sinkGraph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
+            if (sourceItem != null && graph != null) {
+                return graph.Get (sourceItem);
+            }
+            return default (TSinkItem);
+        }
+
+        public static bool 
+            ContainsSinkItemOf<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (
+                this IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem sourceItem)
+                    where TSinkEdge : IEdge<TSinkItem>, TSinkItem where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
+            
+            var graph = sinkGraph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
+            if (sourceItem != null && graph != null) {
+                return graph.Source2Sink.ContainsKey (sourceItem);
+            }
+            return false;
+        }
+
+        public static TSourceItem 
+            SourceItemOf<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (
+                this IGraph<TSinkItem, TSinkEdge> sinkGraph, 
+                TSinkItem sinkItem)
+                    where TSinkEdge : IEdge<TSinkItem>, TSinkItem where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
+            
+            var graph = sinkGraph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
+            if (sinkItem != null && graph != null) {
+                return graph.Get (sinkItem);
+            }
+
+            return default (TSourceItem);
+        }
     }
 
    

@@ -30,7 +30,6 @@ namespace Limada.VisualThings {
 
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
-
             if (sourceGraph != null && (sourceGraph.Source is IThingGraph)) {
                 result = sourceGraph.Source as IThingGraph;
             }
@@ -52,11 +51,7 @@ namespace Limada.VisualThings {
         }
 
         public static IThing ThingOf(this IGraph<IVisual, IVisualEdge> source, IVisual visual) {
-            var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>();
-            if (visual != null && graph != null) {
-                return  graph.Get (visual);
-            }
-            return null;
+            return source.SourceItemOf<IVisual, IVisualEdge, IThing, ILink> (visual);
         }
 
         public static IThing ThingToDisplay (this IGraph<IThing, ILink> graph, IThing thing) {
@@ -68,19 +63,11 @@ namespace Limada.VisualThings {
         }
 
         public static IVisual VisualOf(this IGraph<IVisual, IVisualEdge> source, IThing thing) {
-            var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>();
-            if (thing != null && graph != null) {
-                return graph.Get(thing);
-            }
-            return null;
+            return source.SinkItemOf<IVisual, IVisualEdge, IThing, ILink> (thing);
         }
 
         public static bool ContainsVisualOf (this IGraph<IVisual, IVisualEdge> source, IThing thing) {
-            var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>();
-            if (thing != null && graph != null) {
-                return graph.Source2Sink.ContainsKey (thing);
-            }
-            return false;
+            return source.ContainsSinkItemOf<IVisual, IVisualEdge, IThing, ILink> (thing);
         }
 
         public static object Description(this IGraph<IVisual, IVisualEdge> source, IVisual visual) {
