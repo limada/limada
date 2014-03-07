@@ -1,3 +1,18 @@
+
+
+/*
+* Limaki 
+* 
+* This code is free software; you can redistribute it and/or modify it
+* under the terms of the GNU General Public License version 2 only, as
+* published by the Free Software Foundation.
+* 
+* Author: Lytico
+* Copyright (C) 2014 Lytico
+*
+* http://www.limada.org
+* 
+*/
 using System.Diagnostics;
 using Limada.Model;
 using Limada.Tests.Model;
@@ -22,10 +37,10 @@ namespace Limaki.Tests.View.Visuals {
             var factory =
                 new SampleGraphPairFactory<IThing, IGraphEntity, ILink, IGraphEdge> (
                     new ProgrammingLanguageFactory<IGraphEntity, IGraphEdge> (),
-                    new GraphItem2ThingTransformer ()
+                    new GraphItem2ThingTransformer ().Reverted()
                     );
 
-            factory.Mapper.Source = thingGraph;
+            factory.Mapper.Sink = thingGraph;
             factory.Populate (thingGraph);
 
             Trace.Write (

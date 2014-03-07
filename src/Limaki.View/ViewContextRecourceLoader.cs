@@ -83,6 +83,10 @@ namespace Limaki.View {
             context.Factory.Add<IGraphSceneMesh<IVisual, IVisualEdge>, VisualGraphSceneMesh>();
 
             context.Factory.Add<GraphItemTransformer<IGraphEntity, IVisual, IGraphEdge, IVisualEdge>, GraphItem2VisualTransformer> ();
+            context.Factory.Add<GraphItemTransformer<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>, VisualGraphItemTransformer> ();
+
+            context.Factory.Add<GraphItemTransformer<IVisual, IThing, IVisualEdge, ILink>, VisualThingTransformer> ();
+            context.Factory.Add<GraphItemTransformer<IThing, IVisual, ILink, IVisualEdge>> (t => new VisualThingTransformer ().Reverted ());
 
             var mimeFingerPrints = Registry.Pool.TryGetCreate<MimeFingerPrints> ();
             mimeFingerPrints.SynonymFormats ("DeviceIndependentBitmap", new ImageContentSpot().ContentSpecs.First (s => s.ContentType == ContentTypes.DIB).MimeType);

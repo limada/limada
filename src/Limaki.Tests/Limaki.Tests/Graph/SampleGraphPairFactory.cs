@@ -16,13 +16,13 @@ namespace Limaki.Tests.Graph.Model {
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
         public SampleGraphPairFactory(
-            ISampleGraphFactory<TSourceItem, TSourceEdge> data, 
-            GraphItemTransformer<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> transformer) {
+            ISampleGraphFactory<TSourceItem, TSourceEdge> factory,
+            GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> transformer) {
 
-            this._factory = data;
+            this._factory = factory;
             this._transformer = transformer;
-            this._mapper = 
-                new GraphMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> (Transformer);
+            this._mapper =
+                new GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> (Transformer);
         }
 
         public override string Name {
@@ -32,7 +32,9 @@ namespace Limaki.Tests.Graph.Model {
         public override IGraph<TSinkItem, TSinkEdge> Graph {
             get {
                 if (_graph == null) {
-                    _graph = Mapper.Source;
+                    _graph = Mapper.Sink;
+                    if (Factory.Graph != null)
+                        Mapper.Source = Factory.Graph;
                 }
                 return _graph;
 
@@ -45,13 +47,13 @@ namespace Limaki.Tests.Graph.Model {
             get { return _factory; }
         }
 
-        private GraphItemTransformer<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> _transformer = null;
-        public GraphItemTransformer<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> Transformer {
-            get { return _transformer ?? (Registry.Factory.Create<GraphItemTransformer<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge>> ()); }
+        private GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> _transformer = null;
+        public GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Transformer {
+            get { return _transformer ?? (Registry.Factory.Create<GraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>> ()); }
         }
 
-        private GraphMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> _mapper = null;
-        public GraphMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> Mapper {
+        private GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> _mapper = null;
+        public GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> Mapper {
             get { return _mapper; }
         }
 
@@ -70,23 +72,17 @@ namespace Limaki.Tests.Graph.Model {
             Factory.AddDensity = this.AddDensity;
             Factory.SeperateLattice = this.SeperateLattice;
 
-            var graphPair = 
-                new LiveGraphPair<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge>(
-                    new Graph<TSourceItem, TSourceEdge>(),
-                    graph,
-                    this.Mapper.Transformer
-                    );
-            
-            graphPair.Mapper = this.Mapper;
-
-            Factory.Graph = graphPair;
+            var sourceGraph = Mapper.Source ?? new Graph<TSourceItem, TSourceEdge> ();
+           
+            Factory.Graph = sourceGraph;
             Factory.Populate();
 
             this.GraphPair = new LiveGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(
-                        graphPair.Source, graphPair.Sink, 
-                        Mapper.Transformer.Reverted()
+                        graph, sourceGraph, 
+                        Mapper.Transformer
                         );
-            this.GraphPair.Mapper = this.Mapper.ReverseMapper ();
+            this.GraphPair.Mapper = this.Mapper;
+            this.Mapper.ConvertSourceSink();
 
         }
 

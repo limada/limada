@@ -26,6 +26,6 @@ namespace Limada.Tests.View {
         where T : ISampleGraphFactory<IThing, ILink>, new() {
         public VisualThingSampleFactory() : 
             base(new T(), 
-                 new VisualThingTransformer().Reverted()) { }
+                 new VisualThingTransformer()) { }
         }
 }
