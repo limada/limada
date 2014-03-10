@@ -13,7 +13,7 @@ namespace Xwt.Html5.TestApp {
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
             if (Registry.ConcreteContext == null) {
-                var loader = new Limaki.View.Swf.SwfContextRecourceLoader ();
+                var loader = new Limaki.View.Swf.SwfContextResourceLoader ();
                 Registry.ConcreteContext = new Limaki.Common.IOC.ApplicationContext ();
                 loader.ApplyResources (Registry.ConcreteContext);
                 

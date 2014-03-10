@@ -45,12 +45,12 @@ namespace Limaki.View.Swf {
     /// ApplicationContextRecourceLoader to use
     /// System.Windows.Forms
     /// </summary>
-    public class SwfContextRecourceLoader : IBackendContextRecourceLoader {
+    public class SwfContextResourceLoader : IBackendContextResourceLoader {
 
         public Toolkit Toolkit { get; set; }
         public virtual void ApplyResources(IApplicationContext context) {
 
-            new LimakiCoreContextRecourceLoader ().ApplyResources (context);
+            new LimakiCoreContextResourceLoader ().ApplyResources (context);
 
             Toolkit = Toolkit.CreateToolkit<Xwt.WinformBackend.SwfEngine>(false);
             Toolkit.RegisterBackend<Xwt.Backends.SystemColorsBackend, Xwt.Gdi.Backend.SystemColorsGdiBackend>();
@@ -76,7 +76,7 @@ namespace Limaki.View.Swf {
 
             context.Factory.Add<IWebBrowserBackend>(() => CreateWebBrowserBackend());
 
-            new ViewContextRecourceLoader().ApplyResources(context);
+            new ViewContextResourceLoader().ApplyResources(context);
 
             RegisterBackends(context);
             RegisterDragDropFormats(context);

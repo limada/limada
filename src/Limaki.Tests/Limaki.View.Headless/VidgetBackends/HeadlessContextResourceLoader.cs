@@ -19,6 +19,7 @@ using Limaki.Drawing;
 using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using Limaki.IOC;
+using Limaki.Drawing.XwtBackend;
 using Limaki.View.DragDrop;
 using Limaki.View.Headless.VidgetBackends;
 using Limaki.View.UI;
@@ -30,7 +31,7 @@ using Xwt.Headless.Backend;
 
 namespace Limaki.View.Headless {
 
-    public class HeadlessContextRecourceLoader : IBackendContextRecourceLoader {
+    public class HeadlessContextResourceLoader : IBackendContextResourceLoader {
 
         public virtual void ApplyHeadlessResources (IApplicationContext context) {
             var tk = Toolkit.CurrentEngine;
@@ -63,11 +64,11 @@ namespace Limaki.View.Headless {
 
         public virtual void ApplyResources (IApplicationContext context) {
 
-            new LimakiCoreContextRecourceLoader ().ApplyResources (context);
+            new LimakiCoreContextResourceLoader ().ApplyResources (context);
 
             ApplyHeadlessResources (context);
 
-            new ViewContextRecourceLoader ().ApplyResources (context);
+            new ViewContextResourceLoader ().ApplyResources (context);
 
             RegisterBackends (context);
             RegisterDragDropFormats (context);

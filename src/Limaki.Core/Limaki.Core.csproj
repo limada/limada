@@ -73,7 +73,7 @@
     <Compile Include="Common\IOC\ApplicationContext.cs" />
     <Compile Include="Common\IOC\AppResourceLoader.cs" />
     <Compile Include="Common\IOC\ContextProcessor.cs" />
-    <Compile Include="Common\IOC\ContextRecourceLoader.cs" />
+    <Compile Include="Common\IOC\ContextResourceLoader.cs" />
     <Compile Include="Common\Collections\CollectionWrapper.cs" />
     <Compile Include="Common\Collections\DictionaryAdapter.cs" />
     <Compile Include="Common\Collections\EmptyCollection.cs" />
@@ -107,8 +107,8 @@
     <Compile Include="Common\IComposite.cs" />
     <Compile Include="Common\IExceptionHandler.cs" />
     <Compile Include="Common\IFactory.cs" />
-    <Compile Include="Common\IOC\IContextRecourceLoader.cs" />
-    <Compile Include="Common\IOC\IBackendContextRecourceLoader.cs" />
+    <Compile Include="Common\IOC\IContextResourceLoader.cs" />
+    <Compile Include="Common\IOC\IBackendContextResourceLoader.cs" />
     <Compile Include="Common\IPool.cs" />
     <Compile Include="Common\Message.cs" />
     <Compile Include="Common\Pair.cs" />
@@ -189,7 +189,7 @@
     <Compile Include="Contents\Handlers\TextContent.cs" />
     <Compile Include="Contents\IO\StreamContentIoPool.cs" />
     <Compile Include="Contents\MimeFingerPrints.cs" />
-    <Compile Include="Context\LimakiCoreContextRecourceLoader.cs" />
+    <Compile Include="Context\LimakiCoreContextResourceLoader.cs" />
     <Compile Include="Data\Iori.cs" />
     <Compile Include="Data\DbGraph.cs" />
     <Compile Include="Data\GatewayBase.cs" />

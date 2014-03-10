@@ -12,7 +12,7 @@ namespace Limaki.App {
 
     public class WinformAppFactory : AppFactory<global::Limada.Usecases.AppResourceLoader> {
 
-        public WinformAppFactory(): base(new SwfContextRecourceLoader()) {}
+        public WinformAppFactory(): base(new SwfContextResourceLoader()) {}
 
         public Form MainForm() {
             var result = new Form ();

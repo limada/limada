@@ -18,7 +18,7 @@ using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.Usecases;
 using Limaki.Usecases.Concept;
-using Limaki.View.XwtContext;
+using Limaki.View.XwtBackend;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {
@@ -34,7 +34,7 @@ namespace Limaki.View.XwtBackend {
         public void Run () {
 
             Application.Initialize(this.ToolkitType);
-            this.Create(new XwtContextRecourceLoader());
+            this.Create(new XwtContextResourceLoader());
 
             Window w = null;
             Action onShow = null;

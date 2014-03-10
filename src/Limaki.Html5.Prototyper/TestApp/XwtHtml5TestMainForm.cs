@@ -147,7 +147,7 @@ namespace Xwt.Html5.TestApp {
         }
 
         public void ApplyResources () {
-            var loader = new Html5ContextRecourceLoader ();
+            var loader = new Html5ContextResourceLoader ();
             Registry.ConcreteContext = new Limaki.Common.IOC.ApplicationContext ();
             loader.ApplyResources (Registry.ConcreteContext);
         }

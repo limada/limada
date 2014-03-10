@@ -22,10 +22,10 @@ using Limaki.Contents.IO;
 
 namespace Limada.Usecases {
 
-    public class AppResourceLoader : ContextRecourceLoader {
-        private IContextRecourceLoader deviceContext = null;
+    public class AppResourceLoader : ContextResourceLoader {
+        private IContextResourceLoader deviceContext = null;
 
-        public AppResourceLoader(IContextRecourceLoader deviceContext) {
+        public AppResourceLoader(IContextResourceLoader deviceContext) {
             this.deviceContext = deviceContext;
         }
 

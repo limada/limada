@@ -51,7 +51,7 @@ namespace Limaki.View.Swf.Visualizers {
 
         protected void Initialize() {
             if (Registry.ConcreteContext == null) {
-                var resourceLoader = new SwfContextRecourceLoader();
+                var resourceLoader = new SwfContextResourceLoader();
                 Registry.ConcreteContext = new ApplicationContext();
                 resourceLoader.ApplyResources(Registry.ConcreteContext);
             }

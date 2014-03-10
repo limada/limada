@@ -9,16 +9,16 @@ using System.Diagnostics;
 
 namespace Limaki.Common.IOC {
     public class AppFactory<T>
-    where T : ContextRecourceLoader {
+    where T : ContextResourceLoader {
         protected AppFactory() { }
 
         bool backendApplied = false;
-        public AppFactory (IBackendContextRecourceLoader backendContextRecourceLoader) {
-            Create(backendContextRecourceLoader);
+        public AppFactory (IBackendContextResourceLoader backendContextResourceLoader) {
+            Create(backendContextResourceLoader);
         }
 
-        protected virtual void Create(IBackendContextRecourceLoader backendContextRecourceLoader){    
-            var resourceLoader = Activator.CreateInstance(typeof(T),new object[]{backendContextRecourceLoader}) as T;
+        protected virtual void Create(IBackendContextResourceLoader backendContextResourceLoader){    
+            var resourceLoader = Activator.CreateInstance(typeof(T),new object[]{backendContextResourceLoader}) as T;
             Registry.ConcreteContext = resourceLoader.CreateContext();
             resourceLoader.ApplyResources(Registry.ConcreteContext);
             backendApplied = true;
@@ -28,7 +28,7 @@ namespace Limaki.Common.IOC {
 
         public virtual bool TakeType (Type type) {
             // only one IBackendContextRecourceLoader allowed
-            if (type.GetInterface(typeof(IBackendContextRecourceLoader).FullName) != null && backendApplied)
+            if (type.GetInterface(typeof(IBackendContextResourceLoader).FullName) != null && backendApplied)
                 return false;
             return true;
         }
@@ -40,11 +40,11 @@ namespace Limaki.Common.IOC {
                     t =>
                         t.IsClass &&
                          !t.IsAbstract &&
-                         t.GetInterface(typeof(IContextRecourceLoader).FullName) != null &&
+                         t.GetInterface(typeof(IContextResourceLoader).FullName) != null &&
                          TakeType(t))) {
 
                     if (type.GetConstructors().Any(tc => tc.GetParameters().Length == 0)) {
-                        var loader = Activator.CreateInstance(type) as IContextRecourceLoader;
+                        var loader = Activator.CreateInstance(type) as IContextResourceLoader;
                         loader.ApplyResources(Registry.ConcreteContext);
                     }
 

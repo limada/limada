@@ -15,6 +15,7 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Drawing.XwtBackend;
 using Limaki.View;
 using Limaki.Visuals;
 using Xwt;
@@ -31,7 +32,7 @@ using Xwt.Backends;
 
 namespace Limaki.View.Html5 {
 
-    public class Html5ContextRecourceLoader : IBackendContextRecourceLoader {
+    public class Html5ContextResourceLoader : IBackendContextResourceLoader {
 
         public virtual void RegisterXwtBackends (bool asGuest) {
             var tk = Toolkit.CreateToolkit<Html5Engine>(asGuest);
@@ -62,11 +63,11 @@ namespace Limaki.View.Html5 {
 
         public virtual void ApplyResources (IApplicationContext context) {
             
-            new LimakiCoreContextRecourceLoader ().ApplyResources (context);
+            new LimakiCoreContextResourceLoader ().ApplyResources (context);
 
             ApplyHtml5Resources (context);
             
-            new ViewContextRecourceLoader ().ApplyResources (context);
+            new ViewContextResourceLoader ().ApplyResources (context);
 
 
         }

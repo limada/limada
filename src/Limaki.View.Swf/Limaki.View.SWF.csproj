@@ -196,7 +196,7 @@
     <Compile Include="[Obsolete]\SwfEventControler.cs" />
     <Compile Include="[Obsolete]\VisualsDragDrop.cs" />
     <Compile Include="Limaki.View.Swf\Visuals\VisualsTextEditAction.cs" />
-    <Compile Include="Limaki.View.Swf\SwfContextRecourceLoader.cs" />
+    <Compile Include="Limaki.View.Swf\SwfContextResourceLoader.cs" />
     <Compile Include="Limaki.View.Swf\SwfExeptionHandlerBackend.cs" />
     <Compile Include="Limaki.View.Swf\SwfSystemInformation.cs" />
     <Compile Include="Limaki.View.Swf\SwfUtils.cs" />

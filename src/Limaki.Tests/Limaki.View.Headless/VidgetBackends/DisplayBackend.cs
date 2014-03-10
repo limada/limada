@@ -40,7 +40,7 @@ namespace Limaki.View.Headless.VidgetBackends {
 
         protected virtual void Initialize () {
             if (Registry.ConcreteContext == null) {
-                var resourceLoader = new HeadlessContextRecourceLoader();
+                var resourceLoader = new HeadlessContextResourceLoader();
                 Registry.ConcreteContext = new ApplicationContext();
                 resourceLoader.ApplyResources(Registry.ConcreteContext);
             }

@@ -166,7 +166,7 @@
     <Compile Include="Limaki.View.Headless\VidgetBackends\GraphSceneDisplayBackend.cs" />
     <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessBackendRenderer.cs" />
     <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessConceptUseCaseComposer.cs" />
-    <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessContextRecourceLoader.cs" />
+    <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessContextResourceLoader.cs" />
     <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessCursorHandlerBackend.cs" />
     <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessExeptionHandlerBackend.cs" />
     <Compile Include="Limaki.View.Headless\VidgetBackends\HeadlessGraphSceneLayer.cs" />

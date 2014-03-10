@@ -26,7 +26,7 @@ namespace Limaki.Tests {
                 
             }
 
-            new Html5ContextRecourceLoader ().RegisterXwtBackends (true);
+            new Html5ContextResourceLoader ().RegisterXwtBackends (true);
             
             if (!Registry.Factory.Contains<Limaki.View.Visualizers.IContextWriter>())
                 Registry.Factory.Add<Limaki.View.Visualizers.IContextWriter, Html5ContextWriter>();
@@ -35,10 +35,10 @@ namespace Limaki.Tests {
         }
 
         public void RegisterHeadless (IApplicationContext context) {
-            new LimakiCoreContextRecourceLoader ().ApplyResources (context);
-            var headless = new HeadlessContextRecourceLoader ();
+            new LimakiCoreContextResourceLoader ().ApplyResources (context);
+            var headless = new HeadlessContextResourceLoader ();
             headless.ApplyHeadlessResources (context);
-            new ViewContextRecourceLoader ().ApplyResources (context);
+            new ViewContextResourceLoader ().ApplyResources (context);
             headless.RegisterBackends (context);
             headless.RegisterDragDropFormats (context);
         }

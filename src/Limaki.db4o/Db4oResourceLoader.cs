@@ -11,7 +11,7 @@ using Limaki.Contents.IO;
 
 namespace Limaki.db4o {
 
-    public class Db4oResourceLoader : IContextRecourceLoader {
+    public class Db4oResourceLoader : IContextResourceLoader {
 
         public void ApplyResources(IApplicationContext context) {
             var thingGraphContentPool = context.Pool.TryGetCreate<ThingGraphIoPool>();

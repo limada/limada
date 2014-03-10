@@ -46,7 +46,7 @@ namespace Limaki.View.XwtBackend {
 
         protected virtual void Initialize () {
             if (Registry.ConcreteContext == null) {
-                var resourceLoader = new XwtContextRecourceLoader();
+                var resourceLoader = new XwtContextResourceLoader();
                 Registry.ConcreteContext = new ApplicationContext();
                 resourceLoader.ApplyResources(Registry.ConcreteContext);
             }

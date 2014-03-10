@@ -19,10 +19,11 @@ using Limaki.Drawing;
 using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using Limaki.IOC;
+using Limaki.Drawing.XwtBackend;
 using Limaki.Model.Content;
 using Limaki.View.DragDrop;
 using Limaki.View.UI;
-using Limaki.View.XwtContext;
+using Limaki.View.XwtBackend;
 using Limaki.Viewers;
 using Limaki.Visuals;
 using Xwt;
@@ -30,7 +31,7 @@ using Xwt.Backends;
 
 namespace Limaki.View.XwtBackend {
 
-    public class XwtContextRecourceLoader : IBackendContextRecourceLoader {
+    public class XwtContextResourceLoader : IBackendContextResourceLoader {
 
         public virtual void ApplyXwtResources (IApplicationContext context) {
             var tk = Toolkit.CurrentEngine;
@@ -54,11 +55,11 @@ namespace Limaki.View.XwtBackend {
 
         public virtual void ApplyResources (IApplicationContext context) {
 
-            new LimakiCoreContextRecourceLoader().ApplyResources(context);
+            new LimakiCoreContextResourceLoader().ApplyResources(context);
 
             ApplyXwtResources(context);
 
-            new ViewContextRecourceLoader().ApplyResources(context);
+            new ViewContextResourceLoader().ApplyResources(context);
 
             RegisterBackends(context);
             RegisterDragDropFormats(context);

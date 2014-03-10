@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limaki.View.Html5\Html5ContextWriter.cs" />
-    <Compile Include="Limaki.View.Html5\Html5ContextRecourceLoader.cs" />
+    <Compile Include="Limaki.View.Html5\Html5ContextResourceLoader.cs" />
     <Compile Include="Limaki.View.Html5\Html5DrawingUtils.cs" />
     <Compile Include="Limaki.View.Html5\Html5ExeptionHandlerBackend.cs" />
     <Compile Include="Limaki.View.Html5\Html5PageWriter.cs" />

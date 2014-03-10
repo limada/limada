@@ -19,7 +19,7 @@ using Limaki.Usecases;
 using Limaki.Usecases.Concept;
 using Limaki.View.UI;
 using Limaki.View.WpfBackends;
-using Limaki.View.XwtContext;
+using Limaki.View.XwtBackend;
 using Limaki.Viewers;
 using Limaki.Viewers.ToolStripViewers;
 using Xwt;
@@ -27,7 +27,7 @@ using Xwt.Backends;
 
 namespace Limaki.View.WpfBackend {
 
-    public class WpfContextRecourceLoader : ContextRecourceLoader, IToolkitAware {
+    public class WpfContextResourceLoader : ContextResourceLoader, IToolkitAware {
 
         public Xwt.ToolkitType ToolkitType {
             get { return Xwt.ToolkitType.Wpf; }
