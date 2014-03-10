@@ -15,10 +15,11 @@
 
 using System;
 using Limaki.Common;
+using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Xwt;
 
-namespace Limaki.Drawing.Painters {
+namespace Limaki.Drawing.XwtBackend {
 
     public class DefaultPainterFactory: Factory, IPainterFactory {
         /// <summary>

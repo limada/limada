@@ -3,7 +3,7 @@ using Xwt.Drawing;
 using Xwt;
 using System.Collections.Generic;
 
-namespace Limaki.Drawing.Painters {
+namespace Limaki.Drawing.XwtBackend {
 
     public class ContextPainterExtensions {
 

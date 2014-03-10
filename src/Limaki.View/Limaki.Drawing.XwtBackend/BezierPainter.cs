@@ -13,9 +13,10 @@
  * 
  */
 
+using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 
-namespace Limaki.Drawing.Painters {
+namespace Limaki.Drawing.XwtBackend {
 
     public class BezierPainter : RectanglePainter, IPainter<IBezierRectangleShape, Xwt.Rectangle> {
 

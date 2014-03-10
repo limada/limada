@@ -13,13 +13,14 @@
  */
 
 using System;
+using Limaki.Drawing.XwtBackend;
 using Xwt.Drawing;
 using Xwt;
 using Limaki.Drawing;
 using Limaki.View.Clipping;
 using Limaki.View.Rendering;
 
-namespace Limaki.View.XwtContext {
+namespace Limaki.View.XwtBackend {
     public class RenderContextEventArgs : RenderEventArgs {
 
         private Context _context = null;

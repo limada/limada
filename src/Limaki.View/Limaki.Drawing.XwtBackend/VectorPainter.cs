@@ -14,13 +14,15 @@
  */
 
 using System;
+using Limaki.Drawing;
+using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using Xwt.Drawing;
 using Xwt;
 
-namespace Limaki.Drawing.Painters {
+namespace Limaki.Drawing.XwtBackend {
 
-    public class VectorPainter : Painter<Vector>, IPainter<IVectorShape, Vector> {
+    public class VectorPainter : ContextPainter<Vector>, IPainter<IVectorShape, Vector> {
 
         public override void Render (ISurface surface) {
             var ctx = ((ContextSurface) surface).Context;

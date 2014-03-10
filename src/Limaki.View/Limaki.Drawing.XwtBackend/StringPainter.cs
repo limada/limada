@@ -13,12 +13,14 @@
  * 
  */
 
+using Limaki.Drawing;
+using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using System;
 using Xwt.Drawing;
 using Xwt;
 
-namespace Limaki.Drawing.Painters {
+namespace Limaki.Drawing.XwtBackend {
 
     public class StringPainter : StringPainterBase {
 

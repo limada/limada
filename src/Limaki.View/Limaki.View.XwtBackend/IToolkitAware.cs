@@ -13,7 +13,7 @@
  */
 
 using Xwt;
-namespace Limaki.View.XwtContext {
+namespace Limaki.View.XwtBackend {
     public interface IToolkitAware {
         ToolkitType ToolkitType { get; }
     }

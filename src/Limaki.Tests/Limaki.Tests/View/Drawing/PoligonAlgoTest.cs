@@ -16,6 +16,7 @@
 using System;
 
 using Limaki.Drawing;
+using Limaki.Drawing.XwtBackend;
 using Limaki.UnitTest;
 using NUnit.Framework;
 using System.Collections.Generic;

@@ -13,6 +13,7 @@
  */
 
 
+using Limaki.Drawing.XwtBackend;
 using SD = System.Drawing;
 using Xwt.Drawing;
 using Xwt.Gdi.Backend;

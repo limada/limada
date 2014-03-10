@@ -1,5 +1,6 @@
 ﻿using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.Drawing.XwtBackend;
 using Limaki.View.Rendering;
 using System;
 using System.Collections.Generic;

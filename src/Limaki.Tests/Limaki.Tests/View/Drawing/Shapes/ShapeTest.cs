@@ -14,6 +14,7 @@
 
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
+using Limaki.Drawing.XwtBackend;
 using NUnit.Framework;
 using Limaki.Common;
 using Xwt;

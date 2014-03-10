@@ -20,7 +20,7 @@ using Limaki.Viewers;
 using Limaki.Viewers.StreamViewers;
 using Xwt;
 using Xwt.Drawing;
-using Limaki.View.XwtContext;
+using Limaki.View.XwtBackend;
 using Limaki.Viewers.Vidgets;
 
 namespace Limaki.View.XwtBackend {

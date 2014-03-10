@@ -19,7 +19,8 @@ using System.Text;
 using Limaki.Drawing;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Rendering;
-using Limaki.View.XwtContext;
+using Limaki.View.XwtBackend;
+using Limaki.View.XwtBackend.Visualizers;
 using Limaki.Visuals;
 using Xwt;
 using Xwt.Drawing;
@@ -27,6 +28,7 @@ using Xwt.Drawing;
 namespace Limaki.View.Visualizers {
 
     public class ImageExporter {
+
         private IGraphScene<IVisual, IVisualEdge> Scene;
         private IGraphSceneLayout<IVisual, IVisualEdge> Layout;
         public IStyleSheet StyleSheet { get; set; }

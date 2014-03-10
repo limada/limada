@@ -1,5 +1,8 @@
+using Limaki.Drawing;
 using Xwt.Drawing;
-namespace Limaki.Drawing {
+
+namespace Limaki.Drawing.XwtBackend {
+
     /// <summary>
     /// a Surface providing a Xwt.Drawing.Context
     /// </summary>

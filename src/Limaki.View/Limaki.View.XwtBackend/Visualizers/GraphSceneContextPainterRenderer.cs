@@ -14,10 +14,11 @@
 
 using System;
 using Limaki.Drawing;
+using Limaki.Drawing.XwtBackend;
 using Limaki.View.Rendering;
 using Xwt.Drawing;
 
-namespace Limaki.View.XwtContext {
+namespace Limaki.View.XwtBackend.Visualizers {
 
     public class GraphSceneContextPainterRenderer<T> : IBackendRenderer {
 

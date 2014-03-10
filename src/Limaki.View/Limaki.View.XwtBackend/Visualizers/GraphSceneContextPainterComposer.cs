@@ -16,15 +16,16 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Viewers;
 using Limaki.View.Visualizers;
+using Limaki.View.XwtBackend.Visualizers;
 
-namespace Limaki.View.XwtContext {
+namespace Limaki.View.XwtBackend.Visualizers {
 
     public class GraphSceneContextPainterComposer<TItem, TEdge> : GraphScenePainterComposer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
         public override void Factor(GraphScenePainter<TItem, TEdge> painter) {
             base.Factor(painter);
 
-            var layer = new GraphSceneContextLayer<TItem, TEdge>();
+            var layer = new XwtGraphSceneLayer<TItem, TEdge> ();
             var renderer = new GraphSceneContextPainterRenderer<IGraphScene<TItem, TEdge>>();
             renderer.Layer = layer;
 

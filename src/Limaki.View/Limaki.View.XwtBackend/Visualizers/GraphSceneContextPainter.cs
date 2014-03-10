@@ -19,7 +19,7 @@ using Limaki.View.Visualizers;
 using Xwt;
 using Xwt.Drawing;
 
-namespace Limaki.View.XwtContext {
+namespace Limaki.View.XwtBackend.Visualizers {
 
     /// <summary>
     /// a GraphScenePainter using

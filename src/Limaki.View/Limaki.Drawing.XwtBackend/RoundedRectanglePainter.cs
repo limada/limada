@@ -13,12 +13,13 @@
  * 
  */
 
+using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Xwt;
 using Xwt.Drawing;
 using System;
 
-namespace Limaki.Drawing.Painters {
+namespace Limaki.Drawing.XwtBackend {
 
     public class RoundedRectanglePainter : RectanglePainter, IPainter<IRoundedRectangleShape, Rectangle> {
 

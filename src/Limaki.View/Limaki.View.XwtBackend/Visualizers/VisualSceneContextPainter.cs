@@ -18,7 +18,7 @@ using Limaki.Visuals;
 using Limaki.Drawing;
 using Limaki.View.Visuals.Rendering;
 
-namespace Limaki.View.XwtContext {
+namespace Limaki.View.XwtBackend.Visualizers {
 
     public class VisualSceneContextPainter : GraphSceneContextPainter<IVisual, IVisualEdge> {
 

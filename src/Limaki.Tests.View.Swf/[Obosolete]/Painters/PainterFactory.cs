@@ -15,6 +15,7 @@
 using System;
 using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
+using Limaki.Drawing.XwtBackend;
 using Xwt;
 
 namespace Limaki.Drawing.Gdi.Painters {

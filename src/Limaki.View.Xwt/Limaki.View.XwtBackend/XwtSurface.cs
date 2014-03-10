@@ -13,6 +13,7 @@
  */
 
 using Limaki.Drawing;
+using Limaki.Drawing.XwtBackend;
 using Xwt.Drawing;
 
 namespace Limaki.View.XwtBackend {
