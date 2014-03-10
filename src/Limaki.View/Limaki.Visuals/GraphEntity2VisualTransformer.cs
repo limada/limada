@@ -4,7 +4,7 @@ using Limaki.Common;
 
 namespace Limaki.Visuals {
 
-    public class VisualGraphItemTransformer : GraphItemTransformer<IVisual, IGraphEntity, IVisualEdge, IGraphEdge> {
+    public class VisualGraphEntityTransformer : GraphItemTransformer<IVisual, IGraphEntity, IVisualEdge, IGraphEdge> {
 
         public override IVisual CreateSinkItem (IGraph<IGraphEntity, IGraphEdge> source, IGraph<IVisual, IVisualEdge> sink, IGraphEntity item) {
             return Registry.Pool.TryGetCreate<IVisualFactory> ()
@@ -38,7 +38,7 @@ namespace Limaki.Visuals {
         }
     }
 
-    public class GraphItem2VisualTransformer : GraphItemTransformer<IGraphEntity, IVisual, IGraphEdge, IVisualEdge> {
+    public class GraphEntity2VisualTransformer : GraphItemTransformer<IGraphEntity, IVisual, IGraphEdge, IVisualEdge> {
 
         public override IGraphEntity CreateSinkItem(IGraph<IVisual, IVisualEdge> source,
                                                  IGraph<IGraphEntity, IGraphEdge> sink, IVisual item) {
