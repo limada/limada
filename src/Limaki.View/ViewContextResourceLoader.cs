@@ -37,9 +37,9 @@ namespace Limaki.View {
             new VisualsResourceLoader().ApplyResources(context);
             new DisplayResourceLoader ().ApplyResources (context);
 
-            new VisualThingsResourceLoader ().ApplyResources (context);
-
             new VisualEntityResourceLoader ().ApplyResources (context);
+
+            new VisualThingsResourceLoader ().ApplyResources (context);
 
             new ViewContentResourceLoader ().ApplyResources (context);
 
