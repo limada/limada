@@ -159,7 +159,7 @@ namespace Limada.VisualThings {
                 if (thing is ILink) {
                     var link = (ILink) thing;
                     if (data is IThing) {
-                        graph.Source.DoChangeData (link.Marker, data);
+                        graph.Source.DoChangeData (link, data);
                         SetVisualByThing(graph.Source, visual, link.Marker);
                     }
                 } else {

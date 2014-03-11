@@ -92,7 +92,7 @@ namespace Limada.Model {
         public IThing TryGetCreateMarker (object data) {
             var marker = data as IThing;
 
-            if (data == null)
+            if (data == null || data == CommonSchema.EmtpyMarkerString || data == CommonSchema.NullString)
                 marker = CommonSchema.EmptyMarker;
 
             if (marker == null) {
