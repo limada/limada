@@ -292,7 +292,7 @@ namespace Limada.Model {
                 yield return link;
             }
 
-            foreach (var link in thingGraph.Where<ILink> (l => l.Marker.Id == source.Id)) {
+            foreach (var link in thingGraph.Where<ILink> (l => l.Marker!=null && l.Marker.Id == source.Id)) {
                 link.Marker = sink;
                 thingGraph.Add (link);
                 yield return link;
