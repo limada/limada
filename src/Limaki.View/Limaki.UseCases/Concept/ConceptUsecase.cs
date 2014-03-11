@@ -112,6 +112,14 @@ namespace Limaki.Usecases.Concept {
             this.SplitView.DoSearch ();
         }
 
+        public void MergeVisual() {
+            var display = GetCurrentDisplay();
+            if (display != null) {
+                new VisualThingsSceneViz ().MergeVisual (display.Data);
+                display.Perform ();
+            }
+        }
+
         public void Dispose() {
             this.SplitView.Dispose ();
             

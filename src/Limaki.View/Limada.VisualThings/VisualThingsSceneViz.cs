@@ -23,6 +23,10 @@ using Limaki.Visuals;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Limaki.Common.Linqish;
+using Limaki.View.UI.GraphScene;
+using Limaki.Common;
+using Limaki.View.Mesh;
 
 namespace Limada.Usecases {
     /// <summary>
@@ -128,5 +132,40 @@ namespace Limada.Usecases {
 
             }
         }
+
+       public void MergeVisual (IGraphScene<IVisual, IVisualEdge> scene) {
+
+           var source = scene.Focused;
+           var sink = scene.Selected.Count == 2 ? scene.Selected.Elements.Where (v => v != source).FirstOrDefault () : null;
+           var thingGraph = scene.Graph.ThingGraph ();
+
+           if (source == null || sink == null || thingGraph == null)
+               return;
+
+           var meshed = Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>> ()
+               .Scenes.Any (s => s == scene);
+
+           var sourceThing = scene.Graph.ThingOf (source);
+           var sinkThing = scene.Graph.ThingOf (sink);
+           var graphPair = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
+
+           foreach (var thing in thingGraph.MergeThing (sourceThing, sinkThing)) {
+               thingGraph.OnDataChanged (thing);
+
+               if (!meshed) {
+                   if (scene.Graph.ContainsVisualOf (thing)) {
+                       var vis = scene.Graph.VisualOf (thing);
+                       graphPair.UpdateSink (vis);
+                       if (scene.Contains (vis))
+                           scene.Requests.Add (new LayoutCommand<IVisual> (vis, LayoutActionType.Justify));
+                   }
+               }
+           }
+
+           scene.Requests.Add (new DeleteCommand<IVisual, IVisualEdge> (source, scene));
+
+
+       }
+
     }
 }

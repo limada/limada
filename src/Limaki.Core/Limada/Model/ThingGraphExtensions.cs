@@ -278,5 +278,29 @@ namespace Limada.Model {
             }
             return result;
         }
+
+        public static IEnumerable<IThing> MergeThing (this IThingGraph thingGraph, IThing source, IThing sink) {
+
+            foreach (var link in thingGraph.Edges (source)) {
+                if (link.Root == source)
+                    link.Root = sink;
+                if (link.Leaf == source)
+                    link.Leaf = sink;
+                if (link.Marker == source)
+                    link.Marker = sink;
+                thingGraph.Add (link);
+                yield return link;
+            }
+
+            foreach (var link in thingGraph.Where<ILink> (l => l.Marker.Id == source.Id)) {
+                link.Marker = sink;
+                thingGraph.Add (link);
+                yield return link;
+            }
+
+           
+        }
+
+
     }
 }

@@ -154,6 +154,9 @@ namespace Limaki.Swf.Backends.UseCases {
                     if (display != null) ((Limaki.View.UI.ICopyPasteAction) display.EventControler).Paste ();
                 }),
                 new ToolStripMenuItem(l["Search"], null, (s, e) => { useCase.Search(); }),
+#if DEBUG
+                new ToolStripMenuItem(l["Merge"], null, (s, e) => { useCase.MergeVisual(); }),
+#endif
             }),
 
             new ToolStripMenuItem(l["Style"], null, new ToolStripMenuItem[] {
