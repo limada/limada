@@ -43,7 +43,7 @@ namespace Limaki.Graphs {
         TSourceItem Get ( TSinkItem sink );
         TSinkItem Get ( TSourceItem source );
 
-        
+       
     }
 
     /// <summary>
@@ -65,5 +65,7 @@ namespace Limaki.Graphs {
         /// <param name="item"></param>
         /// <returns></returns>
         bool RemoveInSink (TSinkItem item);
+
+        void UpdateSink (TSinkItem sinkItem);
     }
 }

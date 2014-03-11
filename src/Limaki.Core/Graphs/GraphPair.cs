@@ -45,6 +45,10 @@ namespace Limaki.Graphs {
             return Mapper.Get (a);
         }
 
+        public virtual void UpdateSink (TSinkItem sinkItem) {
+            Mapper.UpdateSink (sinkItem);
+        }
+
         public virtual TSinkItem Get(TSourceItem a) {
             return Mapper.Get(a);
         }
@@ -181,8 +185,6 @@ namespace Limaki.Graphs {
         public override bool IsReadOnly {
             get { return Sink.IsReadOnly; }
         }
-
-
 
         public override IEnumerator<TSinkItem> GetEnumerator() {
             return Sink.GetEnumerator();

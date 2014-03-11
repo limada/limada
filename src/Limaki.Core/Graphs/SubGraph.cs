@@ -196,6 +196,12 @@ namespace Limaki.Graphs {
 
         public virtual TItem Get(TItem a) { return a; }
 
+        public void UpdateSink (TItem a) {
+            var sinkGraph = Source as ISinkGraph<TItem, TEdge>;
+            if (sinkGraph != null)
+                sinkGraph.UpdateSink (a);
+        }
+
         #endregion
 
         Action<TItem> IFactoryListener<TItem>.ItemCreated { get; set; }

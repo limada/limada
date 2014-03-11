@@ -44,9 +44,14 @@ namespace Limaki.Graphs {
         public virtual void EdgeCreated ( TSinkEdge sinkEdge, TSourceEdge sourceEdge) {}
         public virtual void EdgeCreated ( TSourceEdge sourceEdge, TSinkEdge sinkEdge) {}
 
+        public abstract void UpdateSinkItem (IGraph<TSourceItem, TSourceEdge> source,
+            IGraph<TSinkItem, TSinkEdge> sink, TSourceItem sourceItem, TSinkItem sinkItem);
+
         public virtual GraphItemTransformer<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> Reverted() {
             return new ReverseGraphItemTransformer<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge>(this);
         }
+
+
     }
 
     public class ReverseGraphItemTransformer<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : 
@@ -90,6 +95,10 @@ namespace Limaki.Graphs {
 
         public override GraphItemTransformer<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> Reverted() {
             return source;
+        }
+
+        public override void UpdateSinkItem (IGraph<TSourceItem, TSourceEdge> source, IGraph<TSinkItem, TSinkEdge> sink, TSourceItem sourceItem, TSinkItem sinkItem) {
+            
         }
     }
 }

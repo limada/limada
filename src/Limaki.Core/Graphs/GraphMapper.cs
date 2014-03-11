@@ -55,6 +55,7 @@ namespace Limaki.Graphs {
                 CreateSourceEdge = Transformer.CreateSourceEdge;
                 EdgeCreatedSinkSource = Transformer.EdgeCreated;
                 EdgeCreatedSourceSink = Transformer.EdgeCreated;
+                UpdateSinkItem = Transformer.UpdateSinkItem;
             }
         }
 
@@ -146,6 +147,33 @@ namespace Limaki.Graphs {
             return result;
 
         }
+
+        public void UpdateSink (TSinkItem sink) {
+
+            var source = default (TSourceItem);
+            if (sink == null)
+                return;
+            if (!SinkSourceMapper.Dict.TryGetValue (sink, out source))
+                return;
+
+            if (sink is TSinkEdge && source is TSourceEdge) {
+                var sinkEdge = (TSinkEdge) sink;
+                var sourceEdge = (TSourceEdge) source;
+                var root = default (TSinkItem);
+                if (!SourceSinkMapper.Dict.TryGetValue (sourceEdge.Root, out root))
+                    throw new ArgumentException ();
+                sinkEdge.Root = root;
+                var leaf = default (TSinkItem);
+                if (!SourceSinkMapper.Dict.TryGetValue (sourceEdge.Leaf, out leaf))
+                    throw new ArgumentException ();
+
+                sinkEdge.Leaf = leaf;
+            }
+
+            if (UpdateSinkItem != null)
+                UpdateSinkItem (Source, Sink, source, sink);
+        }
+
         #endregion
 
         #region SourceSink
@@ -188,6 +216,8 @@ namespace Limaki.Graphs {
         public Func<IGraph<TSourceItem, TSourceEdge>, IGraph<TSinkItem, TSinkEdge>, TSourceEdge, TSinkEdge> 
             CreateSinkEdge = null;
         public Action<TSourceEdge,TSinkEdge> EdgeCreatedSourceSink=null;
+        protected Action<IGraph<TSourceItem, TSourceEdge>, IGraph<TSinkItem, TSinkEdge>, TSourceItem, TSinkItem>
+            UpdateSinkItem { get; set; }
 
         #endregion
 

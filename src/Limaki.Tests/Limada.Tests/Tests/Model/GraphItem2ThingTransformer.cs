@@ -59,5 +59,9 @@ namespace Limada.Tests.Model {
                item.Data = data;
            }
        }
-    }
+
+       public override void UpdateSinkItem (IGraph<IThing, ILink> source, IGraph<IGraphEntity, IGraphEdge> sink, IThing sourceItem, IGraphEntity sinkItem) {
+           throw new NotImplementedException ();
+       }
+   }
 }

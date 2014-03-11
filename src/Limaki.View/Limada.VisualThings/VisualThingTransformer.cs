@@ -169,6 +169,10 @@ namespace Limada.VisualThings {
             }
         }
 
+        public override void UpdateSinkItem (IGraph<IThing, ILink> source, IGraph<IVisual, IVisualEdge> sink, IThing sourceItem, IVisual sinkItem) {
+            
+        }
+
         public override void ChangeData (IGraph<IThing, ILink> graph, IThing item, object data) {
             throw new Exception("The method or operation is not implemented.");
         }
