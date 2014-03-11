@@ -22,6 +22,7 @@ using Limaki.Graphs.Extensions;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
 using Limaki.Common.Linqish;
+using Limaki.View.Layout;
 
 namespace Limaki.View.Mesh {
 
@@ -102,9 +103,37 @@ namespace Limaki.View.Mesh {
 
         private void BackGraphChangeData (IGraph<TSourceItem, TSourceEdge> graph, TSourceItem backItem, object data) { }
 
-        private void BackGraphDataChanged (IGraph<TSourceItem, TSourceEdge> graph, TSourceItem backItem) { }
+        protected ICollection<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem>> graphDataChanged = new HashSet<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem>> ();
 
-        protected ICollection<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> changing = new HashSet<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> ();
+        protected virtual void BackGraphDataChanged (IGraph<TSourceItem, TSourceEdge> graph, TSourceItem sourceItem) {
+            var change = Tuple.Create (graph, sourceItem);
+            if (graphDataChanged.Contains (change))
+                return;
+            try {
+                graphDataChanged.Add (change);
+                var displays = new HashSet<IGraphSceneDisplay<TSinkItem, TSinkEdge>> ();
+
+                foreach (var scene in ScenesOfBackGraph (graph)) {
+                    var graphPair = scene.Graph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
+
+                    var sinkItem = default (TSinkItem);
+                    if (graphPair.Count == 0 || !graphPair.Source2Sink.TryGetValue (sourceItem, out sinkItem))
+                        continue;
+
+                    graphPair.UpdateSink (sinkItem);
+                    var visible = scene.Contains (sinkItem);
+                    if (visible) {
+                        scene.Requests.Add (new LayoutCommand<TSinkItem> (sinkItem, LayoutActionType.Justify));
+                        displays.Add (DisplayOf (scene));
+                    }
+                }
+
+                displays.ForEach (display => display.Perform ());
+
+            } finally {
+                graphDataChanged.Remove (change);
+            }
+        }
 
         protected ICollection<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> graphChanging = new HashSet<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> ();
 
