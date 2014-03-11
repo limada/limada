@@ -16,6 +16,7 @@ namespace Limaki.View {
 
             context.Factory.Add<GraphItemTransformer<IVisual, IThing, IVisualEdge, ILink>, VisualThingTransformer> ();
             context.Factory.Add<GraphItemTransformer<IThing, IVisual, ILink, IVisualEdge>> (t => new VisualThingTransformer ().Reverted ());
+            
             GraphMapping.ChainGraphMapping<VisualThingGraphMapping> (context);
 
             context.Factory.Add<IVisualContentViz, VisualThingsContentViz> ();
