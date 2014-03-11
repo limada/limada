@@ -106,25 +106,27 @@ namespace Limaki.View.Mesh {
 
         protected ICollection<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> changing = new HashSet<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> ();
 
+        protected ICollection<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> graphChanging = new HashSet<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> ();
+
         protected virtual void BackGraphChange (IGraph<TSourceItem, TSourceEdge> graph, TSourceItem backItem, GraphEventType eventType) {
 
             var change = Tuple.Create (graph, backItem, eventType);
-            if (changing.Contains (change))
+            if (graphChanging.Contains (change))
                 return;
 
             try {
-                changing.Add (change);
+                graphChanging.Add (change);
 
-                var toPerform = new HashSet<IGraphSceneDisplay<TSinkItem, TSinkEdge>> ();
+                var displays = new HashSet<IGraphSceneDisplay<TSinkItem, TSinkEdge>> ();
                 var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<TSourceItem, TSourceEdge>> ();
                 dependencies.VisitItems (GraphCursor.Create (graph, backItem),
                     sourceItem => {
                         foreach (var scene in ScenesOfBackGraph (graph)) {
 
-                            var sg = scene.Graph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
+                            var graphPair = scene.Graph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
 
                             var sinkItem = default (TSinkItem);
-                            if (sg.Count == 0 || !sg.Source2Sink.TryGetValue (sourceItem, out sinkItem))
+                            if (graphPair.Count == 0 || !graphPair.Source2Sink.TryGetValue (sourceItem, out sinkItem))
                                 continue;
 
                             var visible = scene.Contains (sinkItem);
@@ -135,7 +137,7 @@ namespace Limaki.View.Mesh {
                                          .Any (r => sinkItem.Equals (r.Subject))) {
 
                                     scene.RequestDelete (sinkItem, null);
-                                    toPerform.Add (DisplayOf (scene));
+                                    displays.Add (DisplayOf (scene));
                                 }
                             }
 
@@ -150,10 +152,10 @@ namespace Limaki.View.Mesh {
                     }
                     , eventType);
 
-                toPerform.ForEach (display => display.Perform ());
+                displays.ForEach (display => display.Perform ());
 
             } finally {
-                changing.Remove (change);
+                graphChanging.Remove (change);
             }
 
         }

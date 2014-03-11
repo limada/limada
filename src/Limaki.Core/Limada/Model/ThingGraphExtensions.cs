@@ -217,7 +217,7 @@ namespace Limada.Model {
                     }
                 }
 
-                SchemaFacade.Dependencies.VisitItems (
+                Registry.Pool.TryGetCreate<GraphDepencencies<IThing, ILink>> ().VisitItems (
                     GraphCursor.Create (graph, thing), d => addThing (d), GraphEventType.Add);
             }
 

@@ -76,8 +76,8 @@ namespace Limaki.Graphs {
         }
 
         public override void RevertEdge(TEdge edge) {
-            TItem rootBefore = edge.Root;
-            TItem leafBefore = edge.Leaf;
+            var rootBefore = edge.Root;
+            var leafBefore = edge.Leaf;
             Sink.RevertEdge(edge);
 
             edge.Root = rootBefore;
@@ -209,5 +209,9 @@ namespace Limaki.Graphs {
         public override IEnumerable<TItem> Where(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
             return Sink.Where(predicate);
         }
+
+
+
+
     }
 }

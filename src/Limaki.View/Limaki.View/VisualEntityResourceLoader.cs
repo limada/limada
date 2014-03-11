@@ -14,8 +14,8 @@ namespace Limaki.View {
 
             GraphMapping.ChainGraphMapping<GraphVisualEntityMapping> (context);
 
-            context.Factory.Add<GraphItemTransformer<IGraphEntity, IVisual, IGraphEdge, IVisualEdge>, GraphEntity2VisualTransformer> ();
             context.Factory.Add<GraphItemTransformer<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>, VisualGraphEntityTransformer> ();
+            context.Factory.Add<GraphItemTransformer<IGraphEntity, IVisual, IGraphEdge, IVisualEdge>> (() => new VisualGraphEntityTransformer ().Reverted ());
 
         }
 

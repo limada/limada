@@ -218,7 +218,7 @@ namespace Limaki.Viewers.StreamViewers {
 
             var doc = source.Graph.ThingOf (source.Cursor);
             IGraph<IVisual, IVisualEdge> targetGraph = null;
-            targetGraph = Mesh.CreateTargetGraph (source.Graph);
+            targetGraph = Mesh.CreateSinkGraph (source.Graph);
 
             pageScene.Graph = targetGraph;
 

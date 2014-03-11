@@ -174,7 +174,9 @@ namespace Limada.VisualThings {
         }
 
         public override void ChangeData (IGraph<IThing, ILink> graph, IThing item, object data) {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException ();
         }
+
+
     }
 }

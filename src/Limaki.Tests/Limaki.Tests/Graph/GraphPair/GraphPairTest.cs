@@ -32,7 +32,7 @@ namespace Limaki.Tests.Graph.GraphPair {
 
             return
                 new GraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>(
-                one, two, new GraphEntity2VisualTransformer().Reverted());
+                one, two, new VisualGraphEntityTransformer ());
         }
 
         [Test]

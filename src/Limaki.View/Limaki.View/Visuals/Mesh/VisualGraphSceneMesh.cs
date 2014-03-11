@@ -10,14 +10,14 @@ namespace Limaki.View.Visuals.UI {
 
         public override IGraphScene<IVisual, IVisualEdge> CreateSinkScene (IGraph<IVisual, IVisualEdge> sourceGraph) {
             var result = new Scene ();
-            var targetGraph = CreateTargetGraph (sourceGraph);
-            if (targetGraph != null)
-                result.Graph = targetGraph;
+            var sinkGraph = CreateSinkGraph (sourceGraph);
+            if (sinkGraph != null)
+                result.Graph = sinkGraph;
 
             return result;
         }
 
-        public override IGraph<IVisual, IVisualEdge> CreateTargetGraph (IGraph<IVisual, IVisualEdge> source) {
+        public override IGraph<IVisual, IVisualEdge> CreateSinkGraph (IGraph<IVisual, IVisualEdge> source) {
 
             IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge> sourceGraph = source as SubGraph<IVisual, IVisualEdge>;
 

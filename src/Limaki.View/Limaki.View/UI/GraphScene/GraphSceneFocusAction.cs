@@ -93,7 +93,7 @@ namespace Limaki.View.UI.GraphScene {
                 return;
             base.OnMouseDown(e);
             if (e.Button == MouseActionButtons.Left) {
-                TItem last = Scene.Focused;
+                var last = Scene.Focused;
                 Current = HitTest(e.Location);
 
                 Resolved = (Current != null) && (!Current.Equals(Scene.Focused));
@@ -118,7 +118,7 @@ namespace Limaki.View.UI.GraphScene {
                 }
 
                 if (Scene.Focused != null) {
-                    Point sp = Camera.ToSource(e.Location);
+                    var sp = Camera.ToSource(e.Location);
                     if (e.Modifiers == ModifierKeys.None
                         &&
                         ! Scene.ItemShape(Scene.Focused).IsBorderHit(sp, HitSize)) {

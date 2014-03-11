@@ -183,7 +183,7 @@ namespace Limaki.Graphs {
         }
 
         public virtual TSinkItem Get( TSourceItem b ) {
-            TSinkItem result = default(TSinkItem);
+            var result = default(TSinkItem);
             if (b == null)
                 return result;
             SourceSinkMapper.Dict.TryGetValue(b, out result);
@@ -205,17 +205,18 @@ namespace Limaki.Graphs {
 
         #region Factory-Methods
 
-        public Func<IGraph<TSinkItem, TSinkEdge>, IGraph<TSourceItem, TSourceEdge>, TSinkItem, TSourceItem> 
-            CreateSourceItem = null;
-        public Func<IGraph<TSinkItem, TSinkEdge>, IGraph<TSourceItem, TSourceEdge>, TSinkEdge, TSourceEdge> 
-            CreateSourceEdge = null;
-        public Action<TSinkEdge, TSourceEdge> EdgeCreatedSinkSource=null;
+        protected Func<IGraph<TSinkItem, TSinkEdge>, IGraph<TSourceItem, TSourceEdge>, TSinkItem, TSourceItem>
+            CreateSourceItem { get; set; }
+        protected Func<IGraph<TSinkItem, TSinkEdge>, IGraph<TSourceItem, TSourceEdge>, TSinkEdge, TSourceEdge> 
+            CreateSourceEdge { get; set; }
+        protected Action<TSinkEdge, TSourceEdge> EdgeCreatedSinkSource = null;
 
-        public Func<IGraph<TSourceItem, TSourceEdge>, IGraph<TSinkItem, TSinkEdge>, TSourceItem, TSinkItem> 
-            CreateSinkItem = null;
-        public Func<IGraph<TSourceItem, TSourceEdge>, IGraph<TSinkItem, TSinkEdge>, TSourceEdge, TSinkEdge> 
-            CreateSinkEdge = null;
-        public Action<TSourceEdge,TSinkEdge> EdgeCreatedSourceSink=null;
+        protected Func<IGraph<TSourceItem, TSourceEdge>, IGraph<TSinkItem, TSinkEdge>, TSourceItem, TSinkItem> 
+            CreateSinkItem { get; set; }
+        protected Func<IGraph<TSourceItem, TSourceEdge>, IGraph<TSinkItem, TSinkEdge>, TSourceEdge, TSinkEdge> 
+            CreateSinkEdge { get; set; }
+        protected Action<TSourceEdge, TSinkEdge> EdgeCreatedSourceSink = null;
+
         protected Action<IGraph<TSourceItem, TSourceEdge>, IGraph<TSinkItem, TSinkEdge>, TSourceItem, TSinkItem>
             UpdateSinkItem { get; set; }
 
@@ -241,5 +242,7 @@ namespace Limaki.Graphs {
 
             return result;
         }
+
+
     }
 }

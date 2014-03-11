@@ -48,6 +48,7 @@ namespace Limada.Usecases {
             return new SubGraph<IVisual, IVisualEdge>(new VisualThingGraph(new VisualGraph(), schemaGraph), new VisualGraph());
         }
 
+        // TODO: harmonise this with GraphSceneMesh.CreateSinkScene / CreateSinkGraph
         public virtual IGraphScene<IVisual, IVisualEdge> CreateScene (IThingGraph thingGraph) {
             return new Scene { Graph = CreateVisualGraph(thingGraph) };
         }
@@ -111,7 +112,7 @@ namespace Limada.Usecases {
        public void SetDescription (IGraphScene<IVisual, IVisualEdge> scene, IThing thing, string fileName) {
             if (thing != null) {
 
-                var thingGraph = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>().Source as IThingGraph;
+                var thingGraph = scene.Graph.ThingGraph();
                 thingGraph.SetSource(thing, fileName);
 
                 var desc = thingGraph.Description(thing);

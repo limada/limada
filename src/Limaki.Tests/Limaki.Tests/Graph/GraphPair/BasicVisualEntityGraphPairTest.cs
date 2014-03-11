@@ -14,7 +14,7 @@ namespace Limaki.Tests.Graph.GraphPair {
                     var two = new Graph<IGraphEntity, IGraphEdge>();
 
                     base.Graph = new LiveGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>(
-                        one, two, new GraphEntity2VisualTransformer().Reverted());
+                        one, two, new VisualGraphEntityTransformer ());
                 }
                 return base.Graph;
             }

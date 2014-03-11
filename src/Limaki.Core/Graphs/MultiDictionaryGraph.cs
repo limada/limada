@@ -91,7 +91,7 @@ namespace Limaki.Graphs {
 
         protected override void AddEdge(TEdge edge, TItem item) {
             if (item != null) {
-                ICollection<TEdge> list = items[item];
+                var list = items[item];
                 bool isKeyOnly = list.Count == 0;
                 if (!list.Contains(edge)) {
                     list.Add (edge);
@@ -193,7 +193,7 @@ namespace Limaki.Graphs {
         /// </summary>
         /// <returns></returns>
         public override IEnumerable<KeyValuePair<TItem, ICollection<TEdge>>> ItemsWithEdges() {
-            foreach (KeyValuePair<TItem, ICollection<TEdge>> kvp in items) {
+            foreach (var kvp in items) {
                 if ((kvp.Value != null) && (kvp.Value.Count != 0))
                     yield return kvp;
            }

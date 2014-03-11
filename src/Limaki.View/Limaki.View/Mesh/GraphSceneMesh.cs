@@ -164,7 +164,7 @@ namespace Limaki.View.Mesh {
         }
 
         public abstract IGraphScene<TItem, TEdge> CreateSinkScene (IGraph<TItem, TEdge> sourceGraph);
-        public abstract IGraph<TItem, TEdge> CreateTargetGraph (IGraph<TItem, TEdge> source);
+        public abstract IGraph<TItem, TEdge> CreateSinkGraph (IGraph<TItem, TEdge> source);
 
 
 
