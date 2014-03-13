@@ -87,7 +87,13 @@ namespace Limada.Usecases {
                         string ext = null;
                         SaveFileDialog.Filter = StreamContentIoManager.GetFilter(info, out ext) + "All Files|*.*";
                         SaveFileDialog.DefaultExt = ext;
-                        SaveFileDialog.SetFileName(content.Source.ToString());
+                        var fileName = "";
+                        if (content.Source != null)
+                            fileName = content.Source.ToString ();
+                        else if (content.Description != null)
+                            fileName = content.Description.ToString();
+                        
+                        SaveFileDialog.SetFileName (fileName);
                         if (FileDialogShow(SaveFileDialog, false) == DialogResult.Ok) {
                             StreamContentIoManager.ConfigureSinkIo = s => ConfigureSink(s);
                             StreamContentIoManager.WriteSink(content, IoUtils.UriFromFileName(SaveFileDialog.FileName));
