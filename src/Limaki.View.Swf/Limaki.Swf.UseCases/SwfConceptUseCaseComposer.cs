@@ -32,12 +32,16 @@ using DialogResult = Limaki.Viewers.DialogResult;
 using ImageExporter = Limaki.View.Swf.Visuals.ImageExporter;
 using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
 using SD = System.Drawing;
+using Limaki.View.Swf.Backends;
+using Limaki.View;
 
 namespace Limaki.Swf.Backends.UseCases {
 
     public class SwfConceptUseCaseComposer : IComposer<ConceptUsecase> {
 
-        public Form Mainform { get; set; }
+        public Form Mainform { get { return MainWindowBackend as Form; } }
+        public IVindowBackend MainWindowBackend { get; set; }
+
         public ToolStripContainer ToolStripContainer { get; set; }
         public MenuStrip MenuStrip { get; set; }
 
@@ -45,6 +49,8 @@ namespace Limaki.Swf.Backends.UseCases {
         public StatusStrip StatusStrip { get; set; }
 
         public void Factor (ConceptUsecase useCase) {
+            useCase.MainWindow = new Vindow ();
+
             ToolStripContainer = new ToolStripContainer ();
 
             StatusStrip = new StatusStrip ();

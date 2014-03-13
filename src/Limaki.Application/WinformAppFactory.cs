@@ -7,6 +7,7 @@ using Limaki.Common;
 using Xwt.WinformBackend;
 using System;
 using Limaki.Usecases;
+using Limaki.View;
 
 namespace Limaki.App {
 
@@ -15,7 +16,7 @@ namespace Limaki.App {
         public WinformAppFactory(): base(new SwfContextResourceLoader()) {}
 
         public Form MainForm() {
-            var result = new Form ();
+            var result = new Limaki.View.Swf.Backends.VindowBackend ();
             
            
             CreateUseCase (result);
@@ -23,13 +24,14 @@ namespace Limaki.App {
             return result;
         }
 
-        public void CreateUseCase(Form mainform) {
+        public void CreateUseCase(IVindowBackend vindowBackend) {
+            var mainform = vindowBackend as Form;
 
             mainform.Icon = Limaki.View.Properties.GdiIconery.LimadaLogo;
             mainform.ClientSize = new System.Drawing.Size(800, 600);
 
             var backendComposer = new SwfConceptUseCaseComposer();
-            backendComposer.Mainform = mainform;
+            backendComposer.MainWindowBackend = vindowBackend;
 
             var factory = new UsecaseFactory<ConceptUsecase>();
             factory.Composer = new ConceptUsecaseComposer();

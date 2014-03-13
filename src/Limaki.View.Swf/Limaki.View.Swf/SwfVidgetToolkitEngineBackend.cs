@@ -38,6 +38,8 @@ namespace Limaki.View.Swf {
 
             RegisterBackend<IOpenfileDialogBackend, OpenFileDialogBackend>();
             RegisterBackend<ISavefileDialogBackend, SaveFileDialogBackend>();
+
+            RegisterBackend<IVindowBackend, VindowBackend> ();
         }
     }
 }
