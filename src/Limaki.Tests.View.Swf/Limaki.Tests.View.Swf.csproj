@@ -80,7 +80,8 @@
     <Compile Include="Limaki.Tests\View\Winform\WinformVisualsDisplayTest.cs" />
     <Compile Include="Playground\View\XwtRefactroring\PaintContextTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceLoader.cs" />
+    <Compile Include="SwfTestCaseFactory.cs" />
+    <Compile Include="TestViewSwfResourceLoader.cs" />
     <Compile Include="TestCaseFactory008.cs" />
     <Compile Include="Playground\View\XwtRefactroring\PaintContextTestControl.cs">
       <SubType>UserControl</SubType>

@@ -37,8 +37,9 @@ using Limaki.Tests.View.Visuals;
 
 
 namespace Limaki.Tests.UseCases {
-
+    [Obsolete]
     public class TestCaseFactory008 : UsecaseFactory<ConceptUsecase> {
+
         public override void Compose(ConceptUsecase useCase) {
             var deviceComposer = BackendComposer as SwfConceptUseCaseComposer;
             
@@ -250,7 +251,7 @@ namespace Limaki.Tests.UseCases {
                 //sceneProvider.ExportTo(scene, exporter, DataBaseInfo.FromFileName("testExport.pdf"));
 
                 var test = new WebProxyTest();
-                test.CircleFocusToHtml(sender.GetCurrentDisplay());
+                test.TestInfinitLoopIfHtmlContentIsFocused(sender.GetCurrentDisplay());
 
             } catch (Exception e) {
                 MessageBox.Show(e.Message);
