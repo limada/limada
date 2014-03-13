@@ -35,6 +35,9 @@ namespace Limaki.View.Mesh {
         ICollection<IGraphScene<TItem, TEdge>> Scenes { get; }
         ICollection<IGraphSceneDisplay<TItem, TEdge>> Displays { get; }
 
+        
+        IGraphSceneMeshBackHandler<TItem, TEdge> BackHandler (IGraph<TItem, TEdge> graph);
+        
         void CopyDisplayProperties (IGraphSceneDisplay<TItem, TEdge> sourceDisplay, IGraphSceneDisplay<TItem, TEdge> targetDisplay);
         IGraph<TItem, TEdge> CreateSinkGraph (IGraph<TItem, TEdge> source);
         IGraphScene<TItem, TEdge> CreateSinkScene (IGraph<TItem, TEdge> sourceGraph);

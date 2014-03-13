@@ -95,6 +95,11 @@ namespace Limaki.View.Mesh {
             return Scenes ().Where (s => BackGraphOf (s.Graph) == backGraph);
         }
 
+        public IEnumerable<IGraphScene<TSinkItem, TSinkEdge>> ScenesOfBackGraph (IGraph<TSinkItem, TSinkEdge> graph) {
+            var backGraph = BackGraphOf (graph);
+            return ScenesOfBackGraph (backGraph);
+        }
+
         public IGraphSceneDisplay<TSinkItem, TSinkEdge> DisplayOf (IGraphScene<TSinkItem, TSinkEdge> scene) {
             return Displays ().Where (d => d.Data == scene).FirstOrDefault ();
         }
