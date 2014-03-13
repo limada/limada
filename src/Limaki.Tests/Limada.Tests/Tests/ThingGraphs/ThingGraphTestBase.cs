@@ -9,26 +9,15 @@ using Limaki.Contents.IO;
 using System.Linq;
 
 namespace Limada.Tests.ThingGraphs {
-    public static class ThingGraphIoExtensions {
-        public static string Extension(this ThingGraphIo source) {
-            return "."+source.Detector.ContentSpecs.First().Extension;
-        }
-    }
+
     public class ThingGraphTestBase : DomainTest {
+
         protected ThingFactory Factory = new ThingFactory();
 
         protected virtual string _fileName { get; set; }
-        public virtual string FileName {
-            get {
-                if (_fileName == null) {
-                    return TestLocations.GraphtestFile;
-                } else {
-                    return _fileName;
-                }
-            }
-        }
+        public virtual string FileName { get { return _fileName ?? TestLocations.GraphtestFile; } }
 
-        public ThingGraphIo ThingGraphProvider { get; set; }
+        public ThingGraphIo ThingGraphIo { get; set; }
 
         IThingGraph _graph = null;
         public virtual IThingGraph Graph { get {
@@ -39,50 +28,57 @@ namespace Limada.Tests.ThingGraphs {
             }
             protected set { _graph = value; }
         }
+
         protected ThingGraphContent _graphContent = null;
         public virtual ThingGraphContent GraphContent {
             get {
                 if (_graphContent == null) {
-                    _graphContent = OnCreateGraph();
+                    _graphContent = CreateGraphContent();
                 }
                 return _graphContent;
             }
             set { this._graphContent = value; }
         }
 
-        public virtual ThingGraphContent OnCreateGraph () {
-            return OnCreateGraph (this.FileName);
+        public virtual ThingGraphContent CreateGraphContent () {
+            return CreateGraphContent (this.FileName);
         }
 
-        public virtual ThingGraphContent OnCreateGraph (string fileName) {
-            if (ThingGraphProvider != null) {
-                var info = Iori.FromFileName(fileName + ThingGraphProvider.Extension());
-                var result = ThingGraphProvider.Open(info);
-                ReportDetail("*** file:\t" + fileName + ThingGraphProvider.Extension());
+        public virtual ThingGraphContent CreateGraphContent (string fileName) {
+            if (ThingGraphIo != null) {
+                var info = Iori.FromFileName (fileName + ThingGraphIo.Extension ());
+                var result = ThingGraphIo.Open (info);
+                ReportDetail ("*** file:\t" + fileName + ThingGraphIo.Extension ());
                 return result;
             }
-            return new ThingGraphContent{ Data = new ThingGraph() };
+            return new ThingGraphContent { Data = new ThingGraph () };
         }
 
         
         public virtual void Close() {
-            if (ThingGraphProvider != null) {
-                ThingGraphProvider.Close (GraphContent);
+            if (ThingGraphIo != null) {
+                ThingGraphIo.Close (GraphContent);
                 this.GraphContent = null;
             } 
         }
 
         
         public virtual void OnFlush(IThingGraph graph) {
-            if (ThingGraphProvider != null) {
-                if (ThingGraphProvider.IoMode== IoMode.Write)
-                    ThingGraphProvider.Flush(GraphContent);
+            if (ThingGraphIo != null) {
+                if (ThingGraphIo.IoMode== IoMode.Write)
+                    ThingGraphIo.Flush(GraphContent);
             }
         }
 
         public override void TearDown() {
             Close ();
             base.TearDown();
+        }
+    }
+
+    public static class ThingGraphIoExtensions {
+        public static string Extension (this ThingGraphIo source) {
+            return "." + source.Detector.ContentSpecs.First ().Extension;
         }
     }
 }

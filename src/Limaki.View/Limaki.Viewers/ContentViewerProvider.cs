@@ -30,7 +30,7 @@ namespace Limaki.Viewers {
             this.Viewers.Add(viewer);
         }
 
-        public void Dispose () {
+        public virtual void Dispose () {
             foreach (var viewer in this.Viewers) {
                 viewer.Dispose ();
             }

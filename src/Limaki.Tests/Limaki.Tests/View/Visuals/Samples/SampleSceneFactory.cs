@@ -19,15 +19,19 @@ using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using System.Collections.Generic;
 using Limaki.Drawing;
+using Limaki.Common.Linqish;
+using System.Linq;
 
 namespace Limaki.Tests.View.Visuals {
 
-    public class SampleSceneFactory<Item, TEdge, T> : SampleGraphSceneFactory<IVisual, Item, IVisualEdge, TEdge, T>, ISampleGraphSceneFactory
-        where TEdge : IEdge<Item>, Item
-        where T : ISampleGraphFactory<Item, TEdge>, new () {
+    public class SampleSceneFactory<TItem, TEdge, T> : SampleGraphSceneFactory<IVisual, TItem, IVisualEdge, TEdge, T>, ISampleGraphSceneFactory
+        where TEdge : IEdge<TItem>, TItem
+        where T : ISampleGraphFactory<TItem, TEdge>, new () {
 
         protected override IGraphScene<IVisual, IVisualEdge> CreateScene () {
             return new Scene ();
         }
+
+        
     }
 }

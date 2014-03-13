@@ -8,6 +8,7 @@ namespace Limaki.View {
     public class ViewContentResourceLoader : IContextResourceLoader {
 
         public virtual void ApplyResources (IApplicationContext context) {
+
             var mimeFingerPrints = context.Pool.TryGetCreate<MimeFingerPrints> ();
             mimeFingerPrints.SynonymFormats ("DeviceIndependentBitmap", new ImageContentSpot ().ContentSpecs.First (s => s.ContentType == ContentTypes.DIB).MimeType);
             mimeFingerPrints.SynonymFormats ("CF_DIB", new ImageContentSpot ().ContentSpecs.First (s => s.ContentType == ContentTypes.DIB).MimeType);

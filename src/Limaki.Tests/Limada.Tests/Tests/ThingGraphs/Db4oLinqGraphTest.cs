@@ -7,7 +7,7 @@ using System.Linq;
 namespace Limada.Tests.Data.db4o {
     public class Db4oLinqGraphTest : Limada.Tests.ThingGraphs.ThingGraphTest {
         public override void Setup() {
-            this.ThingGraphProvider = new Db4oThingGraphIo();
+            this.ThingGraphIo = new Db4oThingGraphIo();
             base.Setup();
         }
         [Test]

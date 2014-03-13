@@ -116,12 +116,12 @@ namespace Limaki.Graphs {
         }
 
         public override void Clear() {
-            Set<TItem> remove = new Set<TItem>();
+            var remove = new Set<TItem>();
             foreach (TItem item in this) {
                 if (ItemFilter(item))
                     remove.Add(item);
             }
-            foreach (TItem item in remove)
+            foreach (var item in remove)
                 Remove(item);
         }
 

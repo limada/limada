@@ -7,6 +7,7 @@ using System.Threading;
 using System.Collections.Generic;
 
 namespace Limaki.Net.WebProxyServer {
+
     public abstract class WebServerBase : IDisposable {
         public WebServerBase() {
             Port = 40110;

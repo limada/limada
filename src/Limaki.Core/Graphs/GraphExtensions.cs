@@ -117,7 +117,7 @@ namespace Limaki.Graphs {
         }
 
         public static void AddRange<TItem, TEdge>(this IGraph<TItem, TEdge> graph, IEnumerable<TItem> items)
-            where TEdge : IEdge<TItem>, TItem {
+            where TEdge : IEdge<TItem> {
             foreach (var item in items) {
                 graph.Add(item);
             }
