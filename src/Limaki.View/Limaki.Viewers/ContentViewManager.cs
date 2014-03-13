@@ -208,7 +208,9 @@ namespace Limaki.Viewers {
         }
 
         public void Dispose () {
-            Clear();
+            if (IsProviderOwner) {
+                ContentViewerProvider.Dispose();
+            }
         }
     }
 }

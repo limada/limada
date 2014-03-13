@@ -148,15 +148,25 @@ namespace Limaki.Viewers.StreamViewers {
         public override void Save(Content<Stream> content) { }
         public override bool CanSave() {return false;}
 
-        public override void Dispose () {
-            if (_webBrowser is IDisposable) {
-                ((IDisposable)_webBrowser).Dispose();
+        ~HtmlContentViewer() {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose (bool disposing) {
+            if (disposing) {
+                if (_webBrowser is IDisposable) {
+                    ((IDisposable) _webBrowser).Dispose();
+                }
             }
             _webBrowser = null;
             if (_webServer != null) {
                 _webServer.Dispose ();
                 _webServer = null;
             }
+        }
+
+        public override void Dispose () {
+            Dispose (true);
         }
         public override void Clear() {
             base.Clear();
