@@ -135,7 +135,10 @@ namespace Limaki.Tests.View.Visuals {
             result.Graph = this.Graph;
             var layout = new LongtermPerformanceSceneLayout(
                 delegate() { return result; }, this.styleSheet);
+            
             PopulateScene(result);
+            EnsureShapes (layout);
+
             layout.Reset();
             Arrange(result);
             result.ClearSpatialIndex();
