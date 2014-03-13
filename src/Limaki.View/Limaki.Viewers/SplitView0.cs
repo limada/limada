@@ -240,10 +240,37 @@ namespace Limaki.Viewers {
             Backend.ViewInWindow (backend, onClose);
         }
 
+        public void ChangeData(IGraphScene<IVisual, IVisualEdge> scene) {
 
+            var oldScene = Display1.Data;
+            var displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { Display2 };
+
+            if (oldScene != null) {
+                displays = Mesh.DisplaysOfBackGraph (oldScene.Graph).ToArray ();
+
+                Clear ();
+
+                displays.ForEach (d => Mesh.RemoveScene (d.Data));
+                displays.ForEach (d => Mesh.ClearDisplaysOf (d.Data));
+            }
+
+            CurrentDisplay = null;
+
+            Display1.Data = scene;
+            
             Mesh.AddScene (Display1.Data);
-            Mesh.AddScene (Display2.Data);
 
+            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (Display1.Data);
+            displays
+                .Where (d => d != Display1)
+                .ForEach (d => {
+                    Mesh.CopyDisplayProperties (Display1, d);
+                    d.Data = Mesh.CreateSinkScene (Display1.Data.Graph);
+                    Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (d.Data);
+                    Mesh.AddScene (d.Data);
+                });
+
+            FavoriteManager.GoHome (Display1, true);
             GraphGraphView();
             GraphContentView();
 
