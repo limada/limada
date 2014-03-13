@@ -113,7 +113,7 @@ namespace Limaki.Tests.UseCases {
                     test.TestInfinitLoopIfHtmlContentIsFocused (sender.GetCurrentDisplay());
                 }
             } catch (Exception e) {
-                Registry.Pool.TryGetCreate<IExceptionHandler>().Catch (e, MessageType.OK);
+                Registry.Pooled<IExceptionHandler>().Catch (e, MessageType.OK);
             } finally {
 
             }
