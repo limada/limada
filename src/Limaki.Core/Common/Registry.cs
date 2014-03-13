@@ -40,10 +40,18 @@ namespace Limaki.Common {
         /// <typeparam name="TProcessor"></typeparam>
         /// <typeparam name="TTarget"></typeparam>
         /// <param name="target"></param>
-        public static void ApplyProperties<T>(T target){
-            ContextProcessor<T> processor = 
-                Pool.TryGetCreate < ContextProcessor<T>> ();
+        public static void ApplyProperties<T> (T target) {
+            var processor = Pooled<ContextProcessor<T>> ();
             processor.ApplyProperties (ConcreteContext, target);
+        }
+
+        /// <summary>
+        /// calls <see cref="IPool.TryGetCreate{T}()"/> of <see cref="Pool"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T Pooled<T>() {
+            return Pool.TryGetCreate<T>();
         }
 
         /// <summary>
@@ -56,7 +64,7 @@ namespace Limaki.Common {
         public static void ApplyProperties<TProcessor, TTarget>(TTarget target)
             where TProcessor : ContextProcessor<TTarget> {
             if (target == null || ConcreteContext==null) return;
-            ContextProcessor<TTarget> processor = Pool.TryGetCreate<TProcessor>();
+            var processor = Pooled<TProcessor>();
             processor.ApplyProperties(ConcreteContext, target);
 
         }
