@@ -116,9 +116,7 @@ namespace Limada.Schemata {
         protected static HashSet<Id> Deps { get; set; }
 
         public static IEnumerable<IThing> DependsOn (GraphCursor<IThing, ILink> source, GraphEventType eventType) {
-            var graph = source.Graph;
-            if (graph is SchemaThingGraph)
-                graph = ((SchemaThingGraph) graph).Source;
+            var graph = source.Graph.Unwrap();
             return graph.Edges (source.Cursor)
                 .Where (l => Deps.Contains (l.Marker.Id))
                 .Select (l => l.Leaf)

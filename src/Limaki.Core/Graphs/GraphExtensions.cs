@@ -122,5 +122,16 @@ namespace Limaki.Graphs {
                 graph.Add(item);
             }
         }
+
+        public static IGraph<TItem, TEdge>
+            Unwrap<TItem, TEdge> (this IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem> {
+
+            var wrapped = graph as IWrappedGraph<TItem, TEdge>;
+            while (wrapped != null) {
+                graph = wrapped.Source;
+                wrapped = graph as IWrappedGraph<TItem, TEdge>;
+            }
+            return graph;
+        }
     }
 }

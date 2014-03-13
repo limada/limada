@@ -15,7 +15,7 @@ using Limaki.Graphs.Extensions;
 using Limaki.Common.IOC;
 using Limaki.Contents.IO;
 using System.IO;
-
+using Limaki.Graphs;
 
 namespace Limada.Tests.ThingGraphs {
     [TestFixture]
@@ -78,9 +78,9 @@ namespace Limada.Tests.ThingGraphs {
         }
 
         public IEnumerable<IThing> FindRoot(IThingGraph source, bool doAutoView) {
-            source = (source as SchemaThingGraph).Source as IThingGraph;
+            source = source.Unwrap() as IThingGraph;
             var result = new List<IThing>();
-            IThing topic = source.GetById(TopicSchema.Topics.Id);
+            var topic = source.GetById(TopicSchema.Topics.Id);
             if (topic != null && (source.Edges(topic).Count > 0)) {
                 if (doAutoView) {
                     try {
@@ -133,6 +133,7 @@ namespace Limada.Tests.ThingGraphs {
             }
 
         }
+
         [Test]
         public virtual void CleanWrongDocumentsTest() {
             // search for all StringThings where link.Marker == Document && text = null or empty

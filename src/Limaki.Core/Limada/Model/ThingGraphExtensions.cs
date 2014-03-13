@@ -171,9 +171,7 @@ namespace Limada.Model {
             if (things == null)
                 yield break;
 
-            var sourceGraph = graph;
-            if (graph is SchemaThingGraph)
-                sourceGraph = ( (SchemaThingGraph) graph ).Source;
+            var sourceGraph = graph.Unwrap();
 
             var stack = new Queue<IThing> ();
             var done = new Set<IThing> ();

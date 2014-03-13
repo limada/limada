@@ -103,11 +103,7 @@ namespace Limada.View {
             if (thingGraph == null) {
                 throw new ArgumentException("Sheet works only on ThingGraphs");
             }
-
-            if (thingGraph is SchemaThingGraph) {
-                thingGraph = ((SchemaThingGraph)thingGraph).Source as IThingGraph;
-            }
-
+            thingGraph = thingGraph.Unwrap() as IThingGraph;
             return thingGraph;
         }
 
