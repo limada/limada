@@ -20,6 +20,7 @@ using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.View.Layout;
 using Limaki.Visuals;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -135,12 +136,18 @@ namespace Limada.Usecases {
 
        public void MergeVisual (IGraphScene<IVisual, IVisualEdge> scene) {
 
-           var source = scene.Focused;
-           var sink = scene.Selected.Count == 2 ? scene.Selected.Elements.Where (v => v != source).FirstOrDefault () : null;
-           var thingGraph = scene.Graph.ThingGraph ();
+           if (scene.Focused == null)
+               throw new ArgumentException ("nothing focused");
 
-           if (source == null || sink == null || thingGraph == null)
-               return;
+           if (scene.Selected.Count != 2)
+               throw new NotSupportedException ("Currently only merges of 2 things are supported");
+
+           var source = scene.Focused;
+           var sink = scene.Selected.Elements.Where (v => v != source).FirstOrDefault();
+           var thingGraph = scene.Graph.ThingGraph ();
+           
+           if (thingGraph == null)
+               throw new NotSupportedException ("Currently only merges of Thing-Backed graphs are supported");
 
            var meshed = Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>> ()
                .Scenes.Any (s => s == scene);
@@ -148,6 +155,11 @@ namespace Limada.Usecases {
            var sourceThing = scene.Graph.ThingOf (source);
            var sinkThing = scene.Graph.ThingOf (sink);
            var graphPair = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
+
+           var allowed = typeof (IThing<string>).IsAssignableFrom (sourceThing.GetType ()) && sourceThing.GetType () == sinkThing.GetType ();
+           if (!allowed) {
+               throw new NotSupportedException ("Currently only merges of texts are supported");
+           }
 
            foreach (var thing in thingGraph.MergeThing (sourceThing, sinkThing)) {
                thingGraph.OnDataChanged (thing);
