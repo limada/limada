@@ -238,6 +238,7 @@
     <Compile Include="Limada\Data\ThingGraphContent.cs" />
     <Compile Include="Limada\Data\ThingGraphExporter.cs" />
     <Compile Include="Limada\Data\ThingGraphIo.cs" />
+    <Compile Include="Limada\Data\ThingGraphMaintenance.cs" />
     <Compile Include="Limada\Data\ThingGraphMerger.cs" />
     <Compile Include="Limada\Data\XmlThingGraphSpot.cs" />
     <Compile Include="Limada\Data\XmlThingGraphIo.cs" />

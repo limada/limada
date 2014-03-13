@@ -1,3 +1,4 @@
+using Limada.Data;
 using Limada.Schemata;
 using Limada.Usecases;
 using Limada.VisualThings;
@@ -12,6 +13,8 @@ using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
 using System;
+using Limaki.Graphs;
+using Limaki.Graphs.Extensions;
 
 namespace Limaki.Tests.UseCases {
 
@@ -95,9 +98,20 @@ namespace Limaki.Tests.UseCases {
 
         public void CurrentProblem (ConceptUsecase sender) {
             try {
-                var test = new WebProxyTest ();
-                test.CircleFocusToHtml (sender.GetCurrentDisplay ());
 
+                var thingGraph = sender.GetCurrentDisplay ().Data.Graph.ThingGraph ();
+                if (thingGraph == null)
+                    throw new ArgumentException ("ThingGraphMaintenance only works with Thing-backed graphs");
+
+                var graph = thingGraph.Unwrap();
+                var maint = new ThingGraphMaintenance();
+
+                maint.RefreshCompression (graph, true);
+                
+                if (false) {
+                    var test = new WebProxyTest();
+                    test.TestInfinitLoopIfHtmlContentIsFocused (sender.GetCurrentDisplay());
+                }
             } catch (Exception e) {
                 Registry.Pool.TryGetCreate<IExceptionHandler>().Catch (e, MessageType.OK);
             } finally {
