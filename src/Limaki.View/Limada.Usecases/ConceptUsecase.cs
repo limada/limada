@@ -27,7 +27,7 @@ using Limada.VisualThings;
 using Limaki.View;
 
 
-namespace Limaki.Usecases.Concept {
+namespace Limada.Usecases {
 
     public class ConceptUsecase:IDisposable, IProgress {
 
@@ -113,10 +113,15 @@ namespace Limaki.Usecases.Concept {
         }
 
         public void MergeVisual() {
-            var display = GetCurrentDisplay();
-            if (display != null) {
-                new VisualThingsSceneViz ().MergeVisual (display.Data);
-                display.Perform ();
+
+            try {
+                var display = GetCurrentDisplay ();
+                if (display != null) {
+                    new VisualThingsSceneViz ().MergeVisual (display.Data);
+                    display.Perform ();
+                }
+            } catch (Exception ex) {
+                Registry.Pooled<IExceptionHandler> ().Catch (ex, MessageType.OK);
             }
         }
 

@@ -71,6 +71,8 @@ namespace Limaki.View.UI.GraphScene {
         }
 
         public override void OnKeyPressed( KeyActionEventArgs e ) {
+            Trace.WriteLine (string.Format ("{0} {1}", e.Key, e.Modifiers));
+
             base.OnKeyPressed(e);
             bool act = !(Folder.Scene.Focused is TEdge);
 

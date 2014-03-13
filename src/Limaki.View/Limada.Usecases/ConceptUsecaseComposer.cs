@@ -21,7 +21,7 @@ using Limaki.Visuals;
 using Limaki.Viewers.ToolStripViewers;
 using Limaki.Viewers.Vidgets;
 
-namespace Limaki.Usecases.Concept {
+namespace Limada.Usecases {
 
     public class ConceptUsecaseComposer : IComposer<ConceptUsecase> {
 

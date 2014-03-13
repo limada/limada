@@ -1,11 +1,11 @@
 using Limada.Schemata;
+using Limada.Usecases;
 using Limada.VisualThings;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Tests.View;
 using Limaki.Tests.View.Display;
 using Limaki.Usecases;
-using Limaki.Usecases.Concept;
 using Limaki.View;
 using Limaki.View.Rendering;
 using Limaki.View.Visualizers;

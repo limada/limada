@@ -1,6 +1,6 @@
 using System.Windows.Forms;
+using Limada.Usecases;
 using Limaki.View.Swf;
-using Limaki.Usecases.Concept;
 using Limaki.Swf.Backends.UseCases;
 using Limaki.Common.IOC;
 using Limaki.Common;

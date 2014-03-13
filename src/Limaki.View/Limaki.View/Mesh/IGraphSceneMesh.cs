@@ -30,6 +30,8 @@ namespace Limaki.View.Mesh {
         void RemoveScene (IGraphScene<TItem, TEdge> scene);
         void AddDisplay (IGraphSceneDisplay<TItem, TEdge> display);
         void RemoveDisplay (IGraphSceneDisplay<TItem, TEdge> display);
+
+
         ICollection<IGraphScene<TItem, TEdge>> Scenes { get; }
         ICollection<IGraphSceneDisplay<TItem, TEdge>> Displays { get; }
 

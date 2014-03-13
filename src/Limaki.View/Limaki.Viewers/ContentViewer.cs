@@ -25,14 +25,14 @@ namespace Limaki.Viewers {
 
         public Int64 ContentId { get; set; }
 
+        public abstract IVidget Frontend { get; }
+
         /// <summary>
         /// attention! this is strange
         /// ContentViewer is not a Vidget in reality, so it has no backend
-        /// its a composition of ImageDisplay and ContentStreamViewer
+        /// this is in the most cases the Frontend.Backend
         /// </summary>
         public abstract IVidgetBackend Backend { get; }
-
-        public abstract IVidget Frontend { get; }
 
         private Color? _backColor;
         public virtual Color BackColor {

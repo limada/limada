@@ -14,10 +14,10 @@
 
 using System;
 using System.Linq;
+using Limada.Usecases;
 using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.Usecases;
-using Limaki.Usecases.Concept;
 using Limaki.View.XwtBackend;
 using Xwt;
 

@@ -79,7 +79,6 @@ namespace Limaki.View.Mesh {
             }
         }
 
-
         #region BackGraph handling
 
         private IDictionary<Tuple<Type, Type>, IGraphSceneMeshBackHandler<TItem, TEdge>> _backHandlers = new Dictionary<Tuple<Type, Type>, IGraphSceneMeshBackHandler<TItem, TEdge>>();

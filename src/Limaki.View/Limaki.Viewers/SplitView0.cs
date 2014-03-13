@@ -16,9 +16,11 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Limada.View;
 using Limada.VisualThings;
 using Limaki.Common;
+using Limaki.Common.Linqish;
 using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
@@ -33,6 +35,7 @@ using Limaki.Visuals;
 using Xwt;
 using Xwt.Backends;
 using Xwt.Drawing;
+using System.Collections.Generic;
 
 namespace Limaki.Viewers {
 
@@ -169,8 +172,9 @@ namespace Limaki.Viewers {
             if (currentDisplay != null &&
                 currentDisplay.Data != null &&
                 currentDisplay.Data.Focused != null) {
-                var fce = new GraphSceneEventArgs<IVisual, IVisualEdge>(currentDisplay.Data, currentDisplay.Data.Focused);
-                ContentViewManager.ChangeViewer(currentDisplay, fce);
+
+                var eventArgs = new GraphSceneEventArgs<IVisual, IVisualEdge> (currentDisplay.Data, currentDisplay.Data.Focused);
+
             }
             if (Backend != null) {
                 Backend.GraphContentView();

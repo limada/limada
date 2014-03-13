@@ -12,11 +12,11 @@
  * 
  */
 
+using Limada.Usecases;
 using Limaki.Common.IOC;
 using Limaki.Drawing;
 using Limaki.Drawing.WpfBackend;
 using Limaki.Usecases;
-using Limaki.Usecases.Concept;
 using Limaki.View.UI;
 using Limaki.View.WpfBackends;
 using Limaki.View.XwtBackend;

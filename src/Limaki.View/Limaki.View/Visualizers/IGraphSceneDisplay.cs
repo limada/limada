@@ -23,6 +23,10 @@ namespace Limaki.View.Visualizers {
     public interface IGraphSceneDisplay<TItem, TEdge>:IDisplay<IGraphScene<TItem, TEdge>>
         where TEdge : TItem, IEdge<TItem> {
 
+        /// <summary>
+        ///
+        /// <remarks> set this after Data; DataChanged sets this to null</remarks>
+        /// </summary>
         SceneInfo Info { get; set; }
         IGraphSceneLayout<TItem, TEdge> Layout { get; set; }
         IGraphSceneReceiver<TItem, TEdge> GraphSceneReceiver { get; set; }

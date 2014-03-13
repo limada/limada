@@ -11,21 +11,17 @@
  * http://www.limada.org
  */
 
-using System;
-using System.Linq;
-using System.Windows.Forms;
-using Limaki.Common;
-using Limaki.Drawing;
-using Limaki.View.Visualizers;
+using Limaki.View;
+using Limaki.View.Swf;
 using Limaki.View.Swf.Visualizers;
 using Limaki.Viewers;
-using Limaki.Visuals;
-using Limaki.Swf.Backends;
-using DialogResult=Limaki.Viewers.DialogResult;
+using System;
 using System.Diagnostics;
-using Limaki.View;
+using System.Linq;
+using System.Windows.Forms;
 using Xwt.Gdi.Backend;
-using Limaki.View.Swf;
+using DialogResult = Limaki.Viewers.DialogResult;
+using Point = System.Drawing.Point;
 
 namespace Limaki.Swf.Backends.Viewers {
 
@@ -250,7 +246,5 @@ namespace Limaki.Swf.Backends.Viewers {
 
         #endregion
 
-
-     
     }
 }

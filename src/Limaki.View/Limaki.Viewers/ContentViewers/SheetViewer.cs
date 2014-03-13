@@ -69,7 +69,7 @@ namespace Limaki.Viewers.StreamViewers {
             var loadFromMemory = false;
             var isStreamOwner = this.IsStreamOwner;
 
-            Int64 id = content.Source is Int64 ? (Int64)content.Source : 0;
+            var id = content.Source is Int64 ? (Int64)content.Source : 0;
             SceneInfo stored = null;
             if (id != 0 ) {
                 stored = SheetManager.GetSheetInfo(id);
@@ -97,7 +97,7 @@ namespace Limaki.Viewers.StreamViewers {
 
             SheetDisplay.Perform();
             SheetDisplay.Info = sheetinfo;
-           
+
             this.ContentId = SheetDisplay.DataId;
             Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(SheetDisplay.Data);
 

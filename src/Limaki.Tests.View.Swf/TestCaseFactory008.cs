@@ -13,12 +13,12 @@
 
 using System;
 using System.Windows.Forms;
+using Limada.Usecases;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limada.VisualThings;
 using Limaki.View.Visualizers;
 using Limaki.View.Rendering;
-using Limaki.Usecases.Concept;
 using Limaki.View.Swf.Visualizers;
 using Limaki.Swf.Backends.UseCases;
 using Limaki.Tests.View.Display;

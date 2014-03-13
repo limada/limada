@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Limada.Usecases;
 using Limaki.Common;
 using Limada.Model;
 using Limaki.Common.IOC;
-using Limaki.Usecases.Concept;
 using Limaki.Tests.UseCases;
 using Limaki.Usecases;
 

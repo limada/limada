@@ -44,7 +44,12 @@ namespace Limaki.View.DragDrop {
 
         public IVisual Source { get; set; }
 
-        protected virtual IVisual HitTest (Point p) {
+        /// <summary>
+        /// gives back scene.Focused if it is hit by p
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        protected virtual IVisual HitTestFocused (Point p) {
             IVisual result = null;
             var sp = Camera.ToSource(p);
             var scene = this.Scene;
@@ -61,7 +66,7 @@ namespace Limaki.View.DragDrop {
             Resolved = false;
             Dragging = false;
             if (e.Button == MouseActionButtons.Left) {
-                Source = HitTest(e.Location);
+                Source = HitTestFocused(e.Location);
             }
         }
 

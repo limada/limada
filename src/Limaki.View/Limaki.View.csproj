@@ -334,8 +334,8 @@
     <Compile Include="Limaki.View\Visuals\VisualsRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Limaki.Reporting\IReportOptions.cs" />
-    <Compile Include="Limaki.Usecases\Concept\ConceptUsecase.cs" />
-    <Compile Include="Limaki.Usecases\Concept\ConceptUsecaseComposer.cs" />
+    <Compile Include="Limada.UseCases\ConceptUsecase.cs" />
+    <Compile Include="Limada.UseCases\ConceptUsecaseComposer.cs" />
     <Compile Include="Limaki.Usecases\UsecaseFactories.cs" />
     <Compile Include="Limaki.Usecases\UsecaseFactory.cs" />
     <Compile Include="Limaki.Viewers\ContentViewManager.cs" />

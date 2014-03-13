@@ -146,7 +146,7 @@ namespace Limaki.View.Visuals.UI {
             }
         }
 
-        public static void CleanScene(this IGraphScene<IVisual, IVisualEdge> scene) {
+        public static void CleanScene (this IGraphScene<IVisual, IVisualEdge> scene) {
             if (scene != null) {
                 var graphView = scene.Graph as SubGraph<IVisual, IVisualEdge>;
                 if (graphView!=null) {

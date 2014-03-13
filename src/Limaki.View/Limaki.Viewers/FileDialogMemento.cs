@@ -47,8 +47,8 @@ namespace Limaki.Viewers {
 
         public void SetFileName(string fileName) {
             this.FileName = Path.GetFileNameWithoutExtension(fileName);
-            var path = Path.GetDirectoryName(fileName);
             try {
+                var path = Path.GetDirectoryName (fileName);
                 var uri = new Uri(path);
                 if (uri.IsUnc || uri.IsFile)
                     this.InitialDirectory = path;
