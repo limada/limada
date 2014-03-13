@@ -193,6 +193,7 @@ namespace Limaki.Swf.Backends.Viewers {
                 }
             } else {
                 Trace.WriteLine("SplitViewBackend.AttachBackend: currentDisplayBackend == control");
+                return;
             }
             if (panel != null && !panel.Controls.Cast<Control>().Contains(control)) {
                 panel.SuspendLayout();

@@ -175,6 +175,12 @@ namespace Limaki.Viewers {
 
                 var eventArgs = new GraphSceneEventArgs<IVisual, IVisualEdge> (currentDisplay.Data, currentDisplay.Data.Focused);
 
+                var contentViewManager = this.ContentViewManager;
+
+                if (contentViewManager.SheetViewer == currentDisplay)
+                    contentViewManager.SheetViewer = AdjacentDisplay (currentDisplay);
+
+                contentViewManager.ShowViewer (currentDisplay, eventArgs);
             }
             if (Backend != null) {
                 Backend.GraphContentView();
