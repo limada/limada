@@ -111,7 +111,8 @@ namespace Limaki.View.DragDrop {
         public override void Dropped (DragEventArgs e) {
             var pt = Camera.ToSource(e.Position);
             var scene = this.Scene;
-            var target = scene.Hovered;
+            var target = scene.Hovered ?? HitTestFocused (e.Position);
+            
             IVisual item = null;
 
             if (Dragging && Dropping) {

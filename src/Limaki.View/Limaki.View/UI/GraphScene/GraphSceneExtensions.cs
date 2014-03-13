@@ -10,15 +10,25 @@ namespace Limaki.View.UI.GraphScene {
 
     public static class GraphSceneExtensions {
 
-        public static void RequestDelete<TItem, TEdge> (this IGraphScene<TItem, TEdge> scene, TItem delete, ICollection<TItem> done)
-        where TEdge : TItem, IEdge<TItem> {
-            if (done == null || !done.Contains (delete)) {
-                if (delete is TEdge)
-                    scene.Requests.Add (new DeleteEdgeCommand<TItem, TEdge> (delete, scene));
+        /// <summary>
+        /// if item is not an edge or done == null, a <see cref="DeleteCommand{TItem, TEdge}" is added/> 
+        /// if item is an edge, a <see cref="DeleteEdgeCommand{TItem, TEdge}" is added/> 
+        /// this does NOT delete the edge
+        /// </summary>
+        /// <typeparam name="TItem"></typeparam>
+        /// <typeparam name="TEdge"></typeparam>
+        /// <param name="scene"></param>
+        /// <param name="item"></param>
+        /// <param name="done"></param>
+        public static void RequestDelete<TItem, TEdge> (this IGraphScene<TItem, TEdge> scene, TItem item, ICollection<TItem> done)
+            where TEdge : TItem, IEdge<TItem> {
+            if (done == null || !done.Contains (item)) {
+                if (item is TEdge && done != null)
+                    scene.Requests.Add (new DeleteEdgeCommand<TItem, TEdge> (item, scene));
                 else
-                    scene.Requests.Add (new DeleteCommand<TItem, TEdge> (delete, scene));
+                    scene.Requests.Add (new DeleteCommand<TItem, TEdge> (item, scene));
                 if (done != null)
-                    done.Add (delete);
+                    done.Add (item);
             };
         }
 
@@ -41,7 +51,9 @@ namespace Limaki.View.UI.GraphScene {
                     requestDelete,
                     GraphEventType.Remove);
 
-                requestDelete (item);
+                // if item is an edge, then use DeleteCommand
+                scene.RequestDelete (item, null);
+                done.Add (item);
             }
         }
 

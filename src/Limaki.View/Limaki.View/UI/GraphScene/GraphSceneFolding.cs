@@ -14,6 +14,7 @@
 
 
 using System;
+using System.Diagnostics;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
@@ -99,7 +100,8 @@ namespace Limaki.View.UI.GraphScene {
                     } else if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.Control) {
                         Folder.ShowAllData();
 
-                    } else if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.None) {
+                    } else if (((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.None)
+                                || (e.Key == Key.Plus && e.Modifiers == ModifierKeys.Shift)) {
                         Folder.Expand(true);
 
                     } else if ((e.Key == Key.Space && e.Modifiers == ModifierKeys.None)) {

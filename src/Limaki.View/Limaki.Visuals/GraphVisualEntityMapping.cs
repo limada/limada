@@ -25,7 +25,7 @@ namespace Limaki.Visuals {
                                   new VisualGraphEntityTransformer ())
                               as IGraph<TItem, TEdge> ;
             } else  if (Next != null) {
-                Next.CloneGraphPair<TItem, TEdge> (source);
+                return Next.CloneGraphPair<TItem, TEdge> (source);
             }
 
             return targetGraph;
