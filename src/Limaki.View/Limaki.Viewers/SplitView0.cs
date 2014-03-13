@@ -197,27 +197,43 @@ namespace Limaki.Viewers {
 
         #endregion
 
-        public void ChangeData(IGraphScene<IVisual, IVisualEdge> scene) {
+        public void ShowInNewWindow () {
 
-            Mesh.RemoveScene (Display1.Data);
-            Mesh.RemoveScene (Display2.Data);
+            var source = CurrentDisplay ?? this.Display1;
+            if (source == null)
+                return;
 
-            Clear();
+            var graph = source.Data.Graph;
+            var focused = source.Data.Focused;
 
-            CurrentDisplay = null;
+            IVidgetBackend backend = null;
+            Action onClose = null;
 
-            Display1.Data = scene;
-            FavoriteManager.GoHome(Display1, true);
+            if (graph != null && focused != null) {
+                using (var contentViewManager = new ContentViewManager { IsProviderOwner = false }) {
 
-            Display2.Data = null;
+                    if (contentViewManager.IsContent (graph, focused)) {
+                        // TODO: get viewer, make a new instance of it, get the backend
+                        // if sheetviewer, use display(see down) as Viewer
+                    }
 
-            ContentViewManager.Clear();
+                }
+            }
+            // TODO: see above; for now we take always a VisualsDisplay
+            {
+                var display = new VisualsDisplay();
+                onClose += () => Mesh.RemoveDisplay (display);
 
-            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (Display1.Data);
-            Mesh.CopyDisplayProperties (Display1, Display2);
-            Display2.Data = Mesh.CreateSinkScene (Display1.Data.Graph);
+                Mesh.CopyDisplayProperties (source, display);
+                display.Data = Mesh.CreateSinkScene (graph);
 
-            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (Display2.Data);
+                Mesh.AddDisplay (display);
+                backend = display.Backend;
+            }
+
+            Backend.ViewInWindow (backend, onClose);
+        }
+
 
             Mesh.AddScene (Display1.Data);
             Mesh.AddScene (Display2.Data);
@@ -269,7 +285,7 @@ namespace Limaki.Viewers {
                     display.EventControler.UserEventsDisabled = true;
                     adjacent.EventControler.UserEventsDisabled = true;
                     contentViewManager.SheetViewer = adjacent;
-                    contentViewManager.ChangeViewer(sender, e);
+                    contentViewManager.ShowViewer(sender, e);
                 } catch (Exception ex) {
                     ExceptionHandler.Catch(ex, MessageType.OK);
                 } finally {
@@ -366,6 +382,8 @@ namespace Limaki.Viewers {
             if (SheetManager != null) {
                 SheetManager.Clear();
             }
+
+            ContentViewManager.Clear ();
 
             Display1.DataId = 0;
             Display1.Text = string.Empty;
@@ -554,5 +572,7 @@ namespace Limaki.Viewers {
 
             return true;
         }
+
+
     }
 }

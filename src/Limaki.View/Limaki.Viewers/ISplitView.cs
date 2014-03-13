@@ -35,7 +35,14 @@ namespace Limaki.Viewers {
         event EventHandler ViewChanged;
 
         void LoadSheet(SceneInfo sceneInfo);
+
         IGraphSceneDisplay<IVisual, IVisualEdge> AdjacentDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display);
+
+        /// <summary>
+        /// shows a new IGraphSceneDisplay{Visual, IVisualEdge} in a new Window
+        /// 
+        /// </summary>
+        void ShowInNewWindow ();
     }
 
     public enum SplitViewMode {

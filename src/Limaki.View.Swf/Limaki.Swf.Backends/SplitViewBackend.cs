@@ -111,6 +111,26 @@ namespace Limaki.Swf.Backends.Viewers {
             }
         }
 
+        public void ViewInWindow (IVidgetBackend backend, Action onClose) {
+            var control = backend as Control;
+            if (control != null) {
+                control.Dock = DockStyle.Fill;
+                var form = new Form() { FormBorderStyle = FormBorderStyle.SizableToolWindow };
+                form.FormClosing += (s, e) => onClose();
+                form.Controls.Add (control);
+                form.Show (this.ParentForm);
+                form.Location = this.PointToScreen(new Point (this.Location.X, this.Location.Y+(this.Height-form.Height)/2));
+                //form.Height = this.Height/2;
+                Func<Point> calcOffset = () => new Point (form.Location.X - this.ParentForm.Location.X, form.Location.Y- this.ParentForm.Location.Y);
+                var offset = calcOffset();
+                form.LocationChanged += (s, e) =>
+                    offset = calcOffset ();
+                this.ParentForm.LocationChanged += (s, e) =>
+                                                   form.Location = new Point (this.ParentForm.Location.X + offset.X, this.ParentForm.Location.Y + offset.Y);
+
+            }
+        }
+
         #region View-Switching
         
         public void ToggleView() {

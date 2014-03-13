@@ -38,5 +38,7 @@ namespace Limaki.Viewers.ToolStripViewers {
         public virtual IGraphSceneDisplay<IVisual, IVisualEdge> AdjacentDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             return null;
         }
+
+        public void ShowInNewWindow () {}
     }
 }

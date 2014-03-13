@@ -136,6 +136,15 @@ namespace Limaki.Viewers {
             }
         }
 
+        public bool IsContent (IGraph<IVisual, IVisualEdge> visualGraph, IVisual visual) {
+             var graph = visualGraph.Source<IVisual, IVisualEdge,IThing, ILink>();
+
+             if (visual != null && graph != null) {
+                 return graph.ThingOf (visual) is IStreamThing;
+             }
+             return false;
+        }
+
         protected void LoadThing (IGraph<IVisual, IVisualEdge> visualGraph, IVisual visual) {
             var graph = visualGraph.Source<IVisual, IVisualEdge,IThing, ILink>();
 
