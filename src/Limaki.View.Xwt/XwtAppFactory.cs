@@ -23,7 +23,7 @@ using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
-    public class XwtAppFactory : AppFactory<Limada.Usecases.AppResourceLoader> {
+    public class XwtAppFactory : AppFactory<Limada.Usecases.LimadaResourceLoader> {
         
         ToolkitType ToolkitType {
             get { return Xwt.ToolkitType.Wpf; }

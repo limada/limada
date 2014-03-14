@@ -229,7 +229,7 @@
     <Compile Include="Graphs\IGraphPair.cs" />
     <Compile Include="Graphs\LiveGraphPair.cs" />
     <Compile Include="Graphs\MultiDictionaryGraph.cs" />
-    <Compile Include="Limada\AppResourceLoader.cs" />
+    <Compile Include="Limada\LimadaResourceLoader.cs" />
     <Compile Include="Limada\Common\Isaac.cs" />
     <Compile Include="Limada\IO\IoriThingGraphSpot.cs" />
     <Compile Include="Limada\IO\IThingGraphRepair.cs" />

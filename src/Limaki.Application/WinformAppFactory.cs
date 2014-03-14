@@ -25,7 +25,7 @@ using Xwt.WinformBackend;
 
 namespace Limaki.App {
 
-    public class WinformAppFactory : AppFactory<global::Limada.Usecases.AppResourceLoader> {
+    public class WinformAppFactory : AppFactory<global::Limada.Usecases.LimadaResourceLoader> {
 
         public WinformAppFactory(): base(new SwfContextResourceLoader()) {}
 

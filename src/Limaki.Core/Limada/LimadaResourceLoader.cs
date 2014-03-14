@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2013 Lytico
  *
  * http://www.limada.org
  * 
@@ -22,16 +22,17 @@ using Limaki.Contents.IO;
 
 namespace Limada.Usecases {
 
-    public class AppResourceLoader : ContextResourceLoader {
-        private IContextResourceLoader deviceContext = null;
+    public class LimadaResourceLoader : ContextResourceLoader {
 
-        public AppResourceLoader(IContextResourceLoader deviceContext) {
-            this.deviceContext = deviceContext;
+        protected IContextResourceLoader ResourceLoader { get; set; }
+
+        public LimadaResourceLoader(IContextResourceLoader resourceLoader) {
+            this.ResourceLoader = resourceLoader;
         }
 
         public override void ApplyResources(IApplicationContext context) {
             
-            deviceContext.ApplyResources(context);
+            ResourceLoader.ApplyResources(context);
             var thingGraphContentPool = context.Pooled<ThingGraphIoPool>();
             thingGraphContentPool.Add(new XmlThingGraphIo());
             thingGraphContentPool.Add(new IoriThingGraphIo());
