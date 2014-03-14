@@ -89,7 +89,7 @@ namespace Limaki.View.XwtBackend {
             };
 
 
-            var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
+            var viewerProvider = Registry.Pooled<ContentViewerProvider>();
 
             viewerProvider.Add(new SheetViewer());
             viewerProvider.Add(new ImageContentViewer());

@@ -55,7 +55,7 @@ namespace Limaki.Viewers.StreamViewers {
         }
 
         IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
-        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
 
         public override void SetContent(Content<Stream> content) {
             if (SheetDisplay == null) {

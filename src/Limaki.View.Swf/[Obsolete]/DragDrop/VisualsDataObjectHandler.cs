@@ -23,7 +23,7 @@ namespace Limaki.View.Swf.DragDrop {
             object odata = data.GetData(HandledType);
             IVisual result = null;
             if (odata is OUT) {
-                result = Registry.Pool.TryGetCreate<IVisualFactory>().CreateItem< OUT > ((OUT)odata);
+                result = Registry.Pooled<IVisualFactory>().CreateItem< OUT > ((OUT)odata);
             }
             return result;
         }

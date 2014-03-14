@@ -13,6 +13,7 @@
  */
 
 namespace Limaki.Common.IOC {
+
     public interface IApplicationContext {
         /// <summary>
         /// a pool for objects used applicationwide
@@ -23,5 +24,11 @@ namespace Limaki.Common.IOC {
         /// a factory for general used objects
         /// </summary>
         IFactory Factory { get; }
+    }
+
+    public static class ApplicationContextExtensions {
+        public static T Pooled<T>(this IApplicationContext c) {
+            return c.Pool.TryGetCreate<T>();
+        }
     }
 }

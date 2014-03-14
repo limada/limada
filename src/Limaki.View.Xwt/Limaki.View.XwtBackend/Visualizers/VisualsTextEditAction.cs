@@ -67,7 +67,7 @@ namespace Limaki.View.XwtBackend.Visualizers {
             if (Current is IVisualEdge) {
                 location = camera.FromSource(Current.Shape[Anchor.Center]);
                 var text = DataToText(Current);
-                size = Registry.Pool.TryGetCreate<IDrawingUtils>()
+                size = Registry.Pooled<IDrawingUtils>()
                     .GetTextDimension(text, style);
                 size.Height = Math.Max(size.Height + 2, style.Font.Size + 2);
                 size.Width = Math.Max(size.Width + 2, style.Font.Size * 4);
@@ -125,7 +125,7 @@ namespace Limaki.View.XwtBackend.Visualizers {
             if (insert) {
                 DetachEditor(true);
                 Exclusive = Resolved = true;
-                Current = Registry.Pool.TryGetCreate<IVisualFactory>().CreateItem<string>("XXXXXXXX");
+                Current = Registry.Pooled<IVisualFactory>().CreateItem<string>("XXXXXXXX");
                 var scene = Scene;
                 var root = scene.Focused;
 

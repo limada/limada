@@ -14,6 +14,7 @@
 
 using System;
 using Limaki.Common;
+using Limaki.Common.IOC;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.View.Clipping;
@@ -39,7 +40,7 @@ namespace Limaki.View.Visualizers {
             
             var context = Registry.ConcreteContext;
 
-            var styleSheets = context.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = context.Pooled<StyleSheets>();
             display.StyleSheet = styleSheets.DefaultStyleSheet;
 
 

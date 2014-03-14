@@ -51,7 +51,7 @@ namespace Limaki.Drawing.Styles {
         protected SystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = new SystemFonts()); } }
 
         protected IDrawingUtils _drawingUtils = null;
-        protected IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils>()); } }
+        protected IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pooled<IDrawingUtils>()); } }
 
         protected virtual Font CreateFont (string familiy, double size) {
             return Font.FromName(familiy + " " + size.ToString(CultureInfo.InvariantCulture));
@@ -157,7 +157,7 @@ namespace Limaki.Drawing.Styles {
         public static IStyle CreateStyleWithSystemSettings() {
             var result = new Style ("SystemStyle");
             var systemfonts = new SystemFonts();
-            var drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils>();
+            var drawingUtils = Registry.Pooled<IDrawingUtils>();
 
             result.Font = systemfonts.DefaultFont;
             result.Pen = drawingUtils.CreatePen (SystemColors.ActiveCaption);

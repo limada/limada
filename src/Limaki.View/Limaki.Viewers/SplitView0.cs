@@ -67,10 +67,10 @@ namespace Limaki.Viewers {
         }
 
         IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
-        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>>()); } }
+        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>>()); } }
 
         public void InitializeDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
-            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = Registry.Pooled<StyleSheets>();
             IStyleSheet styleSheet = null;
 
             if (styleSheets.TryGetValue(display.StyleSheet.Name, out styleSheet)) {
@@ -149,7 +149,7 @@ namespace Limaki.Viewers {
         }
 
         protected IExceptionHandler ExceptionHandler {
-            get { return Registry.Pool.TryGetCreate<IExceptionHandler>(); }
+            get { return Registry.Pooled<IExceptionHandler>(); }
         }
 
         public void ToggleView() {
@@ -539,7 +539,7 @@ namespace Limaki.Viewers {
             content.Data.Position = 0;
 
 
-            var visual = Registry.Pool.TryGetCreate<IVisualContentViz>().VisualOfContent(scene.Graph, content);
+            var visual = Registry.Pooled<IVisualContentViz>().VisualOfContent(scene.Graph, content);
             var root = scene.Focused;
 
             var layout = currentDiplay.Layout;

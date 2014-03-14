@@ -39,7 +39,7 @@ namespace Limaki.View.WpfBackend {
             tk.RegisterBackend<SystemFontBackend, WpfSystemFontBackend> ();
             context.Factory.Add<IUISystemInformation, WpfSystemInformation>();
 
-            var factories = context.Pool.TryGetCreate<UsecaseFactories<ConceptUsecase>>();
+            var factories = context.Pooled<UsecaseFactories<ConceptUsecase>>();
             factories.Add(new WpfUsecaseFactory());
 
             // register special IVidgetBackends here, eg. webbrowser

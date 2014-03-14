@@ -102,7 +102,7 @@ namespace Limada.Usecases {
                     }
                 }
             } catch (Exception ex) {
-                Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex, MessageType.OK);
+                Registry.Pooled<IExceptionHandler>().Catch(ex, MessageType.OK);
             }
         }
 
@@ -139,7 +139,7 @@ namespace Limada.Usecases {
                     }
                 }
             } catch (Exception ex) {
-                Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex, MessageType.OK);
+                Registry.Pooled<IExceptionHandler>().Catch(ex, MessageType.OK);
             }
         }
 
@@ -160,7 +160,7 @@ namespace Limada.Usecases {
                     }
                 }
             } catch (Exception ex) {
-                Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex, MessageType.OK);
+                Registry.Pooled<IExceptionHandler>().Catch(ex, MessageType.OK);
             }
         }
        

@@ -71,7 +71,7 @@ namespace Limaki.View.XwtBackend {
 
         public IXwtConceptUseCaseComposer CreateUseCase () {
 
-            var backendComposer = Registry.Pool.TryGetCreate<IXwtConceptUseCaseComposer>();
+            var backendComposer = Registry.Pooled<IXwtConceptUseCaseComposer>();
             backendComposer.MainWindowBackend = new MainWindowBackend();
             backendComposer.WindowSize = new Size(800, 600);
             
@@ -95,7 +95,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         public void CallPlugins (UsecaseFactory<ConceptUsecase> factory, ConceptUsecase useCase) {
-            var factories = Registry.Pool.TryGetCreate<UsecaseFactories<ConceptUsecase>>();
+            var factories = Registry.Pooled<UsecaseFactories<ConceptUsecase>>();
             foreach (var item in factories) {
                 item.Composer = factory.Composer;
                 item.BackendComposer = factory.BackendComposer;

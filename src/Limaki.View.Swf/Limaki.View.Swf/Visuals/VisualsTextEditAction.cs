@@ -212,7 +212,7 @@ namespace Limaki.View.Swf.Visuals {
              if (insert) {
                  DetachEditor(true);
                  Exclusive = Resolved = true;
-                 Current = Registry.Pool.TryGetCreate<IVisualFactory>().CreateItem<string>("XXXXXXXX");
+                 Current = Registry.Pooled<IVisualFactory>().CreateItem<string>("XXXXXXXX");
                  var scene = Scene;
                  var root = scene.Focused;
 

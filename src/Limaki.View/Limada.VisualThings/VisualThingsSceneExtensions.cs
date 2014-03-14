@@ -30,7 +30,7 @@ namespace Limada.VisualThings {
 
         static IVisualContentViz _visualContentViz = null;
         public static IVisualContentViz VisualContentViz {
-            get { return _visualContentViz ?? (_visualContentViz = Registry.Pool.TryGetCreate<IVisualContentViz>()); }
+            get { return _visualContentViz ?? (_visualContentViz = Registry.Pooled<IVisualContentViz>()); }
         }
 
         /// <summary>

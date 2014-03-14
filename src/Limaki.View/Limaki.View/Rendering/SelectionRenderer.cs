@@ -24,7 +24,7 @@ namespace Limaki.View.Rendering {
         public IPainter Painter {
             get {
                 if ((_painter == null) && (Shape != null)) {
-                    var factory = Registry.Pool.TryGetCreate<IPainterFactory>();
+                    var factory = Registry.Pooled<IPainterFactory>();
                     _painter = factory.CreatePainter(Shape);
                 }
                 return _painter;

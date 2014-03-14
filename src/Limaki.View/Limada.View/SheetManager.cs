@@ -118,7 +118,7 @@ namespace Limada.View {
             if (result != null) {
                 if (!(result is IStreamThing && 
                     ((IStreamThing)result).StreamType == ContentTypes.LimadaSheet)) {
-                    Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(
+                    Registry.Pooled<IExceptionHandler>().Catch(
                         new ArgumentException("This id does not belong to a sheet")
                         , MessageType.OK);
                 }

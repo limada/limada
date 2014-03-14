@@ -149,7 +149,7 @@ namespace Limada.Usecases {
            if (thingGraph == null)
                throw new NotSupportedException ("Currently only merges of Thing-Backed graphs are supported");
 
-           var meshed = Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>> ()
+           var meshed = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()
                .Scenes.Any (s => s == scene);
 
            var sourceThing = scene.Graph.ThingOf (source);

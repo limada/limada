@@ -388,7 +388,7 @@ namespace Limaki.View.Swf.Visualizers {
         #region IGDIControl Member
 
         void IGdiBackend.Invalidate(System.Drawing.Drawing2D.GraphicsPath path) {
-                Registry.Pool.TryGetCreate<IExceptionHandler>()
+                Registry.Pooled<IExceptionHandler>()
                     .Catch(new Exception(this.GetType().Name + ".Invalidate(GraphicsPath path) not implemented"), MessageType.OK);
         }
         

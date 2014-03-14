@@ -46,7 +46,7 @@ namespace Limaki.View.Visualizers {
             if (StyleSheet == null) {
                 StyleSheet = new StyleSheets().Compose().DefaultStyleSheet;
                 StyleSheet.BackColor = Colors.WhiteSmoke;
-                // maybe created with wrong toolkit! Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet;
+                // maybe created with wrong toolkit! Registry.Pooled<StyleSheets>().DefaultStyleSheet;
             }
 
             if (Layout == null) {

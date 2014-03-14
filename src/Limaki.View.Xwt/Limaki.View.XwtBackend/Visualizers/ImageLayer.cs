@@ -72,7 +72,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         protected IExceptionHandler ExceptionHandler {
-            get { return Registry.Pool.TryGetCreate<IExceptionHandler>(); }
+            get { return Registry.Pooled<IExceptionHandler>(); }
         }
 
         protected virtual void DisposeCache () {

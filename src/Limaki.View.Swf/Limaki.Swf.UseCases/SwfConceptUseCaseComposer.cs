@@ -65,7 +65,7 @@ namespace Limaki.Swf.Backends.UseCases {
             ToolStripContainer.PerformLayout();
             splitViewBackend.SplitterDistance = (int)(ToolStripContainer.Width / 2);
 
-            var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
+            var viewerProvider = Registry.Pooled<ContentViewerProvider>();
 
             viewerProvider.Add(new HtmlContentViewer());
             viewerProvider.Add(new DigidocContentViewer());

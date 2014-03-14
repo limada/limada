@@ -152,7 +152,7 @@ namespace Limaki.View.Mesh {
                 graphChanging.Add (change);
 
                 var displays = new HashSet<IGraphSceneDisplay<TSinkItem, TSinkEdge>> ();
-                var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<TSourceItem, TSourceEdge>> ();
+                var dependencies = Registry.Pooled<GraphDepencencies<TSourceItem, TSourceEdge>> ();
                 dependencies.VisitItems (GraphCursor.Create (graph, backItem),
                     sourceItem => {
                         foreach (var scene in ScenesOfBackGraph (graph)) {

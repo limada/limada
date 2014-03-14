@@ -21,7 +21,7 @@ namespace Limaki.Tests.View.Visuals {
 
     public class VisualGraphTestDataFactory : BasicGraphTestDataFactory<IVisual, IVisualEdge> {
         protected override void CreateItems() {
-            var factory = Registry.Pool.TryGetCreate<IVisualFactory> ();
+            var factory = Registry.Pooled<IVisualFactory> ();
             One = factory.CreateItem("One");
             Two = factory.CreateItem("Source");
             Three = factory.CreateItem("Three");
@@ -30,7 +30,7 @@ namespace Limaki.Tests.View.Visuals {
         }
 
         protected override IVisualEdge CreateEdge(IVisual root, IVisual leaf) {
-            var result = Registry.Pool.TryGetCreate<IVisualFactory>().CreateEdge(root, leaf, "");
+            var result = Registry.Pooled<IVisualFactory>().CreateEdge(root, leaf, "");
             result.Data = GraphExtensions.EdgeString<IVisual, IVisualEdge>(result);
             return result;
         }

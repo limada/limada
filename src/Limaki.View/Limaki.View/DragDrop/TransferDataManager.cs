@@ -29,7 +29,7 @@ namespace Limaki.View.DragDrop {
     public class TransferDataManager {
 
         private StreamContentIoPool _contentPool;
-        public StreamContentIoPool ContentIoPool { get { return _contentPool ?? (_contentPool = Registry.Pool.TryGetCreate<StreamContentIoPool>()); } }
+        public StreamContentIoPool ContentIoPool { get { return _contentPool ?? (_contentPool = Registry.Pooled<StreamContentIoPool>()); } }
 
         private MimeFingerPrints _mimeFingerPrints;
 
@@ -37,7 +37,7 @@ namespace Limaki.View.DragDrop {
         /// registered fingerprints of ContentInfo.MimeTypes
         /// register with <see cref=" Registry.Pool.TryGetCreate{MimeFingerPrints}()"/>
         /// </summary>
-        public MimeFingerPrints MimeFingerPrints { get { return _mimeFingerPrints ?? (_mimeFingerPrints = Registry.Pool.TryGetCreate<MimeFingerPrints>()); } }
+        public MimeFingerPrints MimeFingerPrints { get { return _mimeFingerPrints ?? (_mimeFingerPrints = Registry.Pooled<MimeFingerPrints>()); } }
 
         private TransferContentTypes _transferContentTypes;
 

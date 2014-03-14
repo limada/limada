@@ -9,7 +9,7 @@ namespace Limaki.Tests.Drawing {
         
         [Test]
         public void TestCloning() {
-            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = Registry.Pooled<StyleSheets>();
             var style1 = styleSheets.DefaultStyleSheet.ItemStyle;
             var style2 = (IStyleGroup)style1.Clone();
             Assert.IsFalse(object.ReferenceEquals(style1.ParentStyle, style2.ParentStyle));
@@ -18,7 +18,7 @@ namespace Limaki.Tests.Drawing {
         }
         [Test]
         public void TestGroupCascading() {
-            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = Registry.Pooled<StyleSheets>();
             var stylegroup = (IStyleGroup)styleSheets.DefaultStyleSheet.ItemStyle.Clone();
             var newGroup = (styleSheets.DefaultStyleSheet as StyleSheet).CreateStyleGroup("test", null, true);
           
@@ -47,7 +47,7 @@ namespace Limaki.Tests.Drawing {
 
         [Test]
         public void TestCascading() {
-            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = Registry.Pooled<StyleSheets>();
             
             TestPaintData(styleSheets.DefaultStyleSheet.ItemStyle);
             TestPaintData(styleSheets.DefaultStyleSheet.ItemStyle);

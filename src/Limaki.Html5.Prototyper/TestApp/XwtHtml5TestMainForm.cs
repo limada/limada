@@ -175,7 +175,7 @@ namespace Xwt.Html5.TestApp {
 
             var scene = SceneWithTestData (example);
 
-            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = Registry.Pooled<StyleSheets>();
             var styleSheet = styleSheets[styleSheets.StyleSheetNames[(DateTime.Now.Millisecond%2)+1]];
             //errror here: wrong fontdata! styleSheet.EdgeStyle.DefaultStyle.PaintData = true;
 

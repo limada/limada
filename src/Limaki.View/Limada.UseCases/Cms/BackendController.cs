@@ -211,7 +211,7 @@ namespace Limada.Usecases.Cms {
 
         public StreamContent SetMimeType (StreamContent content) {
 
-            var contentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool> ();
+            var contentIoPool = Registry.Pooled<StreamContentIoPool> ();
             var contentIo = contentIoPool.Find (content.ContentType);
 
             content.MimeType = "unknown";
@@ -239,7 +239,7 @@ namespace Limada.Usecases.Cms {
 
             if (result.ContentType == ContentTypes.TIF) {
                 var sinkType = ContentTypes.PNG;
-                var converter = Registry.Pool.TryGetCreate<ConverterPool<Stream>>()
+                var converter = Registry.Pooled<ConverterPool<Stream>>()
                     .Find(ContentTypes.TIF, sinkType);
 
                 if (converter != null) {
@@ -284,7 +284,7 @@ namespace Limada.Usecases.Cms {
             try {
                 if (thing.StreamType == ContentTypes.RTF) {
                     var sinkType = ContentTypes.HTML;
-                    var converter = Registry.Pool.TryGetCreate<ConverterPool<Stream>>()
+                    var converter = Registry.Pooled<ConverterPool<Stream>>()
                             .Find(thing.StreamType, sinkType);
                     if (converter != null) {
                         var source = ThingContentFacade.ContentOf (thing);

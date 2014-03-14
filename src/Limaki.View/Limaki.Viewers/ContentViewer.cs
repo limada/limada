@@ -56,7 +56,7 @@ namespace Limaki.Viewers {
         }
 
         protected IExceptionHandler ExceptionHandler {
-            get { return Registry.Pool.TryGetCreate<IExceptionHandler>(); }
+            get { return Registry.Pooled<IExceptionHandler>(); }
         }
 
         public abstract void Dispose();

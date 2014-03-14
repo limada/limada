@@ -46,7 +46,7 @@ namespace Limaki.View.UI {
 
         DragDropContainer _dragDropContainer = null;
         protected virtual DragDropContainer InprocDragDrop {
-            get { return _dragDropContainer ?? (_dragDropContainer = Registry.Pool.TryGetCreate<DragDropContainer>()); }
+            get { return _dragDropContainer ?? (_dragDropContainer = Registry.Pooled<DragDropContainer>()); }
         }
 
         public int HitSize { get; set; }

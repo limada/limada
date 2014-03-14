@@ -75,7 +75,7 @@ namespace Limaki.Viewers.StreamViewers {
         protected virtual Content<Stream> PageContent {
             set {
                 if (value != null) {
-                    var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
+                    var viewerProvider = Registry.Pooled<ContentViewerProvider>();
                     var viewer = viewerProvider.Supports(value.ContentType);
                     if (viewer != null) {
                         viewer.SetContent(value);
@@ -126,7 +126,7 @@ namespace Limaki.Viewers.StreamViewers {
 
         protected int padding = 4;
         public virtual int GetDefaultWidth () {
-            var utils = Registry.Pool.TryGetCreate<IDrawingUtils>();
+            var utils = Registry.Pooled<IDrawingUtils>();
             var size = utils.GetTextDimension("".PadLeft(padding, '9'), DefaultStyleSheet.BaseStyle);
             return (int)(size.Width + 32);
         }
@@ -135,7 +135,7 @@ namespace Limaki.Viewers.StreamViewers {
         public IStyleSheet DefaultStyleSheet {
             get {
                 if (_defaultStyleSheet == null) {
-                    var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+                    var styleSheets = Registry.Pooled<StyleSheets>();
                     _defaultStyleSheet = styleSheets["WhiteGlass"];
                 }
                 return _defaultStyleSheet;
@@ -205,7 +205,7 @@ namespace Limaki.Viewers.StreamViewers {
 
 
         IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
-        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pool.TryGetCreate<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
 
         public virtual void SetDocument (GraphCursor<IVisual, IVisualEdge> source) {
 

@@ -42,7 +42,7 @@ namespace Limada.Data {
                 return new ThingGraphContent { Data = thingGraph, Source = source, ContentType = XmlThingGraphSpot.ContentType };
 
             } catch (Exception ex) {
-                Registry.Pool.TryGetCreate<IExceptionHandler>()
+                Registry.Pooled<IExceptionHandler>()
                     .Catch(new Exception("File load failed: " + ex.Message, ex), MessageType.OK);
             }
             return null;
@@ -59,7 +59,7 @@ namespace Limada.Data {
                     serializer.Read(stream);
                     sink.AddRange(serializer.ThingCollection);
                 } catch (Exception ex) {
-                    Registry.Pool.TryGetCreate<IExceptionHandler>()
+                    Registry.Pooled<IExceptionHandler>()
                         .Catch(new Exception("File load failed: " + ex.Message, ex), MessageType.OK);
                 } finally {
                     stream.Close();

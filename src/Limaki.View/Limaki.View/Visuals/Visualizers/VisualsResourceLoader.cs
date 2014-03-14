@@ -39,7 +39,7 @@ namespace Limaki.View.Visuals.Visualizers {
 
             context.Factory.Add<IGraphSceneMesh<IVisual, IVisualEdge>, VisualGraphSceneMesh> ();
 
-            var dependencies = context.Pool.TryGetCreate<GraphDepencencies<IVisual, IVisualEdge>> ();
+            var dependencies = context.Pooled<GraphDepencencies<IVisual, IVisualEdge>> ();
             dependencies.Visitor += (c, a, t) => GraphDepencencyExtension
                 .DependencyVisitor<IVisual, IVisualEdge, IThing, ILink> (c, a, t);
 

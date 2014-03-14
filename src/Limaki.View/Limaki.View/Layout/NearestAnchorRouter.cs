@@ -149,7 +149,7 @@ namespace Limaki.View.Layout {
                 e.LeafAnchor = nearest.Two;
             } catch (ArgumentException e) {
                 ArgumentException ex = new ArgumentException ("Shape-Error with: "+edge.ToString(), e);
-                Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(ex,MessageType.OK);
+                Registry.Pooled<IExceptionHandler>().Catch(ex,MessageType.OK);
             }
             base.RouteEdge(edge);
             

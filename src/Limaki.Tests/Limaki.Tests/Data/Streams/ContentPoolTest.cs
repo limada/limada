@@ -20,13 +20,13 @@ namespace Limaki.Tests.Data.Streams {
         }
 
         IContentIo<Stream> FindIo (long streamType) {
-            var contentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool>();
+            var contentIoPool = Registry.Pooled<StreamContentIoPool>();
             return contentIoPool.Find(streamType);
         }
 
         [Test]
         public void ContentIoPoolTest() {
-            var contentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool>();
+            var contentIoPool = Registry.Pooled<StreamContentIoPool>();
 
             Assert.IsNotNull(contentIoPool.Find(ContentTypes.RTF), "rtf");
             Assert.IsNotNull(contentIoPool.Find("rtf",IoMode.ReadWrite), "rtf");

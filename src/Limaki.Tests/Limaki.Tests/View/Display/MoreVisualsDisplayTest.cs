@@ -10,7 +10,7 @@ namespace Limaki.Tests.View.Display {
         public void SelectorVersusMulitSelectTest () {
             Display.SelectAction.Enabled = true;
 
-            var factory = Registry.Pool.TryGetCreate<IVisualFactory> ();
+            var factory = Registry.Pooled<IVisualFactory> ();
             var w = factory.CreateItem ("SelectorVersusMulitSelectTest");
             Scene.Add (w);
             Display.Layout.Reset ();

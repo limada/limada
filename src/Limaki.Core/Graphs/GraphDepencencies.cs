@@ -38,7 +38,7 @@ namespace Limaki.Graphs {
             if (sourceGraph == null || sourceItem == null)
                 return;
 
-            Registry.Pool.TryGetCreate<GraphDepencencies<TSourceItem, TSourceEdge>> ()
+            Registry.Pooled<GraphDepencencies<TSourceItem, TSourceEdge>> ()
                 .VisitItems (
                     GraphCursor.Create (sourceGraph, sourceItem),
                     source => {

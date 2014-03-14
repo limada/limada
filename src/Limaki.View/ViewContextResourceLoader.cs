@@ -31,7 +31,7 @@ namespace Limaki.View {
             if (!context.Factory.Contains<IPainterFactory>())
                 context.Factory.Add<IPainterFactory, DefaultPainterFactory>();
 
-            var styleSheets = context.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = context.Pooled<StyleSheets>();
             styleSheets.Compose();
 
             new VisualsResourceLoader().ApplyResources(context);

@@ -59,14 +59,14 @@ namespace Limaki.Viewers {
         public Action<IVidgetBackend> ViewersDetachBackend { get; set; }
 
         protected IExceptionHandler ExceptionHandler {
-            get { return Registry.Pool.TryGetCreate<IExceptionHandler> (); }
+            get { return Registry.Pooled<IExceptionHandler> (); }
         }
 
         public bool IsStreamOwner {get;set;}
         public bool IsProviderOwner { get; set; }
 
         private ContentViewerProvider _providers = null;
-        public ContentViewerProvider ContentViewerProvider { get { return _providers ?? (_providers = Registry.Pool.TryGetCreate<ContentViewerProvider>()); } }
+        public ContentViewerProvider ContentViewerProvider { get { return _providers ?? (_providers = Registry.Pooled<ContentViewerProvider>()); } }
         public ContentVisualViewerProvider ContentVisualViewerProvider { get { return ContentViewerProvider as ContentVisualViewerProvider; } }
 
         protected void AttachViewer(ContentViewer viewer, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {

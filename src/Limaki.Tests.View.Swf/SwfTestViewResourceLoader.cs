@@ -22,7 +22,7 @@ namespace Limada.Tests {
     public class SwfTestViewResourceLoader : IContextResourceLoader {
 
         public void ApplyResources(IApplicationContext context) {
-            var factories = context.Pool.TryGetCreate<UsecaseFactories<ConceptUsecase>>();
+            var factories = context.Pooled<UsecaseFactories<ConceptUsecase>>();
             factories.Add(new SwfTestCaseFactory());
         }
     }

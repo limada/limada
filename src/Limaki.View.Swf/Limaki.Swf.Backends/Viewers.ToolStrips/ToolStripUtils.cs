@@ -10,7 +10,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         static IUISystemInformation _systemInformation = null;
 
         public static IUISystemInformation SystemInformation {
-            get { return _systemInformation ?? (_systemInformation = Registry.Pool.TryGetCreate<IUISystemInformation>()); }
+            get { return _systemInformation ?? (_systemInformation = Registry.Pooled<IUISystemInformation>()); }
         }
 
         public static int DropdownWidth = SystemInformation.VerticalScrollBarWidth / 3*2;

@@ -70,7 +70,7 @@ namespace Limaki.View.Swf.DragDrop {
                         description = plaintext.Substring(0, matches[0].Index);
                     } else {
                         // if there is only one line, make a plain string-thing
-                        IVisual visual = Registry.Pool.TryGetCreate<IVisualFactory>()
+                        IVisual visual = Registry.Pooled<IVisualFactory>()
                             .CreateItem(plaintext);
                         return visual;
                     }

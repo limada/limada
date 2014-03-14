@@ -183,7 +183,7 @@ namespace Limada.Model {
             get {
                 if (_compressionWorker == null) {
                     _compressionWorker =
-                        Registry.Pool.TryGetCreate<ICompressionWorker>();
+                        Registry.Pooled<ICompressionWorker>();
                 }
                 return _compressionWorker;
             }

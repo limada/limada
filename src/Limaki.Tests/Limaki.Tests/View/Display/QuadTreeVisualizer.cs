@@ -80,7 +80,7 @@ namespace Limaki.Tests.View {
                                    IDictionary<Node<IVisual>, IVisual> nodesDone,
                                    IDictionary<IVisual, IVisual> itemsDone) {
 
-            var factory = Registry.Pool.TryGetCreate<IVisualFactory>();
+            var factory = Registry.Pooled<IVisualFactory>();
 
             if (node != null) {
                 IVisual result = factory.CreateItem(
@@ -112,7 +112,7 @@ namespace Limaki.Tests.View {
         private void NodeItems(Node<IVisual> node, IVisual nodeVisual,
                                IDictionary<IVisual, IVisual> itemsDone) {
 
-            var factory = Registry.Pool.TryGetCreate<IVisualFactory>();
+            var factory = Registry.Pooled<IVisualFactory>();
 
             foreach (var visual in node.Items) {
                 IVisual childVisual = null;

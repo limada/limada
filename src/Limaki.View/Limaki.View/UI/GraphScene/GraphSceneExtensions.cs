@@ -45,7 +45,7 @@ namespace Limaki.View.UI.GraphScene {
                     requestDelete (edge);
                 }
 
-                var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<TItem, TEdge>> ();
+                var dependencies = Registry.Pooled<GraphDepencencies<TItem, TEdge>> ();
                 dependencies.VisitItems (
                     GraphCursor.Create (scene.Graph, item),
                     requestDelete,

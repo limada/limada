@@ -27,7 +27,7 @@ namespace Limaki.Graphs.Extensions {
         public static IGraphMapping Mapping {
             get {
                 if (_graphMapping == null) {
-                    _graphMapping = Registry.Pool.TryGetCreate<IGraphMapping>();
+                    _graphMapping = Registry.Pooled<IGraphMapping>();
                 }
                 return _graphMapping;
             }
@@ -56,14 +56,14 @@ namespace Limaki.Graphs.Extensions {
             IGraphMapping currentmapping = null;
 
             if (context.Factory.Contains<IGraphMapping>()) {
-                currentmapping = context.Pool.TryGetCreate<IGraphMapping>();
+                currentmapping = context.Pooled<IGraphMapping>();
                 context.Pool.Remove<IGraphMapping>();
             }
 
             context.Factory.Add<IGraphMapping, TMapping>();
 
             if (currentmapping != null && !(currentmapping is TMapping)) {
-                IGraphMapping mapping = context.Pool.TryGetCreate<IGraphMapping>();
+                IGraphMapping mapping = context.Pooled<IGraphMapping>();
                 mapping.Next = currentmapping;
             }
         }

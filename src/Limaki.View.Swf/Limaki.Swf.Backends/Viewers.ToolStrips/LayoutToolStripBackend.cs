@@ -44,7 +44,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                                                             ToolTipText = "change shape of visual",
                                                         };
             shapeCombo.SelectedIndexChanged += (s, e) => Frontend.ShapeChange(shapeCombo.ShapeComboBoxControl.SelectedItem as IShape);
-            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = Registry.Pooled<StyleSheets>();
             shapeCombo.ShapeComboBoxControl.ShapeLayout.StyleSheet = styleSheets[styleSheets.StyleSheetNames[1]];
 
             this.StyleSheetCombo = new ToolStripComboBox {
@@ -88,7 +88,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
         void InitLayoutTools () {
             StyleSheetCombo.Items.Clear();
-            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = Registry.Pooled<StyleSheets>();
             foreach (var styleSheet in styleSheets.Values) {
                 StyleSheetCombo.Items.Add(styleSheet.Name);
             }

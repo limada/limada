@@ -14,7 +14,7 @@ namespace Limaki.Viewers.ToolStripViewers {
 
         public void StyleSheetChange (string sheetName) {
             IStyleSheet styleSheet = null;
-            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = Registry.Pooled<StyleSheets>();
             if (!styleSheets.TryGetValue(sheetName, out styleSheet)) {
                 var style = StyleSheet.CreateStyleWithSystemSettings();
                 styleSheet = new StyleSheet(sheetName, style);

@@ -123,7 +123,7 @@ namespace Limaki.Tests.View.Visuals {
             this.Count = oldCount;
 
             var vector = new Vector();
-            var visual = Registry.Pool.TryGetCreate<IVisualFactory>().CreateItem("line");
+            var visual = Registry.Pooled<IVisualFactory>().CreateItem("line");
             visual.Shape = new VectorShape(vector);
             scene.Add(visual);
             Line1 = visual;

@@ -95,7 +95,7 @@ namespace Limaki.View.XwtBackend {
                 //    view.Add(item);
                 //}
                 //scene.Focused = scene.Elements.First();
-                //var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+                //var styleSheets = Registry.Pooled<StyleSheets>();
                 //var styleSheet = styleSheets.DefaultStyleSheet;
 
                 //var expander = new GraphSceneFolding<IVisual, IVisualEdge>();

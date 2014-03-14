@@ -34,7 +34,7 @@ namespace Limaki.Contents.IO {
         /// global ContentInfos stored in Registry.Pool
         /// all specs of added ContentIos are added to the ContentInfoPool
         /// </summary>
-        protected ContentInfos ContentInfoPool { get { return _contentInfoPool ?? (_contentInfoPool = Registry.Pool.TryGetCreate<ContentInfos>()); } }
+        protected ContentInfos ContentInfoPool { get { return _contentInfoPool ?? (_contentInfoPool = Registry.Pooled<ContentInfos>()); } }
         
         public virtual void Add(IContentIo<TSource> contentIo) {
             _contentIos.Add(contentIo);

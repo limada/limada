@@ -46,7 +46,7 @@ namespace Limada.Schemata {
 
         private static GraphDepencencies<IThing, ILink> _dependencies = null;
         public static GraphDepencencies<IThing, ILink> Dependencies {
-            get { return _dependencies ?? (_dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<IThing, ILink>>()); }
+            get { return _dependencies ?? (_dependencies = Registry.Pooled<GraphDepencencies<IThing, ILink>>()); }
         }
     }
 }
