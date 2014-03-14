@@ -185,9 +185,10 @@
     <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessSystemColorsBackend.cs" />
     <Compile Include="Playground\DocumentObjectModel\DOM.cs" />
     <Compile Include="Playground\Graph\GraphEvents.cs" />
-    <Compile Include="Playground\IO\IOPrototype.cs" />
+    <Compile Include="Playground\IO\IoPrototype.cs" />
     <Compile Include="Playground\IO\IoTryout.cs" />
     <Compile Include="Playground\Limada.Model\HyperGraph.cs" />
+    <Compile Include="Playground\Limada.UseCases\ThingGraphUseCases.cs" />
     <Compile Include="Playground\View\AllignerPrototyper.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
     <Compile Include="Playground\View\CollissionResolver.cs" />
@@ -211,7 +212,7 @@
     <Compile Include="Limaki.Tests\Common\FactoryTest.cs" />
     <Compile Include="Limaki.Tests\Common\HTML\HtmlNextTest.cs" />
     <Compile Include="Limaki.Tests\Common\HTML\HtmlTestData.cs" />
-    <Compile Include="Playground\Linqish\ExpressionExploration.cs" />
+    <Compile Include="Playground\Proves\ExpressionExploration.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\PoligonAlgoTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\ViewSerialisationTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Basic\BasicGraphTests.cs" />
@@ -236,9 +237,9 @@
     <Compile Include="Limaki.Tests\Graph\ISampleGraphFactory.cs" />
     <Compile Include="Limaki.Tests\Graph\Model\Item.cs" />
     <Compile Include="Limaki.Tests\Graph\Model\TestingSomeGraphSemantics.cs" />
-    <Compile Include="Playground\FileInfoTest.cs" />
-    <Compile Include="Playground\HistoryTest.cs" />
-    <Compile Include="Playground\RegExTest.cs" />
+    <Compile Include="Playground\Proves\FileInfoTest.cs" />
+    <Compile Include="Limaki.Tests\Common\HistoryTest.cs" />
+    <Compile Include="Playground\Proves\RegExTest.cs" />
     <Compile Include="Playground\Schema\SchemaArchitecture.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\SceneThreadTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\VectorHulltest.cs" />
@@ -248,8 +249,8 @@
     <Compile Include="Limaki.Tests\View\Visuals\Samples\ISampleGraphSceneFactory.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Samples\SampleSceneFactory.cs" />
     <Compile Include="UnitTest\TestBase.cs" />
-    <Compile Include="Playground\MonoGenericError2.cs" />
-    <Compile Include="Playground\MonoMarshalByRefError.cs" />
+    <Compile Include="Limaki.Tests\Mono\MonoGenericError2.cs" />
+    <Compile Include="Limaki.Tests\Mono\MonoMarshalByRefError.cs" />
     <Compile Include="Limaki.Tests\Data\Streams\ContentPoolTest.cs" />
   </ItemGroup>
   <ItemGroup>

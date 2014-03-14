@@ -23,6 +23,7 @@ using Limaki.Tests;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Graph.GraphPair;
 using Limaki.Visuals;
+using Limaki.Visuals.GraphScene;
 using NUnit.Framework;
 using Id = System.Int64;
 using Limaki.Model;

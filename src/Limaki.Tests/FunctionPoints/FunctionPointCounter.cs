@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace Limaki.Common.Reflections {
+
     public class FunctionPointCounter {
         public enum MemberOptions {
             Public,

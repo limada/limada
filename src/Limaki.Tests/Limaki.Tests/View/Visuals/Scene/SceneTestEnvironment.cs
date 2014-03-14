@@ -18,6 +18,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
+using Limaki.View.GraphScene;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Visualizers;
