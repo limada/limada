@@ -61,7 +61,7 @@ namespace Limaki.Graphs.Extensions {
 
             CommitAdd(worker);
 
-            return worker.Changes;
+            return worker.Affected;
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Limaki.Graphs.Extensions {
 
             CommitAdd(worker);
 
-            return worker.Changes;
+            return worker.Affected;
         }
 
         public virtual ICollection<TItem> Expand(IEnumerable<TItem> elements, bool deep) {
@@ -100,7 +100,7 @@ namespace Limaki.Graphs.Extensions {
 
             CommitAdd(worker);
 
-            return worker.Changes;
+            return worker.Affected;
         }
 
 
@@ -110,9 +110,9 @@ namespace Limaki.Graphs.Extensions {
         /// </summary>
         /// <param name="worker"></param>
         protected virtual void CommitAdd(WalkerWorker<TItem, TEdge> worker) {
-            var changeStack = new Stack<TItem>(worker.Changes);
+            var changeStack = new Queue<TItem> (worker.Affected);
             while (changeStack.Count > 0) {
-                var item = changeStack.Pop();
+                var item = changeStack.Dequeue();
 
                 Sink.Add(item);
 
@@ -120,16 +120,16 @@ namespace Limaki.Graphs.Extensions {
                 var sink = Source as ISinkGraph<TItem, TEdge>;
                 if (sink != null) {
                     foreach (var edge in sink.ComplementEdges(item, Sink)) {
-                        if (!worker.Changes.Contains(edge)) {
-                            changeStack.Push(edge);
-                            worker.Changes.Add(edge);
+                        if (!worker.Changed(edge)) {
+                            changeStack.Enqueue(edge);
+                            worker.Add(edge);
                         }
                     }
                 } else  foreach (var edge in Source.Fork(item)) {
                     if (worker.Contains(edge.Root) && worker.Contains(edge.Leaf)) {
-                        if (!worker.Changes.Contains(edge)) {
-                            changeStack.Push(edge);
-                            worker.Changes.Add(edge);
+                        if (!worker.Changed(edge)) {
+                            changeStack.Enqueue (edge);
+                            worker.Add(edge);
                         }
                     }
                 }
@@ -163,12 +163,12 @@ namespace Limaki.Graphs.Extensions {
 
 
         protected virtual void RevoveEdgesOfChanged(WalkerWorker<TItem, TEdge> worker) {
-            var changeStack = new Stack<TItem>(worker.Changes);
+            var changeStack = new Stack<TItem>(worker.Affected);
             while (changeStack.Count != 0) {
-                TItem item = changeStack.Pop ();
+                var item = changeStack.Pop ();
                 if (item is TEdge) {
-                    TEdge edge = (TEdge)item;
-                    if (worker.Changes.Contains(edge.Root) || worker.Changes.Contains(edge.Leaf)) {
+                    var edge = (TEdge)item;
+                    if (worker.Changed(edge.Root) || worker.Changed(edge.Leaf)) {
                         worker.Remove(edge);
                     }
                 }
@@ -189,15 +189,15 @@ namespace Limaki.Graphs.Extensions {
             RevoveEdgesOfChanged (worker);
 
             CommitRemove(worker);
-            var result = worker.Changes;
+            var result = worker.Affected;
 
             if (RemoveOrphans) {
-                var changes = new List<TItem>(worker.Changes);
-                worker.Changes.Clear ();
+                var changes = new List<TItem> (worker.Affected);
+                worker.ClearChanges ();
                 worker.RemoveOrphans(this.Sink);
                 CommitRemove(worker);
-                changes.AddRange(worker.Changes);
-                worker.Changes.Clear();
+                changes.AddRange(worker.Affected);
+                worker.ClearChanges ();
                 result = changes;
             }
            
@@ -217,7 +217,7 @@ namespace Limaki.Graphs.Extensions {
 
             CommitRemove(worker);
 
-            return worker.Changes;
+            return worker.Affected;
         }
 
         public ICollection<TItem> Hide(IEnumerable<TItem> elements) {
@@ -242,12 +242,12 @@ namespace Limaki.Graphs.Extensions {
             //changes.AddRange(WalkerWorker.Changes);
 
             //WalkerWorker.Changes.Clear();
-            return worker.Changes;
+            return worker.Affected;
 
         }
 
         protected virtual void CommitRemove(WalkerWorker<TItem, TEdge> worker) {
-            foreach(var item in worker.Changes) {
+            foreach (var item in worker.Affected) {
                 worker.Graph.Remove(item);
             }
         }
