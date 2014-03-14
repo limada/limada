@@ -33,5 +33,7 @@ namespace Limaki.View.Mesh {
 
         Func<ICollection<IGraphScene<TSinkItem, TSinkEdge>>> Scenes { get; set; }
         Func<ICollection<IGraphSceneDisplay<TSinkItem, TSinkEdge>>> Displays { get; set; }
+
+        IEnumerable<IGraphScene<TSinkItem, TSinkEdge>> ScenesOfBackGraph (IGraph<TSinkItem, TSinkEdge> graph);
     }
 }

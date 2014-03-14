@@ -78,18 +78,24 @@ namespace Limada.VisualThings {
             return source.ThingGraph().Description(thing);
         }
 
-        public static bool ToggleFilterOnTwo(this IGraph<IVisual, IVisualEdge> source) {
+        /// <summary>
+        /// if source of sink is wrapped, then unwrap it
+        /// if not, then wrap it with a schemagraph
+        /// </summary>
+        /// <param name="sink"></param>
+        /// <returns></returns>
+        public static bool ToggleFilterOnSource(this IGraph<IVisual, IVisualEdge> sink) {
             bool result = false;
-            var graph = source.Source<IVisual, IVisualEdge, IThing, ILink>();
+            var graphPair = sink.Source<IVisual, IVisualEdge, IThing, ILink>();
 
-            if (graph != null) {
-                if (graph.Source is FilteredGraph<IThing, ILink>) {
-                    graph.Source = ((FilteredGraph<IThing, ILink>)graph.Source).Source;
+            if (graphPair != null) {
+                if (graphPair.Source is IWrappedGraph<IThing, ILink>) {
+                    graphPair.Source = graphPair.Source.Unwrap();
                 } else {
-                    graph.Source = new SchemaThingGraph(graph.Source as IThingGraph);
+                    graphPair.Source = new SchemaThingGraph(graphPair.Source as IThingGraph);
                 }
-                result = graph.Source is FilteredGraph<IThing, ILink>;
-                graph.Sink.Clear();
+                result = graphPair.Source is IWrappedGraph<IThing, ILink>;
+                graphPair.Sink.Clear();
             }
             return result;
         }

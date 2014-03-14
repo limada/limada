@@ -17,33 +17,32 @@ using System.IO;
 using Limada.Model;
 using Limada.Test;
 using Limaki.Data;
+using Limaki.Common;
 using Limaki.Model.Content;
 using NUnit.Framework;
 using Id = System.Int64;
 
 namespace Limada.Tests.ThingGraphs {
+
     public class StreamThingTest : ThingGraphTestBase {
+
         protected Stream _stream = null;
-        public virtual Stream stream {
+        public virtual Stream Stream {
             get {
                 if (_stream == null) {
-                    _stream = new StreamSources().Image;
+                    _stream = new StreamSources().Pdf().AsUnicodeStream();
                 }
                 return _stream;
             }
             set { _stream = value; }
         }
         
-        
-
-
-
-        public Id CreateStream() {
-            long len = stream.Length;
+        public Id CreateAndAddStreamThing() {
+            long len = Stream.Length;
 
             var factory = new ThingFactory();
             
-            var thing = factory.CreateItem(Graph, stream) as IStreamThing;
+            var thing = factory.CreateItem(Graph, Stream) as IStreamThing;
             Graph.Add(thing);
 
             thing.Flush();
@@ -60,7 +59,7 @@ namespace Limada.Tests.ThingGraphs {
         public void ProveStream(Id id) {
             IStreamThing thing = Graph.GetById(id) as IStreamThing;
             thing.DeCompress ();
-            Assert.AreEqual(thing.Data.Length, stream.Length);
+            Assert.AreEqual(thing.Data.Length, Stream.Length);
 
             thing.ClearRealSubject();
 
@@ -69,12 +68,12 @@ namespace Limada.Tests.ThingGraphs {
         }
 
         public void ChangeStream(Id id) {
-            stream = new StreamSources ().RandomHTML;
+            Stream = new StreamSources ().RandomHTML;
 
-            IStreamThing thing = Graph.GetById(id) as IStreamThing;
-            thing.Data = stream;
+            var thing = Graph.GetById(id) as IStreamThing;
+            thing.Data = Stream;
 
-            Assert.AreEqual(thing.Data.Length, stream.Length);
+            Assert.AreEqual(thing.Data.Length, Stream.Length);
 
             
             thing.Flush ();
@@ -84,13 +83,14 @@ namespace Limada.Tests.ThingGraphs {
         }
 
         public void DeleteStream(Id id) {
-            IThing thing = Graph.GetById (id);
+
+            var thing = Graph.GetById (id);
             Graph.Remove (thing);
 
-            IDataContainer<Id> dataContainer = Graph.DataContainer;
+            var dataContainer = Graph.DataContainer;
             Assert.IsFalse (dataContainer.Contains (id));
 
-            IRealData<Id> data = dataContainer.GetById (id);
+            var data = dataContainer.GetById (id);
             Assert.IsNull (data);
 
         }
@@ -98,14 +98,14 @@ namespace Limada.Tests.ThingGraphs {
         [Test]
         public virtual void CreateStreamTest() {
             ReportDetail("CreateStreamTest");
-            Id id = CreateStream();
+            var id = CreateAndAddStreamThing();
             ProveStream(id);
         }
 
         [Test]
         public virtual void CrUD() {
             ReportDetail("CrUD");
-            Id id  = CreateStream ();
+            var id  = CreateAndAddStreamThing ();
             ProveStream (id);
             ChangeStream (id);
             ProveStream (id);
@@ -116,7 +116,7 @@ namespace Limada.Tests.ThingGraphs {
         [Test]
         public void CrU() {
             ReportDetail("CrU");
-            Id id = CreateStream();
+            var id = CreateAndAddStreamThing();
             ProveStream(id);
             ChangeStream(id);
             ProveStream(id);

@@ -123,7 +123,7 @@ namespace Limada.Model {
                         source.DoChangeData (desc, name);
                     }
                 } else {
-                    var factory = Registry.Pool.TryGetCreate<IThingFactory>();
+                    var factory = Registry.Pooled<IThingFactory>();
                     new Schema(source, thing).SetTheLeaf(CommonSchema.DescriptionMarker,factory.CreateItem(source,name));
                 }
             } else {
@@ -152,7 +152,7 @@ namespace Limada.Model {
                         source.DoChangeData (desc, name);
                     }
                 } else {
-                    var factory = Registry.Pool.TryGetCreate<IThingFactory>();
+                    var factory = Registry.Pooled<IThingFactory>();
                     schema.SetTheLeaf(CommonSchema.SourceMarker, factory.CreateItem(source, name));
                 }
             }
@@ -171,9 +171,7 @@ namespace Limada.Model {
             if (things == null)
                 yield break;
 
-            var sourceGraph = graph;
-            if (graph is SchemaThingGraph)
-                sourceGraph = ( (SchemaThingGraph) graph ).Source;
+            var sourceGraph = graph.Unwrap();
 
             var stack = new Queue<IThing> ();
             var done = new Set<IThing> ();
@@ -217,7 +215,7 @@ namespace Limada.Model {
                     }
                 }
 
-                Registry.Pool.TryGetCreate<GraphDepencencies<IThing, ILink>> ().VisitItems (
+                Registry.Pooled<GraphDepencencies<IThing, ILink>> ().VisitItems (
                     GraphCursor.Create (graph, thing), d => addThing (d), GraphEventType.Add);
             }
 

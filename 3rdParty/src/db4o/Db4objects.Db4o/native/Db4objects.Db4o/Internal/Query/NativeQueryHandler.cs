@@ -146,7 +146,7 @@ namespace Db4objects.Db4o.Internal.Query
 			return query;
 		}
 
-		private static System.Collections.Generic.IList<Extent> WrapQueryResult<Extent>(Db4objects.Db4o.Query.IQuery query)
+		public static System.Collections.Generic.IList<Extent> WrapQueryResult<Extent>(Db4objects.Db4o.Query.IQuery query)
 		{
 			IQueryResult queryResult = ((QQuery)query).GetQueryResult();
 			return new GenericObjectSetFacade<Extent>(queryResult);

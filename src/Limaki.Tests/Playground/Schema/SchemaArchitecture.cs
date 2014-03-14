@@ -9,7 +9,7 @@ using NUnit.Framework;
 using Limaki.Common.Collections;
 using System.IO;
 
-namespace Limaki.Tests.Sandbox.Schema {
+namespace Limaki.Playground.Schema {
     public class SchemaArchitectureWithAnnotations {
         [ThingSchema(0x97FD9E201789BFCB, Data = "Marker")]
         public const IThing Marker = null;

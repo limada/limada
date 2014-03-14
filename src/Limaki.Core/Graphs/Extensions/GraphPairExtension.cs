@@ -109,6 +109,8 @@ namespace Limaki.Graphs.Extensions {
         public static IEnumerable<IGraph<TItem, TEdge>>
             Graphs<TItem, TEdge> (this IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem>, TItem {
 
+            // TODO: don't ingnore IWrappedGraph
+
             var result = graph as IGraphPair<TItem, TItem, TEdge, TEdge>;
             if (result == null)
                 yield return graph;

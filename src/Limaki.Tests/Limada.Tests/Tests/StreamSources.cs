@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using Xwt;
 using Xwt.Drawing;
+using Xwt.Headless.Backend;
 
 namespace Limada.Test {
     /// <summary>
@@ -39,6 +40,7 @@ namespace Limada.Test {
     /// writeSourceFile==true: writes Test-Streams 
     /// </summary>
     public class StreamSources :IEnumerable<StreamSource> {
+
         #region IEnumerable<Source> Member
 
         public IEnumerator<StreamSource> GetEnumerator() {
@@ -61,10 +63,10 @@ namespace Limada.Test {
         /// </summary>
         public Stream RandomHTML {
             get {
-                Random rnd = new Random();
+                var rnd = new Random();
 
-                MemoryStream result = new MemoryStream();
-                StreamWriter writer = new StreamWriter(result);
+                var result = new MemoryStream();
+                var writer = new StreamWriter(result);
                 writer.Write("<HTML><BODY>");
                 for (int i = 0; i <= 9999; i++) {
                     writer.Write("<p>" + rnd.Next(10000).ToString("#,##0") + "</p>");
@@ -78,11 +80,15 @@ namespace Limada.Test {
 
        
        /// <summary>
-        /// produces a bmp-image with some text
+        /// produces a image with some text
         /// </summary>
         public Stream Image {
             get {
-                Stream result = new MemoryStream();
+
+                if (Toolkit.CurrentEngine.Backend.GetType () == typeof (HeadlessEngine))
+                    throw new PlatformNotSupportedException();
+
+                var result = new MemoryStream();
                 var size = new Size(1000, 3000);
                 // Create image.
                 var builder = new ImageBuilder(size.Width, size.Height);
@@ -99,7 +105,7 @@ namespace Limada.Test {
                 var rnd = new Random();
 
                 while ((stringPos.Y < size.Height) && (stringPos.X < size.Width)) {
-                    string s = "this is " + rnd.Next(10000).ToString("#,##0");
+                    var s = "this is " + rnd.Next(10000).ToString("#,##0");
                     var textLayout = new TextLayout(graphics);
                     textLayout.Font = font;
                     textLayout.Width =size.Width - stringPos.X;

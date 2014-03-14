@@ -44,7 +44,7 @@ namespace Limaki.View.Headless.VidgetBackends {
                     ctx.Save ();
                     display.EventControler.OnPaint (new RenderContextEventArgs (ctx, dirtyRect));
                 } catch (Exception ex) {
-                    Registry.Pool.TryGetCreate<IExceptionHandler> ().Catch (ex, MessageType.OK);
+                    Registry.Pooled<IExceptionHandler> ().Catch (ex, MessageType.OK);
                 } finally {
                     ctx.Restore ();
                 }

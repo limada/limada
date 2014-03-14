@@ -27,7 +27,7 @@ namespace Limaki.Viewers.StreamViewers {
     public class WebResponseBase {
 
         ContentInfos _contentInfoPool = null;
-        protected ContentInfos ContentInfoPool { get { return _contentInfoPool ?? (_contentInfoPool = Registry.Pool.TryGetCreate<ContentInfos>()); } }
+        protected ContentInfos ContentInfoPool { get { return _contentInfoPool ?? (_contentInfoPool = Registry.Pooled<ContentInfos>()); } }
 
 
         public bool IsStreamOwner { get; set; }

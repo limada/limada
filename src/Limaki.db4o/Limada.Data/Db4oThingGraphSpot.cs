@@ -2,7 +2,7 @@ using Limaki.Model.Content;
 using Limaki.Contents.IO;
 using Limaki.Contents;
 
-namespace Limada.Data {
+namespace Limada.IO {
 
     public class Db4oThingGraphSpot : ContentDetector {
         public Db4oThingGraphSpot ()

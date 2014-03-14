@@ -81,8 +81,12 @@ namespace Limaki.Tests.Graph.Model {
                         graph, sourceGraph, 
                         Mapper.Transformer
                         );
+
             this.GraphPair.Mapper = this.Mapper;
             this.Mapper.ConvertSourceSink();
+
+            foreach (var sink in Mapper.Sink2Source.Keys)
+                this.GraphPair.Sink.Add (sink);
 
         }
 

@@ -30,6 +30,8 @@ namespace Limaki.Viewers.ToolStripViewers {
         public ToolStripCommand GraphGraphViewCommand { get; set; }
         public ToolStripCommand ToggleViewCommand { get; set; }
 
+        public ToolStripCommand ViewVisualNoteCommand { get; set; }
+
         public ToolStripCommand GoBackCommand { get; set; }
         public ToolStripCommand GoForwardCommand { get; set; }
         public ToolStripCommand GoHomeCommand { get; set; }
@@ -57,9 +59,17 @@ namespace Limaki.Viewers.ToolStripViewers {
                 Size = size,
                 ToolTipText = "show tiled graph"
             };
+
             ToggleViewCommand = new ToolStripCommand {
                 Action = s => SplitView.ToggleView(),
                 Image = Iconery.ToggleView,
+                Size = size,
+                ToolTipText = "toogle view"
+            };
+
+            ViewVisualNoteCommand = new ToolStripCommand {
+                Action = s => SplitView.ShowInNewWindow (),
+                Image = Iconery.NewViewVisualNote,
                 Size = size,
                 ToolTipText = "toogle view"
             };
@@ -175,5 +185,7 @@ namespace Limaki.Viewers.ToolStripViewers {
         }
 
         public void SelectSheet (SceneInfo info) { SplitView.LoadSheet(info); }
+
+        
     }
 }

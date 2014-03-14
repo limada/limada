@@ -18,6 +18,7 @@ using System.Linq;
 using Limaki.Common.Linqish;
 
 namespace Limaki.Graphs.Extensions {
+
     /// <summary>
     /// a helper class for collapse/expand
     /// uses a walker to iterate through subgraphs of an item

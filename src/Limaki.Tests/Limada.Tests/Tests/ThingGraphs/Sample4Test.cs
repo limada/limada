@@ -1,7 +1,7 @@
 using Limada.Model;
 using Limaki.Tests;
 using System;
-using Limada.Data;
+using Limada.IO;
 using Limaki.Data;
 using Limaki.Common;
 using Limaki;
@@ -15,7 +15,7 @@ using Limaki.Graphs.Extensions;
 using Limaki.Common.IOC;
 using Limaki.Contents.IO;
 using System.IO;
-
+using Limaki.Graphs;
 
 namespace Limada.Tests.ThingGraphs {
     [TestFixture]
@@ -78,9 +78,9 @@ namespace Limada.Tests.ThingGraphs {
         }
 
         public IEnumerable<IThing> FindRoot(IThingGraph source, bool doAutoView) {
-            source = (source as SchemaThingGraph).Source as IThingGraph;
+            source = source.Unwrap() as IThingGraph;
             var result = new List<IThing>();
-            IThing topic = source.GetById(TopicSchema.Topics.Id);
+            var topic = source.GetById(TopicSchema.Topics.Id);
             if (topic != null && (source.Edges(topic).Count > 0)) {
                 if (doAutoView) {
                     try {
@@ -133,6 +133,7 @@ namespace Limada.Tests.ThingGraphs {
             }
 
         }
+
         [Test]
         public virtual void CleanWrongDocumentsTest() {
             // search for all StringThings where link.Marker == Document && text = null or empty
@@ -142,51 +143,7 @@ namespace Limada.Tests.ThingGraphs {
             // set rootlinks.where(marker==Document) to  marker = CommonSchema.Commonmarker
 
             var graph = OpenFile(SampleFile);
-            graph.Add(CommonSchema.CommonMarker);
-            var nullStringThings = graph.GetByData(null);
-            var act = true;
-            foreach (var nullStringThing in nullStringThings) {
-                var edges = graph.Edges(nullStringThing).ToArray();
-                var disp = graph.ThingToDisplay(nullStringThing);
-                
-                if (disp != nullStringThing) {
-                    ReportDetail(string.Format("+\t{0}\t[{1}]", nullStringThing.Data ?? "<null>", nullStringThing.Id.ToString("X")));
-                    var titleLink = edges.FirstOrDefault(l => l.Marker.Id == DigidocSchema.DocumentTitle.Id);
-                    if (titleLink != null && titleLink.Leaf == disp) {
-                        ReportDetail(string.Format("\t-\t{0}\t[{1}]", disp.Data ?? "<null>", disp.Id.ToString("X")));
-                        if (true) {
-                            nullStringThing.Data = disp.Data;
-                            graph.Add(nullStringThing);
-                            graph.Remove(titleLink);
-                            var dispEdges = graph.Edges(disp).ToArray();
-                            foreach (var link in dispEdges) {
-                                graph.ChangeEdge(link, nullStringThing, link.Root == disp);
-                                graph.Add(link);
-                            }
-                            graph.Remove(disp);
-                        }
-                    }
-                    var documentLink = edges.FirstOrDefault(l => l.Marker.Id == DigidocSchema.Document.Id);
-                    if(documentLink!=null) {
-                        ReportDetail(string.Format("\t<>\t{0}\t{1}", DigidocSchema.Document.Data, CommonSchema.CommonMarker.Data));
-                        if (act) {
-                            documentLink.Marker = CommonSchema.CommonMarker;
-                            graph.Add(documentLink);
-                        }
-                    }
-                } else {
-                    //if (edges.Count() == 0)
-                    //    ReportDetail(string.Format("--\t{0}\t[{1}]", disp.Data ?? "<null>", disp.Id.ToString("X")));
-                    //else
-                    //    ReportDetail(string.Format("-\t{0}\t[{1}]", disp.Data ?? "<null>", disp.Id.ToString("X")));
-
-                }
-            }
-            var dbGraph = (graph.Source as DbGraph<IThing, ILink>);
-            if(dbGraph!=null) {
-                dbGraph.Flush();
-                dbGraph.Close();
-            }
+            new ThingGraphMaintenance ().CleanWrongDocuments (graph, true);
         }
 
         [Test]

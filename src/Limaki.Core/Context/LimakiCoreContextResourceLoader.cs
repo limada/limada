@@ -25,14 +25,14 @@ namespace Limaki.IOC {
 
             context.Factory.Add<IGraphModelFactory<IGraphEntity, IGraphEdge>, GraphEntityFactory> ();
             
-            var streamContentIoPool = Registry.Pool.TryGetCreate<StreamContentIoPool>();
+            var streamContentIoPool = Registry.Pooled<StreamContentIoPool>();
             streamContentIoPool.Add (new ImageStreamContentIo ());
             streamContentIoPool.Add(new TextStreamContentIo());
             streamContentIoPool.Add (new RtfStreamContentIo ()); 
             streamContentIoPool.Add(new HtmlStreamContentIo()); 
             streamContentIoPool.Add(new PdfStreamContentIo());
 
-            var contentDiggPool = Registry.Pool.TryGetCreate<ContentDiggPool>();
+            var contentDiggPool = Registry.Pooled<ContentDiggPool>();
             contentDiggPool.Add(new TextContentDigger());
             contentDiggPool.Add(new HtmlContentDigger());
 

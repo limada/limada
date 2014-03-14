@@ -19,19 +19,19 @@ using Limaki.Model.Content;
 
 namespace Limaki.Contents.IO {
 
+    public interface IContentIo {
+        IoMode IoMode { get; }
+        ContentDetector Detector { get; }
+    }
+
     /// <summary>
     /// a pipe that returns the ContentInfo of source
     /// uses IoMode
     /// uses a ContentDetector
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
-    public interface IContentIo<TSource> : IPipe<TSource, ContentInfo>, IProgress {
-
-        IoMode IoMode { get; }
-        ContentDetector Detector { get; }
+    public interface IContentIo<TSource> : IPipe<TSource, ContentInfo>, IContentIo, IProgress {
         bool Supports(TSource source);
-
-        Action<string, int, int> Progress { get; set; }
     }
 
 

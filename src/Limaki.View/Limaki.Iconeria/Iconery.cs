@@ -68,6 +68,7 @@ namespace Limaki.View.Properties {
             GraphGraphView = limadaIcons.AsImage(limadaIcons.IconGraphGraph, 28); //global::Limaki.View.Properties.Resources.GraphGraphView;
             GraphContentView = limadaIcons.AsImage(limadaIcons.IconGraphContent, 28); //global::Limaki.View.Properties.Resources.GraphDocView;
             ToggleView = limadaIcons.AsImage(limadaIcons.IconToggleView, 28); //global::Limaki.View.Properties.Resources.ToggleView;
+            NewViewVisualNote = limadaIcons.AsImage (awesome.IconShare, 28); 
 
             Panning = awesome.AsImage(awesome.IconMove, size); //global::Limaki.View.Properties.Resources.MoveShift;
             Zoom = awesome.AsImage(awesome.IconZoomIn, size); //global::Limaki.View.Properties.Resources.ZoomToolIcon;
@@ -150,5 +151,7 @@ namespace Limaki.View.Properties {
         public static Image LimadaLogoL32 { get; set; }
 
         public static Image LogicalLayoutLeaf { get; set; }
+
+        public static Image NewViewVisualNote { get; set; }
     }
 }

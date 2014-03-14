@@ -13,7 +13,7 @@ namespace Limaki.Contents {
             this.Extension = extension;
             this.MimeType = mimeType;
             this.Description = description;
-            this.Compression = Compression;
+            this.Compression = compression;
         }
 
         public ContentInfo(string description, long contentType, string extension, string mimeType, CompressionType compression, Magic[] magics)
@@ -31,10 +31,13 @@ namespace Limaki.Contents {
     }
 
     public class ContentInfos : IEnumerable<ContentInfo>, IContentSpec {
+        
         private ISet<ContentInfo> _contentInfos = new HashSet<ContentInfo>();
+        
         public void AddRange (IEnumerable<ContentInfo> contentInfos) {
             contentInfos.ForEach(ci => _contentInfos.Add(ci));
         }
+
         public void Add (ContentInfo contentInfo) {
             _contentInfos.Add(contentInfo);
         }

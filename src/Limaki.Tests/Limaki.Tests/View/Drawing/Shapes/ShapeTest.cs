@@ -80,7 +80,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
         [Test]
         public void PainterFactoryTest() {
-            var factory = Registry.Pool.TryGetCreate<IPainterFactory>();
+            var factory = Registry.Pooled<IPainterFactory>();
             var shape = new RectangleShape();
             IPainter _painter = factory.CreatePainter(shape.GetType());
             Assert.IsNotNull(_painter);
@@ -157,8 +157,8 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
             var iconeria = new AwesomeIconeria { Fill = true, FillColor = Colors.Black };
             
-            var utils = Registry.Pool.TryGetCreate<IDrawingUtils>();
-            var style = Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet.ItemStyle.DefaultStyle.Clone() as IStyle;
+            var utils = Registry.Pooled<IDrawingUtils>();
+            var style = Registry.Pooled<StyleSheets>().DefaultStyleSheet.ItemStyle.DefaultStyle.Clone() as IStyle;
 
             // points = pixels * 72 / g.DpiX;
             style.Font = style.Font.WithSize((bounds.Height - bounds.Height / 10) * 72 / utils.ScreenResolution().Width);

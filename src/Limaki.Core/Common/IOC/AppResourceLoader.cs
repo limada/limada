@@ -13,7 +13,7 @@
  */
 
 
-using Limada.Data;
+using Limada.IO;
 using Limada.Model;
 using Limaki.Data;
 using Limaki.Contents.IO;
@@ -30,7 +30,7 @@ namespace Limaki.Common.IOC {
             
             deviceContext.ApplyResources(context);
 
-            var contentIoPool = context.Pool.TryGetCreate<ThingGraphIoPool>();
+            var contentIoPool = context.Pooled<ThingGraphIoPool>();
             contentIoPool.Add(new XmlThingGraphIo());
 
         }

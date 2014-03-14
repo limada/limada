@@ -14,9 +14,11 @@
 
 
 using System;
+using System.Diagnostics;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.View.GraphScene;
 using Limaki.View.Rendering;
 using Xwt;
 
@@ -71,6 +73,8 @@ namespace Limaki.View.UI.GraphScene {
         }
 
         public override void OnKeyPressed( KeyActionEventArgs e ) {
+            Trace.WriteLine (string.Format ("{0} {1}", e.Key, e.Modifiers));
+
             base.OnKeyPressed(e);
             bool act = !(Folder.Scene.Focused is TEdge);
 
@@ -97,7 +101,8 @@ namespace Limaki.View.UI.GraphScene {
                     } else if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.Control) {
                         Folder.ShowAllData();
 
-                    } else if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.None) {
+                    } else if (((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.None)
+                                || (e.Key == Key.Plus && e.Modifiers == ModifierKeys.Shift)) {
                         Folder.Expand(true);
 
                     } else if ((e.Key == Key.Space && e.Modifiers == ModifierKeys.None)) {

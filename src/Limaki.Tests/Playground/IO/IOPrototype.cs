@@ -8,7 +8,6 @@ using Limaki.Contents.IO;
 
 namespace Limaki.Playground.IO {
    
-
     public interface ISinkPipe<TSource, TOver, TSink> {
         TSink Sink(TSource source, IPipe<TSource, TOver> sourceOver, IPipe<TOver, TSink> overSink);
     }

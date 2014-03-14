@@ -21,6 +21,7 @@ using Limaki.Graphs;
 using Xwt;
 using System;
 using System.Diagnostics;
+using Limaki.View.GraphScene;
 
 namespace Limaki.View.UI.GraphScene {
     /// <summary>

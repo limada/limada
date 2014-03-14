@@ -15,6 +15,8 @@
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
+using Limaki.Common.Linqish;
+using System.Linq;
 
 namespace Limaki.Tests.View.Visuals {
 
@@ -50,5 +52,9 @@ namespace Limaki.Tests.View.Visuals {
             scene.ClearSpatialIndex ();
         }
 
+        public void EnsureShapes (IGraphSceneLayout<TSinkItem, TSinkEdge> layout) {
+            Nodes.Where (n => n != null).ForEach (n => layout.Perform (n));
+            Edges.Where (n => n != null).ForEach (n => layout.Perform (n));
+        }
     }
 }

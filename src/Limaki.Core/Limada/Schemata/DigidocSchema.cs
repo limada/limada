@@ -203,10 +203,7 @@ namespace Limada.Schemata {
         }
 
         public IEnumerable<ILink> PageLinks (IThingGraph graph, IThing document) {
-            var filteredGraph = graph as FilteredGraph<IThing, ILink>;
-            if (filteredGraph != null)
-                graph = filteredGraph.Source as IThingGraph;
-
+            graph = graph.Unwrap() as IThingGraph;
             if (graph == null || document == null)
                 return new ILink[0];
             return graph.Edges(document)
@@ -232,9 +229,7 @@ namespace Limada.Schemata {
         }
 
         public bool HasPages (IGraph<IThing, ILink> graph, IThing document) {
-            var filteredGraph = graph as FilteredGraph<IThing, ILink>;
-            if (filteredGraph != null)
-                graph = filteredGraph.Source;
+            graph = graph.Unwrap();
             if (graph == null || document == null)
                 return false;
 
@@ -268,9 +263,7 @@ namespace Limada.Schemata {
         public virtual IEnumerable<IThing> DependsOn (GraphCursor<IThing, ILink> source, GraphEventType eventType) {
             if (HasPages (source)) {
                 var doc = source.Cursor;
-                var graph = source.Graph;
-                if (graph is SchemaThingGraph)
-                    graph = ((SchemaThingGraph) graph).Source;
+                var graph = source.Graph.Unwrap();
 
                 foreach (var link in PageLinks (graph as IThingGraph, doc).ToArray ()) {
                     var page = link.Leaf;

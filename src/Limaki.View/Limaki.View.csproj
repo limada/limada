@@ -85,7 +85,7 @@
     <Compile Include="Limaki.View\Mesh\GraphSceneMeshBackHandler.cs" />
     <Compile Include="Limaki.View\Visuals\Mesh\VisualGraphSceneEvents.cs" />
     <Compile Include="Limaki.View\Visuals\Mesh\VisualGraphSceneMesh.cs" />
-    <Compile Include="Limaki.View\UI\GraphScene\GraphSceneExtensions.cs" />
+    <Compile Include="Limaki.View.GraphScene\GraphSceneExtensions.cs" />
     <Compile Include="Limaki.View\Visuals\UI\VisualsTextEditActionBase.cs" />
     <Compile Include="Limaki.View\Mesh\GraphSceneMesh.cs" />
     <Compile Include="Limaki.Visuals\IVisualContentViz.cs" />
@@ -295,9 +295,9 @@
     <Compile Include="Limaki.View\UI\GraphScene\GraphItemMoveResizeAction.cs" />
     <Compile Include="Limaki.View\UI\GraphScene\GraphItemMultiSelector.cs" />
     <Compile Include="Limaki.View\UI\GraphScene\GraphItemZoomAction.cs" />
-    <Compile Include="Limaki.View\UI\GraphScene\GraphSceneCommands.cs" />
+    <Compile Include="Limaki.View.GraphScene\GraphSceneCommands.cs" />
     <Compile Include="Limaki.View\UI\GraphScene\GraphSceneEventArgs.cs" />
-    <Compile Include="Limaki.View\UI\GraphScene\GraphSceneFacade.cs" />
+    <Compile Include="Limaki.View.GraphScene\GraphSceneFacade.cs" />
     <Compile Include="Limaki.View\UI\GraphScene\GraphSceneFocusAction.cs" />
     <Compile Include="Limaki.View\UI\GraphScene\GraphSceneFolding.cs" />
     <Compile Include="Limaki.View\Rendering\GraphSceneLayer.cs" />
@@ -330,12 +330,12 @@
     <Compile Include="Limaki.View\Visuals\Visualizers\VisualsResourceLoader.cs" />
     <Compile Include="Limaki.View\Visuals\Layout\VisualsSceneLayout.cs" />
     <Compile Include="Limaki.View\Visuals\UI\AddEdgeAction.cs" />
-    <Compile Include="Limaki.View\Visuals\UI\SceneExtensions.cs" />
+    <Compile Include="Limaki.Visuals\GraphScene\SceneExtensions.cs" />
     <Compile Include="Limaki.View\Visuals\VisualsRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Limaki.Reporting\IReportOptions.cs" />
-    <Compile Include="Limaki.Usecases\Concept\ConceptUsecase.cs" />
-    <Compile Include="Limaki.Usecases\Concept\ConceptUsecaseComposer.cs" />
+    <Compile Include="Limada.UseCases\ConceptUsecase.cs" />
+    <Compile Include="Limada.UseCases\ConceptUsecaseComposer.cs" />
     <Compile Include="Limaki.Usecases\UsecaseFactories.cs" />
     <Compile Include="Limaki.Usecases\UsecaseFactory.cs" />
     <Compile Include="Limaki.Viewers\ContentViewManager.cs" />

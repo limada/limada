@@ -19,6 +19,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
+using Limaki.View.GraphScene;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
 using Limaki.Common.Linqish;
@@ -95,6 +96,11 @@ namespace Limaki.View.Mesh {
             return Scenes ().Where (s => BackGraphOf (s.Graph) == backGraph);
         }
 
+        public IEnumerable<IGraphScene<TSinkItem, TSinkEdge>> ScenesOfBackGraph (IGraph<TSinkItem, TSinkEdge> graph) {
+            var backGraph = BackGraphOf (graph);
+            return ScenesOfBackGraph (backGraph);
+        }
+
         public IGraphSceneDisplay<TSinkItem, TSinkEdge> DisplayOf (IGraphScene<TSinkItem, TSinkEdge> scene) {
             return Displays ().Where (d => d.Data == scene).FirstOrDefault ();
         }
@@ -147,7 +153,7 @@ namespace Limaki.View.Mesh {
                 graphChanging.Add (change);
 
                 var displays = new HashSet<IGraphSceneDisplay<TSinkItem, TSinkEdge>> ();
-                var dependencies = Registry.Pool.TryGetCreate<GraphDepencencies<TSourceItem, TSourceEdge>> ();
+                var dependencies = Registry.Pooled<GraphDepencencies<TSourceItem, TSourceEdge>> ();
                 dependencies.VisitItems (GraphCursor.Create (graph, backItem),
                     sourceItem => {
                         foreach (var scene in ScenesOfBackGraph (graph)) {

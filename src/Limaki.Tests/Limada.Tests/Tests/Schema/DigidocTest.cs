@@ -130,7 +130,7 @@ namespace Limada.Tests.Schemata {
         public virtual void TestDocumentWithTestData() {
             
             IThingGraph thingGraph = new ThingGraph();
-            var prov = new Limada.Data.Db4oThingGraphIo();
+            var prov = new Limada.IO.Db4oThingGraphIo();
             var d = prov.Open(Iori.FromFileName(TestLocations.GraphtestDir + "DocumentTest.limo"));
             thingGraph = d.Data;
 

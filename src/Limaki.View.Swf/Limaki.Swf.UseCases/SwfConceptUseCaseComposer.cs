@@ -17,11 +17,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using Limada.Usecases;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Swf.Backends.Viewers;
 using Limaki.Swf.Backends.Viewers.Content;
-using Limaki.Usecases.Concept;
 using Limaki.View.Layout;
 using Limaki.View.Swf;
 using Limaki.View.Swf.Visuals;
@@ -32,12 +32,16 @@ using DialogResult = Limaki.Viewers.DialogResult;
 using ImageExporter = Limaki.View.Swf.Visuals.ImageExporter;
 using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
 using SD = System.Drawing;
+using Limaki.View.Swf.Backends;
+using Limaki.View;
 
 namespace Limaki.Swf.Backends.UseCases {
 
     public class SwfConceptUseCaseComposer : IComposer<ConceptUsecase> {
 
-        public Form Mainform { get; set; }
+        public Form Mainform { get { return MainWindowBackend as Form; } }
+        public IVindowBackend MainWindowBackend { get; set; }
+
         public ToolStripContainer ToolStripContainer { get; set; }
         public MenuStrip MenuStrip { get; set; }
 
@@ -45,6 +49,8 @@ namespace Limaki.Swf.Backends.UseCases {
         public StatusStrip StatusStrip { get; set; }
 
         public void Factor (ConceptUsecase useCase) {
+            useCase.MainWindow = new Vindow ();
+
             ToolStripContainer = new ToolStripContainer ();
 
             StatusStrip = new StatusStrip ();
@@ -59,7 +65,7 @@ namespace Limaki.Swf.Backends.UseCases {
             ToolStripContainer.PerformLayout();
             splitViewBackend.SplitterDistance = (int)(ToolStripContainer.Width / 2);
 
-            var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
+            var viewerProvider = Registry.Pooled<ContentViewerProvider>();
 
             viewerProvider.Add(new HtmlContentViewer());
             viewerProvider.Add(new DigidocContentViewer());

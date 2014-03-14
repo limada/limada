@@ -16,6 +16,7 @@ using Limaki.Drawing;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Visuals.GraphScene;
 using Xwt.Backends;
 
 namespace Limaki.Viewers.ToolStripViewers {

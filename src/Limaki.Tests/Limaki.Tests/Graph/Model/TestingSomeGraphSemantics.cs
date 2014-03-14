@@ -62,12 +62,12 @@ namespace Limaki.Tests.Graph.MethodTests {
 
         IEnumerable<TEdge> BreathFirstTwigRecursion<TItem, TEdge>(IGraph<TItem, TEdge> graph, TItem source, bool preOrder)
         where TEdge : IEdge<TItem> {
-            foreach (TEdge edge in graph.Edges(source)) {
+            foreach (var edge in graph.Edges(source)) {
                 if (preOrder)
                     yield return edge;
                 if (graph.EdgeIsItem) {
-                    TItem edgeAsItem = (TItem)(object)edge;
-                    foreach (TEdge recurse in BreathFirstTwigRecursion<TItem, TEdge>(graph, edgeAsItem, preOrder)) {
+                    var edgeAsItem = (TItem)(object)edge;
+                    foreach (var recurse in BreathFirstTwigRecursion(graph, edgeAsItem, preOrder)) {
                         yield return recurse;
                     }
                 }
@@ -76,25 +76,26 @@ namespace Limaki.Tests.Graph.MethodTests {
             }
         }
 
-        public void BreathFirstTwig(IGraph<IGraphEntity, IGraphEdge> graph) {
-            foreach(IGraphEntity item in graph) {
-                StringWriter sQueue = new StringWriter ();
-                StringWriter sRecursion = new StringWriter();
-                Set<IGraphEdge> queued = new Set<IGraphEdge> ();
-                Set<IGraphEdge> recursed = new Set<IGraphEdge>();
-                foreach(IGraphEdge edge in BreathFirstTwigQueue<IGraphEntity,IGraphEdge>(graph,item,true)) {
+        public void BreathFirstTwig (IGraph<IGraphEntity, IGraphEdge> graph) {
+
+            foreach (var item in graph) {
+                var sQueue = new StringWriter();
+                var sRecursion = new StringWriter();
+                var queued = new Set<IGraphEdge>();
+                var recursed = new Set<IGraphEdge>();
+                foreach (var edge in BreathFirstTwigQueue (graph, item, true)) {
                     queued.Add (edge);
-                    sQueue.Write(edge.ToString() + " : ");
-                } 
-                foreach (IGraphEdge edge in BreathFirstTwigRecursion<IGraphEntity, IGraphEdge>(graph, item, true)) {
-                    recursed.Add (edge);
-                    sRecursion.Write(edge.ToString() + " : ");
+                    sQueue.Write (edge.ToString() + " : ");
                 }
-                ReportDetail(item.ToString() + "\t(r): " + sQueue.ToString() + "\t==\t(q): " + sRecursion.ToString());
+                foreach (var edge in BreathFirstTwigRecursion (graph, item, true)) {
+                    recursed.Add (edge);
+                    sRecursion.Write (edge.ToString() + " : ");
+                }
+                ReportDetail (item.ToString() + "\t(r): " + sQueue.ToString() + "\t==\t(q): " + sRecursion.ToString());
                 // remark: testing the strings doesnt work as Set has no stable order of Edges
                 // we can only test contains
                 Assert.AreEqual (queued.Count, recursed.Count);
-                foreach(IGraphEdge edge in queued) {
+                foreach (var edge in queued) {
                     Assert.IsTrue (recursed.Contains (edge));
                 }
             }
@@ -102,7 +103,7 @@ namespace Limaki.Tests.Graph.MethodTests {
 
         [Test]
         public void TestTwig() {
-            foreach (EntityGraphFactory factory in this.Graphs) {
+            foreach (var factory in this.Graphs) {
                 ReportDetail (factory.Name);
                 factory.Count = 15;
                 factory.AddDensity = false;
@@ -150,14 +151,14 @@ namespace Limaki.Tests.Graph.MethodTests {
         }
 
         IEnumerable<TEdge> ForkQueue<TItem, TEdge>(IGraph<TItem, TEdge> graph, TItem source)
-where TEdge : IEdge<TItem> {
-            Queue<TEdge> work = new Queue<TEdge>();
-            Set<TEdge> done = new Set<TEdge>();
-            foreach (TEdge edge in graph.Edges(source)) {
+        where TEdge : IEdge<TItem> {
+            var work = new Queue<TEdge>();
+            var done = new Set<TEdge>();
+            foreach (var edge in graph.Edges(source)) {
                 work.Enqueue (edge);
             }
             if (source is TEdge) {
-                TEdge curr = (TEdge) (object) source;
+                var curr = (TEdge) (object) source;
                 done.Add(curr);
                 if (curr.Root is TEdge) {
                     work.Enqueue((TEdge)(object)curr.Root);
@@ -185,10 +186,10 @@ where TEdge : IEdge<TItem> {
 
         [Test]
         public void TestFork() {
-            foreach (EntityGraphFactory factory in this.Graphs) {
+            foreach (var factory in this.Graphs) {
                 ReportDetail(factory.Name);
                 factory.Populate();
-                IGraph <IGraphEntity, IGraphEdge> graph = factory.Graph;
+                var graph = factory.Graph;
                 foreach(IGraphEntity item in graph) {
                     ReportDetail(
                         GraphTestUtils.ReportItemAndEdges<IGraphEntity, IGraphEdge>(

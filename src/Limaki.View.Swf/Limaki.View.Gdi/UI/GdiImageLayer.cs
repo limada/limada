@@ -78,7 +78,7 @@ namespace Limaki.View.Gdi.UI {
         }
 
         protected IExceptionHandler ExceptionHandler {
-            get { return Registry.Pool.TryGetCreate<IExceptionHandler>(); }
+            get { return Registry.Pooled<IExceptionHandler>(); }
         }
 
         protected virtual void DisposeCache() {

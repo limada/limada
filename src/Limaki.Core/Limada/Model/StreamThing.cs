@@ -20,6 +20,7 @@ using Limaki.Model.Content;
 using Id = System.Int64;
 using Limaki.Data;
 using System.Runtime.Serialization;
+using System.Diagnostics;
 
 namespace Limada.Model {
 
@@ -140,6 +141,7 @@ namespace Limada.Model {
                 ClearRealSubject ();
             }
         }
+
         object IThing.Data {
             get { return this.Data; }
             set {
@@ -181,7 +183,7 @@ namespace Limada.Model {
             get {
                 if (_compressionWorker == null) {
                     _compressionWorker =
-                        Registry.Pool.TryGetCreate<ICompressionWorker>();
+                        Registry.Pooled<ICompressionWorker>();
                 }
                 return _compressionWorker;
             }
@@ -195,7 +197,7 @@ namespace Limada.Model {
 
         public virtual void Compress() {
             if (Compressable && (_unCompressedStream != null)) {
-                Stream stream = _unCompressedStream;
+                var stream = _unCompressedStream;
                 stream.Position = 0;
                 if (StreamWrapper != null) {
                     StreamWrapper.Stream = CompressionWorker.Compress(stream, Compression);
@@ -214,6 +216,7 @@ namespace Limada.Model {
                     _unCompressedStream.Position = 0;
                 } catch (Exception e) {
                     _unCompressedStream = null;
+                    Trace.TraceError ("StreamThing.DeCompress Error {0}", e.Message);
                 }
             }
         }

@@ -141,7 +141,12 @@ namespace Limaki.View.Visualizers {
         }
 
         public override void DataChanged() {
+            this.Text = "";
+            this.DataId = 0;
+            this._info = null;
+
             base.DataChanged();
+
             if (this.Data != null) {
                 this.Data.FocusChanged += SceneFocusChangedCallback;
             }

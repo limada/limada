@@ -123,7 +123,7 @@ namespace Limaki.Tests.View.Visuals {
             this.Count = oldCount;
 
             var vector = new Vector();
-            var visual = Registry.Pool.TryGetCreate<IVisualFactory>().CreateItem("line");
+            var visual = Registry.Pooled<IVisualFactory>().CreateItem("line");
             visual.Shape = new VectorShape(vector);
             scene.Add(visual);
             Line1 = visual;
@@ -135,7 +135,10 @@ namespace Limaki.Tests.View.Visuals {
             result.Graph = this.Graph;
             var layout = new LongtermPerformanceSceneLayout(
                 delegate() { return result; }, this.styleSheet);
+            
             PopulateScene(result);
+            EnsureShapes (layout);
+
             layout.Reset();
             Arrange(result);
             result.ClearSpatialIndex();

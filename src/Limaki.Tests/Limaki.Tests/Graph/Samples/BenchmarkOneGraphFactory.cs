@@ -17,7 +17,7 @@ namespace Limaki.Tests.Graph.Model {
             get {
                 if (_line1 == null) {
                     var vector = new Vector ();
-                    _line1 = Registry.Pool.TryGetCreate<IVisualFactory>()
+                    _line1 = Registry.Pooled<IVisualFactory>()
                         .CreateItem("line");
                     _line1.Shape = new VectorShape(vector);
                 }

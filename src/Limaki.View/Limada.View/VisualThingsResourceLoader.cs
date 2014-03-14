@@ -24,7 +24,7 @@ namespace Limaki.View {
 
             context.Factory.Add<ISheetManager, SheetManager> ();
 
-            var markerProcessor = context.Pool.TryGetCreate<MarkerContextProcessor> ();
+            var markerProcessor = context.Pooled<MarkerContextProcessor> ();
             markerProcessor.CreateMarkerFacade = graph => {
                 if (graph.Source<IVisual, IVisualEdge, IThing, ILink> () != null) {
                     return new VisualThingMarkerFacade (graph);

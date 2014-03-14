@@ -17,6 +17,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;
+using Limaki.View.GraphScene;
 using Limaki.View.Modelling;
 using Limaki.View.Rendering;
 using Limaki.View.UI.GraphScene;
@@ -46,7 +47,7 @@ namespace Limaki.View.Visualizers {
             if (StyleSheet == null) {
                 StyleSheet = new StyleSheets().Compose().DefaultStyleSheet;
                 StyleSheet.BackColor = Colors.WhiteSmoke;
-                // maybe created with wrong toolkit! Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet;
+                // maybe created with wrong toolkit! Registry.Pooled<StyleSheets>().DefaultStyleSheet;
             }
 
             if (Layout == null) {

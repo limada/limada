@@ -20,6 +20,7 @@ using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Visuals.GraphScene;
 using Xwt;
 using Xwt.Backends;
 using Xwt.Gdi.Backend;
@@ -212,7 +213,7 @@ namespace Limaki.View.Swf.Visuals {
              if (insert) {
                  DetachEditor(true);
                  Exclusive = Resolved = true;
-                 Current = Registry.Pool.TryGetCreate<IVisualFactory>().CreateItem<string>("XXXXXXXX");
+                 Current = Registry.Pooled<IVisualFactory>().CreateItem<string>("XXXXXXXX");
                  var scene = Scene;
                  var root = scene.Focused;
 

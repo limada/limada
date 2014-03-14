@@ -26,7 +26,7 @@ namespace Limaki.Drawing.Styles {
         protected SystemFonts SystemFonts { get { return _systemfonts ?? (_systemfonts = new SystemFonts()); } }
 
         IDrawingUtils _drawingUtils = null;
-        protected IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pool.TryGetCreate<IDrawingUtils> ()); } }
+        protected IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Pooled<IDrawingUtils> ()); } }
 
         public IList<string> StyleSheetNames = new string[] { "Desktop", "TealSmoke", "WhiteGlass" };
 

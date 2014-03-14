@@ -13,7 +13,7 @@ namespace Limaki.Tests.View.Display {
     public class BenchmarkOneTests : VisualsDisplayTest {
 
         BenchmarkOneSceneFactory _factory = null;
-        BenchmarkOneSceneFactory factory {
+        BenchmarkOneSceneFactory Factory {
             get {
                 if (_factory == null) {
                     _factory = new BenchmarkOneSceneFactory ();
@@ -26,7 +26,7 @@ namespace Limaki.Tests.View.Display {
         public override IGraphScene<IVisual, IVisualEdge> Scene {
             get {
                 if (_scene == null) {
-                    base.Scene = factory.Scene;
+                    base.Scene = Factory.Scene;
                 }
                 return base.Scene;
             }
@@ -43,13 +43,13 @@ namespace Limaki.Tests.View.Display {
             if (Display != null) {
                 oldlayout = Display.Layout;
                 Display.Layout = new BenchmarkOneSceneFactory.LongtermPerformanceSceneLayout (
-                    () => { return Display.Data; }, factory.styleSheet);
-                Display.StyleSheet = factory.styleSheet;
+                    () => { return Display.Data; }, Factory.styleSheet);
+                Display.StyleSheet = Factory.styleSheet;
             }
 
             base.Setup ();
 
-            factory.Arrange (Display.Data);
+            Factory.Arrange (Display.Data);
             Display.Data.ClearSpatialIndex ();
             Display.Reset ();
 
@@ -97,13 +97,13 @@ namespace Limaki.Tests.View.Display {
 
 
         public void MoveLinks (Rectangle bounds) {
-            MoveLink (factory.Edges[4], factory.Edges[1]);
-            MoveLink (factory.Edges[5], factory.Edges[3]);
+            MoveLink (Factory.Edges[4], Factory.Edges[1]);
+            MoveLink (Factory.Edges[5], Factory.Edges[3]);
         }
 
         public void MoveNode1 (Rectangle bounds) {
             NeutralPosition ();
-            var startposition = factory.Nodes[1].Shape[Anchor.LeftTop] + new Size (10, 0);
+            var startposition = Factory.Nodes[1].Shape[Anchor.LeftTop] + new Size (10, 0);
             var position = camera.FromSource (startposition);
 
             var e =
@@ -112,7 +112,7 @@ namespace Limaki.Tests.View.Display {
                     0, position.X, position.Y, 0);
             Display.EventControler.OnMouseDown (e);
 
-            Assert.AreSame (Scene.Focused, factory.Nodes[1]);
+            Assert.AreSame (Scene.Focused, Factory.Nodes[1]);
 
 
             var v = new Vector ();
@@ -136,7 +136,7 @@ namespace Limaki.Tests.View.Display {
             MoveAlongLine (v);
 
             v.Start = v.End;
-            v.End = new Point (bounds.Width / 2, factory.distance.Height);
+            v.End = new Point (bounds.Width / 2, Factory.distance.Height);
             MoveAlongLine (v);
 
             v.Start = v.End;

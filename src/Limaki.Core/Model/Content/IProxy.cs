@@ -29,6 +29,7 @@ namespace Limaki.Model.Content {
         /// the caller cares about cleaning the realSubject
         /// </summary>
         void ClearRealSubject(bool clean);
+
         void Flush();
     }
 

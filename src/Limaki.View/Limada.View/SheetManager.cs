@@ -26,6 +26,7 @@ using Limada.VisualThings;
 using Limaki.Model.Content;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Visuals.GraphScene;
 
 namespace Limada.View {
 
@@ -103,11 +104,7 @@ namespace Limada.View {
             if (thingGraph == null) {
                 throw new ArgumentException("Sheet works only on ThingGraphs");
             }
-
-            if (thingGraph is SchemaThingGraph) {
-                thingGraph = ((SchemaThingGraph)thingGraph).Source as IThingGraph;
-            }
-
+            thingGraph = thingGraph.Unwrap() as IThingGraph;
             return thingGraph;
         }
 
@@ -122,7 +119,7 @@ namespace Limada.View {
             if (result != null) {
                 if (!(result is IStreamThing && 
                     ((IStreamThing)result).StreamType == ContentTypes.LimadaSheet)) {
-                    Registry.Pool.TryGetCreate<IExceptionHandler>().Catch(
+                    Registry.Pooled<IExceptionHandler>().Catch(
                         new ArgumentException("This id does not belong to a sheet")
                         , MessageType.OK);
                 }

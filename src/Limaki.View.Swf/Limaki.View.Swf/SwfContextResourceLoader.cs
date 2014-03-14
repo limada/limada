@@ -117,7 +117,7 @@ namespace Limaki.View.Swf {
 
             Registry.Factory.Add<IDragDropBackendHandler>(args => new DragDropBackendHandler(args[0] as IVidgetBackend));
 
-            var man = Registry.Pool.TryGetCreate<TransferDataManager>();
+            var man = Registry.Pooled<TransferDataManager>();
             man.MimeFingerPrints.SynonymFormats ("CF_DIB", "DeviceIndependentBitmap");
 
             man.RegisterSome();

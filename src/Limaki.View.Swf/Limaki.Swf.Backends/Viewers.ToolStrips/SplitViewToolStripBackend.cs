@@ -50,6 +50,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             graphStreamViewButton = new ToolStripButtonEx { Command = Frontend.GraphStreamViewCommand };
             graphGraphViewButton = new ToolStripButtonEx { Command = Frontend.GraphGraphViewCommand };
             var toggleViewButton = new ToolStripButtonEx { Command = Frontend.ToggleViewCommand };
+            var viewVisualNote = new ToolStripButtonEx { Command = Frontend.ViewVisualNoteCommand };
             goBackButton = new ToolStripButtonEx { Command = Frontend.GoBackCommand };
             goForwardButton = new ToolStripButtonEx { Command = Frontend.GoForwardCommand };
             var goHomeButton = new ToolStripButtonEx { Command = Frontend.GoHomeCommand };
@@ -61,6 +62,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
                                                         graphStreamViewButton,
                                                         graphGraphViewButton,
                                                         toggleViewButton,
+                                                        viewVisualNote,
                                                         new System.Windows.Forms.ToolStripSeparator {Size = new System.Drawing.Size(6, 27)},
                                                         goBackButton,
                                                         goForwardButton,

@@ -13,8 +13,8 @@
  */
 
 using System;
+using Limada.Usecases;
 using Limaki.Common;
-using Limaki.Usecases.Concept;
 using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Viewers.StreamViewers;
@@ -89,7 +89,7 @@ namespace Limaki.View.XwtBackend {
             };
 
 
-            var viewerProvider = Registry.Pool.TryGetCreate<ContentViewerProvider>();
+            var viewerProvider = Registry.Pooled<ContentViewerProvider>();
 
             viewerProvider.Add(new SheetViewer());
             viewerProvider.Add(new ImageContentViewer());

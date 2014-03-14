@@ -7,12 +7,12 @@ namespace Limaki.Visuals {
     public class VisualGraphEntityTransformer : GraphItemTransformer<IVisual, IGraphEntity, IVisualEdge, IGraphEdge> {
 
         public override IVisual CreateSinkItem (IGraph<IGraphEntity, IGraphEdge> source, IGraph<IVisual, IVisualEdge> sink, IGraphEntity item) {
-            return Registry.Pool.TryGetCreate<IVisualFactory> ()
+            return Registry.Pooled<IVisualFactory> ()
                 .CreateItem (item.ToString ());
         }
 
         public override IVisualEdge CreateSinkEdge (IGraph<IGraphEntity, IGraphEdge> source, IGraph<IVisual, IVisualEdge> sink, IGraphEdge item) {
-            return Registry.Pool.TryGetCreate<IVisualFactory> ()
+            return Registry.Pooled<IVisualFactory> ()
                     .CreateEdge (item.ToString ());
         }
 

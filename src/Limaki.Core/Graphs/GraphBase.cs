@@ -315,8 +315,8 @@ namespace Limaki.Graphs {
 
         public virtual IEnumerable<TItem> Foliage(IEnumerable<TEdge> edges) {
             ICollection<TItem> done = new Set<TItem>();
-            foreach (TEdge edge in edges) {
-                TItem result = default(TItem);
+            foreach (var edge in edges) {
+                var result = default(TItem);
                 if (!(RootIsEdge(edge)) && !done.Contains(result=edge.Root)) {
                     done.Add(result);
                     yield return result;

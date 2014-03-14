@@ -36,13 +36,13 @@ namespace Limaki.View.DragDrop {
     public class DragDropViz {
 
         TransferDataManager _transferDataManager = null;
-        public virtual TransferDataManager DataManager { get { return _transferDataManager ?? (_transferDataManager = Registry.Pool.TryGetCreate <TransferDataManager>()); } }
+        public virtual TransferDataManager DataManager { get { return _transferDataManager ?? (_transferDataManager = Registry.Pooled<TransferDataManager>()); } }
 
         ContentDiggPool _contentDiggPool = null;
-        public virtual ContentDiggPool ContentDiggPool { get { return _contentDiggPool ?? (_contentDiggPool = Registry.Pool.TryGetCreate<ContentDiggPool>()); } }
+        public virtual ContentDiggPool ContentDiggPool { get { return _contentDiggPool ?? (_contentDiggPool = Registry.Pooled<ContentDiggPool>()); } }
 
         IVisualContentViz _visualContentViz = null;
-        public IVisualContentViz VisualContentViz { get { return _visualContentViz ?? (_visualContentViz = Registry.Pool.TryGetCreate<IVisualContentViz>()); } }
+        public IVisualContentViz VisualContentViz { get { return _visualContentViz ?? (_visualContentViz = Registry.Pooled<IVisualContentViz>()); } }
 
         public virtual IVisual VisualOfTransferData (IGraph<IVisual, IVisualEdge> graph, ITransferData data) {
             var value = data.GetValue(TransferDataType.FromType(typeof(IVisual)));

@@ -18,7 +18,7 @@ using System.Linq;
 
 namespace Limaki.Viewers {
 
-    public class ContentViewerProvider  {
+    public class ContentViewerProvider:IDisposable  {
 
         public ICollection<ContentViewer> Viewers = new List<ContentViewer>();
 
@@ -26,8 +26,14 @@ namespace Limaki.Viewers {
             return Viewers.OfType<ContentStreamViewer>().Where(v => v.Supports(streamType)).FirstOrDefault();
         }
 
-        public virtual void Add (ContentViewer controller) {
-            this.Viewers.Add(controller);
+        public virtual void Add (ContentViewer viewer) {
+            this.Viewers.Add(viewer);
+        }
+
+        public virtual void Dispose () {
+            foreach (var viewer in this.Viewers) {
+                viewer.Dispose ();
+            }
         }
     }
 }

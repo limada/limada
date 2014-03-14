@@ -21,6 +21,7 @@ using Limaki.Drawing.Styles;
 using Limaki.Graphs.Extensions;
 using Limada.View;
 using Limada.VisualThings;
+using Limaki.View.GraphScene;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.Layout;
 using Limaki.Visuals;
@@ -43,7 +44,7 @@ namespace Limada.View {
                     Func<IGraphScene<IVisual, IVisualEdge>> fScene = () => this.Scene;
                     _layout = Registry.Factory.Create <IGraphSceneLayout<IVisual, IVisualEdge>>(
                         fScene,
-                        Registry.Pool.TryGetCreate<StyleSheets>().DefaultStyleSheet);
+                        Registry.Pooled<StyleSheets>().DefaultStyleSheet);
                 }
                 return _layout;
             }

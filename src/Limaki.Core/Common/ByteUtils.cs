@@ -18,9 +18,10 @@ using System.IO;
 using System.Text;
 
 namespace Limaki.Common {
-    public class ByteUtils {
 
-        public static byte[] BytesOfArray (Array data) {
+    public static class ByteUtils {
+
+        public static byte[] BytesOfArray (this Array data) {
             var len = Buffer.ByteLength (data);
             var result = new byte[len];
             for (int i = 0; i < len; i++) {
@@ -29,13 +30,13 @@ namespace Limaki.Common {
             return result;
         }
 
-        public static Stream AsUnicodeStream (string source) {
+        public static Stream AsUnicodeStream (this string source) {
             var buffer = Encoding.Unicode.GetBytes (source);
             return new MemoryStream (buffer);
             Encoding.Convert (Encoding.Unicode, Encoding.ASCII, buffer);
         }
 
-        public static Stream AsAsciiStream (string source) {
+        public static Stream AsAsciiStream (this string source) {
             var buffer = Encoding.Convert (Encoding.Unicode, Encoding.ASCII,
                                            Encoding.Unicode.GetBytes (source));
             return new MemoryStream (buffer);

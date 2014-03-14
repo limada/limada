@@ -4,6 +4,7 @@ using Limaki.Drawing.Styles;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Visuals.GraphScene;
 using Xwt.Backends;
 
 namespace Limaki.Viewers.ToolStripViewers {
@@ -14,7 +15,7 @@ namespace Limaki.Viewers.ToolStripViewers {
 
         public void StyleSheetChange (string sheetName) {
             IStyleSheet styleSheet = null;
-            var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+            var styleSheets = Registry.Pooled<StyleSheets>();
             if (!styleSheets.TryGetValue(sheetName, out styleSheet)) {
                 var style = StyleSheet.CreateStyleWithSystemSettings();
                 styleSheet = new StyleSheet(sheetName, style);

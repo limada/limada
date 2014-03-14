@@ -75,26 +75,26 @@ namespace Limaki.View.Layout {
         }
 
         public override Point[] GetDataHull(IShape item, Matrix matrix, int delta, bool extend) {
-            Registry.Pool.TryGetCreate<IExceptionHandler>()
+            Registry.Pooled<IExceptionHandler>()
                 .Catch(new Exception("The method or operation is not implemented."), MessageType.OK);
             return new Point[0];
 
         }
 
         public override Point[] GetDataHull(IShape item, UiState uiState, Matrix matrix, int delta, bool extend) {
-            Registry.Pool.TryGetCreate<IExceptionHandler>()
+            Registry.Pooled<IExceptionHandler>()
                 .Catch(new Exception("The method or operation is not implemented."), MessageType.OK);
             return new Point[0];
         }
 
         public override Point[] GetDataHull(IShape item, int delta, bool extend) {
-            Registry.Pool.TryGetCreate<IExceptionHandler>()
+            Registry.Pooled<IExceptionHandler>()
                 .Catch(new Exception("The method or operation is not implemented."), MessageType.OK);
             return new Point[0];
         }
 
         public override Point[] GetDataHull(IShape item, UiState uiState, int delta, bool extend) {
-            Registry.Pool.TryGetCreate<IExceptionHandler>()
+            Registry.Pooled<IExceptionHandler>()
                 .Catch(new Exception("The method or operation is not implemented."), MessageType.OK);
             return new Point[0];
         }

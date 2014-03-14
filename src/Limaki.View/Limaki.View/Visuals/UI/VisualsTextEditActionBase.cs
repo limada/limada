@@ -24,6 +24,7 @@ using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Xwt;
 using Xwt.Backends;
+using Limaki.View.GraphScene;
 
 
 namespace Limaki.View.Visuals.UI {
@@ -151,7 +152,7 @@ namespace Limaki.View.Visuals.UI {
                 data = converter.ConvertFromString (text);
 
             } catch (Exception ex) {
-                Registry.Pool.TryGetCreate<IExceptionHandler> ().Catch (ex, MessageType.OK);
+                Registry.Pooled<IExceptionHandler> ().Catch (ex, MessageType.OK);
             }
             if (data == null) return;
            

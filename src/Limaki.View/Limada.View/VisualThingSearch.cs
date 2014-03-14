@@ -18,10 +18,12 @@ using Limaki.Graphs.Extensions;
 using System.Linq;
 using Limada.View;
 using Limada.VisualThings;
+using Limaki.View.GraphScene;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Limaki.View.Layout;
+using Limaki.Visuals.GraphScene;
 using Xwt;
 
 namespace Limada.View {

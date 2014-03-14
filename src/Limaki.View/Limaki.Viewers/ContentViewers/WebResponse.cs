@@ -65,7 +65,7 @@ namespace Limaki.Viewers.StreamViewers {
 
         private StreamContentIoPool _pool = null;
         StreamContentIoPool ContentIoPool {
-            get { return _pool ?? (_pool = Registry.Pool.TryGetCreate<StreamContentIoPool>()); }
+            get { return _pool ?? (_pool = Registry.Pooled<StreamContentIoPool>()); }
         }
         
 

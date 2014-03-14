@@ -14,7 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Limada.Data;
+using Limada.IO;
 using Limada.Model;
 using Limada.VisualThings;
 using Limaki.Common;
@@ -88,7 +88,7 @@ namespace Limada.Usecases {
                 AttachCurrent(source, sourceInfo.Name);
                 return true;
             } catch (Exception ex) {
-                Registry.Pool.TryGetCreate<IExceptionHandler>()
+                Registry.Pooled<IExceptionHandler>()
                     .Catch(new Exception("Open failed: " + ex.Message, ex), MessageType.OK);
                 try {
                     if (source != null)
@@ -262,7 +262,7 @@ namespace Limada.Usecases {
             }
             if (result && sourceFiles.Count > 0) {
                 var progressSaved = this.Progress;
-                var progressHandler = Registry.Pool.TryGetCreate<IProgressHandler>();
+                var progressHandler = Registry.Pooled<IProgressHandler>();
                 this.Progress = (m, i, max) => progressHandler.Write(m, i, max);
                 try {
                     foreach (var sourceFile in sourceFiles) {
@@ -276,7 +276,7 @@ namespace Limada.Usecases {
                                     source = sourceIo.Open(sourceIori);
                                     new ThingGraphMerger { Progress = this.Progress }.Use(source.Data, this.Data.Data);
                                 } catch (Exception ex) {
-                                    Registry.Pool.TryGetCreate<IExceptionHandler>()
+                                    Registry.Pooled<IExceptionHandler>()
                                         .Catch(new Exception("Add file failed: " + ex.Message, ex), MessageType.OK);
                                 } finally {
                                     sourceIo.Close(source);
@@ -330,13 +330,13 @@ namespace Limada.Usecases {
                             try {
 
                                 sink = sinkIo.Open(Iori.FromFileName(sinkFile));
-                                var repairer = Registry.Pool.TryGetCreate<ThingGraphRepairPool>()
+                                var repairer = Registry.Pooled<ThingGraphRepairPool>()
                                     .Find(sourceInfo.Extension,IoMode.Read) as IPipe<Iori, IThingGraph>;
                                 this.AttachProgress(repairer as IProgress);
                                 repairer.Use(Iori.FromFileName(sourceFile), sink.Data);
 
                             } catch (Exception ex) {
-                                Registry.Pool.TryGetCreate<IExceptionHandler>()
+                                Registry.Pooled<IExceptionHandler>()
                                     .Catch(new Exception("Raw import failed: " + ex.Message, ex), MessageType.OK);
                                 sinkIo.Close(sink);
                                 File.Delete(sinkFile);

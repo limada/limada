@@ -12,8 +12,8 @@
  * 
  */
 
+using Limada.Usecases;
 using Limaki.Usecases;
-using Limaki.Usecases.Concept;
 using Limaki.View.WpfBackends;
 using Limaki.View.XwtBackend;
 using System.Windows.Controls;

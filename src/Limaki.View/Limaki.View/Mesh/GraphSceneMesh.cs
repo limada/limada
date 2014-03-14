@@ -19,6 +19,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.View.Visualizers;
+using Limaki.Common.Linqish;
 
 namespace Limaki.View.Mesh {
 
@@ -79,12 +80,11 @@ namespace Limaki.View.Mesh {
             }
         }
 
-
         #region BackGraph handling
 
         private IDictionary<Tuple<Type, Type>, IGraphSceneMeshBackHandler<TItem, TEdge>> _backHandlers = new Dictionary<Tuple<Type, Type>, IGraphSceneMeshBackHandler<TItem, TEdge>>();
 
-        protected virtual IGraphSceneMeshBackHandler<TItem, TEdge> BackHandler (IGraph<TItem, TEdge> graph) {
+        public virtual IGraphSceneMeshBackHandler<TItem, TEdge> BackHandler (IGraph<TItem, TEdge> graph) {
             return BackHandler (graph.RootSink().GraphPairTypes());
         }
 
@@ -169,6 +169,47 @@ namespace Limaki.View.Mesh {
 
 
         #endregion
+    }
+
+    public static class GraphSceneMeshExtensions {
+        /// <summary>
+        /// clears all Displays where scene's backend is the same
+        /// </summary>
+        /// <param name="scene"></param>
+        public static void 
+            ClearDisplaysOf<TItem, TEdge> (this IGraphSceneMesh<TItem, TEdge> mesh, IGraphScene<TItem, TEdge> scene) where TEdge : TItem, IEdge<TItem> {
+            
+            if (scene == null)
+                return;
+
+            mesh.DisplaysOfBackGraph (scene.Graph)
+                               .ForEach (d => {
+                                   if (d.Data != null) {
+                                       d.Data.ClearView ();
+                                   }
+                                   d.Data = null;
+                                   d.Perform ();
+                               });
+
+        }
+
+        public static IEnumerable<IGraphSceneDisplay<TItem, TEdge>>
+            DisplaysOfBackGraph<TItem, TEdge> (this IGraphSceneMesh<TItem, TEdge> mesh, IGraph<TItem, TEdge> graph) where TEdge : TItem, IEdge<TItem> {
+
+            return mesh.Displays
+                .Join (mesh.ScenesOfBackGraph (graph),
+                d => d.Data,
+                s => s, (d, s) => d);
+        }
+
+        public static IEnumerable<IGraphScene<TItem, TEdge>>
+            ScenesOfBackGraph<TItem, TEdge> (this IGraphSceneMesh<TItem, TEdge> mesh, IGraph<TItem, TEdge> graph) where TEdge : TItem, IEdge<TItem> {
+
+            var backMesh = mesh.BackHandler (graph);
+            if (backMesh == null)
+                return new IGraphScene<TItem, TEdge>[0];
+            return backMesh.ScenesOfBackGraph (graph);
+        }
     }
 }
 

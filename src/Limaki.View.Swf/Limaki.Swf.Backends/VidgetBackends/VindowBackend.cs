@@ -9,6 +9,7 @@ namespace Limaki.View.Swf.Backends {
         public void SetContent (IVidget value) {
             var backend = value.Backend as Control;
             if (!this.Controls.Contains (backend)) {
+                backend.Dock = DockStyle.Fill;
                 this.Controls.Add (backend);
             }
         }

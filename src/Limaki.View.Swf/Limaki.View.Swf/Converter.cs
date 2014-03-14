@@ -27,6 +27,7 @@ using Key = Xwt.Key;
 using MessageBoxButtons = System.Windows.Forms.MessageBoxButtons;
 using SD2 = System.Drawing.Drawing2D;
 using Xwt.Gdi.Backend;
+using System.Diagnostics;
 
 namespace Limaki.View.Swf {
 
@@ -110,11 +111,11 @@ namespace Limaki.View.Swf {
                 if (keytable == null) {
                     keytable = new Dictionary<Keys, Key>();
 
-                    keytable.Add(Keys.Multiply, Key.NumPadMultiply);
-                    keytable.Add( Keys.Add, Key.NumPadAdd );
-                    keytable.Add( Keys.Oemplus, Key.NumPadAdd );
-                    keytable.Add( Keys.Subtract, Key.NumPadSubtract );
-                    keytable.Add( Keys.OemMinus, Key.NumPadSubtract );
+                    keytable.Add(Keys.Multiply, Key.Asterisk);
+                    keytable.Add( Keys.Add, Key.Plus);
+                    keytable.Add (Keys.Oemplus, Key.Plus);
+                    keytable.Add( Keys.Subtract, Key.Minus );
+                    keytable.Add (Keys.OemMinus, Key.Minus);
                     keytable.Add( Keys.Decimal, Key.NumPadDecimal );
                     keytable.Add( Keys.Divide, Key.NumPadDivide );
                     keytable.Add(Keys.Back, Key.BackSpace);
@@ -149,6 +150,7 @@ namespace Limaki.View.Swf {
                 return keytable;
             }
         }
+
         public static Key Convert(Keys keys) {
             uint code = (uint)keys & 0x0000FFFF;
             Key result =0;

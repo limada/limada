@@ -74,10 +74,8 @@ namespace Limada.Tests.View {
         }
 
         public void ExpandAndSaveLinks(IGraph<IVisual, IVisualEdge> graph) {
-            IThingGraph thingGraph = graph.ThingGraph();
-            if (thingGraph is SchemaThingGraph) {
-                thingGraph = ((SchemaThingGraph)thingGraph).Source as IThingGraph;
-            }
+            var thingGraph = graph.ThingGraph().Unwrap() as IThingGraph;
+
             if (thingGraph != null) {
                 foreach(ILink link in thingGraph.Edges()) {
                     ProveEdge (thingGraph, link);

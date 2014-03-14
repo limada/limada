@@ -54,7 +54,7 @@ namespace Limaki.Swf.Backends.Viewers {
         public ShapeLayout ShapeLayout {
             get {
                 if (_shapeLayout == null) {
-                    var styleSheets = Registry.Pool.TryGetCreate<StyleSheets>();
+                    var styleSheets = Registry.Pooled<StyleSheets>();
                     _shapeLayout = new ShapeLayout(styleSheets.DefaultStyleSheet);
                 }
                 return _shapeLayout;

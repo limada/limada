@@ -21,6 +21,7 @@ using Limaki.Model.Content;
 using Limaki.View;
 using Limaki.View.Visualizers;
 using Limaki.Visuals;
+using Limaki.View.Mesh;
 
 namespace Limaki.Viewers.StreamViewers {
 
@@ -53,6 +54,9 @@ namespace Limaki.Viewers.StreamViewers {
             return streamType == ContentTypes.LimadaSheet;
         }
 
+        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
+        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+
         public override void SetContent(Content<Stream> content) {
             if (SheetDisplay == null) {
                 throw new ArgumentException("sheetControl must not be null");
@@ -66,10 +70,12 @@ namespace Limaki.Viewers.StreamViewers {
             SheetManager.SaveInStore(SheetDisplay.Data, SheetDisplay.Layout, SheetDisplay.DataId);
             SheetManager.RegisterSheet(SheetDisplay.Info);
 
+            Mesh.RemoveScene (SheetDisplay.Data);
+
             var loadFromMemory = false;
             var isStreamOwner = this.IsStreamOwner;
 
-            Int64 id = content.Source is Int64 ? (Int64)content.Source : 0;
+            var id = content.Source is Int64 ? (Int64)content.Source : 0;
             SceneInfo stored = null;
             if (id != 0 ) {
                 stored = SheetManager.GetSheetInfo(id);
@@ -97,7 +103,9 @@ namespace Limaki.Viewers.StreamViewers {
 
             SheetDisplay.Perform();
             SheetDisplay.Info = sheetinfo;
-           
+
+            Mesh.AddScene (SheetDisplay.Data);
+
             this.ContentId = SheetDisplay.DataId;
             Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(SheetDisplay.Data);
 

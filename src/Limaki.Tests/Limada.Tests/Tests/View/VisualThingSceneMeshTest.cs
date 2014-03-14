@@ -19,8 +19,10 @@ using Limada.Schemata;
 using Limada.Tests.Model;
 using Limaki.Common.Linqish;
 using Limaki.Model;
+using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.View.Visuals;
+using Limaki.View.GraphScene;
 using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
 using NUnit.Framework;
@@ -113,9 +115,8 @@ namespace Limada.Tests.View {
                 pageViewer.ProveNotContains (pageViewer.Source, pageViewer.Nodes.Where (n => n != null).ToArray ());
 
                 var inner = Innerfactory (pageViewer.SampleFactory);
-                var thingGraph = pageViewer.Source.Source;
-                if (thingGraph is SchemaThingGraph)
-                    thingGraph = ((SchemaThingGraph) thingGraph).Source;
+                var thingGraph = pageViewer.Source.Source.Unwrap ();
+
                 pageViewer.ProveNotContains (thingGraph, inner.Nodes.Where (n => n != null).ToArray ());
             }
 

@@ -117,10 +117,21 @@ namespace Limaki.Graphs {
         }
 
         public static void AddRange<TItem, TEdge>(this IGraph<TItem, TEdge> graph, IEnumerable<TItem> items)
-            where TEdge : IEdge<TItem>, TItem {
+            where TEdge : IEdge<TItem> {
             foreach (var item in items) {
                 graph.Add(item);
             }
+        }
+
+        public static IGraph<TItem, TEdge>
+            Unwrap<TItem, TEdge> (this IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem> {
+
+            var wrapped = graph as IWrappedGraph<TItem, TEdge>;
+            while (wrapped != null) {
+                graph = wrapped.Source;
+                wrapped = graph as IWrappedGraph<TItem, TEdge>;
+            }
+            return graph;
         }
     }
 }

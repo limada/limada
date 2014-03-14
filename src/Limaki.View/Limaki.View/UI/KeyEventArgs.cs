@@ -30,7 +30,7 @@ namespace Limaki.View.UI {
 
         public int PlatformKeyCode {
             get {
-                Registry.Pool.TryGetCreate<IExceptionHandler> ()
+                Registry.Pooled<IExceptionHandler> ()
                     .Catch (new Exception (this.GetType ().Name + ".PlatformKeyCode not implemented"), MessageType.OK);
                 return 0;
             }

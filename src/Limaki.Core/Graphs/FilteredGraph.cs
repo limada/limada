@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace Limaki.Graphs {
 
-    public class FilteredGraph<TItem, TEdge> : GraphBase<TItem, TEdge>
+    public class FilteredGraph<TItem, TEdge> : GraphBase<TItem, TEdge>, IWrappedGraph<TItem, TEdge>
         where TEdge : IEdge<TItem> {
 
         public FilteredGraph(IGraph<TItem, TEdge> source) {
@@ -116,12 +116,12 @@ namespace Limaki.Graphs {
         }
 
         public override void Clear() {
-            Set<TItem> remove = new Set<TItem>();
+            var remove = new Set<TItem>();
             foreach (TItem item in this) {
                 if (ItemFilter(item))
                     remove.Add(item);
             }
-            foreach (TItem item in remove)
+            foreach (var item in remove)
                 Remove(item);
         }
 
@@ -189,5 +189,10 @@ namespace Limaki.Graphs {
         public override IEnumerable<TItem> Where(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
             return Source.Where(predicate).Where(e => ItemFilter(e));
         }
+    }
+
+    public interface IWrappedGraph<TItem, TEdge> : IGraph<TItem, TEdge>
+        where TEdge : IEdge<TItem> {
+        IGraph<TItem, TEdge> Source { get; }
     }
 }

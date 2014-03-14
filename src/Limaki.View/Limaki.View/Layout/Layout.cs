@@ -48,7 +48,7 @@ namespace Limaki.View.Layout {
         public virtual IPainterFactory PainterFactory {
             get {
                 if (_painterFactory == null) {
-                    _painterFactory = Registry.Pool.TryGetCreate<IPainterFactory>();
+                    _painterFactory = Registry.Pooled<IPainterFactory>();
                 }
                 return _painterFactory;
             }

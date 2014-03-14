@@ -32,6 +32,7 @@ using Point = System.Drawing.Point;
 using Xwt.Gdi.Backend;
 using Xwt.Drawing;
 using Matrix = Xwt.Drawing.Matrix;
+using Limaki.View.GraphScene;
 
 namespace Limaki.Tests.View.GDI {
     /// <summary>

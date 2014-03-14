@@ -12,11 +12,11 @@
  * 
  */
 
+using Limada.Usecases;
 using Limaki.Common.IOC;
 using Limaki.Drawing;
 using Limaki.Drawing.WpfBackend;
 using Limaki.Usecases;
-using Limaki.Usecases.Concept;
 using Limaki.View.UI;
 using Limaki.View.WpfBackends;
 using Limaki.View.XwtBackend;
@@ -39,7 +39,7 @@ namespace Limaki.View.WpfBackend {
             tk.RegisterBackend<SystemFontBackend, WpfSystemFontBackend> ();
             context.Factory.Add<IUISystemInformation, WpfSystemInformation>();
 
-            var factories = context.Pool.TryGetCreate<UsecaseFactories<ConceptUsecase>>();
+            var factories = context.Pooled<UsecaseFactories<ConceptUsecase>>();
             factories.Add(new WpfUsecaseFactory());
 
             // register special IVidgetBackends here, eg. webbrowser

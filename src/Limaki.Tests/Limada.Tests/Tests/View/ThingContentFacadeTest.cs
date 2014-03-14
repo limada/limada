@@ -19,6 +19,7 @@ using Limaki.Contents;
 using Limaki.Model.Content;
 using NUnit.Framework;
 using System.IO;
+using Limaki.Common;
 
 namespace Limada.Tests.ThingGraphs {
 
@@ -28,7 +29,7 @@ namespace Limada.Tests.ThingGraphs {
         public virtual Stream stream {
             get {
                 if (_stream == null) {
-                    _stream = new StreamSources().Image;
+                    _stream = new StreamSources().Pdf().AsUnicodeStream();
                 }
                 return _stream;
             }

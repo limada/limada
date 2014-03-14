@@ -21,6 +21,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Content;
+using Limaki.View.GraphScene;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.UI;
@@ -30,6 +31,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Limaki.Visuals.GraphScene;
 
 namespace Limada.View {
     public class FavoriteManager {

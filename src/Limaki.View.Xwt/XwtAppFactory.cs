@@ -14,16 +14,16 @@
 
 using System;
 using System.Linq;
+using Limada.Usecases;
 using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.Usecases;
-using Limaki.Usecases.Concept;
 using Limaki.View.XwtBackend;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
-    public class XwtAppFactory : AppFactory<Limada.Usecases.AppResourceLoader> {
+    public class XwtAppFactory : AppFactory<Limada.Usecases.LimadaResourceLoader> {
         
         ToolkitType ToolkitType {
             get { return Xwt.ToolkitType.Wpf; }
@@ -71,7 +71,7 @@ namespace Limaki.View.XwtBackend {
 
         public IXwtConceptUseCaseComposer CreateUseCase () {
 
-            var backendComposer = Registry.Pool.TryGetCreate<IXwtConceptUseCaseComposer>();
+            var backendComposer = Registry.Pooled<IXwtConceptUseCaseComposer>();
             backendComposer.MainWindowBackend = new MainWindowBackend();
             backendComposer.WindowSize = new Size(800, 600);
             
@@ -95,7 +95,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         public void CallPlugins (UsecaseFactory<ConceptUsecase> factory, ConceptUsecase useCase) {
-            var factories = Registry.Pool.TryGetCreate<UsecaseFactories<ConceptUsecase>>();
+            var factories = Registry.Pooled<UsecaseFactories<ConceptUsecase>>();
             foreach (var item in factories) {
                 item.Composer = factory.Composer;
                 item.BackendComposer = factory.BackendComposer;

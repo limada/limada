@@ -22,6 +22,7 @@ using Limaki.View.Layout;
 using Limaki.View.UI.GraphScene;
 using Xwt;
 using System.Linq;
+using Limaki.View.GraphScene;
 
 namespace Limaki.View.Modelling {
 

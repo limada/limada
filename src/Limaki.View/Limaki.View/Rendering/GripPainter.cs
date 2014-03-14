@@ -27,7 +27,7 @@ namespace Limaki.View.Rendering {
         public override IShape<Rectangle> Shape {
             get {
                 if (base.Shape == null) {
-                    var factory = Registry.Pool.TryGetCreate<IShapeFactory>();
+                    var factory = Registry.Pooled<IShapeFactory>();
                     base.Shape = factory.Shape<Rectangle>(new Point(), new Size(GripSize, GripSize),false);
                 }
                 return base.Shape;
@@ -39,7 +39,7 @@ namespace Limaki.View.Rendering {
         protected IPainter InnerPainter {
             get {
                 if (_innerPainter == null) {
-                    var factory = Registry.Pool.TryGetCreate<IPainterFactory>();
+                    var factory = Registry.Pooled<IPainterFactory>();
                     _innerPainter = factory.CreatePainter<Rectangle>();
                     _innerPainter.Shape = this.Shape;
                 }
