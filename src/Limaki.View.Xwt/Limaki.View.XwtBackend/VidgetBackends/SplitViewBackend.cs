@@ -164,5 +164,8 @@ namespace Limaki.View.XwtBackend {
 
         public void Dispose () { }
 
+        public void ViewInWindow (IVidgetBackend backend, Action onClose) {
+            throw new NotImplementedException ();
+        }
     }
 }
