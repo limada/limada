@@ -390,6 +390,7 @@ namespace Limaki.Viewers {
             currentDisplay.Text = name;
             currentDisplay.Viewport.Reset();
             currentDisplay.Perform();
+            currentDisplay.Backend.Invalidate();
             OnViewChanged();
         }
 
