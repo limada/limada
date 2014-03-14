@@ -26,6 +26,7 @@ using Limada.VisualThings;
 using Limaki.Model.Content;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Visuals.GraphScene;
 
 namespace Limada.View {
 

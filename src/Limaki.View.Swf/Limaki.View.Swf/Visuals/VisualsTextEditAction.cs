@@ -20,6 +20,7 @@ using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Visuals.GraphScene;
 using Xwt;
 using Xwt.Backends;
 using Xwt.Gdi.Backend;

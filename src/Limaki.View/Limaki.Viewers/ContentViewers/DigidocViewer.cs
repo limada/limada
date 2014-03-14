@@ -38,6 +38,7 @@ using Xwt;
 using Xwt.Backends;
 using Xwt.Drawing;
 using Limada.Model;
+using Limaki.View.GraphScene;
 
 namespace Limaki.Viewers.StreamViewers {
 

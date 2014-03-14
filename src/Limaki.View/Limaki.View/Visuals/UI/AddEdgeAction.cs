@@ -19,6 +19,7 @@ using Limaki.View.Layout;
 using Limaki.View.UI;
 using Limaki.View.UI.GraphScene;
 using Limaki.Visuals;
+using Limaki.Visuals.GraphScene;
 using Xwt;
 using System;
 

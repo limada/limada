@@ -12,19 +12,20 @@
  * 
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Limaki.Common;
-using Limaki.Common.Linqish;
 using Limaki.Common.Collections;
+using Limaki.Common.Linqish;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.View.Layout;
+using Limaki.View.UI.GraphScene;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xwt;
 
-namespace Limaki.View.UI.GraphScene {
+namespace Limaki.View.GraphScene {
     /// <summary>
     /// Provides a simplified interface to
     /// a scene, a layout and the scenes graph

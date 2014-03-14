@@ -20,6 +20,7 @@ using Limaki.Graphs;
 using Limaki.View.UI;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Visuals.GraphScene;
 using Xwt;
 using Xwt.Backends;
 using Limaki.Graphs.Extensions;

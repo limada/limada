@@ -12,19 +12,18 @@
  * 
  */
 
-using System;
-using System.Collections.Generic;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
+using Limaki.View.GraphScene;
 using Limaki.View.Layout;
-using Limaki.View.UI.GraphScene;
-using Limaki.Visuals;
+using System;
+using System.Collections.Generic;
 using Xwt;
 
-namespace Limaki.View.Visuals.UI {
+namespace Limaki.Visuals.GraphScene {
 
     public static class SceneExtensions {
 

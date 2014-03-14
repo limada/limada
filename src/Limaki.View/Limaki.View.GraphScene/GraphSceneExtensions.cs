@@ -6,7 +6,7 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.UI.GraphScene;
 
-namespace Limaki.View.UI.GraphScene {
+namespace Limaki.View.GraphScene {
 
     public static class GraphSceneExtensions {
 

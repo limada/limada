@@ -22,6 +22,7 @@ using Limaki.Graphs.Extensions;
 using System.Text;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Visuals.GraphScene;
 using Xwt;
 
 namespace Limaki.View.Swf.DragDrop {

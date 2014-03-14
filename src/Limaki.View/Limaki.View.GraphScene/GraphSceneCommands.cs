@@ -13,15 +13,13 @@
  */
 
 
-using System;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Xwt;
 using Limaki.View.Layout;
 
-namespace Limaki.View.UI.GraphScene {
+namespace Limaki.View.GraphScene {
     
     public class DeleteCommand<TItem, TEdge> : Command<TItem, IGraphScene<TItem, TEdge>>, IDirtyCommand
     where TEdge : TItem, IEdge<TItem> {

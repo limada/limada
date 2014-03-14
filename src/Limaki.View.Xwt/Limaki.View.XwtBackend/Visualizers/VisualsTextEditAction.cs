@@ -18,6 +18,7 @@ using Limaki.Drawing;
 using Limaki.View.UI;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
+using Limaki.Visuals.GraphScene;
 using Xwt;
 
 namespace Limaki.View.XwtBackend.Visualizers {

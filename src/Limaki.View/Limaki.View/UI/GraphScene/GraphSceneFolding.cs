@@ -18,6 +18,7 @@ using System.Diagnostics;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.View.GraphScene;
 using Limaki.View.Rendering;
 using Xwt;
 
