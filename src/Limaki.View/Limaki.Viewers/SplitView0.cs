@@ -68,7 +68,7 @@ namespace Limaki.Viewers {
         }
 
         IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
-        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>>()); } }
+        public IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>>()); } }
 
         public void InitializeDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             var styleSheets = Registry.Pooled<StyleSheets>();

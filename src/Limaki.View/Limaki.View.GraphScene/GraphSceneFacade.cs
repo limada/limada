@@ -213,7 +213,7 @@ namespace Limaki.View.GraphScene {
         public virtual void AddRaw (IEnumerable<TItem> elements) {
             var scene = this.Scene;
             ApplyFilter ();
-            TItem curr = scene.Focused;
+            var curr = scene.Focused;
 
             var affected = new SubGraphWorker<TItem, TEdge> (this.SubGraph)
                 .Add (elements);
@@ -230,6 +230,7 @@ namespace Limaki.View.GraphScene {
                 }
             }
         }
+
         public virtual void Expand (bool deep) {
             var scene = this.Scene;
             if (scene.Selected.Count > 0) {

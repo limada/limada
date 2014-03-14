@@ -239,7 +239,7 @@
     <Compile Include="Limaki.Tests\Graph\Model\TestingSomeGraphSemantics.cs" />
     <Compile Include="Playground\Proves\FileInfoTest.cs" />
     <Compile Include="Limaki.Tests\Common\HistoryTest.cs" />
-    <Compile Include="Playground\Proves\RegExTest.cs" />
+    <Compile Include="Playground\Proves\RegExProves.cs" />
     <Compile Include="Playground\Schema\SchemaArchitecture.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\SceneThreadTest.cs" />
     <Compile Include="Limaki.Tests\View\Drawing\VectorHulltest.cs" />

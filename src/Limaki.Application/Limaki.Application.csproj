@@ -106,6 +106,10 @@
       <Project>{0ebc08e0-30d8-4d26-abf4-0aadfa3af422}</Project>
       <Name>Limaki.Db4o</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Limaki.Tests\Limaki.Tests.csproj">
+      <Project>{b1bc3ef8-5ec7-491a-ba83-70cb38f1823f}</Project>
+      <Name>Limaki.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
       <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
       <Name>Limaki.View.Resources</Name>
