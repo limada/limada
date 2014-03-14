@@ -29,6 +29,29 @@ using System.Linq;
 namespace Limada.UseCases {
 
     public class ThingGraphUseCases {
-        
+
+        public IEnumerable<IThing> DateTimesOf (IGraph<IThing, ILink> graph) {
+            graph = graph.Unwrap();
+            foreach (var th in graph.Yield().Where (t => t is IThing<string> && t.Data.ToString () != null)) {
+                var d = default (DateTime);
+                if (DateTime.TryParse (th.Data.ToString (), out d))
+                    yield return th;
+            }
+
+        }
+
+        public IEnumerable<IThing> TimeLine (IGraph<IThing, ILink> graph) {
+            var schemaGraph = graph as SchemaThingGraph;
+            graph = graph.Unwrap ();
+            var done = new HashSet<IThing> ();
+            foreach (var t in DateTimesOf (graph)
+                .OrderBy (t => DateTime.Parse (t.Data.ToString ()))) {
+                    if (!done.Contains (t)) {
+                        yield return t;
+                        done.Add (t);
+                    }
+            }
+
+        }
     }
 }

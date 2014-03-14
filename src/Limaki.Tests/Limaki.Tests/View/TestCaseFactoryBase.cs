@@ -1,20 +1,27 @@
 using Limada.IO;
 using Limada.Schemata;
 using Limada.Usecases;
+using Limada.UseCases;
 using Limada.VisualThings;
 using Limaki.Common;
+using Limaki.Common.Linqish;
 using Limaki.Drawing;
+using Limaki.Graphs;
+using Limaki.Graphs.Extensions;
 using Limaki.Tests.View;
 using Limaki.Tests.View.Display;
 using Limaki.Usecases;
 using Limaki.View;
+using Limaki.View.GraphScene;
+using Limaki.View.Layout;
 using Limaki.View.Rendering;
 using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
 using System;
-using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
+using System.Diagnostics;
+using System.Linq;
+using Xwt;
 
 namespace Limaki.Tests.UseCases {
 
@@ -54,7 +61,7 @@ namespace Limaki.Tests.UseCases {
             vindow.Show ();
         }
 
-        public void WCFServiceTest (ConceptUsecase sender) {
+        public void WCFServiceTest (ConceptUsecase usecase) {
 #if WCF
             DataBaseInfo info = new DataBaseInfo();
             info.Server = "http://localhost";
@@ -65,9 +72,9 @@ namespace Limaki.Tests.UseCases {
             var provider = new WCFThingGraphClientProvider();
 
             handler.Provider = provider;
-            handler.DataBound = sender.GraphSceneUiManager.DataBound;
+            handler.DataBound = usecase.GraphSceneUiManager.DataBound;
             if (handler.Open(info)) {
-                sender.DataPostProcess (provider.host.baseAddress.AbsoluteUri);
+                usecase.DataPostProcess (provider.host.baseAddress.AbsoluteUri);
             }
 #endif
         }
@@ -96,27 +103,62 @@ namespace Limaki.Tests.UseCases {
             }
         }
 
-        public void CurrentProblem (ConceptUsecase sender) {
+        public void CurrentProblem (ConceptUsecase usecase) {
             try {
 
-                var thingGraph = sender.GetCurrentDisplay ().Data.Graph.ThingGraph ();
-                if (thingGraph == null)
-                    throw new ArgumentException ("ThingGraphMaintenance only works with Thing-backed graphs");
+                TimelineSheet (usecase);
 
-                var graph = thingGraph.Unwrap();
-                var maint = new ThingGraphMaintenance();
+                if (false) {
+                    var rfcThingGraph = usecase.GetCurrentDisplay().Data.Graph.ThingGraph();
+                    if (rfcThingGraph == null)
+                        throw new ArgumentException ("ThingGraphMaintenance only works with Thing-backed graphs");
 
-                maint.RefreshCompression (graph, true);
-                
+                    var graph = rfcThingGraph.Unwrap();
+                    var maint = new ThingGraphMaintenance();
+
+                    maint.RefreshCompression (graph, true);
+                }
                 if (false) {
                     var test = new WebProxyTest();
-                    test.TestInfinitLoopIfHtmlContentIsFocused (sender.GetCurrentDisplay());
+                    test.TestInfinitLoopIfHtmlContentIsFocused (usecase.GetCurrentDisplay());
                 }
             } catch (Exception e) {
                 Registry.Pooled<IExceptionHandler>().Catch (e, MessageType.OK);
             } finally {
 
             }
+        }
+
+        public void TimelineSheet (ConceptUsecase usecase) {
+            var tlThingGraph = usecase.GetCurrentDisplay ().Data.Graph.ThingGraph ();
+            if (tlThingGraph == null)
+                throw new ArgumentException ("ThingGraphMaintenance only works with Thing-backed graphs");
+            var tl = new ThingGraphUseCases ();
+
+            
+            var view = usecase.SplitView;
+            var d = view.AdjacentDisplay (view.CurrentDisplay);
+            view.Mesh.RemoveScene (d.Data);
+
+            var scene = view.Mesh.CreateSinkScene (view.CurrentDisplay.Data.Graph);
+            d.Data = scene;
+
+            var vis = tl.TimeLine (tlThingGraph).Select (t => scene.Graph.VisualOf (t)).ToArray();
+            var fac = new GraphSceneFacade<IVisual,IVisualEdge>(()=>scene,d.Layout);
+            fac.Add (vis, true, false);
+
+            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (scene);
+            view.Mesh.AddScene (scene);
+
+            var aligner = new Aligner<IVisual, IVisualEdge> (scene, d.Layout);
+            
+            var options = d.Layout.Options();
+
+            aligner.OneColumn (vis, (Point)d.Layout.Border, options);
+            aligner.Locator.Commit (scene.Requests);
+
+            d.Perform();
+
         }
     }
 }
