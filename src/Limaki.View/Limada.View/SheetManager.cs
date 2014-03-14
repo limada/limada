@@ -224,10 +224,15 @@ namespace Limada.View {
 
         protected void LoadFromStream(Stream source, IGraphScene<IVisual, IVisualEdge> target, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             target.CleanScene();
-            source.Position = 0;
-            using (var sheet = new Sheet(target, layout)) {
-                sheet.Read(source);
-            } 
+            try {
+                source.Position = 0;
+                using (var sheet = new Sheet (target, layout)) {
+                    sheet.Read (source);
+                }
+            } catch (Exception ex) {
+                // TODO: stream-closed-error should never happen.Try to get reread the source  
+                Registry.Pooled<IExceptionHandler> ().Catch (ex, MessageType.OK);
+            }
         }
 
         public SceneInfo LoadFromContent(Content<Stream> source, IGraphScene<IVisual, IVisualEdge> target, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
