@@ -50,12 +50,12 @@ namespace Limaki.App {
             }
         }
 
-        public void CallPlugins(UsecaseFactory<ConceptUsecase> factory, ConceptUsecase useCase) {
-            var factories = Registry.Pool.TryGetCreate < UsecaseFactories<ConceptUsecase>>();
-            foreach(var item in factories) {
+        public void CallPlugins (UsecaseFactory<ConceptUsecase> factory, ConceptUsecase useCase) {
+            var factories = Registry.Pooled<UsecaseFactories<ConceptUsecase>> ();
+            foreach (var item in factories) {
                 item.Composer = factory.Composer;
                 item.BackendComposer = factory.BackendComposer;
-                item.Compose(useCase);
+                item.Compose (useCase);
             }
         }
     }
