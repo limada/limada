@@ -13,13 +13,15 @@
  */
 
 using Db4objects.Db4o.Ext;
+using Limada.IO.db4o;
 using Limada.Model;
 using Limaki.Data;
 using Limaki.Contents.IO;
 using System;
 using System.Linq;
+using ThingGraph = Limada.IO.db4o.ThingGraph;
 
-namespace Limada.Data {
+namespace Limada.IO {
 
     public class Db4oThingGraphIo : ThingGraphIo {
 
@@ -33,7 +35,7 @@ namespace Limada.Data {
                 gateway.Open(source);
 
                 var sink = new ThingGraphContent {
-                                                     Data = new Limada.Data.db4o.ThingGraph(gateway),
+                                                     Data = new ThingGraph(gateway),
                                                      Source = source,
                                                      ContentType = Db4oThingGraphSpot.Db4oThingGraphContentType,
                                                  };
@@ -55,7 +57,7 @@ namespace Limada.Data {
 
         public override void Close (ThingGraphContent sink) {
             Flush(sink);
-            var graph = sink.Data as Limada.Data.db4o.ThingGraph;
+            var graph = sink.Data as ThingGraph;
             if (graph != null) {
                 graph.Close();
             }
@@ -63,7 +65,7 @@ namespace Limada.Data {
 
         public override void Flush (ThingGraphContent sink) {
             if (sink.Data != null) {
-                var graph = sink.Data as Limada.Data.db4o.ThingGraph;
+                var graph = sink.Data as ThingGraph;
                 if (graph != null) {
                     graph.Flush();
                 }
@@ -71,7 +73,7 @@ namespace Limada.Data {
         }
 
         protected virtual string ProveIfOlderVersion (Limaki.Data.db4o.Gateway gateway) {
-            var repairer = new Limada.Data.db4o.Db4oRepairer();
+            var repairer = new Db4oRepairer();
             var clazzes = repairer.ClazzNames(gateway);
             var name = (from clazz in clazzes
                         from field in clazz.Item2

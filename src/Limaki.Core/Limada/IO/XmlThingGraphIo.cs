@@ -21,7 +21,7 @@ using Limaki.Data;
 using Limaki.Graphs;
 using Limaki.Contents.IO;
 
-namespace Limada.Data {
+namespace Limada.IO {
 
     public class XmlThingGraphIo : ThingGraphIo {
 

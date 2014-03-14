@@ -19,7 +19,7 @@ using Limaki.Contents;
 using Limaki.Graphs;
 using System.Linq;
 
-namespace Limada.Data {
+namespace Limada.IO {
 
     public class ThingGraphMerger : IPipe<IThingGraph, IThingGraph>, IProgress {
        

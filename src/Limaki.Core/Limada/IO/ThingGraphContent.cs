@@ -20,7 +20,7 @@ using Limaki.Contents.IO;
 using Limaki.Data;
 using Limaki.Graphs;
 
-namespace Limada.Data {
+namespace Limada.IO {
 
     public class ThingGraphContent : Content<IThingGraph> { }
 

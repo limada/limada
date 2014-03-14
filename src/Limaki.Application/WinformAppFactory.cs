@@ -1,13 +1,27 @@
-using System.Windows.Forms;
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2010-2012 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Limada.Usecases;
-using Limaki.View.Swf;
-using Limaki.Swf.Backends.UseCases;
-using Limaki.Common.IOC;
 using Limaki.Common;
-using Xwt.WinformBackend;
-using System;
+using Limaki.Common.IOC;
+using Limaki.Swf.Backends.UseCases;
 using Limaki.Usecases;
 using Limaki.View;
+using Limaki.View.Swf;
+using System;
+using System.Windows.Forms;
+using Xwt.WinformBackend;
 
 namespace Limaki.App {
 
@@ -18,7 +32,6 @@ namespace Limaki.App {
         public Form MainForm() {
             var result = new Limaki.View.Swf.Backends.VindowBackend ();
             
-           
             CreateUseCase (result);
             
             return result;

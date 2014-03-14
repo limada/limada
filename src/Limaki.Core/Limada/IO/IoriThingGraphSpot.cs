@@ -23,7 +23,7 @@ using System.Xml.Serialization;
 using System.Linq;
 using Limaki.Contents;
 
-namespace Limada.Data {
+namespace Limada.IO {
 
     public class IoriThingGraphSpot : ContentDetector {
         public IoriThingGraphSpot (): base(

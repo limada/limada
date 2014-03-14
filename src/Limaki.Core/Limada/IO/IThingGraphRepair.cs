@@ -1,6 +1,6 @@
 using Limaki.Data;
 
-namespace Limada.Data {
+namespace Limada.IO {
     public interface IThingGraphRepair {
         Iori Iori { get; }
     }

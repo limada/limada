@@ -16,20 +16,22 @@ using Limaki.Model.Content;
 using Limaki.Contents.IO;
 using Limaki.Contents;
 
-namespace Limada.Data {
-    public class XmlThingGraphSpot : ContentDetector {
-        public XmlThingGraphSpot () : base(
-            new ContentInfo[] {
+namespace Limada.IO {
+
+    public class MemoryThingGraphSpot : ContentDetector {
+        public MemoryThingGraphSpot ()
+            : base(
+                new ContentInfo[] {
                                   new ContentInfo(
-                                      "Limada Things (XML)",
+                                      "Limada Things (Memory)",
                                       ContentType,
-                                      "limml",
-                                      "application/limml",
+                                      "limemory",
+                                      "application/limemory",
                                       CompressionType.None
                                       )
                               }
-            ) { }
+                ) { }
 
-        public static long ContentType = unchecked((long) 0x471cd142f3fc2634);
+        public static long ContentType = unchecked((long)0xdf8779b0cf7e7cfc);
     }
 }

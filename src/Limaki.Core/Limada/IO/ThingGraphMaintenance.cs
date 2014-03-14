@@ -12,21 +12,21 @@
  * 
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Limada.Model;
+using Limada.Schemata;
 using Limaki.Common;
 using Limaki.Common.Linqish;
+using Limaki.Contents;
+using Limaki.Data;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Model.Content;
-using Limaki.Contents;
-using Limaki.Data;
-using Limada.Schemata;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
-namespace Limada.Data {
+namespace Limada.IO {
 
     public class ThingGraphMaintenance {
 

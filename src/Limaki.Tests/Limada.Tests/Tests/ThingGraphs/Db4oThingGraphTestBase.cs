@@ -1,6 +1,6 @@
 using Limada.Model;
 using Limaki.Data;
-using Limada.Data;
+using Limada.IO;
 
 
 namespace Limada.Tests.Data.db4o {

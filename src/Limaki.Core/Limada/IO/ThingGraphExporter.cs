@@ -23,7 +23,7 @@ using Limaki.Graphs.Extensions;
 using Limaki.Model.Content;
 using Limaki.Contents;
 
-namespace Limada.Data {
+namespace Limada.IO {
     /// <summary>
     /// returns all things of source
     /// source can be a subgraph (a SubGraph)

@@ -1,4 +1,4 @@
-﻿using Limada.Data;
+﻿using Limada.IO;
 using Db4objects.Db4o.Linq;
 using Limada.Model;
 using NUnit.Framework;
@@ -14,7 +14,7 @@ namespace Limada.Tests.Data.db4o {
         public void LinqTest() {
             
             
-            var graph = this.Graph as Limada.Data.db4o.ThingGraph;
+            var graph = this.Graph as Limada.IO.db4o.ThingGraph;
             Assert.NotNull(graph);
             var count = (from IThing item in graph.Session
                          select item).Count();

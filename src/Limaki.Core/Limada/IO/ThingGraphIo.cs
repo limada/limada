@@ -20,7 +20,7 @@ using System;
 using System.IO;
 using Limaki.Data;
 
-namespace Limada.Data {
+namespace Limada.IO {
 
     public abstract class ThingGraphIo : ContentIo<Iori>, IPipe<Iori,ThingGraphContent>, IPipe<ThingGraphContent, Iori> {
 

@@ -16,7 +16,7 @@ using Limada.Model;
 using Limaki.Data;
 using Limaki.Contents.IO;
 
-namespace Limada.Data {
+namespace Limada.IO {
     public class MemoryThingGraphIo : ThingGraphIo {
 
         public MemoryThingGraphIo (): base(new MemoryThingGraphSpot()) {

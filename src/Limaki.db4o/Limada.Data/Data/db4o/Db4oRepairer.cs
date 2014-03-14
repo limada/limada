@@ -28,7 +28,7 @@ using System.Linq;
 using System.Reflection;
 using Id = System.Int64;
 
-namespace Limada.Data.db4o {
+namespace Limada.IO.db4o {
 
     public class Db4oRepairer : ContentIo<IThingGraphRepair>, IPipe<Iori, IThingGraph> {
 
@@ -47,7 +47,7 @@ namespace Limada.Data.db4o {
             
             var links = new List<ILink>();
             if (repair) {
-                var db4oGraph = sink as Limada.Data.db4o.ThingGraph;
+                var db4oGraph = sink as ThingGraph;
                 if (db4oGraph != null) {
                     ReportClazzes(db4oGraph.Gateway as Gateway);
                 }

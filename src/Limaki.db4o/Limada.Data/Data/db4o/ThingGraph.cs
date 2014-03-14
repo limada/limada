@@ -32,7 +32,7 @@ using Limaki.Model.Content;
 using Db4objects.Db4o.Linq;
 using System.Linq;
 
-namespace Limada.Data.db4o {
+namespace Limada.IO.db4o {
     public class ThingGraph : Graph<IThing, ILink>, IThingGraph {
         public ThingGraph(IGateway g) : base(g) { }
 

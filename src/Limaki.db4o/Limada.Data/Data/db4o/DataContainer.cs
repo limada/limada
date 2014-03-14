@@ -21,7 +21,7 @@ using Limaki.Model.Content;
 using Id = System.Int64;
 using Db4objects.Db4o.Query;
 
-namespace Limada.Data.db4o {
+namespace Limada.IO.db4o {
     public class DataContainer : IDataContainer<Id> {
         Gateway _gateway = null;
 
