@@ -11,15 +11,15 @@
  * http://www.limada.org
  */
 
-using System.IO;
-using Limaki.Contents;
-using Limaki.Drawing;
-using Limaki.Model.Content;
-using Limaki.Visuals;
-using Limaki.View.Visuals.UI;
-using Limaki.Graphs.Extensions;
 using Limada.Model;
 using Limaki.Common;
+using Limaki.Contents;
+using Limaki.Drawing;
+using Limaki.Graphs.Extensions;
+using Limaki.View.Visuals.UI;
+using Limaki.Visuals;
+using System.IO;
+using Limaki.Visuals.GraphScene;
 
 namespace Limada.VisualThings {
 

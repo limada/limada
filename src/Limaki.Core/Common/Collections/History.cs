@@ -6,6 +6,7 @@ using System.Linq;
 #endif
 
 namespace Limaki.Common.Collections {
+
     public class History<T>:IEnumerable<T> {
         private List<T> back = new List<T>();
         private List<T> forward = new List<T>();

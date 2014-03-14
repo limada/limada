@@ -55,4 +55,5 @@ namespace Limada.IO {
     public class ThingsStreamIoManager : IoUriManager<Stream, IEnumerable<IThing>, ThingsStreamPool> { }
 
     public class ThingGraphRepairPool : ContentIoPool<IThingGraphRepair, Iori> { }
+
 }

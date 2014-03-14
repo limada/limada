@@ -9,6 +9,7 @@ using Id = System.Int64;
 using Limaki.Common;
 
 namespace Limada.Model {
+
     public class ThingSerializer : ThingSerializerBase {
         public virtual XmlWriterSettings Settings {
             get {

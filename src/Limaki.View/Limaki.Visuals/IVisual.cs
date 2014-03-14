@@ -17,6 +17,7 @@ using Limaki.Drawing;
 using Xwt;
 
 namespace Limaki.Visuals {
+
    public interface IVisual {
         IStyleGroup Style { get; set; }
         IShape Shape { get; set; }
@@ -25,6 +26,4 @@ namespace Limaki.Visuals {
         object Data { get;set;}
     }
 
- 
-    
 }
