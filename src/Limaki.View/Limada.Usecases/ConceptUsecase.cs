@@ -117,8 +117,10 @@ namespace Limada.Usecases {
             try {
                 var display = GetCurrentDisplay ();
                 if (display != null) {
-                    new VisualThingsSceneViz ().MergeVisual (display.Data);
-                    display.Perform ();
+                    if (MessageBoxShow ("Are you shure?", "Merge", MessageBoxButtons.OkCancel) == DialogResult.Ok) {
+                        new VisualThingsSceneViz().MergeVisual (display.Data);
+                        display.Perform();
+                    }
                 }
             } catch (Exception ex) {
                 Registry.Pooled<IExceptionHandler> ().Catch (ex, MessageType.OK);
