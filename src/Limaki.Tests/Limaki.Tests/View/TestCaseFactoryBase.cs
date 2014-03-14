@@ -4,10 +4,8 @@ using Limada.Usecases;
 using Limada.UseCases;
 using Limada.VisualThings;
 using Limaki.Common;
-using Limaki.Common.Linqish;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using Limaki.Tests.View;
 using Limaki.Tests.View.Display;
 using Limaki.Usecases;
@@ -19,7 +17,6 @@ using Limaki.View.Visualizers;
 using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using Xwt;
 

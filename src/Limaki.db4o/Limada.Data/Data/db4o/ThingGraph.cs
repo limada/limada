@@ -32,6 +32,7 @@ using Limaki.Model.Content;
 using Db4objects.Db4o.Linq;
 using System.Linq;
 
+
 namespace Limada.IO.db4o {
     public class ThingGraph : Graph<IThing, ILink>, IThingGraph {
         public ThingGraph(IGateway g) : base(g) { }
@@ -177,7 +178,8 @@ namespace Limada.IO.db4o {
             NativeQueryWrapper<ILink> result = null;
             if (item != null) 
             try {
-                IQuery query = Session.Query();
+
+                var query = Session.Query();
                 
                 query.Constrain(LinkType);
 
@@ -185,7 +187,7 @@ namespace Limada.IO.db4o {
                 result = new NativeQueryWrapper<ILink>(query.Execute());
                 
                 query = Session.Query();
-                query.Constrain(typeof(Link));
+                query.Constrain (LinkType);
                 query.Descend(LeafIdField).Constrain(item.Id);
                 result.AddSet (query.Execute());
                 
