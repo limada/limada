@@ -21,6 +21,7 @@ using System.IO;
 using System.Windows.Forms;
 using Xwt.Gdi.Backend;
 using Limaki.View.Swf;
+using Limaki.Common;
 
 // this control uses ideas from RicherTextBox by ???
 
@@ -108,7 +109,12 @@ namespace Limaki.Swf.Backends.TextEditor {
         public void Load (Stream stream, TextViewerRtfType streamType) {
             //innerTextBox.Clear ();
             var color = innerTextBox.BackColor;
-            innerTextBox.LoadFile(stream, (RichTextBoxStreamType)streamType);
+            if (streamType == TextViewerRtfType.RichText)
+                innerTextBox.LoadFile (stream, RichTextBoxStreamType.RichText);
+            else if (streamType == TextViewerRtfType.UnicodePlainText) {
+                using (var reader = new StreamReader (stream))
+                    innerTextBox.Text = reader.ReadToEnd ();
+            }
             innerTextBox.BackColor = color;
             AfterLoadRTF();
         }
