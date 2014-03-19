@@ -42,7 +42,7 @@ namespace Limaki.Common {
             return new MemoryStream (buffer);
         }
 
-        public static byte[] GetBuffer (Stream stream, int buflen) {
+        public static byte[] GetBuffer (this Stream stream, int buflen) {
             var oldPos = stream.Position;
             buflen = Math.Min (buflen, (int)stream.Length);
             var buffer = new byte[buflen];

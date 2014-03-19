@@ -47,12 +47,12 @@ namespace Limada.View {
             set { _sheets = value; }
         }
 
-        private IDictionary<long, Stream> _sheetsStreams = null;
+        private IDictionary<long, byte[]> _sheetsStreams = null;
         /// <summary>
         /// streams of sheets
         /// </summary>
-        protected IDictionary<long, Stream> SheetStreams {
-            get { return _sheetsStreams ?? (_sheetsStreams = new Dictionary<long, Stream>()); }
+        protected IDictionary<long, byte[]> SheetStreams {
+            get { return _sheetsStreams ?? (_sheetsStreams = new Dictionary<long, byte[]> ()); }
             set { _sheetsStreams = value; }
         }
 
@@ -205,8 +205,8 @@ namespace Limada.View {
 
         #region load sheet
         public bool Load(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Int64 id) {
-            var result = LoadFromStore(scene, layout, id);
             try {
+                var result = LoadFromStore (scene, layout, id);
                 if (!result) {
                     var graph = scene.Graph.ThingGraph();
 
@@ -229,6 +229,7 @@ namespace Limada.View {
                 using (var sheet = new Sheet (target, layout)) {
                     sheet.Read (source);
                 }
+                source.Position = 0;
             } catch (Exception ex) {
                 // TODO: stream-closed-error should never happen.Try to get reread the source  
                 Registry.Pooled<IExceptionHandler> ().Catch (ex, MessageType.OK);
@@ -296,8 +297,8 @@ namespace Limada.View {
                 var stream = new MemoryStream();
                 new Sheet(scene, layout).Save(stream);
                 stream.Position = 0;
-
-                SheetStreams[id] = stream;
+                
+                SheetStreams[id] = stream.GetBuffer((int)stream.Length);
                 
                 return true;
             } else {
@@ -306,12 +307,18 @@ namespace Limada.View {
             }
             
         }
-        public Stream GetFromStore(Int64 id) {
-            Stream stream = null;
-            if (SheetStreams.TryGetValue(id, out stream)) {
-                stream.Position = 0;
+
+        public Stream GetFromStore (Int64 id) {
+            byte[] buffer = null;
+            try {
+                if (SheetStreams.TryGetValue (id, out buffer)) {
+                    return new MemoryStream (buffer);
+                }
+            } catch (Exception ex) {
+                // TODO: stream-closed-error should never happen.Try to get reread the source  
+                Registry.Pooled<IExceptionHandler> ().Catch (ex, MessageType.OK);
             }
-            return stream;
+            return null;
 
         }
 
@@ -320,11 +327,15 @@ namespace Limada.View {
         }
 
         public bool LoadFromStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Int64 id) {
-            Stream stream = null;
-            if (SheetStreams.TryGetValue(id, out stream)){
-                LoadFromStream(stream, scene, layout);
-                stream.Position = 0;
-                return true;
+            byte[] buffer = null;
+            try {
+                if (SheetStreams.TryGetValue (id, out buffer)) {
+                    LoadFromStream (new MemoryStream(buffer), scene, layout);
+                    return true;
+                }
+            } catch (Exception ex) {
+                // TODO: stream-closed-error should never happen.Try to get reread the source  
+                Registry.Pooled<IExceptionHandler>().Catch (ex, MessageType.OK);
             }
             return false;
         }
