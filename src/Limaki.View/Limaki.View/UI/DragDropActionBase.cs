@@ -110,6 +110,9 @@ namespace Limaki.View.UI {
                 Dropping = false;
                 DragLeft = false;
             }
+            Dragging = false;
+            InprocDragDrop.Dragging = false;
+            InprocDragDrop.Data = null;
             base.OnMouseUp(e);
         }
     }

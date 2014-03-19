@@ -28,7 +28,7 @@ namespace Limaki.View.UI {
             this.Priority = baseAction.Priority;
             this.backend = backend;
             this.baseAction = baseAction;
-            this.Dragging = true;
+            this.Dragging = false;
         }
 
         private IVidgetBackend backend { get; set; }

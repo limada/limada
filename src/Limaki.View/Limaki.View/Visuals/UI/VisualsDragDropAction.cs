@@ -144,15 +144,17 @@ namespace Limaki.View.DragDrop {
             }
 
             if (item != null) {
-                SceneExtensions.AddItem(scene, item, Layout, pt);
-                if (target != null)
-                    SceneExtensions.CreateEdge(scene, target, item);
+                SceneExtensions.AddItem (scene, item, Layout, pt);
+                if (target != null && !scene.Graph.Edges (target).Any (edge => edge.Leaf == item || edge.Root == item))
+                    SceneExtensions.CreateEdge (scene, target, item);
             } else {
                 // no known type found to import
                 string dt = "not found:\t";
             }
 
             InprocDragDrop.Data = null;
+            InprocDragDrop.Dragging = false;
+            Dragging = false;
         }
 
 
