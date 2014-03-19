@@ -204,6 +204,7 @@ namespace Limada.View {
         #endregion
 
         #region load sheet
+
         public bool Load(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Int64 id) {
             try {
                 var result = LoadFromStore (scene, layout, id);

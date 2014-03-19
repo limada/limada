@@ -29,7 +29,7 @@ namespace Limaki.View.Headless.VidgetBackends {
             throw new NotImplementedException ();
         }
 
-        public override void OnKeyPressed (UI.KeyActionEventArgs e) {
+        protected override Xwt.Point CursorPosition () {
             throw new NotImplementedException ();
         }
     }

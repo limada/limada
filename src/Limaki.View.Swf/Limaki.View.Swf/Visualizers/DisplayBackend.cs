@@ -192,7 +192,7 @@ namespace Limaki.View.Swf.Visualizers {
         }
 
         protected override void OnKeyDown(KeyEventArgs e) {
-            Trace.WriteLine (string.Format ("{0} {1} {2}", e.KeyCode, e.KeyData, e.KeyValue));
+            Debug.WriteLine (string.Format ("{0} {1} {2}", e.KeyCode, e.KeyData, e.KeyValue));
             var ev = Converter.Convert(e,this.PointToClient(MousePosition));
             if (Display.Data != null)
                 Display.EventControler.OnKeyPressed(ev);

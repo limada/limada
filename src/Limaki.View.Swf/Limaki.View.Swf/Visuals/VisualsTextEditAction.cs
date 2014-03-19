@@ -25,6 +25,8 @@ using Xwt;
 using Xwt.Backends;
 using Xwt.Gdi.Backend;
 using SWF = System.Windows.Forms;
+using SD = System.Drawing;
+using System.Diagnostics;
 
 namespace Limaki.View.Swf.Visuals {
 
@@ -47,8 +49,7 @@ namespace Limaki.View.Swf.Visuals {
          protected override void ActivateMarkers () {
              var scene = Scene;
              if (Current is IVisualEdge && scene.Markers != null) {
-                 editor.AutoCompleteCustomSource =
-                     new AutoCompleteStringCollection();
+                 editor.AutoCompleteCustomSource = new AutoCompleteStringCollection();
                  editor.AutoCompleteCustomSource.AddRange(scene.Markers.MarkersAsStrings());
                  editor.AutoCompleteMode = AutoCompleteMode.Suggest;
                  editor.AutoCompleteSource = AutoCompleteSource.CustomSource;
@@ -59,14 +60,19 @@ namespace Limaki.View.Swf.Visuals {
          }
 
          protected override void AttachEditor () {
-             editor.KeyDown += control_KeyCancelEdit;
-             editor.KeyDown += control_KeyStartOrConfirmEdit;
+             editor.KeyDown += KeyCancelEdit;
+             editor.KeyDown += KeyStartOrConfirmEdit;
 
              StyleEditor();
 
              displayBackend.Controls.Add(editor);
 
              editor.Text = DataToText(Current);
+             if (string.IsNullOrEmpty (editor.Text)) {
+                 var size = Registry.Pooled<IDrawingUtils> ().GetTextDimension ("XXXX", Layout.GetStyle (Current));
+                 size = camera.FromSource (size);
+                 editor.ClientSize = new Size (size.Width + 2, size.Height + 5).ToGdi ();
+             }
 
              editor.Visible = true;
              ActivateMarkers();
@@ -89,8 +95,8 @@ namespace Limaki.View.Swf.Visuals {
 
              editor.Visible = false;
 
-             editor.KeyDown -= control_KeyCancelEdit;
-             editor.KeyDown -= control_KeyStartOrConfirmEdit;
+             editor.KeyDown -= KeyCancelEdit;
+             editor.KeyDown -= KeyStartOrConfirmEdit;
 
              editor.Text = String.Empty;
              if (hoverAfteredit && !focusAfterEdit) { // this does not work!
@@ -167,70 +173,22 @@ namespace Limaki.View.Swf.Visuals {
          }
          #endregion
 
-
-         protected void control_KeyCancelEdit (object sender, SWF.KeyEventArgs e) {
-             if (e.KeyData == Keys.Escape) {
-                 Exclusive = false;
-                 DetachEditor(false);
-                 e.Handled = true;
-             }
+         protected override Point CursorPosition () {
+             return displayBackend.PointToClient (Cursor.Position).ToXwt();
          }
 
-         protected void control_KeyStartOrConfirmEdit (object sender, SWF.KeyEventArgs e) {
-             if (e.KeyData == Keys.F2) {
-                 if (Exclusive) {
-                     Exclusive = false;
-                     DetachEditor(true);
-                 } else {
-                     if (Visual != null) {//&& HitTest(Visual, lastMousePos)
-                         Exclusive = Resolved = true;
-                         Current = Visual;
-                         AttachEditor();
-                     }
-                 }
-                 e.Handled = true;
-             }
+         protected void KeyCancelEdit (object sender, SWF.KeyEventArgs e) {
+             var ev = Converter.Convert (e, new SD.Point ());
+             base.KeyCancelEdit (sender, ev);
          }
 
-         public override void OnKeyPressed (KeyActionEventArgs e) {
-             if (e.Key == Key.Escape) {
-                 control_KeyCancelEdit(this, new SWF.KeyEventArgs(Keys.Escape));
-             }
-             if (e.Key == Key.F2)
-                 control_KeyStartOrConfirmEdit(this, new SWF.KeyEventArgs(Keys.F2));
-
-             focusAfterEdit = false;
-             hoverAfteredit = false;
-             bool insert = false;
-             if (e.Key == Key.Return && e.Modifiers==ModifierKeys.Control) {
-                 insert = true;
-             }
-             if (e.Key == Key.Insert) {
-                 insert = true;
-                 focusAfterEdit = true;
-             }
-
-             if (insert) {
-                 DetachEditor(true);
-                 Exclusive = Resolved = true;
-                 Current = Registry.Pooled<IVisualFactory>().CreateItem<string>("XXXXXXXX");
-                 var scene = Scene;
-                 var root = scene.Focused;
-
-                 if (root == null) {
-                     var pt = displayBackend.PointToClient(Cursor.Position).ToXwt();
-                     pt = camera.ToSource(pt) - Layout.Distance;
-                     SceneExtensions.AddItem(scene, Current, Layout, pt);
-                 } else {
-                     SceneExtensions.PlaceVisual(scene, root, Current, Layout);
-                 }
-
-                 display.Perform();
-                 TextToData(Current, string.Empty);
-
-                 AttachEditor();
-             }
+         protected void KeyStartOrConfirmEdit (object sender, SWF.KeyEventArgs e) {
+             Debug.WriteLine (string.Format ("{0} {1} {2}", e.KeyCode, e.KeyData, e.KeyValue));
+             var ev = Converter.Convert (e, new SD.Point());
+             base.KeyStartOrConfirmEdit (sender, ev);
          }
+
+       
 
      }
 }

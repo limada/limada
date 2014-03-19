@@ -25,6 +25,7 @@ using Limaki.Visuals;
 using Xwt;
 using Xwt.Backends;
 using Limaki.View.GraphScene;
+using Limaki.Visuals.GraphScene;
 
 
 namespace Limaki.View.Visuals.UI {
@@ -51,7 +52,6 @@ namespace Limaki.View.Visuals.UI {
         protected abstract void AttachEditor();
         protected abstract void DetachEditor (bool writeData);
         protected abstract void ActivateMarkers ();
-        public abstract void OnKeyPressed (KeyActionEventArgs e);
 
         protected ICamera camera { get; set; }
 
@@ -131,7 +131,7 @@ namespace Limaki.View.Visuals.UI {
         }
 
         protected string DataToText (IVisual visual) {
-            TypeConverter converter = GetConverter(visual);
+            var converter = GetConverter(visual);
             if (converter != null) {
                 if(visual.Data==null)
                     return Limada.Schemata.CommonSchema.NullString;
@@ -201,6 +201,84 @@ namespace Limaki.View.Visuals.UI {
             AttachEditor ();
         }
 
+        protected virtual void StartOrConfirmEdit () {
+            if (Exclusive) {
+                Exclusive = false;
+                DetachEditor (true);
+            } else {
+                if (Visual != null) {//&& HitTest(Visual, lastMousePos)
+                    Exclusive = Resolved = true;
+                    Current = Visual;
+                    AttachEditor ();
+                }
+            }
+        }
+
+        protected virtual bool IsKeyStartOrConfirmEdit (KeyEventArgs e) {
+            return e.Key == Key.F2 || (e.Key == Key.Space && e.Modifiers == (ModifierKeys.Control | ModifierKeys.Alt));
+        }
+
+        protected virtual void KeyStartOrConfirmEdit (object sender, KeyEventArgs e) {
+            if (IsKeyStartOrConfirmEdit(e)) {
+                StartOrConfirmEdit();
+                e.Handled = true;
+            }
+        }
+
+        protected virtual void CancelEdit () {
+                Exclusive = false;
+                DetachEditor (false);
+
+        }
+
+        protected virtual void KeyCancelEdit (object sender, KeyEventArgs e) {
+            if (e.Key == Key.Escape) {
+                CancelEdit();
+                e.Handled = true;
+            }
+        }
+
+        protected abstract Point CursorPosition();
+
+        public virtual void OnKeyPressed (KeyActionEventArgs e) {
+            if (e.Key == Key.Escape) {
+                CancelEdit ();
+            }
+            if (IsKeyStartOrConfirmEdit(e))
+                StartOrConfirmEdit ();
+
+            focusAfterEdit = false;
+            hoverAfteredit = false;
+            bool insert = false;
+            if (e.Key == Key.Return && e.Modifiers == ModifierKeys.Control) {
+                insert = true;
+            }
+            if (e.Key == Key.Insert) {
+                insert = true;
+                focusAfterEdit = true;
+            }
+
+            if (insert) {
+                DetachEditor (true);
+                Exclusive = Resolved = true;
+                Current = Registry.Pooled<IVisualFactory> ().CreateItem<string> ("XXXXXXXX");
+                var scene = Scene;
+                var root = scene.Focused;
+
+                if (root == null) {
+                    var pt = CursorPosition();
+                    pt = camera.ToSource (pt) - Layout.Distance;
+                    SceneExtensions.AddItem (scene, Current, Layout, pt);
+                } else {
+                    SceneExtensions.PlaceVisual (scene, root, Current, Layout);
+                }
+
+                display.Perform ();
+                TextToData (Current, string.Empty);
+
+                AttachEditor ();
+            }
+        }
         #endregion
     }
 }
