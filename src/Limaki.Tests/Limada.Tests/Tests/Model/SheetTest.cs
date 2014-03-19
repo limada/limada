@@ -251,7 +251,7 @@ namespace Limada.Tests.Model {
             thingGraph.Add(streamThing);
 
             var streamId = streamThing.Id;
-            streamThing.StreamType = ContentTypes.ASCII;
+            streamThing.StreamType = ContentTypes.Text;
             streamThing.Compression = CompressionType.bZip2;
             streamThing.Data = dataStream.BaseStream;
 

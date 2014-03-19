@@ -48,7 +48,7 @@ namespace Limada.Model {
         }
 
         public virtual XElement Write(IThing thing) {
-            XElement xmlthing = new XElement("thing");
+            var xmlthing = new XElement("thing");
             xmlthing.Add(new XAttribute("id",thing.Id.ToString("X")));
             Things.Add(xmlthing);
             return xmlthing;
@@ -56,14 +56,14 @@ namespace Limada.Model {
 
         public virtual void Write(IEnumerable<IThing> things) {
             if (things == null) return;
-            foreach (IThing thing in things) {
+            foreach (var thing in things) {
                 Write(thing);
             }
         }
 
         public override void Write(Stream s) {
             Write(ThingCollection);
-            using (System.Xml.XmlWriter writer = CreateWriter(s)) {
+            using (var writer = CreateWriter(s)) {
                 Document.Save (writer);
                 writer.Flush ();
             }
@@ -72,15 +72,15 @@ namespace Limada.Model {
 
 
         protected virtual IThing Read(XElement node) {
-            Id id = ReadInt (node, "id", true);
+            var id = ReadInt (node, "id", true);
             if (id != default(Id)) 
                 return Graph.GetById(id);
             return null;
         }
 
         protected virtual void ReadInto(ICollection<IThing> things) {
-            foreach (XElement node in Things.Elements()) {
-                IThing thing = Read(node);
+            foreach (var node in Things.Elements()) {
+                var thing = Read(node);
                 if (thing != null && !things.Contains(thing)) {
                     things.Add(thing);
                 }
@@ -96,8 +96,8 @@ namespace Limada.Model {
                 return;
             }
 
-            using (System.Xml.XmlReader reader = CreateReader (s)){
-                XDocument document = XDocument.Load (reader);
+            using (var reader = CreateReader (s)){
+                var document = XDocument.Load (reader);
                 this.Document = document;
                 this.Things = null;
                 ReadThings ();
