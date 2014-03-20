@@ -17,6 +17,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
+using Limaki.Graphs.Extensions;
 using Limaki.View.GraphScene;
 using Limaki.View.Layout;
 using System;
@@ -151,7 +152,7 @@ namespace Limaki.Visuals.GraphScene {
                 if (graphView!=null) {
                     graphView.Sink.Clear ();
                     scene.ClearView ();
-                    Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(scene);
+                    scene.CreateMarkers();
                 } else {
                     throw new ArgumentException ("scene.Graph must be a SubGraph");
                 }

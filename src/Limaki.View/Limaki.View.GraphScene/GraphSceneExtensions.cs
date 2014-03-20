@@ -5,6 +5,7 @@ using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.UI.GraphScene;
+using Limaki.Graphs.Extensions;
 
 namespace Limaki.View.GraphScene {
 
@@ -57,5 +58,8 @@ namespace Limaki.View.GraphScene {
             }
         }
 
+        public static void CreateMarkers<TItem, TEdge> (this IGraphScene<TItem, TEdge> scene) where TEdge : TItem, IEdge<TItem> {
+            scene.Markers = Registry.Factory.Create<IMarkerFacade<TItem, TEdge>> (scene.Graph);
+        }
     }
 }

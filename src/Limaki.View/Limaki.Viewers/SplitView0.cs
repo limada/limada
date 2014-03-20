@@ -33,10 +33,12 @@ using Limaki.View.Visuals.UI;
 using Limaki.View.Visuals.Visualizers;
 using Limaki.Visuals;
 using Limaki.Visuals.GraphScene;
+using Limaki.View.GraphScene;
 using Xwt;
 using Xwt.Backends;
 using Xwt.Drawing;
 using System.Collections.Generic;
+using Limaki.Graphs.Extensions;
 
 namespace Limaki.Viewers {
 
@@ -256,18 +258,18 @@ namespace Limaki.Viewers {
             }
 
             CurrentDisplay = null;
-
             Display1.Data = scene;
-            
-            Mesh.AddScene (Display1.Data);
 
-            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (Display1.Data);
+            scene.CreateMarkers();
+            Mesh.AddScene (scene);
+            
+
             displays
                 .Where (d => d != Display1)
                 .ForEach (d => {
                     Mesh.CopyDisplayProperties (Display1, d);
                     d.Data = Mesh.CreateSinkScene (Display1.Data.Graph);
-                    Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (d.Data);
+                    d.Data.CreateMarkers();
                     Mesh.AddScene (d.Data);
                 });
 

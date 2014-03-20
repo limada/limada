@@ -374,7 +374,6 @@
     <Compile Include="Limaki.Visuals\IVisual.cs" />
     <Compile Include="Limaki.Visuals\IVisualEdge.cs" />
     <Compile Include="Limaki.Visuals\IVisualFactory.cs" />
-    <Compile Include="Limaki.Visuals\MarkerContextProcessor.cs" />
     <Compile Include="Limaki.Visuals\VisualsQuadTreeIndex.cs" />
     <Compile Include="Limaki.Visuals\Scene.cs" />
     <Compile Include="Limaki.Visuals\Visual.cs" />

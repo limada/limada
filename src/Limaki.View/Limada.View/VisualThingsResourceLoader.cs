@@ -2,6 +2,7 @@ using Limada.Model;
 using Limada.View;
 using Limada.VisualThings;
 using Limaki.Common.IOC;
+using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.Visuals;
@@ -24,14 +25,17 @@ namespace Limaki.View {
 
             context.Factory.Add<ISheetManager, SheetManager> ();
 
-            var markerProcessor = context.Pooled<MarkerContextProcessor> ();
-            markerProcessor.CreateMarkerFacade = graph => {
-                if (graph.Source<IVisual, IVisualEdge, IThing, ILink> () != null) {
-                    return new VisualThingMarkerFacade (graph);
+            context.Factory.Add<IMarkerFacade<IVisual, IVisualEdge>> (p => {
+                var graph = p[0] as IGraph<IVisual, IVisualEdge>;
+                if (graph == null) {
+                    var scene = p[0] as IGraphScene<IVisual, IVisualEdge>;
+                    if (scene != null)
+                        graph = scene.Graph;
                 }
 
-                return null;
-            };
+                return new VisualThingMarkerFacade (graph);
+            });
+
         }
     }
 }

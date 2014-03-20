@@ -22,6 +22,8 @@ using Limaki.View;
 using Limaki.View.Visualizers;
 using Limaki.Visuals;
 using Limaki.View.Mesh;
+using Limaki.Graphs.Extensions;
+using Limaki.View.GraphScene;
 
 namespace Limaki.Viewers.StreamViewers {
 
@@ -107,7 +109,7 @@ namespace Limaki.Viewers.StreamViewers {
             Mesh.AddScene (SheetDisplay.Data);
 
             this.ContentId = SheetDisplay.DataId;
-            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>>(SheetDisplay.Data);
+            SheetDisplay.Data.CreateMarkers();
 
             if (isStreamOwner) {
                 content.Data.Close();
