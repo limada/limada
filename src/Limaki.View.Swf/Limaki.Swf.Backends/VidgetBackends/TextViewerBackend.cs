@@ -22,6 +22,8 @@ using Limaki.View.Vidgets;
 using Xwt.Gdi.Backend;
 using Limaki.View.Swf;
 using Limaki.Common;
+using System.Text;
+using Limaki.Common.Text;
 
 // this control uses ideas from RicherTextBox by ???
 
@@ -112,8 +114,11 @@ namespace Limaki.Swf.Backends.TextEditor {
             if (streamType == TextViewerRtfType.RichText)
                 innerTextBox.LoadFile (stream, RichTextBoxStreamType.RichText);
             else if (streamType == TextViewerRtfType.UnicodePlainText) {
-                using (var reader = new StreamReader (stream))
-                    innerTextBox.Text = reader.ReadToEnd ();
+                if (TextHelper.IsUnicode (stream.GetBuffer (30)))
+                    using (var reader = new StreamReader (stream, Encoding.Unicode))
+                        innerTextBox.Text = reader.ReadToEnd ();
+                else
+                    innerTextBox.LoadFile (stream, RichTextBoxStreamType.PlainText);
             }
             innerTextBox.BackColor = color;
             AfterLoadRTF();

@@ -21,6 +21,8 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Limaki.View.Vidgets;
 using Xwt;
+using Limaki.Contents.IO;
+using System.Diagnostics;
 
 namespace Limaki.View.ContentViewers {
 
@@ -79,6 +81,13 @@ namespace Limaki.View.ContentViewers {
             var rtfStreamType = TextViewerRtfType.PlainText;
 
             try {
+                var nfo = new RtfContentSpot ().Use (content.Data);
+                if (nfo != null && nfo.ContentType == ContentTypes.RTF) {
+                    if (content.ContentType != nfo.ContentType)
+                        Trace.WriteLine (this.GetType () + ":  wrong contenttype detected");
+                    content.ContentType = nfo.ContentType;
+                }
+
                 if (content.ContentType == ContentTypes.RTF) {
                     rtfStreamType = TextViewerRtfType.RichText;
 
