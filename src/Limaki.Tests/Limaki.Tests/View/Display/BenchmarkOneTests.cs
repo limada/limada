@@ -9,6 +9,8 @@ using Limaki.View.Viz.UI.GraphScene;
 using Limaki.View.Viz.Visuals;
 using NUnit.Framework;
 using Xwt;
+using System.Linq;
+using Limaki.Common.Linqish;
 
 namespace Limaki.Tests.View.Display {
 
@@ -60,11 +62,7 @@ namespace Limaki.Tests.View.Display {
                 editorEnabled = action.Enabled;
                 action.Enabled = false;
             }
-            action = Display.EventControler.GetAction<IDropAction> ();
-            if (action != null) {
-                dragDropEnabled = action.Enabled;
-                action.Enabled = false;
-            }
+
             action = Display.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>> ();
             if (action != null)
                 action.Enabled = true;
@@ -80,7 +78,9 @@ namespace Limaki.Tests.View.Display {
             action = Display.EventControler.GetAction<AddVisualEdgeAction> ();
             action.Enabled = false;
 
-
+            Display.EventControler.Actions.Values
+                .OfType<IDropAction> ()
+                .ForEach (a => a.Enabled = false);
 
         }
 
@@ -89,9 +89,9 @@ namespace Limaki.Tests.View.Display {
             IAction action = Display.EventControler.GetAction<IEditAction> ();
             if (action != null)
                 action.Enabled = editorEnabled;
-            action = Display.EventControler.GetAction<IDropAction> ();
-            if (action != null)
-                action.Enabled = dragDropEnabled;
+            Display.EventControler.Actions.Values
+                .OfType<IDropAction> ()
+                .ForEach (a => a.Enabled = true);
             if (oldlayout != null)
                 Display.Layout = oldlayout;
         }
