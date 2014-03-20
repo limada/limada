@@ -100,6 +100,8 @@ namespace Limaki.View.Swf.Backends {
             this.Invalidate(rect.ToGdi());
         }
 
+        void IVidgetBackend.SetFocus () { this.Focus (); }
+
         Xwt.Point IDragDropControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         #endregion

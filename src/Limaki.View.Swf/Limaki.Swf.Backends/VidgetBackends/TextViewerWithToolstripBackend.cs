@@ -147,6 +147,7 @@ namespace Limaki.Swf.Backends.TextEditor {
             get { return this.Size.ToXwt(); }
         }
 
+        void IVidgetBackend.SetFocus () { this.Focus (); }
 
         void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
             this.Invalidate(rect.ToGdi());

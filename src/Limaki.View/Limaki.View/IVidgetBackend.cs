@@ -30,5 +30,7 @@ namespace Limaki.View {
 
         void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
 
+        void SetFocus ();
+
     }
 }

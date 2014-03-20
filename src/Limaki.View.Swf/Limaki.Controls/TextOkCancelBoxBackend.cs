@@ -95,6 +95,7 @@ namespace Limaki.Swf.Backends {
             this.Invalidate(rect.ToGdi ());
         }
 
+        void IVidgetBackend.SetFocus () { this.Focus (); }
 
         #endregion
     }

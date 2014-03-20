@@ -110,6 +110,8 @@ namespace Limaki.View.XwtBackend {
 
         public void Invalidate (Rectangle rect) { }
         public void Dispose () { }
+
+        public void SetFocus () { }
     }
 
     public class OpenFileDialogBackend : FileDialogBackend, IOpenfileDialogBackend {

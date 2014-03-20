@@ -410,6 +410,7 @@ namespace Limaki.View.Swf.Visualizers {
         }
 
         Point IDragDropControl.PointToClient(Point source) {
+        void IVidgetBackend.SetFocus () { this.Focus (); }
             return this.PointToClient (source.ToGdi ()).ToXwt ();
         }
 

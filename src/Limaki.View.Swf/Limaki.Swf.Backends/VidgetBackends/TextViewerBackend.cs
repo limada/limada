@@ -173,6 +173,8 @@ namespace Limaki.Swf.Backends.TextEditor {
 
         Xwt.Point IDragDropControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
+        void IVidgetBackend.SetFocus () { this.Focus (); }
+
         #endregion
 
         VidgetBorderStyle ITextViewerBackend.BorderStyle {

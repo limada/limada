@@ -25,5 +25,6 @@ namespace Limaki.View {
     public interface IVidget : IDisposable {
         IVidgetBackend Backend { get; }
         Size Size { get; }
+        void SetFocus ();
     }
 }

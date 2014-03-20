@@ -23,6 +23,8 @@ namespace Limaki.View.WpfBackends {
            
         }
 
+        public static void VidgetBackendSetFocus (this FrameworkElement widget ) { widget.Focus (); }
+        
         // example code for listening global clipboard changes
         public static void ListenClipboard () {
             //System.Windows.Input.ApplicationCommands.Paste.CanExecuteChanged +=

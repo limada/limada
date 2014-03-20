@@ -19,6 +19,8 @@ namespace Limaki.View.XwtBackend {
 
         void IVidgetBackend.Invalidate (Rectangle rect) { }
 
+        void IVidgetBackend.SetFocus () { }
+
         public IVindow Frontend { get; protected set; }
 
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {

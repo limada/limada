@@ -67,6 +67,8 @@ namespace Limaki.View.Swf.Backends {
 
         public void Invalidate (Rectangle rect) { }
         public void Dispose () { }
+
+        public void SetFocus () {  }
     }
 
     public class OpenFileDialogBackend : FileDialogBackend, IOpenfileDialogBackend {

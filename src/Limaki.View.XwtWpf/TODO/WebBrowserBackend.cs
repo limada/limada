@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using Limaki.View.Vidgets;
 
 namespace Limaki.View.WpfBackend {
+
     public class WebBrowserBackend : WrapPanel, IWebBrowserBackend {
         // WebBrowser is sealed, so we have to wrap it
         protected WebBrowser WebBrowser { get; set; }
@@ -207,6 +208,10 @@ namespace Limaki.View.WpfBackend {
 
         public void Dispose () {
             throw new NotImplementedException();
+        }
+
+        public void SetFocus () {
+            throw new NotImplementedException ();
         }
 
         #endregion

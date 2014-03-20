@@ -234,6 +234,8 @@ namespace Limaki.View.WpfBackends {
 
         public void Invalidate (Xwt.Rectangle rect) { this.VidgetBackendInvalidate (rect); }
 
+        public void SetFocus () { this.VidgetBackendSetFocus (); }
+
         #endregion
 
         IEnumerable<ContentInfo> _supportedContents = null;

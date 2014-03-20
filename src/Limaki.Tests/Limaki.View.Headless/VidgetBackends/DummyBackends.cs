@@ -31,6 +31,8 @@ namespace Limaki.View.Headless.VidgetBackends {
             }
         }
 
+        public void SetFocus () { }
+
         public void Invalidate (Rectangle rect) {
             if(frontend is IDisplay) {
                 ((IDisplay) frontend).BackendRenderer.Render();

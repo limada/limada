@@ -21,6 +21,7 @@ using Xwt.Gdi.Backend;
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
     public abstract partial class ToolStripBackend : ToolStrip, IDisplayToolStripBackend {
+
         #region IVidgetBackend Member
 
         Xwt.Size IVidgetBackend.Size {
@@ -41,6 +42,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
         public abstract void InitializeBackend(IVidget frontend, VidgetApplicationContext context);
 
+        void IVidgetBackend.SetFocus () { this.Focus (); }
 
         #endregion
 

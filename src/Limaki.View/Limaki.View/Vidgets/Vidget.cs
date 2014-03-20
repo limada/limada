@@ -27,5 +27,6 @@ namespace Limaki.View.Vidgets {
 
         public virtual Size Size { get { return Backend.Size; } }
 
+        public virtual void SetFocus() { Backend.SetFocus (); }
     }
 }
