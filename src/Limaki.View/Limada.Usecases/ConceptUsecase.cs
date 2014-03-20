@@ -14,10 +14,12 @@
 
 using System;
 using System.IO;
-using Limada.Usecases;
+using System.Linq;
 using Limada.View;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Graphs;
+using Limaki.Graphs.Extensions;
 using Limaki.Model.Content;
 using Limaki.View.Visualizers;
 using Limaki.Viewers;
@@ -25,6 +27,11 @@ using Limaki.Viewers.ToolStripViewers;
 using Limaki.Visuals;
 using Limada.VisualThings;
 using Limaki.View;
+using Limada.UseCases;
+using Limaki.View.GraphScene;
+using Limada.IO;
+using Limaki.View.Layout;
+using Xwt;
 
 
 namespace Limada.Usecases {
@@ -39,45 +46,39 @@ namespace Limada.Usecases {
             set { _useCaseTitle = value; }
         }
 
+        public Func<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
+
+        public Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow { get; set; }
+
+        public Action<string, int, int> Progress { get; set; }
+        public Action ApplicationQuit { get; set; }
+        public bool ApplicationQuitted { get; set; }
+
+        #region Open/Save
+
+        public IGraphSceneUiManager GraphSceneUiManager { get; set; }
+
+        public Func<FileDialogMemento, bool, DialogResult> FileDialogShow { get; set; }
+        public Action<string> DataPostProcess { get; set; }
+
         public void Start () {
 
-            GraphSceneUiManager.OpenFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
-            GraphSceneUiManager.SaveFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString();
+            GraphSceneUiManager.OpenFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString ();
+            GraphSceneUiManager.SaveFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString ();
 
-            if (!GraphSceneUiManager.ProcessCommandLine()) {
-                GraphSceneUiManager.ShowEmptyScene();
+            if (!GraphSceneUiManager.ProcessCommandLine ()) {
+                GraphSceneUiManager.ShowEmptyScene ();
             }
         }
 
         bool closeDone = false;
-        public void Close() {
+        public void Close () {
             if (!closeDone) {
-                SaveChanges();
-                GraphSceneUiManager.Close();
+                SaveChanges ();
+                GraphSceneUiManager.Close ();
                 closeDone = true;
             }
         }
-
-        public SplitView0 SplitView { get; set; }
-        public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
-        public ISheetManager SheetManager {get;set;}
-        public FavoriteManager FavoriteManager { get; set; }
-
-        public ArrangerToolStrip ArrangerToolStrip { get; set; }
-        public DisplayModeToolStrip DisplayToolStrip { get; set; }
-        public SplitViewToolStrip SplitViewToolStrip { get; set; }
-        public LayoutToolStrip LayoutToolStrip { get; set; }
-        public MarkerToolStrip MarkerToolStrip { get; set; }
-        
-        public Func<object> GetCurrentControl { get; set; }
-        public Func<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
-
-
-        public Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow { get; set; }
-        public Func<FileDialogMemento, bool, DialogResult> FileDialogShow { get; set; }
-
-        public IGraphSceneUiManager GraphSceneUiManager { get; set; }
-        public Action<string> DataPostProcess { get; set; }
 
         public void OpenFile() {
             SaveChanges();
@@ -108,38 +109,17 @@ namespace Limada.Usecases {
             GraphSceneUiManager.ImportRawSource();
         }
 
-        public void Search() {
-            this.SplitView.DoSearch ();
+        public void SaveChanges () {
+            var displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { SplitView.Display1, SplitView.Display2 };
+            VisualsDisplayHistory.SaveChanges (displays, SheetManager, MessageBoxShow);
+            FavoriteManager.SaveChanges (displays);
         }
 
-        public void MergeVisual() {
+        #endregion
 
-            try {
-                var display = GetCurrentDisplay ();
-                if (display != null) {
-                    if (MessageBoxShow ("Are you shure?", "Merge", MessageBoxButtons.OkCancel) == DialogResult.Ok) {
-                        new VisualThingsSceneViz().MergeVisual (display.Data);
-                        display.Perform();
-                    }
-                }
-            } catch (Exception ex) {
-                Registry.Pooled<IExceptionHandler> ().Catch (ex, MessageType.OK);
-            }
-        }
+        #region Content 
 
-        public void Dispose() {
-            this.SplitView.Dispose ();
-            
-        }
-
-        public event EventHandler<EventArgs<IStyle>> DisplayStyleChanged = null;
-        public void OnDisplayStyleChanged(object sender, EventArgs<IStyle> arg) {
-            if (DisplayStyleChanged != null) {
-                DisplayStyleChanged(sender, arg);
-            }
-        }
-
-		public StreamContentUiManager StreamContentUiManager { get; set; }
+        public StreamContentUiManager StreamContentUiManager { get; set; }
 
         public void ExportThings () {
             var display = GetCurrentDisplay();
@@ -184,17 +164,100 @@ namespace Limada.Usecases {
             StreamContentUiManager.Save();
         }
 
-        public void SaveChanges() {
-            var displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { SplitView.Display1, SplitView.Display2 };
-            VisualsDisplayHistory.SaveChanges(displays, SheetManager, MessageBoxShow);
-            FavoriteManager.SaveChanges(displays);
+        #endregion
+
+        public SplitView0 SplitView { get; set; }
+        public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
+        public ISheetManager SheetManager { get; set; }
+        public FavoriteManager FavoriteManager { get; set; }
+
+        public ArrangerToolStrip ArrangerToolStrip { get; set; }
+        public DisplayModeToolStrip DisplayToolStrip { get; set; }
+        public SplitViewToolStrip SplitViewToolStrip { get; set; }
+        public LayoutToolStrip LayoutToolStrip { get; set; }
+        public MarkerToolStrip MarkerToolStrip { get; set; }
+
+        public Func<object> GetCurrentControl { get; set; }
+
+        public event EventHandler<EventArgs<IStyle>> DisplayStyleChanged = null;
+        public void OnDisplayStyleChanged (object sender, EventArgs<IStyle> arg) {
+            if (DisplayStyleChanged != null) {
+                DisplayStyleChanged (sender, arg);
+            }
+        }
+        
+        public void Search () {
+            this.SplitView.DoSearch ();
         }
 
-        public Action<string,int,int> Progress {get; set;}
-        public Action ApplicationQuit { get; set; }
-        public bool ApplicationQuitted { get; set; }
+        public void MergeVisual () {
 
+            try {
+                var display = GetCurrentDisplay ();
+                if (display != null) {
+                    if (MessageBoxShow ("Are you shure?", "Merge", MessageBoxButtons.OkCancel) == DialogResult.Ok) {
+                        new VisualThingsSceneViz ().MergeVisual (display.Data);
+                        display.Perform ();
+                    }
+                }
+            } catch (Exception ex) {
+                Registry.Pooled<IExceptionHandler> ().Catch (ex, MessageType.OK);
+            }
+        }
 
+        public void RefreshCompression () {
+            try {
+                var rfcThingGraph = GetCurrentDisplay ().Data.Graph.ThingGraph ();
+                if (rfcThingGraph == null)
+                    throw new ArgumentException ("ThingGraphMaintenance only works with Thing-backed graphs");
+
+                var graph = rfcThingGraph.Unwrap ();
+                var maint = new ThingGraphMaintenance ();
+
+                maint.RefreshCompression (graph, true);
+            } catch (Exception e) {
+                Registry.Pooled<IExceptionHandler> ().Catch (e, MessageType.OK);
+            }
+        }
+
+        public void TimelineSheet () {
+            try {
+                var thingGraph = GetCurrentDisplay ().Data.Graph.ThingGraph ();
+                if (thingGraph == null)
+                    throw new ArgumentException ("ThingGraphMaintenance only works with Thing-backed graphs");
+
+                var view = SplitView;
+                var display = view.AdjacentDisplay (view.CurrentDisplay);
+                var oldScene = display.Data;
+                var mesh = view.Mesh;
+                mesh.RemoveScene (oldScene);
+
+                var scene = mesh.CreateSinkScene (oldScene.Graph);
+                display.Data = scene;
+
+                var visuals = new ThingGraphUseCases ()
+                    .TimeLine (thingGraph)
+                    .Select (t => scene.Graph.VisualOf (t)).ToArray ();
+
+                new GraphSceneFacade<IVisual, IVisualEdge> (() => scene, display.Layout)
+                    .Add (visuals, true, false);
+
+                mesh.AddScene (scene);
+
+                var aligner = new Aligner<IVisual, IVisualEdge> (scene, display.Layout);
+                aligner.OneColumn (visuals, (Point)display.Layout.Border, display.Layout.Options ());
+                aligner.Locator.Commit (scene.Requests);
+
+                display.Perform ();
+            } catch (Exception e) {
+                Registry.Pooled<IExceptionHandler> ().Catch (e, MessageType.OK);
+            }
+        }
+
+        public void Dispose () {
+            this.SplitView.Dispose ();
+
+        }
         
     }
 }

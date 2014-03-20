@@ -33,7 +33,10 @@ namespace Limaki.View {
                         graph = scene.Graph;
                 }
 
-                return new VisualThingMarkerFacade (graph);
+                if (graph.ThingGraph () != null)
+                    return new VisualThingMarkerFacade (graph);
+                else
+                    return null;
             });
 
         }

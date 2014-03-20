@@ -269,7 +269,6 @@ namespace Limaki.Viewers {
                 .ForEach (d => {
                     Mesh.CopyDisplayProperties (Display1, d);
                     d.Data = Mesh.CreateSinkScene (Display1.Data.Graph);
-                    d.Data.CreateMarkers();
                     Mesh.AddScene (d.Data);
                 });
 

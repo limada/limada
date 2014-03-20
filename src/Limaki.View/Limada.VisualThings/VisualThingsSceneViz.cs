@@ -56,7 +56,9 @@ namespace Limada.Usecases {
 
         // TODO: harmonise this with GraphSceneMesh.CreateSinkScene / CreateSinkGraph
         public virtual IGraphScene<IVisual, IVisualEdge> CreateScene (IThingGraph thingGraph) {
-            return new Scene { Graph = CreateVisualGraph(thingGraph) };
+            var result = new Scene { Graph = CreateVisualGraph(thingGraph) };
+            result.CreateMarkers();
+            return result;
         }
 
         public virtual void Flush (IGraphScene<IVisual, IVisualEdge> scene) {
@@ -137,14 +139,12 @@ namespace Limada.Usecases {
 
        public void MergeVisual (IGraphScene<IVisual, IVisualEdge> scene) {
 
-           if (scene.Focused == null)
-               throw new ArgumentException ("nothing focused");
-
            if (scene.Selected.Count != 2)
                throw new NotSupportedException ("Currently only merges of 2 things are supported");
 
-           var source = scene.Focused;
-           var sink = scene.Selected.Elements.Where (v => v != source).FirstOrDefault();
+           var sink = scene.Selected.Elements.OrderBy (v => v.Location, new PointComparer { Order = PointOrder.XY }).First ();
+           var sweep = scene.Selected.Elements.Where (v => v != sink).FirstOrDefault ();
+
            var thingGraph = scene.Graph.ThingGraph ();
            
            if (thingGraph == null)
@@ -153,16 +153,16 @@ namespace Limada.Usecases {
            var meshed = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()
                .Scenes.Any (s => s == scene);
 
-           var sourceThing = scene.Graph.ThingOf (source);
+           var sweepThing = scene.Graph.ThingOf (sweep);
            var sinkThing = scene.Graph.ThingOf (sink);
            var graphPair = scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
-           var allowed = typeof (IThing<string>).IsAssignableFrom (sourceThing.GetType ()) && sourceThing.GetType () == sinkThing.GetType ();
+           var allowed = typeof (IThing<string>).IsAssignableFrom (sweepThing.GetType ()) && sweepThing.GetType () == sinkThing.GetType ();
            if (!allowed) {
                throw new NotSupportedException ("Currently only merges of texts are supported");
            }
 
-           foreach (var thing in thingGraph.MergeThing (sourceThing, sinkThing)) {
+           foreach (var thing in thingGraph.MergeThing (sweepThing, sinkThing)) {
                thingGraph.OnDataChanged (thing);
 
                if (!meshed) {
@@ -175,7 +175,7 @@ namespace Limada.Usecases {
                }
            }
 
-           scene.Requests.Add (new DeleteCommand<IVisual, IVisualEdge> (source, scene));
+           scene.Requests.Add (new DeleteCommand<IVisual, IVisualEdge> (sweep, scene));
 
 
        }

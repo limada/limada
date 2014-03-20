@@ -188,7 +188,6 @@
     <Compile Include="Playground\IO\IoPrototype.cs" />
     <Compile Include="Playground\IO\IoTryout.cs" />
     <Compile Include="Playground\Limada.Model\HyperGraph.cs" />
-    <Compile Include="Playground\Limada.UseCases\ThingGraphUseCases.cs" />
     <Compile Include="Playground\View\AllignerPrototyper.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
     <Compile Include="Playground\View\CollissionResolver.cs" />
@@ -333,6 +332,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Limada.Tests\Tests\Data\db4o\" />
+    <Folder Include="Playground\Limada.UseCases\" />
     <Folder Include="[Obsolete]\" />
   </ItemGroup>
   <ItemGroup>

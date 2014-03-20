@@ -31,32 +31,32 @@ namespace Limaki.Tests.UseCases {
         public override void Compose (ConceptUsecase useCase) {
 
             this.TestMessage = (s, m) => useCase.Progress (m, -1, -1);
-            
+
             this.DisplayTest = () => {
-                var test = new BenchmarkOneTests ();
-                var testVidget = new VisualsDisplayTest {
-                    CreateDisplay = () => new VisualsDisplay ()
-                };
+                                   var test = new BenchmarkOneTests();
+                                   var testVidget = new VisualsDisplayTest {
+                                                                               CreateDisplay = () => new VisualsDisplay()
+                                                                           };
 
-                test.WriteDetail += TestMessage;
-                test.TestWindow = useCase.MainWindow;
-                test.Display = useCase.SplitView.Display1;
-                test.Setup ();
+                                   test.WriteDetail += TestMessage;
+                                   test.TestWindow = useCase.MainWindow;
+                                   test.Display = useCase.SplitView.Display1;
+                                   test.Setup();
 
-                return test;
-            };
+                                   return test;
+                               };
         }
 
         public void ShowQuadTree (IGraphScene<IVisual, IVisualEdge> scene) {
             var vindow = new Vindow();
-            var display = new VisualsDisplay ();
+            var display = new VisualsDisplay();
             vindow.Content = display;
 
-            var quadTreeVisualizer = new QuadTreeVisualizer ();
+            var quadTreeVisualizer = new QuadTreeVisualizer();
             quadTreeVisualizer.VisualsDisplay = display;
             quadTreeVisualizer.Data = (scene.SpatialIndex as VisualsQuadTreeIndex).GeoIndex;
 
-            vindow.Show ();
+            vindow.Show();
         }
 
         public void WCFServiceTest (ConceptUsecase usecase) {
@@ -92,8 +92,8 @@ namespace Limaki.Tests.UseCases {
         }
 
         public void NoSchemaThingGraph (ConceptUsecase useCase) {
-            var display = useCase.GetCurrentDisplay ();
-            var thingGraph = display.Data.Graph.ThingGraph ();
+            var display = useCase.GetCurrentDisplay();
+            var thingGraph = display.Data.Graph.ThingGraph();
             var schemaGraph = thingGraph as SchemaThingGraph;
             if (schemaGraph != null) {
                 schemaGraph.EdgeFilter = e => true;
@@ -104,61 +104,16 @@ namespace Limaki.Tests.UseCases {
         public void CurrentProblem (ConceptUsecase usecase) {
             try {
 
-                TimelineSheet (usecase);
+                var test = new WebProxyTest ();
+                test.TestInfinitLoopIfHtmlContentIsFocused (usecase.GetCurrentDisplay ());
 
-                if (false) {
-                    var rfcThingGraph = usecase.GetCurrentDisplay().Data.Graph.ThingGraph();
-                    if (rfcThingGraph == null)
-                        throw new ArgumentException ("ThingGraphMaintenance only works with Thing-backed graphs");
-
-                    var graph = rfcThingGraph.Unwrap();
-                    var maint = new ThingGraphMaintenance();
-
-                    maint.RefreshCompression (graph, true);
-                }
-
-                if (false) {
-                    var test = new WebProxyTest();
-                    test.TestInfinitLoopIfHtmlContentIsFocused (usecase.GetCurrentDisplay());
-                }
             } catch (Exception e) {
-                Registry.Pooled<IExceptionHandler>().Catch (e, MessageType.OK);
+                Registry.Pooled<IExceptionHandler> ().Catch (e, MessageType.OK);
             } finally {
 
             }
         }
 
-        public void TimelineSheet (ConceptUsecase usecase) {
-
-            var thingGraph = usecase.GetCurrentDisplay ().Data.Graph.ThingGraph ();
-            if (thingGraph == null)
-                throw new ArgumentException ("ThingGraphMaintenance only works with Thing-backed graphs");
-
-            var view = usecase.SplitView;
-            var display = view.AdjacentDisplay (view.CurrentDisplay);
-            var oldScene = display.Data;
-            var mesh = view.Mesh;
-            mesh.RemoveScene (oldScene);
-
-            var scene = mesh.CreateSinkScene (oldScene.Graph);
-            display.Data = scene;
-
-            var visuals = new ThingGraphUseCases ()
-                .TimeLine (thingGraph)
-                .Select (t => scene.Graph.VisualOf (t)).ToArray();
-
-            new GraphSceneFacade<IVisual, IVisualEdge> (() => scene, display.Layout)
-                .Add (visuals, true, false);
-
-            scene.CreateMarkers();
-            mesh.AddScene (scene);
-
-            var aligner = new Aligner<IVisual, IVisualEdge> (scene, display.Layout);
-            aligner.OneColumn (visuals, (Point)display.Layout.Border, display.Layout.Options ());
-            aligner.Locator.Commit (scene.Requests);
-
-            display.Perform();
-
-        }
+  
     }
 }

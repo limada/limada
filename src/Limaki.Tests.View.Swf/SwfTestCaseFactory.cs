@@ -42,9 +42,12 @@ namespace Limaki.Tests.UseCases {
                         new ToolStripMenuItem ("SchemaFilter off", null, (s, e) => {
                             this.NoSchemaThingGraph (useCase);
                         }),
-                        new ToolStripMenuItem("Repair Database", null, (s, e) => {
-                        //    this.RepairDatabase(useCase);
+                        new ToolStripMenuItem("Database refresh Compression", null, (s, e) => {
+                            useCase.RefreshCompression();
                         }), 
+                         new ToolStripMenuItem ("Timeline", null, (s, e) => {
+                             useCase.TimelineSheet ();
+                        }),
                         new ToolStripMenuItem ("current problem", null, (s, e) => {
                             this.CurrentProblem (useCase);
                         }),

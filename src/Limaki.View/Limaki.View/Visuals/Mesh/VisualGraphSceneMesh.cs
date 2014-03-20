@@ -3,6 +3,7 @@ using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
 using Limaki.View.Mesh;
 using Limaki.Visuals;
+using Limaki.View.GraphScene;
 
 namespace Limaki.View.Visuals.UI {
 
@@ -13,7 +14,7 @@ namespace Limaki.View.Visuals.UI {
             var sinkGraph = CreateSinkGraph (sourceGraph);
             if (sinkGraph != null)
                 result.Graph = sinkGraph;
-
+            result.CreateMarkers();
             return result;
         }
 

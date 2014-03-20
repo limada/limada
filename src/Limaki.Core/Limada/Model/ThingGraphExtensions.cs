@@ -277,20 +277,31 @@ namespace Limada.Model {
             return result;
         }
 
-        public static IEnumerable<IThing> MergeThing (this IThingGraph thingGraph, IThing source, IThing sink) {
+        /// <summary>
+        /// all links of sweeped
+        /// are linked to sink
+        /// </summary>
+        /// <param name="thingGraph"></param>
+        /// <param name="sweeped"></param>
+        /// <param name="sink"></param>
+        /// <returns></returns>
+        public static IEnumerable<IThing> MergeThing (this IThingGraph thingGraph, IThing sweeped, IThing sink) {
 
-            foreach (var link in thingGraph.Edges (source)) {
-                if (link.Root == source)
+            foreach (var link in thingGraph.Edges (sweeped).ToArray()) {
+                if (link.Root == sweeped)
                     link.Root = sink;
-                if (link.Leaf == source)
+                if (link.Leaf == sweeped)
                     link.Leaf = sink;
-                if (link.Marker == source)
+                if (link.Marker == sweeped)
                     link.Marker = sink;
-                thingGraph.Add (link);
+                if (link.Root == link.Leaf)
+                    thingGraph.Remove (link);
+                else
+                    thingGraph.Add (link);
                 yield return link;
             }
 
-            foreach (var link in thingGraph.Where<ILink> (l => l.Marker!=null && l.Marker.Id == source.Id)) {
+            foreach (var link in thingGraph.Where<ILink> (l => l.Marker!=null && l.Marker.Id == sweeped.Id)) {
                 link.Marker = sink;
                 thingGraph.Add (link);
                 yield return link;
