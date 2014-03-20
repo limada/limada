@@ -12,12 +12,11 @@
  * 
  */
 
-using Limaki.View.Swf.UI;
+using Limaki.Drawing.Gdi;
 using Limaki.View.Viz.Rendering;
 using Limaki.View.Viz.UI;
 using Limaki.View.Viz.Visualizers;
 using SD2 = System.Drawing.Drawing2D;
-using Limaki.Drawing.Gdi;
 
 namespace Limaki.View.Swf.Visualizers {
 

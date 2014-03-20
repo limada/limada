@@ -157,7 +157,6 @@
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripUtils.cs" />
     <Compile Include="Limaki.View.Swf\Converter.cs" />
     <Compile Include="Limaki.View.Swf\CursorHandlerBackend.cs" />
-    <Compile Include="[Obsolete]\DragDropCatcher.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\SdImageDisplay.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\DisplayBackendComposer.cs" />
     <Compile Include="Limaki.View.Swf\Visualizers\SdImageDisplayBackend.cs">
@@ -173,28 +172,8 @@
     <Compile Include="Limaki.View.Swf\Visualizers\VisualsDisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="[Obsolete]\DragDrop\ControlDataObject.cs" />
-    <Compile Include="[Obsolete]\DragDrop\DataInprocObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\DataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\DataObjectHandlerChain.cs" />
-    <Compile Include="[Obsolete]\DragDrop\DataObjectHelper.cs" />
-    <Compile Include="[Obsolete]\DragDrop\DragDropFacade.cs" />
-    <Compile Include="[Obsolete]\DragDrop\IDataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\ImageDataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\IVisualsDataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\SerializedDataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\SerializedVisualsDataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\StreamDataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\StringDataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\VisualsDataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\VisualsImageDataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\VisualsInprocDataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\DragDrop\VisualsTextDataObjectHandler.cs" />
-    <Compile Include="[Obsolete]\IDragDropAction.cs" />
     <Compile Include="Limaki.View.Swf\IDragDropControl.cs" />
     <Compile Include="Limaki.View.Swf\Rendering\SwfBackendRenderer.cs" />
-    <Compile Include="[Obsolete]\SwfEventControler.cs" />
-    <Compile Include="[Obsolete]\VisualsDragDrop.cs" />
     <Compile Include="Limaki.View.Swf\Visuals\VisualsTextEditAction.cs" />
     <Compile Include="Limaki.View.Swf\SwfContextResourceLoader.cs" />
     <Compile Include="Limaki.View.Swf\SwfExeptionHandlerBackend.cs" />
@@ -332,6 +311,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Limaki.View.Swf\UI\" />
+    <Folder Include="[Obsolete]\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
