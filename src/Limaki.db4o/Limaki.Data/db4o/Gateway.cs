@@ -29,7 +29,9 @@ namespace Limaki.Data.db4o {
         public ICommonConfiguration Configuration {
             get {
                 if (_configuration == null) {
-                    var accessMode = Iori.AccessMode;
+                    var accessMode = IoMode.None;
+                    if (Iori != null)
+                        accessMode = Iori.AccessMode;
                     if (accessMode.HasFlag(IoMode.Server)) {
                         _configuration = Db4oClientServer.NewServerConfiguration();
                     } else if (accessMode.HasFlag(IoMode.Client)) {
