@@ -16,8 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Limaki.View.Visualizers;
 using Limaki.Common;
+using Limaki.View.Viz;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {

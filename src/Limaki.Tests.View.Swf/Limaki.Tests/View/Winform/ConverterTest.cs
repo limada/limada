@@ -1,6 +1,5 @@
 using System;
 using System.Windows.Forms;
-using Limaki.View.UI;
 using Limaki.View.Swf;
 using NUnit.Framework;
 using Xwt;

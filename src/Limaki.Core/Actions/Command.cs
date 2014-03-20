@@ -17,6 +17,7 @@ using System.Text;
 using Limaki.Common;
 
 namespace Limaki.Actions {
+
     public class Command:ICommand {
         /// <summary>
         /// Command.Execute makes nothing; override it in derived classes

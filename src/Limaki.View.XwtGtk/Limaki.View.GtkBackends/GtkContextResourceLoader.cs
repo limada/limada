@@ -1,5 +1,4 @@
 using Limaki.Common.IOC;
-using Limaki.View.UI;
 using Limaki.View.XwtBackend;
 using Xwt;
 using Xwt.Backends;

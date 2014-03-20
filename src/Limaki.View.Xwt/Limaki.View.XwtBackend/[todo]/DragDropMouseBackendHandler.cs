@@ -1,5 +1,6 @@
 using System;
 using Limaki.View.DragDrop;
+using Limaki.View.Vidgets;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {
@@ -7,11 +8,11 @@ namespace Limaki.View.XwtBackend {
 
         public DragDropMouseBackendHandler (IVidgetBackend widget) : base(widget) { }
 
-        public void MouseUp (UI.MouseActionEventArgs e) {
+        public void MouseUp (MouseActionEventArgs e) {
             throw new NotImplementedException();
         }
 
-        public void MouseMove (UI.MouseActionEventArgs e) {
+        public void MouseMove (MouseActionEventArgs e) {
             throw new NotImplementedException();
         }
 

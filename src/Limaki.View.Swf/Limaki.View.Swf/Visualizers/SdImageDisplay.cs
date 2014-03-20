@@ -12,8 +12,9 @@
  * 
  */
 
-using Limaki.View.UI;
-using Limaki.View.Visualizers;
+using Limaki.View.Viz;
+using Limaki.View.Viz.UI;
+using Limaki.View.Viz.Visualizers;
 using Xwt;
 using Xwt.Backends;
 using Xwt.Gdi.Backend;

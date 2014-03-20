@@ -16,6 +16,7 @@ using System;
 using System.ComponentModel;
 
 namespace Limaki.Actions {
+
     public interface IAction : IDisposable {
         [Browsable ( false )]
         bool Resolved { get; }

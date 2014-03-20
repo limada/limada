@@ -20,17 +20,20 @@ using System.Windows.Forms;
 using Limada.Usecases;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limada.UseCases;
+using Limada.View.ContentViewers;
 using Limaki.Swf.Backends.Viewers;
 using Limaki.Swf.Backends.Viewers.Content;
-using Limaki.View.Layout;
+using Limaki.View.ContentViewers;
 using Limaki.View.Swf;
 using Limaki.View.Swf.Visuals;
-using Limaki.View.Visualizers;
-using Limaki.Viewers;
-using Limaki.Viewers.StreamViewers;
-using DialogResult = Limaki.Viewers.DialogResult;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Modelling;
+using Limaki.View.Viz.UI;
+using Limaki.View.Viz.Visualizers;
+using DialogResult = Limaki.View.Vidgets.DialogResult;
 using ImageExporter = Limaki.View.Swf.Visuals.ImageExporter;
-using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
+using MessageBoxButtons = Limaki.View.Vidgets.MessageBoxButtons;
 using SD = System.Drawing;
 using Limaki.View.Swf.Backends;
 using Limaki.View;
@@ -121,7 +124,7 @@ namespace Limaki.Swf.Backends.UseCases {
                     useCase.SplitViewToolStrip.Backend as ToolStrip,
                     useCase.MarkerToolStrip.Backend as ToolStrip,
                     useCase.LayoutToolStrip.Backend as ToolStrip,
-                    useCase.DisplayToolStrip.Backend as ToolStrip,
+                    useCase.DisplayDisplayToolStrip.Backend as ToolStrip,
                 });
 
         }
@@ -153,11 +156,11 @@ namespace Limaki.Swf.Backends.UseCases {
             new ToolStripMenuItem(l["Edit"], null, new ToolStripMenuItem[] {
                 new ToolStripMenuItem(l["Copy"], null, (s, e) => {
                     var display = useCase.GetCurrentDisplay();
-                    if (display != null) ((Limaki.View.UI.ICopyPasteAction)display.EventControler).Copy();
+                    if (display != null) ((ICopyPasteAction)display.EventControler).Copy();
                 }),
                 new ToolStripMenuItem(l["Paste"], null, (s, e) => {
                     var display = useCase.GetCurrentDisplay();
-                    if (display != null) ((Limaki.View.UI.ICopyPasteAction) display.EventControler).Paste ();
+                    if (display != null) ((ICopyPasteAction) display.EventControler).Paste ();
                 }),
                 new ToolStripMenuItem(l["Search"], null, (s, e) => { useCase.Search(); }),
 #if DEBUG

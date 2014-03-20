@@ -14,11 +14,11 @@
 
 using Limaki.Drawing;
 using Limaki.Swf.Backends.Viewers.Content;
-using Limaki.Viewers.Vidgets;
 using Limaki.View;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using Limaki.View.Vidgets;
 using Xwt.Gdi.Backend;
 using Limaki.View.Swf;
 using Limaki.Common;

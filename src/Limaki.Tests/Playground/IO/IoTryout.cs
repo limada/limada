@@ -3,11 +3,12 @@ using Limada.Model;
 using Limaki.Contents;
 using Limaki.Data;
 using Limaki.Drawing;
-using Limaki.Visuals;
 using Limaki.Graphs;
 using Limaki.Common;
 using Limaki.Contents.IO;
 using System.Collections.Generic;
+using Limaki.View;
+using Limaki.View.Visuals;
 
 namespace Limaki.Playground.IO {
 

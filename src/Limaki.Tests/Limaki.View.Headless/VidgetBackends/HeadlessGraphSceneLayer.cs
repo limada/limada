@@ -1,11 +1,11 @@
 ﻿using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Drawing.XwtBackend;
-using Limaki.View.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Limaki.View.Viz.Rendering;
 
 namespace Limaki.View.Headless.VidgetBackends {
     public class HeadlessGraphSceneLayer<TItem, TEdge> : GraphSceneLayer<TItem, TEdge>

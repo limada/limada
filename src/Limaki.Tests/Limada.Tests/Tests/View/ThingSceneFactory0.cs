@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using Limada.Model;
-using Limada.VisualThings;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limada.View.VisualThings;
 using Limaki.Tests.View.Visuals;
-using Limaki.Visuals;
+using Limaki.View;
+using Limaki.View.Visuals;
 
 namespace Limada.Tests.View {
 

@@ -2,7 +2,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 
 namespace Limaki.Tests.Graph.Model {
 

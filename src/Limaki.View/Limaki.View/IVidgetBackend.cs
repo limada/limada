@@ -14,6 +14,7 @@
 
 using System;
 using Limaki.Drawing;
+using Limaki.View.Vidgets;
 using Xwt;
 
 namespace Limaki.View {

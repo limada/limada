@@ -17,12 +17,11 @@ using System.Threading;
 using System;
 using System.Runtime.InteropServices;
 using System.Net;
+using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.View;
-using Limaki.Viewers;
+using Limaki.View.Vidgets;
 using Xwt.Gdi.Backend;
-using Limaki.Viewers.StreamViewers;
-using Limaki.Viewers.Vidgets;
 using Limaki.View.Swf;
 
 namespace Limaki.Swf.Backends {

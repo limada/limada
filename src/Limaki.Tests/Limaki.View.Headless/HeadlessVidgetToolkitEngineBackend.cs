@@ -1,9 +1,9 @@
 using Limaki.View;
 using Limaki.View.Headless.VidgetBackends;
-using Limaki.View.Visualizers;
-using Limaki.View.Visuals.Visualizers;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers;
+using Limaki.View.Viz.Visuals;
 using Limaki.View.XwtBackend;
-using Limaki.Visuals;
 
 namespace Limaki.View.Headless {
 

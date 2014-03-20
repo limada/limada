@@ -16,8 +16,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Limaki.Drawing;
-using Limaki.View.Visualizers;
-using Limaki.View.Visuals.Visualizers;
+using Limaki.View.Viz.Visualizers;
+using Limaki.View.Viz.Visuals;
 using Xwt;
 using Xwt.Drawing;
 

@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Limaki.Actions;
-using Limaki.View.UI;
+using Limaki.View.Viz.UI;
 
 namespace Limaki.View.Swf.UI {
     /// <summary>

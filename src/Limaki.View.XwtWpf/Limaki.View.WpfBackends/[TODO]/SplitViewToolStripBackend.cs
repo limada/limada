@@ -1,10 +1,12 @@
-using Limaki.Viewers.ToolStripViewers;
 using System.ComponentModel;
+using Limada.View.Vidgets;
+using Limaki.Usecases.Vidgets;
+using Limaki.View.Vidgets;
 
 namespace Limaki.View.WpfBackends {
     public class SplitViewToolStripBackend : ToolStripBackend, ISplitViewToolStripBackend {
 
-        public override void InitializeBackend (Limaki.View.IVidget frontend, Limaki.View.VidgetApplicationContext context) {
+        public override void InitializeBackend (Limaki.View.IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (SplitViewToolStrip)frontend;
             Compose();
         }
@@ -17,9 +19,9 @@ namespace Limaki.View.WpfBackends {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SplitViewToolStrip Frontend { get; protected set; }
 
-        public Viewers.SplitViewMode ViewMode { get; set; }
+        public SplitViewMode ViewMode { get; set; }
 
-        public void CheckBackForward (Viewers.ISplitView splitView) {
+        public void CheckBackForward (ISplitView splitView) {
 
         }
 

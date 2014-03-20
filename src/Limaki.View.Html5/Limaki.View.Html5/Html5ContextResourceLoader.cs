@@ -17,15 +17,11 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.XwtBackend;
 using Limaki.View;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 using Xwt;
 using Xwt.Html5.Backend;
 using Limaki.Common.IOC;
 using Limaki.Drawing.Shapes;
-using Limaki.View.UI;
-using Limaki.IOC;
-using Limaki.Viewers;
-
 using Limaki.Drawing.Painters;
 using Xwt.Backends;
 

@@ -1,10 +1,11 @@
-﻿using Limaki.Viewers.ToolStripViewers;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using System.Windows.Controls;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.WpfBackends {
-    public abstract class ToolStripBackend : ToolBar, IToolStripViewerBackend {
+    public abstract class ToolStripBackend : ToolBar, IDisplayToolStripBackend {
         
         public abstract void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
 

@@ -16,10 +16,11 @@ using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.View;
-using Limaki.View.Rendering;
-using Limaki.View.UI;
-using Limaki.Viewers.Vidgets;
-using Limaki.Visuals;
+using Limaki.View.Vidgets;
+using Limaki.View.Visuals;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Rendering;
+using Limaki.View.Viz.UI;
 using NUnit.Framework;
 using Xwt;
 

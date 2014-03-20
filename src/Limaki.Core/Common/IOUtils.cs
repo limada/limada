@@ -12,13 +12,12 @@
  * 
  */
 
-using Limaki.Common;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Limaki {
+namespace Limaki.Common {
 
     public class IoUtils {
 

@@ -1,5 +1,6 @@
-using Limaki.Viewers.ToolStripViewers;
-using Limaki.Visuals;
+using Limaki.View.Vidgets;
+using Limaki.View.Visuals;
+using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.WpfBackends {
     public class MarkerToolStripBackend : ToolStripBackend, IMarkerToolStripBackend {
@@ -10,11 +11,11 @@ namespace Limaki.View.WpfBackends {
             this.Frontend = (MarkerToolStrip)frontend;
         }
 
-        public void Attach (Drawing.IGraphScene<IVisual, IVisualEdge> scene) {
+        public void Attach (IGraphScene<IVisual, IVisualEdge> scene) {
 
         }
 
-        public void Detach (Drawing.IGraphScene<Limaki.Visuals.IVisual, Limaki.Visuals.IVisualEdge> oldScene) {
+        public void Detach (IGraphScene<IVisual, IVisualEdge> oldScene) {
 
         }
     }

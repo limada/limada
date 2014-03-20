@@ -1,10 +1,11 @@
-using Limaki.Viewers.ToolStripViewers;
+using Limada.View.Vidgets;
+using Limaki.Usecases.Vidgets;
 
 namespace Limaki.View.XwtBackend {
     public class SplitViewToolStripBackend : DummyBackend, ISplitViewToolStripBackend {
-        public Viewers.SplitViewMode ViewMode { get; set; }
+        public SplitViewMode ViewMode { get; set; }
 
-        public void CheckBackForward (Viewers.ISplitView splitView) {
+        public void CheckBackForward (ISplitView splitView) {
 
         }
 

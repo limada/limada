@@ -1,5 +1,6 @@
-using Limaki.Viewers.ToolStripViewers;
 using System.ComponentModel;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.WpfBackends {
     public class DisplayModeToolStripBackend : ToolStripBackend, IDisplayModeToolStripBackend {
@@ -7,7 +8,7 @@ namespace Limaki.View.WpfBackends {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DisplayModeToolStrip Frontend { get; protected set; }
 
-        public override void InitializeBackend (IVidget frontend, Limaki.View.VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (DisplayModeToolStrip)frontend;
             Compose();
         }

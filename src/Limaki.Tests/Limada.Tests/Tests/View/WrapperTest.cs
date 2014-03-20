@@ -16,13 +16,13 @@
 using System.Diagnostics;
 using Limada.Model;
 using Limada.Tests.Model;
-using Limada.VisualThings;
+using Limada.View.VisualThings;
 using Limaki.Model;
 using Limaki.Tests;
 using Limaki.Tests.Graph;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.View.Visuals;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 using NUnit.Framework;
 
 namespace Limaki.Tests.View.Visuals {

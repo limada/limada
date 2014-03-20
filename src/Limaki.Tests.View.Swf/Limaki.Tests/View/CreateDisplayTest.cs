@@ -1,10 +1,8 @@
 using System;
 using Limaki.Drawing;
-using Limaki.View.UI;
 using Limaki.Tests.Graph.Model;
-using Limaki.Visuals;
+using Limaki.View.Viz.Visuals;
 using NUnit.Framework;
-using Limaki.View.Visuals.Visualizers;
 
 namespace Limaki.Tests.View.Display {
 

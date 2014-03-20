@@ -15,7 +15,7 @@
 using Limaki.Common;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Basic;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 
 namespace Limaki.Tests.View.Visuals {
 

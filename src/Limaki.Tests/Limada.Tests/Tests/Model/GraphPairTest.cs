@@ -14,7 +14,6 @@
 
 using Limada.Model;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using Limaki.Model;
 using Limaki.Tests;
 using Limaki.Tests.Graph.Model;

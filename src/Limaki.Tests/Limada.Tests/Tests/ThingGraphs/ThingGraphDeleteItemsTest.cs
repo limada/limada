@@ -4,11 +4,9 @@ using Limada.Model;
 using Limada.Tests.Model;
 using Limaki.Data;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
-using Limada.View;
-using Limada.VisualThings;
+using Limada.View.VisualThings;
 using Limaki.Tests.Graph.Model;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 using NUnit.Framework;
 
 
@@ -122,10 +120,10 @@ namespace Limada.Tests.ThingGraphs {
             programming.thing = dataSource.GetById(programming.id);
 
             IGraphPair<IVisual, IThing, IVisualEdge, ILink> pairOne =
-                new VisualThingGraph(new Limaki.Visuals.VisualGraph(), dataSource);
+                new VisualThingGraph(new VisualGraph(), dataSource);
 
             SubGraph<IVisual, IVisualEdge> viewOne =
-                new SubGraph<IVisual, IVisualEdge>(pairOne, new Limaki.Visuals.VisualGraph());
+                new SubGraph<IVisual, IVisualEdge>(pairOne, new VisualGraph());
 
             programming.one = pairOne.Get(programming.thing); // Programming
 
@@ -139,10 +137,10 @@ namespace Limada.Tests.ThingGraphs {
             ICollection<ILink> dataSourceTwigs = GetTwigCollection<IThing,ILink>(dataSource, java.thing);
 
             IGraphPair<IVisual, IThing, IVisualEdge, ILink> pairTwo =
-                new VisualThingGraph(new Limaki.Visuals.VisualGraph(), dataSource);
+                new VisualThingGraph(new VisualGraph(), dataSource);
 
             SubGraph<IVisual, IVisualEdge> viewTwo =
-                new SubGraph<IVisual, IVisualEdge>(pairTwo, new Limaki.Visuals.VisualGraph());
+                new SubGraph<IVisual, IVisualEdge>(pairTwo, new VisualGraph());
 
             java.one = pairOne.Get(java.thing);
             java.two = pairTwo.Get(java.thing);
@@ -237,7 +235,7 @@ namespace Limada.Tests.ThingGraphs {
             programming2Language.thing = dataSource.GetById (programming2Language.id);
 
             IGraphPair<IVisual, IThing, IVisualEdge, ILink> pairOne =
-                new VisualThingGraph(new Limaki.Visuals.VisualGraph(), dataSource);
+                new VisualThingGraph(new VisualGraph(), dataSource);
 
             programming.one = pairOne.Get(programming.thing);
 

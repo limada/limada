@@ -1,5 +1,5 @@
 using System;
-using Limaki.Viewers;
+using Limaki.View.Vidgets;
 
 namespace Limaki.View.XwtBackend {
     public class WebBrowserBackend : DummyBackend, IWebBrowserBackend {

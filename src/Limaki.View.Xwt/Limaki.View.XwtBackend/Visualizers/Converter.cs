@@ -1,21 +1,22 @@
+using Limaki.View.Vidgets;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
     public static class Converter {
 
-        public static UI.MouseActionButtons ToLmk (this PointerButton button) {
+        public static MouseActionButtons ToLmk (this PointerButton button) {
             if(button == PointerButton.Left)
-                return UI.MouseActionButtons.Left;
+                return MouseActionButtons.Left;
             if(button == PointerButton.Middle)
-                return UI.MouseActionButtons.Middle;
+                return MouseActionButtons.Middle;
             if(button == PointerButton.Right)
-                return UI.MouseActionButtons.Right;
+                return MouseActionButtons.Right;
             if(button == PointerButton.ExtendedButton1)
-                return UI.MouseActionButtons.XButton1;
+                return MouseActionButtons.XButton1;
             if(button == PointerButton.ExtendedButton2)
-                return UI.MouseActionButtons.XButton2;
-            return UI.MouseActionButtons.None;
+                return MouseActionButtons.XButton2;
+            return MouseActionButtons.None;
         }
 
         public static Point MouseLocation (this Widget widget) {

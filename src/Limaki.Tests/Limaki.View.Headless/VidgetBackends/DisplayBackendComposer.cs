@@ -1,8 +1,8 @@
 using Limaki.Drawing.XwtBackend;
-using Limaki.View.Rendering;
-using Limaki.View.UI;
-using Limaki.View.Visualizers;
 using Limaki.Drawing;
+using Limaki.View.Viz.Rendering;
+using Limaki.View.Viz.UI;
+using Limaki.View.Viz.Visualizers;
 
 namespace Limaki.View.Headless.VidgetBackends {
 

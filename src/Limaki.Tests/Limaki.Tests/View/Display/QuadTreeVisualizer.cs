@@ -4,9 +4,8 @@ using Limaki.Drawing;
 using Limaki.Drawing.Indexing.QuadTrees;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
-using Limaki.Visuals;
 using Limaki.View.Visuals;
-using Limaki.View.Visualizers;
+using Limaki.View.Viz.Visualizers;
 using Xwt;
 
 namespace Limaki.Tests.View {

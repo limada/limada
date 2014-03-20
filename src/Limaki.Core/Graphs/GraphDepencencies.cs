@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Limaki.Common;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 
 namespace Limaki.Graphs {
 

@@ -11,16 +11,19 @@
  * http://www.limada.org
  */
 
+using Limada.View.Vidgets;
+using Limaki.Usecases.Vidgets;
 using Limaki.View;
 using Limaki.View.Swf;
 using Limaki.View.Swf.Visualizers;
-using Limaki.Viewers;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using Xwt.Gdi.Backend;
-using DialogResult = Limaki.Viewers.DialogResult;
+using DialogResult = Limaki.View.Vidgets.DialogResult;
 using Point = System.Drawing.Point;
 
 namespace Limaki.Swf.Backends.Viewers {

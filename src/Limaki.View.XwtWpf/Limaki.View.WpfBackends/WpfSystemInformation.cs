@@ -14,7 +14,6 @@
 
 using System.Runtime.InteropServices;
 using System.Windows;
-using Limaki.View.UI;
 using Size = Xwt.Size;
 
 namespace Limaki.View.WpfBackends {

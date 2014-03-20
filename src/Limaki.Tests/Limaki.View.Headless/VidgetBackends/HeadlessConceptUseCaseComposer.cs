@@ -1,5 +1,7 @@
 ﻿using Limada.Usecases;
-using Limaki.View.Visualizers;
+using Limada.UseCases;
+using Limaki.Common;
+using Limaki.View.Viz.Visualizers;
 using Limaki.View.XwtBackend;
 using System;
 using System.Collections.Generic;

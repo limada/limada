@@ -18,12 +18,11 @@ using System.Collections.Generic;
 using System.Text;
 using Limada.Tests.Basic;
 using Limaki.Graphs;
-using Limada.View;
-using Limada.VisualThings;
-using Limaki.Visuals;
 using Limada.Model;
+using Limada.View.VisualThings;
 using Limaki.UnitTest;
 using Limada.Tests.Model;
+using Limaki.View.Visuals;
 using NUnit.Framework;
 
 using Id = System.Int64;

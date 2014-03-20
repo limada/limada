@@ -16,10 +16,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Limaki.Common;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using Limaki.Tests.Graph.Model;
-using Limaki.View.Mesh;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
+using Limaki.View.Viz.Mesh;
 
 namespace Limaki.Tests.View.Visuals {
 

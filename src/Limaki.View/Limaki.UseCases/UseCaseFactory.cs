@@ -12,9 +12,11 @@
  * 
  */
 
-using Limaki.View.Visualizers;
+using Limaki.Common;
+using Limaki.View;
 
 namespace Limaki.Usecases {
+
     public class UsecaseFactory<T> where T:new() {
 
         public virtual T Create() {

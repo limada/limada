@@ -13,6 +13,7 @@
 
 using System;
 namespace Limaki.Actions {
+
     public interface ICommand : IDisposable {
         void Execute();
     }

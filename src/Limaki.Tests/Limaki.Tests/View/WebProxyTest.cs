@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using Limaki.Contents;
 using Limaki.Drawing;
-using Limada.View;
-using Limada.VisualThings;
-using Limaki.Visuals;
 using Limada.Model;
-using Limaki.View.Visualizers;
+using Limada.View.VisualThings;
+using Limaki.View.Visuals;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Visualizers;
 
 namespace Limaki.Tests.View {
 

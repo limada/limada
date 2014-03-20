@@ -15,12 +15,14 @@
 using Limada.Usecases;
 using Limaki.Common;
 using Limaki.Common.IOC;
+using Limada.UseCases;
 using Limaki.Swf.Backends.UseCases;
 using Limaki.Usecases;
 using Limaki.View;
 using Limaki.View.Swf;
 using System;
 using System.Windows.Forms;
+using Limaki.View.Vidgets;
 using Xwt.WinformBackend;
 
 namespace Limaki.App {

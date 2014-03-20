@@ -2,7 +2,7 @@ using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Basic;
 using Limaki.Tests.View.Visuals;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 
 namespace Limaki.Tests.Graph.GraphPair {
 

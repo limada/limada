@@ -16,6 +16,7 @@ using System;
 using System.ComponentModel;
 
 namespace Limaki.Actions {
+
     public abstract class ActionBase : IAction {
         protected bool _resolved = false;
 

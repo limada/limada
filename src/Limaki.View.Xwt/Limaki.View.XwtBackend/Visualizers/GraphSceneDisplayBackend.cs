@@ -18,9 +18,9 @@ using System.Linq;
 using System.Text;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.View.Viz.Visualizers;
 using Limaki.View.XwtBackend;
-using Limaki.View.Visualizers;
-using Limaki.View.XwtBackend.Visualizers;
+using Limaki.View.XwtBackend.Viz;
 
 namespace Limaki.View.XwtBackend {
 

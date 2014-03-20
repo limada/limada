@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using Limaki.Common;
 using Limaki.Common.IOC;
-using Limaki.Graphs.Extensions;
 using Limada.Model;
 
 using Limaki.Contents.IO;
@@ -11,7 +10,7 @@ using Limaki.Contents;
 using Limaki.Graphs;
 using Limaki.Model;
 
-namespace Limaki.IOC {
+namespace Limaki {
 
     public class LimakiCoreContextResourceLoader : ContextResourceLoader {
         

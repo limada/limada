@@ -13,10 +13,10 @@
  */
 
 using Limaki.Drawing.XwtBackend;
-using Limaki.View.Visualizers;
-using Limaki.View.UI;
+using Limaki.View.Viz.Rendering;
+using Limaki.View.Viz.UI;
+using Limaki.View.Viz.Visualizers;
 using Limaki.View.XwtBackend;
-using Limaki.View.Rendering;
 using Limaki.Drawing;
 
 namespace Limaki.View.XwtBackend {

@@ -15,9 +15,9 @@
 using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.View;
+using Limaki.View.Vidgets;
 using Xwt.Gdi.Backend;
 using Limaki.Swf.Backends.Viewers.Content;
-using Limaki.Viewers.Vidgets;
 using Limaki.View.Swf;
 
 namespace Limaki.Swf.Backends.TextEditor {

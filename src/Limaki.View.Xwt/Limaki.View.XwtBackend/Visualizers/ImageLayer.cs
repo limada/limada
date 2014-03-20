@@ -15,8 +15,8 @@
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.XwtBackend;
-using Limaki.View.Rendering;
 using System;
+using Limaki.View.Viz.Rendering;
 using Xwt;
 using Xwt.Drawing;
 

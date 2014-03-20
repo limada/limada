@@ -16,7 +16,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Limaki.Drawing;
 using Limaki.View.Gdi.UI;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 using Rectangle = System.Drawing.Rectangle;
 using Size = Xwt.Size;
 

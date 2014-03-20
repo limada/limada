@@ -14,15 +14,17 @@
 
 using System;
 using Limaki.View;
-using Limaki.View.Rendering;
-using Limaki.View.Visualizers;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Rendering;
+using Limaki.View.Viz.UI;
+using Limaki.View.Viz.Visualizers;
 using Xwt;
 using Limaki.Common;
 using Limaki.Common.IOC;
 using System.ComponentModel;
 using Xwt.Drawing;
 using System.Diagnostics;
-using Limaki.View.UI;
 
 namespace Limaki.View.Headless.VidgetBackends {
 
@@ -133,7 +135,7 @@ namespace Limaki.View.Headless.VidgetBackends {
 
         }
 
-        private global::Limaki.View.UI.MouseActionButtons lastButton = global::Limaki.View.UI.MouseActionButtons.None;
+        private global::Limaki.View.Vidgets.MouseActionButtons lastButton = global::Limaki.View.Vidgets.MouseActionButtons.None;
         protected virtual void OnButtonPressed (MouseActionEventArgs args) {
             Display.EventControler.OnMouseDown (args);
         }

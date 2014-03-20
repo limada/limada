@@ -19,10 +19,9 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Limaki.Contents;
 using Limaki.Graphs;
-using Limada.View;
-using Limada.VisualThings;
 using Limaki.Common;
-using Limaki.Visuals;
+using Limada.View.VisualThings;
+using Limaki.View.Visuals;
 
 namespace Limaki.View.Swf.DragDrop {
     public class VisualsTextDataObjectHandler :

@@ -13,9 +13,9 @@
  */
 
 using System.Drawing;
-using Limaki.View.Visualizers;
 using Limaki.View.Swf.Visualizers;
 using Limaki.View.Gdi.UI;
+using Limaki.View.Viz.Visualizers;
 
 namespace Limaki.View.Swf.Visualizers {
 

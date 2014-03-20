@@ -19,8 +19,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Drawing;
 using System.Linq;
+using Limaki.View.Vidgets;
 using Xwt.Gdi.Backend;
-using Limaki.Viewers;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 

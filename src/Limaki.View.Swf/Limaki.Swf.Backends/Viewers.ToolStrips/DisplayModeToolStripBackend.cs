@@ -14,10 +14,11 @@
 
 
 using System;
-using Limaki.Viewers.ToolStripViewers;
 using System.ComponentModel;
 using System.Windows.Forms;
 using Limaki.View;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers.ToolStrips;
 using Xwt.Gdi.Backend;
 using Limaki.View.Swf;
 
@@ -32,7 +33,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DisplayModeToolStrip Frontend { get; protected set; }
 
-        public override void InitializeBackend (IVidget frontend, Limaki.View.VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (DisplayModeToolStrip)frontend;
             Compose();
         }

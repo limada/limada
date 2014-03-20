@@ -17,12 +17,12 @@ namespace Limaki.Tests.View.Winform {
                 SceneExamples.Selected = SceneExamples.Examples[comboBox1.SelectedIndex];
 
             this.openButton.Click += (s, o) => {
-                this.SceneExamples.DialogResult = Viewers.DialogResult.Ok;
+                this.SceneExamples.DialogResult = Limaki.View.Vidgets.DialogResult.Ok;
                 this.DialogResult = DialogResult.OK;
             };
 
             this.cancelButton.Click += (s, o) => {
-                this.SceneExamples.DialogResult = Viewers.DialogResult.Cancel;
+                this.SceneExamples.DialogResult = Limaki.View.Vidgets.DialogResult.Cancel;
                 this.DialogResult = DialogResult.Cancel;
             };
         }

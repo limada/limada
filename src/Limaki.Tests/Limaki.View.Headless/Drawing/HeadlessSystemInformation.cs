@@ -12,7 +12,6 @@
  * 
  */
 
-using Limaki.View.UI;
 using Xwt;
 
 namespace Limaki.View.Headless {

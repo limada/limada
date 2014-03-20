@@ -17,7 +17,6 @@ using System.Linq;
 using Limada.Model;
 using Limada.Schemata;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using Limaki.Common.Linqish;
 
 using Id = System.Int64;

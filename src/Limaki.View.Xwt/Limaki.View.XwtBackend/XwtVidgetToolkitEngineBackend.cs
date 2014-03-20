@@ -12,12 +12,12 @@
  * 
  */
 
-using Limaki.View.Visualizers;
-using Limaki.View.Visuals.Visualizers;
-using Limaki.Viewers;
-using Limaki.Viewers.StreamViewers;
-using Limaki.Viewers.ToolStripViewers;
-using Limaki.Viewers.Vidgets;
+using Limada.View.Vidgets;
+using Limaki.Usecases.Vidgets;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers;
+using Limaki.View.Viz.Visualizers.ToolStrips;
+using Limaki.View.Viz.Visuals;
 using Xwt.Drawing;
 using Limaki.View.XwtBackend;
 

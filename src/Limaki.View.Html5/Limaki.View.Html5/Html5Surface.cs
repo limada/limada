@@ -1,11 +1,11 @@
 using Limaki.Drawing;
 using Limaki.Drawing.XwtBackend;
+using Limaki.View.Viz.Rendering;
 using Xwt.Html5.Backend;
 using Xwt.Drawing;
 using Xwt;
-using Limaki.View.Rendering;
 using System;
-using Limaki.View.Clipping;
+
 //using Matrice = Limaki.Drawing.Matrice;
 
 namespace Limaki.View.Html5 {

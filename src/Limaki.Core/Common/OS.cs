@@ -16,7 +16,8 @@ using System;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
-namespace Limaki {
+namespace Limaki.Common {
+
     public class OS {
         protected static Nullable<bool> _mono = null;
         public static bool Mono {

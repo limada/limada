@@ -16,7 +16,7 @@ using System;
 using Limaki.Common.Collections;
 using System.Reflection;
 
-namespace Limaki.Common {
+namespace Limaki.Common.Reflections {
 
     public static class Reflector {
 

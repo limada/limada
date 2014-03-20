@@ -20,15 +20,13 @@ using Limaki.Common.Linqish;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using Limaki.Tests;
 using Limaki.Tests.View;
 using Limaki.View;
-using Limaki.View.Layout;
-using Limaki.View.Visualizers;
 using Limaki.View.Visuals;
-using Limaki.View.Visuals.Rendering;
-using Limaki.Visuals;
+using Limaki.View.Viz.Modelling;
+using Limaki.View.Viz.Visuals;
+using Limaki.View.XwtBackend.Viz;
 using NUnit.Framework;
 using Xwt;
 using Xwt.Drawing;
@@ -57,8 +55,8 @@ namespace Limaki.Playground.View {
             worker.StyleSheet.BackColor = Colors.WhiteSmoke;
             worker.Layout.SetOptions(options);
             worker.Folder.ShowAllData();
-            worker.Receiver.Perform();
-            worker.Receiver.Finish();
+            worker.Modeller.Perform();
+            worker.Modeller.Finish();
 
             var scene2 = SceneWithTestData(exampleNr);
 
@@ -75,8 +73,8 @@ namespace Limaki.Playground.View {
 
             scene.Focused = root2;
 
-            worker.Receiver.Perform();
-            worker.Receiver.Finish();
+            worker.Modeller.Perform();
+            worker.Modeller.Finish();
             return worker;
         }
 
@@ -151,8 +149,8 @@ namespace Limaki.Playground.View {
             itemsToPlace.ForEach(e => aligner.Locator.SetLocation(e, aligner.Locator.GetLocation(e) - dist));
 
             aligner.Commit();
-            worker.Receiver.Perform();
-            worker.Receiver.Finish();
+            worker.Modeller.Perform();
+            worker.Modeller.Finish();
 
             ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
 
@@ -189,7 +187,7 @@ namespace Limaki.Playground.View {
                 AlignY = Alignment.Center,
                 Dimension = Dimension.X,
                 PointOrder = PointOrder.XY,
-                Collisions = Limaki.View.Layout.Collisions.NextFree | Collisions.Toggle
+                Collisions = Collisions.NextFree | Collisions.Toggle
             };
 
             var worker = SceneWorkerWithTestData(0, options);
@@ -237,8 +235,8 @@ namespace Limaki.Playground.View {
             aligner.Columns(scene.Focused, selected, options);
 
             aligner.Commit();
-            worker.Receiver.Perform();
-            worker.Receiver.Finish();
+            worker.Modeller.Perform();
+            worker.Modeller.Finish();
 
             ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
 
@@ -318,8 +316,8 @@ namespace Limaki.Playground.View {
                 });
 
                 aligner.Commit();
-                worker.Receiver.Perform();
-                worker.Receiver.Finish();
+                worker.Modeller.Perform();
+                worker.Modeller.Finish();
             };
             allData();
             allData();
@@ -375,8 +373,8 @@ namespace Limaki.Playground.View {
             });
 
             aligner.Commit();
-            worker.Receiver.Perform();
-            worker.Receiver.Finish();
+            worker.Modeller.Perform();
+            worker.Modeller.Finish();
 
             ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
 

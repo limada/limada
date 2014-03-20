@@ -13,7 +13,7 @@
  */
 
 using System.Linq;
-using Limaki.Viewers;
+using Limaki.View.Vidgets;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {

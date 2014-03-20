@@ -1,8 +1,8 @@
-﻿using Limaki.View.Visualizers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Limaki.View.Viz;
 
 namespace Limaki.View.Headless.VidgetBackends {
 

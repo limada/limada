@@ -16,8 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Limaki.Viewers;
-using Limaki.Viewers.Vidgets;
+using Limaki.Common;
+using Limaki.View.Vidgets;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {

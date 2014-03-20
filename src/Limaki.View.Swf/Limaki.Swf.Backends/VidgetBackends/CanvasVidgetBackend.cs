@@ -14,8 +14,8 @@
 
 using System.Windows.Forms;
 using Limaki.Common;
+using Limaki.View.Vidgets;
 using Xwt.Gdi.Backend;
-using Limaki.Viewers.Vidgets;
 using Xwt;
 
 namespace Limaki.View.Swf.Backends {

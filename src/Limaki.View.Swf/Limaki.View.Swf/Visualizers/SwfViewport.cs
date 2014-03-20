@@ -1,15 +1,17 @@
 using System;
 using System.Windows.Forms;
+using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
 using Limaki.View.Gdi.UI;
+using Limaki.View.Viz;
 using Xwt;
 using Point = System.Drawing.Point;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf.Visualizers {
 
-    public class SwfViewport : Limaki.View.Visualizers.Viewport {
+    public class SwfViewport : Viewport {
 
         protected DisplayBackend backend = null;
         public SwfViewport(DisplayBackend userControl) {

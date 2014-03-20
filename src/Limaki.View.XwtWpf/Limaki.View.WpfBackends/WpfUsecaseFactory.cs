@@ -13,6 +13,7 @@
  */
 
 using Limada.Usecases;
+using Limada.UseCases;
 using Limaki.Usecases;
 using Limaki.View.WpfBackends;
 using Limaki.View.XwtBackend;
@@ -53,7 +54,7 @@ namespace Limaki.View.WpfBackend {
             toolBarTray.ToolBars.Add(useCase.SplitViewToolStrip.Backend as ToolBar);
             toolBarTray.ToolBars.Add(useCase.MarkerToolStrip.Backend as ToolBar);
             toolBarTray.ToolBars.Add(useCase.LayoutToolStrip.Backend as ToolBar);
-            toolBarTray.ToolBars.Add(useCase.DisplayToolStrip.Backend as ToolBar);
+            toolBarTray.ToolBars.Add(useCase.DisplayDisplayToolStrip.Backend as ToolBar);
 
         }
 

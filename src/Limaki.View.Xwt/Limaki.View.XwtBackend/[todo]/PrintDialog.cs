@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Limaki.View.Vidgets;
 
 namespace Limaki.View.XwtBackend {
     class PrintDialog : IDisposable {
@@ -11,7 +12,7 @@ namespace Limaki.View.XwtBackend {
             throw new NotImplementedException();
         }
 
-        internal Viewers.DialogResult Show () {
+        internal DialogResult Show () {
             throw new NotImplementedException();
         }
     }

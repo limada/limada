@@ -1,8 +1,11 @@
 using System;
 using Limaki.Drawing;
-using Limaki.View.UI;
-using Limaki.View.Visualizers;
-using Limaki.Visuals;
+using Limaki.View;
+using Limaki.View.Vidgets;
+using Limaki.View.Visuals;
+using Limaki.View.Viz;
+using Limaki.View.Viz.UI;
+using Limaki.View.Viz.Visualizers;
 using NUnit.Framework;
 using Xwt;
 

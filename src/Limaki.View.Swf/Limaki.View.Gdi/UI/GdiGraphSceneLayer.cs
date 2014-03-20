@@ -17,8 +17,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using Limaki.Drawing.Gdi;
 using Limaki.Graphs;
-using Limaki.View.Rendering;
-using Limaki.View.UI.GraphScene;
+using Limaki.View.Viz.Rendering;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Gdi.UI {

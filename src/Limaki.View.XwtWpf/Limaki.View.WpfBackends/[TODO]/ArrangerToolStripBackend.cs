@@ -1,6 +1,7 @@
-using Limaki.Viewers.ToolStripViewers;
 using System.ComponentModel;
 using System.Windows.Controls;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.WpfBackends {
 
@@ -13,7 +14,7 @@ namespace Limaki.View.WpfBackends {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ArrangerToolStrip Frontend { get; protected set; }
 
-        public override void InitializeBackend (IVidget frontend, Limaki.View.VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (ArrangerToolStrip)frontend;
             Compose();
         }

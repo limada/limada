@@ -18,11 +18,9 @@ using System.IO;
 using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using System.Text;
-using Limaki.View.Visuals.UI;
-using Limaki.Visuals;
-using Limaki.Visuals.GraphScene;
+using Limaki.View.Visuals;
+using Limaki.View.Viz;
 using Xwt;
 
 namespace Limaki.View.Swf.DragDrop {

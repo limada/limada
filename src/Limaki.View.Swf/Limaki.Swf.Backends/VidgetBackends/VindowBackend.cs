@@ -1,5 +1,5 @@
 using System.Windows.Forms;
-using Limaki.Viewers.Vidgets;
+using Limaki.View.Vidgets;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.View.Swf.Backends {

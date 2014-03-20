@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using Limaki.Common;
-using Limaki.View.UI;
-using Limaki.Viewers;
+using Limaki.View;
+using Limaki.View.Vidgets;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 

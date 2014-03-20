@@ -13,12 +13,13 @@
  */
 
 using Limaki.Drawing;
+using Limaki.View.Visuals;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Visualizers;
+using Limaki.View.Viz.Visuals;
 using Limaki.View.XwtBackend;
 using Limaki.View.DragDrop;
-using Limaki.View.Visualizers;
-using Limaki.View.Visuals.Visualizers;
-using Limaki.View.XwtBackend.Visualizers;
-using Limaki.Visuals;
+using Limaki.View.XwtBackend.Viz;
 
 namespace Limaki.View.XwtBackend {
 

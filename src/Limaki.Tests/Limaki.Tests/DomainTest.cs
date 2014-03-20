@@ -1,14 +1,12 @@
 using Limaki.Common;
 using Limaki.Common.IOC;
-using Limaki.IOC;
 using Limaki.UnitTest;
 using Limaki.View;
+using Limaki.View.Viz.Visualizers;
 using NUnit.Framework;
 using Limaki.View.Html5;
-using Limaki.View.Visualizers;
 using System.IO;
 using Limaki.Drawing;
-using Limaki.View.UI;
 using Limaki.View.Headless;
 using Xwt;
 
@@ -28,8 +26,8 @@ namespace Limaki.Tests {
 
             new Html5ContextResourceLoader ().RegisterXwtBackends (true);
             
-            if (!Registry.Factory.Contains<Limaki.View.Visualizers.IContextWriter>())
-                Registry.Factory.Add<Limaki.View.Visualizers.IContextWriter, Html5ContextWriter>();
+            if (!Registry.Factory.Contains<IContextWriter>())
+                Registry.Factory.Add<IContextWriter, Html5ContextWriter>();
             
             base.Setup();
         }

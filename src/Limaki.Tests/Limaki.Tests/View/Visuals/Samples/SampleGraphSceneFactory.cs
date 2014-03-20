@@ -17,6 +17,7 @@ using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using Limaki.Common.Linqish;
 using System.Linq;
+using Limaki.View;
 
 namespace Limaki.Tests.View.Visuals {
 

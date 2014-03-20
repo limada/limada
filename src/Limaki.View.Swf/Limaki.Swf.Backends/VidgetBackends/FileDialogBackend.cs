@@ -14,8 +14,7 @@
 
 using System;
 using System.Windows.Forms;
-using Limaki.Viewers;
-using Limaki.Viewers.Vidgets;
+using Limaki.View.Vidgets;
 using Xwt;
 using SWF = System.Windows.Forms;
 

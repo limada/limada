@@ -1,4 +1,4 @@
-using Limaki.Viewers.StreamViewers;
+using Limada.View.Vidgets;
 
 namespace Limaki.View.XwtBackend {
     public class DigidocViewerBackend : DummyBackend, IDigidocViewerBackend {

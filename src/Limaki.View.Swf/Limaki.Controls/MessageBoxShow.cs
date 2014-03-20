@@ -1,8 +1,8 @@
 using System.Windows.Forms;
 using Limaki.View.Swf;
-using Limaki.Viewers;
-using DialogResult = Limaki.Viewers.DialogResult;
-using MessageBoxButtons = Limaki.Viewers.MessageBoxButtons;
+using Limaki.View.Vidgets;
+using DialogResult = Limaki.View.Vidgets.DialogResult;
+using MessageBoxButtons = Limaki.View.Vidgets.MessageBoxButtons;
 
 namespace Limaki.Swf.Backends {
 

@@ -12,6 +12,7 @@
  * 
  */
 
+using Limaki.View.Viz;
 using Xwt;
 using System.Collections.Generic;
 using System;

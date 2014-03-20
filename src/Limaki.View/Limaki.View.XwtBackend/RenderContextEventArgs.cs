@@ -14,8 +14,7 @@
 
 using System;
 using Limaki.Drawing.XwtBackend;
-using Limaki.View.Clipping;
-using Limaki.View.Rendering;
+using Limaki.View.Viz.Rendering;
 using Xwt;
 using Xwt.Drawing;
 

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
-using Limaki.Viewers;
-using Limaki.Viewers.Vidgets;
+using Limaki.View.Vidgets;
 
 namespace Limaki.View.WpfBackend {
     public class WebBrowserBackend : WrapPanel, IWebBrowserBackend {

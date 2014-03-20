@@ -16,12 +16,13 @@ using Limada.Usecases;
 using Limaki.Common.IOC;
 using Limaki.Drawing;
 using Limaki.Drawing.WpfBackend;
+using Limada.UseCases;
+using Limada.View.Vidgets;
 using Limaki.Usecases;
-using Limaki.View.UI;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.View.WpfBackends;
 using Limaki.View.XwtBackend;
-using Limaki.Viewers;
-using Limaki.Viewers.ToolStripViewers;
 using Xwt;
 using Xwt.Backends;
 

@@ -1,7 +1,9 @@
 using Limada.Usecases;
-using Limaki.View.Visualizers;
-using Limaki.Viewers.Vidgets;
+using Limada.UseCases;
+using Limaki.Common;
+using Limaki.View.Vidgets;
 using System;
+using Limaki.View.Viz.Visualizers;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {

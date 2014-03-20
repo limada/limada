@@ -1,14 +1,14 @@
+using Limada.View.Vidgets;
 using Limaki.Swf.Backends;
 using Limaki.Swf.Backends.TextEditor;
 using Limaki.Swf.Backends.Viewers;
 using Limaki.Swf.Backends.Viewers.ToolStrips;
+using Limaki.Usecases.Vidgets;
 using Limaki.View.Swf.Backends;
 using Limaki.View.Swf.Visualizers;
-using Limaki.View.Visuals.Visualizers;
-using Limaki.Viewers;
-using Limaki.Viewers.StreamViewers;
-using Limaki.Viewers.ToolStripViewers;
-using Limaki.Viewers.Vidgets;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers.ToolStrips;
+using Limaki.View.Viz.Visuals;
 
 namespace Limaki.View.Swf {
     public class SwfVidgetToolkitEngineBackend : VidgetToolkitEngineBackend {

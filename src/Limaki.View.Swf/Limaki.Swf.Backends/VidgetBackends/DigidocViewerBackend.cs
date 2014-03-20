@@ -14,13 +14,11 @@
 
 using System.Windows.Forms;
 using Limaki.Drawing;
-using Limaki.View.Visualizers;
-using Limaki.Visuals;
+using Limada.View.Vidgets;
+using Limaki.View.Vidgets;
 using Limaki.View.Swf.Visualizers;
 using System.Drawing;
-using Limada.View;
 using Xwt.Gdi.Backend;
-using Limaki.Viewers.StreamViewers;
 
 namespace Limaki.View.Swf.Backends {
 
@@ -28,10 +26,10 @@ namespace Limaki.View.Swf.Backends {
 
         public DigidocViewerBackend () {}
 
-        public DigidocViewer Frontend { get; set; }
+        public DigidocVidget Frontend { get; set; }
 
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (DigidocViewer)frontend;
+            this.Frontend = (DigidocVidget)frontend;
             Compose();
         }
 

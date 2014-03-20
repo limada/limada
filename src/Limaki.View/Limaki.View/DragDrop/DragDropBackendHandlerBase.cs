@@ -15,7 +15,7 @@
 using System;
 using System.Linq;
 using Limaki.Common;
-using Limaki.View.UI;
+using Limaki.View.Vidgets;
 using Xwt;
 using Xwt.Backends;
 

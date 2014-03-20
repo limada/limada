@@ -16,7 +16,8 @@ using System;
 using System.Windows.Forms;
 using Limaki.Actions;
 using Limaki.Drawing;
-using Limaki.View.UI;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.UI;
 using Xwt;
 using DragEventArgs = System.Windows.Forms.DragEventArgs;
 

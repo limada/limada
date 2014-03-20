@@ -20,6 +20,7 @@ using Db4objects.Db4o.Config;
 using Db4objects.Db4o.Events;
 using Db4objects.Db4o.Query;
 using Limaki.Common;
+using Limaki.Common.Reflections;
 using Limaki.Contents;
 using Limaki.Data;
 using Limaki.Data.db4o;

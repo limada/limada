@@ -20,13 +20,13 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using Gecko;
+using Limaki.Common;
 using Limaki.Contents;
 using Limaki.Contents.IO;
 using Limaki.Drawing;
 using Limaki.View;
 using Limaki.View.Swf;
-using Limaki.Viewers;
-using Limaki.Viewers.Vidgets;
+using Limaki.View.Vidgets;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends {

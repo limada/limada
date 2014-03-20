@@ -1,7 +1,7 @@
 using Limaki.View;
-using Limaki.View.Rendering;
-using Limaki.View.UI;
 using Limaki.UnitTest;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Rendering;
 
 namespace Limaki.Tests.View.Display {
 

@@ -1,7 +1,8 @@
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.View.UI;
-using Limaki.Visuals;
+using Limaki.View;
+using Limaki.View.Vidgets;
+using Limaki.View.Visuals;
 using Xwt;
 
 namespace Limaki.Tests.View.Display {

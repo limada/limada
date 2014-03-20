@@ -15,10 +15,9 @@
 
 
 using Limada.Model;
-using Limada.View;
-using Limada.VisualThings;
+using Limada.View.VisualThings;
 using Limaki.Tests.Graph.Model;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 
 namespace Limada.Tests.View {
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Limaki.Common;
 using Limaki.Common.Collections;
 using System.Linq.Expressions;
+using Limaki.Common.Reflections;
 
 namespace Limaki.Graphs {
     /// <summary>

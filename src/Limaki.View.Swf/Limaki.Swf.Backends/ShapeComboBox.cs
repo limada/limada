@@ -23,7 +23,7 @@ using Limaki.Drawing.Gdi;
 using Limaki.Common;
 using Limaki.Drawing.Shapes;
 using Limaki.Drawing.Styles;
-using Limaki.View.Layout;
+using Limaki.View.Viz.Modelling;
 using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends.Viewers {

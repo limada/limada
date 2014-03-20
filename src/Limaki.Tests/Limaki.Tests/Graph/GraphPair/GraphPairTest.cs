@@ -19,7 +19,7 @@ using Limaki.Tests;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.View.Visuals;
 using Limaki.UnitTest;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Graph.GraphPair {

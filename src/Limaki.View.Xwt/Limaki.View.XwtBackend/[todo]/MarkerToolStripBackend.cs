@@ -1,13 +1,13 @@
-using Limaki.Viewers.ToolStripViewers;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
+using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.XwtBackend {
     public class MarkerToolStripBackend : DummyBackend, IMarkerToolStripBackend {
-        public void Attach (Drawing.IGraphScene<IVisual, IVisualEdge> scene) {
+        public void Attach (IGraphScene<IVisual, IVisualEdge> scene) {
 
         }
 
-        public void Detach (Drawing.IGraphScene<Limaki.Visuals.IVisual, Limaki.Visuals.IVisualEdge> oldScene) {
+        public void Detach (IGraphScene<IVisual, IVisualEdge> oldScene) {
 
         }
     }

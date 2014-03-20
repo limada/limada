@@ -17,6 +17,7 @@ using System.Linq;
 using Limada.Usecases;
 using Limaki.Common;
 using Limaki.Common.IOC;
+using Limada.UseCases;
 using Limaki.Usecases;
 using Limaki.View.XwtBackend;
 using Xwt;

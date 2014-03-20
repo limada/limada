@@ -19,7 +19,8 @@ using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Swf.Backends.UseCases;
 using Limaki.View;
-using Limaki.Viewers.ToolStripViewers;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 

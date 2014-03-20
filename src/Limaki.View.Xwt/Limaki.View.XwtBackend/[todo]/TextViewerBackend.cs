@@ -1,4 +1,4 @@
-using Limaki.Viewers.Vidgets;
+using Limaki.View.Vidgets;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {

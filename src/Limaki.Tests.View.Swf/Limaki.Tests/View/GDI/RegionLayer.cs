@@ -12,6 +12,7 @@
  * 
  */
 
+using Limaki.View.Viz.Rendering;
 using SD = System.Drawing;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -20,8 +21,6 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
 using Limaki.Drawing.Shapes;
-using Limaki.View.Rendering;
-using Limaki.View.UI;
 using Xwt;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;

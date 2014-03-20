@@ -14,8 +14,9 @@
 
 using System.Drawing.Printing;
 using Limaki.Drawing;
+using Limaki.View;
 using Limaki.View.Swf.Visuals;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 
 namespace Limaki.Swf.Backends.UseCases {
 

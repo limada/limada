@@ -1,4 +1,4 @@
-using Limaki.Viewers.Vidgets;
+using Limaki.View.Vidgets;
 
 namespace Limaki.View.XwtBackend {
     public class TextViewerWithToolstripBackend : DummyBackend, ITextViewerWithToolstripBackend {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Limaki.View.UI;
 using Xwt;
 
 namespace Limaki.View.Html5 {

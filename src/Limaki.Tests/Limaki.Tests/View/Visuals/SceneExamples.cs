@@ -5,8 +5,10 @@ using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.View.Visuals;
-using Limaki.Visuals;
+using Limaki.View;
+using Limaki.View.Vidgets;
 using System.Collections.Generic;
+using Limaki.View.Visuals;
 
 namespace Limaki.Tests.View {
     
@@ -58,7 +60,7 @@ namespace Limaki.Tests.View {
             }
         }
 
-        public Viewers.DialogResult DialogResult { get; set; }
+        public DialogResult DialogResult { get; set; }
         public ITypeChoose Selected { get; set; }
 
         public IGraphScene<IVisual, IVisualEdge> GetScene (ISampleGraphSceneFactory factory) {

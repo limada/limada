@@ -19,7 +19,6 @@ using Limaki.Common.Linqish;
 using Limaki.Contents;
 using Limaki.Data;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

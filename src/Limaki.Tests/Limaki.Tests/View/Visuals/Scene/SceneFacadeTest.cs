@@ -8,8 +8,7 @@ using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.View.Visuals;
-using Limaki.View.UI.GraphScene;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 using NUnit.Framework;
 
 namespace Limaki.Tests.View.Visuals {

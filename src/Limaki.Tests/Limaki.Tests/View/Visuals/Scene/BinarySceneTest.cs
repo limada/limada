@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 using NUnit.Framework;
 using Limaki.Graphs;
 

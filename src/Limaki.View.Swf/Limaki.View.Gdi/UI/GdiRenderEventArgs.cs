@@ -2,8 +2,7 @@ using System;
 using System.Drawing;
 using Limaki.View;
 using Limaki.Drawing.Gdi;
-using Limaki.View.Clipping;
-using Limaki.View.Rendering;
+using Limaki.View.Viz.Rendering;
 using Xwt.Gdi;
 using Xwt.Gdi.Backend;
 

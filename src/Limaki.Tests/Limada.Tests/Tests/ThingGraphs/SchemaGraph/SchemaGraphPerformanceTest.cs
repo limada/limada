@@ -3,7 +3,6 @@ using Limada.Model;
 using Limada.Schemata;
 using Limada.Tests.Model;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using NUnit.Framework;
 using Id = System.Int64;
 

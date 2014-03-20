@@ -15,13 +15,12 @@
 using System;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.View.UI;
-using Limaki.View.Visuals.UI;
-using Limaki.Visuals;
-using Limaki.Visuals.GraphScene;
+using Limaki.View.Visuals;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Visuals;
 using Xwt;
 
-namespace Limaki.View.XwtBackend.Visualizers {
+namespace Limaki.View.XwtBackend.Viz {
 
     public class VisualsTextEditAction : VisualsTextEditActionBase {
 

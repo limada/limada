@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Limaki.Graphs;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 
 namespace Limaki.Playground.Graph {
 

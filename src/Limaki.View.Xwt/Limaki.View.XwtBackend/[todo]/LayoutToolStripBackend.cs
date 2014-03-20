@@ -1,4 +1,4 @@
-using Limaki.Viewers.ToolStripViewers;
+using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.XwtBackend {
     public class LayoutToolStripBackend : DummyBackend, ILayoutToolStripBackend {

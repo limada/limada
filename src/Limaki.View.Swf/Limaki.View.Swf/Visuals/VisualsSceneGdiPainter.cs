@@ -17,10 +17,11 @@ using System.Drawing;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.Gdi.UI;
-using Limaki.View.Rendering;
-using Limaki.View.Visualizers;
-using Limaki.View.Visuals.Rendering;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Rendering;
+using Limaki.View.Viz.Visualizers;
+using Limaki.View.Viz.Visuals;
 using Xwt.Gdi.Backend;
 using SWF = System.Windows.Forms;
 

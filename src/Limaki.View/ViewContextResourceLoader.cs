@@ -12,12 +12,15 @@
  */
 
 
+using Limada.View;
 using Limaki.Common.IOC;
+using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Drawing.XwtBackend;
-using Limaki.View.Visualizers;
-using Limaki.View.Visuals.Visualizers;
+using Limaki.Usecases;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Visuals;
 
 namespace Limaki.View {
 

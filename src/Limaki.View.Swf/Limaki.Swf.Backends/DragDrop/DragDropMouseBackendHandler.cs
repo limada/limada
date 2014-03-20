@@ -14,7 +14,7 @@
 
 using Limaki.View.DragDrop;
 using Limaki.View.Swf;
-using Limaki.View.UI;
+using Limaki.View.Vidgets;
 using Xwt;
 using Xwt.Backends;
 

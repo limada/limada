@@ -14,7 +14,7 @@
 
 
 using System.IO;
-using Limaki.View.Visualizers;
+using Limaki.View.Viz.Visualizers;
 using Xwt;
 using Xwt.Html5.Backend;
 

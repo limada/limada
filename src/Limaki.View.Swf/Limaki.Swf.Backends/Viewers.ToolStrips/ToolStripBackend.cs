@@ -14,12 +14,13 @@
 
 using System.Windows.Forms;
 using Limaki.View;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers.ToolStrips;
 using Xwt.Gdi.Backend;
-using Limaki.Viewers.ToolStripViewers;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
-    public abstract partial class ToolStripBackend : ToolStrip, IToolStripViewerBackend {
+    public abstract partial class ToolStripBackend : ToolStrip, IDisplayToolStripBackend {
         #region IVidgetBackend Member
 
         Xwt.Size IVidgetBackend.Size {

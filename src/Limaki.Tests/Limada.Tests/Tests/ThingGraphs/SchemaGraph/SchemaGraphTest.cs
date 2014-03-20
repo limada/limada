@@ -6,7 +6,6 @@ using Limaki.UnitTest;
 using NUnit.Framework;
 using Limada.Model;
 using Limaki.Data;
-using Limaki.Graphs.Extensions;
 using Limada.Tests.Basic;
 using Limaki.Tests.Graph.Model;
 using Limada.Schemata;

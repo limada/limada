@@ -6,21 +6,18 @@ using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
+using Limada.View.ContentViewers;
 using Limaki.Swf.Backends.Viewers.Content;
 using Limaki.Tests.View;
 using Limaki.View;
 using Limaki.View.Html5;
-using Limaki.View.Modelling;
-using Limaki.View.UI.GraphScene;
-using Limaki.Viewers.StreamViewers;
-using Limaki.Visuals;
+using Limaki.View.Viz.Visuals;
+using Limaki.View.XwtBackend.Viz;
+using Limaki.WebServer;
 using Xwt.Drawing;
 using Xwt.Html5.Backend;
 using Xwt.Tests;
-using Limaki.View.Visualizers;
 using Limaki.View.Visuals;
-using Limaki.View.Visuals.Rendering;
 using Limaki.Swf.Backends;
 
 namespace Xwt.Html5.TestApp {
@@ -185,8 +182,8 @@ namespace Xwt.Html5.TestApp {
             worker.Compose(scene, new VisualsRenderer());
 
             worker.Folder.ShowAllData();
-            worker.Receiver.Perform();
-            worker.Receiver.Finish();
+            worker.Modeller.Perform();
+            worker.Modeller.Finish();
 
             worker.Painter.Paint(ctx);
             return scene.Shape.Size;

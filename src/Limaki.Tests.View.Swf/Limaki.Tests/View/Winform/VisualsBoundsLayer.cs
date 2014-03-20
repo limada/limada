@@ -15,11 +15,9 @@
 
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
-using Limaki.View.Rendering;
-using Limaki.View.UI;
-using Limaki.View.UI.GraphScene;
-using Limaki.Visuals;
 using Limaki.Drawing.Gdi;
+using Limaki.View.Visuals;
+using Limaki.View.Viz.Rendering;
 using Xwt;
 using Xwt.Gdi.Backend;
 

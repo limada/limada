@@ -14,13 +14,14 @@
  */
 
 using Limaki.Model;
-using Limaki.Visuals;
 using Limaki.Graphs;
 using Limaki.Tests.Graph.Model;
 using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Common.Linqish;
 using System.Linq;
+using Limaki.View;
+using Limaki.View.Visuals;
 
 namespace Limaki.Tests.View.Visuals {
 

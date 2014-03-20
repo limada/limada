@@ -15,6 +15,7 @@
 using System;
 using System.IO;
 using Gecko;
+using Limaki.Common;
 
 namespace Limaki.Swf.Backends {
 

@@ -1,4 +1,5 @@
-using Limaki.Viewers.ToolStripViewers;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.WpfBackends {
     public class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripBackend {

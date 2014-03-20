@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using Limada.Model;
 using Limada.Tests.Model;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
 using NUnit.Framework;

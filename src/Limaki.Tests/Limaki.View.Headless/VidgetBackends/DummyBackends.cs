@@ -13,6 +13,8 @@
  */
 
 using Limaki.View;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz;
 using Xwt;
 
 namespace Limaki.View.Headless.VidgetBackends {

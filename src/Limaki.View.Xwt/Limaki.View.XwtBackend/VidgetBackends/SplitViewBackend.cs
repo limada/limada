@@ -15,7 +15,10 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using Limaki.Viewers;
+using Limada.View.Vidgets;
+using Limaki.Usecases.Vidgets;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {

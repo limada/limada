@@ -16,11 +16,11 @@ using System.Collections.Generic;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
 using System.Linq;
 using System;
+using Limaki.View;
+using Limaki.View.Viz.Modelling;
 using Xwt;
-using Limaki.View.Layout;
 
 namespace Limaki.Playground.View {
 

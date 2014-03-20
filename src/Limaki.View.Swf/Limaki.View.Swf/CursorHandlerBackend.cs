@@ -1,6 +1,7 @@
 using System.Windows.Forms;
 using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
+using Limaki.View.Viz;
 
 namespace Limaki.View.Swf {
 

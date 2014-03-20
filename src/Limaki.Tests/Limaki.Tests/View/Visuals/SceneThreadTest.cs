@@ -17,7 +17,8 @@ using Limaki.Drawing;
 using System.Text;
 using System.Threading;
 using Limaki.Tests.Graph.Model;
-using Limaki.Visuals;
+using Limaki.View;
+using Limaki.View.Visuals;
 using Xwt;
 
 namespace Limaki.Tests.View.Visuals {

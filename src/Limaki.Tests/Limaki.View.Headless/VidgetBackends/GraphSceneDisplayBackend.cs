@@ -14,7 +14,7 @@
 
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.View.Visualizers;
+using Limaki.View.Viz.Visualizers;
 
 namespace Limaki.View.Headless.VidgetBackends {
 

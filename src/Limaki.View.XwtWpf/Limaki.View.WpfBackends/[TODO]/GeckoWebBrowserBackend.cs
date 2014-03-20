@@ -20,11 +20,11 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Gecko;
+using Limaki.Common;
 using Limaki.Contents;
 using Limaki.Contents.IO;
 using Limaki.Drawing;
-using Limaki.Viewers;
-using Limaki.Viewers.Vidgets;
+using Limaki.View.Vidgets;
 
 namespace Limaki.View.WpfBackends {
 

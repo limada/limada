@@ -18,20 +18,20 @@ using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
+using Limaki.View;
 using Limaki.View.GraphScene;
-using Limaki.View.UI.GraphScene;
-using Limaki.View.Visualizers;
-using Limaki.View.Visuals.Visualizers;
-using Limaki.Visuals;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Limaki.View.Visuals;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Modelling;
+using Limaki.View.Viz.Visualizers;
+using Limaki.View.Viz.Visuals;
+using Limaki.View.XwtBackend.Viz;
 using Xwt;
-using Limaki.Graphs.Extensions;
 using NUnit.Framework;
-using Limaki.View.Layout;
 using Limaki.Common.Collections;
-using Limaki.View.Visuals.Rendering;
 using System.IO;
 
 namespace Limaki.Tests.View.Visuals {
@@ -343,8 +343,8 @@ namespace Limaki.Tests.View.Visuals {
                 //StyleSheet = this.Display.StyleSheet
             };
             worker.Compose (scene, new VisualsRenderer ());
-            worker.Receiver.Perform ();
-            worker.Receiver.Finish ();
+            worker.Modeller.Perform ();
+            worker.Modeller.Finish ();
             ReportPainter.PushPaint (ctx => worker.Painter.Paint (ctx));
             using (var file = File.Create (this.GetType().Name+".html")) {
                 ReportPainter.Write (file);

@@ -17,8 +17,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using Limaki.Drawing;
-using Limaki.Viewers;
-using Limaki.Viewers.ToolStripViewers;
+using Limada.View.Vidgets;
+using Limaki.Usecases.Vidgets;
+using Limaki.View;
+using Limaki.View.Vidgets;
 
 namespace Limaki.Swf.Backends.Viewers.ToolStrips {
 
@@ -29,7 +31,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
            
         }
 
-        public override void InitializeBackend (Limaki.View.IVidget frontend, Limaki.View.VidgetApplicationContext context) {
+        public override void InitializeBackend (Limaki.View.IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (SplitViewToolStrip)frontend;
             Compose();
         }

@@ -15,13 +15,13 @@
 using System;
 using Limada.Usecases;
 using Limaki.Common;
-using Limaki.View.Visualizers;
-using Limaki.Viewers;
-using Limaki.Viewers.StreamViewers;
+using Limada.UseCases;
+using Limaki.View.ContentViewers;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Visualizers;
 using Xwt;
 using Xwt.Drawing;
 using Limaki.View.XwtBackend;
-using Limaki.Viewers.Vidgets;
 
 namespace Limaki.View.XwtBackend {
    

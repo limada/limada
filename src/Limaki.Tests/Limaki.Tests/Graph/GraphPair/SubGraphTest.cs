@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Limaki.Graphs.Extensions;
 using Limaki.Model;
 using Limaki.Tests;
 using NUnit.Framework;

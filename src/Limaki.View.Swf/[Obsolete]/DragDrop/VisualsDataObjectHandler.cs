@@ -15,7 +15,7 @@
 using System.Windows.Forms;
 using Limaki.Graphs;
 using Limaki.Common;
-using Limaki.Visuals;
+using Limaki.View.Visuals;
 
 namespace Limaki.View.Swf.DragDrop {
     public abstract class VisualsDataObjectHandler<OUT> : DataObjectHandler<IGraph<IVisual, IVisualEdge>, IVisual, OUT>, IVisualsDataObjectHandler {

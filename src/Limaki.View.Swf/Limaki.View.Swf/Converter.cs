@@ -17,10 +17,9 @@ using Limaki.Drawing.Gdi;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Limaki.Common;
-using Limaki.Viewers;
+using Limaki.View.Vidgets;
+using Limaki.View.Viz.Rendering;
 using Limaki.View.Gdi.UI;
-using Limaki.View.Rendering;
-using Limaki.View.UI;
 using DialogResult = System.Windows.Forms.DialogResult;
 using ModifierKeys = Xwt.ModifierKeys;
 using Key = Xwt.Key;
@@ -207,93 +206,93 @@ namespace Limaki.View.Swf {
 
             return result;
         }
-        public static Limaki.Viewers.DialogResult Convert(DialogResult value) {
-            var result = Limaki.Viewers.DialogResult.None;
+        public static Vidgets.DialogResult Convert(DialogResult value) {
+            var result = Vidgets.DialogResult.None;
             if (value == DialogResult.OK) {
-                result = Limaki.Viewers.DialogResult.Ok;
+                result = Vidgets.DialogResult.Ok;
             }
             if (value == DialogResult.Cancel) {
-                result = Limaki.Viewers.DialogResult.Cancel;
+                result = Vidgets.DialogResult.Cancel;
             }
             if (value == DialogResult.Abort) {
-                result = Limaki.Viewers.DialogResult.Abort;
+                result = Vidgets.DialogResult.Abort;
             }
             if (value == DialogResult.Retry) {
-                result = Limaki.Viewers.DialogResult.Retry;
+                result = Vidgets.DialogResult.Retry;
             }
             if (value == DialogResult.Ignore) {
-                result = Limaki.Viewers.DialogResult.Ignore;
+                result = Vidgets.DialogResult.Ignore;
             }
             if (value == DialogResult.Yes) {
-                result = Limaki.Viewers.DialogResult.Yes;
+                result = Vidgets.DialogResult.Yes;
             }
             if (value == DialogResult.No) {
-                result = Limaki.Viewers.DialogResult.No;
+                result = Vidgets.DialogResult.No;
             }
 
             return result;
         }
 
-        public static DialogResult Convert(Limaki.Viewers.DialogResult value) {
+        public static DialogResult Convert(Vidgets.DialogResult value) {
             var result = DialogResult.None;
             if (value == null)
                 return result;
-            if ( value == Limaki.Viewers.DialogResult.Ok ) {
+            if ( value == Vidgets.DialogResult.Ok ) {
                 result = DialogResult.OK;
             }
-            if ( value == Limaki.Viewers.DialogResult.Cancel ) {
+            if ( value == Vidgets.DialogResult.Cancel ) {
                 result = DialogResult.Cancel;
             }
-            if ( value == Limaki.Viewers.DialogResult.Abort ) {
+            if ( value == Vidgets.DialogResult.Abort ) {
                 result = DialogResult.Abort;
             }
-            if ( value == Limaki.Viewers.DialogResult.Retry ) {
+            if ( value == Vidgets.DialogResult.Retry ) {
                 result = DialogResult.Retry;
             }
-            if ( value == Limaki.Viewers.DialogResult.Ignore ) {
+            if ( value == Vidgets.DialogResult.Ignore ) {
                 result = DialogResult.Ignore;
             }
-            if ( value == Limaki.Viewers.DialogResult.Yes ) {
+            if ( value == Vidgets.DialogResult.Yes ) {
                 result = DialogResult.Yes;
             }
-            if ( value == Limaki.Viewers.DialogResult.No ) {
+            if ( value == Vidgets.DialogResult.No ) {
                 result = DialogResult.No;
             }
 
             return result;
         }
 
-        public static MessageBoxButtons Convert(Limaki.Viewers.MessageBoxButtons value) {
+        public static MessageBoxButtons Convert(Vidgets.MessageBoxButtons value) {
             var result = MessageBoxButtons.OK;
             if (value == null)
                 return result;
-            if (value == Limaki.Viewers.MessageBoxButtons.OkCancel)
+            if (value == Vidgets.MessageBoxButtons.OkCancel)
                 return MessageBoxButtons.OKCancel;
-            if (value == Limaki.Viewers.MessageBoxButtons.AbortRetryIgnore)
+            if (value == Vidgets.MessageBoxButtons.AbortRetryIgnore)
                 return MessageBoxButtons.AbortRetryIgnore;
-            if (value == Limaki.Viewers.MessageBoxButtons.YesNoCancel)
+            if (value == Vidgets.MessageBoxButtons.YesNoCancel)
                 return MessageBoxButtons.YesNoCancel;
-            if (value == Limaki.Viewers.MessageBoxButtons.YesNo)
+            if (value == Vidgets.MessageBoxButtons.YesNo)
                 return MessageBoxButtons.YesNo;
-            if (value == Limaki.Viewers.MessageBoxButtons.RetryCancel)
+            if (value == Vidgets.MessageBoxButtons.RetryCancel)
                 return MessageBoxButtons.RetryCancel;
             return result;
         }
 
-        public static Limaki.Viewers.MessageBoxButtons Convert(MessageBoxButtons value) {
-            var result = Limaki.Viewers.MessageBoxButtons.Ok;
+        public static Vidgets.MessageBoxButtons Convert(MessageBoxButtons value) {
+            var result = Vidgets.MessageBoxButtons.Ok;
             if (value == null)
                 return result;
             if (value == MessageBoxButtons.OKCancel)
-                return Limaki.Viewers.MessageBoxButtons.OkCancel;
+                return Vidgets.MessageBoxButtons.OkCancel;
             if (value == MessageBoxButtons.AbortRetryIgnore)
-                return Limaki.Viewers.MessageBoxButtons.AbortRetryIgnore;
+                return Vidgets.MessageBoxButtons.AbortRetryIgnore;
             if (value == MessageBoxButtons.YesNoCancel)
-                return Limaki.Viewers.MessageBoxButtons.YesNoCancel;
+                return Vidgets.MessageBoxButtons.YesNoCancel;
             if (value == MessageBoxButtons.YesNo)
-                return Limaki.Viewers.MessageBoxButtons.YesNo;
+                return Vidgets.MessageBoxButtons.YesNo;
             if (value == MessageBoxButtons.RetryCancel)
-                return Limaki.Viewers.MessageBoxButtons.RetryCancel;
+                return Vidgets.MessageBoxButtons.RetryCancel;
             return result;
         }
 

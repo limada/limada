@@ -1,24 +1,24 @@
 using Limada.IO;
 using Limada.Schemata;
 using Limada.Usecases;
-using Limada.UseCases;
-using Limada.VisualThings;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
-using Limaki.Graphs.Extensions;
+using Limada.UseCases;
+using Limada.View.VisualThings;
 using Limaki.Tests.View;
 using Limaki.Tests.View.Display;
 using Limaki.Usecases;
 using Limaki.View;
 using Limaki.View.GraphScene;
-using Limaki.View.Layout;
-using Limaki.View.Rendering;
-using Limaki.View.Visualizers;
-using Limaki.View.Visuals.Visualizers;
-using Limaki.Visuals;
+using Limaki.View.Vidgets;
 using System;
 using System.Linq;
+using Limaki.View.Visuals;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Rendering;
+using Limaki.View.Viz.Visualizers;
+using Limaki.View.Viz.Visuals;
 using Xwt;
 
 namespace Limaki.Tests.UseCases {

@@ -14,12 +14,11 @@
 using Limaki.Drawing;
 using Limaki.View.DragDrop;
 using Limaki.View.Swf.Visuals;
-using Limaki.View.UI.GraphScene;
-using Limaki.View.Visualizers;
-using Limaki.View.Visuals.UI;
-using Limaki.View.Visuals.Visualizers;
-using Limaki.Visuals;
 using System.Windows.Forms;
+using Limaki.View.Visuals;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Visualizers;
+using Limaki.View.Viz.Visuals;
 
 namespace Limaki.View.Swf.Visualizers {
 

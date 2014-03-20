@@ -19,9 +19,10 @@ using Limaki.Drawing.Shapes;
 using Limaki.Drawing.Styles;
 using Limaki.Model;
 using Limaki.Tests.Graph.Model;
-using Limaki.View.Visuals.Layout;
-using Limaki.Visuals;
 using System;
+using Limaki.View;
+using Limaki.View.Visuals;
+using Limaki.View.Viz.Visuals;
 using Xwt;
 
 namespace Limaki.Tests.View.Visuals {

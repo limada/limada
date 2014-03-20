@@ -1,10 +1,12 @@
 using Limaki.Actions;
 using Limaki.Drawing;
 using Limaki.Tests.View.Visuals;
-using Limaki.View.UI;
-using Limaki.View.UI.GraphScene;
-using Limaki.View.Visuals.UI;
-using Limaki.Visuals;
+using Limaki.View;
+using Limaki.View.Vidgets;
+using Limaki.View.Visuals;
+using Limaki.View.Viz.UI;
+using Limaki.View.Viz.UI.GraphScene;
+using Limaki.View.Viz.Visuals;
 using NUnit.Framework;
 using Xwt;
 
@@ -75,7 +77,7 @@ namespace Limaki.Tests.View.Display {
 
             action = Display.EventControler.GetAction<GraphItemAddAction<IVisual, IVisualEdge>> ();
             action.Enabled = false;
-            action = Display.EventControler.GetAction<AddEdgeAction> ();
+            action = Display.EventControler.GetAction<AddVisualEdgeAction> ();
             action.Enabled = false;
 
 
