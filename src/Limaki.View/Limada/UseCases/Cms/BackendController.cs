@@ -72,7 +72,7 @@ namespace Limada.UseCases.Cms {
                 } catch (Exception e) {
                     Trace.WriteLine (e.Message);
                     _thingGraph = new ThingGraph ();
-                    Trace.WriteLine (string.Format ("Empty Graph created", Iori.ToFileName (Iori)));
+                    Trace.WriteLine (string.Format ("Empty Graph created {0}", Iori.ToFileName (Iori)));
                 }
             }
         }

@@ -13,8 +13,5 @@ namespace Limada.Model {
         void Compress();
         void DeCompress();
 
-        void ClearRealSubject();
-
-        void Flush();
     }
 }

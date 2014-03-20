@@ -17,16 +17,17 @@ using Limaki.Data;
 namespace Limaki.Contents {
 
     public interface IProxy {
+
         /// <summary>
         /// realSubject is released and shouldn't 
-        /// use any memory after calling clearRealSubject
+        /// use any memory after calling ClearRealSubject
         /// </summary>
         void ClearRealSubject();
 
         /// <summary>
         /// realSubject is released
         /// if clean==false, the realSubject is not disposed or closed
-        /// the caller cares about cleaning the realSubject
+        /// the caller cares about cleaning the ClearRealSubject
         /// </summary>
         void ClearRealSubject(bool clean);
 
@@ -38,7 +39,9 @@ namespace Limaki.Contents {
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     public interface IContainerProxy<TKey> : IProxy {
+
         IContentContainer<TKey> ContentContainer { get; set; }
+
     }
 
 }

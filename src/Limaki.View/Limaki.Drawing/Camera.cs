@@ -81,7 +81,7 @@ namespace Limaki.Drawing {
 
         #region IDisposable Member
 
-        public abstract void Dispose ( bool disposing );
+        protected abstract void Dispose ( bool disposing );
 
         public void Dispose() {
             Dispose (true);
@@ -116,7 +116,8 @@ namespace Limaki.Drawing {
         #endregion
 
         #region IDisposable Member
-        public override void Dispose(bool disposing) {
+
+        protected override void Dispose (bool disposing) {
             if (disposing) {
                 //_matrix.Dispose();
                 _matrix = null;
@@ -147,7 +148,7 @@ namespace Limaki.Drawing {
         #endregion
 
         #region IDisposable Member
-        public override void Dispose(bool disposing) {
+        protected override void Dispose (bool disposing) {
             if (disposing) {
                 _matrix = null;
             }

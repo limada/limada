@@ -173,12 +173,12 @@ namespace Limaki.View.ContentViewers {
             if (graph != null && viewer.CanSave() && viewer.ContentId != 0){
                 var thing = graph.GetById(viewer.ContentId) as IStreamThing;
                 if (thing != null) {
-                    var info = new Content<Stream> ();
-                    viewer.Save (info);
-                    new ThingContentFacade ().AssignContent (graph, thing, info);
-                    info.Data.Dispose ();
-                    info.Data = null;
-                    info = null;
+                    var content = new Content<Stream> ();
+                    viewer.Save (content);
+                    new ThingContentFacade ().AssignContent (graph, thing, content);
+                    content.Data.Dispose ();
+                    content.Data = null;
+                    content = null;
                 }
             }
         }
