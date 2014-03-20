@@ -18,7 +18,6 @@ using Limada.Model;
 using Limaki.Contents;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Model.Content;
 using Limaki.Visuals;
 using Limaki.View.DragDrop;
 

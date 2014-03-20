@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Limaki.Model.Content;
+using Limaki.Contents;
 using Limaki.Common;
 
 namespace Limaki.Contents {

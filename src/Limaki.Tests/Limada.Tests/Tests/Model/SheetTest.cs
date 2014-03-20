@@ -34,7 +34,6 @@ using System;
 using Limaki.Common;
 using System.Collections.Generic;
 using System.Xml;
-using Limaki.Model.Content;
 using Limaki.View.Layout;
 using Limaki.View.Visuals.UI;
 using Limaki.View.Visuals.Layout;
@@ -301,7 +300,7 @@ namespace Limada.Tests.Model {
 
             serializer.Graph.AddRange(serializer.ThingCollection);
 
-            var data = serializer.Graph.DataContainer.GetById(streamId);
+            var data = serializer.Graph.ContentContainer.GetById(streamId);
             Assert.IsNotNull (data);
 
             streamThing = serializer.Graph.GetById (streamId) as IStreamThing;

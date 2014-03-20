@@ -1,4 +1,4 @@
-﻿using Limaki.Model.Content;
+﻿using Limaki.Contents;
 using Limaki.Contents.IO;
 using System;
 using System.IO;

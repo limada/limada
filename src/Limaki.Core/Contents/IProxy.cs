@@ -14,7 +14,7 @@
 
 using Limaki.Data;
 
-namespace Limaki.Model.Content {
+namespace Limaki.Contents {
 
     public interface IProxy {
         /// <summary>
@@ -34,22 +34,11 @@ namespace Limaki.Model.Content {
     }
 
     /// <summary>
-    /// a proxy using a DataContainer to get the Data
+    /// a proxy using a ContentContainer to get the Data
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     public interface IContainerProxy<TKey> : IProxy {
-        IDataContainer<TKey> DataContainer { get; set; }
+        IContentContainer<TKey> ContentContainer { get; set; }
     }
-
-    /// <summary>
-    /// gets expensive objects on demand 
-    /// </summary>
-    //public interface IProxy<TKey,TData> : IContainerProxy<TKey> {
-    //    /// <summary>
-    //    /// the realSubject of the Proxy
-    //    /// </summary>
-    //    TData Data { get; set;}
-    //}
-
 
 }

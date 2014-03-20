@@ -18,7 +18,7 @@ using Limaki.Data;
 using System;
 using System.IO;
 using System.Linq;
-using Limaki.Model.Content;
+using Limaki.Contents;
 
 namespace Limaki.Contents.IO {
 

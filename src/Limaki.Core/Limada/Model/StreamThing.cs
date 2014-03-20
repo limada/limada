@@ -16,7 +16,6 @@ using System;
 using System.IO;
 using Limaki.Common;
 using Limaki.Contents;
-using Limaki.Model.Content;
 using Id = System.Int64;
 using Limaki.Data;
 using System.Runtime.Serialization;
@@ -38,10 +37,10 @@ namespace Limada.Model {
         #region Proxy-Handling
 
         [Transient]
-        private IDataContainer<Id> _dataContainer = null;
-        public virtual IDataContainer<Id> DataContainer {
-            get { return _dataContainer; }
-            set { _dataContainer = value; }
+        private IContentContainer<Id> _contentContainer = null;
+        public virtual IContentContainer<Id> ContentContainer {
+            get { return _contentContainer; }
+            set { _contentContainer = value; }
         }
 
         [Transient]
@@ -52,9 +51,9 @@ namespace Limada.Model {
         internal virtual ByteStreamWrapper StreamWrapper {
             get {
                 if (_streamWrapper == null) {
-                    if (!State.Hollow && DataContainer!=null) {
+                    if (!State.Hollow && ContentContainer!=null) {
                         var realData =
-                            DataContainer.GetById(this.Id) as IRealData<Id, Byte[]>;
+                            ContentContainer.GetById(this.Id) as IIdContent<Id, Byte[]>;
                         if (realData != null) {
                             _streamWrapper = new ByteStreamWrapper (realData);
                         }
@@ -72,7 +71,7 @@ namespace Limada.Model {
             if (_streamWrapper != null) {
                 if (!StreamWrapper.State.Clean) {
                     StreamWrapper.Flush();
-                    DataContainer.Add(this.StreamWrapper.InnerData);
+                    ContentContainer.Add(this.StreamWrapper.InnerData);
                 }
             } else {
                 if (Compressable) {
@@ -81,7 +80,7 @@ namespace Limada.Model {
                     StreamWrapper.Stream = _unCompressedStream;
                 }
                 StreamWrapper.Flush();
-                DataContainer.Add(this.StreamWrapper.InnerData);
+                ContentContainer.Add(this.StreamWrapper.InnerData);
             }
         }
 

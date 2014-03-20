@@ -159,7 +159,7 @@
     <Compile Include="Common\Text\TextHelper.cs" />
     <Compile Include="Common\TODOAttribute.cs" />
     <Compile Include="Common\Transient.cs" />
-    <Compile Include="Compression\CompressionWorker.cs" />
+    <Compile Include="Contents\CompressionWorker.cs" />
     <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2.cs" />
     <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2Constants.cs" />
     <Compile Include="3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2Exception.cs" />
@@ -189,11 +189,11 @@
     <Compile Include="Contents\Handlers\TextContent.cs" />
     <Compile Include="Contents\IO\StreamContentIoPool.cs" />
     <Compile Include="Contents\MimeFingerPrints.cs" />
-    <Compile Include="Context\LimakiCoreContextResourceLoader.cs" />
+    <Compile Include="LimakiCoreContextResourceLoader.cs" />
     <Compile Include="Data\Iori.cs" />
     <Compile Include="Data\DbGraph.cs" />
     <Compile Include="Data\GatewayBase.cs" />
-    <Compile Include="Data\IDataContainer.cs" />
+    <Compile Include="Contents\IContentContainer.cs" />
     <Compile Include="Data\IGateway.cs" />
     <Compile Include="Data\IGatewayConnection.cs" />
     <Compile Include="Graphs\CorruptedLinkException.cs" />
@@ -232,7 +232,7 @@
     <Compile Include="Graphs\LiveGraphPair.cs" />
     <Compile Include="Graphs\MultiDictionaryGraph.cs" />
     <Compile Include="Limada\LimadaResourceLoader.cs" />
-    <Compile Include="Limada\Common\Isaac.cs" />
+    <Compile Include="Common\Isaac.cs" />
     <Compile Include="Limada\IO\IoriThingGraphSpot.cs" />
     <Compile Include="Limada\IO\IThingGraphRepair.cs" />
     <Compile Include="Limada\IO\MemoryThingGraphSpot.cs" />
@@ -244,7 +244,7 @@
     <Compile Include="Limada\IO\ThingGraphMerger.cs" />
     <Compile Include="Limada\IO\XmlThingGraphSpot.cs" />
     <Compile Include="Limada\IO\XmlThingGraphIo.cs" />
-    <Compile Include="Limada\Model\ByteStreamWrapper.cs" />
+    <Compile Include="Contents\ByteStreamWrapper.cs" />
     <Compile Include="Common\DataComparer.cs" />
     <Compile Include="Limada\Model\ILink.cs" />
     <Compile Include="Limada\Model\IStreamThing.cs" />
@@ -295,10 +295,10 @@
     <Compile Include="Contents\PipeExtensions.cs" />
     <Compile Include="Model\Edge.cs" />
     <Compile Include="Model\GraphEntity.cs" />
-    <Compile Include="Model\Content\CompressionType.cs" />
+    <Compile Include="Contents\CompressionType.cs" />
     <Compile Include="Contents\ICompressionWorker.cs" />
-    <Compile Include="Model\Content\IProxy.cs" />
-    <Compile Include="Model\Content\IRealData.cs" />
+    <Compile Include="Contents\IProxy.cs" />
+    <Compile Include="Contents\IIdContent.cs" />
     <Compile Include="Contents\Magic.cs" />
     <Compile Include="Contents\Content.cs" />
     <Compile Include="Contents\ContentInfo.cs" />
@@ -311,6 +311,7 @@
   <ItemGroup>
     <None Include="3rdParty\MonoRTF\ChangeLog" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -18,10 +18,10 @@ using System.IO;
 using Limada.Model;
 using Limada.Schemata;
 using Limaki.Common;
+using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
 using Limaki.Graphs;
-using Limaki.Model.Content;
 using Limaki.Visuals;
 
 namespace Limada.VisualThings {

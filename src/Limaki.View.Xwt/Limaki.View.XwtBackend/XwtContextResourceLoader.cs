@@ -20,7 +20,6 @@ using Limaki.Drawing.Painters;
 using Limaki.Drawing.Shapes;
 using Limaki.IOC;
 using Limaki.Drawing.XwtBackend;
-using Limaki.Model.Content;
 using Limaki.View.DragDrop;
 using Limaki.View.UI;
 using Limaki.View.XwtBackend;

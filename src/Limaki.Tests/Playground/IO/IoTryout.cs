@@ -4,7 +4,6 @@ using Limaki.Contents;
 using Limaki.Data;
 using Limaki.Drawing;
 using Limaki.Visuals;
-using Limaki.Model.Content;
 using Limaki.Graphs;
 using Limaki.Common;
 using Limaki.Contents.IO;

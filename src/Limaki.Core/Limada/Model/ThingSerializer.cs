@@ -74,8 +74,8 @@ namespace Limada.Model {
                 if (streams.Count > 0) {
                     writer.WriteStartElement("streamthings");
                     foreach (var thing in streams) {
-                        if (thing.DataContainer != null) {
-                            var data = thing.DataContainer.GetById(thing.Id);
+                        if (thing.ContentContainer != null) {
+                            var data = thing.ContentContainer.GetById(thing.Id);
                             serializer.WriteObject(writer, data);
                             data = null;
                         }
@@ -111,8 +111,8 @@ namespace Limada.Model {
                     reader.ReadStartElement("streamthings");
                     while (Serializer.IsStartObject(reader)) {
                         var data = Serializer.ReadObject (reader) as RealData<byte[]>;
-                        if (this.Graph.DataContainer != null) {
-                            this.Graph.DataContainer.Add (data);
+                        if (this.Graph.ContentContainer != null) {
+                            this.Graph.ContentContainer.Add (data);
                         }
                     }
                 }

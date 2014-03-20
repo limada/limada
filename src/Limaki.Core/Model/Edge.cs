@@ -19,6 +19,7 @@ using System.Text;
 using Limaki.Graphs;
 
 namespace Limaki.Model {
+
     /// <summary>
     /// a generic edge class
     /// </summary>
@@ -30,18 +31,10 @@ namespace Limaki.Model {
             Leaf = leaf;
         }
 
+        public T Root { get; set; }
+        
+        public T Leaf { get; set; }
 
-        public T _root = default( T );
-        public T Root {
-            get { return _root; }
-            set {_root = value;}
-        }
-
-        public T _leaf = default(T);
-        public T Leaf {
-            get { return _leaf; }
-            set { _leaf = value; }
-        }
         public override string ToString() {
             return GraphExtensions.EdgeString<T,IEdge<T>>(this);
         }

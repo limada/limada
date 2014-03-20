@@ -12,7 +12,7 @@
  * 
  */
 
-using Limaki.Model.Content;
+using Limaki.Contents;
 using Id = System.Int64;
 
 namespace Limaki.Contents {
@@ -30,6 +30,7 @@ namespace Limaki.Contents {
     }
 
     public class Content<T>:Content {
+
         public T Data;
 
         public Content() {}

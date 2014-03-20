@@ -13,6 +13,7 @@
  */
 
 using System.Collections.Generic;
+using Limaki.Contents;
 using Limaki.Data;
 using Limaki.Graphs;
 using Id = System.Int64;
@@ -27,7 +28,7 @@ namespace Limada.Model {
         void AddMarker ( IThing marker );
         IEnumerable<IThing> GetByData ( object data );
         IEnumerable<IThing> GetByData ( object data, bool exact );
-        IDataContainer<Id> DataContainer { get;set;}
+        IContentContainer<Id> ContentContainer { get;set;}
         IThing UniqueThing ( IThing thing );
         IEnumerable<T> Where<T>(Expression<Func<T,bool>> predicate) where T:IThing;
     }

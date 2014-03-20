@@ -18,7 +18,7 @@ using Limada.Model;
 using Limada.Test;
 using Limaki.Data;
 using Limaki.Common;
-using Limaki.Model.Content;
+using Limaki.Contents;
 using NUnit.Framework;
 using Id = System.Int64;
 
@@ -87,7 +87,7 @@ namespace Limada.Tests.ThingGraphs {
             var thing = Graph.GetById (id);
             Graph.Remove (thing);
 
-            var dataContainer = Graph.DataContainer;
+            var dataContainer = Graph.ContentContainer;
             Assert.IsFalse (dataContainer.Contains (id));
 
             var data = dataContainer.GetById (id);

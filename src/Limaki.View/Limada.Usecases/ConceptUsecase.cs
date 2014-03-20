@@ -20,7 +20,7 @@ using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Model.Content;
+using Limaki.Contents;
 using Limaki.View.Visualizers;
 using Limaki.Viewers;
 using Limaki.Viewers.ToolStripViewers;

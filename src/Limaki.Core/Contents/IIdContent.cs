@@ -1,5 +1,5 @@
 /*
- * Limaki 
+ * Limada
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -12,13 +12,16 @@
  * 
  */
 
-namespace Limaki.Model.Content {
+using System;
 
-    public enum CompressionType:short {
-        None = 0, 
-        Zip = 1, 
-        bZip2 = 2, 
-        neverCompress = 3
-		
+namespace Limaki.Contents {
+
+    public interface IIdContent<TId> {
+        TId Id { get; }
+        object Data { get; set; }
+    }
+
+    public interface IIdContent<TId, TData> : IIdContent<TId> {
+        new TData Data { get; set; }
     }
 }

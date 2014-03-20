@@ -9,7 +9,7 @@ using Limada.Usecases;
 using NUnit.Framework;
 using Limada.Schemata;
 using System.Linq;
-using Limaki.Model.Content;
+using Limaki.Contents;
 using System.Collections.Generic;
 using Limaki.Graphs.Extensions;
 using Limaki.Common.IOC;

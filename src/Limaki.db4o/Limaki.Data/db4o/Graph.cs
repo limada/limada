@@ -25,6 +25,7 @@ using System.Linq;
 using System.Diagnostics;
 
 namespace Limaki.Data.db4o {
+
     public class Graph<TItem, TEdge> : DbGraph<TItem, TEdge>, IGatewayConnection
         where TEdge : IEdge<TItem> {
 

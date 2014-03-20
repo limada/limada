@@ -16,7 +16,6 @@
 using System;
 using System.IO;
 using Limaki.Contents;
-using Limaki.Model.Content;
 using Limaki.Net.WebProxyServer;
 
 namespace Limaki.Viewers.StreamViewers {

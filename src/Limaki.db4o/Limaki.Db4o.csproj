@@ -78,14 +78,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Limada.Data\Data\db4o\Db4oRepairer.cs" />
-    <Compile Include="Limada.Data\Db4oThingGraphSpot.cs" />
-    <Compile Include="Limada.Data\Db4oThingGraphIo.cs" />
+    <Compile Include="Limada.IO\db4o\Db4oRepairer.cs" />
+    <Compile Include="Limada.IO\Db4oThingGraphSpot.cs" />
+    <Compile Include="Limada.IO\Db4oThingGraphIo.cs" />
     <Compile Include="Limaki.Data\db4o\Gateway.cs" />
     <Compile Include="Limaki.Data\db4o\Graph.cs" />
     <Compile Include="Limaki.Data\db4o\NativeQueryWrapper.cs" />
-    <Compile Include="Limada.Data\Data\db4o\DataContainer.cs" />
-    <Compile Include="Limada.Data\Data\db4o\ThingGraph.cs" />
+    <Compile Include="Limada.IO\db4o\ContentContainer.cs" />
+    <Compile Include="Limada.IO\db4o\ThingGraph.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Db4oResourceLoader.cs" />
   </ItemGroup>

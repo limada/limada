@@ -20,7 +20,6 @@ using Limaki.Drawing;
 using Limaki.Drawing.Gdi;
 using Limaki.Drawing.Shapes;
 using Limaki.IOC;
-using Limaki.Model.Content;
 using Limaki.Swf.Backends;
 using Limaki.View.DragDrop;
 using Limaki.View.Swf.Backends;

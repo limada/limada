@@ -12,13 +12,13 @@
  * 
  */
 
-
 using Limada.IO;
 using Limada.Model;
 using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.Data;
 using Limaki.Contents.IO;
+using Limaki.Graphs;
 
 namespace Limada.Usecases {
 
@@ -33,6 +33,10 @@ namespace Limada.Usecases {
         public override void ApplyResources(IApplicationContext context) {
             
             ResourceLoader.ApplyResources(context);
+            
+            context.Factory.Add<IThingFactory, ThingFactory> ();
+            context.Factory.Add<IGraphModelFactory<IThing, ILink>, ThingFactory> ();
+
             var thingGraphContentPool = context.Pooled<ThingGraphIoPool>();
             thingGraphContentPool.Add(new XmlThingGraphIo());
             thingGraphContentPool.Add(new IoriThingGraphIo());

@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using Limada.Model;
 using Limaki.Common.Collections;
+using Limaki.Contents;
 using Limaki.Data;
 using Limaki.Graphs;
 using Id = System.Int64;
@@ -285,9 +286,9 @@ namespace Limada.Schemata {
             return ThingGraph.GetByData(data, exact);
         }
 
-        public virtual IDataContainer<Id> DataContainer {
-            get { return ThingGraph.DataContainer; }
-            set { ThingGraph.DataContainer = value; }
+        public virtual IContentContainer<Id> ContentContainer {
+            get { return ThingGraph.ContentContainer; }
+            set { ThingGraph.ContentContainer = value; }
         }
 
         public virtual IThing UniqueThing(IThing thing) {

@@ -12,11 +12,11 @@
  * 
  */
 
+using Limaki.Contents;
 using Limaki.Graphs;
 using Id = System.Int64;
 using System.Collections.Generic;
 using Limaki.Common.Collections;
-using Limaki.Model.Content;
 using Limaki.Data;
 using System.Linq;
 using Limaki.Common;
@@ -85,14 +85,14 @@ namespace Limada.Model {
             base.Add(item);
             AddId(item);
             var streamThing = item as IStreamThing;
-            if (streamThing!=null && streamThing.DataContainer==null) {
-                streamThing.DataContainer = this.DataContainer;
+            if (streamThing!=null && streamThing.ContentContainer==null) {
+                streamThing.ContentContainer = this.ContentContainer;
             }
         }
 
         public override bool Remove(IThing item) {
             if (item is IProxy) {
-                DataContainer.Remove (item.Id);
+                ContentContainer.Remove (item.Id);
             }
             bool result = base.Remove(item);
             RemoveId (item);
@@ -232,15 +232,15 @@ namespace Limada.Model {
 
         #region Proxy-Handling
         
-        private IDataContainer<Id> _dataContainer = null;
-        public virtual IDataContainer<Id> DataContainer {
+        private IContentContainer<Id> _contentContainer = null;
+        public virtual IContentContainer<Id> ContentContainer {
             get {
-                if (_dataContainer == null) {
-                    _dataContainer = new DataContainer ();
+                if (_contentContainer == null) {
+                    _contentContainer = new ContentContainer ();
                 }
-                return _dataContainer;
+                return _contentContainer;
             }
-            set { _dataContainer = value; }
+            set { _contentContainer = value; }
         }
 
         #endregion
@@ -262,17 +262,17 @@ namespace Limada.Model {
         
     }
 
-    public class DataContainer:IDataContainer<Id>{
+    public class ContentContainer:IContentContainer<Id>{
 
-        private IDictionary<Id, IRealData<Id>> dataList = new Dictionary<Id, IRealData<Id>>();
+        private IDictionary<Id, IIdContent<Id>> dataList = new Dictionary<Id, IIdContent<Id>>();
        
         #region IDataContainer Member
 
-        public bool Contains(IRealData<Id> item) {
+        public bool Contains(IIdContent<Id> item) {
             return dataList.ContainsKey (item.Id);
         }
 
-        public void Add(IRealData<Id> item) {
+        public void Add(IIdContent<Id> item) {
             dataList[item.Id] = item;
         }
 
@@ -280,8 +280,8 @@ namespace Limada.Model {
             return dataList.ContainsKey(id);
         }
 
-        public IRealData<Id> GetById(Id id) {
-            var result = default(IRealData<Id>);
+        public IIdContent<Id> GetById(Id id) {
+            var result = default(IIdContent<Id>);
             dataList.TryGetValue (id, out result);
             return result;
         }
@@ -290,7 +290,7 @@ namespace Limada.Model {
             return dataList.Remove (id);
         }
 
-        public bool Remove(IRealData<Id> item) {
+        public bool Remove(IIdContent<Id> item) {
             return Remove (item.Id);
         }
 

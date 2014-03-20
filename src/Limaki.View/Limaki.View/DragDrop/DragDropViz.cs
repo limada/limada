@@ -24,7 +24,6 @@ using Limaki.Common.Linqish;
 using Limaki.View.Visuals.UI;
 using Limaki.Visuals;
 using Xwt;
-using Limaki.Model.Content;
 using Limaki.Common;
 using Limaki.View.DragDrop;
 using Limaki.Contents.IO;

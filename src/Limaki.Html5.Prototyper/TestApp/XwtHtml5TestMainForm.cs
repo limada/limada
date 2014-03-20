@@ -7,7 +7,6 @@ using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Model.Content;
 using Limaki.Swf.Backends.Viewers.Content;
 using Limaki.Tests.View;
 using Limaki.View;

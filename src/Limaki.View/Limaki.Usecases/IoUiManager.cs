@@ -1,5 +1,5 @@
 using Limaki.Common;
-using Limaki.Model.Content;
+using Limaki.Contents;
 using Limaki.Contents.IO;
 using Limaki.Viewers;
 using System;

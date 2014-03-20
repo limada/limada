@@ -1,5 +1,5 @@
 /*
- * Limaki 
+ * Limada
  * 
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 only, as
@@ -12,14 +12,22 @@
  * 
  */
 
-using System.IO;
+using System;
 using Limaki.Contents;
+using Id = System.Int64;
 
 namespace Limaki.Contents {
 
-    public interface ICompressionWorker {
-        bool Compressable ( CompressionType compression );
-        Stream Compress ( Stream stream, CompressionType compression );
-        Stream DeCompress ( Stream stream, CompressionType compression );
+    public interface IContentContainer<TId> {
+
+        bool Contains (TId id);
+        bool Contains (IIdContent<TId> item);
+
+        void Add (IIdContent<TId> item);
+        IIdContent<TId> GetById (TId id);
+
+        bool Remove (TId id);
+        bool Remove (IIdContent<TId> item);
+
     }
 }

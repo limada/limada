@@ -72,7 +72,6 @@ namespace Limaki.Model {
             set { }
         }
 
-
     }
 
     public class GraphEntityFactory : IGraphModelFactory<IGraphEntity, IGraphEdge>, IGraphModelPropertyChanger<IGraphEntity, IGraphEdge> {

@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 using Limaki.Common.Linqish;
-using Limaki.Model.Content;
+using Limaki.Contents;
 
 namespace Limaki.Contents {
 

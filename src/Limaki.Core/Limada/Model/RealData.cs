@@ -15,12 +15,13 @@
 using System;
 using Limaki.Common;
 using Id = System.Int64;
-using Limaki.Model.Content;
+using Limaki.Contents;
 using System.Runtime.Serialization;
 
 namespace Limada.Model {
+
     [DataContract]
-    public class RealData: IRealData<Id> {
+    public class RealData: IIdContent<Id> {
         
 		protected Id _id = default(Id);
         [DataMember]
@@ -32,7 +33,7 @@ namespace Limada.Model {
             set { _id = value; }
         }
 
-        object IRealData<Id>.Data {
+        object IIdContent<Id>.Data {
             get { throw new Exception("The method or operation is not implemented.");}
             set {throw new Exception("The method or operation is not implemented.");}
         }
@@ -42,7 +43,7 @@ namespace Limada.Model {
 	// the use of the base class is necessary in db4o.DataContainer for indexing
 	// see there: realDataType
     [DataContract]
-    public class RealData<T> : RealData, IRealData<Id,T> {
+    public class RealData<T> : RealData, IIdContent<Id,T> {
         protected RealData() { }
         
         public RealData(Id id) { this._id = id; }
@@ -77,7 +78,7 @@ namespace Limada.Model {
             }
         }
 
-        object IRealData<Id>.Data {
+        object IIdContent<Id>.Data {
             get { return this.Data; }
             set {
                 if (value is T) {

@@ -1,7 +1,7 @@
 using System.IO;
 using System.Text;
 using Limaki.Common.Text;
-using Limaki.Model.Content;
+using Limaki.Contents;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Limaki.Common;

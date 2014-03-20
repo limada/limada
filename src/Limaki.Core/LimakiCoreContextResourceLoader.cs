@@ -3,7 +3,6 @@ using System.Reflection;
 using Limaki.Common;
 using Limaki.Common.IOC;
 using Limaki.Graphs.Extensions;
-using Limaki.Model.Content;
 using Limada.Model;
 
 using Limaki.Contents.IO;
@@ -18,10 +17,7 @@ namespace Limaki.IOC {
         
         public override void ApplyResources(IApplicationContext context) {
 
-            context.Factory.Add<ICompressionWorker, Limaki.Compression.CompressionWorker> ();
-
-            context.Factory.Add<IThingFactory, ThingFactory> ();
-            context.Factory.Add<IGraphModelFactory<IThing, ILink>, ThingFactory> ();
+            context.Factory.Add<ICompressionWorker, CompressionWorker> ();
 
             context.Factory.Add<IGraphModelFactory<IGraphEntity, IGraphEdge>, GraphEntityFactory> ();
             

@@ -20,7 +20,6 @@ using Limaki.Contents;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Model.Content;
 using Limaki.View.GraphScene;
 using Limaki.View.UI.GraphScene;
 using Limaki.View.Visualizers;

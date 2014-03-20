@@ -16,7 +16,6 @@ using Limada.Model;
 using Limada.Schemata;
 using System.IO;
 using Limaki.Contents;
-using Limaki.Model.Content;
 using System.Collections.Generic;
 using System.Linq;
 using Limaki.Graphs;
@@ -159,7 +158,7 @@ namespace Limada.Schemata {
             if (graph == null || document == null)
                 return null;
             var page = Factory.CreateItem<Stream>(null) as IStreamThing;
-            page.DataContainer = graph.DataContainer;
+            page.ContentContainer = graph.ContentContainer;
             if (stream != null) {
                 new ThingContentFacade(Factory).AssignContent(page, stream);
             }

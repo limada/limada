@@ -15,7 +15,7 @@
 
 using System;
 using System.IO;
-using Limaki.Model.Content;
+using Limaki.Contents;
 
 namespace Limaki.Contents.IO {
     /// <summary>

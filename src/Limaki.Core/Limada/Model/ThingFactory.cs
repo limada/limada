@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Limada.Schemata;
 using Limaki.Common;
-using Limaki.Model.Content;
+using Limaki.Contents;
 using Id = System.Int64;
 using Limaki.Graphs;
 
@@ -52,7 +52,7 @@ namespace Limada.Model {
         public IThing CreateItem(Id id, IThingGraph graph, object data) {
             var result = CreateItem(id,data);
             if (result is IContainerProxy<Id>) {
-                ((IContainerProxy<Int64>)result).DataContainer = graph.DataContainer;
+                ((IContainerProxy<Int64>)result).ContentContainer = graph.ContentContainer;
             }
             return result;
         }

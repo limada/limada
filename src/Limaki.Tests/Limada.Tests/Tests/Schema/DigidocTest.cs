@@ -19,7 +19,7 @@ using NUnit.Framework;
 using System.IO;
 using System.Linq;
 using Limaki.Common;
-using Limaki.Model.Content;
+using Limaki.Contents;
 using System;
 using Limaki;
 using Limaki.Tests;

@@ -1,7 +1,6 @@
 using System.IO;
 using Limada.Schemata;
 using Limaki.Contents;
-using Limaki.Model.Content;
 using Limaki.Common;
 
 namespace Limada.Model {
@@ -51,7 +50,7 @@ namespace Limada.Model {
         /// <param name="thing"></param>
         /// <param name="content"></param>
         public void AssignContent(IStreamThing thing, Content<Stream> content) {
-            if (thing != null && thing.DataContainer != null) {
+            if (thing != null && thing.ContentContainer != null) {
                 thing.Data = content.Data;
                 thing.Compression = content.Compression;
                 thing.StreamType = content.ContentType;
@@ -69,7 +68,7 @@ namespace Limada.Model {
         /// <param name="content"></param>
         public IStreamThing AssignContent(IThingGraph graph, IStreamThing thing, Content<Stream> content) {
             if (thing != null) {
-                thing.DataContainer = graph.DataContainer;
+                thing.ContentContainer = graph.ContentContainer;
                 AssignContent (thing, content);
                 AssignContentDescription(thing, content, graph);
             } else {

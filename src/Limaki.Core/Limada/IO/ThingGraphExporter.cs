@@ -20,7 +20,6 @@ using Limaki.Common;
 using Limaki.Common.Linqish;
 using Limaki.Graphs;
 using Limaki.Graphs.Extensions;
-using Limaki.Model.Content;
 using Limaki.Contents;
 
 namespace Limada.IO {
@@ -76,8 +75,8 @@ namespace Limada.IO {
                         .ToList();
                 sink.AddRange(completeThings);
                 foreach (var thing in completeThings.OfType<IStreamThing>()) {
-                    var data = thingGraph.DataContainer.GetById(thing.Id);
-                    sink.DataContainer.Add(data);
+                    var data = thingGraph.ContentContainer.GetById(thing.Id);
+                    sink.ContentContainer.Add(data);
                 }
 
             }

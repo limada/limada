@@ -52,8 +52,8 @@ namespace Limada.IO {
                     sink.UniqueThing(thing);
                 var streamThing = thing as IStreamThing;
                 if (streamThing != null) {
-                    var data = source.DataContainer.GetById(thing.Id);
-                    sink.DataContainer.Add(data);
+                    var data = source.ContentContainer.GetById(thing.Id);
+                    sink.ContentContainer.Add(data);
                 }
             });
 
@@ -73,7 +73,7 @@ namespace Limada.IO {
 
                 var streamThing = t as IStreamThing;
                 if (streamThing != null) {
-                    streamThing.DataContainer = sink.DataContainer;
+                    streamThing.ContentContainer = sink.ContentContainer;
                 }
 
                 var link = t as Link;

@@ -15,7 +15,7 @@
 
 using Limaki.Common;
 using System;
-using Limaki.Model.Content;
+using Limaki.Contents;
 
 namespace Limaki.Contents.IO {
 

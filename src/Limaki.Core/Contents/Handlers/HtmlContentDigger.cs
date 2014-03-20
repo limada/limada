@@ -18,7 +18,7 @@ using System.Text;
 using Limaki.Common.Text;
 using Limaki.Common.Text.HTML.Parser;
 using System.Linq;
-using Limaki.Model.Content;
+using Limaki.Contents;
 using Limaki.Common;
 using LCHP = Limaki.Common.Text.HTML.Parser;
 
