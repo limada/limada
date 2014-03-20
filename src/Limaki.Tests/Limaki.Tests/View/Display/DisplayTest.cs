@@ -74,6 +74,7 @@ namespace Limaki.Tests.View.Display {
         public int secToTest = 5;
 
         public virtual void DoEvents () {
+            Display.SetFocus ();
             Application.MainLoop.DispatchPendingEvents();
         }
 
@@ -225,11 +226,11 @@ namespace Limaki.Tests.View.Display {
             Func<bool> rangeY = () => next.Y < end.Y;
             if (dx < 0) {
                 d = new Size (-d.Width, d.Height);
-                rangeX = delegate () { return next.X > end.X; };
+                rangeX = () => next.X > end.X;
             }
             if (dy < 0) {
                 d = new Size (d.Width, -d.Height);
-                rangeY = delegate () { return next.Y > end.Y; };
+                rangeY = () => next.Y > end.Y;
             }
             //double angle = Math.Atan(dx / dy) / Math.PI * 180 + ((dx < 0) ? 180 : 0);
             MouseActionEventArgs e = null;
@@ -238,7 +239,9 @@ namespace Limaki.Tests.View.Display {
             while (rangeX () || rangeY ()) {
                 var tnext = camera.FromSource (next);
                 e = new MouseActionEventArgs (MouseActionButtons.Left,
-                                              ModifierKeys.None, 0, (int)tnext.X, (int)tnext.Y, 0);
+                                              ModifierKeys.None, 0,
+                                              tnext.X, tnext.Y,
+                                              0);
                 Display.EventControler.OnMouseMove (e);
                 DoEvents ();
                 next = nextPoint (next, d);

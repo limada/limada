@@ -139,9 +139,9 @@ namespace Limaki.View.Viz.UI {
                 return (T)result;
             else { // try harder:
                 T r = default(T);
-                foreach (var action in Actions) {
-                    if (action.Value is T) {
-                        r = (T) action.Value;
+                foreach (var pair in Actions) {
+                    if (pair.Value is T) {
+                        r = (T) pair.Value;
                         break;
                     }
                 }
@@ -185,7 +185,7 @@ namespace Limaki.View.Viz.UI {
             Resolved = false;
             if (UserEventsDisabled)
                 return;
-            foreach (IMouseAction mouseAction in MouseActions) {
+            foreach (var mouseAction in MouseActions) {
                 if (mouseAction.Enabled) {
                     mouseAction.OnMouseMove(e);
                     Resolved = mouseAction.Resolved || Resolved;
