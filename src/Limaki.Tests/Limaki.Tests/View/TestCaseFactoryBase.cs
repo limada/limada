@@ -6,6 +6,7 @@ using Limada.VisualThings;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.Graphs.Extensions;
 using Limaki.Tests.View;
 using Limaki.Tests.View.Display;
 using Limaki.Usecases;
@@ -115,6 +116,7 @@ namespace Limaki.Tests.UseCases {
 
                     maint.RefreshCompression (graph, true);
                 }
+
                 if (false) {
                     var test = new WebProxyTest();
                     test.TestInfinitLoopIfHtmlContentIsFocused (usecase.GetCurrentDisplay());
@@ -127,34 +129,35 @@ namespace Limaki.Tests.UseCases {
         }
 
         public void TimelineSheet (ConceptUsecase usecase) {
-            var tlThingGraph = usecase.GetCurrentDisplay ().Data.Graph.ThingGraph ();
-            if (tlThingGraph == null)
+
+            var thingGraph = usecase.GetCurrentDisplay ().Data.Graph.ThingGraph ();
+            if (thingGraph == null)
                 throw new ArgumentException ("ThingGraphMaintenance only works with Thing-backed graphs");
-            var tl = new ThingGraphUseCases ();
 
-            
             var view = usecase.SplitView;
-            var d = view.AdjacentDisplay (view.CurrentDisplay);
-            view.Mesh.RemoveScene (d.Data);
+            var display = view.AdjacentDisplay (view.CurrentDisplay);
+            var oldScene = display.Data;
+            var mesh = view.Mesh;
+            mesh.RemoveScene (oldScene);
 
-            var scene = view.Mesh.CreateSinkScene (view.CurrentDisplay.Data.Graph);
-            d.Data = scene;
+            var scene = mesh.CreateSinkScene (oldScene.Graph);
+            display.Data = scene;
 
-            var vis = tl.TimeLine (tlThingGraph).Select (t => scene.Graph.VisualOf (t)).ToArray();
-            var fac = new GraphSceneFacade<IVisual,IVisualEdge>(()=>scene,d.Layout);
-            fac.Add (vis, true, false);
+            var visuals = new ThingGraphUseCases ()
+                .TimeLine (thingGraph)
+                .Select (t => scene.Graph.VisualOf (t)).ToArray();
 
-            Registry.ApplyProperties<MarkerContextProcessor, IGraphScene<IVisual, IVisualEdge>> (scene);
-            view.Mesh.AddScene (scene);
+            new GraphSceneFacade<IVisual, IVisualEdge> (() => scene, display.Layout)
+                .Add (visuals, true, false);
 
-            var aligner = new Aligner<IVisual, IVisualEdge> (scene, d.Layout);
-            
-            var options = d.Layout.Options();
+            scene.CreateMarkers();
+            mesh.AddScene (scene);
 
-            aligner.OneColumn (vis, (Point)d.Layout.Border, options);
+            var aligner = new Aligner<IVisual, IVisualEdge> (scene, display.Layout);
+            aligner.OneColumn (visuals, (Point)display.Layout.Border, display.Layout.Options ());
             aligner.Locator.Commit (scene.Requests);
 
-            d.Perform();
+            display.Perform();
 
         }
     }
