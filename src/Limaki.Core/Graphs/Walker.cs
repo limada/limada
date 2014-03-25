@@ -37,52 +37,80 @@ namespace Limaki.Graphs {
         /// <param name="start"></param>
         /// <param name="level"></param>
         /// <returns></returns>
-        public virtual IEnumerable<LevelItem<TItem>> DeepWalk (TItem start, int level, Func<LevelItem<TItem>, bool> predicate) {
-            var queue = new Queue<LevelItem<TItem>>();
-            Action<TItem, TItem, int> enqueue = (node, path, l) => {
-                if (!Visited.Contains(node)) {
-                    var item = new LevelItem<TItem>(node, path, l);
-                    if (predicate == null || predicate(item))
-                        queue.Enqueue(item);
-                    Visited.Add(node);
-                }
-            };
+        public virtual IEnumerable<LevelItem<TItem>> DeepWalk (TItem start, int level, Func<LevelItem<TItem>, bool> predicate, bool breathFirst) {
+            Action<TItem, TItem, int> put = null; ;
+            Func<LevelItem<TItem>> get = null;
+            Func<int> loopCount = null;
 
-            enqueue(start, default(TItem), level);
+            if (breathFirst) {
+                var queue = new Queue<LevelItem<TItem>> ();
+                loopCount = () => queue.Count;
 
-            while (queue.Count > 0) {
-                var item = queue.Dequeue();
+                put = (node, path, l) => {
+                    if (!Visited.Contains (node)) {
+                        var item = new LevelItem<TItem> (node, path, l);
+                        if (predicate == null || predicate (item))
+                            queue.Enqueue (item);
+                        Visited.Add (node);
+                    }
+                };
+
+                get = () => queue.Dequeue ();
+            } else {
+                var stack = new Stack<LevelItem<TItem>> ();
+                loopCount = () => stack.Count;
+
+                put = (node, path, l) => {
+                    if (!Visited.Contains (node)) {
+                        var item = new LevelItem<TItem> (node, path, l);
+                        if (predicate == null || predicate (item))
+                            stack.Push (item);
+                        Visited.Add (node);
+                    }
+                };
+
+                get = () => stack.Pop ();
+            }
+
+            put(start, default(TItem), level);
+
+            while (loopCount() > 0) {
+                var item = get();
                 yield return item;
 
                 level = item.Level + 1;
 
                 if (item.Node is TEdge) {
-                    TEdge edge = (TEdge) item.Node;
+                    var edge = (TEdge) item.Node;
 
                     // follow links of edge:
                     foreach (var edge_edge in graph.Edges(edge))
-                        enqueue(edge_edge, edge, level);
+                        put(edge_edge, edge, level);
 
                     var adjacent = graph.Adjacent(edge, item.Path);
 
                     if (adjacent != null) {
                         // follow adjacent of node:
-                        enqueue(adjacent, edge, level);
+                        put(adjacent, edge, level);
                     } else {
-                        enqueue(edge.Root, edge, level);
-                        enqueue(edge.Leaf, edge, level);
+                        put(edge.Root, edge, level);
+                        put(edge.Leaf, edge, level);
                     }
                 } else {
                     // follow links of node:
                     foreach (var edge in graph.Edges(item.Node))
-                        enqueue(edge, item.Node, level);
+                        put(edge, item.Node, level);
 
                 }
             }
         }
 
+        public virtual IEnumerable<LevelItem<TItem>> DeepWalk (TItem start, int level, Func<LevelItem<TItem>, bool> predicate) {
+            return DeepWalk (start, level, predicate, true);
+        }
+
         public virtual IEnumerable<LevelItem<TItem>> DeepWalk (TItem start, int level) {
-            return DeepWalk(start, level, null);
+            return DeepWalk (start, level, null, true);
         }
 
         /// <summary>
