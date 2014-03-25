@@ -84,7 +84,7 @@ namespace Limada.Schemata {
         }
 
         public virtual IThing DescriptionTarget {
-            get { return GetTheRoot(this.Graph,this.Target,DescriptionMarker); }
+            get { return GetTheRoot(this.Graph,this.Subject,DescriptionMarker); }
         }
 
         public virtual IThing Source {
@@ -93,7 +93,7 @@ namespace Limada.Schemata {
         }
 
         public virtual IThing SourceTarget {
-            get { return GetTheRoot(this.Graph, this.Target, SourceMarker); }
+            get { return GetTheRoot(this.Graph, this.Subject, SourceMarker); }
         }
 
         #endregion

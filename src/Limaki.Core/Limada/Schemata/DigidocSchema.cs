@@ -150,8 +150,8 @@ namespace Limada.Schemata {
             set { SetTheLeaf(DocumentTitle, value); }
         }
 
-        public IThing CreatePage(Content<Stream> content, int pageNr) {
-            return CreatePage(this.Graph, this.Target, content, pageNr);
+        public IThing CreatePage (Content<Stream> content, object pageNr) {
+            return CreatePage(this.Graph, this.Subject, content, pageNr);
         }
 
         public IThing CreatePage(IThingGraph graph, IThing document, Content<Stream> stream, int pageNr) {
@@ -173,8 +173,8 @@ namespace Limada.Schemata {
         }
 
         public IThing CreateDocument(string title) {
-            this.Target = CreateDocument(this.Graph, title);
-            return this.Target;
+            this.Subject = CreateDocument(this.Graph, title);
+            return this.Subject;
         }
 
         public IThing CreateDocument(IThingGraph graph, string title) {
@@ -189,11 +189,11 @@ namespace Limada.Schemata {
         }
 
         public IEnumerable<IThing> Pages() {
-            return this.Pages(this.Graph, this.Target);
+            return this.Pages(this.Graph, this.Subject);
         }
 
         public IEnumerable<IThing> OrderedPages() {
-            return this.OrderedPages(this.Graph, this.Target);
+            return this.OrderedPages(this.Graph, this.Subject);
         }
 
         public IEnumerable<IThing> Pages (IThingGraph graph, IThing document) {
@@ -220,7 +220,7 @@ namespace Limada.Schemata {
         }
 
         public bool HasPages() {
-            return HasPages(this.Graph, this.Target);
+            return HasPages(this.Graph, this.Subject);
         }
 
         public bool HasPages (GraphCursor<IThing, ILink> cursor) {
@@ -237,7 +237,7 @@ namespace Limada.Schemata {
         }
 
         public IEnumerable<Content<Stream>> PageStreams() {
-            return this.PageStreams(this.Graph, this.Target);
+            return this.PageStreams(this.Graph, this.Subject);
         }
 
         public IEnumerable<Content<Stream>> PageStreams(IThingGraph graph, IThing document) {
