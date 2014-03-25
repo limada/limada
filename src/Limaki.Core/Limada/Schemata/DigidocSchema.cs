@@ -154,7 +154,7 @@ namespace Limada.Schemata {
             return CreatePage(this.Graph, this.Subject, content, pageNr);
         }
 
-        public IThing CreatePage(IThingGraph graph, IThing document, Content<Stream> stream, int pageNr) {
+        public IThing CreatePage(IThingGraph graph, IThing document, Content<Stream> stream, object pageNr) {
             if (graph == null || document == null)
                 return null;
             var page = Factory.CreateItem<Stream>(null) as IStreamThing;
@@ -165,7 +165,7 @@ namespace Limada.Schemata {
             var pageEdge = Factory.CreateEdge(document, page, DigidocSchema.DocumentPage);
             graph.Add(pageEdge);
 
-            var number = Factory.CreateItem<int>(pageNr);
+            var number = Factory.CreateItem(pageNr);
             var numberEdge = Factory.CreateEdge(pageEdge, number, DigidocSchema.PageNumber);
             graph.Add(number);
             graph.Add(numberEdge);
@@ -248,6 +248,18 @@ namespace Limada.Schemata {
                 .Where(page => page is IStreamThing)
                 .Select(page => ThingContentFacade.ContentOf(graph, page));
         }
+
+        public IThing PageNumberOf (IGraph<IThing, ILink> graph, IThing document, IThing page) {
+            graph = graph.Unwrap ();
+            var pageLink = graph.Edges (page)
+                .FirstOrDefault (l => l.Root == document && l.Leaf == page && l.Marker.Id == DocumentPage.Id);
+            if (pageLink != null) {
+                return GetTheLeaf (graph, pageLink, PageNumber);
+            }
+            return null;
+        }
+
+        public IThing PageNumberOf (IThing page) { return PageNumberOf (this.Graph, this.Subject, page); }
 
         #endregion
 
