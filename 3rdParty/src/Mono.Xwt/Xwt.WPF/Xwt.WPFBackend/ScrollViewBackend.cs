@@ -28,7 +28,6 @@ using System;
 using Xwt.Backends;
 using Xwt.WPFBackend;
 using System.Windows.Controls;
-using SWC = System.Windows.Controls;
 
 namespace Xwt.WPFBackend
 {
@@ -50,6 +49,22 @@ namespace Xwt.WPFBackend
 		{
 			get { return GetScrollPolicy (ScrollViewer.HorizontalScrollBarVisibility); }
 			set { ScrollViewer.HorizontalScrollBarVisibility = GetScrollVisibility (value); }
+		}
+
+		IScrollControlBackend vscrollControl;
+		public IScrollControlBackend CreateVerticalScrollControl()
+		{
+			if (vscrollControl == null)
+				vscrollControl = new ScrollControlBackend(ScrollViewer, true);
+			return vscrollControl;
+		}
+
+		IScrollControlBackend hscrollControl;
+		public IScrollControlBackend CreateHorizontalScrollControl()
+		{
+			if (hscrollControl == null)
+				hscrollControl = new ScrollControlBackend(ScrollViewer, false);
+			return hscrollControl;
 		}
 
 		protected override double DefaultNaturalHeight
@@ -104,8 +119,8 @@ namespace Xwt.WPFBackend
 			var widget = (WidgetBackend)child;
 
 			if (widget.EventSink.SupportsCustomScrolling ()) {
-				vbackend = new ScrollAdjustmentBackend ();
-				hbackend = new ScrollAdjustmentBackend ();
+				vscrollControl = vbackend = new ScrollAdjustmentBackend ();
+				hscrollControl = hbackend = new ScrollAdjustmentBackend ();
 			}
 			ScrollViewer.Content = new CustomScrollViewPort (widget.NativeWidget, vbackend, hbackend);
 			ScrollViewer.CanContentScroll = true;
@@ -189,7 +204,5 @@ namespace Xwt.WPFBackend
 					throw new NotSupportedException();
 			}
 		}
-
-
 	}
 }

@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C93D746E-1586-4D4F-B411-BF5A966E6A08}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Xwt.WPF</RootNamespace>
     <AssemblyName>Xwt.WPF</AssemblyName>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -29,7 +29,7 @@
     <ConsolePause>False</ConsolePause>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>True</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\xwt.snk</AssemblyOriginatorKeyFile>
@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Xwt.WPFBackend.CellViews\CanvasCellViewBackend.cs" />
+    <Compile Include="Xwt.WPFBackend.CellViews\CanvasCellViewPanel.cs" />
+    <Compile Include="Xwt.WPFBackend.CellViews\CellViewBackend.cs" />
     <Compile Include="Xwt.WPFBackend.Interop\NativeStockIcon.cs" />
     <Compile Include="Xwt.WPFBackend.Utilities\CellUtil.cs" />
     <Compile Include="Xwt.WPFBackend.Utilities\ImageToImageSourceConverter.cs" />
@@ -146,12 +148,14 @@
     <Compile Include="Xwt.WPFBackend\WpfDesktopBackend.cs" />
     <Compile Include="Xwt.WPFBackend\WindowsSpinButton.xaml.cs" />
     <Compile Include="Xwt.WPFBackend\WpfKeyboardHandler.cs" />
+    <Compile Include="Xwt.WPFBackend\WebViewBackend.cs" />
+    <Compile Include="Xwt.WPFBackend\ScrollControlBackend.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

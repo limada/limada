@@ -3,14 +3,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B7C1673E-5124-4BE5-8D21-EC8B12F85B6B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Xwt.Mac</RootNamespace>
     <AssemblyName>Xwt.Mac</AssemblyName>
     <SuppressXamMacMigration>True</SuppressXamMacMigration>
     <UseMSBuildEngine>False</UseMSBuildEngine>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -125,6 +125,9 @@
     <Compile Include="Xwt.Mac\EmbedNativeWidgetBackend.cs" />
     <Compile Include="Xwt.Mac\MacKeyboardHandler.cs" />
     <Compile Include="Xwt.Mac\PasswordEntryBackend.cs" />
+    <Compile Include="Xwt.Mac\WebViewBackend.cs" />
+    <Compile Include="Xwt.Mac\ScrollControlBackend.cs" />
+    <Compile Include="Xwt.Mac.CellViews\CellViewBackend.cs" />
   </ItemGroup>
   <Import Project="..\BuildHelpers.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

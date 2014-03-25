@@ -92,20 +92,20 @@ namespace Xwt.WPFBackend
 
 		public bool MultiLine {
 			get { return multiline; }
-			set
-			{
-                if (multiline != value) {
-                    multiline = value;
-                    if (multiline) {
-                        TextBox.VerticalContentAlignment = VerticalAlignment.Top;
-                        TextBox.AcceptsReturn = true;
-                        TextBox.TextWrapping = TextWrapping.NoWrap;
-                    } else {
-                        TextBox.VerticalContentAlignment = VerticalAlignment.Center;
-                        TextBox.AcceptsReturn = false;
-                        TextBox.TextWrapping = TextWrapping.NoWrap;
-                    }
-                }
+			set {
+				if (multiline != value) {
+            
+					multiline = value;
+					if (multiline) {
+						TextBox.VerticalContentAlignment = VerticalAlignment.Top;
+						TextBox.AcceptsReturn = true;
+						TextBox.TextWrapping = TextWrapping.Wrap;
+					} else {
+						TextBox.VerticalContentAlignment = VerticalAlignment.Center;
+						TextBox.AcceptsReturn = false;
+						TextBox.TextWrapping = TextWrapping.NoWrap;
+					}
+				}
 			}
 		}
 

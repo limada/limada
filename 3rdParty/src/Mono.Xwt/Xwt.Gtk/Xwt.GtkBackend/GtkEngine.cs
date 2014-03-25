@@ -29,11 +29,15 @@ using System;
 using Xwt.Backends;
 using Xwt.CairoBackend;
 using Gdk;
+using System.Reflection;
+using System.IO;
 
 namespace Xwt.GtkBackend
 {
 	public class GtkEngine: ToolkitEngineBackend
 	{
+		GtkPlatformBackend platformBackend;
+
 		public override void InitializeApplication ()
 		{
 			Gtk.Application.Init ();
@@ -103,6 +107,41 @@ namespace Xwt.GtkBackend
 			RegisterBackend<IScrollbarBackend, ScrollbarBackend> ();
 			RegisterBackend<IPasswordEntryBackend, PasswordEntryBackend> ();
 			RegisterBackend<KeyboardHandler, GtkKeyboardHandler> ();
+			RegisterBackend<ISearchTextEntryBackend, SearchTextEntryBackend> ();
+
+			string typeName = null;
+			string asmName = null;
+			if (Platform.IsMac) {
+				typeName = "Xwt.Gtk.Mac.MacPlatformBackend";
+				asmName = "Xwt.Gtk.Mac";
+			}
+			else if (Platform.IsWindows) {
+				typeName = "Xwt.Gtk.Windows.WindowsPlatformBackend";
+				asmName = "Xwt.Gtk.Windows";
+			}
+
+			if (typeName != null) {
+				var loc = Path.GetDirectoryName (GetType ().Assembly.Location);
+				loc = Path.Combine (loc, asmName + ".dll");
+
+				Assembly asm = null;
+				try {
+					if (File.Exists (loc)) {
+						asm = Assembly.LoadFrom (loc);
+					} else {
+						asm = Assembly.Load (asmName);
+					}
+				} catch {
+					// Not found
+				}
+
+				Type platformType = asm != null ? asm.GetType (typeName) : null;
+
+				if (platformType != null) {
+					platformBackend = (GtkPlatformBackend)Activator.CreateInstance (platformType);
+					platformBackend.Initialize (this);
+				}
+			}
 		}
 
 		public override void Dispose ()
@@ -236,9 +275,10 @@ namespace Xwt.GtkBackend
 				throw new NotSupportedException ();
 		}
 
-		public override object GetBackendForContext (object nativeContext)
+		public override object GetBackendForContext (object nativeWidget, object nativeContext)
 		{
-			return new CairoContextBackend (1) { Context = (Cairo.Context)nativeContext };
+			Gtk.Widget w = (Gtk.Widget)nativeWidget;
+			return new CairoContextBackend (Util.GetScaleFactor (w)) { Context = (Cairo.Context)nativeContext };
 		}
 		
 		public override object GetNativeParentWindow (Widget w)

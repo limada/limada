@@ -96,9 +96,9 @@ namespace Xwt.Drawing
 
 		public bool Equals (Matrix value)
 		{
-            if (value == null)
-                return false;
-            return (M11 == value.M11 &&
+			if (value == null)
+				return false;
+			return (M11 == value.M11 &&
 				M12 == value.M12 &&
 				M21 == value.M21 &&
 				M22 == value.M22 &&
@@ -165,9 +165,7 @@ namespace Xwt.Drawing
 			if (Matrix.ReferenceEquals (matrix1, matrix2))
 				return true;
 			if (Matrix.ReferenceEquals (matrix1, null))
-				return false;
-            //if (Matrix.ReferenceEquals (matrix2, null))
-            //    return false; 
+				return false; 
 			return matrix1.Equals (matrix2);
 		}
 

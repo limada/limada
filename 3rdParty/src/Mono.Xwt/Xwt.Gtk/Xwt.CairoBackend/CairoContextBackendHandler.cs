@@ -289,14 +289,14 @@ namespace Xwt.CairoBackend
 				var lc = pl.LineCount;
 				var scale = Pango.Scale.PangoScale;
 				double h = 0;
-                var baseline = ctx.Context.FontExtents.Ascent /
-                     (ctx.Context.FontExtents.Ascent + ctx.Context.FontExtents.Descent);
+				var fe = ctx.Context.FontExtents;
+				var baseline = fe.Ascent / (fe.Ascent + fe.Descent);
 				for (int i=0; i<lc; i++) {
 					var line = pl.Lines [i];
 					var ext = new Pango.Rectangle ();
 					var extl = new Pango.Rectangle ();
 					line.GetExtents (ref ext, ref extl);
-                    h += h == 0 ? (extl.Height / scale * baseline) : (extl.Height / scale);
+					h += h == 0 ? (extl.Height / scale * baseline) : (extl.Height / scale);
 					if (h > layout.Height)
 						break;
 					ctx.Context.MoveTo (x, y + h);

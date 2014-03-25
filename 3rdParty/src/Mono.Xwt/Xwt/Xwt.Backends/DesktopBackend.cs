@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Xwt.Backends
 {
@@ -90,6 +91,28 @@ namespace Xwt.Backends
 			ApplicationContext.InvokeUserCode (delegate {
 				Desktop.NotifyScreensChanged ();
 			});
+		}
+
+		Xwt.Drawing.Image blankImage;
+
+		public virtual void OpenFile (string filename)
+		{
+			Process.Start ("file://" + filename);
+		}
+
+		public virtual void OpenFolder (string folderPath)
+		{
+			Process.Start ("file://" + folderPath);
+		}
+
+		public virtual void OpenUrl (string url)
+		{
+			Process.Start (url);
+		}
+
+		public virtual object GetFileIcon (string fileName)
+		{
+			return null;
 		}
 	}
 }

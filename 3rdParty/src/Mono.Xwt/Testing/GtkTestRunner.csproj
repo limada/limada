@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{BC764278-4141-483C-8643-2EA8C40373B2}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -43,22 +43,14 @@
     <Reference Include="nunit-console-runner">
       <HintPath>libs\nunit-console-runner.dll</HintPath>
     </Reference>
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="nunit.util">
       <HintPath>libs\nunit.util.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GtkTestRunner\Main.cs" />
@@ -116,6 +108,7 @@
     <Compile Include="Tests\DrawingTestsBase.cs" />
     <Compile Include="Tests\NinePatchTests.cs" />
     <Compile Include="Tests\DialogTests.cs" />
+    <Compile Include="Tests\ScrollableWidgetTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -125,10 +118,12 @@
     </ProjectReference>
     <ProjectReference Include="..\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="GtkTests\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Tests\ninep-ss.9.png">
       <LogicalName>ninep-ss.9.png</LogicalName>

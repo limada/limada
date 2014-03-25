@@ -98,41 +98,41 @@ namespace Xwt
 		[Test]
 		public void Margin ()
 		{
-            //var w = CreateWidget ();
-            //Assert.AreEqual (0, w.Margin.Left);
-            //Assert.AreEqual (0, w.Margin.Top);
-            //Assert.AreEqual (0, w.Margin.Right);
-            //Assert.AreEqual (0, w.Margin.Bottom);
-            //w.Margin.SetAll (4);
-            //Assert.AreEqual (4, w.Margin.Left);
-            //Assert.AreEqual (4, w.Margin.Top);
-            //Assert.AreEqual (4, w.Margin.Right);
-            //Assert.AreEqual (4, w.Margin.Bottom);
-            //w.Margin.Set (10, 20, 30, 40);
-            //Assert.AreEqual (10, w.Margin.Left);
-            //Assert.AreEqual (20, w.Margin.Top);
-            //Assert.AreEqual (30, w.Margin.Right);
-            //Assert.AreEqual (40, w.Margin.Bottom);
-            //w.Margin.Left = 1;
-            //Assert.AreEqual (1, w.Margin.Left);
-            //Assert.AreEqual (20, w.Margin.Top);
-            //Assert.AreEqual (30, w.Margin.Right);
-            //Assert.AreEqual (40, w.Margin.Bottom);
-            //w.Margin.Top = 2;
-            //Assert.AreEqual (1, w.Margin.Left);
-            //Assert.AreEqual (2, w.Margin.Top);
-            //Assert.AreEqual (30, w.Margin.Right);
-            //Assert.AreEqual (40, w.Margin.Bottom);
-            //w.Margin.Right = 3;
-            //Assert.AreEqual (1, w.Margin.Left);
-            //Assert.AreEqual (2, w.Margin.Top);
-            //Assert.AreEqual (3, w.Margin.Right);
-            //Assert.AreEqual (40, w.Margin.Bottom);
-            //w.Margin.Bottom = 4;
-            //Assert.AreEqual (1, w.Margin.Left);
-            //Assert.AreEqual (2, w.Margin.Top);
-            //Assert.AreEqual (3, w.Margin.Right);
-            //Assert.AreEqual (4, w.Margin.Bottom);
+			var w = CreateWidget ();
+			Assert.AreEqual (0, w.Margin.Left);
+			Assert.AreEqual (0, w.Margin.Top);
+			Assert.AreEqual (0, w.Margin.Right);
+			Assert.AreEqual (0, w.Margin.Bottom);
+			w.Margin.SetAll (4);
+			Assert.AreEqual (4, w.Margin.Left);
+			Assert.AreEqual (4, w.Margin.Top);
+			Assert.AreEqual (4, w.Margin.Right);
+			Assert.AreEqual (4, w.Margin.Bottom);
+			w.Margin.Set (10, 20, 30, 40);
+			Assert.AreEqual (10, w.Margin.Left);
+			Assert.AreEqual (20, w.Margin.Top);
+			Assert.AreEqual (30, w.Margin.Right);
+			Assert.AreEqual (40, w.Margin.Bottom);
+			w.Margin.Left = 1;
+			Assert.AreEqual (1, w.Margin.Left);
+			Assert.AreEqual (20, w.Margin.Top);
+			Assert.AreEqual (30, w.Margin.Right);
+			Assert.AreEqual (40, w.Margin.Bottom);
+			w.Margin.Top = 2;
+			Assert.AreEqual (1, w.Margin.Left);
+			Assert.AreEqual (2, w.Margin.Top);
+			Assert.AreEqual (30, w.Margin.Right);
+			Assert.AreEqual (40, w.Margin.Bottom);
+			w.Margin.Right = 3;
+			Assert.AreEqual (1, w.Margin.Left);
+			Assert.AreEqual (2, w.Margin.Top);
+			Assert.AreEqual (3, w.Margin.Right);
+			Assert.AreEqual (40, w.Margin.Bottom);
+			w.Margin.Bottom = 4;
+			Assert.AreEqual (1, w.Margin.Left);
+			Assert.AreEqual (2, w.Margin.Top);
+			Assert.AreEqual (3, w.Margin.Right);
+			Assert.AreEqual (4, w.Margin.Bottom);
 		}
 
 		[Test]
@@ -151,13 +151,13 @@ namespace Xwt
 				win.Present ();
 
 //				for (int n=0; n < 500; n++) {
-                    //Application.DispatchPendingEvents ();
+					Application.DispatchPendingEvents ();
 //					System.Threading.Thread.Sleep (10);
 //				}
 
 				e.SetFocus ();
 
-                //Application.DispatchPendingEvents ();
+				Application.DispatchPendingEvents ();
 
 				Assert.IsFalse (w.HasFocus);
 		//		Assert.IsTrue (w.CanGetFocus);
@@ -195,7 +195,7 @@ namespace Xwt
 			win.Content = w;
 			win.Show ();
 
-            //Application.DispatchPendingEvents ();
+			Application.DispatchPendingEvents ();
 
 			var defw = w.Size.Width;
 			var defh = w.Size.Height;
@@ -228,7 +228,7 @@ namespace Xwt
 			win.Content = w;
 			win.Show ();
 
-            //Application.DispatchPendingEvents ();
+			Application.DispatchPendingEvents ();
 
 			Assert.AreEqual (w.ScreenBounds, win.ScreenBounds);
 
