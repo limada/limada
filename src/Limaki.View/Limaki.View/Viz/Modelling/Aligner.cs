@@ -148,7 +148,6 @@ namespace Limaki.View.Viz.Modelling {
             return cols;
         }
 
-
         public virtual void LocateColumns (Queue<Tuple<IEnumerable<TItem>, Rectangle>> cols, ref Rectangle bounds, AlignerOptions options) {
             var colPos = bounds.Location;
             var locate = new LocateVisitBuilder<TItem>(this.Locator);
@@ -159,7 +158,7 @@ namespace Limaki.View.Viz.Modelling {
             }
         }
 
-        protected virtual Tuple<IEnumerable<TItem>, Rectangle> MeasureColumn (IEnumerable<TItem> colItems, AlignerOptions options, ref Rectangle bounds) {
+        public virtual Tuple<IEnumerable<TItem>, Rectangle> MeasureColumn (IEnumerable<TItem> colItems, AlignerOptions options, ref Rectangle bounds) {
 
             Action<TItem> visit = null;
 

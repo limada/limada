@@ -118,7 +118,6 @@ namespace Limaki.Graphs {
         /// iterates over all edges of edges recursivly
         /// if edge.Root or edge.Leaf is an edge, it is iterated too
         /// </summary>
-        /// <remarks>maybe same as deepwalk</remarks>
         /// <param name="start"></param>
         /// <param name="level"></param>
         /// <returns></returns>
@@ -210,7 +209,9 @@ namespace Limaki.Graphs {
             while (queue.Count > 0) {
                 var item = queue.Dequeue();
                 yield return item;
+
                 level = item.Level;
+
                 if (item.Node is TEdge) {
 
                     var edge = (TEdge) item.Node;
@@ -218,11 +219,11 @@ namespace Limaki.Graphs {
                     var adjacent = graph.Adjacent(edge, start);
                     if (adjacent != null || (edge.Equals(start)) || (graph.RootIsEdge(edge) && graph.LeafIsEdge(edge))) {
                         // follow link of links
-                        foreach (TEdge edge_edge in graph.Edges(edge))
+                        foreach (var edge_edge in graph.Edges(edge))
                             enqueue(edge_edge, edge, level + 1);
                     }
 
-                    if (adjacent != null) { // follow adjacent of node:
+                    if (adjacent != null) { // follow adjacent of start:
                         enqueue(adjacent, edge, level);
                     } else {
                         enqueue(edge.Root, edge, level);

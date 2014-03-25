@@ -206,7 +206,7 @@ namespace Limada.Schemata {
             if (graph == null || document == null)
                 return new ILink[0];
             return graph.Edges(document)
-                .Where(link => link.Marker.Id == DigidocSchema.DocumentPage.Id);
+                .Where(link => link.Marker.Id == DocumentPage.Id);
         }
 
         public IEnumerable<IThing> OrderedPages(IThingGraph graph, IThing document) {
