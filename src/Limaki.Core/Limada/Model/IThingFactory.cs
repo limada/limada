@@ -8,7 +8,7 @@ namespace Limada.Model {
     public interface IThingFactory : IGraphModelFactory<IThing, ILink>, IFactory {
         
         IThing CreateItem();
-        IThing CreateItem(Id id);
+        IThing CreateIdItem(Id id);
         IThing CreateItem<T>(Id id, T data);
         IThing CreateItem(IThingGraph graph, object data);
         IThing CreateItem(Id id, IThingGraph graph, object data);

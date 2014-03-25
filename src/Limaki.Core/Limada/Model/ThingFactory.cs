@@ -61,7 +61,7 @@ namespace Limada.Model {
             return CreateItem<object>(null);
         }
 
-        public IThing CreateItem(Id id) {
+        public IThing CreateIdItem(Id id) {
             return CreateItem<object>(id,null);
         }
 

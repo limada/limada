@@ -257,7 +257,7 @@ namespace Limaki.View.Viz.Visuals {
             if (insert) {
                 DetachEditor (true);
                 Exclusive = Resolved = true;
-                Current = Registry.Pooled<IVisualFactory> ().CreateItem<string> ("XXXXXXXX");
+                Current = Registry.Pooled<IVisualFactory> ().CreateItem ("XXXXXXXX");
                 var scene = Scene;
                 var root = scene.Focused;
 
