@@ -132,5 +132,19 @@ namespace Limaki.Graphs {
             }
             return graph;
         }
+
+        public static TItem Adjacent<TItem> (this IEdge<TItem> edge, TItem item)  {
+            if (edge != null) {
+                if (edge.Root.Equals (item))
+                    return edge.Leaf;
+                else if (edge.Leaf.Equals (item))
+                    return edge.Root;
+                else
+                    return default (TItem);
+            } else {
+                return default (TItem);
+
+            }
+        }
     }
 }

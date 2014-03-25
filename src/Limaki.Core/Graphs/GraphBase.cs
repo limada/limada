@@ -107,19 +107,7 @@ namespace Limaki.Graphs {
 
         public abstract void RevertEdge ( TEdge edge );
 
-        public virtual TItem Adjacent(TEdge edge, TItem item) {
-            if (edge != null) {
-                if (edge.Root.Equals(item))
-                    return edge.Leaf;
-                else if (edge.Leaf.Equals(item))
-                    return edge.Root;
-                else
-                    return default(TItem);
-            } else {
-                return default(TItem);
-
-            }
-        }
+        public virtual TItem Adjacent(TEdge edge, TItem item) { return edge.Adjacent (item); }
 
         #endregion
 
