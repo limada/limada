@@ -58,8 +58,8 @@ namespace Limaki.View.Swf.Visuals {
          }
 
          protected override void AttachEditor () {
-             editor.KeyDown += KeyCancelEdit;
-             editor.KeyDown += KeyStartOrConfirmEdit;
+
+             editor.KeyDown += KeyEditBehaviour;
 
              StyleEditor();
 
@@ -93,8 +93,7 @@ namespace Limaki.View.Swf.Visuals {
 
              editor.Visible = false;
 
-             editor.KeyDown -= KeyCancelEdit;
-             editor.KeyDown -= KeyStartOrConfirmEdit;
+             editor.KeyDown -= KeyEditBehaviour;
 
              editor.Text = String.Empty;
              if (hoverAfteredit && !focusAfterEdit) { // this does not work!
@@ -175,15 +174,11 @@ namespace Limaki.View.Swf.Visuals {
              return displayBackend.PointToClient (Cursor.Position).ToXwt();
          }
 
-         protected void KeyCancelEdit (object sender, SWF.KeyEventArgs e) {
-             var ev = Converter.Convert (e, new SD.Point ());
-             base.KeyCancelEdit (sender, ev);
-         }
 
-         protected void KeyStartOrConfirmEdit (object sender, SWF.KeyEventArgs e) {
+         protected void KeyEditBehaviour (object sender, SWF.KeyEventArgs e) {
              Debug.WriteLine (string.Format ("{0} {1} {2}", e.KeyCode, e.KeyData, e.KeyValue));
              var ev = Converter.Convert (e, new SD.Point());
-             base.KeyStartOrConfirmEdit (sender, ev);
+             base.KeyEditBehaviour (sender, ev);
          }
 
        

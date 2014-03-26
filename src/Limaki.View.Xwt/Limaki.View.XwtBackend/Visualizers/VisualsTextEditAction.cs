@@ -38,8 +38,7 @@ namespace Limaki.View.XwtBackend.Viz {
 
         protected override void AttachEditor () {
 
-            editor.KeyPressed += KeyCancelEdit;
-            editor.KeyPressed += KeyStartOrConfirmEdit;
+            editor.KeyPressed += KeyEditBehaviour;
             editor.DragOver += EditorDragOver;
             editor.DragDrop += EditorDragDrop;
 
@@ -56,28 +55,31 @@ namespace Limaki.View.XwtBackend.Viz {
         }
 
         protected Rectangle StyleEditor (TextEntry editor) {
-            var style = Layout.GetStyle(Current);
+            var style = display.StyleSheet.ItemStyle;
             editor.Font = style.Font;
-            editor.BackgroundColor = style.FillColor;
+            editor.BackgroundColor = style.FillColor.WithAlpha(1);
             editor.MultiLine = true;
             editor.ShowFrame = true;
             
             var location = camera.FromSource(Current.Location);
             var size = camera.FromSource(Current.Size);
+            if (Current is IVisualEdge)
+                location = camera.FromSource (Current.Shape[Anchor.Center]);
+
+            var text = DataToText (Current);
+            if (string.IsNullOrEmpty (text))
+                text = "XXXX";
+            size = Registry.Pooled<IDrawingUtils> ()
+                .GetTextDimension (text, style);
+            size.Height = Math.Max (size.Height + 5, style.Font.Size + 5);
+            size.Width = Math.Max (size.Width + 2, style.Font.Size * 4);
+            size = camera.FromSource (size);
             if (Current is IVisualEdge) {
-                location = camera.FromSource(Current.Shape[Anchor.Center]);
-                var text = DataToText(Current);
-                if (string.IsNullOrEmpty (text))
-                    text = "XXXX";
-                size = Registry.Pooled<IDrawingUtils>()
-                    .GetTextDimension(text, style);
-                size.Height = Math.Max(size.Height + 2, style.Font.Size + 2);
-                size.Width = Math.Max(size.Width + 2, style.Font.Size * 4);
-                size = camera.FromSource (size);
                 location.X = location.X - size.Width / 2;
                 location.Y = location.Y - size.Height / 2;
             }
-            return new Rectangle(location, size);
+            //}
+            return new Rectangle (location, size);
         }
 
         protected override void DetachEditor (bool writeData) {
@@ -92,8 +94,7 @@ namespace Limaki.View.XwtBackend.Viz {
 
             editor.Visible = false;
 
-            editor.KeyPressed -= KeyCancelEdit;
-            editor.KeyPressed -= KeyStartOrConfirmEdit;
+            editor.KeyPressed -= KeyEditBehaviour;
             editor.DragOver -= EditorDragOver;
             editor.DragDrop -= EditorDragDrop;
 

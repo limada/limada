@@ -214,41 +214,45 @@ namespace Limaki.View.Viz.Visuals {
             return e.Key == Key.F2 || (e.Key == Key.Space && e.Modifiers == (ModifierKeys.Control | ModifierKeys.Alt));
         }
 
-        protected virtual void KeyStartOrConfirmEdit (object sender, KeyEventArgs e) {
-            if (IsKeyStartOrConfirmEdit(e)) {
-                StartOrConfirmEdit();
+        protected virtual bool IsKeyCancelEdit (KeyEventArgs e) {
+            return e.Key == Key.Escape;
+        }
+
+        protected virtual void KeyEditBehaviour (object sender, KeyEventArgs e) {
+            KeyEditBehaviour (e);
+        }
+
+        protected virtual void KeyEditBehaviour (KeyEventArgs e) {
+            if (IsKeyCancelEdit (e)) {
+                CancelEdit ();
+                e.Handled = true;
+            } else if (IsKeyStartOrConfirmEdit (e)) {
+                StartOrConfirmEdit ();
                 e.Handled = true;
             }
         }
 
         protected virtual void CancelEdit () {
-                Exclusive = false;
-                DetachEditor (false);
-
-        }
-
-        protected virtual void KeyCancelEdit (object sender, KeyEventArgs e) {
-            if (e.Key == Key.Escape) {
-                CancelEdit();
-                e.Handled = true;
-            }
+            Exclusive = false;
+            DetachEditor (false);
         }
 
         protected abstract Point CursorPosition();
 
         public virtual void OnKeyPressed (KeyActionEventArgs e) {
-            if (e.Key == Key.Escape) {
-                CancelEdit ();
-            }
-            if (IsKeyStartOrConfirmEdit(e))
-                StartOrConfirmEdit ();
+
+            KeyEditBehaviour (e);
+            if (e.Handled)
+                return;
 
             focusAfterEdit = false;
             hoverAfteredit = false;
             bool insert = false;
+
             if (e.Key == Key.Return && e.Modifiers == ModifierKeys.Control) {
                 insert = true;
             }
+
             if (e.Key == Key.Insert) {
                 insert = true;
                 focusAfterEdit = true;
@@ -273,7 +277,9 @@ namespace Limaki.View.Viz.Visuals {
                 TextToData (Current, string.Empty);
 
                 AttachEditor ();
+                e.Handled = true;
             }
+           
         }
         #endregion
     }
