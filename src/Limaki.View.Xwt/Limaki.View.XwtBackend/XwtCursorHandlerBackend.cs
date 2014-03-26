@@ -79,8 +79,8 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
-        public static readonly CursorType MoveCursor = CursorType.Hand;
-        public static readonly CursorType EdgeCursor = CursorType.IBeam;
+        public static readonly CursorType MoveCursor = CursorType.Move;
+        public static readonly CursorType EdgeCursor = CursorType.Hand;
 
         public void SetEdgeCursor (Anchor anchor) {
             if (anchor != Anchor.None) {
