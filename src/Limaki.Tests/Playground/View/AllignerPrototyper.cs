@@ -30,11 +30,17 @@ using Limaki.View.XwtBackend.Viz;
 using NUnit.Framework;
 using Xwt;
 using Xwt.Drawing;
+using Xwt.Html5.Backend;
 
 
 namespace Limaki.Playground.View {
 
     public class AlignerPrototyper : DomainTest {
+
+        public override void Setup () {
+            base.Setup ();
+            Toolkit.Engine<Html5Engine> ().SetActive ();
+        }
 
         IGraphScene<IVisual, IVisualEdge> SceneWithTestData (int exampleNr) {
             IGraphScene<IVisual, IVisualEdge> scene = null;
@@ -46,17 +52,24 @@ namespace Limaki.Playground.View {
             return scene;
 
         }
-
         GraphSceneContextVisualizer<IVisual, IVisualEdge> SceneWorkerWithTestData (int exampleNr, AlignerOptions options) {
-            var scene = SceneWithTestData(exampleNr);
+            var scene = SceneWithTestData (exampleNr);
 
-            var worker = new GraphSceneContextVisualizer<IVisual, IVisualEdge>();
-            worker.Compose(scene, new VisualsRenderer());
+            var worker = new GraphSceneContextVisualizer<IVisual, IVisualEdge> ();
+            worker.Compose (scene, new VisualsRenderer ());
             worker.StyleSheet.BackColor = Colors.WhiteSmoke;
-            worker.Layout.SetOptions(options);
-            worker.Folder.ShowAllData();
-            worker.Modeller.Perform();
-            worker.Modeller.Finish();
+            worker.Layout.SetOptions (options);
+            worker.Folder.ShowAllData ();
+            worker.Modeller.Perform ();
+            worker.Modeller.Finish ();
+
+            scene.Focused = scene.Graph.FindRoots (null).First ();
+            return worker;
+        }
+
+        GraphSceneContextVisualizer<IVisual, IVisualEdge> SceneWorkerWithTestData2 (int exampleNr, AlignerOptions options) {
+            var worker = SceneWorkerWithTestData (exampleNr, options);
+            var scene = worker.Scene;
 
             var scene2 = SceneWithTestData(exampleNr);
 
@@ -65,7 +78,8 @@ namespace Limaki.Playground.View {
             var graph2 = (scene2.Graph as SubGraph<IVisual, IVisualEdge>).Source;
             graph2.Where(e => e is Visual<string>).ForEach(e => { e.Data += "1"; });
 
-            var root = graph.FindRoots(null).First();
+            var root = scene.Focused;
+
             var root2 = graph2.FindRoots(null).First();
             graph2.Elements().ForEach(e => graph.Add(e));
             view.Add(root2);
@@ -109,7 +123,7 @@ namespace Limaki.Playground.View {
                 PointOrder = PointOrder.XY
             };
 
-            var worker = SceneWorkerWithTestData(0, options);
+            var worker = SceneWorkerWithTestData2(0, options);
             options.Distance = worker.Layout.Distance;
 
             var scene = worker.Scene;
@@ -190,7 +204,7 @@ namespace Limaki.Playground.View {
                 Collisions = Collisions.NextFree | Collisions.Toggle
             };
 
-            var worker = SceneWorkerWithTestData(0, options);
+            var worker = SceneWorkerWithTestData2(0, options);
             options.Distance = worker.Layout.Distance;
 
             ReportOptions(options);
@@ -327,58 +341,144 @@ namespace Limaki.Playground.View {
             WritePainter();
         }
 
-
         [Test]
         public void TestExpand () {
             var options = new AlignerOptions {
-                                                 AlignX = Alignment.Start,
-                                                 AlignY = Alignment.Center,
-                                                 Dimension = Dimension.X,
-                                                 PointOrder = PointOrder.XY,
-                                                
+                AlignX = Alignment.Start,
+                AlignY = Alignment.Center,
+                Dimension = Dimension.X,
+                PointOrder = PointOrder.XY,
+
             };
 
-            var worker = SceneWorkerWithTestData(3, options);
+            var worker = SceneWorkerWithTestData2 (3, options);
             options.Distance = worker.Layout.Distance;
 
-            var roots = new IVisual[] {worker.Scene.Focused};
-            var aligner = new Aligner<IVisual, IVisualEdge>(worker.Scene, worker.Layout);
+            var roots = new IVisual[] { worker.Scene.Focused };
+            var aligner = new Aligner<IVisual, IVisualEdge> (worker.Scene, worker.Layout);
             var deep = false;
             var graphView = worker.Scene.Graph as SubGraph<IVisual, IVisualEdge>;
 
             var affected = new SubGraphWorker<IVisual, IVisualEdge>
-                    (graphView).Expand(roots, deep);
+                    (graphView).Expand (roots, deep);
 
-           
+            var walker = new Walker<IVisual, IVisualEdge> (graphView);
 
-            var walker = new Walker<IVisual, IVisualEdge>(graphView);
-
-            roots.ForEach(root => {
-                var walk = (deep ? walker.DeepWalk(root, 1) : walker.ExpandWalk(root, 1))
-                          .Where(l => !(l.Node is IVisualEdge)).ToArray();
-                var bounds = new Rectangle(aligner.Locator.GetLocation(root), aligner.Locator.GetSize(root));
+            roots.ForEach (root => {
+                var walk = (deep ? walker.DeepWalk (root, 1) : walker.ExpandWalk (root, 1))
+                          .Where (l => !(l.Node is IVisualEdge)).ToArray ();
+                var bounds = new Rectangle (aligner.Locator.GetLocation (root), aligner.Locator.GetSize (root));
                 options.Collisions = Collisions.None;
-                var cols = aligner.MeasureWalk(walk, ref bounds, options);
-                var removeCol = cols.Dequeue();
+                var cols = aligner.MeasureWalk (walk, ref bounds, options);
+                var removeCol = cols.Dequeue ();
 
                 if (options.Dimension == Dimension.X) {
-                    var adjust = aligner.AlignDelta(bounds.Height, removeCol.Item2.Height, options.AlignY);
-                    bounds.Location = new Point(bounds.X + removeCol.Item2.Width + options.Distance.Width, bounds.Y - adjust);
+                    var adjust = aligner.AlignDelta (bounds.Height, removeCol.Item2.Height, options.AlignY);
+                    bounds.Location = new Point (bounds.X + removeCol.Item2.Width + options.Distance.Width, bounds.Y - adjust);
                 } else {
-                    var adjust = aligner.AlignDelta(bounds.Width, removeCol.Item2.Width, options.AlignX);
-                    bounds.Location = new Point(bounds.X + adjust, bounds.Y + removeCol.Item2.Height + options.Distance.Height);
+                    var adjust = aligner.AlignDelta (bounds.Width, removeCol.Item2.Width, options.AlignX);
+                    bounds.Location = new Point (bounds.X + adjust, bounds.Y + removeCol.Item2.Height + options.Distance.Height);
                 }
                 options.Collisions = Collisions.NextFree | Collisions.PerColumn | Collisions.Toggle;
-                aligner.LocateColumns(cols, ref bounds, options);
+                aligner.LocateColumns (cols, ref bounds, options);
             });
 
-            aligner.Commit();
-            worker.Modeller.Perform();
-            worker.Modeller.Finish();
+            aligner.Commit ();
+            worker.Modeller.Perform ();
+            worker.Modeller.Finish ();
 
-            ReportPainter.PushPaint(ctx => worker.Painter.Paint(ctx));
+            ReportPainter.PushPaint (ctx => worker.Painter.Paint (ctx));
 
-            WritePainter();
+            WritePainter ();
+        }
+
+        [Test]
+        public void BlockAlgin () {
+            var options = new AlignerOptions {
+                AlignX = Alignment.Start,
+                AlignY = Alignment.Center,
+                Dimension = Dimension.X,
+                PointOrder = PointOrder.XY,
+
+            };
+
+            var worker = SceneWorkerWithTestData (1, options);
+            options.Distance = worker.Layout.Distance;
+
+            var roots = new IVisual[] { worker.Scene.Focused };
+            var aligner = new Aligner<IVisual, IVisualEdge> (worker.Scene, worker.Layout);
+            var deep = true;
+            var graphView = worker.Scene.Graph as SubGraph<IVisual, IVisualEdge>;
+
+            var affected = new SubGraphWorker<IVisual, IVisualEdge>
+                (graphView).Expand (roots, deep);
+
+            var walker = new Walker<IVisual, IVisualEdge> (graphView);
+
+            roots.ForEach (root => {
+                var walk = walker.DeepWalk (root, 1, null, false)
+                    .Where (l => !(l.Node is IVisualEdge))
+                    .ToArray ();
+
+                var bounds = new Rectangle (aligner.Locator.GetLocation (root), aligner.Locator.GetSize (root));
+                options.Collisions = Collisions.None;
+
+                #region measurewalk
+
+                var colPos = bounds.Location;
+
+                var cols = new Queue<Tuple<IEnumerable<IVisual>, Rectangle>> ();
+
+                Func<LevelItem<IVisual>, IVisual> groupkey = row => {
+                    var edge = row.Path as IVisualEdge;
+                    if (edge != null)
+                        return edge.Adjacent (row.Node);
+                    return row.Path;
+                };
+
+                IEnumerable<IVisual> colItems = null;
+                IVisual groupItem = null;
+                Action<IVisual> addq = v => ((Queue<IVisual>) colItems).Enqueue (v);
+
+                foreach (var levelItem in walk) {
+                    var group = groupkey (levelItem);
+
+                    if (group != groupItem && colItems != null && colItems.Count () != 0) {
+                        if (options.Dimension == Dimension.X)
+                            colItems = colItems.OrderBy (item => aligner.Locator.GetLocation (item).Y);
+                        else
+                            colItems = colItems.OrderBy (item => aligner.Locator.GetLocation (item).X);
+
+                        cols.Enqueue (aligner.MeasureColumn (colItems, options, ref bounds));
+                        colItems = null;
+                    }
+
+                    if (colItems == null)
+                        colItems = new Queue<IVisual> ();
+
+                    addq (levelItem.Node);
+                    groupItem = group;
+                }
+
+                if (colPos.X == int.MaxValue && colPos.Y == int.MaxValue)
+                    colPos = bounds.Location;
+                else
+                    bounds.Location = colPos;
+
+                #endregion
+
+
+                options.Collisions = Collisions.None;
+                aligner.LocateColumns (cols, ref bounds, options);
+            });
+
+            aligner.Commit ();
+            worker.Modeller.Perform ();
+            worker.Modeller.Finish ();
+
+            ReportPainter.PushPaint (ctx => worker.Painter.Paint (ctx));
+
+            WritePainter ();
         }
     }
 }
