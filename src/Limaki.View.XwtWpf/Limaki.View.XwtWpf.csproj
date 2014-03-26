@@ -47,6 +47,7 @@
     <Compile Include="Limaki.View.WpfBackends\Monitor.cs" />
     <Compile Include="Limaki.View.WpfBackends\WpfUsecaseFactory.cs" />
     <Compile Include="Limaki.View.WpfBackends\[TODO]\ArrangerToolStripBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\FixedBitmap.cs" />
     <Compile Include="Limaki.View.WpfBackends\[TODO]\DisplayModeToolStripBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\[TODO]\GeckoWebBrowserBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\[TODO]\LayoutToolStripBackend.cs" />
@@ -54,6 +55,9 @@
     <Compile Include="Limaki.View.WpfBackends\[TODO]\SplitViewToolStripBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\[TODO]\ToolStripBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\WpfBackendHelper.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\ToolStripButton.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\ToolStripDropDownButton.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\ToolStripUtils.cs" />
     <Compile Include="Limaki.View.WpfBackends\[TODO]\WpfExtensions.cs" />
     <Compile Include="Limaki.View.WpfBackends\[TODO]\XulRunner.cs" />
     <Compile Include="TODO\BitmapCanvasBackend.cs" />

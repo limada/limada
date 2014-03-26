@@ -6,10 +6,11 @@ using SWM = System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xwt.Backends;
 using Xwt.WPFBackend;
+
 namespace Limaki.View.WpfBackend {
 
     /// <summary>
-    /// faster wpf.canvasbackend based on WriteableBitmap
+    /// TODO: faster wpf.canvasbackend based on WriteableBitmap
     /// </summary>
     public class BitmapCanvasBackend : WidgetBackend, ICanvasBackend {
         public void QueueDraw () {
