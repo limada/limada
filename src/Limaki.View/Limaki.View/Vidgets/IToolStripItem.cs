@@ -14,11 +14,14 @@
 
 using System;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.Vidgets {
+
     public interface IToolStripItem {
 
-        Xwt.Drawing.Image Image { get; set; }
+        Image Image { get; set; }
+
         string Text { get; set; }
 
         string ToolTipText { get; set; }
@@ -27,4 +30,5 @@ namespace Limaki.View.Vidgets {
 
         event EventHandler Click;
     }
+
 }

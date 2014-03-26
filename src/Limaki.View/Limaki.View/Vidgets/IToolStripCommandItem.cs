@@ -13,8 +13,10 @@
  */
 
 namespace Limaki.View.Vidgets {
+
     public interface IToolStripCommandItem {
         ToolStripCommand Command { get; set; }
         IToolStripCommandItem ToggleOnClick { get; set; }
     }
+
 }

@@ -37,33 +37,33 @@ namespace Limaki.View.Vidgets {
         }
 
         public virtual void Attach(object target) {
-            var control = target as IToolStripItem;
-            if (control != null) {
-                control.Image = this.Image;
-                control.Text = this.Text;
-                control.ToolTipText = this.ToolTipText;
-                control.Size = this.Size;
-                control.Click += this.DoAction;
+            var item = target as IToolStripItem;
+            if (item != null) {
+                item.Image = this.Image;
+                item.Text = this.Text;
+                item.ToolTipText = this.ToolTipText;
+                item.Size = this.Size;
+                item.Click += this.DoAction;
             }
         }
 
         public virtual void DeAttach(object target) {
-            var control = target as IToolStripItem;
-            if (control != null) {
-                control.Image = null;
-                control.Text = string.Empty;
-                control.ToolTipText = string.Empty;
-                control.Click -= this.DoAction;
+            var item = target as IToolStripItem;
+            if (item != null) {
+                item.Image = null;
+                item.Text = string.Empty;
+                item.ToolTipText = string.Empty;
+                item.Click -= this.DoAction;
             }
         }
 
-        public virtual void ToggleCommand(IToolStripCommandItem control1, IToolStripCommandItem control2) {
-            if (control1 == control2)
+        public virtual void ToggleCommand(IToolStripCommandItem item1, IToolStripCommandItem item2) {
+            if (item1 == item2)
                 return;
 
-            var command1 = control1.Command;
-            control1.Command = control2.Command;
-            control2.Command = command1;
+            var command1 = item1.Command;
+            item1.Command = item2.Command;
+            item2.Command = command1;
 
         }
     }

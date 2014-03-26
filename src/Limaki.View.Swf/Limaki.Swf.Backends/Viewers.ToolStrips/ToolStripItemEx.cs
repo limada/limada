@@ -82,6 +82,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             get { return _command; }
             set { ToolStripUtils.SetCommand(this, ref _command, value); }
         }
+
         public IToolStripCommandItem ToggleOnClick { get; set; }
 
         public new Xwt.Size Size {
