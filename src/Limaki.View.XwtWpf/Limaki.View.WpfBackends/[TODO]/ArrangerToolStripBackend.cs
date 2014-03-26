@@ -6,6 +6,7 @@ using Limaki.View.Viz.Visualizers.ToolStrips;
 namespace Limaki.View.WpfBackends {
 
     public class ArrangerToolStripBackend : ToolStripBackend, IArrangerToolStripBackend {
+
         public ArrangerToolStripBackend () {
            
         }
@@ -21,8 +22,13 @@ namespace Limaki.View.WpfBackends {
 
         protected override void Compose () {
             base.Compose();
-            this.Items.Add
-            (new Button { Width = 20, Height = 20, HorizontalAlignment = System.Windows.HorizontalAlignment.Left, Content = "!" });
+            this.Items.Add(
+                new ToolStripDropDownButton { Command = Frontend.LogicalLayoutLeafCommand }
+                    .AddChilds (
+                        new ToolStripButton { Command = Frontend.LogicalLayoutLeafCommand },
+                        new ToolStripButton { Command = Frontend.LogicalLayoutLeafCommand }
+                    )
+                );
         }
 
       
