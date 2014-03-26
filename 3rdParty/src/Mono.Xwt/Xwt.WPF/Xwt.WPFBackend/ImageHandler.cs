@@ -265,7 +265,7 @@ namespace Xwt.WPFBackend
 		}
 	}
 
-	class WpfImage
+	public class WpfImage
 	{
 		public class ImageFrame
 		{

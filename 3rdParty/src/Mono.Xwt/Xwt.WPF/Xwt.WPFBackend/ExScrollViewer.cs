@@ -27,7 +27,7 @@ namespace Xwt.WPFBackend
 
         protected virtual void RouteKeyEvent (System.Windows.Input.KeyEventArgs e) {
             var w = NativeWidget();
-            if (w != null && e.Source != w && w.Focusable)
+            if (w != null && !w.Equals(e.Source) && w.Focusable)
                 w.RaiseEvent(e);
         }
 
