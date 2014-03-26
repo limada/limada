@@ -5,27 +5,26 @@ namespace Limaki.View.Properties {
     
     public class Iconery {
 
+        public static T Create<T> () where T:Iconeria, new() {
+            var fillColor = new Xwt.Drawing.Color (.3, .3, .3, .8);
+            var strokeColor = new Xwt.Drawing.Color (.1, .1, .1, .3);
+            fillColor = Xwt.Drawing.Colors.DarkSlateBlue.WithAlpha (.8);
+            strokeColor = Xwt.Drawing.Colors.LemonChiffon.WithAlpha (.3);
+            return new T {
+                             Fill = true,
+                             FillColor = fillColor,
+                             StrokeColor = strokeColor,
+                             Stroke = true,
+                             StrokeFirst = false,
+                         };
+        }
+
         static Iconery () {
-            var fillColor = new Xwt.Drawing.Color(.3, .3, .3, .8);
-            var strokeColor = new Xwt.Drawing.Color(.1, .1, .1, .3);
-            fillColor = Xwt.Drawing.Colors.DarkSlateBlue.WithAlpha(.8);
-            strokeColor = Xwt.Drawing.Colors.LemonChiffon.WithAlpha(.3);
+
 
             //strokeColor = fillColor.WithAlpha(.3);
-            var awesome = new AwesomeIconeria {
-                                                  Fill = true,
-                                                  FillColor = fillColor,
-                                                  StrokeColor = strokeColor,
-                                                  Stroke = true,
-                                                  StrokeFirst = false,
-                                              };
-            var limadaIcons = new LimadaIconeria {
-                                                     Fill = awesome.Fill,
-                                                     FillColor = awesome.FillColor,
-                                                     StrokeColor = awesome.StrokeColor,
-                                                     Stroke = awesome.Stroke,
-                                                     StrokeFirst = awesome.StrokeFirst,
-                                                 };
+            var awesome = Create<AwesomeIconeria>();
+            var limadaIcons = Create<LimadaIconeria> (); 
             var size = 24;
 
             ArrangeLeft = awesome.AsImage(awesome.IconAlignLeft, size); //global::Limaki.View.Properties.Resources.ArrangeLeft;

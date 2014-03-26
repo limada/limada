@@ -63,12 +63,6 @@ namespace Limaki.Iconerias {
 
         }
 
-        public virtual Image AsImage (Action<Context> icon, int size) {
-            var ib = new ImageBuilder(size, size);
-            PaintIcon(ib.Context, size, 0, 0, icon);
-            var img = ib.ToBitmap(ImageFormat.ARGB32);
-            return img;
-        }
 
         public virtual void ForEach (Action<Action<Context>, string, string> visit) {
             foreach (var iconMethod in this.GetType().GetMethods()
@@ -82,4 +76,13 @@ namespace Limaki.Iconerias {
             }
         }
     }
+
+    public static class IconeriaExtensions {
+        public static Image AsImage (this Iconeria self, Action<Context> icon, int size) {
+            var ib = new ImageBuilder (size, size);
+            self.PaintIcon (ib.Context, size, 0, 0, icon);
+            var img = ib.ToBitmap (ImageFormat.ARGB32);
+            return img;
+        }
+}
 }
