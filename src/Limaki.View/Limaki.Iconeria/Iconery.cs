@@ -16,16 +16,20 @@ namespace Limaki.View.Properties {
                              StrokeColor = strokeColor,
                              Stroke = true,
                              StrokeFirst = false,
+                             DefaultSize = DefaultSize,
                          };
         }
 
-        static Iconery () {
+        public static Xwt.Size DefaultSize = new Xwt.Size (24, 24);
 
+        static Iconery () { Compose (); }
+
+        public static void Compose () {
 
             //strokeColor = fillColor.WithAlpha(.3);
             var awesome = Create<AwesomeIconeria>();
-            var limadaIcons = Create<LimadaIconeria> (); 
-            var size = 24;
+            var limadaIcons = Create<LimadaIconeria> ();
+            var size = awesome.DefaultSize.Width;
 
             ArrangeLeft = awesome.AsImage(awesome.IconAlignLeft, size); //global::Limaki.View.Properties.Resources.ArrangeLeft;
             ArrangeCenter = awesome.AsImage(awesome.IconAlignCenter, size); // global::Limaki.View.Properties.Resources.ArrangeCenter;
@@ -38,8 +42,8 @@ namespace Limaki.View.Properties {
             ArrageRows = awesome.AsImage(awesome.IconTh, size); //global::Limaki.View.Properties.Resources.ArrageRows;
             ArrangeOneRow = awesome.AsImage(awesome.IconReorder, size); //global::Limaki.View.Properties.Resources.ArrangeOneRow;
 
-            DimensionX = limadaIcons.AsImage(limadaIcons.IconDimensionX, 26); //global::Limaki.View.Properties.Resources.DimensionX;
-            DimensionY = limadaIcons.AsImage(limadaIcons.IconDimensionY, 26); //global::Limaki.View.Properties.Resources.DimensionY;
+            DimensionX = limadaIcons.AsImage(limadaIcons.IconDimensionX, size*1.05); //global::Limaki.View.Properties.Resources.DimensionX;
+            DimensionY = limadaIcons.AsImage (limadaIcons.IconDimensionY, size * 1.05); //global::Limaki.View.Properties.Resources.DimensionY;
 
             LogicalLayout = limadaIcons.AsImage(limadaIcons.IconLogicalLayoutSelected, size); //global::Limaki.View.Properties.Resources.LogicalLayout;
             FullLayout = awesome.AsImage(limadaIcons.IconFullLayout, size); //global::Limaki.View.Properties.Resources.ModifyLayout24;
@@ -52,22 +56,22 @@ namespace Limaki.View.Properties {
             OK = awesome.AsImage(awesome.IconOk, size); //global::Limaki.View.Properties.Resources.ok;
 
 
-            NewSheet = awesome.AsImage(limadaIcons.IconNewSheet, 28); //global::Limaki.View.Properties.Resources.document_new;
-            NewNote = awesome.AsImage(awesome.IconEdit, 28); //global::Limaki.View.Properties.Resources.notes;
-            SaveContent = awesome.AsImage(awesome.IconDownloadAlt, 26); //global::Limaki.View.Properties.Resources.stream_save;
+            NewSheet = awesome.AsImage (limadaIcons.IconNewSheet, size * 1.15); //global::Limaki.View.Properties.Resources.document_new;
+            NewNote = awesome.AsImage (awesome.IconEdit, size * 1.15); //global::Limaki.View.Properties.Resources.notes;
+            SaveContent = awesome.AsImage (awesome.IconDownloadAlt, size * 1.05); //global::Limaki.View.Properties.Resources.stream_save;
 
-            FontBoldIcon = awesome.AsImage(awesome.IconBold, 20); //global::Limaki.View.Properties.Resources.FontBoldIcon;
-            FontItalicIcon = awesome.AsImage(awesome.IconItalic, 20); //global::Limaki.View.Properties.Resources.FontItalicIcon;
-            FontUnderlineIcon = awesome.AsImage(awesome.IconUnderline, 20); //global::Limaki.View.Properties.Resources.FontUnderlineIcon;
+            FontBoldIcon = awesome.AsImage (awesome.IconBold, size * .80); //global::Limaki.View.Properties.Resources.FontBoldIcon;
+            FontItalicIcon = awesome.AsImage (awesome.IconItalic, size * .80); //global::Limaki.View.Properties.Resources.FontItalicIcon;
+            FontUnderlineIcon = awesome.AsImage (awesome.IconUnderline, size * .80); //global::Limaki.View.Properties.Resources.FontUnderlineIcon;
 
             GoNext = awesome.AsImage(awesome.IconChevronRight, size); //global::Limaki.View.Properties.Resources.go_next;
             GoPrevious = awesome.AsImage(awesome.IconChevronLeft, size); //global::Limaki.View.Properties.Resources.go_previous;
-            GoHome = awesome.AsImage(awesome.IconHome, 26); //global::Limaki.View.Properties.Resources.gohome;
+            GoHome = awesome.AsImage (awesome.IconHome, size * 1.05); //global::Limaki.View.Properties.Resources.gohome;
 
-            GraphGraphView = limadaIcons.AsImage(limadaIcons.IconGraphGraph, 28); //global::Limaki.View.Properties.Resources.GraphGraphView;
-            GraphContentView = limadaIcons.AsImage(limadaIcons.IconGraphContent, 28); //global::Limaki.View.Properties.Resources.GraphDocView;
-            ToggleView = limadaIcons.AsImage(limadaIcons.IconToggleView, 28); //global::Limaki.View.Properties.Resources.ToggleView;
-            NewViewVisualNote = limadaIcons.AsImage (awesome.IconShare, 28); 
+            GraphGraphView = limadaIcons.AsImage (limadaIcons.IconGraphGraph, size * 1.15); //global::Limaki.View.Properties.Resources.GraphGraphView;
+            GraphContentView = limadaIcons.AsImage (limadaIcons.IconGraphContent, size * 1.15); //global::Limaki.View.Properties.Resources.GraphDocView;
+            ToggleView = limadaIcons.AsImage (limadaIcons.IconToggleView, size * 1.15); //global::Limaki.View.Properties.Resources.ToggleView;
+            NewViewVisualNote = limadaIcons.AsImage (awesome.IconShare, size * 1.15); 
 
             Panning = awesome.AsImage(awesome.IconMove, size); //global::Limaki.View.Properties.Resources.MoveShift;
             Zoom = awesome.AsImage(awesome.IconZoomIn, size); //global::Limaki.View.Properties.Resources.ZoomToolIcon;

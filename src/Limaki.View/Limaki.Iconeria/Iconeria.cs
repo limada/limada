@@ -16,6 +16,7 @@ using Xwt.Drawing;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Xwt;
 
 namespace Limaki.Iconerias {
 
@@ -26,6 +27,7 @@ namespace Limaki.Iconerias {
         public virtual bool Fill { get; set; }
         public virtual bool Stroke { get; set; }
         public virtual bool StrokeFirst { get; set; }
+        public virtual Size DefaultSize { get; set; }
 
         public virtual void PaintIcon (Context c, double size, double x, double y, Action<Context> icon) {
             c.Save();
@@ -78,7 +80,7 @@ namespace Limaki.Iconerias {
     }
 
     public static class IconeriaExtensions {
-        public static Image AsImage (this Iconeria self, Action<Context> icon, int size) {
+        public static Image AsImage (this Iconeria self, Action<Context> icon, double size) {
             var ib = new ImageBuilder (size, size);
             self.PaintIcon (ib.Context, size, 0, 0, icon);
             var img = ib.ToBitmap (ImageFormat.ARGB32);

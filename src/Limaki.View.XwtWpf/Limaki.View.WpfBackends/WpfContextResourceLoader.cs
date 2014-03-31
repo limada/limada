@@ -21,10 +21,11 @@ using Limada.View.Vidgets;
 using Limaki.Usecases;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
-using Limaki.View.WpfBackends;
+using Limaki.View.WpfBackend;
 using Limaki.View.XwtBackend;
 using Xwt;
 using Xwt.Backends;
+using Limaki.View.Properties;
 
 namespace Limaki.View.WpfBackend {
 
@@ -39,6 +40,9 @@ namespace Limaki.View.WpfBackend {
             tk.RegisterBackend<SystemColorsBackend, WpfSystemColorsBackend>();
             tk.RegisterBackend<SystemFontBackend, WpfSystemFontBackend> ();
             context.Factory.Add<IUISystemInformation, WpfSystemInformation>();
+
+            Iconery.DefaultSize = new Size (21,21);
+            Iconery.Compose ();
 
             var factories = context.Pooled<UsecaseFactories<ConceptUsecase>>();
             factories.Add(new WpfUsecaseFactory());
