@@ -36,6 +36,7 @@ namespace Limaki.View.XwtBackend {
             RegisterBackend<ISavefileDialogBackend, SaveFileDialogBackend>();
 
             RegisterBackend<ISplitViewBackend, SplitViewBackend>();
+            RegisterBackend<ITextOkCancelBoxBackend, TextOkCancelBoxBackend> ();
 
             RegisterBackend<ITextViewerBackend, TextViewerBackend>();
             RegisterBackend<ITextViewerWithToolstripBackend, TextViewerWithToolstripBackend>();

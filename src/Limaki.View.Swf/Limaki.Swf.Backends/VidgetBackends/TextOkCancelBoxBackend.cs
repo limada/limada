@@ -27,47 +27,35 @@ using Xwt.Gdi.Backend;
 
 namespace Limaki.Swf.Backends {
 
-    public partial class TextOkCancelBoxBackend : UserControl, ITextOkCancelBox,IVidgetBackend {
+    public partial class TextOkCancelBoxBackend : UserControl, ITextOkCancelBoxBackend {
 
         public TextOkCancelBoxBackend() {
             InitializeComponent();
             ActiveControl = this.TextBox;
-            Result = DialogResult.None;
         }
 
-
-        public DialogResult Result { get; set; }
+        public string Title { get { return TitleLabel.Text; } set { TitleLabel.Text = value; } }
+        public Action<DialogResult> Finish { get; set; }
 
         private void buttonOk_Click(object sender, EventArgs e) {
-            Text = TextBox.Text;
-            DoFinish (DialogResult.Ok);
+            OnFinish (DialogResult.Ok);
         }
 
         private void buttonCancel_Click(object sender, EventArgs e) {
-            DoFinish(DialogResult.Cancel);
+            OnFinish(DialogResult.Cancel);
         }
 
-        public string Title {
-            get { return nameLabel.Text; }
-            set { nameLabel.Text = value; }
-        }
-
-
-        public Action<string> OnOk { get; set; }
-        public event EventHandler<TextOkCancelBoxEventArgs> Finish = null;
-        
-        void DoFinish(DialogResult result) {
+        void OnFinish (DialogResult result) {
             if (Finish != null) {
-                Finish(this, new TextOkCancelBoxEventArgs(result, OnOk));
+                Finish (result);
             }
         }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return) {
-                Text = TextBox.Text;
-                DoFinish(DialogResult.Ok);
+                OnFinish(DialogResult.Ok);
             } else if (e.KeyCode == Keys.Escape) {
-                DoFinish (DialogResult.Cancel);
+                OnFinish (DialogResult.Cancel);
             }
         }
 

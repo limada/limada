@@ -25,7 +25,7 @@ namespace Limaki.Swf.Backends {
         private void InitializeComponent() {
             this.TextBox = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.nameLabel = new System.Windows.Forms.Label();
+            this.TitleLabel = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
@@ -47,7 +47,7 @@ namespace Limaki.Swf.Backends {
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.nameLabel);
+            this.panel1.Controls.Add(this.TitleLabel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -56,18 +56,18 @@ namespace Limaki.Swf.Backends {
             // 
             // nameLabel
             // 
-            this.nameLabel.BackColor = System.Drawing.SystemColors.Window;
-            this.nameLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.nameLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nameLabel.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.nameLabel.Location = new System.Drawing.Point(0, 0);
-            this.nameLabel.Margin = new System.Windows.Forms.Padding(0);
-            this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(81, 24);
-            this.nameLabel.TabIndex = 0;
-            this.nameLabel.Text = "label1";
-            this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.TitleLabel.BackColor = System.Drawing.SystemColors.Window;
+            this.TitleLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TitleLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleLabel.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.TitleLabel.Location = new System.Drawing.Point(0, 0);
+            this.TitleLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.TitleLabel.Name = "TitleLabel";
+            this.TitleLabel.Size = new System.Drawing.Size(81, 24);
+            this.TitleLabel.TabIndex = 0;
+            this.TitleLabel.Text = "label1";
+            this.TitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel2
             // 
@@ -134,6 +134,6 @@ namespace Limaki.Swf.Backends {
         private System.Windows.Forms.Button buttonOk;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label nameLabel;
+        private System.Windows.Forms.Label TitleLabel;
     }
 }

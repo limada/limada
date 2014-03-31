@@ -25,7 +25,7 @@ namespace Limaki.View.Swf {
             RegisterBackend<IWebBrowserBackend, WebBrowserBackend>();
 
             RegisterBackend<ISplitViewBackend, SplitViewBackend>();
-
+            RegisterBackend<ITextOkCancelBoxBackend, TextOkCancelBoxBackend> ();
             RegisterBackend<IDigidocViewerBackend, DigidocViewerBackend>();
 
             RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend>();

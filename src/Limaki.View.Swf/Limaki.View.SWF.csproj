@@ -101,10 +101,10 @@
     <Compile Include="Limaki.Swf.Backends\VidgetBackends\TextViewerWithToolstripBackend.Designer.cs">
       <DependentUpon>TextViewerWithToolstripBackend.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.Controls\TextOkCancelBoxBackend.cs">
+    <Compile Include="Limaki.Swf.Backends\VidgetBackends\TextOkCancelBoxBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Limaki.Controls\TextOkCancelBoxBackend.Designer.cs">
+    <Compile Include="Limaki.Swf.Backends\VidgetBackends\TextOkCancelBoxBackend.Designer.cs">
       <DependentUpon>TextOkCancelBoxBackend.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.Swf.Backends\VidgetBackends\VindowBackend.cs">
@@ -284,10 +284,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Limaki.Swf.Backends\VidgetBackends\TextViewerWithToolstripBackend.resx">
       <DependentUpon>TextViewerWithToolstripBackend.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Limaki.Controls\TextOkCancelBoxBackend.resx">
-      <DependentUpon>TextOkCancelBoxBackend.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Limaki.Swf.Backends\About.resx">
       <DependentUpon>About.cs</DependentUpon>

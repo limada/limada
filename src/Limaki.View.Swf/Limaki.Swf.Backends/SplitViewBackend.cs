@@ -213,38 +213,41 @@ namespace Limaki.Swf.Backends.Viewers {
 
         #endregion
 
-        void FinishTextOkCancelDialog(object sender, TextOkCancelBoxEventArgs e) {
-            var cd = this.Frontend.CurrentDisplay;
-            var control = (sender as TextOkCancelBoxBackend);
+        bool textDialogVisible = false;
 
-            if (e.Arg == DialogResult.Ok) {
-                e.OnOK (control.Text);
+        public void ShowTextDialog (string title, string text, Action<string> onOk) {
 
+            if (textDialogVisible)
+                return;
+
+            var display = this.Frontend.CurrentDisplay;
+
+            var textDialog = new TextOkCancelBox {Text = text, Title = title};
+
+            var textDialogBackend = textDialog.Backend as TextOkCancelBoxBackend;
+            textDialogBackend.Dock = DockStyle.Top;
+
+            var displayBackend = this.Frontend.CurrentDisplay.Backend as Control;
+            if (SplitContainer.Panel1.Contains (displayBackend)) {
+                SplitContainer.Panel1.Controls.Add (textDialogBackend);
+            } else if (SplitContainer.Panel2.Contains (displayBackend)) {
+                SplitContainer.Panel2.Controls.Add (textDialogBackend);
             }
-            //control.Finish -= SaveSheetDialog_Finish;
-            control.Hide();
-            control.Parent = null;
-            control.Dispose();
-            // hide is changing the CurrentDisplay (whyever)
-            Frontend.DisplayGotFocus(cd);
 
-        }
+            this.ActiveControl = textDialogBackend.TextBox;
 
-        public void ShowTextDialog(string title, string text, Action<string> onOk) {
-            var nameDialog = new TextOkCancelBoxBackend();
-            nameDialog.Finish += FinishTextOkCancelDialog;
-            nameDialog.OnOk = onOk;
+            textDialogBackend.Finish += (e) => {
+                if (e == DialogResult.Ok) {
+                    onOk (textDialog.Text);
+                }
 
-            var currentDisplay = this.Frontend.CurrentDisplay.Backend as Control;
-            if (SplitContainer.Panel1.Contains(currentDisplay)) {
-                SplitContainer.Panel1.Controls.Add(nameDialog);
-            } else if (SplitContainer.Panel2.Contains(currentDisplay)) {
-                SplitContainer.Panel2.Controls.Add(nameDialog);
-            }
-            nameDialog.Dock = DockStyle.Top;
-            nameDialog.TextBox.Text = text;
-            nameDialog.Title = title;
-            this.ActiveControl = nameDialog.TextBox;
+                textDialog.Dispose ();
+
+                textDialogVisible = false;
+
+                // hide is changing the CurrentDisplay (whyever)
+                Frontend.DisplayGotFocus (display);
+            };
 
         }
 
