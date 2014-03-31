@@ -64,6 +64,7 @@
     <Compile Include="Limada\UseCases\ThingGraphUseCases.cs" />
     <Compile Include="Limaki.Contents\ImageContentDigger.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\ContextPainter.cs" />
+    <Compile Include="Limaki.Usecases\UsercaseAppFactory.cs" />
     <Compile Include="Limaki.View.XwtBackend\IToolkitAware.cs" />
     <Compile Include="Limaki.View.XwtBackend\IXwtConceptUseCaseComposer.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\XwtGraphSceneLayer.cs" />

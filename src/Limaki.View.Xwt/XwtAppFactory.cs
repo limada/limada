@@ -24,7 +24,7 @@ using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
-    public class XwtAppFactory : AppFactory<Limada.Usecases.LimadaResourceLoader> {
+    public class XwtAppFactory : UsercaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
         
         ToolkitType ToolkitType {
             get { return Xwt.ToolkitType.Wpf; }
@@ -35,6 +35,7 @@ namespace Limaki.View.XwtBackend {
         public void Run () {
 
             Application.Initialize(this.ToolkitType);
+
             this.Create(new XwtContextResourceLoader());
 
             Window w = null;
@@ -52,6 +53,8 @@ namespace Limaki.View.XwtBackend {
                 onShow();
 
             MessageDialog.RootWindow = w;
+            Application.UnhandledException += (s, e) =>
+                Registry.Pooled<IExceptionHandler> ().Catch (e.ErrorException, MessageType.OK);
 
             Application.Run();
 
@@ -95,14 +98,7 @@ namespace Limaki.View.XwtBackend {
             return backendComposer;
         }
 
-        public void CallPlugins (UsecaseFactory<ConceptUsecase> factory, ConceptUsecase useCase) {
-            var factories = Registry.Pooled<UsecaseFactories<ConceptUsecase>>();
-            foreach (var item in factories) {
-                item.Composer = factory.Composer;
-                item.BackendComposer = factory.BackendComposer;
-                item.Compose(useCase);
-            }
-        }
+
     }
 
 

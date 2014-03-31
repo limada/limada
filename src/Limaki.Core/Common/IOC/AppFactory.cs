@@ -7,8 +7,8 @@ using Limaki.Common.Collections;
 using System.Diagnostics;
 
 namespace Limaki.Common.IOC {
-    public class AppFactory<T>
-    where T : ContextResourceLoader {
+
+    public class AppFactory<T> where T : ContextResourceLoader {
         protected AppFactory() { }
 
         bool backendApplied = false;
@@ -16,7 +16,8 @@ namespace Limaki.Common.IOC {
             Create(backendContextResourceLoader);
         }
 
-        protected virtual void Create(IBackendContextResourceLoader backendContextResourceLoader){    
+        protected virtual void Create(IBackendContextResourceLoader backendContextResourceLoader){ 
+   
             var resourceLoader = Activator.CreateInstance(typeof(T),new object[]{backendContextResourceLoader}) as T;
             Registry.ConcreteContext = resourceLoader.CreateContext();
             resourceLoader.ApplyResources(Registry.ConcreteContext);

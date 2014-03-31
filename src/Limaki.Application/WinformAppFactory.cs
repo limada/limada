@@ -27,7 +27,7 @@ using Xwt.WinformBackend;
 
 namespace Limaki.App {
 
-    public class WinformAppFactory : AppFactory<global::Limada.Usecases.LimadaResourceLoader> {
+    public class WinformAppFactory : UsercaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
 
         public WinformAppFactory(): base(new SwfContextResourceLoader()) {}
 
@@ -65,14 +65,7 @@ namespace Limaki.App {
             }
         }
 
-        public void CallPlugins (UsecaseFactory<ConceptUsecase> factory, ConceptUsecase useCase) {
-            var factories = Registry.Pooled<UsecaseFactories<ConceptUsecase>> ();
-            foreach (var item in factories) {
-                item.Composer = factory.Composer;
-                item.BackendComposer = factory.BackendComposer;
-                item.Compose (useCase);
-            }
-        }
+       
     }
     
 }
