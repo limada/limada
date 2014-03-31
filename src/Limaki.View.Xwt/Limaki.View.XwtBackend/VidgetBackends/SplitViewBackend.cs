@@ -16,6 +16,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Limada.View.Vidgets;
+using Limaki.Common;
 using Limaki.Usecases.Vidgets;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz;
@@ -126,38 +127,98 @@ namespace Limaki.View.XwtBackend {
 
         }
 
+        protected Panel AdjacentPanelOf (IVidget vidget) {
+            var widget = vidget.Backend as Widget;
+
+            if (SplitContainer.Panel1.Content.ScrollPeeledChildren ().Contains (widget)) {
+                return SplitContainer.Panel2;
+            } else if (SplitContainer.Panel2.Content.ScrollPeeledChildren ().Contains (widget)) {
+                return SplitContainer.Panel1;
+            }
+            return null;
+        }
 
         public void AttachViewerBackend (IVidgetBackend backend, Action onShowAction) {
             if (backend == null)
                 return;
 
-            var widget = backend as Widget;
-            var currentDisplayBackend = this.Frontend.CurrentDisplay.Backend as Widget;
-
-            Panel panel = null;
-            if (currentDisplayBackend != widget) {
-                if (SplitContainer.Panel1.Content.ScrollPeeledChildren().Contains(currentDisplayBackend)) {
-                    panel = SplitContainer.Panel2;
-                } else if (SplitContainer.Panel2.Content.ScrollPeeledChildren().Contains(currentDisplayBackend)) {
-                    panel = SplitContainer.Panel1;
-                }
-            } else {
-                Trace.WriteLine("SplitViewBackend.AttachBackend: currentDisplayBackend == control");
+            if (backend == this.Frontend.CurrentDisplay.Backend) {
+                Trace.WriteLine ("SplitViewBackend.AttachBackend: CurrentDisplay.Backend == backend");
+                return;
             }
 
-            if (panel != null && !panel.Content.ScrollPeeledChildren().Contains(widget)) {
-                SetScrollingPanelContent(widget, panel);
+            var widget = backend as Widget;
+            var panel = AdjacentPanelOf (this.Frontend.CurrentDisplay);
+            if (panel != null && !panel.Content.ScrollPeeledChildren ().Contains (widget)) {
+                SetScrollingPanelContent (widget, panel);
             }
 
             if (onShowAction != null) {
-                onShowAction();
+                onShowAction ();
             }
         }
 
-        public void ShowTextDialog (string title, string text, Action<string> onOk) {
-            var nameDialog = new TextOkCancelBoxBackend { Title = title, Text = text };
+        protected Panel PanelOf (IVidget vidget) {
+            var widget = vidget.Backend as Widget;
+
+            if (SplitContainer.Panel1.Content.ScrollPeeledChildren ().Contains (widget)) {
+                return SplitContainer.Panel1;
+            } else if (SplitContainer.Panel2.Content.ScrollPeeledChildren ().Contains (widget)) {
+                return SplitContainer.Panel2;
+            }
+            return null;
         }
 
+        bool textDialogVisible = false;
+        public void ShowTextDialog (string title, string text, Action<string> onOk) {
+
+            if (textDialogVisible)
+                return;
+
+            var display = this.Frontend.CurrentDisplay;
+
+            var textDialog = new TextOkCancelBox {Text = text, Title = title};
+            var textDialogBackend = textDialog.Backend as TextOkCancelBoxBackend;
+            textDialogBackend.HorizontalPlacement = WidgetPlacement.Fill;
+            textDialogBackend.VerticalPlacement = WidgetPlacement.Start;
+
+            var panel = PanelOf (this.Frontend.CurrentDisplay);
+            var c = panel.Content;
+            var box = new VBox {HorizontalPlacement = WidgetPlacement.Fill, VerticalPlacement = WidgetPlacement.Fill};
+            panel.Content = box;
+
+            box.PackStart (textDialogBackend);
+            box.PackEnd (c, true);
+
+            box.SetFocus ();
+            textDialogBackend.SetFocus ();
+
+            textDialogVisible = true;
+
+            textDialogBackend.Finish = (e) => {
+                if (e == DialogResult.Ok) {
+                    onOk (textDialog.Text);
+                }
+
+                box.Remove (c);
+                box.Remove (textDialogBackend);
+
+                panel.Content = c;
+
+                box.Dispose ();
+                textDialog.Dispose ();
+
+                textDialogVisible = false;
+                // hide is changing the CurrentDisplay (whyever)
+                Frontend.DisplayGotFocus (display);
+            };
+
+
+        }
+
+        public void ViewInWindow (IVidgetBackend backend, Action onClose) {
+            Registry.Pooled<IExceptionHandler> ().Catch (new NotImplementedException (), MessageType.OK);
+        }
 
         void IVidgetBackend.Update () { this.VidgetBackendUpdate(); }
 
@@ -167,8 +228,6 @@ namespace Limaki.View.XwtBackend {
 
         public void Dispose () { }
 
-        public void ViewInWindow (IVidgetBackend backend, Action onClose) {
-            throw new NotImplementedException ();
-        }
+
     }
 }
