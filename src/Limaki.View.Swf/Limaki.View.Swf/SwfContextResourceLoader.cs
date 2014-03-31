@@ -40,7 +40,7 @@ namespace Limaki.View.Swf {
 
    
     /// <summary>
-    /// ApplicationContextRecourceLoader to use
+    /// IBackendContextResourceLoader to use
     /// System.Windows.Forms
     /// </summary>
     public class SwfContextResourceLoader : IBackendContextResourceLoader {

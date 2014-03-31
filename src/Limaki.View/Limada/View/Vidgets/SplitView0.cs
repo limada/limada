@@ -394,7 +394,7 @@ namespace Limada.View.Vidgets {
         public void DoSearch() {
             var currentDisplay = this.CurrentDisplay;
             if (new VisualThingSearch().IsSearchable(currentDisplay.Data)) {
-                Backend.ShowTextDialog("Search:", currentDisplay.Text, this.Search);
+                Backend.ShowTextDialog("Search:", "", this.Search);
             }
         }
 
