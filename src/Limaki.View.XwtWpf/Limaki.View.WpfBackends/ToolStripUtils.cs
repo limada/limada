@@ -16,7 +16,7 @@ using System.Windows.Controls;
 using Limaki.Drawing.WpfBackend;
 using Limaki.View.Vidgets;
 
-namespace Limaki.View.WpfBackends {
+namespace Limaki.View.WpfBackend {
 
     public class ToolStripUtils {
 

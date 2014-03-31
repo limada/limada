@@ -15,14 +15,12 @@
 using System.Windows;
 using Xwt;
 using Xwt.Drawing;
-using Xwt.WPFBackend;
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
 using SWM = System.Windows.Media;
 using SWMI = System.Windows.Media.Imaging;
 
 namespace Limaki.Drawing.WpfBackend {
-
     public static class DrawingConverter {
 
         public static Point[] ToWpf (this Xwt.Point[] value) {
@@ -62,6 +60,8 @@ namespace Limaki.Drawing.WpfBackend {
         }
 
         public static SWM.ImageSource ToWpf (this  Xwt.Drawing.Image value) {
+            if (value == null)
+                return null;
             return Toolkit.CurrentEngine.GetNativeImage (value) as SWM.ImageSource;
         }
     }
