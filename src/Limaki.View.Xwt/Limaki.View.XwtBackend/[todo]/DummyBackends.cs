@@ -23,15 +23,21 @@ namespace Limaki.View.XwtBackend {
 
     public class DummyBackend : Frame, IVidgetBackend {
 
+        #region IVidgetBackend
+
+        protected IVidget Frontend { get; set; }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = frontend;
+        }
+
         void IVidgetBackend.Update () { XwtBackendHelper.VidgetBackendUpdate(this); }
 
         void IVidgetBackend.Invalidate () { XwtBackendHelper.VidgetBackendInvalidate(this); }
 
         void IVidgetBackend.Invalidate (Rectangle rect) { XwtBackendHelper.VidgetBackendInvalidate(this, rect); }
 
-        private IVidget frontend;
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.frontend = frontend;
-        }
+        #endregion
+
     }
 }

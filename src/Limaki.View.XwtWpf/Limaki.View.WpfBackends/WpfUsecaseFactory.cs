@@ -15,7 +15,7 @@
 using Limada.Usecases;
 using Limada.UseCases;
 using Limaki.Usecases;
-using Limaki.View.WpfBackends;
+using Limaki.View.WpfBackend;
 using Limaki.View.XwtBackend;
 using System.Windows.Controls;
 using Xwt.Backends;

@@ -1,35 +1,51 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System;
 using System.Windows;
 
-namespace Limaki.View.WpfBackends {
+namespace Limaki.View.WpfBackend {
 
     public static class WpfBackendHelper {
-
-        
 
         public static Xwt.Size VidgetBackendSize (this FrameworkElement backend) {
             return new Xwt.Size(backend.ActualWidth, backend.ActualHeight);
         }
 
         public static void VidgetBackendUpdate (this FrameworkElement widget) {
-           
+            VidgetBackendInvalidate (widget);
+            widget.UpdateLayout ();
         }
 
         public static void VidgetBackendInvalidate (this FrameworkElement widget) {
-            
+            widget.InvalidateMeasure ();
+            widget.InvalidateVisual ();
         }
 
         public static void VidgetBackendInvalidate (this FrameworkElement widget, Xwt.Rectangle rect) {
-           
+            VidgetBackendInvalidate (widget);
         }
 
-        public static void VidgetBackendSetFocus (this FrameworkElement widget ) { widget.Focus (); }
+        public static void VidgetBackendSetFocus (this FrameworkElement widget ) {
+            widget.Focus ();
+        }
         
         // example code for listening global clipboard changes
         public static void ListenClipboard () {
             //System.Windows.Input.ApplicationCommands.Paste.CanExecuteChanged +=
             //   Paste_CanExecuteChanged;
-            // not working, fires only inapp and too often
+            // not working, fires only in current applicaton and too often
             System.Windows.Input.ApplicationCommands.Copy.CanExecuteChanged +=
                 Paste_CanExecuteChanged;
         }

@@ -26,7 +26,7 @@ using Limaki.Contents.IO;
 using Limaki.Drawing;
 using Limaki.View.Vidgets;
 
-namespace Limaki.View.WpfBackends {
+namespace Limaki.View.WpfBackend {
 
     public class GeckoWebBrowserBackend : Gecko.GeckoWebBrowser, IWebBrowserBackend, IWebBrowserWithProxy, IZoomTarget, IHistoryAware, IContentSpec {
 

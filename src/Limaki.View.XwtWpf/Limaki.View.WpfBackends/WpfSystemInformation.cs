@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using Size = Xwt.Size;
 
-namespace Limaki.View.WpfBackends {
+namespace Limaki.View.WpfBackend {
 
     public class WpfSystemInformation : IUISystemInformation {
         public Size DragSize {

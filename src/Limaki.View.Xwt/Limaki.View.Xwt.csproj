@@ -60,29 +60,28 @@
   <ItemGroup>
     <Compile Include="Limaki.View.XwtBackend\VindowBackend.cs" />
     <Compile Include="Sandbox\ScrollDisplayBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\ArrangerToolStripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\ArrangerToolStripBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DigidocViewerBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\DisplayModeToolStripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\DisplayModeToolStripBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\Visualizers\DragDropBackendHandler.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DragDropMouseBackendHandler.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\ImageMissingStuffExtension.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\About.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DummyBackends.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\LayoutEditor.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\LayoutToolStripBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\MarkerToolStripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\LayoutToolStripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\MarkerToolStripBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\PrintDialog.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\PrintDocument.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\PrintManager.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\SplitViewToolStripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\SplitViewToolStripBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\StyleEditor.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\TextViewerBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\TextViewerWithToolstripBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\WebBrowserBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\TextViewerBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\TextViewerWithToolstripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\WebBrowserBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\SplitViewBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\FileDialogBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\TextOkCancelBoxBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\Visualizers\Converter.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\TextOkCancelBoxBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\Visualizers\DisplayBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\Visualizers\XwtBackendRenderer.cs" />
     <Compile Include="Limaki.View.XwtBackend\Visualizers\ImageDisplayBackend.cs" />
@@ -183,6 +182,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

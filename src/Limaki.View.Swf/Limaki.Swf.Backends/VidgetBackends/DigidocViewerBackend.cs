@@ -68,10 +68,6 @@ namespace Limaki.View.Swf.Backends {
 
         }
 
-        void SplitContainer_KeyDown(object sender, KeyEventArgs e) {
-            e.Handled = false;
-        }
-
         #region IZoomTarget Member
 
         public ZoomState ZoomState {

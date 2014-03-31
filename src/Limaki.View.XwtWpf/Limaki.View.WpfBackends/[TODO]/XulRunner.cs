@@ -17,7 +17,7 @@ using System.IO;
 using Gecko;
 using Limaki.Common;
 
-namespace Limaki.View.WpfBackends {
+namespace Limaki.View.WpfBackend {
 
     public class XulRunner {
 

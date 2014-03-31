@@ -43,25 +43,26 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Limaki.View.WpfBackends\WpfConverter.cs" />
     <Compile Include="Limaki.View.WpfBackends\DrawingConverter.cs" />
     <Compile Include="Limaki.View.WpfBackends\Monitor.cs" />
     <Compile Include="Limaki.View.WpfBackends\WpfUsecaseFactory.cs" />
-    <Compile Include="Limaki.View.WpfBackends\[TODO]\ArrangerToolStripBackend.cs" />
-    <Compile Include="Limaki.View.WpfBackends\[TODO]\FixedBitmap.cs" />
+    <Compile Include="Limaki.View.WpfBackends\ArrangerToolStripBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\FixedBitmap.cs" />
     <Compile Include="Limaki.View.WpfBackends\[TODO]\DisplayModeToolStripBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\[TODO]\GeckoWebBrowserBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\[TODO]\LayoutToolStripBackend.cs" />
-    <Compile Include="Limaki.View.WpfBackends\[TODO]\MarkerToolStripBackend.cs" />
-    <Compile Include="Limaki.View.WpfBackends\[TODO]\SplitViewToolStripBackend.cs" />
-    <Compile Include="Limaki.View.WpfBackends\[TODO]\ToolStripBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\MarkerToolStripBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\SplitViewToolStripBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\ToolStripBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\WpfBackendHelper.cs" />
-    <Compile Include="Limaki.View.WpfBackends\[TODO]\ToolStripButton.cs" />
-    <Compile Include="Limaki.View.WpfBackends\[TODO]\ToolStripDropDownButton.cs" />
-    <Compile Include="Limaki.View.WpfBackends\[TODO]\ToolStripUtils.cs" />
-    <Compile Include="Limaki.View.WpfBackends\[TODO]\WpfExtensions.cs" />
+    <Compile Include="Limaki.View.WpfBackends\ToolStripButton.cs" />
+    <Compile Include="Limaki.View.WpfBackends\ToolStripDropDownButton.cs" />
+    <Compile Include="Limaki.View.WpfBackends\ToolStripUtils.cs" />
+    <Compile Include="Limaki.View.WpfBackends\WpfExtensions.cs" />
     <Compile Include="Limaki.View.WpfBackends\[TODO]\XulRunner.cs" />
-    <Compile Include="TODO\BitmapCanvasBackend.cs" />
-    <Compile Include="TODO\WebBrowserBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\BitmapCanvasBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackends\[TODO]\WebBrowserBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\WpfContextResourceLoader.cs" />
     <Compile Include="Limaki.View.WpfBackends\WpfSystemColorsBackend.cs" />
     <Compile Include="Limaki.View.WpfBackends\WpfSystemFontBackend.cs" />

@@ -28,6 +28,7 @@ using Xwt.Drawing;
 using Xwt.Backends;
 
 namespace Limaki.Drawing.WpfBackend {
+
     public class WpfSystemColorsBackend : SystemColorsBackend {
         public override Color ScrollBar { get { return System.Windows.SystemColors.ScrollBarColor.ToXwt (); } }
         public override Color Background { get { return System.Windows.SystemColors.ControlColor.ToXwt (); } }

@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 /*
  * http://wpftutorial.net/ScreenResolutions.html
  */
-namespace Limaki.View.WpfBackends {
+namespace Limaki.View.WpfBackend {
     public class Monitor {
         #region Dll imports
 
