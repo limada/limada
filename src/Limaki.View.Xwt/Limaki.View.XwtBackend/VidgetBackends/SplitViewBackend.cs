@@ -84,7 +84,7 @@ namespace Limaki.View.XwtBackend {
         public void SetFocusCatcher (IVidgetBackend backend) {
             var widget = (backend as Widget).PeeledScrollView();
             if (widget != null) {
-                widget.MouseEntered += ControlGotFocus;
+                //widget.MouseEntered += ControlGotFocus;
                 widget.ButtonReleased += ControlGotFocus;
                 widget.GotFocus += ControlGotFocus;
             }
@@ -93,7 +93,7 @@ namespace Limaki.View.XwtBackend {
         public void ReleaseFocusCatcher (IVidgetBackend backend) {
             var widget = (backend as Widget).PeeledScrollView();
             if (widget != null) {
-                widget.MouseEntered -= ControlGotFocus;
+                //widget.MouseEntered -= ControlGotFocus;
                 widget.ButtonReleased -= ControlGotFocus;
                 widget.GotFocus -= ControlGotFocus;
             }

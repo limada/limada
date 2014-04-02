@@ -157,8 +157,8 @@ namespace Limaki.View.XwtBackend {
 
         protected override void OnMouseEntered (EventArgs args) {
             base.OnMouseEntered(args);
-            if (!HasFocus)
-                SetFocus();
+            //if (!HasFocus)
+            //    SetFocus();
         }
 
         private MouseActionButtons lastButton = MouseActionButtons.None;
