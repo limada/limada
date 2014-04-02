@@ -19,6 +19,7 @@ using System.Text;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
+using Limaki.Iconerias;
 using Limaki.View.Vidgets;
 using Xwt;
 
@@ -62,12 +63,12 @@ namespace Limaki.View.XwtBackend {
 
 
             var buttonOk = new Button {
-                Image = Limaki.View.Properties.Iconery.OK,
+                Image = Iconery.OK,
                 Style = ButtonStyle.Flat,
                 Margin = margin,
             };
             var buttonCancel = new Button {
-                Image = Limaki.View.Properties.Iconery.Cancel,
+                Image = Iconery.Cancel,
                 Style = ButtonStyle.Flat,
                 Margin = margin,
 

@@ -38,43 +38,44 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
         }
 
         protected virtual void Compose () {
+
             var shapeCombo = new ToolStripShapeComboBox {
-                                                            AutoSize = false,
-                                                            Margin = new System.Windows.Forms.Padding(0),
-                                                            Size = new System.Drawing.Size(80, 27),
-                                                            ToolTipText = "change shape of visual",
-                                                        };
+                AutoSize = false,
+                Margin = new System.Windows.Forms.Padding (0),
+                Size = new System.Drawing.Size (80, 27),
+                ToolTipText = "change shape of visual",
+            };
             shapeCombo.SelectedIndexChanged += (s, e) => Frontend.ShapeChange(shapeCombo.ShapeComboBoxControl.SelectedItem as IShape);
             var styleSheets = Registry.Pooled<StyleSheets>();
             shapeCombo.ShapeComboBoxControl.ShapeLayout.StyleSheet = styleSheets[styleSheets.StyleSheetNames[1]];
 
             this.StyleSheetCombo = new ToolStripComboBox {
-                                                             AutoSize = false,
-                                                             Name = "styleSheetCombo",
-                                                             Size = new System.Drawing.Size(121, 27),
-                                                             ToolTipText = "Stylesheet",
+                AutoSize = false,
+                Name = "styleSheetCombo",
+                Size = new System.Drawing.Size (121, 27),
+                ToolTipText = "Stylesheet",
 
-                                                         };
+            };
 
             StyleSheetCombo.SelectedIndexChanged += StyleSheetSelectedIndexChanged;
             StyleSheetCombo.KeyDown += StyleSheetKeyDown;
 
             var styleDialogButton = new ToolStripButtonEx {
-                                                              Checked = false,
-                                                              CheckState = CheckState.Unchecked,
-                                                              DisplayStyle = ToolStripItemDisplayStyle.Image,
-                                                              Image = global::Limaki.View.Properties.Iconery.StyleItem,
-                                                              Size = new Xwt.Size(24, 24),
-                                                              ToolTipText = "set style for selected items",
-                                                              Text = "SetStyle",
-                                                          };
+                Checked = false,
+                CheckState = CheckState.Unchecked,
+                DisplayStyle = ToolStripItemDisplayStyle.Image,
+                Image = global::Limaki.Iconerias.Iconery.StyleItem,
+                Size = new Xwt.Size (24, 24),
+                ToolTipText = "set style for selected items",
+                Text = "SetStyle",
+            };
             styleDialogButton.Click += (s, e) => {
-                                           var style = Frontend.StyleToChange();
-                                           if (style != null) {
-                                               var styleDialog = new SwfConceptUseCaseComposer().ComposeStyleEditor(style, (s1, e1) => Frontend.StyleChange(style));
-                                               styleDialog.Show();
-                                           }
-                                       };
+                var style = Frontend.StyleToChange ();
+                if (style != null) {
+                    var styleDialog = new SwfConceptUseCaseComposer ().ComposeStyleEditor (style, (s1, e1) => Frontend.StyleChange (style));
+                    styleDialog.Show ();
+                }
+            };
 
             this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
                                                                              this.StyleSheetCombo,

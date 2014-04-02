@@ -86,5 +86,5 @@ namespace Limaki.Iconerias {
             var img = ib.ToBitmap (ImageFormat.ARGB32);
             return img;
         }
-}
+    }
 }

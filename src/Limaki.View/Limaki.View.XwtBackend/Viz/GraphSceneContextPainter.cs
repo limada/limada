@@ -48,15 +48,10 @@ namespace Limaki.View.XwtBackend.Viz {
             if (this.Data == null)
                 return;
 
-            var size = Data.Shape.Size + new Size (Layout.Border.Width, Layout.Border.Height);
-            var f = DrawingExtensions.DpiFactor (new Size (72, 72));
             this.Viewport.ClipOrigin = Data.Shape.Location;
 
-            var clipRect = new Rectangle (0, 0, (int) size.Width, (int) size.Height);
-
-            var e = new RenderContextEventArgs (context, clipRect);
-
-            OnPaint (e);
+            OnPaint (new RenderContextEventArgs (
+                context, new Rectangle (Point.Zero, Data.Shape.Size + Layout.Border)));
         }
 
         public virtual void Compose () {

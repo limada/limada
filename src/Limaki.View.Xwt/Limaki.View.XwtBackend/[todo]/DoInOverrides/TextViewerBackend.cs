@@ -15,9 +15,9 @@ namespace Limaki.View.XwtBackend {
 
         public Point AutoScrollOffset { get; set; }
 
-        public void Save (System.IO.Stream stream, TextViewerRtfType rtfType) { }
+        public void Save (System.IO.Stream stream, TextViewerTextType textType) { }
 
-        public void Load (System.IO.Stream stream, TextViewerRtfType rtfType) { }
+        public void Load (System.IO.Stream stream, TextViewerTextType textType) { }
 
         public Drawing.ZoomState ZoomState { get; set; }
 

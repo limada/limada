@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using Limaki.Drawing;
+using Limaki.Iconerias;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.UI;
 using Xwt.Backends;
@@ -67,48 +68,48 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
             SelectCommand = new ToolStripCommand {
                 Action = s => toogleAction(selectAction, true),
-                Image = Limaki.View.Properties.Iconery.Select,
+                Image = Iconery.Select,
                 Size = DefaultSize,
                 ToolTipText = "Select"
             };
 
             PanningCommand = new ToolStripCommand {
                 Action = s => toogleAction(panningAction, true),
-                Image = Limaki.View.Properties.Iconery.Panning,
+                Image = Iconery.Panning,
                 Size = DefaultSize,
                 ToolTipText = "Move"
             };
 
             ZoomInOutCommand = new ToolStripCommand {
-                Image = Limaki.View.Properties.Iconery.Zoom,
+                Image = Iconery.Zoom,
                 Size = DefaultSize,
                 ToolTipText = "Zoom"
             };
 
             FitToWidthCommand = new ToolStripCommand {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToWidth),
-                Image = Limaki.View.Properties.Iconery.FitToWidth,
+                Image = Iconery.FitToWidth,
                 Size = DefaultSize,
                 Text = "Fit to Width"
             };
 
             FitToHeigthCommand = new ToolStripCommand {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToHeigth),
-                Image = Limaki.View.Properties.Iconery.FitToHeigth,
+                Image = Iconery.FitToHeigth,
                 Size = DefaultSize,
                 Text = "Fit to Heigth",
             };
 
             FitToScreenCommand = new ToolStripCommand {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToScreen),
-                Image = Limaki.View.Properties.Iconery.FitToScreen,
+                Image = Iconery.FitToScreen,
                 Size = DefaultSize,
                 Text = "Fit to Screen"
             };
 
             OriginalSizeCommand = new ToolStripCommand {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.Original),
-                Image = Limaki.View.Properties.Iconery.OriginalSize,
+                Image = Iconery.OriginalSize,
                 Size = DefaultSize,
                 Text = "Original size"
             };

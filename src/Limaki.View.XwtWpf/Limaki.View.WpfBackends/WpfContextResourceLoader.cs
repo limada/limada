@@ -18,6 +18,7 @@ using Limaki.Drawing;
 using Limaki.Drawing.WpfBackend;
 using Limada.UseCases;
 using Limada.View.Vidgets;
+using Limaki.Iconerias;
 using Limaki.Usecases;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;

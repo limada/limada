@@ -12,17 +12,16 @@
  * 
  */
 
-
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Text.RegularExpressions;
 using Limaki.Common;
 using Limaki.Common.Text.RTF;
 using Limaki.Contents;
-using System;
-using System.IO;
-using System.Text.RegularExpressions;
+using Limaki.Contents.IO;
 using Limaki.View.Vidgets;
 using Xwt;
-using Limaki.Contents.IO;
-using System.Diagnostics;
 
 namespace Limaki.View.ContentViewers {
 
@@ -34,7 +33,6 @@ namespace Limaki.View.ContentViewers {
                 if (_textViewer != null) {
                     _textViewer = new TextViewer();
                     var backend = _textViewer.Backend;
-                    backend.Multiline = true;
                     backend.BorderStyle = VidgetBorderStyle.None;
                     backend.EnableAutoDragDrop = true;
                     OnAttachBackend(_textViewer.Backend);
@@ -78,25 +76,25 @@ namespace Limaki.View.ContentViewers {
 
             var stream = content.Data;
 
-            var rtfStreamType = TextViewerRtfType.PlainText;
+            var textType = TextViewerTextType.PlainText;
 
             try {
-                var nfo = new RtfContentSpot ().Use (content.Data);
-                if (nfo != null && nfo.ContentType == ContentTypes.RTF) {
-                    if (content.ContentType != nfo.ContentType)
+                var info = new RtfContentSpot ().Use (content.Data);
+                if (info != null && info.ContentType == ContentTypes.RTF) {
+                    if (content.ContentType != info.ContentType)
                         Trace.WriteLine (this.GetType () + ":  wrong contenttype detected");
-                    content.ContentType = nfo.ContentType;
+                    content.ContentType = info.ContentType;
                 }
 
                 if (content.ContentType == ContentTypes.RTF) {
-                    rtfStreamType = TextViewerRtfType.RichText;
-
+                    textType = TextViewerTextType.RichText;
                     stream = PrepareRead(stream);
+
                 } else if (content.ContentType == ContentTypes.Text) {
-                    rtfStreamType = TextViewerRtfType.UnicodePlainText;
+                    textType = TextViewerTextType.UnicodePlainText;
                 }
 
-                backend.Load(stream, rtfStreamType);
+                backend.Load(stream, textType);
 
             } catch (Exception ex) {
                 ExceptionHandler.Catch(ex, MessageType.OK);
@@ -116,7 +114,7 @@ namespace Limaki.View.ContentViewers {
 
         public virtual Stream DoSave () {
             var stream = new MemoryStream();
-            TextViewerBackend.Save(stream, TextViewerRtfType.RichText);
+            TextViewerBackend.Save(stream, TextViewerTextType.RichText);
             return stream;
         }
 

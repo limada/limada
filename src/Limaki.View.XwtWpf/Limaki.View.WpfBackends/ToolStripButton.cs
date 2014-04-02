@@ -28,7 +28,7 @@ namespace Limaki.View.WpfBackend {
 
         public ToolStripButton() {
             Compose();
-            base.Click += OnEventClick;
+            base.Click += OnToolStripItemClick;
         }
 
         protected virtual void Compose () {
@@ -61,6 +61,14 @@ namespace Limaki.View.WpfBackend {
             this.Style = style;
         }
 
+        public bool IsCheckable { get; set; }
+
+        protected override void OnChecked (RoutedEventArgs e) {
+            if (!IsCheckable && (!IsChecked.HasValue || IsChecked.Value)) {
+                IsChecked = false;
+            }
+            base.OnChecked (e);
+        }
 
         protected ToolStripCommand _command = null;
         public new ToolStripCommand Command {
@@ -68,19 +76,28 @@ namespace Limaki.View.WpfBackend {
             set { ToolStripUtils.SetCommand (this, ref _command, value); }
         }
 
-        public IToolStripCommandItem ToggleOnClick { get; set; }
+        #region IToolStripItem-Implementation
 
-        public virtual Xwt.Size Size {
-            get { return new Xwt.Size (this.Width, this.Height); }
-            set { 
-                //this.Width = value.Width;
-                //this.Height = value.Height;
+        public virtual string Text { get; set; }
+
+        public virtual string ToolTipText {
+            get { return base.ToolTip.ToString (); }
+            set {
+                if (!string.IsNullOrEmpty (value))
+                    base.ToolTip = new ToolTip { Content = value };
             }
         }
 
+        public IToolStripCommandItem ToggleOnClick { get; set; }
+
         protected FixedBitmap _innerButton = null;
         protected FixedBitmap ButtonImage {
-            get { return _innerButton ?? (_innerButton = new FixedBitmap ()); }
+            get {
+                if(_innerButton==null) {
+                    _innerButton = new FixedBitmap();
+                }
+                return _innerButton;
+            }
         }
 
         protected Xwt.Drawing.Image _image = null;
@@ -97,29 +114,26 @@ namespace Limaki.View.WpfBackend {
             }
         }
 
-        public virtual string Text { get; set; }
-
-        public virtual string ToolTipText { get { return base.ToolTip.ToString(); } set { base.ToolTip = value; } }
-
-        private void OnEventClick (object sender, RoutedEventArgs e) {
-            if (_click != null)
-                _click (this, e);
-        }
-
-        private event System.EventHandler _click;
+        protected event System.EventHandler _click;
         public virtual new event System.EventHandler Click {
             add { _click += value;  }
             remove { _click -= value; }
         }
 
-        public bool IsCheckable { get; set; }
-
-        protected override void OnChecked (RoutedEventArgs e) {
-            if (!IsCheckable && (!IsChecked.HasValue || IsChecked.Value)) {
-                IsChecked = false;
-            }
-            base.OnChecked (e);
+        protected void OnToolStripItemClick (object sender, RoutedEventArgs e) {
+            if (_click != null)
+                _click (this, e);
         }
+
+        public virtual Xwt.Size Size {
+            get { return new Xwt.Size (this.Width, this.Height); }
+            set {
+                //this.Width = value.Width;
+                //this.Height = value.Height;
+            }
+        }
+
+        #endregion
 
     }
 }

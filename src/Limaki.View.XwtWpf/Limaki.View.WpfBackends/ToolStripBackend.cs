@@ -22,7 +22,9 @@ using System.Windows;
 namespace Limaki.View.WpfBackend {
 
     public abstract class ToolStripBackend : ToolBar, IDisplayToolStripBackend {
-        
+
+        #region IVidgetBackend
+
         public abstract void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
 
         public Xwt.Size Size { get { return this.VidgetBackendSize(); } }
@@ -35,9 +37,9 @@ namespace Limaki.View.WpfBackend {
 
         public void Invalidate (Xwt.Rectangle rect) { this.VidgetBackendInvalidate(rect); }
 
-        public void Dispose () {
+        #endregion
 
-        }
+        public void Dispose () { }
 
         protected override void OnRenderSizeChanged (SizeChangedInfo sizeInfo) {
 

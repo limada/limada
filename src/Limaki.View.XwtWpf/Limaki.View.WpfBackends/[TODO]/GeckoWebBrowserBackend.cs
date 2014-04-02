@@ -95,7 +95,7 @@ namespace Limaki.View.WpfBackend {
                 Thread.Sleep (5);
             }
 
-            //base.Document.DocumentElement.InnerHtml = content;
+            //TODO: base.Document.DocumentElement.InnerHtml = content;
 
             //does nothing: base.Document.TextContent = content;
         }

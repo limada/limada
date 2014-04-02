@@ -18,6 +18,7 @@ using System.Linq;
 using Limaki.Actions;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.Iconerias;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Modelling;
@@ -201,7 +202,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     action = () => LogicalLayout(options);
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.LogicalLayout,
+                Image = Iconery.LogicalLayout,
                 Size = DefaultSize,
                 ToolTipText = "arrange siblings of selected"
             };
@@ -211,7 +212,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     action = () => LogicalLayoutLeaf(options);
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.LogicalLayoutLeaf,
+                Image = Iconery.LogicalLayoutLeaf,
                 Size = DefaultSize,
                 ToolTipText = "arrange leaf of selected"
             };
@@ -221,7 +222,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     action = () => FullLayout(options);
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.FullLayout,
+                Image = Iconery.FullLayout,
                 Size = DefaultSize,
                 ToolTipText = "arrange all"
             };
@@ -231,7 +232,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     action = () => Columns(options);
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.ArrageRows,
+                Image = Iconery.ArrageRows,
                 Size = DefaultSize,
                 ToolTipText = "arrange in columns"
 
@@ -241,7 +242,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     action = () => OneColumn(options);
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.ArrangeOneRow,
+                Image = Iconery.ArrangeOneRow,
                 Size = DefaultSize,
                 ToolTipText = "arrange in one column"
             };
@@ -250,7 +251,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     options.AlignX = Alignment.Start;
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.ArrangeLeft,
+                Image = Iconery.ArrangeLeft,
                 Size = DefaultSize,
                 ToolTipText = "align left"
             };
@@ -259,7 +260,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     options.AlignX = Alignment.Center;
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.ArrangeCenter,
+                Image = Iconery.ArrangeCenter,
                 Size = DefaultSize,
                 ToolTipText = "align center"
             };
@@ -268,7 +269,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     options.AlignX = Alignment.End;
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.ArrangeRight,
+                Image = Iconery.ArrangeRight,
                 Size = DefaultSize,
                 ToolTipText = "align rigth"
             };
@@ -278,7 +279,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     options.AlignY = Alignment.Start;
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.ArrangeTop,
+                Image = Iconery.ArrangeTop,
                 Size = DefaultSize,
                 ToolTipText = "align top"
             };
@@ -287,7 +288,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     options.AlignY = Alignment.Center;
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.ArrangeMiddle,
+                Image = Iconery.ArrangeMiddle,
                 Size = DefaultSize,
                 ToolTipText = "align middle"
             };
@@ -296,7 +297,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     options.AlignY = Alignment.End;
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.ArrangeBottom,
+                Image = Iconery.ArrangeBottom,
                 Size = DefaultSize,
                 ToolTipText = "align bottom"
             };
@@ -306,7 +307,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     options.Dimension = Dimension.X;
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.DimensionX,
+                Image = Iconery.DimensionX,
                 Size = DefaultSize,
                 ToolTipText = "arrange left to right"
             };
@@ -316,7 +317,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     options.Dimension = Dimension.Y;
                     action();
                 },
-                Image = Limaki.View.Properties.Iconery.DimensionY,
+                Image = Iconery.DimensionY,
                 Size = DefaultSize,
                 ToolTipText = "arrange top to bottom"
             };
@@ -324,7 +325,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             UndoCommand = new ToolStripCommand {
                 Action = (s) => Undo(),
                 Size = DefaultSize,
-                Image = Limaki.View.Properties.Iconery.Undo,
+                Image = Iconery.Undo,
                 ToolTipText = "undo last arrange"
             };
         }

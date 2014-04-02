@@ -39,11 +39,6 @@ namespace Limaki.View.WpfBackend {
             }
         }
 
-        public static void SetImage (IToolStripCommandItem item, ref Xwt.Drawing.Image _image, Xwt.Drawing.Image value) {
-            var button = item as Button;
-           
-        }
-
         public static FixedBitmap WpfImage (Xwt.Drawing.Image value) {
             return new FixedBitmap { Source = value.ToWpf () as System.Windows.Media.Imaging.BitmapSource };
         }

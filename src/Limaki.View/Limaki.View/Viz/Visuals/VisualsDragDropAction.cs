@@ -16,6 +16,7 @@ using System;
 using System.Linq;
 using Limaki.Drawing;
 using Limaki.Graphs;
+using Limaki.Iconerias;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.UI;

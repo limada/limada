@@ -32,10 +32,11 @@ namespace Limaki.Swf.Backends.TextEditor {
     public partial class TextViewerBackend : UserControl, IZoomTarget, ITextViewerBackend, IDragDropControl {
 
         public TextViewerBackend () {
-            InitializeComponent();
-            innerTextBox.Enter += (sender, args) => { this.OnEnter(args); };
-            innerTextBox.MouseUp += (sender, args) => { this.OnMouseUp(args); };
-            innerTextBox.GotFocus += (sender, args) => { this.OnGotFocus(args); };
+            InitializeComponent ();
+            Multiline = true;
+            innerTextBox.Enter += (sender, args) => { this.OnEnter (args); };
+            innerTextBox.MouseUp += (sender, args) => { this.OnMouseUp (args); };
+            innerTextBox.GotFocus += (sender, args) => { this.OnGotFocus (args); };
 
         }
 
@@ -108,12 +109,12 @@ namespace Limaki.Swf.Backends.TextEditor {
             }
         }
 
-        public void Load (Stream stream, TextViewerRtfType streamType) {
+        public void Load (Stream stream, TextViewerTextType textType) {
             //innerTextBox.Clear ();
             var color = innerTextBox.BackColor;
-            if (streamType == TextViewerRtfType.RichText)
+            if (textType == TextViewerTextType.RichText)
                 innerTextBox.LoadFile (stream, RichTextBoxStreamType.RichText);
-            else if (streamType == TextViewerRtfType.UnicodePlainText) {
+            else if (textType == TextViewerTextType.UnicodePlainText) {
                 if (TextHelper.IsUnicode (stream.GetBuffer (30)))
                     using (var reader = new StreamReader (stream, Encoding.Unicode))
                         innerTextBox.Text = reader.ReadToEnd ();
@@ -124,8 +125,8 @@ namespace Limaki.Swf.Backends.TextEditor {
             AfterLoadRTF();
         }
 
-        public void Save (Stream stream, TextViewerRtfType streamType) {
-            innerTextBox.SaveFile(stream, (RichTextBoxStreamType)streamType);
+        public void Save (Stream stream, TextViewerTextType textType) {
+            innerTextBox.SaveFile(stream, (RichTextBoxStreamType)textType);
         }
 
         #region IZoomTarget Member

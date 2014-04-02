@@ -12,22 +12,31 @@
  * 
  */
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using Limaki.Iconerias;
-using Limaki.View.Properties;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using Limaki.Common.Linqish;
-using System.Linq;
+using System.Windows.Input;
+using Limaki.Iconerias;
 
 namespace Limaki.View.WpfBackend {
 
     public class ToolStripDropDownButton: ToolStripButton {
-        
+
+        private ICollection<UIElement> _children = null;
+        protected ICollection<UIElement> Children { get { return _children ?? (_children = new List<UIElement> ()); } }
+
+        public void AddItems (params UIElement[] children) {
+            foreach (var child in children)
+                Children.Add (child);
+        }
+
+        #region Composition
+
         protected override void Compose () {
 
             Style = (Style) FindResource (ToolBar.ToggleButtonStyleKey);
@@ -45,7 +54,6 @@ namespace Limaki.View.WpfBackend {
         }
 
         Popup _childPopup = null;
-
         protected Popup ChildPopup {
             get {
                 if (_childPopup == null) {
@@ -96,7 +104,7 @@ namespace Limaki.View.WpfBackend {
                 if (_dropDownImage == null) {
 
                     var awesome = Iconery.Create<AwesomeIconeria>();
-                    _dropDownImage = ToolStripUtils.WpfImage (awesome.AsImage (awesome.IconChevronDown, 12));
+                    _dropDownImage = ToolStripUtils.WpfImage (awesome.AsImage (awesome.FaCaretDown, 12));
 
                     _dropDownImage.MouseLeftButtonDown += (s, e) => {
                         this.PopupVisible = true;
@@ -115,6 +123,8 @@ namespace Limaki.View.WpfBackend {
                 return _dropDownImage;
             }
         }
+
+        #endregion
 
         protected override void OnPreviewMouseDown (MouseButtonEventArgs e) {
             var pos = e.GetPosition (this);
@@ -141,10 +151,12 @@ namespace Limaki.View.WpfBackend {
 
             foreach (var child in this.Children.ToArray ()
                 .Where (c => !ChildPanel.Children.Contains (c))) {
+                child.PreviewMouseMove += ShowToolTip; ;
+                child.MouseLeave += HideToolTip;
                 child.PreviewMouseUp += (s, e) => {
                     this.PopupVisible = false;
                     child.RaiseEvent (new RoutedEventArgs (ButtonBase.ClickEvent));
-                                        };
+                };
                 ChildPanel.Children.Add (child);
             }
             ChildPopup.IsOpen = true;
@@ -161,18 +173,8 @@ namespace Limaki.View.WpfBackend {
                 ButtonPanel.Focus ();
         }
 
-        private ICollection<UIElement> _childs = null;
-        protected ICollection<UIElement> Children { get { return _childs ?? (_childs = new List<UIElement>()); } }
-
-        public ToolStripDropDownButton AddItems (params UIElement[] children) {
-            foreach (var child in children)
-                Children.Add (child);
-            return this;
-        }
-
-
         public bool PopupVisible {
-            get { return (bool)GetValue (PopupVisibleProperty); } 
+            get { return (bool) GetValue (PopupVisibleProperty); }
             set { SetValue (PopupVisibleProperty, value); }
         }
 

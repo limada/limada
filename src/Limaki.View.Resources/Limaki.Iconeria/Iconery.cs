@@ -1,7 +1,6 @@
 using Xwt.Drawing;
-using Limaki.Iconerias;
 
-namespace Limaki.View.Properties {
+namespace Limaki.Iconerias {
     
     public class Iconery {
 

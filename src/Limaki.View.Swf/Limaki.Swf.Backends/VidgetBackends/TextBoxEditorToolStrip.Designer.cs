@@ -1,3 +1,4 @@
+using Limaki.Iconerias;
 using Limaki.Swf.Backends.Viewers.ToolStrips;
 namespace Limaki.Swf.Backends.TextEditor {
     partial class TextBoxEditorToolStrip {
@@ -32,21 +33,21 @@ namespace Limaki.Swf.Backends.TextEditor {
             this.fontComboBox = new System.Windows.Forms.ToolStripComboBox();
 
             this.boldButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.boldButton.Image = Limaki.View.Properties.Iconery.FontBoldIcon;
+            this.boldButton.Image = Iconery.FontBoldIcon;
             this.boldButton.Name = "boldButton";
             this.boldButton.Size = new Xwt.Size(36, 36);
             this.boldButton.Text = "Bold";
             this.boldButton.ToolTipText = "Bold";
 
             this.italicButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.italicButton.Image = Limaki.View.Properties.Iconery.FontItalicIcon;
+            this.italicButton.Image = Iconery.FontItalicIcon;
             this.italicButton.Name = "italicButton";
             this.italicButton.Size = new Xwt.Size(36, 36); 
             this.italicButton.Text = "Italic";
             this.italicButton.ToolTipText = "Italic";
 
             this.underlineButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.underlineButton.Image = Limaki.View.Properties.Iconery.FontUnderlineIcon;
+            this.underlineButton.Image = Iconery.FontUnderlineIcon;
             this.underlineButton.Name = "underlineButton";
             this.underlineButton.Size = new Xwt.Size(36, 36);
             this.underlineButton.Text = "underline";

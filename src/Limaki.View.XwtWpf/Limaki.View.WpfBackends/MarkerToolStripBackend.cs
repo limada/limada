@@ -32,7 +32,7 @@ namespace Limaki.View.WpfBackend {
 
         protected override void Compose () {
             base.Compose ();
-            MarkerCombo = new ComboBox { Width = 120 };
+            MarkerCombo = new ComboBox { Width = 100 };
             MarkerCombo.Items.Clear ();
             this.AddItems (MarkerCombo);
             MarkerCombo.SelectionChanged += (s, e) => Frontend.ChangeMarkers (MarkerCombo.SelectionBoxItem.ToString ());
