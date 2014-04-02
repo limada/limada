@@ -16,7 +16,7 @@ using System;
 using Limaki.Drawing;
 using Xwt.Drawing;
 
-namespace Limaki.XwtAdapter {
+namespace Xwt {
 
     public static class XwtLExtensions {
 
@@ -62,6 +62,13 @@ namespace Limaki.XwtAdapter {
 
         public static double[] GetElements(this Matrix m) {
             return new double[] { m.M11, m.M12, m.M21, m.M22, m.OffsetX, m.OffsetY };
+        }
+
+        private static long upperDistance = (int) Key.A - (int) Key.a;
+        public static Key ToUpper (this Key key) {
+            if (key >= Key.a && key <= Key.z)
+                return (Key)((long)key + upperDistance);
+            return key;
         }
     }
 }

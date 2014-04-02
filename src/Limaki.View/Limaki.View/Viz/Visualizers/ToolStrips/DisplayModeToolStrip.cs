@@ -46,8 +46,10 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
         protected void ZoomAction (Action<IZoomTarget> act) {
             var display = CurrentDisplay as IZoomTarget;
-            if (display != null)
-                act(display);
+            if (display != null) {
+                act (display);
+                display.UpdateZoom ();
+            }
         }
 
         protected virtual void Compose () {
@@ -85,24 +87,28 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
             FitToWidthCommand = new ToolStripCommand {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToWidth),
+                Image = Limaki.View.Properties.Iconery.FitToWidth,
                 Size = DefaultSize,
                 Text = "Fit to Width"
             };
 
             FitToHeigthCommand = new ToolStripCommand {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToHeigth),
+                Image = Limaki.View.Properties.Iconery.FitToHeigth,
                 Size = DefaultSize,
                 Text = "Fit to Heigth",
             };
 
             FitToScreenCommand = new ToolStripCommand {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToScreen),
+                Image = Limaki.View.Properties.Iconery.FitToScreen,
                 Size = DefaultSize,
                 Text = "Fit to Screen"
             };
 
             OriginalSizeCommand = new ToolStripCommand {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.Original),
+                Image = Limaki.View.Properties.Iconery.OriginalSize,
                 Size = DefaultSize,
                 Text = "Original size"
             };
