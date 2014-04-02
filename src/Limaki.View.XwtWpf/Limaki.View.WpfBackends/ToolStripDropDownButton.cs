@@ -184,5 +184,35 @@ namespace Limaki.View.WpfBackend {
         protected static void PopupVisibleChanged (DependencyObject d, DependencyPropertyChangedEventArgs e) {
             Trace.WriteLine (string.Format ("{0} -> {1}", e.OldValue, e.NewValue));
         }
+
+        #region ToolTip
+
+        protected int toolTipStartTime = int.MaxValue;
+
+        protected void ShowToolTip (object sender, MouseEventArgs e) {
+            var child = sender as FrameworkElement;
+            var toolTip = child.ToolTip as ToolTip;
+            if (toolTip == null)
+                return;
+            var now = Environment.TickCount;
+            if (toolTipStartTime == int.MaxValue) {
+                toolTipStartTime = now;
+                return;
+            }
+            var delay = ToolTipService.GetInitialShowDelay (this);
+            var duration = ToolTipService.GetShowDuration (this);
+            toolTip.IsOpen = now > toolTipStartTime + delay && now < toolTipStartTime + delay + duration;
+
+        }
+
+        protected void HideToolTip (object sender, MouseEventArgs e) {
+            var child = sender as FrameworkElement;
+            var toolTip = child.ToolTip as ToolTip;
+            if (toolTip != null)
+                toolTip.IsOpen = false;
+            toolTipStartTime = int.MaxValue;
+        }
+
+        #endregion
     }
 }
