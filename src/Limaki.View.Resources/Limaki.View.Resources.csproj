@@ -32,7 +32,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,87 +75,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Limaki.Iconeria\AwesomeIconeria.cs" />
+    <Compile Include="Limaki.Iconeria\IconAttribute.cs" />
+    <Compile Include="Limaki.Iconeria\Iconeria.cs" />
+    <Compile Include="Limaki.Iconeria\Iconery.cs" />
+    <Compile Include="Limaki.Iconeria\LimadaIconeria.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources1.Designer.cs">
+    <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="[Generated]\AwesomeIconeria-4.04.Generated.cs" />
+    <Compile Include="[Generated]\AwesomeIconeria.Generated.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Properties\Resources\ConnectorToolIcon.png" />
-    <Content Include="Properties\Resources\CreateWidget24.png" />
-    <Content Include="Properties\Resources\draw-straight-connector-ends-with-arrow16.png" />
     <Content Include="Properties\Resources\LimadaLogo.ico" />
-    <Content Include="Properties\Resources\LimadaLogoA.ico" />
     <Content Include="Properties\Resources\LimadaLogoL32.png" />
-    <None Include="Resources\DimensionX.png" />
-    <None Include="Resources\DimensionY.png" />
-    <None Include="Resources\LimadaLogo.ico" />
-    <None Include="Resources\stock_form-line-onerow.png" />
-    <None Include="Resources\format-justify-top.png" />
-    <None Include="Resources\format-justify-bottom.png" />
-    <None Include="Resources\format-justify-middle.png" />
-    <None Include="Resources\gtk-sort-descending.png" />
-    <None Include="Resources\gtk-sort-ascending.png" />
-    <None Include="Resources\OrderLeftRigh.png" />
-    <None Include="Resources\OrderLeftDown.png" />
-    <None Include="Resources\emblem-downloads.png" />
-    <None Include="Resources\applications-graphics.png" />
-    <None Include="Resources\fonts.png" />
-    <None Include="Resources\stock_draw-text.png" />
-    <None Include="Resources\stock_alignment-top.png" />
-    <None Include="Resources\stock_alignment-right.png" />
-    <None Include="Resources\stock_alignment-left.png" />
-    <None Include="Resources\stock_alignment-centered-vertically.png" />
-    <None Include="Resources\stock_alignment-centered.png" />
-    <None Include="Resources\stock_alignment-bottom.png" />
-    <None Include="Resources\stock_alignment.png" />
-    <None Include="Resources\stock_table-same-width.png" />
-    <None Include="Resources\stock_table-same-height.png" />
-    <None Include="Resources\stock_table-fixed-proportional.png" />
-    <None Include="Resources\stock_table-fixed.png" />
-    <None Include="Resources\stock_table-fit-width.png" />
-    <None Include="Resources\stock_table-fit-height.png" />
-    <None Include="Resources\stock_down-with-subpoints.png" />
-    <None Include="Resources\stock_up-with-subpoints.png" />
-    <None Include="Resources\stock_undo-history.png" />
-    <None Include="Resources\stock_right-with-subpoints.png" />
-    <None Include="Resources\stock_previous-page.png" />
-    <None Include="Resources\stock_previous.png" />
-    <None Include="Resources\stock_next-page.png" />
-    <None Include="Resources\stock_next.png" />
-    <None Include="Resources\stock_left-with-subpoints.png" />
-    <None Include="Resources\stock_last-page.png" />
-    <None Include="Resources\stock_first-page.png" />
-    <None Include="Resources\stock_export.png" />
-    <None Include="Resources\stock_reload.png" />
-    <None Include="Resources\stock_insert-file.png" />
-    <None Include="Resources\stock_graphics-align-top.png" />
-    <None Include="Resources\stock_graphics-align-right.png" />
-    <None Include="Resources\stock_graphics-align-left.png" />
-    <None Include="Resources\stock_graphics-align-centered.png" />
-    <None Include="Resources\stock_graphics-align-center.png" />
-    <None Include="Resources\stock_graphics-align-bottom.png" />
-    <None Include="Resources\stock_guides.png" />
-    <None Include="Resources\stock_book_red.png" />
-    <None Include="Resources\stock_book_blue.png" />
-    <None Include="Resources\stock_form-table-control.png" />
-    <None Include="Resources\stock_form-line-horizontal.png" />
-    <None Include="Resources\stock_form-line-vertical.png" />
-    <None Include="Resources\format-indent-less.png" />
-    <None Include="Resources\format-justify-right.png" />
-    <None Include="Resources\format-justify-left.png" />
-    <None Include="Resources\format-justify-fill.png" />
-    <None Include="Resources\format-justify-center.png" />
-    <None Include="Resources\format-indent-more.png" />
-    <None Include="Resources\Tools.Recolor.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +116,15 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
+      <Project>{92494904-35fa-4dc9-bde9-3a3e87ac49d3}</Project>
+      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

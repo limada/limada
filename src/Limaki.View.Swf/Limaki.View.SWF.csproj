@@ -279,12 +279,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Limaki.Swf.Backends\VidgetBackends\TextViewerBackend.resx">
-      <DependentUpon>TextViewerBackend.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Limaki.Swf.Backends\VidgetBackends\TextViewerWithToolstripBackend.resx">
-      <DependentUpon>TextViewerWithToolstripBackend.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Limaki.Swf.Backends\About.resx">
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>

@@ -61,31 +61,11 @@ namespace Limaki.View.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap CreateWidget24 {
-            get {
-                object obj = ResourceManager.GetObject("CreateWidget24", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
         /// </summary>
         public static System.Drawing.Icon LimadaLogo {
             get {
                 object obj = ResourceManager.GetObject("LimadaLogo", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
-        /// </summary>
-        public static System.Drawing.Icon LimadaLogoA {
-            get {
-                object obj = ResourceManager.GetObject("LimadaLogoA", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

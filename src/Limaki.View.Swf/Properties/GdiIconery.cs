@@ -12,8 +12,7 @@ namespace Limaki.View.Properties {
             FullLayout = Iconery.FullLayout.ToGdi();
             Zoom = Iconery.Zoom.ToGdi();
             Panning = Iconery.Panning.ToGdi();
-                   
-            AddVisual = global::Limaki.View.Properties.Resources.CreateWidget24;
+
 
             LimadaLogo = global::Limaki.View.Properties.Resources.LimadaLogo;
             LimadaLogoL32 = global::Limaki.View.Properties.Resources.LimadaLogoL32;

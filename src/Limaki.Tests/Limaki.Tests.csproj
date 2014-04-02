@@ -285,6 +285,10 @@
       <Project>{B77C5BE4-8B43-4B9D-BD73-25B7E58BC8EF}</Project>
       <Name>Limaki.View.Html5</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
+      <Project>{ca6c22ca-dc4a-4f47-88da-17c64c9bddc4}</Project>
+      <Name>Limaki.View.Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
