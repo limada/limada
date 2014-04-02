@@ -17,7 +17,7 @@ using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Iconerias {
-    public partial class AwesomeIconeria {
+    public partial class AwesomeIconeria2 {
         // total: 210
 
         [Icon(Name = "icon_glass", Id = "f000")]

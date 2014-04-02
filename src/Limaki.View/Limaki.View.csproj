@@ -111,7 +111,6 @@
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\LayoutToolStrip.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\MarkerToolStrip.cs" />
     <Compile Include="Limada\View\Vidgets\SplitViewDumnmy.cs" />
-    <Compile Include="Limaki.Iconeria\Iconery.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\DisplayToolStrip.cs" />
     <Compile Include="Limaki.View\Vidgets\CanvasVidget.cs" />
     <Compile Include="Limaki.View\Vidgets\ITextViewerBackend.cs" />
@@ -145,17 +144,12 @@
     <Compile Include="Limaki.Drawing.XwtBackend\ContextPainterExtensions.cs" />
     <Compile Include="Limaki.Drawing\Shapes\BezierExtensions.cs" />
     <Compile Include="Limaki.Drawing\Shapes\BezierSegment.cs" />
-    <Compile Include="Limaki.Iconeria\LimadaIconeria.cs" />
     <Compile Include="Limada\UseCases\Cms\Models\ContentAndLinks.cs" />
     <Compile Include="Limada\UseCases\Cms\Models\HtmlContent.cs" />
     <Compile Include="Limada\UseCases\Cms\Models\LinkID.cs" />
     <Compile Include="Limada\UseCases\Cms\Models\LinkIDs.cs" />
     <Compile Include="Limada\UseCases\Cms\Models\StreamContent.cs" />
     <Compile Include="Limada\UseCases\Cms\CmsSiteSchema.cs" />
-    <Compile Include="Limaki.Iconeria\AwesomeIconeria.cs" />
-    <Compile Include="Limaki.Iconeria\AwesomeIconeria.Generated.cs" />
-    <Compile Include="Limaki.Iconeria\IconAttribute.cs" />
-    <Compile Include="Limaki.Iconeria\Iconeria.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\GraphSceneContextVisualizer.cs" />
     <Compile Include="Limaki.View\Viz\Modelling\AlignerExtensions.cs" />
     <Compile Include="Limaki.View\Viz\Modelling\GraphSceneItemShapeLocator.cs" />
