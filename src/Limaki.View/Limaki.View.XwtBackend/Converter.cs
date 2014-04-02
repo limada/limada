@@ -27,9 +27,9 @@ namespace Limaki.View.XwtBackend {
             return new Point(ml.X - sb.X / scale, ml.Y - sb.Y / scale);
         }
 
-        public static MouseActionEventArgs ToLmk (this ButtonEventArgs args, MouseActionButtons lastButton) {
+        public static MouseActionEventArgs ToLmk (this ButtonEventArgs args) {
             return new MouseActionEventArgs (
-                lastButton,
+                args.Button.ToLmk(),
                 Keyboard.CurrentModifiers,
                 args.MultiplePress,
                 args.X,

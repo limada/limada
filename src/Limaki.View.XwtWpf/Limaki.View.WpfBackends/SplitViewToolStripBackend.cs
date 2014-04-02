@@ -75,7 +75,7 @@ namespace Limaki.View.WpfBackend {
             GraphStreamViewButton = new ToolStripButton {Command = Frontend.GraphStreamViewCommand, IsCheckable = true};
             GraphGraphViewButton = new ToolStripButton {Command = Frontend.GraphGraphViewCommand, IsCheckable = true};
             var toggleViewButton = new ToolStripButton {Command = Frontend.ToggleViewCommand};
-            var viewVisualNote = new ToolStripButton {Command = Frontend.ViewVisualNoteCommand};
+            var viewVisualNote = new ToolStripButton {Command = Frontend.OpenNewWindowCommand};
             GoBackButton = new ToolStripButton {Command = Frontend.GoBackCommand};
             GoForwardButton = new ToolStripButton {Command = Frontend.GoForwardCommand};
             var goHomeButton = new ToolStripButton {Command = Frontend.GoHomeCommand};

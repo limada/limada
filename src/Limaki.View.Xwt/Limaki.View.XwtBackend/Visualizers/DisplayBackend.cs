@@ -170,7 +170,7 @@ namespace Limaki.View.XwtBackend {
             Trace.WriteLine (string.Format ("ButtonPressed {0} == {1} | {2}", this.MouseLocation (), args.Position, this.GetType ().Name));
 
             lastButton = args.Button.ToLmk ();
-            Display.EventControler.OnMouseDown (args.ToLmk (lastButton));
+            Display.EventControler.OnMouseDown (args.ToLmk ());
         }
 
         protected override void OnMouseMoved (MouseMovedEventArgs args) {
@@ -192,7 +192,7 @@ namespace Limaki.View.XwtBackend {
         protected override void OnButtonReleased (ButtonEventArgs args) {
             base.OnButtonReleased (args);
             lastButton = args.Button.ToLmk ();
-            Display.EventControler.OnMouseUp (args.ToLmk (lastButton));
+            Display.EventControler.OnMouseUp (args.ToLmk ());
             lastButton = MouseActionButtons.None;
         }
 

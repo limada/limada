@@ -52,7 +52,7 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             graphStreamViewButton = new ToolStripButtonEx { Command = Frontend.GraphStreamViewCommand };
             graphGraphViewButton = new ToolStripButtonEx { Command = Frontend.GraphGraphViewCommand };
             var toggleViewButton = new ToolStripButtonEx { Command = Frontend.ToggleViewCommand };
-            var viewVisualNote = new ToolStripButtonEx { Command = Frontend.ViewVisualNoteCommand };
+            var viewVisualNote = new ToolStripButtonEx { Command = Frontend.OpenNewWindowCommand };
             goBackButton = new ToolStripButtonEx { Command = Frontend.GoBackCommand };
             goForwardButton = new ToolStripButtonEx { Command = Frontend.GoForwardCommand };
             var goHomeButton = new ToolStripButtonEx { Command = Frontend.GoHomeCommand };

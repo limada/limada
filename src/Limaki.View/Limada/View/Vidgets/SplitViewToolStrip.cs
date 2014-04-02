@@ -34,7 +34,7 @@ namespace Limada.View.Vidgets {
         public ToolStripCommand GraphGraphViewCommand { get; set; }
         public ToolStripCommand ToggleViewCommand { get; set; }
 
-        public ToolStripCommand ViewVisualNoteCommand { get; set; }
+        public ToolStripCommand OpenNewWindowCommand { get; set; }
 
         public ToolStripCommand GoBackCommand { get; set; }
         public ToolStripCommand GoForwardCommand { get; set; }
@@ -71,11 +71,11 @@ namespace Limada.View.Vidgets {
                 ToolTipText = "toogle view"
             };
 
-            ViewVisualNoteCommand = new ToolStripCommand {
+            OpenNewWindowCommand = new ToolStripCommand {
                 Action = s => SplitView.ShowInNewWindow (),
                 Image = Iconery.NewViewVisualNote,
                 Size = size,
-                ToolTipText = "toogle view"
+                ToolTipText = "open new window"
             };
 
             Action<bool> goBackOrForward = backOrForward => {

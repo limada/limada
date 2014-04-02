@@ -2,6 +2,7 @@ using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.WpfBackend {
+
     public class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripBackend {
 
         public LayoutToolStrip Frontend { get; set; }

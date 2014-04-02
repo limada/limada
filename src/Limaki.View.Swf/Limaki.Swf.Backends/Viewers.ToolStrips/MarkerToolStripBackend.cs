@@ -26,7 +26,6 @@ namespace Limaki.Swf.Backends.Viewers.ToolStrips {
             InitializeComponent();
         }
 
-
         public MarkerToolStrip Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {

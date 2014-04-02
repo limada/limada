@@ -90,6 +90,10 @@
       <Project>{b28433e8-bba2-4cb5-a7a2-10ae6aeddfb7}</Project>
       <Name>Limaki.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
+      <Project>{ca6c22ca-dc4a-4f47-88da-17c64c9bddc4}</Project>
+      <Name>Limaki.View.Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
       <Project>{3434f6bc-d6aa-4c53-b359-a1b114364025}</Project>
       <Name>Limaki.View</Name>

@@ -37,6 +37,7 @@ namespace Limaki.View.WpfBackend {
             selectButton.AddItems (
                 new ToolStripButton { Command = Frontend.PanningCommand, ToggleOnClick = selectButton }
             );
+
             var zoomButton = new ToolStripDropDownButton { Command = Frontend.ZoomInOutCommand };
             zoomButton.AddItems (
                 new ToolStripButton { Command = Frontend.FitToScreenCommand },
@@ -45,10 +46,11 @@ namespace Limaki.View.WpfBackend {
                 new ToolStripButton { Command = Frontend.OriginalSizeCommand }
             );
 
-            zoomButton.MouseDown += (s, e) => {
+            zoomButton.PreviewMouseDown += (s, e) => {
                 var args = WpfConverter.ToXwtButtonArgs (s as SW.FrameworkElement, e);
-                Frontend.ZoomInOut (args.ToLmk(MouseActionButtons.None));
+                Frontend.ZoomInOut (args.ToLmk());
             };
+
             this.AddItems (
                selectButton,
                zoomButton

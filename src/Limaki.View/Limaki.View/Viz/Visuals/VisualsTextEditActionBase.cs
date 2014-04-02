@@ -62,6 +62,7 @@ namespace Limaki.View.Viz.Visuals {
         /// has to be the same as in GraphItemResizer
         /// </summary>
         public int HitSize { get; set; }
+
         public virtual IGraphSceneLayout<IVisual, IVisualEdge> Layout { get; set; }
 
         public virtual IVisual Visual {
