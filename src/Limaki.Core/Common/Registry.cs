@@ -54,6 +54,14 @@ namespace Limaki.Common {
             return Pool.TryGetCreate<T>();
         }
 
+        public static T Create<T> () {
+            return Factory.Create<T> ();
+        }
+
+        public static T Create<T> (params object[] args) {
+            return Factory.Create<T> (args);
+        }
+
         /// <summary>
         /// looks for an ApplicationContextProcessor in the Pool
         /// and calls ApplicationContextProcessor.ApplyProperties(target)
