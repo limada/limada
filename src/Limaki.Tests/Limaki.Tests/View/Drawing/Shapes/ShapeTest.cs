@@ -178,11 +178,11 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
                 iconeria.PaintIcon(ctx, iconSize, bounds.X + iconSize / 2, bounds.Y, c => {
                     c.Scale(-1, 1);
-                    iconeria.IconPlay(c);
+                    iconeria.FaPlay(c);
                 });
 
                 iconeria.PaintIcon(ctx, iconSize, bounds.Right - ((iconSize * .7)), bounds.Y, c => {
-                    iconeria.IconPlay(c);
+                    iconeria.FaPlay(c);
                 });
 
                 var textBounds = new Rectangle(new Point(), pageNrSize);
