@@ -40,14 +40,9 @@ namespace Limaki.Swf.Backends.Viewers {
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 
             InitializeComponent();
-            fillWithShapes();
-        }
 
-        void fillWithShapes() {
-            Items.Add(new RectangleShape());
-            Items.Add(new RoundedRectangleShape());
-            Items.Add(new VectorShape());
-            Items.Add (new BezierRectangleShape {Jitter=0});
+            ShapeFactory.Shapes ().ForEach (s => Items.Add (s));
+
         }
 
 

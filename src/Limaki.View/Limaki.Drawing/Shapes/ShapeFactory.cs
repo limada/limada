@@ -12,10 +12,13 @@
  * 
  */
 
+using System.Collections.Generic;
 using Xwt;
 
 namespace Limaki.Drawing.Shapes {
+
     public class ShapeFactory : ShapeFactoryBase {
+
         protected override void InstrumentClazzes() {
             Add<IShape<Rectangle>>(() => new RectangleShape());
             Add<IShape<Vector>>(() => new VectorShape());
@@ -24,6 +27,13 @@ namespace Limaki.Drawing.Shapes {
             Add<IRoundedRectangleShape> (() => new RoundedRectangleShape());
             Add<IBezierRectangleShape> (() => new BezierRectangleShape());
             Add<IVectorShape> (() => new VectorShape());
+        }
+
+        public static IEnumerable<IShape> Shapes () {
+            yield return new RectangleShape ();
+            yield return new RoundedRectangleShape ();
+            yield return new VectorShape ();
+            yield return new BezierRectangleShape { Jitter = 0 };
         }
     }
 }

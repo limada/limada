@@ -8,7 +8,8 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
     [BackendType(typeof(ILayoutToolStripBackend))]
     public class LayoutToolStrip : DisplayToolStrip<IGraphSceneDisplay<IVisual, IVisualEdge>, ILayoutToolStripBackend> {
-    
+
+        public IStyleSheet CurrentStyleSheet { get; set; }
 
         public void StyleSheetChange (string sheetName) {
             IStyleSheet styleSheet = null;
@@ -22,6 +23,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             if (currentDisplay != null) {
                 currentDisplay.StyleSheet = styleSheet;
                 currentDisplay.BackendRenderer.Render();
+                CurrentStyleSheet = styleSheet;
             }
         }
 
@@ -71,6 +73,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             var display = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
             if (display != null) {
                 this.CurrentDisplay = display;
+                this.CurrentStyleSheet = display.StyleSheet;
                 Backend.AttachStyleSheet(display.StyleSheet.Name);
             }
         }
@@ -81,6 +84,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                 Backend.DetachStyleSheet(display.StyleSheet.Name);
             }
             this.CurrentDisplay = null;
+            this.CurrentStyleSheet = null;
         }
     }
 
