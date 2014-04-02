@@ -131,28 +131,30 @@ namespace Limaki.View.Viz.UI.GraphScene {
             if (!(e.Modifiers.HasFlag(ModifierKeys.Control) || e.Modifiers.HasFlag(ModifierKeys.Alt)))
                 return;
 
-            if (e.Key == Key.A) {
+            var key = e.Key.ToUpper();
+
+            if (key == Key.A) {
                 
                 Select(Scene, Scene.Elements, e.Modifiers);
                 
                 e.Handled = true;
             }
 
-            if (e.Key == Key.F) {
+            if (key == Key.F) {
                 if (Scene.Focused != null) {
                     Select (Scene, Scene.Graph.Foliage(Scene.Graph.Fork (Scene.Focused)), e.Modifiers);
                 }
                 e.Handled = true;
             }
 
-            if (e.Key == Key.T) {
+            if (key == Key.T) {
                 if (Scene.Focused != null) {
                     Select(Scene, Scene.Graph.Foliage(Scene.Graph.Twig(Scene.Focused)), e.Modifiers);
                 }
                 e.Handled = true;
             }
 
-            if (e.Key == Key.D) {
+            if (key == Key.D) {
                 if (Scene.Focused != null) {
                     var walker = new Walker<TItem, TEdge> (Scene.Graph);
                     Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.DeepWalk(Scene.Focused,0))),
@@ -161,7 +163,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
                 e.Handled = true;
             }
 
-            if (e.Key == Key.E) {
+            if (key == Key.E) {
                 if (Scene.Focused != null) {
                     var walker = new Walker<TItem, TEdge>(Scene.Graph);
                     Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.ExpandWalk(Scene.Focused, 0))),
@@ -171,7 +173,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
             }
 
-            if (e.Key == Key.W) {
+            if (key == Key.W) {
                 if (Scene.Focused != null) {
                     var walker = new Walker<TItem, TEdge>(Scene.Graph);
                     Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.Walk(Scene.Focused, 0))),
@@ -181,7 +183,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
             }
 
-            //if (e.Key == Key.C) {
+            //if (key == Key.C) {
             //    if (Scene.Focused != null) {
             //        var walker = new Walker<TItem, TEdge>(Scene.Graph);
             //        Select(Scene, Scene.Graph.Foliage(walker.Edges(walker.CollapseWalk(Scene.Focused, 0))),
