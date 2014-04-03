@@ -43,7 +43,7 @@ namespace Limaki.App {
         public void CreateUseCase(IVindowBackend vindowBackend) {
             var mainform = vindowBackend as Form;
 
-            mainform.Icon = Limaki.View.Properties.GdiIconery.LimadaLogo;
+            mainform.Icon = Limaki.View.Properties.GdiIconery.LimadaIcon;
             mainform.ClientSize = new System.Drawing.Size(800, 600);
 
             var backendComposer = new SwfConceptUseCaseComposer();

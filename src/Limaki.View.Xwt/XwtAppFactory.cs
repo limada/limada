@@ -68,7 +68,7 @@ namespace Limaki.View.XwtBackend {
 
             var backendComposer = Registry.Create<IXwtConceptUseCaseComposer> ();
             backendComposer.MainWindowBackend = new MainWindowBackend {
-                Icon = Limaki.Iconerias.Iconery.LimadaLogoL32
+                Icon = Limaki.Iconerias.Iconery.LimadaLogo
             };
             backendComposer.WindowSize = new Size (800, 600);
 

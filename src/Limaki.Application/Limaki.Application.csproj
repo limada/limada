@@ -11,7 +11,7 @@
     <RootNamespace>Limaki</RootNamespace>
     <AssemblyName>Limaki.Application</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <ApplicationIcon>LimadaLogo.ico</ApplicationIcon>
+    <ApplicationIcon>LogoDrop32.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -131,8 +131,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LimadaLogo.ico" />
-    <Content Include="LimadaLogoB.ico" />
     <None Include="EnableDragDropWithBrowserWin7.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -172,6 +170,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LogoDrop32.ico" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

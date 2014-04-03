@@ -14,6 +14,7 @@
 using Limada.View.Vidgets;
 using Limaki.Usecases.Vidgets;
 using Limaki.View;
+using Limaki.View.Properties;
 using Limaki.View.Swf;
 using Limaki.View.Swf.Visualizers;
 using Limaki.View.Vidgets;
@@ -118,7 +119,12 @@ namespace Limaki.Swf.Backends.Viewers {
             var control = backend as Control;
             if (control != null) {
                 control.Dock = DockStyle.Fill;
-                var form = new Form() { FormBorderStyle = FormBorderStyle.SizableToolWindow };
+                var form = new Form {
+                    FormBorderStyle = FormBorderStyle.SizableToolWindow,
+                    Icon = GdiIconery.LimadaSubWinIcon,
+                    Text = Frontend.CurrentDisplay.Info.Name + " - *"
+                    
+                };
                 form.FormClosing += (s, e) => onClose();
                 form.Controls.Add (control);
                 form.Show (this.ParentForm);
@@ -129,7 +135,7 @@ namespace Limaki.Swf.Backends.Viewers {
                 form.LocationChanged += (s, e) =>
                     offset = calcOffset ();
                 this.ParentForm.LocationChanged += (s, e) =>
-                                                   form.Location = new Point (this.ParentForm.Location.X + offset.X, this.ParentForm.Location.Y + offset.Y);
+                     form.Location = new Point (this.ParentForm.Location.X + offset.X, this.ParentForm.Location.Y + offset.Y);
 
             }
         }

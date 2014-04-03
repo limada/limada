@@ -1,7 +1,9 @@
 using System.Drawing;
 using Limaki.Iconerias;
 using Xwt.Gdi.Backend;
+
 namespace Limaki.View.Properties {
+
     public class GdiIconery {
 
         static GdiIconery () {
@@ -14,8 +16,10 @@ namespace Limaki.View.Properties {
             Panning = Iconery.Panning.ToGdi();
 
 
-            LimadaLogo = global::Limaki.View.Properties.Resources.LimadaLogo;
-            LimadaLogoL32 = global::Limaki.View.Properties.Resources.LimadaLogoL32;
+            LimadaIcon = global::Limaki.View.Properties.Resources.LogoDropIcon;
+            LimadaLogo = global::Limaki.View.Properties.Resources.LogoDrop32;
+            LimadaSubWin = global::Limaki.View.Properties.Resources.SubWin;
+            LimadaSubWinIcon = global::Limaki.View.Properties.Resources.SubWinIcon;
 
         }
 
@@ -28,8 +32,10 @@ namespace Limaki.View.Properties {
 
         public static Image AddVisual { get; set; }
 
-        public static Icon LimadaLogo { get; set; }
-        public static Image LimadaLogoL32 { get; set; }
-      
+        public static Icon LimadaIcon { get; set; }
+        public static Image LimadaLogo { get; set; }
+
+        public static Bitmap LimadaSubWin { get; set; }
+        public static Icon LimadaSubWinIcon { get; set; }
     }
 }
