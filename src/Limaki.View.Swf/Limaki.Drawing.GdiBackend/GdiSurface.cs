@@ -12,7 +12,6 @@
  * 
  */
 
-
 using Limaki.Drawing.XwtBackend;
 using Xwt.Drawing;
 using Xwt.GdiBackend;
@@ -21,6 +20,7 @@ using Xwt;
 namespace Limaki.View.GdiBackend {
 
     public class GdiSurface : ContextSurface {
+
         System.Drawing.Graphics _graphics = null;
 
         public System.Drawing.Graphics Graphics {
@@ -46,9 +46,10 @@ namespace Limaki.View.GdiBackend {
                 base.Context = value;
             }
         }
+
         public override Matrix Matrix {
             get {
-                if (base.Matrix == null) {
+                if (base.Matrix == null) { // base.Matrix is never null
                     base.Matrix = this.Graphics.Transform.ToXwt();
                 }
                 return base.Matrix;

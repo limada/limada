@@ -12,18 +12,17 @@
  * 
  */
 
-using System;
-using System.Collections.Generic;
 using Db4objects.Db4o;
 using Db4objects.Db4o.Config;
+using Db4objects.Db4o.Linq;
 using Db4objects.Db4o.Query;
-using Limaki.Common;
 using Limaki.Common.Collections;
 using Limaki.Common.Reflections;
 using Limaki.Graphs;
-using Db4objects.Db4o.Linq;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Limaki.Data.db4o {
 

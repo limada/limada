@@ -243,7 +243,9 @@ namespace Limaki.View.WpfBackend {
             get {
                 return _supportedContents ?? (_supportedContents =
                                               new HtmlContentSpot ().ContentSpecs
+#if DEBUG
                                                   .Union (new PdfContentSpot ().ContentSpecs)
+#endif
                                                   .ToArray ()
                                              );
             }

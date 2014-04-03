@@ -14,10 +14,12 @@
 
 using Limaki.Drawing;
 using Limaki.Drawing.XwtBackend;
+using System;
 using Xwt.Drawing;
 
 namespace Limaki.View.XwtBackend {
 
+    [Obsolete ("use ContextSurface")]
     public class XwtSurface : ContextSurface {
 
         public override Matrix Matrix {

@@ -12,26 +12,23 @@
  * 
  */
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Db4objects.Db4o;
-using Db4objects.Db4o.Config;
+using Db4objects.Db4o.Constraints;
 using Db4objects.Db4o.Events;
-using Db4objects.Db4o.Query;
-using Limaki.Common;
+using Db4objects.Db4o.Ext;
+using Db4objects.Db4o.Foundation;
+using Db4objects.Db4o.Linq;
+using Limada.Model;
+using Limaki.Common.Collections;
 using Limaki.Common.Reflections;
 using Limaki.Contents;
 using Limaki.Data;
 using Limaki.Data.db4o;
-using Limada.Model;
-using Id = System.Int64;
-using Db4objects.Db4o.Constraints;
-using Db4objects.Db4o.Foundation;
-using Limaki.Common.Collections;
-using Db4objects.Db4o.Ext;
-using Db4objects.Db4o.Linq;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using Id = System.Int64;
 
 namespace Limada.IO.db4o {
 

@@ -12,18 +12,19 @@
  * 
  */
 
-using System;
 using Db4objects.Db4o;
 using Db4objects.Db4o.Config;
-using System.Diagnostics;
 using Db4objects.Db4o.CS;
 using Db4objects.Db4o.CS.Config;
-using System.IO;
 using Limaki.Contents.IO;
+using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace Limaki.Data.db4o {
 
     public class Gateway : GatewayBase {
+
         # region session
         private ICommonConfigurationProvider _configuration = null;
         public ICommonConfiguration Configuration {

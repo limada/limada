@@ -22,8 +22,7 @@ namespace Limaki.View {
     public interface IVidgetBackend:IDisposable {
 
         Size Size { get; }
-        
-        // Renderer:
+
         void Update();
         void Invalidate();
         void Invalidate(Rectangle rect);
