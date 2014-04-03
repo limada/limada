@@ -147,6 +147,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Limaki.Swf.Backends\Viewers.ToolStrips\ToolStripRenderer.cs" />
+    <Compile Include="Limaki.Swf.UseCases\SwfAppFactory.cs" />
     <Compile Include="Limaki.View.Swf\SwfVidgetToolkitEngineBackend.cs" />
     <Compile Include="Properties\IconeryExtensions.cs" />
     <Compile Include="Properties\GdiIconery.cs" />

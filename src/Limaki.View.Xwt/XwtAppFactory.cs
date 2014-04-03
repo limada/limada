@@ -26,13 +26,13 @@ namespace Limaki.View.XwtBackend {
 
     public class XwtAppFactory : UsercaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
 
-        ToolkitType ToolkitType {
+        public override ToolkitType ToolkitType {
             get { return Xwt.ToolkitType.Wpf; }
         }
 
         public XwtAppFactory () : base () { }
 
-        public void Run () {
+        public override void Run () {
 
             Application.Initialize (this.ToolkitType);
 
@@ -64,17 +64,7 @@ namespace Limaki.View.XwtBackend {
             Application.Dispose ();
         }
 
-        public override bool TakeType (System.Type type) {
-            if (type.GetInterfaces ().Any (t => t == typeof (IToolkitAware))) {
-                if (type.GetConstructors ().Any (tc => tc.GetParameters ().Length == 0)) {
-                    var loader = Activator.CreateInstance (type) as IToolkitAware;
-                    return loader.ToolkitType == this.ToolkitType;
-                }
-            }
-            return base.TakeType (type);
-        }
-
-        public IXwtConceptUseCaseComposer CreateUseCase () {
+        protected virtual IXwtConceptUseCaseComposer CreateUseCase () {
 
             var backendComposer = Registry.Create<IXwtConceptUseCaseComposer> ();
             backendComposer.MainWindowBackend = new MainWindowBackend {
