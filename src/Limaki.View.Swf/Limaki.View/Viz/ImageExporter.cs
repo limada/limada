@@ -15,7 +15,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using Limaki.Drawing;
-using Limaki.SwfBackend.Viz;
+using Limaki.View.SwfBackend.Viz;
 using Limaki.View.Visuals;
 using Size = Xwt.Size;
 

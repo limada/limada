@@ -20,7 +20,7 @@ using System.Linq;
 using Limaki.Actions;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
-using Limaki.GdiBackend;
+using Limaki.View.GdiBackend;
 using Limaki.Drawing.Shapes;
 using Limaki.View;
 using Limaki.View.Visuals;

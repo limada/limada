@@ -63,20 +63,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiContextBackendHandler.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiFontBackendHandler.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiContext.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiConverter.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiEngine.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiGradientBackendHandler.cs" />
-    <Compile Include="Xwt.Gdi.Backend\IGdiGraphicsBackend.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiImageBuilderBackend.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiImage.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiImageBackendHandler.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiImagePatternBackendHandler.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiTextLayoutBackend.cs" />
-    <Compile Include="Xwt.Gdi.Backend\GdiTextLayoutBackendHandler.cs" />
-    <Compile Include="Xwt.Gdi.Backend\XwtDrawingExtensions.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiContextBackendHandler.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiFontBackendHandler.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiContext.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiConverter.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiEngine.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiGradientBackendHandler.cs" />
+    <Compile Include="Xwt.GdiBackend\IGdiGraphicsBackend.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiImageBuilderBackend.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiImage.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiImageBackendHandler.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiImagePatternBackendHandler.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiTextLayoutBackend.cs" />
+    <Compile Include="Xwt.GdiBackend\GdiTextLayoutBackendHandler.cs" />
+    <Compile Include="Xwt.GdiBackend\XwtDrawingExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

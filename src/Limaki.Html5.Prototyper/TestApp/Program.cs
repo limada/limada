@@ -1,6 +1,6 @@
 ﻿using System;
 using Limaki.Common;
-using Limaki.SwfBackend;
+using Limaki.View.SwfBackend;
 
 namespace Xwt.Html5.TestApp {
 

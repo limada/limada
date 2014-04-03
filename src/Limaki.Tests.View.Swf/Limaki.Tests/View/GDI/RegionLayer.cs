@@ -12,7 +12,7 @@
  * 
  */
 
-using Limaki.GdiBackend;
+using Limaki.View.GdiBackend;
 using Limaki.View.Viz.Rendering;
 using SD = System.Drawing;
 using System.Drawing;

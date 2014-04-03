@@ -60,13 +60,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Xwt.Swf.Backend\ClipboardBackend.cs" />
-    <Compile Include="Xwt.Swf.Backend\DragDropConverter.cs" />
-    <Compile Include="Xwt.Swf.Backend\ISwfWidgetBackend.cs" />
-    <Compile Include="Xwt.Swf.Backend\WidgetBackend.cs" />
-    <Compile Include="Xwt.Swf.Backend\WindowFrameBackend.cs" />
-    <Compile Include="Xwt.Swf.Backend\SwfEngine.cs" />
-    <Compile Include="Xwt.Swf.Backend\SwfDesktopBackend.cs" />
+    <Compile Include="Xwt.SwfBackend\ClipboardBackend.cs" />
+    <Compile Include="Xwt.SwfBackend\DragDropConverter.cs" />
+    <Compile Include="Xwt.SwfBackend\ISwfWidgetBackend.cs" />
+    <Compile Include="Xwt.SwfBackend\WidgetBackend.cs" />
+    <Compile Include="Xwt.SwfBackend\WindowFrameBackend.cs" />
+    <Compile Include="Xwt.SwfBackend\SwfEngine.cs" />
+    <Compile Include="Xwt.SwfBackend\SwfDesktopBackend.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

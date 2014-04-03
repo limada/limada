@@ -17,8 +17,8 @@ using System.Windows.Forms;
 using Limada.Usecases;
 using Limada.UseCases;
 using Limaki.Usecases;
-using Limaki.SwfBackend;
-using Limaki.SwfBackend.VidgetBackends;
+using Limaki.View.SwfBackend;
+using Limaki.View.SwfBackend.VidgetBackends;
 using Limaki.View.Vidgets;
 using Limaki.View.XwtBackend;
 

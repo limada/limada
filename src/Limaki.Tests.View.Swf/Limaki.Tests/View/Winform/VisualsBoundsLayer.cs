@@ -14,7 +14,7 @@
 
 
 using Limaki.Drawing;
-using Limaki.GdiBackend;
+using Limaki.View.GdiBackend;
 using Limaki.Drawing.Shapes;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Rendering;
