@@ -580,7 +580,7 @@ namespace Xwt.WPFBackend
 		bool MapToXwtKeyArgs (System.Windows.Input.KeyEventArgs e, out KeyEventArgs result)
 		{
 			result = null;
-
+		    System.Diagnostics.Trace.WriteLine (string.Format ("WpfKey {0}", e.Key));
 			var key = KeyboardUtil.TranslateToXwtKey (e.Key);
 			if ((int)key == 0)
 				return false;
