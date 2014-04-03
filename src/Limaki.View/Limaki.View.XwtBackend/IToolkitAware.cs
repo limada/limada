@@ -13,7 +13,9 @@
  */
 
 using Xwt;
+
 namespace Limaki.View.XwtBackend {
+
     public interface IToolkitAware {
         ToolkitType ToolkitType { get; }
     }
