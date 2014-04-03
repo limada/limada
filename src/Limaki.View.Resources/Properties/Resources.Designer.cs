@@ -61,11 +61,21 @@ namespace Limaki.View.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap LogoDrop32 {
+            get {
+                object obj = ResourceManager.GetObject("LogoDrop32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
         /// </summary>
-        public static System.Drawing.Icon LimadaLogo {
+        public static System.Drawing.Icon LogoDropIcon {
             get {
-                object obj = ResourceManager.GetObject("LimadaLogo", resourceCulture);
+                object obj = ResourceManager.GetObject("LogoDropIcon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -73,10 +83,20 @@ namespace Limaki.View.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap LimadaLogoL32 {
+        public static System.Drawing.Bitmap SubWin {
             get {
-                object obj = ResourceManager.GetObject("LimadaLogoL32", resourceCulture);
+                object obj = ResourceManager.GetObject("SubWin", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        /// </summary>
+        public static System.Drawing.Icon SubWinIcon {
+            get {
+                object obj = ResourceManager.GetObject("SubWinIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }

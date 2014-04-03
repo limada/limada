@@ -2,8 +2,10 @@ using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Iconerias {
+
     public partial class LimadaIconeria : Iconeria {
-        public virtual void IconGraphContent (Context c) {
+
+        public virtual void GraphContent (Context c) {
             c.MoveTo(0d, 115d);
             c.LineTo(0d, 1421d);
             c.CurveTo(0d, 1468d, 0d, 1468d, 34d, 1502d);
@@ -114,7 +116,8 @@ namespace Limaki.Iconerias {
             c.ClosePath();
             c.MoveTo(1062.866d, 1044.355d);
         }
-        public virtual void IconGraphGraph (Context c) {
+
+        public virtual void GraphGraph (Context c) {
             c.MoveTo(0d, 115d);
             c.LineTo(0d, 1421d);
             c.CurveTo(0d, 1468d, 0d, 1468d, 34d, 1502d);
@@ -236,7 +239,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(1173.531d, 1029.377d);
         }
 
-        public virtual void IconToggle (Context c) {
+        public virtual void Toggle (Context c) {
             c.MoveTo(385d, 711.086d);
             c.LineTo(385d, 736.8065d);
             c.CurveTo(385d, 850.6624d, 385d, 850.6624d, 423.7522d, 951.1436d);
@@ -289,7 +292,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(1387.68d, 841.0687d);
         }
 
-        public virtual void IconToggleView (Context c) {
+        public virtual void ToggleView (Context c) {
             c.MoveTo(716.9131d, 541.0184d);
             c.LineTo(727.7831d, 517.7079d);
             c.CurveTo(775.9007d, 414.5193d, 775.9007d, 414.5193d, 853.4872d, 339.8298d);
@@ -377,7 +380,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(5.893675d, 1226.479d);
         }
 
-        public virtual void IconFullLayout (Context c) {
+        public virtual void FullLayout (Context c) {
             c.MoveTo(719.8462d, 619.6279d);
             c.LineTo(608.2581d, 619.6279d);
             c.CurveTo(599.506d, 619.6279d, 594.887d, 624.0811d, 594.4008d, 632.9875d);
@@ -510,8 +513,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(719.8462d, 619.6279d);
 	}
 
-
-        public virtual void IconLogicalLayout (Context c) {
+        public virtual void LogicalLayout (Context c) {
             c.MoveTo(1519.621d, -8.038032d);
             c.LineTo(1166.011d, -8.038032d);
             c.CurveTo(1135.543d, -8.038032d, 1135.543d, -8.038032d, 1114.769d, 11.05826d);
@@ -587,8 +589,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(1519.621d, -8.038032d);
         }
 
-
-        public virtual void IconDimensionX (Context c) {
+        public virtual void DimensionX (Context c) {
             c.MoveTo(669.2936d, 721.2731d);
             c.LineTo(669.2936d, 606.6954d);
             c.CurveTo(669.2936d, 589.1551d, 662.6769d, 574.0195d, 649.4435d, 561.2886d);
@@ -689,7 +690,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(492.2378d, 570.1799d);
         }
 
-        public virtual void IconDimensionY (Context c) {
+        public virtual void DimensionY (Context c) {
             c.MoveTo(1081.826d, 1159.769d);
             c.LineTo(1093.696d, 1159.769d);
             c.CurveTo(1146.24d, 1159.769d, 1146.24d, 1159.769d, 1192.611d, 1136.581d);
@@ -790,8 +791,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(930.733d, 982.7125d);
         }
 
-
-        public virtual void IconNewSheet (Context c) {
+        public virtual void NewSheet (Context c) {
             c.MoveTo(0d, 307d);
             c.LineTo(0d, 1229d);
             c.CurveTo(0d, 1292d, 0d, 1292d, 24.5d, 1348.5d);
@@ -911,8 +911,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(1180.312d, 329.4816d);
         }
 
-
-        public virtual void IconVerticalAlignTop (Context c) {
+        public virtual void VerticalAlignTop (Context c) {
             c.MoveTo(173.7843d, 982.5101d);
             c.LineTo(173.7843d, 1097.51d);
             c.CurveTo(173.7843d, 1128.51d, 173.7843d, 1128.51d, 211.075d, 1150.51d);
@@ -978,7 +977,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(916.7842d, 550.0838d);
         }
 
-        public virtual void IconVerticalAlignBottom (Context c) {
+        public virtual void VerticalAlignBottom (Context c) {
             c.MoveTo(173.7843d, 545.3732d);
             c.LineTo(173.7843d, 430.3732d);
             c.CurveTo(173.7843d, 399.3732d, 173.7843d, 399.3732d, 211.075d, 377.3732d);
@@ -1044,7 +1043,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(916.7842d, 977.7995d);
         }
 
-        public virtual void IconVerticalAlignCenter (Context c) {
+        public virtual void VerticalAlignCenter (Context c) {
             c.MoveTo(173.7843d, 821.0198d);
             c.LineTo(173.7843d, 706.0198d);
             c.CurveTo(173.7843d, 675.0198d, 173.7843d, 675.0198d, 211.075d, 653.0198d);
@@ -1102,7 +1101,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(912.7437d, 540.2402d);
         }
 
-        public virtual void IconLogicalLayoutSelected (Context c) {
+        public virtual void LogicalLayoutSelected (Context c) {
             c.MoveTo(1299.85034d, -8.03125d);
             c.CurveTo(1273.27185d, -8.03125d, 1250.95142d, -1.66836d, 1232.82971d, 11.0625d);
             c.CurveTo(1214.70813d, 23.79336d, 1205.63684d, 39.48433d, 1205.63684d, 58.15625d);
@@ -1226,7 +1225,7 @@ namespace Limaki.Iconerias {
             c.MoveTo(1433.93323d, 1241.5d);
         }
 
-        public virtual void IconLogicalLayoutSelectedLeaf (Context c) {
+        public virtual void LogicalLayoutSelectedLeaf (Context c) {
             c.MoveTo(1166.78125d, 610.6875d);
             c.CurveTo(1166.86536d, 593.1474d, 1157.7467d, 578.01208d, 1139.625d, 565.28125d);
             c.CurveTo(1121.5033d, 552.55042d, 1099.13464d, 546.77045d, 1072.5625d, 546.1875d);
@@ -1381,8 +1380,6 @@ namespace Limaki.Iconerias {
             c.ClosePath();
             c.MoveTo(1523.9375d, 1241.5d);
         }
-
-
 
     }
 }
