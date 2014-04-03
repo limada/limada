@@ -197,7 +197,10 @@ namespace Limaki.View.Viz.Visuals {
         #region IKeyAction Member
 
         void IKeyAction.OnKeyPressed (KeyActionEventArgs e) {
-            if (e.Key == Key.C &&
+
+            var key = e.Key.ToUpper ();
+
+            if (key == Key.C &&
                 e.Modifiers == ModifierKeys.Control) {
                 if (Scene.Focused != null) {
                     this.Copy();
@@ -205,7 +208,7 @@ namespace Limaki.View.Viz.Visuals {
                 }
             }
 
-            if (e.Key == Key.V
+            if (key == Key.V
                 && e.Modifiers == ModifierKeys.Control) {
                 this.Paste();
                 e.Handled = true;
