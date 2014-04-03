@@ -236,6 +236,9 @@ namespace Limaki.View.XwtBackend {
         }
 
         protected virtual void HandleDragOver (DragOverEventArgs args) {
+            if (!HasFocus)
+                SetFocus ();
+
             var dropHandler = Display.EventControler as IDropAction;
             if (dropHandler != null && Display.Data != null) {
 
