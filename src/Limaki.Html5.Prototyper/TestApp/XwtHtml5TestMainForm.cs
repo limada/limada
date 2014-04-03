@@ -7,10 +7,10 @@ using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Limaki.Graphs;
 using Limada.View.ContentViewers;
-using Limaki.Swf.Backends.Viewers.Content;
 using Limaki.Tests.View;
 using Limaki.View;
 using Limaki.View.Html5;
+using Limaki.SwfBackend.VidgetBackends;
 using Limaki.View.Viz.Visuals;
 using Limaki.View.XwtBackend.Viz;
 using Limaki.WebServer;
@@ -18,7 +18,7 @@ using Xwt.Drawing;
 using Xwt.Html5.Backend;
 using Xwt.Tests;
 using Limaki.View.Visuals;
-using Limaki.Swf.Backends;
+using Limaki.SwfBackend;
 
 namespace Xwt.Html5.TestApp {
 

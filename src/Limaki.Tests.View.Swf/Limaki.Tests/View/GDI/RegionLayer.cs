@@ -12,6 +12,7 @@
  * 
  */
 
+using Limaki.GdiBackend;
 using Limaki.View.Viz.Rendering;
 using SD = System.Drawing;
 using System.Drawing;
@@ -19,13 +20,12 @@ using System.Drawing.Drawing2D;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
-using Limaki.Drawing.Gdi;
 using Limaki.Drawing.Shapes;
 using Xwt;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
 using Size = System.Drawing.Size;
-using Xwt.Gdi.Backend;
+using Xwt.GdiBackend;
 using Xwt.Drawing;
 using Matrix = Xwt.Drawing.Matrix;
 

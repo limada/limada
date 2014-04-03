@@ -1,5 +1,6 @@
 ﻿using System;
 using Limaki.Common;
+using Limaki.SwfBackend;
 
 namespace Xwt.Html5.TestApp {
 
@@ -13,7 +14,7 @@ namespace Xwt.Html5.TestApp {
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
             if (Registry.ConcreteContext == null) {
-                var loader = new Limaki.View.Swf.SwfContextResourceLoader ();
+                var loader = new SwfContextResourceLoader ();
                 Registry.ConcreteContext = new Limaki.Common.IOC.ApplicationContext ();
                 loader.ApplyResources (Registry.ConcreteContext);
                 

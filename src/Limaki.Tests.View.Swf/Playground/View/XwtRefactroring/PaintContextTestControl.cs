@@ -1,7 +1,6 @@
 
 using Xwt.Drawing;
-using Xwt.Gdi.Backend;
-using Xwt.Gdi;
+using Xwt.GdiBackend;
 using System;
 using SD = System.Drawing;
 using System.Diagnostics;

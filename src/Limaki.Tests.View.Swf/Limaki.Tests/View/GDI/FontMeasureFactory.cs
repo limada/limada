@@ -1,10 +1,11 @@
 using System.Drawing;
-using Limaki.Drawing.Gdi;
+using Limaki.GdiBackend;
 using NUnit.Framework;
 using System.IO;
-using Xwt.Gdi.Backend;
+using Xwt.GdiBackend;
 
 namespace Limaki.Tests.View.GDI {
+
     public class FontMeasureFactory : DomainTest {
         
         public void FontMeasures(string fontName) {

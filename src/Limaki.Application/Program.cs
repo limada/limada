@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Limaki 
  * 
  * This code is free software; you can redistribute it and/or modify it
@@ -14,6 +14,7 @@
 
 
 using System;
+using Limada.Usecases;
 
 namespace Limaki.App {
 

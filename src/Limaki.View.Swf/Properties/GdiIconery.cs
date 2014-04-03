@@ -1,6 +1,6 @@
 using System.Drawing;
 using Limaki.Iconerias;
-using Xwt.Gdi.Backend;
+using Xwt.GdiBackend;
 
 namespace Limaki.View.Properties {
 

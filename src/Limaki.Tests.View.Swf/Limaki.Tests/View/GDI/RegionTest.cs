@@ -14,7 +14,7 @@
 
 
 using System.Drawing;
-using Limaki.Drawing.Gdi;
+using Limaki.GdiBackend;
 using NUnit.Framework;
 using System.Diagnostics;
 

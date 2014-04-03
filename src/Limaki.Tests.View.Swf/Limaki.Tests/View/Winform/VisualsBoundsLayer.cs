@@ -14,12 +14,12 @@
 
 
 using Limaki.Drawing;
+using Limaki.GdiBackend;
 using Limaki.Drawing.Shapes;
-using Limaki.Drawing.Gdi;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Rendering;
 using Xwt;
-using Xwt.Gdi.Backend;
+using Xwt.GdiBackend;
 
 namespace Limaki.Tests.View.Winform {
     public class VisualsBoundsLayer : GraphSceneLayer<IVisual,IVisualEdge> {

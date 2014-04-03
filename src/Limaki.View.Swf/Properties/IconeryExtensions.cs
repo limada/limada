@@ -17,7 +17,7 @@ using System.Drawing;
 using Limaki.Iconerias;
 using Xwt.Drawing;
 using Image = System.Drawing.Image;
-using Xwt.Gdi.Backend;
+using Xwt.GdiBackend;
 using Xwt.Backends;
 
 namespace Limaki.View.Properties {
