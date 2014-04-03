@@ -3,7 +3,7 @@ using Limaki.View.XwtBackend;
 using Xwt;
 using Xwt.Backends;
 
-namespace Limaki.View.GtkBackends {
+namespace Limaki.View.GtkBackend {
 
     public class GtkContextResourceLoader : ContextResourceLoader, IToolkitAware {
         public override void ApplyResources (IApplicationContext context) {

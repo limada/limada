@@ -15,7 +15,7 @@
 using Size = Xwt.Size;
 
 
-namespace Limaki.View.GtkBackends {
+namespace Limaki.View.GtkBackend {
     public class GtkSystemInformation : IUISystemInformation {
         public Size DragSize {
             get { return new Size(Gtk.Settings.Default.DndDragThreshold, Gtk.Settings.Default.DndDragThreshold); }
