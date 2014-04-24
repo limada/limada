@@ -8,6 +8,7 @@ using Limaki.View.Viz.Visualizers;
 namespace Limada.View.Vidgets {
 
     public class SplitViewDumnmy : ISplitView {
+
         public event EventHandler ViewChanged;
         public virtual void ToggleView() { }
 

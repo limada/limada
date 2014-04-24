@@ -22,6 +22,7 @@ namespace Limaki.View.XwtBackend.Viz {
 
     public class GraphSceneContextPainterComposer<TItem, TEdge> : GraphScenePainterComposer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {
+
         public override void Factor(GraphScenePainter<TItem, TEdge> painter) {
             base.Factor(painter);
 

@@ -33,39 +33,18 @@ namespace Limaki.View.SwfBackend.Viz {
 
         public override void Compose(Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
             var display = aDisplay;
-            base.Compose(display);
+            base.Compose (display);
 
-#if SwfDragDrop
-                var dragDrop = new VisualsDragDrop(
-                    this.GraphScene,
-                    display.Backend as IDragDropControl,
-                    this.Camera(),
-                    this.Layout());
-                dragDrop.Enabled = true;
-                display.EventControler.Add(dragDrop);
+            var dragDrop = new VisualsDragDropAction (
+                () => display.Data,
+                display.Backend,
+                display.Viewport.Camera,
+                ((IGraphSceneDisplay<IVisual, IVisualEdge>) display).Layout) {
+                    Enabled = true
+                };
 
-                var selector = display.EventControler.GetAction<GraphSceneFocusAction<IVisual, IVisualEdge>>();
-                if (selector != null) {
-                    var catcher = new DragDropCatcher<GraphSceneFocusAction<IVisual, IVisualEdge>>(selector, display.Backend as IDragDropControl);
-                    display.EventControler.Add(catcher);
-                }
+            display.EventControler.Add (dragDrop);
 
-                var addEdgeAction = display.EventControler.GetAction<AddEdgeAction>();
-                if (addEdgeAction != null) {
-                    var catcher = new DragDropCatcher<AddEdgeAction>(addEdgeAction, display.Backend as IDragDropControl);
-                    display.EventControler.Add(catcher);
-                }
-#else
-                var dragDrop = new VisualsDragDropAction(
-                    () => display.Data,
-                    display.Backend,
-                    display.Viewport.Camera,
-                    ((IGraphSceneDisplay<IVisual, IVisualEdge>)display).Layout) {
-                        Enabled = true
-                    };
-
-                display.EventControler.Add(dragDrop);
-#endif            
 
             var editor = new VisualsTextEditAction (
                 this.GraphScene,

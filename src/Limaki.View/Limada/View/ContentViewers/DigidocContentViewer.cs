@@ -55,6 +55,7 @@ namespace Limada.View.ContentViewers {
             base.OnShow();
             DigidocVidget.OnShow();
         }
+
         public override void Dispose () {
             DigidocVidget.Dispose();
             DigidocVidget = null;

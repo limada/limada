@@ -22,6 +22,7 @@ using Size = Xwt.Size;
 namespace Limaki.View.Viz {
 
     public class ImageExporter : VisualsSceneGdiPainter {
+
         public ImageExporter(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout)
             : base() {
             this.Data = scene;

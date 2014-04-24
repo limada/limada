@@ -32,7 +32,7 @@ using Xwt.SwfBackend;
 using ApplicationContext = Limaki.Common.IOC.ApplicationContext;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using Size = Xwt.Size;
-
+using SWF = System.Windows.Forms;
 
 namespace Limaki.View.SwfBackend.Viz {
 
@@ -254,45 +254,7 @@ namespace Limaki.View.SwfBackend.Viz {
 
         #region DragDrop
 
-#if SwfDragDrop
-        protected override void OnGiveFeedback(SWF.GiveFeedbackEventArgs gfbevent) {
-            var EventControler = Display.EventControler as SwfEventControler;
-            if (EventControler != null && Display.Data != null)
-                EventControler.OnGiveFeedback(gfbevent);
-            base.OnGiveFeedback(gfbevent);
 
-        }
-        protected override void OnQueryContinueDrag(SWF.QueryContinueDragEventArgs qcdevent) {
-            var EventControler = Display.EventControler as SwfEventControler;
-            if (EventControler != null && Display.Data != null)
-                EventControler.OnQueryContinueDrag(qcdevent);
-            base.OnQueryContinueDrag(qcdevent);
-
-        }
-
-        protected override void OnDragOver(SWF.DragEventArgs drgevent) {
-            var EventControler = Display.EventControler as SwfEventControler;
-            if (EventControler != null && Display.Data != null)
-                EventControler.OnDragOver(drgevent);
-            base.OnDragOver(drgevent);
-
-        }
-
-        protected override void OnDragDrop(SWF.DragEventArgs drgevent) {
-            var EventControler = Display.EventControler as SwfEventControler;
-            if (EventControler != null && Display.Data != null)
-                EventControler.OnDragDrop(drgevent);
-            base.OnDragDrop(drgevent);
-
-        }
-        protected override void OnDragLeave(EventArgs e) {
-            var EventControler = Display.EventControler as SwfEventControler;
-            if (EventControler != null && Display.Data != null)
-                EventControler.OnDragLeave(e);
-            base.OnDragLeave(e);
-        }
-
-#else
 
         //this is called by Control.DoDragDrop
         protected override void OnGiveFeedback (System.Windows.Forms.GiveFeedbackEventArgs e) { base.OnGiveFeedback (e); }
@@ -365,8 +327,6 @@ namespace Limaki.View.SwfBackend.Viz {
             }
             base.OnDragLeave (e);
         }
-
-#endif
 
         #endregion
 

@@ -139,17 +139,19 @@ namespace Xwt.GdiBackend {
 
         #region Graphics
 
+        static StringFormat defaultStringFormat = null;
         public static StringFormat GetDefaultStringFormat() {
-            var stringFormat =
-                StringFormat.GenericTypographic;
-            stringFormat.Trimming = StringTrimming.EllipsisWord;
-            //stringFormat.FormatFlags = SD.StringFormatFlags.FitBlackBox;
-            stringFormat.FormatFlags = stringFormat.FormatFlags
-                                       & ~StringFormatFlags.NoClip
-                                       & ~StringFormatFlags.FitBlackBox
-                                       & StringFormatFlags.LineLimit
-                ;
-            return stringFormat;
+            if (defaultStringFormat == null) {
+                defaultStringFormat = StringFormat.GenericTypographic;
+                defaultStringFormat.Trimming = StringTrimming.EllipsisWord;
+                //stringFormat.FormatFlags = SD.StringFormatFlags.FitBlackBox;
+                defaultStringFormat.FormatFlags = defaultStringFormat.FormatFlags
+                                           & ~StringFormatFlags.NoClip
+                                           & ~StringFormatFlags.FitBlackBox
+                                           & StringFormatFlags.LineLimit
+                    ;
+            }
+            return defaultStringFormat;
         }
 
         public class GraphicsQuality {
@@ -188,6 +190,7 @@ namespace Xwt.GdiBackend {
                 };
             }
         }
+
         public static GraphicsQuality PaintHighQuality {
             get {
                 return new GraphicsQuality {
@@ -200,6 +203,7 @@ namespace Xwt.GdiBackend {
                 };
             }
         }
+
         public static GraphicsQuality CopyHighQuality {
             get {
                 return new GraphicsQuality {
