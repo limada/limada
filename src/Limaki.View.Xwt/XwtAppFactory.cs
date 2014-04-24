@@ -27,7 +27,7 @@ namespace Limaki.View.XwtBackend {
     public class XwtAppFactory : UsercaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
 
         public override ToolkitType ToolkitType {
-            get { return Xwt.ToolkitType.Wpf; }
+            get { return Xwt.ToolkitType.Gtk; }
         }
 
         public XwtAppFactory () : base () { }
@@ -65,7 +65,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         protected virtual IXwtConceptUseCaseComposer CreateUseCase () {
-
+			Limaki.Iconerias.Iconery.Compose ();
             var backendComposer = Registry.Create<IXwtConceptUseCaseComposer> ();
             backendComposer.MainWindowBackend = new MainWindowBackend {
                 Icon = Limaki.Iconerias.Iconery.LimadaLogo
