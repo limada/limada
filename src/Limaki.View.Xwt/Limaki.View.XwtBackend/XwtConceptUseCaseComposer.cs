@@ -22,6 +22,7 @@ using Limaki.View.Viz.Visualizers;
 using Xwt;
 using Xwt.Drawing;
 using Limaki.View.XwtBackend;
+using Limada.View.ContentViewers;
 
 namespace Limaki.View.XwtBackend {
    
@@ -93,9 +94,10 @@ namespace Limaki.View.XwtBackend {
 
             viewerProvider.Add(new SheetViewer());
             viewerProvider.Add(new ImageContentViewer());
+            viewerProvider.Add (new DigidocContentViewer ());
 
             //viewerProvider.Add(new HtmlContentViewer());
-            //viewerProvider.Add(new DigidocContentViewer());
+            
             //viewerProvider.Add(new TextContentViewerWithToolstrip());
 
         }
