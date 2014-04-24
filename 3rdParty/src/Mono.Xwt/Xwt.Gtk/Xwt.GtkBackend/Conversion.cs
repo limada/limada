@@ -115,8 +115,9 @@ namespace Xwt.GtkBackend
 				m |= ModifierKeys.Control;
 			if ((s & Gdk.ModifierType.Mod1Mask) != 0)
 				m |= ModifierKeys.Alt;
-			if ((s & Gdk.ModifierType.Mod2Mask) != 0)
-				m |= ModifierKeys.Command;
+//			if ((s & Gdk.ModifierType.Mod2Mask) != 0)
+//				// this is not true on all keyboards!
+//				m |= ModifierKeys.Command;
 			return m;
 		}
 	}
