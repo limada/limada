@@ -28,18 +28,13 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
     public class WebBrowserBackend : System.Windows.Forms.WebBrowser, IWebBrowserBackend, IHistoryAware, IZoomTarget, IDragDropControl {
 
-        public void Navigatewithproxy(string uri, string host, int port) {
-            var webRequest = (HttpWebRequest)WebRequest.Create(uri);
-            webRequest.Proxy = new WebProxy(host, port);
-
-            var response = (HttpWebResponse)webRequest.GetResponse();
-            var receiveStream = response.GetResponseStream();
-            
-            DocumentStream = receiveStream;
+        void IWebBrowser.Navigate(string url) {
+            if (!Disposing && !DisposeDone)
+                Navigate (url);
         }
 
         public void MakeReady() {
-            if (base.Document == null) {
+            if (base.Document == null && ! DisposeDone) {
                 Action navigate = () => base.Navigate("about:blank");
                 if (base.InvokeRequired)
                     base.Invoke(navigate);
@@ -55,6 +50,9 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         public void AfterNavigate (Func<bool> done) {
+            if (DisposeDone)
+                return;
+
             if (!OS.Mono) {
                 // try to resolve timing problems 
                 // does not work so well, but better than nothing
@@ -67,6 +65,13 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             // fails with IExplorer, not necessry with gecko:
             // control.Refresh();
             Application.DoEvents();
+        }
+
+        protected bool DisposeDone { get; set; }
+
+        protected override void Dispose (bool disposing) {
+            base.Dispose (disposing);
+            DisposeDone = true;
         }
 
         #region IZoomTarget Member
@@ -249,5 +254,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         #endregion
 
+
+        
     }
 }

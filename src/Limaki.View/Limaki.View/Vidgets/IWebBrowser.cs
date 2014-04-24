@@ -11,7 +11,6 @@
  * http://www.limada.org
  */
 
-#define nowinform
 using System;
 using System.IO;
 using System.Net;
