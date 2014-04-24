@@ -21,7 +21,9 @@ namespace Limaki.Iconerias {
 
         public static Xwt.Size DefaultSize = new Xwt.Size (24, 24);
 
-        static Iconery () { Compose (); }
+        static Iconery () { 
+			Compose (); 
+		}
 
         public static void Compose () {
 
