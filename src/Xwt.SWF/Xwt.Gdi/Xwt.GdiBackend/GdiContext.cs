@@ -29,9 +29,10 @@ using System.Drawing.Drawing2D;
 using System;
 using System.Collections.Generic;
 
-
 namespace Xwt.GdiBackend {
+
     public class GdiContext : IDisposable {
+
         public GdiContext () {
             Color = Color.Black;
             LineWidth = 1;
@@ -137,12 +138,12 @@ namespace Xwt.GdiBackend {
                         LineJoin = LineJoin.Miter,
                         StartCap = LineCap.Round,
                         EndCap = LineCap.Round,
-                        
+                        Width = (float) LineWidth,
                     };
-                else
+                else {
                     _pen.Color = Color;
-
-                _pen.Width = (float) LineWidth;
+                    _pen.Width = (float) LineWidth;
+                }
                 return _pen;
             }
             set { _pen = value; }
@@ -232,7 +233,6 @@ namespace Xwt.GdiBackend {
             this.contexts.Push (new GdiContext (this) { State = Graphics.Save () });
         }
 
-
         public void Restore () {
             if (this.contexts == null || this.contexts.Count == 0)
                 throw new InvalidOperationException ();
@@ -244,7 +244,6 @@ namespace Xwt.GdiBackend {
 
         }
 
-        
         public void AddPath (GraphicsPath path) {
            if (_path != null) {
                 _path.AddPath (path, false);
@@ -254,9 +253,11 @@ namespace Xwt.GdiBackend {
             }
 
         }
+
         public bool ScaledOrRotated {
             get { return (_matrix != null && ScaledRotated (_matrix)); }
         }
+
         public bool ScaledRotated (Matrix matrix) {
             return 
                 matrix.Elements[0] != 1 && matrix.Elements[3] != 1 &&
@@ -282,10 +283,10 @@ namespace Xwt.GdiBackend {
                 _path.CloseFigure();
         }
 
-
         /// <summary>
         /// a general scalefactor, eg. the scalefactor of the control on which is drawn
         /// </summary>
         public double ScaleFactor { get; set; }
+
     }
 }

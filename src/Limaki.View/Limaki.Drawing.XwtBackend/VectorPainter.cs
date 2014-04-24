@@ -28,7 +28,7 @@ namespace Limaki.Drawing.XwtBackend {
             var ctx = ((ContextSurface) surface).Context;
             var vector = Shape.Data;
 
-            var width = this.Style.Pen.Thickness;
+            var width = this.Style.PenThickness;
             var arrowHeigth = width * 5.5d;
             var arrowWidth = width * 1.5d;
             var end = DrawArrow (ctx, vector, arrowWidth, arrowHeigth);

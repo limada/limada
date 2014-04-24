@@ -45,52 +45,48 @@ namespace Limaki.Drawing.Styles {
 
         protected Color? _fillColor = null;
         public virtual Color FillColor {
-            get { return Get(() => ParentStyle.FillColor, _fillColor, DrawingExtensions.EmptyColor); }
-            set { Set(() => ParentStyle.FillColor, ref _fillColor, value); }
+            get { return _fillColor ?? Get (() => ParentStyle.FillColor, DrawingExtensions.EmptyColor); }
+            set { Set (() => ParentStyle.FillColor, ref _fillColor, value); }
         }
 
         protected Color? _textColor = null;
         public virtual Color TextColor {
-            get { return Get(() => ParentStyle.TextColor, _textColor, DrawingExtensions.EmptyColor); }
+            get { return _textColor ?? Get (() => ParentStyle.TextColor, DrawingExtensions.EmptyColor); }
             set { Set(() => ParentStyle.TextColor, ref _textColor, value); }
         }
 
         protected Color? _penColor = null;
         public virtual Color PenColor {
-            get { return Get(() => ParentStyle.PenColor, _penColor, DrawingExtensions.EmptyColor); }
-            set {
-                if (!value.Equals(PenColor)) {
-                    Set(() => ParentStyle.PenColor, ref _penColor, value);
-                    if (_penColor != null) {
-                        if (_pen == null) {
-                            _pen = (Pen) Pen.Clone();
-                        }
-                        _pen.Color = _penColor.Value;
-                    } else {
-                        if (_pen != null) {
-                            _pen.Color = PenColor;
-                            Pen = _pen;
-                        }
-                    }
-                }
-            }
+            get { return _penColor ?? Get (() => ParentStyle.PenColor, DrawingExtensions.EmptyColor); }
+            set { Set (() => ParentStyle.PenColor, ref _penColor, value); }
+        }
+
+        protected double? _penThickness = null;
+        public virtual double PenThickness {
+            get { return _penThickness ?? Get (() => ParentStyle.PenThickness, 1d); }
+            set { Set (() => ParentStyle.PenThickness, ref _penThickness, value); }
         }
 
         protected Pen _pen = null;
+        [Obsolete()]
         public virtual Pen Pen {
-            get { return Get(() => ParentStyle.Pen, _pen); }
+            get { return _pen ?? Get (() => ParentStyle.Pen); }
             set {
-                Set(() => ParentStyle.Pen, ref _pen, value); 
-                if (value != null)
+                Set(() => ParentStyle.Pen, ref _pen, value);
+                if (value != null) {
                     this.PenColor = value.Color;
-                else
-                    this._penColor = null;
+                    this.PenThickness = value.Thickness;
+                } 
+                //else {
+                //    this._penColor = null;
+                //    this._penThickness = null;
+                //}
             }
         }
 
         protected Font _font=null;
         public virtual Font Font {
-            get { return Get(() => ParentStyle.Font, _font); }
+            get { return _font ?? GetC (() => ParentStyle.Font, _font); }
             set { Set(() => ParentStyle.Font, ref _font, value); }
         }
 
@@ -99,13 +95,13 @@ namespace Limaki.Drawing.Styles {
         public static Size NoSize = new Size (int.MaxValue, int.MaxValue);
         protected Size? _autoSize = null;
         public virtual Size AutoSize {
-            get { return Get(() => ParentStyle.AutoSize, _autoSize, NoSize); }
+            get { return _autoSize ?? Get (() => ParentStyle.AutoSize, NoSize); }
             set { Set(()=>ParentStyle.AutoSize, ref _autoSize, value); }
         }
 
         protected bool? _paintData = null;
         public virtual bool PaintData {
-            get { return Get(() => ParentStyle.PaintData, _paintData, true); }
+            get { return _paintData ?? Get (() => ParentStyle.PaintData, true); }
             set { Set(()=>ParentStyle.PaintData, ref _paintData, value); }
         }
      
@@ -114,12 +110,11 @@ namespace Limaki.Drawing.Styles {
 
         #region cascading
 
-        protected T Get<T>(Func<T> parentMemnber, T member) where T : class {
-            if ((member == null) && (ParentStyle != null)) {
-                return parentMemnber();
-            } else {
-                return member;
-            }
+        protected T Get<T> (Func<T> parentMemnber) where T : class {
+            if (_parentStyle == null)
+                return null;
+            return parentMemnber ();
+
         }
 
         protected void Set<T>(Func<T> parentMemnber, ref T member, T value) where T : class {
@@ -130,22 +125,18 @@ namespace Limaki.Drawing.Styles {
             }
         }
 
-        protected T Get<T>(Func<T> parentMemnber, T member, T deefault) where T : class {
-            if (member == null)
-                if (ParentStyle != null)
-                    return parentMemnber();
-                else
-                    return deefault;
-            return member;
+        protected T GetC<T> (Func<T> parentMemnber, T deefault) where T : class {
+            if (_parentStyle != null)
+                return parentMemnber ();
+            else
+                return deefault;
         }
 
-        protected T Get<T>(Func<Nullable<T>> parentMember, Nullable<T> member, T deefault) where T : struct {
-            if (member == null)
-                if (ParentStyle != null)
-                    return parentMember().Value;
-                else
-                    return deefault;
-            return member.Value;
+        protected T Get<T> (Func<Nullable<T>> parentMember, T deefault) where T : struct {
+            if (_parentStyle != null)
+                return parentMember ().Value;
+            else
+                return deefault;
         }
 
         protected void Set<T>(Func<Nullable<T>> parentMember, ref Nullable<T> member, T value) where T : struct {
@@ -194,7 +185,7 @@ namespace Limaki.Drawing.Styles {
                    this.Font == other.Font &&
                    this.Name == other.Name &&
                    this.PaintData == other.PaintData &&
-                   this.Pen == other.Pen &&
+                   this.PenThickness.Equals (other.PenThickness) &&
                    this.PenColor.Equals(other.PenColor) &&
                    this.TextColor.Equals(other.TextColor);
         }
@@ -207,13 +198,12 @@ namespace Limaki.Drawing.Styles {
                 this.Name.GetHashCode() ^
                 this.PaintData.GetHashCode() ^
                 this.PenColor.GetHashCode() ^
+                this.PenThickness.GetHashCode() ^
                 this.TextColor.GetHashCode();
             if (this.Font != null) {
                 result ^= this.Font.GetHashCode ();
             }
-            if (this.Pen != null) {
-                result ^= this.Pen.GetHashCode();
-            }
+
             return result;
         }
 
@@ -225,6 +215,7 @@ namespace Limaki.Drawing.Styles {
             target.PaintData = this.PaintData;
             target.Pen = (Pen)this.Pen.Clone();
             target.PenColor = this.PenColor;
+            target.PenThickness = this.PenThickness;
             target.TextColor = this.TextColor;
         }
 

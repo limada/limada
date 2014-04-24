@@ -42,9 +42,12 @@ namespace Limaki.Drawing {
         /// </summary>
         Color PenColor { get; set;}
 
+        double PenThickness { get; set; }
+
         /// <summary>
         /// The pen used to draw lines and shape outlines.
         /// </summary>
+        [Obsolete ("use PenColor and PenThickness")]
         Pen Pen { get; set;}
 
         /// <summary>

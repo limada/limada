@@ -92,7 +92,7 @@ namespace Limaki.View.GdiBackend {
             }
         }
 
-        public override object Clone() {
+        public virtual Pen ClonePen() {
             return new GdiPen(this);
         }
 

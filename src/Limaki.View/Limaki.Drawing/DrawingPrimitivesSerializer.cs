@@ -138,6 +138,7 @@ namespace Limaki.Drawing {
             result.Add(Write(style.Pen));
             result.Add(Write(style.FillColor, "fillcolor"));
             result.Add(Write(style.PenColor, "pencolor"));
+            result.Add (WriteDouble (style.PenThickness, "penthickness"));
             result.Add(Write(style.TextColor, "textcolor"));
             result.Add(Write("autosize",new Pair<double,double>(style.AutoSize.Width,style.AutoSize.Height)));
             result.Add(Write("paintdata", style.PaintData));
@@ -166,6 +167,7 @@ namespace Limaki.Drawing {
                 ReadAndSetPen(pen, result);
             result.FillColor = ReadColor (node, "fillcolor");
             result.PenColor = ReadColor(node, "pencolor");
+            result.PenThickness = ReadDouble (node, "penthickness");
             result.TextColor = ReadColor(node, "textcolor");
             result.PaintData = ReadBool(node, "paintdata");
             result.AutoSize = ReadSize (node, "autosize");

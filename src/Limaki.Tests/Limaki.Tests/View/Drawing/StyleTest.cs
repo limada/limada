@@ -14,7 +14,8 @@ namespace Limaki.Tests.Drawing {
             var style2 = (IStyleGroup)style1.Clone();
             Assert.IsFalse(object.ReferenceEquals(style1.ParentStyle, style2.ParentStyle));
             Assert.AreEqual(style1.Font, style2.Font);
-            Assert.AreEqual(style1.Pen, style2.Pen);
+            Assert.AreEqual(style1.PenColor, style2.PenColor);
+            Assert.AreEqual (style1.PenThickness, style2.PenThickness);
         }
         [Test]
         public void TestGroupCascading() {

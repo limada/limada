@@ -47,8 +47,8 @@ namespace Limaki.Drawing.XwtBackend {
                 ctx.FillPreserve ();
             }
             if (renderType.HasFlag (RenderType.Draw)) {
-                ctx.SetColor (style.Pen.Color);
-                ctx.SetLineWidth (style.Pen.Thickness);
+                ctx.SetColor (style.PenColor);
+                ctx.SetLineWidth (style.PenThickness);
                 ctx.Stroke ();
             }
             ctx.ClosePath ();

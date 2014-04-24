@@ -54,11 +54,10 @@ namespace Limaki.View.SwfBackend.Controls {
                     if ( swfFont != null )
                         this.StyleFont = swfFont;
                 }
-                this.StyleAutoSize = style.AutoSize.ToGdi();
+                this.StyleAutoSize = style.AutoSize.ToGdi ();
                 this.PaintData = style.PaintData;
-                if (style.Pen != null) {
-                    this.PenThickness = style.Pen.Thickness;
-                }
+                this.PenThickness = style.PenThickness;
+
             } finally {
                 disableChanges = false;
             }
@@ -115,14 +114,8 @@ namespace Limaki.View.SwfBackend.Controls {
             }
             set {
                 _penThickness = value;
-                if (SelectedObject.Pen != null) {
-                    SelectedObject.Pen.Thickness = value;
-                } else {
-                    var pen = new GdiPen ();
-                    pen.Thickness = value;
-                    pen.Color = GdiConverter.ToXwt (this.PenColor);
-                    SelectedObject.Pen = pen;
-                }
+                SelectedObject.PenThickness = value;
+
                 this.penThicknessUpDown.Value = (decimal)value;
                 DoPropertyValueChanged();
             }

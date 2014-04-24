@@ -50,9 +50,13 @@ namespace Limaki.Common {
             double result = default(int);
             string s = node.Attribute(attribute).Value;
             if (!string.IsNullOrEmpty(s)) {
-                double.TryParse(s, out result);
+                double.TryParse(s,NumberStyles.Number, CultureInfo.InvariantCulture, out result);
             }
             return result;
+        }
+
+        public XAttribute WriteDouble (double value, string attribute) {
+            return new XAttribute (attribute, value.ToString (CultureInfo.InvariantCulture));
         }
 
         public string ReadString(XElement node, string attribute) {

@@ -18,7 +18,8 @@ using Xwt.Drawing;
 
 namespace Limaki.Drawing {
 
-    public class Pen:ICloneable, IDisposable {
+    [Obsolete("use Style.PenColor and Style.PenThickness")]
+    public class Pen: IDisposable {
         public Pen() {
             this.Thickness = 1;
         }
@@ -46,7 +47,7 @@ namespace Limaki.Drawing {
             this.CustomStartCap = pen.CustomStartCap;
         }
 
-        public virtual object Clone() {
+        public virtual Pen ClonePen () {
             return new Pen(this);
         }
 
@@ -108,5 +109,13 @@ namespace Limaki.Drawing {
         Miter,
         Bevel,
         Round
+    }
+
+    public static class PenExtensions {
+        public static Pen Clone (this Pen that) {
+            if (that == null)
+                return null;
+            return (Pen) that.ClonePen ();
+        }
     }
 }

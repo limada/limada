@@ -88,9 +88,7 @@ namespace Limaki.Drawing.Styles {
                 _styleSheet.EdgeStyle.FillColor = Colors.White;
                 _styleSheet.EdgeStyle.Font = style.Font.WithSize(style.Font.Size - 2.0d);
 
-                var pen = (Pen)_styleSheet.EdgeStyle.Pen.Clone();
-                pen.Thickness = 0.5d;
-                _styleSheet.EdgeStyle.Pen = pen;
+                _styleSheet.EdgeStyle.PenThickness = 0.5d;
                 _styleSheet.EdgeStyle.PenColor = Color.FromBytes (180, 180, 180,150);
 
                 // this makes sense, cause CreateStyleGroup could make other colors:
