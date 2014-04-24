@@ -153,6 +153,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\..\Geckofx-22\Geckofx-Core\Geckofx-Core.csproj">
+      <Project>{6ab4eee6-1889-43ab-83f7-a4f083230be7}</Project>
+      <Name>Geckofx-Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Geckofx-22\Geckofx-Wpf\Geckofx-Wpf.csproj">
+      <Project>{b52fd785-ec50-4767-b085-300d94de8205}</Project>
+      <Name>Geckofx-Wpf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>

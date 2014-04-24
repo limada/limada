@@ -68,6 +68,7 @@
     <CodeAnalysisRuleDirectories>;D:\programme\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -91,11 +92,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.CS.Optional\Db4objects.Db4o.CS.Optional-2010.csproj">
-      <Project>{2dc5a1fa-7bd9-4937-9e36-2eed126b7809}</Project>
+      <Project>{2DC5A1FA-7BD9-4937-9E36-2EED126B7809}</Project>
       <Name>Db4objects.Db4o.CS.Optional-2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.CS\Db4objects.Db4o.CS-2010.csproj">
-      <Project>{9fa8178a-3e77-42c5-a252-6690ea9ba257}</Project>
+      <Project>{9FA8178A-3E77-42C5-A252-6690EA9BA257}</Project>
       <Name>Db4objects.Db4o.CS-2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq-2010.csproj">
@@ -103,7 +104,7 @@
       <Name>Db4objects.Db4o.Linq-2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Optional\Db4objects.Db4o.Optional-2010.csproj">
-      <Project>{e9588fe7-c19d-445e-bb53-ae539ea4f0e6}</Project>
+      <Project>{E9588FE7-C19D-445E-BB53-AE539EA4F0E6}</Project>
       <Name>Db4objects.Db4o.Optional-2010</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o\Db4objects.Db4o-2010.csproj">
@@ -156,9 +157,6 @@
   </Target>
   -->
   <ProjectExtensions>
-    <MonoDevelop>
-      <Properties InternalTargetFrameworkVersion="3.5" />
-    </MonoDevelop>
     <VisualStudio />
   </ProjectExtensions>
 </Project>

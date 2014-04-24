@@ -47,6 +47,7 @@
     <CodeAnalysisRuleDirectories>;D:\programme\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -247,16 +248,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-22\Geckofx-Core\Geckofx-Core.csproj">
-      <Project>{6ab4eee6-1889-43ab-83f7-a4f083230be7}</Project>
+      <Project>{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}</Project>
       <Name>Geckofx-Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-22\Geckofx-Winforms\Geckofx-Winforms.csproj">
-      <Project>{d7adc901-e1c4-480e-8f6d-b1ffd5cf87e8}</Project>
+      <Project>{D7ADC901-E1C4-480E-8F6D-B1FFD5CF87E8}</Project>
       <Name>Geckofx-Winforms</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
       <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
@@ -270,13 +271,13 @@
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xwt.SWF\Xwt.GDI\Xwt.Gdi.csproj">
-      <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
-      <Name>Xwt.Gdi</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xwt.Swf\Xwt.Swf\Xwt.Swf.csproj">
       <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
       <Name>Xwt.Swf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xwt.Swf\Xwt.Gdi\Xwt.Gdi.csproj">
+      <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
+      <Name>Xwt.Gdi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

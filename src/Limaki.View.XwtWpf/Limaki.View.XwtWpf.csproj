@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -74,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-22\Geckofx-Core\Geckofx-Core.csproj">
-      <Project>{6ab4eee6-1889-43ab-83f7-a4f083230be7}</Project>
+      <Project>{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}</Project>
       <Name>Geckofx-Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-22\Geckofx-Wpf\Geckofx-Wpf.csproj">
@@ -82,23 +84,23 @@
       <Name>Geckofx-Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.WPF\Xwt.WPF.csproj">
-      <Project>{c93d746e-1586-4d4f-b411-bf5a966e6a08}</Project>
+      <Project>{C93D746E-1586-4D4F-B411-BF5A966E6A08}</Project>
       <Name>Xwt.WPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
-      <Project>{92494904-35fa-4dc9-bde9-3a3e87ac49d3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
-      <Project>{b28433e8-bba2-4cb5-a7a2-10ae6aeddfb7}</Project>
+      <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
       <Name>Limaki.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
-      <Project>{ca6c22ca-dc4a-4f47-88da-17c64c9bddc4}</Project>
+      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
       <Name>Limaki.View.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
-      <Project>{3434f6bc-d6aa-4c53-b359-a1b114364025}</Project>
+      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
     </ProjectReference>
   </ItemGroup>

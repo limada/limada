@@ -70,6 +70,7 @@
     <CodeAnalysisRuleDirectories>;D:\programme\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -93,8 +94,7 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.5.5.10112, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="nunit.framework">
       <HintPath>..\..\3rdParty\bin\nUnit\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -264,7 +264,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limada.PdfExporter\Limada.PdfProvider.csproj">
       <Project>{84084423-BA27-4001-8F47-DB0D242A1255}</Project>
@@ -287,7 +287,7 @@
       <Name>Limaki.View.Html5</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
-      <Project>{ca6c22ca-dc4a-4f47-88da-17c64c9bddc4}</Project>
+      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
       <Name>Limaki.View.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
@@ -352,9 +352,6 @@
   </Target>
   -->
   <ProjectExtensions>
-    <MonoDevelop>
-      <Properties InternalTargetFrameworkVersion="3.5" />
-    </MonoDevelop>
     <VisualStudio />
   </ProjectExtensions>
 </Project>

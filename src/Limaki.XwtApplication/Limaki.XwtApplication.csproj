@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
-  <PropertyGroup>
     <ApplicationIcon>LogoDrop32.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
@@ -53,35 +52,31 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
-      <Project>{92494904-35fa-4dc9-bde9-3a3e87ac49d3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
+      <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
-      <Project>{b28433e8-bba2-4cb5-a7a2-10ae6aeddfb7}</Project>
+      <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
       <Name>Limaki.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.db4o\Limaki.Db4o.csproj">
-      <Project>{0ebc08e0-30d8-4d26-abf4-0aadfa3af422}</Project>
+      <Project>{0EBC08E0-30D8-4D26-ABF4-0AADFA3AF422}</Project>
       <Name>Limaki.Db4o</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
-      <Project>{ca6c22ca-dc4a-4f47-88da-17c64c9bddc4}</Project>
+      <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
       <Name>Limaki.View.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.XwtGtk\Limaki.View.XwtGtk.csproj">
-      <Project>{0577142f-b5d1-4271-8795-fe4615c2d728}</Project>
+      <Project>{0577142F-B5D1-4271-8795-FE4615C2D728}</Project>
       <Name>Limaki.View.XwtGtk</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.View.XwtWpf\Limaki.View.XwtWpf.csproj">
-      <Project>{ac4de976-2546-4b77-b040-f2b819be9dc8}</Project>
-      <Name>Limaki.View.XwtWpf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Xwt\Limaki.View.Xwt.csproj">
-      <Project>{4c8b39fe-f433-4c22-b5c7-fdcf33035d23}</Project>
+      <Project>{4C8B39FE-F433-4C22-B5C7-FDCF33035D23}</Project>
       <Name>Limaki.View.Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
-      <Project>{3434f6bc-d6aa-4c53-b359-a1b114364025}</Project>
+      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
     </ProjectReference>
   </ItemGroup>

@@ -75,6 +75,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;D:\programme\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -96,18 +97,18 @@
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
       <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
-      <Name>Xwt %283rdParty\Xwt\Xwt%29</Name>
+      <Name>Xwt</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Core\Limaki.Core.csproj">
       <Project>{B28433E8-BBA2-4CB5-A7A2-10AE6AEDDFB7}</Project>
       <Name>Limaki.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.db4o\Limaki.Db4o.csproj">
-      <Project>{0ebc08e0-30d8-4d26-abf4-0aadfa3af422}</Project>
+      <Project>{0EBC08E0-30D8-4D26-ABF4-0AADFA3AF422}</Project>
       <Name>Limaki.Db4o</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Tests\Limaki.Tests.csproj">
-      <Project>{b1bc3ef8-5ec7-491a-ba83-70cb38f1823f}</Project>
+      <Project>{B1BC3EF8-5EC7-491A-BA83-70CB38F1823F}</Project>
       <Name>Limaki.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
@@ -122,16 +123,17 @@
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xwt.SWF\Xwt.GDI\Xwt.Gdi.csproj">
-      <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
-      <Name>Xwt.Gdi</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xwt.Swf\Xwt.Swf\Xwt.Swf.csproj">
       <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
       <Name>Xwt.Swf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Xwt.Swf\Xwt.Gdi\Xwt.Gdi.csproj">
+      <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
+      <Name>Xwt.Gdi</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="EnableDragDropWithBrowserWin7.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -176,9 +178,6 @@
     <Content Include="LogoDrop32.ico" />
   </ItemGroup>
   <ProjectExtensions>
-    <MonoDevelop>
-      <Properties InternalTargetFrameworkVersion="3.5" />
-    </MonoDevelop>
     <VisualStudio />
   </ProjectExtensions>
 </Project>
