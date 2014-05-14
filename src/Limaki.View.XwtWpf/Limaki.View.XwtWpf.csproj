@@ -75,11 +75,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\3rdParty\src\Geckofx-22\Geckofx-Core\Geckofx-Core.csproj">
-      <Project>{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}</Project>
+    <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">
+      <Project>{6ab4eee6-1889-43ab-83f7-a4f083230be7}</Project>
       <Name>Geckofx-Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\3rdParty\src\Geckofx-22\Geckofx-Wpf\Geckofx-Wpf.csproj">
+    <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Wpf\Geckofx-Wpf.csproj">
       <Project>{b52fd785-ec50-4767-b085-300d94de8205}</Project>
       <Name>Geckofx-Wpf</Name>
     </ProjectReference>

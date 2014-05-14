@@ -97,12 +97,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\3rdParty\src\Geckofx-22\Geckofx-Core\Geckofx-Core.csproj">
-      <Project>{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}</Project>
+    <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">
+      <Project>{6ab4eee6-1889-43ab-83f7-a4f083230be7}</Project>
       <Name>Geckofx-Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\3rdParty\src\Geckofx-22\Geckofx-Winforms\Geckofx-Winforms.csproj">
-      <Project>{D7ADC901-E1C4-480E-8F6D-B1FFD5CF87E8}</Project>
+    <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Winforms\Geckofx-Winforms.csproj">
+      <Project>{d7adc901-e1c4-480e-8f6d-b1ffd5cf87e8}</Project>
       <Name>Geckofx-Winforms</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
