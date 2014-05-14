@@ -75,6 +75,7 @@
     <Compile Include="Limaki.View\ContentViewers\ImageContentViewer.cs" />
     <Compile Include="Limaki.View\Vidgets\IWebBrowserEx.cs" />
     <Compile Include="Limaki.View\Vidgets\FileDialogVidget.cs" />
+    <Compile Include="Limaki.View\Vidgets\VidgetUtils.cs" />
     <Compile Include="Limaki.View\Vidgets\Vindow.cs" />
     <Compile Include="Limaki.View\Vidgets\WebBrowserVidgetEx.cs" />
     <Compile Include="Limaki.View\DragDrop\DragDropBackendHandlerBase.cs" />

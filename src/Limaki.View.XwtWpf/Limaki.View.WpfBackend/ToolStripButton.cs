@@ -73,7 +73,7 @@ namespace Limaki.View.WpfBackend {
         protected ToolStripCommand _command = null;
         public new ToolStripCommand Command {
             get { return _command; }
-            set { ToolStripUtils.SetCommand (this, ref _command, value); }
+            set { VidgetUtils.SetCommand (this, ref _command, value); }
         }
 
         #region IToolStripItem-Implementation

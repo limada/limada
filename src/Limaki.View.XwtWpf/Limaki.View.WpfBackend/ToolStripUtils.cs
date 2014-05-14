@@ -20,18 +20,6 @@ namespace Limaki.View.WpfBackend {
 
     public class ToolStripUtils {
 
-        public static void SetCommand (IToolStripCommandItem item, ref ToolStripCommand _command, ToolStripCommand value) {
-            if (_command != value) {
-                try {
-                    if (_command != null)
-                        _command.DeAttach (item);
-                    _command = value;
-                    _command.Attach (item);
-                } finally {
-                }
-            }
-        }
-
         public static void SetSize (IToolStripCommandItem item, Xwt.Size value) {
             var button = item as Button;
             if (button != null) {

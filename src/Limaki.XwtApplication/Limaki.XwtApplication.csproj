@@ -16,7 +16,7 @@
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -36,6 +36,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>LogoDrop32.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -70,6 +73,10 @@
     <ProjectReference Include="..\Limaki.View.XwtGtk\Limaki.View.XwtGtk.csproj">
       <Project>{0577142F-B5D1-4271-8795-FE4615C2D728}</Project>
       <Name>Limaki.View.XwtGtk</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.XwtWpf\Limaki.View.XwtWpf.csproj">
+      <Project>{ac4de976-2546-4b77-b040-f2b819be9dc8}</Project>
+      <Name>Limaki.View.XwtWpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Xwt\Limaki.View.Xwt.csproj">
       <Project>{4C8B39FE-F433-4C22-B5C7-FDCF33035D23}</Project>
