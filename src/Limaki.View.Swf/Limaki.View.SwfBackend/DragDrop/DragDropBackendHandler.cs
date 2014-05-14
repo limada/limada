@@ -75,12 +75,6 @@ namespace Limaki.View.SwfBackend.DragDrop {
         protected override void ShowDragImage (DragStartData data) { }
         protected override void HideDragImage () { }
 
-        public virtual void OnDragFinished (DragFinishedEventArgs e) {
-            if (DragFinished != null)
-                DragFinished(e);
-        }
-
-        public virtual void DragLeave (EventArgs e) { }
 
         #endregion
 

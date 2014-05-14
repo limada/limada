@@ -9,6 +9,7 @@ using Xwt.Drawing;
 using Limaki.View.Properties;
 
 namespace Limaki.View.XwtBackend {
+
     public class DragDropBackendHandler : DragDropBackendHandlerBase {
 
         public DragDropBackendHandler (IVidgetBackend widget) {
@@ -37,6 +38,7 @@ namespace Limaki.View.XwtBackend {
             ds.Data.DataRequestCallback += t => data.Data.GetValue(t);
             foreach (var t in data.Data.DataTypes)
                 ds.Data.AddType(t);
+            ds.Finished += (s, e) => OnDragFinished (e);
             ds.Start();
         }
 
