@@ -14,7 +14,7 @@ namespace Limaki.View.Vidgets {
         }
 
         ITextViewerWithToolstripBackend _backend = null;
-        public virtual ITextViewerWithToolstripBackend Backend {
+        public virtual new ITextViewerWithToolstripBackend Backend {
             get {
                 if (_backend == null) {
                     _backend = BackendHost.Backend as ITextViewerWithToolstripBackend;

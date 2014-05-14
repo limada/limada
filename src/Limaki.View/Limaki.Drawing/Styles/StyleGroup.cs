@@ -46,7 +46,7 @@ namespace Limaki.Drawing.Styles {
             }
         }
 
-        public object Clone() {
+        public override object Clone() {
             var result = base.Clone() as IStyleGroup;
             CopyTo(result);
             return result;

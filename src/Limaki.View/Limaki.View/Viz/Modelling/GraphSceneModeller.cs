@@ -38,7 +38,7 @@ namespace Limaki.View.Viz.Modelling {
             var modeller = this.Modeller;
 
             if (data != null && data.Requests.Count != 0 && modeller != null && camera != null) {
-                bool clipChanged = false;
+                var clipChanged = false;
                 var matrix = new Matrix(camera.Matrix);
 
                 if (clipper != null) {

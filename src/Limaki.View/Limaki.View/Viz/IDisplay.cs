@@ -37,7 +37,7 @@ namespace Limaki.View.Viz {
         void Reset ();
         void Perform ();
 
-        IDisplayBackend Backend { get; }
+        new IDisplayBackend Backend { get; }
 
         object ActiveVidget { get; set; }
 

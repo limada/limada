@@ -72,8 +72,8 @@ namespace Limaki.View.SwfBackend.DragDrop {
         }
 
         protected virtual object GetDragImageBackend () { return null; }
-        protected virtual void ShowDragImage (DragStartData data) { }
-        protected virtual void HideDragImage () { }
+        protected override void ShowDragImage (DragStartData data) { }
+        protected override void HideDragImage () { }
 
         public virtual void OnDragFinished (DragFinishedEventArgs e) {
             if (DragFinished != null)

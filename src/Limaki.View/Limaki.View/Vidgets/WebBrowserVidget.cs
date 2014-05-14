@@ -33,7 +33,7 @@ namespace Limaki.View.Vidgets {
             return new WebBrowserBackendHost();
         }
 
-        public IWebBrowserBackend Backend { get { return BackendHost.Backend as IWebBrowserBackend; } }
+        public new IWebBrowserBackend Backend { get { return BackendHost.Backend as IWebBrowserBackend; } }
 
         public Stream DocumentStream { get { return Backend.DocumentStream; } set { Backend.DocumentStream = value; } }
 

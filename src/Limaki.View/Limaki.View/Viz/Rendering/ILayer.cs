@@ -27,6 +27,5 @@ namespace Limaki.View.Viz.Rendering {
         Func<ICamera> Camera { get; set; }
         Func<IContentRenderer<T>> Renderer { get; set; }
 
-        void OnPaint ( IRenderEventArgs e );
     }
 }

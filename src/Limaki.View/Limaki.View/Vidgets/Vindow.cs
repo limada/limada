@@ -20,7 +20,7 @@ namespace Limaki.View.Vidgets {
             BackendHost.SetCustomBackend (customBackend);
         }
 
-        public virtual IVindowBackend Backend { get { return BackendHost.Backend as IVindowBackend; } }
+        public virtual new IVindowBackend Backend { get { return BackendHost.Backend as IVindowBackend; } }
 
         IVidget _content = null;
         public IVidget Content {

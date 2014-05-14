@@ -24,7 +24,7 @@ namespace Limaki.View.Vidgets {
         public string Text { get { return Backend.Text; } set { Backend.Text = value; } }
 
         ITextOkCancelBoxBackend _backend = null;
-        public virtual ITextOkCancelBoxBackend Backend {
+        public virtual new ITextOkCancelBoxBackend Backend {
             get {
                 if (_backend == null) {
                     _backend = BackendHost.Backend as ITextOkCancelBoxBackend;

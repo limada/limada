@@ -30,7 +30,7 @@ namespace Limaki.View.Viz.Visualizers {
         public virtual IComposer<Display<TData>> Composer { get; set; }
 
         IDisplayBackend<TData> _backend = null;
-        public virtual IDisplayBackend<TData> Backend {
+        public virtual new IDisplayBackend<TData> Backend {
             get {
                 if (_backend == null) {
                     _backend = BackendHost.Backend as IDisplayBackend<TData>;

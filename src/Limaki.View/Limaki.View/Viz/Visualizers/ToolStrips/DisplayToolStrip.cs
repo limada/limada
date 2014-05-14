@@ -23,7 +23,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
         where TBackend : class,IDisplayToolStripBackend {
 
         public virtual TDisplay CurrentDisplay { get; set; }
-        public virtual TBackend Backend { get { return BackendHost.Backend as TBackend; } }
+        public virtual new TBackend Backend { get { return BackendHost.Backend as TBackend; } }
 
         public virtual void Attach (object sender) {
             if (sender == null)

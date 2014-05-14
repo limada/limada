@@ -17,7 +17,7 @@ namespace Limaki.View.Vidgets {
             return new WebBrowserExBackendHost ();
         }
 
-        public IWebBrowserExBackend Backend { get { return BackendHost.Backend as IWebBrowserExBackend; } }
+        public new IWebBrowserExBackend Backend { get { return BackendHost.Backend as IWebBrowserExBackend; } }
 
         public bool AllowNavigation { get { return Backend.AllowNavigation; } set { Backend.AllowNavigation = value; } }
 

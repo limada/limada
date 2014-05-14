@@ -24,7 +24,7 @@ namespace Limaki.View.Vidgets {
     [BackendType(typeof(ICanvasVidgetBackend))]
     public class CanvasVidget : Vidget, ICanvasVidget {
 
-        public virtual ICanvasVidgetBackend Backend { get { return BackendHost.Backend as ICanvasVidgetBackend; } }
+        public virtual new ICanvasVidgetBackend Backend { get { return BackendHost.Backend as ICanvasVidgetBackend; } }
 
         public override void Dispose () { }
 

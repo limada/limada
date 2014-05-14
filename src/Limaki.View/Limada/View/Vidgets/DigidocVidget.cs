@@ -48,7 +48,7 @@ namespace Limada.View.Vidgets {
     public class DigidocVidget : Vidget, IZoomTarget {
 
         IDigidocViewerBackend _backend = null;
-        public virtual IDigidocViewerBackend Backend {
+        public virtual new IDigidocViewerBackend Backend {
             get {
                 if (_backend == null) {
                     _backend = BackendHost.Backend as IDigidocViewerBackend;

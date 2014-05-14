@@ -24,7 +24,7 @@ namespace Limaki.View.Vidgets {
 
         protected FileDialogVidget (FileDialogMemento dialog) : base() { this._dialog = dialog; }
 
-        protected IFileDialogBackend Backend {
+        protected new IFileDialogBackend Backend {
             get { return (IFileDialogBackend) base.BackendHost.Backend; }
         }
 

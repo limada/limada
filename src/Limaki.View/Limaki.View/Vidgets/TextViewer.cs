@@ -6,7 +6,7 @@ namespace Limaki.View.Vidgets {
     public class TextViewer : Vidget {
 
         ITextViewerBackend _backend = null;
-        public virtual ITextViewerBackend Backend {
+        public virtual new ITextViewerBackend Backend {
             get {
                 if (_backend == null) {
                     _backend = BackendHost.Backend as ITextViewerBackend;

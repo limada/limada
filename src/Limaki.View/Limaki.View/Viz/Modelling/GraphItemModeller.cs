@@ -81,7 +81,7 @@ namespace Limaki.View.Viz.Modelling {
         protected int tolerance = 5;
         public virtual void Perform(ICollection<ICommand<TItem>> requests) {
             if (Data != null && Data.Requests.Count != 0) {
-                bool clipChanged = false;
+                var clipChanged = false;
 
                 foreach (var command in requests.ToArray()) {
                     if (command != null && command.Subject != null) {
