@@ -56,7 +56,7 @@ namespace Xwt
 			get { return toolkits.Values; }
 		}
 
-		internal ApplicationContext Context {
+		public ApplicationContext Context {
 			get { return context; }
 		}
 
