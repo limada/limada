@@ -62,8 +62,8 @@ namespace Limaki.Graphs {
             var itemBefore = getItem ();
 
             Source.ChangeEdge (edge, newItem, changeRoot);
-
-            //lock (edge) {
+            var lockObj = (object) edge;
+            lock (lockObj) {
                 // revert the changes, otherwise edge is not removed from Sink.Edges(itemBefore)
                 setItem (itemBefore);
 
@@ -72,7 +72,7 @@ namespace Limaki.Graphs {
                 // ensure the changes are done
                 if (!object.Equals (getItem (), newItem))
                     setItem (newItem);
-            //}
+            }
         }
 
         public override void RevertEdge(TEdge edge) {
