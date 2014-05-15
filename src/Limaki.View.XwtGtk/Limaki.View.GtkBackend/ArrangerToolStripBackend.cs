@@ -35,9 +35,10 @@ namespace Limaki.View.GtkBackend {
 
             base.Compose ();
 
-            var horizontalButton = new ToolStripButton { Command = Frontend.ArrangeLeftCommand };
+            var horizontalButton = new ToolStripDropDownButton { Command = Frontend.ArrangeLeftCommand };
 
             this.AddItems (horizontalButton);
+
         }
     }
 }

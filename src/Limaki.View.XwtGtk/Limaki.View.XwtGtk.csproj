@@ -55,8 +55,10 @@
     <Compile Include="Limaki.View.GtkBackend\GtkContextResourceLoader.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkSystemInformation.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkUsecaseFactory.cs" />
+    <Compile Include="Limaki.View.GtkBackend\PopoverWindow.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripButton.cs" />
+    <Compile Include="Limaki.View.GtkBackend\ToolStripDropDownButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
