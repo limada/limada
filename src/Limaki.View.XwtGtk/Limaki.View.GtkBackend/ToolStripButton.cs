@@ -55,7 +55,7 @@ namespace Limaki.View.GtkBackend {
         [GLib.ConnectBefore]
         protected virtual void ButtonPressed (object o, Gtk.ButtonPressEventArgs args) {
             Trace.WriteLine ("ButtonPressed");
-            
+            OnToolStripItemClick (o, new EventArgs ());
         }
 
         [GLib.ConnectBefore]
@@ -63,61 +63,6 @@ namespace Limaki.View.GtkBackend {
             Trace.WriteLine ("DropDownPressed");
             if (e.Event.Button != 1)
                 return;
-            ShowDropDown ();
-        }
-
-        private void ShowDropDown () {
-            PopoverWindow.Show (this.ButtonWidget, Xwt.Rectangle.Zero, null);
-            var menu = CreateMenu ();
-
-            if (menu != null) {
-                isOpen = true;
-                var button = this.ButtonWidget as Gtk.Button;
-                var oldRelief = Gtk.ReliefStyle.Normal;
-                if (button != null) {
-                    //make sure the button looks depressed
-                    oldRelief = button.Relief;
-                    button.Relief = Gtk.ReliefStyle.Normal;
-                }
-                this.ButtonWidget.State = Gtk.StateType.Active;
-                //clean up after the menu's done
-                menu.Hidden += delegate {
-                                   if (button != null) {
-                                       button.Relief = oldRelief;
-                                   }
-                                   isOpen = false;
-                    this.ButtonWidget.State = Gtk.StateType.Normal;
-
-                    //FIXME: for some reason the menu's children don't get activated if we destroy 
-                    //directly here, so use a timeout to delay it
-                    GLib.Timeout.Add (100, delegate {
-                        //menu.Destroy ();
-                        return false;
-                    });
-                };
-                menu.Popup (null, null, PositionFunc, 1, Gtk.Global.CurrentEventTime);
-            }
-        }
-
-        void PositionFunc (Gtk.Widget mn, out int x, out int y, out bool push_in) {
-            Gtk.Widget w = (Gtk.Widget)this;
-            w.GdkWindow.GetOrigin (out x, out y);
-            Gdk.Rectangle rect = w.Allocation;
-            x += rect.X;
-            y += rect.Y + rect.Height;
-
-            //if the menu would be off the bottom of the screen, "drop" it upwards
-            if (y + mn.Requisition.Height > w.Screen.Height) {
-                y -= mn.Requisition.Height;
-                y -= rect.Height;
-            }
-
-            //let GTK reposition the button if it still doesn't fit on the screen
-            push_in = true;
-        }
-
-        private Gtk.Menu CreateMenu () {
-            return null;
         }
 
         protected virtual Xwt.ButtonType ButtonType { get { return Xwt.ButtonType.Normal; } }
@@ -133,8 +78,10 @@ namespace Limaki.View.GtkBackend {
         public ToolStripCommand Command {
             get { return _command; }
             set {
+                var first = _command == null;
                 VidgetUtils.SetCommand (this, ref _command, value);
-                Compose ();
+                if (first)
+                    Compose ();
             }
         }
 
@@ -157,6 +104,7 @@ namespace Limaki.View.GtkBackend {
                 }
                 if (this.Image != null && _imageWidget.Image.Backend != this.Image.GetBackend ()) {
                     _imageWidget.Image = this.Image.ToImageDescription ();
+                    _imageWidget.QueueDraw();
                 }
                 return _imageWidget;
             }
@@ -199,7 +147,6 @@ namespace Limaki.View.GtkBackend {
 
             Gtk.Widget contentWidget = null;
             
-
             if (label != null && Image == null) {
                 contentWidget = new Gtk.Label (label) { UseUnderline = this.UseUnderline };
 
@@ -232,7 +179,7 @@ namespace Limaki.View.GtkBackend {
                 if (contentWidget != null) {
                     var box = new Gtk.HBox (false,3);
                     box.PackStart (contentWidget, true, true, 3);
-                    box.PackStart (new Gtk.VSeparator (), true, true, 0);
+                    //box.PackStart (new Gtk.VSeparator (), true, true, 0);
                     box.PackStart (dropDownArrow, false, false, 0);
                     contentWidget = box;
                 } else

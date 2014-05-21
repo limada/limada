@@ -36,8 +36,37 @@ namespace Limaki.View.GtkBackend {
             base.Compose ();
 
             var horizontalButton = new ToolStripDropDownButton { Command = Frontend.ArrangeLeftCommand };
+            horizontalButton.AddItems (
+                new ToolStripButton { Command = Frontend.ArrangeCenterCommand, ToggleOnClick = horizontalButton },
+                new ToolStripButton { Command = Frontend.ArrangeRightCommand, ToggleOnClick = horizontalButton }
+                );
 
-            this.AddItems (horizontalButton);
+            var verticalButton = new ToolStripDropDownButton { Command = Frontend.ArrangeTopCommand };
+            verticalButton.AddItems (
+                new ToolStripButton { Command = Frontend.ArrangeCenterVCommand, ToggleOnClick = verticalButton },
+                new ToolStripButton { Command = Frontend.ArrangeBottomCommand, ToggleOnClick = verticalButton }
+                );
+
+            var layoutButton = new ToolStripDropDownButton { Command = Frontend.LogicalLayoutLeafCommand };
+            layoutButton.AddItems (
+                new ToolStripButton { Command = Frontend.LogicalLayoutCommand, ToggleOnClick = layoutButton },
+                new ToolStripButton { Command = Frontend.ColumnsCommand, ToggleOnClick = layoutButton },
+                new ToolStripButton { Command = Frontend.OneColumnCommand, ToggleOnClick = layoutButton },
+                new ToolStripButton { Command = Frontend.FullLayoutCommand }
+                );
+
+            var dimensionButton = new ToolStripDropDownButton { Command = Frontend.DimensionXCommand };
+            dimensionButton.AddItems (
+                new ToolStripButton { Command = Frontend.DimensionYCommand, ToggleOnClick = dimensionButton }
+                );
+
+            this.AddItems (
+                layoutButton,
+                horizontalButton,
+                verticalButton,
+                dimensionButton,
+                new ToolStripButton { Command = Frontend.UndoCommand }
+                );
 
         }
     }
