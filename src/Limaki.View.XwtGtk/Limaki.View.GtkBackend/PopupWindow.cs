@@ -82,7 +82,9 @@ namespace Limaki.View.GtkBackend {
                 popup.SetSizeRequest ((int) screenBounds.Width, (int) screenBounds.Height);
             else {
                 popup.DefaultWidth = 10;
+               // popup.Child = child;
                 child.ShowAll();
+                //popup.SetSizeRequest (child.Allocation.Width, child.Allocation.Height);
             }
             popup.ShowAll ();
 

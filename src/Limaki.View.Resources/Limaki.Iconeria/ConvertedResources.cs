@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 using System.IO;
 using SDI = System.Drawing.Imaging;
 using XD = Xwt.Drawing;
@@ -24,13 +22,11 @@ namespace Limaki.Iconerias {
         internal static XD.Image AsImage (System.Drawing.Image source) {
             Xwt.Drawing.Image result = null;
             using (var stream = new MemoryStream ()) {
-                try {
-                    source.Save (stream, SDI.ImageFormat.Png);
-                    stream.Position = 0;
-                    result = Xwt.Drawing.Image.FromStream (stream);
-                } catch (Exception ex) {
-                    Trace.TraceError ("ConvertedResources.AsImage failed: {0}",ex.Message);
-                }
+				try {
+                source.Save (stream, SDI.ImageFormat.Png);
+                stream.Position = 0;
+                result = Xwt.Drawing.Image.FromStream (stream);
+				} catch {}
             }
             return result;
         }
