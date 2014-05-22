@@ -42,7 +42,7 @@ namespace Limaki.View.GtkBackend {
         }
 
         protected virtual void Compose () {
-
+            AddEvents ((int) Gdk.EventMask.FocusChangeMask);
             SetContent (Xwt.ContentPosition.Bottom);
         }
 
@@ -91,6 +91,7 @@ namespace Limaki.View.GtkBackend {
             set {
                 if (_image != value) {
                     _image = value;
+                    ImageWidget.QueueDraw ();
                 }
             }
         }
@@ -100,7 +101,10 @@ namespace Limaki.View.GtkBackend {
         protected Gtk.Widget ImageWidget {
             get {
                 if (_imageWidget == null) {
-                    _imageWidget = new ImageBox (Xwt.Toolkit.Engine<GtkEngine> ().Context);
+                    _imageWidget = new ImageBox (Xwt.Toolkit.Engine<GtkEngine> ().Context) {
+                                                                                               Yalign=0,
+                                                                                               Xalign=0,
+                                                                                           };
                 }
                 if (this.Image != null && _imageWidget.Image.Backend != this.Image.GetBackend ()) {
                     _imageWidget.Image = this.Image.ToImageDescription ();

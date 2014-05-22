@@ -21,8 +21,7 @@ namespace Limaki.View.GtkBackend {
             if (PopupWindow == null) {
                 ShowDropDown();
             } else {
-                PopupWindow.Hide();
-                PopupWindow = null;
+                HideDropDown ();
             }
         }
 
@@ -32,6 +31,13 @@ namespace Limaki.View.GtkBackend {
             if (HasChildren) {
                 PopupWindow = PopupWindow.Show (this.ButtonWidget, Xwt.Rectangle.Zero, ChildBox);
             }
+        }
+
+        private void HideDropDown () {
+            if (PopupWindow == null)
+                return;
+            PopupWindow.Hide ();
+            PopupWindow = null;
         }
 
         #region prototype
@@ -100,11 +106,24 @@ namespace Limaki.View.GtkBackend {
             get {
                 if (_childBox == null) {
                     _childBox = new Gtk.VBox ();
-                    foreach (var w in Children)
+                    foreach (var w in Children) {
                         _childBox.PackStart (w);
+                        var b = w as ToolStripButton;
+                        if (b != null) {
+                            b.Click -= b_Click;
+                            b.Click += b_Click;
+                            b.LeaveNotifyEvent += b_Click;
+                            b.GrabNotify += b_Click;
+                        }
+                    }
+
                 }
                 return _childBox;
             }
+        }
+
+        void b_Click (object sender, System.EventArgs e) {
+            HideDropDown ();
         }
     }
 }
