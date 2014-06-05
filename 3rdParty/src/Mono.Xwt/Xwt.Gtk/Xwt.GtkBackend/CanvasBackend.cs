@@ -169,7 +169,9 @@ namespace Xwt.GtkBackend
 			Backend.ApplicationContext.InvokeUserCode (delegate {
 				using (var context = CreateContext ()) {
 					var a = evnt.Area;
-					EventSink.OnDraw (context, new Rectangle (a.X, a.Y, a.Width, a.Height));
+					// offset exposed area by CanvasBackend origin
+					var r = new Rectangle (a.X - context.Origin.X, a.Y - context.Origin.Y, a.Width, a.Height);
+					EventSink.OnDraw (context, r);
 				}
 			});
 			return base.OnExposeEvent (evnt);
@@ -191,8 +193,6 @@ namespace Xwt.GtkBackend
 				// Set ContextBackend Origin
 				ctx.Origin.X = Allocation.X;
 				ctx.Origin.Y = Allocation.Y;
-                //ctx.Context.Rectangle(0,0,Allocation.Width,Allocation.Height);
-                //ctx.Context.Clip();
 			}
 			return ctx;
 		}

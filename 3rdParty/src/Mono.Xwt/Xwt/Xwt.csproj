@@ -9,8 +9,6 @@
     <AssemblyName>Xwt</AssemblyName>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\xwt.snk</AssemblyOriginatorKeyFile>
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -40,6 +38,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Xwt.Backends\IPasswordEntryBackend.cs" />
     <Compile Include="Xwt\PasswordEntry.cs" />
+    <Compile Include="Xwt\PreviewTextEventArgs.cs" />
     <Compile Include="Xwt\Widget.cs" />
     <Compile Include="Xwt\Window.cs" />
     <Compile Include="Xwt\Button.cs" />
