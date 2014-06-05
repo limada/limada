@@ -1,5 +1,20 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Gtk;
 using System;
+using System.Diagnostics;
 
 namespace Limaki.View.GtkBackend {
 
@@ -15,35 +30,41 @@ namespace Limaki.View.GtkBackend {
             SkipPagerHint = true;
             SkipTaskbarHint = true;
             TypeHint = Gdk.WindowTypeHint.PopupMenu;
-           
-            AddEvents ((int)Gdk.EventMask.FocusChangeMask);
+
+            AddEvents ((int) Gdk.EventMask.FocusChangeMask);
             DefaultHeight = DefaultWidth = 1;
+            var _frame = new Frame () { Shadow = ShadowType.EtchedIn };
+
             _alignment = new Gtk.Alignment (0, 0, 1, 1);
-            Add (_alignment);
+            _frame.Add (_alignment);
+            Add (_frame);
             if (child != null) {
                 this._alignment.Add (child);
-                TransientFor = (Gtk.Window)child.Toplevel;
+                //TransientFor = (Gtk.Window)child.Toplevel;
             }
             FocusOutEvent += HandleFocusOutEvent;
+            AcceptFocus = true;
+            CanFocus = true;
+
             Resizable = true;
             OnScreenChanged (null);
         }
-
 
         public void ReleaseInnerWidget () {
             _alignment.Remove (_alignment.Child);
         }
 
+        [GLib.ConnectBefore]
         void HandleFocusOutEvent (object o, FocusOutEventArgs args) {
             this.HideAll ();
         }
 
         public void SetPadding (Xwt.WidgetSpacing spacing) {
-            _alignment.LeftPadding = (uint)spacing.Left;
-            _alignment.RightPadding = (uint)spacing.Right;
+            _alignment.LeftPadding = (uint) spacing.Left;
+            _alignment.RightPadding = (uint) spacing.Right;
 
-            _alignment.TopPadding =   (uint)spacing.Top;
-            _alignment.BottomPadding = (uint)spacing.Bottom;
+            _alignment.TopPadding = (uint) spacing.Top;
+            _alignment.BottomPadding = (uint) spacing.Bottom;
 
         }
 
@@ -61,39 +82,80 @@ namespace Limaki.View.GtkBackend {
         }
 
         public static PopupWindow Show (Widget reference, Xwt.Rectangle positionRect, Widget child) {
-            
+
             var popup = new PopupWindow (child);
-            popup.TransientFor = (Window)reference.Toplevel;
+            var topLevel = (Window) reference.Toplevel;
+
             popup.DestroyWithParent = true;
-            popup.Hidden += (o, args) => {
-                                  popup.ReleaseInnerWidget ();
-                                  popup.Destroy ();
-                              };
 
-            var screenBounds = new Xwt.Rectangle (
-                GtkBackendHelper.ConvertToScreenCoordinates(reference, Xwt.Point.Zero),
-                new Xwt.Size(reference.Allocation.Width,reference.Allocation.Height));
+            popup.BorderWidth = topLevel.BorderWidth;
+            var screenBounds = Xwt.Rectangle.Zero;
 
-            if (positionRect == Xwt.Rectangle.Zero)
-                positionRect = new Xwt.Rectangle (Xwt.Point.Zero, screenBounds.Size);
-            positionRect = positionRect.Offset (screenBounds.Location);
-            var position = new Xwt.Point (positionRect.X, positionRect.Bottom);
+            Func<Xwt.Point> calcPosition = () => {
+                screenBounds = new Xwt.Rectangle (
+                    GtkBackendHelper.ConvertToScreenCoordinates (reference, Xwt.Point.Zero),
+                    new Xwt.Size (reference.Allocation.Width, reference.Allocation.Height));
+
+                if (positionRect == Xwt.Rectangle.Zero)
+                    positionRect = new Xwt.Rectangle (Xwt.Point.Zero, screenBounds.Size);
+                positionRect = positionRect.Offset (screenBounds.Location);
+                return new Xwt.Point (positionRect.X, positionRect.Bottom);
+            };
+            var position = calcPosition ();
             if (child == null)
                 popup.SetSizeRequest ((int) screenBounds.Width, (int) screenBounds.Height);
             else {
                 popup.DefaultWidth = 10;
-                child.ShowAll();
+                child.ShowAll ();
             }
-            popup.ShowAll ();
-
+            var transPos = GtkBackendHelper.ConvertToScreenCoordinates (topLevel, Xwt.Point.Zero);
+            var refPos = GtkBackendHelper.ConvertToScreenCoordinates (reference, Xwt.Point.Zero);
+            popup.TransientPosition = position.Offset (-transPos.X, -transPos.Y);
             Gtk.SizeAllocatedHandler sizeAllocated = (o, args) => {
-                popup.Move ((int)position.X, (int)position.Y);
+                popup.Move ((int) position.X, (int) position.Y);
                 popup.GrabFocus ();
             };
             popup.SizeAllocated += sizeAllocated;
-            sizeAllocated (popup, null);
 
+            topLevel.AddEvents ((int) Gdk.EventMask.StructureMask);
+
+            topLevel.ConfigureEvent -= popup.TransientFor_ConfigureEvent;
+            topLevel.ConfigureEvent += popup.TransientFor_ConfigureEvent;
+
+            Gtk.MotionNotifyEventHandler motionTransient = (s, args) => {
+                if (topLevel == null)
+                    return;
+                transPos = GtkBackendHelper.ConvertToScreenCoordinates (topLevel, Xwt.Point.Zero);
+                refPos = GtkBackendHelper.ConvertToScreenCoordinates (reference, Xwt.Point.Zero);
+                var motionPos = transPos.Offset (new Xwt.Point (args.Event.X, args.Event.Y));
+                var refBounds = new Xwt.Rectangle (refPos, screenBounds.Size);
+
+                if (!refBounds.Contains (motionPos))
+                    popup.HideAll ();
+            };
+
+            topLevel.MotionNotifyEvent += motionTransient;
+
+            popup.ShowAll ();
+
+            popup.Hidden += (o, args) => {
+                topLevel.ConfigureEvent -= popup.TransientFor_ConfigureEvent;
+                topLevel.MotionNotifyEvent -= motionTransient;
+                popup.ReleaseInnerWidget ();
+                popup.Destroy ();
+            };
             return popup;
         }
+
+        public Xwt.Point TransientPosition { get; set; }
+        [GLib.ConnectBefore]
+        void TransientFor_ConfigureEvent (object o, ConfigureEventArgs args) {
+
+            var win = o as Gtk.Window;
+            this.Move (args.Event.X + (int) this.TransientPosition.X, args.Event.Y + (int) this.TransientPosition.Y);
+            Trace.WriteLine (string.Format ("{0} {1}", this.TransientPosition, new Xwt.Point (args.Event.X, args.Event.Y)));
+        }
+
+
     }
 }

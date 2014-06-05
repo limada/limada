@@ -84,10 +84,16 @@ namespace Limaki.View.GtkBackend {
         }
 
         public static Xwt.Point ConvertToScreenCoordinates (Widget widget, Xwt.Point widgetCoordinates) {
-            if (widget.ParentWindow == null)
-                return Point.Zero;
+            var parentWindow = widget.ParentWindow;
+            if (parentWindow == null) {
+                var win = widget as Gtk.Window;
+                if (win != null)
+                    parentWindow = win.GdkWindow;
+                else
+                    return Point.Zero;
+            } 
             int x, y;
-            widget.ParentWindow.GetOrigin (out x, out y);
+            parentWindow.GetOrigin (out x, out y);
             var a = widget.Allocation;
             x += a.X;
             y += a.Y;

@@ -135,7 +135,7 @@ namespace Limaki.View.GtkBackend {
                 _click (this, e);
         }
 
-        protected virtual void SetContent ( Xwt.ContentPosition position) {
+        protected virtual void SetContent (Xwt.ContentPosition position) {
 
             var label = this.Label;
             if (label != null && label.Length == 0)
@@ -155,7 +155,7 @@ namespace Limaki.View.GtkBackend {
                 contentWidget = new Gtk.Label (label) { UseUnderline = this.UseUnderline };
 
             } else if (label == null && Image != null) {
-                contentWidget = AllocEventBox( ImageWidget);
+                contentWidget = AllocEventBox (ImageWidget);
                 contentWidget.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
                 contentWidget.ButtonPressEvent += this.ButtonPressed;
 
@@ -240,9 +240,6 @@ namespace Limaki.View.GtkBackend {
             }
             return widget;
         }
-
-
-
 
         public bool isOpen { get; set; }
     }

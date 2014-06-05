@@ -1,3 +1,16 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
 
 using System.Collections.Generic;
 namespace Limaki.View.GtkBackend {
@@ -24,8 +37,6 @@ namespace Limaki.View.GtkBackend {
                 HideDropDown ();
             }
         }
-
-
 
         private void ShowDropDown () {
             if (HasChildren) {
@@ -105,9 +116,9 @@ namespace Limaki.View.GtkBackend {
         public Gtk.VBox ChildBox {
             get {
                 if (_childBox == null) {
-                    _childBox = new Gtk.VBox ();
+                    _childBox = new Gtk.VBox (false,3);
                     foreach (var w in Children) {
-                        _childBox.PackStart (w);
+                        _childBox.PackStart (w, false, false, 3);
                         var b = w as ToolStripButton;
                         if (b != null) {
                             b.Click -= b_Click;
