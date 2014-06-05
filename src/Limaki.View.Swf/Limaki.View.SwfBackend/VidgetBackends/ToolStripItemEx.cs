@@ -18,12 +18,14 @@ using System.Windows.Forms;
 using System.Drawing;
 using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
+using SWF = System.Windows.Forms;
+using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public class ToolStripButtonEx : ToolStripButton, IToolStripCommandItem, IToolStripItem {
+    public class ToolStripButtonBackend : SWF.ToolStripButton, IToolStripCommandItem, IToolStripItem {
 
-        public ToolStripButtonEx () {
+        public ToolStripButtonBackend () {
             ImageScaling = ToolStripItemImageScaling.None;
         }
 
@@ -45,8 +47,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
     }
 
-    public class ToolStripDropDownButtonEx : ToolStripDropDownButton, IToolStripCommandItem, IToolStripItem {
-        public ToolStripDropDownButtonEx () {
+    public class ToolStripDropDownButtonBackend : SWF.ToolStripDropDownButton, IToolStripCommandItem, IToolStripItem {
+        public ToolStripDropDownButtonBackend () {
             ImageScaling = ToolStripItemImageScaling.None;
         }
 

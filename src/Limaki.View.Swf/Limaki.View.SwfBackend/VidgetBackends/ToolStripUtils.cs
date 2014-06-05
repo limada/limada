@@ -18,6 +18,7 @@ using Limaki.View.Vidgets;
 using System.Windows.Forms;
 using System.Linq;
 using Limaki.Common.Linqish;
+using SWF = System.Windows.Forms;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
@@ -32,7 +33,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         public static int DropdownWidth = SystemInformation.VerticalScrollBarWidth / 3*2;
 
         public static void SetCommand(IToolStripCommandItem item, ref ToolStripCommand _command, ToolStripCommand value) {
-            var toolStripItem = item as ToolStripItem;
+            var toolStripItem = item as SWF.ToolStripItem;
             if (_command != value) {
                 try {
                     if (toolStripItem.Owner != null)
@@ -52,7 +53,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         public System.Drawing.Color? ToolStripForeground = null;
         public System.Drawing.Color? ToolStripItemSelectedColor = null;
 
-        public void InitializeToolstrips (ToolStripPanel toolStripPanel, ToolStrip menuStrip, ToolStrip[] toolStrips) {
+        public void InitializeToolstrips (SWF.ToolStripPanel toolStripPanel, SWF.ToolStrip menuStrip, SWF.ToolStrip[] toolStrips) {
 
             toolStripPanel.SuspendLayout ();
 
@@ -88,7 +89,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
                 toolStrip.Renderer = renderer;
                 var border = toolStrip.Items.Count;
                 var size = new System.Drawing.Size (4, toolStrip.Size.Height);
-                toolStrip.Items.Cast<ToolStripItem> ().ForEach (s =>
+                toolStrip.Items.Cast<SWF.ToolStripItem> ().ForEach (s =>
                     size = new System.Drawing.Size (size.Width + s.Bounds.Width + 3, size.Height)
                     );
                 toolStrip.ResumeLayout (true);

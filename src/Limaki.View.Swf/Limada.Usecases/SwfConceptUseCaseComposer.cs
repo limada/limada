@@ -31,6 +31,7 @@ using Limaki.View.Viz.UI;
 using DialogResult = Limaki.View.Vidgets.DialogResult;
 using ImageExporter = Limaki.View.Viz.ImageExporter;
 using MessageBoxButtons = Limaki.View.Vidgets.MessageBoxButtons;
+using ToolStrip = System.Windows.Forms.ToolStrip;
 
 namespace Limada.Usecases {
 

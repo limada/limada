@@ -1,7 +1,7 @@
 using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.XwtBackend {
-    public class LayoutToolStripBackend : DummyBackend, ILayoutToolStripBackend {
+    public class LayoutToolStripBackend : ToolStripBackendDummy, ILayoutToolStripBackend {
         public void AttachStyleSheet (string sheetName) {
 
         }

@@ -18,10 +18,11 @@ using System.Windows.Controls;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 using System.Windows;
+using System;
 
 namespace Limaki.View.WpfBackend {
 
-    public abstract class ToolStripBackend : ToolBar, IDisplayToolStripBackend {
+    public abstract class ToolStripBackend : ToolBar, IToolStripBackend {
 
         #region IVidgetBackend
 
@@ -58,10 +59,19 @@ namespace Limaki.View.WpfBackend {
 
         protected virtual void Compose () { }
 
+        [Obsolete]
         public void AddItems (params UIElement[] items) {
             foreach (var item in items)
                 Items.Add (item);
 
+        }
+
+        public void InsertItem (int index, IToolStripItemBackend item) {
+            Items.Insert (index, item);
+        }
+
+        public void RemoveItem (IToolStripItemBackend item) {
+            Items.Remove (item);
         }
     }
 }

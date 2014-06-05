@@ -26,9 +26,9 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         /// </summary>
         private void InitializeComponent() {
             components = new System.ComponentModel.Container ();
-            this.boldButton = new ToolStripButtonEx ();
-            this.italicButton = new ToolStripButtonEx();
-            this.underlineButton = new ToolStripButtonEx();
+            this.boldButton = new ToolStripButtonBackend ();
+            this.italicButton = new ToolStripButtonBackend();
+            this.underlineButton = new ToolStripButtonBackend();
             this.fontSizeComboBox = new System.Windows.Forms.ToolStripComboBox ();
             this.fontComboBox = new System.Windows.Forms.ToolStripComboBox();
 
@@ -94,9 +94,9 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             });
         }
 
-        public ToolStripButtonEx boldButton;
-        public ToolStripButtonEx italicButton;
-        public ToolStripButtonEx underlineButton;
+        public ToolStripButtonBackend boldButton;
+        public ToolStripButtonBackend italicButton;
+        public ToolStripButtonBackend underlineButton;
         public System.Windows.Forms.ToolStripComboBox fontSizeComboBox;
         public System.Windows.Forms.ToolStripComboBox fontComboBox;
         #endregion

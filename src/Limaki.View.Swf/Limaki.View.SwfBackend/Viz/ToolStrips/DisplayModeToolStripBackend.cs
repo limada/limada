@@ -19,6 +19,8 @@ using Limaki.View;
 using Limaki.View.SwfBackend.VidgetBackends;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
+using ToolStrip = System.Windows.Forms.ToolStrip;
+using ToolStripItem = System.Windows.Forms.ToolStripItem;
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
@@ -29,20 +31,21 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public DisplayModeToolStrip Frontend { get; protected set; }
+        public new DisplayModeToolStrip Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (DisplayModeToolStrip)frontend;
             Compose();
         }
 
         private void Compose () {
 
-            var selectButton = new ToolStripDropDownButtonEx { Command = Frontend.SelectCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
+            var selectButton = new ToolStripDropDownButtonBackend { Command = Frontend.SelectCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
             selectButton.DropDownItems.AddRange(new ToolStripItem[] { 
                 new ToolStripMenuItemEx { Command = Frontend.PanningCommand,ToggleOnClick = selectButton, DisplayStyle = ToolStripItemDisplayStyle.Image},
             });
-            var zoomButton = new ToolStripDropDownButtonEx { Command = Frontend.ZoomInOutCommand, DisplayStyle = ToolStripItemDisplayStyle.ImageAndText };
+            var zoomButton = new ToolStripDropDownButtonBackend { Command = Frontend.ZoomInOutCommand, DisplayStyle = ToolStripItemDisplayStyle.ImageAndText };
             zoomButton.DropDownItems.AddRange(new ToolStripItem[] {
                 new ToolStripMenuItemEx { Command = Frontend.FitToScreenCommand, DisplayStyle=ToolStripItemDisplayStyle.Text },
                 new ToolStripMenuItemEx { Command = Frontend.FitToWidthCommand, DisplayStyle=ToolStripItemDisplayStyle.Text},

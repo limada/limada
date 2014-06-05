@@ -6,21 +6,24 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2010-2013 Lytico
+ * Copyright (C) 2010-2014 Lytico
  *
  * http://www.limada.org
  * 
  */
 
+using System.ComponentModel;
 using System.Windows.Forms;
 using Limaki.View;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 using Xwt.GdiBackend;
+using SWF = System.Windows.Forms;
+using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public abstract partial class ToolStripBackend : ToolStrip, IDisplayToolStripBackend {
+    public abstract partial class ToolStripBackend : SWF.ToolStrip, IToolStripBackend {
 
         #region IVidgetBackend Member
 
@@ -40,13 +43,24 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             this.Invalidate(rect.ToGdi());
         }
 
-        public abstract void InitializeBackend(IVidget frontend, VidgetApplicationContext context);
+        [Browsable (false)]
+        [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+        public LVV.ToolStrip Frontend { get; protected set; }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (LVV.ToolStrip) frontend;
+        }
 
         void IVidgetBackend.SetFocus () { this.Focus (); }
 
         #endregion
+        
+        public void InsertItem (int index, IToolStripItemBackend item) {
+            base.Items.Insert (index, (SWF.ToolStripItem) item);
+        }
 
-
-
+        public void RemoveItem (IToolStripItemBackend item) {
+            base.Items.Remove ((SWF.ToolStripItem) item);
+        }
     }
 }

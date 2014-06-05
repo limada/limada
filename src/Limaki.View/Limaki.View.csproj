@@ -75,6 +75,8 @@
     <Compile Include="Limaki.View\ContentViewers\ImageContentViewer.cs" />
     <Compile Include="Limaki.View\Vidgets\IWebBrowserEx.cs" />
     <Compile Include="Limaki.View\Vidgets\FileDialogVidget.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolStripItem.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolStripItemCollection.cs" />
     <Compile Include="Limaki.View\Vidgets\VidgetUtils.cs" />
     <Compile Include="Limaki.View\Vidgets\Vindow.cs" />
     <Compile Include="Limaki.View\Vidgets\WebBrowserVidgetEx.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneMeshVisitor.cs" />
     <Compile Include="Limaki.View\Viz\Mesh\GraphSceneMeshVisitor.cs" />
     <Compile Include="Limaki.View\Viz\Mesh\GraphSceneMeshBackHandler.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolStrip.cs" />
     <Compile Include="Limaki.View\Viz\Visuals\VisualGraphSceneMeshEvents.cs" />
     <Compile Include="Limaki.View\Viz\Visuals\VisualGraphSceneMesh.cs" />
     <Compile Include="Limaki.View\GraphScene\GraphSceneExtensions.cs" />

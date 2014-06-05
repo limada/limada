@@ -12,12 +12,13 @@
  * 
  */
 
+using System;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.GtkBackend {
 
-    public abstract class ToolStripBackend : Gtk.Toolbar, IDisplayToolStripBackend {
+    public abstract class ToolStripBackend : Gtk.Toolbar, IToolStripBackend {
 
         #region IVidgetBackend
 
@@ -46,6 +47,7 @@ namespace Limaki.View.GtkBackend {
             base.ToolbarStyle = Gtk.ToolbarStyle.Icons;
         }
 
+        [Obsolete]
         public void AddItems (params Gtk.ToolItem[] items) {
             var ic = base.NItems;
             for (int i = 0; i < items.Length; i++)
@@ -53,6 +55,12 @@ namespace Limaki.View.GtkBackend {
 
         }
 
-       
+        public void InsertItem (int index, IToolStripItemBackend item) {
+            base.Insert ((Gtk.ToolItem) item, index);
+        }
+
+        public void RemoveItem (IToolStripItemBackend item) {
+            base.Remove ((Gtk.Widget) item);
+        }
     }
 }

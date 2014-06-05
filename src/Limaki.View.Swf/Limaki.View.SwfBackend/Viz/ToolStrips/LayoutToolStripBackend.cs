@@ -27,9 +27,10 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
     public partial class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripBackend {
 
-        public LayoutToolStrip Frontend { get; set; }
+        public new LayoutToolStrip Frontend { get; set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (LayoutToolStrip)frontend;
             Compose();
         }
@@ -61,7 +62,7 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
             StyleSheetCombo.SelectedIndexChanged += StyleSheetSelectedIndexChanged;
             StyleSheetCombo.KeyDown += StyleSheetKeyDown;
 
-            var styleDialogButton = new ToolStripButtonEx {
+            var styleDialogButton = new ToolStripButtonBackend {
                 Checked = false,
                 CheckState = CheckState.Unchecked,
                 DisplayStyle = ToolStripItemDisplayStyle.Image,

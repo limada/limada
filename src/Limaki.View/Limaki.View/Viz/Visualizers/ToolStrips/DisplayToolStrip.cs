@@ -18,7 +18,7 @@ using Xwt;
 
 namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
-    public abstract class DisplayToolStrip<TDisplay, TBackend> : Vidget
+    public abstract class DisplayToolStrip<TDisplay, TBackend> : ToolStrip
         where TDisplay : class
         where TBackend : class,IDisplayToolStripBackend {
 
@@ -44,6 +44,5 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
         public Size DefaultSize = new Size(36, 36);
     }
 
-    public interface IDisplayToolStripBackend : IVidgetBackend { }
-
+    public interface IDisplayToolStripBackend : IToolStripBackend { }
 }

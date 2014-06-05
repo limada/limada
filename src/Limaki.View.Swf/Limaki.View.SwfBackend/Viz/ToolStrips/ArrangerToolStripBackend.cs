@@ -18,6 +18,8 @@ using Limaki.View;
 using Limaki.View.SwfBackend.VidgetBackends;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
+using ToolStrip = System.Windows.Forms.ToolStrip;
+using ToolStripItem = System.Windows.Forms.ToolStripItem;
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
@@ -29,28 +31,29 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ArrangerToolStrip Frontend { get; protected set; }
+        public new ArrangerToolStrip Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (ArrangerToolStrip)frontend;
             Compose();
         }
 
         protected virtual void Compose () {
 
-            var horizontalButton = new ToolStripDropDownButtonEx { Command = Frontend.ArrangeLeftCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
+            var horizontalButton = new ToolStripDropDownButtonBackend { Command = Frontend.ArrangeLeftCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
             horizontalButton.DropDownItems.AddRange(new ToolStripItem[] {
                 new ToolStripMenuItemEx { Command = Frontend.ArrangeCenterCommand, ToggleOnClick = horizontalButton, DisplayStyle = ToolStripItemDisplayStyle.Image },
                 new ToolStripMenuItemEx { Command = Frontend.ArrangeRightCommand, ToggleOnClick = horizontalButton, DisplayStyle = ToolStripItemDisplayStyle.Image },
             });
 
-            var verticalButton = new ToolStripDropDownButtonEx { Command = Frontend.ArrangeTopCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
+            var verticalButton = new ToolStripDropDownButtonBackend { Command = Frontend.ArrangeTopCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
             verticalButton.DropDownItems.AddRange(new ToolStripItem[] {
                 new ToolStripMenuItemEx { Command = Frontend.ArrangeCenterVCommand, ToggleOnClick = verticalButton, DisplayStyle = ToolStripItemDisplayStyle.Image },
                 new ToolStripMenuItemEx { Command = Frontend.ArrangeBottomCommand, ToggleOnClick = verticalButton, DisplayStyle = ToolStripItemDisplayStyle.Image },
             });
 
-            var layoutButton = new ToolStripDropDownButtonEx { Command = Frontend.LogicalLayoutLeafCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
+            var layoutButton = new ToolStripDropDownButtonBackend { Command = Frontend.LogicalLayoutLeafCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
             layoutButton.DropDownItems.AddRange(new ToolStripItem[] {
                 new ToolStripMenuItemEx { Command = Frontend.LogicalLayoutCommand, ToggleOnClick = layoutButton, DisplayStyle = ToolStripItemDisplayStyle.Image },
                 new ToolStripMenuItemEx { Command = Frontend.ColumnsCommand, ToggleOnClick = layoutButton, DisplayStyle = ToolStripItemDisplayStyle.Image },
@@ -58,7 +61,7 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
                 new ToolStripMenuItemEx { Command = Frontend.FullLayoutCommand , DisplayStyle = ToolStripItemDisplayStyle.Image},
             });
 
-            var dimensionButton = new ToolStripDropDownButtonEx { Command = Frontend.DimensionXCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
+            var dimensionButton = new ToolStripDropDownButtonBackend { Command = Frontend.DimensionXCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
             dimensionButton.DropDownItems.AddRange(new ToolStripItem[] {
                 new ToolStripMenuItemEx { Command = Frontend.DimensionYCommand, ToggleOnClick = dimensionButton, DisplayStyle = ToolStripItemDisplayStyle.Image },
             });
@@ -68,7 +71,7 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
                 horizontalButton,
                 verticalButton,
                 dimensionButton,
-                new ToolStripButtonEx { Command = Frontend.UndoCommand},
+                new ToolStripButtonBackend { Command = Frontend.UndoCommand},
             });
         }
 
