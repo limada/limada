@@ -27,7 +27,7 @@ namespace Limaki.Contents.IO {
     /// <typeparam name="TSink"></typeparam>
     public class ContentIoPool<TSource,TSink> : IEnumerable<IContentIo<TSource>> {
 
-        private ICollection<IContentIo<TSource>> _contentIos = new Set<IContentIo<TSource>>();
+        private ICollection<IContentIo<TSource>> _contentIos = new List<IContentIo<TSource>>();
         
         ContentInfos _contentInfoPool = null;
         /// <summary>
@@ -45,20 +45,23 @@ namespace Limaki.Contents.IO {
             _contentIos.Remove(contentIo);
         }
 
+        protected virtual IContentIo<TSource> FirstOrDefault (IEnumerable<IContentIo<TSource>> ios) {
+            return ios.FirstOrDefault ();
+        }
         public virtual IContentIo<TSource> Find (string extension, IoMode mode) {
-            return _contentIos.Where(sinkIo => sinkIo.Detector.Supports(extension)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
+            return FirstOrDefault (_contentIos.Where (sinkIo => sinkIo.Detector.Supports (extension) && sinkIo.IoMode.HasFlag (mode)));
         }
 
         public virtual IContentIo<TSource> Find (long streamType, IoMode mode) {
-            return _contentIos.Where(sinkIo => sinkIo.Detector.Supports(streamType)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
+            return FirstOrDefault (_contentIos.Where (sinkIo => sinkIo.Detector.Supports (streamType) && sinkIo.IoMode.HasFlag (mode)));
         }
 
         public virtual IContentIo<TSource> Find (TSource stream, IoMode mode) {
-            return _contentIos.Where(sinkIo => sinkIo.Supports(stream)).FirstOrDefault(i => i.IoMode.HasFlag(mode));
+            return FirstOrDefault (_contentIos.Where (sinkIo => sinkIo.Supports (stream) && sinkIo.IoMode.HasFlag (mode)));
         }
 
-        public virtual IContentIo<TSource> Find(long streamType) {
-            return _contentIos.Where(sinkIo => sinkIo.Detector.Supports(streamType)).FirstOrDefault();
+        public virtual IContentIo<TSource> Find (long streamType) {
+            return FirstOrDefault (_contentIos.Where (sinkIo => sinkIo.Detector.Supports (streamType)));
         }
 
 

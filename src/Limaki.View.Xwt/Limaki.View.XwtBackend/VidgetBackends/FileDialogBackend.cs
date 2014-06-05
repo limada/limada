@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Limaki.Common;
@@ -68,6 +69,8 @@ namespace Limaki.View.XwtBackend {
             target.InitialDirectory = source.CurrentFolder;
             target.Filter = GetFilters(source.Filters);
             target.FilterIndex = source.Filters.IndexOf(source.ActiveFilter);
+            if (target.FilterIndex >= 0 && !Path.HasExtension (target.FileName))
+                target.FileName += "." + source.ActiveFilter.Patterns.First().Remove(0,2);
         }
 
         private string GetFilters (IEnumerable<FileDialogFilter> filters) {

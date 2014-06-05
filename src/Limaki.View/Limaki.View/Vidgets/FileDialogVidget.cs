@@ -50,7 +50,7 @@ namespace Limaki.View.Vidgets {
 
         public override void Dispose () { }
 
-        public FileDialogMemento _dialog { get; set; }
+        protected FileDialogMemento _dialog { get; set; }
     }
 
 

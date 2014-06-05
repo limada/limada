@@ -140,30 +140,35 @@ namespace Limada.UseCases.Content {
 
         public bool SaveAs (Iori sinkInfo) {
             // save current:
-            var oldSource = this.Data.Source.ToString();
-            var sinkIo = ThingGraphIoManager.GetSinkIO(this.Data.ContentType, IoMode.Write) as ThingGraphIo;
-            if (sinkIo != null) {
-                sinkIo.Flush(this.Data);
+            var oldSource = "";
+            ThingGraphIo sinkIo = null;
+            if (this.Data.Source != null) {
+                oldSource = this.Data.Source.ToString ();
+
+                sinkIo = ThingGraphIoManager.GetSinkIO (this.Data.ContentType, IoMode.Write) as ThingGraphIo;
+                if (sinkIo != null) {
+                    sinkIo.Flush (this.Data);
+                }
             }
 
             // get the new:
-            sinkIo = ThingGraphIoManager.GetSinkIO(sinkInfo, IoMode.Write) as ThingGraphIo;
+            sinkIo = ThingGraphIoManager.GetSinkIO (sinkInfo, IoMode.Write) as ThingGraphIo;
             if (sinkIo == null)
                 return false;
-            var sink = sinkIo.Open(sinkInfo);
+            var sink = sinkIo.Open (sinkInfo);
 
             // saveAs:
             var merger = new ThingGraphMerger { Progress = this.Progress };
-            merger.Use(this.Data.Data, sink.Data);
-            merger.AttachThings(sink.Data);
+            merger.Use (this.Data.Data, sink.Data);
+            merger.AttachThings (sink.Data);
 
             // close and reopen; flush and attach does't work in all cases
-            sinkIo.Close(sink);
-            sink = sinkIo.Open(sinkInfo);
+            sinkIo.Close (sink);
+            sink = sinkIo.Open (sinkInfo);
 
-            AttachCurrent(sink, sinkInfo.Name);
+            AttachCurrent (sink, sinkInfo.Name);
 
-            OnProgress(string.Format("{0} saved as {1}",Path.GetFileNameWithoutExtension(oldSource),sinkInfo.Name), -1, -1);
+            OnProgress (string.Format ("{0} saved as {1}", Path.GetFileNameWithoutExtension (oldSource), sinkInfo.Name), -1, -1);
             return true;
         }
 
