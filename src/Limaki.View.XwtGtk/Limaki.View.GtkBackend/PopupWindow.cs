@@ -119,10 +119,10 @@ namespace Limaki.View.GtkBackend {
 
             topLevel.AddEvents ((int) Gdk.EventMask.StructureMask);
 
-            topLevel.ConfigureEvent -= popup.TransientFor_ConfigureEvent;
-            topLevel.ConfigureEvent += popup.TransientFor_ConfigureEvent;
+            topLevel.ConfigureEvent -= popup.TopLevelConfigureEvent;
+            topLevel.ConfigureEvent += popup.TopLevelConfigureEvent;
 
-            Gtk.MotionNotifyEventHandler motionTransient = (s, args) => {
+            Gtk.MotionNotifyEventHandler topLevelMotion = (s, args) => {
                 if (topLevel == null)
                     return;
                 transPos = GtkBackendHelper.ConvertToScreenCoordinates (topLevel, Xwt.Point.Zero);
@@ -134,13 +134,13 @@ namespace Limaki.View.GtkBackend {
                     popup.HideAll ();
             };
 
-            topLevel.MotionNotifyEvent += motionTransient;
+            topLevel.MotionNotifyEvent += topLevelMotion;
 
             popup.ShowAll ();
 
             popup.Hidden += (o, args) => {
-                topLevel.ConfigureEvent -= popup.TransientFor_ConfigureEvent;
-                topLevel.MotionNotifyEvent -= motionTransient;
+                topLevel.ConfigureEvent -= popup.TopLevelConfigureEvent;
+                topLevel.MotionNotifyEvent -= topLevelMotion;
                 popup.ReleaseInnerWidget ();
                 popup.Destroy ();
             };
@@ -149,13 +149,9 @@ namespace Limaki.View.GtkBackend {
 
         public Xwt.Point TransientPosition { get; set; }
         [GLib.ConnectBefore]
-        void TransientFor_ConfigureEvent (object o, ConfigureEventArgs args) {
-
-            var win = o as Gtk.Window;
+        void TopLevelConfigureEvent (object o, ConfigureEventArgs args) {
             this.Move (args.Event.X + (int) this.TransientPosition.X, args.Event.Y + (int) this.TransientPosition.Y);
-            Trace.WriteLine (string.Format ("{0} {1}", this.TransientPosition, new Xwt.Point (args.Event.X, args.Event.Y)));
         }
-
 
     }
 }
