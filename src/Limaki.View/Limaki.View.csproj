@@ -112,7 +112,7 @@
     <Compile Include="Limaki.WebServer\WebResponseBase.cs" />
     <Compile Include="Limaki.Usecases\Vidgets\ISplitViewBackend.cs" />
     <Compile Include="Limaki.View\Vidgets\IToolStripCommandItem.cs" />
-    <Compile Include="Limaki.View\Vidgets\IToolStripItem.cs" />
+    <Compile Include="Limaki.View\Vidgets\IToolStripItem0.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripCommand.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\DisplayModeToolStrip.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\LayoutToolStrip.cs" />

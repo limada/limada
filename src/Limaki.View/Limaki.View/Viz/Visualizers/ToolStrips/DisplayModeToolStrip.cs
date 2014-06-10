@@ -90,28 +90,28 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToWidth),
                 Image = Iconery.FitToWidth,
                 Size = DefaultSize,
-                Text = "Fit to Width"
+                Label = "Fit to Width"
             };
 
             FitToHeigthCommand = new ToolStripCommand {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToHeigth),
                 Image = Iconery.FitToHeigth,
                 Size = DefaultSize,
-                Text = "Fit to Heigth",
+                Label = "Fit to Heigth",
             };
 
             FitToScreenCommand = new ToolStripCommand {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToScreen),
                 Image = Iconery.FitToScreen,
                 Size = DefaultSize,
-                Text = "Fit to Screen"
+                Label = "Fit to Screen"
             };
 
             OriginalSizeCommand = new ToolStripCommand {
                 Action = s => ZoomAction(d => d.ZoomState = ZoomState.Original),
                 Image = Iconery.OriginalSize,
                 Size = DefaultSize,
-                Text = "Original size"
+                Label = "Original size"
             };
         }
 

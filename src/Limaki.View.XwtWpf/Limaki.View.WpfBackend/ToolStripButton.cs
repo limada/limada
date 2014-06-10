@@ -24,7 +24,7 @@ using System.Windows.Data;
 
 namespace Limaki.View.WpfBackend {
 
-    public class ToolStripButton : ToggleButton, IToolStripCommandItem, IToolStripItem {
+    public class ToolStripButton : ToggleButton, IToolStripCommandItem, IToolStripItem0 {
 
         public ToolStripButton() {
             Compose();
@@ -76,9 +76,9 @@ namespace Limaki.View.WpfBackend {
             set { VidgetUtils.SetCommand (this, ref _command, value); }
         }
 
-        #region IToolStripItem-Implementation
+        #region IToolStripItem0-Implementation
 
-        public virtual string Text { get; set; }
+        public virtual string Label { get; set; }
 
         public virtual string ToolTipText {
             get { return base.ToolTip.ToString (); }

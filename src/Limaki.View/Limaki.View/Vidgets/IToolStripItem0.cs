@@ -18,16 +18,12 @@ using Xwt.Drawing;
 
 namespace Limaki.View.Vidgets {
 
-    public interface IToolStripItem {
-
+    [Obsolete]
+    public interface IToolStripItem0 {
         Image Image { get; set; }
-
-        string Text { get; set; }
-
+        string Label { get; set; }
         string ToolTipText { get; set; }
-
         Size Size { get; set; }
-
         event EventHandler Click;
     }
 

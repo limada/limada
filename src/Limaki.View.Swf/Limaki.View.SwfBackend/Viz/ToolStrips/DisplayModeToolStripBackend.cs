@@ -41,16 +41,16 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
         private void Compose () {
 
-            var selectButton = new ToolStripDropDownButtonBackend { Command = Frontend.SelectCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
+            var selectButton = new ToolStripDropDownButtonBackend0 { Command = Frontend.SelectCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
             selectButton.DropDownItems.AddRange(new ToolStripItem[] { 
-                new ToolStripMenuItemEx { Command = Frontend.PanningCommand,ToggleOnClick = selectButton, DisplayStyle = ToolStripItemDisplayStyle.Image},
+                new ToolStripMenuItemBackend0 { Command = Frontend.PanningCommand,ToggleOnClick = selectButton, DisplayStyle = ToolStripItemDisplayStyle.Image},
             });
-            var zoomButton = new ToolStripDropDownButtonBackend { Command = Frontend.ZoomInOutCommand, DisplayStyle = ToolStripItemDisplayStyle.ImageAndText };
+            var zoomButton = new ToolStripDropDownButtonBackend0 { Command = Frontend.ZoomInOutCommand, DisplayStyle = ToolStripItemDisplayStyle.ImageAndText };
             zoomButton.DropDownItems.AddRange(new ToolStripItem[] {
-                new ToolStripMenuItemEx { Command = Frontend.FitToScreenCommand, DisplayStyle=ToolStripItemDisplayStyle.Text },
-                new ToolStripMenuItemEx { Command = Frontend.FitToWidthCommand, DisplayStyle=ToolStripItemDisplayStyle.Text},
-                new ToolStripMenuItemEx { Command = Frontend.FitToHeigthCommand, DisplayStyle=ToolStripItemDisplayStyle.Text},
-                new ToolStripMenuItemEx { Command = Frontend.OriginalSizeCommand, DisplayStyle=ToolStripItemDisplayStyle.Text},
+                new ToolStripMenuItemBackend0 { Command = Frontend.FitToScreenCommand, DisplayStyle=ToolStripItemDisplayStyle.Text },
+                new ToolStripMenuItemBackend0 { Command = Frontend.FitToWidthCommand, DisplayStyle=ToolStripItemDisplayStyle.Text},
+                new ToolStripMenuItemBackend0 { Command = Frontend.FitToHeigthCommand, DisplayStyle=ToolStripItemDisplayStyle.Text},
+                new ToolStripMenuItemBackend0 { Command = Frontend.OriginalSizeCommand, DisplayStyle=ToolStripItemDisplayStyle.Text},
             });
 
             zoomButton.MouseDown += (s, e) => Frontend.ZoomInOut(Converter.Convert(e));

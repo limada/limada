@@ -62,7 +62,7 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
             StyleSheetCombo.SelectedIndexChanged += StyleSheetSelectedIndexChanged;
             StyleSheetCombo.KeyDown += StyleSheetKeyDown;
 
-            var styleDialogButton = new ToolStripButtonBackend {
+            var styleDialogButton = new ToolStripButtonBackend0 {
                 Checked = false,
                 CheckState = CheckState.Unchecked,
                 DisplayStyle = ToolStripItemDisplayStyle.Image,

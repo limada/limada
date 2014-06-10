@@ -21,7 +21,7 @@ using System.Diagnostics;
 
 namespace Limaki.View.GtkBackend {
 
-    public class ToolStripButton : Gtk.ToolItem, IToolStripCommandItem, IToolStripItem {
+    public class ToolStripButton : Gtk.ToolItem, IToolStripCommandItem, IToolStripItem0 {
 
         public ToolStripButton (): base () {
             Compose ();
@@ -66,11 +66,6 @@ namespace Limaki.View.GtkBackend {
         }
 
         protected virtual Xwt.ButtonType ButtonType { get { return Xwt.ButtonType.Normal; } }
-
-        public virtual string Text {
-            get { return this.Label; } 
-            set { this.Label = value; }
-        }
 
         public IToolStripCommandItem ToggleOnClick { get; set; }
 

@@ -23,9 +23,9 @@ using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public class ToolStripButtonBackend : SWF.ToolStripButton, IToolStripCommandItem, IToolStripItem {
+    public class ToolStripButtonBackend0 : SWF.ToolStripButton, IToolStripCommandItem, IToolStripItem0 {
 
-        public ToolStripButtonBackend () {
+        public ToolStripButtonBackend0 () {
             ImageScaling = ToolStripItemImageScaling.None;
         }
 
@@ -34,6 +34,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             get { return _command; }
             set { ToolStripUtils.SetCommand(this, ref _command, value); }
         }
+
         public IToolStripCommandItem ToggleOnClick { get; set; }
 
         public new Xwt.Size Size {
@@ -45,12 +46,18 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             get { return base.Image.ToXwt(); }
             set { base.Image = value.ToGdi(); }
         }
+
+
+        public string Label { get { return base.Text; } set { base.Text = value; } }
     }
 
-    public class ToolStripDropDownButtonBackend : SWF.ToolStripDropDownButton, IToolStripCommandItem, IToolStripItem {
-        public ToolStripDropDownButtonBackend () {
+    public class ToolStripDropDownButtonBackend0 : SWF.ToolStripDropDownButton, IToolStripCommandItem, IToolStripItem0 {
+        
+        public ToolStripDropDownButtonBackend0 () {
             ImageScaling = ToolStripItemImageScaling.None;
         }
+
+        public string Label { get { return base.Text; } set { base.Text = value; } }
 
         protected bool DropDownClicked = false;
         protected override void OnClick (EventArgs e) {
@@ -95,8 +102,9 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
     }
 
-    public class ToolStripMenuItemEx : ToolStripMenuItem, IToolStripCommandItem, IToolStripItem {
-        public ToolStripMenuItemEx () {
+    public class ToolStripMenuItemBackend0 : ToolStripMenuItem, IToolStripCommandItem, IToolStripItem0 {
+
+        public ToolStripMenuItemBackend0 () {
             ImageScaling = ToolStripItemImageScaling.None;
             //    DropDown.AutoSize = false;
             //}
@@ -110,6 +118,9 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             //        base.Size = value;
             //    }
         }
+
+        public string Label { get { return base.Text; } set { base.Text = value; } }
+
         public ToolStripCommand _command = null;
         public ToolStripCommand Command {
             get { return _command; }
@@ -118,12 +129,14 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
                 this.Size = value.Size;
             }
         }
+
         public IToolStripCommandItem ToggleOnClick { get; set; }
 
         public new Xwt.Size Size {
             get { return base.Size.ToXwt(); }
             set { base.Size = value.ToGdi(); }
         }
+
         public new Xwt.Drawing.Image Image {
             get { return base.Image.ToXwt(); }
             set { base.Image = value.ToGdi(); }

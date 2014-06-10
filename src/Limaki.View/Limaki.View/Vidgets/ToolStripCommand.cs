@@ -18,11 +18,19 @@ using Xwt.Drawing;
 
 namespace Limaki.View.Vidgets {
 
-    public class ToolStripCommand {
+    public interface IToolStripCommand {
+        Action<object> Action { get; set; }
+        Image Image { get; set; }
+        string Label { get; set; }
+        string ToolTipText { get; set; }
+        Size Size { get; set; }
+    }
+
+    public class ToolStripCommand:IToolStripCommand {
 
         public Action<object> Action { get; set; }
         public Image Image { get; set; }
-        public string Text { get; set; }
+        public string Label { get; set; }
         public string ToolTipText { get; set; }
         public Size Size { get; set; }
 
@@ -36,22 +44,24 @@ namespace Limaki.View.Vidgets {
                 ToggleCommand(commandItem, commandItem.ToggleOnClick);
         }
 
+        [Obsolete]
         public virtual void Attach(object target) {
-            var item = target as IToolStripItem;
+            var item = target as IToolStripItem0;
             if (item != null) {
                 item.Image = this.Image;
-                item.Text = this.Text;
+                item.Label = this.Label;
                 item.ToolTipText = this.ToolTipText;
                 item.Size = this.Size;
                 item.Click += this.DoAction;
             }
         }
 
+        [Obsolete]
         public virtual void DeAttach(object target) {
-            var item = target as IToolStripItem;
+            var item = target as IToolStripItem0;
             if (item != null) {
                 item.Image = null;
-                item.Text = string.Empty;
+                item.Label = string.Empty;
                 item.ToolTipText = string.Empty;
                 item.Click -= this.DoAction;
             }

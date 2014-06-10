@@ -3,7 +3,7 @@ using Xwt.Backends;
 namespace Limaki.View.Vidgets {
 
     [BackendType (typeof (IToolStripBackend))]
-    public class ToolStrip : Vidget {
+    public class ToolStrip : Vidget, IToolStripItemContainer {
 
         private ToolStripItemCollection _items;
         public ToolStripItemCollection Items {
@@ -24,11 +24,11 @@ namespace Limaki.View.Vidgets {
 
         public override void Dispose () { }
 
-        internal void InsertItem (int index, ToolStripItem item) {
+        void IToolStripItemContainer.InsertItem (int index, ToolStripItem item) {
             Backend.InsertItem (index, (IToolStripItemBackend) item.Backend);
         }
 
-        internal void RemoveItem (ToolStripItem item) {
+        void IToolStripItemContainer.RemoveItem (ToolStripItem item) {
             Backend.RemoveItem ((IToolStripItemBackend) item.Backend);
         }
     }

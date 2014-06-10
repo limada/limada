@@ -43,25 +43,25 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new SplitViewToolStrip Frontend { get; protected set; }
 
-        private ToolStripButtonBackend graphStreamViewButton;
-        private ToolStripButtonBackend graphGraphViewButton;
+        private ToolStripButtonBackend0 graphStreamViewButton;
+        private ToolStripButtonBackend0 graphGraphViewButton;
 
-        private ToolStripButtonBackend goBackButton;
-        private ToolStripButtonBackend goForwardButton;
+        private ToolStripButtonBackend0 goBackButton;
+        private ToolStripButtonBackend0 goForwardButton;
 
 
         public virtual void Compose () {
 
-            graphStreamViewButton = new ToolStripButtonBackend { Command = Frontend.GraphStreamViewCommand };
-            graphGraphViewButton = new ToolStripButtonBackend { Command = Frontend.GraphGraphViewCommand };
-            var toggleViewButton = new ToolStripButtonBackend { Command = Frontend.ToggleViewCommand };
-            var viewVisualNote = new ToolStripButtonBackend { Command = Frontend.OpenNewWindowCommand };
-            goBackButton = new ToolStripButtonBackend { Command = Frontend.GoBackCommand };
-            goForwardButton = new ToolStripButtonBackend { Command = Frontend.GoForwardCommand };
-            var goHomeButton = new ToolStripButtonBackend { Command = Frontend.GoHomeCommand };
-            var newSheetButton = new ToolStripButtonBackend { Command = Frontend.NewSheetCommand };
-            var newNoteButton = new ToolStripButtonBackend { Command = Frontend.NewNoteCommand };
-            var saveSheetButton = new ToolStripButtonBackend { Command = Frontend.SaveSheetCommand };
+            graphStreamViewButton = new ToolStripButtonBackend0 { Command = Frontend.GraphStreamViewCommand };
+            graphGraphViewButton = new ToolStripButtonBackend0 { Command = Frontend.GraphGraphViewCommand };
+            var toggleViewButton = new ToolStripButtonBackend0 { Command = Frontend.ToggleViewCommand };
+            var viewVisualNote = new ToolStripButtonBackend0 { Command = Frontend.OpenNewWindowCommand };
+            goBackButton = new ToolStripButtonBackend0 { Command = Frontend.GoBackCommand };
+            goForwardButton = new ToolStripButtonBackend0 { Command = Frontend.GoForwardCommand };
+            var goHomeButton = new ToolStripButtonBackend0 { Command = Frontend.GoHomeCommand };
+            var newSheetButton = new ToolStripButtonBackend0 { Command = Frontend.NewSheetCommand };
+            var newNoteButton = new ToolStripButtonBackend0 { Command = Frontend.NewNoteCommand };
+            var saveSheetButton = new ToolStripButtonBackend0 { Command = Frontend.SaveSheetCommand };
 
             this.Items.AddRange(new ToolStripItem[] {
                                                         graphStreamViewButton,

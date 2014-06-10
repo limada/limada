@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 namespace Limaki.View.Vidgets {
 
     public class ToolStripItemCollection : Collection<ToolStripItem> {
-        ToolStrip parent;
+        IToolStripItemContainer parent;
 
-        internal ToolStripItemCollection (ToolStrip parent) {
+        internal ToolStripItemCollection (IToolStripItemContainer parent) {
             this.parent = parent;
         }
 

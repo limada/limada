@@ -26,5 +26,15 @@ namespace Limaki.View.Vidgets {
                 } finally {}
             }
         }
+
+        public static void SetCommand (IToolStripCommand command, IToolStripCommand value) {
+            if (command != null && value!=null) {
+                command.Image = value.Image;
+                command.Label = value.Label;
+                command.ToolTipText = value.ToolTipText;
+                command.Size = value.Size;
+                command.Action = value.Action;
+            }  
+        }
     }
 }
