@@ -220,6 +220,8 @@ namespace Limada.View.Vidgets {
 
         protected void LoadFromStream(Stream source, IGraphScene<IVisual, IVisualEdge> target, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
             target.CleanScene();
+            if (source == null)
+                return;
             try {
                 source.Position = 0;
                 using (var sheet = new Sheet (target, layout)) {

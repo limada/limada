@@ -55,6 +55,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             }
         }
 
+        public override string Text {
+            get { return TextBox.Text; }
+            set { TextBox.Text = value; }
+        }
+
         #region IVidgetBackend Member
 
         public TextOkCancelBox Frontend { get; set; }
