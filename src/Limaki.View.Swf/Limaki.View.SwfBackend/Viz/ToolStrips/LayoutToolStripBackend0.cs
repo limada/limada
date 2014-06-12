@@ -25,17 +25,17 @@ using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
-    public partial class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripBackend {
+    public partial class LayoutToolStripBackend0 : ToolStripBackend, ILayoutToolStripBackend {
 
-        public new LayoutToolStrip Frontend { get; set; }
+        public new LayoutToolStrip0 Frontend { get; set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
-            this.Frontend = (LayoutToolStrip)frontend;
+            this.Frontend = (LayoutToolStrip0)frontend;
             Compose();
         }
 
-        public LayoutToolStripBackend () {
+        public LayoutToolStripBackend0 () {
             InitializeComponent();
         }
 

@@ -46,7 +46,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         // Subscribe and unsubscribe the control events you wish to expose.
         protected override void OnSubscribeControlEvents(Control c) {
             base.OnSubscribeControlEvents(c);
-            ShapeComboBox control = (ShapeComboBox)c;
+            var control = (ShapeComboBox)c;
             control.SelectedIndexChanged += new EventHandler(OnSelectedIndexChanged);
 
         }

@@ -45,11 +45,11 @@ namespace Limada.UseCases {
 
             useCase.FavoriteManager = new FavoriteManager();
 
-            useCase.DisplayDisplayToolStrip = new DisplayModeToolStrip();
+            useCase.DisplayModeToolStrip = new DisplayModeToolStrip();
             useCase.ArrangerToolStrip = new ArrangerToolStrip();
-            useCase.SplitViewToolStrip = new SplitViewToolStrip();
-            useCase.LayoutToolStrip = new LayoutToolStrip();
-            useCase.MarkerToolStrip = new MarkerToolStrip();
+            useCase.SplitViewToolStrip0 = new SplitViewToolStrip0();
+            useCase.LayoutToolStrip0 = new LayoutToolStrip0();
+            useCase.MarkerToolStrip0 = new MarkerToolStrip0();
 
             useCase.FileDialogShow = this.FileDialogShow;
 
@@ -72,13 +72,13 @@ namespace Limada.UseCases {
             splitView.FavoriteManager = useCase.FavoriteManager;
             useCase.FavoriteManager.SheetManager = useCase.SheetManager;
 
-            useCase.SplitViewToolStrip.SplitView = useCase.SplitView;
-            useCase.SplitViewToolStrip.SheetManager = useCase.SheetManager;
+            useCase.SplitViewToolStrip0.SplitView = useCase.SplitView;
+            useCase.SplitViewToolStrip0.SheetManager = useCase.SheetManager;
 
-            splitView.CurrentWidgetChanged += c => useCase.DisplayDisplayToolStrip.Attach(c);
-            splitView.CurrentWidgetChanged += c => useCase.LayoutToolStrip.Attach(c);
-            splitView.CurrentWidgetChanged += c => useCase.MarkerToolStrip.Attach(c);
-            splitView.CurrentWidgetChanged += c => useCase.SplitViewToolStrip.Attach(c);
+            splitView.CurrentWidgetChanged += c => useCase.DisplayModeToolStrip.Attach(c);
+            splitView.CurrentWidgetChanged += c => useCase.LayoutToolStrip0.Attach(c);
+            splitView.CurrentWidgetChanged += c => useCase.MarkerToolStrip0.Attach(c);
+            splitView.CurrentWidgetChanged += c => useCase.SplitViewToolStrip0.Attach(c);
             splitView.CurrentWidgetChanged += c => useCase.ArrangerToolStrip.Attach(c);
             
             useCase.DisplayStyleChanged += splitView.DoDisplayStyleChanged;

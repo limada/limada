@@ -25,10 +25,10 @@ using Limaki.Iconerias;
 
 namespace Limaki.View.WpfBackend {
 
-    public class ToolStripDropDownButton : ToolStripButton {
+    public class ToolStripDropDownButton0: ToolStripButton0 {
 
-        private IList<UIElement> _children = null;
-        protected IList<UIElement> Children { get { return _children ?? (_children = new List<UIElement> ()); } }
+        private ICollection<UIElement> _children = null;
+        protected ICollection<UIElement> Children { get { return _children ?? (_children = new List<UIElement> ()); } }
 
         public void AddItems (params UIElement[] children) {
             foreach (var child in children)
@@ -39,7 +39,7 @@ namespace Limaki.View.WpfBackend {
 
         protected override void Compose () {
 
-            Style = (Style)FindResource (ToolBar.ToggleButtonStyleKey);
+            Style = (Style) FindResource (ToolBar.ToggleButtonStyleKey);
 
             ButtonPanel.Children.Add (ButtonImage);
             ButtonPanel.Children.Add (DropDownImage);
@@ -68,7 +68,7 @@ namespace Limaki.View.WpfBackend {
                     Popup.IsOpenProperty.Bind (this, o => o.PopupVisible, _childPopup, BindingMode.TwoWay);
 
                     // not working, maybe IsMouseOver doesnt fire propertychanged?
-                    ToolStripDropDownButton.PopupVisibleProperty.Bind (this.DropDownImage, img => img.IsMouseOver, this, BindingMode.OneWay);
+                    ToolStripDropDownButton0.PopupVisibleProperty.Bind (this.DropDownImage, img => img.IsMouseOver, this, BindingMode.OneWay);
 
                     _childPopup.LostFocus += (s, e) => {
                         Trace.WriteLine (string.Format ("LostFocus; PopupVisible {0}", this.PopupVisible));
@@ -103,7 +103,7 @@ namespace Limaki.View.WpfBackend {
             get {
                 if (_dropDownImage == null) {
 
-                    var awesome = Iconery.Create<AwesomeIconeria> ();
+                    var awesome = Iconery.Create<AwesomeIconeria>();
                     _dropDownImage = ToolStripUtils.WpfImage (awesome.AsImage (awesome.FaCaretDown, 12));
 
                     _dropDownImage.MouseLeftButtonDown += (s, e) => {
@@ -119,7 +119,7 @@ namespace Limaki.View.WpfBackend {
                         e.Handled = true;
                     };
                 }
-
+                
                 return _dropDownImage;
             }
         }
@@ -143,7 +143,7 @@ namespace Limaki.View.WpfBackend {
                 ClosePopup (true);
             else
                 OpenPopup ();
-
+            
             e.Handled = true;
         }
 
@@ -167,18 +167,18 @@ namespace Limaki.View.WpfBackend {
             if (ChildPopup.IsOpen)
                 ChildPopup.IsOpen = false;
             ReleaseMouseCapture ();
-            ChildPopup.ReleaseMouseCapture ();
+            ChildPopup.ReleaseMouseCapture();
 
             if (fromButton)
                 ButtonPanel.Focus ();
         }
 
         public bool PopupVisible {
-            get { return (bool)GetValue (PopupVisibleProperty); }
+            get { return (bool) GetValue (PopupVisibleProperty); }
             set { SetValue (PopupVisibleProperty, value); }
         }
 
-        public static DependencyProperty PopupVisibleProperty = WpfExtensions.RegisterDependencyProperty<ToolStripDropDownButton, bool> (
+        public static DependencyProperty PopupVisibleProperty = WpfExtensions.RegisterDependencyProperty<ToolStripDropDownButton0, bool> (
             o => o.PopupVisible, new UIPropertyMetadata (false, PopupVisibleChanged));
 
         protected static void PopupVisibleChanged (DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -214,6 +214,6 @@ namespace Limaki.View.WpfBackend {
         }
 
         #endregion
-    
     }
+
 }

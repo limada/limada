@@ -27,13 +27,13 @@ namespace Limaki.View.WpfBackend {
     public class SplitViewToolStripBackend : ToolStripBackend, ISplitViewToolStripBackend {
 
         public override void InitializeBackend (Limaki.View.IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (SplitViewToolStrip)frontend;
+            this.Frontend = (SplitViewToolStrip0)frontend;
             Compose();
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SplitViewToolStrip Frontend { get; protected set; }
+        public SplitViewToolStrip0 Frontend { get; protected set; }
 
         protected SplitViewMode _viewMode = SplitViewMode.GraphStream;
         [Browsable (false)]
@@ -61,27 +61,27 @@ namespace Limaki.View.WpfBackend {
             }
         }
 
-        private ToolStripButton GraphStreamViewButton { get; set; }
-        private ToolStripButton GraphGraphViewButton { get; set; }
+        private ToolStripButton0 GraphStreamViewButton { get; set; }
+        private ToolStripButton0 GraphGraphViewButton { get; set; }
 
-        private ToolStripButton GoBackButton { get; set; }
-        private ToolStripButton GoForwardButton { get; set; }
+        private ToolStripButton0 GoBackButton { get; set; }
+        private ToolStripButton0 GoForwardButton { get; set; }
 
         private ComboBox SheetCombo;
 
         protected override void Compose () {
             base.Compose ();
 
-            GraphStreamViewButton = new ToolStripButton {Command = Frontend.GraphStreamViewCommand, IsCheckable = true};
-            GraphGraphViewButton = new ToolStripButton {Command = Frontend.GraphGraphViewCommand, IsCheckable = true};
-            var toggleViewButton = new ToolStripButton {Command = Frontend.ToggleViewCommand};
-            var viewVisualNote = new ToolStripButton {Command = Frontend.OpenNewWindowCommand};
-            GoBackButton = new ToolStripButton {Command = Frontend.GoBackCommand};
-            GoForwardButton = new ToolStripButton {Command = Frontend.GoForwardCommand};
-            var goHomeButton = new ToolStripButton {Command = Frontend.GoHomeCommand};
-            var newSheetButton = new ToolStripButton {Command = Frontend.NewSheetCommand};
-            var newNoteButton = new ToolStripButton {Command = Frontend.NewNoteCommand};
-            var saveSheetButton = new ToolStripButton {Command = Frontend.SaveSheetCommand};
+            GraphStreamViewButton = new ToolStripButton0 {Command = Frontend.GraphStreamViewCommand, IsCheckable = true};
+            GraphGraphViewButton = new ToolStripButton0 {Command = Frontend.GraphGraphViewCommand, IsCheckable = true};
+            var toggleViewButton = new ToolStripButton0 {Command = Frontend.ToggleViewCommand};
+            var viewVisualNote = new ToolStripButton0 {Command = Frontend.OpenNewWindowCommand};
+            GoBackButton = new ToolStripButton0 {Command = Frontend.GoBackCommand};
+            GoForwardButton = new ToolStripButton0 {Command = Frontend.GoForwardCommand};
+            var goHomeButton = new ToolStripButton0 {Command = Frontend.GoHomeCommand};
+            var newSheetButton = new ToolStripButton0 {Command = Frontend.NewSheetCommand};
+            var newNoteButton = new ToolStripButton0 {Command = Frontend.NewNoteCommand};
+            var saveSheetButton = new ToolStripButton0 {Command = Frontend.SaveSheetCommand};
 
             SheetCombo = new ComboBox { Width = 100 };
             SheetCombo.Items.Clear ();

@@ -23,19 +23,19 @@ using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public class ToolStripButtonBackend0 : SWF.ToolStripButton, IToolStripCommandItem, IToolStripItem0 {
+    public class ToolStripButtonBackend0 : SWF.ToolStripButton, IToolStripCommandToggle0, IToolStripItem0 {
 
         public ToolStripButtonBackend0 () {
             ImageScaling = ToolStripItemImageScaling.None;
         }
 
-        public ToolStripCommand _command = null;
-        public ToolStripCommand Command {
+        public ToolStripCommand0 _command = null;
+        public ToolStripCommand0 Command {
             get { return _command; }
             set { ToolStripUtils.SetCommand(this, ref _command, value); }
         }
 
-        public IToolStripCommandItem ToggleOnClick { get; set; }
+        public IToolStripCommandToggle0 ToggleOnClick { get; set; }
 
         public new Xwt.Size Size {
             get { return base.Size.ToXwt(); }
@@ -51,7 +51,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         public string Label { get { return base.Text; } set { base.Text = value; } }
     }
 
-    public class ToolStripDropDownButtonBackend0 : SWF.ToolStripDropDownButton, IToolStripCommandItem, IToolStripItem0 {
+    public class ToolStripDropDownButtonBackend0 : SWF.ToolStripDropDownButton, IToolStripCommandToggle0, IToolStripItem0 {
         
         public ToolStripDropDownButtonBackend0 () {
             ImageScaling = ToolStripItemImageScaling.None;
@@ -83,13 +83,13 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         }
 
-        public ToolStripCommand _command = null;
-        public ToolStripCommand Command {
+        public ToolStripCommand0 _command = null;
+        public ToolStripCommand0 Command {
             get { return _command; }
             set { ToolStripUtils.SetCommand(this, ref _command, value); }
         }
 
-        public IToolStripCommandItem ToggleOnClick { get; set; }
+        public IToolStripCommandToggle0 ToggleOnClick { get; set; }
 
         public new Xwt.Size Size {
             get { return base.Size.ToXwt(); }
@@ -102,7 +102,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
     }
 
-    public class ToolStripMenuItemBackend0 : ToolStripMenuItem, IToolStripCommandItem, IToolStripItem0 {
+    public class ToolStripMenuItemBackend0 : ToolStripMenuItem, IToolStripCommandToggle0, IToolStripItem0 {
 
         public ToolStripMenuItemBackend0 () {
             ImageScaling = ToolStripItemImageScaling.None;
@@ -121,8 +121,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         public string Label { get { return base.Text; } set { base.Text = value; } }
 
-        public ToolStripCommand _command = null;
-        public ToolStripCommand Command {
+        public ToolStripCommand0 _command = null;
+        public ToolStripCommand0 Command {
             get { return _command; }
             set {
                 ToolStripUtils.SetCommand(this, ref _command, value);
@@ -130,7 +130,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             }
         }
 
-        public IToolStripCommandItem ToggleOnClick { get; set; }
+        public IToolStripCommandToggle0 ToggleOnClick { get; set; }
 
         public new Xwt.Size Size {
             get { return base.Size.ToXwt(); }

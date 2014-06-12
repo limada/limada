@@ -25,6 +25,7 @@ using Xwt.Backends;
 namespace Limaki.View.GtkBackend {
 
     public class GtkContextResourceLoader : ContextResourceLoader, IToolkitAware {
+
         public override void ApplyResources (IApplicationContext context) {
             var tk = Toolkit.CurrentEngine;
             //tk.RegisterBackend<SystemColorsBackend, XwtSystemColorsBackend>();
@@ -34,8 +35,12 @@ namespace Limaki.View.GtkBackend {
             var factories = context.Pooled<UsecaseFactories<ConceptUsecase>> ();
             factories.Add (new GtkUsecaseFactory ());
 
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripBackend, ToolStripBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripButtonBackend, ToolStripButtonBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripDropDownButtonBackend, ToolStripDropDownButtonBackend> ();
+
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend> ();
-            //VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend> ();
             //VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend> ();
             //VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend> ();
             //VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend> ();

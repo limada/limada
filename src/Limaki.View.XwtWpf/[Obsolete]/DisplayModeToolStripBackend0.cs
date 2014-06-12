@@ -17,33 +17,35 @@ using SW = System.Windows;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.View.XwtBackend;
+using System;
 
 namespace Limaki.View.WpfBackend {
 
-    public class DisplayModeToolStripBackend : ToolStripBackend, IDisplayModeToolStripBackend {
+    [Obsolete]
+    public class DisplayModeToolStripBackend0 : ToolStripBackend, IDisplayModeToolStripBackend {
 
         [Browsable (false)]
         [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-        public DisplayModeToolStrip Frontend { get; protected set; }
+        public DisplayModeToolStrip0 Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (DisplayModeToolStrip) frontend;
+            this.Frontend = (DisplayModeToolStrip0) frontend;
             Compose ();
         }
 
         private void Compose () {
 
-            var selectButton = new ToolStripDropDownButton { Command = Frontend.SelectCommand };
+            var selectButton = new ToolStripDropDownButton0 { Command = Frontend.SelectCommand };
             selectButton.AddItems (
-                new ToolStripButton { Command = Frontend.PanningCommand, ToggleOnClick = selectButton }
+                new ToolStripButton0 { Command = Frontend.PanningCommand, ToggleOnClick = selectButton }
             );
 
-            var zoomButton = new ToolStripDropDownButton { Command = Frontend.ZoomInOutCommand };
+            var zoomButton = new ToolStripDropDownButton0 { Command = Frontend.ZoomInOutCommand };
             zoomButton.AddItems (
-                new ToolStripButton { Command = Frontend.FitToScreenCommand },
-                new ToolStripButton { Command = Frontend.FitToWidthCommand },
-                new ToolStripButton { Command = Frontend.FitToHeigthCommand },
-                new ToolStripButton { Command = Frontend.OriginalSizeCommand }
+                new ToolStripButton0 { Command = Frontend.FitToScreenCommand },
+                new ToolStripButton0 { Command = Frontend.FitToWidthCommand },
+                new ToolStripButton0 { Command = Frontend.FitToHeigthCommand },
+                new ToolStripButton0 { Command = Frontend.OriginalSizeCommand }
             );
 
             zoomButton.PreviewMouseDown += (s, e) => {

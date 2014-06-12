@@ -13,14 +13,15 @@
  */
 
 using System.Collections.Generic;
+
 namespace Limaki.View.GtkBackend {
 
     public class ToolStripDropDownButton : ToolStripButton {
 
         protected override Xwt.ButtonType ButtonType { get { return Xwt.ButtonType.DropDown; } }
 
-        private ICollection<Gtk.Widget> _children = null;
-        protected ICollection<Gtk.Widget> Children { get { return _children ?? (_children = new List<Gtk.Widget> ()); } }
+        private IList<Gtk.Widget> _children = null;
+        protected IList<Gtk.Widget> Children { get { return _children ?? (_children = new List<Gtk.Widget> ()); } }
 
         public void AddItems (params Gtk.Widget[] children) {
             foreach (var child in children)
@@ -32,81 +33,24 @@ namespace Limaki.View.GtkBackend {
             if (e.Event.Button != 1)
                 return;
             if (PopupWindow == null) {
-                ShowDropDown();
+                ShowDropDown ();
             } else {
                 HideDropDown ();
             }
         }
 
-        private void ShowDropDown () {
+        protected void ShowDropDown () {
             if (HasChildren) {
                 PopupWindow = PopupWindow.Show (this.ButtonWidget, Xwt.Rectangle.Zero, ChildBox);
             }
         }
 
-        private void HideDropDown () {
+        protected void HideDropDown () {
             if (PopupWindow == null)
                 return;
             PopupWindow.Hide ();
             PopupWindow = null;
         }
-
-        #region prototype
-        private void ShowMenu () {
-            var menu = CreateMenu ();
-
-            if (menu != null) {
-                isOpen = true;
-                var button = this.ButtonWidget as Gtk.Button;
-                var oldRelief = Gtk.ReliefStyle.Normal;
-                if (button != null) {
-                    //make sure the button looks depressed
-                    oldRelief = button.Relief;
-                    button.Relief = Gtk.ReliefStyle.Normal;
-                }
-                this.ButtonWidget.State = Gtk.StateType.Active;
-                //clean up after the menu's done
-                menu.Hidden += (s, args) => {
-                    if (button != null) {
-                        button.Relief = oldRelief;
-                    }
-                    isOpen = false;
-                    this.ButtonWidget.State = Gtk.StateType.Normal;
-
-                    //FIXME: for some reason the menu's children don't get activated if we destroy 
-                    //directly here, so use a timeout to delay it
-                    GLib.Timeout.Add (100, delegate {
-                        //menu.Destroy ();
-                        return false;
-                    });
-                };
-                menu.Popup (null, null, PositionFunc, 1, Gtk.Global.CurrentEventTime);
-            }
-        }
-
-        void PositionFunc (Gtk.Widget mn, out int x, out int y, out bool push_in) {
-            var w = (Gtk.Widget)this;
-            w.GdkWindow.GetOrigin (out x, out y);
-            var rect = w.Allocation;
-            x += rect.X;
-            y += rect.Y + rect.Height;
-
-            //if the menu would be off the bottom of the screen, "drop" it upwards
-            if (y + mn.Requisition.Height > w.Screen.Height) {
-                y -= mn.Requisition.Height;
-                y -= rect.Height;
-            }
-
-            //let GTK reposition the button if it still doesn't fit on the screen
-            push_in = true;
-        }
-
-        private Gtk.Menu CreateMenu () {
-            return null;
-        }
-
-        #endregion
-
 
         public bool HasChildren { get { return _children != null && _children.Count > 0; } }
 
@@ -116,15 +60,15 @@ namespace Limaki.View.GtkBackend {
         public Gtk.VBox ChildBox {
             get {
                 if (_childBox == null) {
-                    _childBox = new Gtk.VBox (false,3);
+                    _childBox = new Gtk.VBox (false, 3);
                     foreach (var w in Children) {
                         _childBox.PackStart (w, false, false, 3);
-                        var b = w as ToolStripButton;
+                        var b = w as ToolStripButton0;
                         if (b != null) {
-                            b.Click -= b_Click;
-                            b.Click += b_Click;
-                            b.LeaveNotifyEvent += b_Click;
-                            b.GrabNotify += b_Click;
+                            b.Click -= ChildClicked;
+                            b.Click += ChildClicked;
+                            b.LeaveNotifyEvent += ChildClicked;
+                            b.GrabNotify += ChildClicked;
                         }
                     }
 
@@ -133,7 +77,7 @@ namespace Limaki.View.GtkBackend {
             }
         }
 
-        void b_Click (object sender, System.EventArgs e) {
+        protected void ChildClicked (object sender, System.EventArgs e) {
             HideDropDown ();
         }
     }

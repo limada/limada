@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2010-2013 Lytico
+ * Copyright (C) 2010-2014 Lytico
  *
  * http://www.limada.org
  * 
@@ -22,27 +22,27 @@ using Xwt.Backends;
 
 namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
-    [BackendType(typeof(IDisplayModeToolStripBackend))]
-    public class DisplayModeToolStrip : DisplayToolStrip<object, IDisplayModeToolStripBackend> {
+    [BackendType (typeof (IDisplayModeToolStripBackend))]
+    public class DisplayModeToolStrip : DisplayToolStrip<object> {
 
-        public ToolStripCommand SelectCommand { get; set; }
-        public ToolStripCommand PanningCommand { get; set; }
+        public IToolStripCommand SelectCommand { get; set; }
+        public IToolStripCommand PanningCommand { get; set; }
 
-        public ToolStripCommand ZoomInOutCommand { get; set; }
-        public ToolStripCommand FitToWidthCommand { get; set; }
-        public ToolStripCommand FitToHeigthCommand { get; set; }
-        public ToolStripCommand FitToScreenCommand { get; set; }
-        public ToolStripCommand OriginalSizeCommand { get; set; }
+        public IToolStripCommand ZoomInOutCommand { get; set; }
+        public IToolStripCommand FitToWidthCommand { get; set; }
+        public IToolStripCommand FitToHeigthCommand { get; set; }
+        public IToolStripCommand FitToScreenCommand { get; set; }
+        public IToolStripCommand OriginalSizeCommand { get; set; }
 
 
         public DisplayModeToolStrip () {
-            Compose();
+            Compose ();
         }
 
         protected void DisplayAction (Action<IDisplay> act) {
             var display = CurrentDisplay as IDisplay;
             if (display != null)
-                act(display);
+                act (display);
         }
 
         protected void ZoomAction (Action<IZoomTarget> act) {
@@ -58,23 +58,23 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             Action<IDisplay, bool> selectAction = (display, value) => display.SelectAction.Enabled = value;
             Action<IDisplay, bool> panningAction = (display, value) => display.MouseScrollAction.Enabled = value;
 
-            var actionGroup = new List<Action<IDisplay, bool>>();
-            actionGroup.Add(selectAction);
-            actionGroup.Add(panningAction);
+            var actionGroup = new List<Action<IDisplay, bool>> ();
+            actionGroup.Add (selectAction);
+            actionGroup.Add (panningAction);
             Action<Action<IDisplay, bool>, bool> toogleAction = (ga, value) => {
                 foreach (var a in actionGroup)
-                    if (ga == a) DisplayAction(d => a(d, value)); else DisplayAction(d => a(d, !value));
+                    if (ga == a) DisplayAction (d => a (d, value)); else DisplayAction (d => a (d, !value));
             };
 
             SelectCommand = new ToolStripCommand {
-                Action = s => toogleAction(selectAction, true),
+                Action = s => toogleAction (selectAction, true),
                 Image = Iconery.Select,
                 Size = DefaultSize,
                 ToolTipText = "Select"
             };
 
             PanningCommand = new ToolStripCommand {
-                Action = s => toogleAction(panningAction, true),
+                Action = s => toogleAction (panningAction, true),
                 Image = Iconery.Panning,
                 Size = DefaultSize,
                 ToolTipText = "Move"
@@ -87,32 +87,51 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             };
 
             FitToWidthCommand = new ToolStripCommand {
-                Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToWidth),
+                Action = s => ZoomAction (d => d.ZoomState = ZoomState.FitToWidth),
                 Image = Iconery.FitToWidth,
                 Size = DefaultSize,
                 Label = "Fit to Width"
             };
 
             FitToHeigthCommand = new ToolStripCommand {
-                Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToHeigth),
+                Action = s => ZoomAction (d => d.ZoomState = ZoomState.FitToHeigth),
                 Image = Iconery.FitToHeigth,
                 Size = DefaultSize,
                 Label = "Fit to Heigth",
             };
 
             FitToScreenCommand = new ToolStripCommand {
-                Action = s => ZoomAction(d => d.ZoomState = ZoomState.FitToScreen),
+                Action = s => ZoomAction (d => d.ZoomState = ZoomState.FitToScreen),
                 Image = Iconery.FitToScreen,
                 Size = DefaultSize,
                 Label = "Fit to Screen"
             };
 
             OriginalSizeCommand = new ToolStripCommand {
-                Action = s => ZoomAction(d => d.ZoomState = ZoomState.Original),
+                Action = s => ZoomAction (d => d.ZoomState = ZoomState.Original),
                 Image = Iconery.OriginalSize,
                 Size = DefaultSize,
                 Label = "Original size"
             };
+
+
+            var selectButton = new ToolStripDropDownButton (SelectCommand);
+            selectButton.AddItems(
+                new ToolStripButton (PanningCommand){ToggleOnClick = selectButton}
+            );
+
+            var zoomButton = new ToolStripDropDownButton (ZoomInOutCommand);
+            zoomButton.AddItems (
+                new ToolStripButton (FitToScreenCommand),
+                new ToolStripButton (FitToWidthCommand),
+                new ToolStripButton (FitToHeigthCommand),
+                new ToolStripButton (OriginalSizeCommand)
+            );
+
+            this.AddItems (
+               selectButton,
+               zoomButton
+            );
         }
 
 
@@ -127,12 +146,12 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
             if (display != null) {
                 if (display.ActiveVidget == null) {
-                    var action = display.EventControler.GetAction<ZoomAction>();
+                    var action = display.EventControler.GetAction<ZoomAction> ();
                     if (zoomIn)
-                        action.ZoomIn();
+                        action.ZoomIn ();
                     else
-                        action.ZoomOut();
-                    display.Viewport.UpdateZoom();
+                        action.ZoomOut ();
+                    display.Viewport.UpdateZoom ();
                     return;
                 }
             }
@@ -143,7 +162,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     zoomTarget.ZoomFactor = zoomTarget.ZoomFactor * 1.1f;
                 else
                     zoomTarget.ZoomFactor = zoomTarget.ZoomFactor / 1.1f;
-                zoomTarget.UpdateZoom();
+                zoomTarget.UpdateZoom ();
             }
         }
 

@@ -12,10 +12,12 @@
  * 
  */
 
+using System;
 namespace Limaki.View.Vidgets {
 
-    public interface IToolStripCommandItem {
-        ToolStripCommand Command { get; set; }
-        IToolStripCommandItem ToggleOnClick { get; set; }
+    [Obsolete]
+    public interface IToolStripCommandToggle0 {
+        ToolStripCommand0 Command { get; set; }
+        IToolStripCommandToggle0 ToggleOnClick { get; set; }
     }
 }

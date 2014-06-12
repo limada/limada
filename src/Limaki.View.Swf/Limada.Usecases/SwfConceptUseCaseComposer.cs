@@ -116,10 +116,10 @@ namespace Limada.Usecases {
                 this.MenuStrip,
                 new ToolStrip[] {
                     useCase.ArrangerToolStrip.Backend as ToolStrip,
-                    useCase.SplitViewToolStrip.Backend as ToolStrip,
-                    useCase.MarkerToolStrip.Backend as ToolStrip,
-                    useCase.LayoutToolStrip.Backend as ToolStrip,
-                    useCase.DisplayDisplayToolStrip.Backend as ToolStrip,
+                    useCase.SplitViewToolStrip0.Backend as ToolStrip,
+                    useCase.MarkerToolStrip0.Backend as ToolStrip,
+                    useCase.LayoutToolStrip0.Backend as ToolStrip,
+                    useCase.DisplayModeToolStrip.Backend as ToolStrip,
                 });
 
         }

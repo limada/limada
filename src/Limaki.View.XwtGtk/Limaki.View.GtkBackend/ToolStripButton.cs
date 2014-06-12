@@ -13,20 +13,18 @@
  */
 
 using System;
-using Limaki.View.Vidgets;
+using System.Diagnostics;
 using Xwt.Backends;
 using Xwt.GtkBackend;
-using System.Diagnostics;
-
 
 namespace Limaki.View.GtkBackend {
 
-    public class ToolStripButton : Gtk.ToolItem, IToolStripCommandItem, IToolStripItem0 {
+    public class ToolStripButton : Gtk.ToolItem {
 
         public ToolStripButton (): base () {
             Compose ();
         }
-        
+
         public bool UseUnderline { get; set; }
 
         public string Label { get; set; }
@@ -42,7 +40,7 @@ namespace Limaki.View.GtkBackend {
         }
 
         protected virtual void Compose () {
-            AddEvents ((int) Gdk.EventMask.FocusChangeMask);
+            AddEvents ((int)Gdk.EventMask.FocusChangeMask);
             SetContent (Xwt.ContentPosition.Bottom);
         }
 
@@ -55,7 +53,7 @@ namespace Limaki.View.GtkBackend {
         [GLib.ConnectBefore]
         protected virtual void ButtonPressed (object o, Gtk.ButtonPressEventArgs args) {
             Trace.WriteLine ("ButtonPressed");
-            OnToolStripItemClick (o, new EventArgs ());
+            OnButtonClicked (o, new EventArgs ());
         }
 
         [GLib.ConnectBefore]
@@ -66,19 +64,6 @@ namespace Limaki.View.GtkBackend {
         }
 
         protected virtual Xwt.ButtonType ButtonType { get { return Xwt.ButtonType.Normal; } }
-
-        public IToolStripCommandItem ToggleOnClick { get; set; }
-
-        protected ToolStripCommand _command = null;
-        public ToolStripCommand Command {
-            get { return _command; }
-            set {
-                var first = _command == null;
-                VidgetUtils.SetCommand (this, ref _command, value);
-                if (first)
-                    Compose ();
-            }
-        }
 
         protected Xwt.Drawing.Image _image = null;
         public virtual Xwt.Drawing.Image Image {
@@ -97,13 +82,13 @@ namespace Limaki.View.GtkBackend {
             get {
                 if (_imageWidget == null) {
                     _imageWidget = new ImageBox (Xwt.Toolkit.Engine<GtkEngine> ().Context) {
-                                                                                               Yalign=0,
-                                                                                               Xalign=0,
-                                                                                           };
+                        Yalign = 0,
+                        Xalign = 0,
+                    };
                 }
                 if (this.Image != null && _imageWidget.Image.Backend != this.Image.GetBackend ()) {
                     _imageWidget.Image = this.Image.ToImageDescription ();
-                    _imageWidget.QueueDraw();
+                    _imageWidget.QueueDraw ();
                 }
                 return _imageWidget;
             }
@@ -115,17 +100,17 @@ namespace Limaki.View.GtkBackend {
         }
 
         public Xwt.Size Size {
-            get { return this.VidgetBackendSize (); } 
+            get { return this.VidgetBackendSize (); }
             set { this.VidgetBackendSize (value); }
         }
 
         protected event System.EventHandler _click;
-        public virtual new event System.EventHandler Click {
+        public virtual event System.EventHandler Click {
             add { _click += value; }
             remove { _click -= value; }
         }
 
-        protected void OnToolStripItemClick (object sender, EventArgs e) {
+        protected virtual void OnButtonClicked (object sender, EventArgs e) {
             if (_click != null)
                 _click (this, e);
         }
@@ -145,7 +130,7 @@ namespace Limaki.View.GtkBackend {
             }
 
             Gtk.Widget contentWidget = null;
-            
+
             if (label != null && Image == null) {
                 contentWidget = new Gtk.Label (label) { UseUnderline = this.UseUnderline };
 
@@ -155,7 +140,7 @@ namespace Limaki.View.GtkBackend {
                 contentWidget.ButtonPressEvent += this.ButtonPressed;
 
             } else if (label != null && Image != null) {
-                var box = position == Xwt.ContentPosition.Left || position == Xwt.ContentPosition.Right ? (Gtk.Box) new Gtk.HBox (false, 3) : (Gtk.Box) new Gtk.VBox (false, 3);
+                var box = position == Xwt.ContentPosition.Left || position == Xwt.ContentPosition.Right ? (Gtk.Box)new Gtk.HBox (false, 3) : (Gtk.Box)new Gtk.VBox (false, 3);
                 var lab = new Gtk.Label (label) { UseUnderline = this.UseUnderline };
 
                 if (position == Xwt.ContentPosition.Left || position == Xwt.ContentPosition.Top) {
@@ -169,14 +154,14 @@ namespace Limaki.View.GtkBackend {
                 contentWidget = box;
             }
 
-            if ( ButtonType == Xwt.ButtonType.DropDown) {
+            if (ButtonType == Xwt.ButtonType.DropDown) {
                 Gtk.Widget dropDownArrow = new Gtk.Arrow (Gtk.ArrowType.Down, Gtk.ShadowType.Out);
                 dropDownArrow = AllocEventBox (dropDownArrow);
                 dropDownArrow.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
                 dropDownArrow.ButtonPressEvent += this.DropDownPressed;
 
                 if (contentWidget != null) {
-                    var box = new Gtk.HBox (false,3);
+                    var box = new Gtk.HBox (false, 3);
                     box.PackStart (contentWidget, true, true, 3);
                     //box.PackStart (new Gtk.VSeparator (), true, true, 0);
                     box.PackStart (dropDownArrow, false, false, 0);
@@ -201,14 +186,14 @@ namespace Limaki.View.GtkBackend {
 
             var button = new Gtk.Button () {
                 Image = widget,
-                Label =this.Label,
+                Label = this.Label,
                 Visible = widget.Visible,
                 Sensitive = widget.Sensitive,
                 UseUnderline = this.UseUnderline
             };
             button.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
             button.ButtonPressEvent += this.ButtonPressed;
-            button.Clicked += this.OnToolStripItemClick;
+            button.Clicked += this.OnButtonClicked;
             GtkEngine.ReplaceChild (widget, button);
 
             return button;
@@ -217,7 +202,7 @@ namespace Limaki.View.GtkBackend {
         public Gtk.Widget AllocEventBox (Gtk.Widget widget, bool visibleWindow = false) {
             // Wraps the widget with an event box. Required for some
             // widgets such as Label which doesn't have its own gdk window
-            
+
             if (widget is Gtk.EventBox) {
                 ((Gtk.EventBox)widget).VisibleWindow = true;
                 return widget;

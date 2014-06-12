@@ -26,11 +26,11 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
             InitializeComponent();
         }
 
-        public new MarkerToolStrip Frontend { get; protected set; }
+        public new MarkerToolStrip0 Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
-            this.Frontend = (MarkerToolStrip)frontend;
+            this.Frontend = (MarkerToolStrip0)frontend;
         }
 
         public void Attach (IGraphScene<IVisual, IVisualEdge> scene) {

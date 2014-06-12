@@ -23,23 +23,23 @@ using ToolStripItem = System.Windows.Forms.ToolStripItem;
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
-    public partial class ArrangerToolStripBackend : ToolStripBackend, IArrangerToolStripBackend {
+    public partial class ArrangerToolStripBackend0 : ToolStripBackend, IArrangerToolStripBackend {
 
-        public ArrangerToolStripBackend () {
+        public ArrangerToolStripBackend0 () {
             InitializeComponent();
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new ArrangerToolStrip Frontend { get; protected set; }
+        public new ArrangerToolStrip0 Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
-            this.Frontend = (ArrangerToolStrip)frontend;
+            this.Frontend = (ArrangerToolStrip0)frontend;
             Compose();
         }
 
-        protected virtual void Compose () {
+        protected override void Compose () {
 
             var horizontalButton = new ToolStripDropDownButtonBackend0 { Command = Frontend.ArrangeLeftCommand, DisplayStyle = ToolStripItemDisplayStyle.Image };
             horizontalButton.DropDownItems.AddRange(new ToolStripItem[] {

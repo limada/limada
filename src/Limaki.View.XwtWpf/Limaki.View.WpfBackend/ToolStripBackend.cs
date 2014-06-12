@@ -22,11 +22,18 @@ using System;
 
 namespace Limaki.View.WpfBackend {
 
-    public abstract class ToolStripBackend : ToolBar, IToolStripBackend {
+    public class ToolStripBackend : ToolBar, IToolStripBackend {
 
         #region IVidgetBackend
 
-        public abstract void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
+        public VidgetApplicationContext ApplicationContext { get; set; }
+
+        public ToolStrip Frontend { get; protected set; }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            ApplicationContext = context;
+            this.Frontend = (ToolStrip)frontend;
+        }
 
         public Xwt.Size Size { get { return this.VidgetBackendSize(); } }
 

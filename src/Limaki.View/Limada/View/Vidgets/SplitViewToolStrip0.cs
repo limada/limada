@@ -29,50 +29,50 @@ using Xwt.Backends;
 namespace Limada.View.Vidgets {
 
     [BackendType(typeof(ISplitViewToolStripBackend))]
-    public class SplitViewToolStrip : DisplayToolStrip<IGraphSceneDisplay<IVisual, IVisualEdge>, ISplitViewToolStripBackend> {
+    public class SplitViewToolStrip0 : DisplayToolStrip0<IGraphSceneDisplay<IVisual, IVisualEdge>, ISplitViewToolStripBackend> {
 
-        public ToolStripCommand GraphStreamViewCommand { get; set; }
-        public ToolStripCommand GraphGraphViewCommand { get; set; }
-        public ToolStripCommand ToggleViewCommand { get; set; }
+        public ToolStripCommand0 GraphStreamViewCommand { get; set; }
+        public ToolStripCommand0 GraphGraphViewCommand { get; set; }
+        public ToolStripCommand0 ToggleViewCommand { get; set; }
 
-        public ToolStripCommand OpenNewWindowCommand { get; set; }
+        public ToolStripCommand0 OpenNewWindowCommand { get; set; }
 
-        public ToolStripCommand GoBackCommand { get; set; }
-        public ToolStripCommand GoForwardCommand { get; set; }
-        public ToolStripCommand GoHomeCommand { get; set; }
+        public ToolStripCommand0 GoBackCommand { get; set; }
+        public ToolStripCommand0 GoForwardCommand { get; set; }
+        public ToolStripCommand0 GoHomeCommand { get; set; }
 
-        public ToolStripCommand NewSheetCommand { get; set; }
-        public ToolStripCommand NewNoteCommand { get; set; }
-        public ToolStripCommand SaveSheetCommand { get; set; }
+        public ToolStripCommand0 NewSheetCommand { get; set; }
+        public ToolStripCommand0 NewNoteCommand { get; set; }
+        public ToolStripCommand0 SaveSheetCommand { get; set; }
 
-        public SplitViewToolStrip () {
+        public SplitViewToolStrip0 () {
             Compose();
         }
 
         protected virtual void Compose () {
             var size = new Xwt.Size(36, 36);
 
-            GraphStreamViewCommand = new ToolStripCommand {
+            GraphStreamViewCommand = new ToolStripCommand0 {
                 Action = s => Backend.ViewMode = SplitView.ViewMode = SplitViewMode.GraphStream,
                 Image = Iconery.GraphContentView,
                 Size = size,
                 ToolTipText = "show contents"
             };
-            GraphGraphViewCommand = new ToolStripCommand {
+            GraphGraphViewCommand = new ToolStripCommand0 {
                 Action = s => Backend.ViewMode = SplitView.ViewMode = SplitViewMode.GraphGraph,
                 Image = Iconery.GraphGraphView,
                 Size = size,
                 ToolTipText = "show tiled graph"
             };
 
-            ToggleViewCommand = new ToolStripCommand {
+            ToggleViewCommand = new ToolStripCommand0 {
                 Action = s => SplitView.ToggleView(),
                 Image = Iconery.ToggleView,
                 Size = size,
                 ToolTipText = "toogle view"
             };
 
-            OpenNewWindowCommand = new ToolStripCommand {
+            OpenNewWindowCommand = new ToolStripCommand0 {
                 Action = s => SplitView.ShowInNewWindow (),
                 Image = Iconery.NewViewVisualNote,
                 Size = size,
@@ -85,40 +85,40 @@ namespace Limada.View.Vidgets {
                                 Backend.CheckBackForward(SplitView);
                             }
                         };
-            GoBackCommand = new ToolStripCommand {
+            GoBackCommand = new ToolStripCommand0 {
                 Action = s => goBackOrForward(false),
                 Image = Iconery.GoPrevious,
                 Size = size,
                 ToolTipText = "navigate back"
             };
-            GoForwardCommand = new ToolStripCommand {
+            GoForwardCommand = new ToolStripCommand0 {
                 Action = s => goBackOrForward(true),
                 Image = Iconery.GoNext,
                 Size = size,
                 ToolTipText = "navigate forward"
             };
-            GoHomeCommand = new ToolStripCommand {
+            GoHomeCommand = new ToolStripCommand0 {
                 Action = s => SplitView.GoHome(),
                 Image = Iconery.GoHome,
                 Size = size,
                 ToolTipText = "go to favorites"
             };
 
-            NewSheetCommand = new ToolStripCommand {
+            NewSheetCommand = new ToolStripCommand0 {
                 Action = s => SplitView.NewSheet(),
                 Image = Iconery.NewSheet,
                 Size = size,
                 ToolTipText = "new sheet"
             };
 
-            NewNoteCommand = new ToolStripCommand {
+            NewNoteCommand = new ToolStripCommand0 {
                 Action = s => SplitView.NewNote(),
                 Image = Iconery.NewNote,
                 Size = size,
                 ToolTipText = "new note"
             };
 
-            SaveSheetCommand = new ToolStripCommand {
+            SaveSheetCommand = new ToolStripCommand0 {
                 Action = s => SplitView.SaveDocument(),
                 Image = Iconery.SaveContent,
                 Size = size,

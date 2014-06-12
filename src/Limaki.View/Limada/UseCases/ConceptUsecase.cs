@@ -170,10 +170,11 @@ namespace Limada.UseCases {
         public FavoriteManager FavoriteManager { get; set; }
 
         public ArrangerToolStrip ArrangerToolStrip { get; set; }
-        public DisplayModeToolStrip DisplayDisplayToolStrip { get; set; }
-        public SplitViewToolStrip SplitViewToolStrip { get; set; }
-        public LayoutToolStrip LayoutToolStrip { get; set; }
-        public MarkerToolStrip MarkerToolStrip { get; set; }
+        public DisplayModeToolStrip DisplayModeToolStrip { get; set; }
+
+        public SplitViewToolStrip0 SplitViewToolStrip0 { get; set; }
+        public LayoutToolStrip0 LayoutToolStrip0 { get; set; }
+        public MarkerToolStrip0 MarkerToolStrip0 { get; set; }
 
         public Func<object> GetCurrentControl { get; set; }
 

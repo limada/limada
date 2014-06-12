@@ -75,6 +75,9 @@
     <Compile Include="Limaki.View\ContentViewers\ImageContentViewer.cs" />
     <Compile Include="Limaki.View\Vidgets\IWebBrowserEx.cs" />
     <Compile Include="Limaki.View\Vidgets\FileDialogVidget.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolStripButton.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolStripCommand0.cs" />
+    <Compile Include="Limaki.View\Vidgets\ToolStripDropDownButton.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripItem.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripItemCollection.cs" />
     <Compile Include="Limaki.View\Vidgets\VidgetUtils.cs" />
@@ -94,6 +97,9 @@
     <Compile Include="Limaki.View\Viz\Mesh\GraphSceneMeshVisitor.cs" />
     <Compile Include="Limaki.View\Viz\Mesh\GraphSceneMeshBackHandler.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStrip.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\ArrangerToolStrip.cs" />
+    <Compile Include="[Obsolete]\DisplayModeToolStrip0.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\DisplayToolStrip.cs" />
     <Compile Include="Limaki.View\Viz\Visuals\VisualGraphSceneMeshEvents.cs" />
     <Compile Include="Limaki.View\Viz\Visuals\VisualGraphSceneMesh.cs" />
     <Compile Include="Limaki.View\GraphScene\GraphSceneExtensions.cs" />
@@ -111,14 +117,14 @@
     <Compile Include="Limaki.View\ContentViewers\TextContentViewerWithToolstrip.cs" />
     <Compile Include="Limaki.WebServer\WebResponseBase.cs" />
     <Compile Include="Limaki.Usecases\Vidgets\ISplitViewBackend.cs" />
-    <Compile Include="Limaki.View\Vidgets\IToolStripCommandItem.cs" />
+    <Compile Include="Limaki.View\Vidgets\IToolStripCommandToggle0.cs" />
     <Compile Include="Limaki.View\Vidgets\IToolStripItem0.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripCommand.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\DisplayModeToolStrip.cs" />
-    <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\LayoutToolStrip.cs" />
-    <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\MarkerToolStrip.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\LayoutToolStrip0.cs" />
+    <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\MarkerToolStrip0.cs" />
     <Compile Include="Limada\View\Vidgets\SplitViewDumnmy.cs" />
-    <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\DisplayToolStrip.cs" />
+    <Compile Include="[Obsolete]\DisplayToolStrip0.cs" />
     <Compile Include="Limaki.View\Vidgets\CanvasVidget.cs" />
     <Compile Include="Limaki.View\Vidgets\ITextViewerBackend.cs" />
     <Compile Include="Limaki.View\Vidgets\ITextViewerWithToolstripBackend.cs" />
@@ -364,9 +370,9 @@
     <Compile Include="Limaki.WebServer\WebServerBase.cs" />
     <Compile Include="Limaki.View\ContentViewers\ContentVisualViewerProvider.cs" />
     <Compile Include="Limaki.View\ContentViewers\ContentVisualViewer.cs" />
-    <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\ArrangerToolStrip.cs" />
+    <Compile Include="[Obsolete]\ArrangerToolStrip0.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\IMarkerTool.cs" />
-    <Compile Include="Limada\View\Vidgets\SplitViewToolStrip.cs" />
+    <Compile Include="Limada\View\Vidgets\SplitViewToolStrip0.cs" />
     <Compile Include="Limaki.View\ContentViewers\ContentViewer.cs" />
     <Compile Include="Limaki.View\Visuals\BruteForceIndex.cs" />
     <Compile Include="Limaki.View\Visuals\VisualGraphEntityTransformer.cs" />
@@ -411,9 +417,7 @@
     <Content Include="Xwt\RelatedDocs.txt" />
     <Content Include="Xwt\XwtProblems.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="[Obsolete]\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

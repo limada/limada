@@ -20,7 +20,7 @@ namespace Limaki.View.WpfBackend {
 
     public class ToolStripUtils {
 
-        public static void SetSize (IToolStripCommandItem item, Xwt.Size value) {
+        public static void SetSize (IToolStripCommandToggle0 item, Xwt.Size value) {
             var button = item as Button;
             if (button != null) {
                 button.RenderSize = value.ToWpf ();

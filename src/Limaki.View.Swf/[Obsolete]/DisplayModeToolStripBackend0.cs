@@ -24,18 +24,20 @@ using ToolStripItem = System.Windows.Forms.ToolStripItem;
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
-    public partial class DisplayModeToolStripBackend : ToolStripBackend, IDisplayModeToolStripBackend {
-        public DisplayModeToolStripBackend () {
+
+
+    public partial class DisplayModeToolStripBackend0 : ToolStripBackend, IDisplayModeToolStripBackend {
+        public DisplayModeToolStripBackend0 () {
             InitializeComponent();
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new DisplayModeToolStrip Frontend { get; protected set; }
+        public new DisplayModeToolStrip0 Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
-            this.Frontend = (DisplayModeToolStrip)frontend;
+            this.Frontend = (DisplayModeToolStrip0)frontend;
             Compose();
         }
 

@@ -1,5 +1,5 @@
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
-    partial class DisplayModeToolStripBackend {
+    partial class DisplayModeToolStripBackend0 {
         /// <summary> 
         /// Erforderliche Designervariable.
         /// </summary>

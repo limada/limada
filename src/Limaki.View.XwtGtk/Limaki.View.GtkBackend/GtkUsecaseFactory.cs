@@ -31,10 +31,13 @@ namespace Limaki.View.GtkBackend {
         protected void AddToolbars (Xwt.Window xwtWindow, ConceptUsecase useCase) {
 
             var backend = xwtWindow.GetBackend () as Xwt.GtkBackend.WindowBackend;
- 
+            var toolBox = new Gtk.HBox (true, 2);
+
             var tb = useCase.ArrangerToolStrip.Backend as Gtk.Toolbar;
-            var toolBox = new Gtk.VBox (true, 2) ;
-            toolBox.PackStart (tb, false, false, 0);
+            toolBox.PackStart (tb, false, true, 0);
+
+            tb = useCase.DisplayModeToolStrip.Backend as Gtk.Toolbar;
+            toolBox.PackStart (tb, false, true, 0);
 
             var mainBox = backend.MainBox;
             mainBox.PackStart (toolBox, false, false, 0);

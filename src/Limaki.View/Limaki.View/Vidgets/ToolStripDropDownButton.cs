@@ -16,27 +16,28 @@ using Xwt.Backends;
 
 namespace Limaki.View.Vidgets {
 
-    [BackendType (typeof (IToolStripBackend))]
-    public class ToolStrip : Vidget, IToolStripItemContainer {
+    [BackendType (typeof (IToolStripDropDownButtonBackend))]
+    public class ToolStripDropDownButton : ToolStripButton, IToolStripItemContainer {
 
-        private ToolStripItemCollection _items;
-        public ToolStripItemCollection Items {
-            get { return _items ?? (_items = new ToolStripItemCollection (this)); }
-        }
+        public ToolStripDropDownButton () { } 
 
-        private IToolStripBackend _backend = null;
-        public new virtual IToolStripBackend Backend {
-            get { return _backend ?? (_backend = BackendHost.Backend as IToolStripBackend); } 
+        public ToolStripDropDownButton (IToolStripCommand command) : base (command) { }
+
+        private IToolStripDropDownButtonBackend _backend = null;
+
+        public new virtual IToolStripDropDownButtonBackend Backend {
+            get { return _backend ?? (_backend = BackendHost.Backend as IToolStripDropDownButtonBackend); } 
             set { _backend = value; }
         }
+
+        private ToolStripItemCollection _items;
+        public ToolStripItemCollection Items { get { return _items ?? (_items = new ToolStripItemCollection (this)); } }
 
         public void AddItems (params ToolStripItem[] items) {
             foreach (var item in items)
                 Items.Add (item);
 
         }
-
-        public override void Dispose () { }
 
         void IToolStripItemContainer.InsertItem (int index, ToolStripItem item) {
             Backend.InsertItem (index, (IToolStripItemBackend) item.Backend);
@@ -45,12 +46,11 @@ namespace Limaki.View.Vidgets {
         void IToolStripItemContainer.RemoveItem (ToolStripItem item) {
             Backend.RemoveItem ((IToolStripItemBackend) item.Backend);
         }
+
+        public override void Dispose () {
+        }
     }
 
-    public interface IToolStripItemBackendContainer {
-        void InsertItem (int index, IToolStripItemBackend toolStripItemBackend);
-        void RemoveItem (IToolStripItemBackend toolStripItemBackend);
-    }
+    public interface IToolStripDropDownButtonBackend : IToolStripButtonBackend, IToolStripItemBackendContainer { }
 
-    public interface IToolStripBackend : IVidgetBackend, IToolStripItemBackendContainer { }
 }

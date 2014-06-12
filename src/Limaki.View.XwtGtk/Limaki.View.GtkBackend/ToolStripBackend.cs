@@ -18,14 +18,17 @@ using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.GtkBackend {
 
-    public abstract class ToolStripBackend : Gtk.Toolbar, IToolStripBackend {
+    public class ToolStripBackend : Gtk.Toolbar, IToolStripBackend {
 
         #region IVidgetBackend
 
         public VidgetApplicationContext ApplicationContext { get; set; }
 
+        public ToolStrip Frontend { get; protected set; }
+
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             ApplicationContext = context;
+            this.Frontend = (ToolStrip)frontend;
         }
 
         public Xwt.Size Size { get { return this.VidgetBackendSize(); } }

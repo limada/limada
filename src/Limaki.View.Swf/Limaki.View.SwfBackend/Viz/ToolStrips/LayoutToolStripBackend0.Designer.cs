@@ -13,7 +13,7 @@
  */
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
-    partial class LayoutToolStripBackend {
+    partial class LayoutToolStripBackend0 {
         /// <summary> 
         /// Erforderliche Designervariable.
         /// </summary>

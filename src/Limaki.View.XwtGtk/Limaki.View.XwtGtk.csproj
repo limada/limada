@@ -50,7 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Limaki.View.GtkBackend\ArrangerToolStripBackend.cs" />
+    <Compile Include="Limaki.View.GtkBackend\CustomToolStripBackends.cs" />
+    <Compile Include="[Obsolete]\ArrangerToolStripBackend0.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkBackendHelper.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkContextResourceLoader.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkSystemInformation.cs" />
@@ -58,7 +59,11 @@
     <Compile Include="Limaki.View.GtkBackend\PopupWindow.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripButton.cs" />
+    <Compile Include="[Obsolete]\ToolStripButton0.cs" />
+    <Compile Include="Limaki.View.GtkBackend\ToolStripButtonBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripDropDownButton.cs" />
+    <Compile Include="[Obsolete]\ToolStripDropDownButton0.cs" />
+    <Compile Include="Limaki.View.GtkBackend\ToolStripDropDownButtonBackend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +84,7 @@
       <Name>Limaki.View</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

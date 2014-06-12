@@ -41,10 +41,14 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             RegisterBackend<ITextOkCancelBoxBackend, TextOkCancelBoxBackend> ();
             RegisterBackend<IDigidocViewerBackend, DigidocViewerBackend>();
 
+            RegisterBackend<IToolStripBackend, ToolStripBackend> ();
+            RegisterBackend<IToolStripButtonBackend, ToolStripButtonBackend> ();
+            RegisterBackend<IToolStripDropDownButtonBackend, ToolStripDropDownButtonBackend> ();
+
             RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend>();
             RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend>();
             RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend>();
-            RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend>();
+            RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend0>();
             RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend>();
 
             RegisterBackend<ICanvasVidgetBackend, CanvasVidgetBackend>();

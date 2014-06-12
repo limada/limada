@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2012-2013 Lytico
+ * Copyright (C) 2012-2014 Lytico
  *
  * http://www.limada.org
  * 
@@ -26,55 +26,24 @@ namespace Limaki.View.Vidgets {
         Size Size { get; set; }
     }
 
-    public class ToolStripCommand:IToolStripCommand {
+    public class ToolStripCommand : IToolStripCommand {
+
+        public ToolStripCommand () { }
+
+        public ToolStripCommand (IToolStripCommand value) {
+            if (value != null) {
+                this.Image = value.Image;
+                this.Label = value.Label;
+                this.ToolTipText = value.ToolTipText;
+                this.Size = value.Size;
+                this.Action = value.Action;
+            }    
+        }
 
         public Action<object> Action { get; set; }
         public Image Image { get; set; }
         public string Label { get; set; }
         public string ToolTipText { get; set; }
         public Size Size { get; set; }
-
-        public virtual void DoAction(object sender, EventArgs e) {
-
-            if (Action != null)
-                Action(sender);
-
-            var commandItem = sender as IToolStripCommandItem;
-            if (commandItem != null && commandItem.ToggleOnClick != null)
-                ToggleCommand(commandItem, commandItem.ToggleOnClick);
-        }
-
-        [Obsolete]
-        public virtual void Attach(object target) {
-            var item = target as IToolStripItem0;
-            if (item != null) {
-                item.Image = this.Image;
-                item.Label = this.Label;
-                item.ToolTipText = this.ToolTipText;
-                item.Size = this.Size;
-                item.Click += this.DoAction;
-            }
-        }
-
-        [Obsolete]
-        public virtual void DeAttach(object target) {
-            var item = target as IToolStripItem0;
-            if (item != null) {
-                item.Image = null;
-                item.Label = string.Empty;
-                item.ToolTipText = string.Empty;
-                item.Click -= this.DoAction;
-            }
-        }
-
-        public virtual void ToggleCommand(IToolStripCommandItem item1, IToolStripCommandItem item2) {
-            if (item1 == item2)
-                return;
-
-            var command1 = item1.Command;
-            item1.Command = item2.Command;
-            item2.Command = command1;
-
-        }
     }
 }

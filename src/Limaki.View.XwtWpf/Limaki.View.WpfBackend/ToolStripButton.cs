@@ -12,23 +12,20 @@
  * 
  */
 
-using Limaki.Drawing.WpfBackend;
-using Limaki.View.Vidgets;
-using System.Windows.Controls;
-using Xwt.WPFBackend;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
+using Limaki.Drawing.WpfBackend;
 
 namespace Limaki.View.WpfBackend {
 
-    public class ToolStripButton : ToggleButton, IToolStripCommandItem, IToolStripItem0 {
+    public class ToolStripButton : ToggleButton {
 
-        public ToolStripButton() {
-            Compose();
-            base.Click += OnToolStripItemClick;
+        public ToolStripButton () {
+            Compose ();
+            base.Click += OnButtonClicked;
         }
 
         protected virtual void Compose () {
@@ -55,7 +52,7 @@ namespace Limaki.View.WpfBackend {
             style.Triggers.Add (trigger);
 
             // use ToolbarStyle as BaseStyle
-            var baseStyle = (Style) FindResource (ToolBar.ToggleButtonStyleKey);
+            var baseStyle = (Style)FindResource (ToolBar.ToggleButtonStyleKey);
             style.TargetType = baseStyle.TargetType;
             style.BasedOn = baseStyle;
             this.Style = style;
@@ -70,31 +67,11 @@ namespace Limaki.View.WpfBackend {
             base.OnChecked (e);
         }
 
-        protected ToolStripCommand _command = null;
-        public new ToolStripCommand Command {
-            get { return _command; }
-            set { VidgetUtils.SetCommand (this, ref _command, value); }
-        }
-
-        #region IToolStripItem0-Implementation
-
-        public virtual string Label { get; set; }
-
-        public virtual string ToolTipText {
-            get { return base.ToolTip.ToString (); }
-            set {
-                if (!string.IsNullOrEmpty (value))
-                    base.ToolTip = new ToolTip { Content = value };
-            }
-        }
-
-        public IToolStripCommandItem ToggleOnClick { get; set; }
-
         protected FixedBitmap _innerButton = null;
         protected FixedBitmap ButtonImage {
             get {
-                if(_innerButton==null) {
-                    _innerButton = new FixedBitmap();
+                if (_innerButton == null) {
+                    _innerButton = new FixedBitmap ();
                 }
                 return _innerButton;
             }
@@ -106,7 +83,7 @@ namespace Limaki.View.WpfBackend {
             set {
                 if (_image != value) {
                     _image = value;
-                    ButtonImage.Source = _image.ToWpf() as BitmapSource;
+                    ButtonImage.Source = _image.ToWpf () as BitmapSource;
                     ButtonImage.InvalidateMeasure ();
                     ButtonImage.InvalidateVisual ();
                     //ButtonImage.Width = _image.Width;
@@ -114,13 +91,23 @@ namespace Limaki.View.WpfBackend {
             }
         }
 
+        public virtual string Label { get; set; }
+
+        public virtual string ToolTipText {
+            get { return base.ToolTip.ToString (); }
+            set {
+                if (!string.IsNullOrEmpty (value))
+                    base.ToolTip = new ToolTip { Content = value };
+            }
+        }
+
         protected event System.EventHandler _click;
         public virtual new event System.EventHandler Click {
-            add { _click += value;  }
+            add { _click += value; }
             remove { _click -= value; }
         }
 
-        protected void OnToolStripItemClick (object sender, RoutedEventArgs e) {
+        protected virtual void OnButtonClicked (object sender, RoutedEventArgs e) {
             if (_click != null)
                 _click (this, e);
         }
@@ -132,8 +119,5 @@ namespace Limaki.View.WpfBackend {
                 //this.Height = value.Height;
             }
         }
-
-        #endregion
-
     }
 }

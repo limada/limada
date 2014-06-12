@@ -33,7 +33,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseDistri|AnyCPU'">
     <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE;SwfDragDrop</DefineConstants>
+    <DefineConstants>TRACE;DISTRI</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -130,17 +130,20 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\XulRunner.cs" />
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\DisplayModeToolStripBackend.cs">
+    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\CustomToolStripBackends.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\DisplayModeToolStripBackend.Designer.cs">
-      <DependentUpon>DisplayModeToolStripBackend.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend.cs">
+    <Compile Include="[Obsolete]\DisplayModeToolStripBackend0.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend.Designer.cs">
-      <DependentUpon>LayoutToolStripBackend.cs</DependentUpon>
+    <Compile Include="[Obsolete]\DisplayModeToolStripBackend0.Designer.cs">
+      <DependentUpon>DisplayModeToolStripBackend0.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend0.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend0.Designer.cs">
+      <DependentUpon>LayoutToolStripBackend0.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\MarkerToolStripBackend.cs">
       <SubType>Component</SubType>
@@ -226,11 +229,11 @@
     <Compile Include="Limaki.View.SwfBackend\Controls\StyleEditor.Designer.cs">
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\ArrangerToolStripBackend.cs">
+    <Compile Include="[Obsolete]\ArrangerToolStripBackend0.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\ArrangerToolStripBackend.Designer.cs">
-      <DependentUpon>ArrangerToolStripBackend.cs</DependentUpon>
+    <Compile Include="[Obsolete]\ArrangerToolStripBackend0.Designer.cs">
+      <DependentUpon>ArrangerToolStripBackend0.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\SplitViewToolStripBackend.cs">
       <SubType>Component</SubType>
@@ -238,7 +241,7 @@
     <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\SplitViewToolStripBackend.Designer.cs">
       <DependentUpon>SplitViewToolStripBackend.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripItemBackend0.cs">
+    <Compile Include="[Obsolete]\ToolStripItemBackend0.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripShapeComboBox.cs">
