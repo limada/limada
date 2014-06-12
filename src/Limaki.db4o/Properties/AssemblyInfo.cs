@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Limaki.Tests.Db4o")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("http:\\www.limada.org")]
+[assembly: AssemblyCompany("http://www.limada.org")]
 [assembly: AssemblyProduct("Limaki")]
-[assembly: AssemblyCopyright("Copyright © Lytico 2012")]
+[assembly: AssemblyCopyright("Copyright © Lytico 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,5 +33,5 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.10.0.*")]
-[assembly: AssemblyFileVersion("0.10.0.*")]
+[assembly: AssemblyVersion("0.11.0.*")]
+[assembly: AssemblyFileVersion("0.11.0.*")]
