@@ -306,7 +306,7 @@ namespace Gecko
 		/// <returns>true if Navigate started. false otherwise.</returns>
 		public bool Navigate(string url, GeckoLoadFlags loadFlags, string referrer, MimeInputStream postData, MimeInputStream headers)
 		{
-			if (string.IsNullOrEmpty(url))
+			if (string.IsNullOrEmpty(url)||this.Disposing||this.IsDisposed)
 				return false;
 
 			// added these from http://code.google.com/p/geckofx/issues/detail?id=5 so that it will work even if browser isn't currently shown
