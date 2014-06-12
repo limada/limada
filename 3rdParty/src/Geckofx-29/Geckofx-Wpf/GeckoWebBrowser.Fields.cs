@@ -37,5 +37,7 @@ namespace Gecko
 
 
 		public IntPtr JSContext { get; protected set; }
+
+        protected nsIWebNavigation WebNav { get { return _webNav; } }
 	}
 }
