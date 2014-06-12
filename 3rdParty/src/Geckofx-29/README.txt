@@ -2,6 +2,56 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v29.0-0.8 ==
+
+1. Improve how geckofx handles Popups.
+2. Improve handling of LoadContent calls that occur before geckofx control handle is created.
+3. Linux Makefile improvements.
+
+Thanks : Duan Yao, Jason Naylor, Steve McConnel.
+
+== v29.0-0.7 ==
+
+1. Linux only tag.
+
+== v29.0-0.6 ==
+
+1. Eliminate mandatory GeckoWebBrowser.UseCustomPrompt() call.
+2. Add FullscreenChange event.
+3. Fix GeckoWebBrowser.OnPrint in desing mode
+4. Allow LoadContent to be called if control handle is not yet created.
+5. Fix print issues (#50 and #54); add print button to geckfxtest.
+6. Use custom marshaler for nsAStringBase
+7. More flexible XULRunnerLocator
+
+Thanks : Duan Yao, vmas
+
+== v29.0-0.5 ==
+
+1. Linux only tag.
+
+== v29.0-0.4 ==
+
+1. Regenerate interfaces against released firefox 29
+2. Make GeckoWebBrowser.DocumentCompleted's event type more specific.
+3. Add NavigationError event to GeckoWebBrowser and make GeckoWebBrowser always fire events asynchronously.
+4. Make GeckoWebBrowser.Reload/GoBack()/GoForward() always fire events asynchronously.
+5. Fix GoBack()/GoForward() fired NavigationError event with correct url.
+6. Full Xpath Support. Before this you could not evaluate xpaths that return string, only ones that return nodes.
+7. Fix custom prompt by using default nsIPromptFactory implemetation
+8. Fix WindowMediator (Issue #11).
+9. Fix https://bitbucket.org/geckofx/geckofx-29.0/issue/33/having-a-problem-to-get-a-screenshot-of-a
+10. QuerySelector (CSS) & GetSingle (XPATH)
+11. GeckoPreference random AccessViolationException fix
+12. Fix https://bitbucket.org/geckofx/geckofx-29.0/issue/39/certoverrideservicerememberrecentbadcert
+13. PreferenceService - added typed getter & setter
+
+Thanks : Duan Yao, hheexx, vmas, zloyprotoss
+
+== v29.0-0.3 ==
+
+1. Linux only tag.
+
 == v29.0-0.2 ==
 
 1. Fix https://bitbucket.org/geckofx/geckofx-29.0/issue/8/geckowebbrowsernavigate-dont-have-to :

@@ -184,7 +184,7 @@ namespace Gecko
         /// 32-bit length field, followed by length PRUnichars.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReadString([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		void ReadString([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// Read an opaque byte array from the stream.
@@ -193,7 +193,7 @@ namespace Gecko
         ///
         /// @throws NS_ERROR_FAILURE if it can't read aLength bytes
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr, SizeParamIndex=0)]
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler", SizeParamIndex=0)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		string ReadBytes(uint aLength);
 		

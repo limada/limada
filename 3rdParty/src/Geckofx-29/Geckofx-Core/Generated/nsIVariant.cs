@@ -245,10 +245,10 @@ namespace Gecko
 		int GetAsID(ref System.IntPtr retval);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAsAString([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		void GetAsAString([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAsDOMString([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		void GetAsDOMString([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetAsACString([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
@@ -256,7 +256,7 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetAsAUTF8String([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
 		
-		[return: MarshalAs(UnmanagedType.LPStr)]
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		string GetAsString();
 		
@@ -277,7 +277,7 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetAsArray(ref ushort type, ref System.Guid iid, ref uint count, ref System.IntPtr ptr);
 		
-		[return: MarshalAs(UnmanagedType.LPStr, SizeParamIndex=0)]
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler", SizeParamIndex=0)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		string GetAsStringWithSize(ref uint size);
 		
@@ -355,10 +355,10 @@ namespace Gecko
 		new int GetAsID(ref System.IntPtr retval);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetAsAString([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		new void GetAsAString([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetAsDOMString([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		new void GetAsDOMString([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetAsACString([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
@@ -366,7 +366,7 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetAsAUTF8String([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
 		
-		[return: MarshalAs(UnmanagedType.LPStr)]
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new string GetAsString();
 		
@@ -387,7 +387,7 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new int GetAsArray(ref ushort type, ref System.Guid iid, ref uint count, ref System.IntPtr ptr);
 		
-		[return: MarshalAs(UnmanagedType.LPStr, SizeParamIndex=0)]
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler", SizeParamIndex=0)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new string GetAsStringWithSize(ref uint size);
 		
@@ -463,10 +463,10 @@ namespace Gecko
 		void SetAsID(System.IntPtr aValue);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAsAString([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aValue);
+		void SetAsAString([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAsDOMString([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aValue);
+		void SetAsDOMString([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAsACString([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aValue);

@@ -1,5 +1,7 @@
-﻿namespace Gecko {
-	public static class GeckoError {
+﻿namespace Gecko
+{
+	public static class GeckoError
+	{
 
 		/**
 		 * @name Standard Module Offset Code. Each Module should identify a unique number
@@ -67,7 +69,8 @@
 		public const int NS_ERROR_MODULE_BASE_OFFSET = 0x45;
 
 		/* Helpers for defining our enum, to be undef'd later */
-		public static uint SUCCESS_OR_FAILURE(uint sev, uint module, uint code) {
+		public static uint SUCCESS_OR_FAILURE(uint sev, uint module, uint code)
+		{
 			return (sev << 31) | ((module + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (code);
 		}
 
@@ -85,11 +88,11 @@
 		public const int NS_ERROR_ALREADY_INITIALIZED = NS_ERROR_BASE + 2;
 		/* Returned by a not implemented function */
 		public const int NS_ERROR_NOT_IMPLEMENTED = unchecked((int)0x80004001);
-		/* Returned when a given uinterface is not supported. */
-		public const int NS_NOuintERFACE = unchecked((int)0x80004002);
-		public const int NS_ERROR_NO_uintERFACE = NS_NOuintERFACE;
-		public const int NS_ERROR_INVALID_POuintER = unchecked((int)0x80004003);
-		public const int NS_ERROR_NULL_POuintER = NS_ERROR_INVALID_POuintER;
+		/* Returned when a given interface is not supported. */
+		public const int NS_NOINTERFACE = unchecked((int)0x80004002);
+		public const int NS_ERROR_NO_INTERFACE = NS_NOINTERFACE;
+		public const int NS_ERROR_INVALID_POINTER = unchecked((int)0x80004003);
+		public const int NS_ERROR_NULL_POINTER = NS_ERROR_INVALID_POINTER;
 		/* Returned when a function aborts */
 		public const int NS_ERROR_ABORT = unchecked((int)0x80004004);
 		/* Returned when a function fails */
@@ -133,7 +136,7 @@
 
 		public const int NS_SUCCESS_LOSS_OF_INSIGNIFICANT_DATA = (NS_ERROR_SEVERITY_SUCCESS << 31) | ((NS_ERROR_MODULE_XPCOM + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1);
 		/* Used by nsCycleCollectionParticipant */
-		public const int NS_SUCCESS_uintERRUPTED_TRAVERSE = (NS_ERROR_SEVERITY_SUCCESS << 31) | ((NS_ERROR_MODULE_XPCOM + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (2);
+		public const int NS_SUCCESS_INTERRUPTED_TRAVERSE = (NS_ERROR_SEVERITY_SUCCESS << 31) | ((NS_ERROR_MODULE_XPCOM + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (2);
 		/* DEPRECATED */
 		public const int NS_ERROR_SERVICE_NOT_FOUND = (NS_ERROR_SEVERITY_SUCCESS << 31) | ((NS_ERROR_MODULE_XPCOM + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (22);
 		/* DEPRECATED */
@@ -161,72 +164,72 @@
 		/* ======================================================================= */
 		/* 3: NS_ERROR_MODULE_GFX */
 		/* ======================================================================= */
-		/* error codes for pruinter device contexts */
-		/* Unix: pruint command (lp/lpr) not found */
-		public const int NS_ERROR_GFX_PRuintER_CMD_NOT_FOUND = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (2);
-		/* Unix: pruint command returned an error */
-		public const int NS_ERROR_GFX_PRuintER_CMD_FAILURE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (3);
-		/* no pruinter available (e.g. cannot find _any_ pruinter) */
-		public const int NS_ERROR_GFX_PRuintER_NO_PRuintER_AVAILABLE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (4);
-		/* _specified_ (by name) pruinter not found */
-		public const int NS_ERROR_GFX_PRuintER_NAME_NOT_FOUND = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (5);
-		/* access to pruinter denied */
-		public const int NS_ERROR_GFX_PRuintER_ACCESS_DENIED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (6);
-		/* invalid pruinter attribute (for example: unsupported paper size etc.) */
-		public const int NS_ERROR_GFX_PRuintER_INVALID_ATTRIBUTE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (7);
-		/* pruinter not "ready" (offline ?) */
-		public const int NS_ERROR_GFX_PRuintER_PRuintER_NOT_READY = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (9);
-		/* pruinter out of paper */
-		public const int NS_ERROR_GFX_PRuintER_OUT_OF_PAPER = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (10);
-		/* generic pruinter I/O error */
-		public const int NS_ERROR_GFX_PRuintER_PRuintER_IO_ERROR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (11);
-		/* pruint-to-file: could not open output file */
-		public const int NS_ERROR_GFX_PRuintER_COULD_NOT_OPEN_FILE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (12);
-		/* pruint-to-file: I/O error while pruinting to file */
-		public const int NS_ERROR_GFX_PRuintER_FILE_IO_ERROR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (13);
-		/* pruint preview: needs at least one pruinter */
-		public const int NS_ERROR_GFX_PRuintER_PRuintPREVIEW = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (14);
-		/* pruint: starting document */
-		public const int NS_ERROR_GFX_PRuintER_STARTDOC = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (15);
-		/* pruint: ending document */
-		public const int NS_ERROR_GFX_PRuintER_ENDDOC = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (16);
-		/* pruint: starting page */
-		public const int NS_ERROR_GFX_PRuintER_STARTPAGE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (17);
-		/* pruint: ending page */
-		public const int NS_ERROR_GFX_PRuintER_ENDPAGE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (18);
-		/* pruint: pruint while in pruint preview */
-		public const int NS_ERROR_GFX_PRuintER_PRuint_WHILE_PREVIEW = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (19);
-		/* requested page size not supported by pruinter */
-		public const int NS_ERROR_GFX_PRuintER_PAPER_SIZE_NOT_SUPPORTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (20);
+		/* error codes for printer device contexts */
+		/* Unix: print command (lp/lpr) not found */
+		public const int NS_ERROR_GFX_PRINTER_CMD_NOT_FOUND = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (2);
+		/* Unix: print command returned an error */
+		public const int NS_ERROR_GFX_PRINTER_CMD_FAILURE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (3);
+		/* no printer available (e.g. cannot find _any_ printer) */
+		public const int NS_ERROR_GFX_PRINTER_NO_PRINTER_AVAILABLE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (4);
+		/* _specified_ (by name) printer not found */
+		public const int NS_ERROR_GFX_PRINTER_NAME_NOT_FOUND = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (5);
+		/* access to printer denied */
+		public const int NS_ERROR_GFX_PRINTER_ACCESS_DENIED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (6);
+		/* invalid printer attribute (for example: unsupported paper size etc.) */
+		public const int NS_ERROR_GFX_PRINTER_INVALID_ATTRIBUTE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (7);
+		/* printer not "ready" (offline ?) */
+		public const int NS_ERROR_GFX_PRINTER_PRINTER_NOT_READY = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (9);
+		/* printer out of paper */
+		public const int NS_ERROR_GFX_PRINTER_OUT_OF_PAPER = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (10);
+		/* generic printer I/O error */
+		public const int NS_ERROR_GFX_PRintER_PRINTER_IO_ERROR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (11);
+		/* print-to-file: could not open output file */
+		public const int NS_ERROR_GFX_PRINTER_COULD_NOT_OPEN_FILE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (12);
+		/* print-to-file: I/O error while printing to file */
+		public const int NS_ERROR_GFX_PRINTER_FILE_IO_ERROR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (13);
+		/* print preview: needs at least one printer */
+		public const int NS_ERROR_GFX_PRINTER_PRINTPREVIEW = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (14);
+		/* print: starting document */
+		public const int NS_ERROR_GFX_PRINTER_STARTDOC = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (15);
+		/* print: ending document */
+		public const int NS_ERROR_GFX_PRINTER_ENDDOC = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (16);
+		/* print: starting page */
+		public const int NS_ERROR_GFX_PRINTER_STARTPAGE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (17);
+		/* print: ending page */
+		public const int NS_ERROR_GFX_PRINTER_ENDPAGE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (18);
+		/* print: print while in print preview */
+		public const int NS_ERROR_GFX_PRINTER_PRINT_WHILE_PREVIEW = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (19);
+		/* requested page size not supported by printer */
+		public const int NS_ERROR_GFX_PRINTER_PAPER_SIZE_NOT_SUPPORTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (20);
 		/* requested page orientation not supported */
-		public const int NS_ERROR_GFX_PRuintER_ORIENTATION_NOT_SUPPORTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (21);
-		/* requested colorspace not supported (like pruinting "color" on a
-			 "grayscale"-only pruinter) */
-		public const int NS_ERROR_GFX_PRuintER_COLORSPACE_NOT_SUPPORTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (22);
+		public const int NS_ERROR_GFX_PRINTER_ORIENTATION_NOT_SUPPORTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (21);
+		/* requested colorspace not supported (like printing "color" on a
+			 "grayscale"-only printer) */
+		public const int NS_ERROR_GFX_PRINTER_COLORSPACE_NOT_SUPPORTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (22);
 		/* too many copies requested */
-		public const int NS_ERROR_GFX_PRuintER_TOO_MANY_COPIES = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (23);
+		public const int NS_ERROR_GFX_PRINTER_TOO_MANY_COPIES = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (23);
 		/* driver configuration error */
-		public const int NS_ERROR_GFX_PRuintER_DRIVER_CONFIGURATION_ERROR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (24);
-		/* The document is still being loaded, can't Pruint Preview */
-		public const int NS_ERROR_GFX_PRuintER_DOC_IS_BUSY_PP = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (25);
-		/* The document was asked to be destroyed while we were preparing pruinting */
-		public const int NS_ERROR_GFX_PRuintER_DOC_WAS_DESTORYED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (26);
-		/* Cannot Pruint or Pruint Preview XUL Documents */
-		public const int NS_ERROR_GFX_PRuintER_NO_XUL = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (27);
-		/* The toolkit no longer supports the Pruint Dialog (for embedders) */
-		public const int NS_ERROR_GFX_NO_PRuintDIALOG_IN_TOOLKIT = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (28);
-		/* The was wasn't any Pruint Prompt service registered (this shouldn't happen) */
-		public const int NS_ERROR_GFX_NO_PRuintROMPTSERVICE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (29);
-		/* requested plex mode not supported by pruinter */
-		public const int NS_ERROR_GFX_PRuintER_PLEX_NOT_SUPPORTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (30);
+		public const int NS_ERROR_GFX_PRINTER_DRIVER_CONFIGURATION_ERROR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (24);
+		/* The document is still being loaded, can't Print Preview */
+		public const int NS_ERROR_GFX_PRINTER_DOC_IS_BUSY_PP = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (25);
+		/* The document was asked to be destroyed while we were preparing printing */
+		public const int NS_ERROR_GFX_PRINTER_DOC_WAS_DESTORYED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (26);
+		/* Cannot Print or Print Preview XUL Documents */
+		public const int NS_ERROR_GFX_PRINTER_NO_XUL = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (27);
+		/* The toolkit no longer supports the Print Dialog (for embedders) */
+		public const int NS_ERROR_GFX_NO_PRINTDIALOG_IN_TOOLKIT = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (28);
+		/* The was wasn't any Print Prompt service registered (this shouldn't happen) */
+		public const int NS_ERROR_GFX_NO_PRINTROMPTSERVICE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (29);
+		/* requested plex mode not supported by printer */
+		public const int NS_ERROR_GFX_PRINTER_PLEX_NOT_SUPPORTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (30);
 		/* The document is still being loaded */
-		public const int NS_ERROR_GFX_PRuintER_DOC_IS_BUSY = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (31);
-		/* Pruinting is not implemented */
-		public const int NS_ERROR_GFX_PRuintING_NOT_IMPLEMENTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (32);
-		/* Cannot load the matching pruint NS_ERROR_MODULE_GFX */
-		public const int NS_ERROR_GFX_COULD_NOT_LOAD_PRuint_MODULE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (33);
-		/* requested resolution/quality mode not supported by pruinter */
-		public const int NS_ERROR_GFX_PRuintER_RESOLUTION_NOT_SUPPORTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (34);
+		public const int NS_ERROR_GFX_PRINTER_DOC_IS_BUSY = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (31);
+		/* Printing is not implemented */
+		public const int NS_ERROR_GFX_PRINTING_NOT_IMPLEMENTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (32);
+		/* Cannot load the matching print NS_ERROR_MODULE_GFX */
+		public const int NS_ERROR_GFX_COULD_NOT_LOAD_PRINT_MODULE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (33);
+		/* requested resolution/quality mode not supported by printer */
+		public const int NS_ERROR_GFX_PRINTER_RESOLUTION_NOT_SUPPORTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (34);
 		/* Font cmap is strangely structured - avoid this font! */
 		public const int NS_ERROR_GFX_CMAP_MALFORMED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GFX + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (51);
 
@@ -313,8 +316,8 @@
 		public const int NS_ERROR_PORT_ACCESS_NOT_ALLOWED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_NETWORK + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (19);
 		/* The connection was established, but no data was ever received. */
 		public const int NS_ERROR_NET_RESET = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_NETWORK + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (20);
-		/* The connection was established, but the data transfer was uinterrupted. */
-		public const int NS_ERROR_NET_uintERRUPT = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_NETWORK + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (71);
+		/* The connection was established, but the data transfer was interrupted. */
+		public const int NS_ERROR_NET_INTERRUPT = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_NETWORK + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (71);
 		/* The connection attempt to a proxy failed. */
 		public const int NS_ERROR_PROXY_CONNECTION_REFUSED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_NETWORK + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (72);
 
@@ -457,7 +460,7 @@
 		public const int NS_ERROR_HTMLPARSER_BADFILENAME = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_HTMLPARSER + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1004);
 		public const int NS_ERROR_HTMLPARSER_BADURL = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_HTMLPARSER + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1005);
 		public const int NS_ERROR_HTMLPARSER_INVALIDPARSERCONTEXT = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_HTMLPARSER + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1006);
-		public const int NS_ERROR_HTMLPARSER_uintERRUPTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_HTMLPARSER + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1007);
+		public const int NS_ERROR_HTMLPARSER_INTERRUPTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_HTMLPARSER + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1007);
 		public const int NS_ERROR_HTMLPARSER_BLOCK = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_HTMLPARSER + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1008);
 		public const int NS_ERROR_HTMLPARSER_BADTOKENIZER = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_HTMLPARSER + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1009);
 		public const int NS_ERROR_HTMLPARSER_BADATTRIBUTE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_HTMLPARSER + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1010);
@@ -631,7 +634,7 @@
 		public const int NS_ERROR_XPC_NEED_OUT_OBJECT = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (2);
 		public const int NS_ERROR_XPC_CANT_SET_OUT_VAL = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (3);
 		public const int NS_ERROR_XPC_NATIVE_RETURNED_FAILURE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (4);
-		public const int NS_ERROR_XPC_CANT_GET_uintERFACE_INFO = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (5);
+		public const int NS_ERROR_XPC_CANT_GET_INTERFACE_INFO = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (5);
 		public const int NS_ERROR_XPC_CANT_GET_PARAM_IFACE_INFO = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (6);
 		public const int NS_ERROR_XPC_CANT_GET_METHOD_INFO = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (7);
 		public const int NS_ERROR_XPC_UNEXPECTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (8);
@@ -666,8 +669,8 @@
 		public const int NS_ERROR_XPC_CANT_GET_ARRAY_INFO = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (37);
 		public const int NS_ERROR_XPC_NOT_ENOUGH_CHARS_IN_STRING = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (38);
 		public const int NS_ERROR_XPC_SECURITY_MANAGER_VETO = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (39);
-		public const int NS_ERROR_XPC_uintERFACE_NOT_SCRIPTABLE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (40);
-		public const int NS_ERROR_XPC_uintERFACE_NOT_FROM_NSISUPPORTS = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (41);
+		public const int NS_ERROR_XPC_INTERFACE_NOT_SCRIPTABLE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (40);
+		public const int NS_ERROR_XPC_INTERFACE_NOT_FROM_NSISUPPORTS = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (41);
 		public const int NS_ERROR_XPC_CANT_GET_JSOBJECT_OF_DOM_OBJECT = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (42);
 		public const int NS_ERROR_XPC_CANT_SET_READ_ONLY_CONSTANT = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (43);
 		public const int NS_ERROR_XPC_CANT_SET_READ_ONLY_ATTRIBUTE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_XPCONNECT + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (44);
@@ -837,14 +840,14 @@
 		/* To add additional errors to Storage, please append entries to the bottom
 		 * of the list in the following format:
 		 *   NS_ERROR_STORAGE_YOUR_ERR,  FAILURE(n)
-		 * where n is the next unique positive uinteger.  You must also add an entry
+		 * where n is the next unique positive integer.  You must also add an entry
 		 * to js/xpconnect/src/xpc.msg under the code block beginning with the
 		 * comment 'storage related codes (from mozStorage.h)', in the following
 		 * format: 'XPC_MSG_DEF(NS_ERROR_STORAGE_YOUR_ERR, "brief description of your
 		 * error")' */
 		public const int NS_ERROR_STORAGE_BUSY = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_STORAGE + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1);
 		public const int NS_ERROR_STORAGE_IOERR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_STORAGE + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (2);
-		public const int NS_ERROR_STORAGE_CONSTRAuint = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_STORAGE + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (3);
+		public const int NS_ERROR_STORAGE_CONSTRAINT = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_STORAGE + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (3);
 
 
 		/* ======================================================================= */
@@ -861,7 +864,7 @@
 		/* IndexedDB error codes http://dvcs.w3.org/hg/IndexedDB/raw-file/tip/Overview.html */
 		public const int NS_ERROR_DOM_INDEXEDDB_UNKNOWN_ERR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_DOM_INDEXEDDB + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1);
 		public const int NS_ERROR_DOM_INDEXEDDB_NOT_FOUND_ERR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_DOM_INDEXEDDB + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (3);
-		public const int NS_ERROR_DOM_INDEXEDDB_CONSTRAuint_ERR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_DOM_INDEXEDDB + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (4);
+		public const int NS_ERROR_DOM_INDEXEDDB_CONSTRAINT_ERR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_DOM_INDEXEDDB + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (4);
 		public const int NS_ERROR_DOM_INDEXEDDB_DATA_ERR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_DOM_INDEXEDDB + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (5);
 		public const int NS_ERROR_DOM_INDEXEDDB_NOT_ALLOWED_ERR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_DOM_INDEXEDDB + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (6);
 		public const int NS_ERROR_DOM_INDEXEDDB_TRANSACTION_INACTIVE_ERR = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_DOM_INDEXEDDB + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (7);
@@ -886,10 +889,10 @@
 		/* ======================================================================= */
 		/* 51: NS_ERROR_MODULE_GENERAL */
 		/* ======================================================================= */
-		/* Error code used uinternally by the incremental downloader to cancel the
+		/* Error code used internally by the incremental downloader to cancel the
 		 * network channel when the download is already complete. */
 		public const int NS_ERROR_DOWNLOAD_COMPLETE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GENERAL + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1);
-		/* Error code used uinternally by the incremental downloader to cancel the
+		/* Error code used internally by the incremental downloader to cancel the
 		 * network channel when the response to a range request is 200 instead of
 		 * 206. */
 		public const int NS_ERROR_DOWNLOAD_NOT_PARTIAL = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GENERAL + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (2);
@@ -897,10 +900,10 @@
 
 		public const int NS_ERROR_DOCSHELL_REQUEST_REJECTED = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GENERAL + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1001);
 		/* This is needed for displaying an error message when navigation is
-		 * attempted on a document when pruinting The value arbitrary as long as it
+		 * attempted on a document when printing The value arbitrary as long as it
 		 * doesn't conflict with any of the other values in the errors in
 		 * DisplayLoadError */
-		public const int NS_ERROR_DOCUMENT_IS_PRuintMODE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GENERAL + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (2001);
+		public const int NS_ERROR_DOCUMENT_IS_PRINTMODE = (NS_ERROR_SEVERITY_ERROR << 31) | ((NS_ERROR_MODULE_GENERAL + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (2001);
 
 		public const int NS_SUCCESS_DONT_FIXUP = (NS_ERROR_SEVERITY_SUCCESS << 31) | ((NS_ERROR_MODULE_GENERAL + NS_ERROR_MODULE_BASE_OFFSET) << 16) | (1);
 		/* This success code may be returned by nsIAppStartup::Run to indicate that

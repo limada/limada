@@ -40,7 +40,7 @@ namespace Gecko
         ///This Source Code Form is subject to the terms of the Mozilla Public
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		string ConvertAndEscape([MarshalAs(UnmanagedType.LPStr)] string charset, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string text);
 		
@@ -64,7 +64,7 @@ namespace Gecko
         /// @return Unescaped aURIFragment  converted to unicode
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UnEscapeURIForUI([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCharset, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIFragment, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		void UnEscapeURIForUI([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCharset, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIFragment, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// Unescapes only non ASCII characters in the given URI fragment
@@ -78,6 +78,6 @@ namespace Gecko
         /// or error code of nsIUnicodeDecoder in case of conversion failure
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UnEscapeNonAsciiURI([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCharset, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIFragment, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		void UnEscapeNonAsciiURI([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCharset, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIFragment, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 	}
 }

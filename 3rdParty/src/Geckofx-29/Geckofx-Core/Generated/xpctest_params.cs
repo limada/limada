@@ -76,7 +76,7 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		char TestChar(char a, ref char b);
 		
-		[return: MarshalAs(UnmanagedType.LPStr)]
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		string TestString([MarshalAs(UnmanagedType.LPStr)] string a, [MarshalAs(UnmanagedType.LPStr)] ref string b);
 		
@@ -88,10 +88,10 @@ namespace Gecko
 		string TestWstring([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string a, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] ref string b);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void TestDOMString([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase a, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase b, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		void TestDOMString([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase a, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase b, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void TestAString([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase a, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase b, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		void TestAString([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase a, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase b, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void TestAUTF8String([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase a, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase b, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
@@ -123,7 +123,7 @@ namespace Gecko
 		/// <summary>
         /// Test sized strings.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr, SizeParamIndex=4)]
+		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler", SizeParamIndex=4)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		string TestSizedString(uint aLength, [MarshalAs(UnmanagedType.LPStr, SizeParamIndex=0)] string a, ref uint bLength, [MarshalAs(UnmanagedType.LPStr, SizeParamIndex=2)] ref string b, ref uint rvLength);
 		

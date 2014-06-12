@@ -97,7 +97,7 @@ namespace Gecko
 		/// <param name="result"></param>
 		/// <returns></returns>
 		[DllImport("xul", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-		static extern int NS_NewLocalFile(nsAString path, bool followLinks, [MarshalAs(UnmanagedType.IUnknown)] out object result);
+		static extern int NS_NewLocalFile([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Gecko.CustomMarshalers.AStringMarshaler))] nsAString path, bool followLinks, [MarshalAs(UnmanagedType.IUnknown)] out object result);
 
 		/// <summary>
 		/// Declaration in nsXPCOM.h
@@ -234,6 +234,8 @@ namespace Gecko
 			get { return _xulrunnerVersion; }
 		}
 
+		internal static ChromeContext ChromeContext { get; private set; }
+
 		public static nsIComponentManager ComponentManager;
 		public static nsIComponentRegistrar ComponentRegistrar;
 		public static nsIServiceManager ServiceManager;
@@ -281,8 +283,8 @@ namespace Gecko
 
 			if (binDirectory != null)
 			{
-				Environment.SetEnvironmentVariable("path",
-					Environment.GetEnvironmentVariable("path") + ";" + binDirectory, EnvironmentVariableTarget.Process);
+				Environment.SetEnvironmentVariable("PATH",
+					Environment.GetEnvironmentVariable("PATH") + ";" + binDirectory, EnvironmentVariableTarget.Process);
 			}
 			
 			object mreAppDir = null;
@@ -326,8 +328,12 @@ namespace Gecko
 			NS_GetComponentManager(out ComponentManager);
 			NS_GetComponentRegistrar(out ComponentRegistrar);
 
-			_comGC = new COMGC();
-			if (!IsMono) _comGC.Dispose();
+			if (IsMono)
+			{
+				_comGC = new COMGC();
+			}
+			
+			
 
 			// RegisterProvider is necessary to get link styles etc.
 			nsIDirectoryService directoryService = GetService<nsIDirectoryService>("@mozilla.org/file/directory_service;1");
@@ -336,6 +342,10 @@ namespace Gecko
 
 			_IsInitialized = true;
 			GlobalJSContextHolder.Initialize();
+
+			Xpcom.ChromeContext = new ChromeContext();
+
+			PromptFactoryFactory.Init();
 
 			if (AfterInitalization != null)
 				AfterInitalization();
@@ -348,8 +358,8 @@ namespace Gecko
 		}
 
 		public static void Shutdown()
-		{						
-			_comGC.Dispose();
+		{
+			Xpcom.DisposeObject( ref _comGC );			
 			
 			if (ComponentRegistrar != null)
 				Marshal.ReleaseComObject(ComponentRegistrar);
@@ -574,7 +584,7 @@ namespace Gecko
 		}
 
 		/// <summary>
-		/// Create service wrapped into ComPtr<T>
+		/// Create service wrapped into ComPtr'T
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="contractID"></param>
@@ -649,24 +659,12 @@ namespace Gecko
 		{
 			if (ptr == IntPtr.Zero)
 				return null;
-			
-			int startRef = 0, endRef = 0;
-			
-			// Mono bug : Marshal.GetObjectForIUnknown is decrementing the COM objects ref count not incrementing in.
+						
+			// Mono (2.10.8.1) bug : Marshal.GetObjectForIUnknown is not incrementing the COM objects ref count.			
 			if (IsMono)			
-				startRef = Marshal.AddRef(ptr);			
+				Marshal.AddRef(ptr);
 			
-			object ret = Marshal.GetObjectForIUnknown(ptr);
-			
-			if (IsMono)
-			{
-				endRef = Marshal.AddRef(ptr);
-				if (endRef > startRef + 1)
-					Debug.WriteLine("mono GetObjectForIUknown bug has been fixed! Please delete this fix.");
-			}
-			
-			return ret;
-				
+			return Marshal.GetObjectForIUnknown(ptr);
 		}
 
 		internal static void DisposeObject<T>(ref T obj)
@@ -701,6 +699,25 @@ namespace Gecko
 			}
 #endif
 		}
+
+		/// <summary>
+		/// special version should be used only if we absolutly sure
+		/// Use for only for determinated free (using ..., create & free, etc)
+		/// Don't use in destructors
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="obj"></param>
+		internal static void FreeComObjectDeterminate<T>( ref T obj )
+			where T : class
+		{
+			// take it to local variable
+			var localObj = Interlocked.Exchange(ref obj, null);
+			// if it is already null -> return
+			if (localObj == null) return;
+			Marshal.ReleaseComObject(localObj);
+		}
+	
+
 
 		
 

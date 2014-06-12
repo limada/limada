@@ -8,12 +8,12 @@ namespace Gecko.Services
 {
 	public static class WindowWatcher
 	{
-		private static ServiceWrapper<nsIWindowWatcher> _watcher;
+		private static ComPtr<nsIWindowWatcher> _watcher;
 		private static bool _windowCreatorLocked;
 
 		static WindowWatcher()
 		{
-			_watcher = new ServiceWrapper<nsIWindowWatcher>( Contracts.WindowWatcher );
+			_watcher = Xpcom.GetService2<nsIWindowWatcher>(Contracts.WindowWatcher);
 		}
 
 		/// <summary>
@@ -37,7 +37,11 @@ namespace Gecko.Services
 		public static GeckoWindow ActiveWindow
 		{
 			get { return _watcher.Instance.GetActiveWindowAttribute().Wrap(x=>new GeckoWindow(x)); }
-			set { _watcher.Instance.SetActiveWindowAttribute( value.DomWindow ); }
+			set
+			{
+				if (value != null)
+					_watcher.Instance.SetActiveWindowAttribute( value.DomWindow );
+			}
 		}
 
 		public static IEnumerator<GeckoWindow> GetWindowEnumerator()

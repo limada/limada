@@ -82,6 +82,7 @@ namespace Gecko
 		private static readonly object DomDragEvent = new object();
 		private static readonly object DomDropEvent = new object();
 		private static readonly object DomDragEndEvent = new object();
+		private static readonly object FullscreenChangeEvent = new object();
 		#endregion
 
 		#region Navigation events
@@ -1121,6 +1122,25 @@ namespace Gecko
 
 		#endregion public event GeckoDomEventHandler DomDoubleClick
 
+		#region public event GeckoDomEventHandler FullscreenChange
+
+		[Category("DOM Events")]
+		public event EventHandler<DomEventArgs> FullscreenChange
+		{
+			add { Events.AddHandler(FullscreenChangeEvent, value); }
+			remove { Events.RemoveHandler(FullscreenChangeEvent, value); }
+		}
+
+		/// <summary>Raises the <see cref="FullscreenChange"/> event.</summary>
+		/// <param name="e">The data for the event.</param>
+		protected virtual void OnFullscreenChange(DomEventArgs e)
+		{
+			var evnt = (EventHandler<DomEventArgs>)Events[FullscreenChangeEvent];
+			if (evnt != null) evnt(this, e);
+		}
+
+		#endregion public event GeckoDomEventHandler FullscreenChange
+
 		#endregion
 
 		#region event JavascriptErrorEventHandler JavascriptError
@@ -1150,10 +1170,10 @@ namespace Gecko
 
 			//using (var a = new AutoJSContext(JSContext))
 			{
-				using (var jsd = new ServiceWrapper<jsdIDebuggerService>( "@mozilla.org/js/jsd/debugger-service;1" ))
+				using (var jsd = Xpcom.GetService2<jsdIDebuggerService>(Contracts.DebuggerService))
 				{
 					jsd.Instance.SetErrorHookAttribute( new JSErrorHandler( this ) );
-					using (var runtime = new ServiceWrapper<nsIJSRuntimeService>( "@mozilla.org/js/xpc/RuntimeService;1" ))
+					using (var runtime = Xpcom.GetService2<nsIJSRuntimeService>(Contracts.RuntimeService))
 					{
 						jsd.Instance.ActivateDebugger( runtime.Instance.GetRuntimeAttribute() );
 					}
@@ -1206,7 +1226,7 @@ namespace Gecko
 
 		public void EnableConsoleMessageNotfication()
 		{
-			using (var consoleService = new ServiceWrapper<nsIConsoleService>(Contracts.ConsoleService)) 
+			using (var consoleService = Xpcom.GetService2<nsIConsoleService>(Contracts.ConsoleService)) 
 			{
 				consoleService.Instance.RegisterListener(new ConsoleListener(this));
 			}			
@@ -1431,6 +1451,9 @@ namespace Gecko
 		private GeckoWebBrowser _webBrowser;
 
 		public readonly GeckoWindowFlags Flags;
+
+		public int InitialWidth = (int)nsIAppShellServiceConsts.SIZE_TO_CONTENT;
+		public int InitialHeight = (int)nsIAppShellServiceConsts.SIZE_TO_CONTENT;
 		
 		/// <summary>Creates a new instance of a <see cref="GeckoCreateWindowEventArgs"/> object.</summary>
 		/// <param name="flags"></param>
@@ -1447,7 +1470,7 @@ namespace Gecko
 			get { return _webBrowser; }
 			set { _webBrowser = value; }
 		}
-		
+
 	}
 	#endregion
 

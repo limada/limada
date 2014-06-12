@@ -98,7 +98,7 @@ namespace Gecko
 				yield return "drag";
 				yield return "drop";
 				yield return "dragend";
-
+				yield return "mozfullscreenchange"; //TODO: change to "fullscreenchange" after prefix removed
 			}
 		}
 
@@ -178,6 +178,7 @@ namespace Gecko
 					// only for html documents
 					Document.Cookie = "";
 				}
+				WindowMediator.RegisterWindow(this);
 			}
 
 			base.OnHandleCreated( e );
@@ -188,6 +189,8 @@ namespace Gecko
 			if (BaseWindow != null)
 			{
 				this.Stop();
+
+				WindowMediator.UnregisterWindow(this);
 
 				nsIDocShell docShell = Xpcom.QueryInterface<nsIDocShell>(BaseWindow);
 				if (docShell != null && !docShell.IsBeingDestroyed())
@@ -313,11 +316,10 @@ namespace Gecko
 							//	var str = string.Format( "+WM_MOUSEACTIVATE {0:X8} lastfocus", focus.ToInt32() );
 							//	System.Diagnostics.Debug.WriteLine( str );
 								Console.WriteLine("Activating");
-								if ( WebBrowserFocus != null )
-								{
+								if (WebBrowserFocus != null)
 									WebBrowserFocus.Activate();
-									Services.WindowWatcher.ActiveWindow = this.Window;
-								}
+								if (Window != null)
+									Services.WindowWatcher.ActiveWindow = Window;								
 							}
 							else
 							{
@@ -326,11 +328,10 @@ namespace Gecko
 							}
 							if ( !this.Window.Equals(Services.WindowWatcher.ActiveWindow) )
 							{
-								if ( WebBrowserFocus != null )
-								{
+								if (WebBrowserFocus != null)
 									WebBrowserFocus.Activate();
-									Services.WindowWatcher.ActiveWindow = this.Window;
-								}
+								if (Window != null)
+									Services.WindowWatcher.ActiveWindow = Window;								
 							}
 							return;
 						}
@@ -425,14 +426,95 @@ namespace Gecko
         protected override void OnPrint(PaintEventArgs e)
         {
             base.OnPrint(e);
-               
-            ImageCreator creator = new ImageCreator(this);
-            byte[] mBytes = creator.CanvasGetPngImage((uint)0, (uint)0, (uint)this.Width, (uint)this.Height);
-            using (Image image = Image.FromStream(new System.IO.MemoryStream(mBytes)))
-            {
-                e.Graphics.DrawImage(image, 0.0f, 0.0f);
-            }
+            if (!this.DesignMode)
+			{
+				ImageCreator creator = new ImageCreator(this);
+				byte[] mBytes = creator.CanvasGetPngImage((uint)0, (uint)0, (uint)this.Width, (uint)this.Height);
+				using (Image image = Image.FromStream(new System.IO.MemoryStream(mBytes)))
+				{
+					e.Graphics.DrawImage(image, 0.0f, 0.0f);
+				}
+			}
         }
+
+		/// <summary>
+		/// Enable default fullscreen windowing for HTML5 fullscreen.
+		/// 
+		/// You also have to set pref "full-screen-api.enabled" to true to enable fullscreen of gecko.
+		/// 
+		/// When the page enters fullscreen state, move this browser into a fullscreen Form;
+		/// When the page exits fullscreen state, move this browser back into its original parent, with original index.
+		/// 
+		/// This method should only be called AFTER this browser has been added into its parent.
+		/// After calling this method, this browser's Dock and index should not be changed anymore.
+		/// 
+		/// If this method is not called, the fullscreen element only fills the viewport of this browser.
+		/// 
+		/// You can also implement your fullscreen windowing by listening to the FullscreenChange event.
+		/// 
+		/// TODO: implement confirm prompt. Currently enters fullscreen without user's confirm.
+		/// </summary>
+		public void EnableDefaultFullscreen()
+		{
+			Control browserParent = Parent;
+			int browserIndex = Parent.Controls.IndexOf(this);
+			var browserDock = Dock;
+			Form fullscreenWindow = null;
+			FullscreenChange += (s, e) =>
+			{
+				if (Document.MozFullScreen && fullscreenWindow == null)
+				{
+					fullscreenWindow = new Form();
+					Dock = DockStyle.Fill;
+					fullscreenWindow.Controls.Add(this);
+					fullscreenWindow.WindowState = FormWindowState.Maximized;
+					fullscreenWindow.TopMost = true;
+					fullscreenWindow.FormBorderStyle = FormBorderStyle.None;
+					fullscreenWindow.Show();
+					fullscreenWindow.FormClosing += (sn, ev) =>
+					{
+						Dock = browserDock;
+						browserParent.Controls.Add(this);
+						browserParent.Controls.SetChildIndex(this, browserIndex);
+					};
+				}
+				else if (!this.Document.MozFullScreen && fullscreenWindow != null)
+				{
+					fullscreenWindow.Close();
+					fullscreenWindow = null;
+				}
+			};
+		}
+
+		/// <summary>
+		/// This method is called by gecko when showing a print dialog; window handle
+		/// returned here is the dialog's owner. If model print dialog is not required, just returns NULL.
+		/// 
+		/// TODO: Gecko destroys the window returned after the dialog is dismissed, so we can't return this.Handle, we
+		/// create and return a temp window instead. This may be a bug of gecko.
+		/// 
+		/// See https://bitbucket.org/geckofx/geckofx-29.0/issue/50/printing-with-native-printingpromptservice for more info.
+		/// </summary>
+		/// <returns></returns>
+		IntPtr nsIEmbeddingSiteWindow.GetSiteWindowAttribute()
+		{
+			const string name = "TempSubWindow";
+			var temp = Controls[name];
+			if (temp == null)
+			{
+				temp = new Control()
+				{
+					Top = -10,
+					Left = -10,
+					Width = 1,
+					Height = 1,
+					Name = name
+				};
+				temp.HandleDestroyed += (s, e) => Controls.Remove(temp);
+				Controls.Add(temp);
+			}
+			return temp.Handle;
+		}
 
 		#endregion
 

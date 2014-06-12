@@ -12,17 +12,21 @@ using System.IO;
 namespace GeckoFxTest
 {
 	class MainClass
-	{			
+	{
+		//Enable remote debugger, so that you can debug web pages in geckofx via firefox:
+		//1. Set your firefox's pref 'devtools.debugger.remote-enabled' to true, via 'about:config' page.
+		//2. In firefox, go to Tools > Web Developer > Connect..., keep localhost:6000, click connect, confirm the dialog from geckofx.
+		static bool RemoteDebuggerEnabled = true;
+
 		[STAThread]
 		public static void Main(string[] args)
 		{
-			// Uncomment the follow line to enable CustomPrompt's
-			GeckoWebBrowser.UseCustomPrompt();						
-			
-			// If you want to further customize the GeckoFx PromptService then 
-			// you will need make a class that implements nsIPromptService2 and nsIPrompt interfaces and
+			// If you want to customize the GeckoFx PromptService then 
+			// you will need make a class that implements some or all of nsIPrompt, 
+			// nsIAuthPrompt2, and nsIAuthPrompt interfaces and
 			// set the PromptFactory.PromptServiceCreator delegate. for example:
 			// PromptFactory.PromptServiceCreator = () => new MyPromptService();
+			// Gecko.PromptService already implements those interfaces, and may be sub-classed.
 
 			string xulrunnerPath = XULRunnerLocator.GetXULRunnerLocation();
 #if GTK		
@@ -30,10 +34,15 @@ namespace GeckoFxTest
 				throw new ApplicationException(String.Format("LD_LIBRARY_PATH must contain {0}", xulrunnerPath));			
 #endif
 			Xpcom.Initialize(xulrunnerPath);
-			// Uncomment the follow line to enable CustomPrompt's
-			// GeckoPreferences.User["browser.xul.error_pages.enabled"] = false;
+			// Uncomment the follow line to enable error page
+			GeckoPreferences.User["browser.xul.error_pages.enabled"] = true;
 			
-			GeckoPreferences.User["gfx.font_rendering.graphite.enabled"] = true;			
+			GeckoPreferences.User["gfx.font_rendering.graphite.enabled"] = true;
+
+			GeckoPreferences.User["full-screen-api.enabled"] = true;
+
+			if (RemoteDebuggerEnabled)
+				StartDebugServer();
 			
 			Application.ApplicationExit += (sender, e) => 
 			{
@@ -42,6 +51,37 @@ namespace GeckoFxTest
 			
 			//Application.Idle += (s, e) => Console.WriteLine(SynchronizationContext.Current);
 			Application.Run(new MyForm());
+		}
+
+		static void RegisterChromeDir(string dir)
+		{
+			var chromeDir = (nsIFile)Xpcom.NewNativeLocalFile(dir);
+			var chromeFile = chromeDir.Clone();
+			chromeFile.Append(new nsAString("chrome.manifest"));
+			Xpcom.ComponentRegistrar.AutoRegister(chromeFile);
+			Xpcom.ComponentManager.AddBootstrappedManifestLocation(chromeDir);
+		}
+
+		static void StartDebugServer()
+		{
+			GeckoPreferences.User["devtools.debugger.remote-enabled"] = true;
+
+			//see <geckofx_src>/chrome dir
+			RegisterChromeDir(Path.GetFullPath(Path.Combine(XULRunnerLocator.GetXULRunnerLocation(), "../../chrome")));
+
+			var browser = new GeckoWebBrowser();
+			browser.NavigationError += (s, e) =>
+			{
+				Console.Error.WriteLine("StartDebugServer error: 0x" + e.ErrorCode.ToString("X"));
+				browser.Dispose();
+			};
+			browser.DocumentCompleted += (s, e) =>
+			{
+				Console.WriteLine("StartDebugServer completed");
+				browser.Dispose();
+			};
+			//see <geckofx_src>/chrome/debugger-server.html
+			browser.Navigate("chrome://geckofx/content/debugger-server.html");
 		}
 	}
 
@@ -113,7 +153,7 @@ namespace GeckoFxTest
 			DisplayElements(g);
 		}
 
-		protected void AddTab()
+		protected GeckoWebBrowser AddTab()
 		{
 			var tabPage = new TabPage();
 			tabPage.Text = "blank";
@@ -138,7 +178,31 @@ namespace GeckoFxTest
 			// browser.DomClick += StopLinksNavigating;
 
 			// Demo use of ReadyStateChange.
-			browser.ReadyStateChange += (s, e) => this.Text = browser.Document.ReadyState;
+			// For some special page, e.g. about:config browser.Document is null.
+			browser.ReadyStateChange += (s, e) => this.Text = browser.Document != null ? browser.Document.ReadyState : "";
+
+			browser.DocumentTitleChanged += (s, e) => tabPage.Text = browser.DocumentTitle;
+
+			browser.EnableDefaultFullscreen();
+
+			// Popup window management.
+			browser.CreateWindow += (s, e) =>
+			{
+				// For <a target="_blank"> and window.open() without specs(3rd param),
+				// e.Flags == GeckoWindowFlags.All, and we load it in a new tab;
+				// otherwise, load it in a popup window, which is maximized by default.
+				// This simulates firefox's behavior.
+				if (e.Flags == GeckoWindowFlags.All)
+					e.WebBrowser = AddTab();
+				else
+				{
+					var wa = System.Windows.Forms.Screen.GetWorkingArea(this);
+					e.InitialWidth = wa.Width;
+					e.InitialHeight = wa.Height;
+				}
+			};
+
+			return browser;
 		}
 
 		/// <summary>
@@ -198,21 +262,22 @@ namespace GeckoFxTest
 			open.Text = "FileOpen";
 			open.Left = closeWithDisposeTab.Left + closeWithDisposeTab.Width;
 
+			Button print = new Button();
+			print.Text = "Print";
+			print.Left = open.Left + open.Width;
+
 			Button scrollDown = new Button { Text = "Down", Left = closeWithDisposeTab.Left + 250 };
 			Button scrollUp = new Button { Text = "Up", Left = closeWithDisposeTab.Left + 330 };
 
 			scrollDown.Click += (s, e) => { browser.Window.ScrollByPages(1); };
 			scrollUp.Click += (s, e) => { browser.Window.ScrollByPages(-1); };
 
-			nav.Click += delegate {
+			nav.Click += delegate
+			{
 				// use javascript to warn if url box is empty.
 				if (string.IsNullOrEmpty(urlbox.Text.Trim()))
 					browser.Navigate("javascript:alert('hey try typing a url!');");
-
-				try{
 				browser.Navigate(urlbox.Text);
-				}catch { }
-				tabPage.Text = urlbox.Text;
 			};
 
 			newTab.Click += delegate { AddTab(); };
@@ -246,6 +311,24 @@ namespace GeckoFxTest
 				}
 
 			};
+			//url in Navigating event may be the mapped version,
+			//e.g. about:config in Navigating event is jar:file:///<xulrunner>/omni.ja!/chrome/toolkit/content/global/config.xul
+			browser.Navigating += (s, e) =>
+			{
+				if (e.DomWindowTopLevel)
+					urlbox.Text = e.Uri.ToString();
+			};
+			browser.Navigated += (s, e) =>
+			{
+				if (e.DomWindowTopLevel)
+					urlbox.Text = e.Uri.ToString();
+			};
+			browser.HashChange += (s, e) =>
+			{
+				urlbox.Text = e.NewUrl.ToString();
+			};
+
+			print.Click += delegate { browser.Window.Print(); };
 
 			tabPage.Controls.Add(urlbox);
 			tabPage.Controls.Add(nav);
@@ -254,6 +337,7 @@ namespace GeckoFxTest
 			tabPage.Controls.Add(closeTab);
 			tabPage.Controls.Add(closeWithDisposeTab);
 			tabPage.Controls.Add(open);
+			tabPage.Controls.Add(print);
 			tabPage.Controls.Add(browser);
 			tabPage.Controls.Add(scrollDown);
 			tabPage.Controls.Add(scrollUp);
