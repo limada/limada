@@ -23,6 +23,7 @@ using Limaki.Drawing.Styles;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.View.XwtBackend;
+using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace Limaki.View.WpfBackend {
 

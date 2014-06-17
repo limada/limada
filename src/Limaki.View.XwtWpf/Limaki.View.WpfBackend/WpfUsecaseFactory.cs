@@ -52,7 +52,7 @@ namespace Limaki.View.WpfBackend {
 
             toolBarTray.ToolBars.Add(useCase.ArrangerToolStrip.Backend as ToolBar);
             toolBarTray.ToolBars.Add(useCase.SplitViewToolStrip0.Backend as ToolBar);
-            toolBarTray.ToolBars.Add(useCase.MarkerToolStrip0.Backend as ToolBar);
+            toolBarTray.ToolBars.Add(useCase.MarkerToolStrip.Backend as ToolBar);
             toolBarTray.ToolBars.Add(useCase.LayoutToolStrip0.Backend as ToolBar);
             toolBarTray.ToolBars.Add(useCase.DisplayModeToolStrip.Backend as ToolBar);
 

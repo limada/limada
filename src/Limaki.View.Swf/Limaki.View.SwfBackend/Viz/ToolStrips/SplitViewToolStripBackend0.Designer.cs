@@ -6,14 +6,14 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2008-2013 Lytico
+ * Copyright (C) 2006-2011 Lytico
  *
  * http://www.limada.org
  * 
  */
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
-    partial class MarkerToolStripBackend {
+    partial class SplitViewToolStripBackend0 {
         /// <summary> 
         /// Erforderliche Designervariable.
         /// </summary>
@@ -23,7 +23,7 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
         /// Verwendete Ressourcen bereinigen.
         /// </summary>
         /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
-        protected override void Dispose (bool disposing) {
+        protected override void Dispose(bool disposing) {
             if (disposing && (components != null)) {
                 components.Dispose();
             }
@@ -36,27 +36,36 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
         /// Erforderliche Methode für die Designerunterstützung. 
         /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
         /// </summary>
-        private void InitializeComponent () {
+        private void InitializeComponent() {
             components = new System.ComponentModel.Container();
-            this.markerCombo = new System.Windows.Forms.ToolStripComboBox();
+
+            this.sheetCombo = new System.Windows.Forms.ToolStripComboBox();
+
+            // 
+            // viewToolStrip
+            // 
+            this.Dock = System.Windows.Forms.DockStyle.None;
+            this.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.Name = "viewToolStrip";
+            this.Size = new System.Drawing.Size(238, 27);
+            this.TabIndex = 6;
+
             // 
             // markerCombo
             // 
-            this.markerCombo.Name = "markerCombo";
-            this.markerCombo.Size = new System.Drawing.Size(121, 27);
-            this.markerCombo.Width = 120;
-            this.markerCombo.SelectedIndexChanged += new System.EventHandler(this.markerCombo_SelectedIndexChanged);
+            this.sheetCombo.Name = "markerCombo";
+            this.sheetCombo.Size = new System.Drawing.Size(121, 27);
+            
             this.Dock = System.Windows.Forms.DockStyle.None;
-            this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                             this.markerCombo});
 
-            this.Name = "markerStrip";
-            this.Size = new System.Drawing.Size(133, 27);
-            this.TabIndex = 5;
         }
+
+       
 
         #endregion
 
-        private System.Windows.Forms.ToolStripComboBox markerCombo;
+
+
+        private System.Windows.Forms.ToolStripComboBox sheetCombo;
     }
 }

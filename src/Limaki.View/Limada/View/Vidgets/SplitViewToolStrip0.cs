@@ -28,8 +28,8 @@ using Xwt.Backends;
 
 namespace Limada.View.Vidgets {
 
-    [BackendType(typeof(ISplitViewToolStripBackend))]
-    public class SplitViewToolStrip0 : DisplayToolStrip0<IGraphSceneDisplay<IVisual, IVisualEdge>, ISplitViewToolStripBackend> {
+    [BackendType(typeof(ISplitViewToolStripBackend0))]
+    public class SplitViewToolStrip0 : DisplayToolStrip0<IGraphSceneDisplay<IVisual, IVisualEdge>, ISplitViewToolStripBackend0> {
 
         public ToolStripCommand0 GraphStreamViewCommand { get; set; }
         public ToolStripCommand0 GraphGraphViewCommand { get; set; }
@@ -194,9 +194,10 @@ namespace Limada.View.Vidgets {
         
     }
 
-    public interface ISplitViewToolStripBackend : IDisplayToolStripBackend {
+    public interface ISplitViewToolStripBackend0 : IDisplayToolStripBackend {
         SplitViewMode ViewMode { get; set; }
         void CheckBackForward (ISplitView splitView);
         void AttachSheets ();
     }
+
 }

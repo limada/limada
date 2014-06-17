@@ -39,6 +39,9 @@ namespace Limaki.View.GtkBackend {
             tb = useCase.DisplayModeToolStrip.Backend as Gtk.Toolbar;
             toolBox.PackStart (tb, false, true, 0);
 
+            tb = useCase.MarkerToolStrip.Backend as Gtk.Toolbar;
+            toolBox.PackStart (tb, false, true, 0);
+
             var mainBox = backend.MainBox;
             mainBox.PackStart (toolBox, false, false, 0);
             

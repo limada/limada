@@ -23,7 +23,6 @@ using Limaki.View.Viz;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {
-
     public class SplitViewBackend : HPaned, ISplitViewBackend {
 
         public SplitViewBackend () { }

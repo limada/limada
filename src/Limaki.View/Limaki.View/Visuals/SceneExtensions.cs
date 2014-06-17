@@ -65,9 +65,9 @@ namespace Limaki.View.Visuals {
             }
         }
 
-        public static void ChangeMarkers(IGraphScene<IVisual, IVisualEdge> scene, IEnumerable<IVisual> elements, string text) {
+        public static void ChangeMarkers(IGraphScene<IVisual, IVisualEdge> scene, IEnumerable<IVisual> elements, object marker) {
             if (scene.Markers != null) {
-                scene.Markers.ChangeMarkers (elements, text);
+                scene.Markers.ChangeMarkers (elements, marker);
                 foreach (var visual in elements) {
                     scene.Requests.Add(new LayoutCommand<IVisual>(visual, LayoutActionType.Justify));
                 }

@@ -1,3 +1,4 @@
+using Limada.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.WpfBackend {
@@ -6,5 +7,9 @@ namespace Limaki.View.WpfBackend {
     }
 
     public class DisplayModeToolStripBackend : ToolStripBackend, IDisplayModeToolStripBackend {
+    }
+
+    public class SplitViewToolStripBackend : ToolStripBackend, ISplitViewToolStripBackend {
+
     }
 }

@@ -17,7 +17,6 @@ using System;
 using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.GtkBackend {
-
     public class ToolStripButtonBackend : ToolStripButton, IToolStripButtonBackend {
        
 

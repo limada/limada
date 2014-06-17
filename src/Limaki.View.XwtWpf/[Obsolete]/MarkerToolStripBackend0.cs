@@ -18,10 +18,11 @@ using Limaki.View.Visuals;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 using System.Linq;
 using Limaki.Common.Linqish;
+using ComboBox=System.Windows.Controls.ComboBox;
 
 namespace Limaki.View.WpfBackend {
 
-    public class MarkerToolStripBackend : ToolStripBackend, IMarkerToolStripBackend {
+    public class MarkerToolStripBackend0 : ToolStripBackend, IMarkerToolStripBackend0 {
 
         public MarkerToolStrip0 Frontend { get; protected set; }
 

@@ -12,14 +12,14 @@
  * 
  */
 
-using System;
 using System.Diagnostics;
 using Xwt.Backends;
 using Xwt.GtkBackend;
+using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.GtkBackend {
 
-    public class ToolStripButton : Gtk.ToolItem {
+    public class ToolStripButton : ToolItem {
 
         public ToolStripButton (): base () {
             Compose ();
@@ -27,9 +27,7 @@ namespace Limaki.View.GtkBackend {
 
         public bool UseUnderline { get; set; }
 
-        public string Label { get; set; }
-
-        public Gtk.Widget ButtonWidget {
+        protected virtual Gtk.Widget ContentWidget {
             get { return base.Child; }
             set {
                 if (base.Child != value) {
@@ -39,34 +37,7 @@ namespace Limaki.View.GtkBackend {
             }
         }
 
-        protected virtual void Compose () {
-            AddEvents ((int)Gdk.EventMask.FocusChangeMask);
-            SetContent (Xwt.ContentPosition.Bottom);
-        }
-
-        [GLib.ConnectBefore]
-        protected virtual void ButtonReleased (object o, Gtk.ButtonReleaseEventArgs args) {
-            Trace.WriteLine ("ButtonReleased");
-        }
-
-
-        [GLib.ConnectBefore]
-        protected virtual void ButtonPressed (object o, Gtk.ButtonPressEventArgs args) {
-            Trace.WriteLine ("ButtonPressed");
-            OnButtonClicked (o, new EventArgs ());
-        }
-
-        [GLib.ConnectBefore]
-        protected virtual void DropDownPressed (object o, Gtk.ButtonPressEventArgs e) {
-            Trace.WriteLine ("DropDownPressed");
-            if (e.Event.Button != 1)
-                return;
-        }
-
-        protected virtual Xwt.ButtonType ButtonType { get { return Xwt.ButtonType.Normal; } }
-
-        protected Xwt.Drawing.Image _image = null;
-        public virtual Xwt.Drawing.Image Image {
+        public override Xwt.Drawing.Image Image {
             get { return _image; }
             set {
                 if (_image != value) {
@@ -77,7 +48,6 @@ namespace Limaki.View.GtkBackend {
         }
 
         Xwt.GtkBackend.ImageBox _imageWidget = null;
-
         protected Gtk.Widget ImageWidget {
             get {
                 if (_imageWidget == null) {
@@ -94,25 +64,18 @@ namespace Limaki.View.GtkBackend {
             }
         }
 
-        public string ToolTipText {
-            get { return base.TooltipText; }
-            set { base.TooltipText = value; }
+        protected virtual Xwt.ButtonType ButtonType { get { return Xwt.ButtonType.Normal; } }
+
+        protected override void Compose () {
+            base.Compose ();
+            SetContent (Xwt.ContentPosition.Bottom);
         }
 
-        public Xwt.Size Size {
-            get { return this.VidgetBackendSize (); }
-            set { this.VidgetBackendSize (value); }
-        }
-
-        protected event System.EventHandler _click;
-        public virtual event System.EventHandler Click {
-            add { _click += value; }
-            remove { _click -= value; }
-        }
-
-        protected virtual void OnButtonClicked (object sender, EventArgs e) {
-            if (_click != null)
-                _click (this, e);
+        [GLib.ConnectBefore]
+        protected virtual void DropDownPressed (object o, Gtk.ButtonPressEventArgs e) {
+            Trace.WriteLine ("DropDownPressed");
+            if (e.Event.Button != 1)
+                return;
         }
 
         protected virtual void SetContent (Xwt.ContentPosition position) {
@@ -124,8 +87,8 @@ namespace Limaki.View.GtkBackend {
 
             if (ButtonType == Xwt.ButtonType.Disclosure) {
                 this.Label = null;
-                this.ButtonWidget = new Gtk.Arrow (Gtk.ArrowType.Down, Gtk.ShadowType.Out);
-                this.ButtonWidget.ShowAll ();
+                this.ContentWidget = new Gtk.Arrow (Gtk.ArrowType.Down, Gtk.ShadowType.Out);
+                this.ContentWidget.ShowAll ();
                 return;
             }
 
@@ -173,7 +136,7 @@ namespace Limaki.View.GtkBackend {
             if (contentWidget != null) {
                 contentWidget.ShowAll ();
                 this.Label = null;
-                this.ButtonWidget = contentWidget;
+                this.ContentWidget = contentWidget;
 
             } else
                 this.Label = null;
@@ -199,28 +162,6 @@ namespace Limaki.View.GtkBackend {
             return button;
         }
 
-        public Gtk.Widget AllocEventBox (Gtk.Widget widget, bool visibleWindow = false) {
-            // Wraps the widget with an event box. Required for some
-            // widgets such as Label which doesn't have its own gdk window
 
-            if (widget is Gtk.EventBox) {
-                ((Gtk.EventBox)widget).VisibleWindow = true;
-                return widget;
-            }
-
-            if (widget.IsNoWindow) {
-
-                var eventBox = new Gtk.EventBox ();
-                eventBox.Visible = widget.Visible;
-                eventBox.Sensitive = widget.Sensitive;
-                eventBox.VisibleWindow = visibleWindow;
-                GtkEngine.ReplaceChild (widget, eventBox);
-                eventBox.Add (widget);
-                return eventBox;
-            }
-            return widget;
-        }
-
-        public bool isOpen { get; set; }
     }
 }

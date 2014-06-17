@@ -174,7 +174,7 @@ namespace Limada.UseCases {
 
         public SplitViewToolStrip0 SplitViewToolStrip0 { get; set; }
         public LayoutToolStrip0 LayoutToolStrip0 { get; set; }
-        public MarkerToolStrip0 MarkerToolStrip0 { get; set; }
+        public MarkerToolStrip MarkerToolStrip { get; set; }
 
         public Func<object> GetCurrentControl { get; set; }
 

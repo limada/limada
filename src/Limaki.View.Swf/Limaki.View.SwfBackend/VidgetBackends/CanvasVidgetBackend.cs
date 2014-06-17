@@ -19,7 +19,6 @@ using Xwt.GdiBackend;
 using Xwt;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
-
     public class CanvasVidgetBackend : UserControl, ICanvasVidgetBackend {
 
         protected override void OnPaint (PaintEventArgs e) {

@@ -41,7 +41,7 @@ namespace Limaki.View.GtkBackend {
 
         protected void ShowDropDown () {
             if (HasChildren) {
-                PopupWindow = PopupWindow.Show (this.ButtonWidget, Xwt.Rectangle.Zero, ChildBox);
+                PopupWindow = PopupWindow.Show (this.ContentWidget, Xwt.Rectangle.Zero, ChildBox);
             }
         }
 

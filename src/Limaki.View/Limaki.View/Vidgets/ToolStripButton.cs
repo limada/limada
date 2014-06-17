@@ -17,6 +17,11 @@ using Xwt.Backends;
 
 namespace Limaki.View.Vidgets {
 
+    public interface IToolStripSeparatorBackend : IToolStripItemBackend {}
+    [BackendType (typeof (IToolStripSeparatorBackend))]
+    public class ToolStripSeparator : ToolStripItem {
+    }
+
     [BackendType (typeof (IToolStripButtonBackend))]
     public class ToolStripButton : ToolStripItem {
 
@@ -41,6 +46,12 @@ namespace Limaki.View.Vidgets {
         }
 
         public override void Dispose () { }
+
+        public bool? IsChecked { get; set; }
+
+        public bool IsEnabled { get; set; }
+
+        public bool IsCheckable { get; set; }
     }
 
     public interface IToolStripButtonBackend : IToolStripItemBackend {

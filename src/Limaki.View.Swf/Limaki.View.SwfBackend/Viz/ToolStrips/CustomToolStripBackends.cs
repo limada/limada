@@ -8,4 +8,8 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
     public partial class DisplayModeToolStripBackend : ToolStripBackend, IDisplayModeToolStripBackend {
     }
+
+    public partial class MarkerToolStripBackend : ToolStripBackend, IMarkerToolStripBackend {
+    }
+    
 }

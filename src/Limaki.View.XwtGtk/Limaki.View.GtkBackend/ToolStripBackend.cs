@@ -43,7 +43,9 @@ namespace Limaki.View.GtkBackend {
 
         #endregion
 
-        public void Dispose () { }
+        public override  void Dispose () {
+            base.Dispose ();
+        }
 
         protected virtual void Compose () {
             base.Orientation = Gtk.Orientation.Horizontal;
@@ -64,6 +66,13 @@ namespace Limaki.View.GtkBackend {
 
         public void RemoveItem (IToolStripItemBackend item) {
             base.Remove ((Gtk.Widget) item);
+        }
+
+        public void SetVisibility (Visibility value) {
+            if (value == Visibility.Visible && !this.Visible)
+                this.Visible = true;
+            else
+                this.Visible = false;
         }
     }
 }

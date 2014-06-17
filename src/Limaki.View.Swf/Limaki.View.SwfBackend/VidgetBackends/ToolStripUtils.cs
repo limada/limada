@@ -100,10 +100,13 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
                     toolStrip.ForeColor = ToolStripForeground.Value;
             });
 
+            bool stripIsOutside = false;
             toolStrips.ForEach (toolStrip => {
                 toolStrip.Location = location;
-                if (toolStrip.Bounds.Right > toolStripPanel.Bounds.Right)
+                if (stripIsOutside || toolStrip.Bounds.Right > toolStripPanel.Bounds.Right) {
                     toolStrip.Size = new System.Drawing.Size (1, 1);
+                    stripIsOutside = true;
+                }
                 location = new System.Drawing.Point (toolStrip.Bounds.Right + 1, toolStrip.Bounds.Top);
             });
 

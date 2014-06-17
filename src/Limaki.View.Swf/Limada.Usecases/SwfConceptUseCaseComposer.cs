@@ -117,9 +117,9 @@ namespace Limada.Usecases {
                 new ToolStrip[] {
                     useCase.ArrangerToolStrip.Backend as ToolStrip,
                     useCase.SplitViewToolStrip0.Backend as ToolStrip,
-                    useCase.MarkerToolStrip0.Backend as ToolStrip,
                     useCase.LayoutToolStrip0.Backend as ToolStrip,
                     useCase.DisplayModeToolStrip.Backend as ToolStrip,
+                    useCase.MarkerToolStrip.Backend as ToolStrip,
                 });
 
         }

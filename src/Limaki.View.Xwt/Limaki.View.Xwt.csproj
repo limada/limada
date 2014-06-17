@@ -58,6 +58,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\ComboBoxBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VindowBackend.cs" />
     <Compile Include="Sandbox\ScrollDisplayBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\ArrangerToolStripBackend.cs" />

@@ -17,8 +17,9 @@ using Xwt.Backends;
 
 namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
-    [BackendType(typeof(IMarkerToolStripBackend))]
-    public class MarkerToolStrip0 : DisplayToolStrip0<IGraphSceneDisplay<IVisual, IVisualEdge>, IMarkerToolStripBackend> {
+
+    [BackendType(typeof(IMarkerToolStripBackend0))]
+    public class MarkerToolStrip0 : DisplayToolStrip0<IGraphSceneDisplay<IVisual, IVisualEdge>, IMarkerToolStripBackend0> {
 
         public override void Attach (object sender) {
             var display = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
@@ -44,7 +45,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
         }
     }
 
-    public interface IMarkerToolStripBackend : IDisplayToolStripBackend {
+    public interface IMarkerToolStripBackend0 : IDisplayToolStripBackend {
         void Attach (IGraphScene<IVisual, IVisualEdge> scene);
         void Detach (IGraphScene<IVisual, IVisualEdge> oldScene);
     }

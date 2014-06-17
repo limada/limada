@@ -11,6 +11,10 @@ namespace Limaki.View.XwtBackend {
         public void RemoveItem (IToolStripItemBackend toolStripItemBackend) {
           
         }
+
+        public void SetVisibility (Visibility value) {
+           
+        }
     }
 
     public class ArrangerToolStripBackend : ToolStripBackendDummy, IArrangerToolStripBackend {

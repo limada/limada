@@ -45,6 +45,15 @@ namespace Limaki.View.Vidgets {
         void IToolStripItemContainer.RemoveItem (ToolStripItem item) {
             Backend.RemoveItem ((IToolStripItemBackend) item.Backend);
         }
+
+        private Visibility _vsibility = Visibility.Visible;
+        public Visibility Visibility {
+            get { return _vsibility; }
+            set {
+                this.Visibility = value;
+                Backend.SetVisibility (value);
+            }
+        }
     }
 
     public interface IToolStripItemBackendContainer {
@@ -52,5 +61,7 @@ namespace Limaki.View.Vidgets {
         void RemoveItem (IToolStripItemBackend toolStripItemBackend);
     }
 
-    public interface IToolStripBackend : IVidgetBackend, IToolStripItemBackendContainer { }
+    public interface IToolStripBackend : IVidgetBackend, IToolStripItemBackendContainer {
+        void SetVisibility (Visibility value);
+    }
 }

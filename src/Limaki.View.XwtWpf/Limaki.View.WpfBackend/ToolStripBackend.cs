@@ -19,6 +19,8 @@ using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 using System.Windows;
 using System;
+using LVV = Limaki.View.Vidgets;
+using SW = System.Windows;
 
 namespace Limaki.View.WpfBackend {
 
@@ -55,7 +57,7 @@ namespace Limaki.View.WpfBackend {
             base.OnRenderSizeChanged (sizeInfo);
             var overflowGrid = this.Template.FindName ("OverflowGrid", this) as FrameworkElement;
             if (overflowGrid != null) {
-                overflowGrid.Visibility = Visibility.Collapsed;
+                overflowGrid.Visibility = SW.Visibility.Collapsed;
             }
 
             var mainPanelBorder = this.Template.FindName ("MainPanelBorder", this) as FrameworkElement;
@@ -79,6 +81,15 @@ namespace Limaki.View.WpfBackend {
 
         public void RemoveItem (IToolStripItemBackend item) {
             Items.Remove (item);
+        }
+
+        public void SetVisibility (LVV.Visibility value) {
+            if (value == LVV.Visibility.Visible)
+                this.Visibility = SW.Visibility.Visible;
+            else if (value == LVV.Visibility.Hidden)
+                this.Visibility = SW.Visibility.Hidden;
+            else if (value == LVV.Visibility.Collapsed)
+                this.Visibility = SW.Visibility.Collapsed;
         }
     }
 }

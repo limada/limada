@@ -64,6 +64,9 @@
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropBackendHandler.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropEventConverter.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropMouseBackendHandler.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ComboBoxBackend.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\DragDropVidgetBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -112,6 +115,7 @@
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripItemBackend.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\VidgetBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\VindowBackend.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,11 +149,11 @@
     <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend0.Designer.cs">
       <DependentUpon>LayoutToolStripBackend0.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\MarkerToolStripBackend.cs">
+    <Compile Include="[Obsolete]\MarkerToolStripBackend0.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\MarkerToolStripBackend.Designer.cs">
-      <DependentUpon>MarkerToolStripBackend.cs</DependentUpon>
+    <Compile Include="[Obsolete]\MarkerToolStripBackend0.Designer.cs">
+      <DependentUpon>MarkerToolStripBackend0.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripBackend.cs">
       <SubType>Component</SubType>
@@ -235,11 +239,11 @@
     <Compile Include="[Obsolete]\ArrangerToolStripBackend0.Designer.cs">
       <DependentUpon>ArrangerToolStripBackend0.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\SplitViewToolStripBackend.cs">
+    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\SplitViewToolStripBackend0.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\SplitViewToolStripBackend.Designer.cs">
-      <DependentUpon>SplitViewToolStripBackend.cs</DependentUpon>
+    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\SplitViewToolStripBackend0.Designer.cs">
+      <DependentUpon>SplitViewToolStripBackend0.cs</DependentUpon>
     </Compile>
     <Compile Include="[Obsolete]\ToolStripItemBackend0.cs">
       <SubType>Component</SubType>

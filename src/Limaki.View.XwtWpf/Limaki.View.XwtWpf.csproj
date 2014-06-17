@@ -60,10 +60,10 @@
     <Compile Include="[Obsolete]\DisplayModeToolStripBackend0.cs" />
     <Compile Include="Limaki.View.WpfBackend\[TODO]\GeckoWebBrowserBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\LayoutToolStripBackend.cs" />
-    <Compile Include="Limaki.View.WpfBackend\MarkerToolStripBackend.cs" />
-    <Compile Include="Limaki.View.WpfBackend\SplitViewToolStripBackend.cs" />
+    <Compile Include="[Obsolete]\MarkerToolStripBackend0.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\WpfBackendHelper.cs" />
+    <Compile Include="[Obsolete]\SplitViewToolStripBackend.cs" />
     <Compile Include="[Obsolete]\ToolStripButton0.cs" />
     <Compile Include="[Obsolete]\ToolStripDropDownButton0.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripUtils.cs" />

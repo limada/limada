@@ -29,6 +29,8 @@ namespace Limaki.View.XwtBackend {
 
             base.InitializeBackends();
 
+            RegisterBackend<IComboBoxBackend, ComboBoxBackend> ();
+
             RegisterBackend<IImageDisplayBackend, ImageDisplayBackend>();
             RegisterBackend<IVisualsDisplayBackend, VisualsDisplayBackend>();
 
@@ -46,9 +48,9 @@ namespace Limaki.View.XwtBackend {
 
             RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend>();
             RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend>();
-            RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend>();
+            RegisterBackend<ISplitViewToolStripBackend0, SplitViewToolStripBackend>();
             RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend>();
-            RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend>();
+            RegisterBackend<IMarkerToolStripBackend0, MarkerToolStripBackend>();
 
 
         }

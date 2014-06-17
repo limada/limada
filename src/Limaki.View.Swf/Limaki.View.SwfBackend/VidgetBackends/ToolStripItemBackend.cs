@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System.Windows.Forms;
 using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
@@ -7,8 +21,104 @@ using SD = System.Drawing;
 using System.ComponentModel;
 using Xwt.Backends;
 using System;
+using System.Linq;
+using Limaki.Common.Linqish;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
+
+    public class ToolStripItemHostBackend : SWF.ToolStripControlHost, IToolStripItemHostBackend {
+
+        public ToolStripItemHostBackend () : base (
+            new SWF.Panel {
+                              Dock = DockStyle.Fill,
+                              BorderStyle = BorderStyle.None,
+                              Margin = new Padding (),
+                              Padding = new Padding (),
+                          }) {
+
+            this.Overflow = ToolStripItemOverflow.AsNeeded;
+        }
+
+        #region IVidgetBackend Member
+
+        [Browsable (false)]
+        [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+        public LVV.ToolStripItemHost Frontend { get; protected set; }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (LVV.ToolStripItemHost)frontend;
+        }
+
+        void IVidgetBackend.Update () { }
+
+        void IVidgetBackend.Invalidate () {
+            this.Invalidate ();
+        }
+
+        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
+            this.Invalidate (rect.ToGdi ());
+        }
+
+        void IVidgetBackend.SetFocus () {
+            this.Focus ();
+        }
+
+        public new Xwt.Size Size {
+            get { return base.Size.ToXwt (); }
+            set { base.Size = value.ToGdi (); }
+        }
+
+        #endregion
+
+       
+        public override SD.Font Font {
+            get { return base.Font; }
+            set {
+                base.Font = value;
+                var panel = base.Control as SWF.Panel;
+                panel.SuspendLayout ();
+                panel.Font = value;
+                panel.Controls.Cast<Control> ().ForEach (c => c.Font = value);
+                panel.ResumeLayout ();
+            }
+        }
+
+        public void SetChild (Vidget value) {
+            var control = value.Backend as Control;
+            var panel = base.Control as SWF.Panel;
+            panel.SuspendLayout ();
+            panel.Controls.Clear ();
+            panel.Controls.Add (control);
+            base.Size = value.Size.ToGdi ();
+            panel.ResumeLayout ();
+        }
+
+        protected override void SetBounds (SD.Rectangle bounds) {
+            base.SetBounds (bounds);
+        }
+        public void SetImage (Xwt.Drawing.Image image) {
+            this.BackgroundImage = image.ToGdi();
+        }
+
+        public void SetLabel (string value) {
+            this.Text = value;
+        }
+
+        public void SetToolTip (string value) {
+            this.ToolTipText = value;
+        }
+
+        protected System.Action<object> _action = null;
+        public virtual void SetAction (System.Action<object> value) {
+            _action = value;
+        }
+
+        protected virtual void ClickAction (object sender, System.EventArgs e) {
+            if (_action != null) {
+                _action (this);
+            }
+        }
+    }
 
     public class ToolStripButtonBackend : SWF.ToolStripButton, IToolStripButtonBackend {
 

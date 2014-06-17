@@ -49,7 +49,7 @@ namespace Limada.UseCases {
             useCase.ArrangerToolStrip = new ArrangerToolStrip();
             useCase.SplitViewToolStrip0 = new SplitViewToolStrip0();
             useCase.LayoutToolStrip0 = new LayoutToolStrip0();
-            useCase.MarkerToolStrip0 = new MarkerToolStrip0();
+            useCase.MarkerToolStrip = new MarkerToolStrip();
 
             useCase.FileDialogShow = this.FileDialogShow;
 
@@ -77,7 +77,7 @@ namespace Limada.UseCases {
 
             splitView.CurrentWidgetChanged += c => useCase.DisplayModeToolStrip.Attach(c);
             splitView.CurrentWidgetChanged += c => useCase.LayoutToolStrip0.Attach(c);
-            splitView.CurrentWidgetChanged += c => useCase.MarkerToolStrip0.Attach(c);
+            splitView.CurrentWidgetChanged += c => useCase.MarkerToolStrip.Attach(c);
             splitView.CurrentWidgetChanged += c => useCase.SplitViewToolStrip0.Attach(c);
             splitView.CurrentWidgetChanged += c => useCase.ArrangerToolStrip.Attach(c);
             

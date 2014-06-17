@@ -43,7 +43,7 @@ namespace Limaki.View.GtkBackend {
 
         private void ShowDropDown () {
             if (HasChildren) {
-                PopupWindow = PopupWindow.Show (this.ButtonWidget, Xwt.Rectangle.Zero, ChildBox);
+                PopupWindow = PopupWindow.Show (this.ContentWidget, Xwt.Rectangle.Zero, ChildBox);
             }
         }
 
@@ -55,26 +55,29 @@ namespace Limaki.View.GtkBackend {
         }
 
         #region prototype
+        
+        public bool isOpen { get; set; }
+
         private void ShowMenu () {
             var menu = CreateMenu ();
 
             if (menu != null) {
                 isOpen = true;
-                var button = this.ButtonWidget as Gtk.Button;
+                var button = this.ContentWidget as Gtk.Button;
                 var oldRelief = Gtk.ReliefStyle.Normal;
                 if (button != null) {
                     //make sure the button looks depressed
                     oldRelief = button.Relief;
                     button.Relief = Gtk.ReliefStyle.Normal;
                 }
-                this.ButtonWidget.State = Gtk.StateType.Active;
+                this.ContentWidget.State = Gtk.StateType.Active;
                 //clean up after the menu's done
                 menu.Hidden += (s, args) => {
                     if (button != null) {
                         button.Relief = oldRelief;
                     }
                     isOpen = false;
-                    this.ButtonWidget.State = Gtk.StateType.Normal;
+                    this.ContentWidget.State = Gtk.StateType.Normal;
 
                     //FIXME: for some reason the menu's children don't get activated if we destroy 
                     //directly here, so use a timeout to delay it

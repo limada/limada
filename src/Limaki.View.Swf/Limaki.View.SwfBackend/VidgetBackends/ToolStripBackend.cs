@@ -34,6 +34,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             this.ImageScalingSize = new System.Drawing.Size (20, 20);
             this.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.Size = new System.Drawing.Size (100, 36);
+            this.LayoutStyle = ToolStripLayoutStyle.HorizontalStackWithOverflow;
         }
 
         #region IVidgetBackend Member
@@ -67,11 +68,17 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         #endregion
         
         public void InsertItem (int index, IToolStripItemBackend item) {
+            var control = item as SWF.ToolStripItem;
+            control.Font = this.Font;
             base.Items.Insert (index, (SWF.ToolStripItem) item);
         }
 
         public void RemoveItem (IToolStripItemBackend item) {
             base.Items.Remove ((SWF.ToolStripItem) item);
+        }
+
+        public void SetVisibility (Visibility value) {
+            
         }
     }
 }

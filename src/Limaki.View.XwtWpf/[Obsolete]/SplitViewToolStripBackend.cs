@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2008-2014 Lytico
+ * Copyright (C) 2014 Lytico
  *
  * http://www.limada.org
  * 
@@ -21,10 +21,11 @@ using Limada.View.Vidgets;
 using Limaki.Common.Linqish;
 using Limaki.Usecases.Vidgets;
 using Limaki.View.Vidgets;
+using SWC= System.Windows.Controls;
 
 namespace Limaki.View.WpfBackend {
 
-    public class SplitViewToolStripBackend : ToolStripBackend, ISplitViewToolStripBackend {
+    public class SplitViewToolStripBackend0 : ToolStripBackend, ISplitViewToolStripBackend0 {
 
         public override void InitializeBackend (Limaki.View.IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (SplitViewToolStrip0)frontend;
@@ -67,7 +68,7 @@ namespace Limaki.View.WpfBackend {
         private ToolStripButton0 GoBackButton { get; set; }
         private ToolStripButton0 GoForwardButton { get; set; }
 
-        private ComboBox SheetCombo;
+        private SWC.ComboBox SheetCombo;
 
         protected override void Compose () {
             base.Compose ();
@@ -83,7 +84,7 @@ namespace Limaki.View.WpfBackend {
             var newNoteButton = new ToolStripButton0 {Command = Frontend.NewNoteCommand};
             var saveSheetButton = new ToolStripButton0 {Command = Frontend.SaveSheetCommand};
 
-            SheetCombo = new ComboBox { Width = 100 };
+            SheetCombo = new SWC.ComboBox { Width = 100 };
             SheetCombo.Items.Clear ();
 
             var sepStyle = (Style) FindResource (ToolBar.SeparatorStyleKey);
