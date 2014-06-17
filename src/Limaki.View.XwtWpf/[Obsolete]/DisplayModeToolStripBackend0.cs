@@ -22,7 +22,7 @@ using System;
 namespace Limaki.View.WpfBackend {
 
     [Obsolete]
-    public class DisplayModeToolStripBackend0 : ToolStripBackend, IDisplayModeToolStripBackend {
+    public class DisplayModeToolStripBackend0 : ToolStripBackend00, IDisplayModeToolStripBackend {
 
         [Browsable (false)]
         [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]

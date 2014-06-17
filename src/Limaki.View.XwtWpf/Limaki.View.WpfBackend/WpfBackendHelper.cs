@@ -23,6 +23,11 @@ namespace Limaki.View.WpfBackend {
             return new Xwt.Size(backend.ActualWidth, backend.ActualHeight);
         }
 
+        public static void VidgetBackendSize (this FrameworkElement backend, Xwt.Size value) {
+            backend.Width = value.Width;
+            backend.Height = value.Height;
+        }
+
         public static void VidgetBackendUpdate (this FrameworkElement widget) {
             VidgetBackendInvalidate (widget);
             widget.UpdateLayout ();
@@ -55,6 +60,18 @@ namespace Limaki.View.WpfBackend {
             if (clipo==null || !Clipboard.IsCurrent (clipo)) {
                 clipo = Clipboard.GetDataObject();
             }
+        }
+
+        public static FrameworkElement ToWpf (this IVidgetBackend backend) {
+            var vb = backend as IWpfBackend;
+            if (vb != null)
+                return vb.Control;
+            var xb = backend as Limaki.View.XwtBackend.IXwtBackend;
+            if (xb != null && ((Xwt.Backends.IFrontend)xb.Widget).Backend is Xwt.WPFBackend.WidgetBackend)
+                return ((Xwt.WPFBackend.WidgetBackend)((Xwt.Backends.IFrontend)xb.Widget).Backend).Widget;
+
+            return backend as FrameworkElement;
+
         }
     }
 }

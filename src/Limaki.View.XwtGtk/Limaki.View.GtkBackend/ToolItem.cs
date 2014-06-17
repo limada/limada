@@ -51,11 +51,11 @@ namespace Limaki.View.GtkBackend {
             remove { _click -= value; }
         }
 
-        protected virtual void Compose () {
+        internal virtual void Compose () {
             AddEvents ((int)Gdk.EventMask.FocusChangeMask);
         }
 
-        protected virtual void OnButtonClicked (object sender, EventArgs e) {
+        internal virtual void OnButtonClicked (object sender, EventArgs e) {
             if (_click != null)
                 _click (this, e);
         }

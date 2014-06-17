@@ -52,7 +52,9 @@
   <ItemGroup>
     <Compile Include="Limaki.View.GtkBackend\CustomToolStripBackends.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolItem.cs" />
+    <Compile Include="Limaki.View.GtkBackend\ToolStripItemBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripItemHostBackend.cs" />
+    <Compile Include="Limaki.View.GtkBackend\VidgetBackend.cs" />
     <Compile Include="[Obsolete]\ArrangerToolStripBackend0.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkBackendHelper.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkContextResourceLoader.cs" />

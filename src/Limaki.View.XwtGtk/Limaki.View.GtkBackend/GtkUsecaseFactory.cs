@@ -33,13 +33,13 @@ namespace Limaki.View.GtkBackend {
             var backend = xwtWindow.GetBackend () as Xwt.GtkBackend.WindowBackend;
             var toolBox = new Gtk.HBox (true, 2);
 
-            var tb = useCase.ArrangerToolStrip.Backend as Gtk.Toolbar;
+            var tb = useCase.ArrangerToolStrip.Backend.ToGtk();
             toolBox.PackStart (tb, false, true, 0);
 
-            tb = useCase.DisplayModeToolStrip.Backend as Gtk.Toolbar;
+            tb = useCase.DisplayModeToolStrip.Backend.ToGtk ();
             toolBox.PackStart (tb, false, true, 0);
 
-            tb = useCase.MarkerToolStrip.Backend as Gtk.Toolbar;
+            tb = useCase.MarkerToolStrip.Backend.ToGtk ();
             toolBox.PackStart (tb, false, true, 0);
 
             var mainBox = backend.MainBox;

@@ -50,11 +50,11 @@ namespace Limaki.View.WpfBackend {
                 Grid.SetRow(dockpanel, 2);
             }
 
-            toolBarTray.ToolBars.Add(useCase.ArrangerToolStrip.Backend as ToolBar);
-            toolBarTray.ToolBars.Add(useCase.SplitViewToolStrip0.Backend as ToolBar);
-            toolBarTray.ToolBars.Add(useCase.MarkerToolStrip.Backend as ToolBar);
-            toolBarTray.ToolBars.Add(useCase.LayoutToolStrip0.Backend as ToolBar);
-            toolBarTray.ToolBars.Add(useCase.DisplayModeToolStrip.Backend as ToolBar);
+            toolBarTray.ToolBars.Add(useCase.ArrangerToolStrip.Backend.ToWpf() as ToolBar);
+            toolBarTray.ToolBars.Add (useCase.SplitViewToolStrip0.Backend.ToWpf () as ToolBar);
+            toolBarTray.ToolBars.Add (useCase.MarkerToolStrip.Backend.ToWpf () as ToolBar);
+            toolBarTray.ToolBars.Add (useCase.LayoutToolStrip0.Backend.ToWpf () as ToolBar);
+            toolBarTray.ToolBars.Add (useCase.DisplayModeToolStrip.Backend.ToWpf () as ToolBar);
 
         }
 

@@ -31,7 +31,7 @@ namespace Limaki.View.XwtBackend {
 
             var hPaned = new HPaned();
 
-            var pagesDisplayBackend = Frontend.PagesDisplay.Backend as Widget;
+            var pagesDisplayBackend = Frontend.PagesDisplay.Backend.ToXwt();
 
             pagesDisplayBackend.WidthRequest = Frontend.GetDefaultWidth ();
             hPaned.Panel2.Content = pagesDisplayBackend;
@@ -39,7 +39,7 @@ namespace Limaki.View.XwtBackend {
             Frontend.Compose ();
 
             Frontend.AttachContentViewer = contentViewer => {
-                var contentControl = (contentViewer.Backend as Widget);
+                var contentControl = (contentViewer.Backend.ToXwt ());
 
                 if (hPaned.Panel1.Content != null) {
                     hPaned.Panel1.Content = null;

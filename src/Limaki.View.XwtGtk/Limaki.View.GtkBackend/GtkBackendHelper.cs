@@ -18,6 +18,7 @@ using Xwt;
 using Box = Gtk.Box;
 using Rectangle = Gdk.Rectangle;
 using Widget = Gtk.Widget;
+using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.GtkBackend {
 
@@ -53,6 +54,26 @@ namespace Limaki.View.GtkBackend {
 			widget.HasFocus = true;
         }
 
+        public static Widget ToGtk (this IVidgetBackend backend) {
+            var vb = backend as IGtkBackend;
+            if (vb != null)
+                return vb.Widget;
+            var xb = backend as Limaki.View.XwtBackend.IXwtBackend;
+            if (xb != null && ((Xwt.Backends.IFrontend)xb.Widget).Backend is Xwt.GtkBackend.WidgetBackend)
+                return ((Xwt.GtkBackend.WidgetBackend)((Xwt.Backends.IFrontend)xb.Widget).Backend).Widget;
+
+            return backend as Widget;
+
+        }
+
+        public static Gtk.ToolItem ToGtk (this LVV.IToolStripItemBackend backend) {
+            var vb = backend as IGtkBackend;
+            if (vb != null)
+                return (Gtk.ToolItem) vb.Widget;
+            return backend as Gtk.ToolItem;
+
+        }
+        
         public struct ChildPacking {
             public bool Expand;
             public bool Fill;
@@ -98,6 +119,28 @@ namespace Limaki.View.GtkBackend {
             x += a.X;
             y += a.Y;
             return new Xwt.Point (x + widgetCoordinates.X, y + widgetCoordinates.Y);
+        }
+
+        public static Gtk.Widget AllocEventBox (this Gtk.Widget widget, bool visibleWindow = false) {
+            // Wraps the widget with an event box. Required for some
+            // widgets such as Label which doesn't have its own gdk window
+
+            if (widget is Gtk.EventBox) {
+                ((Gtk.EventBox)widget).VisibleWindow = true;
+                return widget;
+            }
+
+            if (widget.IsNoWindow) {
+
+                var eventBox = new Gtk.EventBox ();
+                eventBox.Visible = widget.Visible;
+                eventBox.Sensitive = widget.Sensitive;
+                eventBox.VisibleWindow = visibleWindow;
+                Xwt.GtkBackend.GtkEngine.ReplaceChild (widget, eventBox);
+                eventBox.Add (widget);
+                return eventBox;
+            }
+            return widget;
         }
     }
 }

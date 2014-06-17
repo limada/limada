@@ -53,13 +53,14 @@ namespace Limaki.View.WpfBackend {
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripBackend, ToolStripBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripButtonBackend, ToolStripButtonBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripDropDownButtonBackend, ToolStripDropDownButtonBackend> ();
-
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripItemHostBackend, ToolStripItemHostBackend> ();
+            
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend>();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend>();
 
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ISplitViewToolStripBackend0, SplitViewToolStripBackend0>();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend>();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IMarkerToolStripBackend0, MarkerToolStripBackend0>();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend>();
 
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IWebBrowserBackend, WebBrowserBackend> ();
 

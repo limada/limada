@@ -18,53 +18,31 @@ using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.WpfBackend {
 
-    public class ToolStripButtonBackend : ToolStripButton, IToolStripButtonBackend {
-
-        #region IVidgetBackend Member
+    public class ToolStripButtonBackend : ToolStripItemBackend<ToolStripButton>, IToolStripButtonBackend {
 
         public LVV.ToolStripButton Frontend { get; protected set; }
 
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (LVV.ToolStripButton)frontend;
         }
 
-        public Xwt.Size Size { get { return this.VidgetBackendSize (); } }
-
-        public void Update () { this.VidgetBackendUpdate (); }
-
-        public void Invalidate () { this.VidgetBackendInvalidate (); }
-
-        public void SetFocus () { this.VidgetBackendSetFocus (); }
-
-        public void Invalidate (Xwt.Rectangle rect) { this.VidgetBackendInvalidate (rect); }
-
-        #endregion
-
-        public void SetImage (Xwt.Drawing.Image value) {
-            base.Image = value;
+        public override void Compose () {
+            base.Compose ();
+            Control.Click += OnButtonClicked;
+        }
+        public virtual void SetImage (Xwt.Drawing.Image value) {
+            Control.Image = value;
         }
 
-        public void SetLabel (string value) {
-            base.Label = value;
+        public virtual void SetLabel (string value) {
+            Control.Label = value;
         }
 
-        public void SetToolTip (string value) {
-            base.ToolTip = value;
-        }
-
-        private System.Action<object> _action;
-        public void SetAction (Action<object> value) {
-            _action = value;
-        }
-
-        protected override void OnButtonClicked (object sender, System.Windows.RoutedEventArgs e) {
-            base.OnButtonClicked (sender, e);
+        protected virtual void OnButtonClicked (object sender, EventArgs e) {
             if (_action != null)
                 _action (this);
         }
 
-        public void Dispose () {
-         
-        }
+
     }
 }

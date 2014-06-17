@@ -66,7 +66,7 @@ namespace Limaki.View.GtkBackend {
 
         protected virtual Xwt.ButtonType ButtonType { get { return Xwt.ButtonType.Normal; } }
 
-        protected override void Compose () {
+        internal override void Compose () {
             base.Compose ();
             SetContent (Xwt.ContentPosition.Bottom);
         }

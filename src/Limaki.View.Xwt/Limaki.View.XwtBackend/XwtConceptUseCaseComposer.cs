@@ -43,7 +43,7 @@ namespace Limaki.View.XwtBackend {
 
             this.Menu = mainWindowBackend.MainMenu;
                 
-            var splitViewBackend = useCase.SplitView.Backend as Widget;
+            var splitViewBackend = useCase.SplitView.Backend.ToXwt();
 
             StatusLabel = new Label {
                 HeightRequest = 20,

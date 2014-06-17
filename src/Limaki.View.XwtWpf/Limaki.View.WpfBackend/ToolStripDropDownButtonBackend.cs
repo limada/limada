@@ -18,61 +18,39 @@ using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.WpfBackend {
 
-    public class ToolStripDropDownButtonBackend : ToolStripDropDownButton, IToolStripDropDownButtonBackend {
-
-        #region IVidgetBackend Member
+    public class ToolStripDropDownButtonBackend : ToolStripItemBackend<ToolStripDropDownButton>, IToolStripDropDownButtonBackend {
 
         public LVV.ToolStripDropDownButton Frontend { get; protected set; }
 
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (LVV.ToolStripDropDownButton)frontend;
         }
 
-        public Xwt.Size Size { get { return this.VidgetBackendSize (); } }
-
-        public void Update () { this.VidgetBackendUpdate (); }
-
-        public void Invalidate () { this.VidgetBackendInvalidate (); }
-
-        public void SetFocus () { this.VidgetBackendSetFocus (); }
-
-        public void Invalidate (Xwt.Rectangle rect) { this.VidgetBackendInvalidate (rect); }
-
-        #endregion
+        public override void Compose () {
+            base.Compose ();
+            Control.Click += OnButtonClicked;
+        }
 
         public void SetImage (Xwt.Drawing.Image value) {
-            base.Image = value;
+            Control.Image = value;
         }
 
         public void SetLabel (string value) {
-            base.Label = value;
+            Control.Label = value;
         }
 
-        public void SetToolTip (string value) {
-            base.ToolTip = value;
-        }
 
-        private Action<object> _action;
-        public void SetAction (Action<object> value) {
-            _action = value;
-        }
-
-        protected override void OnButtonClicked (object sender, System.Windows.RoutedEventArgs e) {
-            base.OnButtonClicked (sender, e);
+        protected virtual void OnButtonClicked (object sender, EventArgs e) {
             if (_action != null)
                 _action (this);
         }
 
-        public void Dispose () {
-
-        }
-
         public void InsertItem (int index, IToolStripItemBackend backend) {
-            Children.Insert (index, (System.Windows.UIElement)backend);
+            Control.Children.Insert (index, backend.ToWpf());
         }
 
         public void RemoveItem (IToolStripItemBackend backend) {
-            Children.Remove ((System.Windows.UIElement)backend);
+            Control.Children.Remove (backend.ToWpf());
         }
     }
 }

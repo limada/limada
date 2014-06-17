@@ -43,6 +43,8 @@ namespace Limaki.Graphs {
         }
 
         public virtual TTwo FittingMarker(object data) {
+            if (data == null)
+                return default(TTwo);
             return Markers.Where (marker => marker.ToString().Equals (data.ToString())).FirstOrDefault();
         }
 

@@ -21,75 +21,66 @@ using System.Windows;
 using System;
 using LVV = Limaki.View.Vidgets;
 using SW = System.Windows;
+using SWC = System.Windows.Controls;
 
 namespace Limaki.View.WpfBackend {
 
-    public class ToolStripBackend : ToolBar, IToolStripBackend {
+    public class ToolStripBackend : VidgetBackend<ToolStripBackend.ToolBar>, IToolStripBackend {
 
-        #region IVidgetBackend
+        public class ToolBar : SWC.ToolBar {
+
+            protected override void OnRenderSizeChanged (SizeChangedInfo sizeInfo) {
+
+                // hide overflow
+                base.OnRenderSizeChanged (sizeInfo);
+                var overflowGrid = this.Template.FindName ("OverflowGrid", this) as FrameworkElement;
+                if (overflowGrid != null) {
+                    overflowGrid.Visibility = SW.Visibility.Collapsed;
+                }
+
+                var mainPanelBorder = this.Template.FindName ("MainPanelBorder", this) as FrameworkElement;
+                if (mainPanelBorder != null) {
+                    mainPanelBorder.Margin = new Thickness (0);
+                }
+            }
+        }
 
         public VidgetApplicationContext ApplicationContext { get; set; }
 
         public ToolStrip Frontend { get; protected set; }
 
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             ApplicationContext = context;
             this.Frontend = (ToolStrip)frontend;
         }
 
-        public Xwt.Size Size { get { return this.VidgetBackendSize(); } }
-
-        public void Update () { this.VidgetBackendUpdate(); }
-
-        public void Invalidate () { this.VidgetBackendInvalidate(); }
-
-        public void SetFocus() { this.VidgetBackendSetFocus (); }
-
-        public void Invalidate (Xwt.Rectangle rect) { this.VidgetBackendInvalidate(rect); }
-
-        #endregion
-
-        public void Dispose () { }
-
-        protected override void OnRenderSizeChanged (SizeChangedInfo sizeInfo) {
-
-            // hide overflow
-            base.OnRenderSizeChanged (sizeInfo);
-            var overflowGrid = this.Template.FindName ("OverflowGrid", this) as FrameworkElement;
-            if (overflowGrid != null) {
-                overflowGrid.Visibility = SW.Visibility.Collapsed;
-            }
-
-            var mainPanelBorder = this.Template.FindName ("MainPanelBorder", this) as FrameworkElement;
-            if (mainPanelBorder != null) {
-                mainPanelBorder.Margin = new Thickness (0);
-            }
-        }
-
-        protected virtual void Compose () { }
-
         [Obsolete]
         public void AddItems (params UIElement[] items) {
             foreach (var item in items)
-                Items.Add (item);
+                Control.Items.Add (item);
 
         }
 
         public void InsertItem (int index, IToolStripItemBackend item) {
-            Items.Insert (index, item);
+
+            var value = item.ToWpf ();
+            if (value != null) {
+                value.Style = ToolStripUtils.ToolbarItemStyle (value);
+                Control.Items.Insert (index, value);
+            }
         }
 
         public void RemoveItem (IToolStripItemBackend item) {
-            Items.Remove (item);
+            Control.Items.Remove (item.ToWpf ());
         }
 
         public void SetVisibility (LVV.Visibility value) {
             if (value == LVV.Visibility.Visible)
-                this.Visibility = SW.Visibility.Visible;
+                Control.Visibility = SW.Visibility.Visible;
             else if (value == LVV.Visibility.Hidden)
-                this.Visibility = SW.Visibility.Hidden;
+                Control.Visibility = SW.Visibility.Hidden;
             else if (value == LVV.Visibility.Collapsed)
-                this.Visibility = SW.Visibility.Collapsed;
+                Control.Visibility = SW.Visibility.Collapsed;
         }
     }
 }

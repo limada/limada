@@ -28,7 +28,7 @@ namespace Limaki.View.WpfBackend {
     public class ToolStripDropDownButton : ToolStripButton {
 
         private IList<UIElement> _children = null;
-        protected IList<UIElement> Children { get { return _children ?? (_children = new List<UIElement> ()); } }
+        public IList<UIElement> Children { get { return _children ?? (_children = new List<UIElement> ()); } }
 
         public void AddItems (params UIElement[] children) {
             foreach (var child in children)
@@ -39,7 +39,7 @@ namespace Limaki.View.WpfBackend {
 
         protected override void Compose () {
 
-            Style = (Style)FindResource (ToolBar.ToggleButtonStyleKey);
+            Style = ToolStripUtils.ToolbarItemStyle (this);
 
             ButtonPanel.Children.Add (ButtonImage);
             ButtonPanel.Children.Add (DropDownImage);

@@ -50,6 +50,9 @@
     <Compile Include="Limaki.View.WpfBackend\ToolStripButtonBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripDropDownButton.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripDropDownButtonBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackend\ToolStripItemBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackend\ToolStripItemHostBackend.cs" />
+    <Compile Include="Limaki.View.WpfBackend\VidgetBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\WpfConverter.cs" />
     <Compile Include="Limaki.View.WpfBackend\DrawingConverter.cs" />
     <Compile Include="Limaki.View.WpfBackend\Monitor.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="Limaki.View.WpfBackend\ToolStripBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\WpfBackendHelper.cs" />
     <Compile Include="[Obsolete]\SplitViewToolStripBackend.cs" />
+    <Compile Include="[Obsolete]\ToolStripBackend00.cs" />
     <Compile Include="[Obsolete]\ToolStripButton0.cs" />
     <Compile Include="[Obsolete]\ToolStripDropDownButton0.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripUtils.cs" />

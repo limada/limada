@@ -52,7 +52,7 @@ namespace Limaki.View.WpfBackend {
             style.Triggers.Add (trigger);
 
             // use ToolbarStyle as BaseStyle
-            var baseStyle = (Style)FindResource (ToolBar.ToggleButtonStyleKey);
+            var baseStyle = ToolStripUtils.ToolbarItemStyle(this);
             style.TargetType = baseStyle.TargetType;
             style.BasedOn = baseStyle;
             this.Style = style;

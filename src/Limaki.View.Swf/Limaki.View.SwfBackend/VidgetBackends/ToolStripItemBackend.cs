@@ -15,97 +15,57 @@
 using System.Windows.Forms;
 using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
+using System;
 using SWF = System.Windows.Forms;
 using LVV = Limaki.View.Vidgets;
-using SD = System.Drawing;
-using System.ComponentModel;
-using Xwt.Backends;
-using System;
-using System.Linq;
-using Limaki.Common.Linqish;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public class ToolStripItemHostBackend : SWF.ToolStripControlHost, IToolStripItemHostBackend {
+    public abstract class ToolStripItemBackend<T> : IVidgetBackend, ISwfToolStripItemBackend where T : System.Windows.Forms.ToolStripItem {
 
-        public ToolStripItemHostBackend () : base (
-            new SWF.Panel {
-                              Dock = DockStyle.Fill,
-                              BorderStyle = BorderStyle.None,
-                              Margin = new Padding (),
-                              Padding = new Padding (),
-                          }) {
+        public abstract void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
 
-            this.Overflow = ToolStripItemOverflow.AsNeeded;
+        public ToolStripItemBackend () {
+            Compose ();
         }
 
-        #region IVidgetBackend Member
-
-        [Browsable (false)]
-        [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-        public LVV.ToolStripItemHost Frontend { get; protected set; }
-
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (LVV.ToolStripItemHost)frontend;
+        protected virtual void Compose () {
+            this.Control = Activator.CreateInstance<T>();
         }
 
-        void IVidgetBackend.Update () { }
+        public T Control { get; protected set; }
 
-        void IVidgetBackend.Invalidate () {
-            this.Invalidate ();
+        public Xwt.Size Size {
+            get { return Control.Size.ToXwt (); }
+            set { Control.Size = value.ToGdi (); }
         }
 
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
-            this.Invalidate (rect.ToGdi ());
+        public virtual void Invalidate (Xwt.Rectangle rect) {
+            Control.Invalidate (rect.ToGdi ());
         }
 
-        void IVidgetBackend.SetFocus () {
-            this.Focus ();
+        public virtual void SetFocus () { }
+
+        public virtual void Update () { }
+
+        public virtual void Invalidate () {
+            Control.Invalidate ();
         }
 
-        public new Xwt.Size Size {
-            get { return base.Size.ToXwt (); }
-            set { base.Size = value.ToGdi (); }
+        public virtual void Dispose () {
+            Control.Dispose ();
         }
 
-        #endregion
-
-       
-        public override SD.Font Font {
-            get { return base.Font; }
-            set {
-                base.Font = value;
-                var panel = base.Control as SWF.Panel;
-                panel.SuspendLayout ();
-                panel.Font = value;
-                panel.Controls.Cast<Control> ().ForEach (c => c.Font = value);
-                panel.ResumeLayout ();
-            }
+        public virtual void SetImage (Xwt.Drawing.Image image) {
+            Control.BackgroundImage = image.ToGdi ();
         }
 
-        public void SetChild (Vidget value) {
-            var control = value.Backend as Control;
-            var panel = base.Control as SWF.Panel;
-            panel.SuspendLayout ();
-            panel.Controls.Clear ();
-            panel.Controls.Add (control);
-            base.Size = value.Size.ToGdi ();
-            panel.ResumeLayout ();
+        public virtual void SetLabel (string value) {
+            Control.Text = value;
         }
 
-        protected override void SetBounds (SD.Rectangle bounds) {
-            base.SetBounds (bounds);
-        }
-        public void SetImage (Xwt.Drawing.Image image) {
-            this.BackgroundImage = image.ToGdi();
-        }
-
-        public void SetLabel (string value) {
-            this.Text = value;
-        }
-
-        public void SetToolTip (string value) {
-            this.ToolTipText = value;
+        public virtual void SetToolTip (string value) {
+            Control.ToolTipText = value;
         }
 
         protected System.Action<object> _action = null;
@@ -117,171 +77,14 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             if (_action != null) {
                 _action (this);
             }
+        }
+
+        SWF.ToolStripItem ISwfToolStripItemBackend.Control {
+            get { return this.Control; }
         }
     }
 
-    public class ToolStripButtonBackend : SWF.ToolStripButton, IToolStripButtonBackend {
-
-        public ToolStripButtonBackend () {
-            ImageScaling = ToolStripItemImageScaling.None;
-            Click += ClickAction;
-        }
-
-        public new Xwt.Size Size {
-            get { return base.Size.ToXwt (); }
-            set { base.Size = value.ToGdi (); }
-        }
-
-        #region IVidgetBackend Member
-
-        [Browsable (false)]
-        [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-        public LVV.ToolStripButton Frontend { get; protected set; }
-
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (LVV.ToolStripButton)frontend;
-        }
-
-        void IVidgetBackend.Update () { }
-
-        void IVidgetBackend.Invalidate() {
-            this.Invalidate();
-        }
-
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
-            this.Invalidate (rect.ToGdi ());
-        }
-
-        void IVidgetBackend.SetFocus () {  }
-
-        #endregion
-
-        public void SetImage (Xwt.Drawing.Image image) {
-            if (this.Parent != null)
-                this.Parent.SuspendLayout ();
-            base.Image = image.ToGdi ();
-            if (this.Parent != null)
-                this.Parent.ResumeLayout ();
-        }
-
-        public void SetLabel (string value) {
-            base.Text = value;
-        }
-
-        public void SetToolTip (string value) {
-            base.ToolTipText = value;
-        }
-
-
-        protected System.Action<object> _action = null;
-        public virtual void SetAction (System.Action<object> value) {
-            _action = value;
-        }
-
-        protected virtual void ClickAction (object sender, System.EventArgs e) {
-            if (_action != null) {
-                _action (this);
-            }
-        }
-    }
-
-    public class ToolStripDropDownButtonBackend : SWF.ToolStripDropDownButton, IToolStripDropDownButtonBackend {
-
-        public ToolStripDropDownButtonBackend () {
-            ImageScaling = ToolStripItemImageScaling.None;
-            DisplayStyle = ToolStripItemDisplayStyle.Image;
-            Click += ClickAction;
-            ((ToolStripDropDownMenu)this.DropDown).ShowImageMargin = false;
-            ((ToolStripDropDownMenu)this.DropDown).ShowCheckMargin = false;
-        }
-
-        protected bool DropDownClicked = false;
-        protected override void OnClick (EventArgs e) {
-
-            if (!DropDownClicked)
-                base.OnClick (e);
-        }
-
-        protected override void OnMouseDown (MouseEventArgs e) {
-
-            var w = ToolStripUtils.DropdownWidth;
-            var area = new SD.Rectangle (this.Width - w, 0, w, this.Height);
-            DropDownClicked = area.Contains (e.Location);
-            this.DropDown.PerformLayout ();
-            var size = DropDown.Size;
-            this.DropDown.Visible = !DropDownClicked;
-            if (Image != null && string.IsNullOrEmpty (Text) && DisplayStyle == ToolStripItemDisplayStyle.Image) {
-                DropDown.AutoSize = false;
-                DropDown.Width = (int)Size.Width;
-                DropDown.Height = size.Height;
-            }
-            base.OnMouseDown (e);
-            //this.DropDown.Visible = this.Pressed;
-
-        }
-        public new Xwt.Size Size {
-            get { return base.Size.ToXwt (); }
-            set { base.Size = value.ToGdi (); }
-        }
-
-        #region IVidgetBackend Member
-
-        [Browsable (false)]
-        [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-        public LVV.ToolStripDropDownButton Frontend { get; protected set; }
-
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (LVV.ToolStripDropDownButton)frontend;
-        }
-
-        void IVidgetBackend.Update () { }
-
-        void IVidgetBackend.Invalidate () {
-            this.Invalidate ();
-        }
-
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
-            this.Invalidate (rect.ToGdi ());
-        }
-
-        void IVidgetBackend.SetFocus () { }
-
-        #endregion
-
-        public void SetImage (Xwt.Drawing.Image image) {
-            if (this.Parent != null)
-                this.Parent.SuspendLayout ();
-            base.Image = image.ToGdi ();
-            if (this.Parent != null)
-                this.Parent.ResumeLayout ();
-        }
-
-        public void SetLabel (string value) {
-            base.Text = value;
-        }
-
-        public void SetToolTip (string value) {
-            base.ToolTipText = value;
-        }
-
-
-        protected System.Action<object> _action = null;
-        public virtual void SetAction (System.Action<object> value) {
-            _action = value;
-        }
-
-        protected virtual void ClickAction (object sender, System.EventArgs e) {
-            if (_action != null) {
-                _action (this);
-            }
-        }
-
-        public void InsertItem (int index, IToolStripItemBackend backend) {
-            this.DropDownItems.Insert (index, (SWF.ToolStripItem) backend);
-        }
-
-        public void RemoveItem (IToolStripItemBackend backend) {
-            this.DropDownItems.Remove ((SWF.ToolStripItem) backend);
-        }
+    public interface ISwfToolStripItemBackend {
+        System.Windows.Forms.ToolStripItem Control { get; }
     }
 }

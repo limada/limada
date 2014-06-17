@@ -21,7 +21,7 @@ using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
-    public partial class MarkerToolStripBackend0 : ToolStripBackend, IMarkerToolStripBackend0 {
+    public partial class MarkerToolStripBackend0 : ToolStripBackend0, IMarkerToolStripBackend0 {
         public MarkerToolStripBackend0 () {
             InitializeComponent();
         }

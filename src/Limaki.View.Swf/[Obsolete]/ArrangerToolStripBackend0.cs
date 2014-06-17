@@ -23,7 +23,7 @@ using ToolStripItem = System.Windows.Forms.ToolStripItem;
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
-    public partial class ArrangerToolStripBackend0 : ToolStripBackend, IArrangerToolStripBackend {
+    public partial class ArrangerToolStripBackend0 : ToolStripBackend0, IArrangerToolStripBackend {
 
         public ArrangerToolStripBackend0 () {
             InitializeComponent();

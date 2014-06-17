@@ -23,6 +23,7 @@ using Limaki.View.Viz;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {
+
     public class SplitViewBackend : HPaned, ISplitViewBackend {
 
         public SplitViewBackend () { }
@@ -48,13 +49,13 @@ namespace Limaki.View.XwtBackend {
         protected void Compose () {
             //this.PositionFraction = 50; // crashes on Wpf
 
-            SetScrollingPanelContent(Frontend.Display1.Backend as Widget, SplitContainer.Panel1);
-            SetScrollingPanelContent(Frontend.Display2.Backend as Widget, SplitContainer.Panel2);
+            SetScrollingPanelContent(Frontend.Display1.Backend.ToXwt(), SplitContainer.Panel1);
+            SetScrollingPanelContent(Frontend.Display2.Backend.ToXwt(), SplitContainer.Panel2);
 
         }
 
         public void InitializeDisplay (IVidgetBackend displayBackend) {
-            var backend = (displayBackend as Widget).PeeledScrollView();
+            var backend = displayBackend.ToXwt ().PeeledScrollView ();
 
             backend.GotFocus -= DisplayGotFocus;
             backend.ButtonReleased -= DisplayGotFocus;
@@ -63,7 +64,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         protected void DisplayGotFocus (object sender, EventArgs e) {
-            sender = (sender as Widget).PeeledScrollView();
+            sender = (sender as IVidgetBackend).ToXwt().PeeledScrollView ();
             var backend = sender as VisualsDisplayBackend;
             if (backend != null) {
                 Frontend.DisplayGotFocus(backend.Display);
@@ -72,7 +73,7 @@ namespace Limaki.View.XwtBackend {
 
         protected void ControlGotFocus (object sender, EventArgs e) {
             Trace.WriteLine(string.Format("{0} {1}", sender.GetType().Name, sender.GetHashCode()));
-            var displayBackend = (sender as Widget).PeeledScrollView() as VisualsDisplayBackend;
+            var displayBackend = (sender as IVidgetBackend).ToXwt().PeeledScrollView () as VisualsDisplayBackend;
             if (displayBackend != null) {
                 Frontend.DisplayGotFocus(displayBackend.Display);
             } else {
@@ -81,7 +82,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         public void SetFocusCatcher (IVidgetBackend backend) {
-            var widget = (backend as Widget).PeeledScrollView();
+            var widget = (backend.ToXwt()).PeeledScrollView();
             if (widget != null) {
                 //widget.MouseEntered += ControlGotFocus;
                 widget.ButtonPressed += ControlGotFocus;
@@ -90,7 +91,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         public void ReleaseFocusCatcher (IVidgetBackend backend) {
-            var widget = (backend as Widget).PeeledScrollView();
+            var widget = (backend.ToXwt()).PeeledScrollView();
             if (widget != null) {
                 //widget.MouseEntered -= ControlGotFocus;
                 widget.ButtonReleased -= ControlGotFocus;
@@ -101,7 +102,7 @@ namespace Limaki.View.XwtBackend {
         public void GraphGraphView () {
 
             Action<IDisplay, Panel> setDisplay = (display, panel) => {
-                var displayWidget = display.Backend as Widget;
+                var displayWidget = display.Backend.ToXwt();
                 var backend = displayWidget.PeeledScrollView();
                 if (!panel.Content.ScrollPeeledChildren().Contains(backend)) {
                     SetScrollingPanelContent(backend, panel);
@@ -127,7 +128,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         protected Panel AdjacentPanelOf (IVidget vidget) {
-            var widget = vidget.Backend as Widget;
+            var widget = vidget.Backend.ToXwt();
 
             if (SplitContainer.Panel1.Content.ScrollPeeledChildren ().Contains (widget)) {
                 return SplitContainer.Panel2;
@@ -146,7 +147,7 @@ namespace Limaki.View.XwtBackend {
                 return;
             }
 
-            var widget = backend as Widget;
+            var widget = backend.ToXwt();
             var panel = AdjacentPanelOf (this.Frontend.CurrentDisplay);
             if (panel != null && !panel.Content.ScrollPeeledChildren ().Contains (widget)) {
                 SetScrollingPanelContent (widget, panel);
@@ -158,7 +159,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         protected Panel PanelOf (IVidget vidget) {
-            var widget = vidget.Backend as Widget;
+            var widget = vidget.Backend.ToXwt();
 
             if (SplitContainer.Panel1.Content.ScrollPeeledChildren ().Contains (widget)) {
                 return SplitContainer.Panel1;
@@ -177,7 +178,7 @@ namespace Limaki.View.XwtBackend {
             var display = this.Frontend.CurrentDisplay;
 
             var textDialog = new TextOkCancelBox {Text = text, Title = title};
-            var textDialogBackend = textDialog.Backend as TextOkCancelBoxBackend;
+            var textDialogBackend = textDialog.Backend.ToXwt() as TextOkCancelBoxBackend;
             textDialogBackend.HorizontalPlacement = WidgetPlacement.Fill;
             textDialogBackend.VerticalPlacement = WidgetPlacement.Start;
 

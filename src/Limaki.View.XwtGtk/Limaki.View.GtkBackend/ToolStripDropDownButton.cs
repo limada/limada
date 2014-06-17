@@ -21,7 +21,7 @@ namespace Limaki.View.GtkBackend {
         protected override Xwt.ButtonType ButtonType { get { return Xwt.ButtonType.DropDown; } }
 
         private IList<Gtk.Widget> _children = null;
-        protected IList<Gtk.Widget> Children { get { return _children ?? (_children = new List<Gtk.Widget> ()); } }
+        public new IList<Gtk.Widget> Children { get { return _children ?? (_children = new List<Gtk.Widget> ()); } }
 
         public void AddItems (params Gtk.Widget[] children) {
             foreach (var child in children)
@@ -63,7 +63,7 @@ namespace Limaki.View.GtkBackend {
                     _childBox = new Gtk.VBox (false, 3);
                     foreach (var w in Children) {
                         _childBox.PackStart (w, false, false, 3);
-                        var b = w as ToolStripButton0;
+                        var b = w as ToolStripButton;
                         if (b != null) {
                             b.Click -= ChildClicked;
                             b.Click += ChildClicked;

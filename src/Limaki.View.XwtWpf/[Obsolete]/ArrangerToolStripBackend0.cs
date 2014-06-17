@@ -22,7 +22,7 @@ using System;
 namespace Limaki.View.WpfBackend {
 
     [Obsolete]
-    public class ArrangerToolStripBackend0 : ToolStripBackend, IArrangerToolStripBackend {
+    public class ArrangerToolStripBackend0 : ToolStripBackend00, IArrangerToolStripBackend {
 
         public ArrangerToolStripBackend0 () { }
 

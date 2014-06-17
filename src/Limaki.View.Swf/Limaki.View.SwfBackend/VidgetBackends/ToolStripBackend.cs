@@ -23,62 +23,41 @@ using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public abstract partial class ToolStripBackend : SWF.ToolStrip, IToolStripBackend {
-
-        public ToolStripBackend () {
-            Compose ();
-        }
+    public abstract partial class ToolStripBackend : VidgetBackend<SWF.ToolStrip>, IToolStripBackend {
 
         protected virtual void Compose () {
-            this.Dock = System.Windows.Forms.DockStyle.None;
-            this.ImageScalingSize = new System.Drawing.Size (20, 20);
-            this.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.Size = new System.Drawing.Size (100, 36);
-            this.LayoutStyle = ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            Control.Dock = System.Windows.Forms.DockStyle.None;
+            Control.ImageScalingSize = new System.Drawing.Size (20, 20);
+            Control.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            Control.Size = new System.Drawing.Size (100, 36);
+            Control.LayoutStyle = ToolStripLayoutStyle.HorizontalStackWithOverflow;
         }
 
-        #region IVidgetBackend Member
-
-        Xwt.Size IVidgetBackend.Size {
-            get { return this.Size.ToXwt(); }
-        }
-
-        void IVidgetBackend.Update () {
-            this.Update();
-        }
-
-        void IVidgetBackend.Invalidate () {
-            this.Invalidate();
-        }
-
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
-            this.Invalidate(rect.ToGdi());
-        }
 
         [Browsable (false)]
         [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
         public LVV.ToolStrip Frontend { get; protected set; }
 
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (LVV.ToolStrip) frontend;
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (LVV.ToolStrip)frontend;
         }
 
-        void IVidgetBackend.SetFocus () { this.Focus (); }
-
-        #endregion
-        
         public void InsertItem (int index, IToolStripItemBackend item) {
-            var control = item as SWF.ToolStripItem;
-            control.Font = this.Font;
-            base.Items.Insert (index, (SWF.ToolStripItem) item);
+            var control = item.ToSwf() as SWF.ToolStripItem;
+            control.Font = Control.Font;
+            Control.Items.Insert (index, control);
         }
 
         public void RemoveItem (IToolStripItemBackend item) {
-            base.Items.Remove ((SWF.ToolStripItem) item);
+            var control = item.ToSwf() as SWF.ToolStripItem;
+            Control.Items.Remove (control);
         }
 
         public void SetVisibility (Visibility value) {
-            
+            if (value == Visibility.Visible && !Control.Visible)
+                Control.Visible = true;
+            else
+                Control.Visible = false;
         }
     }
 }

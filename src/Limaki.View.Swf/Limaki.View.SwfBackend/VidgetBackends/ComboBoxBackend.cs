@@ -11,66 +11,47 @@ using SD = System.Drawing;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public class ComboBoxBackend : SWF.ComboBox, IComboBoxBackend {
+    public class ComboBoxBackend : VidgetBackend<SWF.ComboBox>, IComboBoxBackend {
 
         public ComboBoxBackend () : base () {
-            this.Margin = new SWF.Padding ();
-            this.FlatStyle = SWF.FlatStyle.Popup;
+            Control.Margin = new SWF.Padding ();
+            Control.FlatStyle = SWF.FlatStyle.Popup;
         }
-
-        #region IVidgetBackend Member
 
         [Browsable (false)]
         [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
         public LVV.ComboBox Frontend { get; protected set; }
 
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (LVV.ComboBox)frontend;
         }
 
-        void IVidgetBackend.Update () {
-            this.Update ();
-        }
-
-        void IVidgetBackend.Invalidate () {
-            this.Invalidate ();
-        }
-
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
-            this.Invalidate (rect.ToGdi ());
-        }
-
-        void IVidgetBackend.SetFocus () {
-            this.Focus ();
-        }
-
-        public new Xwt.Size Size {
-            get { return base.Size.ToXwt (); }
-            set { base.Size = value.ToGdi (); }
-        }
-
-        #endregion
 
         public void ItemCollectionChanged (object sender, NotifyCollectionChangedEventArgs e) {
             if (e.Action == NotifyCollectionChangedAction.Add) {
-                this.Items.AddRange (e.NewItems.Cast<object>().ToArray());
+                Control.Items.AddRange (e.NewItems.Cast<object> ().ToArray ());
             } else if (e.Action == NotifyCollectionChangedAction.Remove) {
-                e.OldItems.Cast<object> ().ForEach (i => this.Items.Remove (i));
+                e.OldItems.Cast<object> ().ForEach (i => Control.Items.Remove (i));
             } else if (e.Action == NotifyCollectionChangedAction.Reset) {
-                this.Items.Clear ();
+                Control.Items.Clear ();
             }
         }
 
         public void AddSelectionChanged (EventHandler value) {
-            this.SelectedValueChanged += value;
+            Control.SelectedValueChanged += value;
         }
 
         public void RemoveSelectionChanged (EventHandler value) {
-            this.SelectedValueChanged -= value;
+            Control.SelectedValueChanged -= value;
         }
 
         public void SetWidth (double value) {
-            this.Width = (int) value;
+            Control.Width = (int)value;
+        }
+
+        public int SelectedIndex {
+            get { return Control.SelectedIndex; }
+            set { Control.SelectedIndex = value; }
         }
     }
 }

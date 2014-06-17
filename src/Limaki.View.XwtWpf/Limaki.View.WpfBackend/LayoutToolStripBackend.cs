@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2043 Lytico
+ * Copyright (C) 2014 Lytico
  *
  * http://www.limada.org
  * 
@@ -75,8 +75,7 @@ namespace Limaki.View.WpfBackend {
 
             Registry.Pooled<StyleSheets> ().Keys.ForEach (s => StyleSheetCombo.Items.Add (s));
 
-            this.AddChild (StyleSheetCombo);
-            this.AddChild (shapeCombo);
+            this.AddItems (StyleSheetCombo, shapeCombo);
         }
 
 

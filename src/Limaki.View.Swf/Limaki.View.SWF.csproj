@@ -64,9 +64,8 @@
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropBackendHandler.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropEventConverter.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropMouseBackendHandler.cs" />
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ComboBoxBackend.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\BackendExtensions.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ComboBoxBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\DragDropVidgetBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -112,9 +111,10 @@
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextOkCancelBoxBackend.Designer.cs">
       <DependentUpon>TextOkCancelBoxBackend.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripItemBackend.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripButtonBackend.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripDropDownButtonBackend.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripItemBackend.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripItemHostBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\VidgetBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\VindowBackend.cs">
       <SubType>Form</SubType>
@@ -134,9 +134,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\XulRunner.cs" />
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\CustomToolStripBackends.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\CustomToolStripBackends.cs" />
     <Compile Include="[Obsolete]\DisplayModeToolStripBackend0.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -155,9 +153,7 @@
     <Compile Include="[Obsolete]\MarkerToolStripBackend0.Designer.cs">
       <DependentUpon>MarkerToolStripBackend0.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripBackend.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripRenderer.cs" />
     <Compile Include="Limada.Usecases\SwfAppFactory.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\SwfVidgetToolkitEngineBackend.cs" />
@@ -244,6 +240,9 @@
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\SplitViewToolStripBackend0.Designer.cs">
       <DependentUpon>SplitViewToolStripBackend0.cs</DependentUpon>
+    </Compile>
+    <Compile Include="[Obsolete]\ToolStripBackend0.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="[Obsolete]\ToolStripItemBackend0.cs">
       <SubType>Component</SubType>

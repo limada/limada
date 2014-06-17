@@ -26,7 +26,7 @@ using ToolStripItem = System.Windows.Forms.ToolStripItem;
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
-    public partial class SplitViewToolStripBackend0 : ToolStripBackend, ISplitViewToolStripBackend0 {
+    public partial class SplitViewToolStripBackend0 : ToolStripBackend0, ISplitViewToolStripBackend0 {
 
         public SplitViewToolStripBackend0 () {
             InitializeComponent();

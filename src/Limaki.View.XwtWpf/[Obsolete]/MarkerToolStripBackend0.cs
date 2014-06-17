@@ -22,7 +22,7 @@ using ComboBox=System.Windows.Controls.ComboBox;
 
 namespace Limaki.View.WpfBackend {
 
-    public class MarkerToolStripBackend0 : ToolStripBackend, IMarkerToolStripBackend0 {
+    public class MarkerToolStripBackend0 : ToolStripBackend00, IMarkerToolStripBackend0 {
 
         public MarkerToolStrip0 Frontend { get; protected set; }
 

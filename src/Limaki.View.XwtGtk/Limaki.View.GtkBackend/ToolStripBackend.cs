@@ -18,61 +18,45 @@ using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.GtkBackend {
 
-    public class ToolStripBackend : Gtk.Toolbar, IToolStripBackend {
-
-        #region IVidgetBackend
+    public class ToolStripBackend : VidgetBackend<Gtk.Toolbar>, IToolStripBackend {
 
         public VidgetApplicationContext ApplicationContext { get; set; }
 
         public ToolStrip Frontend { get; protected set; }
 
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             ApplicationContext = context;
             this.Frontend = (ToolStrip)frontend;
         }
 
-        public Xwt.Size Size { get { return this.VidgetBackendSize(); } }
 
-        public void Update () { this.VidgetBackendUpdate(); }
-
-        public void Invalidate () { this.VidgetBackendInvalidate(); }
-
-        public void SetFocus() { this.VidgetBackendSetFocus (); }
-
-        public void Invalidate (Xwt.Rectangle rect) { this.VidgetBackendInvalidate(rect); }
-
-        #endregion
-
-        public override  void Dispose () {
-            base.Dispose ();
-        }
-
-        protected virtual void Compose () {
-            base.Orientation = Gtk.Orientation.Horizontal;
-            base.ToolbarStyle = Gtk.ToolbarStyle.Icons;
+        protected override void Compose () {
+            base.Compose ();
+            Widget.Orientation = Gtk.Orientation.Horizontal;
+            Widget.ToolbarStyle = Gtk.ToolbarStyle.Icons;
         }
 
         [Obsolete]
         public void AddItems (params Gtk.ToolItem[] items) {
-            var ic = base.NItems;
+            var ic = Widget.NItems;
             for (int i = 0; i < items.Length; i++)
-                Insert (items[i], ic + i);
+                Widget.Insert (items[i], ic + i);
 
         }
 
         public void InsertItem (int index, IToolStripItemBackend item) {
-            base.Insert ((Gtk.ToolItem) item, index);
+            Widget.Insert (item.ToGtk(), index);
         }
 
         public void RemoveItem (IToolStripItemBackend item) {
-            base.Remove ((Gtk.Widget) item);
+            Widget.Remove (item.ToGtk ());
         }
 
         public void SetVisibility (Visibility value) {
-            if (value == Visibility.Visible && !this.Visible)
-                this.Visible = true;
+            if (value == Visibility.Visible && !Widget.Visible)
+                Widget.Visible = true;
             else
-                this.Visible = false;
+                Widget.Visible = false;
         }
     }
 }

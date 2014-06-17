@@ -26,7 +26,7 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
 
 
-    public partial class DisplayModeToolStripBackend0 : ToolStripBackend, IDisplayModeToolStripBackend {
+    public partial class DisplayModeToolStripBackend0 : ToolStripBackend0, IDisplayModeToolStripBackend {
         public DisplayModeToolStripBackend0 () {
             InitializeComponent();
         }

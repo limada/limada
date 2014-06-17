@@ -20,47 +20,42 @@ using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
-    public class ComboBoxBackend : Xwt.ComboBox, IComboBoxBackend {
+    public class ComboBoxBackend : VidgetBackend<Xwt.ComboBox>, IComboBoxBackend {
 
         public Vidgets.ComboBox Frontend { get; protected set; }
 
-        public void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (Vidgets.ComboBox)frontend;
-            this.Compose ();
         }
 
-        protected void Compose () {
-            
+        protected override void Compose () {
+            base.Compose ();
         }
-
-        void IVidgetBackend.Update () { this.VidgetBackendUpdate (); }
-
-        void IVidgetBackend.Invalidate () { this.VidgetBackendInvalidate (); }
-
-        void IVidgetBackend.Invalidate (Rectangle rect) { this.VidgetBackendInvalidate (rect); }
-
-        public void Dispose () { }
-
         public void ItemCollectionChanged (object sender, NotifyCollectionChangedEventArgs e) {
             if (e.Action == NotifyCollectionChangedAction.Add) {
-                e.NewItems.Cast<object> ().ForEach (i => this.Items.Add (i));
+                e.NewItems.Cast<object> ().ForEach (i => Widget.Items.Add (i));
             } else if (e.Action == NotifyCollectionChangedAction.Remove) {
-                e.OldItems.Cast<object> ().ForEach (i => this.Items.Remove (i));
+                e.OldItems.Cast<object> ().ForEach (i => Widget.Items.Remove (i));
             } else if (e.Action == NotifyCollectionChangedAction.Reset) {
-                this.Items.Clear ();
+                Widget.Items.Clear ();
             }
         }
 
         public void AddSelectionChanged (System.EventHandler value) {
-            this.SelectionChanged += value;
+            Widget.SelectionChanged += value;
         }
 
         public void RemoveSelectionChanged (System.EventHandler value) {
-            this.SelectionChanged -= value;
+            Widget.SelectionChanged -= value;
         }
 
         public void SetWidth (double value) {
-            this.WidthRequest = value;
+            Widget.WidthRequest = value;
+        }
+
+        public int SelectedIndex {
+            get { return Widget.SelectedIndex; }
+            set { Widget.SelectedIndex = value; }
         }
     }
 }

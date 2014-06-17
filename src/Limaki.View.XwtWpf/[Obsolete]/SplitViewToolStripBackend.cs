@@ -25,7 +25,7 @@ using SWC= System.Windows.Controls;
 
 namespace Limaki.View.WpfBackend {
 
-    public class SplitViewToolStripBackend0 : ToolStripBackend, ISplitViewToolStripBackend0 {
+    public class SplitViewToolStripBackend0 : ToolStripBackend00, ISplitViewToolStripBackend0 {
 
         public override void InitializeBackend (Limaki.View.IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (SplitViewToolStrip0)frontend;

@@ -15,6 +15,8 @@
 using System.Windows.Controls;
 using Limaki.Drawing.WpfBackend;
 using Limaki.View.Vidgets;
+using SW = System.Windows;
+using SWC = System.Windows.Controls;
 
 namespace Limaki.View.WpfBackend {
 
@@ -29,6 +31,16 @@ namespace Limaki.View.WpfBackend {
 
         public static FixedBitmap WpfImage (Xwt.Drawing.Image value) {
             return new FixedBitmap { Source = value.ToWpf () as System.Windows.Media.Imaging.BitmapSource };
+        }
+
+        public static SW.Style ToolbarItemStyle (SW.FrameworkElement value) {
+            if (value is SWC.ComboBox)
+                return (SW.Style)value.FindResource (SWC.ToolBar.ComboBoxStyleKey);
+            else if (value is SWC.Primitives.ToggleButton)
+                return (SW.Style)value.FindResource (SWC.ToolBar.ToggleButtonStyleKey);
+            else if (value is SWC.Separator)
+                return (SW.Style) value.FindResource (SWC.ToolBar.SeparatorStyleKey);
+            return value.Style;
         }
     }
 

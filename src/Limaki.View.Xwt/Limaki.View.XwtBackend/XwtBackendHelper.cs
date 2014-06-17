@@ -101,5 +101,13 @@ namespace Limaki.View.XwtBackend {
         public static void VidgetBackendInvalidate (this Widget widget, Rectangle rect) {
             widget.QueueForReallocate();
         }
+
+        public static Widget ToXwt (this IVidgetBackend backend) {
+            var vb = backend as IXwtBackend;
+            if (vb != null)
+                return vb.Widget;
+            return backend as Widget;
+
+        }
     }
 }
