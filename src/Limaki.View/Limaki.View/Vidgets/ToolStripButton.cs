@@ -47,14 +47,15 @@ namespace Limaki.View.Vidgets {
 
         public override void Dispose () { }
 
-        public bool? IsChecked { get; set; }
+        public bool? IsChecked { get { return Backend.IsChecked; } set { Backend.IsChecked = value; } }
 
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get { return Backend.IsEnabled; } set { Backend.IsEnabled = value; } }
 
         public bool IsCheckable { get; set; }
     }
 
     public interface IToolStripButtonBackend : IToolStripItemBackend {
-
+        //bool IsCheckable { get; set; }
+        bool? IsChecked { get; set; }
     }
 }

@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Limada.View.SwfBackend\SplitViewToolStripBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropBackendHandler.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropEventConverter.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropMouseBackendHandler.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripDropDownButtonBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripItemBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripItemHostBackend.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripSeparatorBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\VidgetBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\VindowBackend.cs">
       <SubType>Form</SubType>
@@ -235,10 +237,10 @@
     <Compile Include="[Obsolete]\ArrangerToolStripBackend0.Designer.cs">
       <DependentUpon>ArrangerToolStripBackend0.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\SplitViewToolStripBackend0.cs">
+    <Compile Include="[Obsolete]\SplitViewToolStripBackend0.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\SplitViewToolStripBackend0.Designer.cs">
+    <Compile Include="[Obsolete]\SplitViewToolStripBackend0.Designer.cs">
       <DependentUpon>SplitViewToolStripBackend0.cs</DependentUpon>
     </Compile>
     <Compile Include="[Obsolete]\ToolStripBackend0.cs">

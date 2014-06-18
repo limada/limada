@@ -4,40 +4,39 @@ using System.Windows.Forms;
 using Limaki.Common.Linqish;
 using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
+using SWF = System.Windows.Forms;
+using SD = System.Drawing;
+using System.Diagnostics;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
+
     public class ToolStripItemHostBackend : ToolStripItemBackend<ToolStripItemHostBackend.ToolStripControlHost>, IToolStripItemHostBackend {
 
-        public class ToolStripControlHost : System.Windows.Forms.ToolStripControlHost {
+        public class ToolStripControlHost : SWF.ToolStripControlHost {
 
             public ToolStripControlHost (Control control) : base (control) { }
 
-            public override System.Drawing.Font Font {
+            public override SD.Font Font {
                 get { return Control.Font; }
                 set {
                     Control.Font = value;
-                    var panel = Control as System.Windows.Forms.Panel;
-                    panel.SuspendLayout ();
-                    panel.Font = value;
-                    panel.Controls.Cast<Control> ().ForEach (c => c.Font = value);
-                    panel.ResumeLayout ();
+                    Control.SuspendLayout ();
+                    Control.Font = value;
+                    Control.Controls.Cast<Control> ().ForEach (c => c.Font = value);
+                    Control.ResumeLayout ();
                 }
             }
 
-            protected override void SetBounds (System.Drawing.Rectangle bounds) {
-                if (Control != null)
-                    Control.SetBounds (bounds.X, bounds.Y, bounds.Width, bounds.Height);
-            }
         }
 
         protected override void Compose () {
             this.Control = new ToolStripItemHostBackend.ToolStripControlHost (
-                new System.Windows.Forms.Panel {
-                                  Dock = DockStyle.Fill,
-                                  BorderStyle = BorderStyle.None,
-                                  Margin = new Padding (),
-                                  Padding = new Padding (),
-                              });
+                new SWF.Panel {
+                    Dock = DockStyle.Fill,
+                    BorderStyle = BorderStyle.None,
+                    Margin = new Padding (),
+                    Padding = new Padding (),
+                });
 
             Control.Overflow = ToolStripItemOverflow.AsNeeded;
         }
@@ -51,13 +50,22 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         public void SetChild (Vidget value) {
-            var control = value.ToSwf ();
-            var panel = Control.Control as System.Windows.Forms.Panel;
-            panel.SuspendLayout ();
-            panel.Controls.Clear ();
-            panel.Controls.Add (control);
-            Control.Size = value.Size.ToGdi ();
-            panel.ResumeLayout ();
+            var child = value.ToSwf ();
+
+            var parent = this.Control.GetCurrentParent ();
+            var controlHost = new ToolStripItemHostBackend.ToolStripControlHost (child) {
+                Size = child.Size,
+                Overflow = ToolStripItemOverflow.AsNeeded,
+            };
+            if (parent != null) {
+                var i = parent.Items.IndexOf (this.Control);
+                parent.SuspendLayout ();
+                parent.Items.RemoveAt (i);
+                parent.Items.Insert (i, controlHost);
+                parent.ResumeLayout ();
+            } 
+            this.Control = controlHost;
+
         }
 
     }

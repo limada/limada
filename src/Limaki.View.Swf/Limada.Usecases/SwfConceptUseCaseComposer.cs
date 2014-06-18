@@ -115,11 +115,11 @@ namespace Limada.Usecases {
                 this.ToolStripContainer.TopToolStripPanel,
                 this.MenuStrip,
                 new ToolStrip[] {
-                    ((ISwfBackend)useCase.ArrangerToolStrip.Backend).Control as ToolStrip,
-                    useCase.SplitViewToolStrip0.Backend as ToolStrip,
-                    useCase.LayoutToolStrip0.Backend as ToolStrip,
-                    ((ISwfBackend)useCase.DisplayModeToolStrip.Backend).Control as ToolStrip,
-                    ((ISwfBackend)useCase.MarkerToolStrip.Backend).Control as ToolStrip,
+                    useCase.ArrangerToolStrip.ToSwf() as ToolStrip,
+                    useCase.SplitViewToolStrip.ToSwf() as ToolStrip,
+                    useCase.LayoutToolStrip0.ToSwf() as ToolStrip,
+                    useCase.DisplayModeToolStrip.ToSwf() as ToolStrip,
+                    useCase.MarkerToolStrip.ToSwf() as ToolStrip,
                 });
 
         }

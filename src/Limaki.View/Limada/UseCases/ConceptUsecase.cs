@@ -172,7 +172,7 @@ namespace Limada.UseCases {
         public ArrangerToolStrip ArrangerToolStrip { get; set; }
         public DisplayModeToolStrip DisplayModeToolStrip { get; set; }
 
-        public SplitViewToolStrip0 SplitViewToolStrip0 { get; set; }
+        public SplitViewToolStrip SplitViewToolStrip { get; set; }
         public LayoutToolStrip0 LayoutToolStrip0 { get; set; }
         public MarkerToolStrip MarkerToolStrip { get; set; }
 

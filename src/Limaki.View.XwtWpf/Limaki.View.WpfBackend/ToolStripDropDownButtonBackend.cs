@@ -39,6 +39,10 @@ namespace Limaki.View.WpfBackend {
             Control.Label = value;
         }
 
+        public bool? IsChecked {
+            get { return Control.IsChecked; }
+            set { Control.IsChecked = value; }
+        }
 
         protected virtual void OnButtonClicked (object sender, EventArgs e) {
             if (_action != null)

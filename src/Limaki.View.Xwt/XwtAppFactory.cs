@@ -27,7 +27,7 @@ namespace Limaki.View.XwtBackend {
     public class XwtAppFactory : UsercaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
 
         public override ToolkitType ToolkitType {
-            get { return Xwt.ToolkitType.Wpf; }
+            get { return Xwt.ToolkitType.Gtk; }
         }
 
         public XwtAppFactory () : base () { }

@@ -51,7 +51,7 @@ namespace Limaki.View.WpfBackend {
             }
 
             toolBarTray.ToolBars.Add(useCase.ArrangerToolStrip.Backend.ToWpf() as ToolBar);
-            toolBarTray.ToolBars.Add (useCase.SplitViewToolStrip0.Backend.ToWpf () as ToolBar);
+            toolBarTray.ToolBars.Add (useCase.SplitViewToolStrip.Backend.ToWpf () as ToolBar);
             toolBarTray.ToolBars.Add (useCase.MarkerToolStrip.Backend.ToWpf () as ToolBar);
             toolBarTray.ToolBars.Add (useCase.LayoutToolStrip0.Backend.ToWpf () as ToolBar);
             toolBarTray.ToolBars.Add (useCase.DisplayModeToolStrip.Backend.ToWpf () as ToolBar);

@@ -36,6 +36,27 @@ namespace Limaki.View.GtkBackend {
             }
         }
 
-       
+
+
+
+        public string ToolTipText {
+            get {
+                throw new NotImplementedException ();
+            }
+            set {
+                throw new NotImplementedException ();
+            }
+        }
+
+        public Xwt.Size Size {
+            get {
+                throw new NotImplementedException ();
+            }
+            set {
+                throw new NotImplementedException ();
+            }
+        }
+
+        public event EventHandler Click;
     }
 }

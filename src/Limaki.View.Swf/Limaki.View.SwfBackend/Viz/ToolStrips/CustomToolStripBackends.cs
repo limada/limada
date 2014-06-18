@@ -11,5 +11,6 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
     public partial class MarkerToolStripBackend : ToolStripBackend, IMarkerToolStripBackend {
     }
-    
+
+
 }

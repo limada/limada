@@ -132,6 +132,8 @@ namespace Limada.View.Vidgets {
 
             SheetCombo = new ComboBox { Width = 100 };
             SheetCombo.Items.Clear ();
+            SheetCombo.SelectionChanged += SelectSheet;
+
             var comboHost = new ToolStripItemHost () { Child = SheetCombo };
 
             this.AddItems (
@@ -252,6 +254,7 @@ namespace Limada.View.Vidgets {
                 SplitView.LoadSheet (_sheets[SheetCombo.SelectedIndex]);
             }
         }
+
         public void CheckBackForward (ISplitView splitView) {
             GoForwardButton.IsEnabled = splitView.CanGoBackOrForward (true);
             GoBackButton.IsEnabled = splitView.CanGoBackOrForward (false);

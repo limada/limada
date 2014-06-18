@@ -89,9 +89,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
                 toolStrip.Renderer = renderer;
                 var border = toolStrip.Items.Count;
                 var size = new System.Drawing.Size (4, toolStrip.Size.Height);
-                toolStrip.Items.Cast<SWF.ToolStripItem> ().ForEach (s =>
-                    size = new System.Drawing.Size (size.Width + s.Bounds.Width + 3, size.Height)
-                    );
+                var i = 0;
+                toolStrip.Items.Cast<SWF.ToolStripItem> ().ForEach (s => {
+                    size = new System.Drawing.Size (size.Width + s.Bounds.Width + 3, size.Height);
+                    s.MergeIndex = i++;
+                });
                 toolStrip.ResumeLayout (true);
                 toolStrip.Size = size;
                 if (ToolStripBackground != null)

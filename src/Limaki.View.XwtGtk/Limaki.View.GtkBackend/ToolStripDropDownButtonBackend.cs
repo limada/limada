@@ -26,6 +26,11 @@ namespace Limaki.View.GtkBackend {
             this.Frontend = (Vidgets.ToolStripDropDownButton)frontend;
         }
 
+        public bool? IsChecked {
+            get { return Widget.IsChecked; }
+            set { Widget.IsChecked = value; }
+        }
+
         public void InsertItem (int index, IToolStripItemBackend backend) {
             Widget.Children.Insert (index, backend.ToGtk());
         }

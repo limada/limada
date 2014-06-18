@@ -14,22 +14,42 @@
 
 using System;
 using Limaki.View.Vidgets;
+using System.Diagnostics;
 
 namespace Limaki.View.GtkBackend {
 
-    public abstract class ToolStripItemBackend<T> : VidgetBackend<T> where T:ToolItem, new() {
+    public abstract class ToolStripItemBackend<T> : VidgetBackend<T> where T:Gtk.ToolItem, new() {
+
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            
+        }
 
         protected override void Compose () {
             base.Compose ();
-            Widget.Click += this.OnButtonClicked;
+            Widget.AddEvents ((int)Gdk.EventMask.FocusChangeMask);
+            var toolItem = Widget as ToolItem;
+            if (toolItem != null)
+                toolItem.Click += this.OnAction;
+        }
+
+        public string ToolTipText {
+            get { return Widget.TooltipText; }
+            set { Widget.TooltipText = value; }
+        }
+
+        [GLib.ConnectBefore]
+        protected virtual void ButtonReleased (object o, Gtk.ButtonReleaseEventArgs args) {
+            Trace.WriteLine ("ButtonReleased");
         }
 
         public void SetLabel (string value) {
-            Widget.Label = value;
+            var toolItem = Widget as ToolItem;
+            if (toolItem != null)
+                toolItem.Label = value;
         }
 
         public void SetToolTip (string value) {
-            Widget.TooltipText = value;
+            this.ToolTipText = value;
         }
 
         private Action<object> _action;
@@ -37,18 +57,27 @@ namespace Limaki.View.GtkBackend {
             _action = value;
         }
 
-        protected virtual void OnButtonClicked (object sender, EventArgs e) {
+        protected virtual void OnAction (object sender, EventArgs e) {
             if (_action != null)
                 _action (this);
         }
 
         protected bool _composed = false;
+
         public virtual void SetImage (Xwt.Drawing.Image image) {
-            Widget.Image = image;
-            if (!_composed) {
-                Widget.Compose ();
-                _composed = true;
+            var toolItem = Widget as ToolItem;
+            if (toolItem != null) {
+                toolItem.Image = image;
+                if (!_composed) {
+                    toolItem.Compose ();
+                    _composed = true;
+                }
             }
+        }
+
+        public virtual bool IsEnabled {
+            get { return Widget.Sensitive; }
+            set { Widget.Sensitive = value; }
         }
     }
 }

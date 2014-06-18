@@ -27,7 +27,7 @@ using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace Limaki.View.WpfBackend {
 
-    public class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripBackend {
+    public class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripBackend0 {
 
         public LayoutToolStrip0 Frontend { get; set; }
 

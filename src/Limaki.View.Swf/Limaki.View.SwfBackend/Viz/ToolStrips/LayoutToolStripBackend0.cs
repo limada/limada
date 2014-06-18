@@ -25,7 +25,7 @@ using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
-    public partial class LayoutToolStripBackend0 : ToolStripBackend0, ILayoutToolStripBackend {
+    public partial class LayoutToolStripBackend0 : ToolStripBackend0, ILayoutToolStripBackend0 {
 
         public new LayoutToolStrip0 Frontend { get; set; }
 

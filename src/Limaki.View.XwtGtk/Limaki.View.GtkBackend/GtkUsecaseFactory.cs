@@ -36,6 +36,9 @@ namespace Limaki.View.GtkBackend {
             var tb = useCase.ArrangerToolStrip.Backend.ToGtk();
             toolBox.PackStart (tb, false, true, 0);
 
+            tb = useCase.SplitViewToolStrip.Backend.ToGtk ();
+            toolBox.PackStart (tb, false, true, 0);
+
             tb = useCase.DisplayModeToolStrip.Backend.ToGtk ();
             toolBox.PackStart (tb, false, true, 0);
 

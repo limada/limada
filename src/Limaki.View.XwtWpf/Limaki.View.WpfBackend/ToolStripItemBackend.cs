@@ -1,6 +1,5 @@
 using System;
 using System.Windows;
-using Limaki.View.Vidgets;
 
 namespace Limaki.View.WpfBackend {
 
@@ -15,7 +14,10 @@ namespace Limaki.View.WpfBackend {
             _action = value;
         }
 
-
+        public bool IsEnabled {
+            get { return Control.IsEnabled; }
+            set { Control.IsEnabled = value; }
+        }
 
 
     }

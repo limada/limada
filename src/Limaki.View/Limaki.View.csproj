@@ -378,7 +378,7 @@
     <Compile Include="Limaki.View\ContentViewers\ContentVisualViewer.cs" />
     <Compile Include="[Obsolete]\ArrangerToolStrip0.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\IMarkerTool.cs" />
-    <Compile Include="Limada\View\Vidgets\SplitViewToolStrip0.cs" />
+    <Compile Include="[Obsolete]\SplitViewToolStrip0.cs" />
     <Compile Include="Limaki.View\ContentViewers\ContentViewer.cs" />
     <Compile Include="Limaki.View\Visuals\BruteForceIndex.cs" />
     <Compile Include="Limaki.View\Visuals\VisualGraphEntityTransformer.cs" />

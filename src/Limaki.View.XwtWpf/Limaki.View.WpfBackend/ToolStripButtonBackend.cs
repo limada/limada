@@ -43,6 +43,10 @@ namespace Limaki.View.WpfBackend {
                 _action (this);
         }
 
+        public bool? IsChecked {
+            get { return Control.IsChecked; }
+            set { Control.IsChecked = value; }
+        }
 
     }
 }

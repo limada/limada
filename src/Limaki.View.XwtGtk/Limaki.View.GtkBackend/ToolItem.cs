@@ -19,8 +19,13 @@ using Xwt.GtkBackend;
 namespace Limaki.View.GtkBackend {
 
     public class ToolItem : Gtk.ToolItem {
+
         public ToolItem (): base () {
             Compose ();
+        }
+
+        internal virtual void Compose () {
+
         }
 
         public string Label { get; set; }
@@ -35,14 +40,10 @@ namespace Limaki.View.GtkBackend {
             }
         }
 
-        public string ToolTipText {
-            get { return base.TooltipText; }
-            set { base.TooltipText = value; }
-        }
-
-        public Xwt.Size Size {
-            get { return this.VidgetBackendSize (); }
-            set { this.VidgetBackendSize (value); }
+        [GLib.ConnectBefore]
+        protected virtual void ButtonPressed (object o, Gtk.ButtonPressEventArgs args) {
+            Trace.WriteLine ("ButtonPressed");
+            OnClick (this, new EventArgs ());
         }
 
         protected event System.EventHandler _click;
@@ -51,25 +52,9 @@ namespace Limaki.View.GtkBackend {
             remove { _click -= value; }
         }
 
-        internal virtual void Compose () {
-            AddEvents ((int)Gdk.EventMask.FocusChangeMask);
-        }
-
-        internal virtual void OnButtonClicked (object sender, EventArgs e) {
+        internal virtual void OnClick (object sender, EventArgs e) {
             if (_click != null)
                 _click (this, e);
-        }
-
-        [GLib.ConnectBefore]
-        protected virtual void ButtonReleased (object o, Gtk.ButtonReleaseEventArgs args) {
-            Trace.WriteLine ("ButtonReleased");
-        }
-
-
-        [GLib.ConnectBefore]
-        protected virtual void ButtonPressed (object o, Gtk.ButtonPressEventArgs args) {
-            Trace.WriteLine ("ButtonPressed");
-            OnButtonClicked (o, new EventArgs ());
         }
 
         public Gtk.Widget AllocEventBox (Gtk.Widget widget, bool visibleWindow = false) {
@@ -93,5 +78,7 @@ namespace Limaki.View.GtkBackend {
             }
             return widget;
         }
+
+        
     }
 }

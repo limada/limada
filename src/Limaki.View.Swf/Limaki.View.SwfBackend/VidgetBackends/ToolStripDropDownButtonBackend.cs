@@ -45,7 +45,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
                     DropDown.Width = (int)Size.Width;
                     DropDown.Height = size.Height;
                 }
-                OnMouseDown (e);
+                base.OnMouseDown (e);
+
                 //this.DropDown.Visible = this.Pressed;
 
             }
@@ -57,6 +58,10 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
                 if (this.Parent != null)
                     this.Parent.ResumeLayout ();
             }
+
+            internal bool? IsChecked () { return false; }
+
+            internal void IsChecked (bool? value) { }
         }
 
         [Browsable (false)]
@@ -86,6 +91,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         public override void SetImage (Xwt.Drawing.Image image) {
             Control.SetImage (image);
+        }
+
+        public bool? IsChecked {
+            get { return Control.IsChecked (); }
+            set { Control.IsChecked (value); }
         }
     }
 }

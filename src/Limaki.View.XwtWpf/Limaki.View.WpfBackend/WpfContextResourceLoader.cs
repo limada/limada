@@ -12,21 +12,17 @@
  * 
  */
 
-using Limada.Usecases;
-using Limaki.Common.IOC;
-using Limaki.Drawing;
-using Limaki.Drawing.WpfBackend;
 using Limada.UseCases;
 using Limada.View.Vidgets;
+using Limaki.Common.IOC;
+using Limaki.Drawing.WpfBackend;
 using Limaki.Iconerias;
 using Limaki.Usecases;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
-using Limaki.View.WpfBackend;
 using Limaki.View.XwtBackend;
 using Xwt;
 using Xwt.Backends;
-using Limaki.View.Properties;
 
 namespace Limaki.View.WpfBackend {
 
@@ -37,6 +33,7 @@ namespace Limaki.View.WpfBackend {
         }
 
         public override void ApplyResources(IApplicationContext context) {
+
             var tk = Toolkit.CurrentEngine;
             tk.RegisterBackend<SystemColorsBackend, WpfSystemColorsBackend>();
             tk.RegisterBackend<SystemFontBackend, WpfSystemFontBackend> ();
@@ -48,23 +45,23 @@ namespace Limaki.View.WpfBackend {
             var factories = context.Pooled<UsecaseFactories<ConceptUsecase>>();
             factories.Add(new WpfUsecaseFactory());
 
-
-
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripBackend, ToolStripBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripButtonBackend, ToolStripButtonBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripDropDownButtonBackend, ToolStripDropDownButtonBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripItemHostBackend, ToolStripItemHostBackend> ();
-            
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripSeparatorBackend, ToolStripSeparatorBackend> ();
+
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend>();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend>();
 
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ISplitViewToolStripBackend0, SplitViewToolStripBackend0>();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend>();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend>();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ILayoutToolStripBackend0, LayoutToolStripBackend>();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend>();
 
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IWebBrowserBackend, WebBrowserBackend> ();
 
             WpfBackendHelper.ListenClipboard();
+
         }
 
 

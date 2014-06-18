@@ -105,6 +105,8 @@ namespace Limaki.View.Vidgets {
         void SetToolTip (string value);
 
         void SetAction (Action<object> action);
+
+        bool IsEnabled { get; set; }
     }
 
 }

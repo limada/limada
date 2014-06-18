@@ -156,12 +156,14 @@ namespace Limaki.View.GtkBackend {
             };
             button.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
             button.ButtonPressEvent += this.ButtonPressed;
-            button.Clicked += this.OnButtonClicked;
+            button.Clicked += this.OnClick;
             GtkEngine.ReplaceChild (widget, button);
 
             return button;
         }
 
+
+        public bool? IsChecked { get; set; }
 
     }
 }

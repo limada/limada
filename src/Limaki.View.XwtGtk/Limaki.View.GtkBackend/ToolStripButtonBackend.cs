@@ -26,7 +26,9 @@ namespace Limaki.View.GtkBackend {
             this.Frontend = (LVV.ToolStripButton)frontend;
         }
 
-
-
+        public virtual bool? IsChecked {
+            get { return Widget.IsChecked; }
+            set { Widget.IsChecked = value; }
+        }
     }
 }

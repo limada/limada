@@ -51,6 +51,10 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             Control.SetImage (image);
         }
 
+        public bool? IsChecked {
+            get { return Control.IsChecked (); }
+            set { Control.IsChecked (value); }
+        }
 
     }
 }

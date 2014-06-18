@@ -56,6 +56,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             Control.Dispose ();
         }
 
+        public bool IsEnabled {
+            get { return Control.Enabled; }
+            set { Control.Enabled = value; }
+        }
+
         public virtual void SetImage (Xwt.Drawing.Image image) {
             Control.BackgroundImage = image.ToGdi ();
         }
