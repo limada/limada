@@ -16,17 +16,22 @@ using Limada.IO;
 using Limada.Model;
 using Limada.Schemata;
 using Limada.UseCases.Cms.Models;
+using Limada.View;
+using Limada.View.VisualThings;
 using Limaki.Common;
 using Limaki.Contents;
 using Limaki.Contents.IO;
 using Limaki.Data;
 using Limaki.Graphs;
+using Limaki.View;
+using Limaki.View.Visuals;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Limaki.Drawing.Styles;
 
 namespace Limada.UseCases.Cms {
 
@@ -340,13 +345,69 @@ namespace Limada.UseCases.Cms {
                 .Select (item => item.Node);
         }
 
-       public LinkID LinkOfThing (IThing t) {
+       public Href HrefOfThing (IThing t) {
            var d = ThingDataToDisplay (t);
-           return new LinkID (d.ToString (), t.Id.ToString ("X16"));//DescribedThing (t).Id.ToString ("X16"));
+           return new Href (d.ToString (), t.Id.ToString ("X16"));//DescribedThing (t).Id.ToString ("X16"));
        }
 
-       public IEnumerable<LinkID> LinksOfThings (IEnumerable<IThing> things) {
-           return things.Select (t => LinkOfThing (t));
+       public IEnumerable<Href> HrefsOfThings (IEnumerable<IThing> things) {
+           return things.Select (t => HrefOfThing (t));
+       }
+
+       public VisualHref HrefOfVisual (VisualThingGraph graph, IVisual v) {
+           var t = graph.ThingOf (v);
+           return new VisualHref {
+               Text = v.Data.ToString (),
+               Id = t.Id.ToString ("X16"),
+               Location = v.Location,
+               Size = v.Size
+           };
+       }
+
+       IGraphSceneLayout<IVisual, IVisualEdge> _layout = null;
+       public virtual IGraphSceneLayout<IVisual, IVisualEdge> Layout {
+           get {
+               if (_layout == null) {
+                  // this makes a bug; some leafs don't work after that! 
+                  // var scene = new VisualThingsSceneViz ().CreateScene (this.ThingGraph);
+                   var scene = new Scene ();
+                   Func<IGraphScene<IVisual, IVisualEdge>> fScene = () => scene;
+                   _layout = Registry.Factory.Create<IGraphSceneLayout<IVisual, IVisualEdge>> (
+                       fScene,
+                       Registry.Pooled<StyleSheets> ().DefaultStyleSheet);
+               }
+               return _layout;
+           }
+           protected set { _layout = value; }
+       }
+
+       public IEnumerable<VisualHref> VisualHrefsOf (IStreamThing source) {
+           source.DeCompress();
+           
+           IEnumerable<VisualHref> result = new VisualHref[0];
+           var stream = source.Data;
+           if (stream == null)
+               return null;
+           try {
+
+               stream.Position = 0;
+               var graph = new VisualThingGraph () { Source = ThingGraph };
+               var serializer = new VisualThingSerializer { VisualThingGraph = graph, Layout = this.Layout };
+               serializer.Read (stream);
+               stream.Position = 0;
+
+               result = serializer.VisualsCollection
+                   .Where (v => !(v is IVisualEdge))
+                   .Select (v => HrefOfVisual (graph, v))
+                   .ToArray ();
+
+           } catch (Exception ex) {
+               // TODO: stream-closed-error should never happen.Try to get reread the source  
+               Registry.Pooled<IExceptionHandler> ().Catch (ex, MessageType.OK);
+           } finally {
+               source.ClearRealSubject ();
+           }
+           return result;
        }
 
 

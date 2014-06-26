@@ -1,12 +1,14 @@
 using Limaki.Data;
 using System.Collections.Specialized;
 using System;
+using System.IO;
 
 namespace Limada.UseCases.Cms {
 
     public class AppController {
 
         public virtual string SiteName { get; set; }
+        public virtual string ApplicationPhysicalPath { get; set; }
 
         public BackendController Backend { get; set; }
 
@@ -30,6 +32,8 @@ namespace Limada.UseCases.Cms {
                 string data = appSettings.Get(i);
 
                 if (key == "DataBaseFileName") {
+                    if (Path.GetDirectoryName (data) == "")
+                        data = ApplicationPhysicalPath + Path.DirectorySeparatorChar + data;
                     Iori.FromFileName(iori, data);
                 }
 
