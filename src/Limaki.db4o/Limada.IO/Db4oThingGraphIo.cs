@@ -35,10 +35,10 @@ namespace Limada.IO {
                 gateway.Open(source);
 
                 var sink = new ThingGraphContent {
-                                                     Data = new ThingGraph(gateway),
-                                                     Source = source,
-                                                     ContentType = Db4oThingGraphSpot.Db4oThingGraphContentType,
-                                                 };
+                    Data = new ThingGraph (gateway),
+                    Source = source,
+                    ContentType = Db4oThingGraphSpot.Db4oThingGraphContentType,
+                };
                 return sink;
             } catch (DatabaseFileLockedException ex) {
                 throw;

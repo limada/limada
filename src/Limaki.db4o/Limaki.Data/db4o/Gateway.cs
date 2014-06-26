@@ -20,6 +20,8 @@ using Limaki.Contents.IO;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Limaki.Data.db4o {
 
@@ -97,7 +99,12 @@ namespace Limaki.Data.db4o {
         }
 
         public virtual IObjectContainer CreateClientSession (IClientConfiguration config) {
+             config.AddConfigurationItem (new ClientSslSupport (CheckCertificate));
              return Db4oClientServer.OpenClient(config, Iori.Server, Iori.Port, Iori.User, Iori.Password);
+        }
+
+        private bool CheckCertificate (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
+            return true;
         }
 
         public virtual IObjectContainer CreateClientSession (IObjectServer server) {
@@ -107,9 +114,15 @@ namespace Limaki.Data.db4o {
       
         public virtual IObjectServer OpenServer (IServerConfiguration config) {
             // remark: if port == 0, then server runs in embedded mode
-            var server  = Db4oClientServer.OpenServer(config, Iori.ToFileName(this.Iori), this.Iori.Port);
+            var file = Iori.ToFileName (this.Iori);
+            if (File.Exists ("limada.limo.cer")) {
+                var certificate = new X509Certificate2 ("limada.limo.cer");
+                config.AddConfigurationItem (new ServerSslSupport (certificate));
+            }
+            
+            var server = Db4oClientServer.OpenServer (config, file, this.Iori.Port);
             try {
-                Trace.WriteLine(string.Format("db4o server running at: {0}",server.Ext().Port()));
+                Trace.WriteLine (string.Format ("db4o server {0} running at: {1}", file, server.Ext ().Port ()));
                 server.GrantAccess(this.Iori.User, this.Iori.Password);
                 return server;
             } catch {

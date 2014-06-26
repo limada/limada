@@ -1,0 +1,8 @@
+﻿DO NOT USE limada.limo.cer IN PRODUKTION!
+This file is published, so the private key is known
+
+Replace this with your own limada.limo.cer - file and put it to the app-folder.
+
+How to create a limada.limo.cer - file (on Linux/Mono):
+
+makecert -iky 1 -r -n "CN=<your name here>" -sv limada.limo.pvk -p12 limada.limo.cer ""

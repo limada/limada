@@ -13,7 +13,9 @@
  */
 
 using Limaki.Contents.IO;
+using System.IO;
 using System.Runtime.Serialization;
+
 namespace Limaki.Data {
 
     ///<summary>
@@ -60,7 +62,7 @@ namespace Limaki.Data {
         }
 
         public static void FromFileName (Iori iori, string fileName) {
-            System.IO.FileInfo file = new System.IO.FileInfo (fileName);
+            var file = new System.IO.FileInfo (fileName);
             iori.Server = "localhost";
             iori.Path = file.DirectoryName + System.IO.Path.DirectorySeparatorChar;
             iori.Name = System.IO.Path.GetFileNameWithoutExtension (file.FullName);
@@ -82,11 +84,16 @@ namespace Limaki.Data {
             var extension = iori.Extension;
             if (!extension.StartsWith("."))
                 extension = "." + extension;
-            return iori.Path + iori.Name + extension;
+            var sep = System.IO.Path.DirectorySeparatorChar.ToString();
+            var path = iori.Path;
+            if (!(path.EndsWith (sep) || string.IsNullOrEmpty (path)))
+                path = path + sep;
+            return path + iori.Name + extension;
         }
+
         public override string ToString() {
-            return (this.Path ?? "") + (this.Name ?? "") + (this.Extension ?? "");
-           
+            return ToFileName (this);
+
         }
     }
 }

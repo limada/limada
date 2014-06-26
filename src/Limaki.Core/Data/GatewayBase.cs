@@ -14,19 +14,10 @@
 
 
 namespace Limaki.Data {
-	
 
-	/// <summary>
-    /// Zusammenfassung für GatewayBase.
-	/// </summary>
 	public abstract class GatewayBase : IGateway {
-		#region IGateway Member
 
-        Iori _iori = null;
-        public Iori Iori {
-            get { return _iori; }
-            set { _iori = value; }
-        }
+        public Iori Iori { get; set; }
 
 		public abstract void Open(Iori iori);
 
@@ -36,9 +27,6 @@ namespace Limaki.Data {
         public abstract bool IsClosed();
 		
 	    public abstract void Dispose();
-
-	    #endregion
-
 
 	}
 }

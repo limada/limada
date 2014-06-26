@@ -56,7 +56,7 @@ namespace Limada.IO {
                 return _thingGraphIoManager ?? (_thingGraphIoManager =
                                                 new ThingGraphIoManager {
                                                     Progress = this.Progress,
-                                                    DefaultExtension = this.Detector.ContentSpecs.First().Extension,
+                                                    DefaultExtension = this.Detector.ContentSpecs.First ().Extension,
                                                 });
             }
         }
@@ -77,7 +77,6 @@ namespace Limada.IO {
 
         public virtual void Write (Iori source, Stream sink) {
 
-            var result = new Iori();
             var writer = XmlDictionaryWriter.CreateDictionaryWriter(XmlWriter.Create(sink, new XmlWriterSettings {
                     OmitXmlDeclaration = true,
                     ConformanceLevel = ConformanceLevel.Fragment,
