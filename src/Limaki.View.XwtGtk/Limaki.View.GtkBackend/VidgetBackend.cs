@@ -15,7 +15,6 @@
 using Limaki.View.Vidgets;
 
 namespace Limaki.View.GtkBackend {
-
     public interface IGtkBackend {
         Gtk.Widget Widget { get; }
     }

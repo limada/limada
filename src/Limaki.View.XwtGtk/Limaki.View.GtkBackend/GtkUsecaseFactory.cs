@@ -14,9 +14,13 @@
 
 using Limada.UseCases;
 using Limaki.Usecases;
+using System.Linq;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.View.XwtBackend;
 using Xwt.Backends;
+using Limaki.Common.Linqish;
+using System.Diagnostics;
+
 
 namespace Limaki.View.GtkBackend {
 
@@ -30,22 +34,38 @@ namespace Limaki.View.GtkBackend {
 
         protected void AddToolbars (Xwt.Window xwtWindow, ConceptUsecase useCase) {
 
-            var backend = xwtWindow.GetBackend () as Xwt.GtkBackend.WindowBackend;
-            var toolBox = new Gtk.HBox (true, 2);
+            var windowBackend = xwtWindow.GetBackend () as Xwt.GtkBackend.WindowBackend;
+            var toolBox = new Gtk.HBox (false, 2);
 
-            var tb = useCase.ArrangerToolStrip.Backend.ToGtk();
-            toolBox.PackStart (tb, false, true, 0);
+            var tbs = new Gtk.Widget []{
+                useCase.ArrangerToolStrip.Backend.ToGtk(),
+                useCase.SplitViewToolStrip.Backend.ToGtk (),
+                useCase.DisplayModeToolStrip.Backend.ToGtk (),
+                useCase.MarkerToolStrip.Backend.ToGtk ()
+            };
 
-            tb = useCase.SplitViewToolStrip.Backend.ToGtk ();
-            toolBox.PackStart (tb, false, true, 0);
+            tbs.Cast<Gtk.Toolbar> ().ForEach (tb => {
+                tb.ShowArrow = true;
+                //tb.ResizeMode = Gtk.ResizeMode.Queue; //deprecated
+ 
+                //tb.CheckResize ();
+                //tb.ShowAll ();
+                var w = 0;
+                tb.Children.ForEach (c => {
+                    var r = c.SizeRequest ();
+                    w += r.Width;
+                });
+                tb.WidthRequest = w + 5;
+                tb.SizeRequested += (s, e) => {
+                    Trace.WriteLine("");
+                };
+                toolBox.PackStart (tb, false, false, 0);
+                toolBox.SizeRequested += (s, e) => {
+                    Trace.WriteLine ("");
+                };
+            });
 
-            tb = useCase.DisplayModeToolStrip.Backend.ToGtk ();
-            toolBox.PackStart (tb, false, true, 0);
-
-            tb = useCase.MarkerToolStrip.Backend.ToGtk ();
-            toolBox.PackStart (tb, false, true, 0);
-
-            var mainBox = backend.MainBox;
+            var mainBox = windowBackend.MainBox;
             mainBox.PackStart (toolBox, false, false, 0);
             
             ((Gtk.Box.BoxChild) mainBox[toolBox]).Position = 1;
