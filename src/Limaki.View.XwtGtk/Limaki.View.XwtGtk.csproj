@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limaki.View.GtkBackend\CustomToolStripBackends.cs" />
+    <Compile Include="Limaki.View.GtkBackend\ImageComboBoxBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolItem.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripItemBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripItemHostBackend.cs" />
