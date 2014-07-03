@@ -104,8 +104,8 @@ namespace Xwt.GtkBackend.WebKit
 		public void LoadHtmlString(string content, string base_uri) {
 			IntPtr native_content = GLib.Marshaller.StringToPtrGStrdup (content);
 			IntPtr native_base_uri = GLib.Marshaller.StringToPtrGStrdup (base_uri);
-			webkit_web_view_load_html_string(Handle, native_content, native_base_uri);
-			GLib.Marshaller.Free (native_content);
+            webkit_web_view_load_string (Handle, native_content, IntPtr.Zero, IntPtr.Zero, native_base_uri);
+            GLib.Marshaller.Free (native_content);
 			GLib.Marshaller.Free (native_base_uri);
 		}
 
@@ -223,6 +223,9 @@ namespace Xwt.GtkBackend.WebKit
 
 		[DllImport (GtkInterop.LIBWEBKIT)]
 		static extern void webkit_web_view_load_html_string(IntPtr raw, IntPtr content, IntPtr base_uri);
+
+        [DllImport (GtkInterop.LIBWEBKIT)]
+        static extern void webkit_web_view_load_string (IntPtr raw, IntPtr content, IntPtr mime_type, IntPtr encoding, IntPtr base_uri);
 
 		[DllImport (GtkInterop.LIBWEBKIT)]
 		static extern IntPtr webkit_web_view_get_title(IntPtr raw);
