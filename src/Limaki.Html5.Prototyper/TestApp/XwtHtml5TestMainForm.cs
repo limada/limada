@@ -55,7 +55,7 @@ namespace Xwt.Html5.TestApp {
             //works, but throws some errors in GeckoWebBrowsre (Uristring too long)
             Action<string, string> showInBrowser1 = (htmlstring, uri) => {
                                                        browser.LoadHtml(htmlstring);
-                                                       browser.AfterNavigate(()=>!browser.IsBusy);
+                                                       browser.WaitFor(()=>!browser.IsBusy);
                                                    };
 
             var serverUri = htmlViewer.WebServer.Uri;

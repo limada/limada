@@ -17,7 +17,6 @@ using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.View.XwtBackend {
-
     public class MainWindowBackend : VindowBackend {
 
        protected StatusIcon StatusIcon{get;set;}

@@ -22,6 +22,7 @@ using Xwt.SwfBackend;
 using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
+
     /// <summary>
     /// example how to implement DragDrop on Windows.Forms.Controls 
     /// </summary>
