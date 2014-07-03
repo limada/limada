@@ -71,8 +71,11 @@ namespace Xwt.WPFBackend
 			int stride = width * (bitmapImage.Format.BitsPerPixel + 7) / 8;
 			byte[] pixelData = new byte[stride * height];
 			bitmapImage.CopyPixels (pixelData, stride, 0);
-
-			return BitmapSource.Create (width, height, dpi, dpi, bitmapImage.Format, null, pixelData, stride);
+            BitmapPalette pal = null;
+		    if (bitmapImage.Format.BitsPerPixel == 1) {
+		        pal = new BitmapPalette (new Color[] { Colors.Black, Colors.White });
+		    }
+            return BitmapSource.Create (width, height, dpi, dpi, bitmapImage.Format, pal, pixelData, stride);
 		}
 
 		public override object CreateCustomDrawn (ImageDrawCallback drawCallback)
