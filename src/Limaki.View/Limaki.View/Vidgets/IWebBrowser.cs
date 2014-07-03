@@ -21,10 +21,10 @@ namespace Limaki.View.Vidgets {
 
         Stream DocumentStream { get; set; }
         string DocumentText { get; set; }
-        Uri Url { get; set; }
+        string Url { get; set; }
         void Navigate (string urlString);
 
-        void AfterNavigate (Func<bool> done);
+        void WaitFor (Func<bool> done);
         void MakeReady ();
         
     }

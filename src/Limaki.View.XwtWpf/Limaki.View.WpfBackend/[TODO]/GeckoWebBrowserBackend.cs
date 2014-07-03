@@ -47,18 +47,12 @@ namespace Limaki.View.WpfBackend {
             }
         }
 
-        public void AfterNavigate (Func<bool> done) {
-            if (!OS.Mono) {
-                // try to resolve timing problems 
-                // does not work so well, but better than nothing
-                int i = 0;
-                while (!done () && i < 10) {
-                    Thread.Sleep (5);
-                    i++;
-                }
+        public void WaitFor (Func<bool> done) {
+            int i = 0;
+            while (!done () && i < 10) {
+                Thread.Sleep (5);
+                i++;
             }
-            // fails with IExplorer, not necessry with gecko:
-            // control.Refresh();
             WpfExtensions.DoEvents ();
         }
 
@@ -105,9 +99,9 @@ namespace Limaki.View.WpfBackend {
         }
 
 
-        public new Uri Url {
-            get { throw new NotImplementedException(); }
-            set { Navigate (value.AbsoluteUri); }
+        public string Url {
+            get { return WebNav.GetCurrentURIAttribute ().ToUri ().AbsoluteUri; }
+            set { Navigate (value); }
         }
 
         public Stream DocumentStream {

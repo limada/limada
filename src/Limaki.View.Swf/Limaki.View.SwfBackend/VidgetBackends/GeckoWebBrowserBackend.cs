@@ -49,7 +49,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             }
         }
 
-        public void AfterNavigate (Func<bool> done) {
+        public void WaitFor (Func<bool> done) {
             if (!OS.Mono) {
                 // try to resolve timing problems 
                 // does not work so well, but better than nothing
@@ -126,7 +126,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             }
         }
 
-        public void GoHome () { base.Navigate("about:blank"); }
+        public void GoHome () { base.Navigate ("about:blank"); }
   
 
         #endregion

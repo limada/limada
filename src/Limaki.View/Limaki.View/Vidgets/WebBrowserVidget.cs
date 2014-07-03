@@ -40,12 +40,10 @@ namespace Limaki.View.Vidgets {
         public string DocumentText { get { return Backend.DocumentText; } set { Backend.DocumentText = value; } }
 
         public void MakeReady () { Backend.MakeReady (); }
-        public Uri Url { get { return Backend.Url; } set { Backend.Url = value; } }
+        public string Url { get { return Backend.Url; } set { Backend.Url = value; } }
         public void Navigate (string urlString) { Backend.Navigate (urlString); }
 
-        public void AfterNavigate (Func<bool> done) {
-            Backend.AfterNavigate (done);
-        }
+        public void WaitFor (Func<bool> done) { Backend.WaitFor (done); }
 
         public bool CanGoBack { get { return Backend.CanGoBack; } }
         public bool CanGoForward { get { return Backend.CanGoForward; } }

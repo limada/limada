@@ -95,8 +95,7 @@ namespace Limaki.View.XwtBackend {
             viewerProvider.Add(new SheetViewer());
             viewerProvider.Add(new ImageContentViewer());
             viewerProvider.Add (new DigidocContentViewer ());
-
-            //viewerProvider.Add(new HtmlContentViewer());
+            viewerProvider.Add(new HtmlContentViewer());
             
             //viewerProvider.Add(new TextContentViewerWithToolstrip());
 

@@ -77,7 +77,6 @@
     <Compile Include="Limaki.View.WpfBackend\[TODO]\TextViewerWithToolstripBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\[TODO]\XulRunner.cs" />
     <Compile Include="Limaki.View.WpfBackend\[TODO]\BitmapCanvasBackend.cs" />
-    <Compile Include="Limaki.View.WpfBackend\[TODO]\WebBrowserBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\WpfContextResourceLoader.cs" />
     <Compile Include="Limaki.View.WpfBackend\WpfSystemColorsBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\WpfSystemFontBackend.cs" />

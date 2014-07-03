@@ -58,8 +58,6 @@ namespace Limaki.View.WpfBackend {
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ILayoutToolStripBackend0, LayoutToolStripBackend>();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend>();
 
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IWebBrowserBackend, WebBrowserBackend> ();
-
             WpfBackendHelper.ListenClipboard();
 
         }

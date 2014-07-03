@@ -62,6 +62,7 @@
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\PanedBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\VidgetBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VindowBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\WebBrowserBackend.cs" />
     <Compile Include="Sandbox\ScrollDisplayBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\DummyToolStripBackends.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\DigidocViewerBackend.cs" />
@@ -77,7 +78,6 @@
     <Compile Include="Limaki.View.XwtBackend\[todo]\StyleEditor.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\TextViewerBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\TextViewerWithToolstripBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\WebBrowserBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\SplitViewBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\FileDialogBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\TextOkCancelBoxBackend.cs" />

@@ -49,7 +49,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             }
         }
 
-        public void AfterNavigate (Func<bool> done) {
+        public void WaitFor (Func<bool> done) {
             if (DisposeDone)
                 return;
 

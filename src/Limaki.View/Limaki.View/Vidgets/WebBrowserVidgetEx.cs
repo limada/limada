@@ -4,6 +4,7 @@ using Limaki.Common;
 
 namespace Limaki.View.Vidgets {
 
+    [Obsolete]
     public class WebBrowserVidgetEx : WebBrowserVidget, IWebBrowserEx {
 
         public class WebBrowserExBackendHost : VidgetBackendHost {

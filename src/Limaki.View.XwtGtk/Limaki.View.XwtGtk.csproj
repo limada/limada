@@ -73,6 +73,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.Gtk.Windows\Xwt.Gtk.Windows.csproj">
+      <Project>{252117ca-0abb-4f36-bfc8-de23a8089bb9}</Project>
+      <Name>Xwt.Gtk.Windows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.Gtk\Xwt.Gtk.csproj">
       <Project>{C3887A93-B2BD-4097-8E2F-3A063EFF32FD}</Project>
       <Name>Xwt.Gtk</Name>

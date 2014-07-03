@@ -107,7 +107,7 @@ namespace Limada.View.ContentViewers {
                 }
 
                 WebBrowser.Navigate (response.AbsoluteUri);
-                WebBrowser.AfterNavigate(() => response.Done);
+                WebBrowser.WaitFor(() => response.Done);
 
                 Trace.WriteLine ("Navigated to " + response.AbsoluteUri);
             }
