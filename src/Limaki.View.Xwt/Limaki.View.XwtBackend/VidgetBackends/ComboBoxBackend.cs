@@ -31,6 +31,7 @@ namespace Limaki.View.XwtBackend {
         protected override void Compose () {
             base.Compose ();
         }
+
         public void ItemCollectionChanged (object sender, NotifyCollectionChangedEventArgs e) {
             if (e.Action == NotifyCollectionChangedAction.Add) {
                 e.NewItems.Cast<object> ().ForEach (i => Widget.Items.Add (i));

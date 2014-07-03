@@ -61,10 +61,10 @@ namespace Limaki.View.XwtBackend {
                 display = factory.Create();
             _display = display;
             factory.Compose(display);
-            
+
             // we need to register at least one target
             // otherwise XwtGtk.DragDrop doesnt work
-            //SetDragDropTarget(DragDropAction.All, TransferDataType.Text);
+            // this is done by DragDropHandler: SetDragDropTarget(DragDropAction.All, TransferDataType.Text);
 
             // we need to register drag-handlers
             // XwtGtk.DragDrop doesnt work without Handlers
@@ -194,14 +194,6 @@ namespace Limaki.View.XwtBackend {
             base.OnMouseExited(args);
         }
 
-        protected override void OnKeyPressed (KeyEventArgs args) {
-            base.OnKeyPressed(args);
-            var ml = this.MouseLocation();
-            Trace.WriteLine(string.Format("KeyPressed {0} | {1}", ml, this.GetType().Name));
-
-            Display.EventControler.OnKeyPressed(new KeyActionEventArgs(args.Key, args.Modifiers, ml));
-        }
-
         #endregion
 
         #region Keyboard
@@ -214,6 +206,14 @@ namespace Limaki.View.XwtBackend {
             Display.EventControler.OnKeyReleased(new KeyActionEventArgs(args.Key, args.Modifiers, ml));
         }
 
+        protected override void OnKeyPressed (KeyEventArgs args) {
+            base.OnKeyPressed (args);
+            var ml = this.MouseLocation ();
+            Trace.WriteLine (string.Format ("KeyPressed {0} | {1}", ml, this.GetType ().Name));
+
+            Display.EventControler.OnKeyPressed (new KeyActionEventArgs (args.Key, args.Modifiers, ml));
+        }
+
         #endregion
 
         [TODO]
@@ -223,9 +223,10 @@ namespace Limaki.View.XwtBackend {
         }
 
         #region Drop
+
         protected virtual void HandleDragDropCheck (DragCheckEventArgs args) {
-            var dropHandler = Display.EventControler as IDropAction;
-            SetDragDropTarget(args.DataTypes);
+            // never called on Gtk!
+            // this is done by DragDropHandler: SetDragDropTarget(args.DataTypes);
 
         }
 
@@ -236,11 +237,9 @@ namespace Limaki.View.XwtBackend {
             var dropHandler = Display.EventControler as IDropAction;
             if (dropHandler != null && Display.Data != null) {
 
-                var ev = new DragDrop.DragOverEventArgs(
-                    args.Position,
-                    args.Data,
-                    args.Action);
-                ev.AllowedAction = args.AllowedAction;
+                var ev = new DragDrop.DragOverEventArgs (
+                    args.Position, args.Data, args.Action) { AllowedAction = args.AllowedAction };
+                
                 dropHandler.DragOver(ev);
                 args.AllowedAction = ev.AllowedAction;
             }
