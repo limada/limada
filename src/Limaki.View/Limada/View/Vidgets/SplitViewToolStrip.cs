@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2008-2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System;
 using System.Collections.Generic;
 using Limaki.Common.Collections;
@@ -233,18 +247,18 @@ namespace Limada.View.Vidgets {
                     dontCare.Add (adj.DataId);
             }
             _sheets.Clear ();
+            SheetCombo.Items.Clear ();
 
             SheetManager.VisitRegisteredSheets (s => {
-                if (SheetManager.StoreContains (s.Id) && !dontCare.Contains (s.Id))
+                if (SheetManager.StoreContains (s.Id) && !dontCare.Contains (s.Id)) {
                     _sheets.Add (s);
+                    SheetCombo.Items.Add (s.Name);
+                }
             });
-
-            SheetCombo.Items.Clear ();
 
             if (result != null) {
                 SheetCombo.SelectedItem = result;
             }
-            _sheets.ForEach (i => SheetCombo.Items.Add (i.Name));
 
         }
 
