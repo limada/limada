@@ -227,8 +227,8 @@ namespace Limaki.View.XwtBackend {
         #region Drop
 
         protected virtual void HandleDragDropCheck (DragCheckEventArgs args) {
-            // never called on Gtk!
-            // this is done by DragDropHandler: SetDragDropTarget(args.DataTypes);
+            
+            SetDragDropTarget(args.DataTypes);
 
         }
 
@@ -244,7 +244,7 @@ namespace Limaki.View.XwtBackend {
                 
                 dropHandler.DragOver(ev);
 
-                if (args.AllowedAction == DragDropAction.All) {
+                if (ev.AllowedAction == DragDropAction.All) {
                     // Gtk is picky on that; accepts only a single DragDropAction
                     args.AllowedAction = DragDropAction.Copy; // TODO: set action according to key state
                 } else

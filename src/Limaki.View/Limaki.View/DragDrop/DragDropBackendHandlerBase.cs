@@ -119,12 +119,16 @@ namespace Limaki.View.DragDrop {
         public virtual void DragOverCheck (DragOverCheckEventArgs args) {
             if (!args.DataTypes.Intersect(this.TargetTypes).Any()) {
                 args.AllowedAction = DragDropAction.None;
+            } else {
+                args.AllowedAction = DragDropAction.All;
             }
         }
 
         public virtual void DragOver (DragOverEventArgs args) {
             if (!TargetTypes.Any(t => args.Info.HasType(t))) {
                 args.AllowedAction = DragDropAction.None;
+            } else {
+                args.AllowedAction = DragDropAction.All;
             }
         }
 
