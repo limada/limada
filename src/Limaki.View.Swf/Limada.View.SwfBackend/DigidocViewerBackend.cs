@@ -40,7 +40,7 @@ namespace Limada.View.SwfBackend {
 
             var pagesDisplayBackend = Frontend.PagesDisplay.Backend as Control;
             pagesDisplayBackend.Dock = System.Windows.Forms.DockStyle.Right;
-            pagesDisplayBackend.Width = Frontend.GetDefaultWidth();
+            pagesDisplayBackend.Width = (int)Frontend.GetDefaultWidth ();
             pagesDisplayBackend.TabStop = false;
             
             Frontend.Compose();

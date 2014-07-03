@@ -24,29 +24,17 @@ using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
-    public class SplitViewBackend : HPaned, ISplitViewBackend {
+    public class SplitViewBackend : PanedBackend, ISplitViewBackend {
 
         public SplitViewBackend () { }
 
         public SplitView0 Frontend { get; protected set; }
-        public void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (SplitView0) frontend;
-            this.Compose();
+            this.Compose2();
         }
 
-        protected HPaned SplitContainer { get { return this; } }
-
-        protected virtual Widget SetScrollingPanelContent (Widget widget, Panel panel) {
-            var panelScroll = panel.Content as ScrollView;
-            if (panelScroll != null) {
-                panelScroll.Content = widget;
-            } else {
-                panel.Content = widget.WithScrollView();
-            }
-            return panel.Content;
-        }
-
-        protected void Compose () {
+        protected void Compose2 () {
             //this.PositionFraction = 50; // crashes on Wpf
 
             SetScrollingPanelContent(Frontend.Display1.Backend.ToXwt(), SplitContainer.Panel1);
@@ -127,17 +115,6 @@ namespace Limaki.View.XwtBackend {
 
         }
 
-        protected Panel AdjacentPanelOf (IVidget vidget) {
-            var widget = vidget.Backend.ToXwt();
-
-            if (SplitContainer.Panel1.Content.ScrollPeeledChildren ().Contains (widget)) {
-                return SplitContainer.Panel2;
-            } else if (SplitContainer.Panel2.Content.ScrollPeeledChildren ().Contains (widget)) {
-                return SplitContainer.Panel1;
-            }
-            return null;
-        }
-
         public void AttachViewerBackend (IVidgetBackend backend, Action onShowAction) {
             if (backend == null)
                 return;
@@ -158,16 +135,6 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
-        protected Panel PanelOf (IVidget vidget) {
-            var widget = vidget.Backend.ToXwt();
-
-            if (SplitContainer.Panel1.Content.ScrollPeeledChildren ().Contains (widget)) {
-                return SplitContainer.Panel1;
-            } else if (SplitContainer.Panel2.Content.ScrollPeeledChildren ().Contains (widget)) {
-                return SplitContainer.Panel2;
-            }
-            return null;
-        }
 
         bool textDialogVisible = false;
         public void ShowTextDialog (string title, string text, Action<string> onOk) {
@@ -219,15 +186,6 @@ namespace Limaki.View.XwtBackend {
         public void ViewInWindow (IVidgetBackend backend, Action onClose) {
             Registry.Pooled<IExceptionHandler> ().Catch (new NotImplementedException (), MessageType.OK);
         }
-
-        void IVidgetBackend.Update () { this.VidgetBackendUpdate(); }
-
-        void IVidgetBackend.Invalidate () { this.VidgetBackendInvalidate(); }
-
-        void IVidgetBackend.Invalidate (Rectangle rect) { this.VidgetBackendInvalidate(rect); }
-
-        public void Dispose () { }
-
 
     }
 }

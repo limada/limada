@@ -126,10 +126,10 @@ namespace Limada.View.Vidgets {
         }
 
         protected int padding = 4;
-        public virtual int GetDefaultWidth () {
+        public virtual double GetDefaultWidth () {
             var utils = Registry.Pooled<IDrawingUtils>();
             var size = utils.GetTextDimension("".PadLeft(padding, '9'), DefaultStyleSheet.BaseStyle);
-            return (int)(size.Width + 32);
+            return (size.Width + 32);
         }
 
         IStyleSheet _defaultStyleSheet = null;
@@ -170,8 +170,6 @@ namespace Limada.View.Vidgets {
             folding.Folder.RemoveOrphans = false;
         }
 
-
-
         protected virtual void AttachScroller (IGraphSceneDisplay<IVisual, IVisualEdge> pagesDisplay, IDisplay contentDisplay) {
             if (contentDisplay == null)
                 return;
@@ -203,7 +201,6 @@ namespace Limada.View.Vidgets {
         }
 
         public virtual IVisual DocumentVisual { get; set; }
-
 
         IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
         IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
