@@ -241,7 +241,12 @@ namespace Limaki.View.XwtBackend {
                     args.Position, args.Data, args.Action) { AllowedAction = args.AllowedAction };
                 
                 dropHandler.DragOver(ev);
-                args.AllowedAction = ev.AllowedAction;
+
+                if (args.AllowedAction == DragDropAction.All) {
+                    // Gtk is picky on that; accepts only a single DragDropAction
+                    args.AllowedAction = DragDropAction.Copy; // TODO: set action according to key state
+                } else
+                    args.AllowedAction = ev.AllowedAction;
             }
         }
 
