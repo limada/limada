@@ -149,9 +149,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="limada.limo.cer">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="limada.limo.client.cer" />
+    <None Include="limada.limo.cer" />
     <None Include="limada.limo.pvk" />
   </ItemGroup>
   <ItemGroup>

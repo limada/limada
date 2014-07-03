@@ -99,24 +99,28 @@ namespace Limaki.Data.db4o {
         }
 
         public virtual IObjectContainer CreateClientSession (IClientConfiguration config) {
-             config.AddConfigurationItem (new ClientSslSupport (CheckCertificate));
-             return Db4oClientServer.OpenClient(config, Iori.Server, Iori.Port, Iori.User, Iori.Password);
+            var clientCer = "limada.limo.client.cer";
+            if (File.Exists (clientCer)) {
+                config.AddConfigurationItem (new ClientSslSupport (CheckCertificate));
+            }
+
+            return Db4oClientServer.OpenClient (config, Iori.Server, Iori.Port, Iori.User, Iori.Password);
         }
 
-        private bool CheckCertificate (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
+        protected virtual bool CheckCertificate (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
             return true;
         }
 
         public virtual IObjectContainer CreateClientSession (IObjectServer server) {
-            return Server.OpenClient();
+            return server.OpenClient();
         }
-
       
         public virtual IObjectServer OpenServer (IServerConfiguration config) {
             // remark: if port == 0, then server runs in embedded mode
             var file = Iori.ToFileName (this.Iori);
-            if (File.Exists ("limada.limo.cer")) {
-                var certificate = new X509Certificate2 ("limada.limo.cer");
+            var serverCer = "limada.limo.cer";
+            if (File.Exists (serverCer)) {
+                var certificate = new X509Certificate2 (serverCer,"");
                 config.AddConfigurationItem (new ServerSslSupport (certificate));
             }
             
