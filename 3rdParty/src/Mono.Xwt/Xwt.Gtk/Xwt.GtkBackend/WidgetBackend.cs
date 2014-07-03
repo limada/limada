@@ -937,11 +937,11 @@ namespace Xwt.GtkBackend
 			
 			DragDropInfo.DragDataRequests--;
 
-            if (!Util.GetSelectionData (ApplicationContext, selectionData, DragDropInfo.DragData) && DragDropInfo.DragDataRequests == 0) {
+            if (!Util.GetSelectionData (ApplicationContext, selectionData, DragDropInfo.DragData) && DragDropInfo.DragDataRequests > 0) {
 				return false;
 			}
 
-            if (DragDropInfo.DragDataRequests == 0 && DragDropInfo.ValidDropTypes.Any ()) {
+            if (DragDropInfo.DragDataRequests == 0 && DragDropInfo.DragData.DataTypes.Any ()) {
 				if (DragDropInfo.DragDataForMotion) {
 					// If no specific action is set, it means that no key has been pressed.
 					// In that case, use Move or Copy or Link as default (when allowed, in this order).
