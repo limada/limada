@@ -62,6 +62,8 @@ namespace Limaki.View.XwtBackend {
             _display = display;
             factory.Compose(display);
 
+            this.CanGetFocus = true;
+
             // we need to register at least one target
             // otherwise XwtGtk.DragDrop doesnt work
             // this is done by DragDropHandler: SetDragDropTarget(DragDropAction.All, TransferDataType.Text);
