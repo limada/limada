@@ -283,29 +283,70 @@ namespace Xwt.CairoBackend
 		{
 			var be = (GtkTextLayoutBackendHandler.PangoBackend)Toolkit.GetBackend (layout);
 			var pl = be.Layout;
-			CairoContextBackend ctx = (CairoContextBackend)backend;
-			ctx.Context.MoveTo (x, y);
-           
-			if (layout.Height <= 0) {
+			var ctx = (CairoContextBackend)backend;
+
+            if (layout.Height <= 0) {
+                ctx.Context.MoveTo (x, y);
 				Pango.CairoHelper.ShowLayout (ctx.Context, pl);
 			} else {
-				var lc = pl.LineCount;
+                // disable ellipsize, otherwise pl.LineCount returns always 1
+                var ellipsize = pl.Ellipsize;
+                pl.Ellipsize = Pango.EllipsizeMode.None; 
+
+                var lc = pl.LineCount;
+			    if (lc == 0)
+			        return;
 				var scale = Pango.Scale.PangoScale;
-				double h = 0;
-				var fe = ctx.Context.FontExtents;
+                var wrap = pl.Wrap;
+                var trimmed = false;
+
+                var next = default (Pango.LayoutLine);
+                var nextDelta = Size.Zero;
+                var fe = ctx.Context.FontExtents;
 				var baseline = fe.Ascent / (fe.Ascent + fe.Descent);
-				for (int i=0; i<lc; i++) {
-					var line = pl.Lines [i];
-					var ext = new Pango.Rectangle ();
-					var extl = new Pango.Rectangle ();
-					line.GetExtents (ref ext, ref extl);
-					h += h == 0 ? (extl.Height / scale * baseline) : (extl.Height / scale);
-					if (h > layout.Height)
-						break;
-					ctx.Context.MoveTo (x, y + h);
-					Pango.CairoHelper.ShowLayoutLine (ctx.Context, line);
-				}
-			}
+                var i = 0;
+
+                Action nextLine = () => {
+                    var ext = new Pango.Rectangle ();
+                    var extl = new Pango.Rectangle ();
+                    next = pl.Lines[i];
+                    next.GetExtents (ref ext, ref extl);
+                    nextDelta = new Size (extl.Width / scale, 
+                        nextDelta.Height + (i == 0 ? (extl.Height / scale * baseline) : (extl.Height / scale)));
+                    
+                };
+
+			    nextLine ();
+
+                while (i < lc && nextDelta.Height <= layout.Height) {
+                    var delta = nextDelta;
+                    var line = next;
+                    if (++i < lc) 
+                        nextLine ();
+
+                    // if the next line is not visible, or the last line not fully visible,
+                    // then the line has to be ellipsize and/or trimmed:
+                    if (nextDelta.Height > layout.Height ||
+                        (i == lc && lc > 1 && delta.Width > layout.Width && layout.Width > 0)) {
+                        trimmed = true;
+                        var text = layout.Text.Substring (line.StartIndex, line.Length) + ((char)(0x2026));
+                        pl.Ellipsize = ellipsize;
+                        if (layout.Trimming == TextTrimming.WordElipsis) {
+                            pl.Wrap = Pango.WrapMode.Char;
+                        }
+                        pl.SetText (text);
+                        line = pl.Lines[0];
+                    }
+                    ctx.Context.MoveTo (x, y + delta.Height);
+                    Pango.CairoHelper.ShowLayoutLine (ctx.Context, line);
+                }
+
+                pl.Ellipsize = ellipsize;
+                if (trimmed) {
+                    pl.Wrap = wrap;
+                    pl.SetText (layout.Text);
+                }
+            }
 		}
 
 		public override void DrawImage (object backend, ImageDescription img, double x, double y)
