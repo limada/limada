@@ -20,6 +20,7 @@ using Limaki.Common;
 namespace Limaki.Drawing {
 
     public static class DrawingExtensions {
+
         #region Recangle
 
         /// <summary>
