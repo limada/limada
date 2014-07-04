@@ -67,6 +67,7 @@ namespace Limaki.View.XwtBackend {
         public void MakeReady () {
             if (_loading)
                 Widget.StopLoading ();
+            Application.MainLoop.DispatchPendingEvents ();
         }
 
         public void Widget_Loaded (object sender, EventArgs e) {

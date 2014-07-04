@@ -19,6 +19,7 @@ using Limaki.Usecases;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.View.XwtBackend;
+using System.Diagnostics;
 using Xwt;
 using Xwt.Backends;
 
@@ -47,8 +48,16 @@ namespace Limaki.View.GtkBackend {
 
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend> ();
             //VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend> ();
-            
 
+            if (false) {
+                var gtkEngine = Xwt.Backends.ToolkitEngineBackend.GetToolkitBackend<Xwt.GtkBackend.GtkEngine> ();
+                // using Xwt.Gtk.Windows.WebViewBackend: not working on linux
+                gtkEngine.RegisterBackend<IWebViewBackend, Xwt.Gtk.Windows.WebViewBackend> ();
+            }
+
+            GLib.ExceptionManager.UnhandledException += (args) => {
+                Trace.WriteLine (args.ToString ());
+            };
 
         }
 
