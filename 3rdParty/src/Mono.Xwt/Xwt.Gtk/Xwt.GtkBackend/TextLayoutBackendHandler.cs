@@ -183,7 +183,11 @@ namespace Xwt.GtkBackend
             tl.Layout.Ellipsize = Pango.EllipsizeMode.None;
 			tl.Layout.GetPixelSize (out w, out h);
             tl.Layout.Ellipsize = ellipsize;
-			return new Size ((double)w, (double)h);
+		    if (ellipsize != Pango.EllipsizeMode.None && tl.Layout.Width > 0)
+                // an ellipsized text doesn't exceed layout's width
+		        w = Math.Min (w, (int) (tl.Layout.Width / Pango.Scale.PangoScale));
+		    
+		    return new Size ((double)w, (double)h);
 		}
 
 		public override void AddAttribute (object backend, TextAttribute attribute)
