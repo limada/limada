@@ -1170,7 +1170,8 @@ namespace Xwt.GtkBackend
 				return 1;
 
 			try {
-				return gdk_screen_get_monitor_scale_factor (screen.Handle, monitor);
+				//return gdk_screen_get_monitor_scale_factor (screen.Handle, monitor);
+			    return (double) screen.Width / screen.WidthMm * 25.4d / 96d;
 			} catch (DllNotFoundException) {
 			} catch (EntryPointNotFoundException) {
 			}
