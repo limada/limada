@@ -904,8 +904,8 @@ namespace Xwt
 			// Transform is saved
             InitBlank (50, 100);
             var la = new TextLayout ();
-            la.Font = Font.FromName ("Arial " + (12 * Desktop.PrimaryScreen.ScaleFactor).ToString (CultureInfo.InvariantCulture));
-            la.Text = "One Two Three Four Five Six Seven Eight Nine";
+            la.Font = Font.FromName ("Arial " + (12 / Desktop.PrimaryScreen.ScaleFactor).ToString (CultureInfo.InvariantCulture));
+            la.Text = "One Two Three Four Five Six Seventh Eight Nine";
 			la.Width = 35;
             la.Trimming = TextTrimming.WordElipsis;
 			var s = la.GetSize ();
@@ -927,15 +927,16 @@ namespace Xwt
             var la = new TextLayout ();
             la.Font = Font.FromName ("Arial 12");// + (12 * Desktop.PrimaryScreen.ScaleFactor).ToString (CultureInfo.InvariantCulture));
             la.Text = "One Two Three Four Five Six Seven Eight Nine";
-            la.Width = 45;
+            la.Width = 60;
             la.Trimming = TextTrimming.WordElipsis;
             var s = la.GetSize ();
             var wSize = s;
-            la.Height = s.Height / 2;
+            la.Height = s.Height / 9 * 4;
             s = la.GetSize ();
 
             InitBlank ((int) (s.Width + 11), (int) (wSize.Height + 11));
 
+            // on Gtk, s.Height differs from la.Height, but not on Wpf
             context.Rectangle (5.5, 5.5, s.Width, la.Height);
             context.SetColor (Colors.Blue);
             context.Stroke ();
