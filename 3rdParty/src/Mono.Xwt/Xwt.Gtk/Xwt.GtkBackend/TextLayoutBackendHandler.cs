@@ -178,7 +178,11 @@ namespace Xwt.GtkBackend
 		{
 			var tl = (PangoBackend)backend;
 			int w, h;
+            // disable ellipsize, otherwise GetPixelSize returns the heigth of one line only
+		    var ellipsize = tl.Layout.Ellipsize;
+            tl.Layout.Ellipsize = Pango.EllipsizeMode.None;
 			tl.Layout.GetPixelSize (out w, out h);
+            tl.Layout.Ellipsize = ellipsize;
 			return new Size ((double)w, (double)h);
 		}
 
