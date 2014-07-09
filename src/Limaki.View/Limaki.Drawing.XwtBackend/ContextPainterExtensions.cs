@@ -73,12 +73,10 @@ namespace Limaki.Drawing.XwtBackend {
             var h = rect.Height;
             if (w > 1 && h > 1) {
                 var textLayout = new TextLayout(ctx) {
-                    Trimming = TextTrimming.Word, // for GetSize, use Word for trimming
+                    Trimming = TextTrimming.WordElipsis, 
                     Text = text, Font = font, Width = w + 0.1, Height = h,
                 };
                 var size = textLayout.GetSize();
-                // set Trimming after GetSize, otherwise Gtk returns Height for one line only
-                textLayout.Trimming = TextTrimming.WordElipsis;
                 w = size.Width < w ? (w - size.Width) / 2d : 0;
                 h = size.Height < h ? (h - size.Height) / 2d : 0;
                 ctx.SetColor(textColor);
