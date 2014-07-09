@@ -109,9 +109,9 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             base.Refresh();
         }
 
-        public new Uri Url {
-            get { return base.Url; }
-            set { Navigate (value.AbsoluteUri); }
+        public new string Url {
+            get { return base.Url.AbsoluteUri; }
+            set { Navigate (value); }
         }
 
         public Stream DocumentStream {

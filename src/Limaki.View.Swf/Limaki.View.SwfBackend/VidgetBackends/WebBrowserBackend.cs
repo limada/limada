@@ -74,6 +74,12 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             DisposeDone = true;
         }
 
+
+        public new string Url {
+            get { return base.Url.AbsoluteUri; }
+            set { Navigate (value); }
+        }
+
         #region IZoomTarget Member
 
         public ZoomState ZoomState {
