@@ -30,10 +30,12 @@ using System.Threading;
 using Xwt.Drawing;
 using System.IO;
 using System.Collections.Generic;
+using System.Text;
+using System.Globalization;
 
 namespace Xwt
 {
-	[TestFixture]
+    [TestFixture, RequiresSTA]
 	public class DrawingTests: DrawingTestsBase
 	{
 		[Test]
@@ -900,22 +902,48 @@ namespace Xwt
 		public void TextTrimmingEllipsis ()
 		{
 			// Transform is saved
-			InitBlank (50, 100);
-			var la = new TextLayout ();
-			la.Font = Font.FromName ("Arial 12");
-			la.Text = "One Two Three Four Five Six Seven Eight Nine";
-			la.Width = 45;
-			la.Trimming = TextTrimming.WordElipsis;
+            InitBlank (50, 100);
+            var la = new TextLayout ();
+            la.Font = Font.FromName ("Arial " + (12 * Desktop.PrimaryScreen.ScaleFactor).ToString (CultureInfo.InvariantCulture));
+            la.Text = "One Two Three Four Five Six Seven Eight Nine";
+			la.Width = 35;
+            la.Trimming = TextTrimming.WordElipsis;
 			var s = la.GetSize ();
+            InitBlank ((int)(s.Width + 11), (int)(s.Height + 11));
+
 			context.Rectangle (5.5, 5.5, s.Width, s.Height);
 			context.SetColor (Colors.Blue);
 			context.Stroke ();
-
+           
 			context.SetColor (Colors.Black);
 			context.DrawTextLayout (la, 5, 5);
 			CheckImage ("TextTrimmingEllipsis.png");
 		}
 
+        [Test]
+        public void TextTrimmingEllipsisHeigthBreak () {
+            // Transform is saved
+            InitBlank (50, 100);
+            var la = new TextLayout ();
+            la.Font = Font.FromName ("Arial 12");// + (12 * Desktop.PrimaryScreen.ScaleFactor).ToString (CultureInfo.InvariantCulture));
+            la.Text = "One Two Three Four Five Six Seven Eight Nine";
+            la.Width = 45;
+            la.Trimming = TextTrimming.WordElipsis;
+            var s = la.GetSize ();
+            var wSize = s;
+            la.Height = s.Height / 2;
+            s = la.GetSize ();
+
+            InitBlank ((int) (s.Width + 11), (int) (wSize.Height + 11));
+
+            context.Rectangle (5.5, 5.5, s.Width, la.Height);
+            context.SetColor (Colors.Blue);
+            context.Stroke ();
+
+            context.SetColor (Colors.Black);
+            context.DrawTextLayout (la, 5, 5);
+            CheckImage ("TextTrimmingEllipsisHeigthBreak.png");
+        }
 		#endregion
 
 		#region Paths
