@@ -46,14 +46,12 @@ namespace Limaki.View.XwtBackend {
 
         public Size ScreenResolution () {
             var f = Desktop.PrimaryScreen.ScaleFactor;
-            return  new Size (96, 96);
+            return  new Size (96*f, 96*f);
         }
 
         public Size Resolution (Context context) {
             return new Size (96, 96);
         }
-
-
 
     }
 }
