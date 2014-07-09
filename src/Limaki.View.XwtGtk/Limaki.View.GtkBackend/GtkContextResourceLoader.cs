@@ -29,8 +29,8 @@ namespace Limaki.View.GtkBackend {
 
         public override void ApplyResources (IApplicationContext context) {
             var tk = Toolkit.CurrentEngine;
-            //tk.RegisterBackend<SystemColorsBackend, XwtSystemColorsBackend>();
-
+            tk.RegisterBackend<ITextEntryBackend, Xwt.GtkBackend.TextEntryBackendMultiLine>();
+            
             context.Factory.Add<IUISystemInformation, GtkSystemInformation> ();
 
             var factories = context.Pooled<UsecaseFactories<ConceptUsecase>> ();
