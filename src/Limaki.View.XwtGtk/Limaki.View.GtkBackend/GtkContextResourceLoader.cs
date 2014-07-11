@@ -53,6 +53,7 @@ namespace Limaki.View.GtkBackend {
                 var gtkEngine = Xwt.Backends.ToolkitEngineBackend.GetToolkitBackend<Xwt.GtkBackend.GtkEngine> ();
                 // using Xwt.Gtk.Windows.WebViewBackend: not working on linux
                 gtkEngine.RegisterBackend<IWebViewBackend, Xwt.Gtk.Windows.WebViewBackend> ();
+                // hint: see GeckoWebBrowser.Gtk for Gtk-Binding of Winform
             }
 
             GLib.ExceptionManager.UnhandledException += (args) => {
