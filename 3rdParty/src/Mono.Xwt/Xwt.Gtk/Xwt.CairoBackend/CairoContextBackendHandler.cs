@@ -341,7 +341,9 @@ namespace Xwt.CairoBackend
                             };
                         }
 
-                        var lineLen = line.Length - (nextDelta.Height > layoutHeight ? 1 : 0);
+                        var lineLen = Math.Min (
+                            line.Length - (nextDelta.Height > layoutHeight ? 1 : 0),
+                            line.Layout.Text.Length - line.StartIndex); // sometimes line.length is bigger than text.length
                         Action setLine = () => {
                             sll.SetText (line.Layout.Text.Substring (line.StartIndex, Math.Max (lineLen, 0)) +
                                 (ellipsize != Pango.EllipsizeMode.None ? // Gtk on Linux forgets to ellipsize
@@ -352,7 +354,7 @@ namespace Xwt.CairoBackend
                         setLine ();
                         // fallback, if line's text don't fit into one line:
                         while ((sll.Lines.Length > 1 || line.GetSize ().Width > layout.Width) && lineLen > 1) {
-                            lineLen = lineLen - 1;
+                            lineLen--;
                             setLine ();
                         }
                     }
