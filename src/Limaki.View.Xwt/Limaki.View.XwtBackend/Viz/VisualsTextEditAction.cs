@@ -67,12 +67,11 @@ namespace Limaki.View.XwtBackend.Viz {
                 location = camera.FromSource (Current.Shape[Anchor.Center]);
 
             var text = DataToText (Current);
-            if (string.IsNullOrEmpty (text))
-                text = "XXXX";
-            size = Registry.Pooled<IDrawingUtils> ()
-                .GetTextDimension (text, style);
-            size.Height = Math.Max (size.Height + 5, style.Font.Size + 5);
-            size.Width = Math.Max (size.Width + 2, style.Font.Size * 4);
+
+            var minSize = Registry.Pooled<IDrawingUtils> ()
+                .GetTextDimension ( "XXXXXXXX", style);
+            size.Height = Math.Max (size.Height + 5, minSize.Height + 5);
+            size.Width = Math.Max (size.Width + 2, minSize.Width + 2);
             size = camera.FromSource (size);
             if (Current is IVisualEdge) {
                 location.X = location.X - size.Width / 2;
