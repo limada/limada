@@ -25,7 +25,7 @@ using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
-    public class TextOkCancelBoxBackend : HBox, ITextOkCancelBoxBackend, IVidgetBackend {
+    public class TextOkCancelBoxBackend : VidgetBackend<HBox>, ITextOkCancelBoxBackend, IVidgetBackend {
 
         public TextOkCancelBoxBackend() { Compose (); }
 
@@ -35,6 +35,7 @@ namespace Limaki.View.XwtBackend {
                 TitleLabel.WidthRequest = Registry.Pooled<IDrawingUtils> ()
                   .GetTextDimension (value, new Style ("") { Font = TitleLabel.Font }).Width;
             }
+
         }
 
         public string Text { get { return TextEntry.Text; } set { TextEntry.Text = value; } }
@@ -46,13 +47,15 @@ namespace Limaki.View.XwtBackend {
         protected Label TitleLabel { get; set; }
         protected TextEntry TextEntry { get; set; }
 
-        protected void Compose () {
-
+        protected override void Compose () {
+            
+            base.Compose ();
+            
             var margin = new WidgetSpacing ();
 
-            this.Margin = margin;
+            Widget.Margin = margin;
 
-            TextEntry = new TextEntry { ShowFrame = false, Margin = margin };
+            TextEntry = new TextEntry { ShowFrame = true, Margin = margin };
             TitleLabel = new Label {
                 WidthRequest = 80,
                 TextColor = SystemColors.GrayText,
@@ -85,11 +88,11 @@ namespace Limaki.View.XwtBackend {
             buttonOk.Clicked += (s, e) => OnFinish (DialogResult.Ok);
             buttonCancel.Clicked += (s, e) => OnFinish (DialogResult.Cancel);
 
-            this.PackStart (TitleLabel);
-            this.PackEnd (buttonCancel);
-            this.PackEnd (buttonOk);
-           
-            this.PackStart (TextEntry, true);
+            Widget.PackStart (TitleLabel);
+            Widget.PackEnd (buttonCancel);
+            Widget.PackEnd (buttonOk);
+
+            Widget.PackStart (TextEntry, true);
         }
 
         protected void OnFinish (DialogResult result) {
@@ -104,15 +107,14 @@ namespace Limaki.View.XwtBackend {
 
         public TextOkCancelBox Frontend { get; set; }
 
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            
             this.Frontend = (TextOkCancelBox) frontend;
         }
 
-        void IVidgetBackend.Update () { XwtBackendHelper.VidgetBackendUpdate (this); }
-
-        void IVidgetBackend.Invalidate () { XwtBackendHelper.VidgetBackendInvalidate (this); }
-
-        void IVidgetBackend.Invalidate (Rectangle rect) { XwtBackendHelper.VidgetBackendInvalidate (this, rect); }
+        public override void SetFocus () {
+            TextEntry.SetFocus ();
+        }
 
         #endregion
 

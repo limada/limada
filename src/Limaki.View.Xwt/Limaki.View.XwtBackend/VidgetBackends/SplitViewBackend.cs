@@ -145,16 +145,16 @@ namespace Limaki.View.XwtBackend {
             var display = this.Frontend.CurrentDisplay;
 
             var textDialog = new TextOkCancelBox {Text = text, Title = title};
-            var textDialogBackend = textDialog.Backend.ToXwt() as TextOkCancelBoxBackend;
-            textDialogBackend.HorizontalPlacement = WidgetPlacement.Fill;
-            textDialogBackend.VerticalPlacement = WidgetPlacement.Start;
+            var textDialogBackend = textDialog.Backend as TextOkCancelBoxBackend;
+            textDialogBackend.Widget.HorizontalPlacement = WidgetPlacement.Fill;
+            textDialogBackend.Widget.VerticalPlacement = WidgetPlacement.Start;
 
             var panel = PanelOf (this.Frontend.CurrentDisplay);
             var c = panel.Content;
             var box = new VBox {HorizontalPlacement = WidgetPlacement.Fill, VerticalPlacement = WidgetPlacement.Fill};
             panel.Content = box;
 
-            box.PackStart (textDialogBackend);
+            box.PackStart (textDialogBackend.Widget);
             box.PackEnd (c, true);
 
             box.SetFocus ();
@@ -168,7 +168,7 @@ namespace Limaki.View.XwtBackend {
                 }
 
                 box.Remove (c);
-                box.Remove (textDialogBackend);
+                box.Remove (textDialogBackend.Widget);
 
                 panel.Content = c;
 

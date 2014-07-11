@@ -39,13 +39,13 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
-        public void Update () { Widget.VidgetBackendUpdate (); }
+        public virtual void Update () { Widget.VidgetBackendUpdate (); }
 
-        public void Invalidate () { Widget.VidgetBackendInvalidate (); }
+        public virtual void Invalidate () { Widget.VidgetBackendInvalidate (); }
 
-        public void SetFocus () { Widget.SetFocus (); }
+        public virtual void SetFocus () { Widget.SetFocus (); }
 
-        public void Invalidate (Xwt.Rectangle rect) { Widget.VidgetBackendInvalidate (rect); }
+        public virtual void Invalidate (Xwt.Rectangle rect) { Widget.VidgetBackendInvalidate (rect); }
 
         public virtual void Dispose () {
             Widget.Dispose ();
