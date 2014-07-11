@@ -22,10 +22,10 @@ namespace Limaki {
             
             var streamContentIoPool = Registry.Pooled<StreamContentIoPool>();
             streamContentIoPool.Add (new ImageStreamContentIo ());
-            streamContentIoPool.Add(new TextStreamContentIo());
             streamContentIoPool.Add (new RtfStreamContentIo ()); 
             streamContentIoPool.Add(new HtmlStreamContentIo()); 
             streamContentIoPool.Add(new PdfStreamContentIo());
+            streamContentIoPool.Add (new TextStreamContentIo ());
 
             var contentDiggPool = Registry.Pooled<ContentDiggPool>();
             contentDiggPool.Add(new TextContentDigger());

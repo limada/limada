@@ -92,14 +92,14 @@ namespace Limaki.Contents.IO {
         protected virtual void Digg (string source, Content<Stream> sink) {
             try {
                 var parser = new TagParser(source);
-                var firstText = new Element { Name = "body", Text = "" };
+                var body = new Element { Name = "body", Text = "" };
                 var elements = new Element[] {
                                 new Element { Name = "title", Text = "" },
                                 new Element { Name = "h1", Text = "" },
                                 new Element { Name = "h2", Text = "" },
                                 new Element { Name = "h3", Text = "" },
                                 new Element { Name = "h4", Text = "" },
-                                firstText,
+                                body,
                             };
                 var plainText = "";
                 parser.DoElement += stuff => {
@@ -121,9 +121,9 @@ namespace Limaki.Contents.IO {
                             element.Parsed = true;
                         }
                     }
-                    if (firstText.Parsing && (tag == "</br>" || tag == "<br>" || tag == "<br/>" || tag == "<br />" || tag == "</div>" || tag == "</p>")) {
-                        firstText.Parsing = false;
-                        firstText.Parsed = true;
+                    if (body.Parsing && (tag == "</br>" || tag == "<br>" || tag == "<br/>" || tag == "<br />" || tag == "</div>" || tag == "</p>")) {
+                        body.Parsing = false;
+                        body.Parsed = true;
                     }
                 };
                 parser.DoText += stuff => {
@@ -132,7 +132,7 @@ namespace Limaki.Contents.IO {
                         if (element.Parsing)
                             element.Text += text;
                     }
-                    if (firstText.Parsed || firstText.Parsing)
+                    if (body.Parsed || body.Parsing)
                         plainText += text;
                 };
                 parser.Parse();
@@ -147,6 +147,9 @@ namespace Limaki.Contents.IO {
                 sink.Description = description;
                 if (description == plainText)
                     sink.Data = null;
+                if (!body.Parsed) {
+                    sink.Data = ByteUtils.AsAsciiStream ("<html><head></head><body>" + source + "</body></html>");
+                }
 
             } catch (Exception e) {
                 throw e;

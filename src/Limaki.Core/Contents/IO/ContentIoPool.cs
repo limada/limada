@@ -27,7 +27,7 @@ namespace Limaki.Contents.IO {
     /// <typeparam name="TSink"></typeparam>
     public class ContentIoPool<TSource,TSink> : IEnumerable<IContentIo<TSource>> {
 
-        private ICollection<IContentIo<TSource>> _contentIos = new List<IContentIo<TSource>>();
+        protected ICollection<IContentIo<TSource>> _contentIos = new List<IContentIo<TSource>>();
         
         ContentInfos _contentInfoPool = null;
         /// <summary>
@@ -48,6 +48,7 @@ namespace Limaki.Contents.IO {
         protected virtual IContentIo<TSource> FirstOrDefault (IEnumerable<IContentIo<TSource>> ios) {
             return ios.FirstOrDefault ();
         }
+
         public virtual IContentIo<TSource> Find (string extension, IoMode mode) {
             return FirstOrDefault (_contentIos.Where (sinkIo => sinkIo.Detector.Supports (extension) && sinkIo.IoMode.HasFlag (mode)));
         }
@@ -64,7 +65,6 @@ namespace Limaki.Contents.IO {
             return FirstOrDefault (_contentIos.Where (sinkIo => sinkIo.Detector.Supports (streamType)));
         }
 
-
         public IEnumerator<IContentIo<TSource>> GetEnumerator() {
             return _contentIos.GetEnumerator();
         }
@@ -73,7 +73,28 @@ namespace Limaki.Contents.IO {
             return this.GetEnumerator();
         }
 
-       
+        public int Priority (long contentType) {
+            var result = 0;
+            foreach (var contentIo in _contentIos) {
+                foreach (var info in contentIo.Detector.ContentSpecs) {
+                    if (info.ContentType == contentType)
+                        return result;
+                    result++;
+                }
+            }
+            return -1;
+        }
+
+        public int Priority (IContentIo value) {
+            var result = 0;
+            foreach (var contentIo in _contentIos) {
+                if (contentIo == value)
+                    return result;
+                result++;
+            }
+
+            return -1;
+        }
     }
 
 }

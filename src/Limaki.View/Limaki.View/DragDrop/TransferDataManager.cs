@@ -83,7 +83,7 @@ namespace Limaki.View.DragDrop {
         }
 
         public virtual IEnumerable<Tuple<TransferDataType, IContentIo<Stream>>> SinksOf (IEnumerable<TransferDataType> sources) {
-
+            var result = new List<Tuple<TransferDataType, IContentIo<Stream>>> ();
             foreach (var source in sources) {
                 var sourceId = MimeFingerPrints.Synonym (source.Id);
                 long contentType = 0;
@@ -99,22 +99,21 @@ namespace Limaki.View.DragDrop {
 
                 foreach (var sinkIo in ContentIoPool.Where (lookUp)
                     .Where (io => ! io.Detector.ContentSpecs.Any (info => done.Contains (info.ContentType)))) {
-                    yield return Tuple.Create (source, sinkIo);
+                    result.Add(Tuple.Create (source, sinkIo));
                 }
             }
+            return result.OrderBy (r => ContentIoPool.Priority (r.Item2));
         }
 
 
 
         // move this to Resourceloader of OS:
         public void RegisterSome() {
-            TransferContentTypes.Add ("text", ContentTypes.Text);
             TransferContentTypes.Add ("html", ContentTypes.HTML);
+            TransferContentTypes.Add ("text", ContentTypes.Text);
             TransferContentTypes.Add ("rtf", ContentTypes.RTF);
             //...
         }
-
-
 
         #region not used
 
