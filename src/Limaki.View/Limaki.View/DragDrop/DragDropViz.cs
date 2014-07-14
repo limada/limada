@@ -83,7 +83,7 @@ namespace Limaki.View.DragDrop {
 
                         content = ContentDiggPool.Use (content);
                         // TODO: find a better handling of preferences; maybe MimeFingerPrints does the job?
-                        if (content.Data == null && (string.IsNullOrEmpty(content.Description.ToString())))
+                        if (content.Data == null && (content.Description == null || string.IsNullOrEmpty (content.Description.ToString ())))
                             continue;
                         else
                             break;

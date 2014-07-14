@@ -63,23 +63,23 @@ namespace Limaki.View.DragDrop {
         }
 
         public virtual IEnumerable<ContentInfo> InfoOf (IContentIo<Stream> io, IEnumerable<TransferDataType> sources) {
+            var result = new List<ContentInfo> ();
             foreach (var source in sources) {
                 var sourceId = MimeFingerPrints.Synonym (source.Id);
                 long contentType = 0;
                 Func<IContentIo<Stream>, IEnumerable<ContentInfo>> lookUp = null;
-                if (TransferContentTypes.TryGetValue (sourceId.ToLower(), out contentType)) {
+
+                if (TransferContentTypes.TryGetValue (sourceId.ToLower (), out contentType)) {
                     lookUp = sinkIo => sinkIo.Detector.ContentSpecs
-                                           .Where (info => info.ContentType == contentType);
+                        .Where (info => info.ContentType == contentType);
                 } else {
                     lookUp = sinkIo => sinkIo.Detector.ContentSpecs
-                                           .Where (info => info.MimeType == sourceId);
+                        .Where (info => info.MimeType == sourceId);
                 }
-                var done = new Set<long> ();
-
-                return lookUp(io);
-                   
+                result.AddRange (lookUp (io));
             }
-            return null;
+
+            return result;
         }
 
         public virtual IEnumerable<Tuple<TransferDataType, IContentIo<Stream>>> SinksOf (IEnumerable<TransferDataType> sources) {
