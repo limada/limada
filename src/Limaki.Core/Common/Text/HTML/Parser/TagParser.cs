@@ -69,6 +69,13 @@ namespace Limaki.Common.Text.HTML.Parser {
             }
         }
 
+        public Action<Stuff> NotEndoced;
+
+        private void OnNotEndoced () {
+            if (NotEndoced != null) {
+                NotEndoced (_stuff);
+            }
+        }
 
         private void Watch() {
             //Bei diesen Zeichen ist u.U. etwas zu unternehmen
@@ -149,6 +156,9 @@ namespace Limaki.Common.Text.HTML.Parser {
                     _stuff.Origin = _stuff.Position + 1;
                     State = Parser.State.Attribute;
                 }
+            }
+            if (_stuff.State == Parser.State.Text && ((long) _actual) > 128) {
+                OnNotEndoced ();
             }
         }
 

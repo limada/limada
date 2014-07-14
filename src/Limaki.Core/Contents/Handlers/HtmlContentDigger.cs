@@ -135,7 +135,29 @@ namespace Limaki.Contents.IO {
                     if (body.Parsed || body.Parsing)
                         plainText += text;
                 };
+
+                var notEncoded = false;
+                parser.NotEndoced = stuff => {
+                    var c = System.Net.WebUtility.HtmlEncode (stuff.Text.ToString (stuff.Position, 1));
+                    stuff.Text.Remove (stuff.Position, 1);
+                    stuff.Text.Insert (stuff.Position, c);
+                    stuff.Position += c.Length - 1;
+                    notEncoded = true;
+                };
+
                 parser.Parse();
+                if (notEncoded) {
+                    source = parser.Stuff.Text.ToString ();
+                    sink.Data.Dispose ();
+                    sink.Data = ByteUtils.AsAsciiStream (source);
+                }
+
+                if (!body.Parsed) {
+                    source = "<html><head></head><body>" + source + "</body></html>";
+                    sink.Data.Dispose ();
+                    sink.Data = ByteUtils.AsAsciiStream (source);
+                    Digg (source, sink);
+                }
 
                 plainText = System.Net.WebUtility.HtmlDecode (plainText.Replace ("\r\n", ""));
                 string description = null;
@@ -147,9 +169,6 @@ namespace Limaki.Contents.IO {
                 sink.Description = description;
                 if (description == plainText)
                     sink.Data = null;
-                if (!body.Parsed) {
-                    sink.Data = ByteUtils.AsAsciiStream ("<html><head></head><body>" + source + "</body></html>");
-                }
 
             } catch (Exception e) {
                 throw e;
