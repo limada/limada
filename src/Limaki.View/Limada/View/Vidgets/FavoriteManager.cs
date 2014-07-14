@@ -38,6 +38,7 @@ namespace Limada.View.Vidgets {
         }
 
         public ISheetManager SheetManager { get; set; }
+        public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
 
         public void AddToFavorites(IGraphScene<IVisual, IVisualEdge> scene) {
             AddToFavorites(scene, TopicSchema.TopicMarker, false);
@@ -93,6 +94,7 @@ namespace Limada.View.Vidgets {
             var info = SheetManager.LoadFromContent(content, display.Data, display.Layout);
             display.Perform();
             display.Info = info;
+            VisualsDisplayHistory.Store (info);
         }
 
         protected virtual bool DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, IThing thing, IThingGraph thingGraph ) {
@@ -272,5 +274,7 @@ namespace Limada.View.Vidgets {
                 }
             }
         }
+
+       
     }
 }

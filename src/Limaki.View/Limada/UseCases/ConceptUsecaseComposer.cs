@@ -71,6 +71,7 @@ namespace Limada.UseCases {
             
             splitView.FavoriteManager = useCase.FavoriteManager;
             useCase.FavoriteManager.SheetManager = useCase.SheetManager;
+            useCase.FavoriteManager.VisualsDisplayHistory = useCase.VisualsDisplayHistory;
 
             useCase.SplitViewToolStrip.SplitView = useCase.SplitView;
             useCase.SplitViewToolStrip.SheetManager = useCase.SheetManager;

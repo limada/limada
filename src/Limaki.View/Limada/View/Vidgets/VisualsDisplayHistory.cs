@@ -33,7 +33,7 @@ namespace Limada.View.Vidgets {
 
     public class VisualsDisplayHistory {
         private History<long> _history = null;
-        protected History<long> history {
+        protected History<long> History {
             get {
                 if (_history == null) {
                     _history = new History<long>();
@@ -44,11 +44,11 @@ namespace Limada.View.Vidgets {
 
 
         public bool CanGoForward() {
-            return history.HasForward();
+            return History.HasForward();
         }
 
         public bool CanGoBack() {
-            return history.HasBack();
+            return History.HasBack();
         }
 
         public void Clear() {
@@ -56,7 +56,7 @@ namespace Limada.View.Vidgets {
         }
 
         public void Store(SceneInfo info) {
-            history.Add(info.Id);
+            History.Add(info.Id);
         }
 
         public void Store(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager) {
@@ -65,7 +65,7 @@ namespace Limada.View.Vidgets {
                     display.DataId = Isaac.Long;
                 if (sheetManager.SaveInStore(display.Data, display.Layout, display.DataId)) {
                     sheetManager.RegisterSheet(display.Info);
-                    history.Add(display.DataId);
+                    History.Add(display.DataId);
                 }
             }
         }
@@ -93,16 +93,16 @@ namespace Limada.View.Vidgets {
 
             Int64 sheetId = default(Int64);
             if (forward)
-                sheetId = history.Forward();
+                sheetId = History.Forward();
             else
-                sheetId = history.Back();
+                sheetId = History.Back();
 
             if (sheetId != default(Int64) && sheetId != currSheedId) {
                 Load(display, sheetManager, sheetId);
             }
 
             if (currSheedId == default(Int64))
-                history.Remove(p => p == currSheedId);
+                History.Remove(p => p == currSheedId);
 
             
         }
