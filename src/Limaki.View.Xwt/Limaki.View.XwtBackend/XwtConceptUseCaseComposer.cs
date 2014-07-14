@@ -85,6 +85,7 @@ namespace Limaki.View.XwtBackend {
                 e.AllowClose = MessageDialog.Confirm("Close?", Command.Ok);
                 if (e.AllowClose) {
                     useCase.Close();
+                    useCase.Dispose ();
                     Application.Exit();
                 }
             };
