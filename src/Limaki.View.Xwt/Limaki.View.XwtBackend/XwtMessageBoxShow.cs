@@ -21,25 +21,26 @@ namespace Limaki.View.XwtBackend {
     public class XwtMessageBoxShow : XwtMessager, IMessageBoxShow {
 
         public DialogResult Show (string title, string text, MessageBoxButtons buttons) {
-            var result = DialogResult.None;
+
             if (buttons == MessageBoxButtons.None) {
-                MessageDialog.ShowMessage(title, text);
+                MessageDialog.ShowMessage (text, title);
                 return DialogResult.None;
             }
-            if ((buttons & (MessageBoxButtons.Yes | MessageBoxButtons.Ok)) != 0) {
-                MessageDialog.ShowMessage(title, text);
+
+            if (buttons == MessageBoxButtons.Yes || buttons == MessageBoxButtons.Ok) {
+                MessageDialog.ShowMessage (text, title);
                 if (buttons == MessageBoxButtons.Yes)
                     return DialogResult.Yes;
                 return DialogResult.Ok;
             }
 
             if ((buttons & (MessageBoxButtons.No | MessageBoxButtons.Cancel | MessageBoxButtons.Retry)) != 0) {
-                var question = MessageDialog.AskQuestion(title, text, 0, ToXwt(buttons));
-                return ToLim(question);
+                var question = MessageDialog.AskQuestion (text, title, 0, ToXwt (buttons));
+                return ToLim (question);
             }
 
             if (false) {
-                var confirm = MessageDialog.Confirm(title, text, ToXwt(buttons).First());
+                var confirm = MessageDialog.Confirm (text, title, ToXwt (buttons).First ());
                 if (confirm)
                     return DialogResult.Ok;
                 else
