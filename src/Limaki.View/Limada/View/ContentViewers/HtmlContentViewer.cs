@@ -168,6 +168,7 @@ namespace Limada.View.ContentViewers {
         public override void Dispose () {
             Dispose (true);
         }
+
         public override void Clear() {
             base.Clear();
             if (_webServer != null) {
