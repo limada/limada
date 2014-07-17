@@ -1,38 +1,53 @@
-/*
- * Limaki 
- * 
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
- * 
- * Author: Lytico
- * Copyright (C) 2014 Lytico
- *
- * http://www.limada.org
- * 
- */
-
 using System.Diagnostics;
+using Gdk;
+using Limaki.View.Vidgets;
 using Xwt.Backends;
 using Xwt.GtkBackend;
-using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.GtkBackend {
 
-    public class ToolStripButton : ToolItem {
+    public class ToolStripButtonBackendBase<T> : ToolStripItemBackend<T>, IToolStripButtonBackend where T : Gtk.ToolItem, new () {
 
-        public ToolStripButton (): base () {
-            Compose ();
+        public Vidgets.ToolStripButton Frontend { get; protected set; }
+
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = (Vidgets.ToolStripButton) frontend;
         }
 
-        public bool UseUnderline { get; set; }
+        public virtual bool? IsChecked { get; set; }
+
+        public virtual bool UseUnderline { get; set; }
+
+        protected virtual Xwt.ButtonType ButtonType { get { return Xwt.ButtonType.Normal; } }
+
+        public override bool IsEnabled {
+            get { return base.IsEnabled; }
+            set {
+                if (value != base.IsEnabled) {
+                    if (ImageWidget != null) {
+                        var id = _imageWidget.Image;
+                        id.Alpha = value ? 1 : .5d;
+                        _imageWidget.Image = id;
+                    }
+                    base.IsEnabled = value;
+                }
+            }
+        }
+
+        public Color Notifycolor { get; set; }
+
+        protected override void Compose () {
+            base.Compose ();
+            SetContent (Xwt.ContentPosition.Bottom);
+            Notifycolor = Xwt.Drawing.Colors.White.ToGtkValue ();
+        }
 
         protected virtual Gtk.Widget ContentWidget {
-            get { return base.Child; }
+            get { return Widget.Child; }
             set {
-                if (base.Child != value) {
-                    base.Remove (base.Child);
-                    base.Child = value;
+                if (Widget.Child != value) {
+                    Widget.Remove (Widget.Child);
+                    Widget.Child = value;
                 }
             }
         }
@@ -47,7 +62,9 @@ namespace Limaki.View.GtkBackend {
             }
         }
 
-        Xwt.GtkBackend.ImageBox _imageWidget = null;
+        private Xwt.GtkBackend.ImageBox _imageWidget = null;
+        private Color _notifycolor;
+
         protected Gtk.Widget ImageWidget {
             get {
                 if (_imageWidget == null) {
@@ -62,13 +79,6 @@ namespace Limaki.View.GtkBackend {
                 }
                 return _imageWidget;
             }
-        }
-
-        protected virtual Xwt.ButtonType ButtonType { get { return Xwt.ButtonType.Normal; } }
-
-        internal override void Compose () {
-            base.Compose ();
-            SetContent (Xwt.ContentPosition.Bottom);
         }
 
         [GLib.ConnectBefore]
@@ -98,12 +108,31 @@ namespace Limaki.View.GtkBackend {
                 contentWidget = new Gtk.Label (label) { UseUnderline = this.UseUnderline };
 
             } else if (label == null && Image != null) {
-                contentWidget = AllocEventBox (ImageWidget);
-                contentWidget.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
+                contentWidget = AllocEventBox (ImageWidget,true);
+                contentWidget.AddEvents ((int) Gdk.EventMask.ButtonPressMask);
+                contentWidget.ButtonPressEvent -= this.ButtonPressed;
                 contentWidget.ButtonPressEvent += this.ButtonPressed;
+                Gdk.Color? background = null;
+                contentWidget.FocusInEvent += (s, e) => {
+                    var w = s as Gtk.Widget;                              
+                                              };
+                contentWidget.EnterNotifyEvent += (s, e) => {
+                    var w = s as Gtk.Widget;
+                    if (background == null)
+                        background = w.Style.Background (Gtk.StateType.Normal);
+                    w.ModifyBg (Gtk.StateType.Normal, Notifycolor);
+                    w.QueueDraw ();
+                };
+                contentWidget.LeaveNotifyEvent += (s, e) => {
+                    var w = s as Gtk.Widget;
+                    w.ModifyBg (Gtk.StateType.Normal, background.Value);
+                    w.QueueDraw ();
+                };
+                
+               
 
             } else if (label != null && Image != null) {
-                var box = position == Xwt.ContentPosition.Left || position == Xwt.ContentPosition.Right ? (Gtk.Box)new Gtk.HBox (false, 3) : (Gtk.Box)new Gtk.VBox (false, 3);
+                var box = position == Xwt.ContentPosition.Left || position == Xwt.ContentPosition.Right ? (Gtk.Box) new Gtk.HBox (false, 3) : (Gtk.Box) new Gtk.VBox (false, 3);
                 var lab = new Gtk.Label (label) { UseUnderline = this.UseUnderline };
 
                 if (position == Xwt.ContentPosition.Left || position == Xwt.ContentPosition.Top) {
@@ -120,7 +149,7 @@ namespace Limaki.View.GtkBackend {
             if (ButtonType == Xwt.ButtonType.DropDown) {
                 Gtk.Widget dropDownArrow = new Gtk.Arrow (Gtk.ArrowType.Down, Gtk.ShadowType.Out);
                 dropDownArrow = AllocEventBox (dropDownArrow);
-                dropDownArrow.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
+                dropDownArrow.AddEvents ((int) Gdk.EventMask.ButtonPressMask);
                 dropDownArrow.ButtonPressEvent += this.DropDownPressed;
 
                 if (contentWidget != null) {
@@ -135,7 +164,6 @@ namespace Limaki.View.GtkBackend {
 
             if (contentWidget != null) {
                 contentWidget.ShowAll ();
-                this.Label = null;
                 this.ContentWidget = contentWidget;
 
             } else
@@ -154,7 +182,7 @@ namespace Limaki.View.GtkBackend {
                 Sensitive = widget.Sensitive,
                 UseUnderline = this.UseUnderline
             };
-            button.AddEvents ((int)Gdk.EventMask.ButtonPressMask);
+            button.AddEvents ((int) Gdk.EventMask.ButtonPressMask);
             button.ButtonPressEvent += this.ButtonPressed;
             button.Clicked += this.OnClick;
             GtkEngine.ReplaceChild (widget, button);
@@ -162,8 +190,6 @@ namespace Limaki.View.GtkBackend {
             return button;
         }
 
-
-        public bool? IsChecked { get; set; }
 
     }
 }

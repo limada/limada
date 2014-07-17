@@ -41,6 +41,7 @@
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
       <Package>gtk-sharp-2.0</Package>
     </Reference>
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,24 +52,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limaki.View.GtkBackend\CustomToolStripBackends.cs" />
+    <Compile Include="Limaki.View.GtkBackend\GtkToolButton.cs" />
     <Compile Include="Limaki.View.GtkBackend\ImageComboBoxBackend.cs" />
-    <Compile Include="Limaki.View.GtkBackend\ToolItem.cs" />
+    <Compile Include="Limaki.View.GtkBackend\ToolStripButtonBackendBase.cs" />
+    <Compile Include="[Obsolete]\ToolStripDropDownWindowButtonBackendBase.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripItemBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripItemHostBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripSeparatorBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\VidgetBackend.cs" />
-    <Compile Include="[Obsolete]\ArrangerToolStripBackend0.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkBackendHelper.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkContextResourceLoader.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkSystemInformation.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkUsecaseFactory.cs" />
     <Compile Include="Limaki.View.GtkBackend\PopupWindow.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripBackend.cs" />
-    <Compile Include="Limaki.View.GtkBackend\ToolStripButton.cs" />
-    <Compile Include="[Obsolete]\ToolStripButton0.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripButtonBackend.cs" />
-    <Compile Include="Limaki.View.GtkBackend\ToolStripDropDownButton.cs" />
-    <Compile Include="[Obsolete]\ToolStripDropDownButton0.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripDropDownButtonBackend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -28,6 +28,7 @@ namespace Limaki.View.WpfBackend {
 
         public override void Compose () {
             base.Compose ();
+            Control.Click -= OnButtonClicked;
             Control.Click += OnButtonClicked;
         }
         public virtual void SetImage (Xwt.Drawing.Image value) {

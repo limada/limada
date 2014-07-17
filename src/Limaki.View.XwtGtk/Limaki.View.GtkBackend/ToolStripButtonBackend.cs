@@ -12,23 +12,21 @@
  * 
  */
 
-using Limaki.View.Vidgets;
 using System;
-using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.GtkBackend {
 
-    public class ToolStripButtonBackend : ToolStripItemBackend<ToolStripButton>, IToolStripButtonBackend {
+    public class ToolStripButtonBackend : ToolStripButtonBackendBase<Gtk.ToolItem> {
+    }
 
-        public LVV.ToolStripButton Frontend { get; protected set; }
-
-        public override  void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (LVV.ToolStripButton)frontend;
-        }
-
-        public virtual bool? IsChecked {
-            get { return Widget.IsChecked; }
-            set { Widget.IsChecked = value; }
+    public class ToolStripButtonBackend1 : ToolStripButtonBackendBase<GtkToolButton> {
+        public override Xwt.Drawing.Image Image {
+            get { return base.Image;
+            }
+            set {
+                base.Image = value;
+                Widget.IconWidget = this.ImageWidget;
+            }
         }
     }
 }

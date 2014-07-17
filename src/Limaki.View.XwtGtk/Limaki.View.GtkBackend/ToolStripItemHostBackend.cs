@@ -17,7 +17,7 @@ using Limaki.View.Vidgets;
 
 namespace Limaki.View.GtkBackend {
 
-    public class ToolStripItemHostBackend : ToolStripItemBackend<ToolItem>, IToolStripItemHostBackend {
+    public class ToolStripItemHostBackend : ToolStripItemBackend<Gtk.ToolItem>, IToolStripItemHostBackend {
 
         public Vidgets.ToolStripItemHost Frontend { get; protected set; }
 
