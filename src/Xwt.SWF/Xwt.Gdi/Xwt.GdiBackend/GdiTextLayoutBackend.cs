@@ -85,11 +85,15 @@ namespace Xwt.GdiBackend {
                     _format = GdiConverter.GetDefaultStringFormat ();
                 if (_format.Trimming != this.Trimming)
                     _format.Trimming = this.Trimming;
-
+                if (!_format.FormatFlags.HasFlag (SD.StringFormatFlags.NoWrap) && WrapMode == Xwt.WrapMode.None)
+                    _format.FormatFlags |= SD.StringFormatFlags.NoWrap;
+                else
+                    _format.FormatFlags &= ~SD.StringFormatFlags.NoWrap;
                 return _format;
             }
         }
 
+        public WrapMode WrapMode { get; set; }
 
     }
 }

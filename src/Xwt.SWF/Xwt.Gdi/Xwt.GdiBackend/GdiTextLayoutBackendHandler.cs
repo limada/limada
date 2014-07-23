@@ -45,6 +45,11 @@ namespace Xwt.GdiBackend {
             tl.Trimming = value.ToGdi();
         }
 
+        public override void SetWrapMode (object backend, WrapMode value) {
+            var tl = (GdiTextLayoutBackend)backend;
+            tl.WrapMode = value;
+        }
+
         public override void SetText (object backend, string text) {
             var tl = (GdiTextLayoutBackend) backend;
             tl.Text = text;
