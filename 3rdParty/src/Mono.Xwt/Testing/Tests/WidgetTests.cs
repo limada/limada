@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.IO;
 using NUnit.Framework;
 using System.Threading;
 
@@ -34,15 +35,28 @@ namespace Xwt
 	{
 		public abstract Widget CreateWidget ();
 
-		[TestFixtureSetUp]
-		public void Init ()
-		{
-		}
+        [TestFixtureSetUp]
+        public void Init () {
 
-		[TestFixtureTearDown]
-		public void Cleanup ()
-		{
-		}
+            if (Toolkit.CurrentEngine == null) {
+                var projName = Path.GetFileNameWithoutExtension (typeof (ReferenceImageManager).Assembly.CodeBase);
+
+                if (projName.ToLower ().Contains ("gtk")) {
+                    Xwt.Application.Initialize (Xwt.ToolkitType.Gtk);
+                } else if (projName.ToLower ().Contains ("wpf")) {
+                    Xwt.Application.Initialize (Xwt.ToolkitType.Wpf);
+                } else if (projName.ToLower ().Contains ("mac")) {
+                    Xwt.Application.Initialize (Xwt.ToolkitType.XamMac);
+                }
+                ReferenceImageManager.Init (projName);
+            }
+
+        }
+
+        [TestFixtureTearDown]
+        public void Cleanup () {
+            ReferenceImageManager.ShowImageVerifier ();
+        }
 
 		[Test]
 		public void Visibility ()
