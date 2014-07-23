@@ -55,6 +55,7 @@
     <Compile Include="Limaki.View.GtkBackend\GtkToolButton.cs" />
     <Compile Include="Limaki.View.GtkBackend\ImageComboBoxBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripButtonBackendBase.cs" />
+    <Compile Include="Limaki.View.GtkBackend\ToolStripDropDownButtonBackendBase.cs" />
     <Compile Include="[Obsolete]\ToolStripDropDownWindowButtonBackendBase.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripItemBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripItemHostBackend.cs" />

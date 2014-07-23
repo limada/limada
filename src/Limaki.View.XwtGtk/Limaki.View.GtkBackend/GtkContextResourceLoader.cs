@@ -29,7 +29,7 @@ namespace Limaki.View.GtkBackend {
 
         public override void ApplyResources (IApplicationContext context) {
             var tk = Toolkit.CurrentEngine;
-            tk.RegisterBackend<ITextEntryBackend, Xwt.GtkBackend.TextEntryBackendMultiLine>();
+            tk.RegisterBackend<ITextEntryBackend, Xwt.GtkBackend.TextEntryMultiLineBackend>();
             
             context.Factory.Add<IUISystemInformation, GtkSystemInformation> ();
 

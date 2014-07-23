@@ -39,7 +39,7 @@ namespace Limaki.View.GtkBackend {
         protected override void Compose () {
             base.Compose ();
             SetContent (Xwt.ContentPosition.Bottom);
-            Notifycolor = Xwt.Drawing.Colors.White.ToGtkValue ();
+            Notifycolor = Widget.Style.Background (Gtk.StateType.Prelight);
         }
 
         protected virtual Gtk.Widget ContentWidget {
