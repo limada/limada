@@ -84,5 +84,7 @@ namespace Xwt.Html5.Backend {
         public double Heigth { get; set; }
 
         public TextTrimming Trimming { get; set; }
+
+        public WrapMode WrapMode { get; set; }
     }
 }

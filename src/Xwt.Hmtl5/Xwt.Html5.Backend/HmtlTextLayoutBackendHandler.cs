@@ -38,12 +38,15 @@ namespace Xwt.Html5.Backend {
             tl.Trimming = value;
         }
 
+        public override void SetWrapMode (object backend, WrapMode value) {
+            var tl = (HtmlTextLayoutBackend)backend;
+            tl.WrapMode = value;
+        }
+
         public override Size GetSize (object backend) {
             var tl = (HtmlTextLayoutBackend) backend;
             return tl.Size;
         }
-
-        
 
         public override int GetIndexFromCoordinates (object backend, double x, double y) {
             throw new System.NotImplementedException();
