@@ -296,6 +296,7 @@ namespace Xwt.GtkBackend
                 args.Event.Window.DrawLayout (gc, 2, (wh - height) / 2, layout);
             }
         }
-	}
+	
+    }
 }
 
