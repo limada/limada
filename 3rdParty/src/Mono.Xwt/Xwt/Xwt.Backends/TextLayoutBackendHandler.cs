@@ -3,7 +3,7 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
-//       Lytico (http://limada.sourceforge.net)
+//       Lytico (http://www.limada.org)
 // 
 // Copyright (c) 2011 Xamarin Inc
 // 
@@ -42,12 +42,14 @@ namespace Xwt.Backends
 		public abstract void SetText (object backend, string text);
 		public abstract void SetFont (object backend, Font font);
 		public abstract void SetTrimming (object backend, TextTrimming textTrimming);
+        public abstract void SetWrapMode (object Backend, WrapMode wrapMode);
 		public abstract Size GetSize (object backend);
 		public abstract int GetIndexFromCoordinates (object backend, double x, double y);
 		public abstract Point GetCoordinateFromIndex (object backend, int index);
 
 		public abstract void AddAttribute (object backend, TextAttribute attribute);
 		public abstract void ClearAttributes (object backend);
-	}
+
+    }
 }
 

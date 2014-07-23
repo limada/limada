@@ -902,12 +902,12 @@ namespace Xwt
 		public void TextTrimmingEllipsis ()
 		{
 			// Transform is saved
-            InitBlank (50, 100);
             var la = new TextLayout ();
             la.Font = Font.FromName ("Arial " + (12 / Desktop.PrimaryScreen.ScaleFactor).ToString (CultureInfo.InvariantCulture));
             la.Text = "One Two Three Four Five Six Seventh Eight Nine";
 			la.Width = 35;
             la.Trimming = TextTrimming.WordElipsis;
+		    la.WrapMode = WrapMode.None;
 			var s = la.GetSize ();
             InitBlank ((int)(s.Width + 11), (int)(s.Height + 11));
 
@@ -929,6 +929,7 @@ namespace Xwt
             la.Text = "One Two Three Four Five Six Seven Eight Nine";
             la.Width = 60;
             la.Trimming = TextTrimming.WordElipsis;
+            la.WrapMode = WrapMode.Word;
             var s = la.GetSize ();
             var wSize = s;
             la.Height = s.Height / 9 * 4;
