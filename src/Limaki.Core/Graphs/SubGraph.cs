@@ -147,10 +147,16 @@ namespace Limaki.Graphs {
             return result;
         }
 
-        public virtual bool RemoveInSink (TItem item) {
-            if (item is TEdge)
-                return Sink.Remove((TEdge) item);
-            return Sink.Remove(item);
+        public virtual bool RemoveSinkItem (TItem item) {
+            Func<IGraph<TItem, TEdge>, bool> remove = graph => {
+                var sinkGraph = graph as ISinkGraph<TItem, TEdge>;
+                if (sinkGraph == null)
+                    return graph.Remove (item);
+                else
+                    return sinkGraph.RemoveSinkItem (item);
+            };
+            remove (Source);
+            return remove (Sink);
         }
 
         public override IEnumerator<TItem> GetEnumerator() {

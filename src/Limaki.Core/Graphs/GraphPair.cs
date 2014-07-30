@@ -119,14 +119,21 @@ namespace Limaki.Graphs {
         protected virtual bool Remove(TSinkItem item, bool inSource) {
             if (item == null) return false;
             RemoveEdge (Sink.DepthFirstTwig (item));
-            bool result = Sink.Remove(item);
+            var result = false;
+            var sinkGraph = Sink as ISinkGraph<TSinkItem, TSinkEdge>;
+            if (inSource || sinkGraph == null)
+                Sink.Remove (item);
+            else
+                sinkGraph.RemoveSinkItem (item);
             var sourceItem = Get(item);
             if (sourceItem != null) {
                 RemoveEdge(Source.DepthFirstTwig(sourceItem));
-                if (inSource)
-                    Source.Remove(sourceItem);
+                if (inSource) {
+                    Source.Remove (sourceItem);
+                }
                 Mapper.Source2Sink.Remove(sourceItem);
             }
+
             Mapper.Sink2Source.Remove(item);
 
             return result;
@@ -136,8 +143,12 @@ namespace Limaki.Graphs {
             return Remove (item, true);
         }
 
-        public virtual bool RemoveInSink (TSinkItem item) {
-            return Remove(item, false);
+        public virtual bool RemoveSinkItem (TSinkItem item) {
+            var result = Remove (item, false);
+            var sinkGraph = Source as ISinkGraph<TSinkItem, TSinkEdge>;
+            if (sinkGraph != null)
+                sinkGraph.RemoveSinkItem (item);
+            return result;
         }
 
         public override int EdgeCount( TSinkItem item ) {

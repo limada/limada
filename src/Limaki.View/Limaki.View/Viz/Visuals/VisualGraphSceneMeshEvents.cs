@@ -21,6 +21,7 @@ using Limaki.View.Viz.Modelling;
 using Limaki.View.Viz.Visualizers;
 using Xwt;
 using Limaki.View.GraphScene;
+using System.Collections.Generic;
 
 namespace Limaki.View.Viz.Visuals {
 
@@ -60,7 +61,7 @@ namespace Limaki.View.Viz.Visuals {
         }
 
         protected virtual void VisualGraphItemRemove (IGraphScene<IVisual, IVisualEdge> sinkScene, IVisual sinkItem) {
-            var sinkGraph = sinkScene.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
+            
             if (sinkScene.Contains (sinkItem)) {
                 if (sinkScene.Focused == sinkItem) {
                     sinkScene.Focused = null;
@@ -68,12 +69,21 @@ namespace Limaki.View.Viz.Visuals {
                 sinkScene.Selected.Remove (sinkItem);
 
                 sinkScene.Requests.Add (new RemoveBoundsCommand<IVisual, IVisualEdge> (sinkItem, sinkScene));
-                sinkGraph.Remove (sinkItem);
-            } else {
-                // remove invisible items:
-                if (sinkGraph.Source.Contains (sinkItem)) {
-                    sinkGraph.Source.Remove (sinkItem);
+            }
+            var graphs = new Stack<IGraph<IVisual, IVisualEdge>> ();
+            graphs.Push (sinkScene.Graph);
+            while (graphs.Count > 0) {
+                var graph = graphs.Pop ();
+                var sinkGraph = graph as ISinkGraph<IVisual, IVisualEdge>;
+                if (graph.Contains (sinkItem)) {
+                    if (sinkGraph != null)
+                        sinkGraph.RemoveSinkItem (sinkItem);
+                    else
+                        graph.Remove (sinkItem);
                 }
+                var graphPair = graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
+                if (graphPair != null)
+                    graphs.Push (graphPair.Source);
             }
         }
 

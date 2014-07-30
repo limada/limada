@@ -60,11 +60,11 @@ namespace Limaki.Graphs {
         IEnumerable<TSinkEdge> ComplementEdges(TSinkItem item, IGraph<TSinkItem, TSinkEdge> graph);
 
         /// <summary>
-        /// removes in sink, but not in source
+        /// removes sinkItem, but not mapped sourceItem if of other type
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        bool RemoveInSink (TSinkItem item);
+        bool RemoveSinkItem (TSinkItem item);
 
         void UpdateSink (TSinkItem sinkItem);
     }
