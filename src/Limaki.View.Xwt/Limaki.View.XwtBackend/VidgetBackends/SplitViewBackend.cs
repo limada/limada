@@ -184,7 +184,40 @@ namespace Limaki.View.XwtBackend {
         }
 
         public void ViewInWindow (IVidgetBackend backend, Action onClose) {
-            Registry.Pooled<IExceptionHandler> ().Catch (new NotImplementedException (), MessageType.OK);
+            var widget = backend as Widget;
+            if (widget != null) {
+                var parent = SplitContainer.ParentWindow;
+                var window = new Window {
+                    Icon = Iconerias.Iconery.SubWinIcon,
+                    InitialLocation = WindowLocation.Manual,
+                    Title = Frontend.CurrentDisplay.Info.Name + " - *",
+                    // Decorated = false,
+                    Resizable = true,
+                    Size = new Size (parent.Size.Width / 3, parent.Size.Height / 3),
+                    TransientFor = parent,
+                };
+                window.Content = widget;
+                window.Location = 
+                    new Point (this.SplitContainer.ScreenBounds.X, this.SplitContainer.ScreenBounds.Y + (this.Size.Height - window.Height) / 2);
+
+                Func<Point> calcOffset = () => 
+                    new Point (window.Location.X - parent.Location.X, window.Location.Y - parent.Location.Y);
+                var offset = calcOffset ();
+                var parentMoving = true;
+                window.BoundsChanged += (s, e) => {
+                    if (!parentMoving)
+                        offset = calcOffset ();
+                };
+                parent.BoundsChanged += (s, e) => {
+                    parentMoving = true;
+                    window.Location = new Point (parent.Location.X + offset.X, parent.Location.Y + offset.Y);
+                    parentMoving = false;
+                };
+                window.Show ();
+                parentMoving = false;
+
+            }
+           // Registry.Pooled<IExceptionHandler> ().Catch (new NotImplementedException (), MessageType.OK);
         }
 
     }
