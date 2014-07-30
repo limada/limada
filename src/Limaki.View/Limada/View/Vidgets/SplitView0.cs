@@ -17,6 +17,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Limada.View.ContentViewers;
 using Limada.View.VisualThings;
 using Limaki.Common;
 using Limaki.Common.Linqish;

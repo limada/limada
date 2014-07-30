@@ -49,7 +49,7 @@ namespace Limaki.View.XwtBackend {
                 HeightRequest = 20,
                 Text = "hello",
                 TextColor = Colors.Black,
-                TextAlignment = Alignment.Center,
+                TextAlignment = Alignment.Start,
                 Name = "asdsf",
             };
             var box = new VBox {};

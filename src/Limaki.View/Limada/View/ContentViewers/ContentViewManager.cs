@@ -12,23 +12,23 @@
  */
 
 
-using Limada.Model;
-using Limaki.Common;
-using Limaki.Contents;
-using Limaki.Graphs;
 using System;
 using System.IO;
 using System.Linq;
-using Limada.View.ContentViewers;
+using Limada.Model;
 using Limada.View.VisualThings;
+using Limaki.Common;
+using Limaki.Contents;
+using Limaki.Graphs;
+using Limaki.View;
+using Limaki.View.ContentViewers;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.UI.GraphScene;
-using Limaki.View.Viz.Visualizers;
 using Xwt;
 using Xwt.Drawing;
 
-namespace Limaki.View.ContentViewers {
+namespace Limada.View.ContentViewers {
 
     public class ContentViewManager:IDisposable {
 

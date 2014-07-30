@@ -114,8 +114,8 @@ namespace Limaki.View.GtkBackend {
                 contentWidget.ButtonPressEvent += this.ButtonPressed;
                 Gdk.Color? background = null;
                 contentWidget.FocusInEvent += (s, e) => {
-                    var w = s as Gtk.Widget;                              
-                                              };
+                    var w = s as Gtk.Widget;
+                };
                 contentWidget.EnterNotifyEvent += (s, e) => {
                     var w = s as Gtk.Widget;
                     if (background == null)
@@ -151,7 +151,7 @@ namespace Limaki.View.GtkBackend {
                 dropDownArrow = AllocEventBox (dropDownArrow);
                 dropDownArrow.AddEvents ((int) Gdk.EventMask.ButtonPressMask);
                 dropDownArrow.ButtonPressEvent += this.DropDownPressed;
-
+                dropDownArrow.ModifyBg(Gtk.StateType.Normal, Widget.Style.Background (Gtk.StateType.Normal));
                 if (contentWidget != null) {
                     var box = new Gtk.HBox (false, 3);
                     box.PackStart (contentWidget, true, true, 3);

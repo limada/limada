@@ -356,7 +356,7 @@
     <Compile Include="Limada\UseCases\ConceptUsecaseComposer.cs" />
     <Compile Include="Limaki.Usecases\UsecaseFactories.cs" />
     <Compile Include="Limaki.Usecases\UsecaseFactory.cs" />
-    <Compile Include="Limaki.View\ContentViewers\ContentViewManager.cs" />
+    <Compile Include="Limada\View\ContentViewers\ContentViewManager.cs" />
     <Compile Include="Limaki.View\ContentViewers\ContentViewerProvider.cs" />
     <Compile Include="Limaki.View\Vidgets\DialogResult.cs" />
     <Compile Include="Limaki.View\Vidgets\FileDialogMemento.cs" />

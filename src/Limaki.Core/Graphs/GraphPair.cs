@@ -99,14 +99,14 @@ namespace Limaki.Graphs {
         /// <param name="edge"></param>
         /// <returns></returns>
         protected virtual bool RemoveEdge(IEnumerable<TSinkEdge> edges) {
-            foreach (TSinkEdge edge in edges) {
+            foreach (var edge in edges) {
                Mapper.Sink2Source.Remove(edge);
             }
             return true;
         }
 
         protected virtual bool RemoveEdge(IEnumerable<TSourceEdge> edges) {
-            foreach (TSourceEdge edge in edges) {
+            foreach (var edge in edges) {
                 Mapper.Source2Sink.Remove(edge);
             }
             return true;
