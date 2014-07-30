@@ -26,13 +26,15 @@ namespace Limada.Usecases {
 
         protected IContextResourceLoader ResourceLoader { get; set; }
 
+        public LimadaResourceLoader () { }
+
         public LimadaResourceLoader(IContextResourceLoader resourceLoader) {
             this.ResourceLoader = resourceLoader;
         }
 
         public override void ApplyResources(IApplicationContext context) {
-            
-            ResourceLoader.ApplyResources(context);
+            if (ResourceLoader != null)
+                ResourceLoader.ApplyResources (context);
             
             context.Factory.Add<IThingFactory, ThingFactory> ();
             context.Factory.Add<IGraphModelFactory<IThing, ILink>, ThingFactory> ();

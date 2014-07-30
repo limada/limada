@@ -9,6 +9,7 @@ using System.IO;
 using Limaki.Drawing;
 using Limaki.View.Headless;
 using Xwt;
+using Limada.Usecases;
 
 
 namespace Limaki.Tests {
@@ -34,6 +35,7 @@ namespace Limaki.Tests {
 
         public void RegisterHeadless (IApplicationContext context) {
             new LimakiCoreContextResourceLoader ().ApplyResources (context);
+            new LimadaResourceLoader ().ApplyResources (context);
             var headless = new HeadlessContextResourceLoader ();
             headless.ApplyHeadlessResources (context);
             new ViewContextResourceLoader ().ApplyResources (context);
