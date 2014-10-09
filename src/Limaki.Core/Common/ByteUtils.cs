@@ -33,11 +33,16 @@ namespace Limaki.Common {
         public static Stream AsUnicodeStream (this string source) {
             var buffer = Encoding.Unicode.GetBytes (source);
             return new MemoryStream (buffer);
-            Encoding.Convert (Encoding.Unicode, Encoding.ASCII, buffer);
         }
 
         public static Stream AsAsciiStream (this string source) {
             var buffer = Encoding.Convert (Encoding.Unicode, Encoding.ASCII,
+                                           Encoding.Unicode.GetBytes (source));
+            return new MemoryStream (buffer);
+        }
+
+        public static Stream AsAnsiStream (this string source) {
+            var buffer = Encoding.Convert (Encoding.Unicode, Encoding.GetEncoding (1252),
                                            Encoding.Unicode.GetBytes (source));
             return new MemoryStream (buffer);
         }
