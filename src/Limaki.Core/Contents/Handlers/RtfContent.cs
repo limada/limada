@@ -13,7 +13,10 @@
  * 
  */
 
+using System.IO;
 using System.Text;
+using Limaki.Common;
+using Limaki.Common.Text;
 using Limaki.Contents;
 
 namespace Limaki.Contents.IO {
@@ -40,5 +43,23 @@ namespace Limaki.Contents.IO {
         }
     }
 
-   
+    public class RtfContentDigger : ContentDigger {
+
+        private static RtfContentSpot _spot = new RtfContentSpot ();
+
+        public RtfContentDigger () : base () { this.DiggUse = Digg; }
+
+        protected virtual Content<Stream> Digg (Content<Stream> source, Content<Stream> sink) {
+            if (!_spot.Supports (source.ContentType))
+                return sink;
+            var buffer = ByteUtils.GetBuffer (source.Data, (int) source.Data.Length);
+
+            // rtf must not be a unicode stream, convert it:
+            if (TextHelper.IsUnicode (buffer)) {
+                var s = Encoding.Unicode.GetString (buffer);
+                sink.Data = s.AsAsciiStream ();
+            }
+            return sink;
+        }
+    }
 }

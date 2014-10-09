@@ -31,6 +31,7 @@ namespace Limaki {
             contentDiggPool.Add(new TextContentDigger());
             contentDiggPool.Add(new HtmlContentDigger());
 
+            contentDiggPool.Add (new RtfContentDigger ());
         }
 
     }
