@@ -95,7 +95,7 @@ namespace Limaki.View.XwtBackend {
                     rc = rc.Intersect(new Xwt.Rectangle(0, 0, Size.Width, Size.Height));
                     rc = rc.Inflate(new Size(1, 1));
 
-                    ctx.DrawImage(image, rc, rc);
+                    ctx.DrawImage(image, rc, rc, this.Alpha);
 
                 } catch (Exception ex) {
                     ExceptionHandler.Catch(ex, MessageType.OK);

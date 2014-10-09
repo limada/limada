@@ -108,17 +108,41 @@ namespace Limaki.View.SwfBackend.Viz {
                     g.InterpolationMode = InterpolationMode.Low;
                     g.CompositingMode = CompositingMode.SourceCopy;
                     g.CompositingQuality = CompositingQuality.HighSpeed;
+                    ImageAttributes imageAttributes = null;
+
+                    if (Alpha < 1d) {
+                        var clrMatrix = new ColorMatrix (new float[][] {
+                            new float[] { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+                            new float[] { 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+                            new float[] { 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
+                            new float[] { 0.0f, 0.0f, 0.0f, (float) this.Alpha, 0.0f },
+                            new float[] { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f }
+                        });
+                        imageAttributes = new ImageAttributes ();
+                        imageAttributes.SetColorMatrix (clrMatrix);
+
+                        g.CompositingMode = CompositingMode.SourceOver;
+                    }
 
                     var rc = Camera.ToSource(e.Clipper.Bounds);
 
                     rc = rc.Intersect(new Xwt.Rectangle(0, 0, Size.Width, Size.Height));
                     rc = rc.Inflate(new Size(1, 1));
-
-                    g.DrawImage(data, 
-                        (float)rc.Location.X,
-                        (float)rc.Location.Y,
-                        rc.ToGdi (),
-                        GraphicsUnit.Pixel);
+                    if (imageAttributes == null)
+                        g.DrawImage (data,
+                            (float)rc.X,
+                            (float)rc.Y,
+                            rc.ToGdi (),
+                            GraphicsUnit.Pixel);
+                    else
+                        g.DrawImage (data,
+                            rc.ToGdi (),
+                            (float)rc.X,
+                            (float)rc.Y,
+                            (float)rc.Width,
+                            (float)rc.Height,
+                            GraphicsUnit.Pixel,
+                            imageAttributes);
 
                     g.Transform.Reset();
                 } catch (Exception ex) {

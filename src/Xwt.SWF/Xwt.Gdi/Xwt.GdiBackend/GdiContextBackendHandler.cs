@@ -27,6 +27,7 @@
 using System;
 
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using Xwt.Backends;
 using SD = System.Drawing;
 
@@ -334,11 +335,31 @@ namespace Xwt.GdiBackend {
 
         }
 
+        protected ImageAttributes ImgAttributes (ImageDescription img) {
+            var alpha = img.Alpha * _globalAlpha;
+            var clrMatrix = new ColorMatrix (new float[][] {
+                            new float[] { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+                            new float[] { 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+                            new float[] { 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
+                            new float[] { 0.0f, 0.0f, 0.0f, (float) alpha, 0.0f },
+                            new float[] { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f }
+                        });
+            var imageAttributes = new ImageAttributes ();
+            imageAttributes.SetColorMatrix (clrMatrix);
+            return imageAttributes;
+        }
+
         public override void DrawImage (object backend, ImageDescription img, double x, double y) {
             var context = (GdiContext)backend;
             var image = (SD.Image)img.Backend;
             var q = context.Graphics.SetQuality(GdiConverter.DrawHighQuality);
-            context.Graphics.DrawImage(image, (float)x, (float)y);
+            if (img.Alpha >= 1)
+                context.Graphics.DrawImage (image, (float) x, (float) y);
+            else {
+                var size = img.Size;
+                context.Graphics.DrawImage (image, new SD.Rectangle ((int)x, (int)y, (int)size.Width, (int)size.Height),
+                    0f, 0f, (float)size.Width, (float)size.Height, SD.GraphicsUnit.Pixel, ImgAttributes (img));
+            }
             context.Graphics.SetQuality(q);
         }
 
@@ -347,11 +368,15 @@ namespace Xwt.GdiBackend {
             var image = (SD.Image)img.Backend;
             
             var q = context.Graphics.SetQuality(GdiConverter.DrawHighQuality);
-            context.Graphics.DrawImage(image, srcRect .ToGdi(), destRect.ToGdi(), SD.GraphicsUnit.Pixel);
+            if (img.Alpha >= 1)
+                context.Graphics.DrawImage (image, destRect.ToGdi (), srcRect.ToGdi (), SD.GraphicsUnit.Pixel);
+            else 
+                context.Graphics.DrawImage (image, destRect.ToGdi (),
+                    (float)srcRect.X, (float)srcRect.Y, (float)srcRect.Width, (float)srcRect.Height, 
+                    SD.GraphicsUnit.Pixel, ImgAttributes (img));
+
             context.Graphics.SetQuality(q);
         }
-
-
 
         public override void Rotate (object backend, double angle) {
             var gc = (GdiContext) backend;
@@ -387,9 +412,9 @@ namespace Xwt.GdiBackend {
         }
 
 
-
+        private double _globalAlpha = 1d;
         public override void SetGlobalAlpha (object backend, double globalAlpha) {
-
+            _globalAlpha = globalAlpha;
         }
 
         public override void ModifyCTM (object backend, Drawing.Matrix transform) {

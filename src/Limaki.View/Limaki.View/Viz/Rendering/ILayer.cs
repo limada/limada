@@ -17,13 +17,16 @@ using Xwt;
 using System;
 
 namespace Limaki.View.Viz.Rendering {
+
     public interface ILayer<T> : IRenderAction {
         Func<T> Data { get; set; }
         void DataChanged();
 
         Point Origin { get; set; }
         Size Size { get; set;}
-        
+
+        double Alpha { get; set; }
+
         Func<ICamera> Camera { get; set; }
         Func<IContentRenderer<T>> Renderer { get; set; }
 
