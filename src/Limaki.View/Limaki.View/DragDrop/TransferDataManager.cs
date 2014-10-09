@@ -84,6 +84,9 @@ namespace Limaki.View.DragDrop {
 
         public virtual IEnumerable<Tuple<TransferDataType, IContentIo<Stream>>> SinksOf (IEnumerable<TransferDataType> sources) {
             var result = new List<Tuple<TransferDataType, IContentIo<Stream>>> ();
+            var prefered = MimeFingerPrints.Prefer (sources.Select (s => s.Id))
+                .ToArray();
+            sources = sources.Where (s => prefered.Contains (MimeFingerPrints.Synonym (s.Id).ToLower()));
             foreach (var source in sources) {
                 var sourceId = MimeFingerPrints.Synonym (source.Id);
                 long contentType = 0;

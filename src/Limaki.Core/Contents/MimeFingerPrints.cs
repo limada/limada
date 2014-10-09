@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Limaki.Contents {
 
@@ -10,21 +12,28 @@ namespace Limaki.Contents {
         /// <summary>
         /// order is important, the first wins!
         /// 
-        /// PreferedFormats({"Star Object Descriptor (XML)"}, {"Rich Text Format"}) // if OpenOffice, then take Rtf 
-        /// PreferedFormats({"text/x-moz-url"}, {"text/uri-list"})
-        /// PreferedFormats({"text/_moz_htmlinfo"}, {"HTML Format"}) // if Firefox, then take HTML
+        ///
         /// </summary>
-        /// <param name="transferId"></param>
+        /// <param name="transferIds"></param>
         /// <param name="allowedIds"></param>
-        public virtual void PreferedFormats (IEnumerable<string> fingerprints, IEnumerable<string> allowedIds) {
-
+        public virtual void PreferedFormats (IEnumerable<string> transferIds, IEnumerable<string> allowedIds) {
+            _preferedFormats.Add (Tuple.Create<IEnumerable<string>, IEnumerable<string>> (
+                transferIds.Select (s => s.ToLower ()).ToArray (),
+                allowedIds.Select (s => s.ToLower ()).ToArray ()
+                ));
         }
 
         public virtual IEnumerable<string> Prefer (IEnumerable<string> transferIds) {
-            // if (transferIds.Contains(fingerprints)) return allowedId
+            var ids = transferIds.Select (s => s.ToLower ()).ToArray ();
+            var prefered = _preferedFormats
+                .Where (f => f.Item1.Intersect (ids).Any () && f.Item2.Intersect(ids).Any())
+                .FirstOrDefault();
+            if (prefered != null )
+                return prefered.Item2;
             return transferIds;
         }
 
+        private ICollection<Tuple<IEnumerable<string>, IEnumerable<string>>> _preferedFormats = new List<Tuple<IEnumerable<string>, IEnumerable<string>>> ();
         private IDictionary<string, string> _synonyms = new Dictionary<string, string> ();
 
         /// <summary>
