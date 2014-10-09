@@ -95,6 +95,7 @@
     <Compile Include="Limaki.View\Viz\Rendering\SelectionRenderer.cs" />
     <Compile Include="Limaki.View\Viz\UI\ICopyPasteAction.cs" />
     <Compile Include="Limaki.View\Vidgets\Vidget.cs" />
+    <Compile Include="Limaki.View\Viz\UI\MouseCustomAction.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ImageDisplay.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ImageExporter.cs" />
     <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneEvents.cs" />
