@@ -67,11 +67,13 @@ namespace Xwt.GdiBackend {
 
 
         public override object Create () {
-            return new GdiTextLayoutBackend();
+            return new GdiTextLayoutBackend () { WrapMode = WrapMode.Word };
         }
         
         public override object Create (Context context) {
-            return new GdiTextLayoutBackend(){Context = context.GetBackend() as GdiContext};
+            var result = Create () as GdiTextLayoutBackend;
+            result.Context = context.GetBackend () as GdiContext;
+            return result;
         }
 
         public override int GetIndexFromCoordinates (object backend, double x, double y) {
