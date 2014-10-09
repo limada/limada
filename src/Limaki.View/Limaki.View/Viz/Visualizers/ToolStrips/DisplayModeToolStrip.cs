@@ -46,10 +46,29 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
         }
 
         protected void ZoomAction (Action<IZoomTarget> act) {
-            var display = CurrentDisplay as IZoomTarget;
-            if (display != null) {
-                act (display);
-                display.UpdateZoom ();
+            Func<object, bool> zoom = v => {
+                var zoomTarget = v as IZoomTarget;
+                if (zoomTarget == null)
+                    return false;
+
+                act (zoomTarget);
+                zoomTarget.UpdateZoom ();
+                return true;
+            };
+            Func<IDisplay, bool> zoomDisplay = v => {
+                if (v == null)
+                    return false;
+                if (zoom (v))
+                    return true;
+                if (zoom (v.Backend))
+                    return true;
+                return zoom (v.ActiveVidget);
+            };
+
+            if (!zoom (CurrentDisplay) && !zoomDisplay (CurrentDisplay as IDisplay)) {
+                var backend = CurrentDisplay as IDisplayBackend;
+                if (backend != null)
+                    zoomDisplay (backend.Frontend);
             }
         }
 
