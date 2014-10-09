@@ -33,7 +33,7 @@ namespace Limaki.View.SwfBackend.Viz {
         private Xwt.Point _scrollPosition = Xwt.Point.Zero;
         public override Xwt.Point ClipOrigin {
             get {
-                if (!useOnScroll) {
+                if (!useOnScroll && backend.AutoScroll) {
                     var point = backend.AutoScrollPosition;
                     _scrollPosition = new Xwt.Point(-point.X, -point.Y);
                     scrollChanged = false;
@@ -43,7 +43,9 @@ namespace Limaki.View.SwfBackend.Viz {
             set {
                 if (_scrollPosition != value) {
                     _scrollPosition = value;
-                    backend.AutoScrollPosition = _scrollPosition.ToGdi();
+
+                    if (backend.AutoScroll)
+                        backend.AutoScrollPosition = _scrollPosition.ToGdi ();
 
                     scrollChanged = true;
                 }
@@ -66,7 +68,8 @@ namespace Limaki.View.SwfBackend.Viz {
             }
             set {
                 _scrollMinSizeChanging = true;
-                backend.AutoScrollMinSize = value.ToGdi();
+                if (backend.AutoScroll)
+                    backend.AutoScrollMinSize = value.ToGdi();
                 _dataSize = value;
                 _scrollMinSizeChanging = false;
                 //device.ScrollBarsVisible = false;
@@ -75,7 +78,7 @@ namespace Limaki.View.SwfBackend.Viz {
 
         private bool useOnScroll = true; // false: works on mono.windows, but not on linux
         public virtual void OnScroll(ScrollEventArgs se) {
-            if (useOnScroll) {
+            if (useOnScroll && backend.AutoScroll) {
                 if (se.OldValue != se.NewValue) {
                     scrollChanged = true;
                   
@@ -122,7 +125,7 @@ namespace Limaki.View.SwfBackend.Viz {
         }
         public override void Update() {
             base.Update();
-            if (useOnScroll) {
+            if (useOnScroll && backend.AutoScroll) {
                 var point = backend.AutoScrollPosition;
                 _scrollPosition = new Xwt.Point(-point.X, -point.Y);
             }
