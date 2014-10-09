@@ -24,6 +24,7 @@ namespace Limaki.View.Viz.Rendering {
 
         public Layer () {
             this.Priority = ActionPriorities.DataLayerPriority;
+            this.Alpha = 1d;
         }
 
         public virtual T Data {
@@ -37,17 +38,11 @@ namespace Limaki.View.Viz.Rendering {
 
         public abstract void DataChanged();
 
-        protected Size _size = Size.Zero;
-        public virtual Size Size {
-            get { return _size; }
-            set { _size = value; }
-        }
+        public virtual Size Size { get; set; }
 
-        protected Point _origin = new Point();
-        public virtual Point Origin {
-            get { return _origin; }
-            set { _origin = value; }
-        }
+        public virtual Point Origin { get; set; }
+
+        public virtual double Alpha { get; set; }
 
         public virtual ICamera Camera {
             get {
