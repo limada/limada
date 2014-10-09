@@ -51,6 +51,25 @@ namespace Limaki.View.SwfBackend.Viz {
 
         public abstract DisplayFactory<T> CreateDisplayFactory (DisplayBackend<T> backend);
 
+
+        public bool Opaque {
+            get{ return this.GetStyle (System.Windows.Forms.ControlStyles.Opaque);}
+            set {
+                this.SetStyle (System.Windows.Forms.ControlStyles.Opaque, value);
+                if (this.BackendRenderer != null)
+                    (this.BackendRenderer as SwfBackendRenderer<T>).Opaque = value;
+            }
+        }
+
+        protected override CreateParams CreateParams {
+            get {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
+                cp.Style &= ~0x02000000;  // Turn off WS_CLIPCHILDREN
+                return cp;
+            }
+        } 
+
         protected void Initialize () {
             if (Registry.ConcreteContext == null) {
                 var resourceLoader = new SwfContextResourceLoader ();
@@ -62,19 +81,15 @@ namespace Limaki.View.SwfBackend.Viz {
             this.AutoScroll = true;
 
             if (!this.DesignMode) {
-                var Opaque = true; //!Commons.Mono; // opaque works on mono too, but is slower
-
                 var controlStyle =
                     System.Windows.Forms.ControlStyles.UserPaint
                     | System.Windows.Forms.ControlStyles.AllPaintingInWmPaint
                     | System.Windows.Forms.ControlStyles.OptimizedDoubleBuffer;
 
-                if (Opaque) {
-                    controlStyle = controlStyle | System.Windows.Forms.ControlStyles.Opaque;
-                }
-
+ 
                 this.SetStyle (controlStyle, true);
 
+                Opaque = true; //!Commons.Mono; // opaque works on mono too, but is slower
             }
         }
 
@@ -88,7 +103,7 @@ namespace Limaki.View.SwfBackend.Viz {
             _display = display;
             factory.Compose (display);
             if (!this.DesignMode) {
-                this._backendRenderer.Opaque = true;
+                this._backendRenderer.Opaque = this.Opaque;
             }
         }
 

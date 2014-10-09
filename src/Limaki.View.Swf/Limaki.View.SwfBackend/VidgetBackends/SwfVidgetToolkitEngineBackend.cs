@@ -19,6 +19,7 @@ using Limaki.View.SwfBackend.Viz;
 using Limaki.View.SwfBackend.Viz.ToolStrips;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz;
+using Limaki.View.Viz.Visualizers;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.View.Viz.Visuals;
 

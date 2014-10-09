@@ -35,6 +35,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Xwt;
 using Xwt.Backends;
+using Limaki.View.Viz.Visualizers;
 
 namespace Limaki.View.SwfBackend {
 
@@ -70,6 +71,7 @@ namespace Limaki.View.SwfBackend {
             context.Factory.Add<IMessageBoxShow, MessageBoxShow>();
 
             context.Factory.Add<IDisplay<System.Drawing.Image>, SdImageDisplay>();
+            context.Factory.Add<IDisplay<Xwt.Drawing.Image>, ImageDisplay> ();
             context.Factory.Add<IDisplay<IGraphScene<IVisual,IVisualEdge>>, VisualsDisplay>();
 
             context.Factory.Add<IWebBrowserBackend>(() => CreateWebBrowserBackend());

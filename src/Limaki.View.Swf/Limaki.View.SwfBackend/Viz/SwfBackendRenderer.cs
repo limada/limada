@@ -27,6 +27,8 @@ namespace Limaki.View.SwfBackend.Viz {
         }
 
         public bool Opaque { get; set; }
+        public bool NoBackground { get; set; }
+
         protected SolidBrush _backBrush = new SolidBrush(SystemColors.ButtonFace);
         protected SolidBrush backBrush {
             get {
@@ -49,20 +51,19 @@ namespace Limaki.View.SwfBackend.Viz {
             var data = display.Data;
 
             if (data != null) {
-                Graphics g = e.Graphics;
-                Region saveRegion = g.Clip;
-                Rectangle clipRect = e.ClipRectangle;
+                var g = e.Graphics;
+                var saveRegion = g.Clip;
+                var clipRect = e.ClipRectangle;
 
                 lock (display.Clipper) {
                     // draw background
-                    if (Opaque) {
+                    if (Opaque && ! NoBackground) {
                         g.FillRectangle(backBrush, clipRect);
                     }
 #if TraceInvalidate
                     System.Console.Out.WriteLine("Paint  cliprect {0}", clipRect);
 #endif
                     display.EventControler.OnPaint(Converter.Convert(e));
-
 
                     display.Clipper.Clear();
                 }
