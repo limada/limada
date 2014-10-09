@@ -28,8 +28,7 @@ namespace Limaki.Contents.IO {
 
         private static HtmlContentSpot _spot = new HtmlContentSpot();
 
-        public HtmlContentDigger ()
-            : base() {
+        public HtmlContentDigger (): base() {
             this.DiggUse = Digg;
         }
 
@@ -38,8 +37,11 @@ namespace Limaki.Contents.IO {
                 return sink;
             var buffer = ByteUtils.GetBuffer(source.Data, (int)source.Data.Length); 
             var s = (TextHelper.IsUnicode(buffer) ? Encoding.Unicode.GetString(buffer) : Encoding.ASCII.GetString(buffer));
-            if (!Fragment2Html(s, sink)) {
-                // TODO: find source
+            if (Fragment2Html (s, sink)) {
+                buffer = ByteUtils.GetBuffer (sink.Data, (int) sink.Data.Length);
+                s = Encoding.Default.GetString (buffer);
+            } else {
+                // TODO: find sink.Source
             }
 
             Digg(s, sink);
@@ -114,17 +116,20 @@ namespace Limaki.Contents.IO {
                 };
                 parser.DoTag += stuff => {
                     var tag = stuff.Tag.ToLower();
+                    var lineend = (tag == "</br>" || tag == "<br>" || tag == "<br/>" || tag == "<br />" || tag == "</div>" || tag == "</p>");
                     foreach (var element in elements) {
                         if (element.Parsing && !element.Parsed && stuff.State == LCHP.State.Endtag && tag == element.EndTag) {
                             element.Ends = stuff.Position;
                             element.Parsing = false;
                             element.Parsed = true;
                         }
+
                     }
-                    if (body.Parsing && (tag == "</br>" || tag == "<br>" || tag == "<br/>" || tag == "<br />" || tag == "</div>" || tag == "</p>")) {
+                    if (body.Parsing && lineend) {
                         body.Parsing = false;
                         body.Parsed = true;
                     }
+                    
                 };
                 parser.DoText += stuff => {
                     var text = stuff.Text.ToString(stuff.Origin, stuff.Position - stuff.Origin);
@@ -159,10 +164,10 @@ namespace Limaki.Contents.IO {
                     Digg (source, sink);
                 }
 
-                plainText = System.Net.WebUtility.HtmlDecode (plainText.Replace ("\r\n", ""));
+                plainText = System.Net.WebUtility.HtmlDecode (plainText.Replace ("\r\n", " ").Trim());
                 string description = null;
                 foreach (var element in elements.Where(e => e.Parsed)) {
-                    description = System.Net.WebUtility.HtmlDecode(element.Text.Replace("\r\n",""));
+                    description = System.Net.WebUtility.HtmlDecode(element.Text.Replace("\r\n"," ").Trim());
                     if (!string.IsNullOrEmpty (description))
                         break;
                 }
