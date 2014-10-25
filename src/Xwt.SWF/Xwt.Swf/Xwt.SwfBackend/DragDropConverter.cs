@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Specialized;
+using System.Linq;
 using Xwt.GdiBackend;
 using SD = System.Drawing;
 using SWF = System.Windows.Forms;
@@ -87,12 +88,20 @@ namespace Xwt.SwfBackend {
             return result;
         }
 
-        public static TransferDataSource ToXwt (this SWF.IDataObject data) {
+        public static TransferDataSource ToXwt (this SWF.DataObject data) {
             var result = new TransferDataSource();
-            result.DataRequestCallback = type => data.GetData(type.ToSwf());
+            result.DataRequestCallback = dt => data.GetData(dt.ToSwf());
                 
-            foreach (var format in data.GetFormats()) {
-                result.AddType(ToXwtTransferType(format));
+            foreach (var item in data.GetFormats()) {
+                var format = ToXwtTransferType (item);
+                if (format == TransferDataType.Uri) {
+                    result.DataRequestCallback = dt => {
+                        var value = data.GetData (TransferDataType.Uri.ToSwf ());
+                        var uris = ((string[])value).Select (f => new Uri (f)).ToArray ();
+                        return uris;
+                    };
+                }
+                result.AddType(format);
             }
 
             return result;

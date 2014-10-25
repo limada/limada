@@ -52,52 +52,90 @@ namespace Limaki.View.DragDrop {
             data.DataTypes.ForEach (d => dt += d.Id+" | ");
             Trace.WriteLine (dt);
 #endif
-            var dataTypes = data.DataTypes;
+            Stream stream = null;
             Content<Stream> content = null;
-            foreach (var s in DataManager.SinksOf(dataTypes)) {
-                value = data.GetValue(s.Item1);
-                var sink = s.Item2;
-                var stream = value as Stream;
-                bytes = value as byte[];
-                if (bytes != null)
-                    stream = new MemoryStream(bytes);
-                var text = value as string;
-                if (text != null)
-                    stream = ByteUtils.AsUnicodeStream (text);
-                if (stream != null) {
-                    var info = sink.Use (stream);
+            Action<ContentInfo, Stream> fillContent = (i, s) => {
+                bool newContent = content == null || s != content.Data;
 
-                    if (info == null) {
-                        info = DataManager.InfoOf (sink, dataTypes).FirstOrDefault();
-                    }
+                content = new Content<Stream> (content) {
+                    Data = newContent ? s : content.Data,
+                    ContentType = newContent ? i.ContentType : content.ContentType,
+                    Compression = newContent ? i.Compression : content.Compression,
+                };
 
-                    if (info != null) {
-                        bool newContent = content == null || stream != content.Data;
 
-                        content = new Content<Stream> (content) {
-                            Data = newContent ? stream : content.Data,
-                            ContentType = newContent ? info.ContentType : content.ContentType,
-                            Compression = newContent ? info.Compression : content.Compression,
-                        };
-                        
+                content = ContentDiggPool.Use (content);
+            };
 
-                        content = ContentDiggPool.Use (content);
-                        // TODO: find a better handling of preferences; maybe MimeFingerPrints does the job?
-                        if (content.Data == null && (content.Description == null || string.IsNullOrEmpty (content.Description.ToString ())))
-                            continue;
-                        else
-                            break;
+            if (data.Uris.Length > 0) {
+                //TODO: handle more then one file
+                foreach (var uri in data.Uris.OrderBy (n => n.ToString ())) {
+                    var fileName = IoUtils.UriToFileName (uri);
+                    if (File.Exists (fileName)) { // TODO: check if filename is directory
+                        stream = File.OpenRead (fileName);
+                        var sink = DataManager.SinkOf (Path.GetExtension (fileName).TrimStart ('.'));
+                        ContentInfo info = null;
+                        if (sink != null) {
+                            info = sink.Use (stream);
+                        } else {
+                            info = new ContentInfo ("Unknown", ContentTypes.Unknown, "*", null, CompressionType.neverCompress);
+                        }
+
+                        fillContent (info, stream);
+                        if (content.Description == null)
+                            content.Description = Path.GetFileNameWithoutExtension (fileName);
+                        content.Source = fileName;
+
+                        if (data.Uris.Length > 1)
+                            Registry.Pooled<IMessageBoxShow> ().Show ("DragDrop multiple files",
+                                string.Format ("Only one file {0} will be stored currently", fileName), MessageBoxButtons.Ok);
+
+                        break;
                     }
                 }
 
+            } else {
+                var dataTypes = data.DataTypes.ToArray ();
+
+                foreach (var s in DataManager.SinksOf (dataTypes)) {
+                    value = data.GetValue (s.Item1);
+                    var sink = s.Item2;
+                    stream = value as Stream;
+                    bytes = value as byte[];
+                    if (bytes != null)
+                        stream = new MemoryStream (bytes);
+                    var text = value as string;
+                    if (text != null)
+                        stream = ByteUtils.AsUnicodeStream (text);
+                    if (stream != null) {
+                        var info = sink.Use (stream);
+
+                        if (info == null) {
+                            info = DataManager.InfoOf (sink, dataTypes).FirstOrDefault ();
+                        }
+
+                        if (info != null) {
+
+                            fillContent (info, stream);
+
+                            // TODO: find a better handling of preferences; maybe MimeFingerPrints does the job?
+                            if (content.Data == null && (content.Description == null || string.IsNullOrEmpty (content.Description.ToString ())))
+                                continue;
+                            else
+                                break;
+                        }
+                    }
+
+                }
             }
 
             if (content != null) {
                 var result = VisualContentViz.VisualOfContent (graph, content);
+                if (stream is FileStream) {
+                    stream.Close ();
+                }
                 return result;
             }
-            return null;
-        }
 
         public virtual IVisual Paste (IGraph<IVisual, IVisualEdge> graph) {
             return null;

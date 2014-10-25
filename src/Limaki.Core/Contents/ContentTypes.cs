@@ -37,7 +37,9 @@ namespace Limaki.Contents {
 
         public static long LimadaSheet = unchecked((long)0x5a835878a618b44d);
 
- }
+        public static long Uri = unchecked((long) 0x273d44bf29878947);
+
+    }
 
     
     //stypPic  = $C5409109CB0C4137;
@@ -52,6 +54,6 @@ namespace Limaki.Contents {
     //0x48ff1e12b887fe9f
     //0x459d75b7026b2b37
     //0xb4764a9d78c73d90
-    //0x273d44bf29878947
+    //
 
 }
