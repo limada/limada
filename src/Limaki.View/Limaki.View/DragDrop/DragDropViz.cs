@@ -6,27 +6,24 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2013 Lytico
+ * Copyright (C) 2013 - 2014 Lytico
  *
  * http://www.limada.org
  * 
  */
 
 
-using System;
-using System.IO;
-using Limaki.Drawing;
-using Limaki.Graphs;
-using System.Text;
-using System.Linq;
-using Limaki.Common.Linqish;
-using Limaki.View.Visuals;
-using Xwt;
 using Limaki.Common;
-using Limaki.View.DragDrop;
-using Limaki.Contents.IO;
+using Limaki.Common.Linqish;
 using Limaki.Contents;
+using Limaki.Graphs;
+using Limaki.View.Vidgets;
+using Limaki.View.Visuals;
+using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using Xwt;
 
 namespace Limaki.View.DragDrop {
 
@@ -137,7 +134,6 @@ namespace Limaki.View.DragDrop {
                 return result;
             }
 
-        public virtual IVisual Paste (IGraph<IVisual, IVisualEdge> graph) {
             return null;
         }
 

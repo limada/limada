@@ -68,7 +68,6 @@
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\DigidocViewerBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\DragDropBackendHandler.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DragDropMouseBackendHandler.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\ImageMissingStuffExtension.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\About.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DummyBackends.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\LayoutEditor.cs" />

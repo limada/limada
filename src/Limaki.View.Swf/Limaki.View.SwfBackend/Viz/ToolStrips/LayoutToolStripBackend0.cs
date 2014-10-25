@@ -39,7 +39,7 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
             InitializeComponent();
         }
 
-        protected virtual void Compose () {
+        protected override void Compose () {
 
             var shapeCombo = new ToolStripShapeComboBox {
                 AutoSize = false,

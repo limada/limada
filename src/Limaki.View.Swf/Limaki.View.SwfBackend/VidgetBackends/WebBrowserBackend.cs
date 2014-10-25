@@ -22,11 +22,10 @@ using Limaki.Drawing;
 using Limaki.View;
 using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
-using Limaki.View.Swf;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public class WebBrowserBackend : System.Windows.Forms.WebBrowser, IWebBrowserBackend, IHistoryAware, IZoomTarget, IDragDropControl {
+    public partial class WebBrowserBackend : System.Windows.Forms.WebBrowser, IWebBrowserBackend, IHistoryAware, IZoomTarget  {
 
         void IWebBrowser.Navigate(string url) {
             if (!Disposing && !DisposeDone)
@@ -253,8 +252,6 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
             this.Invalidate(rect.ToGdi());
         }
-
-        Xwt.Point IDragDropControl.PointToClient (Xwt.Point source) { return PointToClient(source.ToGdi()).ToXwt(); }
 
         void IVidgetBackend.SetFocus () { this.Focus (); }
 

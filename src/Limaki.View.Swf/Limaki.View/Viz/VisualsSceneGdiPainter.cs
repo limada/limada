@@ -12,16 +12,15 @@
  * 
  */
 
-using System;
-using System.Drawing;
 using Limaki.Graphs;
-using Limaki.View.Swf;
 using Limaki.View.SwfBackend;
 using Limaki.View.SwfBackend.Viz;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Rendering;
 using Limaki.View.Viz.Visualizers;
 using Limaki.View.Viz.Visuals;
+using System;
+using System.Drawing;
 using Xwt.GdiBackend;
 
 namespace Limaki.View.Viz {

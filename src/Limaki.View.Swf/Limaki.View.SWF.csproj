@@ -137,23 +137,9 @@
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\XulRunner.cs" />
     <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\CustomToolStripBackends.cs" />
-    <Compile Include="[Obsolete]\DisplayModeToolStripBackend0.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="[Obsolete]\DisplayModeToolStripBackend0.Designer.cs">
-      <DependentUpon>DisplayModeToolStripBackend0.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend0.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend0.cs" />
     <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend0.Designer.cs">
       <DependentUpon>LayoutToolStripBackend0.cs</DependentUpon>
-    </Compile>
-    <Compile Include="[Obsolete]\MarkerToolStripBackend0.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="[Obsolete]\MarkerToolStripBackend0.Designer.cs">
-      <DependentUpon>MarkerToolStripBackend0.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripRenderer.cs" />
@@ -182,7 +168,6 @@
     <Compile Include="Limaki.View.SwfBackend\Viz\VisualsDisplayBackend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="[Obsolete]\IDragDropControl.cs" />
     <Compile Include="Limaki.View.SwfBackend\Viz\SwfBackendRenderer.cs" />
     <Compile Include="Limaki.View.SwfBackend\Viz\VisualsTextEditAction.cs" />
     <Compile Include="Limaki.View.SwfBackend\SwfContextResourceLoader.cs" />
@@ -231,24 +216,6 @@
     <Compile Include="Limaki.View.SwfBackend\Controls\StyleEditor.Designer.cs">
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="[Obsolete]\ArrangerToolStripBackend0.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="[Obsolete]\ArrangerToolStripBackend0.Designer.cs">
-      <DependentUpon>ArrangerToolStripBackend0.cs</DependentUpon>
-    </Compile>
-    <Compile Include="[Obsolete]\SplitViewToolStripBackend0.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="[Obsolete]\SplitViewToolStripBackend0.Designer.cs">
-      <DependentUpon>SplitViewToolStripBackend0.cs</DependentUpon>
-    </Compile>
-    <Compile Include="[Obsolete]\ToolStripBackend0.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="[Obsolete]\ToolStripItemBackend0.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripShapeComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -256,6 +223,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Xwt.GdiBackend\SystemColorsGdiBackend.cs" />
+    <Compile Include="[Obsolete]\ToolStripBackend0.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="[Obsolete]\ToolStripButtonBackend0.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">

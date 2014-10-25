@@ -94,11 +94,7 @@ namespace Limaki.View.SwfBackend.DragDrop {
             Backend.AllowDrop = true;
         }
 
-        
-
         #endregion
         
-        
-
     }
 }

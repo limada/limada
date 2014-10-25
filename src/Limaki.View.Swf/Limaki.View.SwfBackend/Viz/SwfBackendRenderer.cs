@@ -27,7 +27,7 @@ namespace Limaki.View.SwfBackend.Viz {
         }
 
         public bool Opaque { get; set; }
-        public bool NoBackground { get; set; }
+        public bool BackgroundDisabled { get; set; }
 
         protected SolidBrush _backBrush = new SolidBrush(SystemColors.ButtonFace);
         protected SolidBrush backBrush {
@@ -57,7 +57,7 @@ namespace Limaki.View.SwfBackend.Viz {
 
                 lock (display.Clipper) {
                     // draw background
-                    if (Opaque && ! NoBackground) {
+                    if (Opaque && ! BackgroundDisabled) {
                         g.FillRectangle(backBrush, clipRect);
                     }
 #if TraceInvalidate
