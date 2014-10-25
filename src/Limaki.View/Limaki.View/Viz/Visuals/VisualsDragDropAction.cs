@@ -25,6 +25,7 @@ using Xwt.Backends;
 using Limaki.View.Properties;
 using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
+using Limaki.Common;
 
 namespace Limaki.View.Viz.Visuals {
     /// <summary>
@@ -190,6 +191,12 @@ namespace Limaki.View.Viz.Visuals {
                 // a clipboard Pasted-Event is needed
                 InprocDragDrop.ClipboardData = new GraphCursor<IVisual, IVisualEdge>(Scene.Graph, Scene.Focused);
             }
+
+            if (Scene.Focused == null) {
+                Registry.Pooled<IMessageBoxShow> ().Show ("Warning", "Select something to copy", MessageBoxButtons.Ok);
+                return;
+            }
+
             Clipboard.SetTransferData(DragDropViz.TransferDataOfVisual(Scene.Graph, Scene.Focused));
         }
 
