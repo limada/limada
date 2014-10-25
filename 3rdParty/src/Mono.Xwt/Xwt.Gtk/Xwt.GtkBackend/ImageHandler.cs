@@ -160,6 +160,17 @@ namespace Xwt.GtkBackend
 			return !img.HasMultipleSizes;
 		}
 
+        public override ImageFormat GetFormat (object handle) 
+        {
+            var img = (GtkImage)handle;
+            var pixbuf = img.MainFrame;
+            if (pixbuf.HasAlpha && pixbuf.BitsPerSample == 4)
+                return ImageFormat.ARGB32;
+            if (pixbuf.HasAlpha && pixbuf.BitsPerSample == 3)
+                return ImageFormat.RGB24;
+            return ImageFormat.Other;
+        }
+
 		public override object ConvertToBitmap (object handle, double width, double height, double scaleFactor, ImageFormat format)
 		{
 			var img = (GtkImage) handle;
@@ -229,6 +240,12 @@ namespace Xwt.GtkBackend
 		public ImageFrame[] Frames {
 			get { return frames; }
 		}
+
+        public Gdk.Pixbuf MainFrame 
+        {
+            get { return frames[0].Pixbuf; }
+            set { frames[0] = new ImageFrame (value, true); }
+        }
 
 		public GtkImage (Gdk.Pixbuf img)
 		{

@@ -241,8 +241,22 @@ namespace Xwt.WPFBackend
 
 		public override bool IsBitmap (object handle)
 		{
-			return true;
+            var source = (WpfImage)handle;
+		    return source.MainFrame is SWMI.BitmapSource;
 		}
+
+        public override Xwt.Drawing.ImageFormat GetFormat (object handle) 
+        {
+            var source = (WpfImage)handle;
+            var img = source.MainFrame as SWMI.BitmapSource;
+            if (img != null) {
+                if (img.Format.BitsPerPixel == 32)
+                    return Drawing.ImageFormat.ARGB32;
+                if (img.Format.BitsPerPixel == 24)
+                    return Drawing.ImageFormat.RGB24;
+            }
+            return Drawing.ImageFormat.Other;
+        }
 
 		public override Size GetSize (object handle)
 		{
