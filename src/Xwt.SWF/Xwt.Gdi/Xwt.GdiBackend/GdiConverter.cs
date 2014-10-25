@@ -272,7 +272,7 @@ namespace Xwt.GdiBackend {
                 return ImageFormat.ARGB32;
             else if (value == SDI.PixelFormat.Format24bppRgb)
                 return ImageFormat.RGB24;
-            throw new ArgumentException();
+            return ImageFormat.Other;
         }
 
         public static SDI.ImageFormat ToGdi(this ImageFileType value) {

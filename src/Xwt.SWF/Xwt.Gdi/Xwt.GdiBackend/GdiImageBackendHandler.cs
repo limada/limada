@@ -31,6 +31,7 @@ using System.Drawing.Drawing2D;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Xwt.Drawing;
 
 namespace Xwt.GdiBackend {
 
@@ -78,6 +79,13 @@ namespace Xwt.GdiBackend {
         public override bool IsBitmap (object handle) {
             var image = (GdiImage)handle;
             return image.IsBitmap;
+        }
+
+        public override ImageFormat GetFormat (object handle) {
+            var image = (GdiImage)handle;
+            if (!image.IsBitmap)
+                return ImageFormat.Other;
+            return ((SD.Bitmap)image.Image).PixelFormat.ToXwt();
         }
 
         public override object ConvertToBitmap (object handle, double width, double height, double scaleFactor, XD.ImageFormat format) {
