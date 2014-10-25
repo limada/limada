@@ -10,7 +10,10 @@ namespace Limaki.View.SwfBackend.DragDrop {
         public SwfTransferDataStore (System.Windows.Forms.IDataObject data) {
             this.Data = data;
         }
-        public bool HasType (TransferDataType typeId) { return Data.GetFormats().Any(t => t.ToLower() == typeId.Id.ToLower()); }
+
+        public bool HasType (TransferDataType typeId) {
+            return Data.GetFormats().Any(t => DragDropConverter.ToXwtTransferType(t).Id.ToLower() == typeId.Id.ToLower());
+        }
 
         protected System.Windows.Forms.IDataObject Data { get; set; }
 
