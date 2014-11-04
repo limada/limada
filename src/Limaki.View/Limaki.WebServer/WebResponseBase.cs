@@ -19,7 +19,7 @@ using Limaki.Common;
 using System.Linq;
 using Limaki.Contents;
 
-namespace Limaki.WebServer {
+namespace Limaki.WebServers {
 
     public class WebResponseBase {
 

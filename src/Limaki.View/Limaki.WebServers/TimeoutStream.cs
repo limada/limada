@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Limaki.WebServer {
+namespace Limaki.WebServers {
 
     /// <summary>
     /// A normal Stream might provide a timeout on a specific read opreation.

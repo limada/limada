@@ -18,7 +18,7 @@ using System.Net;
 using Limaki.Common.Collections;
 using System;
 
-namespace Limaki.WebServer {
+namespace Limaki.WebServers {
     public class WebProxyContent : WebContent {
         
         public static ICollection<string> FailedConnections = new Set<string>();

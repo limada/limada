@@ -16,7 +16,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Limaki.WebServer {
+namespace Limaki.WebServers {
 
     public class WebContent {
 

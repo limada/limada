@@ -16,7 +16,7 @@ using System;
 using System.Text;
 using System.Diagnostics;
 
-namespace Limaki.WebServer {
+namespace Limaki.WebServers {
     public class RequestInfo {
 
         public Uri Uri=null;

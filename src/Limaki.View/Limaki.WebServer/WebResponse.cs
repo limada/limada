@@ -20,7 +20,7 @@ using Limaki.Contents;
 using System.Diagnostics;
 using Limaki.Contents.IO;
 
-namespace Limaki.WebServer {
+namespace Limaki.WebServers {
 
     public class WebResponse : WebResponseBase, IWebResponse {
 

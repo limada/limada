@@ -7,7 +7,7 @@ using System.Threading;
 using System.Collections.Generic;
 using Limaki.Common;
 
-namespace Limaki.WebServer {
+namespace Limaki.WebServers {
 
     public abstract class WebServerBase : IDisposable {
         public WebServerBase() {

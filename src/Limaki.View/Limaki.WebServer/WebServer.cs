@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2014 Lytico
  *
  * http://www.limada.org
  * 
@@ -20,7 +20,7 @@ using System.Threading;
 
 // Look to Manos as replacemet for this
 // for threading problems see: Manos.Managed.IOLoop
-namespace Limaki.WebServer {
+namespace Limaki.WebServers {
 
     public class WebServer : WebServerBase {
 

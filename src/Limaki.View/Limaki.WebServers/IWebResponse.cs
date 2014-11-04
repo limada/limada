@@ -17,7 +17,7 @@ using System;
 using System.IO;
 using Limaki.Contents;
 
-namespace Limaki.WebServer {
+namespace Limaki.WebServers {
 
     public interface IWebResponse {
         bool IsStreamOwner { get; set; }
