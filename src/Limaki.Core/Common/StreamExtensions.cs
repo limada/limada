@@ -24,6 +24,7 @@ namespace Limaki.Common {
                 position += readByte;
             }
             source.Position = oldPos;
+            result.Position = oldPos;
             return result;
         }
     }
