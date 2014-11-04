@@ -1,6 +1,5 @@
 using System;
 using System.Windows.Forms;
-using Limaki.View.Swf;
 using Limaki.Tests.View;
 
 namespace Limaki.Tests.View.Winform {

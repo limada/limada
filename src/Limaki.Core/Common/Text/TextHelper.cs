@@ -115,5 +115,6 @@ namespace Limaki.Common.Text {
             return isUnicode > buffer.Length/10;
 
         }
+
     }
 }

@@ -137,7 +137,9 @@
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\XulRunner.cs" />
     <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\CustomToolStripBackends.cs" />
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend0.cs" />
+    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend0.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend0.Designer.cs">
       <DependentUpon>LayoutToolStripBackend0.cs</DependentUpon>
     </Compile>
