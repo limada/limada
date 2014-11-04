@@ -253,7 +253,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             get {
                 return _supportedContents ?? (_supportedContents =
                     new HtmlContentSpot().ContentSpecs
-                    .Union(new PdfContentSpot().ContentSpecs)
+                    //.Union(new PdfContentSpot().ContentSpecs)
                     .ToArray()
                 );
             }

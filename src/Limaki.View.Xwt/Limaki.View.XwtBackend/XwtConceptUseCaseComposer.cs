@@ -97,7 +97,9 @@ namespace Limaki.View.XwtBackend {
             viewerProvider.Add(new ImageContentViewer());
             viewerProvider.Add (new DigidocContentViewer ());
             viewerProvider.Add(new HtmlContentViewer());
-            
+
+            if (PdfContentViewer.Available ())
+                viewerProvider.Add (new PdfContentViewer ());
             //viewerProvider.Add(new TextContentViewerWithToolstrip());
 
         }

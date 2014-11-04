@@ -16,24 +16,12 @@ using System;
 using System.IO;
 using Gecko;
 using Limaki.Common;
+using Limaki.Usecases;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public class XulRunner {
+    public class XulRunner : PluginLocator {
 
-        public string XulDir (string basedir) {
-            var xulrunner = "xulrunner29.0-" + (OS.IsWin64Process ? "64" : "32");
-            foreach (var dir in new string[] { @"Plugins\", @"..\3rdParty\bin\" }) {
-                var s = dir;
-                for (int i = 0; i <= 10; i++) {
-                    var xuldir = basedir + s + xulrunner;
-                    if (Directory.Exists(xuldir))
-                        return xuldir;
-                    s = @"..\" + s;
-                }
-            }
-            return null;
-        }
 
         string _ProfileDirectory;
 
@@ -51,9 +39,10 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         protected static bool Running = false;
+
         public bool Initialize() {
             if(!Running) {
-                string xulDir = XulDir(AppDomain.CurrentDomain.BaseDirectory);
+                string xulDir = PluginDir( "xulrunner29.0-" + (OS.IsWin64Process ? "64" : "32"));
                 if (xulDir == null)
                     throw new ArgumentException("xulrunner is missing");
 

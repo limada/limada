@@ -19,7 +19,7 @@ using System.IO;
 using Limada.Model;
 using Limada.Schemata;
 using Limaki.Contents;
-using Limaki.WebServer;
+using Limaki.WebServers;
 
 namespace Limada.View.ContentViewers {
 

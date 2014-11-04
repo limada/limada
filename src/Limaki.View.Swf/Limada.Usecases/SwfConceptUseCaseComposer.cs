@@ -69,6 +69,8 @@ namespace Limada.Usecases {
             viewerProvider.Add(new DigidocContentViewer());
             viewerProvider.Add(new TextContentViewerWithToolstrip());
             viewerProvider.Add(new SheetViewer());
+            if (PdfContentViewer.Available ())
+                viewerProvider.Add (new PdfContentViewer ());
 
             viewerProvider.Add(new SdImageContentViewer());
 
