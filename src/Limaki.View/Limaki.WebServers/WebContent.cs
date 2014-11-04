@@ -21,17 +21,8 @@ namespace Limaki.WebServers {
     public class WebContent {
 
         public virtual Uri Uri { get; set; }
-        private string _mimeType = null;
-        
-        public virtual string MimeType {
-            get {
-                if (_mimeType == null)
-                    return "text/html";
-                else
-                    return _mimeType;
-            }
-            set { _mimeType = value; }
-        }
+
+        public virtual string MimeType { get; set; }
 
         string _content = null;
         public virtual string Content {
@@ -86,6 +77,7 @@ namespace Limaki.WebServers {
             }
             ContentStream = null;
         }
+
         public virtual bool ClearContentAfterServing { get; set; }
 
         string defaultContent() {
@@ -149,7 +141,12 @@ namespace Limaki.WebServers {
                                                Encoding.Unicode.GetBytes(content));
             }
             result.Success = true;
-            result.MimeType = this.MimeType;
+            if(this.MimeType!=null)
+                result.MimeType = this.MimeType;
+            else if (requestInfo.Accept != null)
+                result.MimeType = requestInfo.Accept;
+            else
+                result.MimeType = "text/html";
             if (ClearContentAfterServing) {
                 ClearContent();
             }

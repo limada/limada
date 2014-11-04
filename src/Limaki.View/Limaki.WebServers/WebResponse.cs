@@ -25,13 +25,17 @@ namespace Limaki.WebServers {
     public class WebResponse : WebResponseBase, IWebResponse {
 
         public virtual WebContent GetContentFromContent (Content<Stream> content, Uri uri) {
-            return base.GetContentFromContent(content, uri, true);
+            var result = base.GetContentFromContent(content, uri, true);
+            result.IsStreamOwner = this.IsStreamOwner;
+            return result;
+        }
+
+        public virtual WebContent GetContentFromContent (Content<Stream> content) {
+            return GetContentFromContent (content, new Uri (AbsoluteUri, UriKind.Absolute));
         }
 
         public virtual Func<string, WebContent> Getter (Content<Stream> content) {
-            var uri = new Uri (AbsoluteUri, UriKind.Absolute);
-            var webContent = GetContentFromContent (content, uri);
-            IsStreamOwner = webContent.IsStreamOwner;
+            var webContent = GetContentFromContent (content);
 
             Done = false;
 

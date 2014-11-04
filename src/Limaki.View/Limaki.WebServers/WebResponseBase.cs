@@ -23,16 +23,20 @@ namespace Limaki.WebServers {
 
     public class WebResponseBase {
 
+        public WebResponseBase () {
+            ClearContentAfterServing = true;
+        }
+
         ContentInfos _contentInfoPool = null;
         protected ContentInfos ContentInfoPool { get { return _contentInfoPool ?? (_contentInfoPool = Registry.Pooled<ContentInfos>()); } }
 
-
         public bool IsStreamOwner { get; set; }
+        public bool ClearContentAfterServing { get; set; }
         public bool Done { get; set; }
 
         protected virtual WebContent GetContentFromContent (Content<Stream> content, Uri uri, bool useContentSource) {
             var webContent = new WebContent();
-            webContent.ClearContentAfterServing = true;
+            webContent.ClearContentAfterServing = this.ClearContentAfterServing;
             webContent.ContentIsStream = true;
             webContent.IsStreamOwner = this.IsStreamOwner;
             webContent.ContentStream = content.Data;

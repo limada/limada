@@ -33,13 +33,14 @@ namespace Limaki.WebServers {
             public byte[] buffer = new byte[BufferSize];
         }
 
-        public ManualResetEvent allDone = new ManualResetEvent(false);
+        protected ManualResetEvent AllDone = new ManualResetEvent(false);
+
         public override void Listen() {
-            if (listenerThread == null) {
+            if (ListenerThread == null) {
                 //start the thread which calls the method 'StartListen'
-                listenerThread = new Thread(new ThreadStart(StartListen));
-                listenerThread.Name = ServerName + " running at " + Authority;
-                listenerThread.Start();
+                ListenerThread = new Thread(new ThreadStart(StartListen));
+                ListenerThread.Name = ServerName + " running at " + Authority;
+                ListenerThread.Start();
 
             }
         }
@@ -50,25 +51,23 @@ namespace Limaki.WebServers {
                 running = true;
                 while (running) {
                     // Set the event to nonsignaled state.
-                    allDone.Reset();
+                    AllDone.Reset();
 
                     // Start an asynchronous socket to listen for connections.
                     Trace.WriteLine("Waiting for a connection...");
-                    listener.BeginAcceptSocket(
+                    Listener.BeginAcceptSocket(
                         new AsyncCallback(AcceptRequest),
-                        listener);
+                        Listener);
 
                     // Wait until a connection is made before continuing.
-                    allDone.WaitOne();
+                    AllDone.WaitOne();
                 }
 
             } catch (Exception e) {
                 Trace.WriteLine(e.ToString());
             }
-
-
-
         }
+
         public override void Sleep() {
             running = false;
             /// Create a connection to the port to unblock the listener thread
@@ -83,25 +82,28 @@ namespace Limaki.WebServers {
 
             base.Close();
         }
+
         public void AcceptRequest(IAsyncResult ar) {
             // Get the socket that handles the client request.
-            TcpListener listener = (TcpListener)ar.AsyncState;
+            var listener = (TcpListener)ar.AsyncState;
             var socket = listener.EndAcceptSocket(ar);
 
             if (!socket.Connected || !running) {
                 // Signal the main thread to continue.
-                allDone.Set();
+                AllDone.Set();
                 return;
             }
             // Create the state object.
-            StateObject state = new StateObject();
+            var state = new StateObject();
             state.workSocket = socket;
             if (Asycn) {
                 try {
                     if (socket.Connected)
-                        socket.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                                             new AsyncCallback(ReadRequest), state);
-                } catch { }
+                        socket.BeginReceive (state.buffer, 0, StateObject.BufferSize, 0,
+                            new AsyncCallback (ReadRequest), state);
+                } catch (Exception ex) {
+                    Trace.WriteLine (ex.Message);
+                }
             } else {
                 var bytesRead = socket.Receive(state.buffer);
                 if (bytesRead > 0) {
@@ -109,13 +111,13 @@ namespace Limaki.WebServers {
                 }
             }
             // Signal the main thread to continue.
-            allDone.Set();
+            AllDone.Set();
         }
 
         public void ReadRequest(IAsyncResult ar) {
             // Retrieve the state object and the handler socket
             // from the asynchronous state object.
-            StateObject state = (StateObject)ar.AsyncState;
+            var state = (StateObject)ar.AsyncState;
             var socket = state.workSocket;
             if (!socket.Connected || !running) {
                 return;
@@ -127,13 +129,7 @@ namespace Limaki.WebServers {
                 if (bytesRead > 0) {
                     Respond(socket, state);
                 }
-                // this does not work:
-                //handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                //        new AsyncCallback(ReadRequest), state);
 
-                //} else  if (state.sb.Length>0) {
-                //    Respond (handler, state);
-                //}
             } catch(Exception ex) {
                 Trace.WriteLine("ReadRequest failed "+ex.Message);
             }
@@ -148,7 +144,11 @@ namespace Limaki.WebServers {
             var requestInfo = new RequestInfo(state.buffer);
             var url = requestInfo.Request;
             if (requestInfo.Uri != null)
-                url = requestInfo.Uri.AbsoluteUri;
+                if (requestInfo.Uri.IsAbsoluteUri)
+                    url = requestInfo.Uri.AbsoluteUri;
+                else {
+                    url = requestInfo.Uri.AbsolutePath;
+                }
 
             Trace.WriteLine("Requested:\t" + url);
 
@@ -211,7 +211,7 @@ namespace Limaki.WebServers {
         private void RespondCallback(IAsyncResult ar) {
             try {
                 // Retrieve the socket from the state object.
-                Socket socket = (Socket)ar.AsyncState;
+                var socket = (Socket)ar.AsyncState;
                 if (socket.Connected && running) {
                     // Complete sending the data to the remote device.
                     int bytesSent = socket.EndSend(ar);

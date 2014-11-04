@@ -23,6 +23,9 @@ namespace Limaki.WebServers {
         public string Request = string.Empty;
 
         public string HttpVersion = string.Empty;
+        public string Params { get; protected set; }
+        public string Accept { get; protected set; }
+
         public bool Success=false;
 
         public RequestInfo(Byte[] request)  {
@@ -50,7 +53,15 @@ namespace Limaki.WebServers {
 
             // Extract the Requested Uri (without host)
             requestetUri = buffer.Substring(4, startPos - 5);
-            
+
+            // Extract params, if some
+            var paramPos = requestetUri.IndexOf ('?');
+            if (paramPos != -1) {
+                this.Params = requestetUri.Substring (paramPos+1);
+                requestetUri = requestetUri.Substring (0, paramPos);
+                
+            }
+
             // Look for Host request
             startPos = buffer.IndexOf("Host:", startPos);
             if (startPos != -1) {
@@ -61,6 +72,16 @@ namespace Limaki.WebServers {
                     if (requestetUri.IndexOf("://")==-1) {
                         requestetUri = "http://" + host + requestetUri;
                     }
+                }
+            }
+
+            // Look for Accept request
+            startPos = buffer.IndexOf ("Accept:", 1);
+            if (startPos != -1) {
+                startPos += 7;
+                 var endPos = buffer.IndexOf (",", startPos);
+                if (endPos != -1) {
+                    this.Accept = buffer.Substring (startPos, endPos - startPos);
                 }
             }
 

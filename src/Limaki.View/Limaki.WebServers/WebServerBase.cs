@@ -54,38 +54,46 @@ namespace Limaki.WebServers {
             }
         }
 
-        #region try to use stack or something
-        /// <summary>
-        /// replace this with ConcurrentDictionary<TKey,TValue>
-        /// </summary>
+        #region content-handlers
+
+        // TODO: replace this with ConcurrentDictionary<TKey,TValue>
         protected IDictionary<string,Func<string, WebContent>> Contents = new Dictionary<string,Func<string, WebContent>>();
 
-        protected object contentsLock = new object();
-        public void AddContent(string uri, Func<string, WebContent> content) {
-            lock(contentsLock) {
-                Contents[uri]= content;
+        protected object ContentsLock = new object ();
+        public void AddContent (string uri, Func<string, WebContent> content) {
+            lock (ContentsLock) {
+                Contents[uri] = content;
             }
         }
+
         public void RemoveContent(string uri) {
-            lock (contentsLock) {
+            lock (ContentsLock) {
                 Contents.Remove(uri);
             }
         }
+
         public WebContent GetContent(string uri) {
-            lock (contentsLock) {
+            lock (ContentsLock) {
                 Func<string, WebContent> result = null;
                 if(Contents.TryGetValue(uri, out result))
                     return result(uri);
                 return null;
             }
         }
+
+        public bool HasContent (string uri) {
+            lock (ContentsLock) {
+                return Contents.ContainsKey (uri);
+            }
+        }
+
         #endregion
 
-        public Func<string, WebContent> ContentGetter = null;
+        public Func<string, WebContent> ContentGetter { get; set; }
 
         public bool Asycn { get; set; }
 
-        protected Thread listenerThread = null;
+        protected Thread ListenerThread { get; set; }
 
         public virtual void Start() {
             try {
@@ -96,8 +104,8 @@ namespace Limaki.WebServers {
                 while (count < 100 && !hasPort)
                     try {
                         count++;
-                        listener = new TcpListener(Addr, Port);
-                        listener.Start();
+                        Listener = new TcpListener(Addr, Port);
+                        Listener.Start();
                         hasPort = true;
                     } catch (SocketException ex) {
                         if (ex.ErrorCode == 10048) {
@@ -112,10 +120,11 @@ namespace Limaki.WebServers {
                 Trace.WriteLine("An Exception Occurred while Listening :" + e.ToString());
             }
         }
-        protected TcpListener listener;
+
+        protected TcpListener Listener { get; set; }
 
         public Byte[] MakeHeader(string httpVersion, string mimeHeader, int totalBytes, string statusCode) {
-            StringBuilder buffer = new StringBuilder();
+            var buffer = new StringBuilder();
 
             // if Mime type is not provided set default to text/html
             if (mimeHeader == null || mimeHeader.Length == 0) {
@@ -128,27 +137,32 @@ namespace Limaki.WebServers {
             buffer.Append("Accept-Ranges: bytes\r\n");
             buffer.Append("Content-Length: " + totalBytes + "\r\n\r\n");
 
-            Byte[] sendData = Encoding.ASCII.GetBytes(buffer.ToString());
+            var sendData = Encoding.ASCII.GetBytes(buffer.ToString());
 
 
             return sendData;
         }
 
         public abstract void Listen();
+
+        public event EventHandler Closed;
+
         public virtual void Close() {
             Sleep();
-            if (listener != null) {
-                listener.Stop();
-                listener = null;
+            if (Listener != null) {
+                Listener.Stop();
+                Listener = null;
             }
 
-
+            if (Closed != null) {
+                Closed (this, new EventArgs ());
+            }
         }
 
         public virtual void Sleep() {
-            if (listenerThread != null) {
-                listenerThread.Abort();
-                listenerThread = null;
+            if (ListenerThread != null) {
+                ListenerThread.Abort();
+                ListenerThread = null;
             }
         }
 
