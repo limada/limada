@@ -27,6 +27,7 @@ namespace Limaki.View.Viz.Rendering {
         public MoveResizeRenderer() {
             Priority = ActionPriorities.ToolsLayerPriority;
         }
+
         [DefaultValue(ActionPriorities.ToolsLayerPriority)]
         public int Priority { get; set; }
 

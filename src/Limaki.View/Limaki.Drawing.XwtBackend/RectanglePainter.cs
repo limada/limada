@@ -18,6 +18,7 @@ using Xwt;
 using Limaki.Drawing.Shapes;
 
 namespace Limaki.Drawing.XwtBackend {
+
     public class RectanglePainter : ContextPainter<Rectangle>, IPainter<IRectangleShape, Rectangle> {
 
         public override void Render (ISurface surface) {

@@ -42,7 +42,6 @@ namespace Limaki.View.Viz.Visualizers {
             var styleSheets = context.Pooled<StyleSheets>();
             display.StyleSheet = styleSheets.DefaultStyleSheet;
 
-
             display.ShapeFactory = context.Factory.Create<IShapeFactory>();
             display.PainterFactory = context.Factory.Create<IPainterFactory>();
             display.EventControler = context.Factory.Create<EventControler>();

@@ -27,6 +27,7 @@
 using System;
 using Xwt.Drawing;
 using Xwt;
+using System.Diagnostics;
 
 namespace Xwt.Tests {
     public class ReferencePainter {
@@ -80,7 +81,7 @@ namespace Xwt.Tests {
             ctx.Restore();
         }
 
-        public virtual void RoundetRectangle (Context ctx, double x, double y) {
+        public virtual void RoundedRectangle (Context ctx, double x, double y) {
             // Rounded Rectangle with Arcs
             ctx.Save();
             ctx.Translate(x, y);
@@ -90,7 +91,6 @@ namespace Xwt.Tests {
             var t = 0;
             var w = 50;
             var h = 30;
-
 
             // top left  
             ctx.Arc(l + r, t + r, r, 180, 270);
@@ -109,11 +109,12 @@ namespace Xwt.Tests {
 
             ctx.Restore();
         }
+
         public virtual void Rectangles (Context ctx, double x, double y) {
             SimpleRectangles(ctx, x, y);
 
             RectangleWithHole(ctx, x + 50, y);
-            RoundetRectangle(ctx, x + 120, y);
+            RoundedRectangle(ctx, x + 120, y);
 
         }
 
@@ -200,9 +201,10 @@ namespace Xwt.Tests {
             ib.Context.SetColor(Colors.DarkKhaki);
             ib.Context.Rectangle(0, 0, 5, 5);
             ib.Context.Fill();
+
             var img = ib.ToBitmap();
             ctx.DrawImage(img, 0, 0);
-            ctx.DrawImage(img, 0, 50, 50, 10);
+			ctx.DrawImage(img, 0, 50, 50, 10);
 
             ctx.Arc(100, 100, 15, 0, 360);
             arcColor.Alpha = 0.4;
@@ -353,7 +355,7 @@ namespace Xwt.Tests {
             DrawText(ctx, tl, ref y);
         }
 
-        void DrawText (Context ctx, TextLayout tl, ref double y) {
+        public void DrawText (Context ctx, TextLayout tl, ref double y) {
             double x = 10;
             var s = tl.GetSize();
             var rect = new Rectangle(x, y, s.Width, s.Height).Inflate(0.5, 0.5);

@@ -56,8 +56,8 @@ namespace Limaki.View.Viz.UI {
         public virtual bool HitBorder(Point p) {
             if (Shape == null)
                 return false;
-            Point sp = Camera.ToSource(p);
-            bool result = Shape.IsBorderHit(sp, HitSize);
+            var sp = Camera.ToSource(p);
+            var result = Shape.IsBorderHit(sp, HitSize);
             return result;
         }
 
@@ -69,12 +69,12 @@ namespace Limaki.View.Viz.UI {
 
 
         public override bool HitTest(Point p) {
-            bool result = false;
+            var result = false;
             if (Shape == null) {
                 return result;
             }
             result = HitBorder(p);
-            Anchor anchor = Anchor.None;
+            var anchor = Anchor.None;
             if (result && ShowGrips) {
                 anchor = HitAnchor (p);
                 if (!Resolved) {

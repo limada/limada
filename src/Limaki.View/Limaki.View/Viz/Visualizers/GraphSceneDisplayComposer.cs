@@ -156,8 +156,10 @@ namespace Limaki.View.Viz.Visualizers {
                     MouseDown = e => display.OnSceneFocusChanged()
                 });
 
-            var oldZoomAction = display.EventControler.GetAction<ZoomAction> ();
-            display.EventControler.Remove(oldZoomAction);
+			IAction action = display.EventControler.GetAction<ZoomAction> ();
+            display.EventControler.Remove(action);
+			action = display.EventControler.GetAction<MouseScrollAction> ();
+			display.EventControler.Remove(action);
 
             display.EventControler.Add(
                 new GraphItemZoomAction<TItem, TEdge> {

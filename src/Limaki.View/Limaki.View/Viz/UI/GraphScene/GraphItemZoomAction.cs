@@ -19,6 +19,7 @@ using Xwt;
 using System;
 
 namespace Limaki.View.Viz.UI.GraphScene {
+
     /// <summary>
     /// Overrides Zooming; if an item is hit, no zooming is performed
     /// </summary>
@@ -32,19 +33,16 @@ namespace Limaki.View.Viz.UI.GraphScene {
             get { return SceneHandler(); }
         }
 
-        private int _hitSize = 5;
+      
         /// <summary>
         /// has to be the same as in GraphItemResizer
         /// </summary>
-        public int HitSize {
-            get { return _hitSize; }
-            set { _hitSize = value; }
-        }
+		public int HitSize { get; set; }
 
         public override void OnMouseUp(MouseActionEventArgs e) {
             var zoomTarget = this.Viewport ();
-            Point p = zoomTarget.Camera.ToSource(e.Location);
-            TItem item = Scene.Hit(p, HitSize);
+            var p = zoomTarget.Camera.ToSource(e.Location);
+            var item = Scene.Hit(p, HitSize);
             if (item==null) {
                 base.OnMouseUp (e);
             }
@@ -57,4 +55,5 @@ namespace Limaki.View.Viz.UI.GraphScene {
             return base.Check();
         }
     }
+
 }

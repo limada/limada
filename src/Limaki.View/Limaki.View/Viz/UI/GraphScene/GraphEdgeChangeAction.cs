@@ -63,7 +63,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
         public override bool HitTest(Point p) {
             bool result = false;
             if (Edge != null) {
-                Point sp = Camera.ToSource(p);
+                var sp = Camera.ToSource(p);
                 hitAnchor = Scene.ItemShape(Edge).IsAnchorHit(sp, HitSize);
                 CursorHandler.SetEdgeCursor(hitAnchor);
                 result = hitAnchor != Anchor.None;

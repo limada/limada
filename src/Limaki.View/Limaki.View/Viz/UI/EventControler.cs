@@ -165,7 +165,7 @@ namespace Limaki.View.Viz.UI {
             Resolved = false;
             if (UserEventsDisabled)
                 return;
-            foreach (IMouseAction mouseAction in MouseActions) {
+            foreach (var mouseAction in MouseActions) {
                 if (mouseAction.Enabled) {
                     mouseAction.OnMouseDown(e);
                     Resolved = mouseAction.Resolved || Resolved;
