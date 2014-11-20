@@ -100,10 +100,11 @@ namespace Limaki.Data.db4o {
 
         public virtual IObjectContainer CreateClientSession (IClientConfiguration config) {
             var clientCer = "limada.limo.client.cer";
+			#if ! __ANDROID__
             if (File.Exists (clientCer)) {
                 config.AddConfigurationItem (new ClientSslSupport (CheckCertificate));
             }
-
+			#endif
             return Db4oClientServer.OpenClient (config, Iori.Server, Iori.Port, Iori.User, Iori.Password);
         }
 
@@ -119,11 +120,12 @@ namespace Limaki.Data.db4o {
             // remark: if port == 0, then server runs in embedded mode
             var file = Iori.ToFileName (this.Iori);
             var serverCer = "limada.limo.cer";
+			#if !__ANDROID__
             if (File.Exists (serverCer)) {
                 var certificate = new X509Certificate2 (serverCer,"");
                 config.AddConfigurationItem (new ServerSslSupport (certificate));
             }
-            
+            #endif
             var server = Db4oClientServer.OpenServer (config, file, this.Iori.Port);
             try {
                 Trace.WriteLine (string.Format ("db4o server {0} running at: {1}", file, server.Ext ().Port ()));

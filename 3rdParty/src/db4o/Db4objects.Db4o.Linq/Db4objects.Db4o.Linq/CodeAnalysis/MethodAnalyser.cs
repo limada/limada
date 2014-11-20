@@ -21,7 +21,7 @@ namespace Db4objects.Db4o.Linq.CodeAnalysis
 	{
 		public static IMethodAnalyser FromMethod(MethodInfo method)
 		{
-#if CF || SILVERLIGHT
+#if CF || SILVERLIGHT || __ANDROID__
 			return CecilMethodAnalyser.FromMethod(method);
 #else
 			return ReflectionMethodAnalyser.FromMethod(method);

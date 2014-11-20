@@ -91,9 +91,11 @@ namespace Limaki.Common.Reflections {
                     _memberOption = value;
                     if (value == MemberOptions.DataMember)
                         this.Attribute = typeof(DataMemberAttribute);
+					#if !__ANDROID__
                     else if (value == MemberOptions.TableColumn)
                         this.Attribute = typeof(System.Data.Linq.Mapping.ColumnAttribute);
-                }
+					#endif
+					}
 
             }
         }

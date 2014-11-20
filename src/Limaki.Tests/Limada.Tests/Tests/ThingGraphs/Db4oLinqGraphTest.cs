@@ -1,4 +1,5 @@
-﻿using Limada.IO;
+﻿#if !__ANDROID__
+using Limada.IO;
 using Db4objects.Db4o.Linq;
 using Limada.Model;
 using NUnit.Framework;
@@ -52,3 +53,5 @@ namespace Limada.Tests.Data.db4o {
         }
     }
 }
+
+#endif

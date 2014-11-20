@@ -1,3 +1,4 @@
+#if !__ANDROID__
 using Limada.Model;
 using Limaki.Tests;
 using NUnit.Framework;
@@ -69,3 +70,4 @@ namespace Limada.Tests.Model {
         }
     }
 }
+#endif
