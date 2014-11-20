@@ -28,8 +28,6 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -95,7 +93,6 @@
     <Compile Include="Limaki.View.XwtBackend\XwtExeptionHandlerBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtMessager.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\ProgressHandler.cs" />
-    <Compile Include="[Obsolete]\XwtSurface.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtSystemFontBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtSystemInformation.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtSystemColorsBackend.cs" />
@@ -165,6 +162,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="[Obsolete]\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
