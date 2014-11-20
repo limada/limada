@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B77C5BE4-8B43-4B9D-BD73-25B7E58BC8EF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -59,15 +57,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limaki.View.Html5\Html5ContextWriter.cs" />
+    <Compile Include="Limaki.View.Html5\Html5PageWriter.cs" />
+    <Compile Include="Limaki.View.Html5\Html5Surface.cs" />
+    <Compile Include="Limaki.View.Html5\Html5Canvas.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Limaki.View.Html5\Html5ContextResourceLoader.cs" />
     <Compile Include="Limaki.View.Html5\Html5DrawingUtils.cs" />
     <Compile Include="Limaki.View.Html5\Html5ExeptionHandlerBackend.cs" />
-    <Compile Include="Limaki.View.Html5\Html5PageWriter.cs" />
-    <Compile Include="Limaki.View.Html5\Html5Surface.cs" />
     <Compile Include="Limaki.View.Html5\Html5SystemFontBackend.cs" />
     <Compile Include="Limaki.View.Html5\Html5SystemInformation.cs" />
-    <Compile Include="Limaki.View.Html5\Html5Canvas.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Limaki.View.Html5\HtmlSystemColorsBackend.cs" />
   </ItemGroup>
   <ItemGroup>

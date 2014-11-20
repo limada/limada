@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{99709E36-9FBF-4738-940E-D0078B9DEFB0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -114,10 +112,6 @@
       <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
       <Name>Limaki.View</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xwt.Swf\Xwt.Gdi\Xwt.Gdi.csproj">
-      <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
-      <Name>Xwt.Gdi</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xwt.Swf\Xwt.Swf\Xwt.Swf.csproj">
       <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
       <Name>Xwt.Swf</Name>
@@ -125,6 +119,10 @@
     <ProjectReference Include="..\Xwt.Tests\Xwt.Tests.csproj">
       <Project>{4F416F8C-27E2-4D94-86D4-9E58E24AF10B}</Project>
       <Name>Xwt.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xwt.Swf\Xwt.Gdi\Xwt.Gdi.csproj">
+      <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
+      <Name>Xwt.Gdi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

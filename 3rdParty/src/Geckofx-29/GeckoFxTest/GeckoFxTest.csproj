@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9F904D01-0295-4866-8F11-34482E2E2715}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>GeckoFxTest</RootNamespace>

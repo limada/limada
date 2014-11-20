@@ -2,9 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D7ADC901-E1C4-480E-8F6D-B1FFD5CF87E8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -166,7 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Geckofx-Core\Geckofx-Core.csproj">
-      <Project>{6ab4eee6-1889-43ab-83f7-a4f083230be7}</Project>
+      <Project>{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}</Project>
       <Name>Geckofx-Core</Name>
     </ProjectReference>
   </ItemGroup>
