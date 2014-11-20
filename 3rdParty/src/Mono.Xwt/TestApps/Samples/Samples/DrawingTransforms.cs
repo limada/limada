@@ -28,6 +28,7 @@
 using System;
 using Xwt;
 using Xwt.Drawing;
+using System.Diagnostics;
 
 namespace Samples
 {
@@ -115,6 +116,8 @@ namespace Samples
 			for (var i = inc; i < 3.5d; i +=inc) {
 				ctx.Save ();
 				ctx.Scale (i, i);
+				var mx = ctx.GetCTM ();
+				Trace.WriteLine (string.Format ("{0} - {1} {2}", i, mx.M11, mx.M22));
 				ctx.Rectangle (x, y, w, w);
 				ctx.SetColor (Colors.Yellow.WithAlpha (1 / i));
 				ctx.FillPreserve ();
