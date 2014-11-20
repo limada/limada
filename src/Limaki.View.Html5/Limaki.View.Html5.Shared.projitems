@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{DD729EE5-9C8D-484A-BE7E-49579645FD67}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Limaki.View.Html5.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Html5\Html5ContextWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Html5\Html5PageWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Html5\Html5Surface.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Html5\Html5Canvas.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Html5\Html5ContextResourceLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Html5\Html5DrawingUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Html5\Html5ExeptionHandlerBackend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Html5\Html5SystemFontBackend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Html5\Html5SystemInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Html5\HtmlSystemColorsBackend.cs" />
+  </ItemGroup>
+</Project>

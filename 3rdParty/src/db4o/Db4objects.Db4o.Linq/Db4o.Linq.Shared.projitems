@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{F15E0D03-A5AC-4660-9A5C-2BA98CEE1F9B}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Db4o.Linq.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Caching\CacheFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Caching\ICache4.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Caching\TracingCacheDecorator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\CodeAnalysis\CecilMethodAnalyser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\CodeAnalysis\CodeQueryBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\CodeAnalysis\IMethodAnalyser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\CodeAnalysis\MetadataResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\CodeAnalysis\MethodAnalyser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\CodeAnalysis\QueryExpressionFinder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\CodeAnalysis\ReflectionMethodAnalyser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Db4oLinqQueryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\ExpressionCacheFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\ExpressionComparison.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\ExpressionEnumeration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\ExpressionEqualityComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\ExpressionQueryBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\ExpressionTransformer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\ExpressionTreeNormalizer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\ExpressionVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\HashCodeCalculation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\OrderByAscendingClauseVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\OrderByClauseVisitorBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\OrderByDescendingClauseVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\QueryableTransformer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\SubtreeEvaluator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Expressions\WhereClauseVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\IDb4oLinqQuery.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\IDb4oLinqQueryable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\ILinqQueryMonitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\Db4oLinqQueryable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\Db4oQuery.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\IDb4oLinqQueryInternal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\LinqQueryMonitorImpl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\ObjectSequence.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\ObjectSetWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\OptimizeableMethodConstrains.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\PlaceholderQuery.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\QueryBuilderContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\QueryBuilderRecorder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\Internals\UnoptimizedQuery.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\ObjectContainerExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Db4objects.Db4o.Linq\QueryOptimizationException.cs" />
+  </ItemGroup>
+</Project>
