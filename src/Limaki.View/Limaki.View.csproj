@@ -409,6 +409,7 @@
     <Compile Include="Xwt\SystemFonts.cs" />
     <Compile Include="Xwt\XwtLExtensions.cs" />
     <Compile Include="Xwt\XwtToChange.cs" />
+    <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphItemMouseScrollAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
