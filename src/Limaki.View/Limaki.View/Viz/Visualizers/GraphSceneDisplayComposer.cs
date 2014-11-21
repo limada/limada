@@ -19,6 +19,7 @@ using Limaki.View.Viz.Rendering;
 using Limaki.View.Viz.UI;
 using Limaki.View.Viz.UI.GraphScene;
 using Xwt;
+using Limaki.Actions;
 
 namespace Limaki.View.Viz.Visualizers {
 
@@ -167,6 +168,13 @@ namespace Limaki.View.Viz.Visualizers {
                     SceneHandler = this.GraphScene
                 });
 
+			action = new GraphItemMouseScrollAction<TItem, TEdge> {
+				Viewport = this.Viewport,
+				SceneHandler = this.GraphScene
+			};
+			action.Enabled = false;
+
+			display.EventControler.Add(action);
             display.LayoutChanged ();
         }
 

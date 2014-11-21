@@ -21,12 +21,17 @@ using Xwt;
 using System;
 
 namespace Limaki.View.Viz.UI {
+
     /// <summary>
     /// Makes a shape moveable and resizeable
     /// </summary>
     public abstract class MoveResizeAction : MouseDragActionBase, IMoveResizeAction, ICheckable {
+
         public MoveResizeAction(): base() {
             this.Priority = ActionPriorities.SelectionPriority;
+			MovingEnabled = true;
+			ResizingEnabled = true;
+			DoBorderTest = true;
         }
 
         public virtual Func<ICamera> CameraHandler { get; set; }
@@ -57,7 +62,16 @@ namespace Limaki.View.Viz.UI {
         public abstract IShape Shape { get; set; }
 
         protected Anchor hitAnchor = Anchor.None;
-        //
+
+		public bool ResizingEnabled { get; set; }
+		public bool MovingEnabled { get; set; }
+
+		/// <summary>
+		/// HitTest tests the border
+		/// </summary>
+		/// <value><c>true</c> if hit on border; otherwise, <c>false</c>.</value>
+		public bool DoBorderTest { get; set; }
+
         protected bool resizing = false;
         protected bool moving = false;
 
@@ -164,7 +178,7 @@ namespace Limaki.View.Viz.UI {
                 hitAnchor = Anchor.None;
                 CursorHandler.SaveCursor();
                 moving = HitTest(e.Location);
-                if (hitAnchor != Anchor.None) {
+				if (hitAnchor != Anchor.None && ResizingEnabled) {
                     var anchor = AdjacentAnchor(hitAnchor);
                     resizing = anchor != Anchor.None;
                     this.Resolved = resizing;

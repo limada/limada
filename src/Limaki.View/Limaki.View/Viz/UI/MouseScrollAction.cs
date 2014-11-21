@@ -67,7 +67,7 @@ namespace Limaki.View.Viz.UI {
 
         #region ICheckable Member
 
-        public bool Check() {
+        public virtual bool Check() {
             if (this.Viewport == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IViewport));
             }

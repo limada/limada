@@ -35,6 +35,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
             Priority = ActionPriorities.SelectionPriority - 10;
             FocusFilter = e => e;
         }
+
         public Func<IGraphScene<TItem, TEdge>> SceneHandler;
         public virtual IGraphScene<TItem, TEdge> Scene {
             get { return SceneHandler(); }
@@ -66,9 +67,12 @@ namespace Limaki.View.Viz.UI.GraphScene {
         public override bool HitTest(Point p) {
             var sp = Camera.ToSource(p);
             var item = this.GraphItem;
-            var result = ((item != null) && 
-                (Scene.ItemShape(item)!= null) &&
-                (Scene.ItemShape(item).IsBorderHit(sp, HitSize)));
+			if (item == null || Scene.ItemShape (item)==null)
+				return false;
+			var result = DoBorderTest ? 
+				Scene.ItemShape (item).IsBorderHit (sp, HitSize) :
+				Scene.ItemShape (item).IsHit (sp, HitSize);
+
             var anchor = Anchor.None;
             if (result && ShowGrips) {
                 anchor = HitAnchor(p);
@@ -115,9 +119,8 @@ namespace Limaki.View.Viz.UI.GraphScene {
         }
 
         protected virtual bool CheckResizing() {
-            return Resolved && resizing &&
-                   this.Camera.Matrix.M11> 0.01d &&
-                   this.Camera.Matrix.M22> 0.01d;
+			return Resolved && resizing && ResizingEnabled &&
+                   this.Camera.Matrix.M11> 0.01d && this.Camera.Matrix.M22> 0.01d ;
         }
 
         protected override void OnMouseMoveResolved(MouseActionEventArgs e) {
@@ -128,16 +131,16 @@ namespace Limaki.View.Viz.UI.GraphScene {
                 Resolved = (Resolved) && (item != null);
                 if (Resolved) {
                     ICommand<TItem> command = null;
-                    if (moving) {
+					if (MovingEnabled && (moving || (resizing && false==ResizingEnabled))) {
                         var delta = Camera.ToSource(
                             Rectangle.FromLTRB(e.Location.X, e.Location.Y,
                                                 LastMousePos.X, LastMousePos.Y));
 
-                        foreach(TItem selected in Scene.Selected.Elements) {
+                        foreach(var selected in Scene.Selected.Elements) {
                             if (!(selected is TEdge)) {
                                 Scene.Requests.Add (
                                     new MoveByCommand<TItem> (selected, Scene.ItemShape, delta.Size));
-                                foreach (TItem twig in Scene.Graph.Twig (selected)) {
+                                foreach (var twig in Scene.Graph.Twig (selected)) {
                                     Scene.Requests.Add(
                                         new LayoutCommand<TItem>(twig, LayoutActionType.Justify));
                                 }
@@ -157,7 +160,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
                         command = new ResizeCommand<TItem>(item, Scene.ItemShape, rect);
                         Scene.Requests.Add(command);
 
-                        foreach (TItem twig in Scene.Graph.Twig(item)) {
+                        foreach (var twig in Scene.Graph.Twig(item)) {
                             Scene.Requests.Add(new LayoutCommand<TItem>(twig, LayoutActionType.Justify));
                         }
                     }
