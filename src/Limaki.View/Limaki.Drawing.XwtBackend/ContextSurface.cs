@@ -20,15 +20,33 @@ namespace Limaki.Drawing.XwtBackend {
 
     /// <summary>
     /// a Surface providing a Xwt.Drawing.Context
+	/// if no Matrix is set, then the Context.CTM will be used
     /// </summary>
     public class ContextSurface : ISurface {
 
-        public virtual Context Context { get; set; }
+		Context _context=null;
+        public virtual Context Context { 
+			get {return _context; }
+			set{ _context=value; 
+				_matrix = null;
+				if (_context != null)
+					_matrix = Context.GetCTM ();
+			}
+		}
 
         protected Matrix _matrix = null;
-        public virtual Matrix Matrix {
-            get { return _matrix ?? (_matrix = new Matrix()); }
-            set { _matrix = value; }
-        }
+		/// <summary>
+		/// the matrix of Context 
+		/// at the time of setting this.Context
+		/// </summary>
+		/// <value>The matrix.</value>
+		public virtual Matrix Matrix {
+			get { return _matrix ?? (
+							Context != null ?
+							Context.GetCTM () :
+							new Matrix ()); 
+			}
+			protected set { _matrix = value; }
+		}
     }
 }

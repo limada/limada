@@ -58,7 +58,7 @@ namespace Limaki.View.Html5 {
                 }
                 return base.Matrix;
             }
-            set {
+            protected set {
                 base.Matrix = value;
             }
         }
