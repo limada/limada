@@ -423,7 +423,8 @@ namespace Xwt.GdiBackend {
         }
 
         public override Drawing.Matrix GetCTM (object backend) {
-            throw new NotImplementedException();
+            var gc = (GdiContext)backend;
+            return gc.Matrix.ToXwt ();
         }
 
         public override bool IsPointInStroke (object backend, double x, double y) {
