@@ -233,7 +233,7 @@ namespace Limada.View.SwfBackend {
             var textDialogBackend = textDialog.Backend as TextOkCancelBoxBackend;
             textDialogBackend.Dock = DockStyle.Top;
 
-            var displayBackend = this.Frontend.CurrentDisplay.Backend as Control;
+            var displayBackend = display.Backend as Control;
             if (SplitContainer.Panel1.Contains (displayBackend)) {
                 SplitContainer.Panel1.Controls.Add (textDialogBackend);
             } else if (SplitContainer.Panel2.Contains (displayBackend)) {
@@ -250,6 +250,8 @@ namespace Limada.View.SwfBackend {
                 textDialog.Dispose ();
 
                 textDialogVisible = false;
+
+                SplitContainer.ResumeLayout (true);
 
                 // hide is changing the CurrentDisplay (whyever)
                 Frontend.DisplayGotFocus (display);
