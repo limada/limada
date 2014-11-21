@@ -229,6 +229,10 @@ namespace Xwt.Tests {
         public virtual void Texts (Xwt.Drawing.Context ctx, double x, double y) {
             ctx.Save();
 
+			var m = ctx.GetCTM ();
+			var scaleX = m.M11;
+			var scaleY = m.M22;
+
             ctx.Translate(x, y);
 
             ctx.SetColor(Colors.Black);
@@ -269,7 +273,7 @@ namespace Xwt.Tests {
             var size3 = text.GetSize();
             col2.Height = size3.Height * scale;
             col2.Width = size3.Width * scale + 5;
-            ctx.Scale(scale, scale);
+			ctx.Scale(scale*scaleX, scale*scaleY);
             ctx.DrawTextLayout(text, col2.Left / scale, col2.Top / scale);
             ctx.Restore();
 
@@ -329,7 +333,10 @@ namespace Xwt.Tests {
             ctx.Restore();
 
             ctx.Restore();
-            // Text boces
+            
+			ctx.Save ();
+
+			// Text boces
 
             ctx.Translate(x, y);
             y = 180;
@@ -350,9 +357,11 @@ namespace Xwt.Tests {
             // With blank lines
 
             tl = new TextLayout(ctx);
-            tl.Text = "\nEmpty line above\nLine break above\n\nEmpty line above\n\n\nTwo empty lines above\nEmpty line below\n";
+			tl.Text = "\nEmpty line above\nLine break above\n\nEmpty line above\n\n\nTwo empty lines above\nEmpty line below\n";
             tl.Width = 200;
             DrawText(ctx, tl, ref y);
+
+			ctx.Restore ();
         }
 
         public void DrawText (Context ctx, TextLayout tl, ref double y) {
@@ -403,21 +412,35 @@ namespace Xwt.Tests {
             ctx.SetColor(Colors.Black);
             ctx.SetLineWidth(1);
 
+			var mx = ctx.GetCTM ();
+			var sx = mx.M11;
+			var sy = mx.M22;
+
             var x = 0d;
             var y = 0d;
             var w = 10d;
             var inc = .1d;
+			var doScale = true;
             for (var i = inc; i < 3.5d; i += inc) {
                 ctx.Save();
-                ctx.Scale(i, i);
-                ctx.Rectangle(x, y, w, w);
+				if (doScale) {
+					ctx.Scale (i * sx, i * sy);
+					mx = ctx.GetCTM ();
+					Trace.WriteLine (string.Format ("{0} - {1} {2}", i * sx, mx.M11, mx.M22));
+					ctx.Rectangle (x, y, w, w);
+				} else {
+					var z = 10;
+					ctx.Rectangle (x* i*z, y* i*z, w* i*z, w* i*z);
+				}
                 ctx.SetColor(Colors.Yellow.WithAlpha(1 / i));
                 ctx.FillPreserve();
                 ctx.SetColor(Colors.Red.WithAlpha(1 / i));
                 ctx.Stroke();
-                ctx.MoveTo(x += w * inc, y += w * inc / 3);
+                //ctx.MoveTo(x += w * inc, y += w * inc / 3);
+				x += w * inc; y += w * inc / 3;
                 ctx.Restore();
-
+				mx = ctx.GetCTM ();
+				Trace.WriteLine (string.Format ("restore {0} {1}", mx.M11, mx.M22));
             }
 
             ctx.Restore();
