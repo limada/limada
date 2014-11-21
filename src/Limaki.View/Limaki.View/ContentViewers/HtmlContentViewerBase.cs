@@ -80,8 +80,8 @@ namespace Limaki.View.ContentViewers {
 
         protected object lockObject = new object ();
 
-        public bool UseWebServer { get; set; }
-        public bool UseProxy { get; set; }
+        public virtual bool UseWebServer { get; set; }
+        public virtual bool UseProxy { get; set; }
 
         #endregion
 

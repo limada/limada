@@ -28,7 +28,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         void IVindowBackend.SetContent (IVidget value) {
-            throw new NotImplementedException ();
+			this.SetContent (value);
         }
     }
 }

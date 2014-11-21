@@ -50,7 +50,7 @@ namespace Limaki.View.Vidgets {
         public Visibility Visibility {
             get { return _vsibility; }
             set {
-                this.Visibility = value;
+                _vsibility = value;
                 Backend.SetVisibility (value);
             }
         }

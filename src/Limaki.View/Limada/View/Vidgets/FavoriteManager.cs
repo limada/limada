@@ -134,7 +134,7 @@ namespace Limada.View.Vidgets {
             var view = display.Data.Graph as SubGraph<IVisual, IVisualEdge>;
 
             var graph = view.Source<IVisual, IVisualEdge,IThing, ILink>() as VisualThingGraph;
-            IThingGraph thingGraph = null;
+			IThingGraph thingGraph = null;
             if (graph != null) 
                 thingGraph = graph.Source as IThingGraph;
             

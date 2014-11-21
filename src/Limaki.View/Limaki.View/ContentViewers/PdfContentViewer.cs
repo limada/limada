@@ -29,6 +29,8 @@ namespace Limaki.View.ContentViewers {
             return streamType == PdfContentSpot.PdfContentType;
         }
 
+        public override bool UseWebServer { get { return true; } set { base.UseWebServer = value; } }
+
         PdfJsServer _pdfJsServer = null;
         protected PdfJsServer PdfJsServer {
             get {
