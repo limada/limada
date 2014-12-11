@@ -58,7 +58,7 @@ namespace Limada.UseCases.Cms {
                 Trace.WriteLine (string.Format ("Provider already opened {0}", Current.Description));
                 var conn = Current.Data as IGatewayConnection;
                 if (conn != null) {
-                    Trace.WriteLine (string.Format ("Connection already opened {0}/{1}", conn.Gateway.IsOpen (), Iori.ToFileName (conn.Gateway.Iori)));
+                    Trace.WriteLine (string.Format ("Connection already opened {0}/{1}", conn.Gateway.IsOpen, Iori.ToFileName (conn.Gateway.Iori)));
                 }
             } else {
                 var ioManager = new ThingGraphIoManager { };

@@ -56,7 +56,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -189,6 +188,8 @@
     <Compile Include="Contents\Handlers\TextContent.cs" />
     <Compile Include="Contents\IO\StreamContentIoPool.cs" />
     <Compile Include="Contents\MimeFingerPrints.cs" />
+    <Compile Include="Data\IDataContext.cs" />
+    <Compile Include="Limada\Data\IThingContext.cs" />
     <Compile Include="LimakiCoreContextResourceLoader.cs" />
     <Compile Include="Data\Iori.cs" />
     <Compile Include="Data\DbGraph.cs" />

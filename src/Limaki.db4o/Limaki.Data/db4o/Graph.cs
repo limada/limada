@@ -180,7 +180,7 @@ namespace Limaki.Data.db4o {
 
         public IObjectContainer Session {
             get {
-                if (!_gateway.HasSession() && !_gateway.IsClosed()) {
+                if (!_gateway.HasSession() && !_gateway.IsClosed) {
                     ConfigureSession(_gateway.Session);
                 }
                 return _gateway.Session;

@@ -74,7 +74,7 @@ namespace Limaki.Data {
             } else if (iori.Extension == ".limo") {
                 iori.Provider = "Db4o";
             } else if (iori.Extension == ".pib") {
-                iori.Provider = "Parts";
+                iori.Provider = "Firebird";
                 iori.User = "SYSDBA";
                 iori.Password = "masterkey";
             } 

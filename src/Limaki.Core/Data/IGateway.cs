@@ -19,11 +19,13 @@ using Limaki.Common.Collections;
 namespace Limaki.Data {
 
     public interface IGateway:IDisposable {
-        void Close();
-        Iori Iori { get; set; }
 
-        bool IsOpen();
-        bool IsClosed();
-        void Open( Iori iori );
+        Iori Iori { get; }
+
+        void Open (Iori iori);
+        bool IsOpen { get; }
+
+        void Close ();
+        bool IsClosed { get; }
     }
 }

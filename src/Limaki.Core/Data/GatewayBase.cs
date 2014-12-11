@@ -17,15 +17,16 @@ namespace Limaki.Data {
 
 	public abstract class GatewayBase : IGateway {
 
-        public Iori Iori { get; set; }
+        public virtual Iori Iori { get; protected set; }
 
-		public abstract void Open(Iori iori);
+        public virtual bool IsOpen { get; protected set; }
 
-		public abstract void Close();
+        public abstract void Open(Iori iori);
 
-		public abstract bool IsOpen();
-        public abstract bool IsClosed();
+        public virtual bool IsClosed { get; protected set; }
 		
+        public abstract void Close();
+
 	    public abstract void Dispose();
 
 	}

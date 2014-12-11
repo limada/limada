@@ -178,12 +178,11 @@ namespace Limaki.Data.db4o {
         public virtual bool HasSession() {
             return _session != null;
         }
-        public override bool IsOpen() {
-            return Iori != null;
-        }
-        public override bool IsClosed() {
-            return _isClosed;
-        }
+
+        public override bool IsOpen { get { return Iori != null; } protected set { } }
+
+        public override bool IsClosed { get { return _isClosed; } protected set { _isClosed = value; } }
+
         public virtual void InitConfiguration(ICommonConfiguration configuration) {
             configuration.MarkTransient(typeof(Limaki.Common.TransientAttribute).FullName);
         }
