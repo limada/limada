@@ -12,6 +12,7 @@
  * 
  */
 
+using Xwt;
 using Xwt.Backends;
 
 namespace Limaki.View.Vidgets {
@@ -54,6 +55,9 @@ namespace Limaki.View.Vidgets {
                 Backend.SetVisibility (value);
             }
         }
+
+        public Size DefaultSize = new Size (36, 36);
+
     }
 
     public interface IToolStripItemBackendContainer {
