@@ -27,7 +27,7 @@ namespace GeckoFxWpfTest
 
 		private void Btn_OnClick( object sender, RoutedEventArgs e )
 		{
-			browser.Navigate("https://www.adobe.com/software/flash/about/");
+			browser.Navigate("https://www.google.com/");
 		}
 
 	}
