@@ -302,9 +302,12 @@ namespace Xwt.WPFBackend
 			get { return (this.horizontalBackend != null) ? this.horizontalBackend.StepIncrement : HorizontalPageIncrement / 10; }
 		}
 
-		protected override WSize MeasureOverride (WSize constraint)
-		{
-			FrameworkElement child = (FrameworkElement) InternalChildren [0];
+		protected override WSize MeasureOverride (WSize constraint) {
+
+            if (InternalChildren.Count == 0)
+                return base.MeasureOverride (constraint);
+
+            FrameworkElement child = (FrameworkElement) InternalChildren [0];
 
 			if (usingCustomScrolling) {
 				// Measure the child using the constraint because when using custom scrolling,
@@ -324,7 +327,10 @@ namespace Xwt.WPFBackend
 
 		protected override System.Windows.Size ArrangeOverride (System.Windows.Size finalSize)
 		{
-			FrameworkElement child = (FrameworkElement)InternalChildren [0];
+            if (InternalChildren.Count == 0)
+                return base.ArrangeOverride (finalSize);
+
+            FrameworkElement child = (FrameworkElement)InternalChildren [0];
 
 			WSize childSize = child.DesiredSize;
 
