@@ -123,6 +123,11 @@ namespace Limaki.View.Vidgets {
             backendTypes[typeof(Backend)] = typeof(Implementation);
         }
 
+        public bool BackendRegistered<Backend> () {
+            CheckInitialized ();
+            return  backendTypes.ContainsKey(typeof (Backend));
+        }
+
         public void CheckInitialized () {
             if (backendTypes == null)
                 throw new InvalidOperationException("XWT toolkit not initialized");
