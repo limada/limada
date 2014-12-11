@@ -103,7 +103,8 @@ namespace Limaki.View.XwtBackend {
 
             if (PdfContentViewer.Available ())
                 viewerProvider.Add (new PdfContentViewer ());
-            //viewerProvider.Add(new TextContentViewerWithToolstrip());
+            if (TextContentViewerWithToolstrip.Available ())
+                viewerProvider.Add(new TextContentViewerWithToolstrip());
 
         }
 
