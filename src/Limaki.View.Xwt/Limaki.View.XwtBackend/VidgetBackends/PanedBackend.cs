@@ -22,11 +22,15 @@ namespace Limaki.View.XwtBackend {
         protected Paned SplitContainer { get { return this.Widget; } }
 
         protected virtual Widget SetScrollingPanelContent (Widget widget, Panel panel) {
-            var panelScroll = panel.Content as ScrollView;
-            if (panelScroll != null) {
-                panelScroll.Content = widget;
+            if (widget is IScrollContainingWidget) {
+                panel.Content = widget;
             } else {
-                panel.Content = widget.WithScrollView ();
+                var panelScroll = panel.Content as ScrollView;
+                if (panelScroll != null) {
+                    panelScroll.Content = widget;
+                } else {
+                    panel.Content = widget.WithScrollView ();
+                }
             }
             return panel.Content;
         }
