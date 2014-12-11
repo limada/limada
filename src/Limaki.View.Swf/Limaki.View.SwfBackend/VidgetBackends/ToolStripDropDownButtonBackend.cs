@@ -62,6 +62,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             internal bool? IsChecked () { return false; }
 
             internal void IsChecked (bool? value) { }
+
+            public bool IsCheckable { get { return false; } set { } }
         }
 
         [Browsable (false)]
@@ -96,6 +98,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         public bool? IsChecked {
             get { return Control.IsChecked (); }
             set { Control.IsChecked (value); }
+        }
+
+        public bool IsCheckable {
+            get { return Control.IsCheckable; }
+            set { Control.IsCheckable = value; }
         }
     }
 }

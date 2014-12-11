@@ -51,11 +51,12 @@ namespace Limaki.View.Vidgets {
 
         public bool IsEnabled { get { return Backend.IsEnabled; } set { Backend.IsEnabled = value; } }
 
-        public bool IsCheckable { get; set; }
+        public bool IsCheckable { get { return Backend.IsCheckable; } set { Backend.IsCheckable = value; } }
+
     }
 
     public interface IToolStripButtonBackend : IToolStripItemBackend {
-        //bool IsCheckable { get; set; }
+        bool IsCheckable { get; set; }
         bool? IsChecked { get; set; }
     }
 }

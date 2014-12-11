@@ -15,6 +15,7 @@ namespace Limaki.View.GtkBackend {
         }
 
         public virtual bool? IsChecked { get; set; }
+        public bool IsCheckable { get; set; }
 
         public virtual bool UseUnderline { get; set; }
 

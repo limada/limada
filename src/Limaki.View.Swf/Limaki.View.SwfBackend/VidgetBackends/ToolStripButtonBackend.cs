@@ -31,6 +31,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
                 if (this.Parent != null)
                     this.Parent.ResumeLayout ();
             }
+
         }
 
         protected override void Compose () {
@@ -56,5 +57,9 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             set { Control.IsChecked (value); }
         }
 
+        public bool IsCheckable {
+            get { return Control.CheckOnClick; }
+            set { Control.CheckOnClick = value; }
+        }
     }
 }
