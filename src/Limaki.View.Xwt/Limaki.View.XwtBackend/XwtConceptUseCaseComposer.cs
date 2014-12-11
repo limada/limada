@@ -40,6 +40,7 @@ namespace Limaki.View.XwtBackend {
             var mainWindowBackend = MainWindowBackend as Window;
             mainWindowBackend.Size = WindowSize;
             mainWindowBackend.MainMenu = CreateMenu (useCase);
+            mainWindowBackend.Padding = 2;
 
             this.Menu = mainWindowBackend.MainMenu;
                 
@@ -47,12 +48,14 @@ namespace Limaki.View.XwtBackend {
 
             StatusLabel = new Label {
                 HeightRequest = 20,
-                Text = "hello",
+                Text = "starting...",
                 TextColor = Colors.Black,
                 TextAlignment = Alignment.Start,
-                Name = "asdsf",
             };
-            var box = new VBox {};
+
+            var box = new VBox {
+                Spacing = 2
+            };
 
             box.PackStart(splitViewBackend, true);
             box.PackEnd(StatusLabel);

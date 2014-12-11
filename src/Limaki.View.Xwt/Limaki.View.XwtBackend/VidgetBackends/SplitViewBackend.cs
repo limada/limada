@@ -151,7 +151,11 @@ namespace Limaki.View.XwtBackend {
 
             var panel = PanelOf (this.Frontend.CurrentDisplay);
             var c = panel.Content;
-            var box = new VBox {HorizontalPlacement = WidgetPlacement.Fill, VerticalPlacement = WidgetPlacement.Fill};
+            var box = new VBox {
+                HorizontalPlacement = WidgetPlacement.Fill, 
+                VerticalPlacement = WidgetPlacement.Fill,
+                Spacing = 2
+            };
             panel.Content = box;
 
             box.PackStart (textDialogBackend.Widget);
