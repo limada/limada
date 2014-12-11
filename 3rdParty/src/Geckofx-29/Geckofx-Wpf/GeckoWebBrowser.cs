@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
@@ -25,8 +27,9 @@ namespace Gecko
 		private WebProgressListener _webProgressListener=new WebProgressListener();
 		private nsIWeakReference _webProgressWeakReference;
 
+	    public bool IsHandleCreated { get { return _source != null; } }
 
-		protected override HandleRef BuildWindowCore( HandleRef hwndParent )
+	    protected override HandleRef BuildWindowCore( HandleRef hwndParent )
 		{
 			Loaded += new System.Windows.RoutedEventHandler(GeckoWebBrowser_Loaded);
 			HwndSourceParameters param = new HwndSourceParameters( "web browser container" );
@@ -34,9 +37,24 @@ namespace Gecko
 			param.Height = 100;
 			param.ParentWindow = hwndParent.Handle;
 			param.WindowStyle = 0x10000000 | 0x40000000;
+            param.AdjustSizingForNonClientArea = true;
 			_source = new HwndSource( param );
 			return new HandleRef( this, _source.Handle );
 		}
+
+	    int DpiX {
+	        get {
+	            var propertyInfo = typeof (SystemParameters).GetProperty ("DpiX", BindingFlags.NonPublic | BindingFlags.Static);
+	            return (int) propertyInfo.GetValue (null, null);
+	        }
+	    }
+
+        int DpiY {
+            get {
+                var propertyInfo = typeof (SystemParameters).GetProperty ("Dpi", BindingFlags.NonPublic | BindingFlags.Static);
+                return (int) propertyInfo.GetValue (null, null);
+            }
+        }
 
 		void GeckoWebBrowser_Loaded(object sender, System.Windows.RoutedEventArgs e)
 		{
@@ -46,7 +64,10 @@ namespace Gecko
 			_baseWindow = (nsIBaseWindow)_webBrowser.Instance;
 			_webNav = (nsIWebNavigation)_webBrowser.Instance;
 			_webBrowser.Instance.SetContainerWindowAttribute(this);
-			_baseWindow.InitWindow(Handle, IntPtr.Zero, 0, 0, (int)ActualWidth, (int)ActualHeight);
+
+		    _baseWindow.InitWindow (Handle, IntPtr.Zero, 0, 0,
+		        (int) (ActualWidth * DpiX / 96),
+		        (int) (ActualHeight * DpiY / 96));
 			_baseWindow.Create();
 
 			#region nsIWebProgressListener/nsIWebProgressListener2
@@ -79,10 +100,29 @@ namespace Gecko
 
 		#region IGeckoWebBrowser
 
-		public GeckoDocument Document
-		{
-			get { throw new NotImplementedException(); }
-		}
+        /// <summary>
+        /// Gets the <see cref="GeckoDocument"/> for the page currently loaded in the browser.
+        /// </summary>
+        [Browsable (false)]
+        public GeckoDomDocument DomDocument {
+            get {
+                if (_webBrowser == null)
+                    return null;
+
+                // caching document is bad idea in some situations when ajax is used
+                // dom document wrapper is 1 per page, so it is better to create it when it needed
+                var domWindow = _webBrowser.Instance.GetContentDOMWindowAttribute ();
+                var domDocument = domWindow.GetDocumentAttribute ();
+                Marshal.ReleaseComObject (domWindow);
+                return GeckoDomDocument.CreateDomDocumentWraper (domDocument);
+            }
+        }
+        //GeckoDomDocument _Document;
+
+        public GeckoDocument Document {
+            get { return DomDocument as GeckoDocument; }
+        }
+		
 
 		public GeckoWindow Window
 		{
@@ -148,9 +188,8 @@ namespace Gecko
 			//if (!IsHandleCreated) CreateHandle();
 			//if (IsBusy) this.Stop();
 
-
-		//	if (!IsHandleCreated)
-		//		throw new InvalidOperationException("Cannot call Navigate() before the window handle is created.");
+            if (!IsHandleCreated)
+                throw new InvalidOperationException ("Cannot call Navigate() before the window handle is created.");
 
 			// WebNav.LoadURI throws an exception if we try to open a file that doesn't exist...
 			Uri created;
@@ -266,9 +305,10 @@ namespace Gecko
 
 		protected override void OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo)
 		{
-			if ( _baseWindow != null )
-			{
-				_baseWindow.SetPositionAndSize(0, 0, (int)sizeInfo.NewSize.Width, (int)sizeInfo.NewSize.Height, true);
+			if ( _baseWindow != null ) {
+			    _baseWindow.SetPositionAndSize (0, 0,
+			        (int) (sizeInfo.NewSize.Width * DpiX / 96),
+			        (int) (sizeInfo.NewSize.Height * DpiY / 96), true);
 			}
 			
 			base.OnRenderSizeChanged(sizeInfo);
