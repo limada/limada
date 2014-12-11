@@ -323,8 +323,8 @@ namespace Xwt
 		protected WidgetBackendHost BackendHost {
 			get { return backendHost; }
 		}*/
-		
-		IWidgetBackend Backend {
+
+        protected IWidgetBackend Backend {
 			get { return (IWidgetBackend) BackendHost.Backend; }
 		}
 		
