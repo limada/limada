@@ -73,7 +73,10 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             DisposeDone = true;
         }
 
-
+        public void Clear () {
+            if (IsHandleCreated)
+                base.Navigate ("about:blank");
+        }
         public new string Url {
             get { return base.Url.AbsoluteUri; }
             set { Navigate (value); }

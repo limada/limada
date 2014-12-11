@@ -63,7 +63,8 @@ namespace Limaki.Iconerias {
             FontBoldIcon = awesome.AsImage (awesome.FaBold, size * .80);          
             FontItalicIcon = awesome.AsImage (awesome.FaItalic, size * .80);      
             FontUnderlineIcon = awesome.AsImage (awesome.FaUnderline, size * .80);
-                                                                       
+            FontStrikeThroughIcon = awesome.AsImage (awesome.FaStrikethrough, size * .80);     
+                                       
             GoNext = awesome.AsImage(awesome.FaChevronRight, size);    
             GoPrevious = awesome.AsImage(awesome.FaChevronLeft, size); 
             GoHome = awesome.AsImage (awesome.FaHome, size * 1.15);    
@@ -124,6 +125,8 @@ namespace Limaki.Iconerias {
         public static Image FontItalicIcon { get; set; }
 
         public static Image FontUnderlineIcon { get; set; }
+
+        public static Image FontStrikeThroughIcon { get; set; }
 
         public static Image GoNext { get; set; }
 

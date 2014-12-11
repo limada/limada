@@ -98,11 +98,11 @@
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextBoxEditorToolStrip.Designer.cs">
       <DependentUpon>TextBoxEditorToolStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextViewerWithToolstripBackend.cs">
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextViewerWithToolstripBackend0.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextViewerWithToolstripBackend.Designer.cs">
-      <DependentUpon>TextViewerWithToolstripBackend.cs</DependentUpon>
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextViewerWithToolstripBackend0.Designer.cs">
+      <DependentUpon>TextViewerWithToolstripBackend0.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextOkCancelBoxBackend.cs">
       <SubType>UserControl</SubType>

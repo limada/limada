@@ -48,7 +48,7 @@ namespace Limaki.View.XwtBackend {
             context.Factory.Add<IMessageBoxShow, XwtMessageBoxShow> ();
             context.Factory.Add<IProgressHandler, ProgressHandler>();
 
-            context.Factory.Add<IWebBrowserBackend, WebBrowserBackend> ();
+            context.Factory.Add<IWebBrowserBackend, WebViewBackend> ();
 
             context.Factory.Add<IXwtConceptUseCaseComposer, XwtConceptUseCaseComposer>();
         }

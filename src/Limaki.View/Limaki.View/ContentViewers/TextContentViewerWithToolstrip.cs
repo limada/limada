@@ -6,16 +6,17 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2014 Lytico
  *
  * http://www.limada.org
  * 
  */
 
 
-using Limaki.Contents;
 using System.IO;
+using Limaki.Contents;
 using Limaki.View.Vidgets;
+using Limaki.View.XwtBackend;
 
 namespace Limaki.View.ContentViewers {
 
@@ -30,12 +31,16 @@ namespace Limaki.View.ContentViewers {
             get { return TextViewerWithToolstrip; }
         }
 
+        public static bool Available () {
+            return VidgetToolkit.CurrentEngine.Backend.BackendRegistered<ITextViewerWithToolstripVidgetBackend>();
+        }
+
         TextViewerWithToolstrip _textViewerWithToolstrip = null;
         TextViewerWithToolstrip TextViewerWithToolstrip {
             get {
                 if (_textViewerWithToolstrip == null) {
                     _textViewerWithToolstrip = new TextViewerWithToolstrip ();
-                    this.OnAttachBackend(_textViewerWithToolstrip.Backend);
+                    this.OnAttachBackend (_textViewerWithToolstrip.Backend);
                 }
                 return _textViewerWithToolstrip;
             }
@@ -43,10 +48,13 @@ namespace Limaki.View.ContentViewers {
 
         public override IVidgetBackend Backend { get { return TextViewerWithToolstrip.Backend; } }
 
-        public override void SetContent(Content<Stream> content) {
-            base.SetContent(content);
-            TextViewerWithToolstrip.Backend.ToolStripVisible = !this.ReadOnly;
+        public override void SetContent (Content<Stream> content) {
+            base.SetContent (content);
+            if (this.ReadOnly)
+                TextViewerWithToolstrip.ToolStrip.Visibility = Visibility.Hidden;
+            else
+                TextViewerWithToolstrip.ToolStrip.Visibility = Visibility.Visible;
         }
-      
+     
     }
 }

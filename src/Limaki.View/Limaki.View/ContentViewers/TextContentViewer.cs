@@ -30,23 +30,20 @@ namespace Limaki.View.ContentViewers {
         protected TextViewer _textViewer = null;
         public virtual TextViewer TextViewer {
             get {
-                if (_textViewer != null) {
+                if (_textViewer == null) {
                     _textViewer = new TextViewer();
                     var backend = _textViewer.Backend;
                     backend.BorderStyle = VidgetBorderStyle.None;
-                    backend.EnableAutoDragDrop = true;
                     OnAttachBackend(_textViewer.Backend);
                 }
                 return _textViewer;
             }
         }
 
-        public virtual ITextViewerBackend TextViewerBackend { get { return TextViewer.Backend; } }
-
         public override IVidget Frontend { get { return TextViewer; } }
 
         public override IVidgetBackend Backend {
-            get { return TextViewerBackend; }
+            get { return TextViewer.Backend; }
         }
 
         public override bool Supports (long streamType) {
@@ -68,11 +65,11 @@ namespace Limaki.View.ContentViewers {
         }
 
         public override void SetContent (Content<Stream> content) {
-            var backend = TextViewerBackend;
-            if (backend == null)
+
+            if (TextViewer == null)
                 return;
 
-            zoom = backend.ZoomFactor;
+            zoom = TextViewer.ZoomFactor;
 
             var stream = content.Data;
 
@@ -94,7 +91,7 @@ namespace Limaki.View.ContentViewers {
                     textType = TextViewerTextType.UnicodePlainText;
                 }
 
-                backend.Load(stream, textType);
+                TextViewer.Load(stream, textType);
 
             } catch (Exception ex) {
                 ExceptionHandler.Catch(ex, MessageType.OK);
@@ -107,21 +104,15 @@ namespace Limaki.View.ContentViewers {
         }
 
         public override bool CanSave () {
-            var backend = TextViewerBackend;
-            return backend != null && !backend.ReadOnly && backend.Modified;
-        }
-
-
-        public virtual Stream DoSave () {
-            var stream = new MemoryStream();
-            TextViewerBackend.Save(stream, TextViewerTextType.RichText);
-            return stream;
+            return TextViewer != null && !TextViewer.ReadOnly && TextViewer.Modified;
         }
 
         public override void Save (Content<Stream> content) {
             if (CanSave()) {
                 if (content != null) {
-                    var stream = DoSave();
+
+                    Stream stream = new MemoryStream ();
+                    TextViewer.Save (stream, TextViewerTextType.RichText);
 
                     stream.Position = 0;
                     var filter = new RTFFilter();
@@ -129,26 +120,21 @@ namespace Limaki.View.ContentViewers {
 
                     stream.Position = 0;
 
-
                     content.ContentType = ContentTypes.RTF;
                     content.Compression = CompressionType.bZip2;
                     content.Data = stream;
                 }
             }
-            TextViewerBackend.Modified = false;
+            TextViewer.Modified = false;
         }
 
         public override void OnShow () {
             base.OnShow();
-            var backend = TextViewerBackend as ITextViewerBackend;
-            // this is to bring textControl to show proper scrolloffset and zoom
-            // but zoom does not work
-            //Application.DoEvents(); // this disturbs VisualsDisplay.MouseTimerAction!
-            backend.AutoScrollOffset = new Point();
-            backend.ZoomFactor = this.zoom;
-            backend.ReadOnly = this.ReadOnly;
-            //Application.DoEvents();
-            backend.Modified = false;
+
+            TextViewer.AutoScrollOffset = new Point();
+            TextViewer.ZoomFactor = this.zoom;
+            TextViewer.ReadOnly = this.ReadOnly;
+            TextViewer.Modified = false;
         }
 
         public override void Dispose () {
@@ -160,7 +146,7 @@ namespace Limaki.View.ContentViewers {
         public override void Clear () {
             base.Clear();
             if (_textViewer != null) {
-                TextViewerBackend.Clear();
+                TextViewer.Clear();
             }
         }
     }

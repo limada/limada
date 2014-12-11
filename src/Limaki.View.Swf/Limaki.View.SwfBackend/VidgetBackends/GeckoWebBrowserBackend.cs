@@ -127,7 +127,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         public void GoHome () { base.Navigate ("about:blank"); }
-  
+
+        public void Clear () {
+            if (IsHandleCreated)
+                base.Navigate ("about:blank");
+        }
 
         #endregion
 

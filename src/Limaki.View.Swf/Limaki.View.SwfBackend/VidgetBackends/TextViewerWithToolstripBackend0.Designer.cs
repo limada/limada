@@ -1,5 +1,5 @@
 namespace Limaki.View.SwfBackend.VidgetBackends {
-    partial class TextViewerWithToolstripBackend {
+    partial class TextViewerWithToolstripBackend0 {
         /// <summary>
         /// Erforderliche Designervariable.
         /// </summary>

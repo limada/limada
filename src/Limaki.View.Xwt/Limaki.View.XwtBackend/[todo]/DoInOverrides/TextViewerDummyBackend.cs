@@ -1,8 +1,12 @@
+using System.Collections.Generic;
 using Limaki.View.Vidgets;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.XwtBackend {
-    public class TextViewerBackend : DummyBackend, ITextViewerBackend {
+
+    public class TextViewerDummyBackend : DummyBackend, ITextViewerVidgetBackend {
+
         public bool Multiline { get; set; }
 
         public bool EnableAutoDragDrop { get; set; }
@@ -22,8 +26,13 @@ namespace Limaki.View.XwtBackend {
         public Drawing.ZoomState ZoomState { get; set; }
 
         public double ZoomFactor { get; set; }
-        public void UpdateZoom () {
+        public void UpdateZoom () { }
 
-        }
+        public void SetAttribute (TextAttribute attribute) { }
+
+        public IEnumerable<TextAttribute> GetAttributes () { yield break; }
+
+
+        public event System.EventHandler SelectionChanged;
     }
 }

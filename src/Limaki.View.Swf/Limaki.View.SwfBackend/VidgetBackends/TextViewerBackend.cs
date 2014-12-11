@@ -22,12 +22,15 @@ using Xwt.GdiBackend;
 using Limaki.Common;
 using System.Text;
 using Limaki.Common.Text;
+using XD = Xwt.Drawing;
+using System.Collections.Generic;
+using System;
 
 // this control uses ideas from RicherTextBox by ???
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public partial class TextViewerBackend : UserControl, IZoomTarget, ITextViewerBackend {
+    public partial class TextViewerBackend : UserControl, IZoomTarget, ITextViewerVidgetBackend {
 
         public TextViewerBackend () {
             InitializeComponent ();
@@ -35,6 +38,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             innerTextBox.Enter += (sender, args) => { this.OnEnter (args); };
             innerTextBox.MouseUp += (sender, args) => { this.OnMouseUp (args); };
             innerTextBox.GotFocus += (sender, args) => { this.OnGotFocus (args); };
+            EnableAutoDragDrop = true;
 
         }
 
@@ -127,6 +131,99 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             innerTextBox.SaveFile(stream, (RichTextBoxStreamType)textType);
         }
 
+        public void SetAttribute (XD.TextAttribute a) {
+
+            var rtfHelper = new Limaki.Common.Text.RTF.RTFHelper ();
+
+            var visit = new TextAttributeVisitor {
+
+                FontTextAttribute = attribute => {
+                    if (!string.IsNullOrEmpty (attribute.Font.Family))
+                        Controller.SetFontFamiliy (attribute.Font.Family);
+                    if (attribute.Font.Size > 0)
+                        Controller.SetFontSize ((int) attribute.Font.Size);
+
+                },
+
+                FontDataAttribute = attribute => {
+                    if (!string.IsNullOrEmpty (attribute.FontFamily))
+                        Controller.SetFontFamiliy (attribute.FontFamily);
+                    if (attribute.FontSize > 0)
+                        Controller.SetFontSize ((int) attribute.FontSize);
+
+                },
+
+                FontWeightTextAttribute = attribute => 
+                    Controller.SetEditorSelectedRTF (
+                        source => rtfHelper.SetAttributes (source, Convert (attribute.Weight))),
+
+                FontStyleTextAttribute = attribute => 
+                    Controller.SetEditorSelectedRTF (
+                        source => rtfHelper.SetAttributes (source, Convert (attribute.Style))),
+
+                StrikethroughTextAttribute = attribute => {
+                    if (attribute.Strikethrough) {
+                        Controller.SetEditorSelectedRTF (
+                            source => rtfHelper.SetAttributes (source, Common.Text.RTF.FontStyle.Strikeout));
+                    }
+
+                },
+
+                UnderlineTextAttribute = attribute => {
+                    if (attribute.Underline) {
+                        Controller.SetEditorSelectedRTF (
+                            source => rtfHelper.SetAttributes (source, Common.Text.RTF.FontStyle.Underline));
+                    }
+
+                },
+                BackgroundTextAttribute = attribute => { },
+                ColorTextAttribute = attribute =>{}
+            };
+
+            visit.Visit (a);
+        }
+
+        
+        private Common.Text.RTF.FontStyle Convert (XD.FontWeight fontWeight) {
+            if (fontWeight == XD.FontWeight.Bold)
+                return Common.Text.RTF.FontStyle.Bold;
+            return Common.Text.RTF.FontStyle.Normal;
+        }
+
+        private Common.Text.RTF.FontStyle Convert (XD.FontStyle fontStyle) {
+            if (fontStyle == XD.FontStyle.Italic || fontStyle == XD.FontStyle.Oblique)
+                return Common.Text.RTF.FontStyle.Italic;
+            return Common.Text.RTF.FontStyle.Normal;
+        }
+
+        public IEnumerable<XD.TextAttribute> GetAttributes () {
+
+            var font = this.innerTextBox.SelectionFont;
+            if (font != null) {
+
+                yield return new XD.FontDataAttribute {
+                    FontFamily = font.FontFamily.Name,
+                    FontSize = font.SizeInPoints,
+                };
+
+                yield return new XD.FontWeightTextAttribute {
+                    Weight = font.Bold ? XD.FontWeight.Bold : XD.FontWeight.Normal
+                };
+
+                yield return new XD.FontStyleTextAttribute {
+                    Style = font.Italic ? XD.FontStyle.Italic : XD.FontStyle.Normal
+                };
+
+                if (font.Underline)
+                    yield return new XD.UnderlineTextAttribute { Underline = true };
+            }
+        }
+
+        public event EventHandler SelectionChanged {
+            add { innerTextBox.SelectionChanged += value; }
+            remove { innerTextBox.SelectionChanged -= value; }
+        }
+
         #region IZoomTarget Member
 
         public ZoomState ZoomState {
@@ -137,6 +234,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
                 }
             }
         }
+
+
 
         /// <summary>
         /// remark: works only with truetype-fonts, else next integer
@@ -164,8 +263,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         Xwt.Size IVidgetBackend.Size {
             get { return this.Size.ToXwt(); }
         }
-
-
+        
         void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
             this.Invalidate(rect.ToGdi());
         }
@@ -174,7 +272,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         #endregion
 
-        VidgetBorderStyle ITextViewerBackend.BorderStyle {
+        VidgetBorderStyle ITextViewerVidgetBackend.BorderStyle {
             get { return (VidgetBorderStyle)this.BorderStyle; }
             set { this.BorderStyle = (BorderStyle)value; }
         }
@@ -184,6 +282,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             set { this.AutoScrollOffset = value.ToGdi(); }
         }
 
+
     }
 }
+
 

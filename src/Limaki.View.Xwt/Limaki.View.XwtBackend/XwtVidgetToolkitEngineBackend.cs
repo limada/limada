@@ -20,6 +20,7 @@ using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.View.Viz.Visuals;
 using Xwt.Drawing;
 using Limaki.View.XwtBackend;
+using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
@@ -40,9 +41,9 @@ namespace Limaki.View.XwtBackend {
             RegisterBackend<ISplitViewBackend, SplitViewBackend>();
             RegisterBackend<ITextOkCancelBoxBackend, TextOkCancelBoxBackend> ();
 
-            RegisterBackend<ITextViewerBackend, TextViewerBackend>();
-            RegisterBackend<ITextViewerWithToolstripBackend, TextViewerWithToolstripBackend>();
-            RegisterBackend<IWebBrowserBackend, WebBrowserBackend>();
+            RegisterBackend<ITextViewerVidgetBackend, TextViewerDummyBackend>();
+            RegisterBackend<ITextViewerWithToolstripVidgetBackend0, TextViewerWithToolstripBackend0>();
+            RegisterBackend<IWebBrowserBackend, WebViewBackend>();
 
             RegisterBackend<IDigidocViewerBackend, DigidocViewerBackend>();
 
@@ -51,7 +52,6 @@ namespace Limaki.View.XwtBackend {
             RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend>();
             RegisterBackend<ILayoutToolStripBackend0, LayoutToolStripBackend>();
             RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend>();
-
 
         }
     }

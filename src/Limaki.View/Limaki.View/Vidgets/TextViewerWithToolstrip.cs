@@ -1,31 +1,58 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
+using Limaki.View.XwtBackend;
 using Xwt.Backends;
 
 namespace Limaki.View.Vidgets {
-    [BackendType(typeof(ITextViewerWithToolstripBackend))]
+
+    public interface ITextViewerWithToolstrip {
+
+        void SetTextViewer (TextViewer viewer);
+        void SetToolStrip (TextViewerToolStrip toolstrip);
+    }
+
+    [BackendType (typeof (ITextViewerWithToolstripVidgetBackend))]
     public class TextViewerWithToolstrip : Vidget {
-        TextViewer _textViewer = null;
+
+        public new virtual ITextViewerWithToolstripVidgetBackend Backend {
+            get { return base.Backend as ITextViewerWithToolstripVidgetBackend; }
+        }
+
+        private TextViewer _textViewer = null;
         public TextViewer TextViewer {
             get {
                 if (_textViewer == null) {
-                    _textViewer = new TextViewer();
+                    _textViewer = new TextViewer ();
                 }
                 return _textViewer;
             }
         }
 
-        ITextViewerWithToolstripBackend _backend = null;
-        public virtual new ITextViewerWithToolstripBackend Backend {
+        private TextViewerToolStrip _toolStrip = null;
+        public TextViewerToolStrip ToolStrip {
             get {
-                if (_backend == null) {
-                    _backend = BackendHost.Backend as ITextViewerWithToolstripBackend;
+                if (_toolStrip == null) {
+                    _toolStrip = new TextViewerToolStrip ();
+                    _toolStrip.Attach (TextViewer);
                 }
-                return _backend;
+                return _toolStrip;
             }
-            set { _backend = value; }
         }
 
         public override void Dispose () {
-
+            
         }
     }
 }

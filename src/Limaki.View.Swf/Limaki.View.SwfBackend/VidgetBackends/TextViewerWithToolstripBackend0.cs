@@ -20,14 +20,14 @@ using Xwt.GdiBackend;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public partial class TextViewerWithToolstripBackend : ToolStripContainer, IZoomTarget, ITextViewerWithToolstripBackend {
+    public partial class TextViewerWithToolstripBackend0 : ToolStripContainer, IZoomTarget, ITextViewerWithToolstripVidgetBackend0 {
         
-        public TextViewerWithToolstripBackend() {
+        public TextViewerWithToolstripBackend0() {
             InitializeComponent();
         }
 
-        TextViewerWithToolstrip _frontend = null;
-        public TextViewerWithToolstrip Frontend {
+        TextViewerWithToolstrip0 _frontend = null;
+        public TextViewerWithToolstrip0 Frontend {
             get { return _frontend; }
             protected set {
                 if(_frontend!=value) {
@@ -38,7 +38,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (TextViewerWithToolstrip)frontend;
+            this.Frontend = (TextViewerWithToolstrip0)frontend;
         }
 
         private TextViewerBackend _textViewerBackend = null;
