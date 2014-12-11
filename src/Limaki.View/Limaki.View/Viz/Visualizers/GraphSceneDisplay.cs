@@ -14,8 +14,10 @@
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Common;
+using Limaki.Common.Linqish;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Limaki.Actions;
 using Limaki.View.Viz.Modelling;
 using Limaki.View.Viz.Rendering;
@@ -123,19 +125,13 @@ namespace Limaki.View.Viz.Visualizers {
 
         public virtual void OnSceneFocusChanged() {
             if (SceneFocusChanged != null && focusChangedEventArgs != null) {
-                int start = Environment.TickCount;
 
                 SceneFocusChanged(this, focusChangedEventArgs);
                 focusChangedEventArgs = null;
 
-                //int now = Environment.TickCount;
-                //System.Console.Out.WriteLine("Start/Elapsed FocusChanged:\t" + start+"/"+(now - start));
+                EventControler.Actions.Values.OfType<MouseTimerActionBase> ()
+                    .ForEach (a => a.LastMouseTime = 0);
 
-                foreach (KeyValuePair<Type, IAction> action in this.EventControler.Actions) {
-                    if (action.Value is MouseTimerActionBase) {
-                        ((MouseTimerActionBase)action.Value).LastMouseTime = 0;
-                    }
-                }
             }
         }
 

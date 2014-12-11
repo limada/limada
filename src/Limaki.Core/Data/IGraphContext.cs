@@ -19,8 +19,10 @@ using System.Linq;
 namespace Limaki.Graphs {
 
     public interface IGraphContext<TItem,TEdge> {
+
         IQueryable<TItem> Items { get; }
         IQueryable<TEdge> Edges { get; }
+
     }
 
 }

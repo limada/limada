@@ -18,6 +18,7 @@ using System.Runtime.Serialization;
 
 
 namespace Limada.Model {
+
     public interface INumberThing : IThing<long> {
         NumberType NumberType { get; set; }
         object Number { get; set; }

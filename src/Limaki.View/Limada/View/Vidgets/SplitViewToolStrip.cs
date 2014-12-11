@@ -93,18 +93,21 @@ namespace Limada.View.Vidgets {
                     CheckBackForward (SplitView);
                 }
             };
+
             GoBackCommand = new ToolStripCommand {
                 Action = s => goBackOrForward (false),
                 Image = Iconery.GoPrevious,
                 Size = size,
                 ToolTipText = "navigate back"
             };
+
             GoForwardCommand = new ToolStripCommand {
                 Action = s => goBackOrForward (true),
                 Image = Iconery.GoNext,
                 Size = size,
                 ToolTipText = "navigate forward"
             };
+
             GoHomeCommand = new ToolStripCommand {
                 Action = s => SplitView.GoHome (),
                 Image = Iconery.GoHome,
@@ -257,7 +260,9 @@ namespace Limada.View.Vidgets {
             });
 
             if (result != null) {
+                SheetCombo.SelectionChanged -= SelectSheet;
                 SheetCombo.SelectedItem = result;
+                SheetCombo.SelectionChanged += SelectSheet;
             }
 
         }

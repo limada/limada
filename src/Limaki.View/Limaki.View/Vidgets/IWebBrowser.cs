@@ -30,7 +30,7 @@ namespace Limaki.View.Vidgets {
     }
 
     public interface IWebBrowserBackend : IWebBrowser, IVidgetBackend, IHistoryAware {
-        
+       
     }
 
     public interface IWebBrowserWithProxy {

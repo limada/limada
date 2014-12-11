@@ -38,7 +38,6 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             CurrentDisplay = null;
         }
 
-        public Size DefaultSize = new Size (36, 36);
     }
 
     public interface IDisplayToolStripBackend : IToolStripBackend { }

@@ -30,7 +30,6 @@ namespace Limaki.View.WpfBackend {
 
         protected virtual void Compose () {
             ComposeStyle ();
-
             this.Content = ButtonImage;
         }
 

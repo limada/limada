@@ -46,6 +46,7 @@ namespace Limaki.View.WpfBackend {
 
             this.Content = ButtonPanel;
 
+
         }
 
         StackPanel _buttonPanel = null;
@@ -151,7 +152,7 @@ namespace Limaki.View.WpfBackend {
 
             foreach (var child in this.Children.ToArray ()
                 .Where (c => !ChildPanel.Children.Contains (c))) {
-                child.PreviewMouseMove += ShowToolTip; ;
+                child.PreviewMouseMove += ShowToolTip;
                 child.MouseLeave += HideToolTip;
                 child.PreviewMouseUp += (s, e) => {
                     this.PopupVisible = false;

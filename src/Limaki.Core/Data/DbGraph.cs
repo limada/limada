@@ -7,6 +7,7 @@ namespace Limaki.Data {
     
     public abstract class DbGraph<TItem, TEdge> : GraphBase<TItem, TEdge>
         where TEdge : IEdge<TItem> {
+
         # region EdgeList-Cache
         IDictionary<TItem, ICollection<TEdge>> _edgesCache = null;
         protected IDictionary<TItem, ICollection<TEdge>> EdgesCache{
@@ -48,6 +49,7 @@ namespace Limaki.Data {
 
         public abstract void EvictItem ( TItem item );
         public abstract void Flush();
+
         public virtual void Close() {
             ClearCaches ();
         }

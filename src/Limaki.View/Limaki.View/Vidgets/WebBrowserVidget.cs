@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2013 Lytico
+ * Copyright (C) 2013 - 2014 Lytico
  *
  * http://www.limada.org
  * 
@@ -40,15 +40,21 @@ namespace Limaki.View.Vidgets {
         public string DocumentText { get { return Backend.DocumentText; } set { Backend.DocumentText = value; } }
 
         public void MakeReady () { Backend.MakeReady (); }
+
         public string Url { get { return Backend.Url; } set { Backend.Url = value; } }
+
         public void Navigate (string urlString) { Backend.Navigate (urlString); }
 
         public void WaitFor (Func<bool> done) { Backend.WaitFor (done); }
 
         public bool CanGoBack { get { return Backend.CanGoBack; } }
+
         public bool CanGoForward { get { return Backend.CanGoForward; } }
+
         public bool GoBack () { return Backend.GoBack (); }
+
         public bool GoForward () { return Backend.GoForward (); }
+
         public void GoHome () { Backend.GoHome (); }
 
         public override void Dispose () {}

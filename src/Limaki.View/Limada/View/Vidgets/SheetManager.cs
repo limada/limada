@@ -94,6 +94,7 @@ namespace Limada.View.Vidgets {
      
 
         #region save sheet to thing
+
         private IThingGraph GetThingGraph(IGraph<IVisual, IVisualEdge> graph) {
             var thingGraph = graph.ThingGraph();
             if (thingGraph == null) {

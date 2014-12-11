@@ -79,7 +79,7 @@ namespace Limaki.WebServers {
         }
 
         public override void Close() {
-
+            running = false;
             base.Close();
         }
 

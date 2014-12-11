@@ -21,7 +21,9 @@ namespace Limaki.Contents {
     public interface IPipePool<TSource, TSink> : IEnumerable<IPipe<TSource,TSink>> {}
 
     public class PipePool<TSource, TSink> : IPipePool<TSource, TSink> {
+
         protected ICollection<IPipe<TSource, TSink>> _sinks = new Set<IPipe<TSource, TSink>>();
+
         public virtual void Add (IPipe<TSource, TSink> sink) {
             _sinks.Add(sink);
         }
