@@ -623,7 +623,10 @@ namespace Xwt.WPFBackend
 			});
 			if (args.Handled)
 				e.Handled = true;
-            Mouse.Capture(this.Widget);
+
+            // as it is not sure that there is a MouseUp fired, 
+            // the Mouse will be captured forever on this widget:
+            // Mouse.Capture(this.Widget);
 		}
 
 		void WidgetMouseUpHandler (object o, MouseButtonEventArgs e)
