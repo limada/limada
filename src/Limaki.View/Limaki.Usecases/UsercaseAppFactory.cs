@@ -29,7 +29,7 @@ namespace Limaki.Usecases {
         public UsercaseAppFactory (IBackendContextResourceLoader backendContextResourceLoader)
             : base (backendContextResourceLoader) { }
 
-        public abstract Xwt.ToolkitType ToolkitType { get; }
+        public virtual Xwt.ToolkitType ToolkitType { get; protected set; }
 
         public abstract void Run ();
 

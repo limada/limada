@@ -14,6 +14,7 @@
 
 using System;
 using System.Linq;
+using System.Configuration;
 using Limada.Usecases;
 using Limaki.Common;
 using Limaki.Common.IOC;
@@ -26,13 +27,26 @@ namespace Limaki.View.XwtBackend {
 
     public class XwtAppFactory : UsercaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
 
+        ToolkitType? _toolkitType = null;
         public override ToolkitType ToolkitType {
-            get { return Xwt.ToolkitType.Gtk; }
+            get {
+                if (_toolkitType.HasValue)
+                    return _toolkitType.Value;
+                return Xwt.ToolkitType.Wpf;
+            }
+            protected set { _toolkitType = value; }
         }
 
         public XwtAppFactory () : base () { }
 
         public override void Run () {
+
+            var tkts = ConfigurationManager.AppSettings["ToolkitType"];
+            if (!string.IsNullOrEmpty (tkts)) {
+                var tk = this.ToolkitType;
+                if (Enum.TryParse<Xwt.ToolkitType> (tkts, out tk))
+                    this.ToolkitType = tk;
+            }
 
             Application.Initialize (this.ToolkitType);
 
