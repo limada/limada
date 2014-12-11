@@ -12,9 +12,13 @@
  * 
  */
 
+using System.Collections.Generic;
+using System.Linq;
 using Limaki.Common;
 using System;
 using System.IO;
+using Limaki.Contents;
+using Limaki.Contents.IO;
 using Xwt.Backends;
 
 namespace Limaki.View.Vidgets {
@@ -33,6 +37,19 @@ namespace Limaki.View.Vidgets {
             return new WebBrowserBackendHost();
         }
 
+        private IEnumerable<ContentInfo> _supportedContents = null;
+
+        public IEnumerable<ContentInfo> ContentSpecs {
+            get {
+                return _supportedContents ?? (_supportedContents =
+                    new HtmlContentSpot ().ContentSpecs
+                    #if DEBUG
+                    .Union (new PdfContentSpot ().ContentSpecs)
+                    #endif
+                    .ToArray ()
+                    );
+            }
+        }
         public new IWebBrowserBackend Backend { get { return BackendHost.Backend as IWebBrowserBackend; } }
 
         public Stream DocumentStream { get { return Backend.DocumentStream; } set { Backend.DocumentStream = value; } }
@@ -58,5 +75,7 @@ namespace Limaki.View.Vidgets {
         public void GoHome () { Backend.GoHome (); }
 
         public override void Dispose () {}
+
+        public void Clear () { Backend.Clear (); }
     }
 }

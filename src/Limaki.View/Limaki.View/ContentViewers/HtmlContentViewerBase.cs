@@ -167,7 +167,7 @@ namespace Limaki.View.ContentViewers {
                 
             }
             if (_webBrowser != null) {
-                WebBrowser.Navigate ("about:blank");
+                WebBrowser.Clear();
             }
         }
 

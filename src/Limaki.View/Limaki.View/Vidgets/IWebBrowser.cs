@@ -26,7 +26,8 @@ namespace Limaki.View.Vidgets {
 
         void WaitFor (Func<bool> done);
         void MakeReady ();
-        
+
+        void Clear ();
     }
 
     public interface IWebBrowserBackend : IWebBrowser, IVidgetBackend, IHistoryAware {

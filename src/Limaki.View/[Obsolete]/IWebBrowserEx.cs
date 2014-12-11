@@ -3,6 +3,7 @@ using System.ComponentModel;
 
 namespace Limaki.View.Vidgets {
 
+    [Obsolete]
     public interface IWebBrowserEx : IWebBrowser {
 
         bool AllowNavigation { get; set; }
