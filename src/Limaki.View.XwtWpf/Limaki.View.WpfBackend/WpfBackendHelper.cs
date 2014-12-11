@@ -14,6 +14,7 @@
 
 using System;
 using System.Windows;
+using Xwt.Backends;
 
 namespace Limaki.View.WpfBackend {
 
@@ -70,8 +71,33 @@ namespace Limaki.View.WpfBackend {
             if (xb != null && ((Xwt.Backends.IFrontend)xb.Widget).Backend is Xwt.WPFBackend.WidgetBackend)
                 return ((Xwt.WPFBackend.WidgetBackend)((Xwt.Backends.IFrontend)xb.Widget).Backend).Widget;
 
+            var widget = backend as Xwt.Widget;
+            if (widget != null) {
+                var wpfBackend = widget.GetBackend () as Xwt.WPFBackend.WidgetBackend;
+                if (wpfBackend != null)
+                    return Xwt.WPFBackend.WidgetBackend.GetFrameworkElement (wpfBackend);
+            }
+
             return backend as FrameworkElement;
 
+        }
+
+        public static FrameworkElement GetFrameworkElement (this IVidgetBackend vidgetBackend) {
+            var backend = vidgetBackend as FrameworkElement;
+            if (backend != null)
+                return backend;
+            var widget = vidgetBackend as Xwt.Widget;
+            if (widget != null) {
+                var wpfBackend = widget.GetBackend () as Xwt.WPFBackend.WidgetBackend;
+                if (wpfBackend != null)
+                    backend = Xwt.WPFBackend.WidgetBackend.GetFrameworkElement (wpfBackend);
+            } else {
+                var wpfBackend = vidgetBackend as IWpfBackend;
+                if (wpfBackend != null)
+                    return wpfBackend.Control;
+
+            }
+            return backend;
         }
     }
 }

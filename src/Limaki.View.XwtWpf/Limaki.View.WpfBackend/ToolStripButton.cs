@@ -50,7 +50,6 @@ namespace Limaki.View.WpfBackend {
             trigger.Setters.Add (setter);
             style.Triggers.Add (trigger);
 
-            // use ToolbarStyle as BaseStyle
             var baseStyle = ToolStripUtils.ToolbarItemStyle(this);
             style.TargetType = baseStyle.TargetType;
             style.BasedOn = baseStyle;
@@ -93,7 +92,12 @@ namespace Limaki.View.WpfBackend {
         public virtual string Label { get; set; }
 
         public virtual string ToolTipText {
-            get { return base.ToolTip.ToString (); }
+            get {
+                if (base.ToolTip != null)
+                    return base.ToolTip.ToString ();
+                else
+                    return string.Empty;
+            }
             set {
                 if (!string.IsNullOrEmpty (value))
                     base.ToolTip = new ToolTip { Content = value };

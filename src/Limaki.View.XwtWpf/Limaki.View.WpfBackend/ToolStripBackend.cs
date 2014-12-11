@@ -45,6 +45,12 @@ namespace Limaki.View.WpfBackend {
             }
         }
 
+        public override void Compose () {
+            base.Compose ();
+            Control.Focusable = true;
+            Control.MouseDown += (s, e) => e.Handled = true;
+        }
+
         public VidgetApplicationContext ApplicationContext { get; set; }
 
         public ToolStrip Frontend { get; protected set; }

@@ -68,9 +68,6 @@ namespace Limaki.View.WpfBackend {
 
                     Popup.IsOpenProperty.Bind (this, o => o.PopupVisible, _childPopup, BindingMode.TwoWay);
 
-                    // not working, maybe IsMouseOver doesnt fire propertychanged?
-                    ToolStripDropDownButton.PopupVisibleProperty.Bind (this.DropDownImage, img => img.IsMouseOver, this, BindingMode.OneWay);
-
                     _childPopup.LostFocus += (s, e) => {
                         Trace.WriteLine (string.Format ("LostFocus; PopupVisible {0}", this.PopupVisible));
                     };
@@ -81,6 +78,10 @@ namespace Limaki.View.WpfBackend {
 
                     _childPopup.Opened += (s, e) => {
                         Trace.WriteLine (string.Format ("Opened; PopupVisible {0}", this.PopupVisible));
+                    };
+
+                    _childPopup.Closed += (s, e) => {
+                        Trace.WriteLine (string.Format ("Closed; PopupVisible {0}", this.PopupVisible));
                     };
                 }
                 return _childPopup;
@@ -106,19 +107,6 @@ namespace Limaki.View.WpfBackend {
 
                     var awesome = Iconery.Create<AwesomeIconeria> ();
                     _dropDownImage = ToolStripUtils.WpfImage (awesome.AsImage (awesome.FaCaretDown, 12));
-
-                    _dropDownImage.MouseLeftButtonDown += (s, e) => {
-                        this.PopupVisible = true;
-                        e.Handled = true;
-                    };
-                    _dropDownImage.MouseLeftButtonUp += (s, e) => {
-                        this.PopupVisible = false;
-                        e.Handled = true;
-                    };
-                    _dropDownImage.LostMouseCapture += (s, e) => {
-                        this.PopupVisible = false;
-                        e.Handled = true;
-                    };
                 }
 
                 return _dropDownImage;
@@ -160,6 +148,8 @@ namespace Limaki.View.WpfBackend {
                 };
                 ChildPanel.Children.Add (child);
             }
+            //Mouse.AddPreviewMouseDownOutsideCapturedElementHandler (ChildPanel, OnMouseDownOutsideCapturedElement);
+            //Mouse.Capture (ChildPanel);
             ChildPopup.IsOpen = true;
 
         }
@@ -167,11 +157,14 @@ namespace Limaki.View.WpfBackend {
         protected void ClosePopup (bool fromButton) {
             if (ChildPopup.IsOpen)
                 ChildPopup.IsOpen = false;
-            ReleaseMouseCapture ();
-            ChildPopup.ReleaseMouseCapture ();
-
+            Mouse.Capture (null);
+            
             if (fromButton)
                 ButtonPanel.Focus ();
+        }
+
+        protected void OnMouseDownOutsideCapturedElement (object sender, MouseButtonEventArgs e) {
+            ClosePopup (false);
         }
 
         public bool PopupVisible {
