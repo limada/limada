@@ -48,6 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,9 +59,8 @@
   <ItemGroup>
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\ComboBoxBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\PanedBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\VidgetBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VindowBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\WebBrowserBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\WebViewBackend.cs" />
     <Compile Include="Sandbox\ScrollDisplayBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\DummyToolStripBackends.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\DigidocViewerBackend.cs" />
@@ -73,8 +73,8 @@
     <Compile Include="Limaki.View.XwtBackend\[todo]\PrintDocument.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\PrintManager.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\StyleEditor.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\TextViewerBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\TextViewerWithToolstripBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\TextViewerDummyBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\[todo]\DoInOverrides\TextViewerWithToolstripBackend0.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\SplitViewBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\FileDialogBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\TextOkCancelBoxBackend.cs" />
@@ -97,7 +97,6 @@
     <Compile Include="Limaki.View.XwtBackend\XwtSystemInformation.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtSystemColorsBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\XwtVidgetToolkitEngineBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\XwtBackendHelper.cs" />
     <Compile Include="Limaki.View.XwtBackend\MainWindowBackend.cs" />
     <Compile Include="Sandbox\PrototypeData.cs" />
     <Compile Include="XwtAppFactory.cs" />
