@@ -59,6 +59,8 @@ namespace Limaki.Common {
         void Add<T>(Func<T> creator);
         void Add<T>(Func<object[], T> creator);
 
+        Func<T> Func<T> ();
+
         void Clear ();
 
     }
