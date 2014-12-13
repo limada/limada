@@ -25,6 +25,7 @@ using Id = System.Int64;
 
 
 namespace Limada.Tests.ThingGraphs {
+
     public class ThingGraphTest : ThingGraphTestBase {
 
         public void AddData(IThingGraph graph, BasicThingGraphTest graphTest) {
@@ -38,7 +39,7 @@ namespace Limada.Tests.ThingGraphs {
         /// </summary>
         [Test]
         public virtual void StandardGraphTest() {
-            BasicThingGraphTest graphTest = new BasicThingGraphTest();
+            var graphTest = new BasicThingGraphTest();
             graphTest.DoDetail = this.DoDetail;
 
             graphTest.Graph = this.Graph;
@@ -56,18 +57,18 @@ namespace Limada.Tests.ThingGraphs {
         /// </summary>
         [Test]
         public virtual void OpenCloseOpenRead() {
-            BasicThingGraphTest graphTest = new BasicThingGraphTest();
+            var graphTest = new BasicThingGraphTest();
 
-            IThingGraph graph = this.Graph;
+            var graph = this.Graph;
             AddData(graph, graphTest);
 
             this.Close();
             graph = this.Graph;
 
-            IThing thing = graph.GetById(graphTest.Data.Two.Id);
+            var thing = graph.GetById(graphTest.Data.Two.Id);
             Assert.AreEqual(thing.Id, graphTest.Data.Two.Id);
 
-            IEnumerable<ILink> links = graph.Edges(graphTest.Data.Two);
+            var links = graph.Edges(graphTest.Data.Two);
             foreach (ILink l in links) {
                 Assert.IsNotNull(l.Root);
                 Assert.IsNotNull(l.Leaf);
@@ -75,7 +76,7 @@ namespace Limada.Tests.ThingGraphs {
             }
 
             thing = graph.GetById(graphTest.Data.TwoThree.Id);
-            ILink link = (ILink)thing;
+            var link = (ILink)thing;
             Assert.AreEqual(link.Root.Id, graphTest.Data.Two.Id);
 
             this.Close();
@@ -84,8 +85,8 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public virtual void CheckInvalidLinks() {
-            IThingGraph graph = this.Graph;
-            foreach (ILink link in graph.Edges()) {
+            var graph = this.Graph;
+            foreach (var link in graph.Edges()) {
                 if (((ILink<Id>)link).Leaf != default(Id)) {
                     Assert.IsNotNull(link.Leaf);
                 }
@@ -127,7 +128,7 @@ namespace Limada.Tests.ThingGraphs {
 
         [Test]
         public virtual void EdgeListTest() {
-            IThingGraph target = this.Graph;
+            var target = this.Graph;
 
             //IGraphPair<IGraphItem, IThing, IGraphEdge, ILink> graphPair =
             //      new GraphPair<IGraphItem, IThing, IGraphEdge, ILink>(
@@ -139,18 +140,18 @@ namespace Limada.Tests.ThingGraphs {
             //factory.AddDensity = true;
             //factory.Populate();
 
-            IDictionary<IThing, int> edgesCount = new Dictionary<IThing, int>();
+            var edgesCount = new Dictionary<IThing, int>();
             foreach (IThing thing in target) {
                 int i = 0;
-                foreach (ILink link in target.Edges(thing)) {
+                foreach (var link in target.Edges(thing)) {
                     i++;
                 }
                 edgesCount.Add(thing, i);
             }
             for (int j = 0; j < 3; j++)
-                foreach (IThing thing in target) {
+                foreach (var thing in target) {
                     int i = 0;
-                    foreach (ILink link in target.Edges(thing)) {
+                    foreach (var link in target.Edges(thing)) {
                         i++;
                     }
                     Assert.AreEqual(edgesCount[thing], i);
@@ -186,17 +187,17 @@ namespace Limada.Tests.ThingGraphs {
 
             Assert.IsTrue(target.Contains(testThing));
 
-            ICollection<IGraphEdge> deleteCollection =
+            var deleteCollection =
                 new List<IGraphEdge>(pair.PostorderTwig(testEntity));
 
-            foreach (IGraphEdge link in deleteCollection) {// Java
+            foreach (var link in deleteCollection) {// Java
                 pair.Remove(link);
             }
 
             pair.Remove(testEntity); // Java
 
 
-            foreach (IGraphEdge link in deleteCollection) {// Java
+            foreach (var link in deleteCollection) {// Java
                 pair.Remove(link);
             }
 

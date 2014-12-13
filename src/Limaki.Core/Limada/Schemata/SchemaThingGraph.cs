@@ -341,9 +341,7 @@ namespace Limada.Schemata {
         public IEnumerable<T> Where<T>(Expression<System.Func<T, bool>> predicate) where T : IThing {
             return (Source as IThingGraph).Where<T>(predicate);
         }
-
         
-
         #region IEnumerable Member
 
         public new System.Collections.IEnumerator GetEnumerator() {
@@ -351,5 +349,6 @@ namespace Limada.Schemata {
         }
 
         #endregion
+    
     }
 }

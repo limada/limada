@@ -19,6 +19,7 @@ using Limaki.Data;
 using Limaki.Contents.IO;
 
 namespace Limaki.Common.IOC {
+
     public class AppResourceLoader : ContextResourceLoader {
         private IContextResourceLoader deviceContext = null;
 

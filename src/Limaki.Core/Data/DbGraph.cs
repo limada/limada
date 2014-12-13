@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2006-2011 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using System;
 using System.Collections.Generic;
 using Limaki.Common.Collections;
@@ -19,14 +33,14 @@ namespace Limaki.Data {
             }
         }
 
-        protected virtual ICollection<TEdge> getCached(TItem item) {
+        protected virtual ICollection<TEdge> GetCached(TItem item) {
             ICollection<TEdge> result = null;
             if (item != null)
                 EdgesCache.TryGetValue(item, out result);
             return result;
         }
 
-        protected virtual void setCached(TItem item, ICollection<TEdge> edges) {
+        protected virtual void SetCached(TItem item, ICollection<TEdge> edges) {
             if (item != null) {
                 if (edges != null) {
                     EdgesCache[item] = edges;
@@ -47,15 +61,20 @@ namespace Limaki.Data {
         protected abstract void Delete(TItem item);
         protected abstract void Delete(TEdge edge);
 
-        public abstract void EvictItem ( TItem item );
+        /// <summary>
+        /// removes item from the db reference system, but not in the database
+        /// </summary>
+        /// <param name="item"></param>
+        public abstract void EvictItem (TItem item);
+
         public abstract void Flush();
 
         public virtual void Close() {
             ClearCaches ();
         }
 
-        protected abstract ICollection<TEdge> edges(TItem item);
-        protected abstract IEnumerable<TItem> items { get; }
+        protected abstract ICollection<TEdge> EdgesOf(TItem item);
+        protected abstract IEnumerable<TItem> Items { get; }
 
         public override void Add(TEdge edge) {
             if (edge != null)
@@ -79,7 +98,7 @@ namespace Limaki.Data {
                         }
                     }
                 }
-                setCached(item, null);
+                SetCached(item, null);
 
             }
         }
@@ -97,8 +116,8 @@ namespace Limaki.Data {
                 if (!this.Contains(newItem)) {
                     this.Add(newItem);
                 }
-                setCached(newItem, null);
-                setCached(oldItem, null);
+                SetCached(newItem, null);
+                SetCached(oldItem, null);
                 Store(edge);
             } else {
                 this.Add(edge);
@@ -107,14 +126,14 @@ namespace Limaki.Data {
 
         public override void RevertEdge(TEdge edge) {
             base.RevertEdgeInternal(edge);
-            setCached(edge.Leaf, null);
-            setCached(edge.Root, null);
+            SetCached(edge.Leaf, null);
+            SetCached(edge.Root, null);
             Store(edge);
         }
 
         protected override bool RemoveEdge(TEdge edge, TItem item) {
-            setCached(edge.Leaf, null);
-            setCached(edge.Root, null);
+            SetCached(edge.Leaf, null);
+            SetCached(edge.Root, null);
             return true;
         }
 
@@ -126,10 +145,10 @@ namespace Limaki.Data {
 
         public override ICollection<TEdge> Edges(TItem item) {
             if (item != null) {
-                var result = getCached(item);
+                var result = GetCached(item);
                 if (result == null) {
-                    result = edges(item);
-                    setCached(item, result);
+                    result = EdgesOf(item);
+                    SetCached(item, result);
                 }
                 return result;
             } else {
@@ -199,7 +218,7 @@ namespace Limaki.Data {
                     Delete(item);
                     result = true;
                 }
-                setCached(item, null);
+                SetCached(item, null);
             } catch (Exception e) {
                 throw e;
             } finally { }

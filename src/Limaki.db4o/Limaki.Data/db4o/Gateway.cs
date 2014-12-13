@@ -49,14 +49,12 @@ namespace Limaki.Data.db4o {
             }
         }
 
-        bool _isClosed = false;
-
         IObjectServer Server { get; set; }
         IObjectContainer _session = null;
 
         public virtual IObjectContainer Session {
             get {
-                if (!_isClosed) {
+                if (!IsClosed) {
                     if (_session == null) {
                         try {
                             var emb = _configuration as IEmbeddedConfiguration;
@@ -142,12 +140,12 @@ namespace Limaki.Data.db4o {
         #region IGateway Member
 
         public override void Open(Iori iori) {
-            _isClosed = false;
+            IsClosed = false;
             this.Iori = iori;
         }
 
         public override void Close() {
-            _isClosed = true;
+            IsClosed = true;
             if (_session != null) {
                 try {
                     Session.Close();
@@ -181,8 +179,6 @@ namespace Limaki.Data.db4o {
 
         public override bool IsOpen { get { return Iori != null; } protected set { } }
 
-        public override bool IsClosed { get { return _isClosed; } protected set { _isClosed = value; } }
-
         public virtual void InitConfiguration(ICommonConfiguration configuration) {
             configuration.MarkTransient(typeof(Limaki.Common.TransientAttribute).FullName);
         }
@@ -190,6 +186,7 @@ namespace Limaki.Data.db4o {
         public override void Dispose () {
             
         }
+
         #endregion
     }
 }

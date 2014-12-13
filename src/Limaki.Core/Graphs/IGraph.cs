@@ -114,11 +114,6 @@ namespace Limaki.Graphs {
         /// <returns></returns>
         IEnumerable<TEdge> Fork(TItem source, Func<TItem,bool> pred);
 
-      
-
-
-
-
         /// <summary>
         /// gives back all edge.Root and edge.Leaf in egdes 
         /// if Root/Leaf is not TEdge
@@ -126,6 +121,7 @@ namespace Limaki.Graphs {
         /// <param name="edges"></param>
         /// <returns></returns>
         IEnumerable<TItem> Foliage ( IEnumerable<TEdge> edges );
+
         #endregion
 
         #region events

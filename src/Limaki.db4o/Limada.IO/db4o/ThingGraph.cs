@@ -172,7 +172,7 @@ namespace Limada.IO.db4o {
             }
         }
 
-        protected override ICollection<ILink> edges(IThing item) {
+        protected override ICollection<ILink> EdgesOf(IThing item) {
             NativeQueryWrapper<ILink> result = null;
             if (item != null) 
             try {
@@ -263,7 +263,7 @@ namespace Limada.IO.db4o {
         public override bool HasSingleEdge (IThing item) {
             var result = false;
             if (item != null) {
-                var links = getCached (item);
+                var links = GetCached (item);
                 if (links == null) {
                     try {
                         var query = Session.Query();

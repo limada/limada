@@ -216,8 +216,5 @@ namespace Limaki.Graphs {
             return Sink.Where(predicate);
         }
 
-
-
-
     }
 }

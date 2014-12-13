@@ -19,7 +19,7 @@ using System.Reflection;
 
 namespace Limaki.Common.Linqish {
 
-    public class ExpressionUtils {
+    public static class ExpressionUtils {
 
         public static MemberInfo MemberInfo<T, TMember>(Expression<Func<T, TMember>> exp) {
             var member = exp.Body as MemberExpression;
@@ -38,6 +38,4 @@ namespace Limaki.Common.Linqish {
 
       
     }
-
-   
 }

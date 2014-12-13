@@ -63,7 +63,7 @@ namespace Limaki.Data.db4o {
         }
 
 
-        protected override ICollection<TEdge> edges(TItem item) {
+        protected override ICollection<TEdge> EdgesOf(TItem item) {
             ICollection<TEdge> result = null;
             try {
                 // this doesn't optimize; it seems that the easiest way is to 
@@ -135,10 +135,10 @@ namespace Limaki.Data.db4o {
         }
 
         public override IEnumerator<TItem> GetEnumerator() {
-            return items.GetEnumerator();
+            return Items.GetEnumerator();
         }
 
-        protected override IEnumerable<TItem> items {
+        protected override IEnumerable<TItem> Items {
             get {
                 if (!ItemIsStorableClazz) {
                     Set<TItem> done = new Set<TItem>();

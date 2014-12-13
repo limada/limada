@@ -27,7 +27,7 @@ namespace Limaki.Common.IOC {
         public abstract void ApplyResources(IApplicationContext context);
 
         public virtual IApplicationContext CreateContext() {
-            IApplicationContext result = new ApplicationContext();
+            var result = new ApplicationContext();
             return result;
         }
     }

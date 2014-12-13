@@ -1,8 +1,9 @@
 //
 // SwfDesktopBackend.cs
 //
-// Author:
+// Authors:
 //       Lluis Sanchez <lluis@xamarin.com>
+//       Lytico (www.limada.org)
 //
 // Copyright (c) 2013 Xamarin Inc.
 //
@@ -35,10 +36,7 @@ namespace Xwt.SwfBackend
 {
 	public class SwfDesktopBackend: DesktopBackend
 	{
-		// http://msdn.microsoft.com/en-us/library/windows/desktop/dd464660(v=vs.85).aspx#determining_the_dpi_scale_factor
-		const double BASELINE_DPI = 96d;
-
-		public SwfDesktopBackend ()
+        public SwfDesktopBackend ()
 		{
 			Microsoft.Win32.SystemEvents.DisplaySettingsChanged += delegate
 			{
@@ -46,7 +44,12 @@ namespace Xwt.SwfBackend
 			};
 		}
 
-		static bool cannotCallGetDpiForMonitor;
+        #region ScaleFactor
+
+        // http://msdn.microsoft.com/en-us/library/windows/desktop/dd464660(v=vs.85).aspx#determining_the_dpi_scale_factor
+        const double BASELINE_DPI = 96d;
+
+        static bool cannotCallGetDpiForMonitor;
 		public override double GetScaleFactor (object backend)
 		{
 			//FIXME: Is it possible for the Y dpi to differ from the X dpi,
@@ -82,15 +85,33 @@ namespace Xwt.SwfBackend
 			return dpi / BASELINE_DPI;
 		}
 
-		#region implemented abstract members of DesktopBackend
+        #region P/Invoke
 
-		public override Point GetMouseLocation()
+        const int LOGPIXELSX = 88;
+        const int LOGPIXELSY = 90;
+        const int MDT_Effective_DPI = 0;
+
+        [DllImport ("user32")]
+        static extern IntPtr GetDC (IntPtr hWnd);
+        [DllImport ("user32")]
+        static extern int ReleaseDC (IntPtr hWnd, IntPtr hdc);
+        [DllImport ("gdi32")]
+        static extern int GetDeviceCaps (IntPtr hdc, int nIndex);
+        [DllImport ("Shcore")]
+        static extern int GetDpiForMonitor (IntPtr hmonitor, int dpiType, out int dpiX, out int dpiY);
+        #endregion
+        
+        #endregion
+
+        #region implemented abstract members of DesktopBackend
+
+        public override Point GetMouseLocation()
 		{
 			var loc = SWF.Cursor.Position;
 			var screen = SWF.Screen.FromPoint (loc);
 			var scale = GetScaleFactor (screen);
 
-			// We need to convert the device pixels into WPF's device-independent pixels..
+			// We need to convert the device pixels into device-independent pixels..
 			return new Point (loc.X / scale, loc.Y / scale);
 		}
 
@@ -123,17 +144,7 @@ namespace Xwt.SwfBackend
 
 		#endregion
 
-		#region P/Invoke
-
-		const int LOGPIXELSX = 88;
-		const int LOGPIXELSY = 90;
-		const int MDT_Effective_DPI = 0;
-
-		[DllImport ("user32")] static extern IntPtr GetDC (IntPtr hWnd);
-		[DllImport ("user32")] static extern int ReleaseDC (IntPtr hWnd, IntPtr hdc);
-		[DllImport ("gdi32")]  static extern int GetDeviceCaps (IntPtr hdc, int nIndex);
-		[DllImport ("Shcore")] static extern int GetDpiForMonitor (IntPtr hmonitor, int dpiType, out int dpiX, out int dpiY);
-		#endregion
+	
 	}
 }
 

@@ -21,7 +21,9 @@ using System.Linq.Expressions;
 using System;
 
 namespace Limada.Model {
+
     public interface IThingGraph:IGraph<IThing,ILink> {
+
         IThing GetById ( Id id );
         bool IsMarker ( IThing thing );
         ICollection<IThing> Markers();
@@ -31,5 +33,6 @@ namespace Limada.Model {
         IContentContainer<Id> ContentContainer { get;set;}
         IThing UniqueThing ( IThing thing );
         IEnumerable<T> Where<T>(Expression<Func<T,bool>> predicate) where T:IThing;
+
     }
 }

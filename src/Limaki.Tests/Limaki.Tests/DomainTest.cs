@@ -13,8 +13,10 @@ using Limada.Usecases;
 
 
 namespace Limaki.Tests {
+
     [TestFixture]
     public class DomainTest:TestBase {
+
         [TestFixtureSetUp]
         public override void Setup() {
             if (Registry.ConcreteContext == null) {
