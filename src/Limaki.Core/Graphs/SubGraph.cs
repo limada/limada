@@ -212,8 +212,8 @@ namespace Limaki.Graphs {
 
         Action<TItem> IFactoryListener<TItem>.ItemCreated { get; set; }
 
-        public override IEnumerable<TItem> Where(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
-            return Sink.Where(predicate);
+        public override IEnumerable<TItem> WhereQ(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
+            return Sink.WhereQ(predicate);
         }
 
     }

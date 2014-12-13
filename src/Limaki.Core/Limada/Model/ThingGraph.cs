@@ -247,8 +247,8 @@ namespace Limada.Model {
 
 
         #region Linqish
-
-        public IEnumerable<T> Where<T>(System.Linq.Expressions.Expression<System.Func<T, bool>> predicate) where T : IThing {
+        
+        public IEnumerable<T> WhereQ<T>(System.Linq.Expressions.Expression<System.Func<T, bool>> predicate) where T : IThing {
             if (typeof(T).GetInterface(typeof(ILink).FullName) != null)
                 return edges.OfType<T>().Where(predicate.Compile());
             else {

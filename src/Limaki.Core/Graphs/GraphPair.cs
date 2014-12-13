@@ -297,8 +297,8 @@ namespace Limaki.Graphs {
 
         #endregion
 
-        public override IEnumerable<TSinkItem> Where(System.Linq.Expressions.Expression<Func<TSinkItem, bool>> predicate) {
-            return Sink.Where(predicate);
+        public override IEnumerable<TSinkItem> WhereQ(System.Linq.Expressions.Expression<Func<TSinkItem, bool>> predicate) {
+            return Sink.WhereQ(predicate);
         }
     }
 }

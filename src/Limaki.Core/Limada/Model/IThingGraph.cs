@@ -32,7 +32,7 @@ namespace Limada.Model {
         IEnumerable<IThing> GetByData ( object data, bool exact );
         IContentContainer<Id> ContentContainer { get;set;}
         IThing UniqueThing ( IThing thing );
-        IEnumerable<T> Where<T>(Expression<Func<T,bool>> predicate) where T:IThing;
+        IEnumerable<T> WhereQ<T>(Expression<Func<T,bool>> predicate) where T:IThing;
 
     }
 }

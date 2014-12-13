@@ -46,8 +46,8 @@ namespace Limada.Tests.Data.db4o {
             var lll = graph.Where(e => e.Data != null && e is IThing<string>);
             foreach (var item in lll)
                 ReportDetail(item.ToString());
-            var llll = graph.Where<IThing<string>>(e => e.Data != null);
-            ReportDetail("** graph.graph.Where<IThing<string>>");
+            var llll = graph.WhereQ<IThing<string>>(e => e.Data != null);
+            ReportDetail("** graph.graph.WhereQ<IThing<string>>");
             foreach (var item in llll)
                 ReportDetail(item.ToString());
         }

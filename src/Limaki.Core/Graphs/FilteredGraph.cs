@@ -186,8 +186,8 @@ namespace Limaki.Graphs {
             Source.OnDataChanged (item);
         }
 
-        public override IEnumerable<TItem> Where(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
-            return Source.Where(predicate).Where(e => ItemFilter(e));
+        public override IEnumerable<TItem> WhereQ(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
+            return Source.WhereQ(predicate).Where(e => ItemFilter(e));
         }
     }
 

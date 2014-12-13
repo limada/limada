@@ -348,7 +348,7 @@ namespace Limaki.Data.db4o {
         #endregion
 
 
-        public override IEnumerable<TItem> Where(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
+        public override IEnumerable<TItem> WhereQ(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
             return Session.AsQueryable<TItem>().Where(predicate);
         }
 

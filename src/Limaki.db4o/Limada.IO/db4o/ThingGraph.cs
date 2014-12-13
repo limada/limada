@@ -433,7 +433,7 @@ namespace Limada.IO.db4o {
                 var set = query.Execute();
                 return set.Cast<IThing>();
                 // not working:
-                //var result = Session.AsQueryable<IThing>().Where(e => e.Data != null && e.Data==data);
+                //var result = Session.AsQueryable<IThing>().WhereQ(e => e.Data != null && e.Data==data);
                 //return result.Cast<IThing>();
             } catch (Exception e) {
                 throw e;
@@ -501,7 +501,7 @@ namespace Limada.IO.db4o {
         #region IThingGraph Member
 
 
-        public IEnumerable<T> Where<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate) where T : IThing {
+        public IEnumerable<T> WhereQ<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate) where T : IThing {
             return Session.AsQueryable<T>().Where(predicate);
         }
 

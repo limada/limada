@@ -241,18 +241,18 @@ namespace Limaki.Graphs {
 
         //TODO: make a expression-cache here:
 
-        public override  IEnumerable<TItem> Where(Expression<Func<TItem, bool>> predicate) {
+        public override  IEnumerable<TItem> WhereQ(Expression<Func<TItem, bool>> predicate) {
             var clause = predicate.Compile();
             var result = items.Keys.Where(clause);
             if (EdgeIsItemClazz)
                 result.Concat(edges.Cast<TItem>().Where(clause));
             return result;
 
-            //foreach (var item in items.Keys.Where(clause))
+            //foreach (var item in items.Keys.WhereQ(clause))
             //    yield return item;
 
             //if(EdgeIsItemClazz)
-            //    foreach (var item in edges.Cast<TItem>().Where(clause))
+            //    foreach (var item in edges.Cast<TItem>().WhereQ(clause))
             //        yield return item;
         }
 
