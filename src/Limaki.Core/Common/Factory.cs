@@ -168,7 +168,7 @@ namespace Limaki.Common {
             Delegate d = null;
             if (Clazzes.TryGetValue(type, out d)) {
                 if (GenericAddMethod == null) {
-                    var genexp = ExpressionUtils.ToLamda<Action>(() => this.Create<object>());
+                    Expression<Action> genexp = () => this.Create<object>();
                     GenericCreateMethod = ((MethodCallExpression)((LambdaExpression)genexp).Body).Method.GetGenericMethodDefinition();
                 }
                 return GenericCreateMethod.MakeGenericMethod(type).Invoke(this, null);
@@ -179,7 +179,7 @@ namespace Limaki.Common {
         protected static MethodInfo GenericAddMethod = null;
         public virtual void Add(Type t1, Type t2) {
             if (GenericAddMethod == null) {
-                var genexp = ExpressionUtils.ToLamda<Action>(() => this.Add<object, object>());
+                Expression<Action> genexp =() => this.Add<object, object>();
                 GenericAddMethod = ((MethodCallExpression)((LambdaExpression)genexp).Body).Method.GetGenericMethodDefinition();
             }
             GenericAddMethod.MakeGenericMethod(t1, t2).Invoke(this, null);
