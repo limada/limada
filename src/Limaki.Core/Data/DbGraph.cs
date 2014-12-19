@@ -101,11 +101,10 @@ namespace Limaki.Data {
         protected override void AddEdge(TEdge edge, TItem item) {
             if (item != null) {
                 if (!Contains(item)) {
-                    Add(item);
-                    if (EdgeIsItem) {
-                        if (((object)item) is TEdge) {
-                            this.Add((TEdge)(object)item);
-                        }
+                    if (EdgeIsItem && ((object) item) is TEdge) {
+                        Add ((TEdge) (object) item);
+                    } else {
+                        Add (item);
                     }
                 }
                 SetCached(item, null);
