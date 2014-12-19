@@ -39,5 +39,43 @@ namespace Limaki.Data {
 
     }
 
+    public static class ContextExtensions {
+
+        #region FuncHandling
+
+        public static Func<TContext, IQueryable<TEntity>> QueryableFunc<TContext, TEntity> () {
+            Func<TContext, IQueryable<TEntity>> result = null;
+            var type = typeof (TContext);
+
+            var dataMembers = type.GetProperties ()
+                .Where (p =>
+                       p.PropertyType.IsInstanceOfType (typeof (IQueryable<TEntity>)) ||
+                       p.PropertyType == typeof (IQueryable<TEntity>)
+                )
+                .FirstOrDefault ();
+
+            if (dataMembers != null) {
+                result = c => dataMembers.GetValue (c, null) as IQueryable<TEntity>;
+            }
+            return result;
+        }
+
+        public static IEnumerable<Type> QueryableTypes<TEntity> () {
+            return QueryableProperties<TEntity> ().Select (p => p.PropertyType);
+        }
+
+        public static IEnumerable<PropertyInfo> QueryableProperties<TEntity> () {
+            var genType = typeof (IQueryable<>).GetGenericTypeDefinition ();
+            foreach (var prop in typeof (TEntity).GetProperties ()) {
+                if (prop.PropertyType.IsGenericType) {
+                    var gettype = prop.PropertyType.GetGenericTypeDefinition ();
+                    if (gettype.Equals (genType)) {
+                        yield return prop;
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }
