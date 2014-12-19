@@ -32,7 +32,24 @@ namespace Limaki.Common.Linqish {
             return MemberInfo(exp).Name;
         }
 
-        public static Expression<T> ToLamda<T>(Expression<T> expr) {
+        public static Expression<Func<T, TMember>> ReplaceBody<T, TMember> (Expression<Func<T, TMember>> exp, Expression replace, bool right) {
+            var body = exp.Body as BinaryExpression;
+            if (body == null)
+                throw new NotSupportedException ("Only BinaryExpressions are supported ");
+            if (right)
+                body = Expression.MakeBinary (body.NodeType, body.Left, replace);
+            else
+                body = Expression.MakeBinary (body.NodeType, replace, body.Right);
+            return Expression.Lambda<Func<T, TMember>> (body, exp.Parameters);
+        }
+
+        /// <summary>
+        /// Expression<T> expr = (...) => ...;
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="expr"></param>
+        /// <returns></returns>
+        public static Expression<T> Lambda<T>(Expression<T> expr) {
             return expr;
         }
 
