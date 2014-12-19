@@ -38,7 +38,8 @@ namespace Limaki.Contents.IO {
         
         public virtual void Add(IContentIo<TSource> contentIo) {
             _contentIos.Add(contentIo);
-            ContentInfoPool.AddRange(contentIo.Detector.ContentSpecs);
+            if (contentIo.Detector != null)
+                ContentInfoPool.AddRange (contentIo.Detector.ContentSpecs);
         }
 
         public virtual void Remove(IContentIo<TSource> contentIo) {
