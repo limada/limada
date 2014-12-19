@@ -30,9 +30,15 @@ namespace Limaki.Common.Linqish {
         public Expression<T> Replace<T>(Expression<T> source) {
             if (source == null)
                 return null;
-            this.sourceParam = source.Parameters;
             var result = base.Visit(source);
             return result as Expression<T>;
+        }
+
+        public override Expression Visit (Expression node) {
+            var lam = node as LambdaExpression;
+            if (lam != null)
+                this.sourceParam = lam.Parameters;
+            return base.Visit (node);
         }
 
         protected override Expression VisitMember(MemberExpression node) {
