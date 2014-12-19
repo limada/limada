@@ -61,7 +61,19 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="3rdParty\Mono.Linq.Expressions\CombineExtensions.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\CSharp.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\CSharpWriter.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\DelegateConstraintAttribute.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\ExpressionExtensions.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\ExpressionWriter.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\FluentExtensions.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\IExpressionWriter.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\IFormatter.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\PredicateBuilder.cs" />
+    <Compile Include="3rdParty\Mono.Linq.Expressions\TextFormatter.cs" />
     <Compile Include="3rdParty\Options.cs" />
+    <Compile Include="3rdParty\RLinq\EvaluatingExpressionVisitor.cs" />
     <Compile Include="Actions\ActionBase.cs" />
     <Compile Include="Actions\ActionPriorities.cs" />
     <Compile Include="Actions\Command.cs" />
@@ -87,11 +99,14 @@
     <Compile Include="Common\Linqish\CompareExpressionBuilder.cs" />
     <Compile Include="Common\Linqish\EnumerableExtensions.cs" />
     <Compile Include="Common\Linqish\ExpressionChanger.cs" />
-    <Compile Include="Common\Linqish\ExpressionChangerBase.cs" />
-    <Compile Include="Common\Linqish\ExpressionChanger_S_T.cs" />
+    <Compile Include="[Obsolete]\ExpressionChangerBase.cs" />
+    <Compile Include="Common\Linqish\ExpressionChangerVisit.cs" />
+    <Compile Include="[Obsolete]\ExpressionChanger_S_T.cs" />
     <Compile Include="Common\Linqish\ExpressionConstantBuilder.cs" />
+    <Compile Include="Common\Linqish\ExpressionHashVisitor.cs" />
     <Compile Include="Common\Linqish\ExpressionProjector.cs" />
     <Compile Include="Common\Linqish\ExpressionUtils.cs" />
+    <Compile Include="Common\Linqish\ExpressionVisitVisitor.cs" />
     <Compile Include="Common\Linqish\MemberByNameExpressionBuilder.cs" />
     <Compile Include="Common\Linqish\PropertyExtractor.cs" />
     <Compile Include="Common\Reflections\MemberReflectionCache.cs" />

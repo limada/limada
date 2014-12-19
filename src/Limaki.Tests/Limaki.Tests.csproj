@@ -173,6 +173,7 @@
     <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessFontBackendHandler.cs" />
     <Compile Include="Limaki.View.Headless\XwtBackend\HeadlessSystemColorsBackend.cs" />
     <Compile Include="Playground\DocumentObjectModel\DOM.cs" />
+    <Compile Include="Playground\Generators\ExpressionGenerators.cs" />
     <Compile Include="Playground\Graph\GraphEvents.cs" />
     <Compile Include="Playground\IO\IoPrototype.cs" />
     <Compile Include="Playground\IO\IoTryout.cs" />
@@ -324,7 +325,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Limada.Tests\Tests\Data\db4o\" />
+    <Folder Include="Limada.Tests\Tests\Data\" />
     <Folder Include="Playground\Limada.UseCases\" />
     <Folder Include="[Obsolete]\" />
   </ItemGroup>
