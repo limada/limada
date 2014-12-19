@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Limaki 
  * 
  * This code is free software; you can redistribute it and/or modify it
@@ -36,6 +36,7 @@ namespace Limaki.Common.Linqish {
             }
             return base.VisitMember(node);
         }
+
         protected override Expression VisitBinary(BinaryExpression node) {
             // todo: convert-target could be right too!! 
             var left = Visit(node.Left);

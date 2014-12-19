@@ -76,6 +76,16 @@ namespace Limaki.Data {
         protected abstract ICollection<TEdge> EdgesOf(TItem item);
         protected abstract IEnumerable<TItem> Items { get; }
 
+        public override void Add (TItem item) {
+            // TODO: Prove what happens if item is TEdge
+            if (item != null)
+                try {
+                    Store (item);
+                } catch (Exception e) {
+                    throw e;
+                } finally { }
+        }
+
         public override void Add(TEdge edge) {
             if (edge != null)
                 try {
@@ -99,7 +109,6 @@ namespace Limaki.Data {
                     }
                 }
                 SetCached(item, null);
-
             }
         }
 
@@ -156,15 +165,6 @@ namespace Limaki.Data {
             }
         }
 
-        public override IEnumerable<KeyValuePair<TItem, ICollection<TEdge>>> ItemsWithEdges() {
-            foreach (var item in this) {
-                var result = Edges(item);
-                if (result.Count != 0) {
-                    yield return new KeyValuePair<TItem, ICollection<TEdge>>(item, result);
-                }
-            }
-        }
-
         public override bool Remove(TEdge edge) {
             bool result = false;
             
@@ -186,17 +186,6 @@ namespace Limaki.Data {
                 throw e;
             } finally { }
             return result;
-        }
-
-
-        public override void Add(TItem item) {
-            // TODO: Prove what happens if item is TEdge
-            if (item != null)
-                try {
-                    Store(item);
-                } catch (Exception e) {
-                    throw e;
-                } finally { }
         }
 
         public override bool Remove(TItem item) {
@@ -225,6 +214,13 @@ namespace Limaki.Data {
             return result;
         }
 
-
+        public override IEnumerable<KeyValuePair<TItem, ICollection<TEdge>>> ItemsWithEdges () {
+            foreach (var item in this) {
+                var result = Edges (item);
+                if (result.Count != 0) {
+                    yield return new KeyValuePair<TItem, ICollection<TEdge>> (item, result);
+                }
+            }
+        }
     }
 }

@@ -6,14 +6,15 @@ using NUnit.Framework;
 using System.Linq;
 
 namespace Limada.Tests.Data.db4o {
+
     public class Db4oLinqGraphTest : Limada.Tests.ThingGraphs.ThingGraphTest {
         public override void Setup() {
             this.ThingGraphIo = new Db4oThingGraphIo();
             base.Setup();
         }
+
         [Test]
         public void LinqTest() {
-            
             
             var graph = this.Graph as Limada.IO.db4o.ThingGraph;
             Assert.NotNull(graph);

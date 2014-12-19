@@ -35,7 +35,7 @@ namespace Limada.Tests.ThingGraphs {
         }
 
         /// <summary>
-        /// Testing ThingGraphTest over Limada.Data.db4o.ThingGraph
+        /// Testing ThingGraphTest 
         /// </summary>
         [Test]
         public virtual void StandardGraphTest() {
@@ -69,7 +69,7 @@ namespace Limada.Tests.ThingGraphs {
             Assert.AreEqual(thing.Id, graphTest.Data.Two.Id);
 
             var links = graph.Edges(graphTest.Data.Two);
-            foreach (ILink l in links) {
+            foreach (var l in links) {
                 Assert.IsNotNull(l.Root);
                 Assert.IsNotNull(l.Leaf);
                 Assert.IsNotNull(l.Marker);
@@ -124,8 +124,6 @@ namespace Limada.Tests.ThingGraphs {
             this.Close();
         }
 
-
-
         [Test]
         public virtual void EdgeListTest() {
             var target = this.Graph;
@@ -141,7 +139,7 @@ namespace Limada.Tests.ThingGraphs {
             //factory.Populate();
 
             var edgesCount = new Dictionary<IThing, int>();
-            foreach (IThing thing in target) {
+            foreach (var thing in target) {
                 int i = 0;
                 foreach (var link in target.Edges(thing)) {
                     i++;
@@ -174,11 +172,11 @@ namespace Limada.Tests.ThingGraphs {
             var testThing3 = factory.Edges[1]; // Programming->Language
             var testThing4 = factory.Nodes[1]; // Programming
 
-            var pair =new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
-                    new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge>(),
-                    target,
-                    new GraphItem2ThingTransformer()
-                    );
+            var pair = new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
+                new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge> (),
+                target,
+                new GraphItem2ThingTransformer ()
+                );
 
             pair.Mapper.ConvertSourceSink();
 

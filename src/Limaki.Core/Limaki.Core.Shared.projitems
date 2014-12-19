@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -35,8 +35,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\CompareExpressionBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\EnumerableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\ExpressionChanger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\ExpressionChangerBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\ExpressionChanger_S_T.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\ExpressionConstantBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\ExpressionProjector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\ExpressionUtils.cs" />

@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using Db4objects.Db4o;
 
 namespace Limaki.Data.db4o {
+
     public class NativeQueryWrapper<T>:ICollection<T> {
         private IList<IObjectSet> _set = new List<IObjectSet> ();
         public NativeQueryWrapper(IObjectSet set) {
@@ -26,6 +27,7 @@ namespace Limaki.Data.db4o {
         public void AddSet(IObjectSet set) {
             this._set.Add (set);
         }
+
         #region ICollection<T> Member
 
         public void Add(T item) {

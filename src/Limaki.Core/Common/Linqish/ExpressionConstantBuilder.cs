@@ -8,7 +8,7 @@
  * Author: Lytico
  * Copyright (C) 2012 Lytico
  *
-* http://www.limada.org
+ * http://www.limada.org
  * 
  */
 
@@ -17,6 +17,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Limaki.Common.Linqish {
+
     /// <summary>
     /// replaces local variables with constants
     /// </summary>
@@ -75,10 +76,12 @@ namespace Limaki.Common.Linqish {
                 Visit(ex);
                 return constFound != 0;
             }
+
             protected override Expression VisitConstant(ConstantExpression node) {
                 constFound ++;
                 return base.VisitConstant(node);
             }
+
             protected override Expression VisitMethodCall(MethodCallExpression node) {
                 Visit(node.Arguments);
                 return base.VisitMethodCall(node);

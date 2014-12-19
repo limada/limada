@@ -4,7 +4,9 @@ using Limada.IO;
 
 
 namespace Limada.Tests.Data.db4o {
+
     public class ThingGraphTest:Limada.Tests.ThingGraphs.ThingGraphTest {
+
         public override void Setup() {
             this.ThingGraphIo = new Db4oThingGraphIo();
             base.Setup ();

@@ -18,6 +18,7 @@ using Limaki.Common;
 
 
 namespace Limada.Model {
+
     public interface IThing {
         object Data { get; set; }
         Id Id { get; }

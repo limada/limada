@@ -16,11 +16,13 @@ using Limaki.Graphs;
 using Id = System.Int64;
 
 namespace Limada.Model {
+
     /// <summary>
     /// ILink is an IEdge with a Marker
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface ILink<T>:IEdge<T> {
+
         T Marker { get;set;}
         //IThing Adjacent ( IThing thing );
     }

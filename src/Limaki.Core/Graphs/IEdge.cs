@@ -14,6 +14,7 @@
 
 
 namespace Limaki.Graphs {
+
     public interface IEdge<T> {
         T Root { get;set;}
         T Leaf { get;set;}

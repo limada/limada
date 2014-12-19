@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+
 namespace Limada.Model {
 
     public interface IStringThing : IThing<string> {}

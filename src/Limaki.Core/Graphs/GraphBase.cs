@@ -215,8 +215,6 @@ namespace Limaki.Graphs {
             }
         }
 
-
-
         /// <summary>
         /// NOT TESTED!!!!
         /// </summary>

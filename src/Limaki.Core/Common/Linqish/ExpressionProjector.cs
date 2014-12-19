@@ -17,6 +17,7 @@ using System.Linq;
 using System.Linq.Expressions;
 
 namespace Limaki.Common.Linqish {
+
     /// <summary>
     /// projects an  Expression<Func<S, R>>
     /// into an Expression<Func<T, R>>

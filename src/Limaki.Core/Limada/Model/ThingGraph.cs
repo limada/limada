@@ -109,11 +109,11 @@ namespace Limada.Model {
         #region Marker-Handling
 
         private ICollection<Id> _markerIds = null;
-        protected ICollection<Id> markerIds {
+        protected ICollection<Id> MarkerIds {
             get {
                 if (_markerIds == null) {
                     _markerIds = new Set<Id>();
-                    foreach(ILink link in this.Edges()) {
+                    foreach(var link in this.Edges()) {
                         AddMarker (link.Marker);
                     }
                 }
@@ -126,14 +126,14 @@ namespace Limada.Model {
 
         public virtual void AddMarker(IThing marker) {
             if (marker == null) return;
-            if (!markerIds.Contains(marker.Id)) {
-                markerIds.Add(marker.Id);
+            if (!MarkerIds.Contains(marker.Id)) {
+                MarkerIds.Add(marker.Id);
             }
         }
 
         public virtual void RemoveMarker(IThing marker) {
             if (marker == null) return;
-            markerIds.Remove(marker.Id);
+            MarkerIds.Remove(marker.Id);
         }
 
         #endregion
@@ -158,12 +158,12 @@ namespace Limada.Model {
 
         public virtual bool IsMarker(IThing thing) {
             if (thing == null) return false;
-            return markerIds.Contains (thing.Id);
+            return MarkerIds.Contains (thing.Id);
         }
 
         public virtual ICollection<IThing> Markers() {
             ICollection<IThing> result = new Set<IThing>();
-            foreach (var id in markerIds)
+            foreach (var id in MarkerIds)
                 result.Add(GetById (id));
             return result;
         }
@@ -207,7 +207,7 @@ namespace Limada.Model {
                 }
             }
 
-            if (markerIds.Contains(oldThing.Id)) {
+            if (MarkerIds.Contains(oldThing.Id)) {
                 foreach (var link in this.edges) {
                     if (((ILink<Id>)link).Marker == oldThing.Id) {
                         link.Marker = newThing;
