@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Limaki 
  * 
  * This code is free software; you can redistribute it and/or modify it
@@ -8,7 +8,7 @@
  * Author: Lytico
  * Copyright (C) 2012 Lytico
  *
-* http://www.limada.org
+ * http://www.limada.org
  * 
  */
 
@@ -22,6 +22,7 @@ using Limaki.Common.Reflections;
 
 namespace Limaki.Common.Linqish {
 
+    [Obsolete("use ExpressionChangerVisit")]
     public abstract class ExpressionChangerBase : ExpressionVisitor {
 
         protected MemberReflectionCache _memberReflectionCache = new MemberReflectionCache();
@@ -113,7 +114,11 @@ namespace Limaki.Common.Linqish {
                 }
 
                 if (node.Member is FieldInfo) {
-                    throw new NotImplementedException("Fields not supported");
+                    var info = node.Member as FieldInfo;
+                    var propertyType = ChangeGenericArguments (info.FieldType);
+                    info = target.GetField (info.Name);//GetPropertyInfo (target, propertyType, info.Name);
+                    var ex = Visit (node.Expression);
+                    return Expression.MakeMemberAccess (ex, info);
                 }
 
             }
