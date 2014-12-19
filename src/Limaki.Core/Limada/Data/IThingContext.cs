@@ -23,11 +23,13 @@ using Id = System.Int64;
 
 namespace Limada.Data {
 
-    public interface IThingContext {
+    public interface IThingContext:IDisposable {
+
+        IDataContext DataContext { get; }
 
         IQueryable<IThing> Things { get; }
 
-        IQueryable<IStringThing> StringThings { get; }
+        IQueryable<IThing<string>> StringThings { get; }
         IQueryable<INumberThing> NumberThings { get; }
 
         IQueryable<IStreamThing> StreamThings { get; }
