@@ -13,9 +13,18 @@ namespace Limada.Tests.ThingGraphs {
     public class ThingGraphTestBase : DomainTest {
 
         protected ThingFactory Factory = new ThingFactory();
-
-        protected virtual string _fileName { get; set; }
-        public virtual string FileName { get { return _fileName ?? TestLocations.GraphtestFile; } }
+        protected string FileName { get; set; }
+        protected Iori _iori = null;
+        public virtual Iori Iori {
+            get {
+                if (_iori == null) {
+                    if (FileName == null)
+                        FileName = TestLocations.GraphtestFile;
+                    _iori = Iori.FromFileName (FileName);
+                }
+                return _iori;
+            }
+        }
 
         public ThingGraphIo ThingGraphIo { get; set; }
 
@@ -41,14 +50,13 @@ namespace Limada.Tests.ThingGraphs {
         }
 
         public virtual ThingGraphContent CreateGraphContent () {
-            return CreateGraphContent (this.FileName);
+            return CreateGraphContent (this.Iori);
         }
 
-        public virtual ThingGraphContent CreateGraphContent (string fileName) {
+        public virtual ThingGraphContent CreateGraphContent (Iori iori) {
             if (ThingGraphIo != null) {
-                var info = Iori.FromFileName (fileName + ThingGraphIo.Extension ());
-                var result = ThingGraphIo.Open (info);
-                ReportDetail ("*** file:\t" + fileName + ThingGraphIo.Extension ());
+                var result = ThingGraphIo.Open (iori);
+                ReportDetail ("*** file:\t" + iori.Name + ThingGraphIo.Extension ());
                 return result;
             }
             return new ThingGraphContent { Data = new ThingGraph () };
@@ -78,6 +86,8 @@ namespace Limada.Tests.ThingGraphs {
 
     public static class ThingGraphIoExtensions {
         public static string Extension (this ThingGraphIo source) {
+            if (source.Detector == null)
+                return ".<null>";
             return "." + source.Detector.ContentSpecs.First ().Extension;
         }
     }
