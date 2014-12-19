@@ -39,7 +39,10 @@ namespace Limaki.Tests.Graph.Model {
                 return _graph;
 
             }
-            set { _graph = value; }
+            set {
+                _graph = value;
+                Mapper.Sink = value;
+            }
         }
 
         protected ISampleGraphFactory<TSourceItem, TSourceEdge> _factory = null;
@@ -71,6 +74,8 @@ namespace Limaki.Tests.Graph.Model {
             Factory.Count = this.Count;
             Factory.AddDensity = this.AddDensity;
             Factory.SeperateLattice = this.SeperateLattice;
+
+            Mapper.Sink = graph;
 
             var sourceGraph = Mapper.Source ?? new Graph<TSourceItem, TSourceEdge> ();
            
