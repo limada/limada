@@ -16,6 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Limaki.Data {
 
@@ -25,13 +27,17 @@ namespace Limaki.Data {
 
         TextWriter Log { get; set; }
 
-        IQueryable<T> GetQuery<T> () where T : class;
+        IQueryable<T> GetQuery<T> ();
 
-        void SetQuery<T> (IQueryable<T> querable) where T : class;
+        void SetQuery<T> (IQueryable<T> querable);
 
-        void Upsert<T> (IEnumerable<T> entities) where T : class;
+        void Upsert<T> (IEnumerable<T> entities);
 
-        void Remove<T> (IEnumerable<T> entities) where T : class;
+        void Remove<T> (IEnumerable<T> entities);
+
+        void Remove<T> (Expression<Func<T,bool>> where);
+
+    }
 
     }
 }
