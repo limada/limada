@@ -15,6 +15,10 @@ namespace Limaki.Common {
             return h = (h << 5) - h + comparer.GetHashCode(item1);
         }
 
+        public static int AddHashCode (int h, int h1) {
+            return h = (h << 5) - h + h1;
+        }
+
         public static int GetHashCode(params object[] args) {
             if (args == null || args.Length == 0)
                 return 0;
