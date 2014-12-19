@@ -29,10 +29,19 @@ namespace Limaki.Common.Linqish {
             return base.Visit(node);
         }
 
-        protected override Expression VisitMember(MemberExpression node) {
+        protected virtual Expression ChangeParam (Expression source, Expression result) {
+            var sourceMember = source as MemberExpression;
+            var resultMember = result as MemberExpression;
+            if (sourceMember != null && resultMember != null) {
+                return Expression.MakeMemberAccess(sourceMember.Expression, resultMember.Member);
+            }
+            return result;
+        }
+
+        protected override Expression VisitMember (MemberExpression node) {
             var map = FindSource(node);
             if (map != null) {
-                return map.Item2.Body;
+                return ChangeParam(node, map.Item2.Body);
             }
             return base.VisitMember(node);
         }
@@ -61,7 +70,7 @@ namespace Limaki.Common.Linqish {
             if (node.NodeType == ExpressionType.Convert) {
                 var map = FindSource(node.Operand);
                 if (map != null) {
-                    return map.Item2.Body;
+                    return ChangeParam(node.Operand, map.Item2.Body);
                 }
             }
             return base.VisitUnary(node);
