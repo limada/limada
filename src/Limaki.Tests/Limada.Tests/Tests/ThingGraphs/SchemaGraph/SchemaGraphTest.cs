@@ -2,7 +2,6 @@ using Limada.Tests.Model;
 using Limaki.Graphs;
 using Limaki.Tests;
 using Limaki.UnitTest;
-//using Limaki.Data.db4o;
 using NUnit.Framework;
 using Limada.Model;
 using Limaki.Data;
@@ -40,22 +39,22 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
             //Assert.IsTrue(Graph.Contains(description));
             Assert.IsFalse(Graph.Contains(descriptionLink));
 
-            foreach(ILink link in Graph.Edges(described)) {
+            foreach(var link in Graph.Edges(described)) {
                 Assert.IsFalse (link.Equals (descriptionLink));
             }
             foreach (ILink link in Graph.Edges(description)) {
                 Assert.IsFalse(link.Equals(descriptionLink));
             }
             
-            SchemaThingGraph schemaGraph = Graph as SchemaThingGraph;
-            IThing thing = schemaGraph.ThingToDisplay (described);
+            var schemaGraph = Graph as SchemaThingGraph;
+            var thing = schemaGraph.ThingToDisplay (described);
             Assert.AreEqual (description,thing);
 
             thing = schemaGraph.DescribedThing (description);
             Assert.AreEqual(described, thing);
 
             Walker<IThing, ILink> walker = new Walker<IThing, ILink>(Graph);
-            foreach (LevelItem<IThing> item in walker.DeepWalk(described, 0)) {
+            foreach (var item in walker.DeepWalk(described, 0)) {
                 Assert.IsFalse(item.Node.Equals(descriptionLink));
                 Assert.IsFalse(item.Node.Equals(description));
             }
@@ -66,7 +65,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
 
         [Test]
         public virtual void StandardGraphTest() {
-            BasicThingGraphTest graphTest = new BasicThingGraphTest();
+            var graphTest = new BasicThingGraphTest();
             graphTest.DoDetail = false; //this.DoDetail;
 
             graphTest.Graph = this.Graph;
