@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -52,18 +53,33 @@ namespace Limaki.Common.Reflections {
 
                 //TODO: look at this:http://www.codeproject.com/KB/cs/HyperPropertyDescriptor.aspx
 
-                var propterties = type.GetProperties(BindingFlags).Where(memberFilter);
+                var properties = type.GetProperties(BindingFlags).Where(memberFilter);
                 _done.Add(type);
-                foreach (var prop in propterties) {
-                    var key = GetHashCode(type, prop.PropertyType, prop.Name);
-                    _membersFiltered.Add(key);
-                    _propertyInfos.Add(key, prop);
-                    _propertySetMethod.Add(key, prop.GetSetMethod());
-                    _propertyGetMethod.Add(key, prop.GetGetMethod());
-                    // this is slower and uses more memory cause of dynamikinvoke:
-                    //var delegateType = typeof (Action<,>).MakeGenericType(type, prop.PropertyType);
-                    //_propertySetter.Add(key, Delegate.CreateDelegate(delegateType, null, prop.GetSetMethod()));
-                }
+                Action<PropertyInfo> addProp = prop => {
+                    var key = GetHashCode (type, prop.PropertyType, prop.Name);
+                    if (!_membersFiltered.Contains (key)) {
+                        _membersFiltered.Add (key);
+                        _propertyInfos.Add (key, prop);
+                        _propertySetMethod.Add (key, prop.GetSetMethod ());
+                        _propertyGetMethod.Add (key, prop.GetGetMethod ());
+                        // this is slower and uses more memory cause of dynamikinvoke:
+                        //var delegateType = typeof (Action<,>).MakeGenericType(type, prop.PropertyType);
+                        //_propertySetter.Add(key, Delegate.CreateDelegate(delegateType, null, prop.GetSetMethod()));
+                    } else {
+                        Trace.TraceError ("Property {0}:{1} in type {2} already defined", prop.Name, prop.PropertyType.Name, type.Name);
+                    }
+                };
+
+                foreach (var p in properties) 
+                    addProp (p);
+                properties = type.GetProperties (BindingFlags.NonPublic | BindingFlags.Instance)
+                    //.OfType<RunTimePropertyInfo>
+                    .Where (m => {
+                        var getget = m.GetGetMethod (true);
+                        return getget != null && getget.IsFinal;
+                    });
+                foreach (var p in properties)
+                    addProp (p);
             }
         }
         public void AddType (Type type) {
@@ -103,7 +119,6 @@ namespace Limaki.Common.Reflections {
             var key = GetHashCode(type, propertyType, memberName);
             return _propertyInfos[key];
         }
-
 
     }
 }
