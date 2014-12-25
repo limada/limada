@@ -30,9 +30,7 @@ namespace Limaki.View.XwtBackend {
         public void SetToolStrip (TextViewerToolStrip toolstrip) { Backend.SetToolStrip (toolstrip); }
     }
 
-    public interface ITextViewerWithToolstripVidgetBackend : ITextViewerWithToolstrip, IVidgetBackend { }
-
-    public class TextViewerWithToolStripVidgetBackend : VidgetBackend<TextViewerWithToolStripWidget>, ITextViewerWithToolstripVidgetBackend {
+	public class TextViewerWithToolStripVidgetBackend : VidgetBackend<TextViewerWithToolStripWidget>, ITextViewerWithToolstripVidgetBackend {
 
         public bool ToolStripVisible { get { return true; } set { } }
 

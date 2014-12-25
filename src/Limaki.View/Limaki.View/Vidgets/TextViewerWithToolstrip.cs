@@ -23,6 +23,8 @@ namespace Limaki.View.Vidgets {
         void SetToolStrip (TextViewerToolStrip toolstrip);
     }
 
+	public interface ITextViewerWithToolstripVidgetBackend : ITextViewerWithToolstrip, IVidgetBackend { }
+
     [BackendType (typeof (ITextViewerWithToolstripVidgetBackend))]
     public class TextViewerWithToolstrip : Vidget {
 
