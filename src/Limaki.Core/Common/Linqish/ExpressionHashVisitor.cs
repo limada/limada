@@ -31,6 +31,10 @@ namespace Limaki.Common.Linqish {
             Visit (expression);
         }
 
+        public static int GetHash (Expression expr) { return new ExpressionHashVisitor (expr).Hash; }
+
+        public int Hash { get; protected set; }
+
         private const int NullHashCode = 0x61E04917;
 
         protected void AddHash (object item) {
@@ -55,8 +59,6 @@ namespace Limaki.Common.Linqish {
         protected void AddHash (params object[] items) {
             foreach (var i in items) AddHash (i);
         }
-
-        public int Hash { get; protected set; }
 
         public override Expression Visit (Expression node) {
             if (null == node)
