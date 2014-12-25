@@ -17,19 +17,19 @@ using System.Linq.Expressions;
 
 namespace Limaki.Common.Linqish {
 
-    public class ExpressionVisitVisitor : ExpressionVisitor {
+    public class ExpressionVisitVisitor0 : ExpressionVisitor {
 
         #region Non-Expression overrides
 
-        public Func<ElementInit, ElementInit> VisitElementInitFunc { get; set; }
+        public Func<ElementInit, Func<ElementInit, ElementInit>, ElementInit> VisitElementInitFunc { get; set; }
         protected override ElementInit VisitElementInit (ElementInit node) {
             return EvalFuncT (VisitElementInitFunc, node, base.VisitElementInit);
         }
 
-        public Func<MemberAssignment, MemberAssignment> VisitMemberAssignmentFunc { get; set; }
-        public Func<MemberListBinding, MemberListBinding> VisitMemberListBindingFunc { get; set; }
-        public Func<MemberMemberBinding, MemberMemberBinding> VisitMemberMemberBindingFunc { get; set; }
-        public Func<MemberBinding, MemberBinding> VisitMemberBindingFunc { get; set; }
+        public Func<MemberAssignment, Func<MemberAssignment, MemberAssignment>, MemberAssignment> VisitMemberAssignmentFunc { get; set; }
+        public Func<MemberListBinding, Func<MemberListBinding, MemberListBinding>, MemberListBinding> VisitMemberListBindingFunc { get; set; }
+        public Func<MemberMemberBinding, Func<MemberMemberBinding, MemberMemberBinding>, MemberMemberBinding> VisitMemberMemberBindingFunc { get; set; }
+        public Func<MemberBinding, Func<MemberBinding, MemberBinding>, MemberBinding> VisitMemberBindingFunc { get; set; }
 
         protected override MemberAssignment VisitMemberAssignment (MemberAssignment node) {
             return EvalFuncT (VisitMemberAssignmentFunc, node, base.VisitMemberAssignment);
@@ -50,12 +50,12 @@ namespace Limaki.Common.Linqish {
 
         #endregion
         
-        protected Expression EvalFunc<T> (Func<T, Expression> visit, T node, Func<T, Expression> super) where T : Expression {
+        protected Expression EvalFunc<T> (Func<T, Func<T, Expression>, Expression> visit, T node, Func<T, Expression> super) where T : Expression {
 
             if (visit != null) {
                 T result = node;
                 foreach (var v in visit.GetInvocationList ()) {
-                    result = ((Func<T, Expression>) v) (result) as T;
+                    result = ((Func<T, Func<T, Expression>, Expression>) v) (result, super) as T;
                 }
                 return result;
             } else
@@ -63,129 +63,132 @@ namespace Limaki.Common.Linqish {
 
         }
 
-        protected T EvalFuncT<T> (Func<T, T> visit, T node, Func<T, T> super) where T : class {
-
-            if (visit != null) {
-                foreach (var v in visit.GetInvocationList ()) {
-                    node = ((Func<T, T>) v) (node) as T;
-                }
-                return node;
-            } else
-                return super (node);
-
-        }
-
-        public Func<Expression, Expression> VisitFunc { get; set; }
+        public Func<Expression, Func<Expression, Expression>, Expression> VisitFunc { get; set; }
         public override Expression Visit (Expression node) {
             return EvalFunc (VisitFunc, node, base.Visit);
         }
 
-        public Func<LambdaExpression, Expression> VisitLambdaFunc { get; set; }
+        public Func<LambdaExpression, Func<LambdaExpression, Expression>, Expression> VisitLambdaFunc { get; set; }
         protected override Expression VisitLambda<T> (Expression<T> node) {
             return EvalFunc<LambdaExpression> (VisitLambdaFunc, node, e => base.VisitLambda<T> (e as Expression<T>));
         }
 
-        		public Func<BinaryExpression, Expression> VisitBinaryFunc { get; set; }
+        public Func<BinaryExpression, Func<BinaryExpression, Expression>, Expression> VisitBinaryFunc { get; set; }
 		protected override Expression VisitBinary (BinaryExpression node) {
 			return EvalFunc (VisitBinaryFunc,node,base.VisitBinary);
 		}
-		public Func<BlockExpression, Expression> VisitBlockFunc { get; set; }
+		public Func<BlockExpression, Func<BlockExpression, Expression>, Expression> VisitBlockFunc { get; set; }
 		protected override Expression VisitBlock (BlockExpression node) {
 			return EvalFunc (VisitBlockFunc,node,base.VisitBlock);
 		}
-		public Func<ConditionalExpression, Expression> VisitConditionalFunc { get; set; }
+		public Func<ConditionalExpression, Func<ConditionalExpression, Expression>, Expression> VisitConditionalFunc { get; set; }
 		protected override Expression VisitConditional (ConditionalExpression node) {
 			return EvalFunc (VisitConditionalFunc,node,base.VisitConditional);
 		}
-		public Func<ConstantExpression, Expression> VisitConstantFunc { get; set; }
+		public Func<ConstantExpression, Func<ConstantExpression, Expression>, Expression> VisitConstantFunc { get; set; }
 		protected override Expression VisitConstant (ConstantExpression node) {
 			return EvalFunc (VisitConstantFunc,node,base.VisitConstant);
 		}
-		public Func<DebugInfoExpression, Expression> VisitDebugInfoFunc { get; set; }
+		public Func<DebugInfoExpression, Func<DebugInfoExpression, Expression>, Expression> VisitDebugInfoFunc { get; set; }
 		protected override Expression VisitDebugInfo (DebugInfoExpression node) {
 			return EvalFunc (VisitDebugInfoFunc,node,base.VisitDebugInfo);
 		}
-		public Func<DynamicExpression, Expression> VisitDynamicFunc { get; set; }
+		public Func<DynamicExpression, Func<DynamicExpression, Expression>, Expression> VisitDynamicFunc { get; set; }
 		protected override Expression VisitDynamic (DynamicExpression node) {
 			return EvalFunc (VisitDynamicFunc,node,base.VisitDynamic);
 		}
-		public Func<DefaultExpression, Expression> VisitDefaultFunc { get; set; }
+		public Func<DefaultExpression, Func<DefaultExpression, Expression>, Expression> VisitDefaultFunc { get; set; }
 		protected override Expression VisitDefault (DefaultExpression node) {
 			return EvalFunc (VisitDefaultFunc,node,base.VisitDefault);
 		}
-		public Func<Expression, Expression> VisitExtensionFunc { get; set; }
+		public Func<Expression, Func<Expression, Expression>, Expression> VisitExtensionFunc { get; set; }
 		protected override Expression VisitExtension (Expression node) {
 			return EvalFunc (VisitExtensionFunc,node,base.VisitExtension);
 		}
-		public Func<GotoExpression, Expression> VisitGotoFunc { get; set; }
+		public Func<GotoExpression, Func<GotoExpression, Expression>, Expression> VisitGotoFunc { get; set; }
 		protected override Expression VisitGoto (GotoExpression node) {
 			return EvalFunc (VisitGotoFunc,node,base.VisitGoto);
 		}
-		public Func<InvocationExpression, Expression> VisitInvocationFunc { get; set; }
+		public Func<InvocationExpression, Func<InvocationExpression, Expression>, Expression> VisitInvocationFunc { get; set; }
 		protected override Expression VisitInvocation (InvocationExpression node) {
 			return EvalFunc (VisitInvocationFunc,node,base.VisitInvocation);
 		}
-		public Func<LabelExpression, Expression> VisitLabelFunc { get; set; }
+		public Func<LabelExpression, Func<LabelExpression, Expression>, Expression> VisitLabelFunc { get; set; }
 		protected override Expression VisitLabel (LabelExpression node) {
 			return EvalFunc (VisitLabelFunc,node,base.VisitLabel);
 		}
 
-		public Func<LoopExpression, Expression> VisitLoopFunc { get; set; }
+		public Func<LoopExpression, Func<LoopExpression, Expression>, Expression> VisitLoopFunc { get; set; }
 		protected override Expression VisitLoop (LoopExpression node) {
 			return EvalFunc (VisitLoopFunc,node,base.VisitLoop);
 		}
-		public Func<MemberExpression, Expression> VisitMemberFunc { get; set; }
+		public Func<MemberExpression, Func<MemberExpression, Expression>, Expression> VisitMemberFunc { get; set; }
 		protected override Expression VisitMember (MemberExpression node) {
 			return EvalFunc (VisitMemberFunc,node,base.VisitMember);
 		}
-		public Func<IndexExpression, Expression> VisitIndexFunc { get; set; }
+		public Func<IndexExpression, Func<IndexExpression, Expression>, Expression> VisitIndexFunc { get; set; }
 		protected override Expression VisitIndex (IndexExpression node) {
 			return EvalFunc (VisitIndexFunc,node,base.VisitIndex);
 		}
-		public Func<MethodCallExpression, Expression> VisitMethodCallFunc { get; set; }
+		public Func<MethodCallExpression, Func<MethodCallExpression, Expression>, Expression> VisitMethodCallFunc { get; set; }
 		protected override Expression VisitMethodCall (MethodCallExpression node) {
 			return EvalFunc (VisitMethodCallFunc,node,base.VisitMethodCall);
 		}
-		public Func<NewArrayExpression, Expression> VisitNewArrayFunc { get; set; }
+		public Func<NewArrayExpression, Func<NewArrayExpression, Expression>, Expression> VisitNewArrayFunc { get; set; }
 		protected override Expression VisitNewArray (NewArrayExpression node) {
 			return EvalFunc (VisitNewArrayFunc,node,base.VisitNewArray);
 		}
-		public Func<NewExpression, Expression> VisitNewFunc { get; set; }
+		public Func<NewExpression, Func<NewExpression, Expression>, Expression> VisitNewFunc { get; set; }
 		protected override Expression VisitNew (NewExpression node) {
 			return EvalFunc (VisitNewFunc,node,base.VisitNew);
 		}
-		public Func<ParameterExpression, Expression> VisitParameterFunc { get; set; }
+		public Func<ParameterExpression, Func<ParameterExpression, Expression>, Expression> VisitParameterFunc { get; set; }
 		protected override Expression VisitParameter (ParameterExpression node) {
 			return EvalFunc (VisitParameterFunc,node,base.VisitParameter);
 		}
-		public Func<RuntimeVariablesExpression, Expression> VisitRuntimeVariablesFunc { get; set; }
+		public Func<RuntimeVariablesExpression, Func<RuntimeVariablesExpression, Expression>, Expression> VisitRuntimeVariablesFunc { get; set; }
 		protected override Expression VisitRuntimeVariables (RuntimeVariablesExpression node) {
 			return EvalFunc (VisitRuntimeVariablesFunc,node,base.VisitRuntimeVariables);
 		}
-		public Func<SwitchExpression, Expression> VisitSwitchFunc { get; set; }
+		public Func<SwitchExpression, Func<SwitchExpression, Expression>, Expression> VisitSwitchFunc { get; set; }
 		protected override Expression VisitSwitch (SwitchExpression node) {
 			return EvalFunc (VisitSwitchFunc,node,base.VisitSwitch);
 		}
-		public Func<TryExpression, Expression> VisitTryFunc { get; set; }
+		public Func<TryExpression, Func<TryExpression, Expression>, Expression> VisitTryFunc { get; set; }
 		protected override Expression VisitTry (TryExpression node) {
 			return EvalFunc (VisitTryFunc,node,base.VisitTry);
 		}
-		public Func<TypeBinaryExpression, Expression> VisitTypeBinaryFunc { get; set; }
+		public Func<TypeBinaryExpression, Func<TypeBinaryExpression, Expression>, Expression> VisitTypeBinaryFunc { get; set; }
 		protected override Expression VisitTypeBinary (TypeBinaryExpression node) {
 			return EvalFunc (VisitTypeBinaryFunc,node,base.VisitTypeBinary);
 		}
-		public Func<UnaryExpression, Expression> VisitUnaryFunc { get; set; }
+		public Func<UnaryExpression, Func<UnaryExpression, Expression>, Expression> VisitUnaryFunc { get; set; }
 		protected override Expression VisitUnary (UnaryExpression node) {
 			return EvalFunc (VisitUnaryFunc,node,base.VisitUnary);
 		}
-		public Func<MemberInitExpression, Expression> VisitMemberInitFunc { get; set; }
+		public Func<MemberInitExpression, Func<MemberInitExpression, Expression>, Expression> VisitMemberInitFunc { get; set; }
 		protected override Expression VisitMemberInit (MemberInitExpression node) {
 			return EvalFunc (VisitMemberInitFunc,node,base.VisitMemberInit);
 		}
-		public Func<ListInitExpression, Expression> VisitListInitFunc { get; set; }
+		public Func<ListInitExpression, Func<ListInitExpression, Expression>, Expression> VisitListInitFunc { get; set; }
 		protected override Expression VisitListInit (ListInitExpression node) {
 			return EvalFunc (VisitListInitFunc,node,base.VisitListInit);
 		}
+
+        protected T EvalFuncT<T> (Func<T, Func<T, T>, T> visit, T node, Func<T, T> super) where T:class {
+            
+            if (visit != null) {
+                foreach (var v in visit.GetInvocationList ()) {
+                    node = ((Func<T, Func<T, T>, T>) v) (node, super) as T; 
+                }
+                return node;
+            } else
+                return super (node);
+           
+        }
+
+       
+
 
     }
 }

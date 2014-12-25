@@ -23,8 +23,29 @@ using NUnit.Framework;
 namespace Limaki.Tests.Generators {
     [TestFixture]
     public class ExpressionGenerators : Limaki.UnitTest.TestBase {
+
         [Test]
-        public void GenerateExpressionFuncVisitor () {
+        public void GenerateExpressionVisitVisitor1 () {
+            Func<MethodInfo, string> MethodDeclaration = method =>
+             string.Format ("protected override {0} {1}{2} ({3})", TypeName (method.ReturnType), method.Name,
+             GenericParameters (method),
+             Parameters (method));
+
+            foreach (var m in typeof (ExpressionVisitor).GetMethods (BindingFlags.NonPublic | BindingFlags.Instance)
+                .Where (
+                    m => typeof (Expression).IsAssignableFrom (m.ReturnType) && m.GetParameters ().Length == 1
+                )
+                ) {
+                Console.WriteLine ("\t\tpublic Func<{0}, Expression> {1}Func {{ get; set; }}",
+                TypeName (m.GetParameters ()[0].ParameterType), m.Name);
+                Console.WriteLine ("\t\t{0} {{", MethodDeclaration (m));
+                Console.WriteLine ("\t\t\treturn EvalFunc ({0}Func,node,base.{0});", m.Name);
+                Console.WriteLine ("\t\t}");
+
+            }
+        }
+        [Test]
+        public void GenerateExpressionVisitVisitor0 () {
             Func<MethodInfo, string> MethodDeclaration = method =>
              string.Format ("protected override {0} {1}{2} ({3})", TypeName (method.ReturnType), method.Name,
              GenericParameters (method),

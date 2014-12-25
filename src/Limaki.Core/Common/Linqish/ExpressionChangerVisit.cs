@@ -57,13 +57,13 @@ namespace Limaki.Common.Linqish {
 
         }
 
-        protected virtual Expression VisitMember (MemberExpression node, Func<MemberExpression, Expression> super) {
+        protected virtual Expression VisitMember (MemberExpression node) {
             var source = node.Member.ReflectedType;
             var target = ChangeGenericArguments (source);
             return VisitMember (node, source, target);
         }
 
-        protected virtual Expression VisitParameter (ParameterExpression node, Func<ParameterExpression, Expression> super) {
+        protected virtual Expression VisitParameter (ParameterExpression node) {
             // need to change the ParameterExpression if node.Type.IsGenericType and 
             var source = node.Type;
             if (source == Source && source != Sink) {
@@ -74,7 +74,8 @@ namespace Limaki.Common.Linqish {
 
         }
 
-        protected virtual Expression VisitMethodCall (MethodCallExpression node, Func<MethodCallExpression, Expression> super) {
+        protected virtual Expression VisitMethodCall (MethodCallExpression node) {
+            var instance = default(Expression);
             if (node.Method.IsGenericMethod) {
                 var genericArguments = node.Method.GetGenericArguments ();
                 var changed = false;
