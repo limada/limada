@@ -97,7 +97,7 @@
     <Compile Include="[Obsolete]\IWebBrowserEx.cs" />
     <Compile Include="Limaki.View\Vidgets\FileDialogVidget.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripButton.cs" />
-    <Compile Include="Limaki.View\Vidgets\ToolStripCommand0.cs" />
+    <Compile Include="[Obsolete]\ToolStripCommand0.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripDropDownButton.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripItem.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripItemCollection.cs" />
@@ -142,7 +142,7 @@
     <Compile Include="Limaki.View\ContentViewers\TextContentViewerWithToolstrip0.cs" />
     <Compile Include="Limaki.WebServers\WebResponseBase.cs" />
     <Compile Include="Limaki.Usecases\Vidgets\ISplitViewBackend.cs" />
-    <Compile Include="Limaki.View\Vidgets\IToolStripCommandToggle0.cs" />
+    <Compile Include="[Obsolete]\IToolStripCommandToggle0.cs" />
     <Compile Include="[Obsolete]\IToolStripItem0.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripCommand.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\DisplayModeToolStrip.cs" />

@@ -7,7 +7,12 @@ using Xwt.Backends;
 namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
     [BackendType(typeof(ILayoutToolStripBackend0))]
-    public class LayoutToolStrip0 : DisplayToolStrip0<IGraphSceneDisplay<IVisual, IVisualEdge>, ILayoutToolStripBackend0> {
+    public class LayoutToolStrip0 : DisplayToolStrip<IGraphSceneDisplay<IVisual, IVisualEdge>> {
+
+        public new virtual ILayoutToolStripBackend0 Backend {
+            get { return base.Backend as ILayoutToolStripBackend0; }
+            set { base.Backend = value; }
+        }
 
         public IStyleSheet CurrentStyleSheet { get; set; }
 
@@ -30,7 +35,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
         public void ShapeChange (IShape shape) {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
-                foreach (IVisual visual in currentDisplay.Data.Selected.Elements) {
+                foreach (var visual in currentDisplay.Data.Selected.Elements) {
                     SceneExtensions.ChangeShape(currentDisplay.Data, visual, shape);
                 }
                 currentDisplay.Perform();
@@ -60,7 +65,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
         public void StyleChange (IStyleGroup style) {
             var currentDisplay = this.CurrentDisplay;
             if (currentDisplay != null) {
-                foreach (IVisual visual in currentDisplay.Data.Selected.Elements) {
+                foreach (var visual in currentDisplay.Data.Selected.Elements) {
                     SceneExtensions.ChangeStyle(currentDisplay.Data, visual, style);
                 }
                 currentDisplay.Perform();

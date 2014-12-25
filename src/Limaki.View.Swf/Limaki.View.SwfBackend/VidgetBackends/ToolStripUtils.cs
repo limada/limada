@@ -32,23 +32,6 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         public static int DropdownWidth = SystemInformation.VerticalScrollBarWidth / 3*2;
 
-        public static void SetCommand(IToolStripCommandToggle0 item, ref ToolStripCommand0 _command, ToolStripCommand0 value) {
-            var toolStripItem = item as SWF.ToolStripItem;
-            if (_command != value) {
-                try {
-                    if (toolStripItem.Owner != null)
-                        toolStripItem.Owner.SuspendLayout();
-                    if (_command != null)
-                        _command.DeAttach(item);
-                    _command = value;
-                    _command.Attach(item);
-                } finally {
-                    if (toolStripItem.Owner != null)
-                        toolStripItem.Owner.ResumeLayout(true);
-                }
-            }
-        }
-
         public System.Drawing.Color? ToolStripBackground = null;
         public System.Drawing.Color? ToolStripForeground = null;
         public System.Drawing.Color? ToolStripItemSelectedColor = null;

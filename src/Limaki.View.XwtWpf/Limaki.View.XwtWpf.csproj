@@ -81,6 +81,7 @@
     <Compile Include="Limaki.View.WpfBackend\XwtBackends\WpfSystemFontBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\WpfSystemInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="[Obsolete]\VidgetUtils0.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">

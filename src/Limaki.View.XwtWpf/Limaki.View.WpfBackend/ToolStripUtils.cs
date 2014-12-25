@@ -22,13 +22,6 @@ namespace Limaki.View.WpfBackend {
 
     public class ToolStripUtils {
 
-        public static void SetSize (IToolStripCommandToggle0 item, Xwt.Size value) {
-            var button = item as Button;
-            if (button != null) {
-                button.RenderSize = value.ToWpf ();
-            }
-        }
-
         public static FixedBitmap WpfImage (Xwt.Drawing.Image value) {
             return new FixedBitmap { Source = value.ToWpf () as System.Windows.Media.Imaging.BitmapSource };
         }

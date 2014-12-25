@@ -22,7 +22,7 @@ namespace Limaki.View.WpfBackend {
         protected ToolStripCommand0 _command = null;
         public new ToolStripCommand0 Command {
             get { return _command; }
-            set { VidgetUtils.SetCommand (this, ref _command, value); }
+            set { VidgetUtils0.SetCommand (this, ref _command, value); }
         }
 
         #region IToolStripItem0-Implementation
