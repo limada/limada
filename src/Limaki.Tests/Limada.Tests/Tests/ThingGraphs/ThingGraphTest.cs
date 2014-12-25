@@ -101,7 +101,7 @@ namespace Limada.Tests.ThingGraphs {
             ReportSummary();
         }
 
-        public int StoreCount = 150;
+        public int RepeatCount = 150;
         [Test]
         public virtual void StorePerformanceTest() {
             var target = this.Graph;
@@ -112,7 +112,7 @@ namespace Limada.Tests.ThingGraphs {
 
             var factory = new BinaryGraphFactory();
             factory.Graph = graphPair;
-            factory.Count = StoreCount;
+            factory.Count = RepeatCount;
             factory.AddDensity = true;
 
             this.Tickers.Start();

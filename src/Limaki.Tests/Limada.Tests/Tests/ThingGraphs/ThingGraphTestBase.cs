@@ -86,7 +86,7 @@ namespace Limada.Tests.ThingGraphs {
 
     public static class ThingGraphIoExtensions {
         public static string Extension (this ThingGraphIo source) {
-            if (source.Detector == null)
+            if (source.Detector == null||!source.Detector.ContentSpecs.Any())
                 return ".<null>";
             return "." + source.Detector.ContentSpecs.First ().Extension;
         }

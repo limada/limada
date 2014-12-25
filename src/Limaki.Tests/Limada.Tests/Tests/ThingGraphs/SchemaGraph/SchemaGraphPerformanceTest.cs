@@ -7,9 +7,13 @@ using NUnit.Framework;
 using Id = System.Int64;
 
 namespace Limada.Tests.ThingGraphs.SchemaGraph {
+
     public class SchemaGraphPerformanceTest : SchemaGraphTestBase {
-        public int Count = 50;
-        
+
+        public int FillCount = 1;
+
+        public int ReadCount = 1;
+
         private Id _rootId = 0;
         protected long rootId {
             get {return _rootId;}
@@ -52,7 +56,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
             ReportDetail ("Writing");
             var factory = new DescriptionSampleFactory();
             factory.Graph = this.Graph;
-            factory.Count = Count;
+            factory.Count = FillCount;
             factory.TestMarker = this.TestMarker;
             factory.Populate();
 
@@ -81,14 +85,16 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
 
             view.Add(root);
 
-            int iCount = 0;
-            foreach (IThing thing in facade.Expand(new IThing[] { root }, false)) {
+            var iCount = 0;
+            for(var i=0;i<ReadCount;i++) 
+            foreach (var thing in facade.Expand(new IThing[] { root }, false)) {
                 if (!(thing is ILink)) {
                     var thingToDisplay = schemaGraph.ThingToDisplay(thing);
                     iCount++;
                 }
             }
-            ReportSummary("Reads \tCount \t" + iCount);
+
+            ReportSummary (string.Format("Reads \t{0}\t({1} repeats)", iCount, ReadCount));
         }
     }
 }
