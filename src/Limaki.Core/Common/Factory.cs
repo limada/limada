@@ -171,6 +171,7 @@ namespace Limaki.Common {
                     Expression<Action> genexp = () => this.Create<object>();
                     GenericCreateMethod = ((MethodCallExpression)((LambdaExpression)genexp).Body).Method.GetGenericMethodDefinition();
                 }
+                // TODO: cache delegate here
                 return GenericCreateMethod.MakeGenericMethod(type).Invoke(this, null);
             }
             return null;
@@ -182,6 +183,7 @@ namespace Limaki.Common {
                 Expression<Action> genexp =() => this.Add<object, object>();
                 GenericAddMethod = ((MethodCallExpression)((LambdaExpression)genexp).Body).Method.GetGenericMethodDefinition();
             }
+            // TODO: cache delegate here
             GenericAddMethod.MakeGenericMethod(t1, t2).Invoke(this, null);
             knownClazzes[t1] = t2;
         }
