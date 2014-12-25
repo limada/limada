@@ -33,10 +33,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\PdfContentViewer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\PdfJsServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ComboBox.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\IWebBrowserEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\FileDialogVidget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ToolStripButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ToolStripCommand0.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ToolStripDropDownButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ToolStripItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ToolStripItemCollection.cs" />
@@ -44,7 +42,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\VidgetUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\Vindow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\Visibility.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\WebBrowserVidgetEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\DragDrop\DragDropBackendHandlerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\DragDrop\DragDropInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Rendering\SelectionRenderer.cs" />
@@ -62,7 +59,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ToolStrip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visualizers\ToolStrips\ArrangerToolStrip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visualizers\ToolStrips\MarkerToolStrip.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)[Obsolete]\DisplayModeToolStrip0.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visualizers\ToolStrips\DisplayToolStrip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visuals\VisualGraphSceneMeshEvents.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visuals\VisualGraphSceneMesh.cs" />
@@ -81,17 +77,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\TextContentViewerWithToolstrip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\WebResponseBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Usecases\Vidgets\ISplitViewBackend.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\IToolStripCommandToggle0.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\IToolStripItem0.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ToolStripCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visualizers\ToolStrips\DisplayModeToolStrip.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visualizers\ToolStrips\LayoutToolStrip0.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)[Obsolete]\MarkerToolStrip0.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Vidgets\SplitViewDumnmy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)[Obsolete]\DisplayToolStrip0.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\CanvasVidget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ITextViewerBackend.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ITextViewerWithToolstripBackend.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\TextViewer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\TextViewerTextType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\TextViewerWithToolstrip.cs" />
@@ -334,9 +324,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\WebServerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\ContentVisualViewerProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\ContentVisualViewer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)[Obsolete]\ArrangerToolStrip0.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visualizers\ToolStrips\IMarkerTool.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)[Obsolete]\SplitViewToolStrip0.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\ContentViewer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Visuals\BruteForceIndex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Visuals\VisualGraphEntityTransformer.cs" />
@@ -362,5 +350,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\SystemFonts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\XwtLExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\XwtToChange.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ITextViewerVidgetBackend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\TextViewerToolStrip.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt\FontDataAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt\IScrollContainingWidget.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt\TextViewerWidget.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt\WebBrowserWidget.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visualizers\ToolStrips\LayoutToolStrip0.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\TextAttributeVisitor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)[Obsolete]\" />
   </ItemGroup>
 </Project>

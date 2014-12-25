@@ -98,7 +98,9 @@
     <Compile Include="Common\KeyMaker.cs" />
     <Compile Include="Common\Linqish\CompareExpressionBuilder.cs" />
     <Compile Include="Common\Linqish\EnumerableExtensions.cs" />
+    <Compile Include="Common\Linqish\ExpressionCache.cs" />
     <Compile Include="Common\Linqish\ExpressionChanger.cs" />
+    <Compile Include="Common\Linqish\ExpressionVisitVisitor.cs" />
     <Compile Include="[Obsolete]\ExpressionChangerBase.cs" />
     <Compile Include="Common\Linqish\ExpressionChangerVisit.cs" />
     <Compile Include="[Obsolete]\ExpressionChanger_S_T.cs" />
@@ -106,7 +108,7 @@
     <Compile Include="Common\Linqish\ExpressionHashVisitor.cs" />
     <Compile Include="Common\Linqish\ExpressionProjector.cs" />
     <Compile Include="Common\Linqish\ExpressionUtils.cs" />
-    <Compile Include="Common\Linqish\ExpressionVisitVisitor.cs" />
+    <Compile Include="[Obsolete]\ExpressionVisitVisitor0.cs" />
     <Compile Include="Common\Linqish\MemberByNameExpressionBuilder.cs" />
     <Compile Include="Common\Linqish\PropertyExtractor.cs" />
     <Compile Include="Common\Reflections\MemberReflectionCache.cs" />
