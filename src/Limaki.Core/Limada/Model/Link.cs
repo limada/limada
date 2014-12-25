@@ -135,12 +135,11 @@ namespace Limada.Model {
 
         protected Id _leafId = 0;
         [DataMember(Name = "LeafId")]
-#if SILVERLIGHT
-        public Id leafId {
+        public Id LeafId {
             get { return _leafId; }
             set { setId(ref _leafId, ref _leaf, value); }
         }
-#endif
+
         Id IEdge<Id>.Leaf {
             get { return _leafId; }
             set { setId(ref _leafId, ref _leaf, value); }
@@ -148,12 +147,11 @@ namespace Limada.Model {
 
         protected Id _markerId = 0;
         [DataMember(Name = "MarkerId")]
-#if SILVERLIGHT        
-        public Id narkerId {
+        public Id MarkerId {
             get { return _markerId; }
             set { setId(ref _markerId, ref _marker, value); }
         }
-#endif
+
         Id ILink<Id>.Marker {
             get { return _markerId; }
             set { setId(ref _markerId, ref _marker, value); }
@@ -161,12 +159,10 @@ namespace Limada.Model {
 
         protected Id _rootId = 0;
         [DataMember(Name = "RootId")]
-#if SILVERLIGHT        
-        public Id rootId {
+        public Id RootId {
             get { return _rootId; }
             set { setId(ref _rootId, ref _root, value); }
         }
-#endif
 
         Id IEdge<Id>.Root {
             get { return _rootId; }
