@@ -21,7 +21,7 @@ using Limaki.Common.Reflections;
 
 namespace Limaki.Common.Linqish {
 
-    public class ExpressionChangerVisit {
+    public class ExpressionChangerVisit : ExpressionVisitor {
 
         public ExpressionVisitVisitor Visitor { get; set; }
 
@@ -29,11 +29,13 @@ namespace Limaki.Common.Linqish {
             return new ExpressionChangerVisit (visitor, typeof (S), typeof (T));
         }
 
+        public ExpressionChangerVisit (Type source, Type sink):this(new ExpressionVisitVisitor(), source,sink) {}
+
         public ExpressionChangerVisit (ExpressionVisitVisitor visitor, Type source, Type sink) {
             this.Visitor = visitor;
             this.Source = source;
             this.Sink = sink;
-            visitor.VisitLambdaFunc += VisitLambda;
+            visitor.VisitLambdaFunc += VisitLambdaNG;
             visitor.VisitMemberFunc += VisitMember;
             visitor.VisitParameterFunc += VisitParameter;
             visitor.VisitMethodCallFunc += VisitMethodCall;
@@ -42,19 +44,27 @@ namespace Limaki.Common.Linqish {
         public Type Source { get; protected set; }
         public Type Sink { get; protected set; }
 
-        protected virtual Expression VisitLambda (LambdaExpression node, Func<LambdaExpression, Expression> super) {
-            
-            var source = node.GetType().GetGenericArguments().First();
-            var target = ChangeGenericArguments (source);
-          
-            if (source != target) {
-                var body = Visitor.Visit (node.Body);
-                var paras = node.Parameters.Select (p => Visitor.Visit (p) as ParameterExpression);
-                var result = Expression.Lambda (target, body, paras);
-                return result;
-            } 
-            return node;
+        public override Expression Visit (Expression node) {
+            return Visitor.Visit (node);
+        }
 
+        protected override Expression VisitLambda<T> (Expression<T> node) {
+            return VisitLambdaNG (node);
+        }
+
+        protected virtual Expression VisitLambdaNG (LambdaExpression node) {
+
+            var source = node.GetType ().GetGenericArguments ().First ();
+            var target = ChangeGenericArguments (source);
+            var paras = node.Parameters.Select (p => this.Visit (p) as ParameterExpression);
+
+            var body = this.Visit (node.Body);
+            var result = Expression.Lambda (target, body, paras);
+            return result;
+        }
+
+        protected override Expression VisitConstant (ConstantExpression node) {
+            return base.VisitConstant (node);
         }
 
         protected virtual Expression VisitMember (MemberExpression node) {
@@ -67,7 +77,7 @@ namespace Limaki.Common.Linqish {
             // need to change the ParameterExpression if node.Type.IsGenericType and 
             var source = node.Type;
             if (source == Source && source != Sink) {
-                return VisitParameter (Expression.Parameter (Sink, node.Name), super);
+                return VisitParameter (Expression.Parameter (Sink, node.Name));
             }
             var target = ChangeGenericArguments (source);
             return VisitParameter (node, source, target);
@@ -76,6 +86,9 @@ namespace Limaki.Common.Linqish {
 
         protected virtual Expression VisitMethodCall (MethodCallExpression node) {
             var instance = default(Expression);
+            if (!node.Method.IsStatic) {
+                instance = this.Visit (node.Object);
+            }
             if (node.Method.IsGenericMethod) {
                 var genericArguments = node.Method.GetGenericArguments ();
                 var changed = false;
@@ -88,12 +101,25 @@ namespace Limaki.Common.Linqish {
 
                 if (changed) {
                     var method = node.Method.GetGenericMethodDefinition ().MakeGenericMethod (genericArguments);
-                    var args = ExpressionVisitor.Visit (node.Arguments, Visitor.Visit);
-                    var exp = Expression.Call (method, args);
-                    return super(exp);
+                    var margs = ExpressionVisitor.Visit (node.Arguments, this.Visit);
+                    var exp = default(MethodCallExpression);
+                    if (node.Method.IsStatic)
+                        exp = Expression.Call (method, margs);
+                    else
+                        exp = Expression.Call (instance, method, margs);
+                    return base.VisitMethodCall (exp);
                 }
             }
-            return node;
+            var args = ExpressionVisitor.Visit (node.Arguments, this.Visit);
+            if (node.Method.IsStatic)
+                return Expression.Call (node.Method, args);
+            else
+                return Expression.Call (instance, node.Method, args);
+        }
+
+        protected override Expression VisitUnary (UnaryExpression node) {
+            // TODO:
+            return base.VisitUnary (node);
         }
 
         protected virtual Expression VisitMember (MemberExpression node, Type source, Type target) {
@@ -149,10 +175,10 @@ namespace Limaki.Common.Linqish {
 
             if (generic.IsGenericType) {
                 var argsSource = generic.GetGenericArguments ();
-                if (!Array.Exists (argsSource, t => t == source))
-                    return generic;
+                //if (!Array.Exists (argsSource, t => t == source))
+                //    return generic;
 
-                var args = argsSource.Select (t => t == source ? target : t).ToArray ();
+                var args = argsSource.Select (t => ChangeGenericArguments(t,source,target)).ToArray ();
                 var gen = generic.GetGenericTypeDefinition ();
 
                 var result = gen.MakeGenericType (args);
