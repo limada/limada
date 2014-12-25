@@ -23,7 +23,7 @@ namespace Limaki.Data {
 
     public interface IDataContext : IDisposable {
 
-        IGateway Gateway { get; set; }
+        IGateway Gateway { get; }
 
         TextWriter Log { get; set; }
 
