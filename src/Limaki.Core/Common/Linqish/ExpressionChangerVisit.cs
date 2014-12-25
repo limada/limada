@@ -157,6 +157,7 @@ namespace Limaki.Common.Linqish {
                 var result = gen.MakeGenericType (args);
                 return result;
             }
+
             if (generic.IsArray && generic.GetElementType () == source) {
                 return target.MakeArrayType ();
             }

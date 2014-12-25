@@ -64,9 +64,7 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
 
 
         }
-
-
-
+        
         [Test]
         public void ReadDescriptionTest() {
             IThing root = GetRoot ();
@@ -74,7 +72,6 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
                 WriteDescriptionTest ();
 
             root = GetRoot ();
-
 
             ReportDetail("Reading");
             this.Tickers.Start();
@@ -90,7 +87,6 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
                     var thingToDisplay = schemaGraph.ThingToDisplay(thing);
                     iCount++;
                 }
-
             }
             ReportSummary("Reads \tCount \t" + iCount);
         }

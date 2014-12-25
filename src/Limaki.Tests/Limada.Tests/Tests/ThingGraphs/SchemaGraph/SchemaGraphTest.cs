@@ -12,7 +12,9 @@ using Limada.Schemata;
 using Id = System.Int64;
 
 namespace Limada.Tests.ThingGraphs.SchemaGraph {
+
     public class SchemaGraphTestBase : ThingGraphTestBase {
+
         public override IThingGraph Graph {
             get {
                 if (!(base.Graph is SchemaThingGraph)) {
@@ -84,11 +86,9 @@ namespace Limada.Tests.ThingGraphs.SchemaGraph {
 
             var graph = this.Graph as SchemaThingGraph;
             graph.Initialize ();
-
-
+            
             TestDescription (factory.Nodes[1], factory.Nodes[2], factory.Edges[1]);
             TestDescription(factory.Nodes[3], factory.Nodes[4], factory.Edges[2]);
-            
             
             TestFindRoots(factory.Nodes[1], factory.Nodes[2], factory.Edges[1]);
             ReportSummary();

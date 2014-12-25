@@ -23,6 +23,7 @@ using System.Diagnostics;
 namespace Limaki.Common.IOC {
 
     public class AppFactory<T> where T : ContextResourceLoader {
+
         protected AppFactory() { }
 
         bool backendApplied = false;
