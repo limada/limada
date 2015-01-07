@@ -20,6 +20,7 @@ using Limaki.Tests.Graph.Model;
 using NUnit.Framework;
 
 namespace Limaki.Tests.Graph.Basic {
+
     public class EdgeIsItemDataFactory : BasicGraphTestDataFactory<Item<string>, EdgeItem<string>> {
         protected override void CreateItems() {
             One = new Item<string>("One");

@@ -21,6 +21,7 @@ using Limaki.Contents;
 using Limaki.Common;
 
 namespace Limaki.Contents {
+
     /// <summary>
     /// gives back a ContentInfo describing the stream
     /// if the stream is supported by ContentSpecs
@@ -44,8 +45,6 @@ namespace Limaki.Contents {
         public virtual bool Supports (Stream stream) {
             return Use(stream) != null;
         }
-
-
 
         protected virtual bool HasMagic (Stream stream, byte[] magic, int offset) {
             if (stream.Length <= magic.Length)

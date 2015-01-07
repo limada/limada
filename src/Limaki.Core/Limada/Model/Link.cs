@@ -23,63 +23,62 @@ namespace Limada.Model {
     [DataContract]
     public class Link : Thing, IThing<IThing>, ILink, ILink<Id> {
 
-        public Link() { }
+        public Link () { }
 
-        public Link(IThing marker):base() {
+        public Link (IThing marker): base () {
             this.Marker = marker;
         }
 
-        public Link(Id id, IThing marker) : base(id) {
+        public Link (Id id, IThing marker): base (id) {
             this.Marker = marker;
         }
 
-        public Link(Id id, Id marker): base(id) {
-            ((ILink<Id>)this).Marker = marker;
+        public Link (Id id, Id marker): base (id) {
+            this.MarkerId = marker;
         }
 
-        public Link(IThing root, IThing leaf, IThing marker):this(marker) {
+        public Link (IThing root, IThing leaf, IThing marker) : this (marker) {
             this.Root = root;
             this.Leaf = leaf;
         }
 
-        public Link(Id root, Id leaf, Id marker) {
-            ((ILink<Id>)this).Marker = marker;
-            ((ILink<Id>)this).Root = root ;
-            ((ILink<Id>)this).Leaf = leaf;
+        public Link (Id root, Id leaf, Id marker) {
+            this.RootId = root;
+            this.LeafId = leaf;
+            this.MarkerId = marker;
         }
 
-        public Link(Id id, IThing root, IThing leaf, IThing marker): this(id,marker) {
+        public Link (Id id, IThing root, IThing leaf, IThing marker) : this (id, marker) {
             this.Root = root;
             this.Leaf = leaf;
         }
 
-        public Link(Id id, Id root, Id leaf, Id marker) : this(id, marker) {
-            ((ILink<Id>)this).Root = root;
-            ((ILink<Id>)this).Leaf = leaf;
+        public Link (Id id, Id root, Id leaf, Id marker) : this (id, marker) {
+            this.RootId = root;
+            this.LeafId = leaf;
         }
 
-        
         IThing _root = null;
         [Transient]
         public IThing Root {
-            get { return getThing (_rootId,ref _root); }
-            set { setThing (ref _rootId, ref _root, value); }
+            get { return GetThing (_rootId, ref _root); }
+            set { SetThing (ref _rootId, ref _root, value); }
         }
 
-       
+
         IThing _leaf = null;
         [Transient]
         public IThing Leaf {
-            get { return getThing(_leafId, ref _leaf); }
-            set { setThing(ref _leafId, ref _leaf, value); }
+            get { return GetThing (_leafId, ref _leaf); }
+            set { SetThing (ref _leafId, ref _leaf, value); }
         }
 
-        
+
         IThing _marker = null;
         [Transient]
         public IThing Marker {
-            get { return getThing(_markerId, ref _marker); }
-            set { setThing(ref _markerId, ref _marker, value); }
+            get { return GetThing (_markerId, ref _marker); }
+            set { SetThing (ref _markerId, ref _marker, value); }
         }
 
         [Transient]
@@ -88,94 +87,90 @@ namespace Limada.Model {
             set { Marker = value; }
         }
 
-
-        public override void MakeEqual(IThing thing) {
+        public override void MakeEqual (IThing thing) {
             if (thing is ILink) {
-                base.MakeEqual(thing);
-                var idLink = ( (ILink<Id>) thing );
-                var idThis = ((ILink<Id>)this);
+                base.MakeEqual (thing);
+                var idLink = ((ILink<Id>) thing);
+                var idThis = ((ILink<Id>) this);
                 idThis.Root = idLink.Root;
                 idThis.Leaf = idLink.Leaf;
                 idThis.Marker = idLink.Marker;
-                this.Root = ( (ILink) thing ).Root;
-                this.Leaf = ((ILink)thing).Leaf;
-                
+                this.Root = ((ILink) thing).Root;
+                this.Leaf = ((ILink) thing).Leaf;
+
             }
         }
 
-        protected void setThing(ref Id id, ref IThing data, IThing value) {
+        protected void SetThing (ref Id id, ref IThing thing, IThing value) {
             if (value == null) {
-                data = value;
-                this.State.Setter (ref id, default( Id ));
-            } else if (value != data) {
-                this.State.Setter(ref id, value.Id);
-                data = value;
+                thing = value;
+                this.State.Setter (ref id, default (Id));
+            } else if (value != thing) {
+                this.State.Setter (ref id, value.Id);
+                thing = value;
             }
         }
 
-        public Func<Id,IThing> GetByID = null;
+        public Func<Id, IThing> GetByID { get; set; }
 
-        protected IThing getThing(Id id, ref IThing data) {
-           if (id == 0) {
-               data = null;
-           } else if ((GetByID != null)&&(data==null)) {
-               data = GetByID (id);
-           }
-           return data;
+        protected IThing GetThing (Id id, ref IThing data) {
+            if (id == 0) {
+                data = null;
+            } else if ((GetByID != null) && (data == null)) {
+                data = GetByID (id);
+            }
+            return data;
         }
 
         #region IEdge<Id> Member
 
-        protected void setId(ref Id id, ref IThing data, Id value) {
+        protected void SetId (ref Id id, ref IThing thing, Id value) {
             if (value != id) {
-                data = null;
-                this.State.Setter(ref id, value);
-            } 
+                thing = null;
+                this.State.Setter (ref id, value);
+            }
         }
 
         protected Id _leafId = 0;
-        [DataMember(Name = "LeafId")]
+        [DataMember (Name = "LeafId")]
         public Id LeafId {
             get { return _leafId; }
-            set { setId(ref _leafId, ref _leaf, value); }
+            set { SetId (ref _leafId, ref _leaf, value); }
         }
 
         Id IEdge<Id>.Leaf {
             get { return _leafId; }
-            set { setId(ref _leafId, ref _leaf, value); }
+            set { SetId (ref _leafId, ref _leaf, value); }
         }
 
         protected Id _markerId = 0;
-        [DataMember(Name = "MarkerId")]
+        [DataMember (Name = "MarkerId")]
         public Id MarkerId {
             get { return _markerId; }
-            set { setId(ref _markerId, ref _marker, value); }
+            set { SetId (ref _markerId, ref _marker, value); }
         }
 
         Id ILink<Id>.Marker {
             get { return _markerId; }
-            set { setId(ref _markerId, ref _marker, value); }
+            set { SetId (ref _markerId, ref _marker, value); }
         }
 
         protected Id _rootId = 0;
-        [DataMember(Name = "RootId")]
+        [DataMember (Name = "RootId")]
         public Id RootId {
             get { return _rootId; }
-            set { setId(ref _rootId, ref _root, value); }
+            set { SetId (ref _rootId, ref _root, value); }
         }
 
         Id IEdge<Id>.Root {
             get { return _rootId; }
-            set { setId(ref _rootId, ref _root, value); }
+            set { SetId (ref _rootId, ref _root, value); }
         }
         #endregion
 
-        public override string ToString() {
-            return String.Format("[{0}->{1},{2}]", this.Root, this.Leaf, this.Marker);
+        public override string ToString () {
+            return String.Format ("[{0}->{1},{2}]", this.Root, this.Leaf, this.Marker);
         }
 
-        
-
-        
     }
 }

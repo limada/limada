@@ -42,6 +42,7 @@ namespace Limaki.Contents.IO {
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     public abstract class ContentIo<TSource> : IContentIo<TSource> {
+
         protected ContentIo (ContentDetector detector) {
             this.Detector = detector;
         }

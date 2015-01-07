@@ -56,8 +56,8 @@ namespace Limaki.Data {
 
         #endregion
 
-        protected abstract void Store(TItem item);
-        protected abstract void Store(TEdge edge);
+        protected abstract void Upsert(TItem item);
+        protected abstract void Upsert(TEdge edge);
         protected abstract void Delete(TItem item);
         protected abstract void Delete(TEdge edge);
 
@@ -80,7 +80,7 @@ namespace Limaki.Data {
             // TODO: Prove what happens if item is TEdge
             if (item != null)
                 try {
-                    Store (item);
+                    Upsert (item);
                 } catch (Exception e) {
                     throw e;
                 } finally { }
@@ -92,7 +92,7 @@ namespace Limaki.Data {
                     CheckEdge(edge);
                     AddEdge(edge, edge.Root);
                     AddEdge(edge, edge.Leaf);
-                    Store(edge);
+                    Upsert(edge);
                 } catch (Exception e) {
                     throw e;
                 } finally { }
@@ -126,7 +126,7 @@ namespace Limaki.Data {
                 }
                 SetCached(newItem, null);
                 SetCached(oldItem, null);
-                Store(edge);
+                Upsert(edge);
             } else {
                 this.Add(edge);
             }
@@ -136,7 +136,7 @@ namespace Limaki.Data {
             base.RevertEdgeInternal(edge);
             SetCached(edge.Leaf, null);
             SetCached(edge.Root, null);
-            Store(edge);
+            Upsert(edge);
         }
 
         protected override bool RemoveEdge(TEdge edge, TItem item) {

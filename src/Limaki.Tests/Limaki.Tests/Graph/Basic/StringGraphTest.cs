@@ -23,6 +23,7 @@ using Limaki.Graphs;
 using Limaki.UnitTest;
 
 namespace Limaki.Tests.Graph.Basic {
+
     public class StringDataFactory : BasicGraphTestDataFactory<string, Edge<string>> {
         protected override void CreateItems() {
             One = "One";

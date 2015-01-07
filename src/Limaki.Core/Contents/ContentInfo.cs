@@ -21,12 +21,12 @@ namespace Limaki.Contents {
             this.Magics = magics;
         }
 
-        public CompressionType Compression { get; set; }
-        public long ContentType { get; set; }
-        public string Description { get; set; }
-        public string Extension { get; set; }
-        public string MimeType { get; set; }
-        public Magic[] Magics { get; set; }
+        public virtual CompressionType Compression { get; protected set; }
+        public virtual long ContentType { get; protected set; }
+        public virtual string Description { get; protected set; }
+        public virtual string Extension { get; protected set; }
+        public virtual string MimeType { get; protected set; }
+        public virtual Magic[] Magics { get; protected set; }
 
     }
 

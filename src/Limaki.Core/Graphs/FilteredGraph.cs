@@ -27,11 +27,7 @@ namespace Limaki.Graphs {
             this.Source = source;
         }
 
-        IGraph<TItem, TEdge> _source = null;
-        public virtual IGraph<TItem, TEdge> Source {
-            get { return _source; }
-            set { _source = value; }
-        }
+        public virtual IGraph<TItem, TEdge> Source { get; set; }
 
         public Predicate<TEdge> EdgeFilter = null;
         public Predicate<TItem> ItemFilter = null;
@@ -69,7 +65,7 @@ namespace Limaki.Graphs {
 
         public override int EdgeCount(TItem item) {
             int result = 0;
-            foreach (TEdge edge in Edges(item)) {
+            foreach (var edge in Edges(item)) {
                 result++;
             }
             return result;
@@ -80,7 +76,7 @@ namespace Limaki.Graphs {
         }
 
         public override IEnumerable<TEdge> Edges() {
-            foreach (TEdge edge in Source.Edges()) {
+            foreach (var edge in Source.Edges()) {
                 if (EdgeFilter(edge)) {
                     yield return edge;
                 }
@@ -117,7 +113,7 @@ namespace Limaki.Graphs {
 
         public override void Clear() {
             var remove = new Set<TItem>();
-            foreach (TItem item in this) {
+            foreach (var item in this) {
                 if (ItemFilter(item))
                     remove.Add(item);
             }

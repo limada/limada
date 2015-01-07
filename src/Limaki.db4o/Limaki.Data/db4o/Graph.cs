@@ -41,11 +41,11 @@ namespace Limaki.Data.db4o {
             return result;
         }
 
-        protected override void Store(TItem item) {
+        protected override void Upsert(TItem item) {
             Session.Store(item);
         }
 
-        protected override void Store(TEdge edge) {
+        protected override void Upsert(TEdge edge) {
             Session.Store(edge);
         }
 

@@ -49,12 +49,12 @@ namespace Limada.IO.db4o {
 
             base.DeclareTypesToConfigure();
 
-            TypesToConfigure.Add(typeof(Thing));
-            TypesToConfigure.Add(typeof(Thing<string>));
-            TypesToConfigure.Add(typeof(Link));
+            TypesToConfigure.Add (typeof (Thing));
+            TypesToConfigure.Add (typeof (Thing<string>));
+            TypesToConfigure.Add (typeof (Link));
             TypesToConfigure.Add (typeof (StreamThing));
 
-            TypesToConfigure.Add(typeof(RealData));
+            TypesToConfigure.Add (typeof (RealData));
             TypesToConfigure.Add (typeof (RealData<byte[]>));
 
 
