@@ -101,6 +101,9 @@
     <Compile Include="Common\Linqish\ExpressionCache.cs" />
     <Compile Include="Common\Linqish\ExpressionChanger.cs" />
     <Compile Include="Common\Linqish\ExpressionVisitVisitor.cs" />
+    <Compile Include="Limada\Model\[ModelVersions].cs" />
+    <Compile Include="Limada\Model\NodeThing.cs" />
+    <Compile Include="Limada\Model\ThingExtensions.cs" />
     <Compile Include="[Obsolete]\ExpressionChangerBase.cs" />
     <Compile Include="Common\Linqish\ExpressionChangerVisit.cs" />
     <Compile Include="[Obsolete]\ExpressionChanger_S_T.cs" />
@@ -205,8 +208,8 @@
     <Compile Include="Contents\Handlers\TextContent.cs" />
     <Compile Include="Contents\IO\StreamContentIoPool.cs" />
     <Compile Include="Contents\MimeFingerPrints.cs" />
-    <Compile Include="Data\IDataContext.cs" />
-    <Compile Include="Limada\Data\IThingContext.cs" />
+    <Compile Include="Data\IQuore.cs" />
+    <Compile Include="Limada\Data\IThingQuore.cs" />
     <Compile Include="LimakiCoreContextResourceLoader.cs" />
     <Compile Include="Data\Iori.cs" />
     <Compile Include="Data\DbGraph.cs" />
