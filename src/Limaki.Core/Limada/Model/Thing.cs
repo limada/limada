@@ -54,10 +54,7 @@ namespace Limada.Model {
         [DataMember]
         public virtual Id Id {
             get { return _id; }
-#if ! SILVERLIGHT
-            private 
-#endif
-            set { _id = value; }
+            set { SetId (value); }
         }
 
         public virtual void SetId(Id id) {
@@ -73,20 +70,14 @@ namespace Limada.Model {
         [DataMember]
         public virtual DateTime ChangeDate {
             get {  return _changeDate; }
-#if ! SILVERLIGHT
-            private
-#endif
-            set { _changeDate = value; }
+            set { SetChangeDate (value); }
         }
 
         DateTime _creationDate = DateTime.MinValue;
         [DataMember]
         public virtual DateTime CreationDate {
             get { return _creationDate; }
-#if ! SILVERLIGHT
-            private
-#endif
-            set { _creationDate = value; }
+            set { SetCreationDate (value); }
         }
 
         public virtual void SetCreationDate(DateTime date) {
