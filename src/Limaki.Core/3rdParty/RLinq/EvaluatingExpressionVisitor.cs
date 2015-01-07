@@ -119,8 +119,8 @@ namespace Limaki.Common.Linqish {
             if (subtree.NodeType == ExpressionType.Constant) {
                 var constantExpression = (ConstantExpression) subtree;
                 var valueAsIQueryable = constantExpression.Value as IQueryable;
-                if (valueAsIQueryable != null && valueAsIQueryable.Expression != constantExpression)
-                    return valueAsIQueryable.Expression;
+                //if (valueAsIQueryable != null && valueAsIQueryable.Expression != constantExpression)
+                //    return valueAsIQueryable.Expression;
 
                 return constantExpression;
             } else {
