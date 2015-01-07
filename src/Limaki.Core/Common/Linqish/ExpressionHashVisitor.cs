@@ -14,6 +14,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -80,6 +81,8 @@ namespace Limaki.Common.Linqish {
         }
 
         protected override Expression VisitConstant (ConstantExpression node) {
+            if (node.Value is IQueryable)
+                return node;
             var nodeValues = node.Value as IEnumerable;
 
             if (nodeValues == null)
