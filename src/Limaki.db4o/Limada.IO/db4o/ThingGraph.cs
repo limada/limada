@@ -51,6 +51,8 @@ namespace Limada.IO.db4o {
 
             TypesToConfigure.Add (typeof (Thing));
             TypesToConfigure.Add (typeof (Thing<string>));
+            TypesToConfigure.Add (typeof (StringThing));
+            TypesToConfigure.Add (typeof (NodeThing));
             TypesToConfigure.Add (typeof (Link));
             TypesToConfigure.Add (typeof (StreamThing));
 
