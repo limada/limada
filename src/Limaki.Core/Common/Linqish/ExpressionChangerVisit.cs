@@ -29,23 +29,43 @@ namespace Limaki.Common.Linqish {
             return new ExpressionChangerVisit (visitor, typeof (S), typeof (T));
         }
 
+        public static Expression Change<S, T> (Expression expression) { return new ExpressionChangerVisit (typeof (S), typeof (T)).Visit (expression); }
+        public static Expression Change (Expression expression, Type source, Type sink) { return new ExpressionChangerVisit (source, sink).Visit (expression); }
+
         public ExpressionChangerVisit (Type source, Type sink):this(new ExpressionVisitVisitor(), source,sink) {}
 
         public ExpressionChangerVisit (ExpressionVisitVisitor visitor, Type source, Type sink) {
             this.Visitor = visitor;
             this.Source = source;
             this.Sink = sink;
-            visitor.VisitLambdaFunc += VisitLambdaNG;
-            visitor.VisitMemberFunc += VisitMember;
-            visitor.VisitParameterFunc += VisitParameter;
-            visitor.VisitMethodCallFunc += VisitMethodCall;
+            if (visitor != null) {
+                visitor.VisitLambdaFunc += VisitLambdaNG;
+                visitor.VisitMemberFunc += VisitMember;
+                
+                visitor.VisitMemberAssignmentFunc += VisitMemberAssignment;
+                visitor.VisitMemberBindingFunc += VisitMemberBinding;
+                visitor.VisitMemberMemberBindingFunc += VisitMemberMemberBinding;
+                visitor.VisitMemberListBindingFunc += VisitMemberListBinding;
+                
+                visitor.VisitMemberInitFunc += VisitMemberInit;
+                visitor.VisitListInitFunc += VisitListInit;
+                visitor.VisitElementInitFunc += VisitElementInit;
+
+                visitor.VisitParameterFunc += VisitParameter;
+                visitor.VisitMethodCallFunc += VisitMethodCall;
+                visitor.VisitUnaryFunc += VisitUnary;
+                
+            }
         }
 
         public Type Source { get; protected set; }
         public Type Sink { get; protected set; }
 
         public override Expression Visit (Expression node) {
-            return Visitor.Visit (node);
+            if (Visitor != null)
+                return Visitor.Visit (node);
+            else
+                return base.Visit (node);
         }
 
         protected override Expression VisitLambda<T> (Expression<T> node) {
@@ -55,31 +75,113 @@ namespace Limaki.Common.Linqish {
         protected virtual Expression VisitLambdaNG (LambdaExpression node) {
 
             var source = node.GetType ().GetGenericArguments ().First ();
-            var target = ChangeGenericArguments (source);
+            var target = ChangeType (source);
             var paras = node.Parameters.Select (p => this.Visit (p) as ParameterExpression);
-
+            var changed = false;
             var body = this.Visit (node.Body);
             var result = Expression.Lambda (target, body, paras);
             return result;
+
+            return node;
         }
 
         protected override Expression VisitConstant (ConstantExpression node) {
             return base.VisitConstant (node);
         }
 
+        protected override Expression VisitUnary (UnaryExpression node) {
+            var op = this.Visit (node.Operand);
+            var type = ChangeType (node.Type);
+            if (op != node.Operand || node.Type != type)
+                return Expression.MakeUnary (node.NodeType, op, type);
+            return node.Update (op);
+        }
+
+        protected virtual MemberBinding VisitBinding (MemberBinding binding) {
+            switch (binding.BindingType) {
+                case MemberBindingType.Assignment:
+                    return this.VisitMemberAssignment ((MemberAssignment) binding);
+                case MemberBindingType.MemberBinding:
+                    return this.VisitMemberMemberBinding ((MemberMemberBinding) binding);
+                case MemberBindingType.ListBinding:
+                    return this.VisitMemberListBinding ((MemberListBinding) binding);
+                default:
+                    throw new Exception (string.Format ("Unhandled binding type '{0}'", binding.BindingType));
+            }
+        }
+
+        protected override MemberBinding VisitMemberBinding (MemberBinding node) {
+            return VisitBinding (node);
+        }
+
+        protected override MemberMemberBinding VisitMemberMemberBinding (MemberMemberBinding node) {
+            var member = VisitMember (node.Member, Source, Sink);
+            var bindings = ExpressionVisitor.Visit (node.Bindings, VisitBinding);
+            if (bindings != node.Bindings || member != node.Member) {
+                return Expression.MemberBind (node.Member, bindings);
+            }
+            return node;
+        }
+
+        protected override Expression VisitMemberInit (MemberInitExpression node) {
+            // TODO:
+            var bindings = ExpressionVisitor.Visit (node.Bindings, VisitBinding);
+            var exp = VisitNew (node.NewExpression) as NewExpression;
+            if (bindings != node.Bindings || exp != node.NewExpression)
+                return Expression.MemberInit (exp, bindings);
+            return node;
+        }
+        
+        protected override Expression VisitNew (NewExpression node) {
+            // TODO:
+            return node;
+        }
+
+        protected override MemberAssignment VisitMemberAssignment (MemberAssignment node) {
+            var member = VisitMember (node.Member, Source, Sink);
+            var expr = this.Visit (node.Expression);
+            if (expr != node.Expression || member!=node.Member) {
+                return Expression.Bind (member, expr);
+            }
+            return node;
+        }
+
+        protected override MemberListBinding VisitMemberListBinding (MemberListBinding node) {
+            var member = VisitMember (node.Member, Source, Sink);
+            var initializers = ExpressionVisitor.Visit(node.Initializers,this.VisitElementInit);
+            if (initializers != node.Initializers || member != node.Member) {
+                return Expression.ListBind (member, initializers);
+            }
+            return node;
+        }
+
+        protected override ElementInit VisitElementInit (ElementInit node) {
+            // TODO:
+            return node;
+        }
+
+        protected override Expression VisitListInit (ListInitExpression node) {
+            // TODO:
+            var n = this.VisitNew (node.NewExpression) as NewExpression;
+            var initializers = ExpressionVisitor.Visit (node.Initializers, this.VisitElementInit);
+            if (n != node.NewExpression || initializers != node.Initializers) {
+                return Expression.ListInit (n, initializers);
+            }
+            return node;
+        }
+
         protected virtual Expression VisitMember (MemberExpression node) {
             var source = node.Member.ReflectedType;
-            var target = ChangeGenericArguments (source);
+            var target = ChangeType (source);
             return VisitMember (node, source, target);
         }
 
         protected virtual Expression VisitParameter (ParameterExpression node) {
-            // need to change the ParameterExpression if node.Type.IsGenericType and 
             var source = node.Type;
             if (source == Source && source != Sink) {
                 return VisitParameter (Expression.Parameter (Sink, node.Name));
             }
-            var target = ChangeGenericArguments (source);
+            var target = ChangeType (source);
             return VisitParameter (node, source, target);
 
         }
@@ -117,45 +219,51 @@ namespace Limaki.Common.Linqish {
                 return Expression.Call (instance, node.Method, args);
         }
 
-        protected override Expression VisitUnary (UnaryExpression node) {
-            // TODO:
-            return base.VisitUnary (node);
-        }
+        protected virtual MemberInfo VisitMember (MemberInfo member, Type source, Type sink) {
 
-        protected virtual Expression VisitMember (MemberExpression node, Type source, Type target) {
+            //System.Reflection.FieldInfo
+            //System.Reflection.MethodBase
+            //System.Reflection.PropertyInfo
+            // Use the Field, Property or PropertyOrField factory methods to create a MemberExpression
+
+            if (member is PropertyInfo) {
+                var info = member as PropertyInfo;
+                var propertyType = ChangeType (info.PropertyType);
+                return GetPropertyInfo (sink, propertyType, info.Name);
+            }
+            if (member is FieldInfo) {
+                var info = member as FieldInfo;
+                var propertyType = ChangeType (info.FieldType);
+                return sink.GetField (info.Name); //GetPropertyInfo (target, propertyType, info.Name);
+            }
+            return member;
+        }
+       
+        protected virtual Expression VisitMember (MemberExpression node, Type source, Type sink) {
 
             if (node.Member.ReflectedType == source) {
-
-                //System.Reflection.FieldInfo
-                //System.Reflection.MethodBase
-                //System.Reflection.PropertyInfo
-                // Use the Field, Property or PropertyOrField factory methods to create a MemberExpression
-
-                if (node.Member is PropertyInfo) {
-                    var info = node.Member as PropertyInfo;
-                    var propertyType = ChangeGenericArguments (info.PropertyType);
-                    info = GetPropertyInfo (target, propertyType, info.Name);
-                    var ex = Visitor.Visit (node.Expression);
-                    return Expression.MakeMemberAccess (ex, info);
-                    //return Expression.Property(ex,info);
+                var param = node.Expression as ParameterExpression;
+                var ex = node.Expression;
+                if (param != null && param.Type != source) {
+                    ex = this.Visit (node.Expression);
+                    return Expression.MakeMemberAccess (ex, node.Member);
                 }
-
-                if (node.Member is FieldInfo) {
-                    var info = node.Member as FieldInfo;
-                    var propertyType = ChangeGenericArguments (info.FieldType);
-                    info = target.GetField (info.Name);//GetPropertyInfo (target, propertyType, info.Name);
-                    var ex = Visitor.Visit (node.Expression);
+                
+                var info = VisitMember (node.Member, source, sink);
+                if (info != node.Member) {
+                    ex = this.Visit (node.Expression);
                     return Expression.MakeMemberAccess (ex, info);
-                }
-
+                } else
+                    return node;
             }
-            return Visitor.Visit (node);
+
+            return this.Visit (node);
         }
 
         protected virtual Expression VisitParameter (ParameterExpression node, Type source, Type target) {
             if (node.Type == source)
                 return GetParameter (target, node.Name);
-            return Visitor.Visit (node);
+            return this.Visit (node);
         }
 
         protected IDictionary<int, ParameterExpression> _params = new Dictionary<int, ParameterExpression> ();
@@ -169,31 +277,31 @@ namespace Limaki.Common.Linqish {
             return result;
         }
 
-        protected Type ChangeGenericArguments (Type generic, Type source, Type target) {
-            if (generic == source)
+        protected Type ChangeType (Type type, Type source, Type target) {
+            if (type == source)
                 return target;
 
-            if (generic.IsGenericType) {
-                var argsSource = generic.GetGenericArguments ();
+            if (type.IsGenericType) {
+                var argsSource = type.GetGenericArguments ();
                 //if (!Array.Exists (argsSource, t => t == source))
                 //    return generic;
 
-                var args = argsSource.Select (t => ChangeGenericArguments(t,source,target)).ToArray ();
-                var gen = generic.GetGenericTypeDefinition ();
+                var args = argsSource.Select (t => ChangeType(t,source,target)).ToArray ();
+                var gen = type.GetGenericTypeDefinition ();
 
                 var result = gen.MakeGenericType (args);
                 return result;
             }
 
-            if (generic.IsArray && generic.GetElementType () == source) {
+            if (type.IsArray && type.GetElementType () == source) {
                 return target.MakeArrayType ();
             }
    
-            return generic;
+            return type;
         }
 
-        protected virtual Type ChangeGenericArguments (Type generic) {
-            return ChangeGenericArguments (generic, Source, Sink);
+        protected virtual Type ChangeType (Type type) {
+            return ChangeType (type, Source, Sink);
         }
         
         protected MemberReflectionCache _memberReflectionCache = new MemberReflectionCache ();
