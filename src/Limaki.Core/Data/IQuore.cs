@@ -21,15 +21,18 @@ using System.Reflection;
 
 namespace Limaki.Data {
 
-    public interface IDataContext : IDisposable {
-
+    /// <summary>
+    /// A Quore (Query Store) provides access to a querable source of entities.
+    /// Its a short living object like a DbContext.
+    /// It's a facade to eg. <see cref="System.Data.Entity.DbContext"/>
+    /// </summary>
+    public interface IQuore : IDisposable {
+        
         IGateway Gateway { get; }
 
         TextWriter Log { get; set; }
 
         IQueryable<T> GetQuery<T> ();
-
-        void SetQuery<T> (IQueryable<T> querable);
 
         void Upsert<T> (IEnumerable<T> entities);
 
@@ -39,7 +42,7 @@ namespace Limaki.Data {
 
     }
 
-    public static class ContextExtensions {
+    public static class QuoreExtensions {
 
         #region FuncHandling
 
@@ -77,5 +80,6 @@ namespace Limaki.Data {
         }
 
         #endregion
+    
     }
 }

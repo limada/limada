@@ -20,12 +20,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Id = System.Int64;
+using System.Linq.Expressions;
 
 namespace Limada.Data {
 
-    public interface IThingContext:IDisposable {
+    /// <summary>
+    /// IThingQuore wraps an <see cref="IQuore"/> with 
+    /// thing-model specific queries.
+    /// Its a short living object like <see cref="IQuore"/>
+    /// It decouples model-specific queries from <see cref="IQuore"/>
+    /// </summary>
+    public interface IThingQuore:IDisposable {
 
-        IDataContext DataContext { get; }
+        IQuore Quore { get; }
 
         IQueryable<IThing> Things { get; }
 
@@ -44,5 +51,6 @@ namespace Limada.Data {
 
         void Remove (IEnumerable<Id> ids) ;
 
+        IQueryable<IThing> WhereThings (Expression<Func<IThing, bool>> predicate);
     }
 }
