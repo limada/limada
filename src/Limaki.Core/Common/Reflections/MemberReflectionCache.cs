@@ -85,6 +85,7 @@ namespace Limaki.Common.Reflections {
         public void AddType (Type type) {
             AddType(type, p => p != null);
         }
+
         public PropertyInfo[] Members (Type type, Func<PropertyInfo, bool> memberFilter) {
             PropertyInfo[] members = null;
             if (!_members.TryGetValue(type, out members)) {
@@ -92,6 +93,10 @@ namespace Limaki.Common.Reflections {
                 _members.Add(type, members);
             }
             return members;
+        }
+
+        public bool Contains (Type type) {
+            return _members.ContainsKey (type);
         }
 
         public bool ValidMember (Type type, Type propertyType, string memberName) {
