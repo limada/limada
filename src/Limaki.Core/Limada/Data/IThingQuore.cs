@@ -51,6 +51,6 @@ namespace Limada.Data {
 
         void Remove (IEnumerable<Id> ids) ;
 
-        IQueryable<IThing> WhereThings (Expression<Func<IThing, bool>> predicate);
+        IEnumerable<IThing> WhereThings (Expression<Func<IThing, bool>> predicate);
     }
 }
