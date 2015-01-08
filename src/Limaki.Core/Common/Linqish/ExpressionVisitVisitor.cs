@@ -55,7 +55,12 @@ namespace Limaki.Common.Linqish {
             if (visit != null) {
                 T result = node;
                 foreach (var v in visit.GetInvocationList ()) {
-                    result = ((Func<T, Expression>) v) (result) as T;
+                    var exp = ((Func<T, Expression>) v) (result);
+                    result = exp as T;
+                    // break if expression type has changed:
+                    if (result == null)
+                        return exp;
+
                 }
                 return result;
             } else
