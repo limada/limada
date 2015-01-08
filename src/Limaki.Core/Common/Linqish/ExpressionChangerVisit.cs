@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2014 Lytico
+ * Copyright (C) 2014-2015 Lytico
  *
  * http://www.limada.org
  * 
@@ -91,10 +91,18 @@ namespace Limaki.Common.Linqish {
 
         protected override Expression VisitUnary (UnaryExpression node) {
             var op = this.Visit (node.Operand);
-            var type = ChangeType (node.Type);
-            if (op != node.Operand || node.Type != type)
-                return Expression.MakeUnary (node.NodeType, op, type);
-            return node.Update (op);
+            var sink = ChangeType (node.Type);
+
+            // remove conversion if not needed
+            var para = op as ParameterExpression;
+            if (para != null && para.Type == sink && node.NodeType == ExpressionType.Convert)
+                return op;
+
+            if (op != node.Operand || node.Type != sink)
+                return Expression.MakeUnary (node.NodeType, op, sink);
+            if (op != node.Operand)
+                return node.Update (op);
+            return node;
         }
 
         protected virtual MemberBinding VisitBinding (MemberBinding binding) {
@@ -124,16 +132,20 @@ namespace Limaki.Common.Linqish {
         }
 
         protected override Expression VisitMemberInit (MemberInitExpression node) {
-            // TODO:
             var bindings = ExpressionVisitor.Visit (node.Bindings, VisitBinding);
             var exp = VisitNew (node.NewExpression) as NewExpression;
             if (bindings != node.Bindings || exp != node.NewExpression)
                 return Expression.MemberInit (exp, bindings);
             return node;
         }
-        
+
         protected override Expression VisitNew (NewExpression node) {
-            // TODO:
+            var args = ExpressionVisitor.Visit (node.Arguments, Visit);
+            var members = node.Members;
+            if (members != null)
+                members = ExpressionVisitor.Visit (node.Members, VisitMember);
+            if (members != node.Members || args != node.Arguments)
+                return Expression.New (node.Constructor, args, members);
             return node;
         }
 
@@ -212,14 +224,25 @@ namespace Limaki.Common.Linqish {
                     return base.VisitMethodCall (exp);
                 }
             }
+
             var args = ExpressionVisitor.Visit (node.Arguments, this.Visit);
-            if (node.Method.IsStatic)
-                return Expression.Call (node.Method, args);
-            else
-                return Expression.Call (instance, node.Method, args);
+            if (args != node.Arguments || instance != node.Object) {
+                if (node.Method.IsStatic)
+                    return Expression.Call (node.Method, args);
+                else
+                    return Expression.Call (instance, node.Method, args);
+            }
+
+            return node;
+        }
+
+        protected virtual MemberInfo VisitMember (MemberInfo member) {
+            return VisitMember (member, Source, Sink);
         }
 
         protected virtual MemberInfo VisitMember (MemberInfo member, Type source, Type sink) {
+            if (member.ReflectedType != source)
+                return member;
 
             //System.Reflection.FieldInfo
             //System.Reflection.MethodBase
@@ -229,11 +252,15 @@ namespace Limaki.Common.Linqish {
             if (member is PropertyInfo) {
                 var info = member as PropertyInfo;
                 var propertyType = ChangeType (info.PropertyType);
-                return GetPropertyInfo (sink, propertyType, info.Name);
+                info = GetPropertyInfo (sink, propertyType, info.Name);
+                if (info != null)
+                    return info;
+                return member;
             }
             if (member is FieldInfo) {
                 var info = member as FieldInfo;
                 var propertyType = ChangeType (info.FieldType);
+                // TODO: check if member is valid                
                 return sink.GetField (info.Name); //GetPropertyInfo (target, propertyType, info.Name);
             }
             return member;
@@ -243,15 +270,13 @@ namespace Limaki.Common.Linqish {
 
             if (node.Member.ReflectedType == source) {
                 var param = node.Expression as ParameterExpression;
-                var ex = node.Expression;
+                var ex = this.Visit (node.Expression); // change the parameter
                 if (param != null && param.Type != source) {
-                    ex = this.Visit (node.Expression);
-                    return Expression.MakeMemberAccess (ex, node.Member);
+                   return Expression.MakeMemberAccess (ex, node.Member);
                 }
                 
                 var info = VisitMember (node.Member, source, sink);
-                if (info != node.Member) {
-                    ex = this.Visit (node.Expression);
+                if (info != node.Member || ex != node.Expression) {
                     return Expression.MakeMemberAccess (ex, info);
                 } else
                     return node;
@@ -306,10 +331,11 @@ namespace Limaki.Common.Linqish {
         
         protected MemberReflectionCache _memberReflectionCache = new MemberReflectionCache ();
         protected PropertyInfo GetPropertyInfo (Type target, Type propertyType, string memberName) {
-            if (!_memberReflectionCache.ValidMember (target, propertyType, memberName))
+            if (!_memberReflectionCache.Contains (target))
                 _memberReflectionCache.AddType (target);
-
-            return _memberReflectionCache.GetPropertyInfo (target, propertyType, memberName);
+            if (_memberReflectionCache.ValidMember (target, propertyType, memberName))
+                return _memberReflectionCache.GetPropertyInfo (target, propertyType, memberName);
+            return null;
         }
  
     }
