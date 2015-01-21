@@ -55,7 +55,7 @@ namespace Limada.Model {
         int _numberType = (int)NumberType.Long;
 		
 		[DataMember]
-        public NumberType NumberType {
+        public virtual NumberType NumberType {
             get { return (NumberType)_numberType; }
             set { this.State.Setter(ref _numberType, (int)value); }
         }

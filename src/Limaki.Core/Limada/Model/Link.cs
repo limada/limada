@@ -60,7 +60,7 @@ namespace Limada.Model {
 
         IThing _root = null;
         [Transient]
-        public IThing Root {
+        public virtual IThing Root {
             get { return GetThing (_rootId, ref _root); }
             set { SetThing (ref _rootId, ref _root, value); }
         }
@@ -68,7 +68,7 @@ namespace Limada.Model {
 
         IThing _leaf = null;
         [Transient]
-        public IThing Leaf {
+        public virtual IThing Leaf {
             get { return GetThing (_leafId, ref _leaf); }
             set { SetThing (ref _leafId, ref _leaf, value); }
         }
@@ -76,7 +76,7 @@ namespace Limada.Model {
 
         IThing _marker = null;
         [Transient]
-        public IThing Marker {
+        public virtual IThing Marker {
             get { return GetThing (_markerId, ref _marker); }
             set { SetThing (ref _markerId, ref _marker, value); }
         }
@@ -111,7 +111,7 @@ namespace Limada.Model {
             }
         }
 
-        public Func<Id, IThing> GetByID { get; set; }
+        public virtual Func<Id, IThing> GetByID { get; set; }
 
         protected IThing GetThing (Id id, ref IThing data) {
             if (id == 0) {
@@ -133,7 +133,7 @@ namespace Limada.Model {
 
         protected Id _leafId = 0;
         [DataMember (Name = "LeafId")]
-        public Id LeafId {
+        public virtual Id LeafId {
             get { return _leafId; }
             set { SetId (ref _leafId, ref _leaf, value); }
         }
@@ -145,7 +145,7 @@ namespace Limada.Model {
 
         protected Id _markerId = 0;
         [DataMember (Name = "MarkerId")]
-        public Id MarkerId {
+        public virtual Id MarkerId {
             get { return _markerId; }
             set { SetId (ref _markerId, ref _marker, value); }
         }
@@ -157,7 +157,7 @@ namespace Limada.Model {
 
         protected Id _rootId = 0;
         [DataMember (Name = "RootId")]
-        public Id RootId {
+        public virtual Id RootId {
             get { return _rootId; }
             set { SetId (ref _rootId, ref _root, value); }
         }

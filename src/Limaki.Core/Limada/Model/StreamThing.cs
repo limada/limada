@@ -48,7 +48,7 @@ namespace Limada.Model {
         /// <summary>
         /// wraps the IRealData<byte[]>.Data over a MemoryStream
         /// </summary>
-        internal virtual ByteStreamWrapper StreamWrapper {
+        protected virtual ByteStreamWrapper StreamWrapper {
             get {
                 if (_streamWrapper == null) {
                     if (!State.Hollow && ContentContainer!=null) {

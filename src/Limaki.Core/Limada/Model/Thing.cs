@@ -36,7 +36,7 @@ namespace Limada.Model {
 
         [Transient]
         private State _state = null;
-        public State State {
+        public virtual State State {
             get {
                 if (_state == null) {
                     _state = new State ();
@@ -84,6 +84,7 @@ namespace Limada.Model {
             _creationDate = date;
             _changeDate = date;
         }
+
         public virtual void SetChangeDate(DateTime date) {
             _changeDate = date;
         }
