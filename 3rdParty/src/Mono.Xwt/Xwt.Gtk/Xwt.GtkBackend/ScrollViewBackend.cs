@@ -206,7 +206,7 @@ namespace Xwt.GtkBackend
 		protected override void OnSizeAllocated (Gdk.Rectangle allocation)
 		{
 			base.OnSizeAllocated (allocation);
-			if (child != null && !allocation.Equals(child.Allocation))
+			if (child != null)
 				child.SizeAllocate (allocation);
 		}
 
