@@ -117,11 +117,13 @@ namespace Xwt.WPFBackend
 			SetVerticalOffset (VerticalOffset - VerticalStepIncrement);
 		}
 
+        public bool ScrollIntoView { get; set; }
 		public Rect MakeVisible (Visual visual, Rect rectangle)
 		{
 			// This is the area which is currently visible
 			var visibleRect = new Rect (HorizontalOffset, VerticalOffset, ViewportWidth, ViewportHeight);
-
+		    if(!ScrollIntoView)
+                return visibleRect;
 			// This is the area we wish to be visible
 			rectangle = visual.TransformToAncestor (this).TransformBounds (rectangle);
 
