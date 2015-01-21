@@ -66,6 +66,7 @@ namespace Limada.Tests.ThingGraphs {
             graph = this.Graph;
 
             var thing = graph.GetById(graphTest.Data.Two.Id);
+            Assert.IsNotNull (thing);
             Assert.AreEqual(thing.Id, graphTest.Data.Two.Id);
 
             var links = graph.Edges(graphTest.Data.Two);
