@@ -82,6 +82,8 @@ namespace Limaki.Data {
 
         public static string ToFileName (Iori iori) {
             var extension = iori.Extension;
+            if (extension == null)
+                extension = "";
             if (!extension.StartsWith("."))
                 extension = "." + extension;
             var sep = System.IO.Path.DirectorySeparatorChar.ToString();
