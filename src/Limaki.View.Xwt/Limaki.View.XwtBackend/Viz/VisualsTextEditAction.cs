@@ -49,22 +49,23 @@ namespace Limaki.View.XwtBackend.Viz {
             editor.Text = DataToText(Current);
 
             editor.Visible = true;
+
             ActivateMarkers();
             editor.SetFocus();
-            display.ActiveVidget = editor;
+            Display.ActiveVidget = editor;
         }
 
         protected Rectangle StyleEditor (TextEntry editor) {
-            var style = display.StyleSheet.ItemStyle;
+            var style = Display.StyleSheet.ItemStyle;
             editor.Font = style.Font;
             editor.BackgroundColor = style.FillColor.WithAlpha(1);
             editor.MultiLine = true;
             editor.ShowFrame = true;
             
-            var location = camera.FromSource(Current.Location);
-            var size = camera.FromSource(Current.Size);
+            var location = Camera.FromSource(Current.Location);
+            var size = Camera.FromSource(Current.Size);
             if (Current is IVisualEdge)
-                location = camera.FromSource (Current.Shape[Anchor.Center]);
+                location = Camera.FromSource (Current.Shape[Anchor.Center]);
 
             var text = DataToText (Current);
 
@@ -72,7 +73,7 @@ namespace Limaki.View.XwtBackend.Viz {
                 .GetTextDimension ( "XXXXXXXX", style);
             size.Height = Math.Max (size.Height + 5, minSize.Height + 5);
             size.Width = Math.Max (size.Width + 2, minSize.Width + 2);
-            size = camera.FromSource (size);
+            size = Camera.FromSource (size);
             if (Current is IVisualEdge) {
                 location.X = location.X - size.Width / 2;
                 location.Y = location.Y - size.Height / 2;
@@ -102,7 +103,7 @@ namespace Limaki.View.XwtBackend.Viz {
             displayBackend.RemoveChild(editor);
             displayBackend.SetFocus();
 
-            display.ActiveVidget = null;
+            Display.ActiveVidget = null;
 
         }
 

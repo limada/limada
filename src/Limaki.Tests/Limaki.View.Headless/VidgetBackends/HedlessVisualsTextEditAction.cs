@@ -16,7 +16,7 @@ namespace Limaki.View.Headless.VidgetBackends {
             // TODO: Complete member initialization
             this.func = func;
             this.display1 = display1;
-            this.camera = camera;
+            this.Camera = camera;
             this.graphSceneLayout = graphSceneLayout;
         }
         protected override void AttachEditor () {

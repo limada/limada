@@ -68,7 +68,7 @@ namespace Limaki.View.SwfBackend.Viz {
              editor.Text = DataToText(Current);
              if (string.IsNullOrEmpty (editor.Text)) {
                  var size = Registry.Pooled<IDrawingUtils> ().GetTextDimension ("XXXX", Layout.GetStyle (Current));
-                 size = camera.FromSource (size);
+                 size = Camera.FromSource (size);
                  editor.ClientSize = new Size (size.Width + 2, size.Height + 5).ToGdi ();
              }
 
@@ -76,7 +76,7 @@ namespace Limaki.View.SwfBackend.Viz {
              ActivateMarkers();
              editor.Focus();
              displayBackend.ActiveControl = editor;
-             display.ActiveVidget = editor;
+             Display.ActiveVidget = editor;
          }
 
 
@@ -112,18 +112,18 @@ namespace Limaki.View.SwfBackend.Viz {
              editor.AutoCompleteSource = AutoCompleteSource.None;
 
              displayBackend.ActiveControl = null;
-             display.ActiveVidget = null;
+             Display.ActiveVidget = null;
              displayBackend.Controls.Remove(editor);
              displayBackend.Focus();
 
-             display.ActiveVidget = null;
+             Display.ActiveVidget = null;
          }
 
          private GdiFontCache gdiFontCache = new GdiFontCache();
          void StyleEditor () {
              var style = Layout.StyleSheet.ItemStyle.DefaultStyle;
              var newFont = new FontMemento(style.Font.GetBackend() as System.Drawing.Font);
-             newFont.SizeInPoints = (float) camera.Matrix.TransformFontSize(newFont.SizeInPoints);
+             newFont.SizeInPoints = (float) Camera.Matrix.TransformFontSize(newFont.SizeInPoints);
              editor.Font = gdiFontCache.GetFont(newFont);
 
              editor.BorderStyle = BorderStyle.FixedSingle;
@@ -132,10 +132,10 @@ namespace Limaki.View.SwfBackend.Viz {
              editor.WordWrap = true;
 
              editor.BackColor = System.Drawing.Color.FromArgb((int) style.FillColor.ToRgb());
-             var location = camera.FromSource(Current.Location);
-             var size = camera.FromSource(Current.Size);
+             var location = Camera.FromSource(Current.Location);
+             var size = Camera.FromSource(Current.Size);
              if (Current is IVisualEdge) {
-                 location = camera.FromSource(Current.Shape[Anchor.Center]);
+                 location = Camera.FromSource(Current.Shape[Anchor.Center]);
                  var text = Current.Data == null ? "" : Current.Data.ToString();
                  size = (Size)
                         GdiUtils.GetTextDimension(editor.Font, text, new System.Drawing.SizeF())

@@ -26,7 +26,7 @@ namespace Limada.Model {
         /// <typeparam name="T"></typeparam>
         /// <param name="s"></param>
         /// <param name="r"></param>
-        public static void CopyTo<T> (this T s, T r) where T:Thing {
+        public static void CopyTo<T> (this T s, T r) where T:IThing {
             r.SetId (s.Id);
             r.SetChangeDate (s.ChangeDate);
             r.SetCreationDate (s.CreationDate);
@@ -34,19 +34,19 @@ namespace Limada.Model {
             ((IThing) r).Data = ((IThing) s).Data;
         }
 
-        public static IEnumerable<StringThing> AsThingStrings (this IEnumerable<Thing<string>> entities) {
+        public static IEnumerable<StringThing> AsStringThings (this IEnumerable<IThing<string>> entities) {
             return entities.Select (e => {
                 var r = e as StringThing;
                 if (r != null)
                     return r;
-                var s = (Thing<string>) e;
-                r = new StringThing (s.Id, s.Data);
-                s.CopyTo (r);
+                
+                r = new StringThing (e.Id, e.Data);
+                e.CopyTo (r);
                 return r;
             });
         }
 
-        public static IEnumerable<NodeThing> AsThingNodes (this IEnumerable<Thing> entities) {
+        public static IEnumerable<NodeThing> AsNodeThings (this IEnumerable<Thing> entities) {
             return entities.Select (e => {
                 var r = e as NodeThing;
                 if (r != null)

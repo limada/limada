@@ -39,8 +39,8 @@ namespace Limaki.View.Viz.Visuals {
             IDisplay display, ICamera camera,
             IGraphSceneLayout<IVisual,IVisualEdge> layout): this() {
 
-            this.display = display;
-            this.camera = camera;
+            this.Display = display;
+            this.Camera = camera;
             this._sceneHandler = sceneHandler;
             this.Layout = layout;
         }
@@ -49,9 +49,9 @@ namespace Limaki.View.Viz.Visuals {
         protected abstract void DetachEditor (bool writeData);
         protected abstract void ActivateMarkers ();
 
-        protected ICamera camera { get; set; }
+        protected ICamera Camera { get; set; }
 
-        protected IDisplay display { get; set; }
+        protected IDisplay Display { get; set; }
 
         Func<IGraphScene<IVisual, IVisualEdge>> _sceneHandler;
         public IGraphScene<IVisual, IVisualEdge> Scene {
@@ -79,7 +79,7 @@ namespace Limaki.View.Viz.Visuals {
             if (visual == null)
                 return result;
 
-            var sp = camera.ToSource(p);
+            var sp = Camera.ToSource(p);
 
             result = visual.Shape.IsHit(sp, HitSize);
 
@@ -268,13 +268,13 @@ namespace Limaki.View.Viz.Visuals {
 
                 if (root == null) {
                     var pt = CursorPosition();
-                    pt = camera.ToSource (pt) - Layout.Distance;
+                    pt = Camera.ToSource (pt) - Layout.Distance;
                     SceneExtensions.AddItem (scene, Current, Layout, pt);
                 } else {
                     SceneExtensions.PlaceVisual (scene, root, Current, Layout);
                 }
 
-                display.Perform ();
+                Display.Perform ();
                 TextToData (Current, string.Empty);
 
                 AttachEditor ();
