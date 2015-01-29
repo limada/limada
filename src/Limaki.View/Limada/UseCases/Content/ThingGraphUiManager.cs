@@ -79,14 +79,14 @@ namespace Limada.UseCases.Content {
 
         }
 
-        public bool Open (Iori sourceInfo) {
+        public bool Open (Iori iori) {
             ThingGraphContent source = null;
-            var sinkIo = ThingGraphIoManager.GetSinkIO(sourceInfo, IoMode.Read) as ThingGraphIo;
+            var sinkIo = ThingGraphIoManager.GetSinkIO(iori, IoMode.Read) as ThingGraphIo;
 
             try {
-                source = sinkIo.Open(sourceInfo);
+                source = sinkIo.Open(iori);
                 OnProgress("", -1, -1);
-                AttachCurrent(source, sourceInfo.Name);
+                AttachCurrent(source, iori.Name);
                 return true;
             } catch (Exception ex) {
                 Registry.Pooled<IExceptionHandler>()
@@ -138,7 +138,7 @@ namespace Limada.UseCases.Content {
             }
         }
 
-        public bool SaveAs (Iori sinkInfo) {
+        public bool SaveAs (Iori iori) {
             // save current:
             var oldSource = "";
             ThingGraphIo sinkIo = null;
@@ -152,10 +152,10 @@ namespace Limada.UseCases.Content {
             }
 
             // get the new:
-            sinkIo = ThingGraphIoManager.GetSinkIO (sinkInfo, IoMode.Write) as ThingGraphIo;
+            sinkIo = ThingGraphIoManager.GetSinkIO (iori, IoMode.Write) as ThingGraphIo;
             if (sinkIo == null)
                 return false;
-            var sink = sinkIo.Open (sinkInfo);
+            var sink = sinkIo.Open (iori);
 
             // saveAs:
             var merger = new ThingGraphMerger { Progress = this.Progress };
@@ -164,11 +164,11 @@ namespace Limada.UseCases.Content {
 
             // close and reopen; flush and attach does't work in all cases
             sinkIo.Close (sink);
-            sink = sinkIo.Open (sinkInfo);
+            sink = sinkIo.Open (iori);
 
-            AttachCurrent (sink, sinkInfo.Name);
+            AttachCurrent (sink, iori.Name);
 
-            OnProgress (string.Format ("{0} saved as {1}", Path.GetFileNameWithoutExtension (oldSource), sinkInfo.Name), -1, -1);
+            OnProgress (string.Format ("{0} saved as {1}", Path.GetFileNameWithoutExtension (oldSource), iori.Name), -1, -1);
             return true;
         }
 
@@ -181,12 +181,12 @@ namespace Limada.UseCases.Content {
             }
         }
 
-        public void ExportSceneView (Iori sinkIori, IGraphScene<IVisual, IVisualEdge> scene) {
+        public void ExportSceneView (Iori iori, IGraphScene<IVisual, IVisualEdge> scene) {
             if (scene.HasThingGraph()) {
-                var sinkIo = ThingGraphIoManager.GetSinkIO(sinkIori, IoMode.Write) as ThingGraphIo;
+                var sinkIo = ThingGraphIoManager.GetSinkIO(iori, IoMode.Write) as ThingGraphIo;
                 if (sinkIo != null) {
                     var source = new VisualThingsSceneViz().CreateThingsView(scene);
-                    var sink = sinkIo.Open(sinkIori);
+                    var sink = sinkIo.Open(iori);
                     new ThingGraphExporter { Progress = this.Progress }.Use(source, sink.Data);
                     sinkIo.Close(sink);
                 }

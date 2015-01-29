@@ -202,6 +202,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\SerializerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\StreamThing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\StringThing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\NodeThing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\Thing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingFactory.cs" />

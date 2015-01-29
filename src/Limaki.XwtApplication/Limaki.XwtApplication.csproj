@@ -69,10 +69,6 @@
       <Project>{0577142F-B5D1-4271-8795-FE4615C2D728}</Project>
       <Name>Limaki.View.XwtGtk</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.View.XwtWpf\Limaki.View.XwtWpf.csproj">
-      <Project>{AC4DE976-2546-4B77-B040-F2B819BE9DC8}</Project>
-      <Name>Limaki.View.XwtWpf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Xwt\Limaki.View.Xwt.csproj">
       <Project>{4C8B39FE-F433-4C22-B5C7-FDCF33035D23}</Project>
       <Name>Limaki.View.Xwt</Name>

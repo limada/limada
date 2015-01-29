@@ -16,6 +16,7 @@ using Limaki.Actions;
 using Limaki.Common;
 using Limaki.View.Vidgets;
 using Xwt;
+using System.Diagnostics;
 
 namespace Limaki.View.Viz.UI {
     /// <summary>
@@ -40,7 +41,7 @@ namespace Limaki.View.Viz.UI {
         }
 
         static IUISystemInformation _drawingUtils = null;
-        protected static IUISystemInformation systemInformation {
+        protected static IUISystemInformation SystemInformation {
             get {
                 if (_drawingUtils == null) {
                     _drawingUtils = Registry.Factory.Create<IUISystemInformation>();
@@ -56,7 +57,7 @@ namespace Limaki.View.Viz.UI {
 
             // The DragSize indicates the size that the mouse can move 
             // before a drag event should be started.                
-            Size dragSize = systemInformation.DragSize;
+            Size dragSize = SystemInformation.DragSize;
 
             // Create a Rectangle using the DragSize, with the mouse position being
             // at the center of the Rectangle.
@@ -100,7 +101,7 @@ namespace Limaki.View.Viz.UI {
         protected virtual void BaseMouseUp(MouseActionEventArgs e) {
             if (!Resolved && _lastMouseTime != 0) {
 
-                int dragTime = systemInformation.DoubleClickTime;
+                int dragTime = SystemInformation.DoubleClickTime;
                 int now = Environment.TickCount;
                 // If the mouse NOT moves outside the Rectangle
                 Resolved = !(dragBoxFromMouseDown != Rectangle.Zero &&
@@ -110,7 +111,7 @@ namespace Limaki.View.Viz.UI {
                 
                 // this is for debugging:
                 if (Resolved) {
-                    System.Diagnostics.Trace.WriteLine("Start/Elapsed MouseTimer:\t" + _lastMouseTime + "/" + (now - _lastMouseTime));
+                    Trace.WriteLine("Start/Elapsed MouseTimer:\t" + _lastMouseTime + "/" + (now - _lastMouseTime));
                     dragTime = 0;
                     now = 0;
                 }

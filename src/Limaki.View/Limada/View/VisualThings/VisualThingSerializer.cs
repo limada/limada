@@ -63,12 +63,10 @@ namespace Limada.View.VisualThings {
             set { _layout = value; }
         }
 
-
-
         protected override void ReadThings() {
            ReadInto(VisualsCollection);
            foreach (var visual in VisualsCollection) {
-                IThing thing = VisualThingGraph.Get (visual);
+                var thing = VisualThingGraph.Get (visual);
                 if (thing != null && !ThingCollection.Contains (thing)) {
                     ThingCollection.Add(thing);
                 }
@@ -135,7 +133,7 @@ namespace Limada.View.VisualThings {
         public override void Write(System.IO.Stream s) {
             Write(VisualsCollection);
             if (VisualsCollection.Count > 0) {
-                using (System.Xml.XmlWriter writer = System.Xml.XmlWriter.Create (s)) {
+                using (var writer = System.Xml.XmlWriter.Create (s)) {
                     Document.Save (writer);
                     writer.Flush ();
                 }

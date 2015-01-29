@@ -85,6 +85,7 @@ namespace Limaki.Common {
             target.Dirty = this.Dirty;
             target.Hollow = this.Hollow;
         }
+
         public object Clone() {
             State result = new State();
             CopyTo(result);
