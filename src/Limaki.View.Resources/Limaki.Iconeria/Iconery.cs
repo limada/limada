@@ -1,25 +1,24 @@
 using Xwt.Drawing;
+using Xwt;
 
 namespace Limaki.Iconerias {
 
     public class Iconery {
 
         public static T Create<T> () where T:Iconeria, new() {
-            var fillColor = new Xwt.Drawing.Color (.3, .3, .3, .8);
-            var strokeColor = new Xwt.Drawing.Color (.1, .1, .1, .3);
-            fillColor = Xwt.Drawing.Colors.DarkSlateBlue.WithAlpha (.8);
-            strokeColor = Xwt.Drawing.Colors.LemonChiffon.WithAlpha (.3);
             return new T {
                              Fill = true,
-                             FillColor = fillColor,
-                             StrokeColor = strokeColor,
+                             FillColor = FillColor,
+                             StrokeColor = StrokeColor,
                              Stroke = true,
                              StrokeFirst = false,
                              DefaultSize = DefaultSize,
                          };
         }
 
-        public static Xwt.Size DefaultSize = new Xwt.Size (24, 24);
+        public static Size DefaultSize = new Size (24, 24);
+		public static Color FillColor = Xwt.Drawing.Colors.DarkSlateBlue.WithAlpha (.8);
+		public static Color StrokeColor = Xwt.Drawing.Colors.LemonChiffon.WithAlpha (.3);
 
         static Iconery () { 
 			Compose (); 
@@ -59,6 +58,7 @@ namespace Limaki.Iconerias {
             NewSheet = awesome.AsImage (limadaIcons.NewSheet, size * 1.15); 
             NewNote = awesome.AsImage (awesome.FaPencilSquareO, size * 1.15);   
             SaveContent = awesome.AsImage (awesome.FaDownload, size * 1.05);    
+			OpenFile = awesome.AsImage (awesome.FaFolderOpen, size * 1.05);    
 
             FontBoldIcon = awesome.AsImage (awesome.FaBold, size * .80);          
             FontItalicIcon = awesome.AsImage (awesome.FaItalic, size * .80);      
@@ -175,5 +175,7 @@ namespace Limaki.Iconerias {
         public static Image LimadaLogo { get; set; }
 
         public static Image SubWinIcon { get; set; }
+
+		public static Image OpenFile { get; set; }
     }
 }
