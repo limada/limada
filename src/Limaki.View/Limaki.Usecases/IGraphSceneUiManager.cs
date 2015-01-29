@@ -15,6 +15,7 @@ using System;
 using Limaki.View;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
+using Limaki.Data;
 
 namespace Limaki.Usecases {
 
@@ -33,6 +34,7 @@ namespace Limaki.Usecases {
         Action ApplicationQuit { get; set; }
 
         void Open ();
+		bool Open (Iori iori);
 
         bool ProcessCommandLine ();
         bool OpenCommandLine ();
