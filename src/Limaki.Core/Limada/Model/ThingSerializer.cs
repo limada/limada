@@ -41,18 +41,21 @@ namespace Limada.Model {
             return writer;
         }
 
-
+		XmlObjectSerializer _serializer=null;
         public virtual XmlObjectSerializer Serializer {
             get {
-                var factory = Registry.Factory.Create<IThingFactory>();
-                var knownClasses = factory.KnownClasses.ToList();
-                knownClasses.Add(typeof(RealData<Byte[]>));
-                return new DataContractSerializer(factory.Clazz<IThing>(), knownClasses);
+				if (_serializer == null) {
+					var factory = Registry.Factory.Create<IThingFactory> ();
+					var knownClasses = factory.KnownClasses.ToList ();
+					knownClasses.Add (typeof(RealData<Byte[]>));
+					_serializer =  new DataContractSerializer (factory.Clazz<IThing> (), knownClasses);
+				}
+				return _serializer;
             }
         }
 
         protected virtual void Write(IEnumerable<IThing> things, XmlWriter writer, XmlObjectSerializer serializer) {
-
+			throw new NotImplementedException ();
         }
 
         public override void Write(Stream s) {
