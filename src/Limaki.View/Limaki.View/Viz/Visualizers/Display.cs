@@ -68,10 +68,9 @@ namespace Limaki.View.Viz.Visualizers {
 
             if (!disposing) {
                 Viewport.ClipOrigin = Viewport.DataOrigin;
-
-				// this should be somewhere else, eg. makeready:
-                Reset();
-                UpdateZoom();
+				Perform ();
+				UpdateZoom();
+				                
             }
         }
 
