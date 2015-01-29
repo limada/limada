@@ -18,6 +18,5 @@ namespace Limada.Model {
         ILink CreateEdge<T>(Id id, T data);
         ILink CreateEdge(Id id, IThing root, IThing leaf, IThing marker);
 
-        Type Clazz<T>();
     }
 }
