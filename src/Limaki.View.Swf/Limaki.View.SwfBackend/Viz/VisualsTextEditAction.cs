@@ -72,11 +72,18 @@ namespace Limaki.View.SwfBackend.Viz {
                  editor.ClientSize = new Size (size.Width + 2, size.Height + 5).ToGdi ();
              }
 
+             var oldScrollPosition = displayBackend.AutoScrollPosition;
              editor.Visible = true;
              ActivateMarkers();
              editor.Focus();
+
              displayBackend.ActiveControl = editor;
              Display.ActiveVidget = editor;
+             // workaround: if AutoScroll == true, editor scrolls into view, but OnScroll is NOT called
+             var newScrollPosition = displayBackend.AutoScrollPosition;
+             if (oldScrollPosition != newScrollPosition) {
+                 Display.Viewport.ClipOrigin = new Xwt.Point (-newScrollPosition.X, -newScrollPosition.Y);
+             }
          }
 
 
