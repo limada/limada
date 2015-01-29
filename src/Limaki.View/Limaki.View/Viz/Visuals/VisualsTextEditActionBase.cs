@@ -193,8 +193,10 @@ namespace Limaki.View.Viz.Visuals {
         public void OnKeyReleased( KeyActionEventArgs e ) {}
 
         public void AttachTo(IVisual visual) {
+			DetachEditor (true);
             this.Current = visual;
-            DetachEditor (true);
+			Resolved = true;
+			Exclusive = true;
             AttachEditor ();
         }
 
