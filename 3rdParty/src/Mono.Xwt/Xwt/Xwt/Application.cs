@@ -74,15 +74,16 @@ namespace Xwt
             Initialize(toolkit);
         }
 
-        public static void Initialize (Toolkit toolkit)
+        public static void Initialize (Toolkit tk)
 		{
-
-			engine = toolkit.Backend;
-			mainLoop = new UILoop (toolkit);
+			if (toolkit == null)
+				toolkit = tk;
+			engine = tk.Backend;
+			mainLoop = new UILoop (tk);
 
 			UIThread = System.Threading.Thread.CurrentThread;
 
-			toolkit.EnterUserCode ();
+			tk.EnterUserCode ();
 		}
 		
 		public static void InitializeAsGuest (ToolkitType type)
