@@ -60,17 +60,17 @@ namespace Limaki.View.Viz.Visualizers {
         protected State _state = default(State);
         public virtual State State { get { return _state ?? (_state = new State{Hollow=true}); } }
 
-        public virtual void DataChanged() {
+        public virtual void DataChanged () {
 
             if (SelectAction != null)
-                SelectAction.Clear();
+                SelectAction.Clear ();
 
 
             if (!disposing) {
                 Viewport.ClipOrigin = Viewport.DataOrigin;
-				Perform ();
-				UpdateZoom();
-				                
+                Perform ();
+                UpdateZoom ();
+
             }
         }
 

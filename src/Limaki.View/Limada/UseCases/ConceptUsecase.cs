@@ -34,7 +34,7 @@ using Xwt;
 
 namespace Limada.UseCases {
 
-    public class ConceptUsecase:IDisposable, IProgress {
+    public class ConceptUsecase : IDisposable, IProgress {
 
         public virtual IVindow MainWindow { get; set; }
 
@@ -70,7 +70,7 @@ namespace Limada.UseCases {
         }
 
         protected bool closeDone = false;
-		public virtual void Close () {
+        public virtual void Close () {
             if (!closeDone) {
                 SaveChanges ();
                 GraphSceneUiManager.Close ();
@@ -78,36 +78,36 @@ namespace Limada.UseCases {
             }
         }
 
-		public virtual void OpenFile() {
-            SaveChanges();
+        public virtual void OpenFile () {
+            SaveChanges ();
             GraphSceneUiManager.Open ();
         }
 
-        public virtual void SaveFile() {
-            SaveChanges();
-            GraphSceneUiManager.Save();
+        public virtual void SaveFile () {
+            SaveChanges ();
+            GraphSceneUiManager.Save ();
         }
 
-		public virtual void SaveAsFile() {
-            SaveChanges();
+        public virtual void SaveAsFile () {
+            SaveChanges ();
             GraphSceneUiManager.SaveAs ();
         }
 
-		public virtual void ExportCurrentView() {
+        public virtual void ExportCurrentView () {
             var display = GetCurrentDisplay ();
             if (display != null) {
                 GraphSceneUiManager.ExportSceneView (display.Data);
             }
         }
 
-        
-		public virtual void ImportThingGraphRaw() {
-            SaveChanges();
-            GraphSceneUiManager.ShowEmptyScene();
-            GraphSceneUiManager.ImportRawSource();
+
+        public virtual void ImportThingGraphRaw () {
+            SaveChanges ();
+            GraphSceneUiManager.ShowEmptyScene ();
+            GraphSceneUiManager.ImportRawSource ();
         }
 
-		public virtual void SaveChanges () {
+        public virtual void SaveChanges () {
             var displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { SplitView.Display1, SplitView.Display2 };
             VisualsDisplayHistory.SaveChanges (displays, SheetManager, MessageBoxShow);
             FavoriteManager.SaveChanges (displays);
@@ -115,51 +115,51 @@ namespace Limada.UseCases {
 
         #endregion
 
-        #region Content 
+        #region Content
 
         public StreamContentUiManager StreamContentUiManager { get; set; }
 
-		public virtual void ExportThings () {
-            var display = GetCurrentDisplay();
+        public virtual void ExportThings () {
+            var display = GetCurrentDisplay ();
             if (display != null) {
-                StreamContentUiManager.WriteThings(display.Data);
+                StreamContentUiManager.WriteThings (display.Data);
             }
         }
 
-		public virtual void ImportContent () {
+        public virtual void ImportContent () {
             StreamContentUiManager.ContentIn = content => {
-                var display = GetCurrentDisplay();
+                var display = GetCurrentDisplay ();
                 if (display != null) {
-                    display.Data.AddContent(content, display.Layout);
-                    display.Perform();
+                    display.Data.AddContent (content, display.Layout);
+                    display.Perform ();
                 }
             };
-            StreamContentUiManager.Read();
+            StreamContentUiManager.Read ();
         }
 
-		public virtual void ImportGraphCursor () {
-            var display = GetCurrentDisplay();
+        public virtual void ImportGraphCursor () {
+            var display = GetCurrentDisplay ();
 
             if (display != null) {
                 var scene = display.Data;
                 StreamContentUiManager.ThingGraphCursorIoManager.SinkIn = graphCursor => {
-                    scene.AddVisual(scene.Graph.VisualOf(graphCursor.Cursor), display.Layout);
-                    display.Perform();
+                    scene.AddVisual (scene.Graph.VisualOf (graphCursor.Cursor), display.Layout);
+                    display.Perform ();
                 };
-                StreamContentUiManager.ReadThingGraphCursor(display.Data);
+                StreamContentUiManager.ReadThingGraphCursor (display.Data);
                 display.Perform ();
             }
         }
 
-		public virtual void ExportContent () {
+        public virtual void ExportContent () {
             StreamContentUiManager.ContentOut = () => {
-                var display = GetCurrentDisplay();
+                var display = GetCurrentDisplay ();
                 if (display != null) {
-                    return display.Data.ContentOfFocused();
+                    return display.Data.ContentOfFocused ();
                 }
                 return null;
             };
-            StreamContentUiManager.Save();
+            StreamContentUiManager.Save ();
         }
 
         #endregion
@@ -184,12 +184,12 @@ namespace Limada.UseCases {
                 DisplayStyleChanged (sender, arg);
             }
         }
-        
+
         public void Search () {
             this.SplitView.DoSearch ();
         }
 
-		public virtual void MergeVisual () {
+        public virtual void MergeVisual () {
 
             try {
                 var display = GetCurrentDisplay ();
@@ -204,7 +204,7 @@ namespace Limada.UseCases {
             }
         }
 
-		public virtual void RefreshCompression () {
+        public virtual void RefreshCompression () {
             try {
                 var rfcThingGraph = GetCurrentDisplay ().Data.Graph.ThingGraph ();
                 if (rfcThingGraph == null)
@@ -219,7 +219,7 @@ namespace Limada.UseCases {
             }
         }
 
-		public virtual void TimelineSheet () {
+        public virtual void TimelineSheet () {
             try {
                 var thingGraph = GetCurrentDisplay ().Data.Graph.ThingGraph ();
                 if (thingGraph == null)
@@ -244,7 +244,7 @@ namespace Limada.UseCases {
                 mesh.AddScene (scene);
 
                 var aligner = new Aligner<IVisual, IVisualEdge> (scene, display.Layout);
-                aligner.OneColumn (visuals, (Point)display.Layout.Border, display.Layout.Options ());
+                aligner.OneColumn (visuals, (Point) display.Layout.Border, display.Layout.Options ());
                 aligner.Locator.Commit (scene.Requests);
 
                 display.Perform ();
@@ -253,10 +253,10 @@ namespace Limada.UseCases {
             }
         }
 
-		public virtual void Dispose () {
+        public virtual void Dispose () {
             this.SplitView.Dispose ();
 
         }
-        
+
     }
 }

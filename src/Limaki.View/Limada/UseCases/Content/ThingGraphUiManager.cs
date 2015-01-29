@@ -128,8 +128,8 @@ namespace Limada.UseCases.Content {
         #endregion
 
         public void Save () {
-			if (this.Data == null)
-				return;
+            if (this.Data == null)
+                return;
             if (this.HasUnsavedData(this.Data)) {
                 SaveAs();
             } else {

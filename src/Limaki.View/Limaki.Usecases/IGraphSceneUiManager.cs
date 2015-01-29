@@ -34,7 +34,7 @@ namespace Limaki.Usecases {
         Action ApplicationQuit { get; set; }
 
         void Open ();
-		bool Open (Iori iori);
+        bool Open (Iori iori);
 
         bool ProcessCommandLine ();
         bool OpenCommandLine ();

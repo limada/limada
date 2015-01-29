@@ -22,11 +22,11 @@ namespace Limada.Model {
             }
         }
 
-        public override XmlReader CreateReader(Stream s) {
+        public override XmlReader CreateReader (Stream s) {
 #if ! SILVERLIGHT
             var result = XmlDictionaryReader
                 //.CreateBinaryReader(s, XmlDictionaryReaderQuotas.Max);
-                .CreateTextReader(s, XmlDictionaryReaderQuotas.Max);
+                .CreateTextReader (s, XmlDictionaryReaderQuotas.Max);
 #else
             var result = XmlReader.Create (s);
 #endif
@@ -34,60 +34,60 @@ namespace Limada.Model {
             return result;
         }
 
-        public override XmlWriter CreateWriter(Stream s) {
+        public override XmlWriter CreateWriter (Stream s) {
             var writer = XmlDictionaryWriter
                 //.CreateBinaryWriter(s,null,null,false);
-                .CreateDictionaryWriter(XmlWriter.Create(s, Settings));
+                .CreateDictionaryWriter (XmlWriter.Create (s, Settings));
             return writer;
         }
 
-		XmlObjectSerializer _serializer=null;
+        XmlObjectSerializer _serializer = null;
         public virtual XmlObjectSerializer Serializer {
             get {
-				if (_serializer == null) {
-					var factory = Registry.Factory.Create<IThingFactory> ();
-					var knownClasses = factory.KnownClasses.ToList ();
-					knownClasses.Add (typeof(RealData<Byte[]>));
-					_serializer =  new DataContractSerializer (factory.Clazz<IThing> (), knownClasses);
-				}
-				return _serializer;
+                if (_serializer == null) {
+                    var factory = Registry.Factory.Create<IThingFactory> ();
+                    var knownClasses = factory.KnownClasses.ToList ();
+                    knownClasses.Add (typeof (RealData<Byte[]>));
+                    _serializer = new DataContractSerializer (factory.Clazz<IThing> (), knownClasses);
+                }
+                return _serializer;
             }
         }
 
-        protected virtual void Write(IEnumerable<IThing> things, XmlWriter writer, XmlObjectSerializer serializer) {
-			throw new NotImplementedException ();
+        protected virtual void Write (IEnumerable<IThing> things, XmlWriter writer, XmlObjectSerializer serializer) {
+            throw new NotImplementedException ();
         }
 
-        public override void Write(Stream s) {
+        public override void Write (Stream s) {
 
-            using (var writer = CreateWriter(s)) {
-                writer.WriteStartElement("root");
-                writer.WriteStartElement("things");
+            using (var writer = CreateWriter (s)) {
+                writer.WriteStartElement ("root");
+                writer.WriteStartElement ("things");
 
                 var serializer = this.Serializer;
-                var streams = new List<IStreamThing>();
+                var streams = new List<IStreamThing> ();
                 foreach (var thing in this.ThingCollection) {
-                    serializer.WriteObject(writer, thing);
+                    serializer.WriteObject (writer, thing);
                     if (thing is IStreamThing) {
-                        streams.Add((IStreamThing)thing);
+                        streams.Add ((IStreamThing) thing);
                     }
                 }
 
-                writer.WriteEndElement();
+                writer.WriteEndElement ();
                 if (streams.Count > 0) {
-                    writer.WriteStartElement("streamthings");
+                    writer.WriteStartElement ("streamthings");
                     foreach (var thing in streams) {
                         if (thing.ContentContainer != null) {
-                            var data = thing.ContentContainer.GetById(thing.Id);
-                            serializer.WriteObject(writer, data);
+                            var data = thing.ContentContainer.GetById (thing.Id);
+                            serializer.WriteObject (writer, data);
                             data = null;
                         }
                     }
-                    writer.WriteEndElement();
+                    writer.WriteEndElement ();
                 }
-                writer.WriteEndElement();
+                writer.WriteEndElement ();
 
-                writer.Flush();
+                writer.Flush ();
             }
         }
 
@@ -95,24 +95,24 @@ namespace Limada.Model {
         /// Attention! the stream will be closed after reading!
         /// </summary>
         /// <param name="s"></param>
-        public override void Read(Stream s) {
-            using (var reader = CreateReader(s)) {
-                reader.ReadStartElement("root");
-                reader.ReadStartElement("things");
-                var streamThings = new Dictionary<Id, IStreamThing>();
-                while (Serializer.IsStartObject(reader)) {
-                    var thing = Serializer.ReadObject(reader) as IThing;
-                    ThingCollection.Add(thing);
+        public override void Read (Stream s) {
+            using (var reader = CreateReader (s)) {
+                reader.ReadStartElement ("root");
+                reader.ReadStartElement ("things");
+                var streamThings = new Dictionary<Id, IStreamThing> ();
+                while (Serializer.IsStartObject (reader)) {
+                    var thing = Serializer.ReadObject (reader) as IThing;
+                    ThingCollection.Add (thing);
                     var streamThing = thing as IStreamThing;
                     if (streamThing != null) {
                         streamThings[thing.Id] = streamThing;
                     }
                 }
 
-                reader.ReadEndElement();
-                if (reader.IsStartElement("streamthings")) {
-                    reader.ReadStartElement("streamthings");
-                    while (Serializer.IsStartObject(reader)) {
+                reader.ReadEndElement ();
+                if (reader.IsStartElement ("streamthings")) {
+                    reader.ReadStartElement ("streamthings");
+                    while (Serializer.IsStartObject (reader)) {
                         var data = Serializer.ReadObject (reader) as RealData<byte[]>;
                         if (this.Graph.ContentContainer != null) {
                             this.Graph.ContentContainer.Add (data);
