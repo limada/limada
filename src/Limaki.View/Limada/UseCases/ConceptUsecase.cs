@@ -59,7 +59,7 @@ namespace Limada.UseCases {
         public Func<FileDialogMemento, bool, DialogResult> FileDialogShow { get; set; }
         public Action<string> DataPostProcess { get; set; }
 
-        public void Start () {
+        public virtual void Start () {
 
             GraphSceneUiManager.OpenFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString ();
             GraphSceneUiManager.SaveFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString ();
@@ -69,8 +69,8 @@ namespace Limada.UseCases {
             }
         }
 
-        bool closeDone = false;
-        public void Close () {
+        protected bool closeDone = false;
+		public virtual void Close () {
             if (!closeDone) {
                 SaveChanges ();
                 GraphSceneUiManager.Close ();
@@ -78,7 +78,7 @@ namespace Limada.UseCases {
             }
         }
 
-        public void OpenFile() {
+		public virtual void OpenFile() {
             SaveChanges();
             GraphSceneUiManager.Open ();
         }
@@ -88,12 +88,12 @@ namespace Limada.UseCases {
             GraphSceneUiManager.Save();
         }
 
-        public void SaveAsFile() {
+		public virtual void SaveAsFile() {
             SaveChanges();
             GraphSceneUiManager.SaveAs ();
         }
 
-        public void ExportCurrentView() {
+		public virtual void ExportCurrentView() {
             var display = GetCurrentDisplay ();
             if (display != null) {
                 GraphSceneUiManager.ExportSceneView (display.Data);
@@ -101,13 +101,13 @@ namespace Limada.UseCases {
         }
 
         
-        public void ImportThingGraphRaw() {
+		public virtual void ImportThingGraphRaw() {
             SaveChanges();
             GraphSceneUiManager.ShowEmptyScene();
             GraphSceneUiManager.ImportRawSource();
         }
 
-        public void SaveChanges () {
+		public virtual void SaveChanges () {
             var displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { SplitView.Display1, SplitView.Display2 };
             VisualsDisplayHistory.SaveChanges (displays, SheetManager, MessageBoxShow);
             FavoriteManager.SaveChanges (displays);
@@ -119,14 +119,14 @@ namespace Limada.UseCases {
 
         public StreamContentUiManager StreamContentUiManager { get; set; }
 
-        public void ExportThings () {
+		public virtual void ExportThings () {
             var display = GetCurrentDisplay();
             if (display != null) {
                 StreamContentUiManager.WriteThings(display.Data);
             }
         }
 
-        public void ImportContent () {
+		public virtual void ImportContent () {
             StreamContentUiManager.ContentIn = content => {
                 var display = GetCurrentDisplay();
                 if (display != null) {
@@ -137,7 +137,7 @@ namespace Limada.UseCases {
             StreamContentUiManager.Read();
         }
 
-        public void ImportGraphCursor () {
+		public virtual void ImportGraphCursor () {
             var display = GetCurrentDisplay();
 
             if (display != null) {
@@ -151,7 +151,7 @@ namespace Limada.UseCases {
             }
         }
 
-        public void ExportContent () {
+		public virtual void ExportContent () {
             StreamContentUiManager.ContentOut = () => {
                 var display = GetCurrentDisplay();
                 if (display != null) {
@@ -189,7 +189,7 @@ namespace Limada.UseCases {
             this.SplitView.DoSearch ();
         }
 
-        public void MergeVisual () {
+		public virtual void MergeVisual () {
 
             try {
                 var display = GetCurrentDisplay ();
@@ -204,7 +204,7 @@ namespace Limada.UseCases {
             }
         }
 
-        public void RefreshCompression () {
+		public virtual void RefreshCompression () {
             try {
                 var rfcThingGraph = GetCurrentDisplay ().Data.Graph.ThingGraph ();
                 if (rfcThingGraph == null)
@@ -219,7 +219,7 @@ namespace Limada.UseCases {
             }
         }
 
-        public void TimelineSheet () {
+		public virtual void TimelineSheet () {
             try {
                 var thingGraph = GetCurrentDisplay ().Data.Graph.ThingGraph ();
                 if (thingGraph == null)
@@ -253,7 +253,7 @@ namespace Limada.UseCases {
             }
         }
 
-        public void Dispose () {
+		public virtual void Dispose () {
             this.SplitView.Dispose ();
 
         }
