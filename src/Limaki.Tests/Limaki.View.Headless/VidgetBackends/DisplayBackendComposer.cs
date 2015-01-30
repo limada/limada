@@ -8,7 +8,7 @@ namespace Limaki.View.Headless.VidgetBackends {
 
     public class DisplayBackendComposer<TData> : BackendComposer<TData, DisplayBackend<TData>> {
 
-        public EventControler EventControler { get; set; }
+        public ActionDispatcher ActionDispatcher { get; set; }
         public override void Factor (Display<TData> display) {
 
             display.Backend = Backend;
@@ -20,7 +20,7 @@ namespace Limaki.View.Headless.VidgetBackends {
 
             this.BackendRenderer = surfaceRenderer;
 
-            this.EventControler = new EventControler ();
+            this.ActionDispatcher = new ActionDispatcher ();
             this.ViewPort = new HeadlessViewport (Backend);
             this.CursorHandler = new HeadlessCursorHandlerBackend (Backend);
 
@@ -36,7 +36,7 @@ namespace Limaki.View.Headless.VidgetBackends {
 
             display.BackendRenderer = this.BackendRenderer;
             display.DataLayer = this.DataLayer;
-            display.EventControler = this.EventControler;
+            display.ActionDispatcher = this.ActionDispatcher;
             display.Viewport = this.ViewPort;
             display.CursorHandler = this.CursorHandler;
 

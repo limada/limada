@@ -102,7 +102,7 @@ namespace Limaki.View.Viz.Visualizers {
             display.GraphSceneModeller.Camera = this.Camera;
             display.GraphSceneModeller.Clipper = this.Clipper;
             display.GraphSceneModeller.Modeller = this.ModelReceiver;
-            display.EventControler.Add(display.GraphSceneModeller);
+            display.ActionDispatcher.Add(display.GraphSceneModeller);
 
             var renderer = display.DataRenderer as IGraphSceneRenderer<TItem, TEdge>;
             renderer.ItemRenderer = display.GraphItemRenderer;
@@ -113,8 +113,8 @@ namespace Limaki.View.Viz.Visualizers {
                 SceneHandler = this.GraphScene,
                 CameraHandler = this.Camera,
             };
-            display.EventControler.Add(selector);
-            display.EventControler.Add(new DragDropCatcher<GraphSceneFocusAction<TItem, TEdge>>(selector, display.Backend));
+            display.ActionDispatcher.Add(selector);
+            display.ActionDispatcher.Add(new DragDropCatcher<GraphSceneFocusAction<TItem, TEdge>>(selector, display.Backend));
 
             Compose(display, display.SelectionRenderer);
             Compose(display, display.MoveResizeRenderer);
@@ -123,9 +123,9 @@ namespace Limaki.View.Viz.Visualizers {
                 new GraphItemMoveResizeAction<TItem, TEdge> {
                     SceneHandler = this.GraphScene
                 }, false);
-            display.EventControler.Add(graphItemChanger);
+            display.ActionDispatcher.Add(graphItemChanger);
 
-            display.EventControler.Add(Compose(display,
+            display.ActionDispatcher.Add(Compose(display,
                 new GraphEdgeChangeAction<TItem, TEdge> {
                     SceneHandler = this.GraphScene,
                     HitSize = graphItemChanger.HitSize + 1
@@ -137,32 +137,32 @@ namespace Limaki.View.Viz.Visualizers {
                     ShowGrips = false,
                     Enabled = true,
                 }, true);
-            display.EventControler.Add(display.SelectAction);
+            display.ActionDispatcher.Add(display.SelectAction);
 
-            display.EventControler.Add(Compose(display,
+            display.ActionDispatcher.Add(Compose(display,
                 new GraphItemAddAction<TItem, TEdge> {
                     SceneHandler = this.GraphScene,
                     ModelFactory = display.ModelFactory,
                     Enabled = false
                 }, false));
 
-            display.EventControler.Add(
+            display.ActionDispatcher.Add(
                 new GraphItemDeleteAction<TItem, TEdge> {
                     SceneHandler = this.GraphScene,
                     MoveResizeRenderer = display.MoveResizeRenderer,
                 });
 
-            display.EventControler.Add(
+            display.ActionDispatcher.Add(
                 new DelegatingMouseAction {
                     MouseDown = e => display.OnSceneFocusChanged()
                 });
 
-			IAction action = display.EventControler.GetAction<ZoomAction> ();
-            display.EventControler.Remove(action);
-			action = display.EventControler.GetAction<MouseScrollAction> ();
-			display.EventControler.Remove(action);
+			IAction action = display.ActionDispatcher.GetAction<ZoomAction> ();
+            display.ActionDispatcher.Remove(action);
+			action = display.ActionDispatcher.GetAction<MouseScrollAction> ();
+			display.ActionDispatcher.Remove(action);
 
-            display.EventControler.Add(
+            display.ActionDispatcher.Add(
                 new GraphItemZoomAction<TItem, TEdge> {
                     Viewport = this.Viewport,
                     SceneHandler = this.GraphScene
@@ -174,7 +174,7 @@ namespace Limaki.View.Viz.Visualizers {
 			};
 			action.Enabled = false;
 
-			display.EventControler.Add(action);
+			display.ActionDispatcher.Add(action);
             display.LayoutChanged ();
         }
 

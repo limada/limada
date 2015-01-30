@@ -127,7 +127,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
             if (display != null) {
                 if (display.ActiveVidget == null) {
-                    var action = display.EventControler.GetAction<ZoomAction>();
+                    var action = display.ActionDispatcher.GetAction<ZoomAction>();
                     if (zoomIn)
                         action.ZoomIn();
                     else

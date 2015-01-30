@@ -47,7 +47,7 @@ namespace Limaki.View.XwtBackend {
                     Enabled = true
                 };
 
-            display.EventControler.Add(dragDrop);
+            display.ActionDispatcher.Add(dragDrop);
 
             var editor = new VisualsTextEditAction(
                 this.GraphScene,
@@ -56,7 +56,7 @@ namespace Limaki.View.XwtBackend {
                 this.Layout()
                 );
 
-            display.EventControler.Add(editor);
+            display.ActionDispatcher.Add(editor);
         }
     }
 

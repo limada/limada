@@ -57,28 +57,28 @@ namespace Limaki.Tests.View.Display {
             Display.Data.ClearSpatialIndex ();
             Display.Reset ();
 
-            IAction action = Display.EventControler.GetAction<IEditAction> ();
+            IAction action = Display.ActionDispatcher.GetAction<IEditAction> ();
             if (action != null) {
                 editorEnabled = action.Enabled;
                 action.Enabled = false;
             }
 
-            action = Display.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>> ();
+            action = Display.ActionDispatcher.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>> ();
             if (action != null)
                 action.Enabled = true;
-            action = Display.EventControler.GetAction<GraphEdgeChangeAction<IVisual, IVisualEdge>> ();
+            action = Display.ActionDispatcher.GetAction<GraphEdgeChangeAction<IVisual, IVisualEdge>> ();
             if (action != null)
                 action.Enabled = true;
 
             // this is neccessary as the mouse cursor returns after a long time
             // back to its position and activates VisualsTextEditor
 
-            action = Display.EventControler.GetAction<GraphItemAddAction<IVisual, IVisualEdge>> ();
+            action = Display.ActionDispatcher.GetAction<GraphItemAddAction<IVisual, IVisualEdge>> ();
             action.Enabled = false;
-            action = Display.EventControler.GetAction<AddVisualEdgeAction> ();
+            action = Display.ActionDispatcher.GetAction<AddVisualEdgeAction> ();
             action.Enabled = false;
 
-            Display.EventControler.Actions.Values
+            Display.ActionDispatcher.Actions.Values
                 .OfType<IDropAction> ()
                 .ForEach (a => a.Enabled = false);
 
@@ -86,10 +86,10 @@ namespace Limaki.Tests.View.Display {
 
         public override void TearDown () {
             base.TearDown ();
-            IAction action = Display.EventControler.GetAction<IEditAction> ();
+            IAction action = Display.ActionDispatcher.GetAction<IEditAction> ();
             if (action != null)
                 action.Enabled = editorEnabled;
-            Display.EventControler.Actions.Values
+            Display.ActionDispatcher.Actions.Values
                 .OfType<IDropAction> ()
                 .ForEach (a => a.Enabled = true);
             if (oldlayout != null)
@@ -112,7 +112,7 @@ namespace Limaki.Tests.View.Display {
                 new MouseActionEventArgs (
                     MouseActionButtons.Left, ModifierKeys.None,
                     0, position.X, position.Y, 0);
-            Display.EventControler.OnMouseDown (e);
+            Display.ActionDispatcher.OnMouseDown (e);
 
             Assert.AreSame (Scene.Focused, Factory.Nodes[1]);
 
@@ -149,7 +149,7 @@ namespace Limaki.Tests.View.Display {
             e = new MouseActionEventArgs (
                 MouseActionButtons.Left, ModifierKeys.None,
                 0, position.X, position.Y, 0);
-            Display.EventControler.OnMouseUp (e);
+            Display.ActionDispatcher.OnMouseUp (e);
         }
 
         [Test]

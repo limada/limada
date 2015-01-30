@@ -21,7 +21,7 @@ namespace Limaki.View.SwfBackend.Viz {
 
     public class DisplayBackendComposer<TData> : BackendComposer<TData, DisplayBackend<TData>> {
         
-        public EventControler EventControler { get; set; }
+        public ActionDispatcher ActionDispatcher { get; set; }
         public override void Factor(Display<TData> display) {
             
             display.Backend = Backend;
@@ -33,7 +33,7 @@ namespace Limaki.View.SwfBackend.Viz {
 			
             this.BackendRenderer = surfaceRenderer;
 
-            this.EventControler = new EventControler ();
+            this.ActionDispatcher = new ActionDispatcher ();
 
             this.ViewPort = new SwfViewport (Backend);
             this.CursorHandler = new CursorHandlerBackend (Backend);
@@ -49,7 +49,7 @@ namespace Limaki.View.SwfBackend.Viz {
 
             display.BackendRenderer = this.BackendRenderer;
             display.DataLayer = this.DataLayer;
-            display.EventControler = this.EventControler;
+            display.ActionDispatcher = this.ActionDispatcher;
             display.Viewport = this.ViewPort;
             display.CursorHandler = this.CursorHandler;
 

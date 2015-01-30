@@ -16,6 +16,7 @@ using Limaki.Graphs;
 using System;
 
 namespace Limaki.View.Viz.Rendering {
+
     public class GraphSceneLayer<TItem, TEdge> : Layer<IGraphScene<TItem, TEdge>>
         where TEdge : TItem, IEdge<TItem> {
 

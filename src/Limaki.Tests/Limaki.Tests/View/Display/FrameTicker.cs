@@ -33,10 +33,10 @@ namespace Limaki.Tests.View.Display {
         }
 
         public virtual void Instrument(IDisplay control) {
-            control.EventControler.Add (this);
+            control.ActionDispatcher.Add (this);
         }
         public virtual void Disinstrument(IDisplay control) {
-            control.EventControler.Remove (this);
+            control.ActionDispatcher.Remove (this);
         }
 
         public virtual string FramePerSecond () {

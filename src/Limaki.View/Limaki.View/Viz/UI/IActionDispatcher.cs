@@ -20,7 +20,7 @@ using Limaki.View.Viz.Rendering;
 
 namespace Limaki.View.Viz.UI {
 
-    public interface IEventControler : IMouseAction, IRenderAction, IReceiver, IKeyAction, ICopyPasteAction {
+    public interface IActionDispatcher : IMouseAction, IRenderAction, IReceiver, IKeyAction, ICopyPasteAction {
         void Add ( IAction action );
         void Remove ( IAction action );
         void Add<T> ( T value, ref T action ) where T : class, IAction;

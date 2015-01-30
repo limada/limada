@@ -26,7 +26,7 @@ namespace Limaki.View.Viz.UI {
     /// to Invoke commands (Invoker of the Command Pattern)
     /// to Execute commands by the Actions stored in the ReceiverActions (Receiver of the Command Pattern)
     /// </summary>
-    public class EventControler : ActionBase, IEventControler, IDropAction, IDisposable, ICopyPasteAction {
+    public class ActionDispatcher : ActionBase, IActionDispatcher, IDropAction, IDisposable, ICopyPasteAction {
 
         IDictionary<Type, IAction> _actions = null;
         public IDictionary<Type, IAction> Actions {

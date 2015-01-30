@@ -153,11 +153,11 @@ namespace Limada.Usecases {
             new ToolStripMenuItem(l["Edit"], null, new ToolStripMenuItem[] {
                 new ToolStripMenuItem(l["Copy"], null, (s, e) => {
                     var display = useCase.GetCurrentDisplay();
-                    if (display != null) ((ICopyPasteAction)display.EventControler).Copy();
+                    if (display != null) ((ICopyPasteAction)display.ActionDispatcher).Copy();
                 }),
                 new ToolStripMenuItem(l["Paste"], null, (s, e) => {
                     var display = useCase.GetCurrentDisplay();
-                    if (display != null) ((ICopyPasteAction) display.EventControler).Paste ();
+                    if (display != null) ((ICopyPasteAction) display.ActionDispatcher).Paste ();
                 }),
                 new ToolStripMenuItem(l["Search"], null, (s, e) => { useCase.Search(); }),
 #if DEBUG

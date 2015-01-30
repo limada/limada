@@ -79,7 +79,7 @@ namespace Limaki.Tests.View.Display {
         }
 
         public int VisualsCount () {
-            var layer = Display.EventControler.GetAction<ILayer<T>> ();
+            var layer = Display.ActionDispatcher.GetAction<ILayer<T>> ();
             if (layer != null) {
                 var renderer = layer.Renderer () as GraphSceneRenderer<IVisual, IVisualEdge>;
                 if (renderer != null)
@@ -91,7 +91,7 @@ namespace Limaki.Tests.View.Display {
         [Test]
         public virtual void RunSelectorTest () {
 
-            var zoomAction = Display.EventControler.GetAction<ZoomAction> ();
+            var zoomAction = Display.ActionDispatcher.GetAction<ZoomAction> ();
 
             bool zoomEnabled = zoomAction.Enabled;
             zoomAction.Enabled = false;
@@ -189,11 +189,11 @@ namespace Limaki.Tests.View.Display {
 
         public void NeutralPosition () {
             var e = new MouseActionEventArgs (MouseActionButtons.Left, ModifierKeys.None, 0, 1, 1, 0);
-            Display.EventControler.OnMouseDown (e);
+            Display.ActionDispatcher.OnMouseDown (e);
             DoEvents ();
-            Display.EventControler.OnMouseMove (e);
+            Display.ActionDispatcher.OnMouseMove (e);
             DoEvents ();
-            Display.EventControler.OnMouseUp (e);
+            Display.ActionDispatcher.OnMouseUp (e);
             DoEvents ();
         }
 
@@ -242,7 +242,7 @@ namespace Limaki.Tests.View.Display {
                                               ModifierKeys.None, 0,
                                               tnext.X, tnext.Y,
                                               0);
-                Display.EventControler.OnMouseMove (e);
+                Display.ActionDispatcher.OnMouseMove (e);
                 DoEvents ();
                 next = nextPoint (next, d);
             }

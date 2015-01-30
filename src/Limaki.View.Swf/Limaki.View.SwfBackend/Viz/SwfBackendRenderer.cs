@@ -63,7 +63,7 @@ namespace Limaki.View.SwfBackend.Viz {
 #if TraceInvalidate
                     System.Console.Out.WriteLine("Paint  cliprect {0}", clipRect);
 #endif
-                    display.EventControler.OnPaint(Converter.Convert(e));
+                    display.ActionDispatcher.OnPaint(Converter.Convert(e));
 
                     display.Clipper.Clear();
                 }

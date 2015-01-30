@@ -27,7 +27,7 @@ namespace Limaki.View.Viz {
 
         IMoveResizeAction SelectAction { get; set; }
         MouseScrollAction MouseScrollAction { get; set; }
-        IEventControler EventControler { get; set; }
+        IActionDispatcher ActionDispatcher { get; set; }
 
         IClipper Clipper { get; set; }
         IStyleSheet StyleSheet { get; set; }
@@ -49,6 +49,7 @@ namespace Limaki.View.Viz {
         Int64 DataId { get; set; }
         string Text { get; set; }
         new IDisplayBackend<T> Backend { get; set; }
+        ILayer<T> DataLayer { get; set; }
         State State { get; }
         //ILayout<T> Layout { get; set; }
 

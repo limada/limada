@@ -104,13 +104,13 @@ namespace Limada.View.Vidgets {
                     return;
 
                 display.ZoomState = ZoomState.FitToWidth;
-                display.EventControler.Remove(display.EventControler.GetAction<KeyScrollAction>());
+                display.ActionDispatcher.Remove(display.ActionDispatcher.GetAction<KeyScrollAction>());
 
-                var scroller = display.EventControler.GetAction<DigidocKeyScrollAction>();
+                var scroller = display.ActionDispatcher.GetAction<DigidocKeyScrollAction>();
                 if (scroller == null) {
                     scroller = new DigidocKeyScrollAction();
                     scroller.Viewport = () => display.Viewport;
-                    display.EventControler.Add(scroller);
+                    display.ActionDispatcher.Add(scroller);
                 }
             }
         }
@@ -162,11 +162,11 @@ namespace Limada.View.Vidgets {
             Border = new Size(0, -5);
             layout.StyleSheet = DefaultStyleSheet;
 
-            var focusAction = display.EventControler.GetAction<GraphSceneFocusAction<IVisual, IVisualEdge>>();
+            var focusAction = display.ActionDispatcher.GetAction<GraphSceneFocusAction<IVisual, IVisualEdge>>();
             if (focusAction != null)
                 focusAction.HitSize = -1;
 
-            var folding = display.EventControler.GetAction<IGraphSceneFolding<IVisual, IVisualEdge>>();
+            var folding = display.ActionDispatcher.GetAction<IGraphSceneFolding<IVisual, IVisualEdge>>();
             folding.Folder.RemoveOrphans = false;
         }
 
@@ -174,7 +174,7 @@ namespace Limada.View.Vidgets {
             if (contentDisplay == null)
                 return;
 
-            var scroller = contentDisplay.EventControler.GetAction<DigidocKeyScrollAction>();
+            var scroller = contentDisplay.ActionDispatcher.GetAction<DigidocKeyScrollAction>();
             var scene = pagesDisplay.Data;
             var pages = scene.Elements.Where(e => !(e is IVisualEdge)).OrderBy(e => e.Location.Y).ToList();
             if (scroller != null) {
@@ -260,7 +260,7 @@ namespace Limada.View.Vidgets {
             pagesDisplay.Perform();
 
             var pageCache = new Set<IVisual>(pages);
-            var moveResize = pagesDisplay.EventControler.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();
+            var moveResize = pagesDisplay.ActionDispatcher.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();
             moveResize.FocusFilter = e => pageCache.Contains(e) ? null : e;
 
         }

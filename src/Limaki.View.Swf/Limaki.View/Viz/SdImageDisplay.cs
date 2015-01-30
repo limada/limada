@@ -60,7 +60,7 @@ namespace Limaki.View.Viz {
             selectAction.Enabled = false;
 
             display.SelectAction = selectAction;
-            display.EventControler.Add(selectAction);
+            display.ActionDispatcher.Add(selectAction);
 
             display.SelectAction.ShowGrips = true;
             display.SelectAction.Enabled = false;

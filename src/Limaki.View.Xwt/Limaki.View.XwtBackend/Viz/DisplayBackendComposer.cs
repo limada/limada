@@ -23,7 +23,7 @@ namespace Limaki.View.XwtBackend {
 
     public class DisplayBackendComposer<TData> : BackendComposer<TData, DisplayBackend<TData>> {
         
-        public EventControler EventControler { get; set; }
+        public ActionDispatcher ActionDispatcher { get; set; }
         public override void Factor(Display<TData> display) {
             
             display.Backend = Backend;
@@ -35,7 +35,7 @@ namespace Limaki.View.XwtBackend {
 			
             this.BackendRenderer = surfaceRenderer;
 
-            this.EventControler = new EventControler ();
+            this.ActionDispatcher = new ActionDispatcher ();
             this.ViewPort = new XwtViewport (Backend);
             this.CursorHandler = new XwtCursorHandlerBackend (Backend);
 
@@ -51,7 +51,7 @@ namespace Limaki.View.XwtBackend {
 
             display.BackendRenderer = this.BackendRenderer;
             display.DataLayer = this.DataLayer;
-            display.EventControler = this.EventControler;
+            display.ActionDispatcher = this.ActionDispatcher;
             display.Viewport = this.ViewPort;
             display.CursorHandler = this.CursorHandler;
 

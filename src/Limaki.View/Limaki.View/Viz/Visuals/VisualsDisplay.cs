@@ -57,7 +57,7 @@ namespace Limaki.View.Viz.Visuals {
 
             base.Compose(display);
 
-            display.EventControler.Add(new GraphSceneFolding<IVisual, IVisualEdge> {
+            display.ActionDispatcher.Add(new GraphSceneFolding<IVisual, IVisualEdge> {
                 SceneHandler = this.GraphScene,
                 Layout = this.Layout,
                 BackendRenderer = display.BackendRenderer,
@@ -74,8 +74,8 @@ namespace Limaki.View.Viz.Visuals {
 
             Compose(display, addGraphEdgeAction, false);
 
-            display.EventControler.Add(addGraphEdgeAction);
-            display.EventControler.Add(new DragDropCatcher<AddVisualEdgeAction>(addGraphEdgeAction, display.Backend));
+            display.ActionDispatcher.Add(addGraphEdgeAction);
+            display.ActionDispatcher.Add(new DragDropCatcher<AddVisualEdgeAction>(addGraphEdgeAction, display.Backend));
 
            
 

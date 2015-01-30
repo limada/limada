@@ -202,7 +202,7 @@ namespace Limaki.View.SwfBackend.Viz {
             Debug.WriteLine (string.Format ("{0} {1} {2}", e.KeyCode, e.KeyData, e.KeyValue));
             var ev = Converter.Convert (e, this.PointToClient (MousePosition));
             if (Display.Data != null)
-                Display.EventControler.OnKeyPressed (ev);
+                Display.ActionDispatcher.OnKeyPressed (ev);
             if (!ev.Handled)
                 base.OnKeyDown (e);
         }
@@ -216,13 +216,13 @@ namespace Limaki.View.SwfBackend.Viz {
         protected override void OnKeyUp (KeyEventArgs e) {
             base.OnKeyUp (e);
             if (Display.Data != null)
-                Display.EventControler.OnKeyReleased (Converter.Convert (e, this.PointToClient (MousePosition)));
+                Display.ActionDispatcher.OnKeyReleased (Converter.Convert (e, this.PointToClient (MousePosition)));
         }
 
         protected override void OnMouseDown (System.Windows.Forms.MouseEventArgs e) {
             base.OnMouseDown (e);
             if (Display.Data != null)
-                Display.EventControler.OnMouseDown (Converter.Convert (e));
+                Display.ActionDispatcher.OnMouseDown (Converter.Convert (e));
         }
 
         protected override void OnMouseHover (EventArgs e) {
@@ -235,14 +235,14 @@ namespace Limaki.View.SwfBackend.Viz {
                     Converter.ConvertModifiers (System.Windows.Forms.Form.ModifierKeys),
                     0, pos.X, pos.Y, 0);
             if (Display.Data != null)
-                Display.EventControler.OnMouseHover (mouseEventArgs);
+                Display.ActionDispatcher.OnMouseHover (mouseEventArgs);
 
         }
 
         protected override void OnMouseMove (System.Windows.Forms.MouseEventArgs e) {
             base.OnMouseMove (e);
             if (Display.Data != null)
-                Display.EventControler.OnMouseMove (Converter.Convert (e));
+                Display.ActionDispatcher.OnMouseMove (Converter.Convert (e));
         }
 
         protected override void OnMouseWheel (System.Windows.Forms.MouseEventArgs e) {
@@ -253,7 +253,7 @@ namespace Limaki.View.SwfBackend.Viz {
                     base.OnMouseWheel (e);
                     Display.Viewport.Update ();
                 } else if (ev.Modifiers == Xwt.ModifierKeys.Control) {
-                    var zoomAction = Display.EventControler.GetAction<ZoomAction> ();
+                    var zoomAction = Display.ActionDispatcher.GetAction<ZoomAction> ();
                     if (zoomAction != null) {
                         zoomAction.Zoom (ev.Location, ev.Delta > 0);
                     }
@@ -264,7 +264,7 @@ namespace Limaki.View.SwfBackend.Viz {
         protected override void OnMouseUp (System.Windows.Forms.MouseEventArgs e) {
             base.OnMouseUp (e);
             if (Display.Data != null)
-                Display.EventControler.OnMouseUp (Converter.Convert (e));
+                Display.ActionDispatcher.OnMouseUp (Converter.Convert (e));
         }
 
         #region DragDrop
@@ -315,7 +315,7 @@ namespace Limaki.View.SwfBackend.Viz {
         }
 
         protected override void OnDragOver (System.Windows.Forms.DragEventArgs e) {
-            var dropHandler = Display.EventControler as IDropHandler;
+            var dropHandler = Display.ActionDispatcher as IDropHandler;
             if (dropHandler != null && Display.Data != null) {
                 var ev = e.ToXwtDragOver (this);
                 ev.AllowedAction = DragDropActionFromKeyState (e.KeyState, ev.Action);
@@ -327,7 +327,7 @@ namespace Limaki.View.SwfBackend.Viz {
         }
 
         protected override void OnDragDrop (System.Windows.Forms.DragEventArgs e) {
-            var dropHandler = Display.EventControler as IDropHandler;
+            var dropHandler = Display.ActionDispatcher as IDropHandler;
             if (dropHandler != null && Display.Data != null) {
                 dropHandler.OnDrop (e.ToXwt (this));
             }
@@ -336,7 +336,7 @@ namespace Limaki.View.SwfBackend.Viz {
         }
 
         protected override void OnDragLeave (EventArgs e) {
-            var dropHandler = Display.EventControler as IDropHandler;
+            var dropHandler = Display.ActionDispatcher as IDropHandler;
             if (dropHandler != null && Display.Data != null) {
                 dropHandler.DragLeave (e);
             }

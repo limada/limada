@@ -314,15 +314,15 @@ namespace Limada.View.Vidgets {
                 var adjacent = AdjacentDisplay(display);
                 var contentViewManager = this.ContentViewManager;
                 try {
-                    display.EventControler.UserEventsDisabled = true;
-                    adjacent.EventControler.UserEventsDisabled = true;
+                    display.ActionDispatcher.UserEventsDisabled = true;
+                    adjacent.ActionDispatcher.UserEventsDisabled = true;
                     contentViewManager.SheetViewer = adjacent;
                     contentViewManager.ShowViewer(sender, e);
                 } catch (Exception ex) {
                     ExceptionHandler.Catch(ex, MessageType.OK);
                 } finally {
-                    display.EventControler.UserEventsDisabled = false;
-                    adjacent.EventControler.UserEventsDisabled = false;
+                    display.ActionDispatcher.UserEventsDisabled = false;
+                    adjacent.ActionDispatcher.UserEventsDisabled = false;
                 }
             }
         }

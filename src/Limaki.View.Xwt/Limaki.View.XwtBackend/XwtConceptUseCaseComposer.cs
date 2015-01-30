@@ -137,11 +137,11 @@ namespace Limaki.View.XwtBackend {
             new MenuItem(l["Edit"], null, null, new MenuItem[] {
                 new MenuItem(l["Copy"], null, (s, e) => {
                     var display = useCase.GetCurrentDisplay();
-                    if (display != null) display.EventControler.Copy();
+                    if (display != null) display.ActionDispatcher.Copy();
                 }),
                 new MenuItem(l["Paste"], null, (s, e) => {
                     var display = useCase.GetCurrentDisplay();
-                    if (display != null) display.EventControler.Paste();
+                    if (display != null) display.ActionDispatcher.Paste();
                 }),
                 new MenuItem(l["Search"], null, (s, e) => { useCase.Search(); }),
             }),

@@ -79,7 +79,7 @@ namespace Limaki.View.Viz.Visualizers {
         public virtual IShapeFactory ShapeFactory { get; set; }
         public virtual IPainterFactory PainterFactory { get; set; }
 
-        public virtual IEventControler EventControler { get; set; }
+        public virtual IActionDispatcher ActionDispatcher { get; set; }
 
         public virtual IMoveResizeAction SelectAction { get; set; }
         public virtual MouseScrollAction MouseScrollAction { get; set; }
@@ -129,15 +129,15 @@ namespace Limaki.View.Viz.Visualizers {
         }
 
         public virtual void Reset() {
-            EventControler.Reset();
+            ActionDispatcher.Reset();
         }
 
         public virtual void Perform() {
-            EventControler.Perform();
+            ActionDispatcher.Perform();
         }
 
         public virtual void Finish() {
-            EventControler.Finish();
+            ActionDispatcher.Finish();
         }
 
         #region IDisposable Member
@@ -149,8 +149,8 @@ namespace Limaki.View.Viz.Visualizers {
             composer.Dispose();
 
             // the rest should be done in instrumenter!!!
-            var eventController = this.EventControler;
-            this.EventControler = null;
+            var eventController = this.ActionDispatcher;
+            this.ActionDispatcher = null;
             eventController.Dispose();
 
             var device = this.Backend;
@@ -168,8 +168,8 @@ namespace Limaki.View.Viz.Visualizers {
             if (this.Viewport is ICheckable) {
                 ( (ICheckable) this.Viewport ).Check ();
             }
-            if (this.EventControler == null) {
-                throw new CheckFailedException(this.GetType(), typeof(IEventControler));
+            if (this.ActionDispatcher == null) {
+                throw new CheckFailedException(this.GetType(), typeof(IActionDispatcher));
             }
             if (this.DataRenderer == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IContentRenderer<TData>));
@@ -185,7 +185,7 @@ namespace Limaki.View.Viz.Visualizers {
                 ((ICheckable)MoveResizeRenderer).Check();
             }
 
-            foreach (var action in EventControler.Actions) {
+            foreach (var action in ActionDispatcher.Actions) {
                 var checkable = action.Value as ICheckable;
                 if (checkable != null) {
                     checkable.Check ();

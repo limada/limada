@@ -88,7 +88,7 @@ namespace Limaki.Tests.UseCases {
                 graphLayer.Layout = () => display.Layout;
 
             }
-            display.EventControler.Add (renderAction);
+            display.ActionDispatcher.Add (renderAction);
         }
 
         public void NoSchemaThingGraph (ConceptUsecase useCase) {

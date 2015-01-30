@@ -43,7 +43,7 @@ namespace Limaki.View.SwfBackend.Viz {
                     Enabled = true
                 };
 
-            display.EventControler.Add (dragDrop);
+            display.ActionDispatcher.Add (dragDrop);
 
 
             var editor = new VisualsTextEditAction (
@@ -53,7 +53,7 @@ namespace Limaki.View.SwfBackend.Viz {
                 this.Layout()
                 );
 
-            display.EventControler.Add(editor);
+            display.ActionDispatcher.Add(editor);
         }
     }
 

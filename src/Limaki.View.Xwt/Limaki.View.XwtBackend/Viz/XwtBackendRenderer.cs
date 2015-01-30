@@ -62,7 +62,7 @@ namespace Limaki.View.XwtBackend {
             if (data != null) {
                 try {
                     ctx.Save();
-                    display.EventControler.OnPaint(new RenderContextEventArgs(ctx, dirtyRect));
+                    display.ActionDispatcher.OnPaint(new RenderContextEventArgs(ctx, dirtyRect));
                 } catch (Exception ex) {
                     Registry.Pooled<IExceptionHandler>().Catch(ex, MessageType.OK);
                 } finally {

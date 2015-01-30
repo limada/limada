@@ -44,7 +44,7 @@ namespace Limaki.View.Viz.Visualizers {
 
             display.ShapeFactory = context.Factory.Create<IShapeFactory>();
             display.PainterFactory = context.Factory.Create<IPainterFactory>();
-            display.EventControler = context.Factory.Create<EventControler>();
+            display.ActionDispatcher = context.Factory.Create<ActionDispatcher>();
 
             display.Clipper = context.Factory.Create<IClipper>();
             display.ClipReceiver = context.Factory.Create<IClipReceiver>();
@@ -76,18 +76,18 @@ namespace Limaki.View.Viz.Visualizers {
             display.Viewport.GetDataSize = this.DataSize;
 
 
-            display.EventControler.Add(display.DataLayer);
-            display.EventControler.Add (display.ClipReceiver);
+            display.ActionDispatcher.Add(display.DataLayer);
+            display.ActionDispatcher.Add (display.ClipReceiver);
 
             var zoomAction = new ZoomAction ();
             zoomAction.Viewport = this.Viewport;
-            display.EventControler.Add (zoomAction);
+            display.ActionDispatcher.Add (zoomAction);
 
             var scroll = new MouseScrollAction ();
             scroll.Viewport = this.Viewport;
             scroll.Enabled = false;
             display.MouseScrollAction = scroll;
-            display.EventControler.Add(scroll);
+            display.ActionDispatcher.Add(scroll);
 
         }
 
@@ -99,7 +99,7 @@ namespace Limaki.View.Viz.Visualizers {
             selectionRenderer.GripSize = display.GripSize;
             selectionRenderer.Camera = this.Camera;
             
-            display.EventControler.Add(selectionRenderer);
+            display.ActionDispatcher.Add(selectionRenderer);
             return selectionRenderer;
         }
 

@@ -166,12 +166,12 @@ namespace Limaki.View.XwtBackend {
             Trace.WriteLine (string.Format ("ButtonPressed {0} == {1} | {2}", this.MouseLocation (), args.Position, this.GetType ().Name));
 
             lastButton = args.Button.ToLmk ();
-            Display.EventControler.OnMouseDown (args.ToLmk ());
+            Display.ActionDispatcher.OnMouseDown (args.ToLmk ());
         }
 
         protected override void OnMouseMoved (MouseMovedEventArgs args) {
             base.OnMouseMoved(args);
-            Display.EventControler.OnMouseMove(new MouseActionEventArgs(
+            Display.ActionDispatcher.OnMouseMove(new MouseActionEventArgs(
                lastButton,
                Keyboard.CurrentModifiers,
                0,
@@ -188,7 +188,7 @@ namespace Limaki.View.XwtBackend {
         protected override void OnButtonReleased (ButtonEventArgs args) {
             base.OnButtonReleased (args);
             lastButton = args.Button.ToLmk ();
-            Display.EventControler.OnMouseUp (args.ToLmk ());
+            Display.ActionDispatcher.OnMouseUp (args.ToLmk ());
             lastButton = MouseActionButtons.None;
         }
 
@@ -205,7 +205,7 @@ namespace Limaki.View.XwtBackend {
             var ml = this.MouseLocation();
             Trace.WriteLine(string.Format("KeyReleased {0} | {1}", ml, this.GetType().Name));
 
-            Display.EventControler.OnKeyReleased(new KeyActionEventArgs(args.Key, args.Modifiers, ml));
+            Display.ActionDispatcher.OnKeyReleased(new KeyActionEventArgs(args.Key, args.Modifiers, ml));
         }
 
         protected override void OnKeyPressed (KeyEventArgs args) {
@@ -213,7 +213,7 @@ namespace Limaki.View.XwtBackend {
             var ml = this.MouseLocation ();
             Trace.WriteLine (string.Format ("KeyPressed {0} | {1}", ml, this.GetType ().Name));
 
-            Display.EventControler.OnKeyPressed (new KeyActionEventArgs (args.Key, args.Modifiers, ml));
+            Display.ActionDispatcher.OnKeyPressed (new KeyActionEventArgs (args.Key, args.Modifiers, ml));
         }
 
         #endregion
@@ -236,7 +236,7 @@ namespace Limaki.View.XwtBackend {
             if (!HasFocus)
                 SetFocus ();
 
-            var dropHandler = Display.EventControler as IDropAction;
+            var dropHandler = Display.ActionDispatcher as IDropAction;
             if (dropHandler != null && Display.Data != null) {
 
                 var ev = new DragDrop.DragOverEventArgs (
@@ -253,7 +253,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         protected virtual void HandleDragDrop (DragEventArgs args) {
-            var dropHandler = Display.EventControler as DragDrop.IDropHandler;
+            var dropHandler = Display.ActionDispatcher as DragDrop.IDropHandler;
             if (dropHandler != null && Display.Data != null) {
                var e = new DragDrop.DragEventArgs(
                     args.Position,
@@ -266,7 +266,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         protected virtual void HandleDragLeave (EventArgs args) {
-            var dropHandler = Display.EventControler as DragDrop.IDropHandler;
+            var dropHandler = Display.ActionDispatcher as DragDrop.IDropHandler;
             if (dropHandler != null && Display.Data != null) {
                 dropHandler.DragLeave(args);
             }

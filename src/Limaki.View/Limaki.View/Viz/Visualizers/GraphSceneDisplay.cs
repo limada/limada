@@ -129,7 +129,7 @@ namespace Limaki.View.Viz.Visualizers {
                 SceneFocusChanged(this, focusChangedEventArgs);
                 focusChangedEventArgs = null;
 
-                EventControler.Actions.Values.OfType<MouseTimerActionBase> ()
+                ActionDispatcher.Actions.Values.OfType<MouseTimerActionBase> ()
                     .ForEach (a => a.LastMouseTime = 0);
 
             }

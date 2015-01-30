@@ -34,7 +34,7 @@ namespace Limaki.Tests.View.Display {
         protected virtual void InitDisplay () {
             this.Display.ZoomState = ZoomState.Original;
             this.Display.Data = this.Scene;
-            var zoomAction = Display.EventControler.GetAction<ZoomAction> ();
+            var zoomAction = Display.ActionDispatcher.GetAction<ZoomAction> ();
             zoomEnabled = zoomAction.Enabled;
             zoomAction.Enabled = false;
             trackerEnabled = Display.MouseScrollAction.Enabled;
@@ -44,7 +44,7 @@ namespace Limaki.Tests.View.Display {
         }
 
         public override void TearDown () {
-            var zoomAction = Display.EventControler.GetAction<ZoomAction> ();
+            var zoomAction = Display.ActionDispatcher.GetAction<ZoomAction> ();
             zoomAction.Enabled = zoomEnabled;
             Display.MouseScrollAction.Enabled = trackerEnabled;
             Display.SelectAction.Enabled = selectorEnabled;
@@ -68,7 +68,7 @@ namespace Limaki.Tests.View.Display {
             var e =
                 new MouseActionEventArgs (MouseActionButtons.Left,
                                           ModifierKeys.None, 0, position.X, position.Y, 0);
-            Display.EventControler.OnMouseDown (e);
+            Display.ActionDispatcher.OnMouseDown (e);
             DoEvents ();
 
             Assert.AreSame (Scene.Focused, link);
@@ -85,7 +85,7 @@ namespace Limaki.Tests.View.Display {
             e = new MouseActionEventArgs (MouseActionButtons.Left,
                                           ModifierKeys.None,
                                           0, position.X, position.Y, 0);
-            Display.EventControler.OnMouseDown (e);
+            Display.ActionDispatcher.OnMouseDown (e);
             DoEvents ();
 
             MoveAlongLine (v);
@@ -95,7 +95,7 @@ namespace Limaki.Tests.View.Display {
             e = new MouseActionEventArgs (MouseActionButtons.Left, ModifierKeys.None,
                                           0, position.X, position.Y, 0);
             Assert.AreSame (Scene.Hovered, target);
-            Display.EventControler.OnMouseUp (e);
+            Display.ActionDispatcher.OnMouseUp (e);
             DoEvents ();
 
 

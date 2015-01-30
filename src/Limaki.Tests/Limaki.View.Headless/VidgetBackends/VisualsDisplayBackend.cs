@@ -46,7 +46,7 @@ namespace Limaki.View.Headless.VidgetBackends {
                     Enabled = true
                 };
 
-            display.EventControler.Add(dragDrop);
+            display.ActionDispatcher.Add(dragDrop);
 
             var editor = new HedlessVisualsTextEditAction(
                 this.GraphScene,
@@ -55,7 +55,7 @@ namespace Limaki.View.Headless.VidgetBackends {
                 this.Layout()
                 );
 
-            display.EventControler.Add(editor);
+            display.ActionDispatcher.Add(editor);
         }
     }
 

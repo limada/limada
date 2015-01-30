@@ -137,11 +137,11 @@ namespace Limaki.View.Headless.VidgetBackends {
 
         private global::Limaki.View.Vidgets.MouseActionButtons lastButton = global::Limaki.View.Vidgets.MouseActionButtons.None;
         protected virtual void OnButtonPressed (MouseActionEventArgs args) {
-            Display.EventControler.OnMouseDown (args);
+            Display.ActionDispatcher.OnMouseDown (args);
         }
 
         protected virtual void OnMouseMoved (MouseActionEventArgs args) {
-            Display.EventControler.OnMouseMove (args);
+            Display.ActionDispatcher.OnMouseMove (args);
         }
 
         protected virtual void OnMouseScrolled (MouseScrolledEventArgs args) {
@@ -150,12 +150,12 @@ namespace Limaki.View.Headless.VidgetBackends {
 
         protected virtual void OnButtonReleased (MouseActionEventArgs args) {
 
-            Display.EventControler.OnMouseUp (args);
+            Display.ActionDispatcher.OnMouseUp (args);
         }
 
 
         protected virtual void OnKeyPressed (KeyActionEventArgs args) {
-            Display.EventControler.OnKeyPressed(args);
+            Display.ActionDispatcher.OnKeyPressed(args);
         }
 
         #endregion
@@ -163,7 +163,7 @@ namespace Limaki.View.Headless.VidgetBackends {
         #region Keyboard
 
         protected virtual void OnKeyReleased (KeyActionEventArgs args) {
-            Display.EventControler.OnKeyReleased (args);
+            Display.ActionDispatcher.OnKeyReleased (args);
         }
 
         #endregion
@@ -175,26 +175,26 @@ namespace Limaki.View.Headless.VidgetBackends {
 
         #region Drop
         protected virtual void OnHandleDragDropCheck (DragCheckEventArgs args) {
-            var dropHandler = Display.EventControler as IDropAction;
+            var dropHandler = Display.ActionDispatcher as IDropAction;
 
         }
 
         protected virtual void OnHandleDragOver (DragDrop.DragOverEventArgs args) {
-            var dropHandler = Display.EventControler as IDropAction;
+            var dropHandler = Display.ActionDispatcher as IDropAction;
             if (dropHandler != null && Display.Data != null) {
                 dropHandler.DragOver (args);
             }
         }
 
         protected virtual void OnHandleDragDrop (DragDrop.DragEventArgs args) {
-            var dropHandler = Display.EventControler as global::Limaki.View.DragDrop.IDropHandler;
+            var dropHandler = Display.ActionDispatcher as global::Limaki.View.DragDrop.IDropHandler;
             if (dropHandler != null && Display.Data != null) {
                 dropHandler.OnDrop(args);
             }
         }
 
         protected virtual void OnHandleDragLeave (EventArgs args) {
-            var dropHandler = Display.EventControler as global::Limaki.View.DragDrop.IDropHandler;
+            var dropHandler = Display.ActionDispatcher as global::Limaki.View.DragDrop.IDropHandler;
             if (dropHandler != null && Display.Data != null) {
                 dropHandler.DragLeave(args);
             }
