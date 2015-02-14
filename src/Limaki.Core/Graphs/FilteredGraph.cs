@@ -29,8 +29,8 @@ namespace Limaki.Graphs {
 
         public virtual IGraph<TItem, TEdge> Source { get; set; }
 
-        public Predicate<TEdge> EdgeFilter = null;
-        public Predicate<TItem> ItemFilter = null;
+        public Func<TEdge, bool> EdgeFilter { get; set; }
+        public Func<TItem, bool> ItemFilter { get; set; }
 
         protected override void AddEdge(TEdge edge, TItem item) {
             throw new Exception("The method or operation is not implemented.");
