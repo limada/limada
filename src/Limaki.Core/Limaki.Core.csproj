@@ -101,6 +101,8 @@
     <Compile Include="Common\Linqish\ExpressionCache.cs" />
     <Compile Include="Common\Linqish\ExpressionChanger.cs" />
     <Compile Include="Common\Linqish\ExpressionVisitVisitor.cs" />
+    <Compile Include="[Obsolete]\GraphPair0.cs" />
+    <Compile Include="Graphs\HollowGraphPair.cs" />
     <Compile Include="Limada\Model\[ModelVersions].cs" />
     <Compile Include="Limada\Model\NodeThing.cs" />
     <Compile Include="Limada\Model\ThingExtensions.cs" />
@@ -231,7 +233,6 @@
     <Compile Include="Graphs\Walker.cs" />
     <Compile Include="Graphs\WalkerBase.cs" />
     <Compile Include="Graphs\WalkerWorker1.cs" />
-    <Compile Include="Graphs\Walker_.cs" />
     <Compile Include="Graphs\FilteredGraph.cs" />
     <Compile Include="Graphs\Graph.cs" />
     <Compile Include="Graphs\GraphBase.cs" />
@@ -250,7 +251,7 @@
     <Compile Include="Data\IGraphContext.cs" />
     <Compile Include="Graphs\IGraphModelFactory.cs" />
     <Compile Include="Graphs\IGraphPair.cs" />
-    <Compile Include="Graphs\LiveGraphPair.cs" />
+    <Compile Include="[Obsolete]\LiveGraphPair.cs" />
     <Compile Include="Graphs\MultiDictionaryGraph.cs" />
     <Compile Include="Limada\LimadaResourceLoader.cs" />
     <Compile Include="Common\Isaac.cs" />

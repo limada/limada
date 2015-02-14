@@ -18,7 +18,7 @@ namespace Limaki.View.Visuals {
 
             IGraph<TItem, TEdge> targetGraph = null;
             if (source is IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>) {
-                targetGraph = new LiveGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>(
+                targetGraph = new GraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>(
                                   new VisualGraph(),
                                   ((IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>)source).Source,
                                   new VisualGraphEntityTransformer ())

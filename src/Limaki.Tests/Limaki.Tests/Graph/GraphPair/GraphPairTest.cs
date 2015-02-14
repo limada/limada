@@ -31,7 +31,7 @@ namespace Limaki.Tests.Graph.GraphPair {
             IGraph<IGraphEntity, IGraphEdge> two = new Graph<IGraphEntity, IGraphEdge>();
 
             return
-                new GraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>(
+                new HollowGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>(
                 one, two, new VisualGraphEntityTransformer ());
         }
 

@@ -13,7 +13,7 @@ namespace Limaki.Tests.Graph.GraphPair {
                     var one = new Graph<IVisual, IVisualEdge>();
                     var two = new Graph<IGraphEntity, IGraphEdge>();
 
-                    base.Graph = new LiveGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>(
+                    base.Graph = new GraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>(
                         one, two, new VisualGraphEntityTransformer ());
                 }
                 return base.Graph;

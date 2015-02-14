@@ -106,7 +106,7 @@ namespace Limada.Tests.ThingGraphs {
         [Test]
         public virtual void StorePerformanceTest() {
             var target = this.Graph;
-            var graphPair = new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
+            var graphPair = new HollowGraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                       new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge>(), 
                       target, 
                       new GraphItem2ThingTransformer());
@@ -130,7 +130,7 @@ namespace Limada.Tests.ThingGraphs {
             var target = this.Graph;
 
             //IGraphPair<IGraphItem, IThing, IGraphEdge, ILink> graphPair =
-            //      new GraphPair<IGraphItem, IThing, IGraphEdge, ILink>(
+            //      new HollowGraphPair<IGraphItem, IThing, IGraphEdge, ILink>(
             //          new Limaki.Graphs.Graph<IGraphItem, IGraphEdge>(), target, new GraphItem2ThingMapper());
 
             //GraphFactoryBase factory = new BinaryGraphFactory();
@@ -173,7 +173,7 @@ namespace Limada.Tests.ThingGraphs {
             var testThing3 = factory.Edges[1]; // Programming->Language
             var testThing4 = factory.Nodes[1]; // Programming
 
-            var pair = new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
+            var pair = new HollowGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
                 new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge> (),
                 target,
                 new GraphItem2ThingTransformer ()

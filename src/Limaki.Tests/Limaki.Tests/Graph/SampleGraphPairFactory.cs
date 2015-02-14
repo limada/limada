@@ -82,7 +82,7 @@ namespace Limaki.Tests.Graph.Model {
             Factory.Graph = sourceGraph;
             Factory.Populate();
 
-            this.GraphPair = new LiveGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(
+            this.GraphPair = new GraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(
                         graph, sourceGraph, 
                         Mapper.Transformer
                         );

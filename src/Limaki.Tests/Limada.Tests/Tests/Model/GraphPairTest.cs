@@ -40,7 +40,7 @@ namespace Limada.Tests.Model {
             mapper.ConvertSinkSource ();
 
             var graphPair =
-                new LiveGraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
+                new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                     new Graph<IGraphEntity, IGraphEdge>(), 
                     target, 
                     new GraphItem2ThingTransformer());
@@ -92,7 +92,7 @@ namespace Limada.Tests.Model {
                 Assert.AreSame (ping, back);
             }
 
-            data = new LiveGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
+            data = new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
                 new Graph<IGraphEntity, IGraphEdge>(), 
                 data.Source,new GraphItem2ThingTransformer());
 
@@ -132,7 +132,7 @@ namespace Limada.Tests.Model {
             this.ReportDetail (source.GetType ().FullName + "\t" + source.Count);
 
             var graphPair =
-                new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
+                new HollowGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
                 source.Graph,
                 target,
                 new GraphItem2ThingTransformer ());

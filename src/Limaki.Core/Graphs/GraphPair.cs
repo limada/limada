@@ -13,10 +13,12 @@
  */
 
 
+using Limaki.Common.Collections;
 using System;
 using System.Collections.Generic;
 
 namespace Limaki.Graphs {
+
     /// <summary>
     /// GraphPair couples two graphs of different type
     /// the coupling is done by the GraphMapper
@@ -49,8 +51,17 @@ namespace Limaki.Graphs {
             Mapper.UpdateSink (sinkItem);
         }
 
-        public virtual TSinkItem Get(TSourceItem a) {
-            return Mapper.Get(a);
+        public virtual TSinkItem Get (TSourceItem source) {
+            bool contains = false;
+            if (source is TSourceEdge) {
+                contains = Source.Contains ((TSourceEdge)source);
+            } else {
+                contains = Source.Contains (source);
+            }
+            if (contains)
+                return Mapper.TryGetCreate (source);
+            else
+                return default (TSinkItem);
         }
 
         #region GraphBase<TSinkItem,TSinkEdge>-Member
@@ -151,16 +162,30 @@ namespace Limaki.Graphs {
             return result;
         }
 
-        public override int EdgeCount( TSinkItem item ) {
-            return Sink.EdgeCount(item);
-        }
-
-        public override ICollection<TSinkEdge> Edges( TSinkItem item ) {
-            return Sink.Edges(item);
+        public override int EdgeCount (TSinkItem item) {
+            var itemTwo = Get (item);
+            return Source.EdgeCount (itemTwo);
         }
 
         public override IEnumerable<TSinkEdge> Edges() {
             return Sink.Edges();
+        }
+
+        public override ICollection<TSinkEdge> Edges (TSinkItem item) {
+            //ICollection<TEdgeOne> result = Sink.Edges (item);
+            if (true) {//(result == EmptyEgdes){
+                var itemTwo = Get (item);
+                ICollection<TSourceEdge> _edgesTwo = null;
+                if (itemTwo != null) {
+                    _edgesTwo = Source.Edges (itemTwo);
+                } else {
+                    _edgesTwo = new EmptyCollection<TSourceEdge> ();
+                }
+                foreach (var edgeTwo in _edgesTwo) {
+                    Sink.Add ((TSinkEdge)Mapper.TryGetCreate (edgeTwo));
+                }
+            }
+            return Sink.Edges (item);
         }
 
         public override IEnumerable<KeyValuePair<TSinkItem, ICollection<TSinkEdge>>> ItemsWithEdges() {
@@ -197,8 +222,11 @@ namespace Limaki.Graphs {
             get { return Sink.IsReadOnly; }
         }
 
-        public override IEnumerator<TSinkItem> GetEnumerator() {
-            return Sink.GetEnumerator();
+        public override IEnumerator<TSinkItem> GetEnumerator () {
+            foreach (var itemTwo in Source) {
+                var itemOne = Mapper.TryGetCreate (itemTwo);
+                yield return itemOne;
+            }
         }
 
         public override void OnDataChanged( TSinkItem item ) {
@@ -259,7 +287,7 @@ namespace Limaki.Graphs {
 
         #endregion
 
-        #region IFactoryListener<TItemOne> Member
+        #region IFactoryListener<TSinkItem> Member
 
         Action<TSinkItem> IFactoryListener<TSinkItem>.ItemCreated {
             get { return Mapper.ItemCreated; }

@@ -19,7 +19,7 @@ using Limaki.View.Visuals;
 
 namespace Limada.View.VisualThings {
 
-    public class VisualThingGraph : LiveGraphPair<IVisual, IThing, IVisualEdge, ILink> {
+    public class VisualThingGraph : GraphPair<IVisual, IThing, IVisualEdge, ILink> {
 
         public VisualThingGraph( IGraph<IVisual, IVisualEdge> sink, IThingGraph source):
             this(sink, source, new VisualThingTransformer()) { }
