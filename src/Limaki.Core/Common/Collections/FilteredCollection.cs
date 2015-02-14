@@ -18,9 +18,9 @@ using System.Collections.Generic;
 
 namespace Limaki.Common.Collections {
     public class FilteredCollection<T>:CollectionWrapper<T> {
-        Predicate<T> Filter = null;
+        Func<T, bool> Filter = null;
 
-        public FilteredCollection(ICollection<T> source, Predicate<T> filter):base(source) {
+        public FilteredCollection(ICollection<T> source, Func<T, bool> filter):base(source) {
             this.Filter = filter;
         }
 
