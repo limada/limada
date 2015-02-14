@@ -252,7 +252,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Rendering\IRenderAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Rendering\IRenderEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Rendering\RenderEventArgs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\EventControler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\ActionDispatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\GraphScene\GraphEdgeChangeAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\GraphScene\GraphItemAddAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\GraphScene\GraphItemDeleteAction.cs" />
@@ -271,7 +271,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Rendering\GripPainter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\IDropAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\IEditAction.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\IEventControler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\IActionDispatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\IKeyAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\IMouseAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\UI\IMoveResizeAction.cs" />
