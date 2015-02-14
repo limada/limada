@@ -317,21 +317,7 @@ namespace Limaki.Graphs {
                 }
             }
         }
-
-        public virtual IEnumerable<TItem> Items (IEnumerable<LevelItem<TItem>> items) {
-            foreach (var item in items)
-                yield return item.Node;
-
-        }
-
-        public virtual IEnumerable<TEdge> Edges (IEnumerable<LevelItem<TItem>> items) {
-            foreach (var item in items)
-                if (item.Node is TEdge)
-                    yield return (TEdge) item.Node;
-
-        }
-
-        
+       
     }
 
     public static class Walk {
@@ -366,6 +352,22 @@ namespace Limaki.Graphs {
 
         }
 
+        public static IEnumerable<TItem> Items<TItem> (this IEnumerable<LevelItem<TItem>> items) {
+            foreach (var item in items)
+                yield return item.Node;
+
+        }
+
+        public static IEnumerable<TEdge> Edges<TItem, TEdge> (this IEnumerable<LevelItem<TItem>> items) where TEdge : IEdge<TItem>, TItem {
+            foreach (var item in items)
+                if (item.Node is TEdge)
+                    yield return (TEdge)item.Node;
+
+        }
+
+        public static Walker<TItem, TEdge> Create<TItem, TEdge> (IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem>, TItem {
+            return new Walker<TItem, TEdge>(graph);
+        }
     }
 
 }

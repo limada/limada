@@ -140,7 +140,7 @@ namespace Limaki.Playground.View {
             reportExtent(visibleItems);
 
 
-            IEnumerable<IVisual> itemsToPlace = Walker.Create((scene.Graph as SubGraph<IVisual, IVisualEdge>).Source)
+            IEnumerable<IVisual> itemsToPlace = Walk.Create((scene.Graph as SubGraph<IVisual, IVisualEdge>).Source)
                 .DeepWalk(scene.Focused, 0)
                 .Select(l => l.Node)
                 .ToArray();
@@ -223,7 +223,7 @@ namespace Limaki.Playground.View {
             reportExtent(visibleItems);
 
 
-            IEnumerable<IVisual> itemsToPlace = Walker.Create((scene.Graph as SubGraph<IVisual, IVisualEdge>).Source)
+            IEnumerable<IVisual> itemsToPlace = Walk.Create((scene.Graph as SubGraph<IVisual, IVisualEdge>).Source)
                 .DeepWalk(scene.Focused, 0)
                 .Select(l => l.Node)
                 .ToArray();
