@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using Limaki.Common.Collections;
 
 namespace Limaki.Graphs {
+
     public interface IFactoryListener<T> {
         Action<T> ItemCreated { get; set; }
     }

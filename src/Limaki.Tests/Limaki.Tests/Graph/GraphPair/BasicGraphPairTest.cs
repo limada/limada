@@ -13,8 +13,8 @@ namespace Limaki.Tests.Graph.GraphPair {
         where TEdgeTwo : IEdge<TItemTwo>, TItemTwo {
 
 
-        public virtual GraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> Pair {
-            get { return Graph as GraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>; }
+        public virtual IGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo> Pair {
+            get { return Graph as IGraphPair<TItemOne, TItemTwo, TEdgeOne, TEdgeTwo>; }
         }
 
         public override void Contains(TItemOne item) {
@@ -44,9 +44,9 @@ namespace Limaki.Tests.Graph.GraphPair {
 
         public override void IsEdgeChanged(TEdgeOne edge, TItemOne oldItem, TItemOne newItem, bool newIsRoot) {
             base.IsEdgeChanged(edge, oldItem, newItem, newIsRoot);
-            TEdgeTwo edge2 = (TEdgeTwo)Pair.Get(edge);
-            TItemTwo newItem2 = Pair.Get (newItem);
-            TItemTwo oldItem2 = Pair.Get (oldItem);
+            var edge2 = (TEdgeTwo)Pair.Get(edge);
+            var newItem2 = Pair.Get (newItem);
+            var oldItem2 = Pair.Get (oldItem);
 
             if (newIsRoot)
                 Assert.AreEqual(edge2.Root, newItem2);

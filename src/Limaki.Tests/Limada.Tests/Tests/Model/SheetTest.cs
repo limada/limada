@@ -91,34 +91,33 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void TestSheet() {
-            VisualThingGraph sourceGraph =
+            var sourceGraph =
                 ModelHelper.GetSourceGraph<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
 
             var scene = new Scene();
             scene.Graph = sourceGraph;
 
-            IThingGraph thingGraph = sourceGraph.Source as IThingGraph;
+            var thingGraph = sourceGraph.Source as IThingGraph;
             
-            IGraphSceneLayout<IVisual,IVisualEdge> layout = this.GetLayout();
+            var layout = this.GetLayout();
 
-            Stream s = SaveSheet (scene, layout);
-
-
-            StreamReader reader = new StreamReader (s);
+            var s = SaveSheet (scene, layout);
+            
+            var reader = new StreamReader (s);
             ReportDetail (reader.ReadToEnd ());
             s.Position = 0;
 
             var sheet = new Sheet(new Scene(), layout);
             sheet.Layout.DataHandler = delegate() { return sheet.Scene; };
 
-            VisualThingGraph targetGraph = new VisualThingGraph(new VisualGraph(), thingGraph);
+            var targetGraph = new VisualThingGraph(new VisualGraph(), thingGraph);
             sheet.Scene.Graph = targetGraph;
             s.Position = 0;
             sheet.Read (s);
 
-            foreach(IVisual target in targetGraph) {
-                IThing thing = targetGraph.Get (target);
-                IVisual source = sourceGraph.Get (thing);
+            foreach(var target in targetGraph) {
+                var thing = targetGraph.Get (target);
+                var source = sourceGraph.Get (thing);
 
                 Assert.AreEqual (target.Location, source.Location);
                 Assert.AreEqual(target.Size, source.Size);
@@ -126,8 +125,8 @@ namespace Limada.Tests.Model {
             }
 
             foreach (IVisual source in sourceGraph) {
-                IThing thing = sourceGraph.Get(source);
-                IVisual target = targetGraph.Get(thing);
+                var thing = sourceGraph.Get(source);
+                var target = targetGraph.Get(thing);
 
                 Assert.AreEqual(target.Location, source.Location);
                 Assert.AreEqual(target.Size, source.Size);

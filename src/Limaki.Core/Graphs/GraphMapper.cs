@@ -25,8 +25,7 @@ namespace Limaki.Graphs {
     /// <typeparam name="TSourceItem"></typeparam>
     /// <typeparam name="TSinkEdge"></typeparam>
     /// <typeparam name="TSourceEdge"></typeparam>
-    public class GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>:
-        IFactoryListener<TSinkItem>
+    public class GraphMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IFactoryListener<TSinkItem>
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
@@ -67,7 +66,7 @@ namespace Limaki.Graphs {
         }
 
         GraphSourceSinkMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> _sinkSourceMapper = null;
-        GraphSourceSinkMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> SinkSourceMapper {
+        protected GraphSourceSinkMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> SinkSourceMapper {
             get {
                 if (_sinkSourceMapper == null) {
                     _sinkSourceMapper = new GraphSourceSinkMapper<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>();
@@ -81,7 +80,7 @@ namespace Limaki.Graphs {
         }
 
         GraphSourceSinkMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> _sourceSinkMapper;
-        GraphSourceSinkMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> SourceSinkMapper {
+        protected GraphSourceSinkMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge> SourceSinkMapper {
             get {
                 if (_sourceSinkMapper == null) {
                     _sourceSinkMapper = new GraphSourceSinkMapper<TSourceItem, TSinkItem, TSourceEdge, TSinkEdge>();

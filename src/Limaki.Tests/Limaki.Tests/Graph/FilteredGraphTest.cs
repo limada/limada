@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using Limaki.Graphs;
 using Limaki.Model;
 using Limaki.UnitTest;
-using Limaki.Tests.Graph;
 using Limaki.Tests.Graph.Model;
 using NUnit.Framework;
 using System.IO;
@@ -26,14 +25,13 @@ using Limaki.Common.Collections;
 using System.Collections.ObjectModel;
 using Limaki.Tests.Graph.Basic;
 
-namespace Limaki.Tests.Sandbox.Graph {
+namespace Limaki.Tests.Graph {
     public class FilteredGraphTest : DomainTest {
 
         [Test]
         public void BasicGraphTest() {
-            StringGraphTest test = new StringGraphTest();
-            FilteredGraph<string, Edge<string>> graph = 
-                new FilteredGraph<string, Edge<string>>(test.Graph);
+            var test = new StringGraphTest();
+            var graph = new FilteredGraph<string, Edge<string>>(test.Graph);
             graph.ItemFilter = delegate(string s) { return true; };
             graph.EdgeFilter = delegate(Edge<string> s) { return true; };
             test.Graph = graph;
