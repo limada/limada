@@ -33,7 +33,7 @@ namespace Limada.Tests.Model {
             thing = factory.CreateItem<object>("");
             Assert.IsInstanceOfType(typeof(IThing<string>), thing);
 
-            thing = factory.CreateIdItem(0);
+            thing = factory.CreateItem(0);
             Assert.IsInstanceOfType(typeof(INumberThing), thing);
             thing = factory.CreateItem<object>(0);
             Assert.IsInstanceOfType(typeof(INumberThing), thing);
