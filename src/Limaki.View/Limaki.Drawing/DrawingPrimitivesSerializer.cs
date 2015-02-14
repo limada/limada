@@ -31,8 +31,8 @@ namespace Limaki.Drawing {
         protected static IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Factory.Create<IDrawingUtils>()); } }
 
         public virtual XElement Write(Font font) {
-            XElement xmlthing = new XElement("font");
-            xmlthing.Add(Write("family", font.Family));
+            var xmlthing = new XElement("font");
+            xmlthing.Add(Write("family", font.Family??""));
             xmlthing.Add(Write("size",font.Size));
             xmlthing.Add(Write("style",font.Style));
             return xmlthing;
@@ -135,7 +135,7 @@ namespace Limaki.Drawing {
                 result.Add(Write("parent", style.ParentStyle.Name));    
             }
             result.Add(Write(style.Font));
-            result.Add(Write(style.Pen));
+            // result.Add(Write(style.Pen));
             result.Add(Write(style.FillColor, "fillcolor"));
             result.Add(Write(style.PenColor, "pencolor"));
             result.Add (WriteDouble (style.PenThickness, "penthickness"));

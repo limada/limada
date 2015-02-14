@@ -17,7 +17,7 @@ using System;
 
 namespace Limaki.View.Viz.Rendering {
     /// <summary>
-    /// BackendRenderers are responible
+    /// BackendRenderers are responsible
     /// to manage the rendering methods of a backend
     /// They are device-specific (eg. swf, wpf...)
     /// </summary>
