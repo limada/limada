@@ -232,8 +232,8 @@ namespace Limada.Schemata {
             if (graph == null || document == null)
                 return false;
 
-            return graph.Edges(document)
-                .Any(link => link.Marker.Id == DigidocSchema.DocumentPage.Id && link.Root == document);
+            return graph.Edges (document)
+                .Any (link => link.Marker != null && link.Marker.Id == DigidocSchema.DocumentPage.Id && link.Root != null && link.Root == document);
         }
 
         public IEnumerable<Content<Stream>> PageStreams() {
