@@ -12,9 +12,12 @@
  * http://www.limada.org
  * 
  */
+using Xwt.Drawing;
 
 namespace Limaki.Drawing {
 
-    public interface ISurface {}
+    public interface ISurface {
+		Matrix Matrix { get;}
+	}
 
 }

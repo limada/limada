@@ -47,13 +47,5 @@ namespace Limaki.View.GdiBackend {
             }
         }
 
-        public override Matrix Matrix {
-            get {
-                if (base.Matrix == null) { // base.Matrix is never null
-                    base.Matrix = this.Graphics.Transform.ToXwt();
-                }
-                return base.Matrix;
-            }
-        }
     }
 }
