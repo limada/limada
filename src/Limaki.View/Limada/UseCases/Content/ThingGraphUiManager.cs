@@ -28,7 +28,7 @@ using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Mono.Options;
 
-namespace Limada.UseCases.Content {
+namespace Limada.UseCases.Contents {
 
     public class ThingGraphUiManager : IoUiManager, IGraphSceneUiManager {
 

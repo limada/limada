@@ -25,7 +25,7 @@ using Limaki.View;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 
-namespace Limada.UseCases.Content {
+namespace Limada.UseCases.Contents {
 
     public class StreamContentUiManager : IoUiManager {
 

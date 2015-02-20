@@ -12,7 +12,7 @@
  * 
  */
 
-using Limada.UseCases.Content;
+using Limada.UseCases.Contents;
 using Limada.View.Vidgets;
 using Limaki.Common;
 using Limaki.View;

@@ -14,7 +14,7 @@
 
 using System;
 using System.Linq;
-using Limada.UseCases.Content;
+using Limada.UseCases.Contents;
 using Limada.Usecases;
 using Limada.View.Vidgets;
 using Limada.View.VisualThings;
