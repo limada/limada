@@ -310,10 +310,6 @@ namespace Limada.UseCases.Cms {
             return result;
         }
 
-        public string RenderSheet (IStreamThing streamThing) {
-            return string.Empty;
-        }
-
         /// <summary>
         /// an expandwalk with leafs of thing
         /// attention! use it only once, or make tolist or toarray
