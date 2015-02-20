@@ -63,7 +63,6 @@ namespace Limaki.View.Viz.Rendering {
         }
 
         public Func<IClipper> Clipper { get; set; }
-        public Action<IShape> UpdateGrip { get; set; }
 
         protected GripPainter _gripPainter = null;
         public virtual GripPainter GripPainter {
@@ -75,7 +74,6 @@ namespace Limaki.View.Viz.Rendering {
                     _gripPainter.Camera = this.Camera;
                     _gripPainter.Style = this.Style;
                     _gripPainter.TargetShape = this.Shape;
-                    _gripPainter.UpdateGrip = this.UpdateGrip;
                 }
                 return _gripPainter;
             }
@@ -134,10 +132,6 @@ namespace Limaki.View.Viz.Rendering {
 
         public virtual void UpdateSelection() {
             this.Resolved = true;
-            if (UpdateGrip != null) {
-
-                GripPainter.UpdateGrips();
-            }
 
             var clipper = this.Clipper();
             if (this.Shape != null && clipper != null) {

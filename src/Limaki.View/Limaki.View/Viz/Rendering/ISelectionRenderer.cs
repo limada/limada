@@ -25,7 +25,6 @@ namespace Limaki.View.Viz.Rendering {
         int GripSize { get; set; }
         IStyle Style { get; set; }
         
-        Action<IShape> UpdateGrip { get; set; }
         void UpdateSelection();
         void InvalidateShapeOutline(IShape oldShape, IShape newShape);
         void Clear();

@@ -4,6 +4,7 @@ using System;
 using Limaki.Drawing;
 using Limaki.Drawing.Painters;
 using Xwt;
+using Xwt.Drawing;
 
 namespace Limaki.View.Viz.Rendering {
 
@@ -48,42 +49,22 @@ namespace Limaki.View.Viz.Rendering {
             set { _innerPainter = value; }
         }
 
-        public Action<IShape> UpdateGrip { get; set; }
-        public virtual void UpdateGrips() {
-            if (UpdateGrip != null) {
-                Shape.Size = new Size(GripSize, GripSize);
-                InnerPainter.Style = this.Style;
-                int halfWidth = GripSize / 2;
-                int halfHeight = GripSize / 2;
-                Camera camera = new Camera(this.Camera.Matrix);
+		public override void Render (ISurface surface) {
+			Shape.Size = new Size (GripSize, GripSize);
+			InnerPainter.Style = this.Style;
+			int halfWidth = GripSize / 2;
+			int halfHeight = GripSize / 2;
 
-                foreach (Anchor anchor in Grips) {
-                    Point anchorPoint = TargetShape[anchor];
-                    anchorPoint = camera.FromSource(anchorPoint);
-                    Shape.Location = new Point(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
-                    UpdateGrip(Shape);
-                }
-            }
-        }
-
-        public override void Render (ISurface surface) {
-            Shape.Size = new Size(GripSize, GripSize);
-            InnerPainter.Style = this.Style;
-            int halfWidth = GripSize / 2;
-            int halfHeight = GripSize / 2;
-
-            // get near:
-            var camera = new Camera(this.Camera.Matrix);
-
-            foreach (Anchor anchor in Grips) {
-                var anchorPoint = TargetShape[anchor];
-                anchorPoint = camera.FromSource(anchorPoint);
-                Shape.Location = new Point(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
-
-                InnerPainter.Render(surface);
-
-            }
-        }
+            var camera = new Camera (Camera.Matrix);
+		    var destCam = new Camera (surface.Matrix);
+			foreach (var anchor in Grips) {
+				var anchorPoint = TargetShape[anchor];
+				anchorPoint = camera.FromSource(anchorPoint);
+			    //anchorPoint = destCam.ToSource (anchorPoint);
+				Shape.Location = new Point (anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
+				InnerPainter.Render (surface);
+			}
+		}
 
         public override void Dispose(bool disposing) {
             if (disposing) {
