@@ -75,6 +75,7 @@ namespace Limada.View.Vidgets {
         Content<Stream> _pageContent = null;
         protected virtual Content<Stream> PageContent {
             set {
+                _pageContent = value;
                 if (value != null) {
                     var viewerProvider = Registry.Pooled<ContentViewerProvider>();
                     var viewer = viewerProvider.Supports(value.ContentType);
@@ -85,7 +86,6 @@ namespace Limada.View.Vidgets {
                 } else {
                     ContentViewer = null;
                 }
-                _pageContent = value;
             }
         }
 

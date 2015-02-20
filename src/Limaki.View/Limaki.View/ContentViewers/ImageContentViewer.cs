@@ -76,11 +76,17 @@ namespace Limaki.View.ContentViewers {
             if (ImageDisplay != null) {
                 var display = ImageDisplay;
                 display.BackColor = this.BackColor;
-                content.Data.Position = 0;
-                display.Data = Image.FromStream(content.Data);
+                if (content.Data != null) {
+                    content.Data.Position = 0;
+                    display.Data = Image.FromStream (content.Data);
+                } else {
+                    display.Data = null;
+                }
+
             }
             if (IsStreamOwner) {
-                content.Data.Close ();
+                if (content.Data != null)
+                    content.Data.Close ();
                 content.Data = null;
             }
         }
