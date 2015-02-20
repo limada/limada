@@ -28,8 +28,7 @@ namespace Limaki.View.XwtBackend {
 
         public static ScrollView WithScrollView (this Widget backend) {
             if (backend is ScrollView)
-                return (ScrollView) backend;
-
+                return (ScrollView)backend;
             backend.VerticalPlacement = WidgetPlacement.Fill;
             backend.HorizontalPlacement = WidgetPlacement.Fill;
             var scroll = new ScrollView();

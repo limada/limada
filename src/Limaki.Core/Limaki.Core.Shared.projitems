@@ -155,7 +155,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\Walker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\WalkerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\WalkerWorker1.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphs\Walker_.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\FilteredGraph.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\Graph.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\GraphBase.cs" />
@@ -174,7 +173,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\IGraphContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\IGraphModelFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\IGraphPair.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphs\LiveGraphPair.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\MultiDictionaryGraph.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\LimadaResourceLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Isaac.cs" />
@@ -252,5 +250,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contents\PipePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\IOUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ByteUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphs\HollowGraphPair.cs" />
   </ItemGroup>
 </Project>

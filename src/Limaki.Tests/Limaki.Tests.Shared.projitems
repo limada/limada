@@ -18,7 +18,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\ThingFactoryTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\ThingGraphs\Sample4Test.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\ThingGraphs\SchemaGraph\SchemaGraphPerformanceTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\ThingGraphs\SchemaGraph\SchemaGraphTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\ThingGraphs\StreamThingTest.cs" />

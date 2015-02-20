@@ -12,7 +12,6 @@
  * 
  */
 
-
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Shapes;
@@ -21,6 +20,7 @@ using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.View.Viz {
+
     public class Viewport:IViewport, ICheckable {
 
         #region Camera

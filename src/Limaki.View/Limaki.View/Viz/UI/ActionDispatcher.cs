@@ -265,7 +265,7 @@ namespace Limaki.View.Viz.UI {
         #region IRenderAction Member
 
         public void OnPaint(IRenderEventArgs e) {
-            foreach (IRenderAction renderAction in RenderActions) {
+            foreach (var renderAction in RenderActions) {
                 if (renderAction.Enabled)
                     renderAction.OnPaint(e);
             }
