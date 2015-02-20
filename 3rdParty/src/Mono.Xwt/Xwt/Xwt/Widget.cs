@@ -1305,9 +1305,12 @@ namespace Xwt
 				if (wback != null)
 					wback.InternalParent = this;
 			} else {
-				if (w.Parent != null)
-					throw new InvalidOperationException ("Widget is already a child of a widget of type " + w.Parent.GetType ());
-				w.Parent = this;
+			    var hasParent = w.Parent != null;
+			    if (hasParent) {
+			        //throw new InvalidOperationException ("Widget is already a child of a widget of type " + w.Parent.GetType ());
+			        w.Parent.UnregisterChild (w);
+			    }
+			    w.Parent = this;
 				w.InternalParent = this;
 				if (wback != null) {
 					wback.Parent = this;
