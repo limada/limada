@@ -29,6 +29,8 @@ namespace Limaki.View.XwtBackend {
         public static ScrollView WithScrollView (this Widget backend) {
             if (backend is ScrollView)
                 return (ScrollView)backend;
+            if (backend.Parent is ScrollView)
+                return (ScrollView) backend.Parent;
             backend.VerticalPlacement = WidgetPlacement.Fill;
             backend.HorizontalPlacement = WidgetPlacement.Fill;
             var scroll = new ScrollView();
@@ -107,6 +109,14 @@ namespace Limaki.View.XwtBackend {
                 return vb.Widget;
             return backend as Widget;
 
+        }
+
+        public static void RemoveParent (this Widget widget) {
+            if (widget.Parent != null) {
+                // impossible to change widget.Parent???
+                //throw new NotImplementedException ();
+
+            }
         }
     }
 }

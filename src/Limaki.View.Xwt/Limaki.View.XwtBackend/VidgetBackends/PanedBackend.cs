@@ -15,6 +15,7 @@
 using System.Linq;
 using Xwt;
 
+
 namespace Limaki.View.XwtBackend {
 
     public abstract class PanedBackend : VidgetBackend<HPaned>  {
@@ -22,15 +23,12 @@ namespace Limaki.View.XwtBackend {
         protected Paned SplitContainer { get { return this.Widget; } }
 
         protected virtual Widget SetScrollingPanelContent (Widget widget, Panel panel) {
+            widget.RemoveParent ();
             if (widget is IScrollContainingWidget) {
                 panel.Content = widget;
             } else {
-                var panelScroll = panel.Content as ScrollView;
-                if (panelScroll != null) {
-                    panelScroll.Content = widget;
-                } else {
-                    panel.Content = widget.WithScrollView ();
-                }
+                var panelScroll = widget.PeeledScrollView();
+                 panel.Content = widget.WithScrollView ();
             }
             return panel.Content;
         }

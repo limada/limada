@@ -57,7 +57,7 @@ namespace Limaki.View.XwtBackend {
                     Widget.Position = Widget.Size.Width - width;
 
                 contentControl.WidthRequest = Widget.Position;
-                Widget.Panel1.Content = contentControl;
+                Widget.Panel1.Content = contentControl.WithScrollView();
                 Application.MainLoop.DispatchPendingEvents ();
                 suspendWidth = false;
             };
