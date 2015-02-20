@@ -123,15 +123,10 @@ namespace Limada.UseCases.Cms {
                                    select source.Adjacent (link, topic)
                                ).FirstOrDefault ();
 
-                var streamThing = autoView as IStreamThing;
-                if (streamThing != null && streamThing.StreamType == ContentTypes.LimadaSheet) {
-
-                    //TODO: LoadSheet
-                } else {
                     if (autoView != null) {
                         topic = autoView;
                     }
-                }
+                
             }
             return topic;
         }
