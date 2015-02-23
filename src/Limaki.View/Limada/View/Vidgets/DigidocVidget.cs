@@ -118,7 +118,6 @@ namespace Limada.View.Vidgets {
         public virtual void OnShow () {
             if (AttachContentViewer != null && ContentViewer != null)
                 AttachContentViewer(ContentViewer);
-            PageContent = _pageContent;
         }
 
         public virtual void Compose () {

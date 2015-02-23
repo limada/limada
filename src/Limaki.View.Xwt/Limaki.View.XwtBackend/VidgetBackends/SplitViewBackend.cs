@@ -126,7 +126,7 @@ namespace Limaki.View.XwtBackend {
 
             var widget = backend.ToXwt();
             var panel = AdjacentPanelOf (this.Frontend.CurrentDisplay);
-            if (panel != null && !panel.Content.ScrollPeeledChildren ().Contains (widget)) {
+            if (panel != null) {
                 SetScrollingPanelContent (widget, panel);
             }
 

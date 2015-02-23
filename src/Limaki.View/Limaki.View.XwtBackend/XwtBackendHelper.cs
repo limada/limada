@@ -17,6 +17,7 @@ using Xwt;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Limaki.View.XwtBackend {
 
@@ -112,10 +113,11 @@ namespace Limaki.View.XwtBackend {
         }
 
         public static void RemoveParent (this Widget widget) {
+            var sw = widget.Parent as ScrollView;
+            if (sw != null)
+                sw.Content = null;
             if (widget.Parent != null) {
-                // impossible to change widget.Parent???
-                //throw new NotImplementedException ();
-
+                throw new NotImplementedException ("impossible to remove widget.Parent");
             }
         }
     }

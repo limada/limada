@@ -27,8 +27,7 @@ namespace Limaki.View.XwtBackend {
             if (widget is IScrollContainingWidget) {
                 panel.Content = widget;
             } else {
-                var panelScroll = widget.PeeledScrollView();
-                 panel.Content = widget.WithScrollView ();
+                panel.Content = widget.WithScrollView ();
             }
             return panel.Content;
         }
