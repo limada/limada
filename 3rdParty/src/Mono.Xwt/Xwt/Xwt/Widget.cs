@@ -1307,8 +1307,7 @@ namespace Xwt
 			} else {
 			    var hasParent = w.Parent != null;
 			    if (hasParent) {
-			        //throw new InvalidOperationException ("Widget is already a child of a widget of type " + w.Parent.GetType ());
-			        w.Parent.UnregisterChild (w);
+                    throw new InvalidOperationException ("Widget is already a child of a widget of type " + w.Parent.GetType ());
 			    }
 			    w.Parent = this;
 				w.InternalParent = this;
