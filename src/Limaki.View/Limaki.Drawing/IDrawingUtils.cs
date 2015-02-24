@@ -6,7 +6,6 @@ namespace Limaki.Drawing {
 
     public interface IDrawingUtils {
        
-        object GetCustomLineCap(double arrowWidth, double arrowHeigth);
         Size GetTextDimension(string text, IStyle style);
 
         /// <summary>

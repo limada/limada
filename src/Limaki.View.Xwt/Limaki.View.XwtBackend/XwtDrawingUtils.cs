@@ -21,10 +21,6 @@ namespace Limaki.View.XwtBackend {
 
     public class XwtDrawingUtils : IDrawingUtils {
 
-        public object GetCustomLineCap (double arrowWidth, double arrowHeigth) {
-            return new object ();
-        }
-
         private TextLayout tl = new TextLayout { Trimming = TextTrimming.Word };
         public Size GetTextDimension (string text, IStyle style) {
             var result = default(Size);

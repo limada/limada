@@ -25,30 +25,6 @@ namespace Limaki.View.GdiBackend {
 
     public class GdiDrawingUtils : IDrawingUtils {
 
-
-
-        public object GetCustomLineCap(double arrowWidth, double arrowHeigth) {
-            if (arrowHeigth == 0 || arrowWidth == 0)
-                throw new ArgumentException ("ArrowWidth must not be 0");
-            var path = new System.Drawing.Drawing2D.GraphicsPath();
-            var w = (float) arrowWidth;
-            var h = (float) arrowHeigth;
-            var p1 = new System.Drawing.PointF(0, 1);
-            var p2 = new System.Drawing.PointF(-h, -w);
-            var p3 = new System.Drawing.PointF(h, -w);
-            path.AddPolygon(new System.Drawing.PointF[3] { p1, p2, p3 });
-            //path.AddLine(p1, p2);
-            //path.AddLine(p2, p3);
-            //path.AddLine(p3, p1);
-
-            var result = new CustomLineCap(path, null);
-            result.BaseInset = 1;
-            //result.StrokeJoin = LineJoin.Round;
-
-            return result;
-
-        }
-
         public virtual Size GetTextDimension(string text, IStyle style) {
             return GdiUtils.GetTextDimension(
                 (System.Drawing.Font)style.Font.GetBackend(),

@@ -12,10 +12,6 @@ namespace Limaki.View.Html5 {
 
     public class Html5DrawingUtils : IDrawingUtils {
 
-        public object GetCustomLineCap (double arrowWidth, double arrowHeigth) {
-            return new object ();
-        }
-
         private static HtmlTextLayoutBackend tl = new HtmlTextLayoutBackend();
         public Size GetTextDimension (string text, IStyle style) {
             //return new Size (text.Length * 10, 10);
