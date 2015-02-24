@@ -32,6 +32,13 @@ namespace Limaki.View.GdiBackend {
                 style.AutoSize.ToGdi());
         }
 
+        public Size GetObjectDimension (object value, IStyle style) {
+            var result = new Size ();
+            if (!DrawingExtensions.TryGetObjectDimension (value, style, out result))
+                return Size.Zero;
+            return result;
+        }
+
         public Size ScreenResolution() {
             return new Size(GdiUtils.DeviceContext.DpiX, GdiUtils.DeviceContext.DpiY);
         }

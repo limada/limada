@@ -8,6 +8,8 @@ namespace Limaki.Drawing {
        
         Size GetTextDimension(string text, IStyle style);
 
+        Size GetObjectDimension (object value, IStyle style);
+
         /// <summary>
         /// x ... DpiX, y ... DpiY of Screen
         /// Remark: points = pixels * 72 / DpiX;

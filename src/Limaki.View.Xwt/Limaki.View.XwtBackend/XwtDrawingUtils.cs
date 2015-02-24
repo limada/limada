@@ -36,6 +36,13 @@ namespace Limaki.View.XwtBackend {
             return result;
         }
 
+        public Size GetObjectDimension (object value, IStyle style) {
+            var result = new Size ();
+            if (!DrawingExtensions.TryGetObjectDimension (value, style, out result))
+                return Size.Zero;
+            return result;
+        }
+
         public Size ScreenResolution () {
             var f = Desktop.PrimaryScreen.ScaleFactor;
             return  new Size (96*f, 96*f);

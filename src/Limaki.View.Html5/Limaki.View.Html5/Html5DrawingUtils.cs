@@ -19,6 +19,13 @@ namespace Limaki.View.Html5 {
             return tl.MeasureString(text, f, new Size(0,f.Size));
         }
 
+        public Size GetObjectDimension (object value, IStyle style) {
+            var result = new Size ();
+            if (!DrawingExtensions.TryGetObjectDimension (value, style, out result))
+                return Size.Zero;
+            return result;
+        }
+
         public Size ScreenResolution () {
             return new Size (96, 96);
         }
