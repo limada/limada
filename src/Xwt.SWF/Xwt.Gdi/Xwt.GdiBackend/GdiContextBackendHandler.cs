@@ -351,7 +351,7 @@ namespace Xwt.GdiBackend {
 
         public override void DrawImage (object backend, ImageDescription img, double x, double y) {
             var context = (GdiContext)backend;
-            var image = (SD.Image)img.Backend;
+            var image = ((GdiImage) img.Backend).Image;
             var q = context.Graphics.SetQuality(GdiConverter.DrawHighQuality);
             if (img.Alpha >= 1)
                 context.Graphics.DrawImage (image, (float) x, (float) y);
@@ -365,7 +365,7 @@ namespace Xwt.GdiBackend {
 
         public override void DrawImage (object backend, ImageDescription img, Rectangle srcRect, Rectangle destRect) {
             var context = (GdiContext)backend;
-            var image = (SD.Image)img.Backend;
+            var image = ((GdiImage)img.Backend).Image;
             
             var q = context.Graphics.SetQuality(GdiConverter.DrawHighQuality);
             if (img.Alpha >= 1)
