@@ -86,5 +86,12 @@ namespace Limaki.Iconerias {
             var img = ib.ToBitmap (ImageFormat.ARGB32);
             return img;
         }
+
+        public static Image AsVectorImage (this Iconeria self, Action<Context> icon, double size) {
+            var ib = new ImageBuilder (size, size);
+            self.PaintIcon (ib.Context, size, 0, 0, icon);
+            var img = ib.ToVectorImage();
+            return img;
+        }
     }
 }
