@@ -113,11 +113,32 @@ namespace Limaki.View.XwtBackend {
         }
 
         public static void RemoveParent (this Widget widget) {
-            var sw = widget.Parent as ScrollView;
-            if (sw != null)
-                sw.Content = null;
+
+            if (widget.Parent == null)
+                return;
+
+            var scrollView = widget.Parent as ScrollView;
+            if (scrollView != null) 
+                scrollView.Content = null;
+            var box = widget.Parent as Box;
+            if (box != null && box.Children.Contains (widget))
+                box.Remove (widget);
+            var paned = widget.Parent as Paned;
+            if (paned != null && (paned.Panel1.Content == widget || paned.Panel2.Content == widget))
+                paned.Remove (widget);
+            var table = widget.Parent as Table;
+            if (table != null && table.Children.Contains (widget))
+                table.Remove (widget);
+            var frame = widget.Parent as Frame;
+            if (frame != null && frame.Content == widget)
+                frame.Content = null;
+            var canvas = widget.Parent as Canvas;
+            if (canvas != null && canvas.Children.Contains (widget))
+                canvas.RemoveChild (widget);
+            
+           
             if (widget.Parent != null) {
-                throw new NotImplementedException ("impossible to remove widget.Parent");
+                throw new NotImplementedException ("Impossible to remove widget.Parent");
             }
         }
     }
