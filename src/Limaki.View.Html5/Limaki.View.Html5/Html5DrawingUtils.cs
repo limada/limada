@@ -16,10 +16,6 @@ namespace Limaki.View.Html5 {
             return new object ();
         }
 
-        public Pen CreatePen (Color color) {
-            return new Pen (color);
-        }
-
         private static HtmlTextLayoutBackend tl = new HtmlTextLayoutBackend();
         public Size GetTextDimension (string text, IStyle style) {
             //return new Size (text.Length * 10, 10);

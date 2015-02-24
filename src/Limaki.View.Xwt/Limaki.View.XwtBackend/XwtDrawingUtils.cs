@@ -25,10 +25,6 @@ namespace Limaki.View.XwtBackend {
             return new object ();
         }
 
-        public Pen CreatePen (Color color) {
-            return new Pen (color);
-        }
-
         private TextLayout tl = new TextLayout { Trimming = TextTrimming.Word };
         public Size GetTextDimension (string text, IStyle style) {
             var result = default(Size);

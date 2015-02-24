@@ -7,8 +7,6 @@ namespace Limaki.Drawing {
     public interface IDrawingUtils {
        
         object GetCustomLineCap(double arrowWidth, double arrowHeigth);
-       
-        Pen CreatePen ( Color color );
         Size GetTextDimension(string text, IStyle style);
 
         /// <summary>

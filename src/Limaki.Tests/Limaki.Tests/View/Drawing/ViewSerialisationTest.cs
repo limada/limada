@@ -52,23 +52,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
         }
 
-        [Test]
-        public void PenTest() {
-            var ser = new DrawingPrimitivesSerializer();
-            var item = new Pen(Colors.Red);
-            item.Thickness = 5;
-            item.LineJoin = PenLineJoin.Miter;
-            item.StartCap = PenLineCap.Flat;
-            item.EndCap = PenLineCap.Round;
-
-            var node = ser.Write(item);
-            this.ReportDetail(node.ToString());
-
-            var newItem = ser.ReadPen(node);
-            Assert.AreEqual(item, newItem);
-
-        }
-
+    
         [Test]
         public void TupleTest() {
             var ser = new DrawingPrimitivesSerializer();

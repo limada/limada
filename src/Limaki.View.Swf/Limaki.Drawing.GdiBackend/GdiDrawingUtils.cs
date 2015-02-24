@@ -25,9 +25,6 @@ namespace Limaki.View.GdiBackend {
 
     public class GdiDrawingUtils : IDrawingUtils {
 
-        public Pen CreatePen(Color color) {
-            return new GdiPen(color);
-        }
 
 
         public object GetCustomLineCap(double arrowWidth, double arrowHeigth) {

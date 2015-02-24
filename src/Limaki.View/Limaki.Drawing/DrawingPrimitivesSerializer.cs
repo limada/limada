@@ -87,19 +87,6 @@ namespace Limaki.Drawing {
             return result;
         }
 
-        public virtual Pen ReadPen(XElement node) {
-            var pen = ReadBasePen(node);
-            Pen result = DrawingUtils.CreatePen(pen.Color);
-            result.Thickness = pen.Thickness;
-            result.StartCap = pen.StartCap;
-            result.EndCap = pen.EndCap;
-            result.LineJoin = pen.LineJoin;
-            return result;
-        }
-
-
-
-
         public virtual void ReadAndSetFont(XElement node, IStyle style) {
             if (style.ParentStyle == null || style.ParentStyle.Font==null) {
                 style.Font =  ReadFont (node);
@@ -109,22 +96,6 @@ namespace Limaki.Drawing {
                     var result = CreateFont(  font.Family, font.Size, font.Style);
                     style.Font = result;
                 } 
-            }
-        }
-
-        public virtual void ReadAndSetPen(XElement node, IStyle style) {
-            if (style.ParentStyle == null || style.ParentStyle.Pen == null) {
-                style.Pen = ReadPen(node);
-            } else {
-                var pen = ReadBasePen(node);
-                if (!style.ParentStyle.Pen.Equals(pen)) {
-                    var result = DrawingUtils.CreatePen(pen.Color);
-                    result.Thickness = pen.Thickness;
-                    result.StartCap = pen.StartCap;
-                    result.EndCap = pen.EndCap;
-                    result.LineJoin = pen.LineJoin;
-                    style.Pen = result;
-                }
             }
         }
 
@@ -162,9 +133,7 @@ namespace Limaki.Drawing {
             var font = node.Elements("font").FirstOrDefault();
             if(font != null)
                 ReadAndSetFont(font,result);
-            var pen = node.Elements("pen").FirstOrDefault();
-            if (pen != null)
-                ReadAndSetPen(pen, result);
+
             result.FillColor = ReadColor (node, "fillcolor");
             result.PenColor = ReadColor(node, "pencolor");
             result.PenThickness = ReadDouble (node, "penthickness");
