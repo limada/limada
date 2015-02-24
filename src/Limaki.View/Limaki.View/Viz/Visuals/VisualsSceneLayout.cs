@@ -85,8 +85,13 @@ namespace Limaki.View.Viz.Visuals {
                 var data = visual.Data;
                 if (data == null)
                     data = "<<null>>";
-                var textSize = DrawingUtils.GetTextDimension(data.ToString(), style);
-                var size = textSize + new Size(10, 10);
+                var size = Size.Zero;
+                if (data is string) {
+                    size = DrawingUtils.GetTextDimension (data.ToString (), style);
+                } else {
+                    size = DrawingUtils.GetObjectDimension (data, style);
+                }
+                size += new Size (10, 10);
                 if (shape is VectorShape) {
                     size.Height = 0;
                 }
@@ -160,7 +165,7 @@ namespace Limaki.View.Viz.Visuals {
                     style.AutoSize = autoSize;
                     painter.Data = item.Data;
                     painter.Style = style;
-                    painter.Shape = item.Shape;
+                    painter.OuterShape = item.Shape;
                     if (matrix == null) {
                         result = painter.Measure(delta, extend);
                     } else {
