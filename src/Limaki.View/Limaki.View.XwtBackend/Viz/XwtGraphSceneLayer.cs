@@ -30,7 +30,7 @@ namespace Limaki.View.XwtBackend.Viz {
             var surface = (ContextSurface) e.Surface;
             var ctx = surface.Context;
             var matrix = this.Camera.Matrix;
-			// surface.Matrix = matrix;
+
             ctx.Save();
             
             try {
