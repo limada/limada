@@ -136,7 +136,7 @@ namespace Limaki.Drawing.Shapes {
 
         public override Point[] Hull(Matrix matrix, int delta, bool extend) {
             var dataX = _data.X; var dataY = _data.Y;
-            Point[] p = { new Point(dataX, dataY), new Point(dataX + _data.Width, dataY + _data.Height) };
+            var p = new Point[] { new Point(dataX, dataY), new Point(dataX + _data.Width, dataY + _data.Height) };
 
             matrix.Transform(p);
             return Hull(Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y), delta, extend);

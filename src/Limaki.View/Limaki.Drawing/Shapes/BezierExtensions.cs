@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System;
 
 namespace Limaki.Drawing.Shapes {
-
     public class BezierExtensions {
 
         public static Point[] GetRoundedRectBezier (Rectangle rect, double aoffset) {

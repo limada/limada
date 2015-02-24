@@ -33,12 +33,7 @@ namespace Limaki.Drawing.Painters {
             set { }
         }
 
-        protected string _text;
-        public virtual string Text {
-            get { return _text; }
-            set { _text = value; }
-        }
-
+        public virtual string Text { get; set; }
 
         static IDrawingUtils _drawingUtils = null;
         protected static IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Factory.Create<IDrawingUtils>()); } }
