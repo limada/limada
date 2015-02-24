@@ -146,7 +146,6 @@ namespace Limaki.Drawing {
         }
         #endregion
         
-
         public static double TransformFontSize (this Matrix matrix, double fIn) {
             return Math.Abs(Math.Min(matrix.M11, matrix.M22) * fIn);
         }
@@ -162,5 +161,15 @@ namespace Limaki.Drawing {
             return DpiFactor(DrawingUtils.Resolution(context));
         }
 
+        public static bool TryGetObjectDimension (object value, IStyle style, out Size size) {
+            size = Size.Zero;
+            var image = value as Image;
+            if (image != null) {
+                size = image.Size;
+                return true;
+            }
+
+            return false;
+        }
     }
 }

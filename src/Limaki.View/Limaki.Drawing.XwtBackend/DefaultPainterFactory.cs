@@ -35,6 +35,8 @@ namespace Limaki.Drawing.XwtBackend {
             } else {
                 if (type == typeof(string))
                     return Create<IPainter<string>>();
+                if (typeof (Xwt.Drawing.Image).IsAssignableFrom(type))
+                    return Create<IPainter<Xwt.Drawing.Image>> ();
                 if (Reflector.Implements(type, typeof(IRectangleShape)))
                     return Create<IPainter<IRectangleShape, Rectangle>>();
                 if (Reflector.Implements(type, typeof(IRoundedRectangleShape)))
@@ -52,7 +54,6 @@ namespace Limaki.Drawing.XwtBackend {
         }
 
         public virtual IPainter CreatePainter(IShape shape) {
-
             return CreatePainter(shape.GetType());
         }
 
@@ -69,6 +70,8 @@ namespace Limaki.Drawing.XwtBackend {
             Add<IPainter<IVectorShape, Vector>> (() => new VectorPainter ());
 
             Add<IPainter<string>>(() => new StringPainter());
+            Add<IPainter<Xwt.Drawing.Image>> (() => new ImagePainter ());
+            
 
         }
     }
