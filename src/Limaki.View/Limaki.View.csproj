@@ -61,6 +61,7 @@
     <Compile Include="Limada\UseCases\Cms\Models\VisualHrefContent.cs" />
     <Compile Include="Limada\UseCases\Cms\Models\VisualHref.cs" />
     <Compile Include="Limada\UseCases\Content\StreamContentUiManager.cs" />
+    <Compile Include="Limaki.Drawing.XwtBackend\ImagePainter.cs" />
     <Compile Include="Limaki.View.XwtBackend\TextViewerVidgetBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\WebBrowserVidgetBackend.cs" />
