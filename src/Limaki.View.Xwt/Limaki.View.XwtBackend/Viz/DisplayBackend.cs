@@ -127,8 +127,10 @@ namespace Limaki.View.XwtBackend {
             base.QueueDraw(rect);
         }
 
+        Matrix CanvasMatrix = null;
         protected override void OnDraw (Context ctx, Rectangle dirtyRect) {
             base.OnDraw(ctx, dirtyRect);
+            CanvasMatrix = ctx.GetCTM ();
             _backendRenderer.OnDraw(ctx, dirtyRect);
         }
 
