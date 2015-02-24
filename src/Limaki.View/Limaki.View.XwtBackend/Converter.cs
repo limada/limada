@@ -22,7 +22,7 @@ namespace Limaki.View.XwtBackend {
         public static Point MouseLocation (this Widget widget) {
             var ml = Desktop.MouseLocation;
             var sb = widget.ScreenBounds.Location;
-            var scale = Desktop.GetScreenAtLocation(ml).ScaleFactor;
+            var scale = 1; //Desktop.GetScreenAtLocation(ml).ScaleFactor;
 
             return new Point(ml.X - sb.X / scale, ml.Y - sb.Y / scale);
         }
