@@ -39,7 +39,7 @@ namespace Limaki.Drawing.Painters {
         protected static IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Factory.Create<IDrawingUtils>()); } }
 
         public override Point[] Measure(Matrix matrix, int delta, bool extend) {
-            var shape = this.Shape;
+            var shape = this.OuterShape;
             if (this.Text != null && shape != null) {
                 var style = this.Style;
                 var font = style.Font;
