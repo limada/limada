@@ -97,7 +97,7 @@ namespace Xwt.GdiBackend {
                 if (_matrix != value && _matrix != null)
                     _matrix.Dispose ();
                 _matrix = value;
-                if (_path != null)
+                if (_path != null && !Matrix.IsIdentity)
                     _path.Transform(Matrix);
             }
         }

@@ -162,8 +162,9 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public override Point[] Hull(Matrix matrix, int delta, bool extend) {
-            Vector vector = _data;
-            vector.Transform(matrix);
+            var vector = _data;
+            if (matrix != null && !matrix.IsIdentity)
+                vector.Transform (matrix);
             return vector.Hull(delta, extend);
         }
 

@@ -143,8 +143,8 @@ namespace Limaki.Drawing.Shapes {
             var _data = BoundsRect;
             var dataX = _data.X; var dataY = _data.Y;
             Point[] p = { new Point(dataX, dataY), new Point(dataX + _data.Width, dataY + _data.Height) };
-
-            matrix.Transform(p);
+            if (matrix != null && !matrix.IsIdentity)
+                matrix.Transform (p);
             return Hull( Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y), delta, extend);
         }
 

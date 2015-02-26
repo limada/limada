@@ -49,9 +49,11 @@ namespace Limaki.Drawing {
 
         public void Transform(Matrix matrix) {
             Point[] p = { Start, End };
-            matrix.Transform(p);
-            Start = p[0];
-            End = p[1];
+            if (matrix != null && !matrix.IsIdentity) {
+                matrix.Transform (p);
+                Start = p[0];
+                End = p[1];
+            }
         }
 
         #region Hull

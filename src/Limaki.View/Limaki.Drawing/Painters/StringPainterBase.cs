@@ -54,7 +54,7 @@ namespace Limaki.Drawing.Painters {
                         size.Height = fontSize;
                     }
                     var result = vector.Hull(-(vLen - size.Width) / 2, size.Height / 2);
-                    if (matrix != null)
+                    if (matrix != null && !matrix.IsIdentity)
                         matrix.Transform(result);
                     return result;
 
