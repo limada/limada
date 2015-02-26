@@ -30,11 +30,28 @@ namespace Limaki.Drawing {
         static IDrawingUtils _drawingUtils = null;
         protected static IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Factory.Create<IDrawingUtils>()); } }
 
+        public static class NodeNames {
+            public const string Name = "name";
+            public const string Parent = "parent";
+            public const string FillColor = "fillcolor";
+            public const string StrokeColor = "strokecolor";
+            public const string LineWidth = "linewidth";
+            public const string TextColor = "textcolor";
+            public const string PaintData = "paintdata";
+            public const string AutoSize = "autosize";
+            public const string Font = "font";
+            public const string Family = "family";
+            public const string Size = "size";
+            public const string Style = "style";
+            public const string StyleSheet = "stylesheet";
+            public const string Styles = "styles";
+        }
+
         public virtual XElement Write(Font font) {
-            var xmlthing = new XElement("font");
-            xmlthing.Add(Write("family", font.Family??""));
-            xmlthing.Add(Write("size",font.Size));
-            xmlthing.Add(Write("style",font.Style));
+            var xmlthing = new XElement(NodeNames.Font);
+            xmlthing.Add(Write(NodeNames.Family, font.Family??""));
+            xmlthing.Add(Write(NodeNames.Size,font.Size));
+            xmlthing.Add(Write(NodeNames.Style,font.Style));
             return xmlthing;
         }
 
@@ -43,9 +60,9 @@ namespace Limaki.Drawing {
         }
         
         public virtual Font ReadBaseFont(XElement node) {
-            var fam = node.Attribute("family").Value;
-            var size = ReadDouble(node, "size");
-            var style = ReadEnum<FontStyle>(node.Attribute("style").Value);
+            var fam = node.Attribute(NodeNames.Family).Value;
+            var size = ReadDouble(node, NodeNames.Size);
+            var style = ReadEnum<FontStyle>(node.Attribute(NodeNames.Style).Value);
             var result = CreateFont( fam, size, style);
 
             return result;
@@ -66,27 +83,6 @@ namespace Limaki.Drawing {
             return DrawingExtensions.FromArgb(argb);
         }
 
-        public virtual XElement Write(Pen pen) {
-            XElement xmlthing = new XElement("pen");
-            xmlthing.Add(Write(pen.Color,"color"));
-            xmlthing.Add(Write("thickness", pen.Thickness));
-            xmlthing.Add(Write("startcap", pen.StartCap));
-            xmlthing.Add(Write("endcap", pen.EndCap));
-            xmlthing.Add(Write("linejoin", pen.LineJoin));
-            return xmlthing;
-        }
-
-        public virtual Pen ReadBasePen(XElement node) {
-            Pen result = new Pen ();
-            result.Color = ReadColor (node, "color");
-            result.Thickness = ReadDouble(node, "thickness");
-            result.StartCap = ReadEnum<PenLineCap>(node.Attribute("startcap").Value);
-            result.EndCap = ReadEnum<PenLineCap>(node.Attribute("endcap").Value);
-            result.LineJoin = ReadEnum<PenLineJoin>(node.Attribute("linejoin").Value);
-            
-            return result;
-        }
-
         public virtual void ReadAndSetFont(XElement node, IStyle style) {
             if (style.ParentStyle == null || style.ParentStyle.Font==null) {
                 style.Font =  ReadFont (node);
@@ -100,19 +96,18 @@ namespace Limaki.Drawing {
         }
 
         public virtual XElement Write(IStyle style) {
-            var result = new XElement("style");
-            result.Add(Write("name", style.Name));
+            var result = new XElement(NodeNames.Style);
+            result.Add(Write(NodeNames.Name, style.Name));
             if (style.ParentStyle != null) {
-                result.Add(Write("parent", style.ParentStyle.Name));    
+                result.Add(Write(NodeNames.Parent, style.ParentStyle.Name));    
             }
             result.Add(Write(style.Font));
-            // result.Add(Write(style.Pen));
-            result.Add(Write(style.FillColor, "fillcolor"));
-            result.Add(Write(style.PenColor, "pencolor"));
-            result.Add (WriteDouble (style.PenThickness, "penthickness"));
-            result.Add(Write(style.TextColor, "textcolor"));
-            result.Add(Write("autosize",new Pair<double,double>(style.AutoSize.Width,style.AutoSize.Height)));
-            result.Add(Write("paintdata", style.PaintData));
+            result.Add(Write(style.FillColor, NodeNames.FillColor));
+            result.Add(Write(style.StrokeColor, NodeNames.StrokeColor));
+            result.Add (WriteDouble (style.LineWidth, NodeNames.LineWidth));
+            result.Add(Write(style.TextColor, NodeNames.TextColor));
+            result.Add(Write(NodeNames.AutoSize,new Pair<double,double>(style.AutoSize.Width,style.AutoSize.Height)));
+            result.Add(Write(NodeNames.PaintData, style.PaintData));
             return result;
         }
 
@@ -126,46 +121,47 @@ namespace Limaki.Drawing {
         }
 
         public virtual IStyle ReadStyle(XElement node, IStyle parent) {
-            var name = ReadString (node, "name");
-            var parentStyle = ReadString(node, "parent");
+            var name = ReadString (node, NodeNames.Name);
+            var parentStyle = ReadString(node, NodeNames.Parent);
             
-            IStyle result = new Style (name,parent);
-            var font = node.Elements("font").FirstOrDefault();
+            var result = new Style (name,parent);
+            var font = node.Elements(NodeNames.Font).FirstOrDefault();
             if(font != null)
                 ReadAndSetFont(font,result);
 
-            result.FillColor = ReadColor (node, "fillcolor");
-            result.PenColor = ReadColor(node, "pencolor");
-            result.PenThickness = ReadDouble (node, "penthickness");
-            result.TextColor = ReadColor(node, "textcolor");
-            result.PaintData = ReadBool(node, "paintdata");
-            result.AutoSize = ReadSize (node, "autosize");
+            result.FillColor = ReadColor (node, NodeNames.FillColor);
+            result.StrokeColor = ReadColor(node, NodeNames.StrokeColor);
+            result.LineWidth = ReadDouble (node, NodeNames.LineWidth);
+            result.TextColor = ReadColor(node, NodeNames.TextColor);
+            result.PaintData = ReadBool(node, NodeNames.PaintData);
+            result.AutoSize = ReadSize (node, NodeNames.AutoSize);
             return result;
         }
 
         public virtual XElement Write(IStyleSheet styleSheet) {
-            var result = new XElement("stylesheet");
-            result.Add(Write("name", styleSheet.Name));
+            var result = new XElement (NodeNames.StyleSheet);
+            result.Add(Write(NodeNames.Name, styleSheet.Name));
             if (styleSheet.ParentStyle != null) {
-                result.Add(Write("parent", styleSheet.ParentStyle.Name));
+                result.Add(Write(NodeNames.Parent, styleSheet.ParentStyle.Name));
             }
-            var styles = new XElement("styles");
+            var styles = new XElement (NodeNames.Styles);
             foreach(var style in styleSheet.Styles) {
                 styles.Add (Write(style));
             }
             result.Add (styles);
             return result;
         }
+
         public virtual IStyleSheet ReadStyleSheet(XElement node) {
-            var name = ReadString(node, "name");
+            var name = ReadString(node, NodeNames.Name);
             
-            var parent = node.Attribute("parent");
+            var parent = node.Attribute(NodeNames.Parent);
             var styles = new Dictionary<string,IStyle> ();
             var styleList = new List<IStyle> ();
-            var styleNodes = node.Element ("styles");
+            var styleNodes = node.Element (NodeNames.Styles);
             IStyle parentStyle = null;
-            foreach (var styleNode in styleNodes.Elements("style")) {
-                var styleParent = styleNode.Attribute("parent");
+            foreach (var styleNode in styleNodes.Elements(NodeNames.Style)) {
+                var styleParent = styleNode.Attribute(NodeNames.Parent);
                 parentStyle = null;
                 if (styleParent != null) {
                     styles.TryGetValue (styleParent.Value, out parentStyle);
