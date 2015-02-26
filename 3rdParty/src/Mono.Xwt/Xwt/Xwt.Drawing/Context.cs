@@ -46,7 +46,7 @@ namespace Xwt.Drawing
 			this.handler = handler;
 		}
 
-		internal ContextBackendHandler Handler {
+		public ContextBackendHandler Handler {
 			get { return handler; }
 		}
 

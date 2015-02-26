@@ -310,7 +310,7 @@ namespace Xwt.Drawing
 			get {
 				return !requestedSize.IsZero ? requestedSize : GetDefaultSize ();
 			}
-			internal set {
+			protected set {
 				requestedSize = value;
 			}
 		}

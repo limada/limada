@@ -48,6 +48,8 @@ namespace Xwt.Drawing
 			ToolkitEngine.VectorImageRecorderContextHandler.Draw (ctx.Handler, Toolkit.GetBackend (ctx), data);
 			ctx.Restore ();
 		}
+
+	    public VectorImageData Data { get { return data; } }
 	}
 
     public class VectorImageData
@@ -606,7 +608,7 @@ namespace Xwt.Drawing
 
 		#endregion
 
-		internal void Draw (DrawingPathBackendHandler targetHandler, object ctx, VectorImageData cm)
+		public void Draw (DrawingPathBackendHandler targetHandler, object ctx, VectorImageData cm)
 		{
 			int di = 0;
 			int ci = 0;
