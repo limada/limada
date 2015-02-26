@@ -12,9 +12,13 @@
  * 
  */
 
+using System;
+using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Drawing.Shapes;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Rendering;
+using Xwt;
 
 namespace Limaki.View.Viz.Visuals {
 
@@ -22,10 +26,11 @@ namespace Limaki.View.Viz.Visuals {
 
         public VisualsRenderer() {}
 
-        protected object GetData(IVisual visual) {
-            var data = visual.Data;
+        protected object GetData(IVisual visual) { return GetData (visual.Data); }
+
+        protected object GetData (object data) {
             if (data == null)
-                data = "<<null>>";
+                return "<<null>>";
             return data;
         }
 
@@ -34,7 +39,7 @@ namespace Limaki.View.Viz.Visuals {
             var style = layout.GetStyle(visual);
             var shape = layout.GetShape(visual);
 
-            var shapePainter = layout.GetPainter(visual.Shape.GetType());
+            var shapePainter = layout.GetPainter(shape.GetType());
             if (shapePainter != null) {
                 shapePainter.Shape = shape;
                 shapePainter.Style = style;
@@ -43,14 +48,33 @@ namespace Limaki.View.Viz.Visuals {
 
             bool paintData = style.PaintData;
             if (paintData) {
-                var data = GetData(visual);
 
-                var dataPainter = layout.GetPainter(data.GetType()) as IDataPainter;
-                if (dataPainter != null) {
-                    dataPainter.Data = data;
-                    dataPainter.Style = style;
-                    dataPainter.OuterShape = shape;
-                    dataPainter.Render(e.Surface);
+                Action<object, IShape> paint = (data, dataShape) => {
+                    data = GetData (data);
+                    var dataPainter = layout.GetPainter (data.GetType ()) as IDataPainter;
+                    if (dataPainter != null) {
+                        dataPainter.Data = data;
+                        dataPainter.Style = style;
+                        dataPainter.OuterShape = dataShape;
+                        dataPainter.Render (e.Surface);
+                    }
+                };
+
+                var enumerable = visual.Data as System.Collections.IEnumerable;
+                if (!(visual.Data is string) && enumerable != null) {
+                    var dimension = Dimension.X;
+                    var shapeBounds = shape.BoundsRect;
+                    foreach (var d in enumerable) {
+                        var size = layout.GetSize(d, style);
+                        if (dimension == Dimension.X)
+                            size.Height = shapeBounds.Height;
+                        var dshape = new RectangleShape { Location = shapeBounds.Location, Size = size };
+                        paint (d, dshape);
+                        if (dimension == Dimension.X)
+                            shapeBounds.Location = new Point (shapeBounds.Location.X + size.Width, shapeBounds.Y);
+                    }
+                } else {
+                    paint (visual.Data, shape);
                 }
             }
         }

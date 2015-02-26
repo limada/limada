@@ -16,6 +16,7 @@ using System;
 using Xwt;
 using Xwt.Drawing;
 using Limaki.Common;
+using System.Linq;
 
 namespace Limaki.Drawing {
 
@@ -79,21 +80,7 @@ namespace Limaki.Drawing {
                 Math.Min (a.Right, b.Right),
                 Math.Min (a.Bottom, b.Bottom));
         }
-
-        /// <summary>
-        /// Inflate that doesn't change the rectangle
-        /// </summary>
-        /// <param name="rect"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public static Rectangle Inflate (Rectangle rect, double x, double y) {
-            var ir = 
-                new Rectangle (rect.X, rect.Y, rect.Width, rect.Height)
-                .Inflate (x, y);
-            return ir;
-        }
-
+        
         #endregion
 
         #region Color
@@ -163,12 +150,37 @@ namespace Limaki.Drawing {
 
         public static bool TryGetObjectDimension (object value, IStyle style, out Size size) {
             size = Size.Zero;
+            if (value.GetType ().IsValueType) {
+                value = value.ToString ();
+            }
+            if (value is string) {
+                size = DrawingUtils.GetTextDimension ((string) value, style);
+                return true;
+            }
+           
             var image = value as Image;
             if (image != null) {
                 size = image.Size;
                 return true;
             }
 
+            var enumerable = value as System.Collections.IEnumerable;
+            if (enumerable != null) {
+                var ssize = Size.Zero;
+                var dimension = Dimension.X;
+                var count = 0;
+                foreach (var val in enumerable) {
+                    if (TryGetObjectDimension (val, style, out ssize)) {
+                        if (dimension == Dimension.X) {
+                            count++;
+                            size.Width += ssize.Width;
+                            size.Height = Math.Max (size.Height, ssize.Height);
+                        }
+                    }
+                    size.Width += style.Padding.VerticalSpacing * (count - 1);
+                }
+                return count > 0;
+            }
             return false;
         }
     }
