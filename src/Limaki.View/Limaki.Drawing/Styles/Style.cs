@@ -55,17 +55,12 @@ namespace Limaki.Drawing.Styles {
             set { Set(() => ParentStyle.TextColor, ref _textColor, value); }
         }
 
-        protected Color? _penColor = null;
-        public virtual Color PenColor {
-            get { return _penColor ?? Get (() => ParentStyle.PenColor, DrawingExtensions.EmptyColor); }
-            set { Set (() => ParentStyle.PenColor, ref _penColor, value); }
+        protected Color? _lineColor = null;
+        public virtual Color StrokeColor {
+            get { return _lineColor ?? Get (() => ParentStyle.StrokeColor, DrawingExtensions.EmptyColor); }
+            set { Set (() => ParentStyle.StrokeColor, ref _lineColor, value); }
         }
 
-        protected double? _penThickness = null;
-        public virtual double PenThickness {
-            get { return _penThickness ?? Get (() => ParentStyle.PenThickness, 1d); }
-            set { Set (() => ParentStyle.PenThickness, ref _penThickness, value); }
-        }
 
         protected Pen _pen = null;
         [Obsolete()]
@@ -82,6 +77,10 @@ namespace Limaki.Drawing.Styles {
                 //    this._penThickness = null;
                 //}
             }
+        protected double? _lineWidth = null;
+        public virtual double LineWidth {
+            get { return _lineWidth ?? Get (() => ParentStyle.LineWidth, 1d); }
+            set { Set (() => ParentStyle.LineWidth, ref _lineWidth, value); }
         }
 
         protected Font _font=null;
@@ -185,8 +184,8 @@ namespace Limaki.Drawing.Styles {
                    this.Font == other.Font &&
                    this.Name == other.Name &&
                    this.PaintData == other.PaintData &&
-                   this.PenThickness.Equals (other.PenThickness) &&
-                   this.PenColor.Equals(other.PenColor) &&
+                   this.LineWidth.Equals (other.LineWidth) &&
+                   this.StrokeColor.Equals(other.StrokeColor) &&
                    this.TextColor.Equals(other.TextColor);
         }
 
@@ -197,8 +196,8 @@ namespace Limaki.Drawing.Styles {
                 this.Font.GetHashCode()^
                 this.Name.GetHashCode() ^
                 this.PaintData.GetHashCode() ^
-                this.PenColor.GetHashCode() ^
-                this.PenThickness.GetHashCode() ^
+                this.StrokeColor.GetHashCode() ^
+                this.LineWidth.GetHashCode() ^
                 this.TextColor.GetHashCode();
             if (this.Font != null) {
                 result ^= this.Font.GetHashCode ();
@@ -213,9 +212,8 @@ namespace Limaki.Drawing.Styles {
             target.FillColor = this.FillColor;
             target.Font = this.Font;
             target.PaintData = this.PaintData;
-            target.Pen = (Pen)this.Pen.Clone();
-            target.PenColor = this.PenColor;
-            target.PenThickness = this.PenThickness;
+            target.StrokeColor = this.StrokeColor;
+            target.LineWidth = this.LineWidth;
             target.TextColor = this.TextColor;
         }
 

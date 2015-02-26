@@ -38,17 +38,11 @@ namespace Limaki.Drawing {
         TextDecoration TextDecoration { get; set; }
 
         /// <summary>
-        /// The pen color is used to draw lines and the outlines of shapes.
+        /// color of lines
         /// </summary>
-        Color PenColor { get; set;}
+        Color StrokeColor { get; set; }
 
-        double PenThickness { get; set; }
-
-        /// <summary>
-        /// The pen used to draw lines and shape outlines.
-        /// </summary>
-        [Obsolete ("use PenColor and PenThickness")]
-        Pen Pen { get; set;}
+        double LineWidth { get; set; }
 
         /// <summary>
         /// The font is used as the typeface for drawing text

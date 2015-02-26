@@ -54,7 +54,7 @@ namespace Limaki.Drawing.Styles {
                 var style = StyleSheet.CreateStyleWithSystemSettings();
                 style.Name = name + "." + StyleNames.BaseStyle;
                 style.FillColor = DrawingExtensions.FromArgb(200, Colors.WhiteSmoke);
-                style.PenColor = DrawingExtensions.FromArgb(200, Colors.Teal);
+                style.StrokeColor = DrawingExtensions.FromArgb(200, Colors.Teal);
                 //style.Pen.Color = style.PenColor;
                 style.Font = style.Font.WithSize(10);
                 _styleSheet = new StyleSheet(name, style);
@@ -68,36 +68,36 @@ namespace Limaki.Drawing.Styles {
                 var style = StyleSheet.CreateStyleWithSystemSettings();
                 style.Name = name + "." + StyleNames.BaseStyle;
                 style.FillColor = DrawingExtensions.FromArgb(200, Colors.White);
-                style.PenColor = DrawingExtensions.FromArgb(200, Colors.White);
+                style.StrokeColor = DrawingExtensions.FromArgb(200, Colors.White);
                 //style.Pen.Color = style.PenColor;
                 style.Font = SystemFonts.MessageBoxFont;
 
                 _styleSheet = new StyleSheet(name, style);
 
-                _styleSheet.ItemStyle.SelectedStyle.PenColor = DrawingExtensions.FromArgb(50, 150, 150, 150);
+                _styleSheet.ItemStyle.SelectedStyle.StrokeColor = DrawingExtensions.FromArgb(50, 150, 150, 150);
                 //_styleSheet.ItemStyle.SelectedStyle.Pen.Thickness = style.Pen.Thickness;
 
                 var font = _styleSheet.BaseStyle.Font;
                 //TODO: font.Style = FontStyle.Underline;
                 _styleSheet.ItemStyle.SelectedStyle.Font = font;
 
-                _styleSheet.ItemStyle.HoveredStyle.PenColor = DrawingExtensions.FromArgb(50, 150, 150, 150);
+                _styleSheet.ItemStyle.HoveredStyle.StrokeColor = DrawingExtensions.FromArgb(50, 150, 150, 150);
                 _styleSheet.ItemStyle.HoveredStyle.FillColor = style.FillColor;
 
                 _styleSheet.EdgeStyle.TextColor = DrawingExtensions.FromArgb(150, 100, 100, 100);
                 _styleSheet.EdgeStyle.FillColor = Colors.White;
                 _styleSheet.EdgeStyle.Font = style.Font.WithSize(style.Font.Size - 2.0d);
 
-                _styleSheet.EdgeStyle.PenThickness = 0.5d;
-                _styleSheet.EdgeStyle.PenColor = Color.FromBytes (180, 180, 180,150);
+                _styleSheet.EdgeStyle.LineWidth = 0.5d;
+                _styleSheet.EdgeStyle.StrokeColor = Color.FromBytes (180, 180, 180,150);
 
                 // this makes sense, cause CreateStyleGroup could make other colors:
                 _styleSheet.EdgeStyle.HoveredStyle.FillColor = _styleSheet.EdgeStyle.FillColor;
-                _styleSheet.EdgeStyle.HoveredStyle.PenColor = _styleSheet.EdgeStyle.PenColor;
+                _styleSheet.EdgeStyle.HoveredStyle.StrokeColor = _styleSheet.EdgeStyle.StrokeColor;
                 _styleSheet.EdgeStyle.HoveredStyle.TextColor = _styleSheet.EdgeStyle.TextColor;
 
                 _styleSheet.EdgeStyle.SelectedStyle.TextColor = Color.FromBytes (50, 50, 50, 200);
-                _styleSheet.EdgeStyle.SelectedStyle.PenColor = Color.FromBytes(180, 180, 180,50);
+                _styleSheet.EdgeStyle.SelectedStyle.StrokeColor = Color.FromBytes(180, 180, 180,50);
                 _styleSheet.EdgeStyle.SelectedStyle.FillColor = _styleSheet.EdgeStyle.FillColor;
 
             }

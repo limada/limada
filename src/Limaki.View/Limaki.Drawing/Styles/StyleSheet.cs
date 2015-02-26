@@ -94,10 +94,10 @@ namespace Limaki.Drawing.Styles {
                     this.ParentStyle.Font.Family,
                     this.ParentStyle.Font.Size - 2).WithStyle(FontStyle.Italic);
 
-                selectedStyle.PenThickness = styleGroup.DefaultStyle.PenThickness * 2;
+                selectedStyle.LineWidth = styleGroup.DefaultStyle.LineWidth * 2;
                 selectedStyle.PaintData = true;
 
-                hoveredStyle.PenColor = DrawingExtensions.FromArgb(150, styleGroup.DefaultStyle.PenColor);
+                hoveredStyle.StrokeColor = DrawingExtensions.FromArgb(150, styleGroup.DefaultStyle.StrokeColor);
                 hoveredStyle.PaintData = true;
             }
             
@@ -149,8 +149,8 @@ namespace Limaki.Drawing.Styles {
             var drawingUtils = Registry.Pooled<IDrawingUtils>();
 
             result.Font = systemfonts.DefaultFont;
-            result.PenThickness = 1;
-            result.PenColor = SystemColors.ActiveCaption;
+            result.LineWidth = 1;
+            result.StrokeColor = SystemColors.ActiveCaption;
             
             result.TextColor = SystemColors.WindowText;
             result.FillColor = SystemColors.Window;
