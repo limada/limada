@@ -1,6 +1,7 @@
 ﻿using Limaki.Drawing;
 using Limaki.Graphs;
 using System;
+using Xwt;
 
 namespace Limaki.View {
 
@@ -16,6 +17,8 @@ namespace Limaki.View {
         bool Centered { get; set; }
 
         void AdjustSize (TItem visual);
+
+        Size GetSize (object value, IStyle style);
 
     }
 }

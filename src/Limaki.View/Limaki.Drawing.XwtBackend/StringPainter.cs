@@ -69,7 +69,7 @@ namespace Limaki.Drawing.XwtBackend {
                 ctx.DrawTextLayout(text, -width / 2d, -height / 2d);
                 ctx.Restore();
             } else {
-                var rect = shape.BoundsRect.Inflate(-5, -5);
+                var rect = shape.BoundsRect.Padding (Style.Padding);
                 ContextPainterExtensions.DrawText(ctx, rect, this.Text, font, style.TextColor);
             }
 

@@ -105,6 +105,13 @@ namespace Limaki.Drawing.Styles {
         }
      
 
+        protected Spacing? _padding = null;
+        public virtual Spacing Padding {
+            get { return _padding ?? Get (() => ParentStyle.Padding, new Spacing(5)); }
+            set { Set (() => ParentStyle.Padding, ref _padding, value); }
+        }
+        
+
         #endregion
 
         #region cascading

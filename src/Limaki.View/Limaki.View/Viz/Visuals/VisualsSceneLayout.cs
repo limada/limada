@@ -82,16 +82,7 @@ namespace Limaki.View.Viz.Visuals {
             if (!(visual is TEdge)) {
                 var style = GetStyle(visual);
                 var invalid = shape.BoundsRect;
-                var data = visual.Data;
-                if (data == null)
-                    data = "<<null>>";
-                var size = Size.Zero;
-                if (data is string) {
-                    size = DrawingUtils.GetTextDimension (data.ToString (), style);
-                } else {
-                    size = DrawingUtils.GetObjectDimension (data, style);
-                }
-                size += new Size (10, 10);
+                var size = GetSize (visual.Data, style);
                 if (shape is VectorShape) {
                     size.Height = 0;
                 }

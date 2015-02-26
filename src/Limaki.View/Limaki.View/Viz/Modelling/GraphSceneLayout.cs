@@ -97,6 +97,19 @@ namespace Limaki.View.Viz.Modelling {
         static IDrawingUtils _drawingUtils = null;
         protected static IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Factory.Create<IDrawingUtils>()); } }
 
+        public virtual Size GetSize (object data, IStyle style) {
+            if (data == null)
+                data = "<<null>>";
+            var size = Size.Zero;
+            if (data is string) {
+                size = DrawingUtils.GetTextDimension (data.ToString (), style);
+            } else {
+                size = DrawingUtils.GetObjectDimension (data, style);
+            }
+            size += new Size (style.Padding.HorizontalSpacing, style.Padding.VerticalSpacing);
+            return size;
+        }
+
         public abstract void AdjustSize (TItem item, IShape shape);
 
         public abstract void AdjustSize (TItem item);

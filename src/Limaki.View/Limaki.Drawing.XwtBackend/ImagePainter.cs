@@ -35,8 +35,8 @@ namespace Limaki.Drawing.XwtBackend {
             if (matrix.M11 < 0.2d || matrix.M22 < 0.2d)
                 return;
             var ctx = contextSurface.Context;
-            var shape = OuterShape;
-            var rect = shape.BoundsRect.Inflate (-5, -5);
+
+            var rect = OuterShape.BoundsRect.Padding (Style.Padding);
             var data = Data;
             var vecImg = Data as VectorImage;
             if (vecImg != null) {
