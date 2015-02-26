@@ -215,11 +215,21 @@ namespace Xwt.GdiBackend {
             c.Pen = this._pen;
             c.LineDash = this.LineDash;
             c.Brush = this._brush;
+            
             if (restore)
                 c.Matrix = _matrix;
             else if(_matrix != null && !_matrix.IsIdentity)
                 c.Matrix = _matrix.Clone ();
-            c.Path = this._path;
+
+            if (restore)
+                c.Path = this._path;
+            else {
+                if (this._path == null || this._path.PathData.Points.Length==0)
+                    c.Path = null;
+                else
+                    c.Path = (GraphicsPath) this._path.Clone ();
+            }
+
             c.Current = this.Current;
             //return c;
         }
@@ -242,6 +252,14 @@ namespace Xwt.GdiBackend {
             c.SaveTo (this,true);
             Graphics.Restore (c.State);
 
+        }
+
+        internal void NewPath () {
+            if (_path == null && Path != null)
+                return;
+
+            if (_path.PathData.Points.Length != 0)
+                Path = new GraphicsPath ();
         }
 
         public void AddPath (GraphicsPath path) {
@@ -287,6 +305,8 @@ namespace Xwt.GdiBackend {
         /// a general scalefactor, eg. the scalefactor of the control on which is drawn
         /// </summary>
         public double ScaleFactor { get; set; }
+
+
 
     }
 }

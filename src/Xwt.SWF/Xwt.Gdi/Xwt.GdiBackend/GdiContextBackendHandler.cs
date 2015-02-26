@@ -174,8 +174,8 @@ namespace Xwt.GdiBackend {
 
         public override void NewPath (object backend) {
             var gc = (GdiContext) backend;
-            if (gc.Path.PointCount != 0)
-                gc.Path = new GraphicsPath();
+            gc.NewPath ();
+            
         }
 
         public override void Rectangle (object backend, double x, double y, double width, double height) {
