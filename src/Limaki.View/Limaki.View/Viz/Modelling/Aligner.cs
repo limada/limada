@@ -50,6 +50,8 @@ namespace Limaki.View.Viz.Modelling {
         public virtual void OneColumn (IEnumerable<TItem> items, Point at, AlignerOptions options) {
             var bounds = new Rectangle(int.MaxValue, int.MaxValue, 0, 0);
             MeasureColumn(items, options, ref bounds);
+            if (bounds.Location == new Point (int.MaxValue, int.MaxValue)) // this happens if items have no shape
+                bounds.Location = at;
             var locator = new LocateVisitBuilder<TItem>(this.Locator);
             LocateColumn(items, bounds, bounds, ref at, locator, options);
         }
