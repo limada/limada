@@ -18,15 +18,18 @@ using Xwt.Drawing;
 
 namespace Limaki.Drawing.Styles {
     /// <summary>
-    /// Zusammenfassung für Style.
+    /// 
     /// </summary>
     public class Style : IStyle, IDisposable {
+
         public Style(string name) {
             this.Name = name;
         }
+
         public Style(string name, IStyle parentStyle):this(name) {
             ParentStyle = parentStyle;
         }
+
         #region IStyle Member
 
 
@@ -61,22 +64,6 @@ namespace Limaki.Drawing.Styles {
             set { Set (() => ParentStyle.StrokeColor, ref _lineColor, value); }
         }
 
-
-        protected Pen _pen = null;
-        [Obsolete()]
-        public virtual Pen Pen {
-            get { return _pen ?? Get (() => ParentStyle.Pen); }
-            set {
-                Set(() => ParentStyle.Pen, ref _pen, value);
-                if (value != null) {
-                    this.PenColor = value.Color;
-                    this.PenThickness = value.Thickness;
-                } 
-                //else {
-                //    this._penColor = null;
-                //    this._penThickness = null;
-                //}
-            }
         protected double? _lineWidth = null;
         public virtual double LineWidth {
             get { return _lineWidth ?? Get (() => ParentStyle.LineWidth, 1d); }
@@ -88,8 +75,6 @@ namespace Limaki.Drawing.Styles {
             get { return _font ?? GetC (() => ParentStyle.Font, _font); }
             set { Set(() => ParentStyle.Font, ref _font, value); }
         }
-
-        public virtual TextDecoration TextDecoration { get; set; }
 
         public static Size NoSize = new Size (int.MaxValue, int.MaxValue);
         protected Size? _autoSize = null;
@@ -103,7 +88,6 @@ namespace Limaki.Drawing.Styles {
             get { return _paintData ?? Get (() => ParentStyle.PaintData, true); }
             set { Set(()=>ParentStyle.PaintData, ref _paintData, value); }
         }
-     
 
         protected Spacing? _padding = null;
         public virtual Spacing Padding {
@@ -162,10 +146,6 @@ namespace Limaki.Drawing.Styles {
         public virtual void Dispose(bool disposing) {
             if (_font != null) {
                 _font = null;
-            }
-            if (_pen != null) {
-                _pen.Dispose ();
-                _pen = null;
             }
         }
 
