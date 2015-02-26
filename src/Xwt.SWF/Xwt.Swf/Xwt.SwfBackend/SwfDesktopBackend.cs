@@ -71,6 +71,7 @@ namespace Xwt.SwfBackend
 					}
 				}
 			}
+
 			if (cannotCallGetDpiForMonitor) {
 				// Get system-wide dpi
 				var hdc = GetDC (IntPtr.Zero);

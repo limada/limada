@@ -16,6 +16,7 @@
 using Xwt;
 
 namespace Limaki.Drawing.Shapes {
+
     public interface IRectangleShape : IShape<Rectangle> { }
 
     public interface IRoundedRectangleShape : IShape<Rectangle> { }

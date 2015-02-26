@@ -19,8 +19,10 @@ using Limaki.Drawing.Shapes;
 using Xwt;
 
 namespace Limaki.View.Visuals {
+
     public class VisualComposite<T>:Visual<T>, IComposite<IVisual> 
         where T:ICollection<IVisual> {
+
         public VisualComposite(T data):base(data) {}
 
         #region IVisual Member
@@ -97,7 +99,7 @@ namespace Limaki.View.Visuals {
 
         public virtual IEnumerable<IVisual> Elements {
             get { 
-                foreach (IVisual visual in Data) {
+                foreach (var visual in Data) {
                     yield return visual;
                 }
             }

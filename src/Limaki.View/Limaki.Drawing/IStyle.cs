@@ -19,14 +19,14 @@ using Xwt.Drawing;
 namespace Limaki.Drawing {
     /// <summary>
     /// holds the information about
-    /// Font, Pen, Fillcolor etc.
-    /// IStyle-Implementations are the place for storing and reusing GDI-Objects
+    /// Font, Fillcolor etc.
     /// </summary>
     public interface IStyle : IDisposable, ICloneable {
-        string Name { get; set;}
-        
+
+        string Name { get; set; }
+
         /// <summary>
-        /// The fill color is used to fill the interior of shapes.
+        /// color of interior of shapes.
         /// </summary>
         Color FillColor { get; set; }
 
@@ -34,8 +34,6 @@ namespace Limaki.Drawing {
         /// The text color is used to draw text strings
         /// </summary>
         Color TextColor { get; set; }
-
-        TextDecoration TextDecoration { get; set; }
 
         /// <summary>
         /// color of lines
@@ -47,25 +45,24 @@ namespace Limaki.Drawing {
         /// <summary>
         /// The font is used as the typeface for drawing text
         /// </summary>
-        Font Font { get; set;}
-
-
+        Font Font { get; set; }
+        
         /// <summary>
         /// Styles can be linked to other Styles to reuse
         /// resource-intensiv GDI-Objects
         /// Implementation of IStyle should use the GDI-Objects of the
         /// ParentStyle if it has the same appearence
         /// </summary>
-        IStyle ParentStyle { get;set;}
-        
-        /// <summary>
-        /// The autoSize is used to define the maximum height and width
-        /// of a automatic sizing process
-        /// </summary>
-        Size AutoSize { get;set;}
+        IStyle ParentStyle { get; set; }
 
         /// <summary>
-        /// The text color is used to draw text strings
+        /// maximum height and width
+        /// of an automatic sizing process
+        /// </summary>
+        Size AutoSize { get; set; }
+
+        /// <summary>
+        /// if the data should be painted or only the shape
         /// </summary>
         bool PaintData { get; set; }
 
@@ -74,9 +71,4 @@ namespace Limaki.Drawing {
         void CopyTo(IStyle target);
     }
 
-    [Flags]
-    public enum TextDecoration {
-        BaseLine = 0,
-        Underline=1
-    }
 }
