@@ -36,12 +36,12 @@ namespace Limaki.View.Vidgets {
         /// <summary>
         /// Shows the dialog.
         /// </summary>
-        public bool Run (IVidget parentWindow) {
+        public bool Run (IVidget parentVidget) {
             try {
                 running = true;
                 Backend.Compose(_dialog);
 
-                return Backend.Run(parentWindow);
+                return Backend.Run(parentVidget);
             } finally {
                 running = false;
                 Backend.Cleanup();
