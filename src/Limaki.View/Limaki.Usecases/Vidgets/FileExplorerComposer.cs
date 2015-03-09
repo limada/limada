@@ -75,6 +75,20 @@ namespace Limaki.Usecases.Vidgets {
             }
         }
 
+        private Image _HomeIcon = null;
+        public Image HomeIcon {
+            get {
+                return _HomeIcon ?? (_HomeIcon =
+                    new PaintingImage (
+                        ic.DefaultSize,
+                        ctx => {
+                            SetDefault (ic);
+                            ic.FillColor = IconStrokeColor;
+                            ic.PaintIcon (ctx, ic.DefaultSize.Width, 0, 0, ic.FaHome);
+                        }
+                        ));
+            }
+        }
         private Image _driveIcon = null;
         protected Image DriveIcon {
             get {
@@ -218,7 +232,7 @@ namespace Limaki.Usecases.Vidgets {
                 }
                 LevelUp = new VisualDir (LevelUpIcon, "..");//ShowCurrent ? this.CurrentPath : "..");
                 graph.Add (LevelUp);
-              
+                
                 try {
                     foreach (var dir in Directory.EnumerateDirectories (path)) {
                         var name = Path.GetFileName (dir);
@@ -248,6 +262,16 @@ namespace Limaki.Usecases.Vidgets {
             };
 
             aligner.OneColumn (scene.Graph, (Point) layout.Border, options);
+
+            if (LevelUp != null) {
+                var home = new VisualDir (HomeIcon, "");
+                graph.Add (home);
+                options.Distance = new Size (100, 0);
+                options.Dimension = Dimension.Y;
+                aligner.Locator.SetLocation(home, new Point (int.MaxValue, int.MaxValue));
+                aligner.OneColumn (new IVisual[] { LevelUp, home }, options);
+
+            }
             aligner.Locator.Commit (scene.Requests);
 
         }
@@ -259,9 +283,46 @@ namespace Limaki.Usecases.Vidgets {
 
             var disp = display.ActionDispatcher;
             disp.Remove (disp.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>> ());
+			var edit = disp.Actions.Values.FirstOrDefault (a => a is VisualsTextEditActionBase);
+			if (edit != null)
+				disp.Remove (edit);
 
-            //var select = new DelegatingMouseAction { };
-            //disp.Add (select); only one action per action.gettype is allowed
+            var select = disp.GetAction<DelegatingMouseAction>();
+            if (select == null) { //  only one action per action.gettype is allowed
+                select = new DelegatingMouseAction ();
+                disp.Add (select);
+            };
+
+            IVisual hitItem = null;
+            var hitCount = 0;
+            select.MouseDown += e => {
+                var loc = display.Viewport.Camera.ToSource (e.Location);
+                var isHit = Scene.Focused != null && Scene.Focused.Shape.IsHit (loc, 5);
+
+                if (hitItem == Scene.Focused && isHit) {
+                    var dirItem = Scene.Focused as VisualDir;
+                    if (dirItem == null)
+                        return;
+
+                    if (dirItem.Icon == this.FileIcon) {
+                        if (FileSelected != null)
+                            FileSelected (Path.Combine (CurrentPath, dirItem.Name));
+                        return;
+                    }
+                }
+                if (hitItem != Scene.Focused) {
+                    hitItem = Scene.Focused;
+                    hitCount = 0;
+                }
+
+            };
+
+            Action<string> showPath = (path) => {
+                if (Directory.Exists (path)) {
+                    ShowDir (path);
+                    display.DataChanged ();
+                }
+            };
 
             display.SceneFocusChanged += (s,e) => {
                 if (e.Item == LevelUp) {
@@ -269,7 +330,6 @@ namespace Limaki.Usecases.Vidgets {
                     string path = null;
                     if (parent != null)
                         path = parent.FullName;
-                    var isRoot = Directory.GetDirectoryRoot (CurrentPath) == path;
                     ShowDir (path);
                     display.Perform ();
                     
@@ -277,19 +337,13 @@ namespace Limaki.Usecases.Vidgets {
                 }
                 var dirItem = e.Item as VisualDir;
                 if (dirItem != null) {
-                    Action<string> showPath = (path) => {
-                        if (Directory.Exists (path)) {
-                            ShowDir (path);
-                            display.DataChanged ();
-                        }
-                    };
                     if (dirItem.Icon == this.FolderIcon ) {
                         showPath (Path.Combine (CurrentPath, dirItem.Name));
                         return;
                     }
-                    if (dirItem.Icon == this.FileIcon) {
-                        if (FileSelected != null)
-                            FileSelected (Path.Combine (CurrentPath, dirItem.Name));
+                    if (dirItem.Icon == this.HomeIcon) {
+                        ShowDir (null);
+                        display.Perform ();
                         return;
                     }
                     if (dirItem.Icon == this.DriveIcon) {
