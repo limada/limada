@@ -21,6 +21,8 @@ namespace Limaki.Usecases.Vidgets {
 
     public interface ISplitView {
 
+		IGraphSceneDisplay<IVisual, IVisualEdge> CurrentDisplay  { get; }
+
         SplitViewMode ViewMode { get; set; }
         void ToggleView();
 
@@ -33,6 +35,8 @@ namespace Limaki.Usecases.Vidgets {
         void SaveDocument();
 
         event EventHandler ViewChanged;
+
+		void ChangeData(IGraphScene<IVisual, IVisualEdge> scene);
 
         void LoadSheet(SceneInfo sceneInfo);
 

@@ -7,7 +7,11 @@ using Limaki.View.Viz.Visualizers;
 
 namespace Limada.View.Vidgets {
 
-    public class SplitViewDumnmy : ISplitView {
+	public class SplitViewDumnmy : ISplitView {
+
+		public void ChangeData (IGraphScene<IVisual, IVisualEdge> scene) { }
+
+		public IGraphSceneDisplay<IVisual, IVisualEdge> CurrentDisplay { get { return null; } }
 
         public event EventHandler ViewChanged;
         public virtual void ToggleView() { }

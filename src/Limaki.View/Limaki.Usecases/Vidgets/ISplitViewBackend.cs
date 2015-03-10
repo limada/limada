@@ -31,7 +31,6 @@ namespace Limaki.Usecases.Vidgets {
         void AttachViewerBackend (IVidgetBackend backend, Action onShowAction);
         void ShowTextDialog (string title, string text, Action<string> onOk);
 
-
         void ViewInWindow (IVidgetBackend backend, Action onClose);
     }
 }
