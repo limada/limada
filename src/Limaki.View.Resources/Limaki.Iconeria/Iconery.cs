@@ -83,6 +83,11 @@ namespace Limaki.Iconerias {
 
             Select = awesome.AsImage (awesome.FaPencil, size);
 
+			ToggleVisual = awesome.AsImage (awesome.FaExpand, size);
+			HideVisual = awesome.AsImage (awesome.FaEyeSlash, size);
+
+			Delete = awesome.AsImage (awesome.FaTrashO, size);
+
             awesome.FillColor = Xwt.Drawing.Colors.Red.WithAlpha (.7);
 
             StyleItem = awesome.AsImage (awesome.FaTint, size);
@@ -177,5 +182,11 @@ namespace Limaki.Iconerias {
         public static Image SubWinIcon { get; set; }
 
         public static Image OpenFile { get; set; }
+
+		public static Image ToggleVisual { get; set; }
+
+		public static Image HideVisual { get; set; }
+
+		public static Image Delete { get; set; }
     }
 }
