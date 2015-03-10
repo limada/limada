@@ -115,10 +115,6 @@
       <Project>{B87913C3-EBEE-45AB-88EC-8687D9E57127}</Project>
       <Name>Limaki.View.Swf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
-      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
-      <Name>Limaki.View</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xwt.Swf\Xwt.Swf\Xwt.Swf.csproj">
       <Project>{DEC8F594-97A8-472E-A1CE-CF79BB21EE3F}</Project>
       <Name>Xwt.Swf</Name>
@@ -126,6 +122,10 @@
     <ProjectReference Include="..\Xwt.Swf\Xwt.Gdi\Xwt.Gdi.csproj">
       <Project>{7C1D5C32-35CD-457A-ACFE-4E58F19C6A17}</Project>
       <Name>Xwt.Gdi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View\Limaki.View.csproj">
+      <Project>{3434F6BC-D6AA-4C53-B359-A1B114364025}</Project>
+      <Name>Limaki.View</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
