@@ -102,5 +102,15 @@ namespace Xwt.Drawing {
 
         #endregion
 
+		#region Matrix
+
+		public static Rectangle Transform (this Matrix matrix, Rectangle r) {
+			Point[] p = { r.Location, new Point(r.Right, r.Bottom) };
+			matrix.Transform(p);
+
+			return Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y);
+		}
+
+		#endregion
     }
 }
