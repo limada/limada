@@ -43,6 +43,20 @@ namespace Limaki.Graphs {
             return result;
         }
 
+        public static IGraph<TItem, TEdge>
+            WrappedSource<TItem, TEdge> (this IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem>, TItem {
+
+            var result = graph as IWrappedGraph<TItem, TEdge>;
+            if (result != null) {
+                while (result.Source is IWrappedGraph<TItem, TEdge>) {
+                    result = (IWrappedGraph<TItem, TEdge>) result.Source;
+                }
+                return result.Source;
+            } else {
+                return graph;
+            }
+        }
+
         /// <summary>
         /// iterates through a GraphPair tree 
         /// while graph is GraphPair TItem, TItem, TEdge, TEdge
