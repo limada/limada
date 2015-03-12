@@ -17,19 +17,19 @@ namespace Xwt.Headless.Backend {
         }
 
         public override object SetSize (object handle, double size) {
-            var d = (FontData) handle;
+            var d = ((FontData) handle).Clone ();
             d.Size = size;
             return d;
         }
 
         public override object SetFamily (object handle, string family) {
-            var d = (FontData) handle;
+            var d = ((FontData) handle).Clone ();
             d.Family = family;
             return d;
         }
 
         public override object SetStyle (object handle, FontStyle style) {
-            var d = (FontData) handle;
+            var d = ((FontData) handle).Clone ();
             d.Style = style;
             return d;
 
@@ -42,7 +42,7 @@ namespace Xwt.Headless.Backend {
         }
 
         public override object SetStretch (object handle, FontStretch stretch) {
-            var d = (FontData) handle;
+            var d = ((FontData) handle).Clone ();
             d.Stretch = stretch;
             return d;
         }

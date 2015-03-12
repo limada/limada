@@ -25,5 +25,11 @@ namespace Xwt.Headless.Backend {
             Weight = font.Weight;
             Stretch = font.Stretch;
         }
+
+        public FontData Clone () {
+            var result = new FontData ();
+            result.CopyFrom (this);
+            return result;
+        }
     }
 }
