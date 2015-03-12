@@ -45,17 +45,19 @@ namespace Limaki.View.Viz.UI {
             if (Resolved) {
                 var scrollTarget = this.Viewport ();
                 if (scrollTarget != null) {
-                    var scrollPosition = scrollTarget.ClipOrigin;
+                    var oldScroll = scrollTarget.ClipOrigin;
 
                     var dx = e.X - LastMousePos.X;
                     var dy = e.Y - LastMousePos.Y;
-                    scrollPosition = new Point (
-                        Math.Max (scrollPosition.X - dx, 0),
-                        Math.Max (scrollPosition.Y - dy, 0)
+                    var scrollPosition = new Point (
+                        Math.Max (oldScroll.X - dx, 0),
+                        Math.Max (oldScroll.Y - dy, 0)
                         );
                     this.LastMousePos = new Point (e.X, e.Y);
-                    scrollTarget.ClipOrigin = scrollPosition;
-                    scrollTarget.Update ();
+                    if (oldScroll != scrollPosition) {
+                        scrollTarget.ClipOrigin = scrollPosition;
+                        scrollTarget.Refresh ();
+                    }
                 }
             }
         }
