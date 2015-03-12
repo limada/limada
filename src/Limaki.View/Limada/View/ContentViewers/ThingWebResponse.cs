@@ -51,6 +51,11 @@ namespace Limada.View.ContentViewers {
                         if (WebContent.Uri.AbsoluteUri == request.AbsoluteUri) {
                             if (!WebContent.ContentIsEmpty) {
                                 result = WebContent;
+                            } else if (WebContent.ClearContentAfterServing) {
+                                if (GetUri (thing).AbsoluteUri == request.AbsoluteUri) {
+                                    WebContent = GetContentFromThing (graph, thing);
+                                    result = WebContent;
+                                }
                             }
                         } else {
                             result = this.GetContentFromGraph(graph, thing, request);
