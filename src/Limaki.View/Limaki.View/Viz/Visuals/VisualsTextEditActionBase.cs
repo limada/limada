@@ -115,6 +115,7 @@ namespace Limaki.View.Viz.Visuals {
                 }
             }
             Resolved = false;
+            LastMouseTime = 0;
         }
 
         #endregion
