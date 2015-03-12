@@ -65,8 +65,15 @@ namespace Limaki.View.Viz {
 
         void Update();
         void Update(IClipper clipper);
+
+		/// <summary>
+		/// updates and redraws backend, if one
+		/// </summary>
+		void Refresh();
+
         void UpdateCamera();
         void UpdateZoom();
+	
         void Reset();
         double ZoomFactor { get; set; }
         ZoomState ZoomState { get; set; }

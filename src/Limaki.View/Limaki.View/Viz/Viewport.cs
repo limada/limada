@@ -126,8 +126,6 @@ namespace Limaki.View.Viz {
             }
         }
 
-
-
         public virtual void UpdateCamera() {
 #if TraceInvalidate
             System.Console.Out.WriteLine("Data.Bounds\t" + DataSize);
@@ -147,6 +145,10 @@ namespace Limaki.View.Viz {
             System.Console.Out.WriteLine("scrollMinSize\t" + scrollMinSize);
             System.Console.Out.WriteLine("offset\t" + offset);
 #endif
+        }
+
+        public virtual void Refresh () {
+            Update ();
         }
 
         public Action CommandsExecute { get; set; }
