@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <DefineConstants>TRACE;NET_4_0</DefineConstants>
+    <DefineConstants>NET_4_0</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
