@@ -57,11 +57,11 @@ namespace Limaki.View.GtkBackend {
                 });
                 tb.WidthRequest = w + 5;
                 tb.SizeRequested += (s, e) => {
-                    Trace.WriteLine("");
+                    
                 };
                 toolBox.PackStart (tb, false, false, 0);
                 toolBox.SizeRequested += (s, e) => {
-                    Trace.WriteLine ("");
+                    
                 };
             });
 

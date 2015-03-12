@@ -17,7 +17,9 @@ using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.Drawing {
+
     public abstract class CameraBase:ICamera {
+
         #region ICamera Member
         public abstract Matrix Matrix { get; set;}
 

@@ -91,7 +91,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
         }
 
         protected bool rootMoving = false;
-        protected bool checkResizing() {
+        protected bool CheckResizing() {
             return (this.hitAnchor == Anchor.LeftTop) || (this.hitAnchor == Anchor.RightBottom);
         }
 
@@ -100,7 +100,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
             Exclusive = false;
             if (Edge != null) {
                 base.OnMouseDown(e);
-                this.resizing = this.resizing && checkResizing();
+                this.resizing = this.resizing && CheckResizing();
                 Resolved = this.resizing;
                 if (Resolved) {
                     var shape = Scene.ItemShape (Edge);
@@ -117,12 +117,12 @@ namespace Limaki.View.Viz.UI.GraphScene {
             if ((Edge != null) && (resizing)) {
                 ShowGrips = true;
 
-                Rectangle rect = Camera.ToSource(
+                var rect = Camera.ToSource(
                     Rectangle.FromLTRB(MouseDownPos.X, MouseDownPos.Y,
                                         LastMousePos.X, LastMousePos.Y));
 
                 Scene.Requests.Add(new ResizeCommand<TItem>(Edge, Scene.ItemShape,rect));
-                foreach (TEdge twigEdge in Scene.Graph.Twig(Edge)) {
+                foreach (var twigEdge in Scene.Graph.Twig(Edge)) {
                     Scene.Requests.Add(new LayoutCommand<TItem>(twigEdge, LayoutActionType.Justify));
                 }
 
@@ -163,11 +163,11 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
         public virtual bool IsTargetHit(Point p) {
             bool result = false;
-            TItem hovered = Scene.Hovered;
-            TEdge edge = this.Edge;
+            var hovered = Scene.Hovered;
+            var edge = this.Edge;
             if ((hovered != null) && (edge != null) && (!edge.Equals(hovered))) {
                 if (!hovered.Equals(edge.Leaf) && ! hovered.Equals(edge.Root)) {
-                    Point sp = Camera.ToSource(p);
+                    var sp = Camera.ToSource(p);
                     result = Scene.ItemShape(hovered).IsHit(sp, HitSize);
                 }
             }

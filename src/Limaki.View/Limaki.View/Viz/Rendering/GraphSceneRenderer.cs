@@ -22,6 +22,7 @@ using Limaki.Graphs;
 using System;
 
 namespace Limaki.View.Viz.Rendering {
+
     public class GraphSceneRenderer<TItem, TEdge> : ContentRenderer<IGraphScene<TItem, TEdge>>,
                                                     IGraphSceneRenderer<TItem, TEdge>
         where TEdge : TItem, IEdge<TItem> {

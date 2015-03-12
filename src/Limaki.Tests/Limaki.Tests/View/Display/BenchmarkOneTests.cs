@@ -96,8 +96,6 @@ namespace Limaki.Tests.View.Display {
                 Display.Layout = oldlayout;
         }
 
-
-
         public void MoveLinks (Rectangle bounds) {
             MoveLink (Factory.Edges[4], Factory.Edges[1]);
             MoveLink (Factory.Edges[5], Factory.Edges[3]);
@@ -115,8 +113,7 @@ namespace Limaki.Tests.View.Display {
             Display.ActionDispatcher.OnMouseDown (e);
 
             Assert.AreSame (Scene.Focused, Factory.Nodes[1]);
-
-
+            
             var v = new Vector ();
             // diagonal movement:
             v.Start = startposition;
