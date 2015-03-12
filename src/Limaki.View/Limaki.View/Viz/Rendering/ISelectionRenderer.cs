@@ -33,8 +33,11 @@ namespace Limaki.View.Viz.Rendering {
         Func<IClipper> Clipper { get; set; }
         Func<ICamera> Camera { get; set; }
 
+        [Obsolete]
         Func<ISurface, object> SaveMatrix { get; set; }
+        [Obsolete]
         Action<ISurface> SetMatrix { get; set; }
+        [Obsolete]
         Action<ISurface, object> RestoreMatrix { get; set; }
     }
 }
