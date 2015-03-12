@@ -45,12 +45,14 @@ namespace Limaki.Usecases.Vidgets {
             }
         }
 
+        protected double Scale = 1;
         protected void SetDefault (Iconeria ic) {
+            Scale = Desktop.PrimaryScreen.ScaleFactor;
             ic.Stroke = true;
             ic.StrokeColor = IconStrokeColor;
             ic.Fill = true;
             ic.FillColor = FolderIconFillColor;
-            ic.DefaultSize = new Size (20, 20);
+            ic.DefaultSize = new Size (15 * Scale, 15 * Scale);
             ic.LineWidth = 0;
         }
 
@@ -150,9 +152,13 @@ namespace Limaki.Usecases.Vidgets {
                 if (_layout == null) {
                     var styleSheet = Registry.Pooled<StyleSheets> ().PredefinedStyleSheets ("WhiteGlass");
                     styleSheet.ParentStyle.AutoSize = new Size (double.MaxValue, double.MaxValue);
+                    styleSheet.ParentStyle.Padding = new Spacing (5, 2, 5, 2);
+                    var style = styleSheet.ItemStyle.SelectedStyle;
+                    style.FillColor = Colors.DarkGray;
+                    style.TextColor = styleSheet.BackColor;
                     _layout =
                         Registry.Factory.Create<IGraphSceneLayout<IVisual, IVisualEdge>> (SceneGetter, styleSheet);
-                    _layout.Distance = new Size (-5, -5);
+                    _layout.Distance = new Size (Scale, Scale);
                 }
                 return _layout;
             }
@@ -263,8 +269,9 @@ namespace Limaki.Usecases.Vidgets {
             if (LevelUp != null) {
                 var home = new VisualDir (HomeIcon, "");
                 graph.Add (home);
-                options.Distance = new Size (100, 0);
+                options.Distance = new Size (100 * Scale, 0);
                 options.Dimension = Dimension.Y;
+                options.AlignY = Alignment.End;
                 aligner.Locator.SetLocation (home, new Point (int.MaxValue, int.MaxValue));
                 aligner.OneColumn (new IVisual[] { LevelUp, home }, options);
 
