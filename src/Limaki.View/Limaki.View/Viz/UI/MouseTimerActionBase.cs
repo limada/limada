@@ -97,8 +97,8 @@ namespace Limaki.View.Viz.UI {
                 var dragTime = SystemInformation.DoubleClickTime;
 
                 // If the mouse NOT moves outside the Rectangle
-                Resolved = !(dragBoxFromMouseDown != Rectangle.Zero &&
-                              !dragBoxFromMouseDown.Contains(e.X, e.Y))
+                Resolved = (DragBoxFromMouseDown != Rectangle.Zero &&
+                              DragBoxFromMouseDown.Contains (e.X, e.Y))
                     // if more than 
                            && ((now - LastMouseTime) > dragTime);
 
