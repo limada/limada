@@ -177,7 +177,7 @@ namespace Limaki.Drawing {
                             size.Height = Math.Max (size.Height, ssize.Height);
                         }
                     }
-                    size.Width += style.Padding.VerticalSpacing * (count - 1);
+                    size.Width += style.Padding.VerticalSpacing * (count);
                 }
                 return count > 0;
             }
