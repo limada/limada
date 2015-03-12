@@ -88,6 +88,8 @@ namespace Limaki.View.Viz.Rendering {
 
                 var a = oldShape.BoundsRect;
                 var b = newShape.BoundsRect;
+                if (a.IsEmpty && b.IsEmpty)
+                    return;
 
                 var bigger = DrawingExtensions.Union(a, b);
                 bigger = Camera.FromSource(bigger);
