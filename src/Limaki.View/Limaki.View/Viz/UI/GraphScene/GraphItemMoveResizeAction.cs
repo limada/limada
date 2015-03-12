@@ -32,7 +32,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
         where TEdge:TItem,IEdge<TItem> {
 
         public GraphItemMoveResizeAction() {
-            Priority = ActionPriorities.SelectionPriority - 10;
+            Priority = ActionPriorities.SelectionPriority - 9;
             FocusFilter = e => e;
         }
 
