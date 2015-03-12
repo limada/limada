@@ -67,10 +67,10 @@ namespace Limaki.View.Viz.UI.GraphScene {
         }
 
         public override bool HitTest(Point p) {
-            var sp = Camera.ToSource(p);
             var item = this.GraphItem;
-			if (item == null || Scene.ItemShape (item)==null)
-				return false;
+            if (item == null || Scene.ItemShape (item) == null)
+                return false;
+            var sp = Camera.ToSource (p);
 			var result = DoBorderTest ? 
 				Scene.ItemShape (item).IsBorderHit (sp, HitSize) :
 				Scene.ItemShape (item).IsHit (sp, HitSize);
