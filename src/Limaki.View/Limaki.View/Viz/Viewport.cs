@@ -138,7 +138,7 @@ namespace Limaki.View.Viz {
             this._offset = offset;
         }
 
-        public virtual void Update() {// == UpdateScrollSize
+        public virtual void Update() {
             UpdateCamera();
             this.DataSize = _dataSize;
             this.DataOrigin = this._offset;
@@ -149,7 +149,8 @@ namespace Limaki.View.Viz {
 #endif
         }
 
-        public Action CommandsExecute=null;
+        public Action CommandsExecute { get; set; }
+
         public virtual void Reset() {
             ClipOrigin = new Point();
             if (this.CommandsExecute != null) {

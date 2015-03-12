@@ -23,21 +23,14 @@ namespace Limaki.View.Viz.UI {
     /// base class for mouse handling with dragging 
     /// </summary>
     public abstract class MouseDragActionBase : MouseActionBase {
+
         public MouseDragActionBase():base() {
             Priority = ActionPriorities.DragActionPriority;
-        }
+		}
 
-        private Point _lastMousePos = new Point();
-        protected virtual Point LastMousePos {
-            get { return _lastMousePos; }
-            set { _lastMousePos = value; }
-        }
+        protected virtual Point LastMousePos { get; set; }
 
-		private ModifierKeys _modifierKeys = 0;
-        public ModifierKeys ModifierKeys {
-            get { return _modifierKeys; }
-            set { _modifierKeys = value; }
-        }
+        public ModifierKeys ModifierKeys { get; set; }
 
         static IUISystemInformation _systemInformation = null;
         protected static IUISystemInformation SystemInformation {
@@ -49,7 +42,7 @@ namespace Limaki.View.Viz.UI {
             }
         }
 
-        protected Rectangle DragBoxFromMouseDown = Rectangle.Zero;
+        protected Rectangle DragBoxFromMouseDown { get; set; }
 
         protected void BaseMouseDown(MouseActionEventArgs e) {
             base.OnMouseDown(e);
@@ -61,12 +54,11 @@ namespace Limaki.View.Viz.UI {
             // The DragSize indicates the size that the mouse can move 
             // before a drag event should be started.                
             Size dragSize = SystemInformation.DragSize;
-               
 
             // Create a Rectangle using the DragSize, with the mouse position being
             // at the center of the Rectangle.
-            DragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2),
-                                                           e.Y - (dragSize.Height / 2)), dragSize);
+            DragBoxFromMouseDown = new Rectangle (new Point (e.X - (dragSize.Width / 2),
+                e.Y - (dragSize.Height / 2)), dragSize);
 
             // Remember the point where the mouse down occurred
             LastMousePos = e.Location;          
@@ -96,6 +88,7 @@ namespace Limaki.View.Viz.UI {
                 Resolved = ((e.Button & MouseActionButtons.Left) == MouseActionButtons.Left);
             }   
         }
+
         /// <summary>
         /// sets resolved = true if the mouse is outside of the dragging rectangle 
         /// </summary>

@@ -4,7 +4,7 @@ using Xwt.Backends;
 namespace Xwt.Html5.Backend {
 
     public class HtmlFontBackendHandler : FontBackendHandler {
-        
+
         public override object GetSystemDefaultFont () {
             return new FontData { Family = "Default", Size = 10 };
         }
@@ -14,7 +14,7 @@ namespace Xwt.Html5.Backend {
         }
 
         public override object Create (string fontName, double size, FontStyle style, FontWeight weight, FontStretch stretch) {
-			return new FontData { Family = fontName, Size = size, Style = style, Weight = weight, Stretch = stretch };
+            return new FontData { Family = fontName, Size = size, Style = style, Weight = weight, Stretch = stretch };
         }
 
 

@@ -37,39 +37,39 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
         public virtual ISelectionRenderer MoveResizeRenderer { get; set; }
 
-		public virtual void Delete () {
-			if (Scene.Selected.Count > 0) {
-				var done = new Set<TItem>();
-				foreach(var item in Scene.Selected.Elements) {
-					Scene.Delete (item, done);
-				}
-				if (Scene.Focused != null) {
-					Scene.Requests.Add (
-						new StateChangeCommand<TItem> (Scene.Focused,
-							new Pair<UiState> (
-								UiState.Focus, UiState.None))
-					);
-				}
-				Scene.Focused = default(TItem);
-				if (done.Contains(Scene.Hovered) ) {
-					Scene.Requests.Add(
-						new StateChangeCommand<TItem>(Scene.Hovered,
-							new Pair<UiState>(
-								UiState.Hovered, UiState.None))
-					);
-					Scene.Hovered = default(TItem);
-				}              
-			}
-			if (MoveResizeRenderer != null) {
-				MoveResizeRenderer.Shape = null;
-				MoveResizeRenderer.ShowGrips = false;
-			}
-		}
+        public virtual void Delete () {
+            if (Scene.Selected.Count > 0) {
+                var done = new Set<TItem> ();
+                foreach (var item in Scene.Selected.Elements) {
+                    Scene.Delete (item, done);
+                }
+                if (Scene.Focused != null) {
+                    Scene.Requests.Add (
+                        new StateChangeCommand<TItem> (Scene.Focused,
+                            new Pair<UiState> (
+                                UiState.Focus, UiState.None))
+                    );
+                }
+                Scene.Focused = default (TItem);
+                if (done.Contains (Scene.Hovered)) {
+                    Scene.Requests.Add (
+                        new StateChangeCommand<TItem> (Scene.Hovered,
+                            new Pair<UiState> (
+                                UiState.Hovered, UiState.None))
+                    );
+                    Scene.Hovered = default (TItem);
+                }
+            }
+            if (MoveResizeRenderer != null) {
+                MoveResizeRenderer.Shape = null;
+                MoveResizeRenderer.ShowGrips = false;
+            }
+        }
 
         public override void OnKeyPressed( KeyActionEventArgs e ) {
             base.OnKeyPressed(e);
-            if (e.Key == Key.Delete && (e.Modifiers==ModifierKeys.Control)) {
-				Delete ();
+            if (e.Key == Key.Delete && (e.Modifiers == ModifierKeys.Control)) {
+                Delete ();
             }
         }
    }

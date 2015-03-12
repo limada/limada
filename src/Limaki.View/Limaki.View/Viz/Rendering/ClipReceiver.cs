@@ -39,7 +39,7 @@ namespace Limaki.View.Viz.Rendering {
             }
         }
 
-        public virtual IBackendRenderer DeviceRenderer {
+        public virtual IBackendRenderer BackendRenderer {
             get {
                 if (_renderer != null) {
                     return _renderer();
@@ -69,9 +69,9 @@ namespace Limaki.View.Viz.Rendering {
 
         public virtual void Render() {
             if (Clipper.RenderAll) {
-                DeviceRenderer.Render();
+                BackendRenderer.Render();
             } else if (!Clipper.IsEmpty) {
-                DeviceRenderer.Render(Clipper);
+                BackendRenderer.Render(Clipper);
             }
 
         }

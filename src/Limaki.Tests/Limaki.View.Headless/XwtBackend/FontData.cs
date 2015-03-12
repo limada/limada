@@ -1,6 +1,7 @@
 using Xwt.Drawing;
 
 namespace Xwt.Headless.Backend {
+
     public class FontData {
 
         public string Family { get; set; }

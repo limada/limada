@@ -259,7 +259,6 @@ namespace Limada.View.Vidgets {
 
             scene.CreateMarkers();
             Mesh.AddScene (scene);
-            
 
             displays
                 .Where (d => d != Display1)
