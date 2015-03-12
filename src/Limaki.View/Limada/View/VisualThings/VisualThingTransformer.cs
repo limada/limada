@@ -29,12 +29,12 @@ namespace Limada.View.VisualThings {
     /// <summary>
     /// transforms a IThing into a IVisual
     /// </summary>
-    public class VisualThingTransformer:GraphItemTransformer<IVisual,IThing,IVisualEdge,ILink> {
+    public class VisualThingTransformer : GraphItemTransformer<IVisual, IThing, IVisualEdge, ILink> {
         private IThingFactory _thingFactory = null;
         public IThingFactory ThingFactory {
             get {
                 if (_thingFactory == null) {
-                    _thingFactory = Registry.Factory.Create<IThingFactory>();
+                    _thingFactory = Registry.Factory.Create<IThingFactory> ();
                 }
                 return _thingFactory;
             }
@@ -56,25 +56,25 @@ namespace Limada.View.VisualThings {
         public IShapeFactory ShapeFactory {
             get {
                 if (_shapeFactory == null) {
-                    _shapeFactory = Registry.Factory.Create<IShapeFactory>();
+                    _shapeFactory = Registry.Factory.Create<IShapeFactory> ();
                 }
                 return _shapeFactory;
             }
             set { _shapeFactory = value; }
         }
 
-        public override IVisual CreateSinkItem(IGraph<IThing, ILink> source,
+        public override IVisual CreateSinkItem (IGraph<IThing, ILink> source,
             IGraph<IVisual, IVisualEdge> sink, IThing a) {
-            
-            var result = VisualFactory.CreateItem(ThingDataToDisplay(source,a));
-            if (SchemaFacade.DescriptionableThing(a)) {
+
+            var result = VisualFactory.CreateItem (ThingDataToDisplay (source, a));
+            if (SchemaFacade.DescriptionableThing (a)) {
                 if (a is IThing<Stream>) {
-                    result.Shape = ShapeFactory.Create<IBezierRectangleShape>();
+                    result.Shape = ShapeFactory.Create<IBezierRectangleShape> ();
                 } else {
-                    result.Shape = ShapeFactory.Create<IRectangleShape>();
+                    result.Shape = ShapeFactory.Create<IRectangleShape> ();
                 }
             } else {
-                result.Shape = ShapeFactory.Create<IRoundedRectangleShape>();
+                result.Shape = ShapeFactory.Create<IRoundedRectangleShape> ();
             }
 
             return result;
@@ -84,24 +84,24 @@ namespace Limada.View.VisualThings {
             //if (a.Marker == null) { // this should never happen!:
             //    a.Marker = CommonSchema.EmptyMarker;
             //}
-            return VisualFactory.CreateEdge(ThingDataToDisplay(source,a.Marker));
+            return VisualFactory.CreateEdge (ThingDataToDisplay (source, a.Marker));
 
         }
 
-        public override IThing CreateSourceItem(IGraph<IVisual, IVisualEdge> sink, 
+        public override IThing CreateSourceItem (IGraph<IVisual, IVisualEdge> sink,
             IGraph<IThing, ILink> source, IVisual b) {
-            
-            var result =  ThingFactory.CreateItem(source as IThingGraph, b.Data);
-            
+
+            var result = ThingFactory.CreateItem (source as IThingGraph, b.Data);
+
             return result;
         }
 
-        public override ILink CreateSourceEdge(IGraph<IVisual, IVisualEdge> sink,
+        public override ILink CreateSourceEdge (IGraph<IVisual, IVisualEdge> sink,
             IGraph<IThing, ILink> source, IVisualEdge b) {
-            return ThingFactory.CreateEdge(source as IThingGraph, b.Data);
+            return ThingFactory.CreateEdge (source as IThingGraph, b.Data);
         }
 
-        public object ThingDataToDisplay(IGraph<IThing, ILink> graph, IThing thing) {
+        public object ThingDataToDisplay (IGraph<IThing, ILink> graph, IThing thing) {
             if (thing == null)
                 return CommonSchema.NullString;
 
@@ -120,17 +120,17 @@ namespace Limada.View.VisualThings {
                 result = thing.ToString ();
             else if (thing.Id == CommonSchema.EmptyMarker.Id) {
                 result = CommonSchema.EmtpyMarkerString;
-            } else if (thing.GetType() == typeof(Thing))
+            } else if (thing.GetType () == typeof (Thing))
                 result = CommonSchema.ThingString;
 
             return result;
         }
 
-        public virtual IThing SetThingByData(IGraph<IThing, ILink> graph, IThing thing, object data) {
+        public virtual IThing SetThingByData (IGraph<IThing, ILink> graph, IThing thing, object data) {
             var itemToChange = graph.ThingToDisplay (thing);
-            if (thing != null && itemToChange == thing && SchemaFacade.DescriptionableThing(thing)) {
-                itemToChange = ThingFactory.CreateItem(data);
-                graph.Add(new Link(thing, itemToChange, CommonSchema.DescriptionMarker));
+            if (thing != null && itemToChange == thing && SchemaFacade.DescriptionableThing (thing)) {
+                itemToChange = ThingFactory.CreateItem (data);
+                graph.Add (new Link (thing, itemToChange, CommonSchema.DescriptionMarker));
 
             } else {
                 graph.DoChangeData (itemToChange, data);
@@ -139,28 +139,28 @@ namespace Limada.View.VisualThings {
         }
 
         /// <summary>
-        /// sets Target.Data to ThingDataToDisplay of source
+        /// sets visual.Data to ThingDataToDisplay of source
         /// </summary>
         /// <param name="thingGraph"></param>
         /// <param name="visual"></param>
         /// <param name="thing"></param>
         public virtual void SetVisualByThing (IGraph<IThing, ILink> thingGraph, IVisual visual, IThing thing) {
-            visual.Data = ThingDataToDisplay(thingGraph, thing);
+            visual.Data = ThingDataToDisplay (thingGraph, thing);
         }
 
-        public override void ChangeData(IGraph<IVisual, IVisualEdge> sink, IVisual visual, object data) {
+        public override void ChangeData (IGraph<IVisual, IVisualEdge> sink, IVisual visual, object data) {
             var graph = sink as VisualThingGraph;
-            
-            if (graph == null)
-                throw new ArgumentException();
 
-            var thing = graph.Get(visual);
-            if ( thing != null ) {
+            if (graph == null)
+                throw new ArgumentException ();
+
+            var thing = graph.Get (visual);
+            if (thing != null) {
                 if (thing is ILink) {
                     var link = (ILink) thing;
                     if (data is IThing) {
                         graph.Source.DoChangeData (link, data);
-                        SetVisualByThing(graph.Source, visual, link.Marker);
+                        SetVisualByThing (graph.Source, visual, link.Marker);
                     }
                 } else {
                     thing = SetThingByData (graph.Source, thing, data);
@@ -170,7 +170,7 @@ namespace Limada.View.VisualThings {
         }
 
         public override void UpdateSinkItem (IGraph<IThing, ILink> source, IGraph<IVisual, IVisualEdge> sink, IThing sourceItem, IVisual sinkItem) {
-            
+            // its done in ChangeData
         }
 
         public override void ChangeData (IGraph<IThing, ILink> graph, IThing item, object data) {

@@ -1,7 +1,9 @@
 using System;
 
 namespace Limaki.Common {
+
     public class State : ICloneable {
+
         public State() {
             SetDirty = () => { this.Dirty = true; };
         }

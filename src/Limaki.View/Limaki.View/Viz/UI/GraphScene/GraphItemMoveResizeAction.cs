@@ -32,6 +32,8 @@ namespace Limaki.View.Viz.UI.GraphScene {
         where TEdge:TItem,IEdge<TItem> {
 
         public GraphItemMoveResizeAction() {
+            // higher than GraphSceneFocusAction (SelectionPriority - 10): click and move: start moving 
+            // lower than GraphSceneFocusAction: click and move: starts dragging  
             Priority = ActionPriorities.SelectionPriority - 9;
             FocusFilter = e => e;
         }
@@ -85,8 +87,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
             return result;
         }
-
-
+        
         public override void OnMouseDown(MouseActionEventArgs e) {
             Resolved = false;
             var item = this.GraphItem;

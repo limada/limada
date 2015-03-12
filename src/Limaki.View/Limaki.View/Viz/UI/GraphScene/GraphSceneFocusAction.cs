@@ -78,7 +78,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
         }
 
         void ClearSelection() {
-            foreach (TItem w in Scene.Selected.Elements) {
+            foreach (var w in Scene.Selected.Elements) {
                 if (!w.Equals(Current))
                     Scene.Requests.Add(new StateChangeCommand<TItem>(w,
                                                                      new Pair<UiState>(UiState.Selected, UiState.None)));
@@ -144,6 +144,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
                                                       new Pair<UiState>(UiState.None, UiState.Selected))
                         );
                 }
+                
                 if (Current == null && e.Modifiers == ModifierKeys.None) {
                     ClearSelection(); 
                 }
@@ -205,9 +206,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
             Resolved = false;
             
         }
-
-
-
+        
         #region ICheckable Member
 
         public bool Check() {

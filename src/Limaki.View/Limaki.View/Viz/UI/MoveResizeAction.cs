@@ -63,29 +63,27 @@ namespace Limaki.View.Viz.UI {
 
         protected Anchor hitAnchor = Anchor.None;
 
-		public bool ResizingEnabled { get; set; }
-		public bool MovingEnabled { get; set; }
+        public bool ResizingEnabled { get; set; }
+        public bool MovingEnabled { get; set; }
 
 		/// <summary>
 		/// HitTest tests the border
 		/// </summary>
 		/// <value><c>true</c> if hit on border; otherwise, <c>false</c>.</value>
-		public bool DoBorderTest { get; set; }
+        public bool DoBorderTest { get; set; }
 
         protected bool resizing = false;
         protected bool moving = false;
 
-
-        public virtual Anchor HitAnchor(Point p) {
-            IShape shape = this.Shape;
+        public virtual Anchor HitAnchor (Point p) {
+            var shape = this.Shape;
             if (shape == null)
                 return Anchor.None;
-            Point sp = Camera.ToSource(p);
-            Anchor result = shape.IsAnchorHit(sp, HitSize);
+            var sp = Camera.ToSource (p);
+            var result = shape.IsAnchorHit (sp, HitSize);
             return result;
         }
-
-
+        
         public abstract bool HitTest(Point p);
 
         public static Anchor AdjacentAnchor(Anchor hitAnchor) {
@@ -141,7 +139,7 @@ namespace Limaki.View.Viz.UI {
             }
             set {
                 if (resizing) {
-                    Point _value = value;
+                    var _value = value;
                     switch (hitAnchor) {
                         case Anchor.MiddleTop:
                         case Anchor.MiddleBottom:

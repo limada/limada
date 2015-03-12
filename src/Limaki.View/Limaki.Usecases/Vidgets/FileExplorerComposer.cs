@@ -35,16 +35,13 @@ namespace Limaki.Usecases.Vidgets {
     public class FileExplorerComposer {
 
         AwesomeIconeria _ic = null;
-        protected AwesomeIconeria ic {
+        protected AwesomeIconeria Ic {
             get {
-                return _ic ?? (_ic =
-                    new AwesomeIconeria {
-                        Stroke = true,
-                        StrokeColor = IconStrokeColor,
-                        Fill = true,
-                        FillColor = FolderIconFillColor,
-                        DefaultSize = new Size (20, 20),
-                    });
+                if (_ic == null) {
+                    _ic = new AwesomeIconeria ();
+                    SetDefault (_ic);
+                }
+                return _ic;
             }
         }
 
@@ -65,11 +62,11 @@ namespace Limaki.Usecases.Vidgets {
             get {
                 return _levelUpIcon ?? (_levelUpIcon =
                     new PaintingImage (
-                        ic.DefaultSize,
+                        Ic.DefaultSize,
                         ctx => {
-                            SetDefault (ic);
-                            ic.FillColor = this.IconStrokeColor;
-                            ic.PaintIcon (ctx, ic.DefaultSize.Width, 0, 0, ic.FaLevelUp);
+                            SetDefault (Ic);
+                            Ic.FillColor = this.IconStrokeColor;
+                            Ic.PaintIcon (ctx, Ic.DefaultSize.Width, 0, 0, Ic.FaLevelUp);
                         }
                         ));
             }
@@ -80,11 +77,11 @@ namespace Limaki.Usecases.Vidgets {
             get {
                 return _HomeIcon ?? (_HomeIcon =
                     new PaintingImage (
-                        ic.DefaultSize,
+                        Ic.DefaultSize,
                         ctx => {
-                            SetDefault (ic);
-                            ic.FillColor = IconStrokeColor;
-                            ic.PaintIcon (ctx, ic.DefaultSize.Width, 0, 0, ic.FaHome);
+                            SetDefault (Ic);
+                            Ic.FillColor = IconStrokeColor;
+                            Ic.PaintIcon (ctx, Ic.DefaultSize.Width, 0, 0, Ic.FaHome);
                         }
                         ));
             }
@@ -94,24 +91,24 @@ namespace Limaki.Usecases.Vidgets {
             get {
                 return _driveIcon ?? (_driveIcon =
                     new PaintingImage (
-                        ic.DefaultSize,
+                        Ic.DefaultSize,
                         ctx => {
-                            SetDefault (ic);
-                            ic.FillColor = IconStrokeColor;
-                            ic.PaintIcon (ctx, ic.DefaultSize.Width, 0, 0, ic.FaHddO);
+                            SetDefault (Ic);
+                            Ic.FillColor = IconStrokeColor;
+                            Ic.PaintIcon (ctx, Ic.DefaultSize.Width, 0, 0, Ic.FaHddO);
                         }
                         ));
             }
         }
-        
+
         private Image _folderIcon = null;
         protected Image FolderIcon {
             get {
                 return _folderIcon ?? (_folderIcon =
-                    new PaintingImage (ic.DefaultSize,
+                    new PaintingImage (Ic.DefaultSize,
                         ctx => {
-                            SetDefault (ic);
-                            ic.PaintIcon (ctx, ic.DefaultSize.Width, 0, 0, ic.FaFolder);
+                            SetDefault (Ic);
+                            Ic.PaintIcon (ctx, Ic.DefaultSize.Width, 0, 0, Ic.FaFolder);
                         }
                         ));
             }
@@ -121,11 +118,11 @@ namespace Limaki.Usecases.Vidgets {
         protected Image FileIcon {
             get {
                 return _fileIcon ?? (_fileIcon =
-                    new PaintingImage (ic.DefaultSize,
+                    new PaintingImage (Ic.DefaultSize,
                         ctx => {
-                            SetDefault (ic);
-                            ic.FillColor = Colors.WhiteSmoke;
-                            ic.PaintIcon (ctx, ic.DefaultSize.Width, 0, 0, ic.FaFile);
+                            SetDefault (Ic);
+                            Ic.FillColor = Colors.WhiteSmoke;
+                            Ic.PaintIcon (ctx, Ic.DefaultSize.Width, 0, 0, Ic.FaFile);
                         }
                         ));
             }
@@ -136,17 +133,17 @@ namespace Limaki.Usecases.Vidgets {
             get {
                 return _currentIcon ?? (_currentIcon =
                     new PaintingImage (
-                        ic.DefaultSize,
+                        Ic.DefaultSize,
                         ctx => {
-                            SetDefault (ic);
-                            ic.FillColor = IconStrokeColor.WithAlpha(.7);
-                            ic.Stroke = false;
-                            ic.PaintIcon (ctx, ic.DefaultSize.Width, 0, 0, ic.FaFolderOpen);
+                            SetDefault (Ic);
+                            Ic.FillColor = IconStrokeColor.WithAlpha (.7);
+                            Ic.Stroke = false;
+                            Ic.PaintIcon (ctx, Ic.DefaultSize.Width, 0, 0, Ic.FaFolderOpen);
                         }
                         ));
             }
         }
-        
+
         IGraphSceneLayout<IVisual, IVisualEdge> _layout = null;
         public IGraphSceneLayout<IVisual, IVisualEdge> Layout {
             get {
@@ -204,8 +201,8 @@ namespace Limaki.Usecases.Vidgets {
                     path += Path.DirectorySeparatorChar;
 
                 try {
-					if(!OS.Mono)
-						Directory.GetAccessControl (path);
+                    if (!OS.Mono)
+                        Directory.GetAccessControl (path);
                 } catch (UnauthorizedAccessException) {
                     CurrentPath = oldPath;
                     return;
@@ -221,7 +218,7 @@ namespace Limaki.Usecases.Vidgets {
 
             var isRoot = path == null;
             if (isRoot) {
-                foreach (var drive in DriveInfo.GetDrives()) {
+                foreach (var drive in DriveInfo.GetDrives ()) {
                     graph.Add (new VisualDir (DriveIcon,
                         string.Format ("{0} ({1})", drive.VolumeLabel, drive.Name)));
                 }
@@ -232,14 +229,14 @@ namespace Limaki.Usecases.Vidgets {
                 }
                 LevelUp = new VisualDir (LevelUpIcon, "..");//ShowCurrent ? this.CurrentPath : "..");
                 graph.Add (LevelUp);
-                
+
                 try {
                     foreach (var dir in Directory.EnumerateDirectories (path)) {
                         var name = Path.GetFileName (dir);
                         graph.Add (new VisualDir (this.FolderIcon, name));
                     }
                     var pattern = FileFilter ?? "*.*";
-                    foreach (var file in Directory.EnumerateFiles (path,pattern)) {
+                    foreach (var file in Directory.EnumerateFiles (path, pattern)) {
                         var name = Path.GetFileName (file);
                         graph.Add (new VisualDir (this.FileIcon, name));
                     }
@@ -268,7 +265,7 @@ namespace Limaki.Usecases.Vidgets {
                 graph.Add (home);
                 options.Distance = new Size (100, 0);
                 options.Dimension = Dimension.Y;
-                aligner.Locator.SetLocation(home, new Point (int.MaxValue, int.MaxValue));
+                aligner.Locator.SetLocation (home, new Point (int.MaxValue, int.MaxValue));
                 aligner.OneColumn (new IVisual[] { LevelUp, home }, options);
 
             }
@@ -279,15 +276,15 @@ namespace Limaki.Usecases.Vidgets {
         public void ComposeDisplay (VisualsDisplay display) {
             display.StyleSheet = Layout.StyleSheet;
             display.Layout = Layout;
-			display.Data = Scene;
+            display.Data = Scene;
 
             var disp = display.ActionDispatcher;
             disp.Remove (disp.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>> ());
-			var edit = disp.Actions.Values.FirstOrDefault (a => a is VisualsTextEditActionBase);
-			if (edit != null)
-				disp.Remove (edit);
+            var edit = disp.Actions.Values.FirstOrDefault (a => a is VisualsTextEditActionBase);
+            if (edit != null)
+                disp.Remove (edit);
 
-            var select = disp.GetAction<DelegatingMouseAction>();
+            var select = disp.GetAction<DelegatingMouseAction> ();
             if (select == null) { //  only one action per action.gettype is allowed
                 select = new DelegatingMouseAction ();
                 disp.Add (select);
@@ -324,7 +321,7 @@ namespace Limaki.Usecases.Vidgets {
                 }
             };
 
-            display.SceneFocusChanged += (s,e) => {
+            display.SceneFocusChanged += (s, e) => {
                 if (e.Item == LevelUp) {
                     var parent = Directory.GetParent (CurrentPath);
                     string path = null;
@@ -332,12 +329,12 @@ namespace Limaki.Usecases.Vidgets {
                         path = parent.FullName;
                     ShowDir (path);
                     display.Perform ();
-                    
+
                     return;
                 }
                 var dirItem = e.Item as VisualDir;
                 if (dirItem != null) {
-                    if (dirItem.Icon == this.FolderIcon ) {
+                    if (dirItem.Icon == this.FolderIcon) {
                         showPath (Path.Combine (CurrentPath, dirItem.Name));
                         return;
                     }

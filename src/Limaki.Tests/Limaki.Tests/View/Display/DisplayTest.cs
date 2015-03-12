@@ -207,11 +207,11 @@ namespace Limaki.Tests.View.Display {
 
             var dx = v.End.X - v.Start.X;
             var dy = v.End.Y - v.Start.Y;
-            var m1 = (double)dy / dx;
-            var m = Math.Abs ((double)dy / dx);
+            var m1 = dy / dx;
+            var m = Math.Abs (dy / dx);
 
 
-            var d = new Size (1, (float)m);
+            var d = new Size (1, m);
             if (m == 1d) {
                 // horizontal line:
                 d = new Size (1, 0);
@@ -219,7 +219,7 @@ namespace Limaki.Tests.View.Display {
                 // vertical line:
                 d = new Size (0, 1);
             } else if (m > 1d) {
-                d = new Size ((float)(1d / m), 1);
+                d = new Size (1d / m, 1);
             }
 
             Func<bool> rangeX = () => next.X < end.X;
@@ -234,9 +234,8 @@ namespace Limaki.Tests.View.Display {
             }
             //double angle = Math.Atan(dx / dy) / Math.PI * 180 + ((dx < 0) ? 180 : 0);
             MouseActionEventArgs e = null;
-            next = nextPoint (v.Start, d);
-            end = v.End;
-            while (rangeX () || rangeY ()) {
+            
+            Action move = () => {
                 var tnext = camera.FromSource (next);
                 e = new MouseActionEventArgs (MouseActionButtons.Left,
                                               ModifierKeys.None, 0,
@@ -244,6 +243,12 @@ namespace Limaki.Tests.View.Display {
                                               0);
                 Display.ActionDispatcher.OnMouseMove (e);
                 DoEvents ();
+            };
+
+            next = nextPoint (v.Start, d);
+            end = v.End;
+            while (rangeX () || rangeY ()) {
+                move ();
                 next = nextPoint (next, d);
             }
 

@@ -53,7 +53,7 @@ namespace Limaki.View.Viz.UI {
         // CopyPaste:
         public List<ICopyPasteAction> CopyPasteActions = new List<ICopyPasteAction> ();
 
-        protected int ActionsSort(IAction x, IAction y) {
+        public int ActionsSort (IAction x, IAction y) {
             return x.Priority.CompareTo(y.Priority);
         }
 
@@ -69,8 +69,7 @@ namespace Limaki.View.Viz.UI {
                 RenderActions.Add((IRenderAction)action);
                 RenderActions.Sort(ActionsSort);
             }
-
-
+            
             if (action is IKeyAction) {
                 KeyActions.Add((IKeyAction)action);
                 KeyActions.Sort(ActionsSort);
@@ -80,7 +79,6 @@ namespace Limaki.View.Viz.UI {
                 ReceiverActions.Add((IReceiver)action);
                 ReceiverActions.Sort(ActionsSort);
             }
-
 
             if (action is IDropAction) {
                 DragDropActions.Add((IDropAction)action);

@@ -79,9 +79,9 @@ namespace Limaki.View.Viz.Visuals {
             if (visual == null)
                 return result;
 
-            var sp = Camera.ToSource(p);
+            var sp = Camera.ToSource (p);
 
-            result = visual.Shape.IsHit(sp, HitSize);
+            result = visual.Shape.IsHit (sp, HitSize);
 
             return result;
         }
@@ -100,7 +100,7 @@ namespace Limaki.View.Viz.Visuals {
 
         }
         public override void OnMouseMove(MouseActionEventArgs e) {
-            lastMousePos = e.Location;
+            LastMousePos = e.Location;
         }
 
         public override void OnMouseUp(MouseActionEventArgs e) {

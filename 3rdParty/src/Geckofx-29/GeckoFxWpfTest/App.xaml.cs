@@ -15,9 +15,8 @@ namespace GeckoFxWpfTest
 	{
 		private static App _current;
 		[STAThread]
-		public static void Main()
-		{
-			Xpcom.Initialize(XULRunnerLocator.GetXULRunnerLocation());
+		public static void Main() {
+		    Xpcom.Initialize (@"E:\Programming\Limada\src\3rdParty\bin\xulrunner29.0-32");//XULRunnerLocator.GetXULRunnerLocation());
 
 			_current=new App();
 			_current.InitializeComponent();

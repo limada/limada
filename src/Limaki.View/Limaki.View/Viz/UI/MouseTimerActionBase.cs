@@ -27,18 +27,12 @@ namespace Limaki.View.Viz.UI {
         public MouseTimerActionBase()
             : base() {
             Priority = ActionPriorities.DragActionPriority;
-        }
-        private Point _lastMousePos = new Point();
-        protected virtual Point lastMousePos {
-            get { return _lastMousePos; }
-            set { _lastMousePos = value; }
+
         }
 
-        private int _lastMouseTime = 0;
-        public virtual int LastMouseTime {
-            get { return _lastMouseTime; }
-            set { _lastMouseTime = value; }
-        }
+        protected virtual Point LastMousePos { get; set; }
+
+        public virtual int LastMouseTime { get; set; }
 
         static IUISystemInformation _drawingUtils = null;
         protected static IUISystemInformation SystemInformation {
@@ -50,25 +44,24 @@ namespace Limaki.View.Viz.UI {
             }
         }
 
-        protected Rectangle dragBoxFromMouseDown = Rectangle.Zero;
+        protected Rectangle DragBoxFromMouseDown { get; set; }
 
         protected void BaseMouseDown(MouseActionEventArgs e) {
             base.OnMouseDown(e);
 
             // The DragSize indicates the size that the mouse can move 
             // before a drag event should be started.                
-            Size dragSize = SystemInformation.DragSize;
+            var dragSize = SystemInformation.DragSize;
 
             // Create a Rectangle using the DragSize, with the mouse position being
             // at the center of the Rectangle.
-            dragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2),
+            DragBoxFromMouseDown = new Rectangle(new Point(e.X - (dragSize.Width / 2),
                                                            e.Y - (dragSize.Height / 2)), dragSize);
 
             // Remember the point where the mouse down occurred
-            _lastMousePos.X = e.X;
-            _lastMousePos.Y = e.Y;
+            LastMousePos = new Point (e.X, e.Y);
 
-            _lastMouseTime = Environment.TickCount;
+            LastMouseTime = Environment.TickCount;
         }
 
         /// <summary>
@@ -97,28 +90,28 @@ namespace Limaki.View.Viz.UI {
             BaseMouseMove(e);
         }
 
+		protected virtual void BaseMouseUp(MouseActionEventArgs e) {
+            if (!Resolved && LastMouseTime != 0) {
 
-        protected virtual void BaseMouseUp(MouseActionEventArgs e) {
-            if (!Resolved && _lastMouseTime != 0) {
-
-                int dragTime = SystemInformation.DoubleClickTime;
                 int now = Environment.TickCount;
+                var dragTime = SystemInformation.DoubleClickTime;
+
                 // If the mouse NOT moves outside the Rectangle
                 Resolved = !(dragBoxFromMouseDown != Rectangle.Zero &&
                               !dragBoxFromMouseDown.Contains(e.X, e.Y))
                     // if more than 
-                           && ((now - _lastMouseTime) > dragTime);
-                
+                           && ((now - LastMouseTime) > dragTime);
+
                 // this is for debugging:
                 if (Resolved) {
-                    Trace.WriteLine("Start/Elapsed MouseTimer:\t" + _lastMouseTime + "/" + (now - _lastMouseTime));
+                    Trace.WriteLine ("Start/Elapsed MouseTimer:\t" + LastMouseTime + "/" + (now - LastMouseTime));
                     dragTime = 0;
                     now = 0;
                 }
 
             }
-            dragBoxFromMouseDown = Rectangle.Zero;
-            _lastMouseTime = 0;
+            DragBoxFromMouseDown = Rectangle.Zero;
+            LastMouseTime = 0;
 
         }
 
