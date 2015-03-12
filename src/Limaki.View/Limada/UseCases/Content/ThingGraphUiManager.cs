@@ -37,10 +37,17 @@ namespace Limada.UseCases.Contents {
         public Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
         public Action<string> DataPostProcess { get; set; }
 
+
         /// <summary>
         /// called after ThingGraph is read
         /// </summary>
         public Action<ThingGraphContent> ThingGraphIn { get { return ThingGraphIoManager.SinkIn; } set { ThingGraphIoManager.SinkIn = value; } }
+
+        /// <summary>
+        /// called after ThingGraph is closed
+        /// </summary>
+        /// <value>The ThingGraph closed.</value>
+        public Action<ThingGraphContent> ThingGraphClosed { get; set; }
 
         /// <summary>
         /// TODO: called to get the ThingGraph to be written
@@ -210,8 +217,11 @@ namespace Limada.UseCases.Contents {
             if (data == null)
                 return;
             var sink = ThingGraphIoManager.GetSinkIO(data.ContentType, IoMode.Write) as ThingGraphIo;
-            if (sink != null)
-                sink.Close(data);
+            if (sink != null) {
+                sink.Close (data);
+                if (this.ThingGraphClosed != null)
+                    this.ThingGraphClosed (data);
+            }
         }
 
         public void Close () {

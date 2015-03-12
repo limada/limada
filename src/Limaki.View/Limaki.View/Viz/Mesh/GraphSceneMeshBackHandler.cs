@@ -64,12 +64,21 @@ namespace Limaki.View.Viz.Mesh {
         }
 
         public void UnregisterBackGraph (IGraph<TSourceItem, TSourceEdge> root) {
-            if (BackGraphs.Contains (root) && !ScenesOfBackGraph (root).Any ()) {
+			UnregisterBackGraph (root,false);
+        }
+
+        public IEnumerable<IGraph<TSourceItem, TSourceEdge>> BackGraphsOf (IGraph<TSourceItem, TSourceEdge> graph) {
+            return BackGraphs.Where (g => g == graph || g.WrappedSource () == graph || g.RootSink () == graph);
+        }
+
+        public void UnregisterBackGraph (IGraph<TSourceItem, TSourceEdge> root, bool forced) {
+            root = BackGraphsOf (root).FirstOrDefault ();
+            var remove = forced || !ScenesOfBackGraph (root).Any ();
+            if (root != null && remove) {
                 root.GraphChange -= this.BackGraphChange;
                 root.ChangeData -= this.BackGraphChangeData;
                 root.DataChanged -= this.BackGraphDataChanged;
                 BackGraphs.Remove (root);
-
             }
         }
 

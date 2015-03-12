@@ -21,10 +21,15 @@ using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Visualizers;
 using Limaki.View.Viz.Visualizers.ToolStrips;
+using Limaki.View.Viz.Mesh;
+using Limada.Model;
 
 namespace Limada.UseCases {
 
     public class ConceptUsecaseComposer : IComposer<ConceptUsecase> {
+
+        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
+        public IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
 
         public void Factor(ConceptUsecase useCase) {
 
@@ -35,7 +40,13 @@ namespace Limada.UseCases {
 
             useCase.GraphSceneUiManager = new ThingGraphUiManager {
                 OpenFileDialog = new FileDialogMemento(),
-                SaveFileDialog = new FileDialogMemento()
+                SaveFileDialog = new FileDialogMemento(),
+                ThingGraphClosed = c => {
+                    var h = Mesh.BackHandler<IThing, ILink> () as GraphSceneMeshBackHandler<IVisual, IThing, IVisualEdge, ILink>;
+                    if (h != null) {
+                        h.UnregisterBackGraph (c.Data, true);
+                    }
+                }
             };
 
             useCase.StreamContentUiManager = new StreamContentUiManager {
