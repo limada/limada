@@ -111,9 +111,14 @@ namespace Limaki.Tests.View.Display {
                     MouseActionButtons.Left, ModifierKeys.None,
                     0, position.X, position.Y, 0);
             Display.ActionDispatcher.OnMouseDown (e);
+            DoEvents ();
 
             Assert.AreSame (Scene.Focused, Factory.Nodes[1]);
-            
+
+            Display.ActionDispatcher.OnMouseUp (e);
+            Display.ActionDispatcher.OnMouseDown (e);
+            DoEvents ();
+
             var v = new Vector ();
             // diagonal movement:
             v.Start = startposition;
