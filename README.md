@@ -13,7 +13,7 @@ more details on: http://www.limada.org
 
 #### architectural overview
 
-![Alt architecture](http://github.com/www.limada.org/Diagrams/Limada%20Architecture%20Layers.png)
+![Alt architecture](http://www.limada.org/Diagrams/Limada%20Architecture%20Layers.png)
 
 
 
