@@ -3,9 +3,11 @@ limada::concept is an application to draw, edit and store concept maps.
 
 more details on: http://www.limada.org
 
-About limadas architecture, see: [Architecture Overview](http://limada.org/Content/Limaki/ArchitectureOverview.html)
+About software architecture, see: [Architecture Overview](http://limada.org/Content/Limaki/ArchitectureOverview.html)
 
 About the application, see: [limada::concept](http://limada.org/Content/Application/LimadaConceptApp.html)
+
+Limada is written in c# and published under the GPL 2 License.
 
 #### concept map
 
