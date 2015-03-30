@@ -363,6 +363,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visualizers\ToolStrips\LayoutToolStrip0.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\TextAttributeVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Usecases\Vidgets\FileExplorerComposer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.XwtBackend\Viz\ImageLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)[Obsolete]\" />

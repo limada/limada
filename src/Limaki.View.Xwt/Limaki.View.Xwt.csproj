@@ -81,7 +81,6 @@
     <Compile Include="Limaki.View.XwtBackend\Viz\DisplayBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\XwtBackendRenderer.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\ImageDisplayBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\Viz\ImageLayer.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\DisplayBackendComposer.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\GraphSceneDisplayBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\VisualsDisplayBackend.cs" />
