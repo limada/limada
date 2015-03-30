@@ -29,7 +29,8 @@ namespace Limaki.View.Vidgets {
         public class WebBrowserBackendHost : VidgetBackendHost {
             protected override IVidgetBackend OnCreateBackend () {
                 this.ToolkitEngine.Backend.CheckInitialized();
-                return Registry.Factory.Create<IWebBrowserBackend>();
+				// WebBrowserBackend needs special support of factory to decide which backend is available 
+				return Registry.Factory.Create<IWebBrowserBackend>();
             }
         }
 

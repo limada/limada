@@ -39,7 +39,10 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
-        public string DocumentText { get { return "<html><body>Not Supported</body></html>"; } set { Widget.LoadHtml (value, ""); } }
+        public string DocumentText { 
+			get { return "<html><body>Not Supported</body></html>"; } 
+			set { Widget.LoadHtml (value, ""); } 
+		}
 
         public string Url {
             get { return Widget.Url; }
