@@ -31,6 +31,7 @@ namespace Limaki.Iconerias {
             var limadaIcons = Create<LimadaIconeria> ();
             var size = awesome.DefaultSize.Width;
 
+            Arrange = awesome.AsImage (awesome.FaArrows, size);
             ArrangeLeft = awesome.AsImage (awesome.FaAlignLeft, size);
             ArrangeCenter = awesome.AsImage (awesome.FaAlignCenter, size);
             ArrangeRight = awesome.AsImage (awesome.FaAlignRight, size);
@@ -69,6 +70,8 @@ namespace Limaki.Iconerias {
             GoPrevious = awesome.AsImage (awesome.FaChevronLeft, size);
             GoHome = awesome.AsImage (awesome.FaHome, size * 1.15);
 
+            Search = awesome.AsImage (awesome.FaSearch, size);
+
             GraphGraphView = limadaIcons.AsImage (limadaIcons.GraphGraph, size * 1.15);
             GraphContentView = limadaIcons.AsImage (limadaIcons.GraphContent, size * 1.15);
             ToggleView = limadaIcons.AsImage (limadaIcons.ToggleView, size * 1.15);
@@ -85,6 +88,7 @@ namespace Limaki.Iconerias {
 
             ToggleVisual = awesome.AsImage (awesome.FaExpand, size);
             HideVisual = awesome.AsImage (awesome.FaEyeSlash, size);
+            AddVisual = awesome.AsImage (awesome.FaPlus, size);
 
             Delete = awesome.AsImage (awesome.FaTrashO, size);
 
@@ -96,6 +100,8 @@ namespace Limaki.Iconerias {
             SubWinIcon = ConvertedResources.SubWinIcon;
 
         }
+
+        public static Image Arrange { get; set; }
 
         public static Image ArrageRows { get; set; }
 
@@ -114,8 +120,6 @@ namespace Limaki.Iconerias {
         public static Image ArrangeTop { get; set; }
 
         public static Image Cancel { get; set; }
-
-        public static Image AddVisual { get; set; }
 
         public static Image DimensionX { get; set; }
 
@@ -138,6 +142,8 @@ namespace Limaki.Iconerias {
         public static Image GoPrevious { get; set; }
 
         public static Image GoHome { get; set; }
+
+        public static Image Search { get; set; }
 
         public static Image GraphContentView { get; set; }
 
@@ -187,6 +193,11 @@ namespace Limaki.Iconerias {
 
         public static Image HideVisual { get; set; }
 
+        public static Image AddVisual { get; set; }
+
         public static Image Delete { get; set; }
+
+       
+
     }
 }
