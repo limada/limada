@@ -49,6 +49,8 @@ namespace Limaki.View.Viz.Visuals {
         protected abstract void DetachEditor (bool writeData);
         protected abstract void ActivateMarkers ();
 
+        public void EndEdit () { DetachEditor (true); }
+
         protected ICamera Camera { get; set; }
 
         protected IDisplay Display { get; set; }
@@ -186,7 +188,6 @@ namespace Limaki.View.Viz.Visuals {
 
         #region IKeyAction Member
 
-
         protected bool focusAfterEdit = false;
         protected bool hoverAfteredit = false;
    
@@ -242,6 +243,26 @@ namespace Limaki.View.Viz.Visuals {
 
         protected abstract Point CursorPosition();
 
+        public virtual void Insert (Point cursorPosition) {
+            DetachEditor (true);
+            Exclusive = Resolved = true;
+            Current = Registry.Pooled<IVisualFactory> ().CreateItem ("XXXXXXXX");
+            var scene = Scene;
+            var root = scene.Focused;
+
+            if (root == null) {
+                var pt = Camera.ToSource (cursorPosition) - Layout.Distance;
+                SceneExtensions.AddItem (scene, Current, Layout, pt);
+            } else {
+                SceneExtensions.PlaceVisual (scene, root, Current, Layout);
+            }
+
+            Display.Perform ();
+            TextToData (Current, string.Empty);
+
+            AttachEditor ();
+        }
+
         public virtual void OnKeyPressed (KeyActionEventArgs e) {
 
             KeyEditBehaviour (e);
@@ -262,24 +283,7 @@ namespace Limaki.View.Viz.Visuals {
             }
 
             if (insert) {
-                DetachEditor (true);
-                Exclusive = Resolved = true;
-                Current = Registry.Pooled<IVisualFactory> ().CreateItem ("XXXXXXXX");
-                var scene = Scene;
-                var root = scene.Focused;
-
-                if (root == null) {
-                    var pt = CursorPosition();
-                    pt = Camera.ToSource (pt) - Layout.Distance;
-                    SceneExtensions.AddItem (scene, Current, Layout, pt);
-                } else {
-                    SceneExtensions.PlaceVisual (scene, root, Current, Layout);
-                }
-
-                Display.Perform ();
-                TextToData (Current, string.Empty);
-
-                AttachEditor ();
+                Insert (CursorPosition ());
                 e.Handled = true;
             }
            
