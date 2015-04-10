@@ -85,7 +85,7 @@ namespace Limaki.View.Visuals {
                     _shape = new RectangleShape();
 
                 if (SpatialIndex.BoundsDirty) {
-                    _noHit = emptyPoint;
+                    _noHit = NoPoint;
                 }
 
                 _shape.Data = SpatialIndex.Bounds;
@@ -257,10 +257,10 @@ namespace Limaki.View.Visuals {
 
        
         public virtual IVisual Hovered {get;set;}
-          
 
-        static Point emptyPoint = new Point (int.MinValue, int.MinValue);
-        private Point _noHit = emptyPoint;
+
+        public static readonly Point NoPoint = new Point (double.MinValue, double.MinValue);
+        private Point _noHit = NoPoint;
 
 		public Point NoHit {get{return _noHit;}}
 		
