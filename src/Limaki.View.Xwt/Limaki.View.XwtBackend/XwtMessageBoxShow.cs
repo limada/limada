@@ -12,6 +12,7 @@
  * 
  */
 
+using System;
 using System.Linq;
 using Limaki.View.Vidgets;
 using Xwt;
@@ -48,6 +49,11 @@ namespace Limaki.View.XwtBackend {
             }
 
             return DialogResult.None;
+        }
+
+        public void Show (string title, string text, MessageBoxButtons buttons, Action<DialogResult> onResult) {
+            var result = Show (title, text, buttons);
+            onResult (result);
         }
     }
 }

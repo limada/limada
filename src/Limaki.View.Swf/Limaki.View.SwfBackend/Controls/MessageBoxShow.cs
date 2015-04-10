@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Forms;
 using Limaki.View.Vidgets;
 using DialogResult = Limaki.View.Vidgets.DialogResult;
@@ -11,5 +12,9 @@ namespace Limaki.View.SwfBackend.Controls {
             return Converter.Convert(MessageBox.Show(text, title, Converter.Convert(buttons)));
         }
 
+        public void Show (string title, string text, MessageBoxButtons buttons, Action<DialogResult> onResult) {
+            var result = Show (title, text, buttons);
+            onResult (result);
+        }
     }
 }

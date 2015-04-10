@@ -14,5 +14,10 @@ namespace Limaki.View.Headless.VidgetBackends {
             Trace.WriteLine (string.Format ("{0} {1} {2}", title, text, buttons));
             return DialogResult.None;
         }
+
+        public void Show (string title, string text, MessageBoxButtons buttons, Action<DialogResult> onResult) {
+            var result = Show (title, text, buttons);
+            onResult (result);
+        }
     }
 }
