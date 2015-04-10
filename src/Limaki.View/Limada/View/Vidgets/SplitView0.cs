@@ -14,6 +14,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -243,11 +244,13 @@ namespace Limada.View.Vidgets {
         public void ChangeData(IGraphScene<IVisual, IVisualEdge> scene) {
 
             var oldScene = Display1.Data;
-            var displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { Display2 };
+            IList<IGraphSceneDisplay<IVisual, IVisualEdge>> displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { Display2 };
 
             if (oldScene != null) {
-                displays = Mesh.DisplaysOfBackGraph (oldScene.Graph).ToArray ();
-
+                displays = Mesh.DisplaysOfBackGraph (oldScene.Graph).ToList ();
+                if (!displays.Contains (Display2)) {
+                    displays.Add (Display2);
+                }
                 Clear ();
 
                 displays.ForEach (d => Mesh.RemoveScene (d.Data));
