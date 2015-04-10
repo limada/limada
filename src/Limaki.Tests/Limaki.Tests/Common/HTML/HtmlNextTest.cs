@@ -8,7 +8,6 @@ using Attribute = Limaki.Common.Text.HTML.Parser.Attribute;
 
 namespace Limaki.Tests.Common.HTML {
 
-
     [TestFixture]
     public class HtmlNextTest : TestBase {
         public TagParser TagParser;

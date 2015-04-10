@@ -29,6 +29,7 @@ using Xwt.Backends;
 using Xwt.Drawing;
 
 namespace Xwt {
+
     public class SystemFonts {
 
         public SystemFonts () {

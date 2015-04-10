@@ -130,7 +130,6 @@ namespace Limada.View.Vidgets {
             display.BackendRenderer.Render();
             display.Info = homeInfo;
             
-
             var view = display.Data.Graph as SubGraph<IVisual, IVisualEdge>;
 
             var graph = view.Source<IVisual, IVisualEdge,IThing, ILink>() as VisualThingGraph;

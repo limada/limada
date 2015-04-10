@@ -71,8 +71,7 @@ namespace Limaki.View.Viz.Visuals {
 
         public virtual IVisual Current { get; set; }
 
-        private bool _exclusive;
-        public override bool Exclusive { get { return _exclusive; } protected set { _exclusive = value; } }
+        public override bool Exclusive { get; protected set; }
 
         bool HitTest(IVisual visual, Point p) {
             bool result = false;

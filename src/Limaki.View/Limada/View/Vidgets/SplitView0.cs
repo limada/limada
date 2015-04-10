@@ -405,7 +405,6 @@ namespace Limada.View.Vidgets {
 
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
         
-        
         private void Clear() {
             if (VisualsDisplayHistory != null) {
                 VisualsDisplayHistory.Clear ();

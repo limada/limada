@@ -33,6 +33,7 @@ using System.IO;
 using System.Text;
 
 namespace Limaki.Common.Text.RTF.Parser {
+
     public class RTF {
         #region	Local Variables
         public const char	EOF = unchecked((char)-1);

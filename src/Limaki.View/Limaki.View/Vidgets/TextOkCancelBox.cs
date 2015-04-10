@@ -34,8 +34,6 @@ namespace Limaki.View.Vidgets {
             set { _backend = value; }
         }
 
-
-
         public override void Dispose () {
             if (Backend != null) {
                 Backend.Dispose ();

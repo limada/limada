@@ -146,6 +146,7 @@ namespace Limaki.View.Viz.Visualizers {
                 this.Data.FocusChanged += SceneFocusChangedCallback;
             }
         }
+
         public override bool Check() {
             if (this.Layout == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IGraphSceneLayout<TItem, TEdge>));
