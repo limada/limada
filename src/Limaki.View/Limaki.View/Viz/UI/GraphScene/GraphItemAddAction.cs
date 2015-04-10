@@ -23,6 +23,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
     /// </summary>
     public class GraphItemAddAction<TItem,TEdge> : GraphItemMoveResizeAction<TItem,TEdge>
         where TEdge : TItem, IEdge<TItem> {
+
         public GraphItemAddAction() : base() {
             this.Priority = ActionPriorities.SelectionPriority - 20;
         }
@@ -37,24 +38,35 @@ namespace Limaki.View.Viz.UI.GraphScene {
         public virtual TItem Last { get; set; }
         public IGraphModelFactory<TItem,TEdge> ModelFactory {get;set;}
 
-        private int newCounter = 1;
-        protected override void OnMouseMoveResolved(MouseActionEventArgs e) {
+        public TItem AddItem () {
             if (NewItem == null) {
 
-                NewItem = ModelFactory.CreateItem(newCounter + ". Label");
+                NewItem = ModelFactory.CreateItem (newCounter + ". Label");
 
                 newCounter++;
-                Scene.Add(NewItem);
+                Scene.Add (NewItem);
                 // see: OnMouseUp Scene.Graph.OnGraphChanged (NewItem, GraphChangeType.Add);
-                Scene.Requests.Add(new LayoutCommand<TItem>(NewItem, LayoutActionType.Invoke));
+                Scene.Requests.Add (new LayoutCommand<TItem> (NewItem, LayoutActionType.Invoke));
                 if (Scene.Focused != null) {
                     Scene.Requests.Add (new LayoutCommand<TItem> (Scene.Focused, LayoutActionType.Perform));
                     Scene.Selected.Remove (Scene.Focused);
                 }
-                this.MouseDownPos = e.Location;
+
                 Last = Scene.Focused;
                 Scene.Focused = NewItem;
                 resizing = true;
+            }
+
+            return NewItem;
+        }
+
+        private int newCounter = 1;
+        protected override void OnMouseMoveResolved(MouseActionEventArgs e) {
+            if (NewItem == null) {
+
+                AddItem ();
+
+                this.MouseDownPos = e.Location;
  
             }
             base.OnMouseMoveResolved (e);
