@@ -48,6 +48,7 @@ namespace Limaki.View.Viz.Visualizers {
             set {
                 bool refresh = !object.ReferenceEquals(value,_data);
                 if (refresh) {
+                    BeforeDataChange (_data);
                     _data = value;
                     DataChanged();
                 }
@@ -59,6 +60,8 @@ namespace Limaki.View.Viz.Visualizers {
 
         protected State _state = default(State);
         public virtual State State { get { return _state ?? (_state = new State{Hollow=true}); } }
+
+        public virtual void BeforeDataChange (TData old) { }
 
         public virtual void DataChanged () {
 

@@ -135,6 +135,12 @@ namespace Limaki.View.Viz.Visualizers {
             }
         }
 
+        public override void BeforeDataChange (IGraphScene<TItem, TEdge> old) {
+            base.BeforeDataChange (old);
+            if (old != null)
+                old.FocusChanged -= SceneFocusChangedCallback;
+        }
+
         public override void DataChanged() {
             this.Text = "";
             this.DataId = 0;
@@ -143,6 +149,7 @@ namespace Limaki.View.Viz.Visualizers {
             base.DataChanged();
 
             if (this.Data != null) {
+                this.Data.FocusChanged -= SceneFocusChangedCallback;
                 this.Data.FocusChanged += SceneFocusChangedCallback;
             }
         }
