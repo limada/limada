@@ -135,7 +135,9 @@ namespace Limaki.View.Viz.Mesh {
                     var visible = scene.Contains (sinkItem);
                     if (visible) {
                         scene.Requests.Add (new LayoutCommand<TSinkItem> (sinkItem, LayoutActionType.Justify));
-                        displays.Add (DisplayOf (scene));
+                        var sceneDisplay = DisplayOf (scene);
+                        if (sceneDisplay != null)
+                            displays.Add (sceneDisplay);
                     }
                 }
 
