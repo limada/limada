@@ -48,5 +48,14 @@ namespace Limada.View.Vidgets {
         }
 
         public void ShowInNewWindow () {}
+
+
+        public void Search (string name) {
+           
+        }
+
+        public void DoSearch () {
+           
+        }
     }
 }

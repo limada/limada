@@ -30,6 +30,9 @@ namespace Limaki.Usecases.Vidgets {
         void GoBackOrForward(bool forward);
         void GoHome();
 
+        void Search (string name);
+        void DoSearch ();
+
         void NewSheet();
         void NewNote();
         void SaveDocument();
