@@ -123,6 +123,9 @@
     <Compile Include="Limada.Tests\Tests\View\ThingVisualMapperTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\BasicVisualThingGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\View\WrapperTest.cs" />
+    <Compile Include="Limaki.Tests\Common\Rtf\RtfImporterTest.cs" />
+    <Compile Include="Limaki.Tests\Common\Rtf\RtfTest.cs" />
+    <Compile Include="Limaki.Tests\Common\Rtf\RtfTestData.cs" />
     <Compile Include="Limaki.Tests\Graph\Samples\EntityGraphFactorys.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\EntityTests.cs" />
     <Compile Include="Limaki.Tests\View\Visuals\Samples\SampleGraphSceneFactory.cs" />
