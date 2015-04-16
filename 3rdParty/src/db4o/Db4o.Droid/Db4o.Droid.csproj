@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
+    <Reference Include="I18N.West" />
+    <Reference Include="I18N" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
@@ -52,5 +54,12 @@
   </ItemGroup>
   <Import Project="..\Db4objects.Db4o.CS\Db4o.CS.Shared.projitems" Label="Shared" Condition="Exists('..\Db4objects.Db4o.CS\Db4o.CS.Shared.projitems')" />
   <Import Project="..\Db4objects.Db4o\Db4o.Shared.projitems" Label="Shared" Condition="Exists('..\Db4objects.Db4o\Db4o.Shared.projitems')" />
+  <Import Project="..\Db4objects.Db4o.Linq\Db4o.Linq.Shared.projitems" Label="Shared" Condition="Exists('..\Db4objects.Db4o.Linq\Db4o.Linq.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mono.Reflection\Mono.Reflection.Droid.csproj">
+      <Project>{E708664A-F29E-405E-8777-A6B6E8296055}</Project>
+      <Name>Mono.Reflection.Droid</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
