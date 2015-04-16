@@ -86,6 +86,6 @@ namespace Limaki.Drawing {
     }
 
     public interface IDataPainter<T> : IPainter<T> {
-        new T Data { get; set; }
+        T Data { get; set; }
     }
 }
