@@ -128,7 +128,8 @@ namespace Limada.UseCases.Contents {
             if (this.DataBound != null)
                 this.DataBound(scene);
 
-            DataPostProcess(message);
+			if (DataPostProcess != null)
+				DataPostProcess (message);
 
             return true;
         }

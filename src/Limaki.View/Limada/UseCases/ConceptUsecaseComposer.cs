@@ -101,7 +101,10 @@ namespace Limada.UseCases {
             fileManager.FileDialogShow = useCase.FileDialogShow;
             fileManager.MessageBoxShow = useCase.MessageBoxShow;
 
-            fileManager.DataBound = scene => splitView.ChangeData(scene);
+			fileManager.DataBound = scene => {
+				useCase.FavoriteManager.ResetHomeId();
+				splitView.ChangeData(scene);
+			};
             fileManager.DataPostProcess = useCase.DataPostProcess;
 
             fileManager.Progress = useCase.Progress;
