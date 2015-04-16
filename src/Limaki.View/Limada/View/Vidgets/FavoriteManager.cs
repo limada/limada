@@ -34,7 +34,7 @@ namespace Limada.View.Vidgets {
     public class FavoriteManager {
 
         public FavoriteManager() {
-            Trace.WriteLine(string.Format("HomeId\t{0}", HomeId));
+			ResetHomeId();
         }
 
         public ISheetManager SheetManager { get; set; }
@@ -113,8 +113,19 @@ namespace Limada.View.Vidgets {
             return false;
         }
 
-        [TODO("change homeId on opening database")]
-        public Int64 HomeId = Isaac.Long;
+		Int64 _homeId = 0;
+		public Int64 HomeId { 
+			get { return _homeId; }
+			set { 
+				_homeId = value; 
+				Trace.WriteLine(string.Format("HomeId\t{0}", HomeId));
+			} 
+		}
+
+		public void ResetHomeId() {
+			HomeId = Isaac.Long;
+		}
+
         public virtual void GoHome(IGraphSceneDisplay<IVisual, IVisualEdge> display, bool initialize) {
             if (display == null)
                 return;
