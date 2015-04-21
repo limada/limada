@@ -23,6 +23,9 @@ namespace Limaki.Usecases.Vidgets {
 
         IGraphSceneDisplay<IVisual, IVisualEdge> CurrentDisplay { get; }
 
+        IGraphSceneDisplay<IVisual, IVisualEdge> Display1 { get; }
+        IGraphSceneDisplay<IVisual, IVisualEdge> Display2 { get; }
+
         SplitViewMode ViewMode { get; set; }
         void ToggleView();
 

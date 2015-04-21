@@ -546,7 +546,7 @@ namespace Limada.View.Vidgets {
             var layout = currentDiplay.Layout;
 
             if (root == null) {
-                Point pt = new Point(layout.Border.Width, scene.Shape.BoundsRect.Bottom);
+                var pt = new Point(layout.Border.Width, scene.Shape.BoundsRect.Bottom);
                 SceneExtensions.AddItem(scene, visual, layout, pt);
             } else {
                 SceneExtensions.PlaceVisual(scene, root, visual, layout);
