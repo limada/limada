@@ -27,6 +27,7 @@ using Limaki.View;
 using Limaki.View.GraphScene;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
+using Limaki.View.Viz.Mesh;
 using Limaki.View.Viz.Visualizers;
 
 namespace Limada.View.Vidgets {
@@ -126,115 +127,129 @@ namespace Limada.View.Vidgets {
 			HomeId = Isaac.Long;
 		}
 
-        public virtual void GoHome(IGraphSceneDisplay<IVisual, IVisualEdge> display, bool initialize) {
+        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
+        public IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+
+        public virtual void GoHome (IGraphSceneDisplay<IVisual, IVisualEdge> display, bool initialize) {
             if (display == null)
                 return;
             if (display.Data == null)
                 return;
 
             var homeInfo = new SceneInfo {
-                Id = HomeId,
-                Name = "Favorites",
-            };
+                                             Id = HomeId,
+                                             Name = "Favorites",
+                                         };
             homeInfo.State.Hollow = true;
-            display.Data.CleanScene();
-            display.BackendRenderer.Render();
+
+            var scene = Mesh.CreateSinkScene (display.Data.Graph);
+            display.Data = scene;
+
+            //display.Data.CleanScene();
+            //display.BackendRenderer.Render();
             display.Info = homeInfo;
-            
+
             var view = display.Data.Graph as SubGraph<IVisual, IVisualEdge>;
+            if (view == null)
+                return;
 
-            var graph = view.Source<IVisual, IVisualEdge,IThing, ILink>() as VisualThingGraph;
-			IThingGraph thingGraph = null;
-            if (graph != null) 
+            var graph = view.Source<IVisual, IVisualEdge, IThing, ILink> () as VisualThingGraph;
+            IThingGraph thingGraph = null;
+            if (graph != null)
                 thingGraph = graph.Source as IThingGraph;
-            
-            var done = false;
 
-            if (graph != null && view != null && thingGraph != null) {
-                var topic = thingGraph.GetById(TopicSchema.Topics.Id);
-                var topicsCount = thingGraph.Edges(topic).Count;
-                var showTopic = topic != null && (topicsCount > 0);
-
-                #region only one sheet
-                // look if there is only one sheet:
-                var sheets = thingGraph.GetById(TopicSchema.Sheets.Id);
-                var sheetsCount = thingGraph.Edges(sheets).Where(l => l.Marker.Id == TopicSchema.SheetMarker.Id).Count();
-                
-                if (! done && initialize && sheets != null && sheetsCount==1 && topicsCount <= 1) {
-                    var autoView = thingGraph.Edges(sheets)
-                        .Where(link => link.Marker.Id == TopicSchema.SheetMarker.Id)
-                        .Select(link => thingGraph.Adjacent(link, sheets))
-                        .FirstOrDefault();
-
-                    done = DisplaySheet(display, autoView, thingGraph);
+            if (thingGraph == null) {
+                // it seems not to be a ThingGraph based Scene:
+                foreach (var item in view.Source.FindRoots (null)) {
+                    view.Add (item);
                 }
-                #endregion
-
-                #region Favorites sheet is in SheetManager
-                if (! done) {
-                    var info = SheetManager.GetSheetInfo(HomeId);
-                    if (info != null) {
-                        var sheet = SheetManager.GetFromStore(HomeId);
-                        var content = new Content<Stream> {
-                            Source = HomeId,
-                            Description = homeInfo.Name,
-                            Data = sheet,
-                            ContentType = TopicSchema.SheetMarker.Id
-                        };
-                        DisplaySheet(display, content);
-                        done = true;
-                    }
-                }
-                #endregion
-
-                #region AutoView
-                if (! done && showTopic && initialize) {
-                    var autoView = thingGraph.Edges(topic)
-                        .Where(link => link.Marker.Id == TopicSchema.AutoViewMarker.Id)
-                        .Select(link => thingGraph.Adjacent(link, topic))
-                        .FirstOrDefault();
-
-                    done = DisplaySheet(display, autoView, thingGraph);
-
-                }
-                #endregion
-
-                #region show Topic
-                if (! done && showTopic) {
-                    var topicVisual = graph.Get(topic);
-                    view.Add(topicVisual);
-                    display.Data.Focused = topicVisual;
-                    new GraphSceneFacade<IVisual,IVisualEdge>(() => display.Data,  display.Layout).Expand(false);
-                    display.Reset();
-                    done = true;
-
-                }
-                #endregion
-
-                #region show roots
-                if (!done) {
-                    foreach (var item in thingGraph.FindRoots(null)) {
-                        if (!thingGraph.IsMarker(item))
-                            view.Add(graph.Get(item));
-                    }
-                    display.Reset();
-                    done = true;
-                }
-                #endregion
-
+                display.Reset ();
+                return;
             }
 
-            #region no ThingGraph
+            var done = false;
+            
+            var topic = thingGraph.GetById (TopicSchema.Topics.Id);
+            var topicsCount = thingGraph.Edges (topic).Count;
+            var showTopic = topic != null && (topicsCount > 0);
 
-            if (! done && view != null) {
-                // it seems not to be a ThingGraph based Scene:
-                foreach (var item in  view.Source.FindRoots(null)) {
-                    view.Add(item);
-                }
-                display.Reset();
+            #region only one sheet
+
+            // look if there is only one sheet:
+            var sheets = thingGraph.GetById (TopicSchema.Sheets.Id);
+            var sheetsCount = thingGraph.Edges (sheets).Where (l => l.Marker.Id == TopicSchema.SheetMarker.Id).Count ();
+
+            if (! done && initialize && sheets != null && sheetsCount == 1 && topicsCount <= 1) {
+                var autoView = thingGraph.Edges (sheets)
+                    .Where (link => link.Marker.Id == TopicSchema.SheetMarker.Id)
+                    .Select (link => thingGraph.Adjacent (link, sheets))
+                    .FirstOrDefault ();
+
+                done = DisplaySheet (display, autoView, thingGraph);
             }
 
             #endregion
+
+            #region Favorites sheet is in SheetManager
+
+            if (! done) {
+                var info = SheetManager.GetSheetInfo (HomeId);
+                if (info != null) {
+                    var sheet = SheetManager.GetFromStore (HomeId);
+                    var content = new Content<Stream> {
+                                                          Source = HomeId,
+                                                          Description = homeInfo.Name,
+                                                          Data = sheet,
+                                                          ContentType = TopicSchema.SheetMarker.Id
+                                                      };
+                    DisplaySheet (display, content);
+                    done = true;
+                }
+            }
+
+            #endregion
+
+            #region AutoView
+
+            if (! done && showTopic && initialize) {
+                var autoView = thingGraph.Edges (topic)
+                    .Where (link => link.Marker.Id == TopicSchema.AutoViewMarker.Id)
+                    .Select (link => thingGraph.Adjacent (link, topic))
+                    .FirstOrDefault ();
+
+                done = DisplaySheet (display, autoView, thingGraph);
+
+            }
+
+            #endregion
+
+            #region show Topic
+
+            if (! done && showTopic) {
+                var topicVisual = graph.Get (topic);
+                view.Add (topicVisual);
+                display.Data.Focused = topicVisual;
+                new GraphSceneFacade<IVisual, IVisualEdge> (() => display.Data, display.Layout).Expand (false);
+                display.Reset ();
+                done = true;
+
+            }
+
+            #endregion
+
+            #region show roots
+
+            if (!done) {
+                foreach (var item in thingGraph.FindRoots (null)) {
+                    if (!thingGraph.IsMarker (item))
+                        view.Add (graph.Get (item));
+                }
+                display.Reset ();
+                done = true;
+            }
+
+            #endregion
+
         }
 
 
