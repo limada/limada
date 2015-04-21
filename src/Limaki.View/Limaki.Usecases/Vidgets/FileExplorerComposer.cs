@@ -52,7 +52,8 @@ namespace Limaki.Usecases.Vidgets {
             ic.StrokeColor = IconStrokeColor;
             ic.Fill = true;
             ic.FillColor = FolderIconFillColor;
-            ic.DefaultSize = new Size (15 * Scale, 15 * Scale);
+            var w = 44;
+            ic.DefaultSize = new Size (w, w);
             ic.LineWidth = 0;
         }
 
