@@ -31,7 +31,7 @@ namespace Limada.View.Vidgets {
     [BackendType(typeof(ISplitViewToolStripBackend0))]
     public class SplitViewToolStrip0 : DisplayToolStrip0<IGraphSceneDisplay<IVisual, IVisualEdge>, ISplitViewToolStripBackend0> {
 
-        public ToolStripCommand0 GraphStreamViewCommand { get; set; }
+        public ToolStripCommand0 GraphContentViewCommand { get; set; }
         public ToolStripCommand0 GraphGraphViewCommand { get; set; }
         public ToolStripCommand0 ToggleViewCommand { get; set; }
 
@@ -52,8 +52,8 @@ namespace Limada.View.Vidgets {
         protected virtual void Compose () {
             var size = new Xwt.Size(36, 36);
 
-            GraphStreamViewCommand = new ToolStripCommand0 {
-                Action = s => Backend.ViewMode = SplitView.ViewMode = SplitViewMode.GraphStream,
+            GraphContentViewCommand = new ToolStripCommand0 {
+                Action = s => Backend.ViewMode = SplitView.ViewMode = SplitViewMode.GraphContent,
                 Image = Iconery.GraphContentView,
                 Size = size,
                 ToolTipText = "show contents"

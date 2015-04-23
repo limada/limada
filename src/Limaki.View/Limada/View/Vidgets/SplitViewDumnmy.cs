@@ -18,12 +18,12 @@ namespace Limada.View.Vidgets {
         public event EventHandler ViewChanged;
         public virtual void ToggleView() { }
 
-        SplitViewMode _viewMode = SplitViewMode.GraphStream;
+        SplitViewMode _viewMode = SplitViewMode.GraphContent;
         public SplitViewMode ViewMode {
             get { return _viewMode; }
             set {
                 if (_viewMode != value) {
-                    if (value == SplitViewMode.GraphStream)
+                    if (value == SplitViewMode.GraphContent)
                         this.SetGraphStreamView();
                     else if (value == SplitViewMode.GraphGraph)
                         this.SetGraphGraphView();

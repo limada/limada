@@ -96,12 +96,12 @@ namespace Limada.View.Vidgets {
         public IGraphSceneDisplay<IVisual, IVisualEdge> Display2 { get; set; }
 
         #region View-Switching
-        SplitViewMode _viewMode = SplitViewMode.GraphStream;
+        SplitViewMode _viewMode = SplitViewMode.GraphContent;
         public SplitViewMode ViewMode {
             get { return _viewMode; }
             set {
                 if (_viewMode != value) {
-                    if (value == SplitViewMode.GraphStream)
+                    if (value == SplitViewMode.GraphContent)
                         this.GraphContentView();
                     else if (value == SplitViewMode.GraphGraph)
                         this.GraphGraphView();
@@ -308,7 +308,7 @@ namespace Limada.View.Vidgets {
 
         protected virtual void SceneFocusChanged(object sender, GraphSceneEventArgs<IVisual, IVisualEdge> e) {
 
-            if (ViewMode != SplitViewMode.GraphStream)
+            if (ViewMode != SplitViewMode.GraphContent)
                 return;
             var display = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
             CurrentDisplay = display;

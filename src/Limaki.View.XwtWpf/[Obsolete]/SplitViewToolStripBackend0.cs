@@ -36,13 +36,13 @@ namespace Limaki.View.WpfBackend {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SplitViewToolStrip0 Frontend { get; protected set; }
 
-        protected SplitViewMode _viewMode = SplitViewMode.GraphStream;
+        protected SplitViewMode _viewMode = SplitViewMode.GraphContent;
         [Browsable (false)]
         [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
         public virtual SplitViewMode ViewMode {
             get {
-                if (GraphStreamViewButton.IsChecked.Value)
-                    _viewMode = SplitViewMode.GraphStream;
+                if (GraphContentViewButton.IsChecked.Value)
+                    _viewMode = SplitViewMode.GraphContent;
                 else
                     _viewMode = SplitViewMode.GraphGraph;
                 return _viewMode;
@@ -50,19 +50,19 @@ namespace Limaki.View.WpfBackend {
             }
             set {
                 _viewMode = value;
-                if (value == SplitViewMode.GraphStream) {
-                    GraphStreamViewButton.IsChecked = true;
+                if (value == SplitViewMode.GraphContent) {
+                    GraphContentViewButton.IsChecked = true;
                     GraphGraphViewButton.IsChecked = false;
 
                 } else {
-                    GraphStreamViewButton.IsChecked = false;
+                    GraphContentViewButton.IsChecked = false;
                     GraphGraphViewButton.IsChecked = true;
                 }
 
             }
         }
 
-        private ToolStripButton0 GraphStreamViewButton { get; set; }
+        private ToolStripButton0 GraphContentViewButton { get; set; }
         private ToolStripButton0 GraphGraphViewButton { get; set; }
 
         private ToolStripButton0 GoBackButton { get; set; }
@@ -73,7 +73,7 @@ namespace Limaki.View.WpfBackend {
         protected override void Compose () {
             base.Compose ();
 
-            GraphStreamViewButton = new ToolStripButton0 {Command = Frontend.GraphStreamViewCommand, IsCheckable = true};
+            GraphContentViewButton = new ToolStripButton0 {Command = Frontend.GraphContentViewCommand, IsCheckable = true};
             GraphGraphViewButton = new ToolStripButton0 {Command = Frontend.GraphGraphViewCommand, IsCheckable = true};
             var toggleViewButton = new ToolStripButton0 {Command = Frontend.ToggleViewCommand};
             var viewVisualNote = new ToolStripButton0 {Command = Frontend.OpenNewWindowCommand};
@@ -89,7 +89,7 @@ namespace Limaki.View.WpfBackend {
 
             var sepStyle = (Style) FindResource (ToolBar.SeparatorStyleKey);
             this.AddItems (
-                GraphStreamViewButton,
+                GraphContentViewButton,
                 GraphGraphViewButton,
                 toggleViewButton,
                 viewVisualNote,

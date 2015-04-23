@@ -64,6 +64,6 @@ namespace Limaki.Usecases.Vidgets {
         /// <summary>
         /// shows one VisualsDisplay and one StreamViewer
         /// </summary>
-        GraphStream
+        GraphContent
     }
 }

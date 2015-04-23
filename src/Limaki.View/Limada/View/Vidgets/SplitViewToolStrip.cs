@@ -61,7 +61,7 @@ namespace Limada.View.Vidgets {
             var size = new Xwt.Size (36, 36);
 
             GraphStreamViewCommand = new ToolStripCommand {
-                Action = s => ViewMode = SplitView.ViewMode = SplitViewMode.GraphStream,
+                Action = s => ViewMode = SplitView.ViewMode = SplitViewMode.GraphContent,
                 Image = Iconery.GraphContentView,
                 Size = size,
                 ToolTipText = "show contents"
@@ -170,13 +170,13 @@ namespace Limada.View.Vidgets {
                 );
         }
 
-        protected SplitViewMode _viewMode = SplitViewMode.GraphStream;
+        protected SplitViewMode _viewMode = SplitViewMode.GraphContent;
         [Browsable (false)]
         [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
         public virtual SplitViewMode ViewMode {
             get {
                 if (GraphStreamViewButton.IsChecked.Value)
-                    _viewMode = SplitViewMode.GraphStream;
+                    _viewMode = SplitViewMode.GraphContent;
                 else
                     _viewMode = SplitViewMode.GraphGraph;
                 return _viewMode;
@@ -184,7 +184,7 @@ namespace Limada.View.Vidgets {
             }
             set {
                 _viewMode = value;
-                if (value == SplitViewMode.GraphStream) {
+                if (value == SplitViewMode.GraphContent) {
                     GraphStreamViewButton.IsChecked = true;
                     GraphGraphViewButton.IsChecked = false;
 
