@@ -12,7 +12,8 @@ namespace Limada.View.Vidgets {
 		public void ChangeData (IGraphScene<IVisual, IVisualEdge> scene) { }
 
 		public IGraphSceneDisplay<IVisual, IVisualEdge> CurrentDisplay { get { return null; } }
-        public IGraphSceneDisplay<IVisual, IVisualEdge> Display1 { get { return null; } }
+	    public object CurrentWidget { get { return null; } }
+	    public IGraphSceneDisplay<IVisual, IVisualEdge> Display1 { get { return null; } }
         public IGraphSceneDisplay<IVisual, IVisualEdge> Display2 { get { return null; } }
 
         public event EventHandler ViewChanged;
