@@ -88,6 +88,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="[Generated]\AwesomeIconeria-4.04.Generated.cs" />
+    <Compile Include="[Generated]\AwesomeIconeria-4.3.Generated.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Resources\LogoDrop32.ico" />

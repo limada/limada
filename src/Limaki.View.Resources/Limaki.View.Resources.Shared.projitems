@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -15,5 +15,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Iconeria\Iconery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Iconeria\LimadaIconeria.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)[Generated]\AwesomeIconeria-4.04.Generated.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)[Generated]\AwesomeIconeria-4.3.Generated.cs" />
   </ItemGroup>
 </Project>

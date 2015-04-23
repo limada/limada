@@ -31,7 +31,7 @@ namespace Limaki.Iconerias {
             var limadaIcons = Create<LimadaIconeria> ();
             var size = awesome.DefaultSize.Width;
 
-            Arrange = awesome.AsImage (awesome.FaArrows, size);
+            Arrange = awesome.AsImage (awesome.FaSitemap, size);
             ArrangeLeft = awesome.AsImage (awesome.FaAlignLeft, size);
             ArrangeCenter = awesome.AsImage (awesome.FaAlignCenter, size);
             ArrangeRight = awesome.AsImage (awesome.FaAlignRight, size);
@@ -91,6 +91,8 @@ namespace Limaki.Iconerias {
             AddVisual = awesome.AsImage (awesome.FaPlus, size);
 
             Delete = awesome.AsImage (awesome.FaTrashO, size);
+
+            ViewState = awesome.AsImage (awesome.FaNewspaperO, size); 
 
             awesome.FillColor = Xwt.Drawing.Colors.Red.WithAlpha (.7);
 
@@ -197,7 +199,7 @@ namespace Limaki.Iconerias {
 
         public static Image Delete { get; set; }
 
-       
+        public static Image ViewState { get; set; }
 
     }
 }
