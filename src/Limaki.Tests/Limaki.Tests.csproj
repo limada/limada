@@ -180,6 +180,8 @@
     <Compile Include="Playground\IO\IoPrototype.cs" />
     <Compile Include="Playground\IO\IoTryout.cs" />
     <Compile Include="Playground\Limada.Model\HyperGraph.cs" />
+    <Compile Include="Playground\Text\MarkDown.cs" />
+    <Compile Include="Playground\Text\RichText.cs" />
     <Compile Include="Playground\View\AllignerPrototyper.cs" />
     <Compile Include="Playground\Limjekts\Limjekts.cs" />
     <Compile Include="Playground\View\CollissionResolver.cs" />

@@ -61,6 +61,42 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="3rdParty\CommonMark\CommonMarkAdditionalFeatures.cs" />
+    <Compile Include="3rdParty\CommonMark\CommonMarkConverter.cs" />
+    <Compile Include="3rdParty\CommonMark\CommonMarkException.cs" />
+    <Compile Include="3rdParty\CommonMark\CommonMarkSettings.cs" />
+    <Compile Include="3rdParty\CommonMark\Formatters\HtmlFormatter.cs" />
+    <Compile Include="3rdParty\CommonMark\Formatters\HtmlFormatterSlim.cs" />
+    <Compile Include="3rdParty\CommonMark\Formatters\HtmlTextWriter.cs" />
+    <Compile Include="3rdParty\CommonMark\Formatters\Printer.cs" />
+    <Compile Include="3rdParty\CommonMark\OutputFormat.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\BlockMethods.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\EntityDecoder.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\InlineMethods.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\InlineStack.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\LineInfo.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\PositionOffset.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\PositionTracker.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\Scanner.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\ScannerCharacterMatcher.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\ScannerHtmlTag.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\Subject.cs" />
+    <Compile Include="3rdParty\CommonMark\Parser\TabTextReader.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\Block.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\BlockTag.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\Enumerable.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\EnumeratorEntry.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\FencedCodeData.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\Inline.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\InlineContentLinkable.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\InlineTag.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\ListData.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\ListDelimeter.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\ListType.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\Reference.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\StringContent.cs" />
+    <Compile Include="3rdParty\CommonMark\Syntax\StringContentPart.cs" />
+    <Compile Include="3rdParty\CommonMark\Utilities.cs" />
     <Compile Include="3rdParty\Mono.Linq.Expressions\CombineExtensions.cs" />
     <Compile Include="3rdParty\Mono.Linq.Expressions\CSharp.cs" />
     <Compile Include="3rdParty\Mono.Linq.Expressions\CSharpWriter.cs" />
@@ -101,6 +137,7 @@
     <Compile Include="Common\Linqish\ExpressionCache.cs" />
     <Compile Include="Common\Linqish\ExpressionChanger.cs" />
     <Compile Include="Common\Linqish\ExpressionVisitVisitor.cs" />
+    <Compile Include="Contents\Handlers\MarkdownContent.cs" />
     <Compile Include="[Obsolete]\GraphPair0.cs" />
     <Compile Include="Graphs\HollowGraphPair.cs" />
     <Compile Include="Limada\Model\[ModelVersions].cs" />
@@ -331,9 +368,10 @@
     <Compile Include="Common\ByteUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="3rdParty\CommonMark\LICENSE.md" />
+    <None Include="3rdParty\CommonMark\README.md" />
     <None Include="3rdParty\MonoRTF\ChangeLog" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
