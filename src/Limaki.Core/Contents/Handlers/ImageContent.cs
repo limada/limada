@@ -22,12 +22,21 @@ using System.IO;
 namespace Limaki.Contents.IO {
 
     public class ImageContentSpot : ContentDetector {
+
+        public static long PNG = unchecked ((long)0x8256F278CBBA0AE3);
+        public static long TIF = unchecked ((long)0x4EB7076141A00A0D);
+        public static long JPG = unchecked ((long)0x296FB808C4559626);
+
+        public static long GIF = unchecked ((long)0x66825CADB2730E3C);
+        public static long BMP = unchecked ((long)0xF7D9A1343B792E0E);
+        public static long DIB = unchecked ((long)0xa389c5274651f7fa);
+
         public ImageContentSpot (): base(
 
                 new ContentInfo[]{
                                      new ContentInfo(
                                          "JPEG image",
-                                         ContentTypes.JPG,
+                                         JPG,
                                          "jpg",
                                          "image/jpeg",
                                          CompressionType.neverCompress,
@@ -38,7 +47,7 @@ namespace Limaki.Contents.IO {
 
                                      new ContentInfo(
                                          "Tagged Image File Format",
-                                         ContentTypes.TIF,
+                                         TIF,
                                          "tif",
                                          "image/tiff",
                                          CompressionType.bZip2,
@@ -49,7 +58,7 @@ namespace Limaki.Contents.IO {
 
                                      new ContentInfo(
                                          "GIF image",
-                                         ContentTypes.GIF,
+                                         GIF,
                                          "gif",
                                          "image/gif",
                                          CompressionType.neverCompress,
@@ -59,7 +68,7 @@ namespace Limaki.Contents.IO {
 
                                      new ContentInfo(
                                          "PNG image",
-                                         ContentTypes.PNG,
+                                         PNG,
                                          "png",
                                          "image/png",
                                          CompressionType.neverCompress,
@@ -69,7 +78,7 @@ namespace Limaki.Contents.IO {
 
                                     new ContentInfo(
                                          "Device Independent Bitmap",
-                                         ContentTypes.DIB,
+                                         DIB,
                                          "dib",
                                          "DeviceIndependentBitmap", // TODO:look for dib mime, or register with MimeFingerPrints
                                          CompressionType.bZip2,
@@ -77,7 +86,7 @@ namespace Limaki.Contents.IO {
                                          
 			                       new ContentInfo(
                                          "Bitmap",
-                                         ContentTypes.BMP,
+                                         BMP,
                                          "bmp",
                                          "image/bmp", // TODO:look for dib mime, or register with MimeFingerPrints
                                          CompressionType.bZip2,

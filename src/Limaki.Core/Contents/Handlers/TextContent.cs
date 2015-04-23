@@ -9,19 +9,24 @@ using Limaki.Common;
 namespace Limaki.Contents.IO {
 
     public class TextContentSpot : ContentDetector {
+
+        public static long Text = unchecked ((long)0xf7ecf4a0c9ea2472);
+
+        public static long ASCII = unchecked ((long)0xB658B74F191B9645);
+
         public TextContentSpot ()
             : base(
                 new ContentInfo[] {
                                       new ContentInfo(
                                           "Text",
-                                          ContentTypes.Text,
+                                          Text,
                                           "txt",
                                           "text/plain",
                                           CompressionType.bZip2,
                                           null),
                                       new ContentInfo(
                                           "ASCII",
-                                          ContentTypes.ASCII,
+                                          ASCII,
                                           "txt",
                                           "text/plain",
                                           CompressionType.bZip2,

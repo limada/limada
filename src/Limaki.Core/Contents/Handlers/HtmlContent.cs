@@ -32,7 +32,7 @@ namespace Limaki.Contents.IO {
                 new ContentInfo[]{
                                  new ContentInfo(
                                      "HTML",
-                                     ContentTypes.HTML,
+                                     HTML,
                                      "html",
                                      "text/html",
                                      CompressionType.bZip2
@@ -46,6 +46,8 @@ namespace Limaki.Contents.IO {
                                      )
                              }
             ) {}
+
+        public static long HTML = unchecked ((long)0x97BC58EE45132F1E);
 
         public static long XHTML = 0x280efaf080c35e30;
 

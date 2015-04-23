@@ -22,12 +22,15 @@ using Limaki.Contents;
 namespace Limaki.Contents.IO {
 
     public class RtfContentSpot : ContentDetector {
+        
+        public static long RTF = unchecked ((long)0x720F7A018B8FF1D5);
+
         public RtfContentSpot()
             : base(
                 new ContentInfo[] {
                                       new ContentInfo(
                                           "Rich Text Format",
-                                          ContentTypes.RTF,
+                                          RTF,
                                           "rtf",
                                           "application/rtf",
                                           CompressionType.bZip2,
