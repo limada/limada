@@ -11,7 +11,7 @@ namespace Limaki.Contents {
             var mimeFingerPrints = context.Pooled<MimeFingerPrints> ();
             mimeFingerPrints.SynonymFormats ("DeviceIndependentBitmap", new ImageContentSpot ().ContentSpecs.First (s => s.ContentType == ContentTypes.DIB).MimeType);
             mimeFingerPrints.SynonymFormats ("CF_DIB", new ImageContentSpot ().ContentSpecs.First (s => s.ContentType == ContentTypes.DIB).MimeType);
-
+            mimeFingerPrints.SynonymFormats ("text/x-markdown", new MarkdownContentSpot ().ContentSpecs.First().MimeType);
 
             mimeFingerPrints.PreferedFormats (new string[] { "Star Object Descriptor (XML)" }, new string[] { "Rich Text Format" }); // if OpenOffice, then take Rtf 
             mimeFingerPrints.PreferedFormats (new string[] { "text/x-moz-url" }, new string[] { "text/uri-list" });
