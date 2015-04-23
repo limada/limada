@@ -14,7 +14,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Limaki.Common;
 using System;
 using System.IO;
 using Limaki.Contents;
@@ -25,15 +24,7 @@ namespace Limaki.View.Vidgets {
 
     [BackendType(typeof(IWebBrowserBackend))]
     public class WebBrowserVidget : Vidget, IWebBrowser, IHistoryAware {
-
-        public class WebBrowserBackendHost : VidgetBackendHost {
-            protected override IVidgetBackend OnCreateBackend () {
-                this.ToolkitEngine.Backend.CheckInitialized();
-				// WebBrowserBackend needs special support of factory to decide which backend is available 
-				return Registry.Factory.Create<IWebBrowserBackend>();
-            }
-        }
-
+        
         protected override VidgetBackendHost CreateBackendHost () {
             return new WebBrowserBackendHost();
         }
@@ -51,6 +42,7 @@ namespace Limaki.View.Vidgets {
                     );
             }
         }
+
         public new IWebBrowserBackend Backend { get { return BackendHost.Backend as IWebBrowserBackend; } }
 
         public Stream DocumentStream { get { return Backend.DocumentStream; } set { Backend.DocumentStream = value; } }
