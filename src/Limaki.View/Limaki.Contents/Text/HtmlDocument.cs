@@ -26,17 +26,17 @@ namespace Limaki.Contents.Text {
             if (newLine) inDiv++;
  
             var attrs = new List<string> ();
-            if (style.FontStyleAtt.HasFlag (FontStyleAtt.Bold))
+            if (style.SectionAttribute.HasFlag (SectionAttribute.Bold))
                 attrs.Add ("b");
-            if (style.FontStyleAtt.HasFlag (FontStyleAtt.Italic))
+            if (style.SectionAttribute.HasFlag (SectionAttribute.Italic))
                 attrs.Add ("i");
-            if (style.FontStyleAtt.HasFlag (FontStyleAtt.Underline))
+            if (style.SectionAttribute.HasFlag (SectionAttribute.Underline))
                 attrs.Add ("u");
-            if (style.FontStyleAtt.HasFlag (FontStyleAtt.Strikeout))
+            if (style.SectionAttribute.HasFlag (SectionAttribute.Strikeout))
                 attrs.Add ("strike");
-            if (style.FontStyleAtt.HasFlag (FontStyleAtt.Superscript))
+            if (style.SectionAttribute.HasFlag (SectionAttribute.Superscript))
                 attrs.Add ("sup");
-            if (style.FontStyleAtt.HasFlag (FontStyleAtt.Subscript))
+            if (style.SectionAttribute.HasFlag (SectionAttribute.Subscript))
                 attrs.Add ("sub");
 
             BodyText.Append (string.Format ("<{0}{1}>", tag, tagStyle));
@@ -57,4 +57,5 @@ namespace Limaki.Contents.Text {
         }
 
     }
+
 }

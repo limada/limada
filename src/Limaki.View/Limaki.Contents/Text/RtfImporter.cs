@@ -8,6 +8,7 @@ using Xwt;
 using XD = Xwt.Drawing;
 
 namespace Limaki.Contents.Text {
+
     public class Line {
         public int indent;
         public LineEnding ending;
@@ -23,6 +24,17 @@ namespace Limaki.Contents.Text {
         Color, Font
     }
 
+    [Flags]
+    public enum SectionAttribute {
+        Regular = 0,
+        Bold = 1,
+        Italic = 2,
+        Strikeout = 4,
+        Underline = 8,
+        Superscript = 16,
+        Subscript = 32
+
+    }
 
     public class RtfImporter {
         IDocument document = null;
@@ -63,7 +75,7 @@ namespace Limaki.Contents.Text {
             _style.Color = Xwt.Drawing.Colors.Black;
             _style.FontSize = 10;
             _style.Align = Alignment.Start;
-            _style.FontStyleAtt = FontStyleAtt.Regular;
+            _style.SectionAttribute = SectionAttribute.Regular;
             _style.FontName = null;
             _style.Visible = true;
             _style.SkipWidth = 1;
@@ -263,16 +275,16 @@ namespace Limaki.Contents.Text {
 
                             case Minor.Plain: {
                                     FlushText (rtf, false);
-                                    _style.FontStyleAtt = FontStyleAtt.Regular;
+                                    _style.SectionAttribute = SectionAttribute.Regular;
                                     break;
                                 }
 
                             case Minor.Bold: {
                                     FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
-                                        _style.FontStyleAtt |= FontStyleAtt.Bold;
+                                        _style.SectionAttribute |= SectionAttribute.Bold;
                                     } else {
-                                        _style.FontStyleAtt &= ~FontStyleAtt.Bold;
+                                        _style.SectionAttribute &= ~SectionAttribute.Bold;
                                     }
                                     break;
                                 }
@@ -280,9 +292,9 @@ namespace Limaki.Contents.Text {
                             case Minor.Italic: {
                                     FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
-                                        _style.FontStyleAtt |= FontStyleAtt.Italic;
+                                        _style.SectionAttribute |= SectionAttribute.Italic;
                                     } else {
-                                        _style.FontStyleAtt &= ~FontStyleAtt.Italic;
+                                        _style.SectionAttribute &= ~SectionAttribute.Italic;
                                     }
                                     break;
                                 }
@@ -290,9 +302,9 @@ namespace Limaki.Contents.Text {
                             case Minor.StrikeThru: {
                                     FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
-                                        _style.FontStyleAtt |= FontStyleAtt.Strikeout;
+                                        _style.SectionAttribute |= SectionAttribute.Strikeout;
                                     } else {
-                                        _style.FontStyleAtt &= ~FontStyleAtt.Strikeout;
+                                        _style.SectionAttribute &= ~SectionAttribute.Strikeout;
                                     }
                                     break;
                                 }
@@ -300,9 +312,9 @@ namespace Limaki.Contents.Text {
                             case Minor.Underline: {
                                     FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
-                                        _style.FontStyleAtt |= FontStyleAtt.Underline;
+                                        _style.SectionAttribute |= SectionAttribute.Underline;
                                     } else {
-                                        _style.FontStyleAtt &= ~FontStyleAtt.Underline;
+                                        _style.SectionAttribute &= ~SectionAttribute.Underline;
                                     }
                                     break;
                                 }
@@ -310,9 +322,9 @@ namespace Limaki.Contents.Text {
                             case Minor.SubScrShrink: {
                                     FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
-                                        _style.FontStyleAtt |= FontStyleAtt.Subscript;
+                                        _style.SectionAttribute |= SectionAttribute.Subscript;
                                     } else {
-                                        _style.FontStyleAtt &= ~FontStyleAtt.Subscript;
+                                        _style.SectionAttribute &= ~SectionAttribute.Subscript;
                                     }
                                     break;
                                 }
@@ -320,9 +332,9 @@ namespace Limaki.Contents.Text {
                             case Minor.SuperScrShrink: {
                                     FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
-                                        _style.FontStyleAtt |= FontStyleAtt.Superscript;
+                                        _style.SectionAttribute |= SectionAttribute.Superscript;
                                     } else {
-                                        _style.FontStyleAtt &= ~FontStyleAtt.Superscript;
+                                        _style.SectionAttribute &= ~SectionAttribute.Superscript;
                                     }
                                     break;
                                 }
@@ -335,7 +347,7 @@ namespace Limaki.Contents.Text {
 
                             case Minor.NoUnderline: {
                                     FlushText (rtf, false);
-                                    _style.FontStyleAtt &= ~FontStyleAtt.Underline;
+                                    _style.SectionAttribute &= ~SectionAttribute.Underline;
                                     break;
                                 }
                            
@@ -474,7 +486,7 @@ namespace Limaki.Contents.Text {
         public XD.Color Color;
         public string FontName;
         public int FontSize;
-        public FontStyleAtt FontStyleAtt;
+        public SectionAttribute SectionAttribute;
         public Xwt.Alignment Align;
         public int ParLineLeftIndent;
         public bool Visible;
@@ -488,24 +500,12 @@ namespace Limaki.Contents.Text {
             newStyle.Align = Align;
             newStyle.FontName = FontName;
             newStyle.FontSize = FontSize;
-            newStyle.FontStyleAtt = FontStyleAtt;
+            newStyle.SectionAttribute = SectionAttribute;
             newStyle.Visible = Visible;
             newStyle.SkipWidth = SkipWidth;
 
             return newStyle;
         }
-    }
-
-    [Flags]
-    public enum FontStyleAtt {
-        Regular =0,
-        Bold = 1,
-        Italic = 2,
-        Strikeout = 4,
-        Underline = 8,
-        Superscript = 16,
-        Subscript = 32
-
     }
 
     public static class Missing {
