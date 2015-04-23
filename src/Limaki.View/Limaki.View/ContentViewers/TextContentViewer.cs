@@ -40,6 +40,10 @@ namespace Limaki.View.ContentViewers {
             }
         }
 
+        public static bool Available () {
+            return VidgetToolkit.CurrentEngine.Backend.BackendRegistered<ITextViewerVidgetBackend> ();
+        }
+
         public override IVidget Frontend { get { return TextViewer; } }
 
         public override IVidgetBackend Backend {

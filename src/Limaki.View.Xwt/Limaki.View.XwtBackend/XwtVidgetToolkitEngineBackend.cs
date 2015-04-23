@@ -41,7 +41,7 @@ namespace Limaki.View.XwtBackend {
             RegisterBackend<ISplitViewBackend, SplitViewBackend>();
             RegisterBackend<ITextOkCancelBoxBackend, TextOkCancelBoxBackend> ();
 
-            RegisterBackend<ITextViewerVidgetBackend, TextViewerDummyBackend>();
+            RegisterBackend<ITextViewerVidgetBackend, TextViewerBackend>();
             RegisterBackend<ITextViewerWithToolstripVidgetBackend0, TextViewerWithToolstripBackend0>();
             RegisterBackend<IWebBrowserBackend, WebViewBackend>();
 
