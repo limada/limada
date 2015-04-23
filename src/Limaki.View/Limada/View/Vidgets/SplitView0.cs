@@ -446,17 +446,17 @@ namespace Limada.View.Vidgets {
                 return false;
 
             var currentDisplay = this.CurrentDisplay;
-            var currentControl = this.CurrentWidget;
-            if (currentControl == currentDisplay && currentDisplay != null) {
+            var currentWidget = this.CurrentWidget;
+            if (currentWidget == currentDisplay && currentDisplay != null) {
                 if (forward)
                     return VisualsDisplayHistory.CanGoForward();
                 else
                     return VisualsDisplayHistory.CanGoBack();
-            } else if (currentControl is IHistoryAware) {
+            } else if (currentWidget is IHistoryAware) {
                 if (forward)
-                    return ((IHistoryAware)currentControl).CanGoForward;
+                    return ((IHistoryAware)currentWidget).CanGoForward;
                 else
-                    return ((IHistoryAware)currentControl).CanGoBack;
+                    return ((IHistoryAware)currentWidget).CanGoBack;
             }
             return false;
         }
@@ -479,14 +479,14 @@ namespace Limada.View.Vidgets {
 
         public void GoBackOrForward(bool forward) {
             var currentDisplay = this.CurrentDisplay;
-            var currentControl = this.CurrentWidget;
-            if (currentControl == currentDisplay && currentDisplay != null) {
+            var currentWidget = this.CurrentWidget;
+            if (currentWidget == currentDisplay && currentDisplay != null) {
                 VisualsDisplayHistory.Navigate(currentDisplay, SheetManager, forward);
-            } else if (currentControl is IHistoryAware) {
+            } else if (currentWidget is IHistoryAware) {
                 if (forward)
-                    ((IHistoryAware)currentControl).GoForward();
+                    ((IHistoryAware)currentWidget).GoForward();
                 else
-                    ((IHistoryAware)currentControl).GoBack();
+                    ((IHistoryAware)currentWidget).GoBack();
 
             }
             OnViewChanged();
