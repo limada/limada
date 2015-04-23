@@ -163,6 +163,9 @@ namespace Limada.View.Vidgets {
         }
 
         public void GraphGraphView() {
+            if (CurrentWidget != CurrentDisplay) {
+                CurrentDisplay = AdjacentDisplay (CurrentDisplay);
+            }
             if (Backend != null) {
                 Backend.GraphGraphView();
             }
