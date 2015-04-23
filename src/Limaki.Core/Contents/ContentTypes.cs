@@ -32,6 +32,8 @@ namespace Limaki.Contents {
         public static  long WMF = unchecked((long)0xD4BE7EA976152B1D);
         public static  long BMP = unchecked((long)0xF7D9A1343B792E0E);
         public static long DIB = unchecked ((long)0xa389c5274651f7fa);
+        public static long Markdown = Limaki.Contents.IO.MarkdownContentSpot.Markdown;
+
         
         public static  long Unknown= unchecked((long)0x716D9CE0F33B086A);
 

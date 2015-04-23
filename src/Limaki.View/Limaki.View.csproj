@@ -64,6 +64,7 @@
     <Compile Include="Limada\UseCases\Content\StreamContentUiManager.cs" />
     <Compile Include="Limaki.Contents\Text\HtmlDocument.cs" />
     <Compile Include="Limaki.Contents\Text\IDocument.cs" />
+    <Compile Include="Limaki.Contents\Text\MarkdownDocument.cs" />
     <Compile Include="Limaki.Contents\Text\RtfImporter.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\ImagePainter.cs" />
     <Compile Include="Limaki.Drawing\Geom.cs" />

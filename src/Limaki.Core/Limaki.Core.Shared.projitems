@@ -131,6 +131,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)3rdParty\ICSharpCode.SharpZipLib\Zip\ZipConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)3rdParty\ICSharpCode.SharpZipLib\Zip\ZipException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contents\ContentConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contents\Handlers\MarkdownContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contents\Handlers\TextContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contents\IO\StreamContentIoPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contents\MimeFingerPrints.cs" />
