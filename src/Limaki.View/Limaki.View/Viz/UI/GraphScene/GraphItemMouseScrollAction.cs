@@ -26,6 +26,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
 		public GraphItemMouseScrollAction():base() {
 			Priority = ActionPriorities.SelectionPriority - 50;
+            MoveIfItemHit = false;
 		}
 
 		public Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
@@ -46,10 +47,12 @@ namespace Limaki.View.Viz.UI.GraphScene {
 			return item;
 		}
 
+        public bool MoveIfItemHit { get; set; }
+
 		public override void OnMouseDown (MouseActionEventArgs e)
 		{
 			var item = Hit(e);
-			if (item == null) {
+			if (MoveIfItemHit || item == null) {
 				base.OnMouseDown (e);
 			}
 		}
