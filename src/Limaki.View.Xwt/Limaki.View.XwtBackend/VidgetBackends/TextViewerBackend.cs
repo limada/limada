@@ -31,25 +31,26 @@ namespace Limaki.View.XwtBackend {
         }
 
         public void Load (Stream stream, TextViewerTextType textType) {
-            using (var reader = new StreamReader (stream)) {
-                string html = null;
-                if (textType == TextViewerTextType.PlainText || textType == TextViewerTextType.UnicodePlainText) {
-                    var text = reader.ReadToEnd ();
-                    html = System.Net.WebUtility.HtmlEncode (text);
-                }
-
-                if (textType == TextViewerTextType.RichText) {
-                    var doc = new HtmlDocument ();
-                    var importer = new RtfImporter (stream, doc);
-                    importer.Import ();
-                    html = "<html><body>" + doc.Body + "</html></body>";
-                }
-
-                Widget.LoadHtml (html, "");
+            var reader = new StreamReader (stream);
+            string html = null;
+            if (textType == TextViewerTextType.PlainText || textType == TextViewerTextType.UnicodePlainText) {
+                var text = reader.ReadToEnd ();
+                html = System.Net.WebUtility.HtmlEncode (text);
             }
+
+            if (textType == TextViewerTextType.RichText) {
+                var doc = new HtmlDocument ();
+                var importer = new RtfImporter (stream, doc);
+                importer.Import ();
+                html = "<html><body>" + doc.Body + "</body></html>";
+            }
+            stream.Position = 0;
+            Widget.LoadHtml (html, "");
+
         }
 
         public void Clear () {
+            Widget.LoadHtml ("<html><body></body></html>", "");
         }
 
         public void SetAttribute (Xwt.Drawing.TextAttribute attribute) {
