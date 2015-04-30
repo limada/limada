@@ -32,6 +32,7 @@ using SWF = System.Windows.Forms;
 using Xwt.GtkBackend;
 using Xwt.Backends;
 using Gtk;
+using System.Diagnostics;
 
 namespace Xwt.Gtk.Windows
 {
@@ -61,21 +62,34 @@ namespace Xwt.Gtk.Windows
 		void HandleGtkRealized (object sender, EventArgs e)
 		{
 			var size = new System.Drawing.Size (Widget.WidthRequest, Widget.HeightRequest);
-
-			view = new SWF.WebBrowser ();
-			view.ScriptErrorsSuppressed = true;
-			view.AllowWebBrowserDrop = false;
-			view.Size = size;
+            var createView = view == null;
+		    if (createView) {
+		        view = new SWF.WebBrowser ();
+		        view.ScriptErrorsSuppressed = true;
+		        view.AllowWebBrowserDrop = false;
+                view.Size = size;
+		    }
+		    
 			var browser_handle = view.Handle;
 			IntPtr window_handle = (IntPtr)socket.Id;
 			SetParent (browser_handle, window_handle);
-
-			view.ProgressChanged += HandleProgressChanged;
-			view.Navigating += HandleNavigating;
-			view.Navigated += HandleNavigated;
-			view.DocumentTitleChanged += HandleDocumentTitleChanged;
-			if (url != null)
-				view.Navigate (url);
+		    if (createView) {
+		        view.ProgressChanged += HandleProgressChanged;
+		        view.Navigating += HandleNavigating;
+		        view.Navigated += HandleNavigated;
+		        view.DocumentTitleChanged += HandleDocumentTitleChanged;
+		        view.GotFocus += (s, ev) =>
+		            this.SetFocus ();
+		        // not handled by SWF.WebBrowser
+		        view.PreviewKeyDown += (s, ev) => {
+		            Trace.WriteLine (view.GetType ().Name + " PreviewKeyDown");
+		        };
+		        if (url != null)
+		            view.Navigate (url);
+		    } else {
+                view.Size = size;
+		        Widget.QueueResize ();
+		    }
 		}
 
 		void HandleGtkSizeAllocated (object sender, SizeAllocatedArgs e)
