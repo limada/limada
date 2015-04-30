@@ -119,7 +119,7 @@ namespace Limada.View.ContentViewers {
         protected void LoadThing (ContentVisualViewer viewer, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
             try {
                 //if (viewer.CurrentThingId != thing.Id) {
-                //    //SaveStream(graph, viewer);
+                //    //SaveContentOfViewers(graph, viewer);
                 //}
                 var thing = graph.ThingOf(visual);
                 if (viewer.ContentId != thing.Id) {
@@ -172,27 +172,28 @@ namespace Limada.View.ContentViewers {
              }
         }
 
-        [TODO("Refactor this to use State")]
-        public void SaveStream(IThingGraph graph, ContentStreamViewer viewer) {
-            if (graph != null && viewer.CanSave() && viewer.ContentId != 0){
-                var thing = graph.GetById(viewer.ContentId) as IStreamThing;
-                if (thing != null) {
-                    var content = new Content<Stream> ();
-                    viewer.Save (content);
-                    new ThingContentFacade ().AssignContent (graph, thing, content);
-                    content.Data.Dispose ();
-                    content.Data = null;
-                    content = null;
-                }
+        [TODO ("Refactor this to use State")]
+        public void SaveStream (IThingGraph graph, ContentStreamViewer viewer) {
+            if (viewer == null || graph == null || viewer.ContentId == 0 || !viewer.CanSave ())
+                return;
+
+            var thing = graph.GetById (viewer.ContentId) as IStreamThing;
+            if (thing != null) {
+                var content = new Content<Stream> ();
+                viewer.Save (content);
+                new ThingContentFacade ().AssignContent (graph, thing, content);
+                content.Data.Dispose ();
+                content.Data = null;
+                content = null;
             }
         }
 
-        public void SaveStream(IThingGraph graph) {
+        public void SaveContentOfViewers(IThingGraph graph) {
             if (graph == null)
                 return;
 
-            foreach (var controller in ContentViewerProvider.Viewers.OfType<ContentStreamViewer>()) {
-                SaveStream (graph, controller);
+            foreach (var viewer in ContentViewerProvider.Viewers.OfType<ContentStreamViewer>()) {
+                SaveStream (graph, viewer);
             }
         }
 
@@ -215,5 +216,7 @@ namespace Limada.View.ContentViewers {
                 ContentViewerProvider.Dispose();
             }
         }
+
+        
     }
 }

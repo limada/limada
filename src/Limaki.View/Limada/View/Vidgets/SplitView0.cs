@@ -283,6 +283,8 @@ namespace Limada.View.Vidgets {
 
         #region ContentView
 
+        protected IVidget ContentVidget { get; set; }
+
         private ContentViewManager _contentViewManager = null;
         public ContentViewManager ContentViewManager {
             get {
@@ -349,7 +351,7 @@ namespace Limada.View.Vidgets {
                     Backend.ShowTextDialog("Sheet:", info.Name, SaveSheet);
                 }
             } else {
-                this.ContentViewManager.SaveStream(CurrentDisplay.Data.Graph.ThingGraph());
+                this.ContentViewManager.SaveStream (CurrentDisplay.Data.Graph.ThingGraph (), this.ContentViewManager.CurrentViewer as ContentStreamViewer);
             }
         }
 
