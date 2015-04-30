@@ -59,7 +59,7 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
-        protected void ControlGotFocus (object sender, EventArgs e) {
+        protected void WidgetGotFocus (object sender, EventArgs e) {
             Trace.WriteLine(string.Format("{0} {1}", sender.GetType().Name, sender.GetHashCode()));
             var displayBackend = (sender as IVidgetBackend).ToXwt().PeeledScrollView () as VisualsDisplayBackend;
             if (displayBackend != null) {
@@ -72,18 +72,18 @@ namespace Limaki.View.XwtBackend {
         public void SetFocusCatcher (IVidgetBackend backend) {
             var widget = (backend.ToXwt()).PeeledScrollView();
             if (widget != null) {
-                //widget.MouseEntered += ControlGotFocus;
-                widget.ButtonPressed += ControlGotFocus;
-                widget.GotFocus += ControlGotFocus;
+                //widget.MouseEntered += WidgetGotFocus;
+                widget.ButtonPressed += WidgetGotFocus;
+                widget.GotFocus += WidgetGotFocus;
             }
         }
 
         public void ReleaseFocusCatcher (IVidgetBackend backend) {
             var widget = (backend.ToXwt()).PeeledScrollView();
             if (widget != null) {
-                //widget.MouseEntered -= ControlGotFocus;
-                widget.ButtonReleased -= ControlGotFocus;
-                widget.GotFocus -= ControlGotFocus;
+                //widget.MouseEntered -= WidgetGotFocus;
+                widget.ButtonReleased -= WidgetGotFocus;
+                widget.GotFocus -= WidgetGotFocus;
             }
         }
 

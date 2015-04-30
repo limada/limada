@@ -25,7 +25,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
     [BackendType (typeof (IDisplayModeToolStripBackend))]
     public class DisplayModeToolStrip : DisplayToolStrip<object> {
 
-        public IToolStripCommand SelectCommand { get; set; }
+        public IToolStripCommand EditCommand { get; set; }
         public IToolStripCommand PanningCommand { get; set; }
 
         public IToolStripCommand ZoomInOutCommand { get; set; }
@@ -85,11 +85,11 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     if (ga == a) DisplayAction (d => a (d, value)); else DisplayAction (d => a (d, !value));
             };
 
-            SelectCommand = new ToolStripCommand {
+            EditCommand = new ToolStripCommand {
                 Action = s => toogleAction (selectAction, true),
                 Image = Iconery.Select,
                 Size = DefaultSize,
-                ToolTipText = "Select"
+                ToolTipText = "Edit"
             };
 
             PanningCommand = new ToolStripCommand {
@@ -134,7 +134,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             };
 
 
-            var selectButton = new ToolStripDropDownButton (SelectCommand);
+            var selectButton = new ToolStripDropDownButton (EditCommand);
             selectButton.AddItems(
                 new ToolStripButton (PanningCommand){ToggleOnClick = selectButton}
             );
