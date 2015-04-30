@@ -9,6 +9,42 @@
     <Import_RootNamespace>Limaki.Core.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\CommonMarkAdditionalFeatures.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\CommonMarkConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\CommonMarkException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\CommonMarkSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Formatters\HtmlFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Formatters\HtmlFormatterSlim.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Formatters\HtmlTextWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Formatters\Printer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\OutputFormat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\BlockMethods.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\EntityDecoder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\InlineMethods.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\InlineStack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\LineInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\PositionOffset.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\PositionTracker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\Scanner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\ScannerCharacterMatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\ScannerHtmlTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\Subject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Parser\TabTextReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\Block.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\BlockTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\Enumerable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\EnumeratorEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\FencedCodeData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\Inline.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\InlineContentLinkable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\InlineTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\ListData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\ListDelimeter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\ListType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\Reference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\StringContent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Syntax\StringContentPart.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\Utilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)3rdParty\Options.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Actions\ActionBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Actions\ActionPriorities.cs" />
@@ -252,5 +288,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\IOUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ByteUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\HollowGraphPair.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\LICENSE.md" />
+    <None Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\README.md" />
   </ItemGroup>
 </Project>
