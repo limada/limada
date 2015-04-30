@@ -302,7 +302,6 @@ namespace Gecko
 			base.OnGotMouseCapture(e);
 		}
 
-
 		protected override void OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo)
 		{
 			if ( _baseWindow != null ) {
@@ -310,8 +309,9 @@ namespace Gecko
 			        (int) (sizeInfo.NewSize.Width * DpiX / 96),
 			        (int) (sizeInfo.NewSize.Height * DpiY / 96), true);
 			}
-			
+            base.UpdateWindowPos ();
 			base.OnRenderSizeChanged(sizeInfo);
 		}
+
 	}
 }
