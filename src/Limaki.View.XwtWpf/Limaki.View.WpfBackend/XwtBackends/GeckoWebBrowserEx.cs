@@ -6,6 +6,7 @@ using System.Threading;
 using Gecko;
 using Limaki.Contents;
 using Limaki.View.Vidgets;
+using System.Diagnostics;
 
 namespace Limaki.View.WpfBackend {
 
@@ -17,6 +18,7 @@ namespace Limaki.View.WpfBackend {
             //Gecko.GeckoPreferences.Default["pdfjs.disabled"] = false;
             //TODO: this.DomKeyUp += new EventHandler<DomKeyEventArgs> (GeckoWebBrowser_DomKeyUp);
             base.DocumentCompleted += (s, e) => IsBusy = false;
+            this.Focusable = true;
         }
 
         public double ZoomFactor { get { return Window.TextZoom; } set { Window.TextZoom = (float) value; } }
@@ -75,7 +77,45 @@ namespace Limaki.View.WpfBackend {
                 WpfExtensions.DoEvents ();
                 Thread.Sleep (5);
             }
+            LoadHtml (content);
         }
+
+        /// <summary>
+        /// Loads supplied html string.
+        /// Note: LoadHtml isn't intended to load complex Html Documents.		
+        /// In order to find out when LoadHtml has finished attach a handler to DocumentCompleted Event.
+        /// </summary>
+        /// <param name="htmlDocument"></param>
+        public void LoadHtml (string htmlDocument) {
+            LoadBase64EncodedData ("text/html", htmlDocument);
+        }
+
+        /// <summary>
+        /// Load supplied string.encoded as base64.
+        /// </summary>
+        /// <param name="type">the type of the data eg. text/html </param>
+        /// <param name="data">string that will be encoded as base64 </param>
+        public void LoadBase64EncodedData (string type, string data) {
+            var bytes = System.Text.Encoding.UTF8.GetBytes (data);
+            Navigate (string.Concat ("data:", type, ";base64,", Convert.ToBase64String (bytes)));
+        }
+
+        private void InternalLoadContent (string content, string url, string contentType) {
+            using (var sContentType = new nsACString (contentType))
+            using (var sUtf8 = new nsACString ("UTF8")) {
+                ByteArrayInputStream inputStream = null;
+                try {
+                    inputStream = ByteArrayInputStream.Create (System.Text.Encoding.UTF8.GetBytes (content != null ? content : string.Empty));
+
+                    nsIDocShell docShell = Xpcom.QueryInterface<nsIDocShell> (this.WebBrowser);
+                    docShell.LoadStream (inputStream, IOService.CreateNsIUri (url), sContentType, sUtf8, null);
+                    Marshal.ReleaseComObject (docShell);
+                } finally {
+                    if (inputStream != null)
+                        inputStream.Close ();
+                }
+            }
+        } 
 
         public void Navigate (Uri url) {
             base.Navigate (url.AbsoluteUri);
@@ -92,10 +132,11 @@ namespace Limaki.View.WpfBackend {
                 throw new NotImplementedException ();
             }
             set {
-                using (var reader = new StreamReader (value)) {
-                    string text = reader.ReadToEnd ();
-                    this.DocumentText = text;
-                }
+                value.Position = 0;
+                var reader = new StreamReader (value);
+                string text = reader.ReadToEnd ();
+                this.DocumentText = text;
+                value.Position = 0;
             }
         }
 
@@ -214,6 +255,17 @@ namespace Limaki.View.WpfBackend {
 
         #endregion
 
-       
+        #region experimental
+
+        protected override IntPtr WndProc (IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) {
+            switch (msg) {
+               case NativeMethods.WM_MOUSEDOWN:
+                    break;
+            }
+            // Trace.WriteLine ("Gecko.WndProc\t"+msg.ToString("X"));
+            return base.WndProc (hwnd, msg, wParam, lParam, ref handled);
+        }
+
+        #endregion
     }
 }
