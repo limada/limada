@@ -45,9 +45,11 @@ namespace Limaki.View.WpfBackend {
             if (backend != null) {
                 var toolBarTray = new ToolBarTray ();
                 toolBarTray.Orientation = System.Windows.Controls.Orientation.Horizontal;
-                toolBarTray.ToolBars.Add (backend);
+
                 DockPanel.SetDock (toolBarTray, Dock.Top);
                 this.Box.Children.Add (toolBarTray);
+               
+                toolBarTray.ToolBars.Add (backend);
                 this.Box.UpdateLayout ();
             }
         }
