@@ -44,6 +44,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Limaki.View.WpfBackend\XwtBackends\NativeMethods.cs" />
     <Compile Include="Limaki.View.WpfBackend\XwtBackends\TextViewerWithToolStripWidgetBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripButton.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripButtonBackend.cs" />
