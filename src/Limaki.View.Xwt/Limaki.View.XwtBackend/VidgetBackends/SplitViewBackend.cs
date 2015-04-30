@@ -115,7 +115,10 @@ namespace Limaki.View.XwtBackend {
 
         }
 
-        public void AttachViewerBackend (IVidgetBackend backend, Action onShowAction) {
+        public void AttachViewer (IVidget viewer, Action onShowAction) {
+            if (viewer == null)
+                return;
+            var backend = viewer.Backend;
             if (backend == null)
                 return;
 

@@ -186,7 +186,10 @@ namespace Limada.View.SwfBackend {
         /// <summary>
         /// called in ContentViewManager when a ContentViewer is attached
         /// </summary>
-        public void AttachViewerBackend (IVidgetBackend backend, Action onShowAction) {
+        public void AttachViewer (IVidget viewer, Action onShowAction) {
+            if (viewer == null)
+                return;
+            var backend = viewer.Backend;
             if (backend == null)
                 return;
 

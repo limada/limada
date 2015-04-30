@@ -292,7 +292,10 @@ namespace Limada.View.Vidgets {
                 
                 _contentViewManager.BackColor = Display1.BackColor;
 
-                _contentViewManager.AttachViewerBackend = Backend.AttachViewerBackend;
+                _contentViewManager.AttachViewer = (v, a) => {
+                    Backend.AttachViewer (v, a);
+                    ContentVidget = v;
+                };
                 _contentViewManager.ViewersAttachBackend = Backend.SetFocusCatcher;
                
                 _contentViewManager.SheetManager = this.SheetManager;
