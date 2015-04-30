@@ -832,13 +832,13 @@ namespace Xwt
 				previewTextInput (this, args);
 		}
 		
-		internal protected virtual void OnGotFocus (EventArgs args)
+		protected virtual void OnGotFocus (EventArgs args)
 		{
 			if (gotFocus != null)
 				gotFocus (this, args);
 		}
 		
-		internal protected virtual void OnLostFocus (EventArgs args)
+		protected virtual void OnLostFocus (EventArgs args)
 		{
 			if (lostFocus != null)
 				lostFocus (this, args);
