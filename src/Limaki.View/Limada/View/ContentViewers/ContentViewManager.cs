@@ -43,9 +43,9 @@ namespace Limada.View.ContentViewers {
         public Color BackColor = SystemColors.Background;
 
         /// <summary>
-        /// called in AttachViewer
+        /// called in OnAttachViewer
         /// </summary>
-        public Action<IVidgetBackend, Action> AttachViewerBackend { get; set; }
+        public Action<IVidget, Action> AttachViewer { get; set; }
 
         /// <summary>
         /// delegated to Viewer.AttachBackend
@@ -68,7 +68,7 @@ namespace Limada.View.ContentViewers {
         public ContentViewerProvider ContentViewerProvider { get { return _providers ?? (_providers = Registry.Pooled<ContentViewerProvider>()); } }
         public ContentVisualViewerProvider ContentVisualViewerProvider { get { return ContentViewerProvider as ContentVisualViewerProvider; } }
 
-        protected void AttachViewer(ContentViewer viewer, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
+        protected void OnAttachViewer(ContentViewer viewer, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
             if (viewer is SheetViewer) {
                 var sheetViewer = (SheetViewer)viewer;
                 sheetViewer.SheetDisplay = this.SheetViewer;
@@ -81,8 +81,8 @@ namespace Limada.View.ContentViewers {
                 viewer.AttachBackend = this.ViewersAttachBackend;
             }
 
-            if (AttachViewerBackend != null) {
-                AttachViewerBackend(viewer.Backend, () => viewer.OnShow());
+            if (AttachViewer != null) {
+                AttachViewer(viewer.Frontend, () => viewer.OnShow());
             }
         }
 
@@ -144,6 +144,7 @@ namespace Limada.View.ContentViewers {
              return false;
         }
 
+        public ContentViewer CurrentViewer { get; set; }
         protected void LoadThing (IGraph<IVisual, IVisualEdge> visualGraph, IVisual visual) {
             var graph = visualGraph.Source<IVisual, IVisualEdge,IThing, ILink>();
 
@@ -152,15 +153,18 @@ namespace Limada.View.ContentViewers {
                  if (thing != null) {
                      var viewer = ContentVisualViewerProvider.Supports(visualGraph, visual);
                      if (viewer != null) {
-                         AttachViewer(viewer, graph, visual);
+                         CurrentViewer = viewer;
+                         OnAttachViewer(viewer, graph, visual);
                          LoadThing(viewer, visualGraph, visual);
                      }
                      var streamThing = thing as IStreamThing;
                      if (streamThing != null) {
+                         
                          var streamViewer = ContentViewerProvider.Supports(streamThing.StreamType);
                          
                          if (streamViewer != null) {
-                             AttachViewer(streamViewer, graph, visual);
+                             CurrentViewer = streamViewer;
+                             OnAttachViewer(streamViewer, graph, visual);
                              LoadStreamThing(streamViewer, graph.Source as IThingGraph, streamThing);
                          }
                      }
