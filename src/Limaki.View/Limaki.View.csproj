@@ -69,6 +69,9 @@
     <Compile Include="Limaki.Drawing.XwtBackend\ImagePainter.cs" />
     <Compile Include="Limaki.Drawing\Geom.cs" />
     <Compile Include="Limaki.Drawing\Styles\Spacing.cs" />
+    <Compile Include="Limaki.View\ContentViewers\MarkdownContentViewer.cs" />
+    <Compile Include="Limaki.View\Vidgets\MarkDownEdit.cs" />
+    <Compile Include="Limaki.View\Vidgets\PlainTextBox.cs" />
     <Compile Include="Limaki.View\Vidgets\WebBrowserBackendHost.cs" />
     <Compile Include="Xwt\PaintingImage.cs" />
     <Compile Include="Limaki.View.XwtBackend\TextViewerVidgetBackend.cs" />

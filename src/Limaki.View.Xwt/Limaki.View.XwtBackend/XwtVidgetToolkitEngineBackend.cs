@@ -44,6 +44,8 @@ namespace Limaki.View.XwtBackend {
             RegisterBackend<ITextViewerVidgetBackend, TextViewerBackend>();
             RegisterBackend<ITextViewerWithToolstripVidgetBackend0, TextViewerWithToolstripBackend0>();
             RegisterBackend<IWebBrowserBackend, WebViewBackend>();
+            RegisterBackend<IMarkdownEditBackend, MarkdownEditBackend> ();
+            RegisterBackend<IPlainTextBoxVidgetBackend, PlainTextBoxBackend> ();
 
             RegisterBackend<IDigidocViewerBackend, DigidocViewerBackend>();
 

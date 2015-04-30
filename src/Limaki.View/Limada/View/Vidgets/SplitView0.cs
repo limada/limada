@@ -525,24 +525,31 @@ namespace Limada.View.Vidgets {
             if (scene == null)
                 return;
 
-            var content = new Content<Stream>(
-                new MemoryStream(), CompressionType.bZip2, ContentTypes.RTF);
-
+            var content = new Content<Stream> (
+                new MemoryStream (), CompressionType.bZip2);
             content.Description = title;
 
-            var writer = new StreamWriter(content.Data);
+            if (Registry.Factory.Contains<IMarkdownEdit>()) {
+                content.ContentType = ContentTypes.Markdown;
+                var writer = new StreamWriter (content.Data);
+                writer.Write (title);
+                writer.Flush ();
+                content.Data.Position = 0;
+            } else {
+                content.ContentType = ContentTypes.RTF;
+                var writer = new StreamWriter (content.Data);
 
-            writer.Write(@"{\rtf1\ansi\deff0");
-            writer.Write(@"{\info{\doccomm limada.note}}");
+                writer.Write (@"{\rtf1\ansi\deff0");
+                writer.Write (@"{\info{\doccomm limada.note}}");
 
-            writer.Write(@"{\fonttbl{\f0\froman Times New Roman;}}");
-            writer.Write(@"\pard\plain ");
-            writer.Write(title);
-            writer.Write(@"}");
-            writer.Flush();
-            content.Data.Position = 0;
-
-
+                writer.Write (@"{\fonttbl{\f0\froman {0};}}", Xwt.Drawing.Font.SystemSerifFont.Family);
+                writer.Write (@"\pard\plain ");
+                writer.Write (title);
+                writer.Write (@"}");
+                writer.Flush ();
+                content.Data.Position = 0;
+            }
+            
             var visual = Registry.Pooled<IVisualContentViz>().VisualOfContent(scene.Graph, content);
             var root = scene.Focused;
 
@@ -558,7 +565,12 @@ namespace Limada.View.Vidgets {
             scene.Focused = visual;
             currentDiplay.Perform();
             currentDiplay.OnSceneFocusChanged();
+
+            var md = ContentVidget as IMarkdownEdit;
+            if (md != null)
+                md.InEdit = true;
         }
+
         #endregion
 
         public void DoDisplayStyleChanged(object sender, EventArgs<IStyle> arg) {

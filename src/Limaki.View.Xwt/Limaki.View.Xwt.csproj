@@ -58,7 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\ComboBoxBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\MarkDownEditBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\PanedBackend.cs" />
+    <Compile Include="Limaki.View.XwtBackend\VidgetBackends\PlainTextBoxBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\TextViewerBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VindowBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\WebViewBackend.cs" />

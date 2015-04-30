@@ -109,6 +109,8 @@ namespace Limaki.View.XwtBackend {
                 if (TextContentViewer.Available ())
                     viewerProvider.Add (new TextContentViewer ());
 
+            if (MarkdownContentViewer.Available ())
+                viewerProvider.Add (new MarkdownContentViewer ());
         }
 
         private Menu CreateMenu (ConceptUsecase useCase) {

@@ -74,6 +74,8 @@ namespace Limada.Usecases {
 
             viewerProvider.Add(new SdImageContentViewer());
 
+            if (MarkdownContentViewer.Available ())
+                viewerProvider.Add (new MarkdownContentViewer ());
 
         }
 

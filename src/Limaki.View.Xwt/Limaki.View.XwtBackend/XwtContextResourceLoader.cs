@@ -50,6 +50,8 @@ namespace Limaki.View.XwtBackend {
 
             context.Factory.Add<IWebBrowserBackend, WebViewBackend> ();
 
+            context.Factory.Add<IMarkdownEdit, MarkdownEdit> ();
+
             context.Factory.Add<IXwtConceptUseCaseComposer, XwtConceptUseCaseComposer>();
         }
 
