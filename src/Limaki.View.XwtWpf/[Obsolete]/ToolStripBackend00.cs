@@ -37,6 +37,8 @@ namespace Limaki.View.WpfBackend {
             this.Frontend = (ToolStrip)frontend;
         }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+
         public Xwt.Size Size { get { return this.VidgetBackendSize(); } }
 
         public void Update () { this.VidgetBackendUpdate(); }

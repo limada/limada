@@ -25,8 +25,8 @@ namespace Limaki.View.Headless.VidgetBackends {
         }
 
         public void Invalidate () {
-            if (frontend is IDisplay) {
-                ((IDisplay)frontend).BackendRenderer.Render ();
+            if (Frontend is IDisplay) {
+                ((IDisplay)Frontend).BackendRenderer.Render ();
 
             }
         }
@@ -34,15 +34,16 @@ namespace Limaki.View.Headless.VidgetBackends {
         public void SetFocus () { }
 
         public void Invalidate (Rectangle rect) {
-            if(frontend is IDisplay) {
-                ((IDisplay) frontend).BackendRenderer.Render();
+            if(Frontend is IDisplay) {
+                ((IDisplay) Frontend).BackendRenderer.Render();
 
             }
         }
 
-        private IVidget frontend;
+        public IVidget Frontend { get; protected set; }
+
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.frontend = frontend;
+            this.Frontend = frontend;
         }
 
         public virtual Size Size { get; set; }

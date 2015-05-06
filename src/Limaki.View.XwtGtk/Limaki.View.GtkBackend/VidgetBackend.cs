@@ -21,7 +21,11 @@ namespace Limaki.View.GtkBackend {
 
     public abstract class VidgetBackend<T> : IVidgetBackend, IGtkBackend where T : Gtk.Widget, new () {
 
-        public abstract void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
+        public IVidget Frontend { get; protected set; }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = frontend;
+        }
 
         public VidgetBackend () {
             Compose ();
@@ -53,5 +57,6 @@ namespace Limaki.View.GtkBackend {
         Gtk.Widget IGtkBackend.Widget {
             get { return this.Widget; }
         }
+
     }
 }

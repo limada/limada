@@ -108,7 +108,7 @@ namespace Limaki.View.XwtBackend {
         public TextOkCancelBox Frontend { get; set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            
+            base.InitializeBackend (frontend, context);
             this.Frontend = (TextOkCancelBox) frontend;
         }
 

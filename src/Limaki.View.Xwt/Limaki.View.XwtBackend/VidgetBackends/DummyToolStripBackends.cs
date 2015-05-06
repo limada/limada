@@ -23,7 +23,7 @@ namespace Limaki.View.XwtBackend {
     public class ToolStripBackendDummy : VidgetBackend<Xwt.Canvas>, IToolStripBackend {
         
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-
+            base.InitializeBackend (frontend, context);
         }
 
         public void InsertItem (int index, IToolStripItemBackend toolStripItemBackend) { }

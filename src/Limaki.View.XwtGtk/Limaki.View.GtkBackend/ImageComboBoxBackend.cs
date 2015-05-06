@@ -4,6 +4,7 @@ namespace Limaki.View.GtkBackend {
     public class ImageComboBoxBackend : VidgetBackend<Gtk.ComboBox> {
 
         public override void InitializeBackend (IVidget frontend, Vidgets.VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             throw new System.NotImplementedException ();
         }
 

@@ -22,7 +22,7 @@ namespace Limaki.View.GtkBackend {
     public abstract class ToolStripItemBackend<T> : VidgetBackend<T>, IGtkToolStripItemBackend where T : Gtk.ToolItem, new ()  {
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            
+            base.InitializeBackend (frontend, context);
         }
 
         protected override void Compose () {

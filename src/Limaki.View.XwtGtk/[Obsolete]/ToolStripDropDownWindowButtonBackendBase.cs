@@ -25,6 +25,7 @@ namespace Limaki.View.GtkBackend {
         public new Vidgets.ToolStripDropDownButton Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (Vidgets.ToolStripDropDownButton)frontend;
         }
 

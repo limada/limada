@@ -41,6 +41,8 @@ namespace Limada.View.SwfBackend {
             this.Compose();
         }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+
         protected SplitContainer SplitContainer { get { return this; } }
 
 

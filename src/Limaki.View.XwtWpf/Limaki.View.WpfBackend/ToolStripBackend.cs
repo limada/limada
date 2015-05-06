@@ -53,7 +53,7 @@ namespace Limaki.View.WpfBackend {
 
         public VidgetApplicationContext ApplicationContext { get; set; }
 
-        public ToolStrip Frontend { get; protected set; }
+        public new ToolStrip Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             ApplicationContext = context;

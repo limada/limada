@@ -28,6 +28,8 @@ namespace Limada.View.SwfBackend {
 
         public DigidocVidget Frontend { get; set; }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (DigidocVidget)frontend;
             Compose();

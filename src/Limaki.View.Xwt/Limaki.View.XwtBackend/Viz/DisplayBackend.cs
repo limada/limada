@@ -115,6 +115,8 @@ namespace Limaki.View.XwtBackend {
             set { _backendViewPort = value as XwtViewport; }
         }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Display; } }
+
         void IVidgetBackend.Update () {
             base.QueueDraw();
         }

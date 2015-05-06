@@ -57,6 +57,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             this.Frontend = frontend as IFileDialogVidget;
         }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+
         public Size Size {
             get { throw new ArgumentException(); }
         }

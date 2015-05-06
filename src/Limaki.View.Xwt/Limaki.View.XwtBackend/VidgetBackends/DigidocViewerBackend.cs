@@ -23,6 +23,7 @@ namespace Limaki.View.XwtBackend {
         public DigidocVidget Frontend { get; set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (DigidocVidget)frontend;
             Compose2 ();
         }

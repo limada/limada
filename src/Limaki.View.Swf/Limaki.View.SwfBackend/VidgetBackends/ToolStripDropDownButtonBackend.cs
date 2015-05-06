@@ -68,9 +68,10 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         [Browsable (false)]
         [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-        public LVV.ToolStripDropDownButton Frontend { get; protected set; }
+        public new LVV.ToolStripDropDownButton Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (LVV.ToolStripDropDownButton)frontend;
         }
 

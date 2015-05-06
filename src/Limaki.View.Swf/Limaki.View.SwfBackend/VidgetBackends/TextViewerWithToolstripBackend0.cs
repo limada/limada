@@ -41,6 +41,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             this.Frontend = (TextViewerWithToolstrip0)frontend;
         }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+
         private TextViewerBackend _textViewerBackend = null;
         public TextViewerBackend TextViewerBackend {
             get {

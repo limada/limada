@@ -5,8 +5,5 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
     public class ToolStripSeparatorBackend : ToolStripItemBackend<ToolStripSeparator>, IToolStripSeparatorBackend {
 
-        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            
-        }
     }
 }

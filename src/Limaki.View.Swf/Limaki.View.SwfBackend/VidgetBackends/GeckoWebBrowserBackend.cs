@@ -239,6 +239,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             this.Frontend = (WebBrowserVidget)frontend;
         }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+
         Xwt.Size IVidgetBackend.Size {
             get { return this.Size.ToXwt(); }
         }

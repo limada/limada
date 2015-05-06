@@ -8,9 +8,10 @@ namespace Limaki.View.GtkBackend {
 
     public class ToolStripButtonBackendBase<T> : ToolStripItemBackend<T>, IToolStripButtonBackend where T : Gtk.ToolItem, new () {
 
-        public Vidgets.ToolStripButton Frontend { get; protected set; }
+        public new Vidgets.ToolStripButton Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (Vidgets.ToolStripButton) frontend;
         }
 

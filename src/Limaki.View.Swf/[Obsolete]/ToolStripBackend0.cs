@@ -63,6 +63,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             this.Frontend = (LVV.ToolStrip) frontend;
         }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+
         void IVidgetBackend.SetFocus () { this.Focus (); }
 
         #endregion

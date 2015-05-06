@@ -19,9 +19,10 @@ namespace Limaki.View.GtkBackend {
 
     public class ToolStripItemHostBackend : ToolStripItemBackend<Gtk.ToolItem>, IToolStripItemHostBackend {
 
-        public Vidgets.ToolStripItemHost Frontend { get; protected set; }
+        public new Vidgets.ToolStripItemHost Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (Vidgets.ToolStripItemHost)frontend;
         }
 

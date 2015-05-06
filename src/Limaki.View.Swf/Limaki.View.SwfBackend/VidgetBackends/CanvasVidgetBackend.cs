@@ -41,6 +41,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             this.Frontend = (ICanvasVidget) frontend;
         }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+
         Xwt.Size IVidgetBackend.Size {
             get { return this.Size.ToXwt(); }
         }

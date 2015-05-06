@@ -99,9 +99,11 @@ namespace Limaki.View.XwtBackend {
 
         public IFileDialogVidget Frontend { get; protected set; }
 
-        public void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = frontend as IFileDialogVidget;
         }
+
+        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
 
         public Size Size {
             get { throw new ArgumentException(); }

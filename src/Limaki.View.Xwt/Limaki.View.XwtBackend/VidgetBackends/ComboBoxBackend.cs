@@ -25,6 +25,7 @@ namespace Limaki.View.XwtBackend {
         public Vidgets.ComboBox Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (Vidgets.ComboBox)frontend;
         }
 

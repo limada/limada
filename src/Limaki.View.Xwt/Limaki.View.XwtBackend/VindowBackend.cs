@@ -27,6 +27,8 @@ namespace Limaki.View.XwtBackend {
             this.Frontend = frontend as IVindow;
         }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+
         void IVindowBackend.SetContent (IVidget value) {
 			this.SetContent (value);
         }

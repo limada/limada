@@ -34,9 +34,10 @@ namespace Limaki.View.XwtBackend {
 
         public bool ToolStripVisible { get { return true; } set { } }
 
-        protected TextViewerWithToolstrip Frontend { get; set; }
+        public new TextViewerWithToolstrip Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (TextViewerWithToolstrip) frontend;
             SetToolStrip (this.Frontend.ToolStrip);
             SetTextViewer (this.Frontend.TextViewer);

@@ -30,6 +30,7 @@ namespace Limaki.View.XwtBackend {
 
         public SplitView0 Frontend { get; protected set; }
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (SplitView0) frontend;
             this.Compose2();
         }

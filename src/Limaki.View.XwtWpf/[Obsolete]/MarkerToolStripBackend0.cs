@@ -24,9 +24,10 @@ namespace Limaki.View.WpfBackend {
 
     public class MarkerToolStripBackend0 : ToolStripBackend00, IMarkerToolStripBackend0 {
 
-        public MarkerToolStrip0 Frontend { get; protected set; }
+        public new MarkerToolStrip0 Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (MarkerToolStrip0) frontend;
             Compose ();
         }

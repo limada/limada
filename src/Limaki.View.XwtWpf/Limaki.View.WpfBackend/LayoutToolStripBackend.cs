@@ -29,7 +29,7 @@ namespace Limaki.View.WpfBackend {
 
     public class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripBackend0 {
 
-        public LayoutToolStrip0 Frontend { get; set; }
+        public new LayoutToolStrip0 Frontend { get; set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (LayoutToolStrip0)frontend;

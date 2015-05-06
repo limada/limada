@@ -350,6 +350,7 @@ namespace Limaki.View.SwfBackend.Viz {
 
         Size IVidgetBackend.Size { get { return this.Size.ToXwt (); } }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Display; } }
 
         void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
             this.Invalidate (rect.ToGdi ());

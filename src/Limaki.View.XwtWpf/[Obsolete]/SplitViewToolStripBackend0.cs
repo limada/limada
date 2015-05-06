@@ -28,13 +28,14 @@ namespace Limaki.View.WpfBackend {
     public class SplitViewToolStripBackend0 : ToolStripBackend00, ISplitViewToolStripBackend0 {
 
         public override void InitializeBackend (Limaki.View.IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (SplitViewToolStrip0)frontend;
             Compose();
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SplitViewToolStrip0 Frontend { get; protected set; }
+        public new SplitViewToolStrip0 Frontend { get; protected set; }
 
         protected SplitViewMode _viewMode = SplitViewMode.GraphContent;
         [Browsable (false)]

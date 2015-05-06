@@ -42,9 +42,10 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         [Browsable (false)]
         [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-        public LVV.ToolStripButton Frontend { get; protected set; }
+        public new LVV.ToolStripButton Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (LVV.ToolStripButton)frontend;
         }
 

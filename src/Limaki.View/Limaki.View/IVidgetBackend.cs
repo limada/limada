@@ -21,6 +21,7 @@ namespace Limaki.View {
 
     public interface IVidgetBackend:IDisposable {
 
+        IVidget Frontend { get; }
         Size Size { get; }
 
         void Update();

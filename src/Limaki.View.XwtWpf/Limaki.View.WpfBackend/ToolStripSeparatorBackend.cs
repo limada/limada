@@ -6,7 +6,7 @@ namespace Limaki.View.WpfBackend {
 
     public class ToolStripSeparatorBackend : ToolStripItemBackend<SWC.Separator>, IToolStripSeparatorBackend {
 
-        public LVV.ToolStripSeparator Frontend { get; protected set; }
+        public new LVV.ToolStripSeparator Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (LVV.ToolStripSeparator)frontend;

@@ -23,7 +23,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
     public abstract class ToolStripItemBackend<T> : IVidgetBackend, ISwfToolStripItemBackend where T : System.Windows.Forms.ToolStripItem {
 
-        public abstract void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
+        public IVidget Frontend { get; protected set; }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = Frontend;
+        }
 
         public ToolStripItemBackend () {
             Compose ();

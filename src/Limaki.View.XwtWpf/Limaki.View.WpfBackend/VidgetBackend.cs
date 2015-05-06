@@ -11,7 +11,11 @@ namespace Limaki.View.WpfBackend {
 
     public abstract class VidgetBackend<T> : IVidgetBackend, IWpfBackend where T : FrameworkElement {
 
-        public abstract void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
+        public IVidget Frontend { get; protected set; }
+
+        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            this.Frontend = frontend;
+        }
 
         public VidgetBackend () {
             Compose ();

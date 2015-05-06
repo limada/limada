@@ -28,9 +28,10 @@ namespace Limaki.View.WpfBackend {
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ArrangerToolStrip0 Frontend { get; protected set; }
+        public new ArrangerToolStrip0 Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (ArrangerToolStrip0)frontend;
             Compose();
         }

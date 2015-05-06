@@ -25,7 +25,7 @@ namespace Limaki.View.XwtBackend {
 
         #region IVidgetBackend
 
-        protected IVidget Frontend { get; set; }
+        public IVidget Frontend { get; protected set; }
 
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = frontend;

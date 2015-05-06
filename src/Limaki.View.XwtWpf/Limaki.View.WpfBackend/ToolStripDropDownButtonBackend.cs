@@ -20,7 +20,7 @@ namespace Limaki.View.WpfBackend {
 
     public class ToolStripDropDownButtonBackend : ToolStripItemBackend<ToolStripDropDownButton>, IToolStripDropDownButtonBackend {
 
-        public LVV.ToolStripDropDownButton Frontend { get; protected set; }
+        public new LVV.ToolStripDropDownButton Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = (LVV.ToolStripDropDownButton)frontend;

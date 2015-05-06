@@ -103,6 +103,8 @@ namespace Limaki.View.Headless.VidgetBackends {
             set { _backendViewPort = value as HeadlessViewport; }
         }
 
+        IVidget IVidgetBackend.Frontend { get { return this.Display; } }
+
         void IVidgetBackend.Update () {
             base.Update();
         }
