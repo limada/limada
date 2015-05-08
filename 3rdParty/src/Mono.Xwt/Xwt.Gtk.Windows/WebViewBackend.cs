@@ -78,12 +78,29 @@ namespace Xwt.Gtk.Windows
 		        view.Navigating += HandleNavigating;
 		        view.Navigated += HandleNavigated;
 		        view.DocumentTitleChanged += HandleDocumentTitleChanged;
-		        view.GotFocus += (s, ev) =>
-		            this.SetFocus ();
-		        // not handled by SWF.WebBrowser
-		        view.PreviewKeyDown += (s, ev) => {
-		            Trace.WriteLine (view.GetType ().Name + " PreviewKeyDown");
-		        };
+
+                view.DocumentCompleted += (s, ev) => {
+                    var inFocus = false;
+                    view.Document.Focusing += (sD, eD) => {
+                        this.SetFocus ();
+                        inFocus = true;
+                        ApplicationContext.InvokeUserCode (delegate {
+                            EventSink.OnGotFocus();
+                        });
+                    };
+                    view.Document.LosingFocus += (sD, eD) => {
+                        ApplicationContext.InvokeUserCode (delegate {
+                            EventSink.OnLostFocus ();
+                        });
+                        inFocus = false;
+                    };
+                    view.Document.MouseDown += (sD, eD) => {
+                        var a = new ButtonEventArgs { X = eD.MousePosition.X, Y = eD.MousePosition.Y };
+                        ApplicationContext.InvokeUserCode (delegate {
+                            EventSink.OnButtonPressed (a);
+                        });
+                    };
+                };
 		        if (url != null)
 		            view.Navigate (url);
 		    } else {
