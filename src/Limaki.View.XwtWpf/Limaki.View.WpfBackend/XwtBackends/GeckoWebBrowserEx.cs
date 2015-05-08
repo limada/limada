@@ -4,6 +4,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Gecko;
+using Limaki.Common.Text.HTML;
 using Limaki.Contents;
 using Limaki.View.Vidgets;
 using System.Diagnostics;
@@ -12,12 +13,19 @@ namespace Limaki.View.WpfBackend {
 
     public class GeckoWebBrowserEx : Gecko.GeckoWebBrowser {
 
+
+        public bool IsBusy {
+            get;
+            set;
+        }
+
         public GeckoWebBrowserEx () {
             new XulRunner ().Initialize ();
             Gecko.GeckoPreferences.Default["extensions.blocklist.enabled"] = false;
             //Gecko.GeckoPreferences.Default["pdfjs.disabled"] = false;
             //TODO: this.DomKeyUp += new EventHandler<DomKeyEventArgs> (GeckoWebBrowser_DomKeyUp);
-            base.DocumentCompleted += (s, e) => IsBusy = false;
+            //base.DocumentCompleted += (s, e) => 
+            //    IsBusy = false;
             this.Focusable = true;
         }
 
@@ -64,20 +72,29 @@ namespace Limaki.View.WpfBackend {
         public string DocumentText {
             get { return base.Document.TextContent; }
             set {
-                SetDocumentTextOverAboutBlank (value);
-                //SetDocumentTextOverPostData (value);
+                var html = value;
+                if (value.StartsWith ("<html>"))
+                    html = HtmlHelper.HtmUtf8Begin + value.Substring (6);
+                InternalLoadContent (html, "", "text/html");
+                BlockUntilNavigationFinished ();
             }
         }
 
-        void SetDocumentTextOverAboutBlank (string content) {
-            if (base.Document == null) {
-                base.Navigate ("about:blank");
-            }
-            for (int i = 0; i < 200 && IsBusy; i++) {
+        protected bool BlockUntilNavigationFinishedDone = false;
+        protected void BlockUntilNavigationFinishedEvent (object sender, EventArgs e) {
+            BlockUntilNavigationFinishedDone = true;
+        }
+
+        protected void BlockUntilNavigationFinished () {
+            BlockUntilNavigationFinishedDone = false;
+            this.DocumentCompleted -= BlockUntilNavigationFinishedEvent;
+            this.DocumentCompleted += BlockUntilNavigationFinishedEvent;
+            this.NavigationError -= BlockUntilNavigationFinishedEvent;
+            this.NavigationError += BlockUntilNavigationFinishedEvent;
+            while (!BlockUntilNavigationFinishedDone) {
                 WpfExtensions.DoEvents ();
-                Thread.Sleep (5);
+                //Application.RaiseIdle (new EventArgs ());
             }
-            LoadHtml (content);
         }
 
         /// <summary>
@@ -97,19 +114,34 @@ namespace Limaki.View.WpfBackend {
         /// <param name="data">string that will be encoded as base64 </param>
         public void LoadBase64EncodedData (string type, string data) {
             var bytes = System.Text.Encoding.UTF8.GetBytes (data);
-            Navigate (string.Concat ("data:", type, ";base64,", Convert.ToBase64String (bytes)));
+            Navigate (string.Concat ("data:", type, ";base64,", Convert.ToBase64String (bytes)), GeckoLoadFlags.FromExternal);
         }
 
-        private void InternalLoadContent (string content, string url, string contentType) {
+        protected void InternalLoadContent (string content, string url, string contentType) {
             using (var sContentType = new nsACString (contentType))
             using (var sUtf8 = new nsACString ("UTF8")) {
                 ByteArrayInputStream inputStream = null;
                 try {
                     inputStream = ByteArrayInputStream.Create (System.Text.Encoding.UTF8.GetBytes (content != null ? content : string.Empty));
 
-                    nsIDocShell docShell = Xpcom.QueryInterface<nsIDocShell> (this.WebBrowser);
-                    docShell.LoadStream (inputStream, IOService.CreateNsIUri (url), sContentType, sUtf8, null);
+                    var docShell = Xpcom.QueryInterface<nsIDocShell> (this.WebBrowser);
+                    nsIURI uri = null;
+                    if (!string.IsNullOrEmpty (url))
+                        uri = IOService.CreateNsIUri (url);
+                    nsIDocShellLoadInfo l = null;
+                    if (true) {
+                        l = Xpcom.QueryInterface<nsIDocShellLoadInfo> (this.WebBrowser);
+
+                        docShell.CreateLoadInfo (ref l);
+                        
+                        l.SetLoadTypeAttribute (new IntPtr(16));
+                    }
+                   
+                    docShell.LoadStream (inputStream, uri, sContentType, sUtf8, l);
                     Marshal.ReleaseComObject (docShell);
+                    if (l != null)
+                        Marshal.ReleaseComObject (l);
+
                 } finally {
                     if (inputStream != null)
                         inputStream.Close ();
@@ -173,52 +205,6 @@ namespace Limaki.View.WpfBackend {
         }
 
         #endregion
-
-        #region Workarounds
-
-        /// <summary>
-        /// GeckoWebBrowser doesnt call OnEnter, OnLeave
-        /// </summary>
-        /// <param name="m"></param>
-        //protected override void WndProc (ref Message m) {
-
-        //    base.WndProc (ref m);
-
-        //    const int WM_GETDLGCODE = 0x87;
-        //    const int DLGC_WANTALLKEYS = 0x4;
-        //    const int WM_MOUSEACTIVATE = 0x21;
-        //    const int MA_ACTIVATE = 0x1;
-        //    const int WM_IME_SETCONTEXT = 0x0281;
-        //    const int WM_PAINT = 0x000F;
-        //    const int WM_SETFOCUS = 0x0007;
-        //    const int WM_KILLFOCUS = 0x0008;
-
-
-        //    const int ISC_SHOWUICOMPOSITIONWINDOW = unchecked ((int) 0x80000000);
-        //    if (!DesignMode) {
-        //        IntPtr focus;
-        //        switch (m.Msg) {
-        //            case WM_KILLFOCUS:
-        //                base.OnLeave (new EventArgs ());
-        //                break;
-        //            case WM_SETFOCUS:
-        //            case WM_MOUSEACTIVATE:
-        //                base.OnGotFocus (new EventArgs ());
-        //                break;
-        //            case WM_IME_SETCONTEXT:
-        //                if (WebBrowserFocus != null) {
-        //                    if (m.WParam == IntPtr.Zero)
-        //                        base.OnLeave (new EventArgs ());
-        //                    else
-        //                        base.OnGotFocus (new EventArgs ());
-        //                }
-        //                break;
-        //        }
-        //    }
-        //}
-
-        #endregion
-
      
         public bool CanGoBack {
             get { return WebNav.GetCanGoBackAttribute (); }
@@ -226,11 +212,6 @@ namespace Limaki.View.WpfBackend {
 
         public bool CanGoForward {
             get { return WebNav.GetCanGoForwardAttribute ();  }
-        }
-
-        public bool IsBusy {
-            get;
-            set; 
         }
 
         public EventHandler<DomKeyEventArgs> DomKeyUp {
@@ -255,14 +236,47 @@ namespace Limaki.View.WpfBackend {
 
         #endregion
 
-        #region experimental
+        #region Workarounds
 
         protected override IntPtr WndProc (IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) {
+            
+            const int WM_GETDLGCODE = 0x87;
+            const int DLGC_WANTALLKEYS = 0x4;
+            const int WM_MOUSEACTIVATE = 0x21;
+            const int MA_ACTIVATE = 0x1;
+            const int WM_IME_SETCONTEXT = 0x0281;
+            const int WM_PAINT = 0x000F;
+            const int WM_SETFOCUS = 0x0007;
+            const int WM_KILLFOCUS = 0x0008;
+
+            System.Windows.RoutedEventArgs ev = null;
             switch (msg) {
-               case NativeMethods.WM_MOUSEDOWN:
+                case WM_SETFOCUS:
+                case WM_MOUSEACTIVATE:
+                    ev = new System.Windows.RoutedEventArgs (System.Windows.FrameworkElement.GotFocusEvent, this);
+                    base.OnGotFocus (ev);
+                    break;
+                case WM_KILLFOCUS:
+                    ev = new System.Windows.RoutedEventArgs (System.Windows.FrameworkElement.LostFocusEvent, this);
+                    base.OnLostFocus (ev);
+                    break;
+                case WM_IME_SETCONTEXT:
+                    if (WebBrowserFocus != null) {
+                        if (wParam == IntPtr.Zero) {
+                            ev = new System.Windows.RoutedEventArgs (System.Windows.FrameworkElement.LostFocusEvent, this);
+                            base.OnLostFocus (ev);
+                        } else {
+                            ev = new System.Windows.RoutedEventArgs (System.Windows.FrameworkElement.GotFocusEvent, this);
+                            base.OnGotFocus (ev);
+                        }
+                    }
                     break;
             }
-            // Trace.WriteLine ("Gecko.WndProc\t"+msg.ToString("X"));
+
+            if (ev != null)
+                handled = ev.Handled;
+
+            Trace.WriteLine (msg.ToString ("X"));
             return base.WndProc (hwnd, msg, wParam, lParam, ref handled);
         }
 

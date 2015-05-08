@@ -15,6 +15,7 @@
 using Limaki.Common.Linqish;
 using System;
 using System.Linq.Expressions;
+using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -29,6 +30,15 @@ namespace Limaki.View.WpfBackend {
             Application.Current.Dispatcher.Invoke (DispatcherPriority.Background,
                 new Action (delegate { }));
         }
+
+        [SecurityPermissionAttribute (SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        public static void DoEvents2 () {
+            var frame = new DispatcherFrame ();
+            Dispatcher.CurrentDispatcher.BeginInvoke (DispatcherPriority.Background,
+                new DispatcherOperationCallback (f => { ((DispatcherFrame)f).Continue = false; return null; }), frame);
+            Dispatcher.PushFrame (frame);
+        }
+
 
         public static DependencyProperty RegisterDependencyProperty<T,M> (Expression<Func<T,M>> member, PropertyMetadata typeMetadata) {
             var name = ExpressionUtils.MemberName (member);
