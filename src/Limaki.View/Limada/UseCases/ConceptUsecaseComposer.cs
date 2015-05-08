@@ -87,6 +87,7 @@ namespace Limada.UseCases {
             useCase.SplitViewToolStrip.SplitView = useCase.SplitView;
             useCase.SplitViewToolStrip.SheetManager = useCase.SheetManager;
 
+            useCase.DisplayModeToolStrip.SplitView = splitView;
             splitView.CurrentWidgetChanged += c => useCase.DisplayModeToolStrip.Attach(c);
             splitView.CurrentWidgetChanged += c => useCase.LayoutToolStrip0.Attach(c);
             splitView.CurrentWidgetChanged += c => useCase.MarkerToolStrip.Attach(c);

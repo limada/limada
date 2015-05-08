@@ -72,6 +72,9 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             }
         }
 
+        // TODO: remove this dirty hack!:
+        public Limaki.Usecases.Vidgets.ISplitView SplitView { get; set; }
+
         protected virtual void Compose () {
 
             Action<IDisplay, bool> selectAction = (display, value) => display.SelectAction.Enabled = value;
@@ -86,7 +89,17 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             };
 
             EditCommand = new ToolStripCommand {
-                Action = s => toogleAction (selectAction, true),
+                Action = s => {
+                    // dirty hack:
+                             if (SplitView != null && SplitView.ContentVidget is IMarkdownEdit) {
+                                 var md = (IMarkdownEdit)SplitView.ContentVidget;
+                                 if (md != null)
+                                     md.InEdit = !md.InEdit;
+                                 return;
+                             }
+                    // dirty hack end
+                             toogleAction (selectAction, true);
+                         },
                 Image = Iconery.Select,
                 Size = DefaultSize,
                 ToolTipText = "Edit"
@@ -188,6 +201,8 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
         public override void Detach (object sender) {
 
         }
+
+        
     }
 
     public interface IDisplayModeToolStripBackend : IDisplayToolStripBackend { }
