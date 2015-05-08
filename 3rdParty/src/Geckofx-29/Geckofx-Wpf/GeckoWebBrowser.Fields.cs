@@ -41,5 +41,6 @@ namespace Gecko
         protected nsIWebNavigation WebNav { get { return _webNav; } }
 
         protected nsIWebBrowser WebBrowser { get { return _webBrowser.Instance; } }
+        protected nsIWebBrowserFocus WebBrowserFocus { get { return _webBrowserFocus; } }
 	}
 }

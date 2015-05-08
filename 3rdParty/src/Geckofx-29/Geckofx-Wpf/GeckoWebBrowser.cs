@@ -76,6 +76,9 @@ namespace Gecko
 			_webProgressWeakReference = _webProgressListener.GetWeakReference();
 			_webBrowser.Instance.AddWebBrowserListener(_webProgressWeakReference, ref nsIWebProgressListenerGUID);
 			_webBrowser.Instance.AddWebBrowserListener(_webProgressWeakReference, ref nsIWebProgressListener2GUID);
+
+		    _webProgressListener.OnStateChangeCallback += this.OnStateChange;
+
 			#endregion
 			_baseWindow.SetVisibilityAttribute(true);
 		}
@@ -258,7 +261,7 @@ namespace Gecko
 			return ok;
 		}
 
-		public event EventHandler<Events.GeckoDocumentCompletedEventArgs> DocumentCompleted;
+        //public event EventHandler<Events.GeckoDocumentCompletedEventArgs> DocumentCompleted;
 
 		public event EventHandler<Events.GeckoNavigationErrorEventArgs> NavigationError;
 
