@@ -100,7 +100,7 @@ namespace Limada.View.SwfBackend {
         }
 
         public void SetFocusCatcher (IVidgetBackend backend) {
-            var control = backend as Control;
+            var control = backend.ToSwf ();
             if (control != null) {
                 control.Enter += ControlGotFocus;
                 control.MouseUp += ControlGotFocus;
@@ -109,7 +109,7 @@ namespace Limada.View.SwfBackend {
         }
 
         public void ReleaseFocusCatcher (IVidgetBackend backend) {
-            var control = backend as Control;
+            var control = backend.ToSwf (); 
             if (control != null) {
                 control.Enter -= ControlGotFocus;
                 control.MouseUp -= ControlGotFocus;
@@ -118,7 +118,7 @@ namespace Limada.View.SwfBackend {
         }
 
         public void ViewInWindow (IVidgetBackend backend, Action onClose) {
-            var control = backend as Control;
+            var control = backend.ToSwf (); 
             if (control != null) {
                 control.Dock = DockStyle.Fill;
                 var form = new Form {
@@ -168,7 +168,7 @@ namespace Limada.View.SwfBackend {
 
             Action<IDisplay, SplitterPanel> setDisplay = (display, panel) => {
                 panel.SuspendLayout();
-                var backend = display.Backend as Control;
+                var backend = display.Backend.ToSwf (); 
 
                 if (!panel.Contains(backend)) {
                     panel.Controls.Clear();
@@ -195,8 +195,8 @@ namespace Limada.View.SwfBackend {
             if (backend == null)
                 return;
 
-            var control = backend as Control;
-            var currentDisplayBackend = this.Frontend.CurrentDisplay.Backend as Control;
+            var control = backend.ToSwf ();
+            var currentDisplayBackend = this.Frontend.CurrentDisplay.ToSwf ();
 
             SplitterPanel panel = null;
             if (currentDisplayBackend != control) {
