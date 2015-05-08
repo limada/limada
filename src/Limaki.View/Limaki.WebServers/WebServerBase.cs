@@ -13,7 +13,7 @@ namespace Limaki.WebServers {
         public WebServerBase() {
             Port = 40110;
             ServerName = "Limaki.ContentServer";
-            Asycn = !OS.Mono;
+            Asycn = true; // !OS.Mono;
         }
 
         public string ServerName { get; set; }

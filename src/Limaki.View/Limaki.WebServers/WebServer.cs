@@ -56,7 +56,7 @@ namespace Limaki.WebServers {
                     // Start an asynchronous socket to listen for connections.
                     Trace.WriteLine("Waiting for a connection...");
                     Listener.BeginAcceptSocket(
-                        new AsyncCallback(AcceptRequest),
+                        new AsyncCallback(AcceptRequestAsync),
                         Listener);
 
                     // Wait until a connection is made before continuing.
@@ -83,7 +83,9 @@ namespace Limaki.WebServers {
             base.Close();
         }
 
-        public void AcceptRequest(IAsyncResult ar) {
+        public void AcceptRequestAsync(IAsyncResult ar) {
+            if (!running)
+                return;
             // Get the socket that handles the client request.
             var listener = (TcpListener)ar.AsyncState;
             var socket = listener.EndAcceptSocket(ar);
@@ -100,7 +102,7 @@ namespace Limaki.WebServers {
                 try {
                     if (socket.Connected)
                         socket.BeginReceive (state.buffer, 0, StateObject.BufferSize, 0,
-                            new AsyncCallback (ReadRequest), state);
+                            new AsyncCallback (ReadRequestAsync), state);
                 } catch (Exception ex) {
                     Trace.WriteLine (ex.Message);
                 }
@@ -114,10 +116,11 @@ namespace Limaki.WebServers {
             AllDone.Set();
         }
 
-        public void ReadRequest(IAsyncResult ar) {
+        public void ReadRequestAsync(IAsyncResult ar) {
             // Retrieve the state object and the handler socket
             // from the asynchronous state object.
             var state = (StateObject)ar.AsyncState;
+            var requestInfo = new RequestInfo (state.buffer);
             var socket = state.workSocket;
             if (!socket.Connected || !running) {
                 return;
@@ -179,6 +182,7 @@ namespace Limaki.WebServers {
                                                           ": <br>ERROR: " + url + "<br> not found<br>");
                     statusCode = " 404 Not Found";
                     responseInfo = content.Respond(requestInfo);
+                    responseInfo.Success = false;
                     Trace.WriteLine("\trequest denied:\t " + requestInfo.Request);
                 }
 
@@ -224,7 +228,6 @@ namespace Limaki.WebServers {
                 Trace.WriteLine("Error in webserver-respondcallback:"+e.Message);
             }
         }
-
 
     }
 }
