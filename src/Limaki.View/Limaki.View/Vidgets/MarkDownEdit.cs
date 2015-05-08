@@ -20,6 +20,7 @@ using System.Text;
 using Limaki.View;
 using Xwt.Backends;
 using Limaki.Common;
+using Limaki.Common.Text.HTML;
 
 namespace Limaki.View.Vidgets {
 
@@ -53,7 +54,9 @@ namespace Limaki.View.Vidgets {
             stream.Position = 0;
             stream.SetLength (0);
             var writer = new StreamWriter (stream);
-            writer.Write (Backend.Text);
+            writer.NewLine = "\r\n";
+            foreach (var line in Backend.Text.Split (new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None))
+                writer.WriteLine (line);
             writer.Flush ();
             stream.Position = 0;
         }
@@ -78,7 +81,7 @@ namespace Limaki.View.Vidgets {
             var reader = new StreamReader (stream);
             var s = reader.ReadToEnd ();
             var c = CommonMark.CommonMarkConverter.Convert (s);
-            html = "<html><body>" + c + "</body></html>";
+            html = HtmlHelper.HtmUtf8Begin + "<body>" + c + "</body></html>";
             stream.Position = 0;
             base.DocumentText = html;
         }
@@ -149,10 +152,11 @@ namespace Limaki.View.Vidgets {
             Viewer.Load (this.Markdown);
             _inEdit = false;
             Backend.Activate (Viewer);
+           
         }
 
         public void Save (Stream stream) {
-            if (Editor != null) {
+            if (Editor != null && _inEdit) {
                 Editor.Save (this.Markdown);
             }
             if (stream != this.Markdown) {
@@ -166,8 +170,8 @@ namespace Limaki.View.Vidgets {
             this.Markdown.Position = 0;
             if (Backend.IsEmpty)
                 Backend.Activate (Viewer);
-            Viewer.Load (stream);
-            Editor.Load (stream);
+            Viewer.Load (Markdown);
+            Editor.Load (Markdown);
         }
 
         public void Clear () {
@@ -177,6 +181,8 @@ namespace Limaki.View.Vidgets {
         }
 
         public override void Dispose () {
+            this.Markdown.Dispose ();
+            this.Markdown = null;
             var disp = Editor as IDisposable;
             if (disp != null)
                 disp.Dispose ();

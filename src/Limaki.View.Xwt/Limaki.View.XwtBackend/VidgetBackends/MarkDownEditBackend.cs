@@ -20,7 +20,6 @@ using Xwt.Backends;
 
 namespace Limaki.View.XwtBackend {
 
-
     public class MarkdownEditBackend : VidgetBackend<MarkdownEditBackend.MDBox>, IMarkdownEditBackend {
 
         public class MDBox : VBox {
@@ -57,6 +56,7 @@ namespace Limaki.View.XwtBackend {
             var wb = viewerBackend.GetBackend () as IWebBrowser;
             if (wb != null)
                 wb.MakeReady ();
+            viewerBackend.SetFocus ();
             IsEmpty = false;
         }
 
