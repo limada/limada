@@ -37,6 +37,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             RegisterBackend<ITextViewerVidgetBackend, TextViewerBackend>();
             RegisterBackend<ITextViewerWithToolstripVidgetBackend0, TextViewerWithToolstripBackend0>();
             RegisterBackend<IWebBrowserBackend, WebBrowserBackend>();
+            RegisterBackend<IMarkdownEditBackend, MarkdownEditBackend> ();
+            RegisterBackend<IPlainTextBoxVidgetBackend, PlainTextBoxBackend> ();
 
             RegisterBackend<ISplitViewBackend, SplitViewBackend>();
             RegisterBackend<ITextOkCancelBoxBackend, TextOkCancelBoxBackend> ();
