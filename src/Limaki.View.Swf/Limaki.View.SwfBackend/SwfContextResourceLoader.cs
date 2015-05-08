@@ -76,6 +76,8 @@ namespace Limaki.View.SwfBackend {
 
             context.Factory.Add<IWebBrowserBackend>(() => CreateWebBrowserBackend());
 
+            context.Factory.Add<IMarkdownEdit, MarkdownEdit> ();
+
             new ViewContextResourceLoader().ApplyResources(context);
 
             RegisterBackends(context);
