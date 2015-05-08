@@ -283,7 +283,7 @@ namespace Limada.View.Vidgets {
 
         #region ContentView
 
-        protected IVidget ContentVidget { get; set; }
+        public IVidget ContentVidget { get; protected set; }
 
         private ContentViewManager _contentViewManager = null;
         public ContentViewManager ContentViewManager {

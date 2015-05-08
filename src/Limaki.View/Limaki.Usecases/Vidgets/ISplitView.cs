@@ -22,6 +22,7 @@ namespace Limaki.Usecases.Vidgets {
     public interface ISplitView {
 
         IGraphSceneDisplay<IVisual, IVisualEdge> CurrentDisplay { get; }
+        IVidget ContentVidget { get; }
         object CurrentWidget { get; }
 
         IGraphSceneDisplay<IVisual, IVisualEdge> Display1 { get; }

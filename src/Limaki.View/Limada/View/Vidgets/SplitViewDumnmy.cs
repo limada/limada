@@ -61,5 +61,10 @@ namespace Limada.View.Vidgets {
            
         }
 
+
+
+        public IVidget ContentVidget {
+            get { throw new NotImplementedException (); }
+        }
     }
 }
