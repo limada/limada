@@ -33,7 +33,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         public VidgetBackend () {
-            this.Control = new T();
+            Compose ();
+        }
+
+        protected virtual void Compose () {
+            this.Control = new T ();
         }
 
         public T Control { get; protected set; }
