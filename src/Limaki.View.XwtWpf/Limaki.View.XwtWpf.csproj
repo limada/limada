@@ -44,7 +44,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Limaki.View.WpfBackend\XwtBackends\NativeMethods.cs" />
     <Compile Include="Limaki.View.WpfBackend\XwtBackends\TextViewerWithToolStripWidgetBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripButton.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripButtonBackend.cs" />
@@ -86,11 +85,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">
-      <Project>{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}</Project>
+      <Project>{6ab4eee6-1889-43ab-83f7-a4f083230be7}</Project>
       <Name>Geckofx-Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Wpf\Geckofx-Wpf.csproj">
-      <Project>{B52FD785-EC50-4767-B085-300D94DE8205}</Project>
+      <Project>{b52fd785-ec50-4767-b085-300d94de8205}</Project>
       <Name>Geckofx-Wpf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.WPF\Xwt.WPF.csproj">

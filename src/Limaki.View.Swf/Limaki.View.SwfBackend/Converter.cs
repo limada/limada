@@ -90,6 +90,7 @@ namespace Limaki.View.SwfBackend {
                 e.Y,
                 e.Delta);
         }
+
         static IDictionary<Key, Keys> keytableW = null;
         protected static IDictionary<Key, Keys> KeyTableW {
             get {
@@ -205,6 +206,7 @@ namespace Limaki.View.SwfBackend {
 
             return result;
         }
+
         public static View.Vidgets.DialogResult Convert(DialogResult value) {
             var result = View.Vidgets.DialogResult.None;
             if (value == DialogResult.OK) {

@@ -268,9 +268,7 @@ namespace Limaki.View.SwfBackend.Viz {
         }
 
         #region DragDrop
-
-
-
+        
         //this is called by Control.DoDragDrop
         protected override void OnGiveFeedback (System.Windows.Forms.GiveFeedbackEventArgs e) { base.OnGiveFeedback (e); }
 
