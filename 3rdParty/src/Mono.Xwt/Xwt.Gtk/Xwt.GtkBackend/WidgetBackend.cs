@@ -649,7 +649,7 @@ namespace Xwt.GtkBackend
 		}
 
 		Gdk.Rectangle lastAllocation;
-		void HandleWidgetBoundsChanged (object o, Gtk.SizeAllocatedArgs args)
+        protected void HandleWidgetBoundsChanged (object o, Gtk.SizeAllocatedArgs args)
 		{
 			if (Widget.Allocation != lastAllocation) {
 				lastAllocation = Widget.Allocation;
@@ -661,7 +661,7 @@ namespace Xwt.GtkBackend
 		
 		bool gettingPreferredSize;
 
-		void HandleWidgetSizeRequested (object o, Gtk.SizeRequestedArgs args)
+        protected void HandleWidgetSizeRequested (object o, Gtk.SizeRequestedArgs args)
 		{
 			var req = args.Requisition;
 
@@ -687,7 +687,7 @@ namespace Xwt.GtkBackend
 		}
 
 		[GLib.ConnectBefore]
-		void HandleKeyReleaseEvent (object o, Gtk.KeyReleaseEventArgs args)
+        protected void HandleKeyReleaseEvent (object o, Gtk.KeyReleaseEventArgs args)
 		{
 			Key k = (Key)args.Event.KeyValue;
 			ModifierKeys m = ModifierKeys.None;
@@ -706,7 +706,7 @@ namespace Xwt.GtkBackend
 		}
 
 		[GLib.ConnectBefore]
-		void HandleKeyPressEvent (object o, Gtk.KeyPressEventArgs args)
+        protected void HandleKeyPressEvent (object o, Gtk.KeyPressEventArgs args)
 		{
 			Key k = (Key)args.Event.KeyValue;
 			ModifierKeys m = args.Event.State.ToXwtValue ();
@@ -719,7 +719,7 @@ namespace Xwt.GtkBackend
 		}
 
         [GLib.ConnectBefore]
-        void HandleScrollEvent(object o, Gtk.ScrollEventArgs args)
+        protected void HandleScrollEvent (object o, Gtk.ScrollEventArgs args)
         {
 			var direction = args.Event.Direction.ToXwtValue ();
 
@@ -730,16 +730,16 @@ namespace Xwt.GtkBackend
             if (a.Handled)
                 args.RetVal = true;
         }
-        
 
-		void HandleWidgetFocusOutEvent (object o, Gtk.FocusOutEventArgs args)
+
+        protected void HandleWidgetFocusOutEvent (object o, Gtk.FocusOutEventArgs args)
 		{
 			ApplicationContext.InvokeUserCode (delegate {
 				EventSink.OnLostFocus ();
 			});
 		}
 
-		void HandleWidgetFocusInEvent (object o, EventArgs args)
+        protected void HandleWidgetFocusInEvent (object o, EventArgs args)
 		{
 			if (!CanGetFocus)
 				return;
@@ -748,7 +748,7 @@ namespace Xwt.GtkBackend
 			});
 		}
 
-		void HandleLeaveNotifyEvent (object o, Gtk.LeaveNotifyEventArgs args)
+        protected void HandleLeaveNotifyEvent (object o, Gtk.LeaveNotifyEventArgs args)
 		{
 			if (args.Event.Detail == Gdk.NotifyType.Inferior)
 				return;
@@ -757,7 +757,7 @@ namespace Xwt.GtkBackend
 			});
 		}
 
-		void HandleEnterNotifyEvent (object o, Gtk.EnterNotifyEventArgs args)
+        protected void HandleEnterNotifyEvent (object o, Gtk.EnterNotifyEventArgs args)
 		{
 			if (args.Event.Detail == Gdk.NotifyType.Inferior)
 				return;
@@ -766,7 +766,7 @@ namespace Xwt.GtkBackend
 			});
 		}
 
-		void HandleMotionNotifyEvent (object o, Gtk.MotionNotifyEventArgs args)
+        protected void HandleMotionNotifyEvent (object o, Gtk.MotionNotifyEventArgs args)
 		{
 			var a = new MouseMovedEventArgs ((long) args.Event.Time, args.Event.X, args.Event.Y);
 			ApplicationContext.InvokeUserCode (delegate {
@@ -776,7 +776,7 @@ namespace Xwt.GtkBackend
 				args.RetVal = true;
 		}
 
-		void HandleButtonReleaseEvent (object o, Gtk.ButtonReleaseEventArgs args)
+        protected void HandleButtonReleaseEvent (object o, Gtk.ButtonReleaseEventArgs args)
 		{
 			var a = new ButtonEventArgs ();
 			a.X = args.Event.X;
@@ -790,7 +790,7 @@ namespace Xwt.GtkBackend
 		}
 
 		[GLib.ConnectBeforeAttribute]
-		void HandleButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
+		protected void HandleButtonPressEvent (object o, Gtk.ButtonPressEventArgs args)
 		{
 			var a = new ButtonEventArgs ();
 			a.X = args.Event.X;
@@ -811,7 +811,7 @@ namespace Xwt.GtkBackend
 		}
 		
 		[GLib.ConnectBefore]
-		void HandleWidgetDragMotion (object o, Gtk.DragMotionArgs args)
+        protected void HandleWidgetDragMotion (object o, Gtk.DragMotionArgs args)
 		{
 			args.RetVal = DoDragMotion (args.Context, args.X, args.Y, args.Time);
 		}
@@ -862,7 +862,7 @@ namespace Xwt.GtkBackend
 		}
 		
 		[GLib.ConnectBefore]
-		void HandleWidgetDragDrop (object o, Gtk.DragDropArgs args)
+        protected void HandleWidgetDragDrop (object o, Gtk.DragDropArgs args)
 		{
 			args.RetVal = DoDragDrop (args.Context, args.X, args.Y, args.Time);
 		}
@@ -903,14 +903,14 @@ namespace Xwt.GtkBackend
 			}
 		}
 
-		void HandleWidgetDragLeave (object o, Gtk.DragLeaveArgs args)
+        protected void HandleWidgetDragLeave (object o, Gtk.DragLeaveArgs args)
 		{
 			ApplicationContext.InvokeUserCode (delegate {
 				eventSink.OnDragLeave (EventArgs.Empty);
 			});
 		}
-		
-		void QueryDragData (Gdk.DragContext ctx, uint time, bool isMotionEvent)
+
+        protected void QueryDragData (Gdk.DragContext ctx, uint time, bool isMotionEvent)
 		{
 			DragDropInfo.DragDataForMotion = isMotionEvent;
 			DragDropInfo.DragData = new TransferDataStore ();
@@ -920,8 +920,8 @@ namespace Xwt.GtkBackend
 				Gtk.Drag.GetData (EventsRootWidget, ctx, at, time);
 			}
 		}
-		
-		void HandleWidgetDragDataReceived (object o, Gtk.DragDataReceivedArgs args)
+
+        protected void HandleWidgetDragDataReceived (object o, Gtk.DragDataReceivedArgs args)
 		{
 			args.RetVal = DoDragDataReceived (args.Context, args.X, args.Y, args.SelectionData, args.Info, args.Time);
 		}
@@ -982,8 +982,8 @@ namespace Xwt.GtkBackend
 		{
 			Gdk.Drag.Status (context, action, time);
 		}
-		
-		void HandleWidgetDragBegin (object o, Gtk.DragBeginArgs args)
+
+        protected void HandleWidgetDragBegin (object o, Gtk.DragBeginArgs args)
 		{
 			// If SetDragSource has not been called, ignore the event
 			if (DragDropInfo.SourceDragAction == default (Gdk.DragAction))
