@@ -79,7 +79,7 @@ namespace Gecko
 		/// <summary>
 		/// nsIWebBrowser instance
 		/// </summary>
-		nsIWebBrowser WebBrowser;
+		public nsIWebBrowser WebBrowser;
 		/// <summary>
 		/// nsIWebBrowser casted to nsIBaseWindow
 		/// </summary>
@@ -87,7 +87,7 @@ namespace Gecko
 		/// <summary>
 		/// nsIWebBrowser casted no nsIWebNavigation
 		/// </summary>
-		nsIWebNavigation WebNav;
+        public nsIWebNavigation WebNav;
         nsICommandParams CommandParams;
 
 		uint ChromeFlags;
