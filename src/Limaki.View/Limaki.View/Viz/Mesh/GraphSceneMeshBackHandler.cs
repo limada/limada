@@ -153,9 +153,18 @@ namespace Limaki.View.Viz.Mesh {
                                         dg.OnGraphChange (sinkItem, eventType);
                                         dg.Remove (sinkItem);
                                     }
+                            } else {
+                                SceneItemRemove (scene, sinkItem);
+                            }
                         }
 
                         if (eventType == GraphEventType.Update) {
+
+                            if (backItem is TSourceEdge && sinkItem is TSinkEdge) {
+
+                                SceneEdgeChanged (graph, (TSourceEdge) backItem, scene, (TSinkEdge) sinkItem);
+
+                            } else {
 
                                 graphPair.UpdateSink (sinkItem);
                                 if (visible) {
@@ -184,6 +193,107 @@ namespace Limaki.View.Viz.Mesh {
                 graphChanging.Remove (change);
             }
 
+        }
+
+        #endregion
+
+        #region needed if BackendHandler is called from Backend, not from Frontend (this are copies from VisualGraphSceneMeshEvents, should be consolidated)
+
+        protected virtual void SceneEdgeChanged (IGraph<TSourceItem, TSourceEdge> sourceGraph, TSourceEdge sourceEdge, IGraphScene<TSinkItem, TSinkEdge> sinkScene, TSinkEdge sinkEdge) {
+            
+            var sinkGraph = (sinkScene.Graph as IGraphPair<TSinkItem, TSinkItem, TSinkEdge, TSinkEdge>);
+            var sinkSource = sinkGraph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
+            var root = sinkSource.Get (sourceEdge.Root);
+            var leaf = sinkSource.Get (sourceEdge.Leaf);
+
+            if (!sinkEdge.Root.Equals(root) || !sinkEdge.Leaf.Equals(leaf)) {
+
+                bool isEdgeVisible = sinkGraph.Sink.Contains (sinkEdge);
+                bool makeEdgeVisible = sinkGraph.Sink.Contains (root) && sinkGraph.Sink.Contains (leaf);
+
+                Action<TSinkItem, bool> changeEdge = (item, isRoot) => {
+                    if (makeEdgeVisible)
+                        sinkGraph.ChangeEdge (sinkEdge, item, isRoot);
+                    else
+                        sinkGraph.Source.ChangeEdge (sinkEdge, item, isRoot);
+                };
+
+                if (!sinkEdge.Root.Equals(root)) changeEdge (root, true);
+                if (!sinkEdge.Leaf.Equals(leaf)) changeEdge (leaf, false);
+                
+                if (makeEdgeVisible) {
+                    var changeList = new TSinkEdge[] { sinkEdge }.Union (sinkGraph.Source.Twig (sinkEdge));
+                    foreach (var edge in changeList) {
+                        var showTwig = (sinkScene.Contains (edge.Root) && sinkScene.Contains (edge.Leaf));
+
+                        var doAdd = (edge.Equals(sinkEdge) && !isEdgeVisible) ||
+                                    (!sinkGraph.Sink.Contains (edge) && showTwig);
+
+                        if (doAdd) {
+                            sinkGraph.Sink.Add (edge);
+                            sinkScene.Requests.Add (new LayoutCommand<TSinkItem> (edge, LayoutActionType.Invoke));
+                        }
+                        if (showTwig || edge.Equals(sinkEdge))
+                            sinkScene.Requests.Add (new LayoutCommand<TSinkItem> (edge, LayoutActionType.Justify));
+                    }
+                } else {
+                    var changeList = new TSinkEdge[] { sinkEdge }.Union (sinkGraph.Sink.Twig (sinkEdge));
+                    foreach (var edge in changeList) {
+                        sinkGraph.Sink.Remove (edge);
+                        sinkScene.Requests.Add (new RemoveBoundsCommand<TSinkItem, TSinkEdge> (edge, sinkScene));
+                    }
+                }
+            }
+        }
+
+        protected virtual void SceneItemRemove (IGraphScene<TSinkItem, TSinkEdge> sinkScene, TSinkItem sinkItem) {
+
+            if (sinkScene.Contains (sinkItem)) {
+                if (sinkScene.Focused!=null && sinkScene.Focused.Equals(sinkItem)) {
+                    sinkScene.Focused = default(TSinkItem);
+                }
+                sinkScene.Selected.Remove (sinkItem);
+
+                sinkScene.Requests.Add (new RemoveBoundsCommand<TSinkItem, TSinkEdge> (sinkItem, sinkScene));
+            }
+
+            //TODO: move this on a place when all display.perform are done
+            // currently this is done in VisualGraphSceneMeshEvents
+            if (false) {
+                var graphs = new Stack<IGraph<TSinkItem, TSinkEdge>> ();
+                graphs.Push (sinkScene.Graph);
+                while (graphs.Count > 0) {
+                    var graph = graphs.Pop ();
+                    var sinkGraph = graph as ISinkGraph<TSinkItem, TSinkEdge>;
+                    if (graph.Contains (sinkItem)) {
+                        if (sinkGraph != null)
+                            sinkGraph.RemoveSinkItem (sinkItem);
+                        else
+                            graph.Remove (sinkItem);
+                    }
+                    var graphPair = graph as IGraphPair<TSinkItem, TSinkItem, TSinkEdge, TSinkEdge>;
+                    if (graphPair != null)
+                        graphs.Push (graphPair.Source);
+                }
+            }
+        }
+
+        protected virtual void SceneEdgeAdd (IGraphScene<TSinkItem, TSinkEdge> sinkScene, TSinkEdge sinkEdge) {
+            if (sinkScene.Contains (sinkEdge.Root) && (sinkScene.Contains (sinkEdge.Leaf))) {
+                sinkScene.Graph.Add (sinkEdge);
+                sinkScene.Requests.Add (new LayoutCommand<TSinkItem> (sinkEdge, LayoutActionType.Invoke));
+                sinkScene.Requests.Add (new LayoutCommand<TSinkItem> (sinkEdge, LayoutActionType.Justify));
+            }
+        }
+
+        protected virtual TSinkItem LookUp (IGraph<TSinkItem, TSinkEdge> sourceGraph, IGraph<TSinkItem, TSinkEdge> sinkGraph, TSinkItem lookItem) {
+            var source = sourceGraph as IGraphPair<TSinkItem, TSinkItem, TSinkEdge, TSinkEdge>;
+            var sink = sinkGraph as IGraphPair<TSinkItem, TSinkItem, TSinkEdge, TSinkEdge>;
+            if (sourceGraph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> () != null) {
+                return source.LookUp<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (
+                   sink, lookItem);
+            }
+            return default (TSinkItem);
         }
 
         #endregion
