@@ -27,13 +27,6 @@ namespace Limaki.View.Viz.Visuals {
 
     public class VisualGraphSceneMeshEvents : IGraphSceneEvents<IVisual, IVisualEdge> {
 
-        public void GraphDataChanged (IVisual sourceItem, IVisual sinkItem, IGraphScene<IVisual, IVisualEdge> sinkScene, IGraphSceneDisplay<IVisual, IVisualEdge> sinkDisplay) {
-            sinkItem.Data = sourceItem.Data;
-            sinkScene.Requests.Add (new LayoutCommand<IVisual> (sinkItem, LayoutActionType.Perform));
-            if (sinkDisplay != null)
-                sinkDisplay.Perform ();
-        }
-
         public void GraphChanged (
             IGraph<IVisual, IVisualEdge> sourceGraph, IVisual sourceItem, 
             IVisual sinkItem, IGraphScene<IVisual, IVisualEdge> sinkScene,
@@ -41,6 +34,9 @@ namespace Limaki.View.Viz.Visuals {
 
             if (eventType == GraphEventType.Update && sinkItem is IVisualEdge) {
                 VisualGraphUpdateChangedEdge (sourceGraph, sourceItem as IVisualEdge, sinkScene, (IVisualEdge) sinkItem);
+            } else if (eventType == GraphEventType.Update) {
+                sinkItem.Data = sourceItem.Data;
+                sinkScene.Requests.Add (new LayoutCommand<IVisual> (sinkItem, LayoutActionType.Perform));
             } else if (eventType == GraphEventType.Remove) {
                 VisualGraphItemRemove (sinkScene, sinkItem);
             } else if (eventType == GraphEventType.Add && sinkItem is IVisualEdge) {

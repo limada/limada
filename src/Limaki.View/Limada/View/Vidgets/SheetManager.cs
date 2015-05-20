@@ -161,7 +161,7 @@ namespace Limada.View.Vidgets {
             if (sheetVisual != null) {
                 //sheetVisual.Data = info.Name;
                 scene.Graph.DoChangeData(sheetVisual,info.Name);
-                scene.Graph.OnDataChanged(sheetVisual);
+                scene.Graph.OnGraphChange (sheetVisual, GraphEventType.Update);
             }
             saved.State.CopyTo(info.State);
         }

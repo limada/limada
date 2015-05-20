@@ -332,39 +332,24 @@ namespace Limaki.Graphs {
         #endregion
 
         #region events
-        private Action<IGraph<TItem, TEdge>, TItem, object> _changeData = null;
-        public virtual Action<IGraph<TItem, TEdge>, TItem, object> ChangeData {
-            get { return _changeData; }
-            set { _changeData = value; }
-        }
+
+        public virtual Action<IGraph<TItem, TEdge>, TItem, object> ChangeData { get; set; }
 
         public virtual void DoChangeData(TItem item, object data) {
             if (ChangeData != null) {
                 ChangeData(this, item, data);
             }
         }
+        
+        public virtual Action<IGraph<TItem, TEdge>, TItem, GraphEventType> GraphChange { get; set; }
 
-        private Action<IGraph<TItem, TEdge>, TItem> _dataChanged = null;
-        public virtual Action<IGraph<TItem, TEdge>, TItem> DataChanged {
-            get { return _dataChanged; }
-            set { _dataChanged = value; }
+        public virtual void OnGraphChange (TItem item, GraphEventType eventType) {
+            OnGraphChange (this, item, eventType);
         }
 
-        public virtual void OnDataChanged(TItem item) {
-            if (DataChanged != null) {
-                DataChanged(this, item);
-            }
-        }
-
-        private Action<IGraph<TItem, TEdge>, TItem, GraphEventType> _graphChange = null;
-        public virtual Action<IGraph<TItem, TEdge>, TItem, GraphEventType> GraphChange {
-            get { return _graphChange; }
-            set { _graphChange = value; }
-        }
-
-        public virtual void OnGraphChange(TItem item, GraphEventType eventType) {
+        public virtual void OnGraphChange (IGraph<TItem, TEdge> graph, TItem item, GraphEventType eventType) {
             if (GraphChange != null) {
-                GraphChange(this, item, eventType);
+                GraphChange (graph, item, eventType);
             }
         }
 

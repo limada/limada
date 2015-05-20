@@ -177,9 +177,6 @@ namespace Limaki.Graphs {
             Source.OnGraphChange (item, eventType);
         }
 
-        public override void OnDataChanged(TItem item) {
-            base.OnDataChanged(item);
-            Source.OnDataChanged (item);
         }
 
         public override IEnumerable<TItem> WhereQ(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {

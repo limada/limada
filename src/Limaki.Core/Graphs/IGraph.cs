@@ -125,18 +125,6 @@ namespace Limaki.Graphs {
         #endregion
 
         #region events
-        /// <summary>
-        /// this is fired "outside" of the graph by the user-interface
-        /// </summary>
-        Action<IGraph<TItem, TEdge>,TItem> DataChanged { get;set;}
-
-        /// <summary>
-        /// fires the DataChanged-event
-        /// this is called "outside" of the graph by the user-interface
-        /// </summary>
-        /// <param name="item"></param>
-        void OnDataChanged( TItem item );
-
 
         /// <summary>
         /// changes the items data

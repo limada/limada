@@ -14,6 +14,7 @@
 
 using Db4objects.Db4o;
 using Db4objects.Db4o.Config;
+using Db4objects.Db4o.Ext;
 using Db4objects.Db4o.Linq;
 using Db4objects.Db4o.Query;
 using Limaki.Common.Collections;
@@ -23,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Db4objects.Db4o.Events;
 
 namespace Limaki.Data.db4o {
 
@@ -156,9 +158,10 @@ namespace Limaki.Data.db4o {
             }
         }
 
-        public override void OnDataChanged(TItem item) {
-            base.OnDataChanged(item);
-            this.Add(item);
+        public override void OnGraphChange (IGraph<TItem, TEdge> graph, TItem item, GraphEventType eventType) {
+            base.OnGraphChange (graph, item, eventType);
+            if (eventType == GraphEventType.Update)
+                this.Add (item);
         }
 
         public override void DoChangeData(TItem item, object data) {

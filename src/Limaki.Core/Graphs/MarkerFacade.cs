@@ -51,7 +51,7 @@ namespace Limaki.Graphs {
         public virtual void ChangeMarker(IEdge<TOne> edge, TTwo marker) {
             if (edge == null) return;
             Graph.DoChangeData ((TOne) edge, marker);
-            Graph.OnDataChanged((TOne)edge);
+            Graph.OnGraphChange ((TOne) edge, GraphEventType.Update);
         }
 
         public abstract TTwo CreateMarker ( object data );

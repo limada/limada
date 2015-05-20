@@ -99,11 +99,13 @@ namespace Limada.Model {
             return result;
         }
 
-        public override void OnDataChanged(IThing item) {
-            if (item is ILink) {
-                AddMarker (( (ILink) item ).Marker);
+        public override void OnGraphChange (IGraph<IThing, ILink> graph, IThing item, GraphEventType eventType) {
+            if (eventType == GraphEventType.Update) {
+                if (item is ILink) {
+                    AddMarker (((ILink) item).Marker);
+                }
             }
-            base.OnDataChanged(item);
+            base.OnGraphChange (graph, item, eventType);
         }
 
         #region Marker-Handling

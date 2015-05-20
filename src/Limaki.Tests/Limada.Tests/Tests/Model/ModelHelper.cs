@@ -27,7 +27,6 @@ namespace Limada.Tests.Model {
 
             var visualGraph = (mock.Scene.Graph as SubGraph<IVisual, IVisualEdge>).Sink;
             visualGraph.ChangeData = null;
-            visualGraph.DataChanged = null;
             visualGraph.GraphChange = null;
 
 

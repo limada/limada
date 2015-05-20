@@ -165,7 +165,7 @@ namespace Limaki.View.Viz.Visuals {
                 scene.Markers.DefaultMarker = marker;
             } 
             scene.Graph.DoChangeData(visual, data);
-            scene.Graph.OnDataChanged(visual);
+            scene.Graph.OnGraphChange (visual, Graphs.GraphEventType.Update);
             scene.Requests.Add (new LayoutCommand<IVisual> (visual, LayoutActionType.Justify));
         }
 

@@ -42,8 +42,6 @@ namespace Limaki.View.Viz.Mesh {
                 graph.GraphChange += this.VisualGraphChange;
                 graph.ChangeData -= this.VisualGraphChangeData;
                 graph.ChangeData += this.VisualGraphChangeData;
-                graph.DataChanged -= this.VisualGraphDataChanged;
-                graph.DataChanged += this.VisualGraphDataChanged;
             }
         }
 
@@ -52,7 +50,6 @@ namespace Limaki.View.Viz.Mesh {
                 var graph = scene.Graph;
                 graph.GraphChange -= this.VisualGraphChange;
                 graph.ChangeData -= this.VisualGraphChangeData;
-                graph.DataChanged -= this.VisualGraphDataChanged;
                 Scenes.Remove (scene);
                 UnregisterBackGraph (graph);
 
@@ -130,12 +127,6 @@ namespace Limaki.View.Viz.Mesh {
         }
 
         protected abstract IGraphSceneEvents<TItem, TEdge> CreateSceneEvents();
-
-        protected virtual void VisualGraphDataChanged (IGraph<TItem, TEdge> graph, TItem visual) {
-            var visitor = CreateVisitor (graph, visual);
-            var sceneEvents = CreateSceneEvents ();
-            visitor.ChangeDataVisit (sceneEvents.GraphDataChanged);
-        }
 
         protected void VisualGraphChange (IGraph<TItem, TEdge> graph, TItem visual, GraphEventType eventType) {
             var visitor = CreateVisitor (graph, visual);

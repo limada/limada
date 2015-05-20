@@ -197,15 +197,17 @@ namespace Limada.IO.db4o {
             return result;
         }
 
-        public override void OnDataChanged(IThing item) {
-            if (item is ILink)
-                // maybe this can be done better with
-                // IObjectTranslator..::OnStore or 
-                // with callbacks:
-                // IObjectCallbacks..::ObjectCanUpdate
-                // IObjectCallbacks..::ObjectOnUpdate
-                markerVisitor = null;
-            base.OnDataChanged(item);
+        public override void OnGraphChange (IThing item, Limaki.Graphs.GraphEventType eventType) {
+            if (eventType == Limaki.Graphs.GraphEventType.Update) {
+                if (item is ILink)
+                    // maybe this can be done better with
+                    // IObjectTranslator..::OnStore or 
+                    // with callbacks:
+                    // IObjectCallbacks..::ObjectCanUpdate
+                    // IObjectCallbacks..::ObjectOnUpdate
+                    markerVisitor = null;
+            }
+            base.OnGraphChange (item, eventType);
         }
 
         public override void Add( ILink edge ) {

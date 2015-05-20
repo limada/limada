@@ -160,7 +160,7 @@ namespace Limada.View.VisualThings {
            }
 
            foreach (var thing in thingGraph.MergeThing (sweepThing, sinkThing)) {
-               thingGraph.OnDataChanged (thing);
+               thingGraph.OnGraphChange (thing, GraphEventType.Update);
 
                if (!meshed) {
                    if (scene.Graph.ContainsVisualOf (thing)) {

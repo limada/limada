@@ -15,7 +15,6 @@
 
 namespace Limaki.Graphs {
     public enum GraphEventType {
-        Create,
         Add,
         Update,
         Remove

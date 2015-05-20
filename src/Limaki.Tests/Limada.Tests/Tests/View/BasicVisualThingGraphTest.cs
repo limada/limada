@@ -97,7 +97,7 @@ namespace Limada.Tests.View {
             Pair.DoChangeData(Data.One, newData);
             Assert.AreEqual(newData, Data.One.Data);
 
-            Pair.OnDataChanged (Data.One);
+            Pair.OnGraphChange (Data.One, GraphEventType.Update);
 
             IThing thing = Pair.Get (Data.One);
             Assert.AreEqual (newData, thing.Data.ToString ());

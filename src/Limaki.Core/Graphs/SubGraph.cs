@@ -163,18 +163,13 @@ namespace Limaki.Graphs {
             return Sink.GetEnumerator();
         }
 
-        public override void OnDataChanged(TItem item) {
-            // change the full graph first, then call subgraph change-event
-            Source.OnDataChanged (item);
-            base.OnDataChanged(item);
-        }
-
         public override void DoChangeData(TItem item, object data) {
             Source.DoChangeData(item, data);
             base.DoChangeData(item, data);
         }
 
         public override void OnGraphChange( TItem item, GraphEventType eventType ) {
+            // change the full graph first, then call subgraph change-event
             Source.OnGraphChange(item, eventType);
             base.OnGraphChange(item, eventType);
         }

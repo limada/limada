@@ -228,13 +228,6 @@ namespace Limaki.Graphs {
             }
         }
 
-        public override void OnDataChanged( TSinkItem item ) {
-            base.OnDataChanged(item);
-            Sink.OnDataChanged(item);
-            var sourceItem = Get(item);
-            Source.OnDataChanged(sourceItem);
-        }
-
         public override void DoChangeData(TSinkItem item, object data) {
             var sourceItem = Get(item);
             Source.DoChangeData (sourceItem, data);
