@@ -143,6 +143,8 @@ namespace Limada.View.Vidgets {
             homeInfo.State.Hollow = true;
 
             var scene = Mesh.CreateSinkScene (display.Data.Graph);
+            Mesh.RemoveScene (display.Data);
+            Mesh.AddScene (scene);
             display.Data = scene;
 
             //display.Data.CleanScene();
