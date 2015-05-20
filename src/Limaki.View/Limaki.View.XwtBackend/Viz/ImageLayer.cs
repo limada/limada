@@ -85,7 +85,7 @@ namespace Limaki.View.XwtBackend {
         bool hadError = false;
         public override void OnPaint (IRenderEventArgs e) {
             var image = this.Data;
-            if (image != null && !hadError) {
+            if (image != null && !hadError && ! image.Size.IsZero) {
                 var ctx = ((ContextSurface) e.Surface).Context;
                 ctx.Save();
                 try {
