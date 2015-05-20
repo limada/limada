@@ -255,6 +255,11 @@ namespace Limada.Schemata {
             base.DoChangeData(itemToChange, data);
         }
 
+        public override void SourceGraphChanged (IGraph<IThing, ILink> graph, IThing item, GraphEventType eventType) {
+            var ttd = ThingToDisplay (item);
+            base.SourceGraphChanged (this, ttd, eventType);
+        }
+
         #region IThingGraph Member
 
         public IThingGraph ThingGraph {

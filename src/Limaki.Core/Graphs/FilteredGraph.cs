@@ -25,6 +25,8 @@ namespace Limaki.Graphs {
 
         public FilteredGraph(IGraph<TItem, TEdge> source) {
             this.Source = source;
+            source.GraphChange -= SourceGraphChanged;
+            source.GraphChange += SourceGraphChanged;
         }
 
         public virtual IGraph<TItem, TEdge> Source { get; set; }
@@ -177,6 +179,8 @@ namespace Limaki.Graphs {
             Source.OnGraphChange (item, eventType);
         }
 
+        public virtual void SourceGraphChanged (IGraph<TItem, TEdge> graph, TItem item, GraphEventType eventType) {
+            base.OnGraphChange (graph, item, eventType);
         }
 
         public override IEnumerable<TItem> WhereQ(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
