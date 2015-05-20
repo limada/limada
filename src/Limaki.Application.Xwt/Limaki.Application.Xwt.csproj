@@ -90,6 +90,10 @@
   </Target>
   -->
   <ItemGroup>
+    <None Include="..\..\3rdParty\src\Mono.Xwt\Xwt.Gtk\Xwt.Gtk.dll.config">
+      <Link>Xwt.Gtk.dll.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Limaki.Application.Xwt.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

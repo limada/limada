@@ -148,7 +148,7 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="Xwt.Gtk.dll.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup />
