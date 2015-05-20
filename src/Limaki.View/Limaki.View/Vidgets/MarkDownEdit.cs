@@ -55,8 +55,14 @@ namespace Limaki.View.Vidgets {
             stream.SetLength (0);
             var writer = new StreamWriter (stream);
             writer.NewLine = "\r\n";
-            foreach (var line in Backend.Text.Split (new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None))
-                writer.WriteLine (line);
+            var lines = Backend.Text.Split (new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            for (int i = 0; i < lines.Length; i++) {
+                var line = lines[i];
+                if (i < lines.Length - 1)
+                    writer.WriteLine (line);
+                else
+                    writer.Write (line);
+            }
             writer.Flush ();
             stream.Position = 0;
         }
@@ -175,13 +181,16 @@ namespace Limaki.View.Vidgets {
         }
 
         public void Clear () {
+            if (this.Markdown != null)
+                this.Markdown.Dispose ();
             this.Markdown = null;
             Editor.Clear ();
             Viewer.Clear ();
         }
 
         public override void Dispose () {
-            this.Markdown.Dispose ();
+            if (this.Markdown != null)
+                this.Markdown.Dispose ();
             this.Markdown = null;
             var disp = Editor as IDisposable;
             if (disp != null)
