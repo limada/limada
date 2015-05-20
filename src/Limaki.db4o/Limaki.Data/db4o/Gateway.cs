@@ -29,6 +29,7 @@ namespace Limaki.Data.db4o {
 
         # region session
         private ICommonConfigurationProvider _configuration = null;
+        private ICommonConfigurationProvider _serverConfiguration = null;
         public ICommonConfiguration Configuration {
             get {
                 if (_configuration == null) {
@@ -36,7 +37,12 @@ namespace Limaki.Data.db4o {
                     if (Iori != null)
                         accessMode = Iori.AccessMode;
                     if (accessMode.HasFlag(IoMode.Server)) {
-                        _configuration = Db4oClientServer.NewServerConfiguration();
+                        _serverConfiguration = Db4oClientServer.NewServerConfiguration ();
+                        var server = _serverConfiguration as IServerConfiguration;
+                        if (server != null) {
+                            this.Server = OpenServer (server);
+                        }
+                        _configuration = Db4oClientServer.NewClientConfiguration ();
                     } else if (accessMode.HasFlag(IoMode.Client)) {
                         _configuration = Db4oClientServer.NewClientConfiguration();
                     } else {
@@ -103,7 +109,8 @@ namespace Limaki.Data.db4o {
                 config.AddConfigurationItem (new ClientSslSupport (CheckCertificate));
             }
 			#endif
-            return Db4oClientServer.OpenClient (config, Iori.Server, Iori.Port, Iori.User, Iori.Password);
+            var result = Db4oClientServer.OpenClient (config, Iori.Server, Iori.Port, Iori.User, Iori.Password);
+            return result;
         }
 
         protected virtual bool CheckCertificate (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
