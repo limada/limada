@@ -40,9 +40,9 @@ namespace Limaki.Graphs {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override void ChangeEdge(TEdge edge, TItem newItem, bool changeRoot) {
-            if (EdgeFilter(edge) && ItemFilter(newItem))
-                Source.ChangeEdge(edge, newItem, changeRoot);
+        public override void ChangeEdge(TEdge sinkEdge, TItem newItem, bool changeRoot) {
+            if (EdgeFilter(sinkEdge) && ItemFilter(newItem))
+                Source.ChangeEdge(sinkEdge, newItem, changeRoot);
         }
 
         public override void RevertEdge(TEdge edge) {
@@ -185,6 +185,7 @@ namespace Limaki.Graphs {
         public override IEnumerable<TItem> WhereQ(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
             return Source.WhereQ(predicate).Where(e => ItemFilter(e));
         }
+    
     }
 
     public interface IWrappedGraph<TItem, TEdge> : IGraph<TItem, TEdge>

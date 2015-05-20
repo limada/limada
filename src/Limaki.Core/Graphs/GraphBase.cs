@@ -85,31 +85,31 @@ namespace Limaki.Graphs {
             }
         }
 
-        public virtual void ChangeEdge(TEdge edge, TItem newItem, bool changeRoot) {
-            CheckEdge(edge);
+        public virtual void ChangeEdge(TEdge sinkEdge, TItem newItem, bool changeRoot) {
+            CheckEdge(sinkEdge);
             if (newItem == null ) {
                 throw new ArgumentException("ChangeEdge: Root or Leaf would be null");
             }
             var oldItem = default(TItem);
             var adjacent = default(TItem);
             if (changeRoot) {
-                oldItem = edge.Root;
-                adjacent = edge.Leaf;
-                edge.Root = newItem;
+                oldItem = sinkEdge.Root;
+                adjacent = sinkEdge.Leaf;
+                sinkEdge.Root = newItem;
             } else {
-                oldItem = edge.Leaf;
-                adjacent = edge.Root;
-                edge.Leaf = newItem;
+                oldItem = sinkEdge.Leaf;
+                adjacent = sinkEdge.Root;
+                sinkEdge.Leaf = newItem;
             }
-            if (this.Contains(edge)) {
+            if (this.Contains(sinkEdge)) {
                 if (!this.Contains(newItem)) {
                     this.Add(newItem);
                 }
                 if(!adjacent.Equals(oldItem))
-                    RemoveEdge(edge, oldItem);
-                AddEdge(edge, newItem);
+                    RemoveEdge(sinkEdge, oldItem);
+                AddEdge(sinkEdge, newItem);
             } else {
-                this.Add(edge);
+                this.Add(sinkEdge);
             }
         }
 
@@ -367,6 +367,7 @@ namespace Limaki.Graphs {
                 GraphChange(this, item, eventType);
             }
         }
+
         #endregion
 
         #region Linqishing

@@ -21,8 +21,7 @@ namespace Limaki.View.XwtBackend {
             get { return Widget.Text; }
             set { Widget.Text = value; }
         }
-
-
+        
         public bool ShowFrame { get { return Widget.ShowFrame; } set { Widget.ShowFrame = value; } }
     }
 }

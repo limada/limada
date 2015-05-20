@@ -27,7 +27,6 @@ namespace Limaki.Graphs {
             where TSinkEdge : IEdge<TSinkItem>, TSinkItem
             where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
-
             var graphPair = sink.Graph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
             if (graphPair == null)
                 return;

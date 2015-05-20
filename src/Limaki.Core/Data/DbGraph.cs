@@ -111,24 +111,24 @@ namespace Limaki.Data {
             }
         }
 
-        public override void ChangeEdge(TEdge edge, TItem newItem, bool changeRoot) {
+        public override void ChangeEdge(TEdge sinkEdge, TItem newItem, bool changeRoot) {
             var oldItem = default(TItem);
             if (changeRoot) {
-                oldItem = edge.Root;
-                edge.Root = newItem;
+                oldItem = sinkEdge.Root;
+                sinkEdge.Root = newItem;
             } else {
-                oldItem = edge.Leaf;
-                edge.Leaf = newItem;
+                oldItem = sinkEdge.Leaf;
+                sinkEdge.Leaf = newItem;
             }
-            if (this.Contains(edge)) {
+            if (this.Contains(sinkEdge)) {
                 if (!this.Contains(newItem)) {
                     this.Add(newItem);
                 }
                 SetCached(newItem, null);
                 SetCached(oldItem, null);
-                Upsert(edge);
+                Upsert(sinkEdge);
             } else {
-                this.Add(edge);
+                this.Add(sinkEdge);
             }
         }
 

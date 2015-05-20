@@ -362,10 +362,9 @@ namespace Limada.UseCases.Cms {
                   // this makes a bug; some leafs don't work after that! 
                   // var scene = new VisualThingsSceneViz ().CreateScene (this.ThingGraph);
                    var scene = new Scene ();
-                   Func<IGraphScene<IVisual, IVisualEdge>> fScene = () => scene;
+                   Func<IGraphScene<IVisual,IVisualEdge >> fScene = () => scene;
                    _layout = Registry.Factory.Create<IGraphSceneLayout<IVisual, IVisualEdge>> (
-                       fScene,
-                       Registry.Pooled<StyleSheets> ().DefaultStyleSheet);
+                       fScene, Registry.Pooled<StyleSheets> ().DefaultStyleSheet);
                }
                return _layout;
            }

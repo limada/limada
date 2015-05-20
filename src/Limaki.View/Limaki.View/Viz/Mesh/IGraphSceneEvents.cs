@@ -23,6 +23,7 @@ namespace Limaki.View.Viz.Mesh {
     /// <typeparam name="TItem"></typeparam>
     /// <typeparam name="TEdge"></typeparam>
     public interface IGraphSceneEvents<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
+
         void GraphChanged (
             IGraph<TItem, TEdge> sourceGraph, TItem sourceItem,
             TItem sinkItem, IGraphScene<TItem, TEdge> sinkScene,

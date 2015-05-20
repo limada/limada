@@ -36,6 +36,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.XwtBackend\IXwtConceptUseCaseComposer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.XwtBackend\Viz\XwtGraphSceneLayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\ImageContentViewer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\MarkdownContentViewer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\PdfContentViewer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\MarkDownEdit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\PlainTextBox.cs" />

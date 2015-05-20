@@ -37,7 +37,7 @@ namespace Limaki.Graphs {
 
         bool Contains ( TEdge edge );
         void Add ( TEdge edge );
-        void ChangeEdge ( TEdge edge, TItem newItem, bool changeRoot );
+        void ChangeEdge ( TEdge sinkEdge, TItem newItem, bool changeRoot );
         void RevertEdge ( TEdge edge );
         bool Remove ( TEdge edge );
         TItem Adjacent ( TEdge edge, TItem item );
@@ -156,6 +156,7 @@ namespace Limaki.Graphs {
         /// <summary>
         /// called in <see cref="OnGraphChange"/>
         ///     after adding
+        ///     after change
         ///     before deleting
         /// a graph 
         /// is called "outside" of the graph by the user-interface
@@ -167,6 +168,7 @@ namespace Limaki.Graphs {
         /// this is called "outside" of the graph by the user-interface
         /// it is called 
         ///     after adding
+        ///     after change
         ///     before deleting
         /// a graph 
         /// </summary>

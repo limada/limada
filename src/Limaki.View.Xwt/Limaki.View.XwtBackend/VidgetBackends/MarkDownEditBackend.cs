@@ -23,15 +23,13 @@ namespace Limaki.View.XwtBackend {
     public class MarkdownEditBackend : VidgetBackend<MarkdownEditBackend.MDBox>, IMarkdownEditBackend {
 
         public class MDBox : VBox {
-            public void RaiseFocus (object sender, EventArgs e) {
-                base.OnGotFocus (e);
-            }
+            public void RaiseFocus (object sender, EventArgs e) { base.OnGotFocus (e); }
         }
 
         public Vidgets.MarkdownEdit Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            Frontend = (Vidgets.MarkdownEdit)frontend;
+            Frontend = (Vidgets.MarkdownEdit) frontend;
             IsEmpty = true;
             //Widget.KeyPressed += ToggleEditMode;
         }
@@ -66,7 +64,6 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
-       
     }
 
 }

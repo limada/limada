@@ -70,6 +70,7 @@ namespace Limaki.View.Viz.Visuals {
 
                 sinkScene.Requests.Add (new RemoveBoundsCommand<IVisual, IVisualEdge> (sinkItem, sinkScene));
             }
+
             var graphs = new Stack<IGraph<IVisual, IVisualEdge>> ();
             graphs.Push (sinkScene.Graph);
             while (graphs.Count > 0) {
@@ -85,6 +86,7 @@ namespace Limaki.View.Viz.Visuals {
                 if (graphPair != null)
                     graphs.Push (graphPair.Source);
             }
+
         }
 
         protected virtual IVisual LookUp (IGraph<IVisual, IVisualEdge> sourceGraph, IGraph<IVisual, IVisualEdge> sinkGraph, IVisual sourceItem) {

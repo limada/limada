@@ -56,13 +56,11 @@ namespace Limaki.Data.db4o {
         protected override void Delete(TEdge edge) {
             Session.Delete(edge);
         }
-
         
         public override int EdgeCount(TItem item) {
             return Edges(item).Count;
         }
-
-
+        
         protected override ICollection<TEdge> EdgesOf(TItem item) {
             ICollection<TEdge> result = null;
             try {
@@ -111,7 +109,7 @@ namespace Limaki.Data.db4o {
         }
 
         public override void Clear() {
-            foreach (TItem item in this) {
+            foreach (var item in this) {
                 Remove(item);
             }
         }
@@ -141,8 +139,8 @@ namespace Limaki.Data.db4o {
         protected override IEnumerable<TItem> Items {
             get {
                 if (!ItemIsStorableClazz) {
-                    Set<TItem> done = new Set<TItem>();
-                    foreach (TEdge edge in Edges()) {
+                    var done = new Set<TItem>();
+                    foreach (var edge in Edges()) {
                         if (!done.Contains(edge.Root)) {
                             done.Add(edge.Root);
                         }
@@ -152,7 +150,7 @@ namespace Limaki.Data.db4o {
                     }
                     return done;
                 } else {
-                    IList<TItem> list = Session.Query<TItem>();
+                    var list = Session.Query<TItem>();
                     return list;
                 }
             }
@@ -192,6 +190,7 @@ namespace Limaki.Data.db4o {
             if (this._gateway == null) {
                 throw new ArgumentException("Wrong Gateway");
             }
+
             DeclareTypesToConfigure();
             //Refactor();
             Configure();
@@ -346,7 +345,6 @@ namespace Limaki.Data.db4o {
         }
 
         #endregion
-
 
         public override IEnumerable<TItem> WhereQ(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {
             return Session.AsQueryable<TItem>().Where(predicate);

@@ -65,9 +65,9 @@ namespace Limaki.Graphs {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override void ChangeEdge(TSinkEdge edge, TSinkItem newItem, bool changeRoot) {
-            var two = Get(edge);
-            Sink.ChangeEdge(edge, newItem, changeRoot);
+        public override void ChangeEdge(TSinkEdge sinkEdge, TSinkItem newItem, bool changeRoot) {
+            var two = Get(sinkEdge);
+            Sink.ChangeEdge(sinkEdge, newItem, changeRoot);
             if (two != null) {
                 var edgeTwo = (TSourceEdge) two;
                 //var oldTwo = Mapper.Get(oldItem);

@@ -123,8 +123,7 @@ namespace Limada.IO.db4o {
 
   
         #endregion
-
-
+        
         #region Graph
 
         public override void Add( IThing item ) {

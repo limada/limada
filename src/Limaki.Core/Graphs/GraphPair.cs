@@ -74,14 +74,13 @@ namespace Limaki.Graphs {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override void ChangeEdge(TSinkEdge edge, TSinkItem newItem, bool changeRoot) {
-            var two = Get(edge);
-            Sink.ChangeEdge(edge, newItem, changeRoot);
-            if (two != null) {
-                var edgeTwo = (TSourceEdge) two;
-                //var oldTwo = Mapper.Get(oldItem);
-                var newTwo = Mapper.TryGetCreate(newItem);
-                Source.ChangeEdge(edgeTwo, newTwo, changeRoot);
+        public override void ChangeEdge(TSinkEdge sinkEdge, TSinkItem newItem, bool changeRoot) {
+            var source = Get(sinkEdge);
+            Sink.ChangeEdge(sinkEdge, newItem, changeRoot);
+            if (source != null) {
+                var sourceEdge = (TSourceEdge) source;
+                var newSourceEdge = Mapper.TryGetCreate(newItem);
+                Source.ChangeEdge(sourceEdge, newSourceEdge, changeRoot);
             }
         }
 
@@ -133,9 +132,9 @@ namespace Limaki.Graphs {
             var result = false;
             var sinkGraph = Sink as ISinkGraph<TSinkItem, TSinkEdge>;
             if (inSource || sinkGraph == null)
-                Sink.Remove (item);
+                result = Sink.Remove (item);
             else
-                sinkGraph.RemoveSinkItem (item);
+                result = sinkGraph.RemoveSinkItem (item);
             var sourceItem = Get(item);
             if (sourceItem != null) {
                 RemoveEdge(Source.DepthFirstTwig(sourceItem));
@@ -246,8 +245,8 @@ namespace Limaki.Graphs {
         public override void OnGraphChange(TSinkItem item, GraphEventType eventType) {
             base.OnGraphChange(item, eventType);
             Sink.OnGraphChange(item, eventType);
-            var sourceItem = Get(item);
-            Source.OnGraphChange(sourceItem, eventType);
+            var sourceItem = Get (item);
+            Source.OnGraphChange (sourceItem, eventType);
         }
 
         #endregion

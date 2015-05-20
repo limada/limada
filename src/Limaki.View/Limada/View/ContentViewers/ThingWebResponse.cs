@@ -137,12 +137,5 @@ namespace Limada.View.ContentViewers {
                 return result;
             }
         }
- 
-
-      
-
-      
-      
-      
     }
 }

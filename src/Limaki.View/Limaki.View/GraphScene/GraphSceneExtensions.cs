@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Limaki.Common;
 using Limaki.Common.Collections;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.View.Viz.Modelling;
+using Limaki.Actions;
 
 namespace Limaki.View.GraphScene {
 
@@ -23,10 +25,15 @@ namespace Limaki.View.GraphScene {
         public static void RequestDelete<TItem, TEdge> (this IGraphScene<TItem, TEdge> scene, TItem item, ICollection<TItem> done)
             where TEdge : TItem, IEdge<TItem> {
             if (done == null || !done.Contains (item)) {
+                // prove if already in Requests? but RemoveBoundsCommand is a DeleteCommand too!
+                //if (scene.Requests.OfType<DeleteCommand<TItem, TEdge>> ().Any (c => c.Subject.Equals (item)))
+                //    return;
+                ICommand<TItem> command = null;
                 if (item is TEdge && done != null)
-                    scene.Requests.Add (new DeleteEdgeCommand<TItem, TEdge> (item, scene));
+                    command = new DeleteEdgeCommand<TItem, TEdge> (item, scene);
                 else
-                    scene.Requests.Add (new DeleteCommand<TItem, TEdge> (item, scene));
+                    command = new DeleteCommand<TItem, TEdge> (item, scene);
+                scene.Requests.Add (command);
                 if (done != null)
                     done.Add (item);
             };
@@ -51,7 +58,6 @@ namespace Limaki.View.GraphScene {
                     requestDelete,
                     GraphEventType.Remove);
 
-                // if item is an edge, then use DeleteCommand
                 scene.RequestDelete (item, null);
                 done.Add (item);
             }

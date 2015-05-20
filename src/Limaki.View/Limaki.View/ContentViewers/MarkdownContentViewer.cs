@@ -21,7 +21,9 @@ namespace Limaki.View.ContentViewers {
         }
 
         public static bool Available () {
-            return VidgetToolkit.CurrentEngine.Backend.BackendRegistered<IMarkdownEditBackend> () && Registry.Factory.Contains<IMarkdownEdit> ();
+            return 
+                VidgetToolkit.CurrentEngine.Backend.BackendRegistered<IMarkdownEditBackend> () && 
+                Registry.Factory.Contains<IMarkdownEdit> ();
         }
 
         public override IVidget Frontend { get { return MarkdownEdit; } }

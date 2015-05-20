@@ -307,9 +307,7 @@ namespace Limada.Schemata {
         public override void Add(IThing item) {
             Source.Add(item);
         }
-
         
-
         public virtual bool RemoveThingToDisplay(IThing item) {
             var thingToDisplay = ThingToDisplay (item);
             if (thingToDisplay != item) {

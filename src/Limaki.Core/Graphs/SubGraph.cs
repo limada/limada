@@ -54,20 +54,20 @@ namespace Limaki.Graphs {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public override void ChangeEdge (TEdge edge, TItem newItem, bool changeRoot) {
+        public override void ChangeEdge (TEdge sinkEdge, TItem newItem, bool changeRoot) {
 
-            Func<TItem> getItem = () => changeRoot ? edge.Root : edge.Leaf;
-            Action<TItem> setItem = item => { if (changeRoot) edge.Root = item; else edge.Leaf = item; };
+            Func<TItem> getItem = () => changeRoot ? sinkEdge.Root : sinkEdge.Leaf;
+            Action<TItem> setItem = item => { if (changeRoot) sinkEdge.Root = item; else sinkEdge.Leaf = item; };
 
             var itemBefore = getItem ();
 
-            Source.ChangeEdge (edge, newItem, changeRoot);
-            var lockObj = (object) edge;
+            Source.ChangeEdge (sinkEdge, newItem, changeRoot);
+            var lockObj = (object) sinkEdge;
             lock (lockObj) {
                 // revert the changes, otherwise edge is not removed from Sink.Edges(itemBefore)
                 setItem (itemBefore);
 
-                Sink.ChangeEdge (edge, newItem, changeRoot);
+                Sink.ChangeEdge (sinkEdge, newItem, changeRoot);
 
                 // ensure the changes are done
                 if (!object.Equals (getItem (), newItem))
