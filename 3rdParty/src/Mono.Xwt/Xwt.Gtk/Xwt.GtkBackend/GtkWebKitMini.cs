@@ -233,6 +233,11 @@ namespace Xwt.GtkBackend.WebKit
 		[DllImport (GtkInterop.LIBWEBKIT)]
 		static extern double webkit_web_view_get_progress(IntPtr raw);
 
+        // TODO: this seems to be set to get PdfJs working
+        //QWebSettings* settings = QWebSettings::globalSettings();
+        //settings->setAttribute(QWebSettings::LocalContentCanAccessFileUrls, true);
+        //settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
+        //settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 	}
 
 	public sealed class NetworkRequest : GLib.Object {
