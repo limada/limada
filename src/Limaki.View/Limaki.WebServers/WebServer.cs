@@ -152,7 +152,8 @@ namespace Limaki.WebServers {
                 else {
                     url = requestInfo.Uri.AbsolutePath;
                 }
-
+            if (!string.IsNullOrEmpty (requestInfo.Params))
+                url += "?"+requestInfo.Params;
             Trace.WriteLine("Requested:\t" + url);
 
             ResponseInfo responseInfo = null;
