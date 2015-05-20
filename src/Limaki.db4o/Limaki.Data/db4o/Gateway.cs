@@ -16,6 +16,7 @@ using Db4objects.Db4o;
 using Db4objects.Db4o.Config;
 using Db4objects.Db4o.CS;
 using Db4objects.Db4o.CS.Config;
+using Db4objects.Db4o.Events;
 using Limaki.Contents.IO;
 using System;
 using System.Diagnostics;
@@ -102,6 +103,8 @@ namespace Limaki.Data.db4o {
             return Db4oEmbedded.OpenFile(config,file);
         }
 
+        public event System.EventHandler<Db4objects.Db4o.Events.CommitEventArgs> Committed;
+
         public virtual IObjectContainer CreateClientSession (IClientConfiguration config) {
             var clientCer = "limada.limo.client.cer";
 			#if ! __ANDROID__
@@ -110,6 +113,12 @@ namespace Limaki.Data.db4o {
             }
 			#endif
             var result = Db4oClientServer.OpenClient (config, Iori.Server, Iori.Port, Iori.User, Iori.Password);
+            var events = EventRegistryFactory.ForObjectContainer (result);
+            events.Committed += (s, e) => {
+                if (Committed != null)
+                    Committed (result, e);
+                Trace.WriteLine (string.Format ("db4o client: Commit by  {0}", Iori.Server));
+            };
             return result;
         }
 
@@ -118,7 +127,14 @@ namespace Limaki.Data.db4o {
         }
 
         public virtual IObjectContainer CreateClientSession (IObjectServer server) {
-            return server.OpenClient();
+            var result = server.OpenClient();
+            var events = EventRegistryFactory.ForObjectContainer (result);
+            events.Committed += (s, e) => {
+                if (Committed != null)
+                    Committed (result, e);
+                Trace.WriteLine (string.Format ("db4o client-server: Commit by  {0}", Iori.Server));
+            };
+            return result;
         }
       
         public virtual IObjectServer OpenServer (IServerConfiguration config) {
@@ -172,7 +188,9 @@ namespace Limaki.Data.db4o {
                         try {
                             Server.Close();
                         } catch { throw;
-                        } finally { Server = null;
+                        } finally { 
+                            Server = null;
+                            _serverConfiguration = null;
                         }
                     }
                 }

@@ -166,6 +166,35 @@ namespace Limaki.Data.db4o {
             this.Add(item);
         }
 
+        public virtual void ClientCommit (object sender, CommitEventArgs e) {
+            if (e.IsOwnCommit ())
+                return;
+            var clientContainer = e.ObjectContainer ();
+            Action<IObjectInfoCollection, GraphEventType> handleCommit = (col, eventType) => {
+                foreach (var objectInfo in col.OfType<IObjectInfo>()) {
+                    var obj = objectInfo.GetObject ();
+                    if (eventType == GraphEventType.Remove) {
+                        obj = Session.Ext ().GetByID (objectInfo.GetInternalID ());
+                    }
+                    if (obj is TItem) {
+                        var item = (TItem) obj;
+                        if (eventType == GraphEventType.Update) {
+                            // we get null after that: Session.Ext ().Purge (obj);
+                            // obj = clientContainer.Ext ().GetByID (objectInfo.GetInternalID ());
+                            clientContainer.Ext ().Refresh (obj, 1);
+                        }
+                        OnGraphChange (item, eventType);
+                        if (eventType == GraphEventType.Remove) {
+                            Remove (item);
+                        }
+                    }
+                }
+            };
+            handleCommit (e.Updated, GraphEventType.Update);
+            handleCommit (e.Deleted, GraphEventType.Remove);
+            handleCommit (e.Added, GraphEventType.Add);
+
+        }
 
         #endregion
 
@@ -195,6 +224,8 @@ namespace Limaki.Data.db4o {
             //Refactor();
             Configure();
             ConfigureSession (_gateway.Session);
+
+            this._gateway.Committed += ClientCommit;
         }
 
         public override void EvictItem(TItem item) {
