@@ -170,7 +170,7 @@ namespace Limada.View.VisualThings {
         }
 
         public override void UpdateSinkItem (IGraph<IThing, ILink> source, IGraph<IVisual, IVisualEdge> sink, IThing sourceItem, IVisual sinkItem) {
-            // its done in ChangeData
+            sinkItem.Data = ThingDataToDisplay (source, sourceItem);
         }
 
         public override void ChangeData (IGraph<IThing, ILink> graph, IThing item, object data) {
