@@ -1,22 +1,27 @@
 using Xwt.Drawing;
 using Xwt.Backends;
+using System.Collections.Generic;
 
 namespace Xwt.Html5.Backend {
 
     public class HtmlFontBackendHandler : FontBackendHandler {
 
+        public const string DefaultFamily = "serif";
         public override object GetSystemDefaultFont () {
-            return new FontData { Family = "Default", Size = 10 };
+            return new FontData { Family = DefaultFamily, Size = 10 };
         }
 
-        public override System.Collections.Generic.IEnumerable<string> GetInstalledFonts () {
-            yield break;
+        public override IEnumerable<string> GetInstalledFonts () {
+            yield return "serif";
+            yield return "sans-serif";
+            yield return "monospace";
+            yield return "cursive";
+            yield return "fantasy";
         }
 
         public override object Create (string fontName, double size, FontStyle style, FontWeight weight, FontStretch stretch) {
             return new FontData { Family = fontName, Size = size, Style = style, Weight = weight, Stretch = stretch };
         }
-
 
         public override object Copy (object handle) {
             return ((FontData) handle).Clone ();
