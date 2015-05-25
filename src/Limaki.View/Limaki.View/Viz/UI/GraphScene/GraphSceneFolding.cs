@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2015 Lytico
  *
  * http://www.limada.org
  * 
@@ -19,27 +19,13 @@ using Limaki.Common;
 using Limaki.Graphs;
 using Limaki.View.GraphScene;
 using Limaki.View.Vidgets;
+using Limaki.View.Visuals;
 using Limaki.View.Viz.Rendering;
 using Xwt;
 
 namespace Limaki.View.Viz.UI.GraphScene {
 
-    public interface IGraphSceneFolding<TItem, TEdge> : IKeyAction
-        where TItem : class
-        where TEdge : TItem, IEdge<TItem> {
-
-        IBackendRenderer BackendRenderer { get; set; }
-        ISelectionRenderer MoveResizeRenderer { get; set; }
-        Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
-        Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
-        GraphSceneFacade<TItem, TEdge> Folder { get; set; }
-        DataComparer<TItem> OrderBy { get; set; }
-        bool RemoveOrphans { get; set; }
-        void Clear ();
-        bool Check ();
-    }
-
-    public class GraphSceneFolding<TItem, TEdge> : KeyActionBase, ICheckable, IGraphSceneFolding<TItem, TEdge>
+    public class GraphSceneFolding<TItem, TEdge> : ICheckable, IGraphSceneFolding<TItem, TEdge>
         where TItem : class
         where TEdge : TItem, IEdge<TItem> {
 
@@ -52,6 +38,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
         public Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
 
         private GraphSceneFacade<TItem, TEdge> _folder = null;
+
         public virtual GraphSceneFacade<TItem, TEdge> Folder {
             get {
                 if (_folder == null) {
@@ -95,34 +82,6 @@ namespace Limaki.View.Viz.UI.GraphScene {
             }
         }
 
-        public override void OnKeyPressed (KeyActionEventArgs e) {
-            Trace.WriteLine (string.Format ("{0} {1}", e.Key, e.Modifiers));
-
-            base.OnKeyPressed (e);
-
-            if (e.Key == Key.Delete && e.Modifiers == ModifierKeys.None) {
-                Hide ();
-            } else if ((e.Key == Key.NumPadAdd || e.Key == Key.Plus) && e.Modifiers == ModifierKeys.None) {
-                Fold (() => Folder.Expand (false));
-
-            } else if ((e.Key == Key.NumPadSubtract || e.Key == Key.Minus) && e.Modifiers == ModifierKeys.None) {
-                Fold (() => Folder.Collapse ());
-
-            } else if ((e.Key == Key.NumPadDivide || e.Key == Key.Slash)) {
-                Fold (() => Folder.CollapseToFocused ());
-
-            } else if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.Control) {
-                Fold (() => Folder.ShowAllData ());
-
-            } else if (((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.None)
-                                        || (e.Key == Key.Plus && e.Modifiers == ModifierKeys.Shift)) {
-                Fold (() => Folder.Expand (true));
-
-            } else if ((e.Key == Key.Space && e.Modifiers == ModifierKeys.None)) {
-                Fold (() => Folder.Toggle ());
-            }
-        }
-
         #region ICheckable Member
 
         public bool Check () {
@@ -140,5 +99,119 @@ namespace Limaki.View.Viz.UI.GraphScene {
         }
 
         #endregion
+    }
+
+    public interface IGraphSceneFolding<TItem, TEdge> 
+        where TItem : class
+        where TEdge : TItem, IEdge<TItem> {
+
+        IBackendRenderer BackendRenderer { get; set; }
+        ISelectionRenderer MoveResizeRenderer { get; set; }
+        Func<IGraphSceneLayout<TItem, TEdge>> Layout { get; set; }
+        Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }
+        GraphSceneFacade<TItem, TEdge> Folder { get; set; }
+        DataComparer<TItem> OrderBy { get; set; }
+        bool RemoveOrphans { get; set; }
+        void Clear ();
+        bool Check ();
+        void Fold (Action fold);
+        void Hide ();
+    }
+
+    public interface IGraphSceneKeyFolding<TItem, TEdge>: IKeyAction
+        where TItem : class
+        where TEdge : TItem, IEdge<TItem> {
+
+        IGraphSceneFolding<TItem, TEdge> Folding { get; }
+    }
+
+    public class GraphSceneKeyFolding<TItem, TEdge> : KeyActionBase, ICheckable
+        where TItem : class
+        where TEdge : TItem, IEdge<TItem> {
+
+        public IGraphSceneFolding<TItem, TEdge> Folding { get; protected set; }
+
+        public GraphSceneKeyFolding (IGraphSceneFolding<TItem, TEdge> folding) : base () {
+            this.Folding = folding;
+        }
+
+        public override void OnKeyPressed (KeyActionEventArgs e) {
+
+            Trace.WriteLine (string.Format ("folding key {0} {1}", e.Key, e.Modifiers));
+
+            base.OnKeyPressed (e);
+
+            var folder = Folding.Folder;
+            Action<Action> fold = a => Folding.Fold (a);
+
+            if (e.Key == Key.Delete && e.Modifiers == ModifierKeys.None) {
+                folder.Hide ();
+            } else if ((e.Key == Key.NumPadAdd || e.Key == Key.Plus) && e.Modifiers == ModifierKeys.None) {
+                fold (() => folder.Expand (false));
+
+            } else if ((e.Key == Key.NumPadSubtract || e.Key == Key.Minus) && e.Modifiers == ModifierKeys.None) {
+                fold (() => folder.Collapse ());
+
+            } else if ((e.Key == Key.NumPadDivide || e.Key == Key.Slash)) {
+                fold (() => folder.CollapseToFocused ());
+
+            } else if ((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.Control) {
+                fold (() => folder.ShowAllData ());
+
+            } else if (((e.Key == Key.NumPadMultiply || e.Key == Key.Asterisk) && e.Modifiers == ModifierKeys.None)
+                       || (e.Key == Key.Plus && e.Modifiers == ModifierKeys.Shift)) {
+                fold (() => folder.Expand (true));
+
+            } else if ((e.Key == Key.Space && e.Modifiers == ModifierKeys.None)) {
+                fold (() => folder.Toggle ());
+            }
+
+        }
+
+        public bool Check () {
+            return Folding != null && Folding.Check ();
+        }
+    }
+
+    public interface IGraphSceneMouseFolding<TItem, TEdge> : IMouseAction
+        where TItem : class
+        where TEdge : TItem, IEdge<TItem> {
+
+        IGraphSceneFolding<TItem, TEdge> Folding { get; }
+    }
+
+    public class GraphSceneMouseFolding<TItem, TEdge> : MouseDragActionBase, ICheckable
+        where TItem : class
+        where TEdge : TItem, IEdge<TItem> {
+
+        public IGraphSceneFolding<TItem, TEdge> Folding { get; protected set; }
+
+        public GraphSceneMouseFolding (IGraphSceneFolding<TItem, TEdge> folding)
+            : base () {
+            this.Behaviour = DragBehaviour.DoubleClick;
+            this.Folding = folding;
+        }
+
+        protected override void EndAction () {
+            if (Resolved) {
+                Folding.Fold (() => Folding.Folder.Toggle ());
+            }
+            base.EndAction ();
+        }
+
+        public bool Check () {
+            return Folding != null && Folding.Check ();
+        }
+    }
+
+    public static class UiFoldingExtensions {
+        public static IGraphSceneFolding<TItem, TEdge> Folding<TItem, TEdge> (this IDisplay<IGraphScene<TItem, TEdge>> display)
+            where TItem : class
+            where TEdge : TItem, IEdge<TItem> {
+            var uiAction = display.ActionDispatcher.GetAction<GraphSceneKeyFolding<TItem, TEdge>> ();
+            if (uiAction != null)
+                return uiAction.Folding;
+            return null;
+        }
     }
 }

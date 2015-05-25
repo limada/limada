@@ -56,15 +56,17 @@ namespace Limaki.View.Viz.Visuals {
             var display = aDisplay as GraphSceneDisplay<IVisual, IVisualEdge>;
 
             base.Compose(display);
-
-            display.ActionDispatcher.Add(new GraphSceneFolding<IVisual, IVisualEdge> {
+            var folding = new GraphSceneFolding<IVisual, IVisualEdge> {
                 SceneHandler = this.GraphScene,
                 Layout = this.Layout,
                 BackendRenderer = display.BackendRenderer,
                 MoveResizeRenderer = display.MoveResizeRenderer,
                 OrderBy = new VisualComparer(),
                 RemoveOrphans = false
-            });
+            };
+
+            display.ActionDispatcher.Add (new GraphSceneKeyFolding<IVisual, IVisualEdge> (folding));
+            display.ActionDispatcher.Add (new GraphSceneMouseFolding<IVisual, IVisualEdge> (folding));
 
             var addGraphEdgeAction = new AddVisualEdgeAction {
                 SceneHandler = this.GraphScene,

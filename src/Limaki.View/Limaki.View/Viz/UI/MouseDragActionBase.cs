@@ -13,6 +13,7 @@
 
 //using System.Windows.Forms;
 
+using System;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.View.Vidgets;
@@ -26,9 +27,21 @@ namespace Limaki.View.Viz.UI {
 
         public MouseDragActionBase():base() {
             Priority = ActionPriorities.DragActionPriority;
+            Behaviour = DragBehaviour.Dragger;
 		}
 
         protected virtual Point LastMousePos { get; set; }
+        protected virtual long LastMouseTime { get; set; }
+
+        public enum DragBehaviour {
+            Dragger,
+            DoubleClick
+        }
+
+        /// <summary>
+        /// mouse action should behave as DragAction
+        /// </summary>
+        protected virtual DragBehaviour Behaviour { get; set; }
 
         public ModifierKeys ModifierKeys { get; set; }
 
@@ -57,11 +70,18 @@ namespace Limaki.View.Viz.UI {
 
             // Create a Rectangle using the DragSize, with the mouse position being
             // at the center of the Rectangle.
-            DragBoxFromMouseDown = new Rectangle (new Point (e.X - (dragSize.Width / 2),
-                e.Y - (dragSize.Height / 2)), dragSize);
+            if (DragBoxFromMouseDown == Rectangle.Zero)
+                DragBoxFromMouseDown = new Rectangle (new Point (e.X - (dragSize.Width / 2),
+                    e.Y - (dragSize.Height / 2)), dragSize);
 
             // Remember the point where the mouse down occurred
             LastMousePos = e.Location;
+
+            if (Behaviour == DragBehaviour.DoubleClick) {
+                var now = Environment.TickCount;
+                Resolved = (now - LastMouseTime) <= SystemInformation.DoubleClickTime;
+            }
+            LastMouseTime = Environment.TickCount;
         }
 
         /// <summary>
@@ -74,33 +94,29 @@ namespace Limaki.View.Viz.UI {
 
         }
 
-        protected virtual void BaseMouseMove(MouseActionEventArgs e) {
-            //if ((Form.ModifierKeys & _modifierKeys) != _modifierKeys) {
-            //    return;
-            //}
-            if (!Resolved) {
-                if (((e.Button & MouseActionButtons.Left) == MouseActionButtons.Left))
-                    // If the mouse moves outside the Rectangle, start the drag
-                    Resolved = ( DragBoxFromMouseDown != Rectangle.Zero &&
-                                 !DragBoxFromMouseDown.Contains(e.X, e.Y) );
-
-            } else {
-                Resolved = ((e.Button & MouseActionButtons.Left) == MouseActionButtons.Left);
-            }   
-        }
-
         /// <summary>
-        /// sets resolved = true if the mouse is outside of the dragging rectangle 
+        /// if dragger: sets resolved = true if the mouse is outside of the dragging rectangle 
+        /// if doubleclick: sets resolved = true if the mouse is outside of the dragging rectangle 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public override void OnMouseMove(MouseActionEventArgs e) {
-            BaseMouseMove (e);
+        protected virtual void BaseMouseMove(MouseActionEventArgs e) {
+            if (Behaviour == DragBehaviour.Dragger) {
+                if (!Resolved) {
+                    if (((e.Button & MouseActionButtons.Left) == MouseActionButtons.Left))
+                        // If the mouse moves outside the Rectangle, start the drag
+                        Resolved = (DragBoxFromMouseDown != Rectangle.Zero &&
+                                    !DragBoxFromMouseDown.Contains (e.X, e.Y));
+
+                } else {
+                    Resolved = ((e.Button & MouseActionButtons.Left) == MouseActionButtons.Left);
+                }
+            } else if (Behaviour == DragBehaviour.DoubleClick) {
+                Resolved = Resolved && (DragBoxFromMouseDown != Rectangle.Zero &&
+                                   DragBoxFromMouseDown.Contains (e.X, e.Y));
+            }
         }
 
-        protected override void EndAction() {
-            base.EndAction();
-            DragBoxFromMouseDown = Rectangle.Zero;            
         public override void OnMouseMove (MouseActionEventArgs e) {
             BaseMouseMove (e);
         }
@@ -108,5 +124,17 @@ namespace Limaki.View.Viz.UI {
         public override void OnMouseUp (MouseActionEventArgs e) {
             base.OnMouseUp (e);
         }
+
+        protected override void EndAction () {
+            if (Behaviour == DragBehaviour.Dragger) {
+                base.EndAction ();
+                DragBoxFromMouseDown = Rectangle.Zero;
+            } else if (Behaviour == DragBehaviour.DoubleClick) {
+                if (Resolved)
+                    DragBoxFromMouseDown = Rectangle.Zero;
+                Resolved = false;
+            }
+        }
+
    }
 }
