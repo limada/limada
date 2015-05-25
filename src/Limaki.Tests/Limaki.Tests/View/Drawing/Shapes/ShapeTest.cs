@@ -153,6 +153,8 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         [Test]
         public void TestPaintDocumentNaviatator () {
 
+            var engine = ReportPainter.Switch ();
+
             var bounds = new Rectangle(10, 10, 500, 100);
 
             var iconeria = new AwesomeIconeria { Fill = true, FillColor = Colors.Black };
@@ -161,7 +163,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
             var style = Registry.Pooled<StyleSheets>().DefaultStyleSheet.ItemStyle.DefaultStyle.Clone() as IStyle;
 
             // points = pixels * 72 / g.DpiX;
-            style.Font = style.Font.WithSize((bounds.Height - bounds.Height / 10) * 72 / utils.ScreenResolution().Width);
+            style.Font = Font.FromName(style.Font.Family).WithSize((bounds.Height - bounds.Height / 10) * 72 / utils.ScreenResolution().Width);
 
             var pageNr = "XXXX";
             var pageNrSize = utils.GetTextDimension(pageNr, style);
@@ -198,6 +200,8 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
                                     });
             WritePainter();
+
+            ReportPainter.Restore (engine);
         }
     }
 }

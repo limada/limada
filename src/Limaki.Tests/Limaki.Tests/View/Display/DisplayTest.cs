@@ -21,6 +21,7 @@ using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Rendering;
 using Limaki.View.Viz.UI;
+using Limaki.View.Viz.Visualizers;
 using NUnit.Framework;
 using Xwt;
 
@@ -36,7 +37,7 @@ namespace Limaki.Tests.View.Display {
                         if (CreateDisplay != null)
                             _display = CreateDisplay ();
                         else
-                            _display = Registry.Factory.Create<IDisplay<T>>();
+                            _display = new Display<T> ();
                     } catch (Exception e) {
                         this.ReportDetail (e.Message);
                         throw e;

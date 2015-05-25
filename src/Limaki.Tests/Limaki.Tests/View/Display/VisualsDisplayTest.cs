@@ -6,6 +6,7 @@ using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.UI;
 using Limaki.View.Viz.Visualizers;
+using Limaki.View.Viz.Visuals;
 using NUnit.Framework;
 using Xwt;
 
@@ -53,6 +54,8 @@ namespace Limaki.Tests.View.Display {
         }
 
         public override void Setup () {
+            if (CreateDisplay == null)
+                CreateDisplay = () => new VisualsDisplay ();
             base.Setup ();
             InitDisplay ();
         }
@@ -91,11 +94,12 @@ namespace Limaki.Tests.View.Display {
 
             MoveAlongLine (v);
 
+            Assert.AreSame (Scene.Hovered, target);
+
             // end move
             position = camera.FromSource (v.End);
             e = new MouseActionEventArgs (MouseActionButtons.Left, ModifierKeys.None,
                                           0, position.X, position.Y, 0);
-            Assert.AreSame (Scene.Hovered, target);
             Display.ActionDispatcher.OnMouseUp (e);
             DoEvents ();
 

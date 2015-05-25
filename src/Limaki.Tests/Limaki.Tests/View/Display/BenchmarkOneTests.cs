@@ -44,15 +44,15 @@ namespace Limaki.Tests.View.Display {
         IGraphSceneLayout<IVisual, IVisualEdge> oldlayout = null;
         public override void Setup () {
 
+            base.Setup ();
+
             if (Display != null) {
                 oldlayout = Display.Layout;
                 Display.Layout = new BenchmarkOneSceneFactory.LongtermPerformanceSceneLayout (
                     () => { return Display.Data; }, Factory.styleSheet);
                 Display.StyleSheet = Factory.styleSheet;
             }
-
-            base.Setup ();
-
+            
             Factory.Arrange (Display.Data);
             Display.Data.ClearSpatialIndex ();
             Display.Reset ();

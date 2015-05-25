@@ -12,6 +12,10 @@ namespace Limada.Tests.Model {
     
     public class DigidocSampleFactory : SampleGraphFactory<IThing, ILink> {
 
+        public DigidocSampleFactory () : base () {
+            PageCount = 3;
+        }
+
         public override string Name {
             get { return "DigidocSchema Things"; }
         }
@@ -29,6 +33,10 @@ namespace Limada.Tests.Model {
             }
         }
 
+        public virtual int PageCount { get; set; }
+        public virtual int PageNodeStart { get; protected set; }
+        public virtual int PageEdgeStart { get; protected set; }
+
         public override void Populate(IGraph<IThing, ILink> graph) {
             Nodes[1] = Factory.CreateItem<object>(null);
 
@@ -36,11 +44,13 @@ namespace Limada.Tests.Model {
             Nodes[2].Data = "Document " + Nodes[2].Id.ToString ("X");
 
             Edges[1] = Factory.CreateEdge(Nodes[1], Nodes[2], DigidocSchema.DocumentTitle);
-            var iEdge = 2;
-            var iNode = 3;
+            PageEdgeStart = 2;
+            PageNodeStart = 3; 
+            var iEdge = PageEdgeStart;
+            var iNode = PageNodeStart;
             var pageNr = 1;
 
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < PageCount; i++) {
                 Nodes[iNode] = Factory.CreateItem<Stream> (null);
                 Edges[iEdge] = Factory.CreateEdge (Nodes[1], Nodes[iNode], DigidocSchema.DocumentPage);
                 iNode++;

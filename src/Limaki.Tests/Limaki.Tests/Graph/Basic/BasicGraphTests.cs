@@ -50,11 +50,12 @@ namespace Limaki.Tests.Graph.Basic {
             set { _graph = value; }
         }
 
-        public virtual void ReportGraph(IGraph<TItem, TEdge> graph, string reportHeader) {
+        public virtual void ReportGraph<I, E> (IGraph<I, E> graph, string reportHeader)
+        where E : IEdge<I> {
             this.ReportDetail(reportHeader);
             if (DoDetail) {
                 foreach (
-                    System.Collections.Generic.KeyValuePair<TItem, ICollection<TEdge>> kvp in graph.ItemsWithEdges ()) {
+                    System.Collections.Generic.KeyValuePair<I, ICollection<E>> kvp in graph.ItemsWithEdges ()) {
                     bool first = true;
                     string emptyString = new string (' ', kvp.Key.ToString ().Length);
                     foreach (E edge in kvp.Value) {

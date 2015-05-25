@@ -13,6 +13,7 @@
  */
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
@@ -78,48 +79,51 @@ namespace Limada.Tests.Model {
             factory.Populate();
 
             var graph = new SchemaThingGraph(thingGraph);
+            var expectedDefault = new IThing[] {
+                DigidocSchema.Document,
+                DigidocSchema.DocumentTitle,
+                DigidocSchema.DocumentDefaultLink,
+                DigidocSchema.PageNumber,
+                DigidocSchema.PageDefaultLink,
+                DigidocSchema.DocumentPage,
+                DigidocSchema.HidePagesLink,
+                ViewMetaSchema.Hide,
+                MetaSchema.DescriptionMarker,
+            };
 
-            Prove(
-                new IThing[] { factory.Nodes[1] },
-
-                new IThing[] { factory.Nodes[1], 
-                               factory.Nodes[2], 
-                               DigidocSchema.Document,
-                               DigidocSchema.DocumentTitle, 
-                               DigidocSchema.DocumentDefaultLink,
-                               MetaSchema.DescriptionMarker,
-                               factory.Edges[1] },
-                graph);
+            var pageItems = new List<IThing> ();
+            for (int i = 0; i < factory.PageCount; i++) {
+                pageItems.Add(factory.Nodes[factory.PageNodeStart + i*2]);
+                pageItems.Add (factory.Edges[factory.PageEdgeStart + i*2]);
+            }
+            Prove (
+                new IThing[] { factory.Nodes[1] }, 
+                expectedDefault.Union (
+                    new IThing[] {
+                        factory.Nodes[1],
+                        factory.Nodes[2],
+                        factory.Edges[1],
+                    }).Union(
+                       pageItems
+                    )
+                    , graph);
 
             Prove(
                 new IThing[] { factory.Nodes[1], factory.Nodes[3], factory.Edges[2] },
-                
-                new IThing[] { factory.Nodes[1], 
+                expectedDefault.Union (
+                    new IThing[] {
+                        factory.Nodes[1], 
                                factory.Nodes[2], 
                                factory.Nodes[3], 
                                factory.Nodes[4], 
-
-                               DigidocSchema.Document, 
-                               DigidocSchema.DocumentTitle, 
-                               
-                               DigidocSchema.DocumentPage,
-                               DigidocSchema.PageNumber,
-                               
-                               DigidocSchema.DocumentDefaultLink,
-                               DigidocSchema.PageDefaultLink,
-                               //DigidocSchema.HidePagesLink,
-                               //ViewMetaSchema.Hide,
-                               MetaSchema.DescriptionMarker,
-                               
-                               
-                               //DigidocSchema.Author,
-                               //DigidocSchema.AuthorHasDocument,
-                               //MetaSchema.Root,
-
                                factory.Edges[1], 
                                factory.Edges[2],
-                               factory.Edges[3]},
-                graph);
+                               factory.Edges[3],
+                    }).Union(
+                       pageItems
+                    )
+                    , graph);
+
         }
     }
 }

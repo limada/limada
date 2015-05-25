@@ -24,6 +24,7 @@ using Limaki.Tests;
 using Limaki.Tests.Graph.Model;
 using Limaki.Tests.Graph.GraphPair;
 using Limaki.View;
+using Limaki.View.GraphScene;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Visuals;
 using NUnit.Framework;
@@ -100,6 +101,10 @@ namespace Limada.Tests.Model {
             var thingGraph = sourceGraph.Source as IThingGraph;
             
             var layout = this.CreateLayout();
+            layout.DataHandler = () => scene;
+
+            new GraphSceneFacade<IVisual, IVisualEdge> (() => scene, layout)
+                   .Add (scene.Graph, true, false);
 
             var s = SaveSheet (scene, layout);
             

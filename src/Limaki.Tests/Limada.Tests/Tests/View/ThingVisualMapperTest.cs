@@ -49,11 +49,12 @@ namespace Limada.Tests.View {
 
             //mapper.showMarkers = false;
             mapper.ConvertSinkSource();
+            this.ReportGraph (visualGraph, "ConvertSinkSource");
             Assert.AreEqual(this.Graph.Count,visualGraph.Count);
             this.Graph.Clear();
             mapper.Clear();
             mapper.ConvertSourceSink();
-            this.ReportGraph(this.Graph, "Reread");
+            this.ReportGraph (visualGraph, "Reread");
             Assert.AreEqual(this.Graph.Count, visualGraph.Count);
 
             ReportSummary();
