@@ -14,6 +14,7 @@
 
 
 using System;
+using System.Linq;
 using System.IO;
 using Limada.Model;
 using Limada.Schemata;
@@ -98,7 +99,12 @@ namespace Limada.View.VisualThings {
 
         public override ILink CreateSourceEdge (IGraph<IVisual, IVisualEdge> sink,
             IGraph<IThing, ILink> source, IVisualEdge b) {
-            return ThingFactory.CreateEdge (source as IThingGraph, b.Data);
+            var thingGraph = source as IThingGraph;
+            var data = b.Data;
+            var marker = thingGraph.GetByData (data, true).FirstOrDefault();
+            if (marker != null)
+                data = marker;
+            return ThingFactory.CreateEdge (thingGraph, data);
         }
 
         public object ThingDataToDisplay (IGraph<IThing, ILink> graph, IThing thing) {
