@@ -10,7 +10,7 @@ namespace Limaki.View.XwtBackend {
     public class VindowBackend : Window, IVindowBackend {
 
         public virtual void SetContent (IVidget value) {
-            Content = value.Backend as Widget;
+            Content = value.Backend.ToXwt ();
         }
 
         void IVidgetBackend.Update () { }

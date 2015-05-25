@@ -22,7 +22,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
     public class VindowBackend : Form, IVindowBackend {
 
         public void SetContent (IVidget value) {
-            var backend = value.Backend as Control;
+            var backend = value.Backend.ToSwf ();
             if (!this.Controls.Contains (backend)) {
                 backend.Dock = DockStyle.Fill;
                 this.Controls.Add (backend);
@@ -39,8 +39,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
 
-        Xwt.Size IVidgetBackend.Size {
+        Xwt.Size IVidgetBackend.Size { get { return this.Size.ToXwt (); } }
+
+        Xwt.Size IVindowBackend.Size {
             get { return this.Size.ToXwt (); }
+            set { this.Size = value.ToGdi (); }
         }
 
         void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {

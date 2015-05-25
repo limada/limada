@@ -30,6 +30,8 @@ namespace Limaki.View.XwtBackend {
 
             base.InitializeBackends();
 
+            RegisterBackend<IVindowBackend, VindowBackend> ();
+
             RegisterBackend<IComboBoxBackend, ComboBoxBackend> ();
 
             RegisterBackend<IImageDisplayBackend, ImageDisplayBackend>();
