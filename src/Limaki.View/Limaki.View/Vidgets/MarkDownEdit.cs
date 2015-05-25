@@ -166,13 +166,17 @@ namespace Limaki.View.Vidgets {
                 Editor.Save (this.Markdown);
             }
             if (stream != this.Markdown) {
+                this.Markdown.Position = 0;
                 this.Markdown.CopyTo (stream);
+                this.Markdown.Position = 0;
             }
         }
 
         public void Load (Stream stream) {
             this.Markdown = new MemoryStream();
+            stream.Position = 0;
             stream.CopyTo (this.Markdown);
+            stream.Position = 0;
             this.Markdown.Position = 0;
             if (Backend.IsEmpty)
                 Backend.Activate (Viewer);
