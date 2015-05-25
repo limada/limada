@@ -14,6 +14,7 @@
 
 using Limaki.View.Viz.Visualizers;
 using Limaki.View.XwtBackend;
+using Xwt;
 using Xwt.Drawing;
 
 namespace Limaki.View.Headless.VidgetBackends {

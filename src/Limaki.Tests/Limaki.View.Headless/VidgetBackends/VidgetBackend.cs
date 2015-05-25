@@ -18,29 +18,30 @@ using Limaki.View.Viz;
 using Xwt;
 
 namespace Limaki.View.Headless.VidgetBackends {
-    public class DummyBackend : IVidgetBackend {
 
-        public void Update () {
+    public class VidgetBackend : IVidgetBackend {
+
+        public virtual void Update () {
             this.Invalidate();
         }
 
-        public void Invalidate () {
+        public virtual void Invalidate () {
             if (Frontend is IDisplay) {
                 ((IDisplay)Frontend).BackendRenderer.Render ();
 
             }
         }
 
-        public void SetFocus () { }
+        public virtual void SetFocus () { }
 
-        public void Invalidate (Rectangle rect) {
+        public virtual void Invalidate (Rectangle rect) {
             if(Frontend is IDisplay) {
                 ((IDisplay) Frontend).BackendRenderer.Render();
 
             }
         }
 
-        public IVidget Frontend { get; protected set; }
+        public virtual IVidget Frontend { get; protected set; }
 
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = frontend;

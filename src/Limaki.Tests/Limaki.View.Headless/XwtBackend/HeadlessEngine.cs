@@ -39,6 +39,8 @@ namespace Xwt.Headless.Backend {
         public override void InitializeBackends () {
             RegisterBackend<FontBackendHandler, HeadlessFontBackendHandler> ();
             RegisterBackend<DesktopBackend, HeadlessDesktopBackend> ();
+            RegisterBackend<ContextBackendHandler, HeadlessContextBackendHandler> ();
+            RegisterBackend<TextLayoutBackendHandler, HeadlessTextLayoutBackendHandler> ();
         }
 
         public override void DispatchPendingEvents () {

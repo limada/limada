@@ -15,7 +15,7 @@ namespace Limaki.View.Headless {
 
             RegisterBackend<IImageDisplayBackend, ImageDisplayBackend> ();
             RegisterBackend<IVisualsDisplayBackend, VisualsDisplayBackend> ();
-
+            RegisterBackend<IVindowBackend, VindowBackend> ();
         }
     }
 }

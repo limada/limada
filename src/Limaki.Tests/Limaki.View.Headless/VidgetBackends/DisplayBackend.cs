@@ -25,10 +25,11 @@ using Limaki.Common.IOC;
 using System.ComponentModel;
 using Xwt.Drawing;
 using System.Diagnostics;
+using Xwt.Headless.Backend;
 
 namespace Limaki.View.Headless.VidgetBackends {
 
-    public abstract class DisplayBackend : DummyBackend {
+    public abstract class DisplayBackend : VidgetBackend {
 
     }
 
@@ -101,16 +102,16 @@ namespace Limaki.View.Headless.VidgetBackends {
 
         IVidget IVidgetBackend.Frontend { get { return this.Display; } }
 
-        void IVidgetBackend.Update () {
-            base.Update();
+        public override void Update () {
+            Invalidate ();
         }
 
-        void IVidgetBackend.Invalidate () {
-            base.Invalidate();
+        public override void Invalidate () {
+            Invalidate (new Rectangle (Point.Zero, this.Size));
         }
 
-        void IVidgetBackend.Invalidate (Rectangle rect) {
-            base.Invalidate (rect);
+        public override void Invalidate (Rectangle rect) {
+            OnDraw (new Context (new HeadlessContext (), Toolkit.CurrentEngine), rect);
         }
 
         protected virtual void OnDraw (Context ctx, Rectangle dirtyRect) {
