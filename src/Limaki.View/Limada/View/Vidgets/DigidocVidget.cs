@@ -165,7 +165,7 @@ namespace Limada.View.Vidgets {
             if (focusAction != null)
                 focusAction.HitSize = -1;
 
-            var folding = display.ActionDispatcher.GetAction<IGraphSceneFolding<IVisual, IVisualEdge>>();
+            var folding = display.Folding ();
             folding.Folder.RemoveOrphans = false;
         }
 

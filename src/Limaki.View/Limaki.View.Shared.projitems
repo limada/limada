@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Drawing.XwtBackend\ImagePainter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Drawing\Geom.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Drawing\Styles\Spacing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.Usecases\UsecaseAppFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\HtmlContentViewerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Vidgets\SplitViewToolStrip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Usecases\IGraphSceneUiManager.cs" />
@@ -28,16 +29,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Contents\ImageContentDigger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Drawing.XwtBackend\ContextPainter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Usecases\PluginLocator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.Usecases\UsercaseAppFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.XwtBackend\Converter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.XwtBackend\Extensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.XwtBackend\IToolkitAware.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.XwtBackend\IXwtBackend.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.XwtBackend\IXwtConceptUseCaseComposer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.XwtBackend\Viz\XwtGraphSceneLayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\ImageContentViewer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\MarkdownContentViewer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\PdfContentViewer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\IToolkitAware.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\MarkDownEdit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\PlainTextBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\WebBrowserBackendHost.cs" />
@@ -85,6 +85,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\Vidgets\DigidocVidget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\TextContentViewer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\TextContentViewerWithToolstrip.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\WebRequestContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\WebResponseBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Usecases\Vidgets\ISplitViewBackend.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ToolStripCommand.cs" />
@@ -329,7 +330,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\RequestInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\TimeoutStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\WebContent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\WebProxyContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\WebServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\WebServerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\ContentVisualViewerProvider.cs" />

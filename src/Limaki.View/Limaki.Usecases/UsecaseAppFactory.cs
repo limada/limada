@@ -15,21 +15,33 @@
 using System;
 using Limaki.Common;
 using Limaki.Common.IOC;
+using Limaki.View;
 using Limaki.View.XwtBackend;
 using System.Linq;
 
 namespace Limaki.Usecases {
 
-    public abstract class UsercaseAppFactory<T, U> : AppFactory<T>
+    public abstract class UsecaseAppFactory<T, U> : AppFactory<T>
         where T : ContextResourceLoader
         where U : new () {
 
-        public UsercaseAppFactory () { }
+        public UsecaseAppFactory () { }
 
-        public UsercaseAppFactory (IBackendContextResourceLoader backendContextResourceLoader)
-            : base (backendContextResourceLoader) { }
+        public UsecaseAppFactory (IBackendContextResourceLoader backendContextResourceLoader)
+            : base (backendContextResourceLoader) {}
 
-        public virtual Xwt.ToolkitType ToolkitType { get; protected set; }
+        protected override void Create (IBackendContextResourceLoader backendContextResourceLoader) {
+
+            var tka = backendContextResourceLoader as IToolkitAware;
+            if (tka != null)
+                this.ToolkitType = tka.ToolkitType;
+
+            base.Create (backendContextResourceLoader);
+        }
+
+        public virtual Xwt.ToolkitType XwtToolkitType { get; protected set; }
+
+        public virtual Guid ToolkitType { get; protected set; }
 
         public abstract void Run ();
 
@@ -43,17 +55,20 @@ namespace Limaki.Usecases {
             }
         }
 
+        public virtual bool TakeToolkit (IToolkitAware loader) {
+            return loader.ToolkitType == this.ToolkitType;
+        }
+
         public override bool TakeType (Type type) {
 
             if (type.GetInterfaces ().Any (t => t == typeof (IToolkitAware))) {
                 if (type.GetConstructors ().Any (tc => tc.GetParameters ().Length == 0)) {
                     var loader = Activator.CreateInstance (type) as IToolkitAware;
-                    return loader.ToolkitType == this.ToolkitType;
+                    return TakeToolkit (loader);
                 }
             }
             return base.TakeType (type);
         }
-
         
     }
 }

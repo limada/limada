@@ -335,7 +335,8 @@ namespace Limaki.Tests.View.Visuals {
         IContextWriter _reportPainter = null;
         public virtual IContextWriter ReportPainter { get { return _reportPainter ?? (_reportPainter = Registry.Factory.Create<IContextWriter> ()); } }
         public virtual void ReportScene(IGraphScene<IVisual,IVisualEdge> scene) {
-            var engine = ReportPainter.Save();
+
+            var engine = ReportPainter.Switch();
 
             var worker = new GraphSceneContextVisualizer<IVisual, IVisualEdge> () {
                 Folder = this.SceneFacade,

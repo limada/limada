@@ -24,8 +24,9 @@ namespace Limaki.View.Viz.Visualizers {
 
         void Write (Stream file);
 
-        object Save();
+        object Switch();
         void Restore (object saved);
+
     }
 
     public abstract class ContextWriter : IContextWriter {
@@ -52,9 +53,8 @@ namespace Limaki.View.Viz.Visualizers {
         public abstract void Flush ();
 
         public abstract void Write (Stream stream);
-
-
-        public abstract object Save();
+        
+        public abstract object Switch();
 
         public abstract void Restore (object saved);
     }

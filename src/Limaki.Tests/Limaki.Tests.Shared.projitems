@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -49,6 +49,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\EntityTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\Samples\SampleGraphSceneFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\SceneMeshTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\HeadlessContextResourceLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\ImageMissingStuffExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\Scene\BinarySceneTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\Scene\GCJohnBostonSceneTest.cs" />
@@ -67,16 +68,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Drawing\PointComparerTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Drawing\PolyAlgoPrototyper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\Drawing\HeadlessDrawingUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\VidgetBackend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\VindowBackend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\XwtBackend\HeadlessContextBackendHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\XwtBackend\HeadlessSystemFontsBackend.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\Drawing\HeadlessSystemInformation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\DisplayBackend.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\DisplayBackendComposer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\DragDropBackendHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\DummyBackends.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\GraphSceneDisplayBackend.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\HeadlessBackendRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\HeadlessConceptUseCaseComposer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\HeadlessContextResourceLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\HeadlessCursorHandlerBackend.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\HeadlessExeptionHandlerBackend.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\HeadlessGraphSceneLayer.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\XwtBackend\HeadlessEngine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\XwtBackend\HeadlessFontBackendHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\XwtBackend\HeadlessSystemColorsBackend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\XwtBackend\HeadlessTextLayoutBackendHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Playground\DocumentObjectModel\DOM.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Playground\Graph\GraphEvents.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Playground\IO\IoPrototype.cs" />

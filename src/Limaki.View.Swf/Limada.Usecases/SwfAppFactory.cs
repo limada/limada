@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using Limada.Usecases;
 using Limada.UseCases;
 using Limaki.Usecases;
+using Limaki.View;
 using Limaki.View.SwfBackend;
 using Limaki.View.SwfBackend.VidgetBackends;
 using Limaki.View.Vidgets;
@@ -24,9 +25,9 @@ using Limaki.View.XwtBackend;
 
 namespace Limada.Usecases {
 
-    public class SwfAppFactory : UsercaseAppFactory<LimadaResourceLoader, ConceptUsecase>, IToolkitAware {
+    public class SwfAppFactory : UsecaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
 
-        public override Xwt.ToolkitType ToolkitType {
+        public override Xwt.ToolkitType XwtToolkitType {
             get { return Xwt.ToolkitType.Other; }
         }
 
