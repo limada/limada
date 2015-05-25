@@ -35,6 +35,21 @@ namespace Limaki.WebServers {
             HandleRequest(request);
         }
 
+        public string Url {
+            get {
+                var url = Request;
+                if (Uri != null)
+                    if (Uri.IsAbsoluteUri)
+                        url = Uri.AbsoluteUri;
+                    else {
+                        url = Uri.AbsolutePath;
+                    }
+                if (!string.IsNullOrEmpty (Params))
+                    url += "?" + Params;
+                return url;
+            }
+        }
+
         public void HandleRequest(Byte[] request) {
             int startPos = 0;
             string requestetUri;
@@ -119,5 +134,8 @@ namespace Limaki.WebServers {
         public string MimeType { get; set; }
         public bool Success { get; set; }
         public string StatusCode { get; set; }
+
+        public const string StatusCodeOK = " 200 OK";
+        public const string StatusCodeNotFound = " 404 Not Found";
     }
 }
