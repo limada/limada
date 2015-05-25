@@ -67,22 +67,6 @@ namespace Limaki.Tests.View.Visuals {
         }
 
         [Test]
-        public void Mock2 () {
-            var graph = new VisualThingGraph ();
-
-            var test = new ProgrammingEntitySceneTest ();
-            test.Mock.SampleFactory.Populate (graph);
-            test.Mock.SampleFactory.Graph = graph;
-            var scene = new Scene ();
-            scene.Graph = graph;
-            test.Mock.Scene = scene;
-
-
-            test.Net ();
-
-        }
-
-        [Test]
         public void FoldingExpandTest () {
             var graph = new VisualThingGraph ();
 

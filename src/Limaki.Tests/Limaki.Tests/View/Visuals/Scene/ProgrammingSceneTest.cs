@@ -313,6 +313,7 @@ namespace Limaki.Tests.View.Visuals {
         }
 
         [Test]
+        [Ignore ("expanding edges currently is not supported")]
         public void ProgrammingLanguageEdge () {
             Mock.Scene.Selected.Clear ();
             Mock.SetFocused (Mock.SampleFactory.Edges[1]); // Programming
@@ -352,7 +353,6 @@ namespace Limaki.Tests.View.Visuals {
 
             this.ReportSummary ();
         }
-
 
         [Test]
         public void SingleAddProgrammingLanguageNet () {

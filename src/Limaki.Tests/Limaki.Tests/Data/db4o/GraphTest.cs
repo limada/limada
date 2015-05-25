@@ -84,6 +84,7 @@ namespace Limaki.Tests.Data.db4o {
         }
 
         [Test]
+        [Ignore ("int as item is currently not supported")]
         public void IntGraphTest () {
             Gateway.Open (Iori.FromFileName (FileName));
             var graphTest = new IntGraphTest ();
@@ -100,6 +101,7 @@ namespace Limaki.Tests.Data.db4o {
         }
 
         [Test]
+        [Ignore ("string as item is currently not supported")]
         public void StringGraphTest () {
             var graphTest = new StringGraphTest ();
 

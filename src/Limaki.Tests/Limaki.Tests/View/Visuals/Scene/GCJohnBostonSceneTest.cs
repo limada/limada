@@ -108,13 +108,15 @@ namespace Limaki.Tests.View.Visuals {
         bool edgeWithPerson = false;
 
         [Test]
+        [Ignore ("expanding edges currently is not supported")]
         public void PersonJohnEdge() {
             if (edgeWithPerson) {
                 Person ();
                 Mock.Scene.Selected.Clear ();
             } else {
                 Mock.Scene.ClearView ();
-                Mock.SetFocused (Mock.SampleFactory.Nodes[1]); // Person
+                var person = Mock.SampleFactory.Nodes[1];
+                Mock.SetFocused (person); // Person
 
                 Mock.SceneFacade.Expand (false);
                 Mock.CommandsPerform ();
@@ -131,6 +133,7 @@ namespace Limaki.Tests.View.Visuals {
         }
 
         [Test]
+        [Ignore ("expanding edges currently is not supported")]
         public void PersonJohnGoEdge() {
 
             if (edgeWithPerson) {
