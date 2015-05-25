@@ -59,8 +59,11 @@ namespace Limada.View.ContentViewers {
                             }
                         } else {
                             result = this.GetContentFromGraph(graph, thing, request);
-                            if (UseProxy && result == null) {
-                                result = new WebProxyContent();
+                            if (result == null && UseProxy) {
+                                // if not requesting the internal server, get content from the web
+                                if (request.Host != BaseUri.Host && request.Port != BaseUri.Port) {
+                                    result = new WebRequestContent ();
+                                } 
                             }
                         }
                     } catch (Exception ex) {
