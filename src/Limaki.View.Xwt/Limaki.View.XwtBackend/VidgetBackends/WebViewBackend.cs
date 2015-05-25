@@ -33,10 +33,11 @@ namespace Limaki.View.XwtBackend {
         public Stream DocumentStream {
             get { throw new NotImplementedException (); }
             set {
-                using (var reader = new StreamReader (value)) {
-                    string text = reader.ReadToEnd ();
-                    Widget.LoadHtml (text, "");
-                }
+                value.Position = 0;
+                var reader = new StreamReader (value);
+                string text = reader.ReadToEnd ();
+                Widget.LoadHtml (text, "");
+                value.Position = 0;
             }
         }
 
