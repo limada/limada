@@ -4,6 +4,12 @@ namespace Xwt.Headless.Backend {
 
     public class FontData {
 
+        public FontData () {
+            Stretch = FontStretch.Normal;
+            Weight = FontWeight.Normal;
+            Style = FontStyle.Normal;
+        }
+
         public string Family { get; set; }
         public double Size { get; set; }
         public FontStyle Style { get; set; }

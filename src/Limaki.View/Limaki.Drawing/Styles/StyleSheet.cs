@@ -175,7 +175,49 @@ namespace Limaki.Drawing.Styles {
             return _defaultStyleSheet;
         }
 
+        public override bool Equals (object obj) {
+            var other = obj as IStyleSheet;
+            if (other == null)
+                return false;
 
+            return base.Equals (other)
+                   && BaseStyle.Equals (other.BaseStyle)
+                   && ItemStyle.Equals (other.ItemStyle)
+                   && EdgeStyle.Equals (other.EdgeStyle)
+                   && BackColor.Equals (other.BackColor);
+        }
+
+        public override object Clone () {
+            return base.Clone ();
+        }
+
+        public override void CopyTo (IStyle other) {
+            if (other is IStyleSheet && this != other) {
+                CopyTo ((IStyleSheet) other);
+                return;
+            }
+            base.CopyTo (other);
+        }
+
+        public virtual void CopyTo (IStyleSheet other) {
+            base.CopyTo (other);
+            other.BackColor = this.BackColor;
+
+            other.ParentStyle = MakeCopy (this.ParentStyle, null);
+            other.BaseStyle = MakeCopy (this.BaseStyle, other.ParentStyle);
+
+            Func<IStyleGroup, IStyleGroup> makeCopy = (source) => {
+                IStyleGroup sink = null;
+                if (source != null) {
+                    sink = new StyleGroup (source.Name, other.BaseStyle);
+                    source.CopyTo (sink);
+                }
+                return sink;
+            };
+
+            other.ItemStyle = makeCopy (this.ItemStyle);
+            other.EdgeStyle = makeCopy (this.EdgeStyle);
+        }
 
         #region IEnumerable<IStyle> Member
 

@@ -1,5 +1,6 @@
 using Xwt.Drawing;
 using Xwt.Backends;
+using System.Collections.Generic;
 
 namespace Xwt.Headless.Backend {
 
@@ -73,11 +74,15 @@ namespace Xwt.Headless.Backend {
         }
         
         public override object GetSystemDefaultFont () {
-            return new FontData { Family = "Default", Size = 10 };
+            return new FontData { Family = "serif", Size = 10 };
         }
 
-        public override System.Collections.Generic.IEnumerable<string> GetInstalledFonts () {
-            yield break;
+        public override IEnumerable<string> GetInstalledFonts () {
+            yield return "serif";
+            yield return "sans-serif";
+            yield return "monospace";
+            yield return "cursive";
+            yield return "fantasy";
         }
 
        

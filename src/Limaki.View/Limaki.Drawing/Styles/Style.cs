@@ -192,6 +192,14 @@ namespace Limaki.Drawing.Styles {
             return result;
         }
 
+        public static IStyle MakeCopy (IStyle source, IStyle baseStyle) {
+            IStyle sink = null;
+            if (source != null) {
+                sink = new Style (source.Name, baseStyle);
+                source.CopyTo (sink);
+            }
+            return sink;
+        }
 
         public virtual void CopyTo(IStyle other) {
             other.AutoSize = this.AutoSize;
