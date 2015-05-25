@@ -22,10 +22,19 @@ using Limaki.View.XwtBackend;
 using System.Diagnostics;
 using Xwt;
 using Xwt.Backends;
+using System;
 
 namespace Limaki.View.GtkBackend {
 
     public class GtkContextResourceLoader : ContextResourceLoader, IToolkitAware {
+
+        public Xwt.ToolkitType ToolkitType0 { get { return Xwt.ToolkitType.Gtk; } }
+
+        public static readonly Guid ToolkitGuid = new Guid ("36FB195F-4AAA-4353-8A06-E792360EE63C");
+       
+        public virtual Guid ToolkitType {
+            get { return ToolkitGuid; }
+        }
 
         public override void ApplyResources (IApplicationContext context) {
             var tk = Toolkit.CurrentEngine;
@@ -62,6 +71,5 @@ namespace Limaki.View.GtkBackend {
 
         }
 
-        public Xwt.ToolkitType ToolkitType { get { return Xwt.ToolkitType.Gtk; } }
     }
 }

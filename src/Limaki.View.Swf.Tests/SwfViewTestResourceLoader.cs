@@ -17,19 +17,21 @@ using Limaki.Common.IOC;
 using Limada.UseCases;
 using Limaki.Tests.UseCases;
 using Limaki.Usecases;
+using Limaki.View;
 using Limaki.View.XwtBackend;
+using Limaki.View.SwfBackend;
 
 namespace Limada.Tests {
 
-    public class SwfTestViewResourceLoader : IContextResourceLoader, IToolkitAware {
+    public class SwfViewTestResourceLoader : IContextResourceLoader, IToolkitAware {
 
         public void ApplyResources(IApplicationContext context) {
             var factories = context.Pooled<UsecaseFactories<ConceptUsecase>>();
             factories.Add(new SwfTestCaseFactory());
         }
 
-        public Xwt.ToolkitType ToolkitType {
-            get { return Xwt.ToolkitType.Other; }
+        public System.Guid ToolkitType {
+            get { return SwfContextResourceLoader.ToolkitGuid; }
         }
     }
 }

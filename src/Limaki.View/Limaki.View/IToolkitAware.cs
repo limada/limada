@@ -12,11 +12,13 @@
  * 
  */
 
+using System;
 using Xwt;
 
-namespace Limaki.View.XwtBackend {
+namespace Limaki.View {
 
     public interface IToolkitAware {
-        ToolkitType ToolkitType { get; }
+        //ToolkitType ToolkitType0 { get; }
+        Guid ToolkitType { get; }
     }
 }

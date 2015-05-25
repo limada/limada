@@ -43,7 +43,12 @@ namespace Limaki.View.SwfBackend {
     /// IBackendContextResourceLoader to use
     /// System.Windows.Forms
     /// </summary>
-    public class SwfContextResourceLoader : IBackendContextResourceLoader {
+    public class SwfContextResourceLoader : IBackendContextResourceLoader, IToolkitAware {
+        
+        // { 0xeb5d0ce9, 0xdc0, 0x4f1f, { 0x85, 0xcc, 0x2b, 0xf2, 0xa5, 0x13, 0x8a, 0x28 } };
+        public static readonly Guid ToolkitGuid = new Guid ("EB5D0CE9-0DC0-4F1F-85CC-2BF2A5138A28");
+
+        public virtual Guid ToolkitType { get { return ToolkitGuid; } }
 
         public Toolkit Toolkit { get; set; }
 

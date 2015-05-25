@@ -34,8 +34,14 @@ namespace Limaki.View.WpfBackend {
 
     public class WpfContextResourceLoader : ContextResourceLoader, IToolkitAware {
 
-        public Xwt.ToolkitType ToolkitType {
+        public Xwt.ToolkitType ToolkitType0 {
             get { return Xwt.ToolkitType.Wpf; }
+        }
+
+        public static readonly Guid ToolkitGuid = new Guid ("594AACED-2959-4192-AE9C-0A7ED9D45793");
+
+        public virtual Guid ToolkitType {
+            get { return ToolkitGuid; }
         }
 
         public override void ApplyResources (IApplicationContext context) {
