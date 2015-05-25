@@ -41,11 +41,11 @@ namespace Limaki.View.WpfBackend {
         }
 
         public void WaitFor (Func<bool> done) {
-            int i = 0;
-            while (!done () && i < 10) {
-                Thread.Sleep (5);
-                i++;
-            }
+            //int i = 0;
+            //while (!done () && i < 10) {
+            //    Thread.Sleep (5);
+            //    i++;
+            //}
             WpfExtensions.DoEvents ();
         }
 

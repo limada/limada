@@ -60,11 +60,11 @@ namespace Limaki.View.XwtBackend {
         private bool _loading = false;
 
         public void WaitFor (System.Func<bool> done) {
-            int i = 0;
-            while (!done () && i < 10) {
-                Thread.Sleep (5);
-                i++;
-            }
+            //int i = 0;
+            //while (!done () && i < 10) {
+            //    Thread.Sleep (5);
+            //    i++;
+            //}
             Application.MainLoop.DispatchPendingEvents ();
         }
 

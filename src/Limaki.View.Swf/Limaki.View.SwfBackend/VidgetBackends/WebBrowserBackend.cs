@@ -52,15 +52,15 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             if (DisposeDone)
                 return;
 
-            if (!OS.Mono) {
-                // try to resolve timing problems 
-                // does not work so well, but better than nothing
-                int i = 0;
-                while (!done() && i < 10) {
-                    Thread.Sleep(5);
-                    i++;
-                }
-            }
+            //if (!OS.Mono) {
+            //    // try to resolve timing problems 
+            //    // does not work so well, but better than nothing
+            //    int i = 0;
+            //    while (!done() && i < 10) {
+            //        Thread.Sleep(5);
+            //        i++;
+            //    }
+            //}
             // fails with IExplorer, not necessry with gecko:
             // control.Refresh();
             Application.DoEvents();
