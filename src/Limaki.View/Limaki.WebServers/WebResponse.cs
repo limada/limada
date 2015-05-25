@@ -49,7 +49,8 @@ namespace Limaki.WebServers {
                                 result = webContent;
                             }
                         } else {
-                            result = new WebProxyContent();
+                            // try to get the content form the web
+                            result = new WebRequestContent();
                         }
                     } catch (Exception ex) {
                         Trace.WriteLine("request denied:" + s);

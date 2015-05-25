@@ -139,57 +139,48 @@ namespace Limaki.WebServers {
 
         }
 
+        public WebContent NotFoundContent (RequestInfo requestInfo, out ResponseInfo responseInfo) {
+            var content = new WebContent ();
+            content.Content = content.HtmlMessage (ServerName + " at " + this.Authority +
+                                                  ": <br>ERROR: " + requestInfo.Url + "<br> not found<br>");
+            responseInfo = content.Respond (requestInfo);
+            responseInfo.Success = false;
+            responseInfo.StatusCode = ResponseInfo.StatusCodeNotFound;
+            Trace.WriteLine ("\trequest not found:\t " + requestInfo.Request);
+            return content;
+        }
+
         private void Respond(Socket socket, StateObject state) {
             if (!socket.Connected || !running) {
                 return;
             }
             
             var requestInfo = new RequestInfo(state.buffer);
-            var url = requestInfo.Request;
-            if (requestInfo.Uri != null)
-                if (requestInfo.Uri.IsAbsoluteUri)
-                    url = requestInfo.Uri.AbsoluteUri;
-                else {
-                    url = requestInfo.Uri.AbsolutePath;
-                }
-            if (!string.IsNullOrEmpty (requestInfo.Params))
-                url += "?"+requestInfo.Params;
-            Trace.WriteLine("Requested:\t" + url);
+
+            Trace.WriteLine ("Requested:\t" + requestInfo.Url);
 
             ResponseInfo responseInfo = null;
             WebContent content = null;
 
-            var statusCode = " 200 OK";
             if (!requestInfo.Success) {
-                content = new WebContent();
-                content.Content = requestInfo.Request;
-                responseInfo = content.Respond(requestInfo);
+                content = NotFoundContent (requestInfo, out responseInfo);
+
             } else {
                 if (ContentGetter != null) {
-                    content = ContentGetter(url);
+                    content = ContentGetter (requestInfo.Url);
                 }
-                //content = ConentOf(url);
-                //if (content != null)
-                //    RemoveContent(url);
+
                 if (content == null) {
-                    content = new WebContent();
-                    content.Uri = new Uri(this.Uri.AbsoluteUri);
+                    content = NotFoundContent (requestInfo, out responseInfo);
+                } else {
+                    responseInfo = content.Respond (requestInfo);
+                    if (!responseInfo.Success) {
+                        content = NotFoundContent (requestInfo, out responseInfo);
+                    }
                 }
-
-                responseInfo = content.Respond(requestInfo);
-                if (!responseInfo.Success) {
-                    content = new WebContent();
-                    content.Content = content.HtmlMessage(ServerName + " at " + this.Authority +
-                                                          ": <br>ERROR: " + url + "<br> not found<br>");
-                    statusCode = " 404 Not Found";
-                    responseInfo = content.Respond(requestInfo);
-                    responseInfo.Success = false;
-                    Trace.WriteLine("\trequest denied:\t " + requestInfo.Request);
-                }
-
             }
             var header =
-                MakeHeader(requestInfo.HttpVersion, responseInfo.MimeType, responseInfo.Data.Length, statusCode);
+                MakeHeader (requestInfo.HttpVersion, responseInfo.MimeType, responseInfo.Data.Length, responseInfo.StatusCode);
 
             byte[] buffer = new Byte[header.Length + responseInfo.Data.Length];
             Buffer.BlockCopy(header, 0, buffer, 0, header.Length);

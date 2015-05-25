@@ -19,7 +19,11 @@ using Limaki.Common.Collections;
 using System;
 
 namespace Limaki.WebServers {
-    public class WebProxyContent : WebContent {
+
+    /// <summary>
+    /// gives back a respond using a System.Net.WebRequest 
+    /// </summary>
+    public class WebRequestContent : WebContent {
         
         public static ICollection<string> FailedConnections = new Set<string>();
         
