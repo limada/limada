@@ -53,7 +53,7 @@ namespace Limaki.View.Viz.UI {
 
             // The DragSize indicates the size that the mouse can move 
             // before a drag event should be started.                
-            Size dragSize = SystemInformation.DragSize;
+            var dragSize = SystemInformation.DragSize;
 
             // Create a Rectangle using the DragSize, with the mouse position being
             // at the center of the Rectangle.
@@ -61,7 +61,7 @@ namespace Limaki.View.Viz.UI {
                 e.Y - (dragSize.Height / 2)), dragSize);
 
             // Remember the point where the mouse down occurred
-            LastMousePos = e.Location;          
+            LastMousePos = e.Location;
         }
 
         /// <summary>
@@ -101,9 +101,11 @@ namespace Limaki.View.Viz.UI {
         protected override void EndAction() {
             base.EndAction();
             DragBoxFromMouseDown = Rectangle.Zero;            
+        public override void OnMouseMove (MouseActionEventArgs e) {
+            BaseMouseMove (e);
         }
 
-        public override void OnMouseUp(MouseActionEventArgs e) {
+        public override void OnMouseUp (MouseActionEventArgs e) {
             base.OnMouseUp (e);
         }
    }

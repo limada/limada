@@ -73,17 +73,17 @@ namespace Limada.Tests.Model {
         }
 
 
-        public IGraphSceneLayout<IVisual,IVisualEdge> GetLayout() {
+        public IGraphSceneLayout<IVisual,IVisualEdge> CreateLayout() {
             var styleSheet = StyleSheet.CreateDefaultStyleSheet ();
             var result = new VisualsSceneLayout<IVisual, IVisualEdge>(null,styleSheet);
             return result;
         }
 
         Stream SaveSheet (IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
-            Sheet sheet = new Sheet(scene, layout);
+            var sheet = new Sheet(scene, layout);
             sheet.Layout.DataHandler = delegate() { return sheet.Scene; };
 
-            Stream s = new MemoryStream();
+            var s = new MemoryStream();
             sheet.Save(s);
             s.Position = 0;
             return s;
@@ -99,7 +99,7 @@ namespace Limada.Tests.Model {
 
             var thingGraph = sourceGraph.Source as IThingGraph;
             
-            var layout = this.GetLayout();
+            var layout = this.CreateLayout();
 
             var s = SaveSheet (scene, layout);
             
@@ -124,7 +124,7 @@ namespace Limada.Tests.Model {
 
             }
 
-            foreach (IVisual source in sourceGraph) {
+            foreach (var source in sourceGraph) {
                 var thing = sourceGraph.Get(source);
                 var target = targetGraph.Get(thing);
 
@@ -163,7 +163,7 @@ namespace Limada.Tests.Model {
                 scene.Graph = new SubGraph<IVisual, IVisualEdge> (new VisualGraph (), scene.Graph);
             }
 
-            var layout = this.GetLayout();
+            var layout = this.CreateLayout();
 
             var s = SaveSheet(scene, layout);
 
@@ -320,7 +320,7 @@ namespace Limada.Tests.Model {
                 scene.Graph = new SubGraph<IVisual, IVisualEdge>(scene.Graph,new VisualGraph());
             }
 
-            var layout = this.GetLayout();
+            var layout = this.CreateLayout();
             var thingGraph = scene.Graph.ThingGraph();
 
             var info = new SceneInfo { Name = "TestFavoriteManagerAddToSheets" };

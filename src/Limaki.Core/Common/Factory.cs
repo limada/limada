@@ -214,11 +214,11 @@ namespace Limaki.Common {
         public virtual void Add<T>(Func<object[], T> creator) {
             Clazzes[typeof(T)] = creator;
         }
-
-
+        
         public virtual void Add<T>(Func<T> creator) {
             Clazzes[typeof(T)] = creator;
         }
+
         public virtual void Add<T1,T2>(Func<object[], T1> creator)where T2:T1 {
             Clazzes[typeof(T1)] = creator;
             AddKnown<T1, T2>();   

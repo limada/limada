@@ -69,8 +69,6 @@ namespace Xwt.Headless.Backend {
             throw new NotImplementedException();
         }
 
-       
-
         public override IWindowFrameBackend GetBackendForWindow (object nativeWindow) {
             throw new NotImplementedException();
         }

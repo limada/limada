@@ -18,6 +18,7 @@ using Limada.Model;
 using Limada.Schemata;
 
 namespace Limada.Tests.View {
+
     public class SchemaViewTestData<T>:ThingSceneFactory0
     where T:Schema, new() {
         public override IThingGraph ThingGraph {

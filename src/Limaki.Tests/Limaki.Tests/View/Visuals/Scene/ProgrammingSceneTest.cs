@@ -241,8 +241,6 @@ namespace Limaki.Tests.View.Visuals {
             this.ReportSummary ();
         }
 
-
-
         [Test]
         public void Net () {
             Mock.Scene.Selected.Clear ();
@@ -314,7 +312,6 @@ namespace Limaki.Tests.View.Visuals {
             this.ReportSummary ();
         }
 
-
         [Test]
         public void ProgrammingLanguageEdge () {
             Mock.Scene.Selected.Clear ();
@@ -375,5 +372,6 @@ namespace Limaki.Tests.View.Visuals {
 
             this.ReportSummary ();
         }
+   
     }
 }

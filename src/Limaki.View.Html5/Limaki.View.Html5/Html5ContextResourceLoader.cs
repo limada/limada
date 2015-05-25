@@ -45,10 +45,9 @@ namespace Limaki.View.Html5 {
 
             context.Factory.Add<IExceptionHandler, Html5ExeptionHandlerBackend> ();
             context.Factory.Add<IDrawingUtils, Html5DrawingUtils> ();
-            
-            context.Factory.Add<IPainterFactory, DefaultPainterFactory> ();
-
             context.Factory.Add<IUISystemInformation, Html5SystemInformation> ();
+
+            context.Factory.Add<IPainterFactory, DefaultPainterFactory> ();
             context.Factory.Add<IShapeFactory, ShapeFactory> ();
             context.Factory.Add<IVisualFactory, VisualFactory> ();
 

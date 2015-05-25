@@ -95,7 +95,6 @@ namespace Limaki.Drawing.Styles {
             set { Set (() => ParentStyle.Padding, ref _padding, value); }
         }
         
-
         #endregion
 
         #region cascading
@@ -162,13 +161,13 @@ namespace Limaki.Drawing.Styles {
         }
 
         public override bool Equals(object obj) {
-            if (!(obj is IStyle))
+            var other = obj as IStyle;
+            if (other == null)
                 return false;
-            var other = (IStyle)obj;
             return
                    this.AutoSize == other.AutoSize &&
                    this.FillColor.Equals(other.FillColor) &&
-                   this.Font == other.Font &&
+                   this.Font.Equals(other.Font) &&
                    this.Name == other.Name &&
                    this.PaintData == other.PaintData &&
                    this.LineWidth.Equals (other.LineWidth) &&
@@ -194,14 +193,14 @@ namespace Limaki.Drawing.Styles {
         }
 
 
-        public virtual void CopyTo(IStyle target) {
-            target.AutoSize = this.AutoSize;
-            target.FillColor = this.FillColor;
-            target.Font = this.Font;
-            target.PaintData = this.PaintData;
-            target.StrokeColor = this.StrokeColor;
-            target.LineWidth = this.LineWidth;
-            target.TextColor = this.TextColor;
+        public virtual void CopyTo(IStyle other) {
+            other.AutoSize = this.AutoSize;
+            other.FillColor = this.FillColor;
+            other.Font = this.Font;
+            other.PaintData = this.PaintData;
+            other.StrokeColor = this.StrokeColor;
+            other.LineWidth = this.LineWidth;
+            other.TextColor = this.TextColor;
         }
 
         public virtual object Clone() {

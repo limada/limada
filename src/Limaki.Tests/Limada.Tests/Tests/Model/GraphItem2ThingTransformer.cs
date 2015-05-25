@@ -54,7 +54,7 @@ namespace Limada.Tests.Model {
            IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> graph =
                sink as IGraphPair<IGraphEntity, IThing, IGraphEdge, ILink>;
            if (graph !=null) {
-               IThing thing = graph.Get (item);
+               var thing = graph.Get (item);
                thing.Data = data;
                item.Data = data;
            }

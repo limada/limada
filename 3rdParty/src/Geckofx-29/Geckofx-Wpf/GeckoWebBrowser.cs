@@ -80,7 +80,8 @@ namespace Gecko
 		    _webProgressListener.OnStateChangeCallback += this.OnStateChange;
 
 			#endregion
-			_baseWindow.SetVisibilityAttribute(true);
+			
+            _baseWindow.SetVisibilityAttribute(true);
 		}
 
 		protected override void DestroyWindowCore( HandleRef hwnd )
@@ -208,7 +209,6 @@ namespace Gecko
 				//referrerUri = Xpcom.GetService<nsIIOService>("@mozilla.org/network/io-service;1").NewURI(new nsAUTF8String(referrer), null, null);
 				referrerUri = IOService.CreateNsIUri(referrer);
 			}
-
 
 			_webNav.LoadURI(url, (uint)loadFlags, referrerUri, postData != null ? postData._inputStream : null, headers != null ? headers._inputStream : null);
 

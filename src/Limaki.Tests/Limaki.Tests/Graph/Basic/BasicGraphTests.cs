@@ -57,7 +57,7 @@ namespace Limaki.Tests.Graph.Basic {
                     System.Collections.Generic.KeyValuePair<TItem, ICollection<TEdge>> kvp in graph.ItemsWithEdges ()) {
                     bool first = true;
                     string emptyString = new string (' ', kvp.Key.ToString ().Length);
-                    foreach (TEdge edge in kvp.Value) {
+                    foreach (E edge in kvp.Value) {
                         if (first) {
                             if (edge != null)
                                 this.ReportDetail ("\t" + kvp.Key.ToString () + "\t: " + edge.ToString ());
@@ -73,7 +73,7 @@ namespace Limaki.Tests.Graph.Basic {
         }
 
         public void FillGraph(IGraph<TItem, TEdge> graph, BasicGraphTestDataFactory<TItem, TEdge> data) {
-            foreach (TEdge edge in data.Edges) {
+            foreach (var edge in data.Edges) {
                 graph.Add(edge);
             }
         }
@@ -161,13 +161,12 @@ namespace Limaki.Tests.Graph.Basic {
         public virtual void AddData() {
             InitGraphTest("** AddData");
 
-
             Assert.IsTrue(Graph.Contains(Data.One));
             Assert.IsTrue(Graph.Contains(Data.Two));
             Assert.IsTrue(Graph.Contains(Data.Three));
             Assert.IsTrue(Graph.Contains(Data.Aside));
 
-            foreach (TEdge edge in Data.Edges) {
+            foreach (var edge in Data.Edges) {
                 Assert.IsTrue(Graph.Contains(edge));
             }
             ReportSummary();

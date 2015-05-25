@@ -71,8 +71,7 @@ namespace Xwt.Headless.Backend {
             var d = (FontData) handle;
             return d.Stretch;
         }
-
-
+        
         public override object GetSystemDefaultFont () {
             return new FontData { Family = "Default", Size = 10 };
         }

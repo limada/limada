@@ -27,8 +27,8 @@ namespace Limaki.View.Visuals {
         public override void ChangeData (IGraph<IVisual, IVisualEdge> sink, IVisual item, object data) {
             var graph = sink as IGraphPair<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>;
             if (graph != null) {
-                var thing = graph.Get (item);
-                thing.Data = data;
+                var entity = graph.Get (item);
+                entity.Data = data;
                 item.Data = data;
             }
         }

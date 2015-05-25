@@ -87,8 +87,10 @@ namespace Xwt.Drawing
 
 			int i = name.LastIndexOf (' ');
 			int lasti = name.Length;
+
 			do {
 				string token = name.Substring (i + 1, lasti - i - 1);
+
 				FontStyle st;
 				FontWeight fw;
 				FontStretch fs;

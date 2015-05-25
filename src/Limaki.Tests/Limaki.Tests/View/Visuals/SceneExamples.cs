@@ -13,6 +13,7 @@ using Limaki.View.Visuals;
 namespace Limaki.Tests.View {
     
     public class SceneExamples {
+
         public interface ITypeChoose {
             ISampleGraphSceneFactory Data { get; }
         }

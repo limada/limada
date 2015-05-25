@@ -47,10 +47,8 @@ namespace Limaki.View.Headless.VidgetBackends {
                 resourceLoader.ApplyResources(Registry.ConcreteContext);
             }
 
-
         }
-
-
+        
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             Display<T> display = null;
             var factory = CreateDisplayFactory(this);
@@ -60,8 +58,6 @@ namespace Limaki.View.Headless.VidgetBackends {
                 display = factory.Create();
             _display = display;
             factory.Compose(display);
-            
-
         }
 
         protected IDisplay<T> _display = null;

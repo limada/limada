@@ -13,7 +13,6 @@ namespace Limaki.View.WpfBackend {
 
     public class GeckoWebBrowserEx : Gecko.GeckoWebBrowser {
 
-
         public bool IsBusy {
             get;
             set;
@@ -153,7 +152,6 @@ namespace Limaki.View.WpfBackend {
             base.Navigate (url.AbsoluteUri);
         }
 
-
         public string Url {
             get { return WebNav.GetCurrentURIAttribute ().ToUri ().AbsoluteUri; }
             set { Navigate (value); }
@@ -180,8 +178,6 @@ namespace Limaki.View.WpfBackend {
         }
 
         #endregion
-
-   
 
         protected override void Dispose (bool disposing) {
             base.Dispose (disposing);
@@ -276,7 +272,7 @@ namespace Limaki.View.WpfBackend {
             if (ev != null)
                 handled = ev.Handled;
 
-            Trace.WriteLine (msg.ToString ("X"));
+            //Trace.WriteLine (msg.ToString ("X"));
             return base.WndProc (hwnd, msg, wParam, lParam, ref handled);
         }
 

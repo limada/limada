@@ -56,7 +56,7 @@ namespace Limaki.Common {
 
         void Add ( Type source, Type target );
         void Add<T1, T2>() where T2 : T1;
-        void Add<T>(Func<T> creator);
+        void Add<T> (Func<T> creator);
         void Add<T>(Func<object[], T> creator);
 
         Func<T> Func<T> ();

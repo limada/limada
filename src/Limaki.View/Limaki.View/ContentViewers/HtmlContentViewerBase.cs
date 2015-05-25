@@ -105,7 +105,9 @@ namespace Limaki.View.ContentViewers {
                 }
 
                 WebBrowser.Navigate (response.AbsoluteUri);
-                WebBrowser.WaitFor(() => response.Done);
+                WebBrowser.WaitFor(() => 
+                    response.Done
+                );
 
                 Trace.WriteLine ("Navigated to " + response.AbsoluteUri);
             }

@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using Xwt.Drawing;
 
 namespace Xwt.Html5.Backend {
+
     public class Html5Context {
 
         public Html5Context () {
@@ -58,7 +59,6 @@ namespace Xwt.Html5.Backend {
         public double TranslateX { get { return CTM.OffsetX; } set { CTM.Translate(value,0); } }
         public double TranslateY { get { return CTM.OffsetY; } set { CTM.Translate(0,value); } }
         
-
         public Html5Context (Html5Context c): this () {
             c.SaveTo (this, false);
         }
@@ -87,8 +87,7 @@ namespace Xwt.Html5.Backend {
 
             this.contexts.Push (new Html5Context (this) { });
         }
-
-
+        
         public void Restore () {
             if (this.contexts == null || this.contexts.Count == 0)
                 throw new InvalidOperationException ();
@@ -98,8 +97,6 @@ namespace Xwt.Html5.Backend {
             c.SaveTo (this, true);
 
         }
-
-
         
     }
 }

@@ -17,13 +17,12 @@ namespace Limaki.Tests.Drawing {
             Assert.AreEqual(style1.StrokeColor, style2.StrokeColor);
             Assert.AreEqual (style1.LineWidth, style2.LineWidth);
         }
+
         [Test]
         public void TestGroupCascading() {
             var styleSheets = Registry.Pooled<StyleSheets>();
             var stylegroup = (IStyleGroup)styleSheets.DefaultStyleSheet.ItemStyle.Clone();
             var newGroup = (styleSheets.DefaultStyleSheet as StyleSheet).CreateStyleGroup("test", null, true);
-          
-
         }
 
         public void ReportStyleGroup(IStyleGroup stylegroup) {

@@ -39,7 +39,6 @@ using Limaki.View.Viz.Visualizers;
 
 namespace Limaki.View.SwfBackend {
 
-   
     /// <summary>
     /// IBackendContextResourceLoader to use
     /// System.Windows.Forms
@@ -47,6 +46,7 @@ namespace Limaki.View.SwfBackend {
     public class SwfContextResourceLoader : IBackendContextResourceLoader {
 
         public Toolkit Toolkit { get; set; }
+
         public virtual void ApplyResources(IApplicationContext context) {
 
             new LimakiCoreContextResourceLoader ().ApplyResources (context);

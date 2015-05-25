@@ -31,6 +31,7 @@ namespace Limaki.Tests.View.Display {
         bool zoomEnabled = false;
         bool trackerEnabled = false;
         bool selectorEnabled = false;
+
         protected virtual void InitDisplay () {
             this.Display.ZoomState = ZoomState.Original;
             this.Display.Data = this.Scene;
@@ -73,7 +74,7 @@ namespace Limaki.Tests.View.Display {
 
             Assert.AreSame (Scene.Focused, link);
 
-            Vector v = new Vector ();
+            var v = new Vector ();
             v.Start = link.Shape[Anchor.LeftTop];
             v.End = target.Shape[Anchor.Center];
             //m = M(v);

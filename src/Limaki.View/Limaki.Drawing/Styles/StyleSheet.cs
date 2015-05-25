@@ -33,9 +33,14 @@ namespace Limaki.Drawing.Styles {
             this.BackColor = SystemColors.Window;
         }
 
+
+        public IStyle BaseStyle { get; set; }
+
         public IStyleGroup ItemStyle { get; set; }
         public IStyleGroup EdgeStyle { get; set; }
-        public virtual Color BackColor { get; set;}
+
+        public virtual Color BackColor { get; set; }
+
         public override IStyle ParentStyle {
             get { return base.ParentStyle; }
             set {
@@ -170,7 +175,6 @@ namespace Limaki.Drawing.Styles {
             return _defaultStyleSheet;
         }
 
-        public IStyle BaseStyle { get; set; }
 
 
         #region IEnumerable<IStyle> Member
@@ -178,8 +182,7 @@ namespace Limaki.Drawing.Styles {
         public IEnumerator<IStyle> GetEnumerator() {
             return styles.Values.GetEnumerator();
         }
-
-      
+        
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
             return this.GetEnumerator();
         }

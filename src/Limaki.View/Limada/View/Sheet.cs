@@ -58,7 +58,7 @@ namespace Limada.View {
             var graph = Scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (graph != null) {
-                VisualThingSerializer serializer = new VisualThingSerializer(); 
+                var serializer = new VisualThingSerializer(); 
                 serializer.VisualThingGraph = graph;
                 serializer.Layout = this.Layout;
                 serializer.VisualsCollection = Scene.Graph;

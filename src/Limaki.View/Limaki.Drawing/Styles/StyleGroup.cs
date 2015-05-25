@@ -1,14 +1,17 @@
 ﻿using System;
 
 namespace Limaki.Drawing.Styles {
+
     public class StyleGroup : Style, IStyleGroup {
+
         public Int64 Id { get; set; }
+
         public StyleGroup(string name) : base(name) { }
         public StyleGroup(string name, IStyle parentStyle) : base(name, parentStyle) { }
+
         public IStyle DefaultStyle { get; set; }
         public IStyle SelectedStyle { get; set; }
         public IStyle HoveredStyle { get; set; }
-
 
         public override string Name {
             get { return base.Name; }
@@ -25,25 +28,32 @@ namespace Limaki.Drawing.Styles {
             }
         }
 
-        public override void CopyTo(IStyle target) {
-            base.CopyTo(target);
+        public override void CopyTo (IStyle other) {
+            if (other is IStyleGroup && this != other) {
+                CopyTo ((IStyleGroup) other);
+                return;
+            }
+            base.CopyTo (other);
         }
 
-        public virtual void CopyTo(IStyleGroup result) {
-            base.CopyTo(result);
-            if (DefaultStyle != null) {
-                result.DefaultStyle = this.DefaultStyle.Clone() as IStyle;
-                result.DefaultStyle.ParentStyle = result;
-            }
-            if (SelectedStyle != null) {
-                result.SelectedStyle = this.SelectedStyle.Clone() as IStyle;
-                result.SelectedStyle.ParentStyle = result;
 
+        public virtual void CopyTo (IStyleGroup other) {
+            base.CopyTo (other);
+
+            other.DefaultStyle = MakeCopy (this.DefaultStyle, other);
+            other.SelectedStyle = MakeCopy (this.SelectedStyle, other);
+            other.HoveredStyle = MakeCopy (this.HoveredStyle, other);
+        }
+
+        public override bool Equals (object obj) {
+            var other = obj as IStyleGroup;
+            if (other != null) {
+                return base.Equals (other) &&
+                       this.DefaultStyle.Equals (other.DefaultStyle) &&
+                       this.SelectedStyle.Equals (other.DefaultStyle) &&
+                       this.HoveredStyle.Equals (other.DefaultStyle);
             }
-            if (HoveredStyle != null) {
-                result.HoveredStyle = this.HoveredStyle.Clone() as IStyle;
-                result.HoveredStyle.ParentStyle = result;
-            }
+            return false;
         }
 
         public override object Clone() {
@@ -53,6 +63,7 @@ namespace Limaki.Drawing.Styles {
 
 
         }
+
         public System.Collections.Generic.IEnumerator<IStyle> GetEnumerator() {
             yield return this;
             yield return DefaultStyle;

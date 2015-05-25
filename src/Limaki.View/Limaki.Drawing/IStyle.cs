@@ -68,7 +68,7 @@ namespace Limaki.Drawing {
 
         Spacing Padding { get; set; }
 
-        void CopyTo(IStyle target);
+        void CopyTo(IStyle other);
     }
 
 }

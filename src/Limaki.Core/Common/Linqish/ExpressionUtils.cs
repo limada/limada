@@ -21,7 +21,7 @@ namespace Limaki.Common.Linqish {
 
     public static class ExpressionUtils {
 
-        public static MemberInfo MemberInfo<T, TMember>(Expression<Func<T, TMember>> exp) {
+        public static MemberInfo MemberInfo<T, TMember>(this Expression<Func<T, TMember>> exp) {
             var member = exp.Body as MemberExpression;
             if (member != null)
                 return member.Member;

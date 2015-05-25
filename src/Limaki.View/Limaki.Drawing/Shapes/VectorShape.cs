@@ -95,7 +95,7 @@ namespace Limaki.Drawing.Shapes {
         public override Point Location {
             get { return this._data.Start; }
             set {
-                Size oldSize = this.Size;
+                var oldSize = this.Size;
                 this._data.Start = value;
                 Size = oldSize;
             }
@@ -105,12 +105,11 @@ namespace Limaki.Drawing.Shapes {
             get { return DataSize; }
             set { DataSize = value; }
         }
+
         public override Size DataSize {
             get { return new Size (_data.End.X - _data.Start.X, _data.End.Y - _data.Start.Y); }
             set { _data.End = _data.Start + value; }
         }
-
-
 
         public override void Transform(Matrix matrix) {
             Point[] p = { _data.Start, _data.End };
@@ -119,12 +118,10 @@ namespace Limaki.Drawing.Shapes {
             _data.End = p[1];
         }
 
-
-
-
         public override object Clone() {
             return new VectorShape(_data);
         }
+
         public override System.Collections.Generic.IEnumerable<Anchor> Grips {
             get {
                 yield return Anchor.LeftTop;
@@ -133,14 +130,15 @@ namespace Limaki.Drawing.Shapes {
 
             }
         }
+
         public override Anchor IsAnchorHit(Point p, int hitSize) {
             // TODO: first ask, if p is in boundsRect
-            Rectangle hitRect = new Rectangle(0, 0, hitSize, hitSize);
+            var hitRect = new Rectangle(0, 0, hitSize, hitSize);
             double halfWidth = hitRect.Width / 2;
             double halfHeight = hitRect.Height / 2;
 
-            foreach (Anchor anchor in Grips) {
-                Point anchorPoint = this[anchor];
+            foreach (var anchor in Grips) {
+                var anchorPoint = this[anchor];
                 hitRect.Location = new Point(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
                 if (hitRect.Contains(p))
                     return anchor;

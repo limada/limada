@@ -17,16 +17,19 @@ using System.Text;
 using System.Diagnostics;
 
 namespace Limaki.WebServers {
+
     public class RequestInfo {
 
-        public Uri Uri=null;
+        Uri _uri = null;
+        public Uri Uri { get { return _uri; } set { _uri = value; } }
+
         public string Request = string.Empty;
 
         public string HttpVersion = string.Empty;
         public string Params { get; protected set; }
         public string Accept { get; protected set; }
 
-        public bool Success=false;
+        public bool Success { get; set; }
 
         public RequestInfo(Byte[] request)  {
             HandleRequest(request);
@@ -89,7 +92,7 @@ namespace Limaki.WebServers {
             this.Uri = null;
             if (requestetUri.Length > 1 && isWellFormedUriString) {
                 try {
-                    Uri.TryCreate (requestetUri, UriKind.RelativeOrAbsolute, out this.Uri);
+                    Uri.TryCreate (requestetUri, UriKind.RelativeOrAbsolute, out this._uri);
                     if (this.Uri != null) {
                         this.Request = this.Uri.Segments[Uri.Segments.Length - 1];
                     }
@@ -104,11 +107,17 @@ namespace Limaki.WebServers {
             this.Success = true;
         }
 
+        
     }
 
     public class ResponseInfo {
-        public byte[] Data=null;
-        public string MimeType = string.Empty;
-        public bool Success=false;
+        public ResponseInfo () {
+            MimeType = string.Empty;
+            StatusCode = StatusCodeOK;
+        }
+        public byte[] Data { get; set; }
+        public string MimeType { get; set; }
+        public bool Success { get; set; }
+        public string StatusCode { get; set; }
     }
 }

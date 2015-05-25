@@ -9,6 +9,7 @@ namespace Xwt.Html5.Backend {
             Weight = FontWeight.Normal;
             Style = FontStyle.Normal;
         }
+
         public string Family { get; set; }
         public double Size { get; set; }
         public FontStyle Style { get; set; }

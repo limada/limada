@@ -27,7 +27,6 @@ using NUnit.Framework;
 
 namespace Limaki.Tests.View.Visuals {
 
-
     public class WrapperTest : DomainTest {
 
         public void TestGraphPairFactory () {
@@ -95,8 +94,7 @@ namespace Limaki.Tests.View.Visuals {
             var factory = new ThingGraphFactory0<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
             factory.Count = 10;
             factory.Populate (graph.Source);
-
-
+            
             test.Mock.SetFocused (graph.Get (factory.Nodes[1]));
             Trace.Write (
                 GraphTestUtils.ReportGraph<IVisual, IVisualEdge> (graph.Sink, factory.Name));

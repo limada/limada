@@ -7,6 +7,7 @@ using System.IO;
 using Limaki.Common;
 
 namespace Limada.Tests.Model {
+
     public class ThingFactoryTest : DomainTest {
 
         [Test]

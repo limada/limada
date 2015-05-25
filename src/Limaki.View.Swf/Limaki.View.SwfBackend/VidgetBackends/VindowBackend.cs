@@ -51,7 +51,5 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         #endregion
 
-
-
     }
 }

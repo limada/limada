@@ -45,26 +45,7 @@ namespace Limaki.Tests.Data.db4o {
             base.Setup();
             FileName = TestLocations.GraphtestFile+".limo";
         }
-
-
-
-        [Test]
-        public void StringGraphTest() {
-            var graphTest = new StringGraphTest();
-
-            Gateway.Open(Iori.FromFileName(FileName));
-            Limaki.Data.db4o.Graph<string, Edge<string>> graph =
-                new Limaki.Data.db4o.Graph<string, Edge<string>>(Gateway);
-
-            graphTest.Graph = graph;
-            graphTest.Setup();
-            graphTest.AllTests();
-            graph.Clear();
-
-            Gateway.Close();
-
-
-        }
+        
         [Test]
         public void EdgeIsItemTest() {
             Gateway.Open(Iori.FromFileName(FileName));
@@ -81,21 +62,6 @@ namespace Limaki.Tests.Data.db4o {
 
         }
 
-        [Test]
-        public void IntGraphTest () {
-            Gateway.Open(Iori.FromFileName(FileName));
-            var graphTest = new IntGraphTest();
-            Limaki.Data.db4o.Graph<int, Edge<int>>
-            graph = new Limaki.Data.db4o.Graph<int, Edge<int>>(Gateway);
-
-            graphTest.Graph = graph;
-            graphTest.Setup();
-            graphTest.AllTests();
-            graph.Clear();
-            Gateway.Close();
-
-
-        }
         [Test]
         public void BenchmarkOneTest() {
             var sceneFactory =
@@ -117,6 +83,39 @@ namespace Limaki.Tests.Data.db4o {
             base.TearDown();
         }
 
+        [Test]
+        public void IntGraphTest () {
+            Gateway.Open (Iori.FromFileName (FileName));
+            var graphTest = new IntGraphTest ();
+            Limaki.Data.db4o.Graph<int, Edge<int>>
+            graph = new Limaki.Data.db4o.Graph<int, Edge<int>> (Gateway);
+
+            graphTest.Graph = graph;
+            graphTest.Setup ();
+            graphTest.AllTests ();
+            graph.Clear ();
+            Gateway.Close ();
+
+
+        }
+
+        [Test]
+        public void StringGraphTest () {
+            var graphTest = new StringGraphTest ();
+
+            Gateway.Open (Iori.FromFileName (FileName));
+            Limaki.Data.db4o.Graph<string, Edge<string>> graph =
+                new Limaki.Data.db4o.Graph<string, Edge<string>> (Gateway);
+
+            graphTest.Graph = graph;
+            graphTest.Setup ();
+            graphTest.AllTests ();
+            graph.Clear ();
+
+            Gateway.Close ();
+
+
+        }
         
     }
 }

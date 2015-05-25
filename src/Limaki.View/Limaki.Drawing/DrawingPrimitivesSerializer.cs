@@ -31,6 +31,9 @@ namespace Limaki.Drawing {
         protected static IDrawingUtils DrawingUtils { get { return _drawingUtils ?? (_drawingUtils = Registry.Factory.Create<IDrawingUtils>()); } }
 
         public static class NodeNames {
+            public const string StyleSheet = "stylesheet";
+            public const string Styles = "styles";
+
             public const string Name = "name";
             public const string Parent = "parent";
             public const string FillColor = "fillcolor";
@@ -40,18 +43,16 @@ namespace Limaki.Drawing {
             public const string PaintData = "paintdata";
             public const string AutoSize = "autosize";
             public const string Font = "font";
-            public const string Family = "family";
-            public const string Size = "size";
-            public const string Style = "style";
-            public const string StyleSheet = "stylesheet";
-            public const string Styles = "styles";
+            public const string FontFamily = "family";
+            public const string FontSize = "size";
+            public const string FontStyle = "style";
         }
 
-        public virtual XElement Write(Font font) {
-            var xmlthing = new XElement(NodeNames.Font);
-            xmlthing.Add(Write(NodeNames.Family, font.Family??""));
-            xmlthing.Add(Write(NodeNames.Size,font.Size));
-            xmlthing.Add(Write(NodeNames.Style,font.Style));
+        public virtual XElement Write (Font font) {
+            var xmlthing = new XElement (NodeNames.Font);
+            xmlthing.Add (Write (NodeNames.FontFamily, font.Family ?? ""));
+            xmlthing.Add (Write (NodeNames.FontSize, font.Size));
+            xmlthing.Add (Write (NodeNames.FontStyle, font.Style));
             return xmlthing;
         }
 
@@ -60,9 +61,9 @@ namespace Limaki.Drawing {
         }
         
         public virtual Font ReadBaseFont(XElement node) {
-            var fam = node.Attribute(NodeNames.Family).Value;
-            var size = ReadDouble(node, NodeNames.Size);
-            var style = ReadEnum<FontStyle>(node.Attribute(NodeNames.Style).Value);
+            var fam = node.Attribute(NodeNames.FontFamily).Value;
+            var size = ReadDouble(node, NodeNames.FontSize);
+            var style = ReadEnum<FontStyle>(node.Attribute(NodeNames.FontStyle).Value);
             var result = CreateFont( fam, size, style);
 
             return result;
@@ -70,7 +71,7 @@ namespace Limaki.Drawing {
 
         public virtual Font ReadFont(XElement node) {
             var font = ReadBaseFont (node);
-            Font result = CreateFont( font.Family, font.Size, font.Style);
+            var result = CreateFont( font.Family, font.Size, font.Style);
             return result;
         }
 
@@ -96,7 +97,7 @@ namespace Limaki.Drawing {
         }
 
         public virtual XElement Write(IStyle style) {
-            var result = new XElement(NodeNames.Style);
+            var result = new XElement(NodeNames.FontStyle);
             result.Add(Write(NodeNames.Name, style.Name));
             if (style.ParentStyle != null) {
                 result.Add(Write(NodeNames.Parent, style.ParentStyle.Name));    
@@ -160,7 +161,7 @@ namespace Limaki.Drawing {
             var styleList = new List<IStyle> ();
             var styleNodes = node.Element (NodeNames.Styles);
             IStyle parentStyle = null;
-            foreach (var styleNode in styleNodes.Elements(NodeNames.Style)) {
+            foreach (var styleNode in styleNodes.Elements(NodeNames.FontStyle)) {
                 var styleParent = styleNode.Attribute(NodeNames.Parent);
                 parentStyle = null;
                 if (styleParent != null) {

@@ -223,7 +223,7 @@ namespace Limada.UseCases {
             try {
                 var thingGraph = GetCurrentDisplay ().Data.Graph.ThingGraph ();
                 if (thingGraph == null)
-                    throw new ArgumentException ("ThingGraphMaintenance only works with Thing-backed graphs");
+                    throw new ArgumentException ("TimelineSheet only works with Thing-backed graphs");
 
                 var view = SplitView;
                 var display = view.AdjacentDisplay (view.CurrentDisplay);
