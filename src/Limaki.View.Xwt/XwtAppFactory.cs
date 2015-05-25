@@ -25,10 +25,10 @@ using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
-    public class XwtAppFactory : UsercaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
+    public class XwtAppFactory : UsecaseAppFactory<LimadaResourceLoader, ConceptUsecase> {
 
         ToolkitType? _toolkitType = null;
-        public override ToolkitType ToolkitType {
+        public override ToolkitType XwtToolkitType {
             get {
                 if (_toolkitType.HasValue)
                     return _toolkitType.Value;
@@ -39,16 +39,33 @@ namespace Limaki.View.XwtBackend {
 
         public XwtAppFactory () : base () { }
 
+        public override bool TakeToolkit (IToolkitAware loader) {
+            return base.TakeToolkit (loader) || loader.ToolkitType == XwtContextResourceLoader.ToolkitGuid;
+        }
+
+        public override Guid ToolkitType {
+            get {
+                if (XwtToolkitType == Xwt.ToolkitType.Wpf)
+                    return XwtContextResourceLoader.WpfToolkitGuid;
+                if (XwtToolkitType == Xwt.ToolkitType.Gtk)
+                    return XwtContextResourceLoader.GtkToolkitGuid;
+                return base.ToolkitType;
+            }
+            protected set {
+                base.ToolkitType = value;
+            }
+        }
+
         public override void Run () {
 
             var tkts = ConfigurationManager.AppSettings["ToolkitType"];
             if (!string.IsNullOrEmpty (tkts)) {
-                var tk = this.ToolkitType;
+                var tk = this.XwtToolkitType;
                 if (Enum.TryParse<Xwt.ToolkitType> (tkts, out tk))
-                    this.ToolkitType = tk;
+                    this.XwtToolkitType = tk;
             }
 
-            Application.Initialize (this.ToolkitType);
+            Application.Initialize (this.XwtToolkitType);
 
             this.Create (new XwtContextResourceLoader ());
 
