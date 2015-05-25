@@ -55,6 +55,7 @@ namespace Limada.Model {
         public override void Clear() {
             base.Clear();
             _ids.Clear ();
+            _markerIds = null;
         }
 
         protected override void AddEdge(ILink edge, IThing item) {
