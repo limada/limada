@@ -38,7 +38,7 @@ namespace Limaki.View.Visuals {
         }
 
         public override void UpdateSinkItem (IGraph<IGraphEntity, IGraphEdge> source, IGraph<IVisual, IVisualEdge> sink, IGraphEntity sourceItem, IVisual sinkItem) {
-
+            sinkItem.Data = sourceItem.Data;
         }
     }
 

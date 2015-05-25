@@ -61,7 +61,7 @@ namespace Limada.Tests.Model {
        }
 
        public override void UpdateSinkItem (IGraph<IThing, ILink> source, IGraph<IGraphEntity, IGraphEdge> sink, IThing sourceItem, IGraphEntity sinkItem) {
-           throw new NotImplementedException ();
+           sinkItem.Data = sourceItem.Data;
        }
    }
 }
