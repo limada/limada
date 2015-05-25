@@ -65,7 +65,12 @@ namespace Limaki.Common {
         protected IDictionary<Type, Type> _knownClazzes=null;
         protected IDictionary<Type,Type> knownClazzes {
             get {
-                return _knownClazzes ?? (_knownClazzes = new Dictionary<Type, Type>());
+                if (_knownClazzes == null) {
+                    _knownClazzes = new Dictionary<Type, Type> (); 
+                    if (_clazzes == null)
+                        InstrumentClazzes ();
+                }
+                return _knownClazzes;
             }
         }
         public IEnumerable<Type> KnownClasses {
