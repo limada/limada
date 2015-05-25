@@ -84,6 +84,10 @@ namespace Limaki.View.XwtBackend {
             base.ClipOrigin = new Point(hscroll.Value, vscroll.Value);
         }
 
+        public override void UpdateZoom () {
+            base.UpdateZoom ();
+            Backend.QueueDraw ();
+        }
 
     }
 }
