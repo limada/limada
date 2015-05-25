@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml.Linq;
 using Limada.Model;
 using Limaki.Common.Collections;
@@ -96,10 +97,10 @@ namespace Limada.View.VisualThings {
                 visual = VisualThingGraph.Get (thing);
                 if (visual!=null && Layout != null) {
                     Layout.Perform (visual);
-                    int x = (int)ReadInt(node, "x", false);
-                    int y = (int)ReadInt(node, "y", false);
-                    int w = (int)ReadInt(node, "w", false);
-                    int h = (int)ReadInt(node, "h", false);
+                    var x = ReadDouble(node, "x");
+                    var y = ReadDouble (node, "y");
+                    var w = ReadDouble (node, "w");
+                    var h = ReadDouble (node, "h");
                     visual.Shape.Location = new Point(x, y);
                     visual.Shape.Size = new Size(w, h);
                 }
@@ -114,10 +115,10 @@ namespace Limada.View.VisualThings {
             IThing thing = VisualThingGraph.Get (visual);
             if (thing != null) {
                 xmlthing = Write (thing);
-                xmlthing.Add( new XAttribute("x", ((int)visual.Location.X).ToString()));
-                xmlthing.Add( new XAttribute("y", ((int)visual.Location.Y).ToString()));
-                xmlthing.Add( new XAttribute("w", ((int)Math.Ceiling(visual.Size.Width)).ToString()));
-                xmlthing.Add( new XAttribute("h", ((int)Math.Ceiling(visual.Size.Height)).ToString()));
+                xmlthing.Add (new XAttribute ("x", visual.Location.X.ToString (CultureInfo.InvariantCulture)));
+                xmlthing.Add (new XAttribute ("y", visual.Location.Y.ToString (CultureInfo.InvariantCulture)));
+                xmlthing.Add (new XAttribute ("w", visual.Size.Width.ToString (CultureInfo.InvariantCulture)));
+                xmlthing.Add (new XAttribute ("h", visual.Size.Height.ToString (CultureInfo.InvariantCulture)));
             }
 
             return xmlthing;
