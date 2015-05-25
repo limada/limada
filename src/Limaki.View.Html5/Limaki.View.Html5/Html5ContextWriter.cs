@@ -13,7 +13,11 @@
  */
 
 
+using System;
+using System.Collections.Generic;
 using System.IO;
+using Limaki.Common;
+using Limaki.Drawing;
 using Limaki.View.Viz.Visualizers;
 using Xwt;
 using Xwt.Html5.Backend;
@@ -34,16 +38,18 @@ namespace Limaki.View.Html5 {
         }
 
         public override void Flush () {
-            var htmlCanvas = new Html5Canvas { ElementId = "myCanvas" };
+            var saver = this.Switch ();
+            try {
+                var htmlCanvas = new Html5Canvas { ElementId = "myCanvas" };
 
-            if (paintStack == null)
-                paintStack = c => { };
-            if (CanvasSize == Size.Zero)
-                CanvasSize = new Size(1000, 1000);
+                if (paintStack == null)
+                    paintStack = c => { };
+                if (CanvasSize == Size.Zero)
+                    CanvasSize = new Size (1000, 1000);
 
-            paintStack(htmlCanvas.Context);
+                paintStack (htmlCanvas.Context);
 
-            CanvasPage = string.Format(@"
+                CanvasPage = string.Format (@"
 <html>
     <head>     
         <meta http-equiv=""X-UA-Compatible"" content=""IE=Edge""/>
@@ -54,10 +60,10 @@ namespace Limaki.View.Html5 {
                     padding: 0px;
                 }}"
 
-                                  + (CanvasBorder ? @"
+                                            + (CanvasBorder ? @"
             #{1} {{border: 1px solid #9C9898;}}" : "") +
 
-                                  @"      </style>
+                                            @"      </style>
         <script> 
             window.onload = {0} 
         </script>
@@ -66,12 +72,15 @@ namespace Limaki.View.Html5 {
         <canvas id=""{1}"" width=""{2}"" height=""{3}""></canvas>
     </body>
 </html>",
-                                  htmlCanvas.Html(),
-                                  htmlCanvas.ElementId,
-                                  CanvasSize.Width.ToHtml(),
-                                  CanvasSize.Height.ToHtml()
+                    htmlCanvas.Html (),
+                    htmlCanvas.ElementId,
+                    CanvasSize.Width.ToHtml (),
+                    CanvasSize.Height.ToHtml ()
 
-                );
+                    );
+            } finally {
+                Restore (saver);
+            }
         }
 
         public override void ClearPaint () {
@@ -79,16 +88,42 @@ namespace Limaki.View.Html5 {
             CanvasPage = null;
         }
 
+        public class EngineSave {
+            public Toolkit Toolkit { get; set; }
+            public Action Restore { get; set; }
+        }
 
+        public override object Switch () {
+            var saver = new EngineSave { Toolkit = Toolkit.CurrentEngine };
+            if (saver.Toolkit is Html5Engine)
+                return saver;
 
-        public override object Save () {
             Toolkit.Engine<Html5Engine>().SetActive();
-            return Toolkit.CurrentEngine;
+            var context = Registry.ConcreteContext;
+            var ie =  context.Factory.Clazz<IExceptionHandler> ();
+            var du = context.Factory.Clazz<IDrawingUtils> ();
+            var si = context.Factory.Clazz<IUISystemInformation> ();
+            
+            context.Factory.Add<IExceptionHandler, Html5ExeptionHandlerBackend> ();
+            context.Factory.Add<IDrawingUtils, Html5DrawingUtils> ();
+            context.Factory.Add<IUISystemInformation, Html5SystemInformation> ();
+
+            saver.Restore = () => {
+                context.Factory.Add (typeof (IExceptionHandler), ie);
+                context.Factory.Add (typeof (IDrawingUtils), du);
+                context.Factory.Add (typeof (IUISystemInformation), si);
+            };
+            return saver;
         }
 
         public override void Restore (object saved) {
-            var engine = saved as Toolkit;
-            engine.SetActive();
+            var saver = saved as EngineSave;
+            if (!(saver.Toolkit is Html5Engine)) {
+                saver.Toolkit.SetActive ();
+
+                if (saver.Restore != null)
+                    saver.Restore ();
+            }
         }
     }
 }
