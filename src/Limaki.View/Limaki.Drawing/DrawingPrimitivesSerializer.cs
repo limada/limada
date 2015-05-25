@@ -46,6 +46,8 @@ namespace Limaki.Drawing {
             public const string FontFamily = "family";
             public const string FontSize = "size";
             public const string FontStyle = "style";
+            public const string FontWeight = "weight";
+            public const string FontStretch = "stretch";
         }
 
         public virtual XElement Write (Font font) {
@@ -53,6 +55,8 @@ namespace Limaki.Drawing {
             xmlthing.Add (Write (NodeNames.FontFamily, font.Family ?? ""));
             xmlthing.Add (Write (NodeNames.FontSize, font.Size));
             xmlthing.Add (Write (NodeNames.FontStyle, font.Style));
+            xmlthing.Add (Write (NodeNames.FontWeight, font.Weight));
+            xmlthing.Add (Write (NodeNames.FontStretch, font.Stretch));
             return xmlthing;
         }
 
