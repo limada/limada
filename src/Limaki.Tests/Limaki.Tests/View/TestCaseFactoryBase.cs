@@ -48,7 +48,7 @@ namespace Limaki.Tests.UseCases {
         }
 
         public void ShowQuadTree (IGraphScene<IVisual, IVisualEdge> scene) {
-            var vindow = new Vindow();
+            var vindow = new Vindow { Size = new Size (800,600) };
             var display = new VisualsDisplay();
             vindow.Content = display;
 

@@ -23,6 +23,7 @@ namespace Limaki.View.Vidgets {
 
     public interface IVindowBackend : IVidgetBackend {
         void SetContent (IVidget value);
+        new Xwt.Size Size { get; set; }
         void Show ();
     }
 
@@ -45,6 +46,8 @@ namespace Limaki.View.Vidgets {
         }
 
         public override void Dispose() { }
+
+        public new Xwt.Size Size { get { return Backend.Size; } set { Backend.Size = value; } }
 
         public void Show () {
             Backend.Show();
