@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2015 Lytico
  *
  * http://www.limada.org
  * 
@@ -60,23 +60,28 @@ namespace Limaki.Drawing {
             return xmlthing;
         }
 
-        Font CreateFont(string fam, double size, FontStyle style) {
-            return Font.FromName(fam + " " + style.ToString() + " " + size.ToString(CultureInfo.InvariantCulture));
+        Font CreateFont (string fam, double size, FontStyle style, FontWeight weigth, FontStretch stretch) {
+            return Font.FromName (fam + " " +
+                style.ToString () + " " +
+                weigth.ToString () + " " +
+                stretch.ToString () + " " +
+                size.ToString (CultureInfo.InvariantCulture));
         }
         
         public virtual Font ReadBaseFont(XElement node) {
             var fam = node.Attribute(NodeNames.FontFamily).Value;
             var size = ReadDouble(node, NodeNames.FontSize);
             var style = ReadEnum<FontStyle>(node.Attribute(NodeNames.FontStyle).Value);
-            var result = CreateFont( fam, size, style);
+            var weight = ReadEnum<FontWeight> (node.Attribute (NodeNames.FontWeight).Value);
+            var stretch = ReadEnum<FontStretch> (node.Attribute (NodeNames.FontStretch).Value);
+            var result = CreateFont( fam, size, style, weight, stretch);
 
             return result;
         }
 
         public virtual Font ReadFont(XElement node) {
             var font = ReadBaseFont (node);
-            var result = CreateFont( font.Family, font.Size, font.Style);
-            return result;
+            return font;
         }
 
         public virtual XAttribute Write(Color color, string attribute) {
@@ -94,8 +99,7 @@ namespace Limaki.Drawing {
             } else {
                 var font = ReadBaseFont (node);
                 if (!style.ParentStyle.Font.Equals(font)) {
-                    var result = CreateFont(  font.Family, font.Size, font.Style);
-                    style.Font = result;
+                    style.Font = font;
                 } 
             }
         }
