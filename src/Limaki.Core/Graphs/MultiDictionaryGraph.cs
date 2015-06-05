@@ -14,6 +14,7 @@
 
 using System.Collections.Generic;
 using Limaki.Common.Collections;
+using Limaki.Common.Linqish;
 using System.Linq;
 using System.Linq.Expressions;
 using System;
@@ -73,8 +74,8 @@ namespace Limaki.Graphs {
                 this.RemoveEdge ((TEdge) (object)item);
             }
             if (this.Contains(item)) {
-                new List<TEdge>(DepthFirstTwig(item))
-                    .ForEach(delegate(TEdge edge) { Remove(edge); });
+                DepthFirstTwig (item).ToArray ()
+                    .ForEach (edge => Remove (edge));
                 return items.Remove(item);
             } else {
                 return false;

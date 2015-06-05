@@ -19,7 +19,7 @@ namespace Limaki.View.XwtBackend {
 
     public abstract class VidgetBackend<T> : IVidgetBackend, IXwtBackend where T : Widget, new () {
 
-        public IVidget Frontend { get; protected set; }
+        public virtual IVidget Frontend { get; protected set; }
 
         public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             this.Frontend = frontend;

@@ -17,6 +17,7 @@ using System.ComponentModel;
 using Limaki.Actions;
 using Limaki.Common;
 using Limaki.Drawing;
+using Limaki.Graphs;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Modelling;
