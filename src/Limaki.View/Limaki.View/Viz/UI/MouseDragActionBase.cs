@@ -94,6 +94,10 @@ namespace Limaki.View.Viz.UI {
 
         }
 
+        protected virtual bool CheckDoubleClickHit (double x, double y) {
+            return DragBoxFromMouseDown.Contains (x, y);
+        }
+
         /// <summary>
         /// if dragger: sets resolved = true if the mouse is outside of the dragging rectangle 
         /// if doubleclick: sets resolved = true if the mouse is outside of the dragging rectangle 
@@ -113,7 +117,7 @@ namespace Limaki.View.Viz.UI {
                 }
             } else if (Behaviour == DragBehaviour.DoubleClick) {
                 Resolved = Resolved && (DragBoxFromMouseDown != Rectangle.Zero &&
-                                   DragBoxFromMouseDown.Contains (e.X, e.Y));
+                                        CheckDoubleClickHit (e.X, e.Y));
             }
         }
 

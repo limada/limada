@@ -186,15 +186,23 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
         public IGraphSceneFolding<TItem, TEdge> Folding { get; protected set; }
 
+        public int HitSize { get; set; }
+
         public GraphSceneMouseFolding (IGraphSceneFolding<TItem, TEdge> folding)
             : base () {
             this.Behaviour = DragBehaviour.DoubleClick;
             this.Folding = folding;
         }
 
+        protected override bool CheckDoubleClickHit (double x, double y) {
+            var scene = Folding.SceneHandler ();
+            return scene.Hit (new Point (x, y), HitSize) == scene.Focused;
+        }
+
         protected override void EndAction () {
             if (Resolved) {
                 Folding.Fold (() => Folding.Folder.Toggle ());
+                LastMouseTime = 0;
             }
             base.EndAction ();
         }
@@ -202,6 +210,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
         public bool Check () {
             return Folding != null && Folding.Check ();
         }
+
     }
 
     public static class UiFoldingExtensions {
