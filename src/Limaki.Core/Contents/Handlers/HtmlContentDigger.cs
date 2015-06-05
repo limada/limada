@@ -146,7 +146,12 @@ namespace Limaki.Contents.IO {
                 var notEncoded = false;
 
                 parser.NotEndoced = stuff => {
-                    var c = System.Net.WebUtility.HtmlEncode (stuff.Text.ToString (stuff.Position, 1));
+                    var co = stuff.Text.ToString (stuff.Position, 1);
+                    var c = System.Net.WebUtility.HtmlEncode (co);
+                    // HtmlEncode doesn't replace special unicode chars
+                    if (co == c) {
+                        c = string.Format("&#{0};",(int)c.ToCharArray(0,1)[0]);
+                    } 
                     stuff.Text.Remove (stuff.Position, 1);
                     stuff.Text.Insert (stuff.Position, c);
                     stuff.Position += c.Length - 1;
@@ -170,6 +175,7 @@ namespace Limaki.Contents.IO {
                 plainText = System.Net.WebUtility.HtmlDecode (plainText.Replace ("\r\n", " ").Trim());
                 string description = null;
                 foreach (var element in elements.Where(e => e.Parsed)) {
+                    // TODO: replace unresolved unicode chars; see above
                     description = System.Net.WebUtility.HtmlDecode(element.Text.Replace("\r\n"," ").Trim());
                     if (!string.IsNullOrEmpty (description))
                         break;
