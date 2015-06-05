@@ -19,8 +19,6 @@ namespace Limaki.Graphs {
 
     public class GraphCursor<TItem, TEdge> where TEdge : IEdge<TItem> {
 
-        
-
         public GraphCursor (IGraph<TItem, TEdge> graph, TItem cursor):this(graph) {
             this.Cursor = cursor;
         }

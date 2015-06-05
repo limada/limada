@@ -15,6 +15,7 @@
 using System.Collections.Generic;
 
 namespace Limaki.Common {
+
     public interface IComposite<T> {
         void Add(T item);
         bool Remove ( T item );

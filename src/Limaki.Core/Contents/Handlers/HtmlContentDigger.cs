@@ -36,7 +36,9 @@ namespace Limaki.Contents.IO {
             if (!_spot.Supports(source.ContentType))
                 return sink;
             var buffer = ByteUtils.GetBuffer(source.Data, (int)source.Data.Length); 
-            var s = (TextHelper.IsUnicode(buffer) ? Encoding.Unicode.GetString(buffer) : Encoding.ASCII.GetString(buffer));
+            var s = (TextHelper.IsUnicode(buffer) ? 
+                Encoding.Unicode.GetString(buffer) : 
+                Encoding.ASCII.GetString(buffer));
             if (Fragment2Html (s, sink)) {
                 buffer = ByteUtils.GetBuffer (sink.Data, (int) sink.Data.Length);
                 s = Encoding.Default.GetString (buffer);
@@ -142,6 +144,7 @@ namespace Limaki.Contents.IO {
                 };
 
                 var notEncoded = false;
+
                 parser.NotEndoced = stuff => {
                     var c = System.Net.WebUtility.HtmlEncode (stuff.Text.ToString (stuff.Position, 1));
                     stuff.Text.Remove (stuff.Position, 1);

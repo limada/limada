@@ -23,9 +23,7 @@ namespace Limaki.View.Vidgets {
         public bool AllowNavigation { get { return Backend.AllowNavigation; } set { Backend.AllowNavigation = value; } }
 
         public bool AllowWebBrowserDrop { get { return Backend.AllowWebBrowserDrop; } set { Backend.AllowWebBrowserDrop = value; } }
-
-      
-
+        
         public string DocumentTitle { get { return Backend.DocumentTitle; } }
 
         public string DocumentType { get { return Backend.DocumentType; } }

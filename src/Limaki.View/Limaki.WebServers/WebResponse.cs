@@ -70,8 +70,6 @@ namespace Limaki.WebServers {
         StreamContentIoPool ContentIoPool {
             get { return _pool ?? (_pool = Registry.Pooled<StreamContentIoPool>()); }
         }
-        
 
-      
     }
 }

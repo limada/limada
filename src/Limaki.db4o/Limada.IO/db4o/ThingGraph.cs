@@ -209,7 +209,7 @@ namespace Limada.IO.db4o {
             }
             base.OnGraphChange (item, eventType);
         }
-
+    
         public override void Add( ILink edge ) {
             if (edge != null) {
                 markerVisitor = null;
@@ -357,6 +357,7 @@ namespace Limada.IO.db4o {
         #endregion
 
         #region IThingGraph Member
+
         public virtual bool IsMarker(IThing item) {
             bool result = false;
             if (item != null)

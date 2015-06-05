@@ -108,14 +108,14 @@ namespace Limaki.Graphs {
         /// </summary>
         /// <param name="edge"></param>
         /// <returns></returns>
-        protected virtual bool RemoveEdge(IEnumerable<TSinkEdge> edges) {
+        protected virtual bool RemoveEdgeInMapping(IEnumerable<TSinkEdge> edges) {
             foreach (var edge in edges) {
                Mapper.Sink2Source.Remove(edge);
             }
             return true;
         }
 
-        protected virtual bool RemoveEdge(IEnumerable<TSourceEdge> edges) {
+        protected virtual bool RemoveEdgeInMapping(IEnumerable<TSourceEdge> edges) {
             foreach (var edge in edges) {
                 Mapper.Source2Sink.Remove(edge);
             }
@@ -137,7 +137,7 @@ namespace Limaki.Graphs {
                 result = sinkGraph.RemoveSinkItem (item);
             var sourceItem = Get(item);
             if (sourceItem != null) {
-                RemoveEdge(Source.DepthFirstTwig(sourceItem));
+                RemoveEdgeInMapping (Source.DepthFirstTwig (sourceItem));
                 if (inSource) {
                     Source.Remove (sourceItem);
                 }

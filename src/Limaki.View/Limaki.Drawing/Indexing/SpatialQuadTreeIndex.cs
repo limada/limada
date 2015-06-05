@@ -29,8 +29,6 @@ namespace Limaki.Drawing.Indexing {
                 GeoIndex.Remove(bounds, item);
         }
 
-
-      
         public override IEnumerable<TItem> Query (Rectangle clipBounds) {
             return GeoIndex.Query(clipBounds).Where(item=>DrawingExtensions.Intersects(clipBounds, BoundsOf(item)));
         }

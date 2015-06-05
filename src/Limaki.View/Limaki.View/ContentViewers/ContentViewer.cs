@@ -58,5 +58,7 @@ namespace Limaki.View.ContentViewers {
         }
 
         public abstract void Dispose();
+
+       
     }
 }

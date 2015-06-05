@@ -170,8 +170,10 @@ namespace Limaki.Data.db4o {
         }
 
         public virtual void ClientCommit (object sender, CommitEventArgs e) {
+
             if (e.IsOwnCommit ())
                 return;
+
             var clientContainer = e.ObjectContainer ();
             Action<IObjectInfoCollection, GraphEventType> handleCommit = (col, eventType) => {
                 foreach (var objectInfo in col.OfType<IObjectInfo>()) {

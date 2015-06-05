@@ -32,11 +32,11 @@ namespace Limaki.Drawing.Indexing {
         public virtual void Update (Rectangle invalid, TItem item) {
             if (HasBounds(item)) {
                 var bounds = BoundsOf(item);
-                if (!invalid.Equals(bounds)) {
-                    Remove(invalid, item);
-                    Add(bounds, item);
-                    checkBoundsRemove(ref invalid);
-                    checkBoundsAdd(ref bounds);
+                if (!invalid.Equals (bounds)) {
+                    Remove (invalid, item);
+                    Add (bounds, item);
+                    checkBoundsRemove (ref invalid);
+                    checkBoundsAdd (ref bounds);
 
                 }
             } else {

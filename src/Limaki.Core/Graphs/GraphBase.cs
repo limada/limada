@@ -352,7 +352,6 @@ namespace Limaki.Graphs {
                 GraphChange (graph, item, eventType);
             }
         }
-
         #endregion
 
         #region Linqishing

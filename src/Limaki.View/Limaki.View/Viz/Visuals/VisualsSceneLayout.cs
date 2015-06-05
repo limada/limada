@@ -117,10 +117,10 @@ namespace Limaki.View.Viz.Visuals {
         }
 
         public override void BoundsChanged(TItem target) {
-            Rectangle invalid = target.Shape.BoundsRect;
+            var invalid = target.Shape.BoundsRect;
 
             Justify(target, target.Shape);
-            Rectangle valid = target.Shape.BoundsRect;
+            var valid = target.Shape.BoundsRect;
             if (valid.Equals(invalid)) {
                 Data.RemoveBounds(target); // this is a workaround, should not be here!
                 Data.AddBounds(target);

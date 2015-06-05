@@ -1,7 +1,9 @@
 using System;
 
 namespace Limaki.Common {
+
     public class EventArgs<T>:EventArgs {
+
         public EventArgs(T arg) {
             this.Arg = arg;
         }

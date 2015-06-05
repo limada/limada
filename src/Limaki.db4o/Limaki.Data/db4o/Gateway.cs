@@ -119,6 +119,7 @@ namespace Limaki.Data.db4o {
                     Committed (result, e);
                 Trace.WriteLine (string.Format ("db4o client: Commit by  {0}", Iori.Server));
             };
+            
             return result;
         }
 
