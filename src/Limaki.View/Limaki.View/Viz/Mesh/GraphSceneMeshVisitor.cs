@@ -94,15 +94,15 @@ namespace Limaki.View.Viz.Mesh {
             }
         }
 
-        public bool IsVisible (IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem backItem) {
+        public static bool IsVisible (IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem backItem) {
             return ContainsSinkOf (sinkGraph, backItem);
         }
 
-        public TSinkItem SinkOf (IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem backItem) {
+        public static TSinkItem SinkOf (IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem backItem) {
             return sinkGraph.SinkItemOf<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (backItem);
         }
 
-        public bool ContainsSinkOf (IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem backItem) {
+        public static bool ContainsSinkOf (IGraph<TSinkItem, TSinkEdge> sinkGraph, TSourceItem backItem) {
             return sinkGraph.ContainsSinkItemOf<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (backItem);
         }
 
@@ -110,7 +110,7 @@ namespace Limaki.View.Viz.Mesh {
             return sinkGraph.SourceItemOf<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (sinkItem);
         }
 
-        public IGraph<TSourceItem, TSourceEdge> BackGraphOf (IGraph<TSinkItem, TSinkEdge> sinkGraph) {
+        public static IGraph<TSourceItem, TSourceEdge> BackGraphOf (IGraph<TSinkItem, TSinkEdge> sinkGraph) {
             var sourceGraph = sinkGraph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
             if (sourceGraph != null ) {
                 return sourceGraph.Source;

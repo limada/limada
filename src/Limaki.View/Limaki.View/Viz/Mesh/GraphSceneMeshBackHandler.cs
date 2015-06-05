@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2014 Lytico
+ * Copyright (C) 2008-2015 Lytico
  *
  * http://www.limada.org
  * 
@@ -20,6 +20,7 @@ using Limaki.Common.Linqish;
 using Limaki.Graphs;
 using Limaki.View.GraphScene;
 using Limaki.View.Viz.Modelling;
+using System.Diagnostics;
 
 namespace Limaki.View.Viz.Mesh {
 
@@ -58,7 +59,6 @@ namespace Limaki.View.Viz.Mesh {
                 root.ChangeData -= this.BackGraphChangeData;
                 root.ChangeData += this.BackGraphChangeData;
             }
-
         }
 
         public void UnregisterBackGraph (IGraph<TSourceItem, TSourceEdge> root) {
@@ -129,16 +129,34 @@ namespace Limaki.View.Viz.Mesh {
                 var displays = new HashSet<IGraphSceneDisplay<TSinkItem, TSinkEdge>> ();
                 var removeDependencies = false;
 
+                var senderAsSink = (sender as IGraph<TSinkItem, TSinkEdge>).RootSink ();
+
+                var scenes = ScenesOfBackGraph (graph)
+                    // leave alone the sender:
+                    .Where (s => s.Graph.RootSink () != senderAsSink)
+                    .ToArray ();
+
                 Action<TSourceItem> visit = sourceItem => {
-                    foreach (var scene in ScenesOfBackGraph (graph)) {
+                    foreach (var scene in scenes) {
 
                         var graphPair = scene.Graph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
 
                         var sinkItem = default (TSinkItem);
+
+                        if (eventType == GraphEventType.Add) {
+                            sinkItem = graphPair.Get (sourceItem);
+                            if (sinkItem is TSinkEdge) {
+                                SceneEdgeAdd (scene, (TSinkEdge) sinkItem);
+                                displays.Add (DisplayOf (scene));
+                            }
+                            continue;
+                        }
+
                         if (graphPair.Count == 0 || !graphPair.Source2Sink.TryGetValue (sourceItem, out sinkItem))
                             continue;
 
                         var visible = scene.Contains (sinkItem);
+
                         if (eventType == GraphEventType.Remove) {
                             if (removeDependencies) {
                                 if (visible &&
@@ -152,13 +170,18 @@ namespace Limaki.View.Viz.Mesh {
                                 if (visible)
                                     displays.Add (DisplayOf (scene));
 
-                                if (!visible)
-                                    foreach (var dg in scene.Graph.Graphs ()) {
-                                        dg.OnGraphChange (sinkItem, eventType);
-                                        dg.Remove (sinkItem);
-                                    }
                             } else {
-                                SceneItemRemove (scene, sinkItem);
+                                if (visible) {
+                                    if (scene.Focused != null && scene.Focused.Equals (sinkItem)) {
+                                        scene.Focused = default (TSinkItem);
+                                    }
+                                    scene.Selected.Remove (sinkItem);
+
+                                    scene.Requests.Add (new RemoveBoundsCommand<TSinkItem, TSinkEdge> (sinkItem, scene));
+                                    scene.Graph.Twig (sinkItem).ForEach (e =>
+                                        scene.Requests.Add (new RemoveBoundsCommand<TSinkItem, TSinkEdge> (e, scene)));
+                                    displays.Add (DisplayOf (scene));
+                                }
                             }
                         }
 
@@ -166,33 +189,58 @@ namespace Limaki.View.Viz.Mesh {
 
                             if (backItem is TSourceEdge && sinkItem is TSinkEdge) {
 
-                                SceneEdgeChanged (graph, (TSourceEdge) backItem, scene, (TSinkEdge) sinkItem);
+                                SceneEdgeChanged (graph, (TSourceEdge)backItem, scene, (TSinkEdge)sinkItem);
 
                             } else {
 
                                 graphPair.UpdateSink (sinkItem);
                                 if (visible) {
                                     scene.Requests.Add (new LayoutCommand<TSinkItem> (sinkItem, LayoutActionType.Justify));
-                                    var sceneDisplay = DisplayOf (scene);
-                                    if (sceneDisplay != null)
-                                        displays.Add (sceneDisplay);
+                                    displays.Add (DisplayOf (scene));
                                 }
                             }
                         }
+
                     }
                 };
-
+                
                 if (eventType == GraphEventType.Remove) {
-                    var dependencies = Registry.Pooled<GraphDepencencies<TSourceItem, TSourceEdge>> ();
-                    removeDependencies = true;
-                    dependencies.VisitItems (GraphCursor.Create (graph, backItem), visit, eventType);
-                    removeDependencies = false;
+                    try {
+                        var dependencies = Registry.Pooled<GraphDepencencies<TSourceItem, TSourceEdge>> ();
+                        removeDependencies = true;
+                        dependencies.VisitItems (GraphCursor.Create (graph, backItem), visit, eventType);
+                    } catch (Exception ex) {
+                        Trace.TraceError (ex.Message);
+                    } finally {
+                        removeDependencies = false;
+                    }
                 }
 
                 visit (backItem);
 
-                displays.ForEach (display => display.Perform ());
+                displays.Where (display => display != null)
+                    .ForEach (display => display.Perform ());
 
+                Action<TSourceItem> visitAfter = sourceItem => {
+                    foreach (var scene in scenes) {
+
+                        var graphPair = scene.Graph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
+
+                        var sinkItem = default (TSinkItem);
+                        if (graphPair.Count == 0 || !graphPair.Source2Sink.TryGetValue (sourceItem, out sinkItem))
+                            continue;
+
+                        var visible = scene.Contains (sinkItem);
+                        if (eventType == GraphEventType.Remove) {
+                            SceneItemRemoveAfterDisplayUpdate (scene, sinkItem);
+                        }
+                    }
+                };
+
+                visitAfter (backItem);
+
+            } catch (Exception ex) {
+                Trace.TraceError (ex.Message);
             } finally {
                 graphChanging.Remove (change);
             }
@@ -201,7 +249,8 @@ namespace Limaki.View.Viz.Mesh {
 
         #endregion
 
-        #region needed if BackendHandler is called from Backend, not from Frontend (this are copies from VisualGraphSceneMeshEvents, should be consolidated)
+        #region needed if BackendHandler is called from Backend, not from Frontend 
+        // this are copies from VisualGraphSceneMeshEvents, should be consolidated
 
         protected virtual void SceneEdgeChanged (IGraph<TSourceItem, TSourceEdge> sourceGraph, TSourceEdge sourceEdge, IGraphScene<TSinkItem, TSinkEdge> sinkScene, TSinkEdge sinkEdge) {
             
@@ -250,36 +299,28 @@ namespace Limaki.View.Viz.Mesh {
             }
         }
 
-        protected virtual void SceneItemRemove (IGraphScene<TSinkItem, TSinkEdge> sinkScene, TSinkItem sinkItem) {
-
-            if (sinkScene.Contains (sinkItem)) {
-                if (sinkScene.Focused!=null && sinkScene.Focused.Equals(sinkItem)) {
-                    sinkScene.Focused = default(TSinkItem);
+        /// <summary>
+        /// removes items after display perform is done
+        /// </summary>
+        /// <param name="sinkScene"></param>
+        /// <param name="sinkItem"></param>
+        protected virtual void SceneItemRemoveAfterDisplayUpdate (IGraphScene<TSinkItem, TSinkEdge> sinkScene, TSinkItem sinkItem) {
+            var graphs = new Stack<IGraph<TSinkItem, TSinkEdge>> ();
+            graphs.Push (sinkScene.Graph);
+            while (graphs.Count > 0) {
+                var graph = graphs.Pop ();
+                var sinkGraph = graph as ISinkGraph<TSinkItem, TSinkEdge>;
+                if (graph.Contains (sinkItem)) {
+                    if (sinkGraph != null)
+                        sinkGraph.RemoveSinkItem (sinkItem);
+                    else
+                        graph.Remove (sinkItem);
                 }
-                sinkScene.Selected.Remove (sinkItem);
-
-                sinkScene.Requests.Add (new RemoveBoundsCommand<TSinkItem, TSinkEdge> (sinkItem, sinkScene));
+                var graphPair = graph as IGraphPair<TSinkItem, TSinkItem, TSinkEdge, TSinkEdge>;
+                if (graphPair != null)
+                    graphs.Push (graphPair.Source);
             }
 
-            //TODO: move this on a place when all display.perform are done
-            // currently this is done in VisualGraphSceneMeshEvents
-            if (false) {
-                var graphs = new Stack<IGraph<TSinkItem, TSinkEdge>> ();
-                graphs.Push (sinkScene.Graph);
-                while (graphs.Count > 0) {
-                    var graph = graphs.Pop ();
-                    var sinkGraph = graph as ISinkGraph<TSinkItem, TSinkEdge>;
-                    if (graph.Contains (sinkItem)) {
-                        if (sinkGraph != null)
-                            sinkGraph.RemoveSinkItem (sinkItem);
-                        else
-                            graph.Remove (sinkItem);
-                    }
-                    var graphPair = graph as IGraphPair<TSinkItem, TSinkItem, TSinkEdge, TSinkEdge>;
-                    if (graphPair != null)
-                        graphs.Push (graphPair.Source);
-                }
-            }
         }
 
         protected virtual void SceneEdgeAdd (IGraphScene<TSinkItem, TSinkEdge> sinkScene, TSinkEdge sinkEdge) {

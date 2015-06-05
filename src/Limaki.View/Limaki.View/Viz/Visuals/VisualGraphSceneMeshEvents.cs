@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2008-2014 Lytico
+ * Copyright (C) 2008-2015 Lytico
  *
  * http://www.limada.org
  * 
@@ -33,6 +33,10 @@ namespace Limaki.View.Viz.Visuals {
             IVisual sinkItem, IGraphScene<IVisual, IVisualEdge> sinkScene,
             IGraphSceneDisplay<IVisual, IVisualEdge> sinkDisplay) {
 
+            // everything is done in MeshBackHandler
+            return;
+
+            // TODO: remove the rest:
             var sourceGraph = args.Graph;
             var sourceItem = args.Item;
             var eventType = args.EventType;
@@ -51,6 +55,7 @@ namespace Limaki.View.Viz.Visuals {
                 sinkDisplay.Perform ();
         }
 
+        [Obsolete]
         protected virtual void VisualGraphEdgeAdd (IGraphScene<IVisual, IVisualEdge> sinkScene, IVisualEdge sinkEdge) {
             if (sinkScene.Contains (sinkEdge.Root) && (sinkScene.Contains (sinkEdge.Leaf))) {
                 sinkScene.Graph.Add (sinkEdge);
@@ -60,7 +65,7 @@ namespace Limaki.View.Viz.Visuals {
                 sinkScene.Requests.Add (new LayoutCommand<IVisual> (sinkEdge, LayoutActionType.Justify));
             }
         }
-
+        [Obsolete]
         protected virtual void VisualGraphItemRemove (IGraphScene<IVisual, IVisualEdge> sinkScene, IVisual sinkItem) {
             
             if (sinkScene.Contains (sinkItem)) {
@@ -89,11 +94,11 @@ namespace Limaki.View.Viz.Visuals {
             }
 
         }
-
+        [Obsolete]
         protected virtual IVisual LookUp (IGraph<IVisual, IVisualEdge> sourceGraph, IGraph<IVisual, IVisualEdge> sinkGraph, IVisual sourceItem) {
             return GraphMapping.Mapping.LookUp<IVisual, IVisualEdge> (sourceGraph, sinkGraph, sourceItem);
         }
-
+        [Obsolete]
         protected virtual void VisualGraphUpdateChangedEdge (IGraph<IVisual, IVisualEdge> sourceGraph, IVisualEdge sourceEdge, IGraphScene<IVisual, IVisualEdge> sinkScene, IVisualEdge sinkEdge) {
             var sinkGraph = sinkScene.Graph as IGraphPair<IVisual, IVisual, IVisualEdge, IVisualEdge>;
             var root = LookUp (sourceGraph, sinkGraph, sourceEdge.Root);
