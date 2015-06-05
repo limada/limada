@@ -90,7 +90,12 @@ namespace Limaki.Tests.View.Visuals {
 
         protected GraphSceneFacade<IVisual, IVisualEdge> _sceneFacade;
         public virtual GraphSceneFacade<IVisual, IVisualEdge> SceneFacade {
-            get { return _sceneFacade ?? (_sceneFacade = new GraphSceneFacade<IVisual, IVisualEdge> (() => this.Scene, Display.Layout)); }
+            get {
+                return _sceneFacade ?? (_sceneFacade =
+                    new GraphSceneFacade<IVisual, IVisualEdge> (() => this.Scene, Display.Layout) {
+                        RemoveOrphans = false
+                    });
+            }
         }
 
         public virtual void Clear () {
@@ -129,6 +134,7 @@ namespace Limaki.Tests.View.Visuals {
         /// item is added if not in view
         /// </summary>
         public void SetFocused (IVisual item) {
+            this.Scene.Selected.Clear ();
             this.Scene.Focused = item;
             EnsureShape (item);
             this.Scene.AddBounds (item);
@@ -229,6 +235,10 @@ namespace Limaki.Tests.View.Visuals {
                 var s = "visuals.Contains( " + visual.Data.ToString () + " )";
                 Assert.IsTrue (visualsCollection.Contains (visual), s);
             }
+        }
+
+        public void ProveShapes () {
+            ProveShapes (this.Scene);
         }
 
         public void ProveShapes (IGraphScene<IVisual, IVisualEdge> scene) {

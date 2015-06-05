@@ -372,6 +372,49 @@ namespace Limaki.Tests.View.Visuals {
 
             this.ReportSummary ();
         }
-   
+
+        [Test]
+        public void RemoveLibraries () {
+            Mock.Scene.Selected.Clear ();
+            Mock.SetFocused (Mock.SampleFactory.Nodes[1]); // Programming
+            Mock.SceneFacade.CollapseToFocused ();
+            Mock.CommandsPerform ();
+
+            Mock.SceneFacade.Expand (false);
+            Mock.CommandsPerform ();
+            Mock.Scene.Selected.Clear ();
+            Mock.SetFocused (Mock.SampleFactory.Nodes[5]); // Libraries
+            Mock.SceneFacade.Delete ();
+            Mock.CommandsPerform ();
+            
+            var librariesRemoved =  new IVisual[] {
+                Mock.SampleFactory.Nodes[1], // Programming
+                Mock.SampleFactory.Nodes[2], // Language
+                Mock.SampleFactory.Edges[1], //[Programming->Language]
+                Mock.SampleFactory.Nodes[3], // Java
+                Mock.SampleFactory.Nodes[4], // .NET
+                Mock.SampleFactory.Nodes[6], // Collections
+                Mock.SampleFactory.Edges[2], //[[Programming->Language]->Java]
+                Mock.SampleFactory.Edges[3], //[[Programming->Language]->.NET]
+            };
+
+            Mock.AreEquivalent (librariesRemoved, Mock.Scene.Graph);
+            Mock.ProveShapes ();
+
+            Assert.IsNull (Mock.Scene.Focused);
+            Assert.IsNull (Mock.Scene.Hovered);
+
+            Mock.Scene.Selected.Clear ();
+            Mock.SetFocused (Mock.SampleFactory.Nodes[1]); // Programming
+            Mock.SceneFacade.Collapse ();
+            Mock.CommandsPerform ();
+
+            Mock.SceneFacade.Expand (false);
+            Mock.CommandsPerform ();
+
+            Mock.AreEquivalent (librariesRemoved, Mock.Scene.Graph);
+            Mock.ProveShapes ();
+        }
+
     }
 }
