@@ -34,6 +34,10 @@ namespace Limaki.View.Viz.Modelling {
         public Action<ICommand<TItem>> AfterPerform { get; set; }
 
         public virtual void Perform(ICommand<TItem> request) {
+
+            if (deleted.Contains (request.Subject))
+                return;
+
             if (request is LayoutCommand<TItem>) {
                 var layoutCommand = (LayoutCommand<TItem>)request;
                 if (layoutCommand.Parameter == LayoutActionType.Justify) {
@@ -57,6 +61,7 @@ namespace Limaki.View.Viz.Modelling {
                     Layout.BoundsChanged(layoutCommand.Subject);
                 }
             } else if (request is DeleteCommand<TItem,TEdge>) {
+                deleted.Add (request.Subject);
                 request.Execute();
             } else {
                 var invalid = Rectangle.Zero;
@@ -79,10 +84,11 @@ namespace Limaki.View.Viz.Modelling {
         }
 
         protected int tolerance = 5;
+        protected HashSet<TItem> deleted = new HashSet<TItem> ();
         public virtual void Perform(ICollection<ICommand<TItem>> requests) {
             if (Data != null && Data.Requests.Count != 0) {
                 var clipChanged = false;
-
+                deleted.Clear ();
                 foreach (var command in requests.ToArray()) {
                     if (command != null && command.Subject != null) {
 
@@ -99,6 +105,7 @@ namespace Limaki.View.Viz.Modelling {
                         clipChanged = true;
                     }
                 }
+                deleted.Clear ();
             }
         }
         }
