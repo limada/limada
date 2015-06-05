@@ -18,22 +18,34 @@ using System.Linq;
 
 namespace Limaki.View.ContentViewers {
 
-    public class ContentViewerProvider:IDisposable  {
+    public class ContentViewerProvider:IDisposable {
 
-        public ICollection<ContentViewer> Viewers = new List<ContentViewer>();
+        protected ICollection<ContentViewer> _viewers = new List<ContentViewer>();
+
+        public IEnumerable<ContentViewer> Viewers {
+            get { return _viewers; }
+        }
 
         public virtual ContentStreamViewer Supports(Int64 streamType) {
             return Viewers.OfType<ContentStreamViewer>().Where(v => v.Supports(streamType)).FirstOrDefault();
         }
 
         public virtual void Add (ContentViewer viewer) {
-            this.Viewers.Add(viewer);
+            this._viewers.Add(viewer);
         }
 
         public virtual void Dispose () {
             foreach (var viewer in this.Viewers) {
                 viewer.Dispose ();
             }
+        }
+
+        public T Viewer<T> () where T : ContentViewer {
+            return Viewers.OfType<T> ().FirstOrDefault ();
+        }
+
+        public virtual void Clear () {
+            _viewers.Clear ();
         }
     }
 }
