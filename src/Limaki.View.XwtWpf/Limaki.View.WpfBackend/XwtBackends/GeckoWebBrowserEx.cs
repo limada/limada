@@ -125,6 +125,8 @@ namespace Limaki.View.WpfBackend {
         }
 
         protected void InternalLoadContent (string content, string url, string contentType) {
+            if (!IsHandleCreated)
+                WpfExtensions.DoEvents ();
             using (var sContentType = new nsACString (contentType))
             using (var sUtf8 = new nsACString ("UTF8")) {
                 ByteArrayInputStream inputStream = null;
