@@ -25,8 +25,9 @@ namespace Limaki.View.Viz.Mesh {
     public interface IGraphSceneEvents<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
 
         void GraphChanged (
-            IGraph<TItem, TEdge> sourceGraph, TItem sourceItem,
+            object sender,
+            GraphChangeArgs<TItem,TEdge> args,
             TItem sinkItem, IGraphScene<TItem, TEdge> sinkScene,
-            IGraphSceneDisplay<TItem, TEdge> sinkDisplay, GraphEventType eventType);
+            IGraphSceneDisplay<TItem, TEdge> sinkDisplay);
     }
 }

@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using Limaki.Common;
 
 namespace Limaki.Graphs {
 
@@ -149,7 +150,7 @@ namespace Limaki.Graphs {
         /// a graph 
         /// is called "outside" of the graph by the user-interface
         /// </summary>
-        Action<IGraph<TItem, TEdge>, TItem, GraphEventType> GraphChange { get;set;}
+        Action<object, GraphChangeArgs<TItem, TEdge>> GraphChange { get; set; }
 
         /// <summary>
         /// fires the GraphChange-event
@@ -162,7 +163,7 @@ namespace Limaki.Graphs {
         /// </summary>
         /// <param name="item"></param>
         /// <param name="eventType"></param>
-        void OnGraphChange( TItem item, GraphEventType eventType );
+        void OnGraphChange (object sender, GraphChangeArgs<TItem,TEdge> args);
 
         #endregion
 
@@ -171,5 +172,19 @@ namespace Limaki.Graphs {
         bool ValidEdge(TEdge edge);
 
         bool HasSingleEdge (TItem item);
+    }
+
+    public class GraphChangeArgs<TItem, TEdge>
+    where TEdge : IEdge<TItem> {
+
+        public GraphChangeArgs (IGraph<TItem, TEdge> graph, TItem item, GraphEventType eventType) {
+            this.Graph = graph;
+            this.Item = item;
+            this.EventType = eventType;
+        }
+
+        public TItem Item { get; protected set; }
+        public IGraph<TItem, TEdge> Graph { get; protected set; }
+        public GraphEventType EventType { get; protected set; }
     }
 }

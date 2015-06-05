@@ -174,13 +174,13 @@ namespace Limaki.Graphs {
             base.DoChangeData(item, data);
         }
 
-        public override void OnGraphChange(TItem item, GraphEventType eventType) {
-            base.OnGraphChange(item, eventType);
-            Source.OnGraphChange (item, eventType);
+        public override void OnGraphChange (object sender, GraphChangeArgs<TItem, TEdge> args) {
+            base.OnGraphChange (sender, args);
+            Source.OnGraphChange (sender, args);
         }
 
-        public virtual void SourceGraphChanged (IGraph<TItem, TEdge> graph, TItem item, GraphEventType eventType) {
-            base.OnGraphChange (graph, item, eventType);
+        public virtual void SourceGraphChanged (object sender, GraphChangeArgs<TItem,TEdge> args) {
+            base.OnGraphChange (sender, args);
         }
 
         public override IEnumerable<TItem> WhereQ(System.Linq.Expressions.Expression<Func<TItem, bool>> predicate) {

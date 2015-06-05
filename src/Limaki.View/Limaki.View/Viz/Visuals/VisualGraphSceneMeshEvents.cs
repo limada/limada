@@ -28,9 +28,14 @@ namespace Limaki.View.Viz.Visuals {
     public class VisualGraphSceneMeshEvents : IGraphSceneEvents<IVisual, IVisualEdge> {
 
         public void GraphChanged (
-            IGraph<IVisual, IVisualEdge> sourceGraph, IVisual sourceItem, 
+            object sender,
+            GraphChangeArgs<IVisual,IVisualEdge> args,
             IVisual sinkItem, IGraphScene<IVisual, IVisualEdge> sinkScene,
-            IGraphSceneDisplay<IVisual, IVisualEdge> sinkDisplay, GraphEventType eventType) {
+            IGraphSceneDisplay<IVisual, IVisualEdge> sinkDisplay) {
+
+            var sourceGraph = args.Graph;
+            var sourceItem = args.Item;
+            var eventType = args.EventType;
 
             if (eventType == GraphEventType.Update && sinkItem is IVisualEdge) {
                 VisualGraphUpdateChangedEdge (sourceGraph, sourceItem as IVisualEdge, sinkScene, (IVisualEdge) sinkItem);

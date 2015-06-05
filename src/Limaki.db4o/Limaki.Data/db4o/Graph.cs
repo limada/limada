@@ -158,10 +158,10 @@ namespace Limaki.Data.db4o {
             }
         }
 
-        public override void OnGraphChange (IGraph<TItem, TEdge> graph, TItem item, GraphEventType eventType) {
-            base.OnGraphChange (graph, item, eventType);
-            if (eventType == GraphEventType.Update)
-                this.Add (item);
+        public override void OnGraphChange (object sender, GraphChangeArgs<TItem, TEdge> args) {
+            base.OnGraphChange (sender, args);
+            if (args.EventType == GraphEventType.Update)
+                this.Add (args.Item);
         }
 
         public override void DoChangeData(TItem item, object data) {

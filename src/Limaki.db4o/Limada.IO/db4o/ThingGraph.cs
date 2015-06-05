@@ -29,13 +29,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Id = System.Int64;
+using Limaki.Graphs;
 
 namespace Limada.IO.db4o {
 
-    public class ThingGraph : Graph<IThing, ILink>, IThingGraph {
+    public class ThingGraph : Limaki.Data.db4o.Graph<IThing, ILink>, IThingGraph {
+
         public ThingGraph(IGateway g) : base(g) { }
 
         #region Configuration
+
         public static readonly string RootIdField = "_rootId";
         public static readonly string LeafIdField = "_leafId";
 
@@ -197,9 +200,9 @@ namespace Limada.IO.db4o {
             return result;
         }
 
-        public override void OnGraphChange (IThing item, Limaki.Graphs.GraphEventType eventType) {
-            if (eventType == Limaki.Graphs.GraphEventType.Update) {
-                if (item is ILink)
+        public override void OnGraphChange (object sender, GraphChangeArgs<IThing, ILink> args) {
+            if (args.EventType == GraphEventType.Update) {
+                if (args.Item is ILink)
                     // maybe this can be done better with
                     // IObjectTranslator..::OnStore or 
                     // with callbacks:
@@ -207,7 +210,7 @@ namespace Limada.IO.db4o {
                     // IObjectCallbacks..::ObjectOnUpdate
                     markerVisitor = null;
             }
-            base.OnGraphChange (item, eventType);
+            base.OnGraphChange (sender, args);
         }
     
         public override void Add( ILink edge ) {

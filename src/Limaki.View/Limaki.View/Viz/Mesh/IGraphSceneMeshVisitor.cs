@@ -24,7 +24,12 @@ namespace Limaki.View.Viz.Mesh {
             Action<TSinkItem, TSinkItem, IGraphScene<TSinkItem, TSinkEdge>, IGraphSceneDisplay<TSinkItem, TSinkEdge>> visit);
 
         void GraphChangedVisit (
-            Action<IGraph<TSinkItem, TSinkEdge>, TSinkItem, TSinkItem, IGraphScene<TSinkItem, TSinkEdge>, IGraphSceneDisplay<TSinkItem, TSinkEdge>, GraphEventType> visit,
-            GraphEventType eventType);
-        }
+            Action<
+                object,
+                GraphChangeArgs<TSinkItem, TSinkEdge>,
+                TSinkItem, IGraphScene<TSinkItem, TSinkEdge>,
+                IGraphSceneDisplay<TSinkItem, TSinkEdge>
+                >
+                visit, object sender, GraphChangeArgs<TSinkItem, TSinkEdge> args);
+    }
 }

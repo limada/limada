@@ -113,8 +113,12 @@ namespace Limaki.View.Viz.Mesh {
 
         protected ICollection<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> graphChanging = new HashSet<Tuple<IGraph<TSourceItem, TSourceEdge>, TSourceItem, GraphEventType>> ();
 
-        protected virtual void BackGraphChange (IGraph<TSourceItem, TSourceEdge> graph, TSourceItem backItem, GraphEventType eventType) {
+        protected virtual void BackGraphChange (object sender, GraphChangeArgs<TSourceItem,TSourceEdge> args) {
 
+            var graph = args.Graph;
+            var backItem = args.Item;
+            var eventType = args.EventType;
+            
             var change = Tuple.Create (graph, backItem, eventType);
             if (graphChanging.Contains (change))
                 return;

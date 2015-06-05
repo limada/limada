@@ -128,10 +128,10 @@ namespace Limaki.View.Viz.Mesh {
 
         protected abstract IGraphSceneEvents<TItem, TEdge> CreateSceneEvents();
 
-        protected void VisualGraphChange (IGraph<TItem, TEdge> graph, TItem visual, GraphEventType eventType) {
-            var visitor = CreateVisitor (graph, visual);
+        protected void VisualGraphChange (object sender, GraphChangeArgs<TItem, TEdge> args) {
+            var visitor = CreateVisitor (args.Graph, args.Item);
             var sceneEvents = CreateSceneEvents ();
-            visitor.GraphChangedVisit (sceneEvents.GraphChanged, eventType);
+            visitor.GraphChangedVisit (sceneEvents.GraphChanged, sender, args);
         }
 
         #endregion

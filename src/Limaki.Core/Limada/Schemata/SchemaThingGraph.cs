@@ -255,9 +255,9 @@ namespace Limada.Schemata {
             base.DoChangeData(itemToChange, data);
         }
 
-        public override void SourceGraphChanged (IGraph<IThing, ILink> graph, IThing item, GraphEventType eventType) {
-            var ttd = ThingToDisplay (item);
-            base.SourceGraphChanged (this, ttd, eventType);
+        public override void SourceGraphChanged (object sender, GraphChangeArgs<IThing, ILink> args) {
+            var ttd = ThingToDisplay (args.Item);
+            base.SourceGraphChanged (sender, new GraphChangeArgs<IThing, ILink> (args.Graph, ttd, args.EventType));
         }
 
         #region IThingGraph Member
@@ -332,7 +332,7 @@ namespace Limada.Schemata {
                 GraphCursor.Create(this, item),
                 d => {
                     RemoveThingToDisplay(d);
-                    OnGraphChange(d, GraphEventType.Remove);
+                    this.OnGraphChange(d, GraphEventType.Remove);
                     Source.Remove(d);
                 },
                 GraphEventType.Remove);

@@ -72,10 +72,13 @@ namespace Limaki.View.Viz.Mesh {
         }
 
         public void GraphChangedVisit (Action<
-                                            IGraph<TSinkItem, TSinkEdge>, TSinkItem,
+                                            object,
+                                            GraphChangeArgs<TSinkItem, TSinkEdge>,
                                             TSinkItem, IGraphScene<TSinkItem, TSinkEdge>,
-                                            IGraphSceneDisplay<TSinkItem, TSinkEdge>, GraphEventType
-                                        > visit, GraphEventType eventType) {
+                                            IGraphSceneDisplay<TSinkItem, TSinkEdge>
+                                        > visit, object sender, GraphChangeArgs<TSinkItem, TSinkEdge> args) {
+
+            var eventType = args.EventType;
 
             foreach (var sinkScene in SinkScenes) {
                 var sinkGraph = sinkScene.Graph;
@@ -86,7 +89,7 @@ namespace Limaki.View.Viz.Mesh {
 
                     var sinkDisplay = Mesh.Displays.FirstOrDefault (d => d != SourceDisplay && d.Data == sinkScene);
 
-                    visit (SourceGraph, SourceItem, sinkItem, sinkScene, sinkDisplay, eventType);
+                    visit (sender, args, sinkItem, sinkScene, sinkDisplay);
                 }
             }
         }

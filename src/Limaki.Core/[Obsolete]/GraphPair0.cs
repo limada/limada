@@ -210,11 +210,11 @@ namespace Limaki.Graphs {
             base.DoChangeData(item, data);
         }
 
-        public override void OnGraphChange(TSinkItem item, GraphEventType eventType) {
-            base.OnGraphChange(item, eventType);
-            Sink.OnGraphChange(item, eventType);
-            var sourceItem = Get(item);
-            Source.OnGraphChange(sourceItem, eventType);
+        public override void OnGraphChange (object sender, GraphChangeArgs<TSinkItem, TSinkEdge> args) {
+            base.OnGraphChange (sender, args);
+            Sink.OnGraphChange (sender, args);
+            var sourceItem = Get (args.Item);
+            Source.OnGraphChange (sender, new GraphChangeArgs<TSourceItem, TSourceEdge> (Source, sourceItem, args.EventType));
         }
 
         #endregion

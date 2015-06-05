@@ -146,5 +146,10 @@ namespace Limaki.Graphs {
 
             }
         }
+        
+        public static void OnGraphChange<TItem, TEdge> (this IGraph<TItem, TEdge> graph, TItem item, GraphEventType eventType)
+        where TEdge : IEdge<TItem> {
+            graph.OnGraphChange (graph, new GraphChangeArgs<TItem, TEdge> (graph, item, eventType));
+        }
     }
 }

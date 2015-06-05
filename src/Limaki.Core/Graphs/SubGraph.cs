@@ -168,10 +168,10 @@ namespace Limaki.Graphs {
             base.DoChangeData(item, data);
         }
 
-        public override void OnGraphChange( TItem item, GraphEventType eventType ) {
+        public override void OnGraphChange (object sender, GraphChangeArgs<TItem, TEdge> args) {
             // change the full graph first, then call subgraph change-event
-            Source.OnGraphChange(item, eventType);
-            base.OnGraphChange(item, eventType);
+            Source.OnGraphChange (sender, args);
+            base.OnGraphChange (sender, args);
         }
 
         #region IGraphPair<TItem,TEdge,TItem,TEdge> Member
