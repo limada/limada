@@ -13,8 +13,6 @@ namespace Limaki.View.ContentViewers {
             get {
                 if (_markdownEdit == null) {
                     _markdownEdit = Registry.Create<IMarkdownEdit>();
-                    var backend = _markdownEdit.Backend;
-                    OnAttachBackend (_markdownEdit.Backend);
                 }
                 return _markdownEdit;
             }

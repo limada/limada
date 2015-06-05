@@ -78,7 +78,9 @@ namespace Limada.View.ContentViewers {
             viewer.BackColor = this.BackColor;
 
             if (this.ViewersAttachBackend != null) {
+                var callAttach = viewer.AttachBackend == null;
                 viewer.AttachBackend = this.ViewersAttachBackend;
+                viewer.DoAttachBackend ();
             }
 
             if (AttachViewer != null) {

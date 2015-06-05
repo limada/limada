@@ -34,7 +34,6 @@ namespace Limaki.View.ContentViewers {
             get {
                 if (_textViewerWithToolstrip == null) {
                     _textViewerWithToolstrip = new TextViewerWithToolstrip0 ();
-                    this.OnAttachBackend(_textViewerWithToolstrip.Backend);
                 }
                 return _textViewerWithToolstrip;
             }

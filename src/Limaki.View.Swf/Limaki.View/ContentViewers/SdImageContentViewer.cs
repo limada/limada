@@ -41,7 +41,6 @@ namespace Limaki.View.ContentViewers {
             get {
                 if (_display == null) {
                     _display = new SdImageDisplay();
-                    OnAttachBackend(_display.Backend);
                     _display.ZoomState = ZoomState.FitToScreen;
                 }
                 return _display;

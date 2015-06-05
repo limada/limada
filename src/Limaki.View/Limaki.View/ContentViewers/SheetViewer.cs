@@ -35,7 +35,6 @@ namespace Limaki.View.ContentViewers {
                     this.ContentId = value.DataId;
                 if (_sheetDisplay != value && value != null) {
                     _sheetDisplay = value;
-                    OnAttachBackend(_sheetDisplay.Backend);
                 }
             }
         }

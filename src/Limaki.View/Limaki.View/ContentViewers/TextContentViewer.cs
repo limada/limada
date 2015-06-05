@@ -34,7 +34,6 @@ namespace Limaki.View.ContentViewers {
                     _textViewer = new TextViewer();
                     var backend = _textViewer.Backend;
                     backend.BorderStyle = VidgetBorderStyle.None;
-                    OnAttachBackend(_textViewer.Backend);
                 }
                 return _textViewer;
             }
