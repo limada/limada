@@ -128,14 +128,17 @@ namespace Limaki.Graphs {
 
         protected virtual bool Remove(TSinkItem item, bool inSource) {
             if (item == null) return false;
-            RemoveEdge (Sink.DepthFirstTwig (item));
+
+            var sourceItem = Get (item);
+
+            RemoveEdgeInMapping (Sink.DepthFirstTwig (item));
             var result = false;
             var sinkGraph = Sink as ISinkGraph<TSinkItem, TSinkEdge>;
             if (inSource || sinkGraph == null)
                 result = Sink.Remove (item);
             else
                 result = sinkGraph.RemoveSinkItem (item);
-            var sourceItem = Get(item);
+            
             if (sourceItem != null) {
                 RemoveEdgeInMapping (Source.DepthFirstTwig (sourceItem));
                 if (inSource) {
