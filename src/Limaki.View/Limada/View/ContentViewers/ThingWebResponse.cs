@@ -28,7 +28,7 @@ namespace Limada.View.ContentViewers {
         public virtual IThingGraph ThingGraph { get; set; }
         public virtual IThing Thing { get; set; }
 
-        public bool UseProxy { get; set; }
+        public bool DoWebRequest { get; set; }
 
         public Uri BaseUri { get; set; }
 
@@ -59,10 +59,11 @@ namespace Limada.View.ContentViewers {
                             }
                         } else {
                             result = this.GetContentFromGraph(graph, thing, request);
-                            if (result == null && UseProxy) {
+                            if (result == null) {
                                 // if not requesting the internal server, get content from the web
                                 if (request.Host != BaseUri.Host && request.Port != BaseUri.Port) {
-                                    result = new WebRequestContent ();
+                                    if (DoWebRequest)
+                                        result = new WebRequestContent ();
                                 } 
                             }
                         }
@@ -87,7 +88,7 @@ namespace Limada.View.ContentViewers {
 
 
         public virtual WebContent GetContentFromContent (Content<Stream> content, Uri uri) {
-            return base.GetContentFromContent(content, uri, this.UseProxy);
+            return base.GetContentFromContent(content, uri, this.DoWebRequest);
         }
 
 

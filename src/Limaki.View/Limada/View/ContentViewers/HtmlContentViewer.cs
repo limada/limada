@@ -28,7 +28,7 @@ namespace Limada.View.ContentViewers {
                 IsStreamOwner = this.IsStreamOwner,
                 Thing = this.ContentThing,
                 ThingGraph = this.ThingGraph,
-                UseProxy = this.UseProxy,
+                DoWebRequest = this.UseProxy && !this.StealthMode,
                 BaseUri = this.WebServer.Uri,
             };
         }

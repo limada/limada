@@ -32,7 +32,6 @@ namespace Limaki.View.ContentViewers {
             get {
                 if (_webBrowser == null) {
                     _webBrowser = new WebBrowserVidget();
-                    OnAttachBackend(WebBrowser.Backend);
                     UseWebServer = !OS.Mono;
                     UseProxy = WebBrowser.Backend is IWebBrowserWithProxy;
                 }
@@ -82,6 +81,7 @@ namespace Limaki.View.ContentViewers {
 
         public virtual bool UseWebServer { get; set; }
         public virtual bool UseProxy { get; set; }
+        public virtual bool StealthMode { get; set; }
 
         #endregion
 

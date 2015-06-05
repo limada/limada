@@ -24,6 +24,8 @@ namespace Limaki.WebServers {
 
     public class WebResponse : WebResponseBase, IWebResponse {
 
+        public bool StealthMode { get; set; }
+
         public virtual WebContent GetContentFromContent (Content<Stream> content, Uri uri) {
             var result = base.GetContentFromContent(content, uri, true);
             result.IsStreamOwner = this.IsStreamOwner;
@@ -49,8 +51,11 @@ namespace Limaki.WebServers {
                                 result = webContent;
                             }
                         } else {
-                            // try to get the content form the web
-                            result = new WebRequestContent();
+                            if (StealthMode)
+                                Trace.WriteLine ("Stealth: request denied:" + s);
+                            else
+                                // try to get the content form the web
+                                result = new WebRequestContent ();
                         }
                     } catch (Exception ex) {
                         Trace.WriteLine("request denied:" + s);
