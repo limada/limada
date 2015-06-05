@@ -71,6 +71,14 @@ namespace Limaki.View.Viz.UI.GraphScene {
                 BackendRenderer.Render ();
         }
 
+        public virtual void Delete () {
+            Folder.Delete ();
+            if (MoveResizeRenderer != null) {
+                MoveResizeRenderer.Shape = null;
+                MoveResizeRenderer.ShowGrips = false;
+            }
+        }
+
         public virtual void Fold (Action fold) {
 
             var wasFiltered = Folder.IsFiltered;
@@ -146,6 +154,8 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
             if (e.Key == Key.Delete && e.Modifiers == ModifierKeys.None) {
                 folder.Hide ();
+            } else if (e.Key == Key.Delete && (e.Modifiers == ModifierKeys.Control)) {
+                folder.Delete ();
             } else if ((e.Key == Key.NumPadAdd || e.Key == Key.Plus) && e.Modifiers == ModifierKeys.None) {
                 fold (() => folder.Expand (false));
 

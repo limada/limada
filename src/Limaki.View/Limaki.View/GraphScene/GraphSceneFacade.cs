@@ -333,6 +333,17 @@ namespace Limaki.View.GraphScene {
             }
         }
 
+        public virtual void Delete () {
+            if (Scene.Selected.Count > 0) {
+                var done = new Set<TItem> ();
+                foreach (var item in Scene.Selected.Elements) {
+                    Scene.Delete (item, done);
+                }
+
+                UpdateRemoved (done);
+            }
+        }
+
         public virtual void ShowAllData () {
             ApplyFilter ();
             var scene = this.Scene;

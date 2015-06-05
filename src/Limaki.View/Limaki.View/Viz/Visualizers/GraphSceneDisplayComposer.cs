@@ -146,11 +146,12 @@ namespace Limaki.View.Viz.Visualizers {
                     Enabled = false
                 }, false));
 
-            display.ActionDispatcher.Add(
-                new GraphItemDeleteAction<TItem, TEdge> {
-                    SceneHandler = this.GraphScene,
-                    MoveResizeRenderer = display.MoveResizeRenderer,
-                });
+            //moved to GraphSceneFolding:
+            //display.ActionDispatcher.Add(
+            //    new GraphItemDeleteAction<TItem, TEdge> {
+            //        SceneHandler = this.GraphScene,
+            //        MoveResizeRenderer = display.MoveResizeRenderer,
+            //    });
 
             display.ActionDispatcher.Add(
                 new DelegatingMouseAction {
