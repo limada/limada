@@ -16,6 +16,7 @@
 using System.Collections.Generic;
 using Xwt;
 using Limaki.Drawing.Indexing;
+using System.Linq;
 
 namespace Limaki.View.Visuals {
 
@@ -88,6 +89,7 @@ namespace Limaki.View.Visuals {
                     }
                 }
         }
+
         public override IEnumerable<IVisual> Query() {
             foreach (var visual in Visuals) {
                 if (!(visual is IVisualEdge)) {
@@ -106,6 +108,11 @@ namespace Limaki.View.Visuals {
             Bounds = Rectangle.Zero;
             Visuals = null;
         }
+
+        protected override bool Contains (IVisual item) {
+            return Visuals.Contains (item);
+        }
+
         protected override void Add(Rectangle bounds, IVisual item) {}
 
         protected override void Remove(Rectangle bounds, IVisual item) { }

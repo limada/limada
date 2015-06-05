@@ -29,6 +29,8 @@ namespace Limaki.Drawing.Indexing {
             set { _bounds = value; }
         }
 
+        protected abstract bool Contains (TItem item);
+
         public virtual void Update (Rectangle invalid, TItem item) {
             if (HasBounds(item)) {
                 var bounds = BoundsOf(item);
@@ -38,6 +40,9 @@ namespace Limaki.Drawing.Indexing {
                     checkBoundsRemove (ref invalid);
                     checkBoundsAdd (ref bounds);
 
+                } else if (!Contains(item)){
+                    Add (bounds, item);
+                    checkBoundsAdd (ref bounds);
                 }
             } else {
                 Remove(invalid, item);

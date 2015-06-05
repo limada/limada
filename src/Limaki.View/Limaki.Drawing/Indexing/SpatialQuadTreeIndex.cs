@@ -19,6 +19,10 @@ namespace Limaki.Drawing.Indexing {
             set { _geoIndex = value; }
         }
 
+        protected override bool Contains (TItem item) {
+            return GeoIndex.Root.QuadItems.Keys.Contains (item);
+        }
+
         protected override void Add (Rectangle bounds, TItem item) {
             if (bounds != Rectangle.Zero)
                 GeoIndex.Add(bounds, item);
