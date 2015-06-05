@@ -40,6 +40,8 @@ namespace Limaki.View.WpfBackend {
             }
         }
 
+        #region IWebBrowser Member
+
         public void WaitFor (Func<bool> done) {
             //int i = 0;
             //while (!done () && i < 10) {
@@ -49,9 +51,14 @@ namespace Limaki.View.WpfBackend {
             WpfExtensions.DoEvents ();
         }
 
-        #region IWebBrowser Member
+        public void WaitLoaded () {
+            // blocks everything:
+            //BlockUntilNavigationFinishedDone = true;
+            //BlockUntilNavigationFinished ();
+        }
 
         public void MakeReady () {
+            BlockUntilNavigationFinishedDone = true;
             if (!IsHandleCreated)
                 WpfExtensions.DoEvents ();
             if (base.Document == null) {
@@ -75,6 +82,7 @@ namespace Limaki.View.WpfBackend {
                 if (value.StartsWith ("<html>"))
                     html = HtmlHelper.HtmUtf8Begin + value.Substring (6);
                 InternalLoadContent (html, "", "text/html");
+                BlockUntilNavigationFinishedDone = true;
                 BlockUntilNavigationFinished ();
             }
         }
@@ -220,6 +228,7 @@ namespace Limaki.View.WpfBackend {
         /// Cancels any pending navigation and also stops any sound or animation.
         /// </summary>
         public void Stop () {
+            BlockUntilNavigationFinishedDone = true;
             if (WebNav != null)
                 try {
                     WebNav.Stop ((int) nsIWebNavigationConsts.STOP_ALL);

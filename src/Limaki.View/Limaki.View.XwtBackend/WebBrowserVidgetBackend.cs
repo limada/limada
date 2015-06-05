@@ -27,6 +27,8 @@ namespace Limaki.View.XwtBackend {
 
         public void MakeReady () { Widget.MakeReady (); }
 
+        public void WaitLoaded () { Widget.WaitLoaded(); }
+
         public bool CanGoBack { get { return Widget.CanGoBack; } }
 
         public bool CanGoForward { get { return Widget.CanGoForward; } }

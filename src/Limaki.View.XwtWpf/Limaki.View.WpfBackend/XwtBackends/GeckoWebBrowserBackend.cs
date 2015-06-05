@@ -65,6 +65,8 @@ namespace Limaki.View.WpfBackend {
 
         public void WaitFor (System.Func<bool> done) { Browser.WaitFor (done); }
 
+        public void WaitLoaded () { Browser.WaitLoaded (); }
+
         public void MakeReady () { Browser.MakeReady (); }
         
         public bool CanGoBack { get { return Browser.CanGoBack; } }

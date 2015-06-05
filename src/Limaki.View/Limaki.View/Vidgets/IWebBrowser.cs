@@ -25,6 +25,7 @@ namespace Limaki.View.Vidgets {
         void Navigate (string urlString);
 
         void WaitFor (Func<bool> done);
+        void WaitLoaded ();
         void MakeReady ();
 
         void Clear ();

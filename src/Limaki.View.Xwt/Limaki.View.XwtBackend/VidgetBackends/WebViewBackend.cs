@@ -36,14 +36,18 @@ namespace Limaki.View.XwtBackend {
                 value.Position = 0;
                 var reader = new StreamReader (value);
                 string text = reader.ReadToEnd ();
+                _loading = true;
                 Widget.LoadHtml (text, "");
                 value.Position = 0;
             }
         }
 
         public string DocumentText { 
-			get { return "<html><body>Not Supported</body></html>"; } 
-			set { Widget.LoadHtml (value, ""); } 
+			get { return "<html><body>Not Supported</body></html>"; }
+            set {
+                _loading = true;
+                Widget.LoadHtml (value, "");
+            } 
 		}
 
         public string Url {
@@ -67,6 +71,12 @@ namespace Limaki.View.XwtBackend {
             //    i++;
             //}
             Application.MainLoop.DispatchPendingEvents ();
+        }
+
+        public void WaitLoaded () {
+            while (_loading) {
+                Application.MainLoop.DispatchPendingEvents ();
+            }
         }
 
         public void MakeReady () {
@@ -100,5 +110,6 @@ namespace Limaki.View.XwtBackend {
         public void Clear () {
             Widget.Url = "about:blank";
         }
+
     }
 }

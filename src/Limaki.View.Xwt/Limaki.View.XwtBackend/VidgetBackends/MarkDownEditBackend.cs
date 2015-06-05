@@ -26,9 +26,10 @@ namespace Limaki.View.XwtBackend {
             public void RaiseFocus (object sender, EventArgs e) { base.OnGotFocus (e); }
         }
 
-        public Vidgets.MarkdownEdit Frontend { get; protected set; }
+        public new Vidgets.MarkdownEdit Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             Frontend = (Vidgets.MarkdownEdit) frontend;
             IsEmpty = true;
             //Widget.KeyPressed += ToggleEditMode;
@@ -51,9 +52,9 @@ namespace Limaki.View.XwtBackend {
             var viewerBackend = vidget.Backend.ToXwt ();
             this.Widget.PackStart (viewerBackend, true);
             this.Widget.QueueForReallocate ();
-            var wb = viewerBackend.GetBackend () as IWebBrowser;
+            var wb = vidget.Backend as IWebBrowser;
             if (wb != null)
-                wb.MakeReady ();
+                wb.WaitLoaded ();
             viewerBackend.SetFocus ();
             IsEmpty = false;
         }

@@ -76,6 +76,10 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             }
         }
 
+        public void WaitLoaded () {
+            BlockUntilNavigationFinished ();
+        }
+
         public string DocumentText {
             get { return base.Document.TextContent; }
             set {

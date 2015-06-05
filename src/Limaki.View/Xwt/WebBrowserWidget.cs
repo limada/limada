@@ -21,6 +21,8 @@ namespace Xwt {
 
         public void WaitFor (System.Func<bool> done) { Backend.WaitFor (done); }
 
+        public void WaitLoaded () { Backend.WaitLoaded (); }
+
         public void MakeReady () { Backend.MakeReady (); }
 
         public bool CanGoBack { get { return Backend.CanGoBack; } }

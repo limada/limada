@@ -66,6 +66,21 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             Application.DoEvents();
         }
 
+        protected bool BlockUntilNavigationFinishedDone = false;
+        protected void BlockUntilNavigationFinishedEvent (object sender, EventArgs e) {
+            BlockUntilNavigationFinishedDone = true;
+        }
+
+        public void WaitLoaded () {
+            BlockUntilNavigationFinishedDone = false;
+            this.DocumentCompleted -= BlockUntilNavigationFinishedEvent;
+            this.DocumentCompleted += BlockUntilNavigationFinishedEvent;
+            while (!BlockUntilNavigationFinishedDone) {
+                Application.DoEvents ();
+                Application.RaiseIdle (new EventArgs ());
+            }
+        }
+
         protected bool DisposeDone { get; set; }
 
         protected override void Dispose (bool disposing) {
@@ -262,8 +277,6 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         void IVidgetBackend.SetFocus () { this.Focus (); }
 
         #endregion
-
-
         
     }
 }

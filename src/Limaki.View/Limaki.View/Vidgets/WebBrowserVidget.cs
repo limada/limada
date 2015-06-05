@@ -57,6 +57,8 @@ namespace Limaki.View.Vidgets {
 
         public void WaitFor (Func<bool> done) { Backend.WaitFor (done); }
 
+        public void WaitLoaded () { Backend.WaitLoaded (); }
+
         public bool CanGoBack { get { return Backend.CanGoBack; } }
 
         public bool CanGoForward { get { return Backend.CanGoForward; } }
