@@ -37,9 +37,18 @@ namespace Limaki.Playground.View {
 
     public class AlignerPrototyper : DomainTest {
 
+        Toolkit _savedToolkit = null;
         public override void Setup () {
             base.Setup ();
+            _savedToolkit = Toolkit.CurrentEngine;
             Toolkit.Engine<Html5Engine> ().SetActive ();
+            
+        }
+
+        public override void TearDown () {
+            base.TearDown ();
+            if (_savedToolkit != null)
+                _savedToolkit.SetActive ();
         }
 
         IGraphScene<IVisual, IVisualEdge> SceneWithTestData (int exampleNr) {
