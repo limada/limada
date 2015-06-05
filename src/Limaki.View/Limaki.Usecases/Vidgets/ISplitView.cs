@@ -23,7 +23,7 @@ namespace Limaki.Usecases.Vidgets {
 
         IGraphSceneDisplay<IVisual, IVisualEdge> CurrentDisplay { get; }
         IVidget ContentVidget { get; }
-        object CurrentWidget { get; }
+        IVidget CurrentVidget { get; }
 
         IGraphSceneDisplay<IVisual, IVisualEdge> Display1 { get; }
         IGraphSceneDisplay<IVisual, IVisualEdge> Display2 { get; }

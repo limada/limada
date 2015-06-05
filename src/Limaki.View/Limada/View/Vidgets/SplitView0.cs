@@ -115,7 +115,7 @@ namespace Limada.View.Vidgets {
             get { return _currentDisplay; }
             protected set {
                 //_currentDisplay = value;
-                CurrentWidget = value;
+                CurrentVidget = value;
             }
         }
 
@@ -124,16 +124,24 @@ namespace Limada.View.Vidgets {
         public object CurrentWidget {
             get { return _currentWidget; }
             protected set {
+
+            }
+        }
+
+        IVidget _currentVidget = null;
+        public IVidget CurrentVidget  {
+            get { return _currentVidget; }
+            protected set {
                 lock (locker) {
-                    bool isChange = _currentWidget != value;
+                    bool isChange = _currentVidget != value;
                     var display = value as IGraphSceneDisplay<IVisual, IVisualEdge>;
                     if (display != null || value == null) {
                         //isChange = _currentDisplay != value;
                         _currentDisplay = display;
                     }
-                    _currentWidget = value;
+                    _currentVidget = value;
                     if (isChange) {
-                        OnCurrentWidgetChanged(value);
+                        OnCurrentVidgetChanged(value);
                         OnViewChanged();
                     }
                 }
@@ -144,8 +152,8 @@ namespace Limada.View.Vidgets {
             CurrentDisplay = sender as IGraphSceneDisplay<IVisual, IVisualEdge>;
         }
 
-        public void WidgetGotFocus(object sender) {
-            CurrentWidget = sender;
+        public void VidgetGotFocus (IVidget sender) {
+            CurrentVidget = sender;
         }
 
         protected IExceptionHandler ExceptionHandler {
@@ -162,7 +170,7 @@ namespace Limada.View.Vidgets {
         }
 
         public void GraphGraphView() {
-            if (CurrentWidget != CurrentDisplay) {
+            if (CurrentVidget != CurrentDisplay) {
                 CurrentDisplay = AdjacentDisplay (CurrentDisplay);
             }
             if (Backend != null) {
@@ -196,11 +204,11 @@ namespace Limada.View.Vidgets {
                 ViewChanged(this,new EventArgs());
             }
         }
-        
-        public event Action<object> CurrentWidgetChanged = null;
-        public void OnCurrentWidgetChanged(object backend) {
-            if (CurrentWidgetChanged != null) {
-                CurrentWidgetChanged(backend);
+
+        public event Action<IVidget> CurrentVidgetChanged = null;
+        public void OnCurrentVidgetChanged (IVidget vidget) {
+            if (CurrentVidgetChanged != null) {
+                CurrentVidgetChanged (vidget);
             }
         }
 
@@ -343,7 +351,7 @@ namespace Limada.View.Vidgets {
         public ISheetManager SheetManager {get;set;}
 
         public void SaveDocument() {
-            if (CurrentWidget == CurrentDisplay) {
+            if (CurrentVidget == CurrentDisplay) {
                 var display = this.CurrentDisplay;
                 if (SheetManager.IsSaveable(display.Data)) {
                     var info = display.Info;
@@ -453,17 +461,17 @@ namespace Limada.View.Vidgets {
                 return false;
 
             var currentDisplay = this.CurrentDisplay;
-            var currentWidget = this.CurrentWidget;
-            if (currentWidget == currentDisplay && currentDisplay != null) {
+            var currentVidget = this.CurrentVidget;
+            if (currentVidget == currentDisplay && currentDisplay != null) {
                 if (forward)
                     return VisualsDisplayHistory.CanGoForward();
                 else
                     return VisualsDisplayHistory.CanGoBack();
-            } else if (currentWidget is IHistoryAware) {
+            } else if (currentVidget is IHistoryAware) {
                 if (forward)
-                    return ((IHistoryAware)currentWidget).CanGoForward;
+                    return ((IHistoryAware)currentVidget).CanGoForward;
                 else
-                    return ((IHistoryAware)currentWidget).CanGoBack;
+                    return ((IHistoryAware)currentVidget).CanGoBack;
             }
             return false;
         }
@@ -486,14 +494,14 @@ namespace Limada.View.Vidgets {
 
         public void GoBackOrForward(bool forward) {
             var currentDisplay = this.CurrentDisplay;
-            var currentWidget = this.CurrentWidget;
-            if (currentWidget == currentDisplay && currentDisplay != null) {
+            var currentVidget = this.CurrentVidget;
+            if (currentVidget == currentDisplay && currentDisplay != null) {
                 VisualsDisplayHistory.Navigate(currentDisplay, SheetManager, forward);
-            } else if (currentWidget is IHistoryAware) {
+            } else if (currentVidget is IHistoryAware) {
                 if (forward)
-                    ((IHistoryAware)currentWidget).GoForward();
+                    ((IHistoryAware)currentVidget).GoForward();
                 else
-                    ((IHistoryAware)currentWidget).GoBack();
+                    ((IHistoryAware)currentVidget).GoBack();
 
             }
             OnViewChanged();
@@ -625,7 +633,6 @@ namespace Limada.View.Vidgets {
 
             return true;
         }
-
 
     }
 }

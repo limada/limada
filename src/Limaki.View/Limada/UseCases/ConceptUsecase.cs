@@ -31,6 +31,7 @@ using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.View.GraphScene;
 using Limada.IO;
 using Xwt;
+using Limaki.View;
 
 namespace Limada.UseCases {
 
@@ -176,7 +177,7 @@ namespace Limada.UseCases {
         public LayoutToolStrip0 LayoutToolStrip0 { get; set; }
         public MarkerToolStrip MarkerToolStrip { get; set; }
 
-        public Func<object> GetCurrentControl { get; set; }
+        public Func<IVidget> GetCurrentVidget { get; set; }
 
         public event EventHandler<EventArgs<IStyle>> DisplayStyleChanged = null;
         public void OnDisplayStyleChanged (object sender, EventArgs<IStyle> arg) {

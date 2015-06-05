@@ -71,7 +71,7 @@ namespace Limada.UseCases {
             
             var splitView = useCase.SplitView;
             useCase.GetCurrentDisplay = () => splitView.CurrentDisplay;
-            useCase.GetCurrentControl = () => splitView.CurrentWidget;
+            useCase.GetCurrentVidget = () => splitView.CurrentVidget;
 
             useCase.SheetManager.SheetRegistered = sceneInfo => {
                 useCase.VisualsDisplayHistory.Store(sceneInfo);
@@ -88,12 +88,12 @@ namespace Limada.UseCases {
             useCase.SplitViewToolStrip.SheetManager = useCase.SheetManager;
 
             useCase.DisplayModeToolStrip.SplitView = splitView;
-            splitView.CurrentWidgetChanged += c => useCase.DisplayModeToolStrip.Attach(c);
-            splitView.CurrentWidgetChanged += c => useCase.LayoutToolStrip0.Attach(c);
-            splitView.CurrentWidgetChanged += c => useCase.MarkerToolStrip.Attach(c);
-            splitView.CurrentWidgetChanged += c => useCase.SplitViewToolStrip.Attach(c);
-            splitView.CurrentWidgetChanged += c => useCase.ArrangerToolStrip.Attach(c);
-            
+            splitView.CurrentVidgetChanged += c => useCase.DisplayModeToolStrip.Attach (c);
+            splitView.CurrentVidgetChanged += c => useCase.LayoutToolStrip0.Attach (c);
+            splitView.CurrentVidgetChanged += c => useCase.MarkerToolStrip.Attach (c);
+            splitView.CurrentVidgetChanged += c => useCase.SplitViewToolStrip.Attach (c);
+            splitView.CurrentVidgetChanged += c => useCase.ArrangerToolStrip.Attach (c);
+
             useCase.DisplayStyleChanged += splitView.DoDisplayStyleChanged;
 
             splitView.Check();
