@@ -6,12 +6,13 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2011 Lytico
+ * Copyright (C) 2006-2015 Lytico
  *
  * http://www.limada.org
  * 
  */
 
+using System.Threading;
 using Db4objects.Db4o;
 using Db4objects.Db4o.Config;
 using Db4objects.Db4o.Ext;
@@ -20,11 +21,13 @@ using Db4objects.Db4o.Query;
 using Limaki.Common.Collections;
 using Limaki.Common.Reflections;
 using Limaki.Graphs;
+using Limaki.Common.Linqish;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Db4objects.Db4o.Events;
+using System.Threading.Tasks;
 
 namespace Limaki.Data.db4o {
 
@@ -175,30 +178,90 @@ namespace Limaki.Data.db4o {
                 return;
 
             var clientContainer = e.ObjectContainer ();
-            Action<IObjectInfoCollection, GraphEventType> handleCommit = (col, eventType) => {
-                foreach (var objectInfo in col.OfType<IObjectInfo>()) {
+            var items = new List<Tuple<TItem,GraphEventType>> ();
+            var edges = new List<Tuple<TEdge, GraphEventType>> ();
+
+            Action<IObjectInfoCollection, GraphEventType> selectCommit = (col, eventType) => {
+                foreach (var objectInfo in col.OfType<IObjectInfo> ()) {
                     var obj = objectInfo.GetObject ();
+
                     if (eventType == GraphEventType.Remove) {
                         obj = Session.Ext ().GetByID (objectInfo.GetInternalID ());
+                    } else if (eventType == GraphEventType.Update || eventType == GraphEventType.Add) {
+                        clientContainer.Ext ().Refresh (obj, 1);
                     }
-                    if (obj is TItem) {
-                        var item = (TItem) obj;
-                        if (eventType == GraphEventType.Update) {
-                            // we get null after that: Session.Ext ().Purge (obj);
-                            // obj = clientContainer.Ext ().GetByID (objectInfo.GetInternalID ());
-                            clientContainer.Ext ().Refresh (obj, 1);
-                        }
-                        OnGraphChange (item, eventType);
-                        if (eventType == GraphEventType.Remove) {
-                            Remove (item);
-                        }
+
+                    if (obj is TEdge) {
+                        edges.Add (Tuple.Create((TEdge)obj,eventType));
+                    } else if (obj is TItem) {
+                        items.Add (Tuple.Create ((TItem)obj, eventType));
                     }
                 }
-            };
-            handleCommit (e.Updated, GraphEventType.Update);
-            handleCommit (e.Deleted, GraphEventType.Remove);
-            handleCommit (e.Added, GraphEventType.Add);
 
+            };
+
+            selectCommit (e.Updated, GraphEventType.Update);
+            selectCommit (e.Deleted, GraphEventType.Remove);
+            selectCommit (e.Added, GraphEventType.Add);
+
+            if (items.Count == 0 && edges.Count == 0)
+                return;
+
+            Action<Tuple<TEdge, GraphEventType>> forEdge = tuple => {
+                var edge = tuple.Item1;
+                var eventType = tuple.Item2;
+                var item = (TItem)(object)edge;
+                if (eventType == GraphEventType.Update || eventType == GraphEventType.Add) {
+                    Add (edge);
+                }
+                try {
+                    this.OnGraphChange (item, eventType);
+                } catch (Exception ex) {
+                    Trace.TraceError (ex.Message);
+                }
+                if (eventType == GraphEventType.Remove)
+                    Remove (edge);
+            };
+
+            Action<Tuple<TItem, GraphEventType>> forItem = tuple => {
+                var item = tuple.Item1;
+                var eventType = tuple.Item2;
+                if (eventType == GraphEventType.Update || eventType == GraphEventType.Add) {
+                    Add (item);
+                }
+                try {
+                    this.OnGraphChange (item, eventType);
+
+                } catch (Exception ex) {
+                    Trace.TraceError (ex.Message);
+                }
+            };
+           
+            clientContainer.Commit ();
+
+            var tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
+
+            Action afterCommit = () => {
+                token.WaitHandle.WaitOne (500);
+                token.ThrowIfCancellationRequested ();
+
+                items.Where (t => t.Item2 == GraphEventType.Update || t.Item2 == GraphEventType.Add)
+                    .ForEach (forItem);
+                edges.Where (t => t.Item2 == GraphEventType.Update || t.Item2 == GraphEventType.Add)
+                    .ForEach (forEdge);
+
+                var removeEdges = edges.Where (t => t.Item2 == GraphEventType.Remove);
+                var removeItems = items.Where (t => t.Item2 == GraphEventType.Remove);
+
+                removeEdges.ForEach (forEdge);
+                removeItems.ForEach (forItem);
+                removeEdges.Select (t => t.Item1).ForEach (edge => Remove (edge));
+                removeItems.Select (t => t.Item1).ForEach (item => Remove (item));
+            };
+            
+            var thread = Task.Factory.StartNew (afterCommit);
+            //tokenSource.Cancel ();
         }
 
         #endregion
