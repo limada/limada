@@ -26,6 +26,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Xwt.GdiBackend;
 using DialogResult = Limaki.View.Vidgets.DialogResult;
+using System.Collections.Generic;
 
 namespace Limada.View.SwfBackend {
 
@@ -75,35 +76,34 @@ namespace Limada.View.SwfBackend {
 
 
         public void InitializeDisplay (IVidgetBackend displayBackend) {
-            var backend = displayBackend as Control;
-            backend.Enter -= DisplayGotFocus;
-            backend.MouseUp -= DisplayGotFocus;
-            backend.Enter += DisplayGotFocus;
-            backend.MouseUp += DisplayGotFocus;
         }
 
-        void DisplayGotFocus(object sender, EventArgs e) {
-            var backend = sender as VisualsDisplayBackend;
-            if (backend != null) {
-                Frontend.DisplayGotFocus (backend.Display);
-            }
-        }
+
+        protected Dictionary<Control, IVidget> _vidgets = new Dictionary<Control, IVidget> ();
 
         void ControlGotFocus(object sender, EventArgs e) {
             Trace.WriteLine(string.Format("{0} {1}", sender.GetType().Name,sender.GetHashCode()));
+            var control = sender as Control;
             var displayBackend = sender as VisualsDisplayBackend;
             if (displayBackend != null) {
                 Frontend.DisplayGotFocus(displayBackend.Display);
-            } else {
-                Frontend.WidgetGotFocus(sender);
+            } else if(control!=null) {
+                IVidget vidget = null;
+                if (_vidgets.TryGetValue (control, out vidget)) {
+                    Frontend.VidgetGotFocus (vidget);
+                }
             }
         }
 
         public void SetFocusCatcher (IVidgetBackend backend) {
             var control = backend.ToSwf ();
             if (control != null) {
-                control.Enter += ControlGotFocus;
-                control.MouseUp += ControlGotFocus;
+                _vidgets[control] = backend.Frontend;
+                control.Enter -= ControlGotFocus;
+                control.MouseUp -= ControlGotFocus;
+                control.GotFocus -= ControlGotFocus;
+                //control.Enter += ControlGotFocus;
+                //control.MouseUp += ControlGotFocus;
                 control.GotFocus += ControlGotFocus;
             }
         }
@@ -114,6 +114,7 @@ namespace Limada.View.SwfBackend {
                 control.Enter -= ControlGotFocus;
                 control.MouseUp -= ControlGotFocus;
                 control.GotFocus -= ControlGotFocus;
+                _vidgets.Remove (control);
             }
         }
 

@@ -21,6 +21,7 @@ using Limaki.Usecases.Vidgets;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz;
 using Xwt;
+using System.Collections.Generic;
 
 namespace Limaki.View.XwtBackend {
 
@@ -60,20 +61,37 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
+        object FocusDone = null;
         protected void WidgetGotFocus (object sender, EventArgs e) {
-            Trace.WriteLine(string.Format("{0} {1}", sender.GetType().Name, sender.GetHashCode()));
-            var displayBackend = (sender as IVidgetBackend).ToXwt().PeeledScrollView () as VisualsDisplayBackend;
+            if (FocusDone == sender)
+                return;
+            FocusDone = sender;
+            Trace.WriteLine (string.Format ("{0} {1}", sender.GetType ().Name, sender.GetHashCode ()));
+            var widget = sender as Widget;
+            var displayBackend = (sender as IVidgetBackend).ToXwt ().PeeledScrollView () as VisualsDisplayBackend;
             if (displayBackend != null) {
-                Frontend.DisplayGotFocus(displayBackend.Display);
-            } else {
-                Frontend.WidgetGotFocus(sender);
+                Frontend.DisplayGotFocus (displayBackend.Display);
+            } else if (widget != null) {
+                IVidget vidget = null;
+                if (_vidgets.TryGetValue (widget, out vidget)) {
+                    if (vidget != null)
+                        Frontend.VidgetGotFocus (vidget);
+                    else
+                        Trace.WriteLine ("\tSplitviewBackend error: frontend is null!");
+                } else {
+                    Trace.WriteLine ("\tSplitviewBackend error: frontend not registered!");
+                }
             }
         }
 
+        protected Dictionary<Widget, IVidget> _vidgets = new Dictionary<Widget, IVidget> ();
         public void SetFocusCatcher (IVidgetBackend backend) {
             var widget = (backend.ToXwt()).PeeledScrollView();
             if (widget != null) {
+                _vidgets[widget] = backend.Frontend;
                 //widget.MouseEntered += WidgetGotFocus;
+                widget.ButtonPressed -= WidgetGotFocus;
+                widget.GotFocus -= WidgetGotFocus;
                 widget.ButtonPressed += WidgetGotFocus;
                 widget.GotFocus += WidgetGotFocus;
             }
@@ -83,8 +101,9 @@ namespace Limaki.View.XwtBackend {
             var widget = (backend.ToXwt()).PeeledScrollView();
             if (widget != null) {
                 //widget.MouseEntered -= WidgetGotFocus;
-                widget.ButtonReleased -= WidgetGotFocus;
+                widget.ButtonPressed -= WidgetGotFocus;
                 widget.GotFocus -= WidgetGotFocus;
+                _vidgets.Remove (widget);
             }
         }
 
