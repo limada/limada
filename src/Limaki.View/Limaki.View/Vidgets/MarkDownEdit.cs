@@ -139,11 +139,12 @@ namespace Limaki.View.Vidgets {
         public bool InEdit {
             get { return _inEdit; }
             set {
-                if (value && !_inEdit)
+                if (value == _inEdit)
+                    return; 
+                if (value)
                     StartEdit ();
-                else if(_inEdit)
+                else
                     EndEdit ();
-                _inEdit = value;
             }
         }
 
