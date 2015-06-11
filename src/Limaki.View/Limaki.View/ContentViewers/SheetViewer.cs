@@ -109,7 +109,8 @@ namespace Limaki.View.ContentViewers {
             SheetDisplay.Data.CreateMarkers();
 
             if (isStreamOwner) {
-                content.Data.Close();
+                if (content.Data != null)
+                    content.Data.Close ();
                 content.Data = null;
             }
 
