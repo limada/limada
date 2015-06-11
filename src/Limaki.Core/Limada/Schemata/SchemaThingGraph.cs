@@ -12,8 +12,6 @@
  * 
  */
 
-#define ShowHiddensNo
-
 using System.Collections.Generic;
 using Limada.Model;
 using Limaki.Common.Collections;
@@ -28,18 +26,16 @@ using Limaki.Common;
 namespace Limada.Schemata {
 
     public class SchemaThingGraph:FilteredGraph<IThing,ILink>,IThingGraph {
+
         public SchemaThingGraph(IThingGraph source):base(source) {
             this.EdgeFilter = SchemaEdgeFilter;
             this.ItemFilter = SchemaItemFilter;
+            ViewMetaSchemaHideEnabled = true;
             Initialize ();
         }
 
-        static bool useHiddens = 
-#if ShowHiddens
-            false;
-#else
-        true;
-#endif
+        bool ViewMetaSchemaHideEnabled { get; set; }
+
         public void Initialize() {
             
             SchemaFacade.InitSchemata ();
@@ -50,7 +46,6 @@ namespace Limada.Schemata {
             descriptions.Add(CommonSchema.DescriptionMarker.Id);
             hiddens.Add (CommonSchema.DescriptionMarker.Id);
             
-
             IThingGraph markerGraph = new ThingGraph ();
             var markers = Markers ();
             GraphExtensions.MergeInto(Schema.IdentityGraph, markerGraph);
@@ -65,7 +60,7 @@ namespace Limada.Schemata {
                     
                     var idLink = (ILink<Id>)link;
 
-                    if (useHiddens && 
+                    if (ViewMetaSchemaHideEnabled && 
                         idLink.Marker == ViewMetaSchema.Hide.Id &&
                         idLink.Leaf == markerId) {
                         hiddens.Add(markerId);    
@@ -250,16 +245,8 @@ namespace Limada.Schemata {
 
         }
 
-        public override void DoChangeData(IThing item, object data) {
-            var itemToChange = ThingToDisplay(item);
-            base.DoChangeData(itemToChange, data);
-        }
-
-        public override void SourceGraphChanged (object sender, GraphChangeArgs<IThing, ILink> args) {
-            var ttd = ThingToDisplay (args.Item);
-            base.SourceGraphChanged (sender, new GraphChangeArgs<IThing, ILink> (args.Graph, ttd, args.EventType));
-        }
-
+        // ThingToDisplay of DoChangeData and SourceGraphChanged has to be done with GraphItemTransformer.UpdateSinkItem
+        
         #region IThingGraph Member
 
         public IThingGraph ThingGraph {

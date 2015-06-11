@@ -263,8 +263,8 @@ namespace Limaki.View.Visuals {
         private Point _noHit = NoPoint;
 
 		public Point NoHit {get{return _noHit;}}
-		
-		protected IVisual TestHit(Point p, int hitSize, HitTest hitTest) {
+
+        protected IVisual TestHit (Point p, int hitSize, Func<IVisual, Point, int, bool> hitTest) {
             if (p==_noHit) {
                 return null;
             }
@@ -290,19 +290,17 @@ namespace Limaki.View.Visuals {
         }
 
         public IVisual Hit(Point p, int hitSize) {
-            HitTest hitTest = delegate(IVisual w, Point ap, int ahitSize) {
+            return TestHit (p, hitSize,  (w,ap, ahitSize) => {
                 if (w.Shape == null) return false;
-                return w.Shape.IsHit(ap, ahitSize);
-            };
-            return TestHit(p, hitSize, hitTest);
+                return w.Shape.IsHit (ap, ahitSize);
+            });
         }
 
         public IVisual HitBorder(Point p, int hitSize) {
-            HitTest hitTest = delegate(IVisual w, Point ap, int ahitSize) {
+            return TestHit(p, hitSize,  (w, ap, ahitSize) => {
                 if (w.Shape == null) return false;
                 return w.Shape.IsBorderHit(ap, ahitSize);
-            };
-            return TestHit(p, hitSize, hitTest);
+            });
         }
 
         public virtual IShape ItemShape(IVisual item) {
@@ -359,5 +357,4 @@ namespace Limaki.View.Visuals {
         #endregion
     }
     
-    public delegate bool HitTest(IVisual w, Point p, int hitSize);
 }

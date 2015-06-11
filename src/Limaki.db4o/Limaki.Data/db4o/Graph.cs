@@ -312,10 +312,12 @@ namespace Limaki.Data.db4o {
                 throw e;
             }
         }
+
         public override void Close() {
             Flush();
             this._gateway.Close();
         }
+
         #endregion 
 
         #region Configuration

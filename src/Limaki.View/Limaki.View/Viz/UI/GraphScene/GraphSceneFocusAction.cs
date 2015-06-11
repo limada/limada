@@ -63,8 +63,8 @@ namespace Limaki.View.Viz.UI.GraphScene {
         }
 
         TItem HitTest(Point p) {
-            TItem result = default(TItem);
-            Point sp = Camera.ToSource(p);
+            var result = default(TItem);
+            var sp = Camera.ToSource(p);
 
             result = Scene.Hit(sp, HitSize);
 

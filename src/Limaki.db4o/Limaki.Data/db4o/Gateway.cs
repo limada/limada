@@ -31,6 +31,7 @@ namespace Limaki.Data.db4o {
         # region session
         private ICommonConfigurationProvider _configuration = null;
         private ICommonConfigurationProvider _serverConfiguration = null;
+
         public ICommonConfiguration Configuration {
             get {
                 if (_configuration == null) {

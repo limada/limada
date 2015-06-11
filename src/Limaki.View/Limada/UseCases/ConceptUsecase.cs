@@ -12,26 +12,24 @@
  * 
  */
 
-using System;
-using System.Linq;
+using Limada.IO;
 using Limada.UseCases.Contents;
-using Limada.Usecases;
 using Limada.View.Vidgets;
 using Limada.View.VisualThings;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Graphs;
 using Limaki.Usecases;
+using Limaki.View;
+using Limaki.View.GraphScene;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Modelling;
-using Limaki.View.Viz.Visualizers;
 using Limaki.View.Viz.Visualizers.ToolStrips;
-using Limaki.View.GraphScene;
-using Limada.IO;
+using System;
+using System.Linq;
 using Xwt;
-using Limaki.View;
 
 namespace Limada.UseCases {
 
