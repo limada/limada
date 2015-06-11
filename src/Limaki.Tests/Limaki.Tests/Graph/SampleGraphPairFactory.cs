@@ -60,34 +60,36 @@ namespace Limaki.Tests.Graph.Model {
             get { return _mapper; }
         }
 
-        private IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> _graphPair = null;
-        public IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> GraphPair {
-            get { return _graphPair; }
-            set {
-                _graphPair = value;
-                //_graph = value;
-            }
+        public virtual IGraph<TSourceItem, TSourceEdge>  CreateSourceGraph() {
+            if (Mapper.Source != null)
+                return Mapper.Source;
+            return new Graph<TSourceItem, TSourceEdge> ();
         }
 
+        public virtual GraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> CreateGraphPair () {
+            return new GraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> (
+                Mapper.Sink, Mapper.Source, Mapper.Transformer);
+        }
+
+        public virtual IGraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> GraphPair { get; set; }
+
+        public virtual ISinkGraph<TSinkItem, TSinkEdge> GraphPairAsSink { get { return GraphPair; }}
 
         public override void Populate(IGraph<TSinkItem, TSinkEdge> graph) {
+
             Factory.Count = this.Count;
             Factory.AddDensity = this.AddDensity;
             Factory.SeperateLattice = this.SeperateLattice;
 
             Mapper.Sink = graph;
+            Mapper.Source = CreateSourceGraph ();
 
-            var sourceGraph = Mapper.Source ?? new Graph<TSourceItem, TSourceEdge> ();
-           
-            Factory.Graph = sourceGraph;
+            Factory.Graph = Mapper.Source;
             Factory.Populate();
 
-            this.GraphPair = new GraphPair<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>(
-                        graph, sourceGraph, 
-                        Mapper.Transformer
-                        );
-
+            this.GraphPair = CreateGraphPair ();
             this.GraphPair.Mapper = this.Mapper;
+
             this.Mapper.ConvertSourceSink();
 
             foreach (var sink in Mapper.Sink2Source.Keys)
