@@ -201,34 +201,44 @@ namespace Limaki.Data.db4o {
 
             };
 
-            selectCommit (e.Updated, GraphEventType.Update);
             selectCommit (e.Deleted, GraphEventType.Remove);
+            selectCommit (e.Updated, GraphEventType.Update);
             selectCommit (e.Added, GraphEventType.Add);
 
             if (items.Count == 0 && edges.Count == 0)
                 return;
+
+            // commit makes a roundup back to sender, dont do it
+            //if (!Gateway.Iori.AccessMode.HasFlag (IoMode.Server))
+            //    clientContainer.Commit ();
 
             Action<Tuple<TEdge, GraphEventType>> forEdge = tuple => {
                 var edge = tuple.Item1;
                 var eventType = tuple.Item2;
                 var item = (TItem)(object)edge;
                 if (eventType == GraphEventType.Update || eventType == GraphEventType.Add) {
-                    Add (edge);
+                    // this is done by commit:
+                    // Add (edge);
                 }
                 try {
                     this.OnGraphChange (item, eventType);
                 } catch (Exception ex) {
                     Trace.TraceError (ex.Message);
                 }
-                if (eventType == GraphEventType.Remove)
-                    Remove (edge);
+                if (eventType == GraphEventType.Remove) {
+                    // this is done by commit:
+                    //Remove (edge);
+                    RemoveCached (edge);
+                }
             };
 
             Action<Tuple<TItem, GraphEventType>> forItem = tuple => {
                 var item = tuple.Item1;
                 var eventType = tuple.Item2;
                 if (eventType == GraphEventType.Update || eventType == GraphEventType.Add) {
-                    Add (item);
+                    // Session.Ext ().Refresh (item, 1);
+                    // this is done by commit:
+                    //Add (item);
                 }
                 try {
                     this.OnGraphChange (item, eventType);
@@ -236,10 +246,15 @@ namespace Limaki.Data.db4o {
                 } catch (Exception ex) {
                     Trace.TraceError (ex.Message);
                 }
+
+                if (eventType == GraphEventType.Remove) {
+                    // this is done by commit:
+                    // Remove (item);
+                    SetCached (item, null);
+                }
+
             };
            
-            clientContainer.Commit ();
-
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
 
@@ -257,8 +272,14 @@ namespace Limaki.Data.db4o {
 
                 removeEdges.ForEach (forEdge);
                 removeItems.ForEach (forItem);
-                removeEdges.Select (t => t.Item1).ForEach (edge => Remove (edge));
-                removeItems.Select (t => t.Item1).ForEach (item => Remove (item));
+
+
+                // commit makes a roundtrip back to sender, so use it only on server
+                // annoyance: it triggers back the changes to the client
+                // bug: if changes are made on the server/client, client changes are lost
+                // so currently only changing in client-only-mode is supported!!!
+                if (Gateway.Iori.AccessMode.HasFlag (IoMode.Server))
+                    Flush ();
             };
             
             var thread = Task.Factory.StartNew (afterCommit);
