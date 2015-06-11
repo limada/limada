@@ -35,17 +35,10 @@ namespace Limaki.Data.db4o {
         public ICommonConfiguration Configuration {
             get {
                 if (_configuration == null) {
-                    var accessMode = IoMode.None;
-                    if (Iori != null)
-                        accessMode = Iori.AccessMode;
-                    if (accessMode.HasFlag(IoMode.Server)) {
+                    if (AccessMode.HasFlag(IoMode.Server)) {
                         _serverConfiguration = Db4oClientServer.NewServerConfiguration ();
-                        var server = _serverConfiguration as IServerConfiguration;
-                        if (server != null) {
-                            this.Server = OpenServer (server);
-                        }
                         _configuration = Db4oClientServer.NewClientConfiguration ();
-                    } else if (accessMode.HasFlag(IoMode.Client)) {
+                    } else if (AccessMode.HasFlag(IoMode.Client)) {
                         _configuration = Db4oClientServer.NewClientConfiguration();
                     } else {
                         _configuration = Db4oEmbedded.NewConfiguration();
@@ -57,7 +50,37 @@ namespace Limaki.Data.db4o {
             }
         }
 
-        IObjectServer Server { get; set; }
+        public IoMode AccessMode { get { return Iori != null ? Iori.AccessMode : IoMode.None; } }
+
+        IObjectServer _server = null;
+        protected IObjectServer Server {
+            get {
+                if (_server == null) {
+                    var configuration = _serverConfiguration as IServerConfiguration;
+                    if (configuration != null) {
+                        _server = OpenServer (configuration);
+                    }
+                }
+                return _server;
+            }
+        }
+
+        public virtual IObjectContainer ServerSession {
+            get {
+                if (Server != null)
+                    return Server.Ext ().ObjectContainer ();
+                return null;
+            }
+        }
+
+        public ICommonConfiguration ServerConfiguration {
+            get {
+                if (_serverConfiguration != null)
+                    return _serverConfiguration.Common;
+                return null;
+            }
+        }
+
         IObjectContainer _session = null;
 
         public virtual IObjectContainer Session {
@@ -69,14 +92,16 @@ namespace Limaki.Data.db4o {
                             if (emb != null)
                                 _session = CreateEmbeddedSession(emb);
 
+                            
+                            if (AccessMode.HasFlag (IoMode.Server)) {
+                                 // don't do this, its not triggering then:
+                                 // _session = CreateClientSession (this.Server);
+                                if (Server == null)
+                                    OpenServer (_serverConfiguration as IServerConfiguration);
+                            } 
                             var client = _configuration as IClientConfiguration;
-                            if (client != null)
-                                _session = CreateClientSession(client);
-
-                            var server = _configuration as IServerConfiguration;
-                            if (server != null) {
-                                this.Server = OpenServer(server);
-                                _session = CreateClientSession(this.Server);
+                            if (client != null) {
+                                _session = CreateClientSession (client);
                             }
 
                             if (_session == null)
@@ -140,6 +165,9 @@ namespace Limaki.Data.db4o {
         }
       
         public virtual IObjectServer OpenServer (IServerConfiguration config) {
+            if (config == null)
+                return null;
+
             // remark: if port == 0, then server runs in embedded mode
             var file = Iori.ToFileName (this.Iori);
             var serverCer = "limada.limo.cer";
@@ -153,6 +181,7 @@ namespace Limaki.Data.db4o {
             try {
                 Trace.WriteLine (string.Format ("db4o server {0} running at: {1}", file, server.Ext ().Port ()));
                 server.GrantAccess(this.Iori.User, this.Iori.Password);
+                _server = server;
                 return server;
             } catch {
                 server.Close();
@@ -191,8 +220,8 @@ namespace Limaki.Data.db4o {
                             Server.Close();
                         } catch { throw;
                         } finally { 
-                            Server = null;
                             _serverConfiguration = null;
+                            _server = null;
                         }
                     }
                 }

@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using Db4objects.Db4o.Events;
 using System.Threading.Tasks;
+using Limaki.Contents.IO;
 
 namespace Limaki.Data.db4o {
 
@@ -290,7 +291,11 @@ namespace Limaki.Data.db4o {
 
             DeclareTypesToConfigure();
             //Refactor();
-            Configure();
+           
+            Configure(_gateway.Configuration);
+            if(_gateway.ServerConfiguration!=null)
+                Configure (_gateway.ServerConfiguration);
+
             ConfigureSession (_gateway.Session);
 
             this._gateway.Committed += ClientCommit;
@@ -304,6 +309,9 @@ namespace Limaki.Data.db4o {
             try {
                 if (Session != null) {
                     Session.Commit ();
+                }
+                if (_gateway.ServerSession != null) {
+                    _gateway.ServerSession.Commit ();
                 }
             } catch (Db4objects.Db4o.Ext.Db4oException e) {
                 // TODO: a curios exception is thrown here:
@@ -335,8 +343,8 @@ namespace Limaki.Data.db4o {
         /// this means setting the indices, UpdateDepth etc. etc.
         /// </summary>
         /// <param name="type"></param>
-        protected virtual void ConfigureType(Type type) {
-            var clazz = Configuration.ObjectClass(type);
+        protected virtual void ConfigureType (ICommonConfiguration configuration, Type type) {
+            var clazz = configuration.ObjectClass(type);
             clazz.CascadeOnUpdate(true);
             clazz.CascadeOnActivate(true);
             clazz.CascadeOnDelete(false);
@@ -347,15 +355,14 @@ namespace Limaki.Data.db4o {
             }
         }
 
-        protected virtual bool RefactorType(Type type) {
+        protected virtual bool RefactorType (ICommonConfiguration configuration, Type type) {
             return false;
         }
 
-        public ICommonConfiguration Configuration {
-            get { return _gateway.Configuration; }
-        }
-
-
+        //public ICommonConfiguration configuration {
+        //    get { return _gateway.Configuration; }
+        //}
+        
         private IList<Type> _typesToConfigure = new List<Type>();
         /// <summary>
         /// a list of known types
@@ -383,14 +390,14 @@ namespace Limaki.Data.db4o {
         /// calls ConfigureAliases
         /// this is called before opening the database; no valid session here
         /// </summary>
-        protected void Configure() {
-            ConfigureAliases ();
+        protected void Configure (ICommonConfiguration configuration) {
+            ConfigureAliases (configuration);
             var typesDone = new Set<Type>();
             
             foreach (Type type in TypesToConfigure) {
                 try {
                     if (!typesDone.Contains(type) && IsClassConfigurable(type)) {
-                        ConfigureType(type);
+                        ConfigureType (configuration, type);
                     }
                 } catch (Exception e) {
                     Trace.WriteLine("Error with " + type.FullName + "\t" + e.Message);
@@ -422,23 +429,23 @@ namespace Limaki.Data.db4o {
         /// <param name="session"></param>
         protected virtual void ConfigureSession(IObjectContainer session) { }
 
-        protected virtual void ConfigureAlias(Type type) {
+        protected virtual void ConfigureAlias (ICommonConfiguration configuration, Type type) {
             string ass = type.Assembly.FullName;
             ass = ass.Substring(0, ass.IndexOf(","));
             string namespc = type.Namespace;
-            Configuration.AddAlias(
+            configuration.AddAlias(
               new WildcardAlias(
               namespc + ".*, "+namespc+".007",
               namespc + ".*, " + ass));
         }
 
-        protected virtual void ConfigureAliases() {
-            Set<string> assembliesDone = new Set<string> ();
-            Set<string> namespacesDone = new Set<string> ();
-            foreach (Type type in TypesToConfigure) {
+        protected virtual void ConfigureAliases(ICommonConfiguration configuration) {
+            var assembliesDone = new Set<string> ();
+            var namespacesDone = new Set<string> ();
+            foreach (var type in TypesToConfigure) {
                 if (!namespacesDone.Contains(type.Namespace) || !
                     assembliesDone.Contains(type.Assembly.FullName)) {
-                    ConfigureAlias (type);
+                    ConfigureAlias (configuration, type);
                     namespacesDone.Add (type.Namespace);
                     assembliesDone.Add (type.Assembly.FullName);
                 }

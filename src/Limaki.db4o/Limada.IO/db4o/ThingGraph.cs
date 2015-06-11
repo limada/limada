@@ -30,6 +30,7 @@ using System.Linq;
 using System.Reflection;
 using Id = System.Int64;
 using Limaki.Graphs;
+using Db4objects.Db4o.Config;
 
 namespace Limada.IO.db4o {
 
@@ -70,9 +71,9 @@ namespace Limada.IO.db4o {
             return result || Reflector.Implements(type,typeof(IIdContent<Id>));
         }
 
-        protected override bool RefactorType(Type type) {
+        protected override bool RefactorType (ICommonConfiguration configuration, Type type) {
             var result = false;
-            var clazz = Configuration.ObjectClass(type);
+            var clazz = configuration.ObjectClass(type);
             if (Reflector.Implements(type, typeof(IThing))) {
                 var writeDate = clazz.ObjectField("_writeDate");
                 var changeDate = clazz.ObjectField("_changeDate");
@@ -84,9 +85,9 @@ namespace Limada.IO.db4o {
             return result;
         }
 
-        protected override void ConfigureType(Type type) {
+        protected override void ConfigureType (ICommonConfiguration configuration, Type type) {
             
-            var clazz = Configuration.ObjectClass(type);
+            var clazz = configuration.ObjectClass(type);
             clazz.MaximumActivationDepth(15);
             clazz.UpdateDepth(1);
             
