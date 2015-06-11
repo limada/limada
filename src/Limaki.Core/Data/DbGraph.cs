@@ -134,20 +134,28 @@ namespace Limaki.Data {
 
         public override void RevertEdge(TEdge edge) {
             base.RevertEdgeInternal(edge);
-            SetCached(edge.Leaf, null);
-            SetCached(edge.Root, null);
+            RemoveCached (edge);
             Upsert(edge);
         }
 
         protected override bool RemoveEdge(TEdge edge, TItem item) {
-            SetCached(edge.Leaf, null);
-            SetCached(edge.Root, null);
+            if (edge is TItem) {
+                return RemoveCached ((TItem)(object)edge);
+            }
+            return RemoveCached (edge);
+        }
+
+        protected virtual bool RemoveCached(TEdge edge) {
+            SetCached (edge.Leaf, null);
+            SetCached (edge.Root, null);
             return true;
         }
 
-        protected virtual bool RemoveInternal(TEdge edge) {
-            RemoveEdge(edge, edge.Root);
-            RemoveEdge(edge, edge.Leaf);
+        protected virtual bool RemoveCached (TItem item) {
+            if (item is TEdge) {
+                RemoveCached ((TEdge) (object) item);
+            }
+            SetCached (item, null);
             return true;
         }
 
@@ -179,7 +187,7 @@ namespace Limaki.Data {
                         Delete(edge);
                         result = true;
                     }
-                    RemoveInternal(edge);
+                    RemoveCached(edge);
                 }
             } catch (Exception e) {
                 throw e;
@@ -192,7 +200,7 @@ namespace Limaki.Data {
                 return false;
             bool result = false;
             if (EdgeIsItem && item is TEdge) {
-                RemoveInternal((TEdge)(object)item);
+                RemoveCached((TEdge)(object)item);
             }
             try {
                 var contained = Contains(item);
