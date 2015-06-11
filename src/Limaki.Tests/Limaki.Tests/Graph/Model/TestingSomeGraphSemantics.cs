@@ -33,8 +33,8 @@ namespace Limaki.Tests.Graph.MethodTests {
             get {
                 if (_graphs == null) {
                     _graphs = new List<ISampleGraphFactory<IGraphEntity, IGraphEdge>> ();
-                    _graphs.Add (new BinaryTreeFactory());
-                    _graphs.Add (new BinaryGraphFactory ());
+                    _graphs.Add (new EntityBinaryTreeFactory());
+                    _graphs.Add (new EntityBinaryGraphFactory ());
                 }
                 return _graphs;
             }

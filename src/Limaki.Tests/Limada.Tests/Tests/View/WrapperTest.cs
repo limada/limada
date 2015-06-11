@@ -1,5 +1,3 @@
-
-
 /*
 * Limaki 
 * 
@@ -13,22 +11,22 @@
 * http://www.limada.org
 * 
 */
-using System.Diagnostics;
+
 using Limada.Model;
 using Limada.Tests.Model;
 using Limada.View.VisualThings;
 using Limaki.Model;
-using Limaki.Tests;
 using Limaki.Tests.Graph;
 using Limaki.Tests.Graph.Model;
-using Limaki.Tests.View.Visuals;
 using Limaki.View.Visuals;
 using NUnit.Framework;
+using System.Diagnostics;
 
 namespace Limaki.Tests.View.Visuals {
 
     public class WrapperTest : DomainTest {
 
+        [Test]
         public void TestGraphPairFactory () {
 
             IThingGraph thingGraph = new ThingGraph ();
@@ -36,7 +34,7 @@ namespace Limaki.Tests.View.Visuals {
             var factory =
                 new SampleGraphPairFactory<IThing, IGraphEntity, ILink, IGraphEdge> (
                     new ProgrammingLanguageFactory<IGraphEntity, IGraphEdge> (),
-                    new GraphItem2ThingTransformer ().Reverted()
+                    new GraphEntity2ThingTransformer ().Reverted()
                     );
 
             factory.Mapper.Sink = thingGraph;
@@ -50,7 +48,7 @@ namespace Limaki.Tests.View.Visuals {
         public void ThingGraphFactory () {
             var graph = new VisualThingGraph ();
 
-            var factory = new ThingGraphFactory0<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
+            var factory = new ThingEntityGraphFactory<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
             factory.Populate (graph.Source);
             Trace.Write (
                 GraphTestUtils.ReportGraph<IThing, ILink> (graph.Source, factory.Name));
@@ -60,7 +58,7 @@ namespace Limaki.Tests.View.Visuals {
         public void FoldingTest1 () {
             var graph = new VisualThingGraph ();
 
-            var test = new ProgrammingEntitySceneTest ();
+            var test = new EntityProgrammingSceneTest ();
             test.Mock.SampleFactory.Graph = graph;
             test.Net ();
 
@@ -70,12 +68,12 @@ namespace Limaki.Tests.View.Visuals {
         public void FoldingExpandTest () {
             var graph = new VisualThingGraph ();
 
-            var test = new ProgrammingEntitySceneTest ();
+            var test = new EntityProgrammingSceneTest ();
             test.Mock.SampleFactory.Graph = graph;
             test.Mock.Scene = new Scene ();
             test.Mock.Scene.Graph = graph;
 
-            var factory = new ThingGraphFactory0<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
+            var factory = new ThingEntityGraphFactory<ProgrammingLanguageFactory<IGraphEntity, IGraphEdge>> ();
             factory.Count = 10;
             factory.Populate (graph.Source);
             

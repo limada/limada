@@ -163,7 +163,7 @@ namespace Limada.Tests.Model {
         public void TestSheetManager() {
             var scene = new Scene();
 
-            scene.Graph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>();
+            scene.Graph = ModelHelper.GetSourceGraph<EntityProgrammingLanguageFactory>();
             if (!(scene.Graph is SubGraph<IVisual,IVisualEdge>)){
                 scene.Graph = new SubGraph<IVisual, IVisualEdge> (new VisualGraph (), scene.Graph);
             }
@@ -182,7 +182,7 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void TestDataContractSerializer() {
-            var sourceGraph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>(1);
+            var sourceGraph = ModelHelper.GetSourceGraph<EntityProgrammingLanguageFactory>(1);
             var thingGraph = sourceGraph.Source as IThingGraph;
 
             var s = new MemoryStream();
@@ -240,7 +240,7 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void TestThingSerializer() {
-            var sourceGraph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>(10);
+            var sourceGraph = ModelHelper.GetSourceGraph<EntityProgrammingLanguageFactory>(10);
             var thingGraph = sourceGraph.Source as IThingGraph;
             
             var dataStream = new StreamWriter (new MemoryStream ());
@@ -320,7 +320,7 @@ namespace Limada.Tests.Model {
         public void TestFavoriteManagerAddToSheets() {
             var scene = new Scene();
 
-            scene.Graph = ModelHelper.GetSourceGraph<ProgrammingLanguageFactory>();
+            scene.Graph = ModelHelper.GetSourceGraph<EntityProgrammingLanguageFactory>();
             if (!(scene.Graph is SubGraph<IVisual, IVisualEdge>)) {
                 scene.Graph = new SubGraph<IVisual, IVisualEdge>(scene.Graph,new VisualGraph());
             }

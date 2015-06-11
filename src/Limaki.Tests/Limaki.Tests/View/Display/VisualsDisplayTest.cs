@@ -94,7 +94,7 @@ namespace Limaki.Tests.View.Display {
 
             MoveAlongLine (v);
 
-            Assert.AreSame (Scene.Hovered, target);
+            Assert.AreSame (target, Scene.Hovered);
 
             // end move
             position = camera.FromSource (v.End);

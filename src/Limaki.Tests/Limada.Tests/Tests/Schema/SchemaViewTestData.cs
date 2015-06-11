@@ -16,22 +16,35 @@
 
 using Limada.Model;
 using Limada.Schemata;
+using Limada.View.VisualThings;
+using Limaki.Graphs;
+using Limaki.Tests.Graph.Model;
+using Limaki.View;
+using Limaki.View.Visuals;
 
 namespace Limada.Tests.View {
 
-    public class SchemaViewTestData<T>:ThingSceneFactory0
-    where T:Schema, new() {
-        public override IThingGraph ThingGraph {
-            get {
-                
-                if (_thingGraph==null) {
-                    _thingGraph = new T().SchemaGraph;
-                }
-                return _thingGraph;
-            }
-            set {
-                _thingGraph = value;
-            }
+    public class SchemaViewFactory : SampleGraphFactory<IThing, ILink> {
+
+        public override void Populate (IGraph<IThing, ILink> graph) {
+
         }
+
+        public override void Populate (IGraph<IThing, ILink> graph, int start) {
+            
+        }
+    }
+
+    public class SchemaViewTestData<T> : ViusalThingSampleSceneFactory<SchemaViewFactory>
+        where T : Schema, new () {
+
+        public override Limaki.Graphs.IGraph<IThing, ILink> CreateSourceGraph () {
+            return new T ().SchemaGraph;
+        }
+
+        public override GraphPair<IVisual, IThing, IVisualEdge, ILink> CreateGraphPair () {
+            return new VisualThingGraph (Mapper.Sink, Mapper.Source as IThingGraph, Mapper.Transformer as VisualThingTransformer);
+        }
+
     }
 }

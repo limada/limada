@@ -41,7 +41,7 @@ namespace Limaki.Tests.Graph {
         [Test]
         public void OnlyItemsInListTest() {
             var items = new Set<IGraphEntity> ();
-            var data = new BinaryTreeFactory ();
+            var data = new EntityBinaryTreeFactory ();
             data.Count = 1;
             data.Populate ();
 

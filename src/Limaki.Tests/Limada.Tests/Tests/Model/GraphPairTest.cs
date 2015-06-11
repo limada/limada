@@ -35,7 +35,7 @@ namespace Limada.Tests.Model {
                 new GraphMapper<IGraphEntity, IThing, IGraphEdge, ILink>(
                     source.Graph, 
                     target, 
-                    new GraphItem2ThingTransformer());
+                    new GraphEntity2ThingTransformer());
 
             mapper.ConvertSinkSource ();
 
@@ -43,7 +43,7 @@ namespace Limada.Tests.Model {
                 new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                     new Graph<IGraphEntity, IGraphEdge>(), 
                     target, 
-                    new GraphItem2ThingTransformer());
+                    new GraphEntity2ThingTransformer());
 
             return graphPair;
 
@@ -52,7 +52,7 @@ namespace Limada.Tests.Model {
         [Test]
         public void TestGraphPairGetSource() {
             var data =
-                MakeGraphPair (new BinaryGraphFactory (), new ThingGraph ());
+                MakeGraphPair (new EntityBinaryGraphFactory (), new ThingGraph ());
 
             var view = new Graph<IGraphEntity, IGraphEdge>();
             var graphView = new SubGraph<IGraphEntity, IGraphEdge>(data, view);
@@ -79,7 +79,7 @@ namespace Limada.Tests.Model {
         public void TestGraphPairPingBack() {
             
             var data =
-                MakeGraphPair (new BinaryGraphFactory (), new ThingGraph ());
+                MakeGraphPair (new EntityBinaryGraphFactory (), new ThingGraph ());
 
             var graphView1 = new SubGraph<IGraphEntity, IGraphEdge> (data, new Graph<IGraphEntity, IGraphEdge> ());
             var graphView2 = new SubGraph<IGraphEntity, IGraphEdge>(data, new Graph<IGraphEntity, IGraphEdge>());
@@ -94,7 +94,7 @@ namespace Limada.Tests.Model {
 
             data = new GraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
                 new Graph<IGraphEntity, IGraphEdge>(), 
-                data.Source,new GraphItem2ThingTransformer());
+                data.Source,new GraphEntity2ThingTransformer());
 
             graphView2 = new SubGraph<IGraphEntity, IGraphEdge>(data, new Graph<IGraphEntity, IGraphEdge>());
             
@@ -111,7 +111,7 @@ namespace Limada.Tests.Model {
         public void TestGraphRootSource () {
 
             var data =
-                MakeGraphPair (new BinaryGraphFactory(), new ThingGraph());
+                MakeGraphPair (new EntityBinaryGraphFactory(), new ThingGraph());
 
             IGraph<IGraphEntity, IGraphEdge> graph = new SubGraph<IGraphEntity, IGraphEdge> (data, new Graph<IGraphEntity, IGraphEdge>());
 
@@ -135,7 +135,7 @@ namespace Limada.Tests.Model {
                 new HollowGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
                 source.Graph,
                 target,
-                new GraphItem2ThingTransformer ());
+                new GraphEntity2ThingTransformer ());
 
             var mapper = graphPair.Mapper;
             mapper.ConvertSinkSource ();
@@ -152,8 +152,8 @@ namespace Limada.Tests.Model {
 
         [Test]
         public void TestGraphPairWithFactoryGraph () {
-            TestGraphPair (new BinaryTreeFactory (), new ThingGraph ());
-            TestGraphPair (new BinaryGraphFactory (), new ThingGraph ());
+            TestGraphPair (new EntityBinaryTreeFactory (), new ThingGraph ());
+            TestGraphPair (new EntityBinaryGraphFactory (), new ThingGraph ());
             ReportSummary ();
         }
 

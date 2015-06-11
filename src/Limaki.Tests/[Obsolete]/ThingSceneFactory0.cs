@@ -10,6 +10,7 @@ using Limaki.View.Visuals;
 namespace Limada.Tests.View {
 
     public abstract class ThingSceneFactory0:ISampleGraphSceneFactory {
+
         public ThingSceneFactory0() { }
 
         #region ISampleGraphSceneFactory Member
@@ -29,12 +30,10 @@ namespace Limada.Tests.View {
         protected IThingGraph _thingGraph = null;
         public abstract IThingGraph ThingGraph { get; set; }
 
-        public virtual IGraphScene<IVisual, IVisualEdge> Scene {
-            get {
+        public virtual IGraphScene<IVisual, IVisualEdge> NewScene (){
                 var result = new Scene();
                 PopulateScene(result);
                 return result;
-            }
         }
 
         private int _count = 1;
@@ -51,8 +50,9 @@ namespace Limada.Tests.View {
                 scene.Graph = this.Graph;
             }
         }
+
         public void Populate() {
-            PopulateScene (this.Scene);
+            PopulateScene (this.NewScene());
         }
 
         protected bool _seperateLattice = false;

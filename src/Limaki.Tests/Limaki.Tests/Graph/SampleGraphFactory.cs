@@ -80,15 +80,15 @@ namespace Limaki.Tests.Graph.Model {
             Populate (this.Graph);
         }
 
-        public virtual void MakeEdgeStrings (IGraph<TItem, TEdge> Graph) {
+        public virtual void MakeEdgeStrings (IGraph<TItem, TEdge> graph) {
             var changer = Factory as IGraphModelPropertyChanger<TItem, TEdge>;
             if (changer != null)
-                foreach (var edge in Graph.Edges ()) {
+                foreach (var edge in graph.Edges ()) {
                     changer.SetProperty (edge, GraphExtensions.EdgeString<TItem, TEdge> (edge));
                 }
         }
 
-        public override void Populate (IGraph<TItem, TEdge> Graph) {
+        public override void Populate (IGraph<TItem, TEdge> graph) {
 
             var lastNode1 = default (TItem);
             var lastNode2 = default (TItem); ;
@@ -99,59 +99,59 @@ namespace Limaki.Tests.Graph.Model {
                     lastNode2 = Nodes[5];
                     lastNode3 = Nodes[8];
                 }
-                Populate (Graph, Start + 1);
+                Populate (graph, Start + 1);
                 if (i > 0) {
                     var edge = CreateEdge (lastNode1, Nodes[1]);
-                    Graph.Add (edge);
+                    graph.Add (edge);
                     if (SeperateLattice) {
                         edge = CreateEdge (lastNode2, Nodes[5]);
-                        Graph.Add (edge);
+                        graph.Add (edge);
                     }
                     if (AddDensity) {
                         edge = CreateEdge (Nodes[2], lastNode3);
-                        Graph.Add (edge);
+                        graph.Add (edge);
                     }
                 }
             }
 
         }
 
-        public virtual void Populate (IGraph<TItem, TEdge> Graph, int start) {
+        public virtual void Populate (IGraph<TItem, TEdge> graph, int start) {
 
             var item = CreateItem<int> ((start++));
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[1] = item;
 
             item = CreateItem<int> ((start++));
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[2] = item;
 
             item = CreateItem<int> ((start++));
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[3] = item;
 
             item = CreateItem<int> ((start++));
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[4] = item;
 
             item = CreateItem<int> ((start++));
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[5] = item;
 
             item = CreateItem<int> ((start++));
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[6] = item;
 
             item = CreateItem<int> ((start++));
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[7] = item;
 
             item = CreateItem<int> ((start++));
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[8] = item;
 
             item = CreateItem<int> ((start++));
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[9] = item;
             this.Start = start;
 

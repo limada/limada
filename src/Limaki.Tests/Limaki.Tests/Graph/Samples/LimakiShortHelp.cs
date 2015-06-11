@@ -19,92 +19,92 @@ namespace Limaki.Tests.Graph.Model {
     public class LimakiShortHelpFactory<TItem, TEdge> : SampleGraphFactory<TItem, TEdge>
         where TEdge : IEdge<TItem>, TItem {
 
-        public override void Populate (IGraph<TItem, TEdge> Graph, int start) {
+        public override void Populate (IGraph<TItem, TEdge> graph, int start) {
 
             var item = CreateItem<string> ("Limaki");
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[1] = item;
 
             item = CreateItem<string> ("How To");
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[2] = item;
 
             Edges[1] = CreateEdge (Nodes[1], Nodes[2]);
-            Graph.Add (Edges[1]);
+            graph.Add (Edges[1]);
 
 
             item = CreateItem<string> ("Warning");
-            Graph.Add (item);
+            graph.Add (item);
             Nodes[3] = item;
 
             Edges[2] = CreateEdge (Nodes[1], Nodes[3]);
-            Graph.Add (Edges[2]);
+            graph.Add (Edges[2]);
 
             item = CreateItem<string> ("This is a pre-alpha release");
-            Graph.Add (item);
-            Graph.Add (CreateEdge (Nodes[3], item));
+            graph.Add (item);
+            graph.Add (CreateEdge (Nodes[3], item));
 
             item = CreateItem<string> ("Saved files will NOT be supported in later releases");
-            Graph.Add (item);
-            Graph.Add (CreateEdge (Nodes[3], item));
+            graph.Add (item);
+            graph.Add (CreateEdge (Nodes[3], item));
 
             TItem topic = CreateItem<string> ("add new nodes");
-            Graph.Add (topic);
-            Graph.Add (CreateEdge (Nodes[2], topic));
+            graph.Add (topic);
+            graph.Add (CreateEdge (Nodes[2], topic));
 
             TItem subtopic = CreateItem<string> ("click the Add Shape button");
             TEdge subLink = default (TEdge); ;
 
-            Graph.Add (subtopic);
-            Graph.Add (CreateEdge (topic, subtopic));
+            graph.Add (subtopic);
+            graph.Add (CreateEdge (topic, subtopic));
 
             item = CreateItem<string> ("Draw new nodes");
-            Graph.Add (item);
-            Graph.Add (CreateEdge (subtopic, item));
+            graph.Add (item);
+            graph.Add (CreateEdge (subtopic, item));
 
 
             topic = CreateItem<string> ("connect nodes");
-            Graph.Add (topic);
-            Graph.Add (CreateEdge (Nodes[2], topic));
+            graph.Add (topic);
+            graph.Add (CreateEdge (Nodes[2], topic));
 
 
             subtopic = CreateItem<string> ("click the select button");
-            Graph.Add (subtopic);
-            Graph.Add (subLink = CreateEdge (topic, subtopic));
+            graph.Add (subtopic);
+            graph.Add (subLink = CreateEdge (topic, subtopic));
 
             item = CreateItem<string> ("Drag a node(or link) over an other node (or link)");
-            Graph.Add (item);
-            Graph.Add (CreateEdge (subLink, item));
+            graph.Add (item);
+            graph.Add (CreateEdge (subLink, item));
 
             topic = CreateItem<string> ("edit nodes or links");
-            Graph.Add (topic);
-            Graph.Add (CreateEdge (Nodes[2], topic));
-            Graph.Add (subLink = CreateEdge (topic, subtopic));
+            graph.Add (topic);
+            graph.Add (CreateEdge (Nodes[2], topic));
+            graph.Add (subLink = CreateEdge (topic, subtopic));
 
             item = CreateItem<string> ("Press F2, edit, cancel with ESC or save with F2 again");
-            Graph.Add (item);
-            Graph.Add (CreateEdge (subLink, item));
+            graph.Add (item);
+            graph.Add (CreateEdge (subLink, item));
 
 
             topic = CreateItem<string> ("expand and collapse nodes");
-            Graph.Add (topic);
-            Graph.Add (CreateEdge (Nodes[2], topic));
+            graph.Add (topic);
+            graph.Add (CreateEdge (Nodes[2], topic));
 
             subtopic = CreateItem<string> ("press + to expand");
-            Graph.Add (subtopic);
-            Graph.Add (CreateEdge (topic, subtopic));
+            graph.Add (subtopic);
+            graph.Add (CreateEdge (topic, subtopic));
 
             subtopic = CreateItem<string> ("press - to collapse");
-            Graph.Add (subtopic);
-            Graph.Add (CreateEdge (topic, subtopic));
+            graph.Add (subtopic);
+            graph.Add (CreateEdge (topic, subtopic));
 
             subtopic = CreateItem<string> ("press / to reduce to focused item");
-            Graph.Add (subtopic);
-            Graph.Add (CreateEdge (topic, subtopic));
+            graph.Add (subtopic);
+            graph.Add (CreateEdge (topic, subtopic));
 
             subtopic = CreateItem<string> ("press * to show all items");
-            Graph.Add (subtopic);
-            Graph.Add (CreateEdge (topic, subtopic));
+            graph.Add (subtopic);
+            graph.Add (CreateEdge (topic, subtopic));
 
         }
 

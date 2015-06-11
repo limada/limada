@@ -23,7 +23,7 @@ namespace Limaki.Tests.Graph.Model {
             get { return "GC John going to Boston"; }
         }
 
-        public override void Populate(IGraph<TItem, TEdge> Graph,int start) {
+        public override void Populate(IGraph<TItem, TEdge> graph,int start) {
 
             SetNode (1, "Person");
             SetNode (2, "John");

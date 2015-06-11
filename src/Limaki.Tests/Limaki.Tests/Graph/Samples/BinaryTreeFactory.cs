@@ -24,46 +24,46 @@ namespace Limaki.Tests.Graph.Model {
             get { return "Binary Tree"; }
         }
 
-        public override void Populate (IGraph<TItem, TEdge> Graph, int start) {
+        public override void Populate (IGraph<TItem, TEdge> graph, int start) {
 
-            base.Populate (Graph, start);
+            base.Populate (graph, start);
 
             var edge = default (TEdge);
 
             #region Binarytree Links
 
             edge = CreateEdge (Nodes[1], Nodes[2]);
-            Graph.Add (edge);
+            graph.Add (edge);
             Edges[1] = edge;
 
             edge = CreateEdge (Nodes[1], Nodes[4]);
-            Graph.Add (edge);
+            graph.Add (edge);
             Edges[2] = edge;
 
             edge = CreateEdge (Nodes[2], Nodes[3]);
-            Graph.Add (edge);
+            graph.Add (edge);
             Edges[3] = edge;
 
             edge = CreateEdge (Nodes[4], Nodes[5]);
-            Graph.Add (edge);
+            graph.Add (edge);
             Edges[4] = edge;
 
 
             edge = CreateEdge (Nodes[4], Nodes[8]);
-            Graph.Add (edge);
+            graph.Add (edge);
             Edges[5] = edge;
 
             edge = CreateEdge (Nodes[5], Nodes[6]);
-            Graph.Add (edge);
+            graph.Add (edge);
             Edges[6] = edge;
 
             edge = CreateEdge (Nodes[5], Nodes[7]);
-            Graph.Add (edge);
+            graph.Add (edge);
             Edges[7] = edge;
 
 
             edge = CreateEdge (Nodes[8], Nodes[9]);
-            Graph.Add (edge);
+            graph.Add (edge);
             Edges[8] = edge;
 
             #endregion

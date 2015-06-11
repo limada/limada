@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2006-2014 Lytico
+ * Copyright (C) 2008-2014 Lytico
  *
  * http://www.limada.org
  * 
@@ -27,9 +27,9 @@ using Xwt;
 
 namespace Limaki.Tests.View.Visuals {
 
-    public class BenchmarkOneSceneFactory : EntitySampleSceneFactory<BenchmarkOneGraphFactory<IGraphEntity,IGraphEdge>> {
+    public class EntityBenchmarkOneSceneFactory : EntitySampleSceneFactory<BenchmarkOneGraphFactory<IGraphEntity,IGraphEdge>> {
 
-        public BenchmarkOneSceneFactory () {
+        public EntityBenchmarkOneSceneFactory () {
             this.Count = 10;
         }
 
@@ -117,10 +117,11 @@ namespace Limaki.Tests.View.Visuals {
             ((VectorShape)Line1.Shape).Data = vector;
         }
 
-        public override void PopulateScene (IGraphScene<IVisual, IVisualEdge> scene) {
+        public virtual void PopulateScene (IGraphScene<IVisual, IVisualEdge> scene) {
             int oldCount = this.Count;
             this.Count = 1;
-            base.PopulateScene (scene);
+            Populate (scene.Graph);
+            scene.ClearSpatialIndex ();
             this.Count = oldCount;
 
             var vector = new Vector();
@@ -131,7 +132,7 @@ namespace Limaki.Tests.View.Visuals {
         }
 
 
-        public IGraphScene<IVisual, IVisualEdge> CreateScene () {
+        protected override IGraphScene<IVisual, IVisualEdge> CreateScene () {
             var result = new Scene();
             result.Graph = this.Graph;
             var layout = new LongtermPerformanceSceneLayout(
@@ -146,23 +147,20 @@ namespace Limaki.Tests.View.Visuals {
             return result;
         }
 
-        public override IGraphScene<IVisual, IVisualEdge> Scene {
-            get {
-                var result = CreateScene();
-                var nextStart = new Point(startAt.X, result.Shape.BoundsRect.Bottom + distance.Height);
-                for (int i = 0; i < Count; i++) {
-                    var example = new BenchmarkOneSceneFactory();
-                    example.startAt = nextStart;
-                    var scene = example.CreateScene();
-                    foreach (var visual in scene.Elements)
-                        result.Add(visual);
-                    nextStart = new Point(startAt.X, scene.Shape.BoundsRect.Bottom + distance.Height);
-                }
-                result.ClearSpatialIndex();
-                var shape = result.Shape;
-                return result;
+        public override IGraphScene<IVisual, IVisualEdge> NewScene () {
+            var result = CreateScene ();
+            var nextStart = new Point (startAt.X, result.Shape.BoundsRect.Bottom + distance.Height);
+            for (int i = 0; i < Count; i++) {
+                var example = new EntityBenchmarkOneSceneFactory ();
+                example.startAt = nextStart;
+                var scene = example.CreateScene ();
+                foreach (var visual in scene.Elements)
+                    result.Add (visual);
+                nextStart = new Point (startAt.X, scene.Shape.BoundsRect.Bottom + distance.Height);
             }
+            result.ClearSpatialIndex ();
+            var shape = result.Shape;
+            return result;
         }
-
     }
 }

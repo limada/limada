@@ -24,43 +24,43 @@ namespace Limaki.Tests.Graph.Model {
             get { return "Word Game"; }
         }
 
-        public override void Populate(IGraph<TItem, TEdge> Graph, int start) {
+        public override void Populate(IGraph<TItem, TEdge> graph, int start) {
             var node = default (TItem);
             var edge = default (TEdge);
 
 
             node = CreateItem<string>("Tags");
-            Graph.Add(node);
+            graph.Add(node);
             Nodes[1] = node;
 
 
             node = CreateItem<string>("Word");
-            Graph.Add(node);
+            graph.Add(node);
             Nodes[2] = node;
 
             edge = CreateEdge(Nodes[1], Nodes[2]);
-            Graph.Add(edge);
+            graph.Add(edge);
             Edges[1] = edge;
 
 
             node = CreateItem<string>("Game");
-            Graph.Add(node);
+            graph.Add(node);
             Nodes[3] = node;
 
             edge = CreateEdge(Nodes[2], Nodes[3]);
-            Graph.Add(edge);
+            graph.Add(edge);
             Edges[2] = edge;
 
             node = CreateItem<string>("Something");
-            Graph.Add(node);
+            graph.Add(node);
             Nodes[4] = node;
 
             edge = CreateEdge(Edges[2], Nodes[4]);
-            Graph.Add(edge);
+            graph.Add(edge);
             Edges[3] = edge;
 
             edge = CreateEdge(Nodes[1], Edges[2]);
-            Graph.Add(edge);
+            graph.Add(edge);
             Edges[4] = edge;
 
         }

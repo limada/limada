@@ -12,26 +12,15 @@
  * 
  */
 
-
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Limada.Tests.Basic;
-using Limaki.Graphs;
 using Limada.Model;
 using Limada.View.VisualThings;
-using Limaki.UnitTest;
-using Limada.Tests.Model;
+using Limaki.Graphs;
+using Limaki.Tests.Graph.Basic;
+using Limaki.Tests.Graph.GraphPair;
+using Limaki.Tests.View.Visuals;
 using Limaki.View.Visuals;
 using NUnit.Framework;
-using Limaki.Tests.View.Visuals;
-
 using Id = System.Int64;
-using Limaki.Tests.Graph.GraphPair;
-using Limaki.Tests.Graph.Basic;
-using Limada.Schemata;
-
-
 
 namespace Limada.Tests.View {
 
@@ -76,11 +65,11 @@ namespace Limada.Tests.View {
             var thingGraph = graph.ThingGraph().Unwrap() as IThingGraph;
 
             if (thingGraph != null) {
-                foreach(ILink link in thingGraph.Edges()) {
+                foreach(var link in thingGraph.Edges()) {
                     ProveEdge (thingGraph, link);
                 }
-                foreach (IThing thing in thingGraph.Edges()) {
-                    foreach (ILink edge in thingGraph.Fork(thing)) {
+                foreach (var thing in thingGraph.Edges()) {
+                    foreach (var edge in thingGraph.Fork(thing)) {
                         ProveEdge (thingGraph, edge);
                     }
                 }
@@ -99,7 +88,7 @@ namespace Limada.Tests.View {
 
             Pair.OnGraphChange (Data.One, GraphEventType.Update);
 
-            IThing thing = Pair.Get (Data.One);
+            var thing = Pair.Get (Data.One);
             Assert.AreEqual (newData, thing.Data.ToString ());
         }
     }

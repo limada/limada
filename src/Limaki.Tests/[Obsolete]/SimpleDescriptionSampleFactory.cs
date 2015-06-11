@@ -5,6 +5,7 @@ using Limaki.Tests.Graph.Model;
 using Limaki.Common;
 
 namespace Limada.Tests.Model {
+
     public class SimpleDescriptionSampleFactory:SampleGraphFactoryBase<IThing,ILink> {
 
         public override string Name {

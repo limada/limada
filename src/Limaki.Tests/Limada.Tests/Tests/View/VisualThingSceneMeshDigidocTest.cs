@@ -28,7 +28,8 @@ using Xwt;
 
 namespace Limada.Tests.View {
 
-    public class VisualThingSceneMeshTest : SceneMeshTest<IThing, ILink> {
+    public class VisualThingSceneMeshDigidocTest : SceneMeshTestBase<IThing, ILink> {
+
         private const int iDocument = 1; // Document
         private const int iPage1 = 3; // first Page (stream)
         private const int iPageNr1 = 4; // page nr 1; invisible in SchemaGraph

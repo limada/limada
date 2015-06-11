@@ -45,7 +45,7 @@ namespace Limaki.Tests.View.Visuals {
        public IGraphScene<IVisual, IVisualEdge> Data {
             get {
                 if (_data == null) {
-                    _data = new BenchmarkOneSceneFactory().Scene;
+                    _data = new EntityBenchmarkOneSceneFactory().NewScene ();
                 }
                 return _data;
             }

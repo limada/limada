@@ -8,10 +8,12 @@ using Limada.View.VisualThings;
 using Limaki.Tests.Graph.Model;
 using Limaki.View.Visuals;
 using NUnit.Framework;
-
+using System.Linq;
 
 namespace Limada.Tests.ThingGraphs {
+
     public class ThingGraphDeleteItemsTest : ThingGraphTestBase {
+
         public struct TestItem {
             public Int64 id;
             public IThing thing;
@@ -27,42 +29,36 @@ namespace Limada.Tests.ThingGraphs {
 
         public void IsRemoved<TItem, TEdge>(IGraph<TItem, TEdge> dataSource, TItem root, TItem removed)
         where TEdge : IEdge<TItem>, TItem {
-            Walker<TItem, TEdge> walker = new Walker<TItem, TEdge>(dataSource);
-            foreach (LevelItem<TItem> level in walker.DeepWalk(root, 0)) {
-                TItem item = level.Node;
+            var walker = new Walker<TItem, TEdge>(dataSource);
+            foreach (var level in walker.DeepWalk(root, 0)) {
+                var item = level.Node;
                 Assert.AreNotEqual(item, removed);
                 if (item is TEdge) {
-                    TEdge link = (TEdge)item;
+                    var link = (TEdge)item;
                     Assert.AreNotEqual(link.Root, removed);
                     Assert.AreNotEqual(link.Leaf, removed);
                 }
             }
             Assert.IsFalse (dataSource.Contains (removed));
-            foreach (TEdge edge in dataSource.Edges(removed))
+            foreach (var edge in dataSource.Edges(removed))
                 Assert.Fail ();
-            foreach (TEdge edge in dataSource.Twig(removed))
+            foreach (var edge in dataSource.Twig(removed))
                 Assert.Fail();
         }
 
         public void IsRemoved<TItem, TEdge>(IGraph<TItem, TEdge> dataSource, IEnumerable<TEdge> removed)
         where TEdge : IEdge<TItem>, TItem {
-            foreach (TEdge item in removed)
+            foreach (var item in removed)
                 Assert.IsFalse(dataSource.Contains(item));
         }
 
         public void IsRemoved<TItem, TEdge>(IGraph<TItem, TEdge> dataSource, IEnumerable<TEdge> edges, TItem removed)
         where TEdge : IEdge<TItem>, TItem {
-            foreach (TEdge edge in edges) {
+            foreach (var edge in edges) {
                 Assert.AreNotEqual(edge.Root, removed);
                 Assert.AreNotEqual(edge.Leaf, removed);
             }
         }
-
-        public ICollection<TEdge> GetTwigCollection<TItem, TEdge>(IGraph<TItem, TEdge> dataSource, TItem root)
-        where TEdge : IEdge<TItem>, TItem {
-            return new List<TEdge> (dataSource.Twig (root));
-        }
-
 
         /// <summary>
         /// expand dataSource to fill db4o.Graph.edgesCache
@@ -87,8 +83,8 @@ namespace Limada.Tests.ThingGraphs {
 
         public void Remove<TItem, TEdge>(IGraph<TItem, TEdge> dataSource, TItem removed)
         where TEdge : IEdge<TItem>, TItem {
-            ICollection<TEdge> deleteInPairOne = new List<TEdge>(dataSource.PostorderTwig(removed));
-            foreach (TItem linkOne in deleteInPairOne) {
+            var deleteInPairOne = dataSource.PostorderTwig (removed).ToArray ();
+            foreach (var linkOne in deleteInPairOne) {
                 dataSource.Remove(linkOne);
             }
             dataSource.Remove(removed);
@@ -98,17 +94,17 @@ namespace Limada.Tests.ThingGraphs {
         [Test]
         public void ProgramminglanguageJavaDeleteTestPingBack() {
             ReportDetail ("ProgramminglanguageJavaDeleteTestPingBack");
-            IThingGraph dataSource = this.Graph;
+            var dataSource = this.Graph;
 
            var factory =
-                new ThingGraphFactory0<ProgrammingLanguageFactory> ();
+                new ThingEntityGraphFactory<EntityProgrammingLanguageFactory> ();
 
             factory.Populate(dataSource);
 
-            TestItem java = new TestItem(factory.Nodes[3].Id, null, null, null);// Java
-            TestItem list = new TestItem(factory.Nodes[7].Id, null, null, null);// List
-            TestItem programming = new TestItem(factory.Nodes[1].Id, null, null, null);// Programming
-            TestItem programming2Language = new TestItem(factory.Edges[1].Id, null, null, null);// Programming->Language
+            var java = new TestItem(factory.Nodes[3].Id, null, null, null);// Java
+            var list = new TestItem(factory.Nodes[7].Id, null, null, null);// List
+            var programming = new TestItem(factory.Nodes[1].Id, null, null, null);// Programming
+            var programming2Language = new TestItem(factory.Edges[1].Id, null, null, null);// Programming->Language
 
 
             this.Close();
@@ -119,28 +115,24 @@ namespace Limada.Tests.ThingGraphs {
             programming2Language.thing = dataSource.GetById(programming2Language.id);
             programming.thing = dataSource.GetById(programming.id);
 
-            IGraphPair<IVisual, IThing, IVisualEdge, ILink> pairOne =
-                new VisualThingGraph(new VisualGraph(), dataSource);
+            var pairOne = new VisualThingGraph(new VisualGraph(), dataSource);
 
-            SubGraph<IVisual, IVisualEdge> viewOne =
-                new SubGraph<IVisual, IVisualEdge>(pairOne, new VisualGraph());
+            var viewOne = new SubGraph<IVisual, IVisualEdge>(pairOne, new VisualGraph());
 
             programming.one = pairOne.Get(programming.thing); // Programming
 
             // expand viewOne:
-            Walker<IVisual, IVisualEdge> walker = new Walker<IVisual, IVisualEdge>(pairOne);
-            foreach (LevelItem<IVisual> item in walker.DeepWalk(programming.one, 0)) {
+            var walker = new Walker<IVisual, IVisualEdge>(pairOne);
+            foreach (var item in walker.DeepWalk(programming.one, 0)) {
                 viewOne.Sink.Add(item.Node);
             }
 
-            ICollection<IVisualEdge> pairOneTwigs = GetTwigCollection<IVisual,IVisualEdge> (pairOne, java.one);
-            ICollection<ILink> dataSourceTwigs = GetTwigCollection<IThing,ILink>(dataSource, java.thing);
+            var pairOneTwigs = pairOne.Twig(java.one);
+            var dataSourceTwigs = dataSource.Twig(java.thing);
 
-            IGraphPair<IVisual, IThing, IVisualEdge, ILink> pairTwo =
-                new VisualThingGraph(new VisualGraph(), dataSource);
+            var pairTwo = new VisualThingGraph(new VisualGraph(), dataSource);
 
-            SubGraph<IVisual, IVisualEdge> viewTwo =
-                new SubGraph<IVisual, IVisualEdge>(pairTwo, new VisualGraph());
+            var viewTwo = new SubGraph<IVisual, IVisualEdge>(pairTwo, new VisualGraph());
 
             java.one = pairOne.Get(java.thing);
             java.two = pairTwo.Get(java.thing);
@@ -149,8 +141,7 @@ namespace Limada.Tests.ThingGraphs {
             // delete over PingBack in both views:
             
 
-            ICollection<IVisualEdge> deleteCollection =
-                new List<IVisualEdge>(viewOne.PostorderTwig(java.one));
+            var deleteCollection = new List<IVisualEdge>(viewOne.PostorderTwig(java.one));
 
             foreach (var linkOne in deleteCollection) {// Java
                 var linkTwo = viewOne.LookUp<IVisual, IVisualEdge, IThing, ILink>(viewTwo, linkOne);
@@ -165,8 +156,8 @@ namespace Limada.Tests.ThingGraphs {
             // testing the dataSource:
             IsRemoved<IThing, ILink>(dataSource, programming.thing, java.thing);
 
-            ICollection<ILink> edges = dataSource.Edges(programming2Language.thing);
-            foreach (ILink link in edges) {
+            var edges = dataSource.Edges(programming2Language.thing);
+            foreach (var link in edges) {
                 Assert.AreNotEqual(link.Root, java.thing);
                 Assert.AreNotEqual(link.Leaf, java.thing);
             }
@@ -186,16 +177,16 @@ namespace Limada.Tests.ThingGraphs {
         [Test]
         public void ProgramminglanguageJavaDeleteTest() {
             ReportDetail ("ProgramminglanguageJavaDeleteTest");
-            IThingGraph dataSource = this.Graph;
+            var dataSource = this.Graph;
 
-            ThingGraphFactory0<ProgrammingLanguageFactory> factory =
-                new ThingGraphFactory0<ProgrammingLanguageFactory>();
+            var factory =
+                new ThingEntityGraphFactory<EntityProgrammingLanguageFactory>();
 
             factory.Populate(dataSource);
 
-            TestItem java = new TestItem(factory.Nodes[3].Id, null, null, null);// Java
-            TestItem programming = new TestItem(factory.Nodes[1].Id, null, null, null);// Programming
-            TestItem programming2Language = new TestItem(factory.Edges[1].Id, null, null, null);// Programming->Language
+            var java = new TestItem(factory.Nodes[3].Id, null, null, null);// Java
+            var programming = new TestItem(factory.Nodes[1].Id, null, null, null);// Programming
+            var programming2Language = new TestItem(factory.Edges[1].Id, null, null, null);// Programming->Language
 
             this.Close();
             dataSource = this.Graph;
@@ -205,7 +196,8 @@ namespace Limada.Tests.ThingGraphs {
             programming2Language.thing = dataSource.GetById(programming2Language.id);
 
             Expand<IThing, ILink>(dataSource, programming.thing);
-            ICollection<ILink> dataSourceTwigs = GetTwigCollection<IThing, ILink>(dataSource, java.thing);
+            
+            var dataSourceTwigs = dataSource.Twig (java.thing);
 
             Remove<IThing, ILink>(dataSource, java.thing);
 
@@ -218,14 +210,14 @@ namespace Limada.Tests.ThingGraphs {
         public void ProgramminglanguageJavaDeleteOverPair() {
             ReportDetail("ProgramminglanguageJavaDeleteOverPair");
             var dataSource = this.Graph;
-            ThingGraphFactory0<ProgrammingLanguageFactory> factory =
-                new ThingGraphFactory0<ProgrammingLanguageFactory>();
+            var factory =
+                new ThingEntityGraphFactory<EntityProgrammingLanguageFactory>();
 
             factory.Populate(dataSource);
 
-            TestItem java = new TestItem(factory.Nodes[3].Id, null, null, null);// Java
-            TestItem programming = new TestItem(factory.Nodes[1].Id, null, null, null);// Programming
-            TestItem programming2Language = new TestItem(factory.Edges[1].Id, null, null, null);// Programming->Language
+            var java = new TestItem(factory.Nodes[3].Id, null, null, null);// Java
+            var programming = new TestItem(factory.Nodes[1].Id, null, null, null);// Programming
+            var programming2Language = new TestItem(factory.Edges[1].Id, null, null, null);// Programming->Language
 
             this.Close();
             dataSource = this.Graph;
@@ -234,14 +226,13 @@ namespace Limada.Tests.ThingGraphs {
             programming.thing = dataSource.GetById(programming.id);
             programming2Language.thing = dataSource.GetById (programming2Language.id);
 
-            IGraphPair<IVisual, IThing, IVisualEdge, ILink> pairOne =
-                new VisualThingGraph(new VisualGraph(), dataSource);
+            var pairOne = new VisualThingGraph(new VisualGraph(), dataSource);
 
             programming.one = pairOne.Get(programming.thing);
 
             Expand<IVisual, IVisualEdge>(pairOne, programming.one);
-            ICollection<IVisualEdge> pairOneTwigs = GetTwigCollection<IVisual, IVisualEdge>(pairOne, java.one);
-            ICollection<ILink> dataSourceTwigs = GetTwigCollection<IThing, ILink>(dataSource, java.thing);
+            var pairOneTwigs = pairOne.Twig (java.one);
+            var dataSourceTwigs = dataSource.Twig (java.thing);
 
             java.one = pairOne.Get(java.thing);
             programming2Language.one = pairOne.Get (programming2Language.thing);

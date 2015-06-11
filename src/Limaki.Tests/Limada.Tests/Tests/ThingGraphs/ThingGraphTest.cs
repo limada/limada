@@ -109,9 +109,9 @@ namespace Limada.Tests.ThingGraphs {
             var graphPair = new HollowGraphPair<IGraphEntity, IThing, IGraphEdge, ILink>(
                       new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge>(), 
                       target, 
-                      new GraphItem2ThingTransformer());
+                      new GraphEntity2ThingTransformer());
 
-            var factory = new BinaryGraphFactory();
+            var factory = new EntityBinaryGraphFactory();
             factory.Graph = graphPair;
             factory.Count = RepeatCount;
             factory.AddDensity = true;
@@ -164,7 +164,7 @@ namespace Limada.Tests.ThingGraphs {
         public virtual void ProgramminglanguageJavaDeleteTest2() {
             var target = this.Graph;
 
-            var factory = new ThingGraphFactory0<ProgrammingLanguageFactory>();
+            var factory = new ThingEntityGraphFactory<EntityProgrammingLanguageFactory>();
 
             factory.Populate(target);
 
@@ -176,7 +176,7 @@ namespace Limada.Tests.ThingGraphs {
             var pair = new HollowGraphPair<IGraphEntity, IThing, IGraphEdge, ILink> (
                 new Limaki.Graphs.Graph<IGraphEntity, IGraphEdge> (),
                 target,
-                new GraphItem2ThingTransformer ()
+                new GraphEntity2ThingTransformer ()
                 );
 
             pair.Mapper.ConvertSourceSink();

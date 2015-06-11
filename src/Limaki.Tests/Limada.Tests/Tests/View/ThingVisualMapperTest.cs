@@ -31,33 +31,32 @@ using Id = System.Int64;
 namespace Limada.Tests.View {
 
     public class ThingVisualMapperTest : BasicThingGraphTest {
-        
-        public override void Setup() {
-            base.Setup();
+
+        public override void Setup () {
+            base.Setup ();
 
         }
 
         [Test]
-        public virtual void Prove() {
-            base.AddData();
-            var visualGraph = new VisualGraph();
+        public virtual void Prove () {
+            base.AddData ();
+            var visualGraph = new VisualGraph ();
             var mapper =
-                new GraphMapper<IThing, IVisual, ILink, IVisualEdge>(
-                (IThingGraph)this.Graph, 
+                new GraphMapper<IThing, IVisual, ILink, IVisualEdge> (
+                (IThingGraph)this.Graph,
                 visualGraph,
-                new VisualThingTransformer().Reverted());
+                new VisualThingTransformer ().Reverted ());
 
             //mapper.showMarkers = false;
-            mapper.ConvertSinkSource();
-            this.ReportGraph (visualGraph, "ConvertSinkSource");
-            Assert.AreEqual(this.Graph.Count,visualGraph.Count);
-            this.Graph.Clear();
-            mapper.Clear();
-            mapper.ConvertSourceSink();
-            this.ReportGraph (visualGraph, "Reread");
-            Assert.AreEqual(this.Graph.Count, visualGraph.Count);
+            mapper.ConvertSinkSource ();
+            Assert.AreEqual (this.Graph.Count, visualGraph.Count);
+            this.Graph.Clear ();
+            mapper.Clear ();
+            mapper.ConvertSourceSink ();
+            this.ReportGraph (this.Graph, "Reread");
+            Assert.AreEqual (this.Graph.Count, visualGraph.Count);
 
-            ReportSummary();
+            ReportSummary ();
 
         }
 

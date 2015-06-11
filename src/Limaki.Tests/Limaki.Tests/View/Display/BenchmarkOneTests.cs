@@ -1,3 +1,17 @@
+/*
+ * Limaki 
+ * 
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.
+ * 
+ * Author: Lytico
+ * Copyright (C) 2008-2014 Lytico
+ *
+ * http://www.limada.org
+ * 
+ */
+
 using Limaki.Actions;
 using Limaki.Drawing;
 using Limaki.Tests.View.Visuals;
@@ -16,11 +30,11 @@ namespace Limaki.Tests.View.Display {
 
     public class BenchmarkOneTests : VisualsDisplayTest {
 
-        BenchmarkOneSceneFactory _factory = null;
-        BenchmarkOneSceneFactory Factory {
+        EntityBenchmarkOneSceneFactory _factory = null;
+        EntityBenchmarkOneSceneFactory Factory {
             get {
                 if (_factory == null) {
-                    _factory = new BenchmarkOneSceneFactory ();
+                    _factory = new EntityBenchmarkOneSceneFactory ();
                 }
                 return _factory;
 
@@ -30,7 +44,7 @@ namespace Limaki.Tests.View.Display {
         public override IGraphScene<IVisual, IVisualEdge> Scene {
             get {
                 if (_scene == null) {
-                    base.Scene = Factory.Scene;
+                    base.Scene = Factory.NewScene ();
                 }
                 return base.Scene;
             }
@@ -48,7 +62,7 @@ namespace Limaki.Tests.View.Display {
 
             if (Display != null) {
                 oldlayout = Display.Layout;
-                Display.Layout = new BenchmarkOneSceneFactory.LongtermPerformanceSceneLayout (
+                Display.Layout = new EntityBenchmarkOneSceneFactory.LongtermPerformanceSceneLayout (
                     () => { return Display.Data; }, Factory.styleSheet);
                 Display.StyleSheet = Factory.styleSheet;
             }

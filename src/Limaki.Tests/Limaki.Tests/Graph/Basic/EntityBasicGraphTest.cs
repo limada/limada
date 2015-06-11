@@ -22,10 +22,12 @@ using NUnit.Framework;
 
 namespace Limaki.Tests.Graph.Basic {
 
-    public class BasicEntityGraphTest : BasicGraphTests<IGraphEntity, IGraphEdge> {
+    public class EntityBasicGraphTest : BasicGraphTests<IGraphEntity, IGraphEdge> {
+
         public override BasicGraphTestDataFactory<IGraphEntity, IGraphEdge> GetFactory() {
             return new BasicEntityGraphTestDataFactory();
         }
+
         [Test]
         public override void AddNothing() {
             base.AddNothing();
