@@ -52,7 +52,7 @@ namespace Xwt.Headless.Backend {
         }
 
         public override void ExitApplication () {
-            throw new NotImplementedException();
+            
         }
 
         public override void InvokeAsync (Action action) {
