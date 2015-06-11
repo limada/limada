@@ -124,6 +124,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
         bool Check ();
         void Fold (Action fold);
         void Hide ();
+        void Delete ();
     }
 
     public interface IGraphSceneKeyFolding<TItem, TEdge>: IKeyAction
@@ -153,9 +154,11 @@ namespace Limaki.View.Viz.UI.GraphScene {
             Action<Action> fold = a => Folding.Fold (a);
 
             if (e.Key == Key.Delete && e.Modifiers == ModifierKeys.None) {
-                folder.Hide ();
+                Folding.Hide ();
+
             } else if (e.Key == Key.Delete && (e.Modifiers == ModifierKeys.Control)) {
-                folder.Delete ();
+                Folding.Delete ();
+
             } else if ((e.Key == Key.NumPadAdd || e.Key == Key.Plus) && e.Modifiers == ModifierKeys.None) {
                 fold (() => folder.Expand (false));
 
