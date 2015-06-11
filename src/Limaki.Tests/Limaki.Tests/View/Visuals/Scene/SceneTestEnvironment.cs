@@ -69,9 +69,9 @@ namespace Limaki.Tests.View.Visuals {
 
         public void EnsureScene () {
             if (_scene == null) {
-                var g = this.SampleFactory.Scene.Graph;
-                g = new SubGraph<IVisual, IVisualEdge> (
-                    ((SampleGraphPairFactory<IVisual, TItem, IVisualEdge, TEdge>)this.SampleFactory).GraphPair,
+                var s = this.SampleFactory.NewScene ();
+                var g = new SubGraph<IVisual, IVisualEdge> (
+                    s.Graph,
                     new VisualGraph ());
                 _scene = new Scene ();
                 _scene.Graph = g;

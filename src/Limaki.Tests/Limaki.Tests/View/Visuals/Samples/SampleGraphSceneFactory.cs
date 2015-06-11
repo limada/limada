@@ -39,18 +39,11 @@ namespace Limaki.Tests.View.Visuals {
         /// <summary>
         /// Creates a new scene and populates it
         /// </summary>
-        public virtual IGraphScene<TSinkItem, TSinkEdge> Scene {
-            get {
-                var result = CreateScene ();
-                Populate ();
-                result.Graph = this.Graph;
-                return result;
-            }
-        }
-
-        public virtual void PopulateScene (IGraphScene<TSinkItem, TSinkEdge> scene) {
-            Populate (scene.Graph);
-            scene.ClearSpatialIndex ();
+        public virtual IGraphScene<TSinkItem, TSinkEdge> NewScene () {
+            var result = CreateScene ();
+            Populate (this.Graph);
+            result.Graph = this.GraphPair ?? this.Graph;
+            return result;
         }
 
         public void EnsureShapes (IGraphSceneLayout<TSinkItem, TSinkEdge> layout) {

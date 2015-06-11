@@ -26,9 +26,8 @@ namespace Limaki.Tests.View.Visuals {
     /// </summary>
     public interface ISampleGraphSceneFactory : ISampleGraphFactory<IVisual, IVisualEdge> {
 
-        IGraphScene<IVisual, IVisualEdge> Scene { get; }
+        IGraphScene<IVisual, IVisualEdge> NewScene ();
 
-        void PopulateScene (IGraphScene<IVisual, IVisualEdge> scene);
     }
 
 }
