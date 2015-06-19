@@ -225,7 +225,7 @@ namespace Limaki.Data.db4o {
                 } catch (Exception ex) {
                     Trace.TraceError (ex.Message);
                 }
-                if (eventType == GraphEventType.Remove) {
+                if (eventType == GraphEventType.Remove || eventType == GraphEventType.Add) {
                     // this is done by commit:
                     //Remove (edge);
                     RemoveCached (edge);
