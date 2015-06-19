@@ -8,9 +8,9 @@ namespace Limaki.View.Visuals {
         /// <summary>
         /// creates a visual, created and assigned with content
         /// </summary>
-        /// <param name="graph"></param>
-        /// <param name="content"></param>
-        /// <returns></returns>
+        /// <param name="graph">can be null</param>
+        /// <param name="content">can be null</param>
+        /// <returns>can be null</returns>
         IVisual VisualOfContent(IGraph<IVisual, IVisualEdge> graph, Content<Stream> content);
 
 

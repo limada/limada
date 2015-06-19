@@ -50,6 +50,7 @@ namespace Limaki.Contents.IO {
             return sink;
         }
 
+
         /// <summary>
         /// html dragdrop delivers fragments
         /// so extract the hmtl of the fragment
@@ -145,7 +146,7 @@ namespace Limaki.Contents.IO {
 
                 var notEncoded = false;
 
-                parser.NotEndoced = stuff => {
+                parser.NotEncoded = stuff => {
                     var co = stuff.Text.ToString (stuff.Position, 1);
                     var c = System.Net.WebUtility.HtmlEncode (co);
                     // HtmlEncode doesn't replace special unicode chars

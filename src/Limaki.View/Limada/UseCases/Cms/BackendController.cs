@@ -32,6 +32,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Limaki.Drawing.Styles;
+using Limaki.View.Viz.Mesh;
 
 namespace Limada.UseCases.Cms {
 
@@ -110,7 +111,9 @@ namespace Limada.UseCases.Cms {
                 return graph.SchemaEdgeFilter (link) &&
                        !graph.Hiddens.Contains (idLink.Marker);
             };
-            schema.EnsurceDefaultThings (graph);
+
+            schema.EnsureDefaultThings (graph);
+
         }
 
         public IThing Topic () {

@@ -45,7 +45,7 @@ namespace Limaki.WebServers {
                 webResponse = webRequest.GetResponse();
 
                 var contentLength = webResponse.ContentLength;
-                Stream ReceiveStream = webResponse.GetResponseStream();
+                var responseStream = webResponse.GetResponseStream();
 
                 if (contentLength > 0) {
 
@@ -55,10 +55,9 @@ namespace Limaki.WebServers {
 
                     int bytesRead = 1;
                     while (pos < contentLength && bytesRead != 0) {
-                        bytesRead = ReceiveStream.Read(result.Data, pos, (int)contentLength - pos);
+                        bytesRead = responseStream.Read(result.Data, pos, (int)contentLength - pos);
                         pos += bytesRead;
                     }
-
 
                     if (pos == contentLength)
                         result.Success = true;
@@ -71,7 +70,7 @@ namespace Limaki.WebServers {
                     var totalReceived = 0;
                     var buff = new byte[1024];
                     while (bytesReceived != 0) {
-                        bytesReceived = ReceiveStream.Read(buff, 0, buff.Length);
+                        bytesReceived = responseStream.Read(buff, 0, buff.Length);
                         totalReceived += bytesReceived;
                         stream.Write(buff, 0, bytesReceived);
                     }
@@ -81,7 +80,7 @@ namespace Limaki.WebServers {
                     stream.Close ();
                     result.Success = true;
                 }
-                ReceiveStream.Close();
+                responseStream.Close();
 
                 result.MimeType = webResponse.ContentType;
 

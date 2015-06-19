@@ -255,20 +255,20 @@ namespace Limada.View.Vidgets {
         }
 
 
-        public virtual bool AddToSheets(IThingGraph graph, Int64 sheetId) {
-            var thing = graph.GetById(sheetId) as IStreamThing;
-                if (thing != null && thing.StreamType == ContentTypes.LimadaSheet) {
-                    var add = graph.Edges(thing).Where(l => l.Marker.Id != CommonSchema.DescriptionMarker.Id).Count() == 0;
-                    if(add) {
-                        var sheets = TryAddSomeThing(graph, TopicSchema.Sheets);
-                        var sheetMarker = TryAddSomeThing(graph, TopicSchema.SheetMarker);
-                        TryAddSomeThing(graph, TopicSchema.TopicToSheetsLink);
-                        var factory = Registry.Factory.Create<IThingFactory>();
-                        var link = factory.CreateEdge(sheets, thing, sheetMarker);
-                        graph.Add(link);
-                    }
-                    return add;
+        public virtual bool AddToSheets (IThingGraph graph, Int64 sheetId) {
+            var thing = graph.GetById (sheetId) as IStreamThing;
+            if (thing != null && thing.StreamType == ContentTypes.LimadaSheet) {
+                var add = graph.Edges (thing).Where (l => l.Marker.Id != CommonSchema.DescriptionMarker.Id).Count () == 0;
+                if (add) {
+                    var sheets = TryAddSomeThing (graph, TopicSchema.Sheets);
+                    var sheetMarker = TryAddSomeThing (graph, TopicSchema.SheetMarker);
+                    TryAddSomeThing (graph, TopicSchema.TopicToSheetsLink);
+                    var factory = Registry.Factory.Create<IThingFactory> ();
+                    var link = factory.CreateEdge (sheets, thing, sheetMarker);
+                    graph.Add (link);
                 }
+                return add;
+            }
             return false;
         }
 

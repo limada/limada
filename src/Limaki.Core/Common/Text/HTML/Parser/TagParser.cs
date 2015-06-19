@@ -69,23 +69,27 @@ namespace Limaki.Common.Text.HTML.Parser {
             }
         }
 
-        public Action<Stuff> NotEndoced;
+        public Action<Stuff> NotEncoded;
 
         private void OnNotEndoced () {
-            if (NotEndoced != null) {
-                NotEndoced (_stuff);
+            if (NotEncoded != null) {
+                NotEncoded (_stuff);
             }
         }
 
         private void Watch() {
+            Action onText = () => {
+                                State = Parser.State.Text;
+                                _stuff.Position--;
+                                OnText ();
+                                _stuff.Position++;
+                                _stuff.Origin = _stuff.Position;
+                            };
+
             //Bei diesen Zeichen ist u.U. etwas zu unternehmen
             if (_stuff.State.Equals(Parser.State.Prename)) {
                 if (Letter(_actual)) {
-                    State = Parser.State.Text;
-                    _stuff.Position--;
-                    OnText();
-                    _stuff.Position++;
-                    _stuff.Origin = _stuff.Position;
+                    onText ();
                     State = Parser.State.Name;
                 }
             }
@@ -107,20 +111,12 @@ namespace Limaki.Common.Text.HTML.Parser {
                 }
             } else if (_actual.Equals('!')) {
                 if (_stuff.State.Equals(Parser.State.Prename)) {
-                    State = Parser.State.Text;
-                    _stuff.Position--;
-                    OnText();
-                    _stuff.Position++;
-                    _stuff.Origin = _stuff.Position;
+                    onText ();
                     State = Parser.State.Commenttag;
                 }
             } else if (_actual.Equals('/')) {
                 if (_stuff.State.Equals(Parser.State.Prename)) {
-                    State = Parser.State.Text;
-                    _stuff.Position--;
-                    OnText();
-                    _stuff.Position++;
-                    _stuff.Origin = _stuff.Position;
+                    onText ();
                     State = Parser.State.Endtag;
                 } else if (_stuff.State.Equals(Parser.State.Name)) {
                     State = Parser.State.Solotag;

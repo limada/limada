@@ -10,7 +10,7 @@ namespace Limada.UseCases.Cms {
         /// </summary>
         public static readonly IThing Articles = Thing<string> ("Articles", 0x7c5ad5257cd97092);
 
-        public virtual void EnsurceDefaultThings (IThingGraph graph) {
+        public virtual void EnsureDefaultThings (IThingGraph graph) {
             if (graph.GetById (ChannelRoot.Id) == null)
                 graph.Add (ChannelRoot);
             if (graph.GetById (Articles.Id) == null)
