@@ -15,6 +15,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Basic\ThingTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\DescriptionSampleFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\DigidocSampleFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\GraphEntity2ThingTransformer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\MapperTester.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\ThingFactoryTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
@@ -24,10 +26,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\ThingGraphs\ThingGraphDeleteItemsTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\ThingGraphs\ThingGraphTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\ThingGraphs\ThingGraphTestBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\GraphItem2ThingTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\GraphMapperTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\GraphPairTest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\SimpleDescriptionSampleFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\ThingGraphUtilTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\ModelHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\Model\SheetTest.cs" />
@@ -47,10 +47,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\Graph\Basic\EntityBasicGraphTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\Graph\Samples\EntitySampleFactories.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\EntityBenchmarkOneSceneFactory.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\EntityTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\Samples\SampleGraphSceneFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\SceneMeshTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\SceneMeshTestBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\VisualEntityTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\HeadlessContextResourceLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.Headless\VidgetBackends\ImageMissingStuffExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\Scene\BinarySceneTest.cs" />
