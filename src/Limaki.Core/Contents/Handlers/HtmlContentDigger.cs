@@ -37,8 +37,8 @@ namespace Limaki.Contents.IO {
                 return sink;
             var buffer = ByteUtils.GetBuffer(source.Data, (int)source.Data.Length); 
             var s = (TextHelper.IsUnicode(buffer) ? 
-                Encoding.Unicode.GetString(buffer) : 
-                Encoding.ASCII.GetString(buffer));
+                Encoding.Unicode.GetString(buffer) :
+                Encoding.UTF8.GetString (buffer)); 
             if (Fragment2Html (s, sink)) {
                 buffer = ByteUtils.GetBuffer (sink.Data, (int) sink.Data.Length);
                 s = Encoding.Default.GetString (buffer);
