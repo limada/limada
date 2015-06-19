@@ -66,6 +66,10 @@ namespace Limaki.Contents.IO {
             return FirstOrDefault (_contentIos.Where (sinkIo => sinkIo.Detector.Supports (streamType)));
         }
 
+        public virtual IContentIo<TSource> FindMime (string mimeType, IoMode mode) {
+            return FirstOrDefault (_contentIos.Where (sinkIo => sinkIo.Detector.ContentSpecs.Any(s=>s.MimeType == mimeType) && sinkIo.IoMode.HasFlag (mode)));
+        }
+
         public IEnumerator<IContentIo<TSource>> GetEnumerator() {
             return _contentIos.GetEnumerator();
         }
