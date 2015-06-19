@@ -34,6 +34,9 @@ namespace Limada.View.VisualThings {
         /// <returns></returns>
         public virtual IVisual VisualOfContent (IGraph<IVisual, IVisualEdge> graph, Content<Stream> content) {
             
+            if (content == null)
+                return null;
+
             IVisual result = null;
             var sourceGraph = graph.Source<IVisual, IVisualEdge, IThing, ILink>();
             if (sourceGraph != null) {
