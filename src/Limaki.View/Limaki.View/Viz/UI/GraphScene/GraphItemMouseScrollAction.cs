@@ -25,7 +25,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
 		where TEdge : IEdge<TItem>, TItem {
 
 		public GraphItemMouseScrollAction():base() {
-			Priority = ActionPriorities.SelectionPriority - 50;
+			Priority = ActionPriorities.SelectionPriority - 500;
             MoveIfItemHit = false;
 		}
 

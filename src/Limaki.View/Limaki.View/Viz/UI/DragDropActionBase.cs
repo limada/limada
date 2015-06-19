@@ -15,7 +15,7 @@ namespace Limaki.View.Viz.UI {
     /// </summary>
     public abstract class DragDropActionBase : MouseDragActionBase, IDropAction {
         protected DragDropActionBase (): base() {
-            this.Priority = ActionPriorities.SelectionPriority + 30;
+            this.Priority = ActionPriorities.SelectionPriority + 300;
             this.HitSize = 5;
             
         }

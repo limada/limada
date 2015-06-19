@@ -27,7 +27,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
     where TEdge:TItem,IEdge<TItem>{
         public GraphItemMultiSelector() : base() {
             this.ShowGrips = false;
-            this.Priority = ActionPriorities.SelectionPriority + 5;
+            this.Priority = ActionPriorities.SelectionPriority + 50;
         }
 
 

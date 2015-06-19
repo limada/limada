@@ -203,6 +203,8 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
         public GraphSceneMouseFolding (IGraphSceneFolding<TItem, TEdge> folding)
             : base () {
+            // lower than MoveResize
+            Priority = ActionPriorities.SelectionPriority - 80;
             this.Behaviour = DragBehaviour.DoubleClick;
             this.Folding = folding;
         }

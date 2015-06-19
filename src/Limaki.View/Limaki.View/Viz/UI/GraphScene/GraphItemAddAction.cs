@@ -25,7 +25,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
         where TEdge : TItem, IEdge<TItem> {
 
         public GraphItemAddAction() : base() {
-            this.Priority = ActionPriorities.SelectionPriority - 20;
+            this.Priority = ActionPriorities.SelectionPriority - 200;
         }
 
         public override void OnMouseDown(MouseActionEventArgs e) {

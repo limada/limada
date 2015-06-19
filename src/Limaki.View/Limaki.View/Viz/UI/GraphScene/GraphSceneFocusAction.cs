@@ -33,7 +33,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
         public GraphSceneFocusAction()
             : base() {
-            this.Priority = ActionPriorities.SelectionPriority - 10;
+            this.Priority = ActionPriorities.SelectionPriority - 100;
         }
 
         public Func<ICamera> CameraHandler { get; set; }

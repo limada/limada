@@ -29,7 +29,7 @@ namespace Limaki.View.Viz.Visuals {
     public class AddVisualEdgeAction : GraphEdgeChangeAction<IVisual,IVisualEdge> {
 
         public AddVisualEdgeAction(): base() {
-            this.Priority = ActionPriorities.SelectionPriority + 10;
+            this.Priority = ActionPriorities.SelectionPriority + 100;
         }
 
         public virtual Func<IGraphSceneLayout<IVisual, IVisualEdge>> LayoutHandler { get; set; }

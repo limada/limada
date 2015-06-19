@@ -30,7 +30,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
     where TEdge:TItem, IEdge<TItem> {
 
         public GraphEdgeChangeAction(): base() {
-            this.Priority = ActionPriorities.SelectionPriority - 20;
+            this.Priority = ActionPriorities.SelectionPriority - 200;
         }
 
         public virtual Func<IGraphScene<TItem, TEdge>> SceneHandler { get; set; }

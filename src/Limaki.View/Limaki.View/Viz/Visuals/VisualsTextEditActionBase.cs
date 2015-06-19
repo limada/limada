@@ -32,7 +32,7 @@ namespace Limaki.View.Viz.Visuals {
     public abstract class VisualsTextEditActionBase:MouseTimerActionBase, IKeyAction, IEditAction {
 
         protected VisualsTextEditActionBase (): base() {
-            this.Priority = ActionPriorities.SelectionPriority - 30;
+            this.Priority = ActionPriorities.SelectionPriority - 300;
         }
 
         protected VisualsTextEditActionBase (

@@ -34,7 +34,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
         public GraphItemMoveResizeAction() {
             // higher than GraphSceneFocusAction (SelectionPriority - 10): click and move: start moving 
             // lower than GraphSceneFocusAction: click and move: starts dragging  
-            Priority = ActionPriorities.SelectionPriority - 9;
+            Priority = ActionPriorities.SelectionPriority - 90;
             FocusFilter = e => e;
         }
 
