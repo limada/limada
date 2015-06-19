@@ -30,7 +30,7 @@ namespace Limaki.View.Viz.UI {
             Behaviour = DragBehaviour.Dragger;
 		}
 
-        protected virtual Point LastMousePos { get; set; }
+        public virtual Point LastMousePos { get; protected set; }
         protected virtual long LastMouseTime { get; set; }
 
         public enum DragBehaviour {

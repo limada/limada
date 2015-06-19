@@ -133,11 +133,11 @@ namespace Limaki.View.Viz.UI {
 
         #region Mouse-Handling
 
-        protected override Point LastMousePos {
+        public override Point LastMousePos {
             get {
                 return base.LastMousePos;
             }
-            set {
+            protected set {
                 if (resizing) {
                     var _value = value;
                     switch (hitAnchor) {
