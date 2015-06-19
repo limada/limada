@@ -107,7 +107,7 @@ namespace Limada.View.Vidgets {
             
         }
 
-        public void SaveChanges(IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays, ISheetManager sheetManager, Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow) {
+        public void SaveChanges(IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays, ISheetManager sheetManager, bool ask) {
             IGraph<IVisual, IVisualEdge> graph = null;
             foreach (var display in displays) {
                 if (graph == null)
@@ -122,7 +122,8 @@ namespace Limada.View.Vidgets {
 
             Action<SceneInfo> sheetVisitor = (info) => {
                 if (info.State.Dirty && !info.State.Hollow) {
-                    if (MessageBoxShow("This sheet has been changed. Do you want to save it?", "Sheet " + info.Name, MessageBoxButtons.YesNo) == DialogResult.Yes) {
+                    var saveSheet = !ask || Registry.Pooled<IMessageBoxShow> ().Show ("This sheet has been changed. Do you want to save it?", "Sheet " + info.Name, MessageBoxButtons.YesNo) == DialogResult.Yes;
+                    if (saveSheet) {
                         var sheet = sheetManager.GetFromStore(info.Id);
                         if (sheet != null) {
                             sheetManager.SaveStreamInGraph(sheet, graph, info);

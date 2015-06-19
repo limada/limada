@@ -77,6 +77,7 @@ namespace Limada.UseCases {
                 useCase.VisualsDisplayHistory.Store(sceneInfo);
                 //useCase.SplitViewToolStrip.Attach(splitView.CurrentDisplay);
             };
+            useCase.AskForVisualsDisplayHistorySaveChanges = true;
             splitView.VisualsDisplayHistory = useCase.VisualsDisplayHistory;
             splitView.SheetManager = useCase.SheetManager;
             

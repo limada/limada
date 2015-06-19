@@ -106,9 +106,11 @@ namespace Limada.UseCases {
             GraphSceneUiManager.ImportRawSource ();
         }
 
+        public bool AskForVisualsDisplayHistorySaveChanges { get; set; }
+
         public virtual void SaveChanges () {
             var displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { SplitView.Display1, SplitView.Display2 };
-            VisualsDisplayHistory.SaveChanges (displays, SheetManager, MessageBoxShow);
+            VisualsDisplayHistory.SaveChanges (displays, SheetManager, AskForVisualsDisplayHistorySaveChanges);
             FavoriteManager.SaveChanges (displays);
         }
 
