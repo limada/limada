@@ -79,7 +79,8 @@ namespace Limaki.View.Viz.UI {
 
             if (Behaviour == DragBehaviour.DoubleClick) {
                 var now = Environment.TickCount;
-                Resolved = (now - LastMouseTime) <= SystemInformation.DoubleClickTime;
+                Resolved = ((now - LastMouseTime) <= SystemInformation.DoubleClickTime)
+                           && CheckDoubleClickHit (e.X, e.Y);
             }
             LastMouseTime = Environment.TickCount;
         }
