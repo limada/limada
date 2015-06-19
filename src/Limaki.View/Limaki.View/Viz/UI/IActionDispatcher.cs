@@ -29,6 +29,10 @@ namespace Limaki.View.Viz.UI {
         bool UserEventsDisabled { get; set; }
     }
 
-       
+    public static class ActionDispatcherExtensions {
+        public static void PriorityChanged (this IActionDispatcher disp, IAction action) {
+            disp.Remove (action);
+            disp.Add (action);
+        }
     }
 }
