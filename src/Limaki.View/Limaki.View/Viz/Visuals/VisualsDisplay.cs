@@ -66,7 +66,7 @@ namespace Limaki.View.Viz.Visuals {
             };
 
             display.ActionDispatcher.Add (new GraphSceneKeyFolding<IVisual, IVisualEdge> (folding));
-            display.ActionDispatcher.Add (new GraphSceneMouseFolding<IVisual, IVisualEdge> (folding));
+            display.ActionDispatcher.Add (new GraphSceneMouseFolding<IVisual, IVisualEdge> (folding, () => display.Viewport.Camera));
 
             var addGraphEdgeAction = new AddVisualEdgeAction {
                 SceneHandler = this.GraphScene,

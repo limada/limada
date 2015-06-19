@@ -22,6 +22,8 @@ using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Rendering;
 using Xwt;
+using Limaki.Drawing;
+using Limaki.Actions;
 
 namespace Limaki.View.Viz.UI.GraphScene {
 
@@ -198,20 +200,22 @@ namespace Limaki.View.Viz.UI.GraphScene {
         where TEdge : TItem, IEdge<TItem> {
 
         public IGraphSceneFolding<TItem, TEdge> Folding { get; protected set; }
+        public Func<ICamera> Camera { get; protected set; }
 
         public int HitSize { get; set; }
 
-        public GraphSceneMouseFolding (IGraphSceneFolding<TItem, TEdge> folding)
-            : base () {
+        public GraphSceneMouseFolding (IGraphSceneFolding<TItem, TEdge> folding, Func<ICamera> camera) : base () {
             // lower than MoveResize
             Priority = ActionPriorities.SelectionPriority - 80;
             this.Behaviour = DragBehaviour.DoubleClick;
             this.Folding = folding;
+            this.Camera = camera; 
         }
 
         protected override bool CheckDoubleClickHit (double x, double y) {
             var scene = Folding.SceneHandler ();
-            return scene.Hit (new Point (x, y), HitSize) == scene.Focused;
+            var pt = Camera ().ToSource (new Point (x, y));
+            return scene.Hit (pt, HitSize) == scene.Focused;
         }
 
         protected override void EndAction () {
@@ -232,9 +236,12 @@ namespace Limaki.View.Viz.UI.GraphScene {
         public static IGraphSceneFolding<TItem, TEdge> Folding<TItem, TEdge> (this IDisplay<IGraphScene<TItem, TEdge>> display)
             where TItem : class
             where TEdge : TItem, IEdge<TItem> {
-            var uiAction = display.ActionDispatcher.GetAction<GraphSceneKeyFolding<TItem, TEdge>> ();
+            var uiAction = display.ActionDispatcher.GetAction<GraphSceneMouseFolding<TItem, TEdge>> ();
             if (uiAction != null)
                 return uiAction.Folding;
+            var uikAction = display.ActionDispatcher.GetAction<GraphSceneKeyFolding<TItem, TEdge>> ();
+            if (uikAction != null)
+                return uikAction.Folding;
             return null;
         }
     }
