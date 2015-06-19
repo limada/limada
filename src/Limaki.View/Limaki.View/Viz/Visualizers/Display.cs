@@ -189,7 +189,7 @@ namespace Limaki.View.Viz.Visualizers {
             }
 
             foreach (var action in ActionDispatcher.Actions) {
-                var checkable = action.Value as ICheckable;
+                var checkable = action as ICheckable;
                 if (checkable != null) {
                     checkable.Check ();
                 }

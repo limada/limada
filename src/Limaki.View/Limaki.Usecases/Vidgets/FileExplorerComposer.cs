@@ -288,7 +288,7 @@ namespace Limaki.Usecases.Vidgets {
 
             var disp = display.ActionDispatcher;
             disp.Remove (disp.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>> ());
-            var edit = disp.Actions.Values.FirstOrDefault (a => a is VisualsTextEditActionBase);
+            var edit = disp.Actions.FirstOrDefault (a => a is VisualsTextEditActionBase);
             if (edit != null)
                 disp.Remove (edit);
 

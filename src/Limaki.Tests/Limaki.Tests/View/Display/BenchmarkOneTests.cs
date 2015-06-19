@@ -92,7 +92,7 @@ namespace Limaki.Tests.View.Display {
             action = Display.ActionDispatcher.GetAction<AddVisualEdgeAction> ();
             action.Enabled = false;
 
-            Display.ActionDispatcher.Actions.Values
+            Display.ActionDispatcher.Actions
                 .OfType<IDropAction> ()
                 .ForEach (a => a.Enabled = false);
 
@@ -103,7 +103,7 @@ namespace Limaki.Tests.View.Display {
             IAction action = Display.ActionDispatcher.GetAction<IEditAction> ();
             if (action != null)
                 action.Enabled = editorEnabled;
-            Display.ActionDispatcher.Actions.Values
+            Display.ActionDispatcher.Actions
                 .OfType<IDropAction> ()
                 .ForEach (a => a.Enabled = true);
             if (oldlayout != null)

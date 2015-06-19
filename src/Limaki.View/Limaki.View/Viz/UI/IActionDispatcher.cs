@@ -25,8 +25,9 @@ namespace Limaki.View.Viz.UI {
         void Remove ( IAction action );
         void Add<T> ( T value, ref T action ) where T : class, IAction;
         T GetAction<T>();
-        IDictionary<Type, IAction> Actions { get;}
+        IEnumerable<IAction> Actions { get;}
         bool UserEventsDisabled { get; set; }
+    }
 
        
     }

@@ -38,7 +38,12 @@ namespace Limaki.View.Viz.UI {
             }
         }
 
+        IEnumerable<IAction> IActionDispatcher.Actions {
+            get { return this.Actions.Values; }
+        }
+
         public virtual bool UserEventsDisabled { get; set; }
+
         // Invokers:
         public List<IMouseAction> MouseActions = new List<IMouseAction>();
         public List<IKeyAction> KeyActions = new List<IKeyAction>();
