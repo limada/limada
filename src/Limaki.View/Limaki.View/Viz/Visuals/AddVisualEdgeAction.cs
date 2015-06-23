@@ -37,7 +37,6 @@ namespace Limaki.View.Viz.Visuals {
             get { return LayoutHandler(); }
         }
 
-        
         public virtual IVisual Current {get;set;}
         public override IVisualEdge Edge { get; set; }
 

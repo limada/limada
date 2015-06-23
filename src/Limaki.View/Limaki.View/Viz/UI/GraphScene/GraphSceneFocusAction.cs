@@ -56,11 +56,8 @@ namespace Limaki.View.Viz.UI.GraphScene {
             set { _hitSize = value; }
         }
 
-        private TItem _current = default(TItem);
-        public TItem Current {
-            get { return _current; }
-            set { _current = value; }
-        }
+
+        public TItem Current { get; protected set; }
 
         TItem HitTest(Point p) {
             var result = default(TItem);
@@ -71,11 +68,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
             return result;
         }
 
-        bool _exclusive = false;
-        public override bool Exclusive {
-            get { return _exclusive; }
-            protected set { _exclusive = value; }
-        }
+        public override bool Exclusive { get; protected set; }
 
         void ClearSelection() {
             foreach (var w in Scene.Selected.Elements) {

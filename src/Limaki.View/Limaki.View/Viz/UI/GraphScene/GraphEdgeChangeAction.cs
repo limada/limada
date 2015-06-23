@@ -51,12 +51,8 @@ namespace Limaki.View.Viz.UI.GraphScene {
             }
             set { }
         }
-
-        private TItem _target = default(TItem);
-        public virtual TItem Target {
-            get { return _target; }
-            set { _target = value; }
-        }
+        
+        public virtual TItem Target { get; set; }
 
         public virtual bool Dragging { get; set; }
 
@@ -84,11 +80,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
             }
         }
 
-        bool _exclusive = false;
-        public override bool Exclusive {
-            get { return _exclusive; }
-            protected set { _exclusive = value; }
-        }
+        public override bool Exclusive { get; protected set; }
 
         protected bool rootMoving = false;
         protected bool CheckResizing() {
@@ -193,7 +185,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
                 }
 
                 Scene.Requests.Add(new LayoutCommand<TItem>(Edge, LayoutActionType.Justify));
-                foreach (TItem item in Scene.Graph.Twig(Edge)) {
+                foreach (var item in Scene.Graph.Twig(Edge)) {
                     Scene.Requests.Add(new LayoutCommand<TItem>(item, LayoutActionType.Justify));
                 }
             }

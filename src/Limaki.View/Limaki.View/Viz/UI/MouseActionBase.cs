@@ -43,7 +43,7 @@ namespace Limaki.View.Viz.UI {
         protected virtual void EndAction() {
             if (_resolved) {
                 _resolved = false;
-            }            
+            }
         }
 
         /// <summary>
