@@ -89,6 +89,8 @@ namespace Limaki.Iconerias {
             ToggleVisual = awesome.AsImage (awesome.FaExpand, size);
             HideVisual = awesome.AsImage (awesome.FaEyeSlash, size);
             AddVisual = awesome.AsImage (awesome.FaPlus, size);
+            AddLink = awesome.AsImage (awesome.FaLink, size);
+            CopyItemToAdjacent = awesome.AsImage (awesome.FaCaretSquareORight, size);
 
             Delete = awesome.AsImage (awesome.FaTrashO, size);
 
@@ -195,7 +197,11 @@ namespace Limaki.Iconerias {
 
         public static Image HideVisual { get; set; }
 
+        public static Image CopyItemToAdjacent { get; set; }
+
         public static Image AddVisual { get; set; }
+
+        public static Image AddLink { get; set; }
 
         public static Image Delete { get; set; }
 
