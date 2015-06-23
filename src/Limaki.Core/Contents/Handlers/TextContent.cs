@@ -62,7 +62,7 @@ namespace Limaki.Contents.IO {
             : base() { this.DiggUse = Digg; }
 
         protected virtual Content<Stream> Digg (Content<Stream> source, Content<Stream> sink) {
-            if (!_spot.Supports(source.ContentType))
+            if (!_spot.Supports(source.ContentType) || source.Data == null)
                 return sink;
             var buffer = ByteUtils.GetBuffer(source.Data, 2048);
             var s = (TextHelper.IsUnicode(buffer) ? Encoding.Unicode.GetString(buffer) : Encoding.ASCII.GetString(buffer));
