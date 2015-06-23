@@ -41,8 +41,18 @@ namespace Limaki.View.SwfBackend {
                 e.Clipper.Bounds.ToGdi ());
         }
 
-        public static MouseActionButtons Convert(MouseButtons e) {
-            return (MouseActionButtons)e;
+        public static MouseActionButtons Convert(MouseButtons button) {
+            if (button == MouseButtons.Left)
+                return MouseActionButtons.Left;
+            if (button == MouseButtons.Middle)
+                return MouseActionButtons.Middle;
+            if (button == MouseButtons.Right)
+                return MouseActionButtons.Right;
+            if (button == MouseButtons.XButton1)
+                return MouseActionButtons.XButton1;
+            if (button == MouseButtons.XButton2)
+                return MouseActionButtons.XButton2;
+            return MouseActionButtons.None;
         }
 
         public static KeyActionEventArgs Convert(KeyEventArgs e, System.Drawing.Point location) {
