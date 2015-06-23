@@ -34,5 +34,10 @@ namespace Limaki.View.Viz.UI {
             disp.Remove (action);
             disp.Add (action);
         }
+
+        public static void ChangePriority (this IActionDispatcher disp, IAction action, int priority) {
+            action.Priority = priority;
+            disp.PriorityChanged (action);
+        }
     }
 }

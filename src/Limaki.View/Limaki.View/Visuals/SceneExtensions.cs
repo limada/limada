@@ -86,21 +86,23 @@ namespace Limaki.View.Visuals {
             return edge;
         }
 
-        public static void CreateEdge(IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual leaf) {
-            if (scene != null && leaf != null && root != null && root != leaf) {
-                var edge = CreateEdge (scene);
-                
-                edge.Root = root;
-                edge.Leaf = leaf;
-                scene.Add(edge);
-                if (scene.Markers != null) {
-                    object marker = scene.Markers.DefaultMarker;
-                    scene.Graph.DoChangeData (edge, marker);
-                }
-                scene.Graph.OnGraphChange(edge, GraphEventType.Add);
-                scene.Requests.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Invoke));
-                scene.Requests.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Justify));
+        public static IVisualEdge CreateEdge (IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual leaf) {
+            if (scene == null || leaf == null || root == null || root == leaf)
+                return null;
+
+            var edge = CreateEdge (scene);
+
+            edge.Root = root;
+            edge.Leaf = leaf;
+            scene.Add (edge);
+            if (scene.Markers != null) {
+                object marker = scene.Markers.DefaultMarker;
+                scene.Graph.DoChangeData (edge, marker);
             }
+            scene.Graph.OnGraphChange (edge, GraphEventType.Add);
+            scene.Requests.Add (new LayoutCommand<IVisual> (edge, LayoutActionType.Invoke));
+            scene.Requests.Add (new LayoutCommand<IVisual> (edge, LayoutActionType.Justify));
+            return edge;
         }
 
         public static void AddItem(IGraphScene<IVisual, IVisualEdge> scene, IVisual item, IGraphSceneLayout<IVisual,IVisualEdge> layout, Point pt) {
