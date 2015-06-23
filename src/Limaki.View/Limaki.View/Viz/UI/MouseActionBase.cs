@@ -13,6 +13,7 @@
 
 using Limaki.Actions;
 using Limaki.View.Vidgets;
+using System;
 using Xwt;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 
@@ -39,11 +40,14 @@ namespace Limaki.View.Viz.UI {
         /// <param name="e"></param>
         public abstract void OnMouseMove(MouseActionEventArgs e);
 
+        public virtual Action AfterActionEnd { get; set; }
 
         protected virtual void EndAction() {
             if (_resolved) {
                 _resolved = false;
             }
+            if (AfterActionEnd != null)
+                AfterActionEnd ();
         }
 
         /// <summary>

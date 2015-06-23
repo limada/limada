@@ -138,6 +138,8 @@ namespace Limaki.View.Viz.UI {
                 if (Resolved)
                     DragBoxFromMouseDown = Rectangle.Zero;
                 Resolved = false;
+                if (AfterActionEnd != null)
+                    AfterActionEnd ();
             }
         }
 
