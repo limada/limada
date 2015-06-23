@@ -75,7 +75,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
             if (Scene == null)
                 return;
             base.OnMouseDown(e);
-            if (e.Button == MouseActionButtons.Left) {
+            if (e.Button == MouseActionButtons.Left || e.IsTouchEvent) {
                 var last = Scene.Focused;
                 Current = HitTest(e.Location);
 
@@ -145,7 +145,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
             Current = HitTest(e.Location);
 
             if (Current != null && Scene.Selected.Contains(Current)
-                && e.Button == MouseActionButtons.None) {
+                && (e.Button == MouseActionButtons.None || e.IsTouchEvent)) {
                 if (Scene.Focused != null && !Current.Equals(Scene.Focused)) {
                     Scene.Requests.Add(
                         new StateChangeCommand<TItem>(Scene.Focused,

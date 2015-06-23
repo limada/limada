@@ -10,7 +10,7 @@
  * Lytico
  * 
  * Copyright (c) 2004-2005 Novell, Inc.
- * Copyright (c) 2009 - 20013 Lytico (http://www.limada.org)
+ * Copyright (c) 2009 - 20015 Lytico (http://www.limada.org)
  * 
  */
 
@@ -38,6 +38,13 @@ namespace Limaki.View.Vidgets {
         public ModifierKeys Modifiers { get; protected set; }
         
         public Point Location { get { return new Point(X, Y); } }
+
+        /// <summary>
+        /// this is a hack;
+        /// MouseActionEvents should be refactored to PointerEvents
+        /// see: http://www.w3.org/TR/pointerevents/
+        /// </summary>
+        public bool IsTouchEvent { get; set; }
 
         public MouseActionEventArgs(
             MouseActionButtons button, ModifierKeys modifiers,
