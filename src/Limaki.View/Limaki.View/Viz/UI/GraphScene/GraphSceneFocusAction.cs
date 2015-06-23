@@ -70,17 +70,6 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
         public override bool Exclusive { get; protected set; }
 
-        void ClearSelection() {
-            foreach (var w in Scene.Selected.Elements) {
-                if (!w.Equals(Current))
-                    Scene.Requests.Add(new StateChangeCommand<TItem>(w,
-                                                                     new Pair<UiState>(UiState.Selected, UiState.None)));
-            }
-            Scene.Selected.Clear();
-            if (Scene.Focused != null) {
-                Scene.Selected.Add(Scene.Focused);
-            }
-        }
 
         public override void OnMouseDown(MouseActionEventArgs e) {
             if (Scene == null)
@@ -103,7 +92,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
                 if (last != null && !last.Equals(Current)) {
                     if (e.Modifiers == ModifierKeys.None) {
-                        ClearSelection();
+                        Scene.ClearSelection(Current);
                     }
                     Scene.Requests.Add(
                         new StateChangeCommand<TItem>(last,
@@ -117,7 +106,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
                         &&
                         ! Scene.ItemShape(Scene.Focused).IsBorderHit(sp, HitSize)) {
 
-                        ClearSelection();
+                        Scene.ClearSelection(Current);
                         Scene.Requests.Add(
                             new StateChangeCommand<TItem>(Scene.Focused,
                                                           new Pair<UiState>(UiState.None, UiState.Selected))
@@ -137,9 +126,9 @@ namespace Limaki.View.Viz.UI.GraphScene {
                                                       new Pair<UiState>(UiState.None, UiState.Selected))
                         );
                 }
-                
-                if (Current == null && e.Modifiers == ModifierKeys.None) {
-                    ClearSelection(); 
+
+                if (Current == null && !multiSelect) {
+                    Scene.ClearSelection ();
                 }
             }
         }
