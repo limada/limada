@@ -70,6 +70,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
         public override bool Exclusive { get; protected set; }
 
+        public virtual bool MultiSelect { get; set; }
 
         public override void OnMouseDown(MouseActionEventArgs e) {
             if (Scene == null)
@@ -81,17 +82,18 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
                 Resolved = (Current != null) && (!Current.Equals(Scene.Focused));
 
+                var multiSelect = e.Modifiers == ModifierKeys.Control || MultiSelect;
                 if (Current != null && Current.Equals(last)
-                    && e.Modifiers == ModifierKeys.Control) {
+                    && multiSelect) {
                     Scene.Focused = default(TItem);
                     Scene.Selected.Remove(last);
                     Current = default(TItem);
-                } else if (e.Modifiers != ModifierKeys.Control) {
+                } else if (!multiSelect) {
                     Scene.Focused = Current;
                 }
 
                 if (last != null && !last.Equals(Current)) {
-                    if (e.Modifiers == ModifierKeys.None) {
+                    if (!multiSelect) {
                         Scene.ClearSelection(Current);
                     }
                     Scene.Requests.Add(
@@ -102,7 +104,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
                 if (Scene.Focused != null) {
                     var sp = Camera.ToSource(e.Location);
-                    if (e.Modifiers == ModifierKeys.None
+                    if (!multiSelect
                         &&
                         ! Scene.ItemShape(Scene.Focused).IsBorderHit(sp, HitSize)) {
 
@@ -116,8 +118,8 @@ namespace Limaki.View.Viz.UI.GraphScene {
 
                 if (Resolved && Current != null) {
                     if (!Scene.Selected.Contains(Current)) {
-                        if (e.Modifiers == ModifierKeys.None)
-                            ClearSelection();
+                        if (!multiSelect)
+                            Scene.ClearSelection (Current);
                         Scene.Selected.Add(Current);
                     }
 
