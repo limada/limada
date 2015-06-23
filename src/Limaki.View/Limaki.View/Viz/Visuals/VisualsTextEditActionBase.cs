@@ -175,9 +175,7 @@ namespace Limaki.View.Viz.Visuals {
             if (focusAfterEdit) {
              
                 scene.Selected.Clear();
-                if (scene.Focused != null)
-                    scene.Requests.Add(new StateChangeCommand<IVisual>(scene.Focused, new Pair<UiState>(UiState.Selected, UiState.None)));
-                scene.Focused = Current;
+                scene.SetFocused(Current);
             }
             if (Current != null) {
                 var aligner = new Aligner<IVisual, IVisualEdge>(scene, this.Layout);

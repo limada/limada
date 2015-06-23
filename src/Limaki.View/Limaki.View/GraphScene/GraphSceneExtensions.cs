@@ -67,5 +67,19 @@ namespace Limaki.View.GraphScene {
             scene.Markers = Registry.Factory.Create<IMarkerFacade<TItem, TEdge>> (scene.Graph);
         }
 
+
+        public static void SetFocused<TItem, TEdge> (this IGraphScene<TItem, TEdge> scene, TItem focused) where TEdge : TItem, IEdge<TItem> {
+            var recent = scene.Focused;
+            if (recent != null)
+                new StateChangeCommand<TItem> (focused,
+                    new Pair<UiState> (UiState.Selected, UiState.None));
+                
+            scene.Focused = focused;
+            if (focused != null)
+                scene.Requests.Add (
+                    new StateChangeCommand<TItem> (focused,
+                        new Pair<UiState> (UiState.None, UiState.Selected))
+                    );
+        }
     }
 }

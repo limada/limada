@@ -182,14 +182,8 @@ namespace Limada.View.Vidgets {
                     if (scene.Focused != null && inc != 0) {
                         var iPage = pages.IndexOf(scene.Focused);
                         if (iPage != -1 && pages.Count > iPage + inc && iPage + inc >= 0) {
-                            scene.Requests.Add(
-                                new StateChangeCommand<IVisual>(scene.Focused, new Pair<UiState>(UiState.Focus, UiState.None))
-                                );
-                            scene.Selected.Clear();
-                            scene.Focused = pages[iPage + inc];
-                            scene.Requests.Add(
-                                new StateChangeCommand<IVisual>(scene.Focused, new Pair<UiState>(UiState.None, UiState.Focus))
-                                );
+                            scene.SetFocused (pages[iPage + inc]);
+                            scene.ClearSelection ();
                             pagesDisplay.Perform();
                             pagesDisplay.OnSceneFocusChanged();
                         }
