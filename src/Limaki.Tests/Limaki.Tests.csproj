@@ -96,6 +96,7 @@
     <Compile Include="Limada.Tests\Tests\Model\MapperTester.cs" />
     <Compile Include="Limada.Tests\Tests\Model\ThingFactoryTest.cs" />
     <Compile Include="Limaki.Tests\Graph\Samples\EntitySampleFactories.cs" />
+    <Compile Include="Playground\View\XwtFrontend\PointerEventArgs.cs" />
     <Compile Include="[Obsolete]\SchemaViewTestData0.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oLinqGraphTest.cs" />
     <Compile Include="Limada.Tests\Tests\ThingGraphs\Db4oThingGraphTestBase.cs" />
