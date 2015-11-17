@@ -1,6 +1,9 @@
 using Xwt.Drawing;
 using System;
 
+namespace Xwt {
+}
+
 namespace Xwt.Widgets {
 
     public class ScrollableCanvas : Canvas {

@@ -45,7 +45,7 @@ namespace Limaki.Tests.UseCases {
                         new ToolStripMenuItem("Database refresh Compression", null, (s, e) => {
                             useCase.RefreshCompression();
                         }), 
-                         new ToolStripMenuItem ("Timeline", null, (s, e) => {
+                        new ToolStripMenuItem ("Timeline", null, (s, e) => {
                              useCase.TimelineSheet ();
                         }),
                         new ToolStripMenuItem ("current problem", null, (s, e) => {

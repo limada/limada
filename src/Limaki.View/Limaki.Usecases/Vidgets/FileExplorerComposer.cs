@@ -247,7 +247,7 @@ namespace Limaki.Usecases.Vidgets {
                         var name = Path.GetFileName (file);
                         graph.Add (new VisualDir (this.FileIcon, name));
                     }
-                } catch (UnauthorizedAccessException) {
+                } catch (UnauthorizedAccessException ex) {
                     CurrentPath = oldPath;
                     ShowDir (oldPath);
                     return;

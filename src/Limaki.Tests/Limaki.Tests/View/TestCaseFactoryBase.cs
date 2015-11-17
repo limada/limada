@@ -1,23 +1,17 @@
-using Limada.IO;
+using System;
 using Limada.Schemata;
-using Limada.Usecases;
-using Limaki.Common;
-using Limaki.Drawing;
-using Limaki.Graphs;
 using Limada.UseCases;
 using Limada.View.VisualThings;
+using Limaki.Common;
 using Limaki.Tests.View;
 using Limaki.Tests.View.Display;
 using Limaki.Usecases;
+using Limaki.Usecases.Vidgets;
 using Limaki.View;
-using Limaki.View.GraphScene;
 using Limaki.View.Vidgets;
-using System;
-using System.Linq;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Rendering;
-using Limaki.View.Viz.Visualizers;
 using Limaki.View.Viz.Visuals;
 using Xwt;
 
@@ -33,18 +27,18 @@ namespace Limaki.Tests.UseCases {
             this.TestMessage = (s, m) => useCase.Progress (m, -1, -1);
 
             this.DisplayTest = () => {
-                                   var test = new BenchmarkOneTests();
-                                   var testVidget = new VisualsDisplayTest {
-                                                                               CreateDisplay = () => new VisualsDisplay()
-                                                                           };
+                var test = new BenchmarkOneTests ();
+                var testVidget = new VisualsDisplayTest {
+                    CreateDisplay = () => new VisualsDisplay ()
+                };
 
-                                   test.WriteDetail += TestMessage;
-                                   test.TestWindow = useCase.MainWindow;
-                                   test.Display = useCase.SplitView.Display1;
-                                   test.Setup();
+                test.WriteDetail += TestMessage;
+                test.TestWindow = useCase.MainWindow;
+                test.Display = useCase.SplitView.Display1;
+                test.Setup ();
 
-                                   return test;
-                               };
+                return test;
+            };
         }
 
         public void ShowQuadTree (IGraphScene<IVisual, IVisualEdge> scene) {
