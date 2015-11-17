@@ -97,8 +97,6 @@ namespace Limaki.Common {
             }
         }
 
-#if NET40
-
         protected static readonly IDictionary<int, Delegate> copyActionCache = new Dictionary<int, Delegate>();
 
         public T Copy (T source, T sink) {
@@ -150,7 +148,6 @@ namespace Limaki.Common {
 
             return sink;
         }
-#endif
 
         public IEnumerable<PropertyInfo> Difference (T source, T target) {
             if (source == null || target == null)
@@ -174,36 +171,6 @@ namespace Limaki.Common {
 
         }
 
-        #region Net35 compatibility
-#if NET35
-        public T Copy(T source, T sink) {
-#endif
-#if NET40
-        private T Copy3 (T source, T sink) {
-#endif
-            if (source == null || sink == null) {
-                return sink;
-            }
-
-            var sourceType = source.GetType();
-            var sinkType = sink.GetType();
-            var memberFilter = MemberFilter();
-            cache.AddType(sinkType, memberFilter);
-            var dataMembers = cache.Members(sourceType, memberFilter);
-
-            foreach (var info in dataMembers) {
-                var sourceValue = info.GetValue(source, null);
-                //var prop = desttype.GetProperty(info.Name, info.PropertyType);
-
-                //if (prop!=null && cache.ValidMember(desttype, prop.PropertyType, prop.Name)) {
-                if (cache.ValidMember(sinkType, info.PropertyType, info.Name)) {
-                    cache.SetValue(sinkType, info.PropertyType, info.Name, sink, sourceValue);
-                }
-            }
-            return sink;
-
-        }
-        #endregion
     }
 
 
