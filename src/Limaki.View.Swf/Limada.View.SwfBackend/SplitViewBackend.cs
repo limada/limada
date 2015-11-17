@@ -103,7 +103,7 @@ namespace Limada.View.SwfBackend {
                 control.MouseUp -= ControlGotFocus;
                 control.GotFocus -= ControlGotFocus;
                 //control.Enter += ControlGotFocus;
-                //control.MouseUp += ControlGotFocus;
+                control.MouseUp += ControlGotFocus;
                 control.GotFocus += ControlGotFocus;
             }
         }
