@@ -20,7 +20,32 @@ using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
-    public class WebViewBackend : VidgetBackend<Xwt.WebView>, IWebBrowserBackend, IHistoryAware {
+    public class WebViewBackend : VidgetBackend<WebViewBackend.WebView>, IWebBrowserBackend, IHistoryAware {
+
+        public class WebView : Xwt.WebView, IHistoryAware {
+
+            bool IHistoryAware.CanGoBack {
+                get { return this.CanGoBack; }
+            }
+
+            bool IHistoryAware.CanGoForward {
+                get { return this.CanGoForward; }
+            }
+
+            bool IHistoryAware.GoBack () {
+                this.GoBack ();
+                return true;
+            }
+
+            bool IHistoryAware.GoForward () {
+                this.GoForward ();
+                return true;
+            }
+
+            void IHistoryAware.GoHome () {
+                this.Url = "about:blank";
+            }
+        }
 
         public Vidgets.WebBrowserVidget Frontend { get; protected set; }
 
