@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Xwt;
 using Xwt.SwfBackend;
 
@@ -44,7 +45,14 @@ namespace Limaki.View.SwfBackend.DragDrop {
         }
 
         public object GetValue (TransferDataType type) {
-            return Data.GetData(type.ToSwf());
+            var swftype = type.ToSwf ();
+            var value = Data.GetData (swftype);
+            if (swftype == "HTML Format") {
+                // hack to correct decoding error in Data.GetData
+                var bytes = Encoding.GetEncoding ("Windows-1252").GetBytes ((string)value);
+                value = Encoding.UTF8.GetString (bytes);
+            }
+            return value;
         }
 
         public T GetValue<T> () where T : class {
