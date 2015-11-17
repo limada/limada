@@ -331,12 +331,11 @@ namespace Limaki.View.Viz.Mesh {
             }
         }
 
-        protected virtual TSinkItem LookUp (IGraph<TSinkItem, TSinkEdge> sourceGraph, IGraph<TSinkItem, TSinkEdge> sinkGraph, TSinkItem lookItem) {
+        public virtual TSinkItem LookUp (IGraph<TSinkItem, TSinkEdge> sourceGraph, IGraph<TSinkItem, TSinkEdge> sinkGraph, TSinkItem lookItem) {
             var source = sourceGraph as IGraphPair<TSinkItem, TSinkItem, TSinkEdge, TSinkEdge>;
             var sink = sinkGraph as IGraphPair<TSinkItem, TSinkItem, TSinkEdge, TSinkEdge>;
             if (sourceGraph.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> () != null) {
-                return source.LookUp<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (
-                   sink, lookItem);
+                return source.LookUp<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> (                   sink, lookItem);
             }
             return default (TSinkItem);
         }

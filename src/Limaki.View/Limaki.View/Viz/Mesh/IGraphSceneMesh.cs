@@ -38,5 +38,7 @@ namespace Limaki.View.Viz.Mesh {
         void CopyDisplayProperties (IGraphSceneDisplay<TItem, TEdge> sourceDisplay, IGraphSceneDisplay<TItem, TEdge> targetDisplay);
         IGraph<TItem, TEdge> CreateSinkGraph (IGraph<TItem, TEdge> source);
         IGraphScene<TItem, TEdge> CreateSinkScene (IGraph<TItem, TEdge> sourceGraph);
+
+        TItem LookUp (IGraph<TItem, TEdge> sourceGraph, IGraph<TItem, TEdge> sinkGraph, TItem lookItem);
     }
 }

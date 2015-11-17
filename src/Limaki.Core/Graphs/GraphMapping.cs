@@ -15,12 +15,14 @@
 
 using Limaki.Common;
 using Limaki.Common.IOC;
+using System;
 
 namespace Limaki.Graphs {
     /// <summary>
     /// encapsulates operations on GraphPairs
     /// where the type of TItemTwo and TEdgeTwo are unknown
     /// </summary>
+    [Obsolete("use Mesh")]
     public abstract class GraphMapping : IGraphMapping {
         
         private static IGraphMapping _graphMapping = null;
@@ -43,6 +45,7 @@ namespace Limaki.Graphs {
         public abstract IGraph<TItem, TEdge> CloneGraphPair<TItem, TEdge>(IGraph<TItem, TEdge> source)
             where TEdge : IEdge<TItem>;
 
+        [Obsolete ("use Mesh")]
         public abstract TItem LookUp<TItem, TEdge>(IGraphPair<TItem, TItem, TEdge, TEdge> sourceGraph,
                                                    IGraphPair<TItem, TItem, TEdge, TEdge> targetGraph,
                                                    TItem sourceitem) where TEdge : IEdge<TItem>, TItem;

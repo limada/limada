@@ -100,6 +100,14 @@ namespace Limaki.View.Viz.Mesh {
             return null;
         }
 
+        public TItem LookUp (IGraph<TItem, TEdge> sourceGraph, IGraph<TItem, TEdge> sinkGraph, TItem lookItem) {
+            var backhandler = BackHandler (sourceGraph);
+            if (backhandler != null) {
+                return backhandler.LookUp (sourceGraph, sinkGraph, lookItem);
+            }
+            return default (TItem);
+        }
+
         private void RegisterBackGraph (IGraph<TItem, TEdge> graph) {
             var backMesh = BackHandler (graph);
             if (backMesh != null)
