@@ -53,6 +53,26 @@ namespace Limaki.Tests.UseCases {
             vindow.Show();
         }
 
+        public void ShowFileExplorer (ConceptUsecase useCase) {
+            var vindow = new Vindow { Size = new Size (800, 600) };
+            var fileDisplay = new VisualsDisplay ();
+            vindow.Content = fileDisplay;
+
+            var fileExplorer = new FileExplorerComposer ();
+            fileExplorer.ComposeDisplay (fileDisplay);
+            fileExplorer.FileSelected = f => {
+                
+            };
+            var docFolder = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+            fileExplorer.FileFilter = "*.limo";
+            fileExplorer.ShowCurrent = true;
+            fileExplorer.ShowDir (docFolder);
+
+            fileDisplay.DataChanged ();
+
+            vindow.Show ();
+        }
+
         public void WCFServiceTest (ConceptUsecase usecase) {
 #if WCF
             DataBaseInfo info = new DataBaseInfo();

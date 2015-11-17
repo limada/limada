@@ -48,6 +48,9 @@ namespace Limaki.Tests.UseCases {
                         new ToolStripMenuItem ("Timeline", null, (s, e) => {
                              useCase.TimelineSheet ();
                         }),
+                        new ToolStripMenuItem ("File-Explorer", null, (s, e) => {
+                             this.ShowFileExplorer (useCase);
+                        }),
                         new ToolStripMenuItem ("current problem", null, (s, e) => {
                             this.CurrentProblem (useCase);
                         }),
