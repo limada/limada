@@ -37,6 +37,8 @@ namespace Limaki.View.XwtBackend {
 
         void IVidgetBackend.Invalidate (Rectangle rect) { XwtBackendHelper.VidgetBackendInvalidate(this, rect); }
 
+        public string ToolTipText { get; set; }
+
         #endregion
 
     }

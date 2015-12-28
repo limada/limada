@@ -43,6 +43,7 @@ namespace Limaki.View.SwfBackend.Viz {
                 this.VScroll = value;
             }
         }
+
     }
 
     public abstract class DisplayBackend<T> : DisplayBackend, IDisplayBackend<T> {
@@ -347,7 +348,9 @@ namespace Limaki.View.SwfBackend.Viz {
         #region IVidgetBackend Member
 
         Size IVidgetBackend.Size { get { return this.Size.ToXwt (); } }
-
+        
+        public string ToolTipText { get; set; }
+        
         IVidget IVidgetBackend.Frontend { get { return this.Display; } }
 
         void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {

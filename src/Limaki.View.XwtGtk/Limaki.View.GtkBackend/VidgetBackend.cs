@@ -42,6 +42,8 @@ namespace Limaki.View.GtkBackend {
             set { Widget.VidgetBackendSize (value); }
         }
 
+        public string ToolTipText { get { return Widget.TooltipText; } set { Widget.TooltipText = value; } }
+
         public void Update () { Widget.VidgetBackendUpdate (); }
 
         public void Invalidate () { Widget.VidgetBackendInvalidate (); }

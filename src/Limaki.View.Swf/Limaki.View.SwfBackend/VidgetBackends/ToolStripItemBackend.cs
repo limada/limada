@@ -21,6 +21,13 @@ using LVV = Limaki.View.Vidgets;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <remarks>
+    /// cannot be refactored to VidgetBackend as ToolStripItem is not a Control
+    /// </remarks>
     public abstract class ToolStripItemBackend<T> : IVidgetBackend, ISwfToolStripItemBackend where T : System.Windows.Forms.ToolStripItem {
 
         public IVidget Frontend { get; protected set; }
@@ -42,6 +49,11 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         public Xwt.Size Size {
             get { return Control.Size.ToXwt (); }
             set { Control.Size = value.ToGdi (); }
+        }
+
+        public string ToolTipText {
+            get { return Control.ToolTipText as string; }
+            set { Control.ToolTipText = value; }
         }
 
         public virtual void Invalidate (Xwt.Rectangle rect) {

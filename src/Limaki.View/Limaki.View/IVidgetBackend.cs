@@ -23,6 +23,7 @@ namespace Limaki.View {
 
         IVidget Frontend { get; }
         Size Size { get; }
+        string ToolTipText { get; set; }
 
         void Update();
         void Invalidate();

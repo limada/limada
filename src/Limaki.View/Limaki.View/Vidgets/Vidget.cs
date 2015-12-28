@@ -41,6 +41,8 @@ namespace Limaki.View.Vidgets {
 
         public virtual Size Size { get { return Backend.Size; } }
 
+        public virtual string ToolTipText { get { return Backend.ToolTipText; } set { Backend.ToolTipText = value; } }
+
         public virtual void SetFocus() { Backend.SetFocus (); }
     }
 }

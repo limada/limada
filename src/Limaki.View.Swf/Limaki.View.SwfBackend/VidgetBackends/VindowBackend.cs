@@ -46,6 +46,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             set { this.Size = value.ToGdi (); }
         }
 
+        public string ToolTipText { get; set; }
+
         void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
             this.Invalidate (rect.ToGdi ());
         }

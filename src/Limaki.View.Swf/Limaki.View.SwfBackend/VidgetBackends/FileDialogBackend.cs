@@ -63,7 +63,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             get { throw new ArgumentException(); }
         }
 
-        public void Update () { }
+        public string ToolTipText { get; set; }
+    public void Update () { }
 
         public void Invalidate () { }
 

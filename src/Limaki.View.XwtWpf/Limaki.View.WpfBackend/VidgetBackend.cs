@@ -32,6 +32,11 @@ namespace Limaki.View.WpfBackend {
             set { Control.VidgetBackendSize (value); }
         }
 
+        public string ToolTipText {
+            get { return Control.ToolTip as string; }
+            set { Control.ToolTip = value; }
+        }
+
         public virtual void Invalidate (Xwt.Rectangle rect) {
             Control.VidgetBackendInvalidate(rect);
         }

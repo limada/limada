@@ -43,6 +43,11 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
+        public string ToolTipText {
+            get { return Widget.TooltipText; }
+            set { Widget.TooltipText = value; }
+        }
+
         public virtual void Update () { Widget.VidgetBackendUpdate (); }
 
         public virtual void Invalidate () { Widget.VidgetBackendInvalidate (); }

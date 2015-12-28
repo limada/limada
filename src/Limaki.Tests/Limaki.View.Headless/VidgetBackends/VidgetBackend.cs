@@ -48,6 +48,8 @@ namespace Limaki.View.Headless.VidgetBackends {
         }
 
         public virtual Size Size { get; set; }
+        
+        public string ToolTipText { get; set; }
 
         public void Dispose () {
            
