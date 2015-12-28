@@ -1,7 +1,7 @@
 using Limaki.Iconerias;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
-    partial class TextBoxEditorToolStrip {
+    partial class TextBoxEditorToolStrip0 {
         /// <summary> 
         /// Erforderliche Designervariable.
         /// </summary>

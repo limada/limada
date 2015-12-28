@@ -18,8 +18,8 @@ using System.Windows.Forms;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public partial class TextBoxEditorToolStrip : ToolStrip {
-        public TextBoxEditorToolStrip() {
+    public partial class TextBoxEditorToolStrip0 : ToolStrip {
+        public TextBoxEditorToolStrip0() {
             InitializeComponent();
         }
 
