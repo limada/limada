@@ -13,13 +13,16 @@
  */
 
 using System;
+using Limada.View.Vidgets;
+using Limaki.Common;
+using Limaki.Drawing;
 using Limaki.View;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 
 namespace Limaki.Usecases.Vidgets {
 
-    public interface ISplitView {
+    public interface ISplitView: IDisposable, ICheckable, IVidget {
 
         IGraphSceneDisplay<IVisual, IVisualEdge> CurrentDisplay { get; }
         IVidget ContentVidget { get; }
@@ -29,6 +32,11 @@ namespace Limaki.Usecases.Vidgets {
         IGraphSceneDisplay<IVisual, IVisualEdge> Display2 { get; }
 
         SplitViewMode ViewMode { get; set; }
+
+        VisualsDisplayHistory VisualsDisplayHistory { get; set; }
+        ISheetManager SheetManager { get; set; }
+        FavoriteManager FavoriteManager { get; set; }
+
         void ToggleView();
 
         bool CanGoBackOrForward(bool forward);
@@ -56,6 +64,10 @@ namespace Limaki.Usecases.Vidgets {
         /// 
         /// </summary>
         void ShowInNewWindow ();
+
+        event Action<IVidget> CurrentVidgetChanged;
+
+        void DoDisplayStyleChanged (object sender, EventArgs<IStyle> arg);
     }
 
     public enum SplitViewMode {

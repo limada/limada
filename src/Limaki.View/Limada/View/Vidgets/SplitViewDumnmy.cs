@@ -1,13 +1,16 @@
 using System;
+using Limaki.Common;
+using Limaki.Drawing;
 using Limaki.Usecases.Vidgets;
 using Limaki.View;
+using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Visualizers;
 
 namespace Limada.View.Vidgets {
 
-	public class SplitViewDumnmy : ISplitView {
+	public class SplitViewDumnmy : Vidget, ISplitView {
 
 		public void ChangeData (IGraphScene<IVisual, IVisualEdge> scene) { }
 
@@ -17,6 +20,8 @@ namespace Limada.View.Vidgets {
         public IGraphSceneDisplay<IVisual, IVisualEdge> Display2 { get { return null; } }
 
         public event EventHandler ViewChanged;
+        public event Action<IVidget> CurrentVidgetChanged;
+
         public virtual void ToggleView() { }
 
         SplitViewMode _viewMode = SplitViewMode.GraphContent;
@@ -61,10 +66,25 @@ namespace Limada.View.Vidgets {
            
         }
 
+        public void DoDisplayStyleChanged (object sender, EventArgs<IStyle> arg) {
+          
+        }
 
+        public bool Check () {
+            return true;
+        }
+
+        public override void Dispose () {
+           
+        }
 
         public IVidget ContentVidget {
-            get { throw new NotImplementedException (); }
+            get { return null; }
         }
+
+        public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
+        public ISheetManager SheetManager { get; set; }
+        public FavoriteManager FavoriteManager { get; set; }
+
     }
 }
