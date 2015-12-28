@@ -25,21 +25,22 @@ using Limaki.Common.Text;
 using XD = Xwt.Drawing;
 using System.Collections.Generic;
 using System;
+using Xwt;
 
 // this control uses ideas from RicherTextBox by ???
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public partial class TextViewerBackend : UserControl, IZoomTarget, ITextViewerVidgetBackend {
+    public partial class TextViewerBackend : VidgetBackend<UserControl>, IZoomTarget, ITextViewerVidgetBackend {
 
-        public TextViewerBackend () {
+        protected override void Compose () {
+            base.Compose ();
             InitializeComponent ();
             Multiline = true;
-            innerTextBox.Enter += (sender, args) => { this.OnEnter (args); };
-            innerTextBox.MouseUp += (sender, args) => { this.OnMouseUp (args); };
-            innerTextBox.GotFocus += (sender, args) => { this.OnGotFocus (args); };
+            //innerTextBox.Enter += (sender, args) => { Control.OnEnter (args); };
+            //innerTextBox.MouseUp += (sender, args) => { Control.OnMouseUp (args); };
+            //innerTextBox.GotFocus += (sender, args) => { Control.OnGotFocus (args); };
             EnableAutoDragDrop = true;
-
         }
 
         TextBoxEditorControler _controller = null;
@@ -54,8 +55,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         [Browsable(true)]
-        TextBoxEditorToolStrip _toolStrip = null;
-        public TextBoxEditorToolStrip ToolStrip {
+        TextBoxEditorToolStrip0 _toolStrip = null;
+        public TextBoxEditorToolStrip0 ToolStrip {
             get { return _toolStrip; }
             set {
                 if (value != null) {
@@ -252,36 +253,48 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         #endregion
 
-        #region IVidgetBackend-Implementation
+        private System.Windows.Forms.RichTextBox innerTextBox;
+        private void InitializeComponent () {
+            this.innerTextBox = new System.Windows.Forms.RichTextBox ();
+            Control.SuspendLayout ();
+            // 
+            // innerTextBox
+            // 
+            this.innerTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.innerTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.innerTextBox.Font = new System.Drawing.Font ("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+            this.innerTextBox.Location = new System.Drawing.Point (0, 0);
+            this.innerTextBox.Name = "innerTextBox";
+            this.innerTextBox.Size = new System.Drawing.Size (354, 227);
+            this.innerTextBox.TabIndex = 0;
+            this.innerTextBox.Text = "";
+            // 
+            // TextViewerBackend
+            // 
+            Control.AutoScaleDimensions = new System.Drawing.SizeF (6F, 13F);
+            Control.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Control.Controls.Add (this.innerTextBox);
+            Control.Name = "TextViewerBackend";
+            Control.Size = new System.Drawing.Size (354, 227);
+            Control.ResumeLayout (false);
 
-        public TextViewer Frontend { get; protected set; }
+        }
+        
+        public new TextViewer Frontend { get; protected set; }
 
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override  void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (TextViewer)frontend;
         }
 
-        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
-
-        Xwt.Size IVidgetBackend.Size {
-            get { return this.Size.ToXwt(); }
-        }
-        
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
-            this.Invalidate(rect.ToGdi());
-        }
-
-        void IVidgetBackend.SetFocus () { this.Focus (); }
-
-        #endregion
-
         VidgetBorderStyle ITextViewerVidgetBackend.BorderStyle {
-            get { return (VidgetBorderStyle)this.BorderStyle; }
-            set { this.BorderStyle = (BorderStyle)value; }
+            get { return (VidgetBorderStyle) Control.BorderStyle; }
+            set { Control.BorderStyle = (BorderStyle)value; }
         }
 
         Xwt.Point ITextViewerBackend.AutoScrollOffset {
-            get { return this.AutoScrollOffset.ToXwt(); }
-            set { this.AutoScrollOffset = value.ToGdi(); }
+            get { return Control.AutoScrollOffset.ToXwt(); }
+            set { Control.AutoScrollOffset = value.ToGdi(); }
         }
 
 

@@ -30,50 +30,46 @@ using System.Collections.Generic;
 
 namespace Limada.View.SwfBackend {
 
-    public class SplitViewBackend : SplitContainer, ISplitViewBackend, IDisposable {
+    public class SplitViewBackend : VidgetBackend<SplitContainer>, ISplitViewBackend, IDisposable {
+        
+        public new SplitView0 Frontend { get; protected set; }
 
-        public SplitViewBackend() {
-            InitializeComponent();
-        }
+        protected SplitContainer SplitContainer { get { return Control; } }
 
-        public SplitView0 Frontend { get; protected set; }
-        public void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (SplitView0) frontend;
-            this.Compose();
+            Compose2 ();
         }
 
-        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+        protected override void Compose () {
+            base.Compose ();
+            
+            Control.Dock = System.Windows.Forms.DockStyle.Fill;
+            Control.Margin = new System.Windows.Forms.Padding (2);
+            Control.Name = "SplitView";
+            Control.Panel2MinSize = 0;
+            Control.SplitterWidth = 3;
+            Control.TabIndex = 1;
 
-        protected SplitContainer SplitContainer { get { return this; } }
 
-
-        protected void InitializeComponent () {
-
-            this.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "SplitView";
-            this.Panel2MinSize = 0;
-            this.SplitterWidth = 3;
-            this.TabIndex = 1;
         }
 
-        protected void Compose () {
-
-            var displayBackend1 = Frontend.Display1.Backend as Control;
+        protected void Compose2 () {
+            var displayBackend1 = Frontend.Display1.Backend.ToSwf ();
             displayBackend1.Dock = DockStyle.Fill;
-            SplitContainer.Panel1.Controls.Add(displayBackend1);
+            SplitContainer.Panel1.Controls.Add (displayBackend1);
 
-            var displayBackend2 = Frontend.Display2.Backend as Control;
+            var displayBackend2 = Frontend.Display2.Backend.ToSwf ();
             displayBackend2.Dock = DockStyle.Fill;
-            SplitContainer.Panel2.Controls.Add(displayBackend2);
+            SplitContainer.Panel2.Controls.Add (displayBackend2);
 
             SplitContainer.Panel1.BackColor = displayBackend1.BackColor;
             SplitContainer.Panel2.BackColor = displayBackend1.BackColor;
 
             // this is for mono on linux:
-            ActiveControl = displayBackend1;
+            Control.ActiveControl = displayBackend1;
         }
-
 
         public void InitializeDisplay (IVidgetBackend displayBackend) {
         }
@@ -130,15 +126,15 @@ namespace Limada.View.SwfBackend {
                 };
                 form.FormClosing += (s, e) => onClose();
                 form.Controls.Add (control);
-                form.Show (this.ParentForm);
-                form.Location = this.PointToScreen(new Point (this.Location.X, this.Location.Y+(this.Height-form.Height)/2));
+                form.Show (Control.ParentForm);
+                form.Location = Control.PointToScreen(new Point (Control.Location.X, Control.Location.Y+(Control.Height-form.Height)/2));
                 //form.Height = this.Height/2;
-                Func<Point> calcOffset = () => new Point (form.Location.X - this.ParentForm.Location.X, form.Location.Y- this.ParentForm.Location.Y);
+                Func<Point> calcOffset = () => new Point (form.Location.X - Control.ParentForm.Location.X, form.Location.Y- Control.ParentForm.Location.Y);
                 var offset = calcOffset();
                 form.LocationChanged += (s, e) =>
                     offset = calcOffset ();
-                this.ParentForm.LocationChanged += (s, e) =>
-                     form.Location = new Point (this.ParentForm.Location.X + offset.X, this.ParentForm.Location.Y + offset.Y);
+                Control.ParentForm.LocationChanged += (s, e) =>
+                     form.Location = new Point (Control.ParentForm.Location.X + offset.X, Control.ParentForm.Location.Y + offset.Y);
 
             }
         }
@@ -237,16 +233,16 @@ namespace Limada.View.SwfBackend {
             var textDialog = new TextOkCancelBox {Text = text, Title = title};
 
             var textDialogBackend = textDialog.Backend as TextOkCancelBoxBackend;
-            textDialogBackend.Dock = DockStyle.Top;
+            textDialogBackend.Control.Dock = DockStyle.Top;
 
             var displayBackend = display.Backend as Control;
             if (SplitContainer.Panel1.Contains (displayBackend)) {
-                SplitContainer.Panel1.Controls.Add (textDialogBackend);
+                SplitContainer.Panel1.Controls.Add (textDialogBackend.Control);
             } else if (SplitContainer.Panel2.Contains (displayBackend)) {
-                SplitContainer.Panel2.Controls.Add (textDialogBackend);
+                SplitContainer.Panel2.Controls.Add (textDialogBackend.Control);
             }
 
-            this.ActiveControl = textDialogBackend.TextBox;
+            Control.ActiveControl = textDialogBackend.TextBox;
 
             textDialogBackend.Finish += (e) => {
                 if (e == DialogResult.Ok) {
@@ -265,24 +261,11 @@ namespace Limada.View.SwfBackend {
 
         }
 
-        #region IVidgetBackend-Implementation
-
-        Xwt.Size IVidgetBackend.Size {
-            get { return this.Size.ToXwt(); }
-        }
-
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
-            this.Invalidate(rect.ToGdi());
-        }
-
-        void IVidgetBackend.SetFocus () { this.Focus (); }
-
-        #endregion
-
         #region IDisposable Member
 
-        public void Dispose() {
+        public override void Dispose() {
             this.Frontend.Dispose ();
+            base.Dispose ();
         }
 
         #endregion

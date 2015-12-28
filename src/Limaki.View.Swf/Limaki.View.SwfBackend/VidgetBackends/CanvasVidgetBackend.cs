@@ -20,40 +20,26 @@ using Xwt;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public class CanvasVidgetBackend : UserControl, ICanvasVidgetBackend {
+    public class CanvasVidgetBackend : VidgetBackend<UserControl>, ICanvasVidgetBackend {
 
-        protected override void OnPaint (PaintEventArgs e) {
+        public new ICanvasVidget Frontend { get; protected set; }
 
-            base.OnPaint(e);
-
-            if (Frontend != null)
-                using (var graphics = new GdiContext(e.Graphics)) {
-                    Frontend.DrawContext(new Xwt.Drawing.Context(graphics, Toolkit.CurrentEngine), e.ClipRectangle.ToXwt());
-                }
-        }
-
-
-        #region IVidgetBackend-Implementation
-
-        public ICanvasVidget Frontend { get; protected set; }
-
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (ICanvasVidget) frontend;
         }
 
-        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+        protected override void Compose () {
 
-        Xwt.Size IVidgetBackend.Size {
-            get { return this.Size.ToXwt(); }
+            base.Compose ();
+
+            Control.Paint += (s, e) => {
+                if (Frontend != null)
+                    using (var graphics = new GdiContext (e.Graphics)) {
+                        Frontend.DrawContext (new Xwt.Drawing.Context (graphics, Toolkit.CurrentEngine), e.ClipRectangle.ToXwt ());
+                    }
+            };
         }
-
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
-            this.Invalidate(rect.ToGdi());
-        }
-
-        void IVidgetBackend.SetFocus () { this.Focus (); }
-
-        #endregion
 
     }
 }

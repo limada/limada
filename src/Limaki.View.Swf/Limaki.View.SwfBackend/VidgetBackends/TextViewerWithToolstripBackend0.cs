@@ -20,14 +20,10 @@ using Xwt.GdiBackend;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
 
-    public partial class TextViewerWithToolstripBackend0 : ToolStripContainer, IZoomTarget, ITextViewerWithToolstripVidgetBackend0 {
-        
-        public TextViewerWithToolstripBackend0() {
-            InitializeComponent();
-        }
+    public partial class TextViewerWithToolstripBackend0 : VidgetBackend<ToolStripContainer>, IZoomTarget, ITextViewerWithToolstripVidgetBackend0 {
 
         TextViewerWithToolstrip0 _frontend = null;
-        public TextViewerWithToolstrip0 Frontend {
+        public new TextViewerWithToolstrip0 Frontend {
             get { return _frontend; }
             protected set {
                 if(_frontend!=value) {
@@ -37,11 +33,15 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             }
         }
 
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
-            this.Frontend = (TextViewerWithToolstrip0)frontend;
+        protected override void Compose () {
+            base.Compose ();
+            InitializeComponent ();
         }
 
-        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
+            this.Frontend = (TextViewerWithToolstrip0)frontend;
+        }
 
         private TextViewerBackend _textViewerBackend = null;
         public TextViewerBackend TextViewerBackend {
@@ -59,16 +59,18 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         void SetEditor(TextViewerBackend editor) {
-            this.SuspendLayout ();
-            this.ContentPanel.Controls.Clear();
+            Control.SuspendLayout ();
+            Control.ContentPanel.Controls.Clear();
             if (editor != null) {
-                this.ContentPanel.Controls.Add (editor);
-                editor.Dock = DockStyle.Fill;
-                editor.Enter += ( sender, args) => {this.OnEnter (args);};
-                editor.MouseUp += ( sender,args) => {this.OnMouseUp (args);};
-                editor.GotFocus += ( sender,args) => {this.OnGotFocus (args);};
+                var editorControl = editor.Control;
+                Control.ContentPanel.Controls.Add (editorControl);
+                editorControl.Dock = DockStyle.Fill;
+                // TODO:
+                //editorControl.Enter += (sender, args) => { this.OnEnter (args); };
+                //editorControl.MouseUp += (sender, args) => { this.OnMouseUp (args); };
+                //editorControl.GotFocus += (sender, args) => { this.OnGotFocus (args); };
             }
-            this.ResumeLayout ();
+            Control.ResumeLayout ();
         }
 
         public bool ToolStripVisible {
@@ -76,21 +78,21 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             set { this.TextBoxEditorToolStrip.Visible = value; }
         }
 
-        void SetToolStrip(TextBoxEditorToolStrip toolstrip) {
-            this.SuspendLayout ();
-            this.TopToolStripPanel.Controls.Clear ();
+        void SetToolStrip(TextBoxEditorToolStrip0 toolstrip) {
+            Control.SuspendLayout ();
+            Control.TopToolStripPanel.Controls.Clear ();
             if (toolstrip != null) {
-                this.TopToolStripPanel.Controls.Add (toolstrip);
+                Control.TopToolStripPanel.Controls.Add (toolstrip);
             }
             TextViewerBackend.ToolStrip = toolstrip;
-            this.ResumeLayout ();
+            Control.ResumeLayout ();
         }
 
-        private TextBoxEditorToolStrip _textBoxEditorToolStrip = null;
-        public virtual TextBoxEditorToolStrip TextBoxEditorToolStrip {
+        private TextBoxEditorToolStrip0 _textBoxEditorToolStrip = null;
+        public virtual TextBoxEditorToolStrip0 TextBoxEditorToolStrip {
             get {
                 if (_textBoxEditorToolStrip ==null) {
-                    _textBoxEditorToolStrip = new TextBoxEditorToolStrip ();
+                    _textBoxEditorToolStrip = new TextBoxEditorToolStrip0 ();
                     SetToolStrip (_textBoxEditorToolStrip);
                 }
                 
@@ -141,20 +143,41 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         #endregion
 
-        #region IVidgetBackend-Implementation
 
-        Xwt.Size IVidgetBackend.Size {
-            get { return this.Size.ToXwt(); }
+        private void InitializeComponent () {
+            Control.SuspendLayout ();
+            Control.BottomToolStripPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            Control.BottomToolStripPanel.Location = new System.Drawing.Point (0, 175);
+            Control.BottomToolStripPanel.Name = "";
+            Control.BottomToolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            Control.BottomToolStripPanel.RowMargin = new System.Windows.Forms.Padding (3, 0, 0, 0);
+            Control.BottomToolStripPanel.Size = new System.Drawing.Size (150, 0);
+
+            Control.ContentPanel.Size = new System.Drawing.Size (150, 175);
+
+            Control.LeftToolStripPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            Control.LeftToolStripPanel.Location = new System.Drawing.Point (0, 0);
+            Control.LeftToolStripPanel.Name = "";
+            Control.LeftToolStripPanel.Orientation = System.Windows.Forms.Orientation.Vertical;
+            Control.LeftToolStripPanel.RowMargin = new System.Windows.Forms.Padding (0, 3, 0, 0);
+            Control.LeftToolStripPanel.Size = new System.Drawing.Size (0, 175);
+
+            Control.RightToolStripPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            Control.RightToolStripPanel.Location = new System.Drawing.Point (150, 0);
+            Control.RightToolStripPanel.Name = "";
+            Control.RightToolStripPanel.Orientation = System.Windows.Forms.Orientation.Vertical;
+            Control.RightToolStripPanel.RowMargin = new System.Windows.Forms.Padding (0, 3, 0, 0);
+            Control.RightToolStripPanel.Size = new System.Drawing.Size (0, 175);
+
+            Control.TopToolStripPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            Control.TopToolStripPanel.Location = new System.Drawing.Point (0, 0);
+            Control.TopToolStripPanel.Name = "";
+            Control.TopToolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            Control.TopToolStripPanel.RowMargin = new System.Windows.Forms.Padding (3, 0, 0, 0);
+            Control.TopToolStripPanel.Size = new System.Drawing.Size (150, 30);
+            Control.ResumeLayout (false);
+            Control.PerformLayout ();
+
         }
-
-        void IVidgetBackend.SetFocus () { this.Focus (); }
-
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
-            this.Invalidate(rect.ToGdi());
-        }
-     
-        #endregion
-
-       
     }
 }

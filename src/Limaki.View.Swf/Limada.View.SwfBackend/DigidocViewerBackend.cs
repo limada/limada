@@ -18,27 +18,23 @@ using Limada.View.Vidgets;
 using Limaki.View;
 using Limaki.View.Vidgets;
 using System.Drawing;
-using Xwt.GdiBackend;
+using Limaki.View.SwfBackend.VidgetBackends;
 
 namespace Limada.View.SwfBackend {
 
-    public partial class DigidocViewerBackend : UserControl, IDigidocViewerBackend, IZoomTarget {
+    public partial class DigidocViewerBackend : VidgetBackend<UserControl>, IDigidocViewerBackend, IZoomTarget {
 
-        public DigidocViewerBackend () {}
+        public new DigidocVidget Frontend { get; set; }
 
-        public DigidocVidget Frontend { get; set; }
-
-        IVidget IVidgetBackend.Frontend { get { return this.Frontend; } }
-
-        public virtual void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+        public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (DigidocVidget)frontend;
-            Compose();
         }
 
-        private void Compose () {
+        protected override void Compose () {
 
             var panel = new Panel { Dock = System.Windows.Forms.DockStyle.Fill, BackColor = Color.White };
-            this.SuspendLayout();
+            Control.SuspendLayout();
 
             var pagesDisplayBackend = Frontend.PagesDisplay.Backend as Control;
             pagesDisplayBackend.Dock = System.Windows.Forms.DockStyle.Right;
@@ -48,12 +44,12 @@ namespace Limada.View.SwfBackend {
             Frontend.Compose();
 
             var splitter = new System.Windows.Forms.Splitter { Dock = DockStyle.Right };
-            this.Controls.AddRange(new Control[] { panel, splitter, pagesDisplayBackend });
+            Control.Controls.AddRange(new Control[] { panel, splitter, pagesDisplayBackend });
 
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            Control.ResumeLayout(false);
+            Control.PerformLayout();
 
-            this.PerformLayout();
+            Control.PerformLayout();
             Application.DoEvents();
 
             Frontend.AttachContentViewer = contentViewer => {
@@ -88,18 +84,5 @@ namespace Limada.View.SwfBackend {
 
         #endregion
 
-        #region IVidgetBackend-Implementation
-
-        Xwt.Size IVidgetBackend.Size {
-            get { return this.Size.ToXwt(); }
-        }
-
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
-            this.Invalidate(rect.ToGdi());
-        }
-
-        void IVidgetBackend.SetFocus () { this.Focus (); }
-
-        #endregion
     }
 }
