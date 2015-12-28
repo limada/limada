@@ -230,7 +230,8 @@ namespace Limada.UseCases {
                 var view = SplitView;
                 var display = view.AdjacentDisplay (view.CurrentDisplay);
                 var oldScene = display.Data;
-                var mesh = view.Mesh;
+
+                var mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ();
                 mesh.RemoveScene (oldScene);
 
                 var scene = mesh.CreateSinkScene (oldScene.Graph);
