@@ -1,45 +1,30 @@
-/*
- * Limaki 
- * 
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.
- * 
- * Author: Lytico
- * Copyright (C) 2008-2013 Lytico
- *
- * http://www.limada.org
- * 
- */
-
 using System;
 using System.Windows.Forms;
+using Limada.Usecases;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
-using Limada.Usecases;
-using Limaki.View;
 using Limaki.View.SwfBackend.VidgetBackends;
 using Limaki.View.Vidgets;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 
 namespace Limaki.View.SwfBackend.Viz.ToolStrips {
 
-    public partial class LayoutToolStripBackend0 : ToolStripBackend0, ILayoutToolStripBackend0 {
+    public partial class LayoutToolStripBackend0 : ToolStripBackend, ILayoutToolStripBackend0 {
 
         public new LayoutToolStrip0 Frontend { get; set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
-            this.Frontend = (LayoutToolStrip0)frontend;
-            Compose();
+            this.Frontend = (LayoutToolStrip0) frontend;
+            Compose ();
         }
 
-        public LayoutToolStripBackend0 () {
-            InitializeComponent();
-        }
+        public System.Windows.Forms.ToolStripComboBox StyleSheetCombo;
 
         protected override void Compose () {
+
+            base.Compose ();
 
             var shapeCombo = new ToolStripShapeComboBox {
                 AutoSize = false,
@@ -47,8 +32,8 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
                 Size = new System.Drawing.Size (80, 27),
                 ToolTipText = "change shape of visual",
             };
-            shapeCombo.SelectedIndexChanged += (s, e) => Frontend.ShapeChange(shapeCombo.ShapeComboBoxControl.SelectedItem as IShape);
-            var styleSheets = Registry.Pooled<StyleSheets>();
+            shapeCombo.SelectedIndexChanged += (s, e) => Frontend.ShapeChange (shapeCombo.ShapeComboBoxControl.SelectedItem as IShape);
+            var styleSheets = Registry.Pooled<StyleSheets> ();
             shapeCombo.ShapeComboBoxControl.ShapeLayout.StyleSheet = styleSheets[styleSheets.StyleSheetNames[1]];
 
             this.StyleSheetCombo = new ToolStripComboBox {
@@ -79,24 +64,24 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
                 }
             };
 
-            this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                             this.StyleSheetCombo,
-                                                                             shapeCombo
-                                                                         });
+            Control.Items.AddRange (new System.Windows.Forms.ToolStripItem[] {
+                                        this.StyleSheetCombo,
+                                        shapeCombo
+                                    });
 #if ! DISTRI
-            this.Items.Add(styleDialogButton);
+            Control.Items.Add (styleDialogButton);
 #endif
-            InitLayoutTools();
+            InitLayoutTools ();
         }
 
 
         void InitLayoutTools () {
-            StyleSheetCombo.Items.Clear();
-            var styleSheets = Registry.Pooled<StyleSheets>();
+            StyleSheetCombo.Items.Clear ();
+            var styleSheets = Registry.Pooled<StyleSheets> ();
             foreach (var styleSheet in styleSheets.Values) {
-                StyleSheetCombo.Items.Add(styleSheet.Name);
+                StyleSheetCombo.Items.Add (styleSheet.Name);
             }
-            Application.DoEvents();
+            Application.DoEvents ();
         }
 
         public void AttachStyleSheet (string sheetName) {
@@ -108,21 +93,20 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
         public void DetachStyleSheet (string oldSheetName) {
             StyleSheetCombo.SelectedItem = null;
             StyleSheetCombo.SelectedIndexChanged -= StyleSheetSelectedIndexChanged;
-            InitLayoutTools();
+            InitLayoutTools ();
         }
-
 
         private void StyleSheetSelectedIndexChanged (object sender, EventArgs e) {
             var styleSheetCombo = sender as ToolStripComboBox;
             if (styleSheetCombo != null)
-                Frontend.StyleSheetChange(styleSheetCombo.SelectedItem.ToString());
+                Frontend.StyleSheetChange (styleSheetCombo.SelectedItem.ToString ());
         }
 
         private void StyleSheetKeyDown (object sender, KeyEventArgs e) {
             var styleSheetCombo = sender as ToolStripComboBox;
             if (styleSheetCombo != null) {
                 if (e.KeyCode == Keys.Enter) {
-                    int i = styleSheetCombo.Items.Add(StyleSheetCombo.Text);
+                    int i = styleSheetCombo.Items.Add (StyleSheetCombo.Text);
                     styleSheetCombo.SelectedIndex = i;
                 }
             }
