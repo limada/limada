@@ -198,9 +198,16 @@ namespace Xwt.GtkBackend
 			if (result == null && Gtk.IconTheme.Default.HasIcon (stockId))
 				result = Gtk.IconTheme.Default.LoadIcon (stockId, (int)width, (Gtk.IconLookupFlags)0);
 
-			if (result == null) {
-				return CreateBitmap (Gtk.Stock.MissingImage, width, height, scaleFactor);
+			if (result == null && stockId != Gtk.Stock.MissingImage) {
+				result = CreateBitmap (Gtk.Stock.MissingImage, width, height, scaleFactor);
 			}
+
+		    if (result == null) {
+		        var img = new GtkImage ((b, r) => {
+		            // TODO: draw a "missing" pic here
+		        });
+		        result = img.ToPixbuf (Toolkit.Engine<GtkEngine>().Backend.ApplicationContext, width, height);
+		    }
 			return result;
 		}
 	}
