@@ -109,6 +109,8 @@ namespace Limaki.View.XwtBackend {
             get { throw new ArgumentException(); }
         }
 
+        public string ToolTipText { get; set; }
+
         public void Update () { }
 
         public void Invalidate () { }

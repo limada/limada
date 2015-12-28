@@ -32,5 +32,7 @@ namespace Limaki.View.XwtBackend {
         void IVindowBackend.SetContent (IVidget value) {
 			this.SetContent (value);
         }
+
+        public string ToolTipText { get; set; }
     }
 }

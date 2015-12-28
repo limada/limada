@@ -28,7 +28,10 @@ using Xwt.Drawing;
 namespace Limaki.View.XwtBackend {
 
     public abstract class DisplayBackend : Canvas {
-
+        public string ToolTipText {
+            get { return this.TooltipText; }
+            set { this.TooltipText = value; }
+        }
     }
 
     public abstract class DisplayBackend<T> : DisplayBackend, IVidgetBackend, IDisplayBackend<T> {
