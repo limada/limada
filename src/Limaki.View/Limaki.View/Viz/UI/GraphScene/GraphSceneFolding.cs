@@ -212,16 +212,37 @@ namespace Limaki.View.Viz.UI.GraphScene {
             this.Camera = camera; 
         }
 
+        protected TItem Focused { get; set; }
+
+        public override void OnMouseDown (MouseActionEventArgs e) {
+            if (Focused == null)
+                Focused = Folding.SceneHandler ().Focused;
+
+            base.OnMouseDown (e);
+
+            if (HitCount == 0) {
+                Focused = null;
+            }
+            if (Focused != null && Focused != Folding.SceneHandler ().Focused)
+                HitCount = 0;
+            Resolved = HitCount > 0;
+        }
+
         protected override bool CheckDoubleClickHit (double x, double y) {
+            if (Focused == null)
+                return false;
+
             var scene = Folding.SceneHandler ();
             var pt = Camera ().ToSource (new Point (x, y));
-            return scene.Hit (pt, HitSize) == scene.Focused;
+            return scene.Hit (pt, HitSize) == Focused;
         }
 
         protected override void EndAction () {
-            if (Resolved) {
+            if (HitCount == 2) {
                 Folding.Fold (() => Folding.Folder.Toggle ());
                 LastMouseTime = 0;
+                HitCount = 0;
+                Focused = null;
             }
             base.EndAction ();
         }

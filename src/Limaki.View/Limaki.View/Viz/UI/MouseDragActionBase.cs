@@ -56,31 +56,26 @@ namespace Limaki.View.Viz.UI {
         }
 
         protected Rectangle DragBoxFromMouseDown { get; set; }
+        protected int HitCount  { get; set; }
 
         protected void BaseMouseDown(MouseActionEventArgs e) {
             base.OnMouseDown(e);
-
-            //if (Form.ModifierKeys != _modifierKeys) {
-            //    return;
-            //}
-
-            // The DragSize indicates the size that the mouse can move 
-            // before a drag event should be started.                
+           
             var dragSize = SystemInformation.DragSize;
 
-            // Create a Rectangle using the DragSize, with the mouse position being
-            // at the center of the Rectangle.
             if (DragBoxFromMouseDown == Rectangle.Zero)
                 DragBoxFromMouseDown = new Rectangle (new Point (e.X - (dragSize.Width / 2),
                     e.Y - (dragSize.Height / 2)), dragSize);
 
-            // Remember the point where the mouse down occurred
             LastMousePos = e.Location;
 
             if (Behaviour == DragBehaviour.DoubleClick) {
-                var now = Environment.TickCount;
-                Resolved = ((now - LastMouseTime) <= SystemInformation.DoubleClickTime)
-                           && CheckDoubleClickHit (e.X, e.Y);
+                if (((Environment.TickCount - LastMouseTime) <= SystemInformation.DoubleClickTime)
+                    && CheckDoubleClickHit (e.X, e.Y)) {
+                    HitCount++;
+                } else {
+                    HitCount = 0;
+                }
             }
             LastMouseTime = Environment.TickCount;
         }
@@ -117,8 +112,7 @@ namespace Limaki.View.Viz.UI {
                     Resolved = ((e.Button & MouseActionButtons.Left) == MouseActionButtons.Left);
                 }
             } else if (Behaviour == DragBehaviour.DoubleClick) {
-                Resolved = Resolved && (DragBoxFromMouseDown != Rectangle.Zero &&
-                                        CheckDoubleClickHit (e.X, e.Y));
+                Resolved = Resolved && CheckDoubleClickHit (e.X, e.Y);
             }
         }
 
