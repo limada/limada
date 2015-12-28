@@ -25,7 +25,7 @@ using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
-    public class TextOkCancelBoxBackend : VidgetBackend<HBox>, ITextOkCancelBoxBackend, IVidgetBackend {
+    public class TextOkCancelBoxBackend : VidgetBackend<HBox>, ITextOkCancelBoxBackend {
 
         public TextOkCancelBoxBackend() { Compose (); }
 

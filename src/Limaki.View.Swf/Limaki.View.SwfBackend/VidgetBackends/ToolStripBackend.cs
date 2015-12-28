@@ -25,7 +25,10 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
     public abstract partial class ToolStripBackend : VidgetBackend<SWF.ToolStrip>, IToolStripBackend {
 
-        protected virtual void Compose () {
+        protected override void Compose () {
+
+            base.Compose ();
+
             Control.Dock = System.Windows.Forms.DockStyle.None;
             Control.ImageScalingSize = new System.Drawing.Size (20, 20);
             Control.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
