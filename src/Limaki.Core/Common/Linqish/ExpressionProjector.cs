@@ -79,9 +79,7 @@ namespace Limaki.Common.Linqish {
         protected override Expression VisitMember(MemberExpression node) {
             if (node.Type == sourceMember.Type && targetMember == null)
                 targetMember = node;
-
-           
-
+            
             bool isMember = node.Member.ReflectedType == sourceType || sourceType.GetInterfaces().Contains(node.Member.DeclaringType);
             if (isMember && new MemberOfParam().IsMemberOf(sourceMember, node.Expression))
                 return Expression.MakeMemberAccess(

@@ -30,12 +30,12 @@ using Limaki.View.Viz.Visualizers.ToolStrips;
 using System;
 using System.Linq;
 using Xwt;
+using Limaki.Usecases.Vidgets;
+using Limaki.View.Viz.Mesh;
 
 namespace Limada.UseCases {
 
     public class ConceptUsecase : IDisposable, IProgress {
-
-        public virtual IVindow MainWindow { get; set; }
 
         protected string _useCaseTitle = "limada::concept";
         public string UseCaseTitle {
@@ -43,12 +43,35 @@ namespace Limada.UseCases {
             set { _useCaseTitle = value; }
         }
 
+        public virtual IVindow MainWindow { get; set; }
+        public ISplitView SplitView { get; set; }
+
+        public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
+        public ISheetManager SheetManager { get; set; }
+        public FavoriteManager FavoriteManager { get; set; }
+
+        public ArrangerToolStrip ArrangerToolStrip { get; set; }
+        public DisplayModeToolStrip DisplayModeToolStrip { get; set; }
+        public SplitViewToolStrip SplitViewToolStrip { get; set; }
+        public LayoutToolStrip0 LayoutToolStrip0 { get; set; }
         public LayoutToolStrip LayoutToolStrip { get; set; }
+        public MarkerToolStrip MarkerToolStrip { get; set; }
+
+        public Func<IVidget> GetCurrentVidget { get; set; }
+        
         public Func<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
+
+        public event EventHandler<EventArgs<IStyle>> DisplayStyleChanged = null;
+        public void OnDisplayStyleChanged (object sender, EventArgs<IStyle> arg) {
+            if (DisplayStyleChanged != null) {
+                DisplayStyleChanged (sender, arg);
+            }
+        }
 
         public Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow { get; set; }
 
         public Action<string, int, int> Progress { get; set; }
+
         public Action ApplicationQuit { get; set; }
         public bool ApplicationQuitted { get; set; }
 
@@ -165,27 +188,6 @@ namespace Limada.UseCases {
         }
 
         #endregion
-
-        public SplitView0 SplitView { get; set; }
-        public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
-        public ISheetManager SheetManager { get; set; }
-        public FavoriteManager FavoriteManager { get; set; }
-
-        public ArrangerToolStrip ArrangerToolStrip { get; set; }
-        public DisplayModeToolStrip DisplayModeToolStrip { get; set; }
-
-        public SplitViewToolStrip SplitViewToolStrip { get; set; }
-        public LayoutToolStrip0 LayoutToolStrip0 { get; set; }
-        public MarkerToolStrip MarkerToolStrip { get; set; }
-
-        public Func<IVidget> GetCurrentVidget { get; set; }
-
-        public event EventHandler<EventArgs<IStyle>> DisplayStyleChanged = null;
-        public void OnDisplayStyleChanged (object sender, EventArgs<IStyle> arg) {
-            if (DisplayStyleChanged != null) {
-                DisplayStyleChanged (sender, arg);
-            }
-        }
 
         public void Search () {
             this.SplitView.DoSearch ();
