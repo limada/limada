@@ -41,6 +41,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\MarkDownEdit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\PlainTextBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\WebBrowserBackendHost.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visualizers\ToolStrips\LayoutToolStrip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.WebServers\PdfJsServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\ComboBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\FileDialogVidget.cs" />

@@ -64,7 +64,7 @@
     <Compile Include="Limaki.View.WpfBackend\FixedBitmap.cs" />
     <Compile Include="[Obsolete]\DisplayModeToolStripBackend0.cs" />
     <Compile Include="Limaki.View.WpfBackend\XwtBackends\GeckoWebBrowserBackend.cs" />
-    <Compile Include="Limaki.View.WpfBackend\LayoutToolStripBackend.cs" />
+    <Compile Include="[Obsolete]\LayoutToolStripBackend0.cs" />
     <Compile Include="[Obsolete]\MarkerToolStripBackend0.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\WpfBackendHelper.cs" />

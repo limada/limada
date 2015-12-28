@@ -124,6 +124,7 @@
     <Compile Include="Common\Linqish\ExpressionCache.cs" />
     <Compile Include="Common\Linqish\ExpressionChanger.cs" />
     <Compile Include="Common\Linqish\ExpressionVisitVisitor.cs" />
+    <Compile Include="Common\Linqish\MethodExtractor.cs" />
     <Compile Include="Contents\Handlers\MarkdownContent.cs" />
     <Compile Include="[Obsolete]\GraphPair0.cs" />
     <Compile Include="Graphs\HollowGraphPair.cs" />
