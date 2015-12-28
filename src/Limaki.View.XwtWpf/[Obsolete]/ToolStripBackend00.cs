@@ -93,5 +93,10 @@ namespace Limaki.View.WpfBackend {
             else if (value == LVV.Visibility.Collapsed)
                 this.Visibility = SW.Visibility.Collapsed;
         }
+
+        public string ToolTipText {
+            get { return this.ToolTip as string; }
+            set { this.ToolTip = value; }
+        }
     }
 }

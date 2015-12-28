@@ -1,6 +1,10 @@
+using System;
+using System.Windows;
+using Limaki.View.WpfBackend;
+
 namespace Limaki.View.Vidgets {
 
-    public class VidgetUtils0 {
+    public static class VidgetUtils0 {
 
         public static void SetCommand (IToolStripCommandToggle0 item, ref ToolStripCommand0 _command, ToolStripCommand0 value) {
             if (_command != value) {
@@ -12,6 +16,14 @@ namespace Limaki.View.Vidgets {
                 } finally { }
             }
         }
+
+        [Obsolete]
+        public static void AddItems (this ToolStripBackend toolstripbackend, params UIElement[] items) {
+            foreach (var item in items)
+                toolstripbackend.Control.Items.Add (item);
+
+        }
     }
+
 
 }

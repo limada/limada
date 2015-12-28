@@ -27,18 +27,19 @@ using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace Limaki.View.WpfBackend {
 
-    public class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripBackend0 {
+    public class LayoutToolStripBackend0 : ToolStripBackend, ILayoutToolStripBackend0 {
 
         public new LayoutToolStrip0 Frontend { get; set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
+            base.InitializeBackend (frontend, context);
             this.Frontend = (LayoutToolStrip0)frontend;
-            Compose();
+            Compose2 ();
         }
 
         public ComboBox StyleSheetCombo { get; set; }
 
-        protected virtual void Compose () {
+        public virtual void Compose2 () {
 
             var size = new Xwt.Size (60, 15);
             var margin = new Thickness (3, 2, 3, 2);

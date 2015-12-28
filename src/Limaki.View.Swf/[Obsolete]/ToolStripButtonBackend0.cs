@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Forms;
 using Limaki.View.Vidgets;
 using Xwt.GdiBackend;
@@ -25,6 +26,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
     }
 
+    [Obsolete]
     public class ToolStripButtonBackend0 : ToolStripButton, IToolStripCommandToggle0, IToolStripItem0 {
 
         public ToolStripButtonBackend0 () {

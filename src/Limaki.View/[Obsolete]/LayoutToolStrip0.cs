@@ -1,3 +1,4 @@
+using System;
 using Limaki.Common;
 using Limaki.Drawing;
 using Limaki.Drawing.Styles;
@@ -6,6 +7,7 @@ using Xwt.Backends;
 
 namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
+    [Obsolete]
     [BackendType(typeof(ILayoutToolStripBackend0))]
     public class LayoutToolStrip0 : DisplayToolStrip<IGraphSceneDisplay<IVisual, IVisualEdge>> {
 
@@ -93,7 +95,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
         }
     }
 
-
+    [Obsolete]
     public interface ILayoutToolStripBackend0 : IDisplayToolStripBackend {
         void AttachStyleSheet (string sheetName);
         void DetachStyleSheet (string sheetName);
