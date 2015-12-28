@@ -60,13 +60,6 @@ namespace Limaki.View.WpfBackend {
             this.Frontend = (ToolStrip)frontend;
         }
 
-        [Obsolete]
-        public void AddItems (params UIElement[] items) {
-            foreach (var item in items)
-                Control.Items.Add (item);
-
-        }
-
         public void InsertItem (int index, IToolStripItemBackend item) {
 
             var value = item.ToWpf ();
