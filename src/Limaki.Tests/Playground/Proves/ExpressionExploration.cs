@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Limaki.Common.Linqish;
 using NUnit.Framework;
 
@@ -112,10 +113,39 @@ namespace Limaki.Playground.Proves {
                 .Select(s => new { s.c1.MyString, s.c1.MyDateTime, MyDate2 = s.c2.MyDateTime });
 
         }
+
+        [Test]
+        void TestMemberCall () {
+            Expression<Action<MyClass>> lamda = m => m.MyAction (0);
+            var method1 = new MethodExtractor ().GetMethodInfo<MyClass> (m => m.MyAction (1));
+            var newType = typeof (int);
+
+            var method2 = new MethodExtractor ().GetMethodInfo<MyClass<string>> (m => m.MyAction (null));
+            var method3 = typeof (MyClass<>).MakeGenericType (newType)
+                .GetMethod (method2.Name, method2.GetParameters ().Select (p => newType).ToArray ());
+
+            var method4 = new MethodExtractor ().GetMethodInfo<MyClass> (m => m.MyGenFunction<string> (""));
+            var method5 = method4.GetGenericMethodDefinition().MakeGenericMethod (newType);
+            var myObject = new MyClass ();
+            var result5 = method5.Invoke (myObject, new object[] { Activator.CreateInstance (newType)});
+
+        }
     }
 
     public class MyClass {
         public string MyString { get; set; }
         public DateTime MyDateTime { get; set; }
+        public void MyAction (int myparam) { }
+        public T MyGenFunction<T> (T myparam) {
+            return myparam;
+        }
+    }
+
+    public class MyClass<T> {
+        public T MyValue { get; set; }
+        public void MyAction (T myparam) { }
+        public T MyFunction (T myparam) {
+            return myparam;
+        }
     }
 }
