@@ -33,7 +33,7 @@ namespace Limaki.View.ContentViewers {
                 if (_webBrowser == null) {
                     _webBrowser = new WebBrowserVidget();
                     UseWebServer = !OS.Mono;
-                    UseProxy = WebBrowser.Backend is IWebBrowserWithProxy;
+                    UseProxy = _webBrowser.Backend is IWebBrowserWithProxy;
                 }
                 return _webBrowser;
             }
