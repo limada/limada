@@ -56,11 +56,12 @@ namespace Limada.Usecases {
 
             MenuStrip = new MenuStrip ();
 
-            var splitViewBackend = useCase.SplitView.Backend as SplitContainer;
+            var splitViewBackend = useCase.SplitView.Backend.ToSwf() as SplitContainer;
             ToolStripContainer.SuspendLayout();
             ToolStripContainer.ContentPanel.Controls.Add(splitViewBackend);
             ToolStripContainer.ResumeLayout();
             ToolStripContainer.PerformLayout();
+            
             splitViewBackend.SplitterDistance = (int)(ToolStripContainer.Width / 2);
 
             var viewerProvider = Registry.Pooled<ContentViewerProvider>();
@@ -113,8 +114,6 @@ namespace Limada.Usecases {
             InstrumentMenus (useCase);
 
             var utils = new ToolStripUtils {
-                //ToolStripBackground = Color.FromArgb(0xEF,0xEF,0xF2), //WhiteSmoke
-                //ToolStripForeground = Color.White, // does nothing
                 ToolStripItemSelectedColor = Color.White,
             };
 
