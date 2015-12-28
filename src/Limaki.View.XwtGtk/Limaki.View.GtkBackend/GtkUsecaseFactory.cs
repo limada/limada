@@ -41,7 +41,8 @@ namespace Limaki.View.GtkBackend {
                 useCase.ArrangerToolStrip.Backend.ToGtk(),
                 useCase.SplitViewToolStrip.Backend.ToGtk (),
                 useCase.DisplayModeToolStrip.Backend.ToGtk (),
-                useCase.MarkerToolStrip.Backend.ToGtk ()
+                useCase.MarkerToolStrip.Backend.ToGtk (),
+                useCase.LayoutToolStrip.Backend.ToGtk (),
             };
 
             tbs.Cast<Gtk.Toolbar> ().ForEach (tb => {

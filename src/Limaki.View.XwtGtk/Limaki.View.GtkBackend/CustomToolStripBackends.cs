@@ -11,5 +11,6 @@ namespace Limaki.View.GtkBackend {
 
     public class MarkerToolStripBackend : ToolStripBackend, IMarkerToolStripBackend { }
 
-
+    public class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripBackend { }
+    
 }

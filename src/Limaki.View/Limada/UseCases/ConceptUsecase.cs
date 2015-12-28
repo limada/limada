@@ -43,6 +43,7 @@ namespace Limada.UseCases {
             set { _useCaseTitle = value; }
         }
 
+        public LayoutToolStrip LayoutToolStrip { get; set; }
         public Func<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
 
         public Func<string, string, MessageBoxButtons, DialogResult> MessageBoxShow { get; set; }

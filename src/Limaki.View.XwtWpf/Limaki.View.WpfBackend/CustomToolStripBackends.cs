@@ -11,4 +11,6 @@ namespace Limaki.View.WpfBackend {
 
     public class MarkerToolStripBackend : ToolStripBackend, IMarkerToolStripBackend { }
 
+    public class LayoutToolStripBackend : ToolStripBackend, ILayoutToolStripBackend { }
+
 }

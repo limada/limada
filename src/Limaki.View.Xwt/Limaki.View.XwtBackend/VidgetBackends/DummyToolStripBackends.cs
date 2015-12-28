@@ -43,11 +43,5 @@ namespace Limaki.View.XwtBackend {
 
     public class SplitViewToolStripBackend : ToolStripBackendDummy, ISplitViewToolStripBackend { }
 
-    public class LayoutToolStripBackend : ToolStripBackendDummy, ILayoutToolStripBackend0 {
-        public void AttachStyleSheet (string sheetName) { }
-
-        public void DetachStyleSheet (string sheetName) { }
-    }
-
-
+    public class LayoutToolStripBackend : ToolStripBackendDummy, ILayoutToolStripBackend { }
 }

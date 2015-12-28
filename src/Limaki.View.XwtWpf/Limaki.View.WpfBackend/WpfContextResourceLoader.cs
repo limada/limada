@@ -70,7 +70,7 @@ namespace Limaki.View.WpfBackend {
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IDisplayModeToolStripBackend, DisplayModeToolStripBackend> ();
 
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend> ();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ILayoutToolStripBackend0, LayoutToolStripBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ITextViewerVidgetBackend, TextViewerVidgetBackend> ();
 
