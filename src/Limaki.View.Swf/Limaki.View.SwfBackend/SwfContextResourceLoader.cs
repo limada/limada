@@ -97,7 +97,7 @@ namespace Limaki.View.SwfBackend {
 
         public static bool GeckoFailed = false;
         public IWebBrowserBackend CreateWebBrowserBackend () {
-            Control _backend = null;
+            IWebBrowserBackend _backend = null;
             if (GeckoFailed || OS.Mono) { //(true) { //|| OS.IsWin64Process
                 _backend = new WebBrowserBackend();
                 GeckoFailed = true;
@@ -107,17 +107,18 @@ namespace Limaki.View.SwfBackend {
                     var gecko = Activator.CreateInstance(
                        this.GetType().Assembly.FullName,
                        typeof(WebBrowserBackend).Namespace + ".GeckoWebBrowserBackend");
-                    if (gecko != null)
-                        _backend = (Control)gecko.Unwrap();
-                    else
-                        throw new Exception();
+                    if (gecko != null) {
+                        var control = gecko.Unwrap ();
+                        _backend = (IWebBrowserBackend) control;
+                    } else
+                        throw new Exception ();
                 } catch {
                     GeckoFailed = true;
                     return CreateWebBrowserBackend();
                 }
                 Thread.Sleep(0);
             }
-            return _backend as IWebBrowserBackend;
+            return _backend;
         }
 
         public virtual void RegisterDragDropFormats (IApplicationContext context) {
