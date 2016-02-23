@@ -344,7 +344,7 @@ namespace Xwt.CairoBackend
                         }
 
                         var lineLen = Math.Min (
-                            line.Length - (nextDelta.Height > layoutHeight || layout.WrapMode==WrapMode.None ? 1 : 0),
+							line.Length - (delta.Width > layout.Width || layout.WrapMode==WrapMode.None ? 1 : 0),
                             line.Layout.Text.Length - line.StartIndex); // sometimes line.length is bigger than text.length
                         Action setLine = () => {
                             sll.SetText (line.Layout.Text.Substring (line.StartIndex, Math.Max (lineLen, 0)) +
