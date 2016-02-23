@@ -16,6 +16,7 @@ using Limaki.Drawing;
 using Limaki.Drawing.Styles;
 using Xwt;
 using Xwt.Drawing;
+using System;
 
 namespace Limaki.View.XwtBackend {
 
@@ -31,7 +32,8 @@ namespace Limaki.View.XwtBackend {
                     tl.Width = style.AutoSize.Width;
                     tl.Height = style.AutoSize.Height;
                 }
-                result = tl.GetSize();
+				var size = tl.GetSize();
+				result = new Size (size.Width, Math.Min (style.AutoSize.Height, size.Height));
             }
             return result;
         }
