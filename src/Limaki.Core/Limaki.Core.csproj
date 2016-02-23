@@ -246,7 +246,7 @@
     <Compile Include="Data\IGatewayConnection.cs" />
     <Compile Include="Graphs\CorruptedLinkException.cs" />
     <Compile Include="Graphs\EdgeComparer.cs" />
-    <Compile Include="Graphs\GraphMapping.cs" />
+    <Compile Include="[Obsolete]\GraphMapping.cs" />
     <Compile Include="Graphs\GraphPairExtension.cs" />
     <Compile Include="Graphs\SubGraphWorker.cs" />
     <Compile Include="Graphs\IGraphMapping.cs" />

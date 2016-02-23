@@ -176,7 +176,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Drawing.XwtBackend\RoundedRectanglePainter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Drawing.XwtBackend\StringPainter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Drawing.XwtBackend\VectorPainter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.Drawing\Pen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Drawing\Shapes\BezierRectangleShape.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Drawing\Shapes\IRectangleShape.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Drawing\PointComparer.cs" />
@@ -209,7 +208,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\VisualThings\VisualThingTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\VisualThings\VisualThingGraph.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\VisualThings\VisualThingGraphExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limada\View\VisualThings\VisualThingGraphMapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\VisualThings\VisualThingMarkerFacade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\VisualThings\VisualThingSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\View\VisualThings\VisualThingsContentViz.cs" />
@@ -339,7 +337,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\ContentViewers\ContentViewer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Visuals\BruteForceIndex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Visuals\VisualGraphEntityTransformer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Visuals\GraphVisualEntityMapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Visuals\ISheetManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Visuals\IVisual.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Visuals\IVisualEdge.cs" />
@@ -368,7 +365,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\IScrollContainingWidget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\TextViewerWidget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\WebBrowserWidget.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Viz\Visualizers\ToolStrips\LayoutToolStrip0.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View\Vidgets\TextAttributeVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Usecases\Vidgets\FileExplorerComposer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.View.XwtBackend\Viz\ImageLayer.cs" />

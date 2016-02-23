@@ -20,6 +20,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -108,10 +109,8 @@
     <Compile Include="Limaki.View\ContentViewers\PdfContentViewer.cs" />
     <Compile Include="Limaki.WebServers\PdfJsServer.cs" />
     <Compile Include="Limaki.View\Vidgets\ComboBox.cs" />
-    <Compile Include="[Obsolete]\IWebBrowserEx.cs" />
     <Compile Include="Limaki.View\Vidgets\FileDialogVidget.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripButton.cs" />
-    <Compile Include="[Obsolete]\ToolStripCommand0.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripDropDownButton.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripItem.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripItemCollection.cs" />
@@ -119,7 +118,6 @@
     <Compile Include="Limaki.View\Vidgets\VidgetUtils.cs" />
     <Compile Include="Limaki.View\Vidgets\Vindow.cs" />
     <Compile Include="Limaki.View\Vidgets\Visibility.cs" />
-    <Compile Include="[Obsolete]\WebBrowserVidgetEx.cs" />
     <Compile Include="Limaki.View\DragDrop\DragDropBackendHandlerBase.cs" />
     <Compile Include="Limaki.View\DragDrop\DragDropInfo.cs" />
     <Compile Include="Limaki.View\Viz\Rendering\SelectionRenderer.cs" />
@@ -137,7 +135,6 @@
     <Compile Include="Limaki.View\Vidgets\ToolStrip.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\ArrangerToolStrip.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\MarkerToolStrip.cs" />
-    <Compile Include="[Obsolete]\DisplayModeToolStrip0.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\DisplayToolStrip.cs" />
     <Compile Include="Limaki.View\Viz\Visuals\VisualGraphSceneMeshEvents.cs" />
     <Compile Include="Limaki.View\Viz\Visuals\VisualGraphSceneMesh.cs" />
@@ -156,16 +153,12 @@
     <Compile Include="Limaki.View\ContentViewers\TextContentViewerWithToolstrip0.cs" />
     <Compile Include="Limaki.WebServers\WebResponseBase.cs" />
     <Compile Include="Limaki.Usecases\Vidgets\ISplitViewBackend.cs" />
-    <Compile Include="[Obsolete]\IToolStripCommandToggle0.cs" />
-    <Compile Include="[Obsolete]\IToolStripItem0.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStripCommand.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\DisplayModeToolStrip.cs" />
-    <Compile Include="[Obsolete]\LayoutToolStrip0.cs" />
-    <Compile Include="[Obsolete]\MarkerToolStrip0.cs" />
     <Compile Include="Limada\View\Vidgets\SplitViewDumnmy.cs" />
-    <Compile Include="[Obsolete]\DisplayToolStrip0.cs" />
     <Compile Include="Limaki.View\Vidgets\CanvasVidget.cs" />
     <Compile Include="Limaki.View\Vidgets\ITextViewerVidgetBackend.cs" />
+    <Compile Include="[Obsolete]\LayoutToolStrip0.cs" />
     <Compile Include="[Obsolete]\TextViewer0\ITextViewerWithToolstripVidgetBackend0.cs" />
     <Compile Include="Limaki.View\Vidgets\TextViewer.cs" />
     <Compile Include="Limaki.View\Vidgets\TextViewerTextType.cs" />
@@ -249,7 +242,7 @@
     <Compile Include="Limaki.Drawing.XwtBackend\RoundedRectanglePainter.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\StringPainter.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\VectorPainter.cs" />
-    <Compile Include="Limaki.Drawing\Pen.cs" />
+    <Compile Include="[Obsolete]\Pen.cs" />
     <Compile Include="Limaki.Drawing\Shapes\BezierRectangleShape.cs" />
     <Compile Include="Limaki.Drawing\Shapes\IRectangleShape.cs" />
     <Compile Include="Limaki.Drawing\PointComparer.cs" />
@@ -282,7 +275,7 @@
     <Compile Include="Limada\View\VisualThings\VisualThingTransformer.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingGraph.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingGraphExtension.cs" />
-    <Compile Include="Limada\View\VisualThings\VisualThingGraphMapping.cs" />
+    <Compile Include="[Obsolete]\VisualThingGraphMapping.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingMarkerFacade.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingSerializer.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingsContentViz.cs" />
@@ -409,13 +402,11 @@
     <Compile Include="Limaki.WebServers\WebServerBase.cs" />
     <Compile Include="Limaki.View\ContentViewers\ContentVisualViewerProvider.cs" />
     <Compile Include="Limaki.View\ContentViewers\ContentVisualViewer.cs" />
-    <Compile Include="[Obsolete]\ArrangerToolStrip0.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\IMarkerTool.cs" />
-    <Compile Include="[Obsolete]\SplitViewToolStrip0.cs" />
     <Compile Include="Limaki.View\ContentViewers\ContentViewer.cs" />
     <Compile Include="Limaki.View\Visuals\BruteForceIndex.cs" />
     <Compile Include="Limaki.View\Visuals\VisualGraphEntityTransformer.cs" />
-    <Compile Include="Limaki.View\Visuals\GraphVisualEntityMapping.cs" />
+    <Compile Include="[Obsolete]\GraphVisualEntityMapping.cs" />
     <Compile Include="Limaki.View\Visuals\ISheetManager.cs" />
     <Compile Include="Limaki.View\Visuals\IVisual.cs" />
     <Compile Include="Limaki.View\Visuals\IVisualEdge.cs" />
@@ -440,6 +431,7 @@
     <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphItemMouseScrollAction.cs" />
     <Compile Include="Limaki.Usecases\Vidgets\FileExplorerComposer.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\ImageLayer.cs" />
+    <Compile Include="[Obsolete]\VisualGraphSceneMeshEvents0.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
