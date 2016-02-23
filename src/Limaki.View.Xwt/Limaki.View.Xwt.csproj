@@ -42,7 +42,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
@@ -138,16 +138,6 @@
       <Name>Limaki.View</Name>
     </ProjectReference>
   </ItemGroup>
-  <Choose>
-    <When Condition="!$(DefineConstants.Contains('LINUX'))">
-      <ItemGroup>
-        <ProjectReference Include="..\Limaki.View.XwtWpf\Limaki.View.XwtWpf.csproj">
-          <Project>{ac4de976-2546-4b77-b040-f2b819be9dc8}</Project>
-          <Name>Limaki.View.XwtWpf</Name>
-        </ProjectReference>
-      </ItemGroup>
-    </When>
-  </Choose>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>

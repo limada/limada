@@ -27,7 +27,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -66,7 +66,7 @@
       <Name>Limaki.View.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Xwt.Tests\Limaki.View.Xwt.Tests.csproj">
-      <Project>{1e41c2f8-935a-4453-b7c9-f59cd96536dc}</Project>
+      <Project>{1E41C2F8-935A-4453-B7C9-F59CD96536DC}</Project>
       <Name>Limaki.View.Xwt.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.XwtGtk\Limaki.View.XwtGtk.csproj">
