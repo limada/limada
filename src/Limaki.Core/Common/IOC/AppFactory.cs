@@ -97,7 +97,8 @@ namespace Limaki.Common.IOC {
             try {
                 var assemblyName = AssemblyName.GetAssemblyName(codeBase);
                 return Assembly.Load(assemblyName);
-            } catch  {
+            } catch (Exception ex) {
+                Trace.WriteLine(string.Format("Error loading assembly {0}:{1}", codeBase, ex.Message));
                 return null;    
             }
 
