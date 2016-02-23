@@ -114,7 +114,11 @@ namespace Limaki.Contents.IO {
             ext = info.Extension;
             if (ext[0] != '.')
                 ext = "." + ext;
-            return info.Description + "|*" + ext + "|";
+			var result = info.Description + "|*" + ext.ToLower ();
+			if (OS.Unix)
+				result += ";*" + ext.ToUpper ();
+			result +="|";
+			return result;
         }
 
         public string GetFilter(IoMode mode) {
