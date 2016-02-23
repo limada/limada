@@ -56,7 +56,11 @@ namespace Limaki.View.GtkBackend {
                     var r = c.SizeRequest ();
                     w += r.Width;
                 });
-                tb.WidthRequest = w + 5;
+
+				// this depends on something strange; 
+				// on cinnamon 8 is needed
+				// otherwise 5
+				tb.WidthRequest = w + 8; 
                 tb.SizeRequested += (s, e) => {
                     
                 };
