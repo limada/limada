@@ -189,7 +189,20 @@ namespace Limaki.View.XwtBackend {
         }
 
         protected override void OnMouseScrolled (MouseScrolledEventArgs args) {
+
             base.OnMouseScrolled(args);
+
+			if (Display.Data != null) {
+				var mod = Keyboard.CurrentModifiers;
+				if (mod == Xwt.ModifierKeys.None) {
+					Display.Viewport.Update ();
+				} else if (mod == Xwt.ModifierKeys.Control) {
+					var zoomAction = Display.ActionDispatcher.GetAction<ZoomAction> ();
+					if (zoomAction != null) {
+						zoomAction.Zoom (args.Position, args.Direction == ScrollDirection.Up);
+					}
+				}
+			}
         }
 
         protected override void OnButtonReleased (ButtonEventArgs args) {
