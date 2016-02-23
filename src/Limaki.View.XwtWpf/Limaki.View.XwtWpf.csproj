@@ -60,18 +60,10 @@
     <Compile Include="Limaki.View.WpfBackend\WpfUsecaseFactory.cs" />
     <Compile Include="Limaki.View.WpfBackend\CustomToolStripBackends.cs" />
     <Compile Include="Limaki.View.WpfBackend\XwtBackends\GeckoWebBrowserEx.cs" />
-    <Compile Include="[Obsolete]\ArrangerToolStripBackend0.cs" />
     <Compile Include="Limaki.View.WpfBackend\FixedBitmap.cs" />
-    <Compile Include="[Obsolete]\DisplayModeToolStripBackend0.cs" />
     <Compile Include="Limaki.View.WpfBackend\XwtBackends\GeckoWebBrowserBackend.cs" />
-    <Compile Include="[Obsolete]\LayoutToolStripBackend0.cs" />
-    <Compile Include="[Obsolete]\MarkerToolStripBackend0.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\WpfBackendHelper.cs" />
-    <Compile Include="[Obsolete]\SplitViewToolStripBackend0.cs" />
-    <Compile Include="[Obsolete]\ToolStripBackend00.cs" />
-    <Compile Include="[Obsolete]\ToolStripButton0.cs" />
-    <Compile Include="[Obsolete]\ToolStripDropDownButton0.cs" />
     <Compile Include="Limaki.View.WpfBackend\ToolStripUtils.cs" />
     <Compile Include="Limaki.View.WpfBackend\WpfExtensions.cs" />
     <Compile Include="Limaki.View.WpfBackend\XwtBackends\TextViewerWidgetBackend.cs" />
@@ -81,7 +73,6 @@
     <Compile Include="Limaki.View.WpfBackend\XwtBackends\WpfSystemFontBackend.cs" />
     <Compile Include="Limaki.View.WpfBackend\WpfSystemInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="[Obsolete]\VidgetUtils0.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">
@@ -113,7 +104,9 @@
       <Name>Limaki.View</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="[Obsolete]\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

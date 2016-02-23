@@ -75,6 +75,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\ExpressionProjector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\ExpressionUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\MemberByNameExpressionBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\MethodExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Linqish\PropertyExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Reflections\MemberReflectionCache.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Localizer.cs" />
@@ -180,7 +181,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\IGatewayConnection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\CorruptedLinkException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\EdgeComparer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphs\GraphMapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\GraphPairExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\SubGraphWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\IGraphMapping.cs" />

@@ -193,7 +193,10 @@
     </Compile>
     <Compile Include="Limada.View.SwfBackend\SplitViewBackend.cs" />
     <Compile Include="Xwt.GdiBackend\SystemColorsGdiBackend.cs" />
+    <Compile Include="[Obsolete]\IToolStripCommandToggle0.cs" />
+    <Compile Include="[Obsolete]\IToolStripItem0.cs" />
     <Compile Include="[Obsolete]\ToolStripButtonBackend0.cs" />
+    <Compile Include="[Obsolete]\ToolStripCommand0.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">
