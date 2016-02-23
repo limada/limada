@@ -63,8 +63,8 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             }
             if (menuStrip != null) {
                 menuStrip.Location = new System.Drawing.Point ();
-                toolStripPanel.Controls.Add (menuStrip);
-                location = menuStrip.Location + new System.Drawing.Size (0, menuStrip.Size.Height + 3);
+                // toolStripPanel.Controls.Add (menuStrip);
+                location = menuStrip.Location + new System.Drawing.Size (0, menuStrip.Size.Height + 10);
             }
 
             toolStrips.ForEach (toolStrip => {
@@ -95,7 +95,9 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
                 location = new System.Drawing.Point (toolStrip.Bounds.Right + 1, toolStrip.Bounds.Top);
             });
 
+            toolStripPanel.Controls.Add(menuStrip);
             toolStripPanel.Controls.AddRange (toolStrips);
+
 
             toolStripPanel.ResumeLayout (false);
             toolStripPanel.PerformLayout ();
