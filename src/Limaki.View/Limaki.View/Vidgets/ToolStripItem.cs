@@ -74,12 +74,12 @@ namespace Limaki.View.Vidgets {
         }
 
         protected string _toolTipText = null;
-        public virtual string ToolTipText {
+        public override string ToolTipText {
             get { return _toolTipText; }
             set {
                 if (_toolTipText != value) {
                     _toolTipText = value;
-                    Backend.SetToolTip (value);
+                    Backend.ToolTipText = value;
                 }
             }
         }
@@ -101,8 +101,6 @@ namespace Limaki.View.Vidgets {
         void SetImage (Image image);
 
         void SetLabel (string value);
-
-        void SetToolTip (string value);
 
         void SetAction (Action<object> action);
 

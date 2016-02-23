@@ -45,7 +45,8 @@ namespace Limaki.View.GtkBackend {
         }
 
         public void InsertItem (int index, IToolStripItemBackend item) {
-            Widget.Insert (item.ToGtk(), index);
+			var w = item.ToGtk();
+            Widget.Insert (w, index);
         }
 
         public void RemoveItem (IToolStripItemBackend item) {

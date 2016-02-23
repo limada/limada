@@ -29,7 +29,6 @@ using Limaki.Tests.Graph.GraphPair;
 using NUnit.Framework;
 using Id = System.Int64;
 using Limada.Schemata;
-using System.Linq;
 using Limaki.Common.Collections;
 
 namespace Limada.Tests.Model {

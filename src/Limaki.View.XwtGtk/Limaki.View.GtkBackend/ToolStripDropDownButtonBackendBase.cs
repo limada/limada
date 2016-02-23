@@ -6,6 +6,7 @@ namespace Limaki.View.GtkBackend {
     /// <summary>
     /// ToolStripDropDownButton with Popup-Menu
     /// </summary>
+	/// <remarks>has problem on gkt3 and ubuntu cause icons are not shown any more in toolitems</remarks>
     /// <typeparam name="T"></typeparam>
     public class ToolStripDropDownButtonBackendBase<T> : ToolStripButtonBackendBase<T>, IToolStripDropDownButtonBackend where T : Gtk.ToolItem, new () {
 

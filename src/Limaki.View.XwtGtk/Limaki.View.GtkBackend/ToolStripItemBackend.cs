@@ -83,11 +83,6 @@ namespace Limaki.View.GtkBackend {
             return widget;
         }
 
-        public string ToolTipText {
-            get { return Widget.TooltipText; }
-            set { Widget.TooltipText = value; }
-        }
-
         [GLib.ConnectBefore]
         protected virtual void ButtonReleased (object o, Gtk.ButtonReleaseEventArgs args) {
             Trace.WriteLine ("ButtonReleased");
@@ -96,10 +91,6 @@ namespace Limaki.View.GtkBackend {
         public void SetLabel (string value) {
             if (Label != null)
                 Label = value;
-        }
-
-        public void SetToolTip (string value) {
-            this.ToolTipText = value;
         }
 
         private Action<object> _action;
