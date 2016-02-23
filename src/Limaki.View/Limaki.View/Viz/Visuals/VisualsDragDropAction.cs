@@ -26,6 +26,7 @@ using Limaki.View.Properties;
 using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 using Limaki.Common;
+using Limaki.View.Viz.Mesh;
 
 namespace Limaki.View.Viz.Visuals {
     /// <summary>
@@ -110,6 +111,9 @@ namespace Limaki.View.Viz.Visuals {
                 e.AllowedAction = DragDropAction.All;
         }
 
+        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
+        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+
         public override void Dropped (DragEventArgs e) {
             var pt = Camera.ToSource(e.Position);
             var scene = this.Scene;
@@ -130,7 +134,7 @@ namespace Limaki.View.Viz.Visuals {
             if (InprocDragDrop.Dragging) {
                 var source = InprocDragDrop.Data as GraphCursor<IVisual, IVisualEdge>;
                 if (source != null && source.Cursor != target) {
-                    item = GraphMapping.Mapping.LookUp(source.Graph, scene.Graph, source.Cursor);
+                    item = Mesh.LookUp(source.Graph, scene.Graph, source.Cursor);
                     if (item == null) {
                         //TODO: error here
                         //return;
@@ -168,7 +172,7 @@ namespace Limaki.View.Viz.Visuals {
                 // TODO: refactor to use same code as above
                 var source = InprocDragDrop.ClipboardData as GraphCursor<IVisual, IVisualEdge>;
                 if (source != null && source.Cursor != item) {
-                    item = GraphMapping.Mapping.LookUp(source.Graph, scene.Graph, source.Cursor);
+                    item = Mesh.LookUp(source.Graph, scene.Graph, source.Cursor);
                     if (item == null) {
                         //TODO: error here
                         //return;
