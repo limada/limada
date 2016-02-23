@@ -12,6 +12,7 @@
  * 
  */
 
+#define noTraceMouse
 
 using System;
 using System.Diagnostics;
@@ -195,7 +196,7 @@ namespace Limaki.View.Viz.UI.GraphScene {
         IGraphSceneFolding<TItem, TEdge> Folding { get; }
     }
 
-    public class GraphSceneMouseFolding<TItem, TEdge> : MouseDragActionBase, ICheckable
+	public class GraphSceneMouseFolding<TItem, TEdge> : MouseDragActionBase, ICheckable, IGraphSceneMouseFolding<TItem, TEdge> 
         where TItem : class
         where TEdge : TItem, IEdge<TItem> {
 
@@ -215,16 +216,24 @@ namespace Limaki.View.Viz.UI.GraphScene {
         protected TItem Focused { get; set; }
 
         public override void OnMouseDown (MouseActionEventArgs e) {
-            if (Focused == null)
-                Focused = Folding.SceneHandler ().Focused;
-
+			var scene = Folding.SceneHandler ();
+			if (HitCount == 0) {
+				Focused = scene.Focused;
+				#if TraceMouse
+				Trace.WriteLine (string.Format("GraphSceneMouseFolding OnMouseDown Focused: {0}", Focused));
+				#endif
+			}
             base.OnMouseDown (e);
 
-            if (HitCount == 0) {
-                Focused = null;
-            }
-            if (Focused != null && Focused != Folding.SceneHandler ().Focused)
-                HitCount = 0;
+			if (Focused != null && Focused != scene.Focused) {
+				#if TraceMouse
+				Trace.WriteLine (string.Format("GraphSceneMouseFolding OnMouseDown HitCount=0, was: {0}", HitCount));
+				#endif
+				HitCount = 0;
+			}
+			#if TraceMouse
+			Trace.WriteLine (string.Format("GraphSceneMouseFolding OnMouseDown HitCount {0}", HitCount));
+			#endif
             Resolved = HitCount > 0;
         }
 
@@ -238,13 +247,21 @@ namespace Limaki.View.Viz.UI.GraphScene {
         }
 
         protected override void EndAction () {
-            if (HitCount == 2) {
-                Folding.Fold (() => Folding.Folder.Toggle ());
-                LastMouseTime = 0;
-                HitCount = 0;
-                Focused = null;
-            }
-            base.EndAction ();
+			#if TraceMouse
+			Trace.WriteLine (string.Format ("GraphSceneMouseFolding EndAction HitCount {0}", HitCount));
+			Trace.WriteLine (string.Format ("GraphSceneMouseFolding EndAction Focused: {0}", Focused ));
+			#endif
+			if (HitCount == 1) {
+				Folding.Fold (() => Folding.Folder.Toggle ());
+				LastMouseTime = 0;
+				HitCount = 0;
+				Focused = null;
+			}
+			if (HitCount > 1) {
+				Focused = null;
+				HitCount = 0;
+			}
+			base.EndAction ();
         }
 
         public bool Check () {

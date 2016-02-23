@@ -70,8 +70,9 @@ namespace Limaki.View.Viz.UI {
             LastMousePos = e.Location;
 
             if (Behaviour == DragBehaviour.DoubleClick) {
-                if (((Environment.TickCount - LastMouseTime) <= SystemInformation.DoubleClickTime)
-                    && CheckDoubleClickHit (e.X, e.Y)) {
+				var elapsed = Environment.TickCount - LastMouseTime;
+				var hit = CheckDoubleClickHit (e.X, e.Y);
+				if (elapsed <= SystemInformation.DoubleClickTime && hit) {
                     HitCount++;
                 } else {
                     HitCount = 0;

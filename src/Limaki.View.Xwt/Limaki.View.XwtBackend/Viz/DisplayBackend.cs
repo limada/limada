@@ -170,7 +170,11 @@ namespace Limaki.View.XwtBackend {
             if (!HasFocus)
                 SetFocus ();
 
-            Trace.WriteLine (string.Format ("ButtonPressed {0} == {1} | {2}", this.MouseLocation (), args.Position, this.GetType ().Name));
+			Trace.WriteLine (string.Format ("ButtonPressed {0} == {1} {2} | {3}", this.MouseLocation (), args.Position, args.MultiplePress, this.GetType ().Name));
+
+			// dismiss events of MultiplePress; its handled in MouseActions
+			if (args.MultiplePress > 1)
+				return;
 
             lastButton = args.Button.ToLmk ();
             Display.ActionDispatcher.OnMouseDown (args.ToLmk ());
@@ -207,6 +211,9 @@ namespace Limaki.View.XwtBackend {
 
         protected override void OnButtonReleased (ButtonEventArgs args) {
             base.OnButtonReleased (args);
+
+			Trace.WriteLine (string.Format ("ButtonReleased {0} == {1} | {2}", this.MouseLocation (), args.Position, this.GetType ().Name));
+
             lastButton = args.Button.ToLmk ();
             Display.ActionDispatcher.OnMouseUp (args.ToLmk ());
             lastButton = MouseActionButtons.None;
@@ -224,15 +231,14 @@ namespace Limaki.View.XwtBackend {
             base.OnKeyReleased(args);
             var ml = this.MouseLocation();
             Trace.WriteLine(string.Format("KeyReleased {0} | {1}", ml, this.GetType().Name));
-
-            Display.ActionDispatcher.OnKeyReleased(new KeyActionEventArgs(args.Key, args.Modifiers, ml));
+			var keyAction = new KeyActionEventArgs (args.Key, args.Modifiers, ml);
+			Display.ActionDispatcher.OnKeyReleased (keyAction);
         }
 
         protected override void OnKeyPressed (KeyEventArgs args) {
             base.OnKeyPressed (args);
             var ml = this.MouseLocation ();
             Trace.WriteLine (string.Format ("KeyPressed {0} | {1}", ml, this.GetType ().Name));
-
             Display.ActionDispatcher.OnKeyPressed (new KeyActionEventArgs (args.Key, args.Modifiers, ml));
         }
 
