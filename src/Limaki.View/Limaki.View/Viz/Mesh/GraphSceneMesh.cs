@@ -162,7 +162,25 @@ namespace Limaki.View.Viz.Mesh {
         }
 
         public abstract IGraphScene<TItem, TEdge> CreateSinkScene (IGraph<TItem, TEdge> sourceGraph);
-        public abstract IGraph<TItem, TEdge> CreateSinkGraph (IGraph<TItem, TEdge> source);
+
+        public virtual  IGraph<TItem, TEdge> CreateSinkGraph (IGraph<TItem, TEdge> source) {
+
+            IGraphPair<TItem, TItem, TEdge, TEdge> sourceGraph = source as SubGraph<TItem, TEdge>;
+
+            if (sourceGraph != null) {
+                sourceGraph = sourceGraph.RootSource ();
+
+                var result = BackHandler (sourceGraph).CreateSinkGraph (sourceGraph.Source);
+
+                if (result != null) {
+                    // souround with a view
+                    var view = Activator.CreateInstance ((result as ISinkGraph<TItem, TEdge>).Sink.GetType ())
+                        as IGraph<TItem,TEdge>;
+                    return new SubGraph<TItem, TEdge> (result, view);
+                }
+            }
+            return null;
+        }
 
 
 

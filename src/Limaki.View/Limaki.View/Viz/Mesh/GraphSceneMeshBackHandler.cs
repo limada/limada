@@ -107,6 +107,20 @@ namespace Limaki.View.Viz.Mesh {
             return Displays ().Where (d => d.Data == scene).FirstOrDefault ();
         }
 
+        public virtual IGraph<TSinkItem, TSinkEdge> CreateSinkGraph (IGraph<TSinkItem, TSinkEdge> source) {
+
+            IGraph<TSinkItem, TSinkEdge> result = null;
+
+            var graphPair = source.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge>();
+            if (graphPair != null) {
+                var sinkGraph = Activator.CreateInstance(graphPair.Sink.GetType ()) as IGraph<TSinkItem, TSinkEdge>;
+                var transformer = Activator.CreateInstance (graphPair.Mapper.Transformer.GetType ());
+                result = Activator.CreateInstance (graphPair.GetType (), sinkGraph, graphPair.Source, transformer) as IGraph<TSinkItem, TSinkEdge>;
+            } 
+
+            return result;
+        }
+
         #region BackGraphEvents
 
         private void BackGraphChangeData (IGraph<TSourceItem, TSourceEdge> graph, TSourceItem backItem, object data) { }

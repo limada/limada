@@ -1,8 +1,9 @@
+using System;
 using Limaki.Graphs;
 using Limaki.Model;
 
 namespace Limaki.View.Visuals {
-
+    [Obsolete]
     public class GraphVisualEntityMapping : GraphMapping {
 
         /// <summary>

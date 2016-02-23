@@ -12,6 +12,7 @@
  * 
  */
 
+using System;
 using Limada.Model;
 using Limaki.Graphs;
 using Limaki.View.Visuals;
@@ -21,6 +22,7 @@ namespace Limada.View.VisualThings {
     /// encapsulates operations on 
     /// where the type of TItemTwo and TEdgeTwo are unknown
     /// </summary>
+    [Obsolete]
     public class VisualThingGraphMapping:GraphMapping {
         public VisualThingGraphMapping() :base(){}
 
