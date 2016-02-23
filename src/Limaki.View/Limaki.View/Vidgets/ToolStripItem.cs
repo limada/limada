@@ -84,7 +84,7 @@ namespace Limaki.View.Vidgets {
             }
         }
 
-        public Size Size { get; set; }
+        public new Size Size { get; set; }
 
         public void SetCommand (IToolStripCommand command) {
             VidgetUtils.SetCommand (this, command); 

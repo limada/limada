@@ -148,12 +148,12 @@ namespace Limada.View.Vidgets {
             var saveSheetButton = new ToolStripButton (SaveSheetCommand );
 
             SheetCombo = new ComboBox { Width = 100 };
-            SheetCombo.Items.Clear ();
             SheetCombo.SelectionChanged += SelectSheet;
 
             var comboHost = new ToolStripItemHost () { Child = SheetCombo };
 
             this.AddItems (
+
                 GraphStreamViewButton,
                 GraphGraphViewButton,
                 toggleViewButton,
@@ -165,8 +165,8 @@ namespace Limada.View.Vidgets {
                 new ToolStripSeparator (),
                 newSheetButton,
                 newNoteButton,
-                saveSheetButton,
-                comboHost
+				saveSheetButton,
+				comboHost
                 );
         }
 

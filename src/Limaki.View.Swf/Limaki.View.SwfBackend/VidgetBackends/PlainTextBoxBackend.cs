@@ -13,7 +13,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             Control.Font = Xwt.Drawing.Font.SystemSerifFont.WithSize(10).ToGdi ();
         }
 
-        public PlainTextBox Frontend { get; protected set; }
+        public new PlainTextBox Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);

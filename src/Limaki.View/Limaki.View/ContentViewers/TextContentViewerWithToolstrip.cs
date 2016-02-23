@@ -31,7 +31,7 @@ namespace Limaki.View.ContentViewers {
             get { return TextViewerWithToolstrip; }
         }
 
-        public static bool Available () {
+        public static new bool Available () {
             return VidgetToolkit.CurrentEngine.Backend.BackendRegistered<ITextViewerWithToolstripVidgetBackend>();
         }
 

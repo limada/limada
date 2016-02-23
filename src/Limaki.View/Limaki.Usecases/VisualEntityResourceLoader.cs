@@ -10,9 +10,9 @@ namespace Limaki.Usecases {
     public class VisualEntityResourceLoader : IContextResourceLoader {
 
         public virtual void ApplyResources (IApplicationContext context) {
-
+#if !__ANDROID__
             GraphMapping.ChainGraphMapping<GraphVisualEntityMapping> (context);
-
+#endif
             context.Factory.Add<GraphItemTransformer<IVisual, IGraphEntity, IVisualEdge, IGraphEdge>, VisualGraphEntityTransformer> ();
             context.Factory.Add<GraphItemTransformer<IGraphEntity, IVisual, IGraphEdge, IVisualEdge>> (() => new VisualGraphEntityTransformer ().Reverted ());
 

@@ -16,9 +16,10 @@ namespace Limada.View {
 
             context.Factory.Add<GraphItemTransformer<IVisual, IThing, IVisualEdge, ILink>, VisualThingTransformer> ();
             context.Factory.Add<GraphItemTransformer<IThing, IVisual, ILink, IVisualEdge>> (t => new VisualThingTransformer ().Reverted ());
-            
-            GraphMapping.ChainGraphMapping<VisualThingGraphMapping> (context);
 
+#if !__ANDROID__
+            GraphMapping.ChainGraphMapping<VisualThingGraphMapping> (context);
+#endif
             context.Factory.Add<IVisualContentViz, VisualThingsContentViz> ();
             context.Factory.Add<IVisualContentViz<IThing>, VisualThingsContentViz> ();
 

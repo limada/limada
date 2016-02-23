@@ -27,8 +27,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             };
 
             var styleSheetComboHost = new ToolStripItemHost { Child = StyleSheetCombo };
-            this.AddItems (styleSheetComboHost);
-
+            
             StyleSheetCombo.SelectionChanged += (s, e) => {
                 var selectedItem = StyleSheetCombo.SelectedItem;
                 if (selectedItem != null)
@@ -45,7 +44,6 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             };
 
             var shapeComboHost = new ToolStripItemHost { Child = ShapeCombo };
-            this.AddItems (shapeComboHost);
 
             var shapes = ShapeFactory.Shapes ().ToArray ();
 
@@ -56,6 +54,10 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                             size);
                 ShapeCombo.Items.Add (img);
             });
+
+			this.AddItems (styleSheetComboHost);
+			this.AddItems (shapeComboHost);
+
         }
 
         public IStyleSheet CurrentStyleSheet { get; set; }

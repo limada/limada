@@ -59,7 +59,9 @@ namespace Limada.UseCases {
             useCase.DisplayModeToolStrip = new DisplayModeToolStrip();
             useCase.ArrangerToolStrip = new ArrangerToolStrip();
             useCase.SplitViewToolStrip = new SplitViewToolStrip();
+#if !__ANDROID__
             useCase.LayoutToolStrip0 = new LayoutToolStrip0();
+#endif
             useCase.LayoutToolStrip = new LayoutToolStrip ();
             useCase.MarkerToolStrip = new MarkerToolStrip();
 

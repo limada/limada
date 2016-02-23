@@ -53,7 +53,9 @@ namespace Limada.UseCases {
         public ArrangerToolStrip ArrangerToolStrip { get; set; }
         public DisplayModeToolStrip DisplayModeToolStrip { get; set; }
         public SplitViewToolStrip SplitViewToolStrip { get; set; }
+#if !__ANDROID__
         public LayoutToolStrip0 LayoutToolStrip0 { get; set; }
+#endif
         public LayoutToolStrip LayoutToolStrip { get; set; }
         public MarkerToolStrip MarkerToolStrip { get; set; }
 
@@ -75,7 +77,7 @@ namespace Limada.UseCases {
         public Action ApplicationQuit { get; set; }
         public bool ApplicationQuitted { get; set; }
 
-        #region Open/Save
+#region Open/Save
 
         public IGraphSceneUiManager GraphSceneUiManager { get; set; }
 
@@ -138,9 +140,9 @@ namespace Limada.UseCases {
             FavoriteManager.SaveChanges (displays);
         }
 
-        #endregion
+#endregion
 
-        #region Content
+#region Content
 
         public StreamContentUiManager StreamContentUiManager { get; set; }
 
@@ -187,7 +189,7 @@ namespace Limada.UseCases {
             StreamContentUiManager.Save ();
         }
 
-        #endregion
+#endregion
 
         public void Search () {
             this.SplitView.DoSearch ();

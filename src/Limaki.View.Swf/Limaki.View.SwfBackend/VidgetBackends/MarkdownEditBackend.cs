@@ -16,7 +16,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             base.Compose ();
             Control.Dock = System.Windows.Forms.DockStyle.Fill;
         }
-        public Vidgets.MarkdownEdit Frontend { get; protected set; }
+        public new Vidgets.MarkdownEdit Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
