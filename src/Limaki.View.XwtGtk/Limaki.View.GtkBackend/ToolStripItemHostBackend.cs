@@ -30,7 +30,9 @@ namespace Limaki.View.GtkBackend {
             var child = value.Backend.ToGtk ();
             if (child != null) {
                 if (Widget.Child != child) {
-                    Widget.Remove (Widget.Child);
+					if(Widget.Child != null)
+                    	Widget.Remove (Widget.Child);
+					child.Show ();
                     Widget.Child = child;
                 }
             }
