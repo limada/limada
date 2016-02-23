@@ -70,11 +70,15 @@ namespace Limaki.View.DragDrop {
                     var fileName = IoUtils.UriToFileName (uri);
                     if (File.Exists (fileName)) { // TODO: check if filename is directory
                         stream = File.OpenRead (fileName);
-                        var sink = DataManager.SinkOf (Path.GetExtension (fileName).TrimStart ('.'));
+						var sink = DataManager.SinkOf (Path.GetExtension (fileName).TrimStart ('.').ToLower());
                         ContentInfo info = null;
                         if (sink != null) {
                             info = sink.Use (stream);
-                        } else {
+                        } 
+						if (sink == null) {
+							//TODO: try harder with Magics
+						}
+						if (sink == null) {
                             info = new ContentInfo ("Unknown", ContentTypes.Unknown, "*", null, CompressionType.neverCompress);
                         }
 
