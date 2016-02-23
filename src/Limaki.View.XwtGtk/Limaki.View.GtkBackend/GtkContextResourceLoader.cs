@@ -48,7 +48,7 @@ namespace Limaki.View.GtkBackend {
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripBackend, ToolStripBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripItemHostBackend, ToolStripItemHostBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripButtonBackend, ToolStripButtonBackend> ();
-            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripDropDownButtonBackend, ToolStripDropDownButtonBackend> ();
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripDropDownButtonBackend, ToolStripDropDownPopupButtonBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripSeparatorBackend, ToolStripSeparatorBackend> ();
 
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IArrangerToolStripBackend, ArrangerToolStripBackend> ();
@@ -57,14 +57,14 @@ namespace Limaki.View.GtkBackend {
 
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend> ();
-
+#if WINDOWSBACKEND
             if (false) {
                 var gtkEngine = Xwt.Backends.ToolkitEngineBackend.GetToolkitBackend<Xwt.GtkBackend.GtkEngine> ();
                 // using Xwt.Gtk.Windows.WebViewBackend: not working on linux
                 gtkEngine.RegisterBackend<IWebViewBackend, Xwt.Gtk.Windows.WebViewBackend> ();
                 // hint: see GeckoWebBrowser.Gtk for Gtk-Binding of Winform
             }
-
+#endif
             GLib.ExceptionManager.UnhandledException += (args) => {
                 Trace.WriteLine (args.ToString ());
             };
