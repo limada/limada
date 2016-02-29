@@ -85,17 +85,17 @@ namespace Limaki.View.XwtBackend {
         [TODO]
         public virtual void RegisterDragDropFormats (IApplicationContext context) {
 
-            Registry.Factory.Add<IDragDropBackendHandler>(args => new DragDropBackendHandler(args[0] as IVidgetBackend));
+			Registry.Factory.Add<IDragDropBackendHandler> (args => new DragDropBackendHandler (args [0] as IVidgetBackend));
 
-            var man = Registry.Pooled<TransferDataManager> ();
-            man.RegisterSome();
-            man.TransferContentTypes.Add("html format", ContentTypes.HTML);
-            man.TransferContentTypes.Add("rich text format", ContentTypes.RTF);
-            man.TransferContentTypes.Add ("DeviceIndependentBitmap", ContentTypes.DIB);
+			var man = Registry.Pooled<TransferDataManager> ();
+			man.RegisterSome ();
+			man.TransferContentTypes ["html format"] = ContentTypes.HTML;
+			man.TransferContentTypes ["rich text format"] = ContentTypes.RTF;
+			man.TransferContentTypes ["DeviceIndependentBitmap"] = ContentTypes.DIB;
 
-            // TODO: register the others
-            //man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.UnicodeText, 0);
+			// TODO: register the others
+			//man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.UnicodeText, 0);
 
-        }
+		}
     }
 }

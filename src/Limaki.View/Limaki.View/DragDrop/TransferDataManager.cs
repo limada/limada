@@ -110,12 +110,12 @@ namespace Limaki.View.DragDrop {
 
         // move this to Resourceloader of OS:
         public void RegisterSome() {
-            TransferContentTypes.Add ("html", ContentTypes.HTML);
-            TransferContentTypes.Add ("text", ContentTypes.Text);
-            TransferContentTypes.Add ("rtf", ContentTypes.RTF);
-            TransferContentTypes.Add (TransferDataType.Uri.Id, ContentTypes.Uri);
-            //...
-        }
+			TransferContentTypes ["html"] = ContentTypes.HTML;
+			TransferContentTypes ["text"] = ContentTypes.Text;
+			TransferContentTypes ["rtf"] = ContentTypes.RTF;
+			TransferContentTypes [TransferDataType.Uri.Id] = ContentTypes.Uri;
+			//...
+		}
 
         #region not used
 

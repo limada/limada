@@ -129,9 +129,9 @@ namespace Limaki.View.SwfBackend {
             man.MimeFingerPrints.SynonymFormats ("CF_DIB", "DeviceIndependentBitmap");
 
             man.RegisterSome();
-            man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.Html.ToLower(), ContentTypes.HTML);
-            man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.Rtf.ToLower(), ContentTypes.RTF);
-            man.TransferContentTypes.Add ("DeviceIndependentBitmap", ContentTypes.DIB);
+            man.TransferContentTypes[System.Windows.Forms.DataFormats.Html.ToLower()] = ContentTypes.HTML;
+            man.TransferContentTypes[System.Windows.Forms.DataFormats.Rtf.ToLower()] = ContentTypes.RTF;
+            man.TransferContentTypes["DeviceIndependentBitmap"] = ContentTypes.DIB;
 
             // TODO: register the others
             //man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.UnicodeText, 0);
