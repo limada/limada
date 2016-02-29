@@ -47,12 +47,12 @@ namespace Limaki.View.XwtBackend {
         public override Size DataSize {
             get { return base.DataSize; }
             set {
-                base.DataSize = value;
-                if (hscroll != null && hscroll.UpperValue != value.Width)
-                    hscroll.UpperValue = value.Width;
-                if (vscroll != null && vscroll.UpperValue != value.Height)
-                    vscroll.UpperValue = value.Height;
-            }
+				base.DataSize = new Size (Math.Ceiling (value.Width), Math.Ceiling (value.Height));
+				if (hscroll != null && Math.Ceiling (hscroll.UpperValue) != Math.Ceiling (value.Width))
+					hscroll.UpperValue = Math.Ceiling (value.Width);
+				if (vscroll != null && Math.Ceiling (vscroll.UpperValue) != Math.Ceiling (value.Height))
+					vscroll.UpperValue = Math.Ceiling (value.Height);
+			}
         }
 
         ScrollAdjustment hscroll;
