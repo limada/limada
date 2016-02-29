@@ -16,6 +16,7 @@ using Limada.Usecases;
 using System.Reflection;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Limaki.Common.Collections;
 using System.Diagnostics;
@@ -38,6 +39,8 @@ namespace Limaki.Common.IOC {
             resourceLoader.ApplyResources(Registry.ConcreteContext);
             backendApplied = true;
 
+
+			ResolveAssemblys (AppDomain.CurrentDomain.GetAssemblies (), "Lima");
             ResolveDirectory ("", "Lima*.dll");
         }
 
@@ -65,19 +68,44 @@ namespace Limaki.Common.IOC {
 
                 }
             } catch (Exception ex) {
-                Trace.WriteLine(string.Format("Error loading assembly {0}:{1}", assembly.FullName, ex.Message));
+                Trace.WriteLine(string.Format("Error resolving assemblys {0}:{1}", assembly.FullName, ex.Message));
             }
         }
 
-        public void ResolveDirectory(string path, string filter) {
-            var assemlies = new Set<Assembly>(AppDomain.CurrentDomain.GetAssemblies ());
+		Set<Assembly> _assemblies = null; 
+
+		Set<Assembly> assemblies {
+			get { return _assemblies ?? (_assemblies = new Set<Assembly> ()); }
+		} 
+
+		public virtual void ResolveAssemblys(IEnumerable<Assembly> currDomain, string filter) {
+
+			foreach (var ass in currDomain) {
+				try {
+					if (ass != null && ass.GetName ().Name.StartsWith (filter) && !assemblies.Contains (ass)) {
+						ResolveAssembly (ass);
+						assemblies.Add (ass);
+						var refasses = ass.GetReferencedAssemblies()
+							.Select(a => Assembly.Load (a.FullName))
+							.ToArray();
+
+						ResolveAssemblys (refasses, filter);
+					}
+				} catch (Exception ex) {
+					Trace.WriteLine (string.Format ("Error loading assembly {0}:{1}", ass, ex.Message));
+				}
+			}
+		}
+
+        public virtual void ResolveDirectory(string path, string filter) {
             path = GetFullPath (path);
             var files = Directory.GetFiles(path, filter);
             foreach(var file in files) {
                 try {
                     var ass = LoadAssembly(file);
-                    if (ass != null && !assemlies.Contains(ass)) {
+                    if (ass != null && !assemblies.Contains(ass)) {
                         ResolveAssembly(ass);
+						assemblies.Add(ass);
                     }
                 } catch(Exception ex) {
                     Trace.WriteLine(string.Format("Error loading assembly {0}:{1}", file, ex.Message));
@@ -85,7 +113,7 @@ namespace Limaki.Common.IOC {
             }
         }
 
-        private string GetFullPath(string path) {
+		protected string GetFullPath(string path) {
             if (!Path.IsPathRooted(path) && AppDomain.CurrentDomain.BaseDirectory != null) {
                 path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
             }
@@ -93,7 +121,7 @@ namespace Limaki.Common.IOC {
             return Path.GetFullPath(path);
         }
 
-        private Assembly LoadAssembly(string codeBase) {
+		protected Assembly LoadAssembly(string codeBase) {
             try {
                 var assemblyName = AssemblyName.GetAssemblyName(codeBase);
                 return Assembly.Load(assemblyName);
