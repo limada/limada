@@ -1,4 +1,7 @@
-﻿using System;
+﻿#define NOT_MAKEBUNLDE
+
+using System;
+using System.Diagnostics;
 
 namespace Limaki.View.XwtBackend {
 
@@ -6,9 +9,21 @@ namespace Limaki.View.XwtBackend {
 
         [STAThread]
         public static void Main (string[] args) {
-     
+
+			Preload();
+
             var factory = new XwtAppFactory();
             factory.Run();
         }
+
+		[Conditional("MAKEBUNDLE")]
+		static void Preload(){
+			Trace.WriteLine (string.Format ("static {0}", typeof(Limaki.View.ViewContextResourceLoader)));
+			Trace.WriteLine (string.Format ("static {0}", typeof(Limaki.View.XwtBackend.XwtContextResourceLoader)));
+			#if MAKEBUNDLE
+			Trace.WriteLine (string.Format ("static {0}", typeof(Limaki.View.GtkBackend.GtkContextResourceLoader)));
+			#endif
+			Trace.WriteLine (string.Format ("static {0}", typeof(Limaki.db4o.Db4oResourceLoader)));
+		}
     }
 }
