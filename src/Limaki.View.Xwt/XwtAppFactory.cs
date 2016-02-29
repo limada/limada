@@ -22,6 +22,7 @@ using Limada.UseCases;
 using Limaki.Usecases;
 using Limaki.View.XwtBackend;
 using Xwt;
+using System.Diagnostics;
 
 namespace Limaki.View.XwtBackend {
 
@@ -32,7 +33,7 @@ namespace Limaki.View.XwtBackend {
             get {
                 if (_toolkitType.HasValue)
                     return _toolkitType.Value;
-                return Xwt.ToolkitType.Wpf;
+				return OS.Unix ? Xwt.ToolkitType.Gtk : Xwt.ToolkitType.Wpf;
             }
             protected set { _toolkitType = value; }
         }
