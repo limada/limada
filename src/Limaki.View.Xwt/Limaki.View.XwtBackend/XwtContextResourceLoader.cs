@@ -27,6 +27,7 @@ using Limaki.View.Viz;
 using Limaki.View.XwtBackend;
 using Xwt;
 using Xwt.Backends;
+using System.Diagnostics;
 
 namespace Limaki.View.XwtBackend {
 
@@ -77,10 +78,35 @@ namespace Limaki.View.XwtBackend {
         }
 
         public virtual void RegisterBackends (IApplicationContext context) {
-            var engine = new XwtVidgetToolkitEngineBackend();
-            engine.Initialize();
-            VidgetToolkit.CurrentEngine = new VidgetToolkit { Backend = engine };
-        }
+			var backend = default(VidgetToolkitEngineBackend);
+			var currentEngine = VidgetToolkit.CurrentEngine;
+			if (currentEngine != null) {
+				Trace.WriteLine (string.Format ("Warning\t{0} has already an engine: {1}", typeof(VidgetToolkit).Name, VidgetToolkit.CurrentEngine.GetType ().Name));
+				if (currentEngine is VidgetToolkit) {
+					Trace.WriteLine (string.Format ("\ttake current engine {0}", currentEngine.GetType ().Name));
+				}
+				if (currentEngine.Backend != null) {
+					Trace.WriteLine (string.Format ("Warning:\t{0} has already a backend: {1}", 
+						currentEngine.GetType ().Name, 
+						currentEngine.Backend.GetType ().Name));
+					backend = currentEngine.Backend;
+					if (backend is XwtVidgetToolkitEngineBackend) {
+						Trace.WriteLine (string.Format ("\ttake current engine backend {0}", backend.GetType ().Name));
+					}
+				}
+			}
+
+			if (backend == null) {
+				backend = new XwtVidgetToolkitEngineBackend ();
+				backend.Initialize ();
+			}
+
+			if (currentEngine == null) {
+				currentEngine = new VidgetToolkit { Backend = backend };
+			}
+
+			VidgetToolkit.CurrentEngine = currentEngine;
+		}
 
         [TODO]
         public virtual void RegisterDragDropFormats (IApplicationContext context) {
