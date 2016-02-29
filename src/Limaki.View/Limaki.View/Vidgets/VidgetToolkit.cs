@@ -46,8 +46,15 @@ namespace Limaki.View.Vidgets {
 
     public class VidgetToolkit {
 
-        public VidgetToolkitEngineBackend Backend { get; set; }
-        public static VidgetToolkit CurrentEngine { get; set; }
+        public VidgetToolkitEngineBackend Backend { 
+			get; 
+			set; 
+		}
+
+        public static VidgetToolkit CurrentEngine { 
+			get; 
+			set; 
+		}
 
         VidgetApplicationContext _context = null;
         public VidgetApplicationContext Context {
