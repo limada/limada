@@ -181,6 +181,21 @@ namespace Xwt.GdiBackend {
             throw new NotImplementedException();
         }
 
+        Toolkit _engine = null;
+        Toolkit Engine
+        {
+            get
+            {
+                if (_engine == null)
+                {
+                    _engine = Toolkit.CurrentEngine;
+                    if (!typeof(GdiEngine).IsAssignableFrom(_engine.Backend.GetType()))
+                        this._engine = Toolkit.Engine<GdiEngine>();
+                }
+                return _engine;
+            }
+        }
+
         public void Draw (SD.Graphics g, double x, double y, double width, double height) {
             if (_drawCallback != null) {
                 var c = new GdiContext(g);
