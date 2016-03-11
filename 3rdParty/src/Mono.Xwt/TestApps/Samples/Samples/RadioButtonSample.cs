@@ -33,7 +33,8 @@ namespace Samples
 		public RadioButtonSample ()
 		{
 			var b1 = new RadioButton ("Item 1");
-			var b2 = new RadioButton ("Item 2");
+			var b2 = new RadioButton ("Item 2 (red background)");
+			b2.BackgroundColor = Xwt.Drawing.Colors.Red;
 			var b3 = new RadioButton ("Item 3");
 			b2.Group = b3.Group = b1.Group;
 			PackStart (b1);
@@ -56,9 +57,11 @@ namespace Samples
 
 			var b4 = new RadioButton (box);
 			var b5 = new RadioButton ("Second Option");
+			var b6 = new RadioButton ("Disabled Option") { Sensitive = false };
 			PackStart (b4);
 			PackStart (b5);
-			b4.Group = b5.Group;
+			PackStart (b6);
+			b4.Group = b5.Group = b6.Group;
 		}
 	}
 }

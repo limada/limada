@@ -143,6 +143,12 @@ namespace Xwt
 				}
 			}
 		}
+
+		public bool GridLinesVisible
+		{
+			get { return Backend.GridLinesVisible; }
+			set { Backend.GridLinesVisible = value; }
+		}
 		
 		/// <summary>
 		/// Gets or sets the vertical scroll policy.
@@ -227,6 +233,19 @@ namespace Xwt
 				return Backend.SelectedRows;
 			}
 		}
+
+		/// <summary>
+		/// Gets or sets the focused row.
+		/// </summary>
+		/// <value>The row with the keyboard focus.</value>
+		public int FocusedRow {
+			get {
+				return Backend.FocusedRow;
+			}
+			set {
+				Backend.FocusedRow = value;
+			}
+		}
 		
 		/// <summary>
 		/// Selects a row.
@@ -268,6 +287,43 @@ namespace Xwt
 		public void UnselectAll ()
 		{
 			Backend.UnselectAll ();
+		}
+
+		public void ScrollToRow (int row)
+		{
+			Backend.ScrollToRow (row);
+		}
+
+		/// <summary>
+		/// Returns the row at the given widget coordinates
+		/// </summary>
+		/// <returns>The row index</returns>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		public int GetRowAtPosition (double x, double y)
+		{
+			return GetRowAtPosition (new Point (x, y));
+		}
+
+		/// <summary>
+		/// Returns the row at the given widget coordinates
+		/// </summary>
+		/// <returns>The row index</returns>
+		/// <param name="p">A position, in widget coordinates</param>
+		public int GetRowAtPosition (Point p)
+		{
+			return Backend.GetRowAtPosition (p);
+		}
+
+		/// <summary>
+		/// Gets the bounds of the given row.
+		/// </summary>
+		/// <returns>The row bounds inside the widget, relative to the widget bounds.</returns>
+		/// <param name="row">The row index.</param>
+		/// <param name="includeMargin">If set to <c>true</c> include margin (the background of the row).</param>
+		public Rectangle GetRowBounds (int row, bool includeMargin)
+		{
+			return Backend.GetRowBounds (row, includeMargin);
 		}
 		
 		void HandleModelChanged (object sender, ListRowEventArgs e)

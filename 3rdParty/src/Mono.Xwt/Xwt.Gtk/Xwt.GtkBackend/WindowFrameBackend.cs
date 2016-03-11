@@ -83,6 +83,8 @@ namespace Xwt.GtkBackend
 		{
 			this.eventSink = eventSink;
 			Initialize ();
+
+			#if !XWT_GTK3
 			Window.SizeRequested += delegate(object o, Gtk.SizeRequestedArgs args) {
 				if (!Window.Resizable) {
 					int w = args.Requisition.Width, h = args.Requisition.Height;
@@ -93,6 +95,7 @@ namespace Xwt.GtkBackend
 					args.Requisition = new Gtk.Requisition () { Width = w, Height = h };
 				}
 			};
+			#endif
 		}
 		
 		public virtual void Initialize ()
@@ -154,12 +157,26 @@ namespace Xwt.GtkBackend
 			get { return requestedSize; }
 		}
 
+		string IWindowFrameBackend.Name {
+			get { return Window.Name; }
+			set { Window.Name = value; }
+		}
+
 		bool IWindowFrameBackend.Visible {
 			get {
 				return window.Visible;
 			}
 			set {
 				window.Visible = value;
+			}
+		}
+
+		bool IWindowFrameBackend.Sensitive {
+			get {
+				return window.Sensitive;
+			}
+			set {
+				window.Sensitive = value;
 			}
 		}
 

@@ -5,6 +5,7 @@
 //       Lluis Sanchez Gual <lluis@xamarin.com>
 //       Aaron Bockover <abockover@novell.com>
 //       Gabriel Burt <gburt@novell.com>
+//       Vsevolod Kukol <sevo@sevo.org>
 //
 // Copyright (c) 2014 Xamarin, Inc (http://www.xamarin.com)
 //
@@ -140,8 +141,8 @@ namespace Xwt.GtkBackend
 
 		static SearchEntry ()
 		{
-			clearImage = Xwt.Drawing.Image.FromResource ("searchbox-clear-light-16.png");
-			searchImage = Xwt.Drawing.Image.FromResource ("searchbox-search-light-16.png");
+			clearImage = Xwt.Drawing.Image.FromResource ("searchbox-clear-16.png");
+			searchImage = Xwt.Drawing.Image.FromResource ("searchbox-search-16.png");
 		}
 
 		public SearchEntry ()

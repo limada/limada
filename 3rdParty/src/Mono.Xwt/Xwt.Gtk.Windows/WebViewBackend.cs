@@ -1,4 +1,4 @@
-//
+﻿//
 // WebViewBackend.cs
 //
 // Author:
@@ -62,14 +62,14 @@ namespace Xwt.Gtk.Windows
 		void HandleGtkRealized (object sender, EventArgs e)
 		{
 			var size = new System.Drawing.Size (Widget.WidthRequest, Widget.HeightRequest);
-            var createView = view == null;
-		    if (createView) {
-		        view = new SWF.WebBrowser ();
-		        view.ScriptErrorsSuppressed = true;
-		        view.AllowWebBrowserDrop = false;
-                view.Size = size;
-		    }
-		    
+			    var createView = view == null;
+				    if (createView) {
+					view = new SWF.WebBrowser ();
+					view.ScriptErrorsSuppressed = true;
+					view.AllowWebBrowserDrop = false;
+				view.Size = size;
+				    }
+				    
 			var browser_handle = view.Handle;
 			IntPtr window_handle = (IntPtr)socket.Id;
 			SetParent (browser_handle, window_handle);
@@ -79,29 +79,29 @@ namespace Xwt.Gtk.Windows
 		        view.Navigated += HandleNavigated;
 		        view.DocumentTitleChanged += HandleDocumentTitleChanged;
 
-                view.DocumentCompleted += (s, ev) => {
-                    var inFocus = false;
-                    view.Document.Focusing += (sD, eD) => {
-                        this.SetFocus ();
-                        inFocus = true;
-                        ApplicationContext.InvokeUserCode (delegate {
-                            EventSink.OnGotFocus();
-                        });
-                    };
-                    view.Document.LosingFocus += (sD, eD) => {
-                        ApplicationContext.InvokeUserCode (delegate {
-                            EventSink.OnLostFocus ();
-                        });
-                        inFocus = false;
-                    };
-                    view.Document.MouseDown += (sD, eD) => {
-                        var a = new ButtonEventArgs { X = eD.MousePosition.X, Y = eD.MousePosition.Y };
-                        ApplicationContext.InvokeUserCode (delegate {
-                            EventSink.OnButtonPressed (a);
-                        });
-                    };
-                };
-		        if (url != null)
+		        view.DocumentCompleted += (s, ev) => {
+		            var inFocus = false;
+		            view.Document.Focusing += (sD, eD) => {
+		                this.SetFocus ();
+		                inFocus = true;
+		                ApplicationContext.InvokeUserCode (delegate {
+		                    EventSink.OnGotFocus();
+		                });
+		            };
+		            view.Document.LosingFocus += (sD, eD) => {
+		                ApplicationContext.InvokeUserCode (delegate {
+		                    EventSink.OnLostFocus ();
+		                });
+		                inFocus = false;
+		            };
+		            view.Document.MouseDown += (sD, eD) => {
+		                var a = new ButtonEventArgs { X = eD.MousePosition.X, Y = eD.MousePosition.Y };
+		                ApplicationContext.InvokeUserCode (delegate {
+		                    EventSink.OnButtonPressed (a);
+		                });
+		            };
+		        };
+				if (url != null)
 		            view.Navigate (url);
 		    } else {
                 view.Size = size;

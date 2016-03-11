@@ -427,6 +427,14 @@ namespace Xwt.GtkBackend {
             }
             base.Dispose (disposing);
         }
+
+        public void SetCompletions(string[] completions)
+        {
+        }
+
+        public void SetCompletionMatchFunc(Func<string, string, bool> matchFunc)
+        {
+        }
     }
 
 }

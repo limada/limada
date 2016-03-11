@@ -40,8 +40,8 @@ namespace Xwt.Gtk.Windows
 
 		Gdk.Pixbuf GetIcon (string filename, uint size)
 		{
-			SHFILEINFO shinfo = new SHFILEINFO ();
-			Win32.SHGetFileInfoW (filename, Win32.FILE_ATTRIBUTES_NORMAL, ref shinfo, (uint)Marshal.SizeOf (shinfo), Win32.SHGFI_USEFILEATTRIBUTES | Win32.SHGFI_ICON | Win32.SHGFI_ICONLOCATION | Win32.SHGFI_TYPENAME | size);
+			var shinfo = new Win32.SHFILEINFO ();
+			Win32.SHGetFileInfo (filename, Win32.FILE_ATTRIBUTES_NORMAL, ref shinfo, (uint)Marshal.SizeOf (shinfo), Win32.SHGFI_USEFILEATTRIBUTES | Win32.SHGFI_ICON | Win32.SHGFI_ICONLOCATION | Win32.SHGFI_TYPENAME | size);
 			if (shinfo.iIcon == 0) {
 				Win32.DestroyIcon (shinfo.hIcon);
 				return null;
@@ -60,10 +60,11 @@ namespace Xwt.Gtk.Windows
 
 		public Gdk.Pixbuf CreateFromResource (Bitmap bitmap)
 		{
-			MemoryStream ms = new MemoryStream ();
-			bitmap.Save (ms, ImageFormat.Png);
-			ms.Position = 0;
-			return new Gdk.Pixbuf (ms);
+			using (var ms = new MemoryStream ()) {
+				bitmap.Save (ms, ImageFormat.Png);
+				ms.Position = 0;
+				return new Gdk.Pixbuf (ms);
+			}
 		}
 	}
 }

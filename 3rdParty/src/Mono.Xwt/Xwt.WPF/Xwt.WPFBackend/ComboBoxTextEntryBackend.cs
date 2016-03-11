@@ -169,6 +169,15 @@ namespace Xwt.WPFBackend
 
 		public bool MultiLine { get; set; }
 
+		public void SetCompletions(string[] completions)
+		{
+			// TODO
+		}
+
+		public void SetCompletionMatchFunc (Func<string, string, bool> matchFunc)
+		{
+		}
+
 		public override void EnableEvent (object eventId)
 		{
 			base.EnableEvent (eventId);

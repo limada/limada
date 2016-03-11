@@ -1,5 +1,4 @@
-﻿//
-// Util.cs
+﻿// Util.cs
 //
 // Author:
 //       Eric Maupin <ermau@xamarin.com>
@@ -26,6 +25,7 @@
 
 using System.Windows;
 using System.Windows.Media;
+using System;
 
 namespace Xwt.WPFBackend
 {
@@ -50,5 +50,44 @@ namespace Xwt.WPFBackend
 			Matrix m = source.CompositionTarget.TransformToDevice;
 			return m.M11;
 		}
-	}
+
+		public static System.Windows.Point PointToScreenDpiAware(this Visual visual, System.Windows.Point point)
+		{
+			point = visual.PointToScreen(point);
+
+			PresentationSource source = PresentationSource.FromVisual(visual);
+
+			double scaleFactorX = source.CompositionTarget.TransformToDevice.M11;
+			double scaleFactorY = source.CompositionTarget.TransformToDevice.M22;
+
+			return new System.Windows.Point(point.X / scaleFactorX, point.Y / scaleFactorY);
+		}
+
+		public static HorizontalAlignment ToWpfHorizontalAlignment(Alignment alignment)
+		{
+			switch (alignment) {
+			case Alignment.Start:
+				return HorizontalAlignment.Left;
+			case Alignment.Center:
+				return HorizontalAlignment.Center;
+			case Alignment.End:
+				return HorizontalAlignment.Right;
+			}
+
+			throw new InvalidOperationException("Invalid alignment value: " + alignment);
+        }
+
+		public static System.Windows.Window GetParentWindow (this FrameworkElement element)
+		{
+			FrameworkElement current = element;
+			while (current != null) {
+				if (current is System.Windows.Window)
+					return (System.Windows.Window)current;
+
+				current = VisualTreeHelper.GetParent (current) as FrameworkElement;
+			}
+
+			return null;
+		}
+    }
 }

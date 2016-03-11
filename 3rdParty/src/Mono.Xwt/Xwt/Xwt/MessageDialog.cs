@@ -86,17 +86,19 @@ namespace Xwt
 		{
 			ShowMessage (RootWindow, primaryText, secondaryText);
 		}
-        public static void ShowMessage (Xwt.Drawing.Image icon, string primaryText, string secondaryText) 
-        {
-            ShowMessage (RootWindow, icon, primaryText, secondaryText);
-        }
+
+		public static void ShowMessage (Xwt.Drawing.Image icon, string primaryText, string secondaryText) 
+		{
+		    ShowMessage (RootWindow, icon, primaryText, secondaryText);
+		}
 		public static void ShowMessage (WindowFrame parent, string primaryText, string secondaryText)
 		{
-            ShowMessage (parent, StockIcons.Information, primaryText, secondaryText);
+			GenericAlert (parent, StockIcons.Information, primaryText, secondaryText, Command.Ok);
 		}
-        public static void ShowMessage (WindowFrame parent, Xwt.Drawing.Image icon, string primaryText, string secondaryText) {
-            GenericAlert (parent, icon, primaryText, secondaryText, Command.Ok);
-        }
+
+		public static void ShowMessage (WindowFrame parent, Xwt.Drawing.Image icon, string primaryText, string secondaryText) {
+		    GenericAlert (parent, icon, primaryText, secondaryText, Command.Ok);
+		}
 		#endregion
 		
 		#region Confirm
@@ -177,6 +179,8 @@ namespace Xwt
 
 			IAlertDialogBackend backend = Toolkit.CurrentEngine.Backend.CreateBackend<IAlertDialogBackend> ();
 			backend.Initialize (Toolkit.CurrentEngine.Context);
+			if (message.Icon != null)
+				message.Icon.InitForToolkit (Toolkit.CurrentEngine);
 
 			using (backend) {
 				var res = backend.Run (parent ?? RootWindow, message);
@@ -191,7 +195,7 @@ namespace Xwt
 	
 	public class MessageDescription
 	{
-        public MessageDescription ()
+		public MessageDescription ()
 		{
 			DefaultButton = -1;
 			Buttons = new List<Command> ();

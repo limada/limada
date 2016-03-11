@@ -38,6 +38,7 @@ namespace Xwt.GtkBackend
 
 		public override void Initialize ()
 		{
+			NeedsEventBox = false;
 			Widget = new Gtk.RadioButton ("");
 			Widget.Show ();
 		}
@@ -61,6 +62,14 @@ namespace Xwt.GtkBackend
 				foreach (var c in Widget.Children)
 					c.ModifyFont (fd);
 			}
+		}
+
+		protected override void OnSetBackgroundColor (Xwt.Drawing.Color color)
+		{
+			base.OnSetBackgroundColor (color);
+			Widget.SetBackgroundColor (color);
+			Widget.SetChildBackgroundColor (color);
+			EventsRootWidget.SetBackgroundColor (color);
 		}
 		
 		public override void EnableEvent (object eventId)

@@ -93,7 +93,7 @@ namespace Xwt.GtkBackend
 		}
 	}
 	
-	class CustomCanvas: Gtk.EventBox
+	partial class CustomCanvas: Gtk.EventBox
 	{
 		public CanvasBackend Backend;
 		public ICanvasEventSink EventSink;
@@ -101,9 +101,8 @@ namespace Xwt.GtkBackend
 		
 		public CustomCanvas ()
 		{
-			GtkWorkarounds.FixContainerLeak (this);
-
-			WidgetFlags |= Gtk.WidgetFlags.AppPaintable;
+			this.FixContainerLeak ();
+			this.SetAppPaintable(true);
 			VisibleWindow = false;
 		}
 		
@@ -124,13 +123,6 @@ namespace Xwt.GtkBackend
 		{
 			children.Remove (widget);
 			widget.Unparent ();
-		}
-		
-		protected override void OnSizeRequested (ref Gtk.Requisition requisition)
-		{
-			base.OnSizeRequested (ref requisition);
-			foreach (var cr in children.ToArray ())
-				cr.Key.SizeRequest ();
 		}
 		
 		protected override void OnUnrealized ()
@@ -163,18 +155,14 @@ namespace Xwt.GtkBackend
 			foreach (var c in children.Keys.ToArray ())
 				callback (c);
 		}
-		
-		protected override bool OnExposeEvent (Gdk.EventExpose evnt)
+
+		protected void OnDraw (Rectangle dirtyRect, CairoContextBackend context)
 		{
 			Backend.ApplicationContext.InvokeUserCode (delegate {
-				using (var context = CreateContext ()) {
-					var a = evnt.Area;
-					// offset exposed area by CanvasBackend origin
-					var r = new Rectangle (a.X - context.Origin.X, a.Y - context.Origin.Y, a.Width, a.Height);
-					EventSink.OnDraw (context, r);
+				using (context) {
+					EventSink.OnDraw (context, dirtyRect);
 				}
 			});
-			return base.OnExposeEvent (evnt);
 		}
 		
 		public CairoContextBackend CreateContext ()
@@ -182,18 +170,19 @@ namespace Xwt.GtkBackend
 			CairoContextBackend ctx = new CairoContextBackend (Util.GetScaleFactor (this));
 			if (!IsRealized) {
 				Cairo.Surface sf = new Cairo.ImageSurface (Cairo.Format.ARGB32, 1, 1);
-				Cairo.Context c = new Cairo.Context (sf);
-				ctx.Context = c;
+				ctx.Context = new Cairo.Context (sf);
 				ctx.TempSurface = sf;
 			} else {
 				ctx.Context = Gdk.CairoHelper.Create (GdkWindow);
 			}
 			if (!VisibleWindow) {
 				ctx.Context.Translate (Allocation.X, Allocation.Y);
-				// Set ContextBackend Origin
-				ctx.Origin.X = Allocation.X;
-				ctx.Origin.Y = Allocation.Y;
-			}
+#if limada_8b3c8a
+                // Set ContextBackend Origin
+                ctx.Origin.X = Allocation.X;
+                ctx.Origin.Y = Allocation.Y;
+#endif
+            }
 			return ctx;
 		}
 	}

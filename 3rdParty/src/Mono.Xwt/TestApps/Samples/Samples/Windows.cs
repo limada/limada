@@ -141,6 +141,21 @@ namespace Samples
 					MessageDialog.ShowMessage ("A color has been selected!", dlg.Color.ToString ());
 			};
 
+			b = new Button ("Show Select Font dialog");
+			PackStart (b);
+			b.Clicked += delegate {
+				SelectFontDialog dlg = new SelectFontDialog ();
+				if (dlg.Run (ParentWindow)) {
+					Dialog d = new Dialog ();
+					d.Title = "A font has been selected!";
+					d.Content = new Label (dlg.SelectedFont.ToString ());
+					d.Content.Font = dlg.SelectedFont;
+					d.Buttons.Add (new DialogButton (Command.Ok));
+					d.Run (this.ParentWindow);
+					d.Dispose ();
+				}
+			};
+
 			b = new Button("Show window shown event");
 			PackStart(b);
 			b.Clicked += delegate
@@ -171,6 +186,17 @@ namespace Samples
 					return false;
 				});
 				dialog.Run ();
+			};
+
+			b = new Button("Show dialog and make this window not sensitive");
+			PackStart(b);
+			b.Clicked += delegate
+			{
+				var dialog = new Dialog ();
+				dialog.Content = new Label ("Hello World");
+				dialog.Run ();
+				dialog.Shown += (sender, args) => this.ParentWindow.Sensitive = false;
+				dialog.Closed += (sender, args) => this.ParentWindow.Sensitive = true;
 			};
 		}
 	}

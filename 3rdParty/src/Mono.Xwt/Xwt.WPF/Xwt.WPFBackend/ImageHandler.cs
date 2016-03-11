@@ -71,11 +71,11 @@ namespace Xwt.WPFBackend
 			int stride = width * (bitmapImage.Format.BitsPerPixel + 7) / 8;
 			byte[] pixelData = new byte[stride * height];
 			bitmapImage.CopyPixels (pixelData, stride, 0);
-            BitmapPalette pal = null;
-		    if (bitmapImage.Format.BitsPerPixel == 1) {
-		        pal = new BitmapPalette (new Color[] { Colors.Black, Colors.White });
-		    }
-            return BitmapSource.Create (width, height, dpi, dpi, bitmapImage.Format, pal, pixelData, stride);
+            		BitmapPalette pal = null;
+		    	if (bitmapImage.Format.BitsPerPixel == 1) {
+		        	pal = new BitmapPalette (new Color[] { Colors.Black, Colors.White });
+		    	}
+            		return BitmapSource.Create (width, height, dpi, dpi, bitmapImage.Format, pal, pixelData, stride);
 		}
 
 		public override object CreateCustomDrawn (ImageDrawCallback drawCallback)
@@ -93,7 +93,7 @@ namespace Xwt.WPFBackend
 
 		public override object CreateMultiSizeIcon (IEnumerable<object> images)
 		{
-			return new WpfImage (images.Cast<WpfImage> ().SelectMany (i => i.Frames));
+			return new WpfImage (images.Cast<WpfImage> ());
 		}
 
 		public override void SaveToStream (object backend, Stream stream, Drawing.ImageFileType fileType)
@@ -127,10 +127,10 @@ namespace Xwt.WPFBackend
 
 			switch (id) {
 				case StockIconId.Add:
-					using (var s = typeof (ImageHandler).Assembly.GetManifestResourceStream ("Xwt.WPF.icons.list-add.png"))
+					using (var s = typeof (ImageHandler).Assembly.GetManifestResourceStream ("Xwt.WPF.icons.add-16.png"))
 						return LoadFromStream (s);
 				case StockIconId.Remove:
-					using (var s = typeof (ImageHandler).Assembly.GetManifestResourceStream ("Xwt.WPF.icons.list-remove.png"))
+					using (var s = typeof (ImageHandler).Assembly.GetManifestResourceStream ("Xwt.WPF.icons.remove-16.png"))
 						return LoadFromStream (s);
 
 				case StockIconId.Error:
@@ -241,22 +241,22 @@ namespace Xwt.WPFBackend
 
 		public override bool IsBitmap (object handle)
 		{
-            var source = (WpfImage)handle;
-		    return source.MainFrame is SWMI.BitmapSource;
+            		var source = (WpfImage)handle;
+		    	return source.MainFrame is SWMI.BitmapSource;
 		}
 
-        public override Xwt.Drawing.ImageFormat GetFormat (object handle) 
-        {
-            var source = (WpfImage)handle;
-            var img = source.MainFrame as SWMI.BitmapSource;
-            if (img != null) {
-                if (img.Format.BitsPerPixel == 32)
-                    return Drawing.ImageFormat.ARGB32;
-                if (img.Format.BitsPerPixel == 24)
-                    return Drawing.ImageFormat.RGB24;
-            }
-            return Drawing.ImageFormat.Other;
-        }
+		public override Xwt.Drawing.ImageFormat GetFormat (object handle) 
+		{
+		    var source = (WpfImage)handle;
+		    var img = source.MainFrame as SWMI.BitmapSource;
+		    if (img != null) {
+		        if (img.Format.BitsPerPixel == 32)
+		            return Drawing.ImageFormat.ARGB32;
+		        if (img.Format.BitsPerPixel == 24)
+		            return Drawing.ImageFormat.RGB24;
+		    }
+		    return Drawing.ImageFormat.Other;
+		}
 
 		public override Size GetSize (object handle)
 		{
@@ -315,7 +315,7 @@ namespace Xwt.WPFBackend
 		public int Stride;
 		public bool PixelWritePending;
 
-		ImageFrame[] frames;
+		ImageFrame[] frames = new ImageFrame[0];
 
 		public WpfImage (ImageSource image)
 		{
@@ -328,11 +328,27 @@ namespace Xwt.WPFBackend
 		public WpfImage (IEnumerable<ImageSource> images)
 		{
 			this.frames = images.Select (f => new ImageFrame (f)).ToArray ();
+			if (frames.Length == 0)
+				throw new InvalidOperationException();
 		}
 
 		public WpfImage (IEnumerable<ImageFrame> frames)
 		{
 			this.frames = frames.ToArray ();
+			if (this.frames.Length == 0)
+				throw new InvalidOperationException();
+		}
+
+		public WpfImage (IEnumerable<WpfImage> images)
+		{
+			var first = images.First ();
+			if (first.drawCallback != null)
+				drawCallback = first.drawCallback;
+			else {
+				this.frames = images.SelectMany (i => i.Frames).ToArray ();
+				if (this.frames.Length == 0)
+					throw new InvalidOperationException ();
+			}
 		}
 
 		public WpfImage (ImageDrawCallback drawCallback)
@@ -347,7 +363,7 @@ namespace Xwt.WPFBackend
 
 		public ImageSource MainFrame
 		{
-			get { return frames[0].ImageSource; }
+			get { return frames.Length > 0 ? frames[0].ImageSource : null; }
 			set { frames[0].ImageSource = value; }
 		}
 
@@ -467,7 +483,7 @@ namespace Xwt.WPFBackend
 			if (drawCallback != null) {
 				DrawingContext c = new DrawingContext (dc, scaleFactor);
 				actx.InvokeUserCode (delegate {
-					drawCallback (c, new Rectangle (x, y, idesc.Size.Width, idesc.Size.Height));
+					drawCallback (c, new Rectangle (x, y, idesc.Size.Width, idesc.Size.Height), idesc, actx.Toolkit);
 				});
 			}
 			else {
@@ -476,8 +492,15 @@ namespace Xwt.WPFBackend
 
 				var f = GetBestFrame (actx, scaleFactor, idesc.Size.Width, idesc.Size.Height, false);
 				var bmpImage = f as BitmapSource;
-				if (bmpImage != null && (bmpImage.PixelHeight != idesc.Size.Height || bmpImage.PixelWidth != idesc.Size.Width))
-					f = new TransformedBitmap (bmpImage, new ScaleTransform (idesc.Size.Width / bmpImage.PixelWidth, idesc.Size.Height / bmpImage.PixelHeight));
+
+				// When an image is a single bitmap that doesn't have the same intrinsic size as the drawing size, dc.DrawImage makes a very poor job of down/up scaling it.
+				// Thus we handle this manually by using a TransformedBitmap to handle the conversion in a better way when it's needed.
+
+				var scaledWidth = idesc.Size.Width * scaleFactor;
+				var scaledHeight = idesc.Size.Height * scaleFactor;
+				if (bmpImage != null && (Math.Abs (bmpImage.PixelHeight - scaledHeight) > 0.001 || Math.Abs (bmpImage.PixelWidth - scaledWidth) > 0.001))
+					f = new TransformedBitmap (bmpImage, new ScaleTransform (scaledWidth / bmpImage.PixelWidth, scaledHeight / bmpImage.PixelHeight));
+
 				dc.DrawImage (f, new Rect (x, y, idesc.Size.Width, idesc.Size.Height));
 
 				if (idesc.Alpha < 1)

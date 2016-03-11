@@ -43,6 +43,13 @@ namespace Xwt.CairoBackend
 				(double)(color.Blue >> 8) / 255.0);
 		}
 
+		#if XWT_GTK3
+		public static Cairo.Color ToCairoColor (this Gdk.RGBA color)
+		{
+			return new Cairo.Color (color.Red, color.Green, color.Blue, color.Alpha);
+		}
+		#endif
+
 		public static void SelectFont (this Cairo.Context ctx, Font font)
 		{
 			Cairo.FontSlant slant;
@@ -71,14 +78,14 @@ namespace Xwt.CairoBackend
 			cr.Arc(x + r, y + r, r, Math.PI, Math.PI * 1.5);
 		}
 
-        public static Size GetSize (this Pango.LayoutLine line) 
-        {
-            var ext = new Pango.Rectangle ();
-            var extl = new Pango.Rectangle ();
-            var scale = Pango.Scale.PangoScale;
-            line.GetExtents (ref ext, ref extl);
-            return new Size (extl.Width / scale, extl.Height / scale);
-        }
+		public static Size GetSize (this Pango.LayoutLine line) 
+		{
+		    var ext = new Pango.Rectangle ();
+		    var extl = new Pango.Rectangle ();
+		    var scale = Pango.Scale.PangoScale;
+		    line.GetExtents (ref ext, ref extl);
+		    return new Size (extl.Width / scale, extl.Height / scale);
+		}
 	}
 }
 

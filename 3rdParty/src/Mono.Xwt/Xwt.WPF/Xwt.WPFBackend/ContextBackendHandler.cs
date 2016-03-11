@@ -245,6 +245,8 @@ namespace Xwt.WPFBackend
 		public override void SetPattern (object backend, object p)
 		{
 			var c = (DrawingContext) backend;
+			var toolkit = ApplicationContext.Toolkit;
+			p = toolkit.GetSafeBackend (p);
 			if (p is ImagePattern)
 				p = ((ImagePattern)p).GetBrush (c.ScaleFactor);
 			c.SetPattern ((System.Windows.Media.Brush)p);
@@ -253,8 +255,8 @@ namespace Xwt.WPFBackend
 		public override void DrawTextLayout (object backend, TextLayout layout, double x, double y)
 		{
 			var c = (DrawingContext) backend;
-			var t = (TextLayoutBackend)Toolkit.GetBackend (layout);
-            t.FormattedText.SetForegroundBrush (c.Brush);
+			var t = (TextLayoutBackend)ApplicationContext.Toolkit.GetSafeBackend (layout);
+			t.SetDefaultForeground (c.ColorBrush);
 			c.Context.DrawText (t.FormattedText, new SW.Point (x, y));
 		}
 
@@ -262,7 +264,7 @@ namespace Xwt.WPFBackend
 		{
 			var c = (DrawingContext) backend;
 			WpfImage bmp = (WpfImage) img.Backend;
-
+			img.Styles = img.Styles.AddRange(c.Styles);
 			bmp.Draw (ApplicationContext, c.Context, c.ScaleFactor, x, y, img);
 		}
 
@@ -271,7 +273,8 @@ namespace Xwt.WPFBackend
 			var c = (DrawingContext) backend;
 			WpfImage bmp = (WpfImage)img.Backend;
 
-			c.Context.PushClip (new RectangleGeometry (destRect.ToWpfRect ()));
+			img.Styles = img.Styles.AddRange(c.Styles);
+			c.Context.PushClip(new RectangleGeometry(destRect.ToWpfRect()));
 			c.Context.PushTransform (new TranslateTransform (destRect.X - srcRect.X, destRect.Y - srcRect.Y));
 			var sw = destRect.Width / srcRect.Width;
 			var sh = destRect.Height / srcRect.Height;
@@ -343,6 +346,12 @@ namespace Xwt.WPFBackend
         {
 			var c = (DrawingContext)backend;
 			return c.Geometry.StrokeContains (c.Pen, new SW.Point (x, y));
+		}
+
+		public override void SetStyles(object backend, StyleSet styles)
+		{
+			var c = (DrawingContext)backend;
+			c.Styles = styles;
 		}
 
 		public override void Dispose (object backend)

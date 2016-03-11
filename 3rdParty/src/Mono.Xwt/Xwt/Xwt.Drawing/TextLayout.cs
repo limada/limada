@@ -3,7 +3,7 @@
 //  
 // Author:
 //       Lluis Sanchez <lluis@xamarin.com>
-//       Lytico (http://www.limada.org)
+//       Lytico (http://limada.sourceforge.net)
 // 
 // Copyright (c) 2011 Xamarin Inc
 // 
@@ -41,7 +41,7 @@ namespace Xwt.Drawing
 		double width = -1;
 		double height = -1;
 		TextTrimming textTrimming = TextTrimming.Word;
-	    WrapMode wrapMode = WrapMode.Word;
+	    	WrapMode wrapMode = WrapMode.Word;
 		List<TextAttribute> attributes;
 
 		public TextLayout ()
@@ -63,17 +63,15 @@ namespace Xwt.Drawing
 
 		internal TextLayout (Toolkit tk)
 		{
-			ToolkitEngine = tk;
-			handler = ToolkitEngine.TextLayoutBackendHandler;
-			Backend = handler.Create ();
-			Setup ();
+			ToolkitEngine = null;
+			InitForToolkit (tk);
 		}
 
-        public TextLayout (Context ctx) {
-            ToolkitEngine = ctx.ToolkitEngine;
-            handler = ToolkitEngine.TextLayoutBackendHandler;
-            Backend = handler.Create(ctx);
-        }
+		public TextLayout (Context ctx) {
+		    ToolkitEngine = ctx.ToolkitEngine;
+		    handler = ToolkitEngine.TextLayoutBackendHandler;
+		    Backend = handler.Create(ctx);
+		}
 
 		void Setup ()
 		{
@@ -97,6 +95,33 @@ namespace Xwt.Drawing
 			ResourceManager.FreeResource (Backend);
 		}
 
+		internal void InitForToolkit (Toolkit tk)
+		{
+			if (ToolkitEngine == null || ToolkitEngine != tk) {
+				// If this is a re-initialization we dispose the previous state
+				if (handler != null) {
+					Dispose ();
+					GC.ReRegisterForFinalize (this);
+				}
+				ToolkitEngine = tk;
+				handler = ToolkitEngine.TextLayoutBackendHandler;
+				Backend = handler.Create ();
+				Setup ();
+				font = (Font)tk.ValidateObject (font);
+				if (font != null)
+					handler.SetFont (Backend, font);
+				if (text != null)
+					handler.SetText (Backend, text);
+				if (width != -1)
+					handler.SetWidth (Backend, width);
+				if (height != -1)
+					handler.SetHeight (Backend, height);
+				if (attributes != null && attributes.Count > 0)
+					foreach (var attr in attributes)
+						handler.AddAttribute (Backend, attr);
+			}
+		}
+
 		internal TextLayoutData GetData ()
 		{
 			return new TextLayoutData () {
@@ -105,7 +130,7 @@ namespace Xwt.Drawing
 				Text = text,
 				Font = font,
 				TextTrimming = textTrimming,
-                WrapMode = wrapMode,
+                		WrapMode = wrapMode,
 				Attributes = attributes != null ? new List<TextAttribute> (attributes) : null
 			};
 		}
@@ -156,15 +181,33 @@ namespace Xwt.Drawing
 			return handler.GetSize (Backend);
 		}
 
+		/// <summary>
+		/// Get the distance in pixels between the top of the layout bounds and the first line's baseline
+		/// </summary>
+		public double Baseline {
+			get {
+				return handler.GetBaseline (Backend);
+			}
+		}
+
+		/// <summary>
+		/// Get the distance in pixels between the top of the layout bounds and the first line's meanline (usually equivalent to the baseline minus half of the x-height)
+		/// </summary>
+		public double Meanline {
+			get {
+				return handler.GetMeanline (Backend);
+			}
+		}
+
 		public TextTrimming Trimming {
 			get { return textTrimming; }
 			set { textTrimming = value; handler.SetTrimming (Backend, value); }
 		}
 
-        public WrapMode WrapMode {
-            get { return wrapMode; }
-            set { wrapMode = value; handler.SetWrapMode (Backend, value); }
-        }
+		public WrapMode WrapMode {
+		    get { return wrapMode; }
+		    set { wrapMode = value; handler.SetWrapMode (Backend, value); }
+		}
 
 		/// <summary>
 		/// Converts from a X and Y position within the layout to the character at this position.
@@ -307,7 +350,7 @@ namespace Xwt.Drawing
 		public string Text;
 		public Font Font;
 		public TextTrimming TextTrimming;
-        public WrapMode WrapMode;
+        	public WrapMode WrapMode;
 		public List<TextAttribute> Attributes;
 
 		public void InitLayout (TextLayout la)
@@ -320,10 +363,9 @@ namespace Xwt.Drawing
 				la.Text = Text;
 			if (Font != null)
 				la.Font = Font;
-			
-			la.Trimming = TextTrimming;
-            la.WrapMode = WrapMode;
-
+			if (TextTrimming != default(TextTrimming))
+				la.Trimming = TextTrimming;
+			la.WrapMode = WrapMode;
 			if (Attributes != null) {
 				foreach (var at in Attributes)
 					la.AddAttribute (at);
@@ -332,8 +374,8 @@ namespace Xwt.Drawing
 
 		public bool Equals (TextLayoutData other)
 		{
-            if (Width != other.Width || Height != other.Height || Text != other.Text || Font != other.Font || 
-                TextTrimming != other.TextTrimming || WrapMode != other.WrapMode)
+			if (Width != other.Width || Height != other.Height || Text != other.Text || Font != other.Font || TextTrimming != other.TextTrimming
+				|| WrapMode != other.WrapMode)
 				return false;
 			if (Attributes == null && other.Attributes == null)
 				return true;

@@ -41,6 +41,7 @@ namespace Xwt.GtkBackend
 
 		public override void Initialize ()
 		{
+			NeedsEventBox = false;
 			Widget = new Gtk.CheckButton ();
 			Widget.Toggled += HandleWidgetActivated;
 			Widget.Show ();
@@ -73,6 +74,14 @@ namespace Xwt.GtkBackend
 				Widget.Active = value != CheckBoxState.Off;
 				internalActiveUpdate = false;
 			}
+		}
+
+		protected override void OnSetBackgroundColor (Xwt.Drawing.Color color)
+		{
+			base.OnSetBackgroundColor (color);
+			Widget.SetBackgroundColor (color);
+			Widget.SetChildBackgroundColor (color);
+			EventsRootWidget.SetBackgroundColor (color);
 		}
 		
 		public void SetContent (string label)

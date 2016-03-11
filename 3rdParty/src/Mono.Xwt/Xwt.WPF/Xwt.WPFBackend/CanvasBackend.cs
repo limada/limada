@@ -19,7 +19,7 @@ namespace Xwt.WPFBackend
 		{
 			Canvas = new CustomPanel ();
 			Canvas.RenderAction = Render;
-		    Canvas.CacheMode = new BitmapCache();
+		    	Canvas.CacheMode = new BitmapCache();
 		}
 
 		private CustomPanel Canvas
@@ -43,33 +43,33 @@ namespace Xwt.WPFBackend
 		private void Render (System.Windows.Media.DrawingContext dc) {
 
 		    var dirtyRectangle = queueRect;
-            queueRect = Rectangle.Zero;
-            // disabled! queueRect allways zero!
-            if (queueRect == Rectangle.Zero) {
-                dirtyRectangle = new Rectangle(0, 0, Widget.ActualWidth, Widget.ActualHeight);
-            }
+		    queueRect = Rectangle.Zero;
+		    // disabled! queueRect allways zero!
+		    if (queueRect == Rectangle.Zero) {
+		        dirtyRectangle = new Rectangle(0, 0, Widget.ActualWidth, Widget.ActualHeight);
+		    }
 		    var dirtyRect = dirtyRectangle.ToWpfRect();
-            if (BackgroundColorSet) {
+            	    if (BackgroundColorSet) {
 				SolidColorBrush mySolidColorBrush = new SolidColorBrush ();
 				mySolidColorBrush.Color = BackgroundColor.ToWpfColor ();
-                dc.DrawRectangle (mySolidColorBrush, null, dirtyRect);
-			}
+                		dc.DrawRectangle (mySolidColorBrush, null, dirtyRect);
+		    }
 			
-			var ctx = new Xwt.WPFBackend.DrawingContext (dc, Widget.GetScaleFactor ());
-            ctx.Context.PushClip(new RectangleGeometry(dirtyRect));
+		    var ctx = new Xwt.WPFBackend.DrawingContext (dc, Widget.GetScaleFactor ());
+            	    ctx.Context.PushClip(new RectangleGeometry(dirtyRect));
 		    CanvasEventSink.OnDraw(ctx, dirtyRectangle);
 		}
 
 		public void QueueDraw ()
 		{
 			Canvas.InvalidateVisual ();
-            queueRect = Rectangle.Zero; 
+            		queueRect = Rectangle.Zero; 
 		}
 
 		public void QueueDraw (Rectangle rect)
 		{
 			Canvas.InvalidateVisual ();
-            queueRect = rect; 
+            		queueRect = rect; 
 		}
 
 		public void AddChild (IWidgetBackend widget, Rectangle bounds)

@@ -35,6 +35,7 @@ namespace Xwt.Backends
 		TreePosition[] SelectedRows { get; }
 		void SelectRow (TreePosition pos);
 		void UnselectRow (TreePosition pos);
+		TreePosition FocusedRow { get; set; }
 		
 		bool IsRowSelected (TreePosition pos);
 		bool IsRowExpanded (TreePosition pos);
@@ -44,9 +45,13 @@ namespace Xwt.Backends
 		void ExpandToRow (TreePosition pos);
 		
 		bool HeadersVisible { get; set; }
+		GridLines GridLinesVisible { get; set; }
 		
 		bool GetDropTargetRow (double x, double y, out RowDropPosition pos, out TreePosition nodePosition);
 
+		TreePosition GetRowAtPosition (Point p);
+		Rectangle GetCellBounds (TreePosition pos, CellView cell, bool includeMargin);
+		Rectangle GetRowBounds (TreePosition pos, bool includeMargin);
 		TreePosition CurrentEventRow { get; }
 	}
 	
@@ -57,14 +62,17 @@ namespace Xwt.Backends
 		CanResize,
 		SortDirection,
 		SortDataField,
-		SortIndicatorVisible
+		SortIndicatorVisible,
+		Alignment
 	}
 	
 	public enum TreeViewEvent
 	{
 		RowActivated,
 		RowExpanding,
-		RowExpanded
+		RowExpanded,
+		RowCollapsing,
+		RowCollapsed
 	}
 
 	public interface ITreeViewEventSink: ITableViewEventSink
@@ -72,6 +80,8 @@ namespace Xwt.Backends
 		void OnRowActivated (TreePosition position);
 		void OnRowExpanding (TreePosition position);
 		void OnRowExpanded (TreePosition position);
+		void OnRowCollapsing (TreePosition position);
+		void OnRowCollapsed (TreePosition position);
 	}
 }
 

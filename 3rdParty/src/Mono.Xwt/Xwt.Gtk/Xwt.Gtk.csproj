@@ -22,47 +22,41 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
-      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>glib-sharp-2.0</Package>
-      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
-      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
-      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="Mono.Cairo" />
     <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
-      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="Mono.Cairo" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Xwt.GtkBackend\GtkWebKitMini.cs" />
+    <Compile Include="Xwt.GtkBackend\TextEntryMultiLineBackend.cs" />
     <Compile Include="Xwt.GtkBackend\LabelBackend.cs" />
     <Compile Include="Xwt.GtkBackend\PasswordEntryBackend.cs" />
-    <Compile Include="Xwt.GtkBackend\TextEntryMultiLineBackend.cs" />
-    <Compile Include="Xwt.GtkBackend\WebViewBackend.cs" />
     <Compile Include="Xwt.GtkBackend\WidgetBackend.cs" />
     <Compile Include="Xwt.GtkBackend\WindowBackend.cs" />
     <Compile Include="Xwt.GtkBackend\GtkEngine.cs" />
@@ -141,6 +135,7 @@
     <Compile Include="Xwt.GtkBackend.CellViews\CustomCellRendererText.cs" />
     <Compile Include="Xwt.GtkBackend.CellViews\CustomCellRendererToggle.cs" />
     <Compile Include="Xwt.GtkBackend.CellViews\CustomCellRendererImage.cs" />
+    <Compile Include="Xwt.GtkBackend.CellViews\Gtk2CellRendererCustom.cs" />
     <Compile Include="Xwt.GtkBackend\ScrollbarBackend.cs" />
     <Compile Include="Xwt.GtkBackend\GtkKeyboardHandler.cs" />
     <Compile Include="Xwt.GtkBackend\Conversion.cs" />
@@ -150,6 +145,26 @@
     </Compile>
     <Compile Include="Xwt.GtkBackend.CellViews\CellViewBackend.cs" />
     <Compile Include="Xwt.GtkBackend\SearchTextEntryBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\Gtk2Extensions.cs" />
+    <Compile Include="Xwt.GtkBackend\Gtk2ViewPort.cs" />
+    <Compile Include="Xwt.GtkBackend\Gtk2DrawingArea.cs" />
+    <Compile Include="Xwt.GtkBackend\WidgetBackendGtk2.cs" />
+    <Compile Include="Xwt.GtkBackend\TextEntryBackendGtk2.cs" />
+    <Compile Include="Xwt.GtkBackend\PasswordEntryBackendGtk2.cs" />
+    <Compile Include="Xwt.GtkBackend\LabelBackendGtk2.cs" />
+    <Compile Include="Xwt.GtkBackend\ButtonBackendGtk2.cs" />
+    <Compile Include="Xwt.GtkBackend\SpinButtonBackendGtk2.cs" />
+    <Compile Include="Xwt.GtkBackend\BoxBackendGtk2.cs" />
+    <Compile Include="Xwt.GtkBackend\CanvasBackendGtk2.cs" />
+    <Compile Include="Xwt.GtkBackend\HeaderBoxGtk2.cs" />
+    <Compile Include="Xwt.GtkBackend\WebViewBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\GtkWebKitMini.cs" />
+    <Compile Include="Xwt.GtkBackend\Gtk2PopoverWindow.cs" />
+    <Compile Include="Xwt.GtkBackend\ColorSelectorBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\ColorPickerBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\CalendarBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\FontSelectorBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\SelectFontDialogBackend.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -161,22 +176,34 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="Xwt.Gtk.dll.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="icons\light\searchbox-clear-16.png">
-      <LogicalName>searchbox-clear-light-16.png</LogicalName>
+    <EmbeddedResource Include="icons\searchbox-clear-16.png">
+      <LogicalName>searchbox-clear-16.png</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="icons\light\searchbox-clear-16%402x.png">
-      <LogicalName>searchbox-clear-light-16@2x.png</LogicalName>
+    <EmbeddedResource Include="icons\searchbox-clear-16%402x.png">
+      <LogicalName>searchbox-clear-16@2x.png</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="icons\light\searchbox-search-16%402x.png">
-      <LogicalName>searchbox-search-light-16@2x.png</LogicalName>
+    <EmbeddedResource Include="icons\searchbox-clear-16~dark.png">
+      <LogicalName>searchbox-clear-16~dark.png</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="icons\light\searchbox-search-16.png">
-      <LogicalName>searchbox-search-light-16.png</LogicalName>
+    <EmbeddedResource Include="icons\searchbox-clear-16~dark%402x.png">
+      <LogicalName>searchbox-clear-16~dark@2x.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="icons\searchbox-search-16%402x.png">
+      <LogicalName>searchbox-search-16@2x.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="icons\searchbox-search-16.png">
+      <LogicalName>searchbox-search-16.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="icons\searchbox-search-16~dark%402x.png">
+      <LogicalName>searchbox-search-16~dark@2x.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="icons\searchbox-search-16~dark.png">
+      <LogicalName>searchbox-search-16~dark.png</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

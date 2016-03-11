@@ -28,8 +28,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
-
+using System.Windows.Threading;
 using Xwt.Backends;
 
 
@@ -65,8 +66,12 @@ namespace Xwt.WPFBackend
 		}
 
 		public virtual void Dispose ()
-		{	
-			Window.Close ();
+		{
+			if (Window.Dispatcher.CheckAccess ()) {
+				Window.Close ();
+			} else {
+				Window.Dispatcher.Invoke (DispatcherPriority.Normal, new ThreadStart (Window.Close));
+			}
 		}
 
 		public bool Close ()
@@ -151,6 +156,11 @@ namespace Xwt.WPFBackend
 			window.Icon = imageBackend.ToImageSource ();
 		}
 
+		string IWindowFrameBackend.Name {
+			get { return window.Name; }
+			set { window.Name = value; }
+		}
+
 		string IWindowFrameBackend.Title {
 			get { return window.Title; }
 			set { window.Title = value; }
@@ -167,6 +177,12 @@ namespace Xwt.WPFBackend
 			}
 		}
 
+		bool IWindowFrameBackend.Sensitive
+		{
+			get { return window.IsEnabled; }
+			set { window.IsEnabled = value;	}
+		}
+
 		public double Opacity
 		{
 			get { return window.Opacity; }
@@ -177,13 +193,21 @@ namespace Xwt.WPFBackend
 		{
 			window.Activate ();
 		}
-
 		
 		bool IWindowFrameBackend.FullScreen {
 			get {
-				return false;
+				return window.WindowState == WindowState.Maximized 
+					&& window.ResizeMode == ResizeMode.NoResize;
 			}
 			set {
+				if (value) {
+					window.WindowState = WindowState.Maximized;
+					window.ResizeMode = ResizeMode.NoResize;
+				}
+				else {
+					window.WindowState = WindowState.Normal;
+					window.ResizeMode = ResizeMode.CanResize;
+				}
 			}
 		}
 

@@ -82,18 +82,18 @@ namespace Xwt
 			Label = label;
 		}
 
-        public MenuItem (string label, Image image, EventHandler clicked):this(label) {
-            Clicked += clicked;
-            Image = image;
-        }
+		public MenuItem (string label, Image image, EventHandler clicked):this(label) {
+		    Clicked += clicked;
+		    Image = image;
+		}
 
-        public MenuItem (string label, Image image, EventHandler clicked, params MenuItem[] subItems)
-            : this(label, image, clicked) {
+		public MenuItem (string label, Image image, EventHandler clicked, params MenuItem[] subItems)
+		    : this(label, image, clicked) {
 
-            SubMenu = new Menu();
-            for (int i = 0; i < subItems.Length; i++)
-                SubMenu.InsertItem(i, subItems[i]);
-        }
+		    SubMenu = new Menu();
+		    for (int i = 0; i < subItems.Length; i++)
+		        SubMenu.InsertItem(i, subItems[i]);
+		}
 
 	    protected void LoadCommandProperties (Command command)
 		{
@@ -156,7 +156,7 @@ namespace Xwt
 					throw new NotSupportedException ();
 				image = value; 
 				if (!IsSeparator)
-					Backend.SetImage (image != null ? image.ImageDescription : ImageDescription.Null);
+					Backend.SetImage (image != null ? image.GetImageDescription (BackendHost.ToolkitEngine) : ImageDescription.Null);
 			}
 		}
 		

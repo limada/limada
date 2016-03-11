@@ -1,4 +1,4 @@
-//
+﻿//
 // WebViewBackend.cs
 //
 // Author:
@@ -40,6 +40,7 @@ namespace Xwt.GtkBackend
 
 		public override void Initialize()
 		{
+			NeedsEventBox = false;
 			base.Initialize ();
 
 			view = new WebKit.WebView ();

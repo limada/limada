@@ -39,7 +39,6 @@ using SWC = System.Windows.Controls; // When we need to resolve ambigituies.
 using SW = System.Windows; // When we need to resolve ambigituies.
 
 using Xwt.Backends;
-
 using Color = Xwt.Drawing.Color;
 
 namespace Xwt.WPFBackend
@@ -178,6 +177,12 @@ namespace Xwt.WPFBackend
 			set { Widget.Opacity = value; }
 		}
 
+		public string Name
+		{
+			get { return Widget.Name; }
+			set { Widget.Name = value; }
+		}
+
 		FontData GetWidgetFont ()
 		{
 			if (!(Widget is Control)) {
@@ -243,8 +248,16 @@ namespace Xwt.WPFBackend
 		}
 
 		public string TooltipText {
-			get { return Widget.ToolTip.ToString (); }
-			set { Widget.ToolTip = value; }
+			get { return Widget.ToolTip == null ? null : ((ToolTip)Widget.ToolTip).Content.ToString (); }
+			set {
+				var tp = Widget.ToolTip as ToolTip;
+				if (tp == null)
+					Widget.ToolTip = tp = new ToolTip ();
+				tp.Content = value ?? string.Empty;
+				ToolTipService.SetIsEnabled (Widget, value != null);
+				if (tp.IsOpen && value == null)
+					tp.IsOpen = false;
+			}
 		}
 
 		public static FrameworkElement GetFrameworkElement (IWidgetBackend backend)
@@ -254,7 +267,7 @@ namespace Xwt.WPFBackend
 
 		public Point ConvertToScreenCoordinates (Point widgetCoordinates)
 		{
-			var p = Widget.PointToScreen (new System.Windows.Point (
+			var p = Widget.PointToScreenDpiAware (new System.Windows.Point (
 				widgetCoordinates.X, widgetCoordinates.Y));
 
 			return new Point (p.X, p.Y);
@@ -302,6 +315,10 @@ namespace Xwt.WPFBackend
 		public System.Windows.Size MeasureOverride (System.Windows.Size constraint, System.Windows.Size wpfMeasure)
 		{
 			var defNaturalSize = eventSink.GetDefaultNaturalSize ();
+			if (!double.IsPositiveInfinity (constraint.Width))
+				defNaturalSize.Width = Math.Min (defNaturalSize.Width, constraint.Width);
+			if (!double.IsPositiveInfinity (constraint.Height))
+				defNaturalSize.Height = Math.Min (defNaturalSize.Height, constraint.Height);
 
 			// -2 means use the WPF default, -1 use the XWT default, any other other value is used as custom natural size
 			var nw = DefaultNaturalWidth;
@@ -431,6 +448,8 @@ namespace Xwt.WPFBackend
 				widget.Cursor = Cursors.Wait;
 			else if (cursor == CursorType.Help)
 				widget.Cursor = Cursors.Help;
+			else if (cursor == CursorType.Invisible)
+				widget.Cursor = Cursors.None;
 			else
 				Widget.Cursor = Cursors.Arrow;
 		}
@@ -450,7 +469,7 @@ namespace Xwt.WPFBackend
 					case WidgetEvent.KeyReleased:
 						Widget.KeyUp += WidgetKeyUpHandler;
 						break;
-					case WidgetEvent.PreviewTextInput:
+					case WidgetEvent.TextInput:
 						TextCompositionManager.AddPreviewTextInputHandler(Widget, WidgetPreviewTextInputHandler);
 						break;
 					case WidgetEvent.ButtonPressed:
@@ -504,7 +523,7 @@ namespace Xwt.WPFBackend
 					case WidgetEvent.KeyReleased:
 						Widget.PreviewKeyUp -= WidgetKeyUpHandler;
 						break;
-					case WidgetEvent.PreviewTextInput:
+					case WidgetEvent.TextInput:
 						TextCompositionManager.RemovePreviewTextInputHandler(Widget, WidgetPreviewTextInputHandler);
 						break;
 					case WidgetEvent.ButtonPressed:
@@ -595,21 +614,21 @@ namespace Xwt.WPFBackend
 		bool MapToXwtKeyArgs (System.Windows.Input.KeyEventArgs e, out KeyEventArgs result)
 		{
 			result = null;
-		    System.Diagnostics.Trace.WriteLine (string.Format ("WpfKey {0}", e.Key));
+
 			var key = KeyboardUtil.TranslateToXwtKey (e.Key);
 			if ((int)key == 0)
 				return false;
 
-			result = new KeyEventArgs (key, KeyboardUtil.GetModifiers (), e.IsRepeat, e.Timestamp);
+			result = new KeyEventArgs (key, (int)e.Key, KeyboardUtil.GetModifiers (), e.IsRepeat, e.Timestamp);
 			return true;
 		}
 
 		void WidgetPreviewTextInputHandler (object sender, System.Windows.Input.TextCompositionEventArgs e)
 		{
-			PreviewTextInputEventArgs args = new PreviewTextInputEventArgs(e.Text);
+			TextInputEventArgs args = new TextInputEventArgs(e.Text);
 			Context.InvokeUserCode(delegate
 			{
-				eventSink.OnPreviewTextInput(args);
+				eventSink.OnTextInput(args);
 			});
 			if (args.Handled)
 				e.Handled = true;
@@ -623,23 +642,18 @@ namespace Xwt.WPFBackend
 			});
 			if (args.Handled)
 				e.Handled = true;
-
-            // as it is not sure that there is a MouseUp fired, 
-            // the Mouse will be captured forever on this widget:
-            // Mouse.Capture(this.Widget);
 		}
 
 		void WidgetMouseUpHandler (object o, MouseButtonEventArgs e)
 		{
-            Mouse.Capture(null);
-            var args = ToXwtButtonArgs (e);
+			Mouse.Capture(null);
+			var args = ToXwtButtonArgs (e);
 			Context.InvokeUserCode (delegate ()
 			{
 				eventSink.OnButtonReleased (args);
 			});
 			if (args.Handled)
 				e.Handled = true;
-            
 		}
 
 		ButtonEventArgs ToXwtButtonArgs (MouseButtonEventArgs e)
@@ -678,15 +692,7 @@ namespace Xwt.WPFBackend
 
 		private SW.Window GetParentWindow()
 		{
-			FrameworkElement current = Widget;
-			while (current != null) {
-				if (current is SW.Window)
-					return (SW.Window)current;
-
-				current = VisualTreeHelper.GetParent (current) as FrameworkElement;
-			}
-
-			return null;
+			return Widget.GetParentWindow ();
 		}
 
 		public void DragStart (DragStartData data)
@@ -744,6 +750,7 @@ namespace Xwt.WPFBackend
 				return; // Drag auto detect has been already activated.
 
 			DragDropInfo.AutodetectDrag = true;
+			DragDropInfo.TargetTypes = types == null ? new TransferDataType [0] : types;
 			Widget.MouseUp += WidgetMouseUpForDragHandler;
 			Widget.MouseMove += WidgetMouseMoveForDragHandler;
 		}
@@ -797,31 +804,31 @@ namespace Xwt.WPFBackend
 			return DragDropAction.Move;
 		}
 
-        static void FillDataStore (TransferDataStore store, IDataObject data) 
-        {
+		static void FillDataStore (TransferDataStore store, IDataObject data) 
+		{
 
-            store.DataRequestCallback = tdt => {
-                var di = tdt.ToWpfDataFormat();
-                if (data.GetDataPresent(di))
-                    return data.GetData(di);
-                return null;
-            };
+		    store.DataRequestCallback = tdt => {
+			var di = tdt.ToWpfDataFormat();
+			if (data.GetDataPresent(di))
+			    return data.GetData(di);
+			return null;
+		    };
 
-            foreach (var item in data.GetFormats()) {
-                var format = item.ToXwtTransferType();
-                if (format == TransferDataType.Text)
-                    store.AddText((string)  data.GetData(item));
-                else if (format == TransferDataType.Uri) {
-                    var value = data.GetData(item);
-                    var uris = ((string[]) value).Select(f => new Uri(f)).ToArray();
-                    store.AddUris(uris);
-                } else {
-                    store.AddValue(format,(object) null);
-                }
-            }
-        }
+		    foreach (var item in data.GetFormats()) {
+			var format = item.ToXwtTransferType();
+			if (format == TransferDataType.Text)
+			    store.AddText((string)  data.GetData(item));
+			else if (format == TransferDataType.Uri) {
+			    var value = data.GetData(item);
+			    var uris = ((string[]) value).Select(f => new Uri(f)).ToArray();
+			    store.AddUris(uris);
+			} else {
+			    store.AddValue(format,(object) null);
+			}
+		    }
+		}
 
-	    static void FillDataStore (TransferDataStore store, IDataObject data, TransferDataType [] types)
+		static void FillDataStore (TransferDataStore store, IDataObject data, TransferDataType [] types)
 		{
 			foreach (var type in types) {
 				string format = type.ToWpfDataFormat ();
@@ -933,7 +940,7 @@ namespace Xwt.WPFBackend
 
 			if ((enabledEvents & WidgetEvent.DragOver) > 0) {
 				var store = new TransferDataStore ();
-				FillDataStore (store, e.Data);
+				FillDataStore (store, e.Data); //, DragDropInfo.TargetTypes);
 
 				var args = new DragOverEventArgs (pos, store, proposedAction);
 				OnDragOver (sender, args);
@@ -981,7 +988,7 @@ namespace Xwt.WPFBackend
 
 			if ((enabledEvents & WidgetEvent.DragDrop) > 0) {
 				var store = new TransferDataStore ();
-				FillDataStore (store, e.Data);
+				FillDataStore (store, e.Data); //, DragDropInfo.TargetTypes);
 
 				var args = new DragEventArgs (pos, store, actualEffect.ToXwtDropAction ());
 				Context.InvokeUserCode (delegate {

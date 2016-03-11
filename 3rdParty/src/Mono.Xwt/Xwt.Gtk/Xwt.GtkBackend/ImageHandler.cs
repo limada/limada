@@ -68,6 +68,8 @@ namespace Xwt.GtkBackend
 
 		public override object CreateMultiSizeIcon (IEnumerable<object> images)
 		{
+			if (images.Count () == 1)
+				return images.Cast<GtkImage> ().First ();
 			var frames = images.Cast<GtkImage> ().SelectMany (img => img.Frames);
 			return new GtkImage (frames);
 		}
@@ -160,16 +162,16 @@ namespace Xwt.GtkBackend
 			return !img.HasMultipleSizes;
 		}
 
-        public override ImageFormat GetFormat (object handle) 
-        {
-            var img = (GtkImage)handle;
-            var pixbuf = img.MainFrame;
-            if (pixbuf.HasAlpha && pixbuf.BitsPerSample == 4)
-                return ImageFormat.ARGB32;
-            if (pixbuf.HasAlpha && pixbuf.BitsPerSample == 3)
-                return ImageFormat.RGB24;
-            return ImageFormat.Other;
-        }
+		public override ImageFormat GetFormat (object handle) 
+		{
+		    var img = (GtkImage)handle;
+		    var pixbuf = img.MainFrame;
+		    if (pixbuf.HasAlpha && pixbuf.BitsPerSample == 4)
+		        return ImageFormat.ARGB32;
+		    if (pixbuf.HasAlpha && pixbuf.BitsPerSample == 3)
+		        return ImageFormat.RGB24;
+		    return ImageFormat.Other;
+		}
 
 		public override object ConvertToBitmap (object handle, double width, double height, double scaleFactor, ImageFormat format)
 		{
@@ -194,20 +196,44 @@ namespace Xwt.GtkBackend
 						result = iconset.RenderIcon (Gtk.Widget.DefaultStyle, Gtk.TextDirection.Ltr, Gtk.StateType.Normal, gsize2x, null, null);
 				}
 			}
-			
-			if (result == null && Gtk.IconTheme.Default.HasIcon (stockId))
-				result = Gtk.IconTheme.Default.LoadIcon (stockId, (int)width, (Gtk.IconLookupFlags)0);
 
-			if (result == null && stockId != Gtk.Stock.MissingImage) {
-				result = CreateBitmap (Gtk.Stock.MissingImage, width, height, scaleFactor);
+            //if (result == null && Gtk.IconTheme.Default.HasIcon(stockId))
+            //{
+            //    try {
+            //        result = Gtk.IconTheme.Default.LoadIcon(stockId, (int)width, (Gtk.IconLookupFlags)0);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        result = null;
+            //    }
+            //}
+
+            if (result == null)
+            {
+                var img = new GtkImage((b, r, e, f) => {
+                    // TODO: draw a "missing" pic here
+                });
+                result = img.ToPixbuf(Toolkit.CurrentEngine.Backend.ApplicationContext, width, height);
+            }
+
+            if (result == null) {
+//				return CreateBitmap (Gtk.Stock.MissingImage, width, height, scaleFactor);
+				#if !XWT_GTK3
+				int w = (int) width;
+				int h = (int) height;
+				Gdk.Pixmap pmap = new Gdk.Pixmap (Gdk.Screen.Default.RootWindow, w, h);
+				Gdk.GC gc = new Gdk.GC (pmap);
+				gc.RgbFgColor = new Gdk.Color (255, 255, 255);
+				pmap.DrawRectangle (gc, true, 0, 0, w, h);
+				gc.RgbFgColor = new Gdk.Color (0, 0, 0);
+				pmap.DrawRectangle (gc, false, 0, 0, (w - 1), (h - 1));
+				gc.SetLineAttributes (3, Gdk.LineStyle.Solid, Gdk.CapStyle.Round, Gdk.JoinStyle.Round);
+				gc.RgbFgColor = new Gdk.Color (255, 0, 0);
+				pmap.DrawLine (gc, (w / 4), (h / 4), ((w - 1) - (w / 4)), ((h - 1) - (h / 4)));
+				pmap.DrawLine (gc, ((w - 1) - (w / 4)), (h / 4), (w / 4), ((h - 1) - (h / 4)));
+				return Gdk.Pixbuf.FromDrawable (pmap, pmap.Colormap, 0, 0, 0, 0, w, h);
+				#endif
 			}
-
-		    if (result == null) {
-		        var img = new GtkImage ((b, r) => {
-		            // TODO: draw a "missing" pic here
-		        });
-		        result = img.ToPixbuf (Toolkit.Engine<GtkEngine>().Backend.ApplicationContext, width, height);
-		    }
 			return result;
 		}
 	}
@@ -248,11 +274,11 @@ namespace Xwt.GtkBackend
 			get { return frames; }
 		}
 
-        public Gdk.Pixbuf MainFrame 
-        {
-            get { return frames[0].Pixbuf; }
-            set { frames[0] = new ImageFrame (value, true); }
-        }
+		public Gdk.Pixbuf MainFrame 
+		{
+		    get { return frames[0].Pixbuf; }
+		    set { frames[0] = new ImageFrame (value, true); }
+		}
 
 		public GtkImage (Gdk.Pixbuf img)
 		{
@@ -410,10 +436,10 @@ namespace Xwt.GtkBackend
 				};
 				if (actx != null) {
 					actx.InvokeUserCode (delegate {
-						drawCallback (c, new Rectangle (x, y, idesc.Size.Width, idesc.Size.Height));
+						drawCallback (c, new Rectangle (x, y, idesc.Size.Width, idesc.Size.Height), idesc, actx.Toolkit);
 					});
 				} else
-					drawCallback (c, new Rectangle (x, y, idesc.Size.Width, idesc.Size.Height));
+					drawCallback (c, new Rectangle (x, y, idesc.Size.Width, idesc.Size.Height), idesc, Toolkit.CurrentEngine);
 			}
 			else {
 				DrawPixbuf (ctx, GetBestFrame (actx, scaleFactor, idesc.Size.Width, idesc.Size.Height, false), x, y, idesc);
@@ -428,7 +454,8 @@ namespace Xwt.GtkBackend
 			Gdk.CairoHelper.SetSourcePixbuf (ctx, img, 0, 0);
 
 			#pragma warning disable 618
-			using (var pattern = ctx.Source as Cairo.SurfacePattern) {
+			using (var p = ctx.Source) {
+				var pattern = p as Cairo.SurfacePattern;
 				if (pattern != null) {
 					if (idesc.Size.Width > img.Width || idesc.Size.Height > img.Height) {
 						// Fixes blur issue when rendering on an image surface
@@ -447,7 +474,7 @@ namespace Xwt.GtkBackend
 		}
 	}
 
-	public class ImageBox: Gtk.DrawingArea
+	public class ImageBox: GtkDrawingArea
 	{
 		ImageDescription image;
 		ApplicationContext actx;
@@ -460,14 +487,18 @@ namespace Xwt.GtkBackend
 
 		public ImageBox (ApplicationContext actx)
 		{
-			WidgetFlags |= Gtk.WidgetFlags.AppPaintable;
-			WidgetFlags |= Gtk.WidgetFlags.NoWindow;
+			this.SetHasWindow (false);
+			this.SetAppPaintable (true);
 			this.actx = actx;
 		}
 
 		public ImageDescription Image {
 			get { return image; }
-			set { image = value; QueueResize (); }
+			set { 
+				image = value;
+				SetSizeRequest ((int)image.Size.Width, (int)image.Size.Height);
+				QueueResize ();
+			}
 		}
 
 		public float Yalign {
@@ -479,7 +510,7 @@ namespace Xwt.GtkBackend
 			get { return xalign; }
 			set { xalign = value; QueueDraw (); }
 		}
-		
+
 		protected override void OnSizeRequested (ref Gtk.Requisition requisition)
 		{
 			base.OnSizeRequested (ref requisition);
@@ -489,19 +520,17 @@ namespace Xwt.GtkBackend
 			}
 		}
 
-		protected override bool OnExposeEvent (Gdk.EventExpose evnt)
+		protected override bool OnDrawn (Cairo.Context cr)
 		{
 			if (image.IsNull)
 				return true;
 
-			int x = Allocation.X + (int)(((float)Allocation.Width - (float)image.Size.Width) * xalign);
-			int y = Allocation.Y + (int)(((float)Allocation.Height - (float)image.Size.Height) * yalign);
+			int x = (int)(((float)Allocation.Width - (float)image.Size.Width) * xalign);
+			int y = (int)(((float)Allocation.Height - (float)image.Size.Height) * yalign);
 			if (x < 0) x = 0;
 			if (y < 0) y = 0;
-			using (var ctx = Gdk.CairoHelper.Create (GdkWindow)) {
-				((GtkImage)image.Backend).Draw (actx, ctx, Util.GetScaleFactor (this), x, y, image);
-				return true;
-			}
+			((GtkImage)image.Backend).Draw (actx, cr, Util.GetScaleFactor (this), x, y, image);
+			return base.OnDrawn (cr);
 		}
 	}
 }

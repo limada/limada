@@ -27,6 +27,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Linq;
 using Xwt.Backends;
 
 using Xwt.Drawing;
@@ -42,6 +43,7 @@ namespace Xwt.CairoBackend
 		public Cairo.Surface TempSurface;
 		public double ScaleFactor = 1;
 		public double PatternAlpha = 1;
+		public StyleSet Styles;
 		internal Point Origin = Point.Zero;
 
 		Stack<Data> dataStack = new Stack<Data> ();
@@ -56,7 +58,7 @@ namespace Xwt.CairoBackend
 			ScaleFactor = scaleFactor;
 		}
 
-		public void Dispose ()
+		public virtual void Dispose ()
 		{
 			IDisposable d = Context;
 			if (d != null) {
@@ -120,6 +122,12 @@ namespace Xwt.CairoBackend
 			gc.GlobalAlpha = alpha;
 		}
 		
+		public override void SetStyles (object backend, StyleSet styles)
+		{
+			CairoContextBackend gc = (CairoContextBackend) backend;
+			gc.Styles = styles;
+		}
+
 		const double degrees = System.Math.PI / 180d;
 
 		public override void Arc (object backend, double xc, double yc, double radius, double angle1, double angle2)
@@ -266,8 +274,10 @@ namespace Xwt.CairoBackend
 		public override void SetPattern (object backend, object p)
 		{
 			var cb = (CairoContextBackend)backend;
+			var toolkit = ApplicationContext.Toolkit;
 
 			Cairo.Context ctx = cb.Context;
+			p = toolkit.GetSafeBackend (p);
 			if (p is ImagePatternBackend) {
 				cb.PatternAlpha = ((ImagePatternBackend)p).Image.Alpha;
 				p = ((ImagePatternBackend)p).GetPattern (ApplicationContext, ((CairoContextBackend)backend).ScaleFactor);
@@ -279,6 +289,7 @@ namespace Xwt.CairoBackend
 			else
 				ctx.SetSource ((Cairo.Pattern) null);
 		}
+		
 
         public override void DrawTextLayout (object backend, TextLayout layout, double x, double y) {
             var be = (GtkTextLayoutBackendHandler.PangoBackend) Toolkit.GetBackend (layout);
@@ -377,6 +388,8 @@ namespace Xwt.CairoBackend
 			CairoContextBackend ctx = (CairoContextBackend)backend;
 
 			img.Alpha *= ctx.GlobalAlpha;
+			img.Styles = img.Styles.AddRange (ctx.Styles);
+
 			var pix = (Xwt.GtkBackend.GtkImage) img.Backend;
 
 			pix.Draw (ApplicationContext, ctx.Context, ctx.ScaleFactor, x, y, img);
@@ -394,6 +407,7 @@ namespace Xwt.CairoBackend
 			ctx.Context.Translate (destRect.X-srcRect.X*sx, destRect.Y-srcRect.Y*sy);
 			ctx.Context.Scale (sx, sy);
 			img.Alpha *= ctx.GlobalAlpha;
+			img.Styles = img.Styles.AddRange (ctx.Styles);
 
 			var pix = (Xwt.GtkBackend.GtkImage) img.Backend;
 			pix.Draw (ApplicationContext, ctx.Context, ctx.ScaleFactor, 0, 0, img);
@@ -432,13 +446,10 @@ namespace Xwt.CairoBackend
 
 		public override Matrix GetCTM (object backend)
 		{
-			var gc = (CairoContextBackend)backend;
-
-			Cairo.Matrix t = gc.Context.Matrix;
-
-			// Adjust CTM OffsetX, OffsetY for ContextBackend Origin
-			Matrix ctm = new Matrix (t.Xx, t.Yx, t.Xy, t.Yy, t.X0-gc.Origin.X, t.Y0-gc.Origin.Y);
-
+			var cb = (CairoContextBackend)backend;
+			Cairo.Matrix t = cb.Context.Matrix;
+			// Adjust CTM X0,Y0 for ContextBackend Origin (ensures that new CTM is Identity Matrix)
+			Matrix ctm = new Matrix (t.Xx, t.Yx, t.Xy, t.Yy, t.X0-cb.Origin.X, t.Y0-cb.Origin.Y);
 			return ctm;
 		}
 

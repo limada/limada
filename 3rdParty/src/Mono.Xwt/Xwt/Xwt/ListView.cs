@@ -95,6 +95,12 @@ namespace Xwt
 			set { Backend.BorderVisible = value; }
 		}
 
+		public GridLines GridLinesVisible
+		{
+			get { return Backend.GridLinesVisible; }
+			set { Backend.GridLinesVisible = value; }
+		}
+
 		public ScrollPolicy VerticalScrollPolicy {
 			get { return Backend.VerticalScrollPolicy; }
 			set { Backend.VerticalScrollPolicy = value; }
@@ -159,6 +165,20 @@ namespace Xwt
 				Backend.SetSelectionMode (mode);
 			}
 		}
+
+		/// <summary>
+		/// Gets or sets the row the current event applies to.
+		/// The behavior of this property is undefined when used outside an
+		/// event that supports it.
+		/// </summary>
+		/// <value>
+		/// The current event row.
+		/// </value>
+		public int CurrentEventRow {
+			get {
+				return Backend.CurrentEventRow;
+			}
+		}
 		
 		public int SelectedRow {
 			get {
@@ -174,6 +194,19 @@ namespace Xwt
 		public int[] SelectedRows {
 			get {
 				return Backend.SelectedRows;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the focused row.
+		/// </summary>
+		/// <value>The row with the keyboard focus.</value>
+		public int FocusedRow {
+			get {
+				return Backend.FocusedRow;
+			}
+			set {
+				Backend.FocusedRow = value;
 			}
 		}
 		
@@ -197,6 +230,11 @@ namespace Xwt
 			Backend.UnselectAll ();
 		}
 
+		public void ScrollToRow (int row)
+		{
+			Backend.ScrollToRow (row);
+		}
+
 		/// <summary>
 		/// Returns the row at the given widget coordinates
 		/// </summary>
@@ -218,9 +256,27 @@ namespace Xwt
 			return Backend.GetRowAtPosition (p);
 		}
 
+		/// <summary>
+		/// Gets the bounds of a cell inside the given row.
+		/// </summary>
+		/// <returns>The cell bounds inside the widget, relative to the widget bounds.</returns>
+		/// <param name="row">The row index.</param>
+		/// <param name="cell">The cell view.</param>
+		/// <param name="includeMargin">If set to <c>true</c> include margin (the background of the row).</param>
 		public Rectangle GetCellBounds (int row, CellView cell, bool includeMargin)
 		{
 			return Backend.GetCellBounds (row, cell, includeMargin);
+		}
+
+		/// <summary>
+		/// Gets the bounds of the given row.
+		/// </summary>
+		/// <returns>The row bounds inside the widget, relative to the widget bounds.</returns>
+		/// <param name="row">The row index.</param>
+		/// <param name="includeMargin">If set to <c>true</c> include margin (the background of the row).</param>
+		public Rectangle GetRowBounds (int row, bool includeMargin)
+		{
+			return Backend.GetRowBounds (row, includeMargin);
 		}
 
 		void IColumnContainer.NotifyColumnsChanged ()

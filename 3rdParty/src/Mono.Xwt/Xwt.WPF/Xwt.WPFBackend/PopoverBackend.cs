@@ -27,6 +27,7 @@
 using System;
 using Xwt.Backends;
 using System.Windows.Media;
+using System.Windows;
 
 namespace Xwt.WPFBackend
 {
@@ -38,6 +39,15 @@ namespace Xwt.WPFBackend
 
 		System.Windows.Controls.Border Border {
 			get; set;
+		}
+
+		public Xwt.Drawing.Color BackgroundColor {
+			get {
+				return Border.Background.ToXwtColor ();
+			}
+			set {
+				Border.Background = new SolidColorBrush (value.ToWpfColor ());
+			}
 		}
 
 		IPopoverEventSink EventSink {
@@ -55,31 +65,28 @@ namespace Xwt.WPFBackend
 		public PopoverBackend ()
 		{
 			Border = new System.Windows.Controls.Border {
-				BorderBrush = Brushes.Black,
-				CornerRadius = new System.Windows.CornerRadius (15),
-				Padding = new System.Windows.Thickness (15),
-				BorderThickness = new System.Windows.Thickness (1)
+				Padding = new Thickness (15, 10, 15, 15),
+				BorderThickness = new Thickness (1),
+				Margin = new System.Windows.Thickness (10),
+				Effect = new System.Windows.Media.Effects.DropShadowEffect () {
+					Color = Colors.Black,
+					Direction = 270,
+					BlurRadius = 15,
+					Opacity = .15,
+					ShadowDepth = 1,
+				}
 			};
+			Border.SetResourceReference (System.Windows.Controls.Border.BorderBrushProperty,
+			                             SystemColors.ActiveBorderBrushKey);
+			BackgroundColor = Xwt.Drawing.Color.FromBytes (230, 230, 230, 230);
 
 			NativeWidget = new System.Windows.Controls.Primitives.Popup {
 				AllowsTransparency = true,
 				Child = Border,
 				Placement = System.Windows.Controls.Primitives.PlacementMode.Custom,
 				StaysOpen = false,
-				Margin = new System.Windows.Thickness (10),
 			};
-
-			NativeWidget.CustomPopupPlacementCallback = (popupSize, targetSize, offset) => {
-				var location = new System.Windows.Point (targetSize.Width / 2 - popupSize.Width / 2, 0);
-				if (ActualPosition == Popover.Position.Top)
-					location.Y = targetSize.Height;
-				else
-					location.Y = -popupSize.Height;
-
-				return new[] {
-					new System.Windows.Controls.Primitives.CustomPopupPlacement (location, System.Windows.Controls.Primitives.PopupPrimaryAxis.Horizontal)
-				};
-			};
+			NativeWidget.Closed += NativeWidget_Closed;
 		}
 
 		public void Initialize (IPopoverEventSink sink)
@@ -87,36 +94,37 @@ namespace Xwt.WPFBackend
 			EventSink = sink;
 		}
 
-		public override void EnableEvent (object eventId)
-		{
-			if (eventId is PopoverEvent)
-				if ((PopoverEvent)eventId == PopoverEvent.Closed)
-					NativeWidget.Closed +=new EventHandler(NativeWidget_Closed);
-		}
-
-		public override void DisableEvent (object eventId)
-		{
-			if (eventId is PopoverEvent)
-				if ((PopoverEvent) eventId == PopoverEvent.Closed)
-					NativeWidget.Closed += new EventHandler (NativeWidget_Closed);
-		}
-
 		public void Show (Xwt.Popover.Position orientation, Xwt.Widget reference, Xwt.Rectangle positionRect, Widget child)
 		{
 			ActualPosition = orientation;
 			Border.Child = (System.Windows.FrameworkElement)Context.Toolkit.GetNativeWidget (child);
+			NativeWidget.CustomPopupPlacementCallback = (popupSize, targetSize, offset) => {
+				System.Windows.Point location;
+				if (ActualPosition == Popover.Position.Top)
+					location = new System.Windows.Point (positionRect.Left - popupSize.Width / 2,
+					                                     positionRect.Height > 0 ? positionRect.Bottom : targetSize.Height);
+				else
+					location = new System.Windows.Point (positionRect.Left - popupSize.Width / 2,
+					                                     positionRect.Top - popupSize.Height);
+
+				return new[] {
+					new System.Windows.Controls.Primitives.CustomPopupPlacement (location, System.Windows.Controls.Primitives.PopupPrimaryAxis.Horizontal)
+				};
+			};
 			NativeWidget.PlacementTarget = (System.Windows.FrameworkElement)Context.Toolkit.GetNativeWidget (reference);
 			NativeWidget.IsOpen = true;
 		}
 
 		void NativeWidget_Closed (object sender, EventArgs e)
 		{
+			Border.Child = null;
 			EventSink.OnClosed ();
 		}
 
 		public void Hide ()
 		{
 			NativeWidget.IsOpen = false;
+			Border.Child = null;
 		}
 
 		public void Dispose ()

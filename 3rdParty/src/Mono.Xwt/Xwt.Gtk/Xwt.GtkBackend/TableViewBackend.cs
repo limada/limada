@@ -29,6 +29,9 @@ using Xwt.Backends;
 using Gtk;
 using System.Collections.Generic;
 using System.Linq;
+#if XWT_GTK3
+using TreeModel = Gtk.ITreeModel;
+#endif
 
 namespace Xwt.GtkBackend
 {
@@ -41,6 +44,15 @@ namespace Xwt.GtkBackend
 			public Gtk.TreeViewColumn Column;
 		}
 
+		protected override void OnSetBackgroundColor (Xwt.Drawing.Color color)
+		{
+			// Gtk3 workaround (by rpc-scandinavia, see https://github.com/mono/xwt/pull/411)
+			var selectedColor = Widget.GetBackgroundColor(StateType.Selected);
+			Widget.SetBackgroundColor (StateType.Normal, Xwt.Drawing.Colors.Transparent);
+			Widget.SetBackgroundColor (StateType.Selected, selectedColor);
+			base.OnSetBackgroundColor (color);
+		}
+
 		public TableViewBackend ()
 		{
 			var sw = new Gtk.ScrolledWindow ();
@@ -49,6 +61,8 @@ namespace Xwt.GtkBackend
 			sw.Child.Show ();
 			sw.Show ();
 			base.Widget = sw;
+
+			Widget.EnableSearch = false;
 		}
 		
 		protected new Gtk.TreeView Widget {
@@ -85,6 +99,12 @@ namespace Xwt.GtkBackend
 			set {
 				ScrolledWindow.HscrollbarPolicy = value.ToGtkValue ();
 			}
+		}
+
+		public GridLines GridLinesVisible
+		{
+			get { return Widget.EnableGridLines.ToXwtValue (); }
+			set { Widget.EnableGridLines = value.ToGtkValue (); }
 		}
 
 		public IScrollControlBackend CreateVerticalScrollControl ()
@@ -126,6 +146,12 @@ namespace Xwt.GtkBackend
 		{
 			Gtk.TreeViewColumn tc = new Gtk.TreeViewColumn ();
 			tc.Title = col.Title;
+			tc.Resizable = col.CanResize;
+			tc.Alignment = col.Alignment.ToGtkAlignment ();
+			tc.SortIndicator = col.SortIndicatorVisible;
+			tc.SortOrder = (SortType)col.SortDirection;
+			if (col.SortDataField != null)
+				tc.SortColumnId = col.SortDataField.Index;
 			Widget.AppendColumn (tc);
 			MapTitle (col, tc);
 			MapColumn (col, tc);
@@ -161,20 +187,38 @@ namespace Xwt.GtkBackend
 		public void UpdateColumn (ListViewColumn col, object handle, ListViewColumnChange change)
 		{
 			Gtk.TreeViewColumn tc = (Gtk.TreeViewColumn) handle;
-			if (change == ListViewColumnChange.Cells) {
-				tc.Clear ();
-				MapColumn (col, tc);
+
+			switch (change) {
+				case ListViewColumnChange.Cells:
+					tc.Clear ();
+					MapColumn (col, tc);
+					break;
+				case ListViewColumnChange.Title:
+					MapTitle (col, tc);
+					break;
+				case ListViewColumnChange.CanResize:
+					tc.Resizable = col.CanResize;
+					break;
+				case ListViewColumnChange.SortIndicatorVisible:
+					tc.SortIndicator = col.SortIndicatorVisible;
+					break;
+				case ListViewColumnChange.SortDirection:
+					tc.SortOrder = (SortType)col.SortDirection;
+					break;
+				case ListViewColumnChange.SortDataField:
+					if (col.SortDataField != null)
+						tc.SortColumnId = col.SortDataField.Index;
+					break;
+				case ListViewColumnChange.Alignment:
+					tc.Alignment = col.Alignment.ToGtkAlignment ();
+					break;
 			}
-			else if (change == ListViewColumnChange.Title)
-				MapTitle (col, tc);
-			else if (change == ListViewColumnChange.CanResize)
-				tc.Resizable = col.CanResize;
-			else if (change == ListViewColumnChange.SortDirection)
-				tc.SortOrder = (SortType)col.SortDirection;
-			else if (change == ListViewColumnChange.SortDataField)
-				tc.SortColumnId = col.SortDataField.Index;
-			else if (change == ListViewColumnChange.SortIndicatorVisible)
-				tc.SortIndicator = col.SortIndicatorVisible;
+		}
+
+		public void ScrollToRow (TreeIter pos)
+		{
+			if (Widget.Columns.Length > 0)
+				Widget.ScrollToCell (Widget.Model.GetPath (pos), Widget.Columns[0], false, 0, 0);
 		}
 
 		public void SelectAll ()
@@ -208,6 +252,11 @@ namespace Xwt.GtkBackend
 		#region ICellRendererTarget implementation
 		public void PackStart (object target, Gtk.CellRenderer cr, bool expand)
 		{
+			#if !XWT_GTK3
+			// Gtk2 tree background color workaround
+			if (UsingCustomBackgroundColor)
+				cr.CellBackgroundGdk = BackgroundColor.ToGtkValue ();
+			#endif
 			((Gtk.TreeViewColumn)target).PackStart (cr, expand);
 		}
 
@@ -231,40 +280,159 @@ namespace Xwt.GtkBackend
 			var col = (TreeViewColumn)target;
 			var path = Widget.Model.GetPath (iter);
 
-			Gdk.Rectangle rect = Widget.GetCellArea (path, col);
+			col.CellSetCellData (Widget.Model, iter, false, false);
 
-			int x = 0;
-			int th = 0;
-			CellRenderer[] renderers = col.CellRenderers;
-			foreach (CellRenderer cr in renderers) {
-				int sp, wi, he, xo, yo;
-				col.CellGetSize (rect, out xo, out yo, out wi, out he);
-				col.CellGetPosition (cr, out sp, out wi);
-				Gdk.Rectangle crect = new Gdk.Rectangle (x, rect.Y, wi, rect.Height);
-				cr.GetSize (Widget, ref crect, out xo, out yo, out wi, out he);
+			Gdk.Rectangle column_cell_area = Widget.GetCellArea (path, col);
+			CellRenderer[] renderers = col.GetCellRenderers();
+
+			for (int i = 0; i < renderers.Length; i++)
+			{
+				var cr = renderers [i];
 				if (cr == cra) {
-					Widget.ConvertBinWindowToWidgetCoords (rect.X + x, rect.Y, out xo, out yo);
-					// There seems to be a 1px vertical padding
-					yo++; rect.Height -= 2;
-					return new Rectangle (xo, yo + 1, wi, rect.Height - 2);
+					int position_x, width, height;
+					int position_y = column_cell_area.Y;
+
+					col.CellGetPosition (cr, out position_x, out width);
+
+					if (i == renderers.Length - 1) {
+						#if XWT_GTK3
+						// Gtk3 allocates all available space to the last cell in the column
+						width = column_cell_area.Width - position_x;
+						#else
+						// Gtk2 sets the cell_area size to fit the largest cell in the inner column (row-wise)
+						// since we would have to scan the tree for the largest cell at this (horizontal) cell position
+						// we return the width of the current cell.
+						int padding_x, padding_y;
+						var cell_area = new Gdk.Rectangle(column_cell_area.X + position_x, position_y, width, column_cell_area.Height);
+						cr.GetSize (col.TreeView, ref cell_area, out padding_x, out padding_y, out width, out height);
+						position_x += padding_x;
+						// and add some padding at the end if it would not exceed column bounds
+						if (position_x + width + 2 <= column_cell_area.Width)
+							width += 2;
+						#endif
+					} else {
+						int position_x_next, width_next;
+						col.CellGetPosition (renderers [i + 1], out position_x_next, out width_next);
+						width = position_x_next - position_x;
+					}
+
+					position_x += column_cell_area.X;
+					height = column_cell_area.Height;
+					Widget.ConvertBinWindowToWidgetCoords (position_x, position_y, out position_x, out position_y);
+					return new Rectangle (position_x, position_y, width, height);
 				}
-				if (cr != renderers [renderers.Length - 1])
-					x += crect.Width + col.Spacing + 1;
-				else
-					x += wi + 1;
-				if (he > th) th = he;
 			}
 			return Rectangle.Zero;
 		}
 
-		Rectangle ICellRendererTarget.GetCellBackgroundBounds (object target, Gtk.CellRenderer cr, Gtk.TreeIter iter)
+		Rectangle ICellRendererTarget.GetCellBackgroundBounds (object target, Gtk.CellRenderer cra, Gtk.TreeIter iter)
 		{
 			var col = (TreeViewColumn)target;
 			var path = Widget.Model.GetPath (iter);
-			var a = Widget.GetBackgroundArea (path, (TreeViewColumn)target);
-			int x, y, w, h;
-			col.CellGetSize (a, out x, out y, out w, out h);
-			return new Rectangle (a.X + x, a.Y + y, w, h);
+
+			col.CellSetCellData (Widget.Model, iter, false, false);
+
+			Gdk.Rectangle column_cell_area = Widget.GetCellArea (path, col);
+			Gdk.Rectangle column_cell_bg_area = Widget.GetBackgroundArea (path, col);
+
+			CellRenderer[] renderers = col.Cells;
+
+			foreach (var cr in renderers) {
+				if (cr == cra) {
+					int position_x, width;
+
+					col.CellGetPosition (cr, out position_x, out width);
+
+					// Gtk aligns the bg area of a renderer to the cell area and not the bg area
+					// so we add the cell area offset to the position here
+					position_x += column_cell_bg_area.X + (column_cell_area.X - column_cell_bg_area.X);
+
+					// last widget gets the rest
+					if (cr == renderers[renderers.Length - 1])
+						width = column_cell_bg_area.Width - (position_x - column_cell_bg_area.X);
+
+					var cell_bg_bounds = new Gdk.Rectangle (position_x,
+					                                        column_cell_bg_area.Y,
+					                                        width,
+					                                        column_cell_bg_area.Height);
+
+					Widget.ConvertBinWindowToWidgetCoords (cell_bg_bounds.X, cell_bg_bounds.Y, out cell_bg_bounds.X, out cell_bg_bounds.Y);
+					return new Rectangle (cell_bg_bounds.X, cell_bg_bounds.Y, cell_bg_bounds.Width, cell_bg_bounds.Height);
+				}
+			}
+
+			return Rectangle.Zero;
+		}
+
+		protected Rectangle GetRowBounds (Gtk.TreeIter iter)
+		{
+			var rect = Rectangle.Zero;
+
+			foreach (var col in Widget.Columns) {
+				foreach (var cr in col.GetCellRenderers()) {
+					Rectangle cell_rect = ((ICellRendererTarget)this).GetCellBounds (col, cr, iter);
+					if (rect == Rectangle.Zero)
+						rect = new Rectangle (cell_rect.X, cell_rect.Y, cell_rect.Width, cell_rect.Height);
+					else
+						rect = rect.Union (new Rectangle (cell_rect.X, cell_rect.Y, cell_rect.Width, cell_rect.Height));
+				}
+			}
+			return rect;
+		}
+
+		protected Rectangle GetRowBackgroundBounds (Gtk.TreeIter iter)
+		{
+			var path = Widget.Model.GetPath (iter);
+			var rect = Rectangle.Zero;
+
+			foreach (var col in Widget.Columns) {
+				Gdk.Rectangle cell_rect = Widget.GetBackgroundArea (path, col);
+				Widget.ConvertBinWindowToWidgetCoords (cell_rect.X, cell_rect.Y, out cell_rect.X, out cell_rect.Y);
+
+				if (rect == Rectangle.Zero)
+					rect = new Rectangle (cell_rect.X, cell_rect.Y, cell_rect.Width, cell_rect.Height);
+				else
+					rect = rect.Union (new Rectangle (cell_rect.X, cell_rect.Y, cell_rect.Width, cell_rect.Height));
+			}
+			return rect;
+		}
+
+		protected Gtk.TreePath GetPathAtPosition (Point p)
+		{
+			Gtk.TreePath path;
+			int x, y;
+			Widget.ConvertWidgetToBinWindowCoords ((int)p.X, (int)p.Y, out x, out y);
+
+			if (Widget.GetPathAtPos (x, y, out path))
+				return path;
+			return null;
+		}
+
+		protected override ButtonEventArgs GetButtonPressEventArgs (ButtonPressEventArgs args)
+		{
+			int x, y;
+			Widget.ConvertBinWindowToWidgetCoords ((int)args.Event.X, (int)args.Event.Y, out x, out y);
+			var xwt_args = base.GetButtonPressEventArgs (args);
+			xwt_args.X = x;
+			xwt_args.Y = y;
+			return xwt_args;
+		}
+
+		protected override ButtonEventArgs GetButtonReleaseEventArgs (ButtonReleaseEventArgs args)
+		{
+			int x, y;
+			Widget.ConvertBinWindowToWidgetCoords ((int)args.Event.X, (int)args.Event.Y, out x, out y);
+			var xwt_args = base.GetButtonReleaseEventArgs (args);
+			xwt_args.X = x;
+			xwt_args.Y = y;
+			return xwt_args;
+		}
+
+		protected override MouseMovedEventArgs GetMouseMovedEventArgs (MotionNotifyEventArgs args)
+		{
+			int x, y;
+			Widget.ConvertBinWindowToWidgetCoords ((int)args.Event.X, (int)args.Event.Y, out x, out y);
+			return new MouseMovedEventArgs ((long) args.Event.Time, x, y);
 		}
 
 		public virtual void SetCurrentEventRow (string path)
@@ -275,7 +443,7 @@ namespace Xwt.GtkBackend
 			get { return Widget; }
 		}
 
-		Gtk.TreeModel ICellRendererTarget.Model {
+		TreeModel ICellRendererTarget.Model {
 			get { return Widget.Model; }
 		}
 
@@ -328,7 +496,17 @@ namespace Xwt.GtkBackend
 		{
 			backend = b;
 		}
-		
+
+		static CustomTreeView ()
+		{
+			// On Mac we want to be able to handle the backspace key (labeled "delete") in a custom way
+			// through a normal keypressed event but a default binding prevents this from happening because
+			// it maps it to "select-cursor-parent". However, that event is also bound to Ctrl+Backspace anyway
+			// so we can just kill one of those binding
+			if (Platform.IsMac)
+				GtkWorkarounds.RemoveKeyBindingFromClass (Gtk.TreeView.GType, Gdk.Key.BackSpace, Gdk.ModifierType.None);
+		}
+
 		protected override void OnDragDataDelete (Gdk.DragContext context)
 		{
 			// This method is override to avoid the default implementation

@@ -36,7 +36,7 @@ namespace Xwt.Drawing
 			pixelSize = image.pixelSize;
 		}
 		
-		internal BitmapImage (object backend, Size size): base (backend)
+		internal BitmapImage (object backend, Size size, Toolkit toolkit): base (backend, toolkit)
 		{
 			Size = size;
 			pixelSize = ToolkitEngine.ImageBackendHandler.GetSize (backend);
@@ -64,7 +64,11 @@ namespace Xwt.Drawing
 		public void SetPixel (int x, int y, Color color)
 		{
 			MakeWrittable ();
-			ToolkitEngine.ImageBackendHandler.SetBitmapPixel (Backend, x, y, color);
+			var nr = NativeRef;
+			do {
+				nr.Toolkit.ImageBackendHandler.SetBitmapPixel (nr.Backend, x, y, color);
+				nr = nr.NextRef;
+			} while (nr != NativeRef);
 		}
 		
 		public Color GetPixel (int x, int y)
@@ -75,7 +79,11 @@ namespace Xwt.Drawing
 		public void CopyArea (int srcX, int srcY, int width, int height, BitmapImage dest, int destX, int destY)
 		{
 			dest.MakeWrittable ();
-			ToolkitEngine.ImageBackendHandler.CopyBitmapArea (Backend, srcX, srcY, width, height, dest.Backend, destX, destY);
+			var nr = dest.NativeRef;
+			do {
+				InitForToolkit (nr.Toolkit);
+				nr.Toolkit.ImageBackendHandler.CopyBitmapArea (Backend, srcX, srcY, width, height, nr.Backend, destX, destY);
+			} while (nr != dest.NativeRef);
 		}
 
 		/// <summary>
@@ -89,7 +97,7 @@ namespace Xwt.Drawing
 		{
 			var scaleX = Math.Truncate (PixelWidth / Width);
 			var scaleY = Math.Truncate (PixelHeight / Height);
-			return new BitmapImage (ToolkitEngine.ImageBackendHandler.CropBitmap (Backend, x, y, pixelWidth, pixelHeight), new Size (pixelWidth / scaleX, pixelHeight / scaleY));
+			return new BitmapImage (ToolkitEngine.ImageBackendHandler.CropBitmap (Backend, x, y, pixelWidth, pixelHeight), new Size (pixelWidth / scaleX, pixelHeight / scaleY), ToolkitEngine);
 		}
 
 		/// <summary>
@@ -99,7 +107,7 @@ namespace Xwt.Drawing
 		{
 			var scaleX = Math.Truncate (PixelWidth / Width);
 			var scaleY = Math.Truncate (PixelHeight / Height);
-			return new BitmapImage (ToolkitEngine.ImageBackendHandler.CropBitmap (Backend, (int)pixelRect.X, (int)pixelRect.Y, (int)pixelRect.Width, (int)pixelRect.Height), new Size (pixelRect.Width / scaleX, pixelRect.Height / scaleY));
+			return new BitmapImage (ToolkitEngine.ImageBackendHandler.CropBitmap (Backend, (int)pixelRect.X, (int)pixelRect.Y, (int)pixelRect.Width, (int)pixelRect.Height), new Size (pixelRect.Width / scaleX, pixelRect.Height / scaleY), ToolkitEngine);
 		}
 
 		public Size PixelSize {
@@ -114,9 +122,9 @@ namespace Xwt.Drawing
 			get { return pixelSize.Height; }
 		}
 
-        public ImageFormat Format {
-            get { return ToolkitEngine.ImageBackendHandler.GetFormat(Backend); }
-        }
+		public ImageFormat Format {
+		    get { return ToolkitEngine.ImageBackendHandler.GetFormat(Backend); }
+		}
 	}
 }
 

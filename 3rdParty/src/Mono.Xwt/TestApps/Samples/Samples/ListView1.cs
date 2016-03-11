@@ -16,6 +16,8 @@ namespace Samples
 		{
 			PackStart (new Label ("The listview should have a red background"));
 			ListView list = new ListView ();
+			list.BackgroundColor = Colors.Red;
+			list.GridLinesVisible = GridLines.Both;
 			ListStore store = new ListStore (name, icon, text, icon2, progress);
 			list.DataSource = store;
 			list.Columns.Add ("Name", icon, name);
@@ -51,11 +53,60 @@ namespace Samples
 				}
 			};
 
+			list.KeyPressed += (sender, e) => {
+				if (e.Key == Key.Insert) {
+					var r = store.InsertRowAfter(list.SelectedRow < 0 ? 0 : list.SelectedRow);
+					store.SetValue (r, icon, png);
+					store.SetValue (r, name, "Value " + (store.RowCount + 1));
+					store.SetValue (r, icon2, png);
+					store.SetValue (r, text, "New Text " + (store.RowCount + 1));
+					store.SetValue (r, progress, new CellData { Value = rand.Next () % 100 });
+					list.ScrollToRow (r);
+					list.SelectRow (r);
+					list.FocusedRow = r;
+				}
+			};
+
+			HBox btnBox = new HBox ();
+			Button btnAddItem = new Button ("Add item");
+			btnAddItem.Clicked += delegate {
+				var r = store.InsertRowAfter(list.SelectedRow < 0 ? 0 : list.SelectedRow);
+				store.SetValue (r, icon, png);
+				store.SetValue (r, name, "Value " + (store.RowCount + 1));
+				store.SetValue (r, icon2, png);
+				store.SetValue (r, text, "New Text " + (store.RowCount + 1));
+				store.SetValue (r, progress, new CellData { Value = rand.Next () % 100 });
+				list.ScrollToRow (r);
+				list.SelectRow (r);
+			};
+			btnBox.PackStart (btnAddItem, true);
+			Button btnRemoveItem = new Button ("Remove item");
+			btnRemoveItem.Clicked += delegate {
+				if (list.SelectedRow >= 0)
+					store.RemoveRow(list.SelectedRow);
+			};
+			btnBox.PackStart (btnRemoveItem, true);
+			PackStart (btnBox);
+
 			var but = new Button ("Scroll one line");
 			but.Clicked += delegate {
 				list.VerticalScrollControl.Value += list.VerticalScrollControl.StepIncrement;
 			};
 			PackStart (but);
+
+			var spnValue = new SpinButton ();
+			spnValue.MinimumValue = 0;
+			spnValue.MaximumValue = 99;
+			spnValue.IncrementValue = 1;
+			spnValue.Digits = 0;
+			var btnScroll = new Button ("Go!");
+			btnScroll.Clicked += (sender, e) => list.ScrollToRow((int)spnValue.Value);
+
+			HBox scrollActBox = new HBox ();
+			scrollActBox.PackStart (new Label("Scroll to Value: "));
+			scrollActBox.PackStart (spnValue);
+			scrollActBox.PackStart (btnScroll);
+			PackStart (scrollActBox);
 		}
 	}
 
@@ -69,9 +120,19 @@ namespace Samples
 	{
 		public IDataField<CellData> ValueField { get; set; }
 
+		public Size Size {
+			get;
+			set;
+		}
+
+		public CustomCell ()
+		{
+			Size = new Size (200, 10);
+		}
+
 		protected override Size OnGetRequiredSize ()
 		{
-			return new Size (200, 10);
+			return Size;
 		}
 
 		protected override void OnDraw (Context ctx, Rectangle cellArea)

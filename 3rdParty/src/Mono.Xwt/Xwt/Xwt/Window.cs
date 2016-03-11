@@ -130,6 +130,12 @@ namespace Xwt
 					Widget.QueueWindowSizeNegotiation (this);
 			}
 		}
+
+		protected override void Dispose (bool disposing)
+		{
+			Content.Dispose ();
+			base.Dispose (disposing);
+		}
 		
 		protected override void OnReallocate ()
 		{
@@ -196,20 +202,19 @@ namespace Xwt
 
 		internal override void AdjustSize ()
 		{
-			if (child == null)
-				return;
-
 			Size mMinSize, mDecorationsSize;
 			Backend.GetMetrics (out mMinSize, out mDecorationsSize);
-
-			IWidgetSurface s = child.Surface;
 
 			var size = shown ? Size : initialBounds.Size;
 
 			var wc = (shown || widthSet) ? SizeConstraint.WithSize (Math.Max (size.Width - padding.HorizontalSpacing - mDecorationsSize.Width, mMinSize.Width)) : SizeConstraint.Unconstrained;
 			var hc = (shown || heightSet) ? SizeConstraint.WithSize (Math.Max (size.Height - padding.VerticalSpacing - mDecorationsSize.Height, mMinSize.Height)) : SizeConstraint.Unconstrained;
 
-			var ws = s.GetPreferredSize (wc, hc, true) + mDecorationsSize;
+			var ws = mDecorationsSize;
+			if (child != null) {
+				IWidgetSurface s = child.Surface;
+				ws += s.GetPreferredSize (wc, hc, true);
+			}
 			ws.Width += padding.HorizontalSpacing;
 			ws.Height += padding.VerticalSpacing;
 

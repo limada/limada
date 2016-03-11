@@ -34,6 +34,11 @@ namespace Xwt.Backends
 		void Dispose ();
 
 		/// <summary>
+		/// Gets or sets the name of the window.
+		/// </summary>
+		string Name { get; set; }
+
+		/// <summary>
 		/// Size and position of the window content in screen coordinates
 		/// </summary>
 		Rectangle Bounds { get; set; }
@@ -53,8 +58,8 @@ namespace Xwt.Backends
 		void SetSize (double width, double height);
 
 		bool Visible { get; set; }
-		string Title { get; set; }
-		
+		bool Sensitive { get; set; }
+		string Title { get; set; }		
 		bool Decorated { get; set; }
 		bool ShowInTaskbar { get; set; }
 		void SetTransientFor (IWindowFrameBackend window);

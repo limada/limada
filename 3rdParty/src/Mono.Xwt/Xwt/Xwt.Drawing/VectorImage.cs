@@ -49,10 +49,10 @@ namespace Xwt.Drawing
 			ctx.Restore ();
 		}
 
-	    public VectorImageData Data { get { return data; } }
+	    	public VectorImageData Data { get { return data; } }
 	}
 
-    public class VectorImageData
+	public class VectorImageData
 	{
 		public DrawingCommand[] Commands;
 		public double[] Doubles;
@@ -64,7 +64,7 @@ namespace Xwt.Drawing
 		public TextLayoutData[] TextLayouts;
 	}
 
-    public enum DrawingCommand
+	public enum DrawingCommand
 	{
 		Save,
 		Restore,
@@ -98,10 +98,11 @@ namespace Xwt.Drawing
 		RelLineTo,
 		RelMoveTo,
 		AppendPath,
+		SetStyles,
 		End
 	}
 
-    public class VectorContextBackend : VectorBackend
+	public class VectorContextBackend: VectorBackend
 	{
 		double width;
 		double height;
@@ -146,7 +147,7 @@ namespace Xwt.Drawing
 		}
 	}
 
-    public class VectorPathBackend : VectorBackend
+	public class VectorPathBackend: VectorBackend
 	{
 		public VectorPathBackend (Toolkit toolkit): base (toolkit)
 		{
@@ -159,7 +160,7 @@ namespace Xwt.Drawing
 		}
 	}
 
-    public abstract class VectorBackend
+	public abstract class VectorBackend
 	{
 		public List<DrawingCommand> Commands = new List<DrawingCommand> ();
 		public List<double> Doubles = new List<double> ();
@@ -225,7 +226,7 @@ namespace Xwt.Drawing
 		}
 	}
 
-    public class VectorImageRecorderContextHandler : ContextBackendHandler
+	public class VectorImageRecorderContextHandler: ContextBackendHandler
 	{
 		Toolkit toolkit;
 
@@ -578,6 +579,13 @@ namespace Xwt.Drawing
 			ctx.Doubles.Add (globalAlpha);
 		}
 
+		public override void SetStyles (object backend, StyleSet styles)
+		{
+			var ctx = (VectorBackend)backend;
+			ctx.Commands.Add (DrawingCommand.SetStyles);
+			ctx.Objects.Add (styles);
+		}
+
 		public override bool IsPointInFill (object backend, double x, double y)
 		{
 			var ctx = (VectorBackend)backend;
@@ -727,6 +735,9 @@ namespace Xwt.Drawing
 					break;
 				case DrawingCommand.Translate:
 					handler.Translate (ctx, cm.Doubles [di++], cm.Doubles [di++]);
+					break;
+				case DrawingCommand.SetStyles:
+					handler.SetStyles (ctx, (StyleSet)cm.Objects [oi++]);
 					break;
 				}
 			}

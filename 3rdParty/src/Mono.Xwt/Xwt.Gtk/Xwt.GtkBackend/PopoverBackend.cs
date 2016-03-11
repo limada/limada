@@ -27,6 +27,7 @@
 using System;
 
 using Xwt.Backends;
+using Xwt.CairoBackend;
 
 using Gtk;
 using Cairo;
@@ -36,126 +37,134 @@ namespace Xwt.GtkBackend
 {
 	public class PopoverBackend : IPopoverBackend
 	{
-		class PopoverWindow : Gtk.Window
+		sealed class PopoverWindow : GtkPopoverWindow
 		{
 			const int arrowPadding = 10;
 			const int radius = 6;
-			
-			bool supportAlpha;
-			Xwt.Popover.Position arrowPosition;
+
+			Popover.Position arrowPosition;
+			WidgetSpacing padding;
 			Gtk.Alignment alignment;
+			int arrowDelta;
+
+			public Color BackgroundColor { get; set; }
+
+			public Xwt.Popover.Position ArrowPosition {
+				get {
+					return arrowPosition;
+				}
+				set {
+					arrowPosition = value;
+					Padding = padding;
+					QueueDraw ();
+				}
+			}
+
+			public int ArrowDelta {
+				get { return arrowDelta; }
+				set {
+					if (arrowDelta == value)
+						return;
+					arrowDelta = value;
+					QueueDraw ();
+				}
+			}
+
+			public WidgetSpacing Padding {
+				get {
+					return padding;
+				}
+				set {
+					padding = value;
+					alignment.LeftPadding = radius + (uint) padding.Left;
+					alignment.RightPadding = radius + (uint) padding.Right;
+					if (arrowPosition == Popover.Position.Top) {
+						alignment.TopPadding = radius + arrowPadding + (uint) padding.Top;
+						alignment.BottomPadding = radius + (uint) padding.Bottom;
+					} else {
+						alignment.BottomPadding = radius + arrowPadding + (uint) padding.Bottom;
+						alignment.TopPadding = radius + (uint) padding.Top;
+					}
+				}
+			}
+
+			public Gtk.Widget Content {
+				get {
+					return alignment.Child;
+				}
+				set {
+					if (alignment.Child != value) {
+						if (alignment.Child != null)
+							alignment.Remove (alignment.Child);
+						if (value != null)
+							alignment.Add (value);
+					}
+				}
+			}
 			
-			public PopoverWindow (Gtk.Widget child, Xwt.Popover.Position orientation) : base (WindowType.Toplevel)
+			public PopoverWindow () : base (WindowType.Toplevel)
 			{
 				this.AppPaintable = true;
 				this.Decorated = false;
 				this.SkipPagerHint = true;
 				this.SkipTaskbarHint = true;
 				this.TypeHint = Gdk.WindowTypeHint.PopupMenu;
-				//this.TransientFor = (Gtk.Window)child.Toplevel;
+				this.DestroyWithParent = true;
 				this.AddEvents ((int)Gdk.EventMask.FocusChangeMask);
-				//this.DefaultHeight = this.DefaultWidth = 400;
-				this.arrowPosition = orientation;
 				this.alignment = new Gtk.Alignment (0, 0, 1, 1);
+				this.alignment.Show ();
 				this.Add (alignment);
-				this.alignment.Add (child);
-				this.FocusOutEvent += HandleFocusOutEvent;
+
 				OnScreenChanged (null);
 			}
-			
-			public Xwt.Popover.Position ArrowPosition {
-				get {
-					return arrowPosition;
-				}
-			}
-			
-			public void ReleaseInnerWidget ()
+
+			protected override void OnSizeAllocated (Gdk.Rectangle allocation)
 			{
-				alignment.Remove (alignment.Child);
+				base.OnSizeAllocated (allocation);
+				QueueDraw ();
 			}
-			
-			void HandleFocusOutEvent (object o, FocusOutEventArgs args)
-			{
-				this.HideAll ();
-			}
-			
-			public void SetPadding (WidgetSpacing spacing)
-			{
-				alignment.LeftPadding = radius + (uint) spacing.Left;
-				alignment.RightPadding = radius + (uint) spacing.Right;
-				if (arrowPosition == Xwt.Popover.Position.Top) {
-					alignment.TopPadding = radius + arrowPadding + (uint) spacing.Top;
-					alignment.BottomPadding = radius + (uint) spacing.Bottom;
-				} else {
-					alignment.BottomPadding = radius + arrowPadding + (uint) spacing.Bottom;
-					alignment.TopPadding = radius + (uint) spacing.Top;
-				}
-			}
-			
-			protected override void OnScreenChanged (Gdk.Screen previous_screen)
-			{
-				// To check if the display supports alpha channels, get the colormap
-				var colormap = this.Screen.RgbaColormap;
-				if (colormap == null) {
-					colormap = this.Screen.RgbColormap;
-					supportAlpha = false;
-				} else {
-					supportAlpha = true;
-				}
-				this.Colormap = colormap;
-				base.OnScreenChanged (previous_screen);
-			}
-			
-			protected override bool OnExposeEvent (Gdk.EventExpose evnt)
+
+
+			protected override bool OnDrawn (Context cr)
 			{
 				int w, h;
 				this.GdkWindow.GetSize (out w, out h);
 				var bounds = new Xwt.Rectangle (0.5, 0.5, w - 1, h - 1);
-				var backgroundColor = Xwt.Drawing.Color.FromBytes (230, 230, 230, 230);
-				var black = Xwt.Drawing.Color.FromBytes (60, 60, 60);
+				var black = Xwt.Drawing.Color.FromBytes (0xee, 0xee, 0xee);
 				
-				using (Context ctx = Gdk.CairoHelper.Create (this.GdkWindow)) {
-					// We clear the surface with a transparent color if possible
-					if (supportAlpha)
-						ctx.SetSourceRGBA (1.0, 1.0, 1.0, 0.0);
-					else
-						ctx.SetSourceRGB (1.0, 1.0, 1.0);
-					ctx.Operator = Operator.Source;
-					ctx.Paint ();
-					
-					var calibratedRect = RecalibrateChildRectangle (bounds);
-					// Fill it with one round rectangle
-					RoundRectangle (ctx, calibratedRect, radius);
-					ctx.LineWidth = 1;
-					ctx.SetSourceRGBA (black.Red, black.Green, black.Blue, black.Alpha);
-					ctx.StrokePreserve ();
-					ctx.SetSourceRGBA (backgroundColor.Red, backgroundColor.Green, backgroundColor.Blue, backgroundColor.Alpha);
-					ctx.Fill ();
-					
-					// Triangle
-					// We first begin by positionning ourselves at the top-center or bottom center of the previous rectangle
-					var arrowX = bounds.Center.X;
-					var arrowY = arrowPosition == Xwt.Popover.Position.Top ? calibratedRect.Top + ctx.LineWidth : calibratedRect.Bottom - ctx.LineWidth;
-					ctx.NewPath ();
-					ctx.MoveTo (arrowX, arrowY);
-					// We draw the rectangle path
-					DrawTriangle (ctx);
-					// We use it
-					ctx.SetSourceRGBA (black.Red, black.Green, black.Blue, black.Alpha);
-					ctx.StrokePreserve ();
-					ctx.ClosePath ();
-					ctx.SetSourceRGBA (backgroundColor.Red, backgroundColor.Green, backgroundColor.Blue, backgroundColor.Alpha);
-					ctx.Fill ();
-				}
+				// We clear the surface with a transparent color if possible
+				if (supportAlpha)
+					cr.SetSourceRGBA (1.0, 1.0, 1.0, 0.0);
+				else
+					cr.SetSourceRGB (1.0, 1.0, 1.0);
+				cr.Operator = Operator.Source;
+				cr.Paint ();
 				
-				base.OnExposeEvent (evnt);
-				return false;
+				var calibratedRect = RecalibrateChildRectangle (bounds);
+				// Fill it with one round rectangle
+				RoundRectangle (cr, calibratedRect, radius);
+				cr.LineWidth = 1;
+				
+				// Triangle
+				// We first begin by positionning ourselves at the top-center or bottom center of the previous rectangle
+				var arrowX = bounds.Center.X + arrowDelta;
+				var arrowY = arrowPosition == Xwt.Popover.Position.Top ? calibratedRect.Top + cr.LineWidth : calibratedRect.Bottom;
+				cr.MoveTo (arrowX, arrowY);
+				// We draw the rectangle path
+				DrawTriangle (cr);
+
+				// We use it
+				cr.SetSourceRGBA (black.Red, black.Green, black.Blue, black.Alpha);
+				cr.StrokePreserve ();
+				cr.SetSourceRGBA (BackgroundColor.R, BackgroundColor.G, BackgroundColor.B, BackgroundColor.A);
+				cr.Fill ();
+
+				return base.OnDrawn (cr);
 			}
 			
 			void DrawTriangle (Context ctx)
 			{
-				var triangleSide = 2 * arrowPadding / Math.Sqrt (3);
-				var halfSide = triangleSide / 2;
+				var halfSide = arrowPadding;
 				var verticalModifier = arrowPosition == Xwt.Popover.Position.Top ? -1 : 1;
 				// Move to the left
 				ctx.RelMoveTo (-halfSide, 0);
@@ -195,9 +204,13 @@ namespace Xwt.GtkBackend
 		IPopoverEventSink sink;
 		Popover frontend;
 
+		public Xwt.Drawing.Color BackgroundColor { get; set; }
+
 		public void Initialize (IPopoverEventSink sink)
 		{
 			this.sink = sink;
+			this.BackgroundColor = Xwt.Drawing.Color.FromBytes (0xee, 0xee, 0xee, 0xf9);
+			this.popover = new PopoverWindow ();
 		}
 
 		public void InitializeBackend (object frontend, ApplicationContext context)
@@ -215,28 +228,73 @@ namespace Xwt.GtkBackend
 
 		public void Show (Xwt.Popover.Position orientation, Xwt.Widget reference, Xwt.Rectangle positionRect, Widget child)
 		{
-			var parent = reference.ParentWindow;
-			popover = new PopoverWindow ((Gtk.Widget)((WidgetBackend)Toolkit.GetBackend (child)).NativeWidget, orientation);
-			popover.SetPadding (frontend.Padding);
-			popover.TransientFor = ((WindowFrameBackend)Toolkit.GetBackend (parent)).Window;
-			popover.DestroyWithParent = true;
-			popover.Hidden += (o, args) => {
-				popover.ReleaseInnerWidget ();
-				sink.OnClosed ();
-				popover.Destroy ();
-			};
+			popover.Content = (Gtk.Widget)((WidgetBackend)Toolkit.GetBackend (child)).NativeWidget;
+			popover.ArrowPosition = orientation;
+			popover.BackgroundColor = BackgroundColor.ToCairoColor ();
+			popover.Padding = frontend.Padding;
+
+			var parent = (WindowFrameBackend)Toolkit.GetBackend (reference.ParentWindow);
+			if (popover.TransientFor != parent.Window) {
+				if (popover.TransientFor != null)
+					popover.TransientFor.FocusInEvent -= HandleParentFocusInEvent;
+				popover.TransientFor = parent.Window;
+				popover.TransientFor.FocusInEvent += HandleParentFocusInEvent;
+			}
+
+			popover.Hidden += (o, args) => sink.OnClosed ();
 
 			var screenBounds = reference.ScreenBounds;
 			if (positionRect == Rectangle.Zero)
 				positionRect = new Rectangle (Point.Zero, screenBounds.Size);
 			positionRect = positionRect.Offset (screenBounds.Location);
-			var position = new Point (positionRect.Center.X, popover.ArrowPosition == Popover.Position.Top ? positionRect.Bottom : positionRect.Top);
-			popover.ShowAll ();
+			popover.Show ();
+			popover.Present ();
 			popover.GrabFocus ();
 			int w, h;
 			popover.GetSize (out w, out h);
-			popover.Move ((int)position.X - w / 2, (int)position.Y);
-			popover.SizeAllocated += (o, args) => { popover.Move ((int)position.X - args.Allocation.Width / 2, (int)position.Y); popover.GrabFocus (); };
+
+			UpdatePopoverPosition (positionRect, w, h);
+			popover.SizeAllocated += (o, args) => {
+				UpdatePopoverPosition (positionRect, args.Allocation.Width, args.Allocation.Height);
+				popover.GrabFocus ();
+			};
+		}
+
+		void UpdatePopoverPosition (Rectangle positionRect, int width, int height)
+		{
+			var position = new Point (positionRect.Center.X, popover.ArrowPosition == Popover.Position.Top ? positionRect.Bottom : positionRect.Top);
+			var x = (int)position.X - width / 2;
+			int wx, wy, ww, wh;
+			popover.TransientFor.GetSize (out ww, out wh);
+			popover.TransientFor.GetPosition (out wx, out wy);
+
+			// If the popover height would overflow, we flip the arrow position if possible
+			var arrowPos = popover.ArrowPosition;
+			var overflowing = arrowPos == Popover.Position.Top ? position.Y + height > wy + wh : position.Y - height < wy;
+			var otherOverflow = arrowPos == Popover.Position.Top ? position.Y - height < wy : position.Y + height > wy + wh;
+			if (overflowing && !otherOverflow) {
+				popover.ArrowPosition = arrowPos == Xwt.Popover.Position.Bottom ? Xwt.Popover.Position.Top : Xwt.Popover.Position.Bottom;
+				position = new Point (positionRect.Center.X, popover.ArrowPosition == Popover.Position.Top ? positionRect.Bottom : positionRect.Top);
+			}
+
+			// If the popover width would overflow out of the screen, we balance this
+			// by translating and moving the arrow
+			var delta = Math.Min (
+				Math.Max (0, ((int)position.X + width / 2) - (wx + ww) - 2),
+				((int)position.X - width / 2) - wx + 2
+			);
+			x -= delta;
+			popover.ArrowDelta = delta;
+
+			if (popover.ArrowPosition == Popover.Position.Top)
+				popover.Move (x, (int)position.Y);
+			else
+				popover.Move (x, (int)position.Y - height);
+		}
+
+		void HandleParentFocusInEvent (object o, FocusInEventArgs args)
+		{
+			Hide ();
 		}
 
 		public void Hide ()
@@ -246,6 +304,11 @@ namespace Xwt.GtkBackend
 		
 		public void Dispose ()
 		{
+			if (popover.TransientFor != null)
+				popover.TransientFor.FocusInEvent -= HandleParentFocusInEvent;
+
+			popover.Destroy ();
+			popover.Dispose ();
 		}
 	}
 }

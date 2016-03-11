@@ -32,14 +32,19 @@ namespace Xwt.Backends
 	{
 		void SetSource (IListDataSource source, IBackend sourceBackend);
 		int[] SelectedRows { get; }
+		int FocusedRow { get; set; }
 		void SelectRow (int pos);
 		void UnselectRow (int pos);
+		void ScrollToRow (int row);
 
 		bool BorderVisible { get; set; }
+		GridLines GridLinesVisible { get; set; }
 		bool HeadersVisible { get; set; }
 
 		int GetRowAtPosition (Point p);
 		Rectangle GetCellBounds (int row, CellView cell, bool includeMargin);
+		Rectangle GetRowBounds (int row, bool includeMargin);
+		int CurrentEventRow { get; }
 	}
 	
 	public enum ListViewEvent

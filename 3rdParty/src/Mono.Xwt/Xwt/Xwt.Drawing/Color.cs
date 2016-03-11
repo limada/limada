@@ -293,6 +293,16 @@ namespace Xwt.Drawing
 		{
 			return string.Format ("[Color: Red={0}, Green={1}, Blue={2}, Alpha={3}]", Red, Green, Blue, Alpha);
 		}
+
+		public string ToHexString (bool withAlpha = true)
+		{
+			var rgb = "#" + ((int)(Red * 255)).ToString ("x2") + ((int)(Green * 255)).ToString ("x2") + ((int)(Blue * 255)).ToString ("x2");
+
+			if (withAlpha)
+				return rgb + ((int)(Alpha * 255)).ToString ("x2");
+			else
+				return rgb;
+		}
 	}
 
 	class ColorValueConverter: TypeConverter
@@ -335,7 +345,7 @@ namespace Xwt.Drawing
 		public override string ConvertToString (object value, IValueSerializerContext context)
 		{
 			Color s = (Color) value;
-			return "#" + ((int)(s.Red * 255)).ToString ("x2") + ((int)(s.Green * 255)).ToString ("x2") + ((int)(s.Blue * 255)).ToString ("x2") + ((int)(s.Alpha * 255)).ToString ("x2");
+			return s.ToHexString ();
 		}
 		
 		public override object ConvertFromString (string value, IValueSerializerContext context)

@@ -30,10 +30,8 @@ using Xwt.Drawing;
 
 namespace Xwt.GtkBackend
 {
-	public class TextEntryBackend: WidgetBackend, ITextEntryBackend
+	public partial class TextEntryBackend : WidgetBackend, ITextEntryBackend
 	{
-		string placeHolderText;
-		
 		public override void Initialize ()
 		{
 			Widget = new Gtk.Entry ();
@@ -43,12 +41,12 @@ namespace Xwt.GtkBackend
 		protected virtual Gtk.Entry TextEntry {
 			get { return (Gtk.Entry)base.Widget; }
 		}
-		
+
 		protected new Gtk.Entry Widget {
 			get { return TextEntry; }
 			set { base.Widget = value; }
 		}
-		
+
 		protected new ITextEntryEventSink EventSink {
 			get { return (ITextEntryEventSink)base.EventSink; }
 		}
@@ -75,20 +73,7 @@ namespace Xwt.GtkBackend
 				}
 			}
 		}
-		
-		public string PlaceholderText {
-			get { return placeHolderText; }
-			set {
-				if (placeHolderText != value) {
-					if (placeHolderText == null)
-						Widget.ExposeEvent += HandleWidgetExposeEvent;
-					else if (value == null)
-						Widget.ExposeEvent -= HandleWidgetExposeEvent;
-				}
-				placeHolderText = value;
-			}
-		}
-		
+
 		public override Color BackgroundColor {
 			get {
 				return base.BackgroundColor;
@@ -99,47 +84,6 @@ namespace Xwt.GtkBackend
 			}
 		}
 
-		Pango.Layout layout;
-		
-		void HandleWidgetExposeEvent (object o, Gtk.ExposeEventArgs args)
-		{
-			RenderPlaceholderText (Widget, args, placeHolderText, ref layout);
-		}
-
-		internal static void RenderPlaceholderText (Gtk.Entry entry, Gtk.ExposeEventArgs args, string placeHolderText, ref Pango.Layout layout)
-		{
-			// The Entry's GdkWindow is the top level window onto which
-			// the frame is drawn; the actual text entry is drawn into a
-			// separate window, so we can ensure that for themes that don't
-			// respect HasFrame, we never ever allow the base frame drawing
-			// to happen
-			if (args.Event.Window == entry.GdkWindow)
-				return;
-			
-			if (entry.Text.Length > 0)
-				return;
-			
-			if (layout == null) {
-				layout = new Pango.Layout (entry.PangoContext);
-				layout.FontDescription = entry.PangoContext.FontDescription.Copy ();
-			}
-			
-			int wh, ww;
-			args.Event.Window.GetSize (out ww, out wh);
-			
-			int width, height;
-			layout.SetText (placeHolderText);
-			layout.GetPixelSize (out width, out height);
-			using (var gc = new Gdk.GC (args.Event.Window)) {
-				gc.Copy (entry.Style.TextGC (Gtk.StateType.Normal));
-				Color color_a = entry.Style.Base (Gtk.StateType.Normal).ToXwtValue ();
-				Color color_b = entry.Style.Text (Gtk.StateType.Normal).ToXwtValue ();
-				gc.RgbFgColor = color_b.BlendWith (color_a, 0.5).ToGtkValue ();
-
-				args.Event.Window.DrawLayout (gc, 2, (wh - height) / 2 + 1, layout);
-			}
-		}
-		
 		public bool ReadOnly {
 			get {
 				return !Widget.IsEditable;
@@ -148,7 +92,7 @@ namespace Xwt.GtkBackend
 				Widget.IsEditable = !value;
 			}
 		}
-		
+
 		public bool ShowFrame {
 			get {
 				return Widget.HasFrame;
@@ -228,10 +172,59 @@ namespace Xwt.GtkBackend
 		}
 
 		public bool MultiLine {
-            // GtkEntry has no multiline, so how to implement it? 
 			get; set;
 		}
-		
+
+		/// <summary>
+		/// Set the list of completions that will be shown by the entry
+		/// </summary>
+		/// <param name="completions">The list of completion or null if no completions should be shown</param>
+		public void SetCompletions (string[] completions)
+		{
+			var widgetCompletion = Widget.Completion;
+
+			if (completions == null || completions.Length == 0) {
+				if (widgetCompletion != null)
+					widgetCompletion.Model = null;
+				return;
+			}
+
+			if (widgetCompletion == null)
+				Widget.Completion = widgetCompletion = CreateCompletion ();
+
+			var model = new Gtk.ListStore (typeof(string));
+			foreach (var c in completions)
+				model.SetValue (model.Append (), 0, c);
+			widgetCompletion.Model = model;
+		}
+
+		/// <summary>
+		/// Set a custom matching function used to decide which completion from SetCompletions list are shown
+		/// for the given input
+		/// </summary>
+		/// <param name="matchFunc">A function which parameter are, in order, the current text entered by the user and a completion candidate.
+		/// Returns true if the candidate should be included in the completion list.</param>
+		public void SetCompletionMatchFunc (Func<string, string, bool> matchFunc)
+		{
+			var widgetCompletion = Widget.Completion;
+			if (widgetCompletion == null)
+				Widget.Completion = widgetCompletion = CreateCompletion ();
+			widgetCompletion.MatchFunc = delegate (Gtk.EntryCompletion completion, string key, Gtk.TreeIter iter) {
+				var completionText = (string)completion.Model.GetValue (iter, 0);
+				return matchFunc (key, completionText);
+			};
+		}
+
+		Gtk.EntryCompletion CreateCompletion ()
+		{
+			return new Gtk.EntryCompletion () {
+				PopupCompletion = true,
+				TextColumn = 0,
+				InlineCompletion = true,
+				InlineSelection = true
+			};
+		}
+
 		public override void EnableEvent (object eventId)
 		{
 			base.EnableEvent (eventId);
@@ -249,7 +242,7 @@ namespace Xwt.GtkBackend
 				}
 			}
 		}
-		
+
 		public override void DisableEvent (object eventId)
 		{
 			base.DisableEvent (eventId);
@@ -328,18 +321,6 @@ namespace Xwt.GtkBackend
 				isMouseSelection = false;
 				HandleSelectionChanged ();
 			}
-		}
-
-		protected override void Dispose (bool disposing)
-		{
-			if (disposing) {
-				var l = layout;
-				if (l != null) {
-					l.Dispose ();
-					layout = null;
-				}
-			}
-			base.Dispose (disposing);
 		}
 	}
 }

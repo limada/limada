@@ -26,17 +26,17 @@
 
 using System;
 using Xwt.Backends;
-using Xwt.Drawing;
+using Gtk;
+#if XWT_GTK3
+using TreeModel = Gtk.ITreeModel;
+#endif
 
 namespace Xwt.GtkBackend
 {
 	public class ListStoreBackend: TableStoreBackend, IListStoreBackend
 	{
-		Type[] columnTypes;
-		
-		public override Gtk.TreeModel InitializeModel (Type[] columnTypes)
+		public override TreeModel InitializeModel (Type[] columnTypes)
 		{
-			this.columnTypes = columnTypes;
 			var store = new Gtk.ListStore (columnTypes);
 			store.RowInserted += (o, args) => {
 				if (RowInserted != null)
@@ -81,12 +81,6 @@ namespace Xwt.GtkBackend
 		public int RowCount {
 			get {
 				return List.IterNChildren ();
-			}
-		}
-		
-		public Type[] ColumnTypes {
-			get {
-				return columnTypes;
 			}
 		}
 		

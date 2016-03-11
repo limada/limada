@@ -25,6 +25,10 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
+using Gtk;
+#if XWT_GTK3
+using TreeModel = Gtk.ITreeModel;
+#endif
 
 
 namespace Xwt.GtkBackend
@@ -37,6 +41,7 @@ namespace Xwt.GtkBackend
 
 		public override void Initialize ()
 		{
+			//NeedsEventBox = false;  // TODO: needs fix: no events with or without event box
 			Widget = (Gtk.ComboBox) CreateWidget ();
 			if (Widget.Cells.Length == 0) {
 				var cr = new Gtk.CellRendererText ();
@@ -60,8 +65,8 @@ namespace Xwt.GtkBackend
 		protected new IComboBoxEventSink EventSink {
 			get { return (IComboBoxEventSink)base.EventSink; }
 		}
-		
-		bool IsRowSeparator (Gtk.TreeModel model, Gtk.TreeIter iter)
+
+		bool IsRowSeparator (TreeModel model, Gtk.TreeIter iter)
 		{
 			Gtk.TreePath path = model.GetPath (iter);
 			bool res = false;
@@ -162,8 +167,7 @@ namespace Xwt.GtkBackend
 		Gtk.Widget ICellRendererTarget.EventRootWidget {
 			get { return Widget; }
 		}
-
-		Gtk.TreeModel ICellRendererTarget.Model {
+		TreeModel ICellRendererTarget.Model {
 			get { return Widget.Model; }
 		}
 

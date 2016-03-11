@@ -48,10 +48,16 @@ namespace Xwt.GtkBackend
 					Widget.RowActivated += HandleRowActivated;
 					break;
 				case TreeViewEvent.RowExpanding:
-					Widget.TestExpandRow += HandleTestExpandRow;;
+					Widget.TestExpandRow += HandleTestExpandRow;
 					break;
 				case TreeViewEvent.RowExpanded:
-					Widget.RowExpanded += HandleRowExpanded;;
+					Widget.RowExpanded += HandleRowExpanded;
+					break;
+				case TreeViewEvent.RowCollapsing:
+					Widget.TestCollapseRow += HandleTestCollapseRow;
+					break;
+				case TreeViewEvent.RowCollapsed:
+					Widget.RowCollapsed += HandleRowCollapsed;
 					break;
 				}
 			}
@@ -70,6 +76,12 @@ namespace Xwt.GtkBackend
 					break;
 				case TreeViewEvent.RowExpanded:
 					Widget.RowExpanded -= HandleRowExpanded;;
+					break;
+				case TreeViewEvent.RowCollapsing:
+					Widget.TestCollapseRow -= HandleTestCollapseRow;
+					break;
+				case TreeViewEvent.RowCollapsed:
+					Widget.RowCollapsed -= HandleRowCollapsed;
 					break;
 				}
 			}
@@ -93,6 +105,28 @@ namespace Xwt.GtkBackend
 				CurrentEventRow = new IterPos (-1, it);
 				ApplicationContext.InvokeUserCode (delegate {
 					EventSink.OnRowExpanding (new IterPos (-1, it));
+				});
+			}
+		}
+
+		void HandleRowCollapsed (object o, Gtk.RowCollapsedArgs args)
+		{
+			Gtk.TreeIter it;
+			if (Widget.Model.GetIter (out it, args.Path)) {
+				CurrentEventRow = new IterPos (-1, it);
+				ApplicationContext.InvokeUserCode (delegate {
+					EventSink.OnRowCollapsed (new IterPos (-1, it));
+				});
+			}
+		}
+
+		void HandleTestCollapseRow (object o, Gtk.TestCollapseRowArgs args)
+		{
+			Gtk.TreeIter it;
+			if (Widget.Model.GetIter (out it, args.Path)) {
+				CurrentEventRow = new IterPos (-1, it);
+				ApplicationContext.InvokeUserCode (delegate {
+					EventSink.OnRowCollapsing (new IterPos (-1, it));
 				});
 			}
 		}
@@ -180,6 +214,25 @@ namespace Xwt.GtkBackend
 			}
 		}
 
+		public TreePosition FocusedRow {
+			get {
+				Gtk.TreePath path;
+				Gtk.TreeViewColumn column;
+				Widget.GetCursor (out path, out column);
+
+				Gtk.TreeIter it;
+				if (path != null && Widget.Model.GetIter (out it, path))
+					return new IterPos (-1, it);
+				return null;
+			}
+			set {
+				Gtk.TreePath path = new Gtk.TreePath(new [] { int.MaxValue }); // set invalid path to unfocus
+				if (value != null)
+					path = Widget.Model.GetPath (((IterPos)value).Iter);
+				Widget.SetCursor (path, null, false);
+			}
+		}
+
 		public TreePosition CurrentEventRow {
 			get;
 			internal set;
@@ -217,8 +270,7 @@ namespace Xwt.GtkBackend
 		
 		public void ScrollToRow (TreePosition pos)
 		{
-			if (Widget.Columns.Length > 0)
-				Widget.ScrollToCell (Widget.Model.GetPath (((IterPos)pos).Iter), Widget.Columns[0], false, 0, 0);
+			ScrollToRow (((IterPos)pos).Iter);
 		}
 		
 		public void ExpandToRow (TreePosition pos)
@@ -254,6 +306,34 @@ namespace Xwt.GtkBackend
 			default: pos = RowDropPosition.Into; break;
 			}
 			return true;
+		}
+
+		public TreePosition GetRowAtPosition (Point p)
+		{
+			Gtk.TreePath path = GetPathAtPosition (p);
+			if (path != null) {
+				Gtk.TreeIter iter;
+				Widget.Model.GetIter (out iter, path);
+				return new IterPos (-1, iter);
+			}
+			return null;
+		}
+
+		public Rectangle GetCellBounds (TreePosition pos, CellView cell, bool includeMargin)
+		{
+			var col = GetCellColumn (cell);
+			var cr = GetCellRenderer (cell);
+			Gtk.TreeIter iter = ((IterPos)pos).Iter;
+
+			var rect = includeMargin ? ((ICellRendererTarget)this).GetCellBackgroundBounds (col, cr, iter) : ((ICellRendererTarget)this).GetCellBounds (col, cr, iter);
+			return rect;
+		}
+
+		public Rectangle GetRowBounds (TreePosition pos, bool includeMargin)
+		{
+			Gtk.TreeIter iter = ((IterPos)pos).Iter;
+			Rectangle rect = includeMargin ? GetRowBackgroundBounds (iter) : GetRowBounds (iter);
+			return rect;
 		}
 
 		public override void SetCurrentEventRow (string path)

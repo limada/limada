@@ -65,7 +65,7 @@ namespace Xwt.WPFBackend
 		// * ShiftLock, MetaLeft, MetaRight
 		// * SuperLeft, SuperRight (likely not mappeable for Windows)
 		// * Less, Greater, Question, At
-	    public static Key TranslateToXwtKey (WpfKey key)
+		public static Key TranslateToXwtKey (WpfKey key)
 		{
 			// Letter keys
 			if (key >= WpfKey.A && key <= WpfKey.Z) {
@@ -122,13 +122,14 @@ namespace Xwt.WPFBackend
 				case WpfKey.RightAlt: return Key.AltRight;
 				case WpfKey.Multiply: return Key.Asterisk;
 				case WpfKey.Add: return Key.Plus;
-                case WpfKey.OemComma: return isShiftToggled ? Key.Semicolon : Key.Comma;
+				case WpfKey.OemComma: return isShiftToggled ? Key.Semicolon : Key.Comma;
 				case WpfKey.Subtract: return Key.Minus;
 				case WpfKey.Divide: return Key.Slash;
 				case WpfKey.OemPeriod: return isShiftToggled ? Key.Colon : Key.Period;
-                case WpfKey.OemPlus: return Key.Plus;
-                case WpfKey.OemMinus: return Key.Minus;
-                case WpfKey.OemQuestion: return Key.Question;
+				case WpfKey.Oem5: return Key.Caret;
+				case WpfKey.OemPlus: return Key.Plus;
+				case WpfKey.OemMinus: return Key.Minus;
+				case WpfKey.OemQuestion: return Key.Question;
 			}
 
 			return (Key)0;

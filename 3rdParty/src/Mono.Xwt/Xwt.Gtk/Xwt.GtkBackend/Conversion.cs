@@ -28,6 +28,23 @@ namespace Xwt.GtkBackend
 			return new Color ((double)color.Red / (double)ushort.MaxValue, (double)color.Green / (double)ushort.MaxValue, (double)color.Blue / (double)ushort.MaxValue);
 		}
 
+		#if XWT_GTK3
+		public static Gdk.RGBA ToGtkRgbaValue (this Xwt.Drawing.Color color)
+		{
+			var rgba = new Gdk.RGBA ();
+			rgba.Red = color.Red;
+			rgba.Green = color.Green;
+			rgba.Blue = color.Blue;
+			rgba.Alpha = color.Alpha;
+			return rgba;
+		}
+
+		public static Color ToXwtValue (this Gdk.RGBA color)
+		{
+			return new Color (color.Red, color.Green, color.Blue, color.Alpha);
+		}
+		#endif
+
 		public static Pango.EllipsizeMode ToGtkValue (this EllipsizeMode value)
 		{
 			switch (value) {
@@ -121,23 +138,94 @@ namespace Xwt.GtkBackend
 			return m;
 		}
 
-        public static Gtk.Justification ToGtkValue (this Alignment value) {
-            if (value == Alignment.Center)
-                return Gtk.Justification.Center;
-            if (value == Alignment.Start)
-                return Gtk.Justification.Left;
-            // if (value == Alignment.End)
-            return Gtk.Justification.Right;
-        }
+		public static Gtk.Requisition ToGtkRequisition (this Size size)
+		{
+			var req = new Gtk.Requisition ();
+			req.Height = (int)size.Height;
+			req.Width = (int)size.Width;
+			return req;
+		}
 
-        public static Alignment ToXwtValue (this Gtk.Justification value) {
-            if (value == Gtk.Justification.Center)
-                return Alignment.Center;
-            if (value == Gtk.Justification.Left)
-                return Alignment.Start;
-            //if (value == Gtk.Justification.Right)
-            return Alignment.End;
-        }
+		public static Gtk.TreeViewGridLines ToGtkValue (this GridLines value)
+		{
+			switch (value)
+			{
+				case GridLines.Both:
+					return Gtk.TreeViewGridLines.Both;
+				case GridLines.Horizontal:
+					return Gtk.TreeViewGridLines.Horizontal;
+				case GridLines.Vertical:
+					return Gtk.TreeViewGridLines.Vertical;
+				case GridLines.None:
+					return Gtk.TreeViewGridLines.None;
+			}
+			throw new InvalidOperationException("Invalid GridLines value: " + value);
+		}
+
+		public static GridLines ToXwtValue (this Gtk.TreeViewGridLines value)
+		{
+			switch (value)
+			{
+				case Gtk.TreeViewGridLines.Both:
+					return GridLines.Both;
+				case Gtk.TreeViewGridLines.Horizontal:
+					return GridLines.Horizontal;
+				case Gtk.TreeViewGridLines.Vertical:
+					return GridLines.Vertical;
+				case Gtk.TreeViewGridLines.None:
+					return GridLines.None;
+			}
+			throw new InvalidOperationException("Invalid TreeViewGridLines value: " + value);
+		}
+
+		public static float ToGtkAlignment(this Alignment alignment)
+		{
+			switch(alignment) {
+				case Alignment.Start: return 0.0f;
+				case Alignment.Center: return 0.5f;
+				case Alignment.End: return 1.0f;
+			}
+			throw new InvalidOperationException("Invalid alignment value: " + alignment);
+		}
+
+		public static Gtk.ResponseType ToResponseType (this Xwt.Command command)
+		{
+			if (command.Id == Command.Ok.Id)
+				return Gtk.ResponseType.Ok;
+			if (command.Id == Command.Cancel.Id)
+				return Gtk.ResponseType.Cancel;
+			if (command.Id == Command.Yes.Id)
+				return Gtk.ResponseType.Yes;
+			if (command.Id == Command.No.Id)
+				return Gtk.ResponseType.No;
+			if (command.Id == Command.Close.Id)
+				return Gtk.ResponseType.Close;
+			if (command.Id == Command.Delete.Id)
+				return Gtk.ResponseType.DeleteEvent;
+			if (command.Id == Command.Apply.Id)
+				return Gtk.ResponseType.Accept;
+			if (command.Id == Command.Stop.Id)
+				return Gtk.ResponseType.Reject;
+			return Gtk.ResponseType.None;
+		}
+
+		public static Gtk.Justification ToGtkValue (this Alignment value) {
+		    if (value == Alignment.Center)
+		        return Gtk.Justification.Center;
+		    if (value == Alignment.Start)
+		        return Gtk.Justification.Left;
+		    // if (value == Alignment.End)
+		    return Gtk.Justification.Right;
+		}
+
+		public static Alignment ToXwtValue (this Gtk.Justification value) {
+		    if (value == Gtk.Justification.Center)
+		        return Alignment.Center;
+		    if (value == Gtk.Justification.Left)
+		        return Alignment.Start;
+		    //if (value == Gtk.Justification.Right)
+		    return Alignment.End;
+		}
 	}
 }
 

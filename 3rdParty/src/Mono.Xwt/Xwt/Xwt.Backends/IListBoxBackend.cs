@@ -38,8 +38,13 @@ namespace Xwt.Backends
 		void SelectAll ();
 		void UnselectAll ();
 		int[] SelectedRows { get; }
+		int FocusedRow { get; set; }
 		void SelectRow (int pos);
 		void UnselectRow (int pos);
+		void ScrollToRow (int row);
+		int GetRowAtPosition (Point p);
+		Rectangle GetRowBounds (int row, bool includeMargin);
+		bool GridLinesVisible { get; set; }
 	}
 
 	/// <summary>

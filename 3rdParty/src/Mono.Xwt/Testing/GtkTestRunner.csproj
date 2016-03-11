@@ -20,26 +20,27 @@
     <ConsolePause>False</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>True</Externalconsole>
+    <DebugSymbols>true</DebugSymbols>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="nunit.core">
-      <HintPath>libs\nunit.core.dll</HintPath>
+      <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit.core.dll</HintPath>
     </Reference>
     <Reference Include="nunit.core.interfaces">
-      <HintPath>libs\nunit.core.interfaces.dll</HintPath>
+      <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit.core.interfaces.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>libs\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="nunit-console-runner">
-      <HintPath>libs\nunit-console-runner.dll</HintPath>
+      <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit-console-runner.dll</HintPath>
     </Reference>
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
@@ -51,7 +52,7 @@
       <Package>glib-sharp-2.0</Package>
     </Reference>
     <Reference Include="nunit.util">
-      <HintPath>libs\nunit.util.dll</HintPath>
+      <HintPath>..\packages\NUnit.Runners.2.6.4\tools\lib\nunit.util.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
@@ -115,6 +116,7 @@
     <Compile Include="Tests\NinePatchTests.cs" />
     <Compile Include="Tests\DialogTests.cs" />
     <Compile Include="Tests\ScrollableWidgetTests.cs" />
+    <Compile Include="GtkTestRunner\GtkInit.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -153,6 +155,9 @@
     <EmbeddedResource Include="Tests\ninep-tt.9%402x.png">
       <LogicalName>ninep-tt.9@2x.png</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
