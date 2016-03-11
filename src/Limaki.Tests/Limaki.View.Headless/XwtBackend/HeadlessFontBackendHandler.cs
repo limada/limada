@@ -1,6 +1,7 @@
 using Xwt.Drawing;
 using Xwt.Backends;
 using System.Collections.Generic;
+using System;
 
 namespace Xwt.Headless.Backend {
 
@@ -85,6 +86,14 @@ namespace Xwt.Headless.Backend {
             yield return "fantasy";
         }
 
-       
+        public override IEnumerable<KeyValuePair<string, object>> GetAvailableFamilyFaces(string family)
+        {
+            yield break;
+        }
+
+        public override bool RegisterFontFromFile(string fontPath)
+        {
+            return false;
+        }
     }
 }

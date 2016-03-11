@@ -1,3 +1,4 @@
+using System;
 using Xwt.Backends;
 
 namespace Xwt.Html5.Backend {
@@ -62,6 +63,16 @@ namespace Xwt.Html5.Backend {
 
         public override void ClearAttributes (object backend) {
             throw new System.NotImplementedException();
+        }
+
+        public override double GetBaseline(object backend)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetMeanline(object backend)
+        {
+            throw new NotImplementedException();
         }
     }
 }

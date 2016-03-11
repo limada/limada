@@ -1,3 +1,4 @@
+using System;
 using Xwt.Backends;
 using Xwt.Drawing;
 
@@ -64,5 +65,14 @@ namespace Xwt.Headless.Backend {
             throw new System.NotImplementedException ();
         }
 
+        public override double GetBaseline(object backend)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetMeanline(object backend)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

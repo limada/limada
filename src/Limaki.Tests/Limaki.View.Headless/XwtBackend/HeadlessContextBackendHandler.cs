@@ -159,5 +159,9 @@ namespace Xwt.Headless.Backend {
         public override bool IsPointInFill (object backend, double x, double y) {
             return false;
         }
+
+        public override void SetStyles(object backend, StyleSet styles)
+        {
+        }
     }
 }

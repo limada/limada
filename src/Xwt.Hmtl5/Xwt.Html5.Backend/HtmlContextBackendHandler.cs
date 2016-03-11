@@ -29,7 +29,7 @@ using System;
 
 using Xwt.Backends;
 using System.Globalization;
-
+using Xwt.Drawing;
 
 namespace Xwt.Html5.Backend {
     
@@ -290,6 +290,11 @@ namespace Xwt.Html5.Backend {
         }
 
         public override double GetScaleFactor (object backend) {
+            throw new NotImplementedException();
+        }
+
+        public override void SetStyles(object backend, StyleSet styles)
+        {
             throw new NotImplementedException();
         }
     }

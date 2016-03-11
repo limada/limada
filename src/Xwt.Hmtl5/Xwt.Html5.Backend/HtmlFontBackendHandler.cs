@@ -1,6 +1,7 @@
 using Xwt.Drawing;
 using Xwt.Backends;
 using System.Collections.Generic;
+using System;
 
 namespace Xwt.Html5.Backend {
 
@@ -83,5 +84,14 @@ namespace Xwt.Html5.Backend {
             return d.Stretch;
         }
 
+        public override IEnumerable<KeyValuePair<string, object>> GetAvailableFamilyFaces(string family)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool RegisterFontFromFile(string fontPath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
