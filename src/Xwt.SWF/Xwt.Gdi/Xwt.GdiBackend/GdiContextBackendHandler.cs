@@ -29,6 +29,7 @@ using System;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using Xwt.Backends;
+using Xwt.Drawing;
 using SD = System.Drawing;
 
 namespace Xwt.GdiBackend {
@@ -451,6 +452,9 @@ namespace Xwt.GdiBackend {
             throw new NotImplementedException();
         }
 
-       
+        public override void SetStyles(object backend, StyleSet styles)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

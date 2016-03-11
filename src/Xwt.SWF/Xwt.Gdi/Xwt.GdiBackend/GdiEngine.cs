@@ -43,6 +43,7 @@ namespace Xwt.GdiBackend {
             RegisterBackend<FontBackendHandler, GdiFontBackendHandler>();
             RegisterBackend<TextLayoutBackendHandler, GdiTextLayoutBackendHandler>();
             RegisterBackend<ContextBackendHandler, GdiContextBackendHandler>();
+            RegisterBackend<DrawingPathBackendHandler, GdiContextBackendHandler>();
             RegisterBackend<ImageBackendHandler, GdiImageBackendHandler>();
             RegisterBackend<ImageBuilderBackendHandler,GdiImageBuilderBackend>();
             RegisterBackend<ImagePatternBackendHandler, GdiImagePatternBackendHandler>();

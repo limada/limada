@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
 using Xwt.Backends;
 using Xwt.Drawing;
 
@@ -90,6 +91,16 @@ namespace Xwt.GdiBackend {
 
         public override void ClearAttributes (object backend) {
             throw new System.NotImplementedException();
+        }
+
+        public override double GetBaseline(object backend)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetMeanline(object backend)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -184,7 +184,7 @@ namespace Xwt.GdiBackend {
         public void Draw (SD.Graphics g, double x, double y, double width, double height) {
             if (_drawCallback != null) {
                 var c = new GdiContext(g);
-                _drawCallback(c, new Rectangle(x, y, width, height));
+                _drawCallback(c, new Rectangle(x, y, width, height), ImageDescription.Null, Engine);
             }
         }
     }

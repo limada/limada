@@ -28,6 +28,8 @@ using Font = System.Drawing.Font;
 using Xwt.Backends;
 using Xwt.Drawing;
 using Xwt.GdiBackend;
+using System;
+using System.Collections.Generic;
 
 namespace Xwt.GdiBackend {
 
@@ -133,10 +135,15 @@ namespace Xwt.GdiBackend {
             return FontStretch.Normal;
         }
 
+        public override IEnumerable<KeyValuePair<string, object>> GetAvailableFamilyFaces(string family)
+        {
+            throw new NotImplementedException();
+        }
 
-
-
-       
+        public override bool RegisterFontFromFile(string fontPath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

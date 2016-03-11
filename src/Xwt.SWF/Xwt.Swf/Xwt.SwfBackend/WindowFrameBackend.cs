@@ -190,6 +190,32 @@ namespace Xwt.SwfBackend {
             get { throw new NotImplementedException(); }
         }
 
+        public string Name
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool Sensitive
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public void InitializeBackend (object frontend, ApplicationContext context) {
             throw new NotImplementedException();
         }
