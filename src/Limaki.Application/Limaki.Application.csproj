@@ -107,7 +107,7 @@
       <Name>Limaki.Db4o</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.DBParts\Limaki.dbParts.csproj">
-      <Project>{4bd6f6de-ceba-4185-af2d-47a071e6a276}</Project>
+      <Project>{4BD6F6DE-CEBA-4185-AF2D-47A071E6A276}</Project>
       <Name>Limaki.dbParts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.Tests\Limaki.Tests.csproj">
