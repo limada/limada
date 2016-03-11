@@ -76,8 +76,10 @@ namespace Limaki.View.DragDrop {
                             info = sink.Use (stream);
                         } 
 						if (sink == null) {
-							//TODO: try harder with Magics
+							sink = DataManager.SinkOf (stream);
 						}
+
+						if (sink != null) {
 						if (sink == null) {
                             info = new ContentInfo ("Unknown", ContentTypes.Unknown, "*", null, CompressionType.neverCompress);
                         }

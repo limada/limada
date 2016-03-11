@@ -139,8 +139,11 @@ namespace Limaki.View.DragDrop {
         public IContentIo<Stream> SinkOf (string extension) {
             return ContentIoPool.Where (sinkIo => sinkIo.Detector.ContentSpecs
                 .Any (info => info.Extension == extension)).FirstOrDefault();
-            
         }
+
+		public IContentIo<Stream> SinkOf (Stream stream) {
+			return ContentIoPool.FirstOrDefault (s => s.Use (stream) != null);
+		}
     }
 
 

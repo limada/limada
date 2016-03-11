@@ -36,10 +36,8 @@ namespace Limaki.Contents {
         public virtual ContentInfo Use (Stream stream) {
             if (!SupportsMagics)
                 return null;
-            return ContentSpecs
-                .Where(info => info.Magics != null)
-                .Where(info => info.Magics.Any(magic => HasMagic(stream, magic.Bytes, magic.Offset)))
-                .FirstOrDefault();
+            return ContentSpecs					
+				.FirstOrDefault(info => info.HasMagics && info.Magics.Any(magic => HasMagic(stream, magic.Bytes, magic.Offset)));
         }
 
         public virtual bool Supports (Stream stream) {

@@ -28,6 +28,7 @@ namespace Limaki.Contents {
         public virtual string MimeType { get; protected set; }
         public virtual Magic[] Magics { get; protected set; }
 
+		public bool HasMagics { get { return Magics != null && Magics.Length > 0; } }
     }
 
     public class ContentInfos : IEnumerable<ContentInfo>, IContentSpec {
