@@ -76,7 +76,7 @@ namespace Limaki.View.GtkBackend {
                     };
                 }
                 if (this.Image != null && _imageWidget.Image.Backend != this.Image.GetBackend ()) {
-                    _imageWidget.Image = this.Image.ToImageDescription ();
+                    _imageWidget.Image = this.Image.ToImageDescription (Xwt.Toolkit.Engine<GtkEngine>().Context);
                     _imageWidget.QueueDraw ();
                 }
                 return _imageWidget;
