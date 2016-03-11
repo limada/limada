@@ -14,7 +14,12 @@ namespace Limaki {
 
     public class LimakiCoreContextResourceLoader : ContextResourceLoader {
         
+		protected static bool Applied { get; set; } 
+
         public override void ApplyResources(IApplicationContext context) {
+
+			if (Applied)
+				return;
 
             context.Factory.Add<ICompressionWorker, CompressionWorker> ();
 
@@ -31,6 +36,8 @@ namespace Limaki {
             contentDiggPool.Add (new TextContentDigger ());
             contentDiggPool.Add (new HtmlContentDigger ());
             contentDiggPool.Add (new RtfContentDigger ());
+
+			Applied = true;
         }
 
     }

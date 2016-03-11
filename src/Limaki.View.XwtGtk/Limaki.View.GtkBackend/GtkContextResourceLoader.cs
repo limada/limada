@@ -36,7 +36,13 @@ namespace Limaki.View.GtkBackend {
             get { return ToolkitGuid; }
         }
 
+		protected static bool Applied { get; set; } 
+
         public override void ApplyResources (IApplicationContext context) {
+
+			if (Applied)
+				return;
+
             var tk = Toolkit.CurrentEngine;
             tk.RegisterBackend<ITextEntryBackend, Xwt.GtkBackend.TextEntryMultiLineBackend>();
             
@@ -69,6 +75,7 @@ namespace Limaki.View.GtkBackend {
                 Trace.WriteLine (args.ToString ());
             };
 
+			Applied = true;
         }
 
     }

@@ -32,7 +32,13 @@ namespace Limada.Usecases {
             this.ResourceLoader = resourceLoader;
         }
 
+		protected static bool Applied { get; set; } 
+
         public override void ApplyResources(IApplicationContext context) {
+
+			if (Applied)
+				return;
+
             if (ResourceLoader != null)
                 ResourceLoader.ApplyResources (context);
             
@@ -42,6 +48,8 @@ namespace Limada.Usecases {
             var thingGraphContentPool = context.Pooled<ThingGraphIoPool>();
             thingGraphContentPool.Add(new XmlThingGraphIo());
             thingGraphContentPool.Add(new IoriThingGraphIo());
+
+			Applied = true;
 
         }
     }

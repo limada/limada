@@ -24,7 +24,12 @@ namespace Limaki.View.Viz.Visuals {
 
     public class VisualsResourceLoader : ContextResourceLoader {
 
+		protected static bool Applied { get; set; } 
+
         public override void ApplyResources (IApplicationContext context) {
+
+			if (Applied)
+				return;
 
             if (!context.Factory.Contains<IVisualFactory> ())
                 context.Factory.Add<IVisualFactory, VisualFactory> ();
@@ -39,6 +44,8 @@ namespace Limaki.View.Viz.Visuals {
             var dependencies = context.Pooled<GraphDepencencies<IVisual, IVisualEdge>> ();
             dependencies.Visitor += (c, a, t) => GraphDepencencyExtension
                 .DependencyVisitor<IVisual, IVisualEdge, IThing, ILink> (c, a, t);
+
+			Applied = true;
 
         }
     }
