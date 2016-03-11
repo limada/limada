@@ -24,6 +24,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Xwt;
+using System.Net;
+using Limaki.Contents.IO;
 
 namespace Limaki.View.DragDrop {
 
@@ -67,34 +69,54 @@ namespace Limaki.View.DragDrop {
             if (data.Uris.Length > 0) {
                 //TODO: handle more then one file
                 foreach (var uri in data.Uris.OrderBy (n => n.ToString ())) {
-                    var fileName = IoUtils.UriToFileName (uri);
-                    if (File.Exists (fileName)) { // TODO: check if filename is directory
-                        stream = File.OpenRead (fileName);
-						var sink = DataManager.SinkOf (Path.GetExtension (fileName).TrimStart ('.').ToLower());
-                        ContentInfo info = null;
-                        if (sink != null) {
-                            info = sink.Use (stream);
-                        } 
+					IContentIo<Stream> sink = null;
+					string desc = null;
+					if (uri.IsFile) {
+						var fileName = IoUtils.UriToFileName (uri);
+						if (File.Exists (fileName)) { // TODO: check if filename is directory
+							stream = File.OpenRead (fileName);
+							sink = DataManager.SinkOf (Path.GetExtension (fileName).TrimStart ('.').ToLower ());
+							desc = Path.GetFileNameWithoutExtension (fileName);
+						}
+					} else if (uri.HostNameType == UriHostNameType.Dns) {
+						try {
+							using (var cli = new WebClient ()) {
+								bytes = cli.DownloadData (uri);
+								stream = new MemoryStream (bytes);
+							}
+							desc = uri.ToString ();
+						} catch (Exception webEx) {
+							Registry.Pooled<IMessageBoxShow> ().Show ("Download failed",
+								string.Format ("The uri \n{0}\ncould not be loaded: {1}", uri.ToString (), webEx.Message), MessageBoxButtons.Ok);
+						}
+					}
+
+					if (stream != null) {
+						ContentInfo info = null;
+
 						if (sink == null) {
 							sink = DataManager.SinkOf (stream);
 						}
 
 						if (sink != null) {
+							info = sink.Use (stream);
+						} 
+
 						if (sink == null) {
-                            info = new ContentInfo ("Unknown", ContentTypes.Unknown, "*", null, CompressionType.neverCompress);
-                        }
+							info = new ContentInfo ("Unknown", ContentTypes.Unknown, "*", null, CompressionType.neverCompress);
+						}
 
-                        fillContent (info, stream);
-                        if (content.Description == null)
-                            content.Description = Path.GetFileNameWithoutExtension (fileName);
-                        content.Source = fileName;
+						fillContent (info, stream);
+						if (content.Description == null)
+							content.Description = desc;
+						content.Source = desc;
 
-                        if (data.Uris.Length > 1)
-                            Registry.Pooled<IMessageBoxShow> ().Show ("DragDrop multiple files",
-                                string.Format ("Only one file {0} will be stored currently", fileName), MessageBoxButtons.Ok);
+						if (data.Uris.Length > 1)
+							Registry.Pooled<IMessageBoxShow> ().Show ("DragDrop multiple files",
+								string.Format ("Only one file {0} will be stored currently", uri.AbsolutePath), MessageBoxButtons.Ok);
 
-                        break;
-                    }
+						break;
+					}
                 }
 
             } else {
