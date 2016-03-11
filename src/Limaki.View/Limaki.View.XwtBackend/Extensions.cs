@@ -12,9 +12,10 @@ namespace Limaki.View.XwtBackend {
     public static class XwtDrawingExtensions {
 
         public static Image AsImage (Action<Context> render, Size size) {
-            var ib = new ImageBuilder (size.Width, size.Height);
-            render (ib.Context);
-            return ib.ToBitmap (ImageFormat.ARGB32);
+			using (var ib = new ImageBuilder (size.Width, size.Height)) {
+				render (ib.Context);
+				return ib.ToBitmap (ImageFormat.ARGB32);
+			}
         }
 
         public static Action<Context> Render (IShape shape, Size size, UiState uiState, IStyleSheet styleSheet) {
