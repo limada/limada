@@ -102,7 +102,7 @@ namespace Limada.View.VisualThings {
                     var w = ReadDouble (node, "w");
                     var h = ReadDouble (node, "h");
                     visual.Shape.Location = new Point(x, y);
-                    visual.Shape.Size = new Size(w, h);
+                    visual.Shape.DataSize = new Size(w, h);
                 }
                 
             }
@@ -112,13 +112,13 @@ namespace Limada.View.VisualThings {
         public virtual XElement Write(IVisual visual) {
             XElement xmlthing = null;
 
-            IThing thing = VisualThingGraph.Get (visual);
+            var thing = VisualThingGraph.Get (visual);
             if (thing != null) {
                 xmlthing = Write (thing);
                 xmlthing.Add (new XAttribute ("x", visual.Location.X.ToString (CultureInfo.InvariantCulture)));
                 xmlthing.Add (new XAttribute ("y", visual.Location.Y.ToString (CultureInfo.InvariantCulture)));
-                xmlthing.Add (new XAttribute ("w", visual.Size.Width.ToString (CultureInfo.InvariantCulture)));
-                xmlthing.Add (new XAttribute ("h", visual.Size.Height.ToString (CultureInfo.InvariantCulture)));
+                xmlthing.Add (new XAttribute ("w", visual.Shape.DataSize.Width.ToString (CultureInfo.InvariantCulture)));
+                xmlthing.Add (new XAttribute ("h", visual.Shape.DataSize.Height.ToString (CultureInfo.InvariantCulture)));
             }
 
             return xmlthing;

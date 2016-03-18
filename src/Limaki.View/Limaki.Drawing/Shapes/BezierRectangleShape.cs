@@ -38,10 +38,11 @@ namespace Limaki.Drawing.Shapes {
 
         public override Rectangle BoundsRect {
             get {
-                return Data.Inflate(Offset);
+                return new Rectangle(this.Location, this.Size);
             }
         }
 
+        Point _location = Point.Zero;
         public override Point Location {
             get { return _location; }
             set {
