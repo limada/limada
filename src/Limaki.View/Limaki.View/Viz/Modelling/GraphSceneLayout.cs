@@ -107,6 +107,7 @@ namespace Limaki.View.Viz.Modelling {
                 size = DrawingUtils.GetObjectDimension (data, style);
             }
             size += new Size (style.Padding.HorizontalSpacing, style.Padding.VerticalSpacing);
+            // size = new Size (Math.Ceiling (size.Width), Math.Ceiling (size.Height));
             return size;
         }
 
