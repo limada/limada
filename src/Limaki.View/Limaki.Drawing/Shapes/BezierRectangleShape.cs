@@ -43,26 +43,33 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public override Point Location {
-            get { return new Point(_data.X - Offset.Width, _data.Y - Offset.Height); }
+            get { return _location; }
             set {
-                _offset = null;
-                this._data.Location = new Point(value.X + Offset.Width, value.Y + Offset.Height);
+                if (Location != value) {
+                    _location = value;
+                    _data.Location = new Point (value.X + Offset.Width, value.Y + Offset.Height);
+                }
             }
         }
-
+                
         public override Size Size {
             get { return new Size(_data.Size.Width + Offset.Width * 2, _data.Size.Height + Offset.Height * 2); }
             set {
-                _offset = null;
-                _data.Size = new Size(value.Width - Offset.Width * 2, value.Height - Offset.Height * 2);
+                if (Size != value) {
+                    _data.Size = _data.Size - (Size - value);
+                    _offset = null;
+                    _data.Size = new Size (value.Width - Offset.Width*2, value.Height - Offset.Height*2);
+                }
             }
         }
 
         public override Size DataSize {
             get { return base.DataSize; }
             set {
-                _offset = null;
-                base.DataSize = value;
+                if (DataSize != value) {
+                    _offset = null;
+                    base.DataSize = value;
+                }
             }
         }
 
@@ -76,58 +83,58 @@ namespace Limaki.Drawing.Shapes {
 
         public override Point this[Anchor i] {
             get {
-                Rectangle _data = this.BoundsRect;
+                var boundsRect = this.BoundsRect;
                 switch (i) {
                     case Anchor.LeftTop:
                     case Anchor.MostLeft:
                     case Anchor.MostTop:
-                        return _data.Location;
+                        return boundsRect.Location;
 
                     case Anchor.LeftBottom:
                         return new Point(
-                            _data.X,
-                            _data.Y + _data.Height);
+                            boundsRect.X,
+                            boundsRect.Y + boundsRect.Height);
 
                     case Anchor.RightTop:
                     case Anchor.MostRight:
                         return new Point(
-                            _data.X + _data.Width,
-                            _data.Y);
+                            boundsRect.X + boundsRect.Width,
+                            boundsRect.Y);
 
                     case Anchor.RightBottom:
                     case Anchor.MostBottom:
                         return new Point(
-                            _data.X + _data.Width,
-                            _data.Y + _data.Height
+                            boundsRect.X + boundsRect.Width,
+                            boundsRect.Y + boundsRect.Height
                             );
 
                     case Anchor.MiddleTop:
                         return new Point(
-                            _data.X + _data.Width / 2,
-                            _data.Y);
+                            boundsRect.X + boundsRect.Width / 2,
+                            boundsRect.Y);
 
                     case Anchor.LeftMiddle:
                         return new Point(
-                            _data.X,
-                            _data.Y + _data.Height / 2);
+                            boundsRect.X,
+                            boundsRect.Y + boundsRect.Height / 2);
 
                     case Anchor.RightMiddle:
                         return new Point(
-                            _data.X + _data.Width,
-                            _data.Y + _data.Height / 2);
+                            boundsRect.X + boundsRect.Width,
+                            boundsRect.Y + boundsRect.Height / 2);
 
                     case Anchor.MiddleBottom:
                         return new Point(
-                            _data.X + _data.Width / 2,
-                            _data.Y + _data.Height);
+                            boundsRect.X + boundsRect.Width / 2,
+                            boundsRect.Y + boundsRect.Height);
 
                     case Anchor.Center:
                         return new Point(
-                            _data.X + _data.Width / 2,
-                            _data.Y + _data.Height / 2);
+                            boundsRect.X + boundsRect.Width / 2,
+                            boundsRect.Y + boundsRect.Height / 2);
 
                     default:
-                        return new Point(_data.X, _data.Y);
+                        return new Point(boundsRect.X, boundsRect.Y);
                 }
 
             }
@@ -140,9 +147,9 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public override Point[] Hull(Matrix matrix, int delta, bool extend) {
-            var _data = BoundsRect;
-            var dataX = _data.X; var dataY = _data.Y;
-            Point[] p = { new Point(dataX, dataY), new Point(dataX + _data.Width, dataY + _data.Height) };
+            var boundsRect = BoundsRect;
+            var dataX = boundsRect.X; var dataY = boundsRect.Y;
+            Point[] p = { new Point(dataX, dataY), new Point(dataX + boundsRect.Width, dataY + boundsRect.Height) };
             if (matrix != null && !matrix.IsIdentity)
                 matrix.Transform (p);
             return Hull( Rectangle.FromLTRB(p[0].X, p[0].Y, p[1].X, p[1].Y), delta, extend);
@@ -151,9 +158,16 @@ namespace Limaki.Drawing.Shapes {
         protected double _jitter = 0;
         public double Jitter {
             get { return _jitter; }
-            set { _jitter = value;
-            _offset = null;
+            set {
+                _jitter = value;
+                _offset = null;
             }
+        }
+
+        Size CalculateOffset (Rectangle data) {
+            var points = BezierExtensions.GetRoundedRectBezier (data, Jitter);
+            var bb = BezierExtensions.BezierBoundingBox (points);
+            return new Size ((bb.Size.Width - data.Size.Width) / 2, (bb.Size.Height - data.Size.Height) / 2);
         }
 
         protected Size? _offset = null;
@@ -163,8 +177,7 @@ namespace Limaki.Drawing.Shapes {
                     if(_data.IsEmpty) {
                         _offset = Size.Zero;
                     } else {
-                        var bb = BezierExtensions.BezierBoundingBox(this.BezierPoints);
-                        _offset = new Size((bb.Size.Width - Data.Size.Width)/2, (bb.Size.Height - Data.Size.Height)/2);
+                        _offset = CalculateOffset (this.Data);
                     }
                 }
                 return _offset.Value;

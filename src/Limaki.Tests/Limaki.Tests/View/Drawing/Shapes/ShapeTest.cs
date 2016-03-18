@@ -144,9 +144,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
             resize = shape.BoundsRect.Inflate(-7, -7);
             proveResize(resize);
-
-           
-
+            
             WritePainter();
         }
 
@@ -202,6 +200,30 @@ namespace Limaki.Tests.View.Drawing.Shapes {
             WritePainter();
 
             ReportPainter.Restore (engine);
+        }
+
+        [Test]
+        public void BezierTest () {
+            var shape = new BezierRectangleShape ();
+            var size = new Size (10.5, 10.5);
+            var location = new Point (5.55, 6.66);
+            shape.Location = location;
+            shape.Size = size;
+            Assert.AreEqual (shape.Size, size);
+            var shapeSize = shape.Size;
+            Assert.AreEqual (location, shape.Location);
+            Assert.AreEqual (shapeSize, shape.Size);
+            location = new Point (4.55, 5.66);
+            shape.Location = location;
+            Assert.AreEqual (location, shape.Location);
+            Assert.AreEqual (shapeSize, shape.Size);
+            
+            size += new Size(1d/3d, 1d/3d);
+            shape.Size = size;
+            Assert.AreEqual (shape.Size, size);
+            size = Size.Zero;
+            shape.Size = size;
+            Assert.AreEqual (shape.Size, size);
         }
     }
 }
