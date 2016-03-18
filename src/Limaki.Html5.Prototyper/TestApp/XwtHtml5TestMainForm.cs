@@ -34,7 +34,7 @@ namespace Xwt.Html5.TestApp {
             var panel1 = new System.Windows.Forms.Panel { Dock = DockStyle.Left, Width = 100 };
 
             var htmlViewer = new HtmlContentViewer ();
-            var browser = (GeckoWebBrowserBackend) htmlViewer.Backend;
+            var browser = ((GeckoWebBrowserBackend) htmlViewer.Backend).Control;
             browser.Dock = DockStyle.Fill;
             htmlViewer.Clear();
 
