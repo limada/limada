@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PolicySet name="Limada">
+  <CSharpFormattingPolicy inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp">
+    <IndentSwitchBody>True</IndentSwitchBody>
+    <BeforeMethodDeclarationParentheses>False</BeforeMethodDeclarationParentheses>
+    <BeforeMethodCallParentheses>False</BeforeMethodCallParentheses>
+    <BeforeConstructorDeclarationParentheses>False</BeforeConstructorDeclarationParentheses>
+    <NewLineBeforeConstructorInitializerColon>NewLine</NewLineBeforeConstructorInitializerColon>
+    <NewLineAfterConstructorInitializerColon>SameLine</NewLineAfterConstructorInitializerColon>
+    <BeforeDelegateDeclarationParentheses>False</BeforeDelegateDeclarationParentheses>
+    <NewParentheses>False</NewParentheses>
+    <SpacesBeforeBrackets>False</SpacesBeforeBrackets>
+  </CSharpFormattingPolicy>
+  <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp">
+    <FileWidth>120</FileWidth>
+    <TabsToSpaces>False</TabsToSpaces>
+    <EolMarker>Unix</EolMarker>
+  </TextStylePolicy>
+</PolicySet>
