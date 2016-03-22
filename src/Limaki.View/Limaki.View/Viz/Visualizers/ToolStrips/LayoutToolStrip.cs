@@ -40,7 +40,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
             ShapeCombo = new ComboBox {
                 Width = 100,
-                ToolTipText = "Stylesheets",
+                ToolTipText = "Shapes",
             };
 
             var shapeComboHost = new ToolStripItemHost { Child = ShapeCombo };
@@ -55,7 +55,20 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                 ShapeCombo.Items.Add (img);
             });
 
-			this.AddItems (styleSheetComboHost);
+            ShapeCombo.SelectionChanged += (s, e) => {
+                if (ShapeCombo.SelectedIndex == -1)
+                    return;
+                var shape = shapes[ShapeCombo.SelectedIndex];
+                var currentDisplay = this.CurrentDisplay;
+                if (currentDisplay != null) {
+                    foreach (var visual in currentDisplay.Data.Selected.Elements) {
+                        SceneExtensions.ChangeShape (currentDisplay.Data, visual, shape);
+                    }
+                    currentDisplay.Perform ();
+                }
+            };
+
+            this.AddItems (styleSheetComboHost);
 			this.AddItems (shapeComboHost);
 
         }
