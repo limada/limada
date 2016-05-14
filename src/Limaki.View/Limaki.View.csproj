@@ -66,6 +66,8 @@
     <Compile Include="Limada\UseCases\Cms\Models\VisualHrefContent.cs" />
     <Compile Include="Limada\UseCases\Cms\Models\VisualHref.cs" />
     <Compile Include="Limada\UseCases\Content\StreamContentUiManager.cs" />
+    <Compile Include="Limada\UseCases\IConceptUsecase.cs" />
+    <Compile Include="Limada\UseCases\UsecasePersistor.cs" />
     <Compile Include="Limaki.Contents\Text\HtmlDocument.cs" />
     <Compile Include="Limaki.Contents\Text\IDocument.cs" />
     <Compile Include="Limaki.Contents\Text\MarkdownDocument.cs" />

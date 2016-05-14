@@ -14,6 +14,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limada\UseCases\Cms\Models\VisualHrefContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\UseCases\Cms\Models\VisualHref.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\UseCases\Content\StreamContentUiManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada\UseCases\IConceptUsecase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada\UseCases\UsecasePersistor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Contents\Text\HtmlDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Contents\Text\IDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Contents\Text\RtfImporter.cs" />
