@@ -12,15 +12,18 @@
  * 
  */
 
+using System.Net.Mime;
 using Limada.View.Vidgets;
 using Limaki.View.Vidgets;
 using Xwt;
+using Xwt.Drawing;
+using System;
 
 namespace Limaki.View.XwtBackend {
 
     public class DigidocViewerBackend : PanedBackend, IDigidocViewerBackend {
 
-        public DigidocVidget Frontend { get; set; }
+        public new DigidocVidget Frontend { get; set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
@@ -28,6 +31,7 @@ namespace Limaki.View.XwtBackend {
             Compose2 ();
         }
 
+        Widget NullContentViewer = new Canvas { BackgroundColor = Colors.White };
         protected virtual void Compose2 () {
 
             Frontend.Compose ();
@@ -39,7 +43,7 @@ namespace Limaki.View.XwtBackend {
             bool suspendWidth = false;
             pagesDisplayBackend.BoundsChanged += (s, e) => {
                 if (!suspendWidth) {
-                    width = pagesDisplayBackend.Size.Width;
+                    // width = pagesDisplayBackend.Size.Width;
                 }
             };
             Widget.Panel2.Content = pagesDisplayBackend;
@@ -47,22 +51,34 @@ namespace Limaki.View.XwtBackend {
             this.Widget.BoundsChanged += (s, e) => {
                 Widget.Position = Widget.Size.Width - width;
             };
-
+            
             Frontend.AttachContentViewer = contentViewer => {
-                var contentControl = (contentViewer.Backend.ToXwt ());
+                Widget contentWidget = null;
+                if (contentViewer != null)
+                    contentWidget = contentViewer.Backend.ToXwt ();
+                else {
+                    contentWidget = NullContentViewer;
+                }
                 suspendWidth = true;
                 if (Widget.Panel1.Content != null) {
                     Widget.Panel1.Content = null;
                 }
-                if (Widget.Position == 0 && Widget.Size.Width > width)
-                    Widget.Position = Widget.Size.Width - width;
+                if (Widget.Position == 0 && Widget.Size.Width > pagesDisplayBackend.Size.Width)
+                    Widget.Position = Widget.Size.Width - Math.Max (width, pagesDisplayBackend.Size.Width);
 
-                contentControl.WidthRequest = Widget.Position;
-                Widget.Panel1.Content = contentControl.WithScrollView();
+                contentWidget.WidthRequest = Widget.Position;
+                Widget.Panel1.Content = contentWidget != NullContentViewer?contentWidget.WithScrollView ():contentWidget;
                 Application.MainLoop.DispatchPendingEvents ();
                 suspendWidth = false;
             };
 
+            Frontend.Backend.ToXwt ().BoundsChanged += InitBoundsChanged;
+
+        }
+
+        void InitBoundsChanged (object sender, EventArgs e) {
+            Frontend.Backend.ToXwt ().BoundsChanged -= InitBoundsChanged;
+            Frontend.AttachContentViewer (null);
         }
     }
 }
