@@ -34,8 +34,7 @@ using Limaki.Usecases.Vidgets;
 using Limaki.View.Viz.Mesh;
 
 namespace Limada.UseCases {
-
-    public class ConceptUsecase : IDisposable, IProgress {
+    public class ConceptUsecase : IDisposable, IProgress, IConceptUsecase {
 
         protected string _useCaseTitle = "limada::concept";
         public string UseCaseTitle {
@@ -124,8 +123,7 @@ namespace Limada.UseCases {
                 GraphSceneUiManager.ExportSceneView (display.Data);
             }
         }
-
-
+        
         public virtual void ImportThingGraphRaw () {
             SaveChanges ();
             GraphSceneUiManager.ShowEmptyScene ();
