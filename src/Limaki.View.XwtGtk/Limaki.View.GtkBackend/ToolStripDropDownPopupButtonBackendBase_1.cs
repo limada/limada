@@ -51,6 +51,8 @@ namespace Limaki.View.GtkBackend {
         protected virtual void ShowDropDown () {
             if (HasChildren) {
                 PopupWindow = PopupWindow.Show (this.ContentWidget, Xwt.Rectangle.Zero, ChildBox);
+				var tr = this.Size.Width - PopupWindow.SizeRequest ().Width;
+				PopupWindow.Tolerance = new Xwt.WidgetSpacing (0, 0, tr, 0);
                 PopupWindow.Hidden += (s, e) =>
                     HideDropDown ();
             }

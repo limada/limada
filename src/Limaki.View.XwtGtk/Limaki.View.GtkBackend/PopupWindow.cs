@@ -15,6 +15,9 @@
 using Gtk;
 using System;
 using System.Diagnostics;
+using Gdk;
+using Window = Gtk.Window;
+using WindowType = Gtk.WindowType;
 
 namespace Limaki.View.GtkBackend {
 
@@ -22,6 +25,12 @@ namespace Limaki.View.GtkBackend {
 
         bool supportAlpha;
         Gtk.Alignment _alignment;
+
+		/// <summary>
+		/// adds a space around the window where it is NOT hidden
+		/// </summary>
+		/// <value>The tolerance.</value>
+		public Xwt.WidgetSpacing Tolerance { get; set; }
 
         public PopupWindow (Gtk.Widget child) : base (WindowType.Popup) {
 
@@ -89,30 +98,33 @@ namespace Limaki.View.GtkBackend {
             popup.DestroyWithParent = true;
 
             popup.BorderWidth = topLevel.BorderWidth;
-            var screenBounds = Xwt.Rectangle.Zero;
 
+            // bounds of reference widget in screen coordinates
+            var referenceBounds = Xwt.Rectangle.Zero;
+
+            // position of popup
             Func<Xwt.Point> calcPosition = () => {
-                screenBounds = new Xwt.Rectangle (
+                referenceBounds = new Xwt.Rectangle (
                     GtkBackendHelper.ConvertToScreenCoordinates (reference, Xwt.Point.Zero),
                     new Xwt.Size (reference.Allocation.Width, reference.Allocation.Height));
 
                 if (positionRect == Xwt.Rectangle.Zero)
-                    positionRect = new Xwt.Rectangle (Xwt.Point.Zero, screenBounds.Size);
-                positionRect = positionRect.Offset (screenBounds.Location);
+                    positionRect = new Xwt.Rectangle (Xwt.Point.Zero, referenceBounds.Size);
+                positionRect = positionRect.Offset (referenceBounds.Location);
                 return new Xwt.Point (positionRect.X, positionRect.Bottom);
             };
-            var position = calcPosition ();
+
+            var popupPosition = calcPosition ();
             if (child == null)
-                popup.SetSizeRequest ((int) screenBounds.Width, (int) screenBounds.Height);
+                popup.SetSizeRequest ((int) referenceBounds.Width, (int) referenceBounds.Height);
             else {
                 popup.DefaultWidth = 10;
                 child.ShowAll ();
             }
-            var transPos = GtkBackendHelper.ConvertToScreenCoordinates (topLevel, Xwt.Point.Zero);
-            var refPos = GtkBackendHelper.ConvertToScreenCoordinates (reference, Xwt.Point.Zero);
-            popup.TransientPosition = position.Offset (-transPos.X, -transPos.Y);
+            var topLevelPos = GtkBackendHelper.ConvertToScreenCoordinates (topLevel, Xwt.Point.Zero);
+            popup.TransientPosition = popupPosition.Offset (-topLevelPos.X, -topLevelPos.Y);
             Gtk.SizeAllocatedHandler sizeAllocated = (o, args) => {
-                popup.Move ((int) position.X, (int) position.Y);
+                popup.Move ((int) popupPosition.X, (int) popupPosition.Y);
                 popup.GrabFocus ();
             };
             popup.SizeAllocated += sizeAllocated;
@@ -122,19 +134,36 @@ namespace Limaki.View.GtkBackend {
             topLevel.ConfigureEvent -= popup.TopLevelConfigureEvent;
             topLevel.ConfigureEvent += popup.TopLevelConfigureEvent;
 
+            // if the mouse is moved in toplevel-window:
             Gtk.MotionNotifyEventHandler topLevelMotion = (s, args) => {
                 if (topLevel == null)
                     return;
-                transPos = GtkBackendHelper.ConvertToScreenCoordinates (topLevel, Xwt.Point.Zero);
-                refPos = GtkBackendHelper.ConvertToScreenCoordinates (reference, Xwt.Point.Zero);
-                var motionPos = transPos.Offset (new Xwt.Point (args.Event.X, args.Event.Y));
-                var refBounds = new Xwt.Rectangle (refPos, screenBounds.Size);
 
-                if (!refBounds.Contains (motionPos))
+                topLevelPos = GtkBackendHelper.ConvertToScreenCoordinates (topLevel, Xwt.Point.Zero);
+                var referencePos = GtkBackendHelper.ConvertToScreenCoordinates (reference, Xwt.Point.Zero);
+
+                // take args in sceen coordinates:
+                var motionPos = new Xwt.Point(args.Event.XRoot, args.Event.YRoot);//topLevelPos.Offset (args.Event.X, args.Event.Y);
+
+                var tolerance = popup.Tolerance;
+                var popupSize = new Xwt.Size (popup.Allocation.Width, popup.Allocation.Height);
+
+                // var refBounds = new Xwt.Rectangle (refPos, screenBounds.Size);
+                var motionBounds = new Xwt.Rectangle (
+                    referencePos.X - tolerance.Left,
+                    referencePos.Y - tolerance.Top,
+                    popupSize.Width + tolerance.HorizontalSpacing,
+                    popupSize.Height + tolerance.VerticalSpacing);
+
+                // TODO: hide if other event than move-event occurs outside of popup window
+                // TODO: something is wrong with referencepos; maybe ConvertToScreenCoordinates has an error
+
+                if (!motionBounds.Contains (motionPos))
                     popup.HideAll ();
             };
-
             topLevel.MotionNotifyEvent += topLevelMotion;
+
+            //ClientEvent: a message has been received from another application.
 
             popup.ShowAll ();
 
@@ -143,10 +172,12 @@ namespace Limaki.View.GtkBackend {
                 topLevel.MotionNotifyEvent -= topLevelMotion;
                 popup.ReleaseInnerWidget ();
                 popup.Destroy ();
-            };
+            }; 
             return popup;
         }
-
+        /// <summary>
+        /// position relative to toplevel-window
+        /// </summary>
         public Xwt.Point TransientPosition { get; set; }
         [GLib.ConnectBefore]
         void TopLevelConfigureEvent (object o, ConfigureEventArgs args) {
