@@ -23,7 +23,14 @@ namespace Limaki.View.XwtBackend {
     public class MarkdownEditBackend : VidgetBackend<MarkdownEditBackend.MDBox>, IMarkdownEditBackend {
 
         public class MDBox : VBox {
-            public void RaiseFocus (object sender, EventArgs e) { base.OnGotFocus (e); }
+            public IVidget Frontend { get; set; }
+            public void RaiseFocus (object sender, EventArgs e) {
+                if (Frontend != null && base.gotFocus != null) {
+                    base.gotFocus (Frontend, e);
+                } else {
+                    base.OnGotFocus (e);
+                }
+            }
         }
 
         public new Vidgets.MarkdownEdit Frontend { get; protected set; }
@@ -40,6 +47,8 @@ namespace Limaki.View.XwtBackend {
         public void Compose (IMarkdownViewer viewer) {
             var vidget = viewer as IVidget;
             var viewerBackend = vidget.Backend.ToXwt ();
+            Widget.CanGetFocus = true;
+            Widget.Frontend = this.Frontend;
             viewerBackend.GotFocus -= Widget.RaiseFocus;
             viewerBackend.GotFocus += Widget.RaiseFocus;
             viewerBackend.KeyPressed -= ToggleEditMode;

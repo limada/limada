@@ -81,7 +81,7 @@ namespace Xwt
 		EventHandler boundsChanged;
 		EventHandler<MouseScrolledEventArgs> mouseScrolled;
 		
-		EventHandler gotFocus;
+		protected EventHandler gotFocus;
 		EventHandler lostFocus;
 		
 		/// <summary>
@@ -1145,7 +1145,7 @@ namespace Xwt
 		/// The event will be enabled in the backend automatically, if <see cref="Xwt.Widget.OnGotFocus"/>
 		/// is overridden.
 		/// </remarks>
-		internal protected virtual void OnGotFocus (EventArgs args)
+		protected virtual void OnGotFocus (EventArgs args)
 		{
 			if (gotFocus != null)
 				gotFocus (this, args);

@@ -90,16 +90,19 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
             EditCommand = new ToolStripCommand {
                 Action = s => {
+                    if (SplitView != null && SplitView.ContentVidget != null) {
+                        SplitView.ContentVidget.SetFocus ();
+                    }
                     // dirty hack:
-                             if (SplitView != null && SplitView.ContentVidget is IMarkdownEdit) {
-                                 var md = (IMarkdownEdit)SplitView.ContentVidget;
-                                 if (md != null)
-                                     md.InEdit = !md.InEdit;
-                                 return;
-                             }
+                    if (SplitView != null && SplitView.ContentVidget is IMarkdownEdit) {
+                        var md = (IMarkdownEdit)SplitView.ContentVidget;
+                        if (md != null)
+                            md.InEdit = !md.InEdit;
+                        return;
+                    }
                     // dirty hack end
-                             toogleAction (selectAction, true);
-                         },
+                    toogleAction (selectAction, true);
+                },
                 Image = Iconery.Select,
                 Size = DefaultSize,
                 ToolTipText = "Edit"

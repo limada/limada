@@ -104,7 +104,7 @@ namespace Limaki.View.GtkBackend {
             }
         }
 
-        public static Xwt.Point ConvertToScreenCoordinates (Widget widget, Xwt.Point widgetCoordinates) {
+        public static Xwt.Point ConvertToScreenCoordinates (Widget widget, Xwt.Point point) {
             var parentWindow = widget.ParentWindow;
             if (parentWindow == null) {
                 var win = widget as Gtk.Window;
@@ -118,7 +118,8 @@ namespace Limaki.View.GtkBackend {
             var a = widget.Allocation;
             x += a.X;
             y += a.Y;
-            return new Xwt.Point (x + widgetCoordinates.X, y + widgetCoordinates.Y);
+
+            return new Xwt.Point (x + point.X, y + point.Y);
         }
 
         public static Gtk.Widget AllocEventBox (this Gtk.Widget widget, bool visibleWindow = false) {
