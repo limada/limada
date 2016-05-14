@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -165,6 +165,7 @@
     <Compile Include="Xwt.GtkBackend\CalendarBackend.cs" />
     <Compile Include="Xwt.GtkBackend\FontSelectorBackend.cs" />
     <Compile Include="Xwt.GtkBackend\SelectFontDialogBackend.cs" />
+    <Compile Include="Xwt.GtkBackend\TextWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
