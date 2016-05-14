@@ -182,15 +182,12 @@ namespace Xwt.GdiBackend {
         }
 
         Toolkit _engine = null;
-        Toolkit Engine
-        {
-            get
-            {
-                if (_engine == null)
-                {
+        Toolkit Engine {
+            get {
+                if (_engine == null) {
                     _engine = Toolkit.CurrentEngine;
-                    if (!typeof(GdiEngine).IsAssignableFrom(_engine.Backend.GetType()))
-                        this._engine = Toolkit.Engine<GdiEngine>();
+                    if (!typeof (GdiEngine).IsAssignableFrom (_engine.Backend.GetType ()))
+                        this._engine = Toolkit.Engine<GdiEngine> ();
                 }
                 return _engine;
             }

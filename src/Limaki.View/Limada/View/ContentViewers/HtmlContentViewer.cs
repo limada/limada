@@ -30,6 +30,7 @@ namespace Limada.View.ContentViewers {
                 ThingGraph = this.ThingGraph,
                 DoWebRequest = this.UseProxy && !this.StealthMode,
                 BaseUri = this.WebServer.Uri,
+
             };
         }
 

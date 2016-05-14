@@ -151,10 +151,10 @@ namespace Limaki.View.Vidgets {
         public void StartEdit () {
             Backend.Activate (Editor);
             Editor.Load (this.Markdown);
-			var vidget = Editor as IVidget;
-			if (vidget != null) {
-				vidget.SetFocus ();
-			}
+            var vidget = Editor as IVidget;
+            if (vidget != null) {
+                vidget.SetFocus ();
+            }
             _inEdit = true;
         }
 
