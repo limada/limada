@@ -41,7 +41,7 @@ namespace Xwt.GtkBackend
 		
 		public double Heigth = -1;
 
-		internal class PangoBackend : IDisposable
+		public class PangoBackend : IDisposable
 		{
 			Pango.Layout layout;
 			public Pango.Layout Layout {

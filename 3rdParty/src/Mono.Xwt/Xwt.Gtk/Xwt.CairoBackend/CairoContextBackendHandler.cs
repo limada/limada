@@ -33,10 +33,11 @@ using Xwt.Backends;
 using Xwt.Drawing;
 using Xwt.GtkBackend;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Xwt.CairoBackend
 {
-	class CairoContextBackend : IDisposable
+	public class CairoContextBackend : IDisposable
 	{
 		public double GlobalAlpha = 1;
 		public Cairo.Context Context;
@@ -289,101 +290,38 @@ namespace Xwt.CairoBackend
 			else
 				ctx.SetSource ((Cairo.Pattern) null);
 		}
-		
 
-        public override void DrawTextLayout (object backend, TextLayout layout, double x, double y) {
-            var be = (GtkTextLayoutBackendHandler.PangoBackend) Toolkit.GetBackend (layout);
-            var pl = be.Layout;
-            CairoContextBackend ctx = (CairoContextBackend) backend;
+		public override void DrawTextLayout (object backend, TextLayout layout, double x, double y)
+		{
+			var be = (GtkTextLayoutBackendHandler.PangoBackend)Toolkit.GetBackend (layout);
+			var pl = be.Layout;
+			var ctx = (CairoContextBackend)backend;
+			var wrapper = new TextWrapper ();
+			var text = layout.Text;
+			wrapper.SingleLine = w => {
+				ctx.Context.MoveTo (x, y);
+				Pango.CairoHelper.ShowLayout (ctx.Context, pl);
+			};
+			var sll = new Pango.Layout (pl.Context) {
+				FontDescription = pl.FontDescription,
+				Width = pl.Width,
+				Ellipsize = pl.Ellipsize,
+				Wrap = pl.Wrap
+			};
+			wrapper.MultiLine = w => {
+				var st = text.Substring (w.LineStart, w.CursorPos - w.LineStart);
+				if (w.LineY + w.LineHeight > w.MaxHeight && w.CursorPos < text.Length)
+					st += ((char)0x2026).ToString ();
+				sll.SetText (st);
+				ctx.Context.MoveTo (x, y + w.LineY);
+				var line = sll.Lines [0];
+				Pango.CairoHelper.ShowLayoutLine (ctx.Context, line);			
+			};
+			wrapper.Wrap (layout, ctx);
 
-            if (layout.Height <= 0 && (layout.Trimming == TextTrimming.Word && layout.WrapMode == WrapMode.None)) {
-                ctx.Context.MoveTo (x, y);
-                Pango.CairoHelper.ShowLayout (ctx.Context, pl);
-            } else {
-                // disable ellipsize, otherwise pl.LineCount returns always 1
-                var ellipsize = pl.Ellipsize;
-                pl.Ellipsize = Pango.EllipsizeMode.None;
+		}
 
-                var lc = pl.LineCount;
-                var scale = Pango.Scale.PangoScale;
-                var wrap = pl.Wrap;
-
-                var layoutHeight = layout.Height;
-                if (layoutHeight <= 0) {
-                    var plw = 0;
-                    var plh = 0;
-                    pl.GetSize (out plw, out plh);
-                    layoutHeight = plh / scale;
-                }
-                var next = default (Pango.LayoutLine);
-                var nextDelta = Size.Zero;
-                var fe = ctx.Context.FontExtents;
-                var baseline = fe.Ascent / (fe.Ascent + fe.Descent);
-                var sll = default (Pango.Layout); // single line layout; created on demand
-
-                var i = 0;
-
-                Action nextLine = () => {
-                    next = pl.Lines[i];
-                    var ls = next.GetSize ();
-                    nextDelta = new Size (
-                        ls.Width,
-                        nextDelta.Height + (i == 0 ? ls.Height * baseline : ls.Height)
-                    );
-                };
-
-                nextLine ();
-
-                while (i < lc && nextDelta.Height <= layoutHeight) {
-                    var delta = nextDelta;
-                    var line = next;
-                    if (++i < lc)
-                        nextLine ();
-
-                    // if the next line is not visible, or the line not fully visible,
-                    // then the line has to be ellipsize and/or trimmed:
-                    if (nextDelta.Height > layoutHeight ||
-                        (delta.Width > layout.Width && layout.Width > 0) ||
-                        (layout.WrapMode == WrapMode.None && lc > 1)) {
-                        if (sll == null) {
-                            sll = new Pango.Layout (pl.Context) {
-                                FontDescription = pl.FontDescription,
-                                Width = pl.Width,
-                                Ellipsize = ellipsize,
-                                Wrap = pl.Wrap
-                            };
-                        }
-
-                        var lineLen = Math.Min (
-							line.Length - (delta.Width > layout.Width || layout.WrapMode==WrapMode.None ? 1 : 0),
-                            line.Layout.Text.Length - line.StartIndex); // sometimes line.length is bigger than text.length
-                        Action setLine = () => {
-                            sll.SetText (line.Layout.Text.Substring (line.StartIndex, Math.Max (lineLen, 0)) +
-                                (ellipsize != Pango.EllipsizeMode.None ? ((char)0x2026).ToString () : ""));
-                            line = sll.Lines[0];
-                        };
-
-                        setLine ();
-                        // fallback, if line's text don't fit into one line:
-                        while ((sll.Lines.Length > 1 || line.GetSize ().Width > layout.Width) && lineLen > 1) {
-                            lineLen--;
-                            setLine ();
-                        }
-                    }
-                    ctx.Context.MoveTo (x, y + delta.Height);
-                    Pango.CairoHelper.ShowLayoutLine (ctx.Context, line);
-
-                    if (layout.WrapMode == WrapMode.None)
-                        break;
-                }
-
-                pl.Ellipsize = ellipsize;
-                if (sll != null)
-                    sll.Dispose ();
-            }
-        }
-	   
-        public override void DrawImage (object backend, ImageDescription img, double x, double y)
+		public override void DrawImage (object backend, ImageDescription img, double x, double y)
 		{
 			CairoContextBackend ctx = (CairoContextBackend)backend;
 

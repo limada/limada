@@ -59,7 +59,7 @@ namespace Xwt.GtkBackend
 	/// <summary>
 	/// This creates a Pango list and applies attributes to it with *much* less overhead than the GTK# version.
 	/// </summary>
-	internal class FastPangoAttrList : IDisposable
+	public class FastPangoAttrList : IDisposable
 	{
 		IntPtr list;
 
@@ -226,7 +226,7 @@ namespace Xwt.GtkBackend
 		}
 	}
 
-	internal class TextIndexer
+	public class TextIndexer
 	{
 		int[] indexToByteIndex;
 		int[] byteIndexToIndex;
