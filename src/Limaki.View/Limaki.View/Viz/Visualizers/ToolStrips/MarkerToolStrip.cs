@@ -51,6 +51,8 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
             bool makeVisible = scene != null && scene.Markers != null;
             if (makeVisible) {
                 scene.Markers.MarkersAsStrings ().ForEach (m => MarkerCombo.Items.Add (m));
+                if (scene.Markers.DefaultMarker != null)
+                    MarkerCombo.SelectedItem = scene.Markers.DefaultMarker.ToString ();
             }
             if (!makeVisible)
                 this.Visibility = Visibility.Collapsed;
