@@ -82,20 +82,22 @@ namespace Limada.UseCases.Contents {
                     var info = StreamContentIoManager.GetContentInfo(content);
                     if (info != null) {
                         string ext = null;
-                        SaveFileDialog.Filter = StreamContentIoManager.GetFilter(info, out ext) + "All Files|*.*";
+                        SaveFileDialog.Filter = StreamContentIoManager.GetFilter (info, out ext) + "All Files|*.*";
                         SaveFileDialog.DefaultExt = ext;
-                        var fileName = "";
-                        if (content.Source != null)
-                            fileName = content.Source.ToString ();
-                        else if (content.Description != null)
-                            fileName = content.Description.ToString();
-                        
-                        SaveFileDialog.SetFileName (fileName);
-                        if (FileDialogShow(SaveFileDialog, false) == DialogResult.Ok) {
-                            StreamContentIoManager.ConfigureSinkIo = s => ConfigureSink(s);
-                            StreamContentIoManager.WriteSink(content, IoUtils.UriFromFileName(SaveFileDialog.FileName));
-                            SaveFileDialog.ResetFileName();
-                        }
+                    } else {
+                        SaveFileDialog.Filter = "All Files|*.*";
+                    }
+                    var fileName = "";
+                    if (content.Source != null)
+                        fileName = content.Source.ToString ();
+                    else if (content.Description != null)
+                        fileName = content.Description.ToString ();
+
+                    SaveFileDialog.SetFileName (fileName);
+                    if (FileDialogShow (SaveFileDialog, false) == DialogResult.Ok) {
+                        StreamContentIoManager.ConfigureSinkIo = s => ConfigureSink (s);
+                        StreamContentIoManager.WriteSink (content, IoUtils.UriFromFileName (SaveFileDialog.FileName));
+                        SaveFileDialog.ResetFileName ();
                     }
                 }
             } catch (Exception ex) {
