@@ -1,6 +1,7 @@
 bin
 obj
 _ReSharper.*
+packages.*
 build.*
 *~
 *.sln.cache
