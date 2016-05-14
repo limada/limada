@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -9,20 +9,25 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Xwt\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Xwt.Backends\" />
     <Folder Include="$(MSBuildThisFileDirectory)Xwt.Design\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Xwt.Drawing\" />
     <Folder Include="$(MSBuildThisFileDirectory)Xwt.Formats\" />
     <Folder Include="$(MSBuildThisFileDirectory)Xwt.Motion\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt.Backends\ICalendarBackend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt.Backends\IColorPickerBackend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt.Backends\IFontSelectorBackend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt.Backends\ISelectFontDialogBackend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt.Drawing\IImageLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt.Drawing\StyleSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt.Drawing\ThemedImage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\Alignment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\Application.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\Box.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\ButtonEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\ButtonStyle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt\Calendar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\Canvas.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\CanvasCellView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\CellView.cs" />
@@ -35,6 +40,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\Clipboard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\CloseRequestedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\CloseRequestedHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt\ColorPicker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\ColorSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\ComboBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\ComboBoxCellView.cs" />
@@ -58,9 +64,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\Expander.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\FileDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\FileDialogFilter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt\FontSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\FormattedText.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\Frame.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\FrameBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt\GridLines.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\HBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\HPaned.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\HScrollbar.cs" />
@@ -106,7 +114,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\PointerButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\Popover.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\PopupWindow.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Xwt\PreviewTextEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\ProgressBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\RadioButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\RadioButtonMenuItem.cs" />
@@ -123,6 +130,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\SegmentedButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\SelectColorDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\SelectFolderDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt\SelectFontDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\SelectionMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\Separator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\SeparatorMenuItem.cs" />
@@ -137,6 +145,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\TableCalc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\TextCellView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\TextEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt\TextInputEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\ToggleButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\Toolkit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\ToolkitNotInitializedException.cs" />
@@ -165,6 +174,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\WrapMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\XwtComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\XwtObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xwt\XwtSynchronizationContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt\XwtTaskScheduler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt.Backends\ApplicationContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xwt.Backends\BackendHandler.cs" />
