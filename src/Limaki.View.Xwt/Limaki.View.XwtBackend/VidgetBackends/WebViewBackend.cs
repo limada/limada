@@ -45,6 +45,16 @@ namespace Limaki.View.XwtBackend {
             void IHistoryAware.GoHome () {
                 this.Url = "about:blank";
             }
+
+			/// <summary>
+			/// does nothing; only if supportscustomScrolling == true
+			/// </summary>
+			/// <param name="horizontal">Horizontal.</param>
+			/// <param name="vertical">Vertical.</param>
+			protected override void SetScrollAdjustments(ScrollAdjustment horizontal, ScrollAdjustment vertical)
+			{
+				base.SetScrollAdjustments(horizontal, vertical);
+			}
         }
 
         public Vidgets.WebBrowserVidget Frontend { get; protected set; }
@@ -52,7 +62,7 @@ namespace Limaki.View.XwtBackend {
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
             Frontend = (Vidgets.WebBrowserVidget) frontend;
-            Widget.Loaded += Widget_Loaded;
+			Widget.Loaded += Widget_Loaded;
         }
 
         public Stream DocumentStream {
