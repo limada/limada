@@ -58,6 +58,7 @@ namespace Limada.IO {
 
                     serializer.Read(stream);
                     sink.AddRange(serializer.ThingCollection);
+
                 } catch (Exception ex) {
                     Registry.Pooled<IExceptionHandler>()
                         .Catch(new Exception("File load failed: " + ex.Message, ex), MessageType.OK);
