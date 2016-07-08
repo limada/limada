@@ -215,7 +215,7 @@
     <Compile Include="Limaki.Drawing\Camera.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\ContextSurface.cs" />
     <Compile Include="Limaki.Drawing\DrawingExtensions.cs" />
-    <Compile Include="Limaki.Drawing\DrawingPrimitivesSerializer.cs" />
+    <Compile Include="Limaki.Drawing\StyleSerializer.cs" />
     <Compile Include="Limaki.Drawing\Shapes\GrahamConvexHull.cs" />
     <Compile Include="Limaki.Drawing\ICamera.cs" />
     <Compile Include="Limaki.Drawing\IDrawingUtils.cs" />
