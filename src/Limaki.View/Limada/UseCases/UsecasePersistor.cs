@@ -10,6 +10,7 @@ using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Mesh;
 using Xwt;
+using System.Xml.Linq;
 
 namespace Limada.UseCases {
     public class UsecasePersistor {
@@ -55,6 +56,7 @@ namespace Limada.UseCases {
         }
 
         IList<Type> contentViewers = new List<Type> ();
+
         public void ClearContentViewers () {
             contentViewers.Clear ();
             var provider = Registry.Pooled<ContentViewerProvider> ();
@@ -109,6 +111,9 @@ namespace Limada.UseCases {
             Save (display);
         }
 
+        public DisplayMemento () {
+        }
+
         public void Save (IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             Scene = display.Data;
             Info = display.Info;
@@ -132,6 +137,73 @@ namespace Limada.UseCases {
             display.Viewport.ZoomState = ZoomState;
             if (ZoomState == Limaki.Drawing.ZoomState.Custom)
                 display.Viewport.ZoomFactor = Zoom;
+        }
+    }
+
+    public class DisplaySerializer : DrawingSerializer {
+        public static class NodeNames {
+            public const string Display = "display";
+            public const string Viewport = Display + "_viewport";
+            public const string Offset = Viewport + "_offset";
+            public const string ZoomState = Viewport + "_zoom_state";
+            public const string Zoom = Viewport + "_zoom_factor";
+            // TODO:
+            // selected, focused
+        }
+
+        public virtual XElement Write (DisplayMemento display) {
+
+            var result = new XElement (NodeNames.Display);
+            // TODO: serialise scene
+            var sceneInfoSerializer = new SceneInfoSerializer ();
+            result.Add (sceneInfoSerializer.Write (display.Info));
+            result.Add (Write (NodeNames.Offset, display.Offset));
+            result.Add (Write (NodeNames.ZoomState, display.ZoomState));
+            result.Add (Write (NodeNames.Zoom, display.Zoom));
+
+            return result;
+        }
+
+        public virtual DisplayMemento ReadDisplay (XElement node) {
+            var result = new DisplayMemento ();
+            // TODO: read scene
+            var sceneInfoSerializer = new SceneInfoSerializer ();
+            var info = sceneInfoSerializer.ReadSceneInfo (node);
+            result.Info = info;
+            result.Offset = Read<Point> (node, NodeNames.Offset);
+            result.ZoomState = Read<ZoomState> (node, NodeNames.ZoomState);
+            result.Zoom = Read<double> (node, NodeNames.Zoom);
+
+            return result;
+        }
+
+        public class SceneInfoSerializer : SerializerBase {
+            public static class NodeNames {
+                public const string SceneInfo = "sceneinfo";
+                public const string Id = SceneInfo + "_id";
+                public const string Name = SceneInfo + "_name";
+                public const string State = SceneInfo + "_state";
+            }
+
+            public virtual XElement Write (SceneInfo info) {
+                var result = new XElement (NodeNames.SceneInfo);
+                result.Add (Write (NodeNames.Id, info.Id));
+                result.Add (Write (NodeNames.Name, info.Name));
+                result.Add (Write (NodeNames.State, info.State.Memento ()));
+
+                return result;
+            }
+
+            public virtual SceneInfo ReadSceneInfo (XElement node) {
+                var result = new SceneInfo ();
+
+                result.Id = Read<long> (node, NodeNames.Id);
+                result.Name = Read<string> (node, NodeNames.Name);
+                var state = Read<StateMemento> (node, NodeNames.State);
+                result.State.Memento (state);
+
+                return result;
+            }
         }
     }
 }

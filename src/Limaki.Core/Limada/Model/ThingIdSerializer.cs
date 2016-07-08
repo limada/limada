@@ -24,14 +24,20 @@ using System.Xml;
 namespace Limada.Model {
     public class ThingIdSerializer:ThingSerializerBase {
 
+        public static class NodeNames {
+            public const string Things = "things";
+            public const string Thing = "thing";
+            public const string Id = "id";
+        }
+
         private XElement _things = null;
         public virtual XElement Things {
             get {
                 if (_things == null) {
-                    _things = Document.Element("things");
+                    _things = Document.Element(NodeNames.Things);
                 }
                 if (_things == null) {
-                    _things = new XElement("things");
+                    _things = new XElement(NodeNames.Things);
                     Document.Add(_things);
                 }
                 return _things;
@@ -48,8 +54,8 @@ namespace Limada.Model {
         }
 
         public virtual XElement Write(IThing thing) {
-            var xmlthing = new XElement("thing");
-            xmlthing.Add(new XAttribute("id",thing.Id.ToString("X")));
+            var xmlthing = new XElement(NodeNames.Thing);
+            xmlthing.Add(new XAttribute(NodeNames.Id, thing.Id.ToString("X")));
             Things.Add(xmlthing);
             return xmlthing;
         }
@@ -68,11 +74,9 @@ namespace Limada.Model {
                 writer.Flush ();
             }
         }
-
-
-
+        
         protected virtual IThing Read(XElement node) {
-            var id = ReadInt (node, "id", true);
+            var id = ReadInt (node, NodeNames.Id, true);
             if (id != default(Id)) 
                 return Graph.GetById(id);
             return null;

@@ -5,11 +5,49 @@ using Limaki.Common;
 
 namespace Limaki.Common {
     public class SerializerBase {
+
         public virtual XAttribute Write<T>(T item) {
             return new XAttribute(this.GetType().Name, item.ToString());
         }
-        public virtual XAttribute Write<T>(string name, T item) {
-            return new XAttribute(name, item.ToString());
+
+        public virtual XAttribute Write<T>(string attribute, T item) {
+            if (typeof (long) == typeof (T)) {
+                new XAttribute (attribute, ((long) (object) item).ToString ("X"));
+            }
+
+            if (typeof (double) == typeof (T)) {
+                return WriteDouble ((double) (object) item, attribute);
+            }
+            return new XAttribute(attribute, item.ToString());
+        }
+
+        public virtual T Read<T> (XElement node, string attribute) {
+
+            if (typeof (long) == typeof (T)) {
+                return (T) (object) ReadInt (node, attribute, false);
+            }
+
+            if (typeof (double) == typeof (T)) {
+                return (T) (object) ReadDouble (node, attribute);
+            }
+
+            if (typeof (bool) == typeof (T)) {
+                return (T) (object) ReadBool (node, attribute);
+            }
+
+            if (typeof (Enum) == typeof (T)) {
+                return (T) (object) ReadEnum<T> (node, attribute);
+            }
+
+            if (typeof (string) == typeof (T)) {
+                return (T) (object) ReadString (node, attribute);
+            }
+
+            if (typeof (Pair<string, string>) == typeof (T)) {
+                return (T) (object) ReadTuple (node, attribute);
+            }
+
+            throw new ArgumentException (typeof (T).Name + "not supported");
         }
 
         public virtual Pair<string, string> ReadTuple(XElement node, string attribute) {
@@ -36,14 +74,6 @@ namespace Limaki.Common {
                     long.TryParse(s, out result);
             }
             return result;
-        }
-
-        public XAttribute WriteInt(int value, string attribute, bool hex) {
-            if (hex) {
-                return new XAttribute (attribute, value.ToString ("X"));
-            } else {
-                return new XAttribute(attribute, value.ToString());
-            }
         }
 
         public double ReadDouble(XElement node, string attribute) {
@@ -75,6 +105,10 @@ namespace Limaki.Common {
 
         public virtual T ReadEnum<T>(string value) {
             return (T)Enum.Parse(typeof(T), value);
+        }
+
+        public virtual T ReadEnum<T> (XElement node, string attribute) {
+            return ReadEnum<T> (node.Attribute (attribute).Value);
         }
     }
 }

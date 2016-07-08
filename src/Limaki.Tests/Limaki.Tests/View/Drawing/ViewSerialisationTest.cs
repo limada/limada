@@ -25,7 +25,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
         [Test]
         public void FontTest() {
-            var ser = new DrawingPrimitivesSerializer ();
+            var ser = new StyleSerializer ();
             var font = Font.FromName("Tahoma 10");
             var elem = ser.Write (font);
             this.ReportDetail (elem.ToString());
@@ -39,12 +39,12 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
         [Test]
         public void ColorTest() {
-            var ser = new DrawingPrimitivesSerializer();
+            var ser = new StyleSerializer();
             var item = Colors.Black;
 
 
             var node = new XElement ("ColorTest");
-            node.Add (ser.Write (item,"Color"));
+            node.Add (ser.WriteColor (item,"Color"));
             this.ReportDetail(node.ToString());
 
             var newItem = ser.ReadColor(node,"Color");
@@ -55,7 +55,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
     
         [Test]
         public void TupleTest() {
-            var ser = new DrawingPrimitivesSerializer();
+            var ser = new StyleSerializer();
             var item = new Pair<string, string> ("a","b");
             ser.Write (item);
             var node = new XElement ("tupletest");
@@ -68,7 +68,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         }
         [Test]
         public void SizeTest() {
-            var ser = new DrawingPrimitivesSerializer();
+            var ser = new StyleSerializer();
             var item = new Size(10,10);
             var node = new XElement("itemTest");
             node.Add(ser.Write("size", new Pair<double, double>(item.Width, item.Height)));
@@ -80,7 +80,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
         }
         [Test]
         public void StyleTest() {
-            var ser = new DrawingPrimitivesSerializer();
+            var ser = new StyleSerializer();
             var item = StyleSheet.CreateDefaultStyleSheet().BaseStyle;
 
             item.AutoSize = new Size (10, 10);
@@ -97,7 +97,7 @@ namespace Limaki.Tests.View.Drawing.Shapes {
 
         [Test]
         public void StyleSheetTest() {
-            var ser = new DrawingPrimitivesSerializer();
+            var ser = new StyleSerializer();
             var item = StyleSheet.CreateDefaultStyleSheet();
 
             var node = ser.Write(item);

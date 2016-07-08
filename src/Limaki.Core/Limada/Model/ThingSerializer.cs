@@ -11,6 +11,13 @@ using Limaki.Common;
 namespace Limada.Model {
 
     public class ThingSerializer : ThingSerializerBase {
+
+        public static class NodeNames {
+            public const string Things = "things";
+            public const string Root = "root";
+            public const string StreamThings = "streamthings";
+        }
+
         public virtual XmlWriterSettings Settings {
             get {
                 var settings = new XmlWriterSettings {
@@ -61,8 +68,8 @@ namespace Limada.Model {
         public override void Write (Stream s) {
 
             using (var writer = CreateWriter (s)) {
-                writer.WriteStartElement ("root");
-                writer.WriteStartElement ("things");
+                writer.WriteStartElement (NodeNames.Root);
+                writer.WriteStartElement (NodeNames.Things);
 
                 var serializer = this.Serializer;
                 var streams = new List<IStreamThing> ();
@@ -75,7 +82,7 @@ namespace Limada.Model {
 
                 writer.WriteEndElement ();
                 if (streams.Count > 0) {
-                    writer.WriteStartElement ("streamthings");
+                    writer.WriteStartElement (NodeNames.StreamThings);
                     foreach (var thing in streams) {
                         if (thing.ContentContainer != null) {
                             var data = thing.ContentContainer.GetById (thing.Id);
@@ -97,8 +104,8 @@ namespace Limada.Model {
         /// <param name="s"></param>
         public override void Read (Stream s) {
             using (var reader = CreateReader (s)) {
-                reader.ReadStartElement ("root");
-                reader.ReadStartElement ("things");
+                reader.ReadStartElement (NodeNames.Root);
+                reader.ReadStartElement (NodeNames.Things);
                 var streamThings = new Dictionary<Id, IStreamThing> ();
                 while (Serializer.IsStartObject (reader)) {
                     var thing = Serializer.ReadObject (reader) as IThing;
@@ -110,8 +117,8 @@ namespace Limada.Model {
                 }
 
                 reader.ReadEndElement ();
-                if (reader.IsStartElement ("streamthings")) {
-                    reader.ReadStartElement ("streamthings");
+                if (reader.IsStartElement (NodeNames.StreamThings)) {
+                    reader.ReadStartElement (NodeNames.StreamThings);
                     while (Serializer.IsStartObject (reader)) {
                         var data = Serializer.ReadObject (reader) as RealData<byte[]>;
                         if (this.Graph.ContentContainer != null) {
