@@ -41,7 +41,8 @@ namespace Limada.View.VisualThings {
 
 
         public override IThing FittingMarker (object data) {
-
+			if (data == null)
+				return null;
             var marker = base.FittingMarker (data);
             if (marker != null)
                 return marker;
