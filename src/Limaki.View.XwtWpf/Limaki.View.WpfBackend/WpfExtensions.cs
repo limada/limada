@@ -41,13 +41,13 @@ namespace Limaki.View.WpfBackend {
 
 
         public static DependencyProperty RegisterDependencyProperty<T,M> (Expression<Func<T,M>> member, PropertyMetadata typeMetadata) {
-            var name = ExpressionUtils.MemberName (member);
+            var name = ExpressionUtils.Nameof (member);
             return DependencyProperty
                 .Register (name, typeof(M), typeof(T), typeMetadata);
         }
 
         public static Binding Binding<T, M> (T source, Expression<Func<T, M>> member, BindingMode mode) {
-            var name = ExpressionUtils.MemberName (member);
+            var name = ExpressionUtils.Nameof (member);
             return new Binding (name) { Source = source, Mode = mode, BindsDirectlyToSource = true };
         }
 

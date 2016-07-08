@@ -28,7 +28,7 @@ namespace Limaki.Common.Linqish {
             throw new ArgumentException(string.Format("{0} is not a MemberExpression", exp.ToString()));
         }
 
-        public static string MemberName<T, TMember>(Expression<Func<T, TMember>> exp) {
+        public static string Nameof<T, TMember>(Expression<Func<T, TMember>> exp) {
             return MemberInfo(exp).Name;
         }
 
