@@ -135,7 +135,7 @@ namespace Limaki.Data.db4o {
         }
 
         public override bool IsReadOnly {
-            get { return Session != null; }
+            get { return Session == null; }
         }
 
         public override IEnumerator<TItem> GetEnumerator() {
