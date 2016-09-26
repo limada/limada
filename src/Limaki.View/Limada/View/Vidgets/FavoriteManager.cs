@@ -114,6 +114,7 @@ namespace Limada.View.Vidgets {
             return false;
         }
 
+	
 		Int64 _homeId = 0;
 		public Int64 HomeId { 
 			get { return _homeId; }
@@ -127,8 +128,8 @@ namespace Limada.View.Vidgets {
 			HomeId = Isaac.Long;
 		}
 
-        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
-        public IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+        public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
 
         public virtual void GoHome (IGraphSceneDisplay<IVisual, IVisualEdge> display, bool initialize) {
             if (display == null)
@@ -302,6 +303,9 @@ namespace Limada.View.Vidgets {
             }
         }
 
+		public void Clear() {
+			ResetHomeId();
+		}
        
     }
 }

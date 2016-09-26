@@ -111,8 +111,8 @@ namespace Limaki.View.Viz.Visuals {
                 e.AllowedAction = DragDropAction.All;
         }
 
-        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
-        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+        IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
 
         public override void Dropped (DragEventArgs e) {
             var pt = Camera.ToSource(e.Position);

@@ -66,8 +66,8 @@ namespace Limada.View.Vidgets {
             CurrentDisplay = Display1;
         }
 
-        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
-        public IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>>()); } }
+        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+        public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>>()); } }
 
         public void InitializeDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
             var styleSheets = Registry.Pooled<StyleSheets>();

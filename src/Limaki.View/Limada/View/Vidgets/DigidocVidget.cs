@@ -195,8 +195,8 @@ namespace Limada.View.Vidgets {
 
         public virtual IVisual DocumentVisual { get; set; }
 
-        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
-        IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+        IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
 
         public virtual void SetDocument (GraphCursor<IVisual, IVisualEdge> source) {
 
@@ -238,7 +238,6 @@ namespace Limada.View.Vidgets {
             aligner.OneColumn(pages, (Point)this.Border, options);
             aligner.Locator.Commit(aligner.GraphScene.Requests);
 
-            pagesDisplay.DataId = 0;
             new State { Hollow = true }.CopyTo(pagesDisplay.State);
             pagesDisplay.Text = source.Cursor.Data == null ? CommonSchema.NullString : source.Cursor.Data.ToString();
             pagesDisplay.Viewport.Reset();
