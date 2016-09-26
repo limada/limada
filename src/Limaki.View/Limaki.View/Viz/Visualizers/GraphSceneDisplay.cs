@@ -41,24 +41,30 @@ namespace Limaki.View.Viz.Visualizers {
             }
         }
 
-        SceneInfo _info = default(SceneInfo);
+		public override long DataId {
+			get { return Info.Id; }
+			set { Info.Id = value; }
+		}
+
+		public override string Text {
+			get { return Info.Name; }
+			set { Info.Name = value; }
+		}
+
+		SceneInfo _info = null;
         public virtual SceneInfo Info {
             get {
                 if(_info == null) {
                     _info = new SceneInfo ();
                 }
-                _info.Id = this.DataId;
-                _info.Name = this.Text;
-                this.State.CopyTo(_info.State);
+                State.CopyTo(_info.State);
                 return _info;
             }
             set {
                 if (_info != value) {
                     _info = value;
                 }
-                this.DataId = _info.Id;
-                _info.State.CopyTo(this.State);
-                this.Text = _info.Name;
+                _info.State.CopyTo(State);
             }
         }
 
@@ -142,8 +148,7 @@ namespace Limaki.View.Viz.Visualizers {
         }
 
         public override void DataChanged() {
-            this.Text = "";
-            this.DataId = 0;
+
             this._info = null;
 
             base.DataChanged();
