@@ -15,6 +15,7 @@
 using System;
 using System.IO;
 using Limada.Model;
+using Limada.Schemata;
 using Limaki.Contents;
 using Limaki.Graphs;
 using Limaki.View.Visuals;
@@ -25,14 +26,15 @@ namespace Limada.View.VisualThings {
     /// </summary>
     public class VisualThingsContentViz : IVisualContentViz<IThing> {
 
-        /// <summary>
-        /// creates a visual, backed by a
-        /// StreamThing, created and assigned with content
-        /// </summary>
-        /// <param name="graph"></param>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public virtual IVisual VisualOfContent (IGraph<IVisual, IVisualEdge> graph, Content<Stream> content) {
+
+		/// <summary>
+		/// creates a visual, backed by a
+		/// StreamThing, created and assigned with content
+		/// </summary>
+		/// <param name="graph"></param>
+		/// <param name="content"></param>
+		/// <returns></returns>
+		public virtual IVisual VisualOfContent (IGraph<IVisual, IVisualEdge> graph, Content<Stream> content) {
             
             if (content == null)
                 return null;
@@ -92,6 +94,7 @@ namespace Limada.View.VisualThings {
             return new ThingContentFacade(factory).AssignContent(thingGraph, streamThing, content);
         }
 
-        
+
+
     }
 }
