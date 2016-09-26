@@ -86,6 +86,13 @@ namespace Limada.IO {
             return null;
         }
 
-
+        public override Iori Use (ThingGraphContent source) {
+            var result =  base.Use (source);
+            var thingGraph = source.Data as ThingGraph;
+            if (thingGraph !=null) {
+                result = thingGraph.Gateway.Iori;
+            }
+            return result;
+        }
     }
 }
