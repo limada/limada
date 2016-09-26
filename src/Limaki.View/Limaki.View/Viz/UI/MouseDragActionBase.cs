@@ -41,7 +41,7 @@ namespace Limaki.View.Viz.UI {
         /// <summary>
         /// mouse action should behave as DragAction
         /// </summary>
-        protected virtual DragBehaviour Behaviour { get; set; }
+        public virtual DragBehaviour Behaviour { get; set; }
 
         public ModifierKeys ModifierKeys { get; set; }
 
