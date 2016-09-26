@@ -26,7 +26,7 @@ namespace Limaki.View.WpfBackend {
 
     public class WpfUsecaseFactory : UsecaseFactory<ConceptUsecase> {
         public override void Compose(ConceptUsecase useCase) {
-            var backendComposer = BackendComposer as IXwtConceptUseCaseComposer;
+            var backendComposer = BackendComposer as IXwtBackendConceptUseCaseComposer;
             AddToolbars (backendComposer.MainWindowBackend as Xwt.Window, useCase);
 
         }

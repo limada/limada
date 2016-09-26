@@ -8,11 +8,11 @@ using Xwt;
 
 namespace Limaki.View.XwtBackend {
 
-    public interface IXwtConceptUseCaseComposer : IComposer<ConceptUsecase> {
+    public interface IXwtBackendConceptUseCaseComposer : IBackendConceptUseCaseComposer {
+		
         IVindowBackend MainWindowBackend { get; set; }
         Menu Menu { get; set; }
         Label StatusLabel { get; set; }
-        Size WindowSize { get; set; }
-        Action OnShow { get; set; }
+        
     }
 }

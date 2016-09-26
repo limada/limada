@@ -23,13 +23,14 @@ using Limaki.View.Viz.Visualizers;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 using Limaki.View.Viz.Mesh;
 using Limada.Model;
+using Limaki.View.GraphScene;
 
 namespace Limada.UseCases {
 
     public class ConceptUsecaseComposer : IComposer<ConceptUsecase> {
 
-        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
-        public IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+        public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
 
         public void Factor(ConceptUsecase useCase) {
 
@@ -42,7 +43,7 @@ namespace Limada.UseCases {
                 OpenFileDialog = new FileDialogMemento(),
                 SaveFileDialog = new FileDialogMemento(),
                 ThingGraphClosed = c => {
-                    var h = Mesh.BackHandler<IThing, ILink> () as GraphSceneMeshBackHandler<IVisual, IThing, IVisualEdge, ILink>;
+                    var h = Mesh.BackHandler<IThing, ILink> ();
                     if (h != null) {
                         h.UnregisterBackGraph (c.Data, true);
                     }
@@ -72,43 +73,42 @@ namespace Limada.UseCases {
 
         public void Compose(ConceptUsecase useCase) {
             
-            var splitView = useCase.SplitView;
-            useCase.GetCurrentDisplay = () => splitView.CurrentDisplay;
-            useCase.GetCurrentVidget = () => splitView.CurrentVidget;
+            useCase.GetCurrentDisplay = () => useCase.SplitView.CurrentDisplay;
+            useCase.GetCurrentVidget = () => useCase.SplitView.CurrentVidget;
 
             useCase.SheetManager.SheetRegistered = sceneInfo => {
                 useCase.VisualsDisplayHistory.Store(sceneInfo);
                 //useCase.SplitViewToolStrip.Attach(splitView.CurrentDisplay);
             };
             useCase.AskForVisualsDisplayHistorySaveChanges = true;
-            splitView.VisualsDisplayHistory = useCase.VisualsDisplayHistory;
-            splitView.SheetManager = useCase.SheetManager;
+            useCase.SplitView.VisualsDisplayHistory = useCase.VisualsDisplayHistory;
+            useCase.SplitView.SheetManager = useCase.SheetManager;
             
-            splitView.FavoriteManager = useCase.FavoriteManager;
+            useCase.SplitView.FavoriteManager = useCase.FavoriteManager;
             useCase.FavoriteManager.SheetManager = useCase.SheetManager;
             useCase.FavoriteManager.VisualsDisplayHistory = useCase.VisualsDisplayHistory;
 
             useCase.SplitViewToolStrip.SplitView = useCase.SplitView;
             useCase.SplitViewToolStrip.SheetManager = useCase.SheetManager;
 
-            useCase.DisplayModeToolStrip.SplitView = splitView;
-            splitView.CurrentVidgetChanged += c => useCase.DisplayModeToolStrip.Attach (c);
-            splitView.CurrentVidgetChanged += c => useCase.LayoutToolStrip.Attach (c);
-            splitView.CurrentVidgetChanged += c => useCase.MarkerToolStrip.Attach (c);
-            splitView.CurrentVidgetChanged += c => useCase.SplitViewToolStrip.Attach (c);
-            splitView.CurrentVidgetChanged += c => useCase.ArrangerToolStrip.Attach (c);
+            useCase.DisplayModeToolStrip.SplitView = useCase.SplitView;
+            useCase.SplitView.CurrentVidgetChanged += c => useCase.DisplayModeToolStrip.Attach (c);
+            useCase.SplitView.CurrentVidgetChanged += c => useCase.LayoutToolStrip.Attach (c);
+            useCase.SplitView.CurrentVidgetChanged += c => useCase.MarkerToolStrip.Attach (c);
+            useCase.SplitView.CurrentVidgetChanged += c => useCase.SplitViewToolStrip.Attach (c);
+            useCase.SplitView.CurrentVidgetChanged += c => useCase.ArrangerToolStrip.Attach (c);
 
-            useCase.DisplayStyleChanged += splitView.DoDisplayStyleChanged;
+            useCase.DisplayStyleChanged += useCase.SplitView.DoDisplayStyleChanged;
 
-            splitView.Check();
+            useCase.SplitView.Check();
 
             var fileManager = useCase.GraphSceneUiManager;
             fileManager.FileDialogShow = useCase.FileDialogShow;
             fileManager.MessageBoxShow = useCase.MessageBoxShow;
 
-			fileManager.DataBound = scene => {
+			fileManager.DataBound = () => {
 				useCase.FavoriteManager.ResetHomeId();
-				splitView.ChangeData(scene);
+				useCase.SplitView.ChangeData();
 			};
             fileManager.DataPostProcess = useCase.DataPostProcess;
 

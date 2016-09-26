@@ -26,8 +26,9 @@ using Limada.View.ContentViewers;
 
 namespace Limaki.View.XwtBackend {
    
-    public class XwtConceptUseCaseComposer : IXwtConceptUseCaseComposer {
+    public class XwtConceptUseCaseComposer : IXwtBackendConceptUseCaseComposer {
 
+		public Vindow MainWindow { get; set; }
         public IVindowBackend MainWindowBackend { get; set; }
         public Menu Menu { get; set; }
         public Label StatusLabel { get; set; }
@@ -35,9 +36,16 @@ namespace Limaki.View.XwtBackend {
         public Action OnShow { get; set; }
 
         public virtual void Factor (ConceptUsecase useCase) {
-            useCase.MainWindow = new Vindow (MainWindowBackend);
+			
+			if (MainWindow == null) { 
+				MainWindow = new Vindow (MainWindowBackend);
+			}
+			if (MainWindowBackend == null)
+				MainWindowBackend = MainWindow.Backend;
+			
+			useCase.MainWindow = MainWindow;
 
-            var mainWindowBackend = MainWindowBackend as Window;
+			var mainWindowBackend = MainWindowBackend as Window;
             mainWindowBackend.Size = WindowSize;
             mainWindowBackend.MainMenu = CreateMenu (useCase);
             mainWindowBackend.Padding = 2;
@@ -85,15 +93,11 @@ namespace Limaki.View.XwtBackend {
             };
 
             mainWindowBackend.CloseRequested += (s, e) => {
-                e.AllowClose = MessageDialog.Confirm("Close?", Command.Ok);
-                if (e.AllowClose) {
-                    useCase.Close();
-                    useCase.Dispose ();
-                    Application.Exit();
-                }
+                useCase.Close ();
+                useCase.Dispose ();
+                Application.Exit ();
             };
-
-
+            
             var viewerProvider = Registry.Pooled<ContentViewerProvider>();
 
             viewerProvider.Add(new SheetViewer());
@@ -222,6 +226,5 @@ namespace Limaki.View.XwtBackend {
 
         About About { get; set; }
 
-
-    }
+	}
 }

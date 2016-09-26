@@ -35,7 +35,7 @@ using ToolStrip = System.Windows.Forms.ToolStrip;
 
 namespace Limada.Usecases {
 
-    public class SwfConceptUseCaseComposer : IComposer<ConceptUsecase> {
+    public class SwfConceptUseCaseComposer : IBackendConceptUseCaseComposer {
 
         public Form Mainform { get { return MainWindowBackend as Form; } }
         public IVindowBackend MainWindowBackend { get; set; }
@@ -46,9 +46,23 @@ namespace Limada.Usecases {
         public ToolStripStatusLabel StatusLabel { get; set; }
         public StatusStrip StatusStrip { get; set; }
 
-        public void Factor (ConceptUsecase useCase) {
-            useCase.MainWindow = new Vindow ();
+        public Vindow MainWindow { get; set; }
 
+        public Xwt.Size WindowSize { get; set; }
+
+        public Action OnShow { get; set; }
+
+        public void Factor (ConceptUsecase useCase) {
+
+            if (MainWindow == null) {
+                this.MainWindow = new Vindow ();
+            }
+            if (MainWindowBackend == null) {
+                MainWindowBackend = MainWindow.Backend;
+            }
+
+            useCase.MainWindow = this.MainWindow;
+           
             ToolStripContainer = new ToolStripContainer ();
 
             StatusStrip = new StatusStrip ();

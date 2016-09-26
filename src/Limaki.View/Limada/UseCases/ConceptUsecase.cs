@@ -34,6 +34,7 @@ using Limaki.Usecases.Vidgets;
 using Limaki.View.Viz.Mesh;
 
 namespace Limada.UseCases {
+	
     public class ConceptUsecase : IDisposable, IProgress, IConceptUsecase {
 
         protected string _useCaseTitle = "limada::concept";
@@ -58,7 +59,9 @@ namespace Limada.UseCases {
         public LayoutToolStrip LayoutToolStrip { get; set; }
         public MarkerToolStrip MarkerToolStrip { get; set; }
 
-        public Func<IVidget> GetCurrentVidget { get; set; }
+		public IGraphSceneDisplayMesh<IVisual, IVisualEdge> mesh { get { return Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>>(); }}
+
+		public Func<IVidget> GetCurrentVidget { get; set; }
         
         public Func<IGraphSceneDisplay<IVisual, IVisualEdge>> GetCurrentDisplay { get; set; }
 
@@ -88,7 +91,7 @@ namespace Limada.UseCases {
             GraphSceneUiManager.OpenFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString ();
             GraphSceneUiManager.SaveFileDialog.InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString ();
 
-            if (!GraphSceneUiManager.ProcessCommandLine ()) {
+            if (!GraphSceneUiManager.OpenCommandLine ()) {
                 GraphSceneUiManager.ShowEmptyScene ();
             }
         }
@@ -133,7 +136,7 @@ namespace Limada.UseCases {
         public bool AskForVisualsDisplayHistorySaveChanges { get; set; }
 
         public virtual void SaveChanges () {
-            var displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { SplitView.Display1, SplitView.Display2 };
+			var displays = mesh.Displays;
             VisualsDisplayHistory.SaveChanges (displays, SheetManager, AskForVisualsDisplayHistorySaveChanges);
             FavoriteManager.SaveChanges (displays);
         }
@@ -199,7 +202,7 @@ namespace Limada.UseCases {
                 var display = GetCurrentDisplay ();
                 if (display != null) {
                     if (MessageBoxShow ("Are you shure?", "Merge", MessageBoxButtons.OkCancel) == DialogResult.Ok) {
-                        new VisualThingsSceneViz ().MergeVisual (display.Data);
+                        Registry.Create<ISceneViz<IVisual, IVisualEdge>> ().MergeVisual (display.Data);
                         display.Perform ();
                     }
                 }
@@ -233,7 +236,6 @@ namespace Limada.UseCases {
                 var display = view.AdjacentDisplay (view.CurrentDisplay);
                 var oldScene = display.Data;
 
-                var mesh = Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ();
                 mesh.RemoveScene (oldScene);
 
                 var scene = mesh.CreateSinkScene (oldScene.Graph);
