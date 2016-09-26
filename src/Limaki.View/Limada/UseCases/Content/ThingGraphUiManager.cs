@@ -14,9 +14,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Limada.IO;
 using Limada.Model;
-using Limada.Usecases;
 using Limada.View.VisualThings;
 using Limaki.Common;
 using Limaki.Contents;
@@ -24,17 +24,19 @@ using Limaki.Contents.IO;
 using Limaki.Data;
 using Limaki.Usecases;
 using Limaki.View;
+using Limaki.View.GraphScene;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
+using Limaki.View.Viz.Mesh;
 using Mono.Options;
 
 namespace Limada.UseCases.Contents {
 
     public class ThingGraphUiManager : IoUiManager, IGraphSceneUiManager {
 
-        public ThingGraphContent Data { get; set; }
+        protected ThingGraphContent Data { get; set; }
 
-        public Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
+        public Action DataBound { get; set; }
         public Action<string> DataPostProcess { get; set; }
 
 
@@ -68,10 +70,16 @@ namespace Limada.UseCases.Contents {
             }
         }
 
+		private IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+		public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh {
+			get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); }
+			set { _mesh = value; }
+		}
+
         #region Open
 
         public void Open () {
-            if (this.HasUnsavedData(this.Data)) {
+            if (this.IsUnsaved(this.Data)) {
                 if (MessageBoxShow("You have an unsaved document. Do you want to save it?", "", MessageBoxButtons.YesNo) ==
                     DialogResult.Yes) {
                     SaveAs();
@@ -87,14 +95,18 @@ namespace Limada.UseCases.Contents {
         }
 
         public bool Open (Iori iori) {
+			
             ThingGraphContent source = null;
             var sinkIo = ThingGraphIoManager.GetSinkIO(iori, IoMode.Read) as ThingGraphIo;
 
             try {
+                // TODO: check if iori already in use
+				
                 source = sinkIo.Open(iori);
                 OnProgress("", -1, -1);
                 AttachCurrent(source, iori.Name);
                 return true;
+
             } catch (Exception ex) {
                 Registry.Pooled<IExceptionHandler>()
                     .Catch(new Exception("Open failed: " + ex.Message, ex), MessageType.OK);
@@ -116,34 +128,41 @@ namespace Limada.UseCases.Contents {
            
         }
 
-        public bool AttachCurrent (ThingGraphContent source, string message) {
+		public bool AttachCurrent (ThingGraphContent source, string message) {
 
-            Close(this.Data);
-            this.Data = source;
-            
-            if (ThingGraphIn != null)
-                ThingGraphIn(source);
+            Close (Data);
 
-            var scene = new VisualThingsSceneViz().CreateScene(source.Data);
-            if (this.DataBound != null)
-                this.DataBound(scene);
+			Data = source;
 
-			if (DataPostProcess != null)
-				DataPostProcess (message);
+			ThingGraphIn?.Invoke (source);
 
-            return true;
+		    Mesh.ApplyBackGraph (source.Data);
+		    
+            DataBound?.Invoke ();
+
+			DataPostProcess?.Invoke (message);
+
+			return true;
+		}
+
+        public void SetContent (Content content) {
+            var tgc = content as ThingGraphContent;
+            if (tgc != null) {
+                Data = tgc;
+            }
         }
+
         #endregion
 
         public void Save () {
-            if (this.Data == null)
+            if (Data == null)
                 return;
-            if (this.HasUnsavedData(this.Data)) {
+            if (IsUnsaved(this.Data)) {
                 SaveAs();
             } else {
-                var sinkIo = ThingGraphIoManager.GetSinkIO(this.Data.ContentType, IoMode.Write) as ThingGraphIo;
+                var sinkIo = ThingGraphIoManager.GetSinkIO(Data.ContentType, IoMode.Write) as ThingGraphIo;
                 if (sinkIo != null) {
-                    sinkIo.Flush(this.Data);
+                    sinkIo.Flush(Data);
                 }
             }
         }
@@ -152,12 +171,12 @@ namespace Limada.UseCases.Contents {
             // save current:
             var oldSource = "";
             ThingGraphIo sinkIo = null;
-            if (this.Data.Source != null) {
+            if (Data.Source != null) {
                 oldSource = this.Data.Source.ToString ();
 
-                sinkIo = ThingGraphIoManager.GetSinkIO (this.Data.ContentType, IoMode.Write) as ThingGraphIo;
+                sinkIo = ThingGraphIoManager.GetSinkIO (Data.ContentType, IoMode.Write) as ThingGraphIo;
                 if (sinkIo != null) {
-                    sinkIo.Flush (this.Data);
+                    sinkIo.Flush (Data);
                 }
             }
 
@@ -169,7 +188,7 @@ namespace Limada.UseCases.Contents {
 
             // saveAs:
             var merger = new ThingGraphMerger { Progress = this.Progress };
-            merger.Use (this.Data.Data, sink.Data);
+            merger.Use (Data.Data, sink.Data);
             merger.AttachThings (sink.Data);
 
             // close and reopen; flush and attach does't work in all cases
@@ -195,7 +214,8 @@ namespace Limada.UseCases.Contents {
             if (scene.HasThingGraph()) {
                 var sinkIo = ThingGraphIoManager.GetSinkIO(iori, IoMode.Write) as ThingGraphIo;
                 if (sinkIo != null) {
-                    var source = new VisualThingsSceneViz().CreateThingsView(scene);
+                    var source = Registry.Create<ISceneViz<IVisual, IThing, IVisualEdge, ILink>> ()
+                        .CreateThingsView(scene);
                     var sink = sinkIo.Open(iori);
                     new ThingGraphExporter { Progress = this.Progress }.Use(source, sink.Data);
                     sinkIo.Close(sink);
@@ -217,19 +237,22 @@ namespace Limada.UseCases.Contents {
         protected void Close (ThingGraphContent data) {
             if (data == null)
                 return;
+
+            Mesh.RemoveBackGraph (data.Data);
+            Mesh.ClearDisplays ();
+
             var sink = ThingGraphIoManager.GetSinkIO(data.ContentType, IoMode.Write) as ThingGraphIo;
             if (sink != null) {
                 sink.Close (data);
-                if (this.ThingGraphClosed != null)
-                    this.ThingGraphClosed (data);
+                ThingGraphClosed?.Invoke (data);
             }
         }
 
         public void Close () {
-            Close(this.Data);
+            Close(Data);
         }
 
-        public bool HasUnsavedData (ThingGraphContent data) {
+        public bool IsUnsaved (ThingGraphContent data) {
             var sink = ThingGraphIoManager.GetSinkIO(data.ContentType, IoMode.None) as ThingGraphIo;
             if (sink is MemoryThingGraphIo) {
                 if (data.Data.Count > 0) {
@@ -243,72 +266,70 @@ namespace Limada.UseCases.Contents {
 
         public Action ApplicationQuit { get; set; }
 
-        public bool OpenCommandLine (string[] args) {
+        public bool ImportFiles (IEnumerable<string> sourceFiles) {
 
-            string source = null;
-            if (args.Length > 1) {
-                if (File.Exists(args[1])) {
-                    source = args[1];
+            var result = true;
+            if (sourceFiles.Count () > 0) {
+                var progressSaved = this.Progress;
+                var progressHandler = Registry.Pooled<IProgressHandler> ();
+                this.Progress = (m, i, max) => progressHandler.Write ( m, i, max );
+                try {
+                    foreach (var sourceFile in sourceFiles) {
+                        if (File.Exists ( sourceFile )) {
+                            progressHandler.Show ( "Importing file " + sourceFile );
+                            var sourceIori = Iori.FromFileName ( sourceFile );
+                            var sourceIo = ThingGraphIoManager.GetSinkIO ( sourceIori, IoMode.Read ) as ThingGraphIo;
+                            if (sourceIo != null) {
+                                ThingGraphContent source = null;
+                                try {
+                                    source = sourceIo.Open ( sourceIori );
+                                    new ThingGraphMerger { Progress = this.Progress }.Use ( source.Data, Data.Data );
+                                } catch (Exception ex) {
+                                    Registry.Pooled<IExceptionHandler> ()
+                                        .Catch ( new Exception ( "Add file failed: " + ex.Message, ex ), MessageType.OK );
+                                    result = false;
+                                } finally {
+                                    sourceIo.Close ( source );
+                                }
+                            }
+                        }
+                    }
+                    Progress = null;
+                    progressHandler.Close ();
+                } finally {
+                    Progress = progressSaved;
                 }
             }
-            if (source != null) {
-                return Open(Iori.FromFileName(source));
-            }
-            return false;
+            return result;
         }
 
         public bool OpenCommandLine () {
-            return OpenCommandLine(Environment.GetCommandLineArgs());
-        }
-
-        public bool ProcessCommandLine () {
+			
             var result = false;
             var sourceFiles = new List<string>();
             string fileToOpen = null;
+            string resumeFile = null;
             var exitAfterImport = false;
 
             var p = new OptionSet() {
                                         {"add=", a => sourceFiles.Add(a)},
                                         {"file=", a => fileToOpen = a},
+                                        {"resume=", a => resumeFile = a},
                                         {"exit", a => exitAfterImport = a != null},
                                     };
             var options = p.Parse(Environment.GetCommandLineArgs());
 
-            if (fileToOpen != null) {
-                result = OpenCommandLine(new string[] { fileToOpen });
-            } else {
-                result = OpenCommandLine(options.ToArray());
+            if (fileToOpen == null) {
+                if (options.Count > 1)
+                    fileToOpen = options[1];
             }
-            if (result && sourceFiles.Count > 0) {
-                var progressSaved = this.Progress;
-                var progressHandler = Registry.Pooled<IProgressHandler>();
-                this.Progress = (m, i, max) => progressHandler.Write(m, i, max);
-                try {
-                    foreach (var sourceFile in sourceFiles) {
-                        if (File.Exists(sourceFile)) {
-                            progressHandler.Show("Importing file " + sourceFile);
-                            var sourceIori = Iori.FromFileName(sourceFile);
-                            var sourceIo = ThingGraphIoManager.GetSinkIO(sourceIori, IoMode.Read) as ThingGraphIo;
-                            if (sourceIo != null) {
-                                ThingGraphContent source = null;
-                                try {
-                                    source = sourceIo.Open(sourceIori);
-                                    new ThingGraphMerger { Progress = this.Progress }.Use(source.Data, this.Data.Data);
-                                } catch (Exception ex) {
-                                    Registry.Pooled<IExceptionHandler>()
-                                        .Catch(new Exception("Add file failed: " + ex.Message, ex), MessageType.OK);
-                                } finally {
-                                    sourceIo.Close(source);
-                                }
-                            }
-                        }
-                    }
-                    this.Progress = null;
-                    progressHandler.Close();
-                } finally {
-                    this.Progress = progressSaved;
-                }
-            }
+
+            if (fileToOpen != null && File.Exists ( fileToOpen ))
+                result = Open ( Iori.FromFileName ( fileToOpen ) );
+
+            if (result)
+                result = ImportFiles (sourceFiles);
+
             if (exitAfterImport && ApplicationQuit != null)
                 ApplicationQuit();
             return result;
@@ -317,7 +338,7 @@ namespace Limada.UseCases.Contents {
 
         public void ImportRawSource () {
             Save();
-            Close(this.Data);
+            Close(Data);
             bool tryIt = true;
 
             while (tryIt && MessageBoxShow("Open a new, non exisiting file", "RawImport", MessageBoxButtons.OkCancel) == DialogResult.Ok) {

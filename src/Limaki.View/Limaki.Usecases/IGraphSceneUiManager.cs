@@ -12,6 +12,7 @@
  */
 
 using System;
+using Limaki.Contents;
 using Limaki.View;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
@@ -21,7 +22,8 @@ namespace Limaki.Usecases {
 
     public interface IGraphSceneUiManager {
 
-        Action<IGraphScene<IVisual, IVisualEdge>> DataBound { get; set; }
+        Action DataBound { get; set; }
+
         Action<string> DataPostProcess { get; set; }
 
         FileDialogMemento OpenFileDialog { get; set; }
@@ -36,7 +38,6 @@ namespace Limaki.Usecases {
         void Open ();
         bool Open (Iori iori);
 
-        bool ProcessCommandLine ();
         bool OpenCommandLine ();
 
         void ShowEmptyScene ();
@@ -48,6 +49,7 @@ namespace Limaki.Usecases {
         void SaveAs ();
 
         void Close ();
-        
+
+        void SetContent (Content content);
     }
 }
