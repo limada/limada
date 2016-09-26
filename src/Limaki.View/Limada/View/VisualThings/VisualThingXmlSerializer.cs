@@ -26,13 +26,9 @@ using Xwt;
 
 namespace Limada.View.VisualThings {
 
-    public class VisualThingSerializer : ThingIdSerializer {
-        private IGraphPair<IVisual, IThing, IVisualEdge, ILink> _visualThingGraph = null;
+    public class VisualThingXmlSerializer : ThingXmlIdSerializer {
         
-        public virtual IGraphPair<IVisual, IThing, IVisualEdge, ILink> VisualThingGraph {
-            get { return _visualThingGraph; }
-            set { _visualThingGraph = value; }
-        }
+        public virtual IGraphPair<IVisual, IThing, IVisualEdge, ILink> VisualThingGraph { get; set; }
 
         public override IThingGraph Graph {
             get { 
@@ -43,9 +39,7 @@ namespace Limada.View.VisualThings {
             }
             set { throw new ArgumentException("Use VisualThingGraph!"); }
         }
-
-
-
+        
         private ICollection<IVisual> _visualsCollection = null;
         public virtual ICollection<IVisual> VisualsCollection {
             get {
@@ -58,24 +52,20 @@ namespace Limada.View.VisualThings {
             set { _visualsCollection = value; }
         }
 
-        private IGraphSceneLayout<IVisual,IVisualEdge> _layout = null;
-        public virtual IGraphSceneLayout<IVisual,IVisualEdge> Layout {
-            get { return _layout; }
-            set { _layout = value; }
-        }
+        public virtual IGraphSceneLayout<IVisual, IVisualEdge> Layout { get; set; }
 
-        protected override void ReadThings() {
+		public override void ReadXThings() {
            ReadInto(VisualsCollection);
            foreach (var visual in VisualsCollection) {
                 var thing = VisualThingGraph.Get (visual);
-                if (thing != null && !ThingCollection.Contains (thing)) {
-                    ThingCollection.Add(thing);
+                if (thing != null && !Things.Contains (thing)) {
+                    Things.Add(thing);
                 }
             }
         }
 
         protected virtual void ReadInto(ICollection<IVisual> visuals) {
-            foreach (var node in Things.Elements()) {
+            foreach (var node in XThings.Elements()) {
                 var visual = ReadVisual(node);
                 if (visual != null && !visuals.Contains(visual)) {
                     visuals.Add(visual);
@@ -90,7 +80,7 @@ namespace Limada.View.VisualThings {
         protected virtual IVisual ReadVisual(XElement node) {
             var thing = Read (node);
             
-            this.ThingCollection.Add (thing);
+            this.Things.Add (thing);
 
             IVisual visual = null;
             if (thing != null) {
@@ -126,7 +116,7 @@ namespace Limada.View.VisualThings {
 
         public virtual void Write(IEnumerable<IVisual> visuals) {
             if (visuals == null) return;
-            foreach (IVisual visual in visuals) {
+            foreach (var visual in visuals) {
                 Write(visual);
             }
         }
