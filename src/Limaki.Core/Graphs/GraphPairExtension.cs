@@ -44,7 +44,7 @@ namespace Limaki.Graphs {
         }
 
         public static IGraph<TItem, TEdge>
-            WrappedSource<TItem, TEdge> (this IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem>, TItem {
+            UnWrapped<TItem, TEdge> (this IGraph<TItem, TEdge> graph) where TEdge : IEdge<TItem>, TItem {
 
             var result = graph as IWrappedGraph<TItem, TEdge>;
             if (result != null) {
