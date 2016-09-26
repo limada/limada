@@ -28,7 +28,6 @@ namespace Limaki.Common {
             set { _poolableObjectFactory = value; }
         }
  
-
         public virtual object TryGetCreate(Type type) {
             object result = null;
             if (!_pooledObjects.TryGetValue(type, out result)) {
@@ -59,6 +58,10 @@ namespace Limaki.Common {
         public virtual bool Remove<T>() {
             Type type = typeof(T);
             return _pooledObjects.Remove (type);
+        }
+
+        public void Register<T> (T subject) {
+            _pooledObjects[typeof (T)] = subject;
         }
 
         public virtual void Clear() {

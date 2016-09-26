@@ -44,5 +44,7 @@ namespace Limaki.Common {
         bool Remove<T>();
 
         void Clear ();
+
+        void Register<T> (T subject);
     }
 }
