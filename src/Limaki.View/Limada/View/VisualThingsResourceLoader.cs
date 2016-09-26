@@ -4,6 +4,7 @@ using Limada.View.VisualThings;
 using Limaki.Common.IOC;
 using Limaki.Graphs;
 using Limaki.View;
+using Limaki.View.GraphScene;
 using Limaki.View.Visuals;
 
 namespace Limada.View {
@@ -22,6 +23,8 @@ namespace Limada.View {
 #endif
             context.Factory.Add<IVisualContentViz, VisualThingsContentViz> ();
             context.Factory.Add<IVisualContentViz<IThing>, VisualThingsContentViz> ();
+			context.Factory.Add<ISceneViz<IVisual,IThing,IVisualEdge,ILink>, VisualThingsSceneVizImpl> ();
+            context.Factory.Add<ISceneViz<IVisual, IVisualEdge>, VisualThingsSceneVizImpl> ();
 
             context.Factory.Add<ISheetManager, SheetManager> ();
 
