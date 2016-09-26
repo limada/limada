@@ -88,6 +88,8 @@ namespace Limaki.View {
         public State State { get { return _state ?? (_state = new State { Hollow = true }); } }
 
         public static SceneInfo FromInfo(SceneInfo other) {
+            return new SceneInfo { Name = other.Name, Id = other.Id, _state = other.State.Clone() };
+        }
     }
 
     public interface ISpatialZIndex<TItem> : ISpatialIndex<TItem> {
