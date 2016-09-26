@@ -49,10 +49,10 @@ namespace Limaki.View.Headless.VidgetBackends {
             display.ActionDispatcher.Add(dragDrop);
 
             var editor = new HedlessVisualsTextEditAction(
-                this.GraphScene,
+                () => display.Data,
                 display,
                 this.Camera(),
-                this.Layout()
+                ((IGraphSceneDisplay<IVisual, IVisualEdge>)display).Layout
                 );
 
             display.ActionDispatcher.Add(editor);

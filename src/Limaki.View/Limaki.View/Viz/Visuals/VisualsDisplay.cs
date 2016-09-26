@@ -12,6 +12,7 @@
  * 
  */
 
+using System;
 using Limaki.Common;
 using Limaki.Graphs;
 using Limaki.View.Visuals;
@@ -47,21 +48,23 @@ namespace Limaki.View.Viz.Visuals {
             display.ModelFactory = Registry.Factory.Create<IGraphModelFactory<IVisual, IVisualEdge>>();
             display.GraphItemRenderer = new VisualsRenderer();
 
-            display.Layout = Registry.Factory.Create<IGraphSceneLayout<IVisual, IVisualEdge>>(this.GraphScene, display.StyleSheet);
+            Func<IGraphScene<IVisual, IVisualEdge>> scene = ()=>display.Data;
+            display.Layout = Registry.Factory.Create<IGraphSceneLayout<IVisual, IVisualEdge>>(scene, display.StyleSheet);
         }
 
         protected IMouseAction AddGraphEdgeAction { get; set; }
 
         public override void Compose (Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
+
             var display = aDisplay as GraphSceneDisplay<IVisual, IVisualEdge>;
 
             base.Compose(display);
             var folding = new GraphSceneFolding<IVisual, IVisualEdge> {
-                SceneHandler = this.GraphScene,
-                Layout = this.Layout,
+                SceneHandler = () => display.Data,
+                Layout = () => display.Layout,
                 BackendRenderer = display.BackendRenderer,
                 MoveResizeRenderer = display.MoveResizeRenderer,
-                OrderBy = new VisualComparer(),
+                OrderBy = new VisualComparer (),
                 RemoveOrphans = false
             };
 
@@ -69,8 +72,8 @@ namespace Limaki.View.Viz.Visuals {
             display.ActionDispatcher.Add (new GraphSceneMouseFolding<IVisual, IVisualEdge> (folding, () => display.Viewport.Camera));
 
             var addGraphEdgeAction = new AddVisualEdgeAction {
-                SceneHandler = this.GraphScene,
-                LayoutHandler = this.Layout,
+                SceneHandler = () => display.Data,
+                LayoutHandler = () => display.Layout,
                 Enabled = false
             };
 

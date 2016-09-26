@@ -50,10 +50,10 @@ namespace Limaki.View.XwtBackend {
             display.ActionDispatcher.Add(dragDrop);
 
             var editor = new VisualsTextEditAction(
-                this.GraphScene,
+                () => display.Data,
                 display,
                 this.Camera(),
-                this.Layout()
+                ((IGraphSceneDisplay<IVisual, IVisualEdge>)display).Layout
                 );
 
             display.ActionDispatcher.Add(editor);

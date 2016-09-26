@@ -31,8 +31,8 @@ namespace Limaki.View.SwfBackend.Viz {
 
     public class SwfVisualsDisplayComposer:VisualsDisplayComposer {
 
-        public override void Compose(Display<IGraphScene<IVisual, IVisualEdge>> aDisplay) {
-            var display = aDisplay;
+        public override void Compose(Display<IGraphScene<IVisual, IVisualEdge>> display) {
+
             base.Compose (display);
 
             var dragDrop = new VisualsDragDropAction (
@@ -47,10 +47,10 @@ namespace Limaki.View.SwfBackend.Viz {
 
 
             var editor = new VisualsTextEditAction (
-                this.GraphScene,
+                () => display.Data,
                 display,
-                this.Camera (),
-                this.Layout()
+                display.Viewport.Camera,
+                ((IGraphSceneDisplay<IVisual, IVisualEdge>)display).Layout
                 );
 
             display.ActionDispatcher.Add(editor);
