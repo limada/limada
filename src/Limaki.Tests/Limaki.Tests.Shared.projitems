@@ -46,6 +46,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limada.Tests\Tests\View\WrapperTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\Graph\Basic\EntityBasicGraphTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\Graph\Samples\EntitySampleFactories.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\UsecaseSerializerTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\EntityBenchmarkOneSceneFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\Samples\SampleGraphSceneFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limaki.Tests\View\Visuals\SceneMeshTest.cs" />

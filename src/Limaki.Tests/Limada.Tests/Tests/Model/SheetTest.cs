@@ -51,23 +51,23 @@ namespace Limada.Tests.Model {
             graph.Add (thing);
             graph.Add (factory.CreateItem());
 
-            ThingIdSerializer serializer = new ThingIdSerializer ();
+            ThingXmlIdSerializer serializer = new ThingXmlIdSerializer ();
             serializer.Graph = graph;
-            serializer.ThingCollection = graph;
+            serializer.Things = graph;
 
             foreach(IThing t in graph) {
-                Assert.IsTrue (serializer.ThingCollection.Contains (t));
+                Assert.IsTrue (serializer.Things.Contains (t));
             }
 
             Stream s = new MemoryStream ();
             serializer.Write (s);
             s.Position = 0;
             
-            serializer = new ThingIdSerializer();
+            serializer = new ThingXmlIdSerializer();
             serializer.Graph = graph;
             serializer.Read (s);
             foreach (IThing t in graph) {
-                Assert.IsTrue(serializer.ThingCollection.Contains(t));
+                Assert.IsTrue(serializer.Things.Contains(t));
             }
 
 
@@ -262,16 +262,16 @@ namespace Limada.Tests.Model {
 
             var s = new MemoryStream();
 
-            var serializer = new ThingSerializer();
+            var serializer = new ThingXmlSerializer();
             serializer.Graph = thingGraph;
             
             int thingCount = 0;
             foreach (var thing in thingGraph) {
-                serializer.ThingCollection.Add (thing);
+                serializer.Things.Add (thing);
                 thingCount++;
             }
 
-            Assert.AreEqual (thingCount, serializer.ThingCollection.Count);
+            Assert.AreEqual (thingCount, serializer.Things.Count);
             serializer.Write (s);
             this.ReportDetail(string.Format("Stream.Length={0}", s.Length));
             this.ReportDetail(string.Format("Thing.Count={0}", thingCount));
@@ -294,13 +294,13 @@ namespace Limada.Tests.Model {
             this.ReportDetail(reader.ReadToEnd());
 
             s.Position = 0;
-            serializer = new ThingSerializer();
+            serializer = new ThingXmlSerializer();
             serializer.Graph = new ThingGraph();
             serializer.Read (s);
 
-            Assert.AreEqual(thingCount, serializer.ThingCollection.Count);
+            Assert.AreEqual(thingCount, serializer.Things.Count);
 
-            serializer.Graph.AddRange(serializer.ThingCollection);
+            serializer.Graph.AddRange(serializer.Things);
 
             var data = serializer.Graph.ContentContainer.GetById(streamId);
             Assert.IsNotNull (data);

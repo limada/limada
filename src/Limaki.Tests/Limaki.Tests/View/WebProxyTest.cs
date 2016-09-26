@@ -11,7 +11,6 @@ using Limaki.View.Viz;
 using Limaki.View.Viz.Visualizers;
 
 namespace Limaki.Tests.View {
-
     public class WebProxyTest {
         /// <summary>
         /// tests if scene.Focused with a call to HtmlViewer is an infinite loop

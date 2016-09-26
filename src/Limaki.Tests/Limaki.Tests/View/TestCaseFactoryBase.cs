@@ -118,8 +118,11 @@ namespace Limaki.Tests.UseCases {
         public void CurrentProblem (ConceptUsecase usecase) {
             try {
 
-                var test = new WebProxyTest ();
-                test.TestInfinitLoopIfHtmlContentIsFocused (usecase.GetCurrentDisplay ());
+                //var test = new WebProxyTest ();
+                //test.TestInfinitLoopIfHtmlContentIsFocused (usecase.GetCurrentDisplay ());
+
+                var test = new UsecaseSerializerTest ();
+                test.WriteUsecase (usecase);
 
             } catch (Exception e) {
                 Registry.Pooled<IExceptionHandler> ().Catch (e, MessageType.OK);

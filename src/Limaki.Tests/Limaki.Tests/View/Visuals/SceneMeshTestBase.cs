@@ -24,8 +24,8 @@ namespace Limaki.Tests.View.Visuals {
 
     public class SceneMeshTestBase<TItem, TEdge> : DomainTest where TEdge : IEdge<TItem>, TItem {
         
-        IGraphSceneMesh<IVisual, IVisualEdge> _mesh = null;
-        protected IGraphSceneMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (Registry.Pooled<IGraphSceneMesh<IVisual, IVisualEdge>> ()); } }
+        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+        protected IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
 
         public IEnumerable<SceneTestEnvironment<TItem, TEdge>> MeshTests (params SceneTestEnvironment<TItem, TEdge>[] sources) {
 
