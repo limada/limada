@@ -238,9 +238,13 @@ namespace Limaki.Usecases.Vidgets {
                 graph.Add (LevelUp);
 
                 try {
-                    foreach (var dir in Directory.EnumerateDirectories (path)) {
-                        var name = Path.GetFileName (dir);
+                    Action<string> addPath = p => {
+                        var name = Path.GetFileName (p);
                         graph.Add (new VisualDir (this.FolderIcon, name));
+                    };
+                    addPath (System.Environment.GetFolderPath (System.Environment.SpecialFolder.MyComputer));
+                    foreach (var dir in Directory.EnumerateDirectories (path)) {
+                        addPath (dir);
                     }
                     var pattern = FileFilter ?? "*.*";
                     foreach (var file in Directory.EnumerateFiles (path, pattern)) {
@@ -282,6 +286,7 @@ namespace Limaki.Usecases.Vidgets {
         }
 
         public void ComposeDisplay (VisualsDisplay display) {
+
             display.StyleSheet = Layout.StyleSheet;
             display.Layout = Layout;
             display.Data = Scene;
@@ -300,6 +305,7 @@ namespace Limaki.Usecases.Vidgets {
 
             IVisual hitItem = null;
             var hitCount = 0;
+
             select.MouseDown += e => {
                 var loc = display.Viewport.Camera.ToSource (e.Location);
                 var isHit = Scene.Focused != null && Scene.Focused.Shape.IsHit (loc, 5);
@@ -310,8 +316,7 @@ namespace Limaki.Usecases.Vidgets {
                         return;
 
                     if (dirItem.Icon == this.FileIcon) {
-                        if (FileSelected != null)
-                            FileSelected (Path.Combine (CurrentPath, dirItem.Name));
+                        FileSelected?.Invoke (Path.Combine (CurrentPath, dirItem.Name));
                         return;
                     }
                 }
