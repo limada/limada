@@ -12,6 +12,7 @@
  * 
  */
 
+using System;
 using Limaki.Graphs;
 
 namespace Limaki.View.Viz.Mesh {
@@ -22,7 +23,8 @@ namespace Limaki.View.Viz.Mesh {
     /// </summary>
     /// <typeparam name="TItem"></typeparam>
     /// <typeparam name="TEdge"></typeparam>
-    public interface IGraphSceneEvents<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
+    [Obsolete]
+    public interface IGraphSceneDisplayEvents<TItem, TEdge> where TEdge : IEdge<TItem>, TItem {
 
         void GraphChanged (
             object sender,

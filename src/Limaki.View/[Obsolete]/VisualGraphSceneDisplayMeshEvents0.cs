@@ -9,7 +9,7 @@ using Limaki.View.Viz.Modelling;
 using Xwt;
 
 namespace Limaki.View.Viz.Visuals {
-    public class VisualGraphSceneMeshEvents0 : IGraphSceneEvents<IVisual, IVisualEdge> {
+    public class VisualGraphSceneMeshEvents0 : IGraphSceneDisplayEvents<IVisual, IVisualEdge> {
         public void GraphChanged (
             object sender,
             GraphChangeArgs<IVisual, IVisualEdge> args,

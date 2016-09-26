@@ -12,6 +12,7 @@
  * 
  */
 
+using System;
 using Limaki.Graphs;
 using Limaki.View.Visuals;
 using Limaki.View.Viz.Mesh;
@@ -20,7 +21,8 @@ using System.Collections.Generic;
 
 namespace Limaki.View.Viz.Visuals {
 
-    public class VisualGraphSceneMeshEvents : IGraphSceneEvents<IVisual, IVisualEdge> {
+    [Obsolete]
+    public class VisualGraphSceneDisplayMeshEvents : IGraphSceneDisplayEvents<IVisual, IVisualEdge> {
 
         public void GraphChanged (
             object sender,

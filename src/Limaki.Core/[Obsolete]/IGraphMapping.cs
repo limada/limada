@@ -13,8 +13,10 @@
  */
 
 
-namespace Limaki.Graphs {
+using System;
 
+namespace Limaki.Graphs {
+	[Obsolete ("use Mesh")]
     public interface IGraphMapping {
 
         IGraphMapping Next { get;set;}
