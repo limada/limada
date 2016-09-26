@@ -33,9 +33,11 @@ namespace Limada.View.SwfBackend {
 
         protected override void Compose () {
 
+            base.Compose ();
+
             var panel = new Panel { Dock = System.Windows.Forms.DockStyle.Fill, BackColor = Color.White };
             Control.SuspendLayout();
-
+            
             var pagesDisplayBackend = Frontend.PagesDisplay.Backend as Control;
             pagesDisplayBackend.Dock = System.Windows.Forms.DockStyle.Right;
             pagesDisplayBackend.Width = (int)Frontend.GetDefaultWidth ();
