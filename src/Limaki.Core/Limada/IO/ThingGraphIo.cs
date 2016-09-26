@@ -66,13 +66,13 @@ namespace Limada.IO {
         }
 
         public virtual Iori Use (ThingGraphContent source) {
-            Close(source);
+            // Close(source);
             return source.Source as Iori;
         }
 
         public virtual Iori Use (ThingGraphContent source, Iori sink) {
             source.Source = sink;
-            Close(source);
+            // Close(source);
             return sink;
 
         }
