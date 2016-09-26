@@ -58,8 +58,12 @@ namespace Limaki.Iconerias {
 
             NewSheet = awesome.AsImage (limadaIcons.NewSheet, size * 1.15);
             NewNote = awesome.AsImage (awesome.FaPencilSquareO, size * 1.15);
+
+            FileMenu = awesome.AsImage (awesome.FaNewspaperO, size * 1.05);
             SaveContent = awesome.AsImage (awesome.FaDownload, size * 1.05);
             OpenFile = awesome.AsImage (awesome.FaFolderOpen, size * 1.05);
+            CreateFile = awesome.AsImage (awesome.FaFileO, size * 1.05);
+
 
             FontBoldIcon = awesome.AsImage (awesome.FaBold, size * .80);
             FontItalicIcon = awesome.AsImage (awesome.FaItalic, size * .80);
@@ -193,6 +197,8 @@ namespace Limaki.Iconerias {
 
         public static Image OpenFile { get; set; }
 
+        public static Image CreateFile { get; set; }
+
         public static Image ToggleVisual { get; set; }
 
         public static Image HideVisual { get; set; }
@@ -206,6 +212,6 @@ namespace Limaki.Iconerias {
         public static Image Delete { get; set; }
 
         public static Image ViewState { get; set; }
-
+        public static Image FileMenu { get; private set; }
     }
 }
