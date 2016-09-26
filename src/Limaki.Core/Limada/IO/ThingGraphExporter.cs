@@ -49,7 +49,7 @@ namespace Limada.IO {
                 var streamThing = thing as IStreamThing;
                 if (streamThing != null && streamThing.StreamType == ContentTypes.LimadaSheet) {
 
-                    var ser = new ThingIdSerializer();
+                    var ser = new ThingXmlIdSerializer();
                     ser.Graph = thingGraph;
 
                     streamThing.DeCompress();
@@ -57,7 +57,7 @@ namespace Limada.IO {
                     ser.Read(streamThing.Data);
 
                     streamThing.ClearRealSubject();
-                    ser.ThingCollection.ForEach(t => result.Push(t));
+                    ser.Things.ForEach(t => result.Push(t));
 
                 }
             }

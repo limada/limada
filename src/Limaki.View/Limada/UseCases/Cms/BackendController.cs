@@ -385,7 +385,7 @@ namespace Limada.UseCases.Cms {
 
                stream.Position = 0;
                var graph = new VisualThingGraph () { Source = ThingGraph };
-               var serializer = new VisualThingSerializer { VisualThingGraph = graph, Layout = this.Layout };
+               var serializer = new VisualThingXmlSerializer { VisualThingGraph = graph, Layout = this.Layout };
                serializer.Read (stream);
                stream.Position = 0;
 

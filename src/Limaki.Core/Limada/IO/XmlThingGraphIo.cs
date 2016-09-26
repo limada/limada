@@ -54,10 +54,10 @@ namespace Limada.IO {
 
             if (stream != null && stream.Length > 0) {
                 try {
-                    var serializer = new ThingSerializer { Graph = sink };
+                    var serializer = new ThingXmlSerializer { Graph = sink };
 
                     serializer.Read(stream);
-                    sink.AddRange(serializer.ThingCollection);
+                    sink.AddRange(serializer.Things);
 
                 } catch (Exception ex) {
                     Registry.Pooled<IExceptionHandler>()
@@ -75,7 +75,7 @@ namespace Limada.IO {
 
             using (var sink = new FileStream(Iori.ToFileName(sinkInfo), FileMode.Create)) {
 
-                var serializer = new ThingSerializer { Graph = source.Data, ThingCollection = source.Data.Elements().ToList() };
+                var serializer = new ThingXmlSerializer { Graph = source.Data, Things = source.Data.Elements().ToList() };
 
                 serializer.Write(sink);
 
