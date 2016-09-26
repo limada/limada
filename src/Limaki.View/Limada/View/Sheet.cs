@@ -26,6 +26,7 @@ using Limaki.View.Visuals;
 namespace Limada.View {
     
     public class Sheet:IDisposable {
+		
         public Sheet(IGraphScene<IVisual,IVisualEdge> scene) {
             this._scene = scene;
         }
@@ -55,10 +56,11 @@ namespace Limada.View {
         }
 
         public virtual void Save(Stream s) {
+
             var graph = Scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (graph != null) {
-                var serializer = new VisualThingSerializer(); 
+                var serializer = new VisualThingXmlSerializer(); 
                 serializer.VisualThingGraph = graph;
                 serializer.Layout = this.Layout;
                 serializer.VisualsCollection = Scene.Graph;
@@ -67,10 +69,11 @@ namespace Limada.View {
         }
 
         public virtual void Read(Stream stream) {
+
             var graph = Scene.Graph.Source<IVisual, IVisualEdge, IThing, ILink>();
 
             if (graph != null) {
-                var serializer = new VisualThingSerializer { VisualThingGraph = graph, Layout = this.Layout };
+                var serializer = new VisualThingXmlSerializer { VisualThingGraph = graph, Layout = this.Layout };
                 serializer.Read(stream);
 
                 new GraphSceneFacade<IVisual, IVisualEdge>(() => this.Scene, this.Layout)

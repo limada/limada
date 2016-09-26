@@ -28,6 +28,7 @@ using Limaki.View.XwtBackend;
 using Xwt;
 using Xwt.Backends;
 using System.Diagnostics;
+using Limada.UseCases;
 
 namespace Limaki.View.XwtBackend {
 
@@ -62,7 +63,8 @@ namespace Limaki.View.XwtBackend {
 
             context.Factory.Add<IMarkdownEdit, MarkdownEdit> ();
 
-            context.Factory.Add<IXwtConceptUseCaseComposer, XwtConceptUseCaseComposer>();
+            context.Factory.Add<IXwtBackendConceptUseCaseComposer, XwtConceptUseCaseComposer>();
+			context.Factory.Add<IBackendConceptUseCaseComposer, XwtConceptUseCaseComposer> ();
         }
 
         public virtual void ApplyResources (IApplicationContext context) {
@@ -78,6 +80,7 @@ namespace Limaki.View.XwtBackend {
         }
 
         public virtual void RegisterBackends (IApplicationContext context) {
+			
 			var backend = default(VidgetToolkitEngineBackend);
 			var currentEngine = VidgetToolkit.CurrentEngine;
 			if (currentEngine != null) {
