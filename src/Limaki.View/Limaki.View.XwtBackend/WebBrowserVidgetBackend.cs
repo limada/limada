@@ -13,7 +13,6 @@ namespace Limaki.View.XwtBackend {
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
             Frontend = (Vidgets.WebBrowserVidget) frontend;
-
         }
 
         public Stream DocumentStream { get { return Widget.DocumentStream; } set { Widget.DocumentStream = value; } }

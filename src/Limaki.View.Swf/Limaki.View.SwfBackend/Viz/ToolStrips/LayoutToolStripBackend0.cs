@@ -20,7 +20,7 @@ namespace Limaki.View.SwfBackend.Viz.ToolStrips {
             Compose ();
         }
 
-        public System.Windows.Forms.ToolStripComboBox StyleSheetCombo;
+        public ToolStripComboBox StyleSheetCombo;
 
         protected override void Compose () {
 

@@ -61,7 +61,7 @@ namespace Limada.View.Vidgets {
 
         public void Store(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager) {
             if (display != null && display.Data != null && display.Data.Count > 0) {
-                if (display.DataId == default(Int64))
+                if (display.DataId == 0)
                     display.DataId = Isaac.Long;
                 if (sheetManager.SaveInStore(display.Data, display.Layout, display.DataId)) {
                     sheetManager.RegisterSheet(display.Info);

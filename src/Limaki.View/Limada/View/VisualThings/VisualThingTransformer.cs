@@ -31,6 +31,7 @@ namespace Limada.View.VisualThings {
     /// transforms a IThing into a IVisual
     /// </summary>
     public class VisualThingTransformer : GraphItemTransformer<IVisual, IThing, IVisualEdge, ILink> {
+		
         private IThingFactory _thingFactory = null;
         public IThingFactory ThingFactory {
             get {

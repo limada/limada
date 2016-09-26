@@ -20,6 +20,7 @@ using Limaki.Common.Linqish;
 using NUnit.Framework;
 
 namespace Limaki.Playground.Proves {
+	
     [TestFixture]
     public class ExpressionExplorationTest:Limaki.UnitTest.TestBase  {
         [Test]
