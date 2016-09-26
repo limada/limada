@@ -13,3 +13,4 @@ build.*
 *.usertasks
 *.mdb
 .DS_Store
+3rdParty/src/Mono.Xwt/packages/
