@@ -20,6 +20,7 @@
 using Limaki.Drawing;
 using Limaki.Graphs;
 using System;
+using System.Diagnostics;
 
 namespace Limaki.View.Viz.Rendering {
 
@@ -37,6 +38,7 @@ namespace Limaki.View.Viz.Rendering {
 #endif
 
         public override void Render(IGraphScene<TItem, TEdge> data, IRenderEventArgs e) {
+			
             var camera = this.Camera ();
             var clipBounds = camera.ToSource(e.Clipper.Bounds);
 

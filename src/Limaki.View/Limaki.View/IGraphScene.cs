@@ -80,11 +80,14 @@ namespace Limaki.View {
         
     }
 
-    public class SceneInfo {
-        public Int64 Id;
-        public string Name;
-        private State _state ;
+	public class SceneInfo {
+
+        public Int64 Id { get; set; }
+        public string Name { get; set; } = "";
+        private State _state;
         public State State { get { return _state ?? (_state = new State { Hollow = true }); } }
+
+        public static SceneInfo FromInfo(SceneInfo other) {
     }
 
     public interface ISpatialZIndex<TItem> : ISpatialIndex<TItem> {
