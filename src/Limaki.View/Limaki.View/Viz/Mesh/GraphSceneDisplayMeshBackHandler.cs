@@ -14,15 +14,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Limaki.Common;
 using Limaki.Common.Linqish;
 using Limaki.Graphs;
 using Limaki.View.GraphScene;
 using Limaki.View.Viz.Modelling;
-using System.Diagnostics;
+using System.Linq;
 
 namespace Limaki.View.Viz.Mesh {
+	
 
     /// <summary>
     /// handles the backing Graphs of Scenes
@@ -33,8 +35,12 @@ namespace Limaki.View.Viz.Mesh {
     /// <typeparam name="TSourceItem"></typeparam>
     /// <typeparam name="TSinkEdge"></typeparam>
     /// <typeparam name="TSourceEdge"></typeparam>
-    public class GraphSceneMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IGraphSceneMeshBackHandler<TSinkItem, TSinkEdge>
-        where TSinkEdge : IEdge<TSinkItem>, TSinkItem
+    public class GraphSceneDisplayMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> :
+		
+		IGraphSceneDisplayMeshBackHandler<TSinkItem, TSinkEdge> ,
+	    IGraphSceneMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>
+
+		where TSinkEdge : IEdge<TSinkItem>, TSinkItem
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
         ICollection<IGraph<TSourceItem, TSourceEdge>> _backGraphs = new HashSet<IGraph<TSourceItem, TSourceEdge>> ();
@@ -48,7 +54,8 @@ namespace Limaki.View.Viz.Mesh {
         }
 
         public void UnregisterBackGraph (IGraph<TSinkItem, TSinkEdge> graph) {
-            UnregisterBackGraph (BackGraphOf (graph));
+            var backGraph = BackGraphOf (graph);
+            UnregisterBackGraph (backGraph);
         }
 
         public void RegisterBackGraph (IGraph<TSourceItem, TSourceEdge> root) {
@@ -65,8 +72,14 @@ namespace Limaki.View.Viz.Mesh {
 			UnregisterBackGraph (root,false);
         }
 
+        public void Clear () {
+            foreach (var g in BackGraphs.ToArray ()) {
+                UnregisterBackGraph (g);
+            }
+        }
+
         public IEnumerable<IGraph<TSourceItem, TSourceEdge>> BackGraphsOf (IGraph<TSourceItem, TSourceEdge> graph) {
-            return BackGraphs.Where (g => g == graph || g.WrappedSource () == graph || g.RootSink () == graph);
+            return BackGraphs.Where (g => g == graph || g.UnWrapped () == graph || g.RootSink () == graph);
         }
 
         public void UnregisterBackGraph (IGraph<TSourceItem, TSourceEdge> root, bool forced) {
@@ -103,22 +116,37 @@ namespace Limaki.View.Viz.Mesh {
             return ScenesOfBackGraph (backGraph);
         }
 
+		public virtual IGraph<TSourceItem, TSourceEdge> WrapGraph (IGraph<TSourceItem, TSourceEdge> backGraph) {
+			var viz = Registry.Create<ISceneViz<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>> ();
+			return viz.WrapGraph (backGraph);
+		}
+
+		public virtual IGraph<TSinkItem, TSinkEdge> CreateSinkGraph (IGraph<TSourceItem, TSourceEdge> backGraph) {
+			var viz = Registry.Create<ISceneViz<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>> ();
+			return viz.CreateSinkGraph (backGraph);
+		}
+
+		public virtual IGraphScene<TSinkItem, TSinkEdge> CreateScene (IGraph<TSourceItem, TSourceEdge> backGraph) {
+			var viz = Registry.Create<ISceneViz<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>> ();
+			return viz.CreateScene (backGraph);
+		}
+
+		public virtual IGraph<TSinkItem, TSinkEdge> CreateSinkGraph (IGraph<TSinkItem, TSinkEdge> source) {
+
+			IGraph<TSinkItem, TSinkEdge> result = null;
+
+			var graphPair = source.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge> ();
+			if (graphPair != null) {
+				var sinkGraph = Activator.CreateInstance (graphPair.Sink.GetType ()) as IGraph<TSinkItem, TSinkEdge>;
+				var transformer = Activator.CreateInstance (graphPair.Mapper.Transformer.GetType ());
+				result = Activator.CreateInstance (graphPair.GetType (), sinkGraph, graphPair.Source, transformer) as IGraph<TSinkItem, TSinkEdge>;
+			}
+
+			return result;
+		}
+
         public IGraphSceneDisplay<TSinkItem, TSinkEdge> DisplayOf (IGraphScene<TSinkItem, TSinkEdge> scene) {
-            return Displays ().Where (d => d.Data == scene).FirstOrDefault ();
-        }
-
-        public virtual IGraph<TSinkItem, TSinkEdge> CreateSinkGraph (IGraph<TSinkItem, TSinkEdge> source) {
-
-            IGraph<TSinkItem, TSinkEdge> result = null;
-
-            var graphPair = source.Source<TSinkItem, TSinkEdge, TSourceItem, TSourceEdge>();
-            if (graphPair != null) {
-                var sinkGraph = Activator.CreateInstance(graphPair.Sink.GetType ()) as IGraph<TSinkItem, TSinkEdge>;
-                var transformer = Activator.CreateInstance (graphPair.Mapper.Transformer.GetType ());
-                result = Activator.CreateInstance (graphPair.GetType (), sinkGraph, graphPair.Source, transformer) as IGraph<TSinkItem, TSinkEdge>;
-            } 
-
-            return result;
+            return Displays ().FirstOrDefault (d => d.Data == scene);
         }
 
         #region BackGraphEvents
@@ -264,7 +292,7 @@ namespace Limaki.View.Viz.Mesh {
         #endregion
 
         #region needed if BackendHandler is called from Backend, not from Frontend 
-        // this are copies from VisualGraphSceneMeshEvents, should be consolidated
+        // this are copies from VisualGraphSceneDisplayMeshEvents, should be consolidated
 
         protected virtual void SceneEdgeChanged (IGraph<TSourceItem, TSourceEdge> sourceGraph, TSourceEdge sourceEdge, IGraphScene<TSinkItem, TSinkEdge> sinkScene, TSinkEdge sinkEdge) {
             

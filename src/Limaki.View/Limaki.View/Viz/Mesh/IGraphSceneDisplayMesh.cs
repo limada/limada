@@ -15,6 +15,7 @@
 
 using System.Collections.Generic;
 using Limaki.Graphs;
+using Limaki.View.GraphScene;
 
 namespace Limaki.View.Viz.Mesh {
     /// <summary>
@@ -22,23 +23,19 @@ namespace Limaki.View.Viz.Mesh {
     /// registered scenes and their backing 
     /// Graphs are notified of changes
     /// </summary>
-    public interface IGraphSceneMesh<TItem, TEdge>  where TEdge : TItem, IEdge<TItem> {
+    public interface IGraphSceneDisplayMesh<TItem, TEdge> : IGraphSceneMesh<TItem, TEdge>
+        where TEdge : TItem, IEdge<TItem> {
 
-        void AddScene (IGraphScene<TItem, TEdge> scene);
-        void RemoveScene (IGraphScene<TItem, TEdge> scene);
+        new IGraphSceneDisplayMeshBackHandler<TItem, TEdge> BackHandler (IGraph<TItem, TEdge> graph);
+		new IGraphSceneMeshBackHandler<TItem, TSourceItem, TEdge, TSourceEdge> BackHandler<TSourceItem, TSourceEdge> () where TSourceEdge : TSourceItem, IEdge<TSourceItem>; 
+
         void AddDisplay (IGraphSceneDisplay<TItem, TEdge> display);
         void RemoveDisplay (IGraphSceneDisplay<TItem, TEdge> display);
 
-        ICollection<IGraphScene<TItem, TEdge>> Scenes { get; }
         ICollection<IGraphSceneDisplay<TItem, TEdge>> Displays { get; }
 
-        IGraphSceneMeshBackHandler<TItem, TEdge> BackHandler (IGraph<TItem, TEdge> graph);
-        IGraphSceneMeshBackHandler<TItem, TEdge> BackHandler<TSourceItem, TSourceEdge> ();
-
         void CopyDisplayProperties (IGraphSceneDisplay<TItem, TEdge> sourceDisplay, IGraphSceneDisplay<TItem, TEdge> targetDisplay);
-        IGraph<TItem, TEdge> CreateSinkGraph (IGraph<TItem, TEdge> source);
-        IGraphScene<TItem, TEdge> CreateSinkScene (IGraph<TItem, TEdge> sourceGraph);
 
-        TItem LookUp (IGraph<TItem, TEdge> sourceGraph, IGraph<TItem, TEdge> sinkGraph, TItem lookItem);
+        void Clear ();
     }
 }

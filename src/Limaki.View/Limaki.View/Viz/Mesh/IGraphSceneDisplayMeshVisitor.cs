@@ -14,10 +14,11 @@
 
 using System;
 using Limaki.Graphs;
+using Limaki.View;
 
 namespace Limaki.View.Viz.Mesh {
 
-    public interface IGraphSceneMeshVisitor<TSinkItem, TSinkEdge>
+    public interface IGraphSceneDisplayMeshVisitor<TSinkItem, TSinkEdge>
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem {
 
         void ChangeDataVisit (

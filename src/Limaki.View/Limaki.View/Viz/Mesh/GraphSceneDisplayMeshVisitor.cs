@@ -16,15 +16,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Limaki.Graphs;
+using Limaki.View;
+using Limaki.View.Viz;
+using Limaki.View.Viz.Mesh;
 
-namespace Limaki.View.Viz.Mesh {
+namespace Limaki.View.GraphScene {
 
-    public class GraphSceneMeshVisitor<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IGraphSceneMeshVisitor<TSinkItem, TSinkEdge>
+    public class GraphSceneDisplayMeshVisitor<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> : IGraphSceneDisplayMeshVisitor<TSinkItem, TSinkEdge>
         where TSinkEdge : IEdge<TSinkItem>, TSinkItem
         where TSourceEdge : IEdge<TSourceItem>, TSourceItem {
 
-        public IGraphSceneMesh<TSinkItem, TSinkEdge> Mesh { get; private set; }
-        public GraphSceneMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> BackHandler { get; private set; }
+        public IGraphSceneDisplayMesh<TSinkItem, TSinkEdge> Mesh { get; private set; }
+        public GraphSceneDisplayMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge> BackHandler { get; private set; }
         public IGraph<TSinkItem, TSinkEdge> SourceGraph { get; private set; }
         public TSinkItem SourceItem { get; private set; }
 
@@ -33,14 +36,14 @@ namespace Limaki.View.Viz.Mesh {
         protected IGraph<TSourceItem, TSourceEdge> BackGraph { get; private set; }
         protected TSourceItem BackItem { get; private set; }
 
-        public GraphSceneMeshVisitor (
-                IGraphSceneMesh<TSinkItem, TSinkEdge> mesh, 
-                IGraphSceneMeshBackHandler<TSinkItem, TSinkEdge> backHandler,
+        public GraphSceneDisplayMeshVisitor (
+                IGraphSceneDisplayMesh<TSinkItem, TSinkEdge> mesh, 
+                IGraphSceneDisplayMeshBackHandler<TSinkItem, TSinkEdge> backHandler,
                 IGraph<TSinkItem, TSinkEdge> graph, 
                 TSinkItem item) {
 
             this.Mesh = mesh;
-            this.BackHandler = backHandler as GraphSceneMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>;
+            this.BackHandler = backHandler as GraphSceneDisplayMeshBackHandler<TSinkItem, TSourceItem, TSinkEdge, TSourceEdge>;
             this.SourceGraph = graph;
             this.SourceItem = item;
 
