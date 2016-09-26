@@ -141,6 +141,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\Text\TextHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\TODOAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Transient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\XmlSerializerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contents\CompressionWorker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)3rdParty\ICSharpCode.SharpZipLib\BZip2\BZip2Constants.cs" />
@@ -172,6 +173,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contents\Handlers\TextContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contents\IO\StreamContentIoPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contents\MimeFingerPrints.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingXmlIdSerializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingXmlSerializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingXmlSerializerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LimakiCoreContextResourceLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Iori.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DbGraph.cs" />
@@ -183,7 +188,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\EdgeComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\GraphPairExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\SubGraphWorker.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Graphs\IGraphMapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\IMarkerFacade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\LevelItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\MarkerFacade.cs" />
@@ -234,7 +238,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\Link.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\NumberThing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\RealData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\SerializerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\StreamThing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\StringThing.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\NodeThing.cs" />
@@ -243,9 +246,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingGraph.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingGraphExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingIdSerializer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingSerializer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingSerializerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\ThingContentFacade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Model\Thing_T.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Limada\Schemata\CommonSchema.cs" />

@@ -14,6 +14,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -65,6 +66,10 @@
     <ProjectReference Include="..\Limaki.View.Resources\Limaki.View.Resources.csproj">
       <Project>{CA6C22CA-DC4A-4F47-88DA-17C64C9BDDC4}</Project>
       <Name>Limaki.View.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Limaki.View.Xwt.Tests\Limaki.View.Xwt.Tests.csproj">
+      <Project>{1e41c2f8-935a-4453-b7c9-f59cd96536dc}</Project>
+      <Name>Limaki.View.Xwt.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Limaki.View.Xwt\Limaki.View.Xwt.csproj">
       <Project>{4C8B39FE-F433-4C22-B5C7-FDCF33035D23}</Project>

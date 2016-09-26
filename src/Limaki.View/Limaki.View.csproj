@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;TraceRender</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -67,7 +67,8 @@
     <Compile Include="Limada\UseCases\Cms\Models\VisualHref.cs" />
     <Compile Include="Limada\UseCases\Content\StreamContentUiManager.cs" />
     <Compile Include="Limada\UseCases\IConceptUsecase.cs" />
-    <Compile Include="Limada\UseCases\UsecasePersistor.cs" />
+    <Compile Include="Limada\UseCases\Serializers\UsecasePersistor.cs" />
+    <Compile Include="Limada\View\ThingMeshHelper.cs" />
     <Compile Include="Limaki.Contents\Text\HtmlDocument.cs" />
     <Compile Include="Limaki.Contents\Text\IDocument.cs" />
     <Compile Include="Limaki.Contents\Text\MarkdownDocument.cs" />
@@ -79,6 +80,8 @@
     <Compile Include="Limaki.View\Vidgets\MarkDownEdit.cs" />
     <Compile Include="Limaki.View\Vidgets\PlainTextBox.cs" />
     <Compile Include="Limaki.View\Vidgets\WebBrowserBackendHost.cs" />
+    <Compile Include="Limaki.View\GraphScene\IGraphSceneMesh.cs" />
+    <Compile Include="Limaki.View\GraphScene\IGraphSceneMeshBackHandler.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\LayoutToolStrip.cs" />
     <Compile Include="Xwt\PaintingImage.cs" />
     <Compile Include="Limaki.View.XwtBackend\TextViewerVidgetBackend.cs" />
@@ -108,7 +111,7 @@
     <Compile Include="Limaki.View.XwtBackend\Extensions.cs" />
     <Compile Include="Limaki.View\IToolkitAware.cs" />
     <Compile Include="Limaki.View.XwtBackend\IXwtBackend.cs" />
-    <Compile Include="Limaki.View.XwtBackend\IXwtConceptUseCaseComposer.cs" />
+    <Compile Include="Limaki.View.XwtBackend\IXwtBackendConceptUseCaseComposer.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\XwtGraphSceneLayer.cs" />
     <Compile Include="Limaki.View\ContentViewers\ImageContentViewer.cs" />
     <Compile Include="Limaki.View\ContentViewers\PdfContentViewer.cs" />
@@ -131,21 +134,20 @@
     <Compile Include="Limaki.View\Viz\UI\MouseCustomAction.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ImageDisplay.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ImageExporter.cs" />
-    <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneEvents.cs" />
-    <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneMesh.cs" />
-    <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneMeshBackHandler.cs" />
-    <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneMeshVisitor.cs" />
-    <Compile Include="Limaki.View\Viz\Mesh\GraphSceneMeshVisitor.cs" />
-    <Compile Include="Limaki.View\Viz\Mesh\GraphSceneMeshBackHandler.cs" />
+    <Compile Include="[Obsolete]\IGraphSceneDisplayEvents.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneDisplayMesh.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneDisplayMeshBackHandler.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\IGraphSceneDisplayMeshVisitor.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\GraphSceneDisplayMeshVisitor.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\GraphSceneDisplayMeshBackHandler.cs" />
     <Compile Include="Limaki.View\Vidgets\ToolStrip.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\ArrangerToolStrip.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\MarkerToolStrip.cs" />
     <Compile Include="Limaki.View\Viz\Visualizers\ToolStrips\DisplayToolStrip.cs" />
-    <Compile Include="Limaki.View\Viz\Visuals\VisualGraphSceneMeshEvents.cs" />
-    <Compile Include="Limaki.View\Viz\Visuals\VisualGraphSceneMesh.cs" />
-    <Compile Include="Limaki.View\GraphScene\GraphSceneExtensions.cs" />
+    <Compile Include="[Obsolete]\VisualGraphSceneDisplayMeshEvents.cs" />
+    <Compile Include="Limaki.View\Viz\Visuals\VisualGraphSceneDisplayMesh.cs" />
     <Compile Include="Limaki.View\Viz\Visuals\VisualsTextEditActionBase.cs" />
-    <Compile Include="Limaki.View\Viz\Mesh\GraphSceneMesh.cs" />
+    <Compile Include="Limaki.View\Viz\Mesh\GraphSceneDisplayMesh.cs" />
     <Compile Include="Limaki.View\Visuals\IVisualContentViz.cs" />
     <Compile Include="Limada\View\ContentViewers\DigidocKeyScrollAction.cs" />
     <Compile Include="Limada\View\ContentViewers\DigidocContentViewer.cs" />
@@ -215,7 +217,7 @@
     <Compile Include="Limaki.Drawing\Camera.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\ContextSurface.cs" />
     <Compile Include="Limaki.Drawing\DrawingExtensions.cs" />
-    <Compile Include="Limaki.Drawing\StyleSerializer.cs" />
+    <Compile Include="Limaki.Drawing\StyleXmlSerializer.cs" />
     <Compile Include="Limaki.Drawing\Shapes\GrahamConvexHull.cs" />
     <Compile Include="Limaki.Drawing\ICamera.cs" />
     <Compile Include="Limaki.Drawing\IDrawingUtils.cs" />
@@ -282,7 +284,7 @@
     <Compile Include="Limada\View\VisualThings\VisualThingGraphExtension.cs" />
     <Compile Include="[Obsolete]\VisualThingGraphMapping.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingMarkerFacade.cs" />
-    <Compile Include="Limada\View\VisualThings\VisualThingSerializer.cs" />
+    <Compile Include="Limada\View\VisualThings\VisualThingXmlSerializer.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingsContentViz.cs" />
     <Compile Include="Limaki.View\Viz\Rendering\BoundsClipper.cs" />
     <Compile Include="Limaki.View\Viz\Rendering\ClipReceiver.cs" />
@@ -436,7 +438,14 @@
     <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphItemMouseScrollAction.cs" />
     <Compile Include="Limaki.Usecases\Vidgets\FileExplorerComposer.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\ImageLayer.cs" />
-    <Compile Include="[Obsolete]\VisualGraphSceneMeshEvents0.cs" />
+    <Compile Include="[Obsolete]\VisualGraphSceneDisplayMeshEvents0.cs" />
+    <Compile Include="Limaki.View\Viz\Serializers\GraphSceneDisplayMemento.cs" />
+    <Compile Include="Limaki.View\Viz\Serializers\GraphSceneDisplayXmlSerializer.cs" />
+    <Compile Include="Limaki.View\Viz\Serializers\MeshXmlSerializer.cs" />
+    <Compile Include="Limaki.View\Viz\Serializers\SceneInfoXmlSerializer.cs" />
+    <Compile Include="Limada\UseCases\Serializers\UsecaseXmlSerializer.cs" />
+    <Compile Include="Limaki.View\GraphScene\ISceneViz.cs" />
+    <Compile Include="Limaki.View\GraphScene\GraphSceneExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
@@ -456,6 +465,7 @@
     <Content Include="Xwt\RelatedDocs.txt" />
     <Content Include="Xwt\XwtProblems.txt" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

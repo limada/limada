@@ -253,7 +253,6 @@
     <Compile Include="[Obsolete]\GraphMapping.cs" />
     <Compile Include="Graphs\GraphPairExtension.cs" />
     <Compile Include="Graphs\SubGraphWorker.cs" />
-    <Compile Include="Graphs\IGraphMapping.cs" />
     <Compile Include="Graphs\IMarkerFacade.cs" />
     <Compile Include="Graphs\LevelItem.cs" />
     <Compile Include="Graphs\MarkerFacade.cs" />
@@ -305,7 +304,7 @@
     <Compile Include="Limada\Model\Link.cs" />
     <Compile Include="Limada\Model\NumberThing.cs" />
     <Compile Include="Limada\Model\RealData.cs" />
-    <Compile Include="Common\SerializerBase.cs" />
+    <Compile Include="Common\XmlSerializerBase.cs" />
     <Compile Include="Limada\Model\StreamThing.cs" />
     <Compile Include="Limada\Model\StringThing.cs" />
     <Compile Include="Limada\Model\Thing.cs" />
@@ -313,9 +312,9 @@
     <Compile Include="Limada\Model\ThingFactory.cs" />
     <Compile Include="Limada\Model\ThingGraph.cs" />
     <Compile Include="Limada\Model\ThingGraphExtensions.cs" />
-    <Compile Include="Limada\Model\ThingIdSerializer.cs" />
-    <Compile Include="Limada\Model\ThingSerializer.cs" />
-    <Compile Include="Limada\Model\ThingSerializerBase.cs" />
+    <Compile Include="Limada\Model\ThingXmlIdSerializer.cs" />
+    <Compile Include="Limada\Model\ThingXmlSerializer.cs" />
+    <Compile Include="Limada\Model\ThingXmlSerializerBase.cs" />
     <Compile Include="Limada\Model\ThingContentFacade.cs" />
     <Compile Include="Limada\Model\Thing_T.cs" />
     <Compile Include="Limada\Schemata\CommonSchema.cs" />
@@ -358,6 +357,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\IOUtils.cs" />
     <Compile Include="Common\ByteUtils.cs" />
+    <Compile Include="[Obsolete]\IGraphMapping.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3rdParty\CommonMark\LICENSE.md" />
