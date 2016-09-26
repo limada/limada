@@ -36,6 +36,8 @@ using System.Windows.Forms;
 using Xwt;
 using Xwt.Backends;
 using Limaki.View.Viz.Visualizers;
+using Limada.UseCases;
+using Limada.Usecases;
 
 namespace Limaki.View.SwfBackend {
 
@@ -80,6 +82,8 @@ namespace Limaki.View.SwfBackend {
             context.Factory.Add<IDisplay<IGraphScene<IVisual,IVisualEdge>>, VisualsDisplay>();
 
             context.Factory.Add<IWebBrowserBackend>(() => CreateWebBrowserBackend());
+
+            context.Factory.Add<IBackendConceptUseCaseComposer, SwfConceptUseCaseComposer> ();
 
             context.Factory.Add<IMarkdownEdit, MarkdownEdit> ();
 

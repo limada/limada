@@ -96,9 +96,10 @@ namespace Limaki.View.XwtBackend {
             Application.Dispose ();
         }
 
-        protected virtual IXwtConceptUseCaseComposer CreateUseCase () {
+        protected virtual IXwtBackendConceptUseCaseComposer CreateUseCase () {
+			
 			Limaki.Iconerias.Iconery.Compose ();
-            var backendComposer = Registry.Create<IXwtConceptUseCaseComposer> ();
+            var backendComposer = Registry.Create<IXwtBackendConceptUseCaseComposer> ();
             backendComposer.MainWindowBackend = new MainWindowBackend {
                 Icon = Limaki.Iconerias.Iconery.LimadaLogo
             };
