@@ -90,7 +90,11 @@ namespace Limaki.Common {
             target.Hollow = this.Hollow;
         }
 
-        public object Clone () {
+		object ICloneable.Clone () {
+			return this.Clone ();
+		}
+
+        public State Clone () {
             var result = new State ();
             CopyTo (result);
             return result;
@@ -124,7 +128,9 @@ namespace Limaki.Common {
 
             #endregion
         }
-    }
+
+
+	}
 
     public enum StateMemento {
         Clean,
