@@ -46,6 +46,7 @@ namespace Xwt.GtkBackend
 			view = new WebKit.WebView ();
 			Widget = view;
 			Widget.Show ();
+			//view.EnableScrollbars();
 		}
 
 		public string Url {
