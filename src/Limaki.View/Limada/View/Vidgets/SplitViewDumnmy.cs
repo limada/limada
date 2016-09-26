@@ -7,12 +7,13 @@ using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Visualizers;
+using Limada.View.ContentViewers;
 
 namespace Limada.View.Vidgets {
 
 	public class SplitViewDumnmy : Vidget, ISplitView {
 
-		public void ChangeData (IGraphScene<IVisual, IVisualEdge> scene) { }
+		public void ChangeData () { }
 
 		public IGraphSceneDisplay<IVisual, IVisualEdge> CurrentDisplay { get { return null; } }
 	    public IVidget CurrentVidget { get { return null; } }
@@ -21,6 +22,7 @@ namespace Limada.View.Vidgets {
 
         public event EventHandler ViewChanged;
         public event Action<IVidget> CurrentVidgetChanged;
+        public ContentViewManager ContentViewManager { get; set; }
 
         public virtual void ToggleView() { }
 
@@ -78,7 +80,10 @@ namespace Limada.View.Vidgets {
            
         }
 
-        public IVidget ContentVidget {
+		public void SetScene (IGraphScene<IVisual, IVisualEdge> display, string name) {
+		}
+
+		public IVidget ContentVidget {
             get { return null; }
         }
 

@@ -13,6 +13,7 @@
  */
 
 using System;
+using Limada.View.ContentViewers;
 using Limada.View.Vidgets;
 using Limaki.Common;
 using Limaki.Drawing;
@@ -37,6 +38,8 @@ namespace Limaki.Usecases.Vidgets {
         ISheetManager SheetManager { get; set; }
         FavoriteManager FavoriteManager { get; set; }
 
+        ContentViewManager ContentViewManager { get; set; }
+
         void ToggleView();
 
         bool CanGoBackOrForward(bool forward);
@@ -52,11 +55,13 @@ namespace Limaki.Usecases.Vidgets {
 
         event EventHandler ViewChanged;
 
-        void ChangeData (IGraphScene<IVisual, IVisualEdge> scene);
+        void ChangeData ();
 
         void LoadSheet(SceneInfo sceneInfo);
 
         IGraphSceneDisplay<IVisual, IVisualEdge> AdjacentDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display);
+
+		void SetScene (IGraphScene<IVisual, IVisualEdge> scene, string displayName);
 
         /// <summary>
         /// shows a new IGraph

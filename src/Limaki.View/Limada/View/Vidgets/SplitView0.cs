@@ -53,12 +53,6 @@ namespace Limada.View.Vidgets {
         public virtual void Compose () {
             Display1 = new VisualsDisplay();
             Display2 = new VisualsDisplay();
-            
-            Display1.BackColor = SystemColors.Window;
-
-            Display1.ZoomState = ZoomState.Original;
-            Display1.SelectAction.Enabled = true;
-            Display1.MouseScrollAction.Enabled = false;
 
             InitializeDisplay(Display1);
             InitializeDisplay(Display2);
@@ -70,6 +64,7 @@ namespace Limada.View.Vidgets {
         public IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>>()); } }
 
         public void InitializeDisplay(IGraphSceneDisplay<IVisual, IVisualEdge> display) {
+			
             var styleSheets = Registry.Pooled<StyleSheets>();
             IStyleSheet styleSheet = null;
 
@@ -86,6 +81,24 @@ namespace Limada.View.Vidgets {
             Backend.InitializeDisplay(display.Backend);
 
             Mesh.AddDisplay (display);
+
+        }
+
+		public void SetScene (IGraphScene<IVisual, IVisualEdge> scene, string name) {
+		    var display = Display1;
+
+			if (name.ToLower().EndsWith (nameof (Display1).ToLower())) {
+			    display = Display1;
+			}
+            else if (name.ToLower ().EndsWith (nameof (Display2).ToLower ())) {
+                display = Display2;
+            }
+            else {
+                return;
+            }
+
+		    display.Data = scene;
+            display.BackendRenderer.Render ();
 
         }
 
@@ -251,34 +264,19 @@ namespace Limada.View.Vidgets {
             Backend.ViewInWindow (backend, onClose);
         }
 
-        public void ChangeData(IGraphScene<IVisual, IVisualEdge> scene) {
+        public void ChangeData() {
 
-            var oldScene = Display1.Data;
-            IList<IGraphSceneDisplay<IVisual, IVisualEdge>> displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { Display2 };
 
-            if (oldScene != null) {
-                displays = Mesh.DisplaysOfBackGraph (oldScene.Graph).ToList ();
-                if (!displays.Contains (Display2)) {
-                    displays.Add (Display2);
-                }
-                Clear ();
+			IList<IGraphSceneDisplay<IVisual, IVisualEdge>> displays = new IGraphSceneDisplay<IVisual, IVisualEdge>[] { Display2 };
 
-                displays.ForEach (d => Mesh.RemoveScene (d.Data));
-                displays.ForEach (d => Mesh.ClearDisplaysOf (d.Data));
-            }
+            Clear ();
 
             CurrentDisplay = null;
-            Display1.Data = scene;
-
-            scene.CreateMarkers();
-            Mesh.AddScene (scene);
 
             displays
                 .Where (d => d != Display1)
                 .ForEach (d => {
                     Mesh.CopyDisplayProperties (Display1, d);
-                    d.Data = Mesh.CreateSinkScene (Display1.Data.Graph);
-                    Mesh.AddScene (d.Data);
                 });
 
             FavoriteManager.GoHome (Display1, true);
@@ -353,12 +351,12 @@ namespace Limada.View.Vidgets {
         public void SaveDocument() {
             if (CurrentVidget == CurrentDisplay) {
                 var display = this.CurrentDisplay;
-                if (SheetManager.IsSaveable(display.Data)) {
+                //if (SheetManager.IsSaveable(display.Data)) {
                     var info = display.Info;
                     Backend.ShowTextDialog("Sheet:", info.Name, SaveSheet);
-                }
+                //}
             } else {
-                this.ContentViewManager.SaveStream (CurrentDisplay.Data.Graph.ThingGraph (), this.ContentViewManager.CurrentViewer as ContentStreamViewer);
+                this.ContentViewManager.SaveStream (CurrentDisplay.Data.Graph.ThingGraph (), ContentViewManager.CurrentViewer as ContentStreamViewer);
             }
         }
 
@@ -400,7 +398,7 @@ namespace Limada.View.Vidgets {
             VisualsDisplayHistory.Store(currentDisplay, SheetManager);
             new VisualThingSearch()
                 .LoadSearch(currentDisplay.Data, currentDisplay.Layout, name);
-            currentDisplay.DataId = 0;
+			currentDisplay.DataId = Isaac.Long;
             new State {Hollow = true}.CopyTo(currentDisplay.State);
             currentDisplay.Text = name;
             currentDisplay.Viewport.Reset();
@@ -434,10 +432,9 @@ namespace Limada.View.Vidgets {
 
             ContentViewManager.Clear ();
 
-            Display1.DataId = 0;
-            Display1.Text = string.Empty;
-            Display2.DataId = 0;
-            Display2.Text = string.Empty;
+			Display1.Clear ();
+			Display2.Clear ();
+            
         }
 
         #endregion 
@@ -634,5 +631,5 @@ namespace Limada.View.Vidgets {
             return true;
         }
 
-    }
+	}
 }
