@@ -154,9 +154,8 @@ namespace Limaki.View.XwtBackend {
                 SetScrollingPanelContent (widget, panel);
             }
 
-            if (onShowAction != null) {
-                onShowAction ();
-            }
+            onShowAction?.Invoke ();
+            
         }
 
 

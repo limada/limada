@@ -53,16 +53,12 @@ namespace Limaki.View.XwtBackend {
             };
             
             Frontend.AttachContentViewer = contentViewer => {
-                Widget contentWidget = null;
-                if (contentViewer != null)
-                    contentWidget = contentViewer.Backend.ToXwt ();
-                else {
-                    contentWidget = NullContentViewer;
-                }
+				
+                var contentWidget = contentViewer?.Backend.ToXwt () ?? NullContentViewer;
+
                 suspendWidth = true;
-                if (Widget.Panel1.Content != null) {
-                    Widget.Panel1.Content = null;
-                }
+                Widget.Panel1.Content = null;
+
                 if (Widget.Position == 0 && Widget.Size.Width > pagesDisplayBackend.Size.Width)
                     Widget.Position = Widget.Size.Width - Math.Max (width, pagesDisplayBackend.Size.Width);
 
