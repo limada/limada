@@ -233,6 +233,7 @@ namespace Limaki.View.XwtBackend {
             Trace.WriteLine(string.Format("KeyReleased {0} | {1}", ml, this.GetType().Name));
 			var keyAction = new KeyActionEventArgs (args.Key, args.Modifiers, ml);
 			Display.ActionDispatcher.OnKeyReleased (keyAction);
+            args.Handled = true;
         }
 
         protected override void OnKeyPressed (KeyEventArgs args) {
@@ -240,6 +241,7 @@ namespace Limaki.View.XwtBackend {
             var ml = this.MouseLocation ();
             Trace.WriteLine (string.Format ("KeyPressed {0} | {1}", ml, this.GetType ().Name));
             Display.ActionDispatcher.OnKeyPressed (new KeyActionEventArgs (args.Key, args.Modifiers, ml));
+            args.Handled = true;
         }
 
         #endregion
