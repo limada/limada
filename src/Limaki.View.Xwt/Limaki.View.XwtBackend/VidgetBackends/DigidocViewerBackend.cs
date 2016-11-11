@@ -72,13 +72,7 @@ namespace Limaki.View.XwtBackend {
                 suspendWidth = false;
             };
 
-            Frontend.Backend.ToXwt ().BoundsChanged += InitBoundsChanged;
-
         }
 
-        void InitBoundsChanged (object sender, EventArgs e) {
-            Frontend.Backend.ToXwt ().BoundsChanged -= InitBoundsChanged;
-            Frontend.AttachContentViewer (null);
-        }
     }
 }
