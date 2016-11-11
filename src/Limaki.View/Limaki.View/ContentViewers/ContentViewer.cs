@@ -38,19 +38,6 @@ namespace Limaki.View.ContentViewers {
             set { _backColor = value; }
         }
 
-        public Action<IVidgetBackend> AttachBackend { get; set; }
-        public Action<IVidgetBackend> DetachBackend { get; set; }
-
-        public virtual void DoAttachBackend () {
-            OnAttachBackend (this.Backend);
-        }
-
-        protected virtual void OnAttachBackend (IVidgetBackend backend) {
-            if (AttachBackend != null) {
-                AttachBackend(backend);
-            }
-        }
-
         public virtual void OnShow () { }
 
         public virtual void Clear() {

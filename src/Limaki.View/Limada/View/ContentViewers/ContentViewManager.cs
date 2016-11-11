@@ -50,7 +50,7 @@ namespace Limada.View.ContentViewers {
         /// <summary>
         /// delegated to Viewer.AttachBackend
         /// </summary>
-        public Action<IVidgetBackend> ViewersAttachBackend { get; set; }
+        public Action<IVidgetBackend> AttachViewerBackend { get; set; }
 
         /// <summary>
         /// delegated to Viewer.DetachBackend
@@ -77,15 +77,10 @@ namespace Limada.View.ContentViewers {
 
             viewer.BackColor = this.BackColor;
 
-            if (this.ViewersAttachBackend != null) {
-                var callAttach = viewer.AttachBackend == null;
-                viewer.AttachBackend = this.ViewersAttachBackend;
-                viewer.DoAttachBackend ();
-            }
 
-            if (AttachViewer != null) {
-                AttachViewer(viewer.Frontend, () => viewer.OnShow());
-            }
+			AttachViewerBackend?.Invoke(viewer.Backend);
+			AttachViewer?.Invoke(viewer.Frontend, () => viewer.OnShow());
+            
         }
 
         protected void LoadStreamThing (ContentStreamViewer viewer, IThingGraph graph, IStreamThing thing) {
