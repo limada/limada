@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using Limaki.Common;
 using Limaki.View.Viz;
+using Limaki.Drawing;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {
@@ -47,12 +48,20 @@ namespace Limaki.View.XwtBackend {
         public override Size DataSize {
             get { return base.DataSize; }
             set {
-				base.DataSize = new Size (Math.Ceiling (value.Width), Math.Ceiling (value.Height));
-				if (hscroll != null && Math.Ceiling (hscroll.UpperValue) != Math.Ceiling (value.Width))
-					hscroll.UpperValue = Math.Ceiling (value.Width);
-				if (vscroll != null && Math.Ceiling (vscroll.UpperValue) != Math.Ceiling (value.Height))
-					vscroll.UpperValue = Math.Ceiling (value.Height);
-			}
+                base.DataSize = value;
+                UpdateScrollAdjustment (value);
+            }
+        }
+
+        protected void UpdateScrollAdjustment (Size value) { 
+			
+            if (zooming)
+                return;
+            var upperSize = new Size (Math.Ceiling (value.Width), Math.Ceiling (value.Height));
+            if (hscroll != null && Math.Ceiling (hscroll.UpperValue) != upperSize.Width)
+                hscroll.UpperValue = upperSize.Width;
+            if (vscroll != null && Math.Ceiling (vscroll.UpperValue) != upperSize.Height)
+                vscroll.UpperValue = upperSize.Height;
         }
 
         ScrollAdjustment hscroll;
@@ -62,31 +71,43 @@ namespace Limaki.View.XwtBackend {
             hscroll = horizontal;
             vscroll = vertical;
 
-            OnBoundsChanged();
+            OnBoundsChanged ();
 
             Action<object, EventArgs> changed = (s, e) => {
-                base.ClipOrigin = new Point(hscroll.Value, vscroll.Value);
-                Backend.QueueDraw();
+                base.ClipOrigin = new Point (hscroll.Value, vscroll.Value);
+                Backend.QueueDraw ();
             };
 
-            hscroll.UpperValue = DataSize.Width;
-            hscroll.ValueChanged += (s, e) => changed(s, e);
-            vscroll.UpperValue = DataSize.Height;
-            vscroll.ValueChanged += (s, e) => changed(s, e);
+            hscroll.UpperValue = Math.Ceiling (DataSize.Width);
+            hscroll.ValueChanged += (s, e) => changed (s, e);
+            vscroll.UpperValue = Math.Ceiling (DataSize.Height);
+            vscroll.ValueChanged += (s, e) => changed (s, e);
 
         }
 
         public void OnBoundsChanged () {
-            if (vscroll == null)
+            if (vscroll == null || hscroll == null)
                 return;
+
             vscroll.PageSize = vscroll.PageIncrement = ClipSize.Height;
             hscroll.PageSize = hscroll.PageIncrement = ClipSize.Width;
-            base.ClipOrigin = new Point(hscroll.Value, vscroll.Value);
+            base.ClipOrigin = new Point (hscroll.Value, vscroll.Value);
         }
 
+        bool zooming = false;
+
         public override void UpdateZoom () {
+            zooming = true;
+            var zoom = ZoomFactor;
             base.UpdateZoom ();
+            var zoomChanged = zoom != ZoomFactor;
             Backend.QueueDraw ();
+
+            zooming = false;
+            if (zoomChanged) {
+                Application.MainLoop.QueueExitAction (() => UpdateScrollAdjustment (DataSize));
+            }
+
         }
 
     }
