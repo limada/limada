@@ -76,30 +76,38 @@ namespace Limada.View.Vidgets {
         protected virtual Content<Stream> PageContent {
             set {
                 _pageContent = value;
-                if (value != null) {
-                    var viewerProvider = Registry.Pooled<ContentViewerProvider>();
-                    var viewer = viewerProvider.Supports(value.ContentType);
-                    if (viewer != null) {
-                        viewer.SetContent(value);
-                    }
-                    OnAttachContentViewer(viewer);
-                } else {
-                    ContentViewer = null;
-                }
+                SetContentViewer (_pageContent);
             }
         }
 
-        public void OnAttachContentViewer (ContentStreamViewer viewer) {
-            if (viewer == null)
-                return;
+        public void SetContentViewer (Content<Stream> pageContent) {
 
-            viewer.BackColor = Colors.White;
+            if (pageContent == null) {
+                ContentViewer = null;
+                return;
+            }
+
+            var viewerProvider = Registry.Pooled<ContentViewerProvider> ();
+            var viewer = viewerProvider.Supports (pageContent.ContentType);
+            if (viewer == null) {
+                var io = Registry.Pooled<StreamContentIoPool> ().Find (pageContent.Data, IoMode.Read);
+                if (io != null) {
+                    var info = io.Detector.Use (pageContent.Data);
+                    pageContent.ContentType = info.ContentType;
+                }
+            }
+
+            if (viewer != null) {
+                viewer.SetContent (pageContent);
+                viewer.BackColor = Colors.White;
+            }
+
             if (ContentViewer != viewer) {
                 ContentViewer = viewer;
-                if (AttachContentViewer != null)
-                    AttachContentViewer(viewer);
 
-                var display = viewer.Frontend as IDisplay;
+                AttachContentViewer?.Invoke (viewer);
+
+                var display = viewer?.Frontend as IDisplay;
                 if (display == null)
                     return;
 
