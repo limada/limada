@@ -46,7 +46,7 @@ namespace Limaki.View.XwtBackend {
                     // width = pagesDisplayBackend.Size.Width;
                 }
             };
-            Widget.Panel2.Content = pagesDisplayBackend;
+            Widget.Panel2.Content = pagesDisplayBackend.WithScrollView ();
             Widget.Panel2.Resize = false;
             this.Widget.BoundsChanged += (s, e) => {
                 Widget.Position = Widget.Size.Width - width;
