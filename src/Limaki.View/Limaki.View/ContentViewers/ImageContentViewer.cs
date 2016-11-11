@@ -57,6 +57,10 @@ namespace Limaki.View.ContentViewers {
                     _imageStreamTypes.Add(ContentTypes.GIF);
                     _imageStreamTypes.Add(ContentTypes.PNG);
                     _imageStreamTypes.Add(ContentTypes.BMP);
+                    _imageStreamTypes.Add (ContentTypes.TIF);
+                    //if (Registry.Pooled<ConverterPool<Stream>>()
+                    //   .Find(ContentTypes.TIF, ContentTypes.PNG) != null)
+                    //	_imageStreamTypes.Add(ContentTypes.TIF);
                 }
                 return _imageStreamTypes;
             }
@@ -71,12 +75,29 @@ namespace Limaki.View.ContentViewers {
             return false;
         }
 
-        public override void SetContent(Content<Stream> content) {
+        public Content<Stream> Convert (Content<Stream> source) {
+
+            var sinkType = ContentTypes.PNG;
+            var converter = Registry.Pooled<ConverterPool<Stream>> ()
+                                    .Find (source.ContentType, sinkType);
+
+            if (converter != null) {
+                var conv = converter.Use (source, sinkType);
+                return conv;
+            }
+
+            return null;
+        }
+
+        public override void SetContent (Content<Stream> content) {
             if (ImageDisplay != null) {
                 var display = ImageDisplay;
                 display.BackColor = this.BackColor;
                 if (content.Data != null) {
                     content.Data.Position = 0;
+                    var convertType = ContentTypes.TIF;
+                    if (content.ContentType == convertType && Supports (convertType)) {
+                    }
                     display.Data = Image.FromStream (content.Data);
                 } else {
                     display.Data = null;
