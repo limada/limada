@@ -32,11 +32,12 @@ namespace Limaki.View.XwtBackend {
         }
 
         Widget NullContentViewer = new Canvas { BackgroundColor = Colors.White };
+
         protected virtual void Compose2 () {
 
             Frontend.Compose ();
 
-            var pagesDisplayBackend = Frontend.PagesDisplay.Backend.ToXwt();
+            var pagesDisplayBackend = Frontend.PagesDisplay.Backend.ToXwt ();
             var width = Frontend.GetDefaultWidth ();
             pagesDisplayBackend.WidthRequest = width;
 
@@ -51,7 +52,7 @@ namespace Limaki.View.XwtBackend {
             this.Widget.BoundsChanged += (s, e) => {
                 Widget.Position = Widget.Size.Width - width;
             };
-            
+
             Frontend.AttachContentViewer = contentViewer => {
 				
                 var contentWidget = contentViewer?.Backend.ToXwt () ?? NullContentViewer;
@@ -63,7 +64,7 @@ namespace Limaki.View.XwtBackend {
                     Widget.Position = Widget.Size.Width - Math.Max (width, pagesDisplayBackend.Size.Width);
 
                 contentWidget.WidthRequest = Widget.Position;
-                Widget.Panel1.Content = contentWidget != NullContentViewer?contentWidget.WithScrollView ():contentWidget;
+                Widget.Panel1.Content = contentWidget != NullContentViewer ? contentWidget.WithScrollView () : contentWidget;
                 Application.MainLoop.DispatchPendingEvents ();
                 suspendWidth = false;
             };

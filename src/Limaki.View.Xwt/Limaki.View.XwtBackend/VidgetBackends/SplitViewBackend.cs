@@ -148,7 +148,7 @@ namespace Limaki.View.XwtBackend {
                 return;
             }
 
-            var widget = backend.ToXwt();
+            var widget = backend.ToXwt ();
             var panel = AdjacentPanelOf (this.Frontend.CurrentDisplay);
             if (panel != null) {
                 SetScrollingPanelContent (widget, panel);

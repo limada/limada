@@ -21,6 +21,7 @@ using Limaki.Drawing;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Visualizers;
 using Xwt.Drawing;
+using Limaki.Common;
 
 namespace Limaki.View.ContentViewers {
 
@@ -34,14 +35,14 @@ namespace Limaki.View.ContentViewers {
         }
 
         public override IVidgetBackend Backend {
-            get { return ImageDisplay.Backend;}
+            get { return ImageDisplay.Backend; }
         }
 
         IDisplay<Image> _display = null;
         public virtual IDisplay<Image> ImageDisplay {
             get {
                 if (_display == null) {
-                    _display = new ImageDisplay();
+                    _display = new ImageDisplay ();
                     _display.ZoomState = ZoomState.FitToScreen;
                 }
                 return _display;
@@ -52,11 +53,11 @@ namespace Limaki.View.ContentViewers {
         public ICollection<Int64> ImageStreamTypes {
             get {
                 if (_imageStreamTypes == null) {
-                    _imageStreamTypes = new Set<Int64>();
-                    _imageStreamTypes.Add(ContentTypes.JPG);
-                    _imageStreamTypes.Add(ContentTypes.GIF);
-                    _imageStreamTypes.Add(ContentTypes.PNG);
-                    _imageStreamTypes.Add(ContentTypes.BMP);
+                    _imageStreamTypes = new Set<Int64> ();
+                    _imageStreamTypes.Add (ContentTypes.JPG);
+                    _imageStreamTypes.Add (ContentTypes.GIF);
+                    _imageStreamTypes.Add (ContentTypes.PNG);
+                    _imageStreamTypes.Add (ContentTypes.BMP);
                     _imageStreamTypes.Add (ContentTypes.TIF);
                     //if (Registry.Pooled<ConverterPool<Stream>>()
                     //   .Find(ContentTypes.TIF, ContentTypes.PNG) != null)
@@ -67,11 +68,11 @@ namespace Limaki.View.ContentViewers {
             set { _imageStreamTypes = value; }
         }
 
-        public override bool Supports(long streamType) {
-            return ImageStreamTypes.Contains(streamType);
+        public override bool Supports (long streamType) {
+            return ImageStreamTypes.Contains (streamType);
         }
 
-        public override bool CanSave() {
+        public override bool CanSave () {
             return false;
         }
 
@@ -111,17 +112,15 @@ namespace Limaki.View.ContentViewers {
             }
         }
 
-        public override void Save(Content<Stream> content) { }
+        public override void Save (Content<Stream> content) { }
 
-        public override void Dispose() {
-            if (_display != null) {
-                _display.Dispose();
-                _display = null;
-            }
+        public override void Dispose () {
+            _display?.Dispose ();
+            _display = null;
         }
 
-        public override void Clear() {
-            base.Clear();
+        public override void Clear () {
+            base.Clear ();
             if (_display != null) {
                 _display.Data = null;
             }

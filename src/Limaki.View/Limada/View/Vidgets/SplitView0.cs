@@ -303,7 +303,7 @@ namespace Limada.View.Vidgets {
                     Backend.AttachViewer (v, a);
                     ContentVidget = v;
                 };
-                _contentViewManager.ViewersAttachBackend = Backend.SetFocusCatcher;
+                _contentViewManager.AttachViewerBackend = Backend.SetFocusCatcher;
                
                 _contentViewManager.SheetManager = this.SheetManager;
                 

@@ -39,15 +39,19 @@ using Xwt;
 using Xwt.Backends;
 using Xwt.Drawing;
 using Limaki.View.GraphScene;
+using Limaki.Contents.IO;
 
 namespace Limada.View.Vidgets {
 
-    public interface IDigidocViewerBackend : IVidgetBackend { }
+    public interface IDigidocViewerBackend : IVidgetBackend {
 
-    [BackendType(typeof(IDigidocViewerBackend))]
+    }
+
+    [BackendType (typeof(IDigidocViewerBackend))]
     public class DigidocVidget : Vidget, IZoomTarget {
 
         IDigidocViewerBackend _backend = null;
+
         public virtual new IDigidocViewerBackend Backend {
             get {
                 if (_backend == null) {
@@ -59,10 +63,11 @@ namespace Limada.View.Vidgets {
         }
 
         IGraphSceneDisplay<IVisual, IVisualEdge> _pagesDisplay = null;
+
         public IGraphSceneDisplay<IVisual, IVisualEdge> PagesDisplay {
             get {
                 if (_pagesDisplay == null) {
-                    _pagesDisplay = new VisualsDisplay();
+                    _pagesDisplay = new VisualsDisplay ();
                     Mesh.AddDisplay (_pagesDisplay);
                 }
                 return _pagesDisplay;
@@ -72,7 +77,9 @@ namespace Limada.View.Vidgets {
         public virtual ContentStreamViewer ContentViewer { get; set; }
 
         public Action<ContentStreamViewer> AttachContentViewer { get; set; }
+
         Content<Stream> _pageContent = null;
+
         protected virtual Content<Stream> PageContent {
             set {
                 _pageContent = value;
@@ -112,39 +119,41 @@ namespace Limada.View.Vidgets {
                     return;
 
                 display.ZoomState = ZoomState.FitToWidth;
-                display.ActionDispatcher.Remove(display.ActionDispatcher.GetAction<KeyScrollAction>());
+                display.ActionDispatcher.Remove (display.ActionDispatcher.GetAction<KeyScrollAction> ());
 
-                var scroller = display.ActionDispatcher.GetAction<DigidocKeyScrollAction>();
+                var scroller = display.ActionDispatcher.GetAction<DigidocKeyScrollAction> ();
                 if (scroller == null) {
-                    scroller = new DigidocKeyScrollAction();
+                    scroller = new DigidocKeyScrollAction ();
                     scroller.Viewport = () => display.Viewport;
-                    display.ActionDispatcher.Add(scroller);
+                    display.ActionDispatcher.Add (scroller);
                 }
             }
         }
 
         public virtual void OnShow () {
-            if (AttachContentViewer != null && ContentViewer != null)
-                AttachContentViewer(ContentViewer);
+            if (ContentViewer != null)
+                AttachContentViewer?.Invoke (ContentViewer);
         }
 
         public virtual void Compose () {
-            ComposePagesDisplay(PagesDisplay);
+            ComposePagesDisplay (PagesDisplay);
         }
 
         protected int padding = 4;
+
         public virtual double GetDefaultWidth () {
-            var utils = Registry.Pooled<IDrawingUtils>();
-            var size = utils.GetTextDimension("".PadLeft(padding, '9'), DefaultStyleSheet.BaseStyle);
+            var utils = Registry.Pooled<IDrawingUtils> ();
+            var size = utils.GetTextDimension ("".PadLeft (padding, '9'), DefaultStyleSheet.BaseStyle);
             return (size.Width + 32);
         }
 
         IStyleSheet _defaultStyleSheet = null;
+
         public IStyleSheet DefaultStyleSheet {
             get {
                 if (_defaultStyleSheet == null) {
-                    var styleSheets = Registry.Pooled<StyleSheets>();
-                    _defaultStyleSheet = styleSheets["WhiteGlass"];
+                    var styleSheets = Registry.Pooled<StyleSheets> ();
+                    _defaultStyleSheet = styleSheets ["WhiteGlass"];
                 }
                 return _defaultStyleSheet;
             }
@@ -155,8 +164,8 @@ namespace Limada.View.Vidgets {
         protected virtual void ComposePagesDisplay (IGraphSceneDisplay<IVisual, IVisualEdge> display) {
 
             display.SceneFocusChanged += (s, e) => {
-                var docMan = new DigidocViz();
-                var pageContent = docMan.PageContent(e.Scene.Graph, e.Item);
+                var docMan = new DigidocViz ();
+                var pageContent = docMan.PageContent (e.Scene.Graph, e.Item);
                 PageContent = pageContent;
                 if (pageContent != null && ContentViewer != null) {
                     AttachScroller (display, ContentViewer.Frontend as IDisplay);
@@ -166,10 +175,10 @@ namespace Limada.View.Vidgets {
             };
 
             var layout = display.Layout;
-            Border = new Size(0, -5);
+            Border = new Size (0, -5);
             layout.StyleSheet = DefaultStyleSheet;
 
-            var focusAction = display.ActionDispatcher.GetAction<GraphSceneFocusAction<IVisual, IVisualEdge>>();
+            var focusAction = display.ActionDispatcher.GetAction<GraphSceneFocusAction<IVisual, IVisualEdge>> ();
             if (focusAction != null)
                 focusAction.HitSize = -1;
 
@@ -181,19 +190,19 @@ namespace Limada.View.Vidgets {
             if (contentDisplay == null)
                 return;
 
-            var scroller = contentDisplay.ActionDispatcher.GetAction<DigidocKeyScrollAction>();
+            var scroller = contentDisplay.ActionDispatcher.GetAction<DigidocKeyScrollAction> ();
             var scene = pagesDisplay.Data;
-            var pages = scene.Elements.Where(e => !(e is IVisualEdge)).OrderBy(e => e.Location.Y).ToList();
+            var pages = scene.Elements.Where (e => !(e is IVisualEdge)).OrderBy (e => e.Location.Y).ToList ();
             if (scroller != null) {
                 scroller.KeyProcessed = (r) => {
                     var inc = (int)(r.X + r.Y + r.Bottom + r.Right);
                     if (scene.Focused != null && inc != 0) {
-                        var iPage = pages.IndexOf(scene.Focused);
+                        var iPage = pages.IndexOf (scene.Focused);
                         if (iPage != -1 && pages.Count > iPage + inc && iPage + inc >= 0) {
-                            scene.SetFocused (pages[iPage + inc]);
+                            scene.SetFocused (pages [iPage + inc]);
                             scene.ClearSelection ();
-                            pagesDisplay.Perform();
-                            pagesDisplay.OnSceneFocusChanged();
+                            pagesDisplay.Perform ();
+                            pagesDisplay.OnSceneFocusChanged ();
                         }
 
                     }
@@ -204,6 +213,7 @@ namespace Limada.View.Vidgets {
         public virtual IVisual DocumentVisual { get; set; }
 
         IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
+
         IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
 
         public virtual void SetDocument (GraphCursor<IVisual, IVisualEdge> source) {
@@ -211,8 +221,8 @@ namespace Limada.View.Vidgets {
             var pagesDisplay = this.PagesDisplay;
 
             // bring the docpages into view:
-            var docManager = new DigidocViz();
-            var pageScene = new Scene();
+            var docManager = new DigidocViz ();
+            var pageScene = new Scene ();
             pagesDisplay.Data = pageScene;
 
             var doc = source.Graph.ThingOf (source.Cursor);
@@ -227,46 +237,46 @@ namespace Limada.View.Vidgets {
             this.DocumentVisual = targetDocument;
 
             // get the pages and add them to scene:
-            var pages = docManager.Pages(targetGraph, targetDocument).OrderBy(e => e, new VisualComparer()).ToList();
-            pages.ForEach(page => pagesDisplay.Data.Add(page));
+            var pages = docManager.Pages (targetGraph, targetDocument).OrderBy (e => e, new VisualComparer ()).ToList ();
+            pages.ForEach (page => pagesDisplay.Data.Add (page));
 
             var distance = pagesDisplay.Layout.Distance;
             pagesDisplay.Layout.Border = this.Border;
 
-            var aligner = new Aligner<IVisual, IVisualEdge>(pagesDisplay.Data, pagesDisplay.Layout);
+            var aligner = new Aligner<IVisual, IVisualEdge> (pagesDisplay.Data, pagesDisplay.Layout);
             var dd = this.Border.Height;
             var options = new AlignerOptions {
-                Distance = new Size(dd, dd),
+                Distance = new Size (dd, dd),
                 AlignX = Alignment.End,
                 AlignY = Alignment.Start,
                 Dimension = Dimension.X,
                 PointOrderDelta = 1
             };
 
-            aligner.OneColumn(pages, (Point)this.Border, options);
-            aligner.Locator.Commit(aligner.GraphScene.Requests);
+            aligner.OneColumn (pages, (Point)this.Border, options);
+            aligner.Locator.Commit (aligner.GraphScene.Requests);
 
-            new State { Hollow = true }.CopyTo(pagesDisplay.State);
-            pagesDisplay.Text = source.Cursor.Data == null ? CommonSchema.NullString : source.Cursor.Data.ToString();
-            pagesDisplay.Viewport.Reset();
-            pagesDisplay.BackendRenderer.Render();
+            new State { Hollow = true }.CopyTo (pagesDisplay.State);
+            pagesDisplay.Text = source.Cursor.Data == null ? CommonSchema.NullString : source.Cursor.Data.ToString ();
+            pagesDisplay.Viewport.Reset ();
+            pagesDisplay.BackendRenderer.Render ();
 
             // show first page:
-            var firstPage = pages.FirstOrDefault();
+            var firstPage = pages.FirstOrDefault ();
             if (firstPage != null) {
                 pageScene.Focused = firstPage;
-                pagesDisplay.OnSceneFocusChanged();
+                pagesDisplay.OnSceneFocusChanged ();
             }
-            pagesDisplay.Perform();
+            pagesDisplay.Perform ();
 
-            var pageCache = new Set<IVisual>(pages);
-            var moveResize = pagesDisplay.ActionDispatcher.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>>();
-            moveResize.FocusFilter = e => pageCache.Contains(e) ? null : e;
+            var pageCache = new Set<IVisual> (pages);
+            var moveResize = pagesDisplay.ActionDispatcher.GetAction<GraphItemMoveResizeAction<IVisual, IVisualEdge>> ();
+            moveResize.FocusFilter = e => pageCache.Contains (e) ? null : e;
 
         }
 
         public override void Dispose () {
-            Clear();
+            Clear ();
         }
 
         public virtual void Clear () {
@@ -279,6 +289,7 @@ namespace Limada.View.Vidgets {
         #region IZoomTarget Member
 
         private ZoomState _zoomState = ZoomState.FitToWidth;
+
         public ZoomState ZoomState {
             get { return _zoomState; }
             set {
@@ -291,6 +302,7 @@ namespace Limada.View.Vidgets {
         }
 
         private double _zoomFactor = 0;
+
         public double ZoomFactor {
             get { return _zoomFactor; }
             set {
@@ -304,7 +316,7 @@ namespace Limada.View.Vidgets {
         public void UpdateZoom () {
             var zoom = ContentViewer.Frontend as IZoomTarget;
             if (zoom != null)
-                zoom.UpdateZoom();
+                zoom.UpdateZoom ();
         }
 
         #endregion
