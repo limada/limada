@@ -24,6 +24,7 @@ using Xwt;
 namespace Limaki.View.XwtBackend {
 
     public class XwtViewport : Viewport {
+        
         private DisplayBackend Backend;
 
         public XwtViewport (DisplayBackend Backend) {
@@ -55,7 +56,7 @@ namespace Limaki.View.XwtBackend {
 
         protected void UpdateScrollAdjustment (Size value) { 
 			
-            if (zooming)
+            if (reallocating)
                 return;
             var upperSize = new Size (Math.Ceiling (value.Width), Math.Ceiling (value.Height));
             if (hscroll != null && Math.Ceiling (hscroll.UpperValue) != upperSize.Width)
@@ -94,20 +95,23 @@ namespace Limaki.View.XwtBackend {
             base.ClipOrigin = new Point (hscroll.Value, vscroll.Value);
         }
 
-        bool zooming = false;
+        bool reallocating = false;
 
-        public override void UpdateZoom () {
-            zooming = true;
+        public virtual void OnReallocate () {
+            reallocating = true;
             var zoom = ZoomFactor;
-            base.UpdateZoom ();
+            UpdateZoom ();
             var zoomChanged = zoom != ZoomFactor;
-            Backend.QueueDraw ();
+            (Backend as IVidgetBackend).QueueDraw ();
 
-            zooming = false;
+            reallocating = false;
             if (zoomChanged) {
                 Application.MainLoop.QueueExitAction (() => UpdateScrollAdjustment (DataSize));
-            }
+            }        
+        }
 
+        public override void UpdateZoom () {
+            base.UpdateZoom ();
         }
 
     }
