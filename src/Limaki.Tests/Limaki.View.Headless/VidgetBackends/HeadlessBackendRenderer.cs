@@ -16,11 +16,11 @@ namespace Limaki.View.Headless.VidgetBackends {
         public virtual IDisplay<T> Display { get; set; }
 
         public void Render () {
-            Backend.Invalidate ();
+            Backend.QueueDraw ();
         }
 
         public void Render (IClipper clipper) {
-            Backend.Invalidate (clipper.Bounds);
+            Backend.QueueDraw (clipper.Bounds);
         }
 
         public Func<Color> BackColor { get; set; }

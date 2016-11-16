@@ -169,9 +169,9 @@ namespace Limaki.Tests.View.Display {
             var backend = Display.Backend;
             while (ticker.Elapsed > Environment.TickCount) {
                 if (frame == Frame.Full) {
-                    backend.Invalidate ();
+                    backend.QueueDraw ();
                 } else {
-                    backend.Invalidate (rect);
+                    backend.QueueDraw (rect);
                 }
                 backend.Update ();
                 DoEvents ();

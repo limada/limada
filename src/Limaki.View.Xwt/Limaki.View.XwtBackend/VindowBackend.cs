@@ -15,9 +15,9 @@ namespace Limaki.View.XwtBackend {
 
         void IVidgetBackend.Update () { }
 
-        void IVidgetBackend.Invalidate () { }
+        void IVidgetBackend.QueueDraw () { }
 
-        void IVidgetBackend.Invalidate (Rectangle rect) { }
+        void IVidgetBackend.QueueDraw(Rectangle rect) { }
 
         void IVidgetBackend.SetFocus () { }
 

@@ -353,7 +353,11 @@ namespace Limaki.View.SwfBackend.Viz {
         
         IVidget IVidgetBackend.Frontend { get { return this.Display; } }
 
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
+        public void QueueDraw() {
+            Invalidate ();    
+        }
+
+        public void QueueDraw (Xwt.Rectangle rect) {
             this.Invalidate (rect.ToGdi ());
             System.Windows.Forms.Application.DoEvents ();
         }

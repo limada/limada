@@ -126,11 +126,11 @@ namespace Limaki.View.XwtBackend {
             base.QueueDraw ();
         }
 
-        void IVidgetBackend.Invalidate () {
+        void IVidgetBackend.QueueDraw () {
             base.QueueDraw ();
         }
 
-        void IVidgetBackend.Invalidate (Rectangle rect) {
+        void IVidgetBackend.QueueDraw (Rectangle rect) {
             base.QueueDraw (rect);
         }
 
@@ -156,8 +156,9 @@ namespace Limaki.View.XwtBackend {
 
         protected override void OnReallocate () {
             base.OnReallocate ();
-            _backendViewPort.UpdateZoom ();
+            _backendViewPort.OnReallocate ();
         }
+
 
         #region Mouse
 

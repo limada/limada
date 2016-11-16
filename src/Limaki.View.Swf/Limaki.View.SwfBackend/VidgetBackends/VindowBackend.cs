@@ -48,7 +48,10 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         public string ToolTipText { get; set; }
 
-        void IVidgetBackend.Invalidate (Xwt.Rectangle rect) {
+        public void QueueDraw () {
+            Invalidate ();
+        }
+        public void QueueDraw (Xwt.Rectangle rect) {
             this.Invalidate (rect.ToGdi ());
         }
 

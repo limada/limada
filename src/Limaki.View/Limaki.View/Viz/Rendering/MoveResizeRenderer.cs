@@ -97,7 +97,7 @@ namespace Limaki.View.Viz.Rendering {
 
                 if (bigger.Width <= halfborder || bigger.Height <= halfborder) {
                     bigger = bigger.Inflate(halfborder, halfborder);
-                    Backend.Invalidate(bigger);
+                    Backend.QueueDraw(bigger);
                     Backend.Update();
                 } else {
                     bigger = bigger.Inflate(halfborder, halfborder);
@@ -107,16 +107,16 @@ namespace Limaki.View.Viz.Rendering {
                     smaller = smaller.NormalizedRectangle();
                     smaller = smaller.Inflate(-halfborder, -halfborder);
 
-                    Backend.Invalidate(
+                    Backend.QueueDraw(
                         Rectangle.FromLTRB(bigger.Left, bigger.Top, bigger.Right, smaller.Top).NormalizedRectangle());
 
-                    Backend.Invalidate(
+                    Backend.QueueDraw(
                         Rectangle.FromLTRB(bigger.Left, smaller.Bottom, bigger.Right, bigger.Bottom).NormalizedRectangle());
 
-                    Backend.Invalidate(
+                    Backend.QueueDraw(
                         Rectangle.FromLTRB(bigger.Left, smaller.Top, smaller.Left, smaller.Bottom).NormalizedRectangle());
 
-                    Backend.Invalidate(
+                    Backend.QueueDraw(
                         Rectangle.FromLTRB(smaller.Right, smaller.Top, bigger.Right, smaller.Bottom).NormalizedRectangle());
 
                 }

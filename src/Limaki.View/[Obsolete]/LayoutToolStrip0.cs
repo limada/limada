@@ -71,7 +71,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                     SceneExtensions.ChangeStyle(currentDisplay.Data, visual, style);
                 }
                 currentDisplay.Perform();
-                currentDisplay.Backend.Invalidate();
+                currentDisplay.Backend.QueueDraw();
 
             }
         }

@@ -49,7 +49,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
         public virtual string ToolTipText { get; set; }
 
-        public virtual void Invalidate (Xwt.Rectangle rect) {
+        public virtual void QueueDraw (Xwt.Rectangle rect) {
             Control.Invalidate (rect.ToGdi ());
         }
 
@@ -59,7 +59,7 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             Control.Update ();
         }
 
-        public virtual void Invalidate () {
+        public virtual void QueueDraw () {
             Control.Invalidate ();
         }
 

@@ -26,7 +26,7 @@ namespace Limaki.View.Viz.Visualizers {
     public class ImageDisplay : Display<Image> {
         public override void DataChanged () {
             base.DataChanged();
-            Backend.Invalidate();
+            Backend.QueueDraw();
         }
     }
 

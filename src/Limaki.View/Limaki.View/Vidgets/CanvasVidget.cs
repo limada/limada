@@ -49,7 +49,7 @@ namespace Limaki.View.Vidgets {
         /// Invalidates and forces the redraw of the whole area of the widget
         /// </summary>
         public virtual void QueueDraw () {
-            Backend.Invalidate();
+            Backend.QueueDraw();
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Limaki.View.Vidgets {
         /// Area to invalidate
         /// </param>
         public virtual void QueueDraw (Rectangle rect) {
-            Backend.Invalidate(rect);
+            Backend.QueueDraw(rect);
         }
 
         #endregion

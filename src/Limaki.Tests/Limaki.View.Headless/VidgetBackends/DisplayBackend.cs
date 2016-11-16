@@ -103,14 +103,14 @@ namespace Limaki.View.Headless.VidgetBackends {
         IVidget IVidgetBackend.Frontend { get { return this.Display; } }
 
         public override void Update () {
-            Invalidate ();
+            QueueDraw ();
         }
 
-        public override void Invalidate () {
-            Invalidate (new Rectangle (Point.Zero, this.Size));
+        public override void QueueDraw () {
+            QueueDraw (new Rectangle (Point.Zero, this.Size));
         }
 
-        public override void Invalidate (Rectangle rect) {
+        public override void QueueDraw (Rectangle rect) {
             OnDraw (new Context (new HeadlessContext (), Toolkit.CurrentEngine), rect);
         }
 

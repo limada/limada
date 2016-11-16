@@ -33,9 +33,9 @@ namespace Limaki.View.XwtBackend {
 
         void IVidgetBackend.Update () { XwtBackendHelper.VidgetBackendUpdate(this); }
 
-        void IVidgetBackend.Invalidate () { XwtBackendHelper.VidgetBackendInvalidate(this); }
+        void IVidgetBackend.QueueDraw () { XwtBackendHelper.VidgetBackendInvalidate(this); }
 
-        void IVidgetBackend.Invalidate (Rectangle rect) { XwtBackendHelper.VidgetBackendInvalidate(this, rect); }
+        void IVidgetBackend.QueueDraw (Rectangle rect) { XwtBackendHelper.VidgetBackendInvalidate(this, rect); }
 
         public string ToolTipText { get; set; }
 

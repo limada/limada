@@ -254,7 +254,7 @@ namespace Limada.View.SwfBackend {
                 textDialogVisible = false;
 
                 SplitContainer.ResumeLayout (true);
-				display.Backend.Invalidate ();
+				display.Backend.QueueDraw ();
                 // hide is changing the CurrentDisplay (whyever)
                 Frontend.DisplayGotFocus (display);
             };

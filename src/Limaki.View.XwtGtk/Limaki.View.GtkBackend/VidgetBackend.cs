@@ -46,11 +46,11 @@ namespace Limaki.View.GtkBackend {
 
         public void Update () { Widget.VidgetBackendUpdate (); }
 
-        public void Invalidate () { Widget.VidgetBackendInvalidate (); }
+        public void QueueDraw () { Widget.VidgetBackendInvalidate (); }
 
         public void SetFocus () { Widget.VidgetBackendSetFocus (); }
 
-        public void Invalidate (Xwt.Rectangle rect) { Widget.VidgetBackendInvalidate (rect); }
+        public void QueueDraw (Xwt.Rectangle rect) { Widget.VidgetBackendInvalidate (rect); }
 
         public virtual void Dispose () {
             Widget.Dispose ();

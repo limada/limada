@@ -26,8 +26,8 @@ namespace Limaki.View {
         string ToolTipText { get; set; }
 
         void Update();
-        void Invalidate();
-        void Invalidate(Rectangle rect);
+        void QueueDraw();
+        void QueueDraw(Rectangle rect);
 
         void InitializeBackend (IVidget frontend, VidgetApplicationContext context);
 

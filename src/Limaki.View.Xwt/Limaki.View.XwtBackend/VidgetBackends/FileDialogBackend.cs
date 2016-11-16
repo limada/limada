@@ -113,9 +113,9 @@ namespace Limaki.View.XwtBackend {
 
         public void Update () { }
 
-        public void Invalidate () { }
+        public void QueueDraw () { }
 
-        public void Invalidate (Rectangle rect) { }
+        public void QueueDraw (Rectangle rect) { }
         public void Dispose () { }
 
         public void SetFocus () { }

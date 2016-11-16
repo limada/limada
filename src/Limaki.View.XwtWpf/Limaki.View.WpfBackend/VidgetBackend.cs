@@ -37,7 +37,7 @@ namespace Limaki.View.WpfBackend {
             set { Control.ToolTip = value; }
         }
 
-        public virtual void Invalidate (Xwt.Rectangle rect) {
+        public virtual void QueueDraw (Xwt.Rectangle rect) {
             Control.VidgetBackendInvalidate(rect);
         }
 
@@ -47,7 +47,7 @@ namespace Limaki.View.WpfBackend {
             Control.VidgetBackendUpdate ();
         }
 
-        public virtual void Invalidate () {
+        public virtual void QueueDraw () {
             Control.VidgetBackendInvalidate ();
         }
 

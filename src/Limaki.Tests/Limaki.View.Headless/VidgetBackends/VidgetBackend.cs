@@ -22,10 +22,10 @@ namespace Limaki.View.Headless.VidgetBackends {
     public class VidgetBackend : IVidgetBackend {
 
         public virtual void Update () {
-            this.Invalidate();
+            this.QueueDraw();
         }
 
-        public virtual void Invalidate () {
+        public virtual void QueueDraw () {
             if (Frontend is IDisplay) {
                 ((IDisplay)Frontend).BackendRenderer.Render ();
 
@@ -34,7 +34,7 @@ namespace Limaki.View.Headless.VidgetBackends {
 
         public virtual void SetFocus () { }
 
-        public virtual void Invalidate (Rectangle rect) {
+        public virtual void QueueDraw (Rectangle rect) {
             if(Frontend is IDisplay) {
                 ((IDisplay) Frontend).BackendRenderer.Render();
 

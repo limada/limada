@@ -66,9 +66,9 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         public string ToolTipText { get; set; }
     public void Update () { }
 
-        public void Invalidate () { }
+        public void QueueDraw () { }
 
-        public void Invalidate (Rectangle rect) { }
+        public void QueueDraw (Rectangle rect) { }
         public void Dispose () { }
 
         public void SetFocus () {  }

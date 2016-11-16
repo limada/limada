@@ -403,7 +403,7 @@ namespace Limada.View.Vidgets {
             currentDisplay.Text = name;
             currentDisplay.Viewport.Reset();
             currentDisplay.Perform();
-            currentDisplay.Backend.Invalidate();
+            currentDisplay.Backend.QueueDraw();
             OnViewChanged();
         }
 
