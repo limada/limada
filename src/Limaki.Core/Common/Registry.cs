@@ -15,10 +15,12 @@
 using Limaki.Common.IOC;
 
 namespace Limaki.Common {
+    
     /// <summary>
     /// The Registry gathers application wide used objects
     /// </summary>
     public class Registry:IApplicationContext {
+        
         static IApplicationContext _concreteContext = null;
         public static IApplicationContext ConcreteContext {
             get { return _concreteContext; }
@@ -46,6 +48,21 @@ namespace Limaki.Common {
         }
 
         /// <summary>
+        /// looks for an ApplicationContextProcessor in the Pool
+        /// and calls ApplicationContextProcessor.ApplyProperties(target)
+        /// </summary>
+        /// <typeparam name="TProcessor"></typeparam>
+        /// <typeparam name="TTarget"></typeparam>
+        /// <param name="target"></param>
+        public static void ApplyProperties<TProcessor, TTarget> (TTarget target)
+            where TProcessor : ContextProcessor<TTarget> {
+            if (target == null || ConcreteContext == null) return;
+            var processor = Pooled<TProcessor> ();
+            processor.ApplyProperties (ConcreteContext, target);
+
+        }
+
+        /// <summary>
         /// calls <see cref="IPool.TryGetCreate{T}()"/> of <see cref="Pool"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -60,21 +77,6 @@ namespace Limaki.Common {
 
         public static T Create<T> (params object[] args) {
             return Factory.Create<T> (args);
-        }
-
-        /// <summary>
-        /// looks for an ApplicationContextProcessor in the Pool
-        /// and calls ApplicationContextProcessor.ApplyProperties(target)
-        /// </summary>
-        /// <typeparam name="TProcessor"></typeparam>
-        /// <typeparam name="TTarget"></typeparam>
-        /// <param name="target"></param>
-        public static void ApplyProperties<TProcessor, TTarget>(TTarget target)
-            where TProcessor : ContextProcessor<TTarget> {
-            if (target == null || ConcreteContext==null) return;
-            var processor = Pooled<TProcessor>();
-            processor.ApplyProperties(ConcreteContext, target);
-
         }
 
         #region IApplicationContext Member

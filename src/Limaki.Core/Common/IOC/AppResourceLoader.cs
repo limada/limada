@@ -13,14 +13,14 @@
  */
 
 
-using Limada.IO;
-using Limada.Model;
-using Limaki.Data;
-using Limaki.Contents.IO;
+
+using System;
 
 namespace Limaki.Common.IOC {
 
+    [Obsolete]
     public class AppResourceLoader : ContextResourceLoader {
+        
         private IContextResourceLoader deviceContext = null;
 
         public AppResourceLoader(IContextResourceLoader deviceContext) {
