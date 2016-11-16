@@ -29,12 +29,13 @@ namespace Limada.View.SwfBackend {
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
             this.Frontend = (DigidocVidget)frontend;
+            Compose2 ();
         }
 
-        protected override void Compose () {
+        protected virtual void Compose2 () {
 
-            base.Compose ();
-
+            Frontend.Compose ();
+            
             var panel = new Panel { Dock = System.Windows.Forms.DockStyle.Fill, BackColor = Color.White };
             Control.SuspendLayout();
             
@@ -43,7 +44,6 @@ namespace Limada.View.SwfBackend {
             pagesDisplayBackend.Width = (int)Frontend.GetDefaultWidth ();
             pagesDisplayBackend.TabStop = false;
             
-            Frontend.Compose();
 
             var splitter = new System.Windows.Forms.Splitter { Dock = DockStyle.Right };
             Control.Controls.AddRange(new Control[] { panel, splitter, pagesDisplayBackend });
