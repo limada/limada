@@ -74,6 +74,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripDropDownPopupButtonBackendBase_1.cs" />
     <Compile Include="[Obsolete]\GtkPrototyper.cs" />
+    <Compile Include="[Obsolete]\GtkClipboardBackend1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt.Gtk.Windows\Xwt.Gtk.Windows.csproj">
