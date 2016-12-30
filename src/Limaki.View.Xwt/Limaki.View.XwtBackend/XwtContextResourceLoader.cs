@@ -29,6 +29,7 @@ using Xwt;
 using Xwt.Backends;
 using System.Diagnostics;
 using Limada.UseCases;
+using Limaki.Contents.IO;
 
 namespace Limaki.View.XwtBackend {
 
@@ -114,16 +115,12 @@ namespace Limaki.View.XwtBackend {
         [TODO]
         public virtual void RegisterDragDropFormats (IApplicationContext context) {
 
-			Registry.Factory.Add<IDragDropBackendHandler> (args => new DragDropBackendHandler (args [0] as IVidgetBackend));
+			context.Factory.Add<IDragDropBackendHandler> (args => new DragDropBackendHandler (args [0] as IVidgetBackend));
 
-			var man = Registry.Pooled<TransferDataManager> ();
+			var man = context.Pooled<TransferDataManager> ();
 			man.RegisterSome ();
-			man.TransferContentTypes ["html format"] = ContentTypes.HTML;
-			man.TransferContentTypes ["rich text format"] = ContentTypes.RTF;
-			man.TransferContentTypes ["DeviceIndependentBitmap"] = ContentTypes.DIB;
 
-			// TODO: register the others
-			//man.TransferContentTypes.Add(System.Windows.Forms.DataFormats.UnicodeText, 0);
+
 
 		}
     }
