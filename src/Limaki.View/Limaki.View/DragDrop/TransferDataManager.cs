@@ -132,6 +132,16 @@ namespace Limaki.View.DragDrop {
         /// they override the common <see cref="StreamContentIoPool"/>
         /// </summary>
         public class TransferContentPool : ContentIoPool<Stream, Content<Stream>> {
+        public void RegisterSome () {
+            TransferContentTypes ["html"] = ContentTypes.HTML;
+            TransferContentTypes ["text"] = ContentTypes.Text;
+            TransferContentTypes ["rtf"] = ContentTypes.RTF;
+            TransferContentTypes [TransferDataType.Uri.Id] = ContentTypes.Uri;
+
+            var pool = Registry.Pooled<StreamContentIoPool> ();
+            foreach (var f in pool.ContentInfos) {
+                TransferContentTypes [f.MimeType] = f.ContentType;
+            }
         }
 
         #endregion
