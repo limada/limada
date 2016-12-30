@@ -182,6 +182,7 @@ namespace Limada.View.ContentViewers {
                 content.Data.Dispose ();
                 content.Data = null;
                 content = null;
+                thing.State.Clean = true;
             }
         }
 
