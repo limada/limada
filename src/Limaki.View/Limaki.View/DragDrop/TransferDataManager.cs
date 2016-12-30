@@ -119,19 +119,6 @@ namespace Limaki.View.DragDrop {
 
         #region not used
 
-        private TransferContentPool _transferContentPool;
-
-        /// <summary>
-        /// register special ContentIo's for Clipboard and DragDrop operations here
-        /// they override 
-        /// </summary>
-        private TransferContentPool _TransferContentPool { get { return _transferContentPool ?? (_transferContentPool = new TransferContentPool()); } }
-
-        /// <summary>
-        /// class to register special ContentIo's for Clipboard and DragDrop operations
-        /// they override the common <see cref="StreamContentIoPool"/>
-        /// </summary>
-        public class TransferContentPool : ContentIoPool<Stream, Content<Stream>> {
         public void RegisterSome () {
             TransferContentTypes ["html"] = ContentTypes.HTML;
             TransferContentTypes ["text"] = ContentTypes.Text;
