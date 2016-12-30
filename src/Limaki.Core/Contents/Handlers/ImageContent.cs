@@ -33,18 +33,18 @@ namespace Limaki.Contents.IO {
 
         public ImageContentSpot (): base(
 
+            // place prefered formats first
                 new ContentInfo[]{
-                                     new ContentInfo(
-                                         "JPEG image",
-                                         JPG,
-                                         "jpg",
-                                         "image/jpeg",
+                                    new ContentInfo(
+                                         "PNG image",
+                                         PNG,
+                                         "png",
+                                         "image/png",
                                          CompressionType.neverCompress,
                                          new Magic[]{
-                                                        new Magic(new byte[]{0xff,0xd8},0),
-                                                        new Magic(ByteUtils.BytesOfArray(new int[]{377,330,377}),0)
+                                                        new Magic(new byte[]{0x89,0x50,0x4e,0x47},0)
                                                     }),
-
+                                    
                                      new ContentInfo(
                                          "Tagged Image File Format",
                                          TIF,
@@ -66,16 +66,6 @@ namespace Limaki.Contents.IO {
                                                         new Magic(Encoding.ASCII.GetBytes(@"GIF"),0)
                                                     }),
 
-                                     new ContentInfo(
-                                         "PNG image",
-                                         PNG,
-                                         "png",
-                                         "image/png",
-                                         CompressionType.neverCompress,
-                                         new Magic[]{
-                                                        new Magic(new byte[]{0x89,0x50,0x4e,0x47},0)
-                                                    }),
-
                                     new ContentInfo(
                                          "Device Independent Bitmap",
                                          DIB,
@@ -88,11 +78,22 @@ namespace Limaki.Contents.IO {
                                          "Bitmap",
                                          BMP,
                                          "bmp",
-                                         "image/bmp", // TODO:look for dib mime, or register with MimeFingerPrints
+                                         "image/bmp", // TODO:look for bmp mime, or register with MimeFingerPrints
                                          CompressionType.bZip2,
                                          new Magic[]{
                                                         new Magic(new byte[]{ 0x42, 0x4D},0)
                                                     }),
+                                new ContentInfo(
+                                         "JPEG image",
+                                         JPG,
+                                         "jpg",
+                                         "image/jpeg",
+                                         CompressionType.neverCompress,
+                                         new Magic[]{
+                                                        new Magic(new byte[]{0xff,0xd8},0),
+                                                        new Magic(ByteUtils.BytesOfArray(new int[]{377,330,377}),0)
+                                                    }),
+
                                  }
                 ) { }
 
