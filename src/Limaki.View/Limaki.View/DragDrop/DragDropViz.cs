@@ -41,15 +41,15 @@ namespace Limaki.View.DragDrop {
         public IVisualContentViz VisualContentViz { get { return _visualContentViz ?? (_visualContentViz = Registry.Pooled<IVisualContentViz>()); } }
 
         public virtual IVisual VisualOfTransferData (IGraph<IVisual, IVisualEdge> graph, ITransferData data) {
-            var value = data.GetValue(TransferDataType.FromType(typeof(IVisual)));
-            var bytes = value as byte[];
+            var value = data.GetValue (TransferDataType.FromType (typeof (IVisual)));
+            var bytes = value as byte [];
             if (bytes != null) {
-                return TransferDataSource.DeserializeValue(bytes) as IVisual;
+                return TransferDataSource.DeserializeValue (bytes) as IVisual;
             }
 #if TRACE
             var dt = "";
-            data.DataTypes.ForEach (d => dt += d.Id+" | ");
-            Trace.WriteLine (dt);
+            data.DataTypes.ForEach (d => dt += d.Id + " | ");
+            Trace.WriteLine ($"{nameof (VisualOfTransferData)}\t{dt}");
 #endif
             Stream stream = null;
             Content<Stream> content = null;
@@ -69,54 +69,54 @@ namespace Limaki.View.DragDrop {
             if (data.Uris.Length > 0) {
                 //TODO: handle more then one file
                 foreach (var uri in data.Uris.OrderBy (n => n.ToString ())) {
-					IContentIo<Stream> sink = null;
-					string desc = null;
-					if (uri.IsFile) {
-						var fileName = IoUtils.UriToFileName (uri);
-						if (File.Exists (fileName)) { // TODO: check if filename is directory
-							stream = File.OpenRead (fileName);
-							sink = DataManager.SinkOf (Path.GetExtension (fileName).TrimStart ('.').ToLower ());
-							desc = Path.GetFileNameWithoutExtension (fileName);
-						}
-					} else if (uri.HostNameType == UriHostNameType.Dns) {
-						try {
-							using (var cli = new WebClient ()) {
-								bytes = cli.DownloadData (uri);
-								stream = new MemoryStream (bytes);
-							}
-							desc = uri.ToString ();
-						} catch (Exception webEx) {
-							Registry.Pooled<IMessageBoxShow> ().Show ("Download failed",
-								string.Format ("The uri \n{0}\ncould not be loaded: {1}", uri.ToString (), webEx.Message), MessageBoxButtons.Ok);
-						}
-					}
+                    IContentIo<Stream> sink = null;
+                    string desc = null;
+                    if (uri.IsFile) {
+                        var fileName = IoUtils.UriToFileName (uri);
+                        if (File.Exists (fileName)) { // TODO: check if filename is directory
+                            stream = File.OpenRead (fileName);
+                            sink = DataManager.SinkOf (Path.GetExtension (fileName).TrimStart ('.').ToLower ());
+                            desc = Path.GetFileNameWithoutExtension (fileName);
+                        }
+                    } else if (uri.HostNameType == UriHostNameType.Dns) {
+                        try {
+                            using (var cli = new WebClient ()) {
+                                bytes = cli.DownloadData (uri);
+                                stream = new MemoryStream (bytes);
+                            }
+                            desc = uri.ToString ();
+                        } catch (Exception webEx) {
+                            Registry.Pooled<IMessageBoxShow> ().Show ("Download failed",
+                                string.Format ("The uri \n{0}\ncould not be loaded: {1}", uri.ToString (), webEx.Message), MessageBoxButtons.Ok);
+                        }
+                    }
 
-					if (stream != null) {
-						ContentInfo info = null;
+                    if (stream != null) {
+                        ContentInfo info = null;
 
-						if (sink == null) {
-							sink = DataManager.SinkOf (stream);
-						}
+                        if (sink == null) {
+                            sink = DataManager.SinkOf (stream);
+                        }
 
-						if (sink != null) {
-							info = sink.Use (stream);
-						} 
+                        if (sink != null) {
+                            info = sink.Use (stream);
+                        }
 
-						if (sink == null) {
-							info = new ContentInfo ("Unknown", ContentTypes.Unknown, "*", null, CompressionType.neverCompress);
-						}
+                        if (sink == null) {
+                            info = new ContentInfo ("Unknown", ContentTypes.Unknown, "*", null, CompressionType.neverCompress);
+                        }
 
-						fillContent (info, stream);
-						if (content.Description == null)
-							content.Description = desc;
-						content.Source = desc;
+                        fillContent (info, stream);
+                        if (content.Description == null)
+                            content.Description = desc;
+                        content.Source = desc;
 
-						if (data.Uris.Length > 1)
-							Registry.Pooled<IMessageBoxShow> ().Show ("DragDrop multiple files",
-								string.Format ("Only one file {0} will be stored currently", uri.AbsolutePath), MessageBoxButtons.Ok);
+                        if (data.Uris.Length > 1)
+                            Registry.Pooled<IMessageBoxShow> ().Show ("DragDrop multiple files",
+                                string.Format ("Only one file {0} will be stored currently", uri.AbsolutePath), MessageBoxButtons.Ok);
 
-						break;
-					}
+                        break;
+                    }
                 }
 
             } else {
@@ -126,7 +126,7 @@ namespace Limaki.View.DragDrop {
                     value = data.GetValue (s.Item1);
                     var sink = s.Item2;
                     stream = value as Stream;
-                    bytes = value as byte[];
+                    bytes = value as byte [];
                     if (bytes != null)
                         stream = new MemoryStream (bytes);
                     var text = value as string;
@@ -155,6 +155,9 @@ namespace Limaki.View.DragDrop {
             }
 
             if (content != null) {
+#if TRACE
+                Trace.WriteLine ($"{nameof (VisualOfTransferData)}\tDragged:\t{content.ContentType.MimeType ()}");
+#endif
                 var result = VisualContentViz.VisualOfContent (graph, content);
                 if (stream is FileStream) {
                     stream.Close ();

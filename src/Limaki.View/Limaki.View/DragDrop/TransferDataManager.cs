@@ -108,17 +108,6 @@ namespace Limaki.View.DragDrop {
             return result.OrderBy (r => ContentIoPool.Priority (r.Item2));
         }
 
-        // move this to Resourceloader of OS:
-        public void RegisterSome() {
-			TransferContentTypes ["html"] = ContentTypes.HTML;
-			TransferContentTypes ["text"] = ContentTypes.Text;
-			TransferContentTypes ["rtf"] = ContentTypes.RTF;
-			TransferContentTypes [TransferDataType.Uri.Id] = ContentTypes.Uri;
-			//...
-		}
-
-        #region not used
-
         public void RegisterSome () {
             TransferContentTypes ["html"] = ContentTypes.HTML;
             TransferContentTypes ["text"] = ContentTypes.Text;
@@ -130,8 +119,6 @@ namespace Limaki.View.DragDrop {
                 TransferContentTypes [f.MimeType] = f.ContentType;
             }
         }
-
-        #endregion
 
         public IContentIo<Stream> SinkOf (string extension) {
             return ContentIoPool.Where (sinkIo => sinkIo.Detector.ContentSpecs
