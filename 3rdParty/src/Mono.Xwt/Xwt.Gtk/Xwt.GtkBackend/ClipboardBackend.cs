@@ -35,7 +35,7 @@ namespace Xwt.GtkBackend
 	public class GtkClipboardBackend: ClipboardBackend
 	{
 //		Gtk.Clipboard primaryClipboard;
-		Gtk.Clipboard clipboard;
+		protected Gtk.Clipboard clipboard;
 		
 		public GtkClipboardBackend ()
 		{
@@ -107,7 +107,7 @@ namespace Xwt.GtkBackend
 		{
 			return ((DataRequest)ares).Result;
 		}
-		
+
 		#endregion
 	}
 	
