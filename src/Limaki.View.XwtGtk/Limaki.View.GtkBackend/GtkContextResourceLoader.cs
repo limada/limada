@@ -23,6 +23,8 @@ using System.Diagnostics;
 using Xwt;
 using Xwt.Backends;
 using System;
+using Limaki.View.DragDrop;
+using Limaki.Contents;
 
 namespace Limaki.View.GtkBackend {
 
@@ -80,7 +82,12 @@ namespace Limaki.View.GtkBackend {
             };
 
 			Applied = true;
+
+            RegisterDragDropFormats (context);
         }
 
+        public virtual void RegisterDragDropFormats (IApplicationContext context) { 
+            var man = context.Pooled<TransferDataManager> ();
+        }
     }
 }
