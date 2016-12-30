@@ -4,6 +4,7 @@ using System.IO;
 using Limaki.View.Vidgets;
 using Limaki.Contents.Text;
 using Limaki.Drawing;
+using System.Text;
 
 namespace Limaki.View.XwtBackend {
 
@@ -32,11 +33,13 @@ namespace Limaki.View.XwtBackend {
         }
 
         public void Load (Stream stream, TextViewerTextType textType) {
-            var reader = new StreamReader (stream);
+
             string html = null;
             if (textType == TextViewerTextType.PlainText || textType == TextViewerTextType.UnicodePlainText) {
+                var reader = new StreamReader (stream, textType == TextViewerTextType.UnicodePlainText ? Encoding.Unicode : Encoding.ASCII);
                 var text = reader.ReadToEnd ();
                 html = System.Net.WebUtility.HtmlEncode (text);
+
             }
 
             if (textType == TextViewerTextType.RichText) {
