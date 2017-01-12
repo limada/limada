@@ -19,9 +19,8 @@ using Limaki.View.Vidgets;
 namespace Limaki.View.GtkBackend {
     /// <summary>
     /// ToolStripDropDownButton with Popup-Window
-	/// <remarks>dont show icons on gtk3 and ubuntu</remarks>
     /// </summary>
-    public class ToolStripDropDownPopupButtonBackendBase<T> : ToolStripButtonBackendBase<T>, IToolStripDropDownButtonBackend where T : Gtk.ToolItem, new () {
+    public class ToolStripDropDownWindowButtonBackendBase<T> : ToolStripButtonBackendBase<T>, IToolStripDropDownButtonBackend where T : Gtk.ToolItem, new () {
 
         public new Vidgets.ToolStripDropDownButton Frontend { get; protected set; }
 
@@ -52,6 +51,8 @@ namespace Limaki.View.GtkBackend {
         protected virtual void ShowDropDown () {
             if (HasChildren) {
                 PopupWindow = PopupWindow.Show (this.ContentWidget, Xwt.Rectangle.Zero, ChildBox);
+				var tr = this.Size.Width - PopupWindow.SizeRequest ().Width;
+				PopupWindow.Tolerance = new Xwt.WidgetSpacing (0, 0, tr, 0);
                 PopupWindow.Hidden += (s, e) =>
                     HideDropDown ();
             }
@@ -67,10 +68,9 @@ namespace Limaki.View.GtkBackend {
         public bool HasChildren { get { return _children != null && _children.Count > 0; } }
 
         protected virtual PopupWindow PopupWindow { get; set; }
-
         Gtk.VBox _childBox = null;
 
-		public Gtk.VBox ChildBox {
+        public Gtk.VBox ChildBox {
             get {
                 if (_childBox == null) {
                     _childBox = new Gtk.VBox (false, 3);
@@ -86,6 +86,7 @@ namespace Limaki.View.GtkBackend {
                             b.Widget.GrabNotify += ChildClicked;
                         }
                     }
+
                 }
                 return _childBox;
             }
@@ -105,6 +106,6 @@ namespace Limaki.View.GtkBackend {
         }
     }
 
-	public class ToolStripDropDownPopupButtonBackend : ToolStripDropDownPopupButtonBackendBase<Gtk.ToolItem> {
+	public class ToolStripDropDownPopupButtonBackend : ToolStripDropDownWindowButtonBackendBase<Gtk.ToolItem> {
 	}
 }
