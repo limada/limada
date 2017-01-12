@@ -42,14 +42,14 @@ namespace Limaki.View.XwtBackend {
 
         public void ItemCollectionChanged (object sender, NotifyCollectionChangedEventArgs e) {
             if (e.Action == NotifyCollectionChangedAction.Add) {
-                checkItemType (e.NewItems);
+                CheckItemType (e.NewItems);
                 var r = Store.AddRow ();
                 e.NewItems.Cast<object> ().ForEach (
                     item =>
                     AddValueMethodInfo.Invoke (Store, new object[] { r, DataField, item })
                 );
             } else if (e.Action == NotifyCollectionChangedAction.Remove) {
-                checkItemType (e.OldItems);
+                CheckItemType (e.OldItems);
                 for (int i = 0; i < e.OldItems.Count; i++)
                     Store.RemoveRow (i);
             } else if (e.Action == NotifyCollectionChangedAction.Reset) {
@@ -58,7 +58,7 @@ namespace Limaki.View.XwtBackend {
             }
         }
 
-        private void checkItemType (IList items) {
+        private void CheckItemType (IList items) {
             if (items.Count == 0)
                 return;
             Type itemType = null;

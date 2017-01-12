@@ -58,9 +58,6 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             RegisterBackend<ISplitViewToolStripBackend, SplitViewToolStripBackend>();
             RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend> ();
 
-            RegisterBackend<ILayoutToolStripBackend0, LayoutToolStripBackend0>();
-            
-
             RegisterBackend<ICanvasVidgetBackend, CanvasVidgetBackend>();
 
             RegisterBackend<IOpenfileDialogBackend, OpenFileDialogBackend>();

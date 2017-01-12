@@ -10,8 +10,7 @@ using LVV = Limaki.View.Vidgets;
 using SD = System.Drawing;
 
 namespace Limaki.View.SwfBackend.VidgetBackends {
-
-    public class ComboBoxBackend : VidgetBackend<SWF.ComboBox>, IComboBoxBackend {
+    public class ComboBoxBackend : VidgetBackend<ComboBoxEx>, IComboBoxBackend {
 
         public ComboBoxBackend () : base () {
             Control.Margin = new SWF.Padding ();
@@ -29,7 +28,10 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
 
 
         public void ItemCollectionChanged (object sender, NotifyCollectionChangedEventArgs e) {
+           
             if (e.Action == NotifyCollectionChangedAction.Add) {
+                var setGrahics = e.NewItems.Cast<object> ().Any (o => typeof (Xwt.Drawing.Image).IsAssignableFrom (o.GetType ()));
+                Control.HasGraphics = setGrahics;
                 Control.Items.AddRange (e.NewItems.Cast<object> ().ToArray ());
             } else if (e.Action == NotifyCollectionChangedAction.Remove) {
                 e.OldItems.Cast<object> ().ForEach (i => Control.Items.Remove (i));
