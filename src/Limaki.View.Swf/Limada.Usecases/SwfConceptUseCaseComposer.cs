@@ -137,7 +137,7 @@ namespace Limada.Usecases {
                 new ToolStrip[] {
                     useCase.ArrangerToolStrip.ToSwf() as ToolStrip,
                     useCase.SplitViewToolStrip.ToSwf() as ToolStrip,
-                    useCase.LayoutToolStrip0.ToSwf() as ToolStrip,
+                    useCase.LayoutToolStrip.ToSwf() as ToolStrip,
                     useCase.DisplayModeToolStrip.ToSwf() as ToolStrip,
                     useCase.MarkerToolStrip.ToSwf() as ToolStrip,
                 });

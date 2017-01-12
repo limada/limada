@@ -53,9 +53,7 @@ namespace Limada.UseCases {
         public ArrangerToolStrip ArrangerToolStrip { get; set; }
         public DisplayModeToolStrip DisplayModeToolStrip { get; set; }
         public SplitViewToolStrip SplitViewToolStrip { get; set; }
-#if !__ANDROID__
-        public LayoutToolStrip0 LayoutToolStrip0 { get; set; }
-#endif
+
         public LayoutToolStrip LayoutToolStrip { get; set; }
         public MarkerToolStrip MarkerToolStrip { get; set; }
 
