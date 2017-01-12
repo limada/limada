@@ -33,6 +33,7 @@ using System.IO;
 using System.Linq;
 using Limaki.Drawing.Styles;
 using Limaki.View.Viz.Mesh;
+using System.Net;
 
 namespace Limada.UseCases.Cms {
 
@@ -256,11 +257,16 @@ namespace Limada.UseCases.Cms {
             return result;
         }
 
-        public static long[] ConvertibleHtmlStreamTypes = new long[] { ContentTypes.RTF, ContentTypes.HTML };
+        public static ICollection<long> ConvertibleHtmlStreamTypes = null;
         public virtual bool IsConvertibleToHtml (IThing thing) {
             var streamThing = thing as IStreamThing;
             if (streamThing == null)
                 return false;
+            if (streamThing.StreamType == ContentTypes.HTML)
+                return true;
+            if (ConvertibleHtmlStreamTypes == null) {
+                ConvertibleHtmlStreamTypes = new HashSet<long> (Registry.Pooled<ConverterPool<Stream>> ().SelectMany (c => c.SupportedTypes).Where (t => t.Item2 == ContentTypes.HTML).Select (t => t.Item1));
+            }
             return ConvertibleHtmlStreamTypes.Contains (streamThing.StreamType);
         }
 
@@ -283,22 +289,22 @@ namespace Limada.UseCases.Cms {
                 Source = thing.Id.ToString ("X16"),
             };
             try {
-                if (thing.StreamType == ContentTypes.RTF) {
-                    var sinkType = ContentTypes.HTML;
-                    var converter = Registry.Pooled<ConverterPool<Stream>>()
-                            .Find(thing.StreamType, sinkType);
-                    if (converter != null) {
-                        var source = ThingContentFacade.ContentOf (thing);
-                        using (var reader = new StreamReader(converter.Use(source, sinkType).Data))
-                            result.Data = reader.ReadToEnd();
-                        source.Data.Dispose();
-                    }
-                } else if (thing.StreamType == ContentTypes.HTML) {
+                if (thing.StreamType == ContentTypes.HTML) {
                     thing.DeCompress ();
                     var reader = new StreamReader (thing.Data);
                     result.Data = reader.ReadToEnd ();
                     thing.ClearRealSubject ();
 
+                } else {
+                    var sinkType = ContentTypes.HTML;
+                    var converter = Registry.Pooled<ConverterPool<Stream>> ()
+                            .Find (thing.StreamType, sinkType);
+                    if (converter != null) {
+                        var source = ThingContentFacade.ContentOf (thing);
+                        using (var reader = new StreamReader (converter.Use (source, sinkType).Data))
+                            result.Data = reader.ReadToEnd ();
+                        source.Data.Dispose ();
+                    }
                 }
             } catch (Exception ex) {
 
@@ -341,7 +347,7 @@ namespace Limada.UseCases.Cms {
 
        public Href HrefOfThing (IThing t) {
            var d = ThingDataToDisplay (t);
-           return new Href (d.ToString (), t.Id.ToString ("X16"));//DescribedThing (t).Id.ToString ("X16"));
+            return new Href (d.ToString (), t.Id.ToString ("X16"));//DescribedThing (t).Id.ToString ("X16"));
        }
 
        public IEnumerable<Href> HrefsOfThings (IEnumerable<IThing> things) {
