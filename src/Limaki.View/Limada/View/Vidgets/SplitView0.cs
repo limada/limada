@@ -548,13 +548,13 @@ namespace Limada.View.Vidgets {
                 content.ContentType = ContentTypes.RTF;
                 var writer = new StreamWriter (content.Data);
 
-                writer.Write (@"{\rtf1\ansi\deff0");
-                writer.Write (@"{\info{\doccomm limada.note}}");
+                writer.Write ("{\\rtf1\\ansi\\deff0");
+                writer.Write ("{\\info{\\doccomm limada.note}}");
 
-                writer.Write (@"{\fonttbl{\f0\froman {0};}}", Xwt.Drawing.Font.SystemSerifFont.Family);
-                writer.Write (@"\pard\plain ");
+                writer.Write ($"{{\\fonttbl{{\\f0\\froman {Xwt.Drawing.Font.SystemSerifFont.Family}}}}}");
+                writer.Write ("\\pard\\plain ");
                 writer.Write (title);
-                writer.Write (@"}");
+                writer.Write ("}");
                 writer.Flush ();
                 content.Data.Position = 0;
             }

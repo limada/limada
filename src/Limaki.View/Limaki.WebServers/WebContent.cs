@@ -63,8 +63,8 @@ namespace Limaki.WebServers {
             get {
                 if (ContentIsStream)
                     return _contentStream == null;
-                else
-                    return _content == null;
+                
+                return _content == null;
             }
         }
 

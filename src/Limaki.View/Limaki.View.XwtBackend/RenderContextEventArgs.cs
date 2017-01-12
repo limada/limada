@@ -26,7 +26,7 @@ namespace Limaki.View.XwtBackend {
 
         public RenderContextEventArgs(Context context, Rectangle clipRect) {
             if (context == null)
-                throw new ArgumentNullException("context");
+                throw new ArgumentNullException(nameof (context));
             this._context = context;
             this._clipper = new BoundsClipper(clipRect);
             this._surface = new ContextSurface { Context = context };

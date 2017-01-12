@@ -10,7 +10,7 @@ namespace Limaki.View.XwtBackend {
             Widget.MultiLine = true;
         }
 
-        public Vidgets.PlainTextBox Frontend { get; protected set; }
+        public new Vidgets.PlainTextBox Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);

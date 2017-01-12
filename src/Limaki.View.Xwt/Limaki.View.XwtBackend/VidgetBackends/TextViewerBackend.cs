@@ -14,7 +14,7 @@ namespace Limaki.View.XwtBackend {
     /// </summary>
     public class TextViewerBackend : VidgetBackend<Xwt.WebView>, ITextViewerVidgetBackend {
 
-        public Vidgets.TextViewer Frontend { get; protected set; }
+        public new Vidgets.TextViewer Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);

@@ -108,7 +108,7 @@ namespace Limaki.Drawing
 		
 		public override string ConvertToString (object value, IValueSerializerContext context)
 		{
-			Spacing s = (Spacing) value;
+			var s = (Spacing) value;
 			if (s.Left == s.Right && s.Right == s.Top && s.Top == s.Bottom)
 				return s.Left.ToString (CultureInfo.InvariantCulture);
 			if (s.Bottom != 0)
@@ -120,8 +120,8 @@ namespace Limaki.Drawing
 		
 		public override object ConvertFromString (string value, IValueSerializerContext context)
 		{
-			Spacing c = new Spacing ();
-			string[] values = value.Split (new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+			var c = new Spacing ();
+			var values = value.Split (new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 			if (values.Length == 0)
 				return c;
 

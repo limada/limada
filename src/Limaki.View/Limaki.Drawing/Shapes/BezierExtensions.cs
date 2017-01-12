@@ -297,7 +297,7 @@ namespace Limaki.Drawing.Shapes {
             for (int i = 0; i < ts.Length; i++) {
                 var t = ts[i];
                 if (t >= 0 && t <= 1) {
-                    int x = (int) computeCubicBaseValue(t, 0, rnp2.X, rnp3.X, rnp4.X);
+                    var x = (int) computeCubicBaseValue(t, 0, rnp2.X, rnp3.X, rnp4.X);
                     if (x < minx) { minx = x; }
                     if (x > maxx) { maxx = x; }
                 }
@@ -310,10 +310,10 @@ namespace Limaki.Drawing.Shapes {
             if (0 > maxy) { maxy = 0; }
             ts = computeCubicFirstDerivativeRoots(0, rnp2.Y, rnp3.Y, 0);
 
-            for (int i = 0; i < ts.Length; i++) {
+            for (var i = 0; i < ts.Length; i++) {
                 var t = ts[i];
                 if (t >= 0 && t <= 1) {
-                    int y = (int) computeCubicBaseValue(t, 0, rnp2.Y, rnp3.Y, 0);
+                    var y = (int) computeCubicBaseValue(t, 0, rnp2.Y, rnp3.Y, 0);
                     if (y < miny) { miny = y; }
                     if (y > maxy) { maxy = y; }
                 }

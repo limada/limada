@@ -158,8 +158,8 @@ namespace Limaki.View.Visuals {
         public virtual bool Contains(IVisual item) {
             if (item is IVisualEdge)
                 return this.Contains((IVisualEdge)item);
-            else
-                return this.Graph.Contains(item);
+            
+            return this.Graph.Contains(item);
         }
 
         public virtual bool Contains(IVisualEdge item) {

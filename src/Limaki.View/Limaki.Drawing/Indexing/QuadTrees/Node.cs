@@ -139,8 +139,8 @@ namespace Limaki.Drawing.Indexing.QuadTrees {
                 var node = GetSubnode(subnodeIndex);
                 // recursively search the found/created quad
                 return node.GetNode(searchEnv);
-            } else
-                return this;
+            } 
+            return this;
         }
 
         /// <summary>

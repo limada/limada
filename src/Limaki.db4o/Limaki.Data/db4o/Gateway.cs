@@ -109,9 +109,7 @@ namespace Limaki.Data.db4o {
 
                         } catch (Exception e) {
                             Exception ex = new Exception(
-                                e.Message + "\nFile open failed:\t" +
-                                Iori.Path + Iori.Name + Iori.Extension,
-                                e);
+                                e.Message + "\nFile open failed:\t" + Iori.ToString(), e);
                             throw ex;
                         }
                     }

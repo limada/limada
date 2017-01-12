@@ -60,8 +60,8 @@ namespace Limaki.View.Viz.UI.GraphScene {
                 var item = this.GraphItem;
                 if (item != null)
                     return Scene.ItemShape(item);
-                else
-                    return null;
+                
+                return null;
             }
             set { }
         }

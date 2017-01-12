@@ -71,9 +71,9 @@ namespace Limaki.View.Viz.UI.GraphScene {
             get {
                 if (Edge != null) {
                     return Scene.ItemShape(Edge);
-                } else {
-                    return null;
-                }
+                } 
+                return null;
+
             }
             set {
                 throw new Exception("The method or operation is not implemented.");

@@ -61,8 +61,8 @@ namespace Limaki.View.Viz.Visualizers {
                         result.Y -= border.Height;
                     }
                     return result;
-                } else
-                    return Point.Zero;
+                } 
+                return Point.Zero;
             };
 
             this.DataSize = () => {
@@ -78,8 +78,8 @@ namespace Limaki.View.Viz.Visualizers {
                         result.Height += border.Height;
                     }
                     return result;
-                } else
-                    return Size.Zero;
+                } 
+                return Size.Zero;
             };
 
 

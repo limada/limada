@@ -90,9 +90,9 @@ namespace Limada.View.VisualThings {
 
                 if (graph != null) {
                     return ( graph.Mapper.Transformer as VisualThingTransformer );
-                } else {
-                    return null;
-                }
+                } 
+
+                return null;
             }
         }
 

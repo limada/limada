@@ -47,8 +47,7 @@ namespace Limaki.View.Visuals {
             get {
                 if (base.Shape != null)
                     return base.Shape.Size;
-                else
-                    return new Size();
+                return new Size();
             }
             set { base.Shape.Size = value; }
         }
@@ -57,8 +56,8 @@ namespace Limaki.View.Visuals {
             get {
                 if (base.Shape != null) {
                     return base.Shape.Location;
-                } else
-                    return new Point();
+                } 
+                return new Point();
             }
             set {
                 var oldLocation = base.Location;
@@ -84,8 +83,7 @@ namespace Limaki.View.Visuals {
         public virtual bool Remove(IVisual visual) {
             if (Data.Contains(visual))
                 return Data.Remove(visual);
-            else
-                return false;
+            return false;
         }
         
         public virtual bool Contains(IVisual visual) {

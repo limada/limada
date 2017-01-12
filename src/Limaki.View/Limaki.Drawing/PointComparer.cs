@@ -60,13 +60,11 @@ namespace Limaki.Drawing {
                 if (Order == PointOrder.YX)
                     if (aY == bY)
                         return aX.CompareTo(bX);
-                    else
-                        return aY.CompareTo(bY);
+                    return aY.CompareTo(bY);
                 if (Order == PointOrder.XY)
                     if (aX == bX)
                         return aY.CompareTo(bY);
-                    else
-                        return aX.CompareTo(bX);
+                    return aX.CompareTo(bX);
             }
             if (Order == PointOrder.X) {
                 var aX = Round (a.X);

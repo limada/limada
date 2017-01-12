@@ -78,7 +78,6 @@ namespace Limaki.View.GtkBackend {
 
         public bool HasChildren { get { return _children != null && _children.Count > 0; } }
 
-
         protected virtual Gtk.Menu PopupMenu { get; set; }
 
         protected virtual void Populate (Gtk.Menu menu) {
@@ -114,13 +113,11 @@ namespace Limaki.View.GtkBackend {
             }
 
         }
-
-
+        
         protected void ChildClicked (object sender, System.EventArgs e) {
             HideDropDown ();
         }
-
-
+        
         public void InsertItem (int index, IToolStripItemBackend backend) {
             Children.Insert (index, backend);
         }

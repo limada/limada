@@ -49,12 +49,12 @@ namespace Limaki.Drawing.Shapes {
         public abstract Point this[Anchor i] { get; set; }
 
         public virtual Anchor IsAnchorHit(Point p, int hitSize) {
-            Rectangle hitRect = new Rectangle(0, 0, hitSize, hitSize);
-            double halfWidth = hitRect.Width / 2;
-            double halfHeight = hitRect.Height / 2;
+            var hitRect = new Rectangle(0, 0, hitSize, hitSize);
+            var halfWidth = hitRect.Width / 2;
+            var halfHeight = hitRect.Height / 2;
 
-            foreach (Anchor anchor in Grips) {
-                Point anchorPoint = this[anchor];
+            foreach (var anchor in Grips) {
+                var anchorPoint = this[anchor];
                 hitRect.Location = new Point(anchorPoint.X - halfWidth, anchorPoint.Y - halfHeight);
                 if (hitRect.Contains(p))
                     return anchor;
@@ -63,9 +63,9 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public virtual bool IsBorderHit(Point p, int hitSize) {
-            bool result = false;
-            var hitRect = this.BoundsRect;
-            int halfSize = hitSize / 2;
+            var result = false;
+            var hitRect = BoundsRect;
+            var halfSize = hitSize / 2;
             hitRect = hitRect.Inflate(halfSize, halfSize);
             if (hitRect.Contains(p)) {
                 hitRect = hitRect.Inflate(-hitSize, -hitSize);
@@ -76,8 +76,8 @@ namespace Limaki.Drawing.Shapes {
         }
 
         public virtual bool IsHit(Point p, int hitSize) {
-            Rectangle hitRect = this.BoundsRect;
-            int halfSize = hitSize / 2;
+            var hitRect = BoundsRect;
+            var halfSize = hitSize / 2;
             hitRect = hitRect.Inflate(halfSize, halfSize);
             return hitRect.Contains(p);
         }

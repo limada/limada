@@ -21,7 +21,7 @@ using Limaki.Common.Linqish;
 using Limaki.Graphs;
 using Limaki.View.GraphScene;
 using Limaki.View.Viz.Modelling;
-using System.Linq;
+
 
 namespace Limaki.View.Viz.Mesh {
 	

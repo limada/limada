@@ -70,7 +70,7 @@ namespace Limada.View.Vidgets {
                 if (id == 0) {
                     id = Isaac.Long;
                 }
-                result = new SceneInfo() { Id = id, Name = name };
+                result = new SceneInfo { Id = id, Name = name };
                 result.State.Hollow = true;
                 Sheets[id] = result;
                 if (SheetRegistered != null)
@@ -170,7 +170,7 @@ namespace Limada.View.Vidgets {
             var result = default( SceneInfo );
             if (thing is IStreamThing || thing == null) {
                 
-                Content<Stream> content = new Content<Stream>(
+                var content = new Content<Stream>(
                     new MemoryStream(), CompressionType.bZip2, ContentTypes.LimadaSheet);
 
                 var sheet = new Sheet(scene, layout);
@@ -291,20 +291,19 @@ namespace Limada.View.Vidgets {
 
         #region SheetStreams
 
-        public bool SaveInStore(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Int64 id) {
+        public bool SaveInStore (IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Int64 id) {
             if (scene.Graph.Count > 0) {
-                var stream = new MemoryStream();
-                new Sheet(scene, layout).Save(stream);
+                var stream = new MemoryStream ();
+                new Sheet (scene, layout).Save (stream);
                 stream.Position = 0;
-                
-                SheetStreams[id] = stream.GetBuffer((int)stream.Length);
-                
+
+                SheetStreams [id] = stream.GetBuffer ((int)stream.Length);
+
                 return true;
-            } else {
-                SheetStreams.Remove(id);
-                return false;
             }
-            
+         
+            SheetStreams.Remove (id);
+            return false;
         }
 
         public Stream GetFromStore (Int64 id) {

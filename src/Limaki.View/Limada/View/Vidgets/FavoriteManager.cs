@@ -286,8 +286,8 @@ namespace Limada.View.Vidgets {
         /// </summary>
         /// <param name="displays"></param>
         public void SaveChanges(IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays) {
-            IGraphSceneDisplay<IVisual, IVisualEdge> display = displays.First();
-            IGraph<IVisual, IVisualEdge> graph = graph = display.Data.Graph;
+            var display = displays.First();
+            var graph = display.Data.Graph;
             if (graph.Count == 0)
                 return;
 

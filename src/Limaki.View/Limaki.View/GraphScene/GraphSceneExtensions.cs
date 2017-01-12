@@ -13,8 +13,8 @@ namespace Limaki.View.GraphScene {
     public static class GraphSceneExtensions {
 
         /// <summary>
-        /// if item is not an edge or done == null, a <see cref="DeleteCommand{TItem, TEdge}" is added/> 
-        /// if item is an edge, a <see cref="DeleteEdgeCommand{TItem, TEdge}" is added/> 
+        /// if item is not an edge or done == null, a <see cref="DeleteCommand{TItem, TEdge}"/> is added/> 
+        /// if item is an edge, a <see cref="DeleteEdgeCommand{TItem, TEdge}"/> is added 
         /// this does NOT delete the edge
         /// </summary>
         /// <typeparam name="TItem"></typeparam>

@@ -152,7 +152,8 @@ namespace Limaki.View.Viz.Mesh {
             return Activator.CreateInstance (typeof (GraphSceneDisplayMeshVisitor<,,,>).MakeGenericType (types), this, backMesh, graph, item)
                    as IGraphSceneDisplayMeshVisitor<TItem, TEdge>;
         }
-        
+
+        [Obsolete]
         protected abstract IGraphSceneDisplayEvents<TItem, TEdge> CreateSceneEvents();
 
         protected void VisualGraphChange (object sender, GraphChangeArgs<TItem, TEdge> args) {

@@ -71,7 +71,6 @@ namespace Limaki.View.Vidgets {
             var reader = new StreamReader (stream);
             base.Text = reader.ReadToEnd ();
             stream.Position = 0;
-
         }
 
         void IMarkdownViewer.Clear () {

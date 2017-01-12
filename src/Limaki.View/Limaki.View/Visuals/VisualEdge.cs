@@ -48,8 +48,7 @@ namespace Limaki.View.Visuals {
         }
 
         public override string ToString() {
-            return String.Format("[{0}->{1},{2}]", Root, Leaf, Data);
-;
+            return $"[{Root}->{Leaf},{Data}]";
         }
     }
 }

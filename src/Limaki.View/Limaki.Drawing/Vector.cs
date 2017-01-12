@@ -189,9 +189,9 @@ namespace Limaki.Drawing {
         /// <summary>
         /// tests if a point is Left|On|Right of an infinite line.
         /// Input:  three points start, end, and p
-        ///    Return: >0 for p left of the line through start and end
-        ///            =0 for p on the line
-        ///            <0 for p right of the line
+        ///    Return: > 0 for p left of the line through start and end
+        ///            = 0 for p on the line
+        ///            < 0 for p right of the line
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
@@ -206,9 +206,9 @@ namespace Limaki.Drawing {
 
         /// <summary>
         /// tests if a point is Left|On|Right of the vector.
-        ///    Return: >0 for p left of the line through start and end
-        ///            =0 for p on the line
-        ///            <0 for p right of the line
+        ///    Return: > 0 for p left of the line through start and end
+        ///            = 0 for p on the line
+        ///            < 0 for p right of the line
         /// </summary>
         /// <param name="p">Point to test</param>
         /// <returns></returns>

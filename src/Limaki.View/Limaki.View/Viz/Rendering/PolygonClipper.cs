@@ -48,9 +48,8 @@ namespace Limaki.View.Viz.Rendering {
                             b = envY;
                     }
                     return Rectangle.FromLTRB (l, t, r, b);
-                } else {
-                    return Rectangle.Zero;
-                }
+                } 
+                return Rectangle.Zero;
             }
         }
         

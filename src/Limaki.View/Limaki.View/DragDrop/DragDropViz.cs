@@ -131,7 +131,7 @@ namespace Limaki.View.DragDrop {
                         stream = new MemoryStream (bytes);
                     var text = value as string;
                     if (text != null)
-                        stream = ByteUtils.AsUnicodeStream (text);
+                        stream = text.AsUnicodeStream ();
                     if (stream != null) {
                         var info = sink.Use (stream);
 
@@ -146,8 +146,8 @@ namespace Limaki.View.DragDrop {
                             // TODO: find a better handling of preferences; maybe MimeFingerPrints does the job?
                             if (content.Data == null && (content.Description == null || string.IsNullOrEmpty (content.Description.ToString ())))
                                 continue;
-                            else
-                                break;
+                            
+                            break;
                         }
                     }
 

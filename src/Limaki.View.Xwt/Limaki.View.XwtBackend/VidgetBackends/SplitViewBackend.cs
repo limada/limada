@@ -29,7 +29,7 @@ namespace Limaki.View.XwtBackend {
 
         public SplitViewBackend () { }
 
-        public SplitView0 Frontend { get; protected set; }
+        public new SplitView0 Frontend { get; protected set; }
 
         public override void InitializeBackend (IVidget frontend, VidgetApplicationContext context) {
             base.InitializeBackend (frontend, context);
@@ -244,7 +244,6 @@ namespace Limaki.View.XwtBackend {
                 parentMoving = false;
 
             }
-           // Registry.Pooled<IExceptionHandler> ().Catch (new NotImplementedException (), MessageType.OK);
         }
 
     }

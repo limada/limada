@@ -28,24 +28,24 @@ namespace Limaki.Drawing.XwtBackend {
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual IPainter CreatePainter(Type type) {
+        public virtual IPainter CreatePainter (Type type) {
             if (type.IsInterface) {
-                var ptype = typeof(IPainter<>).GetGenericTypeDefinition().MakeGenericType(type);
-                return (IPainter)Create(ptype);
-            } else {
-                if (type == typeof(string))
-                    return Create<IPainter<string>>();
-                if (typeof (Xwt.Drawing.Image).IsAssignableFrom(type))
-                    return Create<IPainter<Xwt.Drawing.Image>> ();
-                if (Reflector.Implements(type, typeof(IRectangleShape)))
-                    return Create<IPainter<IRectangleShape, Rectangle>>();
-                if (Reflector.Implements(type, typeof(IRoundedRectangleShape)))
-                    return Create<IPainter<IRoundedRectangleShape, Rectangle>>();
-                if (Reflector.Implements(type, typeof(IBezierRectangleShape)))
-                    return Create<IPainter<IBezierRectangleShape, Rectangle>>();
-                if (Reflector.Implements(type, typeof(IVectorShape)))
-                    return Create<IPainter<IVectorShape, Vector>>();
+                var ptype = typeof (IPainter<>).GetGenericTypeDefinition ().MakeGenericType (type);
+                return (IPainter)Create (ptype);
             }
+            if (type == typeof (string))
+                return Create<IPainter<string>> ();
+            if (typeof (Xwt.Drawing.Image).IsAssignableFrom (type))
+                return Create<IPainter<Xwt.Drawing.Image>> ();
+            if (Reflector.Implements (type, typeof (IRectangleShape)))
+                return Create<IPainter<IRectangleShape, Rectangle>> ();
+            if (Reflector.Implements (type, typeof (IRoundedRectangleShape)))
+                return Create<IPainter<IRoundedRectangleShape, Rectangle>> ();
+            if (Reflector.Implements (type, typeof (IBezierRectangleShape)))
+                return Create<IPainter<IBezierRectangleShape, Rectangle>> ();
+            if (Reflector.Implements (type, typeof (IVectorShape)))
+                return Create<IPainter<IVectorShape, Vector>> ();
+
             return null;
         }
 
