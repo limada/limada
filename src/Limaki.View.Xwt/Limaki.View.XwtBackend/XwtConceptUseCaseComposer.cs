@@ -23,6 +23,7 @@ using Xwt;
 using Xwt.Drawing;
 using Limaki.View.XwtBackend;
 using Limada.View.ContentViewers;
+using Limaki.Usecases;
 
 namespace Limaki.View.XwtBackend {
    
@@ -35,6 +36,9 @@ namespace Limaki.View.XwtBackend {
         public Size WindowSize { get; set; }
         public Action OnShow { get; set; }
 
+        public Vindow AboutWindow { get; set; }
+        public IVindowBackend AboutWindowBackend { get; set; }
+
         public virtual void Factor (ConceptUsecase useCase) {
 			
 			if (MainWindow == null) { 
@@ -43,6 +47,12 @@ namespace Limaki.View.XwtBackend {
 			if (MainWindowBackend == null)
 				MainWindowBackend = MainWindow.Backend;
 			
+            if (AboutWindow == null) { 
+                AboutWindow = new Vindow ();
+            }
+            if (AboutWindowBackend == null)
+                AboutWindowBackend = AboutWindow.Backend;
+            
 			useCase.MainWindow = MainWindow;
 
 			var mainWindowBackend = MainWindowBackend as Window;
@@ -115,6 +125,31 @@ namespace Limaki.View.XwtBackend {
 
             if (MarkdownContentViewer.Available ())
                 viewerProvider.Add (new MarkdownContentViewer ());
+
+            ComposeAbout (AboutWindow);
+        }
+
+        About _about = null;
+        public virtual About About { get { return _about ?? (_about = Registry.Pooled<About> ()); } }
+
+        void ComposeAbout (IVindow window) {
+            
+            var backend = window.Backend as Window;
+            backend.Padding = 2;
+
+            var aboutLabel = new Label {
+                Text = About.ToString(),
+                TextColor = Colors.Black,
+                TextAlignment = Alignment.Start,
+            };
+
+            var box = new VBox {
+                Spacing = 2
+            };
+
+            box.PackStart (aboutLabel);
+            backend.Content = box;
+
         }
 
         private Menu CreateMenu (ConceptUsecase useCase) {
@@ -168,8 +203,7 @@ namespace Limaki.View.XwtBackend {
             }),
 
             new MenuItem(l["About"], null, (s, e) => {
-                if (About == null) About = new About();
-                About.Show();
+                AboutWindow.Show();
             })
             );
             return menu;
@@ -224,7 +258,6 @@ namespace Limaki.View.XwtBackend {
             var editor = new LayoutEditor();
         }
 
-        About About { get; set; }
 
 	}
 }

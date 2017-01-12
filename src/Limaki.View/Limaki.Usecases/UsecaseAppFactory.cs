@@ -32,15 +32,18 @@ namespace Limaki.Usecases {
         protected override void Create (IBackendContextResourceLoader backendContextResourceLoader) {
 
             var tka = backendContextResourceLoader as IToolkitAware;
-            if (tka != null)
+            if (tka != null) {
                 this.ToolkitType = tka.ToolkitType;
-
+            }
             base.Create (backendContextResourceLoader);
         }
 
         public virtual Xwt.ToolkitType XwtToolkitType { get; protected set; }
 
         public virtual Guid ToolkitType { get; protected set; }
+
+        About _about = null;
+        public virtual About About { get { return _about ?? (_about = Registry.Pooled<About> ()); } }
 
         public abstract void Run ();
 
@@ -70,4 +73,6 @@ namespace Limaki.Usecases {
         }
         
     }
+
+
 }
