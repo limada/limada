@@ -54,21 +54,21 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
             }
         }
 
-        [Browsable(true)]
-        TextBoxEditorToolStrip0 _toolStrip = null;
-        public TextBoxEditorToolStrip0 ToolStrip {
-            get { return _toolStrip; }
-            set {
-                if (value != null) {
-                    value.Controller = this.Controller;
-                } else {
-                    if (_toolStrip != null) {
-                        _toolStrip.Controller = null;
-                    }
-                }
-                _toolStrip = value;
-            }
-        }
+        //[Browsable(true)]
+        //TextBoxEditorToolStrip0 _toolStrip = null;
+        //public TextBoxEditorToolStrip0 ToolStrip {
+        //    get { return _toolStrip; }
+        //    set {
+        //        if (value != null) {
+        //            value.Controller = this.Controller;
+        //        } else {
+        //            if (_toolStrip != null) {
+        //                _toolStrip.Controller = null;
+        //            }
+        //        }
+        //        _toolStrip = value;
+        //    }
+        //}
 
         [Browsable(true)]
         public virtual bool Multiline {
@@ -99,9 +99,9 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         protected virtual void AfterLoadRTF () {
-            if (this._toolStrip != null) {
-                _toolStrip.Reset();
-            }
+            //if (this._toolStrip != null) {
+            //    _toolStrip.Reset();
+            //}
         }
 
         public string Rtf {

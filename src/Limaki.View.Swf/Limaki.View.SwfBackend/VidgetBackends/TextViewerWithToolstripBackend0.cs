@@ -74,34 +74,35 @@ namespace Limaki.View.SwfBackend.VidgetBackends {
         }
 
         public bool ToolStripVisible {
-            get { return this.TextBoxEditorToolStrip.Visible; }
-            set { this.TextBoxEditorToolStrip.Visible = value; }
+            //get { return this.TextBoxEditorToolStrip.Visible; }
+            //set { this.TextBoxEditorToolStrip.Visible = value; }
+            get;set;
         }
 
-        void SetToolStrip(TextBoxEditorToolStrip0 toolstrip) {
-            Control.SuspendLayout ();
-            Control.TopToolStripPanel.Controls.Clear ();
-            if (toolstrip != null) {
-                Control.TopToolStripPanel.Controls.Add (toolstrip);
-            }
-            TextViewerBackend.ToolStrip = toolstrip;
-            Control.ResumeLayout ();
-        }
+        //void SetToolStrip(TextBoxEditorToolStrip0 toolstrip) {
+        //    Control.SuspendLayout ();
+        //    Control.TopToolStripPanel.Controls.Clear ();
+        //    if (toolstrip != null) {
+        //        Control.TopToolStripPanel.Controls.Add (toolstrip);
+        //    }
+        //    TextViewerBackend.ToolStrip = toolstrip;
+        //    Control.ResumeLayout ();
+        //}
 
-        private TextBoxEditorToolStrip0 _textBoxEditorToolStrip = null;
-        public virtual TextBoxEditorToolStrip0 TextBoxEditorToolStrip {
-            get {
-                if (_textBoxEditorToolStrip ==null) {
-                    _textBoxEditorToolStrip = new TextBoxEditorToolStrip0 ();
-                    SetToolStrip (_textBoxEditorToolStrip);
-                }
+        //private TextBoxEditorToolStrip0 _textBoxEditorToolStrip = null;
+        //public virtual TextBoxEditorToolStrip0 TextBoxEditorToolStrip {
+        //    get {
+        //        if (_textBoxEditorToolStrip ==null) {
+        //            _textBoxEditorToolStrip = new TextBoxEditorToolStrip0 ();
+        //            SetToolStrip (_textBoxEditorToolStrip);
+        //        }
                 
-                return _textBoxEditorToolStrip;
-            }
-            set { _textBoxEditorToolStrip = value;
-                  SetToolStrip(_textBoxEditorToolStrip);
-            }
-        }
+        //        return _textBoxEditorToolStrip;
+        //    }
+        //    set { _textBoxEditorToolStrip = value;
+        //          SetToolStrip(_textBoxEditorToolStrip);
+        //    }
+        //}
 
         #region IZoomTarget Member
 
