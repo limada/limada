@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript">
+        function setUrl() {
+            history.replaceState('Object', 'Title', '@ViewBag.Id');
+        }
+    </script>
+
+    <script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>
+
+</head>
+<body onload="setUrl()">
+    <div class="page">
+        <div id="header">
+            <div id="title">
+                <h2>@ViewBag.Title</h2>
+            </div>
+            <div >
+                <ul id="menu">
+                    <li>@Html.ActionLink("Home", "Index", "")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                </ul>
+            </div>
+        </div>
+        <div id="main">
+            @RenderBody()
+            <div id="footer">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

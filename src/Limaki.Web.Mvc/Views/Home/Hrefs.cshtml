@@ -1,0 +1,8 @@
+﻿@model Limada.UseCases.Cms.Models.Hrefs
+
+    @foreach(var link in Model.Refs) {
+    <div>
+         @Html.ActionLink(@link.Text, "Index", @link.Id)
+    </div>
+    }
+

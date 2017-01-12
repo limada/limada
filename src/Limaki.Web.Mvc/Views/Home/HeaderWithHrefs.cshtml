@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Limada.UseCases.Cms.Models.Href>
+<div class="head">
+    <a href="Content/About.htm" id="LogoRef" >
+        <img id="Logo" style="height: 2em; float: right; padding-right: 1em; border-style: none" src="Content/Logo.png" alt="Logo.png" />
+    </a>
+
+    @foreach (var link in Model) {
+        @Html.ActionLink(@link.Text, "Index", @link.Id)	
+        <text>&nbsp;</text>
+    }
+
+    
+</div>
+

@@ -1,0 +1,29 @@
+﻿@model Limada.UseCases.Cms.Models.VisualHrefContent
+@using System.Globalization
+@using Limada.UseCases.Cms.Models
+@using Limaki.Drawing
+@{
+
+    Html.RenderPartial ("HeaderWithHrefs", Model.Roots);
+
+    @:<div class="description">
+        @:<h2>@Model.Description</h2>
+    @:</div>
+    
+    @:<div style="position:relative;">
+
+    foreach (var link in Model.Hrefs) {
+
+        var x = link.Location.X.ToString (CultureInfo.InvariantCulture);
+        var y = link.Location.Y.ToString (CultureInfo.InvariantCulture);
+        var w = link.Size.Width.ToString (CultureInfo.InvariantCulture);
+        var h = link.Size.Height.ToString (CultureInfo.InvariantCulture);
+
+        <div class="visual-link" style="left:@(x)px; top:@(y)px; width:@(w)px; height:@(h)px">
+            <a href="/@link.Id">@link.Text</a>
+        </div>
+    }
+    
+    @:</div>
+         
+}

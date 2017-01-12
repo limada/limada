@@ -1,0 +1,69 @@
+﻿@model Limada.UseCases.Cms.Models.HtmlContent
+@using Limada.Model
+@using Limaki.Common.Reflections
+@using Limaki.Web.Mvc.Controllers
+@{
+    ViewBag.Title = "Sandbox";
+
+    var t1 = new Thing<string> ("hello");
+    <text>
+    <!-- <text> is special tag to break c# scope -->
+    @t1.ToString()
+    </text>
+    
+    var controller = ViewContext.Controller as HomeController;
+    var backend = controller.Backend;
+  
+    <div>
+        this.GetType(): @Reflector.ClassName(this.GetType())<br />
+        this.GetType().BaseType: @Reflector.ClassName(this.GetType().BaseType)
+    </div>
+    <div>
+        Model.GetType(): @Reflector.ClassName(Model.GetType())<br />
+        Model.Description: @Model.Description<br />
+        <!-- render raw as its already hmtl-->
+        Model.Data:
+        <div style="border: 1px dotted black; margin-left: 2em; width: 50%">
+            @Html.Raw(Model.Data)
+        </div>
+    </div>
+    <div>
+        var controller = ViewContext.Controller as  @controller.GetType().FullName;<br />
+        var backend = controller.Backend; // (type: @backend.GetType().FullName)<br />
+        backend.ThingGraph.GetType(): @backend.ThingGraph.GetType().FullName<br />
+    </div>
+    // outside html-tags use pure c#-code:
+    var topic = backend.Topic(); // topic of the database
+    var topicdesc = backend.ThingDataToDisplay(topic).ToString();
+    <div style="border: 1px dotted black; margin-left: 2em; width: 50%">
+        var topic = backend.Topic():<br />
+        @topicdesc (@Html.ActionLink("Browse", "Index", @topic.Id.ToString("X16")))
+        <br />
+        backend.Leafs(topic):
+        @{// start new block to break html-code
+            var topicLeafs = backend.Leafs(topic);
+            // urls of the leafs of topic:
+            var topicLeafsUrls = backend.HrefsOfThings(topicLeafs).OrderBy(e => e.Text);
+            foreach (var link in topicLeafsUrls) {
+            <text>
+            @Html.ActionLink(@link.Text, "Index", @link.Id)&nbsp;
+            </text>
+            }
+        }
+    </div>
+    <div style="border: 1px dotted black; margin-left: 2em; width: 50%">
+        @{// start new block to break html-code
+            var keyword = "t";
+            var searchResults = backend.ResolveRequest(keyword);
+            var searchResultsUrls = backend.HrefsOfThings(searchResults).OrderBy(e => e.Text);
+            <div>
+                backend.ResolveRequest( "@keyword" ):<br />
+                @foreach (var link in searchResultsUrls) {
+                    <text>
+                    @Html.ActionLink(@link.Text, "Index", @link.Id) &nbsp;
+                    </text>
+                }
+            </div>    
+        }
+    </div>
+}

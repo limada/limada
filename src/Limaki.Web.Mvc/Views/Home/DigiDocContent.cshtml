@@ -1,0 +1,150 @@
+﻿@model Limada.UseCases.Cms.Models.ContentAndLinks
+@using Limada.UseCases.Cms.Models
+
+@section Head
+{
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <script type="text/javascript">
+
+        var pages = [
+            @{
+                var lastPage = Model.Leafs.LastOrDefault ();
+                foreach (var link in Model.Leafs) {
+                    var s = String.Format ("\"{0}\"" + (link.Id == lastPage.Id ? "" : ","), HttpUtility.JavaScriptStringEncode (link.Id));
+                    @Html.Raw(s)
+                    ;
+                }
+            }
+        ];
+
+        var currentImage = 0;
+        var allImages = pages.length;
+        var devicePixelRatio = 1;
+        var emPixelRatio = 700 /2000;
+
+        function showPage(element) {
+            var imgView = $("#pageImg");
+            if (imgView.attr("src") == pages[element])
+                return;
+            var img = new Image();
+            img.onload = function() {
+
+                var width = img.naturalWidth * emPixelRatio;
+                imgView
+                    .attr("src", pages[element])
+                    .attr("width", width + "em")
+                    .hide()
+                    .show();
+                var main = $('html, body');
+                if ($(window).scrollTop() > 0)
+                    main.animate({ scrollTop: 0 }, 1000);
+                var pageNumber = $('#page-number');
+                if (pageNumber.val() != "") {
+                    pageNumber.val(element + 1);
+                }
+                currentImage = element;
+            };
+            img.src = pages[element];
+        }
+
+        function nextPage() {
+            currentImage++;
+            if (currentImage >= allImages) currentImage = 0;
+            showPage(currentImage);
+        }
+
+        function prevPage() {
+            currentImage--;
+            if (currentImage < 0) currentImage = allImages - 1;
+            showPage(currentImage);
+        }
+
+        function init() {
+
+            $(window).ready(function() {
+
+                devicePixelRatio = window.devicePixelRatio || 1;
+
+                showPage(0);
+
+                $('#page-next').click(nextPage);
+                $('#page-prev').click(prevPage);
+                $('#pageDiv').click(nextPage);
+
+                var pageNumber = $('#page-number');
+                pageNumber.change(function() {
+                    var n = pageNumber.val();
+                    if ($.isNumeric(n)) {
+                        var pn = parseInt(n) - 1;
+                        if (Math.floor(pn) == pn && pn < pages.length)
+                            showPage(pn);
+                    }
+
+                });
+                pageNumber.val('');
+                pageNumber.attr("placeholder", pages.length);
+                pageNumber.attr("max", pages.length);
+
+                $(document).keydown(function(e) {
+                    if ($(e.target).is('input, textarea')) {
+                        return;
+                    }
+                    if ((e.which == 34 || e.which == 32) && $(window).scrollTop() + window.innerHeight >= $(document).height())
+                        nextPage();
+                    if (e.which == 33 && $(window).scrollTop() == 0)
+                        prevPage();
+                });
+
+                //$(window).scroll(function() {
+                //  this function is to nervous:
+                //    if ($(window).scrollTop() + window.innerHeight >= $(document).height())
+                //        nextPage();
+                //    if ($(window).scrollTop() == 0)
+                //        prevPage();
+                //});
+            });
+        };
+    </script>
+
+}
+
+@section OnLoad
+{
+    init();
+}
+
+@{  Html.RenderPartial ("HeaderWithHrefs", Model.Roots);
+
+<div class="description" style="padding-bottom:1em">
+    <h2 style="display:inline">
+        @Model.Content.Description
+    </h2>
+    <div style="display:inline; float:right">
+        <a id="page-prev" class="btn btn-default" href="#" style="text-decoration: none">
+            <i class="fa fa-caret-left fa-2x"></i>
+        </a>
+        <input id="page-number" class="form-control" type="number" min="1"
+               style="width:4em;line-height:none;margin-bottom:1em; text-align:right">
+        <a id="page-next" class="btn btn-default" href="#" style="text-decoration: none">
+            <i class="fa fa-caret-right fa-2x"></i>
+        </a>
+
+    </div>
+
+</div>
+
+    <div id="pageDiv">
+        <img id="pageImg"  />
+    </div>
+
+}
+
+
+
+
+
+
+
+
