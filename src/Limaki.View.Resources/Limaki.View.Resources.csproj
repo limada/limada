@@ -92,6 +92,9 @@
     </Compile>
     <Compile Include="[Generated]\AwesomeIconeria-4.04.Generated.cs" />
     <Compile Include="[Generated]\AwesomeIconeria-4.3.Generated.cs" />
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Resources\LogoDrop32.ico" />

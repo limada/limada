@@ -69,6 +69,9 @@
     <Compile Include="Xwt.SwfBackend\WindowFrameBackend.cs" />
     <Compile Include="Xwt.SwfBackend\SwfEngine.cs" />
     <Compile Include="Xwt.SwfBackend\SwfDesktopBackend.cs" />
+    <Compile Include="..\..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

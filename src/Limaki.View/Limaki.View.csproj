@@ -71,7 +71,6 @@
     <Compile Include="Limada\View\ThingMeshHelper.cs" />
     <Compile Include="Limaki.Contents\Text\HtmlDocument.cs" />
     <Compile Include="Limaki.Contents\Text\IDocument.cs" />
-    <Compile Include="Limaki.Contents\Text\MarkdownDocument.cs" />
     <Compile Include="Limaki.Contents\Text\RtfImporter.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\ImagePainter.cs" />
     <Compile Include="Limaki.Drawing\Geom.cs" />
@@ -165,7 +164,6 @@
     <Compile Include="Limada\View\Vidgets\SplitViewDumnmy.cs" />
     <Compile Include="Limaki.View\Vidgets\CanvasVidget.cs" />
     <Compile Include="Limaki.View\Vidgets\ITextViewerVidgetBackend.cs" />
-    <Compile Include="[Obsolete]\LayoutToolStrip0.cs" />
     <Compile Include="[Obsolete]\TextViewer0\ITextViewerWithToolstripVidgetBackend0.cs" />
     <Compile Include="Limaki.View\Vidgets\TextViewer.cs" />
     <Compile Include="Limaki.View\Vidgets\TextViewerTextType.cs" />
@@ -282,7 +280,6 @@
     <Compile Include="Limada\View\VisualThings\VisualThingTransformer.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingGraph.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingGraphExtension.cs" />
-    <Compile Include="[Obsolete]\VisualThingGraphMapping.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingMarkerFacade.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingXmlSerializer.cs" />
     <Compile Include="Limada\View\VisualThings\VisualThingsContentViz.cs" />
@@ -382,6 +379,9 @@
     <Compile Include="Limaki.View\Visuals\SceneExtensions.cs" />
     <Compile Include="Limaki.View\Viz\Visuals\VisualsRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
     <Compile Include="Limaki.Usecases\IReportOptions.cs" />
     <Compile Include="Limada\UseCases\ConceptUsecase.cs" />
     <Compile Include="Limada\UseCases\ConceptUsecaseComposer.cs" />
@@ -413,7 +413,6 @@
     <Compile Include="Limaki.View\ContentViewers\ContentViewer.cs" />
     <Compile Include="Limaki.View\Visuals\BruteForceIndex.cs" />
     <Compile Include="Limaki.View\Visuals\VisualGraphEntityTransformer.cs" />
-    <Compile Include="[Obsolete]\GraphVisualEntityMapping.cs" />
     <Compile Include="Limaki.View\Visuals\ISheetManager.cs" />
     <Compile Include="Limaki.View\Visuals\IVisual.cs" />
     <Compile Include="Limaki.View\Visuals\IVisualEdge.cs" />
@@ -438,7 +437,6 @@
     <Compile Include="Limaki.View\Viz\UI\GraphScene\GraphItemMouseScrollAction.cs" />
     <Compile Include="Limaki.Usecases\Vidgets\FileExplorerComposer.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\ImageLayer.cs" />
-    <Compile Include="[Obsolete]\VisualGraphSceneDisplayMeshEvents0.cs" />
     <Compile Include="Limaki.View\Viz\Serializers\GraphSceneDisplayMemento.cs" />
     <Compile Include="Limaki.View\Viz\Serializers\GraphSceneDisplayXmlSerializer.cs" />
     <Compile Include="Limaki.View\Viz\Serializers\MeshXmlSerializer.cs" />
@@ -446,6 +444,9 @@
     <Compile Include="Limada\UseCases\Serializers\UsecaseXmlSerializer.cs" />
     <Compile Include="Limaki.View\GraphScene\ISceneViz.cs" />
     <Compile Include="Limaki.View\GraphScene\GraphSceneExtensions.cs" />
+    <Compile Include="Limaki.Usecases\About.cs" />
+    <Compile Include="Limaki.Contents\Text\HtmlTextConverter.cs" />
+    <Compile Include="Limaki.Contents\Text\MarkDownConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="Limaki.View.GtkBackend\CustomToolStripBackends.cs" />
     <Compile Include="Limaki.View.GtkBackend\GtkToolButton.cs" />
-    <Compile Include="Limaki.View.GtkBackend\ImageComboBoxBackend.cs" />
+    <Compile Include="[Obsolete]\ImageComboBoxBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripButtonBackendBase.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripDropDownButtonBackendBase.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripItemBackend.cs" />
@@ -72,7 +72,10 @@
     <Compile Include="Limaki.View.GtkBackend\ToolStripButtonBackend.cs" />
     <Compile Include="Limaki.View.GtkBackend\ToolStripDropDownButtonBackend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Limaki.View.GtkBackend\ToolStripDropDownPopupButtonBackendBase_1.cs" />
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
+    <Compile Include="Limaki.View.GtkBackend\ToolStripDropDownPopupButtonBackendBase.cs" />
     <Compile Include="[Obsolete]\GtkPrototyper.cs" />
     <Compile Include="[Obsolete]\GtkClipboardBackend1.cs" />
   </ItemGroup>
@@ -98,9 +101,7 @@
       <Name>Limaki.View</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="[Obsolete]\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

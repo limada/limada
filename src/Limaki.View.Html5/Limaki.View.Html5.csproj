@@ -70,6 +70,9 @@
     <Compile Include="Limaki.View.Html5\Html5SystemFontBackend.cs" />
     <Compile Include="Limaki.View.Html5\Html5SystemInformation.cs" />
     <Compile Include="Limaki.View.Html5\HtmlSystemColorsBackend.cs" />
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

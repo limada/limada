@@ -68,6 +68,9 @@
     <Compile Include="Limaki.View.SwfBackend\DragDrop\DragDropMouseBackendHandler.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\BackendExtensions.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ComboBoxBackend.cs" />
+    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ComboBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\DragDropVidgetBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\SwfTransferDataInfo.cs" />
     <Compile Include="Limaki.View.SwfBackend\DragDrop\SwfTransferDataStore.cs" />
@@ -86,12 +89,6 @@
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\PlainTextBoxBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextViewerBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextBoxEditorControler.cs" />
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextBoxEditorToolStrip0.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextBoxEditorToolStrip0.Designer.cs">
-      <DependentUpon>TextBoxEditorToolStrip0.cs</DependentUpon>
-    </Compile>
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextViewerWithToolstripBackend0.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\TextOkCancelBoxBackend.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripButtonBackend.cs" />
@@ -119,7 +116,6 @@
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripRenderer.cs" />
     <Compile Include="Limada.Usecases\SwfAppFactory.cs" />
     <Compile Include="Limaki.View.SwfBackend\VidgetBackends\SwfVidgetToolkitEngineBackend.cs" />
-    <Compile Include="Limaki.View.SwfBackend\Viz\ToolStrips\LayoutToolStripBackend0.cs" />
     <Compile Include="Properties\IconeryExtensions.cs" />
     <Compile Include="Properties\GdiIconery.cs" />
     <Compile Include="Limaki.View.SwfBackend\Viz\GdiGraphSceneLayer.cs" />
@@ -150,13 +146,16 @@
     <Compile Include="Limaki.View.SwfBackend\SwfSystemInformation.cs" />
     <Compile Include="Limaki.View.SwfBackend\SwfUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
     <Compile Include="Limada.Usecases\PrintManager.cs" />
     <Compile Include="Limada.Usecases\SwfConceptUseCaseComposer.cs" />
-    <Compile Include="Limaki.View.SwfBackend\Controls\About.cs">
+    <Compile Include="Limaki.View.SwfBackend\Controls\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Controls\About.Designer.cs">
-      <DependentUpon>About.cs</DependentUpon>
+    <Compile Include="Limaki.View.SwfBackend\Controls\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.View.SwfBackend\Controls\BaseStyleEditor.cs">
       <SubType>UserControl</SubType>
@@ -178,12 +177,6 @@
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
     <Compile Include="Limaki.View\Viz\VisualsSceneGdiPainter.cs" />
-    <Compile Include="Limaki.View.SwfBackend\Controls\ShapeComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Limaki.View.SwfBackend\Controls\ShapeComboBox.Designer.cs">
-      <DependentUpon>ShapeComboBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="Limaki.View\ContentViewers\SdImageContentViewer.cs" />
     <Compile Include="Limaki.View.SwfBackend\Controls\StyleEditor.cs">
       <SubType>UserControl</SubType>
@@ -191,15 +184,8 @@
     <Compile Include="Limaki.View.SwfBackend\Controls\StyleEditor.Designer.cs">
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Limaki.View.SwfBackend\VidgetBackends\ToolStripShapeComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Limada.View.SwfBackend\SplitViewBackend.cs" />
     <Compile Include="Xwt.GdiBackend\SystemColorsGdiBackend.cs" />
-    <Compile Include="[Obsolete]\IToolStripCommandToggle0.cs" />
-    <Compile Include="[Obsolete]\IToolStripItem0.cs" />
-    <Compile Include="[Obsolete]\ToolStripButtonBackend0.cs" />
-    <Compile Include="[Obsolete]\ToolStripCommand0.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Geckofx-29\Geckofx-Core\Geckofx-Core.csproj">
@@ -237,7 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Limaki.View.SwfBackend\Controls\About.resx">
-      <DependentUpon>About.cs</DependentUpon>
+      <DependentUpon>AboutForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Limaki.View.SwfBackend\Controls\BaseStyleEditor.resx">
@@ -255,6 +241,9 @@
     <EmbeddedResource Include="Limaki.View.SwfBackend\Controls\StyleEditor.resx">
       <DependentUpon>StyleEditor.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="[Obsolete]\" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

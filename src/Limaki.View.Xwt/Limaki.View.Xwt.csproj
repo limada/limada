@@ -59,7 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\ComboBoxBackend.cs" />
-    <Compile Include="[Obsolete]\LayoutToolStripBackend0.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\MarkDownEditBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\PanedBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\PlainTextBoxBackend.cs" />
@@ -71,7 +70,6 @@
     <Compile Include="Limaki.View.XwtBackend\VidgetBackends\DigidocViewerBackend.cs" />
     <Compile Include="Limaki.View.XwtBackend\Viz\DragDropBackendHandler.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DragDropMouseBackendHandler.cs" />
-    <Compile Include="Limaki.View.XwtBackend\[todo]\About.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\DummyBackends.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\LayoutEditor.cs" />
     <Compile Include="Limaki.View.XwtBackend\[todo]\PrintDialog.cs" />
@@ -108,6 +106,9 @@
     <Compile Include="Sandbox\PrototypeWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
     </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -157,6 +158,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="[Obsolete]\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

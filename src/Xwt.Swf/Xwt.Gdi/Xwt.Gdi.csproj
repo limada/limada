@@ -103,10 +103,13 @@
     <Compile Include="Xwt.GdiBackend\GdiTextLayoutBackend.cs" />
     <Compile Include="Xwt.GdiBackend\GdiTextLayoutBackendHandler.cs" />
     <Compile Include="Xwt.GdiBackend\XwtDrawingExtensions.cs" />
+    <Compile Include="..\..\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">
-      <Project>{92494904-35fa-4dc9-bde9-3a3e87ac49d3}</Project>
+      <Project>{92494904-35FA-4DC9-BDE9-3A3E87AC49D3}</Project>
       <Name>Xwt</Name>
     </ProjectReference>
   </ItemGroup>
