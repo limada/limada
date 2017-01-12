@@ -1,6 +1,8 @@
+using System.IO;
 using System.Linq;
 using Limaki.Common.IOC;
 using Limaki.Contents.IO;
+using Limaki.Contents.Text;
 
 namespace Limaki.Contents {
 
@@ -19,6 +21,10 @@ namespace Limaki.Contents {
         
             var contentDiggPool = context.Pooled<ContentDiggPool> ();
             contentDiggPool.Add (new ImageContentDigger ());
+
+            var converterPool = context.Pooled<ConverterPool<Stream>> ();
+            converterPool.Add (new HtmlTextConverter ());
+            converterPool.Add (new MarkDownConverter ());
         }
     }
 }
