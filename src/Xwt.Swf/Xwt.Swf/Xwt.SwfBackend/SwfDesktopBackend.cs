@@ -73,15 +73,19 @@ namespace Xwt.SwfBackend
 			}
 
 			if (cannotCallGetDpiForMonitor) {
-				// Get system-wide dpi
-				var hdc = GetDC (IntPtr.Zero);
-				if (hdc != IntPtr.Zero) {
-					try {
-						dpi = GetDeviceCaps (hdc, LOGPIXELSX);
-					} finally {
-						ReleaseDC (IntPtr.Zero, hdc);
-					}
-				}
+                try {
+                    // Get system-wide dpi
+                    var hdc = GetDC (IntPtr.Zero);
+                    if (hdc != IntPtr.Zero) {
+                        try {
+                            dpi = GetDeviceCaps (hdc, LOGPIXELSX);
+                        } finally {
+                            ReleaseDC (IntPtr.Zero, hdc);
+                        }
+                    }
+				} catch {
+                    cannotCallGetDpiForMonitor = true;
+                }
 			}
 			return dpi / BASELINE_DPI;
 		}
