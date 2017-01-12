@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3F723848-5562-46EE-9236-AC2E0C06B13F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Limaki.ImageLibs</RootNamespace>
+    <AssemblyName>Limaki.ImagePack</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SHARPZIPLIB;EXPOSE_LIBJPEG;SILVERLIGHT;EXPOSE_LIBTIFF</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;SHARPZIPLIB;EXPOSE_LIBJPEG;SILVERLIGHT;EXPOSE_LIBTIFF</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\bin\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Hjg.PngCs\Chunks\ChunkCopyBehaviour.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\ChunkHelper.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\ChunkLoadBehaviour.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\ChunkPredicate.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\ChunkPredicateEquiv.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\ChunkPredicateId.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\ChunkPredicateId2.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\ChunkRaw.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\ChunksList.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\ChunksListForWrite.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunk.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkBKGD.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkCHRM.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkGAMA.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkHIST.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkICCP.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkIDAT.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkIEND.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkIHDR.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkITXT.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkMultiple.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkOFFS.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkPHYS.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkPLTE.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkSBIT.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkSingle.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkSkipped.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkSPLT.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkSRGB.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkSTER.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkTEXT.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkTextVar.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkTIME.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkTRNS.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkUNKNOWN.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngChunkZTXT.cs" />
+    <Compile Include="Hjg.PngCs\Chunks\PngMetadata.cs" />
+    <Compile Include="Hjg.PngCs\FileHelper.cs" />
+    <Compile Include="Hjg.PngCs\FilterType.cs" />
+    <Compile Include="Hjg.PngCs\FilterWriteStrategy.cs" />
+    <Compile Include="Hjg.PngCs\ImageInfo.cs" />
+    <Compile Include="Hjg.PngCs\ImageLine.cs" />
+    <Compile Include="Hjg.PngCs\ImageLineHelper.cs" />
+    <Compile Include="Hjg.PngCs\ImageLines.cs" />
+    <Compile Include="Hjg.PngCs\PngCsUtils.cs" />
+    <Compile Include="Hjg.PngCs\PngDeinterlacer.cs" />
+    <Compile Include="Hjg.PngCs\PngHelperInternal.cs" />
+    <Compile Include="Hjg.PngCs\PngIDatChunkInputStream.cs" />
+    <Compile Include="Hjg.PngCs\PngIDatChunkOutputStream.cs" />
+    <Compile Include="Hjg.PngCs\PngjBadCrcException.cs" />
+    <Compile Include="Hjg.PngCs\PngjException.cs" />
+    <Compile Include="Hjg.PngCs\PngjExceptionInternal.cs" />
+    <Compile Include="Hjg.PngCs\PngjInputException.cs" />
+    <Compile Include="Hjg.PngCs\PngjOutputException.cs" />
+    <Compile Include="Hjg.PngCs\PngjUnsupportedException.cs" />
+    <Compile Include="Hjg.PngCs\PngReader.cs" />
+    <Compile Include="Hjg.PngCs\PngWriter.cs" />
+    <Compile Include="Hjg.PngCs\ProgressiveOutputStream.cs" />
+    <Compile Include="Hjg.PngCs\Zlib\Adler32.cs" />
+    <Compile Include="Hjg.PngCs\Zlib\AZlibInputStream.cs" />
+    <Compile Include="Hjg.PngCs\Zlib\AZlibOutputStream.cs" />
+    <Compile Include="Hjg.PngCs\Zlib\CRC32.cs" />
+    <Compile Include="Hjg.PngCs\Zlib\DeflateCompressLevel.cs" />
+    <Compile Include="Hjg.PngCs\Zlib\EDeflateCompressStrategy.cs" />
+    <Compile Include="Hjg.PngCs\Zlib\ZlibInputStreamIs.cs" />
+    <Compile Include="Hjg.PngCs\Zlib\ZlibInputStreamMs.cs" />
+    <Compile Include="Hjg.PngCs\Zlib\ZlibOutputStreamIs.cs" />
+    <Compile Include="Hjg.PngCs\Zlib\ZlibOutputStreamMs.cs" />
+    <Compile Include="Hjg.PngCs\Zlib\ZlibStreamFactory.cs" />
+    <Compile Include="LibJpeg\BitmapDestination.cs" />
+    <Compile Include="LibJpeg\BitStream.cs" />
+    <Compile Include="LibJpeg\Classic\DensityUnit.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\bitread_perm_state.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\bitread_working_state.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\ComponentBuffer.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\d_derived_tbl.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\huff_entropy_decoder.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\huff_entropy_encoder.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\JpegUtils.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_color_converter.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_color_deconverter.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_color_quantizer.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_comp_master.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_c_coef_controller.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_c_main_controller.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_c_prep_controller.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_decomp_master.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_downsampler.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_d_coef_controller.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_d_main_controller.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_d_post_controller.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_entropy_decoder.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_entropy_encoder.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_forward_dct.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_input_controller.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_inverse_dct.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_marker_reader.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_marker_writer.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_scan_info.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\jpeg_upsampler.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\J_BUF_MODE.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\my_1pass_cquantizer.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\my_2pass_cquantizer.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\my_c_coef_controller.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\my_destination_mgr.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\my_merged_upsampler.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\my_source_mgr.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\my_trans_c_coef_controller.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\my_upsampler.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\phuff_entropy_decoder.cs" />
+    <Compile Include="LibJpeg\Classic\Internal\phuff_entropy_encoder.cs" />
+    <Compile Include="LibJpeg\Classic\JBLOCK.cs" />
+    <Compile Include="LibJpeg\Classic\JHUFF_TBL.cs" />
+    <Compile Include="LibJpeg\Classic\JpegConstants.cs" />
+    <Compile Include="LibJpeg\Classic\jpeg_common_struct.cs" />
+    <Compile Include="LibJpeg\Classic\jpeg_component_info.cs" />
+    <Compile Include="LibJpeg\Classic\jpeg_compress_struct.cs" />
+    <Compile Include="LibJpeg\Classic\jpeg_decompress_struct.cs" />
+    <Compile Include="LibJpeg\Classic\jpeg_destination_mgr.cs" />
+    <Compile Include="LibJpeg\Classic\jpeg_error_mgr.cs" />
+    <Compile Include="LibJpeg\Classic\JPEG_MARKER.cs" />
+    <Compile Include="LibJpeg\Classic\jpeg_marker_struct.cs" />
+    <Compile Include="LibJpeg\Classic\jpeg_progress_mgr.cs" />
+    <Compile Include="LibJpeg\Classic\jpeg_source_mgr.cs" />
+    <Compile Include="LibJpeg\Classic\JQUANT_TBL.cs" />
+    <Compile Include="LibJpeg\Classic\jvirt_array.cs" />
+    <Compile Include="LibJpeg\Classic\J_COLOR_SPACE.cs" />
+    <Compile Include="LibJpeg\Classic\J_DCT_METHOD.cs" />
+    <Compile Include="LibJpeg\Classic\J_DITHER_MODE.cs" />
+    <Compile Include="LibJpeg\Classic\J_MESSAGE_CODE.cs" />
+    <Compile Include="LibJpeg\Classic\ReadResult.cs" />
+    <Compile Include="LibJpeg\CompressionParameters.cs" />
+    <Compile Include="LibJpeg\DecompressionParameters.cs" />
+    <Compile Include="LibJpeg\DecompressorToJpegImage.cs" />
+    <Compile Include="LibJpeg\Enumerations.cs" />
+    <Compile Include="LibJpeg\IDecompressDestination.cs" />
+    <Compile Include="LibJpeg\IRawImage.cs" />
+    <Compile Include="LibJpeg\Jpeg.cs" />
+    <Compile Include="LibJpeg\JpegImage.cs" />
+    <Compile Include="LibJpeg\RawImage.cs" />
+    <Compile Include="LibJpeg\Sample.cs" />
+    <Compile Include="LibJpeg\SampleRow.cs" />
+    <Compile Include="LibJpeg\Utils.cs" />
+    <Compile Include="LibTiff\Enums\CleanFaxData.cs" />
+    <Compile Include="LibTiff\Enums\ColorResponseUnit.cs" />
+    <Compile Include="LibTiff\Enums\Compression.cs" />
+    <Compile Include="LibTiff\Enums\ExtraSample.cs" />
+    <Compile Include="LibTiff\Enums\FaxMode.cs" />
+    <Compile Include="LibTiff\Enums\FileType.cs" />
+    <Compile Include="LibTiff\Enums\FillOrder.cs" />
+    <Compile Include="LibTiff\Enums\GrayResponseUnit.cs" />
+    <Compile Include="LibTiff\Enums\Group3Opt.cs" />
+    <Compile Include="LibTiff\Enums\InkSet.cs" />
+    <Compile Include="LibTiff\Enums\JpegColorMode.cs" />
+    <Compile Include="LibTiff\Enums\JpegProc.cs" />
+    <Compile Include="LibTiff\Enums\JpegTablesMode.cs" />
+    <Compile Include="LibTiff\Enums\OFileType.cs" />
+    <Compile Include="LibTiff\Enums\Orientation.cs" />
+    <Compile Include="LibTiff\Enums\Photometric.cs" />
+    <Compile Include="LibTiff\Enums\PlanarConfig.cs" />
+    <Compile Include="LibTiff\Enums\Predictor.cs" />
+    <Compile Include="LibTiff\Enums\ResUnit.cs" />
+    <Compile Include="LibTiff\Enums\SampleFormat.cs" />
+    <Compile Include="LibTiff\Enums\Threshold.cs" />
+    <Compile Include="LibTiff\Enums\TiffPrintFlags.cs" />
+    <Compile Include="LibTiff\Enums\TiffTag.cs" />
+    <Compile Include="LibTiff\Enums\TiffType.cs" />
+    <Compile Include="LibTiff\Enums\YCbCrPosition.cs" />
+    <Compile Include="LibTiff\FieldBit.cs" />
+    <Compile Include="LibTiff\FieldValue.cs" />
+    <Compile Include="LibTiff\Internal\CCITTCodec.cs" />
+    <Compile Include="LibTiff\Internal\CCITTCodecTagMethods.cs" />
+    <Compile Include="LibTiff\Internal\CCITTCodec_Data.cs" />
+    <Compile Include="LibTiff\Internal\CodecWithPredictor.cs" />
+    <Compile Include="LibTiff\Internal\CodecWithPredictorTagMethods.cs" />
+    <Compile Include="LibTiff\Internal\DeflateCodec.cs" />
+    <Compile Include="LibTiff\Internal\DeflateCodecTagMethods.cs" />
+    <Compile Include="LibTiff\Internal\DumpModeCodec.cs" />
+    <Compile Include="LibTiff\Internal\ExtenderAndErrorHandler.cs" />
+    <Compile Include="LibTiff\Internal\JpegCodec.cs" />
+    <Compile Include="LibTiff\Internal\JpegCodecTagMethods.cs" />
+    <Compile Include="LibTiff\Internal\JpegErrorManager.cs" />
+    <Compile Include="LibTiff\Internal\JpegStdDestination.cs" />
+    <Compile Include="LibTiff\Internal\JpegStdSource.cs" />
+    <Compile Include="LibTiff\Internal\JpegTablesDestination.cs" />
+    <Compile Include="LibTiff\Internal\JpegTablesSource.cs" />
+    <Compile Include="LibTiff\Internal\LZWCodec.cs" />
+    <Compile Include="LibTiff\Internal\OJpegCodec.cs" />
+    <Compile Include="LibTiff\Internal\OJpegCodecTagMethods.cs" />
+    <Compile Include="LibTiff\Internal\OJpegErrorManager.cs" />
+    <Compile Include="LibTiff\Internal\OJpegSrcManager.cs" />
+    <Compile Include="LibTiff\Internal\PackBitsCodec.cs" />
+    <Compile Include="LibTiff\Internal\TagCompare.cs" />
+    <Compile Include="LibTiff\Internal\TiffCIELabToRGB.cs" />
+    <Compile Include="LibTiff\Internal\TiffDirectory.cs" />
+    <Compile Include="LibTiff\Internal\TiffDirEntry.cs" />
+    <Compile Include="LibTiff\Internal\TiffDisplay.cs" />
+    <Compile Include="LibTiff\Internal\TiffFlags.cs" />
+    <Compile Include="LibTiff\Internal\TiffHeader.cs" />
+    <Compile Include="LibTiff\Internal\TiffTagValue.cs" />
+    <Compile Include="LibTiff\Internal\TiffYCbCrToRGB.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_Aux.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_Codec.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_Dir.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_DirInfo.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_DirRead.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_DirWrite.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_Internal.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_Open.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_Print.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_Read.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_Strip.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_Swab.cs" />
+    <Compile Include="LibTiff\Internal\Tiff_Write.cs" />
+    <Compile Include="LibTiff\Tiff.cs" />
+    <Compile Include="LibTiff\TiffCodec.cs" />
+    <Compile Include="LibTiff\TiffErrorHandler.cs" />
+    <Compile Include="LibTiff\TiffFieldInfo.cs" />
+    <Compile Include="LibTiff\TiffRgbaImage.cs" />
+    <Compile Include="LibTiff\TiffStream.cs" />
+    <Compile Include="LibTiff\TiffTagMethods.cs" />
+    <Compile Include="LibTiff\zLib\Adler32.cs" />
+    <Compile Include="LibTiff\zLib\Deflate.cs" />
+    <Compile Include="LibTiff\zLib\InfBlocks.cs" />
+    <Compile Include="LibTiff\zLib\InfCodes.cs" />
+    <Compile Include="LibTiff\zLib\Inflate.cs" />
+    <Compile Include="LibTiff\zLib\InfTree.cs" />
+    <Compile Include="LibTiff\zLib\StaticTree.cs" />
+    <Compile Include="LibTiff\zLib\SupportClass.cs" />
+    <Compile Include="LibTiff\zLib\Tree.cs" />
+    <Compile Include="LibTiff\zLib\ZInputStream.cs" />
+    <Compile Include="LibTiff\zLib\Zlib.cs" />
+    <Compile Include="LibTiff\zLib\ZOutputStream.cs" />
+    <Compile Include="LibTiff\zLib\ZStream.cs" />
+    <Compile Include="LibTiff\zLib\ZStreamException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\..\src\AssemblyInfo.Shared.cs">
+      <Link>Properties\AssemblyInfo.Shared.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
