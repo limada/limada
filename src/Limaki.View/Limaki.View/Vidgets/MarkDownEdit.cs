@@ -21,6 +21,8 @@ using Limaki.View;
 using Xwt.Backends;
 using Limaki.Common;
 using Limaki.Common.Text.HTML;
+using Limaki.Contents;
+using Limaki.Contents.Text;
 
 namespace Limaki.View.Vidgets {
 
@@ -83,11 +85,7 @@ namespace Limaki.View.Vidgets {
         void IMarkdownViewer.Load (Stream stream) {
             string html = null;
             stream.Position = 0;
-            var reader = new StreamReader (stream);
-            var s = reader.ReadToEnd ();
-            var c = CommonMark.CommonMarkConverter.Convert (s);
-            html = HtmlHelper.HtmUtf8Begin + "<body>" + c + "</body></html>";
-            stream.Position = 0;
+            html = new MarkDownConverter ().WithHmtlHeaderTags (stream);
             base.DocumentText = html;
         }
 
