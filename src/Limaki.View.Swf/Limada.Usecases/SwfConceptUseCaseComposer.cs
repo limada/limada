@@ -196,7 +196,7 @@ namespace Limada.Usecases {
             }),
 
             new ToolStripMenuItem(l["About"], null, (s, e) => {
-                if(About == null) About = new About();
+                if(About == null) About = new AboutForm();
                     About.ShowDialog();
                 })
             });

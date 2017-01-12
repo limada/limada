@@ -1,5 +1,5 @@
 namespace Limaki.View.SwfBackend.Controls {
-    partial class About {
+    partial class AboutForm {
         /// <summary>
         /// Erforderliche Designervariable.
         /// </summary>

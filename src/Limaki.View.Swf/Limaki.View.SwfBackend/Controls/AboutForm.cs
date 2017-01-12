@@ -16,23 +16,22 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using Limaki.Common;
+using Limaki.Usecases;
 
 namespace Limaki.View.SwfBackend.Controls {
 
-    public partial class About : Form {
-        public About() {
+    public partial class AboutForm : Form {
+
+        About _about = null;
+        public virtual About About { get { return _about ?? (_about = Registry.Pooled<About> ()); } }
+
+        public AboutForm() {
             InitializeComponent();
-            this.linkLabel1.Links[0].LinkData = "http://www.limada.org/";
+            this.linkLabel1.Links[0].LinkData = About.Link;
             this.label2.Click += About_Click;
-            var version =  Assembly.GetAssembly(this.GetType()).GetName().Version.ToString(4);
-            this.label2.Text =
-                "Version: "+version+"\r\n"
-                +"\r\nCredits:\r\n"
-                + "Storage: db4o object database http://www.db4o.com \r\n"
-                + "Graphics abstraction layer: http://github.com/mono/xwt \r\n"
-                + "Icons: http://fortawesome.github.com/Font-Awesome \r\n"
-               
-                ;
+
+            this.label2.Text = About.ToString ();
         }
 
         private void About_Click(object sender, EventArgs e) {
