@@ -9,6 +9,7 @@
     <AssemblyName>GtkTestRunner</AssemblyName>
     <TestRunnerCommand>bin\GtkTestRunner.exe</TestRunnerCommand>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ReleaseVersion>17.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
