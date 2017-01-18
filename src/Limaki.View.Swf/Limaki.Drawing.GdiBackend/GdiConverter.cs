@@ -36,31 +36,7 @@ namespace Limaki.View.GdiBackend {
             return Array.ConvertAll (value, GdiConverter.ToXwt);
         }
 
-        public static LineCap Convert(PenLineCap linecap) {
-            var result = new LineCap();
-            if (linecap == PenLineCap.Flat) {
-                result |= LineCap.Flat;
-            } else if (linecap == PenLineCap.Round) {
-                result |= LineCap.Round;
-            } else if (linecap == PenLineCap.Square) {
-                result |= LineCap.Square;
-            } else if (linecap == PenLineCap.Triangle) {
-                result |= LineCap.Triangle;
-            }
-            return result;
-        }
 
-        public static LineJoin Convert(PenLineJoin linecap) {
-            var result = new LineJoin();
-            if (linecap == PenLineJoin.Bevel) {
-                result |= LineJoin.Bevel;
-            } else if (linecap == PenLineJoin.Miter) {
-                result |= LineJoin.Miter;
-            } else if (linecap == PenLineJoin.Round) {
-                result |= LineJoin.Round;
-            }
-            return result;
-        }
 
         
 
