@@ -32,10 +32,6 @@ namespace Limada.Usecases.Cms {
             context.Pooled<AppController>()
                 .AppSettingsGetter = () => System.Web.Configuration.WebConfigurationManager.AppSettings;
 
-            var converterPool = context.Pooled<ConverterPool<Stream>>();
-            converterPool.Add(new HtmlRtfConverter());
-            converterPool.Add (new ImageConverter ());
-
 			Applied = true;
         }
     }
