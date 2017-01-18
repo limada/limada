@@ -20,6 +20,11 @@ namespace Limaki.Contents {
     
     public interface IContentSpec {
         IEnumerable<ContentInfo> ContentSpecs { get; }
+        ContentInfo Find (string extension);
+        ContentInfo FindMime (string mime);
+        ContentInfo Find (long contentType);
+        bool Supports (string extension);
+        bool Supports (long contentType);
     }
 
     public class ContentSpec: IContentSpec {
@@ -43,6 +48,11 @@ namespace Limaki.Contents {
         public virtual ContentInfo Find (string extension) {
             extension = extension.ToLower().TrimStart('.');
             return ContentSpecs.Where(type => type.Extension == extension).FirstOrDefault();
+        }
+
+        public virtual ContentInfo FindMime (string mime) {
+            mime = mime.ToLower ();
+            return ContentSpecs.Where (type => type.MimeType == mime).FirstOrDefault ();
         }
 
         public virtual ContentInfo Find (long contentType) {

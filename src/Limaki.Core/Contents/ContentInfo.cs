@@ -51,6 +51,26 @@ namespace Limaki.Contents {
             return this.GetEnumerator();
         }
 
+        public ContentInfo Find (string extension) {
+            return this.FirstOrDefault (s => s.Extension == extension);
+        }
+
+        public ContentInfo FindMime (string mime) {
+            return this.FirstOrDefault (s => s.MimeType == mime);
+        }
+
+        public ContentInfo Find (long contentType) {
+            return this.FirstOrDefault (s => s.ContentType == contentType);
+        }
+
+        public bool Supports (string extension) {
+            return Find (extension) != null;
+        }
+
+        public bool Supports (long contentType) {
+            return Find (contentType) != null;
+        }
+
         public IEnumerable<ContentInfo> ContentSpecs { get { return this; } }
     }
 
