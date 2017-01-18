@@ -115,6 +115,21 @@ namespace Limaki.Tests.UseCases {
             }
         }
 
+        protected virtual void SetExampleScene (ConceptUsecase useCase, IGraphScene<IVisual, IVisualEdge> scene) {
+            useCase.Close ();
+
+            var mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ();
+            mesh.AddScene (scene);
+
+            mesh.Displays.ForEach (d => {
+                var s2 = mesh.CreateSinkScene (scene.Graph);
+                mesh.AddScene (s2);
+                d.Data = s2;
+            });
+            useCase.SplitView.SetScene (scene, nameof (ISplitView.Display1).ToLower ());
+            useCase.FavoriteManager.GoHome (useCase.SplitView.Display1, true);
+        }
+
         public void CurrentProblem (ConceptUsecase usecase) {
             try {
 

@@ -67,7 +67,7 @@ namespace Limaki.Tests.UseCases {
                 var testData = dialog.SceneExamples.Selected;
                 testData.Data.Count = (int)dialog.numericUpDown1.Value;
                 var scene = dialog.SceneExamples.GetScene (testData.Data);
-                useCase.SplitView.ChangeData (scene);
+                SetExampleScene (useCase, scene);
             }
             dialog.Dispose ();
 
