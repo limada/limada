@@ -161,6 +161,16 @@ namespace Limaki.View.DragDrop {
                                 continue;
                         }
 
+                        if (info != null) {
+                            // TODO: remove this hack
+                            if (info.ContentType == HtmlContentSpot.MOZURL) {
+                                if (bytes != null) {
+                                    source = Encoding.Unicode.GetString (bytes);
+                                }
+                            }
+                        }
+
+                        if (content != null) { 
                             if (content.Description == null)
                                 content.Description = desc;
                             if (content.Source == null)

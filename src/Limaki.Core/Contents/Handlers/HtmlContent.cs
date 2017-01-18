@@ -43,13 +43,23 @@ namespace Limaki.Contents.IO {
                                      "xhtml",
                                      "application/xhtml+xml",
                                      CompressionType.bZip2
-                                     )
+                                     ),
+                                new ContentInfo(
+                                     "moz-url",
+                                     MOZURL,
+                                     "url",
+                                     "text/x-moz-url-priv",
+                                     CompressionType.bZip2
+                                     ),
+
                              }
             ) {}
 
         public static long HTML = unchecked ((long)0x97BC58EE45132F1E);
 
         public static long XHTML = 0x280efaf080c35e30;
+
+        public static long MOZURL = unchecked((long)0xD343485588820A82);
 
         public override bool SupportsMagics { 
             get { return true; }
