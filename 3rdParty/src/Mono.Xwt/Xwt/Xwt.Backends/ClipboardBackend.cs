@@ -27,7 +27,7 @@ using System;
 
 namespace Xwt.Backends
 {
-	public abstract class ClipboardBackend: BackendHandler
+	public abstract partial class ClipboardBackend: BackendHandler
 	{
 		public abstract void Clear ();
 		public abstract void SetData (TransferDataType type, Func<object> dataSource);

@@ -168,6 +168,7 @@
     <Compile Include="Xwt.GtkBackend\FontSelectorBackend.cs" />
     <Compile Include="Xwt.GtkBackend\SelectFontDialogBackend.cs" />
     <Compile Include="Xwt.GtkBackend\TextWrapper.cs" />
+    <Compile Include="GtkClipboardBackend.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

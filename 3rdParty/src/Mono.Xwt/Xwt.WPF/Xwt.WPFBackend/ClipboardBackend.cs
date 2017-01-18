@@ -32,7 +32,7 @@ using WindowsClipboard = System.Windows.Clipboard;
 
 namespace Xwt.WPFBackend
 {
-	public class WpfClipboardBackend
+    public partial class WpfClipboardBackend
 		: ClipboardBackend
 	{
 		public override void Clear ()

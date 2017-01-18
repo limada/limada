@@ -32,7 +32,7 @@ using Xwt.Drawing;
 
 namespace Xwt
 {
-	public static class Clipboard
+	public static partial class Clipboard
 	{
 		static ClipboardBackend Backend {
 			get { return Toolkit.CurrentEngine.ClipboardBackend; }

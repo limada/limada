@@ -27,6 +27,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Xwt.Backends;
+using System.Collections.Generic;
 
 #if MONOMAC
 using nint = System.Int32;
@@ -101,8 +102,14 @@ namespace Xwt.Mac
 			throw new NotImplementedException ();
 		}
 
-		#endregion
-	}
+        public override IEnumerable<TransferDataType> GetTypesAvailable () 
+        {
+            foreach (var t in NSPasteboard.GeneralPasteboard.Types)
+                yield return TransferDataType.FromId (t);
+        }
+
+        #endregion
+    }
 
 	[Register ("XwtPasteboardOwner")]
 	class PasteboardOwner : NSObject

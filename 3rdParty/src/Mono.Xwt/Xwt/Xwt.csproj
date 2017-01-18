@@ -339,6 +339,7 @@
     <Compile Include="Xwt\SelectFontDialog.cs" />
     <Compile Include="Xwt.Backends\ISelectFontDialogBackend.cs" />
     <Compile Include="Xwt.Drawing\StyleSet.cs" />
+    <Compile Include="Limaki.Extended\ClipboardBackend.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />
@@ -355,4 +356,7 @@
   </ProjectExtensions>
   <ItemGroup />
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Limaki.Extended\" />
+  </ItemGroup>
 </Project>

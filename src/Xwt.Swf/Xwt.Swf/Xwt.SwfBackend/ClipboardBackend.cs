@@ -31,10 +31,12 @@ using System.Threading.Tasks;
 using Xwt.Backends;
 using WindowsClipboard = System.Windows.Forms.Clipboard;
 using SWF = System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace Xwt.SwfBackend {
 
     public class SwfClipboardBackend : ClipboardBackend {
+
         public override void Clear () {
             WindowsClipboard.Clear ();
         }
@@ -112,6 +114,17 @@ namespace Xwt.SwfBackend {
                 throw new ArgumentException ("ares is the incorrect type", "ares");
 
             return t.Result;
+        }
+
+        public override IEnumerable<TransferDataType> GetTypesAvailable () {
+
+            var dataObject= WindowsClipboard.GetDataObject ();
+            if (dataObject == null)
+                yield break;
+            
+            var formats = dataObject.GetFormats (false);
+            foreach (var f in formats)
+                yield return TransferDataType.FromId (f);
         }
     }
 }

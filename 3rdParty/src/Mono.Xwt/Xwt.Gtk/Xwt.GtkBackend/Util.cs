@@ -82,7 +82,9 @@ namespace Xwt.GtkBackend
 		
 		public static bool GetSelectionData (ApplicationContext context, Gtk.SelectionData data, TransferDataStore target)
 		{
-			TransferDataType type = Util.AtomToType (data.Target.Name);
+            if (data == null)
+                return false;
+            TransferDataType type = Util.AtomToType (data.Target.Name);
 			if (type == null || data.Length <= 0)
 				return false;
 
