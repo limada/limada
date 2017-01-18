@@ -22,22 +22,7 @@ namespace Limaki.View.GdiBackend {
 
     public class GdiUtils {
         
-        public static void SetBackend(Pen frontend, System.Drawing.Pen backend) {
-            if (backend == null || frontend == null)
-                return;
-            backend.Color = GdiConverter.ToGdi(frontend.Color);
-            backend.StartCap = GDIConverter.Convert(frontend.StartCap);
-            backend.EndCap = GDIConverter.Convert(frontend.EndCap);
-            backend.Width = (float)frontend.Thickness;
-            backend.LineJoin = GDIConverter.Convert(frontend.LineJoin);
-            backend.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
-            if (frontend.CustomEndCap!=null)
-                backend.CustomEndCap = 
-                    frontend.CustomEndCap as System.Drawing.Drawing2D.CustomLineCap ;
-            if (frontend.CustomStartCap != null)
-                backend.CustomStartCap = 
-                    frontend.CustomStartCap as System.Drawing.Drawing2D.CustomLineCap;
-        }
+
 
         public static System.Drawing.Graphics CreateGraphics () {
             return System.Drawing.Graphics.FromImage (

@@ -112,4 +112,12 @@
   </Target>
   -->
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="[Prototypes]\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Limaki.View.Gtk.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

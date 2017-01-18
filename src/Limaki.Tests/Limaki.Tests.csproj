@@ -258,6 +258,7 @@
     <Compile Include="Limaki.Tests\Data\Streams\ContentPoolTest.cs" />
     <Compile Include="Playground\Proves\CSharpLanguageFeatures.cs" />
     <Compile Include="Playground\Text\MarkdownDocument.cs" />
+    <Compile Include="[Obsolete]\Pen.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\db4o\Db4objects.Db4o.Linq\Db4objects.Db4o.Linq-2010.csproj">

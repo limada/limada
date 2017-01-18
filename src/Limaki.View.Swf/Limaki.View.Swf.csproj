@@ -11,6 +11,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <ReleaseVersion>17.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -105,7 +106,6 @@
     <Compile Include="Limaki.Drawing.GdiBackend\GdiConverter.cs" />
     <Compile Include="Limaki.Drawing.GdiBackend\GdiDrawingUtils.cs" />
     <Compile Include="Limaki.Drawing.GdiBackend\GdiFontCache.cs" />
-    <Compile Include="Limaki.Drawing.GdiBackend\GdiPen.cs" />
     <Compile Include="Limaki.Drawing.GdiBackend\GdiSurface.cs" />
     <Compile Include="Limaki.Drawing.GdiBackend\GdiSystemFontBackend.cs" />
     <Compile Include="Limaki.Drawing.GdiBackend\GdiUtils.cs" />
