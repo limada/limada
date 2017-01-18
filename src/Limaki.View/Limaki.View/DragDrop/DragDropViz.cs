@@ -26,6 +26,7 @@ using System.Linq;
 using Xwt;
 using System.Net;
 using Limaki.Contents.IO;
+using System.Text;
 
 namespace Limaki.View.DragDrop {
 
@@ -121,8 +122,14 @@ namespace Limaki.View.DragDrop {
 
             } else {
                 var dataTypes = data.DataTypes.ToArray ();
+                string desc = null;
+                string source = null;
+                if (data.Text != null) {
+                    using (var dr = new StringReader (data.Text))
+                          desc = dr.ReadLine ();
+                }
 
-                foreach (var s in DataManager.SinksOf (dataTypes)) {
+                foreach (var s in DataManager.SinksOf (dataTypes).ToArray()) {
                     value = data.GetValue (s.Item1);
                     var sink = s.Item2;
                     stream = value as Stream;
@@ -133,21 +140,31 @@ namespace Limaki.View.DragDrop {
                     if (text != null)
                         stream = text.AsUnicodeStream ();
                     if (stream != null) {
+                        
                         var info = sink.Use (stream);
+
+                        var contentSpec = sink.Detector;
+                        if (info == null && contentSpec != null) {
+                            info = contentSpec.FindMime (s.Item1.Id);
+                        }
 
                         if (info == null) {
                             info = DataManager.InfoOf (sink, dataTypes).FirstOrDefault ();
                         }
 
-                        if (info != null) {
+                        if (info != null && content == null || content.Data == null) {
 
                             fillContent (info, stream);
 
                             // TODO: find a better handling of preferences; maybe MimeFingerPrints does the job?
                             if (content.Data == null && (content.Description == null || string.IsNullOrEmpty (content.Description.ToString ())))
                                 continue;
-                            
-                            break;
+                        }
+
+                            if (content.Description == null)
+                                content.Description = desc;
+                            if (content.Source == null)
+                                content.Source = source;
                         }
                     }
 
