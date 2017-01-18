@@ -27,6 +27,7 @@ using DragEventArgs = Limaki.View.DragDrop.DragEventArgs;
 using DragOverEventArgs = Limaki.View.DragDrop.DragOverEventArgs;
 using Limaki.Common;
 using Limaki.View.Viz.Mesh;
+using System.Diagnostics;
 
 namespace Limaki.View.Viz.Visuals {
     /// <summary>
@@ -168,6 +169,9 @@ namespace Limaki.View.Viz.Visuals {
             var scene = this.Scene;
             IVisual item = null;
 
+#if TRACE
+            Trace.WriteLine (string.Join ("|", Clipboard.GetTypesAvailable ().Select(f => f.Id)));
+#endif
             if (InprocDragDrop.ClipboardData != null) {
                 // TODO: refactor to use same code as above
                 var source = InprocDragDrop.ClipboardData as GraphCursor<IVisual, IVisualEdge>;
@@ -181,7 +185,7 @@ namespace Limaki.View.Viz.Visuals {
             }
 
             if (item == null) {
-                item = DragDropViz.VisualOfTransferData(scene.Graph, Clipboard.GetTransferData(DragDropViz.DataManager.DataTypes));
+                item = DragDropViz.VisualOfTransferData(scene.Graph, Clipboard.GetTransferData(Clipboard.GetTypesAvailable ()));//DragDropViz.DataManager.DataTypes));
             }
             if (item != null) {
                 SceneExtensions.PlaceVisual(scene, scene.Focused, item, Layout);
