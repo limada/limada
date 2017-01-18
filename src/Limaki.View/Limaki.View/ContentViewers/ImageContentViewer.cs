@@ -22,6 +22,7 @@ using Limaki.View.Viz;
 using Limaki.View.Viz.Visualizers;
 using Xwt.Drawing;
 using Limaki.Common;
+using System.Linq;
 
 namespace Limaki.View.ContentViewers {
 
@@ -49,8 +50,9 @@ namespace Limaki.View.ContentViewers {
             }
         }
 
-        private ICollection<Int64> _imageStreamTypes = null;
-        public ICollection<Int64> ImageStreamTypes {
+        private ICollection<long> _converterStreamTypes = new HashSet<long>();
+        private ICollection<long> _imageStreamTypes = null;
+        public ICollection<long> ImageStreamTypes {
             get {
                 if (_imageStreamTypes == null) {
                     _imageStreamTypes = new Set<Int64> ();
@@ -58,10 +60,17 @@ namespace Limaki.View.ContentViewers {
                     _imageStreamTypes.Add (ContentTypes.GIF);
                     _imageStreamTypes.Add (ContentTypes.PNG);
                     _imageStreamTypes.Add (ContentTypes.BMP);
-                    _imageStreamTypes.Add (ContentTypes.TIF);
-                    //if (Registry.Pooled<ConverterPool<Stream>>()
-                    //   .Find(ContentTypes.TIF, ContentTypes.PNG) != null)
-                    //	_imageStreamTypes.Add(ContentTypes.TIF);
+
+                    if (Registry.Pooled<IUISystemInformation> ().ImageFormats.Any (f => f.Contains ("tif"))) {
+                        _imageStreamTypes.Add (ContentTypes.TIF);
+                    }
+                    if (!_imageStreamTypes.Contains (ContentTypes.TIF)) {
+                        if (Registry.Pooled<ConverterPool<Stream>> ()
+                            .Find (ContentTypes.TIF, ContentTypes.PNG) != null) {
+                            _imageStreamTypes.Add (ContentTypes.TIF);
+                            _converterStreamTypes.Add (ContentTypes.TIF);
+                        }
+                    }
                 }
                 return _imageStreamTypes;
             }
@@ -90,14 +99,28 @@ namespace Limaki.View.ContentViewers {
             return null;
         }
 
+        protected void CloseContent (Content<Stream> content, bool isStreamOwner) {
+            if (isStreamOwner) {
+                if (content.Data != null)
+                    content.Data.Close ();
+                content.Data = null;
+            }
+        }
+
         public override void SetContent (Content<Stream> content) {
             if (ImageDisplay != null) {
                 var display = ImageDisplay;
                 display.BackColor = this.BackColor;
                 if (content.Data != null) {
                     content.Data.Position = 0;
-                    var convertType = ContentTypes.TIF;
-                    if (content.ContentType == convertType && Supports (convertType)) {
+
+                    if (_converterStreamTypes.Contains(content.ContentType)) {
+                        var converted = Convert (content);
+                        if (converted != null) {
+                            CloseContent (content, IsStreamOwner);
+                            content = converted;
+                            IsStreamOwner = true;
+                        }
                     }
                     display.Data = Image.FromStream (content.Data);
                 } else {
@@ -105,11 +128,7 @@ namespace Limaki.View.ContentViewers {
                 }
 
             }
-            if (IsStreamOwner) {
-                if (content.Data != null)
-                    content.Data.Close ();
-                content.Data = null;
-            }
+            CloseContent (content, IsStreamOwner);
         }
 
         public override void Save (Content<Stream> content) { }

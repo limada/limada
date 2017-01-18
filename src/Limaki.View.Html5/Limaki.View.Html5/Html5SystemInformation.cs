@@ -5,6 +5,7 @@ using System.Text;
 using Xwt;
 
 namespace Limaki.View.Html5 {
+    
     public class Html5SystemInformation : IUISystemInformation {
         public Size DragSize {
             get { return new Size(1,1); }
@@ -20,6 +21,12 @@ namespace Limaki.View.Html5 {
 
         public int HorizontalScrollBarHeight {
             get { return 10; }
+        }
+
+        public IEnumerable<string> ImageFormats {
+            get {
+                yield break;
+            }
         }
     }
 }

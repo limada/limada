@@ -12,6 +12,7 @@
  * 
  */
 
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using Size = Xwt.Size;
@@ -53,6 +54,15 @@ namespace Limaki.View.WpfBackend {
                 var screenHeight = SystemParameters.PrimaryScreenHeight * result.Height;
                 var screenWidth = SystemParameters.PrimaryScreenWidth * result.Width;
                 return result;
+            }
+        }
+
+        public IEnumerable<string> ImageFormats {
+            get {
+                // TODO:
+                // https://msdn.microsoft.com/en-us/library/system.windows.media.imaging.bitmapsource(v=vs.110).aspx
+                // http://stackoverflow.com/questions/36390013/get-supported-image-formats-from-bitmapimage
+                yield return "tif";
             }
         }
     }

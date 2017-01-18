@@ -12,6 +12,7 @@
  * 
  */
 
+using System.Collections.Generic;
 using Xwt;
 
 namespace Limaki.View {
@@ -21,5 +22,6 @@ namespace Limaki.View {
         int DoubleClickTime { get; }
         int VerticalScrollBarWidth { get; }
         int HorizontalScrollBarHeight { get; }
+        IEnumerable<string> ImageFormats { get; }
     }
 }

@@ -12,6 +12,7 @@
  * 
  */
 
+using System.Collections.Generic;
 using Xwt;
 
 namespace Limaki.View.Headless {
@@ -31,6 +32,12 @@ namespace Limaki.View.Headless {
 
         public int HorizontalScrollBarHeight {
             get { return 10; }
+        }
+
+        public IEnumerable<string> ImageFormats {
+            get {
+                yield break;
+            }
         }
     }
 }

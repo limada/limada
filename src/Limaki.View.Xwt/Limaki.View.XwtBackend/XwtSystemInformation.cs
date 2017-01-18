@@ -12,6 +12,7 @@
  * 
  */
 
+using System.Collections.Generic;
 using Xwt;
 
 namespace Limaki.View.XwtBackend {
@@ -32,6 +33,12 @@ namespace Limaki.View.XwtBackend {
 
         public int HorizontalScrollBarHeight {
             get { return 10; }
+        }
+
+        public IEnumerable<string> ImageFormats {
+            get {
+                yield break;
+            }
         }
     }
 }

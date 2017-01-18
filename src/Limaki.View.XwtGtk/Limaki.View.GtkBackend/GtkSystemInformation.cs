@@ -12,6 +12,8 @@
  * 
  */
 
+using System.Collections.Generic;
+using System.Diagnostics;
 using Size = Xwt.Size;
 
 namespace Limaki.View.GtkBackend {
@@ -19,7 +21,7 @@ namespace Limaki.View.GtkBackend {
     public class GtkSystemInformation : IUISystemInformation {
 
         public Size DragSize {
-            get { return new Size(Gtk.Settings.Default.DndDragThreshold, Gtk.Settings.Default.DndDragThreshold); }
+            get { return new Size (Gtk.Settings.Default.DndDragThreshold, Gtk.Settings.Default.DndDragThreshold); }
         }
 
         public int DoubleClickTime {
@@ -32,6 +34,16 @@ namespace Limaki.View.GtkBackend {
 
         public int HorizontalScrollBarHeight {
             get { return 10; }
+        }
+
+        public IEnumerable<string> ImageFormats {
+            get {
+                var fs = Gdk.Pixbuf.Formats;
+                foreach (var f in fs) {
+                    var mime = $"{string.Join (" | ", f.MimeTypes)}";
+                    yield return mime;
+                }
+            }
         }
     }
 }
