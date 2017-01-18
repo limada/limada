@@ -173,15 +173,16 @@ namespace Limaki.Contents.IO {
                     Digg (source, sink);
                 }
 
-                plainText = System.Net.WebUtility.HtmlDecode (plainText.Replace ("\r\n", " ").Trim());
+                plainText = System.Net.WebUtility.HtmlDecode (plainText.Replace ("\n", " ").Replace("\r"," ").Trim());
                 string description = null;
                 foreach (var element in elements.Where(e => e.Parsed)) {
                     // TODO: replace unresolved unicode chars; see above
-                    description = System.Net.WebUtility.HtmlDecode(element.Text.Replace("\r\n"," ").Trim());
-                    if (!string.IsNullOrEmpty (description))
+                    description = System.Net.WebUtility.HtmlDecode(element.Text.Replace("\n"," ").Replace ("\r", " ").Trim());
+                    if (!string.IsNullOrWhiteSpace (description))
                         break;
                 }
-                sink.Description = description;
+                if (description != null)
+                    sink.Description = description;
                 if (description == plainText)
                     sink.Data = null;
 
