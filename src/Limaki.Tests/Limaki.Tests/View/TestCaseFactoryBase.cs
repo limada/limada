@@ -1,8 +1,10 @@
 using System;
+using System.Text;
 using Limada.Schemata;
 using Limada.UseCases;
 using Limada.View.VisualThings;
 using Limaki.Common;
+using Limaki.Common.Linqish;
 using Limaki.Tests.View;
 using Limaki.Tests.View.Display;
 using Limaki.Usecases;
@@ -11,6 +13,7 @@ using Limaki.View;
 using Limaki.View.Vidgets;
 using Limaki.View.Visuals;
 using Limaki.View.Viz;
+using Limaki.View.Viz.Mesh;
 using Limaki.View.Viz.Rendering;
 using Limaki.View.Viz.Visuals;
 using Xwt;
@@ -70,6 +73,37 @@ namespace Limaki.Tests.UseCases {
 
             fileDisplay.DataChanged ();
 
+            vindow.Show ();
+        }
+
+        public void ShowClipboardContent (ConceptUsecase useCase) {
+            var vindow = new Vindow { Size = new Size (800, 600) };
+            var textbox = new PlainTextBox ();
+            vindow.Content = textbox;
+            var cbcontent = new StringBuilder ();
+            var data = Clipboard.GetTransferData (Clipboard.GetTypesAvailable ());
+            foreach (var f in data.DataTypes){
+                cbcontent.AppendLine ();
+                cbcontent.AppendLine (f.Id);
+                var ct = data.GetValue (f);
+                var text = ct as string;
+                if (text != null) {
+                    cbcontent.AppendLine (text);
+                    continue;
+                } 
+                var bytes = ct as byte [];
+                if (bytes != null) {
+                    for (var i = 0; i < bytes.Length; i++) {
+                        if (i % (4 * 8)==0) {
+                            cbcontent.AppendLine ();
+                        }
+                        cbcontent.Append ($"{bytes[i]:N0} ");
+                    }
+                    continue;
+                }
+                cbcontent.AppendLine ($"{ct!=null?ct.GetType():null}");
+            }
+            textbox.Text = cbcontent.ToString ();
             vindow.Show ();
         }
 
