@@ -13,7 +13,7 @@ namespace Limaki.Contents.Text {
 
         int inDiv = 0;
         [TODO]
-        public virtual void Add (string text, RtfSectionStyle style, bool newLine) {
+        public virtual void Add (string text, RtfSectionStyle style, int startX, bool newLine) {
 
             if (text == null)
                 return;

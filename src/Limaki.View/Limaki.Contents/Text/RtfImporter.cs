@@ -38,11 +38,11 @@ namespace Limaki.Contents.Text {
 
     public class RtfImporter {
         IDocument document = null;
-        Common.Text.RTF.Parser.RTF rtf = null;
+        Common.Text.RTF.Parser.RTF rtfParser = null;
         Stream stream = null;
         public RtfImporter (Stream stream, IDocument document) {
             this.stream = stream;
-            this.rtf = new Common.Text.RTF.Parser.RTF (stream);
+            this.rtfParser = new Common.Text.RTF.Parser.RTF (stream);
             this.document = document;
             _style = new RtfSectionStyle ();
         }
@@ -51,7 +51,7 @@ namespace Limaki.Contents.Text {
         private int _skipCount;
         private int _cursorX;
         private int _cursorY;
-        private int _chars;
+        private int _charCount;
         private StringBuilder _line;
         private RtfSectionStyle _style;
         private Stack _sectionStack;
@@ -63,12 +63,12 @@ namespace Limaki.Contents.Text {
             InsertRtfFromStream (this.stream, 0, 0, out x, out y, out count);
         }
 
-        private void InsertRtfFromStream (Stream data, int cursorX, int cursorY, out int toX, out int toY, out int chars) {
+        private void InsertRtfFromStream (Stream data, int cursorX, int cursorY, out int toX, out int toY, out int charCount) {
 
             // Prepare
-            rtf.ClassCallback[TokenClass.Text] = HandleText;
-            rtf.ClassCallback[TokenClass.Control] = HandleControl;
-            rtf.ClassCallback[TokenClass.Group] = HandleGroup;
+            rtfParser.ClassCallback[TokenClass.Text] = HandleText;
+            rtfParser.ClassCallback[TokenClass.Control] = HandleControl;
+            rtfParser.ClassCallback[TokenClass.Group] = HandleGroup;
 
             _skipCount = 0;
             _line = new StringBuilder ();
@@ -81,15 +81,15 @@ namespace Limaki.Contents.Text {
             _style.SkipWidth = 1;
             _cursorX = cursorX;
             _cursorY = cursorY;
-            _chars = 0;
-            rtf.DefaultFont ("Tahoma");
+            _charCount = 0;
+            rtfParser.DefaultFont ("Tahoma");
 
             _textMap = new TextMap ();
             TextMap.SetupStandardTable (_textMap.Table);
 
             try {
-                rtf.Read ();	// That's it
-                FlushText (rtf, false);
+                rtfParser.Read ();	// That's it
+                FlushText (rtfParser, false);
 
             } catch (RTFException e) {
 #if DEBUG
@@ -101,7 +101,7 @@ namespace Limaki.Contents.Text {
 
             toX = _cursorX;
             toY = _cursorY;
-            chars = _chars;
+            charCount = _charCount;
 
             // clear the section stack if it was used
             if (_sectionStack != null)
@@ -110,7 +110,7 @@ namespace Limaki.Contents.Text {
         }
 
         private void HandleText (Common.Text.RTF.Parser.RTF rtf) {
-            string str = rtf.EncodedText;
+            var str = rtf.EncodedText;
 
             //todo - simplistically skips characters, should skip bytes?
             if (_skipCount > 0 && str.Length > 0) {
@@ -137,10 +137,10 @@ namespace Limaki.Contents.Text {
                 _line.Append (str);
         }
 
-        private void FlushText (Common.Text.RTF.Parser.RTF rtf, bool newline) {
+        private void FlushText (RTF rtf, bool newline) {
             var length = _line.Length;
             if (!newline && (length == 0)) {
-                document.Add (null, null, newline);
+                document.Add (null, null, 0, newline);
                 return;
             }
 
@@ -163,12 +163,9 @@ namespace Limaki.Contents.Text {
 
             }
 
-            _chars += _line.Length;
+            _charCount += _line.Length;
 
-            if (_cursorX == 0) {
-                document.Add (_line.ToString (), _style, newline);
-            }
-
+             document.Add (_line.ToString (), _style, _cursorX, newline);
 
             if (newline) {
                 _cursorX = 0;
@@ -242,45 +239,41 @@ namespace Limaki.Contents.Text {
                     break;
 
                 case Major.CharAttr: {
+                        FlushText (rtf, false);
                         switch (rtf.Minor) {
                             case Minor.ForeColor: {
                                     var color = Color.GetColor (rtf, rtf.Param);
-
                                     if (color != null) {
-                                        FlushText (rtf, false);
                                         if (color.Red == -1 && color.Green == -1 && color.Blue == -1) {
                                             this._style.Color = ForeColor;
                                         } else {
                                             this._style.Color = XD.Color.FromBytes ((byte) color.Red, (byte) color.Green, (byte) color.Blue);
                                         }
-                                        FlushText (rtf, false);
                                     }
+                                    
                                     break;
                                 }
 
                             case Minor.FontSize: {
-                                    FlushText (rtf, false);
                                     this._style.FontSize = rtf.Param / 2;
                                     break;
                                 }
 
                             case Minor.FontNum: {
                                     var font = Font.GetFont (rtf, rtf.Param);
+                                   
                                     if (font != null) {
-                                        FlushText (rtf, false);
                                         this._style.FontName = font.Name;
                                     }
                                     break;
                                 }
 
                             case Minor.Plain: {
-                                    FlushText (rtf, false);
                                     _style.SectionAttribute = SectionAttribute.Regular;
                                     break;
                                 }
 
                             case Minor.Bold: {
-                                    FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Bold;
                                     } else {
@@ -290,7 +283,6 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.Italic: {
-                                    FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Italic;
                                     } else {
@@ -300,7 +292,6 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.StrikeThru: {
-                                    FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Strikeout;
                                     } else {
@@ -310,7 +301,6 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.Underline: {
-                                    FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Underline;
                                     } else {
@@ -320,7 +310,6 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.SubScrShrink: {
-                                    FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Subscript;
                                     } else {
@@ -330,7 +319,6 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.SuperScrShrink: {
-                                    FlushText (rtf, false);
                                     if (rtf.Param == Common.Text.RTF.Parser.RTF.NoParam) {
                                         _style.SectionAttribute |= SectionAttribute.Superscript;
                                     } else {
@@ -340,17 +328,14 @@ namespace Limaki.Contents.Text {
                                 }
 
                             case Minor.Invisible: {
-                                    FlushText (rtf, false);
                                     _style.Visible = false;
                                     break;
                                 }
 
                             case Minor.NoUnderline: {
-                                    FlushText (rtf, false);
                                     _style.SectionAttribute &= ~SectionAttribute.Underline;
                                     break;
                                 }
-                           
                         }
                         break;
                     }
