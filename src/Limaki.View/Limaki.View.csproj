@@ -11,6 +11,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <ReleaseVersion>17.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -247,7 +248,6 @@
     <Compile Include="Limaki.Drawing.XwtBackend\RoundedRectanglePainter.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\StringPainter.cs" />
     <Compile Include="Limaki.Drawing.XwtBackend\VectorPainter.cs" />
-    <Compile Include="[Obsolete]\Pen.cs" />
     <Compile Include="Limaki.Drawing\Shapes\BezierRectangleShape.cs" />
     <Compile Include="Limaki.Drawing\Shapes\IRectangleShape.cs" />
     <Compile Include="Limaki.Drawing\PointComparer.cs" />
@@ -445,8 +445,9 @@
     <Compile Include="Limaki.View\GraphScene\ISceneViz.cs" />
     <Compile Include="Limaki.View\GraphScene\GraphSceneExtensions.cs" />
     <Compile Include="Limaki.Usecases\About.cs" />
-    <Compile Include="Limaki.Contents\Text\HtmlTextConverter.cs" />
-    <Compile Include="Limaki.Contents\Text\MarkDownConverter.cs" />
+    <Compile Include="Limaki.Contents\Text\TextHtmlConverter.cs" />
+    <Compile Include="Limaki.Contents\Text\MarkDownHtmlConverter.cs" />
+    <Compile Include="Limaki.Contents\Text\RtfHtmlConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rdParty\src\Mono.Xwt\Xwt\Xwt.csproj">

@@ -32,7 +32,7 @@ namespace Limaki.Contents.IO {
                                           "Rich Text Format",
                                           RTF,
                                           "rtf",
-                                          "application/rtf",
+                                          "application/rtf", 
                                           CompressionType.bZip2,
                                           new Magic[] {new Magic(Encoding.ASCII.GetBytes(@"{\rtf"), 0)}
                                           )

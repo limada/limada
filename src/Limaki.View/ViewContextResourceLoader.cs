@@ -26,8 +26,9 @@ namespace Limaki.View {
 
     public class ViewContextResourceLoader : IContextResourceLoader {
 
+       
         public virtual void ApplyResources (IApplicationContext context) {
-
+           
             if (!context.Factory.Contains<IShapeFactory>())
                 context.Factory.Add<IShapeFactory, Limaki.Drawing.Shapes.ShapeFactory>();
             

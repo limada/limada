@@ -88,7 +88,7 @@ namespace Limaki.View.DragDrop {
                 .ToArray();
             sources = sources.Where (s => prefered.Contains (MimeFingerPrints.Synonym (s.Id).ToLower()));
             foreach (var source in sources) {
-                var sourceId = MimeFingerPrints.Synonym (source.Id);
+                var sourceId = MimeFingerPrints.Synonym (source.Id.ToLower());
                 long contentType = 0;
                 Func<IContentIo<Stream>, bool> lookUp = null;
                 if (TransferContentTypes.TryGetValue (sourceId.ToLower(), out contentType)) {

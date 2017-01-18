@@ -99,11 +99,26 @@
   <ItemGroup>
     <Content Include="LogoDrop32.ico" />
   </ItemGroup>
+  <PropertyGroup>
+  <!--<property name="os" value="${operating-system::get-platform(environment::get-operating-system())}"/>
+  <echo message="Detected : ${os}"/>-->
+  </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
+  <property name="os" value="${operating-system::get-platform(environment::get-operating-system())}"/>
+    <if test="${os == 'Unix'}">
+      <if test="${directory::exists('/Applications') and directory::exists('/Library')}">
+        <property name="os" value="MacOS"/>
+        <if test="${not directory::exists(mdtooldir)}">
+          <property name="mdtooldir" value="${path::get-full-path('/Applications/Xamarin Studio.app/Contents/MacOS')}"/>
+        </if>
+      </if>
+    </if>
+    <echo message="Detected : ${os}"/>
   </Target>
+
   <Target Name="AfterBuild">
   </Target>
   -->

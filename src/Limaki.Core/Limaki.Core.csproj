@@ -11,6 +11,7 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <ReleaseVersion>17.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -359,6 +360,7 @@
     </Compile>
     <Compile Include="Common\IOUtils.cs" />
     <Compile Include="Common\ByteUtils.cs" />
+    <Compile Include="Contents\Handlers\HtmlConverterBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3rdParty\CommonMark\LICENSE.md" />
