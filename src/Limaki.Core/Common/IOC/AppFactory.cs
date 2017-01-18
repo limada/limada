@@ -41,7 +41,9 @@ namespace Limaki.Common.IOC {
 
 
 			ResolveAssemblys (AppDomain.CurrentDomain.GetAssemblies (), "Lima");
-            ResolveDirectory ("", "Lima*.dll");
+            var loc = new Uri (this.GetType ().Assembly.EscapedCodeBase).LocalPath;
+            loc = Path.GetDirectoryName (loc);
+            ResolveDirectory (loc, "Lima*.dll");
         }
 
         public virtual bool TakeType (Type type) {
