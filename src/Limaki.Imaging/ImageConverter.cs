@@ -17,12 +17,12 @@ namespace Limaki.ImageLibs {
             get { yield return Tuple.Create(ContentTypes.TIF, ContentTypes.PNG); }
         }
 
-
         public override Content<Stream> Use (Content<Stream> source, Content<Stream> sink) {
             if (ProveTypes(source, ContentTypes.TIF, sink, ContentTypes.PNG)) {
                 if (sink.Data == null)
                     sink.Data = new MemoryStream();
                 sink.Compression = CompressionType.neverCompress;
+
                 var error = Tif2Png (source.Data, sink.Data);
                 if (error != null) {
                     sink.ContentType = ContentTypes.Text;
@@ -44,12 +44,12 @@ namespace Limaki.ImageLibs {
                     var dpiX = f == null ? 150 : f[0].ToInt ();
                     f = tif.GetField (TiffTag.YRESOLUTION);
                     var dpiY = f == null ? 150 : f[0].ToInt ();
-                    var greyscale = tifrgb.BitsPerSample == 1;
+                    var greyscale = tifrgb.BitsPerSample == 8;
                     var palette = tifrgb.Photometric == Photometric.PALETTE;
                     var pngWriter = new PngWriter (pngSink,
                         new ImageInfo (tifrgb.Width, tifrgb.Height, tifrgb.BitsPerSample, tifrgb.Alpha == ExtraSample.ASSOCALPHA, greyscale, palette)) {
-                                                                                                                                                           ShouldCloseStream = false
-                                                                                                                                                       };
+                        ShouldCloseStream = false
+                    };
 
                     pngWriter.GetMetadata ().SetDpi (dpiX, dpiY);
                     var buflen = tif.ScanlineSize ();
