@@ -27,6 +27,13 @@ namespace Limaki.Contents.IO {
                                           CompressionType.bZip2,
                                           null),
                                       new ContentInfo(
+                                          "Text",
+                                          Text,
+                                          "txt",
+                                          "text",
+                                          CompressionType.bZip2,
+                                          null),
+                                      new ContentInfo(
                                           "ASCII",
                                           ASCII,
                                           "txt",
