@@ -49,8 +49,8 @@ namespace Limaki.View.GtkBackend {
             tk.RegisterBackend<ITextEntryBackend, Xwt.GtkBackend.TextEntryMultiLineBackend>();
 
             // prototype clipboard:
-            tk.RegisterBackend<ClipboardBackend, GtkClipboardBackend1> ();
-            tk.ClipboardBackend = new GtkClipboardBackend1 ();
+            //tk.RegisterBackend<ClipboardBackend, GtkClipboardBackend1> ();
+            //tk.ClipboardBackend = new GtkClipboardBackend1 ();
 
             context.Factory.Add<IUISystemInformation, GtkSystemInformation> ();
 
@@ -88,6 +88,8 @@ namespace Limaki.View.GtkBackend {
 
         public virtual void RegisterDragDropFormats (IApplicationContext context) { 
             var man = context.Pooled<TransferDataManager> ();
+
+            var imageFormats = GtkPrototypes.ImageFormats.ListImageFormats ();
         }
     }
 }
