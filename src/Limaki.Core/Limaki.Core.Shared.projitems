@@ -288,6 +288,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\IOUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ByteUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphs\HollowGraphPair.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contents\Handlers\HtmlConverterBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)3rdParty\CommonMark\LICENSE.md" />

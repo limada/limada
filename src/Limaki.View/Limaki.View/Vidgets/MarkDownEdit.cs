@@ -85,7 +85,7 @@ namespace Limaki.View.Vidgets {
         void IMarkdownViewer.Load (Stream stream) {
             string html = null;
             stream.Position = 0;
-            html = new MarkDownConverter ().WithHmtlHeaderTags (stream);
+            html = new MarkDownHtmlConverter ().WithHmtlHeaderTags (stream);
             base.DocumentText = html;
         }
 

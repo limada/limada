@@ -6,7 +6,7 @@
  * published by the Free Software Foundation.
  * 
  * Author: Lytico
- * Copyright (C) 2015 Lytico
+ * Copyright (C) 2017 Lytico
  *
  * http://www.limada.org
  * 
@@ -22,11 +22,17 @@ using Limaki.Common.Text.HTML;
 
 namespace Limaki.Contents.Text {
 
-    public class MarkDownConverter : ContentConverter<Stream>, IContentConverter<Stream> {
+    public class MarkDownHtmlConverter : HtmlConverterBase {
 
         public override IEnumerable<Tuple<long, long>> SupportedTypes { get { yield return Tuple.Create (ContentTypes.Markdown, ContentTypes.HTML); } }
 
-        public string MarkDownToHtml (Stream source) {
+        public override long ConversionType (long contentType) {
+            if (contentType == ContentTypes.Markdown)
+                return contentType;
+            return -1;
+        }
+
+        public override string ToHtml (Stream source) {
             string html = null;
             source.Position = 0;
             using (var reader = new StreamReader (source, Encoding.ASCII, false, (int)source.Length, true)) {
@@ -36,15 +42,6 @@ namespace Limaki.Contents.Text {
             return html;
         }
 
-        public string WithHmtlHeaderTags (Stream s) => $"{HtmlHelper.HtmUtf8Begin}<body>{MarkDownToHtml (s)}</body></html>";
-
-        public override Content<Stream> Use (Content<Stream> source, Content<Stream> sink) {
-            if (ProveTypes (source, ContentTypes.Markdown, sink, ContentTypes.HTML)) {
-                var s = WithHmtlHeaderTags (source.Data);
-                return new Content<Stream> (s.AsAsciiStream (), CompressionType.None, ContentTypes.HTML);
-            }
-            return null;
-        }
     }
 
 }

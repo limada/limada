@@ -5,6 +5,8 @@ using Limaki.View.Vidgets;
 using Limaki.Contents.Text;
 using Limaki.Drawing;
 using System.Text;
+using Limaki.Common;
+using Limaki.Contents;
 
 namespace Limaki.View.XwtBackend {
 
@@ -43,10 +45,11 @@ namespace Limaki.View.XwtBackend {
             }
 
             if (textType == TextViewerTextType.RichText) {
-                var doc = new HtmlDocument ();
-                var importer = new RtfImporter (stream, doc);
-                importer.Import ();
-                html = "<html><body>" + doc.Body + "</body></html>";
+                var converterPool = Registry.Pooled<ConverterPool<Stream>> ();
+                var converter = converterPool.Find (ContentTypes.RTF, ContentTypes.HTML) as IHtmlConverter;
+                if (converter != null) {
+                    html = converter.WithHmtlHeaderTags (stream);
+                }
             }
             stream.Position = 0;
             Widget.LoadHtml (html, "");
