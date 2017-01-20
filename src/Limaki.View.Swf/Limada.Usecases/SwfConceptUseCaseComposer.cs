@@ -127,6 +127,23 @@ namespace Limada.Usecases {
             
             InstrumentMenus (useCase);
 
+
+
+        }
+
+        /// <summary>
+        /// runs after usecasefactory.compose
+        /// </summary>
+        /// <param name="useCase">Use case.</param>
+        public void Compose2 (ConceptUsecase useCase) {
+
+            if (useCase.Toolbar == null)
+                return;
+
+            var toolStrips = useCase.Toolbar.Items
+                                 .Cast<Limaki.View.IVidget> ()
+                                 .Select (v => v.ToSwf () as ToolStrip).ToArray ();
+
             var utils = new ToolStripUtils {
                 ToolStripItemSelectedColor = Color.White,
             };
@@ -134,14 +151,8 @@ namespace Limada.Usecases {
             utils.InitializeToolstrips (
                 this.ToolStripContainer.TopToolStripPanel,
                 this.MenuStrip,
-                new ToolStrip[] {
-                    useCase.ArrangerToolStrip.ToSwf() as ToolStrip,
-                    useCase.SplitViewToolStrip.ToSwf() as ToolStrip,
-                    useCase.LayoutToolStrip.ToSwf() as ToolStrip,
-                    useCase.DisplayModeToolStrip.ToSwf() as ToolStrip,
-                    useCase.MarkerToolStrip.ToSwf() as ToolStrip,
-                });
-
+                toolStrips
+                );
         }
 
         public void InstrumentMenus (ConceptUsecase useCase) {

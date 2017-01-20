@@ -117,6 +117,25 @@ namespace Limada.UseCases {
             streamManager.FileDialogShow = useCase.FileDialogShow;
             streamManager.MessageBoxShow = useCase.MessageBoxShow;
             streamManager.Progress = useCase.Progress;
+
+            if (useCase.Toolbar == null) {
+                useCase.Toolbar = new ToolbarPanel ();
+                ComposeToolbar (useCase);
+            }
+        }
+
+        public virtual void ComposeToolbar (ConceptUsecase useCase) {
+            var toolbar = useCase.Toolbar;
+            if (toolbar == null)
+                return;
+
+            toolbar.AddItems (
+                useCase.SplitViewToolStrip,
+                useCase.ArrangerToolStrip,
+                useCase.DisplayModeToolStrip,
+                useCase.MarkerToolStrip,
+                useCase.LayoutToolStrip
+            );
         }
 
         public DialogResult FileDialogShow (FileDialogMemento value, bool open) {

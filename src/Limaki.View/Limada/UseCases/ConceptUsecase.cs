@@ -50,6 +50,7 @@ namespace Limada.UseCases {
         public ISceneManager SceneManager { get; set; }
         public FavoriteManager FavoriteManager { get; set; }
 
+        public ToolbarPanel Toolbar { get; set; }
         public ArrangerToolStrip ArrangerToolStrip { get; set; }
         public DisplayModeToolStrip DisplayModeToolStrip { get; set; }
         public SplitViewToolStrip SplitViewToolStrip { get; set; }

@@ -13,7 +13,6 @@
  */
 
 using Limada.Usecases;
-using Limada.UseCases;
 using Limaki.Usecases;
 using Limaki.View.WpfBackend;
 using Limaki.View.XwtBackend;
@@ -21,10 +20,12 @@ using System.Windows.Controls;
 using Xwt.Backends;
 using System.Linq;
 using System.Windows;
+using Limada.UseCases;
 
 namespace Limaki.View.WpfBackend {
 
     public class WpfUsecaseFactory : UsecaseFactory<ConceptUsecase> {
+        
         public override void Compose(ConceptUsecase useCase) {
             var backendComposer = BackendComposer as IXwtBackendConceptUseCaseComposer;
             AddToolbars (backendComposer.MainWindowBackend as Xwt.Window, useCase);
@@ -32,6 +33,7 @@ namespace Limaki.View.WpfBackend {
         }
 
         private void AddToolbars (Xwt.Window xwtWindow, ConceptUsecase useCase) {
+            
             var backend = xwtWindow.GetBackend() as Xwt.WPFBackend.WindowBackend;
             var window = backend.Window;
             var grid = backend.Window.Content as Grid;
@@ -50,11 +52,16 @@ namespace Limaki.View.WpfBackend {
                 Grid.SetRow(dockpanel, 2);
             }
 
-            toolBarTray.ToolBars.Add(useCase.ArrangerToolStrip.Backend.ToWpf() as ToolBar);
-            toolBarTray.ToolBars.Add (useCase.SplitViewToolStrip.Backend.ToWpf () as ToolBar);
-            toolBarTray.ToolBars.Add (useCase.MarkerToolStrip.Backend.ToWpf () as ToolBar);
-            toolBarTray.ToolBars.Add (useCase.LayoutToolStrip.Backend.ToWpf () as ToolBar);
-            toolBarTray.ToolBars.Add (useCase.DisplayModeToolStrip.Backend.ToWpf () as ToolBar);
+            if (useCase.Toolbar == null)
+                return;
+
+            var toolStrips = useCase.Toolbar.Items
+                                 .Cast<Limaki.View.IVidget> ()
+                                    .Select(t =>t.Backend.ToWpf() as ToolBar);
+            
+            foreach (var strip in toolStrips) { 
+                toolBarTray.ToolBars.Add (strip);
+            }
 
         }
 

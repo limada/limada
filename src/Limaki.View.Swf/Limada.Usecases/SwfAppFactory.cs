@@ -57,6 +57,8 @@ namespace Limada.Usecases {
             var useCase = factory.Create();
             factory.Compose(useCase);
 
+            backendComposer.Compose2 (useCase);
+
             CallPlugins(factory, useCase);
             
             useCase.Start();
