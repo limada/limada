@@ -22,8 +22,7 @@ namespace Limada.View {
             context.Factory.Add<IVisualContentViz<IThing>, VisualThingsContentViz> ();
 			context.Factory.Add<ISceneViz<IVisual,IThing,IVisualEdge,ILink>, VisualThingsSceneVizImpl> ();
             context.Factory.Add<ISceneViz<IVisual, IVisualEdge>, VisualThingsSceneVizImpl> ();
-
-            context.Factory.Add<ISheetManager, SheetManager> ();
+            context.Factory.Add<ISceneManager, SceneManager> ();
 
             context.Factory.Add<IMarkerFacade<IVisual, IVisualEdge>> (p => {
                 var graph = p[0] as IGraph<IVisual, IVisualEdge>;

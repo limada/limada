@@ -14,7 +14,8 @@ namespace Limada.UseCases {
         VisualsDisplayHistory VisualsDisplayHistory { get;  }
         FavoriteManager FavoriteManager { get; }
         IGraphSceneUiManager GraphSceneUiManager { get;}
-        ISheetManager SheetManager { get;  }
+        ISceneManager SceneManager { get; }
+
     }
 
 	public interface IBackendConceptUseCaseComposer : IComposer<ConceptUsecase> {

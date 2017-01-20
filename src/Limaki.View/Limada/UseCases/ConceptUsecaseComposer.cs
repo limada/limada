@@ -36,7 +36,7 @@ namespace Limada.UseCases {
 
             useCase.SplitView = new SplitView0();
 
-            useCase.SheetManager = Registry.Factory.Create<ISheetManager>();
+            useCase.SceneManager = Registry.Factory.Create<ISceneManager> ();
             useCase.VisualsDisplayHistory = new VisualsDisplayHistory ();
 
             useCase.GraphSceneUiManager = new ThingGraphUiManager {
@@ -69,25 +69,26 @@ namespace Limada.UseCases {
             Registry.Factory.Add<ContentViewerProvider, ContentVisualViewerProvider>();
         }
 
+
         public void Compose(ConceptUsecase useCase) {
             
             useCase.GetCurrentDisplay = () => useCase.SplitView.CurrentDisplay;
             useCase.GetCurrentVidget = () => useCase.SplitView.CurrentVidget;
 
-            useCase.SheetManager.SheetRegistered = sceneInfo => {
-                useCase.VisualsDisplayHistory.Store(sceneInfo);
+            useCase.SceneManager.SheetStore.SceneInfoRegistered = sceneInfo => {
+                useCase.VisualsDisplayHistory.Store (sceneInfo);
                 //useCase.SplitViewToolStrip.Attach(splitView.CurrentDisplay);
             };
             useCase.AskForVisualsDisplayHistorySaveChanges = true;
             useCase.SplitView.VisualsDisplayHistory = useCase.VisualsDisplayHistory;
-            useCase.SplitView.SheetManager = useCase.SheetManager;
+            useCase.SplitView.SceneManager = useCase.SceneManager;
             
             useCase.SplitView.FavoriteManager = useCase.FavoriteManager;
-            useCase.FavoriteManager.SheetManager = useCase.SheetManager;
+            useCase.FavoriteManager.SceneManager = useCase.SceneManager;
             useCase.FavoriteManager.VisualsDisplayHistory = useCase.VisualsDisplayHistory;
 
             useCase.SplitViewToolStrip.SplitView = useCase.SplitView;
-            useCase.SplitViewToolStrip.SheetManager = useCase.SheetManager;
+            useCase.SplitViewToolStrip.SceneManager = useCase.SceneManager;
 
             useCase.DisplayModeToolStrip.SplitView = useCase.SplitView;
             useCase.SplitView.CurrentVidgetChanged += c => useCase.DisplayModeToolStrip.Attach (c);
