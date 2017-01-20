@@ -23,8 +23,13 @@ namespace Limaki.View.XwtBackend {
     public class XwtDrawingUtils : IDrawingUtils {
 
         private TextLayout tl = new TextLayout { Trimming = TextTrimming.Word };
+        SystemFonts SystemFonts = new SystemFonts ();
+
         public Size GetTextDimension (string text, IStyle style) {
-            var result = default(Size);
+            var result = default (Size);
+            if (style == null) {
+                style = new Style ("") { Font = SystemFonts.DefaultFont.WithSize(10) };
+            }
             lock (tl) {
                 tl.Font = style.Font;
                 tl.Text = text;
