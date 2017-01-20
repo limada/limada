@@ -91,9 +91,10 @@ namespace Limaki.View.Vidgets {
         }
     }
 
-    public interface IToolStripItemContainer {
-        void InsertItem (int index, ToolStripItem item);
-        void RemoveItem (ToolStripItem item);
+    public interface IToolStripItemContainer : IItemContainer<ToolStripItem> {}
+        
+    public class ToolStripItemCollection : ContainerItemCollection<ToolStripItem> {
+        public ToolStripItemCollection (IItemContainer<ToolStripItem> parent) : base (parent) { }
     }
 
     public interface IToolStripItemBackend : IVidgetBackend {
