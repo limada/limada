@@ -24,7 +24,7 @@ using Limaki.View.Viz;
 using Limaki.View.Viz.Visualizers.ToolStrips;
 using Xwt.Backends;
 using System.ComponentModel;
-using Limaki.Common.Linqish;
+using System.Linq;
 
 namespace Limada.View.Vidgets {
 
@@ -240,41 +240,64 @@ namespace Limada.View.Vidgets {
 
         private IList<SceneInfo> _sheets = new List<SceneInfo> ();
         public virtual void AttachSheets () {
-            string result = null;
-
             var display = CurrentDisplay;
-            var dontCare = new Set<long> ();
 
-            if (display != null) {
-                result = display.Info.Name;
-                dontCare.Add (display.DataId);
+            if (display == null)
+                return;
+
+
+            Func<SceneInfo, bool> dontCare = i => {
+                if (display.DataId == i.Id)
+                    return true;
                 var adj = SplitView.AdjacentDisplay (display);
-                if (adj != null)
-                    dontCare.Add (adj.DataId);
-            }
+                if (adj?.DataId == i.Id)
+                    return true;
+                return false;
+            };
+
             _sheets.Clear ();
             SheetCombo.Items.Clear ();
 
-            SheetManager.VisitRegisteredSheets (s => {
-                if (SheetManager.StoreContains (s.Id) && !dontCare.Contains (s.Id)) {
-                    _sheets.Add (s);
-                    SheetCombo.Items.Add (s.Name);
-                }
-            });
+            Action<SceneInfo> addInfo = s => {
+                _sheets.Add (s);
+                SheetCombo.Items.Add (s.Name);
+            };
 
-            if (result != null) {
-                SheetCombo.SelectionChanged -= SelectSheet;
-                SheetCombo.SelectedItem = result;
-                SheetCombo.SelectionChanged += SelectSheet;
+            SceneManager.SheetStore.VisitRegisteredSheetInfos (s => addInfo (s));
+
+            var lastSelected = _sheets.FirstOrDefault (i => i.Id == display.Info.Id);
+            if (lastSelected == null) {
+                addInfo (display.Info);
+                lastSelected = display.Info;
             }
 
+            SelectSheet = (s, e) => {
+                var selectedIndex = SheetCombo.SelectedIndex;
+                if (selectedIndex != -1) {
+                    var info = _sheets [selectedIndex];
+                    if (info != lastSelected && !dontCare (info)) {
+                        SplitView.LoadSheet (_sheets [selectedIndex]);
+                        lastSelected = info;
+                    } else {
+                        SheetCombo.SelectionChanged -= DoSelect;
+                        var idx = _sheets.IndexOf (lastSelected);
+                        SheetCombo.SelectedIndex = idx;
+                        SheetCombo.SelectionChanged += DoSelect;
+                    }
+                }
+            };
+
+            SheetCombo.SelectionChanged -= DoSelect;
+            {
+                var idx = _sheets.IndexOf (lastSelected);
+                SheetCombo.SelectedIndex = idx;
+                SheetCombo.SelectionChanged += DoSelect;
+            }
         }
 
-
-        protected virtual void SelectSheet (object sender, System.EventArgs e) {
-            if (SheetCombo.SelectedIndex != -1) {
-                SplitView.LoadSheet (_sheets[SheetCombo.SelectedIndex]);
-            }
+        Action<object, EventArgs> SelectSheet { get; set; }
+        protected virtual void DoSelect (object sender, System.EventArgs e) {
+            SelectSheet?.Invoke (sender, e);
         }
 
         public void CheckBackForward (ISplitView splitView) {
@@ -284,5 +307,73 @@ namespace Limada.View.Vidgets {
     }
 
     public interface ISplitViewToolStripBackend : IDisplayToolStripBackend {
+    }
+
+    public class SheetComboComposer { 
+
+        public ISceneManager SceneManager { get; set; }
+
+        public ComboBox SheetCombo { get; set; }
+
+        public Action<object, EventArgs> SelectSheet { get; protected set; }
+
+        public virtual void AttachSheets (IGraphSceneDisplay<IVisual, IVisualEdge> display, ISplitView SplitView) {
+            
+            if (display == null || SheetCombo == null)
+                return;
+
+            SheetCombo.Items.Clear ();
+            var _sheets = new List<SceneInfo> ();
+
+            Func<SceneInfo, bool> dontCare = i => {
+                if (display.DataId == i.Id)
+                    return true;
+                var adj = SplitView.AdjacentDisplay (display);
+                if (adj?.DataId == i.Id)
+                    return true;
+                return false;
+            };
+
+            Action<SceneInfo> addInfo = s => {
+                _sheets.Add (s);
+                SheetCombo.Items.Add (s.Name);
+            };
+
+            SceneManager.SheetStore.VisitRegisteredSheetInfos (s => addInfo (s));
+
+            var lastSelected = _sheets.FirstOrDefault (i => i.Id == display.Info.Id);
+            if (lastSelected == null) {
+                addInfo (display.Info);
+                lastSelected = display.Info;
+            }
+
+            Action resetSelected = () => { 
+                SheetCombo.SelectionChanged -= DoSelect;
+                var idx = _sheets.IndexOf (lastSelected);
+                SheetCombo.SelectedIndex = idx;
+                SheetCombo.SelectionChanged += DoSelect;
+            };
+
+            SelectSheet = (s, e) => {
+                var selectedIndex = SheetCombo.SelectedIndex;
+                if (selectedIndex != -1) {
+                    var info = _sheets [selectedIndex];
+                    if (info != lastSelected && !dontCare (info)) {
+                        SplitView.LoadSheet (_sheets [selectedIndex]);
+                        lastSelected = info;
+                    } else {
+                        resetSelected ();  
+                    }
+                }
+            };
+
+            resetSelected ();
+
+        }
+
+        protected virtual void DoSelect (object sender, System.EventArgs e) {
+            SelectSheet?.Invoke (sender, e);
+        }
+
     }
 }
