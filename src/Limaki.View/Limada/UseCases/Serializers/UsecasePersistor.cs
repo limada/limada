@@ -40,7 +40,7 @@ namespace Limada.UseCases {
                 return;
 
             var displays = Mesh.Displays;
-            usecase.VisualsDisplayHistory.SaveChanges (displays, usecase.SheetManager, false);
+            usecase.VisualsDisplayHistory.SaveChanges (displays, usecase.SceneManager, false);
             usecase.FavoriteManager.SaveChanges (displays);
             usecase.GraphSceneUiManager.Save ();
 
@@ -108,12 +108,12 @@ namespace Limada.UseCases {
             if (graphChanged) {
 
 				usecase.FavoriteManager.Clear();
-				usecase.SheetManager.Clear();
+                usecase.SceneManager.Clear();
 				usecase.VisualsDisplayHistory.Clear();
 
                 foreach (var d in Mesh.Displays) {
                     if (d.Info.Id != usecase.FavoriteManager.HomeId)
-                        usecase.VisualsDisplayHistory.Store (d, usecase.SheetManager);
+                        usecase.VisualsDisplayHistory.Store (d, usecase.SceneManager);
                 }
 			}
 			var thingGraph = backHandler.BackGraphs.FirstOrDefault() as IThingGraph;
@@ -159,7 +159,7 @@ namespace Limada.UseCases {
 
 			HomeId = usecase.FavoriteManager.HomeId;
 			var displays = Mesh.Displays;
-			usecase.VisualsDisplayHistory.SaveChanges (displays, usecase.SheetManager, false);
+            usecase.VisualsDisplayHistory.SaveChanges (displays, usecase.SceneManager, false);
 			usecase.FavoriteManager.SaveChanges (displays);
 			usecase.GraphSceneUiManager.Save ();
 

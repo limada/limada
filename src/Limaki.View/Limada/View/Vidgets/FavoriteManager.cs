@@ -38,7 +38,7 @@ namespace Limada.View.Vidgets {
 			ResetHomeId();
         }
 
-        public ISheetManager SheetManager { get; set; }
+        public ISceneManager SceneManager { get; set; }
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
 
         public void AddToFavorites(IGraphScene<IVisual, IVisualEdge> scene) {
@@ -92,10 +92,8 @@ namespace Limada.View.Vidgets {
         public IGraphSceneDisplay<IVisual, IVisualEdge> Display { get; set; }
 
         protected virtual void DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, Content<Stream> content) {
-            var info = SheetManager.LoadFromContent(content, display.Data, display.Layout);
-            display.Perform();
-            display.Info = info;
-            VisualsDisplayHistory.Store (info);
+            SceneManager.Load (display, content);
+            VisualsDisplayHistory.Store (display.Info);
         }
 
         protected virtual bool DisplaySheet(IGraphSceneDisplay<IVisual, IVisualEdge> display, IThing thing, IThingGraph thingGraph ) {
@@ -255,7 +253,6 @@ namespace Limada.View.Vidgets {
 
         }
 
-
         public virtual bool AddToSheets (IThingGraph graph, Int64 sheetId) {
             var thing = graph.GetById (sheetId) as IStreamThing;
             if (thing != null && thing.StreamType == ContentTypes.LimadaSheet) {
@@ -285,20 +282,21 @@ namespace Limada.View.Vidgets {
         /// saves scenes of displays with  AddToSheets
         /// </summary>
         /// <param name="displays"></param>
-        public void SaveChanges(IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays) {
-            var display = displays.First();
-            var graph = display.Data.Graph;
-            if (graph.Count == 0)
-                return;
+        public void SaveChanges (IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays) {
 
-            var thingGraph = graph.ThingGraph();
-            if (thingGraph != null) {
-                var topic = thingGraph.GetById(TopicSchema.Topics.Id);
-                if(topic == null) {
-                    var info = display.Info;
-                    SheetManager.SaveInGraph(display.Data,display.Layout,info);
-                    display.Info = info;
-                    AddToSheets(thingGraph, info.Id);
+            foreach (var display in displays) {
+                var graph = display.Data.Graph;
+                if (graph.Count == 0)
+                    return;
+
+                var thingGraph = graph.ThingGraph ();
+                if (thingGraph != null) {
+                    var topic = thingGraph.GetById (TopicSchema.Topics.Id);
+                    if (topic == null) {
+                        SceneManager.SaveInGraph (display.Data, display.Layout, display.Info);
+
+                        AddToSheets (thingGraph, display.Info.Id);
+                    }
                 }
             }
         }

@@ -47,7 +47,7 @@ namespace Limada.UseCases {
         public ISplitView SplitView { get; set; }
 
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
-        public ISheetManager SheetManager { get; set; }
+        public ISceneManager SceneManager { get; set; }
         public FavoriteManager FavoriteManager { get; set; }
 
         public ArrangerToolStrip ArrangerToolStrip { get; set; }
@@ -134,8 +134,8 @@ namespace Limada.UseCases {
         public bool AskForVisualsDisplayHistorySaveChanges { get; set; }
 
         public virtual void SaveChanges () {
-            VisualsDisplayHistory.SaveChanges (displays, SheetManager, AskForVisualsDisplayHistorySaveChanges);
 			var displays = Mesh.Displays;
+            VisualsDisplayHistory.SaveChanges (displays, SceneManager, AskForVisualsDisplayHistorySaveChanges);
             FavoriteManager.SaveChanges (displays);
         }
 

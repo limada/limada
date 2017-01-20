@@ -52,85 +52,36 @@ namespace Limada.View.Vidgets {
             History.Add (info.Id);
         }
 
-        public void Store(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager) {
-            if (display != null && display.Data != null && display.Data.Count > 0) {
-                if (display.DataId == 0)
-                    display.DataId = Isaac.Long;
-                if (sheetManager.SaveInStore(display.Data, display.Layout, display.DataId)) {
-                    sheetManager.RegisterSheet(display.Info);
-                    History.Add(display.DataId);
-                }
-            }
-        }
-        
-        protected void Load(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, Int64 id) {
-            if (id == 0)
-                return;
-            var info = sheetManager.GetSheetInfo(id);
-            if (info != null) {
-                if (sheetManager.LoadFromStore(display.Data, display.Layout, info.Id)) {
-                    display.Info = info;
-                    display.Viewport.Reset();
-                    display.BackendRenderer.Render();
-                }
-            }
+        public void Store (IGraphSceneDisplay<IVisual, IVisualEdge> display, ISceneManager sceneManager) {
+            sceneManager.Store (display);
+            History.Add (display.DataId);
         }
 
-        public void Navigate(IGraphSceneDisplay<IVisual, IVisualEdge> display, ISheetManager sheetManager, bool forward) {
+
+        protected void Load (IGraphSceneDisplay<IVisual, IVisualEdge> display, ISceneManager sceneManager, Int64 id) {
+            sceneManager.Load (display, id);
+        }
+
+        public void Navigate (IGraphSceneDisplay<IVisual, IVisualEdge> display, ISceneManager sceneManager, bool forward) {
+            
+            Store (display, sceneManager);
+
             var info = display.Info;
-            Store(display, sheetManager);
-            var currSheedId = default(Int64);
+            var currSheedId = info != null ? info.Id : 0;
 
-            if (info != null)
-                currSheedId = info.Id;
+            var sheetId = forward ? History.Forward () : History.Back ();
 
-            Int64 sheetId = default(Int64);
-            if (forward)
-                sheetId = History.Forward();
-            else
-                sheetId = History.Back();
-
-            if (sheetId != default(Int64) && sheetId != currSheedId) {
-                Load(display, sheetManager, sheetId);
+            if (sheetId != currSheedId) {
+                Load (display, sceneManager, sheetId);
             }
 
-            if (currSheedId == default(Int64))
-                History.Remove(p => p == currSheedId);
-
+            if (currSheedId == 0)
+                History.Remove (p => p == currSheedId);
             
         }
 
-        public void SaveChanges(IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays, ISheetManager sheetManager, bool ask) {
-            IGraph<IVisual, IVisualEdge> graph = null;
-            foreach (var display in displays) {
-                if (graph == null)
-                    graph = display.Data.Graph;
-                if (display.State.Dirty && !display.State.Hollow && display.Data != null) {
-                    var info = sheetManager.GetSheetInfo(display.DataId) ?? display.Info;
-                    sheetManager.SaveInStore(display.Data, display.Layout, info.Id);
-                    display.State.CopyTo(info.State);
-
-                }
-            }
-
-            Action<SceneInfo> sheetVisitor = (info) => {
-                if (info.State.Dirty && !info.State.Hollow) {
-                    var saveSheet = !ask || Registry.Pooled<IMessageBoxShow> ().Show ("This sheet has been changed. Do you want to save it?", "Sheet " + info.Name, MessageBoxButtons.YesNo) == DialogResult.Yes;
-                    if (saveSheet) {
-                        var sheet = sheetManager.GetFromStore(info.Id);
-                        if (sheet != null) {
-                            sheetManager.SaveStreamInGraph(sheet, graph, info);
-                            var display = displays.FirstOrDefault(d => d.DataId == info.Id);
-                            if (display != null)
-                                info.State.CopyTo(display.State);
-                        }
-                    }
-                }
-            };
-
-            if (graph != null)
-                sheetManager.VisitRegisteredSheets(sheetVisitor);
+        public void SaveChanges (IEnumerable<IGraphSceneDisplay<IVisual, IVisualEdge>> displays, ISceneManager sceneManager, bool ask) {
+            sceneManager.SaveChanges (displays, ask);
         }
-
     }
 }

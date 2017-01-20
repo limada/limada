@@ -4,14 +4,8 @@ using Limaki.Contents;
 using Limaki.Graphs;
 
 namespace Limaki.View.Visuals {
-    /// <summary>
-    /// replaces ISheetManager
-    /// replaces all methods where to load and save scenes
-    /// </summary>
-    public interface ISceneManager {
-        
-    }
 
+    [Obsolete("use ISceneManager")]
     public interface ISheetManager {
         /// <summary>
         /// null if not registered
@@ -24,6 +18,11 @@ namespace Limaki.View.Visuals {
         Action<SceneInfo> SheetRegistered { get; set; }
         void VisitRegisteredSheets(Action<SceneInfo> visitor);
 
+        /// <summary>
+        /// clears scene and gives back a new, empty SceneInfo
+        /// </summary>
+        /// <returns>The sheet.</returns>
+        /// <param name="scene">Scene.</param>
         SceneInfo CreateSheet(IGraphScene<IVisual, IVisualEdge> scene);
 
         bool Load(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Int64 id);

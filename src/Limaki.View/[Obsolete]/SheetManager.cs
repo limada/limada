@@ -21,10 +21,13 @@ using Limaki.Common;
 using Limaki.Contents;
 using Limaki.Graphs;
 using Limaki.View;
+using Limaki.View.GraphScene;
 using Limaki.View.Visuals;
 
 namespace Limada.View.Vidgets {
-
+    
+    
+    [Obsolete("use Scenemanager")]
     public class SheetManager : ISheetManager {
 
         #region SheetInfo
@@ -92,7 +95,6 @@ namespace Limada.View.Vidgets {
         }
         #endregion
      
-
         #region save sheet to thing
 
         private IThingGraph GetThingGraph(IGraph<IVisual, IVisualEdge> graph) {
@@ -111,7 +113,7 @@ namespace Limada.View.Vidgets {
         IThing GetSheetThing(IThingGraph thingGraph, Int64 id) {
             if (id == -1)
                 return null;
-            IThing result = thingGraph.GetById(id);
+            var result = thingGraph.GetById(id);
             if (result != null) {
                 if (!(result is IStreamThing && 
                     ((IStreamThing)result).StreamType == ContentTypes.LimadaSheet)) {
@@ -166,14 +168,14 @@ namespace Limada.View.Vidgets {
             saved.State.CopyTo(info.State);
         }
 
-        public SceneInfo SaveToThing(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, IThing thing, string name) {
+        protected SceneInfo SaveToThing(IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, IThing thing, string name) {
             var result = default( SceneInfo );
             if (thing is IStreamThing || thing == null) {
                 
                 var content = new Content<Stream>(
                     new MemoryStream(), CompressionType.bZip2, ContentTypes.LimadaSheet);
 
-                var sheet = new Sheet(scene, layout);
+                var sheet = new SheetSerializer0(scene, layout);
                 sheet.Save(content.Data);
                 content.Data.Position = 0;
                 content.Description = name;
@@ -194,8 +196,6 @@ namespace Limada.View.Vidgets {
         public bool IsSaveable(IGraphScene<IVisual, IVisualEdge> scene) {
             return scene != null && scene.Graph.ThingGraph() != null;
         }
-
-
 
         #endregion
 
@@ -224,8 +224,9 @@ namespace Limada.View.Vidgets {
             if (source == null)
                 return;
             try {
+                target.CheckLayout (layout);
                 source.Position = 0;
-                using (var sheet = new Sheet (target, layout)) {
+                using (var sheet = new SheetSerializer0 (target, layout)) {
                     sheet.Read (source);
                 }
                 source.Position = 0;
@@ -294,7 +295,7 @@ namespace Limada.View.Vidgets {
         public bool SaveInStore (IGraphScene<IVisual, IVisualEdge> scene, IGraphSceneLayout<IVisual, IVisualEdge> layout, Int64 id) {
             if (scene.Graph.Count > 0) {
                 var stream = new MemoryStream ();
-                new Sheet (scene, layout).Save (stream);
+                new SheetSerializer0 (scene, layout).Save (stream);
                 stream.Position = 0;
 
                 SheetStreams [id] = stream.GetBuffer ((int)stream.Length);

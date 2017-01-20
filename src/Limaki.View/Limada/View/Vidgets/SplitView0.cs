@@ -305,8 +305,8 @@ namespace Limada.View.Vidgets {
                 };
                 _contentViewManager.AttachViewerBackend = Backend.SetFocusCatcher;
                
-                _contentViewManager.SheetManager = this.SheetManager;
-                
+                _contentViewManager.SceneManager = this.SceneManager;
+
                 return _contentViewManager;
             }
             set { _contentViewManager = value; }
@@ -346,7 +346,7 @@ namespace Limada.View.Vidgets {
 
         #region SheetManagement
 
-        public ISheetManager SheetManager {get;set;}
+        public ISceneManager SceneManager { get; set; }
 
         public void SaveDocument() {
             if (CurrentVidget == CurrentDisplay) {
@@ -366,15 +366,16 @@ namespace Limada.View.Vidgets {
                 var info = currentDisplay.Info;
                 if(!string.IsNullOrEmpty(info.Name) && info.Name!=name) {
                     var dialog = Registry.Factory.Create<IMessageBoxShow>();
-                    if (dialog.Show("Question",string.Format("Do you want to copy sheet {0} as {1}", info.Name,name),
+                    if (dialog.Show("Question",string.Format($"Do you want to copy sheet {info.Name} as {name}"),
                         MessageBoxButtons.YesNo)== DialogResult.Yes) {
-                            info = SheetManager.RegisterSheet(0, name);
+                        info = SceneManager.SheetStore.CreateSceneInfo ();
+                        info.Name = name;
                     }
                 }
                 if (string.IsNullOrEmpty(info.Name))
                     info.Name = name;
 
-                SheetManager.SaveInGraph(currentDisplay.Data, currentDisplay.Layout, info);
+                SceneManager.SaveInGraph(currentDisplay.Data, currentDisplay.Layout, info);
                 currentDisplay.Info = info;
                 FavoriteManager.AddToSheets(currentDisplay.Data.Graph, currentDisplay.DataId);
             }
@@ -382,8 +383,9 @@ namespace Limada.View.Vidgets {
 
         public void NewSheet() {
             var currentDisplay = this.CurrentDisplay;
-            VisualsDisplayHistory.Store(currentDisplay, SheetManager);
-            var info = SheetManager.CreateSheet(currentDisplay.Data);
+            VisualsDisplayHistory.Store(currentDisplay, SceneManager);
+            currentDisplay.Data.CleanScene ();
+            var info = SceneManager.SheetStore.CreateSceneInfo ();
             currentDisplay.Info = info;
             currentDisplay.BackendRenderer.Render();
             OnViewChanged();
@@ -395,12 +397,12 @@ namespace Limada.View.Vidgets {
 
         public void Search (string name) {
             var currentDisplay = this.CurrentDisplay;
-            VisualsDisplayHistory.Store(currentDisplay, SheetManager);
+            VisualsDisplayHistory.Store(currentDisplay, SceneManager);
             new VisualThingSearch()
                 .LoadSearch(currentDisplay.Data, currentDisplay.Layout, name);
-			currentDisplay.DataId = Isaac.Long;
-            new State {Hollow = true}.CopyTo(currentDisplay.State);
-            currentDisplay.Text = name;
+            var info = SceneManager.SheetStore.CreateSceneInfo ();
+            info.Name = name;
+            currentDisplay.Info = info;
             currentDisplay.Viewport.Reset();
             currentDisplay.Perform();
             currentDisplay.QueueDraw();
@@ -422,13 +424,10 @@ namespace Limada.View.Vidgets {
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
         
         private void Clear() {
-            if (VisualsDisplayHistory != null) {
-                VisualsDisplayHistory.Clear ();
-            }
+            
+            VisualsDisplayHistory?.Clear ();
 
-            if (SheetManager != null) {
-                SheetManager.Clear();
-            }
+            SceneManager?.Clear();
 
             ContentViewManager.Clear ();
 
@@ -444,12 +443,12 @@ namespace Limada.View.Vidgets {
         public void GoHome() {
             var display = this.CurrentDisplay;
             if (display != null) {
-                Trace.WriteLine(string.Format("Before Home\tId\t{0}\tName\t{1}",display.Info.Id,display.Info.Name));
-                VisualsDisplayHistory.Store(display, SheetManager);
+                Trace.WriteLine($"Before {nameof(ISplitView)}.{nameof(GoHome)}\t{display.Info}");
+                VisualsDisplayHistory.Store(display, SceneManager);
                
                 FavoriteManager.GoHome(display, false);
                 OnViewChanged();
-                Trace.WriteLine(string.Format("After Home\tId\t{0}\tName\t{1}", display.Info.Id, display.Info.Name));
+                Trace.WriteLine ($"After {nameof (ISplitView)}.{nameof (GoHome)}\t{display.Info}");
             }
         }
 
@@ -476,16 +475,11 @@ namespace Limada.View.Vidgets {
         public void LoadSheet(SceneInfo info) {
             if (info == null )
                 return;
-            info = SheetManager.GetSheetInfo(info.Id);
+            info = SceneManager.SheetStore.GetSheetInfo(info.Id);
             var display = this.CurrentDisplay;
             if (info != null) {
-                VisualsDisplayHistory.Store(display, SheetManager);
-                if (SheetManager.Load(display.Data, display.Layout, info.Id)) {
-                    info = SheetManager.GetSheetInfo(info.Id);
-                    display.Info = info;
-                    display.Viewport.Reset();
-                    display.BackendRenderer.Render();
-                }
+                VisualsDisplayHistory.Store(display, SceneManager);
+                SceneManager.Load (display, info.Id);
             }
         }
 
@@ -493,7 +487,7 @@ namespace Limada.View.Vidgets {
             var currentDisplay = this.CurrentDisplay;
             var currentVidget = this.CurrentVidget;
             if (currentVidget == currentDisplay && currentDisplay != null) {
-                VisualsDisplayHistory.Navigate(currentDisplay, SheetManager, forward);
+                VisualsDisplayHistory.Navigate(currentDisplay, SceneManager, forward);
             } else if (currentVidget is IHistoryAware) {
                 if (forward)
                     ((IHistoryAware)currentVidget).GoForward();
@@ -612,8 +606,9 @@ namespace Limada.View.Vidgets {
             if (this.VisualsDisplayHistory == null) {
                 throw new CheckFailedException(this.GetType(), typeof(VisualsDisplayHistory));
             }
-            if (this.SheetManager == null) {
-                throw new CheckFailedException(this.GetType(), typeof(SheetManager));
+
+            if (this.SceneManager == null) {
+                throw new CheckFailedException (this.GetType (), typeof (SceneManager));
             }
             if (this.Display1 == null) {
                 throw new CheckFailedException(this.GetType(), typeof(IGraphSceneDisplay<IVisual, IVisualEdge>));

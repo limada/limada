@@ -88,7 +88,7 @@ namespace Limada.View.Vidgets {
         }
 
         public VisualsDisplayHistory VisualsDisplayHistory { get; set; }
-        public ISheetManager SheetManager { get; set; }
+        public ISceneManager SceneManager { get; set; }
         public FavoriteManager FavoriteManager { get; set; }
 
     }

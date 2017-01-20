@@ -27,63 +27,58 @@ namespace Limaki.View.Visuals {
 
     public static class SceneExtensions {
 
-        public static void ChangeShape(IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IShape newShape) {
-            if (visual != null && !(visual is IVisualEdge)) {
-                if (newShape != null) {
-                    newShape = (IShape)newShape.Clone();
-                    newShape.Location = visual.Shape.Location;
-                    newShape.DataSize = visual.Shape.DataSize;
-                    var changeShape =
-                        new ActionCommand<IVisual, IShape>(
-                            visual,
-                            newShape,
-                            delegate(IVisual target, IShape shape) { target.Shape = shape; });
-                    scene.Requests.Add(changeShape);
-                    if (visual.Shape is VectorShape || newShape is VectorShape) {
-                        scene.Requests.Add(new LayoutCommand<IVisual>(visual, LayoutActionType.Justify));
-                    }
-                    foreach (IVisualEdge edge in scene.Twig(visual)) {
-                        scene.Requests.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Justify));
-                    }
+        public static void ChangeShape (IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IShape newShape) {
+            if (visual == null || (visual is IVisualEdge))
+                return;
+            
+            if (newShape != null) {
+                newShape = (IShape)newShape.Clone ();
+                newShape.Location = visual.Shape.Location;
+                newShape.DataSize = visual.Shape.DataSize;
+                var changeShape =
+                    new ActionCommand<IVisual, IShape> (
+                        visual,
+                        newShape,
+                        delegate (IVisual target, IShape shape) { target.Shape = shape; });
+                scene.Requests.Add (changeShape);
+                if (visual.Shape is VectorShape || newShape is VectorShape) {
+                    scene.Requests.Add (new LayoutCommand<IVisual> (visual, LayoutActionType.Justify));
+                }
+                foreach (var edge in scene.Twig (visual)) {
+                    scene.Requests.Add (new LayoutCommand<IVisual> (edge, LayoutActionType.Justify));
                 }
             }
         }
 
-        public static void ChangeStyle(IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IStyleGroup newStyle) {
-            if (visual != null) {
-                if (newStyle != null) {
-                   var changeStyle = 
-                       new ActionCommand<IVisual, IStyleGroup>(visual,newStyle,(target, style) => target.Style = style);
-                    scene.Requests.Add(changeStyle);
-                    if (visual.Shape is VectorShape) {
-                        scene.Requests.Add(new LayoutCommand<IVisual>(visual, LayoutActionType.Justify));
-                    }
-                    foreach (var edge in scene.Twig(visual)) {
-                        scene.Requests.Add(new LayoutCommand<IVisual>(edge, LayoutActionType.Justify));
-                    }
-                }
+        public static void ChangeStyle (IGraphScene<IVisual, IVisualEdge> scene, IVisual visual, IStyleGroup newStyle) {
+            if (visual == null || newStyle == null)
+                return;
+
+            var changeStyle =
+                new ActionCommand<IVisual, IStyleGroup> (visual, newStyle, (target, style) => target.Style = style);
+            scene.Requests.Add (changeStyle);
+            if (visual.Shape is VectorShape) {
+                scene.Requests.Add (new LayoutCommand<IVisual> (visual, LayoutActionType.Justify));
+            }
+            foreach (var edge in scene.Twig (visual)) {
+                scene.Requests.Add (new LayoutCommand<IVisual> (edge, LayoutActionType.Justify));
             }
         }
 
-        public static void ChangeMarkers(IGraphScene<IVisual, IVisualEdge> scene, IEnumerable<IVisual> elements, object marker) {
-            if (scene.Markers != null) {
-                scene.Markers.ChangeMarkers (elements, marker);
-                foreach (var visual in elements) {
-                    scene.Requests.Add(new LayoutCommand<IVisual>(visual, LayoutActionType.Justify));
-                }
+        public static void ChangeMarkers (IGraphScene<IVisual, IVisualEdge> scene, IEnumerable<IVisual> elements, object marker) {
+            if (scene.Markers == null)
+                return;
+         
+            scene.Markers.ChangeMarkers (elements, marker);
+            foreach (var visual in elements) {
+                scene.Requests.Add (new LayoutCommand<IVisual> (visual, LayoutActionType.Justify));
             }
+
         }
 
-        public static IVisualEdge CreateEdge(IGraphScene<IVisual, IVisualEdge> scene) {
-            IVisualEdge edge = null;
-            if (scene != null && scene.Markers != null) {
-                edge = scene.Markers.CreateDefaultEdge() as IVisualEdge;
-            } 
-            if (edge == null){
-                var factory = Registry.Factory.Create<IGraphModelFactory<IVisual, IVisualEdge>> ();
-                edge = factory.CreateEdge ("°");
-            }
-            return edge;
+        public static IVisualEdge CreateEdge (IGraphScene<IVisual, IVisualEdge> scene) {
+            var edge = scene?.Markers?.CreateDefaultEdge () as IVisualEdge;
+            return edge ?? Registry.Factory.Create<IGraphModelFactory<IVisual, IVisualEdge>> ().CreateEdge ("°");
         }
 
         public static IVisualEdge CreateEdge (IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual leaf) {
@@ -119,44 +114,48 @@ namespace Limaki.View.Visuals {
             }
         }
 
-        public static IVisual PlaceVisual(IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual visual, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
-            if (visual != null && scene !=null) {
-                var pt = (Point)layout.Border;
-                if (root != null) {
-                    pt = root.Shape[Anchor.LeftBottom];
-                }
-                AddItem(scene, visual, layout, pt);
-                CreateEdge(scene, root, visual);
+        public static IVisual PlaceVisual (IGraphScene<IVisual, IVisualEdge> scene, IVisual root, IVisual visual, IGraphSceneLayout<IVisual, IVisualEdge> layout) {
+            if (visual == null || scene == null)
+                return visual;
+
+            var pt = (Point)layout.Border;
+            if (root != null) {
+                pt = root.Shape [Anchor.LeftBottom];
             }
+            AddItem (scene, visual, layout, pt);
+            CreateEdge (scene, root, visual);
 
             return visual;
         }
 
         public static void LinkItem (IGraphScene<IVisual, IVisualEdge> scene, IVisual item, Point pt, int hitSize, bool itemIsRoot) {
-            if (item != null) {
-                var target = scene.Hovered;
-                if (target == null && scene.Focused != null && scene.Focused.Shape.IsHit (pt, hitSize)) {
-                    target = scene.Focused;
-                }
-                if (item != target) {
-                    if (itemIsRoot)
-                        CreateEdge (scene, item, target);
-                    else
-                        CreateEdge (scene, target, item);
-                }
+            if (item == null)
+                return;
+
+            var target = scene.Hovered;
+            if (target == null && scene.Focused != null && scene.Focused.Shape.IsHit (pt, hitSize)) {
+                target = scene.Focused;
+            }
+
+            if (item != target) {
+                if (itemIsRoot)
+                    CreateEdge (scene, item, target);
+                else
+                    CreateEdge (scene, target, item);
             }
         }
 
         public static void CleanScene (this IGraphScene<IVisual, IVisualEdge> scene) {
-            if (scene != null) {
-                var graphView = scene.Graph as SubGraph<IVisual, IVisualEdge>;
-                if (graphView!=null) {
-                    graphView.Sink.Clear ();
-                    scene.ClearView ();
-                    scene.CreateMarkers();
-                } else {
-                    throw new ArgumentException ("scene.Graph must be a SubGraph");
-                }
+            if (scene == null)
+                return;
+
+            var graphView = scene.Graph as SubGraph<IVisual, IVisualEdge>;
+            if (graphView != null) {
+                graphView.Sink.Clear ();
+                scene.ClearView ();
+                scene.CreateMarkers ();
+            } else {
+                throw new ArgumentException ("scene.Graph must be a SubGraph");
             }
         }
 

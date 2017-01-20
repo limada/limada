@@ -38,7 +38,7 @@ namespace Limada.View.ContentViewers {
         }
 
         public IGraphSceneDisplay<IVisual, IVisualEdge> SheetViewer { get; set; }
-        public ISheetManager SheetManager { get; set; }
+        public ISceneManager SceneManager { get; set; }
 
         public Color BackColor = SystemColors.Background;
 
@@ -69,10 +69,11 @@ namespace Limada.View.ContentViewers {
         public ContentVisualViewerProvider ContentVisualViewerProvider { get { return ContentViewerProvider as ContentVisualViewerProvider; } }
 
         protected void OnAttachViewer(ContentViewer viewer, IGraph<IVisual, IVisualEdge> graph, IVisual visual) {
+            
             if (viewer is SheetViewer) {
-                var sheetViewer = (SheetViewer)viewer;
+                var sheetViewer = viewer as SheetViewer;
                 sheetViewer.SheetDisplay = this.SheetViewer;
-                sheetViewer.SheetManager = this.SheetManager;
+                sheetViewer.SceneManager = this.SceneManager;
             }
 
             viewer.BackColor = this.BackColor;
