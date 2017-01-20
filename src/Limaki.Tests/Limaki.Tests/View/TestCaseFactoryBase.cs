@@ -101,7 +101,7 @@ namespace Limaki.Tests.UseCases {
                     }
                     continue;
                 }
-                cbcontent.AppendLine ($"{ct!=null?ct.GetType():null}");
+                cbcontent.AppendLine ($"{(ct!=null?ct.GetType():null)}");
             }
             textbox.Text = cbcontent.ToString ();
             vindow.Show ();
