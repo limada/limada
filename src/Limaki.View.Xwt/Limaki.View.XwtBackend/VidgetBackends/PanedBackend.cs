@@ -23,11 +23,17 @@ namespace Limaki.View.XwtBackend {
         protected Paned SplitContainer { get { return this.Widget; } }
 
         protected virtual Widget SetScrollingPanelContent (Widget widget, Panel panel) {
-            widget.RemoveParent ();
             if (widget is IScrollContainingWidget) {
+                widget.RemoveParent ();
                 panel.Content = widget;
             } else {
-                panel.Content = widget.WithScrollView ();
+                var parent = widget.Parent;
+                if (parent is ScrollView) {
+                    parent.RemoveParent ();
+                    panel.Content = parent;
+                } else {
+                    panel.Content = widget.WithScrollView ();
+                }
             }
             return panel.Content;
         }
