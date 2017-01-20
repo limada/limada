@@ -30,7 +30,7 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
         protected virtual void Compose () {
             MarkerCombo = new ComboBox { Width = 100 };
             MarkerComboHost = new ToolStripItemHost { Child = MarkerCombo };
-            this.AddItems (MarkerComboHost);
+            this.AddItems (MarkerComboHost, new ToolStripSeparator());
             MarkerCombo.SelectionChanged += (s, e) => ChangeMarkers (MarkerCombo.SelectedItem);
         }
 

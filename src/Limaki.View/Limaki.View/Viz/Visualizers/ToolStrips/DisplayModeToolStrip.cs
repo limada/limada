@@ -165,7 +165,8 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
 
             this.AddItems (
                selectButton,
-               zoomButton
+               zoomButton,
+               new ToolStripSeparator ()
             );
         }
 

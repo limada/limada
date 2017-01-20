@@ -362,7 +362,8 @@ namespace Limaki.View.Viz.Visualizers.ToolStrips {
                 horizontalButton,
                 verticalButton,
                 dimensionButton,
-                new ToolStripButton (UndoCommand)
+                new ToolStripButton (UndoCommand),
+                new ToolStripSeparator()
                 );
         }
     }
