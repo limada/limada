@@ -54,6 +54,7 @@ namespace Limaki.View.GtkBackend {
             var factories = context.Pooled<UsecaseFactories<ConceptUsecase>> ();
             factories.Add (new GtkUsecaseFactory ());
 
+            VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolbarPanelBackend, ToolbarPanelBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripBackend, ToolStripBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripItemHostBackend, ToolStripItemHostBackend> ();
             VidgetToolkit.CurrentEngine.Backend.RegisterBackend<IToolStripButtonBackend, ToolStripButtonBackend> ();

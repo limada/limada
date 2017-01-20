@@ -20,64 +20,53 @@ using Limaki.View.XwtBackend;
 using Xwt.Backends;
 using Limaki.Common.Linqish;
 using System.Diagnostics;
-
+using System;
+using Limaki.Common;
 
 namespace Limaki.View.GtkBackend {
 
     public class GtkUsecaseFactory : UsecaseFactory<ConceptUsecase> {
 
         public override void Compose (ConceptUsecase useCase) {
+            
             var backendComposer = BackendComposer as IXwtBackendConceptUseCaseComposer;
-            AddToolbars (backendComposer.MainWindowBackend as Xwt.Window, useCase);
+
+            var xwtWindow = backendComposer.MainWindowBackend as Xwt.Window;
+            ComposeWindow (xwtWindow);
+            AddToolbar (xwtWindow, useCase.Toolbar);
 
         }
 
-        protected void AddToolbars (Xwt.Window xwtWindow, ConceptUsecase useCase) {
-
+        protected void ComposeWindow (Xwt.Window xwtWindow) {
+            
             var windowBackend = xwtWindow.GetBackend () as Xwt.GtkBackend.WindowBackend;
-            var toolBox = new Gtk.HBox (false, 2);
 
-            var tbs = new Gtk.Widget []{
-                useCase.ArrangerToolStrip.Backend.ToGtk(),
-                useCase.SplitViewToolStrip.Backend.ToGtk (),
-                useCase.DisplayModeToolStrip.Backend.ToGtk (),
-                useCase.MarkerToolStrip.Backend.ToGtk (),
-                useCase.LayoutToolStrip.Backend.ToGtk (),
+            // set minimum size:
+            var minSize = Registry.Pooled<Limaki.Drawing.IDrawingUtils> ().GetTextDimension ("File Edit Style", null);
+
+            windowBackend.Window.SizeRequested += (s, e) => {
+                var req = e.Requisition;
+                var size = new Xwt.Size (e.Requisition.Width, e.Requisition.Height);
+                Trace.WriteLine ($"{nameof (windowBackend)}.{nameof (windowBackend.Window.SizeRequested)}:{size}");
+                req.Width = (int)minSize.Width;
+                e.Requisition = req;
             };
 
-            tbs.Cast<Gtk.Toolbar> ().ForEach (tb => {
-                tb.ShowArrow = true;
-                //tb.ResizeMode = Gtk.ResizeMode.Queue; //deprecated
- 
-                //tb.CheckResize ();
-                //tb.ShowAll ();
-                var w = 0;
-                tb.Children.ForEach (c => {
-                    var r = c.SizeRequest ();
-                    w += r.Width;
-                });
-
-				// this depends on something strange; 
-				// on cinnamon 8 is needed
-				// otherwise 5
-				tb.WidthRequest = w + 8; 
-                tb.SizeRequested += (s, e) => {
-                    
-                };
-                toolBox.PackStart (tb, false, false, 0);
-                toolBox.SizeRequested += (s, e) => {
-                    
-                };
-            });
-
-            var mainBox = windowBackend.MainBox;
-            mainBox.PackStart (toolBox, false, false, 0);
-            
-            ((Gtk.Box.BoxChild) mainBox[toolBox]).Position = 1;
-            mainBox.ShowAll ();
-
-
         }
 
+        protected void AddToolbar (Xwt.Window xwtWindow, Vidgets.ToolbarPanel toolbar) {
+
+            if (toolbar == null)
+                return;
+            
+            var windowBackend = xwtWindow.GetBackend () as Xwt.GtkBackend.WindowBackend;
+            var toolbarBackend = toolbar.Backend.ToGtk ();
+            var mainBox = windowBackend.MainBox;
+            mainBox.PackStart (toolbarBackend, false, false, 0);
+
+            ((Gtk.Box.BoxChild)mainBox [toolbarBackend]).Position = 1;
+            mainBox.ShowAll ();
+
+        }
     }
 }

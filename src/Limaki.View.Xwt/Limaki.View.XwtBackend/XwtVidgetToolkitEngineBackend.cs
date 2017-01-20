@@ -57,6 +57,7 @@ namespace Limaki.View.XwtBackend {
             RegisterBackend<ILayoutToolStripBackend, LayoutToolStripBackend> ();
             RegisterBackend<IMarkerToolStripBackend, MarkerToolStripBackend>();
 
+            RegisterBackend<IToolbarPanelBackend,ToolbarBackendDummy> ();
         }
     }
 
