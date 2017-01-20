@@ -22,6 +22,7 @@ using Limaki.View.Visuals;
 using Limaki.View.Viz;
 using Limaki.View.Viz.Mesh;
 using Limaki.View.Viz.Visualizers;
+using System.Linq;
 
 namespace Limaki.View.ContentViewers {
 
@@ -39,7 +40,7 @@ namespace Limaki.View.ContentViewers {
             }
         }
 
-        public ISheetManager SheetManager { get;set;}
+        public ISceneManager SceneManager { get; set; }
 
         public override IVidgetBackend Backend {
             get { return SheetDisplay.Backend; }
@@ -53,60 +54,31 @@ namespace Limaki.View.ContentViewers {
             return streamType == ContentTypes.LimadaSheet;
         }
 
-        IGraphSceneDisplayMesh<IVisual, IVisualEdge> _mesh = null;
-        IGraphSceneDisplayMesh<IVisual, IVisualEdge> Mesh { get { return _mesh ?? (_mesh = Registry.Pooled<IGraphSceneDisplayMesh<IVisual, IVisualEdge>> ()); } }
+        public override void SetContent (Content<Stream> content) {
 
-        public override void SetContent(Content<Stream> content) {
             if (SheetDisplay == null) {
-                throw new ArgumentException("sheetControl must not be null");
+                throw new ArgumentException ($"{GetType ().Name}.{nameof (this.SetContent)}:{nameof (SheetDisplay)} must not be null");
             }
 
-            SheetDisplay.Perform();
+            SceneManager.Store (SheetDisplay);
+            var contentId = SceneManager.IdOf (content);
+            if (contentId != 0) {
+                if (SceneManager.IsSceneOpen (contentId, true, true))
+                    return;
+            }
 
-            if (SheetDisplay.DataId == 0) 
-                SheetDisplay.DataId = Isaac.Long;
-            
-            SheetManager.SaveInStore(SheetDisplay.Data, SheetDisplay.Layout, SheetDisplay.DataId);
-            SheetManager.RegisterSheet(SheetDisplay.Info);
-
-            Mesh.RemoveScene (SheetDisplay.Data);
-
-            var loadFromMemory = false;
+            var loadContent = SceneManager.DoLoadDirtyScene(contentId, true);
             var isStreamOwner = this.IsStreamOwner;
 
-            var id = content.Source is Int64 ? (Int64)content.Source : 0;
-            SceneInfo stored = null;
-            if (id != 0 ) {
-                stored = SheetManager.GetSheetInfo(id);
-                if(stored != null && id == stored.Id && !stored.State.Clean) {
-                    var dialog = Registry.Factory.Create<IMessageBoxShow>();
-                    if (dialog.Show(
-                        "Warning",
-                        string.Format("You try to load the a changed sheet again.\r\nYou'll lose all changes on sheet {0}",stored.Name), 
-                        MessageBoxButtons.OkCancel)
-                        == DialogResult.Cancel) {
-                       loadFromMemory = true;
-                    }
-                }
-            }
-
-            SceneInfo sheetinfo = null;
-            if (!loadFromMemory) {
-                sheetinfo = SheetManager.LoadFromContent(content, SheetDisplay.Data, SheetDisplay.Layout);
+            if (loadContent) {
+                SceneManager.Load (SheetDisplay, content);
             } else {
-                SheetManager.LoadFromStore(SheetDisplay.Data, SheetDisplay.Layout, stored.Id);
-                sheetinfo = stored;
+                // should load from SceneManager.SheetStore:
+                SceneManager.Load (SheetDisplay, contentId);
                 isStreamOwner = false;
             }
-            SheetDisplay.BackendRenderer.Render ();
-
-            SheetDisplay.Perform();
-            SheetDisplay.Info = sheetinfo;
-
-            Mesh.AddScene (SheetDisplay.Data);
 
             this.ContentId = SheetDisplay.DataId;
-            SheetDisplay.Data.CreateMarkers();
 
             if (isStreamOwner) {
                 if (content.Data != null)
